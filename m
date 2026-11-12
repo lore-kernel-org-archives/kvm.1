@@ -1,112 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794492265;
-	b=tFWqup9B2UjiMTFqrOvrRBIWNaUuHNoJxkuXiWWR8WqPjkgjLVOQkV5eTlFH6ECPXAiL
-	 C9GAh88gckQI/b0bG+ZdN633T1YE9Z4bGclI/Qf+WPplA6eemjUCWjGrdJJSb7d987TO7
-	 MMknIoBRUg3xBZUODBST+6lvy1ZXkxH5/+OZ/IMTUwQ0OcjGJyvDduxYpJy9vNA+F96yZ
-	 C0bJhqrAvvLoXsRMlJZwbHvcfxKjJy8W3Ty5vt8rM7OWk7OjZJxYGZbQ2ACZiLIDpkGBA
-	 8ThMCEIhYmftpQjKH2w1w/0d3/mKSTZIUxN3Ln0+Zj6WdmTApebOAAnFyAePt59w62Q==
+	t=1794492654;
+	b=E3QJYCC99BBoTI8YIOY+FrEJAwMDHfzwvmOBohw/EAjbsGsMZRHfOV1FHOAQvSYhB805
+	 ugnoekXcNx+nGHldZsCRVZQfhseDSTmD3V0KiTpcGFQrdPbg2Cf/xBLmmsU74q2mNaTEB
+	 fl0Xr9ooip9VSpDftqTfg1m/GnpHICZdoD2kmKnAsBdnmF6xx7Vq2eh+SLhEUQ0WXAyQD
+	 Bu6kOE+vki4YsqfoCObCakSHX8APIlvM1/lAC0PRCH8jHdOymcO+Ve56yS1WIGrrMWfMj
+	 uzHuycMM/tJNU/VEiwkUHUys/b2yTPpKh8bzy6P7hD/RlszDe4XeLXtgB3oThfG/1PQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794492265;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Proofpoint-Spam-Details-Enc:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Info:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=B+CH3/jx2KSH+RRiLFJDBQonfvkStMqSF3XdFCzZT8w=;
-	b=W9DNewz9ZloRN36bE3qeGzFDlStT9g+A6coUiKM0glsQ2vscxYe0/J0+kwwdcypNjVu9
-	 bzQstLpcR/Xf/WndooyjlV86Q8fgeBi3m+3+Cii4byc4bBKTA1v/S3MQSmF7/h3uXRrEW
-	 q8FmbL4fN3W/Zf46YANcVw8eQiiDSv96q4XdWVEnz0IZ315G0hIvLnHVAOlOUzi3cRaoM
-	 y/H6doTX72oC4TzRMa6xBXpHnYAtdmBBL8iWKUlaC/YJcjk+okfk7Hw8vQ9FAiJfdCSuA
-	 KLfotc1C2k15ssgc5/rkrP8+W2qe9f5l9XP0NianWTetBEuTk6d1r37n4XbTR/MZdqw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794492654;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Proofpoint-Spam-Info:X-Authority-Analysis:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=y8LtVMgdBu3BRtlUo0WEuwRsBfw6KOHlQGQFw7HpiRo=;
+	b=XT7kLL2PQNv7E2eO0oAEb2Dej7UtERWTXb3dbDFug7YEmSK57q9UO84Im5bLuEPzlc+1
+	 zAeE966xLyEG979WQGUl6XQ6LywpV4ud7lkGiS1YbPUK1g/XMzDK0UksJVzx/eZDEtlIg
+	 YeV4ljmyXdyWiklbjsOgRCTnzQ0LJqYX61QAQHNRB+JZX4AcOZybkuQlSGCEeeXOZU+S5
+	 HfYu5/EJ9IIJtdLHSnKw3dvhmdBmKKXlpj/9XbHn7QfTB9P49vYWPRGyNKtsvs9FFvLfp
+	 OXozraYUu9LtDJONvZ/+xksZbtqiJC/1oFJG2MYdr4UbvAYO0YBMYzEKi+b6WVR/3oA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b="Pt8mT/O3";
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=Zkdyv7FZ;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	dmarc=pass header.from=de.ibm.com;
+	spf=pass smtp.mailfrom=de.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NGk+mxXq;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F36D606AE81
-	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 14:04:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0F36D606AE81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257CB606A330;
+	Thu, 12 Nov 2026 14:10:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 257CB606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Pt8mT/O3;
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=Zkdyv7FZ
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ACAUYOx1629209
-	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 14:04:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	B+CH3/jx2KSH+RRiLFJDBQonfvkStMqSF3XdFCzZT8w=; b=Pt8mT/O3E+MdfLZ5
-	irvIgS8uLB5HnZNSkjqw9uCkzssqONuDPOuy5kilOtAmiJYPSUIGSxF9D13buTDW
-	+aiq1LxgbwgdvUSAxVbw1ePXNqBwO48/h8xDkJyoNw2v5Sye+5IkGZ5mYZBhXSek
-	9IbJYB9tIVir/trXeHtT9QBeG7HdB6KhiLrlaeALCLDPAhar3kGWHDWv5bKoDo3y
-	b1Dsb+rh2gEqjZQn5RcwKEHhw1XJjnEJ/9RV0rfBb56LC0GBgri8dlL94paAxjrr
-	w1g25DSeUfIxH8cy9wY4Y9eKbEvUgEKPcm3YmIbx4AGfryQISQPQZM7vH49th1Rc
-	Ed87YA==
-Received: from mail-dl1-f71.google.com (mail-dl1-f71.google.com [74.125.82.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hwbs00q6f-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 14:04:22 +0000 (GMT)
-Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-16bc6f3fdb1so3274478c88.0
-        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 06:04:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1794492262; x=1795097062; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=B+CH3/jx2KSH+RRiLFJDBQonfvkStMqSF3XdFCzZT8w=;
-        b=Zkdyv7FZMAup7d7VcnxaVAem3tfHj5MSFqZtrqcidXWFs7hcaVhX1gf27oHzB2TEEB
-         kvMkGB0vbGlN6Cd4G1y3J3mO1SN+/1C6MGibdA/X4cUpEUXNV7uVokZvfuX6QJ+Poyam
-         zFs1Kc81Xes1FcQ9nO/+M2sg6VuLXuIdD/nHbbswzwV0de4ZZH0TVrlDt6tKfU1GtRI1
-         qhvF4mjdOIDWI3rrbHgEk3cUzd6nn/pxW02mCQ6GM8vh8zJThB4l4CWFEqOPXWgftQiw
-         iua5SuEaZsKOZPSst79yXKuZHWDTzmjEXt3+cVkHS4UhCuYfJcf9jA1Q7mA3tr0SxscB
-         Me3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794492262; x=1795097062;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=B+CH3/jx2KSH+RRiLFJDBQonfvkStMqSF3XdFCzZT8w=;
-        b=kFZmLtwLt+7ZY5Ec38JAiJ31QaMcG4nRRvEiaAVxSDA769uY0BOO1pPJYr0E/HCmSs
-         eJWXMiFOrwzusGTPTfgbgfl85A9d8fvx1EFKIgyqSxgG34VE4UtKdLCcw3tWb/YMPMAh
-         SL40qMTS7NeHB/11hdjuVPBYg5mymkGSkjeDKvrRSeoxjvprS4TsfCD/J8t0RuSpS//k
-         lW+h93DE4UcerHMUruE9nWFlk5sTqiIvVdp7/78USVLXiqb6+/4g/Azeo0au5Jq1bUcv
-         UjwyCrSv8rkfUTdcwmsBfmPIygVVhntHlHKZdLL1Z2CS0B9++x69+aT05Sk9dVv0SL9T
-         tlUA==
-X-Forwarded-Encrypted: i=1; AL+hErF4OXBTw7H+BejVGCgMb/DmBvqHSdDt/ji2hT3zo7mJ5sgHYkb5iOWhiJnyWfBjt7peAyk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8eui79Y4vLv9SjeIoyz0b0xhuMQkZzOUV7oFNfr0HB+Q7huL/L
-	4e3zZrkMqIbpEz2ZlHD81dCPwXPix9Xz4TZQnUVi+1HkIHmVVm2TbCXL+UZ9fD/aObo5zWHf6dh
-	ZlXzaYiU4sIJc+p2SLs9dX63ZC5nY3ZD2T4Q2NaOz14QPV6h0sdnwJL4=
-X-Gm-Gg: AYBFou2ocejosLBopyi8Fhh40a9VfkdPGgt4mDvdBdedAlgr1PaMUX37Y5BL7OF2Jbr
-	20gXEMcnkDJQwxPhMyDVI9ESJ5UzvHkcBLmoYfbBonKlEIdZOMahMMryTvHfug/3Z1I6q38DdP7
-	Ul5TV7FMjtcWlPiB/diODxBTV0IUkiwUNj/47V+Aaasz6wwrWyN4qcbo1Vqbi2Z8P+ZXpQjs4cb
-	SaUxmqREZXwJmQGP4T0O9kQP50vQmO+hG2FxVQ2SxuC0+CastI2NW5kcE+e9l2gYGgLeCyVPhX8
-	NLifv1feqlT4G+RDq0c8pfko/X6X98xv5CxZcR1UQueQNNdHkch/cFl/8/JDj5GCmHt3Dez6Mll
-	tGBuBMDbL851bmK0faRgjldRDYz7dOYpGfDrVzSef02pcbN6pIUeNO03g/tNpYJQqglKCet2FQY
-	+dMOP/
-X-Received: by 2002:a05:7022:28c:b0:1b3:bae1:f5f3 with SMTP id a92af1059eb24-1b3c023c99dmr4854428c88.6.1794492261660;
-        Thu, 12 Nov 2026 06:04:21 -0800 (PST)
-X-Received: by 2002:a05:7022:28c:b0:1b3:bae1:f5f3 with SMTP id a92af1059eb24-1b3c023c99dmr4854412c88.6.1794492260879;
-        Thu, 12 Nov 2026 06:04:20 -0800 (PST)
-Received: from [10.206.104.93] ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5029ecb1bsm14027c88.1.2026.11.12.06.04.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Nov 2026 06:04:20 -0800 (PST)
-Message-ID: <97c4eabf-16b0-4e3f-8aab-1c56912c27d4@oss.qualcomm.com>
-Date: Thu, 12 Nov 2026 19:34:11 +0530
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NGk+mxXq
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AC2ibWG2858007;
+	Thu, 12 Nov 2026 14:10:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=y8LtVM
+	gdBu3BRtlUo0WEuwRsBfw6KOHlQGQFw7HpiRo=; b=NGk+mxXqf8NrWp7oCUHeTU
+	dHrnO0mRSLa1VEpLKf4rZSX7SFSP3VdvgpqNQ4ti+/FqKmz7Klc2qNlR7LvuGXj2
+	dOXHGFHMf+4kwMpj51JyIf6mcSKkvRzYT2mpCukc1lh0HDQJosAhCl8o4U9a7piP
+	aBM1OuWbTsHuxYQOlRNWYX/7wUsk8nVLzDIP2yCVmT36TLbrx3DgCefUEwKaFxqO
+	ZrMqcURc/6DWMnVScZeooxEAr6N8icmEglKbuCe8bjrBrfTDRayQ5mv4C6EtX3yG
+	RIgIb59sVBHpCFGw5J2M4pp5nmdhXlzgby4BXWKxb+HjenjoPVy2cdVfRlGAsn4g
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hsumv6jvn-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 12 Nov 2026 14:10:49 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6ACCB7h9669730;
+	Thu, 12 Nov 2026 14:10:48 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hwd858cfq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Nov 2026 14:10:48 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6ACEAiKW27787688
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Nov 2026 14:10:44 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C07642004F;
+	Thu, 12 Nov 2026 14:10:44 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 418922004E;
+	Thu, 12 Nov 2026 14:10:43 +0000 (GMT)
+Received: from [9.111.75.87] (unknown [9.111.75.87])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 12 Nov 2026 14:10:43 +0000 (GMT)
+Message-ID: <ab6581e5-6344-4b5a-8126-5d6d9cf6ccfe@de.ibm.com>
+Date: Thu, 12 Nov 2026 15:10:42 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -117,92 +86,212 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 4/5] iommu/of: Require reg for iommu-addresses
-To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        "Joerg Roedel (AMD)" <joro@8bytes.org>,
-        Vasant Hegde <vasant.hegde@amd.com>,
-        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-        Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Jean-Philippe Brucker <jpb@kernel.org>, Rob Herring <robh@kernel.org>,
-        Saravana Kannan <saravanak@kernel.org>,
-        Tomasz Nowicki <tomasz.nowicki@caviumnetworks.com>,
-        Eric Auger <eric.auger@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-        Srinath Mannam <srinath.mannam@broadcom.com>,
-        Oza Pawandeep <quic_poza@quicinc.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Alex Williamson <alex@shazbot.org>
-Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-        virtualization@lists.linux.dev, devicetree@vger.kernel.org,
-        kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-media@vger.kernel.org,
-        Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
-References: <20261106-add_iommu_ranges-v7-0-5c0f72083e52@oss.qualcomm.com>
- <20261106-add_iommu_ranges-v7-4-5c0f72083e52@oss.qualcomm.com>
- <3713bf13-cec6-4b02-a29b-8f76070f03b3@linaro.org>
+Subject: Re: [PATCH v6 1/5] KVM: s390: Fix UCONTROL inconsistencies
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>, kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, frankja@linux.ibm.com, david@kernel.org,
+        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com
+References: <20261105153705.208516-1-imbrenda@linux.ibm.com>
+ <20261105153705.208516-2-imbrenda@linux.ibm.com>
 Content-Language: en-US
-From: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
-In-Reply-To: <3713bf13-cec6-4b02-a29b-8f76070f03b3@linaro.org>
+From: Christian Borntraeger <borntraeger@de.ibm.com>
+In-Reply-To: <20261105153705.208516-2-imbrenda@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEyMDA1NSBTYWx0ZWRfXxYNHbHluaAlR
- K+Ua+sVYTFG6zyNzjki2aTj45HvdO0+W/4eR5qNX4SNXtT1c44l+IDhfX/TRNwT3cFDiVj1eLg2
- hI9GONtzhRgHFtG41v4tWI1fGv3Ad/Ps6TijmAZDNZYiAOwFDAH5QaQklvdtO9jeCMzdujC5Wdi
- OnxVtbHy32xUqapS3Dih1iz6LFvzJR1W5RZJRHh1Bo6B5TCaEyDqcdGqge/yeC9tCO7geIWN7P7
- xSpY+zJgLvXQwLDPuKSlu5Z/TB1XGxEevzfJMRZrADCcYkeKnuHNHn/qLJUhC72ZWPNPt9hVlJj
- pxl7yEWV2KP2pvRUIQkXE/t1C2J+QuBWuWsuQhm46x+RpepaJJyqX/NdGn2wGyCJiYwoNLjEG0J
- ieh8T+l2xfiS6tR2/mWDcWGPlhW+tRc16LqQCun6yhuB9hOdxrJaKM3WaQO+YszPMf9PbJZcvIW
- IJEX/BL/vkr85tWpo5Q==
-X-Authority-Analysis: v=2.4 cv=AsF7T+9P c=1 sm=1 tr=0 ts=6af5c766 cx=c_pps
- a=JYo30EpNSr/tUYqK9jHPoA==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
- a=VwQbUJbxAAAA:8 a=DrYjplHx1sOd6opfFz8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=Fk4IpSoW4aLDllm1B1p-:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEyMDA1NSBTYWx0ZWRfXxu5PYYlhY3YL
- IscauDFG8wvTNVqobcxMisR5BiE8wvL4+9Iy6EIsj4Sho7KNJVWR4M5u3IHGh19stD4BVeAAQq/
- 9slAZa7+PXM8XlIPpJLpXrew6wmaMgw=
-X-Proofpoint-GUID: 5R-YJ87aecby2SG6VqRPzZYSPZSErVY3
-X-Proofpoint-ORIG-GUID: 5R-YJ87aecby2SG6VqRPzZYSPZSErVY3
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEyMDA1NCBTYWx0ZWRfX4/sb4Mv7y+H8
+ LCBBMFO/kpu6TnoKOIpLiLF6JhozhzVxoH2XJKAticMDtfWY8GmP7in5s8ozKm4QnDmKA920Igo
+ g2Ro4VNHMXPtGBGSgsyF9CNE71IiFbE=
+X-Authority-Analysis: v=2.4 cv=GISdgeNK c=1 sm=1 tr=0 ts=6af5c8e9 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=VwQbUJbxAAAA:8 a=Lq7HJeEGbxt70aPTqbMA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: bElnMRzKlSTYnPY2ZN8oT-2BmJCX8Kl9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEyMDA1NCBTYWx0ZWRfXyMUPpEXCPJ2s
+ zHNYChMHxNk1eBHOMmotRCbTXcm3jGYG5Uaa+WZG8qQqfc8pOw3vGez45PBOX3VHVsahOHIXeTr
+ 3XL7Fh+jlARBuWKLxxPDXYDsMFnl9CgW2Q5rDtpoir9bPnFac29eYB0qJIYSs+DqO5tQko9BZLE
+ Ttcv5theT0TXyyETD1U9v8t5xCYRLEGauglaupQ97a8gljiczyMlvGGG3JNRl8cpcg6uxhQ3gCj
+ NNpDWDEyfrL6jpLZQzZtB6dpeTLq/sUYqImGS2OpYsp7JgHYjH69f3eAOosJTjHc049dX7zbyx7
+ /F4e3g/O6F3O10o+kcfBj2xN3nbQfVqEbs1fYqN/ZL6aWbyluEYpiziw5Q1pnrNBtVbNIc//4Re
+ OwKUKsgdk+ATOjLk5pUMgbu1QA6yFXhl/sFfNS9qwFpYOy8eJ80isv341aZXbwEZvEDyzByigbp
+ SwNLpWJNDA5QcgFeVYA==
+X-Proofpoint-ORIG-GUID: bElnMRzKlSTYnPY2ZN8oT-2BmJCX8Kl9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-12_01,2026-11-11_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 phishscore=0 impostorscore=0 bulkscore=0
- adultscore=0 lowpriorityscore=0 spamscore=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 bulkscore=0 impostorscore=0 clxscore=1015 adultscore=0
+ priorityscore=1501 phishscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611120055
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611120054
 
-
-On 11/11/2026 5:32 PM, Bryan O'Donoghue wrote:
-> On 06/11/2026 17:14, Vikash Garodia wrote:
->> @@ -257,6 +252,9 @@ void of_iommu_get_resv_regions(struct device *dev, 
->> struct list_head *list)
->>                   }
->>                   type = iommu_resv_region_get_type(dev, &phys, iova, 
->> length);
->> +                if (type != IOMMU_RESV_DIRECT)
->> +                    continue;
->> +
+Am 05.11.26 um 16:37 schrieb Claudio Imbrenda:
+> For UCONTROL VMs, when a vCPU segment entry is mapped but unallocated,
+> the tl field was set to 1. This collides with the present bit, which
+> means that other parts of gmap would mistake the entry for a present
+> one.
 > 
-> This change is not about requiring a reg though, which is why it should 
-> be a standalone patch with its own justifications.
+> Refactor the code to use a different combination of flags to indicate a
+> mapped but unallocated segment.
 > 
-
-This is about reg, which determines the direct mapping, hence the code 
-is very much applicable to this patch. Please refer this code [1]
-
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/drivers/iommu/of_iommu.c#n223
-
-Regards,
-Vikash
-
-> Basically the patch should state why a mismatch is dropped instead of 
-> being reserved.
+> The new flags combination will result in several functions returning
+> -EFAULT when used on UCONTROL guests. This is fine, since those
+> interfaces should not be used for UCONTROL guests to begin with.
 > 
+> Proper fencing of the interfaces that are not allowed for UCONTROL
+> guests is outside the scope of this patch.
+> 
+> Fixes: a2c17f9270cc ("KVM: s390: New gmap code")
+> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+
+Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+
+as far as I can deduct, the sashiko report should not happen.
+
+
+> Cc: stable@vger.kernel.org # 7.0+
 > ---
-> bod
+>   arch/s390/kvm/gmap/dat.h  | 22 +++++++++++++++-
+>   arch/s390/kvm/gmap/gmap.c | 54 +++++++++++++++++++--------------------
+>   2 files changed, 47 insertions(+), 29 deletions(-)
+> 
+> diff --git a/arch/s390/kvm/gmap/dat.h b/arch/s390/kvm/gmap/dat.h
+> index 90389d47ba4e..e6215c0b571f 100644
+> --- a/arch/s390/kvm/gmap/dat.h
+> +++ b/arch/s390/kvm/gmap/dat.h
+> @@ -109,6 +109,8 @@ union pte {
+>   #define _REGION3_FR_MASK	(_REGION3_MASK >> PAGE_SHIFT)
+>   #define _PAGES_PER_SEGMENT	_PAGE_ENTRIES
+>   #define _PAGES_PER_REGION3	(_PAGES_PER_SEGMENT * _CRST_ENTRIES)
+> +#define _UCAS_ENTRY_LENGTH	0
+> +#define _UCAS_ENTRY_OFFSET	3
+>   
+>   /* Soft dirty, needed as macro for atomic operations on ptes */
+>   #define _PAGE_SD 0x002
+> @@ -421,6 +423,23 @@ static inline union crste _crste_fc0(kvm_pfn_t pfn, int tt)
+>   	return res;
+>   }
+>   
+> +static inline union crste _crste_ucas(kvm_pfn_t pfn)
+> +{
+> +	union crste res = { .val = PFN_PHYS(pfn) };
+> +
+> +	res.h.i = 1;
+> +	res.h.tt = TABLE_TYPE_SEGMENT;
+> +	/*
+> +	 * Segment entries do not have a TF or TL field; reuse those bits to
+> +	 * indicate that this is a special mappped-but-not-allocated UCAS
+> +	 * entry. Setting TL to 0 ensures that the entry will always be
+> +	 * considered not present.
+> +	 */
+> +	res.h.fc0.tl = _UCAS_ENTRY_LENGTH;
+> +	res.h.fc0.tf = _UCAS_ENTRY_OFFSET;
+> +	return res;
+> +}
+> +
+>   /**
+>    * _crste() - Useful constructor for union crste with FC=1
+>    * @pfn: the pfn this pte should point to.
+> @@ -985,7 +1004,8 @@ static inline int dat_create_slot(struct kvm_s390_mmu_cache *mc, union asce asce
+>   
+>   static inline bool crste_is_ucas(union crste crste)
+>   {
+> -	return is_pmd(crste) && crste.h.i && crste.h.fc0.tl == 1 && crste.h.fc == 0;
+> +	return is_pmd(crste) && crste.h.i && !crste.h.fc &&
+> +	       crste.h.fc0.tl == _UCAS_ENTRY_LENGTH && crste.h.fc0.tf == _UCAS_ENTRY_OFFSET;
+>   }
+>   
+>   #endif /* ARCH_KVM_GMAP_DAT_H */
+> diff --git a/arch/s390/kvm/gmap/gmap.c b/arch/s390/kvm/gmap/gmap.c
+> index bf91e3d5013b..225fdae3d57c 100644
+> --- a/arch/s390/kvm/gmap/gmap.c
+> +++ b/arch/s390/kvm/gmap/gmap.c
+> @@ -777,16 +777,14 @@ static int gmap_ucas_map_one(struct kvm_s390_mmu_cache *mc, struct gmap *gmap,
+>   	if (rc)
+>   		return rc;
+>   	if (!ptep) {
+> -		newcrste = _crste_fc0(p_gfn, TABLE_TYPE_SEGMENT);
+> -		newcrste.h.i = 1;
+> -		newcrste.h.fc0.tl = 1;
+> +		newcrste = _crste_ucas(p_gfn);
+>   	} else {
+>   		pt = pte_table_start(ptep);
+>   		dat_set_ptval(pt, PTVAL_VMADDR, p_gfn >> (_SEGMENT_SHIFT - PAGE_SHIFT));
+>   		newcrste = _crste_fc0(virt_to_pfn(pt), TABLE_TYPE_SEGMENT);
+>   	}
+> -	rc = dat_entry_walk(mc, c_gfn, gmap->asce, DAT_WALK_ALLOC, TABLE_TYPE_SEGMENT,
+> -			    &crstep, &ptep);
+> +	rc = dat_entry_walk(mc, c_gfn, gmap->asce, DAT_WALK_ALLOC | DAT_WALK_IGN_HOLES,
+> +			    TABLE_TYPE_SEGMENT, &crstep, &ptep);
+>   	if (rc)
+>   		return rc;
+>   	do {
+> @@ -802,8 +800,9 @@ static int gmap_ucas_translate_simple(struct gmap *gmap, gpa_t *gaddr, union crs
+>   	union pte *ptep;
+>   	int rc;
+>   
+> -	rc = dat_entry_walk(NULL, gpa_to_gfn(*gaddr), gmap->asce, DAT_WALK_CONTINUE,
+> -			    TABLE_TYPE_SEGMENT, crstepp, &ptep);
+> +	rc = dat_entry_walk(NULL, gpa_to_gfn(*gaddr), gmap->asce,
+> +			    DAT_WALK_IGN_HOLES | DAT_WALK_ANY,
+> +			    TABLE_TYPE_PAGE_TABLE, crstepp, &ptep);
+>   	if (rc || (!ptep && !crste_is_ucas(**crstepp)))
+>   		return -EREMOTE;
+>   	if (!ptep)
+> @@ -840,26 +839,24 @@ int gmap_ucas_translate(struct kvm_s390_mmu_cache *mc, struct gmap *gmap, gpa_t
+>   		if (rc <= 0)
+>   			return rc;
+>   	}
+> -	do {
+> -		scoped_guard(write_lock, &gmap->kvm->mmu_lock) {
+> -			rc = gmap_ucas_translate_simple(gmap, gaddr, &crstep);
+> -			if (rc <= 0)
+> -				return rc;
+> -			translated_address = (*gaddr & ~_SEGMENT_MASK) |
+> -					     (crstep->val & _SEGMENT_MASK);
+> -			rc = gmap_ucas_map_one(mc, gmap, gpa_to_gfn(translated_address), gfn, true);
+> -		}
+> -		if (!rc) {
+> -			*gaddr = translated_address;
+> -			return 0;
+> -		}
+> -		if (rc != -ENOMEM)
+> -			return -EREMOTE;
+> -		rc = kvm_s390_mmu_cache_topup(mc);
+> -		if (rc)
+> +	rc = kvm_s390_mmu_cache_topup(mc);
+> +	if (rc)
+> +		return rc;
+> +
+> +	scoped_guard(write_lock, &gmap->kvm->mmu_lock) {
+> +		rc = gmap_ucas_translate_simple(gmap, gaddr, &crstep);
+> +		if (rc <= 0)
+>   			return rc;
+> -	} while (1);
+> -	return 0;
+> +		translated_address = (*gaddr & ~_SEGMENT_MASK) |
+> +				     (crstep->val & _SEGMENT_MASK);
+> +		rc = gmap_ucas_map_one(mc, gmap, gpa_to_gfn(translated_address), gfn, true);
+> +	}
+> +
+> +	if (!rc)
+> +		*gaddr = translated_address;
+> +	if (!rc || rc == -ENOMEM)
+> +		return rc;
+> +	return -EREMOTE;
+>   }
+>   
+>   int gmap_ucas_map(struct gmap *gmap, gfn_t p_gfn, gfn_t c_gfn, unsigned long count)
+> @@ -896,8 +893,9 @@ static void gmap_ucas_unmap_one(struct gmap *gmap, gfn_t c_gfn)
+>   	union pte *ptep;
+>   	int rc;
+>   
+> -	rc = dat_entry_walk(NULL, c_gfn, gmap->asce, 0, TABLE_TYPE_SEGMENT, &crstep, &ptep);
+> -	if (rc)
+> +	rc = dat_entry_walk(NULL, c_gfn, gmap->asce, DAT_WALK_IGN_HOLES,
+> +			    TABLE_TYPE_SEGMENT, &crstep, &ptep);
+> +	if (rc || !is_pmd(*crstep))
+>   		return;
+>   	while (!dat_crstep_xchg_atomic(crstep, READ_ONCE(*crstep), _PMD_EMPTY, c_gfn, gmap->asce))
+>   		;
 
