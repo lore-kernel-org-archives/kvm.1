@@ -1,72 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=124.126.103.232
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794470506;
-	b=QvGKXpiKEE8UG7/zq4Casn9tgu2MS5+guV8VO2E4KR4QBQJjGask9kYJ+seHHule6l3O
-	 qVEKpDxnzI200pb5F2uaT/hbMMKNoZS5nkcyW+XKhTTAaOtZiyGLWHJjkRMcScqiQuMoS
-	 wBOmPng9rn5ghXLCREQ3drxveDHRRgJUMkqRSkegfAvVpIS7tKkJFYiK6qALodVq/hlFi
-	 U2S+pQroRtIdp4o8LZzlNgjHoyLWvOt5qpRVbr9b5F0SvtuJv/IArGnarK9AJRrGGrdvp
-	 C1uskFgQhLZdLqk2gMP7ZnARlRDu53WnBxXVvg7O/7Mu/yVpvkbIBb+Z2j6x39IClKA==
+	t=1794473805;
+	b=QQfJUGQQ9gkfdRJyctVm1ddKmKCsepJUczozXsculMjB5BfhqOYg3wOvNaPk+TvLnRF3
+	 mxGfc0iOMyPtU2LHDjax5SpOCZ1jbuel54uHd6ZFCtCpxz5Q0pGUD2JtGoKURyQZK75ae
+	 4LnfxIPthsH/iSxGoZXKENS+OPpJig1/0UBgX7mV/GAECYTHLe6rmVpW9xKN/Pkxe90oa
+	 h/bd4mP4M2V1HhyRhqtMPqiejdJdbQ0Fd/tkrFLAvrEcJRC6WOgW3YEBPLCZPHplrPgke
+	 FuzAk/elIHlpLkbYYxWV3E/pz1yBL+yipTOo92oEg2D3V6naUSCdMiwW6xleYu2rhzg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794470506;
-	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-MBO-RS-META:X-MBO-RS-ID;
-	bh=WjKO0NSg8lPOk5mK3slLkPv+yGSOHVDOie0hk9bAwXk=;
-	b=lcooybLSRW/PYY3AwjR75G/Qz8uo905jFd8CgUuAAUq18C0h4RqKUl5PBQ9qANUFBRm1
-	 iW2QfUulNj4cMo1EniN5AvmAJPJ8+apltH9VZk6P0hrDb7EPHeHNCB4PtPW/JAGMaF8OH
-	 8rY5gRuHlimxG1PU9aXIC2biyxFaNd816bIdNG4Qh0r0iLr2lwowu5AlEQGOM1nvnOPW5
-	 xU393oFcEJw8sgJUoSelieH5CJJB5CEsfU5/ezUYZ56Wmav3EsQr62d/BTLCTfxsgUuJh
-	 RC9AhcGGctt1z+zVQ0zSJICJBcMLuaIiLP7AqwiFqJu6Wt8rtugACL/NqDdZ4aIRn1g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794473805;
+	h=DMARC-Filter:X-UUID:X-CID-P-RULE:X-CID-O-INFO:X-CID-META:X-CID-BVR:
+	 X-CID-BAS:X-CID-FACTOR:X-CID-RHF:X-UUID:X-User:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=LxcEEAoCt6n89bCpZ37twcsUB6ZoqztAQdy/4BmRnjc=;
+	b=gJF8KAGePhzwzsbTakESBINYw2FEKlQG9fn7aYZUc26w0HwpHdDR18fOKbPB5VJ18yaS
+	 wynl3uYPZRV16vx/jdI7+nNZXu2oVALA5X1RO11eZZduzj74esjMVD5keFAguTyvDamhc
+	 OhRSbfGxC9pNhG1lx3DJtbUPtEV/Ybge84W+fCKxxmxyNy+lrDOa0tEfGKQD799yyqiHq
+	 3WuTgmNnKqcknEeMEngcQf/MIcLOy+WLZfVgfPQpbqVD/1E3lyHsr1RH0g4y60iG68AZn
+	 3jRStHq3ypl1TwGn8RyyYtvQYSmJzzjfKmS/SxPiU4MgS5IgTuIZ+e34KGpSbGYASLg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=mailbox.org;
-	spf=pass smtp.mailfrom=mailbox.org;
-	dkim=pass header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=MlW8fBiq;
-	arc=none smtp.remote-ip=80.241.56.161
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+	dmarc=none header.from=kylinos.cn;
+	spf=pass smtp.mailfrom=kylinos.cn;
+	arc=none smtp.remote-ip=124.126.103.232
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF775606A323;
-	Thu, 12 Nov 2026 08:01:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DF775606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=MlW8fBiq
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4jQCX35103zKnm3;
-	Thu, 12 Nov 2026 09:01:39 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1794470499;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=WjKO0NSg8lPOk5mK3slLkPv+yGSOHVDOie0hk9bAwXk=;
-	b=MlW8fBiq3WE3Ghcf5Br1fxuxBbOzaTSe7hAgdjhKDsPaMMsg/8Cc7dtxsHGhncE/woOMIa
-	6xe+ZY0J9egGhM70fhIF31eIfrz+cJfa8MPdn7ghKyR2Mt4Hc1NQkkE0JndUMsv+AekhWy
-	srUPYZ6itRYyTrrz3Is7i1Dz3zkFGqcx55DysLVyaPr29NdUUIGakcmqgp05DIjl//qZuH
-	UvBhW9QBZG3tzjnZkr/DehKmRhfNmvbLU3m9G02Pzxx5fdjZgjKMzv6wONgSFVl5HL9tMp
-	ixn79j3qNRyWBozdBY5gKbyUivyx+cGXEcqRVOH+oaCdFZdTZgRUKII4MSv3Jw==
-From: Manuel Ebner <manuelebnerli@mailbox.org>
-To: Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>
-Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
-	linux-coco@lists.linux.dev,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FF9606A323;
+	Thu, 12 Nov 2026 08:56:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25FF9606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: f805aa50de7611f19a56ed5b684f684d-20261112
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:e5d3c368-e4ec-46dd-b66a-e06561e210f7,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:20
+X-CID-META: VersionHash:7db8b62,CLOUDID:92feb5b01784c7e2b70c8a08b12f3392,BulkI
+	D:nil,BulkQuantity:0,SF:102|123|865|898,TC:nil,Content:0|15|50|99,EDM:5,IP
+	:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,
+	LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: f805aa50de7611f19a56ed5b684f684d-20261112
+X-User: zhaoguohan@kylinos.cn
+Received: from ubuntu.. [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <zhaoguohan@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1107669512; Thu, 12 Nov 2026 16:56:37 +0800
+From: zhaoguohan@kylinos.cn
+To: mst@redhat.com
+Cc: jasowangio@gmail.com,
+	eperezma@redhat.com,
+	xuanzhuo@linux.alibaba.com,
 	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] x86/virt/tdx: remove kernel-doc syntax from comment
-Date: Wed, 11 Nov 2026 22:45:40 +0100
-Message-ID: <20261111214540.681690-2-manuelebnerli@mailbox.org>
-X-Mailer: git-send-email 2.56.0
+Subject: [PATCH 0/2] vhost: set dirty log bits without pinning pages on x86
+Date: Thu, 12 Nov 2026 16:56:29 +0800
+Message-ID: <20261112085631.128819-1-zhaoguohan@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,33 +73,56 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: js4ooj96n6zf4zrf87697jkz5j5f76n4
-X-MBO-RS-ID: 03bd02e19382c9c5b13
 
-Remove kernel-doc syntax form multiline comment, fixing:
-  $ ./scripts/kernel-doc --none arch/x86/virt/vmx/tdx/tdx.c
-  Warning: arch/x86/virt/vmx/tdx/tdx.c:123 This comment starts with '/**', but isn't a kernel-doc comment. Refer to Documentation/doc-guide/kernel-doc.rst
-   * Enable VMXON and then do one-time TDX module per-cpu initialization SEAMCALL
+From: Khan Zhao <zhaoguohan@kylinos.cn>
 
-Fixes: 165e77353831 ("KVM: x86/tdx: Do VMXON and TDX-Module initialization during subsys init")
-Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
----
- arch/x86/virt/vmx/tdx/tdx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+We use vhost-net with live migration in our product. While dirty
+logging is enabled, every used ring update and every logged write goes
+through set_bit_to_user(), which pins the log page, maps it, sets a
+single bit and unpins it again. The TODO above that function has noted
+for a long time that a direct user access would be better.
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 680e5178a8..4ebbd7d059 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -120,7 +120,7 @@ static int try_init_module_global(void)
- 	return ret;
- }
- 
--/**
-+/*
-  * Enable VMXON and then do one-time TDX module per-cpu initialization SEAMCALL
-  * (and TDX module global initialization SEAMCALL if not done) on local cpu to
-  * make this cpu be ready to run any other SEAMCALLs.
+Patch 1 does that on x86: it tries a byte-sized cmpxchg on the user
+address with page faults disabled, and falls back to the existing
+pin/kmap path if the access faults or keeps losing to concurrent
+updates of the same byte. Other architectures are unchanged, since
+unsafe_try_cmpxchg_user() is only implemented on x86.
+
+Patch 2 adds a userspace test in tools/virtio that drives used-ring
+logging through vhost_test and checks the bitmap, including fault,
+COW, shared-file and concurrent cases, plus a small benchmark mode.
+
+On an x86_64 KVM guest (i7-12800HX host), the benchmark with logging
+enabled went from 243.60 to 171.11 ns per descriptor, averaged over
+five alternating runs. This is the per-descriptor cost in the vhost
+worker; I have not measured the effect on total migration time.
+
+Tool usage: the test, its documentation and the benchmark in patch 2
+were largely generated with OpenAI Codex (gpt-6.1-sol) from a request
+to exercise vhost used-ring dirty logging, and Codex helped run the
+build and VM tests. The changelogs were edited with help from an AI
+assistant. I have reviewed all of the code and take responsibility
+for it.
+
+Testing: x86_64 with SMAP under QEMU/KVM, running the test from
+patch 2 against both the unmodified and patched vhost modules. i386
+and arm64 are build-tested only; non-x86 has not been runtime tested.
+
+Khan Zhao (2):
+  vhost: set dirty log bits without pinning pages on x86
+  tools/virtio: add a vhost dirty log test
+
+ drivers/vhost/vhost.c           |  50 +++-
+ tools/virtio/.gitignore         |   1 +
+ tools/virtio/Makefile           |   7 +-
+ tools/virtio/vhost_log_test.c   | 393 ++++++++++++++++++++++++++++++++
+ tools/virtio/vhost_log_test.rst |  53 +++++
+ 5 files changed, 497 insertions(+), 7 deletions(-)
+ create mode 100644 tools/virtio/vhost_log_test.c
+ create mode 100644 tools/virtio/vhost_log_test.rst
+
+
+base-commit: 9d66f26fefacebfeed15de31c1123451a17ff119
 -- 
-2.56.0
+2.43.0
 
