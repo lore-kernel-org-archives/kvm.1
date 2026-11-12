@@ -1,89 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794515830;
-	b=hDTWzC/lV8XWEgRPgrb96h4JUgRUUdIlfLK30l8+vcHT5q64ss6wnLkPPhR/hHeHBKC8
-	 34Jbebrs7g+7VIUaYBPX3jcdbsLhKWWb6DxQ3JQuMxlyYwIzONXzS6V147k51tIBZTtSx
-	 ml6eD/dMWTJ3tenYyCG6ebfrvsf1K4RrBySs1ZRBfChmKYXoH8D37pB5NYtbXpvAs2G+F
-	 80yFXCMdIp1zg6NkLrjrct4X3xoXBy87WZlXBgEVaGwG31VS5uGIx6agxpU4SgtnrtSM0
-	 dA9T3CLGlbxRqTbwAuhudwupap6fKrcMA/0g90ffrOp+tvcxAc3StTQlp/X/Mx6+p8A==
+	t=1794516228;
+	b=mBsv9O9mB1gtoY70wZHCJeOvfU3OC7a03V0pp3eCUho8MIeSDSMlGr/XnA1dIw0UYAO4
+	 YV2GiwDgPGHXc0xlEVY+CKmV/xsoIU+10CVFD1LJEQYRcpoKF73axNJEzwahIXq7tJPJV
+	 KVMQvBjlTUYgxgIjY/SeX/Wt3PYT2cmLDDH1eYjRmuj2ySfGcN7paGTyzv/VpgUmUpUJX
+	 V5AvEb02JU8SQHJl/uVMAWNzu/CULG83kQRwwQYtx67OHrNyYZqysyA+d9YPPj1SN043T
+	 FrhMbrNUs9B+OYnfQ5NPtecYYnmnmpd5g8FesqRI4PB4DXkgu5JW1uJVtO9HDpGsRig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794515830;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Originating-IP:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Virus-Version;
-	bh=yS4jNiYhRfGb5QojFYxrTDAoccyphd8P5VhC9esgLP8=;
-	b=KVciakOAIXQvgff06wt2c1n0s2zyhyeV1fTCn/iGZ5qVdesQFB/V3eHxIcND8wv6r3Ec
-	 idwEXsWtl5SglbLY4/JhgLjeogSEOitEWdABgWyM/kkFG1nPTHEP6DWMbndxfn2YiN2zA
-	 T7rNETg57Px9Sj2D7fLUp9xmT+TemfT+0MMhM0yOjgzcZt7H0jmlLt4yk7SPfdiZtiWEB
-	 e574wUpG4nc9uNjSudOx/e+Gz+0mBZ7aNiqkHfMQTfp/l1bVH5B7Rc+jx2omQbhRhugaK
-	 s7XsVK0bXqz9CDd436SFnZSeR4ShhG6wTsrSLbzlMEqGIn/X6+i2yj/8hmqx0iKvwOA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794516228;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=+XDq8f4o+SW+TSIJAMLZejYQ9W9rNih2TSs15MEwTfQ=;
+	b=jkA+SMVTFPCekThymflVl5bwiQDyewpnGZhCigNt++Z8pWDxHOtfl1ptPyqDsGNGH3rQ
+	 wi+s69dcKOQ0AzzQczL9jcLku6sN9SOoaoycRdKY60fwaLck/Q9Iwvn2ZAG81+e+bM+al
+	 JA0IQpb5Z3oJRz3xot8p5bbQdjfLYShAAUfqMzhu5hfmfgbxYmpj3AV77soBnvFyZ2YdC
+	 qS8stWLXFTXBZ+mkqmOeeVLWxihQRtmzM9f6rr+uKwZ9H3TyLckyNXJaP/wl4XNsp/PKy
+	 DfmHgsC41XP44U+mAAPisQf9e9slKQgyt2EYmCbdZ08ghUuce3LHlWuV8h89L29tsxA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=fb.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=fb.com header.i=@fb.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=PMJdQsUZ;
-	arc=none smtp.remote-ip=67.231.145.42
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CxjcKB15;
+	arc=none smtp.remote-ip=192.198.163.9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B66606A333;
-	Thu, 12 Nov 2026 20:37:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16B66606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240D8606A339;
+	Thu, 12 Nov 2026 20:43:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 240D8606A339
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=PMJdQsUZ
-Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ACJcaXd3548768;
-	Thu, 12 Nov 2026 12:35:41 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps82601-s2048-2026-q3; bh=yS4jNiYhRfG
-	b5QojFYxrTDAoccyphd8P5VhC9esgLP8=; b=PMJdQsUZ9wFmcb1iynmoB69a2S9
-	/l6vcpkudJukcwnCYNVACZN0krn+ykO5/TIt8+EpvIbWXk/Thx5k4vZ5cgmq7W4p
-	YSdoLkzwG6uHSIzCdV+IylJorKuexJKBqUwpNz3SZ4B9WPoALoDExWQnCKXWDPRb
-	Z5/DS8vaRFuKSuzPHSYrcPHcAb99myPDRsf03Szq3cieanayPemOCovBQW9GdIeV
-	9RbFNayyQojAeuUGrtEiXtaos06zx2p1BuqvueNs74kFdqg74AT6KnsJC9/MrARK
-	c41Qbapm0737503MSI6RRWeUhYCOy69L1IbLs7qa5UjksU0IawyoORjMH9A==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hwjg5h7ms-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 12 Nov 2026 12:35:41 -0800 (PST)
-Received: from devgpu015.cco6.facebook.com (2620:10d:c0a8:1b::2d) by
- mail.thefacebook.com (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.56; Thu, 12 Nov 2026 20:35:37 +0000
-Date: Thu, 12 Nov 2026 12:35:33 -0800
-From: Alex Mastro <amastro@fb.com>
-To: David Matlack <dmatlack@google.com>
-CC: <dri-devel@lists.freedesktop.org>, <iommu@lists.linux.dev>,
-        <kvm@vger.kernel.org>, <linaro-mm-sig@lists.linaro.org>,
-        <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-        <linux-media@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        Alex Williamson
-	<alex@shazbot.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Christian
- =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        Jason Gunthorpe
-	<jgg@nvidia.com>, Josh Hilke <jrhilke@google.com>,
-        Kevin Tian
-	<kevin.tian@intel.com>, Leon Romanovsky <leon@kernel.org>,
-        Logan Gunthorpe
-	<logang@deltatee.com>, Matt Evans <mattev@meta.com>,
-        Matt Evans
-	<matt@ozlabs.org>, Mina Almasry <almasrymina@google.com>,
-        Samiullah Khawaja
-	<skhawaja@google.com>,
-        Shuah Khan <shuah@kernel.org>, Sumit Semwal
-	<sumit.semwal@linaro.org>,
-        Vipin Sharma <vipinsh@google.com>
-Subject: Re: [RFC PATCH 0/7] vfio: selftests: Add peer-to-peer DMA selftest
-Message-ID: <avYjFfqr3T/U7lvn@devgpu015.cco6.facebook.com>
-References: <20261111192411.4133780-1-dmatlack@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CxjcKB15
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794516228; x=1826052228;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Cu17jS3kkzu1jRndoaNN+VWOMIZskRAf1imQrNBOWQo=;
+  b=CxjcKB15H3/Mwphpr2MXHwmozXWiWkqlvlSkjMIHPxJzHxzEyOYC4AyR
+   cTnwZCZET8oTpZ6bousUrHHDZK8l6OYE0I6/94smxI7DItXU70N+1+UHY
+   4mI3CH/H+sJJmZu8lewZCf/zflSJ1HYgW+3r3xAYZHWOFajjvJkeYMRy/
+   4u1lBKyLq54JEeUWKFfMH25PX3QnwjJwF8wqS34qJqqvIzpTsNV9Ux8Ib
+   bnhNCBqmTJy+NfvExflxko+16lMT69we6tTMDHh+Kb3mYEhRrEXvpbcZJ
+   wVWJS7oa1n+lBXvD3/rEmfV9N2CYb2E/UJgmwpUMBxt7A78zLWL4wHpnT
+   g==;
+X-CSE-ConnectionGUID: oVhvEJAiSUaGL2e4CvvUuQ==
+X-CSE-MsgGUID: /GBrN3HKSum1RFFL3tcb8Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11964"; a="3192225"
+X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
+   d="scan'208";a="3192225"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 12:43:47 -0800
+X-CSE-ConnectionGUID: hF6dJ+jqShG9U7ogg4ZjVg==
+X-CSE-MsgGUID: HMRUrClwSqagjC41ultgYQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
+   d="scan'208";a="9087871"
+Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 12:43:47 -0800
+From: Zide Chen <zide.chen@intel.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>
+Cc: kvm@vger.kernel.org,
+	Jim Mattson <jmattson@google.com>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Stephane Eranian <eranian@google.com>,
+	linux-kernel@vger.kernel.org,
+	Mingwei Zhang <mizhang@google.com>,
+	Zide Chen <zide.chen@intel.com>,
+	Das Sandipan <Sandipan.Das@amd.com>,
+	Shukla Manali <Manali.Shukla@amd.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Xudong Hao <xudong.hao@intel.com>
+Subject: [PATCH v4 03/21] KVM: x86/pmu: Rename all_valid_pmc_idx to pmc_exists
+Date: Thu, 12 Nov 2026 13:32:09 -0700
+Message-ID: <20261112203227.289379-4-zide.chen@intel.com>
+X-Mailer: git-send-email 2.56.1
+In-Reply-To: <20261112203227.289379-1-zide.chen@intel.com>
+References: <20261112203227.289379-1-zide.chen@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -93,61 +92,95 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261111192411.4133780-1-dmatlack@google.com>
-X-Proofpoint-ORIG-GUID: gTZbwHAPJUHvcNcTQXZoaWTbiDqc3U-y
-X-Proofpoint-GUID: gTZbwHAPJUHvcNcTQXZoaWTbiDqc3U-y
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEyMDA4MSBTYWx0ZWRfX8+QGQcJzlVZg
- k4Zo3bVBz7pmfN3Sfd/laKYuJjmFQTltox9bHgb+vFKdRZxfPn2n0Byt7bGXetEoyIWHw2/XxUZ
- RUghY+S0CRIP/9z9WKscp43wNcr8TSs=
-X-Authority-Analysis: v=2.4 cv=Mcb5KJ/f c=1 sm=1 tr=0 ts=6af6231d cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=_1IyUuN4QrATX339ibzo:22 a=VwQbUJbxAAAA:8
- a=3j4BkbkPAAAA:8 a=qjNXR0RCjIH4vnWDDyQA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEyMDA4MSBTYWx0ZWRfX2wWt7WUyZDf5
- D7DqzOxzzAGKashRIAA/XPJs2s1+E5sQcsUHgQu8DNi/oAjPAVl+TFoYcfJpmKo1T+SifLgmnGv
- xX0gaGGyBdj3zBqzNmmH3Fd2JXAsfCEBPaGKMBfVskS8la626Xp/5xsN8j14N+BhVitHcuQFAnY
- /j/Hlo5VFXrSGrLA77e8dj3bzmtM7o9GzgI7nxcQFOvkHBp5VB2jhDeyzOtxhG7DsNjj8S9xSJV
- MQ4mjkW2fHOlYI05MAevUaRZ040NaOb9hNIRBhKLWfydQKtRmj56asgGGtHpbJU1G8GkZR5UxQW
- bQY9UIQoU9xJOkxyJhU0roi0DoxJZwWPF6pauZPOYebzxrW256aN69ysBxfjbUieqTqqTSS6C8z
- XUMjB16+VToOfr8zogSJU1k1HQxxg5xUIVI3PTQqSWHTIJIPK5qkJp79XjeEwbm0r/sW+xVS/9w
- FzxCuMNv0O5AhSkJmzQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-12_03,2026-11-11_03,2025-10-01_01
+Content-Transfer-Encoding: 8bit
 
-Hey David,
+all_valid_pmc_idx is a bitmap of valid PMC indices, not an index
+itself; rename it to pmc_exists to better reflect what it holds and
+keep the name consistent with other fields in the same struct.
 
-On Wed, Nov 11, 2026 at 07:24:04PM +0000, David Matlack wrote:
+No functional change intended.
+
+Signed-off-by: Zide Chen <zide.chen@intel.com>
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+---
+v2:
+- Pick the name pmc_exists other than all_valid_pmc_mask. (Sean)
+---
+ arch/x86/include/asm/kvm_host.h |  2 +-
+ arch/x86/kvm/pmu.c              | 10 +++++-----
+ arch/x86/kvm/vmx/pmu_intel.c    |  2 +-
+ 3 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index e2eef7057bd3..72b8fbf432a2 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -595,7 +595,7 @@ struct kvm_pmu {
+ 		DECLARE_BITMAP(reprogram_pmi, X86_PMC_IDX_MAX);
+ 		atomic64_t __reprogram_pmi;
+ 	};
+-	DECLARE_BITMAP(all_valid_pmc_idx, X86_PMC_IDX_MAX);
++	DECLARE_BITMAP(pmc_exists, X86_PMC_IDX_MAX);
+ 	DECLARE_BITMAP(pmc_in_use, X86_PMC_IDX_MAX);
  
->     Is requiring userspace to re-issue IOMMU_IOAS_MAP_FILE the expected
->     uAPI behavior? VFIO_DEVICE_RESET (and runtime PM transitions) on the
->     target device also bracket the reset with
->     vfio_pci_dma_buf_move(vdev, true) and vfio_pci_dma_buf_move(vdev,
->     false), tearing down any active IOMMU_IOAS_MAP_FILE mapping of that
->     device's BAR even though PCI_COMMAND_MEMORY remains enabled when
->     VFIO_DEVICE_RESET returns.
+ 	DECLARE_BITMAP(pmc_counting_instructions, X86_PMC_IDX_MAX);
+diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+index eef2f792dc9e..83883191d124 100644
+--- a/arch/x86/kvm/pmu.c
++++ b/arch/x86/kvm/pmu.c
+@@ -944,7 +944,7 @@ static void kvm_pmu_reset(struct kvm_vcpu *vcpu)
+ 	bitmap_zero(pmu->reprogram_pmi, X86_PMC_IDX_MAX);
+ 	bitmap_zero(pmu->pmc_has_mode_specific_enables, X86_PMC_IDX_MAX);
+ 
+-	kvm_for_each_pmc(pmu, pmc, i, pmu->all_valid_pmc_idx) {
++	kvm_for_each_pmc(pmu, pmc, i, pmu->pmc_exists) {
+ 		pmc_stop_counter(pmc);
+ 		pmc->counter = 0;
+ 		pmc->emulated_counter = 0;
+@@ -990,7 +990,7 @@ void kvm_pmu_refresh(struct kvm_vcpu *vcpu)
+ 	pmu->fixed_ctr_ctrl_rsvd = ~0ull;
+ 	pmu->pebs_enable_rsvd = ~0ull;
+ 	pmu->pebs_data_cfg_rsvd = ~0ull;
+-	bitmap_zero(pmu->all_valid_pmc_idx, X86_PMC_IDX_MAX);
++	bitmap_zero(pmu->pmc_exists, X86_PMC_IDX_MAX);
+ 
+ 	if (!vcpu->kvm->arch.enable_pmu)
+ 		return;
+@@ -1011,8 +1011,8 @@ void kvm_pmu_refresh(struct kvm_vcpu *vcpu)
+ 	if (kvm_vcpu_has_mediated_pmu(vcpu))
+ 		kvm_pmu_call(write_global_ctrl)(pmu->global_ctrl);
+ 
+-	bitmap_set(pmu->all_valid_pmc_idx, 0, pmu->nr_arch_gp_counters);
+-	bitmap_set(pmu->all_valid_pmc_idx, KVM_FIXED_PMC_BASE_IDX,
++	bitmap_set(pmu->pmc_exists, 0, pmu->nr_arch_gp_counters);
++	bitmap_set(pmu->pmc_exists, KVM_FIXED_PMC_BASE_IDX,
+ 		   pmu->nr_arch_fixed_counters);
+ }
+ 
+@@ -1034,7 +1034,7 @@ void kvm_pmu_cleanup(struct kvm_vcpu *vcpu)
+ 
+ 	pmu->need_cleanup = false;
+ 
+-	bitmap_andnot(bitmask, pmu->all_valid_pmc_idx,
++	bitmap_andnot(bitmask, pmu->pmc_exists,
+ 		      pmu->pmc_in_use, X86_PMC_IDX_MAX);
+ 
+ 	kvm_for_each_pmc(pmu, pmc, i, bitmask) {
+diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+index 36d91215f42a..ee18899614a1 100644
+--- a/arch/x86/kvm/vmx/pmu_intel.c
++++ b/arch/x86/kvm/vmx/pmu_intel.c
+@@ -560,7 +560,7 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+ 		lbr_desc->records.nr = 0;
+ 
+ 	if (lbr_desc->records.nr)
+-		bitmap_set(pmu->all_valid_pmc_idx, INTEL_PMC_IDX_FIXED_VLBR, 1);
++		bitmap_set(pmu->pmc_exists, INTEL_PMC_IDX_FIXED_VLBR, 1);
+ 
+ 	if (pmu->version == 1)
+ 		return;
+-- 
+2.56.1
 
-There was some discussion about this in the thread below. My understanding of
-Jason's point is that the current behavior, and differences between what
-revoking and move-capable importers see in regards to vfio-exported dma-buf is
-somewhat incidental and not necessarily desirable.
-
-https://lore.kernel.org/all/arMBqyI4XNfD+q1W@devgpu015.cco6.facebook.com/
-
->   - Physical target devices and P2P topology checks: mem_bar_descs[]
->     currently only matches QEMU's pci-testdev, and
->     vfio_pci_has_p2p_path() does not yet check PCI topology or ACS to
->     verify that P2P traffic can flow between two physical endpoints.
-> 
->     Suggestions on physical target BARs to add to mem_bar_descs[] and on
->     checking P2P reachability from userspace are welcome.
-
-FWIW, you can also exercise the "P2P" path with just a single device if you
-IOMMU map a device's BAR into it's own IOAS, and have the device DMA itself. For
-eventually validating aspects of Live Update, maybe you don't necessarily care
-if an actual peer device is being DMA'd?
-
-Alex 
