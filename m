@@ -1,117 +1,118 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794500718;
-	b=gM/7eToKRKmPsspTikhKX3HpDyjTlTuck7lvlpYMwZ1xDk1YDKJS3E1B3vTlsaqUmR+z
-	 xNOPNeBKh/UJqZ4KnHmij/bMh0yfOH+OAQTZSHbmgwewH3tMAKQGsmTZoLHnfQN2d8PSw
-	 d5VFfZKgn6xbErqV4r380j0yOCC8/xcRSzbhoZvRTaqUI+j6syuHpKHTFiDWCnQ7k5D2b
-	 /MARVSh1LASmxgU9wbSvv9ootr6Qkeafwp653Bu2Xwff44t6KA0820j4Hm0YG46CpY3DH
-	 vC2pPzDHaQY+655vM+wdZ+80W/Y+HG9WBen3BJ+8+i6ww++k4f0WnMC8revta16Yneg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794500718;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=cYuwF3jxk5OweJI+2J5siFgKQCYYwTrmZlIkUHpws7I=;
-	b=01iggPtK1p0dCZbqXdy9MEK768JKv93hkLSsbgZdAWEZZyKhWzE6TKiJkWBz1SVS0xoy
-	 rEH5LxJMlKF6rbNgRhrHHWgPbvaVGFC7KQhqL5e/ockzGCbqyOFeYfT2Bzd9wA41lgCkj
-	 ipywbQd/iggsIcKXq0YOcM9fgf8s3T8fS8/eHxAhBJ+XZ7ZX1vEClAbXR4BrWJYIEHfY4
-	 94JV6mPYdk3hAq565j7Eh6uF0jM6g5C/gXR6Uvgdn5jnf5rqBWn/wLsFqmVa2NYQY/i96
-	 mHFt+XBmpdhV3Bfyd0J2vWh2fA2DROogqwegGE0htWa6SuOfLoKKbaMnxGNhec3JUZg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LlnJgOFc;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=eVi3jeT5;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.28
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794501205;
+	b=Elezj2ee1DK6zeOzs1f5aWctlItRslBiIgYPQcHOF7YXZhvtOEkZyoGCeg92cb0Ii8Ay
+	 uCCEWvpF+VQioHzyVCe4sK1fnWtMU4+N3GW7iTL47Fe3ouxwlmm4vx60vf6kMXvExij5i
+	 +RWSf+q1PNhPLPKTU/0WGO2QJJuC8lkW+fAt1aDF58RS/OLC0nNOnf94CaaGKyWY8h691
+	 8nHhjQEY8EplAOTg+ZWjUHwmaLggw36ltibt5QJCgFmd2+rI47ntYiXrkvMvQ5l4errWV
+	 EJNDdcuZBCeaVkhW9HKvy6nF75MF59zP5ZcbkwjQXZI/vsxlObjQVaiPWDOUWBS2fTA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794501205;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:Received:Date:From:To:CC:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
+	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=MdDMpn1E237DWMEcWSJ+1x4vI1+JS6BzFl+hQXT8pFc=;
+	b=XJQu+2TxK6HwwIV5FV74OjXomzb15bnfbeijLA4XiAytwx0Oamb1VITDnRb60nuatipz
+	 34BAUoKMJRb5k1ushtVd5z9M/XRcQbeSUtTSly2BGW4SCvIAJ1zcuJEfvaqsAEmjD83Ay
+	 Ga/rZlpROJm6UIULBFTvqRA3LY7BNt6gjTuq53bBgtaVhATwC7rcKCk89eJP9Z6yQ3M5s
+	 EU4t53O6eZRLF3FH1DO0+ZvV4YGouHDcg2AUcQYUU5TnKTL6YRmzPRSqxNkrSrKuOtnpV
+	 05e7bnsYDMeITLb/ZhTaf+T4+GewhNg8wn3zF/UZKsW/p3qzaDU2sQqwsroknztJfhw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=lohlGJF0;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.28
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010028.outbound.protection.outlook.com [52.101.61.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A474B606A31C
-	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 16:25:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A474B606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9187160A2602;
+	Thu, 12 Nov 2026 16:33:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9187160A2602
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LlnJgOFc;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=eVi3jeT5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794500716;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cYuwF3jxk5OweJI+2J5siFgKQCYYwTrmZlIkUHpws7I=;
-	b=LlnJgOFcaId7Eq6XNSh7uKL1LpBPinVtv5525t8t1+o9gVq62FZOnp4aQYcwp+X9KNYk+b
-	vtp7EuFNlAnbCfVjsCh+/TLc65lxJXsdNIlZ8sZi1rZH3inPeBpYv3+860ySle+IJ1KYpa
-	TpXmlZ0yuGyLEKVkGa85WqMgheqeYzg=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-203-Zo2I2oQ2OUWFGcIUQ-HE_A-1; Thu, 12 Nov 2026 11:25:11 -0500
-X-MC-Unique: Zo2I2oQ2OUWFGcIUQ-HE_A-1
-X-Mimecast-MFC-AGG-ID: Zo2I2oQ2OUWFGcIUQ-HE_A_1794500711
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3b15e47e57fso2491328a91.3
-        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 08:25:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794500710; x=1795105510; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cYuwF3jxk5OweJI+2J5siFgKQCYYwTrmZlIkUHpws7I=;
-        b=eVi3jeT5wnJLwt6XEcMgQ7v6ZUVR9lURl8KyWm4hLZYHvHsJj7YtA7Wl8xXTqbmZ29
-         FJUQHPP4a1BIuP5A6frJ1hjeMjjVnqeG/Rn2ixr6zw6g47PIgEDRRFg0OjbfHwCJru0J
-         bYRCZOkWw3QPnmBZjPdCloPtZnnKVz3w4V6hZPjT3skRbAPDrg70llOFgnvp1hZCTP1h
-         QNxGzqlTfUNIKdrdAgylozlP+Pw5Ele/VbhLlAh8KDQImOI61t51M9enCqnvIgbyZ0QG
-         YTMEnh/WfPVgA68u4183ZoY17RopLmNeXZrxwWxxsmkZwYOQHJIY3n+kU1qRdZAgepYC
-         CzPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794500710; x=1795105510;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cYuwF3jxk5OweJI+2J5siFgKQCYYwTrmZlIkUHpws7I=;
-        b=druj86urLnnGYEXbfrn8rGgZ8vY8cgsV3qImn1FicLsYidUP7O9urXZAPkoAS8qLNY
-         c54vV7v4y3Nja7XQAUOkXAHgim5y66HKDcxpMqZHi57aNTgQ7Q0w4BsBs7M0MONFXjVX
-         wPEmVJm6tBrh59w0BX0rjh48gCSZlzIISmf2NDb6cuc6ZIj93HRtud3YQ2NfUUDbbvuT
-         vZ1LQYebK1FqC4TjiCMFMG6IRIW5NZ7rcPhif6U2GrugImylCIP2dkSj8vZdEChVMHC1
-         My+1t4b2lN8WPQpFI+XVGO5f7MDlY0lUObvGGrhGA0Ul47QBL11/AOrS78eVZz0fY9If
-         XMMQ==
-X-Forwarded-Encrypted: i=1; AL+hErF8YCpxHrDiEfLqib2uW+C55+JmwpSJXEePgBaJS0dH99QbGD8AnTQnbbwUXxKEOJeLZ7Y=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8jzI2laBSvkky/Ly+1P6u+bPcI8GnDqid3l/lUdUBvYG3r9QCU
-	bgXeTcPtNb48pGunXHMla5nWWszQtkJABpFpsghEGOjAMpVCtvUenswGggddx5kTopLaUaX7bzp
-	thFd/a40/56QYF6nEVKi0/CCNJHwOGTiva+hUlICDCwU0IBMh3m9cuw==
-X-Gm-Gg: AYBFou3Ws3kSXnOE5xAi59fOBVDj3ShBEkn+g1YB255eunF2QdyGWbn1VJduuDS7HbJ
-	rOrccGoGnUePpIG3VtgkJo5JWyRZp1bMFA+KkSLJWSr1EdhV4ls6O0LKKMwbQHY6WolDPwI6yxf
-	w64yzsDCqHm4D5r1r/O3ICh+2V3eubSZM/xqVlX+5kRPPxo4MALtnvACD8LgLlFg2KakOLLq9V5
-	hSeSBxFW/1E+NgPjyVA9Eg2JbOpRIjdpVs49E0zfddKAspFjukB6rXllsi9RK4yr3M6VXKl8a9a
-	FDTp4KlKMkN+AUYIT9E0tyotGw0wz/6D/xfqUXboe66V+aLM40R+2IuO+Fm+Efr4bt4XlKdistl
-	a72lgWaacKkHUh3psojbkS70mpOHCL+8m4/OTNLeaypWwfQA0tXpb
-X-Received: by 2002:a17:90b:4c4c:b0:3ab:be66:ddb6 with SMTP id 98e67ed59e1d1-3b182eec040mr4638512a91.20.1794500710379;
-        Thu, 12 Nov 2026 08:25:10 -0800 (PST)
-X-Received: by 2002:a17:90b:4c4c:b0:3ab:be66:ddb6 with SMTP id 98e67ed59e1d1-3b182eec040mr4638482a91.20.1794500709791;
-        Thu, 12 Nov 2026 08:25:09 -0800 (PST)
-Received: from sgarzare-redhat ([209.52.143.85])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b182e3a74asm4847290a91.4.2026.11.12.08.25.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 08:25:09 -0800 (PST)
-Date: Thu, 12 Nov 2026 17:25:05 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Jia Jia <physicalmtea@gmail.com>
-Cc: netdev@vger.kernel.org, stefanha@redhat.com, bobbyeshleman@gmail.com, 
-	mst@redhat.com, jasowangio@gmail.com, eperezma@redhat.com, 
-	xuanzhuo@linux.alibaba.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v5 3/5] vsock/virtio: amortize RX socket locking
- for stream packets
-Message-ID: <avXn6E8y5OPtdikQ@sgarzare-redhat>
-References: <20261103041134.33310-1-physicalmtea@gmail.com>
- <20261103041134.33310-4-physicalmtea@gmail.com>
- <auxDWISLHB8Ln1x7@sgarzare-redhat>
- <CAJwVaMJbzzK8Sj8DvLjiAyqS8TNgRQ3tjRpGcBNC+anQECg5yw@mail.gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=lohlGJF0
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bD5mXiKtK+RDImc5uiuPzv4JupOq9QIAJ2/++jUvTXTTKUHjNkN7A/OfspaP5xWnu3eFi8yUn5MSTgM0PTxf0kLxLDTQP8k0VHLFu2d/hrS0khhkO/0oEFGzLslRNbtGySlrXGqdPgu56n/cMR4NF1HNu399c7R5jBlZbeOYhaZYfamcKYXQ9LBkLNuuZRiaZaWyTWtBaCzd9/MhUmgvU450jX48YlfUX3e3Us2SgPSk8qyt3dRb49ELMLyTlQRG5fKEwLpF8W/XQpED5y0+1Ab5Guilba8PqTg07Zn7z1XBlTQWfvgvOkcGD2UA3zXWhL5FVJDi0UakSObGzM0OPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MdDMpn1E237DWMEcWSJ+1x4vI1+JS6BzFl+hQXT8pFc=;
+ b=YM4eX6t+OQGd0wT+Ue1LMCvsD/tq6b3WYdhTTfRaSFykjxgSYgg8+/ZWiAxQoz77SWvERY60LZfmaRrP9Jzl3ZIislPLlUWUFmWCzJ18N4emSWSaGWkWlce+HZONb/mKRXJAVYMvx7OwnPsppdS5qZLR/GOpr81VvzSDBXq+JNuIC6uAiyvoS58b/QSNQpTGRUPWm24EJIYuf2Odd/uVPeqvv9jF+iNjXPLXSzA2wCdnocf7gnXDT9UzDmgUjNOgzzljbnKJy/SQ9WXFiUOIm0MrAdnyDloa09BwuOtjpnm3olptv9x1uY3IE3PSCj6FxNg2M3BgR/p8AMW2oytHIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MdDMpn1E237DWMEcWSJ+1x4vI1+JS6BzFl+hQXT8pFc=;
+ b=lohlGJF0GtlI+2QR3tEh57/riOgWpTtMWYUYKyy1ItotCTGGCNwdv6X4O+5ZdOgoT07KaqJIwZjPIin/tBeAtmQBWdIjwO9EgPwS+INlfUXJe5UUxTaK6rAxj9omAnkopccRLOQ7CoLBfj9TYU7xC6B6TfWGekE/oJWEPF74atY=
+Received: from SJ0PR03CA0271.namprd03.prod.outlook.com (2603:10b6:a03:39e::6)
+ by MN0PR12MB5930.namprd12.prod.outlook.com (2603:10b6:208:37d::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Thu, 12 Nov
+ 2026 16:31:46 +0000
+Received: from PH4PEPF0000B60E.namprd21.prod.outlook.com
+ (2603:10b6:a03:39e:cafe::81) by SJ0PR03CA0271.outlook.office365.com
+ (2603:10b6:a03:39e::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.8 via Frontend Transport; Thu, 12
+ Nov 2026 16:31:46 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ PH4PEPF0000B60E.mail.protection.outlook.com (10.167.243.89) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.639.0 via Frontend Transport; Thu, 12 Nov 2026 16:31:45 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 12 Nov
+ 2026 10:31:45 -0600
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 12 Nov
+ 2026 10:31:38 -0600
+Received: from amd.com (10.180.168.240) by satlexmb07.amd.com (10.181.42.216)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53 via Frontend
+ Transport; Thu, 12 Nov 2026 10:31:30 -0600
+Date: Thu, 12 Nov 2026 16:31:27 +0000
+From: Ankit Soni <Ankit.Soni@amd.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+CC: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Lu Baolu
+	<baolu.lu@linux.intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, David Woodhouse
+	<dwmw2@infradead.org>, Pranjal Shrivastava <praan@google.com>, Robin Murphy
+	<robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, Alex Williamson
+	<alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, <iommu@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>, Pratyush Yadav
+	<pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, "David
+ Matlack" <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+	Vipin Sharma <vipinsh@google.com>, Nicolin Chen <nicolinc@nvidia.com>, "John
+ Starks" <dev@jstarks.net>
+Subject: Re: [PATCH v7 02/18] iommu/pages: Add APIs to
+ preserve/unpreserve/restore iommu pages
+Message-ID: <wirs4vcszlt6wkw2wfauhjnxve4n5ivnnpkg35fqid34htepet@fn4opgt3lt2x>
+References: <20261110040828.1774343-1-skhawaja@google.com>
+ <20261110040828.1774343-3-skhawaja@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -121,319 +122,241 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <CAJwVaMJbzzK8Sj8DvLjiAyqS8TNgRQ3tjRpGcBNC+anQECg5yw@mail.gmail.com>
+In-Reply-To: <20261110040828.1774343-3-skhawaja@google.com>
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH4PEPF0000B60E:EE_|MN0PR12MB5930:EE_
+X-MS-Office365-Filtering-Correlation-Id: b1e51c2a-fd48-4c3c-376e-08df40da7150
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|82310400026|23010399003|36860700016|4143699003|261026140227099003|261022113327099003|11063799006|10067099003|56012099006|261026130827099003|261022105027099003|261022115727099003|261021121427099003|261026121527099003|261021130227099003|261028144727099003|261022075727099003|261021123027099003|261102130727099003|261021135927099003|261102123227099003|261009223027099003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	gcv8q9LASyoR5PTbwBTxNOvb4rZ3kqFw02Fm0J0H57WeB2+DEDd7PEmGIpBF2pb5xhSCtMs7MmCaIxqmIx7ZD33okUEvXGBfrDhP1KYqukh7CjNW3XNjlEbVQbdUFKP7AyMoAL24wVupD6D9uxnV49kNWTjVl7yeM6hJ0EI+ZHsREHDxQudL91iSEoBP0UjoUeBe/F7rvGaW+pTQ6SNdhV3wA7q4+jsrvs2ToylzESyoXEWGSWrSIGE4SsOG6ohsi0DzJQM+Os6fXJ3CpV/+yFkL3hF1U0F3s0L1FmdIeyRA8TujVuw3RxsyzhanaSHaO4za7c8vou37r6E4X77/tmvGF08oS1J2ysv5C0ICavDEOuk4skLppOruht7U1uW0VBeZfOCzaBdK1uIhs9KegEoNsT/Uo+q34z4j7JdccFvFwca66gnDuPP3y6/UC/HxmU5NSN7bDh4tbRP5W0GxEErsR1ifFPdf9R5kHoXQ/DG1vLgOwhQSW1EfhO5OUvKOKQt1IA0VNzg4DHrhnOJYkFnmarx7udN0iZPdrGJD89aezpxcU5796sDi8mqHbVmoJjiTESymm1qvwSZtnic+XoVHMkfFN1O2MQwYvvAwWmuoi/FDAUV+2nFynTwQ32hUKsL6HmzJJyRRa5iIEmSikmFPUGQUx3CBDEvxrVKNjFE8/TRBIWcEpzXV9w83wqDMRqsD2JZcaAtuhZf7THdXJw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(82310400026)(23010399003)(36860700016)(4143699003)(261026140227099003)(261022113327099003)(11063799006)(10067099003)(56012099006)(261026130827099003)(261022105027099003)(261022115727099003)(261021121427099003)(261026121527099003)(261021130227099003)(261028144727099003)(261022075727099003)(261021123027099003)(261102130727099003)(261021135927099003)(261102123227099003)(261009223027099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	kOoCFkF49m1skZCxHv5Pvl5fQfalUkBQ7P4+ACALb97CV/1XWms1yGMa+S7C+RiheRv7yD2Dt1//anSF0sP157J+lviqgUOeUq4Cx//zasOHRUe/Py2TpefNDbgnkw8J0/kycG+NsPhfI+fC5N9c3UPAkSxYTBofTv05gC92W9+FBPmNj3flwxw/nCBbv14CaRb4Hh8Nj0IWNeRuJ24YqpKUhqRjrnBxK6N09fHjbNjfv01MKCzvq+dNOdx02iMsx1nH2h08Il0vYEbmA3x6sD+au6nHlmM8LY1aIYpgHfvVpt0cmfyF/LHBbv3KKdhLj0+G1ZvkGLDHVS4eJV/M4goggdrthJvB8desqcdrN9RlUkN4ciPCUiYfEp0jOIbtGe2l4Tgr2FwnykLZT3XpQ5T2iShe1Dhb7/UD1Sxs2AwGO+I1iPv58g01iJD6GiYX
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2026 16:31:45.6794
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b1e51c2a-fd48-4c3c-376e-08df40da7150
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	PH4PEPF0000B60E.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5930
 
-On Fri, Nov 06, 2026 at 08:27:51PM +0800, Jia Jia wrote:
->>
->> On Tue, Nov 03, 2026 at 12:11:32PM +0800, Jia Jia wrote:
->> >The virtio-vsock RX worker looks up a socket and takes its lock for every
->> >packet. Retain the connected lookup reference and socket lock across a
->> >bounded run of STREAM/RW packets for one established native socket.
->> >
->> >Reuse the locked socket while packets match the same flow. Finish the
->> >batch on a malformed packet, flow change, non-RW traffic, or a change to
->> >the socket state, transport, protocol, sockmap state, or receive buffer
->> >limits. A connected lookup miss falls back to the existing receive path,
->> >which can still find a bound socket.
->> >
->> >Limit an uninterrupted socket-lock ownership interval to 64 packets and
->> >64 KiB of payload. The payload limit is one
->> >VIRTIO_VSOCK_MAX_PKT_BUF_SIZE. Small or zero-length packets still incur
->> >per-packet work, so an independent packet limit is needed. The 64-packet
->> >limit uses VHOST_NET_BATCH as a reference; it is a policy choice rather
->> >than a protocol limit.
->> >
->> >Beyond these limits, a larger batch would only further amortize socket
->> >lookup and lock/unlock operations, while virtqueue work, validation,
->> >tracing, skb ownership, credit update, and queueing remain per-packet. I
->> >therefore expect diminishing returns while the uninterrupted socket-lock
->> >interval continues to grow, but I have not measured larger limits yet.
->> >
->> >Only the guest virtio RX worker is changed. The benchmark exercises the
->> >host-sender-to-guest-receiver direction, where this worker is on the
->> >receive path. I have not measured the corresponding worker and socket-lock
->> >overhead in vhost-vsock or vsock_loopback, and they use different worker
->> >and locking models. Leave those paths unchanged pending separate policy
->> >and validation. I plan to evaluate vhost-vsock separately as follow-up
->> >work.
->> >
->> >Performance:
->> >
->> >These results cover P1-P3, before the notification changes in P4 and P5.
->> >
->> >Tested on a single-stream vsock connection (one Guest receiver thread on
->> >CPU0, virtio-vsock IRQ on Guest CPU1, fresh QEMU Guest per state). The host
->> >uses vhost-vsock.
->> >
->> >For throughput, vsock_perf runs on the host as the
->> >sender, with a custom single-threaded Guest receiver pinned to Guest CPU0
->> >using blocking recv(). The fixed-64K table uses a 64K buffer; the matched
->> >table uses the sender's request size. The virtio-vsock IRQ/RX worker is
->> >pinned to Guest CPU1. To normalize run times across payloads into a
->> >bounded, deterministic window and avoid long runs being skewed by host
->> >background noise or virtualization scheduling jitter, transfer sizes scale
->> >proportionally with the request size (64B/64M, 256B/256M, etc.), capped at
->> >2G for 4K-64K. The custom receiver keeps the recv() size and count
->> >explicit; vsock_perf's receiver uses poll()+read().
->> >
->> >End-to-end RX throughput (fixed-64K receiver; Gbit/s):
->> >
->> >  payload  baseline RX  PATCH RX  throughput change (95% CI)
->> >           (Gbit/s)      (Gbit/s)
->> >  64B        0.1285       0.2462    +91.59% [+79.74%, +104.22%]
->> >  256B       0.5909       0.9666    +63.59% [+61.03%, +66.19%]
->> >  512B       1.1817       1.8350    +55.29% [+46.76%, +64.32%]
->> >  1K         2.3252       3.3600    +44.50% [+38.93%, +50.30%]
->> >  4K         3.8436       5.5661    +44.82% [+40.30%, +49.47%]
->> >  8K         4.6609       5.4115    +16.10% [ +8.91%, +23.77%]
->> >  16K        5.1196       5.6399    +10.16% [ +4.07%, +16.61%]
->> >  64K        5.6095       5.7062     +1.72% [-3.19%, +6.89%]
->> >
->> >Fixed-syscall stress test (receiver recv() size = sender write size;
->> >no perf; Gbit/s):
->> >
->> >  payload  baseline RX  PATCH RX  throughput change (95% CI)
->> >  64B        0.1446       0.2540   +75.71% [+63.67%, +88.62%]
->> >       recv() calls (baseline/PATCH): 1048577/1048577
->> >  256B       0.4211       0.9061  +115.18% [+72.13%, +169.00%]
->> >       recv() calls (baseline/PATCH): 1048577/1048577
->> >  512B       0.7980       1.6112  +101.90% [+95.30%, +108.72%]
->> >       recv() calls (baseline/PATCH): 1048577/1048577
->> >  1K         1.4965       2.6986   +80.33% [+68.93%, +92.49%]
->> >       recv() calls (baseline/PATCH): 1048577/1048577
->> >  4K         2.9384       4.8590   +65.36% [+60.17%, +70.72%]
->> >       recv() calls (baseline/PATCH): 539544/524982
->> >  8K         3.8170       5.1887   +35.94% [+27.66%, +44.75%]
->> >       recv() calls (baseline/PATCH): 274857/262991
->> >  16K        4.6856       5.5996   +19.51% [+15.36%, +23.81%]
->> >       recv() calls (baseline/PATCH): 147518/131351
->> >  64K        5.5182       5.8800    +6.56% [-0.83%, +14.49%]
->> >       recv() calls (baseline/PATCH): 48492/32910
->> >
->> >Guest CPU1 aggregate cycles per received byte
->> >(fixed 64K receiver, with perf):
->> >
->> >  Buffer size  baseline cycles/B  PATCH cycles/B  cycles change (95% CI)
->> >  64B        66.728    61.220  -8.25% [-18.99%, +3.91%]
->> >  256B       14.363    14.515  +1.06% [ -4.22%, +6.64%]
->> >  512B        7.792     7.578  -2.74% [ -6.55%, +1.23%]
->> >  1K          3.988     4.032  +1.09% [ -1.64%, +3.88%]
->> >  4K          2.063     1.973  -4.38% [ -8.23%, -0.37%]
->> >  8K          1.702     1.667  -2.06% [ -7.99%, +4.25%]
->> >  16K         1.473     1.475  +0.17% [ -5.06%, +5.68%]
->> >  64K         1.385     1.358  -1.96% [-10.61%, +7.53%]
->> >
->> >Signed-off-by: Jia Jia <physicalmtea@gmail.com>
->> >---
->> > include/linux/virtio_vsock.h            |  23 ++
->> > net/vmw_vsock/virtio_transport.c        |   7 +-
->> > net/vmw_vsock/virtio_transport_common.c | 303 ++++++++++++++++++++++--
->> > 3 files changed, 318 insertions(+), 15 deletions(-)
->> >
->> >diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
->> >index f91704731057e..748633aa0cc81 100644
->> >--- a/include/linux/virtio_vsock.h
->> >+++ b/include/linux/virtio_vsock.h
->> >@@ -282,6 +282,29 @@ void virtio_transport_destruct(struct vsock_sock *vsk);
->> >
->> > void virtio_transport_recv_pkt(struct virtio_transport *t,
->> >                              struct sk_buff *skb, struct net *net);
->> >+
->> >+/*
->> >+ * Initialize a batch to zero before use. A non-empty batch owns @sk's socket
->> >+ * lock and the reference returned by vsock_find_connected_socket_net(). The
->> >+ * caller retains both until it calls virtio_transport_rx_batch_finish(). An
->> >+ * empty batch owns neither.
->> >+ */
->> >+struct virtio_transport_rx_batch {
->> >+      struct sock *sk;
->> >+      unsigned int pkts;
->> >+      size_t bytes;
->> >+};
->> >+
->> >+static inline bool
->> >+virtio_transport_rx_batch_empty(const struct virtio_transport_rx_batch *batch)
->> >+{
->> >+      return !batch->sk;
->> >+}
->> >+
->> >+void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
->> >+                                   struct sk_buff *skb, struct net *net,
->> >+                                   struct virtio_transport_rx_batch *batch);
->> >+void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch);
->> > void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *skb);
->> > u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 wanted);
->> > void virtio_transport_put_credit(struct virtio_vsock_sock *vvs, u32 credit);
->> >diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
->> >index 4f9aa9c4c3aa5..9af85712bd387 100644
->> >--- a/net/vmw_vsock/virtio_transport.c
->> >+++ b/net/vmw_vsock/virtio_transport.c
->> >@@ -631,6 +631,7 @@ virtio_transport_seqpacket_allow(struct vsock_sock *vsk, u32 remote_cid)
->> >
->> > static void virtio_transport_rx_work(struct work_struct *work)
->> > {
->> >       struct virtio_vsock *vsock =
->> >               container_of(work, struct virtio_vsock, rx_work);
->> >+      struct virtio_transport_rx_batch batch = {};
->> >       struct virtqueue *vq;
->> >@@ -666,6 +667,7 @@ static void virtio_transport_rx_work(struct work_struct *work)
->> >                       /* Drop short/long packets */
->> >                       if (unlikely(len < sizeof(*hdr) ||
->> >                                    len > virtio_vsock_skb_len(skb))) {
->> >+                              virtio_transport_rx_batch_finish(&batch);
->> >                               kfree_skb(skb);
->> >                               continue;
->> >                       }
->> >@@ -673,6 +675,7 @@ static void virtio_transport_rx_work(struct work_struct *work)
->> >                       hdr = virtio_vsock_hdr(skb);
->> >                       payload_len = le32_to_cpu(hdr->len);
->> >                       if (unlikely(payload_len > len - sizeof(*hdr))) {
->> >+                              virtio_transport_rx_batch_finish(&batch);
->> >                               kfree_skb(skb);
->> >                               continue;
->> >                       }
->> >@@ -685,11 +688,13 @@ static void virtio_transport_rx_work(struct work_struct *work)
->> >                       /* Force virtio-transport into global mode since it
->> >                        * does not yet support local-mode namespacing.
->> >                        */
->> >-                      virtio_transport_recv_pkt(&virtio_transport, skb, NULL);
->> >+                      virtio_transport_recv_pkt_batch(&virtio_transport, skb,
->> >+                                                      NULL, &batch);
->> >               }
->> >       } while (!virtqueue_enable_cb(vq));
->> >
->> > out:
->> >+      virtio_transport_rx_batch_finish(&batch);
->> >       if (vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
->> >               virtio_vsock_rx_fill(vsock);
->> > out_nofill:
->> >diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->> >index 2a9cfed085515..f83e5b2edce35 100644
->> >--- a/net/vmw_vsock/virtio_transport_common.c
->> >+++ b/net/vmw_vsock/virtio_transport_common.c
->> >@@ -33,6 +33,15 @@
->> > #define MAX_COLLAPSE_LEN \
->> >       SKB_MAX_ORDER(VIRTIO_VSOCK_SKB_HEADROOM, PAGE_ALLOC_COSTLY_ORDER)
->> >
->> >+/*
->> >+ * Bound the interval that an RX worker owns a socket lock. One maximum packet
->> >+ * buffer (64 KiB) bounds payload in one uninterrupted ownership interval.
->> >+ * Small and zero-length packets need a packet limit to bound per-packet work;
->> >+ * the 64-packet policy uses VHOST_NET_BATCH as a reference.
->> >+ */
->> >+#define VIRTIO_TRANSPORT_RX_BATCH_MAX_PKTS    64
->> >+#define VIRTIO_TRANSPORT_RX_BATCH_MAX_BYTES   VIRTIO_VSOCK_MAX_PKT_BUF_SIZE
->> >+
->> > static void virtio_transport_cancel_close_work(struct vsock_sock *vsk,
->> >                                              bool cancel_timeout);
->> > static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs);
->> >@@ -1793,13 +1802,94 @@ virtio_transport_find_socket(struct sockaddr_vm *src,
->> >       return sk;
->> > }
->> >
->> >+static void
->> >+virtio_transport_trace_recv_pkt(const struct virtio_vsock_hdr *hdr,
->> >+                              const struct sockaddr_vm *src,
->> >+                              const struct sockaddr_vm *dst)
->> >+{
->> >+      trace_virtio_transport_recv_pkt(src->svm_cid, src->svm_port,
->> >+                                      dst->svm_cid, dst->svm_port,
->> >+                                      le32_to_cpu(hdr->len),
->> >+                                      le16_to_cpu(hdr->type),
->> >+                                      le16_to_cpu(hdr->op),
->> >+                                      le32_to_cpu(hdr->flags),
->> >+                                      le32_to_cpu(hdr->buf_alloc),
->> >+                                      le32_to_cpu(hdr->fwd_cnt));
->> >+}
->> >+
->> >+static bool
->> >+virtio_transport_recv_pkt_set_owner(struct sk_buff *skb, struct sock *sk)
->> >+{
->> >+      if (skb_set_owner_sk_safe(skb, sk))
->> >+              return true;
->> >+
->> >+      WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
->> >+      return false;
->> >+}
->> >+
->> >+static bool
->> >+virtio_transport_sock_has_psock(const struct sock *sk)
->> >+{
->> >+      return (uintptr_t)rcu_access_pointer(__sk_user_data(sk)) &
->> >+             SK_USER_DATA_PSOCK;
->> >+}
->> >+
->> >+/* The caller holds sk's socket lock. */
->> >+static bool
->> >+virtio_transport_rx_batch_can_continue(struct virtio_transport *t,
->> >+                                     struct sock *sk, u32 len)
->> >+{
->> >+      struct virtio_vsock_sock *vvs;
->> >+      struct vsock_sock *vsk;
->> >+
->> >+      vsk = vsock_sk(sk);
->> >+      vvs = vsk->trans;
->> >+
->> >+      /*
->> >+       * Keep a connected lookup reference only for the native, established
->> >+       * STREAM path. Sockets outside ESTABLISHED can change table membership;
->> >+       * a completed or reassigned socket must resume the per-packet path.
->> >+       */
->> >+      if (sk->sk_state != TCP_ESTABLISHED ||
->> >+          sk->sk_type != SOCK_STREAM ||
->> >+          sock_flag(sk, SOCK_DONE) ||
->> >+          vsk->transport != &t->transport || !vvs)
->> >+              return false;
->> >+
->> >+      /*
->> >+       * Do not admit a packet that would hit an existing RX limit while the
->> >+       * worker owns the socket lock. The caller holds that lock, so no reader can
->> >+       * dequeue until the batch is released.
->> >+       */
->> >+      return (u64)vvs->buf_used + len <= vvs->buf_alloc &&
->> >+             !virtio_transport_rx_buf_full(vvs);
->>
->
->Hi Stefano,
->
->> I don't understand this. We recently introduce the collapse, so when we
->> will call virtio_transport_recv_enqueue(), all the queue will be
->> collapsed, including packets in the batch.
->>
->> Or am I missing something?
->>
->
->Yes, collapse operates on the same receive queue, which also contains
->skbs queued earlier in the current batch.
->
->The rx_buf_full() check is not intended to bypass collapse. It prevents
->the batch from retaining the socket lock while processing a packet when
->there is no metadata room for another skb. Collapse is best effort:
->some skbs cannot be merged, and allocation of a replacement skb can
+On Tue, Nov 10, 2026 at 04:08:08AM +0000, Samiullah Khawaja wrote:
+> IOMMU pages are allocated/freed using APIs using struct ioptdesc. For
+> the proper preservation and restoration of ioptdesc add helper
+> functions.
+> 
+> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
 
-IIUC batches are enabled only for SOCK_STREAM, so, which skbs can't be 
-merged?
+Reviewed-by: Ankit Soni <Ankit.Soni@amd.com>
 
-If allocation fails, I guess we have other issues, no?
-
->fail. If the packet remained in the batch and collapse did not make
->enough room, virtio_transport_inc_rx_pkt() would fail and
->virtio_transport_recv_connected() would reset the socket with ENOBUFS
->while a waiting reader was still unable to drain the queue.
->
->When the check makes can_continue() return false before the current
->packet has been handled, the caller releases the socket lock and passes
->the packet to virtio_transport_recv_pkt(). This gives a waiting reader a
->chance to make progress. If the queue is still at the metadata limit,
->the normal enqueue path attempts collapse. If that still cannot make
->enough room, the existing ENOBUFS reset occurs.
-
-I really don't see the difference without batching :-(
-
-I may be missing something.
-
-Thanks,
-Stefano
-
+> Reviewed-by: Pranjal Shrivastava <praan@google.com>
+> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+> ---
+>  drivers/iommu/iommu-pages.c | 109 ++++++++++++++++++++++++++++++++++--
+>  drivers/iommu/iommu-pages.h |  30 ++++++++++
+>  2 files changed, 135 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iommu/iommu-pages.c b/drivers/iommu/iommu-pages.c
+> index 3bab175d8557..0aa18c771baa 100644
+> --- a/drivers/iommu/iommu-pages.c
+> +++ b/drivers/iommu/iommu-pages.c
+> @@ -6,6 +6,7 @@
+>  #include "iommu-pages.h"
+>  #include <linux/dma-mapping.h>
+>  #include <linux/gfp.h>
+> +#include <linux/kexec_handover.h>
+>  #include <linux/mm.h>
+>  
+>  #define IOPTDESC_MATCH(pg_elm, elm)                    \
+> @@ -28,6 +29,13 @@ static inline size_t ioptdesc_mem_size(struct ioptdesc *desc)
+>  	return 1UL << (folio_order(ioptdesc_folio(desc)) + PAGE_SHIFT);
+>  }
+>  
+> +static inline void iommu_folio_update_stats(struct folio *folio,
+> +					    unsigned long nr_pages)
+> +{
+> +	mod_node_page_state(folio_pgdat(folio), NR_IOMMU_PAGES, nr_pages);
+> +	lruvec_stat_mod_folio(folio, NR_SECONDARY_PAGETABLE, nr_pages);
+> +}
+> +
+>  /**
+>   * iommu_alloc_pages_node_sz - Allocate a zeroed page of a given size from
+>   *                             specific NUMA node
+> @@ -80,8 +88,7 @@ void *iommu_alloc_pages_node_sz(int nid, gfp_t gfp, size_t size)
+>  	 * rather large, i.e. multiple gigabytes in size.
+>  	 */
+>  	pgcnt = 1UL << order;
+> -	mod_node_page_state(folio_pgdat(folio), NR_IOMMU_PAGES, pgcnt);
+> -	lruvec_stat_mod_folio(folio, NR_SECONDARY_PAGETABLE, pgcnt);
+> +	iommu_folio_update_stats(folio, pgcnt);
+>  
+>  	return folio_address(folio);
+>  }
+> @@ -95,8 +102,7 @@ static void __iommu_free_desc(struct ioptdesc *iopt)
+>  	if (IOMMU_PAGES_USE_DMA_API)
+>  		WARN_ON_ONCE(iopt->incoherent);
+>  
+> -	mod_node_page_state(folio_pgdat(folio), NR_IOMMU_PAGES, -pgcnt);
+> -	lruvec_stat_mod_folio(folio, NR_SECONDARY_PAGETABLE, -pgcnt);
+> +	iommu_folio_update_stats(folio, -pgcnt);
+>  	folio_put(folio);
+>  }
+>  
+> @@ -131,6 +137,101 @@ void iommu_put_pages_list(struct iommu_pages_list *list)
+>  }
+>  EXPORT_SYMBOL_GPL(iommu_put_pages_list);
+>  
+> +#if IS_ENABLED(CONFIG_IOMMU_LIVEUPDATE)
+> +/**
+> + * iommu_unpreserve_pages - Unpreserve pages that were preserved in KHO
+> + * @virt: Virtual address of page to be unpreserved
+> + */
+> +void iommu_unpreserve_pages(void *virt)
+> +{
+> +	kho_unpreserve_folio(ioptdesc_folio(virt_to_ioptdesc(virt)));
+> +}
+> +EXPORT_SYMBOL_GPL(iommu_unpreserve_pages);
+> +
+> +/**
+> + * iommu_preserve_pages - Preserve pages using KHO
+> + * @virt: Virtual address of page to preserve
+> + *
+> + * Returns 0 on success, negative error on failure
+> + */
+> +int iommu_preserve_pages(void *virt)
+> +{
+> +	return kho_preserve_folio(ioptdesc_folio(virt_to_ioptdesc(virt)));
+> +}
+> +EXPORT_SYMBOL_GPL(iommu_preserve_pages);
+> +
+> +/**
+> + * iommu_unpreserve_pages_list - Unpreserve a list of KHO preserved pages
+> + * @list: List of pages to unpreserve
+> + */
+> +void iommu_unpreserve_pages_list(struct iommu_pages_list *list)
+> +{
+> +	struct ioptdesc *iopt;
+> +
+> +	list_for_each_entry(iopt, &list->pages, iopt_freelist_elm)
+> +		kho_unpreserve_folio(ioptdesc_folio(iopt));
+> +}
+> +EXPORT_SYMBOL_GPL(iommu_unpreserve_pages_list);
+> +
+> +/**
+> + * iommu_restore_pages - Restore pages that were preserved in KHO
+> + * @phys: Physical address of page to restore
+> + */
+> +void iommu_restore_pages(u64 phys)
+> +{
+> +	struct ioptdesc *iopt;
+> +	struct folio *folio;
+> +	unsigned long pgcnt;
+> +	unsigned int order;
+> +
+> +	folio = kho_restore_folio(phys);
+> +	if (!folio)
+> +		panic("Failed to restore preserved IOMMU page %llx\n", phys);
+> +
+> +	iopt = folio_ioptdesc(folio);
+> +
+> +	/*
+> +	 * For the restored pages incoherent is set to false as these are not
+> +	 * mapped using the DMA_API. The remapping of these pages using DMA_API
+> +	 * is not needed as these are not going to be written to by the new
+> +	 * kernel.
+> +	 */
+> +	iopt->incoherent = false;
+> +
+> +	order = folio_order(folio);
+> +	pgcnt = 1UL << order;
+> +	iommu_folio_update_stats(folio, pgcnt);
+> +}
+> +EXPORT_SYMBOL_GPL(iommu_restore_pages);
+> +
+> +/**
+> + * iommu_preserve_pages_list - Preserve list of pages using KHO
+> + * @list: List of pages to preserve
+> + *
+> + * Returns 0 on success, negative error on failure
+> + */
+> +int iommu_preserve_pages_list(struct iommu_pages_list *list)
+> +{
+> +	struct ioptdesc *iopt;
+> +	int ret;
+> +
+> +	list_for_each_entry(iopt, &list->pages, iopt_freelist_elm) {
+> +		ret = kho_preserve_folio(ioptdesc_folio(iopt));
+> +		if (ret)
+> +			goto err;
+> +	}
+> +
+> +	return 0;
+> +
+> +err:
+> +	list_for_each_entry_continue_reverse(iopt, &list->pages, iopt_freelist_elm)
+> +		kho_unpreserve_folio(ioptdesc_folio(iopt));
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(iommu_preserve_pages_list);
+> +#endif
+> +
+>  /**
+>   * iommu_pages_start_incoherent - Setup the page for cache incoherent operation
+>   * @virt: The page to setup
+> diff --git a/drivers/iommu/iommu-pages.h b/drivers/iommu/iommu-pages.h
+> index e9e605b5fa3a..3c409ec3d170 100644
+> --- a/drivers/iommu/iommu-pages.h
+> +++ b/drivers/iommu/iommu-pages.h
+> @@ -53,6 +53,36 @@ void *iommu_alloc_pages_node_sz(int nid, gfp_t gfp, size_t size);
+>  void iommu_free_pages(void *virt);
+>  void iommu_put_pages_list(struct iommu_pages_list *list);
+>  
+> +#if IS_ENABLED(CONFIG_IOMMU_LIVEUPDATE)
+> +int iommu_preserve_pages(void *virt);
+> +void iommu_unpreserve_pages(void *virt);
+> +int iommu_preserve_pages_list(struct iommu_pages_list *list);
+> +void iommu_unpreserve_pages_list(struct iommu_pages_list *list);
+> +void iommu_restore_pages(u64 phys);
+> +#else
+> +static inline int iommu_preserve_pages(void *virt)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static inline void iommu_unpreserve_pages(void *virt)
+> +{
+> +}
+> +
+> +static inline int iommu_preserve_pages_list(struct iommu_pages_list *list)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static inline void iommu_unpreserve_pages_list(struct iommu_pages_list *list)
+> +{
+> +}
+> +
+> +static inline void iommu_restore_pages(u64 phys)
+> +{
+> +}
+> +#endif
+> +
+>  /**
+>   * iommu_pages_list_add - add the page to a iommu_pages_list
+>   * @list: List to add the page to
+> -- 
+> 2.56.0.506.g506a7eabc5-goog
+> 
