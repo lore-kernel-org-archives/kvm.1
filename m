@@ -1,49 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794501516;
-	b=ovH98ALs8H6adoFWZkz+Nd80c59v4VS9xlD8X6Zjoj6MMbqG4N7nTDYZz+z7Gc06LmT6
-	 kMfcm6eeNAiSM+4yHCRNCkHaZQI168dGr2hBdAUXaHW1YyASKeCIj0x6D8cv3gNHBm9Gj
-	 ZZH8+niW5huvCDI3QVlbFpxuI6EHUvnk2Tyi5PRcONu0FHX/AGWqq/SXBGdVq5KhgT4kj
-	 sDrxLA9UTzUgPXCR6zX787Le4MYvavHt9KMmoX/jy1qmMd/de4Rs2aYA0n7o4l8wdrJUI
-	 J5kD+YvDgjYaS0wqdqEJfQcBg/U8vyd7N0GTtkEb3TxGRU3TO2iOvq+7gX7ohh8jHCg==
+	t=1794501550;
+	b=kd3M6CwfzdGZDLPpDADwH2eEnkMaSd9gFyRcFJ0KVFC0ourrMxJ9ULbBfRVCquEQO5hl
+	 YnGop/nsw28wru2MgBzembHjs2wE4lwvgpJEiefWtnfzj2nfwWupld4uaQLgYa7bxK/6H
+	 WOzP+/a7qP+bWJPMCUBYm0EU1f4j1eXhkEldTZXgRlLtppMCLQFoRA39p1sHOqREz27PR
+	 T7NUPHeVYrdHD0qDpBlS3PYOlXz/UEK8cyzDl8bMB+E7wggjA0C/r97l8K4BNXzUedsUG
+	 EzW7kdHfTDRCzkEH096SrhRsGsc38aq6vFFZbass0cbF4OWzRfOSBiqalmClEa8qggw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794501516;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=v2gF4aHHWpEIFImP/DPmIYRLFp+X8A6di/NiItcHlnE=;
-	b=fRIrB0moE7Cwcp5YrtEkcZSQEM+Ep8E+KdtwvbSD3NM+14bexI6nNPKNIKghDIYzuvAb
-	 spJKcFJrfJoSRuMm4SdFizlqcjg6DIVUs9WVAVwKtt8tgmqeFFZAwIgTyY9mPj+6ru5q9
-	 mQt/nrz0GgaO6WwiPBFuJ8rt0M41ZtvQ22ahSdho75Y8OBs4pGinZYPEx5YrruHNDv9YC
-	 /y/r2rLu3zfsBkBtpNy1wpplMg7TecigylNh7KbctSGjOa6a8GGBAosCk6EC41YmMvhIR
-	 imPhVUOpb9vGvfIhVfvbLPIkVx5xkm+iGnUQRDZVZ36K3duqD04IWbQOjAcrFmzDyGg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794501550;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=dCI91LNMi1CWjSxyXSR9pkzi8gVuFB/yw882btF1cx4=;
+	b=p8jtxxsGJqENMVk4Buim6VCSSsG3n2UcNiJjEmQfq+zm+v4kpM15btpN+qNMjEchWGHG
+	 kGUyhC6CM+kNQR55Oz30dnz/4gLDEFDqwPbD32Xn4HvvMvmiexqFTTVK1IIhw5lDppZmG
+	 gBWoSV913x+1kFFcIaugyjr3XlzQQ+NWPFvG9/NRtFllc9X5uvdcEd/RxtWORHfLDX0fh
+	 UtOTNv1llXBJDHWXsklql1tiq3/bn7UqxFsMte2r+ylc2vHHxtAYWVmHU8bp5Uly1elI4
+	 M0g1J9hwSHihwDeuwgXJIMAuiibzbh36wv7aEevhjBfkygGrHWzmNVADGANit15Gscw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=d1CjBbn2;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C9A60A261A
-	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 16:38:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27C9A60A261A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=gr+GUwGX;
+	arc=none smtp.remote-ip=209.85.216.71
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D71606A33E
+	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 16:39:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 47D71606A33E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=d1CjBbn2
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 571DE1516;
-	Thu, 12 Nov 2026 08:38:32 -0800 (PST)
-Received: from [10.0.129.47] (e122027.cambridge.arm.com [10.0.129.47])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 176583F673;
-	Thu, 12 Nov 2026 08:38:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794501515; bh=IfAVo4vBtykoPmUjXuBHIIJ7Pw85nRDkVIIg21ET3+s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=d1CjBbn2/7//aQwbZNDEwljJyfRcnwXmXdrb6lOxiOtX9xrDqdPR+W+mFNUUZ4JQ5
-	 JmrnwK1mR2oqvhLSsFKv9tPPlRxdoGWTXhaqzitDiDKrAr95QpHiSv/X/QjAPiTgaG
-	 BODMYd3h+x81om2HLBH7685OhvLmZST938Waokyk=
-Message-ID: <f9c3deee-2526-46a5-be98-f02235ad57be@arm.com>
-Date: Thu, 12 Nov 2026 16:38:32 +0000
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=gr+GUwGX
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3ae7faf4ff7so5555866a91.3
+        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 08:39:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794501549; x=1795106349; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dCI91LNMi1CWjSxyXSR9pkzi8gVuFB/yw882btF1cx4=;
+        b=gr+GUwGX001lkerYKRP5hlznLruNJRFEDi1nRmGrqi7qabGQE4Ky8Oz6X/iIhFae0K
+         o1hTWgvqM5UO98+AvyYusCmiyPk88LDlJ2J5MQUUysV+J97HhY3PUZdZkmGNygEE3fcL
+         n8uGff6+2KY1hXSrVfdlst3mREUNqKNgYrAx2YK5dWyvTmwZ97acIC5VbFxBQ+8dpPvb
+         vQMsjEsJ8DehPq7o71YQ8VYYoUWy5tipgSdRDH6n22OCHB1lTTfW8OOlmfaMSvY1YNxv
+         ITEthTNy9C4l5nwmYcu/AV8IILSGWSdDKApu2K2hJOBLEek4fXaIsaE+Fr/0xwO46Q/x
+         7OZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794501549; x=1795106349;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dCI91LNMi1CWjSxyXSR9pkzi8gVuFB/yw882btF1cx4=;
+        b=fqwAEuioOaGzcuDgaZ+RDy4hufSedAsGdtaACDW+js7LxTJWe+qBaJJJhg2iHDYojH
+         sYxo5twOGJBq4FmGZ3bbWaJNCaR4p0NmQ8Iuz9zJo3pG27u9JeblVIKBRCiOOud36HT7
+         L3UxuycPJ5XWZD+C2PHt983kE4YRxLI/flW4TZTZeE+jB5cxc+y0MLJ53ZNsikD1BOOD
+         LvAStCrGpACYLzKOchcGVhQzmxB+soQVxqkf2eF7FVKAHbx44BId2QekyLQwPf5SCgna
+         0yZlYEjhhHskAaxBFFTQIEy+94VBHqcU3HqP3FFvk8PIoYmKkx4IdAT7fp5rw7h5N6HK
+         sFEw==
+X-Forwarded-Encrypted: i=1; AL+hErGPFE6JtZJcvM/xgjDd078XtJPw5xgp0MFGjOIPFjcKXJ4WtYVbWCszs53+PQNu3KYvGuc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/LxymvNMhoK/M/kIBDzTyJbsyKg+C8T/dTYYA723++pcy1XzLH
+	Ovorj+wx7EFVcUqHCpBLvn1VoIhRBNhCi3x8GyWFtpGKyB2sFRz2tDhKa6PjCgxWI73sBO9YVjw
+	BHyOqJg==
+X-Received: from pglf35.prod.google.com ([2002:a63:1023:0:b0:cd6:23e7:ad7a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:54cc:b0:3b0:9162:948e
+ with SMTP id 98e67ed59e1d1-3b182eda812mr5907218a91.27.1794501549149; Thu, 12
+ Nov 2026 08:39:09 -0800 (PST)
+Date: Thu, 12 Nov 2026 08:39:07 -0800
+In-Reply-To: <20261112132512.68348-1-likexu@tencent.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -52,194 +77,52 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 08/12] KVM: arm64: CCA: Add Realm RTT mapping and
- invalidation helpers
-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
-References: <20261111145758.217946-1-steven.price@arm.com>
- <20261111145758.217946-9-steven.price@arm.com>
- <sashiko-outbox-209447@kernel.org>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <sashiko-outbox-209447@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20261112132512.68348-1-likexu@tencent.com>
+Message-ID: <avXrdHhup76EoDQ8@google.com>
+Subject: Re: [PATCH] KVM: x86: Don't patch L2's hypercall if L1 intercepts #UD
+From: Sean Christopherson <seanjc@google.com>
+To: Like Xu <like.xu.linux@gmail.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Oliver Upton <oupton@google.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 11/11/2026 18:06, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issues to consider:
-> - [Medium] KVM: arm64: wrong granule level when skipping missing RTT in
->   realm_fold_rtt_level()
-> - [Medium] KVM: arm64: cca: unhandled GFP_ATOMIC failure in
->   realm_create_rtt_levels()
-> --
+On Thu, Nov 12, 2026, Like Xu wrote:
+> From: Like Xu <likexu@tencent.com>
 > 
-> commit 68d993c0f3cb9846fd5972acfd789cb5ebe22bac
-> Author: Steven Price <steven.price@arm.com>
+> The fix_hypercall_test selftest fails when run in an L1 VM on an AMD host:
 > 
-> KVM: arm64: CCA: Add Realm RTT mapping and invalidation helpers
+>   ret == (u64)-EFAULT
 > 
-> This commit adds helpers to create, fold, and unmap Realm Translation
-> Tables (RTTs) for shared and private IPA ranges.
+> On SVM, L0 always intercepts #UD in vmcb01, so nested_svm_exit_special()
+> claims every #UD from L2 for L0, before L1's intercepts are consulted.
+> L0 then emulates L2's VMCALL and, based on the quirk that L0 userspace
+> configured for L1, patches it to VMMCALL. This ignores L1's decision to
+> disable KVM_X86_QUIRK_FIX_HYPERCALL_INSN for L2.
 > 
->> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
->> index b904e6541fb07..5aa34d68de595 100644
->> --- a/arch/arm64/kvm/rmi.c
->> +++ b/arch/arm64/kvm/rmi.c
+> Synthesize #UD instead if the vCPU is in L2 and L1 intercepts #UD, so
+> the nested exception machinery reflects it to L1.  Keep patching L2's
+> instruction when L1 doesn't intercept #UD, as existing userspace relies
+> on it, e.g. nested SVM selftests execute VMCALL in L2 and expect L1 to
+> see SVM_EXIT_VMMCALL.
 > 
-> [ ... ]
-> 
->> @@ -156,12 +286,94 @@ static int realm_tear_down_rtt_range(struct realm *realm,
->>  					 start, end);
->>  }
->>  
->> +/*
->> + * Returns 0 on successful fold, a negative value on error, a positive value if
->> + * we were not able to fold all tables at this level.
->> + */
->> +static int realm_fold_rtt_level(struct realm *realm, int level,
->> +				unsigned long start, unsigned long end)
->> +{
->> +	int not_folded = 0;
->> +	ssize_t map_size;
->> +	unsigned long addr, next_addr;
->> +
->> +	if (WARN_ON(level > KVM_PGTABLE_LAST_LEVEL))
->> +		return -EINVAL;
->> +
->> +	map_size = kvm_granule_size(level - 1);
->> +
->> +	for (addr = start; addr < end; addr = next_addr) {
->> +		phys_addr_t rtt_granule;
->> +		long ret;
->> +
->> +		next_addr = ALIGN(addr + 1, map_size);
->> +
->> +		ret = realm_rtt_fold(realm, addr, level, &rtt_granule);
->> +		if (ret < 0)
->> +			return ret;
->> +
->> +		switch (RMI_RESULT_STATUS(ret)) {
->> +		case RMI_SUCCESS:
->> +			free_rtt(rtt_granule);
->> +			break;
->> +		case RMI_ERROR_RTT: {
->> +			int err_level = RMI_RESULT_DATA_LEVEL(ret);
->> +
->> +			if (err_level < level) {
->> +				/* No RTT at this level; skip the missing ancestor. */
->> +				if (WARN_ON(err_level < get_start_level(realm)))
->> +					return -EINVAL;
->> +				next_addr = ALIGN(addr + 1,
->> +						  kvm_granule_size(err_level - 1));
->> +				break;
->> +			}
-> 
-> [Severity: Medium]
-> Should this advance next_addr by kvm_granule_size(err_level) instead of
-> kvm_granule_size(err_level - 1) (matching realm_unmap_shared_range() and
-> realm_unmap_private_range())?
+> Fixes: f1a9761fbb00 ("KVM: x86: Allow userspace to opt out of hypercall patching")
+> Signed-off-by: Like Xu <likexu@tencent.com>
 
-Indeed, this looks wrong. I'll correct in the next version.
+I think I'd rather fix this by skipping the selftest, e.g.
 
-> When realm_rtt_fold() fails at err_level < level, the walk stopped at a
-> single non-table entry in the table at err_level, which spans
-> kvm_granule_size(err_level).  Using err_level - 1 skips the span of the
-> entire table at err_level, leaving any foldable sibling RTTs in the rest of
-> that table unfolded, and evaluates kvm_granule_size(-1) when err_level is 0
-> on 4-level stage-2 tables (shifting past 64 bits on 16KB and 64KB pages).
-> 
-> [ ... ]
-> 
->> @@ -191,6 +403,154 @@ int kvm_realm_teardown_stage2(struct kvm *kvm)
->>  	return 0;
->>  }
->>  
->> +static void realm_unmap_shared_range(struct kvm *kvm,
->> +				     unsigned long start,
->> +				     unsigned long end,
->> +				     bool may_block)
->> +{
-> 
-> [ ... ]
-> 
->> +		case RMI_ERROR_RTT: {
->> +			int err_level = RMI_RESULT_DATA_LEVEL(ret);
->> +			int level = find_map_level(realm, addr, end);
->> +
->> +			if (WARN_ON(err_level > KVM_PGTABLE_LAST_LEVEL))
->> +				return;
->> +
->> +			if (err_level >= level) {
->> +				/* Nothing present, so skip */
->> +				next_addr = ALIGN(addr + 1,
->> +						  kvm_granule_size(err_level));
->> +				break;
->> +			}
->> +
->> +			ret = realm_create_rtt_levels(realm, addr, err_level,
->> +						      level, NULL);
->> +			if (WARN_ON(ret))
->> +				return;
-> 
-> [ ... ]
-> 
->> +static void realm_unmap_private_range(struct kvm *kvm,
->> +				      unsigned long start,
->> +				      unsigned long end,
->> +				      bool may_block)
->> +{
-> 
-> [ ... ]
-> 
->> +		case RMI_ERROR_RTT: {
->> +			int err_level = RMI_RESULT_DATA_LEVEL(ret);
->> +			int level = find_map_level(realm, addr, end);
->> +
->> +			if (WARN_ON(err_level > KVM_PGTABLE_LAST_LEVEL))
->> +				return;
->> +
->> +			if (err_level >= level) {
->> +				/* Nothing present, so skip this RTT entry. */
->> +				next_addr = ALIGN(addr + 1,
->> +						  kvm_granule_size(err_level));
->> +				break;
->> +			}
->> +
->> +			ret = realm_create_rtt_levels(realm, addr, err_level,
->> +						      level, NULL);
->> +			if (WARN_ON(ret))
->> +				return;
-> 
-> [Severity: Medium]
-> Can realm_create_rtt_levels() fail with -ENOMEM here, triggering WARN_ON()
-> and aborting the unmap?
-> 
-> Passing mc = NULL causes alloc_delegated_granule() to allocate RTT pages
-> with GFP_ATOMIC | __GFP_ZERO | __GFP_ACCOUNT.  When unmapping a sub-block
-> range under memory pressure or a memcg limit, an allocation failure fires
-> WARN_ON(ret) and returns early, leaving the rest of [addr, end) mapped in
-> the Realm RTTs (for example across an MMU notifier invalidation before the
-> host frees the backing pages).
+diff --git a/tools/testing/selftests/kvm/x86/fix_hypercall_test.c b/tools/testing/selftests/kvm/x86/fix_hypercall_test.c
+index f11fcc520f24..bb2fdd622538 100644
+--- a/tools/testing/selftests/kvm/x86/fix_hypercall_test.c
++++ b/tools/testing/selftests/kvm/x86/fix_hypercall_test.c
+@@ -135,6 +135,7 @@ KVM_ONE_VCPU_TEST(fix_hypercall, disable_quirk, guest_main)
+ 
+ int main(int argc, char *argv[])
+ {
++	TEST_REQUIRE(!this_cpu_has(X86_FEATURE_HYPERVISOR));
+ 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_DISABLE_QUIRKS2) & KVM_X86_QUIRK_FIX_HYPERCALL_INSN);
+ 
+ 	return test_harness_run(argc, argv);
 
-Yes, this isn't ideal.
-
-This should really have a memcache and allocate from that - that would
-stop this path hitting in the normal case where the allocation can be
-satisfied from the cache. With the cache being topped up when necessary
-with the mmu_lock dropped.
-
-Finally I could handle the case where we actually can't allocate an RTT
-(and therefore can't split a huge page) by simply unmapping the huge
-page in one go. For the shared range this is fine (the pages can be
-faulted back in - assuming the memory becomes available), for the
-private range it would be fatal to the VM, but the system can continue.
-
-As Sashiko has pointed out, this would already have provoked a WARN_ON()
-from the allocator, so I think that's probably fine.
-
-Steve
-
+I doubt there's a deployment that would actually break if L0 stopped patching L2,
+but the right solution here really is to disable the quirk in L0.  Any risk of
+breaking existing setups, however small, just isn't worth it IMO.
