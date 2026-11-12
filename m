@@ -1,81 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.181
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794459479;
-	b=WB/dbAH218B4ag0N2I3pRotIfzF8Pq1FPC8mP5ECwuPhowpjzU+hIf0OBFNzUmJVXd07
-	 32wNmjbxSoYqbiVIZhGt9X0k4vz42e6CQaXHYIxEwY1MWCxvGSEZ+4cO0PqYIGLuMy0jm
-	 /D7tcGsGq2H9W2yEhc3NWn1zv3eVolcRFfFaxsX3dKxaJQKVS5CW0USlPCyJvNYRg7wDx
-	 12hy1ARbztH5r3l3plcay2yDNDoyxWSMHZx5vVjSL1rf340iAesY9VfUxwqYNVMXiPmYm
-	 flmbwLz9boSNGXp9ldxc+VFYEzlnb70Sj6eXTpoQpXbvD7TV4Y98mmnPy/aDBl67XwQ==
+	t=1794461790;
+	b=HRjQ4qi/HsOwFqPNUl3Mowes1TmWpVAkdRm7O+Z0XIeQhDUzq7w5D9yYNlM2IeFo2qP5
+	 rMAvo0sGxSKEl0L9qYUT4Q+t80E8tV+xxkl/yEZYhb6T6QmxC2n/+LGpY9JJbNo6/WfRS
+	 TTNV8QSyeGmQqIzmE/HSV15Bf8Qv0gxXo0Jh0qK+3GVRm3+WduFphHH7uyHNG1dccxyNY
+	 VMMIdPxAzZ9vGYXo2AAtlF9U4dCqMWxXqxEnpNpfGWn+TcVkBPT0srXzdKksGCt/JCcxp
+	 QFp1V0H4P4cPAGXz0zOga4QP3ukUVK0/ck4S+hPjtQw7Q4iPNL8w5wKN+bmvgdFvHcw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794459479;
-	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=Ytz6JpdI1aOWSPZT336Zn/ACErFeICCJWcNWrycsAPE=;
-	b=phzk/vupE6YkoEqCADNWr3BdMzYqFMlAfsIZE+jKknRCZe7d0ytgA3hZC5Sf8RrJJ4FG
-	 4ziytf34nRrVqPArFRK6lEBwvL2tAz6AMLKzqVT4Pp0WGI2a+r3DTvMZPCFgK86ijf44a
-	 GkgiF4avU2Isumiwoh2jzdeP9/lD2wNgaS4p4mlPFAf2dVqVNQTUgoBG/jddwo9G08OK7
-	 Hi+dyY6RkO2/QgPnW9nci5b7m8QVdQIP7rO+hlM7AztroFYcggFoRITgItEiFsiqV5jOE
-	 eQthooj99bA9zuww+5lg+6i69t7H+wJK2qtwQMEkv3+BnWsuHrcMLy2BrAMVE5AxhGw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794461790;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:Subject:From:To:
+	 Cc:In-Reply-To:References:Date:Message-Id:X-Mailer;
+	bh=e2soeXJ852281gC+OC2yZSX9G2s4v3lG9pbKt+VP0DM=;
+	b=pvaeBjoCkpqOrx6rA6g6lM9EpxEJN/Awu4JULJbxh22pkPlAH2Xlp6TB4dNqtIftwuNn
+	 83cm6sJMXPXLq3SmSN1gtDWsPdLhKxo9u3SaUgbT57ftbOFPf1+sdcfDkFvEsPBZYUwVI
+	 rh8YD7xRrZmUS10OiapRPDmQCMVC7BlJZjZROZMgDAzVl/QSaHlYYSn+KuRVeno75mpx6
+	 0sJ8HO9sI3DcqJ92xzNTim+TZsvBjZskSwvzL9cwq4wlsksmipL2xz3FqfyUZJK0DvYpo
+	 b+0E0/834VCqkClOe6cBmRZhauykvwLkOmILhto9R7+7Jj4xQDqzqqey7UbP4FMnS2A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=alien8.de;
-	spf=pass smtp.mailfrom=alien8.de;
-	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=iSp1Bg7q;
-	arc=none smtp.remote-ip=65.109.113.108
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=none header.from=gourry.net;
+	spf=pass smtp.mailfrom=gourry.net;
+	dkim=pass header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=EzLeINlq;
+	arc=none smtp.remote-ip=209.85.222.181
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A134606A321;
-	Thu, 12 Nov 2026 04:57:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A134606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E837606A33B
+	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 05:36:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3E837606A33B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=iSp1Bg7q
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8F40740E021A;
-	Thu, 12 Nov 2026 04:57:56 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id rTeTKjYBm0-s; Thu, 12 Nov 2026 04:57:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1794459472; bh=Ytz6JpdI1aOWSPZT336Zn/ACErFeICCJWcNWrycsAPE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iSp1Bg7qmXQYuEODkDk22wXw870gkxY9xW4DTUuMVGv2pG+69zza/p3x877vqYQxj
-	 +fiGcivEBSAsxpJXHNhrsYbh2qyPblprOHNHEPzN3KZuCFbc77qguawcgJDgDvyg2g
-	 9QeiLrcFyWMuqtj2aWvda38J4UsT/NhppuF/8BCUeEl2HgSTQh6EYhmS0Pwrdh4U7n
-	 g5wHa4CRvnzKEzm6xVt/Hb4sJuk6wuH+QQxyhcOmtwJkliWOQtA6R6LgcESvpxiwo1
-	 azf3gpidPgXonXFnQzkHF6r+UKqi15rv6CW8CtHxkYlJfUWbiYnuQhF59GcqUdcIoA
-	 AbLIYJNRIfpOtURvFSr1Pl51XseCg/WcYomFR9nft0cq6vrDBeM2SGWZxmYz/VP8OJ
-	 j4Wdjoui6fUfmfYGPPZBDoXQa3m0e9PSYfzVHFfB5eKNJ7b1KFMrDBWg4241YmDqwy
-	 0v7qcUms/QWoK6XL5+zuLDbD0FRAk239T4LoXUtnQ9dafWqU3Z/ZAiKx+n1yULXcX3
-	 uO1V7D0lFAmK+WONNLoUfBOBOSGgJRW7US0hG/SrL5GgmyDMmU62BvLvAjsnYe6UAd
-	 1X6+7i0ub8cyObArVTuWuw9bJztMCFRH0hPL2mQ2W1uSq/AguMjCifXR/2Ptc99cKe
-	 flC9FSFF+XONMAm1BOC2kBHI=
-Received: from stx.tnic (unknown [209.52.143.85])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1374D40E0218;
-	Thu, 12 Nov 2026 04:57:38 +0000 (UTC)
-Date: Wed, 11 Nov 2026 20:57:03 -0800
-From: Borislav Petkov <bp@alien8.de>
-To: Breno Leitao <leitao@debian.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, vlad.wing@gmail.com, security@kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 6.18.y] x86/cpufeatures: Make X86_FEATURE leaf 17
- Linux-specific
-Message-ID: <20261112045703.GAavVHH8KA2yyCU7oc@fat_crate.local>
-References: <20261111-stabe_srso-v1-1-45512320ba5e@debian.org>
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=EzLeINlq
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-93e55db58cfso352339185a.1
+        for <kvm@vger.kernel.org>; Wed, 11 Nov 2026 21:36:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1794461788; x=1795066588; darn=vger.kernel.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=e2soeXJ852281gC+OC2yZSX9G2s4v3lG9pbKt+VP0DM=;
+        b=EzLeINlqWKLSrVyAYeG69cub/PpkhXEpvLI85c2/Wn4DBrX36De6eOjOc825yh2/s8
+         /BMocYYbFGCIGlSENImF1edskqevAV/Kuf1SeaFnM5vAAp8DG8IO1FgayCsUEWs73OHL
+         1RmURtZJc9D4dd17Nf7TyLA18R4yata5cpiLNB4SZ3wXp+wb6mfksV9V6NYOJLevPnzx
+         KS0lFdrtd+eUvcxCI5cIGAuAdA3+x/lK/g0n6XOLpuLtAwXE7FSdI5GYz16DwRhEZcI+
+         e0xi/xTmcXSNKhZMTs2dmsnafffo4Jcsb0EhR1rdi49ZUTTTqLCosCyqFBij3UK+VNvA
+         tckg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794461788; x=1795066588;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=e2soeXJ852281gC+OC2yZSX9G2s4v3lG9pbKt+VP0DM=;
+        b=u88AR9VZ4qRkb9i0qGzaH+qJA2VRaW2Z9u2HCj2iU+RbC4fbYebwL0ujLt1FqeyoL0
+         un0G8HuGGeqMt1zcVSgW58KTFkMuYXKXbwAi3tnU57GtETfcHo/fMPfXqaisbBm+ySh6
+         4GJBvfNs9sBjqF3ehF/EPijhLrLWuK6dzvU82Jua8+L9Pt+pUlgjOkBYxh8HTIfIDxo0
+         rGZm90i8HyhKzGyN/weB2GcocLJJ/LXjmLgl85ZqLdewWDbmJFLqseR8UoRUfssA/N/r
+         Yo+tguzTEZzdx6O2ChnyDPE4OH90eMNtOMRa7DXqgwxVVQ6I+pUEdhA3M09MqjzzE8wq
+         WycA==
+X-Forwarded-Encrypted: i=1; AL+hErF095R95kBXa8nMj+YMWXCGuZnGg2bY5tUgQpGTA1h9W6Q7pGEZyQENC3lrHunRUs8lOkw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z86UDnC48sUUy/qTo6cAL4W4uiwfA7dCQZZ/8kBvf+rA/Y8bJja
+	EgeZpa3hsf/jpc+sGSNNdyANGpPyI4BUtBAD7KcKoC4nSAXcyzTgwI6lpWR47OTPPD4=
+X-Gm-Gg: AYBFou2otsd6lAZkVM8xFJELofLeUAf1jSYK/QLGwUc/OXGQFNC4gsZVMxPY1o1KKY4
+	pnvdUEVtPtoeW71bsg47vRboNi8kfRSu8i8Z0n2Xz8k1jFua3NNF4U0z8N7quSnU5VoLo4ixIDw
+	CtEUMcqEQs3nLH78IFMzpvQJKxEygzrQdBmFk5Hu7zbyKcY3jgD/zyt2taXIMJc3Plz1JkHWIxY
+	1hSU6un/lXEVACifa9xnKtRFKa1hFHm9I/v2CwfuZwonUFlkQc4mQxg+swANdSYUvMkuDKYOdDj
+	IARxmnH3F7bpm3S/Xn694so/17LMlCGIT3epwJNTZRusiDukqBjR4oeXpEI/cr3Kd91SWKBMELu
+	5I714zMktRmdtg3cHhqJNMmXEDlQhgH6jhWECpz103mo1hJE9sXTSBrrV9DPndu/43eMXPk1VN9
+	S/8/GVj783KlMbHtyE2nL8ket26VYT59i27X86mh6yN9qvk9b17KQVV/psmKu561ZQ6vxPkwHI5
+	/2K+t45yJcXouRHRxMwcBKlQUjUJVJwuBsx3TRu9mplcbSXk16UqZXStS0QH286PoO4KDV2CFbm
+	wS1MvxY9rOcdg5n/3sru2J8j/4JCLHJKSShHnkF8GjFiJLRmZqYJfoQEAyk2yQDHNlc4VPkf1v/
+	KpyQCIrI=
+X-Received: by 2002:a05:620a:4481:b0:93c:c2c2:40eb with SMTP id af79cd13be357-947b0046fb4mr764496385a.66.1794461787830;
+        Wed, 11 Nov 2026 21:36:27 -0800 (PST)
+Received: from [192.168.50.231] (pool-71-191-145-202.washdc.fios.verizon.net. [71.191.145.202])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9479e4fa312sm647786285a.0.2026.11.11.21.36.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2026 21:36:27 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -85,34 +89,85 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261111-stabe_srso-v1-1-45512320ba5e@debian.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 08/13] mm: convert miscellaneous VMA flag tests to use
+ vma_flags_t
+From: "Gregory Price (Meta)" <gourry@gourry.net>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Rik van Riel <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+ Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+ Gregory Price <gourry@gourry.net>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Alistair Popple <apopple@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
+ Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, 
+ SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>, 
+ David Rientjes <rientjes@google.com>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Arnaldo Carvalho de Melo <acme@kernel.org>, 
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+ Adrian Hunter <adrian.hunter@intel.com>, 
+ James Clark <james.clark@linaro.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+ John Johansen <john.johansen@canonical.com>, 
+ Georgia Garcia <georgia.garcia@canonical.com>, 
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+ "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+ Roberto Sassu <roberto.sassu@huawei.com>, 
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+ Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
+ Stephen Smalley <stephen.smalley.work@gmail.com>, 
+ =?utf-8?q?Ondrej_Mosn=C3=A1=C4=8Dek?= <omosnacek@gmail.com>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ kvm@vger.kernel.org, damon@lists.linux.dev, 
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+ apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
+ linux-integrity@vger.kernel.org, selinux@vger.kernel.org
+In-Reply-To: <20261105-late-2026-vma-flags-v1-8-0d3cd15ab75f@kernel.org>
+References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
+ <20261105-late-2026-vma-flags-v1-8-0d3cd15ab75f@kernel.org>
+Date: Thu, 12 Nov 2026 00:36:24 -0500
+Message-Id: <179446178440.482102.12362401790016415292.b4-reply@b4>
+X-Mailer: b4 0.17-dev
 
-On Wed, Nov 11, 2026 at 08:06:21AM -0800, Breno Leitao wrote:
-> From: "Borislav Petkov (AMD)" <bp@alien8.de>
+On 2026-11-05 21:30 +0000, Lorenzo Stoakes (ARM) wrote:
+> Replace use of the legacy vm_flags_t flags with vma_flags_t values in the
+> remaining straightforward VMA flag tests scattered throughout core mm, HMM
+> (and its test module), DAMON and the OOM reaper.
 > 
-> commit ddde4abaa0ecc8395e0fcfa3e92f65d481890cc8 upstream.
+> No functional change intended.
 > 
-> That cpuinfo_x86.x86_capability[] element was supposed to mirror CPUID flags
-> from CPUID_0x80000007_EBX but that leaf has still to this day only three bits
-> defined in it. So move those bits to scattered.c and free the capability
-> element for synthetic flags.
-> 
-> No functional changes.
-> 
-> [ leitao: Required on 6.18.y: the 6.18.61 backport of ae1d2082d93b
->   ("x86/bugs: Adapt SRSO mitigation to Zen6") put BTB_CTX_ISOLATION in
->   word 17, which here still mirrors CPUID 0x80000007 EBX. The flag is
->   then falsely set on Zen3-5, and Zen5 silently loses its guest->host
->   SRSO mitigation. ]
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Good catch, dang. That's nasty one.
-
-Thanks!
+Acked-by: Gregory Price (Meta) <gourry@gourry.net>
 
 -- 
-Regards/Gruss,
-    Boris.
+~Gregory
 
-https://people.kernel.org/tglx/notes-about-netiquette
