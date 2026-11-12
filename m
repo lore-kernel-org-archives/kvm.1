@@ -1,69 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.139.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794450666;
-	b=EzabWCWfBFwhpbxlfBXEciZZNvpgnwJHncwS8OOVCZTNnROYv6UcFB5069iQrS6QZTTt
-	 TdowYI2hwWH4fxGlRghMi2W7Wy6nTFJpbu3QguqOa11MzZ0u21FJQE1v5Pnt6mOEYIyPm
-	 ctsmADB1ChDZhTpU/BIzFhwPn1RBXYKW1y/g6srh9M1OCyoJrVEQ7gFGxdKNf3GVhkaxt
-	 aJobt2UYZem5hFCOQEYKqNaHqEEV8isTjeZsIoReBYR2pEO6HUfqWafix7CbaFvh1jvQt
-	 /iyHxs1VLAynoQhUTv5T7bHFsCsUU1AKTWOzSEaBcgUmKPFivb8HmswEuPYW0nPoZ5g==
+	t=1794454643;
+	b=11z4J6mkp3mxkNmm6yVbvBRTsBCyB1Igdjc4PcZtaYwn0LhPZIdBJsBfz72wRXCGQwjD
+	 ZIl6SZhwztDXHwdkSnTl09JN6gY4alcxmELG1UoHToiMRE34tLHTI42WkeOxydG6KGnnh
+	 9Jw+v4TPGdXs/ui9d7J5Dv1wCkPhvqtu11Vaqz4P4f6OKihRplwFTXKHL8B8bS6kHFbbs
+	 gJW5Gim5ukmtWlklLzWJEflo49WxZyF2IiHJ9SwOM6i8J+hbc+Vswi3Z/CXrGAcodTT6m
+	 t4Br8j9lukbM0YE7jBZIZcLNJ4vKAxJXyftyGx2HPK7hNNlpiqNnZmxi52sc7fv5Kfg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794450666;
-	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
-	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
-	 To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=qKjC7MwPtb9rlXRFn/imJ4VBX67PhhjBmJbfa0X27x4=;
-	b=M8QH5I9/gdD2A6o9lD5fB3fD5ogtYve1NprwHVzsSiYVCe7/AG7PccBYr3AI0SYMxET2
-	 +O8DHOVkCwnlHrHyaboiJXfnnAWWynR3vNm8lEb8D0QpbTc7tpEZt7L06aN9EjuT3iMSd
-	 Vwa0wB+GAk/fNFW8o8yf7faU2KVc7ZnEa1uari/1uCwz0onLzjrMnBIPyRH2yjYpXlzj8
-	 MBtxlEk4Mjb2M+sZcZmUEJrJPz4o6QlCkhd26vNlk/yExwvG3OlYxqYlFJ82vxOQJH2Os
-	 Eps04WRobYynn35WHUeDnt2L42oldPed5Gr6l8JSQNbSLfGkEw1UBqLW5unEKspyoAQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794454643;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:Received:Received:Received:From:
+	 Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer;
+	bh=7sClOyXc5DYkp7gT7ltCBjv+6uzNG2TAXlQo0+7BqYo=;
+	b=h7Cj+rn7GCTB7GGw70NlAqugzLiKHFMQPW4EychHoVvVHJqrPO+K5mPsdVhJEsqVRwG3
+	 dVP6cWPIjjBg9T8LGy+/UmjE0xuC2wPs1YbbtIyFtaQZzohaxd7cM5y6dvowNz798GRK7
+	 7rVnTsuPEupdPaZWjHA9r2E+L7Wf9hoxoD/IPesSFgvMXqBBnQSLIHHvaGE1nhkNa4sev
+	 ZBS6nUXQa4UdrbAvOCuYXJxec+NbbQwDddrg76B4xHblCzvlqrhA/dGOqjnIi8mCwsZMv
+	 nrMe23luKMFEKh0TjTySkCfAszJqhQcyKBVh2HomrYRgdPFT7TngkQ9o+nswqsIEyKA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cmss.chinamobile.com;
-	spf=pass smtp.mailfrom=cmss.chinamobile.com;
-	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=M+e+pkj0;
-	arc=none smtp.remote-ip=111.22.67.139
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC601606A31C;
-	Thu, 12 Nov 2026 02:31:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC601606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	dmarc=pass header.from=fujitsu.com;
+	spf=pass smtp.mailfrom=fujitsu.com;
+	dkim=pass header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=bMo2DfS4;
+	arc=none smtp.remote-ip=68.232.139.139
+Received: from esa6.hc1455-7.c3s2.iphmx.com (esa6.hc1455-7.c3s2.iphmx.com [68.232.139.139])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82ECC606A886;
+	Thu, 12 Nov 2026 03:37:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82ECC606A886
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=M+e+pkj0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=M+e+pkj0YvA7MfhZ6JFFM3JhlxH9y6oGMQWQti7TBqjjIm+ZsjVUa77Q6zZ/Bd4RpifsDZPdRCftR
-	 PtzvssBsx2pH3tOTUTx0ZhNahnWARjZi+gyQXXLBoQTokVKg5i0K/dGDP57EHtK3YZuSa4glKNbkfa
-	 UThgBKg0jqPGRl6s=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16af524e60ba-b8639;
-	Thu, 12 Nov 2026 10:31:02 +0800 (CST)
-X-RM-TRANSID:2ee16af524e60ba-b8639
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from devin-VMware-Virtual-Platform (unknown[10.55.1.72])
-	by rmsmtp-syy-appsvr05-12005 (RichMail) with SMTP id 2ee56af524e3cdb-ef375;
-	Thu, 12 Nov 2026 10:31:02 +0800 (CST)
-X-RM-TRANSID:2ee56af524e3cdb-ef375
-From: Zhu Jun <zhujun2@cmss.chinamobile.com>
-To: brett.creeley@amd.com
-Cc: jgg@ziepe.ca,
-	yishaih@nvidia.com,
-	skolothumtho@nvidia.com,
-	kevin.tian@intel.com,
-	alex@shazbot.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Zhu Jun <zhujun2@cmss.chinamobile.com>
-Subject: [PATCH] vfio/pds: Release migration files on allocation failure
-Date: Thu, 12 Nov 2026 10:31:01 +0800
-Message-ID: <20261112023101.118174-1-zhujun2@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=bMo2DfS4
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1794454642; x=1825990642;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=03RedrnDsUkMfaAlXP5THfn6nEFN+a+p8i1kpiQJYtU=;
+  b=bMo2DfS4uCpov5A2vl5cToXk2RUXFpGjy6PH+pH5tdcIVk+XDn9CYBA8
+   dDIF1pgKSowwgoRsF4rliEYJKLC41qBwyfXSod/xLCxTh+sNQ4nhGsJk0
+   5pqaWsmyLGNP5AIbW3IYiJosIUIYQVlCdvEgy0EEVawWJOQkCJwDOv6re
+   ziC68kFN/DnRToJwK+hkMgMATjXXAwQKzlRw1n8UmdffjFWacQ/RPcohd
+   nG4H5hryjeLJnCr6vq7VEdoC2HdOLxPhq2AcHQ9nQpI7pTlAavL6+LSJg
+   maHkSV5sML1o9AB17rPAUjb1gDU9Y/aziRwMhTp8u1x1udjf65szo9q3a
+   A==;
+X-CSE-ConnectionGUID: KP/aVEA1To+ik+c+DB93NQ==
+X-CSE-MsgGUID: 4rtNSXPERTCwdx8cyxSRIQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11963"; a="265537743"
+X-IronPort-AV: E=Sophos;i="6.27,208,1786978800"; 
+   d="scan'208";a="265537743"
+Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
+  by esa6.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 12:37:10 +0900
+Received: from az2nlsmgm1.o.css.fujitsu.com (unknown [10.150.26.203])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 862631C04FB1;
+	Thu, 12 Nov 2026 03:37:10 +0000 (UTC)
+Received: from az2nlsmom2.o.css.fujitsu.com (unknown [10.150.26.200])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id 3B26FC0128E;
+	Thu, 12 Nov 2026 03:37:10 +0000 (UTC)
+Received: from [127.0.1.1] (unknown [10.124.178.20])
+	by az2nlsmom2.o.css.fujitsu.com (Postfix) with ESMTP id 2D4CF1801928;
+	Thu, 12 Nov 2026 03:37:03 +0000 (UTC)
+From: Kohei Enju <enju.kohei@fujitsu.com>
+Subject: [PATCH RFC v2 0/2] KVM: arm64: CCA: Add MEC policy support for CCA
+ Realms
+Date: Thu, 12 Nov 2026 12:36:20 +0900
+Message-Id: <20261112-mm-v1-mec-v2-0-0d1dd260a588@fujitsu.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -73,60 +82,79 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADU09WoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
+ vPSU3UzU4B8JSMDIzNDQ0Mj3dxc3TJD3dzUZF2LZFMDc6MUs2RjY0MloPqCotS0zAqwWdFKQW7
+ OSrEQweLSpKzU5BKQKUq1tQDZmoSfcgAAAA==
+X-Change-ID: 20261112-mm-v1-mec-8c5072d6c331
+To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
+ Oliver Upton <oupton@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>, 
+ Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
+ Suzuki K Poulose <suzuki.poulose@arm.com>, 
+ Steven Price <steven.price@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Mark Rutland <mark.rutland@arm.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+ cgroups@vger.kernel.org, Kohei Enju <enju.kohei@fujitsu.com>
+X-Mailer: b4 0.16.0
 
-pds_vfio_get_lm_file() takes an extra file reference before allocating its
-backing storage. If an allocation fails, the error path drops only one
-reference and frees the private data, leaving the anonymous file leaked.
+This series adds basic support for configuring the Memory Encryption
+Context (MEC) policy for Arm CCA Realms.
 
-Take the extra reference only after all allocations succeed. On failure,
-drop the initial reference and let the file's release callback destroy the
-mutex and free the private data.
+Patch 1 introduces the KVM_ARM_VM_RMI_CTRL device attribute group to
+allow userspace to configure Realm VM parameters before the Realm is
+created using KVM_SET_DEVICE_ATTR, and uses it to let userspace select
+the MEC policy before the Realm is created.
 
-OpenAI Codex assisted with analysis and patch preparation.
+Patch 2 adds a misc cgroup resource for CCA MECIDs and charges one unit
+for each Realm using the private MEC policy.
 
-Fixes: bb500dbe2ac6 ("vfio/pds: Add VFIO live migration support")
-Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
+Feedback on the proposed KVM ABI and on using misc cgroup for MECID
+accounting would be appreciated.
+
+This series is based on Steven and Suzuki's CCA host series [1]. I am
+sending it as an RFC while the CCA host series is not yet upstreamed,
+and plan to update it as needed to track future revisions of the host
+series. Once the host series is merged, I plan to post a non-RFC
+version.
+
+Since the base series is not yet upstream, some CI systems may not be
+able to test this series successfully. This is expected for this RFC.
+
+Changes
+- RFC v2:
+  - Use kvm_device_attr instead of a dedicated ioctl.
+  - Rebase onto the CCA host series branch listed in [1].
+- RFC v1: https://lore.kernel.org/all/20260724094120.166536-1-enju.kohei@fujitsu.com/
+
+[1]
+ https://gitlab.arm.com/linux-arm/linux-cca
+ branch: cca-host-mm/v1/integration
+
+Signed-off-by: Kohei Enju <enju.kohei@fujitsu.com>
 ---
- drivers/vfio/pci/pds/lm.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+Kohei Enju (2):
+      KVM: arm64: CCA: Add support for configuring the Realm MEC policy
+      cgroup/misc: Add support for Arm CCA MECIDs
 
-diff --git a/drivers/vfio/pci/pds/lm.c b/drivers/vfio/pci/pds/lm.c
-index 08487eab11b0..d96ec77402c0 100644
---- a/drivers/vfio/pci/pds/lm.c
-+++ b/drivers/vfio/pci/pds/lm.c
-@@ -37,9 +37,6 @@ pds_vfio_get_lm_file(const struct file_operations *fops, int flags, u64 size)
- 	stream_open(lm_file->filep->f_inode, lm_file->filep);
- 	mutex_init(&lm_file->lock);
- 
--	/* prevent file from being released before we are done with it */
--	get_file(lm_file->filep);
--
- 	/* Allocate memory for file pages */
- 	npages = DIV_ROUND_UP_ULL(size, PAGE_SIZE);
- 	pages = kmalloc_objs(*pages, npages);
-@@ -73,6 +70,9 @@ pds_vfio_get_lm_file(const struct file_operations *fops, int flags, u64 size)
- 	lm_file->page_mem = page_mem;
- 	lm_file->alloc_size = npages * PAGE_SIZE;
- 
-+	/* prevent file from being released before we are done with it */
-+	get_file(lm_file->filep);
-+
- 	return lm_file;
- 
- out_free_page_mem:
-@@ -81,7 +81,8 @@ pds_vfio_get_lm_file(const struct file_operations *fops, int flags, u64 size)
- 	kfree(pages);
- out_put_file:
- 	fput(lm_file->filep);
--	mutex_destroy(&lm_file->lock);
-+	return NULL;
-+
- out_free_file:
- 	kfree(lm_file);
- 
--- 
-2.51.0
+ Documentation/virt/kvm/devices/vm.rst   |  25 ++++++++
+ arch/arm64/include/asm/kvm_rmi.h        |   7 +++
+ arch/arm64/include/uapi/asm/kvm.h       |   4 ++
+ arch/arm64/kvm/arm.c                    |   4 ++
+ arch/arm64/kvm/rmi.c                    | 101 +++++++++++++++++++++++++++++++-
+ drivers/firmware/arm_rmm/rmi.c          |  10 ++++
+ include/linux/arm-rmi-cmds.h            |   1 +
+ include/linux/misc_cgroup.h             |   4 ++
+ kernel/cgroup/misc.c                    |   4 ++
+ tools/arch/arm64/include/uapi/asm/kvm.h |   4 ++
+ 10 files changed, 163 insertions(+), 1 deletion(-)
+---
+base-commit: a7644e0425de41ed0338cb73eebe5d14baf6be95
+change-id: 20261112-mm-v1-mec-8c5072d6c331
 
-
+Best regards,
+--  
+Kohei Enju <enju.kohei@fujitsu.com>
 
