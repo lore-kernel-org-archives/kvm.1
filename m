@@ -1,85 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.137.202.136
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794520026;
-	b=Ul1qHvnxb9ZOQVITrCusfItm2EEWGvAGtlBJpoRws3mL9EBYY8EQm5FL+dzWoBLYMzYf
-	 3+/CW+a/4ellvr5GfSgcYQQQpDQnrilQuRYC/2Qf7qQdac7ShxC7feGFdodAq8XIHcf7v
-	 vR1NcscSGj89Q3qTTEpGUuAuILCCJUJ9cbdVarJpeGSs5g6q+mIW0jY39ry8V3uHr1uFc
-	 aw730LCAL0hMpfQt4Bkj3xbXiAUe/coV2pG6wJrUqUJAfE1UdE3Dvt9FL+YJjpN3xMIqx
-	 kqSPudZAsKNxu9oLjKEqeU20JRWBkGInNwXduMrh1QOJndumW3sCeUDYPSRj1c4VZog==
+	t=1794521688;
+	b=x8dt7y5EsUz7Ys+LDJlDIIAmETvYQuMz1O0fHTDf1dcq2tAGOtvdOFJhH+LWdUP7YwKx
+	 yJqYixqU4Ny/j6mM7TdPKsP+P88F5MjokjXwRH7UvjZLkA/m8L45K4SKLR+1QHviOOag6
+	 qVa30gCVv4xDsBymmyCzVaBGl/rlGmrPUNLbqFRjuZxz3h0NVi8qnMtY/Mb0fUbaKUBzb
+	 ryKC+JmetdbPhVqAghb6Os4eld9glJCl2aR/9J9voBGi+Yy3zyvE5t98SUZ0OBjdcWhOk
+	 yasTJyU1TLynON6/w/ndSA41WsOdSMBE2Lm5Sr91d8AIEXviJJnCc0JV50jrrXcch8A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794520026;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
-	bh=MRvrBEIopDqvuVb/vZ72s+DUNbn5hAJVvZTwAj02wNI=;
-	b=vyjbQuJ0MhpjgKcGOuZTVqr6Ajxg2rLQPMVQAJQU72vstjJfUbxem5z7Zl5uT68wcsWJ
-	 Ei7+AsLrZsEB/HrkfIm6vK+8Tps7R76Du74ldafRZu8KlIqUpafFJssXVdz7Fu3EZhAg0
-	 0R2NoRUTZEcKvTY4H33SipkNyA8bFjgkAGS1WfGLw4dg/fVppT19lrT1r5eRSQcGvOI4D
-	 TdE1I8X/904UwYJsG7UUtdfpk0/DJZ9KtDTocSOngnfkNRiJFIZdqwiab5JYinZRw1niw
-	 g2qrPpkzgAf7+Oo+JirXPDZZwbaeCuvkn7xQG67ACKjdBAsmu3mnToX83kCbNHuy6JA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794521688;
+	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=7XTirb6Hj6QyRMPdcPAxooRkBi3VSNvpy8OjENB+njo=;
+	b=iIjP/M8AGLrr5U8pVfV8K6xlftcjr36dcEh5JYKCQud/4VEqdbstsemZmU3+Sc4NmAy5
+	 PKm99W4RjY8MVpjgZs3BAIzg392D8wdNJAWRJfLngTRY462y6xjknNotXWgsOtP/XHdXo
+	 4TcZO21ckubMm89c7iOHhyEiTESbD1yE7sjz3P4mUGJxsIfdvNlq2KFouCSRZ25t+C2EK
+	 55X2bsAFJa75f6UPMeodupZOnw+VIeIrismrYL7g9zVk6rVDLETDcgwCRI0dfrYQXGVrr
+	 gQ2aRj0gqMDpWP28TAGJzG4HYfXKTnUyAOlptVe8mzrnlclY1zsCTF/kF0tKRIh58cQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=IqQicUBc;
-	arc=none smtp.remote-ip=209.85.215.169
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=zytor.com;
+	spf=pass smtp.mailfrom=zytor.com;
+	dkim=pass header.d=zytor.com header.i=@zytor.com header.a=rsa-sha256 header.s=2026102901 header.b="X4HXgj/6";
+	arc=none smtp.remote-ip=198.137.202.136
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924F5606A327
-	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 21:47:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 924F5606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4AB606A31C;
+	Thu, 12 Nov 2026 22:14:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BE4AB606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=IqQicUBc
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cdb75699c7cso118761a12.2
-        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 13:47:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794520026; x=1795124826; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=MRvrBEIopDqvuVb/vZ72s+DUNbn5hAJVvZTwAj02wNI=;
-        b=IqQicUBcHFfASsPeC/FaWkK7/Crm2L2UYyn8/PxIFh5d3NQfwGTsj1ea0yYEQ647ZV
-         /ccaegp04k9hdkyY2Ail6N4rBeUM3LACMz8nX+7douczOTVskMzZJ6rF5iaIrVQm2heW
-         JeAJJRZGwbkWIX4oCdCOf9PAKsBXWkvG0Qf/0hEZ5qTZmjRSXZseI6akOjoL+PPSYmfs
-         n/o355gYSqEM305OphinxwQkhxOcncDRdESkE1XHs1UYEEh7UGYPCzuqJ/L28TVUC0U6
-         aJlfLAOYc0LEA5khjKc7nJefwozvr0lPgi0RdEjsCmQOzXego5h4dYanuiOcrof8EvZv
-         aU7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794520026; x=1795124826;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MRvrBEIopDqvuVb/vZ72s+DUNbn5hAJVvZTwAj02wNI=;
-        b=JGqhfje/mli/CXuHNFgnkl2KuP5zvLJ/9I/ZnzMlRqii72CRhH5hkwVcFYEekJaIAA
-         9XmI/S39/qB/fSgnHjrJBxRK58kH3pWp7B44R4ZoLBcRtmGPo8Rg63FU9hF59TYLU5RV
-         yQO/t4p+vvZxwJa+WwMBkhhbThO7ni4T5bkqrJxM55bUIVDOMkRyC7siIE/bHODMgKIp
-         KGLc7FAhl4HpSHm7hgOd2OAmBs8lAMWunbg5LBSmQ6Mm5hG5tn4qt2z6VLAm+6OlMguw
-         1a/+nUqC1IEJ1Ua+FtUcQ+33fXcWCy3+dxcre6xujcuTf4OXSf3xrVLU12rzhoGyMtGz
-         Ys8A==
-X-Forwarded-Encrypted: i=1; AL+hErF1E1Rhf+/BkEPQ00j2BxWo7o0DDWoPOoQRaV31Z0xs5NV6h60rjlQnOVb6R0mOSFCZyq4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8XxomO9B5Eqa+UGULBFGplFjoRso3UitpFF91AsmLh2NqyGtDc
-	uIpd5bfYw+8whqGZP6cWMV4aodJT6Yx8zGT4drFEzJ8IntOFbL1Xm/FphlKwP+5ZCw==
-X-Gm-Gg: AYBFou2UornM3oIX5ZnLXrY+ZfvevXu5K3gQu1maFI3xo9UXHvynd4CHTe+GxXFruCK
-	rUMdWSRo6YQwSXojvRpGu8bZn3fKwd2Jzu3VyBxaeUoytSbbyNPawrYwxWu/sk17HxqADFt264m
-	Igk/ZHztqzZdlhVs+NWY8Hj3Gwg8Sz+Xddb/PkiySdI/ix+SQT/ZuqfALBhISQPTskl9KeQI5x0
-	RtcIZLkG683z+HNrlGa9MLXJ+WxFGzyxvXsIrUUs6IF96KSO00neMmG2cbzct9bp5iSCiuh9t5E
-	2ygnRlLaEqNTWFSbjvWedC7oUO6lsDlkogG2QxTel21bapx/fwU87FO5Z7qNK9E0a/oJhCPxe4L
-	dKwki9wwM2hlZ8zJWf4aAfz2NVqwHYh1g1XyQpOgoxyw34HuD7H0Zfd2UiFsAXI/H/Jh52Ja2W1
-	LQGaEnMWM/6b/GfosCIlOQM9s+8sEuE5hNk3+svHCTjbZUPxm4JtLl3zhunnVrzhJZ/gvtX3dNT
-	bQzASRWxj90ULyLGwqwl79EX4CV5e0YXk2UVDZy4Rp+IGx8GF9PWcziteZjDTPPUPNOPSH6I6YC
-	t4wJe9/YkzR5z8f8xXHlZdisaugUjYNtdV/MHwePQLIg+ftxmIw6XKaF4ZKou+HKTH/vwSmoJis
-	Cimxjr1h5AA==
-X-Received: by 2002:a17:90b:30e:b0:3b0:97b8:d6bc with SMTP id 98e67ed59e1d1-3b1b0a0e889mr278699a91.16.1794520025137;
-        Thu, 12 Nov 2026 13:47:05 -0800 (PST)
-Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d257a0sm6493095a91.11.2026.11.12.13.47.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Nov 2026 13:47:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.a=rsa-sha256 header.s=2026102901 header.b=X4HXgj/6
+Received: from [IPV6:2601:646:8001:6901:cb27:19ed:d7a2:a981] ([IPv6:2601:646:8001:6901:cb27:19ed:d7a2:a981])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 6ACMDaBM1210494
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Thu, 12 Nov 2026 14:13:36 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 6ACMDaBM1210494
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026102901; t=1794521617;
+	bh=7XTirb6Hj6QyRMPdcPAxooRkBi3VSNvpy8OjENB+njo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=X4HXgj/6OSwkOxqsyWljcVkVck+r/y6L5i/11v8PZs4qnUfLXQ0B+paObySdU8q98
+	 cOjEeFwI2fFmxmO69XAD5MOSbJ9rr4XwQ0k0DTiWOlHhwTs5g/Oq0TLm36Rf1QYa23
+	 OlQfhFL7JzjSX4uqdCUJFz20QX+mKftVeYoQkwfarMCcQueCWFgJO+uLLMbiMSXk8k
+	 u+RJFWJbuvtfvUPRHN8xFVLZDnCyiFfGpDqV6x0y27CziMcasvzkHmiIfWpYovGmHP
+	 dchXDRPCvhzUsZlIl49fHNd+Am1y4sYJyjgxsSjqgxoF8v4OtT49bjUmeVKeagufak
+	 gKHA6YV7Xya6A==
+Message-ID: <9492bce8-aab7-4982-8a0c-7d736c745e12@zytor.com>
+Date: Thu, 12 Nov 2026 14:13:31 -0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -88,82 +59,54 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Nov 2026 13:47:03 -0800
-Message-Id: <DMTK99TDM9AM.SAM3Z4COP9WS@google.com>
-Cc: <dri-devel@lists.freedesktop.org>, <iommu@lists.linux.dev>,
- <kvm@vger.kernel.org>, <linaro-mm-sig@lists.linaro.org>,
- <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <linux-media@vger.kernel.org>, <linux-pci@vger.kernel.org>, "Alex
- Williamson" <alex@shazbot.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, "Jason
- Gunthorpe" <jgg@nvidia.com>, "Josh Hilke" <jrhilke@google.com>, "Kevin
- Tian" <kevin.tian@intel.com>, "Leon Romanovsky" <leon@kernel.org>, "Logan
- Gunthorpe" <logang@deltatee.com>, "Matt Evans" <mattev@meta.com>, "Matt
- Evans" <matt@ozlabs.org>, "Mina Almasry" <almasrymina@google.com>,
- "Samiullah Khawaja" <skhawaja@google.com>, "Shuah Khan" <shuah@kernel.org>,
- "Sumit Semwal" <sumit.semwal@linaro.org>, "Vipin Sharma"
- <vipinsh@google.com>
-Subject: Re: [RFC PATCH 0/7] vfio: selftests: Add peer-to-peer DMA selftest
-From: "David Matlack" <dmatlack@google.com>
-To: "Alex Mastro" <amastro@fb.com>, "David Matlack" <dmatlack@google.com>
-X-Mailer: aerc 0.21.0
-References: <20261111192411.4133780-1-dmatlack@google.com>
- <avYjFfqr3T/U7lvn@devgpu015.cco6.facebook.com>
-In-Reply-To: <avYjFfqr3T/U7lvn@devgpu015.cco6.facebook.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.18.y] x86/cpufeatures: Make X86_FEATURE leaf 17
+ Linux-specific
+To: Borislav Petkov <bp@alien8.de>, Breno Leitao <leitao@debian.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini
+ <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org, vlad.wing@gmail.com, security@kernel.org,
+        kernel-team@meta.com
+References: <20261111-stabe_srso-v1-1-45512320ba5e@debian.org>
+ <20261112045703.GAavVHH8KA2yyCU7oc@fat_crate.local>
+Content-Language: en-US, sv-SE
+From: "H. Peter Anvin" <hpa@zytor.com>
+In-Reply-To: <20261112045703.GAavVHH8KA2yyCU7oc@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu Nov 12, 2026 at 12:35 PM PST, Alex Mastro wrote:
-> Hey David,
->
-> On Wed, Nov 11, 2026 at 07:24:04PM +0000, David Matlack wrote:
-> =20
->>     Is requiring userspace to re-issue IOMMU_IOAS_MAP_FILE the expected
->>     uAPI behavior? VFIO_DEVICE_RESET (and runtime PM transitions) on the
->>     target device also bracket the reset with
->>     vfio_pci_dma_buf_move(vdev, true) and vfio_pci_dma_buf_move(vdev,
->>     false), tearing down any active IOMMU_IOAS_MAP_FILE mapping of that
->>     device's BAR even though PCI_COMMAND_MEMORY remains enabled when
->>     VFIO_DEVICE_RESET returns.
->
-> There was some discussion about this in the thread below. My understandin=
-g of
-> Jason's point is that the current behavior, and differences between what
-> revoking and move-capable importers see in regards to vfio-exported dma-b=
-uf is
-> somewhat incidental and not necessarily desirable.
+Still, I have to wonder if it really makes sense to fold these leaves 
+like this, since they are going to be populated soon. Surely we're not 
+that short of bits?
 
-Thanks, I will read through that thread. It seemed like a surprising
-uAPI.
+	-hpa
 
->
-> https://lore.kernel.org/all/arMBqyI4XNfD+q1W@devgpu015.cco6.facebook.com/
->
->>   - Physical target devices and P2P topology checks: mem_bar_descs[]
->>     currently only matches QEMU's pci-testdev, and
->>     vfio_pci_has_p2p_path() does not yet check PCI topology or ACS to
->>     verify that P2P traffic can flow between two physical endpoints.
->>=20
->>     Suggestions on physical target BARs to add to mem_bar_descs[] and on
->>     checking P2P reachability from userspace are welcome.
->
-> FWIW, you can also exercise the "P2P" path with just a single device if y=
-ou
-> IOMMU map a device's BAR into it's own IOAS, and have the device DMA itse=
-lf. For
-> eventually validating aspects of Live Update, maybe you don't necessarily=
- care
-> if an actual peer device is being DMA'd?
 
-The way I designed the P2P selftest support requires 2 things:
+On 2026-11-11 20:57, Borislav Petkov wrote:
+> On Wed, Nov 11, 2026 at 08:06:21AM -0800, Breno Leitao wrote:
+>> From: "Borislav Petkov (AMD)" <bp@alien8.de>
+>>
+>> commit ddde4abaa0ecc8395e0fcfa3e92f65d481890cc8 upstream.
+>>
+>> That cpuinfo_x86.x86_capability[] element was supposed to mirror CPUID flags
+>> from CPUID_0x80000007_EBX but that leaf has still to this day only three bits
+>> defined in it. So move those bits to scattered.c and free the capability
+>> element for synthetic flags.
+>>
+>> No functional changes.
+>>
+>> [ leitao: Required on 6.18.y: the 6.18.61 backport of ae1d2082d93b
+>>    ("x86/bugs: Adapt SRSO mitigation to Zen6") put BTB_CTX_ISOLATION in
+>>    word 17, which here still mirrors CPUID 0x80000007 EBX. The flag is
+>>    then falsely set on Zen3-5, and Zen5 silently loses its guest->host
+>>    SRSO mitigation. ]
+> 
+> Good catch, dang. That's nasty one.
+> 
+> Thanks!
+> 
 
- (A) initiator: A device that has a VFIO selftests driver.
- (B) target: A device that can provide a memory BAR (vfio_pci_find_mem_bar(=
-)).
-
-So far I haven't found a single device that can do both. But you are
-right that theoretically a single device could satisfy both
-requirements.
-
-I can relax vfio_pci_has_p2p_path() to allow initiator =3D=3D target.
