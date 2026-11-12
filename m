@@ -1,100 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.208.41
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1794509591;
-	b=BvxtncWJmfAqegvH96OQmcq3ZCd4UN6QpDLj0u6tsE+CtlSmQTtp35xoxCD9D/Av7gVN
-	 +6qcHx96TOgp+DtgY6ay7ECveT5kqefKL7oAJ8IiiTxgeN2/+M4u9Pa78xhH7epW+CQhG
-	 UisMlBhtDhlGu+/UaA3KgoVWdtOALOBIwB6gQ27LUdIASRYCQDeKQd9KuMIaI4HZ57rOp
-	 okFcgCp+EI2cu2c/VF4MvqC45z1NltVuQBdElAd1e+kmZk0x+R8yMqxfGXk8/KGak9CUw
-	 h2PgwRqQwKfXVYwKJgSyGuyOgFcP2s5fCBT10BB5PGMrj5J7omWog8wI8ZYeYtQYYCw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794509591;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.71
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794510123;
+	b=jK3qGwQLf+DSzA12+vRhhtKJLNSBnr2XdetXVUTzVxcdaxjo9lVGtwDVRrI/jA5C0MhT
+	 18YuMSZYE2kpXwxk5lm6EdJ4xlBNFhQh2kTro73nsl6jCzGuDxAMhfMqDeCvxyF4lsRH2
+	 y7IPwlXE2UaXO11pTCLVR9qTajjpGvATkYhIJOPClTiiQyaeN3D5QgwCJiZ4HpmWdynPv
+	 Dh3jCZjfPDSqNzvVGSiRIJ6QYVQg83544aBuH2OuTlmgA6rU7EM5f0diHRycJMOVZuZzl
+	 N83hXzKxklkgZW7ItZTdQC14x0aPT/LQ/LTKqbuaVLUEJdtzGXLaKa23twU9yc8xCsw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794510123;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=F3Tw9p9m98nVDXDhiISUHwXl/bWsyTWQBoH+O8XaA5U=;
-	b=mUh6bwWuLCJc1Xw3UGk5eoothgl8UhQKtUm4oYJMHJAKsv2BJUTd/Sh+/2ezz8eL89UG
-	 Wf/khtV3fk7s0Sv4fFcZzDNoJYpqS1SPWwuW624YgUd2w4tr+NcDgd1EnbcXzeETJHGle
-	 Y8AcvESViVLJ0eo7yD17iFGduwy+Xd64RtJgyOSn8rPvJbtjGwLo4Pp0FOTLj72bniV48
-	 zOgEhIwu5Igfc29jl3L792dB75dZgz58UpOLnR31CLUXPcCZGVysXTgZsTZOdhzzsNhcA
-	 3YyplojuKvTc7zW2a4ouwscR6Vym76hXq3Fyf0msWfdjaMeP91T2Un1wJ4w8lui4Izg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=0BWRXYU90cf54hfF6Vi8cEaIhhQPo+XnQGMy56cYcVI=;
+	b=njHpu/V8dBDp9nOriQ8sBv9un9/XfU9a56BRUGNiH1JpdA3GnotwCfGUewce5mSTehGG
+	 QoqAkpcqY7phKxlDnzscQmyOIjP4NPjrpm6bk1auncyDa7iYFezyanXSWqygJ2x0V9aKJ
+	 ACg7ApkWJ3DXKtLTUMyuVFfwEBFH2wvl0qW+mtm1R13xPvJRS5r3SR866SmH7hY00ExvI
+	 SezfdZCRAYbDbhyTTx7W/URze6lDZVuvp8SHMReGfGVrlRRcA5I0M3/luR1wJQTi+sTUI
+	 YkPzDJw9tai/yIjZvmxqTwPV768JSRwrYoxbjdEQ9v+aHzrRb44soMk6L8EicivyPCg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZrXABmQC;
-	arc=fail smtp.remote-ip=209.85.208.41
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=koq6v1Uk;
+	arc=none smtp.remote-ip=209.85.160.71
+Received: from mail-oa1-f71.google.com (mail-oa1-f71.google.com [209.85.160.71])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A556606A339
-	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 18:53:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3A556606A339
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1FF606A33A
+	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 19:02:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0D1FF606A33A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZrXABmQC
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6b71ee00f0dso714a12.1
-        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 10:53:10 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794509590; cv=none;
-        d=google.com; s=arc-20260327;
-        b=R31sxBD3j3gbnba1jcL7JeojR9WwO16aiYt8TtWHGMywK44XDNM6uvUGPqlYp1A5/L
-         4y8vbrQecZha/n1f16pC7KZYbf3idCVAFhvdlMSPwplt2HeGjFKEryQrCeaTvJgiC6w9
-         518/n+i5sOoRH2UuS0zyjFnTSOCUvAV2FVuIQ+1IJ993HfUFmUDH/pGzK7X3/Z6L/Evr
-         myvY1DDulcjwxzvVZ11eOBRB5BZsjitf5a6Ry6fcMnKYpMrwTFZscp47Tke9HCXTS+lM
-         Hyd24hFyGqwbGSFb+oDe/kycn4qKk3OyjRzWqqbKOSSS4g27WZ6HJGgF4DPXL5SE94to
-         PAVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=F3Tw9p9m98nVDXDhiISUHwXl/bWsyTWQBoH+O8XaA5U=;
-        fh=9dA+m4NdRieBkxaIlr9pcLCLR3ATLIGVoMOzJ6zkIRk=;
-        b=MgRCHL5LR/HMOpjSYzkHoROBQpzEYpPExl8L6tDYW1jb06amdnrTSgyxYRAbWxZqhC
-         Nc3skmhCNP8Vu6myylnmDt1i0YdoR5vPttspod0HTaMHbQWRMHwHseizqf0KiCnpAwoT
-         YU0cTFBtYbBDdG3bb2dV+sKSvhCqc7WnnSs+4U1tmtngZPjoJYJYgIuEAT+b3IKqissJ
-         Y89B23wXUmDJBcNZqK5Dqb4LX/sNm4SbIaUjZlqQG/B59GNcmP6h83+RBK6BSrCWzglI
-         v1DB9dnAfREaYAlxF0ekePzcEdqokXFCXyuXvg/6BaBd/2uyC5STZFXATWTto86PAVZn
-         VF1A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=koq6v1Uk
+Received: by mail-oa1-f71.google.com with SMTP id 586e51a60fabf-464fb819ac5so110810fac.1
+        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 11:02:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794509590; x=1795114390; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=F3Tw9p9m98nVDXDhiISUHwXl/bWsyTWQBoH+O8XaA5U=;
-        b=ZrXABmQCJ3w7fpvZ4karrFrjqd/K0rpSVTywmX4rQzivW0jGhC03EBEcz4x1rZkt8Q
-         xZcs/BuI8zU80KvjKJSKuYtuGN5mjG+fjxgyYY1zzVeneVge+I4spJNx2yu2QvsTT+3z
-         TvPQqMAGvHx2vUpd9qW4OU+W5Fry9rR5vNkLu1Dh44916sm5TAsfKFS63IqtWkHs77h7
-         R3bLVHvSuDoXdeOb4Sqv80Gbk7hHPfx1g7wqwZXqG6wIyCH+p+vTXKO0uHUqslp9hEqy
-         9SA57J0VwZZvrWjkKS5FzZu1G0+tHoMzzkIWcR9t7JMe3BPtICsD7vMYb+uUx9TrZQEC
-         uAAQ==
+        d=google.com; s=20260707; t=1794510122; x=1795114922; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0BWRXYU90cf54hfF6Vi8cEaIhhQPo+XnQGMy56cYcVI=;
+        b=koq6v1UkHrE2RUIVTilRGCkuyFhhD4dRyOUijul96GP561xavot25rMkohlunoIyTG
+         m0mjjrL27uMbJnlW58By1WWdHWi51tWC9M5vRA1pChMJQSYqMuFgTP2FbMo8F2YAKoRI
+         0OoTAxy8pIMpw4a2aQUH1yhhEJ5Oo4/ez+ltr8LHLZquWRp0EdAjBSg90fnox37smHfQ
+         eHhkJ8iFdclTwJeLT6Ce3Z/B4bya1rgdpiDSj2Z1USzL3W4r+Jwe1CQ6tOVCdtE0D/EN
+         hw/CMyKeq+G18nITQIbltERzcQz2klRFCN9VtgA/zZjZOx21wj4fkpe/tRbUOQZjoKKw
+         oxjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794509590; x=1795114390;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1794510122; x=1795114922;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=F3Tw9p9m98nVDXDhiISUHwXl/bWsyTWQBoH+O8XaA5U=;
-        b=bGmEfUPvxv/IpZmgxIqbQq8O5hOpYUMkhqNFgAbABCl5/mZFLd/yLSg2qrOc+RvaPO
-         1fHXjl/3WQNo49YaqR70qTWa0SXu7CwoCCsW6aTWOx+ssVOd6sWSFgZBezg38m8k61ls
-         tpjQ56z2SmAkqFwIQb/kBMvJmp5AI2DbV10QYghGCQwhAxciC1qORj6ZL7m7T6KCRHte
-         w+BCmU20Wscewo6mf6hDPWe3PBH0zgI1Crvcp5CsWAXuDXumqaZhSNfIt4sCa/+LY2FL
-         53KGjBDkHTmm9GxLgunQCdV4Tnt6FYHy2mXXQ9jd13GgZOiUCiL29ovpyQwyjWUnAzxL
-         o53w==
-X-Forwarded-Encrypted: i=1; AL+hErEGDMwZ2LWFYeoQWN49U8UgK34Rl6/cAu8zVCVCD1P+lV3NF487H4CmwD0Lg5xTfIemcGQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8TjnVoFgg5AYH6Pn0pJAlF7o5NxMyT3ihGjjXJYGqfkkiElpY4
-	PbNdA7XyvgkdWa4Gz8M/wfwdgt33QY2VIZmHAv+4pP+bwwhelmFQ3YBzbfq1fxSwBrt3ZAyKFBo
-	+xvFFRF2TCkleSYaNrfIM1ec3Apsi8yg+YBXKXzTg
-X-Gm-Gg: AYBFou1jNkEH7p8ExPeUfuqWqbOWKtA/MKcbJlE8poWx7qpV/22KUgpWXfomlcdXswf
-	1vdpEZNHIkNImH4PiEchQPWAUrexJC4Vx7qtg1juhNLgBZbsMd8XI8KJq+EffoGIzZpCPyiiETD
-	btxWaycNzogwIwx6D12h/c+lRtpSK+VGNfBmuXF09DpfvMgIicEBuajZn2BsiOof70Ix0btzSGe
-	OWlk/TSJR3mO5Jp2wyQ5GfRPE8K3ule5nOm8i8a1lfKBaYsmNqxQs7Pis0l7DuYzIW658w4KaPN
-	7ettB/KL8j1rlEn0TW8n4yqwQpuNi3V1l4R/0fWxp79fTAWimN7iOkEvBlQtbRvNbnDbCXXLfYD
-	8Pw5Ke2E8giLGrZ6QuWAIQycR0zZPK/5Ji/ig85FwQvxMlcegT8QJnrUOqyA+yzM3oBaB8qDG
-X-Received: by 2002:aa7:d85a:0:b0:6b5:66cf:eaa4 with SMTP id
- 4fb4d7f45d1cf-6b7c278a457mr7058a12.0.1794509588955; Thu, 12 Nov 2026 10:53:08
- -0800 (PST)
+        bh=0BWRXYU90cf54hfF6Vi8cEaIhhQPo+XnQGMy56cYcVI=;
+        b=YmPIDUY1bf+tD/yf6Pw3bG+Bm6Yn6s3MWnachMUJdW1Zx9Aa4OBRsAxYfGBYffyr95
+         XiLxey77MJx46J/PUQYJsZBymWmhLV6BXS3We5WzRwR8MLCfgsCRXEj/8YXinFC2i4+1
+         EVSRmZyFXtOnZXcTvwP/5FPyVmQV6PtBwn70s6p5sak3OVMTvtZYWnpUVfZY7VUaE7iv
+         RYa7aBFX7ChuSEAh3jFjNRCEHUg+zBZBXDiwi8DGzGrjJmkE94QCvZgUQsAB06nGOF6R
+         Y1SDacI5oQhC+b8hyDqKMSi63Cyo9t7KK+WbVO0EXaSQ8AxGPPdJ2zPl9lBJaKV+Wg8j
+         FZcw==
+X-Forwarded-Encrypted: i=1; AL+hErHa3V6fOywvX4gH22eqJ6hBSoSiDkrfOJPaxtKBX5FPJDDcY8qYcc8/7g8sgCQzPrw6F/c=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+6x8sk8qJseICnDCnk6YBTtxrdOGczAh17jDHl3yk3S4eP54Eo
+	bHzmWdLt6XQJa249JT+d9hZyGHhigRa75rFafFQkvkYzaManhqXOUideLAMZaVSOUxFNCKHLW8w
+	E5Sw4BusuEsk55A==
+X-Received: from ilej14-n1.prod.google.com ([2002:a05:6e02:620e:10b0:518:96aa:6d6a])
+ (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6870:1b08:b0:4ad:5ca8:dbf7 with SMTP id 586e51a60fabf-4afded4d142mr577391fac.0.1794510121626;
+ Thu, 12 Nov 2026 11:02:01 -0800 (PST)
+Date: Thu, 12 Nov 2026 11:01:58 -0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,44 +75,59 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <cover.1794374897.git.zack.rusin@broadcom.com> <90467782be23b83fd3e9a6afe2f1d2149eaf9db9.1794374897.git.zack.rusin@broadcom.com>
-In-Reply-To: <90467782be23b83fd3e9a6afe2f1d2149eaf9db9.1794374897.git.zack.rusin@broadcom.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
+Message-ID: <20261112190158.103091-1-jmattson@google.com>
+Subject: [PATCH] KVM: nSVM: Add CET shadow stack MSRs to merge_msrs[]
 From: Jim Mattson <jmattson@google.com>
-Date: Thu, 12 Nov 2026 10:52:56 -0800
-X-Gm-Features: AclHuK_9mvODzBgQFtLS_Gtq_h9EB7DHS-Em7YexSsSAbzFwFzuvZxGvVdZTuHU
-Message-ID: <CALMp9eTF3WtzGGaV=sCYLqm=8oHNbqg2pYUr_qtcXJaAKjc9bQ@mail.gmail.com>
-Subject: Re: [PATCH v3 06/12] KVM: x86: Forward VMware hypercalls to userspace
-To: Zack Rusin <zack.rusin@broadcom.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	Doug Covelli <doug.covelli@broadcom.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
-	Shuah Khan <shuah@kernel.org>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, Xin Li <xin@zytor.com>, 
-	Francesco Lavra <flavra@baylibre.com>, =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@ventanamicro.com>, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 10, 2026 at 10:05=E2=80=AFPM Zack Rusin <zack.rusin@broadcom.co=
-m> wrote:
->
-> Add KVM_VMWARE_ENABLE_HYPERCALL.  When it is enabled, exit to userspace
-> with KVM_EXIT_VMWARE when an L1 vCPU executes VMCALL or VMMCALL with
-> VMware's magic value in EAX, and let userspace complete the call by
-> updating the guest's registers or by having KVM inject #UD, #GP or #PF.
+When shadow stack is enabled for a vCPU, svm_recalc_msr_intercepts()
+disables interception of MSR_IA32_U_CET, MSR_IA32_S_CET, and
+MSR_IA32_PL{0..3}_SSP in vmcb01's MSRPM. However, because these MSRs are
+missing from merge_msrs[] in nested_svm_init_msrpm_merge_offsets(),
+their MSRPM bits are never merged into vmcb02's MSRPM, and L0 continues
+to intercept L2 accesses to them even when L1 disables interception.
 
-It's not clear to me if this paragraph implies that VMCALL and VMMCALL
-are supported cross-vendor. If so, it may not be true.
+Add the CET shadow stack MSRs to merge_msrs[] and bump the size of
+nested_svm_msrpm_merge_offsets[] to accommodate their MSRPM chunk offset.
 
-In arch/x86/kvm/emulate.c, group7_rm0[1] (VMCALL) has the Priv flag
-set. When an AMD guest executes VMCALL at CPL > 0, x86_emulate_insn()
-sees Priv && cpl > 0 and injects #GP(0) before ever reaching
-em_hypercall(). The other direction should be fine, since
-group7_rm3[3] (VMMCALL) does not have the Priv flag set.
+Fixes: 38c46bdbf998 ("KVM: SVM: Pass through shadow stack MSRs as appropriate")
+Signed-off-by: Jim Mattson <jmattson@google.com>
+---
+ arch/x86/kvm/svm/nested.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-In any case, if cross-vendor hypercall instructions are supposed to be
-supported, you should add them to the selftests.
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 6298160458bc..1299fdadeb73 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -209,7 +209,7 @@ void nested_vmcb02_recalc_intercepts(struct vcpu_svm *svm)
+  * Hardcode the capacity of the array based on the maximum number of _offsets_.
+  * MSRs are batched together, so there are fewer offsets than MSRs.
+  */
+-static int nested_svm_msrpm_merge_offsets[10] __ro_after_init;
++static int nested_svm_msrpm_merge_offsets[11] __ro_after_init;
+ static int nested_svm_nr_msrpm_merge_offsets __ro_after_init;
+ typedef unsigned long nsvm_msrpm_merge_t;
+ 
+@@ -238,6 +238,13 @@ int __init nested_svm_init_msrpm_merge_offsets(void)
+ 		MSR_IA32_LASTINTFROMIP,
+ 		MSR_IA32_LASTINTTOIP,
+ 
++		MSR_IA32_U_CET,
++		MSR_IA32_S_CET,
++		MSR_IA32_PL0_SSP,
++		MSR_IA32_PL1_SSP,
++		MSR_IA32_PL2_SSP,
++		MSR_IA32_PL3_SSP,
++
+ 		MSR_K7_PERFCTR0,
+ 		MSR_K7_PERFCTR1,
+ 		MSR_K7_PERFCTR2,
+-- 
+2.56.1.703.gf848ed807c-goog
+
