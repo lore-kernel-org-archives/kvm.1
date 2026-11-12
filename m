@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794501740;
-	b=TM+4QqeEGwlPs61nn5zQmxFnAi1aO5e9WxAyOoHd5ZHxQcdMp52T8uEPLiOnMa1LuR0b
-	 qeOBF58vL/9Q8048xJ92G92Nhn1sH5BCmbqTu750oq8pBRhlQxTK24pQOjboyy7TX/GJP
-	 yetboRAtSIZSwJI5/eww+2g1fnxnQppKbhaT5/q+zb9C4QkrMCWIlB/rJqcI5xtHZsVji
-	 6D6jP29nTXH+TMfrGfG3AyErzF0LH6oZyo+VGpsyKBx55nB8KSp1LWMmFzeGdFC2sqwOq
-	 /sk5Es/Gv2G9KN6/s4upwVSb7w9kHhIEKt5K8xdK3C2btKJ2vARyA/5dyuWYxwd/cXA==
+	t=1794501893;
+	b=G4lYhTr/kB/jFY7HGl8PP7FKuTEFcihAbLsoMZ1qBH/KlsZJ+r7WhTX6N+SOCOe8bIKA
+	 4hFdZjwxOh1u+XH0PQZgxwzmmZqxcoP07Cv2b51LRTbBWlnnWguUwpWi2FGBfDGAwoABJ
+	 1movhFxqj7atOc0dHAGRgap5Mofni6iuNzc26ZbJnJnKru/6oSkrNvmWVD/MSMRX5bYha
+	 o2QamycXVRyYduvX6766wasC6fUGFX7QjfOLusPnGXVBGomXYoDjaLrnZ29PfNj+tp5tn
+	 2MHat4D0QYCf9wC/uyULjqEQvL01T72z5bu0fMR9kU2klAytNE42Fzbfb07t1zrgtuA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794501740;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794501893;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=AkbVykVZBQUYEeZ40x+qwIRW7yVXsi+IgJgibQddBlo=;
-	b=JG5HvQK6smq5Hk18NCCwavh90HnRjn9WUYCu8dfmCvdHfKM0LyID6+sfApMxmadqHvVs
-	 JDQiA+hIom1Mwg8YEyrfeLONXlFlJ1LoivlDqiKuCpeX7d+uAMv3WrDo1cjFt55551GJx
-	 narr3zBDOBKHWGVHciF2+kpm5suYMegA7jT9c9tKcIFzIk8gKAuVTb7XDQLZzQXKk/Xat
-	 3B3QYMTE4L6S//7z2by3lVz2hxGNVE7JoBh1rP+PCK5goSepzxdy9r55lypP6D/ygeh79
-	 oQNLoObtEFSYYz2j4UZcD6EyRejE2VR58w/pynMhz6F9eQ/3wqnSeTwTZ6AyMnqoioA==
+	bh=N/JJjQAxr7gs5XtFIopHR9Vrbslfj/S3BZMOowPnB6o=;
+	b=KrKSahJj3Efo4ln9VIhlUMYo/VQP2SXd4wT+L/1fKVCxcGHuWql1tX/PuZjzqVdZTsZC
+	 C15bKcqZntHIVhdPB8MwSGRcvZXhJttuDb8U1HlqVTeIko704NFOnLV3ulXvc01IUMybz
+	 aRdYytqmo0EB1uycJupsqmn16QPKtodGU3Dpn9FHPA9o5QYFYBBBv/9Xd7t3FEG8/YoWK
+	 Yv7GsEXVg/7aL1axpsvzbByT+fj6xxN+JPu9GSnQptnjWT2LS5fAp+UgcyuJnTNrPDTvA
+	 cV6BUj31BF8LKaOFrndxanNQyDqLfy5VA8og3sIiY1zmRfDcsBHQxkZCGTKHeMx5GBw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=aB3+nL0V;
-	arc=none smtp.remote-ip=209.85.216.70
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KgyDMV55;
+	arc=none smtp.remote-ip=209.85.214.200
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6166606A323
-	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 16:42:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A6166606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AC4606A898
+	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 16:44:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89AC4606A898
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=aB3+nL0V
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3b175a69ab8so3509046a91.1
-        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 08:42:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KgyDMV55
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2ed2803f863so386885ad.1
+        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 08:44:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794501739; x=1795106539; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794501893; x=1795106693; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=AkbVykVZBQUYEeZ40x+qwIRW7yVXsi+IgJgibQddBlo=;
-        b=aB3+nL0Vpmj4XFDgWJSKQKvxYnbg79IDNhcDs0nk38jbc1dAXpuH5svptkXfW8GD5l
-         PkfWWqAFbqnOjNHb92RvPZXYuOwa6IIfSvKk3KFM3DFM6/AnQa7d+h8LkF9SSR4ckvNI
-         ReNFEtwKj7pbFi3XQR2Iz3PlKQREBqCQsJ86mx/s40WLmiwtkn2LvLJOOjo67pSyVR5N
-         u3GH9JSjb65155nUjAAqWLpu9OPwZUjdpkyF55v0vayjq93fsiKz5eadTHzW5Qi09rlf
-         g/KZiq2sa86dUWwTK/OKRODR1YDcEtMZ/jBsL3DvTMC6PY/Jt+mC/gUkW+ljhvJbgeut
-         IoWQ==
+        bh=N/JJjQAxr7gs5XtFIopHR9Vrbslfj/S3BZMOowPnB6o=;
+        b=KgyDMV55dgAMB96NH6xPoULExcKQ6F7+p4ffGn/u7ogvRLZG+3wGkwPVFeKSaOqkhY
+         31+ZGnNQ4yJIf1ndpeldECdolpnZwx2LYh43xsuwgubZFVizoY5374paI3PJrlqbpERh
+         YmqPkPPnin0+XMmH2X45vR7l2BgtpR0cMVRTX+TP5H5kQf2ZqOIaGs7Ov1hG1RlyfmT7
+         TnaKb4/53FLAKn8iHG73Qpgre8lp5oFkVH7cU7GAyux0eEjEoTnDFdvS3FkklSMsJwWe
+         cNz7+jXpomogS+CvqfViehQpNSdFumH1prz1lE6EnnLhQGhThZ+CkmtM1IQ3GmOBkn/o
+         0RMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794501739; x=1795106539;
+        d=1e100.net; s=20260707; t=1794501893; x=1795106693;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=AkbVykVZBQUYEeZ40x+qwIRW7yVXsi+IgJgibQddBlo=;
-        b=yTvmx+FwrmZ2JgDTPCdgU3psPBFUecC2IrpQmyAty09Dl4+XBJ7pLOQ0duluiUzIku
-         VLKyhNomMxvTozgCHIaYYRL/MvLr5WZPo2MUWZMtYHzyOTrzvp5fNHepobWI3fV9eIGV
-         NVRRrRnsQVk7JjzkmQ2gzx9t8RhkK19JhBe7/Fic38xw0GpPVFs5FrmkBTczqyhkHwpu
-         Nu0UVTP3tfm5nvzyKerdMfa79dhn65jD6fAeLUtEyE4dTA6nQSKi63/fctANVLXF8Ics
-         fMusJ9mGvkik/TDcVYFE8eB7JosHo/xf7Fe3cirWg05/xCPj+vd4ot2onnuxuUr2bRfM
-         KUjw==
-X-Forwarded-Encrypted: i=1; AL+hErEOUy2w2xLmv4xuZ1doldUHoNLxIcYYHv/6LKkXWcs2lYEyzSMSfaKZ78JcyRKgwO1JYLI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9J+271HGzOf9ogBlRYgfugn6d6rgswwF7sFLVsDKgMMjK8m3w2
-	ZSqUZeDPA1TCxUWMcWvKW+gUpoelrsy8W8cYkWM0a4x4762goiLfFCzTALzEIlt1bEl58j8fu2v
-	1ts8Vwg==
-X-Received: from pjuw13.prod.google.com ([2002:a17:90a:d60d:b0:3ab:133b:49b6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5584:b0:3ac:8fff:5a1b
- with SMTP id 98e67ed59e1d1-3b182edd001mr5732914a91.34.1794501738408; Thu, 12
- Nov 2026 08:42:18 -0800 (PST)
-Date: Thu, 12 Nov 2026 08:42:16 -0800
-In-Reply-To: <sashiko-outbox-210535@kernel.org>
+        bh=N/JJjQAxr7gs5XtFIopHR9Vrbslfj/S3BZMOowPnB6o=;
+        b=nxnTSUdcAQevYGFklDciSs+In8Nv9SAs7b8SXzCI6w6Cr6TmyBtEe/n/D8Qzbxvwcf
+         UOkfjjab12bXl2CiZvUMNyGGidb3+zsMSyXmh7kzL5GGYq12JaVdcUIospzkl26aTpm3
+         TVXZKRPqGbgswx3/MQ5oCOXxz/IEidQcxZpwz6X1xDiAuviAqy/tPGf+z5qwgQyX8LNX
+         zSwvyWJJ/zfRxfyYZqMpL43epnBwo9H5TnhKHEtd5uHINBvDMBvYzbGlSdK1+eueiwyU
+         vaU4eSqNrqcLkgMgUdQTl+/imf55kv1ZMMoJUTHej1BD0z/otk9lxEnOpzvY6mH1w1zC
+         uZ0w==
+X-Forwarded-Encrypted: i=1; AL+hErHus2NgVRubJ5Saq9gDV9R8PoVx+P6er9TUsF/08hjJS4xKIUA+MJOEvijZvw0Ejy5AbI4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/FSPL9JEd0gzsXRGkSyD5BvcPJ1NHBI6lbrP4WDtqcoxsRRqbz
+	G2HWzp6szkiRvn+a4pLr3G0gEKX6DGygTBDtsSZwF0dNfDKMYMLf8MWbBqRhIwxYbHuT/fBSU2F
+	VRPnmtw==
+X-Received: from plhz2.prod.google.com ([2002:a17:902:d9c2:b0:2ea:c4fd:59fb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d481:b0:2e9:87a2:b4f8
+ with SMTP id d9443c01a7336-2edd775c023mr63208465ad.29.1794501892291; Thu, 12
+ Nov 2026 08:44:52 -0800 (PST)
+Date: Thu, 12 Nov 2026 08:44:50 -0800
+In-Reply-To: <avWnci8x0fn_4ck-@stanley.mountain>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -79,53 +79,43 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
 References: <57324d544da1e92cf3b30ff7c40595dfbca1933d.1794465097.git.priyankamani2100@gmail.com>
- <sashiko-outbox-210535@kernel.org>
-Message-ID: <avXsaIGjGotdeJiR@google.com>
+ <avWnci8x0fn_4ck-@stanley.mountain>
+Message-ID: <avXtAsi3Llq6Ua1n@google.com>
 Subject: Re: [PATCH] KVM: nSVM: Check full nested state size before writing to
  user buffer
 From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Priyanka Mani <priyankamani2100@gmail.com>, kvm@vger.kernel.org
+To: Dan Carpenter <dan@pereq.eu>
+Cc: Priyanka Mani <priyankamani2100@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H . Peter Anvin" <hpa@zytor.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Nov 12, 2026, sashiko-bot@kernel.org wrote:
-> [Severity: High]
-> This problem wasn't introduced by this patch, but in the paired setter
-> svm_set_nested_state() [1], does a failed nested_svm_load_cr3()
-> leave the vCPU in guest mode with an active nested MMU context?
+On Thu, Nov 12, 2026, Dan Carpenter wrote:
+> On Thu, Nov 12, 2026 at 06:41:43AM +0000, Priyanka Mani wrote:
+> > svm_get_nested_state() compares the userspace-provided buffer size against
+> > kvm_state.size before adding KVM_STATE_NESTED_SVM_VMCB_SIZE for a vCPU that
+> > is in guest mode.  When L2 is active and userspace passes a size that is
+> > large enough for the header but too small for the vmcb12 payload, KVM thus
+> > skips the early exit, copies out the header, clears and fills the full 4KiB
+> > vmcb12 area past the end of the buffer described by userspace, and only
+> > then does the caller notice that the returned size is larger than the
+> > provided one and fail with -E2BIG.
+> > 
+> > As a result, KVM writes up to 4KiB beyond the buffer userspace said it
+> > has, and if that memory isn't mapped, the ioctl fails with -EFAULT instead
+> > of the documented -E2BIG without reporting the required size.
+> > 
+> > Compute the full size before the check, as vmx_get_nested_state() does, so
+> > that a too-small buffer is rejected without writing anything to it.
 > 
-> arch/x86/kvm/svm/nested.c:svm_set_nested_state() {
->     ...
-> 	nested_vmcb02_prepare_control(svm);
->     ...
-> 	ret = nested_svm_load_cr3(&svm->vcpu, vcpu->arch.cr3,
-> 				  nested_npt_enabled(svm), false);
-> 	if (ret)
-> 		goto out_free;
->     ...
-> }
-> 
-> nested_vmcb02_prepare_control() enters guest mode and initializes the
-> nested MMU context, but the out_free error path only frees save and ctl
-> without calling leave_guest_mode() or nested_svm_uninit_mmu_context().
-> If userspace passes an invalid guest CR3 and then continues running the
-> vCPU after KVM_SET_NESTED_STATE fails, the vCPU runs with a corrupted
-> nested state and leaked MMU state.
+> I would prefer to instead move the if (user_data_size < kvm_state.size)
+> check until right before the copy_to_user().  It's more future proof
+> that way.
 
-Ya, I have this locally, just need to write a changelog and get it posted:
++1
 
-diff --git arch/x86/kvm/svm/nested.c arch/x86/kvm/svm/nested.c
-index 07554089ec05..4b1cdc7798bb 100644
---- arch/x86/kvm/svm/nested.c
-+++ arch/x86/kvm/svm/nested.c
-@@ -2114,8 +2114,10 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
-         */
-        ret = nested_svm_load_cr3(&svm->vcpu, vcpu->arch.cr3,
-                                  nested_npt_enabled(svm), false);
--       if (ret)
-+       if (ret) {
-+               svm_leave_nested(vcpu);
-                goto out_free;
-+       }
- 
-        svm->nested.force_msr_bitmap_recalc = true;
+Side topic, your mail got flagged by gmail with:
+
+  This message isn't authenticated and the sender can't be verified.
