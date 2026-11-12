@@ -1,56 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794496255;
-	b=hui9oFIihsdZzEZnqmL7pU6MVSqfchOhq1WTqzAgFANez0bRi3ir72zvjnoOhYXTbrww
-	 jlwkT//Z205fIif42nTcbd0X35snqOHHbSgQVnQsWcdyTiJE7y09e5oTEXpfye5iu+S3b
-	 ktTOl4Ed6YTf5wwCVxIX6Q8FwlJeMdqhYPho5G/mAAz0cLmKou7otspnMI5uy1xUwn3al
-	 xtCsw+IUGvRQKMVuOiH5kbL5dIvJ3p3KIGJV1bZLOY6td3t0KkGefyAhJhr6yAksPFjN8
-	 HrzNlPxGkeS0ECaoKsJUoM25NXh59zHDbYt3oBulY/mMWsaosb57aEl5tq1ZcI2yoKA==
+	t=1794497181;
+	b=poz/wdH+w2YwcllWb5yzFAsv8uqF4AIfPWBHzYonWawDK9SGwz7zH2uhjUJC/h+gG6xk
+	 /EBKWch2pMdrlhmS9dl3vLMTY6m9GdY0r1f0I4p0MgwkwG2id8lbFvx5/AHxGwQrj28MX
+	 /N27uOm0MHcKxbgwXIpKNto8BqLPM3VfqsZSa8820fGu3NFM2on3rjMYzF8i136ScVBem
+	 tthbvcVe6J5LMo4rkb+bPvYq/6MRxo23PAu3Irf/6MjyGRb7h6au9qgqRc1soYlL8yEsv
+	 9eY7dZdXMt6rjLC9+Q6HZvyH59Z2xsdcMB2WjtAAzJ9lzjZaTqsMPdtHXh4zzhH01iQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794496255;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=oA95rbY+oBonMVDuRyweZZjzZ28nbgmghFdIVCPHtBM=;
-	b=NfKxXT66El27C6QzlppwUCmB8M13BgOoYhDb7GRxV5eXe2uxAXxYoJXqSmyXWjaSwvm6
-	 POki+81QOhY4r6UjNdhIfKbU5S9H2nycq9t+ZuiMGgddazM1YrVhpSg5c5J5zRcO5RRob
-	 6JB1418CCZxFIwo5ysp4kyyvp9iUZqC2Un8JtYUB4tGgiRgcdYg4fkeJ8ZBxMTxmfdLMk
-	 R/UfE3fka7qAuqF5XjPMXu/6ljzm7P6AFlQNMcIbRB4vZqfQB1ifnmIQGcwwBEYPisvGS
-	 e6D89E3btRBSkehk9d1JoeRorx5iFSrOdxUBuylWmqsnDbGh0lmNv2IAfWWnTKuKiDA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794497181;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
+	bh=S5SzpuE9K1j8lcY7r96zLl/v/riOJlJqayes6pUVvY8=;
+	b=nzV/xJjFojBjwiKSr0rRH/DGywiF8B0ztWB/wYoGUKNIdn/+w0cB6EA8LGBBx0v3ZAiN
+	 T6bD3Mgg3ykS5OU/7TUzEG94tFTiddx2VrqO70FK6MQLJZQXdgpTePH4nO5wG5jQnI1F0
+	 DclzvtQKGGs4AWE/0ktJQvHWGGumIWnsP7dUUZfeN7ad1qkGOGFD5+QlTKv4jlcvVYQCd
+	 vMJ9pR46UWDxePNOG1r/nCp3x7QzqixMHlk+L/jFNOvV8H9LZCtlC0oI/HkZ525roLf0/
+	 GptXxXBwZfIRY3CswAt2Vcvinn7uKBnY5/Cz07A7E+PCDOSiOirGq/tYUlROs5DiBjw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P5V3nCmK;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8FA606A321;
-	Thu, 12 Nov 2026 15:10:54 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=C3+eQTZO;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A506606A32E;
+	Thu, 12 Nov 2026 15:26:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A506606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P5V3nCmK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52601F00A09;
-	Thu, 12 Nov 2026 15:10:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794496254;
-	bh=oA95rbY+oBonMVDuRyweZZjzZ28nbgmghFdIVCPHtBM=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=P5V3nCmK+s7Ld6IP2OltUzNq4JWzA3BKJmJ1XmaJ1JgxDNyIIKW0V8tluVH868Qrh
-	 GMdhMCEmm75CmPLsNmi9SK/+QNg5wuw1UsRrMef1OJ+4IUKooNrT1dOsf6jhqGp1En
-	 LYwEz3xf1UH6Fq9ywa28TlP4yf0kcU9ET9j4QemxmN+w5k8qmbTwAXIdRkzF8RxCUw
-	 lolRSFd7M8jc+7fn7WGi7P9s8hxsgxdc44hKup1UeqBBKpYJBxrtru9krqzOdzlcgp
-	 XVXaK8iiLx+tyajbu9JWuPr7de/1yGmdYIxNd8On+eKt8AdRQ5pUKo45QR6MtCkytI
-	 YRGEVt5IcJwHw==
-Message-ID: <sashiko-outbox-211410@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 20/20] vfio/pci: Enable recovery for supported
- native PCIe endpoints
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Shameer Kolothum" <skolothumtho@nvidia.com>, kvm@vger.kernel.org, linux-pci@vger.kernel.org
-In-Reply-To: <20261112141632.918954-21-skolothumtho@nvidia.com>
-References: <20261112141632.918954-1-skolothumtho@nvidia.com>
- <20261112141632.918954-21-skolothumtho@nvidia.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 12 Nov 2026 15:10:54 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=C3+eQTZO
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E79AE1516;
+	Thu, 12 Nov 2026 07:26:14 -0800 (PST)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 45BF23F632;
+	Thu, 12 Nov 2026 07:26:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794497177; bh=btEnX4uDhjrUHVzZrwRd+YJ2duMYbN+7dhmt6hZ8QcE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=C3+eQTZOzu1UELo2VKOMsYJ7L2S8YhbY8UfFsu/BvGX/rhLuuRVXaThVsd5Y0C8BK
+	 EHr+DnD1m5w7cpb0Bjcuis2I5Ozpjto38/PtiO/dQr2gTQJXID7h/fAXhiYcdFi1Rm
+	 djJbY6xjQgg5L6eMYfqJIxM9cMpalkGPCK70ZerE=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Tian Zheng <zhengtian10@huawei.com>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	maz@kernel.org,
+	oupton@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	corbet@lwn.net,
+	pbonzini@redhat.com,
+	yuzenghui@huawei.com,
+	wangzhou1@hisilicon.com,
+	yangjinqian1@huawei.com,
+	caijian11@h-partners.com,
+	liuyonglong@huawei.com,
+	tangchengchang@huawei.com,
+	yezhenyu2@huawei.com,
+	yubihong@huawei.com,
+	linuxarm@huawei.com,
+	joey.gouly@arm.com,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	seiden@linux.ibm.com,
+	suzuki.poulose@arm.com,
+	fuad.tabba@linux.dev,
+	mark.rutland@arm.com,
+	seanjc@google.com,
+	rdunlap@infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	skhan@linuxfoundation.org
+Subject: Re: [PATCH v5 11/15] KVM: arm64: Reserve dirty ring space for the HDBSS buffer
+Date: Thu, 12 Nov 2026 15:26:12 +0000
+Message-ID: <avXak02I6i0tLLN9@LeoBrasDK>
+X-Mailer: git-send-email 2.56.1
+In-Reply-To: <fee835a5-a027-4b68-b933-6f8e81987bce@huawei.com>
+References: <20260929103655.85107-1-zhengtian10@huawei.com> <20260929103655.85107-12-zhengtian10@huawei.com> <auikG0clmr19sAjh@LeoBrasDK> <afcbf19b-bd13-4afc-ab56-8bc50c793e50@huawei.com> <au30DqzWIFny1tpr@LeoBrasDK> <d81243e3-d790-4ee8-9b28-36d35591ee77@huawei.com> <avIOZTvQF-1sxs2p@LeoBrasDK> <90775cb3-84ab-4690-a252-1ac41488118f@huawei.com> <avMSw3LLDIFT3kSR@LeoBrasDK> <fee835a5-a027-4b68-b933-6f8e81987bce@huawei.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,184 +88,268 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issues to consider:
-- [High] vfio/pci: VFIO_DEVICE_GET_INFO fails with -EIO on VFs when PF
-  is closed
-- [Medium] vfio/pci: circular locking between access_srcu and
-  access_lock on VF and PF
-- [Medium] vfio/pci: false recovery in vfio_pci_supports_recovery() for
-  SR-IOV VFs
---
+On Thu, Nov 12, 2026 at 09:15:02PM +0800, Tian Zheng wrote:
+> 
+> 
+> On 11/10/2026 8:49 PM, Leonardo Bras wrote:
+> > On Tue, Nov 10, 2026 at 04:54:30PM +0800, Tian Zheng wrote:
+> > > 
+> > > 
+> > > On 11/10/2026 2:18 AM, Leonardo Bras wrote:
+> > > > On Mon, Nov 09, 2026 at 12:00:52PM +0800, Tian Zheng wrote:
+> > > > > 
+> > > > > 
+> > > > > On 11/6/2026 11:36 PM, Leonardo Bras wrote:
+> > > > > > On Fri, Nov 06, 2026 at 06:36:04PM +0800, Tian Zheng wrote:
+> > > > > > > 
+> > > > > > > 
+> > > > > > > On 11/2/2026 10:54 PM, Leonardo Bras wrote:
+> > > > > > > > On Tue, Sep 29, 2026 at 06:36:51PM +0800, Tian Zheng wrote:
+> > > > > > > > > The dirty ring reserves room for CPU-side dirty buffers via
+> > > > > > > > > kvm_cpu_dirty_log_size(). Report the HDBSS buffer entry count
+> > > > > > > > > through it, so a full buffer flush always fits in the ring.
+> > > > > > > > > 
+> > > > > > > > > Pin the HDBSS buffer size to PAGE_SIZE when dirty-ring is enabled,
+> > > > > > > > > via kvm_arch_dirty_ring_size_updated(): a larger buffer only
+> > > > > > > > > shrinks the soft_limit and forces more frequent userspace drains.
+> > > > > > > > > 
+> > > > > > > > > Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
+> > > > > > > > > ---
+> > > > > > > > >      arch/arm64/kvm/arm.c | 8 ++++++++
+> > > > > > > > >      arch/arm64/kvm/mmu.c | 8 ++++++++
+> > > > > > > > >      2 files changed, 16 insertions(+)
+> > > > > > > > > 
+> > > > > > > > > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> > > > > > > > > index 9d7bdece149a..5a7046acb62e 100644
+> > > > > > > > > --- a/arch/arm64/kvm/arm.c
+> > > > > > > > > +++ b/arch/arm64/kvm/arm.c
+> > > > > > > > > @@ -215,6 +215,14 @@ static int kvm_arm_default_max_vcpus(void)
+> > > > > > > > >      	return vgic_present ? kvm_vgic_get_max_vcpus() : KVM_MAX_VCPUS;
+> > > > > > > > >      }
+> > > > > > > > > 
+> > > > > > > > > +void kvm_arch_dirty_ring_size_updated(struct kvm *kvm)
+> > > > > > > > > +{
+> > > > > > > > > +	if (!system_supports_hdbss())
+> > > > > > > > > +		return;
+> > > > > > > > > +
+> > > > > > > > > +	kvm->arch.hdbss_buffer_size = KVM_ARM_HDBSS_DEFAULT_SIZE;
+> > > > > > > > > +}
+> > > > > > > > > +
+> > > > > > > > 
+> > > > > > > > On the same subject as a previous patch:
+> > > > > > > > I don't think this is the best approach, on top of adding a new weak
+> > > > > > > > function to take care.
+> > > > > > > > 
+> > > > > > > > Maybe during the dirty-ring allocation, on vcpu creation, we could take
+> > > > > > > > into account the requested dirty-ring size, and just allocate the HDBSS
+> > > > > > > > buffer taking that into account. That would make it simpler, don't you
+> > > > > > > > agree?
+> > > > > > > > 
+> > > > > > > > Thanks!
+> > > > > > > > Leo
+> > > > > > > 
+> > > > > > > Hi Leo,
+> > > > > > > 
+> > > > > > > The "set once" guard we're discussing comes from the patch that adds the
+> > > > > > > ioctl, and it isn't really needed. We discussed this earlier [1]: we can
+> > > > > > > just initialize hdbss_buffer_size to PAGE_SIZE at VM creation and let
+> > > > > > > the ring reservation use it directly. **That also means
+> > > > > > > kvm_arch_dirty_ring_size_updated() can be removed.** Thanks for your
+> > > > > > > suggestion.
+> > > > > > 
+> > > > > > :)
+> > > > > > 
+> > > > > > > 
+> > > > > > > As for why PAGE_SIZE is the right value in ring mode: the HDBSS buffer
+> > > > > > > is flushed on every VM exit, so a larger buffer doesn't reduce the flush
+> > > > > > > frequency. It only inflates the ring reservation (64 + size/
+> > > > > > > sizeof(u64)), which shrinks the soft_limit and forces more frequent
+> > > > > > > exits to userspace for the ring to be drained. Draining the dirty ring
+> > > > > > > from QEMU is more expensive than draining the HDBSS buffer from the
+> > > > > > > kernel, so the smallest buffer gives the best performance. In this mode,
+> > > > > > > a larger buffer provides no benefit to users.
+> > > > > > 
+> > > > > > Humm, if properly dimensioned larger buffers would be benefitial for
+> > > > > > memory-intensive workloads, unless they are guest_exiting for other
+> > > > > > reasons in the meantime.
+> > > > > > 
+> > > > > 
+> > > > > Agreed, and the workload I tested is on the "unless" side. The guest
+> > > > > exits constantly for other reasons, so the larger buffer never got a
+> > > > > chance to pay off, and only cost ring capacity.
+> > > > > 
+> > > > > > > 
+> > > > > > > In my tests, I also saw performance degrade when more space is reserved.
+> > > > > > > 
+> > > > > > 
+> > > > > > Humm, what kind of workloads did you test?
+> > > > > > Did you have the chance to monitor what were the reasons for VM exiting?
+> > > > > > 
+> > > > > 
+> > > > > For the workload question, it's a Redis server in the guest under redis-
+> > > > > benchmark (SET-only, 2KB values, 1M keys, 100M requests). The traffic is
+> > > > > network-driven, so the guest exits constantly to service requests. The
+> > > > > HDBSS buffer only accumulates entries between two exits and is flushed
+> > > > > on every exit, so it rarely fills regardless of size. A larger buffer
+> > > > > only inflated the ring reservation, which shrinks the soft_limit and
+> > > > > makes the ring-full exit and userspace drain fire more often.
+> > > > > 
+> > > > > > I am not saying this is mandatory for the HDBSS implementation, but the
+> > > > > > whole idea of letting the user choose their own HDBSS buffer size is
+> > > > > > because different workloads may benefit from different buffer sizes: if a
+> > > > > > VM writes a lot to new memory, and exits very little for other reasons,
+> > > > > > then a larger buffer will cause the VM to guest_exit much less often.
+> > > > > > 
+> > > > > > Does that make sense?
+> > > > > > 
+> > > > > > Thanks!
+> > > > > > Leo
+> > > > > 
+> > > > > It does make sense. That's exactly the workload where a larger buffer
+> > > > > pays off, and the next version no longer gets in its way. The two ioctls
+> > > > > are no longer mutually exclusive.
+> > > > > 
+> > > > > The only coupling left is the reservation. hdbss_buffer_size starts at
+> > > > > SZ_4K at VM creation, so a ring enabled right away reserves for the
+> > > > > default buffer (64 + 512 entries), and the minimum ring size accepted is
+> > > > > unchanged from v5. KVM_CAP_ARM_HDBSS_BUFFER_SIZE is the gate. When the
+> > > > > ring is already enabled, a size is accepted only if its reservation
+> > > > > still fits in the ring, otherwise -EINVAL. In the other order, ring-
+> > > > > enable validation rejects a ring too small for the configured size.
+> > > > 
+> > > > I don't think this is needed. If using dirtyring, we don't need to allow
+> > > > user to set hdbss size: HDBSS size should be sized according to the
+> > > > dirty-ring dimensions, that are set by userspace before the first vcpu is
+> > > > created.
+> > > > 
+> > > > 
+> > > > > So SZ_4K is just the conservative default for guests that exit often.
+> > > > > Anything larger, within what the ring can reserve, is up to the user.
+> > > > > 
+> > > > > Does this work for you?
+> > > > 
+> > > > I still think we should do PAGE_SIZE for dirty-bitmap. Dirty ring should do
+> > > > based on the dirty-ring size, and maybe review the use of reserved
+> > > > entries, or it's accounting.
+> > > > 
+> > > > What do you think?
+> > > > 
+> > > > Thanks!
+> > > > Leo
+> > > 
+> > > Hi Leo,
+> > > 
+> > > Thanks for your review. It does make sense!
+> > > 
+> > > I agree that dirty-bitmap mode will keep PAGE_SIZE as the default, and
+> > > in that mode the ioctl stays available for a larger buffer.
+> > > 
+> > > In ring mode we will drop the ioctl, the two remain mutually exclusive,
+> > > and the buffer will be derived from the ring size userspace configured
+> > > before the first vCPU is created:
+> > > 
+> > > ```
+> > > hdbss_buffer = clamp_t(unsigned long,
+> > >                         rounddown_pow_of_two(ring_size / 16),
+> > >                         SZ_4K, KVM_ARM_HDBSS_MAX_SIZE);
+> > > ```
+> > > 
+> > 
+> > Are you allocating 1/16th of the ring size in bytes as an hdbss buffer?
+> > That's confusing. I recommend we rather have something like:
+> > 
+> > ring_entries = ring_size / sizeof(struct kvm_dirty_gfn);
+> > hdbss_entries = ring_entries / 2; // Or any number we decide to use here.
+> > hdbss_buf_size = hdbss_entries * sizeof(hdbss_buf_entry);
+> > 
+> > Then we do
+> > hdbss_buf_size = clamp_t(unsigned long,
+> >                           rounddown_pow_of_two(hdbss_buf_size),
+> >                           SZ_4K, KVM_ARM_HDBSS_MAX_SIZE);
+> > 
+> > So it's clear what is what here.
+> > Just dividing by 16 above can be confusing to whoever is reading the code.
+> > 
+> > 
+> > > A buffer entry is 8 bytes and a ring entry is 16 bytes, so:
+> > > 
+> > > ```
+> > > buffer entries = buffer_size / 8
+> > > ring entries   = ring_size / 16
+> > > ```
+> > 
+> > Remember to use the sizeof instead of fixed numbers.
+> > 
+> > > 
+> > > This means ring_size / 16 reserves at most one eighth of the ring
+> > > entries for the HDBSS buffer. That keeps the usable ring above 85% while
+> > > the buffer still grows with the configured ring size, and the result is
+> > > independent of the kernel page size, with SZ_4K as the only minimum.
+> > 
+> > Yeah, remember that if you are dealing with the ringbuffer like this, an
+> > user can request a 4k ringbuffer and we just won't be able to use hdbss, as
+> > it means 4k/16 entries, and hdbss has the minimum of 4k/8.
+> > 
+> > As I mentioned, maybe this approach of reserved entries is not the right
+> > way of dealing with it in arm64.
+> > 
+> > > 
+> > > One eighth is the ratio that looks reasonable to me so far. What do you
+> > > think?
+> > > 
+> > 
+> > I see no reason why it could not be higher than that. It all depends on how
+> > you want to deal with the full buffer in the future patchset. If hdbss
+> > buffer is full, it has to exit and drain to the dirtyring. The guarantee
+> > you seek with reserved entries is that all hdbss entries fit in the
+> > dirty-ring.
+> > 
+> > As long as the user is required to drain entries until the dirty-ring is
+> > not 'full' anymore, we could easily work with dirty-ring having twice as
+> > many entries as the hdbss buffer.
+> > 
+> > How does it sound?
+> > 
+> > Thanks!
+> > Leo
+> 
+> Hi Leo,
+> 
+> Thanks for the suggestion.
+> 
+> For the next version I'll still go with the reservation scheme. It's the
+> safest approach I can think of. The guarantee I want is that a full
+> buffer flush always fits in the ring by construction, without depending
+> on how quickly userspace drains it.
 
-commit 4182befeb4982c12ce357363cc414cc54cc9381b
-Author: Shameer Kolothum <skolothumtho@nvidia.com>
+Of course, it should never depend on how quickly userspace drains the ring.
+My point is that reserved entries is not the only option that satisfies 
+that.
+ 
+> 
+> I'll also switch to sizeof(struct kvm_dirty_gfn) and
+> sizeof(hdbss_buf_entry) instead of the hardcoded 16 and 8, and size the
+> HDBSS buffer at half the ring entries as you suggested.
+> 
+> On the 4K ring case: HDBSS can't fit there. One option is to just not
+> enable HDBSS in that scenario, but I'll start with returning -EINVAL for
+> now. I'm happy to switch to the other option if you think that's better.
+> 
 
-vfio/pci: Enable recovery for supported native PCIe endpoints
+Return -EINVAL meaning what? userspace can't set the dirty-ring to 4k? that 
+could break a lot of users.
 
-This commit enables host PCI error recovery for supported generic vfio-pci
-endpoints on the subordinate bus of a PCIe Root Port or Downstream Port and
-updates the UAPI documentation.
+Disabling HDBSS for that range could be the solution, but then we 
+would have HDBSS being used for dirty-rings above some size, which could be 
+kind of odd in the code, and possibly lead to trouble in the future.
 
-> diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
-> index a5ba4bb116382..fe9b8b8deccab 100644
-> --- a/drivers/vfio/pci/vfio_pci.c
-> +++ b/drivers/vfio/pci/vfio_pci.c
-> @@ -126,10 +126,70 @@ static int vfio_pci_open_device(struct vfio_device =
-*core_vdev)
->  	return 0;
->  }
-> =20
-> +static bool vfio_pci_supports_recovery(struct pci_dev *pdev)
-> +{
-> +	struct pci_dev *bridge =3D pci_upstream_bridge(pdev);
-> +
-> +	/*
-> +	 * Looking up function zero for VPD takes pci_bus_sem inside access_src=
-u.
-> +	 * Recovery holds the bus read lock while waiting for these SRCU reader=
-s.
-> +	 * A queued bus writer can leave both paths waiting for each other.
-> +	 */
-> +	if (pdev->dev_flags & PCI_DEV_FLAGS_VPD_REF_F0)
-> +		return false;
-> +
-> +	/*
-> +	 * quirk_f0_vpd_link() can redirect sibling VPD accesses to these devic=
-es
-> +	 * without checking whether recovery has blocked function zero. Exclude
-> +	 * them even if no redirecting sibling is present at probe.
-> +	 */
-> +	if (!PCI_FUNC(pdev->devfn) && pdev->vpd.cap &&
-> +	    pdev->vendor =3D=3D PCI_VENDOR_ID_INTEL &&
-> +	    (pdev->class >> 8) =3D=3D PCI_CLASS_NETWORK_ETHERNET)
-> +		return false;
-> +
-> +	/*
-> +	 * EEH and Xen PV can call recovery without the required bus locking.
-> +	 * s390 recovery can omit completion callbacks.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_S390) || IS_ENABLED(CONFIG_EEH) ||
-> +	    xen_pv_domain())
-> +		return false;
-> +
-> +	/*
-> +	 * Recovery power helpers require pci_bus_sem held for reading.
-> +	 * The native recovery walk holds it on a port's subordinate bus.
-> +	 * Direct RCiEP recovery does not use that walk.
-> +	 */
-> +	if (!pci_is_pcie(pdev))
-> +		return false;
-> +
-> +	if (pci_pcie_type(pdev) !=3D PCI_EXP_TYPE_ENDPOINT &&
-> +	    pci_pcie_type(pdev) !=3D PCI_EXP_TYPE_LEG_END)
-> +		return false;
-> +
-> +	if (!bridge || !pci_is_pcie(bridge))
-> +		return false;
-> +
-> +	if (pci_pcie_type(bridge) !=3D PCI_EXP_TYPE_ROOT_PORT &&
-> +	    pci_pcie_type(bridge) !=3D PCI_EXP_TYPE_DOWNSTREAM)
-> +		return false;
-> +
-> +	if (pdev->bus !=3D bridge->subordinate)
-> +		return false;
+That's one of the reasons I mentioned reserved entries may not be the best 
+solution for us.
 
-[Severity: Medium]
-Does this allow SR-IOV VFs placed on the PF's bus to report a false
-recovery when the PF itself does not recover?
-
-When pci_iov_virtfn_bus() matches the PF's bus number, virtfn_add_bus()
-places VFs directly on pf->bus (bridge->subordinate) rather than a
-synthetic VF bus, and pci_upstream_bridge(pdev) resolves through the PF to
-bridge.  vfio_pci_supports_recovery() then returns true for the VF even if
-the PF is excluded from recovery (such as an Intel Ethernet function 0 PF
-with VPD), closed, or has recovery disabled.
-
-If pcie_do_recovery() performs a secondary bus reset on bridge, the PF is
-reset in hardware, clearing PCI_SRIOV_CTRL_VFE and disabling all VFs.
-When the PF is not participating in vfio-pci recovery,
-vfio_pci_core_aer_slot_reset() returns PCI_ERS_RESULT_NONE on the PF
-without calling pci_restore_state() / pci_restore_iov_state().  The
-subsequent vfio_pci_core_aer_slot_reset() on the VF still succeeds because
-pci_set_power_state_locked() sees current_state =3D=3D PCI_D0 and
-pci_restore_state() returns void, so the VF reports
-PCI_ERS_RESULT_RECOVERED and re-enables live access while VFE remains
-cleared on the PF.
-
-[Severity: Medium]
-Enabling pci_recovery_supported on both a PF and an SR-IOV VF on the same
-bus also triggers a lockdep circular locking splat when
-VFIO_DEVICE_GET_INFO is called on the VF while the PF is open.
-
-All vfio_pci_core_device instances share the same lockdep classes for
-access_lock and access_srcu.  vfio_pci_core_block_access() runs
-synchronize_srcu(&vdev->access_srcu) under vdev->access_lock (establishing
-access_lock -> access_srcu), whereas vfio_pci_ioctl_get_info() on the VF
-holds srcu_read_lock(&vdev->access_srcu) across
-vfio_pci_access_atomic_cap(), which takes pf_vdev->access_lock and
-srcu_read_lock(&pf_vdev->access_srcu):
-
-drivers/vfio/pci/vfio_pci_core.c:vfio_pci_access_atomic_cap() {
-	...
-	guard(mutex)(&pf_vdev->access_lock);
-	if (!pf_vdev->device_open)
-		return -EIO;
-
-	return vfio_pci_core_access(pf_vdev, vfio_pci_access_atomic_cap_target,
-				    data);
-}
-
-> +
-> +	/* CXL RCH recovery can omit completion callbacks. */
-> +	if ((pdev->class >> 8) =3D=3D PCI_CLASS_MEMORY_CXL)
-> +		return false;
-> +
-> +	return true;
-> +}
-> +
->  static int vfio_pci_init_dev(struct vfio_device *core_vdev)
->  {
->  	struct vfio_pci_core_device *vdev =3D
->  		container_of(core_vdev, struct vfio_pci_core_device, vdev);
-> +	struct pci_dev *pdev =3D to_pci_dev(core_vdev->dev);
-> =20
->  	/*
->  	 * These behaviors originated in vfio-pci and moved into
-> @@ -140,6 +200,7 @@ static int vfio_pci_init_dev(struct vfio_device *core=
-_vdev)
->  	 */
->  	vdev->nointxmask =3D nointxmask;
->  	vdev->disable_idle_d3 =3D disable_idle_d3;
-> +	vdev->pci_recovery_supported =3D vfio_pci_supports_recovery(pdev);
-
-[Severity: High]
-Does setting pci_recovery_supported on an SR-IOV PF cause
-VFIO_DEVICE_GET_INFO on its VFs to fail with -EIO whenever the PF is not
-open?
-
-SR-IOV can be enabled while a vfio-pci PF is unopened, or the PF fd can be
-closed after configuring a vf_token while VFs are used.  Once
-pf_vdev->pci_recovery_supported is true, vfio_pci_ioctl_get_info() ->
-vfio_pci_access_atomic_cap() on a VF checks pf_vdev->device_open and
-returns -EIO whenever the PF is closed, even when no host recovery is
-active on the PF:
-
-drivers/vfio/pci/vfio_pci_core.c:vfio_pci_access_atomic_cap() {
-	struct vfio_pci_core_device *pf_vdev =3D vdev->sriov_pf_core_dev;
-
-	if (!pf_vdev || !pf_vdev->pci_recovery_supported)
-		return vfio_pci_info_atomic_cap(vdev, data);
-	...
-	guard(mutex)(&pf_vdev->access_lock);
-	if (!pf_vdev->device_open)
-		return -EIO;
-}
-
-vfio_pci_ioctl_get_info() treats any return value other than 0 or -ENODEV
-as fatal and fails the VF's VFIO_DEVICE_GET_INFO ioctl with -EIO.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261112141632.9189=
-54-1-skolothumtho@nvidia.com?part=3D20
+Thanks!
+Leo
