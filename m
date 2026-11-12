@@ -1,58 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.220
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794489309;
-	b=tZOUSLYeKq3oNt2a389scX37GaXy56UdsjAqXgcr1IFyCOk+4fjsG3ELiJM5fQWg5HGA
-	 67SjcLBs1TPbYmt7htgTTLG1twAr0mxFle8XYmSX/UHfI9BcicvddjN845s7Pnp1ti3qH
-	 TUOANAIFtvB3qrqo72qR7x1Civ9Xh+u5v6A8wPxf/DPDLwCyf6540YL33lfonoUOYpZiV
-	 vX1qsl99V0K3QzD9g4T7rx54ZNyR87vwDNqlqNHS6WN15wyAploBunaM7lBUtvygXXUOm
-	 0hDHsnvi2oStPOUHp3NFqk6Ckn+UjPmf2VxDY5FP4Lhr8jR47N/AcAFJmgUIQs8yehg==
+	t=1794489920;
+	b=fsqmaWAgF5EDYaVpPVFlnm26Pvxzec29ckYBaaYGMQ1QXsI6QWZWILW6PT9o5WxCaYZ9
+	 Dbo3659tja5DXcUCtyiP2zExG5jN5VEUdGnoUqE3Yn5EtS5OzPY8ebVwiZbhw4YhACPUQ
+	 ttTLLho9ZPeuP+4tiyrhU9emGcZDa6VMfKdTaB7d9X/OMv9ggBZMrEMDTz4ypqAgUVWuT
+	 1YGbUMij7Y0YUUgfNMYC/TzM42F2mLNVkYGOV0Dodb4AgwU3b0EG/f4CAxTbenTzkj4gn
+	 Fb3iEe5pk930m4DxvpVPy+BmWDfXNPjU4BVuVlpsZF6w1cNdlnOEgp1FPeuDdxxAsMA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794489309;
-	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Originating-IP:
-	 X-ClientProxiedBy;
-	bh=WugcE7vBuFSmf7462xh20D/WJqEas4fzxwH29ysv18s=;
-	b=fXkJ+vZf/Q0oyXubDV/QlRG0Ll/e/UQmV4KeWHnf7+7DlcuY0kT6Ranb/f7KmCiMUqka
-	 Wk2MqUHfCo3XcYtwJRkjKVVtStYyeh5VT1Liq/68JGCofJry3MSzVcs7EebRXMwJWySDw
-	 bTl8PSGD8HhWrQzSMw9s5lvAa72Mbk3wVTZ3KsJZwAr5rHmyINmr9KMnm2S+doospTjFM
-	 /bVpYKCNh8SvSZI0OyLfMWrrFKMSjCjwjqpPfCsb2dD9lGRW4M6Y2Sn7BSJoZbJyPADM4
-	 wUaXYxgcIOLQPGScepVa4ttR9pooWIDXFDqdn3VrtW23Ra0ly8O7w3u9OMhF2B8vG2Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794489920;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=EK+8SMQbD6BCNXEB/btN5Fdx6HGhkX9byuug8RS/Ijw=;
+	b=1wH2LANCwCk+7xZ0nwdxo517QyJ3LObt+Ld3qNvf2N1/iO1CQouEYT3YGj3f6OnwxiJL
+	 FO8EYk3mUpmEfLmcDdVCcbJS58cTh9s4r3ey4b67Da5UjJ1zHDD1L9cZBFcNRp3cHWWhn
+	 e6TRuTqR/wzWY3odmYjk9ZquZSbfZgJUJiZ5MXfZm0ltxboQ1xpZbjPdQc1sWM43xlmqQ
+	 dyeOilEb0iSc+fkiRpa6t/G5COFGkTbd8ddmEi8dRFeAWticuFc7afK/KhE15FrrXCdLn
+	 Djb4obCMenK4/dewKcUm811nC2rDFsd1MRtVaM7kfGtBKw6TrPfRSBthyWBla7/gKCg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=huawei.com;
-	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=MBujkgxw;
-	arc=none smtp.remote-ip=113.46.200.220
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fUXpoxOz;
+	arc=none smtp.remote-ip=209.85.216.53
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64ECF606A33D;
-	Thu, 12 Nov 2026 13:15:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 64ECF606A33D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6390606A31C
+	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 13:25:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6390606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=MBujkgxw
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=WugcE7vBuFSmf7462xh20D/WJqEas4fzxwH29ysv18s=;
-	b=MBujkgxw/LgkfQWxtQpizS2+i71khFhMJYAwF3FbI5PiJzy7AJcJ49U34EpqkMOnFUTLgCvbs
-	/vUvuprN4d17pRx2flYki3azkm6XKr2x60t9ZAz8FRIA73OQjeQdL95YMmmXtlzS6NguL8Bc6d2
-	2pOrmEUd1w7TJGM7Pb/k3lw=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4jQLTp6ZR3z12LdQ;
-	Thu, 12 Nov 2026 21:15:10 +0800 (CST)
-Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5880D203AB;
-	Thu, 12 Nov 2026 21:15:05 +0800 (CST)
-Received: from [10.67.120.103] (10.67.120.103) by
- kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 12 Nov 2026 21:15:04 +0800
-Message-ID: <fee835a5-a027-4b68-b933-6f8e81987bce@huawei.com>
-Date: Thu, 12 Nov 2026 21:15:02 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fUXpoxOz
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3b0d0b80fb9so2540395a91.1
+        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 05:25:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794489919; x=1795094719; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=EK+8SMQbD6BCNXEB/btN5Fdx6HGhkX9byuug8RS/Ijw=;
+        b=fUXpoxOz/e9Byb2r/nTez6z2D7p5ytz3sLY838y2HCcn0SEzSRRSkX0MfZJliHpGqj
+         3hqn6AlZrOwUYdDdp1sGTUjT/u9YktIde+UPCiejdNvh6OWGnWY4C49KHfDdSg1i7qcd
+         LK15iWW+rJrQT7r89oO0Tljpvf22d8YHh57wJbVb4tkkwnBmPjbELkGHaFrOD1Aoubec
+         vH95RliSOSxfcZh4woOCeaD+kdzC1H/dSp9D58l7mmjzSt5etHpdKRsw17NDab7/xB2+
+         74PX9oisGyZCCNAiOzmCzUtploBivo+uz+xSZ1adqTsgZtm9C/ZpBKpC/8RV+10dbOy3
+         46eQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794489919; x=1795094719;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EK+8SMQbD6BCNXEB/btN5Fdx6HGhkX9byuug8RS/Ijw=;
+        b=iHEV/5cgsSJvI6vBQ3ngFVx36TULBep0AmEYGBLfUqhdU0BMr/Ir16VEFsln/LGT+k
+         kBcGIDs3euo77Tlv13MQwHpt3L4+Z31bpBNAF2vAzW29RYOX035ZpJkjvl5KegLn19vk
+         sxF8hRt49UGa7ClEQkX4rAg168Z7o4dtIcO7cK4fpUcRJXaKjzs+Zarq+VCX7hZn0kJv
+         3TrwqASpHboX1ahXWRUXxMvDUl8DCLfNYa11g9XZfiZ/mj0Psmi33fXMst3OcOTPTERy
+         tD8WZ+l8BdYOr0O9d20YQCViNqSMkGVxuak6va6ZHztH48xMP3Oc87m+AM8OJ77hck4j
+         7Yvw==
+X-Forwarded-Encrypted: i=1; AL+hErFsQKGMm2oN2tcy1wNwq6Uhdkp6F4NfqXuxWZKnBmRcituPa0G2WRmNmMhpKtUm8vrJLok=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9RflKguxESauzPlkaqPt6FNw9zYh3oXtTYGyWLwxNmnAgk7Cz+
+	lD3Hh1L0a01dsqg5Velv5pVwRU5vLdZySNWjERJJ/diJlvcoLuqCZoOv
+X-Gm-Gg: AYBFou31MB5Pzw21Kl71QWDQ/34lYGdTrQLcUp2NOJLpU73Z0zWTLJYJYc52kJ/Sx8u
+	dDHxgt/8UV28/45Bo9zJ1gGP8AzEm1zhbWW0XznilTLIP2yQlP0NqnpgEgRqJGiuS7/3R23edRj
+	zAXuwfwddJOcv+J2Nvx+jKfXc+WSmkj4bNa3+/VORevP/ww51kx5+ESxhGnkrTWAL85aixKq/zK
+	f42YoiIR0czBMQiydqld8zNQg4yNletQneFk4egkDLgc51nGvOfLUUk5TMt2hTKHijzkk91nG5M
+	7tTj51VZOanpnSdcQQOuhuLhcTAtuHfNgEN/mQsHbp8h/v0CiOAE1u2Ip0oE7cnrTCRo8ZrmnJ0
+	9HFoMl3RvD3GG7nrUm+icS6dY3mY+b9htDnW7RQOA1ySahzb+WQINhTmCODzuGXAryvkj0zWRza
+	DpGYBwb0F8hhe7tMtSEGjKWIat1rcmAzyQxMHT9xkRGDghQDPMNqTEqV/ze2n8zzZEYuH/rX0Pa
+	Oj2C9xZloPdqdpAyTYueMf1wPdBZo6N0sZ0ZGg528eozcwmBTtZa3Q0SBa9oSCB+MhAl5thLUCp
+	hiuuorBJ5AUkTN3geuvBDLoK/JSeLwKTSgASrswNbeaqc7M=
+X-Received: by 2002:a17:90b:1647:b0:3a8:c0cd:57f9 with SMTP id 98e67ed59e1d1-3b182f26a0emr5570553a91.25.1794489918695;
+        Thu, 12 Nov 2026 05:25:18 -0800 (PST)
+Received: from LIKEXU-MC4 ([43.132.141.21])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cddbf3c0f6fsm54468a12.5.2026.11.12.05.25.16
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 12 Nov 2026 05:25:17 -0800 (PST)
+From: Like Xu <like.xu.linux@gmail.com>
+X-Google-Original-From: Like Xu <likexu@tencent.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Oliver Upton <oupton@google.com>,
+	kvm@vger.kernel.org
+Subject: [PATCH] KVM: x86: Don't patch L2's hypercall if L1 intercepts #UD
+Date: Thu, 12 Nov 2026 21:25:12 +0800
+Message-ID: <20261112132512.68348-1-likexu@tencent.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,276 +96,55 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 11/15] KVM: arm64: Reserve dirty ring space for the
- HDBSS buffer
-To: Leonardo Bras <leo.bras@arm.com>
-CC: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
-	<will@kernel.org>, <corbet@lwn.net>, <pbonzini@redhat.com>,
-	<yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>, <yangjinqian1@huawei.com>,
-	<caijian11@h-partners.com>, <liuyonglong@huawei.com>,
-	<tangchengchang@huawei.com>, <yezhenyu2@huawei.com>, <yubihong@huawei.com>,
-	<linuxarm@huawei.com>, <joey.gouly@arm.com>, <kvmarm@lists.linux.dev>,
-	<kvm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <seiden@linux.ibm.com>,
-	<suzuki.poulose@arm.com>, <fuad.tabba@linux.dev>, <mark.rutland@arm.com>,
-	<seanjc@google.com>, <rdunlap@infradead.org>, <linux-doc@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <skhan@linuxfoundation.org>
-References: <20260929103655.85107-1-zhengtian10@huawei.com>
- <20260929103655.85107-12-zhengtian10@huawei.com> <auikG0clmr19sAjh@LeoBrasDK>
- <afcbf19b-bd13-4afc-ab56-8bc50c793e50@huawei.com>
- <au30DqzWIFny1tpr@LeoBrasDK>
- <d81243e3-d790-4ee8-9b28-36d35591ee77@huawei.com>
- <avIOZTvQF-1sxs2p@LeoBrasDK>
- <90775cb3-84ab-4690-a252-1ac41488118f@huawei.com>
- <avMSw3LLDIFT3kSR@LeoBrasDK>
-From: Tian Zheng <zhengtian10@huawei.com>
-In-Reply-To: <avMSw3LLDIFT3kSR@LeoBrasDK>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemr100010.china.huawei.com (7.202.195.125)
+Content-Transfer-Encoding: 8bit
 
+From: Like Xu <likexu@tencent.com>
 
+The fix_hypercall_test selftest fails when run in an L1 VM on an AMD host:
 
-On 11/10/2026 8:49 PM, Leonardo Bras wrote:
-> On Tue, Nov 10, 2026 at 04:54:30PM +0800, Tian Zheng wrote:
->>
->>
->> On 11/10/2026 2:18 AM, Leonardo Bras wrote:
->>> On Mon, Nov 09, 2026 at 12:00:52PM +0800, Tian Zheng wrote:
->>>>
->>>>
->>>> On 11/6/2026 11:36 PM, Leonardo Bras wrote:
->>>>> On Fri, Nov 06, 2026 at 06:36:04PM +0800, Tian Zheng wrote:
->>>>>>
->>>>>>
->>>>>> On 11/2/2026 10:54 PM, Leonardo Bras wrote:
->>>>>>> On Tue, Sep 29, 2026 at 06:36:51PM +0800, Tian Zheng wrote:
->>>>>>>> The dirty ring reserves room for CPU-side dirty buffers via
->>>>>>>> kvm_cpu_dirty_log_size(). Report the HDBSS buffer entry count
->>>>>>>> through it, so a full buffer flush always fits in the ring.
->>>>>>>>
->>>>>>>> Pin the HDBSS buffer size to PAGE_SIZE when dirty-ring is enabled,
->>>>>>>> via kvm_arch_dirty_ring_size_updated(): a larger buffer only
->>>>>>>> shrinks the soft_limit and forces more frequent userspace drains.
->>>>>>>>
->>>>>>>> Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
->>>>>>>> ---
->>>>>>>>      arch/arm64/kvm/arm.c | 8 ++++++++
->>>>>>>>      arch/arm64/kvm/mmu.c | 8 ++++++++
->>>>>>>>      2 files changed, 16 insertions(+)
->>>>>>>>
->>>>>>>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->>>>>>>> index 9d7bdece149a..5a7046acb62e 100644
->>>>>>>> --- a/arch/arm64/kvm/arm.c
->>>>>>>> +++ b/arch/arm64/kvm/arm.c
->>>>>>>> @@ -215,6 +215,14 @@ static int kvm_arm_default_max_vcpus(void)
->>>>>>>>      	return vgic_present ? kvm_vgic_get_max_vcpus() : KVM_MAX_VCPUS;
->>>>>>>>      }
->>>>>>>>
->>>>>>>> +void kvm_arch_dirty_ring_size_updated(struct kvm *kvm)
->>>>>>>> +{
->>>>>>>> +	if (!system_supports_hdbss())
->>>>>>>> +		return;
->>>>>>>> +
->>>>>>>> +	kvm->arch.hdbss_buffer_size = KVM_ARM_HDBSS_DEFAULT_SIZE;
->>>>>>>> +}
->>>>>>>> +
->>>>>>>
->>>>>>> On the same subject as a previous patch:
->>>>>>> I don't think this is the best approach, on top of adding a new weak
->>>>>>> function to take care.
->>>>>>>
->>>>>>> Maybe during the dirty-ring allocation, on vcpu creation, we could take
->>>>>>> into account the requested dirty-ring size, and just allocate the HDBSS
->>>>>>> buffer taking that into account. That would make it simpler, don't you
->>>>>>> agree?
->>>>>>>
->>>>>>> Thanks!
->>>>>>> Leo
->>>>>>
->>>>>> Hi Leo,
->>>>>>
->>>>>> The "set once" guard we're discussing comes from the patch that adds the
->>>>>> ioctl, and it isn't really needed. We discussed this earlier [1]: we can
->>>>>> just initialize hdbss_buffer_size to PAGE_SIZE at VM creation and let
->>>>>> the ring reservation use it directly. **That also means
->>>>>> kvm_arch_dirty_ring_size_updated() can be removed.** Thanks for your
->>>>>> suggestion.
->>>>>
->>>>> :)
->>>>>
->>>>>>
->>>>>> As for why PAGE_SIZE is the right value in ring mode: the HDBSS buffer
->>>>>> is flushed on every VM exit, so a larger buffer doesn't reduce the flush
->>>>>> frequency. It only inflates the ring reservation (64 + size/
->>>>>> sizeof(u64)), which shrinks the soft_limit and forces more frequent
->>>>>> exits to userspace for the ring to be drained. Draining the dirty ring
->>>>>> from QEMU is more expensive than draining the HDBSS buffer from the
->>>>>> kernel, so the smallest buffer gives the best performance. In this mode,
->>>>>> a larger buffer provides no benefit to users.
->>>>>
->>>>> Humm, if properly dimensioned larger buffers would be benefitial for
->>>>> memory-intensive workloads, unless they are guest_exiting for other
->>>>> reasons in the meantime.
->>>>>
->>>>
->>>> Agreed, and the workload I tested is on the "unless" side. The guest
->>>> exits constantly for other reasons, so the larger buffer never got a
->>>> chance to pay off, and only cost ring capacity.
->>>>
->>>>>>
->>>>>> In my tests, I also saw performance degrade when more space is reserved.
->>>>>>
->>>>>
->>>>> Humm, what kind of workloads did you test?
->>>>> Did you have the chance to monitor what were the reasons for VM exiting?
->>>>>
->>>>
->>>> For the workload question, it's a Redis server in the guest under redis-
->>>> benchmark (SET-only, 2KB values, 1M keys, 100M requests). The traffic is
->>>> network-driven, so the guest exits constantly to service requests. The
->>>> HDBSS buffer only accumulates entries between two exits and is flushed
->>>> on every exit, so it rarely fills regardless of size. A larger buffer
->>>> only inflated the ring reservation, which shrinks the soft_limit and
->>>> makes the ring-full exit and userspace drain fire more often.
->>>>
->>>>> I am not saying this is mandatory for the HDBSS implementation, but the
->>>>> whole idea of letting the user choose their own HDBSS buffer size is
->>>>> because different workloads may benefit from different buffer sizes: if a
->>>>> VM writes a lot to new memory, and exits very little for other reasons,
->>>>> then a larger buffer will cause the VM to guest_exit much less often.
->>>>>
->>>>> Does that make sense?
->>>>>
->>>>> Thanks!
->>>>> Leo
->>>>
->>>> It does make sense. That's exactly the workload where a larger buffer
->>>> pays off, and the next version no longer gets in its way. The two ioctls
->>>> are no longer mutually exclusive.
->>>>
->>>> The only coupling left is the reservation. hdbss_buffer_size starts at
->>>> SZ_4K at VM creation, so a ring enabled right away reserves for the
->>>> default buffer (64 + 512 entries), and the minimum ring size accepted is
->>>> unchanged from v5. KVM_CAP_ARM_HDBSS_BUFFER_SIZE is the gate. When the
->>>> ring is already enabled, a size is accepted only if its reservation
->>>> still fits in the ring, otherwise -EINVAL. In the other order, ring-
->>>> enable validation rejects a ring too small for the configured size.
->>>
->>> I don't think this is needed. If using dirtyring, we don't need to allow
->>> user to set hdbss size: HDBSS size should be sized according to the
->>> dirty-ring dimensions, that are set by userspace before the first vcpu is
->>> created.
->>>
->>>
->>>> So SZ_4K is just the conservative default for guests that exit often.
->>>> Anything larger, within what the ring can reserve, is up to the user.
->>>>
->>>> Does this work for you?
->>>
->>> I still think we should do PAGE_SIZE for dirty-bitmap. Dirty ring should do
->>> based on the dirty-ring size, and maybe review the use of reserved
->>> entries, or it's accounting.
->>>
->>> What do you think?
->>>
->>> Thanks!
->>> Leo
->>
->> Hi Leo,
->>
->> Thanks for your review. It does make sense!
->>
->> I agree that dirty-bitmap mode will keep PAGE_SIZE as the default, and
->> in that mode the ioctl stays available for a larger buffer.
->>
->> In ring mode we will drop the ioctl, the two remain mutually exclusive,
->> and the buffer will be derived from the ring size userspace configured
->> before the first vCPU is created:
->>
->> ```
->> hdbss_buffer = clamp_t(unsigned long,
->>                         rounddown_pow_of_two(ring_size / 16),
->>                         SZ_4K, KVM_ARM_HDBSS_MAX_SIZE);
->> ```
->>
-> 
-> Are you allocating 1/16th of the ring size in bytes as an hdbss buffer?
-> That's confusing. I recommend we rather have something like:
-> 
-> ring_entries = ring_size / sizeof(struct kvm_dirty_gfn);
-> hdbss_entries = ring_entries / 2; // Or any number we decide to use here.
-> hdbss_buf_size = hdbss_entries * sizeof(hdbss_buf_entry);
-> 
-> Then we do
-> hdbss_buf_size = clamp_t(unsigned long,
->                           rounddown_pow_of_two(hdbss_buf_size),
->                           SZ_4K, KVM_ARM_HDBSS_MAX_SIZE);
-> 
-> So it's clear what is what here.
-> Just dividing by 16 above can be confusing to whoever is reading the code.
-> 
-> 
->> A buffer entry is 8 bytes and a ring entry is 16 bytes, so:
->>
->> ```
->> buffer entries = buffer_size / 8
->> ring entries   = ring_size / 16
->> ```
-> 
-> Remember to use the sizeof instead of fixed numbers.
-> 
->>
->> This means ring_size / 16 reserves at most one eighth of the ring
->> entries for the HDBSS buffer. That keeps the usable ring above 85% while
->> the buffer still grows with the configured ring size, and the result is
->> independent of the kernel page size, with SZ_4K as the only minimum.
-> 
-> Yeah, remember that if you are dealing with the ringbuffer like this, an
-> user can request a 4k ringbuffer and we just won't be able to use hdbss, as
-> it means 4k/16 entries, and hdbss has the minimum of 4k/8.
-> 
-> As I mentioned, maybe this approach of reserved entries is not the right
-> way of dealing with it in arm64.
-> 
->>
->> One eighth is the ratio that looks reasonable to me so far. What do you
->> think?
->>
-> 
-> I see no reason why it could not be higher than that. It all depends on how
-> you want to deal with the full buffer in the future patchset. If hdbss
-> buffer is full, it has to exit and drain to the dirtyring. The guarantee
-> you seek with reserved entries is that all hdbss entries fit in the
-> dirty-ring.
-> 
-> As long as the user is required to drain entries until the dirty-ring is
-> not 'full' anymore, we could easily work with dirty-ring having twice as
-> many entries as the hdbss buffer.
-> 
-> How does it sound?
-> 
-> Thanks!
-> Leo
+  ret == (u64)-EFAULT
 
-Hi Leo,
+On SVM, L0 always intercepts #UD in vmcb01, so nested_svm_exit_special()
+claims every #UD from L2 for L0, before L1's intercepts are consulted.
+L0 then emulates L2's VMCALL and, based on the quirk that L0 userspace
+configured for L1, patches it to VMMCALL. This ignores L1's decision to
+disable KVM_X86_QUIRK_FIX_HYPERCALL_INSN for L2.
 
-Thanks for the suggestion.
+Synthesize #UD instead if the vCPU is in L2 and L1 intercepts #UD, so
+the nested exception machinery reflects it to L1.  Keep patching L2's
+instruction when L1 doesn't intercept #UD, as existing userspace relies
+on it, e.g. nested SVM selftests execute VMCALL in L2 and expect L1 to
+see SVM_EXIT_VMMCALL.
 
-For the next version I'll still go with the reservation scheme. It's the
-safest approach I can think of. The guarantee I want is that a full
-buffer flush always fits in the ring by construction, without depending
-on how quickly userspace drains it.
+Fixes: f1a9761fbb00 ("KVM: x86: Allow userspace to opt out of hypercall patching")
+Signed-off-by: Like Xu <likexu@tencent.com>
+---
+ arch/x86/kvm/x86.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-I'll also switch to sizeof(struct kvm_dirty_gfn) and
-sizeof(hdbss_buf_entry) instead of the hardcoded 16 and 8, and size the
-HDBSS buffer at half the ring entries as you suggested.
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 2cd9ee316aada..8c1ae90f1f4b4 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -7507,9 +7507,15 @@ static int emulator_fix_hypercall(struct x86_emulate_ctxt *ctxt)
+ 
+ 	/*
+ 	 * If the quirk is disabled, synthesize a #UD and let the guest pick up
+-	 * the pieces.
+-	 */
+-	if (!kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_FIX_HYPERCALL_INSN)) {
++	 * the pieces.  Do the same if L1 intercepts #UD from L2, as fixing up
++	 * L2's hypercall is then L1's responsibility; the #UD is reflected to
++	 * L1.  If L1 doesn't intercept #UD, keep patching L2's instruction, as
++	 * existing L1 code (e.g. nested SVM selftests executing VMCALL in L2)
++	 * relies on it.
++	 */
++	if (!kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_FIX_HYPERCALL_INSN) ||
++	    (is_guest_mode(vcpu) &&
++	     kvm_nested_call(is_exception_vmexit)(vcpu, UD_VECTOR, 0))) {
+ 		ctxt->exception.error_code_valid = false;
+ 		ctxt->exception.vector = UD_VECTOR;
+ 		ctxt->have_exception = true;
+-- 
+2.43.7
 
-On the 4K ring case: HDBSS can't fit there. One option is to just not
-enable HDBSS in that scenario, but I'll start with returning -EINVAL for
-now. I'm happy to switch to the other option if you think that's better.
-
-Thanks,
-Tian
