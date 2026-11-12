@@ -1,57 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794517231;
-	b=b5oRAgqvSJWuyvh+tx5w46ZTQrKiGtjMcFoPRAtfB5rDwrHwHdWeKmPuol9vlGHUhrx5
-	 4h032HYMwS8zViO6B6mdvY9LGW6SM5BvVa488DqboIzIMj10wmlhFCK+CnIKCNJORtoEF
-	 wSKARartcixEbb8GJ89iaXcY2X0gtCRCBBwtFrkK9BManY/AtREO3irSe7qJoVpfbBFI+
-	 5OYBdlhdX9vDs3cC7/90WP1cEZvkhJmVaTID3vs7bdykb2XCOtj5MisRhxTAADEdNUYDu
-	 ap6F+4F8+T8TN+yLLtZtJZNQbzCMg/gUQHMY7xK3hkwqVyxbU5U4sPjCbNsor9T8kgQ==
+	t=1794518161;
+	b=tpaEVn1/iKqmnXCwaizQG09whpK5nnsnTnmxAb9MxNYQdovb1iiwi/T6ljGS0XF8rAds
+	 MYaX75DrWne8P2HTZbRc98foFQTwl2YsC1UhdecB2Br5nNCnpjIh03z4RJjz8xVqs5re3
+	 ddE8NjO7ojsiccF+6KZhmFXNF6gy2JUIGM+urhM24sWQtkehW+UhQvTeZVcIg0vBQjOzu
+	 fdEi1wPNr0+QYWgFhYSwb+vY4o2zt0nfS5Irs3AxCT/uN2DlcZr246BVyYmPSocJ9KxYT
+	 Q3yKhye+yRm5y6+du7MlbfKK0ZdjVwx+eawDqSJ+6rafhwCnTAK8St+4e55h00wJ3AA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794517231;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=VHaHU+bVMbG5rp/L3ZR3Vh4L196H50+Ilr7EizST4+w=;
-	b=bP43g1f2SgrJsF+wE92Kp6pnIBq9hCr+y0ew+A0EwBtpGv9eNbOQ7BImhPZCnZUBlODw
-	 PtYVBZKyhu12pWG/H+trONPkHVmOm3856u1kXM7ZhTUCYk4Ejmez/nHmz6oYaHblr7Yvw
-	 PyriR1lfs6+L/HFS8WwcS/r9FJbhEx6sWVDZqRp0PsFYv/+BxEfDbgm1WrywAAdMjOL0O
-	 Kadu5xVczUPN3ulCnRAqd6nCfE7PelwgZ9iuzEgUA+1rqGROFXI6atw/I7bZIaDIBjyRM
-	 uMw2gRgAXHdPti45wKn62I8VNCBgQPSSSISKHcrcjsQJtvXEoG6cKiQwTvXXYjC2siA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794518161;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=OAbQKWrixu0wQSE6vk14hxuTjczqzGi6Jtfww5IhWVQ=;
+	b=C55yIrNKUwZeiOZcbXOU0H+3ywluYZqVzkyKK5jHdC89HyvH1qvBogExqUjtkgjIKehZ
+	 2z7a7nkQSPmJtjxlcZ9jd+zPJSiH0Gfe1D8fdeNf6eecNL08cYeL41WhZpf8MqyJtMvDz
+	 rEXxssuj8N7jUu3aS/vXbh5uHjQlNBrbsAcVvruQ+9AhpIwQTV/Ao9F9EYPLeI3kT8EPe
+	 cenef+grrY3WESrySKMV0csvfU1xUP+u+yFkFu+HAREGZnkjAFo5hvwIZESfTyWZoysiA
+	 BD9FB6GPQyfxxj5Tryxr1QzVNQntt1299LJaT4aQ5N1g0VW9Gli6YFCtMaiI2MbOAoA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gNuJx0ST;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hHlCWz54;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E720606A321
-	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 21:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC45C606A31C;
+	Thu, 12 Nov 2026 21:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gNuJx0ST
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E5D1F000C4;
-	Thu, 12 Nov 2026 21:00:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hHlCWz54
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39BB61F000C4;
+	Thu, 12 Nov 2026 21:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794517230;
-	bh=VHaHU+bVMbG5rp/L3ZR3Vh4L196H50+Ilr7EizST4+w=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gNuJx0STOjmbMJDFwYuQ+7+Y/EsWMFGVjHTXmzEd8gj4FqMwl8M7eGwuSHNGc5K3A
-	 iz42mxjuzg1HV5B7xV0JZRT3FctbkLMuGCN0wQQYtpPWPyPdbyOhdNseb0yFtOhc5j
-	 J61tP0Y/pge7C4uvkd1pVDcb1T5p6gVoy4jtEpqq8wEVoQyVJhVsbNP0+wz/3qfeOx
-	 207hyQx3MMBDaQ5HYs0Pzb7NLx9rfxYxD0We6aGwrgZr3whIl2RBMjiN+0oZKutAvT
-	 v+3VG4NfgPz3tWw9h1qTK6otJaPnaS63Ktdw0UV2a4C9BW4YNahIFMaeNm0aQX9n6s
-	 QjqeX+OIj3QVw==
-Message-ID: <sashiko-outbox-211841@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 21/21] KVM: selftests: Support fixed counters bitmap
- in pmu_counters_test
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Zide Chen" <zide.chen@intel.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261112203227.289379-22-zide.chen@intel.com>
-References: <20261112203227.289379-1-zide.chen@intel.com>
- <20261112203227.289379-22-zide.chen@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 12 Nov 2026 21:00:30 +0000
+	s=k20260515; t=1794518161;
+	bh=OAbQKWrixu0wQSE6vk14hxuTjczqzGi6Jtfww5IhWVQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=hHlCWz542xxydIzT2yuDqQ8U75V99Cn3AM80pImqgll47hifHTKLM8ZyYW81rlwS2
+	 hOPDyZkp7rzc5uhivFw03m/eCZ4eS3ZE6pDZnL5KZWzrX08mJBidrsZJrgK7e5A8kl
+	 PoLc66CEQr4vPVZSkt8c5A0EmV0TRG3seCxCBgMBQo3Ax3jAk6bUU4W+AtCCoSle+x
+	 WNhlfbFBBBlxtwJ13VlGLTzoysCKenhqb1Ldb2CBxH/OdisHDsFzhIawdOlKEApb6s
+	 W6/0uwvtVNCa94XjyYRwvm/FNX5v7NwPMgYWZ65xQaUIxfNFZWUEWKW/8rrPSP0VTP
+	 1NxJEoomjUk4Q==
+Date: Thu, 12 Nov 2026 15:16:00 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Shameer Kolothum <skolothumtho@nvidia.com>
+Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, alex@shazbot.org, jgg@ziepe.ca,
+	kevin.tian@intel.com, kbusch@meta.com, michal.winiarski@intel.com,
+	satyanarayana.k.v.p@intel.com, sonangp@nvidia.com,
+	ankita@nvidia.com, nathanc@nvidia.com, mochs@nvidia.com
+Subject: Re: [RFC PATCH v3 02/20] PCI/PM: Add a power-state helper that tries
+ the bus lock
+Message-ID: <20261112211600.GA904814@bhelgaas>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,107 +58,104 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112141632.918954-3-skolothumtho@nvidia.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] KVM: selftests: missing EDX/ECX combinations in
-  test_fixed_counters()
---
+On Thu, Nov 12, 2026 at 02:16:14PM +0000, Shameer Kolothum wrote:
+> PCI error recovery can hold pci_bus_sem for reading while waiting for a
+> lock held by a driver. If that driver also needs the bus read lock to
+> bring a device to D0, a queued writer can block it. Recovery, the driver
+> and the writer then all wait for each other.
+> 
+> Add pci_try_set_power_state(), which returns -EAGAIN if it cannot take
+> the bus lock immediately. The caller can then release its locks. Once
+> the bus lock is held, use pci_set_power_state_locked() for the transition.
+> Keep the existing cases that need no power-state change. The transition
+> itself can still sleep.
+> 
+> Callers that already hold the bus read lock must use the locked helper
+> instead.
+> 
+> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
 
-commit 3d8b2ca900bb2a01f5f9cee15fc9a12bc40184ad
-Author: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
-KVM: selftests: Support fixed counters bitmap in pmu_counters_test
-
-This commit updates this_pmu_has() to check the guest PMU version before
-consulting CPUID.0AH:ECX and updates test_fixed_counters() to test
-supported fixed counter bitmasks alongside CPUID.0AH:EDX[4:0].
-
-> diff --git a/tools/testing/selftests/kvm/x86/pmu_counters_test.c b/tools/=
-testing/selftests/kvm/x86/pmu_counters_test.c
-> index c3e784e16348c..61e6fe5b6ef48 100644
-> --- a/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-> +++ b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-
-[ ... ]
-
-> @@ -631,25 +632,43 @@ static void __test_fixed_counters(struct kvm_vcpu *=
-vcpu, u8 nr_fixed_counters,
->  static void test_fixed_counters(u8 pmu_version, u64 perf_capabilities)
->  {
->  	u8 nr_fixed_counters =3D kvm_cpu_property(X86_PROPERTY_PMU_NR_FIXED_COU=
-NTERS);
-> +	unsigned long fixed_subset;
->  	struct kvm_vcpu **vcpus;
->  	struct kvm_vm *vm;
-> +	u32 fixed_bitmap;
->  	int i =3D 0;
-> -	u32 k;
->  	u8 j;
-> =20
->  	pr_info("Testing %u fixed counters, PMU version %u, perf_caps =3D %lx\n=
-",
->  		nr_fixed_counters, pmu_version, perf_capabilities);
-> =20
-> +	fixed_bitmap =3D BIT(nr_fixed_counters) - 1;
-> +	if (pmu_version >=3D 5)
-> +		fixed_bitmap |=3D kvm_cpu_property(X86_PROPERTY_PMU_FIXED_COUNTERS_BIT=
-MASK);
-> =20
-> -	vm =3D pmu_vm_create_with_vcpus((nr_fixed_counters + 1) * BIT(nr_fixed_=
-counters),
-> +	/* One vCPU per subset of fixed_bitmap, plus one per legacy EDX test. */
-> +	vm =3D pmu_vm_create_with_vcpus(BIT(__builtin_popcount(fixed_bitmap)) +=
- nr_fixed_counters,
->  				      guest_test_fixed_counters,
->  				      pmu_version, perf_capabilities, &vcpus);
-> =20
-> -	for (j =3D 0; j <=3D nr_fixed_counters; j++) {
-> -		for (k =3D 0; k <=3D (BIT(nr_fixed_counters) - 1); k++)
-> -			__test_fixed_counters(vcpus[i++], j, k);
-> +	for (fixed_subset =3D 0; fixed_subset <=3D fixed_bitmap; fixed_subset++=
-) {
-> +		u32 nr_contiguous;
-> +
-> +		/*
-> +		 * The loop walks all values from 0 to fixed_bitmap, so skip any
-> +		 * value that is not a subset of fixed_bitmap.
-> +		 */
-> +		if (fixed_subset & ~fixed_bitmap)
-> +			continue;
-> +
-> +		nr_contiguous =3D find_first_zero_bit(&fixed_subset,
-> +						    MAX_NR_FIXED_COUNTERS);
-> +		__test_fixed_counters(vcpus[i++], nr_contiguous, fixed_subset);
->  	}
-> =20
-> +	for (j =3D 1; j <=3D nr_fixed_counters; j++)
-> +		__test_fixed_counters(vcpus[i++], j, 0);
-> +
->  	pmu_vm_free(vm, vcpus);
+> ---
+>  include/linux/pci.h |  3 +++
+>  drivers/pci/pci.c   | 37 +++++++++++++++++++++++++++++++++++++
+>  2 files changed, 40 insertions(+)
+> 
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index aa3765a20a96..542fa4af0a43 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -1535,6 +1535,7 @@ int pci_load_and_free_saved_state(struct pci_dev *dev,
+>  int pci_platform_power_transition(struct pci_dev *dev, pci_power_t state);
+>  int pci_set_power_state(struct pci_dev *dev, pci_power_t state);
+>  int pci_set_power_state_locked(struct pci_dev *dev, pci_power_t state);
+> +int pci_try_set_power_state(struct pci_dev *dev, pci_power_t state);
+>  pci_power_t pci_choose_state(struct pci_dev *dev, pm_message_t state);
+>  bool pci_pme_capable(struct pci_dev *dev, pci_power_t state);
+>  void pci_pme_active(struct pci_dev *dev, bool enable);
+> @@ -2216,6 +2217,8 @@ static inline int pci_set_power_state(struct pci_dev *dev, pci_power_t state)
+>  { return 0; }
+>  static inline int pci_set_power_state_locked(struct pci_dev *dev, pci_power_t state)
+>  { return 0; }
+> +static inline int pci_try_set_power_state(struct pci_dev *dev, pci_power_t state)
+> +{ return 0; }
+>  static inline int pci_wake_from_d3(struct pci_dev *dev, bool enable)
+>  { return 0; }
+>  static inline pci_power_t pci_choose_state(struct pci_dev *dev,
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index 7c6f2aba8144..f2ebd19204aa 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -1655,6 +1655,43 @@ int pci_set_power_state_locked(struct pci_dev *dev, pci_power_t state)
 >  }
-
-[Severity: Medium]
-Does deriving nr_contiguous from fixed_subset drop test coverage for fixed
-counters enabled solely via CPUID.0AH:ECX when EDX[4:0] is 0?
-
-Whenever bit 0 of fixed_subset is set, find_first_zero_bit() returns at
-least 1, and the second loop only tests supported_bitmask =3D=3D 0 with j >=
-=3D 1.
-As a result, fixed counter 0 (and any contiguous prefix of fixed_subset
-starting at bit 0) is never tested with nr_fixed_counters =3D=3D 0 and ECX[=
-i]
-set, nor does a guest with pmu_version < 5 get tested with EDX[4:0] =3D=3D 0
-and a non-zero contiguous ECX mask to verify that KVM ignores ECX.
-
-In addition, gating X86_PROPERTY_PMU_FIXED_COUNTERS_BITMASK on
-pmu_version >=3D 5 skips non-contiguous host ECX bits when testing guest
-pmu_version < 5, so the test never verifies that KVM ignores those bits on
-older PMU versions.  Keeping the outer loop over j in 0..nr_fixed_counters
-and the inner loop over subsets of an unconditionally constructed
-fixed_bitmap would cover all (EDX[4:0], ECX) combinations across all PMU
-versions.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261112203227.2893=
-79-1-zide.chen@intel.com?part=3D21
+>  EXPORT_SYMBOL(pci_set_power_state_locked);
+>  
+> +/**
+> + * pci_try_set_power_state - Set power state without waiting for the bus lock
+> + * @dev: PCI device to handle
+> + * @state: Target PCI power state
+> + *
+> + * Like pci_set_power_state(), but return -EAGAIN without changing the power
+> + * state if the bus lock cannot be acquired immediately. The transition
+> + * itself can sleep.
+> + *
+> + * Callers already holding the bus read lock must use
+> + * pci_set_power_state_locked().
+> + */
+> +int pci_try_set_power_state(struct pci_dev *dev, pci_power_t state)
+> +{
+> +	int ret;
+> +
+> +	if (state > PCI_D3cold)
+> +		state = PCI_D3cold;
+> +	else if (state < PCI_D0)
+> +		state = PCI_D0;
+> +	else if ((state == PCI_D1 || state == PCI_D2) && pci_no_d1d2(dev))
+> +		return 0;
+> +
+> +	if (dev->current_state == state)
+> +		return 0;
+> +	if (state >= PCI_D3hot && (dev->dev_flags & PCI_DEV_FLAGS_NO_D3))
+> +		return 0;
+> +
+> +	if (!down_read_trylock(&pci_bus_sem))
+> +		return -EAGAIN;
+> +	ret = pci_set_power_state_locked(dev, state);
+> +	up_read(&pci_bus_sem);
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL(pci_try_set_power_state);
+> +
+>  #define PCI_EXP_SAVE_REGS	7
+>  
+>  static struct pci_cap_saved_state *_pci_find_saved_cap(struct pci_dev *pci_dev,
+> -- 
+> 2.43.0
+> 
