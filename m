@@ -1,84 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.226.149.38
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794480685;
-	b=AxM6dlI4UHqkZl1xnwBODr+y2hl7JTOlXBtnPeKRoIzCIGBSTlF8qHs308tH0YHYdg2V
-	 7OAt5mwqfq+NbWKDNeDmqrIi7uGrhNGenDP8wltoVdyIa3xKjI5wnJZKpAo8DIM9CwLtX
-	 QHZpUrKdHlkfzsXE8cpV/+7qNHtlzmUkzDqfynp643RK8W6ngJOR2nMHeA8NYTpQK+sBF
-	 OxHECcoSZZqg9IUeaKXQQLrxz73iRlXX1hZdKYbo9/9Tbsx09DZ8Yj7HTLyBixSorqOji
-	 xAqzBBKiNi+Sa6GUuzuAu8ab2FzQH2SJVhMiFSKqXMsRSh/8BA0zSWKJK/JHi0n18Hw==
+	t=1794480796;
+	b=Wdmu3zDBfny0ZTyPosRD/z8K+XPMMxYAtstVFoPEaEmO0El4X1N6iZyt9gH2VhSJ6RXQ
+	 QTpAN2E01gGEkUQEVVqDEOSih/YO5RpXu8WD41fGDtulVmnIElKXuw0uWkXPLyMIhdhsC
+	 EY1lYg3hrgawVqXJIxh4ODSabcFnS3i8bO8P93Y4UuS+dt8R0Z/hWeDd5FvsS8MtklZib
+	 JBxOMc4orEryMnFrxqMo/qAWr50KH6T4FN5LBv1Aqi9XHw+6jZ17bTxMOIiB5KZg9cjIY
+	 myabrNzXg/pa2KfqWq8yKfS5rFZWvBdovjOHOn7C12iaZFkTDsN7ZMLkF+jiAwyDUYA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794480685;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=pywy5r6pDPMlHENdQdhMX3LebB9YShrau+u2EOFSYes=;
-	b=BcTKobvhrdyIa5YN6+vvxTD6rrJSCEmRlNXehz6g0HioVP5WysVCiD+zad4gc1hSK3nD
-	 cPMRlow9AjarAC4XICdyGsSEku8N7g2ii1WRiqz7pEnroB8XKJFxMaGJfG/Giy7sID1ax
-	 RmP46waifKs+HJXXtT/ZmSOcW54t+zhfFo714Blcw9ICq0ndgjFqfz7mPH0QSNoWDqVHj
-	 TDoi9QniFGun1CGBEViEXOtH7CawrznaaxFaxqFxoNGU8OWOiEImi238BNGoSwBgIsBk+
-	 ws9OlEf9MvbEKq6Za9XsTqAjwnlA3iODUbiJhVPGtVA46n2GaIasrDWEjMhUFhaxaOw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794480796;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:From:Subject:To:Cc:References:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=YkfsgtQgDkRJaBVA+m0bj+SaLpO/MI4c2Nw9+WXxjHw=;
+	b=jDTNPSAO0i4sXCqeXJkKEHSL7IXC8Mo9R8TEkmuVB6W9hWo6gqTWJ9pdHTc3QNg6McZS
+	 hPVSGJneNeuloHVtgCZkpPfNgZOiHnOTUxNdKOeOqJEnAVNmv8cRfjoKtkv0dUAVgPN2y
+	 F3bT7SKwTUpaVjwe30CorPe4LU4uCM5RwJZ03HgFj8k4BvrfmtKbS4aA0Y0yp5BOOWAJj
+	 frRRZGRGEfWlUTWF9Woz+QnA+wUB4sphmWBMoQ8QoXKl5ZTxNL02xBiyTcz8o2h+b5KDG
+	 rMCgT8VV0cCPBu/ReGwiYF/pqTvJ/OEHSIb2wTQkGcd3tso4NH+v9e7SnI0K4NZ4LHg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NyTu+pBP;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=rbox.co;
+	spf=pass smtp.mailfrom=rbox.co;
+	dkim=pass header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=vA5prnCr;
+	arc=none smtp.remote-ip=185.226.149.38
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029AE606A321;
-	Thu, 12 Nov 2026 10:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952A7606A31C;
+	Thu, 12 Nov 2026 10:53:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 952A7606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NyTu+pBP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE0E1F00A05;
-	Thu, 12 Nov 2026 10:51:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794480684;
-	bh=pywy5r6pDPMlHENdQdhMX3LebB9YShrau+u2EOFSYes=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=NyTu+pBPJgo0IB/eZQsoHzsyRKO3iN+jIxpyl8bWDIcxaDufID0hYesdnuAEu5S09
-	 Sckhb1ihC0JjNfCe/VZ/0dE6EfvHMq1aeQjOGwGk+OV91Ff47v1Lqs6UvhF605Eta3
-	 wqD82AU6Z6Q5HyU9Ltah30EsTw+B1M4g4W5yhvs3eqwGRFkKZ3lxXdMmEjSEumyXip
-	 znxH4zR4+tL3nPFrvhzEV7ItlMOu0ZXK4cjY8u2jI7AC6j4dY1Vgqz6/YgsxSq5QDO
-	 kxcuLzRHt03BGPhofFDyKegLBVhQ/EevoaFq2FN8rm1xr5+eOOTgX+dssNLgKSFySa
-	 LHRs3t7Xtw3bA==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: "Tian, Kevin" <kevin.tian@intel.com>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>
-Cc: Alex Williamson <alex@shazbot.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Krishna Reddy <vdumpa@nvidia.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Steven Price <steven.price@arm.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-Subject: RE: [PATCH v8 12/15] iommufd/viommu: Allow PCI TSM backends to
- provide vIOMMU operations
-In-Reply-To: <CO1PR11MB483536F447DF311831A64D4D8C762@CO1PR11MB4835.namprd11.prod.outlook.com>
-References: <20261104161632.3547423-1-aneesh.kumar@kernel.org>
- <20261104161632.3547423-13-aneesh.kumar@kernel.org>
- <CO1PR11MB483536F447DF311831A64D4D8C762@CO1PR11MB4835.namprd11.prod.outlook.com>
-Date: Thu, 12 Nov 2026 16:21:12 +0530
-Message-ID: <yq5av762pbkv.fsf@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=rbox.co header.i=@rbox.co header.a=rsa-sha256 header.s=selector1 header.b=vA5prnCr
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1xRSQY-004vrT-LI; Thu, 12 Nov 2026 11:53:10 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector1; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
+	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
+	bh=YkfsgtQgDkRJaBVA+m0bj+SaLpO/MI4c2Nw9+WXxjHw=; b=vA5prnCrpzhzImvR6dL1hZ5aRx
+	7AZfRRw/AHFTjjH14a9+SL6btoKJD7r3qjUU6vZluBY4yiXzj4EkPT7O3tsVzytYT9F8Q6omZRhfC
+	rjSP+lIYyhcccVt4FQ1thHaQ3EB6KMYIe/k57NBQvE7wNuU7BcbkkS9ovsfC6acXFlZtcWsM9txun
+	FJ2/cNs1c28l736y6d8qTxoZ2gOebmT3UyROCGjzS51oBTV7NUGLlU0rIXGpJBU9fe5CFAQJcq0nj
+	ZkQsf115+s82VBjiu2kpUJLwMUDvyKVnUlu0npvonOx6HadHmshrDy+wIJxfA6Fzg6b31WLoCZrH5
+	IrE54w5A==;
+Received: from [10.9.9.74] (helo=submission03.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1xRSQT-0004QY-4T; Thu, 12 Nov 2026 11:53:05 +0100
+Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.95)
+	id 1xRSQD-005W3c-UH;
+	Thu, 12 Nov 2026 11:52:50 +0100
+Message-ID: <b4dbeace-95ad-4b0e-8f13-a418ab59e8df@rbox.co>
+Date: Thu, 12 Nov 2026 11:52:48 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -88,94 +66,36 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+From: Michal Luczaj <mhal@rbox.co>
+Subject: Re: [PATCH net] vhost/vsock: Fix socket state constant
+To: netdev-bot+sinfo@kernel.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Bobby Eshleman <bobbyeshleman@meta.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, kvm@vger.kernel.org,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261112-transport-reset-state-fix-v1-1-5698375f52a9@rbox.co>
+ <179447976386.2168702.18392043659968828325@kernel.org>
+Content-Language: pl-PL, en-GB
+In-Reply-To: <179447976386.2168702.18392043659968828325@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-"Tian, Kevin" <kevin.tian@intel.com> writes:
+On 11/12/26 11:36, netdev-bot+sinfo@kernel.org wrote:
 
->> From: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
->> Sent: Thursday, November 5, 2026 12:16 AM
->> 
->> In confidential-computing configurations, a vIOMMU may be implemented by
->> a TEE Security Manager rather than by the physical IOMMU driver. Such an
->
-> TSM is the firmware. Here it is the TSM driver.
->
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
 
-Will use TSM driver instead of TSM 
+Discovered by reading the code and not getting it.
 
->
->> implementation also needs the TSM identity when creating and validating
->> vdevices.
->> 
->> Allow VIOMMU_ALLOC to first query the TSM associated with the target PCI
->> device for vIOMMU operations. Fall back to the physical IOMMU driver
->> when the TSM does not provide operations for the requested vIOMMU type.
->> 
->> Resolve the PCI TSM association under pci_tsm_rwsem, pin the module
->> providing the operations, and take a TSM device reference. Store the TSM
->> device in the vIOMMU and release both references on allocation failure,
->
-> what does "both references" mean?
->
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by LLM and not proven at runtime). If it was triggered
+>    please include the symptoms, like the stack trace or kernel messages.
 
-device reference and module reference. How about i update this to
-
-Resolve the PCI TSM association under pci_tsm_rwsem, take a TSM device
-reference, and pin the module providing the operations. Store the TSM
-device in the vIOMMU. Release the device reference and module pin on
-allocation failure, fallback to the physical IOMMU driver, or vIOMMU
-destruction. Drop the device reference before releasing the module pin,
-since the final put may call into the backend module.
-
-
-
->
->> fallback to the physical IOMMU driver, or vIOMMU destruction. Keep the
->> module pinned until after dropping the device reference, since the final
->> put may release the TSM device.
->> 
->> The device reference preserves the TSM allocation. Backends providing
->> vIOMMU operations must not unregister their TSM while the module is pinned,
->> since the reference does not prevent backend resource teardown.
->> 
->> This enables the Realm vIOMMU implementation to provide its operations
->> through the PCI TSM backend and retain the TSM identity needed by its
->> vdevices.
->
-> It's not specific to Realm vIOMMU, and Realm is never explained in
-> prior patches.
->
-
-I will drop this para.
-
->
->> @@ -49,15 +52,33 @@ int iommufd_viommu_alloc_ioctl(struct
->> iommufd_ucmd *ucmd)
->>  		rc = -EOPNOTSUPP;
->>  		goto out_put_idev;
->>  	}
->> -	if (!iommu_dev->ops->get_viommu_ops) {
->> -		rc = -EOPNOTSUPP;
->> +	tsm_dev = tsm_get_device(idev->dev);
->> +	if (IS_ERR(tsm_dev)) {
->> +		rc = PTR_ERR(tsm_dev);
->> +		tsm_dev = NULL;
->>  		goto out_put_idev;
->>  	}
->
-> Is it legal to have a device connected in tsm (i.e. with a valid
-> pdev->tsm) but one wants to assign it to a non-confidential
-> guest using a non-cc vIOMMU type?
->
-> If yes we want to fallback to the physical IOMMU driver even
-> when tsm_get_device() returns an error.
-
-
-tsm_get_device() does not use the vIOMMU type, so an error return
-(rather than NULL) indicates an actual error. In the case you describe,
-tsm_get_device() should return NULL or a valid TSM device. For a valid
-TSM device, tsm_viommu_get_ops() will return NULL because the TSM driver
-does not support the non-confidential vIOMMU type, allowing fallback to
-the physical IOMMU driver.
-
--aneesh
+Not triggered at runtime. It's a correctness fix, I didn't try to work out
+what could/would actually go wrong.
