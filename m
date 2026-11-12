@@ -1,49 +1,117 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794502645;
-	b=eC0SOaO5+EwnerEqKlbHzYQufkorXUuDTcPhZs+6TvwZDhhvB0SH9cC/Db4PWcGHPdUu
-	 tvPhkTkoxS9iNBhMSr5S1JN28K+tWTFt9S+BMQy98nyZo2scBT6NZ9e09AntVEw2tKJLm
-	 A/frlECJLfMUfagFTxqlqUWEPsSRNuTAc1gGzD/FOOEJ0zjKBDOlrHUuC3afz36aK4HEH
-	 GlaivbFxG0mXif3BGU3Psvvpjcm96MclbvGnQOggwishuTiG9bVXXalkbxGpS2JGWpkkP
-	 gjlfb/hhZ53cX1KHRu9zPu3MsCa9jYGmH1xDvMSpCboUWP2T5GHRidgicwJFO3DVfjw==
+	t=1794502970;
+	b=UmCw1WWqP/PKwHeF2kjYxDeHFfos0vS7T8VcI9UuDPu3oMooq/BBmshCo7aveoMEyjGl
+	 8hEm9B9pitq01iA7T7qZAXwRAGKsvRIkiBm+D5yCZ6vUzSv8eVMh+IxFiX4cPx04yOOxE
+	 YdW8tJ5/VisEvOHBxy2vzI+721Vhq3olX6F+Qoe2B+ewdABeBQOc6oOIXlXZW7ftp2Kvr
+	 u67xno0tKfhTOH7NJ8p4f6gWyfEmCFMjU5nTpLjiVVu25UBMecesYvtIzalVpZ+emtUnT
+	 462nS/ACqnGBxRddzCWle9vwawSJxGIHyzbTYvParEmOO4FNKR/1o7Kz40UjHSupQnQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794502645;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:Content-Language:From:To:Cc:
-	 References:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=Fz3ok1xgLMCevgKit+vc08GYfcHPvlYtyNknEWCsv+M=;
-	b=1l/EKsiGRAJ4jn1cCPvoy//C4zorjcZOgjChX6sjZkjCfRWuwlvzHr9DOkkgLZxT+TPG
-	 2C9elpEizP97UGWI/gcE0k+LUfctYtCKMJhBYObDPGA+yO7hqYFq0eO/o387KLDfH43J+
-	 y/ZFLhXgwqq2bR20vInxwBu3eR/mhfrCNB2rJz+kUiwtvGz52976YJes7OBC/BWeCa7ns
-	 afcgperDrVYubV2O5rhm/lrFXqwUYcR3NXQm7abxD/ErXi0hpplXWLVSmBiOWYqSx3MN5
-	 M8sM6WC31RU4dVHWXmsCq50JPqKzEPNTaWfaU1r4GKtfMgs9pbnNT210mUPTbO6ap/w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794502970;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=4SSAg38Nw3BE7JWsNPS6tFWOPRz76x2WFPMI2JzvcWc=;
+	b=IA6oYRkmWWyC1Jc3Za/FJAtCr3RgOPDmKWzesZbDZArbGBQ/P0ovS5uOxMmlF4n6j+Mi
+	 Sq+3doQaLxDD+Bzkfj3I3piZqYiJ4yZdv02oCHmZWMZUD6umMMR3gAF6C5bbphuQl59Wh
+	 JPKySVtskKO4lDs5rtvTFMfVsQ2f5/UB91VCvjxj7b7xNJVtBwF6S4qRCKq5n7UevFtD7
+	 +MPrl5DVAx0oW6g6UsPW0nEtKQZWBLDCAXCMwbkRNUxbsLRUyuS1x7FvCrNYwv8RqfxJR
+	 JUXf4bmbrTwSaWK1RGI7xg70YpAIVZCDDyrWPhcOq9AIC2SexB9QfD+afsbbLjvUXuQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=tNGxxaHv;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A675606A896;
-	Thu, 12 Nov 2026 16:57:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3A675606A896
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UQ3lHNAj;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Fq7YFxue;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DBA606A323
+	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 17:02:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82DBA606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=tNGxxaHv
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7C8B51516;
-	Thu, 12 Nov 2026 08:57:20 -0800 (PST)
-Received: from [10.57.67.215] (unknown [10.57.67.215])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CEA383F673;
-	Thu, 12 Nov 2026 08:57:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794502643; bh=n2YAal6lwAvLkGjEYo4/CPDxHN6fr05biMtI54HCe30=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=tNGxxaHvtfVA43zvRnB7GTnGJoDyTosQUMhEXFkpKP4DM07ISyw/1a6JwnDIzfeVt
-	 iPFZYAuyr7J7aOLWZPHXLLDlPIrzG0j4O6jDVSDxGQbuXq5MM8hFZEpxOFPK8LgeeI
-	 w5IruCxrFPIbf5Si6pQxMDpCHFztBO57Uco6Vvh0=
-Message-ID: <87c408e4-95cd-477c-9656-b472983c6df7@arm.com>
-Date: Thu, 12 Nov 2026 16:57:18 +0000
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UQ3lHNAj;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Fq7YFxue
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794502968;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4SSAg38Nw3BE7JWsNPS6tFWOPRz76x2WFPMI2JzvcWc=;
+	b=UQ3lHNAjeOXsmCES4hWjxHOYer6q8c+25QErNO+A2n1KnP5/5APW2ESjNvPWYQc56JgQEN
+	MZGJmmOZMVt05+xi0OZ8C8iW+paIyNhLJDRnWxxOJm0h/+h2YbWmcNVg9v9IkOfsSl1Fnb
+	kudmPfuvFpNzGevPcZUjA7CKnZWu05k=
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
+ [209.85.161.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-564-7UOuvfJGPICFRh8weA4sRA-1; Thu, 12 Nov 2026 12:02:46 -0500
+X-MC-Unique: 7UOuvfJGPICFRh8weA4sRA-1
+X-Mimecast-MFC-AGG-ID: 7UOuvfJGPICFRh8weA4sRA_1794502966
+Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-70eadc5b37fso3610629eaf.3
+        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 09:02:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1794502966; x=1795107766; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4SSAg38Nw3BE7JWsNPS6tFWOPRz76x2WFPMI2JzvcWc=;
+        b=Fq7YFxuew4y7VYWcjll5e78rzl8lIIgzpNXpaYN/Q8NWnVIoAajywtbu6NvnCpqxUW
+         +1IAiKP12pJlcr+LGTE6q7iwkNzffOFimZkthIQn5OnHflCcBpuOIU4F2vmUVcgEigUo
+         XuvFw8xYfhpop8HoWiKm3c498ITO9JXm68E4K22WtAijG3eEqrT4s0Z2oJMcj3QxRKV1
+         JPbF2XywvRdd+B1f0ik6ycufeWJuRVIF8Xa2OS9nDUvAIJhq8q6xdaL3vBluXbncjohj
+         GrWaYnh80smBPTcYIj4VqyDEw+RsqxujDxB13NBxbkVpU7nsfJToThSwbqKFLRBVEKK9
+         gjnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794502966; x=1795107766;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4SSAg38Nw3BE7JWsNPS6tFWOPRz76x2WFPMI2JzvcWc=;
+        b=pfnxJhQPFzemK0PZHKwj0g2/4HtM24m2hHrTP2ZlqN1jq6rukLhBHci2+UbNXPgXk+
+         sSKqg/XGm8qWvcS4Dk1SBB5fOW6vPXeMQ43OgC5Wi0XCcz2SV3rkyJTGZWa22pqzp2QF
+         Rdn7KA0zY9CHWDjqL7N1HNvI3iKZx9xZ7RX1xQLtm3PE9zPWofSUpVd5lTKGfXFdCsBW
+         jBcB9mwXC1Jm9HmZkVIJ+WiQ0j0wuyUOFMawrfAKHoSRsJZ16Ry64KO5BBsI8ruYkMa6
+         2MPGwXN347bNxBcRGbL9u9MNG85WnWZVFZJAiFQenk2e5zN2ZDmVYJaKKr7hsaVqktU9
+         xkCw==
+X-Forwarded-Encrypted: i=1; AL+hErFw07d8saz1hnK0rPGHi1hef+oPbKP4X6Ts1V8X52JDIoKT1RckDDeJfjCTIsmjZlW3KDw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+iJqJlghMjapw8O1i2p6gntlaXLBJK28gbNkBg7mgduHoUmiAk
+	LwdUVsSwKtfeeA4jok/VM7oh5qwOidNwE7tgJOKhT75dpEmNLdV+4bcwDLU/pL+Llkb2LEG9MEA
+	ueqcnzwxiWnlkNjlJqzCcr8r5kZotzo1WUqAWUIeilOuwDsI/PL64yA==
+X-Gm-Gg: AYBFou0e9+kKinVjMYqdynAWwzXpvamPyabLjHX134Y34IGxI/Cqy8MuOnCC9pUOop5
+	nI7WnFYidMMi1I1XNz6Cz2ck6HHQijx6voqo5v+tkkNp/goPQnaHyTTFFzRSkwtX6gGABEf/mOj
+	qdf5PUg+gzbYdrUM7pDDHHwQLEwIPnb3BI886gVbDRO4RwKzw+n/O4nLbVj3jBDHrJLLlU/HLWr
+	evjXlsansbYXeK87RwDkBa09CBuwJGh9RdP4rMPPu48z8lwWurBnWdg3TlL6ZWuCKERRoUqMa1l
+	nXmq3kycoYjvbtMpMrcyz0IKqyozQrZsspZ4GSAxZP0YJCZ5FC8ccJlaI2Y44QPA9sgk90LTqe8
+	6BO5ROlHAEGSJbe4LWJ4+8oDSLydiA/T8Ewp5nbXHJwrff6H/wpFB
+X-Received: by 2002:a05:6820:83c2:10b0:6dc:e1c3:b2ac with SMTP id 006d021491bc7-7191798a171mr2797268eaf.73.1794502965970;
+        Thu, 12 Nov 2026 09:02:45 -0800 (PST)
+X-Received: by 2002:a05:6820:83c2:10b0:6dc:e1c3:b2ac with SMTP id 006d021491bc7-7191798a171mr2797227eaf.73.1794502965373;
+        Thu, 12 Nov 2026 09:02:45 -0800 (PST)
+Received: from sgarzare-redhat ([209.52.143.85])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4ae22f6a1c7sm5433524fac.6.2026.11.12.09.02.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 09:02:44 -0800 (PST)
+Date: Thu, 12 Nov 2026 18:02:40 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: jrmmhm.kernel@eldare.de
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	Bobby Eshleman <bobbyeshleman@meta.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowangio@gmail.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, virtualization@lists.linux.dev, 
+	kvm@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v4] vsock/virtio: clear vqs[] to avoid a UAF on a
+ failed PM restore
+Message-ID: <avXxFnqVLMgBMjBP@sgarzare-redhat>
+References: <20261109-vsock-restore-uaf-send-v4-1-1df8dfb5d5de@eldare.de>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -53,173 +121,62 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/12] KVM: arm64: guest_memfd: Check mmap support when
- preparing memslot
-Content-Language: en-GB
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Kohei Enju <enju.kohei@fujitsu.com>
-References: <20261111145758.217946-1-steven.price@arm.com>
- <20261111145758.217946-3-steven.price@arm.com>
- <fbc33983-cb8a-48e4-854f-ce009cc5668f@arm.com>
- <1e02dfff-c1ad-46bb-9834-fd4bbaa46179@arm.com>
- <26a29420-8d27-4069-bbd5-28692c9e8542@arm.com>
-In-Reply-To: <26a29420-8d27-4069-bbd5-28692c9e8542@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20261109-vsock-restore-uaf-send-v4-1-1df8dfb5d5de@eldare.de>
 
-On 12/11/2026 16:35, Suzuki K Poulose wrote:
-> On 12/11/2026 10:43, Steven Price wrote:
->> On 11/11/2026 15:21, Suzuki K Poulose wrote:
->>> On 11/11/2026 14:57, Steven Price wrote:
->>>> Check the guest_memfd backing file when deciding whether an arm64
->>>> memslot has mappable memory rather than checking whether the slot is
->>>> gmem only. A public helper function is added to be able to reuse the
->>>> static kvm_gmem_supports_mmap() function.
->>>>
->>>
->>> Please could you explain why we need this ? Why not rely on
->>> kvm_memslot_is_gmem_only(), which already tells
->>> kvm_gmem_supports_mmap() ? With inplace conversion support gmem supports
->>> mmap.
->>
->> Unless I'm missing something it's still possible to create a guest_memfd
->> that doesn't support mmap() by not passing the GUEST_MEMFD_FLAG_MMAP
->> flag. So kvm_memslot_is_gmem_only() doesn't actually guarantee that it's
->> a guest_memfd that supports mmap().
-> 
-> I see, while the KVM decides that, with inplace conversion shared pages
-> come from gmem, we do allow creation of gmem without MMAP set, implying
-> we would fail the mmap request from VMM, which is pretty pointless. But
-> should the KVM fail this when VMM is shooting on its foot ? Only makes
-> sense if there are no untrusted device DMA for the CoCo Guest.
+On Mon, Nov 09, 2026 at 08:39:24PM +0100, Jerome Mohm via B4 Relay wrote:
+>From: Jerome Mohm <jrmmhm.kernel@eldare.de>
+>
+>virtio_vsock_vqs_del() frees the virtqueues but leaves vsock->vqs[]
+>pointing at them. If virtio_vsock_restore() then fails, the driver
+>stays bound with a dangling vqs[], and the next freeze or unbind
+>passes a freed virtqueue to virtqueue_detach_unused_buf():
+>
+>  BUG: KASAN: slab-use-after-free in virtqueue_detach_unused_buf
+>   virtio_vsock_vqs_del (net/vmw_vsock/virtio_transport.c:785)
+>   virtio_vsock_remove
+>  Freed by task ...:
+>   vp_del_vqs
+>   virtio_vsock_freeze
+>
+>Clear vqs[] after del_vqs() and when virtio_find_vqs() fails. Return
+>early from virtio_vsock_vqs_del() when vqs[] is empty: the detach
+>loops would pass NULL to virtqueue_detach_unused_buf(), and a second
+>del_vqs() would free virtio-mmio's IRQ again, which only WARNs in
+>free_irq() ("Trying to free already-free IRQ").
+>
+>Found with the help of Anthropic's Claude and reproduced on virtio-pci
+>and virtio-mmio by failing the restore with failslab, without other
+>kernel changes; the virtio-mmio WARN was found by the netdev Sashiko
+>review and reproduced with v1 of this patch. With this patch neither
+>report appears on virtio-pci or virtio-mmio guests, and the vsock
+>vmtest.sh single-VM tests pass. A find_vqs() failure after some
+>virtqueues were set up was not exercised.
+>
+>Fixes: bd50c5dc182b ("vsock/virtio: add support for device suspend/resume")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Jerome Mohm <jrmmhm.kernel@eldare.de>
+>---
+>Changes in v4:
+>- Say why the early return is needed: the detach loops would pass NULL
+>  to virtqueue_detach_unused_buf() (answering Stefano).
+>- Say in the message and the comment that freeing virtio-mmio's IRQ
+>  again only WARNs (Stefano).
+>- Move the send queue purge before virtio_reset_device() (Stefano).
+>- Message: the use-after-free also reproduces on virtio-mmio.
+>- Rebase onto current net; rebuilt and retested on virtio-pci and
+>  virtio-mmio, and the vmtest.sh single-VM tests rerun on this version.
+>  The moved purge ran with an empty send queue only; the ns_* tests of
+>  vmtest.sh were not run (they need root on the host). The reproducers
+>  are available on request.
+>- Link to v3: https://patch.msgid.link/20261104-vsock-restore-uaf-send-v3-1-d60d06488b57@eldare.de
+>---
+> net/vmw_vsock/virtio_transport.c | 16 +++++++++++++---
+> 1 file changed, 13 insertions(+), 3 deletions(-)
 
-See Documentation/virt/kvm/api.rst, under section : KVM_CREATE_GUEST_MEMFD
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
-
-"When the KVM MMU performs a PFN lookup to service a guest fault, the 
-fault will
-always be consumed from guest_memfd, regardless of whether it is a 
-shared or a
-private fault (unless in-place conversion is disabled and the backing
-guest_memfd does not have the GUEST_MEMFD_FLAG_MMAP flag set)."
-
-
-Cheers
-Suzuki
-
-
-> 
-> Am I missing something ?
-> 
-> Cheers
-> Suzuki
-> 
-> 
-> 
-> 
->>
->>>
->>>> Signed-off-by: Steven Price <steven.price@arm.com>
->>>>
->>>> ---
->>>> Changes since v1:
->>>> - New patch in v2. Check the guest_memfd backing file rather than the
->>>>     memslot flag when deciding whether arm64 can map the backing 
->>>> memory.
->>>> ---
->>>>    arch/arm64/kvm/mmu.c     | 7 ++++---
->>>>    include/linux/kvm_host.h | 1 +
->>>>    virt/kvm/guest_memfd.c   | 6 ++++++
->>>>    3 files changed, 11 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->>>> index 1db10d8d6db7..a146f6cde3d0 100644
->>>> --- a/arch/arm64/kvm/mmu.c
->>>> +++ b/arch/arm64/kvm/mmu.c
->>>> @@ -2839,10 +2839,11 @@ int kvm_arch_prepare_memory_region(struct kvm
->>>> *kvm,
->>>>            return -EFAULT;
->>>>          /*
->>>> -     * Only support guest_memfd backed memslots with mappable memory,
->>>> since
->>>> -     * there aren't any CoCo VMs that support only private memory on
->>>> arm64.
->>>> +     * Protected VMs currently require guest_memfd backed memslots 
->>>> with
->>>> +     * mappable memory to support shared mappings.
->>>>         */
->>>> -    if (kvm_slot_has_gmem(new) && !kvm_memslot_is_gmem_only(new))
->>>> +    if (kvm_arch_has_private_mem(kvm) && kvm_slot_has_gmem(new) &&
->>>> +        !kvm_gmem_slot_supports_mmap(new))
->>
->> Sashiko has identified I've screwed up this condition though.
->> kvm_arch_has_private_mem(kvm) shouldn't be in there as that allows a
->> non-private VM to bind a non-mmappable gmem.
->>
->>>>            return -EINVAL;
->>>>          /* guest_memfd is incompatible with MTE. */
->>>> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
->>>> index e7fc94e2910a..f65728a713ec 100644
->>>> --- a/include/linux/kvm_host.h
->>>> +++ b/include/linux/kvm_host.h
->>>> @@ -2614,6 +2614,7 @@ static inline bool kvm_is_private_gfn(struct kvm
->>>> *kvm, gfn_t gfn)
->>>>      #ifdef CONFIG_KVM_GUEST_MEMFD
->>>>    bool kvm_gmem_is_private_gfn(struct kvm *kvm, gfn_t gfn);
->>>> +bool kvm_gmem_slot_supports_mmap(const struct kvm_memory_slot *slot);
->>>>    bool kvm_arch_supports_gmem_init_shared(struct kvm *kvm);
->>>>      static inline u64 kvm_gmem_get_supported_flags(struct kvm *kvm)
->>>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
->>>> index 8c97a69b16dc..3dd8d227bebb 100644
->>>> --- a/virt/kvm/guest_memfd.c
->>>> +++ b/virt/kvm/guest_memfd.c
->>>> @@ -442,6 +442,12 @@ static bool kvm_gmem_supports_mmap(struct inode
->>>> *inode)
->>>>        return GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_MMAP;
->>>>    }
->>>>    +bool kvm_gmem_slot_supports_mmap(const struct kvm_memory_slot 
->>>> *slot)
->>>> +{
->>>> +    /* The guest_memfd file is pinned while preparing a new 
->>>> memslot. */
->>>
->>> We should gate this on kvm_slot_has_gmem() and how do we ensure that the
->>> call comes after it is prepared ?
->>
->> I'm not sure what you mean by "gate this on kvm_slot_has_gmem()" - yes
->> this function only makes sense on a gmem slot - the user above checks
->> that first. I'm not sure what value the function should call if you call
->> it on a non-gmem slot?
->>
->> Thanks,
->> Steve
->>
->>>> +    return kvm_gmem_supports_mmap(file_inode(slot->gmem.file));
->>>> +}
->>>> +
->>>>    static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
->>>>    {
->>>>        struct inode *inode = file_inode(vmf->vma->vm_file);
->>>
->>>
->>> Cheers
->>> Suzuki
->>
-> 
+Thanks,
+Stefano
 
