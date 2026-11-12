@@ -1,81 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794522249;
-	b=oPujZWaG3c4Z04yq1r2PKmVcPgLHtY8jyhF3+a11U5rA7BAH49qCwhoB/aeqMA+8VfRQ
-	 geqFFwMecJwHiauLkGlTPzXZ2RRg12UDQrbn6DmSkUAIzbo5AljQZHjASFHkzmOOoCB1i
-	 /com7p0ftaplA34GvHURW252+NRyqX2WLnV9niVMw/lbTUNOIB+gbNpSv3yUhktSlQYtH
-	 sqTw0f/b4r7M54CbaUid7s8U5fcXbSL3SQtjoxmnePE1u5K3fq+GTeuomBCyhaVYVd7oL
-	 59BZPGR2R4Eq+vHhbJNw76kr5Qe2IHF8H9WCxX5Q3YMYwvL1xKAggRu/Cm5+PO/GZOA==
+	t=1794523275;
+	b=nMf4Xe6M/3PnK/Mnvtf5P2sRctLqL0j1dFQDJGEs4Baxz2nyCry8SwoG+VSLpK4l1yHu
+	 8/dQsFaQjQ1X+ZpZyn58NS737toKz7ViUl+3/rpgJgccRQv2RgQkpLQhKZzcF1vrTe6rf
+	 DmjkwBj4L+XnOj7VJc5X7tofHOehmbnmCKq2IzgDLqApZ/yLU2pXmfUgQCtaGDE6ogLn5
+	 6/+aTXVRDhXqR2B0+/+G6M/YkhrDglKHhmrrsU2pS2odtVvOdCY5m40eW5YYnwlIFcQVX
+	 RLDTx/8BIqABsJVHtBFdaBSPb6TtDWcfGI8Y2WkkHa4yYVKUR93Raz+NgCFKYb0zDtw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794522249;
-	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
-	 Received:Date:From:To:CC:Subject:User-Agent:In-Reply-To:References:
-	 Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=S6Cy3EpSYBPEqoUBkddb4jPru4ujktF/dPMRtIFOmkM=;
-	b=3BfVqgHroUl+TYfifKzZsqpTMBLVF9v/1GMd8hIuQhO+5QYyRiOPbA7e5MZc4KtV8jvy
-	 LmjVK/5W+BfeJeaPN21eyWCRxRutnFElQsej8oRdl/9A65/a2RwF7oRupPTqXKqcf1xsN
-	 +h/W0YY7j88iYmyUoNBcashiFVPe53RPa8WxDy4Qz1DJB37eribWFGQLtm5LqQlWu3WlT
-	 YL4ELbvn3RAQ4zL7qhtz31E74YPRT4GyEyJbIMV1wCZb1k+cLPihSW5ZbQu3QbA5Iwb/v
-	 JmK5HRmj4SUJCrRg2GtNbg2XYQ1XHcl8rXf+is4sRWM4vzdmAm3o7f6Mhly9Dmox/7A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794523275;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=8Mqlwa6EX3DhYKNmeMt2IGTARTOODXfafQJowRn4dlM=;
+	b=3mNMlODQ58aRNE9j7Tpweo4qxqDvlHVCXkUm4nupNHUOkhyIk8bU6zoxLcNb4B00RKPY
+	 GaI9IaACAG4Cv+Inc00vUTQCUM+Slp8No8Yct3qeiuU9zcoApgyNNZdRTKv6++2wfiPh3
+	 TdK7Jh4upkwmxFBKviBUER5hqzKaqsyzDBQQzDIRaHUV0FbPlC7rWQEYsddOG+wd5sMRB
+	 gTOqce1vd3OnwqKqCqlTe+CJXOJmL92zZW4taz1oWd6MbxKp5irOrbJfEJXOkGQkcjMRl
+	 Qua6IjG7XdAEY8/n3PpCDGvyxFUPlwdC6dej2ixJ0CwpNQg5nT1lWrITE61NCeqXQ4g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=alien8.de;
-	spf=pass smtp.mailfrom=alien8.de;
-	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b="B1GaFK/v";
-	arc=none smtp.remote-ip=65.109.113.108
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iEz0rFk4;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4364C606A321;
-	Thu, 12 Nov 2026 22:24:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4364C606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5916E606A31C
+	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 22:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=B1GaFK/v
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9FF0340E0231;
-	Thu, 12 Nov 2026 22:24:05 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id T5saqsF50iug; Thu, 12 Nov 2026 22:24:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1794522242; bh=S6Cy3EpSYBPEqoUBkddb4jPru4ujktF/dPMRtIFOmkM=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=B1GaFK/vWQrKG1uX3J1hargPwDG6JnkRgO9kyuJ87pumCZNN3Xd/Z+vceAWmDvLA5
-	 szJajHThhNmMaWrQ5EEzPNyGcFPUJ5sDGTsmd+JiDwBrn7il6rBaQ64PcRqmzPJZ6o
-	 4AQY/CFaxeqYH/MgkJloD25Z1SU8lRb+9z1Ji8ENpMTFPq3acj/FsQ4C2J/d0EMMe/
-	 P4e8bBIZ1khLndBpbKQv0zRSqoPQ670BdNunhvoxAn9zTkPwzQfvdote3MThpAdwnK
-	 OfoZsVw6qV/ZYiL9LAOjLHBq/MkPDfAkeQ260GS1/FY5oXuAuLdzP914xKP9nFLYEs
-	 T/FinBagE7BIa1grsqXZg8qrSaAhOwPgbXtYLxK93mTx8KD2LwI8WLULaMz8wWVO7/
-	 wso03iRG/pKw9JCGZSNmB8HOhEekLpWVUefepp9yxl48GveQiQDIM78g4GVl8DypZe
-	 J9KQO1R0bWqkFMKCxNSKc3M5DqrD8vBkJ1cvgOjW4sCl0qNGTwBmII73Ohkhr/KtCr
-	 1lfv7pYAOUqscBHBUKJv7qaSBm9HcM9sWP38+MVkUFOSzx2+S9AgdZMDsZdxMjSvYi
-	 DRmNu3AcWhLbpq2izjZVHcLtC2G2PF/esv0/B5MsqknjgLsuivNYPYmrZ8YkSvGWpI
-	 m06kREaU09u7AwXy/Ed8zfyk=
-Received: from ehlo.thunderbird.net (mobile-166-172-120-26.mycingular.net [166.172.120.26])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C6EA940E015B;
-	Thu, 12 Nov 2026 22:23:48 +0000 (UTC)
-Date: Thu, 12 Nov 2026 22:23:43 +0000
-From: Borislav Petkov <bp@alien8.de>
-To: "H. Peter Anvin" <hpa@zytor.com>, Breno Leitao <leitao@debian.org>
-CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, vlad.wing@gmail.com,
- security@kernel.org, kernel-team@meta.com
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_6=2E18=2Ey=5D_x86/cpufeatures=3A_M?=
- =?US-ASCII?Q?ake_X86=5FFEATURE_leaf_17_Linux-specific?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <9492bce8-aab7-4982-8a0c-7d736c745e12@zytor.com>
-References: <20261111-stabe_srso-v1-1-45512320ba5e@debian.org> <20261112045703.GAavVHH8KA2yyCU7oc@fat_crate.local> <9492bce8-aab7-4982-8a0c-7d736c745e12@zytor.com>
-Message-ID: <29B14106-19E4-4589-BE40-3D42BA646CE3@alien8.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iEz0rFk4
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015E41F000C5
+	for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 22:41:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794523275;
+	bh=8Mqlwa6EX3DhYKNmeMt2IGTARTOODXfafQJowRn4dlM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=iEz0rFk4pcrqXqU+BQldjX3tyQ2671GVCvFqd0kWoAc8QviKfCEIeiN3Kx6uhPxdF
+	 utPgLyhtTsNElrHLA04HCJJu8sUzswM0Di/1xwsJZaevuXjEEX5S80dmE7iQ7u9PK9
+	 ryz4/odhO85LJ8cdMxBnc9sMjC9ccJb0VCtOhppwx6GlgYo3yVZLt0KKsYvHqxELYq
+	 Ztidx9YkbQnprLVIWjwfE4CtHwKOxKLYlXvfSUA/1q1dWTwkaA8OOGWUu7rnKQOsyT
+	 JUumxDhRGaMh6J+Z0D+vXFbcKaPzzzWf74pIHEz9mIPLGHoV4SoIka1fJO5VUoyYg3
+	 X2F04FUeyX+bQ==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c40f29667e6so35867466b.0
+        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 14:41:14 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErE8TkFPSIkbSeMW9SoBVjC0uTg2vpphtAMz2MOPTJrVUDV7poA4ApeDc+gFYMS0QfbDWRs=@vger.kernel.org
+X-Gm-Message-State: APuU4Z++TJG/nDe6Q1wxn7jJzeh/RVA2JRtXeOZMe4Yof935nUFYT6Ug
+	m4GGSJqEAiKuJ/l1KwuYCOdSCvQGvSFQI+lAI357s80jheczDxjbwB+nRt1JyqH6/gBTGotvddj
+	2K2g7GVT+Zb0dFyQ33rLjYBYX29S6/pY=
+X-Received: by 2002:a17:907:d7cb:b0:c50:6222:7b0b with SMTP id
+ a640c23a62f3a-c509619b3c6mr57994366b.2.1794523273963; Thu, 12 Nov 2026
+ 14:41:13 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -85,20 +59,64 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20261112212628.265262-1-jmattson@google.com>
+In-Reply-To: <20261112212628.265262-1-jmattson@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 12 Nov 2026 14:41:02 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zMkKXRT0N18haYG+=jyO6FvL7VE84-=n9kpm7vnARH5UA@mail.gmail.com>
+X-Gm-Features: AclHuK-hQsdGLd3NwGyUYGMiZEoeH0DYgS5sqPTrrpIqwcFjykynjnQHXUyAQXI
+Message-ID: <CAO9r8zMkKXRT0N18haYG+=jyO6FvL7VE84-=n9kpm7vnARH5UA@mail.gmail.com>
+Subject: Re: [PATCH] KVM: nSVM: Gate CET state copy in svm_copy_vmrun_state()
+ on guest SHSTK
+To: Jim Mattson <jmattson@google.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On November 12, 2026 10:13:31 PM UTC, "H=2E Peter Anvin" <hpa@zytor=2Ecom> =
-wrote:
->Still, I have to wonder if it really makes sense to fold these leaves lik=
-e this, since they are going to be populated soon=2E Surely we're not that =
-short of bits?
+On Thu, Nov 12, 2026 at 1:26=E2=80=AFPM Jim Mattson <jmattson@google.com> w=
+rote:
 >
+> Like nested_vmcb02_prepare_save() and nested_svm_vmexit_update_vmcb12(),
+> svm_copy_vmrun_state() should gate copying s_cet, isst_addr, and ssp on
+> guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) (i.e. the feature is advertise=
+d
+> to the guest). Instead, copying is gated on
+> kvm_cpu_cap_has(X86_FEATURE_SHSTK) (i.e. the host supports shadow stacks)=
+.
 
-If you mean the leaves in scattered=2Ec, I'm thinking the moment a leaf ap=
-pears there with half of its bits, it'll get moved to its own separate leaf=
-=2E
+This is a bit confusing, nested_vmcb02_prepare_save() and
+nested_svm_vmexit_update_vmcb12() are about vmcb12 <-> vmcb02, so L2's
+state, while svm_copy_vmrun_state() is for L1's state. I think the
+patch is correct, but the examples are confusing.
 
---=20
-Small device=2E Typos and formatting crap
+Perhaps a better example would be __kvm_set_msr() and __kvm_get_msr()?
+
+>
+> Check guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK) instead of
+> kvm_cpu_cap_has(X86_FEATURE_SHSTK) in svm_copy_vmrun_state().
+>
+> Fixes: c5ba49458513 ("KVM: nSVM: Save/load CET Shadow Stack state to/from=
+ vmcb12/vmcb02")
+> Signed-off-by: Jim Mattson <jmattson@google.com>
+> ---
+>  arch/x86/kvm/svm/nested.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index 1299fdadeb73..b73bc9c3ebdb 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -1248,7 +1248,7 @@ void svm_copy_vmrun_state(struct kvm_vcpu *vcpu, st=
+ruct vmcb_save_area *to_save,
+>         to_save->rip =3D from_save->rip;
+>         to_save->cpl =3D 0;
+>
+> -       if (kvm_cpu_cap_has(X86_FEATURE_SHSTK)) {
+> +       if (guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK)) {
+>                 to_save->s_cet  =3D from_save->s_cet;
+>                 to_save->isst_addr =3D from_save->isst_addr;
+>                 to_save->ssp =3D from_save->ssp;
+> --
+> 2.56.1.703.gf848ed807c-goog
+>
