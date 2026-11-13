@@ -1,73 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794577776;
-	b=M8WQ+ET7hLhV0VSQ9GBx7UT+HRLyznf7xC881bRfJuk7GMXg/ixiHzzQS4+2bGYmym8K
-	 qG1zhRmkrXDIYuqUyZMFAj5ULFoTgizIqjumTlIgYo0xbJuk45LtmWc6j5FSuoOJgFfk7
-	 k7KUO8FfBVWeTvmywOJGsyQ/W/uKg9zcOulmMZDNvuinaNJ+4dhrZhU+JzOHeRJrVudt5
-	 ixL5MCCDs2Ie2N8eC9LV7FyvgrrWjiI6p/aD0k57RxdQBqOcMO2sGdvcTg9qaK4C4HbAK
-	 tvaVnYqMF/PL29bjpSC3NARa548AZA5fU1fPrjvw9kNR1bZNPAQVbP9Or1XZoOPR+BA==
+	t=1794577787;
+	b=s6MfJv0XZGTfhrhbeBo67RuJ0rKMoCwTK4oZS/W8dZnU0dUV8BUeai8N/EKrVRqUanXy
+	 EQGilbIjlT8jikCMp1OJJfbjk8zHmVPwIv7v3Q/E/hEvkY3ERGfkeHp9gr6hUcUXx522U
+	 9UW1LFfT2pxWjdba2CZrzwEBhb1W23ZSy3cj+Ur5DJUNlVnV91ez2vCrrEGrFmsVhl7fR
+	 cNdv06oOC3NYzidpFz5iauGVERH4gCEsaPfe3w23vZu77BpMI/TnKfBGJ3AFXUmQ9ytej
+	 u7kfd68IRiJIEt7uHsOump6tDlpYiU1IlqgjP6hC6UOfiVttGwmou2RRF1dF5N3+wuA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794577776;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794577787;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=UMb2NFxmC1W536I+xEiSuulbMCGZAWVT/hJMtcmN9sg=;
-	b=yVSk9WREXqm55IzSG9ih65y/RuleKUTKgzmmgBibQTTu7oz82mSF4AvYHBoOvqV0Uku+
-	 fZjW024KsRLcqZrTgwI1klePzVHrWlvHlpZNXuNQNJgNStUq6FIAysRlz4Ya1OqOYjExz
-	 Zltogn+pmM0lMdpPgpIPw7TkZp+0igvoXPI3J0GmsZKS5IBsIR0PTxD8HG/lCT69k+nnv
-	 GP0V/8BAjNiZswVsoLZWt54ic2UuJ+gF9xjn09vLuZOO4S1x8OnLmZv25gvvc2+yXNz/c
-	 m9X427bSotR04aM1qdIZbTNJufMM4xzW87Qh7wNNYG5q+J5Q7hTRLTVCjLYA6506kBA==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=JhiXYpkQzjLGTthVjpwYYHAyy2NJiDkV7bui1K5fAuo=;
+	b=AFRWbtULFO3yj0dStoD6r5PWkELi0rJZwJjc3neQM1u0Cf5jHz7niFxJS0oiTkpg22D7
+	 omS3RqUV0Dcyt9gbF9kO/H/EjEQ8AjkoleaOjCb7h2FYIvvlU5nFDCGlgrTk62ryBHmQM
+	 MbMFPB5ZwdyFkCNiCWHlNckSpzVa3/abw6Ozr1fV62hFKioMMrD2otNaieuWNrWoKku8N
+	 6j0mt1sik8CuQ8czCigWUkNos99IuHher1SS5kVdr6d+SvNFqPAM39OzAoTbYfMbYyiG7
+	 sYVwQQyfvq7TM6dlhvWOTWrVbjw/NfW3FmQZRa53rhX3podhpKykGli5gjh2TORleZg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bcsW8lDh;
-	arc=none smtp.remote-ip=209.85.215.197
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="Zog8kNj/";
+	arc=none smtp.remote-ip=209.85.214.199
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9375606A338
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:49:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9375606A338
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757BA606A338
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:49:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 757BA606A338
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bcsW8lDh
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cdaf2073b0cso510511a12.0
-        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:49:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Zog8kNj/
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2ed2803f863so8244325ad.1
+        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:49:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794577775; x=1795182575; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794577787; x=1795182587; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=UMb2NFxmC1W536I+xEiSuulbMCGZAWVT/hJMtcmN9sg=;
-        b=bcsW8lDhGxxv89mDQTbjcds6SoCyum/T2FWzxYNVAh1dSLF5s3XZdYQvnqvnhO4TNB
-         SZi0fvC/A0qNxz/6WBota3XdpYPBWUU1yLMDTBjLPV/uQHPQZi+Vv4IA8kyPa5UI7H2z
-         9aRTyi2MlblJzowjdJ2M6ciaK1J+x1i9cyq0odZUAcgnO2kbSFW3XUlI0F5pumvQsdfc
-         yWdVSUxm4mz5Ur4hn3xwCgLIGFZxe/6ZnLkyI3yk8d0CEojEgaIl/WNioBbFYgShhOVM
-         WVZ38/KMWyZfqyruyQv/6z0MSp2hy4HvR4CH6UJDhH0B8JLElm++YpaAo8av0gIlI95F
-         9fJQ==
+        bh=JhiXYpkQzjLGTthVjpwYYHAyy2NJiDkV7bui1K5fAuo=;
+        b=Zog8kNj//F+tJ47iZ4rd/vRdwfHcPmZr5PIpEYASYfSU0uIpdAaAQbKb2iSjKuGrJC
+         LmUEbEK0fotsAIirWG4OVuVjWqDlP7pjuqWSA8ipK/qrk7DYRZNuaVDxOvHgO8kfS5gP
+         iAjTP1uaV81zzy4WrR3/1ArFc86+k1PfnfcpRkgSeqWInm7zP0pERW/SD5cgU0GHTp/g
+         QLtTRskr0/3u+qWWtQxU1Y2cafkDY01Es0N0hG0T1L7SoYF7+CpvMvrqir+NdpRFWV0W
+         0f7V7cL5Svjza55mLbBuxfs/sAB4CwLy/CiFck2gS9zBwaFsk35GRMhzzzKtluEwoiP7
+         jd7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794577775; x=1795182575;
+        d=1e100.net; s=20260707; t=1794577787; x=1795182587;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=UMb2NFxmC1W536I+xEiSuulbMCGZAWVT/hJMtcmN9sg=;
-        b=xPV6Eq11NLSHVLj8rbAzI4cbPwqCyLbc/nwT0pBDCVyElPTOR/7cCWwwp9hlnMfzju
-         YWxU5qEJ88Drg6m0MGoyhsI8iyDyhSYWXXFFyd4PSB0dFs9t4Cnsb0qOU9G5u/aiUTtk
-         e/R2h1O40+SxM59HIwJf05ktn/pb2TdQDEF092PratzKKYRhwVvD7mY1vsrgunkSLwzZ
-         HPWVe3tO7KGYNgs2yMZSuze11zNTQ3MIThZFpzbDMTtV6gfKDhkd8qlVGRJKQziSuefY
-         9dF8CPzwjJnf9hhLrSs6Dv+JIIioiLyFmkN+m5cxzVeDM/ZV+EdXqKR66WBGMaRcmDCD
-         6ZrA==
-X-Gm-Message-State: APuU4Z888KE7HV5xyLQyag/NkU1NSp++AKrUw0CY7d/LTgvwjucM636z
-	RUI1NEu/EhRdgT9BsWyF8jXgQTnumtZ/y/QcANlK1gFdN4qELZndFgPNtRSX9N9uS/ZUdLKqvIm
-	1JgXjYA==
-X-Received: from pjvd14.prod.google.com ([2002:a17:90a:d98e:b0:3b0:9569:4e9a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3889:b0:3a7:f4d:b23d
- with SMTP id 98e67ed59e1d1-3b1b0b9f024mr2434653a91.52.1794577775185; Fri, 13
- Nov 2026 05:49:35 -0800 (PST)
-Date: Fri, 13 Nov 2026 05:46:42 -0800
-In-Reply-To: <20261016065729.85873-1-flyingpeng@tencent.com>
+        bh=JhiXYpkQzjLGTthVjpwYYHAyy2NJiDkV7bui1K5fAuo=;
+        b=uQbB02GlJvvN1G2jI8bq5ZdQexzWQ4kT64V3ArYUoqBfvt/e4stBCS0k+2JrI/6Sjm
+         vKDrcMjkiHcpiqqEOyNBkJ+phunr/TWK4iqfpxRR+tH6zBnYFO5FOv0Kj2Hv/8BtNvYy
+         0CxviwiC6wb6xcnEl1guLy/Nf2zuXs+BVi+FyCteLCEmNgIcDCiv38G3tugpgRHHQlF/
+         6i0DfvxoBBu7oemZfXyJqx6I5k5zSo+DJjWPPeokZotntiv21Bp7og09ZliJeG62t73l
+         5+2WqXyo29klHMy9AyrFMhUtLe69cG1mX8WGaJrNNYTwPn7cB7QxihKpgdvUfbJhSMJq
+         9iZg==
+X-Forwarded-Encrypted: i=1; AL+hErGKiWYNYF99ikWL1Dq2ZrnNPbj54N41C1ZmU+0/E5rtgwyAgi591kRYSmkkFELRBhQgwuo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+PkIh+PrWxeMt9/yQX9gDfoxTjA9PppX1U02Ha5T1MzB9dm0vu
+	+KwII2o9fZWWnynbaRyEwqlofd5rsXm/TO7TQKwTXaJkYkaIQdg0uW6kttQaYs4g5HCaCcUJ9c6
+	p1woqfw==
+X-Received: from plnd4.prod.google.com ([2002:a17:903:1984:b0:2e9:6b18:1067])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:eccc:b0:2e8:e17d:c8c3
+ with SMTP id d9443c01a7336-2ee0dcd18admr25455115ad.62.1794577786632; Fri, 13
+ Nov 2026 05:49:46 -0800 (PST)
+Date: Fri, 13 Nov 2026 05:46:44 -0800
+In-Reply-To: <20261027001600.2742995-1-ingyujang25@korea.ac.kr>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,42 +79,32 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261016065729.85873-1-flyingpeng@tencent.com>
+References: <20261027001600.2742995-1-ingyujang25@korea.ac.kr>
 X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
-Message-ID: <179441760468.74868.12150652348243797638.b4-ty@b4>
-Subject: Re: [PATCH] KVM: x86: Reject KVM_CREATE_VCPU when the host TSC
- frequency is unknown
+Message-ID: <179441787804.77218.13995076862430553653.b4-ty@b4>
+Subject: Re: [PATCH] KVM: x86: Move PIT existence checks into the PIT ioctl helpers
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, 
-	Peng Hao <flyingpenghao@gmail.com>
-Cc: kvm@vger.kernel.org
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Ingyu Jang <ingyujang25@korea.ac.kr>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, 16 Oct 2026 14:57:29 +0800, Peng Hao wrote:
-> If host TSC calibration fails, tsc_khz stays zero: tsc_init() marks the TSC
-> unstable, clears X86_FEATURE_TSC_DEADLINE_TIMER and gives up.  KVM has been
-> papering over that state since 03ba32cae66e ("VMX: x86: handle host TSC
-> calibration failure"), but the guest cannot actually run:
+On Tue, 27 Oct 2026 09:16:00 +0900, Ingyu Jang wrote:
+> kvm_vm_ioctl_get_pit() and kvm_vm_ioctl_get_pit2() always return 0,
+> so the error checks on their return values in kvm_arch_vm_ioctl()
+> never trigger.
 > 
->   - kvm_set_tsc_khz() computes thresh_lo == thresh_hi == 0 via
->     adjust_tsc_khz(), so use_scaling is always true and set_tsc_khz()
->     divides by tsc_khz to compute the scaling ratio, i.e. #DE in host
->     context.  This one is reachable from KVM_SET_TSC_KHZ alone, no guest
->     cooperation required.
->   - kvm_guest_time_update() re-requests KVM_REQ_CLOCK_UPDATE and returns 1
->     because get_cpu_tsc_khz() hands back the (zero) global tsc_khz for CPUs
->     with a constant TSC.  vcpu_run() only breaks out of its loop on
->     "r <= 0", so the vCPU thread spins in the host kernel rather than even
->     failing the guest.
->   - Everything that converts guest cycles to nanoseconds, e.g. the lapic
->     timer advance logic, divides by virtual_tsc_khz, which is zero as well.
+> Move the !kvm->arch.vpit checks from the callers into the PIT ioctl
+> helpers, so that these error checks handle the missing PIT case.
 > 
 > [...]
 
 Applied to kvm-x86 misc, thanks!
 
-[1/1] KVM: x86: Reject KVM_CREATE_VCPU when the host TSC frequency is unknown
-      https://github.com/kvm-x86/linux/commit/687fe634b54e
+[1/1] KVM: x86: Move PIT existence checks into the PIT ioctl helpers
+      https://github.com/kvm-x86/linux/commit/9e03a08bda04
 
 --
 https://github.com/kvm-x86/linux/tree/next
