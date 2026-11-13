@@ -1,76 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794533385;
-	b=ToWq7qeuccBeub+nyRjRUaaPuFAswM+5iMJxswbTJkgFRBT7a6IHi0cFH09TVzON+Fn6
-	 bvsVM1diK9M3VnbFHhH2+QGXof3fgGoPh83SJ16R6PIvbVM1BEVwGjdgyfQsyX94PSAHc
-	 CUAF3wAw7KT9YgogE/Y/UE672d2zvF7WomHNkZmAyy6tRTbQjlzMAlY4+C2kwv34i/ZXi
-	 25R9b8M854KjnEgpn58RxcHaerxHHyKYlTQmmGBYwkON2YJ1G08p3ky+2VtZC6vjGRqNl
-	 e4IhZqQqCzEvNiPi4rdqZn6VmXNDPgH7bLIQgwCpnQyTjtLni2EaatT3mXYU0kucODg==
+	t=1794533494;
+	b=kLLFtcaQwLgF6hTKCxKkI0Aj1ZG7frqIwHGMl4D+j60VIZ70w2dC2mHCZ7CcctVzIlpV
+	 Kk5p/66yqFmiOE6dnx2w3lna9MgOjmw3dkUgUk8ATD3uiKZccunzNb+OH6M2MafJiqCR7
+	 +O/JkXYajZ0C/tOj85DPZM6Q9jo1ejb7OR+NW8iVQKHEYFivGWxBuiYM7F7k378RPIo1w
+	 JHcqtrzWGdVhkrixGd5+JYyNJKIY9qCISgQOug3+Vrdw6BuljjmRNXF2SAzoML12hNHXo
+	 o5pLHt0ky9JgfvKSIIGq4LWmjYT3OmWr7Rq7ZEsC1W5ytGOhCcTPf6yWY+nrQSyThqg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794533385;
-	h=DMARC-Filter:X-UUID:X-CID-P-RULE:X-CID-O-INFO:X-CID-META:X-CID-BVR:
-	 X-CID-BAS:X-CID-FACTOR:X-CID-RHF:X-UUID:X-User:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=eEm4Qix6NtzscQvmZFr8J73RisDDpJq+6mqvimED2UE=;
-	b=yuwCA3/jaljxSvWIUkTDMkySBR7wGDYEz7BoACRXjTGcVpAOYi4peI33Q/3FNZEqaG6O
-	 blKkZk51dqB7Pltd0jvgdqsTv/FZkFGoYg+bmJbstzNDKBmWBPCeaPxtQSUxf/Zx94KLv
-	 Rr8mh+jFWz9nhjyFg0zDEaBgV80SOR7zy+gflb2lplmr8aNTKqxwNvgQTThJNu7Fn+VHP
-	 M+uZYErTwohvoK7GjPX2ebeuMOLXA3JE+ucrytX9tje71HDvC8Tn0AcmejipVaf3EXQCd
-	 NJTaBETfq5m292sRywk5+RqKtU9APn7+rlQ/X7JHGUboAxUvEhN22JqGAUOYDDKagzw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794533494;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=rycHbTOJK2it38YspaXZxnOqkvIv8pjnp4MzdUIJoBg=;
+	b=wuanZjjOe3Iyka7nxqhWlTk9JtNty1gurWzrKGeAvmSFhat/Dv1wCDQeaUOxQbUSty+J
+	 FGv8athf4fI131qm3IjNVG1REb+EoWilx4MeY3yzawfFkPjICezNj6PTim51oUgFwR3F9
+	 lv8uxBAGgYRro5Ho9mMF7TA5cFL5irNMINKPj/oY5NCAidYA4rsc5ocVrUNE88lDqMySC
+	 EZJ6sXplWtZD4asJ88ciywXAwZCAm/LoH/10SaJFvgIL6/gwOrpH0otbptW7BbGsGtign
+	 h6L+V/Dfnw7NeeeM3/ltzSD5v1fT2E51FQbFv9lMZqYrhChd2L8YlV5/FwaNhqaAjtQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=kylinos.cn;
-	spf=pass smtp.mailfrom=kylinos.cn;
-	arc=none smtp.remote-ip=124.126.103.232
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=IcY3TtCu;
+	arc=none smtp.remote-ip=209.85.214.178
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0ACA606A330;
-	Fri, 13 Nov 2026 01:29:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0ACA606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: b20f2cacdf0111f19a56ed5b684f684d-20261113
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:a1393f79-c721-4503-9941-82aec3f6bac4,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:7db8b62,CLOUDID:78c18e35f9b39b416e800ddba86a14e3,BulkI
-	D:nil,BulkQuantity:0,SF:80|81|82|83|102|123|865|898,TC:nil,Content:0|15|50
-	|99,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:
-	0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: b20f2cacdf0111f19a56ed5b684f684d-20261113
-X-User: zhaoguohan@kylinos.cn
-Received: from ubuntu.. [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <zhaoguohan@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 453346072; Fri, 13 Nov 2026 09:29:40 +0800
-From: zhaoguohan@kylinos.cn
-To: mst@redhat.com
-Cc: bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	eperezma@redhat.com,
-	hpa@zytor.com,
-	jasowang@redhat.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	mingo@redhat.com,
-	netdev@vger.kernel.org,
-	tglx@kernel.org,
-	virtualization@lists.linux.dev,
-	x86@kernel.org,
-	zhaoguohan@kylinos.cn
-Subject: Re: [PATCH RFC] vhost: set dirty log bits without pinning pages on x86
-Date: Fri, 13 Nov 2026 09:29:37 +0800
-Message-ID: <20261113012937.40818-1-zhaoguohan@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <af7f05bf637337d35fdd10f3e0dbb5e39d7780e7.1794480795.git.mst@redhat.com>
-References: <af7f05bf637337d35fdd10f3e0dbb5e39d7780e7.1794480795.git.mst@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EB2606A331
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 01:31:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67EB2606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=IcY3TtCu
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2e9f6a16afcso22475ad.1
+        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 17:31:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794533493; x=1795138293; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rycHbTOJK2it38YspaXZxnOqkvIv8pjnp4MzdUIJoBg=;
+        b=IcY3TtCu5761QwGkzP5go5rX/wc//VSmZY9B9cJPZbfI9qEKb3nueho3bx5em7ukkU
+         eg5rek7shDDtGkOEgibVHzkEyb7K64GyNCEVSv0VVRGesdu/+jguq2ocvMjUvWzfLSZe
+         aVSzEcbmhs2Gr1C1mI5NzTFA1TQIWVNt0YrLeKpQ7t33DRLaIWeSkl8N5eMNIAAjKnCH
+         SkyUj3DJYWOHF1dKiFm6WNUbiYyUyVk8/4MDrHEBorwtCUmypMzBEcxW0pnAwl/Hz3Ul
+         LaY6i1sWRM/vGKd4iKlJDtUE5RvVpV+Q/39flJXF0iTgK8oDk3ygKu5lQqjJHvd/bTdX
+         DYqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794533493; x=1795138293;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rycHbTOJK2it38YspaXZxnOqkvIv8pjnp4MzdUIJoBg=;
+        b=R32sg3LZag14GJ81NR8IteNT7iRBzRfLaYsJWdpROrc9UTG7JRXjcn6/VfPsIGziXU
+         RZdUlbBK3S4UUrc6ai9/YXldrOlvbYsX4nTYain7YHgZM1jEZpMbYTgEZRkc9efIutws
+         /Ylylg/AY39xvJeBv/LfuIKqPiYqovDNGvwlCY7RQXjMs5SKIJ1CsQgihqRkVi+u33Xb
+         Cnl6Ztgrz5jXlx5GJmVUgVO/H4SMjPEfZzodBghI1mU/LYj83Zi388bG3Gx+qvgz7wLH
+         1eUJi+bFC2qpXLJwIbN9QUEv/xxlkdNMaUhNL34Hbz3TQHXq+AXseKWy+aMAqjFg9ZC+
+         u9EA==
+X-Forwarded-Encrypted: i=1; AL+hErEG9FGoRq/jcbT3lOMVmjjdodt+J68AYTmiBtpCpnLr5SXeUqaH49DSBxg2Lq89MMuYCJw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z939O5tJPqNyaI/L/045no+P8y/4W2am1dKl5ghbOdjaHF0dv2x
+	nNx/kAiU6YEhF8+rr8duoOVc5csXZ+3ocNNd68sZ1NUsn7zygji53C+qZzBvaVa2XA==
+X-Gm-Gg: AYBFou3auwODU7EPFYbDkIn6af9mcnPMhocvZ4Jko2gMtlkpL1lf4sudWRdB6jSt0sY
+	1DCPrBctxleYZ0ZTwqkpQIaHjX2cRbDu0gffpzXjkBlQ9h6/WiohNEGfTT0laf8AkFgLPfIeAKK
+	6DYAaWUE4Omn7lWAjmEAoBduKPxbk/2sZwLncKRrG15RgVLwBzDDKn+ID5D+HaLl4ta7RXGQmAX
+	tPrmcCDIOnrG3lCihbv1eRkkuxq1g0MpFQPkZl72N6KmYXmaLLCEy62+v9Z/Bvaw8dl7sG1RZzH
+	NCjSA+0IkSf2H6plZqIrul65rft2v9+tqiSjpVQtH4CWsb06No7dCoKZoBcZGoEh45MS60Gr1/N
+	tosWQAOCtFTm29luzH8htWxDcrXLEg/e+GLWcSSpGe1Un0vbJ8aRpZIRBAzzV+5A53zIWFQXE99
+	EDwzSCge3TxqBqRfehnQd895KbXZIZLGw/aSIJg2Zqk8a3HBbIoBx/FQ6vb1mERcwWdFuXauXoZ
+	c+h/YSW+i8Xgff1o3skZhwgeteP712mSYte8dLotT7o9WDLOoJ8DsgX9iVPZFEXD/6DNP7Xxfra
+	RTyUyjJYYAl/446cb0V6irvOi/dIqMCuE57Qzwgd5h8VkUTNnBvVBZyr73jzOMnABdZpoivzL/c
+	gVwRQKQ+1z5MYGnEkjS6e8w==
+X-Received: by 2002:a17:902:f607:b0:2e9:7ba2:a8bb with SMTP id d9443c01a7336-2ee0f274d9fmr3031435ad.3.1794533492904;
+        Thu, 12 Nov 2026 17:31:32 -0800 (PST)
+Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8bed2b190cfsm291532b3a.51.2026.11.12.17.31.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 17:31:31 -0800 (PST)
+Date: Fri, 13 Nov 2026 01:31:29 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Ankit Soni <Ankit.Soni@amd.com>
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	David Woodhouse <dwmw2@infradead.org>, Pranjal Shrivastava <praan@google.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Vipin Sharma <vipinsh@google.com>, 
+	Nicolin Chen <nicolinc@nvidia.com>, John Starks <dev@jstarks.net>
+Subject: Re: [PATCH v7 02/18] iommu/pages: Add APIs to
+ preserve/unpreserve/restore iommu pages
+Message-ID: <avZoWubpbulF3UUa@google.com>
+References: <20261110040828.1774343-1-skhawaja@google.com>
+ <20261110040828.1774343-3-skhawaja@google.com>
+ <wirs4vcszlt6wkw2wfauhjnxve4n5ivnnpkg35fqid34htepet@fn4opgt3lt2x>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -80,94 +107,20 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <wirs4vcszlt6wkw2wfauhjnxve4n5ivnnpkg35fqid34htepet@fn4opgt3lt2x>
 
-On Thu, Nov 12, 2026 at 05:53:47AM -0500, Michael S. Tsirkin wrote:
-> vhost had a TODO to replace page pinning with a version
-> of set_bit that works on userspace memory, since forever.
+On Thu, Nov 12, 2026 at 04:31:27PM +0000, Ankit Soni wrote:
+>On Tue, Nov 10, 2026 at 04:08:08AM +0000, Samiullah Khawaja wrote:
+>> IOMMU pages are allocated/freed using APIs using struct ioptdesc. For
+>> the proper preservation and restoration of ioptdesc add helper
+>> functions.
+>>
+>> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
 >
-> It is really best to avoid GUP on fast path entirely.
-> Implement set_user_bit and use it in vhost, to do just that.
-[...]
-> lightly tested. pls test and resubmit with your tool.
-
-Thanks, this is much simpler than my version. Two comments on
-set_bit_user() before I resubmit:
-
-> +	int __err = 0;							\
-> +	__uaccess_begin();						\
-> +	asm volatile("\n"						\
-> +		     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"		\
-> +		     "2:\n"						\
-> +		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
-> +					   %[errout])			\
-> +		     : [errout] "=r" (__err),				\
-> +		       [ptr] "+m" (*(u8 __user *)(addr))		\
-
-errout is only written on the fixup path, so it needs "+r", as in
-__try_cmpxchg_user_asm(). With "=r" gcc drops the initialisation; here
-(gcc 13.3, x86_64_defconfig) it even shares a register with mask:
-
-     1a3:	lock or %dl,(%rax)
-     1a9:	test   %edx,%edx
-     1ab:	jne    1bd <log_write+0x5d>
-     ...
-     1bd:	mov    $0xfffffff2,%eax
-
-so every call returns -EFAULT, and log_write() stops after the first
-page.
-
-> +	__uaccess_begin();						\
-
-No access_ok() here. vhost checks the log range when it is set up and
-I couldn't find a way around that, but GUP used to reject kernel
-addresses by itself. user_access_begin() would keep the check (and the
-nospec barrier) local. Something like this, build-tested on x86_64 and
-i386 only:
-
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -597,19 +597,23 @@ _label:									\
- /* set_bit() on a byte of user memory; returns -EFAULT on fault. */
- #define set_bit_user(nr, addr)					\
- ({									\
--	int __err = 0;							\
--	__uaccess_begin();						\
--	asm volatile("\n"						\
--		     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"		\
--		     "2:\n"						\
--		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
--					   %[errout])			\
--		     : [errout] "=r" (__err),				\
--		       [ptr] "+m" (*(u8 __user *)(addr))		\
--		     : [mask] "q" ((unsigned char)BIT(nr))		\
--		     : "memory", "cc");				\
--	__uaccess_end();						\
--	__err ? -EFAULT : 0;						\
-+	u8 __user *__p = (addr);					\
-+	int __err = -EFAULT;						\
-+	if (user_access_begin(__p, sizeof(*__p))) {			\
-+		__err = 0;						\
-+		asm volatile("\n"					\
-+			     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"	\
-+			     "2:\n"					\
-+			     _ASM_EXTABLE_TYPE_REG(1b, 2b,		\
-+						   EX_TYPE_EFAULT_REG,	\
-+						   %[errout])		\
-+			     : [errout] "+r" (__err),			\
-+			       [ptr] "+m" (*__p)			\
-+			     : [mask] "q" ((unsigned char)BIT(nr))	\
-+			     : "memory", "cc");			\
-+		user_access_end();					\
-+	}								\
-+	__err;								\
- })
- 
- /*
-
-If this looks right, I'll fold it in, run my test in a VM and resubmit
-with the test as a second patch.
+>Reviewed-by: Ankit Soni <Ankit.Soni@amd.com>
+>
 
 Thanks,
-Khan
+Sami
