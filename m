@@ -1,46 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=101.6.4.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794563322;
-	b=eZTUjflcaQ6AsbHiZOCwLLKT0Qqa2EGulOV6PpYhTBvjGav/4ZiUHk2ajQT72LI3wD9E
-	 8FIw6TuHFhspDyIJY87FUvB1GvwyEFdbX4AgqWhv4bydDgexM78iN0ptILWlcv2De+jUw
-	 Qbz+SiywBacMrDiGl8pZ4sLSdBpJswNtGJYJCfcM/TNqQqPsBapYNj04cw2X30LhwDEhG
-	 sw23i0wXBvRZanu+ctt7YylTF6QSiVZDZ2YtwZ/W9A8WXl4fyo7G0maUVtS8pZ+4lulN2
-	 FpUo/VMU1Cq0LbM2aAc5qFUm5mxqnodJpforKRxBy4/b0LWUw+4/5uShN7rObdI/GKg==
+	b=YRWU0Un473Ud1hc1oq0zWVH797sQus6xH8eSLsG5yhllU6Cu99f+NLLamwuakF6a1cN+
+	 rPpkEMH1AKr0Pek0YoNaB5/LtADLWZ1JJ+aBrXf2uS8BOpFI88bdRucrh89FtI+Rxznif
+	 DJPefBXwiXRhi648IPPE1tIHCerz1IHBjqI0NPoN/N1EaYGYINfeGBFl/GGD0L5os/Oec
+	 VeEZLSwOjU41zN3xuLm40Y+yHnEZkHu8DVEShsv+TRbWpJ7i20gG1j4tSo2hBKFssOhU8
+	 3RgnX+lnGVlwYkVaaHd4GIeNVxYqb66pwHsR8T3LgU4a/kXBBQEm6dcXn/HD+j+l2aA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794563322;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
 	 X-CM-SenderInfo;
-	bh=aundBwdj27rtC6OA33CJBdTLIboDzXkrGp1qs1FvdEc=;
-	b=FmJQw3LYGuRpJEF4faG94JX5U9kL94tO/e2PyJecCQ/saKsUuQEgOfcv7IjyAyOVRcOo
-	 U/tebXATfWCLxqizjlAFNOhMmGTy4vIxChXQjc+PTuz3K8weanxyhrrVzbgMENPstVcN1
-	 jpToy0atASAb9zdDwSGPvEiJwCZ9oDwIq4rSiKD5RPIzCv8HwbOliwRqG+caw7Qg+HOkH
-	 q4TQK9Myb3QmbirOHX41UfrWiXaq+4YLdQ1h4zDvjV69XGeR43TaRZw5H7q6mDfbpTYY6
-	 B/uRhk97Yml+9ccvAQUfKKZUlpU06o5mgrgopow34aABA+wsAUemeyfsHWfGHCWu8mQ==
+	bh=uyB2d7JldGTrGzC0YCKTHJcf0w2QHiOdrCM0jtxiBRA=;
+	b=VLEfEoFz9D75E8kAQvixpuSiA85Lodjhmiv2zSQomTVLy4oS3/kYj9zqm7p0JQY5/GVs
+	 i8KtyKvRHvLYPeo5g4DNUhEmusZwhUBsDLqNsbBs4ZFAikJaBFGlAJpH47bwFfoNLQA3o
+	 e0EriujvStcRCGGX5iRUPncEn4rw7i4O4WtusPko/k/R9xN2YAO1UZf/H2O0WVY2WQ2rR
+	 ikCctBh4m5p/jFwNJbaWoRhZe28OUvkr2PyVfA1aL4IBJNHRBTtCq+y6wayHVyK9JFRhI
+	 F0v3MXphPvVU6kODZBpVxcIvexjcOW0zGk75+mABtmWd6tK2S8G1Yu7ICLJv5+EMH9A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=mails.tsinghua.edu.cn;
 	spf=pass smtp.mailfrom=mails.tsinghua.edu.cn;
-	dkim=pass header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=Cq14Y4Ya;
+	dkim=pass header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=TfHShXJp;
 	arc=none smtp.remote-ip=101.6.4.70
 Received: from tsinghua.edu.cn (smtp46.tsinghua.edu.cn [101.6.4.70])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B6E606A335
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9118606A339
 	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 09:48:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6B6E606A335
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9118606A339
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=Cq14Y4Ya
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=TfHShXJp
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
 	Date:Message-ID:In-Reply-To:References:MIME-Version:
-	Content-Transfer-Encoding; bh=aundBwdj27rtC6OA33CJBdTLIboDzXkrGp
-	1qs1FvdEc=; b=Cq14Y4Ya4Cdcq+fBy0p77h6myfZNRSLatex8OzRse/pG9sV+Ue
-	rYxidQJUhQR4at/6YvhuTVtuL2nJyKihrbQzAerdc2c2eLCEnlIzU7R0yixjz75r
-	15uDcbMTU6NhMzxFRQlwJlO0KOOxXp5lKb/HwdGqqFw00E865FjyaY/qA=
+	Content-Transfer-Encoding; bh=uyB2d7JldGTrGzC0YCKTHJcf0w2QHiOdrC
+	M0jtxiBRA=; b=TfHShXJpw5nq3aIrXupXvTMO7Bq6j5SSPoLf30YI+RCR634oMG
+	xBGMsM+IP7EJuzo+bqHYQN+Y5YTkRfvFSCIOaVKXs6IrHGjIsbwLfjmux4xYp6zA
+	uoMzo0NvTCEYB32LcYYd2UvGcMZFj8s9PFsO2KMmhTYgQW4+NMaJewl/U=
 Received: from ubuntu (unknown [101.5.154.165])
-	by web1 (Coremail) with SMTP id yAQGZQA3qzvR3PZqgA5CAg--.9318S3;
-	Fri, 13 Nov 2026 17:48:25 +0800 (CST)
+	by web1 (Coremail) with SMTP id yAQGZQA3qzvR3PZqgA5CAg--.9318S5;
+	Fri, 13 Nov 2026 17:48:29 +0800 (CST)
 From: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>
 To: qemu-devel@nongnu.org
 Cc: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>,
@@ -58,9 +58,9 @@ Cc: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>,
 	bin.meng@processmission.com,
 	tangtao1634@phytium.com.cn,
 	Chao Liu <chao.liu@processmission.com>
-Subject: [RFC PATCH 01/20] hw/char/dw8250: implement the UART status register
-Date: Fri, 13 Nov 2026 17:47:35 +0800
-Message-ID: <b5f1bddaaa4e4d16aaba94267475140c8e6be74b.1794555589.git.w-yf22@mails.tsinghua.edu.cn>
+Subject: [RFC PATCH 03/20] target/arm: report SMCCC v1.1 support
+Date: Fri, 13 Nov 2026 17:47:37 +0800
+Message-ID: <220bd78f343a5d9d85a03e20c26ece7152a0feb4.1794555589.git.w-yf22@mails.tsinghua.edu.cn>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1794555588.git.w-yf22@mails.tsinghua.edu.cn>
 References: <cover.1794555588.git.w-yf22@mails.tsinghua.edu.cn>
@@ -74,13 +74,13 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:yAQGZQA3qzvR3PZqgA5CAg--.9318S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxCw1rKw15Kr13Cr45WF4rXwb_yoW5AF4Dpr
-	90kFZ8tF1qyw13W3s3KFW3GrsxXFWrG3W0yr43trZ8tF4UCw4kKry3Za4aqFWDZrn8Jr4U
-	X34DGwsFgayjvr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:yAQGZQA3qzvR3PZqgA5CAg--.9318S5
+X-Coremail-Antispam: 1UD129KBjvJXoWxCr1DCw4DXF47uF47KF48Zwb_yoW5JFWkpF
+	W5Xrn8GryxX343Ga9xArWUZF15Ga9YkFn0yr47t3W8Wws8Jry5CrZ0g3ZakFZ8K39xua9r
+	AF12vr13KFWkXwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUHF14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jr4l82xGYIkIc2
-	x26xkF7I0E14v26r4j6ryUM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JrWl82xGYIkIc2
+	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
 	Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
 	A2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAa
 	c4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzV
@@ -91,96 +91,74 @@ X-Coremail-Antispam: 1UD129KBjvJXoWxCw1rKw15Kr13Cr45WF4rXwb_yoW5AF4Dpr
 	WUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAK
 	I48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4UJV
 	WxJr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF
-	0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjfUj9a9DUUUU
+	0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjfUeJPEUUUUU
 X-CM-SenderInfo: fzn1wj2s6ptxtovo32xlqjx3vdohv3gofq/
 
 From: Chao Liu <chao.liu@processmission.com>
 
-The Rock 5B machine runs a vendor U-Boot and Linux that read the UART
-status register to check the transmitter and FIFO state. Implement the
-register.
+Guests use the SMCCC version call to select the conduit for firmware
+services such as SCMI.  QEMU reports PSCI 1.1 but rejects the SMCCC
+version call, so a guest running with the SMC PSCI conduit never
+initializes SMCCC and cannot use SCMI over SMC.
+
+Advertise SMCCC 1.1 through PSCI_FEATURES and the SMCCC version call.
 
 Signed-off-by: Chao Liu <chao.liu@processmission.com>
 Signed-off-by: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>
 ---
- hw/char/dw8250.c | 43 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ target/arm/kvm-consts.h |  5 +++++
+ target/arm/tcg/psci.c   | 15 +++++++++++++++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/hw/char/dw8250.c b/hw/char/dw8250.c
-index 50baeae62c..4f9a8ea989 100644
---- a/hw/char/dw8250.c
-+++ b/hw/char/dw8250.c
-@@ -6,6 +6,7 @@
-  */
+diff --git a/target/arm/kvm-consts.h b/target/arm/kvm-consts.h
+index 9fba3e886d..ab64c91888 100644
+--- a/target/arm/kvm-consts.h
++++ b/target/arm/kvm-consts.h
+@@ -88,6 +88,11 @@ MISMATCH_CHECK(QEMU_PSCI_0_2_FN64_CPU_ON, PSCI_0_2_FN64_CPU_ON);
+ MISMATCH_CHECK(QEMU_PSCI_0_2_FN64_MIGRATE, PSCI_0_2_FN64_MIGRATE);
+ MISMATCH_CHECK(QEMU_PSCI_1_0_FN_PSCI_FEATURES, PSCI_1_0_FN_PSCI_FEATURES);
  
- #include "qemu/osdep.h"
-+#include "qemu/bitops.h"
- #include "qemu/log.h"
- #include "qapi/error.h"
- #include "hw/char/dw8250.h"
-@@ -14,20 +15,62 @@
- 
- #define DW_UART_REGION_SIZE 0x100
- 
-+#define DW_UART_USR   (0x7C >> 2) /* UART Status Register */
- #define DW_UART_RE_EN (0xB4 >> 2) /* Receiver Output Enable Register */
- #define DW_UART_DLF   (0xC0 >> 2) /* Divisor Latch Fraction Register */
- #define DW_UART_CPR   (0xF4 >> 2) /* Component Parameter Register */
- #define DW_UART_UCV   (0xF8 >> 2) /* UART Component Version */
- #define DW_UART_CTR   (0xFC >> 2) /* Component Type Register */
- 
-+/* UART Status Register bits */
-+#define DW_UART_USR_BUSY BIT(0) /* UART busy */
-+#define DW_UART_USR_TFNF BIT(1) /* Transmit FIFO not full */
-+#define DW_UART_USR_TFE  BIT(2) /* Transmit FIFO empty */
-+#define DW_UART_USR_RFNE BIT(3) /* Receive FIFO not empty */
-+#define DW_UART_USR_RFF  BIT(4) /* Receive FIFO full */
++/* SMCCC architecture calls. */
++#define QEMU_SMCCC_VERSION_FUNC_ID                0x80000000
++#define QEMU_SMCCC_ARCH_FEATURES_FUNC_ID          0x80000001
++#define QEMU_SMCCC_VERSION_1_1                     QEMU_PSCI_VERSION_1_1
 +
-+/* FIFO Control Register bits */
-+#define DW_UART_FCR_FIFO_EN BIT(0) /* FIFO enable */
-+
-+/* Line Status Register bits */
-+#define DW_UART_LSR_DR   BIT(0) /* Receiver data ready */
-+#define DW_UART_LSR_THRE BIT(5) /* Transmitter holding register empty */
-+#define DW_UART_LSR_TEMT BIT(6) /* Transmitter empty */
-+
- #define DW_UART_UCV_VALUE 0x3332332A /* "323*" -> v3.23a */
- #define DW_UART_CTR_VALUE 0x44570110 /* "DW" */
+ /* PSCI v0.2 return values used by TCG emulation of PSCI */
  
- static uint64_t dw8250_ext_read(void *opaque, hwaddr addr, unsigned int size)
- {
-     DW8250State *s = opaque;
-+    SerialState *serial = &s->serial_mm.serial;
- 
-     switch (addr >> s->regshift) {
-+    case DW_UART_USR: {
-+        bool fifo_enabled = serial->fcr & DW_UART_FCR_FIFO_EN;
-+        bool thr_empty = serial->lsr & DW_UART_LSR_THRE;
-+        bool tx_idle = serial->lsr & DW_UART_LSR_TEMT;
-+        bool rx_ready = serial->lsr & DW_UART_LSR_DR;
-+        bool tx_empty;
-+        bool tx_full;
-+        bool rx_full;
-+
-+        if (fifo_enabled) {
-+            tx_empty = fifo8_is_empty(&serial->xmit_fifo);
-+            tx_full = fifo8_is_full(&serial->xmit_fifo);
-+            rx_full = fifo8_is_full(&serial->recv_fifo);
-+        } else {
-+            tx_empty = thr_empty;
-+            tx_full = !thr_empty;
-+            rx_full = rx_ready;
+ /* No Trusted OS migration to worry about when offlining CPUs */
+diff --git a/target/arm/tcg/psci.c b/target/arm/tcg/psci.c
+index d8e01df762..81ca2fbb44 100644
+--- a/target/arm/tcg/psci.c
++++ b/target/arm/tcg/psci.c
+@@ -95,6 +95,20 @@ void arm_handle_psci_call(ARMCPU *cpu)
+     case QEMU_PSCI_0_2_FN_PSCI_VERSION:
+         ret = QEMU_PSCI_VERSION_1_1;
+         break;
++    case QEMU_SMCCC_VERSION_FUNC_ID:
++        ret = QEMU_SMCCC_VERSION_1_1;
++        break;
++    case QEMU_SMCCC_ARCH_FEATURES_FUNC_ID:
++        switch ((uint32_t)param[1]) {
++        case QEMU_SMCCC_VERSION_FUNC_ID:
++        case QEMU_SMCCC_ARCH_FEATURES_FUNC_ID:
++            ret = 0;
++            break;
++        default:
++            ret = QEMU_PSCI_RET_NOT_SUPPORTED;
++            break;
 +        }
-+
-+        return (!tx_idle ? DW_UART_USR_BUSY : 0) |
-+               (!tx_full ? DW_UART_USR_TFNF : 0) |
-+               (tx_empty ? DW_UART_USR_TFE : 0) |
-+               (rx_ready ? DW_UART_USR_RFNE : 0) |
-+               (rx_full ? DW_UART_USR_RFF : 0);
-+    }
-     case DW_UART_UCV:
-         return DW_UART_UCV_VALUE;
-     case DW_UART_CPR:
++        break;
+     case QEMU_PSCI_0_2_FN_MIGRATE_INFO_TYPE:
+         ret = QEMU_PSCI_0_2_RET_TOS_MIGRATION_NOT_REQUIRED; /* No trusted OS */
+         break;
+@@ -177,6 +191,7 @@ void arm_handle_psci_call(ARMCPU *cpu)
+     case QEMU_PSCI_1_0_FN_PSCI_FEATURES:
+         switch (param[1]) {
+         case QEMU_PSCI_0_2_FN_PSCI_VERSION:
++        case QEMU_SMCCC_VERSION_FUNC_ID:
+         case QEMU_PSCI_0_2_FN_MIGRATE_INFO_TYPE:
+         case QEMU_PSCI_0_2_FN_AFFINITY_INFO:
+         case QEMU_PSCI_0_2_FN64_AFFINITY_INFO:
 -- 
 2.53.0
 
