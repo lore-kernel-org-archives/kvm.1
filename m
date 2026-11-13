@@ -1,75 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794577768;
-	b=CKBg1Pm2WV9wbc4iCd3RT4KFJ16o70t7aQqjOkEIHeFE1nXMRbeIkFg28SHTO7C0aHgG
-	 maNldWvtXYx0OFHGbzqUG/VnK2YXnW7j/nCvtyWHRbvvOpoJIM7gygYv7OQGcBdhY7GqV
-	 2LxPduqxKmfa5aG4FBA7rGrzYt+t5agkBNw7w8DSTDRd5W4CeLjBAA3tvWEbiT9KCozZF
-	 uSkvlYTOFgij1CfaSTtgcXzRw4uiw5vKGPrPOd/4HsMpSw9elizz+9SmcPUxKv0Y4N5La
-	 5/XfvRVl8k4ggsxpoSciPtOqAu4vihcvruxYO5R6D9t5crqrqlfR4tHm0zYkJBSDDqw==
+	t=1794577776;
+	b=M8WQ+ET7hLhV0VSQ9GBx7UT+HRLyznf7xC881bRfJuk7GMXg/ixiHzzQS4+2bGYmym8K
+	 qG1zhRmkrXDIYuqUyZMFAj5ULFoTgizIqjumTlIgYo0xbJuk45LtmWc6j5FSuoOJgFfk7
+	 k7KUO8FfBVWeTvmywOJGsyQ/W/uKg9zcOulmMZDNvuinaNJ+4dhrZhU+JzOHeRJrVudt5
+	 ixL5MCCDs2Ie2N8eC9LV7FyvgrrWjiI6p/aD0k57RxdQBqOcMO2sGdvcTg9qaK4C4HbAK
+	 tvaVnYqMF/PL29bjpSC3NARa548AZA5fU1fPrjvw9kNR1bZNPAQVbP9Or1XZoOPR+BA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794577768;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794577776;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=3v73r32eIAJAgWPi1LsXT3feGTevyTVBk7sdUb/TcA8=;
-	b=xIViLw2lNBANqwKb+OBOCdRHQxlAlF5qSY/w+Of/s3TJuzErN3K2lYUoKUAUocWE5Ehu
-	 5HAizL2OoI2TJLkTa+qxR1fXMqdNge+Aka+2MB9qFGYgriPAUe8BOf+Hp98dZ8au2/PjI
-	 i2E7WH4Q4meAK+gtIaCD9uFO7MPvtoRtcgNKPihXBBbUznJ+hIQpaQAAHYMzrsafrRATS
-	 f4E1w0ggTtvkR0mY4W7WGyfJYRTiCRsSfkM03EL8t9AwVV5knotUQgRkkZzoo1E+t4Fvl
-	 KA4czGVHZinHmQ1HbzslVAmKU8TfCgS3DxWkoF+GSxSy009srbhggDpzwBubPocYGpQ==
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=UMb2NFxmC1W536I+xEiSuulbMCGZAWVT/hJMtcmN9sg=;
+	b=yVSk9WREXqm55IzSG9ih65y/RuleKUTKgzmmgBibQTTu7oz82mSF4AvYHBoOvqV0Uku+
+	 fZjW024KsRLcqZrTgwI1klePzVHrWlvHlpZNXuNQNJgNStUq6FIAysRlz4Ya1OqOYjExz
+	 Zltogn+pmM0lMdpPgpIPw7TkZp+0igvoXPI3J0GmsZKS5IBsIR0PTxD8HG/lCT69k+nnv
+	 GP0V/8BAjNiZswVsoLZWt54ic2UuJ+gF9xjn09vLuZOO4S1x8OnLmZv25gvvc2+yXNz/c
+	 m9X427bSotR04aM1qdIZbTNJufMM4xzW87Qh7wNNYG5q+J5Q7hTRLTVCjLYA6506kBA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iYprxckR;
-	arc=none smtp.remote-ip=209.85.216.72
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bcsW8lDh;
+	arc=none smtp.remote-ip=209.85.215.197
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8796606A8B4
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:49:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E8796606A8B4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9375606A338
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:49:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9375606A338
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iYprxckR
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3adeba76cadso695349a91.1
-        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:49:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bcsW8lDh
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cdaf2073b0cso510511a12.0
+        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:49:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794577767; x=1795182567; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794577775; x=1795182575; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=3v73r32eIAJAgWPi1LsXT3feGTevyTVBk7sdUb/TcA8=;
-        b=iYprxckRt6x0jveQ7KIO6R+oa6tFiYQfSlMcbZeYNkZElf1SB6bHrK9uNemcL5oERW
-         JhBhmjD7LEkzuwclSSGtFi8rLnFij9YqELQAndFPhuWI9gCQC10TQDtD8DoiOnpSH0j2
-         HVjFKRqbxI13gzT/MYxeD/jL8356LwhFULpVEx6CDY8d5wA1hfQQpOq6O4L8pqpiDPp6
-         HbI63zWl1Ozdh3NXXVXkDOnJO/DgRq1C2QmRF0R3mwzq5LUSDPowEpJb4meLFazbRWGf
-         Ez8ljTE+47qpn1tkWgbwYUJo1cThf1QiMHn3kI1ljYZOpvksMa5d85Mf4VwYBml1Ckrq
-         a5Gw==
+        bh=UMb2NFxmC1W536I+xEiSuulbMCGZAWVT/hJMtcmN9sg=;
+        b=bcsW8lDhGxxv89mDQTbjcds6SoCyum/T2FWzxYNVAh1dSLF5s3XZdYQvnqvnhO4TNB
+         SZi0fvC/A0qNxz/6WBota3XdpYPBWUU1yLMDTBjLPV/uQHPQZi+Vv4IA8kyPa5UI7H2z
+         9aRTyi2MlblJzowjdJ2M6ciaK1J+x1i9cyq0odZUAcgnO2kbSFW3XUlI0F5pumvQsdfc
+         yWdVSUxm4mz5Ur4hn3xwCgLIGFZxe/6ZnLkyI3yk8d0CEojEgaIl/WNioBbFYgShhOVM
+         WVZ38/KMWyZfqyruyQv/6z0MSp2hy4HvR4CH6UJDhH0B8JLElm++YpaAo8av0gIlI95F
+         9fJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794577767; x=1795182567;
+        d=1e100.net; s=20260707; t=1794577775; x=1795182575;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=3v73r32eIAJAgWPi1LsXT3feGTevyTVBk7sdUb/TcA8=;
-        b=Ph7eW5kjjUH2F+c3CKkF9IZwIUQldOr41RA8oG8OcyyIha4BfXCfAz9pOpyoYFKPOl
-         svn1JkH3B488NOms46P8YaZpKc/PUOh6DN3iHEW7BsrwLqcnyfdOJRJdSKBVFAcWmHJe
-         3ZQ5zLGGu5yb7gar80DRgq/OvOru1TGdrl+wC+zGIP3gsOF6qm4447fLwPwvzQiQew4Q
-         64o1B5BLhmWGja7jhYXZX1IslB5NMvJ1zY4pENuqLL88nlT5lkec15tLtjhgQH0iH7TJ
-         4SKp+1IEXLOGMBxnTbwkMiOSgB+Vq7fL1d6vvpKScODJTbXhOCz7LcnCsQ+MVw+OnbCn
-         jfEA==
-X-Forwarded-Encrypted: i=1; AL+hErGMtQqZg0u1ygQfxFRe8FZfdLr9IJJZkp+nY0qx5DJsELCeHvkOKiVmuLtpNjwVbpinpDU=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+Sdrwo4I9JXzDDASbf6kx7FjDNg/7MPPe5YuNMBLA5x2nh6Fye
-	THX6HMTapGXM9N2RCeMmGWyE7XZygtkilWUJLwzEk1d2SkhwjlDHKMCOQxRonxNyjh4h0hfvXwZ
-	GVmn4qQ==
-X-Received: from pga12.prod.google.com ([2002:a05:6a02:4f8c:b0:cca:d82:9104])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:17c8:b0:3ac:7842:bd50
- with SMTP id 98e67ed59e1d1-3b1b0a428admr2241920a91.15.1794577767011; Fri, 13
- Nov 2026 05:49:27 -0800 (PST)
-Date: Fri, 13 Nov 2026 05:46:40 -0800
-In-Reply-To: <20260731150846.1728164-1-dmaluka@chromium.org>
+        bh=UMb2NFxmC1W536I+xEiSuulbMCGZAWVT/hJMtcmN9sg=;
+        b=xPV6Eq11NLSHVLj8rbAzI4cbPwqCyLbc/nwT0pBDCVyElPTOR/7cCWwwp9hlnMfzju
+         YWxU5qEJ88Drg6m0MGoyhsI8iyDyhSYWXXFFyd4PSB0dFs9t4Cnsb0qOU9G5u/aiUTtk
+         e/R2h1O40+SxM59HIwJf05ktn/pb2TdQDEF092PratzKKYRhwVvD7mY1vsrgunkSLwzZ
+         HPWVe3tO7KGYNgs2yMZSuze11zNTQ3MIThZFpzbDMTtV6gfKDhkd8qlVGRJKQziSuefY
+         9dF8CPzwjJnf9hhLrSs6Dv+JIIioiLyFmkN+m5cxzVeDM/ZV+EdXqKR66WBGMaRcmDCD
+         6ZrA==
+X-Gm-Message-State: APuU4Z888KE7HV5xyLQyag/NkU1NSp++AKrUw0CY7d/LTgvwjucM636z
+	RUI1NEu/EhRdgT9BsWyF8jXgQTnumtZ/y/QcANlK1gFdN4qELZndFgPNtRSX9N9uS/ZUdLKqvIm
+	1JgXjYA==
+X-Received: from pjvd14.prod.google.com ([2002:a17:90a:d98e:b0:3b0:9569:4e9a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3889:b0:3a7:f4d:b23d
+ with SMTP id 98e67ed59e1d1-3b1b0b9f024mr2434653a91.52.1794577775185; Fri, 13
+ Nov 2026 05:49:35 -0800 (PST)
+Date: Fri, 13 Nov 2026 05:46:42 -0800
+In-Reply-To: <20261016065729.85873-1-flyingpeng@tencent.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -79,40 +77,42 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20260731150846.1728164-1-dmaluka@chromium.org>
+References: <20261016065729.85873-1-flyingpeng@tencent.com>
 X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
-Message-ID: <179441846682.83214.17243719876978660073.b4-ty@b4>
-Subject: Re: [PATCH v2 0/4] KVM: x86: Fix off-by-one in max_vcpu_ids bounds checks
+Message-ID: <179441760468.74868.12150652348243797638.b4-ty@b4>
+Subject: Re: [PATCH] KVM: x86: Reject KVM_CREATE_VCPU when the host TSC
+ frequency is unknown
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Dmytro Maluka <dmaluka@chromium.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Mathias Krause <minipli@grsecurity.net>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Vineeth Pillai <vineeth@bitbyteword.org>, Chuanxiao Dong <chuanxiao.dong@intel.com>, 
-	Aashish Sharma <aashish@aashishsharma.net>, Grzegorz Jaszczyk <jaszczyk@chromium.org>
+To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, 
+	Peng Hao <flyingpenghao@gmail.com>
+Cc: kvm@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, 31 Jul 2026 15:08:41 +0000, Dmytro Maluka wrote:
-> max_vcpu_ids and KVM_CAP_MAX_VCPU_ID are exclusive, i.e. the maximum
-> allowed vcpu_id value is max_vcpu_ids minus one, not max_vcpu_ids.
+On Fri, 16 Oct 2026 14:57:29 +0800, Peng Hao wrote:
+> If host TSC calibration fails, tsc_khz stays zero: tsc_init() marks the TSC
+> unstable, clears X86_FEATURE_TSC_DEADLINE_TIMER and gives up.  KVM has been
+> papering over that state since 03ba32cae66e ("VMX: x86: handle host TSC
+> calibration failure"), but the guest cannot actually run:
 > 
-> Fix the sanity checks for KVM_SET_BOOT_CPU_ID and KVM_CAP_MAX_VCPU_ID
-> and the selftests for them (added in series [1]) to fail when
-> bsp_vcpu_id is incorrectly set to max_vcpu_ids, not to a value below
-> max_vcpu_ids.
+>   - kvm_set_tsc_khz() computes thresh_lo == thresh_hi == 0 via
+>     adjust_tsc_khz(), so use_scaling is always true and set_tsc_khz()
+>     divides by tsc_khz to compute the scaling ratio, i.e. #DE in host
+>     context.  This one is reachable from KVM_SET_TSC_KHZ alone, no guest
+>     cooperation required.
+>   - kvm_guest_time_update() re-requests KVM_REQ_CLOCK_UPDATE and returns 1
+>     because get_cpu_tsc_khz() hands back the (zero) global tsc_khz for CPUs
+>     with a constant TSC.  vcpu_run() only breaks out of its loop on
+>     "r <= 0", so the vCPU thread spins in the host kernel rather than even
+>     failing the guest.
+>   - Everything that converts guest cycles to nanoseconds, e.g. the lapic
+>     timer advance logic, divides by virtual_tsc_khz, which is zero as well.
 > 
 > [...]
 
 Applied to kvm-x86 misc, thanks!
 
-[1/4] KVM: selftests: Fix treating KVM_CAP_MAX_VCPU_ID as inclusive
-      https://github.com/kvm-x86/linux/commit/9b04ebe5c085
-[2/4] KVM: x86: Fix off-by-one in max_vcpu_ids bounds checks
-      https://github.com/kvm-x86/linux/commit/c36d436e7335
-[3/4] KVM: selftests: Improve bsp_vcpu_id and max_vcpu_ids out-of-bound tests
-      https://github.com/kvm-x86/linux/commit/201aaeb1df8f
-[4/4] Documentation: KVM: Clarify that KVM_CAP_MAX_VCPU_ID is exclusive
-      https://github.com/kvm-x86/linux/commit/ea6d489ae6c2
+[1/1] KVM: x86: Reject KVM_CREATE_VCPU when the host TSC frequency is unknown
+      https://github.com/kvm-x86/linux/commit/687fe634b54e
 
 --
 https://github.com/kvm-x86/linux/tree/next
