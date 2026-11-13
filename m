@@ -1,46 +1,46 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=101.6.4.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=101.6.4.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794563379;
-	b=LGFn534/+E8PjFCJpDtMm4hEbrTexOm3dAF4ocQpo/vOhn02OzL64GhNIomvDfTQtzUV
-	 hIN8g1tbd0L+xvKAONbL3qp2uJJvc9xh2gv+mmjHi0mIx5b6kOKVSJaFMo0/COZWXBbgu
-	 QU1ynInj8Uu5EME9lRhB85d5cL2TL+wA9AEydv2NeN3wFW6j2mjpTwok3W/UvatkekZ13
-	 i/Rqpm6nPZ7QfS5zGqBMmImLz1wkOXz5qszh72/xYFbkcvTMXtG8PSP/0RJyrjf7Sh3Mk
-	 rQpuljVx22o1Wke+pZsy9tXARijYquUboNR0HgP0raNTJrtQNoqifQGBo4fTy7f0CXQ==
+	t=1794563381;
+	b=U8K9+2Rg/24Zw9y7BJ87tPbH3mW4xPkHReBqFBAIKxd38dvBg829uBxtfX8Eu9AroFgK
+	 Cxc8RkPWgLpTE9kVUh2e5nPoFl/XZG8wOaYWk4F8NR/4yNb72Lov5MQ2REWoWiF6Sq12f
+	 k7SYBKNOmvZtIMseFcH0m07K0CBijYrhmAh3YhQQeOrhLbFRbWubi/sxitTPMFUaUm9ZF
+	 Ghw9JSaXGMZdNngIQupygB5q/fQ/c7Y774zSVPQfbfTYi1CrbDvSo5y4TvI0aRjDHujPv
+	 +6Pf7O4XXV4kydkqsdYRr7Iv9fqj26SsJLYHHFf16Sato8lRD9v+MeAFsFNCCUT/Y1g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794563379;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794563381;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
 	 X-CM-SenderInfo;
-	bh=ziqaSW7s/T3WAwT7Mz/j7jHhExcw1/jQm85lHkw0d7M=;
-	b=dCxX1/cw56zKhMvaqMxz6hJmsqxOeve6ODQaytewTw9cSPvG21P3wMY9cDfsDPSqr0kV
-	 WRZkJQPIJVPCCj6mPgabmyd+IcWxsXMIdjKxh6kvwoKyTgOD90OI0q4ourM5N/QdQmSNL
-	 QBtkLU22w8CEZVyONtcPx4fQ9Pd0hJHzF+Ii62VxrCPV2kff0fVGC1CLCFWoP4tsSnLuk
-	 AFyyT6kAOO6OfUNGcRePQE0OcWDETNd1b1wJB9uIqQphjlT7CtQnGzZ5JharTPuALdVEe
-	 ZDu+D+xqAlknQT5Dq+0zJBmHILTs3TytU83xAavgClJkp1Oq1qcRy+KgVssn9aIv6IA==
+	bh=kSMmJ0QOsjYMU+TvrW5BJ6fvkMcj5fcXBix6+PAuGR4=;
+	b=vyvG1RlVmXbP9cYKmUsJHfkoPuZC6sCLfKylkg6Us0CCBYvPX1hOTGR+fIo3NMfHCdpT
+	 Cb9w+qQN1KSX2lUorseX2mbfPa2zOoCtvH86ora5q5BnGwk6v2ECynti1jJEq05UkWij5
+	 zIoP2pV3xeQGbFlDp3t2fnaLDTO3Muh1UjFWY3V0HMIyxNjMIIjv9qtFYk+735CAAMcqT
+	 v5o/0X6v/Ligq9dF95BXktdFs+QVgzjm9cFaYFCl5wi568R9rd3UjTTAL++uje3hHJGQw
+	 Tc61ucaHcpcpLKOl6pBj0nx9mfFzu6qy5ufN1PMUwz00pkVXLh/8hV/AhOUJUAwnsLw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=mails.tsinghua.edu.cn;
 	spf=pass smtp.mailfrom=mails.tsinghua.edu.cn;
-	dkim=pass header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=gExOVnhY;
-	arc=none smtp.remote-ip=101.6.4.71
-Received: from tsinghua.edu.cn (smtp47.tsinghua.edu.cn [101.6.4.71])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C14E606A882
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 09:49:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C14E606A882
+	dkim=pass header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=ghf1DsHs;
+	arc=none smtp.remote-ip=101.6.4.70
+Received: from tsinghua.edu.cn (smtp46.tsinghua.edu.cn [101.6.4.70])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C206660A260A
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 09:49:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C206660A260A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=gExOVnhY
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=ghf1DsHs
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
 	Date:Message-ID:In-Reply-To:References:MIME-Version:
-	Content-Transfer-Encoding; bh=ziqaSW7s/T3WAwT7Mz/j7jHhExcw1/jQm8
-	5lHkw0d7M=; b=gExOVnhYWhnOn8O18CWMUVe4eBs4bQ/JWwEUD6yXZE/8Y+7Ay2
-	zFaTghoNSiPvvh86phviTG8Uyg/KHJ6s+9sd41F2UrPpViSaGSn8ViovZBKSt+cU
-	EpwnAOlqlzGH7ziwztm886HtRGfLSPXe9XrlvOXQ44cLmb2UsRtDlxtw8=
+	Content-Transfer-Encoding; bh=kSMmJ0QOsjYMU+TvrW5BJ6fvkMcj5fcXBi
+	x6+PAuGR4=; b=ghf1DsHs15652R1khDxIUwjsWMQ35seAnfjkx6JpkX3X3zWHYS
+	/KQabOuo1rzejSL/FKRG6C/DjyIvdGbgMUzUHdkLUhTjOGcnLJSGBA6wFaqdTUTO
+	CZNRFfVVynHuGaMePP8uPP8Kr9TGjkidR5ZWxkotLIo+e8+JJQIx1EQ/o=
 Received: from ubuntu (unknown [101.5.154.165])
-	by web1 (Coremail) with SMTP id yAQGZQA3qzvR3PZqgA5CAg--.9318S17;
-	Fri, 13 Nov 2026 17:49:29 +0800 (CST)
+	by web1 (Coremail) with SMTP id yAQGZQA3qzvR3PZqgA5CAg--.9318S18;
+	Fri, 13 Nov 2026 17:49:32 +0800 (CST)
 From: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>
 To: qemu-devel@nongnu.org
 Cc: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>,
@@ -58,9 +58,9 @@ Cc: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>,
 	bin.meng@processmission.com,
 	tangtao1634@phytium.com.cn,
 	Chao Liu <chao.liu@processmission.com>
-Subject: [RFC PATCH 15/20] hw/arm/rk3588: wire up the SCMI server
-Date: Fri, 13 Nov 2026 17:47:49 +0800
-Message-ID: <54d84a2574f15f9c6157e6d281ad5216b509295c.1794555589.git.w-yf22@mails.tsinghua.edu.cn>
+Subject: [RFC PATCH 16/20] hw/arm: add Radxa ROCK 5B board
+Date: Fri, 13 Nov 2026 17:47:50 +0800
+Message-ID: <954564f37ed6b2509781610629e2d20ef2e05a60.1794555589.git.w-yf22@mails.tsinghua.edu.cn>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1794555588.git.w-yf22@mails.tsinghua.edu.cn>
 References: <cover.1794555588.git.w-yf22@mails.tsinghua.edu.cn>
@@ -74,10 +74,10 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:yAQGZQA3qzvR3PZqgA5CAg--.9318S17
-X-Coremail-Antispam: 1UD129KBjvJXoWxXF18ur4rWr4DXF4UCrW8tFb_yoW5ArW5pF
-	48Zr45XrWkGay7AwsIvr1Sgr43Ja1kWryrt3yfZr9YyFy3tr1Yyr4j9w4YkayIqrZFqw1U
-	ZrWqqF4YgF47XF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:yAQGZQA3qzvR3PZqgA5CAg--.9318S18
+X-Coremail-Antispam: 1UD129KBjvJXoW3Xw1ktrWUXFWDGr15ur47twb_yoW3ZFy8pF
+	15C34kWrZ7WFWa9w4fJFyj9a15Xw4v9a4jqr1fu3sYyF9rtr1j9r48t34Fka9rWr4qya15
+	CrZ3Xr1Sq3W5XaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUHa14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
 	kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
@@ -89,7 +89,7 @@ X-Coremail-Antispam: 1UD129KBjvJXoWxXF18ur4rWr4DXF4UCrW8tFb_yoW5ArW5pF
 	IFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_
 	GFWl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxV
 	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI
-	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
+	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Xr0_Ar1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
 	4UJVWxJr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
 	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjfUeVbkUU
 	UUU
@@ -97,91 +97,266 @@ X-CM-SenderInfo: fzn1wj2s6ptxtovo32xlqjx3vdohv3gofq/
 
 From: Chao Liu <chao.liu@processmission.com>
 
-Instantiate the SCMI server in the RK3588 SoC and map its shared memory
-at the address reserved by the RK3588 device tree.  The shared memory
-is overlaid on RAM so the guest can use it while the rest of the low
-memory map is unchanged.
+Add initial support for the Radxa ROCK 5B board, which uses the RK3588
+SoC and 128 MiB to 16 GiB of DRAM. Support direct Linux booting.
+
+The first -serial option drives UART2, the debug console on the ROCK 5B
+header. Further -serial options connect to UART1 and UART3 through UART9
+in that order.
 
 Signed-off-by: Chao Liu <chao.liu@processmission.com>
 Signed-off-by: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>
 ---
- hw/arm/rk3588.c         | 22 ++++++++++++++++++++++
- include/hw/arm/rk3588.h |  1 +
- 2 files changed, 23 insertions(+)
+ MAINTAINERS        |   1 +
+ hw/arm/Kconfig     |   6 ++
+ hw/arm/meson.build |   1 +
+ hw/arm/rock-5b.c   | 200 +++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 208 insertions(+)
+ create mode 100644 hw/arm/rock-5b.c
 
-diff --git a/hw/arm/rk3588.c b/hw/arm/rk3588.c
-index 2319c54c76..f4ebb59d36 100644
---- a/hw/arm/rk3588.c
-+++ b/hw/arm/rk3588.c
-@@ -19,6 +19,7 @@
- #include "hw/core/qdev-properties.h"
- #include "hw/core/sysbus.h"
- #include "hw/cpu/cluster.h"
-+#include "hw/misc/rk3588-scmci.h"
- #include "hw/misc/unimp.h"
- #include "hw/timer/rockchip-hptimer.h"
- #include "migration/vmstate.h"
-@@ -29,6 +30,7 @@
- #define RK3588_MPIDR_AFF0_PER_AFF1   (1)
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c3d3388975..544d93c01d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1065,6 +1065,7 @@ M: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>
+ L: qemu-arm@nongnu.org
+ S: Maintained
+ F: hw/arm/rk3588.c
++F: hw/arm/rock-5b.c
+ F: hw/misc/rockchip_cru.c
+ F: hw/misc/rockchip_otp.c
+ F: hw/misc/rk3588-scmci.c
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index eaa55eae29..40f7de823c 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -783,3 +783,9 @@ config RK3588
+     select REGISTER
+     select ROCKCHIP_SFC
+     select UNIMP
++
++config ROCK5B
++    bool
++    default y
++    depends on TCG && AARCH64
++    select RK3588
+diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+index 70c835814f..9af1e01037 100644
+--- a/hw/arm/meson.build
++++ b/hw/arm/meson.build
+@@ -121,5 +121,6 @@ arm_common_ss.add(when: ['CONFIG_AXIADO_EVK', 'TARGET_AARCH64'], if_true: files(
+ arm_common_ss.add(files('boot.c'))
  
- #define RK3588_CNTFRQ                24000000
-+#define RK3588_SCMI_SHMEM_BASE       0x0010f000
- #define RK3588_SFC_SPI               206
- #define RK3588_GIC_NUM_IRQS          512
+ arm_common_ss.add(when: 'CONFIG_RK3588', if_true: files('rk3588.c'))
++arm_common_ss.add(when: 'CONFIG_ROCK5B', if_true: files('rock-5b.c'))
  
-@@ -253,6 +255,21 @@ static bool rk3588_soc_create_sfc(RK3588SoCState *s, Error **errp)
-     return true;
- }
- 
-+static bool rk3588_soc_create_scmi(RK3588SoCState *s, Error **errp)
+ hw_common_arch += {'arm': arm_common_ss}
+diff --git a/hw/arm/rock-5b.c b/hw/arm/rock-5b.c
+new file mode 100644
+index 0000000000..7906d53175
+--- /dev/null
++++ b/hw/arm/rock-5b.c
+@@ -0,0 +1,200 @@
++/*
++ * Radxa ROCK 5B Board emulation
++ *
++ * Copyright (C) 2026 Process Mission
++ *
++ * Authors:
++ *    Chao Liu <chao.liu@processmission.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/error-report.h"
++#include "qemu/module.h"
++#include "qemu/units.h"
++#include "qapi/error.h"
++#include "hw/arm/boot.h"
++#include "hw/arm/rk3588.h"
++#include "hw/core/boards.h"
++#include "hw/core/qdev-properties-system.h"
++#include "system/address-spaces.h"
++#include "system/device_tree.h"
++#include "system/kvm.h"
++#include "system/qtest.h"
++#include "system/system.h"
++
++#define TYPE_ROCK5B_MACHINE MACHINE_TYPE_NAME("rock-5b")
++OBJECT_DECLARE_SIMPLE_TYPE(Rock5BMachineState, ROCK5B_MACHINE)
++
++enum {
++    ROCK5B_LOW_RAM,
++    ROCK5B_HIGH_RAM,
++};
++
++static const MemMapEntry rock5b_memmap[] = {
++    [ROCK5B_LOW_RAM]  = { 0x000000000, 0x0f0000000 },
++    [ROCK5B_HIGH_RAM] = { 0x100000000, 0x310000000 },
++};
++
++/* Match the low-memory reservation made by Rockchip U-Boot for BL31. */
++#define ROCK5B_FIRMWARE_RESERVED_SIZE (2 * MiB)
++/* UART2 drives the board's debug header. */
++#define ROCK5B_CONSOLE_UART 2
++
++struct Rock5BMachineState {
++    MachineState parent_obj;
++
++    RK3588SoCState soc;
++    MemoryRegion low_ram;
++    MemoryRegion high_ram;
++    uint64_t low_ram_size;
++    uint64_t high_ram_size;
++    struct arm_boot_info binfo;
++};
++
++/*
++ * The first -serial option drives the debug console; further options
++ * connect to the remaining UARTs in index order.
++ */
++static void rock5b_connect_serial(Rock5BMachineState *s)
 +{
-+    SysBusDevice *scmi = SYS_BUS_DEVICE(s->scmi);
++    unsigned int hd = 1;
 +
-+    if (!sysbus_realize(scmi, errp)) {
-+        return false;
++    /* UART0 in the PMU power domain is not modeled. */
++    for (unsigned int i = 1; i < RK3588_NUM_UARTS; i++) {
++        g_autofree char *prop = g_strdup_printf("uart%u-chardev", i);
++
++        qdev_prop_set_chr(DEVICE(&s->soc), prop,
++                          serial_hd(i == ROCK5B_CONSOLE_UART ? 0 : hd++));
 +    }
-+
-+    memory_region_add_subregion_overlap(s->memory,
-+        RK3588_SCMI_SHMEM_BASE,
-+        sysbus_mmio_get_region(scmi, 0), 1);
-+
-+    return true;
 +}
 +
- static bool rk3588_soc_create_uart(RK3588SoCState *s, Error **errp)
- {
-     for (unsigned int i = RK3588_FIRST_UART; i < RK3588_NUM_UARTS; i++) {
-@@ -329,6 +346,7 @@ static void rk3588_soc_realize(DeviceState *dev, Error **errp)
-         !rk3588_soc_create_cru(s, errp) ||
-         !rk3588_soc_create_otp(s, errp) ||
-         !rk3588_soc_create_sfc(s, errp) ||
-+        !rk3588_soc_create_scmi(s, errp) ||
-         !rk3588_soc_create_uart(s, errp) ||
-         !rk3588_soc_create_hptimer(s, errp)) {
-         return;
-@@ -388,6 +406,10 @@ static void rk3588_soc_instance_init(Object *obj)
-     object_property_add_child(obj, "sfc", OBJECT(s->sfc));
-     object_unref(OBJECT(s->sfc));
- 
-+    s->scmi = qdev_new(TYPE_RK3588_SCMCI);
-+    object_property_add_child(obj, "scmi", OBJECT(s->scmi));
-+    object_unref(OBJECT(s->scmi));
++/*
++ * arm_load_dtb() replaces the memory nodes with a single node for low RAM;
++ * add the RAM above the peripheral hole.
++ */
++static void rock5b_modify_dtb(const struct arm_boot_info *binfo, void *fdt)
++{
++    const Rock5BMachineState *s = container_of(binfo, Rock5BMachineState,
++                                               binfo);
++    hwaddr base = rock5b_memmap[ROCK5B_HIGH_RAM].base;
++    g_autofree char *node = NULL;
++    uint32_t acells, scells;
 +
-     s->hptimer = qdev_new(TYPE_ROCKCHIP_HPTIMER);
-     object_property_add_child(obj, "hptimer", OBJECT(s->hptimer));
-     object_unref(OBJECT(s->hptimer));
-diff --git a/include/hw/arm/rk3588.h b/include/hw/arm/rk3588.h
-index 1304c11598..f85242f464 100644
---- a/include/hw/arm/rk3588.h
-+++ b/include/hw/arm/rk3588.h
-@@ -55,6 +55,7 @@ struct RK3588SoCState {
-     DeviceState *cru;
-     DeviceState *otp;
-     DeviceState *sfc;
-+    DeviceState *scmi;
-     MemoryRegion *memory;
-     MemoryRegion sram;
-     DeviceState *hptimer;
++    if (!s->high_ram_size) {
++        return;
++    }
++
++    acells = qemu_fdt_getprop_cell(fdt, "/", "#address-cells", NULL,
++                                   &error_fatal);
++    scells = qemu_fdt_getprop_cell(fdt, "/", "#size-cells", NULL,
++                                   &error_fatal);
++    node = g_strdup_printf("/memory@%" HWADDR_PRIx, base);
++    qemu_fdt_add_subnode(fdt, node);
++    qemu_fdt_setprop_string(fdt, node, "device_type", "memory");
++    if (qemu_fdt_setprop_sized_cells(fdt, node, "reg", acells, base,
++                                     scells, s->high_ram_size) < 0) {
++        error_report("rock-5b: device tree cells cannot describe RAM "
++                     "above 4 GiB");
++        exit(EXIT_FAILURE);
++    }
++}
++
++/*
++ * arm_load_kernel() enters Linux at EL2, keeps the SMC PSCI conduit and
++ * registers the CPU reset handlers.
++ */
++static void rock5b_direct_boot(Rock5BMachineState *s)
++{
++    s->binfo.ram_size = s->low_ram_size - ROCK5B_FIRMWARE_RESERVED_SIZE;
++    s->binfo.loader_start = ROCK5B_FIRMWARE_RESERVED_SIZE;
++    s->binfo.board_id = -1;
++    s->binfo.psci_conduit = QEMU_PSCI_CONDUIT_SMC;
++    s->binfo.modify_dtb = rock5b_modify_dtb;
++    arm_load_kernel(&s->soc.cpu[0], MACHINE(s), &s->binfo);
++}
++
++static void rock5b_init(MachineState *ms)
++{
++    Rock5BMachineState *s = ROCK5B_MACHINE(ms);
++
++    if (ms->ram_size < 128 * MiB || ms->ram_size > 16 * GiB) {
++        error_report("rock-5b: memory size must be between "
++                     "128 MiB and 16 GiB");
++        exit(EXIT_FAILURE);
++    }
++
++    if (kvm_enabled()) {
++        error_report("rock-5b: KVM is not supported");
++        exit(EXIT_FAILURE);
++    }
++
++    if (ms->firmware) {
++        error_report("rock-5b: -bios is not supported");
++        exit(EXIT_FAILURE);
++    }
++    if (ms->kernel_filename) {
++        if (!ms->dtb) {
++            error_report("rock-5b: direct Linux boot requires -dtb");
++            exit(EXIT_FAILURE);
++        }
++    } else if (!qtest_enabled()) {
++        error_report("rock-5b: supply a Linux kernel with -kernel");
++        exit(EXIT_FAILURE);
++    }
++
++    /* Initialize the SoC object. */
++    object_initialize_child(OBJECT(s), "soc", &s->soc, TYPE_RK3588_SOC);
++    object_property_set_link(OBJECT(&s->soc), "memory",
++                             OBJECT(get_system_memory()), &error_abort);
++    rock5b_connect_serial(s);
++    qdev_realize(DEVICE(&s->soc), NULL, &error_fatal);
++
++    s->low_ram_size = MIN(ms->ram_size,
++                          rock5b_memmap[ROCK5B_LOW_RAM].size);
++    s->high_ram_size = ms->ram_size - s->low_ram_size;
++    memory_region_init_alias(&s->low_ram, OBJECT(s), "rock-5b.low-ram",
++                             ms->ram, 0, s->low_ram_size);
++    memory_region_add_subregion(get_system_memory(),
++                                rock5b_memmap[ROCK5B_LOW_RAM].base,
++                                &s->low_ram);
++    if (s->high_ram_size) {
++        memory_region_init_alias(&s->high_ram, OBJECT(s),
++                                 "rock-5b.high-ram", ms->ram,
++                                 s->low_ram_size, s->high_ram_size);
++        memory_region_add_subregion(get_system_memory(),
++                                    rock5b_memmap[ROCK5B_HIGH_RAM].base,
++                                    &s->high_ram);
++    }
++
++    rock5b_direct_boot(s);
++}
++
++static void rock5b_class_init(ObjectClass *oc, const void *data)
++{
++    MachineClass *mc = MACHINE_CLASS(oc);
++
++    mc->desc = "Radxa ROCK 5B";
++    mc->init = rock5b_init;
++    mc->default_ram_size = 2 * GiB;
++    mc->default_ram_id = "rock-5b.ram";
++    mc->min_cpus = RK3588_NUM_CPUS;
++    mc->default_cpus = RK3588_NUM_CPUS;
++    mc->max_cpus = RK3588_NUM_CPUS;
++    mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-a55");
++}
++
++static const TypeInfo rock5b_typeinfo = {
++    .name = TYPE_ROCK5B_MACHINE,
++    .parent = TYPE_MACHINE,
++    .instance_size = sizeof(Rock5BMachineState),
++    .class_init = rock5b_class_init,
++};
++
++static void rock5b_register_types(void)
++{
++    type_register_static(&rock5b_typeinfo);
++}
++
++type_init(rock5b_register_types)
 -- 
 2.53.0
 
