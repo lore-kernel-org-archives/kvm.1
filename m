@@ -1,89 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.11
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794593981;
-	b=a13/t7YRKnbEJNC3gsglV0sipNKTIDR5ruC0Lq//8pm3pwc7OsKeHr39j1sMKO0g/Oos
-	 Vz3RNmCaRPHWCxCYpGoB5osAkToHENmZSSocqvgLcSqg1xuzFZHNRlGHjZONwAnZdJIUX
-	 YLVpVNlMJ44hH0XW5l1wh5syMM8A06KsSFv//GIQu5/mqEQVccY/EXdhkc873Hkx4vaeR
-	 UaXoSz/XTX5j87ETMu+BN6uMuopKeYSGR+kffud9rzgvyD5JAt3bHALdXMtvWW8+ZhXZL
-	 OfLScXVDcbeDbxnrqWzJpr/6TP9Fl9Czh7HZHsUC1lvABPHt9ClBMqbVgl49Aya8ONQ==
+	t=1794594163;
+	b=bA/z4vQX/OyIQ6wUObLJok25hIZJZ3+VBVfvL8fO6kAHQoIoeXp3mGrfJdlIddiwaVHO
+	 m9gcX/83/OMecb3ObmcE8IzS08NkQeLF0i3HP8cnHz/ocLgr/qM455yfQQgx6iGMvjyvd
+	 WJdvChkQoFaZaMPj5nQNGp69tjT7beAJ3+8YO5NpE6AeEMGBgQYKB6vFG8KMd4sTBsyZU
+	 KD4dxMkiLLygQr5/FEc5CFWuX9Z6AIV/0uWoiFhHgsNe+nwE3Lv/lnprTDRbqyRG7FUWC
+	 pvS1bGGkCIw/bUiL/gOGPqW7E3/E9bX5wgya4NYg7pjq01Vv4v4fDe23DUdpwvACNWg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794593981;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=CENXtX1/W/MRp/DcAqbUbrZhUcyfT59CNNpcWDlZbsw=;
-	b=nK7YaQY3P7JhoETggW7bZTpqMx0zXYdwRFAwpWyuR4DwLezX89Cfp/g/uksW9V/1PXMw
-	 8yjlUgdAn6oeCFqRo53Y0U010S3a7r12UukDeB+pVGLzWuEbNjQ5Ae+FOD7t539Fcv9a7
-	 lxWw0pswn027mPj4Ozfj+pglLj98572+N4zouulopJL2sVb+votRYkMSQjrHCo0MR/WWX
-	 fS+4/skuhTKATbjYK9SiQBoVFDjLrOa+VR2BrjqXI4c5jpRreuOryMSgeqb3iN90I16uh
-	 3N91cvhhywbVL8yomrkQrwNbiNdvgpaDAm7QgrILdjfKgyj9UILLUrvftL2aKffSqvQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794594163;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=IqzoU+3enczpSWtf+dXVpkMExXL8ltIAkfd6DAJvt9o=;
+	b=pjjJW7COPduJxEOyE9vDf1fGQ1iY8mCBjG9wj9b1/NNfEwGh60qcfQkUtoEVhjy9qzrp
+	 R5QtE/7sVq+4oB/LH+fR7Hdx9oXH5vW/phnjcsP3hAJWgv/imLalyN2ayYaXJ4bwKAINU
+	 V7CrmfS21ODfynXua4nG7DynpgMLDyGCGX2K9L1qdi97DlgT1ihStx7+jgc3KjrjTejpH
+	 E1HU40avmbw/dNsfIMlq5njMHxQPH9bDkmOM9NvSHGnczMiciouGhFoACQwILRayK+8/w
+	 Y4iHrew4lRpxKCHdY5yoFEV8cDBQMK2q7900vTei+KYw4s5+eVzNFCk6M42Taj7uUJQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZBWNIUpT;
-	arc=none smtp.remote-ip=209.85.128.46
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=R4L0xzhb;
+	arc=none smtp.remote-ip=198.175.65.11
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE41606A332
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 18:19:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FE41606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6630606A323;
+	Fri, 13 Nov 2026 18:22:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E6630606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZBWNIUpT
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a35d5d4a20so22329225e9.2
-        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 10:19:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794593978; x=1795198778; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CENXtX1/W/MRp/DcAqbUbrZhUcyfT59CNNpcWDlZbsw=;
-        b=ZBWNIUpTzZN2uRy2q5KN3dzd4ycS0bX6OSapit7Dfuzls/o9BmSymtEAwV7D27WPTE
-         hs2DUXs+VCbAkp8mweL3beZ0hwRFeg6YdlQ3qPGHYJZysT0eKtlw8Hqab+1yn94ijLx2
-         L4jPimLmXFBPMhCSww94GpHH+C0XH4lY+Eeiajw9FWKnBPIzjFYP+yjyLxRSDfrN+lTR
-         b7mAaD4WZ5Xun2QqTd8mkpXF8/f6k2en5DCF+g2y77HKoyldTdiei7mNxJiwSdi3TLvC
-         TuohG4BTazDqiA7sQRueapEuMgTSes3gDb8c566mbYEbzV/i8BXGidgSzYRUbwJR90mn
-         xTpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794593978; x=1795198778;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CENXtX1/W/MRp/DcAqbUbrZhUcyfT59CNNpcWDlZbsw=;
-        b=ExjZs3qzoIu4HQT2eKyoSKJnlfkLNpgNQGyDJW7d0L+DhG59rKVwjoevWMZ+HjdKjb
-         vypHkJI/Hxx+rTbBDXAtu21QlLgJ7oR2G2aDXqX6TM0kgZY6XjbUiaBwY6dxTQmqW3CW
-         7kDDeled3tpREoOV2BK6TQneBbECu0BA4nbFeHyiDD//Ypt4TpXnLGenv/lKiY39+LOH
-         9BScKxbsFPM5P2w/stx+3UcPkVWU6qABVKBbRtTPaj+iY2bgbhF46SLer44GrhdndT39
-         /MFHdakj5dpuLDooBqxV+A91WuHgzJPlB9FI+ziyPY/rAbFiPjwOpmXtU8PNDs5a7b0C
-         cCgg==
-X-Forwarded-Encrypted: i=1; AL+hErHnGs8+YUt2AbgWOpwD1FKLz1Zm4GeAI4w+wQkjoO/aCqs+b4HdyQhS5Jis0JDPr5n79YI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+51hR9GuslnFn6mI5u/Ll3xRPceN36ENjEkEAmJh/397XRmNhu
-	ofmisHk1Nk66Emh6Yg2YiV5rBnm5nrxLoIFz1B90x0tNeM2MlueEsNlD
-X-Gm-Gg: AYBFou3i65NKAJiPfqubIv2fuU6AXoWjgII01Lf4B+4JQ99Es+PWW18l60zAxYF2x51
-	mGEd//hsCM/Xhl7VaRjPwHI78g7Mosmxpm+A/noN+K9OVipe7zTkMpgmzaKMZ/jC/6b2/lZCgeX
-	nM62NDN6MEJSTjBuXiryjChSX7ftJH7y8Eur/ezvQk1q+Zn05wTWE00VMWKf/kdetus06ADbHgS
-	ghfqLzrZ3pkVAQIiMhiS3glIA1483qNQxCCPO3Tcm9b5asje/r6Qq5IMXdJjpNWsnrecbU/bPQn
-	PpZGnSvqQSnxADHz9PwrP5voxxB8JGldfbrceiZV6war5l5Qz0hNJHh4GtPAXXOyxrvZRAF66bC
-	FsWur4gzFyknC9bPYzfeaAndwR35sf+owPPzgzg/QIPTcLiBYr1yc+yQrt3JoIVIOYvN+eMU4UV
-	dk5a24PqdgZh6FYf9xQeUfGmJ4LCp1lWsMD9AAPhGUdv9zJhpcY0z5AFRh53r0v+Qmf81t9P7S0
-	mO1Zi6eVmQPzHh8yDvO+1Xta0SjPnSYI+IwwcMdRZlK2RGWUzL7UL5EZ6N9et1UHuTThtKyP76+
-	2E8AMO743FlkXnujYtUwQSV0xVrpzFzOKhlmBch4khm7XKK7iLSk02FSt1y3zx3HdogKS0iV7qR
-	irg==
-X-Received: by 2002:a05:600c:34d0:b0:4a2:133:45e1 with SMTP id 5b1f17b1804b1-4bb55a59f41mr72807635e9.24.1794593978271;
-        Fri, 13 Nov 2026 10:19:38 -0800 (PST)
-Received: from [192.168.1.6] (user-109-243-65-71.play-internet.pl. [109.243.65.71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb5667a8aesm54253275e9.1.2026.11.13.10.19.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Nov 2026 10:19:37 -0800 (PST)
-Message-ID: <7e634bef-6d23-4a57-b3e6-b5585045ca19@gmail.com>
-Date: Fri, 13 Nov 2026 19:19:36 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=R4L0xzhb
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794594163; x=1826130163;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=RLt6bmT1T200I+l51L4W7gcZpysiqvAtz8ihlO2UTUs=;
+  b=R4L0xzhb4gxhFCvW2KJndie0W+iD82IbNwJLy7bPG9j4T8Xtgot9yQqh
+   jkICcIomat2t0FirB6uM4hscOIPwaIp99Ei5X8qE8O4rniFP7Q0wZT60Q
+   uXRwJUZqDf3C2ru7xnqY2kVQ4sb8KReN+Denm6kWwTioV2XeGV6YO9c4Q
+   DH0qasjt3p6LqOLNZiMJKHu5rfk8Enok9ZhYyBqiasSmVkNtcWl5ZY9yd
+   UwiEKnxYrhCbekrSt9olSMCnZvjW+Kfka5mTjOHV9VH32Nk6F1z3Z16rW
+   lrT/qVxadMsUpoCKD3ONgO+L7OBIxFlPYJ2Waoh0NiGO3hWwNelQfYtG8
+   w==;
+X-CSE-ConnectionGUID: F3Zfmni4TtS2aZ0jcbSPNA==
+X-CSE-MsgGUID: jIXMJo2pTBWFbJqXd6BzMA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11965"; a="3298561"
+X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
+   d="scan'208";a="3298561"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 10:22:42 -0800
+X-CSE-ConnectionGUID: 8ZWm3YhdTUWy+R8mdHtNVA==
+X-CSE-MsgGUID: mGxQjURkSsiBP9VUQx4GJg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
+   d="scan'208";a="8899393"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 10:22:42 -0800
+Message-ID: <34b7e735-9ed9-477d-8e88-c4d6440201a9@intel.com>
+Date: Fri, 13 Nov 2026 12:22:40 -0600
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,180 +73,329 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] RISC-V: KVM: Order IMSIC VS-file write before releasing
- vsfile_lock
-To: Anup Patel <anup.patel@oss.qualcomm.com>
-Cc: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20261023142550.148604-1-oleksii.kurochko@gmail.com>
- <CABBgwmuBBbyBytwRBTeAqF=0c1m+TFK8E3yPopGNQAsrMFO2vg@mail.gmail.com>
+Subject: Re: [PATCH v4 09/21] KVM: x86/pmu: Switch to bitmask-based KVM PMU
+ capabilities
+To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
+ Yosry Ahmed <yosry@kernel.org>, Andi Kleen <ak@linux.intel.com>,
+ Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org,
+ Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
+ Shukla Manali <Manali.Shukla@amd.com>, Xudong Hao <xudong.hao@intel.com>,
+ Peter Zijlstra <peterz@infradead.org>
+References: <20261112203227.289379-1-zide.chen@intel.com>
+ <20261112203227.289379-10-zide.chen@intel.com>
+ <792c8390-5c39-4e60-bbd5-0901f3d5b2a1@linux.intel.com>
 Content-Language: en-US
-From: Oleksii Kurochko <oleksii.kurochko@gmail.com>
-In-Reply-To: <CABBgwmuBBbyBytwRBTeAqF=0c1m+TFK8E3yPopGNQAsrMFO2vg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <792c8390-5c39-4e60-bbd5-0901f3d5b2a1@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
 
-On 11/13/26 9:00 AM, Anup Patel wrote:
-> On Fri, Oct 23, 2026 at 7:56 PM Oleksii Kurochko
-> <oleksii.kurochko@gmail.com> wrote:
->>
->> kvm_riscv_vcpu_aia_imsic_inject() writes the interrupt identity to the
->> SETIPNUM register of the vCPU's IMSIC VS-file while holding vsfile_lock
->> for reading. The lock keeps the VS-file from being switched under the
->> injector: kvm_riscv_vcpu_aia_imsic_update() and
->> kvm_riscv_vcpu_aia_imsic_release() take it for writing to move the vCPU
->> to a new VS-file or to the SW-file, then read and clear the old VS-file
->> and free its HGEI line.
->>
->> On RISC-V, writel() is followed only by mmiowb_set_pending(). The
->> trailing "fence o,w" is deferred to spin_unlock() by the mmiowb()
->> tracking, and rwlocks don't take part in that tracking:
->> queued_read_unlock() issues just "fence rw,w" before the AMO, which
->> doesn't order device output. So the SETIPNUM write can still be in
->> flight after another hart has observed vsfile_lock being released. If
->> the old VS-file is read and cleared before the write lands, the
->> interrupt is lost. If the HGEI line has already been handed out
->> again, the interrupt ends up in another vCPU's VS-file.
->>
->> Add an explicit RISCV_FENCE(o, w) after the write to the VS-file, which
->> is what spin_unlock() would issue via mmiowb().
->>
->> Fixes: db8b7e97d613 ("RISC-V: KVM: Add in-kernel virtualization of AIA IMSIC")
->> Signed-off-by: Oleksii Kurochko <oleksii.kurochko@gmail.com>
->> ---
->> Why RISCV_FENCE(o, w) and not mmiowb():
->>
->> - Since the mmiowb() rework in v5.2 (e.g. commit 60ca1e5a200c
->>    ("mmiowb: Hook up mmiowb helpers to spinlocks and generic I/O
->>    accessors")), mmiowb() is an implementation detail of the spinlock
->>    code. Explicit invocations were removed from drivers by commit
->>    fb24ea52f78e ("drivers: Remove explicit invocations of mmiowb()") and
->>    from the documentation by commit 915530396c78 ("Documentation: Kill
->>    all references to mmiowb()"), so adding a new direct caller would go
->>    against that.
->>
->> - RISCV_FENCE(o, w) states exactly the ordering needed here (device
->>    output before the store that releases the lock), which is fine for
->>    arch-specific code, and it is the same instruction mmiowb() expands to
->>    on RISC-V. wmb() ("fence ow,ow") would also work but is stronger than
->>    required.
->>
->> Scope: this only orders the write before the lock release. Whether a
->> write that is already in global memory order is guaranteed to have
->> taken effect in the old VS-file before kvm_riscv_vcpu_aia_imsic_update()
->> or kvm_riscv_vcpu_aia_imsic_release() reads and clears it is a separate
->> question, see https://github.com/riscv/riscv-aia/issues/172. If it
->> isn't, these paths will also need to drain the old VS-file, and such a
->> drain depends on the ordering added here.
->> ---
->>   arch/riscv/kvm/aia_imsic.c | 7 +++++++
->>   1 file changed, 7 insertions(+)
->>
->> diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
->> index f17dc559a709..807bb73a129a 100644
->> --- a/arch/riscv/kvm/aia_imsic.c
->> +++ b/arch/riscv/kvm/aia_imsic.c
->> @@ -1056,6 +1056,13 @@ int kvm_riscv_vcpu_aia_imsic_inject(struct kvm_vcpu *vcpu,
->>
->>          if (imsic->vsfile_cpu >= 0) {
->>                  writel(iid, imsic->vsfile_va + IMSIC_MMIO_SETIPNUM_LE);
->> +               /*
->> +                * rwlocks don't participate in mmiowb() tracking, so order
->> +                * the write to the VS-file before releasing vsfile_lock,
->> +                * i.e. before the vCPU can be moved off this VS-file and
->> +                * the VS-file read and cleared.
->> +                */
->> +               RISCV_FENCE(o, w);
+On 11/13/2026 12:40 AM, Mi, Dapeng wrote:
 > 
-> Another fence after every writel() is a big hammer in the path.
+> On 11/13/2026 4:32 AM, Zide Chen wrote:
+>> From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+>>
+>> Intel platforms support non-contiguous fixed counters via CPUID.0AH:ECX
+>> starting with PerfMon v5, and support non-contiguous GP counters
+>> through the Architectural PerfMon Extension (CPUID leaf 23H).
+>>
+>> struct x86_pmu_capability now exposes {,fixed_}cntr_mask64 bitmaps,
+>> which may contain sparse bits representing non-contiguous counters.
+>> Switch KVM's kvm_host_pmu and kvm_pmu_cap consumers over to the new
+>> bitmask fields, including iterating kvm_host_pmu bitmasks directly in
+>> VMX and SVM PMU MSR intercept setup.
+>>
+>> CPUID.0AH:EAX[15:8] and CPUID.0AH:EDX[4:0] enumerate only contiguous
+>> counters. Derive these values from kvm_pmu_cap.{,fixed_}cntr_mask64 as
+>> the number of consecutive counters starting at index 0.
+>>
+>> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+>> Co-developed-by: Zide Chen <zide.chen@intel.com>
+>> Signed-off-by: Zide Chen <zide.chen@intel.com>
+>> ---
+>> v4:
+>> - Cleanly substitute kvm_pmu_cap.num_counters_{gp,fixed} with
+>>   find_first_zero_bit() in intel_pmu_refresh() without throwaway
+>>   code churn.
+>> - Use find_first_zero_bit() instead of hweight64() for AMD CPUID
+>>   0x80000022 EBX[3:0] (NumCorePmc) and svm_set_cpu_caps() to enumerate
+>>   contiguous counters. (Yosry)
+>> - Do not carry over Jim's Reviewed-by from v3 due to reworking counter
+>>   clamping in intel_pmu_refresh().
+>>
+>> v3:
+>> - Iterate kvm_host_pmu bitmasks directly in VMX and SVM intercept loops.
+>> - Clamp nr_{gp,fixed}_counters to the number of contiguous counters
+>>   supported by KVM in intel_pmu_refresh(). (Jim, Sashiko)
+>> - Drop redundant !enable_mediated_pmu clamp on fixed_cntr_mask64.
+>>   (Sashiko)
+>> ---
+>>  arch/x86/kvm/cpuid.c         | 17 ++++++++++++++---
+>>  arch/x86/kvm/msrs.c          | 12 ++++++------
+>>  arch/x86/kvm/pmu.c           | 17 ++++++++---------
+>>  arch/x86/kvm/svm/pmu.c       |  2 +-
+>>  arch/x86/kvm/svm/svm.c       |  8 ++++----
+>>  arch/x86/kvm/vmx/pmu_intel.c | 18 +++++++++++++++---
+>>  arch/x86/kvm/vmx/vmx.c       |  4 ++--
+>>  7 files changed, 50 insertions(+), 28 deletions(-)
+>>
+>> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+>> index adafd6fa2c54..427871ec365f 100644
+>> --- a/arch/x86/kvm/cpuid.c
+>> +++ b/arch/x86/kvm/cpuid.c
+>> @@ -1535,10 +1535,18 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
+>>  		}
+>>  
+>>  		eax.split.version_id = kvm_pmu_cap.version;
+>> -		eax.split.num_counters = kvm_pmu_cap.num_counters_gp;
+>> +
+>> +		/* Contiguous GP counters only. */
+>> +		eax.split.num_counters =
+>> +			find_first_zero_bit(kvm_pmu_cap.cntr_mask,
+>> +					    KVM_MAX_NR_GP_COUNTERS);
+>>  		eax.split.bit_width = kvm_pmu_cap.bit_width_gp;
+>>  		eax.split.mask_length = kvm_pmu_cap.events_mask_len;
+>> -		edx.split.num_counters_fixed = kvm_pmu_cap.num_counters_fixed;
+>> +
+>> +		/* Contiguous fixed counters only. */
+>> +		edx.split.num_counters_fixed =
+>> +			find_first_zero_bit(kvm_pmu_cap.fixed_cntr_mask,
+>> +					    KVM_MAX_NR_FIXED_COUNTERS);
+>>  		edx.split.bit_width_fixed = kvm_pmu_cap.bit_width_fixed;
+>>  
+>>  		if (kvm_pmu_cap.version)
+>> @@ -1903,7 +1911,10 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
+>>  
+>>  		cpuid_entry_override(entry, CPUID_8000_0022_EAX);
+>>  
+>> -		ebx.split.num_core_pmc = kvm_pmu_cap.num_counters_gp;
+>> +		/* Contiguous GP counters only. */
+>> +		ebx.split.num_core_pmc =
+>> +			find_first_zero_bit(kvm_pmu_cap.cntr_mask,
+>> +					    KVM_MAX_NR_GP_COUNTERS);
+>>  		entry->ebx = ebx.full;
+>>  		break;
+>>  	}
+>> diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
+>> index e91650af44c2..01fb130a7d24 100644
+>> --- a/arch/x86/kvm/msrs.c
+>> +++ b/arch/x86/kvm/msrs.c
+>> @@ -2621,20 +2621,20 @@ static void kvm_probe_msr_to_save(u32 msr_index)
+>>  		break;
+>>  	case MSR_ARCH_PERFMON_PERFCTR0 ...
+>>  	     MSR_ARCH_PERFMON_PERFCTR0 + KVM_MAX_NR_GP_COUNTERS - 1:
+>> -		if (msr_index - MSR_ARCH_PERFMON_PERFCTR0 >=
+>> -		    kvm_pmu_cap.num_counters_gp)
+>> +		if (!(BIT_ULL(msr_index - MSR_ARCH_PERFMON_PERFCTR0) &
+>> +		      kvm_pmu_cap.cntr_mask64))
+>>  			return;
+>>  		break;
+>>  	case MSR_ARCH_PERFMON_EVENTSEL0 ...
+>>  	     MSR_ARCH_PERFMON_EVENTSEL0 + KVM_MAX_NR_GP_COUNTERS - 1:
+>> -		if (msr_index - MSR_ARCH_PERFMON_EVENTSEL0 >=
+>> -		    kvm_pmu_cap.num_counters_gp)
+>> +		if (!(BIT_ULL(msr_index - MSR_ARCH_PERFMON_EVENTSEL0) &
+>> +		      kvm_pmu_cap.cntr_mask64))
+>>  			return;
+>>  		break;
+>>  	case MSR_ARCH_PERFMON_FIXED_CTR0 ...
+>>  	     MSR_ARCH_PERFMON_FIXED_CTR0 + KVM_MAX_NR_FIXED_COUNTERS - 1:
+>> -		if (msr_index - MSR_ARCH_PERFMON_FIXED_CTR0 >=
+>> -		    kvm_pmu_cap.num_counters_fixed)
+>> +		if (!(BIT_ULL(msr_index - MSR_ARCH_PERFMON_FIXED_CTR0) &
+>> +		      kvm_pmu_cap.fixed_cntr_mask64))
+>>  			return;
+>>  		break;
+>>  	case MSR_AMD64_PERF_CNTR_GLOBAL_CTL:
+>> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+>> index d203cbc7fd12..e1999a6c85d7 100644
+>> --- a/arch/x86/kvm/pmu.c
+>> +++ b/arch/x86/kvm/pmu.c
+>> @@ -20,7 +20,6 @@
+>>  #include <asm/perf_event.h>
+>>  #include <asm/cpu_device_id.h>
+>>  #include "x86.h"
+>> -#include "cpuid.h"
+>>  #include "lapic.h"
+>>  #include "pmu.h"
+>>  
+>> @@ -156,8 +155,8 @@ void kvm_init_pmu_capability(struct kvm_pmu_ops *pmu_ops)
+>>  		 * there are a non-zero number of counters, but fewer than what
+>>  		 * is architecturally required.
+>>  		 */
+>> -		if (!kvm_host_pmu.num_counters_gp ||
+>> -		    WARN_ON_ONCE(kvm_host_pmu.num_counters_gp < min_nr_gp_ctrs))
+>> +		if (!kvm_host_pmu.cntr_mask64 ||
+>> +		    WARN_ON_ONCE(hweight64(kvm_host_pmu.cntr_mask64) < min_nr_gp_ctrs))
+>>  			enable_pmu = false;
+>>  		else if (is_intel && !kvm_host_pmu.version)
+>>  			enable_pmu = false;
+>> @@ -177,10 +176,10 @@ void kvm_init_pmu_capability(struct kvm_pmu_ops *pmu_ops)
+>>  
+>>  	memcpy(&kvm_pmu_cap, &kvm_host_pmu, sizeof(kvm_host_pmu));
+>>  	kvm_pmu_cap.version = min(kvm_pmu_cap.version, 2);
+>> -	kvm_pmu_cap.num_counters_gp = min(kvm_pmu_cap.num_counters_gp,
+>> -					  pmu_ops->MAX_NR_GP_COUNTERS);
+>> -	kvm_pmu_cap.num_counters_fixed = min(kvm_pmu_cap.num_counters_fixed,
+>> -					     KVM_MAX_NR_FIXED_COUNTERS);
+>> +	kvm_pmu_cap.cntr_mask64 &=
+>> +		GENMASK_ULL(pmu_ops->MAX_NR_GP_COUNTERS - 1, 0);
+>> +	kvm_pmu_cap.fixed_cntr_mask64 &=
+>> +		GENMASK_ULL(KVM_MAX_NR_FIXED_COUNTERS - 1, 0);
+>>  
+>>  	kvm_pmu_eventsel.INSTRUCTIONS_RETIRED =
+>>  		perf_get_hw_event_config(PERF_COUNT_HW_INSTRUCTIONS);
+>> @@ -788,8 +787,8 @@ static bool kvm_need_any_pmc_intercept(struct kvm_vcpu *vcpu)
+>>  	 * KVM's capabilities are constrained based on KVM support, i.e. KVM's
+>>  	 * capabilities themselves may be a subset of hardware capabilities.
+>>  	 */
+>> -	return kvm_gp_pmc_mask(pmu) != BIT_ULL(kvm_host_pmu.num_counters_gp) - 1 ||
+>> -	       kvm_fixed_pmc_mask(pmu) != BIT_ULL(kvm_host_pmu.num_counters_fixed) - 1;
+>> +	return kvm_gp_pmc_mask(pmu) != kvm_host_pmu.cntr_mask64 ||
+>> +	       kvm_fixed_pmc_mask(pmu) != kvm_host_pmu.fixed_cntr_mask64;
+>>  }
+>>  
+>>  bool kvm_need_perf_global_ctrl_intercept(struct kvm_vcpu *vcpu)
+>> diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
+>> index 64215024e70e..5eedf9b35fce 100644
+>> --- a/arch/x86/kvm/svm/pmu.c
+>> +++ b/arch/x86/kvm/svm/pmu.c
+>> @@ -196,7 +196,7 @@ static void amd_pmu_refresh(struct kvm_vcpu *vcpu)
+>>  	}
+>>  
+>>  	pmu->pmc_exists64 = (BIT_ULL(nr_gp_counters) - 1) &
+>> -			    (BIT_ULL(kvm_pmu_cap.num_counters_gp) - 1);
+>> +			    kvm_pmu_cap.cntr_mask64;
+>>  
+>>  	if (pmu->version > 1) {
+>>  		pmu->global_ctrl_rsvd = ~pmu->pmc_exists64;
+>> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+>> index e21abcedea70..5b9c9d149486 100644
+>> --- a/arch/x86/kvm/svm/svm.c
+>> +++ b/arch/x86/kvm/svm/svm.c
+>> @@ -773,7 +773,7 @@ static void svm_recalc_pmu_msr_intercepts(struct kvm_vcpu *vcpu)
+>>  					  MSR_TYPE_RW, intercept || !test_bit(i, &gp_mask));
+>>  
+>>  	intercept |= !guest_cpu_cap_has(vcpu, X86_FEATURE_PERFCTR_CORE);
+>> -	for (i = 0; i < kvm_pmu_cap.num_counters_gp; i++)
+>> +	for_each_set_bit(i, kvm_host_pmu.cntr_mask, AMD64_NUM_COUNTERS_CORE)
+>>  		svm_set_intercept_for_msr(vcpu, MSR_F15H_PERF_CTR + 2 * i,
+>>  					  MSR_TYPE_RW, intercept || !test_bit(i, &gp_mask));
+>>  
+>> @@ -5719,9 +5719,9 @@ static __init void svm_set_cpu_caps(void)
+>>  		 * access to enough counters to virtualize "core" support,
+>>  		 * otherwise limit vPMU support to the legacy number of counters.
+>>  		 */
+>> -		if (kvm_pmu_cap.num_counters_gp < AMD64_NUM_COUNTERS_CORE)
+>> -			kvm_pmu_cap.num_counters_gp = min(AMD64_NUM_COUNTERS,
+>> -							  kvm_pmu_cap.num_counters_gp);
+>> +		if (find_first_zero_bit(kvm_pmu_cap.cntr_mask,
+>> +					KVM_MAX_NR_GP_COUNTERS) < AMD64_NUM_COUNTERS_CORE)
+>> +			kvm_pmu_cap.cntr_mask64 &= GENMASK_ULL(AMD64_NUM_COUNTERS - 1, 0);
+>>  		else
+>>  			kvm_cpu_cap_check_and_set(X86_FEATURE_PERFCTR_CORE);
+>>  
+>> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+>> index 68d23c7877a2..a240b74ac704 100644
+>> --- a/arch/x86/kvm/vmx/pmu_intel.c
+>> +++ b/arch/x86/kvm/vmx/pmu_intel.c
+>> @@ -493,7 +493,8 @@ static __always_inline u64 intel_get_fixed_pmc_eventsel(unsigned int index)
+>>  	 * have a known encoding for the associated general purpose event.
+>>  	 */
+>>  	eventsel = perf_get_hw_event_config(fixed_pmc_perf_ids[index]);
+>> -	WARN_ON_ONCE(!eventsel && index < kvm_pmu_cap.num_counters_fixed);
+>> +	WARN_ON_ONCE(!eventsel &&
+>> +		     (kvm_pmu_cap.fixed_cntr_mask64 & BIT_ULL(index)));
+>>  	return eventsel;
+>>  }
+>>  
+>> @@ -548,12 +549,23 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
+>>  				      kvm_pmu_cap.events_mask_len);
+>>  	pmu->available_event_types = ~entry->ebx & (BIT_ULL(eax.split.mask_length) - 1);
+>>  
+>> +	/*
+>> +	 * CPUID.0AH:EDX[4:0] can only enumerate contiguous counters. Clamp the
+>> +	 * value to the number of contiguous fixed counters supported by KVM.
+>> +	 */
+>>  	nr_fixed_counters = min_t(int, edx.split.num_counters_fixed,
+>> -				  kvm_pmu_cap.num_counters_fixed);
+>> +				  find_first_zero_bit(kvm_pmu_cap.fixed_cntr_mask,
+>> +						      KVM_MAX_NR_FIXED_COUNTERS));
+>> +
+>>  	fixed_mask = BIT_ULL(nr_fixed_counters) - 1;
+>>  
+>> +	/*
+>> +	 * CPUID.0AH:EAX[15:8] can only enumerate contiguous counters. Clamp the
+>> +	 * value to the number of contiguous GP counters supported by KVM.
+>> +	 */
+>>  	nr_gp_counters = min_t(int, eax.split.num_counters,
+>> -			       kvm_pmu_cap.num_counters_gp);
+>> +			       find_first_zero_bit(kvm_pmu_cap.cntr_mask,
+>> +						   KVM_MAX_NR_GP_COUNTERS));
+>>  	pmu->pmc_exists64 = BIT_ULL(nr_gp_counters) - 1;
+>>  
+>>  	entry = kvm_find_cpuid_entry_index(vcpu, 7, 0);
+>> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+>> index 944ecbf351cf..9db6107943ec 100644
+>> --- a/arch/x86/kvm/vmx/vmx.c
+>> +++ b/arch/x86/kvm/vmx/vmx.c
+>> @@ -4264,7 +4264,7 @@ static void vmx_recalc_pmu_msr_intercepts(struct kvm_vcpu *vcpu)
+>>  
+>>  	vm_exit_controls_changebit(vmx, vm_exit_controls_bits, has_mediated_pmu);
+>>  
+>> -	for (i = 0; i < kvm_pmu_cap.num_counters_gp; i++) {
+>> +	for_each_set_bit(i, kvm_host_pmu.cntr_mask, INTEL_PMC_MAX_GENERIC) {
 > 
-> If the intention is to have correct contents when VS-file is read then
-> better place to add a fence is at the start of imsic_vsfile_local_read().
-Thanks for the review.
+> Nit: This seems a long standing bug, kvm_host_pmu instead of kvm_pmu_cap
+> should be used here. Better put a stand-alone patch to fix this issue at
+> the header of this patch series if possible. 
 
-I don't think a fence in imsic_vsfile_local_read() helps here. The
-problem is on the writer's side, and imsic_vsfile_local_read() runs on
-a different hart.
+Actually, it seems to me using kvm_pmu_cap here is not a bug in
+upstream. MSR bitmaps by default are all-intercepted, and guest PMCs are
+clamped to kvm_pmu_cap, so counters beyond kvm_pmu_cap can never be
+exposed to the guest.
 
-The SETIPNUM write is done by whichever hart calls
-kvm_riscv_vcpu_aia_imsic_inject(), which can be any CPU (irqfd,
-ioctl, ...). imsic_vsfile_local_read() runs on the old vsfile_cpu, via
-the IPI from imsic_vsfile_read(). A fence only orders the accesses of
-the hart that executes it, so a fence on the reading hart can't make
-another hart's MMIO store land.
+Looking closer at the history, exposing kvm_host_pmu to vendor code in
+patch 6 was originally added in v2 when vmx.c had two loops and needed
+it to compute "host_only_gp_mask = kvm_host_pmu.cntr_mask64 & ~gp_mask".
 
-Without the fence, this can happen:
+In v3, patch 5 consolidated VMX and SVM into single loops, which
+eliminated the host_only mask calculation. Using kvm_host_pmu is
+intuitively "more" correct, but not a must.
 
-   hart A (inject)            hart B (update/release)    hart C (old 
-vsfile_cpu)
-   read_lock()
-   writel(SETIPNUM)
-     (store still in flight)
-   read_unlock()
-                              write_lock()
-                              switch VS-file
-                              write_unlock()
-                              IPI ------------------->
-                                                        fence  <-proposed
-                                                        read+clear VSfile
-                              free HGEI
-   SETIPNUM lands: the interrupt
-   is lost, or ends up in another
-   vCPU's VS-file if the HGEI was
-   already reused
+kvm_pmu_cap.cntr_mask can be used in this patch:
 
-Hart A's unlock can become visible before its SETIPNUM write has
-reached the IMSIC, because read_unlock() doesn't order device output.
-Nothing that hart B or hart C does afterwards can wait for that write.
-Only hart A can hold back its unlock until the write is ordered, and
-that is what the fence o,w after writel() does.
+-  for_each_set_bit(i, kvm_host_pmu.cntr_mask, INTEL_PMC_MAX_GENERIC) {
++  for_each_set_bit(i, kvm_pmu_cap.cntr_mask, INTEL_PMC_MAX_GENERIC) {
+       bool pmc_intercept = intercept || !test_bit(i, &gp_mask);
 
-With the fence:
+       vmx_set_intercept_for_msr(vcpu, MSR_IA32_PERFCTR0 + i,
+                          MSR_TYPE_RW, pmc_intercept);
+       vmx_set_intercept_for_msr(vcpu, MSR_IA32_PMC0 + i, MSR_TYPE_RW,
+                          pmc_intercept || !fw_writes_is_enabled(vcpu));
+   }
 
-   hart A (inject)            hart B (update/release)    hart C (old 
-vsfile_cpu)
-   read_lock()
-   writel(SETIPNUM)
-   fence o,w
-   read_unlock()
-                              write_lock()
-                              switch VS-file
-                              write_unlock()
-                              IPI ------------------->
-                                                       read+clear VS-file
-                              free HGEI
+Thus, patch 6 ("KVM: x86/pmu: Expose kvm_host_pmu to vendor modules")
+could be dropped, keeping kvm_host_pmu encapsulated as static to pmu.c.
 
-The SETIPNUM write is now ordered before the unlock, so it is also
-ordered before everything hart B does after taking the lock, and,
-through the IPI, before hart C reads the old VS-file. It can no longer
-arrive after the read or after the HGEI is freed.
+> 
+> Thanks.
+> 
+> 
+>>  		bool pmc_intercept = intercept || !test_bit(i, &gp_mask);
+>>  
+>>  		vmx_set_intercept_for_msr(vcpu, MSR_IA32_PERFCTR0 + i,
+>> @@ -4273,7 +4273,7 @@ static void vmx_recalc_pmu_msr_intercepts(struct kvm_vcpu *vcpu)
+>>  					  pmc_intercept || !fw_writes_is_enabled(vcpu));
+>>  	}
+>>  
+>> -	for (i = 0; i < kvm_pmu_cap.num_counters_fixed; i++) {
+>> +	for_each_set_bit(i, kvm_host_pmu.fixed_cntr_mask, INTEL_PMC_MAX_FIXED) {
+>>  		bool pmc_intercept = intercept || !test_bit(i, &fixed_mask);
+>>  
+>>  		vmx_set_intercept_for_msr(vcpu, MSR_CORE_PERF_FIXED_CTR0 + i,
 
-About the cost: this is the same fence that every writel() under a
-spinlock already gets. On RISC-V, writel() only sets mmiowb pending and
-spin_unlock() then issues "fence o,w". We need it explicitly here only
-because vsfile_lock is an rwlock. It runs once per injected MSI, and
-only when the vCPU has a VS-file.
-
-The only way I see to keep it out of the inject path is for
-update/release to IPI every CPU that might be injecting and run
-"fence o,w" there before the old VS-file is read. That is much heavier
-and moves the cost to vCPU migration, so I'd rather keep the fence in
-inject. Let me know if you'd still prefer the other way.
-
-One more thing, not directly connected to this patch: could you please
-also take a look at https://github.com/riscv/riscv-aia/issues/172?
-The fence makes sure that the SETIPNUM write is ordered before hart C
-reads the old VS-file, but hart C reads it through CSRs
-(vsiselect/vsireg), not through memory. As far as I can tell, the spec
-doesn't say whether a write that is already in global memory order is
-guaranteed to be visible in eip at that point. If it isn't,
-update/release will also need to drain the old VS-file before reading
-it. Such a drain would build on this fence rather than replace it, since
-it only works if the write is ordered before the unlock.
-
-~ Oleksii
