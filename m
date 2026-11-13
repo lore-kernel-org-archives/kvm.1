@@ -1,56 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794593386;
-	b=kBPenB0r1gsmFQjo1HEog95mh/VxmrCXEcOOCzbauNYIfaH7AzAk8/xyHMTEEpiPhCJM
-	 7t2202mu7l+WuN+ZjOY5d5e8Z/uxvKXG34x5rl3SC3nsJRrML7yrifIFhJ+1EAGnJxz3P
-	 XLRBM7gee/tXFQZt5pmAdY1cxc4Fe2qCxDUIoDoBNyyOZYx6COI6Omr8uJzspcBdVdQnY
-	 LUF6YvfcuL73GZ4PYLnv96RLTkkTUnext1oOAciTYsSJKG7OAqknf5oxv17eAKCpIga9m
-	 s5nNBO6sH2NlOdxWZNh0lX9v2UPl24NCx4a1GeVtiBojvh4T8DRK0ux1BV1mIJCZOVw==
+	t=1794593457;
+	b=MnjeS1TBs+v381Wn82cbDnvpPipqJ0rB3C7SWUavpjEbkL4zZJwvV214aGTiLz9FYR2X
+	 mGwpuwPUFePAlIpxOsJmHuQrfn4wMQmpvoR3wXzOvbQ0EiVJUnb29lU3+l9ah9XcZw2tI
+	 csLn3zy3n8LTF/wIaKTQAArUwOt/VXOTiPo/BwH3O+iTO3G3CumF4hQWBiiS8dAaEmnYu
+	 lnfk+QuCreaNxvyQAwfiY98s1C+ywPLXJpFzHlHuj5kyajhxxdUWcHgyRuK3pD8ZW0lyk
+	 trtdfwFhEIdXI05+uPBVzJkI6qGtPRRXuS7QtwmWcQu+7LulbbMYFr/ju7+TfPycm8A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794593386;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=nVjP5GX+3XmXl45D78zcygPv7kUuwRgrwxq54cpdc8c=;
-	b=RwhFqTLkGpVWPWPl4wkXGNsISx+Djq7nHJk8PMbI+vhgTl6KLN7s0MOlhNPrAk6LH2Ce
-	 lxf6LHcazqfAEkhp5okd/OS+CWpY3Z/Cg5ha7EAzQTB6AE0Fp3puqKZxBDRGa7JTe+nM0
-	 qd1mb+3aD29q5H2ob1xW4oxKd7OUu5WVQEcYHxRIqrzGZ2ZrerEb29y+jdXqwqNT3ND0Y
-	 CGKWAdPbsfz4dpD4ogorgILIKb0QFRcDemdiLLB3HurQFNfYtUlS0ro2x7pU/YMzSgHuC
-	 +VjxiiMbXbTP8EpkeyL8vmBfXoeWctdpDOhtF4fLthfDgZg5PNuhdn8D5U1vZgLaKWQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794593457;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
+	bh=XhBNFtC1QnqJ4V4bqrNNUKOgvII9Lgc8h6uQXVwmY3w=;
+	b=NgVWxbeNJguDX2F3B6jmNtH0o+nYLuYzp31f3xHamVdvMWxkMCVZnx5Y5UCO3EAi8P/W
+	 bf0170uNBVBa5UECjhwP8HAAAvwdJYbRae7w4nsZ2Ih7CfhlwR88//A80VJE5TRwP0yrc
+	 XYuQQeeHVpcNhE6mEBlGF7Lh4Sd42KP9sC0zp+6Tydqsv6JBMU75PhHJgOvLZ9ZvO7dzn
+	 VtUpTYu7VQNBKifTsXYNp0CsFqjynSRTq7vA8C3pXIdmStHP9+bC1k/T44kXrr9uqEjQJ
+	 EBeMrDLc8aJ0ENE0Rofef/+RUpjjaWLZQT0M4vk3CAKwHFIbEWi12ExSy5CufKxqvfA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M8xF7Uem;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=infradead.org;
+	spf=none smtp.mailfrom=casper.srs.infradead.org;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=i+W7errz;
+	arc=none smtp.remote-ip=90.155.50.34
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E57606A32D
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 18:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8275606A323;
+	Fri, 13 Nov 2026 18:10:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E8275606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M8xF7Uem
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC7D1F000C4;
-	Fri, 13 Nov 2026 18:09:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794593386;
-	bh=nVjP5GX+3XmXl45D78zcygPv7kUuwRgrwxq54cpdc8c=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=M8xF7Uem2/M5qUDMzaG02/Sy3gxReDYMHASg3Lft7PvpgbbeKqsDPXtAUd51AU8dO
-	 g02ZLRgCm4BOOXtlWu7fQdVOIZ3Vxz/9+QA+x/a+OePH+Pgo92aNNypnl2WM0CUf1u
-	 fFKqEaXM4g4IFxDkt+6gH6G0uH24dUkhvqswAvQgVpTvCG2LsAjsLG5ta24kgPVIcY
-	 9rBMwjk5lFn0LHBYLf8nPejp1ZYkmqfLWjWfH9vz/IhYZeZIIC/cm/+w57PgR6YXSb
-	 hC/EUI55TXFSuiHETCLBVu2/p+6f1qNnZ6scrEpbYNX8ApBnv9PnEQABJei/rCMvg+
-	 T73njNxJXiiwg==
-Message-ID: <sashiko-outbox-213391@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: x86: Leave nested if vendor specific logic fails
- on RSM to L2
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261113172318.482971-1-seanjc@google.com>
-References: <20261113172318.482971-1-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 13 Nov 2026 18:09:45 +0000
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=i+W7errz
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=XhBNFtC1QnqJ4V4bqrNNUKOgvII9Lgc8h6uQXVwmY3w=; b=i+W7errzkrkTbd/Y6S6JKxaE+o
+	JPvmm4iyNZVuiMob4lgImQslNCzaFBB3YHVlIyDQpI2JMITxrHzbQrys4nkITqA7Zq0pmPnOnP1Co
+	4Qv33ei8oai2kvMoZ9wxGgYYZ16cZAT813Zl0UKzlEcE3Xl9hkKLVdqFm6yXm/OUN9eulL1t1Tc6L
+	QIxCWPindXgcGukf+595ZhlRtiqYgEhv6hGj0/Fbs6ykYTbkNBv/5H+BpqI19RORJo1Rigvfjadoh
+	pE/xx/pXpasnEXxLMwlb+iGz6haRxVlJzyXevjWroSM3wySm+62Lqcz7w/Dk8/aY6CaZZiD4vTf7y
+	SacZ2Jxw==;
+Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
+	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xRvjh-00000004WY2-21iJ;
+	Fri, 13 Nov 2026 18:10:53 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
+	id 1xRvjh-00000000LH7-0cTC;
+	Fri, 13 Nov 2026 18:10:53 +0000
+From: David Woodhouse <dwmw2@infradead.org>
+To: kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: [PATCH] KVM: selftests: Make the x86 SSE register helpers volatile
+Date: Fri, 13 Nov 2026 18:10:53 +0000
+Message-ID: <20261113181053.81779-1-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <sashiko-outbox-209724@kernel.org>
+References: <sashiko-outbox-209724@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,89 +73,124 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Sender: David Woodhouse <dwmw2@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] KVM: x86: stale L2 CR/EFER and MMU state on error in
-  emulator_leave_smm()
---
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-commit c1ffe76267a883adcbf36fb63721587d4841653d
-Author: Sean Christopherson <seanjc@google.com>
+read_sse_reg() and write_sse_reg() were borrowed from KVM's
+_kvm_read_sse_reg() and _kvm_write_sse_reg(). The kernel is built
+without SSE, so the compiler never uses the XMM registers itself and a
+plain asm() is enough there. Selftest guest code is built with SSE, and
+there the asm statements have to tell the compiler what they do.
 
-KVM: x86: Leave nested if vendor specific logic fails on RSM to L2
+read_sse_reg() has an output and is not volatile, so the compiler may
+treat it as a pure computation and move it, for example ahead of the
+hypercall whose XMM output it is meant to read. write_sse_reg() has no
+outputs and is therefore implicitly volatile, but it doesn't declare the
+register it overwrites, so a value the compiler was keeping there does
+not survive.
 
-This commit jumps to the exit path in emulator_leave_smm() when the vendor
-leave_smm callback fails so that kvm_leave_nested() is called if the vCPU
-already entered guest mode.
+Mark both volatile, and declare the register each write_sse_reg() case
+writes as clobbered. A read_sse_reg() after __hyperv_hypercall() now
+stays after it.
 
-> diff --git a/arch/x86/kvm/smm.c b/arch/x86/kvm/smm.c
-> index 656a38dad7e7a..23cb8211ec74e 100644
-> --- a/arch/x86/kvm/smm.c
-> +++ b/arch/x86/kvm/smm.c
-> @@ -639,8 +639,10 @@ int emulator_leave_smm(struct x86_emulate_ctxt *ctxt)
->  	 * reasons), and so nSVM/nVMX would clobber state that is loaded from
->  	 * SMRAM and from the VMCS/VMCB.
->  	 */
-> -	if (kvm_x86_call(leave_smm)(vcpu, &smram))
-> -		return X86EMUL_UNHANDLEABLE;
-> +	if (kvm_x86_call(leave_smm)(vcpu, &smram)) {
-> +		ret =3D X86EMUL_UNHANDLEABLE;
-> +		goto out;
-> +	}
-> =20
->  #ifdef CONFIG_X86_64
->  	if (guest_cpu_cap_has(vcpu, X86_FEATURE_LM))
-> @@ -661,6 +663,7 @@ int emulator_leave_smm(struct x86_emulate_ctxt *ctxt)
->  	 * the shutdown, so that L1 enters shutdown instead of seeing a VM-Exit
->  	 * that architecturally shouldn't be possible.
->  	 */
-> +out:
->  	if (ret !=3D X86EMUL_CONTINUE && is_guest_mode(vcpu))
->  		kvm_leave_nested(vcpu);
->  	return ret;
+That still leaves the compiler free to use an XMM register for its own
+code between a write_sse_reg() and the asm which consumes it.
+hyperv_write_xmm_input() in the hyperv_ipi and hyperv_tlb_flush tests
+relies on that not happening; GCC 11.5 at -O2 emits nothing there.
+Closing that window entirely would mean passing the XMM values as
+operands of the hypercall asm itself.
 
-[Severity: Medium]
-Does jumping directly to kvm_leave_nested() when leave_smm() fails on SVM
-leave vcpu->arch.{efer,cr0,cr4} with partially loaded vmcb12 state while
-switching back to L1?
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/all/sashiko-outbox-209724@kernel.org/
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+---
+ .../selftests/kvm/include/x86/processor.h     | 32 +++++++++----------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-Before calling leave_smm(), emulator_leave_smm() puts the vCPU into 32-bit
-unpaged real mode (CR0.PG=3D0, CR0.PE=3D0, EFER=3D0).  In svm_leave_smm(),
-nested_svm_check_cached_vmcb12() only checks kvm_vcpu_is_legal_cr3() when
-both EFER_LME and X86_CR0_PG are set in vmcb12.  If vmcb12 has an illegal
-CR3 with CR0.PG=3D0, enter_svm_guest_mode() enters guest mode and overwrites
-vcpu->arch.{efer,cr0,cr4} before failing in nested_svm_load_cr3():
+diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+index 3e4351ccb359..28571ac697c8 100644
+--- a/tools/testing/selftests/kvm/include/x86/processor.h
++++ b/tools/testing/selftests/kvm/include/x86/processor.h
+@@ -888,28 +888,28 @@ static inline void read_sse_reg(int reg, sse128_t *data)
+ {
+ 	switch (reg) {
+ 	case 0:
+-		asm("movdqa %%xmm0, %0" : "=m"(*data));
++		asm volatile("movdqa %%xmm0, %0" : "=m"(*data));
+ 		break;
+ 	case 1:
+-		asm("movdqa %%xmm1, %0" : "=m"(*data));
++		asm volatile("movdqa %%xmm1, %0" : "=m"(*data));
+ 		break;
+ 	case 2:
+-		asm("movdqa %%xmm2, %0" : "=m"(*data));
++		asm volatile("movdqa %%xmm2, %0" : "=m"(*data));
+ 		break;
+ 	case 3:
+-		asm("movdqa %%xmm3, %0" : "=m"(*data));
++		asm volatile("movdqa %%xmm3, %0" : "=m"(*data));
+ 		break;
+ 	case 4:
+-		asm("movdqa %%xmm4, %0" : "=m"(*data));
++		asm volatile("movdqa %%xmm4, %0" : "=m"(*data));
+ 		break;
+ 	case 5:
+-		asm("movdqa %%xmm5, %0" : "=m"(*data));
++		asm volatile("movdqa %%xmm5, %0" : "=m"(*data));
+ 		break;
+ 	case 6:
+-		asm("movdqa %%xmm6, %0" : "=m"(*data));
++		asm volatile("movdqa %%xmm6, %0" : "=m"(*data));
+ 		break;
+ 	case 7:
+-		asm("movdqa %%xmm7, %0" : "=m"(*data));
++		asm volatile("movdqa %%xmm7, %0" : "=m"(*data));
+ 		break;
+ 	default:
+ 		BUG();
+@@ -920,28 +920,28 @@ static inline void write_sse_reg(int reg, const sse128_t *data)
+ {
+ 	switch (reg) {
+ 	case 0:
+-		asm("movdqa %0, %%xmm0" : : "m"(*data));
++		asm volatile("movdqa %0, %%xmm0" : : "m"(*data) : "xmm0");
+ 		break;
+ 	case 1:
+-		asm("movdqa %0, %%xmm1" : : "m"(*data));
++		asm volatile("movdqa %0, %%xmm1" : : "m"(*data) : "xmm1");
+ 		break;
+ 	case 2:
+-		asm("movdqa %0, %%xmm2" : : "m"(*data));
++		asm volatile("movdqa %0, %%xmm2" : : "m"(*data) : "xmm2");
+ 		break;
+ 	case 3:
+-		asm("movdqa %0, %%xmm3" : : "m"(*data));
++		asm volatile("movdqa %0, %%xmm3" : : "m"(*data) : "xmm3");
+ 		break;
+ 	case 4:
+-		asm("movdqa %0, %%xmm4" : : "m"(*data));
++		asm volatile("movdqa %0, %%xmm4" : : "m"(*data) : "xmm4");
+ 		break;
+ 	case 5:
+-		asm("movdqa %0, %%xmm5" : : "m"(*data));
++		asm volatile("movdqa %0, %%xmm5" : : "m"(*data) : "xmm5");
+ 		break;
+ 	case 6:
+-		asm("movdqa %0, %%xmm6" : : "m"(*data));
++		asm volatile("movdqa %0, %%xmm6" : : "m"(*data) : "xmm6");
+ 		break;
+ 	case 7:
+-		asm("movdqa %0, %%xmm7" : : "m"(*data));
++		asm volatile("movdqa %0, %%xmm7" : : "m"(*data) : "xmm7");
+ 		break;
+ 	default:
+ 		BUG();
 
-arch/x86/kvm/svm/nested.c:enter_svm_guest_mode() {
-	...
-	nested_vmcb02_prepare_control(svm);
-	nested_vmcb02_prepare_save(svm);
+base-commit: cbe54fc3462b3949ab27b9ae81fb9ddb509040c7
+-- 
+2.50.1
 
-	ret =3D nested_svm_load_cr3(&svm->vcpu, svm->nested.save.cr3,
-				  nested_npt_enabled(svm), from_vmrun);
-	if (ret)
-		return ret;
-	...
-}
-
-Because is_paging(vcpu) is false during RSM, nested_vmcb02_prepare_save()
-and svm_set_cr0() leave EFER_LMA set in vcpu->arch.efer if vmcb12 has
-EFER_LME=3D1, EFER_LMA=3D1, and CR0.PG=3D0.  Jumping to out: skips
-rsm_load_state_*(), and svm_leave_nested() switches back to vmcb01 (CPL=3D0)
-and clears HF_GUEST_MASK without restoring vcpu->arch.{efer,cr0,cr4} or
-resetting the MMU.
-
-When vmcb12 also has CR0.PE=3D0, em_rsm() then fails in
-emulator_recalc_and_set_mode() because EFER_LMA=3D1 with CR0.PE=3D0, and
-handle_emulation_failure() sees !is_guest_mode(vcpu) and CPL =3D=3D 0 and
-exits to userspace with KVM_EXIT_INTERNAL_ERROR instead of
-KVM_EXIT_SHUTDOWN.  If CR0.PE=3D1 and userspace ignores KVM_EXIT_SHUTDOWN,
-the vCPU runs in L1 with illegal or desynchronized CR/EFER and MMU state
-(for example, EFER_LMA=3D1 with CR0.PG=3D0 and CR4.PAE=3D0, which can trigg=
-er
-the KVM_BUG_ON() in kvm_calc_cpu_role()).
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113172318.4829=
-71-1-seanjc@google.com?part=3D1
