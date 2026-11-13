@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794596208;
-	b=lVetO3ynY6ExFrE+o1mXPXbkzzMA1LSk55WH47vaJjc9wOcsn2vVvwaTniMtX/GEVtln
-	 yjceynUO975L4msZYBjQfO2smZWA1JjtVeu55tMEDqVlTlvnu5KRq1Z5GSisSsi3w/h9J
-	 QoRfvdQB5MYssBJ3VDGOQWDLUY6OFlyfAix6oC9k/fhRT6DM/DXDWJFFEQ+2hhTtZU6jh
-	 v4h4XBHGY5CN2GRABKCybGh4nYPwbncGnQLrB29swbNjiP26TBiEI7YbXTPy+XvW//iLz
-	 KYYgDnFXRgO/ZzZZ+0yCXfXR5TgOGIkW9fWW1bkkqSoPdqZV6BYIHomZMgADPApzfGQ==
+	t=1794596300;
+	b=5JsH9XOGCgUD2RR9CbsqccaIBWeXL+Ii6jy1hACpsdvKycFDUt3ejkZ/uiXxqjCBTOcL
+	 PNqmpuClVRTTkKAy3npQhOFT1imfblkGczqfViPahhZryZ/i3adkN+hJ8Mq8u8RdqFf83
+	 mfJmUK/T+Qczrhz4x5Sj/6mLB1MyyzZa4C/siu1iKTSJJGMa5csCQwaFe0UBT1XgJoV0L
+	 S3Wkwo3FkbeIQYoyVy018Vx6S6zWL8ha9Ho2a0zB6aaXVAydRFqeZbjq4qeCHfxrNiS7o
+	 UBMRhcyLiTRBqPoDseQj9V6qB4Y4hBfDAFRBngBW94DovCm4yab5DQqCKxDE9gsqa5Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794596208;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794596300;
 	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=EaBAv/H8BT4vm7qZdZm8f+J1eyq2A3r6KggVt6sufuE=;
-	b=2CHVE0b/thIQmpzYPaJR68omrf3DkAWUJVdYDC2LJrxXSpJeSaXcGGnPsnSU9XowlaKQ
-	 TLF6r/CW637OBpABkN19X965tBiemEJiRfEET/B3hZr+CYhbdRboqzcI012ZznBbou5+v
-	 OkhSBTJTXAwi8nhKWfwc9Txb12lhGSc//wm90+71fFUGWE30QB8y6AI/XhsOhq1yQnYEX
-	 5GuZoAVWax/wWsNgXO5M4XlR7gFcXoHbZfUYRF79YZviPcQdQ9v57cb4VDRh5bYcxq4VD
-	 FK4Cz5V9J1tINsHEyWu9yFWyMrmcOrJ7rf4gnFnGdtjriLiBZqtnC/7XSX3YUTxiRzw==
+	bh=plduXl+R6cqY32R5PgJwlwqrejdYEcZNDX1tD+foFH4=;
+	b=RWJCxGEM3KxcEgvQLS3jGqRQrB0S+RuFS9nZO1SutmKWIUb/PgBmRkClX1NWZ56bVA6T
+	 Y9z9+ehMITMNXiSjSHyl8Kyu8OBJBbJATTfu4WUN6eoY7/9YBySlY3WfrVS+xyhWB/8VR
+	 fXKHfgN3oDIpFfCtGm2RaO3aKcMDwNtlcLA55D8QY0uG6IAO8VQh/ST4NI2W9XqNKvfGY
+	 l4L7D4GWEelzBHVzy7YkyMXm5sGyu3lnrFlrCSfcFTi1clXbAQJatyTGravWkJqiMRwYO
+	 FGEt5bJOE7LGM0m2DVc30w3IFYVBF2PO+tGjxgbEsS8L/Gy73cj0O9F2codOBJlVCgg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AaE1y4q+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cFHMfohK;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBA1606B35D;
-	Fri, 13 Nov 2026 18:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C92606A323;
+	Fri, 13 Nov 2026 18:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AaE1y4q+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 240ED1F000C6;
-	Fri, 13 Nov 2026 18:56:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cFHMfohK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A6C1F000C4;
+	Fri, 13 Nov 2026 18:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794596207;
-	bh=EaBAv/H8BT4vm7qZdZm8f+J1eyq2A3r6KggVt6sufuE=;
+	s=k20260515; t=1794596299;
+	bh=plduXl+R6cqY32R5PgJwlwqrejdYEcZNDX1tD+foFH4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=AaE1y4q++14YE+IhwkDHq526uKCelbaOwgasfvvC4nM/4hAhiYAO7UK+ijyX/ar2K
-	 RcF9z3EyMuug76TE2MqnPN2zWnCcm8jTzvzD51ZgEqYsfg4/t8IDDX/GqFCDl1vhrC
-	 lS03Ce5DsUfiByziqXEoTJGp4FyelH9mFjJ21U3K8rzL71dB1L5jvKvnw29yWtG/k5
-	 oYaPu+ChzIYEEiYVssqHg9c1J3lM2qqyA0QQlJtW1QlWTTSRsyYTAN3TebDz5DbyaE
-	 mgC+QvXuFWfDMfwcVSWr1BdmY9ZPFHBKLQBXw41STjLTQz9S41ytt6jjSxenfIWl17
-	 oTSsNoPlU4QMQ==
-Message-ID: <603cd8e0-c2c5-4c1e-85c4-d0a5ceda8d4c@kernel.org>
-Date: Fri, 13 Nov 2026 19:56:37 +0100
+	b=cFHMfohKIP9bZkMX3RyFr/Ll4R+czW78WJbfwmAUJfkYxKrc3F5eycBDUkXneLE5J
+	 zLmy7f4T3SKuWAbJfOjW4wASWun1i2hpcPsSRgg6sNBUSxm7CxmKMEGeUPM1hXAMIH
+	 3GKF4t/5yePvyYKMcZlLAbEjrBlxqOByEOlVcR5r7Uvpv4RTQO4oZnVFlQUkxtsBTt
+	 Qanw4sSGu2xtFHluqWwh/ghF1SF7encSXNNqYrl7JksRhjnMYE4wNSfAafURUA57/X
+	 GrydL0T9XVbUhYn6/7nrHwJRG8DZESnJdoN6m6Bg1l6eWdIuolgbk3ZPEpxgXtYvEL
+	 husZdF7uzgD7Q==
+Message-ID: <136002e1-646d-4607-be3f-b6a6a869bbec@kernel.org>
+Date: Fri, 13 Nov 2026 19:58:08 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -52,23 +52,24 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/9] mm: keep writable entries writable on protection
- changes
+Subject: Re: [PATCH v3 3/9] mm/huge_memory: honor MM_CP_TRY_CHANGE_WRITABLE in
+ change_huge_pud()
 To: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>, kvm@vger.kernel.org,
  linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
  linux-riscv@lists.infradead.org, seanjc@google.com, pbonzini@redhat.com,
  akpm@linux-foundation.org, peterx@redhat.com, ljs@kernel.org,
  imbrenda@linux.ibm.com, borntraeger@linux.ibm.com, frankja@linux.ibm.com,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>
 References: <20261112142039.907090-2-clopez@suse.de>
- <20261112142039.907090-6-clopez@suse.de>
+ <20261112142039.907090-5-clopez@suse.de>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -115,7 +116,7 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261112142039.907090-6-clopez@suse.de>
+In-Reply-To: <20261112142039.907090-5-clopez@suse.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
@@ -123,20 +124,19 @@ On 11/12/26 15:20, Carlos López wrote:
 > change_protection() applies vma->vm_page_prot, which lacks the write bit
 > for CoW and write-notified mappings. MM_CP_TRY_CHANGE_WRITABLE makes
 > entries writable again if a write fault would only set the write bit.
-> In shared mappings, it relies on the dirty bit for this, as a clean
-> entry might still need a write fault to notify the FS.
 > 
-> However, this misses clean entries that were already writable. For
-> example, a uffd-wp unprotect makes shmem PTEs read-only if they were
-> mapped by a read fault before uffd-wp was registered, so the next write
-> to each of them faults.
+> However, change_huge_pud() ignores the flag. For example, device DAX
+> mappings are write-notified once soft-dirty tracking is armed through
+> /proc/pid/clear_refs, and a protection change then leaves dirty PUDs
+> read-only, so the next write to each of them faults.
+> 
+> Fix this by adding can_change_pud_writable(), based on
+> can_change_pmd_writable(). It omits the NUMA and uffd-wp checks, as
+> change_huge_pud() bails out on those changes.
 
-See my other reply, adding such optimizations without any motivation why we
-should even care is not really what we want.
+Again, please keep MM changes to a bare minimum for your work.
 
-Drop it from your series and keep the MM changes to a bare minimum please.
-
-Or is there a real dependency for your work?
+If this is not required for your work, please drop it.
 
 -- 
 Cheers,
