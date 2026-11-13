@@ -1,46 +1,46 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=101.6.4.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794563377;
-	b=oTW1eBjOfFXdg9rAHdngU218HW7XDdXqD9bsOpEiaerOHgujDmqq4tYMjqFr64yYnYLw
-	 iD78+UilBGmkMseKRlZjx2viwPFl1aKsuYz+74PvstPNBvRbZv3KOlXsiWej3DYENd2Pg
-	 B8IU/Xcg5SQ2PAum0aJjgvekkemxQZnxdmUXzDgWL4+uSf/DFY8juhplhQ13E7j6STnP/
-	 YTimHsXmfJDW8S1TZGj6fN2oBXMMz0shCHjDulYShRLOOXrewkO2SvkgknLBXVIN6nUWP
-	 kmBne9cC8TvGzE0z6pxp0iO8srSiFOrgj0Iu3qDUa5cn5dSKSJsFoJ4ez/rQGchm4Pg==
+	t=1794563379;
+	b=LGFn534/+E8PjFCJpDtMm4hEbrTexOm3dAF4ocQpo/vOhn02OzL64GhNIomvDfTQtzUV
+	 hIN8g1tbd0L+xvKAONbL3qp2uJJvc9xh2gv+mmjHi0mIx5b6kOKVSJaFMo0/COZWXBbgu
+	 QU1ynInj8Uu5EME9lRhB85d5cL2TL+wA9AEydv2NeN3wFW6j2mjpTwok3W/UvatkekZ13
+	 i/Rqpm6nPZ7QfS5zGqBMmImLz1wkOXz5qszh72/xYFbkcvTMXtG8PSP/0RJyrjf7Sh3Mk
+	 rQpuljVx22o1Wke+pZsy9tXARijYquUboNR0HgP0raNTJrtQNoqifQGBo4fTy7f0CXQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794563377;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794563379;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
 	 X-CM-SenderInfo;
-	bh=ZhJqZ4Iz1JybuOyLa3+Tf7ZbuQ75IVhz6am+cHq5Pwk=;
-	b=4DMVbi/AFvv2zvbEGFqfz+6gu1mzYOpI6L3VVAdAGDlLdRlp920YuFF592R81Yz/dwE/
-	 /5mDt4ASG7taOTmU7QLe6gynD1bpauV6/kzVhsobyjGNbWdMuOBGXI/ii3kPUKFfEZpSO
-	 h0JvdX2tw6R5+rsTvVr4LTQg79MGSRpecl0/6DP7JQePUenTr99w3SMsi4BRGItnxjGr/
-	 VMxLrrjYtYhLm/qT8atGmYfssrjGsaz+d89vGVI/jnZBIQYF/eTk/9P0FLkQ2sSKAPOpR
-	 GVab/q7jEu4iRSzBFMymW4NB48xoeMpNhzZpdBQuF/o1i/fPfpQruuRz8slB2cPrkQw==
+	bh=ziqaSW7s/T3WAwT7Mz/j7jHhExcw1/jQm85lHkw0d7M=;
+	b=dCxX1/cw56zKhMvaqMxz6hJmsqxOeve6ODQaytewTw9cSPvG21P3wMY9cDfsDPSqr0kV
+	 WRZkJQPIJVPCCj6mPgabmyd+IcWxsXMIdjKxh6kvwoKyTgOD90OI0q4ourM5N/QdQmSNL
+	 QBtkLU22w8CEZVyONtcPx4fQ9Pd0hJHzF+Ii62VxrCPV2kff0fVGC1CLCFWoP4tsSnLuk
+	 AFyyT6kAOO6OfUNGcRePQE0OcWDETNd1b1wJB9uIqQphjlT7CtQnGzZ5JharTPuALdVEe
+	 ZDu+D+xqAlknQT5Dq+0zJBmHILTs3TytU83xAavgClJkp1Oq1qcRy+KgVssn9aIv6IA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=mails.tsinghua.edu.cn;
 	spf=pass smtp.mailfrom=mails.tsinghua.edu.cn;
-	dkim=pass header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=g4qysHZf;
+	dkim=pass header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=gExOVnhY;
 	arc=none smtp.remote-ip=101.6.4.71
 Received: from tsinghua.edu.cn (smtp47.tsinghua.edu.cn [101.6.4.71])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3EF5606A321
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 09:49:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3EF5606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C14E606A882
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 09:49:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C14E606A882
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=g4qysHZf
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=gExOVnhY
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
 	Date:Message-ID:In-Reply-To:References:MIME-Version:
-	Content-Transfer-Encoding; bh=ZhJqZ4Iz1JybuOyLa3+Tf7ZbuQ75IVhz6a
-	m+cHq5Pwk=; b=g4qysHZfXc6ZmGUkPA3EZd/9k7g/WcpnJPj2R0Txzr/8eA9mRj
-	Q3k0QBjqUQzp0PjVJC02NgJ80YV7aCM1asWodNI8fWFh6fLTVpegfAUPU1Z35/2y
-	bh4iUXU+xpvHQiOsdpdJjjHB4Rn8izn3ZUAqqNvdCtXawBaXf12VDZcxQ=
+	Content-Transfer-Encoding; bh=ziqaSW7s/T3WAwT7Mz/j7jHhExcw1/jQm8
+	5lHkw0d7M=; b=gExOVnhYWhnOn8O18CWMUVe4eBs4bQ/JWwEUD6yXZE/8Y+7Ay2
+	zFaTghoNSiPvvh86phviTG8Uyg/KHJ6s+9sd41F2UrPpViSaGSn8ViovZBKSt+cU
+	EpwnAOlqlzGH7ziwztm886HtRGfLSPXe9XrlvOXQ44cLmb2UsRtDlxtw8=
 Received: from ubuntu (unknown [101.5.154.165])
-	by web1 (Coremail) with SMTP id yAQGZQA3qzvR3PZqgA5CAg--.9318S16;
-	Fri, 13 Nov 2026 17:49:24 +0800 (CST)
+	by web1 (Coremail) with SMTP id yAQGZQA3qzvR3PZqgA5CAg--.9318S17;
+	Fri, 13 Nov 2026 17:49:29 +0800 (CST)
 From: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>
 To: qemu-devel@nongnu.org
 Cc: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>,
@@ -58,9 +58,9 @@ Cc: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>,
 	bin.meng@processmission.com,
 	tangtao1634@phytium.com.cn,
 	Chao Liu <chao.liu@processmission.com>
-Subject: [RFC PATCH 14/20] hw/misc: add RK3588 SCMI server
-Date: Fri, 13 Nov 2026 17:47:48 +0800
-Message-ID: <d6ac376874ebd963542d26e74ff6540e8d054100.1794555589.git.w-yf22@mails.tsinghua.edu.cn>
+Subject: [RFC PATCH 15/20] hw/arm/rk3588: wire up the SCMI server
+Date: Fri, 13 Nov 2026 17:47:49 +0800
+Message-ID: <54d84a2574f15f9c6157e6d281ad5216b509295c.1794555589.git.w-yf22@mails.tsinghua.edu.cn>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1794555588.git.w-yf22@mails.tsinghua.edu.cn>
 References: <cover.1794555588.git.w-yf22@mails.tsinghua.edu.cn>
@@ -74,704 +74,114 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:yAQGZQA3qzvR3PZqgA5CAg--.9318S16
-X-Coremail-Antispam: 1UD129KBjvAXoW3uw18JrWUKrW8Cw47Kw45ZFb_yoW8Cw4rAo
-	WUGr95tr4Fgr4rAFn5uw1UJ3y0vryjkay2yws0qrs093ZrX3s5G3ZrJa95J34fGrW8ZryU
-	Wry0q3s7t392kryxn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UjIYCTnIWjp_UUUOZ7AC8VAFwI0_Wr0E3s1l1xkIjI8I6I8E6xAIw20EY4v20xva
-	j40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l82xGYIkIc2x26280x7IE14v26r126s0DM28Irc
-	Ia0xkI8VCY1x0267AKxVW5JVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l
-	84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJV
-	WxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE
-	3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2
-	IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r1j6r4U
-	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I64
-	8v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67AK
-	6r4fMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	W8Jr0_Cr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWx
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VUjCJmU
-	UUUUU==
+X-CM-TRANSID:yAQGZQA3qzvR3PZqgA5CAg--.9318S17
+X-Coremail-Antispam: 1UD129KBjvJXoWxXF18ur4rWr4DXF4UCrW8tFb_yoW5ArW5pF
+	48Zr45XrWkGay7AwsIvr1Sgr43Ja1kWryrt3yfZr9YyFy3tr1Yyr4j9w4YkayIqrZFqw1U
+	ZrWqqF4YgF47XF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUHa14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
+	kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
+	z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F
+	4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq
+	3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0V
+	AKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1l
+	Ox8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErc
+	IFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_
+	GFWl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxV
+	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI
+	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
+	4UJVWxJr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjfUeVbkUU
+	UUU
 X-CM-SenderInfo: fzn1wj2s6ptxtovo32xlqjx3vdohv3gofq/
 
 From: Chao Liu <chao.liu@processmission.com>
 
-RK3588 firmware exposes SCMI through the SMC transport.  Add a minimal
-server implementing the Base and Clock protocols and the shared memory
-area described by the upstream RK3588 device tree, so a guest can
-exercise the standard arm,scmi-smc path without running a complete
-BL31 image.
-
-Provide the CPUL, DSU, CPUB01 and CPUB23 clocks using the nominal
-PVTPLL rates accepted by TF-A v2.12. Clock rates and enable state are
-maintained independently of the CRU registers.
+Instantiate the SCMI server in the RK3588 SoC and map its shared memory
+at the address reserved by the RK3588 device tree.  The shared memory
+is overlaid on RAM so the guest can use it while the rest of the low
+memory map is unchanged.
 
 Signed-off-by: Chao Liu <chao.liu@processmission.com>
 Signed-off-by: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>
 ---
- MAINTAINERS                    |   2 +
- hw/misc/meson.build            |   1 +
- hw/misc/rk3588-scmci.c         | 589 +++++++++++++++++++++++++++++++++
- include/hw/misc/rk3588-scmci.h |  25 ++
- 4 files changed, 617 insertions(+)
- create mode 100644 hw/misc/rk3588-scmci.c
- create mode 100644 include/hw/misc/rk3588-scmci.h
+ hw/arm/rk3588.c         | 22 ++++++++++++++++++++++
+ include/hw/arm/rk3588.h |  1 +
+ 2 files changed, 23 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7fd434ade2..c3d3388975 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1067,9 +1067,11 @@ S: Maintained
- F: hw/arm/rk3588.c
- F: hw/misc/rockchip_cru.c
- F: hw/misc/rockchip_otp.c
-+F: hw/misc/rk3588-scmci.c
- F: hw/ssi/rockchip_sfc.c
- F: hw/timer/rockchip-hptimer.c
- F: include/hw/arm/rk3588.h
-+F: include/hw/misc/rk3588-scmci.h
- F: include/hw/timer/rockchip-hptimer.h
- 
- SABRELITE / i.MX6
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index 51c09b056e..8f13f5da77 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -16,6 +16,7 @@ system_ss.add(when: 'CONFIG_PL310', if_true: files('arm_l2x0.c'))
- system_ss.add(when: 'CONFIG_INTEGRATOR_DEBUG', if_true: files('arm_integrator_debug.c'))
- system_ss.add(when: 'CONFIG_A9SCU', if_true: files('a9scu.c'))
- system_ss.add(when: 'CONFIG_ARM11SCU', if_true: files('arm11scu.c'))
-+system_ss.add(when: 'CONFIG_RK3588', if_true: files('rk3588-scmci.c'))
- 
- system_ss.add(when: 'CONFIG_ARM_V7M', if_true: files('armv7m_ras.c'))
- 
-diff --git a/hw/misc/rk3588-scmci.c b/hw/misc/rk3588-scmci.c
-new file mode 100644
-index 0000000000..956919e823
---- /dev/null
-+++ b/hw/misc/rk3588-scmci.c
-@@ -0,0 +1,589 @@
-+/*
-+ * Rockchip RK3588 SCMI server
-+ *
-+ * The RK3588 firmware exposes SCMI through the SMC transport rather
-+ * than through a mailbox.  This model provides the shared memory area
-+ * and a minimal server implementing the Base and Clock protocols. Clock rates
-+ * and enable state are maintained independently of CRU registers. It is
-+ * intended to let a guest exercise the standard arm,scmi-smc path without
-+ * running a complete BL31 image.
-+ *
-+ * Copyright (C) 2026 Process Mission
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "qemu/bswap.h"
-+#include "hw/arm/arm-smc.h"
-+#include "hw/core/qdev-properties.h"
-+#include "hw/core/resettable.h"
-+#include "hw/core/sysbus.h"
+diff --git a/hw/arm/rk3588.c b/hw/arm/rk3588.c
+index 2319c54c76..f4ebb59d36 100644
+--- a/hw/arm/rk3588.c
++++ b/hw/arm/rk3588.c
+@@ -19,6 +19,7 @@
+ #include "hw/core/qdev-properties.h"
+ #include "hw/core/sysbus.h"
+ #include "hw/cpu/cluster.h"
 +#include "hw/misc/rk3588-scmci.h"
-+#include "system/memory.h"
-+
-+#define RK3588_SCMI_SHORT_NAME_SIZE     16
-+#define RK3588_SCMI_MAX_STR_SIZE        64
-+
-+/*
-+ * Use the U-Boot v2025.01 SPL boot rate, with DSU using its default
-+ * LPLL source and divide-by-one setting.
-+ */
-+#define RK3588_SCMI_BOOT_RATE           816000000ULL
-+
-+#define RK3588_SCMI_CPUL                0
-+#define RK3588_SCMI_DSU                 1
-+#define RK3588_SCMI_CPUB01              2
-+#define RK3588_SCMI_CPUB23              3
-+
-+/*
-+ * TF-A v2.12 PVTPLL nominal rates, sorted ascending for enumeration and
-+ * selection. These differ from the firmware's advertised rate lists.
-+ */
-+static const uint64_t rk3588_cpul_rates[] = {
-+    408000000, 600000000, 816000000, 1008000000, 1200000000,
-+    1416000000, 1608000000, 1704000000, 1800000000,
-+};
-+
-+static const uint64_t rk3588_cpub_rates[] = {
-+    408000000, 600000000, 816000000, 1008000000, 1200000000,
-+    1416000000, 1608000000, 1800000000, 2016000000, 2112000000,
-+    2208000000, 2256000000, 2304000000, 2352000000, 2400000000,
-+};
-+
-+static const struct {
-+    const char *name;
-+    const uint64_t *rates;
-+    size_t num_rates;
-+} rk3588_scmi_clocks[] = {
-+    [RK3588_SCMI_CPUL] = {
-+        "scmi_clk_cpul", rk3588_cpul_rates, ARRAY_SIZE(rk3588_cpul_rates),
-+    },
-+    [RK3588_SCMI_DSU] = {
-+        "scmi_clk_dsu", rk3588_cpul_rates, ARRAY_SIZE(rk3588_cpul_rates),
-+    },
-+    [RK3588_SCMI_CPUB01] = {
-+        "scmi_clk_cpub01", rk3588_cpub_rates, ARRAY_SIZE(rk3588_cpub_rates),
-+    },
-+    [RK3588_SCMI_CPUB23] = {
-+        "scmi_clk_cpub23", rk3588_cpub_rates, ARRAY_SIZE(rk3588_cpub_rates),
-+    },
-+};
-+
-+/* SCMI shared memory layout, see Linux struct scmi_shared_mem. */
-+#define SCMI_SHMEM_RESERVED             0x00
-+#define SCMI_SHMEM_CHANNEL_STATUS       0x04
-+#define SCMI_SHMEM_RESERVED1            0x08
-+#define SCMI_SHMEM_FLAGS                0x10
-+#define SCMI_SHMEM_LENGTH               0x14
-+#define SCMI_SHMEM_MSG_HEADER           0x18
-+#define SCMI_SHMEM_MSG_PAYLOAD          0x1c
-+
-+/* Space for response data after the 32-bit SCMI status code. */
-+#define RK3588_SCMI_RESP_MAX \
-+    (RK3588_SCMI_SHMEM_SIZE - SCMI_SHMEM_MSG_PAYLOAD - sizeof(uint32_t))
-+
-+#define SCMI_SHMEM_CHANNEL_FREE         BIT(0)
-+#define SCMI_SHMEM_CHANNEL_ERROR        BIT(1)
-+
-+#define SCMI_MSG_ID(hdr)                ((hdr) & 0xff)
-+#define SCMI_MSG_PROTOCOL(hdr)          (((hdr) >> 10) & 0xff)
-+
-+#define SCMI_PROTOCOL_BASE              0x10
-+#define SCMI_PROTOCOL_CLOCK             0x14
-+
-+#define SCMI_SUCCESS                    0
-+#define SCMI_ERR_SUPPORT                (-1)
-+#define SCMI_ERR_PARAMS                 (-2)
-+#define SCMI_ERR_NOT_FOUND              (-4)
-+#define SCMI_ERR_OUT_OF_RANGE           (-5)
-+#define SCMI_ERR_PROTOCOL               (-10)
-+
-+#define SCMI_BASE_PROTOCOL_VERSION      0x00020001
-+#define SCMI_CLOCK_PROTOCOL_VERSION     0x00020000
-+
-+#define SCMI_CLOCK_EXTENDED_NAMES        BIT(29)
-+#define SCMI_CLOCK_ENABLED               BIT(0)
-+
-+#define SCMI_CLOCK_SET_ASYNC            BIT(0)
-+#define SCMI_CLOCK_SET_IGNORE_RESP      BIT(1)
-+#define SCMI_CLOCK_SET_ROUND_UP         BIT(2)
-+#define SCMI_CLOCK_SET_ROUND_AUTO       BIT(3)
-+
-+/* Each rate list is preceded by a 32-bit count/flags field. */
-+G_STATIC_ASSERT(sizeof(rk3588_cpul_rates) + sizeof(uint32_t) <=
-+                RK3588_SCMI_RESP_MAX);
-+G_STATIC_ASSERT(sizeof(rk3588_cpub_rates) + sizeof(uint32_t) <=
-+                RK3588_SCMI_RESP_MAX);
-+
-+struct RK3588SCMIState {
-+    /*< private >*/
-+    SysBusDevice parent_obj;
-+
-+    /*< public >*/
-+    MemoryRegion shmem;
-+    uint8_t *shmem_ptr;
-+    uint64_t clock_rate[ARRAY_SIZE(rk3588_scmi_clocks)];
-+    uint32_t clock_config[ARRAY_SIZE(rk3588_scmi_clocks)];
-+    bool smc_registered;
-+};
-+
-+static uint32_t rk3588_scmi_rd32(RK3588SCMIState *s, hwaddr offset)
+ #include "hw/misc/unimp.h"
+ #include "hw/timer/rockchip-hptimer.h"
+ #include "migration/vmstate.h"
+@@ -29,6 +30,7 @@
+ #define RK3588_MPIDR_AFF0_PER_AFF1   (1)
+ 
+ #define RK3588_CNTFRQ                24000000
++#define RK3588_SCMI_SHMEM_BASE       0x0010f000
+ #define RK3588_SFC_SPI               206
+ #define RK3588_GIC_NUM_IRQS          512
+ 
+@@ -253,6 +255,21 @@ static bool rk3588_soc_create_sfc(RK3588SoCState *s, Error **errp)
+     return true;
+ }
+ 
++static bool rk3588_soc_create_scmi(RK3588SoCState *s, Error **errp)
 +{
-+    return ldl_le_p(s->shmem_ptr + offset);
-+}
++    SysBusDevice *scmi = SYS_BUS_DEVICE(s->scmi);
 +
-+static void rk3588_scmi_wr32(RK3588SCMIState *s, hwaddr offset, uint32_t value)
-+{
-+    stl_le_p(s->shmem_ptr + offset, value);
-+}
-+
-+static void rk3588_scmi_put_name(uint8_t *dst, const char *name)
-+{
-+    size_t len = strlen(name);
-+
-+    memset(dst, 0, RK3588_SCMI_SHORT_NAME_SIZE);
-+    memcpy(dst, name, MIN(len, RK3588_SCMI_SHORT_NAME_SIZE));
-+}
-+
-+static int32_t rk3588_scmi_base_protocol(RK3588SCMIState *s, uint8_t msg_id,
-+                                         const uint8_t *req, size_t req_len,
-+                                         uint8_t *resp, size_t *resp_len)
-+{
-+    uint32_t value;
-+
-+    switch (msg_id) {
-+    case 0x0: /* PROTOCOL_VERSION */
-+        stl_le_p(resp, SCMI_BASE_PROTOCOL_VERSION);
-+        *resp_len = 4;
-+        return SCMI_SUCCESS;
-+
-+    case 0x1: /* PROTOCOL_ATTRIBUTES */
-+        resp[0] = 1; /* one implemented protocol: Clock */
-+        resp[1] = 1; /* one agent */
-+        resp[2] = 0;
-+        resp[3] = 0;
-+        *resp_len = 4;
-+        return SCMI_SUCCESS;
-+
-+    case 0x2: /* PROTOCOL_MESSAGE_ATTRIBUTES */
-+        if (req_len < 4) {
-+            return SCMI_ERR_PROTOCOL;
-+        }
-+        value = ldl_le_p(req);
-+        if (value > 0x7) {
-+            return SCMI_ERR_NOT_FOUND;
-+        }
-+        stl_le_p(resp, 0);
-+        *resp_len = 4;
-+        return SCMI_SUCCESS;
-+
-+    case 0x3: /* BASE_DISCOVER_VENDOR */
-+    case 0x4: /* BASE_DISCOVER_SUB_VENDOR */
-+        rk3588_scmi_put_name(resp, "QEMU");
-+        *resp_len = RK3588_SCMI_SHORT_NAME_SIZE;
-+        return SCMI_SUCCESS;
-+
-+    case 0x5: /* BASE_DISCOVER_IMPLEMENT_VERSION */
-+        stl_le_p(resp, 1);
-+        *resp_len = 4;
-+        return SCMI_SUCCESS;
-+
-+    case 0x6: /* BASE_DISCOVER_LIST_PROTOCOLS */
-+        if (req_len < 4) {
-+            return SCMI_ERR_PROTOCOL;
-+        }
-+        value = ldl_le_p(req);
-+        if (value == 0) {
-+            stl_le_p(resp, 1);
-+            resp[4] = SCMI_PROTOCOL_CLOCK;
-+            resp[5] = 0;
-+            resp[6] = 0;
-+            resp[7] = 0;
-+            *resp_len = 8;
-+        } else {
-+            stl_le_p(resp, 0);
-+            *resp_len = 4;
-+        }
-+        return SCMI_SUCCESS;
-+
-+    case 0x7: /* BASE_DISCOVER_AGENT */
-+        if (req_len < 4) {
-+            return SCMI_ERR_PROTOCOL;
-+        }
-+        value = ldl_le_p(req);
-+        if (value == UINT32_MAX) {
-+            value = 1; /* The single agent using this channel. */
-+        }
-+        if (value > 1) {
-+            return SCMI_ERR_NOT_FOUND;
-+        }
-+        stl_le_p(resp, value);
-+        rk3588_scmi_put_name(resp + 4, value ? "QEMU" : "platform");
-+        *resp_len = 4 + RK3588_SCMI_SHORT_NAME_SIZE;
-+        return SCMI_SUCCESS;
-+
-+    default:
-+        return SCMI_ERR_SUPPORT;
-+    }
-+}
-+
-+/*
-+ * Caller validates id. ROUND_AUTO takes precedence; ties select the lower rate.
-+ */
-+static int32_t rk3588_scmi_select_rate(uint32_t id, uint32_t flags,
-+                                       uint64_t requested, uint64_t *selected)
-+{
-+    const uint64_t *rates = rk3588_scmi_clocks[id].rates;
-+    size_t count = rk3588_scmi_clocks[id].num_rates;
-+    size_t i;
-+
-+    for (i = 0; i < count && rates[i] < requested; i++) {
-+        /* Find the first rate at least as high as requested. */
-+    }
-+    if (i < count && rates[i] == requested) {
-+        *selected = rates[i];
-+    } else if (flags & SCMI_CLOCK_SET_ROUND_AUTO) {
-+        if (i == 0) {
-+            *selected = rates[0];
-+        } else if (i == count ||
-+                   requested - rates[i - 1] <= rates[i] - requested) {
-+            *selected = rates[i - 1];
-+        } else {
-+            *selected = rates[i];
-+        }
-+    } else if (flags & SCMI_CLOCK_SET_ROUND_UP) {
-+        if (i == count) {
-+            return SCMI_ERR_OUT_OF_RANGE;
-+        }
-+        *selected = rates[i];
-+    } else {
-+        if (i == 0) {
-+            return SCMI_ERR_OUT_OF_RANGE;
-+        }
-+        *selected = rates[i - 1];
-+    }
-+    return SCMI_SUCCESS;
-+}
-+
-+static int32_t rk3588_scmi_clock_protocol(RK3588SCMIState *s, uint8_t msg_id,
-+                                          const uint8_t *req, size_t req_len,
-+                                          uint8_t *resp, size_t *resp_len)
-+{
-+    uint32_t id;
-+
-+    switch (msg_id) {
-+    case 0x0: /* PROTOCOL_VERSION */
-+        stl_le_p(resp, SCMI_CLOCK_PROTOCOL_VERSION);
-+        *resp_len = 4;
-+        return SCMI_SUCCESS;
-+
-+    case 0x1: /* PROTOCOL_ATTRIBUTES */
-+        stw_le_p(resp, ARRAY_SIZE(rk3588_scmi_clocks));
-+        resp[2] = 0;
-+        resp[3] = 0;
-+        *resp_len = 4;
-+        return SCMI_SUCCESS;
-+
-+    case 0x2: /* PROTOCOL_MESSAGE_ATTRIBUTES */
-+        if (req_len < 4) {
-+            return SCMI_ERR_PROTOCOL;
-+        }
-+        id = ldl_le_p(req);
-+        if (id > 0x8 && id != 0xb) {
-+            return SCMI_ERR_NOT_FOUND;
-+        }
-+        stl_le_p(resp, 0);
-+        *resp_len = 4;
-+        return SCMI_SUCCESS;
-+
-+    case 0x3: /* CLOCK_ATTRIBUTES */
-+        if (req_len < 4) {
-+            return SCMI_ERR_PROTOCOL;
-+        }
-+        id = ldl_le_p(req);
-+        if (id >= ARRAY_SIZE(rk3588_scmi_clocks)) {
-+            return SCMI_ERR_NOT_FOUND;
-+        }
-+        stl_le_p(resp, SCMI_CLOCK_EXTENDED_NAMES |
-+                       (s->clock_config[id] & SCMI_CLOCK_ENABLED));
-+        rk3588_scmi_put_name(resp + 4, rk3588_scmi_clocks[id].name);
-+        stl_le_p(resp + 4 + RK3588_SCMI_SHORT_NAME_SIZE, 0);
-+        *resp_len = 4 + RK3588_SCMI_SHORT_NAME_SIZE + 4;
-+        return SCMI_SUCCESS;
-+
-+    case 0x4: { /* CLOCK_DESCRIBE_RATES */
-+        uint32_t rate_index;
-+        size_t count;
-+
-+        if (req_len < 8) {
-+            return SCMI_ERR_PROTOCOL;
-+        }
-+        id = ldl_le_p(req);
-+        rate_index = ldl_le_p(req + 4);
-+        if (id >= ARRAY_SIZE(rk3588_scmi_clocks)) {
-+            return SCMI_ERR_NOT_FOUND;
-+        }
-+        count = rk3588_scmi_clocks[id].num_rates;
-+        if (rate_index >= count) {
-+            return SCMI_ERR_OUT_OF_RANGE;
-+        }
-+        count -= rate_index;
-+        stl_le_p(resp, count);
-+        for (size_t i = 0; i < count; i++) {
-+            stq_le_p(resp + 4 + i * 8,
-+                     rk3588_scmi_clocks[id].rates[rate_index + i]);
-+        }
-+        *resp_len = 4 + count * 8;
-+        return SCMI_SUCCESS;
++    if (!sysbus_realize(scmi, errp)) {
++        return false;
 +    }
 +
-+    case 0x5: { /* CLOCK_RATE_SET */
-+        uint32_t flags;
-+        uint64_t rate;
-+        int32_t status;
++    memory_region_add_subregion_overlap(s->memory,
++        RK3588_SCMI_SHMEM_BASE,
++        sysbus_mmio_get_region(scmi, 0), 1);
 +
-+        if (req_len < 16) {
-+            return SCMI_ERR_PROTOCOL;
-+        }
-+        flags = ldl_le_p(req);
-+        id = ldl_le_p(req + 4);
-+        if (id >= ARRAY_SIZE(rk3588_scmi_clocks)) {
-+            return SCMI_ERR_NOT_FOUND;
-+        }
-+        if (flags & ~(SCMI_CLOCK_SET_ASYNC | SCMI_CLOCK_SET_IGNORE_RESP |
-+                      SCMI_CLOCK_SET_ROUND_UP | SCMI_CLOCK_SET_ROUND_AUTO)) {
-+            return SCMI_ERR_PARAMS;
-+        }
-+        if (flags & SCMI_CLOCK_SET_ASYNC) {
-+            return SCMI_ERR_SUPPORT;
-+        }
-+        rate = ldq_le_p(req + 8);
-+        status = rk3588_scmi_select_rate(id, flags, rate, &rate);
-+        if (status != SCMI_SUCCESS) {
-+            return status;
-+        }
-+        s->clock_rate[id] = rate;
-+        if (id == RK3588_SCMI_CPUL) {
-+            /* TF-A v2.12 also sets DSU to the requested CPUL rate. */
-+            s->clock_rate[RK3588_SCMI_DSU] = rate;
-+        }
-+        *resp_len = 0;
-+        return SCMI_SUCCESS;
-+    }
-+
-+    case 0x6: /* CLOCK_RATE_GET */
-+        if (req_len < 4) {
-+            return SCMI_ERR_PROTOCOL;
-+        }
-+        id = ldl_le_p(req);
-+        if (id >= ARRAY_SIZE(rk3588_scmi_clocks)) {
-+            return SCMI_ERR_NOT_FOUND;
-+        }
-+        stq_le_p(resp, s->clock_rate[id]);
-+        *resp_len = 8;
-+        return SCMI_SUCCESS;
-+
-+    case 0x7: { /* CLOCK_CONFIG_SET */
-+        uint32_t attributes;
-+
-+        if (req_len < 8) {
-+            return SCMI_ERR_PROTOCOL;
-+        }
-+        id = ldl_le_p(req);
-+        if (id >= ARRAY_SIZE(rk3588_scmi_clocks)) {
-+            return SCMI_ERR_NOT_FOUND;
-+        }
-+        attributes = ldl_le_p(req + 4);
-+        if (attributes & ~SCMI_CLOCK_ENABLED) {
-+            return SCMI_ERR_PARAMS;
-+        }
-+        s->clock_config[id] = attributes;
-+        *resp_len = 0;
-+        return SCMI_SUCCESS;
-+    }
-+
-+    case 0x8: /* CLOCK_NAME_GET */
-+        if (req_len < 4) {
-+            return SCMI_ERR_PROTOCOL;
-+        }
-+        id = ldl_le_p(req);
-+        if (id >= ARRAY_SIZE(rk3588_scmi_clocks)) {
-+            return SCMI_ERR_NOT_FOUND;
-+        }
-+        memset(resp, 0, 4 + RK3588_SCMI_MAX_STR_SIZE);
-+        memcpy(resp + 4, rk3588_scmi_clocks[id].name,
-+               strlen(rk3588_scmi_clocks[id].name));
-+        *resp_len = 4 + RK3588_SCMI_MAX_STR_SIZE;
-+        return SCMI_SUCCESS;
-+
-+    case 0xb: { /* CLOCK_CONFIG_GET */
-+        uint32_t flags;
-+
-+        if (req_len < 8) {
-+            return SCMI_ERR_PROTOCOL;
-+        }
-+        id = ldl_le_p(req);
-+        if (id >= ARRAY_SIZE(rk3588_scmi_clocks)) {
-+            return SCMI_ERR_NOT_FOUND;
-+        }
-+        flags = ldl_le_p(req + 4);
-+        if (flags & ~0xffU) {
-+            return SCMI_ERR_PARAMS;
-+        }
-+        if (flags) { /* OEM configuration type */
-+            return SCMI_ERR_SUPPORT;
-+        }
-+        stl_le_p(resp, 0);
-+        stl_le_p(resp + 4, s->clock_config[id]);
-+        stl_le_p(resp + 8, 0);
-+        *resp_len = 12;
-+        return SCMI_SUCCESS;
-+    }
-+
-+    default:
-+        return SCMI_ERR_SUPPORT;
-+    }
-+}
-+
-+static void rk3588_scmi_process(RK3588SCMIState *s)
-+{
-+    uint32_t channel_status = rk3588_scmi_rd32(s, SCMI_SHMEM_CHANNEL_STATUS);
-+    uint32_t length = rk3588_scmi_rd32(s, SCMI_SHMEM_LENGTH);
-+    uint32_t header = rk3588_scmi_rd32(s, SCMI_SHMEM_MSG_HEADER);
-+    uint32_t protocol = SCMI_MSG_PROTOCOL(header);
-+    uint32_t msg_id = SCMI_MSG_ID(header);
-+    const uint8_t *req = s->shmem_ptr + SCMI_SHMEM_MSG_PAYLOAD;
-+    uint8_t resp[RK3588_SCMI_RESP_MAX];
-+    size_t req_len;
-+    size_t resp_len = 0;
-+    int32_t status;
-+
-+    memset(resp, 0, sizeof(resp));
-+
-+    if (channel_status & SCMI_SHMEM_CHANNEL_ERROR) {
-+        return;
-+    }
-+
-+    if (length < 4 ||
-+        length - 4 > RK3588_SCMI_SHMEM_SIZE - SCMI_SHMEM_MSG_PAYLOAD) {
-+        status = SCMI_ERR_PROTOCOL;
-+        resp_len = 0;
-+    } else {
-+        req_len = length - 4;
-+
-+        switch (protocol) {
-+        case SCMI_PROTOCOL_BASE:
-+            status = rk3588_scmi_base_protocol(s, msg_id, req, req_len,
-+                                               resp, &resp_len);
-+            break;
-+        case SCMI_PROTOCOL_CLOCK:
-+            status = rk3588_scmi_clock_protocol(s, msg_id, req, req_len,
-+                                                resp, &resp_len);
-+            break;
-+        default:
-+            status = SCMI_ERR_SUPPORT;
-+            resp_len = 0;
-+            break;
-+        }
-+    }
-+
-+    if (resp_len > RK3588_SCMI_RESP_MAX) {
-+        status = SCMI_ERR_PROTOCOL;
-+        resp_len = 0;
-+    }
-+
-+    rk3588_scmi_wr32(s, SCMI_SHMEM_MSG_HEADER, header);
-+    rk3588_scmi_wr32(s, SCMI_SHMEM_LENGTH, 8 + resp_len);
-+    rk3588_scmi_wr32(s, SCMI_SHMEM_MSG_PAYLOAD, (uint32_t)status);
-+    if (resp_len) {
-+        memcpy(s->shmem_ptr + SCMI_SHMEM_MSG_PAYLOAD + 4, resp, resp_len);
-+    }
-+    rk3588_scmi_wr32(s, SCMI_SHMEM_CHANNEL_STATUS,
-+                     SCMI_SHMEM_CHANNEL_FREE |
-+                     (status == SCMI_ERR_PROTOCOL ?
-+                      SCMI_SHMEM_CHANNEL_ERROR : 0));
-+}
-+
-+static bool rk3588_scmi_smc_handler(const uint64_t args[8], uint64_t *ret,
-+                                  void *opaque)
-+{
-+    RK3588SCMIState *s = RK3588_SCMCI(opaque);
-+
-+    rk3588_scmi_process(s);
-+    *ret = 0;
 +    return true;
 +}
 +
-+static void rk3588_scmi_reset_hold(Object *obj, ResetType type)
-+{
-+    RK3588SCMIState *s = RK3588_SCMCI(obj);
+ static bool rk3588_soc_create_uart(RK3588SoCState *s, Error **errp)
+ {
+     for (unsigned int i = RK3588_FIRST_UART; i < RK3588_NUM_UARTS; i++) {
+@@ -329,6 +346,7 @@ static void rk3588_soc_realize(DeviceState *dev, Error **errp)
+         !rk3588_soc_create_cru(s, errp) ||
+         !rk3588_soc_create_otp(s, errp) ||
+         !rk3588_soc_create_sfc(s, errp) ||
++        !rk3588_soc_create_scmi(s, errp) ||
+         !rk3588_soc_create_uart(s, errp) ||
+         !rk3588_soc_create_hptimer(s, errp)) {
+         return;
+@@ -388,6 +406,10 @@ static void rk3588_soc_instance_init(Object *obj)
+     object_property_add_child(obj, "sfc", OBJECT(s->sfc));
+     object_unref(OBJECT(s->sfc));
+ 
++    s->scmi = qdev_new(TYPE_RK3588_SCMCI);
++    object_property_add_child(obj, "scmi", OBJECT(s->scmi));
++    object_unref(OBJECT(s->scmi));
 +
-+    memset(s->shmem_ptr, 0, RK3588_SCMI_SHMEM_SIZE);
-+    rk3588_scmi_wr32(s, SCMI_SHMEM_CHANNEL_STATUS, SCMI_SHMEM_CHANNEL_FREE);
-+    for (size_t i = 0; i < ARRAY_SIZE(rk3588_scmi_clocks); i++) {
-+        s->clock_rate[i] = RK3588_SCMI_BOOT_RATE;
-+        s->clock_config[i] = 0;
-+    }
-+}
-+
-+static void rk3588_scmi_realize(DeviceState *dev, Error **errp)
-+{
-+    RK3588SCMIState *s = RK3588_SCMCI(dev);
-+
-+    if (arm_register_smc_handler(RK3588_SCMI_SMC_ID, rk3588_scmi_smc_handler,
-+                                 s) < 0) {
-+        error_setg(errp, "rk3588-scmci: SMC function is already registered");
-+        return;
-+    }
-+    s->smc_registered = true;
-+}
-+
-+static void rk3588_scmi_unrealize(DeviceState *dev)
-+{
-+    RK3588SCMIState *s = RK3588_SCMCI(dev);
-+
-+    if (s->smc_registered) {
-+        arm_unregister_smc_handler(RK3588_SCMI_SMC_ID,
-+                                   rk3588_scmi_smc_handler);
-+        s->smc_registered = false;
-+    }
-+}
-+
-+static void rk3588_scmi_instance_init(Object *obj)
-+{
-+    RK3588SCMIState *s = RK3588_SCMCI(obj);
-+
-+    memory_region_init_ram(&s->shmem, obj, TYPE_RK3588_SCMCI,
-+                           RK3588_SCMI_SHMEM_SIZE, &error_fatal);
-+    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->shmem);
-+    s->shmem_ptr = memory_region_get_ram_ptr(&s->shmem);
-+}
-+
-+static void rk3588_scmi_class_init(ObjectClass *oc, const void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(oc);
-+    ResettableClass *rc = RESETTABLE_CLASS(oc);
-+
-+    rc->phases.hold = rk3588_scmi_reset_hold;
-+    dc->realize = rk3588_scmi_realize;
-+    dc->unrealize = rk3588_scmi_unrealize;
-+    dc->desc = "Rockchip RK3588 SCMI server";
-+    dc->user_creatable = false;
-+}
-+
-+static const TypeInfo rk3588_scmi_typeinfo = {
-+    .name = TYPE_RK3588_SCMCI,
-+    .parent = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(RK3588SCMIState),
-+    .instance_init = rk3588_scmi_instance_init,
-+    .class_init = rk3588_scmi_class_init,
-+};
-+
-+static void rk3588_scmi_register_types(void)
-+{
-+    type_register_static(&rk3588_scmi_typeinfo);
-+}
-+
-+type_init(rk3588_scmi_register_types)
-diff --git a/include/hw/misc/rk3588-scmci.h b/include/hw/misc/rk3588-scmci.h
-new file mode 100644
-index 0000000000..4a00f621d4
---- /dev/null
-+++ b/include/hw/misc/rk3588-scmci.h
-@@ -0,0 +1,25 @@
-+/*
-+ * Rockchip RK3588 SCMI server
-+ *
-+ * This device implements the SCMI shared memory and a minimal SCMI
-+ * server for the RK3588 SMC transport.  The guest uses the standard
-+ * "arm,scmi-smc" binding, with the SMC function ID and shared memory
-+ * address documented by the upstream RK3588 device tree.
-+ *
-+ * Copyright (C) 2026 Process Mission
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef HW_MISC_RK3588_SCMCI_H
-+#define HW_MISC_RK3588_SCMCI_H
-+
-+#include "qom/object.h"
-+
-+#define TYPE_RK3588_SCMCI "rk3588-scmci"
-+OBJECT_DECLARE_SIMPLE_TYPE(RK3588SCMIState, RK3588_SCMCI)
-+
-+#define RK3588_SCMI_SMC_ID      0x82000010
-+#define RK3588_SCMI_SHMEM_SIZE  0x100
-+
-+#endif /* HW_MISC_RK3588_SCMCI_H */
+     s->hptimer = qdev_new(TYPE_ROCKCHIP_HPTIMER);
+     object_property_add_child(obj, "hptimer", OBJECT(s->hptimer));
+     object_unref(OBJECT(s->hptimer));
+diff --git a/include/hw/arm/rk3588.h b/include/hw/arm/rk3588.h
+index 1304c11598..f85242f464 100644
+--- a/include/hw/arm/rk3588.h
++++ b/include/hw/arm/rk3588.h
+@@ -55,6 +55,7 @@ struct RK3588SoCState {
+     DeviceState *cru;
+     DeviceState *otp;
+     DeviceState *sfc;
++    DeviceState *scmi;
+     MemoryRegion *memory;
+     MemoryRegion sram;
+     DeviceState *hptimer;
 -- 
 2.53.0
 
