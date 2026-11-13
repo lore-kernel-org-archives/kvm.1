@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794594892;
-	b=cSRKw+AUVD4VZQMuPuArZEeJBJuwz67DEaowY9OxqRV6po7bbiLHPnV4Fc0DcwKf7xIZ
-	 Vzf8pFfFL1aGlu5MzZDx4z+6GbR3Ig0ivHYxUCGBBMiuZs4kSagwotzKYhlU+YBZ6kTD7
-	 B8MnQqqJW88pTjjXjxgnMyafgDasEzXDXeVoIKelYFzoCImcu+YYA+0ZdI0AglJm080kc
-	 PkkOcT0yT2rMa3yx5sA6MRfWTMYCFKJq0oMktErnv5kJnVXUhHjDQj9ALpY+nnTsqR8er
-	 Rl+FpDzfoKg/HSxqqPXjkOXhDn/NAkFXNRiP9cuCspzwlQQz21985l4HtdqPaobnE0Q==
+	b=kNzY3Zx2nAZp+78khF2Y54TccyEjBfa7bUXYPmNO37PTzeUCriXbIc9WZwzoiDfeUYUf
+	 obqhoSZC2yERjC+wEbrxyKMjAgnfbG6xKHSE36OIB7U5PGd10s0oUpLoy4Eyv6uDxmUOh
+	 byfckPNU5vkvk8gd0IubLreo2Fm4FVzFSIMdDN9Loo9wDuxcpAxOWzfIaFZU5UTzhMz4L
+	 cNm93x210iyrYemxIzSBi6vaD0A5A0MBO39touFMdWwDWQipSILSrRvqllaeU69ONFJZT
+	 OktK/izbFYwWOHfxa+vqP3wHGz+lk5E0SjEI0PNgDiI+LfGWAce//3mNFX5EnEklXXg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794594892;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=R9iXh39dZZCE3gaRA9kMFf1oh9f6gEsCdkgy+uiqVUs=;
-	b=XJhHbuMCNE67pYl3/eXIkhq7G3obUwRQDG+wPCPlGG3MafVnJOSRYKEA/Gj0p+i1/eLW
-	 aW1QiednA/W7Z+z2JlvvRhzvxeh7u4jJ7xW5YUZM/6uHDc/vbJ/kJiXH8FwOtOwOoQIvR
-	 BBpFnWI0+C4lRCmwUWEioXe9xRN6Pn3FQc2BYs63KJoMcBiFoBTCLm7H9Kj0Vg3yN8TyY
-	 RTUyuZud9s0E3VRo94rkQCauZyyycZUE8u9BvSl8f831VP1+DzFGMFbkAkuo4onkgM+u5
-	 WvVRpWqbAbACzxHhJ8x/PqnvoVeVtKblHeJ4P+moVh0oEnQrOkyETEcMm5tehxZa1iQ==
+	bh=RFjZrZyzRZHYPexghm1fB/dAz6WRQaGXQodRS4ebBdk=;
+	b=PzRRxPd9Qof3PHgvHbYT4xbatKM5BOakFLgX3hRI50iuGvAcVblsfRFx6D2QS1iz7J4o
+	 B8uVC1SXhleIfccliQuJ3YgJwuHDjz3Dqbpw+wr/+2WuwygJEtFGifjtgdO0JwWuHQzQO
+	 K/Ltrjg9udlrMi2QlRfqhbKe+7qGY+6s1uF4v96IvXp7rqk5V4wSf/3AJPkkQz6K88u8z
+	 Yoil6NtiS62mBk28+Ih9k/B/2FdgaNbxIGDwSpKm6x9N8w75fvUQF54e57iYWEDAdkDXM
+	 70b6+aFnuYZBv7gmMt4WOteabuTzJx8XfTh+1g6EUtI7cPiWBrSJD8RLNna69lwMO8Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=auwbJd4Z;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=L2seJnyB;
 	arc=none smtp.remote-ip=90.155.50.34
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A49C606A336;
-	Fri, 13 Nov 2026 18:34:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A49C606A336
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73006606A896;
+	Fri, 13 Nov 2026 18:34:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73006606A896
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=auwbJd4Z
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=L2seJnyB
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=R9iXh39dZZCE3gaRA9kMFf1oh9f6gEsCdkgy+uiqVUs=; b=auwbJd4Zrq/Bkqepherrrz4c6g
-	UIG2NN7ORU9r5BNxmoY6EWoez6jMr4fJuJOM+vtk8SYuWrEWxt5Z3BU6yoswe1kvXc1283dwHb0eU
-	0zbparAVG+OUaWQ0Ovn1WxdJDIjzCjKocgnWejWlfzvBCxfPXxkDukaTpFwf3fV9mSHSUwDkCUcIs
-	R49aSyaA7oPYulr4x1Y9jjxL3sPxWiLG83l1nG1Z5cKRah0WK66Lil8iKehkqy4OEUdC62j8ragjU
-	IZAK4ijDPIAqcpyVeX4wu7elqljcMe9iMf1V/658KrRuBXHjBNvM8+CTWq/xrazvoImQEkUMXNy7h
-	xft87+VA==;
+	bh=RFjZrZyzRZHYPexghm1fB/dAz6WRQaGXQodRS4ebBdk=; b=L2seJnyBdJ/ExdzRQZKgTFiKqB
+	hbFYFM6t03vH9Cw7U/UZwqkVKq59Fv2j95fEKgnUzkemXcH5jrSIq3fToAJRTJPYEO+gX4MfdQmF2
+	8nyItFsPP3tkuTxMKIegs5Ok3Zjo3xJSqrUHn+PlJikD4TCG1iuGBFjvSGJP0QlMpIIpoxyTIlfQr
+	B9NG+kN6tApq+vfAo86wq8IfwvpgHYr7p7MzbOWuOmX9dxb2McwZB4SW409TMs/H8xTvwANl4kaLy
+	s1STTb9OMHyYrNlrYnUFAlG78FiLtHH5XDWmgBQVO+jBT5DiIIMjwT3qaA4qmA9xYvvfk/hkZJztr
+	s8iJu8HQ==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRw6s-00000004gQM-0Toj;
+	id 1xRw6s-00000004gRC-31JA;
 	Fri, 13 Nov 2026 18:34:50 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xRw6r-00000000LtS-3pFO;
-	Fri, 13 Nov 2026 18:34:49 +0000
+	id 1xRw6s-00000000LuQ-23tN;
+	Fri, 13 Nov 2026 18:34:50 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -71,9 +71,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Mushahid Hussain <hmushi@amazon.co.uk>,
 	Sriram Nambakam <snambakam@linux.microsoft.com>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [RFC PATCH v2 14/31] KVM: VMX: Report GVA and instruction bytes on plane-protection faults
-Date: Fri, 13 Nov 2026 18:34:30 +0000
-Message-ID: <20261113183448.84094-15-dwmw2@infradead.org>
+Subject: [RFC PATCH v2 28/31] KVM: SVM: Keep TPR[3:0] across exits without a guest CR8 write
+Date: Fri, 13 Nov 2026 18:34:44 +0000
+Message-ID: <20261113183448.84094-29-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261113183448.84094-1-dwmw2@infradead.org>
 References: <20261113183448.84094-1-dwmw2@infradead.org>
@@ -92,178 +92,84 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-A plane memory-protection fault is reflected to userspace as
-KVM_EXIT_MEMORY_FAULT, and a VSM VMM turns it into the TLFS GPA
-intercept message for the higher VTL. That message carries the
-guest-linear address and the faulting instruction's length and bytes,
-none of which the exit reports.
+V_TPR holds only TPR[7:4]. While KVM does not intercept CR8 writes,
+sync_cr8_to_lapic() pushes V_TPR back into the local APIC after every
+VMRUN, whether or not the guest touched CR8. A guest that sets the TPR
+through the APIC page or the x2APIC MSR therefore loses TPR[3:0] at the
+next exit: it writes 0xff, reads back 0xf0, and interrupts in the
+priority sub-class it meant to mask are delivered. VMX keeps all eight
+TPR bits in the virtual-APIC page and does not have this problem.
 
-Extend memory_fault with 'gva', 'insn_len' and 'insn_bytes', and a
-KVM_MEMORY_EXIT_FLAG_GVA_VALID flag qualifying 'gva'. On VMX, fill them
-in handle_ept_violation() while the exit state is still at hand: the
-GVA from GUEST_LINEAR_ADDRESS when the exit qualification says it is
-valid, the length from VM_EXIT_INSTRUCTION_LEN (architecturally
-undefined for EPT violations, but provided by the hardware), and the
-bytes read at the linear RIP unless the access was the instruction
-fetch itself. The bytes are best effort and zeroed if the read fails.
-The plane's protections can refuse that read as well (a protected code
-or page-table page is the normal VSM layout), and a refused read
-prepares a memory-fault exit of its own; save the exit being reported
-around the read so the read cannot replace it.
+Hardware changes V_TPR only on a guest CR8 write. Record the value
+sync_lapic_to_cr8() loads on entry and push V_TPR back into the APIC
+only when it differs, which only a guest CR8 write can make it do. A
+CR8 write whose value matches the loaded TPR[7:4] is indistinguishable
+from no write and now preserves TPR[3:0], where architecturally it
+would clear it; the previous behaviour cleared TPR[3:0] on every exit
+regardless.
 
-The new fields fit in the existing kvm_run union and are documented as
-present on kernels that advertise KVM_CAP_PLANE_MEMORY_OVERLAYS.
+Found while implementing Hyper-V VSM on KVM planes.
 
+Fixes: d7bf8221a303 ("KVM: SVM: sync V_TPR with LAPIC.TPR if CR8 write intercept is disabled")
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- Documentation/virt/kvm/api.rst | 14 ++++++++
- arch/x86/kvm/vmx/vmx.c         | 63 +++++++++++++++++++++++++++++++++-
- include/uapi/linux/kvm.h       |  6 ++++
- 3 files changed, 82 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/svm.c | 11 ++++++++++-
+ arch/x86/kvm/svm/svm.h | 13 +++++++++++++
+ 2 files changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index 99e18956f249..f1c64d721570 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -7721,9 +7721,15 @@ spec refer, https://github.com/riscv/riscv-sbi-doc.
-   #define KVM_MEMORY_EXIT_FLAG_WRITE    (1ULL << 1)
-   #define KVM_MEMORY_EXIT_FLAG_EXEC     (1ULL << 2)
-   #define KVM_MEMORY_EXIT_FLAG_PRIVATE	(1ULL << 3)
-+  #define KVM_MEMORY_EXIT_FLAG_GVA_VALID	(1ULL << 4)
- 			__u64 flags;
- 			__u64 gpa;
- 			__u64 size;
-+			/* set on plane-protection faults when available */
-+			__u64 gva;
-+			__u32 insn_len;
-+			__u8  insn_bytes[16];
-+			__u32 pad;
- 		} memory_fault;
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index cf049367523c..9bfcc7684504 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4622,7 +4622,15 @@ static inline void sync_cr8_to_lapic(struct kvm_vcpu *vcpu)
  
- KVM_EXIT_MEMORY_FAULT indicates the vCPU has encountered a memory fault that
-@@ -7736,6 +7742,14 @@ describes properties of the faulting access that are likely pertinent:
-  - KVM_MEMORY_EXIT_FLAG_PRIVATE - When set, indicates the memory fault occurred
-    on a private memory access.  When clear, indicates the fault occurred on a
-    shared access.
-+ - KVM_MEMORY_EXIT_FLAG_GVA_VALID - When set, 'gva' holds the faulting guest
-+   virtual address.
+ 	if (!svm_is_intercept(svm, INTERCEPT_CR8_WRITE)) {
+ 		int cr8 = svm->vmcb->control.int_ctl & V_TPR_MASK;
+-		kvm_set_cr8(vcpu, cr8);
 +
-+The 'gva', 'insn_len' and 'insn_bytes' fields exist only on kernels
-+which advertise KVM_CAP_PLANE_MEMORY_OVERLAYS (see section 8.48).  On
-+plane memory-protection faults, 'insn_len' and 'insn_bytes' carry a
-+best-effort copy of the faulting instruction when KVM could fetch it;
-+an 'insn_len' of 0 means no instruction bytes are available.
- 
- Note!  KVM_EXIT_MEMORY_FAULT is unique among all KVM exit reasons in that it
- accompanies a return code of '-1', not '0'!  errno will always be set to EFAULT
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 4e7eec9a0625..b5aa7110bf36 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -70,6 +70,7 @@
- #include "vmcs12.h"
- #include "vmx.h"
- #include "x86.h"
-+#include "kvm_emulate.h"
- #include "x86_ops.h"
- #include "smm.h"
- #include "tss.h"
-@@ -6050,6 +6051,7 @@ static int handle_ept_violation(struct kvm_vcpu *vcpu)
- {
- 	unsigned long exit_qualification = vt_get_exit_qual(vcpu);
- 	gpa_t gpa;
-+	int ret;
- 
- 	/*
- 	 * EPT violation happened while executing iret from NMI,
-@@ -6076,7 +6078,66 @@ static int handle_ept_violation(struct kvm_vcpu *vcpu)
- 	if (unlikely(allow_smaller_maxphyaddr && !kvm_vcpu_is_legal_gpa(vcpu, gpa)))
- 		return kvm_emulate_instruction(vcpu, 0);
- 
--	return __vt_handle_ept_violation(vcpu, gpa, exit_qualification);
-+	ret = __vt_handle_ept_violation(vcpu, gpa, exit_qualification);
-+
-+	/*
-+	 * A plane-protection fault reflected to userspace becomes a TLFS
-+	 * GPA intercept message, which carries the guest-linear address
-+	 * and the faulting instruction's bytes.  Harvest them while the
-+	 * exit state is still at hand.
-+	 */
-+	if (ret == -EFAULT &&
-+	    vcpu->run->exit_reason == KVM_EXIT_MEMORY_FAULT &&
-+	    (vcpu->run->memory_fault.flags & (KVM_MEMORY_EXIT_FLAG_READ |
-+					      KVM_MEMORY_EXIT_FLAG_WRITE |
-+					      KVM_MEMORY_EXIT_FLAG_EXEC))) {
-+		unsigned int len;
-+
-+		if (exit_qualification & EPT_VIOLATION_GVA_IS_VALID) {
-+			vcpu->run->memory_fault.gva =
-+				vmcs_readl(GUEST_LINEAR_ADDRESS);
-+			vcpu->run->memory_fault.flags |=
-+				KVM_MEMORY_EXIT_FLAG_GVA_VALID;
-+		}
 +		/*
-+		 * Architecturally undefined for EPT violations, but the
-+		 * hardware provides the faulting (for a fetch: the
-+		 * fetching) instruction's length here, and the TLFS
-+		 * message carries exactly that.
++		 * Hardware changes V_TPR only on a guest CR8 write.  Pushing
++		 * an unchanged value into the APIC would zero TPR[3:0] (CR8
++		 * maps TPR[7:4] alone), wiping the low nibble of a TASKPRI
++		 * value the guest set through the APIC page or MSR.
 +		 */
-+		len = vmcs_read32(VM_EXIT_INSTRUCTION_LEN);
-+		len = min_t(unsigned int, len,
-+			    sizeof(vcpu->run->memory_fault.insn_bytes));
-+		vcpu->run->memory_fault.insn_len = len;
-+		if (!(exit_qualification & EPT_VIOLATION_ACC_INSTR)) {
-+			typeof(vcpu->run->memory_fault) fault =
-+				vcpu->run->memory_fault;
-+			u32 exit_reason = vcpu->run->exit_reason;
-+			struct x86_exception e;
-+			int r;
-+
-+			/*
-+			 * kvm_read_guest_virt() takes a linear address: RIP
-+			 * is CS-relative, and the two coincide only when
-+			 * CS.base is zero (64-bit mode, or a flat 32-bit
-+			 * code segment).
-+			 */
-+			r = kvm_read_guest_virt(vcpu, kvm_get_linear_rip(vcpu),
-+						fault.insn_bytes, len, &e);
-+			/*
-+			 * The plane's protections can refuse the read too (a
-+			 * protected code or page-table page is the normal VSM
-+			 * layout), and a refused read prepares a memory-fault
-+			 * exit of its own.  Report the fault that was taken.
-+			 */
-+			vcpu->run->exit_reason = exit_reason;
-+			vcpu->run->memory_fault = fault;
-+			if (r)
-+				memset(vcpu->run->memory_fault.insn_bytes, 0,
-+				       sizeof(vcpu->run->memory_fault.insn_bytes));
-+		}
-+	}
-+	return ret;
++		if (cr8 != svm->v_tpr_entry)
++			kvm_set_cr8(vcpu, cr8);
+ 	}
  }
  
- static int handle_ept_misconfig(struct kvm_vcpu *vcpu)
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index b260d4d8aa22..25626be71eb7 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -489,9 +489,15 @@ struct kvm_run {
- #define KVM_MEMORY_EXIT_FLAG_WRITE      (1ULL << 1)
- #define KVM_MEMORY_EXIT_FLAG_EXEC       (1ULL << 2)
- #define KVM_MEMORY_EXIT_FLAG_PRIVATE	(1ULL << 3)
-+#define KVM_MEMORY_EXIT_FLAG_GVA_VALID	(1ULL << 4)
- 			__u64 flags;
- 			__u64 gpa;
- 			__u64 size;
-+			/* set on plane-protection faults when available */
-+			__u64 gva;
-+			__u32 insn_len;
-+			__u8  insn_bytes[16];
-+			__u32 pad;
- 		} memory_fault;
- 		/* KVM_EXIT_TDX */
- 		struct {
+@@ -4637,6 +4645,7 @@ static inline void sync_lapic_to_cr8(struct kvm_vcpu *vcpu)
+ 	cr8 = kvm_get_cr8(vcpu);
+ 	svm->vmcb->control.int_ctl &= ~V_TPR_MASK;
+ 	svm->vmcb->control.int_ctl |= cr8 & V_TPR_MASK;
++	svm->v_tpr_entry = cr8 & V_TPR_MASK;
+ }
+ 
+ static void svm_complete_soft_interrupt(struct kvm_vcpu *vcpu, u8 vector,
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index e7fced399e05..3dfa8b20152b 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -323,6 +323,19 @@ struct vcpu_svm {
+ 
+ 	void *msrpm;
+ 
++	/*
++	 * V_TPR value written by sync_lapic_to_cr8() on the last entry.
++	 * sync_cr8_to_lapic() pushes V_TPR back into the APIC only when it
++	 * differs: V_TPR holds TPR[7:4] only, so an unconditional back-sync
++	 * would zero TPR[3:0] after every exit, losing the low nibble of an
++	 * APIC TASKPRI write.  A differing V_TPR implies a guest CR8 write,
++	 * but not the converse: a CR8 write of the same value is
++	 * indistinguishable from no write, so TPR[3:0] survives it where
++	 * the architectural write (and the intercepted path through
++	 * kvm_lapic_set_tpr()) would clear it.
++	 */
++	u8 v_tpr_entry;
++
+ 	ulong nmi_iret_rip;
+ 
+ 	struct svm_nested_state nested;
 -- 
 2.50.1
 
