@@ -1,73 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794577759;
-	b=sZXDMhCZ9WhPIUMDCmpq7eqk0iqzj4w9RLuKEotHbhgVU94QSdzdVG5VE6e4oBj+ho50
-	 938RjVtgrS1iH0DrGLmxmWa7PIMx8NEtovrjZoZzremkkSo4a3tLZj7HidoPCMTRzL1et
-	 3bg7TkuzcZzW1tXFmXDLE7xk1mV6i7CVnxmR8n2zygreJ1ALaYoU5nNS4q1icrXA7XG57
-	 HSurS8UHoFJ4MhnSFV83Eed4Q6GZtzQuhXSzznsWLbCSaIq/SOcHuGeGvyMHzFXvRs+N9
-	 6Cv1FnOLJvHpykm08rjY9qf8i2G9F/qOW0zKC+JyqFfJ7bIvErrBJs6ZdrePbx1C2cQ==
+	t=1794577768;
+	b=CKBg1Pm2WV9wbc4iCd3RT4KFJ16o70t7aQqjOkEIHeFE1nXMRbeIkFg28SHTO7C0aHgG
+	 maNldWvtXYx0OFHGbzqUG/VnK2YXnW7j/nCvtyWHRbvvOpoJIM7gygYv7OQGcBdhY7GqV
+	 2LxPduqxKmfa5aG4FBA7rGrzYt+t5agkBNw7w8DSTDRd5W4CeLjBAA3tvWEbiT9KCozZF
+	 uSkvlYTOFgij1CfaSTtgcXzRw4uiw5vKGPrPOd/4HsMpSw9elizz+9SmcPUxKv0Y4N5La
+	 5/XfvRVl8k4ggsxpoSciPtOqAu4vihcvruxYO5R6D9t5crqrqlfR4tHm0zYkJBSDDqw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794577759;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794577768;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=iaZEgFBO0oN7uYyRNO34L79aitowmvFZR4PRL3xrbhA=;
-	b=K1q9m3ZF/NgpQ9qMGllGQavukUqxjmieVAq2n5rfwtl8pRYJfm7nNtieR5oI9GJDi72l
-	 mCL7zLnr/0iCP+BBcvUxDkd9egTqXR4ZJkIpeBDz6p7OJ/2YJNKkAMkWxDl/MDt1JxLRO
-	 bEvGMuVocZjwZT37ywqBkLtJ63975p/XioBh3LDeLYbT+2mCxjTMpS4bFn6ItMSBlGlO6
-	 1gxGUls6gMedITVPyJ9SIIpPbNnBMpRJXa6eadYvk/YAgLP6aR5piqADIc0j/wT895/jC
-	 m2iJyUD7NzD8we0dwZydHyv2ASWh76wxaSBwsLl6/qr1wtQLGUMUEbFqVlpJeCpLjwg==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=3v73r32eIAJAgWPi1LsXT3feGTevyTVBk7sdUb/TcA8=;
+	b=xIViLw2lNBANqwKb+OBOCdRHQxlAlF5qSY/w+Of/s3TJuzErN3K2lYUoKUAUocWE5Ehu
+	 5HAizL2OoI2TJLkTa+qxR1fXMqdNge+Aka+2MB9qFGYgriPAUe8BOf+Hp98dZ8au2/PjI
+	 i2E7WH4Q4meAK+gtIaCD9uFO7MPvtoRtcgNKPihXBBbUznJ+hIQpaQAAHYMzrsafrRATS
+	 f4E1w0ggTtvkR0mY4W7WGyfJYRTiCRsSfkM03EL8t9AwVV5knotUQgRkkZzoo1E+t4Fvl
+	 KA4czGVHZinHmQ1HbzslVAmKU8TfCgS3DxWkoF+GSxSy009srbhggDpzwBubPocYGpQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ldea60Y7;
-	arc=none smtp.remote-ip=209.85.215.199
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iYprxckR;
+	arc=none smtp.remote-ip=209.85.216.72
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B1B606A337
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:49:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9B1B606A337
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8796606A8B4
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:49:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E8796606A8B4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ldea60Y7
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cd5fd34fee0so630386a12.3
-        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:49:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iYprxckR
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3adeba76cadso695349a91.1
+        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:49:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794577758; x=1795182558; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794577767; x=1795182567; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=iaZEgFBO0oN7uYyRNO34L79aitowmvFZR4PRL3xrbhA=;
-        b=ldea60Y77L8XdLaoFVYj7SbvCOAQT3aoZ3sqpFSGcD2f4plIFiedS905Gt0APcYH0k
-         jRhtDQqE6zKe+9LpBG1ufAX2UgJMZjkqk6JGSV8hTx/qi4J7v2zC1shw6z9KhL2i9V2b
-         COfWUvBauXn5tC0VJRNPvD+YpGN95+acz9kH3Q54VDHOFSsvQkEGUBWscp23gYhPByLb
-         X9VousiCKXhv0SVOSb/7ukmkTOeSMoLk82UfSBOgUCbuJcBSvf3sdZ9ezWcb/g3E6yAZ
-         t7JEj0yWX9AIjqbrPiYqbbyU6GyuC6f0LvWDWgtr1feCG8ugz3F8FjfCbPziVJh6A0+6
-         P2aA==
+        bh=3v73r32eIAJAgWPi1LsXT3feGTevyTVBk7sdUb/TcA8=;
+        b=iYprxckRt6x0jveQ7KIO6R+oa6tFiYQfSlMcbZeYNkZElf1SB6bHrK9uNemcL5oERW
+         JhBhmjD7LEkzuwclSSGtFi8rLnFij9YqELQAndFPhuWI9gCQC10TQDtD8DoiOnpSH0j2
+         HVjFKRqbxI13gzT/MYxeD/jL8356LwhFULpVEx6CDY8d5wA1hfQQpOq6O4L8pqpiDPp6
+         HbI63zWl1Ozdh3NXXVXkDOnJO/DgRq1C2QmRF0R3mwzq5LUSDPowEpJb4meLFazbRWGf
+         Ez8ljTE+47qpn1tkWgbwYUJo1cThf1QiMHn3kI1ljYZOpvksMa5d85Mf4VwYBml1Ckrq
+         a5Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794577758; x=1795182558;
+        d=1e100.net; s=20260707; t=1794577767; x=1795182567;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=iaZEgFBO0oN7uYyRNO34L79aitowmvFZR4PRL3xrbhA=;
-        b=tuU8Dzk0yKbkoDkxDqzOJrez+QW/Ff1IIhfPwaHLFk/U5tPKg5vulbejQ/p9/1659K
-         wf7s0t1IaEglP9iBmCMX5zqudYVWhmvRd0+aYpS3zTQiNNIbEOoUn2BLxhBeycw8k6Al
-         V7SHWJwi89DIe3Rv7+ecYMFOdEij5zn9tVbD7OmORGyhR8u+MRJy0BPhW9/rVOpkWYXc
-         JPZnJ2767ctC1s5O6+iMN6WxMH3jvyPEbuhjEI0XSLY103NoP/r1VE0oL1s2K2Esyaz8
-         vWF3AV48GLuWEkyJFcTAkzMJnJL3CgWQAxkxYPxCtV6l6YHMD6OHjYAOYGOUHNqJ/VBy
-         48hg==
-X-Gm-Message-State: APuU4Z82klqbwdA0L9TU/cbwYDHz2J/Goea5ArTUU3xThnX/0G1312In
-	vM2q2PIscHpSnwNEmRRo/037yKHYElTGado8nJXoMk5ukkgk8gWN+aEQrEumgSh1wyFXC4LLjc+
-	U+hN/ow==
-X-Received: from pjbov12.prod.google.com ([2002:a17:90b:258c:b0:3b0:ac19:f886])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:54cb:b0:3b1:832b:bb3d
- with SMTP id 98e67ed59e1d1-3b1b0ba66d9mr2028281a91.57.1794577757932; Fri, 13
- Nov 2026 05:49:17 -0800 (PST)
-Date: Fri, 13 Nov 2026 05:46:38 -0800
-In-Reply-To: <20261006093354.590415-1-bruno.produit@trailofbits.com>
+        bh=3v73r32eIAJAgWPi1LsXT3feGTevyTVBk7sdUb/TcA8=;
+        b=Ph7eW5kjjUH2F+c3CKkF9IZwIUQldOr41RA8oG8OcyyIha4BfXCfAz9pOpyoYFKPOl
+         svn1JkH3B488NOms46P8YaZpKc/PUOh6DN3iHEW7BsrwLqcnyfdOJRJdSKBVFAcWmHJe
+         3ZQ5zLGGu5yb7gar80DRgq/OvOru1TGdrl+wC+zGIP3gsOF6qm4447fLwPwvzQiQew4Q
+         64o1B5BLhmWGja7jhYXZX1IslB5NMvJ1zY4pENuqLL88nlT5lkec15tLtjhgQH0iH7TJ
+         4SKp+1IEXLOGMBxnTbwkMiOSgB+Vq7fL1d6vvpKScODJTbXhOCz7LcnCsQ+MVw+OnbCn
+         jfEA==
+X-Forwarded-Encrypted: i=1; AL+hErGMtQqZg0u1ygQfxFRe8FZfdLr9IJJZkp+nY0qx5DJsELCeHvkOKiVmuLtpNjwVbpinpDU=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+Sdrwo4I9JXzDDASbf6kx7FjDNg/7MPPe5YuNMBLA5x2nh6Fye
+	THX6HMTapGXM9N2RCeMmGWyE7XZygtkilWUJLwzEk1d2SkhwjlDHKMCOQxRonxNyjh4h0hfvXwZ
+	GVmn4qQ==
+X-Received: from pga12.prod.google.com ([2002:a05:6a02:4f8c:b0:cca:d82:9104])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:17c8:b0:3ac:7842:bd50
+ with SMTP id 98e67ed59e1d1-3b1b0a428admr2241920a91.15.1794577767011; Fri, 13
+ Nov 2026 05:49:27 -0800 (PST)
+Date: Fri, 13 Nov 2026 05:46:40 -0800
+In-Reply-To: <20260731150846.1728164-1-dmaluka@chromium.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,36 +79,40 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261006093354.590415-1-bruno.produit@trailofbits.com>
+References: <20260731150846.1728164-1-dmaluka@chromium.org>
 X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
-Message-ID: <179441841896.82698.8297015734174614821.b4-ty@b4>
-Subject: Re: [PATCH v2] KVM: x86: Cancel PIT timer on failed creation
+Message-ID: <179441846682.83214.17243719876978660073.b4-ty@b4>
+Subject: Re: [PATCH v2 0/4] KVM: x86: Fix off-by-one in max_vcpu_ids bounds checks
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, 
-	Bruno Produit <bruno.produit@trailofbits.com>
-Cc: kvm@vger.kernel.org, Kyle Zeng <kylebot@openai.com>, linux-kernel@vger.kernel.org, 
-	Dominik Czarnota <dominik.czarnota@trailofbits.com>, stable@vger.kernel.org
+To: Sean Christopherson <seanjc@google.com>, Dmytro Maluka <dmaluka@chromium.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Mathias Krause <minipli@grsecurity.net>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Vineeth Pillai <vineeth@bitbyteword.org>, Chuanxiao Dong <chuanxiao.dong@intel.com>, 
+	Aashish Sharma <aashish@aashishsharma.net>, Grzegorz Jaszczyk <jaszczyk@chromium.org>
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, 06 Oct 2026 11:33:54 +0200, Bruno Produit wrote:
-> Cancel the PIT hrtimer if PIT creation fails after registering the PIO
-> device.  This matches normal teardown and ensures the timer no longer
-> uses the PIT before its memory is freed.
+On Fri, 31 Jul 2026 15:08:41 +0000, Dmytro Maluka wrote:
+> max_vcpu_ids and KVM_CAP_MAX_VCPU_ID are exclusive, i.e. the maximum
+> allowed vcpu_id value is max_vcpu_ids minus one, not max_vcpu_ids.
 > 
-> KVM registers the PIT's PIO device before registering the optional dummy
-> speaker device.  If speaker registration fails, a vCPU can have already
-> programmed channel 0 and armed pit_state.timer through the published PIT
-> device.  When I/O bus registration became fallible, its cleanup did not
-> cancel the timer before freeing the PIT.
+> Fix the sanity checks for KVM_SET_BOOT_CPU_ID and KVM_CAP_MAX_VCPU_ID
+> and the selftests for them (added in series [1]) to fail when
+> bsp_vcpu_id is incorrectly set to max_vcpu_ids, not to a value below
+> max_vcpu_ids.
 > 
 > [...]
 
 Applied to kvm-x86 misc, thanks!
 
-[1/1] KVM: x86: Cancel PIT timer on failed creation
-      https://github.com/kvm-x86/linux/commit/381a21cfe810
+[1/4] KVM: selftests: Fix treating KVM_CAP_MAX_VCPU_ID as inclusive
+      https://github.com/kvm-x86/linux/commit/9b04ebe5c085
+[2/4] KVM: x86: Fix off-by-one in max_vcpu_ids bounds checks
+      https://github.com/kvm-x86/linux/commit/c36d436e7335
+[3/4] KVM: selftests: Improve bsp_vcpu_id and max_vcpu_ids out-of-bound tests
+      https://github.com/kvm-x86/linux/commit/201aaeb1df8f
+[4/4] Documentation: KVM: Clarify that KVM_CAP_MAX_VCPU_ID is exclusive
+      https://github.com/kvm-x86/linux/commit/ea6d489ae6c2
 
 --
 https://github.com/kvm-x86/linux/tree/next
