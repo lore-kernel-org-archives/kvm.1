@@ -1,99 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794589548;
-	b=g4FD/RNopqmlBpfwSVEWMGN19y0hNpRCCcG6nHRaFAuZYOEpj6Ie0DLj307TbGmS7m+E
-	 kdjIin/5P+hyKM23h5Bi0qU6xlneOBobm10RjI3PwfLtdY+PqmDAsFj8pvIrxPIto0Ytv
-	 mhvNHSOO4ZEpuRdKbdG+gqhyjiK+O01FEvySlj82y5AuHEee6SwB0OkgrZkaUON1bDER5
-	 wkyDiZ/tRak0lRssr36Y8izP33uAnwdETLnkEHRB/wwtlXVPmfqROOzWgaGDBoQ7UXjsE
-	 6Of30IK3LQtaJpK1HrhySwVqlz2CSR/MatODR2dg7zHvFB6p6RXemrqweIbovE6OONg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794589548;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=kCGxpBXBaBiGwMJsw72VsYlYa0+q6WTQu2Tug3H6f7Q=;
-	b=Pd39Kp04xXDgX+6jW0p4XCrSrICJRtK8swz0L2JPC6aBsx30oVnDXkqe/Ij4d1cnlLaF
-	 djf+W2gqKJX358gKa4/6/yXPA9Maw43I1amA8RSqzb2nacCyQqgcGvdcIX3iHyYbOxBGC
-	 SpWvx0iDVqSeyLAD4V416Lit/Rw5BqUPW6zaFk1ZU1rB65oz7DRQqT235qbDDfj9i/2Se
-	 uh1cPBVSTL/PKpMo/X2XyTmWyah0rIRCh1GUdm8BHtcFi5ROiSOBkUjO59tOl9GFRLB+q
-	 brKQ9x4DQdBnYycmB5d/MA7OYzDPZQRqfi1tvt8r5Fj/xE34lMdkb2O89gH2uERc8vA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=infradead.org;
-	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ZciuCMf+;
-	arc=none smtp.remote-ip=90.155.50.34
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.50
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794589747;
+	b=pPnNPK2t2ucrd/YqnjEO7AzckqWFyttRXZtEuo+JSTwNLFfu7qTuCXkElJ3NY7SNUEqI
+	 N+sa26hNdjHOSi4dRipm/rjD+VXNM/hdIcKhDKNCxJ1xYiS2LqOaUOWZbQjdJ3Bzhf2A0
+	 XeQcHKzggBLBrJOH+GvRykvXl1VFRY2g2j7B/PXfHsXc7Dwp66FoPBXbDUiHmPtAe0x+t
+	 l71Ing5V/fwP3B82S2o5LzxboEKgBzYvqqAxRa3eLxkK1WDEPgqZ3Hgq/UD5CQPk/lPTf
+	 10givLfMroO+tPeGsRMC32WcN9qIyqhR6AkSN1wpUJTP/oB5ZGFdIfIdHWx91A53Q4w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794589747;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=zTGaV1UloT0Chf0ol30qq10ZNwEvfaESId1U8G45Gn0=;
+	b=CdXW5bZegDF/jXFiFxosu6NY/DJNJIXqehJ7rRs2V9WsfYLKD6LF7+VYhcPxq4O+G/su
+	 2gt5+nbqfEfg30BFsA+Ybx0r9UcsHLuy9yMab9WSD4fXNuhrWMFS9UOQjsAyo4y1pe/Cg
+	 y2e38MRIunZhKwvI5I2cRc9qsqUZlPyln8kZ88IZjf4IVSqpabwRvVIP3hlg28zt8urVO
+	 alQehbrS0zB2Lg1EabiYc3LhQCKpbE+IY/JJKknoPgkViR4Mpy8eRkbQmvYN1Ho/SyGgY
+	 25qTRTtqXrzCMSfmO0JYCu1q3V4tC7BaNUT0Bb31ZPItlDasJEnOgWD/2c8oTlD5JFg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qYpt8qHU;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.50
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF569606A323;
-	Fri, 13 Nov 2026 17:05:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BF569606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1704F606A327
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 17:09:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1704F606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ZciuCMf+
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=kCGxpBXBaBiGwMJsw72VsYlYa0+q6WTQu2Tug3H6f7Q=; b=ZciuCMf+M5eyOudWbTFzUxXseO
-	d736S9WO9qpplbnJ69ZC0ve9bAxozf7HMnjy5Md3huKV1yThrkco6Mvq1XqlH9ols5OLAel4kyXZl
-	MI0iUNQiUQ0+JfIh4h3Cmg0S3hCVkeqVXjb20Z1hBb3ClJ5LoE3CRs5jTk0xzW9trOcD7ElkMvO0E
-	kBCFqQ24vbdOESU5In6oV/ixmSamYTFzkFVeT4iwMVwXS48HIQFFS3XHjhFX7Jj4/NRBMKZuL0Ciu
-	BycjxC1e/m7sajXYq5OKagFKPW1JvU9TMwCxGjYtDpb8oAoicr63i7NG9QQgqRd8mD5xqQHphbPpr
-	KcTWtn1g==;
-Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRuiW-00000003oWG-0RUW;
-	Fri, 13 Nov 2026 17:05:36 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xRuiV-00000000KcN-3hGD;
-	Fri, 13 Nov 2026 17:05:35 +0000
-From: David Woodhouse <dwmw2@infradead.org>
-To: kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Thara Gopinath <tgopinath@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Nicolas Saenz Julienne <nsaenz@amazon.com>,
-	Nikolas Wipper <nik.wipper@gmx.de>,
-	Mushahid Hussain <hmushi@amazon.co.uk>,
-	Sriram Nambakam <snambakam@linux.microsoft.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Doug Covelli <doug.covelli@broadcom.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Paul Durrant <paul@xen.org>,
-	Xin Li <xin@zytor.com>,
-	Francesco Lavra <flavra@baylibre.com>,
-	=?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>,
-	Liran Alon <liran.alon@oracle.com>,
-	Arbel Moshe <arbel.moshe@oracle.com>,
-	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v2 2/4] KVM: x86: Let userspace cancel a pending hypercall completion
-Date: Fri, 13 Nov 2026 10:05:33 -0700
-Message-ID: <20261113170535.79246-3-dwmw2@infradead.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261113170535.79246-1-dwmw2@infradead.org>
-References: <20261113170535.79246-1-dwmw2@infradead.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qYpt8qHU
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-67be1e468a8so981525d50.0
+        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 09:09:06 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794589746; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SmmbIekVkjYBi5HF43XCXdiMSLYVlaw9LVyX7K/+9/Ozj/akk2LK38qZC69ksUyDNt
+         KsNhhHxX4cKDlc6b2P3ViXN4Oldc+GZMn41ndEghZjyIy1GHrhuF50ntIDoZ3TDwYJjb
+         skE4isCJ3UbzPK/15NjMcKu+Pppi19ZKSwXQKf3BpYcMmNdSU3Pt9E7ROciOb34U0wPz
+         61jFlfStSHEGFTYr+nLKVvGA2WsEBcluQf7qTTkn/ho8phpi3pL4DHiNLw5S5DILDYv+
+         62a/pwK38sBCRjO5fYb2XR5IAc1L4f60NL4zB5QHuoDtJBfW0dr8hx1APFOXEQ5ctn1n
+         uEvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=zTGaV1UloT0Chf0ol30qq10ZNwEvfaESId1U8G45Gn0=;
+        fh=7GLsMAbjwctLn5T6vJj+2SQlTnfn1P1/Je2tOelQEEw=;
+        b=SbLEc/u4yfHeg7wAb70GED1tcHI+0o8zqw5BSoNfyZvFY73QVPbaul5yrqWNW3JS17
+         Z/06q+nVrkTaP0LvfFTbVBieTam4fAEKlaKkp9igsMjRXw8y04ZMZ/f6F5g8rGqSAmQZ
+         yAiEy8GyI8i3NGZu/j+oxLFYL3TSTL2vFqA28W/v2hb1f0CBQ7sHv2wwIo17ahX1Xkh3
+         xBUDdTXNh4P0/to5eD2GxDH1AOOFP9TZGOapl/5zlABMAWKJg/V/r8PbesT+TISvf570
+         pCBxrrf6Kr78bZFidRAIKJOqMWnqSwB0q2CMuspBSatj9lh8tFY/IiWKivEqyOKjT37H
+         MxOQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794589746; x=1795194546; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zTGaV1UloT0Chf0ol30qq10ZNwEvfaESId1U8G45Gn0=;
+        b=qYpt8qHU1s3hYs2EdjpWPeJcxzItZ/dHhSXtd8KhfZT3VZndoapqqo/OPSrbzOt0u5
+         YA45CjpERrjrGn8LOk30kLgXGFHhxbKXm+0KJMvaOE5aq776n6/nsV9LuNgUcZOPzLP9
+         Z6HJMWgs0iDKwIubCmVYdDf1dHLK+25mFG64ErQ3ErC6l3o2z3/7ihXV4XKJQ5pkd+3O
+         xguj4lgkehPCVghW5LpqoZRB0z5nzLayOlxNzznfeFszFIuKZEv0SIKkzKBzEy7HkEsK
+         C5AIM3YNskWJO+dHDT1aQa8TIfkWG+YmYlI8AR+konnAQY+T5yYgyfV1DKfXHoHlt3O6
+         Z/sA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794589746; x=1795194546;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=zTGaV1UloT0Chf0ol30qq10ZNwEvfaESId1U8G45Gn0=;
+        b=pdsgH0ZrXuUnS53E3xuGTwXhMI4Eex5ukn2BXeWTxvSDX/j0uXLocyWDn+HaZUay3A
+         5/x7xnF3Axk2wCABssXe+RdvRz+2K760tl2Cn8tmq5U2KLXzcIurabnCX/gWSZgHthZX
+         9rjCmkk4XoyFNBBTefvkAOGK7js1/3aezlmzLL6Z8tEc/NKFZnzRpVRdIl7jeJ6J1dpF
+         63/d1AJL0Vheugulg/kVayrvB/l+T8Rz2smMoKhCVo6fGeRwqxS6Yefl/Y+4NGF6C4YQ
+         simoN6OzrLtzLVgJ839hYp885uI4sm8gHtih7pzwCyW0f8gCzkM4x+m3bH4N2Kf4Q2JX
+         tffg==
+X-Forwarded-Encrypted: i=1; AL+hErGNn5D2JoHcRFygRVWrj6sOvJgqPoMymJxFHG/cAI27EFaPkCPk0orM36aOhUuT0szgIkI=@vger.kernel.org
+X-Gm-Message-State: APuU4Z810dCqxTQO/ZU5AhwibnTpcYUgzVJsxtEIQ2v17MgpGDbQXDqu
+	BxjPjdMRotUihbdnDOZtyJrf6BRYT+5nbBJ/DmpMT0y4LH5csR7m9iJKbmpHPHn/ITUCyNUvVVn
+	Z6hwksDJIwxFT2+mAMADw6meXsyZimFc=
+X-Gm-Gg: AYBFou0NyHuP7ag/wxuKJ3atQiNaqPhUDovIuHRY3t4So09Zobzk/Ibvp0wH88GAc+Q
+	h6sVp8YPYYdQyzhVlH/elR2GMgv4eOYdulPpn9mTUryWWrU5FbAaMkohuPvtIhrLpVq//IHGc0O
+	le+5j0HNDie2GNAF1C2TUdShpzu4oqjlsa72GKPT3xLunrGZn+oUYH8+q9x0yFtSAKbh9CepDGT
+	KeVMj/HLGFpCubCkAUznYqstCM/mUQNntZqm0M3NVwX/LGXpeQVD3w+k8Ov9NSeZeo33xPL3QYE
+	gbtLnmMIVn0+QqqnQ6OSzzX+s6ech4C6TUkvu/i5EPo2TW8LPVD+Nz/u0x/TZixHvBK/CaHOl5Y
+	4bVW1EED71PCHLfeHEibUDac+chTv76zf9i70k92taRQYNmtgAMrdgBrXEkmibLNPaG/+tr2Qr5
+	whClhlRLxscjgUYhCjD9+WE/VK7qoLUYaBoBAeTEh9XM705+NC3kb+0aY9lf3gWJcBtY8emkRRa
+	iUyEb6v
+X-Received: by 2002:a05:690e:b83:b0:67c:1fc:2a49 with SMTP id
+ 956f58d0204a3-67d970207c9mr377453d50.54.1794589746003; Fri, 13 Nov 2026
+ 09:09:06 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,375 +105,73 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+References: <20261023070110.1833446-1-fuad.tabba@linux.dev>
+ <20261023070110.1833446-2-fuad.tabba@linux.dev> <86fqxwzul7.wl-maz@kernel.org>
+ <CA+EHjTw08SZC_3Uodt6ew6vXVH-doW-8G41fVCF-rmaKsv+0fQ@mail.gmail.com>
+ <86ecdgzp6m.wl-maz@kernel.org> <CA+EHjTy0jpY3sdVCENJRj_kfRDwbZ6TpkCAHQ2xUO-7ZuErpcA@mail.gmail.com>
+ <ad724195-3452-495a-a50a-5e5c8093a483@app.fastmail.com> <CA+EHjTyLnAXanf9R7SuoL3gFZUNewX7QOnW=mc3qzwvaxg7jJg@mail.gmail.com>
+ <040cf379-baba-4e3a-bf3d-6bc009a9e28d@app.fastmail.com> <20261112180741.17614-1-sidchintamaneni@gmail.com>
+ <0a5e252e-1494-4b0f-a761-d984238c9d0d@app.fastmail.com>
+In-Reply-To: <0a5e252e-1494-4b0f-a761-d984238c9d0d@app.fastmail.com>
+From: Siddharth Chintamaneni <sidchintamaneni@gmail.com>
+Date: Fri, 13 Nov 2026 09:08:54 -0800
+X-Gm-Features: AclHuK_eSsuSs47N6QK3g2E7GgnMGVY8PMc7m7IxLZzX0JjkDZoYycjEKtYvyFw
+Message-ID: <CAE5sdEjVx-eGz4hkN3bMMJAag_g0hm+J18G6JvFH814Z4_ZGaA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] KVM: arm64: Hide FEAT_LS64_ACCDATA from guests
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Fuad Tabba <fuad.tabba@linux.dev>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Joey Gouly <joey.gouly@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Zhou Wang <wangzhou1@hisilicon.com>, Navneet Singh <navneetsingh@microsoft.com>, 
+	apais@microsoft.com, rlmenge@gmail.com, hargar@linux.microsoft.com, 
+	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+On Fri, 13 Nov 2026 at 03:31, Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Thu, Nov 12, 2026, at 19:07, Siddharth Chintamaneni wrote:
+> > On Tue, Oct 27, 2026 at 02:48:29PM +0100, Arnd Bergmann wrote:
+> >> On Sat, Oct 24, 2026, at 09:14, Fuad Tabba wrote:
+> >> > On a host that runs at EL1 (nVHE or hVHE), this also requires
+> >> > __init_el2_fgt to set nACCDATA_EL1 in HFGRTR_EL2 and HFGWTR_EL2, and
+> >> > __init_el2_hcrx to set HCRX_EL2.EnAS0. Without them, the ACCDATA_EL1
+> >> > access traps to EL2 and the hypervisor panics, and so does ST64BV0
+> >> > once SCTLR_EL1.EnAS0 is set. Happy to write those and the KVM change
+> >> > once you're ready to post this.
+> >>
+> >> Thanks for the offer, that part is definitely not my area.
+> >
+> > We are preparing to post the Microsoft Smart Data Accelerator (SDA) VF
+> > dmaengine driver for Microsoft Cobalt SoCs, which uses IOMMU SVA with
+> > direct EL0 ST64BV0 portal submissions carrying the process PASID in
+> > ACCDATA_EL1.
+> >
+> > Now that Fuad's KVM guest FEAT_LS64_ACCDATA series is queued, are you
+> > planning to post the host ST64BV0 SVA + EL2/KVM patches as a standalone
+> > series soon?
+>
+> Yes, sorry for the delay on my side, I'll try to get it to you ASAP.
+>
+> For my understanding of your requirements:
+>
+> - Is that hardware using an SMMUv3 or a different type of IOMMU?
 
-A VMM implementing Hyper-V hypercalls behind KVM_EXIT_HYPERV_HCALL can
-only complete them: write a status, advance RIP.  The TLFS specifies
-some hypercalls to raise an exception at the hypercall instruction
-instead, and the exit has no way to say that.  The KVM_EXIT_VMWARE
-series has the same problem for its backdoor exits, so solve it without
-touching the exit format at all: cancel the pending completion, and
-queue the exception through the machinery KVM_SET_VCPU_EVENTS already
-has.
+SMMUv3.
 
-KVM_VCPUEVENT_CANCEL_HCALL on KVM_SET_VCPU_EVENTS drops the pending
-completion: no result write, no RIP advance, so the guest re-executes
-the hypercall on its next entry unless the same call queued an
-exception to be delivered there.  Hyper-V hypercalls are restartable by
-design, so both outcomes are architecturally sound.  If nothing
-cancellable is pending - nothing at all, or a completion KVM armed for
-its own purposes, like the MMIO and PIO emulation continuations - the
-ioctl fails with EBUSY and changes nothing.  Only the Hyper-V hypercall
-userspace exits are cancellable.
 
-Only the ioctl takes the flag.  KVM_GET_VCPU_EVENTS never reports it, so
-no saved or synced copy of the events carries it, and cancelling from the
-events KVM_RUN syncs from kvm_run (KVM_SYNC_X86_EVENTS) would have no
-use: userspace is already re-entering the vCPU.  sync_regs() rejects the
-flag outright with EINVAL, so EBUSY keeps one meaning and only the ioctl
-returns it.
+> - Do you have userspace calling ST64BV0 on the host, guest or possibly both?
+>
 
-KVM_SET_VCPU_EVENTS offers no way to probe for a new flag, so
-KVM_CHECK_EXTENSION(KVM_CAP_VCPU_EVENTS) grows from 1 into a feature
-mask: KVM_VCPU_EVENTS_BASE keeps existing truth-value checks working,
-and KVM_VCPU_EVENTS_CANCEL_HCALL advertises the new flag.
+We are focusing on guest VMs first, where guest userspace calls ST64BV0 on
+the portal mmap'd by the guest VF driver (with bare-metal host follow later).
 
-The new selftest covers the paths that need no Hyper-V support: the
-capability mask, EBUSY with nothing pending and with a PIO emulation
-continuation pending (which must then still retire the instruction),
-EINVAL for an undefined flags bit, and EINVAL from KVM_RUN for the flag
-in the synced events.  The positive paths need a
-hypercall exit and come with the Hyper-V forwarding test.
-
-Link: https://lore.kernel.org/all/876c4f4fc442116c9bff8abd8c34f99fcfa65531.camel@infradead.org/
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
- Documentation/virt/kvm/api.rst                |  24 ++++
- arch/x86/include/asm/kvm_host.h               |   2 +
- arch/x86/include/uapi/asm/kvm.h               |   7 ++
- arch/x86/kvm/hyperv.c                         |   6 +
- arch/x86/kvm/x86.c                            |  37 +++++-
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../kvm/x86/vcpu_events_cancel_test.c         | 119 ++++++++++++++++++
- 7 files changed, 194 insertions(+), 2 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/x86/vcpu_events_cancel_test.c
-
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index 092f6f9ad8a0..cb45bdf5f1ee 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -1302,6 +1302,27 @@ If KVM_CAP_X86_TRIPLE_FAULT_EVENT is enabled, KVM_VCPUEVENT_VALID_TRIPLE_FAULT
- can be set in flags field to signal that the triple_fault field contains
- a valid state and shall be written into the VCPU.
- 
-+On x86, KVM_CHECK_EXTENSION(KVM_CAP_VCPU_EVENTS) returns a feature mask:
-+KVM_VCPU_EVENTS_BASE for the two ioctls themselves, and
-+KVM_VCPU_EVENTS_CANCEL_HCALL when KVM_SET_VCPU_EVENTS accepts
-+KVM_VCPUEVENT_CANCEL_HCALL in the flags field.
-+
-+KVM_VCPUEVENT_CANCEL_HCALL cancels a pending, cancellable hypercall
-+completion, i.e. a KVM_EXIT_HYPERV_HCALL exit that userspace is holding.
-+KVM forgets the completion: the hypercall's result is never written and
-+its instruction is never retired, so the vCPU re-executes the hypercall
-+instruction on its next entry unless the same call queued an exception
-+to be delivered there instead.  Hyper-V hypercalls are restartable by
-+design, so either is architecturally sound; this is how a VMM makes a
-+hypercall fault (e.g. #UD, or #PF with the address in
-+exception_payload) rather than return a status.  If no completion is
-+pending, or the pending completion is not cancellable (for example an
-+MMIO or PIO emulation continuation), the ioctl fails with EBUSY and
-+changes nothing.  Only the KVM_SET_VCPU_EVENTS ioctl takes the flag:
-+KVM_GET_VCPU_EVENTS never reports it, and in the events that
-+KVM_SYNC_X86_EVENTS syncs through kvm_run it makes KVM_RUN fail with
-+EINVAL.
-+
- ARM64:
- ^^^^^^
- 
-@@ -7323,6 +7344,9 @@ and memory-based extended hypercalls exit this way;
- KVM_CAP_HYPERV_FORWARD_HCALL (see section 7.48) adds the hypercalls KVM
- does not implement.
- 
-+Instead of completing the hypercall, userspace may cancel it with
-+KVM_VCPUEVENT_CANCEL_HCALL on KVM_SET_VCPU_EVENTS (see section 4.32).
-+
- 	- KVM_EXIT_HYPERV_SYNDBG -- synchronously notify user-space about
- 
- Hyper-V Synthetic debugger state change. Notification is used to either update
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index fce46ae26137..7e37cbadc6d4 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -856,6 +856,8 @@ struct kvm_vcpu_arch {
- 	struct x86_emulate_ctxt *emulate_ctxt;
- 	bool emulate_regs_need_sync_to_vcpu;
- 	bool emulate_regs_need_sync_from_vcpu;
-+	/* KVM_SET_VCPU_EVENTS may cancel the pending completion. */
-+	bool cui_cancellable;
- 	int (*complete_userspace_io)(struct kvm_vcpu *vcpu);
- 	unsigned long cui_linear_rip;
- 	int cui_rdmsr_imm_reg;
-diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
-index 00ce265391e1..a886830f663c 100644
---- a/arch/x86/include/uapi/asm/kvm.h
-+++ b/arch/x86/include/uapi/asm/kvm.h
-@@ -330,6 +330,13 @@ struct kvm_reinject_control {
- #define KVM_VCPUEVENT_VALID_PAYLOAD	0x00000010
- #define KVM_VCPUEVENT_VALID_TRIPLE_FAULT	0x00000020
- 
-+/* Cancels a pending, cancellable hypercall completion on KVM_SET_VCPU_EVENTS */
-+#define KVM_VCPUEVENT_CANCEL_HCALL	0x00000040
-+
-+/* KVM_CHECK_EXTENSION(KVM_CAP_VCPU_EVENTS) feature bits */
-+#define KVM_VCPU_EVENTS_BASE		0x00000001
-+#define KVM_VCPU_EVENTS_CANCEL_HCALL	0x00000002
-+
- /* Interrupt shadow states */
- #define KVM_X86_SHADOW_INT_MOV_SS	0x01
- #define KVM_X86_SHADOW_INT_STI		0x02
-diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index e72539f9acc9..858ee0f374e5 100644
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -2717,6 +2717,12 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
- 	vcpu->run->hyperv.u.hcall.params[0] = hc.ingpa;
- 	vcpu->run->hyperv.u.hcall.params[1] = hc.outgpa;
- 	vcpu->arch.complete_userspace_io = kvm_hv_hypercall_complete_userspace;
-+	/*
-+	 * Userspace may revoke this completion through KVM_SET_VCPU_EVENTS
-+	 * instead of completing it; the guest then re-executes the hypercall
-+	 * instruction.
-+	 */
-+	vcpu->arch.cui_cancellable = true;
- 	return 0;
- }
- 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index d8de7742a0da..2824fe8e1417 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -2237,7 +2237,6 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 	case KVM_CAP_IOEVENTFD_NO_LENGTH:
- 
- 	case KVM_CAP_SET_IDENTITY_MAP_ADDR:
--	case KVM_CAP_VCPU_EVENTS:
- #ifdef CONFIG_KVM_HYPERV
- 	case KVM_CAP_HYPERV:
- 	case KVM_CAP_HYPERV_VAPIC:
-@@ -2305,6 +2304,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 	case KVM_CAP_EXIT_HYPERCALL:
- 		r = KVM_EXIT_HYPERCALL_VALID_MASK;
- 		break;
-+	case KVM_CAP_VCPU_EVENTS:
-+		r = KVM_VCPU_EVENTS_BASE | KVM_VCPU_EVENTS_CANCEL_HCALL;
-+		break;
- #ifdef CONFIG_KVM_HYPERV
- 	case KVM_CAP_HYPERV_FORWARD_HCALL:
- 		r = KVM_HYPERV_HCALL_SUPPORTED;
-@@ -3052,9 +3054,21 @@ static int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
- 			      | KVM_VCPUEVENT_VALID_SHADOW
- 			      | KVM_VCPUEVENT_VALID_SMM
- 			      | KVM_VCPUEVENT_VALID_PAYLOAD
--			      | KVM_VCPUEVENT_VALID_TRIPLE_FAULT))
-+			      | KVM_VCPUEVENT_VALID_TRIPLE_FAULT
-+			      | KVM_VCPUEVENT_CANCEL_HCALL))
- 		return -EINVAL;
- 
-+	/*
-+	 * Refuse the cancel unless a cancellable completion is pending: the
-+	 * flag is only valid on the vCPU whose KVM_EXIT_HYPERV_HCALL exit
-+	 * userspace is holding, and a completion KVM armed for its own
-+	 * purposes (MMIO and PIO emulation continuations) is not userspace's
-+	 * to revoke.
-+	 */
-+	if ((events->flags & KVM_VCPUEVENT_CANCEL_HCALL) &&
-+	    (!vcpu->arch.complete_userspace_io || !vcpu->arch.cui_cancellable))
-+		return -EBUSY;
-+
- 	if (events->flags & KVM_VCPUEVENT_VALID_PAYLOAD) {
- 		if (!vcpu->kvm->arch.exception_payload_enabled)
- 			return -EINVAL;
-@@ -3152,6 +3166,16 @@ static int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
- 			kvm_clear_request(KVM_REQ_TRIPLE_FAULT, vcpu);
- 	}
- 
-+	/*
-+	 * Drop the pending completion: nothing retires the hypercall
-+	 * instruction, so the vCPU re-executes it on its next entry unless
-+	 * this call queued an exception to be delivered there instead.
-+	 */
-+	if (events->flags & KVM_VCPUEVENT_CANCEL_HCALL) {
-+		vcpu->arch.complete_userspace_io = NULL;
-+		vcpu->arch.cui_cancellable = false;
-+	}
-+
- 	kvm_make_request(KVM_REQ_EVENT, vcpu);
- 
- 	return 0;
-@@ -9060,6 +9084,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
- 	if (unlikely(vcpu->arch.complete_userspace_io)) {
- 		int (*cui)(struct kvm_vcpu *) = vcpu->arch.complete_userspace_io;
- 		vcpu->arch.complete_userspace_io = NULL;
-+		vcpu->arch.cui_cancellable = false;
- 		r = cui(vcpu);
- 		if (r <= 0)
- 			goto out;
-@@ -9393,6 +9418,14 @@ static int sync_regs(struct kvm_vcpu *vcpu)
- 	if (vcpu->run->kvm_dirty_regs & KVM_SYNC_X86_EVENTS) {
- 		struct kvm_vcpu_events events = vcpu->run->s.regs.events;
- 
-+		/*
-+		 * Cancelling a hypercall completion takes an explicit
-+		 * KVM_SET_VCPU_EVENTS; KVM_GET_VCPU_EVENTS never reports the
-+		 * flag, so no synced copy of the events legitimately has it.
-+		 */
-+		if (events.flags & KVM_VCPUEVENT_CANCEL_HCALL)
-+			return -EINVAL;
-+
- 		if (kvm_vcpu_ioctl_x86_set_vcpu_events(vcpu, &events))
- 			return -EINVAL;
- 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 17a4256e9081..7a51ff975cfa 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -134,6 +134,7 @@ TEST_GEN_PROGS_x86 += x86/sync_regs_test
- TEST_GEN_PROGS_x86 += x86/ucna_injection_test
- TEST_GEN_PROGS_x86 += x86/userspace_io_test
- TEST_GEN_PROGS_x86 += x86/userspace_msr_exit_test
-+TEST_GEN_PROGS_x86 += x86/vcpu_events_cancel_test
- TEST_GEN_PROGS_x86 += x86/vmx_apic_access_test
- TEST_GEN_PROGS_x86 += x86/vmx_apicv_updates_test
- TEST_GEN_PROGS_x86 += x86/vmx_exception_with_invalid_guest_state
-diff --git a/tools/testing/selftests/kvm/x86/vcpu_events_cancel_test.c b/tools/testing/selftests/kvm/x86/vcpu_events_cancel_test.c
-new file mode 100644
-index 000000000000..d78f7f881031
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/vcpu_events_cancel_test.c
-@@ -0,0 +1,119 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Test KVM_VCPUEVENT_CANCEL_HCALL without a cancellable completion: the
-+ * cancel must fail with EBUSY and disturb nothing, whether nothing at
-+ * all is pending or the pending completion belongs to KVM (a PIO
-+ * emulation continuation), and an undefined flags bit must still fail
-+ * with EINVAL, as must the flag in the events KVM_RUN syncs from
-+ * kvm_run.  The positive paths need a hypercall exit and live in the
-+ * Hyper-V forwarding test (hyperv_forward_hcall) later in this series.
-+ */
-+#include "test_util.h"
-+#include "kvm_util.h"
-+#include "processor.h"
-+
-+#define TEST_PORT	0xd00d
-+
-+static void guest_code(void)
-+{
-+	asm volatile("outb %%al, %%dx" :: "a"(0xaa), "d"(TEST_PORT));
-+	GUEST_DONE();
-+}
-+
-+/*
-+ * The cancel must fail with EBUSY and leave the vCPU's event state as
-+ * KVM_GET_VCPU_EVENTS reported it.
-+ */
-+static void check_cancel_refused(struct kvm_vcpu *vcpu)
-+{
-+	struct kvm_vcpu_events events, after;
-+	int r;
-+
-+	vcpu_events_get(vcpu, &events);
-+	events.flags |= KVM_VCPUEVENT_CANCEL_HCALL;
-+	r = __vcpu_ioctl(vcpu, KVM_SET_VCPU_EVENTS, &events);
-+	TEST_ASSERT(r == -1 && errno == EBUSY,
-+		    "Cancel with nothing to cancel: r = %d, errno = %d",
-+		    r, errno);
-+
-+	events.flags &= ~KVM_VCPUEVENT_CANCEL_HCALL;
-+	vcpu_events_get(vcpu, &after);
-+	TEST_ASSERT(!memcmp(&events, &after, sizeof(events)),
-+		    "Failed cancel changed the vCPU's events");
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	struct kvm_vcpu_events events;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_regs regs, after;
-+	struct kvm_vm *vm;
-+	struct ucall uc;
-+	long cap;
-+	int r;
-+
-+	cap = kvm_check_cap(KVM_CAP_VCPU_EVENTS);
-+	TEST_REQUIRE(cap & KVM_VCPU_EVENTS_CANCEL_HCALL);
-+	TEST_ASSERT(cap & KVM_VCPU_EVENTS_BASE,
-+		    "KVM_CAP_VCPU_EVENTS lost its base bit: %#lx", cap);
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
-+
-+	/* Nothing pending at all. */
-+	check_cancel_refused(vcpu);
-+
-+	/*
-+	 * An undefined flags bit is still unknown.  Flags are allocated from
-+	 * the bottom, so probe the top bit rather than the next free one.
-+	 */
-+	vcpu_events_get(vcpu, &events);
-+	events.flags |= 1U << 31;
-+	r = __vcpu_ioctl(vcpu, KVM_SET_VCPU_EVENTS, &events);
-+	TEST_ASSERT(r == -1 && errno == EINVAL,
-+		    "Undefined events flag: r = %d, errno = %d", r, errno);
-+
-+	/* Only the ioctl cancels: in the synced events the flag is invalid. */
-+	if (kvm_check_cap(KVM_CAP_SYNC_REGS) & KVM_SYNC_X86_EVENTS) {
-+		vcpu_events_get(vcpu, &vcpu->run->s.regs.events);
-+		vcpu->run->s.regs.events.flags |= KVM_VCPUEVENT_CANCEL_HCALL;
-+		vcpu->run->kvm_dirty_regs = KVM_SYNC_X86_EVENTS;
-+		r = __vcpu_run(vcpu);
-+		TEST_ASSERT(r == -1 && errno == EINVAL,
-+			    "Cancel through sync_regs: r = %d, errno = %d",
-+			    r, errno);
-+		vcpu->run->kvm_dirty_regs = 0;
-+	} else {
-+		print_skip("KVM_CAP_SYNC_REGS lacks KVM_SYNC_X86_EVENTS, sync_regs cancel case");
-+	}
-+
-+	vcpu_run(vcpu);
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-+	TEST_ASSERT(vcpu->run->io.port == TEST_PORT &&
-+		    vcpu->run->io.direction == KVM_EXIT_IO_OUT,
-+		    "Expected OUT to port %#x, got %s port %#x", TEST_PORT,
-+		    vcpu->run->io.direction == KVM_EXIT_IO_OUT ? "OUT" : "IN",
-+		    vcpu->run->io.port);
-+
-+	/*
-+	 * The OUT's completion is KVM's, not userspace's to revoke, and
-+	 * the refusal must not move the vCPU.
-+	 */
-+	vcpu_regs_get(vcpu, &regs);
-+	check_cancel_refused(vcpu);
-+	vcpu_regs_get(vcpu, &after);
-+	TEST_ASSERT_EQ(regs.rip, after.rip);
-+	TEST_ASSERT_EQ(regs.rax, after.rax);
-+
-+	/*
-+	 * The pending completion must still retire the OUT: the next exit
-+	 * is the GUEST_DONE ucall, not the OUT re-executing.
-+	 */
-+	vcpu_run(vcpu);
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-+	TEST_ASSERT(vcpu->run->io.port != TEST_PORT,
-+		    "The OUT re-executed: its completion was lost");
-+	TEST_ASSERT_EQ(get_ucall(vcpu, &uc), UCALL_DONE);
-+
-+	kvm_vm_free(vm);
-+	return 0;
-+}
--- 
-2.50.1
-
+> > Either way, we have Cobalt hardware with FEAT_LS64_ACCDATA available and
+> > would be happy to test your patches on silicon, or help put together and
+> > carry any remaining pieces alongside our driver series if you prefer.
+>
+> Sounds good, thanks!
+>
+>     Arnd
