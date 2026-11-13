@@ -1,73 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794577856;
-	b=bFa+p/M4Gw/8krvyEW/R/y5HH42e0NjZscma5GJp6IKIwp695toPomRJMTKZV79ZUHBV
-	 bBFtOfwC1bQnP1eePDz1W7SmGZfYMko+V0IMlRsIIUQmz3f+2nXCL3oV3hm4CJUPS9POW
-	 S7j8E39mg3qikIlrxcimeMdE28wywdx4Pe+OIzmGPbHF/2rrmXtpmOPEOgtsGOvIfueD9
-	 RDNjFv0o1mNtH80WUQUDV51yYI+DwWYgjxdX/MQtiZHBe57eJnMFcyx/SiHmIVpG4e7RT
-	 h7c8T5T95Ne7X2s9bDy5wolw/P5fefuONLoLC/jy5sxmzaOMQ80ObvtIb8yc4WxpL5w==
+	t=1794577866;
+	b=3vPInCssGEL6BWdoCTqZFmweSxFqqaCWhq0Q21Ap0zqwttNcHbCv+CWRCS5k1pCauO2O
+	 dR7+Hrc8Qs30HuK/sdWjw0V0kks5xMNSgTPZB28DFXLzIewUwScAr04WJbkUQNs0KEw+G
+	 C+Wvsx3IY6T2Sn0vZD11U/kdxUGhOTrThsXYzlr0sTY5v1N91w7pdMzYbGpmw2hBuP81G
+	 5w5wD8mKeznCRbawNdgW2PaA+lwhhIhQIs/cnpVOzu4DC+ripjgSjxvLrmotFf+y1zZJ8
+	 xjGfhqWQ7tRZHINPBLBEE6MSu9jKpUU8gYx4S22tMVCTi5sKgnWpTEE9F6lLxOFHQpA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794577856;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794577866;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=5yckwOBS7WejdenQlSVU1d+F+ViL007aqlGTgu3O5JE=;
-	b=mPBCB4OeJ4arTdqoWC7dBjYDYRhs5itFnLlrG63dev6K70OLGsP9C98R/scDxRqah4UF
-	 QT7JPj5ZWV5uohF3bslSsew65GzJriT8ep+UxTthXXpal1+h53CeHM9YJi4+KRFKeCq7g
-	 70ybWXPvjXr50GDnMMxTB3MJPJqUverimo8V+9DLmy5zdnXuMD6cRQ99sYKboPWJyjkun
-	 3EZbsFzNsjHn/yIRWjsGAT5p/DM84QkozHg+RUgQpWvVvXMzDEMQc1pdFMj9OlAWvYyuw
-	 RDY4uM6KFiXiU69lKlt9v7BzgZoVGbA/AOkAkrIGTgefgOgPGJwfIZh7EciH9rxQnAQ==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=kXcht9P+JlFAWDjvNBwE3nXsYUOs8z+TyJ2+cP3q9Yw=;
+	b=H3t48e3E8z7LQCzMM9IvJyqm2gPX8PS5D57VFtsziNOXUIJzF/cYKE3iCBKVw3Jm5cR2
+	 ywq5VRBtwi9WzQJuY+dgtAAVIyqnqBmT/gnAvwYCXyigY41Lpgo2mdtRhkuCoXszR3ylE
+	 KjVBn82FgPaDE+nsP5qx37MOWJ22N1duFkYvYmZp3DTqKVyUin76MUos24cuHIt5QJjSJ
+	 wmiXSLyWsCXL71M438gnMVE/BsNtZ9dg4ADNl83HeuSfGoiHTNtrG6tgyhyZxOAfwZn5P
+	 6iiq2zEQvuQTIlFjv91U+9rrTzJTuGjFUsy5kMBc0dMXvcrNe+oCAizwaN6n+0DA3CQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nZaxX0Qv;
-	arc=none smtp.remote-ip=209.85.214.198
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=omzjmy47;
+	arc=none smtp.remote-ip=209.85.216.69
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9183606A8AD
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:50:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A9183606A8AD
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19E7606A330
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:51:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D19E7606A330
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nZaxX0Qv
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ed05b3eaecso7157495ad.1
-        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:50:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=omzjmy47
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3b09a466295so721572a91.2
+        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:51:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794577855; x=1795182655; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794577865; x=1795182665; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=5yckwOBS7WejdenQlSVU1d+F+ViL007aqlGTgu3O5JE=;
-        b=nZaxX0QveTvXUZQ6FF+rYtycsnzLY0zhEJLylL199xZlKGoAmM6tgqiunZdzyyitv6
-         z0gNLWUVrUfa1bWxDMcxQND7Hz+Cuy5jt2Q5V6Bu4y91FRyFo+9LO1xeHKqF/WZqErgY
-         vRjX2igNmOyyCn01Z6XN+4ojjwj9mu5tIUG6G6l+6Kbq8gi749835gGRZ7LTpQ5wBC4O
-         6FLuG3pixe0qZ5Qka90firpYf5Z+kHSugnGzEXnZiJYa89IYqidXk71eKdxityoIkUmb
-         DOu7cNDspZ8bgucF0ulPJ83IT6wEJwCNq+6SGApCz/XN9Kp+iVExufIwAHRdvBgjSqJX
-         v0Eg==
+        bh=kXcht9P+JlFAWDjvNBwE3nXsYUOs8z+TyJ2+cP3q9Yw=;
+        b=omzjmy47L2fSY2Y5fdXegm4426L+6ApFXYiWB6LN1Mc5oWkRVfyCO6E2LgqN9lQ7dL
+         HI1q44cMbtFmX//vHoaDda0vaS6GzVkzcfgAyyv04Lim/nb8G8/nDgjF/u3urE+g3G5+
+         ym63ZUYL3nHosUBKGwMw0gWSJ+fIOhWRwfOSSeNcz832T0OB5usjffeRL3HZd8oLnFE7
+         Hajg1uoCmFMoN5Jg3TPtuCkH7PNd3+9gFHreuhCCRJ0u2CMtGswQpABzbPlJSIZtFVFp
+         y/mBBMgT6z2Jf0yjOlxEAfDVeTs0aVY9li8mGbltauIjwQB/o/KA+tIQV9TizZPHveeu
+         bUHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794577855; x=1795182655;
+        d=1e100.net; s=20260707; t=1794577865; x=1795182665;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=5yckwOBS7WejdenQlSVU1d+F+ViL007aqlGTgu3O5JE=;
-        b=kPl+KyuHo2FG0BL6Hx86T22eaMZdXjfxLERBkQ8NgIiHJY/7GnI+JWMmdq6LbnXRcK
-         ZhJuss9G+NoTn2SFq25gWeHJSbwNjHuWat+6ilblbULgnrcegRY/2M2M44Uaq/p4fZWT
-         br6W5VSeHGL6hC6VYK3Bh6QK7fz3CeabQ1+QhaX9EqcMegIYMayy4SLcFWOGrSedU+na
-         EkJQEZkVn4erb+EpKTXP0VcQAivHgvQ/RFLrBYyGVowVl1ZeDQB5UuSebqjSUz3enuCN
-         4XGYke86Aez3hOfbdlJ8oA86t6S/pN+TJQc13qrMVkgEsAXEjH85GLfEU2qdn+qB5OuS
-         5BvA==
-X-Gm-Message-State: APuU4Z8aFHPIMqybiM9HWDlVhM9ZkJfU3uOPR99oIGtrQ/nfxyWvUJNw
-	Ro9j0Q86aHmlUXPtVV685VPcv8xDzfTRKjUNzWmo+o6gXvfG9DS4Joa1l0cuf4avBYbxkPEMGbp
-	y7B/Jtw==
-X-Received: from plki12.prod.google.com ([2002:a17:903:1a0c:b0:2ed:1d20:a33a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d591:b0:2e9:7ace:ccd9
- with SMTP id d9443c01a7336-2ee0df8f7cemr26087855ad.52.1794577854829; Fri, 13
- Nov 2026 05:50:54 -0800 (PST)
-Date: Fri, 13 Nov 2026 05:47:04 -0800
-In-Reply-To: <20261022022209.300964-1-seanjc@google.com>
+        bh=kXcht9P+JlFAWDjvNBwE3nXsYUOs8z+TyJ2+cP3q9Yw=;
+        b=DAGTZi3n0ovpx2p9NWkSSH4OrHpKmsk8XJbO4Oko8o146ttfdjlV/ndT8STo5xeixm
+         v1dEZFqgtMF4Dhrv1jT+5eNmjW5kgSxhd6rGPhiHir+71vXVwVim6X6qHyK+5EqIcSQC
+         +SGHIm/hNYVRip9bHDVVyKF0lzsCe5FmWQU1GEKuvnR69x9DFXVvanJwyFaUiN2oAqAP
+         K4isVV7IFWtxKr4yAcnUruD8SK7uXLK16S1A8vtUZezpHHCqG5vtBswXaXSEU92G29f0
+         PknB0dU7WOpWdwtd6mEbjDXxruYtlIXwV7GzYiI4Bqbzs4S96Q2ktsYhTh5557H9Kiz5
+         Ktgw==
+X-Forwarded-Encrypted: i=1; AL+hErFwKBeUlCCQmLts9oNmte72T3jNrQEuUdCgMZQlzCq2y1tK0GILmhJlmLxPzVy7aO4FkOw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+ye5+5NmhxQsIkl09dJmaZca/mSVXOB1IDAEItROOHMIV3m9EA
+	MT6Cz+7KuYnNW86/3jdcq5TJsH57pt21UcZ/iqtqEsFP0/3JPyq2SL3m0XwU6+SSEk7edGDUSw/
+	H+CNeVg==
+X-Received: from pjbqd6.prod.google.com ([2002:a17:90b:3cc6:b0:3b0:979d:e867])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5906:b0:3b0:934c:5e41
+ with SMTP id 98e67ed59e1d1-3b1b0b4acecmr2199158a91.29.1794577864940; Fri, 13
+ Nov 2026 05:51:04 -0800 (PST)
+Date: Fri, 13 Nov 2026 05:47:06 -0800
+In-Reply-To: <eef6bc34bdf7391c5d3eb4b1ba5e97819e22ae8f.1791542392.git.priyankamani2100@gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,31 +79,35 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261022022209.300964-1-seanjc@google.com>
+References: <eef6bc34bdf7391c5d3eb4b1ba5e97819e22ae8f.1791542392.git.priyankamani2100@gmail.com>
 X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
-Message-ID: <179441773300.75844.312134211621387845.b4-ty@b4>
-Subject: Re: [PATCH] KVM: x86/mmu: WARN and flush TLBs if TDP MMU replaces
- present SPTE with MMIO SPTE
+Message-ID: <179441834884.81867.15216676468170040644.b4-ty@b4>
+Subject: Re: [PATCH] KVM: selftests: Fix ndata size check in test_mmio_during_vectoring
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Stefan Teodorescu <fane@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Priyanka Mani <priyankamani2100@gmail.com>
+Cc: Shuah Khan <shuah@kernel.org>, Ivan Orlov <iorlov@amazon.com>, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, 21 Oct 2026 19:22:09 -0700, Sean Christopherson wrote:
-> If KVM is buggy and manages to replace a shadow-present SPTE with an MMIO
-> SPTE in the TDP MMU, WARN but emit a TLB flush to prevent a potential use-
-> after-free.  It should be impossible for KVM to resolve a GFN to a memslot
-> and then later find no memslot, but due to flaws in KVM's handling of GFNs
-> that can be generated by the guest[*], KVM can/wrap truncate GFNs when
-> walking SPTEs and resolve two different GFNs to the same SPTE.
+On Fri, 09 Oct 2026 11:30:17 +0000, Priyanka Mani wrote:
+> test_mmio_during_vectoring() verifies that KVM reports the faulting GPA in
+> run->internal.data[3] when an emulated MMIO access occurs during event
+> vectoring.  kvm_prepare_event_vectoring_exit() always fills five entries
+> (info2, reason, info1, gpa, last_vmentry_cpu), i.e. internal.ndata is 5.
+> 
+> The test, however, checks "ndata != 4" before dereferencing data[3].  That
+> predicate does not actually validate the array size: it passes for ndata ==
+> 3, where data[3] is out of bounds yet is read just below, and it spuriously
+> fails if ndata were ever exactly 4.  It only happens to work today because
+> KVM returns 5.
 > 
 > [...]
 
-Applied to kvm-x86 mmu, thanks!
+Applied to kvm-x86 selftests, thanks!
 
-[1/1] KVM: x86/mmu: WARN and flush TLBs if TDP MMU replaces present SPTE with MMIO SPTE
-      https://github.com/kvm-x86/linux/commit/94b5cb50abec
+[1/1] KVM: selftests: Fix ndata size check in test_mmio_during_vectoring
+      https://github.com/kvm-x86/linux/commit/509f344f9480
 
 --
 https://github.com/kvm-x86/linux/tree/next
