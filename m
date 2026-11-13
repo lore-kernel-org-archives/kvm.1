@@ -1,101 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.41
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794548177;
-	b=5VlBt5jdBLmHilTKZgCUitmE50Qyi8NWASDpfWktsliw+mqd+iTWSoJFCuC11oSKwliM
-	 9MG++Vwo2v0E1wVXXzWvUR1Tcs5+cYRHiiLTuypolfwJiq/2fgLQgLNqX5v0TMljxyVyl
-	 RD92nzL7AEhYKYoU9u/OU2gMJRqiZgVfF1Kga0oMfgiKAc8M3AHcwYV3458k0X/ieIfMg
-	 OqLpPzcXJlvmlY3KrByswfZp/Rq1e9efVNW50/nj+WAS48HzjWXH1HJiWQQxpOW3ws3Ef
-	 Q2pW7aaQbZKvi43OWPbwYEnCHFNzIcQg/d0D7y8x8Z1TnWtke9w+GtRXog0fLNkcltQ==
+	t=1794548219;
+	b=TagKjmH9WF4TzJosa2x5BgSFr3lm4MW96jXhYFqTtRObEHyAGqwvvGn9iESu/1nFifFS
+	 0OopGkeN2fh+7St5K8YGULNW1Y3TaStp2nhN6z95nj2UMY5e2ZoTPFRbZZ9WCAQs20gpq
+	 9s+o5x6aaHhs38M9IDCK2i4ARkaFyAnse6gfC+KlDfy8EJDTbtBMirIpzMjAJ6YE41SGk
+	 Jed/TV7wkdJPVttBkmuzFtQrd5ZzpzASoVs6C4g4bc/ysvpdQoV2EuXSFMFyDXd5nC967
+	 C4LNjPSHykliI5fL2zuJuQ6mOvx23l9bme+T2sPYTEa9106a0Trn0A5pqs9ErPA1dUQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794548177;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794548219;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=Asn5k3wB77QNm+ii4GqJgfJg46vBWMInhGMAcW/l5U0=;
-	b=B0R08x31y1Ym79+sEipns8RxmwK+ZAcONcSk3cHRgk7ZY2wrkMjytNp+QHYYnJUWSx6X
-	 m+xxae188utXYUxyaen1PytmHEw/uaMg1RjF1SVzKGEHV3I4Zjt4VTapJvYZRaLEPyg1V
-	 xkh15NdFh2yXBmciAmOvcx2714efbLCXJUNWPw1oPIb9HC2B3SE68hvqSjhAkLcGn+6tA
-	 jxCvEiu9hPZ0D213V614MHwLZ+S54u9K6hf5FxLDj+bkgUQhrLQ60H9+CEtmgnw1fnqz+
-	 sAhFH1VXVk7WqdF0pHvUDrWdtz6J4JDjeh+WudMzXBfJRAKLkCeuu0L2coc5yB80iBw==
+	bh=T2Ks1icqV7sc4HD6DCoye7tArv6/S0Ygu8r9B8v/4m4=;
+	b=qcIUzdVrMDfbFx4XRRZgV5VPzpZR7zjRUryHxGaJFzN7co0pU7utZIoRlNUDJNtT28SL
+	 uyzUc0i/rGf+1u3ATBpCv4wqIuj76VIdFMNdWCyZ8fhcTSTaDt3HxmcvkDXXpHQPIgJeO
+	 3mOCYMwmwZzmaNcbzpvkJSYnHyv2w8b1v4s3ceZ0nwaKRK2QSnNGjV7yNzKUBIuooOaox
+	 gI1c93ILn6miMhH07slW69R92gJus3buNBruG89Kv4oE9KVuOKzCbrzlexba8A7kPqZTU
+	 OzwOK/CUqJK+5Gv5hNeG7QX7sFUkIYArLON94WulRIv1NGD66jmZsi7GedzrZBOwkJQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=none header.from=brainfault.org;
 	spf=none smtp.mailfrom=brainfault.org;
-	dkim=pass header.d=brainfault.org header.i=@brainfault.org header.a=rsa-sha256 header.s=google header.b=QjTBOvyJ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.53
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	dkim=pass header.d=brainfault.org header.i=@brainfault.org header.a=rsa-sha256 header.s=google header.b=daViEFRR;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.41
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BAD606A32E
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:36:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0BAD606A32E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2706606A32A
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:36:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F2706606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.a=rsa-sha256 header.s=google header.b=QjTBOvyJ
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4ba013938d7so7138825e9.2
-        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 21:36:16 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794548175; cv=none;
+	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.a=rsa-sha256 header.s=google header.b=daViEFRR
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-497614c95f0so216995f8f.1
+        for <kvm@vger.kernel.org>; Thu, 12 Nov 2026 21:36:58 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794548217; cv=none;
         d=google.com; s=arc-20260327;
-        b=jHEeAbzmTEmEAr9Yx16Z3qX3Dc0ifOq4SJQU0FZWnQoxzrt0xXQHg7CC/pmBhVdnEr
-         2JtUCxQcwkn2ixbNi0mWokIjrPzwPJluOCOXdYZ57/cgBdSacGktW94cD2QE/gtNr2Of
-         DbSejlGqfJ5LVPMjvMF6krpaQq2TT30RxG5GNE+ZH2fGEbFMDHZr5UJGw+NUfp4Hyfzg
-         2TPkUlDOjLI0SI/HnCJpxm+i8Tq6bQ97Yu+wp4LV9Onv6+ncnnekC4mCjkNr6XzKGFY1
-         1Py9YOW2zBRKrVyNkiHLbDCsPxPHu7y21z28vKu9Up1QYp0ixUNq6rTpLpgTg9tac+Dc
-         o0eg==
+        b=RzwhUaXEY/ZefmfY534dQiSMUJzSVxfOHpvgZbKqwrwxYxNhw5BZRmNmF4t0QC3WaW
+         IZOPdWfQb0QuQMyPY0VcrIvyTuwZJ/ipwqI0b7xTlakiOlocjEJCDWe70bvaxNSbAOo0
+         +lyt34b8zdmW+mA2lJ2g7PGGri1gvFRu2mkzknHGNMP6X4YLadx44oPa2BUBayBjxtQU
+         dF7ULIZg3q9e9AJaiOnh1/RoiOG++iVuorQ8zYEeZxy13yWm4WmE61UN0jm15gO/Zy5V
+         PxmxCWC+eCdTL4xsSEZ37sr/uuokG7AC43jBmXGoDWuo/sMqOsEmKX66gJFZfJnISnKf
+         bC7g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=Asn5k3wB77QNm+ii4GqJgfJg46vBWMInhGMAcW/l5U0=;
-        fh=sFKRjREN0belhpz39/QG/ko5FSdG5siFbaDiE1qW/8w=;
-        b=P8VP96U1P6K2PSIDzVnatgZBZOBHrmdTi3Mp+Rh0jPEx4+sa5XLsrHjY+kjR+RtuCd
-         tpeLOFkue3Kq2uKVoWIMOEuuS0UYPap9BEVE/IEmZFYEHTACgCiPakqWL2VvEHHU3VEw
-         gwjRuL5VlbFro8YSjyEfNlAeZSbNu8yNZvoMnXLxqkTdcpHKUfUIIAi5DWnnztIHnDoS
-         afWgnLt2xh8SOthha5wFQVby4iR1i7Iyk5u9SJi9f2tF5YEv1LhofM2Immxo409SYUW6
-         60DPXBC6b9ykZZsJZagD/5E+SLx4P5F6oXHOv2jDd/axfC6o8Vf3HmQMajaMQe3H7Kk4
-         lWIA==;
+        bh=T2Ks1icqV7sc4HD6DCoye7tArv6/S0Ygu8r9B8v/4m4=;
+        fh=ck+TRRi8mZ/LQH0eEG18qEI8vs4mYxWbRz6CuRxza0o=;
+        b=Xn+cxIy/uoKry5qWRIl2mAMAMWCJ4rq440lWKpPwvw53wEZ80I3E1baPZ1EyTgz1ja
+         8YtcKmPWdwq5mbZQD79LqQ3sDf/RSRDqZcPDZJgpG7wHcYmowv2z99qTB+nzaPIz8tHr
+         OdpBmuotJ4Ouys1eZasATbYYnDxXXeXPbDsEViFbvFV4v0QFG+469shP4S/B1d0/Zn6J
+         02afHBScKe6ok0Kk5i7PZtdwzIqeiCjhTXgnAoQDPDwX8Nevi/vKv/cVl3Bvld/64M2Y
+         cPyd3omLMIDUmMdE/9hJmW7fBqUnL7BGsvUIXfjiNE3C1mmMWMmSx35URkkOYFrWnT4O
+         6FKA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1794548175; x=1795152975; darn=vger.kernel.org;
+        d=brainfault.org; s=google; t=1794548217; x=1795153017; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Asn5k3wB77QNm+ii4GqJgfJg46vBWMInhGMAcW/l5U0=;
-        b=QjTBOvyJvwyTWvQ7fi5ObNrUO1Wr3gd+m3ES7oW4jzXaXXBxX9l5QSHSIPC3Kp6H4u
-         z4/kLkujsOGxCPvgPxkhAg0o9G4SZbcID7VUSNZZeF83QaOM0JHWfT+CPS79Gkjy96aH
-         GWWoC47j8ym5do2l9qTj1hA4NIbnbuIiQmYDGitUlr6wX87r+gQdsz4T+eMw69Ah/BBt
-         IaCBgOvPmZDLJelqYV274qMHO4y9qWTVQGpOW3mSsXSs57uZPPDLq/5JeRz4cDXRW6ZM
-         tnNIA06XvBV0hmbBP89yVhvaum/mA3+9IS8TpNpSvAd+xE+GKXNHtCFxLXBO8roJNp8O
-         SIpg==
+        bh=T2Ks1icqV7sc4HD6DCoye7tArv6/S0Ygu8r9B8v/4m4=;
+        b=daViEFRRlWgxegdlfyazsl4lEgVfhqcGvlV/y5M0IjgUnYqzJ//Y20Yc9YpHSs4zVy
+         WbvX3qgm7ZvLNdp3JZDq4N+VFOt3ZM6jGzHHQl1ukfrRmZfcCrI2O61SB6h9kvw3pXzh
+         GvK1U4P5pHcYRskVC75iH2ZLtqujiDzWmv3+4xS3WrXX9TkkH5N7bTy9I/UN7Z9Oosj/
+         j60DQlu7EI2ji/GMEHLpd2jaLjF7qOvTArp9GrpmSlFiBG8Hi601kRuSgSRPPRZ9275A
+         oY0p43gKjd8PzFPH69nb4j6r0qYBA8ZYqnjlgIuNqrnfuiA8rSR7705M96Qa7jbXOpPO
+         0Mig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794548175; x=1795152975;
+        d=1e100.net; s=20260707; t=1794548217; x=1795153017;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Asn5k3wB77QNm+ii4GqJgfJg46vBWMInhGMAcW/l5U0=;
-        b=WBLwYwJL1gnmFKNgvYCDR+n3KoSAqi2FG0kiy7xRlFoBX7tU7xrui7ZpjUMdxNrmtV
-         modmSzOw+belg8Usol8RoMmsplmDP33MQ0tgE9ebIzJFMp8LPcvC0jCbdwvztrohWwZv
-         amV1n0VUmhU+9aBYM7CPsqvXELCcvfKrdM9ZTzN7EGpeQlsQhH1Z53MZPwaRqba/TJr+
-         Sqf8ziD4nLVLtXQJXkK9W0y/Oi+bKq8dD94yDaAlXppYv/mn5VEsaUAFIiYWTqAucNmf
-         KgFXiFZx+KNGvOBNQQK3a3k6/7cPUeEue8I+jB9CqAKVsmbxlpBu/X8dMWOIYrs+Hz/G
-         GIfw==
-X-Forwarded-Encrypted: i=1; AL+hErGLQRs10sZXBHtNPWDPCy47eQ4jdryvYe8kow91vw/ANjYi3MOdj2w1AoHwVPNtQ0NW06g=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/rfnno2mOP7eaqpQ7a1jV25NaXwS7K/48m1usjnf+YOzu2wqc7
-	WZi0aUI1FjQ84apmqXdAnLbCDmsPSMlDYgKV4mG/QYl9oFZVqaZ9WhFAEovcS2T/l0f0xby+aJK
-	FL4s4ZE2LNyP92hJEY/XeYx+SzOQRHEpLWazBtFLSxw==
-X-Gm-Gg: AYBFou1ZDK8015PAtGiOKNqmi2Y3V6Fl4aPaCsti211duynMNID8zDF7U5f0XlZlWjT
-	YvTekX1gWp3AlWpjEIjhnofRF4J7o1CFKCwSCc0hTNt86oN/N+RI4YlgSyqZh36i107zxU0Agf0
-	kZ17Lp9zt9MRcfsqV2RuK7ar1jXBNG5zQxfo8WDhmcd134pB1oVhEInM4Vds/bmJR80GGhJCon2
-	B5T+8JNzehKQ469nonqfcZKjefz/wPReEf2yV6mKMa79J3+JRfE2asUysu138q4Ftnvsr6X7NDl
-	rvjbjnxcxJ2Xk8IZqt2OYEPfXp+901xJiU+UEd9sHXMgijfEUvrjdltGWMv2ZE2gnZ/WBhl9MrW
-	AA6aLbPAd0uyUGf4L4LQXDFuZmksuYvHMb83XUrtmFgXPK2IH7P7eS6VWeJVsTptQT0hBsz0nqP
-	L1T5EQMhzotYK2TCqV/cc3ep7PsPvyuNAh4VndyZMMH/qwQ/zNni/PEdob
-X-Received: by 2002:a05:600c:8909:b0:4a1:f720:74cd with SMTP id
- 5b1f17b1804b1-4bb55a83e95mr22775035e9.24.1794548175140; Thu, 12 Nov 2026
- 21:36:15 -0800 (PST)
+        bh=T2Ks1icqV7sc4HD6DCoye7tArv6/S0Ygu8r9B8v/4m4=;
+        b=Uwiug1n854nJLui8yOW05/W8mtOisDn0MP1y05jKnf7RUC/PVk/kBx+rey498cu/Vv
+         uXPdoQNYEAGzt/mbJ2D6Q9EBJdoC1qEiC/t4PTpibestbD0lC2oQ5oDoHEiyutTfDxZN
+         UhNYm3aaX6BI6GD/W9wCIc/7IRneCV7YEqouIPSg41ahvoqVMElsuIu8tIvSQnSMNLSN
+         mNJOwnUtPUjC0If+1bnay3VbpaPTX1ks6HcRVXvvhws7LhmJh5hKYfOpCFbsNO7UmYHN
+         n8r+vtUDaf1MTqpzzlYOnGHPHScloFoG1S99zYDo1gGtlrZswfjHOJcj36//mLZY7zUv
+         cZLg==
+X-Forwarded-Encrypted: i=1; AL+hErGpX37+Xl3Eqov/Le2i8shpSQd9MQNXq/LGrrUpb7mEG7inhLzXmSltVW+bQRSrHjz4zEA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/e3nIgNRMs2zB9YYf+SBUP38ng2Z3KHAgNIgFL7BGUciYem3eP
+	jdLmuAVSUpuahDeeuAq+JzpATLkFtVGJJOYwaqFMjR1n3N88CFZN4/cs0SjeU1VulmC4Y0BbmSx
+	Jue+oaDmq2AsC18/SwMk4+rEGHWJ7fHWZppYERGrkDA==
+X-Gm-Gg: AYBFou1PglGQBCSS4o7+uzfMZKnfvfbgKgSKEmm0zdUl11VZIWEg8CApRIsUhSzZf0J
+	4v19u2grZZ9qwwxQDbCjRjBp5f+az0bpIjt+PU4kx/xAVrdCNghkzIy4iMGxD+Mj5SrM0fBa2Bl
+	ve6Rg7ucdg2WXD3Uq7uADVplnEISuleSobHkqanuTewnSOu81s8s6r/Lu9rDslh1whEhbrNs7Dj
+	L1OChuulbnhudxeJ4sEVZEEAby4qMe3HvqYka12BwSg0E8B4S5dcQCvEBwfLeirdJ+3hYisjlyB
+	8PkAOUefco0PHkxF3k9FQNIJMeukcXfSrHDuU0m0QYRro+nfw1YQWWiCIEL332uRvwqUakAqXZJ
+	UTBSXcHpcCDhsXd4HdLlG7e5lleSjiuEAKojPoONZUBB7QqDjcbKqJmYp3Mz1LX53vajjI6w4Dr
+	FC4rShpwky/UEoLEl4ZEcn2mzSweGbo75D30VE24h1ItJM02k2mgWrYuI7/A==
+X-Received: by 2002:a05:6000:25ec:b0:490:83b9:7888 with SMTP id
+ ffacd0b85a97d-49c74959580mr2860493f8f.52.1794548217360; Thu, 12 Nov 2026
+ 21:36:57 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,161 +105,172 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260923091658.1421475-1-xiangwencheng@lanxincomputing.com>
-In-Reply-To: <20260923091658.1421475-1-xiangwencheng@lanxincomputing.com>
+References: <cover.1789872556.git.hppiscas@163.com> <3046cfd67c5f962014cd38e49a0e8bf28b6fb53f.1789872556.git.hppiscas@163.com>
+In-Reply-To: <3046cfd67c5f962014cd38e49a0e8bf28b6fb53f.1789872556.git.hppiscas@163.com>
 From: Anup Patel <anup@brainfault.org>
-Date: Fri, 13 Nov 2026 11:06:03 +0530
-X-Gm-Features: AclHuK-hB4uNWUkZ5GD6or_GmOhWyIPCmKZQ4zfjMNF_IuFbt8PDj-n3XQqHnik
-Message-ID: <CAAhSdy0Fp5R9v1O7gEoVriBBfnSapTgQ52ZLn5+QJOMxnn1z3w@mail.gmail.com>
-Subject: Re: [PATCH v3] RISC-V: KVM: Serialize and atomize the IMSIC's TOPEI
- read-and-clear operation
-To: BillXiang <xiangwencheng@lanxincomputing.com>
-Cc: xb@ultrarisc.com, atish.patra@linux.dev, pjw@kernel.org, 
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, pbonzini@redhat.com, 
-	graf@amazon.com, kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Fri, 13 Nov 2026 11:06:45 +0530
+X-Gm-Features: AclHuK9biTLZxhI1tcdlqfU4imHZdhgp5Hgs9a4lcq-e0JhTebZNZ8Ov0xT5swk
+Message-ID: <CAAhSdy3-ArOtVWGzzpM3pxi7_+8bhD5L-_WvGL-MFwRLH1xzAw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] RISC-V: KVM: Validate AIA MMIO address ranges
+To: Pengpeng Hou <hppiscas@163.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, Andrew Jones <andrew.jones@oss.qualcomm.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Atish Patra <atish.patra@linux.dev>, 
+	Fangyu Yu <fangyu.yu@linux.alibaba.com>, Guo Ren <guoren@kernel.org>, 
+	kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	Nutty Liu <nutty.liu@hotmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Paul Walmsley <pjw@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 23, 2026 at 2:47=E2=80=AFPM BillXiang
-<xiangwencheng@lanxincomputing.com> wrote:
+On Sun, Sep 20, 2026 at 6:39=E2=80=AFPM Pengpeng Hou <hppiscas@163.com> wro=
+te:
 >
-> The TOPEI read-and-clear must be atomic with respect to
-> interrupt injection (set_bit in EIP). Otherwise an
-> interrupt injected between the topei read and the
-> clear_bit could be silently dropped.
+> The AIA address setters check alignment but not the complete fixed-size
+> APLIC and IMSIC MMIO regions. A range can therefore wrap when its end is
+> formed or extend beyond the selected guest physical address space before
+> it is registered on the KVM MMIO bus.
 >
-> v3:
->  - fix undefined eflags
+> Check the complete range in both setters. Return -EINVAL for alignment
+> or arithmetic overflow and -E2BIG for a range beyond the selected GPA
+> limit, following the arm64 VGIC address-validation convention.
 >
-> v2:
->  - fix patch file curruption
+> Recheck only the APLIC range during initialization: userspace can set
+> its address and then change KVM_CAP_VM_GPA_BITS while the VM still has
+> no vCPUs or memory slots. An IMSIC address, in contrast, can only be set
+> for an existing vCPU, which already prevents subsequent GPA-width
+> changes. No additional pass over the vCPUs is needed.
 >
-> v1: https://lore.kernel.org/kvm-riscv/20260923070332.1376132-1-xiangwench=
-eng@lanxincomputing.com/
+> Keep the existing required-address checks and IMSIC cleanup path.
 >
-> Signed-off-by: BillXiang <xiangwencheng@lanxincomputing.com>
+> The issue was found by our static-analysis tool.
+>
+> Fixes: 89d01306e34d ("RISC-V: KVM: Implement device interface for AIA irq=
+chip")
+> Assisted-by: gpt 5
+> Signed-off-by: Pengpeng Hou <hppiscas@163.com>
 > ---
->  arch/riscv/kvm/aia_imsic.c | 42 +++++++++++++++++++++++++-------------
->  1 file changed, 28 insertions(+), 14 deletions(-)
+> Changes since v1: https://lore.kernel.org/r/38f87205419f328693bc6ab25ae78=
+f021c2dd003.1786512671.git.pengpeng@iscas.ac.cn/
+> - Keep the original APLIC and per-vCPU IMSIC required-address checks.
+> - Drop the separate pass over all vCPUs during initialization.
+> - Recheck only APLIC, whose address can be configured before GPA width
+>   becomes immutable; IMSIC setters already require an existing vCPU.
 >
-> diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
-> index c1af23e79ae0..c440088651ec 100644
-> --- a/arch/riscv/kvm/aia_imsic.c
-> +++ b/arch/riscv/kvm/aia_imsic.c
-> @@ -607,26 +607,25 @@ static void imsic_vsfile_cleanup(struct imsic *imsi=
-c)
->                 kvm_riscv_aia_free_hgei(old_vsfile_cpu, old_vsfile_hgei);
+>  arch/riscv/kvm/aia_device.c | 42 +++++++++++++++++++++++++++++++++----
+>  1 file changed, 38 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/riscv/kvm/aia_device.c b/arch/riscv/kvm/aia_device.c
+> index efc7c0b..4490015 100644
+> --- a/arch/riscv/kvm/aia_device.c
+> +++ b/arch/riscv/kvm/aia_device.c
+> @@ -10,7 +10,9 @@
+>  #include <linux/bits.h>
+>  #include <linux/irqchip/riscv-imsic.h>
+>  #include <linux/kvm_host.h>
+> +#include <linux/overflow.h>
+>  #include <linux/uaccess.h>
+> +#include <asm/kvm_gstage.h>
+>  #include <asm/kvm_isa.h>
+>
+>  static int aia_create(struct kvm_device *dev, u32 type)
+> @@ -142,17 +144,37 @@ static int aia_config(struct kvm *kvm, unsigned lon=
+g type,
+>         return 0;
 >  }
 >
-> -static void imsic_swfile_extirq_update(struct kvm_vcpu *vcpu)
-> +static void __imsic_swfile_extirq_update(struct kvm_vcpu *vcpu)
->  {
->         struct imsic *imsic =3D vcpu->arch.aia_context.imsic_state;
->         struct imsic_mrif *mrif =3D imsic->swfile;
-> -       unsigned long flags;
-> -
-> -       /*
-> -        * The critical section is necessary during external interrupt
-> -        * updates to avoid the risk of losing interrupts due to potentia=
-l
-> -        * interruptions between reading topei and updating pending statu=
-s.
-> -        */
-> -
-> -       raw_spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
->
->         if (imsic_mrif_atomic_read(mrif, &mrif->eidelivery) &&
->             imsic_mrif_topei(mrif, imsic->nr_eix, imsic->nr_msis))
->                 kvm_riscv_vcpu_set_interrupt(vcpu, IRQ_VS_EXT);
->         else
->                 kvm_riscv_vcpu_unset_interrupt(vcpu, IRQ_VS_EXT);
+> +static int aia_check_addr_range(struct kvm *kvm, u64 addr, u64 alignment=
+,
+> +                               u64 size)
+> +{
+> +       u64 end;
+> +
+> +       if (!IS_ALIGNED(addr, alignment))
+> +               return -EINVAL;
+> +
+> +       if (check_add_overflow(addr, size, &end))
+> +               return -EINVAL;
+> +
+> +       if (end > kvm_riscv_gstage_gpa_size(kvm->arch.pgd_levels))
+> +               return -E2BIG;
+> +
+> +       return 0;
 > +}
 > +
-> +static void imsic_swfile_extirq_update(struct kvm_vcpu *vcpu)
-> +{
-> +       struct imsic *imsic =3D vcpu->arch.aia_context.imsic_state;
-> +       unsigned long flags;
+>  static int aia_aplic_addr(struct kvm *kvm, u64 *addr, bool write)
+>  {
+>         struct kvm_aia *aia =3D &kvm->arch.aia;
+> +       int ret;
 >
-> +       raw_spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
-> +       __imsic_swfile_extirq_update(vcpu);
->         raw_spin_unlock_irqrestore(&imsic->swfile_extirq_lock, flags);
->  }
+>         if (write) {
+>                 /* Writes can only be done before irqchip is initialized =
+*/
+>                 if (kvm_riscv_aia_initialized(kvm))
+>                         return -EBUSY;
 >
-> @@ -912,12 +911,15 @@ int kvm_riscv_vcpu_aia_imsic_rmw(struct kvm_vcpu *v=
-cpu, unsigned long isel,
->         struct imsic_mrif_eix *eix;
->         int r, rc =3D KVM_INSN_CONTINUE_NEXT_SEPC;
->         struct imsic *imsic =3D vcpu->arch.aia_context.imsic_state;
-> +       unsigned long flags;
+> -               if (*addr & (KVM_DEV_RISCV_APLIC_ALIGN - 1))
+> -                       return -EINVAL;
+> +               ret =3D aia_check_addr_range(kvm, *addr, KVM_DEV_RISCV_AP=
+LIC_ALIGN,
+> +                                          KVM_DEV_RISCV_APLIC_SIZE);
+> +               if (ret)
+> +                       return ret;
 >
->         /* If IMSIC vCPU state not initialized then forward to user space=
- */
->         if (!imsic)
->                 return KVM_INSN_EXIT_TO_USER_SPACE;
+>                 aia->aplic_addr =3D *addr;
+>         } else
+> @@ -166,6 +188,7 @@ static int aia_imsic_addr(struct kvm *kvm, u64 *addr,
+>  {
+>         struct kvm_vcpu *vcpu;
+>         struct kvm_vcpu_aia *vcpu_aia;
+> +       int ret;
 >
->         if (isel =3D=3D KVM_RISCV_AIA_IMSIC_TOPEI) {
-> +               raw_spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
-> +
->                 /* Read pending and enabled interrupt with highest priori=
-ty */
->                 topei =3D imsic_mrif_topei(imsic->swfile, imsic->nr_eix,
->                                          imsic->nr_msis);
-> @@ -934,16 +936,20 @@ int kvm_riscv_vcpu_aia_imsic_rmw(struct kvm_vcpu *v=
-cpu, unsigned long isel,
->                                           eix->eip);
->                         }
->                 }
-> +               if (wr_mask)
-> +                       __imsic_swfile_extirq_update(vcpu);
-
-The __imsic_swfile_extirq_update() also calls imsic_mrif_topei() so it is
-better to pass topei value to __imsic_swfile_extirq_update().
-
-> +
-> +               raw_spin_unlock_irqrestore(&imsic->swfile_extirq_lock, fl=
-ags);
->         } else {
->                 r =3D imsic_mrif_rmw(imsic->swfile, imsic->nr_eix, isel,
->                                    val, new_val, wr_mask);
->                 /* Forward unknown IMSIC register to user-space */
->                 if (r)
->                         rc =3D (r =3D=3D -ENOENT) ? 0 : KVM_INSN_ILLEGAL_=
-TRAP;
-> -       }
+>         vcpu =3D kvm_get_vcpu(kvm, vcpu_idx);
+>         if (!vcpu)
+> @@ -177,8 +200,10 @@ static int aia_imsic_addr(struct kvm *kvm, u64 *addr=
+,
+>                 if (kvm_riscv_aia_initialized(kvm))
+>                         return -EBUSY;
 >
-> -       if (wr_mask)
-> -               imsic_swfile_extirq_update(vcpu);
-> +               if (wr_mask)
-> +                       imsic_swfile_extirq_update(vcpu);
-> +       }
->
->         return rc;
->  }
-> @@ -1050,9 +1056,17 @@ int kvm_riscv_vcpu_aia_imsic_inject(struct kvm_vcp=
-u *vcpu,
->         if (imsic->vsfile_cpu >=3D 0) {
->                 writel(iid, imsic->vsfile_va + IMSIC_MMIO_SETIPNUM_LE);
->         } else {
-> +               /*
-> +                * Serialize the EIP set + external-irq update against th=
-e
-> +                * TOPEI read-and-clear path so that an injected interrup=
-t
-> +                * cannot be silently lost when the guest acknowledges a
-> +                * different (or the same) interrupt concurrently.
-> +                */
-> +               raw_spin_lock(&imsic->swfile_extirq_lock);
->                 eix =3D &imsic->swfile->eix[iid / BITS_PER_TYPE(u64)];
->                 set_bit(iid & (BITS_PER_TYPE(u64) - 1), eix->eip);
-> -               imsic_swfile_extirq_update(vcpu);
-> +               __imsic_swfile_extirq_update(vcpu);
-> +               raw_spin_unlock(&imsic->swfile_extirq_lock);
+> -               if (*addr & (KVM_DEV_RISCV_IMSIC_ALIGN - 1))
+> -                       return -EINVAL;
+> +               ret =3D aia_check_addr_range(kvm, *addr, KVM_DEV_RISCV_IM=
+SIC_ALIGN,
+> +                                          KVM_DEV_RISCV_IMSIC_SIZE);
+> +               if (ret)
+> +                       return ret;
 >         }
 >
->         read_unlock_irqrestore(&imsic->vsfile_lock, flags);
-> --
-> 2.53.0
+>         mutex_lock(&vcpu->mutex);
+> @@ -248,6 +273,15 @@ static int aia_init(struct kvm *kvm)
+>         if (aia->nr_sources && aia->aplic_addr =3D=3D KVM_RISCV_AIA_UNDEF=
+_ADDR)
+>                 return -EINVAL;
+>
+> +       /* The GPA width may change after setting APLIC's address on an e=
+mpty VM. */
+> +       if (aia->nr_sources) {
+> +               ret =3D aia_check_addr_range(kvm, aia->aplic_addr,
+> +                                          KVM_DEV_RISCV_APLIC_ALIGN,
+> +                                          KVM_DEV_RISCV_APLIC_SIZE);
+> +               if (ret)
+> +                       return ret;
+> +       }
+> +
 
-Regards,
+We should also check IMSIC addresses one more time in aia_init(). I will
+take care of it at the time of merging.
+
+>         /* Group index bits must not overlap guest and HART index bits. *=
+/
+>         if (aia->nr_group_bits &&
+>             aia->nr_group_shift < (IMSIC_MMIO_PAGE_SHIFT +
+>
+
+LGTM.
+
+Reviewed-by: Anup Patel <anup@brainfault.org>
+
+Queued this patch as a fix for Linux-7.4-rcX
+
+Thanks,
 Anup
