@@ -1,114 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794599978;
-	b=yN4RdiNvilhDUZj86YQuTYEQYd34jIlXBZFnN5D9WfTWuehVsqSdkyPdq0zn54xuxg48
-	 dQVnqgmgKgf9ewnJXnvtCv1qgo/jJ7DiwZMlhYiUvHkyrb8UVDTHYGuS6X4boFymZC1Q9
-	 Kkz3obALExgKwGt+ZdvQ3epTNZdsW1qe+tzTqW8vTCqcFFkCHOrn58n5Tfjyz6v3nL+xL
-	 nABbyOXUbH4f52EFkvDYSmbonJ9KTm2eM6GoxNTXZ39A8qVXSOenNvcdyfaYye9eUiywn
-	 hy/5ardXnGLihsMEvR2mWUuPF5qpvFUcBgqn1Fj4tih/VvHhfeEkWaJ242iK34Lx8dg==
+	t=1794601061;
+	b=ooYj89L9+8jaFEShiVlPNcUK9dujC1V4h5V8z1GRyYsf7BCVbgf3hCUa1TRUdT98dM6p
+	 PTcLQs62jINSpA4vnUyaWSsR07zGOSohCdwON018V6UcfYh7qxHfmigIvaZZ4jdtYQnO6
+	 Ph9B6nx11IZcsPIdEPIoWh/XDdTINo07TZ5ohw0z0ZUWgS2AWpEANX8/ZKMQbMN9SJ7KA
+	 0VikYchFwrbWnWoN8Nh7BOix60ljq/T0PS5h2HZd4XlkOv3puyqLVQjawamBBFnSKkVsH
+	 kxM/Qns3saqKLkgHUlxCCA5a6kojek6rMUgDFZn2X/9W48z6v2ahy7ewOd+MXi8Ve/w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794599978;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=ZZ2nZZ3s6y7qol6GLZvqI4xyT/lOQ3RMsv1KGP5S3jA=;
-	b=n5NtF25ZBBZN5B+OrTl0JsjjhiMwgEl/ZopzQ/bY4vv3xl0Kqu6hhY4vxuS1KB3lCLHQ
-	 Z1GXI/xgextJ4iqd+V5YQG9XGAkBm2rACGlDvb5X/k2/eFSRrF01NxAoza4glDX1sjZeu
-	 OWSYW02g2Ma8HyrLWU0KUdXqPTLygpBvwW+tULJbREsFx1QJLFDTY0fwodlHW3Z28ZVXH
-	 1429+euZ61Ty86aBcElmYRYRan9yB69dyfuWIaN9SHuLkZAkAW75Y6bpWZWF6DB2Sr37M
-	 8PkNc6wWklpzoq6o/SUJ0c1BF+5w5YXQJ8XidJZp02OQ1HD8DNPoGauKBhkmkvlpntw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794601061;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=sQw4GvATXFtrzEViTcI7yXb0PY3EJAnllv1+ldzoAew=;
+	b=Le4bCga4ymcv96qSQoDVYS1I20EyJIy0DKNY8PnT33Pec7lwXuf72TxhqDUgZw0mq5DS
+	 7FKPGUt7Bpohis4Ig4Jb5czp3TCLaOpZo/U4sQNrOckZU+7OF1eKpIyLJTnPYVY+mUVaQ
+	 x38VDsC3GhHz+1zCzseWweEr3IpBiiYSWEfzFV7SgSHxm8gehf75qdiMK+EQHpD+qO2s/
+	 DgrDJeI81ZV1ydN+0uyvt+Tlfj7ceBdYKQAMc8BqznHapxRjUGQch87BKdkIQfuWQmnSg
+	 ds/sRS3iYEofQszcwdrzxmHdbeOyNTYp8CP+GDzJwapWPpRhKMVEEFr+mWbchIb9HXg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=Po3n9AZ5;
-	arc=none smtp.remote-ip=209.85.219.53
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Na7LhR87;
+	arc=none smtp.remote-ip=192.198.163.18
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCDF606B55B
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 19:59:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0DCDF606B55B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D3A606A332
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 20:17:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 60D3A606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=Po3n9AZ5
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-91f30ff609eso6418706d6.1
-        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 11:59:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1794599977; x=1795204777; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ZZ2nZZ3s6y7qol6GLZvqI4xyT/lOQ3RMsv1KGP5S3jA=;
-        b=Po3n9AZ5ukCVtyxupRbbfrpLGYxngRljlMmr6URQx5mXBtNOQmayJr515hpgVNj4sx
-         SfBF8u0oI8BRgh0FyosgUvP4tKwELgo4ewaKIi5JN8mRtCuCRmvkGWXjuAw/02iadmRA
-         uDnxdZ7AXUvdkY1hWsdsHvfshz1nH6EsEpR5OkjhwJvolkOQui9lyzTw24vhAEBxWDRt
-         KI1J+fFxELXn2bRApiz8FOoEpAjp37dDgQtZRNcDqm1xmiXUP7jrvFn6TT9BHVcob1x2
-         umNuZjQRMa9C79LylxXf/Ma826OY9RYwk2x+s7ONJ5FVSABT6CpUk/vzeFrO9xuYf9Ln
-         k9cQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794599977; x=1795204777;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZZ2nZZ3s6y7qol6GLZvqI4xyT/lOQ3RMsv1KGP5S3jA=;
-        b=w2cqRk9TVvjE1BDg2HP1IaG/esIvmrgVD/x61mJ9DbfTEXOFUY/tbZa3lLisp1IKRV
-         iT2InnYg4mGyudLe2Azt1vYSdtkZmn+83fxqvWQeknvdyMXRPOAwEDGTOrcScHevEaJQ
-         /b+s/FBpJKHodeNRj8juMfYbUMSD3ZhIDfCNZaeTBZ0b3/PhAz5LflO5eGkzd9lw/F+u
-         i4bpNFwgDiUlofmde6SHa6hwsTrccjfODPe8HmoGEMQ5s4fjIpGlFLes8danffD+6eCH
-         J6cl1syYGlISHo5RUfn1rny1lq12Bc2r/qJXSXW4h1yZFdLyK56b3Yq2NV4FzNBx90Pe
-         ySHg==
-X-Forwarded-Encrypted: i=1; AL+hErG40yFWiVqKmgeh34pSUvuHyVBCIH+/2BpMDin97cKLLK39KI7Aeklh0nyDE/jV+wtJnfY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9X3ca/kvBfc4DMFqnrgL6uzyhdJ/s6C3cKoi20wyyZWkoFGHMS
-	YgxYPiuHScZ+davLs1KZcEmy1/R2SaAyv7hrYUsr2RZZMaD+UNH1qUnpVW8bWsdHPpA=
-X-Gm-Gg: AYBFou2MJettsubKDE7jckeHI4p0f9oN1h1FbNlbJoDWzODGHeQeEq/+YB2Gk2d0bDC
-	a+iNkAJpTExa6M0HGems4IIccCusUXTmYR0LsJgUBq8SBK9oSu3DAv9V9ox0lEQKBoE2RmCv+bQ
-	fm6J7me3ePYxUmm6Y0RzLWfevZ86mhhfpeURkqJ+J2P5++0m8Sk2sbto6QAJNNr7JrfmknNGd0j
-	B00djY/4IVsV6EznoupWTMpvoxTHW10DMkBNu9oEBKbHLPJ6CzOcvY5dELx2lHBEzwrDvwyQtuC
-	EQvqcvLk09mGdsiTe5kVzP+fb55VDBQRLZCa5azIZMu858OMScyO57EC2QDiiaqyZKhpijhn2HN
-	5A72EJnGDqBxUYgBcQkIedj3jB5cLDdsMBryOPAS8c2RtlAhvh18wqAWJQ8t6rrRJ6EeMLlKfAn
-	HgIBgEMA0oCz9pvqzKlaZ8bwNro7e+fi6vugpTp8OEhzLIv8uHQG9t7qojd/cFcuI5HEa5+6HsP
-	Bp/SSPh2qaCD8PwmqFjxEp+enJ3Pi/5brNM4T24zUS2p3OrSPI9Ba2uxNP+lOzWX6cZSEykE+XT
-	hnuCoQ==
-X-Received: by 2002:a05:6214:451e:b0:91e:8d6d:21c8 with SMTP id 6a1803df08f44-91f2423e922mr59090456d6.54.1794599976764;
-        Fri, 13 Nov 2026 11:59:36 -0800 (PST)
-Received: from ziepe.ca ([142.166.156.71])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23db49c5sm27322246d6.41.2026.11.13.11.59.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 11:59:35 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xRxQs-00000001ekG-3813;
-	Fri, 13 Nov 2026 15:59:34 -0400
-Date: Fri, 13 Nov 2026 15:59:34 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, iommu@lists.linux.dev,
-	Tushar Dave <tdave@nvidia.com>, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	linux-rdma@vger.kernel.org, kvm@vger.kernel.org,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jens Axboe <axboe@kernel.dk>, Alex Williamson <alex@shazbot.org>,
-	Ankit Agrawal <ankita@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>
-Subject: Re: [PATCH v13 00/19] PCI/P2PDMA: Route peer-to-peer DMA by TLP class
-Message-ID: <20261113195934.GD2532299@ziepe.ca>
-References: <20261111121602.GQ8635@unreal>
- <20261111224136.GA754433@bhelgaas>
- <20261112092326.GU8635@unreal>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Na7LhR87
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794601061; x=1826137061;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=FLioU4cDbbnRDreB0K/kLhwrT7wLL1csVX23RCfV9/0=;
+  b=Na7LhR87jFvmPWijzZu3VtuDKhCj6zsvCd6AKe8mwfs7+1yJ0Wjpn4Oz
+   PvCSmMhByEa82HX/S6nwnM7t04Z/h3AcgQFJzbEI0xXJcTpzyNdWMgX5p
+   Pf/O2+hDX2OJFqzIfNLnJ9guaf+AkDhMoI+bYUBgjxKfXnAI4KmDPJamO
+   9KZEonybfasViTZjE1zkJwHTkf1mI2OqqLrTrhlWtDHkFydXBW+zoH+3T
+   yLnewWEsV5XuSQTsr013vYX3wMEczj3T3lmSMkbynKpEenLlzTPiGHZhj
+   towE1BYmnNru8JqyBME4Q6w7rXE48Zo1lRx4E7MaQ0duaWjIwtPqQ3QRQ
+   A==;
+X-CSE-ConnectionGUID: a0QdmscWRQOvfVMxe1Dr1A==
+X-CSE-MsgGUID: 3/YfS/jQR3mzUSzYO1zC5Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11965"; a="3446814"
+X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
+   d="scan'208";a="3446814"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 12:17:41 -0800
+X-CSE-ConnectionGUID: ipjc2YimRcKAr4DI/2LA0A==
+X-CSE-MsgGUID: 3xVpcVvLTgm3oq0L90T70g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
+   d="scan'208";a="9325321"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 12:17:40 -0800
+Message-ID: <2a3c1d34-b3f3-47f1-ae15-c3b466f0a363@intel.com>
+Date: Fri, 13 Nov 2026 14:17:39 -0600
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -118,53 +72,129 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261112092326.GU8635@unreal>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 21/21] KVM: selftests: Support fixed counters bitmap in
+ pmu_counters_test
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+References: <20261112203227.289379-1-zide.chen@intel.com>
+ <20261112203227.289379-22-zide.chen@intel.com>
+ <sashiko-outbox-211841@kernel.org>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <sashiko-outbox-211841@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 12, 2026 at 11:23:26AM +0200, Leon Romanovsky wrote:
 
-> > I guess one benefit of this series is that a path where P2P Completion
-> > Redirect is set used to mean that pci_p2pdma_map_type() would return
-> > PCI_P2PDMA_MAP_NOT_SUPPORTED (unless the RC was allow-listed), and now
-> > it might return PCI_P2PDMA_MAP_BUS_ADDR because if P2P Request
-> > Redirect is clear, Requests can be routed directly?
+
+On 11/12/2026 3:00 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [Medium] KVM: selftests: missing EDX/ECX combinations in
+>   test_fixed_counters()
+> --
 > 
-> I'm not sure the first part (return PCI_P2PDMA_MAP_NOT_SUPPORTED) is correct,
-> since callers have so far ensured that P2P is supported before calling this
-> function. The second part is correct.
+> commit 3d8b2ca900bb2a01f5f9cee15fc9a12bc40184ad
+> Author: Dapeng Mi <dapeng1.mi@linux.intel.com>
 > 
-> > 
-> > That sounds great as long as the Request uses Relaxed Ordering, so the
-> > Completion won't be affected by P2P Completion Redirect.  But devices
-> > aren't *required* to use RO even if enabled, and I'm doubtful that a
-> > non-RO Completion redirected to the RC is going to work.  So I don't
-> > understand how p2pdma.c can guarantee safety.
-> > 
-> > Translated Requests seems similar -- are we assuming that if ACS
-> > Direct Translated P2P is set and ATS Enable is set, the device
-> > *always* generates Translated Requests?
+> KVM: selftests: Support fixed counters bitmap in pmu_counters_test
 > 
-> PCI spec allows "A Function is permitted to intermix translated
-> and untranslated requests" and p2p doesn't decide anything except
-> if routing is possible or not.
+> This commit updates this_pmu_has() to check the guest PMU version before
+> consulting CPUID.0AH:ECX and updates test_fixed_counters() to test
+> supported fixed counter bitmasks alongside CPUID.0AH:EDX[4:0].
+> 
+>> diff --git a/tools/testing/selftests/kvm/x86/pmu_counters_test.c b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
+>> index c3e784e16348c..61e6fe5b6ef48 100644
+>> --- a/tools/testing/selftests/kvm/x86/pmu_counters_test.c
+>> +++ b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
+> 
+> [ ... ]
+> 
+>> @@ -631,25 +632,43 @@ static void __test_fixed_counters(struct kvm_vcpu *vcpu, u8 nr_fixed_counters,
+>>  static void test_fixed_counters(u8 pmu_version, u64 perf_capabilities)
+>>  {
+>>  	u8 nr_fixed_counters = kvm_cpu_property(X86_PROPERTY_PMU_NR_FIXED_COUNTERS);
+>> +	unsigned long fixed_subset;
+>>  	struct kvm_vcpu **vcpus;
+>>  	struct kvm_vm *vm;
+>> +	u32 fixed_bitmap;
+>>  	int i = 0;
+>> -	u32 k;
+>>  	u8 j;
+>>  
+>>  	pr_info("Testing %u fixed counters, PMU version %u, perf_caps = %lx\n",
+>>  		nr_fixed_counters, pmu_version, perf_capabilities);
+>>  
+>> +	fixed_bitmap = BIT(nr_fixed_counters) - 1;
+>> +	if (pmu_version >= 5)
+>> +		fixed_bitmap |= kvm_cpu_property(X86_PROPERTY_PMU_FIXED_COUNTERS_BITMASK);
+>>  
+>> -	vm = pmu_vm_create_with_vcpus((nr_fixed_counters + 1) * BIT(nr_fixed_counters),
+>> +	/* One vCPU per subset of fixed_bitmap, plus one per legacy EDX test. */
+>> +	vm = pmu_vm_create_with_vcpus(BIT(__builtin_popcount(fixed_bitmap)) + nr_fixed_counters,
+>>  				      guest_test_fixed_counters,
+>>  				      pmu_version, perf_capabilities, &vcpus);
+>>  
+>> -	for (j = 0; j <= nr_fixed_counters; j++) {
+>> -		for (k = 0; k <= (BIT(nr_fixed_counters) - 1); k++)
+>> -			__test_fixed_counters(vcpus[i++], j, k);
+>> +	for (fixed_subset = 0; fixed_subset <= fixed_bitmap; fixed_subset++) {
+>> +		u32 nr_contiguous;
+>> +
+>> +		/*
+>> +		 * The loop walks all values from 0 to fixed_bitmap, so skip any
+>> +		 * value that is not a subset of fixed_bitmap.
+>> +		 */
+>> +		if (fixed_subset & ~fixed_bitmap)
+>> +			continue;
+>> +
+>> +		nr_contiguous = find_first_zero_bit(&fixed_subset,
+>> +						    MAX_NR_FIXED_COUNTERS);
+>> +		__test_fixed_counters(vcpus[i++], nr_contiguous, fixed_subset);
+>>  	}
+>>  
+>> +	for (j = 1; j <= nr_fixed_counters; j++)
+>> +		__test_fixed_counters(vcpus[i++], j, 0);
+>> +
+>>  	pmu_vm_free(vm, vcpus);
+>>  }
+> 
+> [Severity: Medium]
+> Does deriving nr_contiguous from fixed_subset drop test coverage for fixed
+> counters enabled solely via CPUID.0AH:ECX when EDX[4:0] is 0?
+> 
+> Whenever bit 0 of fixed_subset is set, find_first_zero_bit() returns at
+> least 1, and the second loop only tests supported_bitmask == 0 with j >= 1.
+> As a result, fixed counter 0 (and any contiguous prefix of fixed_subset
+> starting at bit 0) is never tested with nr_fixed_counters == 0 and ECX[i]
+> set, nor does a guest with pmu_version < 5 get tested with EDX[4:0] == 0
+> and a non-zero contiguous ECX mask to verify that KVM ignores ECX.
 
-Both of these are basically the question we left open in the
-discussion with Christian.
+The mentioned configuration is architecturally invalid and can be
+ignored: if fixed counter 0 is supported (ECX[0] == 1), EDX[4:0] cannot
+be zero.
 
-To use this new TLP specific API correctly the initiator needs to tell
-the API what kinds of TLPs it intends to generate, and ask if that set
-is OK.
+Furthermore, verifying that KVM ignores ECX on pmu_version < 5 with
+EDX[4:0] == 0 is already tested for all subsets where bit 0 is clear
+(e.g. subsets 2, 4, 6), where find_first_zero_bit() returns 0 and the
+guest explicitly asserts #GP.
 
-So you need to say 'I will use translated, I will use RO, I will use
-untranslated' because each of them can have different routing.
+> 
+> In addition, gating X86_PROPERTY_PMU_FIXED_COUNTERS_BITMASK on
+> pmu_version >= 5 skips non-contiguous host ECX bits when testing guest
+> pmu_version < 5, so the test never verifies that KVM ignores those bits on
+> older PMU versions.  Keeping the outer loop over j in 0..nr_fixed_counters
+> and the inner loop over subsets of an unconditionally constructed
+> fixed_bitmap would cover all (EDX[4:0], ECX) combinations across all PMU
+> versions.
+> 
 
-NOT_SUPPORTED has to be returned if the modes the driver asks for
-don't have identical routing.
+The proposed nested loop produces massive duplication without covering
+any new counter configurations.
 
-I forget how this ended up when that got deferred, but that missing
-driver input is an important part of the puzzle.
+In contrast, the current single loop exercises all 2^N unique subsets of
+available counters exactly once with consistent EDX/ECX pairs, and the
+second loop explicitly exercises legacy EDX-only enumeration (ECX = 0).
 
-eg mlx5 knows exactly which of the three TLPs it is going to generate.
-
-Jason
+Therefore, I prefer to keep the current implementation.
