@@ -1,73 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.198
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794577915;
-	b=Bv5kJQh9yZmRmPTepwy3c5Z404ucxBQWL5UeVx42TsQjix9wgByTsmBlc4RbYwBJy+BJ
-	 b0NmAJ7u3g8DzMaHAQ8cwmi3gNCMNPYLavvYQj2g6IgKyTloxB7rYmuu159J58O4kw5be
-	 GBH21Do00E3ZS4i46jyaWS/NMrl74X6BR229lmE96ilDri4/EvRaPgwde8PITyIuRwpr5
-	 FtS/ReJLV8nchMmA4URcmAOWdayFthnXJqpTIYMu5hAKhxEdZ8W3Dh6Y37v8pODWjzvkW
-	 qaXlgDNpOHTq2D5w1gYW8a3Cz9Bb9txh7p7v6QCkbYTEgtyrCdO+mtSqMFSkpr0+7WQ==
+	t=1794577919;
+	b=IAlEeCTa87BwceWJqNqz3R8K53Ck6KJtL3yDFw1w4+NJYEFbYJCP4eJH6OIXXYchcwM1
+	 r4tkpc2bWUKC3aabQTcYn9Wqw4XgI1lpDd+GenTph5w8WKS4IKTo9Sd8A3BelAgD35HBH
+	 37No2zT1EISI1H9vDZv9II1krt4Xgk8PnmFiDWymxMKjQimLvITHxWlvSk7AwkyX4Tib4
+	 2Ubuq1zV6lip4vIzWDfwu6SyGsh7TOHBgDNakSh9ZKIqinbWpndBl2a1NjywQ+eXUI9Lh
+	 cU0wB9+NhmbmnV5bxHl1KGdry841PEFNi9q0n0DFBJBC3yuUkpwyWwQoFMZi1gbg9AA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794577915;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794577919;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=VjaqT3209uv6MC202ND13nLcrUczNX+A6aMg0FaxB88=;
-	b=LXwEy+oN7hdHmHUvlepBZa9a1C0lbhQT6h20qAhGyIZUovWPedACyDs5QluRq1tmH+X+
-	 /Oe0Sl0eGxqoFtYtazVT1iuCQi6i8KbZ0gawxkxBwzDWifT0r0jER96Kkh7tOOZ7+iAUa
-	 bEVriZNaDO4Q5zn+DYVVL3lLf6h6JmjOuEDPA1YdfwK1CC/flh7VXpjrAcbh2IPWgH6eR
-	 y3H9OKS6+iQrsYdQXZtaCCwplSwzYvTovAex+/+IDuANVPt7cyvSrLTvNb4xfUMEQZOcI
-	 uOOlbADZHOep9hjmdd995epwZIG2fJiY8Ch8MKMCascnGxmN9Kr9WhXDPW/TsQv3zBA==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=7iOQh6oJAMU34U5WNO1f4JDUIZhUKKNoQ3y6TH5HxY4=;
+	b=GmH0AxZS7XwKPAWUUMqXlgFYJEvZOBT5ffQFgG13L/4saKSVupxmzYpgztZvacuMLaJv
+	 2vOGRMMzx917++I/El2ul82+UI4u81uupv0wag3tkmSlpJAAAyTRdCmqSMgvbz1Sd1/mj
+	 ouub2v7pT5l2m+3nZqYzk60LxnlHaR8Mhj5kGCzFCRsX9wBAXDCGNF5g4v3cK3fmXqFC2
+	 DK5/FmSj2GQAwxJ4AdmJC78fhBL2FMWZoVKxYgNbIfFW7+2fHwJoCWBfQoFPlAQUxL+SW
+	 Z20WnUKTy1nYrGCF/WKOCsgYIlqTNHZpa2xN/tfqh7EmbvO3eV6sI3exWraSLqHVTDg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=kULy1qMk;
-	arc=none smtp.remote-ip=209.85.216.69
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=FPyf8Ilf;
+	arc=none smtp.remote-ip=209.85.210.198
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15A7606CA34
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:51:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C15A7606CA34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B9C606D691
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:51:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63B9C606D691
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=kULy1qMk
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3b0f667a666so1367771a91.2
-        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:51:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=FPyf8Ilf
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8a064f294cbso683257b3a.2
+        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:51:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794577914; x=1795182714; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794577919; x=1795182719; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=VjaqT3209uv6MC202ND13nLcrUczNX+A6aMg0FaxB88=;
-        b=kULy1qMkrEvLFqNPD2ea4MMpEZMW5F8AX8btRQtJfle80qdC8bsC48WmN6jWuwA0JH
-         KBiZe/XdV0VJ0fvE0Z3bO1zzaogNS1Nv5o40Qxok9rD6eJLHQRo1Hh5cEJYaPdecvH0h
-         fjBYxYdZj0HqWqzYAIOCqZCcN4QlgfvE4UHCXBt5IJgM0pTVQWileSsIdT8T8SKYYvTf
-         K15JxyQFk+u2xmlowfxRdwS10Ame2modkb9RIKo7yFMHiJ/G/R/7KVKpUD8Hyw4q1Cuq
-         wJ6r72lIGg0KT/8ewZf+bbCHE4hL4NUJG7cd6uTdgiEQSYJTBA4viSKzUBKIc8yAPb3A
-         IWpg==
+        bh=7iOQh6oJAMU34U5WNO1f4JDUIZhUKKNoQ3y6TH5HxY4=;
+        b=FPyf8Ilfs7u7AaJsMMV6r3d94pfGyY7/LDBBwvNUPsxfj3LmrDI9hgMHq3yFbap+GZ
+         m5zoscaDeq9rtkD46WPQ9tzJKth1ynDDzJVK9JdrgxAuW0/BRfqQ2ki0w9E6n2aUxJgv
+         cvGAsoaskmKWLJ2asxsrAJA85uBCnOS6CdgpJLD8noCRc9ptW5xZmIFmsFviaBQJ5/MZ
+         NmUDBBSNecKjaIVrwro8T2UTLLwvaYvBKyBDDn3mMLZgxG6eWDBkKIMdWW1Om/2gQucM
+         FdOTnhaRd7wt/a4nlVGFyVpKzd2nLTdHsl9RBj0EddthkA4Zx7H4/UQ5CCp54MbruaIt
+         pExw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794577914; x=1795182714;
+        d=1e100.net; s=20260707; t=1794577919; x=1795182719;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=VjaqT3209uv6MC202ND13nLcrUczNX+A6aMg0FaxB88=;
-        b=JY5aDsYYrX7rrcT/heVlLDbXH6fdLfUWxdVQmafGa7/4cWY4b+xdKHi47ts3UA3myP
-         ox2PRUAlqCw3Q0KiK3WYKVYOXQcmPFjZ1KKpMKTd14RZffaML/PeTomU08/BT9FxHvJP
-         zSlZsXbo/ayefruOk1D9vSWG+AjtZFgvc3LQAZSd36TnOGRJcIBwXtASQlptEAvzjHiW
-         0jfAh6aCZuP4aL+4NbWpK1ekfr6txjnbBWlYKiEKSLMsUekuOW0HhF5umah8MlKhWYK+
-         fvwHX9qTmFUVhKWgsRrXlThY9ncpaN6IawlKR59i/BCRUdYeR595Y4IC8A5vrFil+M1c
-         Y6Pg==
-X-Gm-Message-State: APuU4Z8yxHkixFC5hQCrYsTDUQ0nRhYtwC4oOGh7WuI1LqRS5oOM8BIK
-	StgKYbsDkTnVLvKK9ilXKdWl3s+SM7iOxxpBRGvHcE7pz/Q1PfM0y5fwg7PRamdEYgXYfvvtMdk
-	Kul3goQ==
-X-Received: from pjca1.prod.google.com ([2002:a17:90b:5b81:b0:3aa:ff61:94cf])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:35c8:b0:3ac:e6a:1b2b
- with SMTP id 98e67ed59e1d1-3b1b05ea8cfmr2418462a91.0.1794577914038; Fri, 13
- Nov 2026 05:51:54 -0800 (PST)
-Date: Fri, 13 Nov 2026 05:47:20 -0800
-In-Reply-To: <20261022203028.595318-1-seanjc@google.com>
+        bh=7iOQh6oJAMU34U5WNO1f4JDUIZhUKKNoQ3y6TH5HxY4=;
+        b=0+OJDmGYmGAUyJ0Qs2pV8Vvjo9655S4FtaPdaLVtFNlxTi1x+32C4FX7VJijOxk88l
+         /GlrMImRqn5pn3zIOJ4y/t0KkPHvVrNuUzCla9OyBCD2D0O5J63zmHSGLwsgh8BkcGWM
+         ayNL5yV3tgPe4AVfYk/6x6TRBo5A49dr0wx69JHooGDpTZgjiVdjoEZLIGjD3HPBfwg3
+         1hsSd2LvaCujQ8L/wHBICfKX2aKNZGuqZARONWlMBj72JbkyefOnKEgii5MkNHOhwKSg
+         qB+RnrdzVHSleHuuNK2kKqm8hzhVyaCdUSuIjr6jkC1/XwnugQTs4euID2GmgpGNVIT1
+         YkAA==
+X-Forwarded-Encrypted: i=1; AL+hErFs0q2cWNfODoYu3g6COVaGoCsefwrEUY/NarZk2g50i2DeKM9b0Zm6SDUReODzChvdLOE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/2amkUfcoqApPnDOfBFpfIGi8WvIAQGGdvYhCpa8YX1CmEHoNw
+	VWREwX7m76mwPesnej/IY5ttAvWcSHC5i0N50NjFHlJB5+WNaBTPNBlvIwWGH8f6Oy/Fh60ovjT
+	uO7reCQ==
+X-Received: from pffi11-n1.prod.google.com ([2002:a05:6a00:c28b:10b0:8a0:3171:5410])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4b53:b0:886:a737:e0fe
+ with SMTP id d2e1a72fcca58-8beb6197585mr2672431b3a.23.1794577918466; Fri, 13
+ Nov 2026 05:51:58 -0800 (PST)
+Date: Fri, 13 Nov 2026 05:47:22 -0800
+In-Reply-To: <20260821093957.1722167-1-binbin.wu@linux.intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,24 +79,31 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261022203028.595318-1-seanjc@google.com>
+References: <20260821093957.1722167-1-binbin.wu@linux.intel.com>
 X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
-Message-ID: <179441776823.76438.16222114675545424492.b4-ty@b4>
-Subject: Re: [PATCH] KVM: SEV: Ratelimit all #VMGEXIT-induced info and error messages
+Message-ID: <179441845917.83089.279363969551127970.b4-ty@b4>
+Subject: Re: [PATCH] KVM: TDX: Charge misc cgroup before allocating HKID
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Stefan Teodorescu <fane@google.com>
+To: Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Binbin Wu <binbin.wu@linux.intel.com>
+Cc: pbonzini@redhat.com, kas@kernel.org, rick.p.edgecombe@intel.com
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, 22 Oct 2026 13:30:28 -0700, Sean Christopherson wrote:
-> Ratelimit all of the kernel log messages related to #VMGEXIT and/or GHCB
-> handling, as they can all be triggered at will by the guest.
+On Fri, 21 Aug 2026 17:39:57 +0800, Binbin Wu wrote:
+> Add a tdx_hkid_alloc() helper that charges the misc cgroup before
+> allocating an HKID, and unwind the charge if HKID allocation fails.
+> 
+> __tdx_td_init() currently allocates an HKID before charging the misc
+> cgroup. If the charge fails, the error path calls tdx_hkid_free(), which
+> uncharges a resource that was never successfully charged. This can make
+> the misc-cgroup usage negative.
+> 
+> [...]
 
-Applied to kvm-x86 svm, thanks!
+Applied to kvm-x86 vmx, thanks!
 
-[1/1] KVM: SEV: Ratelimit all #VMGEXIT-induced info and error messages
-      https://github.com/kvm-x86/linux/commit/6611ea2bff76
+[1/1] KVM: TDX: Charge misc cgroup before allocating HKID
+      https://github.com/kvm-x86/linux/commit/93f1e8445a2f
 
 --
 https://github.com/kvm-x86/linux/tree/next
