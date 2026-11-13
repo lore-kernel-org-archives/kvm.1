@@ -1,75 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794528011;
-	b=DUHi1nZkfTcWE2n4c7aV95ka2tFFGPPfjUJ6gokrZqxDRIsoMdc85iQAXB72eruzP4WY
-	 KLY2THI/YpROZDRrjrmcSZVVH2mQThLfQ5ou1yu6n214UjHtLDpg7R9yFKUhSiNZPh1ny
-	 sx3p49zjkGQ5B8I6xTXPPr7IFR50geMblxKRlZNUhsgnK57sO64+4bR59YZJQTT+sWqw7
-	 ZJ4k2hkbr+RRWoemBH8EyrDh/ajN/cMf1/gTaePG8o5nnTV55fzEv3xtDF511OwhqZJ2Y
-	 J4w0VDXzdSqx/9QGurRRA2SOvPUiNS1NnZ2KyHGW6vIZHcsEBbMeKg0/dc5fvL0qMew==
+	t=1794529052;
+	b=TGQKSbYFeZiW43pAxBT468NsVjWSf5HBue9t938DG6NW/i165SWXJvUfl3uu1uIXMGgi
+	 Ueyz1bk+2XmOY6xaVTidtKaeO4N+o6kFiyt5MdmhMbEX6xVem+ANcxSR1hdEYLz4lwIZ/
+	 uaYXiijkHclIeZvmn1ENsgMZ/1fU17krPr8VoUQhSW7zl3Bt7BtIdWh7v57as1x//uD0i
+	 9u+wmAqXaxPenRFqg8SVvnlv9YexDOn93RP/Nb5zwiN7yZtBdUkjAkLC/ZsYWR9MLbxM0
+	 P6ezffEb27VnUccDDjWFuuTS1zk+zPYqTDaz5aSGnpbaE9g4SMXiSnnXO8ShggggDwQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794528011;
-	h=DMARC-Filter:From:DKIM-Signature:DKIM-Signature:To:Cc:Subject:
-	 In-Reply-To:References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=tB2CDFSNAQHG63R1fKA0lxUFEzusvt8zbvQv1xopf0Y=;
-	b=Oi/pB97OfkRuSd6whumhXTeLBRhyQPOzyJwngdox0Hb2QR/kmK7uSkIONm12tDGTIkaW
-	 gZxnn3DNO+EoIJT7Ge1h0BQm64YiUYkcs2Tgc5sJIapcv44iB2LbZ9gyT6vLGTE0vDXRL
-	 sJbFFNfRNoIDvgUJ79cUkpV8dWj4aoRqpWnv6xQto7WCTcdB6lJOjUAF0kqYSyBs8C+dd
-	 RpXzS3EMBMaeenKDb75kx+1cX1s/2EHRvd52JVsuGXhU4TzOzSFP3mXCpHvDrELxGaTDD
-	 lJsO5VURXIM0hHgYkEH9lpvWLb6IDQrHHEAjxXlrIQ2gJzLoI1tROlXbu4q1s5HZYjg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794529052;
+	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
+	 Received:Date:From:To:CC:Subject:User-Agent:In-Reply-To:References:
+	 Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=SF1gokFIlxA0lxb0bJ+7LJNNprQkzUbs5KhpdJOREYw=;
+	b=d66Bvbj7kpl84fgQ9XKtQ5SMjannx52A18NNiVMsaW++9efOpXK/tUqsSYNI5taT9l7V
+	 fkzQQcmiepLxWefwyxl4CfEwyRaUwGlT0PGvBlneLsHFhqF/PfctcCKwQww1SSPaLw91T
+	 B7NH8u5VbMCiwsvU7MX97oacqxRXBbohaAXt9WLzz0r4Grx6+QPpb/sxzsuhumVQ5URL2
+	 7qnA15dIb3G7VXN2cW5Mc/PuphpNMqPWnBqZV5PM3aH7IsjzvbjkCBYCtAHjIrfirhJRZ
+	 NTTuvoq2CiuEtODPeQfrIbhiAMpH1N4QAn20N3SJpeq30hVv8zngJyguCooChEA4IWA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linutronix.de;
-	spf=pass smtp.mailfrom=linutronix.de;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b="OoMAyUJ/";
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=lYXL7NEv;
-	arc=none smtp.remote-ip=193.142.43.55
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dmarc=pass header.from=alien8.de;
+	spf=pass smtp.mailfrom=alien8.de;
+	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b="WmWK/PpZ";
+	arc=none smtp.remote-ip=65.109.113.108
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0A7606A33A;
-	Fri, 13 Nov 2026 00:00:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AE0A7606A33A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A1F606A31C;
+	Fri, 13 Nov 2026 00:17:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F3A1F606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=OoMAyUJ/;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=lYXL7NEv
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1794528007;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tB2CDFSNAQHG63R1fKA0lxUFEzusvt8zbvQv1xopf0Y=;
-	b=OoMAyUJ/fVovEwUQuTaBvbYZTnrRLX5QQkC91oB02/YyobUoIwW1FhNg+JOWuPLuGyPf2j
-	X5e3UIFCnSefmSvgweufvhRgLM0TAHAu8kEv8LImb0pfQd3Fb5Os3WLLpHKPtJQVtidJV7
-	kVDKJQINh2Q4u4vYAycblw0GdHA+cgWm+X6TAe+qn2TAxBn1pcCfqNGIV+Z7HJ4eljWdDW
-	E1fOib0GIjR3wZUD6oPZmqJeb2/ftYF8ba6veeeISqYsy7c35VhmhiKD48HJsv/pqlC7NH
-	Vb0Gd1bmqOoC14ssk4mq3Su94o9qgEaQKUoAFPcsMuIchO/G/6xV+SZ66DEhMg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1794528007;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tB2CDFSNAQHG63R1fKA0lxUFEzusvt8zbvQv1xopf0Y=;
-	b=lYXL7NEvwjrqgd4ZBfhr7W9Jh6ZSAzPXE3Uq4+yYP9LpzbBB1+qQxyzNY6eoKH6d7Glw16
-	4sH4GAT17UoKLsDA==
-To: Borislav Petkov <bp@alien8.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>, Breno Leitao <leitao@debian.org>, Ingo
- Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- vlad.wing@gmail.com, security@kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 6.18.y] x86/cpufeatures: Make X86_FEATURE leaf 17
- Linux-specific
-In-Reply-To: <20261112233327.GBavZMx2etyTFh1be4@fat_crate.local>
-References: <20261111-stabe_srso-v1-1-45512320ba5e@debian.org>
- <20261112045703.GAavVHH8KA2yyCU7oc@fat_crate.local>
- <9492bce8-aab7-4982-8a0c-7d736c745e12@zytor.com>
- <29B14106-19E4-4589-BE40-3D42BA646CE3@alien8.de> <87o6btsl4g.ffs@fw13>
- <20261112233327.GBavZMx2etyTFh1be4@fat_crate.local>
-Date: Fri, 13 Nov 2026 01:00:07 +0100
-Message-ID: <87ik21sirc.ffs@fw13>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=WmWK/PpZ
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D9D6140E0184;
+	Fri, 13 Nov 2026 00:17:29 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 99-WtVOz2-xU; Fri, 13 Nov 2026 00:17:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1794529046; bh=SF1gokFIlxA0lxb0bJ+7LJNNprQkzUbs5KhpdJOREYw=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=WmWK/PpZEeDacN+3DkBXx0z3t+3GNFgG6Sfyjsw25ZBFXr0FYH52/RpB4RtkPq38f
+	 EeTBAC33QDCvolVTr1TNTfNk0TNSSxb7GZrOkwh1T6esRfyeyUeo5ncG8EmAeesJXy
+	 QxhnVfIHu6U+HWBMfY1G5YioXpRjnvboE5odfUFGwg05XbsYo+PrlrrEeLqAI/EZFo
+	 wkQCFm8E4GaW/JadkWXYiYxE2Ws+gY1wNI+UC1avd1NomtqH58zxC0cRMgcOTI6Cev
+	 oz86YiyfshdbyrInn7ak8ZxnsY4U671QVUz1AwovPvO3AOM5NZvQCVV0VBxTriR55G
+	 Bhr2zEGbVTGpsJTALFBCsE/pjHFLv1OoG0eM5kDug+ox/+fbHXElKHpuyZEmeFgkpq
+	 f/Fc0TkVoq4JxVquhO7tEqinJjUuSUafk4WPrKEVCVCXPUYvu3Gv5p/PsLxqXvoQ2g
+	 C7o4mfShBy61Zw13Upb13jXw47L/ZOiFXifA5+ZfBZKWmfhqoYr9KqC35WsWT4K/Gj
+	 k08QimkqM7OkMdzBPBek2CtVxMezjEy8/gni65Bo69tKUqvZHXIj8GHHSK1FMjvM00
+	 gwAspNJQvQKLcVp1jwLA901MSwxmlTnIA2Irux3/7NaHF7Zpob8CveqpStzNV2Icsd
+	 Nx34V/T3xKBTqqHzugaTOcQo=
+Received: from ehlo.thunderbird.net (mobile-166-172-120-26.mycingular.net [166.172.120.26])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9BE4A40E015B;
+	Fri, 13 Nov 2026 00:17:12 +0000 (UTC)
+Date: Fri, 13 Nov 2026 00:15:30 +0000
+From: Borislav Petkov <bp@alien8.de>
+To: Thomas Gleixner <tglx@linutronix.de>
+CC: "H. Peter Anvin" <hpa@zytor.com>, Breno Leitao <leitao@debian.org>,
+ Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, vlad.wing@gmail.com, security@kernel.org,
+ kernel-team@meta.com
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_6=2E18=2Ey=5D_x86/cpufeatures=3A_M?=
+ =?US-ASCII?Q?ake_X86=5FFEATURE_leaf_17_Linux-specific?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <87ik21sirc.ffs@fw13>
+References: <20261111-stabe_srso-v1-1-45512320ba5e@debian.org> <20261112045703.GAavVHH8KA2yyCU7oc@fat_crate.local> <9492bce8-aab7-4982-8a0c-7d736c745e12@zytor.com> <29B14106-19E4-4589-BE40-3D42BA646CE3@alien8.de> <87o6btsl4g.ffs@fw13> <20261112233327.GBavZMx2etyTFh1be4@fat_crate.local> <87ik21sirc.ffs@fw13>
+Message-ID: <804E3306-237D-4923-BF96-9E7C85BB933D@alien8.de>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -79,54 +86,34 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 12 2026 at 15:33, Borislav Petkov wrote:
-> On Fri, Nov 13, 2026 at 12:09:03AM +0100, Thomas Gleixner wrote:
->> Even if a new leaf has only _ONE_ bit defined then it's a new leaf. This
->> whole "save space" nonsense has been source of a gazillion of subtle
->> bugs in the past and we just continue to "fix" them instead of actually
->> tackling the underlying problem.
->> 
->> Linux specific leafs want to be in a space which is reserved by
->> hardware for software purposes and not arbitrarily hacked into "holes".
->> 
->> Hardware defined leafs have to be represented by a proper entry even if
->> there is only one relevant bit in a leaf.
->
-> Are you saying we should get rid of scattered.c?
+On November 13, 2026 12:00:07 AM UTC, Thomas Gleixner <tglx@linutronix=2Ede=
+> wrote:
+>Yes=2E The fact that it's ridiculous that we still have to debate this=2E
 
-Yes. It's an abomination as you know very well.
+I don't think anyone disagrees=2E
 
-> Well, as a matter of fact, after stopping this silly nonsense of having to add
-> a cpufeatures.h leaf just to advertise feature bits to a guests, the space
-> saving is not really important anymore. We're much better there.
->
-> So I could whack scattered.c, we make it a rule to allocate a new
-> x86_capability leaf when we need it and then we will switch to the stuff Ahmed
-> has been working on eventually, when we get that upstreamed.
+>The time wasted on that, the time wasted by people to decode the subtle
+>bugs and the amount of AI tokens wasted to come up with more duct tape
+>fixes is at least an order of magnitude more expensive than funding the
+>completion of the overhaul=2E
 
-Emphasis on eventually.
+There's a great proverb in my native tongue which goes something like this=
+: whack the saddle so that the horse hears and acts on it=2E
 
-So another twenty years to actually have a proper design in place for
-something which just resulted in duct tape layers since the initial
-CPUID/feature management design mistake was made twenty years ago.
+Yeah, I'm just a saddle=2E :-)
 
-Until we get there we just add more duct tape which interferes with the
-cleanup, right?
+>But I just "work" here so I might be missing something important which
+>justifies that =2E=2E=2E
 
-> Anything else missing?
+Same here=2E Lemme continue working towards it and we'll see where we get=
+=2E I'll whack scattered=2Ec and then continue working on Ahmed's pile=2E U=
+nless you have a different suggestion=2E=20
 
-Yes. The fact that it's ridiculous that we still have to debate this.
+Thx=2E
 
-The time wasted on that, the time wasted by people to decode the subtle
-bugs and the amount of AI tokens wasted to come up with more duct tape
-fixes is at least an order of magnitude more expensive than funding the
-completion of the overhaul.
-
-But I just "work" here so I might be missing something important which
-justifies that ...
-
-Thanks,
-
-        tglx
+--=20
+Small device=2E Typos and formatting crap
