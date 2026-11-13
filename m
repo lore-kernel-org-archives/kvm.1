@@ -1,73 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794588004;
-	b=1riRq7uQVo+1jbKxlkRmJTU9zIpGK8yshQCMUoo9q79oVgGBvtHjmHfNr6NFEajXn+7m
-	 Z3sv0W/LpxUW33OJACnsu+V9xrkf3EzYGY/NGbKRkPxVsyqVupY3uvjsgVkkA6a3YbkXR
-	 jHjCj46x6cgwqEukOALj17JJdJdWUk+IDSGyzND7ErIc7ky9jJtAlvUvRB+ZIzLYhEfoX
-	 Wswf4LPn79EP4/qG2+iGV2DjIcVgPCrp7uorczIgUXw3yRyx+k5WHndlnsR3zT+0wk1LB
-	 vxsB0Tl2W2/vR+m1LAECQ/BN6E0nPXB8hIg/uB/AKhyjb+fw7dLkBb8nKHqawsQz8fA==
+	t=1794588022;
+	b=mS+7ehkpGcaN9BmTbtCD22Wf6UUtB7oK6lJhhMmJeJdDo+gZCqN/ed4wC1VvqaKhxoO8
+	 rYseBNr/VLb6XjCQ+IZI9w0BbXV0+N2C+E1Y3j63zntFNW46LL2WszjrchHHUEPeAHib6
+	 4eCXFpkDDMFr+fhXIodiQuE5av+zgLgTVrBY+qI1BrCrkDDtHGep+tMbuy0TBK0f0g01b
+	 bm4+9P755xJkMUE5E5Zu3RIljWqkAognujvhxGA9OB4+kbCgVMKV3f5r+NynhdVYRLWfV
+	 41HbsVLX4S3ysWW7hsXE8obLZ8Qc79OytcOzQAtGysfix1gVqS3/F5lXWcpQLAM0pQA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794588004;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Reply-To:Date:
-	 Mime-Version:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=TuZxlvr1d/lwL17oni3PHFgqYaIIh/QyBPbeAfUOfRQ=;
-	b=McbXRmTRg4Wh2xuxXbVbPOW42X3WTImHb2YaMPsq0543AHHoqN+mDmfFsfqwSlQ3n2Ee
-	 fBT5ehwYznIu/ohchiTYH/01Sg7/xI3jS4CtLP2ZtMgUresKyAmcENbGTD62CpC/zAOPK
-	 RWPL9L/kbGUyeZeAy0PVHjre5YUIFqC+6RnZg56PKf4ex8jYiJsBjv2RD4LjziiaKI0oV
-	 EO0jdRPTM5kVZnx+c/A2gkZFo0Y63IpIAUd/mWjat2Mct+yEvI7e/s/ghYX0muMyuqeOt
-	 cr0C51qt92aPU1BYuf4s21JVajbgFkuwsmW050KYwPrlOs2EJTLcZmzLQDEHPHodBBA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794588022;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=4hrO+e6psKT0G9cQKzDJd2tFoUjCcpj/bUYIzTJU/8M=;
+	b=r8yYnhAOjfSMZiKTK99Bi+cZrbxEJxElt/3BWbI27JNJeJ1Mv1EDPKQpBwEw79J9C8Eq
+	 5qYR0xwS+y98P1r6koOJg/UCvSGUxO0nCBsccPPd6ueBZQqAuGJBSBnrwuDnKgFEDbIOf
+	 nDMq+njMCIKFX5/fGgpZaRsWvIHdhs1fDoq9Rmh9F5suNoE9x0f9yDp8riRwObA9yKc7c
+	 Ui4p/NcJQxdYaZubhLCLnhMkSR5W0q97cVNwqdjJa8UrmkrjhkDpD+Ql9cTPgelfxay8w
+	 c6FlF65KUVLRJYVmmX/yWk5bjBe0TskWpUvdg1g7BysLXwLONbJpQK+0rYgeTRyq/ig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=CWoFi8DY;
-	arc=none smtp.remote-ip=209.85.214.197
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1717606A33A
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 16:40:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D1717606A33A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=XPh8lR4z;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F93960A263B;
+	Fri, 13 Nov 2026 16:40:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F93960A263B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=CWoFi8DY
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2ed05b3eaecso8525025ad.1
-        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 08:40:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794588003; x=1795192803; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=TuZxlvr1d/lwL17oni3PHFgqYaIIh/QyBPbeAfUOfRQ=;
-        b=CWoFi8DY2WdbKaklbxd2Apgym/0rgCC36RqT3hFpKSdsGy4iCcm0vOC0gYUb29BMTq
-         yImS8SSNMdZh80bN6bRDVFkk+S0jXN7lJFnRJ1q3hhbL9m5WzNZ352zjq5N6pgjIPGd5
-         xBLjAsRwAM0M+b+Jazd0MTVykR7a5hmeJ5n8TSZj+1QatRhPxGi97rqpl7xYTU7PqiEv
-         F7uF5v1ix/T81yb2wBan3vs+ld8iOgX+qKMOS5aKMJLQOzfYvRciTz40TvgQEuX3CZnO
-         CT79FF/DrTDJxTTFdx5iYG11bDi84P52tfTvunpQpQdALd0jFOzspm7LLwLXMC/ol7dM
-         3IEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794588003; x=1795192803;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=TuZxlvr1d/lwL17oni3PHFgqYaIIh/QyBPbeAfUOfRQ=;
-        b=fuAyAa5ThatTVneTjUwFv9Hr+b7/go/EDyuVHUQZ0gHyGMdtrvBwtDXtD+1zaq/YsH
-         BpWtWvgL6BuSJJA9n2S88un2qzqEZeotDpCxM9G9WPirYmTcnxxjeZJsuDD+lzTpYC+g
-         R4X2z98iy+HdUl/8qAh692FEdKSCsqKOrHavl0pgSPwL82D3qfa3jZyAWSHQzySjJbcx
-         qgNYnJ1CvvqSMUw8P44/RtnzKPCDUstniBLTAb/zi/Wzpy5HFpberKpjUR+gHmaNmqTW
-         C3txkLcIKE4KHAHZtjsiHa1VYtYa7b3znKYpuDk3hrw1Lw9qpu4KzjJSYuqnWTMpC2r/
-         urnQ==
-X-Forwarded-Encrypted: i=1; AL+hErGZIHbjth+Fc2GFsXupU9lLZDvT47F1sdWjVGyIaGvpM7oidEr/43pvT3NYFhvi3tuE1a8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8F2A2dnsaPtwEXPYJ3a28DBvYPnT7uBJ63w0o9X+iROs8xyB5g
-	PFtblWL5trPdMYT9++cXqGUUdyWy+zj7yJ6TNeMZ9+51AbwC6JuqQEvaHvJbnPgPg423lyUhBsn
-	oZ5uUiQ==
-X-Received: from plri11.prod.google.com ([2002:a17:903:32cb:b0:2e9:4bf0:5f17])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:230b:b0:2df:90d4:7847
- with SMTP id d9443c01a7336-2ee0dee40a0mr27467255ad.35.1794588002900; Fri, 13
- Nov 2026 08:40:02 -0800 (PST)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 13 Nov 2026 08:40:00 -0800
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=XPh8lR4z
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C2191143D;
+	Fri, 13 Nov 2026 08:40:16 -0800 (PST)
+Received: from [10.0.129.47] (e122027.cambridge.arm.com [10.0.129.47])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 781C93F673;
+	Fri, 13 Nov 2026 08:40:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794588019; bh=1zidGf96h2mILbQOIPvQvH9eE0PFWLwBTyMugXxtTL4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XPh8lR4z4sGOr6mc4nQmdxCkus7p7kE/+H+/rLmcfw3HxIpswM+njx6Syluzaz/ze
+	 05XTW09R9RvMuuTRSunsyOCczODX5k9giTJzyZxEZLII0ZN+dyCy/UIr/JAQ0N/IVq
+	 kdwS1SAyCKpQDILcvHcFg8Q5vEdb44ljRsxG/D8k=
+Message-ID: <adc28bdc-ced8-4627-8ec7-23b767e7d445@arm.com>
+Date: Fri, 13 Nov 2026 16:40:12 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,79 +52,182 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
-Message-ID: <20261113164000.467175-1-seanjc@google.com>
-Subject: [PATCH v3] KVM: Skip gfn-based MMU notifier invalidations for
- guest_memfd-only memslots
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Lorenzo Stoakes <ljs@kernel.org>, Naveen N Rao <naveen@kernel.org>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 07/12] KVM: arm64: CCA: Tear down RTTs
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Kohei Enju <enju.kohei@fujitsu.com>
+References: <20261111145758.217946-1-steven.price@arm.com>
+ <20261111145758.217946-8-steven.price@arm.com>
+ <e1690e53-70fb-47fe-bd06-4758b1e196d2@arm.com>
+ <6c362b9e-6ac3-4cbb-8e9d-d666f87ef8c2@arm.com>
+ <020d220a-6f21-46a9-a0d6-51e56a7b3a5a@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <020d220a-6f21-46a9-a0d6-51e56a7b3a5a@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Alexandru Elisei <alexandru.elisei@arm.com>
+On 13/11/2026 16:26, Suzuki K Poulose wrote:
+> On 13/11/2026 15:05, Steven Price wrote:
+>> On 13/11/2026 01:04, Suzuki K Poulose wrote:
+>>> On 11/11/2026 14:57, Steven Price wrote:
+>>>> The RMM owns the stage 2 page tables for a realm, and KVM must request
+>>>> that the RMM creates/destroys entries as necessary. The physical pages
+>>>> to store the page tables are delegated to the realm as required, and
+>>>> can
+>>>> be undelegated when no longer used.
+>>>>
+>>>> Creating new RTTs is the easy part, tearing down is a little more
+>>>> tricky. The result of realm_rtt_destroy() can be used to effectively
+>>>> walk the tree and destroy the entries (undelegating pages that were
+>>>> given to the realm).
+>>>>
+>>>> Tear down a created Realm whether it is still new or has been
+>>>> activated.
+>>>> Unmap the Realm IPA space once during stage-2 teardown. Defer
+>>>> destruction of non-root RTTs until final Realm destruction, after
+>>>> REALM_TERMINATE and before destroying the RD; root RTTs remain until
+>>>> the
+>>>> RD has gone away.
+>>>>
+>>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>>>
+> 
+> ...
+> 
+>>>>      #endif /* __ASM_KVM_RMI_H */
+>>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>>>> index 9df3f8d5b4ef..be014f6c00e7 100644
+>>>> --- a/arch/arm64/kvm/mmu.c
+>>>> +++ b/arch/arm64/kvm/mmu.c
+>>>> @@ -1145,9 +1145,25 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct
+>>>> kvm_s2_mmu *mmu, unsigned long t
+>>>>        return err;
+>>>>    }
+> 
+> ...
+> 
+>>>>    void kvm_uninit_stage2_mmu(struct kvm *kvm)
+>>>>    {
+>>>> -    kvm_free_stage2_pgd(&kvm->arch.mmu);
+>>>> +    if (kvm_realm_is_created(kvm))
+>>>> +        kvm_realm_uninit_stage2(&kvm->arch.mmu);
+>>>> +    else
+>>>> +        kvm_free_stage2_pgd(&kvm->arch.mmu);
+>>>
+>>> We added kvm_free_stage2_pgd() from kvm_destroy_realm() for Realms in
+>>> the previous patch. Should we move that here since, this is where we
+>>>
+>>> 1. Deal with tearing down stage2
+>>> 2. And more importantly we are skipping it for Realms.
+>>
+>> I'm not quite sure what you're asking for here. We can't free the stage2
+>> PGD while the realm is existing (because the RMM has the pages) - so we
+>> defer it.
+> 
+> I understand. My point is, we are deferring the stage2 free for Realm
+> in this patch, without explicitly showing where it is done. We have
+> introduced that as part of kvm_destroy_realm() in Patch 6.
+> 
+> My recommendation is to add kvm_free_stage2_pgd() to kvm_destroy_realm()
+> in this patch, where we are showing when this is deferred to. e.g.,
+> this patch functionally leaves the reader with no clue when this is
+> actually freed.
+> 
+> Does that make sense ?
 
-Don't invalidate gmem-only memslots when responding to MMU notifier
-invalidations, as the entire point of gmem-only memslots is so that KVM
-doesn't need a VMA to install mappings into KVM's MMU.  Specifically,
-page faults are resolved by going straight to guest_memfd, using the gfn
-and the associated memslot's gmem.file.  I.e. whether or not userspace
-happens to have valid mappings to the same gmem instance is irrelevant,
-as are any invalidations for those mappings.
+Ah, yes move the code between patches - I thought you were suggesting
+somehow moving the code between functions (hence I was very confused).
 
-Note!  The exception is KVM's gfn_to_pfn_cache implementation which isn't
-yet wired up to pull pfns directly from guest_memfd, i.e. still relies on
-userspace mappings/VMAs and thus need to be invalidated, e.g. to ensure KVM
-doesn't retain a kernel mapping+pointer to PRIVATE memory.  However, as of
-commit da260bcb56fe ("KVM: pfncache: use a dedicated invalidation sequence
-for cache refresh"), GPC invalidation no longer relies on memslot lookups,
-because GPCs also support HVA-based mappings.  I.e. KVM *must* be able to
-detect and handle relevant MMU notifier invalidations even if there is *no*
-memslot whatsoever.
+Yes, I can move the kvm_destroy_realm() code changes into this patch.
 
-In addition to the obvious performance benefits, avoiding unnecessary and
-spurious SPTE zaps and TLB flushes will allow KVM to support features like
-ARM's Statistical Profiling Extension (SPE)[1] and x86's Secure AVIC[2],
-both of which rely on the pages *never* being unmapped from the stage-2
-page tables.
+Thanks,
+Steve
 
-Link: https://lore.kernel.org/all/20260903160623.315525-1-alexandru.elisei@arm.com [1]
-Link: https://lore.kernel.org/all/cover.1783490022.git.naveen@kernel.org [2]
-Cc: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Cc: Naveen N Rao (AMD) <naveen@kernel.org>
-Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
-[sean: rewrite changelog to capture the new gpc behavior]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
-
-v3: v1, but with a different changelog.
-
-v2: https://lore.kernel.org/all/20260714160411.302386-1-alexandru.elisei@arm.com
-
-v1: https://lore.kernel.org/all/20260615155244.183044-1-alexandru.elisei@arm.com
-
- virt/kvm/kvm_main.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index cf4cb586f140..599dea22afb8 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -601,6 +601,10 @@ static __always_inline kvm_mn_ret_t kvm_handle_hva_range(struct kvm *kvm,
- 			unsigned long hva_start, hva_end;
- 
- 			slot = container_of(node, struct kvm_memory_slot, hva_node[slots->node_idx]);
-+
-+			if (kvm_slot_has_gmem(slot) && kvm_memslot_is_gmem_only(slot))
-+				continue;
-+
- 			hva_start = max_t(unsigned long, range->start, slot->userspace_addr);
- 			hva_end = min_t(unsigned long, range->end,
- 					slot->userspace_addr + (slot->npages << PAGE_SHIFT));
-
-base-commit: d21eef2084a9af87ac2a783bc7c2b175ba114e4e
--- 
-2.56.1.703.gf848ed807c-goog
+> 
+>>
+>>>>        kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
+>>>>    }
+>>>>    diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+>>>> index 69c628cfb6c7..b904e6541fb0 100644
+>>>> --- a/arch/arm64/kvm/rmi.c
+>>>> +++ b/arch/arm64/kvm/rmi.c
+>>>> @@ -11,16 +11,193 @@
+>>>>    #include <asm/kvm_pgtable.h>
+>>>>    #include <asm/virt.h>
+>>>>    +static inline unsigned long rmi_rtt_level_mapsize(int level)
+>>>> +{
+>>>> +    if (WARN_ON(level > KVM_PGTABLE_LAST_LEVEL))
+>>>> +        return PAGE_SIZE;
+>>>> +
+>>>> +    return (1UL << ARM64_HW_PGTABLE_LEVEL_SHIFT(level));
+>>>> +}
+>>>> +
+>>>
+>>> We agreed to use kvm_granule_size() instead of this ?
+>>>
+>>> https://lore.kernel.org/all/cb183290-3fee-4535-aa3e-5cc172c2323a@arm.com
+>>
+>> That was a screw-up when I was squashing fixes back in - the next patch
+>> removes the code. I'll fix this up in the next version so it never
+>> appears. Thanks for pointing it out.
+>>
+>>>>    u32 kvm_rmm_ipa_limit(void)
+>>>>    {
+>>>>        return u64_get_bits(rmi_feat_reg(0),
+>>>> RMI_FEATURE_REGISTER_0_S2SZ);
+>>>>    }
+>>>>    +static int get_start_level(struct realm *realm)
+>>>> +{
+>>>> +    return 4 - max(2, stage2_pgtable_levels(realm->ia_bits));
+>>>
+>>> I don't think we need this "max()". ia_bits is guaranteed to be
+>>>> = 32bit (ARM64_MIN_PARANGE_BITS, see kvm_init_ipa_range()), implying
+>>> that we have at least 2 levels on all page sizes.
+>>
+>> Ah, very true - Sashiko complained, but I hadn't noticed
+>> ARM64_MIN_PARANGE_BITS provided an effective minimum. I'll remove the
+>> max() and add a comment.
+>>
+>>>> +}
+>>>> +
+>>>> +static void free_rtt(phys_addr_t phys)
+>>>> +{
+>>>> +    kvm_account_pgtable_pages(phys_to_virt(phys), -1);
+>>>> +    if (rmi_free_delegated_page(phys))
+>>>> +        kvm_account_pgtable_pages(phys_to_virt(phys), 1);
+>>>
+>>> Is there a reason why remove the account before freeing ? Could we do
+>>> this after we have reclaimed it ?
+>>
+>> Sashiko again:
+>>
+>>> Does calling kvm_account_pgtable_pages() after rmi_free_delegated_page()
+>>> access the page after it has already been freed and uncharged from its
+>>> memcg?
+>>
+>> Basically the problem is that rmi_free_delegated_page() frees the page
+>> back to the allocator. So doing the account after freeing means that
+>> technically the page could have been reused.
+> 
+> Thanks, for the explanation, that makes sense.
+> 
+> Cheers
+> Suzuki
+> 
 
