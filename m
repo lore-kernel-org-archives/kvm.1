@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794594897;
-	b=PyU5ppXIJ3CM5GdXr4dhvPd6JaAqmac6GjYwX0nN2r6tN/8dh3GBOoFVZh1cXtwmxJNy
-	 hWFbSXmdAdFs4jUU7pm2If228dEOe29IFDQRbhVEf/1z8ohNb/gUmiA8CSkyKrlhMiPrU
-	 cmrpmG5vT23xn1VV7Dnp8qo50hNTXWNaQbfPFcqWGraXRvziKxj/oA1TeRjOxuZfStDcJ
-	 MkwR2NxjtJ86jaEuiQWtTEA99eDbGXylbFwPIk51RnQvEDjj8KJvyICQ9TsPwqSP16UGr
-	 Kg9tW5hxXSYdX8FqYsu2QRfSnNhCArMgR8jMAKwaKPIYHnyTxleqEJ3tbv4oRqNMrxw==
+	t=1794594892;
+	b=cSRKw+AUVD4VZQMuPuArZEeJBJuwz67DEaowY9OxqRV6po7bbiLHPnV4Fc0DcwKf7xIZ
+	 Vzf8pFfFL1aGlu5MzZDx4z+6GbR3Ig0ivHYxUCGBBMiuZs4kSagwotzKYhlU+YBZ6kTD7
+	 B8MnQqqJW88pTjjXjxgnMyafgDasEzXDXeVoIKelYFzoCImcu+YYA+0ZdI0AglJm080kc
+	 PkkOcT0yT2rMa3yx5sA6MRfWTMYCFKJq0oMktErnv5kJnVXUhHjDQj9ALpY+nnTsqR8er
+	 Rl+FpDzfoKg/HSxqqPXjkOXhDn/NAkFXNRiP9cuCspzwlQQz21985l4HtdqPaobnE0Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794594897;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794594892;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=+/G3xbUKgtqZ3Kc6MYvEXpKu+pwk0E+3Sd8UbxnvfZM=;
-	b=OD8jOchYhtqVew4clXnjF//su54EqWj8+gqGucKgLIbhmcMHZ+7L45Bu9/qKUeMMcGZr
-	 hnP8jv6VWWjsuKKpVT0bc/VMKV0YQ8EfLd7H6on6lDQDutj1jnt+K3jlDX8LY2R7kSLLO
-	 4Ca+c6C60q0YS19tcJAAsdjddBhv9ZfxosHUDc/SGDfOtmohWf7DXdAjx8xX8OeW2Jj19
-	 Al058OjLf/6I0YiUTsMT3ZNrw7glfbUt5DGMF2Rhr4Y6xGE7MMTxeJVfioUWSpX1MIMnh
-	 iu0+2A2jt8PK5jaAQuar2wi+W6/XVyW73C0DMRDM0ZeN2j+NQnUzc1NRNcHKPfqNpAw==
+	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
+	bh=R9iXh39dZZCE3gaRA9kMFf1oh9f6gEsCdkgy+uiqVUs=;
+	b=XJhHbuMCNE67pYl3/eXIkhq7G3obUwRQDG+wPCPlGG3MafVnJOSRYKEA/Gj0p+i1/eLW
+	 aW1QiednA/W7Z+z2JlvvRhzvxeh7u4jJ7xW5YUZM/6uHDc/vbJ/kJiXH8FwOtOwOoQIvR
+	 BBpFnWI0+C4lRCmwUWEioXe9xRN6Pn3FQc2BYs63KJoMcBiFoBTCLm7H9Kj0Vg3yN8TyY
+	 RTUyuZud9s0E3VRo94rkQCauZyyycZUE8u9BvSl8f831VP1+DzFGMFbkAkuo4onkgM+u5
+	 WvVRpWqbAbACzxHhJ8x/PqnvoVeVtKblHeJ4P+moVh0oEnQrOkyETEcMm5tehxZa1iQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Sqq0E32Y;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=auwbJd4Z;
 	arc=none smtp.remote-ip=90.155.50.34
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25188606A886;
-	Fri, 13 Nov 2026 18:34:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25188606A886
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A49C606A336;
+	Fri, 13 Nov 2026 18:34:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A49C606A336
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Sqq0E32Y
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=auwbJd4Z
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description;
-	bh=+/G3xbUKgtqZ3Kc6MYvEXpKu+pwk0E+3Sd8UbxnvfZM=; b=Sqq0E32YiCWzjHiRxTzbsandNa
-	F2xHaAcfCvEeRyXAkjrB3WfebpbNz0T+sk/oiOYpqDEmp/YGxHr1zUon0wpl48i9leGByBOtTuD5O
-	OdsDDUMqBKA0o67fKCOCWyBcFyZsQ6+cAuTJ2eBxtdr54Fyjnc6rfIbGtb4NpJopsz7fbzKoXNmZt
-	rc/xxOLaX98RdnxkxSBXXJANXRGSVjaFAmpOC86s9LMwdC+1GFEsC4M/ba4jyrs7WXCrjiOint0Ps
-	aZCiiC2Ri6YB+GgEmhr/wiDlnF/pZuVYVMfWlcMyaYwGCMWrfDErAPDe8p4qwkYO6TzCHV94mC3Ju
-	skktTxUw==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=R9iXh39dZZCE3gaRA9kMFf1oh9f6gEsCdkgy+uiqVUs=; b=auwbJd4Zrq/Bkqepherrrz4c6g
+	UIG2NN7ORU9r5BNxmoY6EWoez6jMr4fJuJOM+vtk8SYuWrEWxt5Z3BU6yoswe1kvXc1283dwHb0eU
+	0zbparAVG+OUaWQ0Ovn1WxdJDIjzCjKocgnWejWlfzvBCxfPXxkDukaTpFwf3fV9mSHSUwDkCUcIs
+	R49aSyaA7oPYulr4x1Y9jjxL3sPxWiLG83l1nG1Z5cKRah0WK66Lil8iKehkqy4OEUdC62j8ragjU
+	IZAK4ijDPIAqcpyVeX4wu7elqljcMe9iMf1V/658KrRuBXHjBNvM8+CTWq/xrazvoImQEkUMXNy7h
+	xft87+VA==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRw6s-00000004gQl-1apz;
+	id 1xRw6s-00000004gQM-0Toj;
 	Fri, 13 Nov 2026 18:34:50 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xRw6s-00000000Lts-0dk4;
-	Fri, 13 Nov 2026 18:34:50 +0000
+	id 1xRw6r-00000000LtS-3pFO;
+	Fri, 13 Nov 2026 18:34:49 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -71,9 +71,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Mushahid Hussain <hmushi@amazon.co.uk>,
 	Sriram Nambakam <snambakam@linux.microsoft.com>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [RFC PATCH v2 20/31] KVM: x86: hyperv: Honour in_vtl in synthetic cluster IPIs
-Date: Fri, 13 Nov 2026 18:34:36 +0000
-Message-ID: <20261113183448.84094-21-dwmw2@infradead.org>
+Subject: [RFC PATCH v2 14/31] KVM: VMX: Report GVA and instruction bytes on plane-protection faults
+Date: Fri, 13 Nov 2026 18:34:30 +0000
+Message-ID: <20261113183448.84094-15-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261113183448.84094-1-dwmw2@infradead.org>
 References: <20261113183448.84094-1-dwmw2@infradead.org>
@@ -86,228 +86,184 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-A guest using VSM names the target VTL of HvCallSendSyntheticClusterIpi
-and HvCallSendSyntheticClusterIpiEx in the input's in_vtl field (TLFS
-hv_input_vtl, the byte after the vector). KVM treats that byte as
-reserved: the fast form of HvCallSendSyntheticClusterIpi fails any
-input with bits above 31 set with HV_STATUS_INVALID_HYPERCALL_INPUT,
-and the other forms ignore it.
+A plane memory-protection fault is reflected to userspace as
+KVM_EXIT_MEMORY_FAULT, and a VSM VMM turns it into the TLFS GPA
+intercept message for the higher VTL. That message carries the
+guest-linear address and the faulting instruction's length and bytes,
+none of which the exit reports.
 
-Decode in_vtl in both the memory and the fast forms and deliver the IPI
-into that plane's twin of each targeted VP, or into the sender's own
-plane when use_target_vtl is clear. A VP with no twin in the target
-plane is skipped. Reserved bits 7:5 of in_vtl are rejected with
-HV_STATUS_INVALID_HYPERCALL_INPUT before anything is delivered.
+Extend memory_fault with 'gva', 'insn_len' and 'insn_bytes', and a
+KVM_MEMORY_EXIT_FLAG_GVA_VALID flag qualifying 'gva'. On VMX, fill them
+in handle_ept_violation() while the exit state is still at hand: the
+GVA from GUEST_LINEAR_ADDRESS when the exit qualification says it is
+valid, the length from VM_EXIT_INSTRUCTION_LEN (architecturally
+undefined for EPT violations, but provided by the hardware), and the
+bytes read at the linear RIP unless the access was the instruction
+fetch itself. The bytes are best effort and zeroed if the read fails.
+The plane's protections can refuse that read as well (a protected code
+or page-table page is the normal VSM layout), and a refused read
+prepares a memory-fault exit of its own; save the exit being reported
+around the read so the read cannot replace it.
 
-A target VTL above the caller's is refused with HV_STATUS_ACCESS_DENIED,
-also for an empty EX set.
-Under the VTL privilege model a VTL may interrupt its own level and
-lower ones, but never a more privileged one (TLFS §15.9). The target
-plane is therefore always at or below the caller's, and so below
-KVM_MAX_PLANES.
-
-struct hv_send_ipi and struct hv_send_ipi_ex are shared with the Linux
-guest code, which now clears in_vtl and the remaining reserved bytes
-separately.
-
-The target twin is looked up without the locks that serialise twin
-creation, so read the slot with READ_ONCE() to pair with its
-publication.
+The new fields fit in the existing kvm_run union and are documented as
+present on kernels that advertise KVM_CAP_PLANE_MEMORY_OVERLAYS.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- arch/x86/hyperv/hv_apic.c   |  3 +-
- arch/x86/kvm/hyperv.c       | 69 ++++++++++++++++++++++++++++++++++---
- include/hyperv/hvgdk_mini.h |  3 +-
- include/hyperv/hvhdk_mini.h |  3 +-
- 4 files changed, 70 insertions(+), 8 deletions(-)
+ Documentation/virt/kvm/api.rst | 14 ++++++++
+ arch/x86/kvm/vmx/vmx.c         | 63 +++++++++++++++++++++++++++++++++-
+ include/uapi/linux/kvm.h       |  6 ++++
+ 3 files changed, 82 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/hyperv/hv_apic.c b/arch/x86/hyperv/hv_apic.c
-index 95f1782d1e17..3655b744395d 100644
---- a/arch/x86/hyperv/hv_apic.c
-+++ b/arch/x86/hyperv/hv_apic.c
-@@ -125,7 +125,8 @@ static bool __send_ipi_mask_ex(const struct cpumask *mask, int vector,
- 		goto ipi_mask_ex_done;
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index 99e18956f249..f1c64d721570 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -7721,9 +7721,15 @@ spec refer, https://github.com/riscv/riscv-sbi-doc.
+   #define KVM_MEMORY_EXIT_FLAG_WRITE    (1ULL << 1)
+   #define KVM_MEMORY_EXIT_FLAG_EXEC     (1ULL << 2)
+   #define KVM_MEMORY_EXIT_FLAG_PRIVATE	(1ULL << 3)
++  #define KVM_MEMORY_EXIT_FLAG_GVA_VALID	(1ULL << 4)
+ 			__u64 flags;
+ 			__u64 gpa;
+ 			__u64 size;
++			/* set on plane-protection faults when available */
++			__u64 gva;
++			__u32 insn_len;
++			__u8  insn_bytes[16];
++			__u32 pad;
+ 		} memory_fault;
  
- 	ipi_arg->vector = vector;
--	ipi_arg->reserved = 0;
-+	ipi_arg->in_vtl.as_uint8 = 0;
-+	memset(ipi_arg->reserved, 0, sizeof(ipi_arg->reserved));
- 	ipi_arg->vp_set.valid_bank_mask = 0;
+ KVM_EXIT_MEMORY_FAULT indicates the vCPU has encountered a memory fault that
+@@ -7736,6 +7742,14 @@ describes properties of the faulting access that are likely pertinent:
+  - KVM_MEMORY_EXIT_FLAG_PRIVATE - When set, indicates the memory fault occurred
+    on a private memory access.  When clear, indicates the fault occurred on a
+    shared access.
++ - KVM_MEMORY_EXIT_FLAG_GVA_VALID - When set, 'gva' holds the faulting guest
++   virtual address.
++
++The 'gva', 'insn_len' and 'insn_bytes' fields exist only on kernels
++which advertise KVM_CAP_PLANE_MEMORY_OVERLAYS (see section 8.48).  On
++plane memory-protection faults, 'insn_len' and 'insn_bytes' carry a
++best-effort copy of the faulting instruction when KVM could fetch it;
++an 'insn_len' of 0 means no instruction bytes are available.
+ 
+ Note!  KVM_EXIT_MEMORY_FAULT is unique among all KVM exit reasons in that it
+ accompanies a return code of '-1', not '0'!  errno will always be set to EFAULT
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 4e7eec9a0625..b5aa7110bf36 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -70,6 +70,7 @@
+ #include "vmcs12.h"
+ #include "vmx.h"
+ #include "x86.h"
++#include "kvm_emulate.h"
+ #include "x86_ops.h"
+ #include "smm.h"
+ #include "tss.h"
+@@ -6050,6 +6051,7 @@ static int handle_ept_violation(struct kvm_vcpu *vcpu)
+ {
+ 	unsigned long exit_qualification = vt_get_exit_qual(vcpu);
+ 	gpa_t gpa;
++	int ret;
  
  	/*
-diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index 3494f3b29809..8a33127169fa 100644
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -2683,7 +2683,8 @@ static s64 kvm_hv_flush_tlb(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
- }
+ 	 * EPT violation happened while executing iret from NMI,
+@@ -6076,7 +6078,66 @@ static int handle_ept_violation(struct kvm_vcpu *vcpu)
+ 	if (unlikely(allow_smaller_maxphyaddr && !kvm_vcpu_is_legal_gpa(vcpu, gpa)))
+ 		return kvm_emulate_instruction(vcpu, 0);
  
- static void kvm_hv_send_ipi_to_many(struct kvm *kvm, u32 vector,
--				    u64 *sparse_banks, u64 valid_bank_mask)
-+				    u64 *sparse_banks, u64 valid_bank_mask,
-+				    int target_plane)
- {
- 	struct kvm_lapic_irq irq = {
- 		.delivery_mode = APIC_DM_FIXED,
-@@ -2693,16 +2694,44 @@ static void kvm_hv_send_ipi_to_many(struct kvm *kvm, u32 vector,
- 	unsigned long i;
- 
- 	kvm_for_each_vcpu(i, vcpu, kvm) {
-+		struct kvm_vcpu *target = vcpu;
+-	return __vt_handle_ept_violation(vcpu, gpa, exit_qualification);
++	ret = __vt_handle_ept_violation(vcpu, gpa, exit_qualification);
 +
- 		if (sparse_banks &&
- 		    !hv_is_vp_in_sparse_set(kvm_hv_get_vpindex(vcpu),
- 					    valid_bank_mask, sparse_banks))
- 			continue;
- 
-+		/*
-+		 * TLFS: the IPI targets the VPs' in_vtl (or the sender's
-+		 * VTL): deliver into that plane's APIC.
-+		 */
-+		if (target_plane) {
-+			target = READ_ONCE(vcpu->common->vcpus[target_plane]);
-+			if (!target)
-+				continue;
++	/*
++	 * A plane-protection fault reflected to userspace becomes a TLFS
++	 * GPA intercept message, which carries the guest-linear address
++	 * and the faulting instruction's bytes.  Harvest them while the
++	 * exit state is still at hand.
++	 */
++	if (ret == -EFAULT &&
++	    vcpu->run->exit_reason == KVM_EXIT_MEMORY_FAULT &&
++	    (vcpu->run->memory_fault.flags & (KVM_MEMORY_EXIT_FLAG_READ |
++					      KVM_MEMORY_EXIT_FLAG_WRITE |
++					      KVM_MEMORY_EXIT_FLAG_EXEC))) {
++		unsigned int len;
++
++		if (exit_qualification & EPT_VIOLATION_GVA_IS_VALID) {
++			vcpu->run->memory_fault.gva =
++				vmcs_readl(GUEST_LINEAR_ADDRESS);
++			vcpu->run->memory_fault.flags |=
++				KVM_MEMORY_EXIT_FLAG_GVA_VALID;
 +		}
++		/*
++		 * Architecturally undefined for EPT violations, but the
++		 * hardware provides the faulting (for a fetch: the
++		 * fetching) instruction's length here, and the TLFS
++		 * message carries exactly that.
++		 */
++		len = vmcs_read32(VM_EXIT_INSTRUCTION_LEN);
++		len = min_t(unsigned int, len,
++			    sizeof(vcpu->run->memory_fault.insn_bytes));
++		vcpu->run->memory_fault.insn_len = len;
++		if (!(exit_qualification & EPT_VIOLATION_ACC_INSTR)) {
++			typeof(vcpu->run->memory_fault) fault =
++				vcpu->run->memory_fault;
++			u32 exit_reason = vcpu->run->exit_reason;
++			struct x86_exception e;
++			int r;
 +
- 		/* We fail only when APIC is disabled */
--		kvm_apic_set_irq(vcpu, &irq, NULL);
-+		kvm_apic_set_irq(target, &irq, NULL);
- 	}
++			/*
++			 * kvm_read_guest_virt() takes a linear address: RIP
++			 * is CS-relative, and the two coincide only when
++			 * CS.base is zero (64-bit mode, or a flat 32-bit
++			 * code segment).
++			 */
++			r = kvm_read_guest_virt(vcpu, kvm_get_linear_rip(vcpu),
++						fault.insn_bytes, len, &e);
++			/*
++			 * The plane's protections can refuse the read too (a
++			 * protected code or page-table page is the normal VSM
++			 * layout), and a refused read prepares a memory-fault
++			 * exit of its own.  Report the fault that was taken.
++			 */
++			vcpu->run->exit_reason = exit_reason;
++			vcpu->run->memory_fault = fault;
++			if (r)
++				memset(vcpu->run->memory_fault.insn_bytes, 0,
++				       sizeof(vcpu->run->memory_fault.insn_bytes));
++		}
++	}
++	return ret;
  }
  
-+/*
-+ * TLFS: in_vtl bit 4 selects an explicit target VTL.  A VTL may interrupt
-+ * its own level and lower ones, never a higher one (TLFS 15.9, "VTL
-+ * Interrupt Management": each VTL sends and receives interrupts without
-+ * interference from a less secure VTL).  Returns the target plane, or -1
-+ * for a target above the caller's.
-+ */
-+static int hv_send_ipi_target_plane(struct kvm_vcpu *vcpu, u8 in_vtl)
-+{
-+	if (!(in_vtl & 0x10))
-+		return vcpu->plane_level;
-+	if ((in_vtl & 0xf) > vcpu->plane_level)
-+		return -1;
-+	return in_vtl & 0xf;
-+}
-+
- static int kvm_hv_send_ipi(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
- {
- 	struct kvm_vcpu_hv *hv_vcpu = to_hv_vcpu(vcpu);
-@@ -2712,6 +2741,8 @@ static int kvm_hv_send_ipi(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
- 	struct hv_send_ipi send_ipi;
- 	u64 valid_bank_mask;
- 	u32 vector;
-+	u8 in_vtl = 0;
-+	int target_plane;
- 	bool all_cpus;
- 	int r;
- 
-@@ -2729,13 +2760,28 @@ static int kvm_hv_send_ipi(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
- 				return HV_STATUS_INVALID_HYPERCALL_INPUT;
- 			sparse_banks[0] = send_ipi.cpu_mask;
- 			vector = send_ipi.vector;
-+			in_vtl = send_ipi.in_vtl.as_uint8;
- 		} else {
- 			/* 'reserved' part of hv_send_ipi should be 0 */
--			if (unlikely(hc->ingpa >> 32 != 0))
-+			if (unlikely(hc->ingpa >> 40 != 0))
- 				return HV_STATUS_INVALID_HYPERCALL_INPUT;
- 			sparse_banks[0] = hc->outgpa;
- 			vector = (u32)hc->ingpa;
-+			in_vtl = (hc->ingpa >> 32) & 0xff;
- 		}
-+
-+		/*
-+		 * Only hv_input_vtl.target_vtl (bits 3:0) and
-+		 * use_target_vtl (bit 4) are defined; reserved_z (7:5)
-+		 * must be zero in every form of the hypercall, before
-+		 * anything is delivered.
-+		 */
-+		if (unlikely(in_vtl & 0xe0))
-+			return HV_STATUS_INVALID_HYPERCALL_INPUT;
-+		target_plane = hv_send_ipi_target_plane(vcpu, in_vtl);
-+		if (target_plane < 0)
-+			return HV_STATUS_ACCESS_DENIED;
-+
- 		all_cpus = false;
- 		valid_bank_mask = BIT_ULL(0);
- 
-@@ -2745,12 +2791,24 @@ static int kvm_hv_send_ipi(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
- 			if (unlikely(kvm_vcpu_read_guest(vcpu, hc->ingpa, &send_ipi_ex,
- 							 sizeof(send_ipi_ex))))
- 				return HV_STATUS_INVALID_HYPERCALL_INPUT;
-+			in_vtl = send_ipi_ex.in_vtl.as_uint8;
- 		} else {
- 			send_ipi_ex.vector = (u32)hc->ingpa;
- 			send_ipi_ex.vp_set.format = hc->outgpa;
- 			send_ipi_ex.vp_set.valid_bank_mask = sse128_lo(hc->xmm[0]);
-+			in_vtl = (hc->ingpa >> 32) & 0xff;
- 		}
- 
-+		/*
-+		 * As above: hv_input_vtl bits 7:5 are reserved, and a target
-+		 * VTL above the caller's is refused even for an empty set.
-+		 */
-+		if (unlikely(in_vtl & 0xe0))
-+			return HV_STATUS_INVALID_HYPERCALL_INPUT;
-+		target_plane = hv_send_ipi_target_plane(vcpu, in_vtl);
-+		if (target_plane < 0)
-+			return HV_STATUS_ACCESS_DENIED;
-+
- 		trace_kvm_hv_send_ipi_ex(send_ipi_ex.vector,
- 					 send_ipi_ex.vp_set.format,
- 					 send_ipi_ex.vp_set.valid_bank_mask);
-@@ -2783,9 +2841,10 @@ static int kvm_hv_send_ipi(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
- 		return HV_STATUS_INVALID_HYPERCALL_INPUT;
- 
- 	if (all_cpus)
--		kvm_hv_send_ipi_to_many(kvm, vector, NULL, 0);
-+		kvm_hv_send_ipi_to_many(kvm, vector, NULL, 0, target_plane);
- 	else
--		kvm_hv_send_ipi_to_many(kvm, vector, sparse_banks, valid_bank_mask);
-+		kvm_hv_send_ipi_to_many(kvm, vector, sparse_banks,
-+					valid_bank_mask, target_plane);
- 
- ret_success:
- 	return HV_STATUS_SUCCESS;
-diff --git a/include/hyperv/hvgdk_mini.h b/include/hyperv/hvgdk_mini.h
-index 8346b2212c8c..21fcdd085a9b 100644
---- a/include/hyperv/hvgdk_mini.h
-+++ b/include/hyperv/hvgdk_mini.h
-@@ -1356,7 +1356,8 @@ struct hv_input_set_vp_registers {
- /* HvCallSendSyntheticClusterIpi hypercall */
- struct hv_send_ipi {	 /* HV_INPUT_SEND_SYNTHETIC_CLUSTER_IPI */
- 	u32 vector;
--	u32 reserved;
-+	union hv_input_vtl in_vtl;
-+	u8 reserved[3];
- 	u64 cpu_mask;
- } __packed;
- 
-diff --git a/include/hyperv/hvhdk_mini.h b/include/hyperv/hvhdk_mini.h
-index 57b70efe60d4..6ded425453df 100644
---- a/include/hyperv/hvhdk_mini.h
-+++ b/include/hyperv/hvhdk_mini.h
-@@ -465,7 +465,8 @@ struct hv_input_unmap_device_interrupt {
- 
- struct hv_send_ipi_ex { /* HV_INPUT_SEND_SYNTHETIC_CLUSTER_IPI_EX */
- 	u32 vector;
--	u32 reserved;
-+	union hv_input_vtl in_vtl;
-+	u8 reserved[3];
- 	struct hv_vpset vp_set;
- } __packed;
- 
+ static int handle_ept_misconfig(struct kvm_vcpu *vcpu)
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index b260d4d8aa22..25626be71eb7 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -489,9 +489,15 @@ struct kvm_run {
+ #define KVM_MEMORY_EXIT_FLAG_WRITE      (1ULL << 1)
+ #define KVM_MEMORY_EXIT_FLAG_EXEC       (1ULL << 2)
+ #define KVM_MEMORY_EXIT_FLAG_PRIVATE	(1ULL << 3)
++#define KVM_MEMORY_EXIT_FLAG_GVA_VALID	(1ULL << 4)
+ 			__u64 flags;
+ 			__u64 gpa;
+ 			__u64 size;
++			/* set on plane-protection faults when available */
++			__u64 gva;
++			__u32 insn_len;
++			__u8  insn_bytes[16];
++			__u32 pad;
+ 		} memory_fault;
+ 		/* KVM_EXIT_TDX */
+ 		struct {
 -- 
 2.50.1
 
