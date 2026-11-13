@@ -1,75 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794577717;
-	b=zdGUTolxrPtoO9kbQfhUg6dlul4xHtftjhueXdDTawm3M6V9eT2QEPPTMl6ZqkSj1c9m
-	 Ptet2pj7qEFqZfK9NB5tY7tG11iMqnoq+QEYFDvfzM1r8kAEShaXJCTC0UBQhrdIinCQa
-	 lilZw+oFAuzbX4J6PsSYb5H7jw+oBoDUh9WSZUBbkiYqgpep0nz+4yfprxYtSibB8K+22
-	 pRhOECN29tnxdMHZNrHsENXJ9bOPhKzHh1kbVbjGKXdlRKY/KWD+F/WxW1g+WOqfwkinP
-	 FV3rWs95csO+RBzZkqUg5zxeoS0CxgT+nwnQLqliFdaoirWqB/3b1DeuxKr2yn/hlbQ==
+	t=1794577725;
+	b=LLpLrdx7P6KpMvEAaEqyPvLVSo8w48urOKuCvGogYdJaGKhYYR+rc+dSYjKoYZaoC47Z
+	 NLHjCpt1eWtMzxWFr3hH5orb9+Y+vUEq72q41CgXKTuAbNJs3/iAzDTAioUqoLK6SJ7S9
+	 xNYlP+fJYKoChnhOkoCPpedN19LyNrcMedC1T/AZlXPsu3Tu2+UCfOptRpWXMS2SX5kmk
+	 hb7Be5JmZ/N+MPzM2GS8tuiqZNGvBEOKP1H9Y3q1qzyO2Bj6Lgrn4GlJ5MvZbmrVB+XQm
+	 +62wrlSIZpk/wOaopximsxcLQcimUZl9s1eSR0yKkmCWtVYk7tIpKVxGu/mXroegfPw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794577717;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794577725;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=MRt/+n3qpNWP5atygjxku8RJqbtyvsNAOovAuzylIO8=;
-	b=IT6uSCn5yvjnj7YONodOS8ZfIVjaTexPDZB2K5Qm1kv11iNdneEL/DrOjahg0m2t6PjF
-	 +51ydz9eCi6Ofa8WTlcO9kpuBbdiM4epEksrimXO7VqFXgVxYe/hsYuqigFr4xYZMBh0C
-	 5KmTsJjHjcLwLf56vqYsKRah+hvMDrV0s+iC4mgoy73fguAUBg4ohRtLvy2/8oXJFGIaG
-	 yZUtS0lWoX5dKuytmlkJj1zqTXQwlCp6qLK5pGWiQXXQM4GuEBqmcn80VMyqy0ZyJWdLx
-	 0+599XzwyXc+FSaxTX7Py0Xmc9Dw90czpTsetEQiO6NwOce1H/1w3ynSeyiE5RNIGIQ==
+	bh=AP0XwMHx6rTXkwguG+yt2WQaymwZ4K34wFaqNUKI46o=;
+	b=EHXgLGiVJR0/DoxIiUxoJxAV77Uo3kR5P2DcauinEhaRqyF9m2CpV2Yp0Jx9O0OyNsCZ
+	 Z0r6jaaGI1g7848HrG3S0dgU0XOagLCEk5z9bP7LBFjweh9YZpucn1As395On3oxCMat2
+	 Yd01fFUQ28rsMGmTe61WjOCwMe/22JjpqRdYPKheZ+GOdrmcGmZBxxuh6PjlXyRdEUZCR
+	 QE5AxEXmqcjlZVZ8AMT8Rd8D+CskuMJa+KsFXWEUQqLhsZQCcvP74x/23PXvH1yNtiaDZ
+	 pypErV37lrnY7aaAQAtozVK8ge15jNdXW69a3L2+/T87I649tAEASsV77L8sAfK95xQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=H7l3hkV9;
-	arc=none smtp.remote-ip=209.85.216.70
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=TbePuknP;
+	arc=none smtp.remote-ip=209.85.214.197
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEBA606A898
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:48:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2EEBA606A898
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B802606A339
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:48:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1B802606A339
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=H7l3hkV9
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3b17b31c3beso927432a91.2
-        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:48:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=TbePuknP
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2ea446ea8c9so15380405ad.0
+        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:48:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794577716; x=1795182516; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794577724; x=1795182524; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=MRt/+n3qpNWP5atygjxku8RJqbtyvsNAOovAuzylIO8=;
-        b=H7l3hkV9qOW+6vyuUekiTht/VgeOUD9RY6ujvAaePTbWFCrkmneK+9URuCWnM4Idif
-         nch2e3YuYB3HYE8YyaksiOy+sz+dPIgbz2pgiVFDHlKax3ow6perDCufFHfmW8b4vJc+
-         81Lgwz4RGwV/C5+UsUDMJRAsEj1k/FdBFiL1HpUAWQnCSntqNX+L8s0MviUX1ZLfBTmb
-         zO8HD1J4iQSnT12Uc9OvoZ7VZq8/DkBMzIgr+IqbUR+T6swRCGybzhPUoqSoDcGaym3l
-         rEAqkj1YL4C4cFVzh1abOH6LXn7xq3Ql7P2pisU1h3t33RL1M/EAUhhGcxTC+zki18Su
-         42Dg==
+        bh=AP0XwMHx6rTXkwguG+yt2WQaymwZ4K34wFaqNUKI46o=;
+        b=TbePuknPBXYHo+RZyb/1rCrfdAXXS6fpsm+ap+/pFdXQrYWrKDjOsBssrYbBLufTmg
+         lY+BCIW//rftv7ucWnLXH+MfskNv7DTsgpCfyc78TiJHdaWwKJujZI8zt1SxpPhR10zx
+         sKfIZK+8W1eQadSE6tD2pXNkfNomuxkniO+86Qd/pHeD9WQUWih387qiqZzRmsdj3rH0
+         wIrfejzUlGyBGpACqoxDJ7lcYqUk2Nveiqg39x/xGE1X9Uuo1wR3Gw4U6u4A2IPNasre
+         n5NO6A7AT3pcaXVNjYPaXc64OZUI9N2x821Raep6f8ZJ/hXt+/VDq2KLJgfMaiYO7zOu
+         e5gA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794577716; x=1795182516;
+        d=1e100.net; s=20260707; t=1794577724; x=1795182524;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=MRt/+n3qpNWP5atygjxku8RJqbtyvsNAOovAuzylIO8=;
-        b=R9TAAo+b0RdihWY5J7BhLg+CyJRmu1qzdTr1OHdgq2Jqe4fYi5ah4CGc21fmXUQjB5
-         eCGvFZKGloF/lPX60obtZmIsmnXJXTQangy4vLm0MIOTEl0XzuN3q12oeDJtslVFKv/7
-         9OsyGHgKXhloc1MlwEt6q0eYBSt4K/jJ0b954y5FkzH0PlG25+OYKXuIONJaGYNzIwYT
-         UV4fDWrwD5QS8gl83rjJs5m4g7gggUh75VGlPJRpzQCefceQVCeaYiwOANBrQ1h75IG8
-         JfrfBB7X8SsIiWZ+rnT4l7Kn62NbsxGxSG//z6rm9uMKbo01hS7yzOeZaBC4ZlJCjHYh
-         UrjA==
-X-Forwarded-Encrypted: i=1; AL+hErHjrop8oYAI8b2METf77m6p4h2l+/BxNsC7KKwjXzCnfHbDEMGNfQVXv7GDQxmDRxL3eJE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8O0hN/8qaeTzE8dbrpYNoswJJpUiZLHSIxlqv/0OqkfcRXDELx
-	+ytHHUORisvGzg2US27UxOZZ/ZMMBFo4GE5BFWFW9gSivUTKa2v9UAzM12+lAFDUyADAslJvJTm
-	KNyEeXg==
-X-Received: from pjzb15.prod.google.com ([2002:a17:90a:e38f:b0:3a6:d839:55d1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:49:b0:3ac:bfa7:b079
- with SMTP id 98e67ed59e1d1-3b1b081bbd8mr2314779a91.7.1794577716202; Fri, 13
- Nov 2026 05:48:36 -0800 (PST)
-Date: Fri, 13 Nov 2026 05:46:26 -0800
-In-Reply-To: <20261013195358.163375-1-yosry@kernel.org>
+        bh=AP0XwMHx6rTXkwguG+yt2WQaymwZ4K34wFaqNUKI46o=;
+        b=WUYfnW8CeR6BwUXlA/UoT7s2nFO1vcQEGW34sWOMAIcrsKXhr8Pfp4W6P/F218Y/n5
+         XzCYdOhO1KBmvKnAJ6s74QLNpzDZxYHvJQZQH+icJ0NkQblPvaJ5OL0YlG1KYjxFQYu6
+         Qx7WNLcSFM1f75PiwAOnkadHW5w1IVziVflcEmHcVHUq15PjkoUPdfJjYkPtfIS3xIGj
+         mATO/QASiSCeG/dSRNm0SMA5SBZtIXdzKGQX2XAqqPVoLAculjY5i7SrtnP1jsWmZEmQ
+         rfOSYMrANrDKvE/H6joadu377/FAgdKg5sY1sPqNChxL+bPWgZU/mrgwSQrBFCzM/6EV
+         L4Dw==
+X-Forwarded-Encrypted: i=1; AL+hErE2oRUHQnzBgdCr70f/uR7IfD+xaZNrRbobYWu80Whvcvw38zar2/dRARW2chmiHuWQvMo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9U0SsnrS9VL3nA3OhQjmiRqrxn6OryLubREYmFL5SKvPecineK
+	zi4LZqdkUE2iXRkC8631ZU3+El5GPi4d4heqRCQwpLUzBCmDT2ivURhlFGzvO+TDlp1JCiVc6Y/
+	nWUszTQ==
+X-Received: from pjbcp15.prod.google.com ([2002:a17:90a:fb8f:b0:3b0:a4e8:cfb8])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3912:b0:3b0:a7b5:c044
+ with SMTP id 98e67ed59e1d1-3b1b087b35bmr1488456a91.1.1794577724117; Fri, 13
+ Nov 2026 05:48:44 -0800 (PST)
+Date: Fri, 13 Nov 2026 05:46:28 -0800
+In-Reply-To: <tencent_6EE8901CBE1ED363CBBA2E8CEC6D88D19F09@qq.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -79,35 +79,31 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261013195358.163375-1-yosry@kernel.org>
+References: <tencent_6EE8901CBE1ED363CBBA2E8CEC6D88D19F09@qq.com>
 X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
-Message-ID: <179441826991.81142.10798231327707439438.b4-ty@b4>
-Subject: Re: [PATCH v2] KVM: SVM: Update tracked pCPU on pCPU switch
+Message-ID: <179441794610.77862.7904519184101802738.b4-ty@b4>
+Subject: Re: [PATCH v2] KVM: coalesced_mmio: reject zone sizes that don't fit
+ in an int
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Stefan Teodorescu <fane@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Hang Nan <2122295973@qq.com>
+Cc: Carlos Llamas <cmllamas@google.com>, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, 13 Oct 2026 19:53:58 +0000, Yosry Ahmed wrote:
-> When a pCPU switch is detected in pre_svm_run(), update the tracked pCPU
-> and mark all fields dirty in both VMCBs (if nested is initialized), in
-> addition to resetting the ASID generation in both VMCBs.
+On Wed, 28 Oct 2026 09:59:56 +0800, Hang Nan wrote:
+> kvm_vm_ioctl_register_coalesced_mmio() validates @zone->pio but not
+> @zone->size.  The u32 size is handed to kvm_io_bus_register_dev() as an
+> "int len", so any size >= 0x80000000 silently becomes negative.
 > 
-> Commit bf260dc9e7b8 ("KVM: SVM: Trigger new ASID allocation in both
-> VMCBs on pCPU switch") reset the ASID generation in both VMCBs on a pCPU
-> switch, but only updated the tracked pCPU for the active VMCB to avoid
-> unnecessarily dirtying the inactive VMCB. Leaving the inactive VMCB's
-> tracked pCPU set to an old pCPU still allows an ASID allocated on one
-> pCPU to be used on another:
+> coalesced_mmio_in_range() bails out immediately for len < 0, so such a
+> zone never matches its own range:
 > 
 > [...]
 
-Applied to kvm-x86 fixes, thanks!
+Applied to kvm-x86 generic, thanks!
 
-[1/1] KVM: SVM: Update tracked pCPU on pCPU switch
-      https://github.com/kvm-x86/linux/commit/d41766c45065
+[1/1] KVM: coalesced_mmio: reject zone sizes that don't fit in an int
+      https://github.com/kvm-x86/linux/commit/9afe49408a4e
 
 --
 https://github.com/kvm-x86/linux/tree/next
