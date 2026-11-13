@@ -1,68 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794601061;
-	b=ooYj89L9+8jaFEShiVlPNcUK9dujC1V4h5V8z1GRyYsf7BCVbgf3hCUa1TRUdT98dM6p
-	 PTcLQs62jINSpA4vnUyaWSsR07zGOSohCdwON018V6UcfYh7qxHfmigIvaZZ4jdtYQnO6
-	 Ph9B6nx11IZcsPIdEPIoWh/XDdTINo07TZ5ohw0z0ZUWgS2AWpEANX8/ZKMQbMN9SJ7KA
-	 0VikYchFwrbWnWoN8Nh7BOix60ljq/T0PS5h2HZd4XlkOv3puyqLVQjawamBBFnSKkVsH
-	 kxM/Qns3saqKLkgHUlxCCA5a6kojek6rMUgDFZn2X/9W48z6v2ahy7ewOd+MXi8Ve/w==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794601061;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=sQw4GvATXFtrzEViTcI7yXb0PY3EJAnllv1+ldzoAew=;
-	b=Le4bCga4ymcv96qSQoDVYS1I20EyJIy0DKNY8PnT33Pec7lwXuf72TxhqDUgZw0mq5DS
-	 7FKPGUt7Bpohis4Ig4Jb5czp3TCLaOpZo/U4sQNrOckZU+7OF1eKpIyLJTnPYVY+mUVaQ
-	 x38VDsC3GhHz+1zCzseWweEr3IpBiiYSWEfzFV7SgSHxm8gehf75qdiMK+EQHpD+qO2s/
-	 DgrDJeI81ZV1ydN+0uyvt+Tlfj7ceBdYKQAMc8BqznHapxRjUGQch87BKdkIQfuWQmnSg
-	 ds/sRS3iYEofQszcwdrzxmHdbeOyNTYp8CP+GDzJwapWPpRhKMVEEFr+mWbchIb9HXg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Na7LhR87;
-	arc=none smtp.remote-ip=192.198.163.18
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.60
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794601605;
+	b=hwBwQzAVYpcnaBc0Cp2Bufmwp1pObhDHLHFfttDtzsDaNyf3Enh0oFeO8O8Hv3SvkZN7
+	 A6RDmfY8OkIj7B//Qog3pucslMxo47beuzhPJYdFNManh4FWX7XvdJIgJvp2ohgaHp454
+	 gIjLAdfiiLFQ+TE86Th8QZ+x7dUI3CyCIagkvHUefLOqPex7cOPGPcIm0pCJHfRs4m9BA
+	 mnZ3wBnFFMELF9wZfbgc8otUunP6VkwsD88GsdC3KBbhwBW00Dh6vt9b5qcogi+lPEcP3
+	 G/q2/U629uyjquI26VSxOlxItv8Vc8hb7BURHSIrlRV2qS0yHZsXUe/SfoR8XDi3YDw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794601605;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=QqIkYqZeSoc/2lcPZKMr8rJ9XJvrru+p2bZbCAPzEkQ=;
+	b=KxXqb+SiJHRXvV73kh8sDWD6LXtlObqJvzIhVPh9hoejetyRHJiMThJ2vqE75n4As/lV
+	 oHHVwQUdueIMQkZ0qSvh4pHXDJkK6LNV4sdsQovbUNjd0236GbvawG6z9kO79NlP6AU2N
+	 Us+YHG59LTlerthmdROfhVcybfgC9jNZ4heoQ5soHGbkdu9DSURVhkbOFu1/A4fwQnIUj
+	 r2juPoD1I8tjWq6u/uepeY5zuGhj9VkIm2AlmkhLXZdYiIb4E1ECXduomwkTOE2Lmi6B1
+	 CAvV0pwa7X92AmYkDlaXhgKDbWShXnilJeFAu70gr/QaF+Ivb0XFxSLwz+WM0DtHn4g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=d+8ngGUR;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.60
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012060.outbound.protection.outlook.com [52.101.48.60])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D3A606A332
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 20:17:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 60D3A606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B2C606A334;
+	Fri, 13 Nov 2026 20:26:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 26B2C606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Na7LhR87
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794601061; x=1826137061;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=FLioU4cDbbnRDreB0K/kLhwrT7wLL1csVX23RCfV9/0=;
-  b=Na7LhR87jFvmPWijzZu3VtuDKhCj6zsvCd6AKe8mwfs7+1yJ0Wjpn4Oz
-   PvCSmMhByEa82HX/S6nwnM7t04Z/h3AcgQFJzbEI0xXJcTpzyNdWMgX5p
-   Pf/O2+hDX2OJFqzIfNLnJ9guaf+AkDhMoI+bYUBgjxKfXnAI4KmDPJamO
-   9KZEonybfasViTZjE1zkJwHTkf1mI2OqqLrTrhlWtDHkFydXBW+zoH+3T
-   yLnewWEsV5XuSQTsr013vYX3wMEczj3T3lmSMkbynKpEenLlzTPiGHZhj
-   towE1BYmnNru8JqyBME4Q6w7rXE48Zo1lRx4E7MaQ0duaWjIwtPqQ3QRQ
-   A==;
-X-CSE-ConnectionGUID: a0QdmscWRQOvfVMxe1Dr1A==
-X-CSE-MsgGUID: 3/YfS/jQR3mzUSzYO1zC5Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11965"; a="3446814"
-X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
-   d="scan'208";a="3446814"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 12:17:41 -0800
-X-CSE-ConnectionGUID: ipjc2YimRcKAr4DI/2LA0A==
-X-CSE-MsgGUID: 3xVpcVvLTgm3oq0L90T70g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
-   d="scan'208";a="9325321"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 12:17:40 -0800
-Message-ID: <2a3c1d34-b3f3-47f1-ae15-c3b466f0a363@intel.com>
-Date: Fri, 13 Nov 2026 14:17:39 -0600
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=d+8ngGUR
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=w7CgoUEgW+lGzZXgcd6JA03p5tIa3PNA5SwDGS+NHCM/fYj88fJ9lgEsGOj9KB0ucCipfZ9//Vyo5NcBQ50PxMp4l9qEnWMMhz9X2CWKj1XkT2cHs+M+5OxosnjNfygjEQOQCBH1lSuNd2EHXYhoJ/vK5QfPqdc6THZzdOLM7F/4DoCa2W2rFz/Qq6ZavGH9KGo8em/Vjh6bPxrtArLR1HiSxOE0NT5wd0X2NCWUS+uVgaPxoeyLZmtLJ9TegiMcBXO2rdgUotNibq+0JLSUAFmpymM4kIHuTF/RuWLc4AuCe4nDRg4Ln0aHcpltbbIiLhRSd/iLDRJkxTCjZKj/7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QqIkYqZeSoc/2lcPZKMr8rJ9XJvrru+p2bZbCAPzEkQ=;
+ b=l/uW82JkJd9owNze0r3E4peJ3mnAhmFWt4ZOpKJ8zbOvkiqrCw51ngllAw6w7NI2WQ6zqbanUq6J54Ew2irJpU2q1hj5SCw+l+Aw3rNnrv6vddKIjgIEhiAnkPxxIWQm9kM0jRvNCa6rIu+gUwv+ok05X5ri+squDeYy5IboknrekEhWvIygfye2WJ0RvptoQLMhNmws3ASd2ogzxrqmDdBzK1PDeTvhKeyO6HWA2L4z6bB4j2MCfcbVnUHytlIrteUzFEwUb64A8/2Sw63KPR+nY5C0Gxy2tLBGq/gnWD/nL48Z6V8xhoRY4r5ia69WqvzW0oHXnK7yhJ4a47PLaQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QqIkYqZeSoc/2lcPZKMr8rJ9XJvrru+p2bZbCAPzEkQ=;
+ b=d+8ngGUR9XVN6DlPHXPZseQ4I8Hq3zYdL18Mz2k9rQYRKkejvsigYFFa3PdpXFftRJm1CpxRuayqhWBoRW3Pd7OGLJYrhdcyVrBInIPWj/XMlncP/SR7DbM6DmCQwXPDTwPdjJGIqL/rn34FrTWbDDnvgMdsydAgUkVTIlXt8ks=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5310.namprd12.prod.outlook.com (2603:10b6:5:39e::10)
+ by CYXPR12MB9388.namprd12.prod.outlook.com (2603:10b6:930:e8::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.10; Fri, 13 Nov
+ 2026 20:23:17 +0000
+Received: from DM4PR12MB5310.namprd12.prod.outlook.com
+ ([fe80::1bf0:6a94:a990:14f5]) by DM4PR12MB5310.namprd12.prod.outlook.com
+ ([fe80::1bf0:6a94:a990:14f5%6]) with mapi id 15.21.0615.009; Fri, 13 Nov 2026
+ 20:23:16 +0000
+Message-ID: <43616e23-cd28-4017-ba12-1a0eed4cf05b@amd.com>
+Date: Fri, 13 Nov 2026 15:23:12 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch v4 3/4] x86/sev: Add guest support for Enhanced SMT
+ Protection
+To: Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>
+Cc: kvm@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+ pbonzini@redhat.com, thomas.lendacky@amd.com, kim.phillips@amd.com,
+ nikunj@amd.com, michael.roth@amd.com, ashish.kalra@amd.com
+References: <cover.1794244450.git.prsampat@amd.com>
+ <c64b614ddc83eabc6bb1bdf288272110df04256a.1794244450.git.prsampat@amd.com>
+ <20261112184929.GGavYKObGQNQ0wbDpD@fat_crate.local>
+ <avc-5lkQhoR6US9o@google.com>
+Content-Language: en-US
+From: "Pratik R. Sampat" <prsampat@amd.com>
+In-Reply-To: <avc-5lkQhoR6US9o@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH0PR03CA0108.namprd03.prod.outlook.com
+ (2603:10b6:610:cd::23) To DM4PR12MB5310.namprd12.prod.outlook.com
+ (2603:10b6:5:39e::10)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,129 +102,120 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 21/21] KVM: selftests: Support fixed counters bitmap in
- pmu_counters_test
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-References: <20261112203227.289379-1-zide.chen@intel.com>
- <20261112203227.289379-22-zide.chen@intel.com>
- <sashiko-outbox-211841@kernel.org>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <sashiko-outbox-211841@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5310:EE_|CYXPR12MB9388:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2a9c86cc-86a1-4ac0-3caf-08df41c3f348
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|18002099003|22082099003|261009223027099003|56012099006|11063799006|4143699003|261026140227099003|261026121527099003|261022105027099003|261028144727099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	OfA9z404ZwcAQ3DQo5fGG3d1McD4pG8fgcH5UHjgAk0Q6Ie5EwXrGROM9NxrrrcKVosF6zBFjJY8f3S/JcolFiUciEytl3gQjK5AhP7C2kZVj2XcxJsiISgN0tRn5B6DX334MQYGbCVmETWkCw7NP7mrrWwqIWobXI7pHzI7NbAkaYbt64jLNicbuwEiX8op58B3GgXyzUGi+2nvuAxz49bP284fbhhU7I3FR+/UEu5Kk/7oyVeLk0nBeDG6F15y+0wq1ezSMUDuUZPblvtxje81f1bnB7q4EZrdcW5Yh5u24DSwe7Gq+n4HnRHawDboSO3RTaILzRIblpiQErUZf5rWwm4RYTH7RHDVGGOfsm0R0o3E02R1lWlIBtR7y0ApDCJgqN2VtPWxi6GpXFGaCYg6VXr3Ofk9Kt+U1YwhpUmhmcjp9zmU8m02nvPy6+7xmN4UOrxy3vtJ5ziyq6IDuf+btIXKdx7EpyBikdqeMYR+KGwxQVdsNgoQI04dslFkKYmmsqLVUux/Jdg4bz/EHwhLlefKSY9is/Bl02Cxkr/qdDMm5FMGt9SypYEdjlLZee4EIJ57M2sg5yC+hBuIJ19PmS56XLd1AAwv+6Ns3+KnJR80i6qJKzgLa5dpvyIVsqIGcDRo+/ifwZ1v4DYwOj+E2ccV3H65n42ERTSuQ70=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5310.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(18002099003)(22082099003)(261009223027099003)(56012099006)(11063799006)(4143699003)(261026140227099003)(261026121527099003)(261022105027099003)(261028144727099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SjdaTituV0wyVndSdEw1bi96aEZPejR6QjN2enhyaTRVb08xaldXNzdUbStV?=
+ =?utf-8?B?a0hNbThxVVBjNE9ROUlpWTZkWVFlTnlrNVYrb0kxV2wvNnUxTGw2dHAwbTlw?=
+ =?utf-8?B?UnFRTlczcFBBSm1ZL1FmVExsbkFPaldNV0lHNjVTM3dPV2Y5QW5PblVFY2Js?=
+ =?utf-8?B?SjR4N09IQ0hoUHErUzJBaFpDRkplMTVGL0lmd01XZHlPaHZ6eXZpendpKzBz?=
+ =?utf-8?B?TjBwRUE1MVFJbDhDMGs4L1BSRDQzOEh6U3gzd00rQmlwY1JJUGxRMnhJeE5y?=
+ =?utf-8?B?dkRGV01VdXFuR0R0RHFsV3J4b1Bjd1FwR1REbENMWHJtOXN4dUp5TktsWGl0?=
+ =?utf-8?B?b1oyM1JQYXo4YmtiTk1JamdaK0VRYVUvVi9Ud1hkdUl1V2tGTENMUEUxNE10?=
+ =?utf-8?B?bE9KOUo5bGdkT1dlMGprMzJhQU5WMkdpTzhIVTBPa1pFZGJNdzdDQUE0M2pn?=
+ =?utf-8?B?aW5GR0dLOFpuTDM4MXBzcU51UDVaRlh3RktyM0RFQUlqNGZtVHJJN3hnUVVs?=
+ =?utf-8?B?YzJjL09XcjR2Ni92OFBMWERUemkvQ0c1ay9ycmJFb3gybTZ1dkIyQWtUY25l?=
+ =?utf-8?B?L0xZbnZ6ZENwbjJmd0pUcHF3ZlVkZmFtSzc0eUZwUDZwQ2tzWkRlbEc5UFl6?=
+ =?utf-8?B?N2htakI2UUZub1NpVjRYTUtpTFU4U2YrOGhSQWUwN0toOFR6TjR5cmtaYnA1?=
+ =?utf-8?B?WFVXSGJzM2JnMTZKcDUydVJyTkdMM291TnJwTHdzbHRkNGdQRFR5elovVFFQ?=
+ =?utf-8?B?dXUremo4b2ovR3RZUktKQlE3VnR0SUhGbjNKUzVZVHExT251d2pvdDRzR2xp?=
+ =?utf-8?B?SUVBVWo2eVIwWmtDZ3JMTENrNUQwb3MzclkwbWhWZkE0ckxYdEZEd25JN3Qr?=
+ =?utf-8?B?K2dYQXVyTThkcDgxK2lHZHZPdy9hU1ZlYVprSmJ5MnhhcFErZlJreGVIMkNO?=
+ =?utf-8?B?VXF6YWNQMm9BYTJKbTRGQlVFMFEvUEhCOGN1ZnZtYStDMDBydjFGeVJ4ZXly?=
+ =?utf-8?B?dnYyK292MnRTMGd1WEpkNXN5OTdnZFRYd3hqam51YlB6YlVHMXVRTDJtQnk0?=
+ =?utf-8?B?YzVSQW5SaVcyWGpzVmhCc2hXR0lXcU9EZmRHR2tBSU0zd3A1NnBqSEphUFZQ?=
+ =?utf-8?B?bGpKWjdmYUR1L2dwK3ZvZ0NodExBQXBGdUZYUFIzWmVaYlhnOHVCMjFaeTB5?=
+ =?utf-8?B?eFYwUlV1blRVZmRhc1FPakZrWDk3UzNianBESExrRjRxUjVqV1FMb2NMb3R1?=
+ =?utf-8?B?YTVZWUtoN3prMENQL0RhUm1wU2tRY1UwNzhXM09OenNyQ2JqN3c2MFNlUGI2?=
+ =?utf-8?B?YWV4OXdNRFV5L0YyM1hNYTdIUDRiV1dtVkNYc2NIOHFXWm5FSFRQVmNoVldn?=
+ =?utf-8?B?bzdobmlzZkZKOVh2ZWF3TmlTNEhtdGtpaXF5aVdlRFBDSjd5cnpCUlVia3NQ?=
+ =?utf-8?B?TjVxSFN1NS9MVkd4aHlwcVdXNkl4c0E4RXpWQ1ZOZzVZdHJESlo2SjJlQklu?=
+ =?utf-8?B?SURNK1pyLy85VzN3WWgydTgzTkxmSWRCYmdZL2Ntc1NaWldJaDhvWTg3V2Vy?=
+ =?utf-8?B?UFNieHRuZlhUd0V0WUJMQ2p1bXVFRGJHSTA0VDJ5VURrdkh2cTFrNkhVOUZG?=
+ =?utf-8?B?Y1lRN3l2b1lQa0ZsNmlMVHZXT0k5aDR1OVpiL3BCRkh4aDV5bzV6N0FQa3ln?=
+ =?utf-8?B?eHdLS3JwejMvM3RxWENaTkxwbWo4UmdpeThQNG5tWVRxdFhmREtVNDQ2OTh0?=
+ =?utf-8?B?ZUxWK3REYXN4bjRhTnBJRTAwQzg0YkZXRUQvZS9YdXp5ODRnOFo0WG9VNkZO?=
+ =?utf-8?B?TmpydGpMbG53bG50RlNQQk9iZTdDQVZJODhHNXFoK2xyMXludTVaL3p2Y0N5?=
+ =?utf-8?B?dE5wVnptLzhkejFFYU9NeStQY2QyVjh3OXMrc01qdnNBOUJkMmJ4bDRiVElY?=
+ =?utf-8?B?VStIN3JBbXN3VExMOWE1YkJwYjZNU2FVWEtGSmRLUnlNNERoWVcrMXVVMU5i?=
+ =?utf-8?B?Y2hiNDFHaGJqR291NStDcG84NTZsbXVsM2Z5QVZLb05hS3UvaGZzVlNNYnFC?=
+ =?utf-8?B?dTVpckIwWDg0di96eCtWTEVwSWlpclphcWZEZmJkQlY1V05nYUZBZnJkak9L?=
+ =?utf-8?B?VEtQSWFLMXpKQTNkWUFDQzhCUXd3ZVJySmpKSHp2L1gxL3htbnFvc2VIa1ZV?=
+ =?utf-8?B?T0h0b08rMEZjRGNIblFNeHdqMzlDVmdGOWxXZnZGVVdORU1TeGxoQkFoS1Zj?=
+ =?utf-8?B?L0ZDUllBUDkvSC9yYVExalVjWk9ibk9scnk0S05uSWhWNVB6NG55TUVaM1FG?=
+ =?utf-8?Q?IeuwJ0NlkLriHhcTPr?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2a9c86cc-86a1-4ac0-3caf-08df41c3f348
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5310.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2026 20:23:16.8432
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 30iQfG3SPlhqY8weLk41WQT/UOuskd88OuB0fofuHVxCWa0rRUlr9GcUCcNJwjHcLmaZMKV3/joFirQ9S3BF4A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9388
 
+Hi Boris and Sean,
 
+On 11/13/26 11:46 AM, Sean Christopherson wrote:
+> On Thu, Nov 12, 2026, Borislav Petkov wrote:
+>> On Mon, Nov 09, 2026 at 08:35:13PM +0000, Pratik R. Sampat wrote:
+>>> @@ -849,6 +850,18 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip, unsigned
+>>>  	vmsa->vmpl		= snp_vmpl;
+>>>  	vmsa->sev_features	= sev_status >> 2;
+>>>  
+>>> +	if (sev_status & MSR_AMD64_SEV_SNP_ENABLED &&
+>>> +	    (sev_status & MSR_AMD64_SNP_ESMT_PROT)) {
+>>> +		vmsa->vcpu_id = apic_id;
+>>> +		/*
+>>> +		 * The mask fully set puts every vCPU in one group, so any two
+>>> +		 * of them may be co-resident. A legal ESMTP sibling must
+>>> +		 * also match on ASID, so the sibling of a vCPU in guest mode is
+>>> +		 * always either another vCPU of this same guest or idle.
+>>> +		 */
+>>
+>> This comment doesn't belong here.
+>>
 
-On 11/12/2026 3:00 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Medium] KVM: selftests: missing EDX/ECX combinations in
->   test_fixed_counters()
-> --
-> 
-> commit 3d8b2ca900bb2a01f5f9cee15fc9a12bc40184ad
-> Author: Dapeng Mi <dapeng1.mi@linux.intel.com>
-> 
-> KVM: selftests: Support fixed counters bitmap in pmu_counters_test
-> 
-> This commit updates this_pmu_has() to check the guest PMU version before
-> consulting CPUID.0AH:ECX and updates test_fixed_counters() to test
-> supported fixed counter bitmasks alongside CPUID.0AH:EDX[4:0].
-> 
->> diff --git a/tools/testing/selftests/kvm/x86/pmu_counters_test.c b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
->> index c3e784e16348c..61e6fe5b6ef48 100644
->> --- a/tools/testing/selftests/kvm/x86/pmu_counters_test.c
->> +++ b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-> 
-> [ ... ]
-> 
->> @@ -631,25 +632,43 @@ static void __test_fixed_counters(struct kvm_vcpu *vcpu, u8 nr_fixed_counters,
->>  static void test_fixed_counters(u8 pmu_version, u64 perf_capabilities)
->>  {
->>  	u8 nr_fixed_counters = kvm_cpu_property(X86_PROPERTY_PMU_NR_FIXED_COUNTERS);
->> +	unsigned long fixed_subset;
->>  	struct kvm_vcpu **vcpus;
->>  	struct kvm_vm *vm;
->> +	u32 fixed_bitmap;
->>  	int i = 0;
->> -	u32 k;
->>  	u8 j;
->>  
->>  	pr_info("Testing %u fixed counters, PMU version %u, perf_caps = %lx\n",
->>  		nr_fixed_counters, pmu_version, perf_capabilities);
->>  
->> +	fixed_bitmap = BIT(nr_fixed_counters) - 1;
->> +	if (pmu_version >= 5)
->> +		fixed_bitmap |= kvm_cpu_property(X86_PROPERTY_PMU_FIXED_COUNTERS_BITMASK);
->>  
->> -	vm = pmu_vm_create_with_vcpus((nr_fixed_counters + 1) * BIT(nr_fixed_counters),
->> +	/* One vCPU per subset of fixed_bitmap, plus one per legacy EDX test. */
->> +	vm = pmu_vm_create_with_vcpus(BIT(__builtin_popcount(fixed_bitmap)) + nr_fixed_counters,
->>  				      guest_test_fixed_counters,
->>  				      pmu_version, perf_capabilities, &vcpus);
->>  
->> -	for (j = 0; j <= nr_fixed_counters; j++) {
->> -		for (k = 0; k <= (BIT(nr_fixed_counters) - 1); k++)
->> -			__test_fixed_counters(vcpus[i++], j, k);
->> +	for (fixed_subset = 0; fixed_subset <= fixed_bitmap; fixed_subset++) {
->> +		u32 nr_contiguous;
->> +
->> +		/*
->> +		 * The loop walks all values from 0 to fixed_bitmap, so skip any
->> +		 * value that is not a subset of fixed_bitmap.
->> +		 */
->> +		if (fixed_subset & ~fixed_bitmap)
->> +			continue;
->> +
->> +		nr_contiguous = find_first_zero_bit(&fixed_subset,
->> +						    MAX_NR_FIXED_COUNTERS);
->> +		__test_fixed_counters(vcpus[i++], nr_contiguous, fixed_subset);
->>  	}
->>  
->> +	for (j = 1; j <= nr_fixed_counters; j++)
->> +		__test_fixed_counters(vcpus[i++], j, 0);
->> +
->>  	pmu_vm_free(vm, vcpus);
->>  }
-> 
-> [Severity: Medium]
-> Does deriving nr_contiguous from fixed_subset drop test coverage for fixed
-> counters enabled solely via CPUID.0AH:ECX when EDX[4:0] is 0?
-> 
-> Whenever bit 0 of fixed_subset is set, find_first_zero_bit() returns at
-> least 1, and the second loop only tests supported_bitmask == 0 with j >= 1.
-> As a result, fixed counter 0 (and any contiguous prefix of fixed_subset
-> starting at bit 0) is never tested with nr_fixed_counters == 0 and ECX[i]
-> set, nor does a guest with pmu_version < 5 get tested with EDX[4:0] == 0
-> and a non-zero contiguous ECX mask to verify that KVM ignores ECX.
+Ack, will get rid of it.
 
-The mentioned configuration is architecturally invalid and can be
-ignored: if fixed counter 0 is supported (ECX[0] == 1), EDX[4:0] cannot
-be zero.
-
-Furthermore, verifying that KVM ignores ECX on pmu_version < 5 with
-EDX[4:0] == 0 is already tested for all subsets where bit 0 is clear
-(e.g. subsets 2, 4, 6), where find_first_zero_bit() returns 0 and the
-guest explicitly asserts #GP.
-
+>> In any case, this set touches multiple trees so I'm open to suggestions from
+>> KVM folks how we should do the patch merging tetris eventually.
 > 
-> In addition, gating X86_PROPERTY_PMU_FIXED_COUNTERS_BITMASK on
-> pmu_version >= 5 skips non-contiguous host ECX bits when testing guest
-> pmu_version < 5, so the test never verifies that KVM ignores those bits on
-> older PMU versions.  Keeping the outer loop over j in 0..nr_fixed_counters
-> and the inner loop over subsets of an unconditionally constructed
-> fixed_bitmap would cover all (EDX[4:0], ECX) combinations across all PMU
-> versions.
-> 
+> Post and merge the guest patches separately, and put any architectural collateral
+> need for the guest code in those patches.  This is not high on my todo list, i.e.
+> the KVM patches can come later.
 
-The proposed nested loop produces massive duplication without covering
-any new counter configurations.
+Sure this makes sense. In that case I'm thinking of splitting the patches by
+flipping the order as follows:
 
-In contrast, the current single loop exercises all 2^N unique subsets of
-available counters exactly once with consistent EDX/ECX pairs, and the
-second loop explicitly exercises legacy EDX-only enumeration (ECX = 0).
+Series 1
+  1. x86/sev: Add Enhanced SMT Protection fields to the VMSA  (new) Moves the
+     vcpu_id and vcpu_sibling_mask VMSA definitions out of the KVM patch so the
+     guest side builds on its own. 
+  2. Current guest support patch - no change, minus the comment
+  3. Hyper-V guest support patch - no change, may need the blessing from Hyper-V
+     folks to merge
 
-Therefore, I prefer to keep the current implementation.
+Series 2 - to kvm later
+  1. KVM: SVM: Re-queue events that were never injected  (unchanged)
+  2. KVM: SVM: Add host support for Enhanced SMT Protection - Unchanged apart
+     from dropping the VMSA definitions now in series 1
+
+Boris, series 2 still carries the X86_FEATURE_AMD_ESMTP/scattered.c entry and
+MSR_AMD64_IDLE_WAKEUP_ICR, which only KVM uses. I'll keep your ack on those so
+they can go through the KVM tree.
+
+Thanks,
+--Pratik
