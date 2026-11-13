@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794594892;
-	b=HgCRgue0JI4l2nzXRSNAIpDS+EJkaiRVz6USnTEqq/qmllmPW5hA/NMi7YlSTFdKl6FZ
-	 9EhibOM/jT7z8nZLsM4CFk1x+w6Gnt8iLEXpulTZEhe22UMplBX8kBQGW1NTU43EqVbvl
-	 bv2/HD2ugZmL2AECj+MubUFafDGJYYMZp+WePB8PpKeRs6AkD5TbskiVyIwTtJj1sNadv
-	 9ladDI5xecMU3OCJ18rrCtP2WSTDXUfjfel3aj0hSSYy5GDyK7GW1rwZPzGWPAR7LZzmi
-	 wnbE58Pf1htO98wyu5rn56PmOXVWnTPK1AjyRV3eqs4IXPFLhAeOJyP+cfQFspqDLgw==
+	t=1794594893;
+	b=cTj8eYPWOv9oZljsZ7z1MrRdIQn5ZMi+POaa9qj+z4LfXkGCgfA3TTKK6nQ62cQXfOXi
+	 Rr7QDnE+TqwJBIO3Lv0CJWaUIBOAX7aee6vus+1QGZuPLNxeAjMZpqw4dUhlzePOiKIfx
+	 fNOdW27T7jGLdmhRXanXHFLw1QL0v2CzdxukVPJvYdQJ/v3TGHdDrKhLrNiJ+ByZWlZH+
+	 RDA+VjfdGAHeFfattDAnLra7i+VT7y9x2N7NFf5sC7gAugbJcgIAcCtyS5BK3gr5e8dee
+	 Xx6/Jb5DGmKDiUdRWsZYP14bWm7lpsVBNTF7r8Ycuvrg3Gm6yD4bgSvnvTblVnHS4vg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794594892;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794594893;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=VeAdZMo7xKei4b/LovaFZ4bIRHRhU7+BzLiziNXX27s=;
-	b=hSzQ+u7s54VRYu6pi6Y1Ag01JY45f7woPyEizr1MZ7nG9npGdnBktWaIfz60n4+TOZVX
-	 6v94uRnQJJUIjX2WIhIYtLiRJGbTYAfjyI2+63+A9trV4vq99HsAT7+mnao/D7WC3TRoW
-	 b3cfee5UZj73DAP8UqsoWCuUvLPdQF6P2cqrquK9dAz3IGNdM9WTLdAv42MZ6+GeosQsR
-	 /35kVm4DG96HOf/tJGoS/U4dYgbDTnJLLyQG+XqPEoDGZbty8b8x1Tjp9yYkPR5iEsZVr
-	 7AA2ZiAyKQaWzYL0W2vBRQMTMyrY0+PjduQYkX8XyY937tP2H8kxPXNJScsVYI9s/aw==
+	bh=/WqO646IdUqxWnilMTwK/CDvkieJdx4BpTrbDaCZSsA=;
+	b=RV/ifm6EKlxWNkjjom/KPjiA1+KR3Ni0uq7dz5dSVj/hvIUTLcU8R+hBVPhfmzyslcP1
+	 XjblCUct9Ol+8nuhAOob61QTUwC6u1nI9w2UEfhZk6rl/Mlb0a+Pe3Kp3idQJljSgA4J4
+	 GmM5hU+nguY1nxo+Cy6L1ynSbUFJB1NZflP1fNMoP/r27VSauVdrnPSHbCnWAs/V3zpZx
+	 AdMgETDEohzOxG38id6ekaFH8dktmo8koGYHyvsNuAElp0XwIxErkfUZ15JXOS9qxLf0G
+	 mhoSy//aLjTWzo5+Zh5tJG/PFzsz2rECtT0lqjN2qdR4S2RzF8OeBhA+O+vfXH2u2IA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=OXsoNUQa;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=h12w1uXZ;
 	arc=none smtp.remote-ip=90.155.50.34
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC12606A887;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02235606A33B;
 	Fri, 13 Nov 2026 18:34:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2BC12606A887
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 02235606A33B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=OXsoNUQa
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=h12w1uXZ
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=VeAdZMo7xKei4b/LovaFZ4bIRHRhU7+BzLiziNXX27s=; b=OXsoNUQaEtNaj1AD6vpQI/dV6g
-	XsHHeKxjw3pH/RoSeqGPhGfRghtX/iisH4a29bbs/sckVZiffyiUlxAPqaTJNVW2ST7qfV815sN2e
-	SWflnUaV3bD+Haao+XaBA2O1JqOy1ADZiISxXHMLW8ZA8ajnE0O5qYjN5a1tQjRnLolz+WVQK36hW
-	r0jr9YlmkyhXaWNhZ9nGlc33n2cUtI79KKgSQheIm/kLLwKVJyvVbfn/7j7H0f+he8cpO5vtJ96ek
-	hZPi50nPrciDgY8NEbYuY54juWL/sp5l5cQPcj8CXycIqbPp+qYqvYSJClaAZU8+o2nHkN418/Cpz
-	++Od+FLA==;
+	bh=/WqO646IdUqxWnilMTwK/CDvkieJdx4BpTrbDaCZSsA=; b=h12w1uXZXr0VxxlkJMIDbgr4iV
+	niMeSS+q3vLuKqI+JbXXrhwTvI9AJiVynwjSNsVOuZlHYz7AqvMEhExx6sLsrFW8CMJZTmeeq0oRU
+	LOQtMSSSpZ6jDB3hx77B+BRGmncsxd+S1YW1YgtleFMS1UKM13KiFIQ2I/DUSoWOPn2H7780sR+5q
+	YRr091RcUaGbvQPBM4CL/tBQZqOM3z27b4bk+WMk+uB4uOTWm3gNDbD8XCZWTx+fo7Had5wyQDiGA
+	vhtquhQG4mHooASWDhM+dFcUXSbhaH5PKJD7VRCEOAZgY0hb9FyiyBHAm/j2H2r402GWz0G+C6D/G
+	H1KmUfFQ==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRw6s-00000004gQx-2EoI;
+	id 1xRw6s-00000004gQP-0uuL;
 	Fri, 13 Nov 2026 18:34:50 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xRw6s-00000000Lu5-1FFP;
-	Fri, 13 Nov 2026 18:34:50 +0000
+	id 1xRw6r-00000000Lta-4Bjz;
+	Fri, 13 Nov 2026 18:34:49 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -71,9 +71,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Mushahid Hussain <hmushi@amazon.co.uk>,
 	Sriram Nambakam <snambakam@linux.microsoft.com>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [RFC PATCH v2 23/31] KVM: selftests: Check that a masked higher-plane timer is no event
-Date: Fri, 13 Nov 2026 18:34:39 +0000
-Message-ID: <20261113183448.84094-24-dwmw2@infradead.org>
+Subject: [RFC PATCH v2 16/31] KVM: Add per-plane memory overlays
+Date: Fri, 13 Nov 2026 18:34:32 +0000
+Message-ID: <20261113183448.84094-17-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261113183448.84094-1-dwmw2@infradead.org>
 References: <20261113183448.84094-1-dwmw2@infradead.org>
@@ -92,218 +92,558 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-A LAPIC timer that expires under a masked LVTT latches the expiry but
-is never injected. A higher plane that arms its timer and then masks
-LVTT must therefore not count as having a pending event, or every run
-of the lower plane ends in a KVM_EXIT_HYPERV_VTL_INTERRUPT exit (or a
-forced entry) with nothing for the higher plane to take.
+TLFS overlay pages, the SynIC message page (SIMP) in particular, show
+each VTL a private page at a GPA while the other VTLs keep seeing the
+guest RAM underneath. With planes, all planes share the memslots, so a
+VMM has no way to give a single plane a different backing for one gfn.
 
-The plane-1 twin arms a 50ms one-shot timer, masks LVTT and is
-suspended like a userspace VTL switch. Once KVM_GET_LAPIC shows the
-timer expired, plane 0 must run its guest code to GUEST_DONE.
+Add the KVM_SET_PLANE_MEMORY_OVERLAY vm ioctl, which pins one page of
+userspace memory and maps it over a gfn for a single plane, replaces
+it, or removes it when 'uaddr' is 0. KVM_CAP_PLANE_MEMORY_OVERLAYS
+reports the per-plane limit (KVM_PLANE_MAX_OVERLAYS, 64). An overlay
+cannot cover a private or guest_memfd-only gfn.
+
+On x86, per-plane EPT roots make a per-plane pfn override in
+__kvm_mmu_faultin_pfn() sufficient. While a plane has overlays its
+mappings stay at 4KiB, so a neighbouring fault's huge page cannot span
+an overlaid gfn, and the gmem path only ever narrows max_level.
+kvm_tdp_mmu_recover_huge_pages() skips non-zero-plane roots, and plane
+0 roots while plane 0 has overlays, so a later promotion cannot widen
+a plane's attribute or overlay clamps back out. Planes keep no lpage
+tracking; their fault path rebuilds each mapping at the largest level
+the plane allows.
+
+The overlay update runs under the kvm_mmu_invalidate_start()/end()
+protocol with the gfn registered, as the mmu notifiers do, so a
+concurrent lockless fault cannot install an SPTE for the old backing
+after the zap. Overlays are unpinned when the plane is destroyed.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../kvm/x86/planes_vtl_timer_mask_test.c      | 177 ++++++++++++++++++
- 2 files changed, 178 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/x86/planes_vtl_timer_mask_test.c
+ Documentation/virt/kvm/api.rst |  48 ++++++
+ arch/x86/kvm/mmu/mmu.c         |  29 +++-
+ arch/x86/kvm/mmu/tdp_mmu.c     |  17 +-
+ include/linux/kvm_host.h       |  17 ++
+ include/uapi/linux/kvm.h       |  11 ++
+ virt/kvm/kvm_main.c            | 278 +++++++++++++++++++++++++++++++++
+ 6 files changed, 395 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 250b324d0881..c6ad866a0b0d 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -115,6 +115,7 @@ TEST_GEN_PROGS_x86 += x86/platform_info_test
- TEST_GEN_PROGS_x86 += x86/plane_x86_test
- TEST_GEN_PROGS_x86 += x86/planes_test
- TEST_GEN_PROGS_x86 += x86/planes_vtl_entry_test
-+TEST_GEN_PROGS_x86 += x86/planes_vtl_timer_mask_test
- TEST_GEN_PROGS_x86 += x86/pmu_counters_test
- TEST_GEN_PROGS_x86 += x86/pmu_event_filter_test
- TEST_GEN_PROGS_x86 += x86/private_mem_conversions_test
-diff --git a/tools/testing/selftests/kvm/x86/planes_vtl_timer_mask_test.c b/tools/testing/selftests/kvm/x86/planes_vtl_timer_mask_test.c
-new file mode 100644
-index 000000000000..e6b2b9eaa9c6
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/planes_vtl_timer_mask_test.c
-@@ -0,0 +1,177 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Test that a higher plane's masked LAPIC timer does not hold the lower
-+ * plane hostage.
-+ *
-+ * A LAPIC timer that expires while LVTT is masked still latches its
-+ * expiry, but the interrupt is never injected.  If the latched expiry
-+ * counted as a pending higher-plane event, the lower plane would exit
-+ * with KVM_EXIT_HYPERV_VTL_INTERRUPT on every run, and a VMM that enters
-+ * the higher plane in response would find nothing to deliver.
-+ *
-+ * The plane-1 twin arms a one-shot timer, masks LVTT before it can fire,
-+ * and is then suspended exactly like a userspace VTL switch.  Once the
-+ * timer has expired, plane 0 must run its guest code.
-+ */
-+#include <errno.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <unistd.h>
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index b742ca327130..1c30bb2806d3 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -6965,6 +6965,38 @@ plane has KVM_PLANE_RUN_STATE_INACTIVE.
+ 
+ .. _kvm_run:
+ 
++4.149 KVM_SET_PLANE_MEMORY_OVERLAY
++----------------------------------
 +
-+#include "test_util.h"
-+#include "kvm_util.h"
-+#include "processor.h"
-+#include "apic.h"
++:Capability: KVM_CAP_PLANE_MEMORY_OVERLAYS
++:Architectures: x86
++:Type: vm ioctl
++:Parameters: struct kvm_plane_memory_overlay (in)
++:Returns: 0 on success, <0 on error
 +
-+#ifndef KVM_EXIT_HYPERV_VTL_INTERRUPT
-+#define KVM_EXIT_HYPERV_VTL_INTERRUPT  4
-+#endif
++::
 +
-+#define TEST_VECTOR		0xe0
-+#define TWIN_SYNC_PORT		0x7e
-+#define TWIN_STACK_PAGES	4
-+#define TDCR_DIVIDE_BY_1	0xb
-+/* 50ms at KVM's default 1GHz APIC bus: long enough to mask LVTT first. */
-+#define TIMER_COUNT		50000000u
++  struct kvm_plane_memory_overlay {
++	__u32 plane;
++	__u32 flags;
++	__u64 gfn;
++	__u64 uaddr;		/* page-aligned; 0 removes the overlay */
++  };
 +
-+static void twin_sync(uint8_t stage)
-+{
-+	asm volatile("outb %0, %1" :: "a"(stage), "Nd"((uint16_t)TWIN_SYNC_PORT));
-+}
++Installs, replaces or removes a memory overlay for a single guest page
++frame on one plane.  While an overlay is installed, translations of
++'gfn' for vCPUs of 'plane' resolve to the (pinned) page at 'uaddr' in
++the calling process instead of to the memslot backing; other planes are
++unaffected.  Hyper-V VSM uses this for per-VTL overlay pages such as
++the SynIC message and event-flags pages.
 +
-+/* Runs with IF clear; the masked timer must never interrupt it anyway. */
-+static void twin_guest_code(void)
-+{
-+	x2apic_enable();
-+	x2apic_write_reg(APIC_TDCR, TDCR_DIVIDE_BY_1);
-+	x2apic_write_reg(APIC_LVTT, APIC_LVT_TIMER_ONESHOT | TEST_VECTOR);
-+	x2apic_write_reg(APIC_TMICT, TIMER_COUNT);
-+	x2apic_write_reg(APIC_LVTT, APIC_LVT_MASKED | APIC_LVT_TIMER_ONESHOT |
-+				    TEST_VECTOR);
-+	for (;;)
-+		twin_sync(1);
-+}
++'flags' must be zero and 'uaddr' must be page-aligned.  At most
++KVM_CHECK_EXTENSION(KVM_CAP_PLANE_MEMORY_OVERLAYS) distinct gfns can
++carry an overlay per plane at any one time; further installs fail with
++-ENOSPC until an overlay is removed.  An overlay cannot be installed
++over a private or guest_memfd-only gfn (-EINVAL).  Passing 'uaddr' == 0
++removes the overlay for 'gfn', if any.
 +
-+static void plane0_guest_code(void)
-+{
-+	GUEST_SYNC(0);
-+	GUEST_SYNC(1);
-+	GUEST_DONE();
-+}
+ 5. The kvm_run structure
+ ========================
+ 
+@@ -10129,6 +10161,22 @@ take care to differentiate between these cases.
+ The presence of this capability indicates that the nested KVM guest can
+ start in ESA mode.
+ 
++8.48 KVM_CAP_PLANE_MEMORY_OVERLAYS
++----------------------------------
 +
-+static void set_plane_run_state(int vcpu_fd, u64 state)
-+{
-+	int r = ioctl(vcpu_fd, KVM_SET_PLANE_RUN_STATE, &state);
++:Architectures: x86
 +
-+	TEST_ASSERT(!r, "KVM_SET_PLANE_RUN_STATE(0x%lx) failed: errno %d",
-+		    state, errno);
-+}
++A positive return from KVM_CHECK_EXTENSION(KVM_CAP_PLANE_MEMORY_OVERLAYS)
++announces two things:
 +
-+static u32 twin_tmcct(int twin_fd)
-+{
-+	struct kvm_lapic_state lapic;
-+	int r = ioctl(twin_fd, KVM_GET_LAPIC, &lapic);
++ - The KVM_SET_PLANE_MEMORY_OVERLAY vm ioctl (section 4.149).  The
++   returned value is the number of gfns which can carry an overlay
++   simultaneously on each plane.
 +
-+	TEST_ASSERT(!r, "KVM_GET_LAPIC on twin failed: errno %d", errno);
-+	return *(u32 *)&lapic.regs[APIC_TMCCT];
-+}
++ - The extended KVM_EXIT_MEMORY_FAULT layout: 'memory_fault' carries
++   the additional 'gva', 'insn_len' and 'insn_bytes' fields, with
++   KVM_MEMORY_EXIT_FLAG_GVA_VALID qualifying 'gva' (see section 5).
 +
-+int main(int argc, char *argv[])
-+{
-+	struct kvm_sregs sregs;
-+	struct kvm_regs regs;
-+	struct kvm_run *twin_run;
-+	struct kvm_vcpu *vcpu0;
-+	struct kvm_vm *vm;
-+	struct ucall uc;
-+	int plane_fd, twin_fd, mmap_sz, r, i;
-+
-+	kvm_force_split_irqchip = true;
-+	vm = __vm_create(VM_SHAPE_DEFAULT, 1, 0);
-+	kvm_force_split_irqchip = false;
-+
-+	TEST_REQUIRE(vm_check_cap(vm, KVM_CAP_PLANES) >= 1);
-+	TEST_REQUIRE(__vm_enable_cap(vm, KVM_CAP_PLANES, 2) == 0);
-+	TEST_REQUIRE(kvm_check_cap(KVM_CAP_HYPERV_FORWARD_HCALL) &
-+		     KVM_HYPERV_HCALL_VTL_CALLS);
-+	/* VTL interrupt exits belong to the userspace-switch VTL contract. */
-+	vm_enable_cap(vm, KVM_CAP_HYPERV_FORWARD_HCALL,
-+		      KVM_HYPERV_HCALL_VTL_CALLS);
-+
-+	vcpu0 = vm_vcpu_add(vm, 0, plane0_guest_code);
-+
-+	plane_fd = __vm_ioctl(vm, KVM_CREATE_PLANE, (void *)1UL);
-+	TEST_ASSERT(plane_fd >= 0, "KVM_CREATE_PLANE failed: errno %d", errno);
-+	twin_fd = __kvm_ioctl(plane_fd, KVM_CREATE_VCPU, NULL);
-+	TEST_ASSERT(twin_fd >= 0, "KVM_CREATE_VCPU on plane 1 failed: errno %d",
-+		    errno);
-+
-+	mmap_sz = ioctl(vm->kvm_fd, KVM_GET_VCPU_MMAP_SIZE, NULL);
-+	TEST_ASSERT(mmap_sz >= (int)sizeof(*twin_run),
-+		    "KVM_GET_VCPU_MMAP_SIZE failed");
-+	twin_run = mmap(NULL, mmap_sz, PROT_READ | PROT_WRITE, MAP_SHARED,
-+			twin_fd, 0);
-+	TEST_ASSERT(twin_run != MAP_FAILED, "mmap of twin kvm_run failed");
-+
-+	/* Same mode and page tables as plane 0, own code and stack, IF clear. */
-+	vcpu_sregs_get(vcpu0, &sregs);
-+	r = ioctl(twin_fd, KVM_SET_SREGS, &sregs);
-+	TEST_ASSERT(!r, "KVM_SET_SREGS on twin failed: errno %d", errno);
-+
-+	r = ioctl(twin_fd, KVM_GET_REGS, &regs);
-+	TEST_ASSERT(!r, "KVM_GET_REGS on twin failed: errno %d", errno);
-+	regs.rip = (unsigned long)twin_guest_code;
-+	regs.rsp = vm_alloc_stack(vm, TWIN_STACK_PAGES);
-+	regs.rflags = 0x2;
-+	r = ioctl(twin_fd, KVM_SET_REGS, &regs);
-+	TEST_ASSERT(!r, "KVM_SET_REGS on twin failed: errno %d", errno);
-+
-+	/* Run the twin until it has armed and masked its timer. */
-+	set_plane_run_state(twin_fd, 0);
-+	set_plane_run_state(vcpu0->fd, KVM_PLANE_RUN_STATE_USER_HOLD);
-+	r = ioctl(vcpu0->fd, KVM_RUN, NULL);
-+	TEST_ASSERT(!r, "KVM_RUN (twin runnable) failed: errno %d", errno);
-+	TEST_ASSERT_EQ(twin_run->exit_reason, KVM_EXIT_IO);
-+	TEST_ASSERT_EQ(twin_run->io.port, TWIN_SYNC_PORT);
-+
-+	/* Suspend the twin and let its masked timer expire. */
-+	set_plane_run_state(twin_fd, KVM_PLANE_RUN_STATE_USER_HOLD);
-+	set_plane_run_state(vcpu0->fd, 0);
-+	for (i = 0; i < 100 && twin_tmcct(twin_fd); i++)
-+		usleep(10000);
-+	TEST_ASSERT(!twin_tmcct(twin_fd), "The twin's timer did not expire");
-+
+ 9. Known KVM API problems
+ =========================
+ 
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 669a1a2a6e3c..8061790e7357 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4715,7 +4715,13 @@ static int kvm_mmu_faultin_pfn_gmem(struct kvm_vcpu *vcpu,
+ 	if (fault->slot->flags & KVM_MEM_READONLY)
+ 		fault->host_access &= ~ACC_WRITE_MASK;
+ 
+-	fault->max_level = kvm_max_level_for_order(max_order);
 +	/*
-+	 * Plane 0 must make progress: the latched expiry of a masked timer
-+	 * is not an event of the twin's.
++	 * Only ever narrow max_level: the overlay check in
++	 * __kvm_mmu_faultin_pfn() may already have clamped it to 4KiB, and
++	 * a huge gmem mapping must not span an overlaid gfn.
 +	 */
-+	for (i = 0; i < 3; i++) {
-+		vcpu_run(vcpu0);
-+		/* A masked higher-plane timer must not count as an event. */
-+		TEST_ASSERT(vcpu0->run->exit_reason == KVM_EXIT_IO,
-+			    "Plane 0 did not run: exit %u (%s), hyperv type %u",
-+			    vcpu0->run->exit_reason,
-+			    exit_reason_str(vcpu0->run->exit_reason),
-+			    vcpu0->run->exit_reason == KVM_EXIT_HYPERV ?
-+			    vcpu0->run->hyperv.type : 0);
-+		switch (get_ucall(vcpu0, &uc)) {
-+		case UCALL_SYNC:
-+			TEST_ASSERT_EQ(uc.args[1], i);
-+			break;
-+		case UCALL_DONE:
-+			TEST_ASSERT_EQ(i, 2);
-+			break;
-+		case UCALL_ABORT:
-+			REPORT_GUEST_ASSERT(uc);
-+		default:
-+			TEST_FAIL("Unexpected ucall %lu", uc.cmd);
++	fault->max_level = min(fault->max_level,
++			       kvm_max_level_for_order(max_order));
+ 	return RET_PF_CONTINUE;
+ }
+ 
+@@ -4780,8 +4786,29 @@ static int __kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
+ 				 struct kvm_page_fault *fault)
+ {
+ 	unsigned int foll = fault->write ? FOLL_WRITE : 0;
++	struct page *overlay;
+ 	bool writable;
+ 
++	/*
++	 * A plane overlay page (VSM SynIC SIMP/SIEFP etc.) replaces the
++	 * memslot translation for this plane only.  The page is pinned
++	 * for the overlay's lifetime, so no refcounting here.
++	 */
++	/*
++	 * Keep this plane's mappings at 4KiB while it has overlays: a huge
++	 * mapping established by a neighbouring gfn's fault would span the
++	 * overlaid gfn and bypass the override below.
++	 */
++	if (READ_ONCE(vcpu->plane->nr_overlays)) {
++		fault->max_level = PG_LEVEL_4K;
++
++		overlay = kvm_plane_overlay_page(vcpu->plane, fault->gfn);
++		if (overlay) {
++			fault->pfn = page_to_pfn(overlay);
++			return RET_PF_CONTINUE;
 +		}
 +	}
 +
-+	kvm_munmap(twin_run, mmap_sz);
-+	close(twin_fd);
-+	close(plane_fd);
-+	kvm_vm_free(vm);
+ 	if (fault->is_private || kvm_memslot_is_gmem_only(fault->slot))
+ 		return kvm_mmu_faultin_pfn_gmem(vcpu, fault);
+ 
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index 356efffe0b16..3c2f97345998 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -1832,13 +1832,22 @@ void kvm_tdp_mmu_recover_huge_pages(struct kvm *kvm,
+ 		/*
+ 		 * kvm_mmu_max_mapping_level() consults only plane-0 state
+ 		 * (lpage_info and plane-0 private attributes).  Nonzero
+-		 * planes carry per-plane memory attributes whose fault-time
+-		 * 4KiB clamps a huge SPTE would undo, extending one page's
+-		 * protections over gfns the plane maps differently.  Leave
++		 * planes carry per-plane memory attributes and memory
++		 * overlays whose fault-time 4KiB clamps a huge SPTE would
++		 * undo, extending one page's protections or overlay
++		 * backing over gfns the plane maps differently.  Leave
+ 		 * those roots alone; their fault path rebuilds mappings at
+ 		 * the largest level the plane allows.
++		 *
++		 * Plane 0 can carry overlays too (kvm->planes[0] always
++		 * exists and KVM_SET_PLANE_MEMORY_OVERLAY accepts plane 0),
++		 * and the same reasoning applies: a recovered huge SPTE
++		 * would either span an overlaid gfn with the memslot
++		 * backing, or huge-align the pinned overlay page's pfn and
++		 * map ~2MiB of unrelated host memory around it.
+ 		 */
+-		if (root->role.plane)
++		if (root->role.plane ||
++		    READ_ONCE(kvm->planes[root->role.plane]->nr_overlays))
+ 			continue;
+ 		recover_huge_pages_range(kvm, root, slot);
+ 	}
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 09ed84886550..27155ac0522a 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -928,9 +928,26 @@ struct kvm_plane {
+ 	struct xarray mem_attrs;
+ #endif
+ 
++	/*
++	 * VSM overlay pages: per-plane gfn -> pinned user page overriding
++	 * the memslot translation for this plane only.  Written under
++	 * kvm->slots_lock; readers tolerate a transient stale view, the
++	 * post-update zap makes the EPT coherent.
++	 */
++#define KVM_PLANE_MAX_OVERLAYS 64
++	struct kvm_plane_overlay {
++		gfn_t gfn;
++		unsigned long uaddr;
++		struct page *page;
++	} overlays[KVM_PLANE_MAX_OVERLAYS];
++	int nr_overlays;
++
+ 	struct kvm_arch_plane arch;
+ };
+ 
++struct page *kvm_plane_overlay_page(struct kvm_plane *plane, gfn_t gfn);
++unsigned long kvm_plane_overlay_uaddr(struct kvm_plane *plane, gfn_t gfn);
++
+ struct kvm {
+ #ifdef KVM_HAVE_MMU_RWLOCK
+ 	rwlock_t mmu_lock;
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index 25626be71eb7..18845d9e02f2 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -1049,6 +1049,7 @@ struct kvm_enable_cap {
+ #define KVM_CAP_HYPERV_FORWARD_HCALL 255
+ #define KVM_CAP_PLANES_SHARE 256
+ #define KVM_CAP_HYPERV_REG_INTERCEPT 257
++#define KVM_CAP_PLANE_MEMORY_OVERLAYS 260
+ 
+ struct kvm_irq_routing_irqchip {
+ 	__u32 irqchip;
+@@ -1411,6 +1412,16 @@ struct kvm_s390_keyop {
+ #define   KVM_PLANE_RUN_STATE_SUSPENDED	(1ULL << 1)
+ #define   KVM_PLANE_RUN_STATE_INACTIVE	(1ULL << 2)
+ 
++/* Map one page of userspace memory over a GPA for a single plane (VSM
++ * overlay pages: SynIC SIMP/SIEFP, hypercall page, VP assist page). */
++struct kvm_plane_memory_overlay {
++	__u32 plane;
++	__u32 flags;
++	__u64 gfn;
++	__u64 uaddr;		/* page-aligned; 0 removes the overlay */
++};
++#define KVM_SET_PLANE_MEMORY_OVERLAY	  _IOW(KVMIO, 0xe7, struct kvm_plane_memory_overlay)
++
+ /*
+  * ioctls for vcpu fds
+  */
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 0a3cfdc624d7..4b1df1a592e9 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -1309,6 +1309,14 @@ static struct kvm_plane *kvm_create_plane(struct kvm *kvm, unsigned plane_level)
+ 
+ static void kvm_destroy_one_plane(struct kvm_plane *plane)
+ {
++	int i;
++
++	for (i = 0; i < plane->nr_overlays; i++)
++		if (plane->overlays[i].page)
++			unpin_user_pages_dirty_lock(&plane->overlays[i].page,
++						    1, true);
++	plane->nr_overlays = 0;
++
+ #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+ 	xa_destroy(&plane->mem_attrs);
+ #endif
+@@ -5953,6 +5961,8 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
+ 		 * VM actually has.
+ 		 */
+ 		return KVM_MAX_USER_PLANES;
++	case KVM_CAP_PLANE_MEMORY_OVERLAYS:
++		return KVM_PLANE_MAX_OVERLAYS;
+ 	default:
+ 		break;
+ 	}
+@@ -6227,6 +6237,265 @@ do {										\
+ 		     sizeof_field(struct kvm_userspace_memory_region2, field));	\
+ } while (0)
+ 
++struct page *kvm_plane_overlay_page(struct kvm_plane *plane, gfn_t gfn)
++{
++	int i, n = READ_ONCE(plane->nr_overlays);
++
++	/* pairs with the smp_wmb() publishing a new entry */
++	smp_rmb();
++	for (i = 0; i < n; i++) {
++		if (READ_ONCE(plane->overlays[i].gfn) != gfn)
++			continue;
++		/* pairs with the smp_store_release() updating an entry */
++		return smp_load_acquire(&plane->overlays[i].page);
++	}
++	return NULL;
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_plane_overlay_page);
++
++unsigned long kvm_plane_overlay_uaddr(struct kvm_plane *plane, gfn_t gfn)
++{
++	int i, n = READ_ONCE(plane->nr_overlays);
++
++	smp_rmb();
++	for (i = 0; i < n; i++) {
++		if (READ_ONCE(plane->overlays[i].gfn) != gfn)
++			continue;
++		/*
++		 * The acquire pairs with the smp_store_release() updating
++		 * an entry: a reader which observes the new page also
++		 * observes the uaddr written before it.
++		 */
++		if (smp_load_acquire(&plane->overlays[i].page))
++			return READ_ONCE(plane->overlays[i].uaddr);
++		return 0;
++	}
 +	return 0;
 +}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_plane_overlay_uaddr);
++
++/*
++ * The invalidation window registered around an overlay update must
++ * cover every gfn whose in-flight fault could install a huge leaf
++ * spanning the overlaid gfn, i.e. the naturally-aligned region of the
++ * widest stage-2 huge mapping any plane-capable architecture supports
++ * (a 1GiB page on x86).  A narrower window lets a racing fault on a
++ * neighbouring gfn, which sampled nr_overlays and mmu_invalidate_seq
++ * before the update, pass mmu_invalidate_retry_gfn() and install a
++ * huge SPTE over the overlay after the zap.
++ */
++#define KVM_PLANE_OVERLAY_INVAL_PAGES	(SZ_1G >> PAGE_SHIFT)
++
++static void kvm_plane_overlay_invalidate_add(struct kvm *kvm, gfn_t gfn)
++{
++	gfn_t start = ALIGN_DOWN(gfn, KVM_PLANE_OVERLAY_INVAL_PAGES);
++
++	kvm_mmu_invalidate_range_add(kvm, start,
++				     start + KVM_PLANE_OVERLAY_INVAL_PAGES);
++}
++
++/*
++ * Drop every translation of @gfn, in all address spaces and all planes'
++ * roots.  A huge leaf spanning the gfn intersects the single-page range
++ * and is zapped with it.  Hardware TLBs are not flushed here.
++ */
++static void kvm_plane_overlay_unmap(struct kvm *kvm, gfn_t gfn)
++{
++#ifdef CONFIG_KVM_GENERIC_MMU_NOTIFIER
++	struct kvm_memslot_iter iter;
++	struct kvm_memslots *slots;
++	int i;
++
++	KVM_MMU_LOCK(kvm);
++	for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
++		slots = __kvm_memslots(kvm, i);
++
++		kvm_for_each_memslot_in_gfn_range(&iter, slots, gfn, gfn + 1) {
++			struct kvm_gfn_range range = {
++				.slot = iter.slot,
++				.start = gfn,
++				.end = gfn + 1,
++				.attr_filter = KVM_FILTER_PRIVATE |
++					       KVM_FILTER_SHARED,
++				.may_block = true,
++			};
++
++			kvm_unmap_gfn_range(kvm, &range);
++		}
++	}
++	KVM_MMU_UNLOCK(kvm);
++#else
++	kvm_arch_flush_shadow_all(kvm);
++#endif
++}
++
++static int kvm_vm_ioctl_set_plane_overlay(struct kvm *kvm,
++					  struct kvm_plane_memory_overlay *ov)
++{
++	struct kvm_plane_overlay *e = NULL;
++	struct page *page = NULL, *old_page = NULL;
++	struct kvm_plane *plane;
++	bool moved = false;
++	gfn_t moved_gfn = 0;
++	int i, r;
++
++	if (ov->flags || ov->plane >= KVM_MAX_PLANES)
++		return -EINVAL;
++	if (ov->uaddr & ~PAGE_MASK)
++		return -EINVAL;
++	/*
++	 * Read under kvm->lock: KVM_CREATE_PLANE publishes and, on its
++	 * error path, unpublishes-and-frees the plane under that lock, so
++	 * a pointer observed here is either NULL or a plane that lives
++	 * until VM teardown.
++	 */
++	scoped_guard(mutex, &kvm->lock)
++		plane = kvm->planes[ov->plane];
++	if (!plane)
++		return -EINVAL;
++
++	if (ov->uaddr) {
++		r = pin_user_pages_fast(ov->uaddr, 1,
++					FOLL_WRITE | FOLL_LONGTERM, &page);
++		if (r != 1)
++			return r < 0 ? r : -EFAULT;
++	}
++
++	mutex_lock(&kvm->slots_lock);
++	for (i = 0; i < plane->nr_overlays; i++) {
++		if (plane->overlays[i].gfn == ov->gfn) {
++			e = &plane->overlays[i];
++			break;
++		}
++	}
++
++	/*
++	 * Removing an overlay which was never installed changes nothing;
++	 * don't zap and flush for it.
++	 */
++	if (!ov->uaddr && !e) {
++		mutex_unlock(&kvm->slots_lock);
++		return 0;
++	}
++
++	/*
++	 * guest_memfd-backed and private gfns have their own backing
++	 * contract which an ordinary pinned user page cannot substitute
++	 * for, and kvm_mmu_faultin_pfn_gmem() does not consult overlays.
++	 * Both the private attribute and the memslot flags are stable
++	 * under slots_lock.
++	 */
++	if (ov->uaddr) {
++		struct kvm_memory_slot *slot = gfn_to_memslot(kvm, ov->gfn);
++
++		if ((slot && kvm_memslot_is_gmem_only(slot)) ||
++		    kvm_is_private_gfn(kvm, ov->gfn)) {
++			mutex_unlock(&kvm->slots_lock);
++			unpin_user_page(page);
++			return -EINVAL;
++		}
++	}
++
++	if (ov->uaddr) {
++		if (!e) {
++			if (plane->nr_overlays >= KVM_PLANE_MAX_OVERLAYS) {
++				mutex_unlock(&kvm->slots_lock);
++				unpin_user_page(page);
++				return -ENOSPC;
++			}
++			e = &plane->overlays[plane->nr_overlays];
++			e->gfn = ov->gfn;
++			e->uaddr = ov->uaddr;
++			e->page = page;
++			/*
++			 * Publish the fully-initialised entry before
++			 * raising the count; pairs with the smp_rmb() in
++			 * the lockless readers.
++			 */
++			smp_wmb();
++			WRITE_ONCE(plane->nr_overlays, plane->nr_overlays + 1);
++		} else {
++			old_page = e->page;
++			WRITE_ONCE(e->uaddr, ov->uaddr);
++			/*
++			 * Order the uaddr store before the page store; a
++			 * reader which acquires the new page must see the
++			 * uaddr it belongs to.
++			 */
++			smp_store_release(&e->page, page);
++		}
++	} else if (e) {
++		struct kvm_plane_overlay *tail =
++			&plane->overlays[plane->nr_overlays - 1];
++
++		old_page = e->page;
++		WRITE_ONCE(e->page, NULL);
++		WRITE_ONCE(e->uaddr, 0);
++
++		/*
++		 * Reclaim the slot: move the tail entry into the vacated
++		 * one and shrink the array.  A lockless reader scanning
++		 * with the old count can miss the moved entry entirely
++		 * (it may already have passed the vacated slot), so the
++		 * moved gfn is added to the invalidation window below and
++		 * any such in-flight fault retries.  The cleared tail is
++		 * harmless to a stale-count reader: the live copy sits at
++		 * a lower index and is found first.
++		 */
++		if (e != tail) {
++			moved = true;
++			moved_gfn = tail->gfn;
++			WRITE_ONCE(e->gfn, tail->gfn);
++			WRITE_ONCE(e->uaddr, tail->uaddr);
++			/* pairs with smp_load_acquire() in the readers */
++			smp_store_release(&e->page, tail->page);
++		}
++		WRITE_ONCE(plane->nr_overlays, plane->nr_overlays - 1);
++		WRITE_ONCE(tail->page, NULL);
++		WRITE_ONCE(tail->uaddr, 0);
++		WRITE_ONCE(tail->gfn, 0);
++	}
++	/*
++	 * Bump the invalidation sequence across the update and zap: a
++	 * concurrent fault resolves the overlay pfn locklessly before
++	 * taking mmu_lock, and without a sequence change
++	 * is_page_fault_stale() would let it install an SPTE for the OLD
++	 * backing after the zap, mapping a page this function is about
++	 * to unpin.
++	 */
++	KVM_MMU_LOCK(kvm);
++	kvm_mmu_invalidate_start(kvm);
++	kvm_plane_overlay_invalidate_add(kvm, ov->gfn);
++	if (moved)
++		kvm_plane_overlay_invalidate_add(kvm, moved_gfn);
++	KVM_MMU_UNLOCK(kvm);
++
++	mutex_unlock(&kvm->slots_lock);
++
++	/*
++	 * Drop any translation mapping the old or new backing.  The unmap
++	 * removes the SPTEs but does not flush hardware TLBs: a vCPU that
++	 * mapped the gfn before the update still holds a translation to
++	 * the old backing in its TLB (tagged by the live ASID on SVM,
++	 * which nothing else invalidates).  Flush before the old page is
++	 * unpinned: KVM_REQ_TLB_FLUSH is a per-plane request, so the
++	 * fan-out in kvm_make_vcpu_request() reaches every plane twin and
++	 * each flushes its own hardware context.
++	 */
++	kvm_plane_overlay_unmap(kvm, ov->gfn);
++	if (moved)
++		kvm_plane_overlay_unmap(kvm, moved_gfn);
++	kvm_flush_remote_tlbs(kvm);
++
++	KVM_MMU_LOCK(kvm);
++	kvm_mmu_invalidate_end(kvm);
++	KVM_MMU_UNLOCK(kvm);
++
++	if (old_page)
++		unpin_user_pages_dirty_lock(&old_page, 1, true);
++	return 0;
++}
++
+ static long kvm_vm_ioctl(struct file *filp,
+ 			   unsigned int ioctl, unsigned long arg)
+ {
+@@ -6237,6 +6506,15 @@ static long kvm_vm_ioctl(struct file *filp,
+ 	if (kvm->mm != current->mm || kvm->vm_dead)
+ 		return -EIO;
+ 	switch (ioctl) {
++	case KVM_SET_PLANE_MEMORY_OVERLAY: {
++		struct kvm_plane_memory_overlay ov;
++
++		r = -EFAULT;
++		if (copy_from_user(&ov, argp, sizeof(ov)))
++			goto out;
++		r = kvm_vm_ioctl_set_plane_overlay(kvm, &ov);
++		break;
++	}
+ 	case KVM_CREATE_PLANE:
+ 		r = kvm_vm_ioctl_create_plane(kvm, arg);
+ 		break;
 -- 
 2.50.1
 
