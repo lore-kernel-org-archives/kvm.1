@@ -1,47 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=129.187.255.137
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794576022;
-	b=utJ0IZbaD3/yijNCJTaMXgmMIAjKJLcFeUjwrlkfJxRyKuB7NCZ6DHEMpTx988Md81O3
-	 c2lRYj7b9N0WjTXQhU2yG4d4gp2S62rD/bioKEDVMioP4HRjhiN8T74dWbyFwJvgot4t5
-	 6Fc7PVAE+tCr/BawDUWSS6h5Lewx0RrKyBA6jAnnhdAL3QVT8hXgs0ui7YQctxcD/Zef3
-	 fIaw5JpKU4jHKnlGoTu+9TDzG35f8oh+gmO9F0hiNMjjy0pQdeG84WMbRuL9uhJW1xZNd
-	 /Qp/Z3Ufs8Qs1An0Cvt6wFDY7EyQ6TWPRqWKJ+MEI4MKxx4dO2l4uoqKzUK5/eTUJxg==
+	t=1794576792;
+	b=JTXaJiIIgPEZygKm4sLRUzJ2MUHJ2DCaapg16C+QIzyytt4vh+8Rqn/wNDdHvWWTgVau
+	 mX+B3xWxLA98CiXJLkGP2TkogiJbzj2M+2jFs7EJEHKSRg6OywaXY9it76J9lgXYdWDRG
+	 2qOY5iq0kR+wEW+JHf/uPnB2m+PM6ZwOZTSZ1ArkAjr/VqZe04ClXr3Pscu32bdCYTo5X
+	 Cve22+dRkeII7phTWJ2Xd1Cdyx5OaDFmzhFT8+6SFeDyl6LaMMUonCeQ8fDMRfWLpWo1P
+	 GE83bd5XtpoX0W6calfHvTwcmK0nsdbDb6baECZ2FawnyTPcrlBEX7YYidw8AB5hopg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794576022;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=FqUL6WwFMsKVYZsc6fUiuxiEIZc0EI2CRK5bQ4oB51A=;
-	b=WGPbYLH9wkyuR0XEgEcfHv9srWqV3TfNQH0cHKK6gvqXx/CSP5OKwG9DcysWZYEjGgCr
-	 UWzF2Hh3hWFWKmw/TlD0ZDNlYbCfqXaTOESC9NKgccM1Qf1urusDojtnSZxwtaIHnI1Hl
-	 yTrHCFNYbqPCbxIC2qpXLUFpjafBuzSQXVNfvGpybhSj8AcN3iHGTJPHCYbIya8oEGXER
-	 +wdKGGbUHqwukikwNo+EX/mUsu8WzbgoyBiVeC9gMPvoGGHaywE8B79LY8eZ1d6M3Y7Gq
-	 7FILiOsB3ipJxMuNuyefUe8yHH3HU11fHHAN+fLhG3AWV/o8lhIf8IhLYVr0PV7rmhg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794576792;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Virus-Scanned:X-Spam-Flag:
+	 X-Spam-Score:X-Spam-Level:X-Spam-Status:Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Content-Language:To:From:Subject:
+	 Autocrypt:Content-Type:Content-Transfer-Encoding;
+	bh=sjthr6lL03BtfNRNFM5Cu+KNtDVFOfHz0SS8ijp8QRQ=;
+	b=dTm3XTkwUfuCRA6ckYC4AAoSjjH1MrJCNVOjxA9qnV0cypMcTBAadrOlaZs4/3wCzocZ
+	 RMKYbLR/M3dK1w4TTXyz2kCb2YrWboFYy1az+JzldSBVY+IowpNq7tieRQNokiTC/tds/
+	 FJRATOYHL4s6V+MLWyWpDO9HEpSJLz2CJ8jawgHx8puCCdgnH1GNZpp5DXf3uJZsyfQF6
+	 QoIJRbQChhzwlw9bITFRusJfFS2D03moX+/k5G2wnDMLd+zCOJv3mBra3pPmbzw7YQV1w
+	 /IrBnB/wMtHuoJgcPbt7hQJRvR2VnUmXOBHgcFS1Nd9IfxPzw8BOKntfUAO1CLwVsmg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m4KpwJ3H;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=tum.de;
+	spf=pass smtp.mailfrom=tum.de;
+	dkim=pass header.d=tum.de header.i=@tum.de header.a=rsa-sha256 header.s=tu-postout21 header.b=bJSAlkXT;
+	arc=none smtp.remote-ip=129.187.255.137
+Received: from postout1.mail.lrz.de (postout1.mail.lrz.de [129.187.255.137])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FDE606AB8F;
-	Fri, 13 Nov 2026 13:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4486606A32D;
+	Fri, 13 Nov 2026 13:33:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4486606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tum.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tum.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m4KpwJ3H
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7642D1F000C4;
-	Fri, 13 Nov 2026 13:20:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794576022;
-	bh=FqUL6WwFMsKVYZsc6fUiuxiEIZc0EI2CRK5bQ4oB51A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=m4KpwJ3HMu8IEJe37/dqMEBiuIKYQNEiPAErcix/L4S8IBwrVFztu8MraiCZnHIcK
-	 Ug3UaLyoARX6eM1nZr1xhJEL5edMzdsK2EnQ/NhSZ/PF1gFC4zoLEwhJvVI4vn3X0D
-	 HJCFAuvMtMlvMSjmPGQpnXvVbHqLmbKyEwVVJdsUOC57t5uSyP+Pfs82Gjzdr970ua
-	 8oYAJOcSDhh/ZtsQtuy+wpyhhYlJwXKlmucwViObPVOSVLDoMwsowijArswpG+pWz0
-	 DaYnjqrlOGe32d6tS//cF7fsf9/LRTtbKb5v24VpVvsnqSArrMIY4+yf9m39KMTiNa
-	 NY+6B/naH/Biw==
-Message-ID: <78f8179c-89c8-4f26-8fe1-580ec4e73684@kernel.org>
-Date: Fri, 13 Nov 2026 14:20:10 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=tum.de header.i=@tum.de header.a=rsa-sha256 header.s=tu-postout21 header.b=bJSAlkXT
+Received: from lxmhs51.srv.lrz.de (localhost [127.0.0.1])
+	by postout1.mail.lrz.de (Postfix) with ESMTP id 4jQyqv6bl5zySL;
+	Fri, 13 Nov 2026 14:32:59 +0100 (CET)
+Authentication-Results: postout.lrz.de (amavis); dkim=pass (2048-bit key)
+ reason="pass (just generated, assumed good)" header.d=tum.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tum.de; h=
+	content-transfer-encoding:content-type:content-type:subject
+	:subject:from:from:to:to:content-language:user-agent
+	:mime-version:date:date:message-id:received:received; s=
+	tu-postout21; t=1794576779; bh=sjthr6lL03BtfNRNFM5Cu+KNtDVFOfHz0
+	SS8ijp8QRQ=; b=bJSAlkXT9DqydhKuLYfONt2l0GbeXIWYozqaMibhUf2x0BERm
+	dSHgDwoqAqTDYGqe7r3/4smFdmO3/enebhHuVIt8RT0HmwfkI4iZyU6AzEpRXVvl
+	eNPWslTg7RMrJ141QNLh0+hEwYWofvnQTlX3LZUAlZLNvEyw1rwqO4XW+q0R3Cyr
+	y5+P0VXuqVvxkb//pSTZHO01WZb4TP4p+s7TZOpkqmI5tas31xyomUcKZifhUIhk
+	tKvqY/X7chb1zHKNDJEADx37t2ymYsNaCaIBwcEu6ziaAsbgtvJYXW6x0x1kjLYu
+	f1ZotAcJcxGBLXsOzv94adg5u7yDKDkpX4EKg==
+X-Virus-Scanned: by amavisd-new at lrz.de in lxmhs51.srv.lrz.de
+X-Spam-Flag: NO
+X-Spam-Score: -2.872
+X-Spam-Level:
+Received: from postout1.mail.lrz.de ([127.0.0.1])
+ by lxmhs51.srv.lrz.de (lxmhs51.srv.lrz.de [127.0.0.1]) (amavis, port 20024)
+ with LMTP id KPhA-nGjwbmO; Fri, 13 Nov 2026 14:32:59 +0100 (CET)
+Received: from [IPV6:2a02:2455:1b1c:5000:a2c4:f9c8:74:1614] (unknown [IPv6:2a02:2455:1b1c:5000:a2c4:f9c8:74:1614])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by postout1.mail.lrz.de (Postfix) with ESMTPSA id 4jQyqv0nnZzyWW;
+	Fri, 13 Nov 2026 14:32:59 +0100 (CET)
+Message-ID: <f4a86ec3-2155-4289-ac7a-1f9eb998e173@tum.de>
+Date: Fri, 13 Nov 2026 14:32:06 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -52,108 +75,85 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 5/5] iommu/of: Add support for "iommu-ranges" on a
- device node
-To: Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Vasant Hegde <vasant.hegde@amd.com>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>,
- Jean-Philippe Brucker <jpb@kernel.org>, Rob Herring <robh@kernel.org>,
- Saravana Kannan <saravanak@kernel.org>,
- Tomasz Nowicki <tomasz.nowicki@caviumnetworks.com>,
- Eric Auger <eric.auger@redhat.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Joerg Roedel
- <jroedel@suse.de>, Srinath Mannam <srinath.mannam@broadcom.com>,
- Oza Pawandeep <quic_poza@quicinc.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Alex Williamson <alex@shazbot.org>
-Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
- virtualization@lists.linux.dev, devicetree@vger.kernel.org,
- kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-media@vger.kernel.org,
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
- Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
-References: <20261106-add_iommu_ranges-v7-0-5c0f72083e52@oss.qualcomm.com>
- <20261106-add_iommu_ranges-v7-5-5c0f72083e52@oss.qualcomm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGPBBMBCgA5AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJp2mE8AAoJEBuTQ307QWKbeaIP
- /ihHTkTW4KsN/DQ945JJbyu5tI0J80Wue7QyyLPglyKfhgb5cLLNPpOC8cCIJsc7+W3i2P38
- s2c1cOH6CYGE7E9ur3Vfme8NW2S2I/Z8VC7bZnzyS23wT17LrsdS/qCpx4o8U+pt/xdXDKph
- EGRYrIEmMpUWvyYzyYKGIe25FtaayIIKpq8eZYyFcp2f/sG5IkOW5uZzHPMPdcm87jU7fyuQ
- rAU2vx9r+ulUfQ/q9Z2roC/ode3l7t2pN7BCBCsUDp6JCrUyZrtT1e7EbA0ZRP3aOBNk2P2E
- DQOgJGjGdO5Yx2Y9LFtltu6JbsBJHi1syGRX3AtQYOMc4Y1WGoeZJmMlvKj2ZqqXNkcWi2DS
- IQEWB0uW6CqFsBBIMGDa+6OzdaVO/uAVXWDWml02Men3CILdI1MbVjoh8ECqYUY7OQ+JJvNN
- vnliuq5WM3Ghd3jg/LZZrxXjdIginRHFQCjIJYLKpLZWm1/iDFedcfzqRNYmTtqscdCNHW41
- oT3Z7BmO9xwdjuwBS6nmS6JJwkbf5Ot2QR4pB/DRU7ZwjT1qHe+9r9gF32wXVQatHNGK/VVu
- sfwOnkdxCWkp/qb2gdQRmZh+SedStWshigH6sNfuHBloF/q+hjMRc8b2m326OZdrbSHwY1Sz
- vti8Hn7n8NjdHO9LKB7BIdjkA9DA5WsqOuVCzsFNBFVDXDQBEADNkrQYSREUL4D3Gws46JEo
- Z9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLueMNsWLJBv
- BaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6eiOMheesVS
- 5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wAGldWsRxb
- f3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA6z6lBZn0
- WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9YegxWKvX
- XHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt91pFzBSO
- IpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gUBLHFTg2h
- YnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/JoFzZ4B0
- p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu4vXVFBYI
- GmpyNPYzRm0QPwARAQABwsF2BBgBCgAgAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtBYpsFAmna
- YUkACgkQG5NDfTtBYptX+BAApg32CkxwNucNEi8WfWA8oKkW0y8YDuY6ORMo9FWNGiT/OTy0
- vyJrLocrpn86zwfjVp+eCrssPYh8eqJfnWqmYv6ACQtHPYzPZQ3mSo8H97Z01oUxITzCxpXm
- ZkLgPIqtDPcC2E3dPM/fVxcyowM8XsaMA9wcsaUYrta8toOq2b9tKcjleKMfMrm0gQ9u7wUc
- QbLkwj6TCLOwucb07GXzLTNF9PZmaDUpKAZjMjmrW+le+SFvQbhamx0rxLWPR0NWntXpbCn+
- +ACch03p/JyTBVktxFsFyCt7pTPE1kEaeuXBTe/a2D9iQvRxRW19LvuO2e59/u1wYUiH/orz
- wbIC2S4dBsPAPihL3ztOU1yE86GPyQtSE0kU+/7snnLt4QGi6PChf3t5gnNjAzjUUovO8rgI
- c+5yN5heq5loYHgK6OQ9OlHzsPHO9e9MOQcKlFycs1pyijFGzDwdNUm/SchK8iWT2QApTx4A
- K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
- n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
- qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <20261106-add_iommu_ranges-v7-5-5c0f72083e52@oss.qualcomm.com>
+To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com
+From: Manuel Andreas <manuel.andreas@tum.de>
+Subject: nVMX: Policy on VM-entry checks KVM intends to support
+Autocrypt: addr=manuel.andreas@tum.de; keydata=
+ xjMEY9Zx/RYJKwYBBAHaRw8BAQdALWzRzW9a74DX4l6i8VzXGvv72Vz0qfvj9s7bjBD905nN
+ Jk1hbnVlbCBBbmRyZWFzIDxtYW51ZWwuYW5kcmVhc0B0dW0uZGU+wokEExYIADEWIQQuSfNX
+ 11QV6exAUmOqZGwY4LuingUCY9Zx/QIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEKpkbBjgu6Ke
+ McQBAPyP530S365I50I5rM2XjH5Hr9YcUQATD5dusZJMDgejAP9T/wUurwQSuRfm1rK8cNcf
+ w4wP3+PLvL+J+kuVku93CM44BGPWcf0SCisGAQQBl1UBBQEBB0AmCAf31tLBD5tvtdZ0XX1B
+ yGLUAxhgmFskGyPhY8wOKQMBCAfCeAQYFggAIBYhBC5J81fXVBXp7EBSY6pkbBjgu6KeBQJj
+ 1nH9AhsMAAoJEKpkbBjgu6Kej6YA/RvJdXMjsD5csifolLw53KX0/ElM22SvaGym1+KiiVND
+ AQDy+y+bCXI+J713/AwLBsDxTEXmP7Cp49ZqbAu83NnpBQ==
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 06/11/2026 18:14, Vikash Garodia wrote:
-> Reserving an IOVA address using "iommu-addresses" requires it to be
-> placed in the reserved-memory node. But when "iommu-addresses" is the
-> only property being described and there is no backing "reg" (i.e. no
-> actual reserved system memory), it does not really belong under
-> /reserved-memory. A device IOVA range is specific to its own address
-> space, and does not describe the system physical memory to make it
-> qualify under reserved-memory. Given this, place "iommu-addresses"
-> inside reserved-memory only when it is paired with a "reg", otherwise,
-> define it within the device own node. It was discussed here:
-> https://lore.kernel.org/all/662f7093-fb0a-4564-9ca0-98e03e68ba9a@kernel.org
-> 
-> Existing "iommu-addresses" property expects a phandle, which does
-> not make sense when the property is defined within the device node.
-> "iommu-ranges" was introduced to specify the device specific IOVA ranges
-> when there is no backing "reg".
-> 
-> Suggested-by: Rob Herring <robh@kernel.org>
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> Co-developed-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
-> Signed-off-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
-> Signed-off-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
-> ---
->  drivers/iommu/of_iommu.c | 107 +++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 107 insertions(+)
-> 
+Hi all,
 
+I've built a tool that allows me to scrutinize the VMLAUNCH emulation of KVM.
+With this, I am able to find a variety of VMCS12 configurations that will pass
+KVM's own implemented VM-entry checks and eventually create an architecturally 
+invalid VMCS02 that will fail its hardware VM-entry.
 
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+A brief overview of some of these cases:
+- Missing checks on GUEST_RFLAGS
+- Missing checks on GUEST_RIP
+- Missing check on GUEST_CR4.PCIDE for 32 bit guests
+- Missing checks related to guest segments
+- Missing checks for event injection related fields
+- Missing canonical checks on GUEST_SYSENTER_EIP/ESP
 
-Best regards,
-Krzysztof
+I am aware that a failed hardware VM-entry on VMCS02 is not directly an issue on its own, as it is
+caught in L0 and forwarded to L1 for handling.
+
+However, many of these cases would still bring forth incorrect emulation behavior.
+For instance, lets assume an L1 guest has configured its VMCS12 such that both the GUEST_SYSENTER_ESP
+and the VM-entry MSR load address are invalid. Then, a real hardware VM-entry on such a VMCS would result in EXIT_REASON_INVALID_STATE.
+In contrast, since KVM does not check the GUEST_SYSENTER_ESP to be canonical, it would pass the guest-state checks and
+move on to the MSR loading, which would eventually fail and forward the VM-exit EXIT_REASON_MSR_LOAD_FAIL to L1. Therefore, KVM does not
+correctly emulate hardware.
+
+Further, I can think of other cases (and believe have found at least one such case) that lead to incorrect emulation behavior due to missing/incorrect VM-entry checks:
+- L1 launches an architecturally valid VMCS12, but the merging creates an invalid VMCS02 and KVM forwards a failed VM-entry to L1
+- L1 launches an architecturally _in_valid VMCS12, but the merging creates a valid VMCS02 and the VM-entry succeeds. 
+
+These cases would seem to contradict (or make one of such exceptions?) this statement from the maintainer docs:
+"With few exceptions, KVM *must* honor architectural behavior, therefore it's implied that KVM behavior is emulating SDM and/or APM behavior."
+Therefore, indicating that these cases are all to be treated as bugs in KVM.
+
+Now, what's confusing me is that in `nested_vmx_run` I see the following comment:
+
+/*
+ * The nested entry process starts with enforcing various prerequisites
+ * on vmcs12 as required by the Intel SDM, and act appropriately when
+ * they fail: As the SDM explains, some conditions should cause the
+ * instruction to fail, while others will cause the instruction to seem
+ * to succeed, but return an EXIT_REASON_INVALID_STATE.
+ * To speed up the normal (success) code path, we should avoid checking
+ * for misconfigurations which will anyway be caught by the processor
+ * when using the merged vmcs02.
+ */
+
+which one could interpret as KVM intentionally attempting to validate as little of the VMCS12 as possible?
+This entirely makes sense to me if KVM simply prioritizes performance rather than 100% emulation correctness.
+
+However, I am then once more confused by some other source code comments.
+For instance, `__vmx_guest_state_valid` hosts the following comment:
+
+/* TODO:
+ * - Add checks on RIP
+ * - Add checks on RFLAGS
+ */
+
+which indicates to me that one would ideally have those VM-entry checks for completeness sake,
+just nobody got around to implementing those yet?
+
+So in the end I would simply like to know what VM-entry checks KVM actually cares about, such that I don't
+need to waste your (or my) time on submitting useless patches.
+
+Thanks and best,
+Manuel
