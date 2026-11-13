@@ -1,46 +1,46 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=101.6.4.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=101.6.4.71
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794563369;
-	b=p5469W8/4f5iFO8mmZOQLrZlQ1AzqyalIyuzPCwRjPOoJNLeiXybGp6WO4kNxJgzd1wD
-	 yic/BSopCFpy0Mq8SH7zssX8/uEaGPQh8Ddj37EPeW/0jFgPrzP8h9UkZGJhXj/QQm/Gm
-	 2kZUrR7YeM6BWXwzGzhwJhrlMft7zVwZx52vIFqtCkplLXHDSAN+AXLjXxGbkDWMjR31l
-	 4iXCBSgTth+SssPotU7EIH4Pmv6fIctHVdNEu2SR6+7GFZP2UBy5gnTm/NbbhVDMLVEpS
-	 9rIRlaQlCl61MsOLc7YCLPGEhitPPUBzHA7L8gvbk9Ks7dlwOGk1NuuqDaZf4ytq06A==
+	t=1794563372;
+	b=FICibHdixMMBhJvASMtfwy7Wbjn9v7HQp5+A7EdCHxr1EQSUnpx7Opiq/UaTDEnjVoCz
+	 dOcfJK1CCBdHSa9SCf3KJIvtNkvQnbWgNOgKD6zwgGl9+4+oCiLx3/lf8r6ZBaNGp3y5Z
+	 ZwDwm4AV19K6kmBovrXIz37J7ZejF+aw/V1ICaQPj2HqWHZ1DJ/d5rnON7bveNShy5m12
+	 TmWgt4oif/z67UwiT4+mzRvC8McNbZ7lGf685Mtfm1TzxFC18rior8OdgATGMJjLq6c5x
+	 SeawpMWtxY+GtjQtl4IplkuDDcQodiZbqh6lh/oSYTrpKNfdHsiQmrD7l9CLTrVyQtA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794563369;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794563372;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
 	 X-CM-SenderInfo;
-	bh=z0wAaN14MrdTcq4vNRXtU+J3HaGg6LIxXoL1VlhxKq4=;
-	b=AwRYLtO3VkyHZmU7oZgijB0MWVCAhITrxMeskyye97wl02ugA+04N0qxC0MmX3LPl88k
-	 1NOI1fWXiyo4yEyOPNOa6fMK59+YP75hJyqPNhpifexmTiTpdCumnzfiYaHNRWPo8Nbtf
-	 VAenhObyyBnQdOWCjc7cYfkwv8dAmAYSIEtogIATAbr7hdR+LXw8lAMyoTSIxAkO5kUob
-	 HjQRTCkSZVsk3Y7KxsxOgi3iPJzQ6isKLOMJQNHirQFcH9BbYKDHlDVWcDQqUqoplvx+P
-	 A1GPdaoPDY0X4oUjmAuyZ6nNeMJ6G2HJ8luaCG21hyZ2eQz7Jt6vaa90Jg4gq8sdrVQ==
+	bh=0slYynxcqkcuOoir1dAuL9+HYncu4X2CDrICwebLZnw=;
+	b=w2UPMKCemJgoFc07WGVd498M/S9kA7xKLzitAmn3No/rZUx3MAZsyKaZWGXSEJlbxbgt
+	 /2gIK3a4MmfvtpV7fIGrHrCclKqo+Zllw8XRnFuxkg94S+N9kVx5atqEZIjNKN1MjMC/S
+	 qmnmGvGXdKgIrkLWbZHmkAsoQfcRZt6MBzkbfj6BNrIjZnWVtd6fh8rqTe4YOZkIr8AWA
+	 Z3kSVMI6kWewNDE7f7QcbPwSjJj6iCacdQS4htFNt/aJtvnJQKfTXYfKi0LQe5lA/WuC/
+	 cA//iZ82iqCWLw2ugwms9LojEKnx225oayG4dUzqhwZXmxJJqBiWRagDYEHDq/tV9pw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=mails.tsinghua.edu.cn;
 	spf=pass smtp.mailfrom=mails.tsinghua.edu.cn;
-	dkim=pass header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=jOLiYxfu;
-	arc=none smtp.remote-ip=101.6.4.70
-Received: from tsinghua.edu.cn (smtp46.tsinghua.edu.cn [101.6.4.70])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F9D1606A321
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 09:49:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F9D1606A321
+	dkim=pass header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=TaG96q4B;
+	arc=none smtp.remote-ip=101.6.4.71
+Received: from tsinghua.edu.cn (smtp47.tsinghua.edu.cn [101.6.4.71])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37869606A321
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 09:49:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37869606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=jOLiYxfu
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=TaG96q4B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
 	Date:Message-ID:In-Reply-To:References:MIME-Version:
-	Content-Transfer-Encoding; bh=z0wAaN14MrdTcq4vNRXtU+J3HaGg6LIxXo
-	L1VlhxKq4=; b=jOLiYxfu1OrcLdkdrgm9GUEGNeARzLp460MevVgWWJjyOoU1F5
-	r7+CPb53wTCV8gaZRBQ3ryQG5LZDu7kHo+iO72F5mrcYmgy+Ye9htMmzxLL7eYA2
-	gEJ/9uQSwj2hefpFnARBasuXckFGSQ/yL7Yi8/WyTcbNKlw2ubxeW8uuQ=
+	Content-Transfer-Encoding; bh=0slYynxcqkcuOoir1dAuL9+HYncu4X2CDr
+	ICwebLZnw=; b=TaG96q4BemqPy11REescMHoRe9X1ZWTXrtxx3pvUdPg2dk1UR7
+	zkHzarSaJO0FnzfUTvnoFj78vwCk79LfCD0t950TtCrTpNT/vZh5ZiHo5+1QApQc
+	ZSxyqdZIXcGBqRNBfWGVsGAtSa5UhU9XEcNVLFrHWogCYC+kOZxihadv0=
 Received: from ubuntu (unknown [101.5.154.165])
-	by web1 (Coremail) with SMTP id yAQGZQA3qzvR3PZqgA5CAg--.9318S14;
-	Fri, 13 Nov 2026 17:49:20 +0800 (CST)
+	by web1 (Coremail) with SMTP id yAQGZQA3qzvR3PZqgA5CAg--.9318S15;
+	Fri, 13 Nov 2026 17:49:22 +0800 (CST)
 From: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>
 To: qemu-devel@nongnu.org
 Cc: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>,
@@ -58,9 +58,9 @@ Cc: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>,
 	bin.meng@processmission.com,
 	tangtao1634@phytium.com.cn,
 	Chao Liu <chao.liu@processmission.com>
-Subject: [RFC PATCH 12/20] hw/misc: add the RK3588 OTP controller
-Date: Fri, 13 Nov 2026 17:47:46 +0800
-Message-ID: <8215913c80e82187d194efc1f22e43528e0c4be6.1794555589.git.w-yf22@mails.tsinghua.edu.cn>
+Subject: [RFC PATCH 13/20] hw/ssi: add the Rockchip SPI flash controller
+Date: Fri, 13 Nov 2026 17:47:47 +0800
+Message-ID: <160fbdb55551ee295ca8acd80a53876210756475.1794555589.git.w-yf22@mails.tsinghua.edu.cn>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1794555588.git.w-yf22@mails.tsinghua.edu.cn>
 References: <cover.1794555588.git.w-yf22@mails.tsinghua.edu.cn>
@@ -74,101 +74,128 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:yAQGZQA3qzvR3PZqgA5CAg--.9318S14
-X-Coremail-Antispam: 1UD129KBjvJXoWxtFyDAFWDZFykXFykuFyUJrb_yoWfCw15pr
-	n5Cry5GrWkGF47ZrZ3tFnxtF45Jan7Ww1jv3yfAFyayFW7tFy5KF4qgayYyFZ7XrW8ur18
-	u39Fg3yYqr47Xw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUHa14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
-	kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
-	z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F
-	4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq
-	3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0V
-	AKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1l
-	Ox8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErc
-	IFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_
-	GFWl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxV
-	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI
-	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
-	4UJVWxJr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
-	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjfUeVbkUU
-	UUU
+X-CM-TRANSID:yAQGZQA3qzvR3PZqgA5CAg--.9318S15
+X-Coremail-Antispam: 1UD129KBjvAXoW3ZrWftr13trWkKF1fCw43trb_yoW8ArW3Xo
+	WqgF45Xry8Kw4xAry0v3yI9r4xWwnrKr4kCa18uF4jva18ArnrXan8C3yY9a1rAr15tF9x
+	JF4vy393Ja4kZryxn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
+	AaLaJ3UjIYCTnIWjp_UUUOZ7AC8VAFwI0_Wr0E3s1l1xkIjI8I6I8E6xAIw20EY4v20xva
+	j40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l82xGYIkIc2x26280x7IE14v26r126s0DM28Irc
+	Ia0xkI8VCY1x0267AKxVW5JVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l
+	84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJV
+	WxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE
+	3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2
+	IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r1j6r4U
+	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I64
+	8v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67AK
+	6r4fMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	W8Jr0_Cr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWx
+	JwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VUjCJmU
+	UUUUU==
 X-CM-SenderInfo: fzn1wj2s6ptxtovo32xlqjx3vdohv3gofq/
 
 From: Chao Liu <chao.liu@processmission.com>
 
-Add a model of the RK3588 OTP automatic read interface that U-Boot uses
-for CPU identity and device-tree initialization. The OTP array starts
-unprogrammed: a read command fills up to four data registers with zero
-words and sets a write-one-to-clear completion status bit. Commands
-outside the 1024-word array are rejected as guest errors.
+Add a model of the Rockchip SPI flash controller. The ROCK 5B boots
+U-Boot proper from the SPI NOR through this controller, so it is needed
+for firmware booting.
+
+The model implements command, address and dummy phases, PIO and DMA
+data transfers, completion and error interrupts, interrupt masking and
+clearing, and controller reset.
 
 Signed-off-by: Chao Liu <chao.liu@processmission.com>
 Signed-off-by: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>
 ---
  MAINTAINERS             |   1 +
- hw/arm/rk3588.c         |  23 ++++++-
- hw/misc/meson.build     |   4 +-
- hw/misc/rockchip_otp.c  | 146 ++++++++++++++++++++++++++++++++++++++++
+ hw/arm/Kconfig          |   1 +
+ hw/arm/rk3588.c         |  29 ++-
+ hw/ssi/Kconfig          |   5 +
+ hw/ssi/meson.build      |   1 +
+ hw/ssi/rockchip_sfc.c   | 439 ++++++++++++++++++++++++++++++++++++++++
  include/hw/arm/rk3588.h |   1 +
- 5 files changed, 173 insertions(+), 2 deletions(-)
- create mode 100644 hw/misc/rockchip_otp.c
+ 7 files changed, 475 insertions(+), 2 deletions(-)
+ create mode 100644 hw/ssi/rockchip_sfc.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 2905276c7e..5a4ec869ea 100644
+index 5a4ec869ea..7fd434ade2 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1066,6 +1066,7 @@ L: qemu-arm@nongnu.org
- S: Maintained
+@@ -1067,6 +1067,7 @@ S: Maintained
  F: hw/arm/rk3588.c
  F: hw/misc/rockchip_cru.c
-+F: hw/misc/rockchip_otp.c
+ F: hw/misc/rockchip_otp.c
++F: hw/ssi/rockchip_sfc.c
  F: hw/timer/rockchip-hptimer.c
  F: include/hw/arm/rk3588.h
  F: include/hw/timer/rockchip-hptimer.h
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index 902c4ba377..eaa55eae29 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -781,4 +781,5 @@ config RK3588
+     select CPU_CLUSTER
+     select DW8250
+     select REGISTER
++    select ROCKCHIP_SFC
+     select UNIMP
 diff --git a/hw/arm/rk3588.c b/hw/arm/rk3588.c
-index 6e7cafea1c..acd9149933 100644
+index acd9149933..2319c54c76 100644
 --- a/hw/arm/rk3588.c
 +++ b/hw/arm/rk3588.c
-@@ -42,6 +42,7 @@ enum {
-     RK3588_DEV_GIC_DIST,
+@@ -29,7 +29,7 @@
+ #define RK3588_MPIDR_AFF0_PER_AFF1   (1)
+ 
+ #define RK3588_CNTFRQ                24000000
+-
++#define RK3588_SFC_SPI               206
+ #define RK3588_GIC_NUM_IRQS          512
+ 
+ /* UART1-UART9 are modeled; UART0 in the PMU power domain is unimplemented. */
+@@ -43,6 +43,7 @@ enum {
      RK3588_DEV_GIC_REDIST,
      RK3588_DEV_CRU,
-+    RK3588_DEV_OTP,
+     RK3588_DEV_OTP,
++    RK3588_DEV_SFC,
      RK3588_DEV_UART1,
      RK3588_DEV_UART2,
      RK3588_DEV_UART3,
-@@ -58,6 +59,7 @@ static const MemMapEntry rk3588_memmap[] = {
-     [RK3588_DEV_GIC_DIST]   = { 0xfe600000, 0x00010000 },
+@@ -60,6 +61,7 @@ static const MemMapEntry rk3588_memmap[] = {
      [RK3588_DEV_GIC_REDIST] = { 0xfe680000, 0x00100000 },
      [RK3588_DEV_CRU]        = { 0xfd7c0000, 0x0005c000 },
-+    [RK3588_DEV_OTP]        = { 0xfecc0000, 0x00000400 },
+     [RK3588_DEV_OTP]        = { 0xfecc0000, 0x00000400 },
++    [RK3588_DEV_SFC]        = { 0xfe2b0000, 0x00004000 },
      [RK3588_DEV_UART1]      = { 0xfeb40000, 0x00010000 },
      [RK3588_DEV_UART2]      = { 0xfeb50000, 0x00010000 },
      [RK3588_DEV_UART3]      = { 0xfeb60000, 0x00010000 },
-@@ -111,7 +113,6 @@ static const UnimplementedDeviceConfig rk3588_unimpl_devices[] = {
-     RK3588_UNIMPLEMENTED("gpio4", 0xfec50000, 64 * KiB),
-     RK3588_UNIMPLEMENTED("i2c6", 0xfec80000, 64 * KiB),
-     RK3588_UNIMPLEMENTED("i2c7", 0xfec90000, 64 * KiB),
--    RK3588_UNIMPLEMENTED("otp-ns", 0xfecc0000, 64 * KiB),
-     RK3588_UNIMPLEMENTED("dmac2", 0xfed10000, 64 * KiB),
-     { }
- };
-@@ -217,6 +218,21 @@ static bool rk3588_soc_create_cru(RK3588SoCState *s, Error **errp)
+@@ -96,7 +98,6 @@ static const UnimplementedDeviceConfig rk3588_unimpl_devices[] = {
+     RK3588_UNIMPLEMENTED("i2c0", 0xfd880000, 64 * KiB),
+     RK3588_UNIMPLEMENTED("gpio0", 0xfd8a0000, 64 * KiB),
+     RK3588_UNIMPLEMENTED("pwm0", 0xfd8b0000, 64 * KiB),
+-    RK3588_UNIMPLEMENTED("fspi", 0xfe2b0000, 64 * KiB),
+     RK3588_UNIMPLEMENTED("sdmmc", 0xfe2c0000, 64 * KiB),
+     RK3588_UNIMPLEMENTED("sdio", 0xfe2d0000, 64 * KiB),
+     RK3588_UNIMPLEMENTED("emmc", 0xfe2e0000, 64 * KiB),
+@@ -233,6 +234,25 @@ static bool rk3588_soc_create_otp(RK3588SoCState *s, Error **errp)
      return true;
  }
  
-+static bool rk3588_soc_create_otp(RK3588SoCState *s, Error **errp)
++static bool rk3588_soc_create_sfc(RK3588SoCState *s, Error **errp)
 +{
-+    SysBusDevice *otp = SYS_BUS_DEVICE(s->otp);
++    SysBusDevice *sfc = SYS_BUS_DEVICE(s->sfc);
 +
-+    if (!sysbus_realize(otp, errp)) {
++    object_property_set_link(OBJECT(s->sfc), "dma-memory",
++                             OBJECT(s->memory), &error_abort);
++    if (!sysbus_realize(sfc, errp)) {
 +        return false;
 +    }
 +
 +    memory_region_add_subregion(s->memory,
-+        rk3588_memmap[RK3588_DEV_OTP].base,
-+        sysbus_mmio_get_region(otp, 0));
++        rk3588_memmap[RK3588_DEV_SFC].base,
++        sysbus_mmio_get_region(sfc, 0));
++    sysbus_connect_irq(sfc, 0,
++                       qdev_get_gpio_in(DEVICE(&s->gic), RK3588_SFC_SPI));
 +
 +    return true;
 +}
@@ -176,198 +203,501 @@ index 6e7cafea1c..acd9149933 100644
  static bool rk3588_soc_create_uart(RK3588SoCState *s, Error **errp)
  {
      for (unsigned int i = RK3588_FIRST_UART; i < RK3588_NUM_UARTS; i++) {
-@@ -291,6 +307,7 @@ static void rk3588_soc_realize(DeviceState *dev, Error **errp)
- 
+@@ -308,6 +328,7 @@ static void rk3588_soc_realize(DeviceState *dev, Error **errp)
      if (!rk3588_soc_create_gic(s, errp) ||
          !rk3588_soc_create_cru(s, errp) ||
-+        !rk3588_soc_create_otp(s, errp) ||
+         !rk3588_soc_create_otp(s, errp) ||
++        !rk3588_soc_create_sfc(s, errp) ||
          !rk3588_soc_create_uart(s, errp) ||
          !rk3588_soc_create_hptimer(s, errp)) {
          return;
-@@ -342,6 +359,10 @@ static void rk3588_soc_instance_init(Object *obj)
-     object_property_add_child(obj, "cru", OBJECT(s->cru));
-     object_unref(OBJECT(s->cru));
+@@ -363,6 +384,10 @@ static void rk3588_soc_instance_init(Object *obj)
+     object_property_add_child(obj, "otp", OBJECT(s->otp));
+     object_unref(OBJECT(s->otp));
  
-+    s->otp = qdev_new("rockchip-otp");
-+    object_property_add_child(obj, "otp", OBJECT(s->otp));
-+    object_unref(OBJECT(s->otp));
++    s->sfc = qdev_new("rockchip-sfc");
++    object_property_add_child(obj, "sfc", OBJECT(s->sfc));
++    object_unref(OBJECT(s->sfc));
 +
      s->hptimer = qdev_new(TYPE_ROCKCHIP_HPTIMER);
      object_property_add_child(obj, "hptimer", OBJECT(s->hptimer));
      object_unref(OBJECT(s->hptimer));
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index 374af9331b..51c09b056e 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -183,4 +183,6 @@ system_ss.add(when: 'CONFIG_AXIADO_CLK', if_true: files('axiado_clk.c'))
- # Qualcomm Hexagon DSP subsystems
- system_ss.add(when: 'CONFIG_QCOM_QDSP6SS_CLK', if_true: files('qcom-qdsp6ss-clk.c'))
- 
--system_ss.add(when: 'CONFIG_RK3588', if_true: files('rockchip_cru.c'))
-+system_ss.add(when: 'CONFIG_RK3588', if_true: files(
-+  'rockchip_cru.c',
-+  'rockchip_otp.c'))
-diff --git a/hw/misc/rockchip_otp.c b/hw/misc/rockchip_otp.c
+diff --git a/hw/ssi/Kconfig b/hw/ssi/Kconfig
+index d477d20e9b..5735b422c9 100644
+--- a/hw/ssi/Kconfig
++++ b/hw/ssi/Kconfig
+@@ -36,3 +36,8 @@ config ALLWINNER_A10_SPI
+ config IMX_SPI
+     bool
+     select SSI
++
++config ROCKCHIP_SFC
++    bool
++    select REGISTER
++    select SSI
+diff --git a/hw/ssi/meson.build b/hw/ssi/meson.build
+index f334e48e2f..701ae09ed2 100644
+--- a/hw/ssi/meson.build
++++ b/hw/ssi/meson.build
+@@ -13,3 +13,4 @@ system_ss.add(when: 'CONFIG_IMX_SPI', if_true: files('imx_spi.c'))
+ system_ss.add(when: 'CONFIG_IBEX', if_true: files('ibex_spi_host.c'))
+ system_ss.add(when: 'CONFIG_BCM2835_SPI', if_true: files('bcm2835_spi.c'))
+ system_ss.add(when: 'CONFIG_PNV_SPI', if_true: files('pnv_spi.c'))
++system_ss.add(when: 'CONFIG_ROCKCHIP_SFC', if_true: files('rockchip_sfc.c'))
+diff --git a/hw/ssi/rockchip_sfc.c b/hw/ssi/rockchip_sfc.c
 new file mode 100644
-index 0000000000..81e402fdcc
+index 0000000000..7960655e83
 --- /dev/null
-+++ b/hw/misc/rockchip_otp.c
-@@ -0,0 +1,146 @@
++++ b/hw/ssi/rockchip_sfc.c
+@@ -0,0 +1,439 @@
 +/*
-+ * Rockchip OTP
++ * Rockchip Serial Flash Controller
 + *
-+ * Copyright (C) 2026 Process Mission
++ * Copyright (c) 2026 Process Mission
 + *
 + * Authors:
 + *    Chao Liu <chao.liu@processmission.com>
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + *
-+ * The automatic read interface exposes a bank of unprogrammed OTP words.
-+ * Each read command fills the data registers and sets the read-done status;
-+ * the status is cleared by a write-one-to-clear acknowledgement.
 + */
 +
 +#include "qemu/osdep.h"
 +#include "qemu/bitops.h"
 +#include "qemu/module.h"
-+#include "qemu/log.h"
++#include "qemu/units.h"
++#include "qapi/error.h"
++#include "hw/core/irq.h"
++#include "hw/core/qdev-properties.h"
 +#include "hw/core/register.h"
 +#include "hw/core/sysbus.h"
++#include "hw/ssi/ssi.h"
 +#include "qom/object.h"
 +
-+#define TYPE_ROCKCHIP_OTP "rockchip-otp"
-+OBJECT_DECLARE_SIMPLE_TYPE(RockchipOTPState, ROCKCHIP_OTP)
++#define TYPE_ROCKCHIP_SFC "rockchip-sfc"
++OBJECT_DECLARE_SIMPLE_TYPE(RockchipSFCState, ROCKCHIP_SFC)
 +
-+/* Size of the OTP window in the RK3588 address map. */
-+#define ROCKCHIP_OTP_SIZE 0x400
-+/* Highest byte address described by rockchip_otp_regs_info[]. */
-+#define ROCKCHIP_OTP_MAX_REG 0x84
-+#define ROCKCHIP_OTP_NUM_REGS \
-+    ((ROCKCHIP_OTP_MAX_REG / sizeof(uint32_t)) + 1)
-+/* Number of 32-bit words in the OTP array. */
-+#define ROCKCHIP_OTP_NUM_WORDS 1024
++#define ROCKCHIP_SFC_MMIO_SIZE 0x4000
++#define ROCKCHIP_SFC_NUM_CS 2
++#define ROCKCHIP_SFC_NUM_REGS (0x10c / sizeof(uint32_t))
 +
-+struct RockchipOTPState {
++struct RockchipSFCState {
 +    SysBusDevice parent_obj;
 +
-+    RegisterInfo regs_info[ROCKCHIP_OTP_NUM_REGS];
-+    uint32_t regs[ROCKCHIP_OTP_NUM_REGS];
++    RegisterInfo regs_info[ROCKCHIP_SFC_NUM_REGS];
++    uint32_t regs[ROCKCHIP_SFC_NUM_REGS];
++    MemoryRegion *dma_memory;
++    AddressSpace dma_as;
++    SSIBus *spi;
++    qemu_irq irq;
++    qemu_irq cs_lines[ROCKCHIP_SFC_NUM_CS];
++
++    uint32_t remaining;
++    uint8_t address_bytes;
++    uint8_t dummy_bytes;
++    uint8_t cs;
++    bool write;
++    bool pending;
++    bool started;
++    bool resetting;
 +};
 +
-+REG32(AUTO_CTRL, 0x04)
-+REG32(AUTO_EN, 0x08)
-+REG32(DOUT0, 0x20)
-+REG32(DOUT1, 0x24)
-+REG32(DOUT2, 0x28)
-+REG32(DOUT3, 0x2c)
-+REG32(INT_STATUS, 0x84)
++REG32(CTRL, 0x000)
++REG32(IMR, 0x004)
++REG32(ICLR, 0x008)
++REG32(FTLR, 0x00c)
++REG32(RCVR, 0x010)
++REG32(AX, 0x014)
++REG32(ABIT, 0x018)
++REG32(ISR, 0x01c)
++REG32(FSR, 0x020)
++REG32(SR, 0x024)
++REG32(RISR, 0x028)
++REG32(VER, 0x02c)
++REG32(DLL_CTRL0, 0x03c)
++REG32(DMA_TRIGGER, 0x080)
++REG32(DMA_ADDR, 0x084)
++REG32(LEN_CTRL, 0x088)
++REG32(LEN_EXT, 0x08c)
++REG32(CMD, 0x100)
++REG32(ADDR, 0x104)
++REG32(DATA, 0x108)
 +
-+/* INT_STATUS: a read has finished. */
-+#define ROCKCHIP_OTP_INT_STATUS_READ_DONE BIT(1)
++#define SFC_INT_FINISH   BIT(4)
++#define SFC_INT_BUS_ERR  BIT(5)
++#define SFC_INT_NSPI_ERR BIT(6)
++#define SFC_INT_DMA      BIT(7)
++#define SFC_MAX_LENGTH  (32 * MiB)
++#define SFC_LEN_CTRL_TRB_SEL BIT(0)
 +
-+static void rockchip_otp_auto_read(RegisterInfo *reg, uint64_t value)
++static void rockchip_sfc_update_irq(RockchipSFCState *s)
 +{
-+    RockchipOTPState *s = ROCKCHIP_OTP(reg->opaque);
++    qemu_set_irq(s->irq, (s->regs[R_RISR] & ~s->regs[R_IMR]) != 0);
++}
 +
-+    if (value & 1) {
-+        uint32_t control = s->regs[R_AUTO_CTRL];
-+        unsigned int address = control >> 16;
-+        unsigned int count = (control >> 8) & 0xff;
++static void rockchip_sfc_end(RockchipSFCState *s)
++{
++    if (s->started) {
++        qemu_irq_raise(s->cs_lines[s->cs]);
++    }
++    s->pending = false;
++    s->started = false;
++    s->remaining = 0;
++}
 +
-+        s->regs[R_AUTO_EN] = 0;
-+        if (count == 0 || count > 4 ||
-+            address + count > ROCKCHIP_OTP_NUM_WORDS) {
-+            qemu_log_mask(LOG_GUEST_ERROR,
-+                          "rockchip-otp: invalid read command\n");
-+            return;
-+        }
-+        /* Unprogrammed fuse words read as zero. */
-+        for (unsigned int i = 0; i < count; i++) {
-+            s->regs[R_DOUT0 + i] = 0;
-+        }
-+        s->regs[R_INT_STATUS] |= ROCKCHIP_OTP_INT_STATUS_READ_DONE;
++static void rockchip_sfc_complete(RockchipSFCState *s, uint32_t status)
++{
++    rockchip_sfc_end(s);
++    s->regs[R_RISR] |= status;
++    rockchip_sfc_update_irq(s);
++}
++
++static void rockchip_sfc_begin(RockchipSFCState *s)
++{
++    if (!s->pending || s->started) {
++        return;
++    }
++
++    qemu_irq_lower(s->cs_lines[s->cs]);
++    s->started = true;
++    ssi_transfer(s->spi, s->regs[R_CMD] & 0xff);
++    for (int i = s->address_bytes - 1; i >= 0; i--) {
++        ssi_transfer(s->spi, (s->regs[R_ADDR] >> (8 * i)) & 0xff);
++    }
++    for (unsigned int i = 0; i < s->dummy_bytes; i++) {
++        ssi_transfer(s->spi, 0);
++    }
++    if (!s->remaining) {
++        rockchip_sfc_complete(s, SFC_INT_FINISH);
 +    }
 +}
 +
-+static const RegisterAccessInfo rockchip_otp_regs_info[] = {
-+    { .name = "AUTO_CTRL", .addr = A_AUTO_CTRL },
-+    { .name = "AUTO_EN", .addr = A_AUTO_EN,
-+      .ro = ~1U, .post_write = rockchip_otp_auto_read },
-+    { .name = "DOUT0", .addr = A_DOUT0, .ro = UINT32_MAX },
-+    { .name = "DOUT1", .addr = A_DOUT1, .ro = UINT32_MAX },
-+    { .name = "DOUT2", .addr = A_DOUT2, .ro = UINT32_MAX },
-+    { .name = "DOUT3", .addr = A_DOUT3, .ro = UINT32_MAX },
-+    { .name = "INT_STATUS", .addr = A_INT_STATUS,
-+      .ro = ~ROCKCHIP_OTP_INT_STATUS_READ_DONE,
-+      .w1c = ROCKCHIP_OTP_INT_STATUS_READ_DONE },
++static void rockchip_sfc_command(RockchipSFCState *s, uint32_t value)
++{
++    unsigned int address_mode = (value >> 14) & 3;
++    unsigned int dummy_cycles = (value >> 8) & 0xf;
++    unsigned int address_width = 1 << ((s->regs[R_CTRL] >> 10) & 3);
++    uint32_t len;
++
++    if (s->regs[R_LEN_CTRL] & SFC_LEN_CTRL_TRB_SEL) {
++        len = s->regs[R_LEN_EXT];
++    } else {
++        /* Normal mode: transfer bytes are in CMD[29:16]. */
++        len = (value >> 16) & 0x3fff;
++    }
++
++    rockchip_sfc_end(s);
++    s->cs = value >> 30;
++    if (s->cs >= ROCKCHIP_SFC_NUM_CS || len > SFC_MAX_LENGTH) {
++        rockchip_sfc_complete(s, SFC_INT_NSPI_ERR);
++        return;
++    }
++
++    switch (address_mode) {
++    case 1:
++        s->address_bytes = 3;
++        break;
++    case 2:
++        s->address_bytes = 4;
++        break;
++    case 3:
++        if ((s->regs[R_ABIT] & 7) != 7) {
++            rockchip_sfc_complete(s, SFC_INT_NSPI_ERR);
++            return;
++        }
++        s->address_bytes = ((s->regs[R_ABIT] & 31) + 1) / 8;
++        break;
++    default:
++        s->address_bytes = 0;
++        break;
++    }
++    s->dummy_bytes = DIV_ROUND_UP(dummy_cycles * address_width, 8);
++    s->write = (value >> 12) & 1;
++    s->remaining = len;
++    s->pending = true;
++    if (!s->address_bytes) {
++        rockchip_sfc_begin(s);
++    }
++}
++
++static uint32_t rockchip_sfc_read_data(RockchipSFCState *s)
++{
++    uint32_t value = 0;
++    unsigned int count;
++
++    if (!s->started || s->write) {
++        return 0;
++    }
++    count = MIN(4, s->remaining);
++    for (unsigned int i = 0; i < count; i++) {
++        value |= (uint32_t)ssi_transfer(s->spi, 0) << (i * 8);
++    }
++    s->remaining -= count;
++    if (!s->remaining) {
++        rockchip_sfc_complete(s, SFC_INT_FINISH);
++    }
++    return value;
++}
++
++static void rockchip_sfc_write_data(RockchipSFCState *s, uint32_t value)
++{
++    unsigned int count;
++
++    if (!s->started || !s->write) {
++        return;
++    }
++    count = MIN(4, s->remaining);
++    for (unsigned int i = 0; i < count; i++) {
++        ssi_transfer(s->spi, (value >> (i * 8)) & 0xff);
++    }
++    s->remaining -= count;
++    if (!s->remaining) {
++        rockchip_sfc_complete(s, SFC_INT_FINISH);
++    }
++}
++
++static void rockchip_sfc_dma(RockchipSFCState *s)
++{
++    uint8_t buffer[256];
++    hwaddr addr = s->regs[R_DMA_ADDR];
++    MemTxAttrs attrs = { .memory = true };
++
++    if (!s->started) {
++        rockchip_sfc_complete(s, SFC_INT_BUS_ERR);
++        return;
++    }
++
++    while (s->remaining) {
++        unsigned int count = MIN(sizeof(buffer), s->remaining);
++        MemTxResult result;
++
++        if (s->write) {
++            result = address_space_read(&s->dma_as, addr, attrs,
++                                        buffer, count);
++            if (result == MEMTX_OK) {
++                for (unsigned int i = 0; i < count; i++) {
++                    ssi_transfer(s->spi, buffer[i]);
++                }
++            }
++        } else {
++            for (unsigned int i = 0; i < count; i++) {
++                buffer[i] = ssi_transfer(s->spi, 0);
++            }
++            result = address_space_write(&s->dma_as, addr, attrs,
++                                         buffer, count);
++        }
++        if (result != MEMTX_OK) {
++            rockchip_sfc_complete(s, SFC_INT_BUS_ERR);
++            return;
++        }
++        s->remaining -= count;
++        addr += count;
++    }
++    rockchip_sfc_complete(s, SFC_INT_DMA | SFC_INT_FINISH);
++}
++
++static void rockchip_sfc_reset(DeviceState *dev)
++{
++    RockchipSFCState *s = ROCKCHIP_SFC(dev);
++
++    rockchip_sfc_end(s);
++    for (unsigned int i = 0; i < ROCKCHIP_SFC_NUM_CS; i++) {
++        qemu_irq_raise(s->cs_lines[i]);
++    }
++    s->resetting = true;
++    for (unsigned int i = 0; i < ARRAY_SIZE(s->regs_info); i++) {
++        register_reset(&s->regs_info[i]);
++    }
++    s->resetting = false;
++    s->cs = 0;
++    s->address_bytes = 0;
++    s->dummy_bytes = 0;
++    s->write = false;
++    rockchip_sfc_update_irq(s);
++}
++
++static uint64_t rockchip_sfc_status_read(RegisterInfo *reg, uint64_t value)
++{
++    RockchipSFCState *s = ROCKCHIP_SFC(reg->opaque);
++
++    switch (reg->access->addr) {
++    case A_ISR:
++        return s->regs[R_RISR] & ~s->regs[R_IMR];
++    case A_FSR:
++        if (s->started && !s->write && s->remaining) {
++            return (31 << 8) | BIT(1) |
++                   (MIN(DIV_ROUND_UP(s->remaining, 4), 31) << 16);
++        }
++        return (31 << 8) | BIT(1) | BIT(2);
++    case A_SR:
++        return s->pending ? 1 : 0;
++    case A_DATA:
++        return rockchip_sfc_read_data(s);
++    default:
++        g_assert_not_reached();
++    }
++}
++
++static void rockchip_sfc_register_write(RegisterInfo *reg, uint64_t value)
++{
++    RockchipSFCState *s = ROCKCHIP_SFC(reg->opaque);
++
++    if (s->resetting) {
++        return;
++    }
++
++    switch (reg->access->addr) {
++    case A_IMR:
++        rockchip_sfc_update_irq(s);
++        break;
++    case A_ICLR:
++        s->regs[R_RISR] &= ~value;
++        s->regs[R_ICLR] = 0;
++        rockchip_sfc_update_irq(s);
++        break;
++    case A_RCVR:
++        if (value & 1) {
++            rockchip_sfc_end(s);
++            s->regs[R_RISR] = 0;
++            rockchip_sfc_update_irq(s);
++        }
++        s->regs[R_RCVR] = 0;
++        break;
++    case A_DMA_TRIGGER:
++        if (value & 1) {
++            rockchip_sfc_dma(s);
++        }
++        s->regs[R_DMA_TRIGGER] = 0;
++        break;
++    case A_CMD:
++        rockchip_sfc_command(s, value);
++        break;
++    case A_ADDR:
++        rockchip_sfc_begin(s);
++        break;
++    case A_DATA:
++        rockchip_sfc_write_data(s, value);
++        break;
++    default:
++        g_assert_not_reached();
++    }
++}
++
++static const RegisterAccessInfo rockchip_sfc_regs[] = {
++    { .name = "CTRL", .addr = A_CTRL },
++    { .name = "IMR", .addr = A_IMR, .reset = UINT32_MAX,
++      .post_write = rockchip_sfc_register_write },
++    { .name = "ICLR", .addr = A_ICLR,
++      .post_write = rockchip_sfc_register_write },
++    { .name = "FTLR", .addr = A_FTLR },
++    { .name = "RCVR", .addr = A_RCVR,
++      .post_write = rockchip_sfc_register_write },
++    { .name = "AX", .addr = A_AX },
++    { .name = "ABIT", .addr = A_ABIT },
++    { .name = "ISR", .addr = A_ISR, .ro = UINT32_MAX,
++      .post_read = rockchip_sfc_status_read },
++    { .name = "FSR", .addr = A_FSR, .ro = UINT32_MAX,
++      .post_read = rockchip_sfc_status_read },
++    { .name = "SR", .addr = A_SR, .ro = UINT32_MAX,
++      .post_read = rockchip_sfc_status_read },
++    { .name = "RISR", .addr = A_RISR, .ro = UINT32_MAX },
++    { .name = "VER", .addr = A_VER, .ro = UINT32_MAX, .reset = 4 },
++    { .name = "DLL_CTRL0", .addr = A_DLL_CTRL0 },
++    { .name = "DMA_TRIGGER", .addr = A_DMA_TRIGGER,
++      .post_write = rockchip_sfc_register_write },
++    { .name = "DMA_ADDR", .addr = A_DMA_ADDR },
++    { .name = "LEN_CTRL", .addr = A_LEN_CTRL },
++    { .name = "LEN_EXT", .addr = A_LEN_EXT },
++    { .name = "CMD", .addr = A_CMD,
++      .post_write = rockchip_sfc_register_write },
++    { .name = "ADDR", .addr = A_ADDR,
++      .post_write = rockchip_sfc_register_write },
++    { .name = "DATA", .addr = A_DATA,
++      .post_read = rockchip_sfc_status_read,
++      .post_write = rockchip_sfc_register_write },
 +};
 +
-+static const MemoryRegionOps rockchip_otp_ops = {
++static const MemoryRegionOps rockchip_sfc_ops = {
 +    .read = register_read_memory,
 +    .write = register_write_memory,
 +    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+    },
-+    .impl = {
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+    },
++    .valid.min_access_size = 4,
++    .valid.max_access_size = 4,
 +};
 +
-+static void rockchip_otp_reset(DeviceState *dev)
++static void rockchip_sfc_realize(DeviceState *dev, Error **errp)
 +{
-+    RockchipOTPState *s = ROCKCHIP_OTP(dev);
++    RockchipSFCState *s = ROCKCHIP_SFC(dev);
 +
-+    for (int i = 0; i < ARRAY_SIZE(s->regs_info); i++) {
-+        register_reset(&s->regs_info[i]);
++    if (!s->dma_memory) {
++        error_setg(errp, "rockchip-sfc: dma-memory link is required");
++        return;
 +    }
++    address_space_init(&s->dma_as, s->dma_memory, TYPE_ROCKCHIP_SFC);
 +}
 +
-+static void rockchip_otp_init(Object *obj)
++static void rockchip_sfc_unrealize(DeviceState *dev)
 +{
-+    RockchipOTPState *s = ROCKCHIP_OTP(obj);
++    RockchipSFCState *s = ROCKCHIP_SFC(dev);
++
++    address_space_destroy(&s->dma_as);
++}
++
++static void rockchip_sfc_init(Object *obj)
++{
++    RockchipSFCState *s = ROCKCHIP_SFC(obj);
++    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
 +    RegisterInfoArray *reg_array;
 +
-+    reg_array = register_init_block32(
-+        DEVICE(obj), rockchip_otp_regs_info, ARRAY_SIZE(rockchip_otp_regs_info),
-+        s->regs_info, s->regs, &rockchip_otp_ops, false, ROCKCHIP_OTP_SIZE);
-+
-+    sysbus_init_mmio(SYS_BUS_DEVICE(obj), &reg_array->mem);
++    s->spi = ssi_create_bus(DEVICE(obj), "spi");
++    qdev_init_gpio_out_named(DEVICE(obj), s->cs_lines, "cs",
++                             ROCKCHIP_SFC_NUM_CS);
++    sysbus_init_irq(sbd, &s->irq);
++    reg_array = register_init_block32(DEVICE(obj), rockchip_sfc_regs,
++                                     ARRAY_SIZE(rockchip_sfc_regs),
++                                     s->regs_info, s->regs, &rockchip_sfc_ops,
++                                     false, ROCKCHIP_SFC_MMIO_SIZE);
++    sysbus_init_mmio(sbd, &reg_array->mem);
 +}
 +
-+static void rockchip_otp_class_init(ObjectClass *oc, const void *data)
++static const Property rockchip_sfc_properties[] = {
++    DEFINE_PROP_LINK("dma-memory", RockchipSFCState, dma_memory,
++                     TYPE_MEMORY_REGION, MemoryRegion *),
++};
++
++static void rockchip_sfc_class_init(ObjectClass *oc, const void *data)
 +{
 +    DeviceClass *dc = DEVICE_CLASS(oc);
 +
-+    device_class_set_legacy_reset(dc, rockchip_otp_reset);
++    dc->realize = rockchip_sfc_realize;
++    dc->unrealize = rockchip_sfc_unrealize;
++    device_class_set_props(dc, rockchip_sfc_properties);
++    device_class_set_legacy_reset(dc, rockchip_sfc_reset);
 +}
 +
-+static const TypeInfo rockchip_otp_type_info = {
-+    .name = TYPE_ROCKCHIP_OTP,
++static const TypeInfo rockchip_sfc_info = {
++    .name = TYPE_ROCKCHIP_SFC,
 +    .parent = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(RockchipOTPState),
-+    .instance_init = rockchip_otp_init,
-+    .class_init = rockchip_otp_class_init,
++    .instance_size = sizeof(RockchipSFCState),
++    .instance_init = rockchip_sfc_init,
++    .class_init = rockchip_sfc_class_init,
 +};
 +
-+static void rockchip_otp_register_types(void)
++static void rockchip_sfc_register_types(void)
 +{
-+    type_register_static(&rockchip_otp_type_info);
++    type_register_static(&rockchip_sfc_info);
 +}
 +
-+type_init(rockchip_otp_register_types)
++type_init(rockchip_sfc_register_types)
 diff --git a/include/hw/arm/rk3588.h b/include/hw/arm/rk3588.h
-index 18c66b6bae..1f854043de 100644
+index 1f854043de..1304c11598 100644
 --- a/include/hw/arm/rk3588.h
 +++ b/include/hw/arm/rk3588.h
-@@ -53,6 +53,7 @@ struct RK3588SoCState {
-     GICv3State gic;
+@@ -54,6 +54,7 @@ struct RK3588SoCState {
      DW8250State uart[RK3588_NUM_UARTS];
      DeviceState *cru;
-+    DeviceState *otp;
+     DeviceState *otp;
++    DeviceState *sfc;
      MemoryRegion *memory;
      MemoryRegion sram;
      DeviceState *hptimer;
