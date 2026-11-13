@@ -1,75 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794578003;
-	b=LbRWXOKOd/79Ov+171BMHxMx6rjAQixUBUQCb7pqq/sarnploiwO1OHYAJfPOiGq4+YU
-	 yqqZPO7ATKgSEXZTLEpaMxbvUwyn6ujDTdDoVlyygOszZWQOfp1Js91lpQvl8DKfiI8jc
-	 JO+QBs0PrrgOH/Ok/8bkyGXdo0eLh9M5l21pBKZkt/8eyYaeePAbj1jZMu2N+jJBzAXB4
-	 fFBxfV0rP53ngwm9szNkRQO3K0/D9v4FCnzOZYeq/7ZMxiLTaOvdFaLv+spH+SA2+a3tw
-	 Z0wmJwSiytAC2RHovDdu6H2ejBOx0BnUN1PJpAHd6219u4IWDQFrWXAIYhCOeKsGskQ==
+	t=1794578009;
+	b=djD1jEKZpTf/VR4ZmjNQYQg31hYhllc5JtYw8JDa4G4i65WBGtk6kBi7/LoFryVObDVs
+	 I6WbdF1wljzr6rTGsnphq7AGd4/xxkb4UIXQZMAaOi4ZTsslS9ksX4rE60R+z/CDeSN9q
+	 AShKuRQvvsP6X4knfERQhDCGQh0gHEU9sXPc+C5Hl1etPI0oWiLKPDxzylQNKtjvWZnoi
+	 wEmrNz+1Bu5s+gWMlHvyBZAb1arxqqbmdZubMFbkhI25PCSbCHYaHksiVWFALvm5iMwdo
+	 Idxo0JUF0ECWLACmepZTqGqk7+so4PTTPasmxQNRWRSRF1a1IG0Ts/e4k304nQH2fXQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794578003;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794578009;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=dlsL3F8sYJVmEsiFaoMpY1LBlwOoTrnSEiIx7tFA8jw=;
-	b=1j0oQ7p2FS35N6fhwLNj/6Dr/Oonymoae7rkGXTaztRs+y8xMVh1r2cB0pCoLi61zyTC
-	 dpBMG8gJcPFTFjhQkQWKzTFy88E/gpHo54xsFxSnMA66fu/sS5mBSPy7+mwTpcq3NmFj3
-	 YHU6IYbSVaiqgbTsQjh1SJPIaMfO57GmP90qvgmpqm0wf4DZDqaEXP1evhsUNIuqwtt1C
-	 OIgEunphQQIl9V1q/hde+BnEmeuuT3Gt7dYqQ04VgUMf1TP40JfooqcmfFLKOT807IDUS
-	 hqSiERweCkgxyOBCTDQBjxh1Q5uXlWkjAvKGmmeOt+mwxxUZu0serdlILfxRaPEvIlw==
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=OpvfzW9Dt2ae2NU+aWz0za7rartm1yMIX237xsigiwk=;
+	b=B+aqc30jM6+pSYaKCCfRUYfs4zBWdmMJvvcXQGijjzKH2nP/XNg49NTtNlQj7y2yfOfK
+	 vy40utXWmPFmGrnJBsezTPgqpH5nSnr7x60H+evie3YorNCBo+QI5QfHzlhl/tAmtED89
+	 e3madmEOYh7hqTMuoRg2ZK5LYzyc1NFtfcQqZBCAIg5IhS6CKHeZpOqlU0zKnrMaruJK2
+	 TD9vfDmAfLrQnwNm84tIrK30dO2QXrW9/VPNA+eu8UyRVm5Cqcuo/KfURBjWAkYniZXDb
+	 AHrLo0twuoqgGDXEwTfvNLDu0oMRLat0v5lwivjK+CRVPXjeJTYWISKePL/dPN58l5g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=mxlhe+Qt;
-	arc=none smtp.remote-ip=209.85.210.199
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="IyRE+h6/";
+	arc=none smtp.remote-ip=209.85.214.197
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37059606EB38
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:53:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37059606EB38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB0C606A331
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:53:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5AB0C606A331
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=mxlhe+Qt
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8b8cef34b43so1464109b3a.2
-        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:53:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=IyRE+h6/
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2ea71803effso9462895ad.3
+        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:53:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794578002; x=1795182802; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794578009; x=1795182809; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=dlsL3F8sYJVmEsiFaoMpY1LBlwOoTrnSEiIx7tFA8jw=;
-        b=mxlhe+QtvpmAYIZcVFMh1eKW1qV6yNglG0IIW1nW/DD8LmyRUmO43Zejqlym9ykpz1
-         9QhFn5wny5QjsvrZ9SGPq+8qEg9lDWsnLVH46VaicYKY7hmXj4PdQsGkWeSMTi9q7ag8
-         E4/FLwAtjAZhYo+6ROn7RUCBF3kHFkVuy9egxa/sUMu8qoPJNN5wh/8R8T7Os2qFqlKX
-         lF58GPs5YPVM979ApTLkJ1GHepac3VXfEIUVREoXwJbDlSxVQxOGhgwprCjZ+u/JmwIa
-         DTTqM97kce1wnbt2LM0wRwXPoK9MQ4uKiuVNmhgwgJoXe/XmKvvzQR71X/j9aO8+UfG6
-         LBeA==
+        bh=OpvfzW9Dt2ae2NU+aWz0za7rartm1yMIX237xsigiwk=;
+        b=IyRE+h6/BprbiT9YfKqROdO8bQAo+A9P5DBpWh7NAFxsTtHmRb+PVB5foakalhsJLd
+         //dRxsU74v70M8ZO1jT99iOuMazMM8iqLyrZx1WAEt1BUTP4FKjYMYPPFNI97wq+wt02
+         lfjJE07r/cctnslWn/iqQVQmSSfRNdwiTbfXFSygjUlo+g6GKgv5Luz2SAuCbiNANTMk
+         oYKThmDNsjeKbGRyB+ZLHPyVHvIZy4k64/K2ghexG51Edu589TTsc/CZm98VspHefSBZ
+         gxoYYRO/HhDZPMP8MehkGZYX1ZiGTzy7mDHjrcuCZdTGDEj0E1yEQTLXR+ChBQPA4KCd
+         Y9ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794578002; x=1795182802;
+        d=1e100.net; s=20260707; t=1794578009; x=1795182809;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=dlsL3F8sYJVmEsiFaoMpY1LBlwOoTrnSEiIx7tFA8jw=;
-        b=0oLsvOI4BIB9cA0+CRbbV1S53IZhwLuEuPSvI3iWZVmRt8HVO6gQC62Wwij/mwDcwq
-         DxvXreQDV98uT6KiJNuKc1JBTSCt51dmQRko8GkvdJfsuD/Sdk724hqrE0hh44jchC47
-         ON+gpRPgq4jAka9MR3Oa60mBDNRS1GARcDldfPp6Z/U6xUX2MYwwDLw7cbzde6rzTSn1
-         wDRVecKth6LK2XE6ZlmlDEO2tctwAuUTM8OvGiD5D8HwW6HLA0+QHp15r932Uaj2t1Dz
-         i8sUIFscmmKovpYYCwiqd/qpEGiUxowSXFgpDwTYGlw2jjsJ4sVFQ7+N7apMsfGQ69kv
-         +X0A==
-X-Forwarded-Encrypted: i=1; AL+hErFbE9G24eLgj2Ni7AAYFX2j84pDZ4+MrMBz9dYfRz7M0JdcfO6vRpHBNy2P6RtQociYl0Y=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9PDoA9tbDO1bOQNlRTEPQlM0y0ka6bTo0OD1hm5LruuMIsaZ4D
-	TZGQk8/RPDyjbfg4csDykZr6eANw8ES+p8aI3WXAuPMFw7vIuAVnOR/7D+hyDQbdkHDDTByj3By
-	kLWDM4Q==
-X-Received: from pfew6-n2.prod.google.com ([2002:a05:6a00:c1c6:20b0:8b6:29f9:ce4c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:aa7:88cd:0:b0:8bd:281a:5cb0
- with SMTP id d2e1a72fcca58-8beb3b3ccd9mr2811215b3a.6.1794578002302; Fri, 13
- Nov 2026 05:53:22 -0800 (PST)
-Date: Fri, 13 Nov 2026 05:47:41 -0800
-In-Reply-To: <20261022210134.612848-1-seanjc@google.com>
+        bh=OpvfzW9Dt2ae2NU+aWz0za7rartm1yMIX237xsigiwk=;
+        b=ln0N1NVV3G8g2+WauOe/9bp8a7/ZYWtY2lx+n+6ENb0VwZRK1Gxg7zAKcqckNiUR1H
+         5j6MDHnctJ3oX8V+4BxDloNATaBReHQq966p4WMa1DZz4QeyxxZSG5EmxNjStxWvFUfC
+         wTN6Sv25HJgP2bsG3OTGFKJ1e710dugBUb1/XYY2Bb90UA5fI+gyZ8dxOG9zL0UdmTb+
+         8MhPTBdsag4d/BjJUmOv7sG5yxL3PHcfroCzi9f4H+DY6WqyIbBAQuWgjW89v7UYK7JZ
+         e8YJma+ITXeDzT8SqNkmL36nnIwbewKpknvH1d3ZAmbhFHLy0WAWYcmdFqAs2iwIQnfm
+         fkGw==
+X-Gm-Message-State: APuU4Z/lRr3PKzCfmMxcJj4qhL5uVpyE6bNA6C6/hrx+y8KZ7qOJKL84
+	PrKadCpuXn0PUGrNU7QPdcLbgzT7jVOkVc7a/mSIw+ADPQVzf5qTWg5E1D+OSdEa/JuIo01p7e9
+	IN0THnQ==
+X-Received: from plbkr11.prod.google.com ([2002:a17:903:80b:b0:2ed:8abb:208a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2c7:b0:2e9:9a19:c5b
+ with SMTP id d9443c01a7336-2ee0dd2382emr24969425ad.47.1794578008628; Fri, 13
+ Nov 2026 05:53:28 -0800 (PST)
+Date: Fri, 13 Nov 2026 05:47:43 -0800
+In-Reply-To: <20261030213747.2611815-1-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -79,39 +77,42 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261022210134.612848-1-seanjc@google.com>
+References: <20261030213747.2611815-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
-Message-ID: <179441778800.76592.3104502166440669144.b4-ty@b4>
-Subject: Re: [PATCH v2 0/3] x86/cpuid: KVM: TDX CPUID fixes
+Message-ID: <179441819203.80207.10000872984066251793.b4-ty@b4>
+Subject: Re: [PATCH v3 0/5] KVM: nVMX: Honor L1-owned CR0 bits for LMSW
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-coco@lists.linux.dev, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Changyuan Lyu <changyuanl@google.com>, Sashiko <sashiko-bot@kernel.org>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Mahmoud Abumandour <ma.mandourr@gmail.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, 22 Oct 2026 14:01:31 -0700, Sean Christopherson wrote:
-> Boris or Dave, can you grab patch 1 for 7.4, ideally sooner than later?  That
-> would avoid having to carry a stable topic branch for a trivial change.
+On Fri, 30 Oct 2026 14:37:42 -0700, Sean Christopherson wrote:
+> Fix a bug where KVM ignores vmcs12's CR0 guest/host mask when emulating an
+> LMSW from L2, i.e. an LMSW tha exits to L0 but not to L1.
 > 
-> Annotate CPUID entries that have a significant index when reporting TDX
-> capabilities to userspace, and enforce that userspace honors significant
-> indices to avoid creating a misconfiguring between KVM and the TDX Module,
-> which in the worst case scenario could lead to host state getting clobbered.
+> v3:
+>  - Handle the read_shadow in handle_set_cr0() (and for CR4, because why not).
+>  - Kill off kvm_lmsw() entirely.
+>  - Add a bunch of comments to the selftest to explain the dangers of running
+>    with CR0.TS=1.
+>  - Test MOV CR0 as well as LMSW.
+>  - Add a patch to take full ownership of the must-be-1 CR0 and CR4 bits.
 > 
 > [...]
 
-Applied 2 and 3 to kvm-x86 vmx.  Thanks Boris for fast-tracking the CPUID change!
+Applied to kvm-x86 vmx, thanks!
 
-[1/3] x86/cpuid: Mark CPUID function 0x23 as being indexed
-      [already upstream as 108775fa28fe04a16f19a828a779689f3d0ea9f0]
-[2/3] KVM: TDX: Set SIGNIFCANT_INDEX flag as appropriate when filling CPUID entries
-      https://github.com/kvm-x86/linux/commit/bfce14e80e89
-[3/3] KVM: TDX: Reject KVM_TDX_INIT_VM if indexed CPUID functions don't match
-      https://github.com/kvm-x86/linux/commit/c576a80cfc4e
+[1/5] KVM: nVMX: Preserve L1-owned bits in CR{0,4} read shadows
+      https://github.com/kvm-x86/linux/commit/3193e9153882
+[2/5] KVM: nVMX: Honor L1-owned CR0 bits when emulating intercepted LMSW for L2
+      https://github.com/kvm-x86/linux/commit/7e538a7bb16b
+[3/5] KVM: nVMX: Synthesize #GP if L2 writes a "bad" CR0 value via LMSW
+      https://github.com/kvm-x86/linux/commit/7672fa397f00
+[4/5] KVM: nVMX: Take full ownership of the post-VMXON CR{0,4} must-be-1 bits
+      https://github.com/kvm-x86/linux/commit/565c14684d6f
+[5/5] KVM: selftests: Verify KVM handling of L1-owned CR0 bits on writes from L2
+      https://github.com/kvm-x86/linux/commit/798e54a8c0bc
 
 --
 https://github.com/kvm-x86/linux/tree/next
