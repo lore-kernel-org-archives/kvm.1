@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794594892;
-	b=3wgeRFK4TB03Oe0O3GxU9wpp21ClEgvau3JD8Ao3Q36VY0T5Xad6OATRs1pzLR9bwoIn
-	 8yRaHYcwBvGPDXuLW2m1CrtqEiA7vbGofG6PQ37PnMWfHXNcMLTBULM1qclcQKtjD9zZA
-	 hkUNA2mPeuImSfzrWCcknsL8B5dyKi5tMHZq+QOHk70jWnLcJdPIeG8FKV04YaNnSnKXb
-	 Xkx3jTUg5PkslgK2tl6rVw4xk7fa1oiFO8SckJsAxqivuZpxtEitR01D1KWRxHlmh3ona
-	 ViJ2LIkJ01Eej4zPhtVqvcFTMZKSmg9Hx5JxyWaKTSwVuW3IkhbZKu6XPXTAerRDKRw==
+	t=1794594893;
+	b=MYsS53zV56/YLXDh3sEFyxli9wiiG9hCZ9QKkSShjjd5BRhzC4F80NNCoC2+agdObXU7
+	 1/EL49i2sannbHYrLCogWGvGkuMVJ1O7zWNVao+/7K/jk01p4U+3m2oonwMDkiSrTX/hS
+	 Euc+hhgHuQQiMJJieXUr8NfxSxV2tClEfL0Hm5uY31q4zfttWlVsxtCGHhXGZ+ntnQgwF
+	 55b7L3OeA4pEjlMUIEBXE7JMnFXXuEMCcXBYJH/E72YhWjg2rs5VGDKuaPdVwn6OmVzjj
+	 F86wn0yLTxuw8ylgfjdNTpPg0e/jhhGYQhfjWvLbnn6EBFI0aybGGGnLSiEcHfBEGgA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794594892;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794594893;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=pBZ+CnC3hUbxw26tE/js7VOagY0qf7uRdqzEN36xmto=;
-	b=l1PmbPrifyas6OHrCV2tpF3lt5WkFHE0HUcfDNA+mg2EsdZZhdaAQJJPjOx446af/KaH
-	 YzPNJOAPdIDxwHMGoNX9TxUkabwjhe4kwXmkV+zkHs0Wrzz4TEe9fi62OzsxKIQw5L2uT
-	 K0hB1vXZ9G8M9asGhgTmZ/26C0AmPFdUHdek4mVvGMYoTwsByouuFC+NSd/ZFIFErmCSp
-	 sF8acamLiPsZEBd3rkYFB3Vi3ORI5O5/4jhz5GD6uG3JAN+48RLr2/huy8jVtd6FMmGgW
-	 EMCzW8kZwiwEZwJtFNtQIYxPlBmL9FlPZD3ClngSzUb+GdTkWJKWNYwd1Kp3cF9hmkA==
+	bh=EY1jAy9xqxdqlTDEIZOP/6uxD2DtesdtQKnPvIrypYY=;
+	b=h1PqargWLn6x/AgEVUAHFvi0TIOBde9MCSE7jE5PiVb6Gt3PDKIxvI/ygdVL8yzQiLE4
+	 KsQJEq4OPcO/wTR753hVcOymGmdkDfIvjRC0B4r92CB6N1VmRieG3nttWT2lzMweROUva
+	 960rDMsqdRG6INhhyWi1UmEH4BVzJmQbUGRi+6mHbig8njGf3Zeh0vA2f7bJtvP4PKv8Z
+	 lRyj59OqFicwqbngz/8hzV2EwZ8KhrptqgHJWZ4LvxqQ/+00GvOpPgeB7J1Zd/4n4KuTw
+	 Lx/tEcCSoatu89eysjcSSG13FJbO+tp0KVmN1PuNxdpxXd/hxVryR7PIuniTYV7b2Yg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=bFbO6Fb+;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=gePMfFXl;
 	arc=none smtp.remote-ip=90.155.50.34
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F95606A897;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D55606A885;
 	Fri, 13 Nov 2026 18:34:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 76F95606A897
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24D55606A885
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=bFbO6Fb+
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=gePMfFXl
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=pBZ+CnC3hUbxw26tE/js7VOagY0qf7uRdqzEN36xmto=; b=bFbO6Fb+H0AOE5YwunPbU0/elQ
-	hncDX2690I4xzl5oLtMzrouUr9OCgDKRrsbvqb7LuIn2REM5uu2cPx61vPYFhPw6WqAsq9EbOO+Dj
-	poZyuU6VuAw7xc7ri5u0NXRbScm09VlMclyOzmIywN1xPKaQJkQ4dytQpLivU9lCHfq6TzCerLPEM
-	aohhu/iC/7zzkYqS0DM3LdCMsykpBD/bbYy2pK5HCN9LsFTWpL60aQnQ98XpO6q/wfZdOYLBii877
-	KLFLjhxYSvtvluybm9gpnYQACUkXczMd3nL/iDzUahB//cNexh+3K0XtstRK+fi8P2yb3Ho2HwY22
-	ZuTyu9QQ==;
+	bh=EY1jAy9xqxdqlTDEIZOP/6uxD2DtesdtQKnPvIrypYY=; b=gePMfFXlM5uUyVVex2S8XUiIZT
+	zlvQtIL8aI7Ed+EwmxwqEP9X3bsGQMB6O85z3W4+giuynHYckAF0cLOA1+GrgtVt7JrkVUWUGHwN0
+	OEJ9NK6LICTLB3dZQ7/NqNqjFXc3BtVFeN3tMwSsgcoK5CDGdw+IvucDRzNJ6Drh83BYeVhg74Pct
+	OyiMfzf0K9hazbu5ZzPvVtD/wUWY6oPi9Pug5lLQOPviiNDQaxmJpCYPeYs/YdTDyhHIFEowccKut
+	5tFjmNMpi6bADMWVpqw9/emo1autHpujpMNN0FdFGQxKvQqaHhwNEVbiFWmJnKcYbZ6peGyQf7fYJ
+	3ae9lC+A==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRw6s-00000004gRI-3PvL;
+	id 1xRw6s-00000004gQi-1U9A;
 	Fri, 13 Nov 2026 18:34:50 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xRw6s-00000000Luc-2ZvH;
+	id 1xRw6s-00000000Ltn-0TS6;
 	Fri, 13 Nov 2026 18:34:50 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -71,9 +71,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Mushahid Hussain <hmushi@amazon.co.uk>,
 	Sriram Nambakam <snambakam@linux.microsoft.com>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [RFC PATCH v2 31/31] KVM: x86: hyperv: Do not divert descriptor-table writes in SMM
-Date: Fri, 13 Nov 2026 18:34:47 +0000
-Message-ID: <20261113183448.84094-32-dwmw2@infradead.org>
+Subject: [RFC PATCH v2 19/31] KVM: x86: Fold an NMI for a higher plane back to plane 0
+Date: Fri, 13 Nov 2026 18:34:35 +0000
+Message-ID: <20261113183448.84094-20-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261113183448.84094-1-dwmw2@infradead.org>
 References: <20261113183448.84094-1-dwmw2@infradead.org>
@@ -90,39 +90,166 @@ Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-From: Sriram Nambakam <snambakam@linux.microsoft.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-Windows VBS boot fails when OVMF executes in SMM. The
-hv_divert_dt_write() helper was diverting firmware descriptor-table
-writes into the VTL register-intercept path. The failure trace showed a
-reflected #GP delivered in an SMM context with IDT base and limit both
-zero, followed by a triple fault and guest reset.
+An NMI aimed at a higher plane is injected into that plane, so the
+secure kernel takes a real NMI inside VTL1 and bugchecks (0x18B).
 
-Exclude SMM from this helper so those firmware descriptor-table updates
-proceed normally, without changing interception for ordinary VTL0
-execution.
+For a non-zero plane, inject the NMI into the plane-0 twin instead, to
+be delivered once the VTL returns. Set the higher plane's
+hv_apic_event_pending marker so the NMI still forces one entry into
+it, and kick through __kvm_kick_lower_twins(), the ungated half of
+kvm_kick_lower_twins(), since plane 0 takes the NMI whether or not
+anything consumes the higher plane's event.
+kvm_higher_plane_with_event() counts a higher plane's pending NMI state
+(KVM_REQ_NMI, nmi_queued, nmi_pending) as an event as well: the fold
+never leaves NMI state there, but KVM_SET_VCPU_EVENTS on the plane's
+own fd can.
 
-[dwmw2: applied from the mail; subject ours.]
-Link: https://lore.kernel.org/all/20261104065539.15281-1-snambakam@linux.microsoft.com/
-Not-signed-off-by: Sriram Nambakam <snambakam@linux.microsoft.com>
+When the targeted plane is the selected one and halted, the fold must
+still break its HLT, as an NMI would on hardware. Its own event checks
+see no NMI and plane 0's events are only examined on guest entry, so
+kvm_arch_vcpu_runnable() counts the posting marker the fold leaves on
+a non-zero plane, and kvm_check_plane0_events() counts plane 0's
+nmi_queued, where the folded NMI waits until it is processed.
+
+Plane 0 is looked up without the locks that serialise twin creation,
+so its slot is read once, with READ_ONCE(), to pair with its
+publication.
+
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- arch/x86/kvm/x86.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/lapic.c | 26 ++++++++++++++++++++++++--
+ arch/x86/kvm/x86.c   | 35 ++++++++++++++++++++++++++++++-----
+ arch/x86/kvm/x86.h   |  1 +
+ 3 files changed, 55 insertions(+), 7 deletions(-)
 
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index 81bf72e83e8c..d33226c44488 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -1476,8 +1476,30 @@ static int __apic_accept_irq(struct kvm_lapic *apic, int delivery_mode,
+ 
+ 	case APIC_DM_NMI:
+ 		result = 1;
+-		kvm_inject_nmi(vcpu);
+-		kvm_vcpu_kick(vcpu);
++		/*
++		 * An NMI aimed at a higher plane forces entry into that
++		 * plane (reason INTERRUPT, below) but the NMI itself is
++		 * folded back to plane 0 and delivered there after the VTL
++		 * returns.  Matches the Nitro VSM implementation, which never
++		 * delivers an NMI inside a higher VTL.
++		 */
++		if (vcpu->plane_level) {
++			struct kvm_vcpu *twin;
++
++			WRITE_ONCE(vcpu->arch.hv_apic_event_pending, true);
++			twin = READ_ONCE(vcpu->common->vcpus[0]);
++			if (twin)
++				kvm_inject_nmi(twin);
++			/*
++			 * Plane 0 takes the NMI whether or not VTL semantics
++			 * are on, so don't gate this kick the way
++			 * kvm_kick_lower_twins() does.
++			 */
++			__kvm_kick_lower_twins(vcpu);
++		} else {
++			kvm_inject_nmi(vcpu);
++			kvm_vcpu_kick(vcpu);
++		}
+ 		break;
+ 
+ 	case APIC_DM_INIT:
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 27317077f519..4ad8be64166f 100644
+index 165eb105e112..c2c9b5a181b9 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -5939,7 +5939,7 @@ static bool hv_divert_dt_write(struct x86_emulate_ctxt *ctxt, u32 hv_reg,
- 	struct kvm_vcpu_hv *hv_vcpu = to_hv_vcpu(vcpu);
+@@ -8301,16 +8301,22 @@ bool kvm_higher_plane_event_consumable(struct kvm_vcpu *higher)
+  * including when it is already past its event checks on the way into the
+  * guest.  KVM_REQ_UNBLOCK lives in the request word the twins share, so
+  * it aborts that twin's vmentry, and the kick reaches whichever twin is
+- * running (or waiting).  Nothing is kicked for an event that cannot be
+- * consumed.
++ * running (or waiting).  kvm_kick_lower_twins() kicks nothing for an
++ * event that cannot be consumed; __kvm_kick_lower_twins() is the ungated
++ * kick, for an event that a lower plane takes itself.
+  */
++void __kvm_kick_lower_twins(struct kvm_vcpu *vcpu)
++{
++	kvm_make_request(KVM_REQ_UNBLOCK, vcpu);
++	kvm_vcpu_kick(vcpu);
++}
++
+ void kvm_kick_lower_twins(struct kvm_vcpu *vcpu)
+ {
+ 	if (!vcpu->plane_level || !kvm_higher_plane_event_consumable(vcpu))
+ 		return;
  
- 	if (!hv_vcpu || vcpu->plane_level || is_guest_mode(vcpu) ||
--	    !(hv_vcpu->reg_intercept_control & ctl_bit))
-+	    is_smm(vcpu) || !(hv_vcpu->reg_intercept_control & ctl_bit))
- 		return false;
+-	kvm_make_request(KVM_REQ_UNBLOCK, vcpu);
+-	kvm_vcpu_kick(vcpu);
++	__kvm_kick_lower_twins(vcpu);
+ }
  
- 	hv_vcpu->reg_intercept.reg = hv_reg;
+ /*
+@@ -8353,6 +8359,9 @@ static struct kvm_vcpu *kvm_higher_plane_with_event(struct kvm_vcpu *vcpu)
+ 		if (READ_ONCE(higher->arch.hv_apic_event_pending) ||
+ 		    kvm_cpu_has_extint(higher) ||
+ 		    kvm_test_request(KVM_REQ_HV_STIMER, higher) ||
++		    kvm_test_request(KVM_REQ_NMI, higher) ||
++		    atomic_read(&higher->arch.nmi_queued) ||
++		    higher->arch.nmi_pending ||
+ 		    kvm_cpu_has_pending_timer(higher))
+ 			return higher;
+ 	}
+@@ -8403,6 +8412,7 @@ static inline bool kvm_check_plane0_events(struct kvm_vcpu *vcpu)
+ 
+ 	return kvm_cpu_has_injectable_intr(vcpu_plane0) ||
+ 		vcpu_plane0->arch.nmi_pending ||
++		atomic_read(&vcpu_plane0->arch.nmi_queued) ||
+ 		vcpu_plane0->arch.smi_pending;
+ }
+ 
+@@ -9254,11 +9264,26 @@ bool kvm_vcpu_has_events(struct kvm_vcpu *vcpu)
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_has_events);
+ 
++/*
++ * An NMI aimed at a higher plane is folded to plane 0 and leaves only the
++ * plane's own posting marker behind (see __apic_accept_irq()).  When that
++ * plane is the selected one and sits in HLT, nothing else wakes it: its
++ * own event checks see no NMI, and plane 0's events are only examined
++ * when the plane enters the guest.  The marker is consumed on that entry,
++ * so the NMI breaks the HLT once, as it would on hardware.
++ */
++static bool kvm_plane_nmi_folded(struct kvm_vcpu *vcpu)
++{
++	return vcpu->plane_level &&
++	       READ_ONCE(vcpu->arch.hv_apic_event_pending);
++}
++
+ int kvm_arch_vcpu_runnable(struct kvm_vcpu *vcpu)
+ {
+ 	return kvm_vcpu_running(vcpu) || vcpu->arch.pv.pv_unhalted ||
+ 	       kvm_vcpu_has_events(vcpu) ||
+-	       kvm_higher_plane_with_event(vcpu);
++	       kvm_higher_plane_with_event(vcpu) ||
++	       kvm_plane_nmi_folded(vcpu);
+ }
+ 
+ /* Called within kvm->srcu read side.  */
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index 649d4b8ac2d4..00dc866c08c3 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -534,6 +534,7 @@ void __user *__x86_set_memory_region(struct kvm *kvm, int id, gpa_t gpa,
+ int memslot_rmap_alloc(struct kvm_memory_slot *slot, unsigned long npages);
+ 
+ bool kvm_higher_plane_event_consumable(struct kvm_vcpu *higher);
++void __kvm_kick_lower_twins(struct kvm_vcpu *vcpu);
+ void kvm_kick_lower_twins(struct kvm_vcpu *vcpu);
+ bool kvm_vcpu_is_reset_bsp(struct kvm_vcpu *vcpu);
+ bool kvm_vcpu_is_bsp(struct kvm_vcpu *vcpu);
 -- 
 2.50.1
 
