@@ -1,73 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794577740;
-	b=sKH7a3jwEhERqMv69h5NusVPbJyM+6M38sMTAkElR/MoO1Dk5qHbdZYTNH4mS+l6TkNt
-	 NlI6PgLnBWrXWgGg4AGp1WqYkFVe6cu4h+eey99IQ/1j680EhYqbbTSg5cKGaBEIr2W6T
-	 2DiyGks70R2e9IkKLdKXQMz6xPFN429YKzEZGqtXoW3T7f1pi9g/ZnL6xi9tzXh4Q0Q9O
-	 Tm3ETB9765LSI5zfjJ2bVyva1d/AJ9ruydo/I8K2J8vDfXmAkUUEtJY38q0Y3mzY/seBN
-	 c9ZeveQaW6zzNU/psGDVJDG7NV89+kcZfJ3ncHt38sbJDG7o+e1padUi3v3frEUizIw==
+	t=1794577730;
+	b=hHNWXlADvzHv2F+RW1TZpLL0JRXujhWFw3HBOzj5hFtVy/WHJljby+AJnNjtFNVKwPww
+	 LrqHbPJpqOs9Lp0xAHVzETI96hayTlMgjU1xHZviu1qP1W83T4r1qgZ1jLjRx0qnHzt+J
+	 XllVT2Z3kPHKqIk3ZFKsPC23MG2n/Ri8t/Oq2YbLrOweWUfDgUSDmlYzuhsB7e0gs03At
+	 7Ow4oPrTAXxXNd21uZPVcJgpyffFqq+te/HRzxznkISr/SI9Shf3gPshk8Pvpr0Sn/rbp
+	 PxUeOHbEs5uaSVCrzfI9Hyh++AkUqYXhZAVeVN98eAli8v3Ay9CabI3P3o1qvgW9hDA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794577740;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794577730;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
 	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=nUA/XruHs1T2Tf0WpFoNgdHnIv/Lm/y++OYQw+7v6pc=;
-	b=xaExgGfedW/uQNQlrDokHE/oyewt46esJoi4VdvQqQBBIm25QdepZ0Q9mtu02VpH5SxS
-	 Pk43S7/IeIab/u3/n3p/inYgB7/xHXoaVw9+qBKfw0DvGDU1Rx/DnhLtSMZH6NZazbhpv
-	 kP7nbdbB/aubXCkuBtZq6YQBLZzNwZtF5LIm+jjydxcTDpccYe1Yntzp4PNs1iMg/P20g
-	 iPbDSSb/Ryzg+exyV5/TFKnf1vnmqUZnObmWCiUSkFpyH4hKGU1riSuC70C5Pn76Ajedu
-	 SXeRoWHJBNBJzaXOUpl/l6ql/Cvxf8FT0o9w8yxk78bEi6r4SV0xpbVGTmDyz3YxGyg==
+	bh=owQijkkt4PGB+i0XYnWR09SeC4OwCpHMumuAGD1MVVI=;
+	b=A/U1wh98Q7a1uh6rq6Dap/M4xolZKn9DFgxILnFmbi+Uiby/I+I8hpcVs/p2Lwa+PXIl
+	 8CLSLRWALOUFdDQ0e86LIxnwLsSRSz+ZhNDfQrHb2a8Kn5PRHmRG+fRvAF8QlhEf2gq9m
+	 J1HnyRMImr78kTZnUPxa29paUUD6kvsA1/p/HzMg5HSakmw9L19N3FYbwdR8mg2HtJ6op
+	 KCxXQ94QLrurPLgMN4CiXg1EScQQdRIrll0KHOS+D3/4++zAkDk7y7fzHrbHZzUuACE3o
+	 PNt0hWb5YU/GYTTNhXiVW4XP66Qffm/Z8PH5NkgBUXXblsfj1FlI289R9W7ELjnXC5g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=CBQ+FCKV;
-	arc=none smtp.remote-ip=209.85.216.70
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=B9aYRATs;
+	arc=none smtp.remote-ip=209.85.210.200
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3459A60A2609
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:49:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3459A60A2609
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D4C606A889
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:48:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48D4C606A889
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=CBQ+FCKV
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3ae72da2f57so1574032a91.1
-        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:49:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=B9aYRATs
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8b847ab3fd3so1333856b3a.2
+        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:48:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794577739; x=1795182539; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794577730; x=1795182530; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=nUA/XruHs1T2Tf0WpFoNgdHnIv/Lm/y++OYQw+7v6pc=;
-        b=CBQ+FCKVX7pyz+dQ5QKbM1hny+1ubSjujIi3qRVilyp/T0+yE1V8b9cVWf22zDenoC
-         tjwuSSWg7a3QrAj8WecXcvHmgIRWj5X4qg3+BudzaHgS5l7FyC5gv9CPFyp+ww9oRyEt
-         Za1LsSuXYb3w7AC1TcgQ8QR6wLhkDC1RLoic08ASNOYsKuNzstCDwkNVDld5k7y3hLkW
-         zUD9eu1UQqI4u45bFgUefkvN65VbxrWK1Oj3ywn55s5q4lLyvq2v4GYjuBbWqK0xQ4x0
-         +WuGtPMUGi4gy7/oFurNiG+xplmet7p0AGp1XFBMRPVjAv5OTaVMD410CTaqNXBq1olH
-         hJtg==
+        bh=owQijkkt4PGB+i0XYnWR09SeC4OwCpHMumuAGD1MVVI=;
+        b=B9aYRATsr6AjwFdmMFe+QqETDSJS8V+FIDOZb9ABXD+4Ee9sHeSAzpr6Wg0xnPQ22Y
+         +grnUbNyqtaKo5Z0+NPmgalzhswXvyqpVeI131Yd4l33OSiYSlKof50xrlkIYYqR1CFJ
+         BetSPA0vNGW4IDtCx6b2Mz8hgSw+WFvtJ4B29zYNmHN9blYTy9sA9LGiaf16t/ervrup
+         wWgRimuEyWjsB1hXFpbNyAC7KW6GIBY9PffjMGYdhWRTPB97u5PnZBx2MQP5zjzw8uU6
+         SgOPzW096mP6trUDFYAAiFkbHFe240dNEdcIfNLuouDdnFKEguPinZsPv0aws5hDOnXC
+         27VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794577739; x=1795182539;
+        d=1e100.net; s=20260707; t=1794577730; x=1795182530;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nUA/XruHs1T2Tf0WpFoNgdHnIv/Lm/y++OYQw+7v6pc=;
-        b=lKe5rBDJ0V5kGSlMtztn1/iAnSKsSy22enWLgCDfNRU0bd8tZO3ZUcYxZfnwyxF2oh
-         PdynsmIiw8bvK3ZzYL3fG7/6x4+soc0xa65mXASu344ZXbfo1cN0XGR0+AGWcpzec9Mi
-         1On3n2iPKAmoC4C1VisgJb3/QmuflfL5nAS38dIpwdOjDne2N3e8lu1n3KbqYnV3vIXQ
-         mM8NBkJZb3XPaHAEphZMSEeka7146K30dnBgfcdOWWFNTfNgHg62WI0jmOZVHn8cSKi9
-         XHujluFs99lWUOT9xlvFMk5waWzXDtV2ogZqWJ2jci2Tjc1VWGgZFKVzM8mpAy9MjE+g
-         b6hA==
-X-Gm-Message-State: APuU4Z9MjRVexM71zYWZ3h00rvvvq8DhvGNW5jKZs3ZmR9u5zBKpY6dv
-	IHY2J8rf1vtxkc3FoCbRBfMe0X5zPxWzeiJyI4esZ+KlX0T/3gx6IkTrJkA6tKvzGU2p/J2wbz6
-	RTcdv1w==
-X-Received: from pjyw22.prod.google.com ([2002:a17:90a:ea16:b0:3b0:9c59:c0e2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:35c6:b0:3ab:884b:65b4
- with SMTP id 98e67ed59e1d1-3b1b0d4332fmr2502747a91.59.1794577739394; Fri, 13
- Nov 2026 05:48:59 -0800 (PST)
-Date: Fri, 13 Nov 2026 05:46:34 -0800
-In-Reply-To: <20261022021349.296149-1-seanjc@google.com>
+        bh=owQijkkt4PGB+i0XYnWR09SeC4OwCpHMumuAGD1MVVI=;
+        b=f/hSqc+YfuIhYyvWugOZ8TNJ2wiwm+3ngyNZa89xLu365nSNbPwDQQhAgIaMQhq5TJ
+         TrkFIMlvf2jzOLpyWLpTNcQFtuBTOGCALxz21R4HwWu6dHXYbY9uQHehp9MA9jM3OvCm
+         x6jrle8/QeJEoVNrtps0nOHF3g8dBv3dhSKKMrYkzcPsjnurgcQmvGGdWyYF2A14XOLV
+         CfojKFn5hDEpmJxiEf/n0PcQcGZ63WNaVuaq+Kqv92FeFQOjaWm6JxNxP9cChnA0VI4c
+         v7Y6lOhQivL/aDp7i6D2gezhpKeCcMe8aEhB+RVuiUG9SvDfTlGZ+Xuh1SsJqY5ePdbh
+         I3Dg==
+X-Gm-Message-State: APuU4Z8qtzmHLtJkxJ0Cx6+TcRnAfX9jA3IbG1/aPap+ZWSkQ0n0SdgT
+	xiSj9A8kivpIpFztSWs8C8ATyMf349YhEjqld2HEnlStN8OxTAJymknZx6iMO6TRzLBf5bfeAUv
+	yr67spQ==
+X-Received: from pfblt8.prod.google.com ([2002:a05:6a00:7448:b0:8a2:7343:1d03])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:807:b0:8a0:58c3:8ceb
+ with SMTP id d2e1a72fcca58-8beb753d1b7mr2666112b3a.45.1794577729376; Fri, 13
+ Nov 2026 05:48:49 -0800 (PST)
+Date: Fri, 13 Nov 2026 05:46:30 -0800
+In-Reply-To: <20261020175818.375700-1-borntraeger@linux.ibm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,31 +77,35 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261022021349.296149-1-seanjc@google.com>
+References: <20261020175818.375700-1-borntraeger@linux.ibm.com>
 X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
-Message-ID: <179441757932.74670.12537566702126454135.b4-ty@b4>
-Subject: Re: [PATCH] KVM: Don't WARN on -EIO return from kvm_arch_vcpu_pre_fault_memory()
+Message-ID: <179441818685.80121.18041691595252974773.b4-ty@b4>
+Subject: Re: [PATCH v2 0/2] Fix error handling for async_pf
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzbot+db7bd0f41c2a7e82d4ba@syzkaller.appspotmail.com
+To: Sean Christopherson <seanjc@google.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: KVM <kvm@vger.kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, 
+	Shuah Khan <shuah@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, 21 Oct 2026 19:13:49 -0700, Sean Christopherson wrote:
-> Drop the WARN on arch code returning -EIO when pre-faulting memory, as the
-> WARN is user-triggerable and completely unwarranted.  In all likelihood,
-> the WARN was added due to a misinterpretation of review feedback, and was
-> overlooked in subsequent review rounds.
+On Tue, 20 Oct 2026 19:58:16 +0200, Christian Borntraeger wrote:
+> Return mapping errors also for async_pf cases. Otherwise guests
+> will loop forever. Nothing critical just missing error handling.
 > 
-> The WARN showed up in v5 of the original pre-faulting series without any
-> real explanation.  v5 did add -EIO as a documented error code[1]:
+> v1->v2:
+> - !npages instead of npages == 0 (Sean)
+> - new block comment (Sean)
+> - fix testcase to build with 7.3 and 7.4-rc
 > 
 > [...]
 
 Applied to kvm-x86 generic, thanks!
 
-[1/1] KVM: Don't WARN on -EIO return from kvm_arch_vcpu_pre_fault_memory()
-      https://github.com/kvm-x86/linux/commit/ed4d60b4ca23
+[1/2] KVM: Set up async page faults only for faults that need to wait
+      https://github.com/kvm-x86/linux/commit/9e03117114b6
+[2/2] KVM: selftests: Test that KVM_RUN fails for unresolvable host faults
+      https://github.com/kvm-x86/linux/commit/05bb06acb180
 
 --
 https://github.com/kvm-x86/linux/tree/next
