@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794587361;
-	b=wdohTpe30hfhdS4mNCfZdDk/KGrOezFVp+f747z1HYP21tpWcV3n9mNYgL93oI/i78JE
-	 MV74qpSxQuDwjKNGVFtF3IkIau28qyjJNV3yB+y/NEsavUBkroRHVfhY4jd5hdG5GO8WR
-	 BbZgq9rH99VbRJ8+W1VBiEmhs4w0O0R+buzCkGrcl/UC8YTNLysJRsygm3tj1Tp+zfX6k
-	 pHxiStfuwCOmooQf1f8kudiGALwNVIzvBhfGZVUxhzgMNz3QlmJKiqb3OclVmvAUyWtuv
-	 3f0zl2+/p8KbXZQ7rtaeGivWfQNJr/zBzDa90Arc7tn/qeblgCaxr+R/cxr0/J8mcQw==
+	t=1794587626;
+	b=Leq/HU1iKq83Sm/KH02/t6zPWMyZyMjtPlu0JKILai1Uf4sLPnBu0wFMFpNeR06bFMMF
+	 Zw5gWjl1rJ1bihXERnrIEiJSPBjZP4MPVZKaGCH0B2K7XGuWP/DrxUxTSDF+G84vYt8F8
+	 6orXIs8Y1/egi3eBCwFfKNfbg+y1gkS0RPHXylvKN67rcHLqhzN9cI/3lMY0etyevjPV2
+	 C3seLLSVqu99AgXQoYEoXU8jonbnYcwFYGGxgJ1hIZ1XoiXu4PuxMd3uYjVbMgT7WOjVn
+	 /JOmJAo3MGPUHIn7Bwggn/xwuDV39x5TzyAUbIF/maZPvCNuKrgsyve71oNMNlGbTMw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794587361;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794587626;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=twk10zSL0lVU6qT+kkjUftM7b3g7fDF7BFDcGNkkq2I=;
-	b=Hqg5E85c/ZJQ9lqFPoaye2Oe8/wE1X2Zhzc996mozZPHu7il9Y0bGbFJ64QCIaMvLPdp
-	 pkYDMDLplMYe+qHqCdLe23YeF9Eky62fE0wxDrlLmvuqvG00uMGWWyp4UAGlayLSHXJfK
-	 Ed+nb6+ASrTv6c1Oo7m72FVXxZq8sU/2/dR6QfqENtFJVnkL6H+YyorbR/ChTaEpd+tgJ
-	 +1dxlLi2TivVwe150sJRx3fOwIBeQ5yMLkNpmDGkkpyZb3YzZUJDjXqbpTwYasSpLpwhi
-	 jMaZ0zNb5aW9bJhWtqLw7/x4mDsEyzyFn+dIJDS8jc3W7k+LMu9AL8MBxwPqm+bfs5w==
+	bh=nDY6g8wwhcMLyuBhzmb8DN6IMJlPgJbqFNtxYZnN9Z0=;
+	b=Lo3i/jHGsfaiH3L1b9B0cqVmZV2pq/euOiiLoXNdWPBKnT6udSRluUvlgo/tWnfzTGW6
+	 han5YG9zaNer+uzVmFmgZ5b/R8endcGtKiZA2/EhtBU+vn7loktdo1X1yP+VPrUeHjH47
+	 tuTJLl7ttlFVjx6jVvzzry67qY1KGb2lIepIad0sCSK1aNXjhlBu0fW2wjh31nsH5KZmD
+	 MZGgznv8hDv9CdL1wf07UMIEpO4kJp+JkeQCqcjPOfYf+sLPVJQK0ypcwI3zxGiwv+Bjx
+	 auUoU+6TpF3wk0QFrTnphV/NviCH9/BxSDsdD+JoUiMCYPqMcjf2WIuo1ML15HH68AQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SozigEsL;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AXZqP3Px;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D147606A8A5
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 16:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11206606A327
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 16:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SozigEsL
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47BB1F000C4;
-	Fri, 13 Nov 2026 16:29:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AXZqP3Px
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73FDB1F000C4;
+	Fri, 13 Nov 2026 16:33:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794587361;
-	bh=twk10zSL0lVU6qT+kkjUftM7b3g7fDF7BFDcGNkkq2I=;
+	s=k20260515; t=1794587625;
+	bh=nDY6g8wwhcMLyuBhzmb8DN6IMJlPgJbqFNtxYZnN9Z0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SozigEsLaadFW6RXseX1VfSUYKln7Uj0RJ+ea1YFOdmSUL9n1PI+qRy3FWHjeZhyT
-	 9Ahi7pdKOfivr/yMsj6BbgP3KrhFHXlTicrZRzEVmZlEbZYpAXCeLXj4euJmRe8xEK
-	 n7i7EDg5wCk2PALtVCTD6D3AlMOCbz0sNAtmj2hpS5DTdFNwWUfaO0/ZX8bkDMyAiC
-	 ZcjDy/htCF1xvGuqSPtpxcaO67e2GC3y4jZAqJ6pft8xF9x8b1KVefLwr3cYQGNneU
-	 vRiqAtSAyy9RTDbRxAkFXCCLBI5Mig1SCLWsu2fSEVJdV1uwCUy0oHpgg7XTRxkvLU
-	 L4td8+9J9dKOQ==
-Message-ID: <sashiko-outbox-213196@kernel.org>
+	b=AXZqP3PxV4bgLbFfUBAVtDFM8VQmCVnAXyvI6+7vbBiEC7trFloxatyjbjFQEoidv
+	 OFy9Fd7ZPj7ivh9k4E2iXjcYUJWpietFzAVohXWLq1hTEiCG0UNmBt9MvW7kUSeDMp
+	 NxDc9qCGpysJ1iWlhfwIvwzvgFW3vuR7oY498XDN59Tf1U54NzN8Gos3zoOHeQPnEk
+	 3N1GsFxECokk7il5MM1i7/irNbHRG7RQ5uFNhbxgeoKjVTNVoKC1N4QiwAGPbqmgp6
+	 66CSq4h2iPmehdgERJEA0kvuPsGn9LEtsiqVLX7b0NW1+7pQqXW9ks0iqB1vcuggC5
+	 cEKWH/KyT32Dg==
+Message-ID: <sashiko-outbox-213200@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v2 11/15] ctlv: Add operation dispatch
+Subject: Re: [PATCH] KVM: SVM: Sync CR8 to the local APIC after marking the
+ VMCB clean
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jiri Pirko" <jiri@resnulli.us>
+To: "Sean Christopherson" <seanjc@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20261113155515.2510194-12-jiri@resnulli.us>
-References: <20261113155515.2510194-1-jiri@resnulli.us>
- <20261113155515.2510194-12-jiri@resnulli.us>
+In-Reply-To: <20261113162556.461390-1-seanjc@google.com>
+References: <20261113162556.461390-1-seanjc@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 13 Nov 2026 16:29:20 +0000
+Date: Fri, 13 Nov 2026 16:33:45 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,156 +60,44 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] ctlv: broken request rebinding and WARN_ON_ONCE in
-  ctlv_ext_fill()
-- [Low] ctlv: unclaimed ancestor families and bad log in ctlv_init()
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [High] KVM: SVM: missing Signed-off-by trailer from patch author
 --
 
-commit d099e8b67fe7bf2eb3f3e45b3042be1ff1f88e98
-Author: Jiri Pirko <jiri@resnulli.us>
+commit 233803838af902e26ce77bf3e6c981b3c2991bd9
+Author: Chris Oo <cho@microsoft.com>
 
-ctlv: Add operation dispatch
+> KVM: SVM: Sync CR8 to the local APIC after marking the VMCB clean
+>
+> Sync CR8 from the VMCB to the TPR *after* marking all VMCB fields as clea=
+n,
+> as syncing CR8 can toggle the CR8 write intercept and thus mark INTERCEPTS
+> as dirty.  Clobbering the dirty bit can result in KVM failing to detect C=
+R8
+> writes if the underlying "hardware" uses the clean bits to optimize VMRUN,
+> e.g. when KVM is running on Hyper-V.
+>
+> Failure to intercept CR8 usually manifests as hangs when running Windows =
+as
+> L2, as KVM's view of vTPR stays high and so KVM never injects pending IRQ=
+s.
+>
+> Fixes: bb365a506b1e ("KVM: x86: Unconditionally recompute CR8 intercept o=
+n PPR update")
+> Cc: stable@vger.kernel.org
+> Cc: Carlos L=C3=B3pez <clopez@suse.de>
+> Cc: Stefano Garzarella <sgarzare@redhat.com>
+> Not-signed-off-by: Chris Oo <cho@microsoft.com>
+> [sean: rewrite changelog, massage comment]
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-This commit adds CTLV family resolution, instance registration, file
-operations, and ioctl operation dispatch.
-
-> diff --git a/lib/ctlv/core.c b/lib/ctlv/core.c
-> new file mode 100644
-> index 0000000000000..605f191de77ba
-> --- /dev/null
-> +++ b/lib/ctlv/core.c
-
-[ ... ]
-
-> +/**
-> + * ctlv_ext_fill - Delegate an extension-point output record.
-> + * @ctx: operation context
-> + * @request: validated request root
-> + * @record: output record selected by the generated helper
-> + *
-> + * Return: filling callback result, or 0 for an unfilled point.
-> + */
-> +int ctlv_ext_fill(struct ctlv_op_ctx *ctx, const struct ctlv_cursor *req=
-uest,
-> +		  struct ctlv_cursor *record)
-> +{
-> +	const struct ctlv_schema_tree *tree;
-> +	u32 index;
-> +
-> +	if (WARN_ON_ONCE(!record->tree))
-> +		return -EINVAL;
-> +	tree =3D record->tree;
-> +
-> +	for (index =3D 0; index < tree->ext_schemas_count; index++) {
-> +		const struct ctlv_ext_schema *ext_schema =3D &tree->ext_schemas[index];
-> +		const struct ctlv_cursor *filled_request =3D request;
-> +		const struct ctlv_ext_fill_schema *fill_schema;
-> +		const struct ctlv_ext_ops *ext_ops;
-> +		struct ctlv_cursor filled;
-> +		int ret;
-> +
-> +		if (ext_schema->node !=3D record->node)
-> +			continue;
-> +		ext_ops =3D ctlv_ext_ops_find(ctx->ctlv, ext_schema);
-> +		if (!ext_ops || !ext_ops->fill)
-> +			continue;
-> +
-> +		if (request) {
-> +			fill_schema =3D ctlv_schema_fill(ctx->family, ext_schema->family_id,
-> +						       ext_schema->ext_id);
-> +			if (WARN_ON_ONCE(!fill_schema))
-> +				return -EINVAL;
-> +			filled =3D *request;
-> +			if (ctlv_message_input_rebind(&filled, &fill_schema->members, 0))
-> +				filled_request =3D &filled;
-> +			else
-> +				filled_request =3D NULL;
-> +		}
-
-[Severity: Medium]
-Can ctlv_ext_fill() trigger WARN_ON_ONCE(!record->hdr) in
-ctlv_message_input_rebind() when userspace omits an optional request
-extension record?
-
-When a parent operation looks up the request extension-point record with
-its generated helper and the optional record was omitted in the request
-message, ctlv_input_field() sets request->hdr =3D NULL.  Passing that cursor
-to ctlv_ext_fill() enters the if (request) branch and passes filled.hdr =3D=
-=3D
-NULL to ctlv_message_input_rebind():
-
-lib/ctlv/message.c:ctlv_message_input_rebind() {
-	if (WARN_ON_ONCE(!record->hdr || !record->msg || !record->msg->index))
-		return false;
-    ...
-}
-
-Also, the kernel-doc above says @request is the validated request root,
-whereas extension fill scopes are attached to the child extension record
-rather than index->records[0], so passing the request root cursor always
-fails to rebind and sets filled_request =3D NULL.  Should ctlv_ext_fill()
-check ctlv_cursor_ok(request) (setting filled_request =3D NULL when absent)
-and document @request as the matching request extension record?
-
-[ ... ]
-
-> +int ctlv_init(struct ctlv *ctlv, struct device *dev,
-> +	      const struct ctlv_family *family, const struct ctlv_hooks *hooks)
-> +{
-> +	int ret;
-> +
-> +	/* Nothing in common means no pair, not half of one. */
-> +	if (!dev || !family || (hooks && (!hooks->pre || !hooks->post)))
-> +		return -EINVAL;
-> +
-> +	ctlv->dev =3D dev;
-> +	ctlv->hooks =3D hooks;
-> +	init_rwsem(&ctlv->registration_lock);
-> +	spin_lock_init(&ctlv->transition_lock);
-> +
-> +	/* Before anything reads the schema through this instance. */
-> +	ret =3D ctlv_op_resolution_init(ctlv, family);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Before a subsystem announces a device that could not be. */
-> +	ret =3D ctlv_uevent_check(family);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (ctlv->dynamic_ops_count) {
-> +		ctlv->disabled =3D bitmap_zalloc(ctlv->dynamic_ops_count, GFP_KERNEL);
-> +		if (!ctlv->disabled)
-> +			return -ENOMEM;
-> +	}
-> +
-> +	ret =3D ctlv_family_claim_add(family->schema);
-> +	if (ret)
-> +		return ret;
-> +	ctlv->family =3D family;
-> +	return 0;
-> +}
-
-[Severity: Low]
-Does ctlv_init() leave intermediate ancestor families unclaimed in
-ctlv_family_claims?
-
-ctlv_init() only calls ctlv_family_claim_add(family->schema) on the leaf
-family, so base families that are only inherited and never instantiated on
-their own are not recorded in ctlv_family_claims, allowing conflicting
-ancestor names or family_ids across chains.
-
-In addition, when ctlv_family_claim_add() hits a name collision with a
-different family_id (same_name && !same_id), its pr_err() reports that
-schema->family_id belongs to claim->name instead of claim->family_id.
-Finally, ctlv_family_chain_check() and ctlv_family_descriptor_check() do
-not check that child->schema->name[len + 1] is non-NUL after '-' or that
-strlen(schema->name) fits the 63-byte limit of
-CTLV_T_FAMILY_GET_FAMILIES_NAME before CTLV_OP_FAMILY_GET hits a runtime
-WARN_ON_ONCE in ctlv_put_string().
+[Severity: High]
+As noted below the tearline, the patch author's Signed-off-by trailer is
+missing and currently listed as Not-signed-off-by.  A Signed-off-by from
+Chris Oo <cho@microsoft.com> is required under the Developer's Certificate
+of Origin before this commit can be merged.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113155515.2510=
-194-1-jiri@resnulli.us?part=3D11
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113162556.4613=
+90-1-seanjc@google.com?part=3D1
