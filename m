@@ -1,115 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794577906;
-	b=yfgggMLEfAD9rXESYoeZ+/xTfDHNEs+nmv9W/nGGzHbZuMpfGwMGlAtOt+FId9ttBala
-	 +0UYM0G+P6cy3B69aBf8/6DQr0cpDE1mkQzzS0prRB0K1yZXQbZIVxmI4zyek/024+ny5
-	 OxZSdYeAAZUp4vaBKZ4ZFmSZ5EonMMtgJfBbtGgqGpBcCKIP+bWNCdTSUxK7fEi+8tVnF
-	 +qyARi7ralKf8afTnlrgXBYVuLro4nmh4tOw6IAhsvxgFX8HYda6Sc7MGqsHEFDcPm+Ie
-	 LoGwG/ysHx0uxiIwjZi8MGqcFnL/BOe+bkFerRqtxRlbeMEuZNuawqQuVswwIF90OqQ==
+	t=1794577909;
+	b=F3K5cKgP9y0JFKiUkL+MmOe85AZQQt244lMUJ//S7DP5lZJbP3FRtrF+BULRKyD35Sv6
+	 3DAXsUVvtSVV15joO4uYdndnaXxHqpOAM7xHCdilZmxlmY+Viyct9t4bqBsSolw36AsCc
+	 0WwSn9pwmgBwONETfUpavOy9qIHFOXuRQKO69MCjirhXqaVqzLUj7tPHkHmjapFG3p48x
+	 hExFqBB9E6p2bWYt8xpgwCMRelqqkms3bhB7f8Az8QAJ+8o0I0l4zF4W1O2RkoaAmGudu
+	 TwK7hUqW0gAwwbD1THLXjnaJVpCxvfbXUnUmQL+FakpAfCV74xSsuKnsCdIs/w4TZvA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794577906;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=nzwVW9fNWfGXZUemLc1dTW/hhZ3xpHtCMfznCyx8mPI=;
-	b=yVrWhtv2DK5dVC989MBWFvTULAjnDfrI3ECNqWcSJghRG7KIrXA6vObpM+J5+AwOKtRZ
-	 FaLpTx+DjAd/DuHvTqaYzWnc/RNDAtBy85gaZm26+6ZC/a2fVq0U4Eiws4S+/qO6uNZrX
-	 EEVdtHTgPsMTQuUFFveaRYvSs2YBwfACaCG71KktQKYp9lU0uy/fnM6zkGpGsrgdRZj/4
-	 Ic94eYbWKkoK9Rh4DY5QpC8j68Tpyj6kMrclHXTXbtFyejdyPG/c8OozTv59ZMvvtSDli
-	 oxKAfl6OSyif9ILNQ8IbD07c+SN3ADMide/mocaoEmEAlR9K8uTVBhbasAUsohQcABw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794577909;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=42M757uFT5De2Shdc7fUSbsmEvk3UICXAJs/eiBakI4=;
+	b=gVHL2pxq7RQ7NlpTDnIYtDjGczU5Izr7ZU7u4FDsNaNdF7DCZNBWDftUOVaC3HgD2kpq
+	 TC4Das1FoeNy0Nijhh+D7nPL+L40xxsfNm2bEDF/NQGcZWmVB4Q088flqaTi0iy4JBdIh
+	 w7liUJ+9UohSC9YAMqoes9nr3FREBpfRBupFrbzLhNfG3sKDhedG9gBTv0V/3snQGAPW9
+	 A273QmyZIWj0bmWvYPBOVdA9BtNLCv0PpPD1YF56q2jstrKWzNIFdBYrlY7klWVhzRQYG
+	 FXONlqPdSWggJoXFXiWH29euq6LPsDbqfMCKRqbF/hjTDPcP6XLM+h6jRzxnoRD0tsQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PquMVjty;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=ECIV4Jho;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iyYZiJ8j;
+	arc=none smtp.remote-ip=209.85.216.70
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C040606CA01
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:51:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C040606CA01
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782A3606CA34
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:51:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 782A3606CA34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PquMVjty;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=ECIV4Jho
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794577905;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nzwVW9fNWfGXZUemLc1dTW/hhZ3xpHtCMfznCyx8mPI=;
-	b=PquMVjtyZGfGYCr47ArvAw10Sx6XB1xjzp0Gz0SxHI8qWIFs80PQfh1xTcp4QHWjyKVu2g
-	ysiGasak4ZP6CZkD9riBMfdwJ6fkwRcbc/cmQa9nrDb/CSlWsAJ3FGmmrtlZkFxNO+vfCj
-	vjUaX5eIoNlUZBmyfUDOniWrUznGHQE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-596-kyqZo81JNwaoIp-GCDL_nw-1; Fri, 13 Nov 2026 08:51:44 -0500
-X-MC-Unique: kyqZo81JNwaoIp-GCDL_nw-1
-X-Mimecast-MFC-AGG-ID: kyqZo81JNwaoIp-GCDL_nw_1794577903
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4915ba023d4so391711f8f.0
-        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:51:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iyYZiJ8j
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3ad30487d55so1837439a91.2
+        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:51:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794577903; x=1795182703; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nzwVW9fNWfGXZUemLc1dTW/hhZ3xpHtCMfznCyx8mPI=;
-        b=ECIV4JhoLU17HxPiNt/9IPbToz1Q9M0ZMdWYEbZF9dgHjBSqYjxBItkMJAdLrPIE/w
-         9BaD9t99NeGPTSEuqAjus0I82h25o5EZpJtv8S6OvmXtCHTII9YNlxhqt80ejg7M4lPi
-         jZaF+6TL4ftJXcnFmrSq+VQarvnvLHKzO38cnffKeUram4D6URkhgK1jKnUwQTBTzSlU
-         VeS7ckUEYdgPXhCeZImkQ00tqQl3oG5kq2SXvcapUP2MG3X/gBOHnnM5VZuw7aMAYeeq
-         g3W+5Gi/OaaFPtqtZWWkPntCnpw7El38l8SDggJY8npS4m1ealjIDpCzWcOZ9aj0b6i+
-         mx1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794577903; x=1795182703;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1794577909; x=1795182709; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=nzwVW9fNWfGXZUemLc1dTW/hhZ3xpHtCMfznCyx8mPI=;
-        b=uUBxJRqkgjXQ0XXI80wLeBVIz4xnqWbmIdSPD73R95ZVL3ff83HjJvO1koGrHD0PKo
-         vLE/EFH7OjOpBOKTa5xdQvkgTDPFWZ98CkF3kA95QNtyTQ1qzzAm36ZDKMH93iBTrDFW
-         QSFzUlaegKSu5jXhqFmNTm0EMj4cfrY2AAMPuNMTyDvHWwdLlRwOSX79FFl3Em7EC5jU
-         i829lay0IoC4+N91dNFtyPoeHeW2FhURHIVLkmP3YzAVu0+7peCWzz7L7Zx2SUzx1ETW
-         5L2RPvOGmKE1DScEKLpKnwFnceMC50TETzn2AZWHL7L0h/bNf3E6ZSQIMun1dagJk2rI
-         6dGA==
-X-Forwarded-Encrypted: i=1; AL+hErGLH650ZvImlM9cG/KET48ixdfhPpDHoCJqzamdzu7VqNND7F6WtMhPjb4KWtdum+8erqE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+Y8EUbjuGkgvFj+XdLveNjz41NrT9GciguhbZkvysXvE7TPOua
-	Hrjm7etOcQyZKm1tvdFi8pIyMp1I8++MmeXnvYukJWIyOIbMVqnOIzqElY1WATY+60Jbvn0n1qP
-	ZeWgO9Woc6OIRElEjfDdWJffLTAzvLLuPRkBBmVL5WuR2hX9kZGxxFw==
-X-Gm-Gg: AYBFou3Yr7WNw3aeQLRS7l+TXEBmNl/u4sb/BuGaL6xbOxDwYd2ymF5ykg/FR6yQ4+L
-	776ya0IjlCEWerej+5k5tRsHmYTWpl+G9bLjfwfvxpS4V5zPlawTNqkLRGQDlkVNhbfnkVzUcLx
-	afM/GnGMH8Sem+yAqPAOZibKZopOwhAWJ10FNlBwlWdKC2JoV5LGrfvg4UOCxAYNkQAOdr9Ee4h
-	alEtn0IZJh9ggOaTsaO/gFgN+G5oYEzvgryoVYpQ6ECoao1VO6iOL4WTtAfpdvvvx3TYpf88p//
-	H8ujAwGJyJZy6YGFzA4O53MT3FL03dJCKLUji1jP0Ei22QyIDL8EA5Y+7ZEeV+l/jkV5oAtsQHs
-	0P5nkPXopf8CdHBu/fNmydZaXbOP1pVjB+fPbDTrmQA==
-X-Received: by 2002:a05:600c:c16d:b0:4ba:495c:2f5d with SMTP id 5b1f17b1804b1-4bb55a3e3f0mr51424275e9.9.1794577902443;
-        Fri, 13 Nov 2026 05:51:42 -0800 (PST)
-X-Received: by 2002:a05:600c:c16d:b0:4ba:495c:2f5d with SMTP id 5b1f17b1804b1-4bb55a3e3f0mr51423795e9.9.1794577901867;
-        Fri, 13 Nov 2026 05:51:41 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1511:2900:ff37:b35c:a97:952d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb5667a8aesm42328895e9.1.2026.11.13.05.51.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 05:51:40 -0800 (PST)
-Date: Fri, 13 Nov 2026 08:51:38 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: zhaoguohan@kylinos.cn
-Cc: bp@alien8.de, dave.hansen@linux.intel.com, eperezma@redhat.com,
-	hpa@zytor.com, jasowang@redhat.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, mingo@redhat.com,
-	netdev@vger.kernel.org, tglx@kernel.org,
-	virtualization@lists.linux.dev, x86@kernel.org
-Subject: Re: [PATCH RFC] vhost: set dirty log bits without pinning pages on
- x86
-Message-ID: <20261113083351-mutt-send-email-mst@kernel.org>
-References: <af7f05bf637337d35fdd10f3e0dbb5e39d7780e7.1794480795.git.mst@redhat.com>
- <20261113012937.40818-1-zhaoguohan@kylinos.cn>
+        bh=42M757uFT5De2Shdc7fUSbsmEvk3UICXAJs/eiBakI4=;
+        b=iyYZiJ8jcqBngMg2gOjYjAHJu9i7i3NjGZ32sbMgw2U6zE9Iu4JJc/3fs1BBFmKBym
+         TIuntcom/Sfh3JyDk3EnJT0Nbm27Ap95riyXzo/drUcLyTO8S5m98A8uJtl1bZzQGPSM
+         9Av30/QYjoYn0k6MhIvN/VbYAOYYffw7NVxeSaMbjQhG1ac6zo1rX0NwtG2zyhB+mHpw
+         sXOshidQuBG1WVI4U+H0YDdyXwwXcIN/dW7uwRtyt+rJHO7Xcl/os/JgVGXkqOhyCh2N
+         qgTY+deikiW7hYpqnUNjhCwdNHqGSIB1l2KAdLJ/nTbmQJoQi4XMPIB0p6Z6IoZAUTSJ
+         c4eQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794577909; x=1795182709;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=42M757uFT5De2Shdc7fUSbsmEvk3UICXAJs/eiBakI4=;
+        b=Azgotg9dthLtIMZPapaILHM1uTZ4wsLLLILu2QAV+fWxHwzDv2lhm4Rso4qV8H1mGc
+         CFnPHeypS2SbsfL0J9jvRPe6G6/iZBcAHqaP+zBa50/E2lXWg+l8f5bSnuU2t2a9w32o
+         xQW+Vd7kRzEvnFBlrxk0N/Rzxb2OMZyic4mnEn420N0T8m7D5uiKAiPB+IPQobZ6vlie
+         DsyEnNpoCVO91gNd4iP8lKp+JPykPuBpnaoInsU32B4a9vJ6WkzzWzGaQZDifwrI6E/z
+         Ah4aoV0Gpx0LvyRPw4vU7ZfwrUSXytHd4vGhVQlpiXfdM9hDJNrZ28URBUWEWVMMlaya
+         ke6g==
+X-Gm-Message-State: APuU4Z+b9XjFZz+vsC4N63bXPi6Wgx/e3rCTsFOBmArTb7BYsOx4/H3m
+	QQlIRVVd8kCbyJmUpapzj7W/XlzTJxJeRpBWEVcw+9AfE+w3ziZUCNmEd8XI9QMqWPkEGR0vT7t
+	QB+nNJw==
+X-Received: from pjbse4.prod.google.com ([2002:a17:90b:5184:b0:3ad:c8d8:70c3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:c2cf:b0:3ac:74b3:a8f3
+ with SMTP id 98e67ed59e1d1-3b1b0ccec81mr2546508a91.44.1794577908610; Fri, 13
+ Nov 2026 05:51:48 -0800 (PST)
+Date: Fri, 13 Nov 2026 05:47:18 -0800
+In-Reply-To: <20261030210321.3019901-1-jmattson@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -118,143 +76,38 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261113012937.40818-1-zhaoguohan@kylinos.cn>
+Mime-Version: 1.0
+References: <20261030210321.3019901-1-jmattson@google.com>
+X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
+Message-ID: <179441820842.80495.17224406535846671057.b4-ty@b4>
+Subject: Re: [PATCH] KVM: SVM: Stub out MSR_VM_CR to return VM_CR.LOCK and
+ ignore writes
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jim Mattson <jmattson@google.com>
+Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Nov 13, 2026 at 09:29:37AM +0800, zhaoguohan@kylinos.cn wrote:
-> On Thu, Nov 12, 2026 at 05:53:47AM -0500, Michael S. Tsirkin wrote:
-> > vhost had a TODO to replace page pinning with a version
-> > of set_bit that works on userspace memory, since forever.
-> >
-> > It is really best to avoid GUP on fast path entirely.
-> > Implement set_user_bit and use it in vhost, to do just that.
+On Fri, 30 Oct 2026 14:03:21 -0700, Jim Mattson wrote:
+> Commit 4a810181c8bc ("KVM: SVM: Implement emulation of vm_cr msr") added
+> svm_set_vm_cr() and svm->nested.vm_cr_msr solely because Hyper-V wrote
+> to MSR_VM_CR when running under nested SVM [1]. At the time, Avi Kivity
+> noted that the MSR needed to be exposed to userspace for save/restore
+> [2], but it was never added to KVM_GET_MSR_INDEX_LIST.
+> 
+> Moreover, KVM's emulation of MSR_VM_CR does not actually wire up any of
+> its five defined bits (DPD, R_INIT, DIS_A20M, LOCK, SVMDIS) to their
+> architectural behaviors (not even checking VM_CR.SVMDIS on writes to
+> MSR_EFER), checks the wrong bit (SVMDIS instead of LOCK) when locking
+> bits 4:3, and never resets vm_cr_msr on vCPU reset/INIT.
+> 
 > [...]
-> > lightly tested. pls test and resubmit with your tool.
-> 
-> Thanks, this is much simpler than my version. Two comments on
-> set_bit_user() before I resubmit:
-> 
-> > +	int __err = 0;							\
-> > +	__uaccess_begin();						\
-> > +	asm volatile("\n"						\
-> > +		     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"		\
-> > +		     "2:\n"						\
-> > +		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
-> > +					   %[errout])			\
-> > +		     : [errout] "=r" (__err),				\
-> > +		       [ptr] "+m" (*(u8 __user *)(addr))		\
-> 
-> errout is only written on the fixup path, so it needs "+r", as in
-> __try_cmpxchg_user_asm(). With "=r" gcc drops the initialisation; here
-> (gcc 13.3, x86_64_defconfig) it even shares a register with mask:
-> 
->      1a3:	lock or %dl,(%rax)
->      1a9:	test   %edx,%edx
->      1ab:	jne    1bd <log_write+0x5d>
->      ...
->      1bd:	mov    $0xfffffff2,%eax
-> 
-> so every call returns -EFAULT, and log_write() stops after the first
-> page.
-> 
-> > +	__uaccess_begin();						\
-> 
-> No access_ok() here. vhost checks the log range when it is set up and
-> I couldn't find a way around that, but GUP used to reject kernel
-> addresses by itself. user_access_begin() would keep the check (and the
-> nospec barrier) local. Something like this, build-tested on x86_64 and
-> i386 only:
-> 
-> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-> --- a/arch/x86/include/asm/uaccess.h
-> +++ b/arch/x86/include/asm/uaccess.h
-> @@ -597,19 +597,23 @@ _label:									\
->  /* set_bit() on a byte of user memory; returns -EFAULT on fault. */
->  #define set_bit_user(nr, addr)					\
->  ({									\
-> -	int __err = 0;							\
-> -	__uaccess_begin();						\
-> -	asm volatile("\n"						\
-> -		     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"		\
-> -		     "2:\n"						\
-> -		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
-> -					   %[errout])			\
-> -		     : [errout] "=r" (__err),				\
-> -		       [ptr] "+m" (*(u8 __user *)(addr))		\
-> -		     : [mask] "q" ((unsigned char)BIT(nr))		\
-> -		     : "memory", "cc");				\
-> -	__uaccess_end();						\
-> -	__err ? -EFAULT : 0;						\
-> +	u8 __user *__p = (addr);					\
-> +	int __err = -EFAULT;						\
-> +	if (user_access_begin(__p, sizeof(*__p))) {			\
-> +		__err = 0;						\
-> +		asm volatile("\n"					\
-> +			     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"	\
-> +			     "2:\n"					\
-> +			     _ASM_EXTABLE_TYPE_REG(1b, 2b,		\
-> +						   EX_TYPE_EFAULT_REG,	\
-> +						   %[errout])		\
-> +			     : [errout] "+r" (__err),			\
-> +			       [ptr] "+m" (*__p)			\
-> +			     : [mask] "q" ((unsigned char)BIT(nr))	\
-> +			     : "memory", "cc");			\
-> +		user_access_end();					\
-> +	}								\
-> +	__err;								\
->  })
->  
->  /*
-> 
-> If this looks right, I'll fold it in, run my test in a VM and resubmit
-> with the test as a second patch.
-> 
-> Thanks,
-> Khan
 
+Applied to kvm-x86 svm, thanks!
 
-So, you were right, it's better to check access. But I don't like
-paying nospec. Let's use the modern scoped accessors?
-Like this maybe? Very lightly tested, no time today, sorry.
-If you want to use it:
+[1/1] KVM: SVM: Stub out MSR_VM_CR to return VM_CR.LOCK and ignore writes
+      https://github.com/kvm-x86/linux/commit/27ddbc70c82a
 
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-
-
-
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index 3a0dd3c2b233e..0bffa43e02179 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -594,6 +594,28 @@ _label:									\
- 	__ret;								\
- 							})
- 
-+/* set_bit() on a byte of user memory; returns -EFAULT on fault. */
-+#define set_bit_user(nr, addr)					\
-+({									\
-+	int __err = -EFAULT;						\
-+	u8 __user *__p = (addr);					\
-+	scoped_user_rw_access(__p, efault) {				\
-+		__err = 0;						\
-+		asm volatile("\n"					\
-+			     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"	\
-+			     "2:\n"					\
-+			     _ASM_EXTABLE_TYPE_REG(1b, 2b,			\
-+						   EX_TYPE_EFAULT_REG,	\
-+						   %[errout])		\
-+			     : [errout] "+r" (__err),			\
-+			       [ptr] "+m" (*__p)			\
-+			     : [mask] "q" ((unsigned char)BIT(nr))	\
-+			     : "memory", "cc");				\
-+	}								\
-+efault:									\
-+	__err;								\
-+})
-+
- /*
-  * We want the unsafe accessors to always be inlined and use
-  * the error labels - thus the macro games.
-
+--
+https://github.com/kvm-x86/linux/tree/next
