@@ -1,54 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794594893;
-	b=MYsS53zV56/YLXDh3sEFyxli9wiiG9hCZ9QKkSShjjd5BRhzC4F80NNCoC2+agdObXU7
-	 1/EL49i2sannbHYrLCogWGvGkuMVJ1O7zWNVao+/7K/jk01p4U+3m2oonwMDkiSrTX/hS
-	 Euc+hhgHuQQiMJJieXUr8NfxSxV2tClEfL0Hm5uY31q4zfttWlVsxtCGHhXGZ+ntnQgwF
-	 55b7L3OeA4pEjlMUIEBXE7JMnFXXuEMCcXBYJH/E72YhWjg2rs5VGDKuaPdVwn6OmVzjj
-	 F86wn0yLTxuw8ylgfjdNTpPg0e/jhhGYQhfjWvLbnn6EBFI0aybGGGnLSiEcHfBEGgA==
+	t=1794594895;
+	b=mqYWNwMfX5IBavrKCIgSieBnuvwUDGbzEkkxaIAezWmyM/AGtgV/mzpGmKw9b42+WzPs
+	 9rtm8PY/GUa95GqI63FqeP+dzq2prUkflRDBtcrDT+i54exUQK/ThF5WwhYRzwB5PCBdp
+	 kEGKTl/uNwXXTFU6erS/lsL8TfULZqj24I1F6gE3zoIexIr7oNg9B0CxI9oWeLs5HNo+j
+	 a7mKPw3/RDxNY6HHSGTStqAxv5x7sZU4ma6YNvw83evdRTnJ31EkqmgI6mKGIZddf9xWE
+	 OL3CgteCJLNDlozzK55kPiVGHejYGAe+L82DrYOZGcDEoLxWPp6ctuzDPs0Mqbxg5oA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794594893;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794594895;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=EY1jAy9xqxdqlTDEIZOP/6uxD2DtesdtQKnPvIrypYY=;
-	b=h1PqargWLn6x/AgEVUAHFvi0TIOBde9MCSE7jE5PiVb6Gt3PDKIxvI/ygdVL8yzQiLE4
-	 KsQJEq4OPcO/wTR753hVcOymGmdkDfIvjRC0B4r92CB6N1VmRieG3nttWT2lzMweROUva
-	 960rDMsqdRG6INhhyWi1UmEH4BVzJmQbUGRi+6mHbig8njGf3Zeh0vA2f7bJtvP4PKv8Z
-	 lRyj59OqFicwqbngz/8hzV2EwZ8KhrptqgHJWZ4LvxqQ/+00GvOpPgeB7J1Zd/4n4KuTw
-	 Lx/tEcCSoatu89eysjcSSG13FJbO+tp0KVmN1PuNxdpxXd/hxVryR7PIuniTYV7b2Yg==
+	bh=e0QjDoSDOqtjXi/aRoGP666o2KHiNjjVlepe5JNaymU=;
+	b=A/CcGzLclqIB4DOZYEUzVj5tcIpZPLvSvqXd/hT5U/PMKpqaGmjhHfF4vZvjCQoPvrmP
+	 oWbpxcVhQY8pPgxp6X63jM73Ucp3dDF6tQ9sCpGmaSRz1Hq8DwPv4P4O/1mw4pO4aGLtG
+	 pYb/cvGNfVGe6U+6h7bggieEUsYs2uXqyONBcbv/Cyl8CJwWRhPJff0cXBSLllyAi6H8R
+	 QiBA9ALaY0cGJrk99qWREGEGEUKAPf8yemM2LnEKM1LmlT+JssmJIu46PKam+6AzPFqup
+	 y/oawkICfrrXjIaMOtp5hkiOnbEEt7BZr63XbLgDdNozo7NpBkGn22xUrx4ra3JHOUQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
-	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=gePMfFXl;
-	arc=none smtp.remote-ip=90.155.50.34
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	spf=none smtp.mailfrom=desiato.srs.infradead.org;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=R4c9Wc5k;
+	arc=none smtp.remote-ip=90.155.92.199
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D55606A885;
-	Fri, 13 Nov 2026 18:34:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24D55606A885
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEEEC60A383F;
+	Fri, 13 Nov 2026 18:34:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AEEEC60A383F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=gePMfFXl
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=R4c9Wc5k
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=EY1jAy9xqxdqlTDEIZOP/6uxD2DtesdtQKnPvIrypYY=; b=gePMfFXlM5uUyVVex2S8XUiIZT
-	zlvQtIL8aI7Ed+EwmxwqEP9X3bsGQMB6O85z3W4+giuynHYckAF0cLOA1+GrgtVt7JrkVUWUGHwN0
-	OEJ9NK6LICTLB3dZQ7/NqNqjFXc3BtVFeN3tMwSsgcoK5CDGdw+IvucDRzNJ6Drh83BYeVhg74Pct
-	OyiMfzf0K9hazbu5ZzPvVtD/wUWY6oPi9Pug5lLQOPviiNDQaxmJpCYPeYs/YdTDyhHIFEowccKut
-	5tFjmNMpi6bADMWVpqw9/emo1autHpujpMNN0FdFGQxKvQqaHhwNEVbiFWmJnKcYbZ6peGyQf7fYJ
-	3ae9lC+A==;
+	bh=e0QjDoSDOqtjXi/aRoGP666o2KHiNjjVlepe5JNaymU=; b=R4c9Wc5kaf4dtb12GOu7/i2wR3
+	Vzf1j82Ld0ZPYVKP65TcpO/83QyHkCaX8aN1FLXsiO/XtyUaSfCqH+RIVUJfgGFC06E0gtIYrn1Hv
+	D3CQKbvuxGIm5pw2gl81Oo34BnsYRVcUiGKCheBmpkSfqXZkUC7SazHHB5U8paEmTqjPtnaqJEo6Y
+	LXYSBB3Tjjbtq5vp4FCwmTwNf6mfJlPaalDmBKqphosYcRi/cCUh/Njz031IUF77EMuPxZzP7dhlF
+	W0fhycYJcJYVuf3g+VQZuPr4yMll5uIqZD+Zk00sD4CRzsCDjmNz2V10o6yVIQITTUA5Ige2omnpt
+	VuUp8kbg==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRw6s-00000004gQi-1U9A;
-	Fri, 13 Nov 2026 18:34:50 +0000
+	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xRw6v-0000000Bf05-0Ueo;
+	Fri, 13 Nov 2026 18:34:53 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xRw6s-00000000Ltn-0TS6;
+	id 1xRw6s-00000000Lu9-1P8S;
 	Fri, 13 Nov 2026 18:34:50 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -71,9 +71,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Mushahid Hussain <hmushi@amazon.co.uk>,
 	Sriram Nambakam <snambakam@linux.microsoft.com>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [RFC PATCH v2 19/31] KVM: x86: Fold an NMI for a higher plane back to plane 0
-Date: Fri, 13 Nov 2026 18:34:35 +0000
-Message-ID: <20261113183448.84094-20-dwmw2@infradead.org>
+Subject: [RFC PATCH v2 24/31] KVM: selftests: Check that a restored higher-plane interrupt forces an exit
+Date: Fri, 13 Nov 2026 18:34:40 +0000
+Message-ID: <20261113183448.84094-25-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261113183448.84094-1-dwmw2@infradead.org>
 References: <20261113183448.84094-1-dwmw2@infradead.org>
@@ -88,168 +88,168 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-An NMI aimed at a higher plane is injected into that plane, so the
-secure kernel takes a real NMI inside VTL1 and bugchecks (0x18B).
+A migration destination restores a higher plane's IRR with
+KVM_SET_LAPIC, which does not go through __apic_accept_irq() and so
+sets no forced-entry marker, and its plane vCPUs have never entered the
+guest on that host. KVM must re-derive the marker from the restored
+IRR, or an interrupt posted to a suspended VTL1 just before the save is
+never delivered.
 
-For a non-zero plane, inject the NMI into the plane-0 twin instead, to
-be delivered once the VTL returns. Set the higher plane's
-hv_apic_event_pending marker so the NMI still forces one entry into
-it, and kick through __kvm_kick_lower_twins(), the ungated half of
-kvm_kick_lower_twins(), since plane 0 takes the NMI whether or not
-anything consumes the higher plane's event.
-kvm_higher_plane_with_event() counts a higher plane's pending NMI state
-(KVM_REQ_NMI, nmi_queued, nmi_pending) as an event as well: the fold
-never leaves NMI state there, but KVM_SET_VCPU_EVENTS on the plane's
-own fd can.
-
-When the targeted plane is the selected one and halted, the fold must
-still break its HLT, as an NMI would on hardware. Its own event checks
-see no NMI and plane 0's events are only examined on guest entry, so
-kvm_arch_vcpu_runnable() counts the posting marker the fold leaves on
-a non-zero plane, and kvm_check_plane0_events() counts plane 0's
-nmi_queued, where the folded NMI waits until it is processed.
-
-Plane 0 is looked up without the locks that serialise twin creation,
-so its slot is read once, with READ_ONCE(), to pair with its
-publication.
+Model the destination: give a plane-1 twin that has never run an IRR
+bit through KVM_SET_LAPIC, leave it held, and require plane 0 to
+exit with KVM_EXIT_HYPERV_VTL_INTERRUPT for plane 1. Run it with the
+LAPIC restored before and after KVM_SET_PLANE_RUN_STATE.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- arch/x86/kvm/lapic.c | 26 ++++++++++++++++++++++++--
- arch/x86/kvm/x86.c   | 35 ++++++++++++++++++++++++++++++-----
- arch/x86/kvm/x86.h   |  1 +
- 3 files changed, 55 insertions(+), 7 deletions(-)
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../kvm/x86/planes_vtl_restore_test.c         | 121 ++++++++++++++++++
+ 2 files changed, 122 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/x86/planes_vtl_restore_test.c
 
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 81bf72e83e8c..d33226c44488 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -1476,8 +1476,30 @@ static int __apic_accept_irq(struct kvm_lapic *apic, int delivery_mode,
- 
- 	case APIC_DM_NMI:
- 		result = 1;
--		kvm_inject_nmi(vcpu);
--		kvm_vcpu_kick(vcpu);
-+		/*
-+		 * An NMI aimed at a higher plane forces entry into that
-+		 * plane (reason INTERRUPT, below) but the NMI itself is
-+		 * folded back to plane 0 and delivered there after the VTL
-+		 * returns.  Matches the Nitro VSM implementation, which never
-+		 * delivers an NMI inside a higher VTL.
-+		 */
-+		if (vcpu->plane_level) {
-+			struct kvm_vcpu *twin;
-+
-+			WRITE_ONCE(vcpu->arch.hv_apic_event_pending, true);
-+			twin = READ_ONCE(vcpu->common->vcpus[0]);
-+			if (twin)
-+				kvm_inject_nmi(twin);
-+			/*
-+			 * Plane 0 takes the NMI whether or not VTL semantics
-+			 * are on, so don't gate this kick the way
-+			 * kvm_kick_lower_twins() does.
-+			 */
-+			__kvm_kick_lower_twins(vcpu);
-+		} else {
-+			kvm_inject_nmi(vcpu);
-+			kvm_vcpu_kick(vcpu);
-+		}
- 		break;
- 
- 	case APIC_DM_INIT:
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 165eb105e112..c2c9b5a181b9 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8301,16 +8301,22 @@ bool kvm_higher_plane_event_consumable(struct kvm_vcpu *higher)
-  * including when it is already past its event checks on the way into the
-  * guest.  KVM_REQ_UNBLOCK lives in the request word the twins share, so
-  * it aborts that twin's vmentry, and the kick reaches whichever twin is
-- * running (or waiting).  Nothing is kicked for an event that cannot be
-- * consumed.
-+ * running (or waiting).  kvm_kick_lower_twins() kicks nothing for an
-+ * event that cannot be consumed; __kvm_kick_lower_twins() is the ungated
-+ * kick, for an event that a lower plane takes itself.
-  */
-+void __kvm_kick_lower_twins(struct kvm_vcpu *vcpu)
-+{
-+	kvm_make_request(KVM_REQ_UNBLOCK, vcpu);
-+	kvm_vcpu_kick(vcpu);
-+}
-+
- void kvm_kick_lower_twins(struct kvm_vcpu *vcpu)
- {
- 	if (!vcpu->plane_level || !kvm_higher_plane_event_consumable(vcpu))
- 		return;
- 
--	kvm_make_request(KVM_REQ_UNBLOCK, vcpu);
--	kvm_vcpu_kick(vcpu);
-+	__kvm_kick_lower_twins(vcpu);
- }
- 
- /*
-@@ -8353,6 +8359,9 @@ static struct kvm_vcpu *kvm_higher_plane_with_event(struct kvm_vcpu *vcpu)
- 		if (READ_ONCE(higher->arch.hv_apic_event_pending) ||
- 		    kvm_cpu_has_extint(higher) ||
- 		    kvm_test_request(KVM_REQ_HV_STIMER, higher) ||
-+		    kvm_test_request(KVM_REQ_NMI, higher) ||
-+		    atomic_read(&higher->arch.nmi_queued) ||
-+		    higher->arch.nmi_pending ||
- 		    kvm_cpu_has_pending_timer(higher))
- 			return higher;
- 	}
-@@ -8403,6 +8412,7 @@ static inline bool kvm_check_plane0_events(struct kvm_vcpu *vcpu)
- 
- 	return kvm_cpu_has_injectable_intr(vcpu_plane0) ||
- 		vcpu_plane0->arch.nmi_pending ||
-+		atomic_read(&vcpu_plane0->arch.nmi_queued) ||
- 		vcpu_plane0->arch.smi_pending;
- }
- 
-@@ -9254,11 +9264,26 @@ bool kvm_vcpu_has_events(struct kvm_vcpu *vcpu)
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_has_events);
- 
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index c6ad866a0b0d..446a526750e0 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -116,6 +116,7 @@ TEST_GEN_PROGS_x86 += x86/plane_x86_test
+ TEST_GEN_PROGS_x86 += x86/planes_test
+ TEST_GEN_PROGS_x86 += x86/planes_vtl_entry_test
+ TEST_GEN_PROGS_x86 += x86/planes_vtl_timer_mask_test
++TEST_GEN_PROGS_x86 += x86/planes_vtl_restore_test
+ TEST_GEN_PROGS_x86 += x86/pmu_counters_test
+ TEST_GEN_PROGS_x86 += x86/pmu_event_filter_test
+ TEST_GEN_PROGS_x86 += x86/private_mem_conversions_test
+diff --git a/tools/testing/selftests/kvm/x86/planes_vtl_restore_test.c b/tools/testing/selftests/kvm/x86/planes_vtl_restore_test.c
+new file mode 100644
+index 000000000000..186a9338627d
+--- /dev/null
++++ b/tools/testing/selftests/kvm/x86/planes_vtl_restore_test.c
+@@ -0,0 +1,121 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * An NMI aimed at a higher plane is folded to plane 0 and leaves only the
-+ * plane's own posting marker behind (see __apic_accept_irq()).  When that
-+ * plane is the selected one and sits in HLT, nothing else wakes it: its
-+ * own event checks see no NMI, and plane 0's events are only examined
-+ * when the plane enters the guest.  The marker is consumed on that entry,
-+ * so the NMI breaks the HLT once, as it would on hardware.
++ * Test that a restored higher plane with a latched interrupt still forces
++ * a VTL interrupt exit.
++ *
++ * Forced entry is triggered by the posting of an interrupt to a higher
++ * plane, through a marker __apic_accept_irq() sets.  A migration
++ * destination restores the IRR with KVM_SET_LAPIC instead, which posts
++ * nothing, and its plane vCPUs have never entered the guest on that host.
++ * KVM must re-derive the marker from the restored IRR, whichever of
++ * KVM_SET_LAPIC and KVM_SET_PLANE_RUN_STATE the VMM issues last, or a
++ * one-shot cross-VTL interrupt sent just before the save is lost.
++ *
++ * Each run models a destination: a plane-1 twin that has never run gets
++ * an IRR bit through KVM_SET_LAPIC and is left held, and running plane
++ * 0 must report a KVM_EXIT_HYPERV_VTL_INTERRUPT exit for plane 1.
 + */
-+static bool kvm_plane_nmi_folded(struct kvm_vcpu *vcpu)
++#include <errno.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <unistd.h>
++
++#include "test_util.h"
++#include "kvm_util.h"
++#include "processor.h"
++#include "apic.h"
++
++#ifndef KVM_EXIT_HYPERV_VTL_INTERRUPT
++#define KVM_EXIT_HYPERV_VTL_INTERRUPT  4
++#endif
++
++#define TEST_VECTOR	0xe0
++
++static void plane0_guest_code(void)
 +{
-+	return vcpu->plane_level &&
-+	       READ_ONCE(vcpu->arch.hv_apic_event_pending);
++	GUEST_SYNC(0);
++	GUEST_DONE();
 +}
 +
- int kvm_arch_vcpu_runnable(struct kvm_vcpu *vcpu)
- {
- 	return kvm_vcpu_running(vcpu) || vcpu->arch.pv.pv_unhalted ||
- 	       kvm_vcpu_has_events(vcpu) ||
--	       kvm_higher_plane_with_event(vcpu);
-+	       kvm_higher_plane_with_event(vcpu) ||
-+	       kvm_plane_nmi_folded(vcpu);
- }
- 
- /* Called within kvm->srcu read side.  */
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index 649d4b8ac2d4..00dc866c08c3 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -534,6 +534,7 @@ void __user *__x86_set_memory_region(struct kvm *kvm, int id, gpa_t gpa,
- int memslot_rmap_alloc(struct kvm_memory_slot *slot, unsigned long npages);
- 
- bool kvm_higher_plane_event_consumable(struct kvm_vcpu *higher);
-+void __kvm_kick_lower_twins(struct kvm_vcpu *vcpu);
- void kvm_kick_lower_twins(struct kvm_vcpu *vcpu);
- bool kvm_vcpu_is_reset_bsp(struct kvm_vcpu *vcpu);
- bool kvm_vcpu_is_bsp(struct kvm_vcpu *vcpu);
++static void set_plane_run_state(int vcpu_fd, u64 state)
++{
++	int r = ioctl(vcpu_fd, KVM_SET_PLANE_RUN_STATE, &state);
++
++	TEST_ASSERT(!r, "KVM_SET_PLANE_RUN_STATE(0x%lx) failed: errno %d",
++		    state, errno);
++}
++
++/* Enable the twin's APIC in software and latch TEST_VECTOR in its IRR. */
++static void restore_twin_lapic(int twin_fd)
++{
++	struct kvm_lapic_state lapic;
++	u32 *reg;
++	int r;
++
++	r = ioctl(twin_fd, KVM_GET_LAPIC, &lapic);
++	TEST_ASSERT(!r, "KVM_GET_LAPIC on twin failed: errno %d", errno);
++
++	reg = (u32 *)&lapic.regs[APIC_SPIV];
++	*reg |= APIC_SPIV_APIC_ENABLED;
++	reg = (u32 *)&lapic.regs[APIC_IRR + (TEST_VECTOR / 32) * 0x10];
++	*reg |= 1u << (TEST_VECTOR % 32);
++
++	r = ioctl(twin_fd, KVM_SET_LAPIC, &lapic);
++	TEST_ASSERT(!r, "KVM_SET_LAPIC on twin failed: errno %d", errno);
++}
++
++static void run_test(bool lapic_first)
++{
++	struct kvm_vcpu *vcpu0;
++	struct kvm_vm *vm;
++	int plane_fd, twin_fd, r;
++
++	kvm_force_split_irqchip = true;
++	vm = __vm_create(VM_SHAPE_DEFAULT, 1, 0);
++	kvm_force_split_irqchip = false;
++
++	TEST_REQUIRE(__vm_enable_cap(vm, KVM_CAP_PLANES, 2) == 0);
++	/* VTL interrupt exits belong to the userspace-switch VTL contract. */
++	vm_enable_cap(vm, KVM_CAP_HYPERV_FORWARD_HCALL,
++		      KVM_HYPERV_HCALL_VTL_CALLS);
++
++	vcpu0 = vm_vcpu_add(vm, 0, plane0_guest_code);
++
++	plane_fd = __vm_ioctl(vm, KVM_CREATE_PLANE, (void *)1UL);
++	TEST_ASSERT(plane_fd >= 0, "KVM_CREATE_PLANE failed: errno %d", errno);
++	twin_fd = __kvm_ioctl(plane_fd, KVM_CREATE_VCPU, NULL);
++	TEST_ASSERT(twin_fd >= 0, "KVM_CREATE_VCPU on plane 1 failed: errno %d",
++		    errno);
++
++	if (lapic_first)
++		restore_twin_lapic(twin_fd);
++	set_plane_run_state(twin_fd, KVM_PLANE_RUN_STATE_USER_HOLD);
++	set_plane_run_state(vcpu0->fd, 0);
++	if (!lapic_first)
++		restore_twin_lapic(twin_fd);
++
++	r = ioctl(vcpu0->fd, KVM_RUN, NULL);
++	TEST_ASSERT(!r, "KVM_RUN (plane 0) failed: errno %d", errno);
++	TEST_ASSERT(vcpu0->run->exit_reason == KVM_EXIT_HYPERV,
++		    "Expected KVM_EXIT_HYPERV, got %u (%s), LAPIC restored %s",
++		    vcpu0->run->exit_reason,
++		    exit_reason_str(vcpu0->run->exit_reason),
++		    lapic_first ? "first" : "last");
++	TEST_ASSERT_EQ(vcpu0->run->hyperv.type, KVM_EXIT_HYPERV_VTL_INTERRUPT);
++	TEST_ASSERT_EQ(vcpu0->run->hyperv.plane, 1);
++
++	close(twin_fd);
++	close(plane_fd);
++	kvm_vm_free(vm);
++}
++
++int main(int argc, char *argv[])
++{
++	TEST_REQUIRE(kvm_has_cap(KVM_CAP_PLANES));
++	TEST_REQUIRE(kvm_check_cap(KVM_CAP_HYPERV_FORWARD_HCALL) &
++		     KVM_HYPERV_HCALL_VTL_CALLS);
++
++	run_test(true);
++	run_test(false);
++	return 0;
++}
 -- 
 2.50.1
 
