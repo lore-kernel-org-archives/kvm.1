@@ -1,57 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794590537;
-	b=a403SAgGoHPg3YQvFQ7ki/WBoPUGhhxiRqe6Qnlfc0esvPc7bo95xr0qek334lylKPnb
-	 pRuLiTgRKjXTPOtkW+55pGumrP5D0utyhujqoAFM0T4kfnXPUws4tDHEh3pkEBWiC7Ajv
-	 vKeZh3Mc71W2lUgErYh0ylrclpdFzmzE+mp0g+eRY2nlvQlKEIhASBL91i3paozz85WZk
-	 qDxvHeHygM4bBtszrtiPaCPPQvVsXRB86P/6NSe3N64Fd6cZklTHVpn4NxADOxsiNJwPN
-	 wJBNQ5PTsxUfTTlTkgkZxLkywzUIDlGmRMgBkDwKzfXMejfjWodFup3njVb47UGHKcg==
+	t=1794590603;
+	b=yRGfNpZIKb6tOzLyQ8BU8F7uBwoFgvf2XuABGVAgf8E0vmm1vYMOo6u+LB777Qi/1qc9
+	 8uP5FmgkA4K+Yl3pJCLhCaJc8NX8ILCcnmIRB3ANw7hBm9WlVGwMxHtrJvjJtI2lMESMi
+	 rCO+Co5kItMjmK/zCfVPrgeE2NzxuQyQi1JStVWZQEkQ/SXLY2Hj49/Pm1Gox1/pPRkjR
+	 SLUTwzB9Nrj7r2QwYy0t0MXSjZq4K2/v4e6BVB8P8488st0BykMxyhUUOztZ9BK0bCp1o
+	 YiGIuQ4sYNXZbm1BpZXGaRaKW4lySeDlX4mBRXk21CDlB+NOH5Ob/6FiET+yy8WRyjg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794590537;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=v3pStVz/719WTAUk1+xHAiMJ4ZTeYF4JuCVC++s0TPk=;
-	b=fKNOn/KP2AYSJiSagCVID7OKX+CMKi74LMdFpgTgYkZOpJDbG7j5E2vIonIJbWIMdNmt
-	 f/VFGgM+yn3mjix/YGZvH8gVvC3JKC6j7gIXdSuxcxZQ+UiraWVujFMa6SZQWrVbtFj+c
-	 dZ2ugKB0EXqjX9oexn9SAph7qAz2gEuMsFqcwKZkiABpxHk6U0NKSNrqMJsiVMlhe70gW
-	 D4EWtrrQvAZdWfyZm/Bbi7mzro/icflzR6TOBLJ/xaN7lB/UP4qBnjstO+dMqS3vmKnJR
-	 FrH+Ekfd+qHz1GqtEWb/ow3BFuuJzaeft+1Vv48n4ogBF5OLT8o3mTO6yahPFPBvMSw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794590603;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Reply-To:Date:Mime-Version:X-Mailer:
+	 Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=6p/cpLmwtBMtzqB9Ka32YEX11P0LpkgIf0A/bPbuKMU=;
+	b=u1qlOhrUGIY118miMD8OLiyWTIndT1Fq9CyYqbXQqQ9jWPJ7i3gCxTC+jYdo7uJNJFWN
+	 yOt/ivv+t1FEfXJ6iEwT0CAgJRADHEmE8BXTNhQdtGJmN8LnoJnvIzG8iD9tV7UOhNYr3
+	 BXe6ixpr3UTDcIgB5NG/PG53uWlhymG4tvhHXE+7akVCSa+yLlczvjeoLo3a3ie5Zh1ic
+	 yX7BAlmAZNcsqO8YMzobPhwrMmfYbSjW1TY5o4Jt6wnHPXLVd5kVr++ec/Cgt2SLbo4wx
+	 JLwBgbsV8z42AsUJdReeHUkVAZsQ1gGkuHufpof3LjEkB4poRgEothVTwGWNyCl4VDw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O3LUpN21;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=e48lHNPR;
+	arc=none smtp.remote-ip=209.85.216.72
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3665F606A88B;
-	Fri, 13 Nov 2026 17:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD9F606C0B8
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 17:23:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EFD9F606C0B8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O3LUpN21
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C65721F000CA;
-	Fri, 13 Nov 2026 17:22:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794590537;
-	bh=v3pStVz/719WTAUk1+xHAiMJ4ZTeYF4JuCVC++s0TPk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=O3LUpN21UaTpwHdm6+mMNb99pzLamRkAv92B3bV+M6DYrZWvwH50dPTN2lF9YJ5n5
-	 b9FV6tDUedFcNziI9wYuNgWdfvSlNDfpsXepY6/7XH1ibCPOYadIDm7uQIuUSznyZf
-	 coGVdJx8D4zKgC3Cu/PT5IggcyF13+5cPYNAEhcrKeV68ZG3z/c7ZVtRPpB4u9t0L+
-	 q5LUvVp98wmkLRvMtUYQu8RXzvVPShTa/dFF5P+SFw7KJARVpoGxQOOpEqolU9TkoT
-	 +SDjJndLgCs7PV4jbpZN6lweeC/9rYLilkcwCJ/rvCAH9u7u0cDIHIAf/PxOexYna0
-	 uG7kHj9CQOstg==
-Message-ID: <sashiko-outbox-213294@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 4/4] KVM: selftests: Add Hyper-V hypercall forwarding
- test
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "David Woodhouse" <dwmw2@infradead.org>, kvm@vger.kernel.org
-Cc: linux-hyperv@vger.kernel.org
-In-Reply-To: <20261113170535.79246-5-dwmw2@infradead.org>
-References: <20261113170535.79246-1-dwmw2@infradead.org>
- <20261113170535.79246-5-dwmw2@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 13 Nov 2026 17:22:16 +0000
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=e48lHNPR
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3b18165dc53so1779568a91.3
+        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 09:23:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794590602; x=1795195402; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6p/cpLmwtBMtzqB9Ka32YEX11P0LpkgIf0A/bPbuKMU=;
+        b=e48lHNPROZUMj2wUwF/qjHZ4xPfCPLyxzMu+/mP8MLIzp6v3m0qwW3VGAGjcaJYUtk
+         7yaxdPw9t92ib+wUTpuK4FAU+hCt2nEXgxdh9MyyP9Bvymo3dYfgxjlsK1t1eMVHu2eN
+         7xuannnYF0BhDsm8m514feGa4gQFAIgRayac5EfdpaoKyquabDCE1aptrU9qEfFaTXKD
+         0kiVy6VgZunHxwPVry9+T0MUaswehQmNPiUphCVQQV606XIvIL7HzvNgRoMUEMRR8H5C
+         F3yv0L6+9D9//oaGTqRTPuMlMKpMiWp/87S4y4/0zDuLkZoheMWVShiLyXEI2+ow3JRf
+         zPug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794590602; x=1795195402;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=6p/cpLmwtBMtzqB9Ka32YEX11P0LpkgIf0A/bPbuKMU=;
+        b=CqCuEFvP0LIphXxOVHxEhH5ijPtAG9rDP3ERfoK8G7kZ9g+RgK540QeB/4jru9RTGC
+         AzbpPHmEM2/j1rZHT1bHaN9QDKRIdzkyjW4lszZKweMsUXqazFE2MbtnM4bSoBZVEm2R
+         WqFA4bPilPw9eySZwP4E2sLF2KgkcVkJQOwY+vp4ZI2josV/V6SyS2BwcG96S8jwnpvP
+         U7p/S8JuZq08O1axkgmv0WopLnYOWzW4U/LGAEYAdHHBCTLXO4p7kkn5lIGG++wBH5bo
+         Ssc1XRbQFifN3SZir0f5gzMpIPNuFaoNEFi9nw/+C1vN8nT0uZ9V4MDqANXxxv+Pwo14
+         5tBA==
+X-Gm-Message-State: APuU4Z/RE0kQthhXa8zQBPzeEx3Vn8I1SdNfHMqG+zvX2hwKAT4c2Wge
+	rL1Cdn+MyzrgyFCAzoLPq1kQaaNlu0yg6ZFB2mZl2aBdZuws1g4w/89Yz11DrCYSba/xaYBczEw
+	0w8nuOw==
+X-Received: from pgba10-n1.prod.google.com ([2002:a05:6a02:644a:10b0:cdb:4f65:709a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3bcc:b0:3b0:a1af:e4fa
+ with SMTP id 98e67ed59e1d1-3b1b09fca30mr3155571a91.24.1794590602170; Fri, 13
+ Nov 2026 09:23:22 -0800 (PST)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri, 13 Nov 2026 09:23:18 -0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,89 +75,62 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
+Message-ID: <20261113172318.482971-1-seanjc@google.com>
+Subject: [PATCH] KVM: x86: Leave nested if vendor specific logic fails on RSM
+ to L2
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Stefan Teodorescu <fane@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] KVM: selftests: missing volatile and XMM constraints in
-  guest_code()
---
+Force the vCPU into L1 before synthesizing SHUTDOWN if RSM to L2 fails due
+to vendor specific checks, e.g. because SMRAM was corrupted with illegal
+state, and the bad state was detected *after* starting the transition back
+to L2.  Architecturally, any fatal error when loading CPU state during RSM
+is supposed to send the CPU into SHUTDOWN *before* switching to guest mode,
+and leaving the vCPU in L2 is all but guaranteed to effectively corrupt
+vCPU state (which doesn't matter for the guest since it's already hosed,
+but matters if userspace misbehaves and ignores the SHUTDOWN, i.e. runs the
+vCPU even though it's in a bad state).
 
-commit e7e0d35b7ca4b9fc386b6fe7a75c6cc9bf38431a
-Author: David Woodhouse <dwmw@amazon.co.uk>
+Fixes: 3f6821aa147b ("KVM: x86: Forcibly leave nested if RSM to L2 hits shutdown")
+Cc: stable@vger.kernel.org
+Reported-by: Stefan Teodorescu <fane@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/smm.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-KVM: selftests: Add Hyper-V hypercall forwarding test
+diff --git a/arch/x86/kvm/smm.c b/arch/x86/kvm/smm.c
+index 656a38dad7e7..23cb8211ec74 100644
+--- a/arch/x86/kvm/smm.c
++++ b/arch/x86/kvm/smm.c
+@@ -639,8 +639,10 @@ int emulator_leave_smm(struct x86_emulate_ctxt *ctxt)
+ 	 * reasons), and so nSVM/nVMX would clobber state that is loaded from
+ 	 * SMRAM and from the VMCS/VMCB.
+ 	 */
+-	if (kvm_x86_call(leave_smm)(vcpu, &smram))
+-		return X86EMUL_UNHANDLEABLE;
++	if (kvm_x86_call(leave_smm)(vcpu, &smram)) {
++		ret = X86EMUL_UNHANDLEABLE;
++		goto out;
++	}
+ 
+ #ifdef CONFIG_X86_64
+ 	if (guest_cpu_cap_has(vcpu, X86_FEATURE_LM))
+@@ -661,6 +663,7 @@ int emulator_leave_smm(struct x86_emulate_ctxt *ctxt)
+ 	 * the shutdown, so that L1 enters shutdown instead of seeing a VM-Exit
+ 	 * that architecturally shouldn't be possible.
+ 	 */
++out:
+ 	if (ret != X86EMUL_CONTINUE && is_guest_mode(vcpu))
+ 		kvm_leave_nested(vcpu);
+ 	return ret;
 
-This commit adds a KVM selftest covering KVM_CAP_HYPERV_FORWARD_HCALL for
-memory-based and fast hypercall exits as well as hypercall completion
-cancellation via KVM_SET_VCPU_EVENTS.
+base-commit: d21eef2084a9af87ac2a783bc7c2b175ba114e4e
+-- 
+2.56.1.703.gf848ed807c-goog
 
-> diff --git a/tools/testing/selftests/kvm/x86/hyperv_forward_hcall.c b/too=
-ls/testing/selftests/kvm/x86/hyperv_forward_hcall.c
-> new file mode 100644
-> index 0000000000000..4c290b6a10122
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/x86/hyperv_forward_hcall.c
-> @@ -0,0 +1,337 @@
-
-[ ... ]
-
-> +static void guest_code(gpa_t pgs_gpa)
-> +{
-> +	__sse128_u in, out;
-> +	u64 status;
-> +	u8 vector;
-
-[ ... ]
-
-> +	/*
-> +	 * Fast form: the register parameters and XMM0 reach userspace, and
-> +	 * the XMM1 value userspace writes reaches the guest.
-> +	 */
-> +	in.as_u64[0] =3D XMM_IN_MARKER;
-> +	in.as_u64[1] =3D XMM_IN_MARKER + 1;
-> +	out.as_u64[0] =3D 0;
-> +	out.as_u64[1] =3D 0;
-> +	write_sse_reg(0, &in.vec);
-> +	write_sse_reg(1, &out.vec);
-> +	vector =3D __hyperv_hypercall(HVCALL_TEST_CODE | HV_HYPERCALL_FAST_BIT,
-> +				    FAST_PARAM0, FAST_PARAM1, &status);
-> +	read_sse_reg(1, &out.vec);
-> +	GUEST_ASSERT(!vector);
-> +	GUEST_ASSERT_EQ(status, USERSPACE_STATUS);
-> +	GUEST_ASSERT_EQ(out.as_u64[0], XMM_OUT_MARKER);
-> +	GUEST_ASSERT_EQ(out.as_u64[1], XMM_OUT_MARKER + 1);
-> +	GUEST_SYNC(STAGE_FAST);
-
-[Severity: Low]
-Can the compiler reorder read_sse_reg() across __hyperv_hypercall(), or
-clobber xmm0 before the hypercall runs?
-
-In tools/testing/selftests/kvm/include/x86/processor.h, read_sse_reg()
-uses a non-volatile asm statement with an output operand and no input
-operands, and neither write_sse_reg() nor __hyperv_hypercall() declares
-xmm register constraints or clobbers:
-
-tools/testing/selftests/kvm/include/x86/processor.h:read_sse_reg() {
-	switch (reg) {
-	...
-	case 1:
-		asm("movdqa %%xmm1, %0" : "=3Dm"(*data));
-		break;
-}
-
-tools/testing/selftests/kvm/include/x86/processor.h:write_sse_reg() {
-	switch (reg) {
-	case 0:
-		asm("movdqa %0, %%xmm0" : : "m"(*data));
-		break;
-}
-
-Because x86 selftests are compiled with -O2 -march=3Dx86-64-v2 (with SSE
-enabled), the compiler can schedule a vectorized zeroing of out via xmm0
-after write_sse_reg(0, &in.vec) or move read_sse_reg(1, &out.vec) ahead of
-__hyperv_hypercall(), causing spurious assertion failures in
-handle_fast_hcall() or guest_code().
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113170535.7924=
-6-1-dwmw2@infradead.org?part=3D4
