@@ -1,57 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794586381;
-	b=VcWIEyaSsoffPHkjJp/yD/IakpSunRSSxXZYEKsTG9rvWbzeLkjKGi5HQzocPA/ESg+a
-	 RjqyOw3j7zsT02XiKEm35k1iq1AAUSglUFRQVTeKwxGqNn4k4/T9xDViY9CEOgIth6q78
-	 i/AKq45suGmGTqDaXOOnBeekmK0awREQ7trJDKaAEDP9wiipvDv42ksC++HaGKOmLtxpF
-	 13zuRGalXUDsIJGj07u+5FgS0ID2mX8opQ7WVnI9U04i3yUbnRq4s96l7SRfMG2OGgGFy
-	 I6ECqC1jM5NfumbRiFNUZ8hM0vrAQ8mWXiGFGEIRYSrRTENoA7gj4QLwL0o9ZgjIL0Q==
+	t=1794586384;
+	b=nKtuenrv6tUe11CFeqyYVXS142nKju9dGhSjl2FrC/2p1b09dzHEz+iV4tU/SU7W/u7w
+	 SIYbCYYbWkw15o0yJx6m4K/NQX6Jh9JS2JP93rxhqHTbW5Pg3ShUsfZpmAMQPd0aMd+OC
+	 zSzVGWqs9hRzmFWgS056yDnBZiR6N92jwjDizM0k84NmEFKuiBNSmrvWQQJu8UBtDO8zx
+	 QPAlM3NmmxzKkkfwyz+68ptuyqwmGOYFJFsAjN5CS2AjJ1zD0pfR/UnL9+CwI2xpF7Y8E
+	 d1SQWEZdyu65xc/OMSx0ooSrlZB/FdLXdHl6pPW7yZkZ4jLYdronH/3AE6o56/7bFcg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794586381;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=+w3wc6tkKcO8bk94IBPGtLICnhkjKw536W7deGlPuCA=;
-	b=A9TfPMt02wcc8+Xzhuz02YB/YBwfenolQU6GIKBZJEYOJQia2HlHPfmJR4a11FVC/YUB
-	 7e42A6oA1ypXr1xRLJc4ZsO5Rm6D2dDzWLTEySHNPw0x1J2XfuwI6PXjesRzwFn+htNgO
-	 971x2PtkOWrqmfTUhGgtV1eNRjEBPFayi0yc2P6Q/JV4iZkIpLQ8mFWpD3Fx84Y2W6GHh
-	 LNhxRN9Z4Wtt8hQwjkYsKJmzVq5ski2G1YJe5GMeHz9SPMV0EA18BKq2gl+L/gqbyy2ZM
-	 e/X2AkUUlJDox+WO1vtqp19zn9QLYUO0Tg6beeVf+/cA8Rzn1qI5lDjkqyjq1wlnuNQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794586384;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:Autocrypt:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=uBhj5ZT/wKvt1cB2ZHQUyu1GVRILA+V8UDZgyKlKW6A=;
+	b=dKqgqrvIYIuPdFXh1fqG+fHicSjoAnXaaYyt+7sBDyKB3QL/8JB11X32iRBfqjEwq+6e
+	 k6Ivtb726hd3frhNNqQzUIOzgC5UbrzLGEnBt9WmYAaRjL8Wo9aw05DB0ldJ8Oskl5SoX
+	 daqg/FGbKHrqZ+bC4Xw5hUU0EcaQbH/dRpG6fRU0QXzb9cmfAD4mIm7jhOUg0hOCnDzgx
+	 khFwvr4MP7YXaMfYX9TRMFgR6GIJDguqBw6OhrHjGp0SWlN/D5XbNBYvugxT6rkmjDYEX
+	 awzKRVUzJ2+gb0QTZUUqQpNhLH7vl2tpJWsM4K8RtuF/AkO5wOZj36M1zGrOLjjvddw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FApX9Abv;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=suse.com;
+	spf=pass smtp.mailfrom=suse.com;
+	dkim=pass header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=JQmTVlP5;
+	arc=none smtp.remote-ip=209.85.221.41
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C80606A891
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 16:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4B7606A891
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 16:13:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BD4B7606A891
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FApX9Abv
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258C31F000C5;
-	Fri, 13 Nov 2026 16:13:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794586381;
-	bh=+w3wc6tkKcO8bk94IBPGtLICnhkjKw536W7deGlPuCA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FApX9AbvfDqV+tiWWASYd8NZ7raT6a2cI8GUbjrzO45OKEbiX1JtemgU4+zM3Lcbd
-	 9p9EOWAZs8cRyzv6dxsIDwPD/R8aM7ZYuOH5aIp7zisUOvYGB+bKtpB40pm/wOVgjO
-	 mcGOsMvAhZQ4/4xfmwNaz32pwbS01onYavSZY2A1duFfFVBHSmgOud7FoQIRH3hdDh
-	 /0om83oaA93hfsqmtmKDdmFo9vr8T7jO+qJ58JyAmUydams8lDyg1HBp4h1nEWoHKr
-	 5kCz1yg8zZXptoHsJWu5+WWmfA7k/lnhgH8Fxf9BluMXB2/Y0kOMXsF1ep0dTPKNtQ
-	 5fnfAjol3KUXg==
-Message-ID: <sashiko-outbox-213174@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v2 13/15] Documentation: ctlv: Describe how to write
- a family
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jiri Pirko" <jiri@resnulli.us>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261113155515.2510194-14-jiri@resnulli.us>
-References: <20261113155515.2510194-1-jiri@resnulli.us>
- <20261113155515.2510194-14-jiri@resnulli.us>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 13 Nov 2026 16:13:00 +0000
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=JQmTVlP5
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-491d1f66968so411095f8f.0
+        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 08:13:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1794586382; x=1795191182; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=uBhj5ZT/wKvt1cB2ZHQUyu1GVRILA+V8UDZgyKlKW6A=;
+        b=JQmTVlP5ZiOlcIc2zz9AksAjuPn3HqjHFW2kgua0zm1wzf4QbyCXiuiBpN+yZ7/ol8
+         x+UJ7CPdzLaeTEp2lvexusQZ5FW5Dv0k+uylRLINRYqC6dXwRhepupWQh6lWVLPXmTUb
+         WmtNOu2iUUxAEIn7F8WNFrmBJtChzh3sXDL1jO+s4EEsyfAzM12p6jK5W2Bi6wtFv3QC
+         QcJUrLa4a+JRdYSSh9m4x/fVbaD5OLuxKGGu01Vb6BmwDmvbAwaOYIc+0SHm3gwryLfs
+         aRzZvuSe0D8ixpqxbasc+kBpCgJMlPqUKj/FjajSX2CWRZb13rCJu+QrzgXEmHT5H7Ln
+         UQEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794586382; x=1795191182;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=uBhj5ZT/wKvt1cB2ZHQUyu1GVRILA+V8UDZgyKlKW6A=;
+        b=DPZW1TeVS8mcLbsrnphwScrWWFqyT3N/MfsK7SM7rlTfMUjbBMkzwvz8a5u0qDt8Uu
+         gOWn9Ogdpg9KwAt48OAVB4iZGbJID5oqaWQITAbzlSNkreDgRKNfxhoE6znS6NQx3G4S
+         ApxtbPbfnyksBtC5XD6H1v8ZFY2ghIWafOcfxGkK7L12NtP0EdEkxqKO1gInCr+oO+R1
+         /xQ4J6uB0xz4cVr2UJG7hE1m4WnyBYTGhacz2E2nLdMdCk8/h35ZEIJUrIetm1c1a1P2
+         M8dlwlT1MkXZ6AvIImjQtZSqIgoW47482BAS3AFNjM6VhQQAh7uEmWa4HrN/OuD8GBPA
+         TIrg==
+X-Forwarded-Encrypted: i=1; AL+hErGYtlccOL7tmGsViv8nxht5xSm8RG9NJYW3IRasa1DXCw1iOATRkERbGhcERy2O7xMgkTk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z883AsWqGiNmYfuMCOr9unzyUUivIsp5S36T7OPm1XLMNHw6uCE
+	PRsEkc57WDvW9L/GSXaehVuYhVrB/vV10eMo9J/4EaDCnJW0rfkxz3t5NhzFfJGHnIMvWkhYT2Z
+	Wt5cblMA=
+X-Gm-Gg: AYBFou3dNAdKUwRMfTw2uuv+QG5PpKPpKe08rFoHH6gNm1LTdrSAew26B0KYM0mS9SI
+	qw76XP+PP26BgR0Un2fo1yPEY9gsykiSBfewTJ5Alr+WZLrNeNaUw/VRmwTvCaaBFyJK9I0gCwi
+	mBEjSEBDa+hDEriCMRXaE72ORY+TyssO4CdCtfPKM/C9BmC6UvuS5GOfnmok/WszrqcZzhQSfzK
+	SSBoDGiUBKlIF0EDorY3ItPLq+ZavL8uXj7MaisEfncwsgnVsm0goKReOfEkJqAvwhgtd7sWAhQ
+	gXcBaXs6cvMmS4Bsmxms1iwV+YZyibGHsFn2800K1Hu50wobx8MVCiqlxNrZXor/rmKZfhShz29
+	Ix1XPXds6qxC5UGhI3lw5iNa48hbCNoYUG7vealvm3X6EkEcQWAabbIp9mlLc2ZIOhTJb7lgWRG
+	mMeu6C1O73AnJb2pdpkLuZ1Hza/LBf5gdWTdeiKfxS+5dN1nGo21R5puVVIpJxCaLoi9HeImEr3
+	9GaZUPnNq92d4vcv8oHKldFyFQ2IvD7tCxii5P16QVwJvsRRGmIa1kJXGjFacpbsr2vsGqzmAfC
+	J46W5Y0C/xkhv10wlas1uTgkRD81O3QE
+X-Received: by 2002:a05:6000:480e:b0:493:f3f2:2255 with SMTP id ffacd0b85a97d-49c70542714mr6244595f8f.25.1794586382025;
+        Fri, 13 Nov 2026 08:13:02 -0800 (PST)
+Received: from [192.168.0.20] ([212.21.133.162])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c607d12c4sm5658167f8f.41.2026.11.13.08.13.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Nov 2026 08:13:01 -0800 (PST)
+Message-ID: <8826c56d-8fa2-407d-8362-3edd8c281cd9@suse.com>
+Date: Fri, 13 Nov 2026 18:13:00 +0200
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,126 +92,102 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 5/6] x86/virt/tdx: Make TDX module initialize the
+ extensions
+To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, dave.hansen@intel.com,
+ kvm@vger.kernel.org, yilun.xu@intel.com, xiaoyao.li@intel.com,
+ sohil.mehta@intel.com, adrian.hunter@intel.com, kishen.maloor@intel.com,
+ tony.lindgren@linux.intel.com, peter.fang@intel.com,
+ baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, chao.gao@intel.com,
+ artem.bityutskiy@linux.intel.com
+References: <20261111-tdx-module-ext-v5-0-c74f764abc3d@linux.intel.com>
+ <20261111-tdx-module-ext-v5-5-c74f764abc3d@linux.intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+Content-Language: en-US
+Autocrypt: addr=nik.borisov@suse.com; keydata=
+ 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
+In-Reply-To: <20261111-tdx-module-ext-v5-5-c74f764abc3d@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Low] docs: ctlv: direct -ESTALE return in query example skips
-  error-info
-- [Low] docs: ctlv: inaccurate claim that unfilled extension adds no
-  record
---
 
-commit 37d8b6224a7e92519379e383dd7fb525d99c7126
-Author: Jiri Pirko <jiri@resnulli.us>
 
-Documentation: ctlv: Describe how to write a family
+On 11.11.26 г. 5:48 ч., Xu Yilun wrote:
+> Continue fleshing out the extension initialization process. At this
+> point the kernel has provided all memory and the TDX module is ready to
+> initialize the extensions on the memory.
+> 
+> Initialize TDX module extensions via TDH.EXT.INIT. This process takes on
+> the order of 100's of milliseconds, during which the TDX module loads
+> its internal extension image into this memory and builds the execution
+> environment. Once initialized, those add-on features can use their
+> SEAMCALL leafs normally.
+> 
+> Note that TDH.EXT.INIT builds all configured extensions. The SEAMCALL
+> leaf fails if any extension fails to initialize. The kernel does simple
+> error handling - just fails the whole TDX initialization on any error.
+> This is OK cause all extensions are considered necessary for security.
+> If a nice-to-have extension appears in the future, this can be
+> revisited. A potential solution is to have a new metadata field
+> indicating which extensions get enabled/failed, then the kernel decides
+> whether to continue or abort.
+> 
+> The original changelog was written by hand. AI was used to help correct
+> grammatical errors and polish individual sentences for better
+> readability.
+> 
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+> Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-This commit adds driver-api documentation explaining how to define a CTLV
-family specification in YAML and implement its kernel callbacks.
-
-> diff --git a/Documentation/driver-api/ctlv.rst b/Documentation/driver-api=
-/ctlv.rst
-> new file mode 100644
-> index 0000000000000..34d20c14a9bfa
-> --- /dev/null
-> +++ b/Documentation/driver-api/ctlv.rst
-> @@ -0,0 +1,716 @@
-
-[ ... ]
-
-> +    int ctlv_example_item_get_query(struct ctlv *ctlv,
-> +                                      struct ctlv_op_ctx *ctx,
-> +                                      const struct ctlv_cursor *request,
-> +                                      struct ctlv_cursor *reply)
-> +    {
-> +            struct example_device *example =3D to_example(ctlv);
-> +            u64 generation =3D READ_ONCE(example->generation);
-> +            u64 cursor =3D ctlv_op_query_cursor(ctx);
-> +            struct ctlv_cursor item;
-> +            u64 i =3D cursor ? cursor - 1 : 0;
-> +
-> +            if (cursor && ctlv_op_query_generation(ctx) !=3D generation)
-> +                    return -ESTALE;
-
-[Severity: Low]
-Does returning -ESTALE directly here skip populating ctx->error for
-ctlv_error_info()?
-
-ctlv_query_fragment_end() (called by ctlv_op_query_done() and
-ctlv_op_query_more()) is the only place that sets
-CTLV_VALIDATION_REASON_STALE_GENERATION along with expected_generation and
-current_generation:
-
-lib/ctlv/builder.c:ctlv_query_fragment_end() {
-    ...
-	if (ctx->frag.cursor && generation !=3D ctx->frag.generation) {
-		ctx->error.reason =3D CTLV_VALIDATION_REASON_STALE_GENERATION;
-		ctx->error.expected_generation =3D ctx->frag.generation;
-		ctx->error.current_generation =3D generation;
-		return -ESTALE;
-	}
-    ...
-}
-
-When a callback returns -ESTALE directly, ctlv_error_info() sees
-ctx->error.reason =3D=3D 0 and omits the stale-generation error-info message
-documented in Documentation/userspace-api/ctlv.rst.  Calling
-ctlv_op_query_done(ctx, generation) on mismatch or letting the loop finish
-into ctlv_op_query_done() would populate the error info and return
--ESTALE.
-
-[ ... ]
-
-> +The ``device-get`` callback in ``ctlv-example`` opens the record and has=
- the
-> +device's family fill it:
-> +
-> +.. code-block:: c
-> +
-> +    if (ctlv_example_device_get_details_start(reply, &details)) {
-> +            ret =3D ctlv_ext_fill(ctx, NULL, &details);
-> +            ctlv_record_end(&details);
-> +            if (ret)
-> +                    return ret;
-> +    }
-> +
-> +The foo family implements the generated fill callback:
-> +
-> +.. code-block:: c
-> +
-> +    int ctlv_example_foo_device_details_fill(struct ctlv *ctlv,
-> +                                             struct ctlv_op_ctx *ctx,
-> +                                             const struct ctlv_cursor *r=
-equest,
-> +                                             struct ctlv_cursor *record)
-> +    {
-> +            struct foo_device *foo =3D container_of(ctlv, struct foo_dev=
-ice,
-> +                                                  example.ctlv);
-> +
-> +            ctlv_example_foo_device_details_sram_bank_put(record,
-> +                                                          foo->sram_bank=
-);
-> +            return 0;
-> +    }
-> +
-> +``request`` is the matching record of the request, for an op whose reque=
-st has
-> +an extension point too; ``device-get`` has none and passes ``NULL``. An
-> +extension point no family fills adds no record and no length.
-
-[Severity: Low]
-Is it accurate that an unfilled extension point adds no record and no
-length?
-
-ctlv_example_device_get_details_start() calls ctlv_record_start(), which
-writes a 16-byte struct ctlv_hdr with CTLV_HDR_F_RECORD into the reply and
-adds 16 bytes to each ancestor record's length.  When no family in the
-chain fills the extension point, ctlv_ext_fill() returns 0 and
-ctlv_record_end() leaves that empty 16-byte record in the output buffer
-(and the schema size calculations in schema.c and sizes.py likewise count
-16 bytes for the empty extension record header).
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113155515.2510=
-194-1-jiri@resnulli.us?part=3D13
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
