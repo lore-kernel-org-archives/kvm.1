@@ -1,54 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794590730;
-	b=woG8sohuP6LovfSzJeA7aouHhsmTYJE56kboK4s64FdHoekpSI4Ojj95lhHcqwNLKMxb
-	 MC9QPxL6TyY22FmUByXM4GdLY4FGLmlSpUoBhNH0+F3NNEYt6c1nHGabD0P1L51rHCviY
-	 qy3IZZK+pAaGgJUs25vabKhKP2GnPSa+yc33hvsVmEi2rc9iF3wtR5MGEzZajBtgui0sk
-	 VBL6O2Y2Tye3YZAKlMIVwyibi6EWnTOgxRS03dUkNA0JJE/oPMv3XDf0F68B0ILTthXZf
-	 LhkIRn0qHNoOHQSd8DJNaNyPuFDD8fFntHgyY+xlxl/1QdxcuM0zqWhwiAYDuHLtryw==
+	t=1794591413;
+	b=BFIiqQct8IZKvtDxVoZVVq/vAePBhozs2e+ougO0UCMIQqiMES27f5LFO3mjaySe0jKG
+	 C09QVOc5reExNdfT5NUA325Rz9kLrZlUPkOfjgnJXdzlW2txWmVzSebvzCNMkT2NT8BFK
+	 LMgopVdjZGCSsVv1/bhZ/DLstbm6OJDfXW0WuF2AvHrpJf/fpBIcqQT9cpKAbqkPhnjk+
+	 n7Lv5kxBiU8W1PulqDC5tHK0gTSjqQcgeiwUfDccfp6EtxwrdiAsfk2+e9QVDCNiKbepE
+	 tNM3WWcHvRksiSqEt0NoxhgfPt9/gpELij5SmtuAeuVUzRjGrCP/CZdLUg3rhQfk7bA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794590730;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=VRqhLiYHA083I8w4qSXLatZbskX7q7uO1NskiBll704=;
-	b=Sqqf3DDrgdUpUVe7T4lWQjD7S36Yse9jMqBa3p4XnZ8MQZDN8+Y1Fbw0XfWyVho8s3M0
-	 peG4KQ785t6zkkpbBWDgYrAPj3sj6KMEikuc/l1qdEOwaQBC475CQ4XcNMRaJUFJIDjUm
-	 ekcSlbkl3MojxSp+an0i23OqD8AfbsblqOYMNBFxDkPTjTrSlVGyRbi/IFMZ0fHPcWybE
-	 fuNYvpw79+XnAdgA/gdTx2FXcGWLgff3gQIRtI2oVihJyqNGu19bJDt7grOQvF2NTEOig
-	 8RtHM7WxbmV9eICJPPcoxUf2CNa6lmyhzfSyzp8dRtzFm9ziRbtqQM4Jn1eHSKlMw+g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794591413;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=tsdsxAtx5ur2RfR41Vo9KuL0BIud70CGmTbCcTeUdhY=;
+	b=n1/EqUnjdwyQapgoqtH+KlS6s6x8QNw2WCjN8wvTIzO4NzB1kMcU96GGaO57fy4UzOMs
+	 3/vy4pFWvstMlRkhOp23zxEHGnvh6xKV3aeIdk2LvWsY4Mg/h+4gjjGaClMtzIHMUYuff
+	 zm20C4Vyn2kYtQdN2DTMq3Bxo7y+0tqrUvJYIHxrBKO/inKpQ5oXntRydqJTwGj50iz0i
+	 UsBEX6c+dC/6n1AO/aDRJEL93NFfhng3jsqj8+Le3XctHmDz2gG+UQe9nMJqahz7cdhiT
+	 vteQIUBUncwornbAMH3NPwcQZ3VMcJXljSjCJ/dsRA7ahPPm0J+KsN7yz3+fD2J/Qrg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ImJrxHwd;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V4g4SEyX;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2126079D59;
-	Fri, 13 Nov 2026 17:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CEB6079D6A
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 17:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ImJrxHwd
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F341F000C6;
-	Fri, 13 Nov 2026 17:25:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V4g4SEyX
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A46C71F000C6;
+	Fri, 13 Nov 2026 17:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794590730;
-	bh=VRqhLiYHA083I8w4qSXLatZbskX7q7uO1NskiBll704=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ImJrxHwdNrhLT5bylFtSH+Fg7WpJTgmnwoCPTohUvCmUP3+ePCW9xSIvHDDN9WGED
-	 zd7lfgp7amQt4qqLuACiSYR0B2nXo1Ad1bd2UvWAGuCVfmuXu/CTihfec9DSOt9yi6
-	 GZ3SryYXGrf4ks+aOi+8qhORfqQgyJfuAakF0TkNeu6/SKs2UeV/f7S5O1rvsW43Mz
-	 Dt9hYKXQTeLsqzPeZqC+POuqiTPq/HYwmgTwueE8IhCMqa0Syr8OKGmeUP03npQ0BB
-	 YzLVM/T1cX7ZfCxwMsTGGa9sPv38d/C7h5VW39OHedaRJMVJOK4qu5u/XFWOtzvL+k
-	 ByxaYy/XJso+g==
-Date: Fri, 13 Nov 2026 17:25:25 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Naveen N Rao <naveen@kernel.org>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>
+	s=k20260515; t=1794591412;
+	bh=tsdsxAtx5ur2RfR41Vo9KuL0BIud70CGmTbCcTeUdhY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=V4g4SEyXB9j8pLLUtk3wSaj03PnLe4JwZSqPe1CCuZsaJVhP4KhWlKiSnZqaxLVwI
+	 31H7mqUQ4H8DnCF/Jz4vNnRVJ2ZWDersdM4zRCcSJMibhyQbUVtKANZH9XbkNbXtUo
+	 TRLufB6STiVHE3LtN0AQVNGT778a++Ysj6wq0i5BxZ4p5oGIN+Km95Grx1ccmffCm3
+	 wRzI6ujkDW83FQS3RUUP8DUgNVn93kiu0VNaAkT0KHrT/yFg1JzQwMPEKGz92Wi2l9
+	 K0OnKCn1rBg9LTJtz0ArCQP90e45p3lsQA23Vb8D71N/Ni4g57ESwXGvoZzVrKg95h
+	 2uf0vIsdEgolQ==
+Message-ID: <sashiko-outbox-213330@kernel.org>
+From: sashiko-bot@kernel.org
 Subject: Re: [PATCH v3] KVM: Skip gfn-based MMU notifier invalidations for
  guest_memfd-only memslots
-Message-ID: <avdAIMDfgL_wy1rx@gremlin>
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <avdGNbOO4562tk10@google.com>
 References: <20261113164000.467175-1-seanjc@google.com>
+ <sashiko-outbox-213282@kernel.org> <avdGNbOO4562tk10@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 13 Nov 2026 17:36:52 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -57,115 +60,111 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261113164000.467175-1-seanjc@google.com>
 
-On Fri, Nov 13, 2026 at 08:40:00AM -0800, Sean Christopherson wrote:
-> From: Alexandru Elisei <alexandru.elisei@arm.com>
->
-> Don't invalidate gmem-only memslots when responding to MMU notifier
-> invalidations, as the entire point of gmem-only memslots is so that KVM
-> doesn't need a VMA to install mappings into KVM's MMU.  Specifically,
-> page faults are resolved by going straight to guest_memfd, using the gfn
-> and the associated memslot's gmem.file.  I.e. whether or not userspace
-> happens to have valid mappings to the same gmem instance is irrelevant,
-> as are any invalidations for those mappings.
->
-> Note!  The exception is KVM's gfn_to_pfn_cache implementation which isn't
-> yet wired up to pull pfns directly from guest_memfd, i.e. still relies on
-> userspace mappings/VMAs and thus need to be invalidated, e.g. to ensure KVM
-> doesn't retain a kernel mapping+pointer to PRIVATE memory.  However, as of
-> commit da260bcb56fe ("KVM: pfncache: use a dedicated invalidation sequence
-> for cache refresh"), GPC invalidation no longer relies on memslot lookups,
-> because GPCs also support HVA-based mappings.  I.e. KVM *must* be able to
-> detect and handle relevant MMU notifier invalidations even if there is *no*
-> memslot whatsoever.
->
-> In addition to the obvious performance benefits, avoiding unnecessary and
-> spurious SPTE zaps and TLB flushes will allow KVM to support features like
-> ARM's Statistical Profiling Extension (SPE)[1] and x86's Secure AVIC[2],
-> both of which rely on the pages *never* being unmapped from the stage-2
-> page tables.
->
-> Link: https://lore.kernel.org/all/20260903160623.315525-1-alexandru.elisei@arm.com [1]
-> Link: https://lore.kernel.org/all/cover.1783490022.git.naveen@kernel.org [2]
-> Cc: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Cc: Naveen N Rao (AMD) <naveen@kernel.org>
-> Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
-> [sean: rewrite changelog to capture the new gpc behavior]
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-Thanks a lot for this Sean + Alex! :)
-
-Though, having local AI do a review pass on it flagged an issue (don't worry my
-own analysis - not pasting some slop here :).
-
-I think actually this might need an additional change for x86, since it doesn't
-have a gmem-only check for the shadow MMU PTE prefetch:
-
-direct_map()
-  -> direct_pte_prefetch()
-    -> __direct_pte_prefetch()
-      -> direct_pte_prefetch_many()
-        -> kvm_mmu_prefetch_sptes()
-          -> kvm_prefetch_pages()
-            -> get_user_pages_fast_only()
-
-And a VMM that's doing something broken (i.e. trying to take advantage of this
-as a vulnerability), could then intentionally set up a gmem-only slot to point
-at ordinary anon memory, munmap(), and have a UAF on the underlying folio due to
-no MMU notifier invalidation.
-
-Fix would be something like:
-
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index cf4cb586f140..76350dc55d8f 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -3172,6 +3172,9 @@ int kvm_prefetch_pages(struct kvm_memory_slot *slot, gfn_t gfn,
- 	unsigned long addr;
- 	gfn_t entry = 0;
-
-+	if (kvm_memslot_is_gmem_only(slot))
-+		return 0;
-+
- 	addr = gfn_to_hva_many(slot, gfn, &entry);
- 	if (kvm_is_error_hva(addr))
- 		return -1;
-
-> ---
->
-> v3: v1, but with a different changelog.
->
-> v2: https://lore.kernel.org/all/20260714160411.302386-1-alexandru.elisei@arm.com
->
-> v1: https://lore.kernel.org/all/20260615155244.183044-1-alexandru.elisei@arm.com
->
->  virt/kvm/kvm_main.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index cf4cb586f140..599dea22afb8 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -601,6 +601,10 @@ static __always_inline kvm_mn_ret_t kvm_handle_hva_range(struct kvm *kvm,
->  			unsigned long hva_start, hva_end;
->
->  			slot = container_of(node, struct kvm_memory_slot, hva_node[slots->node_idx]);
-> +
-> +			if (kvm_slot_has_gmem(slot) && kvm_memslot_is_gmem_only(slot))
-> +				continue;
-> +
->  			hva_start = max_t(unsigned long, range->start, slot->userspace_addr);
->  			hva_end = min_t(unsigned long, range->end,
->  					slot->userspace_addr + (slot->npages << PAGE_SHIFT));
->
-> base-commit: d21eef2084a9af87ac2a783bc7c2b175ba114e4e
-> --
-> 2.56.1.703.gf848ed807c-goog
->
-
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [High] KVM: x86/mmu: missing Signed-off-by trailer in commit message
+- [Medium] KVM: x86/mmu: commit title and message do not match change in
+  kvm_mmu_prefetch_sptes()
+- [Low] KVM: x86/mmu: missing Fixes trailer for commit f029f04ddbec
 --
-Cheers, Lorenzo
+
+commit 0029f5853016e6378c3fb60ef0b654f4ef090476
+Author: Sean Christopherson <seanjc@google.com>
+
+> KVM: Skip gfn-based MMU notifier invalidations for guest_memfd-only memsl=
+ots
+>
+> On Fri, Nov 13, 2026, sashiko-bot@kernel.org wrote:
+> > > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > > index cf4cb586f1407..599dea22afb81 100644
+> > > --- a/virt/kvm/kvm_main.c
+> > > +++ b/virt/kvm/kvm_main.c
+> > > @@ -601,6 +601,10 @@ static __always_inline kvm_mn_ret_t kvm_handle_h=
+va_range(struct kvm *kvm,
+> > >                     unsigned long hva_start, hva_end;
+> > >
+> > >                     slot =3D container_of(node, struct kvm_memory_slo=
+t, hva_node[slots->node_idx]);
+> > > +
+> > > +                   if (kvm_slot_has_gmem(slot) && kvm_memslot_is_gme=
+m_only(slot))
+> > > +                           continue;
+> >
+> > [Severity: Critical]
+> > Can skipping guest_memfd-only memslots here leave writable SPTEs instal=
+led by
+> > x86's kvm_mmu_prefetch_sptes() unzapped when the VMA at slot->userspace=
+_addr
+> > is unmapped?
+> >
+> > While __kvm_mmu_faultin_pfn() resolves the primary fault from guest_mem=
+fd for
+> > gmem-only memslots, the post-fault PTE prefetch paths (such as FNAME(fe=
+tch)()
+> > -> FNAME(pte_prefetch)() for nested EPT/NPT or shadow paging) call
+> > kvm_mmu_prefetch_sptes() for neighboring GFNs without checking
+> > kvm_memslot_is_gmem_only():
+> >
+> > arch/x86/kvm/mmu/mmu.c:kvm_mmu_prefetch_sptes() {
+> >       slot =3D gfn_to_memslot_dirty_bitmap(vcpu, gfn, access & ACC_WRIT=
+E_MASK);
+> >       if (!slot)
+> >               return false;
+> >
+> >       nr_pages =3D kvm_prefetch_pages(slot, gfn, pages, nr_pages);
+> >       if (nr_pages <=3D 0)
+> >               return false;
+> >
+> >       for (i =3D 0; i < nr_pages; i++, gfn++, sptep++) {
+> >               mmu_set_spte(vcpu, slot, sptep, access, gfn,
+> >                            page_to_pfn(pages[i]), NULL);
+> >               ...
+> >               kvm_release_page_dirty(pages[i]);
+> >       }
+> > }
+> >
+> > kvm_prefetch_pages() resolves PFNs from slot->userspace_addr via
+> > get_user_pages_fast_only(), and kvm_mmu_prefetch_sptes() installs writa=
+ble
+> > SPTEs and drops the page references.  With kvm_handle_hva_range() ignor=
+ing
+> > gmem-only memslots, unmapping or reclaiming the VMA at slot->userspace_=
+addr
+> > will not zap those prefetched SPTEs, giving the guest a host page
+> > use-after-free.
+>
+> Well fudge.  That's a bug that needs to be fixed irrespective of this pat=
+ch,
+> though it obviously needs to land first.
+>
+> The TDP MMU doesn't support automatic prefetching, yet[*], and I'm planni=
+ng on
+> using the "normal" fault flow for that support, so I think we can just di=
+sable
+> prefetching for gmem-only slots without negatively impacting any real-wor=
+ld
+> workload, and punt on proper support until someone cares, e.g.
+
+[Severity: High]
+The commit message is missing a Signed-off-by trailer.
+
+[Severity: Medium]
+The commit subject and message are an unedited email reply to a different
+patch and end mid-sentence, rather than describing the change in
+kvm_mmu_prefetch_sptes() to skip SPTE prefetching for guest_memfd-only
+memslots.
+
+[Severity: Low]
+Since commit f029f04ddbec ("KVM: x86/mmu: Handle guest page faults for
+guest_memfd with shared memory") updated __kvm_mmu_faultin_pfn() to fault
+in pages from guest_memfd for gmem-only memslots while leaving
+kvm_mmu_prefetch_sptes() resolving PFNs from slot->userspace_addr, should
+this include:
+
+  Fixes: f029f04ddbec ("KVM: x86/mmu: Handle guest page faults for guest_me=
+mfd with shared memory")
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/avdGNbOO4562tk10@go=
+ogle.com?part=3D1
