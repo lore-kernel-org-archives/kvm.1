@@ -1,101 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.42
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794560995;
-	b=fJE2aj6H05osz+H/6MaCbq6Jt2ypOgQPylmecQG1wY/x/UfKXbFB2QqTDt5uHeD6852A
-	 92A5axL1QG2kMVcvTzFOcKBIDdNtX1pGQsJyyaUX3inv4kTuupiLyUCb09hlxln/4Uf7W
-	 cVaQL4n1wBrENdmWY1zNhyn2+HnohMZEgoYbrzpyS6QnlQt4GYnOuua2mkYIkKnnNYONG
-	 5xLaToXJZRmqPh3/Ie+dyCyzCwsXOAWpNBEAzIaHj+1vmUOXyhkaBmtIXlG15itvvtRWJ
-	 fsQfa4CuQyQZdTxScmkUTEZIcMvAWkXF2Zw9MYt9GSyWkhuqZ540ldZdRDSi0PuFUqQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794560995;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=guR2kn0I9WVyI0WwVW8m8P4IC07cc5z6OUtXdezJXW0=;
-	b=mLJ+KQxglUIgJPH1QlCpnrWXEl61hzfvPyY5p1Nb/JUmf5VKgnKYt1l69ehSKrsZ6fN5
-	 MNLrsi48qOmLup1gM4MeJQsDfBDCWoQcHurTnQsFEAADNYYn2HvRXBZKmugZ7z7q8kC5F
-	 GuZAho8gRbTqHlFg4fmlADjnyEbJgwoJMxnRfionCDY1fE3JNwM47AZ8y0L8NMpNnAT4U
-	 KELYDV79LCEWcxiTm0pLQnl0cssQFF/3G6Mo3n+zhM0UPHlZUA/IMPl7a7qHhrH8u3cB6
-	 tH9x8W1pVGRx2vRfr7mQ5wJWBayKqDtJHsHdbWenAtu/VJTibtYyMrLyKvvXlTtsvxg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=flashbots.net;
-	spf=pass smtp.mailfrom=flashbots.net;
-	dkim=pass header.d=flashbots.net header.i=@flashbots.net header.a=rsa-sha256 header.s=google header.b=cVF2s76c;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.42
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.155
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794561531;
+	b=22z1BgFBwoBtzUJekiyrTiqAanMkqmLMcohvjtsho8VUuyGAz3r/GgkgYlOYidW83h1M
+	 ol1UWFC65Hk3+qO9gtfnR1NhP5GYx2vTBwAF2ZEQQaS2hqw1wNaB3P8BX4bDjB26bitxj
+	 XxaC4R7Xj1dgNHRkV1CyBcoJpgHYVDtBmnhPkkyDEsa3cZgl9EC7bhbBs72Wcp/8zpWkq
+	 eQdXwfcyBrKIxutl4CMvjyOuGP/GfRZQj5CM3lJo2MZ1O1UG4d+KTYTgyAv9+MQTvSbEr
+	 cPZGiuzYRr4Wszr6CoRSd72/2m9QxxloudRxPrBdJ1Mwr9Lx6pgF8fh6+DWM9Yiy9KA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794561531;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
+	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
+	 References:Subject:Content-Type:Content-Transfer-Encoding;
+	bh=6y/Vwdb7m8Q4VQEZiWRGa4EBI0ZcNW5mrZJmNnLAIEk=;
+	b=JaKpTkF9eFwdkeg76tYytWf+QlwJOdSTHRON/OyHQI7HsmSLON0WifQS4pJvlfZmb1+8
+	 EG/acczemLTh7iuy77D9Q1wevY27ZFFPdp9lCnElflIAmYPiIrhFj5Yd0YTpGzBTBqhFY
+	 P/4dY85qIJ46G4pCoLQM2HU0LSqEW6dnn4GcIYathSRT0GstlIJ9I7CJyyyeeoiAaGMJZ
+	 xl4Kvg4/BwRQC/YwXPkNAr7T5YTVMNjJecutU9M1yqNiBlk5yh2elbfHXkMZSRbBgpyv2
+	 4zPaHiLHQFFymapbo0SFnZVyrmmHd6ul+d5Aol0Xg//Ib4Jx6H4GiBJkrvflDv8fnWA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arndb.de;
+	spf=pass smtp.mailfrom=arndb.de;
+	dkim=pass header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=XU1Lk5w0;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=0cGPAQzH;
+	arc=none smtp.remote-ip=202.12.124.155
+Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C4E606A321
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 09:09:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1C4E606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flashbots.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flashbots.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAAB0606A31C
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 09:18:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CAAB0606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flashbots.net header.i=@flashbots.net header.a=rsa-sha256 header.s=google header.b=cVF2s76c
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-4adae3eb4d3so659720fac.1
-        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 01:09:54 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794560993; cv=none;
-        d=google.com; s=arc-20260327;
-        b=T5slQ83e/i18pLhstHuVQqPn/t2q/iij35sgxRtPDQIKwfFhBrsrngfnKOhtqjWB1K
-         VFeq3fpm/ZsgxbeWuGLiUjNtmIrzlDQW0az3OIICSg7b/9+2gHZi5AIjQUn/d0K04yf8
-         0k+tJj1QaiAWaJV4wC0itnlBfQqGEY4EH39RdhiDVWzZpq9pvJ6iXbzZBoMdWCwliOoD
-         hSzz4W6lDktecwz/4wiTyRNEOEaAjAbMfV7/48UwkONhNY8142yg4HC0Q8QyuZsHlN2o
-         RR6K77kPNYsea/il/c7Po+v5tPn64DG3ewkglKHV+sI8B2tFri5T96+P3iLsHhvSyhRZ
-         +C5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=guR2kn0I9WVyI0WwVW8m8P4IC07cc5z6OUtXdezJXW0=;
-        fh=VGrl2tmIHnraSvBH1Qm746m+QPITjmboOfPD91GKS+I=;
-        b=pHAf56SwEMSCraDMIg0CcC1PRvpftSKPuhdAYZtHY4bc6HsPyhgzh3PvymX2I+cJct
-         iD+LWUBAID3xtxecQ0WBr4JAmSo9x8jznbHIx4bQaAbYLGdJBfPaLgiZ/NBN6ZfjEKIu
-         nIwcg1WY4eiaPDWtH+NLvACb+DtKsE+LOXHhSzkOknBusEnmvhg1zvPSzTFSB72rsZPb
-         8sTKN9LnDFGGvhw7LAn+MH1KFRn3xMqFYTAGDtfc5bEYrvQvkf4EcNiGeFwJE2/s6ieE
-         rUoR1l8McPYxtwE0dOj1WkzOokej2tJ95hGBW3WR4oj/lwYfEIoC6DighKXv7It8PiGh
-         H32w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flashbots.net; s=google; t=1794560993; x=1795165793; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=guR2kn0I9WVyI0WwVW8m8P4IC07cc5z6OUtXdezJXW0=;
-        b=cVF2s76crrUEBSBW36t5JDEzTv4J7cNTCDmf+lJz7rwwx6KqLEpuy73WkOOYTKprwL
-         yqKWkmIv4Kl7sLZFr8Yds98KHN4fZwFGhK8sFRSJ1S455RdEsUYCuGVMDkqFDjVaEsvS
-         wCO5BrPQr4RwKdUm2+HSF1rsKJHm2mMV3CWFpmU9gtMpsTS1Z5PCRx8kvfvxZENN3/3X
-         +sWEFmk6kdzZeQSm2hzNJet/YI4aB3FL93uHee3qfThMFp+f1vfx4xOwk9BeR28Jm7Bx
-         2fHT5JxtJthzpRgDW0upHqz8gcyDOba1Y9X2fySWkzASsU9nZirNvgZ8E0ZOIEU37DQc
-         u8FA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794560993; x=1795165793;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=guR2kn0I9WVyI0WwVW8m8P4IC07cc5z6OUtXdezJXW0=;
-        b=ge9dTWSxy1twm5xwdfn6odW1v5UyYBZOspMYj26cicFML1QPFR+Zz1rZyM9FdSrB1p
-         UIneglg4B4UnZ8tJQpf6yQxopNoBOSC8qXh5wa62EUdLpcjM1jSQWA4SeyKZn6l52Vth
-         NEU/X6q2Z3tHWG6bCIR1X0GlkYIKJxtLx4llRA9FdKeuR7FyD9SaI1WqDe4T28wWF/cw
-         vk0UTBLifXHqO1vqB2zD8xcbtjL0h/crHHrVfLwWDivdEjAH2gAYGQwP86d7py4Q/DoL
-         R0T+dzhoQVmnD8IoFVZD+SoSL32vBlDIMJQrH7dzcGSJAKXfElBPeubq4zznp7vMv2Fp
-         0pBQ==
-X-Forwarded-Encrypted: i=1; AL+hErEnr3HE/+dVgScms2LlawwR3L0WXmRQfljUL1Ff2JOaJA8A88/vMXDAPuMOV/jjVvreU3I=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8NfRf/jpS/HlLFVpU6E8VzIZJPXSECsQFep/mXYvBd6QSamJew
-	ookIz7PfUl/QrxCMbsg3ki0hj4YFQMdMvPvt3wLTO0/uKwZcqIQdRPdH2mODiKTt2h0Z/v9e4Gt
-	wYbCvwnvq4M4bNM1NSrvcpIJ4kHkjKPv8DTQlgkITPg==
-X-Gm-Gg: AYBFou0tzurTRBj7DncDXGaX6+E7H5DS27G73qz9ytB1oKog1cDeg2Dnm6b4HzJHH3i
-	Nwg5gzLSkAmmcK4oMyjyBjkQHFmINkhQ7AgjxhfkipnQJmLllNdcq4Q7xO3b68K68loCj1U5tf/
-	YyxcdiZOSWP1CPhDQ0ag8fRyDWDBb3X0Fn/tqhGHTIveLdOko1cqphaTXgKcy0Mfd+l+UAn1fMs
-	dRFLxbJCrsNO+snCnEqyw89ugbn7vMraPqpi/uYDgjvQDg+9GTMohzIH4IrRwE/lOYWpkg46e+o
-	dir92ASN6LQaxX5TQkec7bIfwCOySYxlqJ1wWhkLOuLYW/xlpT7Vny2nNdy85E4QvXqH4535Ik+
-	GoK9m06raI5mqfxgV6n1QsvcwiwTMcjXxltaBvUIC3EnxdyHvAgTje22OHiFCqN6A+oMFH2xtcz
-	E7n530leGwHN3/S1niEtntpDkOJU8UVfI9p2mQKH49V7aVlOw2tdfpgC09uaIwHQazRGTI00OlK
-	Q==
-X-Received: by 2002:a05:6870:e135:b0:43b:b245:30ac with SMTP id
- 586e51a60fabf-4afdf492b47mr2095487fac.16.1794560993407; Fri, 13 Nov 2026
- 01:09:53 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=XU1Lk5w0;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=0cGPAQzH
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 16D8F7A0493
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 04:18:49 -0500 (EST)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Fri, 13 Nov 2026 04:18:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1794561517;
+	 x=1794647917; bh=6y/Vwdb7m8Q4VQEZiWRGa4EBI0ZcNW5mrZJmNnLAIEk=; b=
+	XU1Lk5w0uu+L798wbsZMLuM/oLYfa2jptOAdI0/brmVfRTwfItVhsy3/WAwvax1F
+	fuaQl4/YNqrjvvedfsQ98apUbuq2EWa3KR/0yNMIo8oMGN6RYG2KhrIIjntO7XyE
+	3T/x22Q0ofh10QVEM3ULAFsFyWj3odFZ7AoKT22lf3icg2StEk+zw2eVVSKHPx+k
+	jvSYUMM/Ua6Iws2yFqcpGetJUD14kijTlkJiW8MpsS1uZxK6FFg9urFhVnwDhwlk
+	Q2sm/viJV6LlSQ9L7J0bNYRhncmf/YGINIJsD/H/Jcg0bofs5O/+sC/SeoLB0FIb
+	JBzviiALhI7Sr8vj5M0l8Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794561517; x=
+	1794647917; bh=6y/Vwdb7m8Q4VQEZiWRGa4EBI0ZcNW5mrZJmNnLAIEk=; b=0
+	cGPAQzH3SBhTsnw+2A9ATJi83tr8tGmI+3kDDLfaTEaRbD5laHcp8CEuyufeolH9
+	jURzrwqeJ7ww6MXCBKDrknmhPGSRPic4aLVzEIABu0DK1XaLZxihlxBePOJqkVI7
+	8U26SDrkzAAubG/VO1ysi5U+MZosEKyDySXbdlR14MknUMkpTa2U73QgwVPhGWo0
+	1CRBlJ2Jo+kwqpRUt2hOGj0KXxfNA9ddfC3jatqzvpCv/BoiYk4TzDg5zI/t7r+q
+	VtSrxa3A1dYMyBXFDt6yYVgyPOWgq6KEsM5mSRXJi8NyFP8ps0wXYBQGOlvhgcdM
+	8GGdR0qeBeN+LCQipeAvQ==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1794561517; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:IV4kp/nubihqscdJ3aRpJnq3H3a4/NuajDDa3Yfk2cvc1jp
+	+PhUMsG1cNU9RjzxyrNitJGn6l7I1TzAeezrvY7r77t0faZHIS4XvfjoPpmNe5yK
+	qrCBnkN2H3VKs/GvYTMpLMKsl92WL2hP0Mj1AI1vFACrc6Sm5+3eZjoBe3k6sJoU
+	s34CmT7EJG5Unv12bq9tYJRICfLa49bN4Z4xb0sYT9m7Slbuq88lJcCnZRBpV3nV
+	kX4vuG8sxaHA22eCmRNaTTb2ma6AxGCb1w8zaPaJloYnZkvOrfuY+7hxGbOSfoZY
+	802AiwrSYQ/NjsZxjxI8RUH+6/4GsnJkS1XoaKQ==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:vxkME9aONuWR23Ea+xNeRHIFYOKp3Ac+/gT4UmzDtbY=:vv1cmvtVAPstmIXGMWwsHMK7bkwINRxjdcmQxQpM0k8=;
+X-ME-Sender: <xms:59X2attsw9jzsR2DUXa62XldNiNGsOnYuvtuSGWCEWJVshM_h3vLtg>
+    <xme:59X2ahTvdP4tih94hNRex_pSoHh7BSjTgNR3au7lIU_BLhrc0JNfgH1QHALo6fbI9
+    F2P3TSxOICtcRLssuCHUsnZCIZfOrWCz5_RdAhRNdxTrFkjkvmYyGtxvg>
+X-ME-Proxy-Cause: dmFkZTFVGdrpsZrdpDlQwvZlSXs02XDBfEcLRW3P1tW5KGZAS4C4fdOW+W5npGRXES212F
+    utLs+hHqpTKLWMZ8tmzA9bRCMjG0dVFWaSgJP+Kckx36Uhk3RvGJbOg+K4+tlArKmH5okZ
+    6FgrfzpHTKtyBWqQtQ5SXsJIHv2n58bHsVCtj2LHVz7CM+T2lcvIrMZU9wZdnHcSztbo3Z
+    PRGrfN5bV9fOZ8IBqi+gkiEDpyNnnh9UROjquhjmwPcYIK/5TwNMJ3JjwjX/ueMEKWjrBo
+    A984hL86fNebMBTXelnTURIMGALHrSY516+YwVrZluwfyr2j6zlviEFXVo6AMfekpGh+YM
+    9c7UuzdfAJ4GPX25yxpydOysxG4iok0RzNv8mvAsX9+/oOTxH+YneYQynPdVFxaaZ/fhrp
+    I+cvtUg/aCxktQ8IVzPAKNgg7FDajd6PMTLOh81U3GlPlYGp0BGc2zo/dxBTVxkXAHr8Zy
+    6X3adHnyud1c6HaY/j1ad5kiVuHeb8/Do47imt06tXJNNAOg7/FxaVQQCVEAQWbqwQu6sl
+    BZaqbgAGHOJsRnqob8hw23nUoUuidlrWANfNd4fkJJlU7qivtKsw6n3UxSJSZq7Yxx2PlU
+    +quMQCQmgDc1BLWKWPSNYJB/IVjbT8IwBH0VeL8UOfE0sS3NBxiwDMRpchuw
+X-ME-Proxy: <xmx:6tX2agqyKoQmSsheqqC2_7zSEJ_p8jtnYFSH9zQgk6vHM_U9OcD1Fg>
+    <xmx:6tX2as8NGURzv57ffr7OrcTGIoV_qwI3Qi5wFRpU6pQqvFxRPgEoUQ>
+    <xmx:6tX2ah4yH9TU7d222ttOVwAZD23Qqesdxspq21XIczL7_LjK0nQ87A>
+    <xmx:6tX2amjDrofUuFTMkIbeFBNLIsmZOjajRlgRPWVYfIsCOlPeVITU1w>
+    <xmx:7dX2amMSM3lU66UWuHc95ZrHdkPEHIlb_f9fZLmlQxUm6A9xbSczPzX8>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 0B16132A0099; Fri, 13 Nov 2026 04:18:31 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,26 +114,71 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261024-tdx-guest-quote-poll-v3-0-6a83bb767314@flashbots.net>
- <3b582cdcfe37f1d01ee71611ab2611f845261089.camel@intel.com> <CAKV3HMM9BKpmgWeFqRqamAsqqiofj+TG4DrOEHmbUyE0FjA7+w@mail.gmail.com>
-In-Reply-To: <CAKV3HMM9BKpmgWeFqRqamAsqqiofj+TG4DrOEHmbUyE0FjA7+w@mail.gmail.com>
-From: Moe Mahhouk <moe@flashbots.net>
-Date: Fri, 13 Nov 2026 09:09:41 +0000
-X-Gm-Features: AclHuK8gjoF7QTD6gz3W2dlc8aBwAvH7LfNyoPplzwlNGb-GET7hpsX60d1d4kI
-Message-ID: <CAKV3HMOnY9LXvtFjnNKzfhVwxf7v-ZqDrRfceyLeVLP82x=bnQ@mail.gmail.com>
-Subject: =?UTF-8?Q?Re=3A_=5B=F0=9F=9A=A8ext=5D_Re=3A_=5BPATCH_v3_0=2F2=5D_virt=3A_tdx=2Dguest=3A_Fi?=
-	=?UTF-8?Q?x_and_speed_up_the_wait_for_a_Quote?=
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, 
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	"kas@kernel.org" <kas@kernel.org>, "Aktas, Erdem" <erdemaktas@google.com>, 
-	"djbw@kernel.org" <djbw@kernel.org>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Miao, Jun" <jun.miao@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-ThreadId: AmcrnnMArev7
+Date: Fri, 13 Nov 2026 10:18:10 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Siddharth Chintamaneni" <sidchintamaneni@gmail.com>,
+ "Fuad Tabba" <fuad.tabba@linux.dev>
+Cc: "Marc Zyngier" <maz@kernel.org>, "Oliver Upton" <oupton@kernel.org>,
+ "Catalin Marinas" <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>,
+ "Mark Rutland" <mark.rutland@arm.com>,
+ "Suzuki K Poulose" <suzuki.poulose@arm.com>,
+ "Joey Gouly" <joey.gouly@arm.com>, "Zenghui Yu" <yuzenghui@huawei.com>,
+ "Steffen Eiden" <seiden@linux.ibm.com>,
+ "Yicong Yang" <yangyicong@hisilicon.com>,
+ "Zhou Wang" <wangzhou1@hisilicon.com>,
+ "Navneet Singh" <navneetsingh@microsoft.com>, apais@microsoft.com,
+ rlmenge@gmail.com, hargar@linux.microsoft.com, kvmarm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Message-Id: <0a5e252e-1494-4b0f-a761-d984238c9d0d@app.fastmail.com>
+In-Reply-To: <20261112180741.17614-1-sidchintamaneni@gmail.com>
+References: <20261023070110.1833446-1-fuad.tabba@linux.dev>
+ <20261023070110.1833446-2-fuad.tabba@linux.dev>
+ <86fqxwzul7.wl-maz@kernel.org>
+ <CA+EHjTw08SZC_3Uodt6ew6vXVH-doW-8G41fVCF-rmaKsv+0fQ@mail.gmail.com>
+ <86ecdgzp6m.wl-maz@kernel.org>
+ <CA+EHjTy0jpY3sdVCENJRj_kfRDwbZ6TpkCAHQ2xUO-7ZuErpcA@mail.gmail.com>
+ <ad724195-3452-495a-a50a-5e5c8093a483@app.fastmail.com>
+ <CA+EHjTyLnAXanf9R7SuoL3gFZUNewX7QOnW=mc3qzwvaxg7jJg@mail.gmail.com>
+ <040cf379-baba-4e3a-bf3d-6bc009a9e28d@app.fastmail.com>
+ <20261112180741.17614-1-sidchintamaneni@gmail.com>
+Subject: Re: [PATCH 1/2] KVM: arm64: Hide FEAT_LS64_ACCDATA from guests
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-This is a gentle reminder; it has been 10 days since my last reply
-without feedback. Do you have any thoughts on it?
-Kind regards
+On Thu, Nov 12, 2026, at 19:07, Siddharth Chintamaneni wrote:
+> On Tue, Oct 27, 2026 at 02:48:29PM +0100, Arnd Bergmann wrote:
+>> On Sat, Oct 24, 2026, at 09:14, Fuad Tabba wrote:
+>> > On a host that runs at EL1 (nVHE or hVHE), this also requires
+>> > __init_el2_fgt to set nACCDATA_EL1 in HFGRTR_EL2 and HFGWTR_EL2, and
+>> > __init_el2_hcrx to set HCRX_EL2.EnAS0. Without them, the ACCDATA_EL1
+>> > access traps to EL2 and the hypervisor panics, and so does ST64BV0
+>> > once SCTLR_EL1.EnAS0 is set. Happy to write those and the KVM change
+>> > once you're ready to post this.
+>>
+>> Thanks for the offer, that part is definitely not my area.
+>
+> We are preparing to post the Microsoft Smart Data Accelerator (SDA) VF
+> dmaengine driver for Microsoft Cobalt SoCs, which uses IOMMU SVA with
+> direct EL0 ST64BV0 portal submissions carrying the process PASID in
+> ACCDATA_EL1.
+>
+> Now that Fuad's KVM guest FEAT_LS64_ACCDATA series is queued, are you
+> planning to post the host ST64BV0 SVA + EL2/KVM patches as a standalone
+> series soon?
+
+Yes, sorry for the delay on my side, I'll try to get it to you ASAP.
+
+For my understanding of your requirements:
+
+- Is that hardware using an SMMUv3 or a different type of IOMMU?
+- Do you have userspace calling ST64BV0 on the host, guest or possibly both?
+
+> Either way, we have Cobalt hardware with FEAT_LS64_ACCDATA available and
+> would be happy to test your patches on silicon, or help put together and
+> carry any remaining pieces alongside our driver series if you prefer.
+
+Sounds good, thanks!
+
+    Arnd
