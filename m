@@ -1,56 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794529582;
-	b=QnMrDk3JGL1R7aYDCqMcq2EFi+8V66WI89LZiSx5ibccI3M/Bn3F6YtqZWyWCuUSbLoE
-	 7bd0VVzeLWJDw+0dOD0HrKgKNVgfP8HYKDpZjKn6gPggd66/bbFoqvo+cnV5mx/Ea5NgR
-	 zre+q9toZWWgk+Xtwx1bDOPvVgo4w3to73QN4tMSUx7kOpWkn/L7m1S4SxRoIC81c0cuU
-	 hspt9FtALGq0ZklSK87MMBaBC4p4Ql1d31gWdJTzmU+imgRUv6mlnAPbemA5xv1YyKLjn
-	 u3jttWb6L/G7TvA5Bt/ZE94deBtKWP0xxPbbJZkR4I90HkhbJidnFDvCP+4U8LzY7cQ==
+	t=1794529793;
+	b=uq7KgBCp9rByJJYuolpts9heX15M3KI946pWr1WuDlJxDZqnyQicWnUyouBIvbLzo517
+	 o310op+k4wRuleaqg2E7aFrwlfSGKvpkp/8LdR/dHpXXnQon4UFd+TT/rYmhILRMs8SqE
+	 4Ig+4x2+R4gkTvhRj3GF/SAcVV25VfggSPyjqXBAoGW5a0Z3fS70EdSFcdoktcwWk9zEM
+	 JYd2e2zYxVG1W+5DJsucUtFGkv0VTDJcVlCvgD48q3PrnLuDInGqUN7HEIl7OxIH6oAi4
+	 LlZtu20kQLJfg+Q6cACFsBZug6tbXqkYI5986s0tbH6zZnxIbYD6Jci+9QRwv935hyg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794529582;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=xB0wHtJLho/hI1TK4pgDO/Y/7cPOsuXpf5q0g5awPCY=;
-	b=okCGn2XO5BcOMJswl4YWyTiHC1pRXikWCzDDaIQ/+cL2QKuEudHxWiXu97uGIe3O0Fum
-	 L7QPJlYS6ZwyBUSK1EsveF08oCP2SigwDpUY8aXAAmB6JUOBCBgaIPkf9VtKp9e6gpGsG
-	 8Skb8MhrSR6dBi+heIWabRIgGyf0a4+moCbeIwGp6QMHfKVgV9eM5l915kmuZZf+Qv0KR
-	 PyTq+2cde+73sThpENBBOt7pdaa5pk1RR/0VnOkXGxQ7nziS1gRqFCln1h4xRHH9zxiI+
-	 9yeSGbat2qDKp1MLNN+xfmLE4JA1i8YkEKeZFR6373ZpVJv1i7qcQng85M8y3zF83Kg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794529793;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
+	bh=r4E+MTESEWZeubmBM7/YkvNZnlWh5Dhkmonv/pR6l2E=;
+	b=y6f0Nll5v/bOf33u1/7aD0GoJQNWwZy/8Y6ojD/zIkJZ9P83ixny6wbl3kWFM4zn8S2p
+	 BlPAikAWePzSVgfv2p559zU2tdlebbo+tIZQwsjfSPAi3oNcS+WImLknn2bTWwRaMshvI
+	 Sy/Bl4vODa10+zlBiMoBc300MHDc4JrGMALqTQXBa1RuaaiDV8K7MawlpZ3Pqcl55F6AM
+	 Pm+8aNmkITIgZWpzaKhKpu+rfLWxvbHUWECOLwL106rVUeyXYxH1mvYlYTh98/xFWaxII
+	 n1UcKugRWL2skDeLKczxuwih/vd70LPlyg7m5QU4hW1JvLGrLiza/C8UFtroLvMwp4Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C7o6XSnt;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=infradead.org;
+	spf=none smtp.mailfrom=casper.srs.infradead.org;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=t8lS+h1x;
+	arc=none smtp.remote-ip=90.155.50.34
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F1D606A32A;
-	Fri, 13 Nov 2026 00:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7296606A321;
+	Fri, 13 Nov 2026 00:29:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E7296606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C7o6XSnt
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C1231F000C4;
-	Fri, 13 Nov 2026 00:26:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794529581;
-	bh=xB0wHtJLho/hI1TK4pgDO/Y/7cPOsuXpf5q0g5awPCY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=C7o6XSntRT4ASi0P0XxS023aAgW0lyzpzZwyNJFt13D6giiGlX4Mfx0woIMu/TM+Q
-	 fSx0VolJpyy9H8xl9DRkqwnXeR406Q7VBLeojN8vpbqQrl2tunjTDpv4FLJh+ciVDq
-	 NqsDs7ZWtBsJcM4vYKVlwJEco5FfGY6BFA5T8p1js+DdMwat6WYnFWQ04vgi37YJ76
-	 6NvDmtyA2DsFzQy0AgdM7A7vyrkFhQH4FvPEAoe5H7jXf0uBByHqAojMqy6J0jKoN1
-	 2qDa1RB6zZg34GwTjI9XhutXMPmp9BnAumS5oxJYTMskrRa0YsLdrM3mO3EoSYfqlM
-	 qDGlWgn8n5qaA==
-Message-ID: <sashiko-outbox-211997@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] vfio/pci: Only lock the upstream bridge if the reset
- may need it
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Samiullah Khawaja" <skhawaja@google.com>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
-In-Reply-To: <20261112235700.2029562-1-skhawaja@google.com>
-References: <20261112235700.2029562-1-skhawaja@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 13 Nov 2026 00:26:21 +0000
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=t8lS+h1x
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=r4E+MTESEWZeubmBM7/YkvNZnlWh5Dhkmonv/pR6l2E=; b=t8lS+h1xoqqcNCX6bvUQ6GPBG3
+	czOnBE3wbdobT8Xt4PbuAuPs6szpn7rX1ZYfX4KebCgyrEdTx+HfnnFUSEjMVNXqEJzWPXJPmTDzl
+	G2jDnmgINPeVSnatFqidjs2yw/xK3G/hIg72zvZo1RoW1Y8u8zJnkNvxWVJ4BgNLyatu8CmydO5hT
+	btrhY2LDnkjTrKfX4BmMJGovM0g0FvdzxKr8PMjjy80ZjTDzIIWr/MRyamnDb7s9yLSSP57oCwDU2
+	xdsRsVcWR0GsFxCvyPbRygnISpR20u9vxhzIJfcUO5UB/u9ZCIUHDTw2v4xbZVhheW+5uC92tv89q
+	ga5jTSFA==;
+Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
+	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xRfAq-0000000D12s-1rZk;
+	Fri, 13 Nov 2026 00:29:48 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
+	id 1xRfAq-00000000DvP-11Bi;
+	Fri, 13 Nov 2026 00:29:48 +0000
+From: David Woodhouse <dwmw2@infradead.org>
+To: =?UTF-8?q?J=C3=B6rg=20R=C3=B6del?= <joro@8bytes.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	ashish.kalra@amd.com,
+	michael.roth@amd.com,
+	nsaenz@amazon.com,
+	anelkz@amazon.de,
+	James.Bottomley@HansenPartnership.com,
+	Melody Wang <huibo.wang@amd.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	kvm-riscv@lists.infradead.org,
+	x86@kernel.org,
+	coconut-svsm@lists.linux.dev,
+	joerg.roedel@amd.com,
+	Mushahid Hussain <hmushi@amazon.co.uk>,
+	Sriram Nambakam <snambakam@linux.microsoft.com>,
+	David Woodhouse <dwmw@amazon.co.uk>
+Subject: [PATCH 18/16] KVM: SVM: Bound the SNP plane count by the architectural VMPL limit
+Date: Thu, 12 Nov 2026 17:29:48 -0700
+Message-ID: <20261113002948.53522-2-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261111222911.477-1-dwmw2@infradead.org>
+References: <20261111222911.477-1-dwmw2@infradead.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,177 +88,49 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Sender: David Woodhouse <dwmw2@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] PCI: pci_reset_needs_bridge_lock() is true for VFs behind CXL
-  ports
-- [Medium] PCI: pci_reset_needs_bridge_lock() is true for VFs on hotplug
-  slots
-It also noticed 2 related pre-existing issues this patch does not
-introduce:
-- [Medium] PCI: incomplete sibling check in cxl_reset_bus_function() [1]
-- [Critical] vfio/pci: double free in vfio_pci_set_power_state() [2]
---
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-commit 5344c77aa429b69701e7ba84d963f4e63e1dda8b
-Author: Samiullah Khawaja <skhawaja@google.com>
+sev_snp_max_planes() reports the VMPL count straight from CPUID
+0x8000001f EBX[15:12], a 4-bit field the host provides. A value above
+four lets userspace create SNP planes that no VMPL switch can ever
+reach, because the switch already refuses a VMPL at or above
+SVM_SEV_VMPL_MAX.
 
-vfio/pci: Only lock the upstream bridge if the reset may need it
+Clamp the count to between one and SVM_SEV_VMPL_MAX, so that a
+VM's plane count never exceeds what the architecture defines.
 
-This commit adds pci_reset_needs_bridge_lock() to check whether a device has
-a bus reset method enabled, and updates vfio_pci_core_disable() to only lock
-the upstream bridge when a bus reset may be used.
+Fixes the plane count in "kvm: svm: Implement max_planes x86
+operation".
 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 7c6f2aba81443..c44e4d4d87743 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -5256,6 +5256,34 @@ int __pci_reset_function_locked(struct pci_dev *de=
-v)
->  }
->  EXPORT_SYMBOL_GPL(__pci_reset_function_locked);
-> =20
-> +/**
-> + * pci_reset_needs_bridge_lock - check whether a reset of @dev may need =
-the
-> + * upstream bridge to be locked
-> + * @dev: PCI device to check
-> + *
-> + * A bus reset of @dev is done through its upstream bridge, so the calle=
-r must
-> + * hold the bridge lock. The other reset methods only access @dev itself.
-> + *
-> + * Return: true if any of the reset methods enabled for @dev is a bus re=
-set.
-> + */
-> +bool pci_reset_needs_bridge_lock(struct pci_dev *dev)
-> +{
-> +	int i, m;
-> +
-> +	for (i =3D 0; i < PCI_NUM_RESET_METHODS; i++) {
-> +		m =3D dev->reset_methods[i];
-> +		if (!m)
-> +			break;
-> +
-> +		if (pci_reset_fn_methods[m].reset_fn =3D=3D pci_reset_bus_function ||
+Fixes: https://lore.kernel.org/all/20260608144252.351443-60-joro@8bytes.org/
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+---
+ arch/x86/kvm/svm/sev.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-[Severity: Medium]
-Does pci_reset_needs_bridge_lock() still return true for VFs on hotplug
-slots, leaving concurrent VF resets broken on hotplug-capable ports?
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index c8a9f808dcc4..eefa8641100b 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -6010,8 +6010,10 @@ bool sev_snp_blocked(enum inject_type type, struct kvm_vcpu *vcpu)
+ int sev_snp_max_planes(struct kvm *kvm)
+ {
+ 	/*
+-	 * CPUID 0x8000001f EBX[15:12] is host-provided data; a zero there
+-	 * must not report "no planes at all" (plane 0 always exists).
++	 * CPUID 0x8000001f EBX[15:12] is host-provided data.  A zero there
++	 * must not report "no planes at all" (plane 0 always exists), and
++	 * the architecture defines no more than SVM_SEV_VMPL_MAX VMPLs, the
++	 * bound the VMPL switch already enforces.
+ 	 */
+-	return max(vmpl_levels, 1U);
++	return clamp(vmpl_levels, 1U, SVM_SEV_VMPL_MAX);
+ }
+-- 
+2.50.1
 
-When pci_iov_add_virtfn() creates a VF on a bus with a hotplug slot (such as
-pciehp with PCI_SLOT_ALL_DEVICES), pci_setup_device() assigns virtfn->slot
-and virtfn->multifunction is cleared to 0 before pci_init_reset_methods()
-runs.  During probing, pci_reset_bus_function() calls
-pci_dev_reset_slot_function() before pci_parent_bus_reset():
-
-drivers/pci/pci.c:pci_dev_reset_slot_function() {
-	if (dev->subordinate || !dev->slot ||
-	    dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
-	    (dev->multifunction && !dev->slot->per_func_slot))
-		return -ENOTTY;
-
-	return pci_reset_hotplug_slot(dev->slot->hotplug, probe);
-}
-
-Because pci_dev_reset_slot_function() returns 0, pci_reset_bus_function is
-recorded in virtfn->reset_methods[] behind pcie_reset_flr (and similarly for
-a single-function PF probed before VFs are enabled).  Checking all entries
-in dev->reset_methods[] causes pci_reset_needs_bridge_lock() to return true
-even though __pci_reset_function_locked() will use pcie_reset_flr first, so
-concurrent vfio_pci_core_disable() calls still contend on the bridge trylock
-and skip the FLR.
-
-> +		    pci_reset_fn_methods[m].reset_fn =3D=3D cxl_reset_bus_function)
-
-[Severity: Medium]
-This problem wasn't introduced by this patch, but cxl_reset_bus_function()
-[1] returns 0 on probe without checking whether sibling devices on the
-bus prevent a bus reset:
-
-drivers/pci/pci.c:cxl_reset_bus_function() {
-	...
-	dvsec =3D cxl_port_dvsec(bridge);
-	if (!dvsec)
-		return -ENOTTY;
-
-	if (probe)
-		return 0;
-	...
-	rc =3D pci_reset_bus_function(dev, probe);
-}
-
-During probing, returning 0 before calling pci_reset_bus_function() bypasses
-the sibling checks in pci_dev_reset_slot_function() and
-pci_parent_bus_reset().  For a CXL VF or a device sharing a bus, the PCI
-core records cxl_reset_bus_function as supported, but when the reset is
-later executed with probe =3D=3D false, pci_reset_bus_function() fails with
--ENOTTY.
-
-> +			return true;
-> +	}
-
-[Severity: Medium]
-Will pci_reset_needs_bridge_lock() also always return true for VFs behind a
-CXL-capable upstream port?
-
-In cxl_reset_bus_function(), pci_upstream_bridge() resolves a VF to its PF's
-upstream bridge via pci_physfn(), and if that bridge has a CXL Port DVSEC,
-the probe path immediately returns 0.  Every VF behind such a port therefore
-has cxl_reset_bus_function in dev->reset_methods[] (behind pcie_reset_flr),
-so pci_reset_needs_bridge_lock() returns true and concurrent
-vfio_pci_core_disable() calls on those VFs still fail pci_dev_trylock() on
-the shared bridge and skip the reset.
-
-[ ... ]
-
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
-_core.c
-> index fcbb2da860e2a..ba3dfdadae399 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -777,7 +777,8 @@ void vfio_pci_core_disable(struct vfio_pci_core_devic=
-e *vdev)
->  	 * overwrite the previously restored configuration information.
->  	 */
->  	if (vdev->reset_works) {
-> -		bridge =3D pci_upstream_bridge(pdev);
-> +		bridge =3D pci_reset_needs_bridge_lock(pdev) ?
-> +			 pci_upstream_bridge(pdev) : NULL;
->  		if (bridge && !pci_dev_trylock(bridge))
->  			goto out_restore_state;
->  		if (pci_dev_trylock(pdev)) {
-
-[Severity: Critical]
-This problem wasn't introduced by this patch, but vfio_pci_core_disable()
-[2] calls vfio_pci_set_power_state(vdev, PCI_D0) without holding
-vdev->memory_lock, which can race with another path transitioning the device
-to D0 and cause a use-after-free and double free of vdev->pm_save:
-
-CPU0                                  CPU1
-vfio_pci_core_iotcl() / config write  vfio_pci_core_disable()
-  down_write(&vdev->memory_lock)
-  vfio_pci_set_power_state(..., D0)
-                                        vfio_pci_set_power_state(..., D0)
-    needs_restore =3D true
-                                          needs_restore =3D true
-    pci_set_power_state()
-                                          pci_set_power_state()
-    pci_load_and_free_saved_state(
-      &vdev->pm_save)
-                                          pci_load_and_free_saved_state(
-                                            &vdev->pm_save)
-                                            <-- use-after-free / double free
-
-When the device is in D3hot, both threads see pdev->current_state >=3D
-PCI_D3hot before the state is updated, so both set needs_restore =3D true a=
-nd
-call pci_load_and_free_saved_state(&vdev->pm_save) concurrently.
-
-[1] https://sashiko.dev/#/bug/linux-f16fb8bb-75c3-4e2c-af09-9d033af32bc8
-[2] https://sashiko.dev/#/bug/linux-d67caf72-8141-4778-be9b-75a34618f8f7
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261112235700.2029=
-562-1-skhawaja@google.com?part=3D1
