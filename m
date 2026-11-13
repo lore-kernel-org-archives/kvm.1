@@ -1,56 +1,50 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.127.231.30
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794567242;
-	b=O6S7hLZG1T8tfsZlM+IpptTZZ6eWfN0WCQnxRg7iCE5EY732MvV1iwXGVteRzxFQHN/t
-	 TrlkqQukaS5j/+GYurYS8V3OymZlAPNL7wVRFGDraljifthyrfTFlNdxQAdeP0dUqn7/6
-	 kQ6zdLKsMdDzFa6EfdC4uyafSBfgIRU0j8gGBRv9L5MGgfomDWDa+858BBKM8qRn0KyZW
-	 z9t27YOZ1TUs+v2CYJRyUu/Pq8wWbmjN5E5fOSiSZHqKc20+nbwwMHNYNpqNEy3Sf38sy
-	 kCyKfg5fD/WqKoyNVLgQAG1BDhaI0+LwPEnApqONxed16HV/RQ4B8P2yebSAYHgr6UA==
+	t=1794568421;
+	b=IlLD8W6Bl60XzNOIYvDfyd+eGpPAugg3NwV9y9y8UCL11454/I06YqhPzVY+Pe+yG6ux
+	 00LhCF7jkOYSHDKMhNWouPLlPDbN/afaQjGq4nlPzuVtehxvbbdH8cL/zwXbJiw1j8gJe
+	 aY+vd5ZCQ9LyA97o7uIkIGYvN2nuDaPQT1OW73pxGlOGfSWEplaI4oaUv/1+aO9poeWp2
+	 8uM8qJCl7fx4lZjXvyw0iEqOPd3SItCRMATeMUy4snQogjc9EiD5V4LpnZnohV36kD8q4
+	 zgHCseDE8EW3UaHjVsdcwVMdY2OolO43t/Xb0IBLoR6XVO5WbOVW5pkVRUc6Tm0qBpw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794567242;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=fWJcRXjj6PRpDNlqYnDkesvi0jgKgQsveVoKe2eJUY8=;
-	b=NQ4AAwEbAv+P5DNJDv9tjjEICE6oqY+i+/FeWg7UGAGc/Wmqqo2Ax39SNgj7nS1PQfaV
-	 0fyJ7bGdsFabka5iIqBaMp9mB49X2EKO0888Sz9FXBxhITvkVfFTSK3JOxitWSChvokKb
-	 /zmT8sJBzyuIEMX56AmPbZ9eecD2z76ELQvJYJimxjhtI8UY4qR+X6ZLWZaoAtrkl8JQ8
-	 ngLjZI3ZsNZKuIdkqQ16Z2U/atUTvsfAzbAGMkkhf+f99XzMdJbyElxpYeaMBbZVb/VjH
-	 Q1Y3SapLaXDqQ4PdZcJ/DCxvxPtsuKkmXc4PsfgwC2al9rnTRg3cIhLsAcreoudoLqQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794568421;
+	h=DMARC-Filter:DKIM-Signature:Subject:Mime-Version:Received:From:
+	 Content-Language:In-Reply-To:Content-Type:Date:X-Lms-Return-Path:
+	 X-Original-From:References:User-Agent:Content-Transfer-Encoding:To:Cc:
+	 Message-Id;
+	bh=5z3kRYBTZmascmZC3oBJ58Ce4ddSnbuJ0JbdYHj/1JU=;
+	b=Wym+3KMvFXAz5A5wjW6sEVvmINMecoYCuxmfMbmWH5mLLQOPjgicMR4y+8KZJTe/3UlW
+	 sfK8x5lKQZCb5Ms/0OuFldeXjzc0C0vL/npOShON+sD61XDqzDbUmwS3pHmgsvpS16N3s
+	 UE/zFZORaDdNqmZ41mODLYdBNXq+PSOHcSWBQPDhjQv6xG7iK7szwgqFOFfzE777mtk89
+	 3qU0yJAYfiKNfALiASqTJG1KyGkhlt6l9no3UPY5xzVQ6JalwTuXZBbzC5/xqKQKIsibv
+	 ZE4ghZrPD9QfCw1f4cNYEmC9/B9z9G9syZTvzt0aPKdBFHHgMG6YYT5azFhzY2Otb9A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Pn27p0uv;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=lanxincomputing.com;
+	spf=pass smtp.mailfrom=lanxincomputing.com;
+	dkim=pass header.d=lanxincomputing-com.20200927.dkim.feishu.cn header.i=@lanxincomputing-com.20200927.dkim.feishu.cn header.a=rsa-sha256 header.s=s1 header.b=2RJOnBmK;
+	arc=none smtp.remote-ip=209.127.231.30
+Received: from va-2-30.ptr.blmpb.com (va-2-30.ptr.blmpb.com [209.127.231.30])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BF960A261D;
-	Fri, 13 Nov 2026 10:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19131606A31C
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 11:13:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19131606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lanxincomputing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lanxincomputing.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Pn27p0uv
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B661F000C4;
-	Fri, 13 Nov 2026 10:54:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794567242;
-	bh=fWJcRXjj6PRpDNlqYnDkesvi0jgKgQsveVoKe2eJUY8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Pn27p0uvBBJ6LJETrVO7gInmEWjKaScJ12M0nrPWh4qpqgq97VL0x3GAali/NNaJU
-	 MwEkwg1NcMbZogVcig0dG+YRCWa5kVj4xKXiCKxuhzD2sRxpgIv5Ql0w+CwnTJ/K0c
-	 Gft2wFjD8qfFKsfseolavAEka5VPRhCSGZVBkM8Pu7LKfNLcvz8bPZWqfkTgRzuv8W
-	 0iEmz00CFxMTdLu+OMj0K4+BsG8VzX6XKs7wZyZHx5ycf5OvmeELXjEiP/+OmUVYJs
-	 rBGZOQZcAh/CiB2OZ/CV42Red5o661j/OdsWdbBdga+6OZ2NBrM7iLP66Bp7O4yi9O
-	 8kJVkMSrNB60Q==
-Message-ID: <sashiko-outbox-212640@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC] vhost: set dirty log bits without pinning pages on
- x86
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, "Eugenio Perez" <eperezma@redhat.com>
-In-Reply-To: <af7f05bf637337d35fdd10f3e0dbb5e39d7780e7.1794480795.git.mst@redhat.com>
-References: <af7f05bf637337d35fdd10f3e0dbb5e39d7780e7.1794480795.git.mst@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 13 Nov 2026 10:54:01 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=lanxincomputing-com.20200927.dkim.feishu.cn header.i=@lanxincomputing-com.20200927.dkim.feishu.cn header.a=rsa-sha256 header.s=s1 header.b=2RJOnBmK
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=lanxincomputing-com.20200927.dkim.feishu.cn; t=1794568414;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=5z3kRYBTZmascmZC3oBJ58Ce4ddSnbuJ0JbdYHj/1JU=;
+ b=2RJOnBmKuMtUQ3+7IjG6Woaz9wyDDKqGAWaPEXWgDpQ6L0ZMktXmmcskyvJgoPA1s8ySnU
+ XOGqIVBBbQzYPgnjEtbRYedF7VAboqEbExRMDAyiy2wfZHspHWHcn6iofRahw+d6UdPeGS
+ I8PP/wrNOGlTgaEKF7GuVQWQXftQJYychqFFQivbPyXwjIEu1EsU2md39CVBs8DZKgKK0y
+ qkxnp+itHCmfHcS16ymXylwInrux69aSf5sOCcvlyQVDdlKE9ECuZqndzOKu+6cAGzu1Df
+ nkn0/avjcVxiIoZckUUsXepzV4VNTUhzQkYJGkEmjYLEzzD4CvbfkMZUGiOspg==
+Subject: Re: [PATCH v4] RISC-V: KVM: Serialize and atomize the IMSIC's TOPEI read-and-clear operation
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,85 +53,151 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+Mime-Version: 1.0
+Received: from [127.0.0.1] ([123.120.5.129]) by smtp.feishu.cn with ESMTPS; Fri, 13 Nov 2026 19:13:31 +0800
+From: "BillXiang" <xiangwencheng@lanxincomputing.com>
+Content-Language: en-US
+In-Reply-To: <sashiko-outbox-212624@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 13 Nov 2026 19:13:29 +0800
+X-Lms-Return-Path: <lba+26af6f0dc+28a652+vger.kernel.org+xiangwencheng@lanxincomputing.com>
+X-Original-From: BillXiang <xiangwencheng@lanxincomputing.com>
+References: <20261113101358.3007601-1-xiangwencheng@lanxincomputing.com> <sashiko-outbox-212624@kernel.org>
+User-Agent: Mozilla Thunderbird
+Content-Transfer-Encoding: 7bit
+To: "Anup Patel" <anup@brainfault.org>
+Cc: <xb@ultrarisc.com>, <atish.patra@linux.dev>, <pjw@kernel.org>, 
+	<palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <alex@ghiti.fr>, 
+	<pbonzini@redhat.com>, <graf@amazon.com>, 
+	<kvm-riscv@lists.infradead.org>, <kvm@vger.kernel.org>, 
+	<linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+Message-Id: <44886809-744d-4e4d-9a55-45e2fcc6dd08@lanxincomputing.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Critical] x86/uaccess, vhost: missing access_ok() check in
-  set_bit_user()
-- [High] x86/uaccess: set_bit_user() uses write-only =3Dr constraint on
-  __err
---
+On 11/13/2026 6:34 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issues to consider:
+> - [High] RISC-V: KVM: stale topei passed to
+>    __imsic_swfile_extirq_update()
+> - [High] RISC-V: KVM: imsic->swfile dereferenced before !imsic check in
+>    inject
+> - [Low] RISC-V: KVM: missing Fixes trailer on IMSIC TOPEI serialization
+>    fix
+> --
+> 
+> commit 322bd38f6016b31c1cdf5b875effdce4436f4b2f
+> Author: BillXiang <xiangwencheng@lanxincomputing.com>
+> 
+>> RISC-V: KVM: Serialize and atomize the IMSIC's TOPEI read-and-clear operation
+>>
+>> The TOPEI read-and-clear must be atomic with respect to
+>> interrupt injection (set_bit in EIP). Otherwise an
+>> interrupt injected between the topei read and the
+>> clear_bit could be silently dropped.
+>>
+>> Signed-off-by: BillXiang <xiangwencheng@lanxincomputing.com>
+> 
+> [Severity: Low]
+> Since this fixes a race in the IMSIC software file TOPEI handling, should
+> it include:
+> 
+>    Fixes: db8b7e97d613 ("RISC-V: KVM: Add in-kernel virtualization of AIA IMSIC")
+> 
+>> diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
+>> index 302938972aa0e..f4cc1691e0478 100644
+>> --- a/arch/riscv/kvm/aia_imsic.c
+>> +++ b/arch/riscv/kvm/aia_imsic.c
+>> @@ -526,26 +526,25 @@ static void imsic_vsfile_cleanup(struct imsic *imsic)
+>>   		kvm_riscv_aia_free_hgei(old_vsfile_cpu, old_vsfile_hgei);
+>>   }
+>>   
+>> -static void imsic_swfile_extirq_update(struct kvm_vcpu *vcpu)
+>> +static void __imsic_swfile_extirq_update(struct kvm_vcpu *vcpu, u32 topei)
+>>   {
+>>   	struct imsic *imsic = vcpu->arch.aia_context.imsic_state;
+>>   	struct imsic_mrif *mrif = imsic->swfile;
+>> -	unsigned long flags;
+>> -
+>> -	/*
+>> -	 * The critical section is necessary during external interrupt
+>> -	 * updates to avoid the risk of losing interrupts due to potential
+>> -	 * interruptions between reading topei and updating pending status.
+>> -	 */
+>> -
+>> -	raw_spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
+>>   
+>> -	if (imsic_mrif_atomic_read(mrif, &mrif->eidelivery) &&
+>> -	    imsic_mrif_topei(mrif, imsic->nr_eix, imsic->nr_msis))
+>> +	if (imsic_mrif_atomic_read(mrif, &mrif->eidelivery) && topei)
+>>   		kvm_riscv_vcpu_set_interrupt(vcpu, IRQ_VS_EXT);
+>>   	else
+>>   		kvm_riscv_vcpu_unset_interrupt(vcpu, IRQ_VS_EXT);
+>> +}
+>> +
+>> +static void imsic_swfile_extirq_update(struct kvm_vcpu *vcpu)
+>> +{
+>> +	struct imsic *imsic = vcpu->arch.aia_context.imsic_state;
+>> +	struct imsic_mrif *mrif = imsic->swfile;
+>> +	unsigned long flags;
+>>   
+>> +	raw_spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
+>> +	__imsic_swfile_extirq_update(vcpu, imsic_mrif_topei(mrif, imsic->nr_eix, imsic->nr_msis));
+>>   	raw_spin_unlock_irqrestore(&imsic->swfile_extirq_lock, flags);
+>>   }
+>>   
+>> @@ -830,12 +829,15 @@ int kvm_riscv_vcpu_aia_imsic_rmw(struct kvm_vcpu *vcpu, unsigned long isel,
+>>   	struct imsic_mrif_eix *eix;
+>>   	int r, rc = KVM_INSN_CONTINUE_NEXT_SEPC;
+>>   	struct imsic *imsic = vcpu->arch.aia_context.imsic_state;
+>> +	unsigned long flags;
+>>   
+>>   	/* If IMSIC vCPU state not initialized then forward to user space */
+>>   	if (!imsic)
+>>   		return KVM_INSN_EXIT_TO_USER_SPACE;
+>>   
+>>   	if (isel == KVM_RISCV_AIA_IMSIC_TOPEI) {
+>> +		raw_spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
+>> +
+>>   		/* Read pending and enabled interrupt with highest priority */
+>>   		topei = imsic_mrif_topei(imsic->swfile, imsic->nr_eix,
+>>   					 imsic->nr_msis);
+>> @@ -852,16 +854,20 @@ int kvm_riscv_vcpu_aia_imsic_rmw(struct kvm_vcpu *vcpu, unsigned long isel,
+>>   					  eix->eip);
+>>   			}
+>>   		}
+>> +		if (wr_mask)
+>> +			__imsic_swfile_extirq_update(vcpu, topei);
+> 
+> [Severity: High]
+> Does this pass the pre-clear interrupt ID in topei to
+> __imsic_swfile_extirq_update() instead of re-reading imsic_mrif_topei()
+> after clear_bit()?
+> 
+> When a guest claims the last pending interrupt in imsic->swfile via a
+> TOPEI write, topei still holds the non-zero ID that was just cleared from
+> eix->eip.  __imsic_swfile_extirq_update() then calls
+> kvm_riscv_vcpu_set_interrupt(vcpu, IRQ_VS_EXT) instead of unsetting
+> IRQ_VS_EXT, leaving IRQ_VS_EXT asserted and causing spurious guest
+> external interrupt traps.
+> 
+> [ ... ]
+> 
+>> @@ -959,6 +965,7 @@ int kvm_riscv_vcpu_aia_imsic_inject(struct kvm_vcpu *vcpu,
+>>   	unsigned long flags;
+>>   	struct imsic_mrif_eix *eix;
+>>   	struct imsic *imsic = vcpu->arch.aia_context.imsic_state;
+>> +	struct imsic_mrif *mrif = imsic->swfile;
+>>   
+>>   	/* We only emulate one IMSIC MMIO page for each Guest VCPU */
+>>   	if (!imsic || !iid || guest_index ||
+> 
+> [Severity: High]
+> Does imsic->swfile dereference a NULL imsic pointer before the !imsic
+> check below?  If a vCPU is created after aia_init(), its imsic_state is
+> NULL and injecting an MSI to that vCPU will crash the host kernel instead
+> of returning -ENODEV.
+> 
 
-commit 508047a5899f1ab9b68b7a3a4c36fffabf6ab858
-Author: Michael S. Tsirkin <mst@redhat.com>
+Ignore this version.
 
-vhost: set dirty log bits without pinning pages on x86
-
-This commit introduces a set_bit_user() helper on x86 to atomically set a
-bit in user memory using an exception table entry, and uses it in vhost's
-set_bit_to_user() to avoid pinning user pages on the dirty-logging path.
-
-Link: https://lore.kernel.org/all/20261112085631.128819-1-zhaoguohan@kylino=
-s.cn/
-
-> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uacces=
-s.h
-> index 3a0dd3c2b233e..ba1e7c3f83c8e 100644
-> --- a/arch/x86/include/asm/uaccess.h
-> +++ b/arch/x86/include/asm/uaccess.h
-> @@ -594,6 +594,24 @@ _label:									\
->  	__ret;								\
->  							})
-> =20
-> +/* set_bit() on a byte of user memory; returns -EFAULT on fault. */
-> +#define set_bit_user(nr, addr)					\
-> +({									\
-> +	int __err =3D 0;							\
-> +	__uaccess_begin();						\
-> +	asm volatile("\n"						\
-> +		     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"		\
-> +		     "2:\n"						\
-> +		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
-> +					   %[errout])			\
-> +		     : [errout] "=3Dr" (__err),				\
-> +		       [ptr] "+m" (*(u8 __user *)(addr))		\
-> +		     : [mask] "q" ((unsigned char)BIT(nr))		\
-> +		     : "memory", "cc");				\
-> +	__uaccess_end();						\
-> +	__err ? -EFAULT : 0;						\
-> +})
-
-[Severity: Critical]
-Does set_bit_user() need an access_ok() check (or user_access_begin() /
-scoped_user_rw_access()) before calling __uaccess_begin()?
-
-Previously, set_bit_to_user() called pin_user_pages_fast(), which rejected
-kernel addresses.  Not every vhost path validates vq->log_base with
-access_ok() before reaching set_bit_to_user(): when vq->iotlb is non-NULL
-and vq->log_used is set (with VHOST_F_LOG_ALL unset), vq_log_access_ok()
-skips log_access_ok() because vq_log_used_access_ok() returns true early:
-
-drivers/vhost/vhost.c:vq_log_used_access_ok() {
-	if (vq->iotlb)
-		return true;
-
-	return !log_used || log_access_ok(log_base, log_addr,
-					  vhost_get_used_size(vq, vq->num));
-}
-
-When log_used() then runs, it calls log_write_hva() ->
-log_write(vq->log_base, ...) -> set_bit_to_user(), allowing userspace to
-set bits in arbitrary kernel memory with SMAP disabled.
-
-[Severity: High]
-Should the [errout] constraint on __err be "+r" instead of "=3Dr"?
-
-%[errout] is only written by the exception handler when instruction 1b
-faults.  With a write-only "=3Dr" constraint, the compiler treats the
-initial "__err =3D 0" assignment as dead and can reuse a register holding a
-non-zero input (such as [mask]), causing set_bit_user() to return -EFAULT
-even when the atomic orb succeeds and aborting vhost dirty-page logging.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/af7f05bf637337d35fd=
-d10f3e0dbb5e39d7780e7.1794480795.git.mst@redhat.com?part=3D1
+Regards,
+Bill
