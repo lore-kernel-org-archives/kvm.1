@@ -1,73 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794578009;
-	b=djD1jEKZpTf/VR4ZmjNQYQg31hYhllc5JtYw8JDa4G4i65WBGtk6kBi7/LoFryVObDVs
-	 I6WbdF1wljzr6rTGsnphq7AGd4/xxkb4UIXQZMAaOi4ZTsslS9ksX4rE60R+z/CDeSN9q
-	 AShKuRQvvsP6X4knfERQhDCGQh0gHEU9sXPc+C5Hl1etPI0oWiLKPDxzylQNKtjvWZnoi
-	 wEmrNz+1Bu5s+gWMlHvyBZAb1arxqqbmdZubMFbkhI25PCSbCHYaHksiVWFALvm5iMwdo
-	 Idxo0JUF0ECWLACmepZTqGqk7+so4PTTPasmxQNRWRSRF1a1IG0Ts/e4k304nQH2fXQ==
+	t=1794579958;
+	b=NxO8d30bS6+bryLtzJj4LXZNytYzZzsSTqlftZiX9RF8A+dfQOg+3aMj8+uyNcANxq4E
+	 FnJZljkNxLQiPeIH6AXBxdb8NasbrFWuCiEL/sqlx3FAvCcO7ZMyjVhulBsyzrU8a3eEl
+	 rqbv3OLa+I5SXRyY0vxQztnjta9Fssngw1o2swH4Iz5Btz9YW16qYXtBxx1IZrfv2Xyrl
+	 0FE557MuLqNjBJdWFc9wD8b2VSHgYxanewZfirTgRwpzwrGFTSETjgUbK5a5PAaY4gX18
+	 64p+0RvC2OB2USWZY/jgXuhTMQ1wXYI0aX0b8X98dsWb8l95Q36sUE26vDjyx5ZG+pQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794578009;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=OpvfzW9Dt2ae2NU+aWz0za7rartm1yMIX237xsigiwk=;
-	b=B+aqc30jM6+pSYaKCCfRUYfs4zBWdmMJvvcXQGijjzKH2nP/XNg49NTtNlQj7y2yfOfK
-	 vy40utXWmPFmGrnJBsezTPgqpH5nSnr7x60H+evie3YorNCBo+QI5QfHzlhl/tAmtED89
-	 e3madmEOYh7hqTMuoRg2ZK5LYzyc1NFtfcQqZBCAIg5IhS6CKHeZpOqlU0zKnrMaruJK2
-	 TD9vfDmAfLrQnwNm84tIrK30dO2QXrW9/VPNA+eu8UyRVm5Cqcuo/KfURBjWAkYniZXDb
-	 AHrLo0twuoqgGDXEwTfvNLDu0oMRLat0v5lwivjK+CRVPXjeJTYWISKePL/dPN58l5g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794579958;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=uGazlu8ZE2iEilyNSWyDR4PXa0zhg5n8Ju1m9LVZYdk=;
+	b=zpFooomPS3xpmZOdtFbkFo8pMpvnA2oDYHQb9epqPhXC42xaMopmclkzXSzwG7gEm4uN
+	 fEHaMcF+LZB7jKmIjWcJ2VCalGOUOx2pzgRxtOpwQ48DSIWo4Ue85ub6/fYN2mNP1HuPK
+	 EUXkxaHHvwY7aC5z07r1LADfoQ7v20CBtrimWfdO0FfQyTXdbsRYbCEUDm+B6rByv4qkJ
+	 9eDHx+OWosYNRGBTTtfpZhpjwrGcWDyHNk0geGlMdQRGjSYYCcbIHh2yncVStgXbyVcsO
+	 WXLnsoTaJA0MmEiTt9xlRPeTfJyZig1VvN6U/gzVRqB1GB8vXjnw4PM+j00LFrpxRZQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="IyRE+h6/";
-	arc=none smtp.remote-ip=209.85.214.197
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d6Mtjvb0;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB0C606A331
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:53:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5AB0C606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C2E606A323;
+	Fri, 13 Nov 2026 14:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=IyRE+h6/
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2ea71803effso9462895ad.3
-        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:53:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794578009; x=1795182809; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OpvfzW9Dt2ae2NU+aWz0za7rartm1yMIX237xsigiwk=;
-        b=IyRE+h6/BprbiT9YfKqROdO8bQAo+A9P5DBpWh7NAFxsTtHmRb+PVB5foakalhsJLd
-         //dRxsU74v70M8ZO1jT99iOuMazMM8iqLyrZx1WAEt1BUTP4FKjYMYPPFNI97wq+wt02
-         lfjJE07r/cctnslWn/iqQVQmSSfRNdwiTbfXFSygjUlo+g6GKgv5Luz2SAuCbiNANTMk
-         oYKThmDNsjeKbGRyB+ZLHPyVHvIZy4k64/K2ghexG51Edu589TTsc/CZm98VspHefSBZ
-         gxoYYRO/HhDZPMP8MehkGZYX1ZiGTzy7mDHjrcuCZdTGDEj0E1yEQTLXR+ChBQPA4KCd
-         Y9ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794578009; x=1795182809;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=OpvfzW9Dt2ae2NU+aWz0za7rartm1yMIX237xsigiwk=;
-        b=ln0N1NVV3G8g2+WauOe/9bp8a7/ZYWtY2lx+n+6ENb0VwZRK1Gxg7zAKcqckNiUR1H
-         5j6MDHnctJ3oX8V+4BxDloNATaBReHQq966p4WMa1DZz4QeyxxZSG5EmxNjStxWvFUfC
-         wTN6Sv25HJgP2bsG3OTGFKJ1e710dugBUb1/XYY2Bb90UA5fI+gyZ8dxOG9zL0UdmTb+
-         8MhPTBdsag4d/BjJUmOv7sG5yxL3PHcfroCzi9f4H+DY6WqyIbBAQuWgjW89v7UYK7JZ
-         e8YJma+ITXeDzT8SqNkmL36nnIwbewKpknvH1d3ZAmbhFHLy0WAWYcmdFqAs2iwIQnfm
-         fkGw==
-X-Gm-Message-State: APuU4Z/lRr3PKzCfmMxcJj4qhL5uVpyE6bNA6C6/hrx+y8KZ7qOJKL84
-	PrKadCpuXn0PUGrNU7QPdcLbgzT7jVOkVc7a/mSIw+ADPQVzf5qTWg5E1D+OSdEa/JuIo01p7e9
-	IN0THnQ==
-X-Received: from plbkr11.prod.google.com ([2002:a17:903:80b:b0:2ed:8abb:208a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2c7:b0:2e9:9a19:c5b
- with SMTP id d9443c01a7336-2ee0dd2382emr24969425ad.47.1794578008628; Fri, 13
- Nov 2026 05:53:28 -0800 (PST)
-Date: Fri, 13 Nov 2026 05:47:43 -0800
-In-Reply-To: <20261030213747.2611815-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d6Mtjvb0
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805011F000C4;
+	Fri, 13 Nov 2026 14:25:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794579958;
+	bh=uGazlu8ZE2iEilyNSWyDR4PXa0zhg5n8Ju1m9LVZYdk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=d6Mtjvb0izQ7tMW+TKdqltTALnjGs/s/qsTtCiTcxiW9ImCMu/US8fU27eyNhqJdT
+	 efkP8fjCq75tG1xSi7ByXwXxEiGFAnLcBXatGj+H3LjNQ3hZnlp2XqggdjB8vVk4qi
+	 MkIvQgQzBvWWsRc6HCqKMErR6nuc3k9ZUhsmto5prZfybTk/F1pIxh6TMOiioaqtAO
+	 eYdgERV82+3FlsTSGOfGby2HBZiBzhxTFbMFiTPwoZf+g9CB0YwnSCcF26OZXpuVk3
+	 GkFC+7jk4S/KyGcLSNsk+VnujlOs73HWdbTUFTWayH1ODqJ3Wyf6bJts+ivnA3Y4Uc
+	 ZGFNU8JJE/ctg==
+Message-ID: <sashiko-outbox-212981@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 6/9] mm/mmu_notifier: add
+ MMU_NOTIFIER_RANGE_PERM_UPGRADE
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?Q2FybG9zIEzDs3Bleg==?= <clopez@suse.de>, kvm@vger.kernel.org, linux-mm@kvack.org
+Cc: linux-s390@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com, akpm@linux-foundation.org, david@kernel.org, peterx@redhat.com, ljs@kernel.org, imbrenda@linux.ibm.com, "Christian
+ Borntraeger" <borntraeger@linux.ibm.com>, frankja@linux.ibm.com, "Liam R.
+ Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
+ Hocko" <mhocko@suse.com>, "Muchun Song" <muchun.song@linux.dev>, "Oscar
+ Salvador" <osalvador@suse.de>, "Jann Horn" <jannh@google.com>, "Pedro
+ Falcato" <pfalcato@suse.de>, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
+ Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>
+In-Reply-To: <20261112142039.907090-8-clopez@suse.de>
+References: <20261112142039.907090-2-clopez@suse.de>
+ <20261112142039.907090-8-clopez@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 13 Nov 2026 14:25:57 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,43 +67,75 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261030213747.2611815-1-seanjc@google.com>
-X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
-Message-ID: <179441819203.80207.10000872984066251793.b4-ty@b4>
-Subject: Re: [PATCH v3 0/5] KVM: nVMX: Honor L1-owned CR0 bits for LMSW
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Mahmoud Abumandour <ma.mandourr@gmail.com>
-Content-Type: text/plain; charset="utf-8"
 
-On Fri, 30 Oct 2026 14:37:42 -0700, Sean Christopherson wrote:
-> Fix a bug where KVM ignores vmcs12's CR0 guest/host mask when emulating an
-> LMSW from L2, i.e. an LMSW tha exits to L0 but not to L1.
-> 
-> v3:
->  - Handle the read_shadow in handle_set_cr0() (and for CR4, because why not).
->  - Kill off kvm_lmsw() entirely.
->  - Add a bunch of comments to the selftest to explain the dangers of running
->    with CR0.TS=1.
->  - Test MOV CR0 as well as LMSW.
->  - Add a patch to take full ownership of the must-be-1 CR0 and CR4 bits.
-> 
-> [...]
-
-Applied to kvm-x86 vmx, thanks!
-
-[1/5] KVM: nVMX: Preserve L1-owned bits in CR{0,4} read shadows
-      https://github.com/kvm-x86/linux/commit/3193e9153882
-[2/5] KVM: nVMX: Honor L1-owned CR0 bits when emulating intercepted LMSW for L2
-      https://github.com/kvm-x86/linux/commit/7e538a7bb16b
-[3/5] KVM: nVMX: Synthesize #GP if L2 writes a "bad" CR0 value via LMSW
-      https://github.com/kvm-x86/linux/commit/7672fa397f00
-[4/5] KVM: nVMX: Take full ownership of the post-VMXON CR{0,4} must-be-1 bits
-      https://github.com/kvm-x86/linux/commit/565c14684d6f
-[5/5] KVM: selftests: Verify KVM handling of L1-owned CR0 bits on writes from L2
-      https://github.com/kvm-x86/linux/commit/798e54a8c0bc
-
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] mm: change_protection() strips write bit for soft-dirty on
+  perm upgrade
 --
-https://github.com/kvm-x86/linux/tree/next
+
+commit 292879801a9c3725b053aaa1391bad7e3b1f0588
+Author: Carlos L=C3=B3pez <clopez@suse.de>
+
+mm/mmu_notifier: add MMU_NOTIFIER_RANGE_PERM_UPGRADE
+
+This commit adds the MMU_NOTIFIER_RANGE_PERM_UPGRADE flag to indicate that a
+range invalidation only upgrades access permissions, and sets it in
+change_protection() for permission upgrades and userfaultfd write-protect
+resolves.
+
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index 70922e19c741d..ce3dd4b23c25b 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -582,8 +582,9 @@ static inline long change_pud_range(struct mmu_gather=
+ *tlb,
+>  			continue;
+> =20
+>  		if (!range.start) {
+> -			mmu_notifier_range_init(&range,
+> -						MMU_NOTIFY_PROTECTION_VMA, 0,
+> +			mmu_notifier_range_init(&range, MMU_NOTIFY_PROTECTION_VMA,
+> +						mm_cp_is_perm_upgrade(cp_flags) ?
+> +						MMU_NOTIFIER_RANGE_PERM_UPGRADE : 0,
+>  						vma->vm_mm, addr, end);
+>  			mmu_notifier_invalidate_range_start(&range);
+>  		}
+
+[Severity: Medium]
+Can change_protection() still downgrade writable entries to read-only when
+MMU_NOTIFIER_RANGE_PERM_UPGRADE is set on a VMA with soft-dirty tracking
+enabled?
+
+When vma_soft_dirty_enabled(vma) is true, newprot lacks the write bit, so
+pte_modify(), pmd_modify(), and pud_modify() clear it.  When restoring
+writability, set_write_prot_commit_flush_ptes() delegates to
+maybe_change_pte_writable(), which returns false whenever
+pte_needs_soft_dirty_wp() is true even if pte_write(oldpte) was set:
+
+mm/mprotect.c:set_write_prot_commit_flush_ptes() {
+	if (pte_write(oldpte)) {
+		set_write =3D maybe_change_pte_writable(vma, ptent);
+		prot_commit_flush_ptes(vma, addr, ptep, oldpte, ptent, nr_ptes,
+				       /* idx =3D */ 0, set_write, tlb);
+		return;
+	}
+    ...
+}
+
+can_change_pmd_writable() and can_change_pud_writable() similarly reject
+entries lacking the soft-dirty bit before checking pmd_write(oldpmd) or
+pud_write(oldpud).
+
+Writing 4 (CLEAR_REFS_SOFT_DIRTY) to /proc/pid/clear_refs enables soft-dirty
+tracking on all VMAs while clear_refs_test_walk() skips VM_PFNMAP VMAs, and
+clear_soft_dirty() skips pinned PTEs via pte_is_pinned() (which can be
+writable without the soft-dirty bit after a read swap-in of an exclusive
+anonymous page).  A subsequent permission upgrade or userfaultfd resolve
+then advertises MMU_NOTIFIER_RANGE_PERM_UPGRADE while write-protecting those
+present entries, leaving secondary MMUs with stale writable mappings or
+breaking CoW pin coherency.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261112142039.9070=
+90-2-clopez@suse.de?part=3D6
