@@ -1,131 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794575143;
-	b=4mTOwZmwxiL3Ib0oP7szT2Ma/PEp0zXnlr4F2NCs8fQRUOlZSN95weKt2Nt6EcJMXwcD
-	 Z3PpUHiQAhpRp6K1XKHBijVdQeU8xyBum7zXHMF0mgUfP7nP/9IxHN5GDz28GtYpKjoVT
-	 SzYQvAwNFgYvORLlQS8UZDtEXG6juS5TxIb9P5jD0p0NHtpuRG3hD4xUJtmCoBq030OOx
-	 N7r1HVxbuYq689d+NUdyM+7AXChbtR9ZAC4REXjphnzk6j5ftbL/uRTrpzbLn8iHDci7z
-	 KdbomjJztccXfq3Ow1n9k9A/7dtpE71qCzF0CepshhoMgdHI/Ozs2Uvu3gjruwnhHZQ==
+	t=1794575500;
+	b=vU1SvFRo5Epe70xdtZshrzYHTLrmVUBIsdH+Jgjh/bHV7RYOTLE6q/OLVwLnHa+KDqPX
+	 3XMQ+u6eTY/rAJUUXlbGuR6qeMZRlcvgbVfmuVYCkpJZJPWK7Es9OaxGvZqNOKhyS2shR
+	 9H8BLSUdPYhRE0x5UWTIb5HoaiY7OHVjpVof4/lukB2me5A+GwmKkNg3+q2YKAMrBHK2k
+	 bT+NoyFHZSwwxpIPc7XYYz7/yCXLrWH1y5hLuMYk4L/J7axJeUewYwL1TaUNpT6b8w1kM
+	 JQRKpDQRTxUp7TGSgoVpMktDDg4oKoPc7xqr3o9H/1t54p6QAWoBxL1KP9mxBZGIH5g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794575143;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=v4TApKQ2t0hyQZxEXCOTGwfQDcbqzJhHn9ZrRsucxAk=;
-	b=g7JvW6R23MtB6HMzTIyWnpiMBbD76t3k6/g4YGclydYlTxQEI+NMEokqRYXyf5LkwZcR
-	 IBW4WY3KebPO7PJNBCyvNnrOBClyZlAEcReiRUl9UX9YqEhjmYvGpKHiVQtJO4SLSbpb4
-	 j9D/Th6A2bKZ9Ve/cEDsO3BdFN5XMpessPUQWOqH8n3Mo96tMtTfdQEeBhXJZdsxFefH5
-	 aTkod6CiJwVHe3X23Xu4UAFJw5X0Y1bP+zQo4zHV5iV5DEGheno8W147m2kTPJKADy58c
-	 KuFX9pvmhwU/gFMYvyH45muzBqRapajdFsSrnasU+uZNgHVPlOXGtB87/dIqZ8kp5Bg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794575500;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=UJJGqVjSBQwrXCt5oO1oVp31bm2wr0tRxTzs6y+s5eY=;
+	b=iQ2fofjGwAm8s/O7r7hvbnpEQzOn3cbPDIL4NjBfuMsK7OC8RxDTTaZd4RA43N5/id9r
+	 B3a2psO9X6O0V0rUPSJPYBjp3OCdVLFY8Nz6nI3LILfB6ZvhAP+qPDAsU8ij+lYcKiLXS
+	 fWHRbbkQP8gUAVFzLgbq+nUMdXrtt2wGEW3T9wi9XDEkUhnM6Pz94stmK+Vmz8kBrLwvA
+	 jnsfraS7vxdXQHI6/qyAJJ1q/GjVdtJ9Nh3H/8iD7QmaBxeSyMpDQuwj/Zsr2m7AKsp8A
+	 3rK9J5sPNdqp7ELiP7lytDtR/xv2qJmSH98V3ceJGCwUCedhqOXRFT9ihagu0mFS7FQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KDPXWuSp;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=OBz9MajD;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HhntSPDz;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6607360A3819
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 13:05:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6607360A3819
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68156606A339;
+	Fri, 13 Nov 2026 13:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KDPXWuSp;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=OBz9MajD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794575142;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v4TApKQ2t0hyQZxEXCOTGwfQDcbqzJhHn9ZrRsucxAk=;
-	b=KDPXWuSp1Sps1n5l0XOKTB8NCY/eDYqFCblDHSrj55b/PeQ0JkV/kG2LIWfC+1sQj90W/z
-	JIMpPMWfRGOGmjY2gXbtofZiWFXCu4cVfjpw0Dz+Jm2WZ1AqahY4lpub7jYWOS9I269Z/3
-	w/swyxS2emGhQ3rV8mpgXY0LnPhKVjE=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-654-2nDb5cfrOFSp63fXk7MoDA-1; Fri, 13 Nov 2026 08:05:39 -0500
-X-MC-Unique: 2nDb5cfrOFSp63fXk7MoDA-1
-X-Mimecast-MFC-AGG-ID: 2nDb5cfrOFSp63fXk7MoDA_1794575138
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4ba01393800so5591685e9.1
-        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 05:05:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794575138; x=1795179938; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=v4TApKQ2t0hyQZxEXCOTGwfQDcbqzJhHn9ZrRsucxAk=;
-        b=OBz9MajDYVenCm8MUwg+HL9hyy/hjg7gXdoLfpQDTEBvcKFk4YaX7Tl44/rlnKnb5v
-         srBQjbdSbBWBZPcxn1PCvXeu/Ks6Gvy2Titlk2bQEM78XcpFYAgC/2KkHvwx0b1eMl16
-         fJqEP8wyrSh+PTfT8Q5vAzO/lPfDDbIdHdZPyVOUh5NF9jOK5LDk9hPIq/iH9JpeAkue
-         raBwYvhyGwVeeSEq4hAtrs8tbzv0KpfcO77sH0pmSsQulx+UF9ep+lWXV/u+w78kH28r
-         qz2J8dRVuL5lFl9EeQ8JjcRWpC9ounCRfBmSYjbhUwAFIjJ84CwdJl8oncnERZAetmJ2
-         932w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794575138; x=1795179938;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=v4TApKQ2t0hyQZxEXCOTGwfQDcbqzJhHn9ZrRsucxAk=;
-        b=PvvdutgPwLNb7TgJeg30qNZP5v9lgXt/bl0MsoynUrtEZfDGUXsa+BL8UCOBD92K4L
-         IKVfJ/77I6wUYZ3PHGV8CgjukmKcQ+4diWn5EYoyOIc93Qck1D3Q2VSb/21pK1Ah39kb
-         arHjT38ktKDoktJ7P0kM0Qqa7iY8mUAoin/Qy6tYmQ0pizxXcxEmiZt7fpjzB4ZWF5df
-         PXJ4ykxs+S1fxvjTee8Tcabd15H95/6GNoEWcNGzgetaz8pOx243zCYK0fuZBo1kfqZn
-         2VRgckPSzHR0R1yvNnh2CZw4p1K/aKY9v+UvkdI1ft6/iSyOswbeBgF/aY/F83b1zqpd
-         yYBA==
-X-Forwarded-Encrypted: i=1; AL+hErGxU2RZGfXF+Mfg9y90f1pngMAKKFIZsamJbZcFM+97mZUsBLHU02O0yTJP4nOxUs1FC1Q=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8JaX1xOoZ4xlS2qye/tlHE7ihgfPMdZKWgE10OfoxaAfZlfZVk
-	D6zyqi7Ycc26rXKspZ62ZzLp3Lu5NiBPpUSkxZeKg9He229AI2VEWgRfR6w/auKidP0UEvAT2ha
-	b7xrvU/hG1+veNVtIaTSvIp+ltKw82KDpNtX8O9k13Bd1gl4Zf5K5Yg==
-X-Gm-Gg: AYBFou1+mv5VtWLaqe0zkzajkS6d2AsbXzJxGWbXWM8q69MEsxgdNUmbTwWVX7hnptu
-	iLImu3xp/T3CO8JZKPUMrN/h2TsRdiq2T7YzkM0qAaE1hgFIsD6XZYYvkSANYygpmDa64qGkEek
-	inoyoI1VCah2oPMHO/MkwQmsCzxlLkOAWYTAnn7OPBnl8J94o2EcLOTe035g9hvyWhB0vRiXmI3
-	Yni+tZtGSahQk/ZL/e4rIeiYb0o7p6jgCpC6lz9feH7OU/U+V1ei30/eZLAQthK2AXwKxWT0typ
-	LdoyJFL3vFSy0/OBe8MYzfsycmLrEn688iqsHiKtPc3EpGIwi4b4o0nfruXNE++LJyDPM7NTHuw
-	lB882WZLaci3qC88xKnBGKW1OpFLclWYf7EMEOtHKHw==
-X-Received: by 2002:a05:600c:3487:b0:4a2:526b:d410 with SMTP id 5b1f17b1804b1-4bb55a4f1b4mr53874685e9.13.1794575137637;
-        Fri, 13 Nov 2026 05:05:37 -0800 (PST)
-X-Received: by 2002:a05:600c:3487:b0:4a2:526b:d410 with SMTP id 5b1f17b1804b1-4bb55a4f1b4mr53873365e9.13.1794575136910;
-        Fri, 13 Nov 2026 05:05:36 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1511:2900:ff37:b35c:a97:952d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb56680ea9sm39056695e9.0.2026.11.13.05.05.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 05:05:35 -0800 (PST)
-Date: Fri, 13 Nov 2026 08:05:30 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Sergio Lopez <slp@redhat.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Bryan Tan <bryan-bt.tan@broadcom.com>,
-	Vishnu Dasa <vishnu.dasa@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	bpf@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
-Subject: Re: [PATCH RFC v2 0/8] vsock: add datagram support to virtio and
- vhost
-Message-ID: <20261113080506-mutt-send-email-mst@kernel.org>
-References: <20261113-vsock-dgram-support-v2-0-bacfc85b71ce@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HhntSPDz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 151971F000C4;
+	Fri, 13 Nov 2026 13:11:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794575500;
+	bh=UJJGqVjSBQwrXCt5oO1oVp31bm2wr0tRxTzs6y+s5eY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=HhntSPDz4hBtYpgjSDSSVhehC3ugFdt3d8uKPZhC9zPonuqtlUMxXtQgAXMu51sk+
+	 c6XaBX4mO0q+UZo6swHPzJFo/cu1cNYby+GumuSJb/pVqWa6M9JH4jlEBT/Exzl7GL
+	 ilydPvL3dZGNK7a2kUtrXtR0vCyfsSfrp37MQPRL04JKFaIyA2wxO0cy5ZJPxSTlr0
+	 v8iYKnqyavXMWdSClMn6YoV3XhTdrYpDGEwipYibWKjBD7yNxpuoauoWKAYDDvAG18
+	 HB+RxkZpbQXP1mMGqKExpbXk0lrd8Hkf6F0/bRiOljbAPatD7c8Cs1nGKblzyWcaU1
+	 yoMV4p8by0Ezg==
+Message-ID: <3e4b6491-2b58-4b9c-90ad-0912f47cb217@kernel.org>
+Date: Fri, 13 Nov 2026 14:11:30 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -135,134 +51,157 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261113-vsock-dgram-support-v2-0-bacfc85b71ce@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 4/5] iommu/of: Require reg for iommu-addresses
+To: Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+ "Joerg Roedel (AMD)" <joro@8bytes.org>, Vasant Hegde <vasant.hegde@amd.com>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+ Jean-Philippe Brucker <jpb@kernel.org>, Rob Herring <robh@kernel.org>,
+ Saravana Kannan <saravanak@kernel.org>,
+ Tomasz Nowicki <tomasz.nowicki@caviumnetworks.com>,
+ Eric Auger <eric.auger@redhat.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Joerg Roedel
+ <jroedel@suse.de>, Srinath Mannam <srinath.mannam@broadcom.com>,
+ Oza Pawandeep <quic_poza@quicinc.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Alex Williamson <alex@shazbot.org>
+Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux.dev, devicetree@vger.kernel.org,
+ kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-media@vger.kernel.org, Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
+References: <20261106-add_iommu_ranges-v7-0-5c0f72083e52@oss.qualcomm.com>
+ <20261106-add_iommu_ranges-v7-4-5c0f72083e52@oss.qualcomm.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <20261106-add_iommu_ranges-v7-4-5c0f72083e52@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 13, 2026 at 01:47:33PM +0100, Sergio Lopez wrote:
-> This RFC adds SOCK_DGRAM support to virtio-vsock and vhost-vsock through
-> the existing AF_VSOCK API. It is intended for guest and host services
-> that exchange independent requests, responses, or events and need message
-> boundaries and sender addresses without a stream connection or application
-> framing.
-> 
-> VIRTIO_VSOCK_F_DGRAM gates virtio traffic in both directions. Each virtio
-> send carries zero to 64 KiB of payload in one VIRTIO_VSOCK_TYPE_DGRAM
-> packet. On the RX virtqueue, the device may split a datagram across
-> page-sized guest buffers.
-> START and EOM delimit the message; the guest reassembles at most 64
-> fragments and 64 KiB before delivering it to a socket.
+On 06/11/2026 18:14, Vikash Garodia wrote:
+> The "iommu-addresses" property describes an identity 1:1 mapping between
+> an IOVA range and the physical memory specified by "reg" in the same
+> reserved-memory node. Without "reg", there is no physical memory to map.
 
-where do these limits come from? how does peer know not to send more?
+This looks like ABI break.
 
-Thanks!
-
-> Invalid or
-> incomplete messages are discarded. Datagram delivery is best effort:
-> there are no peer credits, acknowledgements, or retransmissions. Send
-> admission uses the socket send-memory limit, and SIOCOUTQ reports charged
-> send memory.
 > 
-> Datagram sockets have a separate port space from stream and seqpacket
-> sockets. The latter two continue to share their port space. Datagram
-> routes are chosen per destination among guest-to-host, host-to-guest, and
-> loopback transports, with VMCI as a fallback. VMCI still owns its socket
-> handle when it is present; loopback works without a directional transport.
-> Hyper-V continues to reject datagram sockets.
+> The DT schema now requires "reg" whenever "iommu-addresses" is present.
+> Align the kernel implementation with this requirement.
+> https://github.com/devicetree-org/dt-schema/pull/207
 > 
-> Bobby Eshleman and Amery Hung explored this feature in their v6 series
-> and v7 work-in-progress branch. This series is a fresh implementation
-> against the current vsock code. It follows the separate datagram port
-> space, per-destination routing, and VMCI fallback requirements discussed
-> there. For guest receive buffers, it uses bounded fragmentation and
-> reassembly rather than full-message buffers or the earlier drop/error
-> queue approach:
+> An identity mapping requires matching IOVA and "reg" ranges. Reject
+> mismatched ranges and report an error.
 > 
-> https://lore.kernel.org/r/20240710212555.1617795-1-amery.hung@bytedance.com
-> https://github.com/ameryhung/linux/tree/vsock-dgram-v7
-> 
-> A corresponding virtio specification update has been drafted separately.
-> The wire format and feature negotiation still need specification review
-> before this series can be considered for merging.
-> 
-> The first patches expose the core port allocator and add datagram queue
-> reporting, then implement the common data path, guest and host feature
-> negotiation, routing, and RX fragmentation. The last patch extends
-> vsock_test with local and peer tests for message boundaries, routing,
-> connected peers, port sharing, queue accounting, and delayed reads.
-> 
-> Testing used QEMU with the F_DGRAM property patch below, an x86-64
-> KASAN/lockdep kernel, paired guest tests, and a nested Linux vhost-vsock
-> backend. The tested paths include 64 KiB messages, delayed-read bursts,
-> feature-disabled ingress, stream and seqpacket controls, and header-only
-> guest RX buffers. A temporary userspace backend still fails stream test
-> 21 on both the series base and tip; that case passes with Linux vhost.
-> Real VMCI and Hyper-V hardware were not exercised.
-> 
-> https://lists.gnu.org/archive/html/qemu-devel/2026-10/msg08074.html
-> 
-> Code was written and reviewed both manually and assisted by Codex
-> (GPT-6.1-Sol) and Claude (Opus 4.6).
-> 
-> Signed-off-by: Sergio Lopez <slp@redhat.com>
+> Suggested-by: Rob Herring <robh@kernel.org>
+> Co-developed-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
+> Signed-off-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
+> Signed-off-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
 > ---
-> Changes in v2:
-> - Keep guest RX buffers page-sized; add START/EOM framing and bounded
->   datagram reassembly (thanks to Alexei Starovoitov and Bobby Eshleman).
-> - Preserve stream and seqpacket data when an RX buffer has no payload
->   room.
-> - Separate datagram and connection-oriented port spaces, and share
->   receive metadata and queueing (thanks to Alexei Starovoitov).
-> - Check negotiated support and destination CID on ingress, and require
->   an exact connected peer CID and port (thanks to Sashiko AI bot).
-> - Select a capable route for each destination, retain VMCI as fallback,
->   and support loopback-only sockets (thanks to Alexei Starovoitov).
-> - Preserve the connected peer address across temporary parent fallback
->   (thanks to Sashiko AI bot).
-> - Use socket write-memory accounting for datagram SIOCOUTQ instead of
->   separate transport counters (thanks to Alexei Starovoitov).
-> - Extend selftests for fragmentation, delayed reads, port sharing,
->   connected peers, and capability-based skips; fix the test build and
->   README entries (thanks to Alexei Starovoitov, Bobby Eshleman,
->   and Sashiko AI bot).
-> - Link to v1: https://lore.kernel.org/r/20261028-vsock-dgram-support-v1-0-e457cf7cee78@sinrega.org
+>  drivers/iommu/of_iommu.c | 32 +++++++++++++++-----------------
+>  1 file changed, 15 insertions(+), 17 deletions(-)
 > 
-> ---
-> Sergio Lopez (8):
->       vsock: expose the core port allocator to transports
->       vsock: report datagram receive and send queue state
->       vsock/virtio: implement the datagram data path
->       vsock/virtio: negotiate datagram support on the guest
->       vhost/vsock: negotiate datagram support with guests
->       vsock: allow datagrams to use directional transports
->       vsock: fragment datagrams across receive buffers
->       vsock: add datagram tests to vsock_test
-> 
->  Documentation/admin-guide/sysctl/net.rst |    8 +-
->  drivers/vhost/vsock.c                    |   51 +-
->  include/linux/virtio_vsock.h             |    9 +-
->  include/net/af_vsock.h                   |   30 +-
->  include/uapi/linux/virtio_vsock.h        |   10 +
->  net/vmw_vsock/af_vsock.c                 |  459 +++++++++++---
->  net/vmw_vsock/hyperv_transport.c         |   11 +-
->  net/vmw_vsock/virtio_transport.c         |  167 ++++-
->  net/vmw_vsock/virtio_transport_common.c  |  164 ++++-
->  net/vmw_vsock/vmci_transport.c           |  115 ++--
->  net/vmw_vsock/vsock_bpf.c                |    3 +-
->  net/vmw_vsock/vsock_loopback.c           |    2 +-
->  tools/testing/vsock/Makefile             |    3 +-
->  tools/testing/vsock/README               |   31 +-
->  tools/testing/vsock/util.c               |   62 +-
->  tools/testing/vsock/util.h               |   10 +
->  tools/testing/vsock/vsock_test.c         |  175 +++++-
->  tools/testing/vsock/vsock_test_dgram.c   | 1000 ++++++++++++++++++++++++++++++
->  tools/testing/vsock/vsock_test_dgram.h   |   29 +
->  19 files changed, 2066 insertions(+), 273 deletions(-)
-> ---
-> base-commit: 65ba8f34ec886ec72b2c07ddc8cf3d815c32869d
-> change-id: 20261027-vsock-dgram-support-683a4e0aebe7
-> 
-> Best regards,
-> -- 
-> Sergio Lopez <slp@redhat.com>
+> diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
+> index 6675fc900e6c2d55b34c61dc9effaeb48e24f18f..00b02c19f27e195fc36c4bc1d91253255147c9ab 100644
+> --- a/drivers/iommu/of_iommu.c
+> +++ b/drivers/iommu/of_iommu.c
+> @@ -174,19 +174,12 @@ iommu_resv_region_get_type(struct device *dev,
+>  {
+>  	phys_addr_t end = start + length - 1;
+>  
+> -	/*
+> -	 * IOMMU regions without an associated physical region cannot be
+> -	 * mapped and are simply reservations.
+> -	 */
+> -	if (phys->start >= phys->end)
+> -		return IOMMU_RESV_RESERVED;
+> -
+>  	/* may be IOMMU_RESV_DIRECT_RELAXABLE for certain cases */
+>  	if (start == phys->start && end == phys->end)
+>  		return IOMMU_RESV_DIRECT;
+>  
+> -	dev_warn(dev, "treating non-direct mapping [%pr] -> [%pap-%pap] as reservation\n", phys,
+> -		 &start, &end);
+> +	dev_err(dev, "non-direct mapping [%pr] -> [%pap-%pap] is not supported\n", phys,
+> +		&start, &end);
+>  	return IOMMU_RESV_RESERVED;
+>  }
+>  
+> @@ -211,12 +204,14 @@ void of_iommu_get_resv_regions(struct device *dev, struct list_head *list)
+>  		struct resource phys;
+>  		int size;
+>  
+> -		memset(&phys, 0, sizeof(phys));
+> +		maps = of_get_property(it.node, "iommu-addresses", &size);
+> +		if (!maps)
+> +			continue;
+>  
+>  		/*
+> -		 * The "reg" property is optional and can be omitted by reserved-memory regions
+> -		 * that represent reservations in the IOVA space, which are regions that should
+> -		 * not be mapped.
+> +		 * "iommu-addresses" must be used in combination with a "reg" that provides
+> +		 * the physical address and size of this memory region, for an identity 1:1
+> +		 * IOVA mapping to that physical memory.
+>  		 */
+>  		if (of_property_present(it.node, "reg")) {
+>  			err = of_address_to_resource(it.node, 0, &phys);
+> @@ -225,11 +220,11 @@ void of_iommu_get_resv_regions(struct device *dev, struct list_head *list)
+>  					it.node, err);
+>  				continue;
+>  			}
+> -		}
+> -
+> -		maps = of_get_property(it.node, "iommu-addresses", &size);
+> -		if (!maps)
 
+I miss the point why you are moving this part. Irrespective to actual
+ABI break, why do you nee to check for iommu-addresses before?
+
+
+Best regards,
+Krzysztof
