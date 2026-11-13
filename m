@@ -1,106 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794571445;
-	b=P5Nj3BLmt6CV6EUuq+hj4FrtQ5zEbsiTUApqG5nKyNpxSy16KXnKwmg5uttviyxxVsb8
-	 L/u7TRy/q3VPh8xAiIuKz/Dhf1lVv7e8CgJ3d5JgBf33P42S5uidASxgNwV4pcjjZjD39
-	 xaeUdlr+FySGioCdfy6cOP2Ab8rTVnQeC2iS9ZNNjwbJpQ1ym2C9MT3Wr8A4CW05Pwd8T
-	 wGU+8+63QlRTKqOIr0y/IqYg3UOKe3MM1O6S4ASQ0NfqDDAAWS64ZooqyHvWMBgJmaFDM
-	 uLlBpqHb4jxSEXs/XzJkmO6FwMkcTShgnWGLuEZAYlcMteQ0YQTEf130EMLhQE+cQ+g==
+	t=1794571728;
+	b=TBegGUHmMBc2VlKj8L1A59+f+ESUKmzWxWpkrtdZlR48YAJ+Yafu3amylyQmYOwoaTII
+	 owKGTcHs5c0J/D0G8g3j6GFmjDKygdKvrcvmeWg6FRxuFWVCBRHb4CeLc+Kimkr1JE67f
+	 /FvzJcsA6ihOt1owJFhQutLQ0OMwh9tAwp23eY6dS1Qm5duos/9SG5yT5/tpFeWV7U2oq
+	 jiU6nuAc4yPvaLPU6l9z5vUnJxDI9TfMpOoy/Fk+NFC4XHK+DHwll207RsTudqUvq616A
+	 YY9Qrq/N+HFWYMhYgh/yuJkPHvDOst7n8Kxbs9V2uSxdZNmaxxivrQBLEW9cEoUn+cQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794571445;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:References:Content-Language:From:Autocrypt:In-Reply-To:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794571728;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=sgx6q2Uejt/yyraa52WF95rjtybG6YxFla96nvKygLs=;
-	b=ikqsPuSH2dAfXQ4e3TdQilyT28/FohplX/O3jQbkzE/JBdgI49fMtJ3yKJDF63O+ZBT1
-	 p6szu6R8Ni6iFZpYMdziTgUowxF+9i7tCd1/D7k/rs5QGyVmNRo60YW3GUXfXmO0hLuT2
-	 aCismO14JdLU2qwrVR9Ajd/gLQl3PzNSZUKzX0Fc14cwUdD5sWRuKV7NWuCKJoGXE1CuI
-	 GTfvhXklxCLxxGhQI+VOLGyWGZWiNLrcixtO+4GmzIllOiypi1sPpyc42XDKQnYcgAXaF
-	 SGcpMfe59nA7AjYsqqw1MhqSHPGXeB5stwM5NRUtW4RdMq/uEuHi4uejuRzHTs955fA==
+	bh=DCPKKvSKsZGN6ZGZTx2lYYqlAtYoJoEa/WryVTu5l4E=;
+	b=4E0wANdVI35to+DBEGgYC5tuvsdBhtLbMVZazldL6HshuvbjGeWV39eb2XKmTaUinJ5t
+	 Ya3XCN1odLVaBD5X3ZL+klgYFdrfivJRRdTgt8e6bmQY5Ob/z4htiKcLRWY6Fw+NChhV4
+	 bqUwiwKq1D8MMHBJABDIKyN3ow0OXpKJkRTArpl07PDKP8y4DteJ8Uto+91OV6AUrNEik
+	 lDZ+/N+69BnkTDpeOwtPhnktO5iu73UYL0aA/wVXZ2nolnftcupUi3WyLorqq3iGC4tXd
+	 w2tc2Vn7WlyGsZdXaCVqgsMz7lgT4lmJ7wr2TGr1khOfODbAni6xW+LUb0W0bj8QwTw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b3WUoynU;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="EO/vU4yk";
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=au15CuIx;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490BE606A8AF
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 12:04:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 490BE606A8AF
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741B3606B582;
+	Fri, 13 Nov 2026 12:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b3WUoynU;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=EO/vU4yk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794571444;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sgx6q2Uejt/yyraa52WF95rjtybG6YxFla96nvKygLs=;
-	b=b3WUoynU+xYy77iKucujOEClblu6BnVpmDkjnUNrvt0rV/yne/HsVWEw1IwB7AFJj3GY56
-	CZrXjSa2iWGgMeHOoT2zPro/PG7zeX9XUjqUefgmbNWHXh7K8WFMpIz87DDC8GTItA2TDl
-	yhcri0aqIHWfQE+8KcVlgxOIHzAT6Q4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-74-Has0ngF4N8GsXj2t6ILnTA-1; Fri, 13 Nov 2026 07:04:02 -0500
-X-MC-Unique: Has0ngF4N8GsXj2t6ILnTA-1
-X-Mimecast-MFC-AGG-ID: Has0ngF4N8GsXj2t6ILnTA_1794571441
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4afef353dd2so7289625e9.1
-        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 04:04:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794571441; x=1795176241; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sgx6q2Uejt/yyraa52WF95rjtybG6YxFla96nvKygLs=;
-        b=EO/vU4yk+rYV9XedZw1O2u8JQPWBtEibTMA0h0oN4A5gFXD4mF7W2BHnjsoT7Phr7t
-         9CACPKQPKq2Fqt6vTOsEzeVq1oHZqqIyPIwJHfpEnNw4X7vPuDWiu7t4aKzhwM2bRWqu
-         JGqoF3xi55WZmgn3mPrxHqcElvr27Z9cWJ3NwOO+7cZZAxTTR8pzDKcTIT5/hIjD/OrL
-         8Xy54A/H3E2N1ah2oSZmMqN2INc1RJSHOPiqTP2p6zfU3RUFxLBw0ri4wYqv7ZC5ciIg
-         xoxu91QukXWaiYSzTfHJ8SS/1DuxzunMnKMkpc47AO+pWmnCQ4l+dk14SPQ00GJOWkKx
-         BEEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794571441; x=1795176241;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sgx6q2Uejt/yyraa52WF95rjtybG6YxFla96nvKygLs=;
-        b=kORsq22A3w9OH7/W6CvgdzYhprdclFIFj5RjYtyITZU4goa+vv0lCbReucgnOEBPc7
-         jZ2dfMxgLKEnh8PSWigHQr9/SuVt0/cmBYNWrdqFl0nj9LTf8YksRBISKuSNxx/9EmQd
-         KTcNH/EVzV5xbD9SQP7Jy0Nxy6K/4d3bBJDULy2bIkXCqTprSd3ZWPvTqtDCB0syNibl
-         CFNxG4m0Mp0w+2v8tAnwuvSaROx+bFn7iVmKJvWL7sw6OeMDUr0BhuZfqqdLC5DGXWD9
-         0DUMs+cJIFSqKEdkv91KzCgDGo3zvmJA4HEh9BDelHShsxayFfoLkPxtPaqM+J8eB5I7
-         Hzog==
-X-Forwarded-Encrypted: i=1; AL+hErEv5HBqDfz8cEGMGdeXeNru80R+lC+NQpgBVW7R6hv+1IPCT5G0qMokM2jJCwxbG93x8Bw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8zIN0N6ijedGRtt2fGZ45tml/Tu6wSiQ8XPTA7oLT9KeWCXde2
-	inrs0P9G6MiBrpjPtvQPRQqT7yMQZpM6NaYVMyxxvZjMuY1+W8HuySwzqZBVoxFHdveXn0XevYO
-	u2WHIVBcrOkpOU6Wx7bSyO85WPHAQefhP85qgUg32i7WLWZ4lFFvRjA==
-X-Gm-Gg: AYBFou14gcjzMaPrgOgG8UAN7jF1pCMy/VcwdjJHZnYNCN7lTI8ktjmljX3KUcgGnZX
-	/BAEek08eQiwovefVymwbhTFSjqOTPO0A14sH7Y+xWj4jdZT3BL76sqAJi5KqSHw3wMA0NcClnH
-	XLSUk7XYVaam7dsWeDgTD3nqY9Yd4NnAlc74F1DIo52l1DNQsb2T2h/K24djqI2m4tYUcE5bLgl
-	htFAGPRGv8joag+Y1cZzDBLg1K2qnnwZqO4TiXKxIo2CemzR1s3NzYkiLXEcrRildPwimYjXfrv
-	ZdBqKqFJfj6XpLBY8duhePNNTH/d+6cp11JdX9M9FgNmAmucqs4Ao/YiveN3hMHOZXdWibyT4jQ
-	ix1lQvyPqHjdADOo++mnx0nzPbUWw3g==
-X-Received: by 2002:a05:600c:1c03:b0:4a4:4d57:8487 with SMTP id 5b1f17b1804b1-4bb55a42fe4mr50493015e9.5.1794571441018;
-        Fri, 13 Nov 2026 04:04:01 -0800 (PST)
-X-Received: by 2002:a05:600c:1c03:b0:4a4:4d57:8487 with SMTP id 5b1f17b1804b1-4bb55a42fe4mr50492575e9.5.1794571440636;
-        Fri, 13 Nov 2026 04:04:00 -0800 (PST)
-Received: from [192.168.0.9] ([47.64.115.75])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb55ae4414sm60149395e9.9.2026.11.13.04.03.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Nov 2026 04:03:59 -0800 (PST)
-Message-ID: <4bcbdea1-b2a2-4f09-881c-c6d116b59127@redhat.com>
-Date: Fri, 13 Nov 2026 13:03:58 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=au15CuIx
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 947EF1F000C4;
+	Fri, 13 Nov 2026 12:08:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794571728;
+	bh=DCPKKvSKsZGN6ZGZTx2lYYqlAtYoJoEa/WryVTu5l4E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=au15CuIxjBQb5zBlCDyGEp8bBtB0P5Q1riTnaoMRjIfwb8D+lUqZY7XXgl0RsxAzE
+	 kEueU9MSfS09y0CdiKoR78LXqvmC+g1NN+S7+0AXg5mE3c7yxaFGCFPasTn7U4P2Yq
+	 wCOmTQgCrhEq4vvUSftMSYa5B30cDjtQSZ4QKKgcyn3VBZTG1A+Enp95W85ZAMdrq6
+	 O7g68nfE/V7ai7AnS5L0FgWFeW+jFuPUAjGijxYYKQwiRFrELWdqd1vF1K1M2iFOMJ
+	 /QMc3+6yubESduWY8XFoIkDyAQVIKCBMJaq+EJ2OJhCHuSIlaa63VHGiH5duiMEZum
+	 aurui0ZOLZ9TA==
+Message-ID: <b2a76474-c3eb-4b56-b5f8-0fc4b123467e@kernel.org>
+Date: Fri, 13 Nov 2026 13:08:35 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -111,92 +52,110 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc: Link with -z notext
-To: Laurent Vivier <lvivier@redhat.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org
-References: <20261110154415.46220-1-amachhiw@linux.ibm.com>
- <1346902a-67ba-49e5-9dfc-fc3990c3329d@redhat.com>
- <20261111145459.6b15a2c5-eb-amachhiw@linux.ibm.com>
+Subject: Re: [PATCH v7 1/5] iommu/dma: Keep reserved regions below the IOVA
+ rbtree anchor
+To: Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+ "Joerg Roedel (AMD)" <joro@8bytes.org>, Vasant Hegde <vasant.hegde@amd.com>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+ Jean-Philippe Brucker <jpb@kernel.org>, Rob Herring <robh@kernel.org>,
+ Saravana Kannan <saravanak@kernel.org>,
+ Tomasz Nowicki <tomasz.nowicki@caviumnetworks.com>,
+ Eric Auger <eric.auger@redhat.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Joerg Roedel
+ <jroedel@suse.de>, Srinath Mannam <srinath.mannam@broadcom.com>,
+ Oza Pawandeep <quic_poza@quicinc.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Alex Williamson <alex@shazbot.org>
+Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux.dev, devicetree@vger.kernel.org,
+ kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-media@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>,
+ stable@vger.kernel.org, Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
+References: <20261106-add_iommu_ranges-v7-0-5c0f72083e52@oss.qualcomm.com>
+ <20261106-add_iommu_ranges-v7-1-5c0f72083e52@oss.qualcomm.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20261111145459.6b15a2c5-eb-amachhiw@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <20261106-add_iommu_ranges-v7-1-5c0f72083e52@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Am 11.11.26 um 11:18 schrieb Amit Machhiwal:
-> Hi Thomas,
+On 06/11/2026 18:14, Vikash Garodia wrote:
+> The IOVA allocator tracks address ranges by page frame number (PFN).
+> The highest node in its rbtree is a fixed anchor at PFN ~0UL, which is
+> embedded in the DMA cookie. dma-iommu converts reserved regions to PFNs
+> with iova_pfn(), which returns unsigned long. On x86-32 with PAE,
+> addresses are 64-bit but unsigned long is 32-bit, so the upper bits of
+> the PFN are lost.
+> A reserved region that ends at the top of the address space then gets
+> the anchor's PFN. reserve_iova() merges it into the anchor and lowers
+> the anchor's pfn_lo. At teardown, free_iova_mem() no longer recognises
+> the anchor and frees it to iova_cache, which corrupts the slab. PCI host
+> bridge windows above 16TiB and the reservation after the last PCI DMA
+> window hit the same problem.
+> Compute the PFNs in u64. Skip ranges that start above the PFN space and
+> clamp the end one PFN below the anchor. The allocator never hands out
+> those IOVAs, so nothing is lost. On 64-bit, PFNs never reach ~0UL, so
+> nothing changes there.
 > 
-> On 2026/11/11 08:54 AM, Thomas Huth wrote:
->> Am 10.11.26 um 16:44 schrieb Amit Machhiwal:
->>> Building the powerpc tests with GNU ld 2.46.1 fails when linking the
->>> test binaries:
->>>
->>>     /usr/bin/ld.bfd: error: read-only segment has dynamic relocations
->>   Hi!
->>
->> This does not happen for me (using GNU ld version 2.46.1-1.fc44 from Fedora
->> 44) ... which compiler and distro are you using?
-> 
-> Thanks for checking!
-> 
-> I'm also using the same GNU ld version on Fedora 44 PPC64LE host (more details
-> are below).  Are you cross compiling on an x86 host by any chance where you are
-> not seeing this problem?
+> Fixes: fade1ec055dc ("iommu/dma: Avoid PCI host bridge windows")
+> Fixes: 7c1b058c8b5a ("iommu/dma: Handle IOMMU API reserved regions")
+> Fixes: aadad097cd46 ("iommu/dma: Reserve IOVA for PCIe inaccessible DMA address")
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/all/sashiko-outbox-195658@kernel.org/
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
+> Signed-off-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
+> Signed-off-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+> ---
+>  drivers/iommu/dma-iommu.c | 32 ++++++++++++++++++++------------
+>  1 file changed, 20 insertions(+), 12 deletions(-)
 
-Yes, I was cross-compiling, so that's likely the reason why I did not see 
-the issue.
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Anyway, could you please check the following patch to see whether it fixes 
-the issue for you, too:
-
-   https://lore.kernel.org/kvm/20261113120101.145183-1-thuth@redhat.com/
-
-... that compiles the powerpc code with "-fpie" in the CFLAGS, so I think it 
-should cure the issue, too, and it's likely the better way instead of 
-suppressing the warnings with "-z notext".
-
-  Thomas
-
+Best regards,
+Krzysztof
