@@ -1,58 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794591738;
-	b=Lx7JYvNMvO8gJQJ4mr5tDmkGNgvnbbehsPciz1f9M5g6edSrjsHSRt9MnvpEPRQxDFXv
-	 NGLY81Dn8/IgUDzlf4raY5JUSQckYkvGHKw1dLXedE7G8RPBCkD+65jv7qY5pS/+r0HsJ
-	 OlUrJAh0/X5/4dkL6OQPkGwfR3mKJdCBCyUDg8mCE5wGCShx50FuoQ0jAIJONDtTfFdFa
-	 3/fX2W2X2BrkxoKRbDazA7Jrb79SEyvyI7qVtMomjcw6rKiJsAhnCkuJ+El9aC/1y5bsV
-	 TNKlaCQyy43lj9SNEh29nGNW+EM2JKpKESl5aqDzO4n8aDb2LvwX293p7cFjKD/RrcA==
+	t=1794591856;
+	b=xrHAL5lm4CHfLEpV3klH2AlN3tLg3jjzi8yj6mfUrsE/huDZP7Im4AmKwsCN99FVC8LW
+	 1PsLmTrLE2C27Pem2hkCW5XsBe+c3xLFLK5+VcUU52bJKtPJllEy1f3bm0NcAaJqXjQh9
+	 IUDdXRLdN+y4GvItBjvlCRx7bKv73NtOKALweUOfJsVFCDZOnb4VlxkOS5cbdrqccBSuA
+	 d+pNsz8+Dn3wWrsNzB3xY06miq/l3UW4lyZD709ipokCOpruEneDffacGP46ynheP1z3X
+	 4y1ug2eWZGMzZ3N2Tk9XGtHVs8jGkAM7b19HZOVn1MrTnlYAorotBQyVFOpWRT6ng8Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794591738;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794591856;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=Fl69UvFz7M/xHyOwf6baSwAePhr8TRIxNHnV31DbQTQ=;
-	b=Do79olGp19KnlPN7sVs14S747Yi+u6DRJb2eM20Oq1ADHR3M9Y1Khq07ZN3E//DLTM5S
-	 35LpT6mzEDKBD16SaB4Bo6uRADByZqpluRCiXeif6xXz6kdAoKMSGTCPWC5ArkAlkWFVs
-	 el+5jwKs93Iq/NJTgJZ5eL+MGqVusWs/Wd+x0N2Xhv0jgSjNWBWGdKoQK0tZl16oioLIo
-	 ElNRRX43iDRdmeXAKkVb9ZZSpe1pAI7wfhi0ZvdSFQL73aMTJl+0qciSuMiydeMmuf1hP
-	 OU7y2jqcIhCn9DVx8FPhOGnRKaZJLM+yUANpS+m9HPiUuE6+NHRG9T0lBOWFOxBnaaQ==
+	bh=PnfWnZVjkrLcf/vVtn08+ZdJb16w8w5SXYvVhj6IA9Y=;
+	b=cVejIo9hNBpNeiMlnMS2cXRABSaRe7ohGehUJdoc9UpGgr2g20zMEW+UaR0YfUumUfmI
+	 rvFuBL0KMJbIKN6sbrFNMVTki0C3Wq5tU3gM7g1fePZrisYuHMFrYehmM1fAgfkl7CJXa
+	 JPd2JswlxpKmggyOPDqbZTY00RGUwB3H6joQJ7vxS3WFGrfnLaNewUsjBdBqhLBuAqjXj
+	 snfwwvTmTWzgDWVYB0lJZl0/18X30hxUD8/X+umj7y8jyE4jDdBosPaR4R0ZdLVsDtiME
+	 W06uKo5tutRT8Cp16J+g/I6fyftguUugXoS0LRoFQqNlEUV6tSWb/OwDNc8LcsH6EJw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fQ7jUEK+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TTSNHJZI;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC64606A337;
-	Fri, 13 Nov 2026 17:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23687606A335
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 17:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fQ7jUEK+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51F11F000C4;
-	Fri, 13 Nov 2026 17:42:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TTSNHJZI
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A42F1F000C4;
+	Fri, 13 Nov 2026 17:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794591738;
-	bh=Fl69UvFz7M/xHyOwf6baSwAePhr8TRIxNHnV31DbQTQ=;
+	s=k20260515; t=1794591855;
+	bh=PnfWnZVjkrLcf/vVtn08+ZdJb16w8w5SXYvVhj6IA9Y=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fQ7jUEK+TH4qkM6EcY55fWVb3n50Tf6Pf8cEF2a9Zd7nkdXuZUK9wGFQbUgnLBxm4
-	 MVoalfuakHjRIW48AxR4Yr4Fd8GJzzaDwA0RlJFQGtspK3sTUzsUTwz+zNgqPNeVwe
-	 lAn/ZkaIFB/JQWWNUBfsO7+Ams8vd/8w4JlEHDCKcUJxPkqkzgpFeC7Shet9VcRTd/
-	 oplv4zxjZITYY1vV7tnlgcEpQyKLFJxJyebh5/5/9Ez9cmb89F15uaonJwLw9rEMSE
-	 1w/TKooUnKxlGJuExzBqRyJ4WghawzGaUkjVCFgCKfMQ+JMdx/1gqfUUhe2DeRYaZA
-	 b2zcOxs6rvi2w==
-Message-ID: <sashiko-outbox-213343@kernel.org>
+	b=TTSNHJZI/6ZNGsgvhWgfQqdbOosynqR3IpZ/m+VP3H7kNlDt/WsMNvOQ063eQ0P5b
+	 D1hhVq1xM+xHtdOp3poJ9l10+z//aK3kPyhEH1xXs/sk0/fCtBUYUdFbCYtAAPEYJA
+	 S2MwBOidA9SY7zOIEnW1OM9F59icBWoQXIibt5fnLArFZAKFsW/CoCB67WaVvQe8e7
+	 CnonDF7ezjBPrFexf5yzpCeaUYp/qQd26GyUFBuz4spy2B0d+JuuuWk2DnHUGlroMm
+	 rCBuGiuzQDYalRU6G4bVssxoeFd2C8KKmf42D+qJUQpaL3rjVCzMaV+fpehy0EkQvM
+	 wdC6WcYUUDWWQ==
+Message-ID: <sashiko-outbox-213358@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v3 6/8] vsock: allow datagrams to use directional
- transports
+Subject: Re: [PATCH] KVM: nSVM: Leave nested if loading CR3 fails at the end
+ of KVM_SET_NESTED_STATE
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sergio Lopez" <slp@redhat.com>
-Cc: virtualization@lists.linux.dev, kvm@vger.kernel.org, bpf@vger.kernel.org, linux-hyperv@vger.kernel.org, "Michael
- S. Tsirkin" <mst@redhat.com>, "Eugenio Perez" <eperezma@redhat.com>
-In-Reply-To: <20261113-vsock-dgram-support-v3-6-1523c8e9b27e@redhat.com>
-References: <20261113-vsock-dgram-support-v3-0-1523c8e9b27e@redhat.com>
- <20261113-vsock-dgram-support-v3-6-1523c8e9b27e@redhat.com>
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261113170405.473841-1-seanjc@google.com>
+References: <20261113170405.473841-1-seanjc@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 13 Nov 2026 17:42:17 +0000
+Date: Fri, 13 Nov 2026 17:44:15 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -64,132 +62,81 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 2 potential
 issues to consider:
-- [Medium] vsock: local datagrams route to transport_g2h when loopback
-  is unloaded
-- [Medium] vsock: VMCI datagram sockets misroute CID_HOST and CID_ANY to
-  loopback
+- [Medium] KVM: nSVM: unrestored vmcb01 save state in
+  svm_set_nested_state() on error
+- [Medium] KVM: nSVM: svm_leave_nested() fails to reinitialize MMU
+  context on L2 exit
 --
 
-commit 9eab4679f5d6926cf379df182996c2e8cd726902
-Author: Sergio Lopez <slp@redhat.com>
+commit 47588b5eb2f39bbca607aca29d4d677254fa60d9
+Author: Sean Christopherson <seanjc@google.com>
 
-vsock: allow datagrams to use directional transports
+KVM: nSVM: Leave nested if loading CR3 fails at the end of KVM_SET_NESTED_S=
+TATE
 
-This commit enables datagram sockets to select directional and loopback
-transports per destination while keeping a fallback transport as the
-socket owner when needed, and unifies datagram receive queuing in the
-core.
+This commit calls svm_leave_nested() when nested_svm_load_cr3() fails at
+the end of svm_set_nested_state().
 
-Link: https://lore.kernel.org/all/DMGNAV67LK3F.2FNLTD5NVHDEA@gmail.com/
-
-> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-> index aef5389eeca2c..e0d1a3e5d05cc 100644
-> --- a/net/vmw_vsock/af_vsock.c
-> +++ b/net/vmw_vsock/af_vsock.c
-[ ... ]
-> @@ -576,11 +579,56 @@ static bool vsock_use_local_transport(unsigned int =
-remote_cid)
->  	if (remote_cid =3D=3D VMADDR_CID_LOCAL)
->  		return true;
-> =20
-> -	if (transport_g2h) {
-> -		return remote_cid =3D=3D transport_g2h->get_local_cid();
-> -	} else {
-> -		return remote_cid =3D=3D VMADDR_CID_HOST;
-> +	local_cid =3D transport_g2h ? transport_g2h->get_local_cid() :
-> +		VMADDR_CID_HOST;
-> +	/* A virtio device without a CID keeps the host loopback alias.
-> +	 * Hyper-V has no numeric CID even while it is active, so CID_HOST
-> +	 * must keep using its guest-to-host transport in that case.
-> +	 */
-> +	if (local_cid =3D=3D VMADDR_CID_ANY && transport_g2h->dgram_transport_m=
-atch)
-> +		local_cid =3D VMADDR_CID_HOST;
-> +
-> +	return remote_cid =3D=3D local_cid;
-> +}
-> +
-> +/* Select a route without changing socket ownership. The caller holds
-> + * vsock_register_mutex and pins the returned transport before releasing=
- it.
-> + */
-> +static const struct vsock_transport *
-> +vsock_select_transport(struct vsock_sock *vsk,
-> +		       const struct sockaddr_vm *remote_addr,
-> +		       const struct vsock_transport *dgram_owner,
-> +		       bool *to_host)
-> +{
-> +	struct sock *sk =3D sk_vsock(vsk);
-> +	u32 cid =3D remote_addr->svm_cid;
-> +
-> +	lockdep_assert_held(&vsock_register_mutex);
-> +	*to_host =3D false;
-> +
-> +	if (vsock_use_local_transport(cid))
-> +		return transport_local;
-> +	if (cid <=3D VMADDR_CID_HOST ||
-> +	    (remote_addr->svm_flags & VMADDR_FLAG_TO_HOST))
-> +		return transport_g2h;
-
-[Severity: Medium]
-Can vsock_select_transport() route VMADDR_CID_LOCAL datagrams to
-transport_g2h when transport_local is not registered?
-
-When transport_local is NULL, vsock_use_local_transport(VMADDR_CID_LOCAL)
-returns false and cid <=3D VMADDR_CID_HOST (1 <=3D 2) matches, returning
-transport_g2h instead of NULL. Because vsock_dgram_resolve_cid() also
-maps VMADDR_CID_ANY to VMADDR_CID_LOCAL whenever
-owner->dgram_transport_match is set, datagram connect() and sendmsg() to
-VMADDR_CID_LOCAL or VMADDR_CID_ANY transmit local packets to the host (or
-fall back to the VMCI owner) instead of failing with -ENODEV. When
-vsock.g2h_fallback is enabled without transport_local, connecting a
-datagram socket to the guest's own CID also succeeds via transport_g2h
-even though subsequent sends fail in virtio_transport_send_pkt().
-
-[ ... ]
-
-> @@ -1461,6 +1645,27 @@ static int vsock_read_skb(struct sock *sk, skb_rea=
-d_actor_t read_actor)
->  	return vsk->transport->read_skb(vsk, read_actor);
->  }
-> =20
-> +static int vsock_dgram_resolve_cid(struct vsock_sock *vsk,
-> +				   struct sockaddr_vm *remote_addr,
-> +				   bool *vmci_self)
-> +{
-> +	const struct vsock_transport *owner =3D vsk->transport;
-> +
-> +	if (remote_addr->svm_cid !=3D VMADDR_CID_ANY)
-> +		return 0;
-> +
-> +	mutex_lock(&vsock_register_mutex);
-> +	if (transport_local || owner->dgram_transport_match) {
-> +		remote_addr->svm_cid =3D VMADDR_CID_LOCAL;
-> +	} else {
-> +		remote_addr->svm_cid =3D owner->get_local_cid();
-> +		*vmci_self =3D owner->dgram_fallback;
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index 07554089ec05b..4b1cdc7798bb7 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -2114,8 +2114,10 @@ static int svm_set_nested_state(struct kvm_vcpu *v=
+cpu,
+>  	 */
+>  	ret =3D nested_svm_load_cr3(&svm->vcpu, vcpu->arch.cr3,
+>  				  nested_npt_enabled(svm), false);
+> -	if (ret)
+> +	if (ret) {
+> +		svm_leave_nested(vcpu);
+>  		goto out_free;
 > +	}
-> +	mutex_unlock(&vsock_register_mutex);
-> +
-> +	return remote_addr->svm_cid =3D=3D VMADDR_CID_ANY ? -EADDRNOTAVAIL : 0;
-> +}
 
 [Severity: Medium]
-Does this misroute VMCI datagrams onto loopback when vsock_loopback is
-loaded?
+Does calling svm_leave_nested() here leave vmcb01.ptr->save and vCPU
+controls corrupted when nested_svm_load_cr3() fails?
 
-On a VMCI guest where virtio_transport is loaded without an active
-virtio-vsock device (or transport_g2h is NULL),
-vsock_use_local_transport(VMADDR_CID_HOST) returns true, so
-vsock_select_transport() routes VMADDR_CID_HOST datagrams to
-transport_local instead of falling back to the VMCI owner. In addition, if
-a VMCI socket is bound to VMCI's local CID and sends or connects to
-VMADDR_CID_ANY while transport_local is registered,
-vsock_dgram_resolve_cid() resolves the destination to VMADDR_CID_LOCAL and
-vsock_dgram_get_transport() skips the fallback to owner because
-transport->get_local_cid() =3D=3D VMADDR_CID_LOCAL, failing with
--EADDRNOTAVAIL when vsk->local_addr.svm_cid does not match loopback.
+By this point in svm_set_nested_state(), svm_copy_vmrun_state() has
+already overwritten vmcb01.ptr->save with the raw user-supplied save area
+without updating vcpu->arch, and nested_vmcb02_prepare_control() has
+already applied L2 TSC scaling, TSC offset, and virtual NMI state.
+svm_leave_nested() switches svm->vmcb back to vmcb01 without restoring
+vmcb01.ptr->save from vmcb02.ptr->save or undoing the control changes,
+leaving vmcb01's CR0/CR3/CR4/EFER out of sync with vcpu->arch and lacking
+required shadow-paging bits when NPT is disabled on the host.
+
+Since nested_svm_load_cr3() is called with reload_pdptrs=3Dfalse, its only
+failure condition is !kvm_vcpu_is_legal_cr3(vcpu, vcpu->arch.cr3), which
+could be checked during the validation phase before mutating vCPU state.
+
+[Severity: Medium]
+Can svm_leave_nested() leave the vCPU's MMU uninitialized when forcing a
+vCPU out of L2?
+
+arch/x86/kvm/svm/nested.c:svm_leave_nested() {
+    ...
+		leave_guest_mode(vcpu);
+    ...
+		svm_switch_vmcb(svm, &svm->vmcb01);
+
+		nested_svm_uninit_mmu_context(vcpu);
+}
+
+nested_svm_uninit_mmu_context() only sets vcpu->arch.mmu back to
+&vcpu->arch.root_mmu without calling kvm_init_mmu().  If the vCPU was
+already in L2 with nested NPT enabled and userspace updates CPUID (such
+as reducing MAXPHYADDR, which also causes nested_svm_load_cr3() to fail),
+kvm_mmu_after_set_cpuid() sets root_mmu.root_role.invalid =3D 1, while
+kvm_init_mmu() skips reinitializing root_mmu because mmu_is_nested(vcpu)
+is true.
+
+After svm_leave_nested() exits guest mode without calling kvm_init_mmu(),
+the vCPU is left in L1 with L2's gva_walk and root_mmu.root_role.invalid
+still set.  On the next KVM_RUN with TDP MMU enabled,
+kvm_tdp_mmu_alloc_root() allocates a root with role.invalid =3D 1,
+triggering KVM_MMU_WARN_ON(!root || root->role.invalid) in
+kvm_tdp_mmu_map() and leaking the invalid root on VM teardown.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113-vsock-dgra=
-m-support-v3-0-1523c8e9b27e@redhat.com?part=3D6
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113170405.4738=
+41-1-seanjc@google.com?part=3D1
