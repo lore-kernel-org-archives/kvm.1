@@ -1,49 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794587217;
-	b=HLRnUBpKzXhN1yeoXDjoIqHUcYqMNKhGnYmmfZI0gI8HHwb4JLKFVD6M7lSHcCLsJZh4
-	 5fWqENnqzfH16MGsIe8MB6tw4tqGpuXy7JtpnX2+vjrvs7ASsoJ3J/dsE6tZmxPWSggCA
-	 mrEffgLD191v/YMOEXcns32HS9lcEGn6TloU/TK99iZcTT5BmuW/LHzRnZQISpt2GMP1J
-	 8JDdzOw16ydvgg0kmBx0/LS7pZ93Lf+f9UGfvH7qlEg2dhJL85RusImgmsAiTlglzti5l
-	 PgSELfSzeNJ1PJWp9jQSJDFxZo4yOD9agrpCozPIQT11IUVvD3VFANPTB96knR1e7tA==
+	t=1794587335;
+	b=12TMupJx8+AUmzHvrlOjXoK2j+HRjuWkcu42Zn/sjKZDrhKJ2zEjEAFwBPH2oj7BkjgT
+	 g7DIoNJY5ZJSJW8+jR+VU3lmRK1WrthCd6VBjzt4yismnWQvy9EnoL4rEfj0M0wyA5gWy
+	 +BaRlj8cWr2j5T5lDQ2KKTdQulAtLRrg/BugQ1uHF67YGRDtr2iAi2Njuu3Llkf8cgMiR
+	 b00C6C48ch5DbM48lGd4wuoL0y//7ClJ2go2x8Uqyxc9Qu+NfgxYNZ3XaOGWveYbDIz0o
+	 UrUpG4tWc1nNOecEyOsa82KMTm02NG+NC01Wf7Z2KnrAJW4UuQvAZCUn1kzLugWl9ww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794587217;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=QhfGUW32CZ1pQ3WZy3XxoZITm270vtUPhzCkGIyBM7o=;
-	b=XM+PTte80Z/2/QQ+3fChg+PDnlgo28CkvwU1OuIvjLONjx7UT6lhD2dICJJT/nLBi970
-	 xrlVXs2VYGfLocRyMERYkmsZYccK+jPHPgev8ephcjo6CO6VfqjIdUQyHDXvlf0nlwWnT
-	 zCyyXUWTGsuHlbZpPIfishZalnkTOKtilehbbkaXFrrMagkAJ566nvaDzHcKi2o9zT3k1
-	 nK/ZSI6sRp+hqWFlm6wAOiEBBitQykgm+pQWat9oH0uX2XyxC4BY2AOOwdKqoQbY/EHdO
-	 h8ne414UkNfomZsU1C+8Z9oB9qR59Ms8pqJBiCaZsQrUebvebxJ2uQ8UnEhIRCxrfYQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794587335;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=bqLPYEgtC/OaOWVQN5VtB/ybeQbbLIeU9NIU5AKPVwk=;
+	b=SbSapHlFMqXX6Z0rs6GNsX25Z4K01JSQWQtmKIEhv7R7zwcPZhk4k1K0xPPv/3th8skQ
+	 VwJLmPq9wekAdrDax/LiGcbh+A9GQfOXRqQkZ8uXYjZ13Mb4rYoGpnXHVdHL6JHn2gBOn
+	 ZDgGzNj4JTkNi5RikQZRnlwLxqA0LB1Als1xLnJeQr6srfOL8KI8kbkwXdFrt2R8Brbfd
+	 wLyfqgfgTx5G/hOlqq5gwgRG62Z63RFUw4iejhzxtMVjsOzexk89Ab4xBkyQrTkDYF1EX
+	 Eku/gZeq91TcGAkW3SsOCN+RkYonEPota0s8xTGHROGk5FvbiXH4NmudmOKLqlp6cwA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=um0Z1Mgu;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D84606BA8E;
-	Fri, 13 Nov 2026 16:26:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A2D84606BA8E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AoVWeW93;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72519606A327
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 16:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=um0Z1Mgu
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9D37E143D;
-	Fri, 13 Nov 2026 08:26:52 -0800 (PST)
-Received: from [10.57.67.215] (unknown [10.57.67.215])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 343483F673;
-	Fri, 13 Nov 2026 08:26:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794587215; bh=dx8muCVYeDPy2QKy19aHXLOssocMH92hk+wTEOh+S2c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=um0Z1MguqXQ8blB8JQE/qq8Zfq1bjvAzBvhOvIMT2Q6WCh2xsGWLNMiYlpJJx/RT8
-	 0/q22nwbKtcU1lUiKqeDaCDNKTHPeR8Ew8RenrzpRN/Kx6x1f+sGSI6pNMCsZk0kdw
-	 vBmst7zYpt+0NFsc/w8bPy44Rc8krIKETT+fI79E=
-Message-ID: <020d220a-6f21-46a9-a0d6-51e56a7b3a5a@arm.com>
-Date: Fri, 13 Nov 2026 16:26:50 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AoVWeW93
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 039FA1F000C4;
+	Fri, 13 Nov 2026 16:28:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794587335;
+	bh=bqLPYEgtC/OaOWVQN5VtB/ybeQbbLIeU9NIU5AKPVwk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=AoVWeW93JeeqhOpJEN8AYiJzIIvUjkzzXiA5vF5m/y6vAkOVUEkPbGCqkxpIp4tfP
+	 LW8y/gPF5aDBSjKCzEejigwoDSA7HEHojX2WsPmCBba6zJRVxbyV3RvbnuOpXPEdfu
+	 acTCJMNg/B72ftgfQOCG1RC+d+7+ORUsCnHFyLUosNnABXg94SXyIWqCFbUeTIuFy7
+	 sknd2KjBsvwHgkN0MLu9WK4kL0QwogXeSJg5O7+r8mEKUwJZbJmH+Gib5Hnv2Il2z6
+	 ZKeTF7rek5/Txn3U5Gt2CcktA54sbTnED8vecdpT5cAVfBDDVHq5uTjCWP8e5zvnOi
+	 4YXGewuDgld0Q==
+Message-ID: <sashiko-outbox-213194@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC v2 14/15] tools/ctlv: Add the userspace library
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jiri Pirko" <jiri@resnulli.us>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261113155515.2510194-15-jiri@resnulli.us>
+References: <20261113155515.2510194-1-jiri@resnulli.us>
+ <20261113155515.2510194-15-jiri@resnulli.us>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 13 Nov 2026 16:28:54 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -52,167 +59,254 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/12] KVM: arm64: CCA: Tear down RTTs
-Content-Language: en-GB
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Kohei Enju <enju.kohei@fujitsu.com>
-References: <20261111145758.217946-1-steven.price@arm.com>
- <20261111145758.217946-8-steven.price@arm.com>
- <e1690e53-70fb-47fe-bd06-4758b1e196d2@arm.com>
- <6c362b9e-6ac3-4cbb-8e9d-d666f87ef8c2@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <6c362b9e-6ac3-4cbb-8e9d-d666f87ef8c2@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 13/11/2026 15:05, Steven Price wrote:
-> On 13/11/2026 01:04, Suzuki K Poulose wrote:
->> On 11/11/2026 14:57, Steven Price wrote:
->>> The RMM owns the stage 2 page tables for a realm, and KVM must request
->>> that the RMM creates/destroys entries as necessary. The physical pages
->>> to store the page tables are delegated to the realm as required, and can
->>> be undelegated when no longer used.
->>>
->>> Creating new RTTs is the easy part, tearing down is a little more
->>> tricky. The result of realm_rtt_destroy() can be used to effectively
->>> walk the tree and destroy the entries (undelegating pages that were
->>> given to the realm).
->>>
->>> Tear down a created Realm whether it is still new or has been activated.
->>> Unmap the Realm IPA space once during stage-2 teardown. Defer
->>> destruction of non-root RTTs until final Realm destruction, after
->>> REALM_TERMINATE and before destroying the RD; root RTTs remain until the
->>> RD has gone away.
->>>
->>> Signed-off-by: Steven Price <steven.price@arm.com>
->>>
+Thank you for your contribution! Sashiko AI review found 7 potential
+issues to consider:
+- [Medium] tools/ctlv: missing ctlv_hdr_is_record() check in record
+  walkers and getters
+- [Low] tools/ctlv: ctlv_put_str() bypasses sticky msg->err on length
+  overflow
+- [Low] tools/ctlv: memory leak in ctlv_msg_new_max() when
+  ctlv_record_start() fails
+- [Low] tools/ctlv: unpopulated ctlv_error in ctlv_spec_check() and
+  ctlv_query_sized()
+- [Low] tools/ctlv: stale bound and truncation of reason in
+  ctlv_error_parse()
+- [Low] tools/ctlv: missing progress check on final fragment in
+  ctlv_query_guard_next()
+- [Low] tools/ctlv: missing -ESTALE retry loop in ctlv_ops_get()
+--
 
-...
+commit 128e9e8121ea589172c7fc1358fcc6d31f685bab
+Author: Jiri Pirko <jiri@resnulli.us>
 
->>>      #endif /* __ASM_KVM_RMI_H */
->>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->>> index 9df3f8d5b4ef..be014f6c00e7 100644
->>> --- a/arch/arm64/kvm/mmu.c
->>> +++ b/arch/arm64/kvm/mmu.c
->>> @@ -1145,9 +1145,25 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct
->>> kvm_s2_mmu *mmu, unsigned long t
->>>        return err;
->>>    }
+tools/ctlv: Add the userspace library
 
-...
+This commit adds the libctlv userspace library for transport, message
+building and parsing, device discovery, and schema checking, along with
+the userspace code generator in ctlvgen.
 
->>>    void kvm_uninit_stage2_mmu(struct kvm *kvm)
->>>    {
->>> -    kvm_free_stage2_pgd(&kvm->arch.mmu);
->>> +    if (kvm_realm_is_created(kvm))
->>> +        kvm_realm_uninit_stage2(&kvm->arch.mmu);
->>> +    else
->>> +        kvm_free_stage2_pgd(&kvm->arch.mmu);
->>
->> We added kvm_free_stage2_pgd() from kvm_destroy_realm() for Realms in
->> the previous patch. Should we move that here since, this is where we
->>
->> 1. Deal with tearing down stage2
->> 2. And more importantly we are skipping it for Realms.
-> 
-> I'm not quite sure what you're asking for here. We can't free the stage2
-> PGD while the realm is existing (because the RMM has the pages) - so we
-> defer it.
+> diff --git a/tools/ctlv/libctlv/introspection.c b/tools/ctlv/libctlv/intr=
+ospection.c
+> new file mode 100644
+> index 0000000000000..1bd2662e58317
+> --- /dev/null
+> +++ b/tools/ctlv/libctlv/introspection.c
+[ ... ]
+> +int ctlv_ops_get(struct ctlv_dev *dev, struct ctlv_ops **opsp,
+> +		 struct ctlv_error *error)
+> +{
+> +	struct ctlv_reply *reply =3D NULL;
+> +	int ret;
+> +
+> +	/* Sized, or the dump kept for op lengths would ask for itself. */
+> +	ret =3D ctlv_query_sized(dev, CTLV_OP_OP_GET, NULL, 0, &reply, error);
+> +	if (ret)
+> +		return ret;
 
-I understand. My point is, we are deferring the stage2 free for Realm
-in this patch, without explicitly showing where it is done. We have
-introduced that as part of kvm_destroy_realm() in Patch 6.
+[Severity: Low]
+Should ctlv_ops_get() retry up to QUERY_RESTARTS times on -ESTALE like
+ctlv_query() does?
 
-My recommendation is to add kvm_free_stage2_pgd() to kvm_destroy_realm()
-in this patch, where we are showing when this is deferred to. e.g.,
-this patch functionally leaves the reader with no clue when this is
-actually freed.
+Because ctlv_ops_get() calls ctlv_query_sized() directly to avoid
+recursing into ctlv_dev_sizes(), a dynamic op state change between
+fragments of an op-get dump causes ctlv_ops_get(), ctlv_dev_sizes(), and
+ctlv_spec_check() to fail with -ESTALE instead of restarting the dump.
 
-Does that make sense ?
+[ ... ]
 
+> diff --git a/tools/ctlv/libctlv/message.c b/tools/ctlv/libctlv/message.c
+> new file mode 100644
+> index 0000000000000..ab4464fb8af2d
+> --- /dev/null
+> +++ b/tools/ctlv/libctlv/message.c
+[ ... ]
+> +int ctlv_msg_new_max(__u32 capacity, __u32 max, struct ctlv_msg **msgp)
+> +{
+> +	struct ctlv_msg *msg;
+> +
+> +	if (!capacity || capacity > max)
+> +		return -EINVAL;
+> +	msg =3D calloc(1, sizeof(*msg));
+> +	if (!msg)
+> +		return -ENOMEM;
+> +	/* Separate from the handle, so growing the buffer does not move it. */
+> +	msg->buf =3D malloc(capacity);
+> +	if (!msg->buf) {
+> +		free(msg);
+> +		return -ENOMEM;
+> +	}
+> +	msg->capacity =3D capacity;
+> +	msg->max =3D max;
+> +	*msgp =3D msg;
+> +	return ctlv_record_start(msg, CTLV_TYPE_ROOT);
+> +}
 
-> 
->>>        kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
->>>    }
->>>    diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
->>> index 69c628cfb6c7..b904e6541fb0 100644
->>> --- a/arch/arm64/kvm/rmi.c
->>> +++ b/arch/arm64/kvm/rmi.c
->>> @@ -11,16 +11,193 @@
->>>    #include <asm/kvm_pgtable.h>
->>>    #include <asm/virt.h>
->>>    +static inline unsigned long rmi_rtt_level_mapsize(int level)
->>> +{
->>> +    if (WARN_ON(level > KVM_PGTABLE_LAST_LEVEL))
->>> +        return PAGE_SIZE;
->>> +
->>> +    return (1UL << ARM64_HW_PGTABLE_LEVEL_SHIFT(level));
->>> +}
->>> +
->>
->> We agreed to use kvm_granule_size() instead of this ?
->>
->> https://lore.kernel.org/all/cb183290-3fee-4535-aa3e-5cc172c2323a@arm.com
-> 
-> That was a screw-up when I was squashing fixes back in - the next patch
-> removes the code. I'll fix this up in the next version so it never
-> appears. Thanks for pointing it out.
-> 
->>>    u32 kvm_rmm_ipa_limit(void)
->>>    {
->>>        return u64_get_bits(rmi_feat_reg(0), RMI_FEATURE_REGISTER_0_S2SZ);
->>>    }
->>>    +static int get_start_level(struct realm *realm)
->>> +{
->>> +    return 4 - max(2, stage2_pgtable_levels(realm->ia_bits));
->>
->> I don't think we need this "max()". ia_bits is guaranteed to be
->>> = 32bit (ARM64_MIN_PARANGE_BITS, see kvm_init_ipa_range()), implying
->> that we have at least 2 levels on all page sizes.
-> 
-> Ah, very true - Sashiko complained, but I hadn't noticed
-> ARM64_MIN_PARANGE_BITS provided an effective minimum. I'll remove the
-> max() and add a comment.
-> 
->>> +}
->>> +
->>> +static void free_rtt(phys_addr_t phys)
->>> +{
->>> +    kvm_account_pgtable_pages(phys_to_virt(phys), -1);
->>> +    if (rmi_free_delegated_page(phys))
->>> +        kvm_account_pgtable_pages(phys_to_virt(phys), 1);
->>
->> Is there a reason why remove the account before freeing ? Could we do
->> this after we have reclaimed it ?
-> 
-> Sashiko again:
-> 
->> Does calling kvm_account_pgtable_pages() after rmi_free_delegated_page()
->> access the page after it has already been freed and uncharged from its
->> memcg?
-> 
-> Basically the problem is that rmi_free_delegated_page() frees the page
-> back to the allocator. So doing the account after freeing means that
-> technically the page could have been reused.
+[Severity: Low]
+Does ctlv_msg_new_max() leak msg and msg->buf if ctlv_record_start()
+fails?
 
-Thanks, for the explanation, that makes sense.
+When capacity is smaller than sizeof(struct ctlv_hdr) (16 bytes),
+ctlv_record_start() has to grow msg->buf; if max < 16 or realloc() fails,
+ctlv_msg_new_max() returns a negative errno with *msgp pointing to the
+allocated struct, which callers such as reply_new() do not free on error.
 
-Cheers
-Suzuki
+[ ... ]
 
+> +/* The terminator is part of the payload, and a declared length excludes=
+ it. */
+> +int ctlv_put_str(struct ctlv_msg *msg, __u64 type, const char *value)
+> +{
+> +	size_t len =3D strlen(value) + 1;
+> +
+> +	if (len > UINT32_MAX)
+> +		return -EMSGSIZE;
+> +	return ctlv_msg_put(msg, type, 0, value, len);
+> +}
+
+[Severity: Low]
+Does the length overflow path in ctlv_put_str() bypass msg->err?
+
+If len > UINT32_MAX, returning -EMSGSIZE directly neither preserves an
+earlier msg->err nor records -EMSGSIZE in msg->err, so a caller checking
+ctlv_msg_err() or ctlv_msg_done() at the end will miss the failure and
+send an incomplete message.
+
+[ ... ]
+
+> +const struct ctlv_hdr *ctlv_hdr_first(const struct ctlv_hdr *record)
+> +{
+> +	if (record->len <=3D sizeof(*record))
+> +		return NULL;
+> +	/* A record too short to hold the header it announces holds no child. */
+> +	if (record->len - sizeof(*record) < sizeof(*record))
+> +		return NULL;
+> +	return record + 1;
+> +}
+> +
+> +/*
+> + * The next child is a step of this one's aligned length. Both the step =
+and the
+> + * header it lands on have to stay inside the record.
+> + */
+> +const struct ctlv_hdr *ctlv_hdr_next(const struct ctlv_hdr *record,
+> +				     const struct ctlv_hdr *child)
+> +{
+> +	const char *end =3D (const char *)record + record->len;
+> +	const char *next =3D (const char *)child;
+> +	__u32 step;
+> +
+> +	if (aligned(child->len, &step))
+> +		return NULL;
+> +	next +=3D step;
+> +	if (next < (const char *)child || next > end)
+> +		return NULL;
+> +	if ((size_t)(end - next) < sizeof(*child))
+> +		return NULL;
+> +	return (const struct ctlv_hdr *)next;
+> +}
+
+[Severity: Medium]
+Should ctlv_hdr_first(), ctlv_hdr_next(), and the generated record
+getters verify ctlv_hdr_is_record()?
+
+check_record() only validates nested TLV headers when CTLV_HDR_F_RECORD is
+set, and the scalar getters reject records via ctlv_hdr_is_record(hdr),
+but ctlv_hdr_first() and ctlv_hdr_next() walk any TLV whose len is at
+least 32 bytes.  Generated record getters in
+tools/ctlv/ctlvgen/lib/gen_user.py:_getter() also return ctlv_hdr_find()
+without checking ctlv_hdr_is_record().
+
+If a non-record TLV is passed to ctlv_hdr_first() or returned by a record
+getter, its unvalidated payload bytes are interpreted as struct ctlv_hdr,
+which can spin forever in ctlv_for_each() when the first 4 payload bytes
+are zero (step =3D=3D 0) or read out of bounds when a child's len is smaller
+than sizeof(struct ctlv_hdr).
+
+[ ... ]
+
+> diff --git a/tools/ctlv/libctlv/spec.c b/tools/ctlv/libctlv/spec.c
+> new file mode 100644
+> index 0000000000000..194966e29e2d8
+> --- /dev/null
+> +++ b/tools/ctlv/libctlv/spec.c
+[ ... ]
+> +int ctlv_spec_check(struct ctlv_dev *dev, const struct ctlv_family_spec =
+*spec,
+> +		    char *diff, size_t len, struct ctlv_error *error)
+> +{
+> +	struct ctlv_ops *ops;
+> +	unsigned int i;
+> +	int ret;
+> +
+> +	if (diff && len)
+> +		*diff =3D '\0';
+> +	ret =3D chain_check(dev, spec, diff, len);
+> +	if (ret)
+> +		return ret;
+> +	ret =3D ctlv_ops_get(dev, &ops, error);
+> +	if (ret)
+> +		return ret;
+
+[Severity: Low]
+Does ctlv_spec_check() leave *error uninitialized or cleared with
+error->err =3D=3D 0 on failure?
+
+If chain_check() fails, *error is never initialized, and if a later check
+fails with -ENOMSG (such as an unknown op, info_check(),
+ctlv_schema_equal() in schema_check(), or required_ops_check()), error->err
+remains 0 from ctlv_ops_get().  Similarly, in
+tools/ctlv/libctlv/transport.c:ctlv_query_sized(), if reply_new() fails it
+jumps to out_free_buf instead of out_set_err, leaving error->err as 0.
+
+> diff --git a/tools/ctlv/libctlv/transport.c b/tools/ctlv/libctlv/transpor=
+t.c
+> new file mode 100644
+> index 0000000000000..647bab085c9e1
+> --- /dev/null
+> +++ b/tools/ctlv/libctlv/transport.c
+[ ... ]
+> +	hdr =3D ctlv_hdr_find(root, CTLV_T_ERROR_INFO_REASON);
+> +	if (hdr && !ctlv_get_enum(hdr, 1,
+> +				  CTLV_VALIDATION_REASON_STALE_GENERATION,
+> +				  &value, NULL)) {
+> +		error->reason =3D value;
+> +		error->present |=3D CTLV_ERROR_HAS_REASON;
+> +	}
+
+[Severity: Low]
+Does ctlv_error_parse() ignore the enum bounds and truncate value into
+error->reason?
+
+ctlv_get_enum() only checks min and max when the known pointer is
+non-NULL, so passing NULL accepts any 64-bit value (including 0 or values
+above UINT32_MAX) and truncates it into the 32-bit error->reason field.
+In addition, the upper bound passed here is
+CTLV_VALIDATION_REASON_STALE_GENERATION (11) rather than
+CTLV_VALIDATION_REASON_NONCONTIGUOUS_TYPE (12).
+
+[ ... ]
+
+> +int ctlv_query_guard_next(struct ctlv_query_guard *guard, __u64 cursor,
+> +			  bool progress)
+> +{
+> +	unsigned int slot;
+> +	int ret;
+> +
+> +	if (!cursor)
+> +		return 0;
+> +	if (!progress)
+> +		return -EPROTO;
+
+[Severity: Low]
+Does returning early on !cursor skip the progress check for the final
+fragment of a multi-fragment query?
+
+When guard->cursors_count > 0 and the final continuation fragment ends
+with cursor =3D=3D 0 without adding any complete TLV (progress =3D=3D false=
+),
+ctlv_query_guard_next() returns 0 instead of rejecting it with -EPROTO.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113155515.2510=
+194-1-jiri@resnulli.us?part=3D14
