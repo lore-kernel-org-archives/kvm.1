@@ -1,112 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.243.161.220
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794562600;
-	b=fu2+emhBv08+SvPyVjdoFOQzT7xEB8bF6nWgPbMmLmWNp6yiOXdZ1C4SP7WPc9B6RlPs
-	 IL9wy7COcIKGYDUWVtV0MidpjV4ev1g858VZIG1sqbZzfGwz6gULt2rvSZCS+zyRJxpMw
-	 sNGYMGFH9wDwNbKC5sSX+57T4pzvWnoIk+tdnE8lMeBRpKZkiVZarsC8usHCka10TmR5J
-	 lDtWqtz/gaSW2HnToTEP8x5J7SiRZ7UiGu9TVo4U4irLl/EVQ0mgI0Mjap3NdkhBEWkr0
-	 yJpmDAdhERrQv6NWHp0yVvlDJcs4UiSaw3EM9/a8TzRwhkzcmxEYi/4D7Un9zxdEzUA==
+	t=1794563316;
+	b=0maSzaysPBNLEJCHW5a+MjmBPupn12G0YfzMIbVYXU8DNBhTHqEyVMS5vx/MhjDXWD6u
+	 XXHFTumkHG2TJCc/LMu2hISsvsxosM0qP0Rb8/9D5VlTeba0aHjlMJQxO4TY2A7Je0Wkd
+	 48mxkImaIpgdpspeAQcEpVwaEPDjEXHio7a8fwLfipOGz4dg3o6kVfqy1xjw9YP160YqD
+	 p+Pj5MEbDKFDNZxGuB2wQRPgJ9oseiw61oobrmmuEtRLdaltRMQA6qqJbSCSQ67igbAk2
+	 d+MWD0N7Zw7i67AoynWSsD/LwzhoXeYAsqJto84slJvUY5xj8z3Hal5Lu5w0rmoT9zA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794562600;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:X-Authority-Analysis:
-	 X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=cLsQc2gUWWCsMRZXIeMbM6mV7EAFqw0z8J6u3kCxlKY=;
-	b=3vuLf2bZMMceAk7i95h/ObomCdVLyOFMuxSkSS6AyjY4jtkE3kU9PQqHlvlhRa8PLIG+
-	 qPHG1zXotrlkEgEdYwb5qu8M2FyZpX+UiLk7OWlOiTkKUFNXyF8SH46MwAaqz77UK2Ot7
-	 N15RHkF2ufpBY+OAVzU4nV5laDV/ypa9tUZw3VT5XfPohXSh8XOtW99Ju/shKOYY4l1tj
-	 I9yB/D4hfdTvt0vg1VaqVOlUAxrUWSZIqS9pM3JXk5eQp5My9B+H9e7gRVnpfZX9TpQtR
-	 dRjGh6/WuF0FsOZME1sRsc5c0PpD/ITH1CpQhryshLt1/ZZ8sa6HDb8cHIgvig/jkFA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794563316;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-CM-SenderInfo;
+	bh=2OuYuwDSIVfTPlLHBFplT3Fsykaz6y/ZYTd6iGyKIGg=;
+	b=tuTpYc3Mbw2o655Cg8PCgGkM4Hkq9VoOSjRPn3dOFi6+PCut20wj4BCTAtlSpCIAfcqi
+	 cz6BTBn4PzAOM9axcfh8/6OUbHlLOQkS8VQ16kOvSS4f2KjGX9N9Se1C3AnV/6uCnwHwY
+	 UkBpgyCy8NpZj504uw0qvK58iLPxy5HiWaGRx5rn8eaHnl9z03K0UZWsgpAdC7fhAAamo
+	 FPKhCTzejOWTBE2/a5JfbLjwJjaZvgHCzfIw/PsOOUmAljmgIGdsvH+QivPEFnsIEU1gy
+	 RwcC+OCS7mO4GvnHXPko5PgRggkwQVRtoIAp1/WBWhdnEr9xthcoonUUdGx/rFr46Jw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=GVKFGMs1;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=Wak6RPD6;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C9B606A32E
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 09:36:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B9C9B606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	dmarc=pass header.from=mails.tsinghua.edu.cn;
+	spf=pass smtp.mailfrom=mails.tsinghua.edu.cn;
+	dkim=pass header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=nGXyCgwR;
+	arc=none smtp.remote-ip=162.243.161.220
+Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net (zg8tmtyylji0my4xnjeumjiw.icoremail.net [162.243.161.220])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FAAC606A31C
+	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 09:48:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6FAAC606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=GVKFGMs1;
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=Wak6RPD6
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AD8VSiS1527723
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 09:36:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	cLsQc2gUWWCsMRZXIeMbM6mV7EAFqw0z8J6u3kCxlKY=; b=GVKFGMs1XMs9bbXp
-	Zhg5r5J6RwMc42vPpYNxUdrGnsI4Fhw2BdDU0rdu3o0sFmMKaQu1NrcR2rTbbR8R
-	GvHPsp+4adGh3QtD7FPMoBIFtRHYLVkbyZChjnR/NLvCdmjR/OrbJPj7fl4qeV8W
-	a1ieVPsDJG+7JDIGNw/V8eBuedTZbN9Wy0yyelW2uvkedT6T910Pio8zORxPVIZq
-	cgFh3n80GjMVVrvJDu3INzRywdH0D4acbetf4CAQIkFyDea6uPH4cEbOmx5UmaHp
-	nwj/BjflK9AxQPPF1ZvcJ3MYKU+dUoOYlXPQrcNKRYBmmtJfK/Ul3Q6ffcQMlx45
-	ZG45lA==
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hww5r8nvj-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 09:36:38 +0000 (GMT)
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cd66551e02cso1012127a12.2
-        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 01:36:38 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.a=rsa-sha256 header.s=dkim header.b=nGXyCgwR
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1794562597; x=1795167397; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cLsQc2gUWWCsMRZXIeMbM6mV7EAFqw0z8J6u3kCxlKY=;
-        b=Wak6RPD6kKAJD2xcOzv6C5pG0152NpqFM7/5txgIakOVGBBCW9mPOqpc/pMIeLfWXj
-         3ULZuTnfWPFFAvo9Wa4W8gPIvMYbtquaapskupEKbVPvOmrUW/c4IAurbnXryJI4lsvd
-         KrZiayW0emk47CGdeDDttkmvtQ35McX+vLZyuImModRddJIAUa4opiCdlShS94U3YKUJ
-         Oz7gDlnZUV4bOm+XSB7bot3Ux4GvtL9voAQ4NIvqu7EnWrgc/31kFvS90bnrjWBiuSab
-         H8TcLUW7ZMyTnAv9l3JlI1LZSce59CJwaQJVqMd0eqidWGLUP8vhnMonIflK5AfS20yV
-         AyvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794562597; x=1795167397;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cLsQc2gUWWCsMRZXIeMbM6mV7EAFqw0z8J6u3kCxlKY=;
-        b=sYL6/CGvNSBuHf1+h9HY/RNhCyNnVaCb60hXcqaYx5/eV0eNfSgW9yPGKu2iBVW/cS
-         mZgqu50C23S/u/MVSLLsiRn4/FSqcCXminaKj2rRguK9RgkYYX0z6c0fLjCC66hR2E3p
-         4RxwfvALEEvHke/M4XJDhLDmWJENh85rRQUfOnA/af6kUZ4TEI13xu//CiCtf0oJ5NI5
-         4Ixbw/F4gQa8la0EEHguQvQJvRw7RKSyIJ5wd9ja1aq8Xn4/24CQVyFhUfu6OdpRhyaM
-         CKN3JJXal8wuffd/S4onMA901n+uts95R61+bS2efAENEYmuUeuGBohkn0D/9cSZZkq0
-         V2ow==
-X-Forwarded-Encrypted: i=1; AL+hErGmtSXiLXwG2BWvC3W60gf0nVjC6ulv4ZI0cdBW5slyD9Tn24BE+MmnJEKksjuQW7MxjZ8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/4yCmdY77mqMGKUzKa5sNdjeP+T6WVOpOqCxi+CFA2+9+cu39Q
-	wuFi+NS98WNh51Y5xtWxkHfqfJszqWPK4divxscMwRIVJ8S4NEMZyhvFL1EmFZSr8UzeofLm2fL
-	M2ZoBiW3BoOJybnh8Rs8TIz2W6FnWu8I6AvS5rJFTmwnG5Imv2oXW6Ow=
-X-Gm-Gg: AYBFou1dMgMoMhYWy/pzZLzsPLBIxASQ14cPXyY0yUe6nkrtQFyj1QKVahFHCWNEcNq
-	GrJxpK+/IE5pjHgE/cr9Qkzdgh9jxPnuyverxrcEgf6t3KqvUNodO/hhHyydIB82u3gMbTyASJQ
-	Et94E7V9qbwhUiFBNH08v4NRqbBh7vaiur5eUS3B/HSm4b5zQ4mRBTDC4n8Oy8cziiHT+gFsmpI
-	4OJcLxD7JbJNglodSKPNsJLBhws2APe1zom6jl3jLe5In9RKZ33qOVvufRgtusorGHAjdVc3bAO
-	0zE+V9p3/9HEru/4MD+ur6x5mJLhF2hcylex7Ppi1Fr854v0OmgP3NlDuSu3UUJnUn0snCCqUeZ
-	epbkxQciUBe45eSaAslHRkcBlcnkV/E9QMeET1E2eHcMm8EejjH/H+aQdhZQ9XCxTz6EZXtCBMd
-	HssVTIgpcUzR333Zz4WW64NxO8vtrkAiXk6370OqA=
-X-Received: by 2002:a17:90b:1652:b0:3b0:9317:5842 with SMTP id 98e67ed59e1d1-3b1b0a42b8cmr1747885a91.48.1794562597506;
-        Fri, 13 Nov 2026 01:36:37 -0800 (PST)
-X-Received: by 2002:a17:90b:1652:b0:3b0:9317:5842 with SMTP id 98e67ed59e1d1-3b1b0a42b8cmr1747854a91.48.1794562596993;
-        Fri, 13 Nov 2026 01:36:36 -0800 (PST)
-Received: from [10.133.33.5] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1ae981c55sm3828201a91.1.2026.11.13.01.36.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Nov 2026 01:36:36 -0800 (PST)
-Message-ID: <68bb5fe0-9005-4517-aec0-c39021a5b24f@oss.qualcomm.com>
-Date: Fri, 13 Nov 2026 17:36:28 +0800
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=2OuYu
+	wDSIVfTPlLHBFplT3Fsykaz6y/ZYTd6iGyKIGg=; b=nGXyCgwRjuIHlCaeQN6cX
+	FlXdq91QhupNrkVwOA3HymR+DC8pH99QZqscmzu2fXf7UQLcsqDDR1Sm0AlfG09R
+	h+bZbZUhAFwY4EvOBD3+EUI33pGsdwRMR04gCmDiF2nVwglVOzSs6CGcSLabTKNy
+	7c/RmlzRHj93AFsAUj1DNU=
+Received: from ubuntu (unknown [101.5.154.165])
+	by web1 (Coremail) with SMTP id yAQGZQA3qzvR3PZqgA5CAg--.9318S2;
+	Fri, 13 Nov 2026 17:48:12 +0800 (CST)
+From: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>
+To: qemu-devel@nongnu.org
+Cc: Yifan Wang <w-yf22@mails.tsinghua.edu.cn>,
+	qemu-arm@nongnu.org,
+	qemu-block@nongnu.org,
+	kvm@vger.kernel.org,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Alistair Francis <alistair@alistair23.me>,
+	Kevin Wolf <kwolf@redhat.com>,
+	Hanna Reitz <hreitz@redhat.com>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+	bin.meng@processmission.com,
+	tangtao1634@phytium.com.cn
+Subject: [RFC PATCH 00/20] hw/arm: Add initial RK3588 and ROCK 5B support
+Date: Fri, 13 Nov 2026 17:47:34 +0800
+Message-ID: <cover.1794555588.git.w-yf22@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -116,227 +69,119 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 5/5] iommu/of: Add support for "iommu-ranges" on a
- device node
-To: Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-        "Joerg Roedel (AMD)" <joro@8bytes.org>,
-        Vasant Hegde <vasant.hegde@amd.com>,
-        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-        Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Jean-Philippe Brucker <jpb@kernel.org>, Rob Herring <robh@kernel.org>,
-        Saravana Kannan <saravanak@kernel.org>,
-        Tomasz Nowicki <tomasz.nowicki@caviumnetworks.com>,
-        Eric Auger <eric.auger@redhat.com>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Joerg Roedel
- <jroedel@suse.de>,
-        Srinath Mannam <srinath.mannam@broadcom.com>,
-        Oza Pawandeep <quic_poza@quicinc.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Alex Williamson <alex@shazbot.org>
-Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-        virtualization@lists.linux.dev, devicetree@vger.kernel.org,
-        kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-media@vger.kernel.org,
-        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
-References: <20261106-add_iommu_ranges-v7-0-5c0f72083e52@oss.qualcomm.com>
- <20261106-add_iommu_ranges-v7-5-5c0f72083e52@oss.qualcomm.com>
-Content-Language: en-US
-From: Yijie Yang <yijie.yang@oss.qualcomm.com>
-In-Reply-To: <20261106-add_iommu_ranges-v7-5-5c0f72083e52@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDAzOCBTYWx0ZWRfX038NakgjkRCU
- X330/vu3lbLfTzkSD4j2gW08OewkPui5HGefXS9opOP3Z3mLZKXsoKA0+VaHlqk0I4852U3d/Rs
- 7mFyN3zHRiSiHMmByFhkb3om3e23ILCwaL/e5zBiVVkw8Po8SJKgvZyYWBqp7MqczV7QcQqe9JW
- AFGmhwD4F0abZN88BwKr6m2rtsOLI2E0ccmQtgzw4bEkgmyWqbxc3XFyX5ol0WQqRGbv1QQ/EQO
- c/KBZw/H3EzHlDEg/1Br/OSrmqfn92wnQHNoAbqEbJC+pui+dn64Lb9eXM2vKTted4osYas5sZu
- 1m8TVkv5/rTpLRi1YurJwYKF5hPdbL66YvJp9mVxdhfDQXoxpqma27jPhevVGFh6ysFwPE/n3lz
- o6vrEAThtOZmi5MO4pTX9lDSvTdirzWAixcxAnl4a2AJeMgak/AgI433DMUIi1/tIeWhxT6lyJL
- VhltaBUqRGGaplLk9Hg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDAzOCBTYWx0ZWRfX7ROCXxqJZ9zd
- NYigwVgXqIRIOh7wjcm/LghzNZvTU8chCsuwneHfcI7eVvUzshklO3khD/QgCPKtemsj3lVoUk/
- IWkVyNxjojUWtdhNTKXGZcD8Fw1uIPc=
-X-Proofpoint-ORIG-GUID: _5g6RLIGvDHmLcQrkqIu5wDrrayAKcGa
-X-Authority-Analysis: v=2.4 cv=Vqq2kO2n c=1 sm=1 tr=0 ts=6af6da26 cx=c_pps
- a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=BUd8g3l6cCjgLUHkIXsA:9 a=QEXdDO2ut3YA:10
- a=_Vgx9l1VpLgwpw_dHYaR:22
-X-Proofpoint-GUID: _5g6RLIGvDHmLcQrkqIu5wDrrayAKcGa
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-13_03,2026-11-11_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 priorityscore=1501 suspectscore=0 lowpriorityscore=0
- clxscore=1011 spamscore=0 impostorscore=0 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611130038
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:yAQGZQA3qzvR3PZqgA5CAg--.9318S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxXr4kuF4kCr15uF18AF1fZwb_yoW5KFWfpa
+	n5Arn8Krs7Gay3XrWSvFnrJF4Sv3WkWrWjkw1xXrW7AFWaqF40krnrK3Z09FyfJFWfXF13
+	CFn2qryrGw47ZFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPY14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67
+	AK6r4fMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
+	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
+	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AK
+	xVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+	4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU6mhrU
+	UUUU=
+X-CM-SenderInfo: fzn1wj2s6ptxtovo32xlqjx3vdohv3gofq/
+
+Hi,
+
+This series adds initial support for the Rockchip RK3588 SoC and the
+Radxa ROCK 5B board. It supports booting Linux through U-Boot SPL and
+U-Boot from SPI NOR flash, as well as direct kernel boot.
+
+The implementation includes the eight Cortex-A55/A76 CPUs, GICv3,
+architectural timers, SRAM, UARTs, and the Rockchip SPI flash controller.
+It also models the CRU, OTP, and HPTIMER registers needed by the boot
+software.
+
+Patches 1-5 extend DW8250 and ARM SMC support and add the XTX XT25F128
+flash device. Patches 6-15 add the RK3588 SoC and its devices. Patches
+16-18 add the ROCK 5B board and firmware boot support. Patch 19 adds
+functional boot tests, and patch 20 adds documentation.
+
+Both boot paths have been tested with Linux 6.12.4, with U-Boot 2025.01
+used for the firmware boot path. The included functional tests cover
+booting to a Buildroot shell, reboot, and poweroff.
+
+Comments and suggestions are welcome.
+
+Thanks,
+Yifan
+
+Chao Liu (20):
+  hw/char/dw8250: implement the UART status register
+  hw/char/dw8250: expose the baudbase property
+  target/arm: report SMCCC v1.1 support
+  target/arm: allow machines to handle SMC calls
+  hw/block/m25p80: add the XTX XT25F128 SPI NOR flash
+  hw/arm: add the Rockchip RK3588 SoC
+  hw/timer: add Rockchip HPTIMER boot control
+  hw/arm/rk3588: add the unimplemented device map
+  hw/arm/rk3588: add the GICv3 interrupt controller
+  hw/arm/rk3588: add the UARTs
+  hw/misc: add the RK3588 clock and reset unit
+  hw/misc: add the RK3588 OTP controller
+  hw/ssi: add the Rockchip SPI flash controller
+  hw/misc: add RK3588 SCMI server
+  hw/arm/rk3588: wire up the SCMI server
+  hw/arm: add Radxa ROCK 5B board
+  hw/arm/rock-5b: connect the XTX XT25F128 SPI NOR flash
+  hw/arm/rock-5b: add firmware booting
+  tests/functional: add ROCK 5B boot tests
+  docs/system/arm: document the Radxa ROCK 5B machine
+
+ MAINTAINERS                              |  19 +
+ docs/system/arm/rock-5b.rst              |  86 ++++
+ docs/system/target-arm.rst               |   1 +
+ hw/arm/Kconfig                           |  16 +
+ hw/arm/meson.build                       |   3 +
+ hw/arm/rk3588.c                          | 452 +++++++++++++++++
+ hw/arm/rock-5b.c                         | 297 ++++++++++++
+ hw/block/m25p80.c                        |  20 +
+ hw/char/dw8250.c                         |  45 ++
+ hw/misc/meson.build                      |   5 +
+ hw/misc/rk3588-scmci.c                   | 589 +++++++++++++++++++++++
+ hw/misc/rockchip_cru.c                   | 233 +++++++++
+ hw/misc/rockchip_otp.c                   | 146 ++++++
+ hw/ssi/Kconfig                           |   5 +
+ hw/ssi/meson.build                       |   1 +
+ hw/ssi/rockchip_sfc.c                    | 439 +++++++++++++++++
+ hw/timer/meson.build                     |   1 +
+ hw/timer/rockchip-hptimer.c              | 115 +++++
+ include/hw/arm/arm-smc.h                 |  31 ++
+ include/hw/arm/rk3588.h                  |  64 +++
+ include/hw/misc/rk3588-scmci.h           |  25 +
+ include/hw/timer/rockchip-hptimer.h      |  20 +
+ target/arm/helper.c                      |  80 +++
+ target/arm/internals.h                   |   3 +
+ target/arm/kvm-consts.h                  |   5 +
+ target/arm/tcg/psci.c                    |  15 +
+ tests/functional/aarch64/meson.build     |   2 +
+ tests/functional/aarch64/test_rock_5b.py | 118 +++++
+ 28 files changed, 2836 insertions(+)
+ create mode 100644 docs/system/arm/rock-5b.rst
+ create mode 100644 hw/arm/rk3588.c
+ create mode 100644 hw/arm/rock-5b.c
+ create mode 100644 hw/misc/rk3588-scmci.c
+ create mode 100644 hw/misc/rockchip_cru.c
+ create mode 100644 hw/misc/rockchip_otp.c
+ create mode 100644 hw/ssi/rockchip_sfc.c
+ create mode 100644 hw/timer/rockchip-hptimer.c
+ create mode 100644 include/hw/arm/arm-smc.h
+ create mode 100644 include/hw/arm/rk3588.h
+ create mode 100644 include/hw/misc/rk3588-scmci.h
+ create mode 100644 include/hw/timer/rockchip-hptimer.h
+ create mode 100755 tests/functional/aarch64/test_rock_5b.py
 
 
-
-On 11/7/2026 1:14 AM, Vikash Garodia wrote:
-> Reserving an IOVA address using "iommu-addresses" requires it to be
-> placed in the reserved-memory node. But when "iommu-addresses" is the
-> only property being described and there is no backing "reg" (i.e. no
-> actual reserved system memory), it does not really belong under
-> /reserved-memory. A device IOVA range is specific to its own address
-> space, and does not describe the system physical memory to make it
-> qualify under reserved-memory. Given this, place "iommu-addresses"
-> inside reserved-memory only when it is paired with a "reg", otherwise,
-> define it within the device own node. It was discussed here:
-> https://lore.kernel.org/all/662f7093-fb0a-4564-9ca0-98e03e68ba9a@kernel.org
-> 
-> Existing "iommu-addresses" property expects a phandle, which does
-> not make sense when the property is defined within the device node.
-> "iommu-ranges" was introduced to specify the device specific IOVA ranges
-> when there is no backing "reg".
-> 
-> Suggested-by: Rob Herring <robh@kernel.org>
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> Co-developed-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
-> Signed-off-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
-> Signed-off-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
-> ---
->   drivers/iommu/of_iommu.c | 107 +++++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 107 insertions(+)
-> 
-> diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
-> index 00b02c19f27e195fc36c4bc1d91253255147c9ab..e133d3b346feecac7e2bfaec44e4882060ee89ec 100644
-> --- a/drivers/iommu/of_iommu.c
-> +++ b/drivers/iommu/of_iommu.c
-> @@ -183,6 +183,111 @@ iommu_resv_region_get_type(struct device *dev,
->   	return IOMMU_RESV_RESERVED;
->   }
->   
-> +/**
-> + * of_iommu_derive_resv_regions - derive reserved regions which
-> + *                                are outside of iommu-ranges
-> + * @dev: device for which to get reserved regions
-> + * @list: reserved region list
-> + *
-> + * A device can describe its own usable IOVA ranges directly on its node
-> + * via "iommu-ranges". Everything not under those ranges is derived
-> + * as a reserved region so the IOMMU allocator won't use it. Entries may
-> + * appear in any order in the property.
-> + */
-> +static void of_iommu_derive_resv_regions(struct device *dev, struct list_head *list)
-> +{
-> +	struct of_iommu_range {
-> +		struct list_head node;
-> +		phys_addr_t start;
-> +		phys_addr_t end;
-> +	} *pos, *new, *next_range;
-> +	int size, prot = IOMMU_READ | IOMMU_WRITE;
-> +	struct iommu_resv_region *region;
-> +	const __be32 *maps, *end;
-> +	struct list_head *prev;
-> +	phys_addr_t next = 0;
-> +	LIST_HEAD(ranges);
-> +
-> +	maps = of_get_property(dev->of_node, "iommu-ranges", &size);
-> +	if (!maps)
-> +		return;
-> +
-> +	end = maps + size / sizeof(__be32);
-> +
-> +	while (maps < end) {
-> +		phys_addr_t iova, iova_end;
-> +		resource_size_t length;
-> +
-> +		maps = of_translate_dma_region(dev->of_node, maps, &iova, &length);
-> +		if (!maps) {
-> +			dev_err(dev, "%pOF: failed to parse iommu-ranges\n",
-> +				dev->of_node);
-> +			goto exit;
-> +		}
-> +
-> +		if (!length)
-> +			continue;
-> +
-> +		iova_end = iova + length - 1;
-> +
-> +		if (iova_end < iova) {
-> +			dev_err(dev, "%pOF: iommu-ranges overflows address space\n",
-> +				dev->of_node);
-> +			goto exit;
-> +		}
-> +
-> +		prev = &ranges;
-> +		list_for_each_entry(pos, &ranges, node) {
-> +			if (pos->start > iova)
-> +				break;
-> +			prev = &pos->node;
-> +		}
-> +
-> +		new = kmalloc_obj(*new);
-> +		if (!new)
-> +			goto exit;
-> +
-> +		new->start = iova;
-> +		new->end = iova_end;
-> +		list_add(&new->node, prev);
-> +	}
-> +
-> +	if (list_empty(&ranges))
-> +		return;
-> +
-> +	if (of_dma_is_coherent(dev->of_node))
-> +		prot |= IOMMU_CACHE;
-> +
-> +	list_for_each_entry_safe(pos, next_range, &ranges, node) {
-> +		if (pos->start > next) {
-> +			region = iommu_alloc_resv_region(next, pos->start - next, prot,
-> +							 IOMMU_RESV_RESERVED, GFP_KERNEL);
-> +			if (region)
-> +				list_add_tail(&region->list, list);
-
-Why keep looping here after allocation failure?
-
-> +		}
-> +
-> +		if (pos->end >= PHYS_ADDR_MAX - 1)
-> +			goto exit;
-> +
-> +		if (pos->end >= next)
-> +			next = pos->end + 1;
-> +
-> +		list_del(&pos->node);
-> +		kfree(pos);
-> +	}
-> +
-> +	region = iommu_alloc_resv_region(next, PHYS_ADDR_MAX - next,
-> +					 prot, IOMMU_RESV_RESERVED, GFP_KERNEL);
-> +	if (region)
-> +		list_add_tail(&region->list, list);
-> +
-> +exit:
-> +	list_for_each_entry_safe(pos, next_range, &ranges, node) {
-> +		list_del(&pos->node);
-> +		kfree(pos);
-> +	}
-> +}
-> +
->   /**
->    * of_iommu_get_resv_regions - reserved region driver helper for device tree
->    * @dev: device for which to get reserved regions
-> @@ -262,5 +367,7 @@ void of_iommu_get_resv_regions(struct device *dev, struct list_head *list)
->   			}
->   		}
->   	}
-> +
-> +	of_iommu_derive_resv_regions(dev, list);
->   }
->   EXPORT_SYMBOL(of_iommu_get_resv_regions);
-> 
-
+base-commit: 49559567804523cb28cad002aa8e97f444e23ad7
 -- 
-Best Regards,
-Yijie
+2.53.0
 
