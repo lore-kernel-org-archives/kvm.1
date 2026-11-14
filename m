@@ -1,56 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794665334;
-	b=k9lAKyFT1VQVYQBcKYemiTJPSAspy27fTKrxXSDkJ8DGsV84mTL9lxLEUBzRFkOhatBR
-	 axR2x1FdJnNeyQmBFZ5hHk4oecJYH+ulorOK7L24PwslZwrSVIWiF82t2rU6eISz4cBkW
-	 EjFBpr5a37Bh5xciJOOsIj6AMFdZmlQ87yjjctMF/aWMu0MSWnGoGRQDF+n/JxqJQJuv7
-	 oSdrLXMjaRk/Mt/NTke/MpkQzdf3RZqbolzxDaCf3qsoOYHO2VXSazNhRwwAhqSmRU97y
-	 2yaHPCYIWQejk+rf88eGYWggp3ahojfpKNYiKbLz6o49v81gV7TtuQIqbqhx0yZ5HvQ==
+	t=1794671323;
+	b=cK69Ra9zEZqX9+vCiqUr70em0+ttjxWUIeQe0t0IaD2HWD3szzY8Pgh7xIL6Mi2mt90q
+	 x0UCYH8xLhvrqHVyzto6l9ohfxjcQNYpzCwCfPIwSXFV1QGwltndpg/APm7GJQatm2wU1
+	 adOdQ75VjsyLvez53854W0eRfuQ5chwVGyLD/mkkMtolhbveMaF3zH9nJRiES9qIrO9Gl
+	 Rtg0JfS5pDJoyu/MM1uwPcQ6HqG81V6YRDRkKav/OxFmeMBPmMAUb7CDPvvNkxUmAKmMA
+	 f5876TIAAsWV+v/DtvlcGeMMpJVxFemHNucd/oEtVDIOaGJmwTWFZKJHludIbnjlfLg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794665334;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=Fw4W/Vm3KORZ910M8MQlZ2qOgcGxqyG9xoAizUZfybs=;
-	b=mMUrAEXG48Q8BcpdrTmpl4OJ/4ivvHwJt2iJ4wwggv65w4PIj97X083ItyXG43ZJ4Z5f
-	 PFfzMF6koBJdyJ5r1dpbScoqWi7O2D8A0cEUmSNyQLjddTAyY9R68iGAQxi1R6dGp9h0s
-	 f9RlUoTm3osW3kjtap79zqiVcL3qujokhGYSHksr049YK6ntyd9z0YjPeuUb1CFvjASzJ
-	 ok1fvPq1nv5HzExcu1L/vLRZNCgHz6DI2I4ZZa9GCoieCbIFIk2KDfKp74bwvfReVA2E8
-	 bdPaq6xZzOP1QokQaN69IvABo20MvZyzNp/jKzU3+tttLwGEBrRf8GyCXbOaq54lw7Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794671323;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=JmaPmls247RMxiNbh9yTGBP02WoOg6woXxKHoqe7rwM=;
+	b=sFy/BRgXLURcMUu15P8NxrXZN1PJcsypuZNe5g83XjETT9R2rAGeWYn3qNLyDDQMwFNY
+	 UWjwQu7AJmZSv7geAyaTy2CNE5UoCo7HP5bA0C9mDrza5wAK7OVq0jctYobSy76ScR7Ew
+	 E2PqgCN4qw9KdX9p5/Je1yucViCYw46WP+FU47jmedHh5QOCYy4hc5OSJiAYymH5X8rly
+	 bFsOuROg3qPbQVJzqsWWxrMwa19sraDtWwiAxX12uJoPgJNZEBeE79DLVvwNx2DjluCbE
+	 O3Cy5IIlauA5zDpeCCtbMEizMCqOsfuSPLyRhY+rgrNMEpgQVngvqu2dSqjGpIquN5A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jLaVXgrw;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XUo6X5vk;
+	arc=none smtp.remote-ip=209.85.216.72
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045F5606A330
-	for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 14:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825C7606A32D
+	for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 15:48:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 825C7606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jLaVXgrw
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742F51F000C4;
-	Sat, 14 Nov 2026 14:08:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794665333;
-	bh=Fw4W/Vm3KORZ910M8MQlZ2qOgcGxqyG9xoAizUZfybs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jLaVXgrw1R6saYh7h4wqqAreT+VowsYNFsWptIUj0qHrzXFHnrG35QFTFhjsN9JUZ
-	 UGRRZX/CqjKht968j0UJnh/SYmZyXlZqLjMLzc6JMd/qaRaZfwjwdEKU8/1J4wEx8r
-	 oEIfhDQ8kmfVcz1cxYENApWl8tOgd2GIAhROSuKqda0XCriT3U0MXBZGR7U9pAnQvP
-	 NRjd3X0S8QwFi/NuOxRZ7HHuzGNjp6KE5Tjhr0kOdgQEtkDXqrajUiOA25fCHhtAhm
-	 9zuC9OfNekwSjuBdIo+86AnKydcHBnByT6473RBefYZ3INNDzaB1xIva4uMufXVZcv
-	 XIATOvL1dRXiw==
-Message-ID: <sashiko-outbox-214611@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] RISC-V: KVM: Convert IMSIC vsfile_lock to a raw
- spinlock
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anup Patel" <anup.patel@oss.qualcomm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261114135056.202556-1-anup.patel@oss.qualcomm.com>
-References: <20261114135056.202556-1-anup.patel@oss.qualcomm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 14 Nov 2026 14:08:52 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XUo6X5vk
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-3b18165dc53so2903417a91.3
+        for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 07:48:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794671322; x=1795276122; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JmaPmls247RMxiNbh9yTGBP02WoOg6woXxKHoqe7rwM=;
+        b=XUo6X5vkTHU/VnViw7N34xp+R/Ho90DDumY7KsO9yxTqgCxS6Y4WK5+jj2o+8dWIQd
+         E1q5397Ddb3BvwM9BBnXi3WPpHgf9/fJTi0/CNxVeM6bEDwhdtjyrvIZzhYb0zD9PNdq
+         5HqKTgSsOzxjW37leKEiCRgYZqsHsNQlFrwD0BJjCEVU5mzLiZcXS9F3foNOasW+MsEs
+         0CJtmgWnWjy0swUk3Qhxhuebh3fvokQbdCHSWTkVzbhisk1LDnB/1pYs+5LPqYPo2Fh4
+         NVYkx9Klq4WkIG7f4hkzIC1OzyKbJrn+LefXapkpYH3Y1dwunmp+CYwZs2wnd1RMxCAT
+         nlBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794671322; x=1795276122;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JmaPmls247RMxiNbh9yTGBP02WoOg6woXxKHoqe7rwM=;
+        b=XsAh+BeVuhap/LzrDqOSvk8f4cJXIIhXySu4H00X0IEG3m7Xgv3CJ2ROyfn1kN1OFa
+         2Pt9+/FNF49HFm/7IP7jg1CCQs/QtA4AE4tC8z7WjPWGA82UScQfyMjh4uNA4Ovw7Sw7
+         o7E8f+k8Jycmk5NpQNMTKpgpJeNqc64dAzJeUuPl8mLas/ha2u05Fva/Ng6RKXuM0tbg
+         xqqxagWurYIXYIwizQKkLtd+SWesx+vrK6g81w+HDJokHfZgetmyctM0c2zBxE3FmPC8
+         /w2A5HJmZxp8ue7QuswQnPz32cmHDoFD1QMzM2Oz7RCeujzwHHLV6onIUYaDQOunetCG
+         fivw==
+X-Forwarded-Encrypted: i=1; AL+hErG0yE/6JDMGf1cAwQPsouFtDdJ7yfQZaQ/Fz+IpxsR2u35XyiFj59RgrER6EkGt/Xdy3J0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8ON8Y3itTRPNdpFalpvGpAek1ljqX5PWh8/dNZN4ytmVNj9okC
+	uU/CktB9os+XiBWMLfdzWEnqx0ujIq9CwuDw9MNl44YCwsZizxt99V0vbfhMVj832eJufvQkvs9
+	MhPptog==
+X-Received: from pjyd3.prod.google.com ([2002:a17:90a:dfc3:b0:3b1:29ae:3c64])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4acb:b0:3a4:f75d:d194
+ with SMTP id 98e67ed59e1d1-3b1b0a20d40mr6307606a91.36.1794671321759; Sat, 14
+ Nov 2026 07:48:41 -0800 (PST)
+Date: Sat, 14 Nov 2026 07:48:40 -0800
+In-Reply-To: <avdAIMDfgL_wy1rx@gremlin>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,177 +77,133 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+Mime-Version: 1.0
+References: <20261113164000.467175-1-seanjc@google.com> <avdAIMDfgL_wy1rx@gremlin>
+Message-ID: <aviC2OUjvNz_ubZr@google.com>
+Subject: Re: [PATCH v3] KVM: Skip gfn-based MMU notifier invalidations for
+ guest_memfd-only memslots
+From: Sean Christopherson <seanjc@google.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Naveen N Rao <naveen@kernel.org>, Alexandru Elisei <alexandru.elisei@arm.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [High] KVM: riscv: unordered MMIO write in
-  kvm_riscv_vcpu_aia_imsic_inject()
-- [High] KVM: riscv: race on IRQ_VS_EXT in
-  kvm_riscv_vcpu_aia_imsic_inject()
-It also noticed 1 related pre-existing issue this patch does not
-introduce:
-- [Critical] RISC-V: KVM: double-free in
-  kvm_riscv_vcpu_aia_imsic_update() [1]
---
+On Fri, Nov 13, 2026, Lorenzo Stoakes (ARM) wrote:
+> On Fri, Nov 13, 2026 at 08:40:00AM -0800, Sean Christopherson wrote:
+> > From: Alexandru Elisei <alexandru.elisei@arm.com>
+> >
+> > Don't invalidate gmem-only memslots when responding to MMU notifier
+> > invalidations, as the entire point of gmem-only memslots is so that KVM
+> > doesn't need a VMA to install mappings into KVM's MMU.  Specifically,
+> > page faults are resolved by going straight to guest_memfd, using the gfn
+> > and the associated memslot's gmem.file.  I.e. whether or not userspace
+> > happens to have valid mappings to the same gmem instance is irrelevant,
+> > as are any invalidations for those mappings.
+> >
+> > Note!  The exception is KVM's gfn_to_pfn_cache implementation which isn't
+> > yet wired up to pull pfns directly from guest_memfd, i.e. still relies on
+> > userspace mappings/VMAs and thus need to be invalidated, e.g. to ensure KVM
+> > doesn't retain a kernel mapping+pointer to PRIVATE memory.  However, as of
+> > commit da260bcb56fe ("KVM: pfncache: use a dedicated invalidation sequence
+> > for cache refresh"), GPC invalidation no longer relies on memslot lookups,
+> > because GPCs also support HVA-based mappings.  I.e. KVM *must* be able to
+> > detect and handle relevant MMU notifier invalidations even if there is *no*
+> > memslot whatsoever.
+> >
+> > In addition to the obvious performance benefits, avoiding unnecessary and
+> > spurious SPTE zaps and TLB flushes will allow KVM to support features like
+> > ARM's Statistical Profiling Extension (SPE)[1] and x86's Secure AVIC[2],
+> > both of which rely on the pages *never* being unmapped from the stage-2
+> > page tables.
+> >
+> > Link: https://lore.kernel.org/all/20260903160623.315525-1-alexandru.elisei@arm.com [1]
+> > Link: https://lore.kernel.org/all/cover.1783490022.git.naveen@kernel.org [2]
+> > Cc: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > Cc: Naveen N Rao (AMD) <naveen@kernel.org>
+> > Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
+> > [sean: rewrite changelog to capture the new gpc behavior]
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> 
+> Thanks a lot for this Sean + Alex! :)
+> 
+> Though, having local AI do a review pass on it flagged an issue (don't worry my
+> own analysis - not pasting some slop here :).
+> 
+> I think actually this might need an additional change for x86, since it doesn't
+> have a gmem-only check for the shadow MMU PTE prefetch:
+> 
+> direct_map()
+>   -> direct_pte_prefetch()
+>     -> __direct_pte_prefetch()
+>       -> direct_pte_prefetch_many()
+>         -> kvm_mmu_prefetch_sptes()
+>           -> kvm_prefetch_pages()
+>             -> get_user_pages_fast_only()
+> 
+> And a VMM that's doing something broken (i.e. trying to take advantage of this
+> as a vulnerability), could then intentionally set up a gmem-only slot to point
+> at ordinary anon memory, munmap(), and have a UAF on the underlying folio due to
+> no MMU notifier invalidation.
 
-commit 7416cdfbe4d0521c182f4faca63b3ac6e4ae60b3
-Author: Anup Patel <anup.patel@oss.qualcomm.com>
+Ya, Sashiko flagged this as well.  I was initially planning on adding the check
+in kvm_mmu_prefetch_sptes(), but adding the check in kvm_prefetch_pages() is
+better since the work-in-progress prefetching for x86's TDP MMU will share some
+of the prefetching checks, but will go through the normal fault-in path instead
+of using kvm_prefetch_pages().  The return should be -EINVAL or so though.
 
-RISC-V: KVM: Convert IMSIC vsfile_lock to a raw spinlock
+I'll send a patch on Monday.  Thanks much!
 
-This commit converts imsic->vsfile_lock from rwlock_t to raw_spinlock_t,
-removes vsfile_hgei_lock, moves imsic_swfile_extirq_update() outside
-vsfile_lock, and switches kvm_riscv_vcpu_aia_imsic_inject() to
-writel_relaxed().
+https://lore.kernel.org/all/sashiko-outbox-213282@kernel.org
 
-> diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
-> index 302938972aa0e..0b9d15721d52f 100644
-> --- a/arch/riscv/kvm/aia_imsic.c
-> +++ b/arch/riscv/kvm/aia_imsic.c
-
-[ ... ]
-
-> @@ -726,10 +715,10 @@ int kvm_riscv_vcpu_aia_imsic_update(struct kvm_vcpu=
- *vcpu)
->  		return 1;
-> =20
->  	/* Read old IMSIC VS-file details */
-> -	read_lock_irqsave(&imsic->vsfile_lock, flags);
-> +	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
->  	old_vsfile_hgei =3D imsic->vsfile_hgei;
->  	old_vsfile_cpu =3D imsic->vsfile_cpu;
-> -	read_unlock_irqrestore(&imsic->vsfile_lock, flags);
-> +	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
-
-[Severity: Critical]
-This problem wasn't introduced by this patch, but can [1] cause a
-double free of old_vsfile_hgei when kvm_riscv_vcpu_aia_imsic_update()
-races with kvm_riscv_vcpu_aia_imsic_release()?
-
-kvm_riscv_vcpu_aia_imsic_update() caches old_vsfile_hgei and
-old_vsfile_cpu under imsic->vsfile_lock and drops the lock before later
-freeing the old HGEI slot:
-
-CPU0                                  CPU1
-kvm_riscv_vcpu_aia_imsic_update()     kvm_riscv_vcpu_aia_imsic_release()
-  raw_spin_lock_irqsave(...)
-  old_vsfile_hgei =3D imsic->vsfile_hgei;
-  old_vsfile_cpu =3D imsic->vsfile_cpu;
-  raw_spin_unlock_irqrestore(...)
-                                        raw_spin_lock_irqsave(...)
-                                        old_vsfile_hgei =3D imsic->vsfile_h=
-gei;
-                                        old_vsfile_cpu =3D imsic->vsfile_cp=
-u;
-                                        imsic->vsfile_cpu =3D -1;
-                                        imsic->vsfile_hgei =3D -1;
-                                        raw_spin_unlock_irqrestore(...)
-                                        ...
-                                        kvm_riscv_aia_free_hgei(...)
-  ...
-  if (old_vsfile_cpu >=3D 0) {
-    ...
-    kvm_riscv_aia_free_hgei(...)  <-- double free
-
-If a concurrent CPU hotplug or vCPU reset runs
-kvm_riscv_vcpu_aia_imsic_release() in that window, both paths free the
-same HGEI slot.  If that slot was reallocated to another VM in between,
-the second free corrupts cross-VM interrupt state.
-
-[ ... ]
-
-> @@ -970,17 +965,26 @@ int kvm_riscv_vcpu_aia_imsic_inject(struct kvm_vcpu=
- *vcpu,
->  	if (imsic->nr_msis <=3D iid)
->  		return -EINVAL;
-> =20
-> -	read_lock_irqsave(&imsic->vsfile_lock, flags);
-> +	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
-> =20
->  	if (imsic->vsfile_cpu >=3D 0) {
-> -		writel(iid, imsic->vsfile_va + IMSIC_MMIO_SETIPNUM_LE);
-> +		/*
-> +		 * We can use writel_relaxed() over here because the
-> +		 * raw_spin_unlock() below will do mmiowb_spin_unlock()
-> +		 * which in-turn drains the write-buffer ensuring the
-> +		 * write is visible to the CPU owning the IMSIC VS-file.
-> +		 */
-> +		writel_relaxed(iid, imsic->vsfile_va + IMSIC_MMIO_SETIPNUM_LE);
-
-[Severity: High]
-Does replacing writel() with writel_relaxed() leave the MMIO write to
-imsic->vsfile_va unordered with raw_spin_unlock_irqrestore()?
-
-mmiowb_spin_unlock() only emits mmiowb() when ms->mmiowb_pending is set:
-
-include/asm-generic/mmiowb.h:mmiowb_spin_unlock() {
-	struct mmiowb_state *ms =3D __mmiowb_state();
-
-	if (unlikely(ms->mmiowb_pending)) {
-		ms->mmiowb_pending =3D 0;
-		mmiowb();
-	}
-}
-
-On RISC-V, writel() calls __io_bw() and __io_aw() (which calls
-mmiowb_set_pending()), whereas writel_relaxed() uses __io_rbw() and
-__io_raw(), which are both no-ops.  Because writel_relaxed() never sets
-ms->mmiowb_pending, raw_spin_unlock_irqrestore() does not emit mmiowb()
-(RISCV_FENCE(o, w)).  If the vCPU concurrently migrates or releases its
-VS-file in kvm_riscv_vcpu_aia_imsic_update() or
-kvm_riscv_vcpu_aia_imsic_release(), the store to IMSIC_MMIO_SETIPNUM_LE
-can arrive after imsic_vsfile_read() has cleared the old VS-file and
-kvm_riscv_aia_free_hgei() has freed the slot, losing the guest interrupt
-or delivering a spurious MSI to another vCPU.
-
->  	} else {
->  		eix =3D &imsic->swfile->eix[iid / BITS_PER_TYPE(u64)];
->  		set_bit(iid & (BITS_PER_TYPE(u64) - 1), eix->eip);
-> -		imsic_swfile_extirq_update(vcpu);
-> +		swfile_update =3D true;
->  	}
-> =20
-> -	read_unlock_irqrestore(&imsic->vsfile_lock, flags);
-> +	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
+> 
+> Fix would be something like:
+> 
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index cf4cb586f140..76350dc55d8f 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -3172,6 +3172,9 @@ int kvm_prefetch_pages(struct kvm_memory_slot *slot, gfn_t gfn,
+>  	unsigned long addr;
+>  	gfn_t entry = 0;
+> 
+> +	if (kvm_memslot_is_gmem_only(slot))
+> +		return 0;
 > +
-> +	if (swfile_update)
-> +		imsic_swfile_extirq_update(vcpu);
-
-[Severity: High]
-Can moving imsic_swfile_extirq_update() outside imsic->vsfile_lock race
-with kvm_riscv_vcpu_aia_imsic_update() and leave IRQ_VS_EXT stuck pending?
-
-imsic_swfile_read() clears imsic->swfile and unsets IRQ_VS_EXT without
-taking swfile_extirq_lock, relying on vsfile_lock to serialize against
-SW-file producers:
-
-CPU0                                  CPU1
-kvm_riscv_vcpu_aia_imsic_inject()     kvm_riscv_vcpu_aia_imsic_update()
-  raw_spin_lock_irqsave(&vsfile_lock)
-  /* vsfile_cpu < 0 */
-  set_bit(..., eix->eip)
-  swfile_update =3D true
-  raw_spin_unlock_irqrestore(...)
-  imsic_swfile_extirq_update()
-    raw_spin_lock_irqsave(&extirq_lock)
-    /* reads eidelivery && topei !=3D 0 */
-                                        raw_spin_lock_irqsave(&vsfile_lock)
-                                        imsic->vsfile_cpu =3D vcpu->cpu
-                                        raw_spin_unlock_irqrestore(...)
-                                        imsic_swfile_read(..., true, ...)
-                                          memset(imsic->swfile, 0, ...)
-                                          kvm_riscv_vcpu_unset_interrupt(
-                                              vcpu, IRQ_VS_EXT)
-    kvm_riscv_vcpu_set_interrupt(
-        vcpu, IRQ_VS_EXT)  <-- re-asserts IRQ_VS_EXT
-
-Once the vCPU is using a hardware VS-file (HSTATUS.VGEIN > 0), guest
-accesses to CSR_VSTOPEI are handled by hardware without trapping, so
-nothing clears IRQ_VS_EXT in CSR_HVIP and the guest vCPU is wedged in a
-spurious external interrupt storm.
-
-[1] https://sashiko.dev/#/bug/linux-0a58883c-0da3-49e7-847e-a71b508f0638
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261114135056.2025=
-56-1-anup.patel@oss.qualcomm.com?part=3D1
+>  	addr = gfn_to_hva_many(slot, gfn, &entry);
+>  	if (kvm_is_error_hva(addr))
+>  		return -1;
+> 
+> > ---
+> >
+> > v3: v1, but with a different changelog.
+> >
+> > v2: https://lore.kernel.org/all/20260714160411.302386-1-alexandru.elisei@arm.com
+> >
+> > v1: https://lore.kernel.org/all/20260615155244.183044-1-alexandru.elisei@arm.com
+> >
+> >  virt/kvm/kvm_main.c | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> >
+> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > index cf4cb586f140..599dea22afb8 100644
+> > --- a/virt/kvm/kvm_main.c
+> > +++ b/virt/kvm/kvm_main.c
+> > @@ -601,6 +601,10 @@ static __always_inline kvm_mn_ret_t kvm_handle_hva_range(struct kvm *kvm,
+> >  			unsigned long hva_start, hva_end;
+> >
+> >  			slot = container_of(node, struct kvm_memory_slot, hva_node[slots->node_idx]);
+> > +
+> > +			if (kvm_slot_has_gmem(slot) && kvm_memslot_is_gmem_only(slot))
+> > +				continue;
+> > +
+> >  			hva_start = max_t(unsigned long, range->start, slot->userspace_addr);
+> >  			hva_end = min_t(unsigned long, range->end,
+> >  					slot->userspace_addr + (slot->npages << PAGE_SHIFT));
+> >
+> > base-commit: d21eef2084a9af87ac2a783bc7c2b175ba114e4e
+> > --
+> > 2.56.1.703.gf848ed807c-goog
+> >
+> 
+> --
+> Cheers, Lorenzo
