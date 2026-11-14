@@ -1,122 +1,146 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.142
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.137.202.133
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794684261;
-	b=NTblonRXLCizcuAJRRtqtAwsyZ4NXlwIbz64t18WiCCnPWb88p4U7wwOHVuo/XOf+Y03
-	 SoocWohSRsoptt+R/F6mWA5X30olyltEo/zQfbV4CZzfEuxKLtIUlCkHTQTLQoknQF+0i
-	 2vscZBiyxEJfMiCsq5QGc3D21Ary+yue5NJU3KLILWr0e1Tpk09exA6Ey9MoZqTbWs45S
-	 0U9i852SD8p9L1noFUpieJVbKfF30oLiJ5v/xaQ5oQ3Aymv+gdTRhGeb43JJa84erOyzP
-	 j3Kumk1gSv7o+cpakjbmyPv2/K9FsHjPJSWqP6+jDz8Y26b5ILSi3ex8aZuVASkNz7A==
+	t=1794688036;
+	b=NPqChFHU0CFXS2Xj4lj8AJWDF7NnS5c4YH6w4JONeaSlN2fhdTwspOqtTdSKJjLl6/OC
+	 0VVTygOXzCE1qyVuQKZNpLH54pM5fJnVofPo54FsNeoF0aGNJBg2kUoudi0mz2gVhg8Cc
+	 aw8PukuYgQjJSQ+OcFWOO/xZvfLzrM3ZB39T7IVKh3f2K6e3EWjokuK8QFWJvn4qhw5lm
+	 nfyeE8yuNPIO2pM7xVODTHISXgoFc/zR34aBHIUG8u9tKAQiaaQU+TQw6Q3rRBh9HaEY+
+	 Eeh/XsiAk4+l+uff6NsMFSe9kfpuRl1Ea3OqQ2mowUVUSCkRrLN+prKSmvXkrM+75aQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794684261;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=yvFXCPgCAoParutaFstLpAH76pHHtuAw39SrsRYAS7o=;
-	b=aX2RQFQRpsLc4aUs6G9MNn2nUi5bkmRFAKfBNuILp8ZRgxyvRlcAvplvqngWE6Y+oLDQ
-	 2WD+FJ6NkbOp1RvewCC6a4I7YhpSx6AqeelnvjoH5cYx+yFg1HgMzsbzlLb7i7ae3YNLZ
-	 nHk8u8YiSpaqjTo2lxNxAKEPhjqDB84S27PFtLL9YO1Si21mARg+YD2xSO1P5S3pKoNuD
-	 i+IFTLVwlbKmwzxlEUyCZDH/QH1Xryl6l9hPCSBIQKMmLU3641creOtrA3VSP8oZfZhzk
-	 X0gj8EbWB+3/9Qi7d0rL/XUzl5jI1UQuVUYrIkQIEcgtroieOjla4vgAvK2WdzCCW0Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794688036;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=+R+vnOxGbR8669a/yApMPxumePGvUCvn6pAgbhYVxac=;
+	b=1LbAkG/5u3PKn5sSPZPJYOgWStqZOabRZrVgmATbtsW/YXfkfLesPyBXfyhyK0Gsw/Xe
+	 Ll/GAOIEaccZke1pjCQnakuhC4TJCgc5s99gOvJPxaCWmqbJ/ckxbLdGpe9Fwohdv4nCA
+	 0hK9g7+FHC6EKr5NjsjPt+5adFFI7Q5mqhLnot8DUNWKX/0jVqi3Ih/SZZ7416nSV3Cu5
+	 ncn3NI1am1JYDCV6uGk6EdskgpJXMhmVxQ5LIXbZixKQ1chHRR54OzdG3Hq6Du6BItD/Q
+	 tSOSkBZ7/eHmOgzE7LHoYrbz4v0gAdmhp4KO63G3ByTfnQMh4jZS8ag5n3ih8BF8GQA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=shazbot.org;
-	spf=pass smtp.mailfrom=shazbot.org;
-	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=vcLoqtxq;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=hLKCtxgl;
-	arc=none smtp.remote-ip=202.12.124.142
-Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
+	dmarc=pass header.from=infradead.org;
+	spf=pass smtp.mailfrom=infradead.org;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=0gISktcF;
+	arc=none smtp.remote-ip=198.137.202.133
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5E5606A327
-	for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 19:24:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F5E5606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26A6606A333;
+	Sat, 14 Nov 2026 20:27:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A26A6606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=vcLoqtxq;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=hLKCtxgl
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.stl.internal (Postfix) with ESMTP id 311E91302A33
-	for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 14:24:19 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Sat, 14 Nov 2026 14:24:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1794684258;
-	 x=1794691458; bh=yvFXCPgCAoParutaFstLpAH76pHHtuAw39SrsRYAS7o=; b=
-	vcLoqtxqRBeSBh6yz+pb85KZdGSCFRYFeqTbHzgN2g98oS4mfLdD+6VksvdlWT82
-	mg8DSQ4gswXmVN29c/bFxNnb0vFIzJ9PCCnOZ+iEL1KwQgHyiJWyGyP5EL7lxqLM
-	D1Z7dBSg5XYNgbmivlbGwVbZ5ztwXces9EjBU9aLVUv/Q8cl8K0OMjszVBv3IKoq
-	fLHVkWVS4vJEp8TyywzIEXKAtSSQ9mFnM9Usw1EAOSkqL22+n2Rnjw9Uik5InjXF
-	ZN5r6wDYsubhP4vScK7KgbapZmuCvyYeye5mCr4xPVIiTIALhOu8a3faG0shOHwx
-	/epNQGHQqF4dZeFL1KG2PQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794684258; x=
-	1794691458; bh=yvFXCPgCAoParutaFstLpAH76pHHtuAw39SrsRYAS7o=; b=h
-	LKCtxglN1Wb/yjAwOzDgvR+3yUCfUBoE3jlJFIDNOtloZbAnPEFzP/BpOwBVqHrb
-	JRtPOUTjt0ogK5l8zpnbkWUmVd0uUcf/Nxvm6kBYkxKtf6AsEaEMJE2Yw+yT1DeQ
-	5gkUaiVHvPiL8bNqRVCjTCN+8N15eEHBZVRliGhpmNImqR6Tmrngk0gUHbFQPlSb
-	0jrUJzl46MTLJtYqMu2rtxDOdPnAvS5vpKmMVbYyNk4TmNQA7hTIQQ9LAqyHSS2d
-	KYlIVczJDZo9ZONzROCFNI4sT+bbhcDVS935nVu3P+c19aDIhLa0AJdv/U1HrcCS
-	G0I3kKqpCf1NgTYRL7sfA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794684258; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:SiMvSpqhBQx1930qrhIX+arppIOP1D766W6x+hu0fQ3JbH0
-	Ntxed4g4El9dk9PHxp7kZu56WDlRDzplW2nVz4sd+4nPBq2lphyfx/65ylS4kvYo
-	eUr8B87w3mj+1pji0TA52v+fIpaE+cw7br9IhG1mOUvUCeaHebtsKH8bK+af97hp
-	RNQZoDHGC+gYet+y86+MQb06sZjd5kF3riqlmDUukVW3m6zwr1UDlKgytoNvDpu4
-	T1IrOrl9mqw1KieztaoU/dgGQosUZBKZs+tn+SHyJQjycxod6OxPnXGkqdF7MbNV
-	E3KCY15UqeThGzdis1bPMNjL5v714S96J/8ymvA==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:Ddgp35+deYgPjeBp6+WU4uaGwW7rAFSB1e90u0WpSVo=:qFTiOKytmbXbuq+/ojEO5pMyhdRgxCuiM0+UxKDxfgY=;
-X-ME-Sender: <xms:YrX4ah2fTfTxm02cvqpivHNXmJtgTtCtWgUoz-egjx0ax4NjE2Kt4A>
-    <xme:YrX4avjEjkj1uZxMBaCd0S6YGt5HFcd0rlTQAZ9BlzhyIh_oTC8x7DaC8XCDJsQas
-    oDQMGNkXN67Dx_AdrkTUrpwmIq6l1DMYueOC1-FaRqvhJCsbjVBIuY>
-X-ME-Received: <xmr:YrX4avS13gLZSq25NHBoSr8yyd_Swm6GodXin7D8XLoQUoPVE4rOJs-c2YOPmg>
-X-ME-Proxy-Cause: dmFkZTFsWN6qLkPRJVSLWeiMGhpmNdkikqfNwAs7pltHEzO44B/AYHvu+mBJXMvUKwthwX
-    WAwCv9sTnn223q5FeUtWkhT4zD5yGLMHLKn2hP2tSLp97/p1kJPBR2GwG/RYC++XnVq1gB
-    VvelTJQsGkGEFEVOPGtgJfgGT4u3ZQXCp5DeV6TwW4K5Ftgx5TI+np8sEKnoOipd9Qckz9
-    GFCePDc548z3Y8lVbgiZuD+vui054tQbUGcAru0JKxTF2Z/H6DMpGPPvIBtgxOZ0Af7sys
-    CSOTZ/Qm4dxqZX915ouNor6p3lXKPNR0g7Zy73eOpYLp8ijf6Q+92EPWIxhQabvEy52jc8
-    92r0ejyjLvfinrw2olYwa7Z6QNDTXlAdG8WAMNPDvJKrfeUH5XoCq3+gxuvn7QL3qnALfO
-    B+yJJx0p3jkbHY5f9ZR3GK5ppjX//el4E4RtKKAQXo+ZEgDbLGm6T9cUJqwKcrpHZp1Z0u
-    AUT+W/oHxf6yOv4ARiZX3Ts4UwlVD9QcoF+aqNhDIi+mJtRAQij7kmw08AKn8WQY+J1dGT
-    X48zlUwl04V3VZzx1IE71qu+56+QSml0Y2Jo+e819QSZMtcgzHuZgjP+XFlp0GI/a7nxnY
-    vqUYGSuOqHKwVw7WhfLAdxBvgJ8kUwpunGFHCr7piEBAOIoSK9rjhuIVGakA
-X-ME-Proxy: <xmx:YrX4aog0B46ljQk-UNg9YdCDPYiBcudUPOar3rAt4-Z1UTHfCcnklw>
-    <xmx:YrX4an4JBbqAhMRAvQACCzTEmtsMN-C-UwwCffJsCrNXJF7Uta1Dqw>
-    <xmx:YrX4atC_ZckFoQXZ7y4p4JjwuQEW9K9ad9xFLyk6F-SROYBxxIC4fA>
-    <xmx:YrX4amaVOsw3InP4NWwoTpyVqIXK40xrCk3bd_KNw7qlfJtjTLpfmQ>
-    <xmx:YrX4ajUZc-l5Q6U9NRQ-mpGplpEeIOaMf7-hLsPE_a8JxQyLWknUT2Dn>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 14 Nov 2026 14:24:17 -0500 (EST)
-Date: Sat, 14 Nov 2026 12:24:14 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: kvm@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH v2 1/2] vfio/pci: fall back to platform ROM when
- pci_map_rom() fails
-Message-ID: <20261114122414.788bc88c@shazbot.org>
-In-Reply-To: <20261111055054-mutt-send-email-mst@kernel.org>
-References: <c5d91752c7bbd40d89f5fce5da8582f1673cdfc3.1792566536.git.mst@redhat.com>
-	<20261110165221.7fb75f91@shazbot.org>
-	<20261111055054-mutt-send-email-mst@kernel.org>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=0gISktcF
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=+R+vnOxGbR8669a/yApMPxumePGvUCvn6pAgbhYVxac=; b=0gISktcFQZ2GDvifsGTgS59sfG
+	kunWLZ6j4WJmZNWp5LEnszL22uc8vL2dWFu1RjmHgMxpq3+s81eoyyLyLRgh1JX2FCM+Ucnn9lnRu
+	xq+ifod2xjGTYMtSqx/mjXvo6gYeG0OBVZ6us5wFR8NWjXbd6svl7TtSia805oWzbC0wdA5XmtRPu
+	lz8VBaijPu8G+/iovTheAMz1DVmhcqpFoxT7ZD+ifolkPaCbDs4NZpe1KPhz7EbgIiGPKi0p7T/4P
+	1yjmK74+koqPtH49egLTHRfkzHTFtjIwh9kMt2ZZP22JlvUwoK5invu82fEC7b4FzEmVSQtSLFnGI
+	XhkCvv7Q==;
+Received: from [50.53.43.113] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xSKL6-0000000Giga-3ShA;
+	Sat, 14 Nov 2026 20:27:08 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-doc@vger.kernel.org,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	linux-mm@kvack.org,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	linux-sound@vger.kernel.org,
+	Jens Axboe <axboe@kernel.dk>,
+	linux-block@vger.kernel.org,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	linux-bluetooth@vger.kernel.org,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	David Heidelberg <david@ixit.cz>,
+	oe-linux-nfc@lists.linux.dev,
+	Chas Williams <3chas3@gmail.com>,
+	linux-atm-general@lists.sourceforge.net,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	Helge Deller <deller@gmx.de>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	MPT-FusionLinux.pdl@broadcom.com,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K. Petersen" <mkp@kernel.org>,
+	linux-scsi@vger.kernel.org,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	linux-mtd@lists.infradead.org,
+	Neill Kapron <nkapron@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	xen-devel@lists.xenproject.org,
+	Hans de Goede <hansg@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	"Theodore Ts'o" <tytso@mit.edu>,
+	linux-ext4@vger.kernel.org,
+	Mike Marshall <hubcap@omnibond.com>,
+	devel@lists.orangefs.org,
+	Paulo Alcantara <pc@manguebit.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	linux-f2fs-devel@lists.sourceforge.net,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Benson Leung <bleung@chromium.org>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	intel-gfx@lists.freedesktop.org,
+	Matthew Brost <matthew.brost@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	intel-xe@lists.freedesktop.org
+Subject: [PATCH 06/12] docs: ioctl-number: update SCSI entries
+Date: Sat, 14 Nov 2026 12:26:44 -0800
+Message-ID: <20261114202653.3113381-7-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261114202653.3113381-1-rdunlap@infradead.org>
+References: <20261114202653.3113381-1-rdunlap@infradead.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -126,91 +150,44 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, 11 Nov 2026 06:02:35 -0500
-"Michael S. Tsirkin" <mst@redhat.com> wrote:
+Update the list of files where SCSI ioctls are defined and update the
+ranges of function numbers that are used.
 
-> On Tue, Nov 10, 2026 at 04:52:21PM -0700, Alex Williamson wrote:
-> > On Wed, 21 Oct 2026 04:20:32 -0400
-> > "Michael S. Tsirkin" <mst@redhat.com> wrote:
-> >  =20
-> > > When pci_resource_start() returns non-zero but pci_map_rom() fails
-> > > (ROM BAR exists but content is unreadable), the pdev->rom fallback
-> > > is unreachable because it's behind an else-if that only triggers
-> > > when pci_resource_start() is zero.
-> > >=20
-> > > Try pdev->rom whenever the ROM BAR didn't produce a mapping, in both
-> > > the region info ioctl and the read path. =20
-> >=20
-> > Here's the crazy thing, users actually update firmware through
-> > vfio-pci.  Therefore, what's an invalid ROM image on one check, may be
-> > a valid ROM image next round.  If we fall through to a different ROM
-> > provider, we might actually be presenting a changing view of the
-> > device. =20
->=20
->=20
-> This is out of spec anyway. The spec is pretty clear that _ROM if
-> present takes precedence over the ROM BAR.  I decided not to change that
-> if ROM BAR is valid to reduce the chance of breaking a working setup.
->=20
-> From ACPI 6.3, Section A.3.3 "_ROM (Get ROM Data)", page 1123:
->=20
-> 	If _ROM is present, it is preferred over the image read through the
-> 	standard PCI interface, in order to allow platform runtime firmware to
-> 	provide re-configured ROM data via the method.
->=20
->=20
-> Would you like me to simply implement the spec? Use _ROM if there
-> even if pci rom bar is valid?
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+---
+[Since having multiple maintainers trying to merge these would
+cause some conflicts, it would be more manageable for Jon to
+take all of these through the docs-next tree.]
 
-The spec goes on to state:
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+Cc: linux-doc@vger.kernel.org
+Cc: MPT-FusionLinux.pdl@broadcom.com
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: "Martin K. Petersen" <mkp@kernel.org>
+Cc: linux-scsi@vger.kernel.org
 
-	This method is defined to provide this data as motherboard
-	devices typically don=E2=80=99t have a dedicated option ROM.
+ Documentation/userspace-api/ioctl/ioctl-number.rst |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Your use case falls within the guidance and fits within our existing
-fall through model to look for alternate options only if the ROM BAR is
-not present or mapped.
-
-A "preference" is also not a mandate that we need to virtualize _ROM as
-a ROM BAR.  We fall through to other sources for convenience.  A
-cleaner approach might be to expose _ROM as a device specific region
-(same with pdev->rom), allowing the VMM to decide how to expose it,
-virtualizing the ROM BAR, a BIOS ROM slot, or ACPI _ROM method.
-
-It seems a bit overkill to implement that though when the example
-device we're enabling and the spec, both favor that the ROM BAR is
-likely not present.  The fall through seems the more conservative
-approach that also handles every known case.
-
-> > I believe this is why we intentionally always report the physical ROM
-> > BAR when present and mapped, regardless of the contents. =20
->=20
-> No such setups should have _ROM, since rombar would then be ignored.
->=20
-> > QEMU, of course, has the ability to take the ROM as a file and override
-> > whatever is provided through the kernel interface.  This is how I had
-> > previously made use of a secondary GPU on a laptop, dumping the ACPI
-> > ROM to a file to provide directly to QEMU. =20
->=20
-> First we need a way to get the ROM from _ROM.
->=20
-> >=20
-> > Does your GPU support a ROM BAR?  The v1 patch didn't have this and
-> > would have exposed the physical RAM BAR if present, so I'm guessing not.
-> > Thanks,
-> >=20
-> > Alex =20
->=20
-> It has a bar but it is not accessible. _ROM overrides that, as per spec, =
-and this
-> appears to be how nvidia drivers use it and expect to use it.
-
-Without an example where we have both a programmed ROM BAR and a _ROM
-method, I'm not inclined to risk changing from one ROM image to another
-for existing users.  Allowing the VMM to pick a policy probably means
-exposing _ROM via a device specific region.  Thanks,
-
-Alex
+--- linux-next-20261111.orig/Documentation/userspace-api/ioctl/ioctl-number.rst
++++ linux-next-20261111/Documentation/userspace-api/ioctl/ioctl-number.rst
+@@ -189,7 +189,7 @@ Code  Seq#    Include File
+ 'I'   40-4F  linux/mISDNif.h                                           conflict!
+ 'K'   all    linux/kd.h
+ 'L'   00-1F  linux/loop.h                                              conflict!
+-'L'   10-1F  drivers/scsi/mpt3sas/mpt3sas_ctl.h                        conflict!
++'L'   10-21  drivers/scsi/mpt3sas/mpt3sas_ctl.h                        conflict!
+ 'L'   E0-FF  linux/ppdd.h                                              encrypted disk device driver
+                                                                        <http://linux01.gwdg.de/~alatham/ppdd.html>
+ 'L'   35-38  arch/m68k/include/asm/fbio.h
+@@ -260,6 +260,7 @@ Code  Seq#    Include File
+ 'c'   00-7F  linux/comstats.h                                          conflict!
+ 'c'   00-7F  linux/coda.h                                              conflict!
+ 'c'   00-1F  linux/chio.h                                              conflict!
++'c'   08     drivers/scsi/ch.c                                         conflict!
+ 'c'   80-9F  arch/s390/include/asm/chsc.h                              conflict!
+ 'c'   A0-AF  arch/x86/include/asm/msr.h conflict!
+ 'd'   00-FF  linux/char/drm/drm.h                                      conflict!
