@@ -1,83 +1,81 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=65.109.113.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794612817;
-	b=2AQmTyTNIQsJwQevxAiUPWP6MshsvwF79uZpfc18HTXg4sftb3M+LWowPaIK2O59qDyF
-	 9NOsxShNszAxXiNVnwYimDY7ga076ItGbJdnWcagrgoLzbqdRKSS1zB8cFEqiKvORPk6S
-	 XtFd/k724WDIAcepwYxW1sYiNr7ma5ivVB4gA9hCnVV408kem9pWz48a3N16tY/2yb0g2
-	 NO/610/N6xefwbnqTL4XaVy8b17qnMiHvJGCqxlKkzcPp1yZRW/USxn/bJxlBPsPOA/mX
-	 VCssxT3jOzyfHeoWIf2WKs+M5W2V1ttnZXYqWdd9VFZ5eFlDcFklarCGC4QD6zYDSeg==
+	t=1794614822;
+	b=BU4VUmVkSuA5ZPfI4rZdP8/PV/CwpaXK0+7Utao1iE9dckqpXN+HD6dSikjimJKojah0
+	 /X783AO5lx1+YxjLWvzQuNPcaPmJtEPuIm5y3HfvfVg2P9HEoucb0bxjvc+1w9H27aEFu
+	 DyGNnB+ozKZkud8khstmjOt+6mlnRxNthT24h1Yk/8Udul0z7ogizDz1LMijTNQK3ur5e
+	 9+Nb7pznX5W+p9CbaM7eh2Z2dW3n8pHBoFI+Fw++MljakHCiLvsynLviiP/G+fbJbTYZF
+	 AbQ+PNbogzB/3iH4sEiA9Xxyp8ILHNPIuFsYffLpIBdyRdnIEjkHW2/cuy5u1xA5lXg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794612817;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794614822;
 	h=DMARC-Filter:Received:X-Virus-Scanned:Received:DKIM-Signature:
 	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=M/i/Ynwqw+pfbLKXDHYYoCFsRPcW8TMPNBDCCP4OkdM=;
-	b=Q6J2Z0esN+zRSjUj24Re5oOVZdEkU83PB1iaF9JqNna3OZr3t6x8pbOxDy35MJ74yVmy
-	 6SmycbFYj4MJSEHkdJxUHQOu6qTaVhJ34m1/sHvkOgZlGn6Di1RwohJ/XKqYtvbiSKzLM
-	 HUW0KaAY7ZdPZ5WqTcpBgJjOB25ckpictXtA/gNc1lopczncClxVDCp+gDY/bJtGue+Hq
-	 fuolbzC4ziQalC2jLXBkBrgfbAmFRLK3btX7dk7pdZhgwvc4x/JIMtOU/udjACBm36Vpl
-	 a060+f8GnTPl288E0NSkmA4r7o5X3yna1TW/zoHKqzw7P0aLgZgfzrQk0/tPRmZXI4g==
+	bh=94fisBGc1VBi3d2j7Dn40cj6s5hYrDP82tmnwi/gW64=;
+	b=XxZdJjtrx84OccmEu5nhxlV5ELRyVpdvaZOYk/Ms9fx6x5RDe1Cwwf3gf7IIqImReM+z
+	 8cotjkZIDNGVyIZA4XMcIJPZSmweVDRmTOJw+Fz0m2+Vt3fJ1/0x/1RB2vxexpRZUQS89
+	 hRYNFjc/ZXkGG9H8nHe7hvzUf7V2h/VYnKp6NwtGJ0cDsS/a1pmufBaAe2cn0D/JJibof
+	 qyZ0ZIAYvdbQSb8533HnSOAJ7cNGV+c17wgQLWd+5MDpd2QtPJR5NVzO2Q6K3DOJ4Xyud
+	 Yl2Ot8TjbfR+1JxkjbajjFbEPVOm81bB7Ruv9OKVPWjitWSv6iTZZnOcVxazARWS/2Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=alien8.de;
 	spf=pass smtp.mailfrom=alien8.de;
-	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=AkMu07Gj;
+	dkim=pass header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=L5L2QlBA;
 	arc=none smtp.remote-ip=65.109.113.108
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C09606A327;
-	Fri, 13 Nov 2026 23:33:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0C09606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F53A606A327;
+	Sat, 14 Nov 2026 00:07:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F53A606A327
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key, unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=AkMu07Gj
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=L5L2QlBA
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6CADD40E0184;
-	Fri, 13 Nov 2026 23:33:27 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5DCF540E01DD;
+	Sat, 14 Nov 2026 00:07:00 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id OK7KlsJqDe9p; Fri, 13 Nov 2026 23:33:24 +0000 (UTC)
+	with ESMTP id kNQd6-Yr5Rtq; Sat, 14 Nov 2026 00:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1794612804; bh=M/i/Ynwqw+pfbLKXDHYYoCFsRPcW8TMPNBDCCP4OkdM=;
+	t=1794614816; bh=94fisBGc1VBi3d2j7Dn40cj6s5hYrDP82tmnwi/gW64=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AkMu07GjwQ82MBP+6gBaiGnCrVDqU9lAfVRhTkMPK3E5ItkZV08We/V3Rt8OB76nh
-	 BJIuZlqMyBcO5/p84Qajl94vvTwhahqkv+/wNtoQGBGQSo56Y3IogQHTxEmSjQRvpT
-	 FXJ+/YYCfpBAxm3h2dGyst8e5VPu9U6Chx9S3ecxyuMenk9yjRwyl+k/WhmyRMh5vM
-	 smMbzQwHDnVx3zb/d/xDEyYlyUSmkdkgnyqhc+ytVtk7QVVIddNo6DCSRjlpGXpOzL
-	 iXNu29y6gSrs/hx8l15E5O/JrP4xeQ5r/eADptmcJJ7d1+GTiJMQnehkGSvHXNBbJV
-	 HYJr6bkbxH/DtC/+ffD69pyO2ZJAkd0skTfxfI6lfERluQv4VD6Y171xQRv+e2uujM
-	 +QY//eEn1tDVjErmBL8OZpMIDpvmfs8Sw3ZstS8Zl2CedTSq8Mjs9D9AtIp951ltd7
-	 DJ/Bdiz7afY5O7CysBjnFP5mHxapwWKrwKKr96QxQ4tuV5AIlfDaDjyjKzFYiyIYvE
-	 pmfkNRKF2u65pI6OOLZj6254T9UrL1l2UWthn76rZ+kpO9PGdqdnHYlq0Z3xPrZELn
-	 8kcAs+2s4BnJt3jfUAhAALXKxLqffaqHMEy8QagXryptrVInQaZcGkhj9vY6Vu6OQM
-	 DFQU6NFL8t52oXoe80/ArClE=
+	b=L5L2QlBAVgMoCOqd9Ajw606xXk1QT3VhoaXWA2PA4SmtJzoGreR2s+NQZlVvpm5Z4
+	 nqGhDWyQ8eHpIcoui7CnJvC35AOHEmxbCD3FJhNtK1H8KamOmatENYz16ZuFAviwUj
+	 zqG93zI+pmf5mOAy1UKvuVu3csf+ENlIIm5CYfhys9Je5geK2QOmgtb4d0NUpI8yCL
+	 9Ch34NEvRSy01JxMEzwermQuTDSUpv7zPhp0WaxHeNjRXy2wT8rIcOQOGZoE0r2ujX
+	 A2Bb2OZtG46WCc/R8EjptD6yBf3kzsaEAPecMkXSnBNtbrSK55IPWL1W/J7k8DbsJZ
+	 1tX3+gsmCDAshq4ZnA0EBKLY3UkOAIJCLt9JYd2+Qq44LEfaI40blKdrz49Kik9F/P
+	 9jWdYTGrtrVJvPZp5v1feZTNnbJEEsZEd9PR+qMneQ9hTDX1WdzbpgFA0Rl1bhxQCO
+	 +8MymZJj7gxaY+7vyMFo+jq1vyLXXGa1mXnuvo02Dfe6Yr+WMrzeWC9qU/LMylLGOQ
+	 TZwg8GI/9lE2u4CzaQUj5A9nBzwY+l78tV66V2zwfJLaC4YyHEnhKo3okbDKj3AQVK
+	 qmL6/JHDTW7NquAfJxlDXqxl9D8Thdm8AK8k0CC8X5Nnr8ZiIAGMif2fPbmDBxlxaJ
+	 M4r9f7/dt6T4off7X+mkt7vk=
 Received: from stx.tnic (unknown [209.52.143.85])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3A22440E015B;
-	Fri, 13 Nov 2026 23:33:09 +0000 (UTC)
-Date: Fri, 13 Nov 2026 15:33:05 -0800
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1821440E015B;
+	Sat, 14 Nov 2026 00:06:43 +0000 (UTC)
+Date: Fri, 13 Nov 2026 16:06:39 -0800
 From: Borislav Petkov <bp@alien8.de>
-To: "Pratik R. Sampat" <prsampat@amd.com>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org,
-	x86@kernel.org, linux-kernel@vger.kernel.org, tglx@kernel.org,
-	mingo@redhat.com, dave.hansen@linux.intel.com, pbonzini@redhat.com,
-	thomas.lendacky@amd.com, kim.phillips@amd.com, nikunj@amd.com,
-	michael.roth@amd.com, ashish.kalra@amd.com
-Subject: Re: [Patch v4 3/4] x86/sev: Add guest support for Enhanced SMT
- Protection
-Message-ID: <20261113233305.GBaveeMRizuR-KfjE9@fat_crate.local>
-References: <cover.1794244450.git.prsampat@amd.com>
- <c64b614ddc83eabc6bb1bdf288272110df04256a.1794244450.git.prsampat@amd.com>
- <20261112184929.GGavYKObGQNQ0wbDpD@fat_crate.local>
- <avc-5lkQhoR6US9o@google.com>
- <43616e23-cd28-4017-ba12-1a0eed4cf05b@amd.com>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Srikanth Aithal <Srikanth.Aithal@amd.com>, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] x86/sev: Skip DR7 write during kexec when it would
+ trigger an unserviceable #VC
+Message-ID: <20261114000639.GFavemD1v0D7JQJ_kG@fat_crate.local>
+References: <20260821201432.879450-1-Ashish.Kalra@amd.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -89,12 +87,70 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <43616e23-cd28-4017-ba12-1a0eed4cf05b@amd.com>
+In-Reply-To: <20260821201432.879450-1-Ashish.Kalra@amd.com>
 
-On Fri, Nov 13, 2026 at 03:23:12PM -0500, Pratik R. Sampat wrote:
-> Boris, series 2 still carries the X86_FEATURE_AMD_ESMTP/scattered.c entry and
+On Fri, Aug 21, 2026 at 08:14:32PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> machine_kexec() calls hw_breakpoint_disable(), which writes DR7. On
+> SEV-ES/SNP guests that do not have DebugSwap enabled, DR7 accesses are
+> intercepted and delivered to the guest as a #VC exception, which must be
+> serviced through the GHCB.
+> 
+> By the time machine_kexec() runs, snp_kexec_finish() (called from
+> native_machine_shutdown()) has already converted the per-CPU GHCBs and
+> the boot GHCB back to private and set boot_ghcb to NULL, tearing down the
+> GHCB infrastructure. The DR7 write therefore raises a #VC that
+> dereferences a NULL GHCB pointer, causing a page fault and the kexec to
+> fail.
+> 
+> The NULL boot_ghcb pointer is a result of commit 3645eb7e3915 ("x86/fred:
+> Fix early boot failures on SEV-ES/SNP guests"): that change makes
+> __sev_get_ghcb() return the now-NULL boot_ghcb in this window, turning
+> the previously-benign teardown-window #VC (a bogus VMGEXIT the host
+> rejected but survived) into a NULL dereference.
+> 
+> Skip the DR7 write in this case. Its value is not needed across kexec
+> because the new kernel re-initializes DR7. Guests with DebugSwap enabled
+> context-switch DR7 in hardware and do not intercept the write, and
+> non-encrypted guests are unaffected, so both continue to call
+> hw_breakpoint_disable() as before.
+> 
+> Add a CC_ATTR_GUEST_DEBUG_VIRT confidential-computing attribute, so the
+> debug-register-virtualization state (AMD DebugSwap) is queried through
+> cc_platform_has().
 
-You can hold off on that because I wanna whack scattered.c first.
+Do not explain the patch in your commit message.
+
+> diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+> index c3f4a389992d..60d25ceada03 100644
+> --- a/arch/x86/kernel/machine_kexec_64.c
+> +++ b/arch/x86/kernel/machine_kexec_64.c
+> @@ -398,7 +398,16 @@ void __nocfi machine_kexec(struct kimage *image)
+>  
+>  	/* Interrupts aren't acceptable while we reboot */
+>  	local_irq_disable();
+> -	hw_breakpoint_disable();
+> +
+> +	/*
+> +	 * On SEV-ES/SEV-SNP guests without debug virtualization enabled, DR7
+> +	 * writes are intercepted and generate a #VC. The GHCBs have already
+> +	 * been torn down at this point so the #VC cannot be handled. Skip the
+> +	 * DR7 write as the new kernel re-initializes DR7 during boot.
+> +	 */
+> +	if (!cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT) ||
+> +	    cc_platform_has(CC_ATTR_GUEST_DEBUG_VIRT))
+> +		hw_breakpoint_disable();
+>  	cet_disable();
+
+hw_breakpoint_disable() does
+
+	if (snp_hw_breakpoint_disable())
+		return;
+
+and this way all SNP-specific code is contained in sev.c or so.
+
+Not the other way around.
 
 -- 
 Regards/Gruss,
