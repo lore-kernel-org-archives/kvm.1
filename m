@@ -1,101 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.41
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794624578;
-	b=cyBPfPp/SXvyW1uN3x00CWHYMvl1XtK1cQjuZsLbz2fiq5Q7TtSGcMqlMTCrdnE5UVYR
-	 n06y2cRUXvRtNf0RwKSvvn+d4liwiP7o0R05tIGJwtriwLcGHt+KfqThFlGMNmGJSptxN
-	 Mb1Bp5dvxHtkc+lH+OmuzYV/B01L/FH0EU6QjZnpob3uchD4AF5apMRO+hIqNqJk1NLuo
-	 L7jNHjGyy02Jji3UPLvfelHJW/Ktyh4e0/X5GkGdJqrFcVGSgRMznLknrMM5pHlp3nMSt
-	 KJ+CJ03cZGXPgeHHPAl4mbNQCmvldmcx3oPUBCvWre3KWZOsA7E2g3IEIYt+RLovKzA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794624578;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 MIME-Version:From:In-Reply-To:References:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=UXFz+LVPA4StkvelJonUtuNdbofnh/Ow/uAkSdC83dA=;
-	b=PjIV+yZY5gtedYYoYQMslfq8bFTlcyrrU3SF74c2DwFCzH6Ii9PwQWJXgLF7W6/Ctufi
-	 qd+2gC3SJSUp1atyhZLmOKMy7H7iLeHWaACrIbNs77cqbRxF41Kd4g9QbNVoV+snKj50k
-	 EkCeQ6ZRv7mw+q6lwx6n7eGRT1oTUXy1qmTSbhZqRCwuhAbEFZf49uKd87d72t4aibXfb
-	 mdlQvaukUMpxXlw8eItLcS319JX5UkeMadcR0lXa2MuBCZ/htDhutyLdMzsRlq41U7/VZ
-	 qDIj16Tc0V4nkuRHessg1JsGaVqH6M85SeleMEt6/9iN+iXErkO1UkT7h2Xo6vJcyoQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=me4nK145;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.41
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794626450;
+	b=FnLAnSB/PH4Z1ak4IsLDMKNfmcSvu++xqaG/MSO9QZK+oFmZBl20a+fOskIoUkRBBIyH
+	 r0QQwfqMF+18Tkt2yiZyPotHd47WNlkE8CY9IxbrAZ8ICgA+IRaRo3AjmBBzjHwtHmAKA
+	 P1dJ+Qlt7zB/OPJfORLejyzCmVgAyPkHKRfyH+l4eH77F68rEAiTAWr+tVD3TMOcky4pe
+	 xJX7R8iKH5UcqBDex9DCoPTyK0gub+AJcZF7SjUjyyD5oUymWc8M8oyaAGZDkX7kvmgso
+	 VeFDAVIJQZCisFJDbP0d9oI7FQ3ZV4I8yNoxa21eBej0oCkL9x4eZ/zkpsnbMf9dcow==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794626450;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:Date:
+	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-ID:References:In-Reply-To:To:CC:X-Mailer:X-Originating-IP:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
+	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Virus-Version;
+	bh=Zat2TDCQjQrCJJMrldTuofKduoOsw5NtEo4KJnXzX30=;
+	b=5Q/TheAPme+VUyHKCaCrJ/SsRqkHQNNPb/j+01LcbQiER1/UlYh5UQhrJFKJlwhwO7ID
+	 1dzbzywx0lPiG7ylTtuC78SJbKJpQo9EJuZ6ap7+eybqJykmvqXr2Sfv4cQxZP8BZAuYc
+	 wRnxnhNSrtMvf+/5IW5HApe2tsR8ApTnYmd0du7DkjwIchxG2uxco7fEdlj79q1iQB8bQ
+	 ERMoeuBP4lRfGaeiJGTCA3wQA1YXuKUC1QeIjmygcaK8VE0GedYYbjJIw6gLIX/3oyq9s
+	 xyoC+UFK3sf2UCdz/dnqHKhcnndGdJVGVTl2XbdMfDQVFd77mfDXVfKLe93FJwqjp6Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=meta.com;
+	spf=pass smtp.mailfrom=meta.com;
+	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=DbVcyXLr;
+	arc=none smtp.remote-ip=67.231.145.42
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E914606A323
-	for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 02:49:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E914606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73419606A32D;
+	Sat, 14 Nov 2026 03:20:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73419606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=me4nK145
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c5083bc0e28so318039366b.0
-        for <kvm@vger.kernel.org>; Fri, 13 Nov 2026 18:49:37 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794624576; cv=none;
-        d=google.com; s=arc-20260327;
-        b=r4smJAzFicLuubsQ1aL6EU2ZMtJQOMwFh7QU21cF6axVUdZegnVyySVagC+0gRwSG1
-         MrO10jmkvvzBswgBJPWe2qDBuz1oYPpsTZ8yiK0OQIt2hDzEjFtkSVHHxN8W5kFDTPkv
-         N/ExGmIUzySFD33M+KrN9tLeR3/6TeicCCBaRZLgHnKY0L9J/aKMGW9m6BGC7rsUky4g
-         tpglDT4akl/ap7zKUEezns+3SQz17sBks5vgwstG5X2Fj5Q28QINqyW5HJdxTW3DOdpb
-         bB0+7b1uMECi5Ufg3MeYJ7dmDjB05Yg/+VItFawVtnGRI/2BBosWg7I1no+gg+221uJr
-         h8Lw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:references:in-reply-to:from
-         :mime-version:dkim-signature;
-        bh=UXFz+LVPA4StkvelJonUtuNdbofnh/Ow/uAkSdC83dA=;
-        fh=eG2yCOgNgP6xCsEwYgSRwahWhD8SQv6GY9ixpB/5KAk=;
-        b=H6e3LCmTBLRbFxYCcEqcN+EnMwywecOYO2qdQK5zZkcAUJZaaaL/prSWcGU10ix70C
-         qVAqeS2rnWAaI8+bz7dW+5GTxFjgCtEV6mSsSv0TqbKkZcVs9o61z7msaFtAaBwFHK+m
-         RbSXklOP5yc4vOvRxWw7cSUgMimbkYAe8L+22VVFxh3Bz8DqV7WhT/XIwpzG3cVDZuwx
-         F/eGDPmZnHgj1AU2s7LyX4CyEJsNENyWn0d51qnGa5Y1Q89M0fsva/pCqmcEXLSxPFbw
-         wvHv3FVj7tVP9nWJkt0ttPWNwMtGLRwcBUpN3Xa5pOGUNU2SalYyjW/qZhH6jCS89xXE
-         /nHg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794624576; x=1795229376; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:references:in-reply-to
-         :from:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UXFz+LVPA4StkvelJonUtuNdbofnh/Ow/uAkSdC83dA=;
-        b=me4nK145BvUwSydS35zt/+x/rtNM0IxHIveqPqHbNokQ+yVzcLXL9dt7WYXaSThfxZ
-         fhW8en5hSbfanGV2k+EHaYnKcqh5SRrSpPehaGjV5kO0FAWBbMyUaKU0U4zqzDvmcYXx
-         xKB14I16eTsnnwFRFvhgFavVhviWyNL872pKK3aA4VkBgkj9WQNs906hLTWD+r60pWVs
-         PUfLi/MQzs+TBnTW4uyB+B9iTUuau/s9YOGBKpY3C1H0JBv3z1+mbAv2Cq8WCyHJLFbw
-         RNVEmyfDq/Y+GjFAT7AL22x/9OIxEBQl2qqEr80zcAVAdOTScPUBPvxmsrHO3c8JTQbj
-         04FA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794624576; x=1795229376;
-        h=content-type:cc:to:subject:message-id:date:references:in-reply-to
-         :from:mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UXFz+LVPA4StkvelJonUtuNdbofnh/Ow/uAkSdC83dA=;
-        b=j8iBw/kAAd7acMMJYS9gS2kJVlEThREvhnbkr4M2sxadrHT86CHL16nLAhPrc3zcnE
-         YsUa2hvlrYvxq1AYwDSjX7CP/Zi04pFuxSYCtozcaHuJp2g+KLuaZmQV7NBwi9Cex+1X
-         BJHgLwKE41OhZ0eVByTaWeZJesH9CTC31OijfedOFJGw5rlISVnyZyjeCNQOMf7Fl1RH
-         5zppdaIBOAFuafug7e6Pm13cxeYXqjsQYLJesGIl+JtyG1L/0PY1A3RL7l+Dpaitulgd
-         6ktLU5cVHSOdZzEP+UdjzGBtI0e3CIE9HXmwIfD08QoKFikHdbYg721S6ngdJlOdShtu
-         kiHw==
-X-Forwarded-Encrypted: i=1; AL+hErG+wE4Q6+A2IzQTtbm0R0xvsXDz4xl0VuHspYwCa3zTbfHpHAzontnl9E5vps8lIqzkfpg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+oXcqtkKh2YPKDiNxnA/alfotyWpoYpSmz6G5wWKhmDtRfShx3
-	B/4pY3wddBQq5K1A1ZMebhjBPU+kweDsJgp5FpmtA0aoD0bGkQRGd7jg6NSbGnOUYJSZihZdoNY
-	eRlnZBKp8w31BTQVbQjIy1WhqW5PJjfw=
-X-Gm-Gg: AYBFou0fkAA3hfiuTpcWuciLPSN0f18nQUXRaC4yX8VI74/twd+8gMDQ5bn64/40lwl
-	lvGyDxkKDzH/hnG9jPgi+ITadR3p4tC/LJbEgoDTHiCkaTvaDSij7GANo8iG0pxO9E6fG4p3RbQ
-	HVn+0U7E0UBWhXrtfzTuE/aPX2UumhC/OTr48PKLjUMngrXQUlMwiIZhy1jTe5cTTcloSf905lS
-	Fza+0RyW5/QxCTjS9vqnj27wCdFH/mqY5Y5RbeSmr+BO1gVfGz63AXvhig80sbU5nf61dLpqbTL
-	NVXgkr9xr/m369az87kbmFZu8Y9qC919ucGnhjHaz0HrXZtESH6vd5V0ADGkJd8ssE/7rpJxXlS
-	4RztyzgMFaMsHeRWO/iUukvllu7O61XyPYsl72DR9qCmpogRUY24PAdC5Wj4aDJLatF+E
-X-Received: by 2002:a17:907:1b06:b0:c48:1977:e1c3 with SMTP id
- a640c23a62f3a-c509633f436mr370744566b.21.1794624576345; Fri, 13 Nov 2026
- 18:49:36 -0800 (PST)
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Sat, 14 Nov 2026 02:49:35 +0000
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=DbVcyXLr
+Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AE22QKo3157778;
+	Fri, 13 Nov 2026 19:20:23 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	pps82601-s2048-2026-q3; bh=Zat2TDCQjQrCJJMrldTuofKduoOsw5NtEo4KJ
+	nXzX30=; b=DbVcyXLr2uaGvRGegH7A+eoDwDt4dpnjN6ZanArxGLZj+W9eHd0B/
+	syjY2L/lZeYAgG8qPCXGDdrozSz7d6gbuJ8RSq19bq06WPmoa4C3kwErQzso5w6S
+	HlXaW6PtmcNLns0rsA+lCMpwwEx9Q9LcA7hmBq0wLb10gXcXctRBll2G1KnG9YGZ
+	F28/qeGZsv/gQHl4eTuVCvtQSCgkgP3Lxz0FzGxgV5Ds5WV58GPI92QA59cjPnLq
+	MtVqGqk0rKuDiR9I3zsl16CEuql5I0KGufHnMCpU0FOPzBlqsZgeyYaaS3GuWQox
+	8JQtGQpoLAuk4fFtcJ6NelZ1yToJ1f8SA==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hwjg5tf9d-4
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Fri, 13 Nov 2026 19:20:23 -0800 (PST)
+Received: from localhost (2620:10d:c0a8:1b::30) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Sat, 14 Nov
+ 2026 03:20:22 +0000
+From: Bobby Eshleman <bobbyeshleman@meta.com>
+Date: Fri, 13 Nov 2026 19:14:13 -0800
+Subject: [PATCH net-next v6 2/8] vsock: constify the transport in
+ vsock_for_each_connected_socket()
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,343 +70,106 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-From: "Gustavo A." <gustavogyn@gmail.com>
-In-Reply-To: <CAPZV9qUk3-eKOGEjVc7f0QzZcjb3L5QwUceAEUV0nuCdo90eGw@mail.gmail.com>
-References: <CAPZV9qUk3-eKOGEjVc7f0QzZcjb3L5QwUceAEUV0nuCdo90eGw@mail.gmail.com>
-Date: Sat, 14 Nov 2026 02:49:35 +0000
-X-Gm-Features: AclHuK_8EXPqWfBcaJzUj-vJun5PFqofwNouDnURDw6kMQ9Hpoyy-kyr9dieQcc
-Message-ID: <CAPZV9qVJ9BcwFgT7-3j6vxCmyCQmMan7WHsmRYgx1AT3aJcVBw@mail.gmail.com>
-Subject: [RFC PATCH] vfio/pci: Wait for GB202 firmware initialization after reset
-To: Alex Williamson <alex@shazbot.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Jason Gunthorpe <jgg@nvidia.com>, kvm@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, gustavogyn@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20261113-vsock-guest-ns-v6-2-3737ce4673c0@meta.com>
+References: <20261113-vsock-guest-ns-v6-0-3737ce4673c0@meta.com>
+In-Reply-To: <20261113-vsock-guest-ns-v6-0-3737ce4673c0@meta.com>
+To: Stefano Garzarella <sgarzare@redhat.com>,
+        "David S. Miller"
+	<davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>,
+        Simon Horman <horms@kernel.org>, Jonathan Corbet
+	<corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Stefan Hajnoczi
+	<stefanha@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang
+	<jasowangio@gmail.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+        Shuah Khan
+	<shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
+        Donald Hunter
+	<donald.hunter@gmail.com>,
+        Eric Dumazet <edumazet@kernel.org>,
+        George Zhang
+	<georgezhang@vmware.com>, Andy King <acking@vmware.com>,
+        Dmitry Torokhov
+	<dtor@vmware.com>, Eric Dumazet <edumazet@kernel.org>
+CC: <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+        <sargun@sargun.me>, <jlinbox@meta.com>,
+        Bobby Eshleman <bobbyeshleman@gmail.com>,
+        Bobby Eshleman
+	<bobbyeshleman@meta.com>
+X-Mailer: b4 0.14.3
+X-Proofpoint-ORIG-GUID: bemiz2S90q8sVTl3DAMVPZy6ZL5HvRAb
+X-Proofpoint-GUID: bemiz2S90q8sVTl3DAMVPZy6ZL5HvRAb
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE0MDAxMiBTYWx0ZWRfXw1vd/KzJ5D0k
+ /K5YHwTpZm72AmOSdGOWmF/ZfIy9Am0QO3b38BpKregGz+o36YKVkqV7B3vJngpPhmMedV4Xlsh
+ yTuYfvx6nrIK4GcFjcp127wpV2JDQpQ=
+X-Authority-Analysis: v=2.4 cv=Mcb5KJ/f c=1 sm=1 tr=0 ts=6af7d377 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=_1IyUuN4QrATX339ibzo:22 a=20KFwNOVAAAA:8
+ a=VabnemYjAAAA:8 a=YkCHES2veT9o9JeyN-cA:9 a=QEXdDO2ut3YA:10
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE0MDAxMiBTYWx0ZWRfXxdNMnqxwZfFH
+ aXA5yH2re5udZq7NOLooD6zLaCqK8i3ZCVKPmYvit744jAX0h9bY3Mz2zdl2Uv2tf8FG9SbtzC1
+ jAnLTXx9faylJ2z9q+s7YURDUpPafIjeogPYNhZcOo7A3rhGH97+CbVDMm5oNkOLt4n9smtPaOo
+ /t3E9W3V6Mobpw15ortGGOYf7I0+O3P4wgBYK6TuOFy49eEWhbOgXVL+EvM1ltsWz42HcC88G4x
+ rgLn7LKCXmxZ1pOV9lnVtLgONYq6MIELQY5QMVsNrUiMn4K0S2f1ItyC/LKCHsg9am8zM11aFb0
+ NaVJkMSCGVBOnAJ6aci54m5am0NSIh5q45Hgt9A0joxYUqKCJxurZ8PaiIJpOwHUkiV839LKRI9
+ bU5X7lFheIaIQL40qrUM1VX3/o9GMQaVmY2qO0NEeDVv7K2wlCM/hlkxcDv9IjHvAr/2ICOtUwo
+ xFgbAmcNg76cInSFSxw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-14_01,2026-11-11_03,2025-10-01_01
 
-From: "Gustavo A." <gustavogyn@gmail.com>
+Allow const transports to be passed too. The function only compares the
+pointer against vsk->transport, which is itself const, and never writes
+through it.
 
-On the affected system, GPU passthrough worked with the CachyOS 7.2.10
-host kernel. After upgrading the host to 7.3, the guest still booted but
-its physical display stayed grey. The exact triggering change is unknown.
+No functional change.
 
-GB202 GPUs can complete a PCI reset before their Firmware Security
-Processor (FSP) finishes initialization. Wait for the BAR firewall to open,
-then poll FSP's boot-complete status before reporting reset success. This
-restores normal display output with huge BAR1 mappings.
-
-Use a shared five-second timeout. Reject unassigned BAR0 resources,
-temporarily enable memory decoding to read FSP status, and restore the
-original decoding state while preserving concurrent command-register
-updates.
-
-Apply the check to physical GB202 GPU functions, covering both GeForce
-and RTX PRO variants.
-
-Link: https://github.com/NVIDIA/open-gpu-kernel-modules/blob/e6a2e01579fbbd1ca2ed43fef2ee2589e9bd8bd9/src/nvidia/src/kernel/gpu/fsp/arch/blackwell/kern_fsp_gb202.c
-Link: https://github.com/NVIDIA/open-gpu-kernel-modules/blob/e6a2e01579fbbd1ca2ed43fef2ee2589e9bd8bd9/src/nvidia/src/kernel/gpu/bif/arch/blackwell/kernel_bif_gb202.c
-Signed-off-by: Gustavo A. <gustavogyn@gmail.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 ---
- drivers/vfio/pci/vfio_pci_config.c |  16 +++-
- drivers/vfio/pci/vfio_pci_core.c   | 141 +++++++++++++++++++++++++++++
- drivers/vfio/pci/vfio_pci_priv.h   |   2 +
- 3 files changed, 157 insertions(+), 2 deletions(-)
+ include/net/af_vsock.h   | 2 +-
+ net/vmw_vsock/af_vsock.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_config.c
-b/drivers/vfio/pci/vfio_pci_config.c
-index 9914f3ac6..94d49f2e2 100644
---- a/drivers/vfio/pci/vfio_pci_config.c
-+++ b/drivers/vfio/pci/vfio_pci_config.c
-@@ -908,12 +908,18 @@ static int vfio_exp_config_write(struct
-vfio_pci_core_device *vdev, int pos,
- 						 &cap);
-
- 		if (!ret && (cap & PCI_EXP_DEVCAP_FLR)) {
-+			int ready_ret = 0;
-+
- 			vfio_pci_zap_and_down_write_memory_lock(vdev);
- 			vfio_pci_dma_buf_move(vdev, true);
--			pci_try_reset_function(vdev->pdev);
-+			ret = pci_try_reset_function(vdev->pdev);
-+			if (!ret)
-+				ready_ret = vfio_pci_gb202_wait_ready(vdev);
- 			if (__vfio_pci_memory_enabled(vdev))
- 				vfio_pci_dma_buf_move(vdev, false);
- 			up_write(&vdev->memory_lock);
-+			if (ready_ret)
-+				return ready_ret;
- 		}
- 	}
-
-@@ -993,12 +999,18 @@ static int vfio_af_config_write(struct
-vfio_pci_core_device *vdev, int pos,
- 						&cap);
-
- 		if (!ret && (cap & PCI_AF_CAP_FLR) && (cap & PCI_AF_CAP_TP)) {
-+			int ready_ret = 0;
-+
- 			vfio_pci_zap_and_down_write_memory_lock(vdev);
- 			vfio_pci_dma_buf_move(vdev, true);
--			pci_try_reset_function(vdev->pdev);
-+			ret = pci_try_reset_function(vdev->pdev);
-+			if (!ret)
-+				ready_ret = vfio_pci_gb202_wait_ready(vdev);
- 			if (__vfio_pci_memory_enabled(vdev))
- 				vfio_pci_dma_buf_move(vdev, false);
- 			up_write(&vdev->memory_lock);
-+			if (ready_ret)
-+				return ready_ret;
- 		}
- 	}
-
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index fcbb2da86..c77de8868 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -17,6 +17,8 @@
- #include <linux/file.h>
- #include <linux/interrupt.h>
- #include <linux/iommu.h>
-+#include <linux/iopoll.h>
-+#include <linux/ktime.h>
- #include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/notifier.h>
-@@ -24,6 +26,7 @@
- #include <linux/pci.h>
- #include <linux/pm_runtime.h>
- #include <linux/slab.h>
-+#include <linux/time64.h>
- #include <linux/types.h>
- #include <linux/uaccess.h>
- #include <linux/vgaarb.h>
-@@ -575,6 +578,129 @@ static void vfio_pci_core_map_bars(struct
-vfio_pci_core_device *vdev)
- 	}
+diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+index 5549298c1ec6..370fcd3ddabc 100644
+--- a/include/net/af_vsock.h
++++ b/include/net/af_vsock.h
+@@ -233,7 +233,7 @@ bool vsock_check_source(const struct vsock_sock *vsk,
+ 			const struct vsock_transport *transport,
+ 			const struct sockaddr_vm *src);
+ void vsock_remove_sock(struct vsock_sock *vsk);
+-void vsock_for_each_connected_socket(struct vsock_transport *transport,
++void vsock_for_each_connected_socket(const struct vsock_transport *transport,
+ 				     void (*fn)(struct sock *sk));
+ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk);
+ bool vsock_find_cid(unsigned int cid);
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index dc81cd47f099..eaf77ab55321 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -480,7 +480,7 @@ void vsock_remove_sock(struct vsock_sock *vsk)
  }
-
-+#define GB202_BAR_FIREWALL	0x2b8
-+#define GB202_BAR_BLOCKED		BIT(24)
-+#define GB202_FSP_STATUS		0xad00bc
-+#define GB202_FSP_READY		0xff
-+#define GB202_TIMEOUT_US		(5 * USEC_PER_SEC)
-+
-+/* Serialize with INTx; byte writes preserve concurrent COMMAND+1 updates. */
-+static int vfio_pci_set_memory_decode(struct vfio_pci_core_device *vdev,
-+				      bool enable, bool *was_enabled)
-+{
-+	unsigned long flags;
-+	u16 command, readback;
-+	u8 value;
-+	int ret;
-+
-+	spin_lock_irqsave(&vdev->irqlock, flags);
-+	ret = pci_read_config_word(vdev->pdev, PCI_COMMAND, &command);
-+	if (ret)
-+		goto out_unlock;
-+	if (PCI_POSSIBLE_ERROR(command)) {
-+		ret = -EIO;
-+		goto out_unlock;
-+	}
-+
-+	if (was_enabled)
-+		*was_enabled = command & PCI_COMMAND_MEMORY;
-+	value = enable ? command | PCI_COMMAND_MEMORY :
-+			 command & ~PCI_COMMAND_MEMORY;
-+	if (value == (u8)command)
-+		goto out_unlock;
-+
-+	ret = pci_write_config_byte(vdev->pdev, PCI_COMMAND, value);
-+	if (ret)
-+		goto out_unlock;
-+	ret = pci_read_config_word(vdev->pdev, PCI_COMMAND, &readback);
-+	if (!ret && (PCI_POSSIBLE_ERROR(readback) || (u8)readback != value))
-+		ret = -EIO;
-+
-+out_unlock:
-+	spin_unlock_irqrestore(&vdev->irqlock, flags);
-+	return pcibios_err_to_errno(ret);
-+}
-+
-+/**
-+ * vfio_pci_gb202_wait_ready - wait for GB202 firmware after reset
-+ * @vdev: VFIO PCI device
-+ *
-+ * GB202 releases PCI reset before FSP initialization completes. Wait for BAR
-+ * access first, then firmware readiness.
-+ *
-+ * Context: Sleepable. Called during initial device enable or with
-+ * memory_lock held for write.
-+ * Return: 0 for unaffected or ready devices, negative errno on failure.
-+ */
-+int vfio_pci_gb202_wait_ready(struct vfio_pci_core_device *vdev)
-+{
-+	struct pci_dev *pdev = vdev->pdev;
-+	u32 firewall = ~0U, fsp_status = ~0U;
-+	bool memory_was_enabled = true;
-+	void __iomem *fsp_status_reg;
-+	ktime_t deadline;
-+	s64 timeout_us;
-+	int ret, config_ret, restore_ret;
-+
-+	/* GB202 GeForce and RTX PRO GPUs use device IDs 0x2b80-0x2bbf. */
-+	if (pdev->vendor != PCI_VENDOR_ID_NVIDIA || pdev->is_virtfn ||
-+	    (pdev->class >> 16) != PCI_BASE_CLASS_DISPLAY ||
-+	    (pdev->device & 0xffc0) != 0x2b80)
-+		return 0;
-+	if (pdev->current_state != PCI_D0 ||
-+	    !(pci_resource_flags(pdev, 0) & IORESOURCE_MEM) ||
-+	    (pci_resource_flags(pdev, 0) & IORESOURCE_UNSET) ||
-+	    pci_resource_len(pdev, 0) < GB202_FSP_STATUS + sizeof(u32))
-+		return -ENODEV;
-+
-+	deadline = ktime_add_us(ktime_get(), GB202_TIMEOUT_US);
-+	ret = read_poll_timeout(pci_read_config_dword, config_ret,
-+				config_ret || PCI_POSSIBLE_ERROR(firewall) ||
-+				!(firewall & GB202_BAR_BLOCKED), USEC_PER_MSEC,
-+				GB202_TIMEOUT_US, false, pdev,
-+				GB202_BAR_FIREWALL, &firewall);
-+	if (!ret && config_ret)
-+		ret = pcibios_err_to_errno(config_ret);
-+	if (!ret && PCI_POSSIBLE_ERROR(firewall))
-+		ret = -EIO;
-+	if (ret) {
-+		pci_err(pdev, "BAR firewall not ready: %#x (%d)\n", firewall, ret);
-+		return ret;
-+	}
-+
-+	fsp_status_reg = pci_iomap_range(pdev, 0, GB202_FSP_STATUS, sizeof(u32));
-+	if (!fsp_status_reg)
-+		return -ENOMEM;
-+
-+	ret = vfio_pci_set_memory_decode(vdev, true, &memory_was_enabled);
-+	if (ret) {
-+		pci_err(pdev, "Cannot enable BAR0 access (%d)\n", ret);
-+		goto out_restore;
-+	}
-+
-+	/* A zero timeout would disable the polling deadline. */
-+	timeout_us = max_t(s64, 1, ktime_us_delta(deadline, ktime_get()));
-+	ret = readl_poll_timeout(fsp_status_reg, fsp_status,
-+				 fsp_status == GB202_FSP_READY ||
-+				 PCI_POSSIBLE_ERROR(fsp_status),
-+				 USEC_PER_MSEC, timeout_us);
-+	if (!ret && PCI_POSSIBLE_ERROR(fsp_status))
-+		ret = -EIO;
-+	if (ret)
-+		pci_err(pdev, "FSP not ready: %#x (%d)\n", fsp_status, ret);
-+
-+out_restore:
-+	if (!memory_was_enabled) {
-+		restore_ret = vfio_pci_set_memory_decode(vdev, false, NULL);
-+		if (restore_ret) {
-+			pci_err(pdev, "Cannot restore memory decoding (%d)\n", restore_ret);
-+			ret = restore_ret;
-+		}
-+	}
-+	pci_iounmap(pdev, fsp_status_reg);
-+	return ret;
-+}
-+
- int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+ EXPORT_SYMBOL_GPL(vsock_remove_sock);
+ 
+-void vsock_for_each_connected_socket(struct vsock_transport *transport,
++void vsock_for_each_connected_socket(const struct vsock_transport *transport,
+ 				     void (*fn)(struct sock *sk))
  {
- 	struct pci_dev *pdev = vdev->pdev;
-@@ -601,6 +727,12 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
- 		goto out_disable_device;
+ 	int i;
 
- 	vdev->reset_works = !ret;
-+	if (!ret) {
-+		ret = vfio_pci_gb202_wait_ready(vdev);
-+		if (ret)
-+			goto out_disable_device;
-+	}
-+
- 	pci_save_state(pdev);
- 	vdev->pci_saved_state = pci_store_saved_state(pdev);
- 	if (!vdev->pci_saved_state)
-@@ -1322,6 +1454,8 @@ static int vfio_pci_ioctl_reset(struct
-vfio_pci_core_device *vdev,
-
- 	vfio_pci_dma_buf_move(vdev, true);
- 	ret = pci_try_reset_function(vdev->pdev);
-+	if (!ret)
-+		ret = vfio_pci_gb202_wait_ready(vdev);
- 	if (__vfio_pci_memory_enabled(vdev))
- 		vfio_pci_dma_buf_move(vdev, false);
- 	up_write(&vdev->memory_lock);
-@@ -2574,6 +2708,13 @@ static int vfio_pci_dev_set_hot_reset(struct
-vfio_device_set *dev_set,
- 		vfio_pci_set_power_state(vdev, PCI_D0);
-
- 	ret = pci_reset_bus(pdev);
-+	if (!ret) {
-+		list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list) {
-+			ret = vfio_pci_gb202_wait_ready(vdev);
-+			if (ret)
-+				break;
-+		}
-+	}
-
- 	vdev = list_last_entry(&dev_set->device_list,
- 			       struct vfio_pci_core_device, vdev.dev_set_list);
-diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
-index 4e7162234..fcc7d1b53 100644
---- a/drivers/vfio/pci/vfio_pci_priv.h
-+++ b/drivers/vfio/pci/vfio_pci_priv.h
-@@ -68,6 +68,8 @@ void vfio_config_free(struct vfio_pci_core_device *vdev);
- int vfio_pci_set_power_state(struct vfio_pci_core_device *vdev,
- 			     pci_power_t state);
-
-+int vfio_pci_gb202_wait_ready(struct vfio_pci_core_device *vdev);
-+
- void vfio_pci_zap_and_down_write_memory_lock(struct
-vfio_pci_core_device *vdev);
- u16 vfio_pci_memory_lock_and_enable(struct vfio_pci_core_device *vdev);
- void vfio_pci_memory_unlock_and_restore(struct vfio_pci_core_device *vdev,
-
-base-commit: 97d73c8251226cf27cc6656b4c542869bb8c69fa
 -- 
-2.56.1
+2.53.1-Meta
 
-
-
-On Sat, 14 Nov 2026 02:48:53 +0000, "Gustavo A." <gustavogyn@gmail.com> wrote:
-> On the affected system, GPU passthrough worked with the CachyOS 7.2.10
-> host kernel. After upgrading the host to 7.3, the guest still booted but
-> its physical display stayed grey. The exact triggering change is unknown,
-> so this patch has no Fixes tag.
->
-> PCI reset returns successfully while the Firmware Security Processor (FSP)
-> is still initializing. Restricting BAR1 to 4 KiB mappings masks the problem.
-> Waiting for FSP completion after reset restores normal output with stock
-> KVM and verified 1 GiB BAR1 mappings.
->
-> The RFC question is where this wait belongs. It currently follows
-> successful resets in the VFIO enable, reset ioctl, PCIe/AF FLR and hot-reset
-> paths. Would a PCI-core readiness check after state restoration be more
-> appropriate? A device-specific reset method runs before BAR and state
-> restoration and does not cover all bus resets. The existing reset_done
-> callback cannot propagate errors.
->
-> Validation:
-> - Local host and Linux guest: 7.3.4-1-cachyos, QEMU 11.1.3, GPU 10de:2b85.
->   The physical display works with startup tracing disabled. The submitted
->   readiness code adds only an IORESOURCE_UNSET guard to this tested code.
->   A focused check fails without the guard and passes with it.
-> - Rebased onto mainline 97d73c825122 (7.4-rc2). Full W=1 builds pass with
->   GCC 16.2.1 (VFIO modules, PM enabled) and Clang 23.1.5 (VFIO built in,
->   PM disabled). No VFIO compiler warnings. Unrelated warnings remain.
-> - 79 helper checks and 51 reset-path checks pass using extracted source
->   with modeled PCI, time and locking. The unpatched reset-path baseline
->   fails 22 checks. The hot-reset model covers completion and unwind for
->   three devices, excluding ownership validation and initial locking.
-> - Strict checkpatch and kernel-doc pass. Sparse 0.6.4 reports the same 17
->   diagnostics on patched and unpatched code, with no added findings.
->
-> The rebased mainline kernel has not been booted. Runtime lockdep, D3/resume
-> and repeated hardware reset cycles remain untested. Hardware testing covers
-> only the device listed above.
->
-> Related FSP-ordering work:
-> https://lists.openwall.net/linux-kernel/2026/06/15/1402
->
-> Gustavo A. (1):
->   vfio/pci: Wait for GB202 firmware initialization after reset
