@@ -1,73 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794662532;
-	b=TZkea5RasjEtW4YkCB44VdcFJaBcdWQiJdqEtnnkEt/1I/1JaeQtGtsMqMXX5DhfxG8j
-	 gRT0qx0MHccJnb/QR0zdCmF17gUvZj7fGsaC+ebUiGY7JI0d9Rf020OjPb1GkZJvmL9lW
-	 9GYjXk7YKdCTQyldSfLPGUI6s05ytIdZHuS5mJFRyEedZnGjevsc9s/co/mt1LBpGXyIr
-	 EJz1lnjPj2yJ19VdvtyUkBjNIuxdr/zAac92El9qUkvD1rViK5BOARxaWTr3nIkJl2ijL
-	 4YTETvr23+nhHMp6b5ioZIrzU2UA5iH0U+IiqwehcnthgENBfQ6uipc2pprYHHT4mfA==
+	t=1794662530;
+	b=PPx0CskJTqfM3xvPeCgTZsau9OlfQC5Q9sjwJxzWRsVtbh4MjWgye1GA2Z16xzUELpJT
+	 zxe8ki+ZkFoOaGcFm5dBmd1p6fr2rAqgaWJbB9RHCG6I9/kC0xIpIWP8o9gjYNSoy1+Dl
+	 w1rD5KHGJEN68+GF0Uaca2xwqrxwPwVLgtu5RbgsRa4RuSMyCGAXi5ws1udDo45qR1ZKu
+	 1mpsHCdShBFJLmClkTr0u8WoD3DJqe5r2psodAhCOCwJRTPSX9KMqqJ8KiYLbO/dA4q2G
+	 yUtcoFrb/thtuWMyhwdpdNqwApK2GaonfTAn2P5UXdF0pGYoLgWN6pF1dsgxrcQb85Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794662532;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794662530;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
 	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=mr8KrDnzXuL95QpOwferNfI2WjvgEHCDBjvr34Rp5qY=;
-	b=44qnBRiu+kBtL4Fp6fp0z5K9AkTu8Rb0c6JB938pBPfNJE7aLeRgfxNooVR7ZnNTrVm7
-	 LFpY04eR3GEgeIwoNo5TcxuY3ovtxSzyM48J10oYaApfhlcJmaDhfdAKXNRIZZDzb8LaX
-	 Myr2QkrC1T/BeRIX2/JZQskZIHeZDWkVxFT9p7k0BRvWaayi1KxN0ytm5DNat+thBDbmc
-	 OZrNNQeAwLahqUQUlWOAsjUEOJcQlv1YyRlEfmIDY5UYuwlr8D2KuiVOc1JvGiujOYLhp
-	 7lwMqyRgFLaR4mZr5kfwZtOvv+faiorXjSxlET0RGleT7F+pEzEizAHz+M25EDYWBSw==
+	bh=vorzF43BonkKNR1gp1NegEOher26yfJCUCzSjOMrhhg=;
+	b=PZYJ76m2IoXQ9K+2xTZb5diETPosRP+gUgUWKZiGTb1XJXh1oXRmzkpJ251zI6Pp+ixm
+	 H/KaQPy4DYaR1MBbZMBpp/ZeaowvOYVLdMHZhBAU8HFKzwnfQbfY83n6acBnMFd1hGK+S
+	 ff//dNMuvNAOt5F9K/ABSI5/x+g2Zaketso9nLf2U/Gc83wyt1mLPqqipYbSIXHFezB1r
+	 Jc8LjKx8Dz/902uEmtsAbxep1bJdhV/hYW+69/ZJ3MGl+pyTIz674RFRDCRfM4GDRkwyf
+	 NyokOui1h+i5Nc2eG8kJtvpXFhMov86EmAvBPRqIYZm4owj4BdwCcvljoyHLwvSbLew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Ou0we7Sp;
-	arc=none smtp.remote-ip=74.125.82.71
-Received: from mail-dl1-f71.google.com (mail-dl1-f71.google.com [74.125.82.71])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fuyRZv9n;
+	arc=none smtp.remote-ip=74.125.82.197
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B03606A882
-	for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 13:22:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 59B03606A882
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF92606A887
+	for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 13:22:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2AF92606A887
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Ou0we7Sp
-Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-14373747468so544c88.1
-        for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 05:22:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fuyRZv9n
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-36fa5673fccso4712873eec.1
+        for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 05:22:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794662531; x=1795267331; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794662529; x=1795267329; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=mr8KrDnzXuL95QpOwferNfI2WjvgEHCDBjvr34Rp5qY=;
-        b=Ou0we7SpIwUt6oK3wYbaGcGxTp6O9oPptV4MzvM3uJUBl0B1IKDIOJaOSjWzqvS+Sd
-         frITv+vj6MBcNYcKdbKH5Oifod5SJ8hUJv0QwOX/dEOSMVvorBkNTuF8oHnWwvEZdXzI
-         z/xvLgcZh/5+BYLXoeMjmSCY81qyzk4M+RMCxhtQtWrBR+WPsPBX02eciAgm90q++iBN
-         pg6yvY9qapkupzgSIufJOg44OREoqPJ7W01Pq6gwKBTE9VsGfS3GFg09Xu77KA0XZsGA
-         df7/QPm5iR4r7O+dEXk1tBNjxmQLSxIpa/FA/MPsKx5LP0aNuEHH86ZaCUp8BTgh2Dyl
-         0dlA==
+        bh=vorzF43BonkKNR1gp1NegEOher26yfJCUCzSjOMrhhg=;
+        b=fuyRZv9nEzoZGfrQ/Rp9HIj+32JDFjhdcG6rYmrnbNmgKs4xYhqXAMmMeq35Vf/STL
+         um7Ixz4pmNmeaWktxQO3GIpUSSTn/iHhLYWjfXDhWnrwJiBjnH8HjtpNomKbtbiAfg3T
+         KN9aj13yvrXzFhyR+QFGsydv6UIYN51kExdsqWSEXpFhBcaRz2u2NAzy71VVfoVPpvvI
+         N+ipsENjO4iDJpmNTzVB2n1fJLGqXavxRs3YMg/6fS7gUg+XadFgRid7fJJP0Hn1KUi7
+         kmueCKFY3Why3BEDUjV+zZ2XGxxiMf+Gae5lOnzyx92H37WqgOKuk15xjHNNqlMFzZgw
+         UUTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794662531; x=1795267331;
+        d=1e100.net; s=20260707; t=1794662529; x=1795267329;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=mr8KrDnzXuL95QpOwferNfI2WjvgEHCDBjvr34Rp5qY=;
-        b=CCyufEWnv55x0/bgM9Jj9AZfCylXxYhaeJLbJLTRV5TabB4EM8A6bMx4gSa2gafb6a
-         Mkmr63XiQQVjE+6WcjBvv3Ohmbh3oWiQhJh8PpAEV+8mk4d+ruQqOm9u96HZRuhhe8pU
-         WMx1Pe0w010c7asrzAcLVWAxKHBXxnWcyg85E/dhazNVy2c8b2ejQZIo41Qb9JHjBXc6
-         mdwQ5P4wAD++x5B81FKYRQ3NEeCe3/IFbed9vrm5tvjexVTgbUzPzXQMwyQtpGjNQR7J
-         nWAc353405SB0zp2t9ueUst2Cjqtbse6Pb/WeK4H/kbcQVo300o7PkHjwr0uGEG6Mvq3
-         u95w==
-X-Gm-Message-State: APuU4Z+j0OHHi7veYCnOUUG8RO2jFN9OCEoGGgRCQFwKkbea/2BscwPh
-	KUIS4/ehhKQc53Fl1Y/Fvf4MuhLo/YfP5apCnZIx7ejbKwD1+d5rJXH/nEy/0qgFpqj+2/4AMyf
-	6+evPxlPGF8khGwlSdSOQlxHYGrpny5eDDDC84PAsKhiXfmUbbiwO5SHzubNGXnP6qMghPQeG/x
-	4pwt5GuO1oHMKgDgpLft3HjE7A/2bLDTkFP2J6Z/MkQb9JrzBILK5Vfg==
-X-Received: from dyad23.prod.google.com ([2002:a05:693c:8357:b0:369:7ef0:57b0])
+        bh=vorzF43BonkKNR1gp1NegEOher26yfJCUCzSjOMrhhg=;
+        b=u4srz2nJ85IUOVOnqto+8+++hYOi6z2KjpTRE5vE8OED515dQz1oyaHsE6W5pEZ6Bj
+         45CeBkpyMQQ3NN/UTfFOQGda5L8I7+ITApEv3XFQdwj+WzKRgsW2oYxI0l/R6yNS8WCW
+         OJSy/RAaOCv3l6FenmAgOssqqTlzARjj3znv4KdZKsJ1VqrfzBcCd7jYwjERLstEebsu
+         /eMK58hEIAskk3RSEsaBD1UCRwfoMy5BlFWgd3/E3/54mm+Mi4KF8b5d9DdEgODzpgR3
+         wQO/QXSUGunqCo+DRgbra2qpZyaGco3dJaR/Fp8HNULzEx/9zuf0Y/9O+l2Vn+y2Fd1q
+         IGrA==
+X-Gm-Message-State: APuU4Z+rECLLEycBygAPun54xOqcJtUkQDXrR5LrxdnW2S8KMX8f/II8
+	76g0pyAKQkFJHLchZXaWOJzM0ItTFH+gMQRK2XRnCcs/g4FknULZvyQbM3IRg00SDZB7HrxT127
+	ddKihsk2W9JegjDTQnCDdEPOKTZ1bgfWGIf0Vsu9LG+W+UlkSGiKlPRoK/uEv2Sc4c3HGzQ7Bll
+	OlQFvoc5PZpBy2wReikjc4MLHrQXSkHx8KA+mU7dhDBPTxuoATKDBAfw==
+X-Received: from dybrp3.prod.google.com ([2002:a05:7301:4603:b0:351:1933:2028])
  (user=aaronlewis job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:701b:2912:b0:1b2:490b:6fdd with SMTP id a92af1059eb24-1b5030ad368mr5481397c88.24.1794662530894;
- Sat, 14 Nov 2026 05:22:10 -0800 (PST)
-Date: Sat, 14 Nov 2026 13:22:00 +0000
+ 2002:a05:7301:4d16:b0:36a:1d6a:596b with SMTP id 5a478bee46e88-379675feb32mr5590009eec.29.1794662528910;
+ Sat, 14 Nov 2026 05:22:08 -0800 (PST)
+Date: Sat, 14 Nov 2026 13:21:58 +0000
 In-Reply-To: <20261114132200.113697-1-aaronlewis@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -80,259 +80,203 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261114132200.113697-1-aaronlewis@google.com>
 X-Mailer: git-send-email 2.56.0.611.g1030f0b940-goog
-Message-ID: <20261114132200.113697-6-aaronlewis@google.com>
-Subject: [PATCH v4 5/5] vfio: selftests: Allow a size for vfio_dma_mapping_perf_test
+Message-ID: <20261114132200.113697-4-aaronlewis@google.com>
+Subject: [PATCH v4 3/5] vfio: selftests: Add memfd test to vfio_dma_mapping_perf_test
 From: Aaron Lewis <aaronlewis@google.com>
 To: kvm@vger.kernel.org
 Cc: alex@shazbot.org, dmatlack@google.com, jgg@nvidia.com, 
-	Aaron Lewis <aaronlewis@google.com>, Kees Cook <kees@kernel.org>, 
-	Andy Lutomirski <luto@amacapital.net>, Will Drewry <wad@chromium.org>, Shuah Khan <shuah@kernel.org>, 
-	linux-kselftest@vger.kernel.org
+	Aaron Lewis <aaronlewis@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Allow the user to specify a DMA region size via the command line for
-vfio_dma_mapping_perf_test.
+Add a second test to "vfio_dma_mapping_perf_test" to evaluate memfd
+latencies. A key motivator for adding this test is to demonstrate that
+the IOMMU_IOAS_MAP_FILE ioctl is significantly faster than other methods
+of mapping DMA regions. This performance difference is more apparent
+with larger memory regions, which will be added in a subsequent commit.
 
-Use test_harness_run_opts() to introduce a '-b' option to specify the
-DMA region size so that both the test size and test harness options can
-be passed together naturally:
+To support this, add IOMMU_IOAS_MAP_FILE ioctl support to the VFIO
+selftest library via iommufd_map_file().
 
-  ./vfio_dma_mapping_perf_test -b 16G -v vfio_type1_iommu_anonymous_hugetlb_1gb
-
+Reviewed-by: David Matlack <dmatlack@google.com>
 Signed-off-by: Aaron Lewis <aaronlewis@google.com>
 ---
- .../vfio/vfio_dma_mapping_perf_test.c         | 144 ++++++++++++++----
- 1 file changed, 117 insertions(+), 27 deletions(-)
+ .../vfio/lib/include/libvfio/iommu.h          |  9 ++
+ tools/testing/selftests/vfio/lib/iommu.c      | 24 +++++
+ .../vfio/vfio_dma_mapping_perf_test.c         | 99 +++++++++++++++++++
+ 3 files changed, 132 insertions(+)
 
+diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h b/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
+index 5c77875240f4..2336dcebce5c 100644
+--- a/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
++++ b/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
+@@ -22,6 +22,8 @@ struct dma_region {
+ 	void *vaddr;
+ 	iova_t iova;
+ 	u64 size;
++	int fd;
++	u64 fd_offset;
+ };
+ 
+ struct iommu {
+@@ -35,6 +37,13 @@ struct iommu {
+ struct iommu *iommu_init(const char *iommu_mode);
+ void iommu_cleanup(struct iommu *iommu);
+ 
++int __iommufd_map_file(struct iommu *iommu, struct dma_region *region);
++
++static inline void iommufd_map_file(struct iommu *iommu, struct dma_region *region)
++{
++	VFIO_ASSERT_EQ(__iommufd_map_file(iommu, region), 0);
++}
++
+ int __iommu_map(struct iommu *iommu, struct dma_region *region);
+ 
+ static inline void iommu_map(struct iommu *iommu, struct dma_region *region)
+diff --git a/tools/testing/selftests/vfio/lib/iommu.c b/tools/testing/selftests/vfio/lib/iommu.c
+index b6f3c5c84e01..a0a3dc4b968c 100644
+--- a/tools/testing/selftests/vfio/lib/iommu.c
++++ b/tools/testing/selftests/vfio/lib/iommu.c
+@@ -97,6 +97,30 @@ iova_t iommu_hva2iova(struct iommu *iommu, void *vaddr)
+ 	return iova;
+ }
+ 
++int __iommufd_map_file(struct iommu *iommu, struct dma_region *region)
++{
++	VFIO_ASSERT_TRUE(iommu->iommufd, "IOMMU_IOAS_MAP_FILE is an IOMMUFD IOCTL.");
++
++	struct iommu_ioas_map_file args = {
++		.size = sizeof(args),
++		.flags = IOMMU_IOAS_MAP_READABLE |
++			IOMMU_IOAS_MAP_WRITEABLE |
++			IOMMU_IOAS_MAP_FIXED_IOVA,
++		.ioas_id = iommu->ioas_id,
++		.fd = region->fd,
++		.start = region->fd_offset,
++		.iova = region->iova,
++		.length = region->size,
++	};
++
++	if (ioctl(iommu->iommufd, IOMMU_IOAS_MAP_FILE, &args))
++		return -errno;
++
++	list_add(&region->link, &iommu->dma_regions);
++
++	return 0;
++}
++
+ static int vfio_iommu_map(struct iommu *iommu, struct dma_region *region)
+ {
+ 	struct vfio_iommu_type1_dma_map args = {
 diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
-index 086a63a50df8..6e38cc134a49 100644
+index 4d41fecf2372..086a63a50df8 100644
 --- a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
 +++ b/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
-@@ -1,10 +1,12 @@
- // SPDX-License-Identifier: GPL-2.0-only
-+#include <ctype.h>
- #include <limits.h>
- #include <stdio.h>
- #include <sys/mman.h>
- #include <time.h>
- #include <unistd.h>
+@@ -83,6 +83,105 @@ TEST_F(vfio_dma_mapping_perf_test, dma_map_unmap)
+ 	TIME("munmap", ASSERT_EQ(0, munmap(region.vaddr, size)));
+ }
  
-+#include <linux/align.h>
- #include <linux/iommufd.h>
- #include <linux/limits.h>
- #include <linux/memfd.h>
-@@ -17,7 +19,81 @@
- 
- #include "kselftest_harness.h"
- 
--static const char *device_bdf;
-+static struct {
-+	u64 size;
-+	const char *size_str;
-+	const char *device_bdf;
-+} test_params = {
-+	.size = SZ_1G,
-+	.size_str = "1G",
++FIXTURE(vfio_dma_mapping_perf_memfd_test) {
++	struct iommu *iommu;
++	struct vfio_pci_device *device;
++	struct iova_allocator *iova_allocator;
 +};
 +
-+/*
-+ * Parses "[0-9]+[kmgt]?".
-+ */
-+static u64 parse_size(const char *size)
-+{
-+	int shift = 0;
-+	char *scale;
-+	u64 base;
-+
-+	VFIO_ASSERT_TRUE(size && isdigit(size[0]),
-+			 "Need at least one digit in '%s'.", size);
-+
-+	base = strtoull(size, &scale, 0);
-+
-+	VFIO_ASSERT_GT(base, 0, "Size must be greater than 0!");
-+	VFIO_ASSERT_TRUE(base != ULLONG_MAX, "Overflow parsing size!");
-+
-+	switch (tolower(*scale)) {
-+	case 't':
-+		shift = 40;
-+		break;
-+	case 'g':
-+		shift = 30;
-+		break;
-+	case 'm':
-+		shift = 20;
-+		break;
-+	case 'k':
-+		shift = 10;
-+		break;
-+	case 'b':
-+	case '\0':
-+		shift = 0;
-+		break;
-+	default:
-+		VFIO_FAIL("Unknown size letter '%c'.", *scale);
-+	}
-+
-+	VFIO_ASSERT_TRUE((base << shift) >> shift == base,
-+			 "Overflow scaling size!");
-+
-+	return base << shift;
-+}
-+
-+static void opts_help(void)
-+{
-+	fprintf(stderr,
-+		"\t-b bytes Specify the size of the DMA region to be mapped\n"
-+		"\t         and unmapped. e.g. 16M or 8G, (default: 1G)\n");
-+}
-+
-+static int opts_handler(int opt, char *optarg)
-+{
-+	if (opt == 'b') {
-+		test_params.size = parse_size(optarg);
-+		test_params.size_str = optarg;
-+		return KSFT_PASS;
-+	}
-+	return KSFT_FAIL;
-+}
-+
-+static const struct test_harness_cli_opts opts = {
-+	.optstring = "b:",
-+	.handler = opts_handler,
-+	.help = opts_help,
++FIXTURE_VARIANT(vfio_dma_mapping_perf_memfd_test) {
++	int mmap_flags;
++	int memfd_flags;
 +};
- 
- FIXTURE(vfio_dma_mapping_perf_test) {
- 	struct iommu *iommu;
-@@ -27,25 +103,27 @@ FIXTURE(vfio_dma_mapping_perf_test) {
- 
- FIXTURE_VARIANT(vfio_dma_mapping_perf_test) {
- 	const char *iommu_mode;
-+	u64 page_size;
- 	int mmap_flags;
- };
- 
--#define FIXTURE_VARIANT_ADD_IOMMU_MODE(_iommu_mode, _name, _mmap_flags)		  \
--FIXTURE_VARIANT_ADD(vfio_dma_mapping_perf_test, _iommu_mode ## _ ## _name) {	  \
--	.iommu_mode = #_iommu_mode,						  \
--	.mmap_flags = MAP_ANONYMOUS | MAP_PRIVATE | MAP_POPULATE | (_mmap_flags), \
-+#define FIXTURE_VARIANT_ADD_IOMMU_MODE(_iommu_mode, _name, _page_size, _mmap_flags) \
-+FIXTURE_VARIANT_ADD(vfio_dma_mapping_perf_test, _iommu_mode ## _ ## _name) {	    \
-+	.iommu_mode = #_iommu_mode,						    \
-+	.page_size = (_page_size),						    \
-+	.mmap_flags = MAP_ANONYMOUS | MAP_PRIVATE | MAP_POPULATE | (_mmap_flags),   \
- }
- 
--FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(anonymous, 0);
--FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(anonymous_hugetlb_2mb, MAP_HUGETLB | MAP_HUGE_2MB);
--FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(anonymous_hugetlb_1gb, MAP_HUGETLB | MAP_HUGE_1GB);
-+FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(anonymous, 0, 0);
-+FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(anonymous_hugetlb_2mb, SZ_2M, MAP_HUGETLB | MAP_HUGE_2MB);
-+FIXTURE_VARIANT_ADD_ALL_IOMMU_MODES(anonymous_hugetlb_1gb, SZ_1G, MAP_HUGETLB | MAP_HUGE_1GB);
- 
- #undef FIXTURE_VARIANT_ADD_IOMMU_MODE
- 
- FIXTURE_SETUP(vfio_dma_mapping_perf_test)
- {
- 	self->iommu = iommu_init(variant->iommu_mode);
--	self->device = vfio_pci_device_init(device_bdf, self->iommu);
-+	self->device = vfio_pci_device_init(test_params.device_bdf, self->iommu);
- 	self->iova_allocator = iova_allocator_init(self->iommu);
- }
- 
-@@ -58,11 +136,16 @@ FIXTURE_TEARDOWN(vfio_dma_mapping_perf_test)
- 
- TEST_F(vfio_dma_mapping_perf_test, dma_map_unmap)
- {
--	const u64 size = SZ_1G;
-+	const u64 page_size = variant->page_size ?: getpagesize();
-+	const u64 size = test_params.size;
- 	const int flags = variant->mmap_flags;
- 	struct dma_region region;
- 
--	ksft_print_msg("mmap size = %lluG\n", (unsigned long long)(size / SZ_1G));
-+	if (!IS_ALIGNED(size, page_size))
-+		SKIP(return, "Size 0x%llx is not aligned to page size 0x%llx",
-+		     (unsigned long long)size, (unsigned long long)page_size);
 +
-+	ksft_print_msg("mmap size = %s\n", test_params.size_str);
- 
- 	TIME("mmap",
- 	     region.vaddr = mmap(NULL, size, PROT_READ | PROT_WRITE, flags, -1, 0));
-@@ -90,30 +173,32 @@ FIXTURE(vfio_dma_mapping_perf_memfd_test) {
- };
- 
- FIXTURE_VARIANT(vfio_dma_mapping_perf_memfd_test) {
-+	u64 page_size;
- 	int mmap_flags;
- 	int memfd_flags;
- };
- 
--#define FIXTURE_VARIANT_ADD_MEMFD_MODE(_name, _mmap_flags, _memfd_flags)      \
--FIXTURE_VARIANT_ADD(vfio_dma_mapping_perf_memfd_test, iommufd ## _ ## _name) {\
--	.mmap_flags = MAP_SHARED | MAP_POPULATE | (_mmap_flags),	      \
--	.memfd_flags = (_memfd_flags),					      \
-+#define FIXTURE_VARIANT_ADD_MEMFD_MODE(_name, _page_size, _mmap_flags, _memfd_flags) \
-+FIXTURE_VARIANT_ADD(vfio_dma_mapping_perf_memfd_test, iommufd ## _ ## _name) {	     \
-+	.page_size = (_page_size),						     \
-+	.mmap_flags = MAP_SHARED | MAP_POPULATE | (_mmap_flags),		     \
-+	.memfd_flags = (_memfd_flags),						     \
- }
- 
--FIXTURE_VARIANT_ADD_MEMFD_MODE(memfd, 0, 0);
--FIXTURE_VARIANT_ADD_MEMFD_MODE(memfd_hugetlb_2mb,
--				    MAP_HUGETLB | MAP_HUGE_2MB,
--				    MFD_HUGETLB | MFD_HUGE_2MB);
--FIXTURE_VARIANT_ADD_MEMFD_MODE(memfd_hugetlb_1gb,
--				    MAP_HUGETLB | MAP_HUGE_1GB,
--				    MFD_HUGETLB | MFD_HUGE_1GB);
-+FIXTURE_VARIANT_ADD_MEMFD_MODE(memfd, 0, 0, 0);
-+FIXTURE_VARIANT_ADD_MEMFD_MODE(memfd_hugetlb_2mb, SZ_2M,
-+			       MAP_HUGETLB | MAP_HUGE_2MB,
-+			       MFD_HUGETLB | MFD_HUGE_2MB);
-+FIXTURE_VARIANT_ADD_MEMFD_MODE(memfd_hugetlb_1gb, SZ_1G,
-+			       MAP_HUGETLB | MAP_HUGE_1GB,
-+			       MFD_HUGETLB | MFD_HUGE_1GB);
- 
- #undef FIXTURE_VARIANT_ADD_MEMFD_MODE
- 
- FIXTURE_SETUP(vfio_dma_mapping_perf_memfd_test)
- {
- 	self->iommu = iommu_init(MODE_IOMMUFD);
--	self->device = vfio_pci_device_init(device_bdf, self->iommu);
-+	self->device = vfio_pci_device_init(test_params.device_bdf, self->iommu);
- 	self->iova_allocator = iova_allocator_init(self->iommu);
- }
- 
-@@ -154,12 +239,17 @@ static void teardown_memfd(int fd, u64 size, void *vaddr)
- 
- TEST_F(vfio_dma_mapping_perf_memfd_test, dma_map_unmap_from_file)
- {
--	const u64 size = SZ_1G;
-+	const u64 page_size = variant->page_size ?: getpagesize();
-+	const u64 size = test_params.size;
- 	const int mmap_flags = variant->mmap_flags;
- 	struct dma_region region;
- 	int fd;
- 
--	ksft_print_msg("mmap size = %lluG\n", (unsigned long long)(size / SZ_1G));
-+	if (!IS_ALIGNED(size, page_size))
-+		SKIP(return, "Size 0x%llx is not aligned to page size 0x%llx",
-+		     (unsigned long long)size, (unsigned long long)page_size);
++#define FIXTURE_VARIANT_ADD_MEMFD_MODE(_name, _mmap_flags, _memfd_flags)      \
++FIXTURE_VARIANT_ADD(vfio_dma_mapping_perf_memfd_test, iommufd ## _ ## _name) {\
++	.mmap_flags = MAP_SHARED | MAP_POPULATE | (_mmap_flags),	      \
++	.memfd_flags = (_memfd_flags),					      \
++}
 +
-+	ksft_print_msg("mmap size = %s\n", test_params.size_str);
- 
- 	region.vaddr = setup_memfd(&fd, size, mmap_flags, variant->memfd_flags);
- 
-@@ -184,6 +274,6 @@ TEST_F(vfio_dma_mapping_perf_memfd_test, dma_map_unmap_from_file)
- 
++FIXTURE_VARIANT_ADD_MEMFD_MODE(memfd, 0, 0);
++FIXTURE_VARIANT_ADD_MEMFD_MODE(memfd_hugetlb_2mb,
++				    MAP_HUGETLB | MAP_HUGE_2MB,
++				    MFD_HUGETLB | MFD_HUGE_2MB);
++FIXTURE_VARIANT_ADD_MEMFD_MODE(memfd_hugetlb_1gb,
++				    MAP_HUGETLB | MAP_HUGE_1GB,
++				    MFD_HUGETLB | MFD_HUGE_1GB);
++
++#undef FIXTURE_VARIANT_ADD_MEMFD_MODE
++
++FIXTURE_SETUP(vfio_dma_mapping_perf_memfd_test)
++{
++	self->iommu = iommu_init(MODE_IOMMUFD);
++	self->device = vfio_pci_device_init(device_bdf, self->iommu);
++	self->iova_allocator = iova_allocator_init(self->iommu);
++}
++
++FIXTURE_TEARDOWN(vfio_dma_mapping_perf_memfd_test)
++{
++	iova_allocator_cleanup(self->iova_allocator);
++	vfio_pci_device_cleanup(self->device);
++	iommu_cleanup(self->iommu);
++}
++
++static void *setup_memfd(int *fd, u64 size, int mmap_flags, int mfd_flags)
++{
++	void *buf = MAP_FAILED;
++
++	TIME("memfd_create",
++	     *fd = memfd_create("vfio_dma_mapping_perf_memfd_test", mfd_flags));
++	if (*fd < 0)
++		return MAP_FAILED;
++
++	if (ftruncate(*fd, size))
++		goto out;
++
++	TIME("mmap",
++	     buf = mmap(NULL, size, PROT_READ | PROT_WRITE, mmap_flags, *fd, 0));
++
++out:
++	if (buf == MAP_FAILED)
++		close(*fd);
++
++	return buf;
++}
++
++static void teardown_memfd(int fd, u64 size, void *vaddr)
++{
++	TIME("munmap", VFIO_ASSERT_EQ(0, munmap(vaddr, size)));
++	TIME("close", VFIO_ASSERT_EQ(0, close(fd)));
++}
++
++TEST_F(vfio_dma_mapping_perf_memfd_test, dma_map_unmap_from_file)
++{
++	const u64 size = SZ_1G;
++	const int mmap_flags = variant->mmap_flags;
++	struct dma_region region;
++	int fd;
++
++	ksft_print_msg("mmap size = %lluG\n", (unsigned long long)(size / SZ_1G));
++
++	region.vaddr = setup_memfd(&fd, size, mmap_flags, variant->memfd_flags);
++
++	/* Skip the test if there aren't enough HugeTLB pages available. */
++	if (mmap_flags & MAP_HUGETLB && region.vaddr == MAP_FAILED)
++		SKIP(return, "setup_memfd() failed: %s (%d)\n", strerror(errno), errno);
++	else
++		ASSERT_NE(region.vaddr, MAP_FAILED);
++
++	region.iova = iova_allocator_alloc(self->iova_allocator, size);
++	region.size = size;
++	region.fd = fd;
++	region.fd_offset = 0;
++
++	TIME("IOMMU map file", iommufd_map_file(self->iommu, &region));
++	ASSERT_EQ(region.iova, to_iova(self->device, region.vaddr));
++
++	TIME("IOMMU unmap", iommu_unmap(self->iommu, &region));
++
++	teardown_memfd(fd, size, region.vaddr);
++}
++
  int main(int argc, char *argv[])
  {
--	device_bdf = vfio_selftests_get_bdf(&argc, argv);
--	return test_harness_run(argc, argv);
-+	test_params.device_bdf = vfio_selftests_get_bdf(&argc, argv);
-+	return test_harness_run_opts(argc, argv, &opts);
- }
+ 	device_bdf = vfio_selftests_get_bdf(&argc, argv);
 -- 
 2.56.0.611.g1030f0b940-goog
 
