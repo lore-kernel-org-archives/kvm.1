@@ -1,78 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794664273;
-	b=oUGrFjCm2SVZomMp/k6+ZQq8bEIYlbIKnZZMLUKnQP1dDW7wWWbEwxSd8+5RtsRZ62ui
-	 f+aZu56Jm249yDJ2srXfQMMSkmEmoPxV+bwkjB1fLayyT+WHhRGkPnEnTiwehnlacCxmU
-	 OZIxrD34SLjho2tZUCdhSSZMMDpOcHVkprkGIshICq8MkpH8U8/JeU+D/WH8B0i5hFNC2
-	 3hIiE8YPcxaEBgp6keZs5Rg1tLhK8oE9UArZt4WRHlIO0UKgM4bEPy/IX52O5mBmfzXIS
-	 tsX0cvs/9DAU0iXCw0owQRGHMKu1Oz/kuY6KjFuxDF97EiG1lESWG/JgIw5QYHNX0NQ==
+	t=1794664313;
+	b=BZjZKQmO3WuQ1rWOKGbAWBz7ZWh1tECu/fvN4Nk+LkmEO8N/1VPKXMnRaajr/xBHBAHc
+	 OG8CZFFbsJqs7aDKrGRQ679uNItmcOBMxRCfoCb8TbWozEPQZeK6MZuVT9DpvsgMnEQR3
+	 81cMThkDs0ODfBfh0coAxXa+fJKKFhZanzz8efmXaOVCcX9NkVWNB9Kcsmu9d1FL5c5aj
+	 D3a0IWo1uLJfXBXWqPzJsaWJmzS7fa9q1N6lsSxnxMbhVU4dk1s2h74CKbPmQUJIQEI3N
+	 JU/6a9UBIhyGYuTWlc2yc/MeGmxROsS5twkuNCipmETAaEfN0a9sND+EoSDI/18z/Dg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794664273;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:X-Proofpoint-Reinject:X-QCInternal:
-	 X-QCInternal:X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-GUID:X-Proofpoint-Spam-Info:X-Authority-Analysis:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=qqG2NJCc3JWi40GBILYwMhO94PZlOObFL01RUJTaOOg=;
-	b=Hxx+tHcIBiiYm69EIc9p6/H0IHibjwWeILR0TCqW8bB9YRsVMiBZuGvEaDSZ2fy9Qcjx
-	 trfh37hhwLgkNcY3JiOAbvhr7S5wfo5tC/OjdU+JsI41MgyH1b8bilo4F61TPEzFXceTh
-	 R5VcPHcCxiM4Jn0L+Tnp8oNsAgiS82Vexlg8LZ+rgy+4Lo94DcJqcojO1EGMh07nYFbGs
-	 9SJHOBv5j4QqrXhjxw8y0nEhJOZULolJh01wEa7blxo5j1bWlEil0J+C5rlm0ziH5XQmG
-	 4AmNH7sjzQvh5AjslBS4B4W339YAfF5iGjmeRus++gq9LIuheycw+0BIdBqbU3cb2yA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794664313;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=CnWW9gpNC79/nZFswkxbrq3QlPD5NwtKAqBQkHXA8Ek=;
+	b=CPsUcro/+lIIaA7gJvh/3nGyY1CTlpBPdpSjN5MkWmA0M7f/LGFb/uY7qPPEwjP7a8nO
+	 gU2JtPep7s2tXHrROldwZQ+9YvYgeyGoAoWtXFzGpHpWpig4wtRHU9rhmWRiGcjGcSDVq
+	 vBdmBl1ZzyyIlW+BW5rHy9cj/zGKeNQdUQLGA0LfBEq9qFqREadySSIhGxHlDJ55aZt1X
+	 XHiyexoc3IAodo6ANnyO8AXeTYDPIaQqk+OX5UEsPsRHQhsybOABMWi3M+0RSjuYVtX+H
+	 5cPvR4rJfYqeYlIe/XtcvAjT/gceTqRZ0ijLjr/5t8E0XMam2zKOMGLXm9FKPUBjp5g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=dvTk+BCl;
-	arc=none smtp.remote-ip=205.220.168.131
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eNM1lOrF;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5E2606A323;
-	Sat, 14 Nov 2026 13:51:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B5E2606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B86606A32D;
+	Sat, 14 Nov 2026 13:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=dvTk+BCl
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AEDk4x84114866;
-	Sat, 14 Nov 2026 13:51:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=qqG2NJCc3JWi40GBILYwMhO94PZlOObFL01
-	RUJTaOOg=; b=dvTk+BClL+cnnkARh7sbqeGlV+Zbp3/rSkdLsBlVXcC0Rcr1M8u
-	FU5wUay9SnIXcyZMr5wu8tgXeUiht1BzBtI7VJvjI2c4N1sjqIR+bHH/gZKTsnwV
-	m/dReyVwLjdorbreiPECyoR62i/Z8fTxS0dFaxHSgxcpYF44uYcOXgvxrz1bQtH+
-	GdeG0w6fZYGv0BNZcRQwRD5wMBpdpD2TZ07MpXzWVzDXaXMcRW6HWTg21zhrPTt7
-	ynUrrE0juNO/YGqOkwX1HpDSiC/OlGQWV6ZzIeL/MsvO5klNGBTDUQgXhZMeXSKN
-	BUB9hNJ4B1C9tQWHCdp9LhUDKCtoH87hI+Q==
-Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hxhhjrx38-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sat, 14 Nov 2026 13:51:02 +0000 (GMT)
-Received: from pps.filterd (apblrppmta01.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AEDoxKU2649580;
-	Sat, 14 Nov 2026 13:50:59 GMT
-Received: from hu-devc-blr-u24-a.qualcomm.com (hu-anuppate-blr.qualcomm.com [10.131.36.165])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 6AEDoxe62649574
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sat, 14 Nov 2026 13:50:59 +0000 (GMT)
-Received: by hu-devc-blr-u24-a.qualcomm.com (Postfix, from userid 486687)
-	id B561F248E3; Sat, 14 Nov 2026 19:20:58 +0530 (+0530)
-From: Anup Patel <anup.patel@oss.qualcomm.com>
-To: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
-        Atish Patra <atish.patra@linux.dev>,
-        Andrew Jones <andrew.jones@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Anup Patel <anup@brainfault.org>,
-        kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Anup Patel <anup.patel@oss.qualcomm.com>
-Subject: [PATCH] RISC-V: KVM: Convert IMSIC vsfile_lock to a raw spinlock
-Date: Sat, 14 Nov 2026 19:20:56 +0530
-Message-ID: <20261114135056.202556-1-anup.patel@oss.qualcomm.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eNM1lOrF
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A351F000C4;
+	Sat, 14 Nov 2026 13:51:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794664313;
+	bh=CnWW9gpNC79/nZFswkxbrq3QlPD5NwtKAqBQkHXA8Ek=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=eNM1lOrFmFNoqyY7Zg+zbZETOrIHJDfIwRjw5kbfBCQene0fTVwTsdlrWC6g7oDD5
+	 MiAFtMafjcMADffS57tvSIcGBOFJxfP5Vj/RrY29PT9MzBDEyJ0UbrIP4A2QLkhpff
+	 GTbBce2zEWYPzbbCW4+WA35p4SHopqkLTuUsQ5+ayDO9LeUqvrNs/J+BznzuJWonx+
+	 7l3RodaXwRpPQXYT1fils6n6B/9l1KhRFt8AfjVZ4Jqeptsaa9j+ymESAdVlPIXe2I
+	 +G45ETUded+2Do3+1FR+VWKPJZWumTaNx9f0bbDwJe24iDW/kz6b4mkUc3ixQZ3kst
+	 kbB/J6Hjkb8RQ==
+Message-ID: <sashiko-outbox-214595@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC] vhost: set dirty log bits without pinning pages on
+ x86
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, "Eugenio Perez" <eperezma@redhat.com>
+In-Reply-To: <20261113083351-mutt-send-email-mst@kernel.org>
+References: <af7f05bf637337d35fdd10f3e0dbb5e39d7780e7.1794480795.git.mst@redhat.com>
+ <20261113012937.40818-1-zhaoguohan@kylinos.cn>
+ <20261113083351-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 14 Nov 2026 13:51:52 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -81,268 +61,75 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE0MDA1NSBTYWx0ZWRfX9BAvxvMAehan
- IK1cbACB3iXuuEMfkX1Cjsrn85urvCZrgH6EjlDvX4GLMUHudgJTCJchwx2+RwZg4kxYd5bJC8H
- TY63RXKYEoxryKoQ6vkobwqTCtxavgDu0rfJW/aWK8J3q0kVMY6QgSSnRZJY2kyxLTgcMykBme0
- qpK1c6mGMyOlddfhTTirwfYVSvzpjZJMvAU4B2eqWd5L8Q4Afp9H5M1lc0Ud1umF6x96Ykibf2u
- aJ82UzpU2PTcUWZD1OgbWUCpeZxmXZ7VIy0RzeaFCvcapeCThooTKgy6gqT9RqGANWGvH0rR5u7
- QVslEKoA92nfi0JJL6YgteS3/mMvJdNv5Aq6LGu3WH8ClSUwnZdeLqZfxsQWRxwtEzohuyfLRrP
- Dy/BMcSEufnS2V1q5CMpM/G/8xIDQ1sA2ranD8ZD6j3edkDzxejNdofzLANAFkhRHelDrSwwT6i
- /64PuR+gVma2uk8lQvw==
-X-Proofpoint-ORIG-GUID: ppqplaSz09GqRES1YyfPrhQeGEsw5BYC
-X-Proofpoint-GUID: ppqplaSz09GqRES1YyfPrhQeGEsw5BYC
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE0MDA1NSBTYWx0ZWRfX+pxHc+D0Yn8A
- UTVNoyIScB+eQo60VTQSMqOKjeHiknhJ9B2002oB8ET4M8giNwRCPxQgaQPIe9vAmAuU87q3+oq
- xjKPE2ipyUuxZ76Di9GYlBir1g+fl4k=
-X-Authority-Analysis: v=2.4 cv=X9rHu2Te c=1 sm=1 tr=0 ts=6af86746 cx=c_pps
- a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=yOCtJkima9RkubShWh1s:22 a=EUspDBNiAAAA:8 a=wOdddZgVwB2pSmFxpusA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-14_04,2026-11-11_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 impostorscore=0 bulkscore=0 clxscore=1011 priorityscore=1501
- adultscore=0 malwarescore=0 lowpriorityscore=0 suspectscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611140055
 
-The kvm_riscv_vcpu_aia_imsic_put() runs from the scheduler preemption
-notifier with the raw runqueue lock held, so it must not take vsfile_lock,
-an rwlock_t, which sleeps on PREEMPT_RT. All vsfile_lock critical sections
-are short, so a raw spinlock is fine.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Medium] vhost: missing drivers/vhost/vhost.c changes to use
+  set_bit_user()
+- [Low] x86/uaccess: missing local __label__ efault in set_bit_user()
+--
 
-In addition, converting vsfile_lock to raw spinlock allows us to drop
-the vsfile_hgei_lock and also allows us to use writel_relaxed() in
-kvm_riscv_vcpu_aia_imsic_inject() since raw_spin_unlock() internally
-does mmiowb_spin_unlock() which in-turn drains the write-buffer.
+commit 0fc009f80e8e18bd72e753ada02155e494eedeca
+Author: Michael S. Tsirkin <mst@redhat.com>
 
-Co-developed-by: Andrew Jones <andrew.jones@linux.dev>
-Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
-Signed-off-by: Anup Patel <anup.patel@oss.qualcomm.com>
----
- arch/riscv/kvm/aia_imsic.c | 79 ++++++++++++++++++++------------------
- 1 file changed, 41 insertions(+), 38 deletions(-)
+vhost: set dirty log bits without pinning pages on x86
 
-diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
-index 302938972aa0..0b9d15721d52 100644
---- a/arch/riscv/kvm/aia_imsic.c
-+++ b/arch/riscv/kvm/aia_imsic.c
-@@ -47,9 +47,7 @@ struct imsic {
- 	 */
- 
- 	/* IMSIC VS-file */
--	rwlock_t vsfile_lock;
--	/* Writers hold both locks; scheduler-out only takes vsfile_hgei_lock. */
--	raw_spinlock_t vsfile_hgei_lock;
-+	raw_spinlock_t vsfile_lock;
- 	int vsfile_cpu;
- 	int vsfile_hgei;
- 	void __iomem *vsfile_va;
-@@ -490,17 +488,6 @@ static void imsic_vsfile_local_update(int vsfile_hgei, u32 nr_eix,
- 	csr_write(CSR_VSISELECT, old_vsiselect);
- }
- 
--static void imsic_vsfile_set_hgei(struct imsic *imsic, int cpu, int hgei)
--{
--	unsigned long flags;
--
--	/* Serialize the CPU/HGEI pair with scheduler-out's wakeup setup. */
--	raw_spin_lock_irqsave(&imsic->vsfile_hgei_lock, flags);
--	imsic->vsfile_cpu = cpu;
--	imsic->vsfile_hgei = hgei;
--	raw_spin_unlock_irqrestore(&imsic->vsfile_hgei_lock, flags);
--}
--
- static void imsic_vsfile_cleanup(struct imsic *imsic)
- {
- 	int old_vsfile_hgei, old_vsfile_cpu;
-@@ -512,13 +499,14 @@ static void imsic_vsfile_cleanup(struct imsic *imsic)
- 	 * VCPU is being destroyed.
- 	 */
- 
--	write_lock_irqsave(&imsic->vsfile_lock, flags);
-+	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
- 	old_vsfile_hgei = imsic->vsfile_hgei;
- 	old_vsfile_cpu = imsic->vsfile_cpu;
--	imsic_vsfile_set_hgei(imsic, -1, -1);
-+	imsic->vsfile_cpu = -1;
-+	imsic->vsfile_hgei = -1;
- 	imsic->vsfile_va = NULL;
- 	imsic->vsfile_pa = 0;
--	write_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
- 
- 	memset(imsic->swfile, 0, sizeof(*imsic->swfile));
- 
-@@ -606,7 +594,7 @@ bool kvm_riscv_vcpu_aia_imsic_has_interrupt(struct kvm_vcpu *vcpu)
- 	 * only check for interrupt when IMSIC VS-file is being used.
- 	 */
- 
--	read_lock_irqsave(&imsic->vsfile_lock, flags);
-+	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
- 	if (imsic->vsfile_cpu > -1) {
- 		/*
- 		 * This function is typically called from kvm_vcpu_block() via
-@@ -621,7 +609,7 @@ bool kvm_riscv_vcpu_aia_imsic_has_interrupt(struct kvm_vcpu *vcpu)
- 		else
- 			ret = !!(csr_read(CSR_HGEIP) & BIT(imsic->vsfile_hgei));
- 	}
--	read_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
- 
- 	return ret;
- }
-@@ -646,10 +634,10 @@ void kvm_riscv_vcpu_aia_imsic_put(struct kvm_vcpu *vcpu)
- 	if (!kvm_vcpu_is_blocking(vcpu))
- 		return;
- 
--	raw_spin_lock_irqsave(&imsic->vsfile_hgei_lock, flags);
-+	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
- 	if (imsic->vsfile_cpu > -1)
- 		csr_set(CSR_HGEIE, BIT(imsic->vsfile_hgei));
--	raw_spin_unlock_irqrestore(&imsic->vsfile_hgei_lock, flags);
-+	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
- }
- 
- void kvm_riscv_vcpu_aia_imsic_release(struct kvm_vcpu *vcpu)
-@@ -663,13 +651,14 @@ void kvm_riscv_vcpu_aia_imsic_release(struct kvm_vcpu *vcpu)
- 		return;
- 
- 	/* Read and clear IMSIC VS-file details */
--	write_lock_irqsave(&imsic->vsfile_lock, flags);
-+	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
- 	old_vsfile_hgei = imsic->vsfile_hgei;
- 	old_vsfile_cpu = imsic->vsfile_cpu;
--	imsic_vsfile_set_hgei(imsic, -1, -1);
-+	imsic->vsfile_cpu = -1;
-+	imsic->vsfile_hgei = -1;
- 	imsic->vsfile_va = NULL;
- 	imsic->vsfile_pa = 0;
--	write_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
- 
- 	/* Do nothing, if no IMSIC VS-file to release */
- 	if (old_vsfile_cpu < 0)
-@@ -726,10 +715,10 @@ int kvm_riscv_vcpu_aia_imsic_update(struct kvm_vcpu *vcpu)
- 		return 1;
- 
- 	/* Read old IMSIC VS-file details */
--	read_lock_irqsave(&imsic->vsfile_lock, flags);
-+	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
- 	old_vsfile_hgei = imsic->vsfile_hgei;
- 	old_vsfile_cpu = imsic->vsfile_cpu;
--	read_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
- 
- 	/* Do nothing if we are continuing on same CPU */
- 	if (old_vsfile_cpu == vcpu->cpu)
-@@ -779,11 +768,12 @@ int kvm_riscv_vcpu_aia_imsic_update(struct kvm_vcpu *vcpu)
- 	/* TODO: Update the IOMMU mapping ??? */
- 
- 	/* Update new IMSIC VS-file details in IMSIC context */
--	write_lock_irqsave(&imsic->vsfile_lock, flags);
--	imsic_vsfile_set_hgei(imsic, vcpu->cpu, new_vsfile_hgei);
-+	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
-+	imsic->vsfile_cpu = vcpu->cpu;
-+	imsic->vsfile_hgei = new_vsfile_hgei;
- 	imsic->vsfile_va = new_vsfile_va;
- 	imsic->vsfile_pa = new_vsfile_pa;
--	write_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
- 
- 	/*
- 	 * At this point, all interrupt producers have been moved
-@@ -874,6 +864,7 @@ int kvm_riscv_aia_imsic_rw_attr(struct kvm *kvm, unsigned long type,
- 	struct imsic *imsic;
- 	struct kvm_vcpu *vcpu;
- 	int rc, vsfile_hgei, vsfile_cpu;
-+	bool swfile_update = false;
- 
- 	if (!kvm_riscv_aia_initialized(kvm))
- 		return -ENODEV;
-@@ -893,7 +884,7 @@ int kvm_riscv_aia_imsic_rw_attr(struct kvm *kvm, unsigned long type,
- 	}
- 	isel = KVM_DEV_RISCV_AIA_IMSIC_GET_ISEL(type);
- 
--	read_lock_irqsave(&imsic->vsfile_lock, flags);
-+	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
- 
- 	rc = 0;
- 	vsfile_hgei = imsic->vsfile_hgei;
-@@ -902,13 +893,16 @@ int kvm_riscv_aia_imsic_rw_attr(struct kvm *kvm, unsigned long type,
- 		if (write) {
- 			rc = imsic_mrif_rmw(imsic->swfile, imsic->nr_eix,
- 					    isel, NULL, *val, -1UL);
--			imsic_swfile_extirq_update(vcpu);
-+			swfile_update = true;
- 		} else
- 			rc = imsic_mrif_rmw(imsic->swfile, imsic->nr_eix,
- 					    isel, val, 0, 0);
- 	}
- 
--	read_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+
-+	if (swfile_update)
-+		imsic_swfile_extirq_update(vcpu);
- 
- 	if (!rc && vsfile_cpu >= 0)
- 		rc = imsic_vsfile_rw(vsfile_hgei, vsfile_cpu, imsic->nr_eix,
-@@ -959,6 +953,7 @@ int kvm_riscv_vcpu_aia_imsic_inject(struct kvm_vcpu *vcpu,
- 	unsigned long flags;
- 	struct imsic_mrif_eix *eix;
- 	struct imsic *imsic = vcpu->arch.aia_context.imsic_state;
-+	bool swfile_update = false;
- 
- 	/* We only emulate one IMSIC MMIO page for each Guest VCPU */
- 	if (!imsic || !iid || guest_index ||
-@@ -970,17 +965,26 @@ int kvm_riscv_vcpu_aia_imsic_inject(struct kvm_vcpu *vcpu,
- 	if (imsic->nr_msis <= iid)
- 		return -EINVAL;
- 
--	read_lock_irqsave(&imsic->vsfile_lock, flags);
-+	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
- 
- 	if (imsic->vsfile_cpu >= 0) {
--		writel(iid, imsic->vsfile_va + IMSIC_MMIO_SETIPNUM_LE);
-+		/*
-+		 * We can use writel_relaxed() over here because the
-+		 * raw_spin_unlock() below will do mmiowb_spin_unlock()
-+		 * which in-turn drains the write-buffer ensuring the
-+		 * write is visible to the CPU owning the IMSIC VS-file.
-+		 */
-+		writel_relaxed(iid, imsic->vsfile_va + IMSIC_MMIO_SETIPNUM_LE);
- 	} else {
- 		eix = &imsic->swfile->eix[iid / BITS_PER_TYPE(u64)];
- 		set_bit(iid & (BITS_PER_TYPE(u64) - 1), eix->eip);
--		imsic_swfile_extirq_update(vcpu);
-+		swfile_update = true;
- 	}
- 
--	read_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+
-+	if (swfile_update)
-+		imsic_swfile_extirq_update(vcpu);
- 
- 	return 0;
- }
-@@ -1036,8 +1040,7 @@ int kvm_riscv_vcpu_aia_imsic_init(struct kvm_vcpu *vcpu)
- 
- 	/* Setup IMSIC context  */
- 	imsic->nr_msis = kvm->arch.aia.nr_ids + 1;
--	rwlock_init(&imsic->vsfile_lock);
--	raw_spin_lock_init(&imsic->vsfile_hgei_lock);
-+	raw_spin_lock_init(&imsic->vsfile_lock);
- 	imsic->nr_eix = BITS_TO_U64(imsic->nr_msis);
- 	imsic->nr_hw_eix = BITS_TO_U64(kvm_riscv_aia_max_ids);
- 	imsic->vsfile_hgei = imsic->vsfile_cpu = -1;
--- 
-2.43.0
+This commit adds the set_bit_user() macro in arch/x86/include/asm/uaccess.h
+to atomically set a bit in a byte of user memory using scoped_user_rw_acces=
+s().
 
+> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uacces=
+s.h
+> index 3a0dd3c2b233e..0bffa43e02179 100644
+> --- a/arch/x86/include/asm/uaccess.h
+> +++ b/arch/x86/include/asm/uaccess.h
+> @@ -594,6 +594,28 @@ _label:									\
+>  	__ret;								\
+>  							})
+> =20
+> +/* set_bit() on a byte of user memory; returns -EFAULT on fault. */
+> +#define set_bit_user(nr, addr)					\
+
+[Severity: Medium]
+Is this commit missing the changes in drivers/vhost/vhost.c to call
+set_bit_user()?
+
+The commit appears to have been applied directly from a mailing-list reply
+that only contained a replacement hunk for arch/x86/include/asm/uaccess.h.
+As a result, set_bit_user() has no callers in the tree and
+set_bit_to_user() in drivers/vhost/vhost.c still pins user pages with
+pin_user_pages_fast().
+
+> +({									\
+> +	int __err =3D -EFAULT;						\
+> +	u8 __user *__p =3D (addr);					\
+> +	scoped_user_rw_access(__p, efault) {				\
+> +		__err =3D 0;						\
+> +		asm volatile("\n"					\
+> +			     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"	\
+> +			     "2:\n"					\
+> +			     _ASM_EXTABLE_TYPE_REG(1b, 2b,			\
+> +						   EX_TYPE_EFAULT_REG,	\
+> +						   %[errout])		\
+> +			     : [errout] "+r" (__err),			\
+> +			       [ptr] "+m" (*__p)			\
+> +			     : [mask] "q" ((unsigned char)BIT(nr))	\
+> +			     : "memory", "cc");				\
+> +	}								\
+> +efault:									\
+> +	__err;								\
+> +})
+
+[Severity: Low]
+Should set_bit_user() declare __label__ efault; at the start of the
+statement expression, as get_user_inline() and put_user_inline() do in
+include/linux/uaccess.h?
+
+Without __label__ efault;, the efault label has function scope, so
+expanding set_bit_user() more than once in the same function (or inside a
+function that already defines an efault label) will fail to compile with a
+duplicate label error.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261113083351-mutt=
+-send-email-mst@kernel.org?part=3D1
