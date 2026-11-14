@@ -1,74 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794677751;
-	b=U+pEnHuFeJ6DlMfrE5uPVmRjAr74qLlRlRrzoO2K3zz8d8idMNx4WQylPs7XUyVeSbhF
-	 Lv+4ZgdjCF/WMeb3pVcsmOXQUq8Y/bXwSSYPogylSbd5TMkO/vQ9HAduCSBaSr3YU7TQp
-	 ZjZ8shDkBXE/NE6rR7D1Rv2gnUTIKK51uAwYSsjE9EMLGfR38L7j6Jlq/sunkfxzkiVIj
-	 2Z+Jm8PZhGt9MwusAK8yYAdwvxMbOi5LTXRhxsm0oA23TLxrJh8HYnTBnjwif/BqS8Ykc
-	 zYZykCEXUzWvuj0us7Atdy3s3ozTL21sBrFm59/1k6gpcqzKfMRptbdnix83kZFoc5g==
+	t=1794679070;
+	b=y3vuq1bJpHpDZR71BkmXNeyva//ScAn3CxCoaG/emENz5OrB4sY+nA9Do8niQg0UGuuL
+	 /Kw4jSe5xq90rCUHJ63f9xmSLEHPqp4Imx74h7HfcPh5A3A+QR2Pr8lxaDmLQVAyYHEmE
+	 ft6ERfCf7GSjVkouWR+zot752+JomkOt8cG/etJImGnRQ01ZNDs2lTtRuXYJM4zw/RJGT
+	 Y5HQa9masfyzG0m5vk4SPkCsamG1/Njd/+O+T8KdRFCK6mZeBRZdBcyX+/crE5a2jAKUI
+	 YqmM1JVvdzVypgPoMiEya+0YCIP1CuMWISoicPOiPOIRVu6gYfYLFtiJ7myHcrMAuTw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794677751;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794679070;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=JNaJcXdU6JL88Hplnr1u9aTEynknq2tK7kpa3hgYbA8=;
-	b=VarKdT643sbH8sSLTTQgF7rUnWKPnYQu5Maapg1aDVsoHLd3YuyxzvUvHAblADOaJR4K
-	 +dwfM+Y9zhuYT42yaA54xGfiBK6ONXz1icCG/th3on6EOVRIwC/Cthn9WTeIWxFVLx6Uk
-	 DzZLtzGfxjvVm8SFMKpGry4NHgHMvdflZLGzUkoSByH1aZ2aD9PMeL4q54u5YMyFe1yTQ
-	 Twkdm6mGWKAD/T4iqqlMNP4P61FS849LFh7aJ/l1OtheBcbaTmwzydgPNJUk3gn/0or1d
-	 mGuGHET2nzmPUNJU7dEMS+7cdQhKlt0NKcZaj90C5gByChHob7ndMgC9BdaO7F9Acag==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=Oeu8fRL3y/S5bZyksCXvYqJHykgbAKegGBLalUwV/PE=;
+	b=I70/VZJnaT6/DJEJQl6Q5nMS9QpFN/HxvD4WrmG47jSeR+yzh/Gdp77jLdWjiaxM4cvr
+	 /4QCY51CxIJfKGDKfOLaRcaqEyGBTb9NHQl/MgxTOA0f3iJdu5T7CcuertiGfRfI/gfR+
+	 ADjuSAzHhJ0DtNuz+yL2CyvrCxDgVgJJUR6/IE8kO4foHfQ7eZXznTJ7m/QbygG4peGg8
+	 W4JUjS7EEzVZ25eZ1mZnmVMZYW7Fc60HEsI2wzyrLHxPbuGuUmh6O6Z5NGNH+eJnvljTK
+	 4miuGh09SS96DPWRK91sI9pZa7Kn3BOwmA41mO6trKS8nEO53Grai4S02/dyEPPHkyQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XSSeCau7;
-	arc=none smtp.remote-ip=209.85.218.69
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yiqucYiP;
+	arc=none smtp.remote-ip=209.85.128.49
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0299E606A337
-	for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 17:35:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0299E606A337
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5324A606A327
+	for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 17:57:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5324A606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XSSeCau7
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c50713860c0so198186866b.0
-        for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 09:35:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yiqucYiP
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a2167bd087so13482115e9.3
+        for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 09:57:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794677748; x=1795282548; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20260707; t=1794679069; x=1795283869; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=JNaJcXdU6JL88Hplnr1u9aTEynknq2tK7kpa3hgYbA8=;
-        b=XSSeCau7YgwEp6nAVRbbl/y7vrel4QlasSkkS3O+sdNhiVlZ/lYbebt6ZnY70vAdOD
-         eGHE2605aeE7eHPIdrg74PzC/qnZt8iFNDSyloLNhlQq+yFuWqtkOYmD1iThOxILmyYq
-         JV+pQsEsOeAVgs9+GoW8ueAyCKQVGd1B/S9cB58Yh2er6awjGmCDMy5Vm1Iz8mg2iioo
-         VWKfLdaBGF5Spc8RyDs1ELufEf/uo4Xo1aMAczXmftDLnFrizV/VdaIzMaivEBCMUbA6
-         h2OGOjExnQm9nyj8awbABd3LTl3W6dRW4EEnjVSAR3tCHL18axB7iF+i/BM9Ji5BGIWI
-         T66g==
+        bh=Oeu8fRL3y/S5bZyksCXvYqJHykgbAKegGBLalUwV/PE=;
+        b=yiqucYiPhicJpvweTW8QlOt990uPnzzoTAoTZKVxBSOsacWKJCWpQ6kmtpxXBSsmfZ
+         dA6cccGEX/mnZVBztmMQ7K3lNMCn49Hw3Chc3oNrNoAuEttmV8Hq0pXNoJtUNlICfNd5
+         Q4exnWlV6pKgguc+UIVvBeHb6EvYESUBPh7U6i0pUTsPofLsd0tgwU3MGh1vMr6TiDkE
+         ydB3hF6LD2moJYc7fZHF6WvOD4j0MoXLCiq2qr53vdZSjyTYyM//XH/qKX7PDQbegzJx
+         BZ0S3aMBxZA2FJkDp7s2BtJCAzhBgsnbngpjBomfr3OnGLtpG1bZtDUg541snvCJQgj0
+         5PYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794677748; x=1795282548;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1794679069; x=1795283869;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=JNaJcXdU6JL88Hplnr1u9aTEynknq2tK7kpa3hgYbA8=;
-        b=UmOX1HHLS7cRovCbkrb6M3ClkhEQapl7SYAWtuwu1Pf6VCsvjv1CWDQV9xq3lF71TK
-         2C4UIQuLyQ6VKfWAuYqQWJzMYiIP7HC9zcU/vaFi7SjHIJTCNB20mazizRzLCkw6P3Xv
-         IPZl/GDDBW+Se+oynVTnF/iKwGGHlh6TO0ys/EENo+phUIM9TO8kKhNZ/SP+I56XFfCE
-         uhMGaAkUU4M4P3QIJ0Cp+6Er+NYx7eOs+dLxwEkEmI/uBDa/z602JkyUfstTBSLqgtcQ
-         hw6a2rBcbVh7y5a5luVO7Trtzq7Qecu3OOYNf5QZ/SaG2NJKTBtljL+INKqvuuOvOCfb
-         AHjw==
-X-Forwarded-Encrypted: i=1; AL+hErEsA8gZGxYeKZp/DgfytA/TKCt8eqx2EWDTCAcyvX05WD1fh/GqtFrjWH2aGHR1u+fTWQo=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/+FGljT6DpXhURwdgXKa4+OgwW/zfQzSzZGZ/eO79kBPCVAXlF
-	fzjddShShawuBl4fdAO+ZAigD/ru7nGnbeGhUoUsVGpINYAQWcMXfme9yY9+iNmt1/DRk+8tlVa
-	1dvWZqUNeM3aZ0GwApQ==
-X-Received: from ejfz7.prod.google.com ([2002:a17:906:ac7:b0:c2e:3202:ef75])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:868f:b0:c33:ae8b:817d with SMTP id a640c23a62f3a-c509654f9admr515384166b.46.1794677747981;
- Sat, 14 Nov 2026 09:35:47 -0800 (PST)
-Date: Sat, 14 Nov 2026 17:35:47 +0000
-In-Reply-To: <DMRO4QXXB8H4.127C1CPT3RZ18@google.com>
+        bh=Oeu8fRL3y/S5bZyksCXvYqJHykgbAKegGBLalUwV/PE=;
+        b=wR0R/8U1pxXJpm6IgBRA17IvGoIV2+qImse0GbnmXSiDKCUhxS9I9Znp4+JGmzhe9l
+         BsL7wPyBvo8LzHrtJW61m7hm53r20H4LDuSSK/zsD32AdMcvInWeYbj7x/58pkReMoxs
+         yCGuZW4vVS0FyGxXYF7HwwIpbXDrkv9RnVFMKtuAKI6fGwUPUYH7J5wOiOuBj2IdD46+
+         pFjbisSbSjrd0NsglRBDEaryAV35WFrxEf5RMYVocZz/7eBJ5KIVAeqYNlVsn9ji47l/
+         8NvW4sfBaKce2CAQJVLsaGTnFDukHw2iViD+LjBS2mrqBkE+u1t0bwqK2eExzjysDPx/
+         0Lfw==
+X-Forwarded-Encrypted: i=1; AL+hErHLKt+QYYZATKdNvbXJFv8wMPKvlCPrG48emXXYsPRvTmHeLS8sI2lb2RibvxzAq0yewjs=@vger.kernel.org
+X-Gm-Message-State: APuU4Z83ZWvTOlgb7ngMACJqQE0JLlDiiOsCQsx4vD7+oZv6H7S+g12P
+	0mYBqjHKkHfQBiiIkPuBC89wXgHLaXTIo0D7MNHNNsbp0S+rzKGPEMeb
+X-Gm-Gg: AYBFou2P6UozSYzQp+OLgpju7jT6SbxMv8keI+0WZFaTQ73jI01v8dpGGdkynpOzlqn
+	ao3PnCdvt2ItansqI51E3jCsqGc/NlzRFuuWpFUVHJ5s3YZkTn7a9JcGyFA2I157i3OPF2iOIW8
+	HYfVteyVpXp3PJeJyZr9O8T0xJYGF2LB2ioLNhkKu+77chyiMeywx7Bfha9M2tr8Tzd7E6w2xIz
+	ZPC87ZH1ky+WrpkaTa5qGTKtt0v+FNh1F7c/oQxrxg411t5wFmad5/DwkfC3NcW4nEf5i+Y6+9F
+	kxt/C2YXhyf6ZSnXDyA21kCRy/PKFROEQRfF+T8JX3bFpjbQG7d/Ggpq0fQ0Dy4Yj2Lp9YxrnHD
+	FP6DmQ3ysggpgbkxmvmx+S0yzDHtmAmK43PPjJSbEjWk/XhqXg/ZqzXcz0yA32IX8wE1MHEi8pI
+	t21GTxrUxtBgR2YeDA3STl16iiHFbFy8fNieo4A3zbgR5Le9TkVzqIvGT4BbLKK3NYRd/8Atnen
+	C2sS122x+s6Brj/jIVQLZ4HEMpLVLl9mQCKAUJt+da2yUK6175GcNGIYa55gHzn2TgTJ74axEI0
+	C9ZTgSnHs2CRyJBMMpWVTV0H9miN46jpQGzU/GJVbSGSnNJgM+x7mNN0d06n0igDTaMjsg+Gf2V
+	kUpE=
+X-Received: by 2002:a05:600c:b86:b0:4a1:811c:8078 with SMTP id 5b1f17b1804b1-4bb55a67c61mr134469755e9.26.1794679068535;
+        Sat, 14 Nov 2026 09:57:48 -0800 (PST)
+Received: from [192.168.1.6] (user-109-243-65-71.play-internet.pl. [109.243.65.71])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb68c00b10sm14350715e9.0.2026.11.14.09.57.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 14 Nov 2026 09:57:48 -0800 (PST)
+Message-ID: <a5170ee5-ccf6-4f19-8ecf-1bc82e3d54d1@gmail.com>
+Date: Sat, 14 Nov 2026 18:57:46 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,135 +92,200 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261110050202.529473-1-tarunsahu@google.com> <20261110050202.529473-17-tarunsahu@google.com>
- <DMRO4QXXB8H4.127C1CPT3RZ18@google.com>
-Message-ID: <9huzmrrbpb7w.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 16/19] PCI: liveupdate: Add feature header to struct pci_dev_ser
-From: tarunsahu@google.com
-To: David Matlack <dmatlack@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, maz@kernel.org, will@kernel.org, 
-	Alexander Graf <graf@amazon.com>, seanjc@google.com, jgg@nvidia.com, loganodell@google.com, 
-	arnd@arndb.de, dwmw2@infradead.org, baolu.lu@linux.intel.com, 
-	Bjorn Helgaas <bhelgaas@google.com>, oupton@kernel.org, alex@shazbot.org, 
-	gle.com@google.com, pbonzini@redhat.com, 
-	Andrew Morton <akpm@linux-foundation.org>, kevin.tian@intel.com, joro@8bytes.org
-Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org, 
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
-	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	skhawaja@google.com, sagis@google.com, linux-arch@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-
-"David Matlack" <dmatlack@google.com> writes:
-
-> On Tue Nov 10, 2026 at 5:01 AM UTC, Tarun Sahu wrote:
->> Precede each serialized PCI device entry in the PCI Live Update KHO block
->> set with struct kho_ser_hdr via DECLARE_KHO_SER so future per-device PCI
->> Live Update features can append fields to struct pci_dev_ser without
->> breaking compatibility between adjacent kernels.
->
-> Elements of a collection should not have their own feature headers. This
-> applies to patches 10, 12, 14, 16 and 18. I raised this during the v2
-> discussion [1][2], but I don't think it was addressed.
->
-
-As per [3], I tried to add feature header to all possible instances of
-ser structs. Maybe this is the right time to audit these structs and decide
-which one will never need feature header.
-
-[3]: https://lore.kernel.org/kexec/CA+CK2bB9xoAWP0kC+KtXeDTdwt0kWqb-PLHN=6DsA=mnRpMfxA@mail.gmail.com/
-
-> All entries in a KHO block set are written by the same kernel using the
-> same struct, and the block set has a single entry_size, so every entry
-> header is necessarily identical. They don't convey anything that the
-> header of the struct that owns the collection can't. In this case,
-> struct pci_ser's header can define features that describe fields in
-> struct pci_dev_ser, and the PCI core checks them once before iterating.
-> If a feature only applies to some devices, the field's value in each
-> entry says whether that device uses it.
->
-
-pci_dev_ser can be refrained from using kho_ser_hdr but not
-memfd_luo_folio_ser.
-
-The difference lies in their API usage. one use kho block and other one
-kho_vmalloc. With kho block, we carry entry_size, so the parent
-pci_ser's kho_ser_hdr can communicate about the new field/feature in the
-pci_dev_ser and entry_size will carry correct the size of pci_dev_ser
-for iterator on deserialization. But for memfd_luo_ser, kho_vmalloc does
-not carry such entry_size. So we can solve this by adding the
-folio_ser_size into memfd_luo_ser struct.
-
-Without entry_size, we can only add new changes to such structs by
-adding feature in parent struct with required = 1. That way rollback or
-upgrade will fail to the kernel which does not support this required
-feature. Incase, if we have entry_size (folio_ser_size in above
-example), it will help marking such feature to be optional also and
-deserialization can correctly parse with entry_size and can ignore those
-changes if the kernel wants to.
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] RISC-V: KVM: Order IMSIC VS-file write before releasing
+ vsfile_lock
+To: Anup Patel <anup@brainfault.org>
+Cc: Anup Patel <anup.patel@oss.qualcomm.com>,
+ Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20261023142550.148604-1-oleksii.kurochko@gmail.com>
+ <CABBgwmuBBbyBytwRBTeAqF=0c1m+TFK8E3yPopGNQAsrMFO2vg@mail.gmail.com>
+ <7e634bef-6d23-4a57-b3e6-b5585045ca19@gmail.com>
+ <CAAhSdy2cL6u_pAinYFU64nfqespQU+2x3GTeiqvjFUbJyYLLMA@mail.gmail.com>
+Content-Language: en-US
+From: Oleksii Kurochko <oleksii.kurochko@gmail.com>
+In-Reply-To: <CAAhSdy2cL6u_pAinYFU64nfqespQU+2x3GTeiqvjFUbJyYLLMA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
-> Per-entry headers also cost a lot for small entries. struct pci_dev_ser
-> goes from 8 to 16 bytes, and to 24 bytes once the first feature is
-> added. Patch 18 does the same for every preserved memfd folio, which for
-> a large guest backed by 4K pages adds gigabytes of preserved metadata.
->
 
-Yeah, we are carrying 8/16 byte of extra memory where every entry share
-the same header. Which is a waste.
+On 11/14/26 2:35 PM, Anup Patel wrote:
+> On Fri, Nov 13, 2026 at 11:49 PM Oleksii Kurochko
+> <oleksii.kurochko@gmail.com> wrote:
+>>
+>>
+>>
+>> On 11/13/26 9:00 AM, Anup Patel wrote:
+>>> On Fri, Oct 23, 2026 at 7:56 PM Oleksii Kurochko
+>>> <oleksii.kurochko@gmail.com> wrote:
+>>>>
+>>>> kvm_riscv_vcpu_aia_imsic_inject() writes the interrupt identity to the
+>>>> SETIPNUM register of the vCPU's IMSIC VS-file while holding vsfile_lock
+>>>> for reading. The lock keeps the VS-file from being switched under the
+>>>> injector: kvm_riscv_vcpu_aia_imsic_update() and
+>>>> kvm_riscv_vcpu_aia_imsic_release() take it for writing to move the vCPU
+>>>> to a new VS-file or to the SW-file, then read and clear the old VS-file
+>>>> and free its HGEI line.
+>>>>
+>>>> On RISC-V, writel() is followed only by mmiowb_set_pending(). The
+>>>> trailing "fence o,w" is deferred to spin_unlock() by the mmiowb()
+>>>> tracking, and rwlocks don't take part in that tracking:
+>>>> queued_read_unlock() issues just "fence rw,w" before the AMO, which
+>>>> doesn't order device output. So the SETIPNUM write can still be in
+>>>> flight after another hart has observed vsfile_lock being released. If
+>>>> the old VS-file is read and cleared before the write lands, the
+>>>> interrupt is lost. If the HGEI line has already been handed out
+>>>> again, the interrupt ends up in another vCPU's VS-file.
+>>>>
+>>>> Add an explicit RISCV_FENCE(o, w) after the write to the VS-file, which
+>>>> is what spin_unlock() would issue via mmiowb().
+>>>>
+>>>> Fixes: db8b7e97d613 ("RISC-V: KVM: Add in-kernel virtualization of AIA IMSIC")
+>>>> Signed-off-by: Oleksii Kurochko <oleksii.kurochko@gmail.com>
+>>>> ---
+>>>> Why RISCV_FENCE(o, w) and not mmiowb():
+>>>>
+>>>> - Since the mmiowb() rework in v5.2 (e.g. commit 60ca1e5a200c
+>>>>     ("mmiowb: Hook up mmiowb helpers to spinlocks and generic I/O
+>>>>     accessors")), mmiowb() is an implementation detail of the spinlock
+>>>>     code. Explicit invocations were removed from drivers by commit
+>>>>     fb24ea52f78e ("drivers: Remove explicit invocations of mmiowb()") and
+>>>>     from the documentation by commit 915530396c78 ("Documentation: Kill
+>>>>     all references to mmiowb()"), so adding a new direct caller would go
+>>>>     against that.
+>>>>
+>>>> - RISCV_FENCE(o, w) states exactly the ordering needed here (device
+>>>>     output before the store that releases the lock), which is fine for
+>>>>     arch-specific code, and it is the same instruction mmiowb() expands to
+>>>>     on RISC-V. wmb() ("fence ow,ow") would also work but is stronger than
+>>>>     required.
+>>>>
+>>>> Scope: this only orders the write before the lock release. Whether a
+>>>> write that is already in global memory order is guaranteed to have
+>>>> taken effect in the old VS-file before kvm_riscv_vcpu_aia_imsic_update()
+>>>> or kvm_riscv_vcpu_aia_imsic_release() reads and clears it is a separate
+>>>> question, see https://github.com/riscv/riscv-aia/issues/172. If it
+>>>> isn't, these paths will also need to drain the old VS-file, and such a
+>>>> drain depends on the ordering added here.
+>>>> ---
+>>>>    arch/riscv/kvm/aia_imsic.c | 7 +++++++
+>>>>    1 file changed, 7 insertions(+)
+>>>>
+>>>> diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
+>>>> index f17dc559a709..807bb73a129a 100644
+>>>> --- a/arch/riscv/kvm/aia_imsic.c
+>>>> +++ b/arch/riscv/kvm/aia_imsic.c
+>>>> @@ -1056,6 +1056,13 @@ int kvm_riscv_vcpu_aia_imsic_inject(struct kvm_vcpu *vcpu,
+>>>>
+>>>>           if (imsic->vsfile_cpu >= 0) {
+>>>>                   writel(iid, imsic->vsfile_va + IMSIC_MMIO_SETIPNUM_LE);
+>>>> +               /*
+>>>> +                * rwlocks don't participate in mmiowb() tracking, so order
+>>>> +                * the write to the VS-file before releasing vsfile_lock,
+>>>> +                * i.e. before the vCPU can be moved off this VS-file and
+>>>> +                * the VS-file read and cleared.
+>>>> +                */
+>>>> +               RISCV_FENCE(o, w);
+>>>
+>>> Another fence after every writel() is a big hammer in the path.
+>>>
+>>> If the intention is to have correct contents when VS-file is read then
+>>> better place to add a fence is at the start of imsic_vsfile_local_read().
+>> Thanks for the review.
+>>
+>> I don't think a fence in imsic_vsfile_local_read() helps here. The
+>> problem is on the writer's side, and imsic_vsfile_local_read() runs on
+>> a different hart.
+>>
+>> The SETIPNUM write is done by whichever hart calls
+>> kvm_riscv_vcpu_aia_imsic_inject(), which can be any CPU (irqfd,
+>> ioctl, ...). imsic_vsfile_local_read() runs on the old vsfile_cpu, via
+>> the IPI from imsic_vsfile_read(). A fence only orders the accesses of
+>> the hart that executes it, so a fence on the reading hart can't make
+>> another hart's MMIO store land.
+>>
+>> Without the fence, this can happen:
+>>
+>>     hart A (inject)            hart B (update/release)    hart C (old
+>> vsfile_cpu)
+>>     read_lock()
+>>     writel(SETIPNUM)
+>>       (store still in flight)
+> 
+> Over here the MMIO write targets hart C IMSIC
+> 
+>>     read_unlock()
+>>                                write_lock()
+>>                                switch VS-file
+>>                                write_unlock()
+>>                                IPI ------------------->
+>>                                                          fence  <-proposed
+>>                                                          read+clear VSfile
+>>                                free HGEI
+>>     SETIPNUM lands: the interrupt
+>>     is lost, or ends up in another
+>>     vCPU's VS-file if the HGEI was
+>>     already reused
+>>
+>> Hart A's unlock can become visible before its SETIPNUM write has
+>> reached the IMSIC, because read_unlock() doesn't order device output.
+>> Nothing that hart B or hart C does afterwards can wait for that write.
+>> Only hart A can hold back its unlock until the write is ordered, and
+>> that is what the fence o,w after writel() does.
+>>
+>> With the fence:
+>>
+>>     hart A (inject)            hart B (update/release)    hart C (old
+>> vsfile_cpu)
+>>     read_lock()
+>>     writel(SETIPNUM)
+>>     fence o,w
+>>     read_unlock()
+>>                                write_lock()
+>>                                switch VS-file
+>>                                write_unlock()
+>>                                IPI ------------------->
+>>                                                         read+clear VS-file
+>>                                free HGEI
+>>
+>> The SETIPNUM write is now ordered before the unlock, so it is also
+>> ordered before everything hart B does after taking the lock, and,
+>> through the IPI, before hart C reads the old VS-file. It can no longer
+>> arrive after the read or after the HGEI is freed.
+>>
+>> About the cost: this is the same fence that every writel() under a
+>> spinlock already gets. On RISC-V, writel() only sets mmiowb pending and
+>> spin_unlock() then issues "fence o,w". We need it explicitly here only
+>> because vsfile_lock is an rwlock. It runs once per injected MSI, and
+>> only when the vCPU has a VS-file.
+> 
+> I am still not on-board adding a barrier in hot-path. Also, any barrier
+> we add must be paired with a barrier else where with proper comments
+> so this single barrier anyways does not satify this requirement.
 
-> They also add new ways to read out of bounds. kho_ser_payload() trusts
-> nr_required/nr_optional in each entry, and nothing checks that the entry
-> header plus payload fit within entry_size. In patches 14 and 18 the walk
-> uses each entry's fhdr->size to find the next entry, so one bad header
-> throws off every entry after it.
+Oh, right, I missed that.
 
-Bad feature header is not the reasoning here we should back this
-requirement. A bad feature header already imply the deserialization is
-compromised and hence accessing anything further is undefined. This
-holds true for any struct with feature header.
+> 
+> Instead of this, I think a much cleaner approach is to convert vsfile_lock
+> to raw_spinlock_t. The current vsfile_lock being a rwlock_t is create other
+> issues as well [1]. This will also allow us to use writel_relaxed() in the
+> kvm_riscv_vcpu_aia_imsic_inject() since raw_spin_unlock() will take
+> care of draining the write buffer.
 
->
-> Instead I would keep struct pci_dev_ser as a plain struct, take the
-> entry size from the KHO block header (patch 2), and in pci_flb_retrieve()
-> check once that the entry size covers the base fields, plus the fields
-> of any features set in struct pci_ser's header, e.g.:
->
-> 	entry_size = kho_block_set_entry_size(&incoming->block_set);
-> 	if (entry_size < offsetofend(struct pci_dev_ser, refcount))
-> 		panic(...);
->
-> That also restores the minimum entry size check that the v10 PCI series
-> had with PCI_DEV_SER_MIN_SIZE, which this version drops.
+Totally agree, raw_spinlock_t will work here and will be cleaner.
 
-offsetofend() is a good idea to replace PCI_DEV_SER_MIN_SIZE.
+> 
+> I will post something along these lines.
 
->
-> [...]
->
->> -	kho_block_set_init(&incoming->block_set, sizeof(struct pci_dev_ser));
->> +	kho_block_set_init(&incoming->block_set, kho_ser_size(pci_dev_ser));
->
-> This size is never used. kho_block_set_restore() overwrites it with the
-> entry size recorded by the previous kernel. Passing this kernel's size
-> here is misleading: pci_flb_retrieve() (and the LUO session/file restore
-> paths) read as if they iterate incoming entries with the outgoing entry
-> size, which would be a bug.
->
-> Incoming block sets should not take an entry size at all.
-> kho_block_set_restore() should initialize the block set itself from the
-> incoming block headers, and the incoming paths should drop the
-> kho_block_set_init() call.
+Thanks!
 
-Yes, We can avoid this dual initialization. kho_block_set_restore can
-take care of it. Also once we will agree on having having
-kho_block_set_ser to have entry_size which will be part of only
-block[0], then we will not have to update the entry_size inside the loop
-again and again and count_per_block can also be calculated before the
-loop for block 0 and 1..N.
+> 
+> [1] https://lore.kernel.org/r/20260925155116.465203-1-andrew.jones@oss.qualcomm.com
 
-~Tarun
->
-> [1] https://lore.kernel.org/kexec/atl6K2Juy6Bh29lh@google.com/
-> [2] https://lore.kernel.org/kexec/at-8vkVpN2SF3XgB@google.com/
+~ Oleksii
