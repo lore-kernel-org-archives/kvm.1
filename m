@@ -1,146 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.137.202.133
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794688048;
-	b=hO7A0/SLz0Yz1ntLIPCUcT4trmakEYNbjykqBq3cBjzi+GbSzPJTcpKyagh14wTzAUoH
-	 fIMiVbU28TEvAgbtHVmV5OPqY0c36hRH3vtPONLbiAyx+IW6ly11T408KUTwyZJ+VW5X6
-	 yq1TNDthsCrqsOsMpN/3OSct6AC9DQqqLZVNj5ha8Io4/64XPQ7uLT7yD2uOseA4ltpxP
-	 5yoy5fMjDRgQcFgUmw0I7ky0ek5s4aP2/H4MBNG5GvD8L2tyQ0Yu8SMoDx7UuuiqjQX8A
-	 4lNtFoe4t0jkneNLfW2aUIK63yyOujU0Mvo1VjAqLtyOoG4WyRBKpBy0sR3XOwcoI7Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794688048;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=LfkfapyQaXHB8T99IkenQj1dMnikIM4i8S8xipB/rew=;
-	b=asXYQukrz9grqE+R5bB5/h4y9apjt9RIhs34WG5SJVp013a30+YD2FqKbVTKju8biZGG
-	 6EEaqnDhhfXcMeZxLMUu66e5P/NI53j7MZz1B6VFx3lrEzd9cCtKSf2PZMRbKnILQ/Mrb
-	 OKsQVlhgFEkC78YUy9tyEuX2oti7eTLgxghOfp3f95QXCKJHiMC99tlB16RdC/erF2hx3
-	 qL1NiPSWRebSH0xocoED6Ux+iowA+Nmi3qCK5d1Qsd8Kez3CLY2v7fAhFwgM8+4bLxVHz
-	 4hriU55ZtX3hTGoy0z9nT/2OLn6XAcMLQki6r/qnABvZKi+HWOD1pdvImVGhxVIZAtw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=infradead.org;
-	spf=pass smtp.mailfrom=infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=pd+Ad0bz;
-	arc=none smtp.remote-ip=198.137.202.133
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.46.2
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794700713;
+	b=esu6QbD6q/GOzB/FOyb6eUIfO6ty2SNcHAzeurOHPWu0ZFsSIfHsr+iWm3H29wJWssQF
+	 EPG+ZmXTe10tSUJXlsgBYFe1jae2pgClgWhw4PsxilBjKjXPPgkBMmBKvQmBtEkkJjyar
+	 PWqGWhWtePxaaIbtMsdROpxqZZJ+y67VjjwovdmIGsPrXF8LXnvSpdgGDGQtJwJ86IvTd
+	 VJR+P3yyq3h6D7vawzVzV0wd1uL3X3D2LFhxLRrPaihAxgtSzQ7zIS5ZdTGowK3OzyeH1
+	 DWpJ9ayHH69Tf8dueJZx3ComNJ+WawJ/lEZWf7GDXcfZUvbVGUUGNBHZJHSR3aqDA3A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794700713;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:Content-Type:Content-Disposition:
+	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=bpeeawqXAwXe8hvlJopUeaTMWg2WHuyiLKNJWkrx+f4=;
+	b=u/nEg07VXOOJQxLDw9XbbcTTaVMNoQB6DaCnEjvFCpSRY5n8dOA+SOzaJMG0b+bKT7S3
+	 D4VrDBlY0o1z1cbcYceL0y5brQ7vKomd0203/nEUr/h1tVlBe0V0RayT9/oN9IFzi1eee
+	 1MlQYOJ6GmY1GY+maXAJdF7V50Z3JaWlxxci1pBcCUiUv8969dqYFMl9vUc/pAQG5GyJi
+	 hyEksQG4oM+VECWwFhncMaczSJ/VQ6roZUB9njVBzO66fS29ypQAL/vAYuCg/q6D+xGj1
+	 SKSF4RLmkFIG7FgDv1T3KuXM3yUEo8FUcXEpk+P9o6LwUq/iWRFbwNLulhf37QxaI0Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gnQX0JSf;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.46.2
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010002.outbound.protection.outlook.com [52.101.46.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBE1606FAD8;
-	Sat, 14 Nov 2026 20:27:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9BBE1606FAD8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D311606A323;
+	Sat, 14 Nov 2026 23:58:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D311606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=pd+Ad0bz
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=LfkfapyQaXHB8T99IkenQj1dMnikIM4i8S8xipB/rew=; b=pd+Ad0bzAd8xTR1JjwD4oFjSGH
-	JfBYfPLz11DyfWWnkiCUkI7riV6CxKDnKVKGLpxlrMgBzDX5m7u0VSVAXnfPyoevCZ+ZrnzmUw1xL
-	j/dWSsJdcdrnbhyY8ritNU8xSL3O7zBwc9uSDVYqQS+V9ePeGG32VV4wHyyag6NovMDPb+uJpnMRr
-	NE6OQf8BRese+r6meXZlwtHULS8LPMXX6qKc4mh80jnCSKrNhE9WtW8Reypn75q6AFAkpAE1YtTH5
-	ExpRINSRbfrwGa+9LBPo5ALgtbXk7CLpWN58t04LugKzbsJXVrD2V9/vlrQCT9ZZhfxwKqAxQiZf9
-	AET5AX2g==;
-Received: from [50.53.43.113] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xSKLF-0000000Giga-0jjJ;
-	Sat, 14 Nov 2026 20:27:19 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-doc@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	linux-mm@kvack.org,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org,
-	Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	linux-bluetooth@vger.kernel.org,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	David Heidelberg <david@ixit.cz>,
-	oe-linux-nfc@lists.linux.dev,
-	Chas Williams <3chas3@gmail.com>,
-	linux-atm-general@lists.sourceforge.net,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	Helge Deller <deller@gmx.de>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	MPT-FusionLinux.pdl@broadcom.com,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"Martin K. Petersen" <mkp@kernel.org>,
-	linux-scsi@vger.kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	linux-mtd@lists.infradead.org,
-	Neill Kapron <nkapron@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	xen-devel@lists.xenproject.org,
-	Hans de Goede <hansg@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	"Theodore Ts'o" <tytso@mit.edu>,
-	linux-ext4@vger.kernel.org,
-	Mike Marshall <hubcap@omnibond.com>,
-	devel@lists.orangefs.org,
-	Paulo Alcantara <pc@manguebit.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Chao Yu <chao@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Benson Leung <bleung@chromium.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	intel-gfx@lists.freedesktop.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	intel-xe@lists.freedesktop.org
-Subject: [PATCH 10/12] docs: ioctl-number: update FS entries
-Date: Sat, 14 Nov 2026 12:26:48 -0800
-Message-ID: <20261114202653.3113381-11-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261114202653.3113381-1-rdunlap@infradead.org>
-References: <20261114202653.3113381-1-rdunlap@infradead.org>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gnQX0JSf
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RPYuQiX7nVQF6jjTls2JJ3dWYsqMTYMXgj9VJT0rqq+yERB9PaV50OeZu4A9Qu3ZPnnbjnRsZTsgJdJJsvfoNHrQ8onpPuknUYCZSopTzHzkdipU0YFV8/WEUKFzlwtnYSNXbcK6i+HRt2TkgEFitVeVLgccGp4NJUpmOWfaIHKmzH9C+q32WaEYxjs0NyQLogOI3Blr/3GK9tTaeE0peWUfK90mhO4WM+bm0C1tPbCsb+o/V840fcURV80gueKGR4efK27/Qe7ELFkd6JgBe4y6qmvyNUWGki2WImIcKhFP6LWlVs5bMqroMzNM1Kj/DzgZxySzu/KyDtj/PPyg2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bpeeawqXAwXe8hvlJopUeaTMWg2WHuyiLKNJWkrx+f4=;
+ b=phlFpl3CphybGUtGR42SzP2r3OansBies9l2kTtnZAlXWtUXBTMJySNkCIBExCNy6MNck91miINysetyW4jRJkBh3iqPdY4KsyKYsuzKcPR613Y61gY1C/yn9LKRpNLwPmZOctP3s5nAlyP91vr6uvTyuAFVxUhQKt5WuIB9PzQGFq4AxI6r8qtN/1VvFpvMDB6J6ups56LSa1L0Bm29VXkgQA/MYgaP5Qf4bTYO3g1xzLkr2ksH8QR9z7KI07zaUXshjZfyw/tl89A6s9BfwPgGabEc2/wSJ9P+ruw3Ebu4FxRXjYtPmgF8dju3pYRiipaX4YsfIqNlvBioqe9CJg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bpeeawqXAwXe8hvlJopUeaTMWg2WHuyiLKNJWkrx+f4=;
+ b=gnQX0JSfaWIThT5puKLnGEzubVl7uJiV8PQo8McKIAkp/w6Hj12wRI74nOmPmByqufWPNCZY/xBj9kVZ4q3pO5WK9bPdbGmaXubxdY93ESwhMsfCORaBH6S/jZEy3EcJg9pjysGF4y0OyBJrsZfXCPK34R8yjV3nsKPTpzqraoHhq4C7fyzvhFgdUAeC3ljtInuA2qT437ZZaRA20LP4tdo4klSxgf5l7SiZWN5QwlfqlB/uo4RSWlgrEZ3Dkf/I9kyvE9xPJ1fb/4Haq+mWe6t86O0vRjQC4jyyIdudODa4GdkGx2723N1P5334SO3/9GkXw1bV71wvbJ3kzgZLdA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12) by LV2PR12MB966079.namprd12.prod.outlook.com
+ (2603:10b6:408:3a9::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.13; Sat, 14 Nov
+ 2026 23:58:30 +0000
+Received: from CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
+ ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0615.012; Sat, 14 Nov 2026
+ 23:58:29 +0000
+Date: Sat, 14 Nov 2026 19:58:28 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: "Gustavo A." <gustavogyn@gmail.com>
+Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	kvm@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/1] vfio/pci: Wait for GB202 firmware after reset
+Message-ID: <20261114235828.GF3706007@nvidia.com>
+References: <CAPZV9qUk3-eKOGEjVc7f0QzZcjb3L5QwUceAEUV0nuCdo90eGw@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPZV9qUk3-eKOGEjVc7f0QzZcjb3L5QwUceAEUV0nuCdo90eGw@mail.gmail.com>
+X-ClientProxiedBy: YT4PR01CA0258.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10f::20) To CHBPR12MB731189.namprd12.prod.outlook.com
+ (2603:10b6:610:33d::12)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -150,86 +96,74 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|LV2PR12MB966079:EE_
+X-MS-Office365-Filtering-Correlation-Id: 89250432-0d3d-4650-c1eb-08df42ab2e74
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|10067099003|11063799006|56012099006|261026121527099003|261026140227099003|261028144727099003|261022105027099003|261021121427099003|261102123227099003|18002099003|22082099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	30TQXdawrUHQb0c/Dc4EDp9F8mkt9/XnyJjrSNA/m3A5NZMPdN5UijqN080uVwnIQ5k0vPn1cpnshopgbJs2A7ymaHkFAIREk1jD3WG3VC/SOpxVxmkT8pDzhjBOS+R3d1FCmYZZtYjvVFy8xEzPhT4wlH5vu2l80v/GJcUzcO3qghhE7NQ4u9A9umJWiksCO0E9DfHsvYjY3vKebmNPhJ7Z3KtaJhnbmABtJN8yxhbfx9yLgBv6EdeUaSN+4ujhUQ8Dw05YXQScMXVt+8CGQ/eLZp4eqj6bjJE8lIp4YhgqXQBE3NaAqT3RGJDEyh1hO6U2yf7exO9KvMXeTjrDJSG3Y8UF9Mvb2Le1H+v07DayOyJdXUbRX+48Fcys6XXh6kkLVNtxU72G1bM08skhGJJDtVJxXRfChhgvMMAMszMyOkLSn4ueWtQc47lDK5DvacV0hZMcvGua32MSeV8klAKdDyQQE/djyLyi1Jw1F5MZv90zTrkoMNneLEMBmkfndXdwo0fCen/moCOnBPdbQNACejur6IsVRFWTShxILAkSnfX/BgV/04Jzhtz2AA5O/Fhuh2jOCpmqJ6hTRh3iVeoOeqLZB77L+v5BrMISqXiryiIzxdL75mgDVEWh8u6SW1ITQ9VnAX95pK7XVDtnZrO+wQL5ndVJdgVQJYCdWI0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(10067099003)(11063799006)(56012099006)(261026121527099003)(261026140227099003)(261028144727099003)(261022105027099003)(261021121427099003)(261102123227099003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ZerEi3rYKFysHkeTB3ffQvD7eIpXPOB5DnWvWGKShGEDycO2bHpy5ccZAhIB?=
+ =?us-ascii?Q?veDWjdhdZ0ujFnjvyzBI6GXhK983Xnkbeusd8oBKKTblKcN1SrC2Lcd7FoKF?=
+ =?us-ascii?Q?Wy0ekRqoO7+SF067K04SurT8yko1Mm+3Xj6RP0wld2Ld0k+gNvdf+t/GP1Nt?=
+ =?us-ascii?Q?hMbvGAU/yV43wtG8bYPnQGuJ0HfAvosYXehiHRc23u4qSLEZmCjan1ReaPRi?=
+ =?us-ascii?Q?uA8Tp18EymkJHSuq9p91e5wYzN5Z9VUr5bYuYLgEW8VlUxvCXo5zDbYG1FgB?=
+ =?us-ascii?Q?nIRLHMuwTqHkG7FI4s032KoCfnP1RHJETkijFx1hULK8LuQrH3iRlRq+Njgv?=
+ =?us-ascii?Q?gtu1qne/+puZadoc5gsC1COaTIYC9MDe+Ek7xXNuzYjtl61geYv3d5O6qLac?=
+ =?us-ascii?Q?BkWibYHE5CUqdp1OKZ0pYyO/zzxWBtOt0JX9pjYWRkvzaGCEx3UG4V2rkI+A?=
+ =?us-ascii?Q?gmKBAtyHy0OKYitQXL4ZTiaRlrz2IehBa1z/WGfgOfKlNiQXdEhUsKqw2JWf?=
+ =?us-ascii?Q?oV5j1pCdtFFsQ1PAsAwktMTM4QI2RbHU+jCh45yqtKRn7s7QDlqGR3JumAxD?=
+ =?us-ascii?Q?cBlem5at2GFJcQeSMyA2G2gyC3xr0RlYwKmI8dZh3ofNl8TJEyH2aA0no2CI?=
+ =?us-ascii?Q?HmAH7gsw7j2vFpWuAfiPGJ4YR2iYEW/3UIpD+P7nx70lf9L2AKm5BbHdD+kY?=
+ =?us-ascii?Q?bokJM63MC4A0riZ3EcVusZMyHPYpf2BCmGzhl5eJg0E+fKRW1ouSeWPHN8Fy?=
+ =?us-ascii?Q?6p4IE8oKD6dZFV4Mf5+A6qpUp1MjUrc0ojYnEwCPP45eM24Jj0jaraiRTaGf?=
+ =?us-ascii?Q?ME2FWzTjqc+spWXq72yO3RKgN5XnBqmLfbHDNapdNVeGfP19wufkCYlDdt5X?=
+ =?us-ascii?Q?hGIwnNlBWFs4TGHHcr/KCgAC6wjf9yeuZxPrakEsGIuOGaX3LTrWucKHKMgl?=
+ =?us-ascii?Q?WXyp5ofnLGRxiTo/UPrRUr80HstzDRzWWKqyNDipvVI7QcrkCP2ca0VngH1F?=
+ =?us-ascii?Q?ifw33hvfbmisHxDT8gvrSku+Lt8cbZZAGOH4AArIIY9cNg19XbqVA45/Uerx?=
+ =?us-ascii?Q?Wa6CV7b9pgWC+V8dIjW+5HtvjEuSZ0a/I0yyCKE9a3rBjeb09fM1IidseNBB?=
+ =?us-ascii?Q?QkzTVcSpVJ2F1bFlAgNqnSbUG9dlD0D/CMHB9IJ6VWw8kKzuRgZQf65P8Y5N?=
+ =?us-ascii?Q?zuxSrGfLUFFf4TzB4dGxY+B0X8sx/tQfO0A9YiIF3jhFQk1PWS/jVEweQfey?=
+ =?us-ascii?Q?/XTHbjrh7a+Xuhs2wxT5G8kEIAbgOdiBFz3vgY3NjzkbW28KwbdrI6V186ej?=
+ =?us-ascii?Q?WsszYT5OulotIAYFtVwxvPkU/of8HHJ9gaYto2vFiTtfJQ2eGvGUqHz/alvx?=
+ =?us-ascii?Q?qM58F208bp4kKAcA/QQT3v8x6gz0VCsInlhpE/Np+6eBmty3+os5Bt5L+I9s?=
+ =?us-ascii?Q?g5pjJGoRRYmTH4n2gBmxpSoUcvW/mi6mh/4g6r/TtsgM3EofIC+Hh+oAX2Kc?=
+ =?us-ascii?Q?5LfBS3krDE1jbmKfge9293CytdW0Y9MprBdBL93ISorRnR4IfBXTmvdryrOb?=
+ =?us-ascii?Q?6y5sXnq5G3PqwOWTXFGMAL9ycpDYxiRaWXiC1m0pVAGW18OiJuZvf260H5BB?=
+ =?us-ascii?Q?gIsMbFydf0b4lmrkdAOiW74D77O53NFTbtpDCOFZjRiR9AIypfqEf4rdfunn?=
+ =?us-ascii?Q?jjiTnPzyuabwJ+INQqM/wC2TyTfuwSjQPr4SN7crLu1vsBMZ?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 89250432-0d3d-4650-c1eb-08df42ab2e74
+X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2026 23:58:29.7309
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KO2jAZofPRq7Y4vrWGCsNEXfFiU2olO5d2dpg69lFp4W/eyalNFsG2ZGwROzQVnw
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB966079
 
-Update the list of files where filesystem ioctls are defined and update
-the ranges of function numbers that are used.
+On Sat, Nov 14, 2026 at 02:48:53AM +0000, Gustavo A. wrote:
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
----
-[Since having multiple maintainers trying to merge these would
-cause some conflicts, it would be more manageable for Jon to
-take all of these through the docs-next tree.]
+> PCI reset returns successfully while the Firmware Security Processor (FSP)
+> is still initializing. Restricting BAR1 to 4 KiB mappings masks the problem.
+> Waiting for FSP completion after reset restores normal output with stock
+> KVM and verified 1 GiB BAR1 mappings.
 
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Shuah Khan <skhan@linuxfoundation.org>
-Cc: linux-doc@vger.kernel.org
-Cc: Jan Kara <jack@suse.cz>
-Cc: linux-fsdevel@vger.kernel.org
-Cc: "Theodore Ts'o" <tytso@mit.edu>
-Cc: linux-ext4@vger.kernel.org
-Cc: Mike Marshall <hubcap@omnibond.com>
-Cc: devel@lists.orangefs.org
-Cc: Paulo Alcantara <pc@manguebit.org>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: linux-cifs@vger.kernel.org
-Cc: Jaegeuk Kim <jaegeuk@kernel.org>
-Cc: Chao Yu <chao@kernel.org>
-Cc: linux-f2fs-devel@lists.sourceforge.net
+That doesn't really make any sense, you are probably hitting a race
+condition somewhere since 1G/4k changes the timing. And possibly
+because your new kernel versions boot VFIO faster than older ones.
 
- Documentation/userspace-api/ioctl/ioctl-number.rst |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+IIRC there was some VBIOS bug in old versions that caused issues with
+vfio.
 
---- linux-next-20261113.orig/Documentation/userspace-api/ioctl/ioctl-number.rst
-+++ linux-next-20261113/Documentation/userspace-api/ioctl/ioctl-number.rst
-@@ -187,6 +187,7 @@ Code  Seq#    Include File
- 'I'   all    linux/isdn.h                                              conflict!
- 'I'   00-0F  drivers/isdn/divert/isdn_divert.h                         conflict!
- 'I'   40-4F  linux/mISDNif.h                                           conflict!
-+'I'   00     linux/inotify.h
- 'K'   all    linux/kd.h
- 'L'   00-1F  linux/loop.h                                              conflict!
- 'L'   10-21  drivers/scsi/mpt3sas/mpt3sas_ctl.h                        conflict!
-@@ -275,7 +276,7 @@ Code  Seq#    Include File
- 'f'   00-1F  linux/ext2_fs.h                                           conflict!
- 'f'   00-1F  linux/ext3_fs.h                                           conflict!
- 'f'   00-0F  fs/jfs/jfs_dinode.h                                       conflict!
--'f'   00-0F  fs/ext4/ext4.h                                            conflict!
-+'f'   00-2F  fs/ext4/ext4.h                                            conflict!
- 'f'   00-0F  linux/fs.h                                                conflict!
- 'f'   00-0F  fs/ocfs2/ocfs2_fs.h                                       conflict!
- 'f'   13-27  linux/fscrypt.h
-@@ -300,6 +301,7 @@ Code  Seq#    Include File
- 'k'   00-0F  linux/spi/spidev.h                                        conflict!
- 'k'   00-05  video/kyro.h                                              conflict!
- 'k'   10-17  linux/hsi/hsi_char.h                                      HSI character device
-+'k'   01-0F  fs/orangefs/protocol.h                                    <mailto:devel@lists.orangefs.org>
- 'l'   00-3F  linux/tcfs_fs.h                                           transparent cryptographic file system
-                                                                        <http://web.archive.org/web/%2A/http://mikonos.dia.unisa.it/tcfs>
- 'l'   40-7F  linux/udf_fs_i.h                                          in development:
-@@ -373,7 +375,7 @@ Code  Seq#    Include File
- 0x92  00-0F  drivers/usb/mon/mon_bin.c
- 0x93  60-7F  linux/auto_fs.h
- 0x94  all    fs/btrfs/ioctl.h                                          Btrfs filesystem
--             and linux/fs.h                                            some lifted to vfs/generic
-+0x94  all    linux/fs.h                                                some lifted from Btrfs to vfs/generic
- 0x97  00-7F  fs/ceph/ioctl.h                                           Ceph file system
- 0x99  00-0F                                                            537-Addinboard driver
-                                                                        <mailto:buk@buks.ipn.de>
-@@ -442,7 +444,7 @@ Code  Seq#    Include File
- 0xCC  00-0F  drivers/misc/ibmvmc.h                                     pseries VMC driver
- 0xCD  01     linux/reiserfs_fs.h                                       Dead since 6.13
- 0xCE  01-02  uapi/linux/cxl_mem.h                                      Compute Express Link Memory Devices
--0xCF  02     fs/smb/client/cifs_ioctl.h
-+0xCF  01-0F  fs/smb/client/cifs_ioctl.h                                <mailto:linux-cifs@vger.kernel.org>
- 0xDD  00-3F                                                            ZFCP device driver see drivers/s390/scsi/
-                                                                        <mailto:aherrman@de.ibm.com>
- 0xE5  00-3F  linux/fuse.h
-@@ -451,6 +453,7 @@ Code  Seq#    Include File
- 0xEF  00-0F  uapi/linux/ntfs.h                                         NTFS
- 0xF3  00-3F  drivers/usb/misc/sisusbvga/sisusb.h                       sisfb
- 0xF3  00-3F  video/sisfb.h                                             <mailto:thomas@winischhofer.net>
-+0xF5  01-1F  uapi/linux/f2fs.h                                         <mailto:linux-f2fs-devel@lists.sourceforge.net>
- 0xF6  all                                                              LTTng Linux Trace Toolkit Next Generation
-                                                                        <mailto:mathieu.desnoyers@efficios.com>
- 0xF8  all    arch/x86/include/uapi/asm/amd_hsmp.h                      AMD HSMP EPYC system management interface driver
+VFIO should definately not be doing things like this.
+
+Jason
