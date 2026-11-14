@@ -1,101 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794663345;
-	b=eu8pBCwFOhmfKLD1gKQzrMSZDdlmbHCofl3lD6iPloJSeP6a5j6s9CZwy0Lb1Scg1zsL
-	 R+7KOgiGZx76zodHe75yAS/et9ZuIy5I1J0NSmOAsBEWwAF9hgANJhGUW1xAu6aWv2ysh
-	 C1ooEtVYYbnLF4gYCJPt3tkKjrFM1rXIIItWUAi7CmV055T8nApY5NnRe+bvHW+cCYOU0
-	 8haef6qmIpJOPRAT4EU98HKhpLa3U6s1ucMAfVMDoN1IW/zqL4OUh8NeUTjzbDXS+acw5
-	 +pONu0ADfpxeHdwmKJHTCS4QEOWjc5+19FJpNNM5iVnh2POAf3/92jAmDqzpRT4g1vQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794663345;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=B7nxs2ziyKSXajCogouyEEECBltRg0HZJSOSZE1z6bs=;
-	b=GKs/5dcRXmOEljyIHug87jG1UNuizcbyOIxWaVSBRBx2QTk1vqw6VQ97S1edlzPj13TZ
-	 p+zwyIF2/WG5pPgjcyH297NokGOLxw+QjmULw6XQZ8kmos7rzsVb7lQNdKvazBkbatHtv
-	 i9uQPvYgzyxJlmVW5RZP9Yde4ACTZbcNYwuXNW5R2kH08EpRnzTvucPkgAswlKoDeq8e6
-	 hHLoa7sGR2x2BVFCKQoRhcxI2CsVNzXC18Mqe5GgTpMxbK3MGvS0c5g4q4/TaCBRbFTy8
-	 AlU8jm+6HZR8llaYOmAtvRo/4Fq8+wxc0eNmuLWz1VeJfdmV5CBaH3n4MPsgKTfZvgA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=brainfault.org;
-	spf=none smtp.mailfrom=brainfault.org;
-	dkim=pass header.d=brainfault.org header.i=@brainfault.org header.a=rsa-sha256 header.s=google header.b=L3eX69Mo;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.50
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794664273;
+	b=oUGrFjCm2SVZomMp/k6+ZQq8bEIYlbIKnZZMLUKnQP1dDW7wWWbEwxSd8+5RtsRZ62ui
+	 f+aZu56Jm249yDJ2srXfQMMSkmEmoPxV+bwkjB1fLayyT+WHhRGkPnEnTiwehnlacCxmU
+	 OZIxrD34SLjho2tZUCdhSSZMMDpOcHVkprkGIshICq8MkpH8U8/JeU+D/WH8B0i5hFNC2
+	 3hIiE8YPcxaEBgp6keZs5Rg1tLhK8oE9UArZt4WRHlIO0UKgM4bEPy/IX52O5mBmfzXIS
+	 tsX0cvs/9DAU0iXCw0owQRGHMKu1Oz/kuY6KjFuxDF97EiG1lESWG/JgIw5QYHNX0NQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794664273;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:X-Proofpoint-Reinject:X-QCInternal:
+	 X-QCInternal:X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-GUID:X-Proofpoint-Spam-Info:X-Authority-Analysis:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=qqG2NJCc3JWi40GBILYwMhO94PZlOObFL01RUJTaOOg=;
+	b=Hxx+tHcIBiiYm69EIc9p6/H0IHibjwWeILR0TCqW8bB9YRsVMiBZuGvEaDSZ2fy9Qcjx
+	 trfh37hhwLgkNcY3JiOAbvhr7S5wfo5tC/OjdU+JsI41MgyH1b8bilo4F61TPEzFXceTh
+	 R5VcPHcCxiM4Jn0L+Tnp8oNsAgiS82Vexlg8LZ+rgy+4Lo94DcJqcojO1EGMh07nYFbGs
+	 9SJHOBv5j4QqrXhjxw8y0nEhJOZULolJh01wEa7blxo5j1bWlEil0J+C5rlm0ziH5XQmG
+	 4AmNH7sjzQvh5AjslBS4B4W339YAfF5iGjmeRus++gq9LIuheycw+0BIdBqbU3cb2yA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=dvTk+BCl;
+	arc=none smtp.remote-ip=205.220.168.131
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7365A606A323
-	for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 13:35:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7365A606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5E2606A323;
+	Sat, 14 Nov 2026 13:51:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B5E2606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.a=rsa-sha256 header.s=google header.b=L3eX69Mo
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5c14470729eso1931894e87.2
-        for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 05:35:44 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794663342; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kJ4+jAgtX3Sw3RdapiVR95Yz+0JNJRQR6S68j+i+7PlZ8/PvzqbAT4nMei8yDFrWc1
-         OPUR/L7A7jh2mCtsKkdvDQXzjhEyB24mL2sDNeGHnuRnIRAT/5xVwi2El+uPN5P58DyB
-         ZoKG5t0duV8bM6v1yXvB5SMIEwVcaoV10SN7ZJeZUDELm/EceAZzasmqdMwiuPUekjwD
-         lb18MdjLJBmM9+Fktt51kUJmRXcsmYrQENBfMvAc7Oo4KeTm45X25a2rypGZURgirXKF
-         Rd2b720a6q+k6+HAu+pgyfT7uh0U7P3NeVMPo0M8cXDbuYG0wcRblvi3eVHJQJuL1anz
-         2mCA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=B7nxs2ziyKSXajCogouyEEECBltRg0HZJSOSZE1z6bs=;
-        fh=T/EaQqiSH6XmOObuoP19/00HyzWz4P15VUoduKH2iUk=;
-        b=MnAD/AE/4OCGdJ8ZGVd9kFwHNtzvbvPzRZJ6COvG2Dgxihqw1ps2O9k24YDPFDNQvb
-         gpWY9WQZLO+TwvUabVUaXHabDZ9yBQTXSNykzzMoFbGF0KB34bCM0I/ZiOaD3CWiDC/2
-         aduBMGmGnQ3sqfBRi5dyQl2tBlQDEMs1/phCRK05MLrTeWILhtdq3Wz+NPL2Z9iJkVh2
-         ilroZ9rhQEKwaJC2ZY6K5joxvRnkM0z00ImDbA+H7kkxNshBaBUrY43KZk7kJKPK4Fc7
-         CQfGOprrMkLTz2Zt/ZUGfz0lNCarX9i/j2UvUN31LJ0pg3fAcYvJLRhBupzE4rl/Q2zK
-         yO1A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1794663342; x=1795268142; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=B7nxs2ziyKSXajCogouyEEECBltRg0HZJSOSZE1z6bs=;
-        b=L3eX69MojesZqcpGizRiPTiM/QZx0402ABXzBhG+bHN7zui+JzLQU+9MZigCpAdWrk
-         EgGX3VS2MRMf2W84gAiALbfPQUIdSqNWXdU5gcNaim13cTnnnnIuxUegF8uHRcvn9pix
-         GFe3p5BdPR+ZPhYWdXR/1FcTTU7Pyx/RUrZiK1wBUTLijMvtOXnhqi5vwOaj6oCUrWRy
-         duQGbxkWTdSXMu1fpkvGLIqf3PIcyeQf7cvoXnmQ6zj4zrJaf7GlMn/LLl2q0Z+ncdWd
-         zWTA7Mol/2x/L5whXj7aPV5zexLHGcQtD6wPo4aQ0VVMU+QMTi8TWVIhJgUncEM0sJWo
-         tp6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794663342; x=1795268142;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=B7nxs2ziyKSXajCogouyEEECBltRg0HZJSOSZE1z6bs=;
-        b=DWBY3Z6LNg21Vxixb/kjGJslcbjbd86hEeKUQfWoQDoxvSt2zShDM4dM/d0h9mAavf
-         Do8mQxTO8p3F4bn2Xlp+wFm5TA4imNYo9DBoZlQLC277B2PZRIOiJt08SNnQZb4vFiUO
-         gIz33lryMV32Vyzhc1Pg+Sku71Io4hxosepgbiouzaRDnVBv4faxdHEFCasb2djEjKvo
-         dYLgrusuBSyaVvq3f766dShLqI4yogMFdxXTGFiewGluoSSvVvKnVPpIZq3sRzrcYLsX
-         F9dHG9BjaxHS+qsQdnt1X1GE/EHEwPvDemCaEBlgP0DFr6gXd2JTVqfdixgcMvP/wlgr
-         +dcg==
-X-Forwarded-Encrypted: i=1; AL+hErGNPbL6elTWlyAWJzwaR/mWRTocX8z1ozRdbgXCGWZ6uS86zIvzxvWTmAuheQRLDF0pCa8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+ybS3HQ4vWNhar4Dnws0Vk4rRCNGaHaBZPBdbAjzLogaa6gi8X
-	LUOM3TQYB/6CTCq/V1KM3CbSELc0AahDQDttV+DcNCRxa9I6mHqydgGN3MOjfMjw6ka2rWoBGBl
-	2Mg6t1uU9GELnNmm4W9zRpTGTM9+klOHwYfCIPyKVwg==
-X-Gm-Gg: AYBFou02n60Qx+M8pVncR2HH+MGVB+cLjBS6HpHq+qW2c3eKIUvMCg8fvlwK5QRUakR
-	NHowRJ445LRBZQ/70D5xNCLcCxJA2wu9WX0iaFKVn47VVPB4i42YYtV0EkDanm/lrILllzdzXWr
-	DW7mvBqEtRhb7zcV2e703y1g68vCHpmXVM16oklowFnKrsmgGeGJvlu7tH76lwvKwHHYMgEKHxe
-	CPqOgVQEsyMtcL0v0CeXCA1dXFuMFSYxvXd2Vo43BEQl8sXW2EMyH+FRbTpIVoswXAhym/gU18q
-	LVKTWP0M7X/TBf4GlvPdjUv/8t6l8iMBF92NtDtRR5uWKzzJAySTW+LyZHpZC1R3EOU6qUHundc
-	TI2199nNhtAzNS+ai0VMqhb4522LLWocPfSzf7G+sPDJY74P2hT3HdnnDIMPNL5Cz9UVYue+FKZ
-	qa5NTlZd13RsS05gY66V/0Gr3HsP9eR1jVvV1aYpWDXGng6EyhH66yCw==
-X-Received: by 2002:a05:6512:a84:b0:5c1:5171:4ad7 with SMTP id
- 2adb3069b0e04-5c170b383ddmr2080350e87.33.1794663341999; Sat, 14 Nov 2026
- 05:35:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=dvTk+BCl
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AEDk4x84114866;
+	Sat, 14 Nov 2026 13:51:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=qqG2NJCc3JWi40GBILYwMhO94PZlOObFL01
+	RUJTaOOg=; b=dvTk+BClL+cnnkARh7sbqeGlV+Zbp3/rSkdLsBlVXcC0Rcr1M8u
+	FU5wUay9SnIXcyZMr5wu8tgXeUiht1BzBtI7VJvjI2c4N1sjqIR+bHH/gZKTsnwV
+	m/dReyVwLjdorbreiPECyoR62i/Z8fTxS0dFaxHSgxcpYF44uYcOXgvxrz1bQtH+
+	GdeG0w6fZYGv0BNZcRQwRD5wMBpdpD2TZ07MpXzWVzDXaXMcRW6HWTg21zhrPTt7
+	ynUrrE0juNO/YGqOkwX1HpDSiC/OlGQWV6ZzIeL/MsvO5klNGBTDUQgXhZMeXSKN
+	BUB9hNJ4B1C9tQWHCdp9LhUDKCtoH87hI+Q==
+Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hxhhjrx38-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Sat, 14 Nov 2026 13:51:02 +0000 (GMT)
+Received: from pps.filterd (apblrppmta01.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AEDoxKU2649580;
+	Sat, 14 Nov 2026 13:50:59 GMT
+Received: from hu-devc-blr-u24-a.qualcomm.com (hu-anuppate-blr.qualcomm.com [10.131.36.165])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 6AEDoxe62649574
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Sat, 14 Nov 2026 13:50:59 +0000 (GMT)
+Received: by hu-devc-blr-u24-a.qualcomm.com (Postfix, from userid 486687)
+	id B561F248E3; Sat, 14 Nov 2026 19:20:58 +0530 (+0530)
+From: Anup Patel <anup.patel@oss.qualcomm.com>
+To: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+        Atish Patra <atish.patra@linux.dev>,
+        Andrew Jones <andrew.jones@linux.dev>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Anup Patel <anup@brainfault.org>,
+        kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Anup Patel <anup.patel@oss.qualcomm.com>
+Subject: [PATCH] RISC-V: KVM: Convert IMSIC vsfile_lock to a raw spinlock
+Date: Sat, 14 Nov 2026 19:20:56 +0530
+Message-ID: <20261114135056.202556-1-anup.patel@oss.qualcomm.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,202 +82,267 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261023142550.148604-1-oleksii.kurochko@gmail.com>
- <CABBgwmuBBbyBytwRBTeAqF=0c1m+TFK8E3yPopGNQAsrMFO2vg@mail.gmail.com> <7e634bef-6d23-4a57-b3e6-b5585045ca19@gmail.com>
-In-Reply-To: <7e634bef-6d23-4a57-b3e6-b5585045ca19@gmail.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Sat, 14 Nov 2026 19:05:28 +0530
-X-Gm-Features: AclHuK9nWY20qy2LdzPDWoj5LiIWjiiPX9NCcLCEPiqITYBgVdXOX7JbUWJZ-OQ
-Message-ID: <CAAhSdy2cL6u_pAinYFU64nfqespQU+2x3GTeiqvjFUbJyYLLMA@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: Order IMSIC VS-file write before releasing vsfile_lock
-To: Oleksii Kurochko <oleksii.kurochko@gmail.com>
-Cc: Anup Patel <anup.patel@oss.qualcomm.com>, Atish Patra <atish.patra@linux.dev>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE0MDA1NSBTYWx0ZWRfX9BAvxvMAehan
+ IK1cbACB3iXuuEMfkX1Cjsrn85urvCZrgH6EjlDvX4GLMUHudgJTCJchwx2+RwZg4kxYd5bJC8H
+ TY63RXKYEoxryKoQ6vkobwqTCtxavgDu0rfJW/aWK8J3q0kVMY6QgSSnRZJY2kyxLTgcMykBme0
+ qpK1c6mGMyOlddfhTTirwfYVSvzpjZJMvAU4B2eqWd5L8Q4Afp9H5M1lc0Ud1umF6x96Ykibf2u
+ aJ82UzpU2PTcUWZD1OgbWUCpeZxmXZ7VIy0RzeaFCvcapeCThooTKgy6gqT9RqGANWGvH0rR5u7
+ QVslEKoA92nfi0JJL6YgteS3/mMvJdNv5Aq6LGu3WH8ClSUwnZdeLqZfxsQWRxwtEzohuyfLRrP
+ Dy/BMcSEufnS2V1q5CMpM/G/8xIDQ1sA2ranD8ZD6j3edkDzxejNdofzLANAFkhRHelDrSwwT6i
+ /64PuR+gVma2uk8lQvw==
+X-Proofpoint-ORIG-GUID: ppqplaSz09GqRES1YyfPrhQeGEsw5BYC
+X-Proofpoint-GUID: ppqplaSz09GqRES1YyfPrhQeGEsw5BYC
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE0MDA1NSBTYWx0ZWRfX+pxHc+D0Yn8A
+ UTVNoyIScB+eQo60VTQSMqOKjeHiknhJ9B2002oB8ET4M8giNwRCPxQgaQPIe9vAmAuU87q3+oq
+ xjKPE2ipyUuxZ76Di9GYlBir1g+fl4k=
+X-Authority-Analysis: v=2.4 cv=X9rHu2Te c=1 sm=1 tr=0 ts=6af86746 cx=c_pps
+ a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=yOCtJkima9RkubShWh1s:22 a=EUspDBNiAAAA:8 a=wOdddZgVwB2pSmFxpusA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-14_04,2026-11-11_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 impostorscore=0 bulkscore=0 clxscore=1011 priorityscore=1501
+ adultscore=0 malwarescore=0 lowpriorityscore=0 suspectscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611140055
 
-On Fri, Nov 13, 2026 at 11:49=E2=80=AFPM Oleksii Kurochko
-<oleksii.kurochko@gmail.com> wrote:
->
->
->
-> On 11/13/26 9:00 AM, Anup Patel wrote:
-> > On Fri, Oct 23, 2026 at 7:56=E2=80=AFPM Oleksii Kurochko
-> > <oleksii.kurochko@gmail.com> wrote:
-> >>
-> >> kvm_riscv_vcpu_aia_imsic_inject() writes the interrupt identity to the
-> >> SETIPNUM register of the vCPU's IMSIC VS-file while holding vsfile_loc=
-k
-> >> for reading. The lock keeps the VS-file from being switched under the
-> >> injector: kvm_riscv_vcpu_aia_imsic_update() and
-> >> kvm_riscv_vcpu_aia_imsic_release() take it for writing to move the vCP=
-U
-> >> to a new VS-file or to the SW-file, then read and clear the old VS-fil=
-e
-> >> and free its HGEI line.
-> >>
-> >> On RISC-V, writel() is followed only by mmiowb_set_pending(). The
-> >> trailing "fence o,w" is deferred to spin_unlock() by the mmiowb()
-> >> tracking, and rwlocks don't take part in that tracking:
-> >> queued_read_unlock() issues just "fence rw,w" before the AMO, which
-> >> doesn't order device output. So the SETIPNUM write can still be in
-> >> flight after another hart has observed vsfile_lock being released. If
-> >> the old VS-file is read and cleared before the write lands, the
-> >> interrupt is lost. If the HGEI line has already been handed out
-> >> again, the interrupt ends up in another vCPU's VS-file.
-> >>
-> >> Add an explicit RISCV_FENCE(o, w) after the write to the VS-file, whic=
-h
-> >> is what spin_unlock() would issue via mmiowb().
-> >>
-> >> Fixes: db8b7e97d613 ("RISC-V: KVM: Add in-kernel virtualization of AIA=
- IMSIC")
-> >> Signed-off-by: Oleksii Kurochko <oleksii.kurochko@gmail.com>
-> >> ---
-> >> Why RISCV_FENCE(o, w) and not mmiowb():
-> >>
-> >> - Since the mmiowb() rework in v5.2 (e.g. commit 60ca1e5a200c
-> >>    ("mmiowb: Hook up mmiowb helpers to spinlocks and generic I/O
-> >>    accessors")), mmiowb() is an implementation detail of the spinlock
-> >>    code. Explicit invocations were removed from drivers by commit
-> >>    fb24ea52f78e ("drivers: Remove explicit invocations of mmiowb()") a=
-nd
-> >>    from the documentation by commit 915530396c78 ("Documentation: Kill
-> >>    all references to mmiowb()"), so adding a new direct caller would g=
-o
-> >>    against that.
-> >>
-> >> - RISCV_FENCE(o, w) states exactly the ordering needed here (device
-> >>    output before the store that releases the lock), which is fine for
-> >>    arch-specific code, and it is the same instruction mmiowb() expands=
- to
-> >>    on RISC-V. wmb() ("fence ow,ow") would also work but is stronger th=
-an
-> >>    required.
-> >>
-> >> Scope: this only orders the write before the lock release. Whether a
-> >> write that is already in global memory order is guaranteed to have
-> >> taken effect in the old VS-file before kvm_riscv_vcpu_aia_imsic_update=
-()
-> >> or kvm_riscv_vcpu_aia_imsic_release() reads and clears it is a separat=
-e
-> >> question, see https://github.com/riscv/riscv-aia/issues/172. If it
-> >> isn't, these paths will also need to drain the old VS-file, and such a
-> >> drain depends on the ordering added here.
-> >> ---
-> >>   arch/riscv/kvm/aia_imsic.c | 7 +++++++
-> >>   1 file changed, 7 insertions(+)
-> >>
-> >> diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
-> >> index f17dc559a709..807bb73a129a 100644
-> >> --- a/arch/riscv/kvm/aia_imsic.c
-> >> +++ b/arch/riscv/kvm/aia_imsic.c
-> >> @@ -1056,6 +1056,13 @@ int kvm_riscv_vcpu_aia_imsic_inject(struct kvm_=
-vcpu *vcpu,
-> >>
-> >>          if (imsic->vsfile_cpu >=3D 0) {
-> >>                  writel(iid, imsic->vsfile_va + IMSIC_MMIO_SETIPNUM_LE=
-);
-> >> +               /*
-> >> +                * rwlocks don't participate in mmiowb() tracking, so =
-order
-> >> +                * the write to the VS-file before releasing vsfile_lo=
-ck,
-> >> +                * i.e. before the vCPU can be moved off this VS-file =
-and
-> >> +                * the VS-file read and cleared.
-> >> +                */
-> >> +               RISCV_FENCE(o, w);
-> >
-> > Another fence after every writel() is a big hammer in the path.
-> >
-> > If the intention is to have correct contents when VS-file is read then
-> > better place to add a fence is at the start of imsic_vsfile_local_read(=
-).
-> Thanks for the review.
->
-> I don't think a fence in imsic_vsfile_local_read() helps here. The
-> problem is on the writer's side, and imsic_vsfile_local_read() runs on
-> a different hart.
->
-> The SETIPNUM write is done by whichever hart calls
-> kvm_riscv_vcpu_aia_imsic_inject(), which can be any CPU (irqfd,
-> ioctl, ...). imsic_vsfile_local_read() runs on the old vsfile_cpu, via
-> the IPI from imsic_vsfile_read(). A fence only orders the accesses of
-> the hart that executes it, so a fence on the reading hart can't make
-> another hart's MMIO store land.
->
-> Without the fence, this can happen:
->
->    hart A (inject)            hart B (update/release)    hart C (old
-> vsfile_cpu)
->    read_lock()
->    writel(SETIPNUM)
->      (store still in flight)
+The kvm_riscv_vcpu_aia_imsic_put() runs from the scheduler preemption
+notifier with the raw runqueue lock held, so it must not take vsfile_lock,
+an rwlock_t, which sleeps on PREEMPT_RT. All vsfile_lock critical sections
+are short, so a raw spinlock is fine.
 
-Over here the MMIO write targets hart C IMSIC
+In addition, converting vsfile_lock to raw spinlock allows us to drop
+the vsfile_hgei_lock and also allows us to use writel_relaxed() in
+kvm_riscv_vcpu_aia_imsic_inject() since raw_spin_unlock() internally
+does mmiowb_spin_unlock() which in-turn drains the write-buffer.
 
->    read_unlock()
->                               write_lock()
->                               switch VS-file
->                               write_unlock()
->                               IPI ------------------->
->                                                         fence  <-proposed
->                                                         read+clear VSfile
->                               free HGEI
->    SETIPNUM lands: the interrupt
->    is lost, or ends up in another
->    vCPU's VS-file if the HGEI was
->    already reused
->
-> Hart A's unlock can become visible before its SETIPNUM write has
-> reached the IMSIC, because read_unlock() doesn't order device output.
-> Nothing that hart B or hart C does afterwards can wait for that write.
-> Only hart A can hold back its unlock until the write is ordered, and
-> that is what the fence o,w after writel() does.
->
-> With the fence:
->
->    hart A (inject)            hart B (update/release)    hart C (old
-> vsfile_cpu)
->    read_lock()
->    writel(SETIPNUM)
->    fence o,w
->    read_unlock()
->                               write_lock()
->                               switch VS-file
->                               write_unlock()
->                               IPI ------------------->
->                                                        read+clear VS-file
->                               free HGEI
->
-> The SETIPNUM write is now ordered before the unlock, so it is also
-> ordered before everything hart B does after taking the lock, and,
-> through the IPI, before hart C reads the old VS-file. It can no longer
-> arrive after the read or after the HGEI is freed.
->
-> About the cost: this is the same fence that every writel() under a
-> spinlock already gets. On RISC-V, writel() only sets mmiowb pending and
-> spin_unlock() then issues "fence o,w". We need it explicitly here only
-> because vsfile_lock is an rwlock. It runs once per injected MSI, and
-> only when the vCPU has a VS-file.
+Co-developed-by: Andrew Jones <andrew.jones@linux.dev>
+Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
+Signed-off-by: Anup Patel <anup.patel@oss.qualcomm.com>
+---
+ arch/riscv/kvm/aia_imsic.c | 79 ++++++++++++++++++++------------------
+ 1 file changed, 41 insertions(+), 38 deletions(-)
 
-I am still not on-board adding a barrier in hot-path. Also, any barrier
-we add must be paired with a barrier else where with proper comments
-so this single barrier anyways does not satify this requirement.
+diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
+index 302938972aa0..0b9d15721d52 100644
+--- a/arch/riscv/kvm/aia_imsic.c
++++ b/arch/riscv/kvm/aia_imsic.c
+@@ -47,9 +47,7 @@ struct imsic {
+ 	 */
+ 
+ 	/* IMSIC VS-file */
+-	rwlock_t vsfile_lock;
+-	/* Writers hold both locks; scheduler-out only takes vsfile_hgei_lock. */
+-	raw_spinlock_t vsfile_hgei_lock;
++	raw_spinlock_t vsfile_lock;
+ 	int vsfile_cpu;
+ 	int vsfile_hgei;
+ 	void __iomem *vsfile_va;
+@@ -490,17 +488,6 @@ static void imsic_vsfile_local_update(int vsfile_hgei, u32 nr_eix,
+ 	csr_write(CSR_VSISELECT, old_vsiselect);
+ }
+ 
+-static void imsic_vsfile_set_hgei(struct imsic *imsic, int cpu, int hgei)
+-{
+-	unsigned long flags;
+-
+-	/* Serialize the CPU/HGEI pair with scheduler-out's wakeup setup. */
+-	raw_spin_lock_irqsave(&imsic->vsfile_hgei_lock, flags);
+-	imsic->vsfile_cpu = cpu;
+-	imsic->vsfile_hgei = hgei;
+-	raw_spin_unlock_irqrestore(&imsic->vsfile_hgei_lock, flags);
+-}
+-
+ static void imsic_vsfile_cleanup(struct imsic *imsic)
+ {
+ 	int old_vsfile_hgei, old_vsfile_cpu;
+@@ -512,13 +499,14 @@ static void imsic_vsfile_cleanup(struct imsic *imsic)
+ 	 * VCPU is being destroyed.
+ 	 */
+ 
+-	write_lock_irqsave(&imsic->vsfile_lock, flags);
++	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
+ 	old_vsfile_hgei = imsic->vsfile_hgei;
+ 	old_vsfile_cpu = imsic->vsfile_cpu;
+-	imsic_vsfile_set_hgei(imsic, -1, -1);
++	imsic->vsfile_cpu = -1;
++	imsic->vsfile_hgei = -1;
+ 	imsic->vsfile_va = NULL;
+ 	imsic->vsfile_pa = 0;
+-	write_unlock_irqrestore(&imsic->vsfile_lock, flags);
++	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
+ 
+ 	memset(imsic->swfile, 0, sizeof(*imsic->swfile));
+ 
+@@ -606,7 +594,7 @@ bool kvm_riscv_vcpu_aia_imsic_has_interrupt(struct kvm_vcpu *vcpu)
+ 	 * only check for interrupt when IMSIC VS-file is being used.
+ 	 */
+ 
+-	read_lock_irqsave(&imsic->vsfile_lock, flags);
++	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
+ 	if (imsic->vsfile_cpu > -1) {
+ 		/*
+ 		 * This function is typically called from kvm_vcpu_block() via
+@@ -621,7 +609,7 @@ bool kvm_riscv_vcpu_aia_imsic_has_interrupt(struct kvm_vcpu *vcpu)
+ 		else
+ 			ret = !!(csr_read(CSR_HGEIP) & BIT(imsic->vsfile_hgei));
+ 	}
+-	read_unlock_irqrestore(&imsic->vsfile_lock, flags);
++	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
+ 
+ 	return ret;
+ }
+@@ -646,10 +634,10 @@ void kvm_riscv_vcpu_aia_imsic_put(struct kvm_vcpu *vcpu)
+ 	if (!kvm_vcpu_is_blocking(vcpu))
+ 		return;
+ 
+-	raw_spin_lock_irqsave(&imsic->vsfile_hgei_lock, flags);
++	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
+ 	if (imsic->vsfile_cpu > -1)
+ 		csr_set(CSR_HGEIE, BIT(imsic->vsfile_hgei));
+-	raw_spin_unlock_irqrestore(&imsic->vsfile_hgei_lock, flags);
++	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
+ }
+ 
+ void kvm_riscv_vcpu_aia_imsic_release(struct kvm_vcpu *vcpu)
+@@ -663,13 +651,14 @@ void kvm_riscv_vcpu_aia_imsic_release(struct kvm_vcpu *vcpu)
+ 		return;
+ 
+ 	/* Read and clear IMSIC VS-file details */
+-	write_lock_irqsave(&imsic->vsfile_lock, flags);
++	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
+ 	old_vsfile_hgei = imsic->vsfile_hgei;
+ 	old_vsfile_cpu = imsic->vsfile_cpu;
+-	imsic_vsfile_set_hgei(imsic, -1, -1);
++	imsic->vsfile_cpu = -1;
++	imsic->vsfile_hgei = -1;
+ 	imsic->vsfile_va = NULL;
+ 	imsic->vsfile_pa = 0;
+-	write_unlock_irqrestore(&imsic->vsfile_lock, flags);
++	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
+ 
+ 	/* Do nothing, if no IMSIC VS-file to release */
+ 	if (old_vsfile_cpu < 0)
+@@ -726,10 +715,10 @@ int kvm_riscv_vcpu_aia_imsic_update(struct kvm_vcpu *vcpu)
+ 		return 1;
+ 
+ 	/* Read old IMSIC VS-file details */
+-	read_lock_irqsave(&imsic->vsfile_lock, flags);
++	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
+ 	old_vsfile_hgei = imsic->vsfile_hgei;
+ 	old_vsfile_cpu = imsic->vsfile_cpu;
+-	read_unlock_irqrestore(&imsic->vsfile_lock, flags);
++	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
+ 
+ 	/* Do nothing if we are continuing on same CPU */
+ 	if (old_vsfile_cpu == vcpu->cpu)
+@@ -779,11 +768,12 @@ int kvm_riscv_vcpu_aia_imsic_update(struct kvm_vcpu *vcpu)
+ 	/* TODO: Update the IOMMU mapping ??? */
+ 
+ 	/* Update new IMSIC VS-file details in IMSIC context */
+-	write_lock_irqsave(&imsic->vsfile_lock, flags);
+-	imsic_vsfile_set_hgei(imsic, vcpu->cpu, new_vsfile_hgei);
++	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
++	imsic->vsfile_cpu = vcpu->cpu;
++	imsic->vsfile_hgei = new_vsfile_hgei;
+ 	imsic->vsfile_va = new_vsfile_va;
+ 	imsic->vsfile_pa = new_vsfile_pa;
+-	write_unlock_irqrestore(&imsic->vsfile_lock, flags);
++	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
+ 
+ 	/*
+ 	 * At this point, all interrupt producers have been moved
+@@ -874,6 +864,7 @@ int kvm_riscv_aia_imsic_rw_attr(struct kvm *kvm, unsigned long type,
+ 	struct imsic *imsic;
+ 	struct kvm_vcpu *vcpu;
+ 	int rc, vsfile_hgei, vsfile_cpu;
++	bool swfile_update = false;
+ 
+ 	if (!kvm_riscv_aia_initialized(kvm))
+ 		return -ENODEV;
+@@ -893,7 +884,7 @@ int kvm_riscv_aia_imsic_rw_attr(struct kvm *kvm, unsigned long type,
+ 	}
+ 	isel = KVM_DEV_RISCV_AIA_IMSIC_GET_ISEL(type);
+ 
+-	read_lock_irqsave(&imsic->vsfile_lock, flags);
++	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
+ 
+ 	rc = 0;
+ 	vsfile_hgei = imsic->vsfile_hgei;
+@@ -902,13 +893,16 @@ int kvm_riscv_aia_imsic_rw_attr(struct kvm *kvm, unsigned long type,
+ 		if (write) {
+ 			rc = imsic_mrif_rmw(imsic->swfile, imsic->nr_eix,
+ 					    isel, NULL, *val, -1UL);
+-			imsic_swfile_extirq_update(vcpu);
++			swfile_update = true;
+ 		} else
+ 			rc = imsic_mrif_rmw(imsic->swfile, imsic->nr_eix,
+ 					    isel, val, 0, 0);
+ 	}
+ 
+-	read_unlock_irqrestore(&imsic->vsfile_lock, flags);
++	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
++
++	if (swfile_update)
++		imsic_swfile_extirq_update(vcpu);
+ 
+ 	if (!rc && vsfile_cpu >= 0)
+ 		rc = imsic_vsfile_rw(vsfile_hgei, vsfile_cpu, imsic->nr_eix,
+@@ -959,6 +953,7 @@ int kvm_riscv_vcpu_aia_imsic_inject(struct kvm_vcpu *vcpu,
+ 	unsigned long flags;
+ 	struct imsic_mrif_eix *eix;
+ 	struct imsic *imsic = vcpu->arch.aia_context.imsic_state;
++	bool swfile_update = false;
+ 
+ 	/* We only emulate one IMSIC MMIO page for each Guest VCPU */
+ 	if (!imsic || !iid || guest_index ||
+@@ -970,17 +965,26 @@ int kvm_riscv_vcpu_aia_imsic_inject(struct kvm_vcpu *vcpu,
+ 	if (imsic->nr_msis <= iid)
+ 		return -EINVAL;
+ 
+-	read_lock_irqsave(&imsic->vsfile_lock, flags);
++	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
+ 
+ 	if (imsic->vsfile_cpu >= 0) {
+-		writel(iid, imsic->vsfile_va + IMSIC_MMIO_SETIPNUM_LE);
++		/*
++		 * We can use writel_relaxed() over here because the
++		 * raw_spin_unlock() below will do mmiowb_spin_unlock()
++		 * which in-turn drains the write-buffer ensuring the
++		 * write is visible to the CPU owning the IMSIC VS-file.
++		 */
++		writel_relaxed(iid, imsic->vsfile_va + IMSIC_MMIO_SETIPNUM_LE);
+ 	} else {
+ 		eix = &imsic->swfile->eix[iid / BITS_PER_TYPE(u64)];
+ 		set_bit(iid & (BITS_PER_TYPE(u64) - 1), eix->eip);
+-		imsic_swfile_extirq_update(vcpu);
++		swfile_update = true;
+ 	}
+ 
+-	read_unlock_irqrestore(&imsic->vsfile_lock, flags);
++	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
++
++	if (swfile_update)
++		imsic_swfile_extirq_update(vcpu);
+ 
+ 	return 0;
+ }
+@@ -1036,8 +1040,7 @@ int kvm_riscv_vcpu_aia_imsic_init(struct kvm_vcpu *vcpu)
+ 
+ 	/* Setup IMSIC context  */
+ 	imsic->nr_msis = kvm->arch.aia.nr_ids + 1;
+-	rwlock_init(&imsic->vsfile_lock);
+-	raw_spin_lock_init(&imsic->vsfile_hgei_lock);
++	raw_spin_lock_init(&imsic->vsfile_lock);
+ 	imsic->nr_eix = BITS_TO_U64(imsic->nr_msis);
+ 	imsic->nr_hw_eix = BITS_TO_U64(kvm_riscv_aia_max_ids);
+ 	imsic->vsfile_hgei = imsic->vsfile_cpu = -1;
+-- 
+2.43.0
 
-Instead of this, I think a much cleaner approach is to convert vsfile_lock
-to raw_spinlock_t. The current vsfile_lock being a rwlock_t is create other
-issues as well [1]. This will also allow us to use writel_relaxed() in the
-kvm_riscv_vcpu_aia_imsic_inject() since raw_spin_unlock() will take
-care of draining the write buffer.
-
-I will post something along these lines.
-
-Regards,
-Anup
-
-[1] https://lore.kernel.org/r/20260925155116.465203-1-andrew.jones@oss.qual=
-comm.com
