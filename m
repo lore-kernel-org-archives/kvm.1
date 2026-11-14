@@ -1,100 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.160.46
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1794656499;
-	b=2nhDcjC1ZBKXQrdMWPMJcXt0O+yKXQjKe4nMsThoaxGYuS1lPaI5hLFUI4myEjBEeBqH
-	 iAn9pWm7vm2+MjFAruRbgGW2JIZH5vFafIIAgDR81MYSv6D59+S+c/o66GjW+5itziBrx
-	 4fWyEgZlg9+jnZJlSsughlQLCBJW2Ky4Rqpm303qCrRenHDtDp094e8hmkW4os3jlDuDC
-	 BlSQeaQRfQ+moUAAgR4+oR2bDk2oC7fDkn/JyEVJ42Ddlx76ODo6NQYGo7RRxDwkf2Jhk
-	 0bsGviZreFdXiNWhO9ysRKtq5kHPKjx0FsCbFxlWJx2cvfAeZNO/sxcZ2Wc95Sv0xfA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794656499;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.198
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794662527;
+	b=RfII7JG4lekM//lqgxNglSGBFCvOtKkOdhJgkSiqE9k7ksScPiVL/3lZOEcrq3Noa8+v
+	 /YFhygjAJmIW7ZI2R7JZgApmDQPcJMxwvbQK4nABI2DeFmA59N58iRW9cwl6hGKlFw+OK
+	 YdLDAuKeP0kLvUkjPZM5QXaFAJiDN7oSzM5RS4oGjpby5gq/POZhxDKZxyU8RZ4XEEniN
+	 n5vvI1n+4SdfB9P4mqz3QpQMm8wDQImpJOXWSo8jKouuljB3zD6x4BNSir+S6M3Rdkn9H
+	 ocuGCY3JQ7JjJbv2RJ8mT49hukk+7c7GJFbKb8ebeNCMtnyuQlMDVeDM3GtebTVXOHw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794662527;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=a/fji4ANglWLhnM1b925r1xDhw6BBJRmXgZEro3KYGA=;
-	b=PXq3tgcpWVUB3NpihVKgZlxzgaoZiri/Tw21lddHihZ0yvZxPQzMVET4cYPADuyF/jiP
-	 V0Mphn+peKldZtymlqPYLJ6nFUhaN+QgPbWS+FsSSc3kI0OJ33VYNjZ49va5ByxA5hYy5
-	 ktjRwSOHdLZSmwBtUny870bj3wHmNLZaQNDKXiOaHkbKfOVDrJ81jNoymUaZCymxABxa2
-	 S6WbYS8XL6WkoRKrQZNmOHYUGHcILmG6u4wBq9BcoKXJbGP81N8M802m9ZQUE7hBt6CVq
-	 BYgy8CmWPdW0d/sO2HwzbGaHoKvtU12iM09pekBQrI+TouGoG/sL7rZfgpowS/Go1Pg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=flashbots.net;
-	spf=pass smtp.mailfrom=flashbots.net;
-	dkim=pass header.d=flashbots.net header.i=@flashbots.net header.a=rsa-sha256 header.s=google header.b=RPk3hKmo;
-	arc=fail smtp.remote-ip=209.85.160.46
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-Mailer:Message-ID:
+	 Subject:From:To:Cc:Content-Type;
+	bh=s+9Hu3UM2egN38MZu88OBSAAZcGtjqWd9rwLazpIXwA=;
+	b=yHOR3iRX+UsPr9r0g8uixeD4+Na7LmJBbAXD6kXKoYtq9cOhxHnOz6F7+GGbJ4y8NnEM
+	 tc+RIpyxzjwO7xHC8PYucDXlYaizbHKpbAlqGF5ywwq2f59jDJyLzqacKguzJBIG0Ig8Q
+	 WL42zCR/iyH3h2X/OmzHWHa0V2P+UFa/q3NjsnJ9kMaqt3dQ6ieWQvHOA/6j69tkiKfJV
+	 IN+eT3+6gfiiYrCRx6Tx0XoyC3CBmBsIxNaOiqXCPLIsQxhJaDQI/3EvfgxNkzOHbgqYz
+	 GuD9rEHUoSEc/iJ7QOqp41x52yAVSX7cunQXYg/N3m/QBwuCv3B2EkisH3gYaytjynQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bncfTbHL;
+	arc=none smtp.remote-ip=74.125.82.198
+Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B49606A32D
-	for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 11:41:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3B49606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flashbots.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flashbots.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1CF606A323
+	for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 13:22:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2B1CF606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flashbots.net header.i=@flashbots.net header.a=rsa-sha256 header.s=google header.b=RPk3hKmo
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-4932b13c4ccso1678887fac.3
-        for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 03:41:38 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794656497; cv=none;
-        d=google.com; s=arc-20260327;
-        b=J4/U3/P59iH8yWxf163dmKpXVddrOEKvbpH5j7ikAWFW1MJh2/iw8l8p80sVWzaP+R
-         gaTZl8svaNZVuLFn9MHLRVXPZ1cUlUSi4Fi4qt9a824OdyVmxWqccCjudE3mbY3trCcX
-         fVe0cr75BRF1D3iWo7aaXQURfjzYEnPLL74aUPYb+Mw/x1m6BoTOaaLetUAGuds6moHB
-         oIy8nj1LaKnSkMpFXfk/Rw+5xw+oMpAz6ruWefzGua8irpZwCqP6wHm+XO4nba0+b5t6
-         U9qFbDChCyiknuL5CTTsPJwgmPx6MM9Dmz4AhxweU1R1Oe3N9sdcDIcl5vy81IQq4vYK
-         G5Qg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=a/fji4ANglWLhnM1b925r1xDhw6BBJRmXgZEro3KYGA=;
-        fh=AMrGLitKGqBdjIyWWKXxVPjBo9ZhPjegIAx3vnpk7oo=;
-        b=XcCvcs1d7ZEhA2MIVgHuofvST8m4mAZn8ylGI+doAM1HpJEioXhGjh5Mqpcva2vv+r
-         bB2x+MpCzgGyUfr0XxTDEWaj1ikp54QixsVkTppISDvkF60+7qiyL85LM1H/TPhtXtUn
-         NAabECm+zNLWHtcSxZH/XINPJAFwM04dTJyW0mcLwdtXeQNO9aq4PJic9dOAtm7aYqB1
-         HbHccTo2G5cNGWqsOR0TIWVpwFCeumA++WfR1ve6KwKP1gbSOOjrP4UcAHMFT27aoPZZ
-         i/zkEmpmvY13CIwzrJxDK6QDt1QSEsRT4Kfa33K8U9YlwqDnwxp/NAoKUY6ruRSJCmc5
-         Mjfg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bncfTbHL
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-3724667bc16so1209742eec.1
+        for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 05:22:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flashbots.net; s=google; t=1794656497; x=1795261297; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=a/fji4ANglWLhnM1b925r1xDhw6BBJRmXgZEro3KYGA=;
-        b=RPk3hKmoRJZOE/rLguqoyJOuGcI+0otfDHj0jb7OOJz8CKu6MRyvtZeUpLpVzvBaZK
-         47pyhTHWDFQ1P1XlcTeOxUOIfzbX2jWaZLZ19EPmx3ZGxxskuCiRMvdrV/lQQwwSZVrR
-         vW6pLdI9B6VSHdpmLs62jQCunpKHDRtp59ImFhyuB87W2d44eiehj8/z2l7f97f2Igdc
-         vkF+ZBAmiXjyGePpmcbFQzoAdE3F7Fc87C3LuSRARiEaD8XBKhy+IHwAFaMAwI1EZdID
-         nb8O+iCxZ7Sgj1igdgLaM8WLEr+AKf92TY8ExRgrig4CzkQNfiiblHSNsoQO/MmO6pKj
-         t5eQ==
+        d=google.com; s=20260707; t=1794662526; x=1795267326; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=s+9Hu3UM2egN38MZu88OBSAAZcGtjqWd9rwLazpIXwA=;
+        b=bncfTbHL1W9tQ0kN5vy6blQXY1nwquvXkviPBSymOAVM6JM4F/y4xUzJ0eJKxe7SpV
+         mA6PN3rumsKaHirSFPklHL1j81nVTIU6TgqULRa8kNHOtWDkKActXq13bcOaJPUJAYg/
+         WYXS7e6pPLXZZ0N4ko9v5hTj71ecdW1DbTJrTpOsksGVyyaw0y3B1f8vW8Yj1mxL9nRK
+         VBXaXfWuxNx4LVniWrjxl2aNJJgbCF8ZXNPVmQupO9zfpoybIQ4igeUEr1RtMoh7TVj2
+         x66Ts7JmaLzcOME3+9ofDC1mZRAMx/nxdlanc7Yrus6S5swkNfancUAOSGVjWjrOjior
+         yQKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794656497; x=1795261297;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=a/fji4ANglWLhnM1b925r1xDhw6BBJRmXgZEro3KYGA=;
-        b=G1fWje1mUfbfOFQ2Q+VSpoOD+GQUX/q0j+/nnkd5KHS/0s5n6+0cpiFif8hnfdsrGt
-         wiSIB68F3c2NrGgMCl5EMR54hU8IS5Z2wIcJh3zIexUlXC9pTZJkwt2D/ABVLOnpLCVU
-         DOJJODds8Zi2ZhTw3lkId7LcmIm+AL5giwOoU0wjClHtqE/QmRMSkYSjRQrko+qkFAr5
-         OUGR6o1ScqSF4ed5JUFsSsz99WNd7fo8nUo0HdTDCi7TaIkwBH2a2+eCv8uRSTqw8ad0
-         q1nimnFgy+nucFqDPlPEbk83v7YinvIenAzyQ4Mms42M9jF3FsqdbzO1MvHAJPt5WBab
-         QpDw==
-X-Forwarded-Encrypted: i=1; AL+hErHyTEMVVjO/tgZZP8hsQkYD0g2HAL0CuJkx1UFe4kqJ/EGl6YF/h2dvTfQkARurXnZQ/O0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/MO6ojcSknjVOwJblvD14QQavM+oW86XIibmn2c4OpB6KKBukA
-	ia5v47c5c8MTVlkKT8wHbDeVYoFnsupuWBDw8jfHbGm2cFkZoRRiRvZOoTO677WV7Y9rX+gO3Ke
-	BsHin+EPowP88WAxqu0puxkYCaR0ePLoPwrf3ZLlpNrNbeYGmJnPV8Vqsfg==
-X-Gm-Gg: AYBFou1vT1ueh1FcLPZXaORbxPgbS4NgKMrKy5xaHna1ogy1yGttREyZYlur0KCLIBH
-	+mPtrCJQbvjPLdUuCtfW8Zxtmetb3gcpoII7d/0vqbkJu9xjM2Yv92gZ7/qpdJ38MBuPO9rvZgd
-	22aQceTQUwBA19I8TvFX787tmocdHR96wDGs85JJEbA999QVcEQiur5vfguGu2+7x6HWZjNRnap
-	Lwy8uQ5XZ3xs9+8Zchxb86iUVWVDdRZSA9cOEm7HJ5Xt0jIVMSDhBcSlQLFlj/1Ok2GOzL//g6o
-	HEZghIAowyrqPwETmkpGe7jGba7Vhkq9yVTNudem9MjkIRZRbMLxEuJeajsiHRLbAqnSItrDYFW
-	P5wWudWWgQUi8DORS6B/bunZB1fgyAFgJTo8o4jK6uH4tKf8BbsoRYdkTB8nn5NB2u8beH6brng
-	kjqedEgLknLHsmuuTW9WSKlIJwGO6upIrprGSOJGWUT7MjdffcZBvs5kWTxU2JhM6QFyC2aEWv
-X-Received: by 2002:a05:6870:6c1c:b0:4ad:7ef2:6005 with SMTP id
- 586e51a60fabf-4afdf445b53mr4823353fac.11.1794656497656; Sat, 14 Nov 2026
- 03:41:37 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794662526; x=1795267326;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=s+9Hu3UM2egN38MZu88OBSAAZcGtjqWd9rwLazpIXwA=;
+        b=zfKQQ2ioGp5x/vZrm/4p0HrftL/3eqDD8dzFGg2jcurKvhOJvl8n4LzwRLcrSZ5YPw
+         bekSXTF5Ls53y1YAexrUTJ8U2fH+SSoX41cYO1NW1AdxxvsNaI9wPIkjghfQ4cmROUay
+         5815JVnr+0sAPAUcMmcw6vG4Y5UxsR6alelVOKcZ9X9v8y7lMH7vPeOTTRURuVU4s07g
+         g0xMotefPu9llRIoU8KslFaWEFrcWjXh9R2Pd2YADRoSQLrXz4j+yJ7V85tOA+ymsY70
+         kOp4CLT4UHBjV+iMi+MGVazK2TWQTZu/7H8JKQjVxo2soN2SBnCyk1AZHWrRlTksVdWZ
+         gE+g==
+X-Gm-Message-State: APuU4Z+EVBRyLfYfMYfIMjpT61ULxscjcin7L4ZbySVpRm9wdt8bpI27
+	+BzIB865KS0FB9IxYpjIt0oyzzeH67GhoBCo6bQs2Iy8X9yF1gsWUOTThaGxeoHLiteROuAGWa8
+	bOu7bU0odOtbp3lK2e+5Q9l/tk9eBc828M8AbY8E2GfAq64QOvay/3I6zYtzqrDPFhnR41Aymei
+	XE8v8S70DJQNALEZw3F0ZTssE2zlUAElDIqMZoztqIHV6HNkDhgjWfLg==
+X-Received: from dybnj2.prod.google.com ([2002:a05:7300:d082:b0:375:5ce5:6e37])
+ (user=aaronlewis job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:693c:87c2:10b0:36c:a3ae:936e with SMTP id 5a478bee46e88-377e093dc83mr7948432eec.5.1794662525774;
+ Sat, 14 Nov 2026 05:22:05 -0800 (PST)
+Date: Sat, 14 Nov 2026 13:21:55 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,64 +75,67 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261024-tdx-guest-quote-poll-v3-0-6a83bb767314@flashbots.net>
- <3b582cdcfe37f1d01ee71611ab2611f845261089.camel@intel.com>
- <CAKV3HMM9BKpmgWeFqRqamAsqqiofj+TG4DrOEHmbUyE0FjA7+w@mail.gmail.com> <0f9ba1a6acb57a8c126739175b4e38dafac08c9d.camel@intel.com>
-In-Reply-To: <0f9ba1a6acb57a8c126739175b4e38dafac08c9d.camel@intel.com>
-From: Moe Mahhouk <moe@flashbots.net>
-Date: Sat, 14 Nov 2026 11:41:26 +0000
-X-Gm-Features: AclHuK8iaDFWSE6FVS5GEQtiGzXP5xPODgzuL6kYZ3-GR4mSvXxwjBpv9blLgS0
-Message-ID: <CAKV3HMMfx4APmardWdtL8yhirXMuuBQMZ8xrtowHNRnTKXNRiw@mail.gmail.com>
-Subject: =?UTF-8?Q?Re=3A_=5B=F0=9F=9A=A8ext=5D_Re=3A_=5BPATCH_v3_0=2F2=5D_virt=3A_tdx=2Dguest=3A_Fi?=
-	=?UTF-8?Q?x_and_speed_up_the_wait_for_a_Quote?=
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"Miao, Jun" <jun.miao@intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "Aktas, Erdem" <erdemaktas@google.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, "djbw@kernel.org" <djbw@kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.611.g1030f0b940-goog
+Message-ID: <20261114132200.113697-1-aaronlewis@google.com>
+Subject: [PATCH v4 0/5] Introduce vfio_dma_mapping_perf_test
+From: Aaron Lewis <aaronlewis@google.com>
+To: kvm@vger.kernel.org
+Cc: alex@shazbot.org, dmatlack@google.com, jgg@nvidia.com, 
+	Aaron Lewis <aaronlewis@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 2026-11-13 at 17:33 +0000, Edgecombe, Rick P wrote:
-> We do expect quote execution time to change, so this may not be optimal long
-> term. The exponential backoff could limit it to 2x the real quote time. For a
-> long quote this could be pretty long.
+Add a new VFIO selftest, vfio_dma_mapping_perf_test, to provide a
+configurable tool for measuring DMA mapping and unmapping latencies
+across backing memory types, IOMMU backends, and region sizes.
 
-The backoff is capped at 100 ms. The 2x bound only applies while the
-sleep is still doubling, which is roughly the first 130 ms. Any Quote
-that takes longer is seen at most 100 ms after it completes, whatever
-its duration. A 10 s Quote returns by 10.1 s. The current code adds up
-to 1 s.
+For example, running the test across various region sizes (backed by 1G
+HugeTLB pages) makes it easy to collect and compare latencies:
 
-> I'd almost wonder if the guest would normally be happy to spend more cycles on
-> getting a faster quote.
+Map latency:
 
-I think so too. The cap is a single constant. I can lower it (10 ms
-would mean 100 wakeups per second, and only while a Quote is in flight)
-or replace the backoff with a short fixed interval. Tell me which you
-prefer and I will do that in v4.
+IOCTL               |      1G  |      4G  |     32G  |     128G
+--------------------+----------+----------+----------+-----------
+VFIO_IOMMU_MAP_DMA  |  0.39 ms |  1.38 ms | 11.62 ms |  46.54 ms
+IOMMU_IOAS_MAP      |  0.58 ms |  2.27 ms | 18.08 ms |  73.49 ms
+IOMMU_IOAS_MAP_FILE |  0.01 ms |  0.02 ms |  0.10 ms |   0.32 ms
 
-> Can you explain more about the quote use case you are targeting?
+Unmap latency:
 
-Attested TLS. Right after each TLS handshake the server in the TD sends
-a fresh Quote. Its REPORTDATA is the hash of the TLS public key plus
-keying material exported from that session (RFC 5705). That binds the
-Quote to the session, so it cannot be cached or reused, and every new
-connection costs one GetQuote. Requests are serialized by quote_lock, so
-today a TD accepts about one connection per second, and ten clients
-connecting at once wait up to ten seconds. With a local QGS the Quote
-itself takes a few milliseconds. With patch 2 the same ten connections
-take about 0.1 s.
+IOCTL               |      1G  |      4G  |     32G  |     128G
+--------------------+----------+----------+----------+-----------
+VFIO_IOMMU_MAP_DMA  |  1.51 ms |  5.69 ms | 45.78 ms | 187.66 ms
+IOMMU_IOAS_MAP      |  1.84 ms |  6.83 ms | 52.53 ms | 211.75 ms
+IOMMU_IOAS_MAP_FILE |  1.78 ms |  6.74 ms | 61.26 ms | 213.70 ms
 
-Session binding is also the fix for the recent relay attacks on attested
-TLS, so one Quote per connection is becoming the norm.
+The numbers in the tables were collected on EMR.
 
-For the long term I have event notify working on top of this series. The
-driver uses the interrupt when GetTdVmCallInfo reports it and keeps the
-polling as the fallback. Over 120 back-to-back Quotes at HZ=250 it gives
-2 ms median, against 8 ms with polling alone. I can post it as a
-follow-up once we agree on the polling side.
+Changes in v4:
+ - Split kselftest_harness.h custom CLI option support into its own patch
+ - Printed usage help on invalid options and passed custom optstring to
+   test_enabled()
+ - Skipped variants when the '-b' size is not aligned to the page size
+ - Renamed timer_start() to timer_get()
+
+v3: https://lore.kernel.org/kvm/20260910153326.3085937-1-aaronlewis@google.com/
+
+Aaron Lewis (5):
+  vfio: selftests: Assert the region was unmapped in iommu_unmap()
+  vfio: selftests: Introduce vfio_dma_mapping_perf_test
+  vfio: selftests: Add memfd test to vfio_dma_mapping_perf_test
+  selftests: harness: Support custom command-line options
+  vfio: selftests: Allow a size for vfio_dma_mapping_perf_test
+
+ tools/testing/selftests/kselftest_harness.h   | 127 +++++---
+ tools/testing/selftests/vfio/Makefile         |   1 +
+ .../selftests/vfio/lib/include/libvfio.h      |  31 ++
+ .../vfio/lib/include/libvfio/iommu.h          |  14 +-
+ tools/testing/selftests/vfio/lib/iommu.c      |  24 ++
+ .../vfio/vfio_dma_mapping_perf_test.c         | 279 ++++++++++++++++++
+ .../selftests/vfio/vfio_dma_mapping_test.c    |  11 +-
+ 7 files changed, 444 insertions(+), 43 deletions(-)
+ create mode 100644 tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
+
+-- 
+2.56.0.611.g1030f0b940-goog
+
