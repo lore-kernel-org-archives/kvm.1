@@ -1,79 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794643687;
-	b=ES515OduRFTwgkt84par5+0iSR/0JOKdWS3AwpxUsJ1KZ7pcaUySjQEsxgziLYfoosVI
-	 2AK38r+Mk7j8cDZgZX/f8yKhNgBKK1wc9Ib68dELaC1P78txUH1iUn8ix+q79masa1S9z
-	 +HbrJ+bfPvDW5PJYBUnv3NH+Muo7UQgLGlUAqopKJVwrH/CxMsO+yUUzy5GeQmrVcT5/9
-	 2Zwliw93ofwUbqyOTd2d0f7gCgXBp9NFfUKnqDf1idTnd3tJCPqRnixPRCPrEfB9r+5qj
-	 mEv3GbFh3Ou2XYLQY1ugDJcMDfK62Ygm1iD0mIzMOZasUpMAIJTjd42wq5KmVoje0bg==
+	t=1794648885;
+	b=cp8oGh7fOmDDZ61g8q9RpUMF1jmMluPxRClpVRTconNCgznYTheimY+fJJ6zEgpYvvJt
+	 6PfQpF3flyEMKmY35NTVFhqZyDprKOiiNuaOCfA1RzbdPDC4QbRoRKNAD9jDnvhvhBfYD
+	 FgC8Ng7UNBFtNsCWNgdPN5ITbXVv/8veb7hIatf1obRI6vxdJ6RyeDHcCwpM344yvNJXF
+	 LrI/1hKAekFI3JXeAzSyZwHFKAsSCVt2tuBnW8OuQXI7W9E5qiZATOoIo4WFvrFk7NgcY
+	 D8LHikDJ0rqn7TvuK+7ZAK/CDpsEsSEDi85ZrggZzE14QoWxKDagrY4sAkYreME94fw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794643687;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:User-Agent;
-	bh=AMvfvtuGPCIX4hwXez9m9TR/hOp92TjyZdeouklQZFI=;
-	b=oEXwLVqaVVNF7VRiqKMT8/FcTCu3QAnhx0SDe8QsM63fg2g7cL6+NiR0lEVcSQzPnKXe
-	 Hwit4jkqVLSwF0S86eN/sopUnkLBLMJfE3pA9uGnMOFIpxKm0NnCeNdL+QX6L74QOlrIo
-	 AvP2H1+fIin+nzbEnj1NtPMDnsoGCtfvnRv3VrL4HIQhVdgFIiA/RZjzQwCExnIxD92CJ
-	 dv+5lgqsXCqy18pJbhnhGqIh95iRvrJ1al5o97zkB/JqZbc1fR3lFbxT198t+MaUFoMGB
-	 m4dL0AglxpbppT1PBd1VEXTc9oS2lxRGMw14g3+HR1PzrfdFr1ALvB3+JIUYnn7aMkg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794648885;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=cYfB8ZYjzkbZTu8PkWr5VdyVYonCx+ZsO65KHqfQojE=;
+	b=wbyCU5cfny5de2ZI89XaEuIR3jQZsDlUDHPU7N5nMxcMdzF/3oJiCiHCDS93Wzzd32Nh
+	 I2NfJlQxHcHP1DuO/mlNNikxhU9AQ97gccmDYumJN1pk+56Rb0TrvkE+0nQeO2dAm8NE+
+	 nFKSFqDYUM+11weNdNPfaR2BrvrL+NCva888/RJqYspHIV7rXhyHFSrta+NEQsvdfjFCf
+	 adBvn31ecuyuwLJFAahz/yEjVrXo37Wxs+el2VNS2CVGTZ2kN0BaSW5XCdyTOoLa6/ros
+	 u/B/ztMUL6wmOKBo5Hs/RublIPL1C+E4RGIreTdI/VsaqolxQB18/cN10O99AIh/HgQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="cQkbF+b/";
-	arc=none smtp.remote-ip=192.198.163.9
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ITg0WODf;
+	arc=none smtp.remote-ip=209.85.218.70
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1028D606A32E
-	for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 08:08:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1028D606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54107606A327
+	for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 09:34:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 54107606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cQkbF+b/
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794643687; x=1826179687;
-  h=date:from:to:cc:subject:message-id;
-  bh=9RrjyNNU8Fx7Fz4gw1ab+JcI5Ul7RVjRZks5ZBos2v0=;
-  b=cQkbF+b/hrh77MZ9ZP2QdpYnJwySOjUQov/6a0nuIDxniDf+aJpYsKjO
-   Tapdj2IA5YQK4zgQc7PY8QZYFqUyfeTNteS+fauj3EY9qJAGQ8+XrSdGf
-   vftUlv3cFNRwNML4dnYFyiJfnx4/ZNFD7ewYwfvJd8GT1h9nvOfDIrS9n
-   ZdDTIt35mlwPtcSr+UKO9og1gOoh2xg6Af82Mjg0YvdB8y8V0+9AogSur
-   Alp5BArx1+vMS9Tk12yY3ySVCsup2Ed9Ibq+HyF3XC9SkZBqmHFav6Sud
-   B0TuAOLvNsG5/0WFeQQm1b9jL4y1llGzyZnB7I6ScnwF4GZM0pGKHOGLW
-   Q==;
-X-CSE-ConnectionGUID: vQ5o54ffTrmh02MYTvE+Ag==
-X-CSE-MsgGUID: cyA0culsRXua8G9SEUIjhA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11965"; a="3324824"
-X-IronPort-AV: E=Sophos;i="6.27,213,1787036400"; 
-   d="scan'208";a="3324824"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2026 00:08:07 -0800
-X-CSE-ConnectionGUID: DC3T8hBDTWmzcnLyTX5R5Q==
-X-CSE-MsgGUID: YTnOhEkWQnO099y+6Ki0lQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,213,1787036400"; 
-   d="scan'208";a="10833011"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa012.fm.intel.com with ESMTP; 14 Nov 2026 00:08:04 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xS8np-0000000158w-3Ofo;
-	Sat, 14 Nov 2026 08:08:01 +0000
-Date: Sat, 14 Nov 2026 16:07:05 +0800
-From: kernel test robot <lkp@intel.com>
-To: Nicolas Saenz Julienne <nsaenz@amazon.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- kvm@vger.kernel.org, Farrah Chen <farrah.chen@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [kvm:kvm-memprot-v4 26/54] ld.lld: error: call to
- __compiletime_assert_775 marked "dontcall-error": BUILD_BUG_ON failed:
- sizeof(attrs->attributes) != sizeof(unsigned long)
-Message-ID: <202611141509.8iHcv46y-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ITg0WODf
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c504b52eed3so197467266b.1
+        for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 01:34:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794648884; x=1795253684; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cYfB8ZYjzkbZTu8PkWr5VdyVYonCx+ZsO65KHqfQojE=;
+        b=ITg0WODfjiev4CXog2b9Top27p9acyqI1Fkp+RPBD6r7sYJZqI/EMHl8i8nfvu28O9
+         dUCQop6o6E2Gr/87u/0UbmggSi5NCyfqhTIrHZZ9kj0eQQToCTyvBNp/d27vac0bvCPD
+         r2WpWq4ODLLc1IpIs9MpZYNM4XyaHWGT+Pjf0nuE0ptmYbcQQ24ghSHFaFmasMm7blpJ
+         5PbfVkj5ydyYPDI0PxPy9Mx5/COg2jf4RAruRKhBDxV3osGEsZ2RwtiEbtey1x5Jcctb
+         XByyygKualSG+W9eCuD217I4RzkoA04BH4G0/h+C3EmObIc6kiVaAU213gFCHU6Ch4R1
+         Grzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794648884; x=1795253684;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cYfB8ZYjzkbZTu8PkWr5VdyVYonCx+ZsO65KHqfQojE=;
+        b=lIM+NAqPckwhtfwye8yKRCZ7n+Vhou/q6+q+dqswUyUd+jZ6dcyaZ5mUOP72P4blWJ
+         UWXkiWVGt69Qc2uwIsh4b1mD41NUiccJ1Hsby9aOVnTqrOcj3q5hwkohRtFK5CDGBZhD
+         e8arVOC1ak78Ej814TMlUNmERmj2iLTD8tStaIO/+y5B69XiBHN4rks9UW0BQrgBjZZ5
+         vKtOnA0KyJZZOalEEu/NVmhhhe2gQLwnTC6bp38LLXFwZhVq5a4zmmcsWIZFZHqKzEuA
+         mdJYf6JWU+76Wxy0y/rmip+S5tysU9qAJwoc09lwU7QoYMtpHQ3BFKYnfhOpILE93LrV
+         TVQw==
+X-Forwarded-Encrypted: i=1; AL+hErFmUmB6y4GHJXlPo7hnNvutHM5JEuomfSzkfMc335ab5xsxnrS0KqWLtzFlfd9/lxUb/04=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+G1mP6b4xTSOMd5xrCYuVSpHT5/Ju6EWxVDrLA4eeHai+AkDbc
+	hd41Ffm8fd88JqxUTvsc9InHuGIglWPBBaug2nUhTCfgf11VBid6SnfPr4ywnaHPVDsLOVSU0tF
+	ddKcQ77FaqJNq58mEpg==
+X-Received: from ejbgl17.prod.google.com ([2002:a17:906:e0d1:b0:c50:537a:6835])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:7b83:b0:c41:b4e4:7958 with SMTP id a640c23a62f3a-c5095dd7931mr418395066b.0.1794648883281;
+ Sat, 14 Nov 2026 01:34:43 -0800 (PST)
+Date: Sat, 14 Nov 2026 09:34:41 +0000
+In-Reply-To: <DMRP21FATCC0.ARAURXWV85JP@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -82,23 +77,70 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+Mime-Version: 1.0
+References: <20261110050202.529473-1-tarunsahu@google.com> <20261110050202.529473-9-tarunsahu@google.com>
+ <DMRP21FATCC0.ARAURXWV85JP@google.com>
+Message-ID: <9huzse13pxhq.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v4 08/19] kho: block: Add the feature header to blocks
+From: tarunsahu@google.com
+To: David Matlack <dmatlack@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, maz@kernel.org, will@kernel.org, 
+	Alexander Graf <graf@amazon.com>, seanjc@google.com, jgg@nvidia.com, loganodell@google.com, 
+	arnd@arndb.de, dwmw2@infradead.org, baolu.lu@linux.intel.com, 
+	Bjorn Helgaas <bhelgaas@google.com>, oupton@kernel.org, alex@shazbot.org, 
+	gle.com@google.com, pbonzini@redhat.com, 
+	Andrew Morton <akpm@linux-foundation.org>, kevin.tian@intel.com, joro@8bytes.org
+Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org, 
+	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
+	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	skhawaja@google.com, sagis@google.com, linux-arch@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-tree:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git kvm-memprot-v4
-head:   e71c4e83c03926c300f6c43e79b783d47ba8b588
-commit: fd506bfd91720a0465a26f9baf6d9ee57c81b847 [26/54] KVM: Introduce NR/NW/NX memory attributes
-config: i386-randconfig-1003-20261113 (https://download.01.org/0day-ci/archive/20261114/202611141509.8iHcv46y-lkp@intel.com/config)
-compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261114/202611141509.8iHcv46y-lkp@intel.com/reproduce)
+"David Matlack" <dmatlack@google.com> writes:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611141509.8iHcv46y-lkp@intel.com/
+> On Tue Nov 10, 2026 at 5:01 AM UTC, Tarun Sahu wrote:
+>> Precede struct kho_block_header_ser with struct kho_ser_hdr using
+>> DECLARE_KHO_SER. Each block in a block set starts with struct
+>> kho_ser_hdr followed by struct kho_block_header_ser. Serialized entries
+>> start immediately after the header payload at offset fhdr->size.
+>
+> This adds a feature header to every block in the set, but the layout it
+> describes is a property of the whole set: all blocks are written by the
+> same kernel with the same header.
+>
+> Blocks are only ever added and removed at the tail, so the head block
+> is stable for the lifetime of the set. I'd put a single set-wide
+> header in the first block only, e.g. a struct kho_block_set_ser with
+> its own feature header, and keep the per-block header to next and
+> count.
+>
+> entry_size (added in patch 2) is another set-wide property that belongs
+> there. All blocks in a set have the same entry size, so recording it in
+> every block is redundant, and restore has to check that the copies
+> agree.
+>
 
-All errors (new ones prefixed by >>):
+Yes, adding a ser_hdr to each block_header is unnecessary and also cause
+8 bytes to get added to every block. This can be solved like you said by
+adding it only to the first block. But this will make number of entries
+in block[0] to be less than blocks 1..N. I am not sure if that is
+acceptable but if it can be then we can avoid adding ser_hdr to each
+block. Same for entry_size which can be moved to the first block only
+like you suggested part of struct kho_block_set_ser.
 
->> ld.lld: error: call to __compiletime_assert_775 marked "dontcall-error": BUILD_BUG_ON failed: sizeof(attrs->attributes) != sizeof(unsigned long)
+> [...]
+>
+>>  		entry_size = ser->entry_size;
+>>  		bs->entry_size = entry_size;
+>> -		capacity = (KHO_BLOCK_SIZE - sizeof(*ser)) / bs->entry_size;
+>> +		capacity = (KHO_BLOCK_SIZE - fhdr->size) / bs->entry_size;
+>>  		bs->count_per_block = capacity;
+>
+> Nothing checks that the blocks agree. Each block's entries start at its
+> own fhdr->size, and count_per_block ends up being whatever the last
+> block implies. With a single set-wide header this can't happen.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+yes.
+
+~Tarun
