@@ -1,74 +1,114 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794724654;
-	b=MBU1hJfe3pukKSeGfO4nu9pxVGfq0cLS1rxHOJ7Gd8ZTOmdpRvmKqeeJKm1zdxNiz+Qb
-	 jT9mLEGxevaFtwDqHQRDOE4sVxQnIrhYA+7Gfc+vfhAf4d4el206PuNf4/o4BOtbTJ/iY
-	 PkGI1c5sTUtsvzYW4wMT2NKDWXf8szECRtCTDrOlgvRmtxeZ1gHQ1PhRZo+6i5g+MT/gZ
-	 fT3txnKNWQY/2+u/4Hzdb0FOivZa01enVuErDQW+kxW6cugS1IDKDO/rfN5cLPUl0mqiv
-	 K+bldIx82BLGX9Mc3UwKhvI5AUf+3LU5c0PaHpBQBZ5sAyKEU4DHy2RaEOdODOBwHEA==
+	t=1794730235;
+	b=Wxz1KcpTimj6WkpbNmCv+ioRkOTVw03HMoJ4yoSQlT6b/BUon0nBtH3es/Ur4PdhcND3
+	 t2Ft3mkNzBhzaqdVi5NpRvZE6mNiyOxpRna/okj+xohdER8L/OXaa+BSGacog4BD2t+zD
+	 eMtjAnliNPk3LxnehouyZC4xg7+B9JWo+pyFvtw5QjV49B0qVMcBawS0ctbd8t2vz1Cbn
+	 M4t6StDqFsJGmYBx3/DUV1QdQ3rrsROSKbKUHkOTkmzZSaH4ApafJGJJ1+CmkRKPd/+mZ
+	 O7dcEAfi2zkHoLc1IAjmQhdtBAMvE82XfwHv2R9LjEevkV9DSCTYBL4Y5WEX54d8LUw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794724654;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=aE92BuA/q+u7mWs8kchTDkcjs1m/i8lsv1ezZ7OruqU=;
-	b=2dl9rxTvnnq7TEfV6lWoVVbW6uwtIcdD8CHXGgGEKoO6+hVg4UEZWDvevHKXeUI/zCM3
-	 Zek99SpzmrlRauDlSbuPkUVv32IGUUjABu1K/TaUscEdjrrBrS5TRZaKj1O9JTnS3Krtd
-	 lzgcWjALGCs9/GjHioF3ipTtkubaCy1bdZvmA2iFPJEnbKgMDkh4wyGylVvpMpF8SwxVn
-	 nyEHOqLxEn1IPmzjtrlYC6puwAI0c6+x3Zp8IDy/6R/MnrrQg6MtobwcodpuqODOhWD3p
-	 UPcIdHyOy1Oqb5q8e1Q0szg7mJBvltBbTYEEey4TitMO1W5JNxd6UGrCi+bVDjIQTjw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794730235;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=3AD2NjAEnXh3TsyeQJyuQPBTmIH2AEBoMc1BO7pCl1I=;
+	b=aE6lshWAR3mvmu/FjEBT3dSjDSLRoTvb1v1hiiE+JOWs6cLmtQDvpD/KHgvjYZ8BmRAP
+	 jlICRVucfaaER4JCeCFWGBEuyXDuKJMtwk1QGx6cs/8TR7HgmmJ0mDj3XYpahkwaJmeDW
+	 KihudLnCMtYhugufBQlGCGpNmLLifatHYiwa+rc4l6nkHFV3PixvEzw87XIAWyDFZolWd
+	 mG1YMjYgA2TYJhbvKtN86mkF6BZpsDvBpTOWkzZLGv8yfv6mSn8NQAnpRlDaYx3yMOCn5
+	 9ExHf9YFDjAxewbCpY6LhXquS+95O0DIFkeiEzl3gw4BpaQ2lkM3kZ3qoP6+ma93Fig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XLzHgoV3;
-	arc=none smtp.remote-ip=209.85.218.69
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ER9zjlLy;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="DB84/V9V";
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A36606A32E
-	for <kvm@vger.kernel.org>; Sun, 15 Nov 2026 06:37:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19A36606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071FB606A327
+	for <kvm@vger.kernel.org>; Sun, 15 Nov 2026 08:10:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 071FB606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XLzHgoV3
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c293e604f0eso151931966b.3
-        for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 22:37:33 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ER9zjlLy;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=DB84/V9V
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794730234;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3AD2NjAEnXh3TsyeQJyuQPBTmIH2AEBoMc1BO7pCl1I=;
+	b=ER9zjlLyt2rGDy7WZUDyp2bOCUfc6rx+WItUKIPqDQrOA3Js3Y2Eg08yvFBIIdeveAfDlR
+	Nrw9yB14/bIRJuReGBeKq5QHFtk9heHLM9/wPlHfQ45MaZmwDr6qWlIW5DuGE5vbQ8DCMq
+	0dc4+mMhwm91dKGw+L/2ROeTw770LDA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-302-sWUHTpbcNXOeNn6hXcRy_A-1; Sun, 15 Nov 2026 03:10:32 -0500
+X-MC-Unique: sWUHTpbcNXOeNn6hXcRy_A-1
+X-Mimecast-MFC-AGG-ID: sWUHTpbcNXOeNn6hXcRy_A_1794730231
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-49034831bb3so1601842f8f.1
+        for <kvm@vger.kernel.org>; Sun, 15 Nov 2026 00:10:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794724652; x=1795329452; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aE92BuA/q+u7mWs8kchTDkcjs1m/i8lsv1ezZ7OruqU=;
-        b=XLzHgoV30EX3XK+IKPAkxf1NIb5iub/1+QP9OZESQPBT/nbZSwd+vhxPRSYjPTjEy8
-         6pNOTjUDI9xA9TM6UgpXg+rhOfPSJIgkglyhPEkwUDvSB9xqbwLBseo1rMmEJjTL2oUV
-         bMsRramqEqNAkvIFvyiaR5Dn1APgaZwx9nL9Tcoo0MdGVE4UZMCOPNcI/R6Fbh66hBnt
-         aK995BtGsljPmGs66zYNWiPNrNOhigAehP1DM+QN96lq0GSJ2OkQWmODo/4PTzveGJAW
-         7ufVF+ADmBv3OtDogn8ht793IGrIrf0wleGy5TY80sCBku0zeWx8+NOzMJ4DEq/wspYV
-         UCoA==
+        d=redhat.com; s=google; t=1794730231; x=1795335031; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3AD2NjAEnXh3TsyeQJyuQPBTmIH2AEBoMc1BO7pCl1I=;
+        b=DB84/V9VopxV8ZLFARtBAA6zG7pqGlYvH8XXCFVTB2aTa6rsPquz1BJnQppxmyrHmM
+         5cO1/R+2Tbt1EUzrfazpxEFBqomVayQUIZDXzpxVy88SvSr5deTRD7my3Nlhpi+GcQpq
+         fzrP5shcMfTx3s5jFgD2d4OpHi7X8FD5oC2SgcXre1/O8grzf+VWqA9tqQW3T5SuQoc9
+         reTsJnm67xe8Sm3jrlWASFnouuggpQg29NWg202PpqXwXUqtubE9DS4xC66KYy5xh7eW
+         GdKYXkjsah29akmliaksZ3AfisrQTKPIopg/W79dUg3FnfkDY1t5ERWuL19z3/Kr6ZWM
+         ACfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794724652; x=1795329452;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aE92BuA/q+u7mWs8kchTDkcjs1m/i8lsv1ezZ7OruqU=;
-        b=jMCkdD+ljX/x6BwrHigsX8kmeCEAqBkU31YOfa7Hwpw/6Vm40Or5Cv+oy2BLSp7MDq
-         oCumcG51NZkqjnCDhPAiaEjjpJXFknDkReCm2ql1Lxww8Leuv3pztz7q1ix6Oj4I1DuD
-         JVmkCzxzp4JJoCl1tFthoUUpVu4SPrlGeUwmePQix7G1J2iq10rzo+cb+sRV72p8TScG
-         HXXvPmCmh4Jgd0Pf1sRQTseETiF8lBtSrH7t65Dov8ZcToAB+e+h2Hnkf4Jjv4bSzMJr
-         d1JC78l6EjD0hehVdxifh35t1VphcKn0FHwtnYkzvOKclQ2uvjeacWf+6Mgy4PrQEx8e
-         10DA==
-X-Forwarded-Encrypted: i=1; AL+hErGZ1sIVFMyP8p5qcG8NDIeclRVgMC2BILyCySDnyELvNLncQXl+dzPvBiTLQGNSX0zPe4Y=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9KscSHovehL+7TY7dk0S+WhCB2Ar8goalO7pjsH/IicptXA0wl
-	2o6/vkSgSA0/eLUmMrWJrC9fl1M8d5wUM62aL8uyLARDi6LJteSSd7q3sUfem7Te3IVBGYwZviC
-	C2ggMBCye9Q8XvnNcyA==
-X-Received: from ejbge24.prod.google.com ([2002:a17:907:9098:b0:c46:7bd3:aa06])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:a714:b0:c42:5363:38dc with SMTP id a640c23a62f3a-c509637e20cmr533164966b.25.1794724652053;
- Sat, 14 Nov 2026 22:37:32 -0800 (PST)
-Date: Sun, 15 Nov 2026 06:37:31 +0000
-In-Reply-To: <DMROZB8DPEWD.W2BFC7JIBVZP@google.com>
+        d=1e100.net; s=20260707; t=1794730231; x=1795335031;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=3AD2NjAEnXh3TsyeQJyuQPBTmIH2AEBoMc1BO7pCl1I=;
+        b=CHUT4LNjRMO+kHqgq+HfN0o6KztlfZsJ4A69hRjXCL4odEiIUQyL75D/5S94Ss1jsh
+         udhXed6X99sE9ULWE3B2bme5edAOES3EqKgGNCPdGmTTvS273jZ004QQwbJzpAHazW8u
+         o+afr+j/weV3XrTViBFjN+2RBY6QGXXKzjGnbEavIPSStprLB+ssnVxcKqw9D6GXU3Gq
+         Z1pCa4SDGee9VFzGJneHUlWeDqDa2RKE9IN7criqAznpI80jdu1NLrFqZGw/cGXDvRcQ
+         GIDBRNny7/kM87dZyj/O6GHlP1jHRVtKuFn3SraHGcaxG9GjU/xGRshp3e41Nhw4NDZt
+         IEtg==
+X-Forwarded-Encrypted: i=1; AL+hErHjMgdqm31AIKHqTom0f6eMzKyWEsB2Nz1amK/In9JUXKGf3uzeWaWOv5VDVWVxJdBH/A8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/3G1Q6i6H896HLf45gJX9kxZI7o+o3PgfWvxW6hqUNapWrfsOj
+	SCi8j7+gOJ43shNYA3VOhmg4+bTzEUpMjSv/7g2u8MptqN7Y9Kd6q2J+PwHmMx0eJoWe/Pv0KAG
+	CfOb9jjIEtYwFTIWBShCaSYtCVhM8glQEZcGXqc//TTEliXpFfJhyOA==
+X-Gm-Gg: AYBFou0a8Pz6Z40FDNYqOHAOhu0qFeII743MhGwk7kPrr7EaIySdsEyRBLsvBrfmLiy
+	I9SqSYAtdwiRQfsqbvQjmUZ7fH3tJmRtS7pphmOSd9UIIVXJLeILfPJimG2NhkgBv07lp3s07Ko
+	XrknJ7L5vRXuP3bFxl/fEkj14AChUZM7omH5ew1d+xORaH2UEbYabl5Yam5Mr3emoAYvVd7Gw6M
+	RkO0Bw7eaY5K5aqx46jQpUxVMRC9weliP88yYAf7uSxsMBjIcOHBhqNcXj6nWDxerg2/DF/vjJ5
+	Wb643sczl5zLQVpQpvx7WZMSRkppkbMCcEGVOrD6V9j09ebJRO+9E8/69Wn+6C97fxMVEJq8tsP
+	jBuq/CsRzYXe0928/I7qB53OBaP7L3x00lphRPPde+VnYtjyrNxYzUA==
+X-Received: by 2002:a05:6000:25c6:b0:48c:77ad:d52d with SMTP id ffacd0b85a97d-49c73165309mr15480412f8f.43.1794730231243;
+        Sun, 15 Nov 2026 00:10:31 -0800 (PST)
+X-Received: by 2002:a05:6000:25c6:b0:48c:77ad:d52d with SMTP id ffacd0b85a97d-49c73165309mr15480342f8f.43.1794730230626;
+        Sun, 15 Nov 2026 00:10:30 -0800 (PST)
+Received: from sgarzare-redhat ([193.207.75.235])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c609c602dsm14853290f8f.46.2026.11.15.00.10.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Nov 2026 00:10:28 -0800 (PST)
+Date: Sun, 15 Nov 2026 09:10:14 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Carlos =?utf-8?B?TMOzcGV6?= <clopez@suse.de>, 
+	Chris Oo <cho@microsoft.com>
+Subject: Re: [PATCH] KVM: SVM: Sync CR8 to the local APIC after marking the
+ VMCB clean
+Message-ID: <avlowrJCV-dgtAD3@sgarzare-redhat>
+References: <20261113162556.461390-1-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,78 +117,34 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261110050202.529473-1-tarunsahu@google.com> <20261110050202.529473-3-tarunsahu@google.com>
- <DMROZB8DPEWD.W2BFC7JIBVZP@google.com>
-Message-ID: <9huzjymepplg.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 02/19] kho: block: Record the entry size in the block header
-From: tarunsahu@google.com
-To: David Matlack <dmatlack@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, maz@kernel.org, will@kernel.org, 
-	Alexander Graf <graf@amazon.com>, seanjc@google.com, jgg@nvidia.com, loganodell@google.com, 
-	arnd@arndb.de, dwmw2@infradead.org, baolu.lu@linux.intel.com, 
-	Bjorn Helgaas <bhelgaas@google.com>, oupton@kernel.org, alex@shazbot.org, 
-	gle.com@google.com, pbonzini@redhat.com, 
-	Andrew Morton <akpm@linux-foundation.org>, kevin.tian@intel.com, joro@8bytes.org
-Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org, 
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
-	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	skhawaja@google.com, sagis@google.com, linux-arch@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261113162556.461390-1-seanjc@google.com>
 
-"David Matlack" <dmatlack@google.com> writes:
-
-> On Tue Nov 10, 2026 at 5:01 AM UTC, Tarun Sahu wrote:
->> Add an entry_size field to struct kho_block_header_ser. On the outgoing
->> side, record bs->entry_size into every block header during allocation.
->> During restoration, derive the entry stride directly from the block
->> header instead of relying on caller-supplied dimensions. The
->> kho_block_set_init() interface remains unchanged. A zero entry size,
+On Fri, Nov 13, 2026 at 08:25:56AM -0800, Sean Christopherson wrote:
+>From: Chris Oo <cho@microsoft.com>
 >
-> Since the entry size now comes from the block headers, incoming block
-> sets should not take an entry size at all. I pointed this out on the
-> PCI patch (16/19) as well. As is, every incoming path still calls
-> kho_block_set_init() with this kernel's (outgoing) entry size, which
-> kho_block_set_restore() then silently overwrites. That makes the
-> callers (e.g. pci_flb_retrieve() and the LUO session/file restore
-> paths) read as if they iterate incoming entries with the outgoing entry
-> size. kho_block_set_restore() should initialize the block set itself
-> from the incoming block headers, and the incoming paths should drop the
-> kho_block_set_init() call.
+>Sync CR8 from the VMCB to the TPR *after* marking all VMCB fields as clean,
+>as syncing CR8 can toggle the CR8 write intercept and thus mark INTERCEPTS
+>as dirty.  Clobbering the dirty bit can result in KVM failing to detect CR8
+>writes if the underlying "hardware" uses the clean bits to optimize VMRUN,
+>e.g. when KVM is running on Hyper-V.
 >
-I agree, responded to the PCI 16/19 patch.
-
-> Please also add an accessor for the entry size, e.g.
-> kho_block_set_entry_size(). Users of the block set need it to check that
-> incoming entries are large enough for the fields they read, and that
-> the fields of a feature are within the entry.
-
-Sure, Will update it.
-
-> [...]
+>Failure to intercept CR8 usually manifests as hangs when running Windows as
+>L2, as KVM's view of vTPR stays high and so KVM never injects pending IRQs.
 >
->> + * Each block header also records the size of its entries. A newer kernel may
->> + * append fields to an entry, so the kernel that writes a block and the kernel
->> + * that reads it can use different entry sizes. The reader steps through the
->> + * entries with the recorded size, so every entry is found, and it does not read
->> + * beyond the recorded size of an entry.
->
-> KHO blocks can't guarantee the last part. The iterator returns a void *
-> that the caller casts to its own struct, so it is up to the caller to
-> not read fields beyond the entry size. Please document that callers must
-> check the entry size before accessing fields that may not be present.
+>Fixes: bb365a506b1e ("KVM: x86: Unconditionally recompute CR8 intercept on PPR update")
+>Cc: stable@vger.kernel.org
+>Cc: Carlos López <clopez@suse.de>
+>Cc: Stefano Garzarella <sgarzare@redhat.com>
+>Not-signed-off-by: Chris Oo <cho@microsoft.com>
+>[sean: rewrite changelog, massage comment]
+>Signed-off-by: Sean Christopherson <seanjc@google.com>
+>---
 
-Yes, I meant the same thing. by having a check on entry_size reader must
-prevent itself to read beyong the provded entry_size. I update the
-correct the documentation.
+LGTM!
 
-Also, I realize tha, after checking the base fields using offsetofend,
-for any following new feature fields, a entry_size should also be
-compared against the readers offsetofend till this feature field for
-required fields. Incase reader does not have that field and
-kho_ser_validate passes, that means that field certainly is optional.
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
 
-I can add this also part of the documentation.
-
-~Tarun
