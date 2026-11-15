@@ -1,245 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.143
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794705614;
-	b=Q4BLPB/un3qmYkLROgedbj58IQYq+sn+QGs7TK4/OIEGUbYPCJUxjpFnYCPO3JS3QcAD
-	 hBfzX3R1jtvDp4PDyMbBNCQEif/VeKe5zalOKDwO07E1n/N//XpV1ILopugsvn6xUR86w
-	 7OV9qjY8v3tTJ1qTO8n1NxdRqVEighbxtCt4E4wQ/yay6vJoUrgSzHcekGhbRHJEPOl6K
-	 MgCVEMHJ3RiZCUiP+CcLPyQKQ3mQT9APqc2qyBTnZSAszcOivBMxDGTpObYFTzL6Kkjdx
-	 0uZvBjUQKW8UBl9MIckP640Rxxdcru8pY5mhFDTJmuASOfeaJYY+MftKgqaK2ZaOxTQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794705614;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:Mail-Followup-To:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=QIES4zNTDxRjCnYHiHcWq6p6uX7fK/EWYh7I/zXroHQ=;
-	b=WyQ5jBRj8DW8W73GUnIZBRJ/hT3e9OBbF8Ron5IGaQqpnU190VTZ3qrEyQHszbg1fIoz
-	 Z1WnTGaKHDfpauDjKKMmMGLzk1uRiAxjbM587FXuvcIHOcRXggUYHSRKOjiFz0xGehpJ5
-	 k/CNoSblhcfUqZwI3z/Dbhl9PKD4RwMZsTCW2E3/xnzh5y4qJzFaV1VDcC/5xEnK9Z4Ny
-	 N36c8GRCpR8vWnrfnvoOvCyVARjUxeQ/GeydkDlUIONSdLBM9ni3bf7wQfipwt1jbjc0n
-	 hi9vWgu0Bswq91Ep3+LU3KhVTmcTkvey+FRtOVuOFF9KeR71w3HELW+SwLDjl6iK/lg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=sakamocchi.jp;
-	spf=pass smtp.mailfrom=sakamocchi.jp;
-	dkim=pass header.d=sakamocchi.jp header.i=@sakamocchi.jp header.a=rsa-sha256 header.s=fm3 header.b="pjuVmr/L";
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=syy3aDEc;
-	arc=none smtp.remote-ip=103.168.172.143
-Received: from flow-a8-smtp.messagingengine.com (flow-a8-smtp.messagingengine.com [103.168.172.143])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.43
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794707273;
+	b=0qgWvdDy4cJ2oYsWQw7gbEYa4eJ5nmgklaxJynl5BLk26IQVerIC+I986BFNPmuT6Jmm
+	 w3d973fKTCj9CBrHM+4YlsLEWS6gjQB63B1LPid7tZ3LmZd3u1UD6xWz3VYVIdd00HOdI
+	 KvuaNLMhqLuHRr5B3lDATj/y1jE5uIakcEBZOPPYRbTSSd6e4PW0H9/VDrqva69I8+rgt
+	 8ifvBKPP7X29Gl9WDKp77kF627Zj/l4K9BeIuPD9TGvXJyjtjx+ByMhdxs9DwEpa6IVmo
+	 zWHl/mW6BxekkLh3QlVT6drLJI0d+PxMVrw9lEXd/FYznK3P6Qgh2sbqxYWMuuV4whA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794707273;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=OE0V4hDYj6rciPValeql+PDftw1T5fn9De/8GtPo6aI=;
+	b=fMxiN72uMzsOeZ6UVTHmElISd3n1As/N1CzeczND2mOZCgSp74Cm4CnmA9adN7qabG8V
+	 mWEjN2JS45EUYRwHMuff7MeCaktMa2YpVFXPgK8S8Bs3UN3FisLprjjb5S/ta4yR0LWRA
+	 fme4EKNQh1dGY7Ppj+UGYe3gk1W3IyJ1Su3it9M7Fb7WVGT7LQqgB4wPFN1R7WBJKhWID
+	 NugRBjLFs2BMOWBqGbDYl2oPLmu0YUoJO0j3QGU/5R3nln67oB3P64G5CR7I44P1Y8HLM
+	 mZWxyrhcG4x8otK3LLKz7v6FzXKQkBKk2ZiSjjfr7QlPBKcrfYDK3xoSkJPud8sPLQA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=z2gVAHL2;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.43
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81126606A893
-	for <kvm@vger.kernel.org>; Sun, 15 Nov 2026 01:20:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81126606A893
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sakamocchi.jp
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B8E606A323
+	for <kvm@vger.kernel.org>; Sun, 15 Nov 2026 01:47:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3B8E606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.a=rsa-sha256 header.s=fm3 header.b=pjuVmr/L;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=syy3aDEc
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.phl.internal (Postfix) with ESMTP id BE0681381D55
-	for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 20:20:09 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Sat, 14 Nov 2026 20:20:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1794705609; x=
-	1794712809; bh=QIES4zNTDxRjCnYHiHcWq6p6uX7fK/EWYh7I/zXroHQ=; b=p
-	juVmr/LC7nCJ0SQ2rWUhRQGDMnlVGg/71zflyfizaeCefqOj8Wyp1bv5cUdTgRb8
-	7XUxKSQFA4h5chwE1lADu0vrwg8OhHP6GoQHRhO7+gqlPzaI30gfxszAJ8iBZnAq
-	w6LhtavpJKSJHCgIMJ9jaiAQhtgloSfAXiebl32YH12R4n49k4Dhf+Y8W3pLV4v+
-	Lk6DFTk8SpQ9jSXzpScexBSvyhdEJDbrQwMC0927YExgznJjfLZe0flh8fHQL7IO
-	vj78LH6slSiU2T+/dLzxP/iDcsVNxx1fb6S0NI/BKneEKfRIjGfp58LmRDVhLSom
-	qjpjx4Q11TfgHJQJAHUUA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1794705609; x=1794712809; bh=QIES4zNTDxRjCnYHiHcWq6p6uX7fK/EWYh7
-	I/zXroHQ=; b=syy3aDEccFqwMWi7OqQgN+5WtM3ZAfMLRFvK6Ty6zA65HPirgvN
-	ilcYb0Q1wBWUsxvkCfegkY1pzVtpHUOC6WAP6pTtbZPWcSU2JRmZq5bj3XtaI5mJ
-	5KZK4MCZjfikGyCw8udPD79DzKX657SNeo8VKm+NBs1zDN72HR3ZemlLBm38jus1
-	WDdVI20E7k3nTziG5v/jPkof/xTKUHTBh7LLvCto0jlE2c4pmQs/fxRRAq0SyBeZ
-	lruY2Ddh8f3CbRk7/EsENeVrGkeN2qYTfTHHssLqQwRRARUN/edAoqWV9ygwuEYm
-	jIS3U35+DcIoM5H/MAq31DLvDAGEUQlNvVA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=sakamocchi.jp a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794705609; d=sakamocchi.jp;
-	mf=PG8tdGFrYXNoaUBzYWthbW9jY2hpLmpwPg==;
-	rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm3:rsa-sha256:Jx1rB6sUTvyusgDV5Ilyrn39z0xfVIrRrNNddeqUljMxC/b
-	YuIaKjrk2MQOeeqtIsr8KHcX+BU+uiJ8E95M2F6mOhQfylTXSvdN+kW01KC5ijM1
-	oeW9Gwgu3ilhIdotlD1Yn/x+mIiOq3CMx9N+aHO9Ay40CcdXX8GLogjJ55AxVodh
-	+yxXJ+mUOHDKimCo8YjYJIsfUZeeFGFeJB/VDr+go7TBTialjngLqqAoNsH+uS86
-	3cCsHa3zWSeT6JM6ymjnv8PGsS0u166GD9KGLSGiuTukK4kZ+efKMfCx02EGCPaa
-	5R30AiyfMV3eiBHGmjfnqy599ZzPoZEOiZS84Zw==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=13;
-	hn=cc,content-disposition,content-type,date,feedback-id,from,
-	in-reply-to,mail-followup-to,message-id,mime-version,references,
-	subject,to;
-Message-Instance: m=1; h=sha256:ntV32t7KOIfGMot6swX3CNi9IkfeqivW9U6qBDwCqc8=:4RP5xhIBVdE4nHZvdVXdOxDGDwEwdGMsIHWUj8/gqfI=;
-X-ME-Sender: <xms:xQj5aiop4gg9dsJ6_Vn6u45zXMYueatHm6sTqNkrPjF6p_uliIn0fA>
-    <xme:xQj5ao-c0CruU-TGxTE7NFYZSaEuQncLSSmM997vVUnXnDFfvxt3Mt5vMRNmSfmhf
-    34fKN--fbmH87piFvayMBFAxnjq6WHAkHe46t3SFxeylFtFg6aPnx9A>
-X-ME-Received: <xmr:xQj5atXGMWjP8faJlCtXj9RrVZeBW-gqDucCpC0ZXa191cT5jnWReGYw_Z8rYiOMsAtlcaNqIM8bDcRsKH9aHiPzWCfQ_w>
-X-ME-Proxy-Cause: dmFkZTGQstm6GOmXFdPQXDqZqAYG7aQouPeZUHJ4IBXrRYWFH6lFNnMWIuGsSOCFSsBuXW
-    LbDJxfVrfV3cl+wc1JM2qA4EvGILGxXqZILW7GfZPYDe6vWDeehuWas6PsFLq2rp3ZCMLK
-    vb2ZkQs61G65smsTsr3W8fx/U8N5II0Wva1plTCgHg5UpMnhi5PWu1EQKVr47yDlfh1UvS
-    LYKjU/U9x7MTbsMHbdhB5rWUTX8pbvj9eAIRg5DGXYvFzZokg4/nvH5yq0IUoDc8xEYNrb
-    hSXdXqov4GW1obuCd3P9CA8Y5vszeSouSKwogVvelkFQGttmZKq/NF5ipA4vDPXyrU1Xrm
-    Zrz3WElYlhVCDcPNRnAGrD/gNAj1b7M9bHXUiJrCqgmTebsAx0cfPWnZGZ3/j9Ea2UWcPj
-    qqJZ67js4v5NriJFPwSb5fBisbBQrZL2hM4YjWQCJ9uoloExIgLFI0L7sZA853RBWP4ncp
-    DBuj0o8Fkgdi7cJEPrTBBMdPRnMErqVngCb+aWeUA0zKt+uaR6UB1bg9ZicNV0ayYa37yt
-    I8T18lqRGBzHHbPK9Mrtu/1JSrYmpYKqgKJaY1owBZ4nprZ++3QPl5fwcLNIPsiGvSmzop
-    Zbr1xrRPLyP5mMh+v5LgBzIwywaOGj2L4LIDZM+0lWqxfhjtWj2WgxvXglrg
-X-ME-Proxy: <xmx:xQj5avAwgflb4ksIG5XRwHT6xxt96MMxRO3omUvuEt-3k_ppqJzgYw>
-    <xmx:xQj5aka9rFrx7_oeihBM0qdilVdSsLFNvKaV60FpVwOaq7EoVM3bNQ>
-    <xmx:xQj5ak3AzNFqwOx2mTfPhYibu1bQ_UDkW9NgFtUhfBWBcyXvs0uL4A>
-    <xmx:xQj5aoGo_8KYcqvEjpNAxM_sotiXZsyQPcuJ_BoRuwGjdfls4pLNfg>
-    <xmx:yQj5amBDENmX5NhRabHbZy5mqP0Iv6_jzPBpOZyadDNP-V1uD_qCKZw->
-Feedback-ID: ie8e14432:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 14 Nov 2026 20:19:47 -0500 (EST)
-Date: Sun, 15 Nov 2026 10:19:45 +0900
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-mm@kvack.org,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org, Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	linux-bluetooth@vger.kernel.org,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>, David Heidelberg <david@ixit.cz>,
-	oe-linux-nfc@lists.linux.dev, Chas Williams <3chas3@gmail.com>,
-	linux-atm-general@lists.sourceforge.net,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, Helge Deller <deller@gmx.de>,
-	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	MPT-FusionLinux.pdl@broadcom.com,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	linux-mtd@lists.infradead.org, Neill Kapron <nkapron@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org, Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	xen-devel@lists.xenproject.org, Hans de Goede <hansg@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
-	linux-ext4@vger.kernel.org, Mike Marshall <hubcap@omnibond.com>,
-	devel@lists.orangefs.org, Paulo Alcantara <pc@manguebit.org>,
-	Namjae Jeon <linkinjeon@kernel.org>, linux-cifs@vger.kernel.org,
-	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Benson Leung <bleung@chromium.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	intel-gfx@lists.freedesktop.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	intel-xe@lists.freedesktop.org
-Subject: Re: [PATCH 02/12] docs: ioctl-number: update sound entries
-Message-ID: <20261115011945.GA238787@sakamocchi.jp>
-Mail-Followup-To: Randy Dunlap <rdunlap@infradead.org>,
-	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-mm@kvack.org,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org, Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	linux-bluetooth@vger.kernel.org,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>, David Heidelberg <david@ixit.cz>,
-	oe-linux-nfc@lists.linux.dev, Chas Williams <3chas3@gmail.com>,
-	linux-atm-general@lists.sourceforge.net,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, Helge Deller <deller@gmx.de>,
-	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	MPT-FusionLinux.pdl@broadcom.com,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	linux-mtd@lists.infradead.org, Neill Kapron <nkapron@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org, Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	xen-devel@lists.xenproject.org, Hans de Goede <hansg@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
-	linux-ext4@vger.kernel.org, Mike Marshall <hubcap@omnibond.com>,
-	devel@lists.orangefs.org, Paulo Alcantara <pc@manguebit.org>,
-	Namjae Jeon <linkinjeon@kernel.org>, linux-cifs@vger.kernel.org,
-	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Benson Leung <bleung@chromium.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	intel-gfx@lists.freedesktop.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	intel-xe@lists.freedesktop.org
-References: <20261114202653.3113381-1-rdunlap@infradead.org>
- <20261114202653.3113381-3-rdunlap@infradead.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=z2gVAHL2
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c4d581da0aaso296229566b.2
+        for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 17:47:52 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794707271; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BZ3qZAtWRg0p9NIQ5Ecqr6t8vmsYubRNxJgOx5a0E/mCcDhxbvPJUliEP6ocQuUsmL
+         yhYRZWfOC4WJwTMbaiQZ1pap0l5ebKPLFA9KggIGT3SbocKuQ9fJAGlK6DbDKy1w7Q2f
+         dibqfGb5pju62Y8PubTVMjc52l9qJTWsHmEGuS0QLVt1Gb/Ei46e9rFnSqLw31yDna/K
+         4+rr2Pihfgda2z+lMQe1N7nG04TvLsRLagMY6AbtOXN8DYFMVILsovaAA2sfnWGG5LVR
+         knkWU2XdffaUjR+L1qzW8ld/LLgE0LQX/xatO8LKN7BwabnmDie8G6SEWIiIIQIuVOZz
+         aOdw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=OE0V4hDYj6rciPValeql+PDftw1T5fn9De/8GtPo6aI=;
+        fh=02FFfDG0Mo9x6s99mNnCF97ITEK+eh/DOyJRfipcvtk=;
+        b=gFjdcDAIO1Al3AVbrO51E9P2k2DgMCiVz1HVRVsj/knKksJGUnBwdlexCdW4VZDtjq
+         gMIqM27RpKnz3a0wSJSsT0SlmGqBTwNsAwqkj9qGKyAcNvUCP7AJm82TitoBvFZuB42T
+         eISjeYFUKgQeIdwF8bq2ekFPaaJ50lrl6M9nMFlquadWvaEwaDaWeIDSX6dYYkhTvxRt
+         Bvw/iP4vyURQcb0hY5hrHOizys0wb2YDoeRWSVZ80KtKzj5WqlcUuTqf5lrxgnnQdsot
+         M5uwgZP3mOVZqklx3kJDhbgvglS9PHP7OHNFCIkn1m1SiB7/7Wtt70aLE0POzsZbQpSq
+         Q8QA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794707271; x=1795312071; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=OE0V4hDYj6rciPValeql+PDftw1T5fn9De/8GtPo6aI=;
+        b=z2gVAHL2z+x8knWv91TPYYOz6MOsnsUKca8jKwGhSeucc+ZXvt1GALAUWo1aWaFcI5
+         ng3uFS3yt//zqgciRT/DBMTOx1x5hPkA5DkQSK6bPTzS7Q+nwvtz+BqWv7Ef+1B8vEBJ
+         oTxO+lsUQED7F8x1UKB3uU+wrZf7DWSN76v23rINlQwzuLU8WwhM+PejbCtbeMzh4rk+
+         Ajs3d/7o+QxOnfL5aOtmX6IVez1+1FcNy4cT0z2L/kKY/5kg16k/jFs6D71/mKgpnkME
+         vGPj9Op5uNNQcDMHWSkbIl+fyPd/DSBFTYZHoShZY3+Br9aVFpoVTEtTkdTrKokbYFkW
+         wI4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794707271; x=1795312071;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OE0V4hDYj6rciPValeql+PDftw1T5fn9De/8GtPo6aI=;
+        b=KLsqayleuh1XXjS1scAB1kV7erDCvjsamXgFYgo/UKkkug/FEmFWwL122f0415u9b3
+         1KBgSiOaab8maxO24eJNtyXY0IhxxdwyFRNNwtwIZXumCqwjyH1nayVxXHRAFKZwEIBg
+         pEgWAL/WYg+RmFPG5OnUWrUDcTwmW9WwQ/dCuZkjAb6Vsn2Npbk23482uF/LD1Maz2aV
+         OGTrw39rZAcdY8fIZ2U30a4U52jNzgfphZEAOizb656jX231xhihzYfz/X7HrV7ZZ5IQ
+         2R4OKyiVgFWmYLf9p421cz6pLEyZ4aJpXmeDyFM30ch6TeeofXHz4B7pNYjGszX6bNYp
+         mBbQ==
+X-Forwarded-Encrypted: i=1; AL+hErGXh0Kt16jhbx0BWqcI1QZzXyQgXUqnwTOLpH1Y/ykH0UZwl2mRzamSeGtMIFs/3uXPdmk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+ouQzBJpC79UFVO2MFGR34sYp4hmVF++B+Ldbb0KdNjAazEtWM
+	IazOuMRRuR72YShZ1OFmm/VNFv53ypiZ8O3+odNeRltMJvOmWw4pCPPkOpBfECzX/MwLTtnNu9/
+	RAeQJ7LAgTYWYEXchIR5sFFMMMpUSb7o9Dcry
+X-Gm-Gg: AYBFou0RWEIIYDV0MMsIu7G0o/vccU1YUsaZaHBVcIa3nij8EjBLSqmiJ5Lz23WTLji
+	iwJs4EEutObnSNgklKuMwYeAMfEzNJ+BLxTA/9NOwpmLNtypxHFGkelOgu3CRPEmKrXZcDd1rXV
+	1wkZVcaYbJ0WmiZWHaR02iflp4hbj1v4GeGUzrFYlx8PtdKRk0032/19nO25K7bBilVtrRg/NEY
+	Dvjrp7eaDboR80UCTn52LggfAcmM8lHBu0R15j1GzVXhjDlWB33uGY9FWQnjDb2rSLRva0+6a/W
+	SJHhMJQwGGBR8dRvMrpBsf+vT25CHx4T/zswQlHS4JML3Oa+qgt5LhUDtbMo2O45jwYlhPYOiX4
+	IhQP1oRUD2fd2L+WF8THRGXT0IxvkVKN/J4bX/oYQb5DgsQnI7nbQ1UsNKxOVGVn+cHOkSfHrht
+	aGFH+hl2xn99E=
+X-Received: by 2002:a17:907:9443:b0:c46:75e7:25af with SMTP id
+ a640c23a62f3a-c50963446c5mr535005266b.11.1794707271041; Sat, 14 Nov 2026
+ 17:47:51 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -249,55 +105,72 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261114202653.3113381-3-rdunlap@infradead.org>
+References: <CAPZV9qUk3-eKOGEjVc7f0QzZcjb3L5QwUceAEUV0nuCdo90eGw@mail.gmail.com>
+ <20261114235828.GF3706007@nvidia.com> <CAPZV9qUvgKjoBXGjYXJzwnCmqzSfu781ZSG8zW6Fn4PokUN2uQ@mail.gmail.com>
+In-Reply-To: <CAPZV9qUvgKjoBXGjYXJzwnCmqzSfu781ZSG8zW6Fn4PokUN2uQ@mail.gmail.com>
+From: Gustavo Andrade <gustavogyn@gmail.com>
+Date: Sat, 14 Nov 2026 22:47:34 -0300
+X-Gm-Features: AclHuK-T0Xx18CWBs0ljRBJr9OWFzUd844AH_e8W_0A95quNMuvEFSNR0XQKFu0
+Message-ID: <CAPZV9qUMZcwVF=CUK4LY4G6Qoqd5ykCXE5ocX8VCy_f1c6+aBw@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/1] vfio/pci: Wait for GB202 firmware after reset
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, kvm@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Hi Jason,
 
-On Sat, Nov 14, 2026 at 12:26:40PM -0800, Randy Dunlap wrote:
-> Update the list of files where sound ioctls are defined and update
-> the ranges of function numbers that are used.
-> 
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> ---
-> [Since having multiple maintainers trying to merge these would
-> cause some conflicts, it would be more manageable for Jon to
-> take all of these through the docs-next tree.]
-> 
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Shuah Khan <skhan@linuxfoundation.org>
-> Cc: linux-doc@vger.kernel.org
-> Cc: Jaroslav Kysela <perex@perex.cz>
-> Cc: Takashi Iwai <tiwai@suse.com>
-> Cc: linux-sound@vger.kernel.org
-> 
->  Documentation/userspace-api/ioctl/ioctl-number.rst |   12 +++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
-> 
-> --- linux-next-20261111.orig/Documentation/userspace-api/ioctl/ioctl-number.rst
-> +++ linux-next-20261111/Documentation/userspace-api/ioctl/ioctl-number.rst
-> ...(snip)...
-> @@ -168,7 +174,7 @@ Code  Seq#    Include File
->  'H'   C0-DF  net/bluetooth/cmtp/cmtp.h                                 conflict!
->  'H'   C0-DF  net/bluetooth/bnep/bnep.h                                 conflict!
->  'H'   F1     linux/hid-roccat.h                                        <mailto:erazor_de@users.sourceforge.net>
-> -'H'   F8-FA  sound/firewire.h
-> +'H'   F8-FE  sound/firewire.h                                          conflict!
-> ...(snip)...
+Thanks for the feedback. I submitted this as an RFC because, while the
+workaround solved the issue for me, it seemed unusual that only my
+card required it, since I haven't seen recent reports of this issue.
 
-I overlooked this entry when inserting the additional ioctl commands in
-the following commits:
+How would you suggest I proceed? I am currently running the latest
+VBIOS available for my card (Palit RTX 5090 GameRock, version
+98.02.2E.80.10), which is also the most recent version listed in the
+TechPowerUp database.
 
-* 90e8ac5c9d446 ("ALSA: firewire-tascam: add new hwdep ioctl command to get state image")
-* 58b62ab702591 ("ALSA: firewire-motu: add ioctl command to read cached hardware meter")
-* ca15a09ccc5bd ("ALSA: firewire-motu: add ioctl command to read cached parameters in register DSP model")
-
-Thank you for catching and correcting this.
-
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Best regards,
+Gustavo Andrade
 
 
-Thanks
-
-Takashi Sakamoto
+On Sat, Nov 14, 2026 at 10:44=E2=80=AFPM Gustavo Andrade <gustavogyn@gmail.=
+com> wrote:
+>
+> Hi Jason,
+>
+> Thanks for the feedback. I submitted this as an RFC because, while the wo=
+rkaround solved the issue for me, it seemed unusual that only my card requi=
+red it, since I haven't seen recent reports of this issue.
+>
+> How would you suggest I proceed? I am currently running the latest VBIOS =
+available for my card (Palit RTX 5090 GameRock, version 98.02.2E.80.10), wh=
+ich is also the most recent version listed in the TechPowerUp database.
+>
+> Best regards,
+> Gustavo Andrade
+>
+>
+> On Sat, Nov 14, 2026 at 8:58=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> =
+wrote:
+>>
+>> On Sat, Nov 14, 2026 at 02:48:53AM +0000, Gustavo A. wrote:
+>>
+>> > PCI reset returns successfully while the Firmware Security Processor (=
+FSP)
+>> > is still initializing. Restricting BAR1 to 4 KiB mappings masks the pr=
+oblem.
+>> > Waiting for FSP completion after reset restores normal output with sto=
+ck
+>> > KVM and verified 1 GiB BAR1 mappings.
+>>
+>> That doesn't really make any sense, you are probably hitting a race
+>> condition somewhere since 1G/4k changes the timing. And possibly
+>> because your new kernel versions boot VFIO faster than older ones.
+>>
+>> IIRC there was some VBIOS bug in old versions that caused issues with
+>> vfio.
+>>
+>> VFIO should definately not be doing things like this.
+>>
+>> Jason
