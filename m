@@ -1,101 +1,104 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.67
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794775448;
-	b=sGHY6/UzG6T0w+liqE6iDXq83MQHBsOLZJppaaMUugmJ3Z04Gx5b9gPbsvWPHiwaifWu
-	 I1VRqs71h3GuZKATiBwoFIUK0LAH+GPW1fgM/ZQQEw1/RG2y8fS9O7rFuuYK7cdp8g931
-	 SN0dp9gKD0PsvN99Xi8xS5Wk4u1SoasQtlS9Rt4SiUMO1xXYWbyg/EpQjoDhAjsktoLfz
-	 odtb3GoBxaorEfHXaqJFLx0W0N5ij0RCmxKx2Z3w0xfGsRBLqXm7KnLQvQS8Nk3W2ZfbB
-	 boZhRGkhDEGB0drTv47riTT+mS/N7kqX66JYCnzZyM/PeAaBMJly1QV41vfF6UUIBIQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794775448;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:
-	 CC:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=TtiSOYQpTfWjjsDsF1zSvxSAoFO2srp3DLSB8hB/LOQ=;
-	b=RjzPZVhzNgO7ZKtnlC9lrK+tSToSH4fe63asR2kGmPYXGUAbLNQp57g0zAgck5JYwOHE
-	 IWYRPPG/WCOlKMnYNlejvRJkVcDkKiX6eDv5q442z23Inq3s7mT/dn8s+9mweHBkoMmhc
-	 HQXxUdeSXcLfRnETQeOCgTbWb82VaPDNcuLJDi3DKBHriciY8IuM+w0YyboqiC1uEPVpY
-	 zShBxMOXEmwRGkxAVYtEfmRxb/Lq3oWwC56HDgwfUTun/axPtOXxN2TvQS1Ku3PyNOJ05
-	 WF/GWdq1Yf9ogFJw83t1oQNUasixhrXeryDj4rQpuQmKQLPP0gPTwdcODSTmZIUbLLg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=S3brw4KI;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.67
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013067.outbound.protection.outlook.com [40.93.201.67])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794779987;
+	b=Faerjoj41Dx/KX1lqW20EzSpXKtnN+U1u4Q3sb7gYMxF6an8xYQOKFq2TyYonOd68JzK
+	 IINh8xroGeLm4G96Uv7Vp3oWzuO+DL8jSSwNUXz57+YfT0AXl8oFntDimd3cT3I6lb8/a
+	 A+PFTPjbygyMMbUEwwR/sI32yPQkqy9UMGfLfiTxol9o3wyc/SkzymerV/bTtmnAuxPBQ
+	 eNQZlXrPrUnSqWthRp1SbNDiZnflPoHeJ60M1+NkfvR+uhrX2lRWLjpSpopDMtCvbyJyF
+	 IABt7dptiWVv1mwgsXex/z3l1tFX/tmzMjVIrKegOHvsz+ftepOgq4ykeEsxKulTAZw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794779987;
+	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
+	 DKIM-Signature:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:From:Content-Language:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Rspamd-Queue-Id:X-Spam-Level:
+	 X-Rspamd-Server:X-Rspamd-Action:X-Spam-Flag:X-Spamd-Result:
+	 X-Spam-Score;
+	bh=CVZtep4ZvvYVafoyhBpdOjFTJN1dKVl9nzH4Gq67ry0=;
+	b=otWFu5WLPa3ucoxUCrmOMT2Q0CXns9MPmwc+SnV7EB+SN0Da/q+/NThdQaFhsECTG/9W
+	 Qxpf0/r45KQht59jSDmHOrEs5T+P11FVj263Q+P7oQ8bBlVJJXbHS3Se9nDZDnqTUa2Qy
+	 fwEnezX4wVNADA6+pAGDmncBe62+EWy8HN5LPdPrI+sWMHKdLkJjr3D2TbeqXibOlSqLF
+	 p1igEo0O7ljZQPcA2aenUQ+nQH+aKtzDw6GNldYoDGox6+DMwumBXo4TO/9fsH3qpCHpQ
+	 YDbfuI5PuDsDZQl237axqqMDGS6WouiTvDeHaIkH5Bak/YslyfpcfnXwC5sxhAwSLdg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=suse.de;
+	spf=pass smtp.mailfrom=suse.de;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=gY3mMjYg;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=DmLbD5KU;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=qIV84Pyr;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=mZIJVbXM;
+	arc=none smtp.remote-ip=195.135.223.131
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBA5606A31F
-	for <kvm@vger.kernel.org>; Sun, 15 Nov 2026 20:44:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DFBA5606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4038606A323;
+	Sun, 15 Nov 2026 21:59:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F4038606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=S3brw4KI
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vGnRj39fpnjbavrnHL24sq9RA0IKV9yCyAudM4eDwJtJeVBMi/TKkyu/reQj0+sDguqukgbybOlrdC5YoH2kBX6mvRdpiBqoGLr3H3xT2iDTfwJG0N9i42QcubXssD9WjkAY97GBEE0z9pgXRqK0XWgKLr4CgSiSY1syw9IRjBDsGg41jCgHkJkgdxdrtNfFOWLmHiqzPCyCPn0UIRRdSGNsrjvuXnbICY9ryRzmGDH5YZZqMESVxV63uiEhJ9lS+veqVtVWAPK34iI/Es1zUXzXC4npZEjqFvUCb2S7BYaQLkkeUHSrvpyIj6JB/9fUwsxwmroMaBV7gKaHO94y5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TtiSOYQpTfWjjsDsF1zSvxSAoFO2srp3DLSB8hB/LOQ=;
- b=ROkgSE8jKKdb1pudQvURfSwyPeGY9lFs7GB3Ucogn31yhep6lQwKd687QdzNo3Qg3AvrB9MJJkKuctkbOsEwlHnLKnoFfVhc/UkZQgSPE0sF1s8lxj4mDhM9YW5ja6PVzw0Ni702Q+Ljvj+gxttsm3JWAhRES9PzoEgLi/y+b8CgueoXnF025MQMRJnC1+t15ThHYFKFEchVEQRslP0B7SYR+/wIewjkQhNZXGdurORWRIbf9CVnoYxMYb567cOmTt/hNbm1CZWOqeD7nOvijB1BvJVwWqeu2GScZP/FU/kvYhZPBB14qMXAwk96T6taPOG7LcEemVtAfl1vrUUN9w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TtiSOYQpTfWjjsDsF1zSvxSAoFO2srp3DLSB8hB/LOQ=;
- b=S3brw4KI6oXILwXxFJwqughrSUOl7/AKrP0hRkiHhLhUa91paLZWooUz1zBizpKfbMhkalJzdNo83s8UebpD+uLD+BgzTxdA3U4XIVL20vYBI2p3/t/mZnmJ0VGuz0DjZ2nbZ7zUsew96KnARFjet/t8Po0o1kvSl0ma0j9MSUA=
-Received: from BL1PR13CA0297.namprd13.prod.outlook.com (2603:10b6:208:2bc::32)
- by PH8PR12MB7135.namprd12.prod.outlook.com (2603:10b6:510:22c::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.13; Sun, 15 Nov
- 2026 20:44:00 +0000
-Received: from IA0PEPF00000043.namprd04.prod.outlook.com
- (2603:10b6:208:2bc:cafe::5e) by BL1PR13CA0297.outlook.office365.com
- (2603:10b6:208:2bc::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.639.0 via Frontend Transport; Sun, 15
- Nov 2026 20:44:00 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- IA0PEPF00000043.mail.protection.outlook.com (10.167.249.165) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Sun, 15 Nov 2026 20:44:00 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Sun, 15 Nov
- 2026 14:43:59 -0600
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Sun, 15 Nov
- 2026 14:43:59 -0600
-Received: from [192.168.29.217] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.57 via Frontend
- Transport; Sun, 15 Nov 2026 14:43:56 -0600
-Message-ID: <0552ca9c-98bc-42b5-855f-3fe6245a68d1@amd.com>
-Date: Mon, 16 Nov 2026 02:13:54 +0530
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=gY3mMjYg;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=DmLbD5KU;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=qIV84Pyr;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=mZIJVbXM
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1ED7B1F449;
+	Sun, 15 Nov 2026 21:59:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794779983; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CVZtep4ZvvYVafoyhBpdOjFTJN1dKVl9nzH4Gq67ry0=;
+	b=gY3mMjYgF5vu+pI9mP2Rd7Drc/pLMD4+v0EO8drluBELU1wBHzwhO1G0DsDiVTzXFHGgH+
+	O1TnR4e+K/hgSgv0EpizCjhk7Znh2BGwNm/UvaVImw1Nl0VmTZZ0sY8HpSDVbFQn5Cmuwe
+	x/iUHMnlIVIoZGAEAtOoUhKk69k9i7Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794779983;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CVZtep4ZvvYVafoyhBpdOjFTJN1dKVl9nzH4Gq67ry0=;
+	b=DmLbD5KUDJLP/w2kKJHYFJocZG1hzbxdIfNN2YISnQFOeYfkFh3/beBXJ6IR+yltYHkFXR
+	2sIQl02LYF9HBpDA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qIV84Pyr;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=mZIJVbXM
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794779982; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CVZtep4ZvvYVafoyhBpdOjFTJN1dKVl9nzH4Gq67ry0=;
+	b=qIV84PyrNE0dD3kBoWUBjZeNZWF3AuDrlfCmqolb2FyOl3t/p9nLINmfhRiuwbEhnf7cHn
+	uvbVod1sY0b1k4VFPEjCI4wF9A6sHGkBMWXKQMyIMavO1PCvH88n5U2cE3xwkVVWvd5TV9
+	ynZMTjAbR5YSxOQOGxknOfLcTpH5dRA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794779982;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CVZtep4ZvvYVafoyhBpdOjFTJN1dKVl9nzH4Gq67ry0=;
+	b=mZIJVbXM4XB1a0Tz1IPi2hV9yfHM9XZLuK3X4kSgmZKoLw9I0IrLNWZDHe+a9xJq9w2YW+
+	TR77jarbUdO9STAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5ABED134F4;
+	Sun, 15 Nov 2026 21:59:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 408tCkwr+mr9bgAAD6G6ig
+	(envelope-from <clopez@suse.de>); Sun, 15 Nov 2026 21:59:40 +0000
+Message-ID: <743f60f7-d611-4d73-a2d1-d5873bcdda36@suse.de>
+Date: Sun, 15 Nov 2026 22:59:39 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -106,70 +109,92 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] KVM: SVM: Clear VMCB save area instead of entire VMCB
- on shutdown intercept
-To: Sean Christopherson <seanjc@google.com>, <pbonzini@redhat.com>,
-	<mingo@redhat.com>, Thomas Gleixner <tglx@kernel.org>
-CC: <kvm@vger.kernel.org>, <x86@kernel.org>, <thomas.lendacky@amd.com>,
-	<nikunj.dadhania@amd.com>, <santosh.shukla@amd.com>, Shivansh Dhiman
-	<shivansh.dhiman@amd.com>
-References: <20261008062643.1183018-1-shivansh.dhiman@amd.com>
- <179441837420.82293.15548104733852212417.b4-ty@b4>
+Subject: Re: [PATCH v3 4/9] mm: keep writable entries writable on protection
+ changes
+To: "David Hildenbrand (Arm)" <david@kernel.org>, kvm@vger.kernel.org,
+ linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-riscv@lists.infradead.org, seanjc@google.com, pbonzini@redhat.com,
+ akpm@linux-foundation.org, peterx@redhat.com, ljs@kernel.org,
+ imbrenda@linux.ibm.com, borntraeger@linux.ibm.com, frankja@linux.ibm.com,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>
+References: <20261112142039.907090-2-clopez@suse.de>
+ <20261112142039.907090-6-clopez@suse.de>
+ <603cd8e0-c2c5-4c1e-85c4-d0a5ceda8d4c@kernel.org>
+From: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
 Content-Language: en-US
-From: Shivansh Dhiman <shivansh.dhiman@amd.com>
-In-Reply-To: <179441837420.82293.15548104733852212417.b4-ty@b4>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PEPF00000043:EE_|PH8PR12MB7135:EE_
-X-MS-Office365-Filtering-Correlation-Id: 28319020-7bac-415e-40bc-08df43592d5c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700016|1800799024|23010399003|82310400026|10067099003|11063799006|4143699003|56012099006|261022105027099003|261026121527099003|261028144727099003|261026140227099003|261009223027099003|18002099003|22082099003|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	GWb3FbWz0sl+Gb0svz8X1Qvs/tbU4fwNNuKn8jsSrfmx2aLc7FvWRxg8EV2Dggy1wupNp9N4ItmCyBWRZEEDjo5UA+8Z39r0IcLaCUriARIMIoeL9oXlsbJykXz1dApUMMPwxjkEwTcODTl3QuLHxW3Ymj8ToEC+y/sKquqHqkEv+Pxpm00Zrsdx4PS99FjsrqSnLFYi1IbLoU+57kaEeSVH80rZ+obVdr/Fs3FPQm5OM+3aps7uNGVFAXnGO0NKFbIhcXd4OpsP7DU5eUMSouXwWXlQqmupXw/FVyNTJcEt5iA8/AaxKkxxs8/4tr2UQAjIy60A9jSegml29GliTbwZ98RtNFPFGNGHqwgPlpOqKsCkTb4DHRZL7UepnMnmUdMRww+YicHH5WzV08xpa8YtnzypNh/Lq9L6WmrBHjRCp7Bv7bPQ4AovtR13psL8CA2w/MY0NBrKLgjwo3f+QQkyNfz01f441ZgEf99pwCe6/BIgNd4w99cuh8rYtkMil370iseOV3IvI5ojIXrYRAMzR51Qmt35H5YkXRzeuj9GMlp+6br1kN510VIdh6SQCiSiXynNhTsPPe2KfQ3kmnw0gGl8rvDIcML2jPPhe9iFDfBZ5+wIhcfMuyoraaZwAV+nkQvoa30ef3jw+99GxBqUKKtjCHBCYoSURFhAwW0Aa3n3Qbnw2lK9GoOV74NycPeZ4fPdcWbwaOwT8E+boQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700016)(1800799024)(23010399003)(82310400026)(10067099003)(11063799006)(4143699003)(56012099006)(261022105027099003)(261026121527099003)(261028144727099003)(261026140227099003)(261009223027099003)(18002099003)(22082099003)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	z2ebbdzvy10q86cUaSVMN0I3XvJbTAymYtAukYLt+nB0NGGjAuzwu0NULfhXcVj9Z8tuupLW6ILdBlPhY3M7hYNiDcBEY0jXUQhUwOTyK+m1DP2vHXXxB5q888pZo/GdZC0j7EBlyjA0HGCxzBAitqCkUWGLmSdecP75IuivGaZH3W3/aLt5R4oQcV8ideLIevshuQ/27kuAPkLDoa+CU8kGLMX+JAWop/mWMRhnxRXW7LKRA4ZLZT4ua05h+2U8+DeilYtvqvYeTc+GaB52G7hXwoMNg6G3E4Ed6Aohxe1stryLjs9WBMtslrzlYTTIOkkt+eEvM6oAkEaw0dOeuhhHIcFCST4yD7EDRgV6nTCDbw+EsHAw4J7e0bIhtX9v2pPByHLvsjvzpPKHb0OwPfPY7tRaghzMFbqUt32whYzbTEAgr6V/FKuUDMmmgwsX
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2026 20:44:00.1632
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 28319020-7bac-415e-40bc-08df43592d5c
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	IA0PEPF00000043.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7135
+In-Reply-To: <603cd8e0-c2c5-4c1e-85c4-d0a5ceda8d4c@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1ED7B1F449
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-13.50 / 50.00];
+	SUSE_INTERNAL_BYPASS(-9.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	XM_UA_NO_VERSION(0.01)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[27];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	R_RATELIMIT(0.00)[to_ip_from(RL3zg8z7sygsujbub1yh4z3pr1)];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim]
+X-Spam-Score: -13.50
 
-
-
-On 13-11-26 19:16, Sean Christopherson wrote:
-> On Thu, 08 Oct 2026 06:26:43 +0000, Shivansh Dhiman wrote:
->> The AMD APM previously stated that after an intercepted shutdown, the
->> entire VMCB state is undefined. In practice, only the save area is
->> undefined and most of the control area remains valid. Revision 3.45 of
->> the APM now makes this explicit:
+On 11/13/26 7:56 PM, David Hildenbrand (Arm) wrote:
+> On 11/12/26 15:20, Carlos López wrote:
+>> change_protection() applies vma->vm_page_prot, which lacks the write bit
+>> for CoW and write-notified mappings. MM_CP_TRY_CHANGE_WRITABLE makes
+>> entries writable again if a write fault would only set the write bit.
+>> In shared mappings, it relies on the dirty bit for this, as a clean
+>> entry might still need a write fault to notify the FS.
 >>
->>   "After an intercepted shutdown, the VMCB control area is valid (with
->>    the exception of offsets 60h, 61h, and 68h) and the VMCB state save
->>    area is undefined."
->>
->> [...]
+>> However, this misses clean entries that were already writable. For
+>> example, a uffd-wp unprotect makes shmem PTEs read-only if they were
+>> mapped by a read fault before uffd-wp was registered, so the next write
+>> to each of them faults.
 > 
-> Applied to kvm-x86 fixes, thanks!
-
-Thank you Sean for merging this patch. :D
-
+> See my other reply, adding such optimizations without any motivation why we
+> should even care is not really what we want.
 > 
-> [1/1] KVM: SVM: Clear VMCB save area instead of entire VMCB on shutdown intercept
->       https://github.com/kvm-x86/linux/commit/bdd05706f146
+> Drop it from your series and keep the MM changes to a bare minimum please.
 > 
-> --
-> https://github.com/kvm-x86/linux/tree/next
+> Or is there a real dependency for your work?
+> 
 
+Yes there is, but I clearly did not explain it properly.
+
+The whole point of the series is to avoid zaps when no permission bits
+are removed by a protection change, e.g. mprotect(PROT_READ |
+PROT_WRITE) on a read-only VMA. My proposal is for change_protection()
+to signal this is the case to MMU notifiers with a new flag. However,
+change_protection() sometimes write-protects entries that were writable,
+which makes the flag wrong, so this patch fixes that.
+
+I'll be sure to explain this properly.
