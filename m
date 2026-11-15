@@ -1,79 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794723158;
-	b=Va49lzgMct2SHPm+g4GeLECIXW3kNW9SzVQ2sPk5iZgXqRAjf+OD3JDTkFSQgSCBhPsH
-	 n1vOaJ+XoLyEfUTTRNFfKM0bwSbaw5inM3yyvuTy/RffVawTnlrUsUF7HMjTpWPuv/7H+
-	 MFzPX0rBPW/J0pl9Z/zwqbHzZ7sfLW2zJaqAllRfLvTmnWronX4w2ajJR0j3aNGQKilj6
-	 be/PVxqzsfOgeRDlpEZnQCj7yZUg0Jj6yiS5K4VVfcShJV5uuDgsU1Nxe7CxfSbcJ8Geg
-	 uvMJzM+BHRiGSjhObYGHtlo8M5Yyk6TyhAcYjASd8ttQQ2M9zGHbv5ZDVjLuMKCXvmQ==
+	t=1794724654;
+	b=MBU1hJfe3pukKSeGfO4nu9pxVGfq0cLS1rxHOJ7Gd8ZTOmdpRvmKqeeJKm1zdxNiz+Qb
+	 jT9mLEGxevaFtwDqHQRDOE4sVxQnIrhYA+7Gfc+vfhAf4d4el206PuNf4/o4BOtbTJ/iY
+	 PkGI1c5sTUtsvzYW4wMT2NKDWXf8szECRtCTDrOlgvRmtxeZ1gHQ1PhRZo+6i5g+MT/gZ
+	 fT3txnKNWQY/2+u/4Hzdb0FOivZa01enVuErDQW+kxW6cugS1IDKDO/rfN5cLPUl0mqiv
+	 K+bldIx82BLGX9Mc3UwKhvI5AUf+3LU5c0PaHpBQBZ5sAyKEU4DHy2RaEOdODOBwHEA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794723158;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:User-Agent;
-	bh=ytMfKLlb+8TFduX4LEm8vQBksMeHNyWpTdHQS1yNLWo=;
-	b=reYJ+JwVcV22ur9P/z0J9YhApnXbpuAZFqrcOUL5wZOfoK8/WMdPs9s2CM9XS37hOBFm
-	 uLV9CDbbCuCX6Ls110Gb1zJg7eHoZSdyQ5DzZHkwSiWHumz3P9gXJQY4HbPoopbc9IhjX
-	 j5tySnPwDXbkIy55GPjfrSEiOEDG+vH9/wPYM4rpfxpazjcqDzq1Ys1E8CFNCin1NXO6S
-	 1YDGb5M46zXH+CsiYGFEEgoTJVa7M3FuOp748QiFKan8PQg/RvQbo9LDclguFWSk960NS
-	 VmvvY/+B56Qi/yFTnE9st/fn7cJ3lCqsk0vnfzAEVbYvpgEOE7OUSNxJ+ehRPgkXCUg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794724654;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=aE92BuA/q+u7mWs8kchTDkcjs1m/i8lsv1ezZ7OruqU=;
+	b=2dl9rxTvnnq7TEfV6lWoVVbW6uwtIcdD8CHXGgGEKoO6+hVg4UEZWDvevHKXeUI/zCM3
+	 Zek99SpzmrlRauDlSbuPkUVv32IGUUjABu1K/TaUscEdjrrBrS5TRZaKj1O9JTnS3Krtd
+	 lzgcWjALGCs9/GjHioF3ipTtkubaCy1bdZvmA2iFPJEnbKgMDkh4wyGylVvpMpF8SwxVn
+	 nyEHOqLxEn1IPmzjtrlYC6puwAI0c6+x3Zp8IDy/6R/MnrrQg6MtobwcodpuqODOhWD3p
+	 UPcIdHyOy1Oqb5q8e1Q0szg7mJBvltBbTYEEey4TitMO1W5JNxd6UGrCi+bVDjIQTjw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jF+7fszk;
-	arc=none smtp.remote-ip=192.198.163.9
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XLzHgoV3;
+	arc=none smtp.remote-ip=209.85.218.69
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CF0606A329
-	for <kvm@vger.kernel.org>; Sun, 15 Nov 2026 06:12:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E5CF0606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A36606A32E
+	for <kvm@vger.kernel.org>; Sun, 15 Nov 2026 06:37:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19A36606A32E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jF+7fszk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794723157; x=1826259157;
-  h=date:from:to:cc:subject:message-id;
-  bh=WaJqmMU5Rk7UxVfC5zB8/PfWhy9sfUb5n/VBggTrDa4=;
-  b=jF+7fszkqVa5BJpy0Sqbr46BlTwNv3fT1b4UXG7VoQKpTS4WJEtLUDDw
-   ZUVGBsqeEFXXgvbJQtnnsJO2tZ0sntva9RSr81QrOZGd7FcC9NXbJvYNd
-   il5c0jyO4g6IsEi8LAg8HfZU0+OeKK1nn0Tuqu3MJ2PjBTUv5F+X5cjgG
-   zJSVh8ykvxzvTgi3cN9AfkpdHckwy3hzRqJN8zER2/IKL5Tp5Jl4+UD/Y
-   yrMOPMMM6ZSzUwAqxmWyf9WyFs+3q2HPp/nBWj/qPEUTFHc6rPoWcxagS
-   LdtLRjLB8aSrA5qlz18Xbh5XjkWMnrHETYjyfm76Y7vMwxB//Ts8mJ+gJ
-   A==;
-X-CSE-ConnectionGUID: 2WSAoTHISDWGvzIdf34uww==
-X-CSE-MsgGUID: Dex2OlA2SYWAl717cSbmBQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11966"; a="3358879"
-X-IronPort-AV: E=Sophos;i="6.27,214,1787036400"; 
-   d="scan'208";a="3358879"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2026 22:12:37 -0800
-X-CSE-ConnectionGUID: DGdCookFQli8gWEKJWqs5Q==
-X-CSE-MsgGUID: VpZ0NVNSSh632x+F1hF/JA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,214,1787036400"; 
-   d="scan'208";a="9694041"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 14 Nov 2026 22:12:34 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xSTTb-000000016Sd-3ygg;
-	Sun, 15 Nov 2026 06:12:31 +0000
-Date: Sun, 15 Nov 2026 14:11:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: Nicolas Saenz Julienne <nsaenz@amazon.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- kvm@vger.kernel.org, Farrah Chen <farrah.chen@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [kvm:kvm-memprot-v4 33/54] ld.lld: error: call to
- __compiletime_assert_485 marked "dontcall-error": Need native word sized
- stores/loads for atomicity.
-Message-ID: <202611151427.xPh7Ijtn-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XLzHgoV3
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c293e604f0eso151931966b.3
+        for <kvm@vger.kernel.org>; Sat, 14 Nov 2026 22:37:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794724652; x=1795329452; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aE92BuA/q+u7mWs8kchTDkcjs1m/i8lsv1ezZ7OruqU=;
+        b=XLzHgoV30EX3XK+IKPAkxf1NIb5iub/1+QP9OZESQPBT/nbZSwd+vhxPRSYjPTjEy8
+         6pNOTjUDI9xA9TM6UgpXg+rhOfPSJIgkglyhPEkwUDvSB9xqbwLBseo1rMmEJjTL2oUV
+         bMsRramqEqNAkvIFvyiaR5Dn1APgaZwx9nL9Tcoo0MdGVE4UZMCOPNcI/R6Fbh66hBnt
+         aK995BtGsljPmGs66zYNWiPNrNOhigAehP1DM+QN96lq0GSJ2OkQWmODo/4PTzveGJAW
+         7ufVF+ADmBv3OtDogn8ht793IGrIrf0wleGy5TY80sCBku0zeWx8+NOzMJ4DEq/wspYV
+         UCoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794724652; x=1795329452;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=aE92BuA/q+u7mWs8kchTDkcjs1m/i8lsv1ezZ7OruqU=;
+        b=jMCkdD+ljX/x6BwrHigsX8kmeCEAqBkU31YOfa7Hwpw/6Vm40Or5Cv+oy2BLSp7MDq
+         oCumcG51NZkqjnCDhPAiaEjjpJXFknDkReCm2ql1Lxww8Leuv3pztz7q1ix6Oj4I1DuD
+         JVmkCzxzp4JJoCl1tFthoUUpVu4SPrlGeUwmePQix7G1J2iq10rzo+cb+sRV72p8TScG
+         HXXvPmCmh4Jgd0Pf1sRQTseETiF8lBtSrH7t65Dov8ZcToAB+e+h2Hnkf4Jjv4bSzMJr
+         d1JC78l6EjD0hehVdxifh35t1VphcKn0FHwtnYkzvOKclQ2uvjeacWf+6Mgy4PrQEx8e
+         10DA==
+X-Forwarded-Encrypted: i=1; AL+hErGZ1sIVFMyP8p5qcG8NDIeclRVgMC2BILyCySDnyELvNLncQXl+dzPvBiTLQGNSX0zPe4Y=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9KscSHovehL+7TY7dk0S+WhCB2Ar8goalO7pjsH/IicptXA0wl
+	2o6/vkSgSA0/eLUmMrWJrC9fl1M8d5wUM62aL8uyLARDi6LJteSSd7q3sUfem7Te3IVBGYwZviC
+	C2ggMBCye9Q8XvnNcyA==
+X-Received: from ejbge24.prod.google.com ([2002:a17:907:9098:b0:c46:7bd3:aa06])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:a714:b0:c42:5363:38dc with SMTP id a640c23a62f3a-c509637e20cmr533164966b.25.1794724652053;
+ Sat, 14 Nov 2026 22:37:32 -0800 (PST)
+Date: Sun, 15 Nov 2026 06:37:31 +0000
+In-Reply-To: <DMROZB8DPEWD.W2BFC7JIBVZP@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -82,28 +77,78 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+Mime-Version: 1.0
+References: <20261110050202.529473-1-tarunsahu@google.com> <20261110050202.529473-3-tarunsahu@google.com>
+ <DMROZB8DPEWD.W2BFC7JIBVZP@google.com>
+Message-ID: <9huzjymepplg.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v4 02/19] kho: block: Record the entry size in the block header
+From: tarunsahu@google.com
+To: David Matlack <dmatlack@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, maz@kernel.org, will@kernel.org, 
+	Alexander Graf <graf@amazon.com>, seanjc@google.com, jgg@nvidia.com, loganodell@google.com, 
+	arnd@arndb.de, dwmw2@infradead.org, baolu.lu@linux.intel.com, 
+	Bjorn Helgaas <bhelgaas@google.com>, oupton@kernel.org, alex@shazbot.org, 
+	gle.com@google.com, pbonzini@redhat.com, 
+	Andrew Morton <akpm@linux-foundation.org>, kevin.tian@intel.com, joro@8bytes.org
+Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org, 
+	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
+	iommu@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	skhawaja@google.com, sagis@google.com, linux-arch@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-tree:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git kvm-memprot-v4
-head:   e71c4e83c03926c300f6c43e79b783d47ba8b588
-commit: 4764db743fe860556eea711a26ef11c74db647d2 [33/54] KVM: Introduce a generation number for memory attributes
-config: i386-randconfig-1003-20261113 (https://download.01.org/0day-ci/archive/20261115/202611151427.xPh7Ijtn-lkp@intel.com/config)
-compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261115/202611151427.xPh7Ijtn-lkp@intel.com/reproduce)
+"David Matlack" <dmatlack@google.com> writes:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611151427.xPh7Ijtn-lkp@intel.com/
+> On Tue Nov 10, 2026 at 5:01 AM UTC, Tarun Sahu wrote:
+>> Add an entry_size field to struct kho_block_header_ser. On the outgoing
+>> side, record bs->entry_size into every block header during allocation.
+>> During restoration, derive the entry stride directly from the block
+>> header instead of relying on caller-supplied dimensions. The
+>> kho_block_set_init() interface remains unchanged. A zero entry size,
+>
+> Since the entry size now comes from the block headers, incoming block
+> sets should not take an entry size at all. I pointed this out on the
+> PCI patch (16/19) as well. As is, every incoming path still calls
+> kho_block_set_init() with this kernel's (outgoing) entry size, which
+> kho_block_set_restore() then silently overwrites. That makes the
+> callers (e.g. pci_flb_retrieve() and the LUO session/file restore
+> paths) read as if they iterate incoming entries with the outgoing entry
+> size. kho_block_set_restore() should initialize the block set itself
+> from the incoming block headers, and the incoming paths should drop the
+> kho_block_set_init() call.
+>
+I agree, responded to the PCI 16/19 patch.
 
-All errors (new ones prefixed by >>):
+> Please also add an accessor for the entry size, e.g.
+> kho_block_set_entry_size(). Users of the block set need it to check that
+> incoming entries are large enough for the fields they read, and that
+> the fields of a feature are within the entry.
 
->> ld.lld: error: call to __compiletime_assert_485 marked "dontcall-error": Need native word sized stores/loads for atomicity.
->> ld.lld: error: call to __compiletime_assert_485 marked "dontcall-error": Need native word sized stores/loads for atomicity.
->> ld.lld: error: call to __compiletime_assert_485 marked "dontcall-error": Need native word sized stores/loads for atomicity.
->> ld.lld: error: call to __compiletime_assert_485 marked "dontcall-error": Need native word sized stores/loads for atomicity.
-   ld.lld: error: call to __compiletime_assert_780 marked "dontcall-error": BUILD_BUG_ON failed: sizeof(attrs->attributes) != sizeof(unsigned long)
->> ld.lld: error: call to __compiletime_assert_485 marked "dontcall-error": Need native word sized stores/loads for atomicity.
+Sure, Will update it.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> [...]
+>
+>> + * Each block header also records the size of its entries. A newer kernel may
+>> + * append fields to an entry, so the kernel that writes a block and the kernel
+>> + * that reads it can use different entry sizes. The reader steps through the
+>> + * entries with the recorded size, so every entry is found, and it does not read
+>> + * beyond the recorded size of an entry.
+>
+> KHO blocks can't guarantee the last part. The iterator returns a void *
+> that the caller casts to its own struct, so it is up to the caller to
+> not read fields beyond the entry size. Please document that callers must
+> check the entry size before accessing fields that may not be present.
+
+Yes, I meant the same thing. by having a check on entry_size reader must
+prevent itself to read beyong the provded entry_size. I update the
+correct the documentation.
+
+Also, I realize tha, after checking the base fields using offsetofend,
+for any following new feature fields, a entry_size should also be
+compared against the readers offsetofend till this feature field for
+required fields. Incase reader does not have that field and
+kho_ser_validate passes, that means that field certainly is optional.
+
+I can add this also part of the documentation.
+
+~Tarun
