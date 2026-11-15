@@ -1,104 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794781204;
-	b=AOTCWj/g7vqN5M2qHzJpVepTQ28G54NGOOxbQJCsh4gog7BDxGbZ911TF0AJRUuFrore
-	 ExKnew6xo1qYbklpGyLKETr61pbyNvbkVUNtG2p8QktjGmJttXbHHYyJ6KzTMXh82NLnW
-	 RcH5bLggj97/WDrw6HqKR/qI00fUkFYjwao+AOIZTVhaChUjjIFmh6hxoe+KVfuCCqlVo
-	 gppN1jFQIcCMqiIsqFowrcbbZt6Esyl1E5+ET5SxR4mqO0dOPxOuyOMlsnV0xoGioWjtw
-	 MBXTpdHzoEKnfI2vgR/nOhXrFbvQ8b0R9BGpmOHqdtcxhU8c4TCq15bTy0gCqUg3HHw==
+	t=1794781898;
+	b=ywMWznv/fmyqqPnEgN6r8Axtmx3u1k2eMPxB6yYcWxWNvEhoabyheABSlE9zkHbgYx/M
+	 lCXHbISjCxsfJ4Bt2ewltsJrbA/NJnOhK2B2Hw1Lfrjb58E/px5gFDsoqt8wNXO/IREIO
+	 RW3gTdP5iip5iQ4MYvwF/KqvpmS57U1HhGHV3aX7a2H4uCbz9q61qgvZ5PTRdRZLBh7oJ
+	 nc1Mh+UCOIQ8nZONiFemGh6DGx1Ps1TAMZa1VVy1q7UfCW41o+EVrdhv5yHpRUKnCin78
+	 SkMnTf48iiZ0WU+Rv3GjtyFIRiBGh6iLmxc+KWiIXYNBSAX7CvvCEle9UAy9+FjIo2A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794781204;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:From:Content-Language:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-Rspamd-Queue-Id:X-Spam-Level:
-	 X-Rspamd-Server:X-Rspamd-Action:X-Spam-Flag:X-Spamd-Result:
-	 X-Spam-Score;
-	bh=d3rAtedktrSwXVekAFGPioCnjnnEo6sIvs0uSQj8koE=;
-	b=4PGESU5VGzrEGHejB1COfKGSa/pyQUnQTFhq3M3hgVuSZKTFjL8I7KQLFwGUnpixWn4R
-	 Y1chp/vrEvEYV5pTNKVX4rlQfAPcEiZ1Wi79+G9R2av5i4j1iRi57ce45wuHE/4+Fl6Bm
-	 bkWyXPIpp21KgUdyEfp/5DEfGWXK3GVXAKGbQzLz9S5miZWX1EhHkRCrbfPxYZInIk6bD
-	 NcRt1TByfhm2gcFH6JSYe7QZeT3Ab3K3UPXITZDoT7EKw53xn20o6RgvZgguyvTLNzWIV
-	 q3pE/92NHsLD0PL8y5zAUrMVssFRPlUwhxIgxHR1PqZAlVZ0FXyxM7O5DfPzlSnNrnw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794781898;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
+	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:
+	 X-Originating-IP:X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:
+	 X-Proofpoint-Virus-Version;
+	bh=ykt8FTUNX1/fdxCk4A4DHYN7Y2tblUILl4FGUFZzAXY=;
+	b=03a5KAE2CN0t5oTwV80OaJ9MaMDUZ1/taIWbJgGW0HLIELIjyMX/bvNjwLFaFfYf/GFj
+	 6i3YG1uyIvw1BTCYNr4oXg5Pnlcajo++j4J2bVEh8GIXi1EVy8vcptJQKkxpjRbphRgAZ
+	 XxdBEcu/eHInIxE9GwrRk7n78hj8s+Q8shvL3VB1mCnnQnU78PJtOE4jeDXFFYGXTHwsr
+	 47bmRibCCi5sEacfYV3SL3EGeCD5aTMMssFr6HmkorQxRqDtg9+d4m2SkSQzFAHoitDIG
+	 oR6chvl6P3B78gtmOaIWVHBOttplJ6MVrR+bX+UorBBYpT59gXU9CPjgUgSOQYPTpsg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=suse.de;
-	spf=pass smtp.mailfrom=suse.de;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=l0FofxsE;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=uC+Qn4yw;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=r8H5tXPE;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=XhxLpZB3;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	dmarc=pass header.from=meta.com;
+	spf=pass smtp.mailfrom=meta.com;
+	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=SJ1mxSb+;
+	arc=none smtp.remote-ip=67.231.145.42
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CA4606A31F;
-	Sun, 15 Nov 2026 22:20:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B6CA4606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0DF606A323;
+	Sun, 15 Nov 2026 22:31:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3E0DF606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=l0FofxsE;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=uC+Qn4yw;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=r8H5tXPE;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=XhxLpZB3
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2320F1F453;
-	Sun, 15 Nov 2026 22:19:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794781200; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d3rAtedktrSwXVekAFGPioCnjnnEo6sIvs0uSQj8koE=;
-	b=l0FofxsEj7ZfE5jdC8pSPGeEiJJBaKymA4HRl9c+CNaG70rfjcdrQH1+vKsjEukB6864z8
-	kCVVWURXjil96kZmgY4K4F6IhtBZELjq7qZ4NneOaNz/q1RDRhljcIy8XjPyecEnHduvYX
-	GtRqwwAvJpzaikJtjZNlcIC5jwdfsnw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794781200;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d3rAtedktrSwXVekAFGPioCnjnnEo6sIvs0uSQj8koE=;
-	b=uC+Qn4ywawI31ggkR3nxBg4KdFBGSO6u95J0oXgJ42zKn2UElFjFNmgN41BHBkGdy7OZ7Z
-	rFtdTHKyzEB4ThAg==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=r8H5tXPE;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=XhxLpZB3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794781199; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d3rAtedktrSwXVekAFGPioCnjnnEo6sIvs0uSQj8koE=;
-	b=r8H5tXPEcYAOEhBl0gVbqRFO0u40h4FsQlxVnPfSqDvfh5vBc3KiQmfTQrCUgm8yOdiMxr
-	+RJUA+zY3qVDXarEuqD9hlGqn5v2EpZWlePta87ucCAzGVVTmABftMyln1tlanwZXcw48b
-	SYeey9qwqhzcjUds7EVfs/4QLgXplcw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794781199;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d3rAtedktrSwXVekAFGPioCnjnnEo6sIvs0uSQj8koE=;
-	b=XhxLpZB3Izj3+Sqc1fD3IYSg8BD0r3TCwNIGyJxkHeFD6TeRbep+ifEc1VkZSK6j/fzFlq
-	nxF+ZPZgnRZ35VCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E34F5134F4;
-	Sun, 15 Nov 2026 22:19:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 83EDLA0w+mrmBAAAD6G6ig
-	(envelope-from <clopez@suse.de>); Sun, 15 Nov 2026 22:19:57 +0000
-Message-ID: <749a4a86-5b7e-47ff-a6d8-d885354dc68e@suse.de>
-Date: Sun, 15 Nov 2026 23:19:53 +0100
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=SJ1mxSb+
+Received: from pps.filterd (m0109333.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AFLmgRp538015;
+	Sun, 15 Nov 2026 14:31:16 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	pps82601-s2048-2026-q3; bh=ykt8FTUNX1/fdxCk4A4DHYN7Y2tblUILl4FGU
+	FZzAXY=; b=SJ1mxSb+jBspwpZ+RoOy/Lr5CS/7QRNeo6OhUzjml3l34B3DOQryV
+	YTrD7iaqc9bgjeOvKGchb/xXrv6VyJK/Gnz553rSSAdGLesUpyD5Iz2tjzkhAy3E
+	AiQphbyhg194wLcmkgxeLVgI8XyXEp9YyBcP0aAXzVQgJQUXnKZErZIoGmaclPQE
+	xGshwi14J+WZvgkcMRCwpNXSsDFUyFSi8i6x4g5eKeCkVNk/jhnHQntZSJqtPYaC
+	tvixv1d5+1mVFqDxanbVp8+94a3/32sOffAJJp0HYLsn4xOrSypZSbsV/oTIJabd
+	VFAOlvk4X4FxeeglzrPDyjhY9FIx+7AUA==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hxmj45x9v-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Sun, 15 Nov 2026 14:31:15 -0800 (PST)
+Received: from localhost (2620:10d:c0a8:fe::f072) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Sun, 15 Nov
+ 2026 22:31:14 +0000
+Date: Sun, 15 Nov 2026 14:31:13 -0800
+From: Bobby Eshleman <bobbyeshleman@meta.com>
+To: <netdev-bot+sashiko@kernel.org>
+CC: <sgarzare@redhat.com>, <davem@davemloft.net>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <horms@kernel.org>, <corbet@lwn.net>,
+        <skhan@linuxfoundation.org>, <stefanha@redhat.com>, <mst@redhat.com>,
+        <jasowangio@gmail.com>, <xuanzhuo@linux.alibaba.com>,
+        <eperezma@redhat.com>, <shuah@kernel.org>, <rdunlap@infradead.org>,
+        <donald.hunter@gmail.com>, <edumazet@kernel.org>,
+        <georgezhang@vmware.com>, <acking@vmware.com>, <dtor@vmware.com>,
+        <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+        <sargun@sargun.me>, <jlinbox@meta.com>
+Subject: Re: [PATCH net-next v6 5/8] vsock: add a netlink command to assign
+ the g2h device to a netns
+Message-ID: <avoysWTR++rTKfKL@devvm29614.prn0.facebook.com>
+References: <20261113-vsock-guest-ns-v6-5-3737ce4673c0@meta.com>
+ <179471528940.2199510.18137700517588437955@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -108,86 +85,130 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/9] KVM: don't zap secondary MMU on permission upgrade
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: kvm@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-riscv@lists.infradead.org,
- seanjc@google.com, pbonzini@redhat.com, akpm@linux-foundation.org,
- david@kernel.org, peterx@redhat.com, imbrenda@linux.ibm.com,
- borntraeger@linux.ibm.com, frankja@linux.ibm.com,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>
-References: <20261112142039.907090-2-clopez@suse.de>
- <avd4MOhiTCw0I_e1@gremlin>
-From: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
-Content-Language: en-US
-In-Reply-To: <avd4MOhiTCw0I_e1@gremlin>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 2320F1F453
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-13.50 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim]
-X-Spam-Score: -13.50
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179471528940.2199510.18137700517588437955@kernel.org>
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE1MDA4OSBTYWx0ZWRfX+ZQB0ppP8ScL
+ 5zEoQ8ohV0T1CuBY5u/tqmj8DzX5Ljagf1soUB7AVYidkRKRsqhQDkRRZp+pVhEMtjBS5jfK7P+
+ ZeO7st34x107s/XRqb/3LcQol9zeezk=
+X-Proofpoint-ORIG-GUID: DnfmZE2Va31yL9pMIgnnC5detjkL3Jk6
+X-Proofpoint-GUID: DnfmZE2Va31yL9pMIgnnC5detjkL3Jk6
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE1MDA4OSBTYWx0ZWRfX0OsD6yWxMwIx
+ 0eZPLstlNAs7lKlPNceGqzSKTDjDVlTQ8eyUjLvERfU+AVrymQITadzDMNe6//+ObxP4VVoDsDi
+ PtfEjV5VvmmKEO4UOE1nDpJKK7pde2D2jZcbeeQKi7FhIJbhCt1Zn96tR09NcwGm0DrG79aUI2w
+ 7waXvI2nBWmzsmdvP5m6fUzi7e3AEmTbPRlkkM71iU3BQgwiFM7HvNnj/FbQxMrsWfSzRWxnyYl
+ RmIoL8BgU+5gLMYoTLNjeqpjs4r9t4zqlQEtiuRu48++m8CutKsrxmTLLDA412TrOZTRGeO/9qu
+ tWqdZPESNn+B8cvuFQMHhjqGoRus/Z9jPR7eMtzSatOkjYmg/TBUTQ1pwPhlVuVRqoVWo1a5Ykt
+ ZpDhImJHp4PlMvxMImAYZlfqBSypP+uKOi3oo55f5oAk3IstOyhBmlaRPMHE8us4htBgO9vLvxr
+ DalggzfOW7SMsENxYvA==
+X-Authority-Analysis: v=2.4 cv=Vp+2kO2n c=1 sm=1 tr=0 ts=6afa32b3 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=8nJEP1OIZ-IA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=tpM8CJlwf7uhpglF1g9U:22 a=VwQbUJbxAAAA:8
+ a=9R54UkLUAAAA:8 a=VabnemYjAAAA:8 a=RAyg9Hr4hlSmefgnMj4A:9 a=3ZKOabzyN94A:10
+ a=wPNLvfGTeEIA:10 a=YTcpBFlVQWkNscrzJ_Dz:22 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-15_07,2026-11-11_03,2025-10-01_01
 
-On 11/13/26 9:59 PM, Lorenzo Stoakes (ARM) wrote:
-> Sorry but as I said to David I really question what you're doing with this
-> series on the mm side, and I wonder whether we should even consider it for
-> this cycle, frankly, given [0].
-
-I was not aware, sorry. Considering this, I am happy to wait until
-7.5-rc1 to send the next version.
-
-> And, myself being the fool who is engaged in the Sisyphean task of
-> converting VMA flags everywhere, you can imagine my delight when I saw that
-> you (seemingly quite knowingly!) chose to abuse that API, writing code that
-> I'll personally have to rewrite later.
+On Sun, Nov 15, 2026 at 04:01:29AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found more severe
+> issue(s) in other patches of this series. This mail is only an FYI, in case
+> you want to address the nit picks below when you respin.
 > 
-> Don't do that please :)
+> Low priority / nit picks for your consideration:
+> 
+> - [Low] The new `vsock` generic netlink family defines `dev-netns-set`
+>   (VSOCK_CMD_DEV_NETNS_SET) as a do-request with no reply.
+> 
+> --
+> 
+> vsock: add a netlink command to assign the g2h device to a netns
+> 
+> This patch adds a vsock generic netlink family. VSOCK_CMD_DEV_NETNS_SET
+> moves the guest's G2H vsock device into a given network namespace, and
+> VSOCK_CMD_DEV_NETNS_GET reports the assignment as an nsid relative to
+> the caller. Connected sockets that can no longer reach the device are
+> closed with ECONNRESET, and an assignment that would cause a CID
+> collision is refused.
+> 
+> Link: https://lore.kernel.org/all/20200427142518.uwssa6dtasrp3bfc@steredhat/
+> 
+> > diff --git a/Documentation/netlink/specs/vsock.yaml b/Documentation/netlink/specs/vsock.yaml
+> > new file mode 100644
+> > index 0000000000000..f260ee88b1402
+> > --- /dev/null
+> > +++ b/Documentation/netlink/specs/vsock.yaml
+> 
+> [ ... ]
+> 
+> > +operations:
+> > +  list:
+> > +    -
+> > +      name: dev-netns-set
+> > +      doc: |
+> > +        Set the network namespace of the guest's vsock device.
+> 
+> [ ... ]
+> 
+> > +        The assignment holds a reference on the namespace.
+> > +      attribute-set: vsock
+> > +      flags: [admin-perm]
+> > +      do:
+> > +        request:
+> > +          attributes:
+> > +            - netns-fd
+> > +            - netns-pid
+> 
+> [Severity: Low]
+> This isn't a bug, but should dev-netns-set have a reply block here?
+> 
+> The spec gives dev-netns-set a request and no reply. As a result,
+> vsock_nl_dev_netns_set_doit() only returns an errno and the caller gets a
+> bare ACK.
+> 
+> The netlink guidance for new families says every operation should reply
+> with a full message that identifies the resulting object. It also says
+> that once a command only ACKs, the ACK-only behaviour becomes uAPI and
+> cannot be changed later.
+> 
+> The v3 revision replied with netns-id. The v5 changelog says the reply
+> was dropped at Stefano's request, so this looks deliberate. Since this
+> family has not been released yet, could that decision be checked once
+> more?
+> 
+> A netns-id reply would tell the caller where the device ended up,
+> relative to its own namespace, without a second dev-netns-get request.
 
-I was also not aware of the ongoing effort, I'll use the new API.
+Actually, now that we're taking a netns-fd/netns-pid, the reply makes
+sense because it can be something besides the current netns.
 
-> Please also do not keep respinning based on sashiko feedback. FIRST get a
-> clear understanding of what maintainers want.
-> 
-> Sashiko is a bug finder, not a reviewer.
-> 
-> And see [1]:
-> 
-> "Wait for a minimum of one week before resubmitting or pinging reviewers -
-> possibly longer during busy times like merge windows."
-> 
-> Please only respin once a week at the minimum.
+pw-bot: cr
 
-Understood. For what it's worth, each version went out about a week
-after the previous one, but fair enough, I should have waited for David
-and you to agree on direction.
+-Bobby
+
+> 
+> > diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> > index 37abde1ca26cd..d4d88c8cf142f 100644
+> > --- a/net/vmw_vsock/af_vsock.c
+> > +++ b/net/vmw_vsock/af_vsock.c
+> 
+> [ ... ]
+> 
+> > +int vsock_nl_dev_netns_set_doit(struct sk_buff *skb, struct genl_info *info)
+> > +{
+> 
+> [ ... ]
+> 
+> > +	err = vsock_g2h_net_assign(net, info->extack);
+> > +	put_net(net);
+> > +
+> > +	return err;
+> > +}
+> 
+> This is where a reply would be built, for example by reusing
+> vsock_nl_dev_netns_fill() as vsock_nl_dev_netns_get_doit() does.
+> 
+> -- 
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261113-vsock-guest-ns-v6-0-3737ce4673c0%40meta.com
