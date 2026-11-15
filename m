@@ -1,79 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.132
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794730328;
-	b=jKsYk8McN8if+BC8NYnHfGPxD+lwSr5e/qRyCiuOZDk4Y7Z+PS8PWgAsXNpt3Q8U5DBX
-	 zJcli+knOSbWt/R1nJ63ih3zaxgJ9RXVV8PdAu6hYH0MU93/Z90adEXpIYrws9O80wSvp
-	 2MsTFnqwyMeXot8GEr7LuIfJJENFbP3h1xedCLnHxt5Ajt57/HJDFcSqOw/bDwrQq3I05
-	 2NTOhzyHjErO+m7Vfr/4MR5LKgszatOeMHM3TpS4CfffFn2uklbSpAfnWb5zCXQkPD5M2
-	 70WJvsyJzgG8wipov5P2WGXxTylRZORkj/x8DUPxQkBXrUCgwJ8ZR3qaSXdop/LjIyA==
+	t=1794732910;
+	b=sdAFDMIo5Jjy4gXi+F9Z7ckAf05/UDPp1s7LW1AdiflyhS7iVWaydmjd+VinVZHxjlpB
+	 pprn4eVjIEzwCt1kpn/JKqsDHgXdQZssrKu58oZk6wZSwreheFoh03mfNav6ujthCZG0y
+	 uTjNx6iIJi/k7iK5s8Jilr/T+qBPLP9AhfO+Qk3Y8RyVH20buQTHR5wyoACLYfwlLhOmT
+	 kdqNmLaR/rTxP0/K80JGWOXUvMqHD9mIAkKxe5IPNRvnbLACmSStMjVXu+DW0aT4s5KGS
+	 mTez4ZJnWLrYLuTMRL1SQpIlcMAR+OtQUdqUpSrrujIn6uot56t++U5Aro0DvNXEqaQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794730328;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:X-Proofpoint-Reinject:X-QCInternal:
-	 X-QCInternal:X-Proofpoint-ORIG-GUID:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=fUa0H0ztFNFxbRvfr5CH/40+4HwV2xqZXcXOuIDf7nY=;
-	b=p1T1nxNz1C6x/TjN6H7g99XP7ndq0XAXADLzSwRtlQ6n1DDNUZZl62KGi3v/lVuomU0E
-	 4q6+jSAmp3PIvYF2Zkv4U0sxKi4wQr/yd5AsiEQ2svUQX20dwOes5qywmjXAM+tky5i/K
-	 Vi9EXw3Rc9tnA1oTONlxg5spxInVyY7ARlHY1IFOLqWXAa9rz+sx147CfdqHbvWAyWJWN
-	 2Ar6MTJYn3+KB1V+zuZLAobz3ovK/Pya0EjXdeCiuELCWBY7A1Lb2eGrImxIn6S59s0q4
-	 vBSH2PTgfczQmeB4j33R6Q+m9SvFvgXloc01CcHwPiLSm00SKBWeGiQ/xAeUDncSzeQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794732910;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=2W9g589hYI/qXRjeFg9GTGFNeMUzzFOuJrEl7Zvx7OU=;
+	b=lv2YHn3ReIXkKRokYan450X+WaUMOpdyd3EuQbqJRxV4ina4Gpis3IctoCWtgpfUZdCu
+	 e9UEhCLLRNA8Y/KR/8ZO/zA314QZpWHx5ekpqz3SWWAF2TKpsRY4/YLxf3ROKvdNlu5qx
+	 Ufs4+N+YAlu9rstFeljfh3OgacXO3mj4IoQkOgxbPVbUGzEdXQd1YkqUuCgclRu92H80G
+	 bbRgcTjClBtY9UcYnzIbnvKfxt/b8r/Xvt6lFqweEuKr8qjTi2gDWd/eNp1/vaWrBdtrJ
+	 Wmo8UhdcOxZncLqn91LYoh6R4ZL2uaBXVX8FZnsOOK4LsWCopKmLTUJA44T/OGkq9oA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=i62iclQZ;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="SGeRgf/z";
+	arc=none smtp.remote-ip=74.125.227.132
+Received: from mail-pj2-f4.google.com (mail-pj2-f4.google.com [74.125.227.132])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C983606A31A;
-	Sun, 15 Nov 2026 08:12:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9C983606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A022B606A323
+	for <kvm@vger.kernel.org>; Sun, 15 Nov 2026 08:55:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A022B606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=i62iclQZ
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AF7vviY2205269;
-	Sun, 15 Nov 2026 08:11:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=fUa0H0ztFNFxbRvfr5CH/40+4HwV2xqZXcX
-	OuIDf7nY=; b=i62iclQZDxxp/ozqj9EOgfArEp6xpaFMkgRosd357rXah9VU2B+
-	5YLPQsPLWAY0pHLsE7E6f1Za6/2pMl869w2nUWtF1YX5AA0VYP4jobldKnoco8Lw
-	iJ099NgEiUEs0iIZAtfG0/zUN2EieojtjJ3TFnwjRaBmqo00/baibTMpRbnC+YTi
-	4gK9sZkzD4EhyRv0ijGw3ROrdnWoD5k1pRDvSlX9IsYhx6nqROObMANqZYo5WwZX
-	1w1FdUQ8mJfthy706N3cqgcyDSaEzIMCs8q8KTyx0uwdp1BQDVEr1TzpOc4srtsL
-	OEQvdts+6FpzLmhbNwzl4HD0uHtzC3GK+IA==
-Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hxhk22k1m-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sun, 15 Nov 2026 08:11:53 +0000 (GMT)
-Received: from pps.filterd (apblrppmta02.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AF8BofP2472710;
-	Sun, 15 Nov 2026 08:11:50 GMT
-Received: from hu-devc-blr-u24-a.qualcomm.com (hu-anuppate-blr.qualcomm.com [10.131.36.165])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 6AF8Bo7n2472702
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sun, 15 Nov 2026 08:11:50 +0000 (GMT)
-Received: by hu-devc-blr-u24-a.qualcomm.com (Postfix, from userid 486687)
-	id ACC01248E2; Sun, 15 Nov 2026 13:41:49 +0530 (+0530)
-From: Anup Patel <anup.patel@oss.qualcomm.com>
-To: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
-        Atish Patra <atish.patra@linux.dev>,
-        Andrew Jones <andrew.jones@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Anup Patel <anup@brainfault.org>,
-        kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
-        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Anup Patel <anup.patel@oss.qualcomm.com>
-Subject: [PATCH v2] RISC-V: KVM: Convert IMSIC vsfile_lock to a raw spinlock
-Date: Sun, 15 Nov 2026 13:41:49 +0530
-Message-ID: <20261115081149.901590-1-anup.patel@oss.qualcomm.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SGeRgf/z
+Received: by mail-pj2-f4.google.com with SMTP id d9443c01a7336-2e96b8bfb43so7617975ad.0
+        for <kvm@vger.kernel.org>; Sun, 15 Nov 2026 00:55:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794732909; x=1795337709; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2W9g589hYI/qXRjeFg9GTGFNeMUzzFOuJrEl7Zvx7OU=;
+        b=SGeRgf/zTmXTFO/Meao9ef7XXArdfTx4NyVqdNIY9tHGowAM1YFhGCePO7ukhUTHtc
+         KsorIap36rJYj+xZ8ecqWCUOkcNPt81shI9WXLvZ8A8hnPSOnDr34sIoOv4Lt00Wz6CZ
+         FMG2N6Kp0j6488k2DV5SMxPPgrR6qaxgyRrWLXTM3PulbdXlqFwwSxy11s6MmTnGJODE
+         hTym7EYH+wdwCreK/Id6ZuNjACN74YvvsJoMFdq82shwi0u6ZIbuWQuAznKtmdAn0PMH
+         4lK10Sxai10BsDEd5NJ6V4HuPYxYw2vg6Lgngx/5OsoMbMzzscc2kSpGvB5C94gPpa0/
+         SAMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794732909; x=1795337709;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2W9g589hYI/qXRjeFg9GTGFNeMUzzFOuJrEl7Zvx7OU=;
+        b=tLbIVdntBC/JW6X5ws7+Hqi4zOieKnmOSwmgJsozYQMuj1F9f32vK5xCFSbpGtmHtI
+         dsyNPohwfZUiLfqcTnec7EqM4sSZyMS/wTl2chESlPbiewDTsB0YNLiGLW3reQwwJHD9
+         XqH1xuKj2VXyoLUilb1BqzJ5/7YjIg9CRO4x7232Aipud8XZk2BXtSY1LzbSKBVd5HJb
+         wgPfdN/k9T8jBRALXXA8ybLb2f5GdUFZtflCdZi5DNWIZoj4G33+/gH3Qmo/PFoZIss2
+         32Bhu1E2Xj1E3uHI3B3CrHSrGuYRoz4jS7jz2fX4zaXVps0g24BLKX3u2IZZz4H3i2Q0
+         H/Lw==
+X-Forwarded-Encrypted: i=1; AL+hErGaTOGJVwBnacYnijXRGGkqWhdrbXp2imI524Spkz70bnvYhGRi9ezcOQwXQQIV36YZM9o=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9a1PjZgErfliIsKHzjWNMrX2Bj2dnavRnuCrwtY6aBwwTDuADd
+	fzO7iPTLRW7sFFs34yUzhvYAzLXn7Zi72SFpXE9HFNZsG8tWdpw7558O
+X-Gm-Gg: AYBFou1i+5nyNmFIjEh9/SeC9WLtd0e3bpQjO32kCUnbv444xpyt4ziBqqtIxQ2HrKO
+	LV3Z7dhi8Z6y0xH9yAuqNML+R5jG4kutlLg3fozRbZZzLlTmo8suSxMv82b5g3GpqdVV/v9LrxQ
+	f0KnrqmiW7mVbTLCeUg09ac8V+ciRO2KinylSzO0tNCZkMzhu1xe/SiVsX7k+1DnLuwhWn2MxH4
+	8r4/IBvZF1bVBgN83JKU7pXFq9awSplEAWw3Zr1TE8UNOfQ6PedOjFssRR+09oonyZbhCNtQdam
+	IHc6dega2PthhanCnz8TM+8Kf50EXNyOtXkUhIAwFpjzWw2KT2P5vndIUhW6m09a2tiuuCB5DpI
+	kM0ItFAz/wrG3B6yT6Aayhgt4QBle3bWcB1Z9WuVj/aOWLL8q6TyW0U6biAV5RCmy47QDC9Nd4m
+	AgdybIfzxJr08gHYC4VUwxdfAtHLsYbXCCk9gdrxLfvOu4uDCicCYyISNmRnE4UVe4Fk2LJ6mFN
+	oj2kr6x7+/iSdzx9mbRbDOwxDqMwlU0rQ0VYH4erqCyi6a2iBadgFYaMAXwadrxNtLwm65B+ODJ
+	hcrHhZzITxtyenWv50IseZxK81daeiK5WK6/aeAofq8=
+X-Received: by 2002:a17:90b:48c3:b0:3b0:b36b:66fc with SMTP id 98e67ed59e1d1-3b1b0cac932mr7318329a91.63.1794732908821;
+        Sun, 15 Nov 2026 00:55:08 -0800 (PST)
+Received: from q-Legion-Y7000-IRX9.. ([113.54.187.246])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cddc160a190sm2879089a12.2.2026.11.15.00.55.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Nov 2026 00:55:08 -0800 (PST)
+From: "Bingyu.Xian" <shanbeeyoo@gmail.com>
+To: anup@brainfault.org
+Cc: atish.patra@linux.dev,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	zhouquan@iscas.ac.cn,
+	shanbeeyoo@gmail.com,
+	linux-kselftest@vger.kernel.org,
+	shuah@kernel.org,
+	pbonzini@redhat.com,
+	seanjc@google.com
+Subject: [PATCH] KVM: selftests: riscv: Test the SBI STA shared memory lifecycle
+Date: Sun, 15 Nov 2026 16:54:57 +0800
+Message-Id: <20261115085457.889873-1-shanbeeyoo@gmail.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,296 +108,231 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-ORIG-GUID: rt763E9qN95eSkS-VYNd9oSGTjgbV9Q0
-X-Authority-Analysis: v=2.4 cv=QanzLcbv c=1 sm=1 tr=0 ts=6af96949 cx=c_pps
- a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=gowsoOTTUOVcmtlkKump:22 a=EUspDBNiAAAA:8 a=tOZApgkiDm8jHLQLuvUA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE1MDAzMiBTYWx0ZWRfXz1twMmDAI67m
- 93+/0v6JlKlCoh9rmjAH1fvgHno6x2LVMfHHASHeEV7BYpW7GFoZEM1ttkPwHCrleT6I2fXozfZ
- RrvqRJk8bo/lLD5QEqM4oEoMKvTuZhD6YtimpgA9qgmzxC2JW0sKUhwE9h26jBp6WnJWxdug7bz
- yPWSXkra1QuKRjyiFja0VN3GB6dbivXDUz6Icn2C1o/1MutYcPEWP2BWnlGekXvVIgLzLkdNgEY
- VB05jYVka7Yy7bSMT/8BUgG3CNbUJ8xTkI3yfeJcWvfi2RiwhyFe+yOLPMaU+fQPJBKzBpb3HiZ
- GKoCih61Wb+Vtban2dvFj6T2nk2xkjO20yFPGXt1u9G0ARYuWmFYn1fnJL2d/vw8qNp5umE/cST
- mxsY0AD4tBrTXjFXMBlaEIXG1oX6yF7ZB1nSEYrG+P7+ZS1XPbxyLY6Wfz9UqAyBXxTDjtlvoVx
- Xz5afzp2X4+GAbIeG+g==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE1MDAzMiBTYWx0ZWRfXwqyJ1ELKz4x6
- I4FanG0zWiT1K4AG9vRxrUMSP/84aMn2lttNHR5QHdX8jkYqSiOasuoC0Y6RNRKOlTtG83SQ8fZ
- h44F1PfQiFrm42oQY+bKCzKuAYkgblk=
-X-Proofpoint-GUID: rt763E9qN95eSkS-VYNd9oSGTjgbV9Q0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-15_03,2026-11-11_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 lowpriorityscore=0 clxscore=1015 malwarescore=0 impostorscore=0
- bulkscore=0 priorityscore=1501 suspectscore=0 spamscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611150032
 
-The kvm_riscv_vcpu_aia_imsic_put() runs from the scheduler preemption
-notifier with the raw runqueue lock held, so it must not take vsfile_lock,
-an rwlock_t, which sleeps on PREEMPT_RT. All vsfile_lock critical sections
-are short, so a raw spinlock is fine.
+The RISC-V steal-time test checks the UAPI alignment constraints and
+compares stolen time with the host run delay. It does not exercise
+changes to the shared page after accounting has been enabled.
 
-In addition, converting vsfile_lock to raw spinlock allows us to drop
-the vsfile_hgei_lock and the raw_spin_unlock() will internally call
-mmiowb_spin_unlock() which in-turn drains the write-buffer at the time
-of releasing vsfile_lock.
+Extend the existing test to check that disabling STA stops shared-page
+updates and that reconfiguring it leaves the old shared page unchanged.
+Place the second STA structure at the end of another page and verify
+that updates mark the appropriate page dirty.
 
-Co-developed-by: Andrew Jones <andrew.jones@linux.dev>
-Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
-Signed-off-by: Anup Patel <anup.patel@oss.qualcomm.com>
+Discard the second backing page with MADV_DONTNEED and check that a
+subsequent KVM_RUN resumes STA updates on the replacement page and
+marks it dirty. Read the replacement page before KVM_RUN so that a
+stale write into the old backing page cannot satisfy the assertions.
+
+Keep these checks in steal_time instead of adding another test binary.
+The test does not depend on a gfn-to-pfn cache implementation.
+
+Assisted-by: YuanSheng: deepseek-v4-pro
+Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
+Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
+Signed-off-by: bingyu.xian <shanbeenyoo@gmail.com>
 ---
-Changes since v1:
- - Use writel() instead of writel_relaxed() because mmiowb_spin_unlock()
-   will be only called by raw_spin_unlock() when writel() is called from
-   critical section.
- - Use swfile_extirq_lock in imsic_swfile_read() to serialize clearing
-   IRQ_VS_EXT.
----
- arch/riscv/kvm/aia_imsic.c | 82 +++++++++++++++++++++-----------------
- 1 file changed, 45 insertions(+), 37 deletions(-)
+Tested with a freshly built RISC-V kernel and KVM module from the base
+commit below, running as a QEMU TCG guest with H extension enabled:
+  - steal_time: 4 lifecycle checks and the existing 4 vCPU cases pass
+  - CONFIG_DEBUG_ATOMIC_SLEEP=y and CONFIG_PROVE_LOCKING=y
+  - no kernel diagnostics observed
+  - x86 steal_time build also passes (not run)
 
-diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
-index 302938972aa0..c5966019cd1f 100644
---- a/arch/riscv/kvm/aia_imsic.c
-+++ b/arch/riscv/kvm/aia_imsic.c
-@@ -47,9 +47,7 @@ struct imsic {
- 	 */
- 
- 	/* IMSIC VS-file */
--	rwlock_t vsfile_lock;
--	/* Writers hold both locks; scheduler-out only takes vsfile_hgei_lock. */
--	raw_spinlock_t vsfile_hgei_lock;
-+	raw_spinlock_t vsfile_lock;
- 	int vsfile_cpu;
- 	int vsfile_hgei;
- 	void __iomem *vsfile_va;
-@@ -490,17 +488,6 @@ static void imsic_vsfile_local_update(int vsfile_hgei, u32 nr_eix,
- 	csr_write(CSR_VSISELECT, old_vsiselect);
+This exercises baseline STA behavior and does not depend on an STA
+caching implementation. The lifecycle checks also apply cleanly to
+riscv_kvm_next at 633b3931a87438282d6454646ff40c669a6896cb.
+
+Test logs (verbatim excerpt from the 2026-11-15 QEMU run):
+  STA_LIFECYCLE_KERNEL=7.4.0-rc2-sta-lifecycle+
+  Random seed: 0x35d6f94c
+  TAP version 13
+  1..8
+  ok 1 STA shared page updates and is marked dirty
+  ok 2 STA disable stops shared page updates
+  ok 3 STA reconfiguration updates only the new page
+  ok 4 STA updates recover after backing page invalidation
+  # VCPU0: total-stolen-time=3269800 test-stolen-time=3269800
+  VCPU0:
+      sequence:  6
+      flags:     0
+      steal:     3269800
+      preempted: 0
+      pad:      00000000000000000000000000000000000000000000000
+  ok 5 vcpu0
+  # VCPU1: total-stolen-time=898700 test-stolen-time=898700 (BONUS: guest test-stolen-time even exactly matches test-run_delay)
+  VCPU1:
+      sequence:  4
+      flags:     0
+      steal:     898700
+      preempted: 0
+      pad:      00000000000000000000000000000000000000000000000
+  ok 6 vcpu1
+  # VCPU2: total-stolen-time=654000 test-stolen-time=654000 (BONUS: guest test-stolen-time even exactly matches test-run_delay)
+  VCPU2:
+      sequence:  4
+      flags:     0
+      steal:     654000
+      preempted: 0
+      pad:      00000000000000000000000000000000000000000000000
+  ok 7 vcpu2
+  # VCPU3: total-stolen-time=800700 test-stolen-time=800700 (BONUS: guest test-stolen-time even exactly matches test-run_delay)
+  VCPU3:
+      sequence:  4
+      flags:     0
+      steal:     800700
+      preempted: 0
+      pad:      00000000000000000000000000000000000000000000000
+  ok 8 vcpu3
+  # Totals: pass:8 fail:0 xfail:0 xpass:0 skip:0 error:0
+  STA_LIFECYCLE_STATUS=0
+  STA_LIFECYCLE_PASS
+
+ tools/testing/selftests/kvm/steal_time.c | 113 +++++++++++++++++++++++
+ 1 file changed, 113 insertions(+)
+
+diff --git a/tools/testing/selftests/kvm/steal_time.c b/tools/testing/selftests/kvm/steal_time.c
+index 82b94a82d..059f7fa60 100644
+--- a/tools/testing/selftests/kvm/steal_time.c
++++ b/tools/testing/selftests/kvm/steal_time.c
+@@ -8,6 +8,7 @@
+ #include <time.h>
+ #include <sched.h>
+ #include <pthread.h>
++#include <sys/mman.h>
+ #include <linux/kernel.h>
+ #include <asm/kvm.h>
+ #ifdef __riscv
+@@ -329,6 +330,111 @@ static void steal_time_dump(struct kvm_vm *vm, u32 vcpu_idx)
+ 	pr_info("\n");
  }
  
--static void imsic_vsfile_set_hgei(struct imsic *imsic, int cpu, int hgei)
--{
--	unsigned long flags;
--
--	/* Serialize the CPU/HGEI pair with scheduler-out's wakeup setup. */
--	raw_spin_lock_irqsave(&imsic->vsfile_hgei_lock, flags);
--	imsic->vsfile_cpu = cpu;
--	imsic->vsfile_hgei = hgei;
--	raw_spin_unlock_irqrestore(&imsic->vsfile_hgei_lock, flags);
--}
--
- static void imsic_vsfile_cleanup(struct imsic *imsic)
++static gpa_t lifecycle_second_gpa;
++
++static void sta_lifecycle_guest(void)
++{
++	sta_set_shmem(ST_GPA_BASE, 0);
++	GUEST_SYNC(0);
++	/* The first update takes place on the next KVM_RUN. */
++	GUEST_SYNC(1);
++
++	sta_set_shmem(INVALID_GPA, 0);
++	GUEST_SYNC(2);
++	GUEST_SYNC(3);
++
++	sta_set_shmem(lifecycle_second_gpa, 0);
++	GUEST_SYNC(4);
++	GUEST_SYNC(5);
++
++	/* Userspace discards the second backing page before resuming us. */
++	GUEST_SYNC(6);
++	sta_set_shmem(INVALID_GPA, 0);
++	GUEST_DONE();
++}
++
++static void sta_lifecycle_run(struct kvm_vcpu *vcpu, unsigned int stage)
++{
++	struct ucall uc;
++
++	vcpu_run(vcpu);
++	switch (get_ucall(vcpu, &uc)) {
++	case UCALL_SYNC:
++		TEST_ASSERT_EQ(uc.args[1], stage);
++		break;
++	case UCALL_DONE:
++		TEST_ASSERT_EQ(stage, 7);
++		break;
++	case UCALL_ABORT:
++		REPORT_GUEST_ASSERT(uc);
++	default:
++		TEST_FAIL("Unexpected STA lifecycle exit at stage %u", stage);
++	}
++}
++
++static void check_sta_page(struct sta_struct *st)
++{
++	TEST_ASSERT(st->sequence && !(st->sequence & 1),
++		    "Expected a completed STA update, sequence=%u", st->sequence);
++	TEST_ASSERT_EQ(st->flags, 0);
++	TEST_ASSERT_EQ(st->preempted, 0);
++}
++
++static void check_sta_lifecycle(void)
++{
++	struct sta_struct snapshot, *first, *second;
++	struct kvm_vcpu *vcpu;
++	struct kvm_vm *vm;
++	unsigned long dirty = 0;
++	void *second_page;
++
++	vm = vm_create_with_one_vcpu(&vcpu, sta_lifecycle_guest);
++	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, ST_GPA_BASE,
++				    1, 2, KVM_MEM_LOG_DIRTY_PAGES);
++	/* Also exercise an STA structure ending exactly at a page boundary. */
++	WRITE_AND_SYNC_TO_GUEST(vm, lifecycle_second_gpa,
++				ST_GPA_BASE + 2 * vm->page_size - sizeof(struct sta_struct));
++	first = addr_gpa2hva(vm, ST_GPA_BASE);
++	second = addr_gpa2hva(vm, lifecycle_second_gpa);
++	second_page = addr_gpa2hva(vm, ST_GPA_BASE + vm->page_size);
++
++	sta_lifecycle_run(vcpu, 0);
++	sta_lifecycle_run(vcpu, 1);
++	check_sta_page(first);
++	kvm_vm_get_dirty_log(vm, 1, &dirty);
++	TEST_ASSERT(dirty & BIT(0), "STA update did not dirty the first page");
++	ksft_test_result_pass("STA shared page updates and is marked dirty\n");
++
++	sta_lifecycle_run(vcpu, 2);
++	snapshot = *first;
++	sta_lifecycle_run(vcpu, 3);
++	TEST_ASSERT(!memcmp(first, &snapshot, sizeof(snapshot)),
++		    "Disabled STA shared page was modified");
++	ksft_test_result_pass("STA disable stops shared page updates\n");
++
++	sta_lifecycle_run(vcpu, 4);
++	sta_lifecycle_run(vcpu, 5);
++	check_sta_page(second);
++	TEST_ASSERT(!memcmp(first, &snapshot, sizeof(snapshot)),
++		    "Old STA shared page was modified after reconfiguration");
++	dirty = 0;
++	kvm_vm_get_dirty_log(vm, 1, &dirty);
++	TEST_ASSERT(dirty & BIT(1), "STA update did not dirty the new page");
++	ksft_test_result_pass("STA reconfiguration updates only the new page\n");
++
++	TEST_ASSERT_EQ(madvise(second_page, vm->page_size, MADV_DONTNEED), 0);
++	TEST_ASSERT_EQ(second->sequence, 0);
++	sta_lifecycle_run(vcpu, 6);
++	check_sta_page(second);
++	dirty = 0;
++	kvm_vm_get_dirty_log(vm, 1, &dirty);
++	TEST_ASSERT(dirty & BIT(1), "Recovered STA update did not dirty the page");
++	ksft_test_result_pass("STA updates recover after backing page invalidation\n");
++
++	sta_lifecycle_run(vcpu, 7);
++	kvm_vm_free(vm);
++}
++
+ static void check_steal_time_uapi(void)
  {
- 	int old_vsfile_hgei, old_vsfile_cpu;
-@@ -512,13 +499,14 @@ static void imsic_vsfile_cleanup(struct imsic *imsic)
- 	 * VCPU is being destroyed.
- 	 */
+ 	struct kvm_vm *vm;
+@@ -535,9 +641,16 @@ int main(int ac, char **av)
  
--	write_lock_irqsave(&imsic->vsfile_lock, flags);
-+	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
- 	old_vsfile_hgei = imsic->vsfile_hgei;
- 	old_vsfile_cpu = imsic->vsfile_cpu;
--	imsic_vsfile_set_hgei(imsic, -1, -1);
-+	imsic->vsfile_cpu = -1;
-+	imsic->vsfile_hgei = -1;
- 	imsic->vsfile_va = NULL;
- 	imsic->vsfile_pa = 0;
--	write_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
+ 	ksft_print_header();
+ 	TEST_REQUIRE(is_steal_time_supported(vcpus[0]));
++#ifdef __riscv
++	ksft_set_plan(NR_VCPUS + 4);
++#else
+ 	ksft_set_plan(NR_VCPUS);
++#endif
  
- 	memset(imsic->swfile, 0, sizeof(*imsic->swfile));
+ 	check_steal_time_uapi();
++#ifdef __riscv
++	check_sta_lifecycle();
++#endif
  
-@@ -553,6 +541,7 @@ static void imsic_swfile_read(struct kvm_vcpu *vcpu, bool clear,
- 			      struct imsic_mrif *mrif)
- {
- 	struct imsic *imsic = vcpu->arch.aia_context.imsic_state;
-+	unsigned long flags;
- 
- 	/*
- 	 * We don't use imsic_mrif_atomic_xyz() functions to read and
-@@ -561,11 +550,15 @@ static void imsic_swfile_read(struct kvm_vcpu *vcpu, bool clear,
- 	 * a temporary MRIF on stack.
- 	 */
- 
-+	raw_spin_lock_irqsave(&imsic->swfile_extirq_lock, flags);
-+
- 	memcpy(mrif, imsic->swfile, sizeof(*mrif));
- 	if (clear) {
- 		memset(imsic->swfile, 0, sizeof(*imsic->swfile));
- 		kvm_riscv_vcpu_unset_interrupt(vcpu, IRQ_VS_EXT);
- 	}
-+
-+	raw_spin_unlock_irqrestore(&imsic->swfile_extirq_lock, flags);
- }
- 
- static void imsic_swfile_update(struct kvm_vcpu *vcpu,
-@@ -606,7 +599,7 @@ bool kvm_riscv_vcpu_aia_imsic_has_interrupt(struct kvm_vcpu *vcpu)
- 	 * only check for interrupt when IMSIC VS-file is being used.
- 	 */
- 
--	read_lock_irqsave(&imsic->vsfile_lock, flags);
-+	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
- 	if (imsic->vsfile_cpu > -1) {
- 		/*
- 		 * This function is typically called from kvm_vcpu_block() via
-@@ -621,7 +614,7 @@ bool kvm_riscv_vcpu_aia_imsic_has_interrupt(struct kvm_vcpu *vcpu)
- 		else
- 			ret = !!(csr_read(CSR_HGEIP) & BIT(imsic->vsfile_hgei));
- 	}
--	read_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
- 
- 	return ret;
- }
-@@ -646,10 +639,10 @@ void kvm_riscv_vcpu_aia_imsic_put(struct kvm_vcpu *vcpu)
- 	if (!kvm_vcpu_is_blocking(vcpu))
- 		return;
- 
--	raw_spin_lock_irqsave(&imsic->vsfile_hgei_lock, flags);
-+	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
- 	if (imsic->vsfile_cpu > -1)
- 		csr_set(CSR_HGEIE, BIT(imsic->vsfile_hgei));
--	raw_spin_unlock_irqrestore(&imsic->vsfile_hgei_lock, flags);
-+	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
- }
- 
- void kvm_riscv_vcpu_aia_imsic_release(struct kvm_vcpu *vcpu)
-@@ -663,13 +656,14 @@ void kvm_riscv_vcpu_aia_imsic_release(struct kvm_vcpu *vcpu)
- 		return;
- 
- 	/* Read and clear IMSIC VS-file details */
--	write_lock_irqsave(&imsic->vsfile_lock, flags);
-+	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
- 	old_vsfile_hgei = imsic->vsfile_hgei;
- 	old_vsfile_cpu = imsic->vsfile_cpu;
--	imsic_vsfile_set_hgei(imsic, -1, -1);
-+	imsic->vsfile_cpu = -1;
-+	imsic->vsfile_hgei = -1;
- 	imsic->vsfile_va = NULL;
- 	imsic->vsfile_pa = 0;
--	write_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
- 
- 	/* Do nothing, if no IMSIC VS-file to release */
- 	if (old_vsfile_cpu < 0)
-@@ -726,10 +720,10 @@ int kvm_riscv_vcpu_aia_imsic_update(struct kvm_vcpu *vcpu)
- 		return 1;
- 
- 	/* Read old IMSIC VS-file details */
--	read_lock_irqsave(&imsic->vsfile_lock, flags);
-+	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
- 	old_vsfile_hgei = imsic->vsfile_hgei;
- 	old_vsfile_cpu = imsic->vsfile_cpu;
--	read_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
- 
- 	/* Do nothing if we are continuing on same CPU */
- 	if (old_vsfile_cpu == vcpu->cpu)
-@@ -779,11 +773,12 @@ int kvm_riscv_vcpu_aia_imsic_update(struct kvm_vcpu *vcpu)
- 	/* TODO: Update the IOMMU mapping ??? */
- 
- 	/* Update new IMSIC VS-file details in IMSIC context */
--	write_lock_irqsave(&imsic->vsfile_lock, flags);
--	imsic_vsfile_set_hgei(imsic, vcpu->cpu, new_vsfile_hgei);
-+	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
-+	imsic->vsfile_cpu = vcpu->cpu;
-+	imsic->vsfile_hgei = new_vsfile_hgei;
- 	imsic->vsfile_va = new_vsfile_va;
- 	imsic->vsfile_pa = new_vsfile_pa;
--	write_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
- 
- 	/*
- 	 * At this point, all interrupt producers have been moved
-@@ -874,6 +869,7 @@ int kvm_riscv_aia_imsic_rw_attr(struct kvm *kvm, unsigned long type,
- 	struct imsic *imsic;
- 	struct kvm_vcpu *vcpu;
- 	int rc, vsfile_hgei, vsfile_cpu;
-+	bool swfile_update = false;
- 
- 	if (!kvm_riscv_aia_initialized(kvm))
- 		return -ENODEV;
-@@ -893,7 +889,7 @@ int kvm_riscv_aia_imsic_rw_attr(struct kvm *kvm, unsigned long type,
- 	}
- 	isel = KVM_DEV_RISCV_AIA_IMSIC_GET_ISEL(type);
- 
--	read_lock_irqsave(&imsic->vsfile_lock, flags);
-+	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
- 
- 	rc = 0;
- 	vsfile_hgei = imsic->vsfile_hgei;
-@@ -902,13 +898,16 @@ int kvm_riscv_aia_imsic_rw_attr(struct kvm *kvm, unsigned long type,
- 		if (write) {
- 			rc = imsic_mrif_rmw(imsic->swfile, imsic->nr_eix,
- 					    isel, NULL, *val, -1UL);
--			imsic_swfile_extirq_update(vcpu);
-+			swfile_update = true;
- 		} else
- 			rc = imsic_mrif_rmw(imsic->swfile, imsic->nr_eix,
- 					    isel, val, 0, 0);
- 	}
- 
--	read_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+
-+	if (swfile_update)
-+		imsic_swfile_extirq_update(vcpu);
- 
- 	if (!rc && vsfile_cpu >= 0)
- 		rc = imsic_vsfile_rw(vsfile_hgei, vsfile_cpu, imsic->nr_eix,
-@@ -959,6 +958,7 @@ int kvm_riscv_vcpu_aia_imsic_inject(struct kvm_vcpu *vcpu,
- 	unsigned long flags;
- 	struct imsic_mrif_eix *eix;
- 	struct imsic *imsic = vcpu->arch.aia_context.imsic_state;
-+	bool swfile_update = false;
- 
- 	/* We only emulate one IMSIC MMIO page for each Guest VCPU */
- 	if (!imsic || !iid || guest_index ||
-@@ -970,17 +970,26 @@ int kvm_riscv_vcpu_aia_imsic_inject(struct kvm_vcpu *vcpu,
- 	if (imsic->nr_msis <= iid)
- 		return -EINVAL;
- 
--	read_lock_irqsave(&imsic->vsfile_lock, flags);
-+	raw_spin_lock_irqsave(&imsic->vsfile_lock, flags);
- 
- 	if (imsic->vsfile_cpu >= 0) {
-+		/*
-+		 * We must use writel() over here because the raw_spin_unlock()
-+		 * below will do mmiowb_spin_unlock() which in-turn drains the
-+		 * write-buffer ensuring the write is visible to the CPU owning
-+		 * the target IMSIC VS-file.
-+		 */
- 		writel(iid, imsic->vsfile_va + IMSIC_MMIO_SETIPNUM_LE);
- 	} else {
- 		eix = &imsic->swfile->eix[iid / BITS_PER_TYPE(u64)];
- 		set_bit(iid & (BITS_PER_TYPE(u64) - 1), eix->eip);
--		imsic_swfile_extirq_update(vcpu);
-+		swfile_update = true;
- 	}
- 
--	read_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+	raw_spin_unlock_irqrestore(&imsic->vsfile_lock, flags);
-+
-+	if (swfile_update)
-+		imsic_swfile_extirq_update(vcpu);
- 
- 	return 0;
- }
-@@ -1036,8 +1045,7 @@ int kvm_riscv_vcpu_aia_imsic_init(struct kvm_vcpu *vcpu)
- 
- 	/* Setup IMSIC context  */
- 	imsic->nr_msis = kvm->arch.aia.nr_ids + 1;
--	rwlock_init(&imsic->vsfile_lock);
--	raw_spin_lock_init(&imsic->vsfile_hgei_lock);
-+	raw_spin_lock_init(&imsic->vsfile_lock);
- 	imsic->nr_eix = BITS_TO_U64(imsic->nr_msis);
- 	imsic->nr_hw_eix = BITS_TO_U64(kvm_riscv_aia_max_ids);
- 	imsic->vsfile_hgei = imsic->vsfile_cpu = -1;
+ 	/* Run test on each VCPU */
+ 	for (i = 0; i < NR_VCPUS; ++i) {
+
+base-commit: 23c62304dde29abe92013d85910d03a77dada35d
 -- 
-2.43.0
+2.34.1
 
