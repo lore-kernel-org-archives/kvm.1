@@ -1,77 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.179
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794755914;
-	b=EISbxGLaPVjDG881M3berAsx4nJrcYDZ5d0BD9Q02SmMcXd0yphWYEGSRDxIhtO2YMUs
-	 v2AbRTMcp7cmyyOK7IwgQI8OViA7qjfKLmeqCJPW2hMAPWHPFkuacNBf+tn9aDyxIall0
-	 uss2Q5CZtid5V556fS47Cf4gaEJFsLKpj4VWND8lhI3fzaEzqsORHStDJ2vs61kkF/gIH
-	 J5IQVjl3zIoE7FDfM6m7MS21xQj6WEmqyxsk1rsuvGdEaBLaDVHSpmlz70X1+ET1Fy+dy
-	 MHxQWHTBVx7ZMVrOjp75AXtpbbNJZ0f2II0BOik1mzznJnaXtSeT2jaZCnyuTAKQyqw==
+	t=1794760662;
+	b=hdbzfHEq3mQaMKYBjHQ3d32MuqhbwcJLXEym5qcge0Lvp1asAjxYuuhbIgZZwhudwO1Z
+	 jk0c96AiDchvK9cBuUQx4LGK1Tr68K6qPmo9Rlx9wcKtBY9DD9gn0O5b/TP7uSrfp6xIb
+	 b4w8N9iXzreTaJdgI9hDddX3yCyR/RF7zhgbe870Ry+JsZiHvrhbJYJW+3opfh7wuIai0
+	 Bj15tF88G7ecTxLMS8cJZtLPB3cqSVWawj7ixKWMo4eYnA4LwSFAIxDHgjnhHFvuwLlhq
+	 QTk7nJawLAM2Jin1MQoVxawv+ZFcl46zF3WZelYUYtZOburXFhrMaRRUctX4bjbfmgQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794755914;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:User-Agent;
-	bh=k5Qp03CAQ8BatLGqMbyRg2JVFKmiz6vka1EtIHQp7Pc=;
-	b=tmGF7nKTk+7PbxiNHZ2bLqS6WAlYRRZgygKLEnLAwPr63kqKoMIXTtuTfzTXRCDtaZKa
-	 C2pWz6sSKU4CEhbTVcVV8WePOueHi2e3knTY+a67AKA5A6zWgejrFv2r7PMQa+YpcVhzh
-	 2UOvlkgZ8t0Eqtrt/7trE7i6Y41i47JZsA+s7jx+JqBJlrcXaqsDxPnt7Ijfx9ZfFOLh7
-	 W94s1/n0vAW39Z7nAj40K+RkQA2ScwcgFQmioUuE3xiRPDQvUfFE2Rgqv2fnfN5ACS+qT
-	 qHrEO/QCS4lCS9DHmeRh1pX53RbiR34Av5Zc/ZWl8fgM5cqxTMNurSf+0JHKfHaO+pQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794760662;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=K+gvpLnHAWCS2qej9/dKDbqHpvb2Unj69ztz/dYZD4I=;
+	b=J5CgNO0yBgjwHV0+p4ThfVfPAQwaslD0IiFUzvpWlD1/yV1nglbbD3ApjG0TS+cDuePE
+	 SXUpz9eVgR6iFhfHbF89i+AleSH48Mdf9piXv1/UO0sOr8fW7+OObcEd0SOmuLUeqC/6R
+	 QRtL1pRTX4YAwR3JvXpJqu1fQFp2prpOacXjVMyIS4JIl7nxG+bwf3gdgNdYA5OBcWiFs
+	 i1eB8P3UVO0G++VihVdaeShy2YNIIVADbotkwUS+EXWoEhZKstNZQFivcOT9g+M7V0kxn
+	 xwdTINk/8H2KzFOLj73Dmu1x3ffUD3w/pj2eTZM1tPMVf24OXdbx4kyJkLi1kSmP/bA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=axmlKbHD;
-	arc=none smtp.remote-ip=192.198.163.13
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="TAVMfL/F";
+	arc=none smtp.remote-ip=74.125.82.179
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA37606A31D
-	for <kvm@vger.kernel.org>; Sun, 15 Nov 2026 15:18:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AFA37606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97DC606A31E
+	for <kvm@vger.kernel.org>; Sun, 15 Nov 2026 16:37:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D97DC606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=axmlKbHD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794755913; x=1826291913;
-  h=date:from:to:cc:subject:message-id;
-  bh=3PUFe8lGfmRoHU6PGkmQY4a6erVkVN1VaPEhG8iDapw=;
-  b=axmlKbHDOf0dcOY3r8i6Kv030nNQuUmv/V72u8XvN/L8owk2DK5NKmhA
-   mwP4zFtY1sMC8NuwZhXZ07HfTeT7SqUJTagCUI2FgJMCRxvGhIs+H/xUG
-   igd9ycZ7qQGrvCQjVYx+eiYzPeasUWfgX0dGOxGxAjlCqfD4IqOGV8wsn
-   6ou1ZSyMLCdCLd8YcC7rCFITqb/20pbDC588vZWJmzoG3f3qtNG29wFmE
-   tcDvgVB+bszfZVfGwIpp5xuxb7c4mveRl9ub+JpNf9Qeq1oK19xLbVffT
-   /8S9mucW8DhalUjL+PTQMWqwPITcnuOXpgZy4kVe26Pwf+7TzNEP6hW1t
-   A==;
-X-CSE-ConnectionGUID: 94lalwvwQD2fhFyG1Vd/sw==
-X-CSE-MsgGUID: 6ThLRiTRQBq/B0GLamJgFQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11967"; a="3493283"
-X-IronPort-AV: E=Sophos;i="6.27,215,1787036400"; 
-   d="scan'208";a="3493283"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2026 07:18:33 -0800
-X-CSE-ConnectionGUID: hgYGchmpSnufnt+cFIY40w==
-X-CSE-MsgGUID: jj27NBEsSLeFx0dPrFBjNQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,215,1787036400"; 
-   d="scan'208";a="9500856"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 15 Nov 2026 07:18:21 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xSbzm-000000016yq-2Hw2;
-	Sun, 15 Nov 2026 15:18:18 +0000
-Date: Sun, 15 Nov 2026 23:17:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- kvm@vger.kernel.org, Farrah Chen <farrah.chen@intel.com>
-Subject: [kvm:kvm-memprot-v4 32/54] arch/loongarch/kvm/vcpu.c:167:53:
- error: expected ')'
-Message-ID: <202611152311.FOhXX4Pi-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=TAVMfL/F
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-3282db206d3so7914669eec.0
+        for <kvm@vger.kernel.org>; Sun, 15 Nov 2026 08:37:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794760661; x=1795365461; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=K+gvpLnHAWCS2qej9/dKDbqHpvb2Unj69ztz/dYZD4I=;
+        b=TAVMfL/FjyLswmQ1OblEHRo8HslRF3gicwrmde1Gm215hLqGigb1ZoLJ8PZV/CS4Gb
+         ilniSrB7HYZYBWzDpptKEH8rbtveWPXCIzkrlVwtCwDTl+kdC8t50LXkxKBy+akDCell
+         tjmcSNXsP7AGvI7U1ZN+NhVuycyA2TfbKsOJR/mjZdkVGHJ2UiQtKk/2F+4A0dPZXN+b
+         VIDphpsSG92z7rSMlzU6wn0Cwy9JQlbouj2kon93XxBEWDWjTXuEbSaLnsA0XtXKl7Wn
+         PvrwlbJUfWbnaWo5nUd5b4yLb4Fl8UsHBX9FIhPz15QW8R4osAe8KJJCn8+7Rhg4J2oQ
+         /DLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794760661; x=1795365461;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=K+gvpLnHAWCS2qej9/dKDbqHpvb2Unj69ztz/dYZD4I=;
+        b=vNKHdcYyZH4h05BGKWNsOCCJpuObObmSGhqrte4M475jkmTMcn9lNG5QRHfbhf6Mwt
+         pd2hxMn2PgHXjUnzKP9BzqNCr+px2OHE8MLnjaYD20UJPSdNQ7dAxu3SlBkuLNB5FQtN
+         FO3jpPobTZSRzvVeyU/k5nzMhk3pT77HPM3ZnowhsuK2RvUWfknqhz/j4124BnBIur3I
+         RZYVNL4LGzg69DqW0cX9yHE96kBHT+E0zhQxs2o4b5kimnDQmdZh1lGt1bGxg79uchrs
+         ux+5Ikt40JYq1BqmMt1wmgB/GhAsdAy5ZKJnQkNQ6S8WImO8Xy2+vUWJZHOU8vR8Omh2
+         kCqw==
+X-Gm-Message-State: APuU4Z9mO8sr92YVIf4Bhj7hBFzYuOIYDnlzaFEjVQJwNISHe/8E6lZq
+	CN9EjU+fJTIsjJ8ha0PEkZ4fykcB6VsdKeatqMxD5xpnbsvbEZpk3z4M
+X-Gm-Gg: AYBFou3bwincj1QcyhzpO+6eHJx8+g6LsEMYxt9pl3cQ/uL7xN4nQFSn+ik7IE+Pp2R
+	uvM8TleHM31UFhHD2BMmsrEtP1qT/jfUwEIhPkEe3WEgPo2SzGB7etBQdKwVkKGYjR8c+FeHma9
+	b6sOvqmXJYpiADcPcp4NJVLvgWuj5bTnJyOVA/YZRO6ES1/URcC7jiwTPfts7Wd5eglOX017N0i
+	hQ0vA+9QTRPDbRBFtlvrNgwOHZpplb/byj0vPyOVrNMlbKE156RQPoL3Zc2aoS5CpV2mqYx3fnY
+	0i8Xzr68zRlzC7nIqea2DZwVxLolTAoG0Doe196Zae5IWzrOZMkU7HmRGzJiRa7cbBLAIf1xgvF
+	spo8O8K0WcDXJs4iS8SboPGoCOF1x87lnEN+We4ivWLhqrDWyOPO29ZAPZ9N8I/WFg3pOHvxzOh
+	u/wTX74/shcuBKaQVpMhS42nu+EeossX4x79JIpS35jxLR8rKcImpjGNfrHpI2nQSUk5/0mxIZB
+	Ye3MrldQFqkxpE9ipx2zZPbDN5eSrNzhLNC1cCT2Dp5PKRQCp6EymK+TBCb+O74wB4qmDl2Q8M/
+	fftjUNoSAdDe2jUT27k0/9cV4RU0nuFT6iSjTrbofLzff9X2Vje3lOgCtODZIKYmxQtO
+X-Received: by 2002:a05:7022:3a87:b0:18c:e014:6f1d with SMTP id a92af1059eb24-1b503068f8cmr8823437c88.1.1794760661026;
+        Sun, 15 Nov 2026 08:37:41 -0800 (PST)
+Received: from youngkk-vm.localdomain (67.216.200.102.16clouds.com. [67.216.200.102])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-379565d269asm28775558eec.23.2026.11.15.08.37.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Nov 2026 08:37:40 -0800 (PST)
+From: Cheng Yongkang <teel4res@gmail.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [BUG] KVM: x86: INIT leaves a stale RTC pending EOI
+Date: Sun, 15 Nov 2026 08:37:33 -0800
+Message-Id: <20261115163733.227072-1-teel4res@gmail.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -80,88 +94,58 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-tree:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git kvm-memprot-v4
-head:   e71c4e83c03926c300f6c43e79b783d47ba8b588
-commit: 494d2885086430d3eb267af6aaf35093e2ba78db [32/54] KVM: Introduce kvm_check_gen()/kvm_memslots_check_gen()
-config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/20261115/202611152311.FOhXX4Pi-lkp@intel.com/config)
-compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261115/202611152311.FOhXX4Pi-lkp@intel.com/reproduce)
+Hi Sean, Paolo,
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611152311.FOhXX4Pi-lkp@intel.com/
+I hit a corner case in the in-kernel IOAPIC RTC EOI tracking. It needs
+a vCPU to get INIT before it EOIs an RTC interrupt, APICv to be
+inactive, and a VMM that injects GSI 8 with KVM_IRQ_LINE_STATUS, so it
+may be rare in practice.
 
-All errors (new ones prefixed by >>):
+When a vCPU accepts the RTC interrupt, ioapic->rtc_status records it
+in map and pending_eoi. If that vCPU then processes INIT,
+kvm_lapic_reset() clears IRR and ISR but does not touch rtc_status.
+The guest can no longer EOI that vector, so pending_eoi stays above 0
+and rtc_irq_check_coalesced() treats every later GSI 8 injection as
+coalesced. Only KVM_SET_LAPIC or KVM_SET_IRQCHIP clear it, through
+kvm_rtc_eoi_tracking_restore_*(). The lazy repair in
+ioapic_lazy_update_eoi() only runs with APICv active, so nothing
+repairs the stale entry when APICv is inactive.
 
->> arch/loongarch/kvm/vcpu.c:167:53: error: expected ')'
-     167 |                      kvm_is_error_hva(ghc->hva) || !ghc->memslot) {
-         |                                                                   ^
-   arch/loongarch/kvm/vcpu.c:166:5: note: to match this '('
-     166 |         if (unlikely(!kvm_check_gen(vcpu->kvm, ghc->generation) || gpa != ghc->gpa ||
-         |            ^
-   arch/loongarch/kvm/vcpu.c:1821:53: error: expected ')'
-    1821 |                      kvm_is_error_hva(ghc->hva) || !ghc->memslot) {
-         |                                                                   ^
-   arch/loongarch/kvm/vcpu.c:1820:5: note: to match this '('
-    1820 |         if (unlikely(!kvm_check_gen(vcpu->kvm, ghc->generation) || gpa != ghc->gpa ||
-         |            ^
-   2 errors generated.
+On v7.3 with kvm-amd.avic=N, running nested (the KVM under test is
+inside a QEMU guest), with IOAPIC pin 8 edge-triggered, vector 0x50,
+physical dest 0, and GSI 8 routed only to the IOAPIC, 6 out of 6 runs
+gave:
 
+  KVM_IRQ_LINE_STATUS(GSI 8)              -> status 1
+      LAPIC: SVR=0x1ff, IRR[0x50]=1, ISR[0x50]=0
+  INIT through KVM_SIGNAL_MSI, processed by KVM_RUN
+      LAPIC: SVR=0xff, IRR[0x50]=0, ISR[0x50]=0
+  guest re-enables the LAPIC: a stub in 32-bit protected mode
+  (set with KVM_SET_SREGS/KVM_SET_REGS) writes SVR=0x1ff through the
+  APIC MMIO page and exits with "out"
+      LAPIC: SVR=0x1ff, IRR[0x50]=0, ISR[0x50]=0
+  deassert, KVM_IRQ_LINE_STATUS(GSI 8)    -> status 0 (coalesced)
+  control: KVM_SET_LAPIC with the same LAPIC state, so
+  kvm_rtc_eoi_tracking_restore_one() drops the stale entry
+  deassert, KVM_IRQ_LINE_STATUS(GSI 8)    -> status 1
 
-vim +167 arch/loongarch/kvm/vcpu.c
+The entry is edge-triggered, so remote_irr is not involved, and GSI 8
+goes only to the IOAPIC, so the status does not come from the PIC. In
+the 0 and the 1 case the LAPIC is enabled and its IRR is empty; the
+only difference is the stale rtc_status entry.
 
-   151	
-   152	static void kvm_update_stolen_time(struct kvm_vcpu *vcpu)
-   153	{
-   154		u32 version;
-   155		u64 steal;
-   156		gpa_t gpa;
-   157		struct kvm_steal_time __user *st;
-   158		struct gfn_to_hva_cache *ghc;
-   159	
-   160		ghc = &vcpu->arch.st.cache;
-   161		gpa = vcpu->arch.st.guest_addr;
-   162		if (!(gpa & KVM_STEAL_PHYS_VALID))
-   163			return;
-   164	
-   165		gpa &= KVM_STEAL_PHYS_MASK;
-   166		if (unlikely(!kvm_check_gen(vcpu->kvm, ghc->generation) || gpa != ghc->gpa ||
- > 167			     kvm_is_error_hva(ghc->hva) || !ghc->memslot) {
-   168			if (kvm_gfn_to_hva_cache_init(vcpu->kvm, ghc, gpa, sizeof(*st))) {
-   169				ghc->gpa = INVALID_GPA;
-   170				return;
-   171			}
-   172		}
-   173	
-   174		st = (struct kvm_steal_time __user *)ghc->hva;
-   175		if (kvm_guest_has_pv_feature(vcpu, KVM_FEATURE_PREEMPT)) {
-   176			unsafe_put_user(0, &st->preempted, out);
-   177			vcpu->arch.st.preempted = 0;
-   178		}
-   179	
-   180		unsafe_get_user(version, &st->version, out);
-   181		if (version & 1)
-   182			version += 1; /* first time write, random junk */
-   183	
-   184		version += 1;
-   185		unsafe_put_user(version, &st->version, out);
-   186		smp_wmb();
-   187	
-   188		unsafe_get_user(steal, &st->steal, out);
-   189		steal += current->sched_info.run_delay - vcpu->arch.st.last_steal;
-   190		vcpu->arch.st.last_steal = current->sched_info.run_delay;
-   191		unsafe_put_user(steal, &st->steal, out);
-   192	
-   193		smp_wmb();
-   194		version += 1;
-   195		unsafe_put_user(version, &st->version, out);
-   196	out:
-   197		mark_page_dirty_in_slot(vcpu->kvm, ghc->memslot, gpa_to_gfn(ghc->gpa));
-   198	}
-   199	
+The code is unchanged in next-20261113. Xiang Zheng's "KVM: x86: Fix
+stale RTC pending-EOI tracking under AVIC" only changes
+ioapic_lazy_update_eoi(), so it does not cover the APICv-inactive
+case.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+One option is to call kvm_rtc_eoi_tracking_restore_one() from the INIT
+path of kvm_lapic_reset(), as kvm_apic_set_state() already does. I
+have not tested that.
+
+Thanks,
+Cheng Yongkang
