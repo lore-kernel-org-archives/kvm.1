@@ -1,94 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.179
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794851260;
-	b=QvWe+M0AhTwXqqfhvZGMhWfk4nFdfQsLsf8ZNSd6L2iNSqP9mH+PKW7OG+Z2JrgobqRi
-	 wB6cqHJNQtyRPylhyR26HukZ7vMdFZx6qF2d5C0ZSslQYt1JOZe3NKzUfnu+9ob3O1QWW
-	 mMbvCnsDY/KNn/0VUa9e+43xAXvX5D0QIQviY3dUTyMpYOeProlfhRquyYA5gc5xFIQxi
-	 Myg5qct5nBLrgKltuB8/65BsoBoA1BpEX2iM5l91R406fW0ehb+U76QLvavMM7YnM6YjG
-	 8CqnxR9l+IK+iZ7anBCNNu84YkmU0vOJyuBMJ1fi29TRMbOfQq8yAITQKOqxem85dAg==
+	t=1794851578;
+	b=ked/5lhJidrPnjDAQyybqZV4JWnyImPyj2YbRViTmWOGROhi8LpIOVO/7oBhXxkxgoSL
+	 UYHxAf/aQy04pA6Bp5b1uQqgGVMRpr60Eq/qYpMr0kqxMIJ8XJqHmVnzS5zm5lnFdM5mM
+	 8Zv/Vk5cTZGTv2MP4T8g6ki0JSKSNANBkWemuQjmDP5Qvph4rnsLb4U4Aexv/WnWs/epD
+	 kDwyb6wAbsfccGgKxXET/t/hzPOk87LNKOFKtUmDEKiEuS7rZGFmvtzGBWG5Pmz9gH/Kd
+	 KQYNYwPa79dOVRHcZjR9DwguzBMtwIWy4LNzMsUj6pGcudkb9xBk6M8W4oCRSD6CMLQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794851260;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-TM-AS-GCONF:X-Proofpoint-GUID:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=lSkurEuqzWY07J42xz49JInftf8xvjfRIqM1YL0tZ5c=;
-	b=nxJdRvmeveIUOdZE684M97ySmWVvwA9gbem2k4xAoWl/7mavSAULiQjiQZvT1nHnx7Au
-	 wOMoZ97+gP0b4BnhtMQJllCHXbmDDk10L4tPv3GwjwnUUFp2dXkXvtbgU9UDRs3ba5Gvv
-	 Kw2iENIwSWZMBhx2Y/WHVzzmeyGhb5E9JycuNXoTy63M6OTnGPZpoUXgEoKFt4CEsBuBi
-	 NRKrX08UnZcPVbbz1ou1Jrqsfxn0piP4FiqwMLJLAdOHYCWdsg05SA+29WDVG5zuvzbHZ
-	 oPwCw7L8uOT0Y6SMVR8ECFZMD8rA+8bJnI5mv6DZ0aSE1Ke5esuRzLNafdf/cfKMWmQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794851578;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
+	bh=ZVha1LQJ+ZYa0pasaO7rOjBg6mtWgNhixYpeavUGJvw=;
+	b=HluuTOPpHDDUoJQvX9YwgbJ8ELP9JWS6FxBRYdk8VfCWVG4yu/3fM3ub1Q1mHI4jIf9W
+	 2nLoRvfVWnfvL5SnWd0VaUOicFtXBjFwKdFj1KZJagi9MR+doCLNUQNqT6h8qiwsD9T5e
+	 t7Zb0kqXy97wfDb5K5eQDv73mUkS7nr2pQKTLH8IKrzEazoUOPHUXoFfvfIrWCdweZoGi
+	 AkA1CTjG8J0urWREUVqn42rDjYd/Yrg8+AJG6LCboMenUDFoUyjWQbXwtCrYDVEMb7kNb
+	 oum5OUDCK8GLvlSJ28nqOT5Qkh+px1YtP+TrUYMxDEoVdNLi8Bvv1xMRmcMRNx4XhWg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rwMGbKeg;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Mr0MWBAM;
+	arc=none smtp.remote-ip=209.85.214.179
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFB3606A331;
-	Mon, 16 Nov 2026 17:47:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6DFB3606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164D5606A887
+	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 17:52:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 164D5606A887
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rwMGbKeg
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGGQBjV3773693;
-	Mon, 16 Nov 2026 17:47:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=lSkurEuqzWY07J42xz49JInftf8xvj
-	fRIqM1YL0tZ5c=; b=rwMGbKegakPvE0CIQtAqgEn+oh3LlHxF+nvZRS2PoVXJHB
-	zJuLlPoWa/NHFe5JbYkg6HJkEBQKeCWrywf1dK+v3njdnWn1PEtC4vFDkc2oKZ97
-	A/s9d81Aih4CUM4G0010EbH4iePu7mAgJYFvneGj/dwQZv+sYcEI/8kaGTCSG/sa
-	0YJ9vpkRHOPuwIoR5bacd5JCzp5YS80ymccJRNeDhPUda5t+VzHrad+mGzcFXScK
-	DpHlbyfA1ktUGm63n2aNRyQWBqGz07rDFX4216ag3+Ac+hK6ISXXeqfJJtLhFqjP
-	2qM/vQzFGni61Y69TVyy9OPyEMKi7wHqwC+KB9sQ==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hxf9ve8d0-1311
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 16 Nov 2026 17:47:35 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGCKXv22351239;
-	Mon, 16 Nov 2026 13:13:09 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hy2bv9u55-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Nov 2026 13:13:09 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AGDCwLW53084420
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Nov 2026 13:12:58 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B526220043;
-	Mon, 16 Nov 2026 13:12:58 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 434472004B;
-	Mon, 16 Nov 2026 13:12:58 +0000 (GMT)
-Received: from osiris (unknown [9.111.42.169])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 16 Nov 2026 13:12:58 +0000 (GMT)
-Date: Mon, 16 Nov 2026 14:12:56 +0100
-From: Heiko Carstens <hca@linux.ibm.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 2/5] s390/vmur: Replace __get_free_page() with kmalloc()
-Message-ID: <20261116131256.125125Cdd-hca@linux.ibm.com>
-References: <20261108-s390-char-ready-v1-0-3db507722530@kernel.org>
- <20261108-s390-char-ready-v1-2-3db507722530@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Mr0MWBAM
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2e99b1e5b4cso22928795ad.0
+        for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 09:52:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794851577; x=1795456377; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ZVha1LQJ+ZYa0pasaO7rOjBg6mtWgNhixYpeavUGJvw=;
+        b=Mr0MWBAM4MLlHJMOKb/4Z6+dOhVz5cE+GMuRUduu9EHxuwhijBh3tXy8WJrkhaD0vh
+         PYAoy9x9sShYaRayE53yartClLeXdWk62a//vvYlSd2zLiJvKMc9TXh7Mof3XZRTu0rx
+         GxoGIFqRYzrwZ+dbFPfJk7TnrE7kr2+1NPV9kZnPO9acPHImQGPyrlGzUI/V+O9rL+lS
+         rW57l05EwtNh4ZKXuPgI4wU7DkeDNQM3yk0RZSB8ysyrRk6y/+Fsb3SJKn/X/NOmQar9
+         V386QxKbhvhnCZ98vZnrwlnUF9YPDTCdsBALgZVykIgXLyQJuXY30X/5rtUP6x7EcqzI
+         KKdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794851577; x=1795456377;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZVha1LQJ+ZYa0pasaO7rOjBg6mtWgNhixYpeavUGJvw=;
+        b=UHHLHVVPgvR7g5jTseVXMPH9UA2Mqlog/Fme+DiKwRi8enhioXWuDds7dJ7oTCbM3Z
+         Xe31lUIoBoRHP/ilXiPYRx+5rrnhp1yZ0tJ8jRD2hsWn57WS3F0V5enfGFlKOi6enr/B
+         2svi74VsFQuMfC2G2Bhde2T037zu4UpvPdpxCHkvyh7dEkPWjXUyY5H8I6FbeYtDaDEA
+         Y2R3nHiob27E6iM1TkuRBedX9QZFRPlC8uWxnvg3LpxhvlqRt58IjLHeryuA1m+ICnoi
+         xzwkeiskYwi+dDK/iiULbcOQawcz0374tgCIBljVnYP2Gvv7be4SfWATxjjVKShAT2TL
+         WV6Q==
+X-Forwarded-Encrypted: i=1; AL+hErGxeey26mS19Zoztfo7n17/Wkpe+SBud6wFg8bCSr7WmYNZvlmldOV3Mt7gKWsZW5IiAlY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+OJVYkjFHRGpqN57S/w2CdhYNXU3E/qXd+E4sIcEyOtEkLW19l
+	Frl/SsCKNDFzT+hbFt+wboOAFUDMLSnQaEbh2/Em2C0liaGcp8NSJVpaY38I8r2i4A==
+X-Gm-Gg: AZFdTZcSx7RGkkOMFngTPYNOSZ2guDwkoS8vM5Qt8zxQr8EueSLOxvqdSZZwzUylYza
+	sbIQ6YsNbTrMrvNKBgcqlx+jEWhkmotTFNtAAgM1kR6mj/gOdicWfrtd03CDxZKn7UCs4O10729
+	oOIahtaCPVIEYVj4ndtHUoLKJSczDzdRwq42vyTOChhkB9+YTkKsHankAGVw7vwiGIaCDkdvIy/
+	7uc58vLFJcH1UpID63JLnz1P5SuqrvuAyCxhnA0J4zvKR9CMgQ/Ih4AWcJBBkZrBkQ+cQY2/y6k
+	uNxaGPsx0WX2Fo3S7fcwI+ZNvgrhYaNty0n16U38s0Q1iUVQ4I085KR+YtkXTB3jNerP2t/9ebR
+	Un4Odw+YEzJbaN9UVSaLiwV8iUxIpT3lCn2XNO+Rx4Sjo3OPHV0pHycVxREDiV9a065IEZd0oIH
+	TQzs8nQcQs+g7Rp9xBQ1TJV6aL/C48K7fWPN2Qe86epYRytB9FxWFbLeuNsFPXGuJ0ZrWtJKD8P
+	foburgmHDXs2NeuaVmLHyCmBvBrHrkl/DGXX/mD7NAyMHNOFW5EREKISAcBoC/QGutURYwrvgOR
+	rrJZPm8z9pODFQFEEOtFXODB6wV5rlWLkQ1Grp9IEKHr7CL+SiwHUWs87lO2DNVf
+X-Received: by 2002:a17:90b:4c0c:b0:3a0:516d:9f87 with SMTP id 98e67ed59e1d1-3b1b0a1f01cmr12343648a91.13.1794851576505;
+        Mon, 16 Nov 2026 09:52:56 -0800 (PST)
+Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b3ac296b5fsm224574a91.8.2026.11.16.09.52.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Nov 2026 09:52:55 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -97,63 +87,256 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261108-s390-char-ready-v1-2-3db507722530@kernel.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 7AiCKN4979fldUbYW-Neq7KI7iaDNVkX
-X-Authority-Analysis: v=2.4 cv=dtxOmFg4 c=1 sm=1 tr=0 ts=6afb41b7 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=Y6TpkvVB5ZIwULgkomUA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE2MDA2OSBTYWx0ZWRfX5TOywkPDj7lQ
- HNrmfuLln6FgDAm5tONoVF0myIyvvgTGjKb2TaA8+KWG0MI/i7Rr9lWiIOb8/EKtsV4TlffUA0Q
- PeFcv79OZg2atJqk9oQfW5lLLdvyYaL3gsKWTOl6CyEizeBKqFlULaTxTdGlZux7EIwbJ+Y1Fsj
- FNBUuYcKwgtTb0+irzTRS7b7MVAkqDJxaEZy3onXIMI20Oc4vX800/etJ+kY8nlgxgl1qk52E2O
- C6C3LfX/UOWErrxoodoRokstcA8W5xQvUYWaB111dTf0EFwacVWfbuu2nlCpqb9oeONp8bdjFFC
- lAZzjc/N01SzKaK2DSIxOpJUkY3pSOczCzrqhBEgvVdqMJIwlLUnSicUiUmOlyz7Cv1HWQ6MxJl
- +/Rb4NP1mhsW4w69qOMRCKFxdDqPx+D/K0NG8POO9nMNykMcpBzkcUxzL9vhGB5ssWETrHaU1lc
- ielt9eBk1RF8wfvpA4g==
-X-Proofpoint-ORIG-GUID: 7AiCKN4979fldUbYW-Neq7KI7iaDNVkX
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE2MDA2OSBTYWx0ZWRfX/oHTORHLiPRG
- spGtUexLGQ2GCSjwYhnFHs/FNuOQaz4quf96OKEXlzhWJe7LE2Cgwhjp1ZZSO1Xu58OczsAdxLi
- HKBfiPs3FW4s1seTCiNkygpH8TCORJs=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-16_05,2026-11-16_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 priorityscore=1501 impostorscore=0 suspectscore=0
- spamscore=0 malwarescore=0 phishscore=0 clxscore=1015 adultscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611160069
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 16 Nov 2026 09:52:54 -0800
+Message-Id: <DMWTS6IPSI2R.3EJQC130JYVW3@google.com>
+Cc: <cjia@nvidia.com>, <kjaju@nvidia.com>, <vsethi@nvidia.com>,
+ <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+ <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>
+Subject: Re: [PATCH v6 31/31] selftests/vfio: Add CXL Type-2 passthrough
+ tests
+From: "David Matlack" <dmatlack@google.com>
+To: <mhonap@nvidia.com>, <alex@shazbot.org>, <jgg@ziepe.ca>,
+ <ankita@nvidia.com>, <jic23@kernel.org>, <dave.jiang@intel.com>,
+ <alejandro.lucero-palau@amd.com>, <smadhavan@nvidia.com>, <corbet@lwn.net>,
+ <skhan@linuxfoundation.org>, <dave@stgolabs.net>,
+ <alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+ <iweiny@kernel.org>, <ming.li@zohomail.com>, <yishaih@nvidia.com>,
+ <skolothumtho@nvidia.com>, <kevin.tian@intel.com>, <bhelgaas@google.com>,
+ <dmatlack@google.com>, <kees@kernel.org>, <gustavoars@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20261016161839.2765592-1-mhonap@nvidia.com>
+ <20261016161839.2765592-32-mhonap@nvidia.com>
+In-Reply-To: <20261016161839.2765592-32-mhonap@nvidia.com>
 
-On Sun, Nov 08, 2026 at 10:48:59AM +0200, Mike Rapoport (Microsoft) wrote:
-> diag14_read() and verify_uri_device() allocate the buffers that receive
-> the spool file data returned by z/VM DIAGNOSE 0x14.
-> 
-> These buffers can be allocated with kmalloc() as there's nothing special
-> about them to go directly to the page allocator.
-> 
-> kmalloc() provides a better API that does not require ugly casts and
-> kfree() does not need to know the size of the freed object.
-> 
-> Performance difference between kmalloc() and __get_free_pages() is not
-> measurable as both allocators take an object/page from a per-CPU list for
-> fast path allocations.
-> 
-> For the slow path the performance is anyway determined by the amount of
-> reclaim involved rather than by what allocator is used.
-> 
-> Replace use of __get_free_page() with kmalloc() and free_page() with
-> kfree().
-> 
-> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  drivers/s390/char/vmur.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+On Fri Oct 16, 2026 at 9:18 AM PDT, mhonap wrote:
+> Exercise the vfio-cxl contract on a bound Type-2 device: the CXL
+> device-info flag and the two vendor-type regions, the HDM memory mmap
+> (including a 2 MB huge fault), the read-only trapped decoder region
+> against the live host-committed decoder, and the guest's DVSEC reset
+> doorbell and manual HDM discovery.
 
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+I tried running this test in a VM with the emulated cxl-type2 device
+from your QEMU RFC [1], on an x86 q35 machine with intel-iommu. Out of
+the box the device binds as plain vfio-pci and the fixture skips
+everything. v6 now requires that the host can do CPU cache invalidation
+for CXL Reset, and cpu_cache_has_invalidate_memregion() returns false in
+a VM (x86 refuses it under a hypervisor, and arm64 has no cache
+maintenance provider in a guest).
+
+The QEMU RFC reports 19/19 passing in an Arm guest, but that was against
+v5, which didn't have this requirement. How did you run the v6 version
+of this test without hardware? Did you use something like
+CONFIG_CXL_REGION_INVALIDATION_TEST? That option only covers region
+management in drivers/cxl/core/region.c, and depends on CXL_REGION, so
+it doesn't help here.
+
+I added a local test-only bypass (a CONFIG_CXL_RESET_INVALIDATION_TEST
+that skips the invalidation in cxl_reset_check() and
+cxl_hdm_quiesce_prepare()/cxl_hdm_ranges_invalidate()), I get 26 passes
+and 1 skip (pm_d3hot_restores_decoder, since cxl-type2 has no PM
+capability in QEMU). I think something like that belongs in the
+cxl_reset series. Otherwise this test can only be run by people with
+real Type-2 hardware.
+
+[1] https://lore.kernel.org/linux-cxl/20261106035911.1280066-1-mhonap@nvidi=
+a.com/
+
+> Check that the decoder register region reads fail with EIO while Memory
+> Space is disabled, and that the decoder reads back committed and HDM
+> access works after low power entry and exit.
+
+The series says a Type-2 device loses its committed HDM decoder in D3hot
+and D3cold (patches 17 and 30), but the emulated cxl-type2 device in
+your QEMU RFC has no PM capability, so on it these tests never take the
+decoder restore path in vfio_cxl_power_up(). Please make the emulated
+device behave the same way as the real hardware across D3hot (PM
+capability, No_Soft_Reset, and whether the decoder is lost), so that the
+selftest exercises the same vfio-cxl code paths in a VM as it does on
+hardware.
+
+To help get that right: what does lspci -vv show for the PM capability
+of the device you tested with (NoSoftRst+ or NoSoftRst-), and did you
+observe the decoder actually being lost?
+
+> Add a partial-mmap path to the vfio selftest library so the trapped
+> component BAR maps its sparse ranges, and an __iommu_map_file() helper fo=
+r
+> the dma-buf mapping.
+
+Please split the library changes into separate commits ahead of the
+test: __iommu_map_file(), the sparse mmap support in vfio_pci_bar_map(),
+and each of the new libvfio helpers suggested below. That way each one
+can be reviewed on its own, and the final commit only adds the test, its
+Makefile entry, and the MAINTAINERS line.
+
+This series is already quite long (31 patches), and with the library
+changes split out the selftest changes will grow to several patches.
+Consider sending all the VFIO selftests patches as a separate series
+that depends on this one.
+
+> +/* Return the sparse-mmap capability in @info, or NULL if the region has=
+ none. */
+> +static struct vfio_region_info_cap_sparse_mmap *
+> +vfio_pci_sparse_mmap_cap(struct vfio_region_info *info)
+> +{
+> +	struct vfio_info_cap_header *hdr;
+> +	u32 offset;
+> +
+> +	if (!(info->flags & VFIO_REGION_INFO_FLAG_CAPS))
+> +		return NULL;
+> +
+> +	for (offset =3D info->cap_offset; offset; offset =3D hdr->next) {
+> +		hdr =3D (void *)info + offset;
+> +		if (hdr->id =3D=3D VFIO_REGION_INFO_CAP_SPARSE_MMAP)
+> +			return (struct vfio_region_info_cap_sparse_mmap *)hdr;
+> +	}
+> +
+> +	return NULL;
+> +}
+
+This walks the region info capability chain looking for one ID, which is
+the same thing find_region_cap() does in the test. Please add one
+generic libvfio helper that looks up a region info capability by ID, and
+use it in both places.
+
+> + * Usage: ./vfio_cxl_type2_test <BDF>  (or export VFIO_SELFTESTS_BDF=3D<=
+BDF>).
+> + * The device must be bound to vfio-pci with the vfio-cxl module availab=
+le.
+
+Please document how to run this test in more detail: the hardware
+requirements, how to set up the emulated QEMU device, and the kernel
+config needed (VFIO_CXL, IOMMUFD, any test-only bypass), so others can
+reproduce your results.
+
+> +/* vfio-pci region-offset packing is kernel-internal, not UAPI; define l=
+ocally. */
+> +#ifndef VFIO_PCI_OFFSET_SHIFT
+> +#define VFIO_PCI_OFFSET_SHIFT		40
+> +#endif
+> +#ifndef VFIO_PCI_INDEX_TO_OFFSET
+> +#define VFIO_PCI_INDEX_TO_OFFSET(i)	((uint64_t)(i) << VFIO_PCI_OFFSET_SH=
+IFT)
+> +#endif
+
+As the comment says, this is kernel-internal and not uAPI, so the test
+shouldn't depend on it. Please use vfio_region_info.offset from
+VFIO_DEVICE_GET_REGION_INFO instead, as comp_bar_sparse_mmap already
+does for the BAR. Better yet, use region access helpers in libvfio that
+take a region index and apply the offset internally (see below), so the
+test never computes region offsets itself.
+
+> +/* Find a CXL region by subtype; returns the region index or -1, @buf le=
+ft holding its info. */
+> +static int find_cxl_region(int fd, uint32_t nregions, uint32_t subtype,
+> +			   void *buf, size_t bufsz)
+> +{
+> +	uint32_t i;
+> +
+> +	for (i =3D 0; i < nregions; i++) {
+> +		struct vfio_region_info *ri =3D buf;
+> +		const struct vfio_region_info_cap_type *t;
+> +		const struct vfio_info_cap_header *hdr;
+> +
+> +		memset(buf, 0, bufsz);
+> +		ri->argsz =3D bufsz;
+> +		ri->index =3D i;
+> +		if (ioctl(fd, VFIO_DEVICE_GET_REGION_INFO, ri))
+> +			continue;
+
+This is a generic lookup of a region by type and subtype. Only the CXL
+vendor ID is specific. Please make it a libvfio helper (e.g.
+vfio_pci_find_region(device, type, subtype)) built on the existing
+region info code in libvfio.
+
+More generally, please replace the raw ioctl() calls throughout the test
+with libvfio helpers: VFIO_DEVICE_GET_INFO, VFIO_DEVICE_GET_REGION_INFO,
+and VFIO_DEVICE_FEATURE for DMA_BUF and LOW_POWER_ENTRY/EXIT. Please
+follow the existing convention, e.g. __vfio_pci_device_reset() and
+vfio_pci_device_reset(): a double-underscore variant that returns -errno
+for the tests that expect failures or skip when something isn't
+supported, and a plain variant that asserts success.
+
+> +/* Walk the PCI extended capability list for the CXL Device DVSEC. */
+> +static uint16_t find_cxl_dvsec(struct vfio_pci_device *dev)
+> +{
+
+Same here, the extended capability walk and the DVSEC match aren't
+CXL-specific. Please consider vfio_pci_find_ext_capability() and
+vfio_pci_find_dvsec(device, vendor, id) helpers in libvfio, with the
+test passing in the CXL IDs.
+
+> +/* Read config space from sysfs, which is the hardware, not the vfio vie=
+w. */
+> +static int sysfs_config_read(uint32_t off, void *buf, size_t len)
+> +{
+> +	char path[128];
+> +	ssize_t n;
+> +	int fd;
+> +
+> +	snprintf(path, sizeof(path), "/sys/bus/pci/devices/%s/config",
+> +		 device_bdf);
+> +	fd =3D open(path, O_RDONLY);
+> +	if (fd < 0)
+> +		return -errno;
+> +	n =3D pread(fd, buf, len, off);
+> +	close(fd);
+> +	return n =3D=3D (ssize_t)len ? 0 : -EIO;
+> +}
+
+This and sysfs_config() further down do the same thing. Please replace
+both with one sysfs config access helper in lib/sysfs.c, modeled after
+the existing vfio config helpers: a sysfs_config_access(bdf, write,
+offset, size, data) core with sysfs_config_read{b,w,l}() and
+sysfs_config_write{b,w,l}() wrappers that assert on failure, like
+vfio_pci_config_access() and vfio_pci_config_read{b,w,l}().
+
+Taking the BDF as a parameter also gets helpers off the device_bdf
+global. Please only use device_bdf where the device is opened
+(FIXTURE_SETUP() and close_restores_open_time_command). Everywhere else
+can use self->dev->bdf.
+
+> +/* The trapped block starts at the HDM decoder registers; CTRL 0 reads b=
+ack. */
+> +TEST_F(vfio_cxl, comp_regs_hdm_read)
+> +{
+> +	uint64_t ctrl =3D self->comp_off + CXL_HDM_DECODER0_CTRL_OFFSET(0);
+> +	uint32_t val =3D 0;
+> +
+> +	ASSERT_GE(self->comp_size, CXL_HDM_DECODER0_CTRL_OFFSET(0) + 4);
+> +	ASSERT_EQ((ssize_t)sizeof(val),
+> +		  pread(self->dev->fd, &val, sizeof(val), ctrl));
+> +}
+
+Please add region access helpers to libvfio instead of open-coding
+pread()/pwrite()/mmap() on the device fd, which this test does in about
+50 places. Something modeled on the config space helpers:
+__vfio_pci_region_access(device, index, write, offset, size, data)
+returning the number of bytes or -errno, vfio_pci_region_access()
+asserting success, and typed vfio_pci_region_read{b,w,l,q}() and
+vfio_pci_region_write{b,w,l,q}() wrappers. Then this becomes:
+
+	val =3D vfio_pci_region_readl(self->dev, self->comp_idx,
+				    CXL_HDM_DECODER0_CTRL_OFFSET(0));
+
+The double-underscore variant covers the expected failures, like
+comp_regs_read_needs_memory and the unaligned and out of range tests.
+vfio_pci_config_access() could become a wrapper around the same code
+using VFIO_PCI_CONFIG_REGION_INDEX. libvfio would need to cache the
+region info for all regions, not just config space and the BARs, so it
+can apply the offset reported by VFIO_DEVICE_GET_REGION_INFO.
+
+Similarly, __vfio_pci_region_mmap() and vfio_pci_region_mmap() could
+cover the HDM region mappings and the expected mmap failures over the
+decoder block, and vfio_pci_bar_map() could be built on them.
+
+> +/* Find a standard capability through the vfio config view. */
+> +static uint8_t find_std_cap(struct vfio_pci_device *dev, uint8_t id)
+
+Please make this a libvfio helper too, e.g.
+vfio_pci_find_capability(device, cap_id).
