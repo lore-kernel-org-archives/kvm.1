@@ -1,84 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.17
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794862227;
-	b=LDT1Uzfe1KwJHLD4gPahJUV5h7wQ6cJ3qa3OdyMni23b0yZkTtWvQQyZBmf1YbaITcYc
-	 uELxrWONMbgiujFnePU90OIBAaVVPbgdHTwIELOK1SgCXpc4cUYL0iK5Qmdd2AH5rXWKd
-	 /aXcuiOtQSwrKL88vhxHdI8bGVfhm+Dig/nJL0BqdqYBSv8bVMOuyNTowAGpAWZmuCSTD
-	 z+/jAXOb/6AptT0ihk5eyMVQEoeiydvjGx81/DXf3asfRpyTqhlb52jE0iPuMB/VbBdl4
-	 ZVxyBxcmHF5rYYieo5FUSdLqhdO1QS/mcS+OKksY64wjWF1YMYtUFhDxN1sZnZLCEHA==
+	t=1794862262;
+	b=y/hZkMY2m0gnvD46U9dSM5Mol0/psUZe9yUbRSS/BiYFfRsuBdAkVEnGAq4Uao03H8zi
+	 r5ZfQd4u1lD2b9ElHBGya/oLu14M1YCTtVoMcXgJJd+ssRbjOqKgfx8Paosc7L8JFaSfF
+	 b02tHHnePdmdGz5HeaHqXtgYHLPWcgEsciL1wb5EL6oMqTInCAdEskfZJWXqbdYS6XQCm
+	 PXFrMo++ySJOufHlqO/1h7c2ksfCeRhhGYH6chOiUMSwSY4lnHF7+jYDEwKCNpExpMs+v
+	 mtF3YcLPy3Pef2AmqRnvwV9r4DvVKGbMlPajrFgDdLXo3sfxxak2TY/em7lzZkJMR3w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794862227;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
-	bh=itpoRBF/1k6lXJt+7gBQZf0XsZd0eRgpwFhim4ck9gw=;
-	b=PNGZRKNZWqFI8rxe5U48tZ1AY4+bWlm8TmnTk18U7ByCsGbq1+KB+Mn9YZbseVy1lxgq
-	 8PQ/qAFeHDrwKseellSNnACcsHHLMqFQbgwcLQh3ptqd871Ly6b26D8mpJeUnsHTzXb55
-	 W2dLKFTE7hfu461xReUGL6CumD0yk1XGdQvR0yL7/DS/0DfbOfYoJ3So9+SeFpk1/QJPG
-	 c823zxdNC438tpkDfQgMMmH9lSDufy9uCJLBbqN6uAZ1HhMuzTqTfwnB6qE/70sjFF0lj
-	 hm+e4gimvtbBquhP9yFOtveVbsu7kY3yKNm7Z1uz6tRkAUH38rHMQdJqtJwCMvMS1Kw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794862262;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=LbYY8S+YO6IOf9cej8HAyGPboaJz0Yq/WVfxOOkRios=;
+	b=0xz4DM75bN/OBuDaHgrR1+9+u1y3HjEDhKut/zp9J2h7pnCcbKOsK8eLu1OQI2I3yB2m
+	 uJggMkXNuZh41e/e2i+qQHOwwPoeCZuqUIW/nAfIGZmuWYSoiJJfY1VvVSeYScvcjJ+uf
+	 4piZaWilOiBNhkaJGhQ5QJRkKYpYIC4iWVqYhW0X+tJ9whaVgGCSepiD42M8ZtKcEWAd9
+	 tVWs8FvONYt66ZYjWp2jwHI5325E5DTlF7Ix7bwSrSszHfpchC+NiUHK3GcWnRfBcFYSm
+	 fmb99Rq3Se71Asxxe2vJWVV2TV5+RnZae189KVRWlL6uhkpzHP02Eh2NibQOxyQmCMw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Dwg3aB5j;
-	arc=none smtp.remote-ip=209.85.210.178
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Kc3N08k+;
+	arc=none smtp.remote-ip=198.175.65.17
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593CA606A32C
-	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 20:50:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 593CA606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05F8606A32C;
+	Mon, 16 Nov 2026 20:51:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F05F8606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Dwg3aB5j
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8a07078200fso1779087b3a.2
-        for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 12:50:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794862226; x=1795467026; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=itpoRBF/1k6lXJt+7gBQZf0XsZd0eRgpwFhim4ck9gw=;
-        b=Dwg3aB5j/PWPJaLku3L1tUZkBCUnHRSbqBmF3A4BQGz08Tq28ncBeYQbG/So5ZsN+h
-         NojTXp3MVD/ZSvcPTtCd3tmxdm9+qM5KoPTSkI+CLdlA+txelMPpn8SZybXuEjrLBIaV
-         YowodJucWxxle8t1RD08hQ061mcCTFHAAfcigRC9haQR8iCHdz2xN+lplQeaY4S1h8P2
-         rfyRhY/H0SQx7FRPTAB/RKZgvSK1AUAlv4LwLdvUsGDJp95HEf/Kqijr56sClMPAuG4N
-         jqnkIcUVMlGE6mtQ8PhlTITjVU0VqdOlyT+0EtqE4DK5p65P3wpVCNkS6l7wiGteLlYw
-         f3aQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794862226; x=1795467026;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=itpoRBF/1k6lXJt+7gBQZf0XsZd0eRgpwFhim4ck9gw=;
-        b=yuoUhmrHcff/Eys7qhBAij3lWHZa30J+oUqFUqaw3ZJU8Gv8ggapmpcHmNjxoMsbZZ
-         8eahgUV2YTGNh8fAckDo69SaOSSG+cnfn+WvVxl38fHoU0+/5hcvXwmVNMYD8SE6DTDj
-         e8Vb14K6bs0WAaWCJ1gq92lqKMvaNmaM4TPkCfM4cFpRt61GVpYEX9dn5IPxpHMURAdS
-         FsOq/P07RK5j2p9J3U4znb1EBLaOurD6J7i3iEW0HrbYgJf6Su6szdY6mM+4MyWKoxzI
-         BVVgIGaGdHW+Bvq+OiTe+YmxDHRrSjncRutoUZn5VMh2xwvH0JmRTyu15XYRFyaSNSm9
-         3Bxg==
-X-Forwarded-Encrypted: i=1; AL+hErEAoeIJ66PQI0/WJnQ4sfi0qoFHNdGZB2LFeIhkJW1bChJZFF2cgMjtyFcrEUDSuBr3bGw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9/QLA3GyBEHk+HNbltVcM7GZenFBQkzwl2wvmxwitO9DghhGfQ
-	AHAd0OtnnIxuJCKQFLqWYFFiqUwN5tb3wDcA2BCM1pLRjEafP81Gj9Osm2/osi0IwA==
-X-Gm-Gg: AYBFou1p/DhYqGsOgYWdsPO+fn8Mg4w6Pufyd1ATof6LSMZ0P3fEmrkZng+LmxUwPqy
-	JsEDhol/+qSBNTITj1aBvKwhPwfGQQAb4hSimBAyYwjQHCrqxLGZSUIXYz0i/kA9eBDrYc4ehjg
-	icOXa8v15VvgIP5PbJJfN6000zlOyf1EPYnUpuXs4Js9iByWXVczOtOLJ1ifoRPQN0DxpmcHLbZ
-	eHiAqzOXm1hr/QhnPAmxI1pPkLnEBZPPEh31uNuA6jhPfPIrJuYv8lodP7RpECNnxQR9J6Ow5bx
-	Yy6ot/2VCSBgbRHqG2rqQE274W1G2qujlY+GCiG1J837w28ayRz6V/SVch35pVq6wZNLF7hXxLL
-	BukRE8iYkH2/6nXfnoptORMrzklpaStQpICuHf/O5yX97ofNyWyzEofPOiMZqoBTS9lswRJXIZ2
-	D6hWZHICuIWNEr0RrvW6ozEMSzs942lIVefWLkiObzBqikbu5y6VUQURFU9RGhtObLv+e0j8War
-	LypghVVAFsSt93K5ijEhtvxe3w5cZI9+mYClQcPTliSZb+d+okOOuQTo6D+0s2rAj1rHzCc8l5o
-	bPSABpW9l0YbVkjJuJLEOlaQo0LT1t6L2dzeXVb7ZtUtvyjiHEEll8ADpFyQ2v+/
-X-Received: by 2002:a05:6a20:ef03:b0:3e2:4350:1528 with SMTP id adf61e73a8af0-3f7a51ba2ffmr9092719637.7.1794862225898;
-        Mon, 16 Nov 2026 12:50:25 -0800 (PST)
-Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cddc18c847asm4527944a12.28.2026.11.16.12.50.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Nov 2026 12:50:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Kc3N08k+
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794862262; x=1826398262;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=o+hAdGEu/G2i+6qXpIrE3hZjue1EEFXSISQEDRzQof4=;
+  b=Kc3N08k+1Xc9Kzbt58HPLEFIBolee9HsoPL7rVf4ffHuv/xRCwb30pjF
+   MF0XFgotEDFsSiq0S49rnT/WlewulcqmjJLYQALqIfMSVOOcWyzxQV+At
+   e0Yp/ClUU6Z8S99YyJQTigteIlAKqW3hgYyKKl9n4QVnqYXM3XFqmxybV
+   eR5/pSNCfLRSu8yvrYaaUx8Mn81Th0XtTkbwutLDp8BGAfeaUbSB0FjBV
+   93tPm+LBfA1oyMwdcWjUhqUah9qFfjgOPxdv1pFz86BFBTagnt6l4S3NF
+   sU9O1iyg/hf7BPO8dBIoxZh/dWecVNsRsOAfen5gtBrtiWmICMZXC4L3J
+   A==;
+X-CSE-ConnectionGUID: LhDtlwNkRf+3/VqQDC0GTA==
+X-CSE-MsgGUID: cc461PsgQ8qCY/hgoyoC9g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11968"; a="3627643"
+X-IronPort-AV: E=Sophos;i="6.27,217,1787036400"; 
+   d="scan'208";a="3627643"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 12:51:02 -0800
+X-CSE-ConnectionGUID: XQbmmi1NSs+nwwq2ukQKFg==
+X-CSE-MsgGUID: Z839PmLoT2aZ0zvCWNu+dQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,217,1787036400"; 
+   d="scan'208";a="9660347"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 16 Nov 2026 12:50:56 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xT3fB-000000019PL-1eCy;
+	Mon, 16 Nov 2026 20:50:53 +0000
+Date: Tue, 17 Nov 2026 04:50:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Eric Dumazet <edumazet@kernel.org>, Simon Horman <horms@kernel.org>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Liang Chen <liangchen.linux@gmail.com>,
+	Heng Qi <hengqi@linux.alibaba.com>
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org, kvm@vger.kernel.org, kernel@pengutronix.de,
+	Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH net-next v5 6/9] virtio-net: assert header sizes
+Message-ID: <202611170421.klVDQaAD-lkp@intel.com>
+References: <20261112-v6-7-topic-virtio-net-ptp-v5-6-7ab67b572f4f@pengutronix.de>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -87,92 +101,82 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 16 Nov 2026 12:50:24 -0800
-Message-Id: <DMWXK2VTL3XP.MWW7ZG7Z6HUF@google.com>
-Cc: "Jason Gunthorpe" <jgg@nvidia.com>, "Alex Mastro" <amastro@fb.com>,
- <dri-devel@lists.freedesktop.org>, <iommu@lists.linux.dev>,
- <kvm@vger.kernel.org>, <linaro-mm-sig@lists.linaro.org>,
- <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <linux-media@vger.kernel.org>, <linux-pci@vger.kernel.org>, "Alex
- Williamson" <alex@shazbot.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, "Josh Hilke"
- <jrhilke@google.com>, "Kevin Tian" <kevin.tian@intel.com>, "Leon
- Romanovsky" <leon@kernel.org>, "Logan Gunthorpe" <logang@deltatee.com>,
- "Matt Evans" <mattev@meta.com>, "Matt Evans" <matt@ozlabs.org>, "Mina
- Almasry" <almasrymina@google.com>, "Shuah Khan" <shuah@kernel.org>, "Sumit
- Semwal" <sumit.semwal@linaro.org>, "Vipin Sharma" <vipinsh@google.com>
-Subject: Re: [RFC PATCH 0/7] vfio: selftests: Add peer-to-peer DMA selftest
-From: "David Matlack" <dmatlack@google.com>
-To: "Samiullah Khawaja" <skhawaja@google.com>, "David Matlack"
- <dmatlack@google.com>
-X-Mailer: aerc 0.21.0
-References: <20261111192411.4133780-1-dmatlack@google.com>
- <avYjFfqr3T/U7lvn@devgpu015.cco6.facebook.com>
- <DMTK99TDM9AM.SAM3Z4COP9WS@google.com>
- <20261115231946.GB1239159@nvidia.com>
- <CALzav=efnA_ABCZVicX0QeTmHknaEbMeWOy8cS+zHYVhm5z+iw@mail.gmail.com>
- <avtI--OIZu5E5sma@google.com>
-In-Reply-To: <avtI--OIZu5E5sma@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112-v6-7-topic-virtio-net-ptp-v5-6-7ab67b572f4f@pengutronix.de>
 
-On Mon Nov 16, 2026 at 10:24 AM PST, Samiullah Khawaja wrote:
-> On Mon, Nov 16, 2026 at 10:02:56AM -0800, David Matlack wrote:
->>Looks like GPUs and NVMe can do both as well.
->
-> AFAIU the memory BARs for GPUs would need initialization. The internal
-> VRAM needs to be exposed (mapped) to the BARs.
->
-> Do you think we should have a P2P device "setup" step that can be
-> implemented for various types of devices?
+Hi Steffen,
 
-Yes, I think we need something like that.
+kernel test robot noticed the following build errors:
 
-I've been prototyping a new optional op in struct vfio_pci_driver_ops:
+[auto build test ERROR on c88fd6989aea9237a60a4859139a265bfb7ddc0b]
 
-  /*
-   * Set up a range of device memory, accessible through a BAR,
-   * that other devices can target with P2P DMA and that the CPU
-   * can access through mem_bar->vaddr.
-   */
-  int (*mem_bar_setup)(struct vfio_pci_device *device, u64 min_size,
-                       struct vfio_pci_mem_bar *mem_bar);
+url:    https://github.com/intel-lab-lkp/linux/commits/Steffen-Trumtrar/net-ethtool-tsconfig-allow-hardware-timestamping-without-a-PHC/20261112-121933
+base:   c88fd6989aea9237a60a4859139a265bfb7ddc0b
+patch link:    https://lore.kernel.org/r/20261112-v6-7-topic-virtio-net-ptp-v5-6-7ab67b572f4f%40pengutronix.de
+patch subject: [PATCH net-next v5 6/9] virtio-net: assert header sizes
+config: arm-neponset_defconfig (https://download.01.org/0day-ci/archive/20261117/202611170421.klVDQaAD-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 16.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261117/202611170421.klVDQaAD-lkp@intel.com/reproduce)
 
-vfio_pci_find_mem_bar() falls back to calling it when the device does
-not match any entry in mem_bar_descs[], sanity checks the returned
-range, and then runs the existing memory verification on it.
-mem_bar_descs[] stays around for devices like pci-testdev that need no
-setup.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611170421.klVDQaAD-lkp@intel.com/
 
-For NVIDIA GPUs, I had an LLM work on it and the setup was simpler than
-I expected, at least on Blackwell. BAR1 comes out of reset in physical
-mode, where BAR1 offset N maps directly to VRAM physical address N
-without going through the GPU MMU. The LLM confirmed this on by writing
-VRAM through BAR1 and reading it back through the BAR0 PRAMIN window
-(and vice versa) at offsets from 256MiB up to 178GiB.
+All errors (new ones prefixed by >>):
 
-The nv_falcon implementation only has to:
+   In file included from include/linux/bits.h:30,
+                    from include/linux/bitops.h:6,
+                    from include/linux/bitmap.h:8,
+                    from include/linux/ethtool.h:16,
+                    from net/packet/af_packet.c:51:
+>> include/linux/build_bug.h:80:41: error: static assertion failed: "offsetof(struct virtio_net_common_hdr, tstamp) == 32"
+      80 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+         |                                         ^~~~~~~~~~~~~~
+   include/linux/build_bug.h:79:34: note: in expansion of macro '__static_assert'
+      79 | #define static_assert(expr, ...) __static_assert(expr, ##__VA_ARGS__, #expr)
+         |                                  ^~~~~~~~~~~~~~~
+   include/linux/virtio_net.h:36:1: note: in expansion of macro 'static_assert'
+      36 | static_assert(offsetof(struct virtio_net_common_hdr, tstamp) == 32);
+         | ^~~~~~~~~~~~~
+>> include/linux/build_bug.h:80:41: error: static assertion failed: "__alignof__(struct virtio_net_common_hdr) == 2"
+      80 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+         |                                         ^~~~~~~~~~~~~~
+   include/linux/build_bug.h:79:34: note: in expansion of macro '__static_assert'
+      79 | #define static_assert(expr, ...) __static_assert(expr, ##__VA_ARGS__, #expr)
+         |                                  ^~~~~~~~~~~~~~~
+   include/linux/virtio_net.h:39:1: note: in expansion of macro 'static_assert'
+      39 | static_assert(__alignof__(struct virtio_net_common_hdr) == 2);
+         | ^~~~~~~~~~~~~
 
-  - Wait for FSP to finish booting, which takes a few seconds after the
-    reset VFIO does when the device is opened.
-  - Make sure BAR1 is in physical mode.
-  - Return the range of BAR1 that maps VRAM (the size comes from
-    NV_USABLE_FB_SIZE_IN_MB), staying clear of firmware reservations at
-    either end.
 
-With that the P2P test passes with a ConnectX-7 (mlx5 driver) as the
-initiator and B200 VRAM as the target.
+vim +80 include/linux/build_bug.h
 
-A couple of open questions:
+bc6245e5efd70c4 Ian Abbott       2017-07-10  61  
+6bab69c65013bed Rasmus Villemoes 2019-03-07  62  /**
+6bab69c65013bed Rasmus Villemoes 2019-03-07  63   * static_assert - check integer constant expression at build time
+6ffd853b0b10e1e Randy Dunlap     2026-03-01  64   * @expr: expression to be checked
+6bab69c65013bed Rasmus Villemoes 2019-03-07  65   *
+6bab69c65013bed Rasmus Villemoes 2019-03-07  66   * static_assert() is a wrapper for the C11 _Static_assert, with a
+6bab69c65013bed Rasmus Villemoes 2019-03-07  67   * little macro magic to make the message optional (defaulting to the
+6bab69c65013bed Rasmus Villemoes 2019-03-07  68   * stringification of the tested expression).
+6bab69c65013bed Rasmus Villemoes 2019-03-07  69   *
+6bab69c65013bed Rasmus Villemoes 2019-03-07  70   * Contrary to BUILD_BUG_ON(), static_assert() can be used at global
+6bab69c65013bed Rasmus Villemoes 2019-03-07  71   * scope, but requires the expression to be an integer constant
+6bab69c65013bed Rasmus Villemoes 2019-03-07  72   * expression (i.e., it is not enough that __builtin_constant_p() is
+6bab69c65013bed Rasmus Villemoes 2019-03-07  73   * true for expr).
+6bab69c65013bed Rasmus Villemoes 2019-03-07  74   *
+6bab69c65013bed Rasmus Villemoes 2019-03-07  75   * Also note that BUILD_BUG_ON() fails the build if the condition is
+6bab69c65013bed Rasmus Villemoes 2019-03-07  76   * true, while static_assert() fails the build if the expression is
+6bab69c65013bed Rasmus Villemoes 2019-03-07  77   * false.
+6bab69c65013bed Rasmus Villemoes 2019-03-07  78   */
+6bab69c65013bed Rasmus Villemoes 2019-03-07  79  #define static_assert(expr, ...) __static_assert(expr, ##__VA_ARGS__, #expr)
+6bab69c65013bed Rasmus Villemoes 2019-03-07 @80  #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+6bab69c65013bed Rasmus Villemoes 2019-03-07  81  
+07a368b3f55a79d Maxim Levitsky   2022-10-25  82  
 
- 1. The prototype allows .mem_bar_setup() to be called before .init().
-    That is enough for GPUs, but as Jason described, mlx5 device memory
-    has to be allocated from firmware, which needs the command interface
-    and therefore init(). Supporting mlx5 as a target would mean running
-    .mem_bar_setup() after .init().
-
- 2. nv_falcon does not support Falcon DMA on Blackwell yet, so a B200
-    can only be a target for now. That requires a driver to be able to
-    probe a device that cannot do memcpy. I am not sure I want to go
-    down that road.
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
