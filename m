@@ -1,59 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794825356;
-	b=5NKj+8kCT0vVfxxp+jXRnHYNtMrC/2XwvRuqeu+nccOjmGevAxSExuCbIfSuhKMTIr21
-	 9fj7Jksfwuo2gApXjuwm4toa4apB0gokciHEWR0WWPaqVDgWS/evK/6qbg25IOK6hw4ai
-	 E08mdew5nwNPsdRuLFJXJOV9Bf1tApzbxCih3jTp10GEzmFHaUjix5QA7ugCnzS7xWOu7
-	 lwHuhOFv4DRCRYRlbglYXsNt0fltCwlfm/Scp9G9ZSfxcwfunOXgyeny/9OxSGXKOKLKQ
-	 VPrQO9JfH6kUhXin26Am7N8KfxPQf8al4eu8qoNa+YplnjhF5Tfu01nMkiwt+Y1l2Pg==
+	t=1794827392;
+	b=kr0PW2ivpXz179/sLzgKa4qQTKxmnXmumw+hqp0XLCBybRF5MEdnVZpqwsW/K7+ejQig
+	 CKaFZ6DJXrNZVlXjRNQjHamuW/OdCLTFYOqgWwGhw9PSr1rxKtsbsqd3xLHwO3gpJyDBE
+	 TCY4Je0xISBrrop7JRspbLFHrKfj02YN1+gIjgbLIgk/qrrsleTMj3464UaTA+FSKzjco
+	 Io/qgAMPocpPjP067rYaHHwDh308KSmuci8kVFNgg5SPy4jimo0RF7cff250y9eeyTbOG
+	 Xg7iHE6yZrOlGI6F/vL/8ZcU4LM7NB3ETFVmxYHjsMtX/jVX3gC1P/qkElfufl5XlzQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794825356;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=yJIFDAZTBBUc/zWvcjI+JoSUsDm2VmZ4BHMBL+zYoOg=;
-	b=JlzsWN0aYZb+Uu/J4Bb3pkxxvS5/oE4kXRb6wGNZHi4ctl8sTAZOlbp6nCTxes5pKnll
-	 523k8g4Upd3qWJBvvJhP2r9A8+sEJcdIkd2G8fda0NMXnh01M9wzv5GEQuiMd6TPvIg0T
-	 xbFjGNqJyuIe40/eRSO0WAIB5tliwOPhHxFbyz0cs74/imrJlUu51PHaF800bLdYJqPF8
-	 AOFA+8qpxycPuzd2eKTuDmQIzanfsY+ks/Ov8WD4NtRFtYHIydL4qs/xDfNcDKuNdMRcT
-	 7G8vMD66m+5Vx2ucaHbU5z3yEUvpC3gLtgnm5FbPWh/aIG23uiKfCmLxvA4dmltdG1Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794827392;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=6JE3ezNpre7PvCafHO7wBh2leIssf/Pub7wCkgud8Ws=;
+	b=bucqEwaGUZzsdLwEXczcEJpzJuHjVR0sM/g5WjCyhsxKXI+wcQbDUcTe/Nb8UH42Jn/8
+	 eK1dDfvGtfJYFDefLsLv9H3SdilJ9jk3SK8kU1r/LhP1IUhN2K6c4qkpBYbzVVooabLPM
+	 UO1bOTVd+/SuiII2pRHW3d8RgmntFq2Y0QiACuG4AsLzrLsjtOgyZ2eNRYcqeYa/tRNqi
+	 DI7YppFV95duTBu8uHWoFD+2cJl67sVoDsO/64jy0hvPGcvgUFkDiH16CwIMRR8fZ3Glr
+	 3KxPt3UO33DOErvi7VnpTOFX9wgq44ij7go8YvMgRq+4BWM4W6a9LkrOphvuOXVt7DQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zi9FfVIk;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=oBUExuUa;
+	arc=none smtp.remote-ip=198.175.65.12
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9E2606A330;
-	Mon, 16 Nov 2026 10:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B6F607BDA8;
+	Mon, 16 Nov 2026 11:09:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D1B6F607BDA8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zi9FfVIk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E732E1F000C4;
-	Mon, 16 Nov 2026 10:35:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794825356;
-	bh=yJIFDAZTBBUc/zWvcjI+JoSUsDm2VmZ4BHMBL+zYoOg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Zi9FfVIkSFfbDd7ubsUktRGMsIHDCNUtu3OnboGf8dkzTfs49fP0b0t5egcZr7qsl
-	 FgA4oO2ko3m9qeqW79ZZQsdSpH+mKFLNJXxWXCgGvOFUVIRUN40XwJyyUW6zpoa7Fl
-	 6S34lMcF5leGhdSQXICkEZ+lQOkiltt65hmsc5eRiBg/SlBDA0grcBIgrD7nl5JEfe
-	 7J559ahYAea0l7MzcGcOVYrynXKwS3nFU08qGujnDW7or4fJpYwf9CgDdIHdGP8ljV
-	 WJj6n/ndblsiL6B+v70t1tWG1KZsyump1VDDjlpWZCTrv6SGVrKYkhz91SmFLwfPB0
-	 yENSLcOVbymag==
-Subject: Re: [PATCH net] vhost/vsock: Fix socket state constant
-From: netdev-bot+sashiko@kernel.org
-To: mhal@rbox.co
-Cc: stefanha@redhat.com, sgarzare@redhat.com, bobbyeshleman@meta.com,
- mst@redhat.com, jasowangio@gmail.com, eperezma@redhat.com,
- davem@davemloft.net, kvm@vger.kernel.org, virtualization@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kuba@kernel.org
-Date: Mon, 16 Nov 2026 10:35:55 +0000
-Message-ID: <179482535544.3136.14958523425614003338@kernel.org>
-In-Reply-To: <20261112-transport-reset-state-fix-v1-1-5698375f52a9@rbox.co>
-References: <20261112-transport-reset-state-fix-v1-1-5698375f52a9@rbox.co>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=oBUExuUa
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794827392; x=1826363392;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=rksEBsctxS5+pBQx28Yn4C2YEUM13RYYmc1Ab7GCG9E=;
+  b=oBUExuUa2bNWoPbqKKmF7Mlx7lyCLzHHRRZuAA4Fc7Lw0jTc/EiyyrOi
+   JdkaQHlRhernZpfxI6NAmiFZKm+UmMReRU1mPuLeUGt2AH7PfDMRjknJ+
+   IvYTQ+bSVvYS4EYKtI+9lMulqZZNqRJQdTHhqgRr/G12vnxuA2Alvfozw
+   P0cHj5vrwN9oBKGMt8NPPMgESYGCgJ03lDfJrSR89E7VZ/aeUFLsIm3ap
+   Hiyi3geFUl1v9Xp+2mXsiqRPVCDzdgW3kOerAboN4xhIQcOD0yMI7XS8f
+   BkFXxmvgxDMozxMH+Vmrxz+zdxYt1IpuagcW9IIMkNZahsQnRj05TGLqB
+   A==;
+X-CSE-ConnectionGUID: PiH0yrj7RB6ciLZZMrmBWw==
+X-CSE-MsgGUID: 00GZSHFXQbeiBgOdbwWa3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11967"; a="3429593"
+X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; 
+   d="scan'208";a="3429593"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 03:09:51 -0800
+X-CSE-ConnectionGUID: Nfekq6HIRXSdxBOKkXSS5g==
+X-CSE-MsgGUID: ZLCkwydlSViBT75NqwCb0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; 
+   d="scan'208";a="9848116"
+Received: from 984fee019967.jf.intel.com ([10.23.153.244])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 03:09:51 -0800
+From: Chao Gao <chao.gao@intel.com>
+To: x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Cc: rick.p.edgecombe@intel.com,
+	kevin.tian@intel.com,
+	yilun.xu@intel.com,
+	chao.p.peng@intel.com,
+	baolu.lu@linux.intel.com,
+	chao.gao@intel.com,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [RFC PATCH 0/7] TDX: Enable PCIe link encryption for trusted I/O
+Date: Mon, 16 Nov 2026 03:10:18 -0800
+Message-ID: <20261116111037.3478844-1-chao.gao@intel.com>
+X-Mailer: git-send-email 2.52.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -63,169 +92,208 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Hi all,
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+This series adds PCIe link encryption on TDX hosts. Yilun previously
+posted one large series with all the changes needed for this [1]. That
+series has been split up, and the parts are being posted separately.
+This RFC is posted for early review. It is not yet seeking review from
+the x86 maintainers.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+The SEAMCALL wrappers this series uses are in a separate series, not
+yet posted. So, their names and parameters may still change.
 
-- [High] Writing TCP_CLOSE plus sk_err = ECONNRESET in
-  vhost_vsock_reset_orphans() (drivers/vhost/vsock.c:792-793) brings…
-- [Medium] vhost_vsock_reset_orphans() now moves every orphaned connected
-  socket to TCP_CLOSE unconditionally, after setting SOCK_DONE, even…
+Today, userspace sets up link encryption by writing to the PCI/TSM
+"connect" sysfs attribute. A proposal under discussion [2] adds CTLV
+attestation commands [3] to this flow, so that userspace can select and
+verify the device's certificates before the IDE stream is set up. This
+series uses only the "connect" attribute. I will convert it to the new
+flow once the discussion settles.
 
---
+== Background ==
 
-vhost/vsock: Fix socket state constant
+With shared I/O, devices cannot access a confidential VM's private
+memory, so the VM bounces I/O data through memory it shares with the
+host. With trusted I/O, the VM establishes trust in a device and then
+lets it access private memory directly, which avoids the bouncing.
 
-This patch replaces SS_UNCONNECTED with TCP_CLOSE in
-vhost_vsock_reset_orphans(). SS_UNCONNECTED has the value 1, which is the
-same as TCP_ESTABLISHED. So far, orphaned sockets have been left in the
-established state after the vhost device was released.
+The device's MMIO and DMA traffic then carries private data across PCIe
+links and switches. A physical attacker on a link, or a malicious
+switch, could read, modify or replay that traffic. PCIe link encryption
+protects the traffic between the root port and the device against these
+attacks, which keeps switches out of the VM's TCB.
 
-> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-> index 88a310390eb0a..fd224f7681d92 100644
-> --- a/drivers/vhost/vsock.c
-> +++ b/drivers/vhost/vsock.c
-> @@ -789,7 +789,7 @@ static void vhost_vsock_reset_orphans(struct sock *sk)
->  
->  	sock_set_flag(sk, SOCK_DONE);
->  	vsk->peer_shutdown = SHUTDOWN_MASK;
-> -	sk->sk_state = SS_UNCONNECTED;
-> +	sk->sk_state = TCP_CLOSE;
+Link encryption builds on:
 
-[Severity: High]
-Can this let connect() reset a socket that is still linked in
-vsock_connected_table? Commit 4f6ac74fa594 ("vsock: treat TCP_CLOSING as
-once-established") fixed that problem for the other close paths.
+  - Integrity and Data Encryption (IDE) [4], the PCIe feature that
+    encrypts and integrity-protects data exchanged between the root port
+    (part of the CPU's root complex) and the device.
 
-vhost_vsock_reset_orphans() runs without lock_sock(). Suppose it runs
-after virtio_transport_recv_connecting() has handled a RESPONSE, but
-before the waiter in vsock_connect() gets the socket lock back:
+  - The Security Protocol and Data Model (SPDM) [5], a protocol for
+    authenticating a device and setting up a secure session with it.
 
-vhost TX worker
-virtio_transport_recv_connecting()
-    sk->sk_state = TCP_ESTABLISHED;
-    sk->sk_socket->state = SS_CONNECTED;
-    vsock_insert_connected(vsk);
+  - Data Object Exchange (DOE) [6], a PCIe feature that provides a
+    mailbox in the device's config space.
 
-vhost_vsock_dev_release()
-  vhost_vsock_reset_orphans()
-    sk->sk_state = TCP_CLOSE;
-    sk->sk_err = ECONNRESET;
+At a high level, setting up link encryption means opening an SPDM
+session with the device through its DOE mailbox, configuring an IDE
+stream on both the root port and the device, and programming the
+stream's keys into the root port and sending them to the device over
+the SPDM session.
 
-The waiter then fails the TCP_ESTABLISHED/TCP_CLOSING check and ends up
-here:
+The TEE Security Manager (TSM) is a trusted platform component, such as
+the TDX module or AMD's Secure Processor firmware. The work is split
+between the TSM and the host kernel. The TSM runs the SPDM session and
+handles the keys. It doesn't own the device, so the host kernel configures
+the device's IDE settings and relays SPDM messages between the TSM and
+the device.
 
-net/vmw_vsock/af_vsock.c:vsock_connect() {
-    ...
-	err = sock_error(sk);
-	if (err) {
-		sk->sk_state = TCP_CLOSE;
-		sock->state = SS_UNCONNECTED;
-	}
-    ...
-}
+== This series ==
 
-connect() returns -ECONNRESET, but the socket is still in the connected
-table. With the old value (1 == TCP_ESTABLISHED), connect() returned 0 and
-the socket stayed SS_CONNECTED.
+This series adds a TDX-TSM driver to the TDX host services module
+(tdx-host.ko). The driver registers the TDX module as a TSM with the
+PCI/TSM framework [7] and implements its connect and disconnect
+operations. PCI/TSM calls them when userspace writes to a device's
+"connect" and "disconnect" sysfs attributes.
 
-After that, ordinary API calls seem to be enough to insert the socket a
-second time:
+Connect sets up the SPDM session, the IDE stream and its keys through
+SEAMCALLs, and disconnect tears them down.
 
-1. A second connect(): sock->state is SS_UNCONNECTED, so it does not get
-   -EISCONN. vsock_assign_transport() returns early because the transport
-   is the same. That skips both vsock_remove_sock() and
-   sock_reset_flag(sk, SOCK_DONE).
+During some SEAMCALLs, the TDX module may need to exchange several SPDM
+messages with the device. The kernel calls such a SEAMCALL in a loop.
+Each time it returns an SPDM message with a dedicated status code, the
+kernel sends the message through the device's DOE mailbox and calls the
+SEAMCALL again with the device's reply, until the SEAMCALL completes.
 
-2. shutdown() while the socket is SS_CONNECTING: vsock_shutdown() calls
-   sock_reset_flag(sk, SOCK_DONE). Without that flag,
-   virtio_transport_recv_pkt() no longer drops the incoming RESPONSE.
+== Points for discussion ==
 
-3. A RESPONSE from a guest with that CID reaches
-   virtio_transport_recv_connecting() in TCP_SYN_SENT. It calls
-   vsock_insert_connected() a second time.
+1. Raw DOE frames (See patch 3)
 
-__vsock_insert_connected() then does an unconditional sock_hold() and
-list_add() on a node that is already linked, which corrupts the bucket.
+The TDX module produces and consumes whole DOE objects, header included,
+but the PCI DOE API takes payloads only. The TDX-TSM driver therefore
+strips and rebuilds the DOE header itself. The code is small, but it
+puts DOE format details in a TSM driver, while the DOE core already
+handles them. A PCI DOE API that takes whole objects would keep them in
+the core, but the TDX-TSM driver would be its only user. Is such an API
+worth adding, or can we live with the DOE format handling in the
+TDX-TSM driver?
 
-Any later walk of that bucket under vsock_table_lock can then loop forever,
-for example in vsock_find_connected_socket() or
-vsock_for_each_connected_socket(). With CONFIG_DEBUG_LIST it hits the
-list_add double add BUG instead. One socket reference is also leaked.
+2. Default IDE Stream (See patch 5)
 
-Only the first step depends on timing, a race with VM teardown. The rest
-is normal use of the socket API.
+TDISP requires each device to have one default IDE stream [8]. The PCI
+core does not set Default Stream, so each TSM driver sets it itself, by
+looking up the device's IDE settings with pci_ide_to_settings() and
+setting default_stream. AMD's driver already does this, and the TDX-TSM
+driver does the same. Since the requirement is shared, the PCI core
+could instead set Default Stream on the device's TC0 stream, which is
+what TDISP expects. Should this move into the PCI core now, or can it be
+a later cleanup?
 
-> +	sk->sk_state = TCP_CLOSE;
+== Limitations ==
 
-[Severity: Medium]
-Does this drop data that is still queued in the socket's rx_queue?
+The TDX module configures the root port's IDE settings and accepts
+only one address range for the stream. The root port therefore encrypts
+only traffic to the device's prefetchable MMIO range, and a device with
+no prefetchable range cannot be connected. We are evaluating whether
+this can be lifted.
 
-vhost_vsock_reset_orphans() now sets SOCK_DONE and then moves the socket
-to TCP_CLOSE unconditionally. __vsock_connectible_recvmsg() then returns
-early without dequeuing anything:
+Link encryption needs the root complex to enter a TDX mode, in which
+only the TDX module can configure the root port's IDE settings. The
+kernel opts in to this mode with TDH.IOMMU.SETUP. As its name suggests,
+this SEAMCALL also puts the IOMMU into TDX mode, which changes the
+IOMMU's behavior. Unfortunately, the two cannot be enabled separately,
+even though link encryption does not need IOMMU TDX mode.
 
-net/vmw_vsock/af_vsock.c:__vsock_connectible_recvmsg() {
-    ...
-	if (!transport || sk->sk_state != TCP_ESTABLISHED) {
-		...
-		if (sock_flag(sk, SOCK_DONE))
-			err = 0;
-		else
-			err = -ENOTCONN;
+== Dependencies ==
 
-		goto out;
-	}
-    ...
-}
+The series depends on the following series:
 
-So recv() returns 0 (EOF), and sk_err is not reported there.
+  - TDX module extensions [9]
+  - IOMMU TDX mode [10]
+  - SEAMCALL wrappers for PCIe Link Encryption [not yet posted]
 
-The other close paths only leave the readable state when no data is
-pending:
+The full stack is available at:
 
-net/vmw_vsock/virtio_transport_common.c:virtio_transport_do_close() {
-    ...
-	if (vsock_stream_has_data(vsk) <= 0)
-		sk->sk_state = TCP_CLOSING;
-    ...
-}
+  https://github.com/gaochaointel/linux-dev/tree/link-encryption-rfc-v1
 
-hvs_do_close_lock_held() in hyperv_transport.c has the same check.
-vmci_transport_handle_detach() skips the check only on the host side,
-where queue-pair data can't be read once the VM detaches. With vhost, the
-data is still in host-kernel skbs and can be read.
+== Testing ==
 
-One way to hit this:
+Tested that link encryption can be enabled and disabled through PCI/TSM:
 
-1. The guest writes data and sends SHUTDOWN.
-   virtio_transport_recv_connected() keeps the socket TCP_ESTABLISHED
-   because data is pending.
+  # echo tsm0 > /sys/bus/pci/devices/$DEVICE/tsm/connect
+  # echo tsm0 > /sys/bus/pci/devices/$DEVICE/tsm/disconnect
 
-2. The VM exits, or the VMM closes the vhost fd.
-   vhost_vsock_dev_release() calls vhost_vsock_reset_orphans().
+Note that I disabled DPAMT for this testing as this series does not yet
+install DPAMT for the SPDM metadata, which will be added later.
 
-3. The host application's next recv() returns 0, and the end of the
-   stream is lost.
+== Changes since Yilun's version ==
+  - Rebased onto the latest tip/x86/tdx branch.
+  - Rewrote the cover letter and commit messages
+  - Took over the patches from Zhenzhong and Yilun, and credited them
+    in the changelogs.
+  - Dropped the Reviewed-by tags collected as patches are changed
+    significantly.
+  - Allocated struct spdm_config_info_t with kzalloc_obj() and added a
+    static_assert() on its size, which removes the casts on allocation
+    and free.
+  - Fixed a leak of the SPDM message buffers (tlink->in_msg and
+    tlink->out_msg), and moved their allocation into tdx_spdm_create(),
+    next to the SPDM metadata.
+  - Dropped the SPDM session key update patch.
+  - Made TDX_HOST_SERVICES depend on PCI and select PCI_TSM directly.
+    Otherwise tdx-host fails to build with CONFIG_PCI=n. A TDX host
+    without PCI support is not a realistic configuration
+  - Replaced the bit operations and endian conversions in the DOE
+    header handling with struct pci_doe_header and struct pci_doe_msg.
+  - Returned -EIO instead of -EFAULT when TDH.IDE.STREAM.CREATE fails.
+  - Reworded changelog to describe the TDX module's limit on concurrent
+    TDH.SPDM.CONNECT. i.e., why tdx_spdm_lock.
+  - Clarified that having an IDE default stream is required by TDISP spec.
+  - Fixed checkpatch warnings
 
-With the old value the socket stayed TCP_ESTABLISHED, so the application
-could read the remaining data before seeing EOF.
+== AI Usage ==
 
-On the guest side, virtio_vsock_reset_sock() also sets TCP_CLOSE
-unconditionally on a transport reset, so this may be the intended reset
-behaviour. It is still different from the RST path, which keeps queued
-data readable.
+AI was used under supervision to review code, refine logs and explore ways
+to improve readability. I wrote the first draft of this cover letter, which
+then changed significantly over several rounds of review with AI and was
+trimmed a lot for brevity. The idea for simplifying the DOE format
+handling in patch 3 came from AI.
 
-Should vhost_vsock_reset_orphans() check vsock_stream_has_data() the way
-the other transports do?
+== References ==
+
+[1]: https://lore.kernel.org/all/20260327160132.2946114-1-yilun.xu@linux.intel.com/
+[2]: https://lore.kernel.org/all/20261028152618.1356860-1-aneesh.kumar@kernel.org/
+[3]: https://lore.kernel.org/all/20261015145053.3664509-1-jiri@resnulli.us/
+[4]: PCIe Specification r7.0, section 6.33 "Integrity & Data Encryption (IDE)"
+[5]: https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.3.0.pdf
+[6]: PCIe Specification r7.0, section 6.30 "Data Object Exchange (DOE)"
+[7]: https://lwn.net/Articles/1043262/
+[8]: Intel TDX Connect Architecture Specification
+     https://cdrdv2-public.intel.com/773614/intel-tdx-connect-architecture-specification.pdf
+[9]: https://lore.kernel.org/all/20261013-tdx-module-ext-v4-0-de5ffac65470@linux.intel.com/
+[10]: https://lore.kernel.org/kvm/20261112043054.2664857-1-baolu.lu@linux.intel.com/
+
+Chao Gao (7):
+  coco/tdx-host: Create metadata for an SPDM session
+  coco/tdx-host: Establish an SPDM session with the device
+  coco/tdx-host: Exchange SPDM messages through DOE
+  coco/tdx-host: Pass a device info buffer to tdh_spdm_connect()
+  coco/tdx-host: Configure an IDE stream
+  coco/tdx-host: Program IDE keys and enable the IDE stream
+  x86/virt/tdx: Enable PCIe link encryption
+
+ arch/x86/include/asm/shared/tdx_errno.h     |   1 +
+ arch/x86/include/asm/tdx.h                  |   2 +-
+ arch/x86/include/asm/tdx_global_metadata.h  |   2 +
+ arch/x86/virt/vmx/tdx/tdx.c                 |   2 +-
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  12 +
+ drivers/pci/ide.c                           |   5 +-
+ drivers/virt/coco/tdx-host/main.c           | 496 +++++++++++++++++++-
+ include/linux/pci-ide.h                     |   2 +
+ 8 files changed, 516 insertions(+), 6 deletions(-)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261112-transport-reset-state-fix-v1-1-5698375f52a9%40rbox.co
+2.52.0
+
