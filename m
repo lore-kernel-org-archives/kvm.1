@@ -1,76 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794868051;
-	b=SUjb8ZGiXuXb5ipzJOEIXJfxnRPncTRpWutfTP127IfDzBTmgeZ/19W3hHc5ajRDZfqj
-	 TFSbw7TA6hva81B2OsTESZQFjvbzhkPqj/o7C5M2fAmQrHHeCaZs+YWPjV2a9Q64exJDb
-	 mQ6lZROK53l2L/zS7ZQkRmq4RtyHHr5x9UD985vjgtPwgBQVKcY2XsmQvpqOee9KyMnRv
-	 I8fMJtW46oaoX5qiClVtvKEUbJaDF3x5hWtT0rYzHJ22pzQiTvRqUVc4RypAcixpoDLWh
-	 Y762+xK5OloNmQcqXJKVL4ChKCKpuWfm0OkQPS/dmR0w3ctDdR8Kf59s1RvC5ScMQbA==
+	t=1794868238;
+	b=NdSOOn4NyTxSWhXq8Ko1pAIe3oodMUT9hL33lFXTiyJJulUUBzJ14/+FAE7aWroVXG/S
+	 CeJWogz6CsTkh6NEwMSppo3fVCyhClBJ141FvPQ/58UgViwqrB4N8AhNzAIlE2VEzJ7WS
+	 GfIAhN/lcT1u+dz66D/F9qmIPOEbsaTLsSx/3Ymf/5F3SL3e0sf4ZAKJNdvKCQKnA5nol
+	 K5LjjaUmVQRKE7DJ7nVLQH+J1drlV8/E1gcc+6dfPW8ytHswphnt1K8j13oxjFsiBr/8p
+	 X55iY75lzGH7LgwzUabLOYf7NkiiCWfUhfwHLa3qAVzdmdLb4TC5IN+X2U8qFMHksWw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794868051;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794868238;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=RUvXiIcVm9hOpppwwCqg1ARGN5d5bhbmrIqkvTODPmQ=;
-	b=CjVlz3gC+J7CZb6mJ4bpBx1poyHFgUruxLmHw2SqbrUYv1UfuLRjUHJOJaCIMNujX32L
-	 /+zdowlyRfPg2Y+l/k27YMU4b5dc8ElGm1LpBn+2swIulb2bM+jNekrlKd+eD5vRgHEke
-	 PgzDVGVaHoMjYzOrd5JPE1s5SmNSHi9RnozCEm1jYGEtSVz5IdtXOT+B/CTzOvq5yFM9O
-	 46JsoM82f6tXbkBXXpUFjff5BOs0a0yURgORUcblhGqrZPKM+pgKRoUStXugs87sUiBw+
-	 2Iqp2LHGHIZ5FLgQXcyiZIZk3X6PvPtyusKBmRsZpL8JzLWm2oLKd6Kt59AkiNTRAmg==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=C0gexXoY+SLiE6S59pTDegfKVc6UD8M7O/wbYmXheC0=;
+	b=Nt967sBYfozxfRV+ANNnKeukyfl4x4AP/Px31e3m+frCYQ2XTyLAwh03P12kIURDF0SH
+	 0bP6iBMcJbXkfy9aoY2N4M6n7qyIjZiDa+XtsMbNAEcn0THUIHhr4kUq4Z+6rk5oYjsss
+	 dgCWAcc5+31XmF2eced6Ps/lDziOeOLvKvO8wdzpmQtGWux2QhXvOYUkKk/AXoKgnmJT5
+	 U8zh6ZPn7r/zx9Mreaj/C4CkVJ5qnpc0lXgtMW4S69BTLCqrbtSaEzdfQXsY6UAygoG0z
+	 o7eaLcytWZhAUVx6ym9dO4wVnkYjMvvAmOq8WQYWtFLlzvwof5xS7/qe1U+8sjS0RzQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ni9kZ9z3;
-	arc=none smtp.remote-ip=209.85.214.199
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0X+VEt9v;
+	arc=none smtp.remote-ip=209.85.215.182
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80981606A89C
-	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 22:27:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 80981606A89C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B753606A882
+	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 22:30:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2B753606A882
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ni9kZ9z3
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2edd25534afso29513625ad.2
-        for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 14:27:30 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0X+VEt9v
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cdadf7e248aso1557652a12.3
+        for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 14:30:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794868050; x=1795472850; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=RUvXiIcVm9hOpppwwCqg1ARGN5d5bhbmrIqkvTODPmQ=;
-        b=ni9kZ9z3ndG3fR2W1CR/nXPGUaB4ZhicnRKeINuTayT2Oky75VTmjsp/DzFK86Cd9v
-         cPuoexhvixBJyC7j96hyx+yJVVOr7VBMAk8TLQNJT8bkATeR0B7k0ge7nhaUGONn/UOb
-         gEXkCJLiugSWUvSaIeV7WGRgINROsyHnlu/Fn50HVBM+HAJlzY/ll3zTYjoV/rYfHxxj
-         Ltpok75OWasipSzWml+SR4Th8dijeW+FKWIGF6HtVq3JO2m2NZbMKiQRrwLFEpcL++E7
-         RWLup/N/BkKUgkCU/Fe2e7Q57Ua0Yn4kx63U3lSePzsGhjAmmmW8lWZKaBAuuUSETbLk
-         H8Dw==
+        d=gmail.com; s=20260707; t=1794868236; x=1795473036; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=C0gexXoY+SLiE6S59pTDegfKVc6UD8M7O/wbYmXheC0=;
+        b=0X+VEt9v3lkfg3CTHkk2K5why3V7N8328n8SLfJtO+t27n3Wy9a2BTqHYU2qiWfdV0
+         oiL+xNWie+Tb/c2TCRzMb3wsfHnvom1+RuaNxKF0mUMHCG90X6ygaysAkRehBOX8l6ic
+         x/+GcVGvadXmaQ/YANAoesBcRlABXBGFCiqWq+J/63NFkqnHHTtLnHTJP6AvWCR1nLZt
+         2jQyur6uHqsFCXV29VDfGNaBcBSN/vw+qoH/GsFQJ176UBsE4qorWl8gjTJjZRqoLZiB
+         hVcS1e8l7bjoo0WUsyscy9GdwsG7ht+d3EmeJFtelhg9Ay4jTMAfWppT2k7evyK2t4OE
+         PFuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794868050; x=1795472850;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RUvXiIcVm9hOpppwwCqg1ARGN5d5bhbmrIqkvTODPmQ=;
-        b=zjtdvaGYtvu3+bMxZBtItWI2PyWwWWkqmK2Ki3WRNJVW9v+IK+kV4+9MLROcyQwoJG
-         O74Y105FZyKTDI670LsjEXtjgtWMgLCaKgLuokeVOq9/JOEKJzqoo1n44axfjQ/ahSGG
-         WMOK9nPrtzlZ4pfOpVB9gpVNcAiloATHN5VcJb8BRPxIRj9JMO96d66/qHHafZZl2TgG
-         8UEMhkZaEtI8LLULmXezh5OsBe2L8bNkow+/NNRW2y2LVsqgqoc9aXnxCiAnXAXPamm/
-         tAItLKpugNBKraI69EubD/PXJNpSkWooGxM9ukOVTyg8/sgUWaXWS4ot8Aj3WndjtKyz
-         HbXQ==
-X-Forwarded-Encrypted: i=1; AL+hErHpd+Ft8xkgLRD1CepBIOjje6RPZUezopGExtkKRUv0xnlrsiPBDBFZN/rx42dAKn65UF0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9je0qtgJmawBVBy3UtVGmqKlF+HxzRTHSdFzWHpEOn1zFpwXeA
-	jqSxlqKboAqRnDr091rfzNHOemgB8aL/FrmlhBQBFgP6BeCdFvx0WbYeo5k+zI0h3kJ62sfdOR1
-	YZxXgrw==
-X-Received: from ploh2.prod.google.com ([2002:a17:902:f702:b0:2e3:1b6e:33bb])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:574b:b0:3ae:2969:903f
- with SMTP id 98e67ed59e1d1-3b1b0b8bcb7mr10699281a91.45.1794868049419; Mon, 16
- Nov 2026 14:27:29 -0800 (PST)
-Date: Mon, 16 Nov 2026 14:27:28 -0800
-In-Reply-To: <ca9dffb64656a392965f95d35b9d13d829f34076.camel@infradead.org>
+        d=1e100.net; s=20260707; t=1794868236; x=1795473036;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=C0gexXoY+SLiE6S59pTDegfKVc6UD8M7O/wbYmXheC0=;
+        b=IWFRrty/Ku4xlm8Srwb0LdRVHWb+dZwxlGOQG9hUPdBqdPELo0qjeqykhZm0mlwMHS
+         Sw2HfIapqq8lF+2bc9VAoD6KtqhWBHETOD7/Gtteh5+88TBHSKGizDqvPEsewYhRyzBS
+         h9B6pyBE83y5ZMgNe0HWrQuM4L2lMMXPhlUzFt8ymwaRLlgg49EEf2TtBLHcV+L6welE
+         i5mASawuUkx1LNNJTemCgn/z1TdF6CYqTfe4dPRtdKxyCe/VIPGfbNU0CqO3VeFKYJ+I
+         VzuSpw4GfF/Tf/s4TWYVtKBI48eEayo3dRMCNU1R+ugId7IC8ECwoN/b3XSW2fPKkdVZ
+         DvbA==
+X-Gm-Message-State: APuU4Z8sJ1n0T2H/EQEZ08yXonAHlKHofWJW/mv0mOESEqJ/fQTFX+uX
+	b8Br1DI/eCmjFlRIkjH0rX9j7h+UqLeGKIw5xBC3rtAwe4sPCxhaRLm7
+X-Gm-Gg: AZFdTZduSFyZQN8yrS7+lYsS5HRWW11kDwkUxlvDU73O1Qrv258L4HoubmEBXeIIxhy
+	ozcGQNMeWmbHbbZQdG0wUUwxjVoOhNBj3fOBK4wZ/gOTz1l1iQybLSezwqY5tWOGFl5sRHNfBr4
+	nqHR+sYm7qWuTR69S7l8P+/x78BUToC+xjex9G2KQQVNLL5AUqNsdqCrnqg8M8zjvTGQ3O8qMdC
+	TQeZqxvBVj0GMpjN9styZCdFidX5xQ9GjkDkkToTKy/w5POntWfMjrEsbFfAYXhrEqdG3P1AFcO
+	IWzWGAjZH9IelgMtvZPEMl/XUt6JFErbuSLpAPHltwrgWSst7AkxMi5gfQrypsuZxO7EsUBbR8X
+	u8OCi2QlSwJ5PEyRsvg0PqauY+gIZ5qf9Rw6PjSWCPEgm8JrfdHUM6cvN19HgmI+j00URhFwdi/
+	YfD+Qufh0KT83jYxcGvShDWlWCj5uDW4LJi+OuSrshHV/sPhIkBAe91cRR2Z5tFPgjVm+3qL0/y
+	riH+AY+oxo8sU7yI0tvqhyXUn2a/ErlJ8xM1qNNn+ELnqDk21yVep9z7gRHbGyPiD2Iv9Uvfa1E
+	4HAv9Csp094IQIRYGxWnJq7zWJPgB031yFUY5VMFe1F73fzpxubKHiPwD0emtmpIonKJmk84/r0
+	1qVMP3D0OvpWZuLsLM2ImWIxjXHzZpbrlbDBGY0pBnqleFnsZ7ujCF6Ye+tFqke8mjT5j0ctD+U
+	BNBH5s+5COfg==
+X-Received: by 2002:a17:90a:c110:b0:3ad:93b4:718f with SMTP id 98e67ed59e1d1-3b1b0ccda1emr9629636a91.65.1794868236231;
+        Mon, 16 Nov 2026 14:30:36 -0800 (PST)
+Received: from cs-arch-srv04.cmpt.sfu.ca (cs-arch-srv04.cmpt.sfu.ca. [142.58.10.48])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b3ac255634sm944375a91.5.2026.11.16.14.30.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Nov 2026 14:30:35 -0800 (PST)
+From: Mahmoud Abumandour <ma.mandourr@gmail.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mahmoud Abumandour <ma.mandourr@gmail.com>
+Subject: [PATCH v3 0/3] KVM: nVMX: Don't clobber VM-Entry instruction length on soft INTn exits
+Date: Mon, 16 Nov 2026 14:30:30 -0800
+Message-Id: <20261116223033.3866283-1-ma.mandourr@gmail.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -79,150 +95,38 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <cover.1794374897.git.zack.rusin@broadcom.com> <90467782be23b83fd3e9a6afe2f1d2149eaf9db9.1794374897.git.zack.rusin@broadcom.com>
- <876c4f4fc442116c9bff8abd8c34f99fcfa65531.camel@infradead.org>
- <CABQX2QNd7DehBsH-pGL=EJK4b5vC60PymL_YP27xDxGT6_6=uQ@mail.gmail.com>
- <1bae109338ab6ff1ff14eac811f7e86ced785b22.camel@infradead.org>
- <CABQX2QNhRZP1Td_HQ6QpMzw-_TjqhbooipWYg3VTgTOq2_U9+w@mail.gmail.com> <ca9dffb64656a392965f95d35b9d13d829f34076.camel@infradead.org>
-Message-ID: <avuDUNAU_a933zvp@seanjc-mac.roam.internal>
-Subject: Re: [PATCH v3 06/12] KVM: x86: Forward VMware hypercalls to userspace
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Zack Rusin <zack.rusin@broadcom.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	Doug Covelli <doug.covelli@broadcom.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
-	Shuah Khan <shuah@kernel.org>, Vitaly Kuznetsov <vkuznets@redhat.com>, Paul Durrant <paul@xen.org>, 
-	Xin Li <xin@zytor.com>, Francesco Lavra <flavra@baylibre.com>, 
-	"Radim =?utf-8?B?S3LEjW3DocWZ?=" <rkrcmar@ventanamicro.com>, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 13, 2026, David Woodhouse wrote:
-> On Fri, 2026-11-13 at 01:33 -0500, Zack Rusin wrote:
-> > > Userspace *already* needed to
-> > > know about those=C2=B9 because it can't migrate while those are pendi=
-ng;
-> > > it has to do at least one more run, even if it's with the immediate_e=
-xit
-> > > flag set.
-> >=20
-> > True, but, again afaict, that rule exists because those completions
-> > have to run, so I don't think it tells us they can be dropped.
-> >=20
-> > > If it's deemed clearer, I'd also be OK with an explicit
-> > > KVM_VCPUEVENT_CANCEL_HCALL which cancels *only* hypercalls. But I don=
-'t
-> > > really see the point; userspace shouldn't be getting confused when it
-> > > was actually some other kind of completion that was active anyway.
-> > >=20
-> > > =C2=B9 https://lore.kernel.org/all/20250111012450.1262638-1-seanjc@go=
-ogle.com/
-> > >=20
-> > > Looks something like this in my Hyper-V hcall series (except I alread=
-y
-> > > shouted at the agent for stupid struct layout and made it go run paho=
-le
-> > > on everything it's working on).
-> >=20
-> > FWIW, restricting cancellation to explicitly marked completions looks
-> > good to me.=C2=A0 If Sean/Paolo prefer that, I'm happy to mark our
-> > completion cancellable and drop our exception fields.
->=20
-> I posted that as
-> https://lore.kernel.org/kvm/20261113170535.79246-3-dwmw2@infradead.org/T/=
-#u
-> and caught both Paolo and Sean here at KVM Forum and both seem OK with it
-> (although acquiescence when badgered at a conference doesn't necessarily
-> translate to applying the patch... :)
+KVM writes the length of a soft INTn that L2 was vectoring at the time of a
+nested VM-Exit into vmcs12's VM-Entry instruction length instead of the VM-Exit
+instruction length.
 
-Heh, you jinxed yourself.
+Patch 1 is there because Sashiko pointed out that prepare_vmcs12() overwrites
+the VM-exit instruction length that vmcs12_save_pending_event() saves for soft
+events.
 
-Adding something to KVM_SET_VCPU_EVENTS is complete overkill, and will crea=
-te a
-confusing ABI for hypercalls versus MSR exits.  For the latter, KVM lets us=
-erspace
-signal success/failure, and injects a #GP on failure.
+v3:
+ - Rebased onto kvm-x86/next.
 
-The VMware case in particular is a bit different since that case needs to i=
-nject
-a variety of faults, with a payload, but the concept is the same: give user=
-space
-a way to cancel/reject the hypercall/action.  And that's dead simple, e.g.
+v2:
+ - New Patch 1
+ - Same Patch 2 from v1 (with commit message changes)
+ - Patch 3 now extends nested_exceptions_test instead of adding a new test
+   (suggested by Sashiko).
 
-  static int complete_vmware_hypercall_exit(struct kvm_vcpu *vcpu)
-  {
-	if (vcpu->run->vmware.ret)
-		return 1;
+Mahmoud Abumandour (3):
+  KVM: nVMX: Fill VM-Exit instruction length before saving pending event
+  KVM: nVMX: Don't clobber VM-Entry instruction length when saving soft
+    INTn
+  KVM: selftests: Verify nested VM-Exits while vectoring INT3 and INTn
 
-	return kvm_skip_emulated_instruction(vcpu);
-  }
+ arch/x86/kvm/vmx/nested.c                     |  6 ++-
+ .../kvm/x86/nested_exceptions_test.c          | 39 +++++++++++++++++++
+ 2 files changed, 43 insertions(+), 2 deletions(-)
 
-For Hyper-V exits, from what I can tell, the plumbing already exists, i.e. =
-I
-suspect that this:
 
-  A VMM implementing Hyper-V hypercalls behind KVM_EXIT_HYPERV_HCALL can on=
-ly
-  complete them: write a status, advance RIP.  The TLFS specifies some hype=
-rcalls
-  to raise an exception at the hypercall instruction instead, and the exit =
-has no
-  way to say that.
+base-commit: cbe54fc3462b3949ab27b9ae81fb9ddb509040c7
+-- 
+2.25.1
 
-is partly wrong.  Presumably the TLFS provides a HV_STATUS_xxx flag or thre=
-e to
-indicate "exception", KVM just needs to honor those, e.g. if the behavior o=
-nly
-applies to userspace exits *and* userspace is responsible for injecting the=
- fault:
-
-diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index 5d2e3617c952..7933389731e6 100644
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -2430,7 +2430,12 @@ static int kvm_hv_hypercall_complete(struct kvm_vcpu=
- *vcpu, u64 result)
-
- static int kvm_hv_hypercall_complete_userspace(struct kvm_vcpu *vcpu)
- {
--	return kvm_hv_hypercall_complete(vcpu, vcpu->run->hyperv.u.hcall.result);
-+	u64 result =3D READ_ONCE(vcpu->run->hyperv.u.hcall.result);
-+
-+	if (hv_result_exception(result))
-+		return 1;
-+
-+	return kvm_hv_hypercall_complete(vcpu, result);
- }
-
-or if the type of fault is hardcoded and we want to apply the behavior to b=
-oth
-userspace exits and KVM-internal exits:
-
-diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index 5d2e3617c952..c726a707a7ca 100644
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -2420,6 +2420,9 @@ static int kvm_hv_hypercall_complete(struct kvm_vcpu =
-*vcpu, u64 result)
- 	kvm_hv_hypercall_set_result(vcpu, result);
- 	++vcpu->stat.hypercalls;
-
-+	if (hv_result_exception(result))
-+		return 1;
-+
- 	ret =3D kvm_skip_emulated_instruction(vcpu);
-
- 	if (tlb_lock_count)
-
-If it's a mix of those two, we can obviously sort that out.
-
-If the exception is communicated through some other means, then (a) that ne=
-eds
-to be explained in detail, and (b) we should be able to use the same apprao=
-ch,
-just with new "ret" field or whatever in kvm_hyperv_exit.u.hcall.
