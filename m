@@ -1,68 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794824360;
-	b=gPicqUtqM7j5ijabp3ySXrY67zKWzZ9kL2X0W6y2+Hnkxcha6y3bDYOXADCue9l6MN6a
-	 NmAETfc9LhahHclvdJRP/VuG69ZVRuQvDcRFHdG+drdsAk6F3j+YLqBS1FFvQBIpjv8vA
-	 Lbh/vip3QCMshR06CrDoMkWIM2NvEP7MXZy6THW4wgCwpCl5fAg8pmMUP0gBw2WU7Zh5d
-	 csDd7e3AfgleotgznA+2MzWQKG45x5ffH0sSXoVgi3IgwZwAHZhQySY2xEGUvjDwTSSDT
-	 GfKoy4fhWmNC/fstOlhQvEISFVLJU+9PPqGE96BSe8qaHL7KkyuXDQUjAOvfJZYj20g==
+	t=1794825356;
+	b=5NKj+8kCT0vVfxxp+jXRnHYNtMrC/2XwvRuqeu+nccOjmGevAxSExuCbIfSuhKMTIr21
+	 9fj7Jksfwuo2gApXjuwm4toa4apB0gokciHEWR0WWPaqVDgWS/evK/6qbg25IOK6hw4ai
+	 E08mdew5nwNPsdRuLFJXJOV9Bf1tApzbxCih3jTp10GEzmFHaUjix5QA7ugCnzS7xWOu7
+	 lwHuhOFv4DRCRYRlbglYXsNt0fltCwlfm/Scp9G9ZSfxcwfunOXgyeny/9OxSGXKOKLKQ
+	 VPrQO9JfH6kUhXin26Am7N8KfxPQf8al4eu8qoNa+YplnjhF5Tfu01nMkiwt+Y1l2Pg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794824360;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=z3MXqBBrdYBSbmsQsRqTPyDvyLGQ9DWbEILlQGx/tbc=;
-	b=15EpsCt2v3eJhwoN2e8/lrOGkq0HKfVnC4mASgswsrJIBxnAezr3ffnMGkNr89deRAUL
-	 hu/PR1jcDp+a2roYvO/Pm0KDUmHoXAF50AqDrqt00k0MFs+lBh8OSObpmWG2zkOisrP0E
-	 Lf8VXS51hu7k7X08kCw2N4HZ4FGbmej6PQrbFPLKmx114bIsIXSttVD949egh3XRIh3mf
-	 nJxJQAwSCnJV4Xw5X9Phcn9HUL4+117a/Xaptk0A5w/uFdxtxPiIMVzzWvZudOnO9afmx
-	 LkoSopWysT1tu++28eC/vGDZTSwA5SGNQEfB3Om4kJK7GEaBaCZdzRSH7AwfyQmrDGg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794825356;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=yJIFDAZTBBUc/zWvcjI+JoSUsDm2VmZ4BHMBL+zYoOg=;
+	b=JlzsWN0aYZb+Uu/J4Bb3pkxxvS5/oE4kXRb6wGNZHi4ctl8sTAZOlbp6nCTxes5pKnll
+	 523k8g4Upd3qWJBvvJhP2r9A8+sEJcdIkd2G8fda0NMXnh01M9wzv5GEQuiMd6TPvIg0T
+	 xbFjGNqJyuIe40/eRSO0WAIB5tliwOPhHxFbyz0cs74/imrJlUu51PHaF800bLdYJqPF8
+	 AOFA+8qpxycPuzd2eKTuDmQIzanfsY+ks/Ov8WD4NtRFtYHIydL4qs/xDfNcDKuNdMRcT
+	 7G8vMD66m+5Vx2ucaHbU5z3yEUvpC3gLtgnm5FbPWh/aIG23uiKfCmLxvA4dmltdG1Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Nkrn02YO;
-	arc=none smtp.remote-ip=192.198.163.16
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zi9FfVIk;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A41606A323;
-	Mon, 16 Nov 2026 10:19:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81A41606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9E2606A330;
+	Mon, 16 Nov 2026 10:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Nkrn02YO
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794824359; x=1826360359;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=2WlCAn6Pk+Z5dUXP28WyX0TyGqz8OQa7Xa7A7c6Eer0=;
-  b=Nkrn02YOTt/EFCAob7TtC/JUMaeLXAY+JUY9Li2DF5lR9tGD+UyN6Du8
-   kdkxEYpsopVj8o5eGD4nh/9H4w65SjbSgzH9OfuKZJ9cH4BCh67vqqzhm
-   8vHfG0oLHqx1R25NP9MX4RD8j5juxdB5Dx86gL7FYhCQ+4xMOe7T/CWKZ
-   ENB8w91de9Y2Dshzb4q+kSt7aklWQOGh6v5cdCbY7H7c3ePKLq939LK+u
-   GO95Ubfysst4w9A1COQX0czmKQxN4eI8uxJgsSdIyK13/AaX3ZQXga8yQ
-   RGTTsndR20wsQdDk+xeL6fcTgclAkJr/YLNvO9TOssLTSbYPzc0/IojSi
-   w==;
-X-CSE-ConnectionGUID: LZKtJO6VSEGwArCKSa3XCQ==
-X-CSE-MsgGUID: K4s6iiJFRjWnxuCjAptuWQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11967"; a="3591941"
-X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; 
-   d="scan'208";a="3591941"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 02:19:18 -0800
-X-CSE-ConnectionGUID: D04pzoWJRgyYip1bxMQS1g==
-X-CSE-MsgGUID: dPJVQiuDSwSPeuR0CYsX4g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; 
-   d="scan'208";a="9357980"
-Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.249.52]) ([10.124.249.52])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 02:19:14 -0800
-Message-ID: <5dc1b3a3-8e9d-4771-b70a-ace7d5b919df@linux.intel.com>
-Date: Mon, 16 Nov 2026 18:19:11 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zi9FfVIk
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E732E1F000C4;
+	Mon, 16 Nov 2026 10:35:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794825356;
+	bh=yJIFDAZTBBUc/zWvcjI+JoSUsDm2VmZ4BHMBL+zYoOg=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Zi9FfVIkSFfbDd7ubsUktRGMsIHDCNUtu3OnboGf8dkzTfs49fP0b0t5egcZr7qsl
+	 FgA4oO2ko3m9qeqW79ZZQsdSpH+mKFLNJXxWXCgGvOFUVIRUN40XwJyyUW6zpoa7Fl
+	 6S34lMcF5leGhdSQXICkEZ+lQOkiltt65hmsc5eRiBg/SlBDA0grcBIgrD7nl5JEfe
+	 7J559ahYAea0l7MzcGcOVYrynXKwS3nFU08qGujnDW7or4fJpYwf9CgDdIHdGP8ljV
+	 WJj6n/ndblsiL6B+v70t1tWG1KZsyump1VDDjlpWZCTrv6SGVrKYkhz91SmFLwfPB0
+	 yENSLcOVbymag==
+Subject: Re: [PATCH net] vhost/vsock: Fix socket state constant
+From: netdev-bot+sashiko@kernel.org
+To: mhal@rbox.co
+Cc: stefanha@redhat.com, sgarzare@redhat.com, bobbyeshleman@meta.com,
+ mst@redhat.com, jasowangio@gmail.com, eperezma@redhat.com,
+ davem@davemloft.net, kvm@vger.kernel.org, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kuba@kernel.org
+Date: Mon, 16 Nov 2026 10:35:55 +0000
+Message-ID: <179482535544.3136.14958523425614003338@kernel.org>
+In-Reply-To: <20261112-transport-reset-state-fix-v1-1-5698375f52a9@rbox.co>
+References: <20261112-transport-reset-state-fix-v1-1-5698375f52a9@rbox.co>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,280 +63,169 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, Robin Murphy <robin.murphy@arm.com>,
- Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>,
- Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
- Ankit Soni <Ankit.Soni@amd.com>, Nicolin Chen <nicolinc@nvidia.com>,
- John Starks <dev@jstarks.net>
-Subject: Re: [PATCH v7 05/18] iommu: Implement device and IOMMU HW
- preservation
-To: Samiullah Khawaja <skhawaja@google.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- David Woodhouse <dwmw2@infradead.org>
-References: <20261110040828.1774343-1-skhawaja@google.com>
- <20261110040828.1774343-6-skhawaja@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20261110040828.1774343-6-skhawaja@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 11/10/2026 12:08 PM, Samiullah Khawaja wrote:
-> Add IOMMU ops to preserve/unpreserve the device state handled by the
-> IOMMU driver. This is IOMMU specific state of the device that needs to
-> be preserved for liveupdate. These ops can be implemented by the IOMMU
-> drivers that support preservation of devices that have their IOMMU
-> domains preserved. During device preservation the state of the
-> associated IOMMU is also preserved as dependency.
-> 
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> ---
->   drivers/iommu/iommu-priv.h       |   2 +
->   drivers/iommu/iommu.c            |  32 +++++-
->   drivers/iommu/liveupdate.c       | 191 +++++++++++++++++++++++++++++++
->   include/linux/iommu-liveupdate.h |  76 ++++++++++++
->   include/linux/iommu.h            |  21 ++++
->   5 files changed, 321 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iommu/iommu-priv.h b/drivers/iommu/iommu-priv.h
-> index 1f9f886b2c10..8a14d38a3e70 100644
-> --- a/drivers/iommu/iommu-priv.h
-> +++ b/drivers/iommu/iommu-priv.h
-> @@ -21,6 +21,8 @@ static inline const struct iommu_ops *dev_iommu_ops(struct device *dev)
->   
->   void dev_iommu_free(struct device *dev);
->   
-> +size_t iommu_group_device_count(struct iommu_group *group);
-> +
->   const struct iommu_ops *iommu_ops_from_fwnode(const struct fwnode_handle *fwnode);
->   
->   static inline const struct iommu_ops *iommu_fwspec_ops(struct iommu_fwspec *fwspec)
-> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-> index b486b8bbd1fc..932325e0af41 100644
-> --- a/drivers/iommu/iommu.c
-> +++ b/drivers/iommu/iommu.c
-> @@ -18,6 +18,7 @@
->   #include <linux/errno.h>
->   #include <linux/host1x_context_bus.h>
->   #include <linux/iommu.h>
-> +#include <linux/iommu-liveupdate.h>
->   #include <linux/iommufd.h>
->   #include <linux/idr.h>
->   #include <linux/err.h>
-> @@ -626,8 +627,8 @@ DEFINE_MUTEX(iommu_probe_device_lock);
->   
->   static int __iommu_probe_device(struct device *dev, struct list_head *group_list)
->   {
-> +	struct group_device *gdev, *gdev2;
->   	struct iommu_group *group;
-> -	struct group_device *gdev;
->   	int ret;
->   
->   	/*
-> @@ -661,6 +662,13 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
->   		goto err_put_group;
->   	}
->   
-> +	for_each_group_device(group, gdev2) {
-> +		if (dev_iommu_has_preserved_state(gdev2->dev)) {
-> +			ret = -EBUSY;
-> +			goto err_free_gdev;
-> +		}
-> +	}
-> +
->   	/*
->   	 * The gdev must be in the list before calling
->   	 * iommu_setup_default_domain()
-> @@ -697,6 +705,7 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
->   
->   err_remove_gdev:
->   	list_del(&gdev->list);
-> +err_free_gdev:
->   	__iommu_group_free_device(group, gdev);
->   err_put_group:
->   	iommu_deinit_device(dev);
-> @@ -3543,6 +3552,27 @@ bool iommu_group_dma_owner_claimed(struct iommu_group *group)
->   }
->   EXPORT_SYMBOL_GPL(iommu_group_dma_owner_claimed);
->   
-> +/**
-> + * iommu_group_device_count() - Get the number of devices in a group
-> + * @group: The group.
-> + *
-> + * The device count may change after this function returns, as devices can
-> + * be added to or removed from the group. The caller must recheck it if it
-> + * needs the count to stay the same.
-> + *
-> + * Return: the number of devices in the group.
-> + */
-> +size_t iommu_group_device_count(struct iommu_group *group)
-> +{
-> +	size_t count;
-> +
-> +	mutex_lock(&group->mutex);
-> +	count = list_count_nodes(&group->devices);
-> +	mutex_unlock(&group->mutex);
-> +
-> +	return count;
-> +}
-> +
->   static void iommu_remove_dev_pasid(struct device *dev, ioasid_t pasid,
->   				   struct iommu_domain *domain)
->   {
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-[...]
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-> +/**
-> + * iommu_preserve_device() - Preserve device state across live update
-> + * @domain: Associated IOMMU domain
-> + * @dev: Device to preserve
-> + * @dma_owner_token: Token to identify DMA owner of this device
-> + *
-> + * Return: 0 on success, or negative error code.
-> + */
-> +int iommu_preserve_device(struct iommu_domain *domain,
-> +			  struct device *dev, u64 dma_owner_token)
-> +{
-> +	struct iommu_device_ser *device_ser;
-> +	struct iommu_flb_obj *flb_obj;
-> +	struct dev_iommu *iommu;
-> +	struct pci_dev *pdev;
-> +	int ret;
-> +
-> +	if (!dev_is_pci(dev))
-> +		return -EOPNOTSUPP;
-> +
-> +	if (!iommu_group_dma_owner_claimed(dev->iommu_group))
-> +		return -EINVAL;
-> +
-> +	if (iommu_group_device_count(dev->iommu_group) != 1)
-> +		return -EOPNOTSUPP;
-> +
-> +	if (iommu_get_domain_for_dev(dev) != domain)
-> +		return -EINVAL;
-> +
-> +	pdev = to_pci_dev(dev);
-> +	iommu = dev->iommu;
-> +	if (!iommu->iommu_dev->ops->preserve_device ||
-> +	    !iommu->iommu_dev->ops->unpreserve_device ||
-> +	    !iommu->iommu_dev->ops->preserve ||
-> +	    !iommu->iommu_dev->ops->unpreserve)
-> +		return -EOPNOTSUPP;
-> +
-> +	ret = liveupdate_flb_get_outgoing(&iommu_flb, (void **)&flb_obj);
-> +	if (ret)
-> +		return ret;
-> +
-> +	mutex_lock(&flb_obj->lock);
-> +	if (!domain->domain_ser) {
-> +		ret = -EINVAL;
-> +		goto out_unlock;
-> +	}
-> +
-> +	if (dev_iommu_preserved_state(dev)) {
-> +		ret = -EBUSY;
-> +		goto out_unlock;
-> +	}
-> +
-> +	device_ser = iommu_ser_set_alloc(&flb_obj->device_set);
-> +	if (IS_ERR(device_ser)) {
-> +		ret = PTR_ERR(device_ser);
-> +		goto out_unlock;
-> +	}
-> +
-> +	ret = iommu_preserve_locked(iommu->iommu_dev, flb_obj);
-> +	if (ret) {
-> +		device_ser->hdr.flags |= IOMMU_SER_FLAG_DELETED;
-> +		goto out_unlock;
-> +	}
-> +
-> +	device_ser->attachment.domain_phys = virt_to_phys(domain->domain_ser);
-> +	device_ser->iommu_phys = virt_to_phys(iommu->iommu_dev->iommu_ser);
-> +	device_ser->devid = pci_dev_id(pdev);
-> +	device_ser->pci_domain_nr = pci_domain_nr(pdev->bus);
-> +	device_ser->dma_owner_token = dma_owner_token;
-> +
-> +	ret = iommu->iommu_dev->ops->preserve_device(dev, device_ser);
-> +	if (!ret) {
-> +		WRITE_ONCE(dev->iommu->device_ser, device_ser);
-> +
-> +		/* Validate that no sibling device was added concurrently */
-> +		if (iommu_group_device_count(dev->iommu_group) != 1) {
-> +			iommu->iommu_dev->ops->unpreserve_device(dev, device_ser);
-> +			WRITE_ONCE(dev->iommu->device_ser, NULL);
-> +			ret = -EOPNOTSUPP;
-> +		}
-> +	}
-> +
-> +	if (ret) {
-> +		device_ser->hdr.flags |= IOMMU_SER_FLAG_DELETED;
-> +		iommu_unpreserve_locked(iommu->iommu_dev, flb_obj);
-> +		goto out_unlock;
-> +	}
-> +
-> +out_unlock:
-> +	mutex_unlock(&flb_obj->lock);
-> +	liveupdate_flb_put_outgoing(&iommu_flb);
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(iommu_preserve_device);
-Only devices in singleton iommu groups can be preserved, and no other
-device may join the group while preservation is in progress or the
-device remains preserved.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Could we simplify this by adding a flag to struct iommu_group, protected
-by group->mutex? For example:
+- [High] Writing TCP_CLOSE plus sk_err = ECONNRESET in
+  vhost_vsock_reset_orphans() (drivers/vhost/vsock.c:792-793) brings…
+- [Medium] vhost_vsock_reset_orphans() now moves every orphaned connected
+  socket to TCP_CLOSE unconditionally, after setting SOCK_DONE, even…
 
-@@ -72,6 +72,9 @@ struct iommu_group {
-          */
-         unsigned int recovery_cnt;
-         void *owner;
-+#ifdef CONFIG_IOMMU_LIVEUPDATE
-+       bool liveupdate_reserved;
-+#endif
-  };
+--
 
-A helper could check that the group contains exactly one device and set
-the flag atomically under group->mutex. Device probing would reject an
-addition if the flag is set.
+vhost/vsock: Fix socket state constant
 
-#ifdef CONFIG_IOMMU_LIVEUPDATE
-int iommu_group_reserve_liveupdate(struct iommu_group *group)
-{
-         int ret = 0;
+This patch replaces SS_UNCONNECTED with TCP_CLOSE in
+vhost_vsock_reset_orphans(). SS_UNCONNECTED has the value 1, which is the
+same as TCP_ESTABLISHED. So far, orphaned sockets have been left in the
+established state after the vhost device was released.
 
-         mutex_lock(&group->mutex);
-         if (group->liveupdate_reserved)
-                 ret = -EBUSY;
-         else if (list_count_nodes(&group->devices) != 1)
-                 ret = -EOPNOTSUPP;
-         else
-                 group->liveupdate_reserved = true;
-         mutex_unlock(&group->mutex);
+> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+> index 88a310390eb0a..fd224f7681d92 100644
+> --- a/drivers/vhost/vsock.c
+> +++ b/drivers/vhost/vsock.c
+> @@ -789,7 +789,7 @@ static void vhost_vsock_reset_orphans(struct sock *sk)
+>  
+>  	sock_set_flag(sk, SOCK_DONE);
+>  	vsk->peer_shutdown = SHUTDOWN_MASK;
+> -	sk->sk_state = SS_UNCONNECTED;
+> +	sk->sk_state = TCP_CLOSE;
 
-         return ret;
+[Severity: High]
+Can this let connect() reset a socket that is still linked in
+vsock_connected_table? Commit 4f6ac74fa594 ("vsock: treat TCP_CLOSING as
+once-established") fixed that problem for the other close paths.
+
+vhost_vsock_reset_orphans() runs without lock_sock(). Suppose it runs
+after virtio_transport_recv_connecting() has handled a RESPONSE, but
+before the waiter in vsock_connect() gets the socket lock back:
+
+vhost TX worker
+virtio_transport_recv_connecting()
+    sk->sk_state = TCP_ESTABLISHED;
+    sk->sk_socket->state = SS_CONNECTED;
+    vsock_insert_connected(vsk);
+
+vhost_vsock_dev_release()
+  vhost_vsock_reset_orphans()
+    sk->sk_state = TCP_CLOSE;
+    sk->sk_err = ECONNRESET;
+
+The waiter then fails the TCP_ESTABLISHED/TCP_CLOSING check and ends up
+here:
+
+net/vmw_vsock/af_vsock.c:vsock_connect() {
+    ...
+	err = sock_error(sk);
+	if (err) {
+		sk->sk_state = TCP_CLOSE;
+		sock->state = SS_UNCONNECTED;
+	}
+    ...
 }
 
-void iommu_group_unreserve_liveupdate(struct iommu_group *group)
-{
-         mutex_lock(&group->mutex);
-         group->liveupdate_reserved = false;
-         mutex_unlock(&group->mutex);
+connect() returns -ECONNRESET, but the socket is still in the connected
+table. With the old value (1 == TCP_ESTABLISHED), connect() returned 0 and
+the socket stayed SS_CONNECTED.
+
+After that, ordinary API calls seem to be enough to insert the socket a
+second time:
+
+1. A second connect(): sock->state is SS_UNCONNECTED, so it does not get
+   -EISCONN. vsock_assign_transport() returns early because the transport
+   is the same. That skips both vsock_remove_sock() and
+   sock_reset_flag(sk, SOCK_DONE).
+
+2. shutdown() while the socket is SS_CONNECTING: vsock_shutdown() calls
+   sock_reset_flag(sk, SOCK_DONE). Without that flag,
+   virtio_transport_recv_pkt() no longer drops the incoming RESPONSE.
+
+3. A RESPONSE from a guest with that CID reaches
+   virtio_transport_recv_connecting() in TCP_SYN_SENT. It calls
+   vsock_insert_connected() a second time.
+
+__vsock_insert_connected() then does an unconditional sock_hold() and
+list_add() on a node that is already linked, which corrupts the bucket.
+
+Any later walk of that bucket under vsock_table_lock can then loop forever,
+for example in vsock_find_connected_socket() or
+vsock_for_each_connected_socket(). With CONFIG_DEBUG_LIST it hits the
+list_add double add BUG instead. One socket reference is also leaked.
+
+Only the first step depends on timing, a race with VM teardown. The rest
+is normal use of the socket API.
+
+> +	sk->sk_state = TCP_CLOSE;
+
+[Severity: Medium]
+Does this drop data that is still queued in the socket's rx_queue?
+
+vhost_vsock_reset_orphans() now sets SOCK_DONE and then moves the socket
+to TCP_CLOSE unconditionally. __vsock_connectible_recvmsg() then returns
+early without dequeuing anything:
+
+net/vmw_vsock/af_vsock.c:__vsock_connectible_recvmsg() {
+    ...
+	if (!transport || sk->sk_state != TCP_ESTABLISHED) {
+		...
+		if (sock_flag(sk, SOCK_DONE))
+			err = 0;
+		else
+			err = -ENOTCONN;
+
+		goto out;
+	}
+    ...
 }
-#endif
 
-The reservation could be taken before calling the driver's preserve
-callback and cleared on every failure path and after unpreservation.
-This would avoid the second device-count check.
+So recv() returns 0 (EOF), and sk_err is not reported there.
 
-Any thoughts?
+The other close paths only leave the readable state when no data is
+pending:
 
-Thanks,
-baolu
+net/vmw_vsock/virtio_transport_common.c:virtio_transport_do_close() {
+    ...
+	if (vsock_stream_has_data(vsk) <= 0)
+		sk->sk_state = TCP_CLOSING;
+    ...
+}
+
+hvs_do_close_lock_held() in hyperv_transport.c has the same check.
+vmci_transport_handle_detach() skips the check only on the host side,
+where queue-pair data can't be read once the VM detaches. With vhost, the
+data is still in host-kernel skbs and can be read.
+
+One way to hit this:
+
+1. The guest writes data and sends SHUTDOWN.
+   virtio_transport_recv_connected() keeps the socket TCP_ESTABLISHED
+   because data is pending.
+
+2. The VM exits, or the VMM closes the vhost fd.
+   vhost_vsock_dev_release() calls vhost_vsock_reset_orphans().
+
+3. The host application's next recv() returns 0, and the end of the
+   stream is lost.
+
+With the old value the socket stayed TCP_ESTABLISHED, so the application
+could read the remaining data before seeing EOF.
+
+On the guest side, virtio_vsock_reset_sock() also sets TCP_CLOSE
+unconditionally on a transport reset, so this may be the intended reset
+behaviour. It is still different from the RST path, which keeps queued
+data readable.
+
+Should vhost_vsock_reset_orphans() check vsock_stream_has_data() the way
+the other transports do?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261112-transport-reset-state-fix-v1-1-5698375f52a9%40rbox.co
