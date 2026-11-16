@@ -1,102 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.70
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794870233;
-	b=aHpbjmg7P1B98jvlBQenQdGRc5swRItN8fGHvCst8Rjedn8DpZJwKko/ayu2ITzfZAlS
-	 jguUnHbZS7YFVSf4BoZbiJ+riZhzyerp7wE6H+J5NnA1VpJ619BEO3pUe1P87EgyHkDoK
-	 I+VFgX1s6BY205iOT/+R1rxzSK4kD3iQXJ2wW5/NHOpiHWMuKeNd/zZxiQf9B3NGc0lOn
-	 sjt9f8+gqVWnk4lwDqMC3yx306EpeqOpZS+YKwBD7W5IzwzmLWy4WLDLjNsTihk+dZo8J
-	 yQMhcLo4NiA96OYgROWTwIQO6wwIvG/Mt4Igwf2NhZ0LQm6Oktso+CSAGl53vztkCWw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794870233;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=7Sqqz4CUK9FM2c8iI8rMI9qqDHGwnTjEE3CtPNueviM=;
-	b=ybpOLm7jF4oMHVRKPICIsx2Mk5mQwIX0XsmysYtQeaFSQ7j5dkfJ1mkI58Wz1oTs49HA
-	 J84JVKicA0FwLQjGnQA4n1eOGjv1rnPABKYsZ6QDLO3X1tKMfiqSBQS9ZVUSAoGPuCntJ
-	 bw9SGWvN7ei6pIp8V4ntFWBzhrJ4MzuTyt59kU1bUp1Wae/q9SkawzNETD6UTEaBCDsf1
-	 fizw2D9B68+FO0b4VZAiK/m4C0De8r5KxNLnzJwMXwnIqXJw+aD8e1NpRlKeDNxm7qk//
-	 nAeuXFGgURS3niiBPw1wUVE3FU+rjoECyrFbQ7k6O7WoZgg4liaSDzX5HAIWDOHbQAg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b="zkQ2/nRv";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.70
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010070.outbound.protection.outlook.com [52.101.193.70])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794872834;
+	b=TM/G0FIf4dISJRaIx2ahDXo8mHZ0tMfRPKN9XRNuaNSA0JL1Oe9rYFMQoou5TJvsEmiQ
+	 uRBaIbWhIbCknqLG5Tz6xCu3eYhH5utp2I3eRI2rUiORh6iD5CtGVWLgRU7/jpQvqNw7y
+	 fXlLigmzlxRkD0wUlCEwp0mfEgcm/NYp++xZ+LQKcvPNvI96yLJsEaLSEoiFv3EP6u0KZ
+	 oTavkoxGEojntPwArmlniQtVvPNLMP7IlwTdivosJeu6T62x7X4V7hC/KJHaUErLFTz10
+	 VimC5aejVF9BTodRVCVE4Tlo17NbqarUuHEdzpn3MQmC/xp2SNFrVpgaaLl1bu2tk4A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794872834;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:Date:
+	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-ID:X-B4-Tracking:X-Change-ID:To:CC:X-Mailer:X-Originating-IP:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:X-Authority-Analysis:
+	 X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Virus-Version;
+	bh=erW4QNXmLOEoWNGzUnD+FqnM0gfstb4jmRqULXnvHQ8=;
+	b=Hr4TT2djUe5rRqf9RBaAKQbQ1OPhaKmUSvRspqF31wD6RWZte8yZ4V7aHu1NjQuEQ4cb
+	 BlIPKo8zE+97iXojCfQfxdHPnKnm6iLZkUemrLWZp+4mZiW+BOVo3W0pP7FoJKvSgqha2
+	 ityuHk1IZKvkZrNa2ZXOuT4tHF4Dx6CEZuMprUcWJRws2/6QleqivaAtbVwrwujKXgViK
+	 UND9bpOsD/mkxXyQPymEow01f2HeJOQQnBM1EJxJq6AfD36PZDp0JSkEKkWkbEgPs8yOu
+	 wy+US86JDwqJNT65ab984AGR7/NmI86+npV2NhrvIdfDLDvZwllzRtgQ2Gi5DoDt0Lg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=meta.com;
+	spf=pass smtp.mailfrom=meta.com;
+	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=nbMwOWrq;
+	arc=none smtp.remote-ip=67.231.145.42
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A885606A323;
-	Mon, 16 Nov 2026 23:03:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A885606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD3C606A889;
+	Mon, 16 Nov 2026 23:47:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3AD3C606A889
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=zkQ2/nRv
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZBaYLhfVlHsbf5CGC5MUsbqlD/ePYvnWdQs7DiHtdoGUX/3cKRsaPrwbB7fnMjk7Q3tH9d/89GLSNK9p+xUYPt7JUHtqFpBoR6kjSWplNfDnafizV/Gdd3zK+yIFg+ACL/+0SWM6PwMsYKNhcTFxhSjJ6ZMhSEsEx7fGxAdGAQL/sbj2OQPR58wks2KVsoai7tPyI+R7Twb47xThEASBwbagXml6q2fVb3yxop3ybTaPb7wXKZ8xge/blpAD95VzQdA2LOLYsfUTA8MZNb6Lc2tmiPBrJ5YzDtzfcmp2G+3Z053PFtZdBajZ4ru+sovyepKIrUxEEM8u4gXCwxdydw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7Sqqz4CUK9FM2c8iI8rMI9qqDHGwnTjEE3CtPNueviM=;
- b=rgjbEaj/j+73vcjdJm5vYmz+/Qsc55l+jH/49C801cdJ++5Hea3nlSxeYEBuZeTHDOpbb7u2zawynhpOdcgYf3/KeI4NHKbq7Y4mw+tAZeQ5SeihKJjZvU685BBjqiRWYBsIjPCH3i13bOoWx6ErVaYU9Dmog5g/MfIV1XSht5xwK6EZ4tjQU0GzKh4wHaTANsWIlhdH6h96gzc1ZIsxWboi42pZ1ZXhluGtR06VVTDlc1tZCrwYAGkQcHe8qQW//hrbRUK1hECbHAvAXTwdvKtoR9giRHxPiDZ/ZF4JtpSRsxnBRQSFbMRVvGmJ2Y3dN97O49wsyeqKDVN5qOc26g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7Sqqz4CUK9FM2c8iI8rMI9qqDHGwnTjEE3CtPNueviM=;
- b=zkQ2/nRvxwNDil5oXC+cOus3awtFifyHrKrOkuSECejavYlLAxBx4BsZEJAdesfyDEJYBveMLcuO5kbwTqugxSgukaVR31/SQf3bGeNWHE3E7NO//aEzQh2LYc+zQ3Wph655c97mhn/sZi1EJ/CvTFTZ4+OYbItGXXY3seyTBP8=
-Received: from SJ0PR05CA0103.namprd05.prod.outlook.com (2603:10b6:a03:334::18)
- by BN3PR12MB9569.namprd12.prod.outlook.com (2603:10b6:408:2ca::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.13; Mon, 16 Nov
- 2026 23:03:46 +0000
-Received: from MWH0EPF000A6735.namprd04.prod.outlook.com
- (2603:10b6:a03:334:cafe::28) by SJ0PR05CA0103.outlook.office365.com
- (2603:10b6:a03:334::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.8 via Frontend Transport; Mon, 16
- Nov 2026 23:03:46 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- MWH0EPF000A6735.mail.protection.outlook.com (10.167.249.27) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Mon, 16 Nov 2026 23:03:45 +0000
-Received: from nigeria-2635-os.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Mon, 16 Nov
- 2026 17:03:44 -0600
-From: Ashish Kalra <Ashish.Kalra@amd.com>
-To: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
-	<thomas.lendacky@amd.com>, <nikunj@amd.com>, <Srikanth.Aithal@amd.com>
-CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH v2] x86/sev: Skip DR7 write during kexec when it would trigger an unserviceable #VC
-Date: Mon, 16 Nov 2026 23:03:35 +0000
-Message-ID: <20261116230335.1161521-1-Ashish.Kalra@amd.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=nbMwOWrq
+Received: from pps.filterd (m0528009.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGNOh3p3594659;
+	Mon, 16 Nov 2026 15:47:04 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pps82601-s2048-2026-q3; bh=erW4QNXmL
+	OEoWNGzUnD+FqnM0gfstb4jmRqULXnvHQ8=; b=nbMwOWrq1FCjXpZAMziSKloxO
+	zi38uycTZxz4RhG0ErmURTCmDPzlMFUlHF70UfXsSUE8H/AOpDfkshVZ5vh4vNl9
+	19O/ae4UZ0O+CW6Fl7uwLAGLEuRDpyhnALi5hdyq8m+7vXE5TS3aBy5ORHktjkf4
+	vr6G6M/HiwKmnfoVFWKEym3mkA/PzlOQ7wYJ6RLb29P1earatDEFhj514QAL/wif
+	tL7TnS02pBiBeUopsYAtqd/Js/xwL/OioPfb60K8Serwk1cRwNoRUU70WuRDrhK+
+	BIveU6pSZF+aME3DVkhV6zhpuqlgmPYEG8N44/w6n3XUm7U0fkOin3ORflIJg==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hya99spbp-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 16 Nov 2026 15:47:04 -0800 (PST)
+Received: from localhost (2620:10d:c0a8:1b::8e35) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Mon, 16 Nov
+ 2026 23:47:02 +0000
+From: Bobby Eshleman <bobbyeshleman@meta.com>
+Date: Mon, 16 Nov 2026 15:46:49 -0800
+Subject: [PATCH net] vsock: only deliver taps to namespaces that can reach
+ the device
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -106,150 +69,224 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000A6735:EE_|BN3PR12MB9569:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1ec4c501-696f-4fb1-3b86-08df4435de0a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|376014|36860700016|23010399003|261009223027099003|18002099003|261026140227099003|261026121527099003|261021121427099003|261021123027099003|261102123227099003|261028144727099003|261022105027099003|56012099006|10067099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	8A8wAHtWIMFitVyEEmVkq09zPlYVYGfk3llvlGdsrW3EzA2pjuhoIihRUG8Gb5v3+FFpRzQcqa9dOZVR1GvSTVmpi+QjWy/lj1138VsPCONwSloTbp44vSEX+jF0cnt9Un118Q1KXS0ot4n45PPP67NAdu3obJRdTmL6YXypODQKDgniWv81rhsf7kq+qt0tBQNO3i0jz35/lmtHuWCWBRUZk5DjP/1GsAbWab744ms1BFnYmvE7R1ed1/43vxE+vqxRWe04ENjgJqTgy+AW2h1UdJcOEDALQAtg1FWazyLYqO/gZNU1kE7SDGj0AQKswCI2mANar5kebcVo3WNMCXOgtioc0I537TOWZ64wY8ju4BNVYd3lPncqAW6Cbm7M81yMJO96gvr+QMl7+AGvtS8kwErbwm1ZTBAt7s9Zgm33eukJB+V4oO5fjF5kOq4UvuW7bAYAUWlBfWVK0LqyNaXgpBmOODF4KMsgHGRE4liA/cVkDUjBEKVmFJhDnjLzqWTRI43t76/YtrNW95l0B+agvT7AXkhiUUIjeI8OA3DY0tvTQDIWnY/EdrofTN54Su0RITybmb3jCQg4baYR9qI7J4/p/9GrQ2IxwJQX8y6qHsInGSCRYBpDVWKnR+YzJucWLcJ/agHdBxGkrT+9raxHCLU0ocanNmIPzVLkZ+WfWzw2MIyQhl0TFKVNEkJVMECVK6zon1nkOap8T/54Rw==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(36860700016)(23010399003)(261009223027099003)(18002099003)(261026140227099003)(261026121527099003)(261021121427099003)(261021123027099003)(261102123227099003)(261028144727099003)(261022105027099003)(56012099006)(10067099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	gn9mr77+VPsqRcQkoTNER21mWN2DOCUF4a77Vt9AM2pEnse3ljEdvv6aQ7GICqQscUrpP+/QZCkU/Jwwm/ADRFvx6mL465RhbOUyG9vFRtDcVCvtOdpPOPeNcwVYLhjTNU1Ap7s5d6T1/nVcFJ+nCN2D+kQpoLUlZZMPEz0izoZapcpZEw+18p+JwgHQvyNLoNUEGMrtAAdAEmvtQEBy6Ex4IjeAVXkonkEBlPfG/3HhyDmwHvpX9uiF/TWI1V/pdVPhpGffWAyGQQYOBxThang8me0gJnuz8c4pmv+wCNOhPsRNfyVtk+Sxs8+NqkDMo51VJ6AfPGpYL8X/cve5o3efbB8lgDEtmG1QgpSWdEUTjQ/A0T6QAJdpbYR9obnprNTOqCuzsXm8vZ+3y1CLF/KhBkmE9JJAlF7Lkjhb4VJsA1tiUskIxfBNO+i4d0OY
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 23:03:45.7985
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ec4c501-696f-4fb1-3b86-08df4435de0a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000A6735.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN3PR12MB9569
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20261116-vsock-tap-net-v1-1-7e24f45adad3@meta.com>
+X-B4-Tracking: v=1; b=H4sIAOmV+2oC/x3MQQqDMBAF0KsMf+1ARqySXKV0EXXaDkKUJIgg3
+ l3wHeCdKJpNCwKdyLpbsTUhkDSE6R/TT9lmBELr2l5Eet7LOi1c48ZJK8vofHS+ew2DR0PYsn7
+ teL43klZ8rusGdSxwmGQAAAA=
+X-Change-ID: 20261116-vsock-tap-net-1b09a0945779
+To: Stefan Hajnoczi <stefanha@redhat.com>,
+        Stefano Garzarella
+	<sgarzare@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang
+	<jasowangio@gmail.com>,
+        =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        "David S. Miller"
+	<davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>
+CC: <kvm@vger.kernel.org>, <virtualization@lists.linux.dev>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Bobby Eshleman
+	<bobbyeshleman@meta.com>
+X-Mailer: b4 0.14.3
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE2MDA5NCBTYWx0ZWRfX5OJdBdyViD+U
+ 5F5qWrd7qt7HJHlgLcOwnoLNFmKtmG14C7DdtKhbqiYTAEl/W0ZljvsQWch9+bnVZ/GJDHMTWi3
+ iUAzps/HhAHyCtAsa+HoAxf+wqCUjj0=
+X-Proofpoint-ORIG-GUID: gKDNQAj56r8459FNniU9y9-fMq_ecPmD
+X-Authority-Analysis: v=2.4 cv=ZuN4uN7G c=1 sm=1 tr=0 ts=6afb95f8 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=U_y8lYiYyhHBU5rMqhb2:22 a=VabnemYjAAAA:8
+ a=SWFGfQgXnGc93N8zE1QA:9 a=QEXdDO2ut3YA:10 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-GUID: gKDNQAj56r8459FNniU9y9-fMq_ecPmD
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE2MDA5NCBTYWx0ZWRfX4CTqCEvwyK4k
+ 1gKYYYNFViwq/KsAmDiIDlUCOYPpP+uGeKEv6CtdZHnO0TjYuVuEQv+mJG9glxn52sBbSOH8w4H
+ 3oosVpURYlbLlCHjnqmV1hfrCDBPQQaWSFHy9sJkewGwR/+nEP5MjpsgXoziYWegJad/xGJ/1Ol
+ 6H1nRgxWdSf8zYKHVJfHU9+AnuDHYXoeJoOPZ6uJwdX5OLXJGhLbKivTVH07gBIbuWLlllqng2F
+ F5qyc16f4TqlZ0EsgKPld8ZV5CP5Iwwh6b2tcLAwZ+jvyS8unjNuU2vD0KfaVr/L6w0R/xG9A3A
+ krRB7fpzVZVdvYh7W4224s7gqen4uXe0gwljy+u62N4ipijBDD2xamoMv0s4+AVUFJ68TT7W68B
+ CVZigCjqRTArHF2nzqFbBfN+ONC6d0u/i8JzYeNWeX7rG9VCmSx7ZzjDOrTZUr7H4IMn86jE03T
+ z1ceLjsuI8HmVaCMscg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-16_07,2026-11-16_01,2025-10-01_01
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+vsock_deliver_tap() clones every packet to every vsockmon device on the
+system. Creating one needs only CAP_NET_ADMIN in the owning user
+namespace, so an unprivileged user can capture the traffic of local mode
+namespaces.
 
-machine_kexec() calls hw_breakpoint_disable(), which writes DR7. On
-SEV-ES/SNP guests that do not have DebugSwap enabled, DR7 accesses are
-intercepted and delivered to the guest as a #VC exception, which must be
-serviced through the GHCB.
+Pass the packet's netns to vsock_deliver_tap() and only deliver to
+devices that pass vsock_net_check_mode(), the same rule socket lookups
+use. vhost passes the vhost_vsock netns, loopback the sending socket's
+netns, and virtio-vsock NULL (global mode).
 
-By the time machine_kexec() runs, snp_kexec_finish() (called from
-native_machine_shutdown()) has already converted the per-CPU GHCBs and
-the boot GHCB back to private and set boot_ghcb to NULL, tearing down the
-GHCB infrastructure. The DR7 write therefore raises a #VC that
-dereferences a NULL GHCB pointer, causing a page fault and the kexec to
-fail.
-
-The NULL boot_ghcb pointer is a result of commit 3645eb7e3915 ("x86/fred:
-Fix early boot failures on SEV-ES/SNP guests"): that change makes
-__sev_get_ghcb() return the now-NULL boot_ghcb in this window, turning
-the previously-benign teardown-window #VC (a bogus VMGEXIT the host
-rejected but survived) into a NULL dereference.
-
-Skip the DR7 write once the GHCBs have been torn down; the kexec'ed
-kernel re-initializes DR7.
-
-Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
-Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+Fixes: a69686327e42 ("vsock: add netns support to virtio transports")
+Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 ---
-v2:
- - Move the check into hw_breakpoint_disable() through a new
-   snp_hw_breakpoint_disable() helper, so the SNP-specific logic lives in
-   SEV code (Borislav Petkov).
- - Drop CC_ATTR_GUEST_DEBUG_VIRT and read DebugSwap from sev_status.
- - Skip only once the GHCBs have been torn down, so use_temporary_mm()
-   keeps disabling breakpoints at runtime.
- - Trim the commit message (Borislav Petkov).
+ drivers/vhost/vsock.c                   |  4 ++--
+ include/linux/virtio_vsock.h            |  2 +-
+ include/net/af_vsock.h                  |  3 ++-
+ net/vmw_vsock/af_vsock_tap.c            | 10 +++++++---
+ net/vmw_vsock/virtio_transport.c        |  4 ++--
+ net/vmw_vsock/virtio_transport_common.c |  4 ++--
+ net/vmw_vsock/vsock_loopback.c          |  2 +-
+ 7 files changed, 17 insertions(+), 12 deletions(-)
 
- arch/x86/coco/sev/core.c        | 16 ++++++++++++++++
- arch/x86/include/asm/debugreg.h |  4 ++++
- arch/x86/include/asm/sev.h      |  2 ++
- 3 files changed, 22 insertions(+)
-
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index eb2e853e950a..64a5a037a9c8 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -723,6 +723,22 @@ void snp_kexec_finish(void)
+diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+index 88a310390eb0..3de1f1920717 100644
+--- a/drivers/vhost/vsock.c
++++ b/drivers/vhost/vsock.c
+@@ -229,7 +229,7 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+ 		/* Deliver to monitoring devices all packets that we
+ 		 * will transmit.
+ 		 */
+-		virtio_transport_deliver_tap_pkt(skb);
++		virtio_transport_deliver_tap_pkt(skb, vsock->net);
+ 
+ 		vhost_add_used(vq, head, sizeof(*hdr) + payload_len);
+ 		added = true;
+@@ -567,7 +567,7 @@ static void vhost_vsock_handle_tx_kick(struct vhost_work *work)
+ 		total_len += sizeof(*hdr) + skb->len;
+ 
+ 		/* Deliver to monitoring devices all received packets */
+-		virtio_transport_deliver_tap_pkt(skb);
++		virtio_transport_deliver_tap_pkt(skb, vsock->net);
+ 
+ 		hdr = virtio_vsock_hdr(skb);
+ 
+diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+index f91704731057..46058d354940 100644
+--- a/include/linux/virtio_vsock.h
++++ b/include/linux/virtio_vsock.h
+@@ -285,7 +285,7 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+ void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *skb);
+ u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 wanted);
+ void virtio_transport_put_credit(struct virtio_vsock_sock *vvs, u32 credit);
+-void virtio_transport_deliver_tap_pkt(struct sk_buff *skb);
++void virtio_transport_deliver_tap_pkt(struct sk_buff *skb, struct net *net);
+ int virtio_transport_purge_skbs(void *vsk, struct sk_buff_head *list);
+ int virtio_transport_read_skb(struct vsock_sock *vsk, skb_read_actor_t read_actor);
+ int virtio_transport_notify_set_rcvlowat(struct vsock_sock *vsk, int val);
+diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+index e8481f12312e..3e28865578eb 100644
+--- a/include/net/af_vsock.h
++++ b/include/net/af_vsock.h
+@@ -250,7 +250,8 @@ struct vsock_tap {
+ 
+ int vsock_add_tap(struct vsock_tap *vt);
+ int vsock_remove_tap(struct vsock_tap *vt);
+-void vsock_deliver_tap(struct sk_buff *build_skb(void *opaque), void *opaque);
++void vsock_deliver_tap(struct sk_buff *build_skb(void *opaque), void *opaque,
++		       struct net *net);
+ int __vsock_connectible_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 				int flags);
+ int vsock_connectible_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+diff --git a/net/vmw_vsock/af_vsock_tap.c b/net/vmw_vsock/af_vsock_tap.c
+index 7c5cdceabb2a..4c8821835251 100644
+--- a/net/vmw_vsock/af_vsock_tap.c
++++ b/net/vmw_vsock/af_vsock_tap.c
+@@ -73,19 +73,23 @@ static int __vsock_deliver_tap_skb(struct sk_buff *skb,
+ 	return ret;
+ }
+ 
+-static void __vsock_deliver_tap(struct sk_buff *skb)
++static void __vsock_deliver_tap(struct sk_buff *skb, struct net *net)
+ {
+ 	int ret;
+ 	struct vsock_tap *tmp;
+ 
+ 	list_for_each_entry_rcu(tmp, &vsock_tap_all, list) {
++		if (!vsock_net_check_mode(dev_net(tmp->dev), net))
++			continue;
++
+ 		ret = __vsock_deliver_tap_skb(skb, tmp->dev);
+ 		if (unlikely(ret))
+ 			break;
  	}
  }
  
-+/*
-+ * Without DebugSwap, a DR7 write raises a #VC, which can no longer be serviced
-+ * once snp_kexec_finish() has torn down the GHCBs.  The kexec'ed kernel
-+ * re-initializes DR7, so skip the write in that case.
-+ */
-+bool snp_hw_breakpoint_disable(void)
-+{
-+	if (!cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
-+		return false;
-+
-+	if (sev_status & MSR_AMD64_SNP_DEBUG_SWAP)
-+		return false;
-+
-+	return !sev_cfg.ghcbs_initialized;
-+}
-+
- #define __ATTR_BASE		(SVM_SELECTOR_P_MASK | SVM_SELECTOR_S_MASK)
- #define INIT_CS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_READ_MASK | SVM_SELECTOR_CODE_MASK)
- #define INIT_DS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_WRITE_MASK)
-diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
-index 854d82b88ff4..af15e2c928db 100644
---- a/arch/x86/include/asm/debugreg.h
-+++ b/arch/x86/include/asm/debugreg.h
-@@ -8,6 +8,7 @@
- 
- #include <asm/cpufeature.h>
- #include <asm/msr.h>
-+#include <asm/sev.h>
- 
- /*
-  * Define bits that are always set to 1 in DR7, only bit 10 is
-@@ -108,6 +109,9 @@ static __always_inline void native_set_debugreg(int regno, unsigned long value)
- 
- static inline void hw_breakpoint_disable(void)
+-void vsock_deliver_tap(struct sk_buff *build_skb(void *opaque), void *opaque)
++void vsock_deliver_tap(struct sk_buff *build_skb(void *opaque), void *opaque,
++		       struct net *net)
  {
-+	if (snp_hw_breakpoint_disable())
-+		return;
-+
- 	/* Reset the control register for HW Breakpoint */
- 	set_debugreg(DR7_FIXED_1, 7);
+ 	struct sk_buff *skb;
  
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index c7ea9845351e..f38bb521987d 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -522,6 +522,7 @@ int prepare_pte_enc(struct pte_enc_desc *d);
- void set_pte_enc_mask(pte_t *kpte, unsigned long pfn, pgprot_t new_prot);
- void snp_kexec_finish(void);
- void snp_kexec_begin(void);
-+bool snp_hw_breakpoint_disable(void);
+@@ -96,7 +100,7 @@ void vsock_deliver_tap(struct sk_buff *build_skb(void *opaque), void *opaque)
  
- int snp_msg_init(struct snp_msg_desc *mdesc, int vmpck_id);
- struct snp_msg_desc *snp_msg_alloc(void);
-@@ -632,6 +633,7 @@ static inline int prepare_pte_enc(struct pte_enc_desc *d) { return 0; }
- static inline void set_pte_enc_mask(pte_t *kpte, unsigned long pfn, pgprot_t new_prot) { }
- static inline void snp_kexec_finish(void) { }
- static inline void snp_kexec_begin(void) { }
-+static inline bool snp_hw_breakpoint_disable(void) { return false; }
- static inline int snp_msg_init(struct snp_msg_desc *mdesc, int vmpck_id) { return -1; }
- static inline struct snp_msg_desc *snp_msg_alloc(void) { return NULL; }
- static inline void snp_msg_free(struct snp_msg_desc *mdesc) { }
+ 	skb = build_skb(opaque);
+ 	if (skb) {
+-		__vsock_deliver_tap(skb);
++		__vsock_deliver_tap(skb, net);
+ 		consume_skb(skb);
+ 	}
+ 
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index cf63bc99f3cc..b39c001260a9 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -150,7 +150,7 @@ static int virtio_transport_send_skb(struct sk_buff *skb, struct virtqueue *vq,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	virtio_transport_deliver_tap_pkt(skb);
++	virtio_transport_deliver_tap_pkt(skb, NULL);
+ 	return 0;
+ }
+ 
+@@ -680,7 +680,7 @@ static void virtio_transport_rx_work(struct work_struct *work)
+ 			if (payload_len)
+ 				virtio_vsock_skb_put(skb, payload_len);
+ 
+-			virtio_transport_deliver_tap_pkt(skb);
++			virtio_transport_deliver_tap_pkt(skb, NULL);
+ 
+ 			/* Force virtio-transport into global mode since it
+ 			 * does not yet support local-mode namespacing.
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 1e762a480df4..027fe41c676a 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -190,12 +190,12 @@ static struct sk_buff *virtio_transport_build_skb(void *opaque)
+ 	return skb;
+ }
+ 
+-void virtio_transport_deliver_tap_pkt(struct sk_buff *skb)
++void virtio_transport_deliver_tap_pkt(struct sk_buff *skb, struct net *net)
+ {
+ 	if (virtio_vsock_skb_tap_delivered(skb))
+ 		return;
+ 
+-	vsock_deliver_tap(virtio_transport_build_skb, skb);
++	vsock_deliver_tap(virtio_transport_build_skb, skb, net);
+ 	virtio_vsock_skb_set_tap_delivered(skb);
+ }
+ EXPORT_SYMBOL_GPL(virtio_transport_deliver_tap_pkt);
+diff --git a/net/vmw_vsock/vsock_loopback.c b/net/vmw_vsock/vsock_loopback.c
+index 8068d1b6e851..cacd313a454b 100644
+--- a/net/vmw_vsock/vsock_loopback.c
++++ b/net/vmw_vsock/vsock_loopback.c
+@@ -138,7 +138,7 @@ static void vsock_loopback_work(struct work_struct *work)
+ 		 * It is freed by the receiver.
+ 		 */
+ 		virtio_transport_consume_skb_sent(skb, false);
+-		virtio_transport_deliver_tap_pkt(skb);
++		virtio_transport_deliver_tap_pkt(skb, sock_net(skb->sk));
+ 		virtio_transport_recv_pkt(&loopback_transport, skb,
+ 					  sock_net(skb->sk));
+ 	}
 
-base-commit: 9f74092fda91ef93c2b07585785c1dc83cd7971f
+---
+base-commit: aa40afa831ebfe45e40a23721711059f2ac584d4
+change-id: 20261116-vsock-tap-net-1b09a0945779
+
+Best regards,
 -- 
-2.43.0
+Bobby Eshleman <bobbyeshleman@meta.com>
 
