@@ -1,66 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794827395;
-	b=ojQKK3xpXFQkeC+v7MfxsHJkGPEe1JoGac0PnMxgetFt0+/INGckQBfuaFe1CTQaje8h
-	 R9CGRUp/0CMQHbEQIN29CYJliAMO2NCw395p65B+tPxMwKfXb7pJXIdE8vJPHm5jYd6Dk
-	 Dmz2mMWpJRQr44Q8cuhmk8CYedLIYnrgXE6wcHs3cvMRaTSsLhcEnGuNnDkAnDtiE8N4F
-	 GgI9ijgULlxiojnQdyZUuz7mNApLIIqGPBlRBY4I98aCyd+lbA9EzpvX8aORNcfOG5V+r
-	 HKfKq6p7GMdzbv9fJopkNx/ZR028WXe6w3uae64gOMHZxHD+1AUiMG6oAtKtF8bt/bA==
+	t=1794827397;
+	b=4h79SUOGcYf7pjeC7XzB1g5bVR8jYR4CGQUkdQj0dvr0sAOzkyBCqkqTrDGlllc6cyEs
+	 gozuScq4p9R407/1oFMjMU7Aer3ZCG2BGMCLZT++bzmwDyNTK5KLq1IWiXKPGeFNqG9pN
+	 eg+b8aD2JM2agP+xuoLDOAIFnZuqpQXZYPxWonP1D7Oepv39q3dGPrNrhKBUA5vJmixso
+	 i4KwuKyM7QgRLKzKUPqHUTpdvGfsdaRaBG8n/cqJD2MMiSCvQr07nR+trUhltzzzTxvU4
+	 Y7UqDxBg86INa3he+Bl3L56znUqXZlFEnk796fAEnieBe8Xb3B/Wv6XC3S8VgOBWN+A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794827395;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794827397;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=ea9lwwZqx0Fhut6tkttK1ey1EZJvZdhuW5q9l8B81uM=;
-	b=lB2/PQibKL/Tj6D8FoOYpf1KowBU7az0HkMXnyLGovqrbd4lvsMyvDa2f26BhGjDlzno
-	 k1yzzhFiDExFAS6DKhUIiu+iXrLpg8ml/oH/0VfV9IzITeBB+aF5P0lMa9sTIrakZVpCN
-	 JH9dvHchIJZ0AoPBwZ4jVV7AprUAaHusRVcYaBMTLKnDE0EuynzgPwLhfyWecL0i6HqsP
-	 3576Moe33yLs+pQ/CaW7Fxza8xwdCR0E+iOakvu/3R8ZOrKAN39kTfgSiCEmxaci1rixj
-	 HLNmf1Mkwl0NoAaLGiviHpvwciKENS+LSUpb6M9wW+4abdjOMxrtt7bgGq3kLFEQP1Q==
+	bh=uQiaosrZq/6cfVUoy8hqdiQwradIgh/yOR1oHMgTR+I=;
+	b=idFEczwDn+T4BlOSs7TJweADMwH6rNnhRb8I27EJuBH1Qw0L2XtihE/FSlGNm8whyoXl
+	 c0Eci/rV7uHDgNEVb4djsn/l7rokNi9C92PKIuErALWHWV8PWKdnNNBmxo3vAxgKxTMq1
+	 DJciXop4Itut54drxsQjtu4v9Iy8OZAV58Y+0OkYWO9ENz05gcc0aVT3iQRsFZ+UogMZ4
+	 12vK3uvQUnJ8LwgZwr+jTlVrzlAgVeKXYuZxI450Ju6hlMN7eGKD6vFFdJXtIjoj5WPu6
+	 lVWc8h7p9K0h4V6rOlQCi0dJzGRk0YTmug/pmgSLEWvp4BUMNlVtI+te96tDK6BjKcg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TVeRa0E4;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a3fthGMX;
 	arc=none smtp.remote-ip=198.175.65.12
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C4C607D204;
-	Mon, 16 Nov 2026 11:09:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23C4C607D204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73477606FD88;
+	Mon, 16 Nov 2026 11:09:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73477606FD88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TVeRa0E4
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a3fthGMX
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794827395; x=1826363395;
+  t=1794827398; x=1826363398;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=LXi3lqi7mwnIt0PeIoIaisI/1PD78k2CSvLXt+UxR2Q=;
-  b=TVeRa0E4LcA4UQqrWMMx/cPLQ/HuD174A3QzF6nxw27jddLZHxLeks0Z
-   aMk+EOSlAkBv/bOpl63BIKqjYAa2kfOKrBn3PTDuYzznpQJtRYtlTocIu
-   p64vkwaI8DQBLY0Q7sFdWa7BAiiPkL3N71DXqg/lChQ9YKX69XDs1BAx6
-   /oMe6FA9vU+VTUUNaoTQq2/ZtA0Q1ldt0l64gJjSkEXmIpC3Ob1rZ5zxZ
-   /y89NCd1BeDZhOw6czB2/+HoqFtfSRZA9n3T7F59re35KnC75XJoDia6M
-   ERnzscqavd5ot16wOFpVDFN2O3kT63GNGt0zN3u+N3ffpHYi/WB+82eaZ
-   g==;
-X-CSE-ConnectionGUID: aatFxhjQT3CfJlCQA9adsA==
-X-CSE-MsgGUID: spPApCFkQ+O38pQUedNIOA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11967"; a="3429616"
+  bh=WhpSgKz06/UoA0SUzG7bcB2Js0yT2iQrvfmwQ8dZ9ws=;
+  b=a3fthGMXBAqMBRKWAAu1xrCgIt3OUQUMagQQbGHdoZCMRUTtuz3DCBId
+   WrKan/asDNOumU6mCqgJyzisZAtg67BIHeVSgj09qrgyf7z6t+VqJbZkK
+   YZajq9F813QKmC+CQnSIWeuVecXyMNgIYoBcxkKl0B85geaRNdPo9SBNR
+   jj7iokmODp6yh8nytlDkAYKbS5eOrxNV2wNn9OKdSo9DeFQKzB0JlrqWP
+   hBaVw7aCVufYxb/Fw6vna12+pCnHZ34xyAM90ktKovYJh7Kis2l1YK99l
+   Fx4XMxr8QCOpxhSShFbHtxUabZsYZ7zizuORykNENQ4n4MMvrhgDlTSlm
+   A==;
+X-CSE-ConnectionGUID: AHrnMMwiS3OeNFn1iUvklA==
+X-CSE-MsgGUID: NVbwIDhiTbC+SPYDcuxUrg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11967"; a="3429632"
 X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; 
-   d="scan'208";a="3429616"
+   d="scan'208";a="3429632"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 03:09:55 -0800
-X-CSE-ConnectionGUID: K0wFedccTxSIlfX62SeNWQ==
-X-CSE-MsgGUID: ZCBMM4UmSA6znCuN2PxlWA==
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 03:09:57 -0800
+X-CSE-ConnectionGUID: Mb1/qUX8TCimH2SqS0E8xw==
+X-CSE-MsgGUID: wKuz7SU7S6aEXHOAGtX76g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; 
-   d="scan'208";a="9848128"
+   d="scan'208";a="9848138"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 03:09:54 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 03:09:57 -0800
 From: Chao Gao <chao.gao@intel.com>
 To: linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -78,9 +78,9 @@ Cc: rick.p.edgecombe@intel.com,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	Kiryl Shutsemau <kas@kernel.org>
-Subject: [RFC PATCH 4/7] coco/tdx-host: Pass a device info buffer to tdh_spdm_connect()
-Date: Mon, 16 Nov 2026 03:10:22 -0800
-Message-ID: <20261116111037.3478844-5-chao.gao@intel.com>
+Subject: [RFC PATCH 7/7] x86/virt/tdx: Enable PCIe link encryption
+Date: Mon, 16 Nov 2026 03:10:25 -0800
+Message-ID: <20261116111037.3478844-8-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20261116111037.3478844-1-chao.gao@intel.com>
 References: <20261116111037.3478844-1-chao.gao@intel.com>
@@ -95,157 +95,44 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-TDH.SPDM.CONNECT requires a host-provided buffer, into which the TDX
-module writes information about the device.
-
-TDs will use the information to attest the device, which is not
-supported yet. The kernel doesn't use it for now, so treat it as opaque
-data.
-
-Take the buffer size from the TDX global metadata, and keep the buffer
-for the lifetime of the SPDM session.
+The basic SPDM session and IDE functionalities are all implemented,
+configure the TDX Module to enable the TDISP feature and in turn enable
+PCIe link encryption.
 
 Based on work by Yilun.
 
-[This patch will be reworked when the series moves to the CTLV
-  attestation flow.]
-
 Signed-off-by: Chao Gao <chao.gao@intel.com>
 ---
- arch/x86/include/asm/tdx_global_metadata.h  |  1 +
- arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  6 +++++
- drivers/virt/coco/tdx-host/main.c           | 27 +++++++++++++++++++--
- 3 files changed, 32 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/tdx.h  | 2 +-
+ arch/x86/virt/vmx/tdx/tdx.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
-index 537e872eeb0e..30f3ca006e88 100644
---- a/arch/x86/include/asm/tdx_global_metadata.h
-+++ b/arch/x86/include/asm/tdx_global_metadata.h
-@@ -54,6 +54,7 @@ struct tdx_sys_info_ext {
- struct tdx_sys_info_connect {
- 	u16 spdm_mt_page_count;
- 	u16 iommu_mt_page_count;
-+	u16 spdm_max_dev_info_pages;
- };
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index add83e7b9c36..c051f2ae82e6 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -147,7 +147,7 @@ static inline bool tdx_supports_tdisp(const struct tdx_sys_info *sysinfo)
+ 	if (!(sysinfo->features.tdx_features0 & TDX_FEATURES0_TDXCONNECT))
+ 		return false;
  
- struct tdx_sys_info {
-diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-index f20e029f240b..cf747b0dc945 100644
---- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-+++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-@@ -156,6 +156,12 @@ static __init int get_tdx_sys_info_connect(struct tdx_sys_info_connect *sysinfo_
- 
- 	sysinfo_connect->iommu_mt_page_count = val;
- 
-+	ret = read_sys_metadata_field(0x3000000100000007, &val);
-+	if (ret)
-+		return ret;
-+
-+	sysinfo_connect->spdm_max_dev_info_pages = val;
-+
- 	return 0;
+-	return false; /* To be enabled when kernel is ready */
++	return true;
  }
  
-diff --git a/drivers/virt/coco/tdx-host/main.c b/drivers/virt/coco/tdx-host/main.c
-index 86299658ae45..da56178eac2e 100644
---- a/drivers/virt/coco/tdx-host/main.c
-+++ b/drivers/virt/coco/tdx-host/main.c
-@@ -67,6 +67,8 @@ struct tdx_tsm_link {
- 	struct page *out_msg;
- 	unsigned int spdm_mt_nr_pages;
- 	void *spdm_mt;
-+	unsigned int dev_info_nr_pages;
-+	void *dev_info;
+ int tdx_guest_keyid_alloc(void);
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index d661de8230cf..9e87484283b8 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1043,7 +1043,7 @@ struct tdmr_info_pa_array {
  };
  
- static struct tdx_tsm_link *to_tdx_tsm_link(struct pci_tsm *tsm)
-@@ -158,6 +160,7 @@ static int tdx_spdm_xfer_handler(struct tdx_tsm_link *tlink, u64 sret,
- static int tdx_spdm_session_connect(struct tdx_tsm_link *tlink)
+ /* List all kernel-supported add-on features0 bits here */
+-#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0	(0)
++#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0	(TDX_FEATURES0_TDXCONNECT)
+ 
+ static __init u64 get_tdx_usable_addon_features0(void)
  {
- 	struct spdm_config_info_t *spdm_conf;
-+	struct tdx_hpa_list_info info;
- 	u64 sret, out_msg_sz;
- 	int ret;
- 
-@@ -168,16 +171,23 @@ static int tdx_spdm_session_connect(struct tdx_tsm_link *tlink)
- 
- 	spdm_conf->certificate_slot_mask = 0xff;
- 
-+	ret = tdx_hpa_list_info_setup(&info, tlink->dev_info, tlink->dev_info_nr_pages);
-+	if (ret)
-+		goto out_free_spdm_conf;
-+
- 	do {
- 		mutex_lock(&tdx_spdm_lock);
- 		sret = tdh_spdm_connect(tlink->spdm_id,
- 					virt_to_page(spdm_conf),
- 					tlink->in_msg, tlink->out_msg,
--					NULL, &out_msg_sz);
-+					&info, &out_msg_sz);
- 		mutex_unlock(&tdx_spdm_lock);
- 		ret = tdx_spdm_xfer_handler(tlink, sret, out_msg_sz);
- 	} while (ret == -EAGAIN);
- 
-+	tdx_hpa_list_info_free(&info);
-+
-+out_free_spdm_conf:
- 	kfree(spdm_conf);
- 
- 	return ret;
-@@ -203,9 +213,11 @@ static int tdx_spdm_create(struct tdx_tsm_link *tlink)
- {
- 	const struct tdx_sys_info *tdx_sysinfo = tdx_get_sysinfo();
- 	struct page *in_msg_page, *out_msg_page;
-+	unsigned int dev_info_nr_pages;
- 	struct tdx_hpa_list_info info;
- 	unsigned int nr_pages;
- 	u64 spdm_id, sret;
-+	void *dev_info;
- 	void *spdm_mt;
- 	int ret;
- 
-@@ -222,11 +234,17 @@ static int tdx_spdm_create(struct tdx_tsm_link *tlink)
- 		goto out_free_in_msg;
- 
- 	nr_pages = tdx_sysinfo->tdx_connect.spdm_mt_page_count;
-+	dev_info_nr_pages = tdx_sysinfo->tdx_connect.spdm_max_dev_info_pages;
-+
-+	dev_info = alloc_pages_exact(dev_info_nr_pages * PAGE_SIZE,
-+				     GFP_KERNEL | __GFP_ZERO);
-+	if (!dev_info)
-+		goto out_free_out_msg;
- 
- 	spdm_mt = alloc_pages_exact(nr_pages * PAGE_SIZE,
- 				    GFP_KERNEL | __GFP_ZERO);
- 	if (!spdm_mt)
--		goto out_free_out_msg;
-+		goto out_free_dev_info;
- 
- 	ret = tdx_hpa_list_info_setup(&info, spdm_mt, nr_pages);
- 	if (ret)
-@@ -246,10 +264,14 @@ static int tdx_spdm_create(struct tdx_tsm_link *tlink)
- 	tlink->in_msg = in_msg_page;
- 	tlink->out_msg = out_msg_page;
- 	tlink->spdm_mt_nr_pages = nr_pages;
-+	tlink->dev_info = dev_info;
-+	tlink->dev_info_nr_pages = dev_info_nr_pages;
- 	return 0;
- 
- out_free_spdm_mt:
- 	free_pages_exact(spdm_mt, nr_pages * PAGE_SIZE);
-+out_free_dev_info:
-+	free_pages_exact(dev_info, dev_info_nr_pages * PAGE_SIZE);
- out_free_out_msg:
- 	__free_page(out_msg_page);
- out_free_in_msg:
-@@ -272,6 +294,7 @@ static void tdx_spdm_delete(struct tdx_tsm_link *tlink)
- 	__free_page(tlink->in_msg);
- 	__free_page(tlink->out_msg);
- 	free_pages_exact(tlink->spdm_mt, tlink->spdm_mt_nr_pages * PAGE_SIZE);
-+	free_pages_exact(tlink->dev_info, tlink->dev_info_nr_pages * PAGE_SIZE);
- }
- 
- static int tdx_spdm_session_setup(struct tdx_tsm_link *tlink)
 -- 
 2.52.0
 
