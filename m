@@ -1,49 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794856146;
-	b=ZURBOVEtIfx/8CApYYLOIoctegD40+yibfUMBvDuQvitCsF31KpucBtvUGngx4F47MtH
-	 QFgQNF1HrMzXrM2k/BWq4JVQpkVI1fwlYDTBjz9myW+qaqiGCWTPVqlpHLYWdrx9cVyBq
-	 +kARHmE4RZbzNE2tTh3ke5rWgFPCfHMzroIbhMYLFbtz8Rv/qRepvlcoK/n3Eu1wt3cTV
-	 MO6+Bm0sEzlRWpw8106lxKlf7RHSZ518GW5Rqs3c28nSaHAePkcx/+uvBisDzSZhSp6KJ
-	 nbKolVlbPqyL8HfgP0bOQ7FvSCE9fuddzNf4cCShZ4sFU+xmzDEBDNTa5Uns2bGo8dA==
+	t=1794858736;
+	b=DqyTuKi0AmWobo73Pn2vxTOLcEiyUYUTDmMnjLqtuxF+qEb+31H5kpXkzmAmJJiuWPoS
+	 plgU4eqhD5ZGcdd1Cz8Ek2P6sKAXihG4L6pcRip/lKH++udw6iLmFfz/KGGtuRonl51Vd
+	 LWtWX+Qcx263hkveoHDmB3TrQK0W/s/2YQeZx+YmhW0wNHRFOkB/28dfVDE9heE2BOIVD
+	 HpU6LhfuoT/z2Jeoa3DmFUgKxnlQlWFtYCqQBelAqqxBiXIg4Ld++EioCmXzyC0O4JH5O
+	 sbRqKMp0ZxYgKrwWaQEg3zMKUY4+Y1emjZtoLUW8HEJjebNP9T70+r690lAjScmuZLQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794856146;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=xa5m2kQ4McS89naKgeW1MFetHUtXxopI9MUGzN5ygBU=;
-	b=xoeD/6hyXPdDYOkCwR5HFpZFica/YXP/VcTvE6FLarFMHyNUBR7mE70p3YBh8ibP55N2
-	 pyU9TMK+E2Hwd4i12yGyu69ETro8o07mVW8IjMdFk66e4b8mlD2tgiadU6jC9ZWuR92dx
-	 c8tl6l6tk5pubhDj31kw02NBuFR5Wh7RFM81EjqNRBuD3bTCiBdcULNC81R2N7j/gimkI
-	 O5of6IQhEZ3EN7OvATNEey/7/f46xx8wNcoZIudQV+2jI32V/BbNUOWQpOtmvn3doH8Nu
-	 nzxokJGiSC8bhETsfJPwgL4LsVE7+nHFPgWcU5HMIhBy0KQ42qsH8FTVn2bc17StNiQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794858736;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=jqnrRoTh5TcWr/Py+gEgzzX7wdMhzTlFxFkfLcpGuJM=;
+	b=n0JL/g/6F+62bYxcs48GIjvqL7o8Uhg7SFZgr/Y2f0RszQPstMe8RIKecMl5fv69ky66
+	 zwp8Y41PQJNYglz3ROZpoSweR1edZe3pNROgY+XIwCqHh3hw/XW3TEjCQ0XFcVeWVbYay
+	 t37Fdl7/TC3Hc2sY5jxGPEljS12a+K47+OFNnjJn94RRef2F6gProWQ+7c57py6mLyl7M
+	 WUlbzXqifyRdFTf6eF+Dn4itWEyUNR8xgbsZjSU3D896MSmefj/IIrFkoo9rhVaeP+f2p
+	 ZraDVQD4yfLCleZT47R7TUZ3CXzcNqH5FRjTqH97Y+8dxgl7R9Do3Pqt1UXZCVQuquA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=vLbwuybu;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACFBF606A329
-	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 19:09:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ACFBF606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=YcqWJI31;
+	arc=none smtp.remote-ip=209.85.160.180
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E72D606A335
+	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 19:52:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1E72D606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=vLbwuybu
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 920641684;
-	Mon, 16 Nov 2026 11:09:00 -0800 (PST)
-Received: from [10.57.69.37] (unknown [10.57.69.37])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9638C3F763;
-	Mon, 16 Nov 2026 11:09:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794856143; bh=f2swxQ3wi7X4GorXhzlcfPLv2QaLk/FTXlMHUk2SH3Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vLbwuybuJ1gnxVNNBPUef0Ug4GMpb03qX4MOQFkuIvDvKnSaA2YBECf3PHbl6Mh0S
-	 5CmTmGAzP11/8d1l6rOX4yk43dY6xvUg7SEvtmTeaHbNuJOuTmgZjUZMl+ZVE4zyYl
-	 fzz5Zk8O1bhcT12ZEDIxdCJJyZVCkD/N3LujRf1E=
-Message-ID: <5c70e40a-114d-4fe3-ad0d-506589b8e7bc@arm.com>
-Date: Mon, 16 Nov 2026 19:09:00 +0000
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=YcqWJI31
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-55c38cdd5b7so33737821cf.2
+        for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 11:52:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1794858735; x=1795463535; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jqnrRoTh5TcWr/Py+gEgzzX7wdMhzTlFxFkfLcpGuJM=;
+        b=YcqWJI31Q3We3zqNvL52aNkFr++cowdUSJ0aOSCLtCZgOyPTfxfZMV4aawKPfLKj7g
+         4m2sGeUiA0CXGadMrFuMRIl89TE0lacup406nbrhvwqwPIX8FxoVlYidwE8/s7P7Wszm
+         OrbfdLGk33YGmzpkBYmsq4F3Mxnt+4Lu+TymHPjdbgW2SfeAeQs52uRWqh/1XVhhLOxn
+         GvpMlDfLIXvCkNJG/BKPMpLBeKmXfFzSUPrKKeUURMUv+fsornqCLKr9GiRTo2LK7Tab
+         rlciZWXd7u0mEyCoyMVRbS74CtgQ2ZcTLr22IpH7H7u3DgVnSQkVWAwVkGPORAQHY8UQ
+         R7qQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794858735; x=1795463535;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jqnrRoTh5TcWr/Py+gEgzzX7wdMhzTlFxFkfLcpGuJM=;
+        b=tK2LPJlbYNT59tIFQBT5k2VrTfJNlOrYGHVRleWJzZqeV3zVSP2Dd/Ad6XRFnmgjdh
+         hHHkr0jfjOPQKGe1oW1Izb32+ihfzx0hZ4fkJjCNXmz8qIXprCOacHUxXgGMRkTJdKnf
+         NnxZQVS4LZ45CoRjjvYrZmDrht+V+BpHn86stjdcd8+gasjgR4ZMK18Ruu4n5VaxeQhv
+         G3x3P1fDcPR/YytwEpUwehJ9+eYb/ZM9B0lEOrNU8zOW4dOWotk76TalvFX2JDoaMkUA
+         0UH2jl4i+ZWSExF6Kkk9LaiUfJaLOX4vqwywGkh2V1svqE57hhfS+UXdXRaNnJgK0Gdi
+         ucBw==
+X-Forwarded-Encrypted: i=1; AL+hErE02SFHwbmb+kqKwQrluFZulp0HxCjPR5htcIT0V2RM0OBrji0h2bl86/tjv5s5axaei/8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9JrkjswfB/fBrLdmCdM2EufNiQytODVLkZpCrCgrmOo75YrtL1
+	QTP4s2uLqOiLFH7C5cFqRYiLBJGwKRXqwVuopwY9qc0OdbcK70D3gdy1hBYnZyCWQvU=
+X-Gm-Gg: AYBFou18T0RW2bQ3n8mXmfIZk/UfbvUsF5t0QmalP9AiNTB5J9tSDpRKjXJzshVXEyR
+	6IwSRy8qZ+ly1Wnzh44FtPmp4x6n9YMwFbYouP8Up7JyDbH/njK6m2n3CjGyetVf7+l98ncmZOa
+	vMnvMaZN6FvOxrXNIcDe9Df8G0ZM31mhNwKHVuJPCSQe6clURl4R9SQaHbdLncz7dUM8XvYNa02
+	QDEGFyLmlUH01OKCEQX0UZP+4cv6r8BtuvHKgkifzyKrjkSEQzS7WZw/YJVkx1C9hedJsas+v4S
+	mkv4oCPahG6GedY0743Xal4EbFRRnASPKze2FRjlCgCOvLbBUJgjvINh2fGwUaXQSWi8W6nJEfY
+	R6gOLXlniweXAiCrdm9UPHYOqg5dwDwzRNZcsqBmTDtdNHgiM72EvQNOnSoGjkHIt11lPSVmQjI
+	tTMY0CpOcA8YUxdjm/v+N/Ct2Nkenf8NHY+MY4L/XUKuBNxt0dSy+xCjebH19kPQxTPIKIqA4nG
+	WSJbwRsY04JcXdBoesQP8Kubgc+5JFzq8qBe4gSe1BVS4wZkC6OERcUOR1xVioXVN8OqjDs/k98
+	9At+bA==
+X-Received: by 2002:a05:622a:13c6:b0:55c:c7ab:4445 with SMTP id d75a77b69052e-55cc7ab469bmr121785021cf.29.1794858734926;
+        Mon, 16 Nov 2026 11:52:14 -0800 (PST)
+Received: from ziepe.ca ([142.166.156.71])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f8319d44bsm48973876d6.4.2026.11.16.11.52.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Nov 2026 11:52:14 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xT2kP-0000000ALbT-12cG;
+	Mon, 16 Nov 2026 15:52:13 -0400
+Date: Mon, 16 Nov 2026 15:52:13 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Tao Cui <cui.tao@linux.dev>
+Cc: akpm@linux-foundation.org, dgilbert@interlog.com, mkp@kernel.org,
+	loberman@redhat.com, jmeneghi@redhat.com, kraxel@redhat.com,
+	vivek.kasireddy@intel.com, mst@redhat.com, jasowangio@gmail.com,
+	eperezma@redhat.com, stefanha@redhat.com, sgarzare@redhat.com,
+	rostedt@goodmis.org, vdonnefort@google.com, mhiramat@kernel.org,
+	kevin.tian@intel.com, axboe@kernel.dk, linux-mm@kvack.org,
+	James.Bottomley@hansenpartnership.com, sumit.semwal@linaro.org,
+	christian.koenig@amd.com, phasta@kernel.org, joro@8bytes.org,
+	will@kernel.org, linux-scsi@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
+	iommu@lists.linux.dev, io-uring@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bobbyeshleman@meta.com,
+	mathieu.desnoyers@efficios.com, robin.murphy@arm.com,
+	mason@kernel.org, aesteve@redhat.com, tjmercier@google.com,
+	harry@kernel.org, vbabka@suse.cz, cuitao@kylinos.cn
+Subject: Re: [PATCH 5/7] iommufd: account the hw_queue page array to memcg
+Message-ID: <20261116195213.GF2452510@ziepe.ca>
+References: <20261106131829.3228926-1-cui.tao@linux.dev>
+ <20261106131829.3228926-6-cui.tao@linux.dev>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -53,123 +116,30 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/11] KVM: arm64: CCA: Support runtime faulting of
- memory
-Content-Language: en-GB
-To: sashiko-reviews@lists.linux.dev, Steven Price <steven.price@arm.com>,
- kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
-References: <20261116164358.142785-1-steven.price@arm.com>
- <20261116164358.142785-10-steven.price@arm.com>
- <sashiko-outbox-217436@kernel.org>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <sashiko-outbox-217436@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261106131829.3228926-6-cui.tao@linux.dev>
 
-On 16/11/2026 17:31, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issues to consider:
-> - [Medium] KVM: arm64: KVM_CAP_PRE_FAULT_MEMORY advertised for Realm VMs
-> - [Medium] KVM: arm64: missing unmap on partial failure in
->    realm_map_unprotected()
-> - [Low] KVM: arm64: unhandled exec fault on shared Realm IPA in
->    gmem_abort() and user_mem_abort()
-> --
+On Fri, Nov 06, 2026 at 09:18:27PM +0800, Tao Cui wrote:
+> From: Tao Cui <cuitao@kylinos.cn>
 > 
-> commit 5a0919ef6adc946a1afb4f6ad7cf84e5573597f3
-> Author: Steven Price <steven.price@arm.com>
+> IOMMUFD_CMD_HW_QUEUE_ALLOC pins up to max_npages pages just to check
+> that a user supplied queue region is physically contiguous, and the
+> page array for that check is plain GFP_KERNEL.  The size comes from
+> cmd->length, a u64 that is only overflow checked, and the array is
+> freed again as soon as the contiguity check fails, so the allocation
+> can be repeated concurrently: a 1GB region costs about 2MB of
+> uncharged memory per attempt.
 > 
-> KVM: arm64: CCA: Support runtime faulting of memory
+> Every other iommufd allocation that scales with user input is already
+> charged, and the pinned pages charge the mapper at map time.  Charge
+> this array like the rest.
 > 
-> This commit adds runtime stage-2 fault handling for Realm VMs, delegating
-> and mapping private guest_memfd pages in the protected IPA region and
-> mapping shared pages in the unprotected IPA region via the RMM.
-> 
->> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->> index 0db3c293fdd52..9b371159be92c 100644
->> --- a/arch/arm64/kvm/mmu.c
->> +++ b/arch/arm64/kvm/mmu.c
-> [ ... ]
->> @@ -1846,6 +1882,16 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
->>   		goto out_unlock;
->>   	}
->>   
->> +	switch (kvm->arch.vm_flavor) {
->> +	case VM_REALM:
->> +		prot &= ~KVM_PGTABLE_PROT_X;
->> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, s2vi.pfn,
->> +				    PAGE_SIZE, prot, memcache);
->> +		goto out_unlock;
->> +	default:
->> +		break;
->> +	}
->> +
-> [ ... ]
->> @@ -2242,12 +2289,15 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
->>   	if (!perm_fault_granule && !s2vi->map_non_cacheable && kvm_has_mte(kvm))
->>   		sanitise_mte_tags(kvm, pfn, mapping_size);
->>   
->> -	/*
->> -	 * Under the premise of getting a FSC_PERM fault, we just need to relax
->> -	 * permissions only if mapping_size equals perm_fault_granule. Otherwise,
->> -	 * kvm_pgtable_stage2_map() should be called to change block size.
->> -	 */
->> -	if (mapping_size == perm_fault_granule) {
->> +	if (kvm_vm_is_realm(kvm)) {
->> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, pfn, mapping_size,
->> +				    prot, memcache);
-> 
-> [Severity: Low]
-> This question rests on an architecture detail that could not be confirmed
-> from the kernel source: can a Realm guest instruction fetch from an
-> unprotected (shared) IPA exit to the host as a stage-2 instruction abort
-> that reaches kvm_handle_guest_abort()?
-> 
-> If so, unprotected RTT mappings only encode RMI_S2AP_DIRECT_READ and
-> RMI_S2AP_DIRECT_WRITE and cannot grant execute permission, but neither
-> gmem_abort() nor user_mem_abort() rejects kvm_s2_fault_is_exec(s2fd) with
-> -ENOEXEC to inject an instruction abort.  Instead, realm_map_unprotected()
-> installs a non-executable mapping, and on subsequent instruction permission
-> faults at the same IPA where level >= req_level, unmaps and remaps the page
-> with the same non-executable permissions and returns 0 in an endless fault
-> loop.
+> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+> ---
+>  drivers/iommu/iommufd/viommu.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-No, this is wrong. As per RMM spec, Rule XLSKP in A5.2.7 Realm access to 
-an Unprotected IPA , version 2.0-beta3:
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
-"Realm instruction fetch from an Unprotected IPA causes a Synchronous 
-External Abort taken to the Realm."
-
-So the execute permission fault do not come to the KVM.
-
-We could a comment here to make it clear.
-
-> 
-> [ ... ]
-> 
->> @@ -3155,7 +3217,7 @@ pre_fault_bytes_consumed(gpa_t gpa, unsigned long granule_size,
->>   
->>   int kvm_arch_pre_fault_allowed(struct kvm_vcpu *vcpu)
->>   {
->> -	if (is_protected_kvm_enabled())
->> +	if (is_protected_kvm_enabled() || kvm_vm_is_realm(vcpu->kvm))
->>   		return -EOPNOTSUPP;
->>   	if (!kvm_vcpu_initialized(vcpu))
->>   		return -ENOEXEC;
-> 
-> [Severity: Medium]
-> Should kvm_vm_ioctl_check_extension() also report 0 for
-> KVM_CAP_PRE_FAULT_MEMORY when kvm && kvm_vm_is_realm(kvm)?
-> 
-> Currently kvm_vm_ioctl_check_extension() only gates capabilities on
-> is_protected_kvm_enabled() and otherwise unconditionally sets r = 1 for
-> KVM_CAP_PRE_FAULT_MEMORY, advertising the capability on a Realm VM file
-> descriptor even though KVM_PRE_FAULT_MEMORY always fails here with
-> -EOPNOTSUPP.
-
-This is taken care of in the later patches on the integration branch,
-where the capabilities are restricted for Realms.
-
-Suzuki
+Jason
