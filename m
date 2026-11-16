@@ -1,50 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=84.16.66.168
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794850130;
-	b=lPGXvczwsYpaNS0Ns2QaNhCQ2cdQtJDMOr+ri+y8BRl0FJ/lOOlrBMogRD6zj5ZRnpSY
-	 RigEDeUNzL2tMhj4pWbxfFcLflw/0+fr0rkGuk4wEClJadciup7XfSpRoX/leAMozhBp2
-	 roxCvD1DBhctxx5QhGnNx9BTqn3D9AfQvA4xMGykxMalxX9CFplWzP48yXSyrzGl5IViT
-	 39Y+t4jRkrr0KYzv7535csfCIV+N2MjK6QlMpD1Swp0HE/D7OtZUe04TZ5zLHdKEGap1K
-	 jC/i3TlpurwCCYikg5pmKSjarDzqMaZzL0LAct8BWZhZJGzgliUvSz+OYvvXkFLGw5g==
+	t=1794850307;
+	b=FT7JtU8W8luwe4kZuJBYQBDnbZwC4EvFBVkL7TTD9Jgt8nHc7kZfJ/WSS++DPXS5A1+w
+	 NCGh8caV4AO2OU4byrjksWKbv0MRP3ARF5HOlUtkjvvK6helb/AikSHFWN+dM8e/vWkSz
+	 eppAjakGCHLfhKpaUeiKr9ipeGLsf4Okt0ZzJuWBptWn4f76m9BYP80574xnY0dY2Hto6
+	 9N56S1WNMy6ulLp9qADrTOKd+ViTR0FRZMO5zUol3HNJwiUA8W9SqBw/dblubCNQIJkT8
+	 xoYoN9i7m94H5yJ3Ar6m4n07x0HRA9YPhfVxo/oqghKMZDw+7wXFk80RQ5EXDQAbg0A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794850130;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:From:Subject:To:Cc:References:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 Feedback-ID:X-Infomaniak-Routing;
-	bh=sksj3erO0Akx5zzJjGKDAnrGDqLQmFXWSoMgfv5FcBI=;
-	b=IJiF6of6CW/rtLBdb3VWyiGAip8pUq5e+7XSoWNk5hUvZIIcJBEBuBAIkbcLDcda4nxK
-	 JPIi7OxScY3iVNLtPxgLd4oDtCN3GTPh65T+nwq+tTJZdcenZlcX37yAbHFw1+bojtzqJ
-	 BBnma3tTMmUpX25jOtrWX0PCuz2o0wannYM9bu5qH4Vb/gJ/0HiYIYXxncrehtsnYGPNY
-	 zATBaIN51E32az2tsRYreNYHMPdXLs0QPf6PyDoQ3uqDxHh0l9zrT1V4DLkuayAwlRf+z
-	 aHEEqyRk6LO+YGC4BQZYqrAlA1flEL66wThWVDyHTDXjEwZeJZ5fv3kOZylJfMxGhkw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794850307;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=Hm64xLHNibckADV1peCrsacIKe9H5aSr0f1d+XzjCzQ=;
+	b=buuuRWP2mzut8SedBkRlTEUZj1Hij1ZFY4Jp8TRDaXyWZYjmroAlJCPCPi6poJ7XOqN5
+	 0ZkUhBO91GWZDKzIZUXbdL8bmp+Ty1YL6PMaI2rftTOKP6eSU7mX+Gx7axPbWZyJPwhh2
+	 eEAIuce3C1pUOIo8iRXh38hU1p3wc+RgvAa7hKMvbb9yIvZCNQDb/T+pbAvk7m3E2nXUk
+	 LOg59vwQ1ccXktwRV89I+V0c6JWHUp/cYrG8V4u4yEKgwUiZjvaAlGn8AFPeB4ku+iJvm
+	 GGpN3G1C6khq1aIpHxpR4hP46y80YoLj6RGLGFlsOyJtHV9ANp4TC0fGpf3U6cw/HhA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=etik.com;
-	spf=pass smtp.mailfrom=etik.com;
-	arc=none smtp.remote-ip=84.16.66.168
-Received: from smtp-42a8.mail.infomaniak.ch (smtp-42a8.mail.infomaniak.ch [84.16.66.168])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bbLi9RNJ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98218606A33D
-	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 17:28:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 98218606A33D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=etik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etik.com
-Received: from smtp-4-0000.mail.infomaniak.ch (smtp-4-0000.mail.infomaniak.ch [10.7.10.107])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4jSvwR05KVz2kNw;
-	Mon, 16 Nov 2026 18:28:39 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=etik.com;
-	s=20210927; t=1794850118;
-	bh=sksj3erO0Akx5zzJjGKDAnrGDqLQmFXWSoMgfv5FcBI=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=cQxdshKVjvsM39W9Gap2BRzIbXEaf1d/No2nWFKAUSwvNOUV8gHSyKC6R2d1cBd0C
-	 MYDXtX311AflSc+xrxIyZzAIJKlRBSmJPWHwajQQAvOoDVjRXhbkkUF8hQv1ogIlAi
-	 gGhu6QsEblH34EbgOm93qm2GRqDN3dpaW0DQdFEE=
-Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4jSvwN6vjBzcsX;
-	Mon, 16 Nov 2026 18:28:36 +0100 (CET)
-Message-ID: <999079c0-c728-445b-a122-720d93f112cc@etik.com>
-Date: Mon, 16 Nov 2026 18:28:36 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4153F606A32F;
+	Mon, 16 Nov 2026 17:31:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bbLi9RNJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907671F000C4;
+	Mon, 16 Nov 2026 17:31:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794850306;
+	bh=Hm64xLHNibckADV1peCrsacIKe9H5aSr0f1d+XzjCzQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=bbLi9RNJUuydZ+xDpiu4l2NnQCKDcMmTX0ejvQaNiL+rIW23Oavq82+yqexf+CMTv
+	 7ZVyTdVbSJram3xv7Fkqf/gwXbxfbmW0aZ10NaiMcFCUiRRkXhucJObawr+5hgYAbe
+	 EOfe5G2wJJF+ZmFMKjqD8LhdDolw4tU2Mvhxqf5fjnZXS25yupIQ67vg/WCLkrMyWd
+	 lxTy/Sebh1oPHsw9/WpyCN8npvBz/6pLqg+POyhnV7rTQIpjKWh9lGVpqwY7bztbGj
+	 1Bulu+b83UnmMgKGqzyGQ4dkMtOnE/zAw2gphc8tbWyQQWS+zUQsfeLP1DqAVAAqMR
+	 jBAgvAU5SeIXg==
+Message-ID: <sashiko-outbox-217436@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 09/11] KVM: arm64: CCA: Support runtime faulting of
+ memory
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Steven Price" <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>
+In-Reply-To: <20261116164358.142785-10-steven.price@arm.com>
+References: <20261116164358.142785-1-steven.price@arm.com>
+ <20261116164358.142785-10-steven.price@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 16 Nov 2026 17:31:46 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -53,79 +60,180 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: DV <dv@etik.com>
-Subject: Re: [PATCH] kvm: hyper-v: Delay firing of expired stimers
-To: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Alexander Graf <graf@amazon.com>, Sean Christopherson
- <seanjc@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- hpa@zytor.com, x86@kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- nh-open-source@amazon.com, gurugubs@amazon.com, jalliste@amazon.co.uk,
- Michael Kelley <mhklinux@outlook.com>, John Starks <jostarks@microsoft.com>,
- David Woodhouse <dwmw2@infradead.org>, Marcelo Tosatti
- <mtosatti@redhat.com>, qemu-devel@nongnu.org
-References: <20260115141520.24176-1-graf@amazon.com>
- <aXO8I6xuZyZB7CxV@google.com>
- <769f538d-dd42-4d36-a4c5-7e6e48b209f6@amazon.com> <87bjigaeyx.fsf@redhat.com>
- <1435d106-d4b0-487e-85d3-4032a9fe9332@etik.com>
- <kupzev8hf8s.fsf@vkuznets-thinkpadx1carbongen12.rmtcz.csb>
-Content-Language: en-US
-In-Reply-To: <kupzev8hf8s.fsf@vkuznets-thinkpadx1carbongen12.rmtcz.csb>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Feedback-ID: :74c292bbbde641d:ham:123049f310c9d1d
-X-Infomaniak-Routing: alpha
 
-On Mon, 16 Nov 2026, Vitaly Kuznetsov wrote:
-> From what I remember, direct mode synthetic timers were added
-> specifically to aid Hyper-V-on-KVM case as non-nested Windows was
-> preferring non-direct version anyway. So I believe we need a fix and
-> not 3).
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [Medium] KVM: arm64: KVM_CAP_PRE_FAULT_MEMORY advertised for Realm VMs
+- [Medium] KVM: arm64: missing unmap on partial failure in
+  realm_map_unprotected()
+- [Low] KVM: arm64: unhandled exec fault on shared Realm IPA in
+  gmem_abort() and user_mem_abort()
+--
 
-Thanks, that rules out 3).
+commit 5a0919ef6adc946a1afb4f6ad7cf84e5573597f3
+Author: Steven Price <steven.price@arm.com>
 
-> I'm wondering if the issue is somewhat related to the nasty hack we
-> put in commit 0469f2f7ab4c ("KVM: x86: hyper-v: Don't touch TSC page
-> values when guest opted for re-enlightenment") but maybe hibernation
-> is somewhat different. Or maybe we misunderstood the problem in the
-> first place and only fixed one sympthom of it?
+KVM: arm64: CCA: Support runtime faulting of memory
 
-I don't think the hack itself is involved here, but your second guess
-fits what I see.
+This commit adds runtime stage-2 fault handling for Realm VMs, delegating
+and mapping private guest_memfd pages in the protected IPA region and
+mapping shared pages in the unprotected IPA region via the RMM.
 
-The hack only takes effect once the guest has written
-HV_X64_MSR_TSC_EMULATION_CONTROL. In the failing setup
-hv-reenlightenment isn't exposed, so KVM recomputes the TSC page on
-every masterclock update and every KVM_SET_CLOCK as usual. With
-hv-reenlightenment on, X was 494.7 ms and the timers were just as
-late. I didn't trace whether L1 wrote the MSR in that run, but it
-wouldn't change the lag at boot: L1 enabling the page sets
-HV_TSC_PAGE_GUEST_CHANGED, so the first setup is computed normally
-either way.
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index 0db3c293fdd52..9b371159be92c 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+[ ... ]
+> @@ -1846,6 +1882,16 @@ static int gmem_abort(const struct kvm_s2_fault_de=
+sc *s2fd,
+>  		goto out_unlock;
+>  	}
+> =20
+> +	switch (kvm->arch.vm_flavor) {
+> +	case VM_REALM:
+> +		prot &=3D ~KVM_PGTABLE_PROT_X;
+> +		ret =3D realm_map_ipa(kvm, s2fd->fault_ipa, s2vi.pfn,
+> +				    PAGE_SIZE, prot, memcache);
+> +		goto out_unlock;
+> +	default:
+> +		break;
+> +	}
+> +
+[ ... ]
+> @@ -2242,12 +2289,15 @@ static int kvm_s2_fault_map(const struct kvm_s2_f=
+ault_desc *s2fd,
+>  	if (!perm_fault_granule && !s2vi->map_non_cacheable && kvm_has_mte(kvm))
+>  		sanitise_mte_tags(kvm, pfn, mapping_size);
+> =20
+> -	/*
+> -	 * Under the premise of getting a FSC_PERM fault, we just need to relax
+> -	 * permissions only if mapping_size equals perm_fault_granule. Otherwis=
+e,
+> -	 * kvm_pgtable_stage2_map() should be called to change block size.
+> -	 */
+> -	if (mapping_size =3D=3D perm_fault_granule) {
+> +	if (kvm_vm_is_realm(kvm)) {
+> +		ret =3D realm_map_ipa(kvm, s2fd->fault_ipa, pfn, mapping_size,
+> +				    prot, memcache);
 
-What points to your second guess: X is already in kvmclock before the
-guest runs its first instruction, so when L1 enables the TSC page,
-KVM writes a tsc_offset of about -X into it. Yet on a boot with no
-pause and no migration, L1's counts were still X too far out. If L1
-used the values it read from the TSC page, even cached ones, it would
-have been right at that point. So L1 seems to take L0's reference
-time to be guest TSC / TSC frequency with no offset at all, perhaps
-because on a Hyper-V host the two start together.
+[Severity: Low]
+This question rests on an architecture detail that could not be confirmed
+from the kernel source: can a Realm guest instruction fetch from an
+unprotected (shared) IPA exit to the host as a stage-2 instruction abort
+that reaches kvm_handle_guest_abort()?
 
-If so, the 2021 migration storm and this are the same assumption
-broken in two ways. The hack keeps tsc_offset from changing after L1
-has started, which helps on migration, but it can't help when
-tsc_offset isn't zero to begin with. And without re-enlightenment,
-nothing keeps it from changing on pause/resume, which matches the
-virsh suspend result in my first mail.
+If so, unprotected RTT mappings only encode RMI_S2AP_DIRECT_READ and
+RMI_S2AP_DIRECT_WRITE and cannot grant execute permission, but neither
+gmem_abort() nor user_mem_abort() rejects kvm_s2_fault_is_exec(s2fd) with
+-ENOEXEC to inject an instruction abort.  Instead, realm_map_unprotected()
+installs a non-executable mapping, and on subsequent instruction permission
+faults at the same IPA where level >=3D req_level, unmaps and remaps the pa=
+ge
+with the same non-executable permissions and returns 0 in an endless fault
+loop.
 
-If it helps, I can rerun with hv-reenlightenment on, trace whether L1
-writes HV_X64_MSR_TSC_EMULATION_CONTROL, and repeat the suspend. If
-the hack engages, I'd expect X to stay the same across the pause,
-while the timers stay X late from boot.
+[ ... ]
 
-As before, Claude Code did the code reading for this.
+> @@ -3155,7 +3217,7 @@ pre_fault_bytes_consumed(gpa_t gpa, unsigned long g=
+ranule_size,
+> =20
+>  int kvm_arch_pre_fault_allowed(struct kvm_vcpu *vcpu)
+>  {
+> -	if (is_protected_kvm_enabled())
+> +	if (is_protected_kvm_enabled() || kvm_vm_is_realm(vcpu->kvm))
+>  		return -EOPNOTSUPP;
+>  	if (!kvm_vcpu_initialized(vcpu))
+>  		return -ENOEXEC;
 
-Thanks,
-David
+[Severity: Medium]
+Should kvm_vm_ioctl_check_extension() also report 0 for
+KVM_CAP_PRE_FAULT_MEMORY when kvm && kvm_vm_is_realm(kvm)?
+
+Currently kvm_vm_ioctl_check_extension() only gates capabilities on
+is_protected_kvm_enabled() and otherwise unconditionally sets r =3D 1 for
+KVM_CAP_PRE_FAULT_MEMORY, advertising the capability on a Realm VM file
+descriptor even though KVM_PRE_FAULT_MEMORY always fails here with
+-EOPNOTSUPP.
+
+> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+> index 838f95c201ada..4cacb9fe000f4 100644
+> --- a/arch/arm64/kvm/rmi.c
+> +++ b/arch/arm64/kvm/rmi.c
+[ ... ]
+> +static int realm_map_unprotected(struct kvm *kvm,
+> +				 unsigned long ipa,
+> +				 kvm_pfn_t pfn,
+> +				 unsigned long size,
+> +				 enum kvm_pgtable_prot prot,
+> +				 struct kvm_mmu_memory_cache *memcache)
+> +{
+[ ... ]
+> +	while (ipa < ipa_top) {
+> +		unsigned long range_desc =3D addr_range_desc(realm, ipa, phys,
+> +							   ipa_top - ipa,
+> +							   RMI_OP_MEM_UNDELEGATED);
+> +		unsigned long call_top =3D ipa + RMI_ADDR_RANGE_COUNT(range_desc) *
+> +			rmi_addr_block_size_to_bytes(RMI_ADDR_RANGE_BLOCK_SIZE(range_desc));
+> +		unsigned long out_top;
+> +
+> +		ret =3D rmi_rtt_unprot_map(rd, ipa, call_top, flags, range_desc,
+> +					 &out_top);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		if (ret) {
+> +			/* Create missing RTTs and retry */
+> +			int level =3D RMI_RESULT_DATA_LEVEL(ret);
+> +			int req_level =3D KVM_PGTABLE_LAST_LEVEL -
+> +				RMI_ADDR_RANGE_BLOCK_SIZE(range_desc);
+> +
+> +			if (RMI_RESULT_STATUS(ret) !=3D RMI_ERROR_RTT ||
+> +			    ++retries > KVM_PGTABLE_LAST_LEVEL + 2)
+> +				return -ENXIO;
+> +
+> +			/* Replace an existing mapping to update its permissions. */
+> +			if (level >=3D req_level) {
+> +				realm_unmap_shared_range(kvm, ipa, ipa_top, false,
+> +							 memcache);
+> +				continue;
+> +			}
+> +
+> +			ret =3D realm_create_rtt_levels(realm, ipa, level,
+> +						      req_level,
+> +						      memcache);
+> +			if (ret)
+> +				return ret;
+> +
+> +			continue;
+> +		}
+> +
+> +		/* Retry the fault after releasing mmu_lock to service the IRQ. */
+> +		if (out_top =3D=3D ipa)
+> +			return -EAGAIN;
+> +		if (WARN_ON_ONCE(out_top < ipa || out_top > call_top))
+> +			return -ENXIO;
+> +
+> +		phys +=3D out_top - ipa;
+> +		ipa =3D out_top;
+> +		retries =3D 0;
+> +	}
+
+[Severity: Medium]
+Can a multi-iteration call to realm_map_unprotected() leave a writable
+prefix mapped when a later iteration fails or returns -EAGAIN?
+
+For a Realm with a 32- to 34-bit IPA space on 4KB pages, get_start_level()
+is 2, so addr_range_desc() caps rmi_size at 1 (PMD_SIZE).  When a shared
+memslot is backed by a 1GB hugetlbfs VMA, kvm_s2_fault_map() passes
+mapping_size =3D PUD_SIZE and this loop runs across multiple 2MB iterations.
+If an iteration after the first is interrupted (out_top =3D=3D ipa) or hits=
+ an
+error, realm_map_unprotected() returns non-zero without unmapping the
+already-installed prefix (unlike realm_map_protected()).  kvm_s2_fault_map()
+then passes !!ret (unused =3D true) to kvm_release_faultin_page() and skips
+mark_page_dirty_in_slot(), so if the faulting IPA lies in the mapped prefix,
+the guest can write to the page without marking the host folio dirty.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261116164358.1427=
+85-1-steven.price@arm.com?part=3D9
