@@ -1,103 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=173.37.86.79
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794861545;
-	b=DqBLsc1N28inc2R+OhUM6tubjWkmBRImmooHQagihu5KqNUximOxMjQQuJCwIiqEVc1F
-	 Q5dEsONihc2BsQjH8xQ6RxtpGHVjFog2JNDB9+nTGGh3lBcv+/l+UmSkjD3QSaAjodUnz
-	 mZBk7MArjHpZVw/IxT0cOwiZOIS4t1WAUyDgxVcUCsrN+y4WGr0vHbP0nHiJlLssuVRPe
-	 aGRu0hNn/LgFv64bWdeFe2OkJaSwXI995CO6L0SQd53BfnJhKmE5zgxFbKS+7K3njO9HM
-	 O9Wb6frKRURvksT4d9r7fVm2eTUYesMArEYLjXcywlbDsRM8VvMHyBdaAg+Pj3EjfvQ==
+	t=1794862227;
+	b=LDT1Uzfe1KwJHLD4gPahJUV5h7wQ6cJ3qa3OdyMni23b0yZkTtWvQQyZBmf1YbaITcYc
+	 uELxrWONMbgiujFnePU90OIBAaVVPbgdHTwIELOK1SgCXpc4cUYL0iK5Qmdd2AH5rXWKd
+	 /aXcuiOtQSwrKL88vhxHdI8bGVfhm+Dig/nJL0BqdqYBSv8bVMOuyNTowAGpAWZmuCSTD
+	 z+/jAXOb/6AptT0ihk5eyMVQEoeiydvjGx81/DXf3asfRpyTqhlb52jE0iPuMB/VbBdl4
+	 ZVxyBxcmHF5rYYieo5FUSdLqhdO1QS/mcS+OKksY64wjWF1YMYtUFhDxN1sZnZLCEHA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794861545;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IPAS-Result:IronPort-Data:IronPort-HdrOrdr:X-Talos-CUID:
-	 X-Talos-MUID:X-IronPort-Anti-Spam-Filtered:X-IronPort-AV:Received:
-	 Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Outbound-Client-TLS:
-	 X-Outbound-SMTP-Client:X-Outbound-Node;
-	bh=xVJ7wS5s+PAGh2ipNS10JXvI3Lsan3rvod9uIbNhZRI=;
-	b=Bq19ujVgdIwvBeZJsXGJLhOKZuO8INoMV34i5+8x6nvCXwkEQQCVHusLRQo4aK3R/Df0
-	 QX2Pck6gxnt8dniCdKm73Fz9GudDtqmOejDXEMIbd95U3CPkmQQkK+UqoQyqKEC7yATMB
-	 8WiJG8ZAPtAFNiw+nBf2Z25HNWQWeyt0DAyo8JxoGLpBN8ANlM2gQg9zSr639rOpLli7s
-	 o9q1E0xrWQZkaBudRcw1HVTbQAarGjafN916mPIQjuS/YChiqEU1cyLAEfIvIeOgCkc/o
-	 P937v37/uXn6AVbLyGO8IljFyTqixiHOECallbk7tWmdryxNB/i45izSSO1CA1MpZng==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794862227;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
+	bh=itpoRBF/1k6lXJt+7gBQZf0XsZd0eRgpwFhim4ck9gw=;
+	b=PNGZRKNZWqFI8rxe5U48tZ1AY4+bWlm8TmnTk18U7ByCsGbq1+KB+Mn9YZbseVy1lxgq
+	 8PQ/qAFeHDrwKseellSNnACcsHHLMqFQbgwcLQh3ptqd871Ly6b26D8mpJeUnsHTzXb55
+	 W2dLKFTE7hfu461xReUGL6CumD0yk1XGdQvR0yL7/DS/0DfbOfYoJ3So9+SeFpk1/QJPG
+	 c823zxdNC438tpkDfQgMMmH9lSDufy9uCJLBbqN6uAZ1HhMuzTqTfwnB6qE/70sjFF0lj
+	 hm+e4gimvtbBquhP9yFOtveVbsu7kY3yKNm7Z1uz6tRkAUH38rHMQdJqtJwCMvMS1Kw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cisco.com;
-	spf=pass smtp.mailfrom=cisco.com;
-	dkim=pass header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=GHOAy6lp;
-	arc=none smtp.remote-ip=173.37.86.79
-Received: from rcdn-iport-8.cisco.com (rcdn-iport-8.cisco.com [173.37.86.79])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Dwg3aB5j;
+	arc=none smtp.remote-ip=209.85.210.178
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58E3606A334;
-	Mon, 16 Nov 2026 20:39:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C58E3606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593CA606A32C
+	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 20:50:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 593CA606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=GHOAy6lp
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Dwg3aB5j
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8a07078200fso1779087b3a.2
+        for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 12:50:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=5061; q=dns/txt;
-  s=iport01; t=1794861544; x=1796071144;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:to:cc;
-  bh=xVJ7wS5s+PAGh2ipNS10JXvI3Lsan3rvod9uIbNhZRI=;
-  b=GHOAy6lpy1lEzlz3zH8pJlrKK8clNIG6dLg8WYs/dCbS5Eqs6F9omjoB
-   lY4JFNRFiB5uUHgU1AwvI7tp+1z6lGlZ7b23B07TvWkV6XIYtFOGVVfHH
-   4AyheOM/q6D1vXPxqiEV1v29Y25AGGKfoNN1rkq4b16eNu8nvU+fMoSjR
-   c0wKc5U9VJ5ugxA+CybjxEWdUdcBKoz/HadFY8fMrS+ayYm95qP0ADQXS
-   uOLEiBVGogyB4Pjpma7vIcBHPAk/zG4bDn6HN997WHqYHBh/OP1x8zW1n
-   Z6qsZcXidoMtyaRL0cHLgUVuBtsTb9rrjpMtaLUXagzgmpSfI/BhDm0dk
-   A==;
-X-CSE-ConnectionGUID: 4osFWF5mRbanqGpumdQOpA==
-X-CSE-MsgGUID: mORXt0fNT+KlYWa/PISBAg==
-X-IPAS-Result: =?us-ascii?q?A0AIAAD9aPtq/5T/Ja1aGwEBAQEBAQEBBQEBARIBAQEDA?=
- =?us-ascii?q?wEBAYF8BgEBAQsBglaBVUNJhFeIG4c4giGRT4xWgX4PAQEBD1EEAQGFBY4hA?=
- =?us-ascii?q?iY0CQ4BAgQDAgMBAQEBAQEBAQEBAQEKAQEFAQEBAgEHBYEOE4ZckBUnBD4UN?=
- =?us-ascii?q?QImAkgXEoMCgnUDuRd6fzOBAYR+2UuBaAELFAGBCi4BhXOCbgGBcYQIO4RCJ?=
- =?us-ascii?q?xuBSUSBFYJ7b4gfgmoEgQ6BFIEMiBGEHIQQh1MJP4ECHANZLAFVEw0KCwcFY?=
- =?us-ascii?q?4EFAyoLEhIYFW4yHYEjOxcvWBsGBYEcgQcEE4ESgQVdgSsoXQEhgQiBdgKCU?=
- =?us-ascii?q?YIAAgFJQQ4HRVMJJUMSRyQiCBIJARMaLAqBGjU8CSY/FQxnCAMaBUACHwgCD?=
- =?us-ascii?q?Qx0ORAwHiQvBRomPhsKgQ4nERgNSBEsNxUZBD0BbgeTFoIjLz0GAQEVCTsKF?=
- =?us-ascii?q?wkKCkQuBCcITTUOHgwhkwYTMoMwjV5roRGEKoFooBAzl2qTBwGZCCOjUA8JG?=
- =?us-ascii?q?TeEaoFoPIFZMxoIGxWDIlMZD9srJjI9AQEHAgcOAwuBaIReiyQtgU8BAQ?=
-IronPort-Data: A9a23:8h0Ke6AEvRDthRVW/6biw5YqxClBgxIJ4kV8jS/XYbTApG8k0WQAn
- DEYCmmPM6yOY2b2Ltx0O4zgoU9QvpTQy4A2OVdlrnsFo1CmBibm6XV1Cm+qYkt+++WaFBoPA
- /02M4eGcYZsCC+G+39BC5C5xVFkz6aEW7HgP+DNPyF1VGdMRTwo4f5Zs7ZRbrVA357jXGthh
- fuo+5eBYQb8hWYkWo4pw/vrRC1H7ayaVAww5jTSVdgT1HfCmn8cCo4oJK3ZBxPQXolOE+emc
- P3Ixbe/83mx109F5gSNy+uTnuUiG9Y+DCDW4pZkc/HKbitq+kTe5p0G2M80Mi+7vdkmc+dZk
- 72hvbToIesg0zaldO41C3G0GAkmVUFKFSOuzXWX6aSuI0P6n3TEn/J1In4YYIgi8O9xGE5W6
- PkUERcVR0XW7w626OrTpuhEnM8vKozveYgYoHwllGifBvc9SpeFSKLPjTNa9G5v3YYVQrCEO
- pdfMGY/BPjDS0Un1lM/E5sinfyohXnXeDxDo1XTrq0yi4TW5FEtiOK0bICLILRmQ+1QuXyou
- jrI2Vi6IRUrC9XY8Ru+2Fuj07qncSTTHdh6+KeD3vRyqFSXx2EVWFsaWDOTuvSwjEy1c91YL
- EMQ92wlqq1a3FCkSsnVXBCipnOA+BkGVLJ4A71kwAKA0KzZ50CeHGdsZjJIdtFgtMYwXjEs/
- luImc75Qz1prLCRD3ma89+8qDK0Ni89N2IOZSYYCwAC5rHLuIs0iADOSNdLCqO5jtTpXzr3x
- liirzY7r6scgNRN1Kih+13DxTW2qfDhSg8z+xWSXW+/6A59TJCqapbu6lXB6/tEaoGDQTGpp
- 2QNkcyTxP4BAIvLlyGXRugJWraz6J6tMCXVqUx+A547sT+q/haekZt4+jpyIgJtd80DYzKsO
- RaVsgJK75gVN3yvBUNqX7+M5w0R5fCIPbzYujr8N7KivrAZmNe7wRxT
-IronPort-HdrOrdr: A9a23:yJ8Lo6ALAJ73QyLlHeky55DYdb4zR+YMi2TDGXoBLSC9Ffb4qy
- nOppomPHDP5Qr5NEtLpTniAsa9qA3nlaKdiLN5VdyftWLd1FdAQrsSiLfK8nnKRmnC7eZW16
- dmfcFFeb7NJGk/p8fz5we1V/YMqeP3kpyAtKPyw2hgSAdyZ7olzQtoYzzra3FedU1qCYU0EZ
- yE6tECnTqvfnwLct+2b0N1OdQr3+e7867OUFohGwMt7hWIgHeD7b73FAXd4zIlOgk/uYvLNQ
- P+4nbEDmLJiYDB9iPh
-X-Talos-CUID: =?us-ascii?q?9a23=3A/PlGQGvpeanunB4iVKflgk1i6It5dWbz81mNJnW?=
- =?us-ascii?q?yAGBwZ6WITFOp37tNxp8=3D?=
-X-Talos-MUID: 9a23:hR9AKQS887jj9q6xRXTpowtSKJ9mxZjtK0Q8rpxBg+i/HwV/bmI=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.27,217,1787011200"; 
-   d="scan'208";a="540214262"
-Received: from rcdn-l-core-11.cisco.com ([173.37.255.148])
-  by rcdn-iport-8.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 16 Nov 2026 20:38:57 +0000
-Received: from [127.0.0.1] (unknown [10.25.129.52])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by rcdn-l-core-11.cisco.com (Postfix) with ESMTPS id 8F44A18000149;
-	Mon, 16 Nov 2026 20:38:56 +0000 (GMT)
-From: Satish Kharat <satishkh@cisco.com>
-Date: Mon, 16 Nov 2026 12:38:52 -0800
-Subject: [PATCH] KVM: x86: Start IRQ bypass with local interrupts enabled
+        d=google.com; s=20260707; t=1794862226; x=1795467026; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=itpoRBF/1k6lXJt+7gBQZf0XsZd0eRgpwFhim4ck9gw=;
+        b=Dwg3aB5j/PWPJaLku3L1tUZkBCUnHRSbqBmF3A4BQGz08Tq28ncBeYQbG/So5ZsN+h
+         NojTXp3MVD/ZSvcPTtCd3tmxdm9+qM5KoPTSkI+CLdlA+txelMPpn8SZybXuEjrLBIaV
+         YowodJucWxxle8t1RD08hQ061mcCTFHAAfcigRC9haQR8iCHdz2xN+lplQeaY4S1h8P2
+         rfyRhY/H0SQx7FRPTAB/RKZgvSK1AUAlv4LwLdvUsGDJp95HEf/Kqijr56sClMPAuG4N
+         jqnkIcUVMlGE6mtQ8PhlTITjVU0VqdOlyT+0EtqE4DK5p65P3wpVCNkS6l7wiGteLlYw
+         f3aQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794862226; x=1795467026;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=itpoRBF/1k6lXJt+7gBQZf0XsZd0eRgpwFhim4ck9gw=;
+        b=yuoUhmrHcff/Eys7qhBAij3lWHZa30J+oUqFUqaw3ZJU8Gv8ggapmpcHmNjxoMsbZZ
+         8eahgUV2YTGNh8fAckDo69SaOSSG+cnfn+WvVxl38fHoU0+/5hcvXwmVNMYD8SE6DTDj
+         e8Vb14K6bs0WAaWCJ1gq92lqKMvaNmaM4TPkCfM4cFpRt61GVpYEX9dn5IPxpHMURAdS
+         FsOq/P07RK5j2p9J3U4znb1EBLaOurD6J7i3iEW0HrbYgJf6Su6szdY6mM+4MyWKoxzI
+         BVVgIGaGdHW+Bvq+OiTe+YmxDHRrSjncRutoUZn5VMh2xwvH0JmRTyu15XYRFyaSNSm9
+         3Bxg==
+X-Forwarded-Encrypted: i=1; AL+hErEAoeIJ66PQI0/WJnQ4sfi0qoFHNdGZB2LFeIhkJW1bChJZFF2cgMjtyFcrEUDSuBr3bGw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9/QLA3GyBEHk+HNbltVcM7GZenFBQkzwl2wvmxwitO9DghhGfQ
+	AHAd0OtnnIxuJCKQFLqWYFFiqUwN5tb3wDcA2BCM1pLRjEafP81Gj9Osm2/osi0IwA==
+X-Gm-Gg: AYBFou1p/DhYqGsOgYWdsPO+fn8Mg4w6Pufyd1ATof6LSMZ0P3fEmrkZng+LmxUwPqy
+	JsEDhol/+qSBNTITj1aBvKwhPwfGQQAb4hSimBAyYwjQHCrqxLGZSUIXYz0i/kA9eBDrYc4ehjg
+	icOXa8v15VvgIP5PbJJfN6000zlOyf1EPYnUpuXs4Js9iByWXVczOtOLJ1ifoRPQN0DxpmcHLbZ
+	eHiAqzOXm1hr/QhnPAmxI1pPkLnEBZPPEh31uNuA6jhPfPIrJuYv8lodP7RpECNnxQR9J6Ow5bx
+	Yy6ot/2VCSBgbRHqG2rqQE274W1G2qujlY+GCiG1J837w28ayRz6V/SVch35pVq6wZNLF7hXxLL
+	BukRE8iYkH2/6nXfnoptORMrzklpaStQpICuHf/O5yX97ofNyWyzEofPOiMZqoBTS9lswRJXIZ2
+	D6hWZHICuIWNEr0RrvW6ozEMSzs942lIVefWLkiObzBqikbu5y6VUQURFU9RGhtObLv+e0j8War
+	LypghVVAFsSt93K5ijEhtvxe3w5cZI9+mYClQcPTliSZb+d+okOOuQTo6D+0s2rAj1rHzCc8l5o
+	bPSABpW9l0YbVkjJuJLEOlaQo0LT1t6L2dzeXVb7ZtUtvyjiHEEll8ADpFyQ2v+/
+X-Received: by 2002:a05:6a20:ef03:b0:3e2:4350:1528 with SMTP id adf61e73a8af0-3f7a51ba2ffmr9092719637.7.1794862225898;
+        Mon, 16 Nov 2026 12:50:25 -0800 (PST)
+Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cddc18c847asm4527944a12.28.2026.11.16.12.50.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Nov 2026 12:50:25 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -106,153 +87,92 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261116-b4-kvm-irq-bypass-irqs-20261116-v1-1-6cc721a062fd@cisco.com>
-X-B4-Tracking: v=1; b=H4sIANtp+2oC/z2Nyw6CQAxFf4V0bSNDzAT9FeNiHkWqccQpkjGEf
- 5dqwu6e2+bcGYQyk8CpmiHTxMLPtILZVRB6l66EHFeGpm6sMcaiP+B9eiDnF/rP4EQ0Cm737hh
- dTTa25C2sliFTx+W3cL78Wd7+RmFUrX54J4Q+uxR6rRT3OlFai4nKuLlhWb4eoekKsAAAAA==
-X-Change-ID: 20261116-b4-kvm-irq-bypass-irqs-20261116-f9da0e6d8eb6
-To: seanjc@google.com, pbonzini@redhat.com
-Cc: kvm@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
- tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
- dave.hansen@linux.intel.com, hpa@zytor.com, stable@vger.kernel.org, 
- Satish Kharat <satishkh@cisco.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794861536; l=5111;
- i=satishkh@cisco.com; h=from:subject:message-id;
- bh=ZeFucPcfC3LRZpV0j/vmi51iAxZtU4EeWQbX+0tsTLs=;
- b=GS3vK1WlVDrrOkFv954VJ1xQ6Ls78j1H0RA604hpcneWvAv5d19Xm7CJ23zAfQix4SpxttzhJ
- 5zPMBq/qUu/Bupu35nxtTcWmu+nCUoAlHIKn+UNBBX+MQORqhhL9Ifn
-X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
- pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
-X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.129.52];TLSv1.3;TLS_AES_256_GCM_SHA384;256
-X-Outbound-SMTP-Client: 10.25.129.52, [10.25.129.52]
-X-Outbound-Node: rcdn-l-core-11.cisco.com
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 16 Nov 2026 12:50:24 -0800
+Message-Id: <DMWXK2VTL3XP.MWW7ZG7Z6HUF@google.com>
+Cc: "Jason Gunthorpe" <jgg@nvidia.com>, "Alex Mastro" <amastro@fb.com>,
+ <dri-devel@lists.freedesktop.org>, <iommu@lists.linux.dev>,
+ <kvm@vger.kernel.org>, <linaro-mm-sig@lists.linaro.org>,
+ <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <linux-media@vger.kernel.org>, <linux-pci@vger.kernel.org>, "Alex
+ Williamson" <alex@shazbot.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, "Josh Hilke"
+ <jrhilke@google.com>, "Kevin Tian" <kevin.tian@intel.com>, "Leon
+ Romanovsky" <leon@kernel.org>, "Logan Gunthorpe" <logang@deltatee.com>,
+ "Matt Evans" <mattev@meta.com>, "Matt Evans" <matt@ozlabs.org>, "Mina
+ Almasry" <almasrymina@google.com>, "Shuah Khan" <shuah@kernel.org>, "Sumit
+ Semwal" <sumit.semwal@linaro.org>, "Vipin Sharma" <vipinsh@google.com>
+Subject: Re: [RFC PATCH 0/7] vfio: selftests: Add peer-to-peer DMA selftest
+From: "David Matlack" <dmatlack@google.com>
+To: "Samiullah Khawaja" <skhawaja@google.com>, "David Matlack"
+ <dmatlack@google.com>
+X-Mailer: aerc 0.21.0
+References: <20261111192411.4133780-1-dmatlack@google.com>
+ <avYjFfqr3T/U7lvn@devgpu015.cco6.facebook.com>
+ <DMTK99TDM9AM.SAM3Z4COP9WS@google.com>
+ <20261115231946.GB1239159@nvidia.com>
+ <CALzav=efnA_ABCZVicX0QeTmHknaEbMeWOy8cS+zHYVhm5z+iw@mail.gmail.com>
+ <avtI--OIZu5E5sma@google.com>
+In-Reply-To: <avtI--OIZu5E5sma@google.com>
 
-Move the first IRQ-bypass notification after releasing irqfds.lock so
-that the vendor callback runs with local interrupts enabled.
+On Mon Nov 16, 2026 at 10:24 AM PST, Samiullah Khawaja wrote:
+> On Mon, Nov 16, 2026 at 10:02:56AM -0800, David Matlack wrote:
+>>Looks like GPUs and NVMe can do both as well.
+>
+> AFAIU the memory BARs for GPUs would need initialization. The internal
+> VRAM needs to be exposed (mapped) to the BARs.
+>
+> Do you think we should have a P2P device "setup" step that can be
+> implemented for various types of devices?
 
-On Intel, pi_start_bypass() issues KVM_REQ_UNBLOCK to the vCPUs through
-kvm_make_all_cpus_request(). If another CPU needs to be kicked, this can
-reach smp_call_function_many(), which requires local interrupts enabled.
-Calling the hook inside spin_lock_irq() violates that requirement and
-triggered the following warning during VFIO MSI-X setup:
+Yes, I think we need something like that.
 
-  WARNING: kernel/smp.c:943 at smp_call_function_many_cond
-    kvm_make_all_cpus_request [kvm]
-    kvm_arch_irq_bypass_add_producer [kvm]
-    __connect [irqbypass]
-    irq_bypass_register_producer [irqbypass]
-    vfio_msi_set_vector_signal [vfio_pci_core]
+I've been prototyping a new optional op in struct vfio_pci_driver_ops:
 
-The SMP API documents a possible deadlock in this context, including for
-non-waiting calls. No deadlock was observed in this case.
+  /*
+   * Set up a range of device memory, accessible through a BAR,
+   * that other devices can target with P2P DMA and that the CPU
+   * can access through mem_bar->vaddr.
+   */
+  int (*mem_bar_setup)(struct vfio_pci_device *device, u64 min_size,
+                       struct vfio_pci_mem_bar *mem_bar);
 
-Keep producer publication, bypass accounting and IRTE error rollback under
-the existing lock. The IRQ bypass mutex still serializes producer
-callbacks after irqfds.lock is released. Notify only for a successful
-first attachment, after any IRTE failure has been ruled out.
+vfio_pci_find_mem_bar() falls back to calling it when the device does
+not match any entry in mem_bar_descs[], sanity checks the returned
+range, and then runs the existing memory verification on it.
+mem_bar_descs[] stays around for devices like pci-testdev that need no
+setup.
 
-An LLM assisted with implementation, code review and test automation.
+For NVIDIA GPUs, I had an LLM work on it and the setup was simpler than
+I expected, at least on Blackwell. BAR1 comes out of reset in physical
+mode, where BAR1 offset N maps directly to VRAM physical address N
+without going through the GPU MMU. The LLM confirmed this on by writing
+VRAM through BAR1 and reading it back through the BAR0 PRAMIN window
+(and vice versa) at offsets from 256MiB up to 178GiB.
 
-Fixes: 77e1b8332d1d ("KVM: x86: Decouple device assignment from IRQ bypass")
-Cc: stable@vger.kernel.org
-Signed-off-by: Satish Kharat <satishkh@cisco.com>
----
-Based on kvm-x86/next at cbe54fc3462b3949ab27b9ae81fb9ddb509040c7.
+The nv_falcon implementation only has to:
 
-Validation:
-- Build-tested irq.o against kvm-x86/next with W=1 and -Werror.
-- Built the KVM core, Intel and AMD modules for a 7.4-rc1 kernel
-  and used those modules for runtime testing.
-- On Intel VT-d hardware, started a guest with an ENIC VF passed through
-  using VFIO and reloaded its driver with device-posted interrupts and
-  APICv enabled. Function-graph tracing captured pi_start_bypass() reaching
-  the real SMP call with IRQs enabled. Posted-IRTE updates and bidirectional
-  guest traffic passed.
-- On Intel, selected KVM selftests passed: irqfd_test; irq_test in xAPIC and x2APIC
-  routing modes; vmx_apicv_updates_test; nested_close_kvm_test; and
-  xapic_ipi_test.
-- On Intel, selected kvm-unit-tests passed: x2apic, xapic, ioapic, smptest and
-  smptest3. The xapic run had one expected internal skip for absent
-  x2APIC support in that test's CPU model.
+  - Wait for FSP to finish booting, which takes a few seconds after the
+    reset VFIO does when the device is opened.
+  - Make sure BAR1 is in physical mode.
+  - Return the range of BAR1 that maps VRAM (the size comes from
+    NV_USABLE_FB_SIZE_IN_MB), staying clear of firmware reservations at
+    either end.
 
-On a Cisco C225 M8 (AMD EPYC 9555P) with AVIC/x2AVIC and
-device-posted interrupts enabled, selected KVM selftests and
-kvm-unit-tests passed; the VMX-only test skipped.
+With that the P2P test passes with a ConnectX-7 (mlx5 driver) as the
+initiator and B200 VRAM as the target.
 
-Physical NIC passthrough passed bidirectional traffic, link cycling,
-driver reload and guest shutdown with two guest kernels. Tracing
-confirmed balanced IRQ-bypass registration and successful AMD
-posted-interrupt setup.
+A couple of open questions:
 
-AMD has no pi_start_bypass() hook, so these are regression tests rather
-than a reproduction of the Intel warning.
+ 1. The prototype allows .mem_bar_setup() to be called before .init().
+    That is enough for GPUs, but as Jason described, mlx5 device memory
+    has to be allocated from firmware, which needs the command interface
+    and therefore init(). Supporting mlx5 as a target would mean running
+    .mem_bar_setup() after .init().
 
-One guest logged an informational clocksource-check timeout, without
-a BUG/WARN or unstable-clock report. Host lockdep remained enabled.
-NetworkManager route-metric and profile-timestamp changes were
-restored and verified separately after the tests.
-
-On AMD EPYC 7343 with AVIC disabled, assigned ENIC VF traffic and
-guest-driver reload passed using VIC forwarding between the VF
-and its parent PF.
-
-External-wire traffic was not tested on AMD.
-
-The complete default test suites and forced IRTE-error runtime test were
-not run. The public-base build check compiled the changed object; it was
-not a full public-base kernel runtime test.
-
-The IRQ-disabled warning in smp_call_function_many_cond() was observed
-on multiple occasions during VFIO MSI-X setup. No deadlock was observed.
-Additional diagnostic logs are available on request.
----
- arch/x86/kvm/irq.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kvm/irq.c b/arch/x86/kvm/irq.c
-index 7f8b092b4479..611b3e57b09a 100644
---- a/arch/x86/kvm/irq.c
-+++ b/arch/x86/kvm/irq.c
-@@ -485,13 +485,13 @@ int kvm_arch_irq_bypass_add_producer(struct irq_bypass_consumer *cons,
- 	struct kvm_kernel_irqfd *irqfd =
- 		container_of(cons, struct kvm_kernel_irqfd, consumer);
- 	struct kvm *kvm = irqfd->kvm;
-+	bool start_bypass;
- 	int ret = 0;
- 
- 	spin_lock_irq(&kvm->irqfds.lock);
- 	irqfd->producer = prod;
- 
--	if (!kvm->arch.nr_possible_bypass_irqs++)
--		kvm_x86_call(pi_start_bypass)(kvm);
-+	start_bypass = !kvm->arch.nr_possible_bypass_irqs++;
- 
- 	if (irqfd->irq_entry.type == KVM_IRQ_ROUTING_MSI) {
- 		ret = kvm_pi_update_irte(irqfd, &irqfd->irq_entry);
-@@ -502,6 +502,13 @@ int kvm_arch_irq_bypass_add_producer(struct irq_bypass_consumer *cons,
- 	}
- 	spin_unlock_irq(&kvm->irqfds.lock);
- 
-+	/*
-+	 * Wake vCPUs with IRQs enabled. The IRQ bypass mutex keeps producer
-+	 * callbacks serialized after dropping irqfds.lock.
-+	 */
-+	if (!ret && start_bypass)
-+		kvm_x86_call(pi_start_bypass)(kvm);
-+
- 	return ret;
- }
- 
-
----
-base-commit: cbe54fc3462b3949ab27b9ae81fb9ddb509040c7
-change-id: 20261116-b4-kvm-irq-bypass-irqs-20261116-f9da0e6d8eb6
-
-Best regards,
---  
-Satish Kharat <satishkh@cisco.com>
-
+ 2. nv_falcon does not support Falcon DMA on Blackwell yet, so a B200
+    can only be a target for now. That requires a driver to be able to
+    probe a device that cannot do memcpy. I am not sure I want to go
+    down that road.
