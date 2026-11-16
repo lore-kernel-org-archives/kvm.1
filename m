@@ -1,88 +1,89 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794827392;
-	b=kr0PW2ivpXz179/sLzgKa4qQTKxmnXmumw+hqp0XLCBybRF5MEdnVZpqwsW/K7+ejQig
-	 CKaFZ6DJXrNZVlXjRNQjHamuW/OdCLTFYOqgWwGhw9PSr1rxKtsbsqd3xLHwO3gpJyDBE
-	 TCY4Je0xISBrrop7JRspbLFHrKfj02YN1+gIjgbLIgk/qrrsleTMj3464UaTA+FSKzjco
-	 Io/qgAMPocpPjP067rYaHHwDh308KSmuci8kVFNgg5SPy4jimo0RF7cff250y9eeyTbOG
-	 Xg7iHE6yZrOlGI6F/vL/8ZcU4LM7NB3ETFVmxYHjsMtX/jVX3gC1P/qkElfufl5XlzQ==
+	b=oTwrQ05HScw7lo2ay3oYQRnlattxeIxR4KUNkV6VGP9Z0XS4+IiNzHaCz2eNlmwrEps9
+	 XWsgX1U4MFwgjaLOASZx+YwVKtb+khi9JZOCYLKkThPITWo+msNyE6FptS43EGSSiu5e/
+	 pyL0fDGf4GAzkgFEcpCt3FCUalbLWAGF2EZiFP6XT63XK1yufmDoNoE6o40hpZIg3PXrY
+	 uRaAD6TaugK8fRZPLnqM6iJfxX9UnkrcYuVx12hz3SkcGJxqFQdL8T+7ct0hnzqgru2qq
+	 ISbtM9yjtyNPNrzunruCKqt4hCWCgC4djN9/zWDeeb7NPeJbNg7bgORe8yQXBAo/agw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794827392;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=6JE3ezNpre7PvCafHO7wBh2leIssf/Pub7wCkgud8Ws=;
-	b=bucqEwaGUZzsdLwEXczcEJpzJuHjVR0sM/g5WjCyhsxKXI+wcQbDUcTe/Nb8UH42Jn/8
-	 eK1dDfvGtfJYFDefLsLv9H3SdilJ9jk3SK8kU1r/LhP1IUhN2K6c4qkpBYbzVVooabLPM
-	 UO1bOTVd+/SuiII2pRHW3d8RgmntFq2Y0QiACuG4AsLzrLsjtOgyZ2eNRYcqeYa/tRNqi
-	 DI7YppFV95duTBu8uHWoFD+2cJl67sVoDsO/64jy0hvPGcvgUFkDiH16CwIMRR8fZ3Glr
-	 3KxPt3UO33DOErvi7VnpTOFX9wgq44ij7go8YvMgRq+4BWM4W6a9LkrOphvuOXVt7DQ==
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=bWZrsX7aWlMbwvlLKJqbJrwnBhxG4JV+WqMba30KTxI=;
+	b=aTWdsz5/yY56WrFizkb+RgyBc5eCTbp6dSyLubYTC+yS5LxpioSikVt3f4+yLXe3f/N4
+	 UoqpuSUcbRUNL4/cvuvvCgQbgT92rpEU6tT/kv/xvVu7TNWUQ67kW7cDdBk9GxmIuLnZO
+	 Y1a8CjVx3cdB0VdGp6ICUXVPnoJhbZVdBJYd1P8mOVrGqgdb04ZhvYzFvhMFOTOzOF9eH
+	 jzoXkFDOYy9GqSJiJhHnDm0AmcQhYr6y85zqy1KDKOoil9PsOXHtCCdlbSZqaaFMoPUee
+	 L3CU4RJeMvy5yB6FrI30jpVHeLvB2UhhslmCVVrk25nFQS/khqdb3KLEtZ7SMDpSoAQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=oBUExuUa;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mzZVjiAC;
 	arc=none smtp.remote-ip=198.175.65.12
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B6F607BDA8;
-	Mon, 16 Nov 2026 11:09:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D1B6F607BDA8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77131607BDAE;
+	Mon, 16 Nov 2026 11:09:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 77131607BDAE
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=oBUExuUa
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mzZVjiAC
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794827392; x=1826363392;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=rksEBsctxS5+pBQx28Yn4C2YEUM13RYYmc1Ab7GCG9E=;
-  b=oBUExuUa2bNWoPbqKKmF7Mlx7lyCLzHHRRZuAA4Fc7Lw0jTc/EiyyrOi
-   JdkaQHlRhernZpfxI6NAmiFZKm+UmMReRU1mPuLeUGt2AH7PfDMRjknJ+
-   IvYTQ+bSVvYS4EYKtI+9lMulqZZNqRJQdTHhqgRr/G12vnxuA2Alvfozw
-   P0cHj5vrwN9oBKGMt8NPPMgESYGCgJ03lDfJrSR89E7VZ/aeUFLsIm3ap
-   Hiyi3geFUl1v9Xp+2mXsiqRPVCDzdgW3kOerAboN4xhIQcOD0yMI7XS8f
-   BkFXxmvgxDMozxMH+Vmrxz+zdxYt1IpuagcW9IIMkNZahsQnRj05TGLqB
-   A==;
-X-CSE-ConnectionGUID: PiH0yrj7RB6ciLZZMrmBWw==
-X-CSE-MsgGUID: 00GZSHFXQbeiBgOdbwWa3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11967"; a="3429593"
+  t=1794827393; x=1826363393;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=9lxGVvT3vxsJLouzD6uoqq/ubjW0JxIDBomkq69iZzc=;
+  b=mzZVjiACHdTMTQcvX6vauMQdSHfQta7JSvbovbjzwJq8C5NtX6ydIGQd
+   tECxFPicdQwixdUACmSDTXpLRFwhvBWN9J8hnyixXtCT5NsAREG/O2Aga
+   eXyYo6/r9C7hmSssSfogeozZ+iGq4lAni/0FHDjMNBbIQw6dU6j0sBl8Y
+   n+a2qPlz4Dru1pIA7lGR4NqAUkStiu4u3e93vAtQoapoDyurnyiXAt6yL
+   joYsnaQwPeojAwCY2W6wY9OhZfuoN2KwsbRosUJAY3tmrPEvp0dUI29JK
+   lwGI0JHMhfN6dJn0ypn5wcIbHabkxVcSfbVXSdl/1z+Uw7PxcJE9Pr8oN
+   g==;
+X-CSE-ConnectionGUID: DMfKerVgQwOqKa2EISIpBQ==
+X-CSE-MsgGUID: iOczUZUFRva+74eqBJdgvw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11967"; a="3429600"
 X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; 
-   d="scan'208";a="3429593"
+   d="scan'208";a="3429600"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 03:09:51 -0800
-X-CSE-ConnectionGUID: Nfekq6HIRXSdxBOKkXSS5g==
-X-CSE-MsgGUID: ZLCkwydlSViBT75NqwCb0Q==
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 03:09:52 -0800
+X-CSE-ConnectionGUID: GnjyuEbnSVKCTGS2ir7Ulg==
+X-CSE-MsgGUID: WWcnUJP/SLqjthyP2XC2og==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; 
-   d="scan'208";a="9848116"
+   d="scan'208";a="9848119"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 03:09:51 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 03:09:52 -0800
 From: Chao Gao <chao.gao@intel.com>
-To: x86@kernel.org,
+To: linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
+	kvm@vger.kernel.org
 Cc: rick.p.edgecombe@intel.com,
 	kevin.tian@intel.com,
 	yilun.xu@intel.com,
 	chao.p.peng@intel.com,
 	baolu.lu@linux.intel.com,
 	chao.gao@intel.com,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
 	Thomas Gleixner <tglx@kernel.org>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [RFC PATCH 0/7] TDX: Enable PCIe link encryption for trusted I/O
-Date: Mon, 16 Nov 2026 03:10:18 -0800
-Message-ID: <20261116111037.3478844-1-chao.gao@intel.com>
+	Kiryl Shutsemau <kas@kernel.org>
+Subject: [RFC PATCH 1/7] coco/tdx-host: Create metadata for an SPDM session
+Date: Mon, 16 Nov 2026 03:10:19 -0800
+Message-ID: <20261116111037.3478844-2-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20261116111037.3478844-1-chao.gao@intel.com>
+References: <20261116111037.3478844-1-chao.gao@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,206 +95,205 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi all,
+The TDX module talks to the device over a Security Protocol and Data
+Model (SPDM) session. It needs host memory for each session's metadata,
+and reports the number of pages required in its global metadata.
 
-This series adds PCIe link encryption on TDX hosts. Yilun previously
-posted one large series with all the changes needed for this [1]. That
-series has been split up, and the parts are being posted separately.
-This RFC is posted for early review. It is not yet seeking review from
-the x86 maintainers.
+When setting up an SPDM session, allocate the memory and hand it to the
+TDX module with TDH.SPDM.CREATE. Keep the returned session ID for later
+SEAMCALLs. When tearing the session down, reclaim the memory with
+TDH.SPDM.DELETE. If that fails, leak the memory, as the TDX module may
+still be using it.
 
-The SEAMCALL wrappers this series uses are in a separate series, not
-yet posted. So, their names and parameters may still change.
+Based on work by Yilun and Zhenzhong.
 
-Today, userspace sets up link encryption by writing to the PCI/TSM
-"connect" sysfs attribute. A proposal under discussion [2] adds CTLV
-attestation commands [3] to this flow, so that userspace can select and
-verify the device's certificates before the IDE stream is set up. This
-series uses only the "connect" attribute. I will convert it to the new
-flow once the discussion settles.
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+---
+ arch/x86/include/asm/tdx_global_metadata.h  |   1 +
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c |   6 ++
+ drivers/virt/coco/tdx-host/main.c           | 104 +++++++++++++++++++-
+ 3 files changed, 109 insertions(+), 2 deletions(-)
 
-== Background ==
-
-With shared I/O, devices cannot access a confidential VM's private
-memory, so the VM bounces I/O data through memory it shares with the
-host. With trusted I/O, the VM establishes trust in a device and then
-lets it access private memory directly, which avoids the bouncing.
-
-The device's MMIO and DMA traffic then carries private data across PCIe
-links and switches. A physical attacker on a link, or a malicious
-switch, could read, modify or replay that traffic. PCIe link encryption
-protects the traffic between the root port and the device against these
-attacks, which keeps switches out of the VM's TCB.
-
-Link encryption builds on:
-
-  - Integrity and Data Encryption (IDE) [4], the PCIe feature that
-    encrypts and integrity-protects data exchanged between the root port
-    (part of the CPU's root complex) and the device.
-
-  - The Security Protocol and Data Model (SPDM) [5], a protocol for
-    authenticating a device and setting up a secure session with it.
-
-  - Data Object Exchange (DOE) [6], a PCIe feature that provides a
-    mailbox in the device's config space.
-
-At a high level, setting up link encryption means opening an SPDM
-session with the device through its DOE mailbox, configuring an IDE
-stream on both the root port and the device, and programming the
-stream's keys into the root port and sending them to the device over
-the SPDM session.
-
-The TEE Security Manager (TSM) is a trusted platform component, such as
-the TDX module or AMD's Secure Processor firmware. The work is split
-between the TSM and the host kernel. The TSM runs the SPDM session and
-handles the keys. It doesn't own the device, so the host kernel configures
-the device's IDE settings and relays SPDM messages between the TSM and
-the device.
-
-== This series ==
-
-This series adds a TDX-TSM driver to the TDX host services module
-(tdx-host.ko). The driver registers the TDX module as a TSM with the
-PCI/TSM framework [7] and implements its connect and disconnect
-operations. PCI/TSM calls them when userspace writes to a device's
-"connect" and "disconnect" sysfs attributes.
-
-Connect sets up the SPDM session, the IDE stream and its keys through
-SEAMCALLs, and disconnect tears them down.
-
-During some SEAMCALLs, the TDX module may need to exchange several SPDM
-messages with the device. The kernel calls such a SEAMCALL in a loop.
-Each time it returns an SPDM message with a dedicated status code, the
-kernel sends the message through the device's DOE mailbox and calls the
-SEAMCALL again with the device's reply, until the SEAMCALL completes.
-
-== Points for discussion ==
-
-1. Raw DOE frames (See patch 3)
-
-The TDX module produces and consumes whole DOE objects, header included,
-but the PCI DOE API takes payloads only. The TDX-TSM driver therefore
-strips and rebuilds the DOE header itself. The code is small, but it
-puts DOE format details in a TSM driver, while the DOE core already
-handles them. A PCI DOE API that takes whole objects would keep them in
-the core, but the TDX-TSM driver would be its only user. Is such an API
-worth adding, or can we live with the DOE format handling in the
-TDX-TSM driver?
-
-2. Default IDE Stream (See patch 5)
-
-TDISP requires each device to have one default IDE stream [8]. The PCI
-core does not set Default Stream, so each TSM driver sets it itself, by
-looking up the device's IDE settings with pci_ide_to_settings() and
-setting default_stream. AMD's driver already does this, and the TDX-TSM
-driver does the same. Since the requirement is shared, the PCI core
-could instead set Default Stream on the device's TC0 stream, which is
-what TDISP expects. Should this move into the PCI core now, or can it be
-a later cleanup?
-
-== Limitations ==
-
-The TDX module configures the root port's IDE settings and accepts
-only one address range for the stream. The root port therefore encrypts
-only traffic to the device's prefetchable MMIO range, and a device with
-no prefetchable range cannot be connected. We are evaluating whether
-this can be lifted.
-
-Link encryption needs the root complex to enter a TDX mode, in which
-only the TDX module can configure the root port's IDE settings. The
-kernel opts in to this mode with TDH.IOMMU.SETUP. As its name suggests,
-this SEAMCALL also puts the IOMMU into TDX mode, which changes the
-IOMMU's behavior. Unfortunately, the two cannot be enabled separately,
-even though link encryption does not need IOMMU TDX mode.
-
-== Dependencies ==
-
-The series depends on the following series:
-
-  - TDX module extensions [9]
-  - IOMMU TDX mode [10]
-  - SEAMCALL wrappers for PCIe Link Encryption [not yet posted]
-
-The full stack is available at:
-
-  https://github.com/gaochaointel/linux-dev/tree/link-encryption-rfc-v1
-
-== Testing ==
-
-Tested that link encryption can be enabled and disabled through PCI/TSM:
-
-  # echo tsm0 > /sys/bus/pci/devices/$DEVICE/tsm/connect
-  # echo tsm0 > /sys/bus/pci/devices/$DEVICE/tsm/disconnect
-
-Note that I disabled DPAMT for this testing as this series does not yet
-install DPAMT for the SPDM metadata, which will be added later.
-
-== Changes since Yilun's version ==
-  - Rebased onto the latest tip/x86/tdx branch.
-  - Rewrote the cover letter and commit messages
-  - Took over the patches from Zhenzhong and Yilun, and credited them
-    in the changelogs.
-  - Dropped the Reviewed-by tags collected as patches are changed
-    significantly.
-  - Allocated struct spdm_config_info_t with kzalloc_obj() and added a
-    static_assert() on its size, which removes the casts on allocation
-    and free.
-  - Fixed a leak of the SPDM message buffers (tlink->in_msg and
-    tlink->out_msg), and moved their allocation into tdx_spdm_create(),
-    next to the SPDM metadata.
-  - Dropped the SPDM session key update patch.
-  - Made TDX_HOST_SERVICES depend on PCI and select PCI_TSM directly.
-    Otherwise tdx-host fails to build with CONFIG_PCI=n. A TDX host
-    without PCI support is not a realistic configuration
-  - Replaced the bit operations and endian conversions in the DOE
-    header handling with struct pci_doe_header and struct pci_doe_msg.
-  - Returned -EIO instead of -EFAULT when TDH.IDE.STREAM.CREATE fails.
-  - Reworded changelog to describe the TDX module's limit on concurrent
-    TDH.SPDM.CONNECT. i.e., why tdx_spdm_lock.
-  - Clarified that having an IDE default stream is required by TDISP spec.
-  - Fixed checkpatch warnings
-
-== AI Usage ==
-
-AI was used under supervision to review code, refine logs and explore ways
-to improve readability. I wrote the first draft of this cover letter, which
-then changed significantly over several rounds of review with AI and was
-trimmed a lot for brevity. The idea for simplifying the DOE format
-handling in patch 3 came from AI.
-
-== References ==
-
-[1]: https://lore.kernel.org/all/20260327160132.2946114-1-yilun.xu@linux.intel.com/
-[2]: https://lore.kernel.org/all/20261028152618.1356860-1-aneesh.kumar@kernel.org/
-[3]: https://lore.kernel.org/all/20261015145053.3664509-1-jiri@resnulli.us/
-[4]: PCIe Specification r7.0, section 6.33 "Integrity & Data Encryption (IDE)"
-[5]: https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.3.0.pdf
-[6]: PCIe Specification r7.0, section 6.30 "Data Object Exchange (DOE)"
-[7]: https://lwn.net/Articles/1043262/
-[8]: Intel TDX Connect Architecture Specification
-     https://cdrdv2-public.intel.com/773614/intel-tdx-connect-architecture-specification.pdf
-[9]: https://lore.kernel.org/all/20261013-tdx-module-ext-v4-0-de5ffac65470@linux.intel.com/
-[10]: https://lore.kernel.org/kvm/20261112043054.2664857-1-baolu.lu@linux.intel.com/
-
-Chao Gao (7):
-  coco/tdx-host: Create metadata for an SPDM session
-  coco/tdx-host: Establish an SPDM session with the device
-  coco/tdx-host: Exchange SPDM messages through DOE
-  coco/tdx-host: Pass a device info buffer to tdh_spdm_connect()
-  coco/tdx-host: Configure an IDE stream
-  coco/tdx-host: Program IDE keys and enable the IDE stream
-  x86/virt/tdx: Enable PCIe link encryption
-
- arch/x86/include/asm/shared/tdx_errno.h     |   1 +
- arch/x86/include/asm/tdx.h                  |   2 +-
- arch/x86/include/asm/tdx_global_metadata.h  |   2 +
- arch/x86/virt/vmx/tdx/tdx.c                 |   2 +-
- arch/x86/virt/vmx/tdx/tdx_global_metadata.c |  12 +
- drivers/pci/ide.c                           |   5 +-
- drivers/virt/coco/tdx-host/main.c           | 496 +++++++++++++++++++-
- include/linux/pci-ide.h                     |   2 +
- 8 files changed, 516 insertions(+), 6 deletions(-)
-
+diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
+index e5e54159ad36..537e872eeb0e 100644
+--- a/arch/x86/include/asm/tdx_global_metadata.h
++++ b/arch/x86/include/asm/tdx_global_metadata.h
+@@ -52,6 +52,7 @@ struct tdx_sys_info_ext {
+ };
+ 
+ struct tdx_sys_info_connect {
++	u16 spdm_mt_page_count;
+ 	u16 iommu_mt_page_count;
+ };
+ 
+diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+index 9b46f34cb469..f20e029f240b 100644
+--- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
++++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+@@ -144,6 +144,12 @@ static __init int get_tdx_sys_info_connect(struct tdx_sys_info_connect *sysinfo_
+ 	int ret;
+ 	u64 val;
+ 
++	ret = read_sys_metadata_field(0x3000000100000002, &val);
++	if (ret)
++		return ret;
++
++	sysinfo_connect->spdm_mt_page_count = val;
++
+ 	ret = read_sys_metadata_field(0x3000000100000003, &val);
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/virt/coco/tdx-host/main.c b/drivers/virt/coco/tdx-host/main.c
+index a815dbe5127a..919e77ae2326 100644
+--- a/drivers/virt/coco/tdx-host/main.c
++++ b/drivers/virt/coco/tdx-host/main.c
+@@ -5,6 +5,7 @@
+  * Copyright (C) 2025 Intel Corporation
+  */
+ 
++#include <linux/bitfield.h>
+ #include <linux/device/faux.h>
+ #include <linux/firmware.h>
+ #include <linux/module.h>
+@@ -26,8 +27,30 @@ static const struct x86_cpu_id tdx_host_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(x86cpu, tdx_host_ids);
+ 
++#define TDISP_FUNC_ID		GENMASK(15, 0)
++#define TDISP_FUNC_ID_SEGMENT		GENMASK(23, 16)
++#define TDISP_FUNC_ID_SEG_VALID		BIT(24)
++
++static inline u32 tdisp_func_id(struct pci_dev *pdev)
++{
++	u32 func_id;
++
++	func_id = FIELD_PREP(TDISP_FUNC_ID_SEGMENT, pci_domain_nr(pdev->bus));
++	if (func_id)
++		func_id |= TDISP_FUNC_ID_SEG_VALID;
++	func_id |= FIELD_PREP(TDISP_FUNC_ID,
++			      PCI_DEVID(pdev->bus->number, pdev->devfn));
++
++	return func_id;
++}
++
+ struct tdx_tsm_link {
+ 	struct pci_tsm_pf0 pci;
++	u32 func_id;
++
++	u64 spdm_id;
++	unsigned int spdm_mt_nr_pages;
++	void *spdm_mt;
+ };
+ 
+ static struct tdx_tsm_link *to_tdx_tsm_link(struct pci_tsm *tsm)
+@@ -35,21 +58,97 @@ static struct tdx_tsm_link *to_tdx_tsm_link(struct pci_tsm *tsm)
+ 	return container_of(tsm, struct tdx_tsm_link, pci.base_tsm);
+ }
+ 
++static int tdx_spdm_create(struct tdx_tsm_link *tlink)
++{
++	const struct tdx_sys_info *tdx_sysinfo = tdx_get_sysinfo();
++	struct tdx_hpa_list_info info;
++	unsigned int nr_pages;
++	u64 spdm_id, sret;
++	void *spdm_mt;
++	int ret;
++
++	if (!tdx_sysinfo)
++		return -ENXIO;
++
++	nr_pages = tdx_sysinfo->tdx_connect.spdm_mt_page_count;
++
++	spdm_mt = alloc_pages_exact(nr_pages * PAGE_SIZE,
++				    GFP_KERNEL | __GFP_ZERO);
++	if (!spdm_mt)
++		return -ENOMEM;
++
++	ret = tdx_hpa_list_info_setup(&info, spdm_mt, nr_pages);
++	if (ret)
++		goto out_free_spdm_mt;
++
++	sret = tdh_spdm_create(tlink->func_id, &info, &spdm_id);
++
++	tdx_hpa_list_info_free(&info);
++
++	if (sret) {
++		ret = -EIO;
++		goto out_free_spdm_mt;
++	}
++
++	tlink->spdm_id = spdm_id;
++	tlink->spdm_mt = spdm_mt;
++	tlink->spdm_mt_nr_pages = nr_pages;
++	return 0;
++
++out_free_spdm_mt:
++	free_pages_exact(spdm_mt, nr_pages * PAGE_SIZE);
++	return ret;
++}
++
++static void tdx_spdm_delete(struct tdx_tsm_link *tlink)
++{
++	struct pci_dev *pdev = tlink->pci.base_tsm.pdev;
++	u64 sret;
++
++	sret = tdh_spdm_delete(tlink->spdm_id);
++	if (sret) {
++		/* leak the metadata pages */
++		pci_err(pdev, "fail to delete spdm 0x%llx\n", sret);
++		return;
++	}
++
++	free_pages_exact(tlink->spdm_mt, tlink->spdm_mt_nr_pages * PAGE_SIZE);
++}
++
++static int tdx_spdm_session_setup(struct tdx_tsm_link *tlink)
++{
++	return tdx_spdm_create(tlink);
++}
++
++static void tdx_spdm_session_teardown(struct tdx_tsm_link *tlink)
++{
++	tdx_spdm_delete(tlink);
++}
++
+ static int tdx_tsm_link_connect(struct pci_dev *pdev)
+ {
++	struct tdx_tsm_link *tlink = to_tdx_tsm_link(pdev->tsm);
+ 	int ret;
+ 
+ 	ret = tdx_iommu_get(pdev);
+ 	if (ret)
+ 		return ret;
+ 
+-	/* TDISP connect is not implemented yet. */
++	ret = tdx_spdm_session_setup(tlink);
++	if (ret)
++		goto out_iommu_put;
++	return 0;
++
++out_iommu_put:
+ 	tdx_iommu_put(pdev);
+-	return -ENXIO;
++	return ret;
+ }
+ 
+ static void tdx_tsm_link_disconnect(struct pci_dev *pdev)
+ {
++	struct tdx_tsm_link *tlink = to_tdx_tsm_link(pdev->tsm);
++
++	tdx_spdm_session_teardown(tlink);
+ 	tdx_iommu_put(pdev);
+ }
+ 
+@@ -66,6 +165,7 @@ static struct pci_tsm *tdx_tsm_link_pf0_probe(struct tsm_dev *tsm_dev,
+ 	if (rc)
+ 		return NULL;
+ 
++	tlink->func_id = tdisp_func_id(pdev);
+ 	return &no_free_ptr(tlink)->pci.base_tsm;
+ }
+ 
 -- 
 2.52.0
 
