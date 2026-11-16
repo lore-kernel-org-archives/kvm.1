@@ -1,49 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794832294;
-	b=kD2O/v6ErI7u3/GodIZxTirKI26fZNX9CQUQAqge9F6i6TRKqLCKiSIjcB2QXZ+wQAUx
-	 G20bAsyzrEO5wl1LhuP8I9w5EYRuUpNVNu7kiuUeT63TSx1Df8HhtbC1RYSqby6/EUby/
-	 aYAPrlyAx2KVlOhyVgJWfYzKnuNXpEHO1vN1auodNaeBwCZRAKVhpBWxXxUxldDVqQP/q
-	 b3RKnxYvxXDxaprmUKnftuBNv0eazIoQCQOD4uerknGehLBl7nusW6I89Naq02EVnfOFP
-	 m1UVLv1p/XMYGNj7XERRvT6MIlbROWduYE5yqbJAxcUQtWfTcX2YE/apsLqbkmb7FyQ==
+	t=1794834681;
+	b=HcXeB+GSTdGtgttxY26sihu7ipSISCdlq6yZxJzdAJmf671/0TRR8nIcdeO308I+DIps
+	 UdlOrsvbViKs1zbjJbkD2Z/MTJ7M2gVPL5r3J1ZxGad9ITLjji/SAggtCRY31rhsY+gvi
+	 OQxyvuwIY9qZI6Kh/xa8fjByjns4jc3bUcmni2/s0MseqnoCcUOZ9RaQm5Vk9AGl5kBaI
+	 hwAOjGDQMT7vMFvmsLsA2q5aF5kMY2NwHP8MVOO8O3p/e8lLX0JWjKZq0PhhKaNrrxhJB
+	 YVkNL+z5lpUsnwdMzDvmdeZgGkNcsjW9QYItro9OMLOPEr68NPV5uPg32bUnXiIARMg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794832294;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=UXWEq6GylonDqejwpJ3gmpS0qCBY2G7N/kYI6AoO3k8=;
-	b=dqOWGI2MWDFbQX6sgwsJO66iSb8UZec1rPmOARycof8f0RhzYmTm+8IfCdQSkGad0xEI
-	 m7PMVmAuucSYwgIBSlTK9wqPhVSsUICYU4BEPInnDTcGIKJxFXgAFrsP1KYoSK6xPFTx9
-	 by+mq62aWwchK1/xm4H10lT1TG3oeUZD+IAOXNwtD2ugOvgrDAcSdcaVJyn3Fuof06Ls6
-	 VxnOXO//TuCqTBV4A9LHbzZFYMA4JqTnnrzE90iovkIAkx4kRbtowxL9j6IYWxY7jaQyB
-	 njECCdEbVUNv0XdDikCeeuzZNObJveEipUwqpLqGPEcJ9suAIKBdwUZPgT1aLr/8duw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794834681;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-TM-AS-GCONF:X-Proofpoint-Spam-Info:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=RZGav5VBwE05/edcFKd6DvQjJV7onBew1olClaU4Khk=;
+	b=y20F81vPHuATKJ6Q+NEH5zeYQVTMON9RW9WEGKPhC3NjCvqdBJd4FW710sBLu5Dvd1gJ
+	 PeZAOcOuIGYqPYOXFEClEQTPSLVuAHmN4IBxWVeYOH4gtxE1t3TY3pszQHv2H6ojOWysk
+	 pm65W1Sc2ETnA52zhIXHT4qQInalXHgydw6veJE4FFX2yePgK01BDOnjsRZTkMGaglGIN
+	 fNCQAMo6yIUD0yS7LhZ0q3MEf2soILhdmeAL6FEMgF9MouGABwIo/vZGvYritE3gR69Uk
+	 3Hykatazf+xyzzmTlN9rwzX5XMKXLiADP3Oa6AU/Wgq/aqbUwmKNLd3XlBZ3mI/piLA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="R8rKd/7d";
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6704C606A323
-	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 12:31:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6704C606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b="iH/vRTNF";
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16B2606A31C;
+	Mon, 16 Nov 2026 13:11:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C16B2606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=R8rKd/7d
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 720271713;
-	Mon, 16 Nov 2026 04:31:29 -0800 (PST)
-Received: from [10.57.63.54] (unknown [10.57.63.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 40ECB3F632;
-	Mon, 16 Nov 2026 04:31:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794832292; bh=s7rrkrPJqSn/VjCcV69VrZwhRBwoHg2LiBmbvlJS4QU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=R8rKd/7dshc6bJehTX2gQKEe2ooXJn49EI7bnRMenRMJj9Ex8tsbMyrQrjIPKWeHU
-	 jHlR4ImkKT+gb84NFUwB+6wvlHV8Q6TJDWSrPpmNbD0byPt94PGSn2iBZBzy2W7k6j
-	 K9BaMsEbWRW2P8Cl9a3RVLN/dji+D5lZUVdYUbCI=
-Message-ID: <2b5abe0e-547b-44ac-a0c2-18c7206f3eda@arm.com>
-Date: Mon, 16 Nov 2026 12:31:29 +0000
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iH/vRTNF
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGCSFe13278619;
+	Mon, 16 Nov 2026 13:11:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=RZGav5VBwE05/edcFKd6DvQjJV7onB
+	ew1olClaU4Khk=; b=iH/vRTNFvfIt+8VTNU0NODeXzxr5PfToQQc2RxXxNMmxwN
+	tz3/spAte0eKSp35mm/PFh3NjoN/vy6vTelBsn0uo9bHwP5SzBzfppUrbYfu0zxm
+	BAl8CeToJf+TKRLSwDqkwA+sb9JkqXvhOr7WOuJUjhOLWxCmAyAJowFmxuSZ2ouP
+	T8g6fVy9tfIhOn+tF3sMC5kTR843pGqLvYdL9OJVwXL4UTKzXycmp8bYcAA0hCa5
+	vDSOSZrylbofpU7Py22fmKpq2PMc8eVqarKR9Q31jkoE6jbb00gBtS0aw3HZfsO/
+	QE4zz8nk9j8vS1HPwOdry8Ti4Bn6bNG4VistaWVA==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hxfc4wu3m-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 16 Nov 2026 13:11:00 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGD54Ef3095320;
+	Mon, 16 Nov 2026 13:10:59 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j02df8131-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Nov 2026 13:10:59 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AGDAii140173868
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 16 Nov 2026 13:10:45 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E23FF2004F;
+	Mon, 16 Nov 2026 13:10:44 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6E6522004E;
+	Mon, 16 Nov 2026 13:10:44 +0000 (GMT)
+Received: from osiris (unknown [9.111.42.169])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 16 Nov 2026 13:10:44 +0000 (GMT)
+Date: Mon, 16 Nov 2026 14:10:42 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 1/5] s390/zcore: Replace __get_free_page() with kmalloc()
+Message-ID: <20261116131042.125125Be9-hca@linux.ibm.com>
+References: <20261108-s390-char-ready-v1-0-3db507722530@kernel.org>
+ <20261108-s390-char-ready-v1-1-3db507722530@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -53,328 +98,61 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 11/12] KVM: arm64: CCA: Support runtime faulting of
- memory
-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
-References: <20261111145758.217946-1-steven.price@arm.com>
- <20261111145758.217946-12-steven.price@arm.com>
- <sashiko-outbox-209568@kernel.org>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <sashiko-outbox-209568@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261108-s390-char-ready-v1-1-3db507722530@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE2MDA1MSBTYWx0ZWRfX4Vt5A3LJOpJy
+ 0XdUr3DO1Af4d9Tkz1UwnONNH/UsC2i83UkCe0GtdgMGWqCK1Qy5uH0lOt8asBNnhd932KsjZaP
+ SCBWc6zQzLW0p/36Gsi4pLTKSieGDOk=
+X-Authority-Analysis: v=2.4 cv=Fu6QbGrq c=1 sm=1 tr=0 ts=6afb00e4 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=Y6TpkvVB5ZIwULgkomUA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE2MDA1MSBTYWx0ZWRfX5WKg2xhkqX3a
+ +mn5URnuTpnAuQTeVueZz/+Cvr2qdxs1AiGUW59818IwBq3kPvGnm0XlZxjie2nXXYNu6VOFC/5
+ dYJEp079OAUzZ1l8jBMqWyh+nERMTiUr6MP9R/bzTUHqQCmrImh3yeXe5xCwqbS1TdTOQ01t6jn
+ leguscywOUOj2ZT5f9I26t+/uRiG0GnH6CuHpnLn/wwLd4qTRaiB1puhK7aNxHx1oQxhO/7gEOg
+ EEXVUIfT3kYQ4slLn93t9jhT6b1vN2jqZiE8QXr6EdBDKOt6tWL58BgpX467ZBO69tnRAF2/gcj
+ nCxBwIpeljd3rWbsFNVRaf5IG4K2nw/Us7enBWeIP7ZMm3ZLB4kEfbsb0CPgSaoWy1HVGRVlA5S
+ 4wxh8F1hXszvfKfVEiRPDRn5Iw1ZAfoRhHna8YlJbxBHywqJKEZWREVsjGSah2Z3sqYBzdZi5R6
+ iCgIN/TJDNSRvxN3W4w==
+X-Proofpoint-GUID: 4EnDG3myrhPma2aarqXVW-FwqNCfXQvB
+X-Proofpoint-ORIG-GUID: 4EnDG3myrhPma2aarqXVW-FwqNCfXQvB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-16_04,2026-11-16_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 lowpriorityscore=0 adultscore=0 bulkscore=0
+ impostorscore=0 spamscore=0 suspectscore=0 phishscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611160051
 
-On 11/11/2026 19:34, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 6 potential
-> issues to consider:
-> - [Medium] KVM: arm64: KVM_CAP_PRE_FAULT_MEMORY advertised for Realm VMs
-> - [Medium] KVM: arm64: cca: user-triggerable WARN_ON and retry bug in
->   realm_map_protected()
-> - [Medium] KVM: arm64: cca: bound block level in addr_range_desc() by
->   start level
-> - [Low] KVM: arm64: unhandled exec fault on shared Realm IPA in
->   gmem_abort() and user_mem_abort()
-> - [Low] KVM: arm64: dead code and missing memory fault exit in
->   kvm_vm_mem_abort()
-> - [Low] KVM: arm64: unreachable dead code in kvm_fault_is_gmem_abort()
-> --
+On Sun, Nov 08, 2026 at 10:48:58AM +0200, Mike Rapoport (Microsoft) wrote:
+> zcore_reipl_init() allocates buffers that keep a copy of the IPL block
+> and of the OS info structure of the crashed system.
 > 
-> commit 7a04ef54472b7db03df4200b280f4db2cc49ed58
-> Author: Steven Price <steven.price@arm.com>
+> These buffers can be allocated with kmalloc() as there's nothing special
+> about them to go directly to the page allocator.
 > 
-> KVM: arm64: CCA: Support runtime faulting of memory
+> kmalloc() provides a better API that does not require ugly casts and
+> kfree() does not need to know the size of the freed object.
 > 
-> This commit adds stage-2 runtime fault handling for Realm VMs, mapping
-> private guest_memfd pages into the protected IPA range via the RMM and
-> mapping shared guest_memfd or normal memslot pages into the unprotected
-> IPA range.
+> Performance difference between kmalloc() and __get_free_pages() is not
+> measurable as both allocators take an object/page from a per-CPU list for
+> fast path allocations.
 > 
->> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->> index e550360fc94d0..b6c61d7890c89 100644
->> --- a/arch/arm64/kvm/mmu.c
->> +++ b/arch/arm64/kvm/mmu.c
+> For the slow path the performance is anyway determined by the amount of
+> reclaim involved rather than by what allocator is used.
 > 
-> [ ... ]
+> Replace use of __get_free_page() with kmalloc() and free_page() with
+> kfree().
 > 
->> @@ -1846,6 +1882,16 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
->>  		goto out_unlock;
->>  	}
->>  
->> +	switch (kvm->arch.vm_flavor) {
->> +	case VM_REALM:
->> +		prot &= ~KVM_PGTABLE_PROT_X;
->> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, s2vi.pfn,
->> +				    PAGE_SIZE, prot, memcache);
->> +		goto out_unlock;
->> +	default:
->> +		break;
->> +	}
-> 
-> [Severity: Low]
-> This question rests on an architecture detail that this review could not
-> confirm from the kernel source: can a Realm guest instruction fetch from an
-> unprotected (shared) IPA cause the RMM to exit to the host with a stage-2
-> instruction abort (ESR_ELx_EC_IABT_LOW) that reaches
-> kvm_handle_guest_abort()?
-> 
-> If the answer is yes, unprotected Realm mappings cannot grant execute
-> permission because RMI_RTT_UNPROT_MAP only encodes RMI_S2AP_DIRECT_READ and
-> RMI_S2AP_DIRECT_WRITE, yet neither gmem_abort() nor user_mem_abort() checks
-> kvm_s2_fault_is_exec(s2fd) on a shared IPA to return -ENOEXEC (so
-> kvm_handle_guest_abort() can inject an instruction abort via
-> kvm_inject_sea_iabt()).  Instead, realm_map_unprotected() installs a
-> non-executable mapping and returns 0, and on subsequent instruction
-> permission faults at that IPA, unmaps and remaps the page with the same
-> non-executable permissions in an endless fault loop.
+> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  drivers/s390/char/zcore.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 
-Realm guests should never execute from unprotected mappings (that would
-largely defeat the point of confidential compute). The spec covers this
-case:
-
-RXLSKP: Realm instruction fetch from an Unprotected IPA causes a
-Synchronous External Abort taken to the Realm.
-
-So the fault isn't taken to the host.
-
-> [ ... ]
-> 
->> @@ -2340,13 +2391,40 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd,
->>  	return kvm_s2_fault_map(s2fd, &s2vi, prot, memcache, result);
->>  }
->>  
->> +static bool private_ipa_fault(struct kvm *kvm, phys_addr_t fault_ipa)
->> +{
->> +	return kvm_vm_is_realm(kvm) &&
->> +		kvm_realm_is_private_address(&kvm->arch.realm, fault_ipa);
->> +}
->> +
->> +/* Decide if an abort should be handled by the gmem */
->> +static bool kvm_fault_is_gmem_abort(struct kvm *kvm,
->> +				    const struct kvm_s2_fault_desc *s2fd)
->> +{
->> +	if (!kvm_slot_has_gmem(s2fd->memslot))
->> +		return false;
->> +	if (kvm_memslot_is_gmem_only(s2fd->memslot))
->> +		return true;
->> +	/*
->> +	 * For Realms, all private faults must be backed by GMEM.
->> +	 * TODO: Handle Trusted device private memory mappings.
->> +	 */
->> +	if (private_ipa_fault(kvm, s2fd->fault_ipa))
->> +		return true;
->> +	return false;
->> +}
-> 
-> [Severity: Low]
-> Is the private_ipa_fault() check in kvm_fault_is_gmem_abort() reachable?
-> 
-> On arm64, include/linux/kvm_host.h defines gmem_in_place_conversion as true
-> because kvm_arch_has_private_mem is defined without
-> CONFIG_KVM_PRIVATE_MEMATTR_VM, so kvm_gmem_prepare_memory_region() sets
-> KVM_MEMSLOT_GMEM_ONLY on every guest_memfd-backed memslot:
-> 
-> virt/kvm/guest_memfd.c:kvm_gmem_prepare_memory_region() {
->     ...
-> 	if (gmem_in_place_conversion || kvm_gmem_supports_mmap(inode))
-> 		slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
->     ...
-> }
-> 
-> Once kvm_slot_has_gmem(s2fd->memslot) is true,
-> kvm_memslot_is_gmem_only(s2fd->memslot) always returns true, making the rest
-> of kvm_fault_is_gmem_abort() unreachable and the helper equivalent to
-> kvm_slot_has_gmem(s2fd->memslot).
-
-Indeed it isn't reachable. All memslots are now gmem only. Which means
-this function is now simply kvm_slot_has_gmem() so I'll drop it.
-
->> +
->>  static int kvm_vm_mem_abort(const struct kvm_s2_fault_desc *s2fd)
->>  {
->>  	VM_WARN_ON_ONCE(kvm_s2_fault_is_perm(s2fd) &&
->>  			!esr_abt_is_write_fault(s2fd->esr) &&
->>  			!kvm_s2_fault_is_exec(s2fd));
->>  
->> -	if (kvm_slot_has_gmem(s2fd->memslot))
->> +	if (private_ipa_fault(s2fd->vcpu->kvm, s2fd->fault_ipa) &&
->> +	    !kvm_slot_has_gmem(s2fd->memslot))
->> +		return -EINVAL;
->> +
->> +	if (kvm_fault_is_gmem_abort(s2fd->vcpu->kvm, s2fd))
->>  		return gmem_abort(s2fd, NULL);
->>  	else
->>  		return user_mem_abort(s2fd, NULL);
-> 
-> [Severity: Low]
-> When a Realm guest faults on the private IPA alias of a non-guest_memfd
-> memslot, should kvm_vm_mem_abort() call kvm_prepare_memory_fault_exit() and
-> return -EFAULT instead of returning -EINVAL?
-
-I don't think we can actually reach this path without protected device
-support (which will come later). Exposing this to the VM as a memory
-fault doesn't seem appropriate when we don't have the kernel support for
-handling protected devices.
-
-> Returning -EINVAL leaves vcpu->run->exit_reason unpopulated and causes
-> KVM_RUN to fail with EINVAL rather than reporting KVM_EXIT_MEMORY_FAULT
-> (with KVM_MEMORY_EXIT_FLAG_PRIVATE) to userspace, and as noted above,
-> kvm_fault_is_gmem_abort() is also redundant with kvm_slot_has_gmem() on
-> arm64.
-> 
-> [ ... ]
-> 
->> @@ -3156,7 +3235,7 @@ pre_fault_bytes_consumed(gpa_t gpa, unsigned long granule_size,
->>  
->>  int kvm_arch_pre_fault_allowed(struct kvm_vcpu *vcpu)
->>  {
->> -	if (is_protected_kvm_enabled())
->> +	if (is_protected_kvm_enabled() || kvm_vm_is_realm(vcpu->kvm))
->>  		return -EOPNOTSUPP;
->>  	if (!kvm_vcpu_initialized(vcpu))
->>  		return -ENOEXEC;
-> 
-> [Severity: Medium]
-> Should kvm_vm_ioctl_check_extension() also gate KVM_CAP_PRE_FAULT_MEMORY on
-> !kvm_vm_is_realm(kvm)?
-> 
-> kvm_arch_pre_fault_allowed() rejects KVM_PRE_FAULT_MEMORY on Realm VMs with
-> -EOPNOTSUPP, but kvm_vm_ioctl_check_extension() in arch/arm64/kvm/arm.c
-> still advertises KVM_CAP_PRE_FAULT_MEMORY as supported when queried on a
-> Realm VM file descriptor.
-
-False positive. kvm_realm_ext_allowed() already prevents
-kvm_vm_ioctl_check_extension() returning 1 for a realm VM.
-
->> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
->> index 5aa34d68de595..682ed7005d579 100644
->> --- a/arch/arm64/kvm/rmi.c
->> +++ b/arch/arm64/kvm/rmi.c
->> @@ -551,6 +551,241 @@ void kvm_realm_unmap_range_filter(struct kvm *kvm, unsigned long start,
->>  		realm_unmap_private_range(kvm, start, end, may_block);
->>  }
->>  
->> +static unsigned long addr_range_desc(unsigned long ipa, unsigned long phys,
->> +				     unsigned long size, unsigned long state)
->> +{
->> +	unsigned long count = 1;
->> +	unsigned long out;
->> +	int rmi_size;
->> +
->> +	for (rmi_size = KVM_PGTABLE_LAST_LEVEL; rmi_size >= 0; rmi_size--) {
->> +		unsigned long entry_size = rmi_addr_block_size_to_bytes(rmi_size);
->> +
->> +		if (size >= entry_size && IS_ALIGNED(ipa, entry_size) &&
->> +		    IS_ALIGNED(phys, entry_size))
->> +			break;
->> +	}
-> 
-> [Severity: Medium]
-> Can addr_range_desc() select a block level above the Realm's RTT start level?
-> 
-> When a Realm VM is created with a 32..34-bit IPA range on 4KB pages,
-> get_start_level(realm) is 2 (concatenated level-2 root RTTs).  If the guest
-> faults on a 1GB-aligned shared memslot backed by a 1GB hugetlbfs VMA,
-> kvm_s2_resolve_vma_size() sets vma_pagesize to PUD_SIZE (1GB) and
-> addr_range_desc() picks rmi_size = 2 (RTT level 1).  In
-> realm_map_unprotected(), req_level is then 1, which is above the root RTT
-> level 2, causing rmi_rtt_unprot_map() to fail until retries are exhausted
-> and terminating the fault with -ENXIO.
-
-Valid point - I'll change the for loop to:
-
-	for (rmi_size = KVM_PGTABLE_LAST_LEVEL - get_start_level(realm);
-	     rmi_size >= 0; rmi_size--) {
-
->> +
->> +	if (rmi_size == 0) {
->> +		/*
->> +		 * Stop at the next block boundary so that a later iteration can
->> +		 * use a larger mapping when both addresses are aligned.
->> +		 */
->> +		count = MIN(size >> PAGE_SHIFT, PTRS_PER_PTE - 1);
->> +		count = min(count, (PMD_SIZE - (ipa & (PMD_SIZE - 1))) >> PAGE_SHIFT);
->> +		count = min(count, (PMD_SIZE - (phys & (PMD_SIZE - 1))) >> PAGE_SHIFT);
->> +	}
->> +
->> +	WARN_ON(phys & ~PAGE_MASK);
->> +
->> +	out = FIELD_PREP(RMI_ADDR_RANGE_BLOCK_SIZE_MASK, rmi_size) |
->> +	      FIELD_PREP(RMI_ADDR_RANGE_COUNT_MASK, count) |
->> +	      FIELD_PREP(RMI_ADDR_RANGE_STATE_MASK, state);
->> +	out |= phys & PAGE_MASK;
->> +
->> +	return out;
->> +}
->> +
->> +static int realm_map_protected(struct kvm *kvm,
->> +			       unsigned long ipa,
->> +			       kvm_pfn_t pfn,
->> +			       unsigned long map_size,
->> +			       struct kvm_mmu_memory_cache *memcache)
->> +{
-> 
-> [ ... ]
-> 
->> +	while (ipa < ipa_top) {
->> +		unsigned long flags = RMI_ADDR_TYPE_SINGLE;
->> +		unsigned long range_desc = addr_range_desc(ipa, phys, ipa_top - ipa,
->> +							   RMI_OP_MEM_DELEGATED);
->> +		unsigned long out_top;
->> +
->> +		ret = rmi_rtt_data_map(rd, ipa, ipa_top, flags, range_desc,
->> +				       &out_top);
->> +		if (ret < 0)
->> +			goto err_undelegate;
->> +
->> +		if (RMI_RESULT_STATUS(ret) == RMI_ERROR_RTT) {
->> +			/* Create missing RTTs and retry */
->> +			int level = RMI_RESULT_DATA_LEVEL(ret);
->> +
->> +			if (WARN_ON(level >= KVM_PGTABLE_LAST_LEVEL))
->> +				goto err_undelegate;
->> +			ret = realm_create_rtt_levels(realm, ipa, level,
->> +						      level + 1,
->> +						      memcache);
->> +			if (ret)
->> +				goto err_undelegate;
->> +
->> +			continue;
->> +		}
->> +
->> +		if (WARN_ON(ret))
->> +			goto err_undelegate;
-> 
-> [Severity: Medium]
-> Can userspace or a Realm guest trigger WARN_ON(level >=
-> KVM_PGTABLE_LAST_LEVEL) and WARN_ON(ret) in realm_map_protected()?
-> 
-> If userspace punches a hole in guest_memfd on an already-mapped protected
-> page, realm_unmap_private_range() unmaps the page via rmi_rtt_data_unmap()
-> (leaving the level-3 RTT entry in the DESTROYED state) and undelegates the
-> folio while the guest_memfd range remains private.  When a vCPU faults on
-> that GPA again, gmem_abort() allocates a fresh undelegated folio and
-> realm_map_protected() delegates it, but rmi_rtt_data_map() fails with
-> RMI_ERROR_RTT at level 3 (or if the guest has not initialized RIPAS to RAM),
-> hitting WARN_ON(level >= KVM_PGTABLE_LAST_LEVEL).  Similarly, any non-RTT
-> status such as RMI_BLOCKED hits WARN_ON(ret).
-
-If the guest hasn't reinitialized to RIPAS_RAM then the RMM wouldn't
-allow this. A realm guest hitting DESTROYED is fatal for the guest.
-
-> In addition, unlike realm_map_unprotected(), realm_map_protected() passes
-> ipa_top instead of call_top to rmi_rtt_data_map(), checks
-> KVM_PGTABLE_LAST_LEVEL and passes level + 1 instead of req_level to
-> realm_create_rtt_levels(), and does not bound retries.  If map_size >
-> PAGE_SIZE is used, addr_range_desc() can describe a sub-range smaller than
-> ipa_top - ipa (failing with RMI_ERROR_INPUT) or a block mapping where a
-> child RTT at level + 1 already exists, causing realm_create_rtt_levels() to
-> return 0 on RMI_ERROR_RTT and spin forever under write_lock(&kvm->mmu_lock).
-
-That might well be valid though. I'll do the call_top dance here too.
-
-Steve
-
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
