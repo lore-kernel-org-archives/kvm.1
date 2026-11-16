@@ -1,65 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794847825;
-	b=ddqSEPdDaTlHMWyFb/ILXLcgMzrVOgvuvV1SBKXHqCfmKIsI2qd8aXhA300i7wm98uZL
-	 rezzlOEN9MImc++6RxcRJDFo9g0MAqB5LHKTeLQX/r8LyhDbjLCBhVi9KmcLif9/EPmsL
-	 kgC8e/hK4X589/7RnUEmYv+kOypYubWVXMofjMDDWVheAZwx0USl047oEj05rEp4cc0H/
-	 zKzrvDyfTBRPE7aSlmCtW/YZc21ZQL1dZ0OPICcYf7+ROcU7bsox1Jqx1wzWh595V7JMP
-	 /KqSsMSVtbnzPR7HTXRGxz3dKFb/E5aL1qLlhQSjYNm7fvNtVmAsKWfrKZWRS3LcxZA==
+	t=1794847830;
+	b=Q80kJUgW45KwNvGZr3eijvGJQ/gt5eRKTLqQf2vCJqioZIE+yO7wJrq3csdu/CFRcCKf
+	 4qOQAVHsdsbtftwhp7T1PZlx+wQCNZGwMfVmk4qMvwsAxMpkpL0OcG+890GvH53uH11oN
+	 4QmQ+yekZZKYbdAxl3N3pfe6Yc4JjGgclnuT9Rnz+dyBhV5juUeu6BrcbAjzvVS09WAYv
+	 cFtyp94l8ivTopUYDXPE4X6vHvFatyhGbxouZA03PIAxTFr3uXcjfYio67aHueis0PM4w
+	 YJzdZbQUUTdqkc1IFFiGiVKl29HttWtayqfIQGLjWbLE6jaAeB4VfyZoemOE8sqSHxw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794847825;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794847830;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=ekrPifKeZKSKlAlu0PgB8G/oDkp8oZ++mIkvY8WR1Xw=;
-	b=Vq68ON5rh81aW/rb/kcJbz77bSHq9QpLnxhuqIWHqWVjeNcRxNKwAKulNxIMh0E/0Nww
-	 YiaDqU4xb+RVRMoHjXMDQmLUMouwu1fym2KhuXaOoY8lfYIlYLcNQmGW2vg5Uoly3lESj
-	 oiO7JBJELezVifux4m9MWt0lrc4obbJ9krCNMC6uNk7Kw/xTrshxcoqTVh7tMAAzo6qPy
-	 ftufgaMSsI3flDNZrTXScGrL36gPSGB0SQHlxisIDL7hgY7MyH8dksI98izzGl9efzPwP
-	 BVUNSvf0Dv6nK6vo77wDoJcUvTC8qGkBawTO7qdFBNGTYVQAPV8BqmQCUgd/T3b76ig==
+	bh=JSlihkLJpIlxY9tcrA9GhmKKT3bZReqpBGh+tfoa3wk=;
+	b=lrCkbbWozOZYruG1Sv8SdCIrOnezNyZHBG3cGX9U2hRvUsSopLgZsf5ebecFCzjN+7qL
+	 YNaPOZ5mbYBdDxISH/cbaSvCuybU1ZoNtnM5ALEeJxWGbWNOmaxVduENbw/XqwIMwpN5Q
+	 3aRY+bkBjP/Mplvn7OKzp+mwlryTEtzrsLSpHYbc9EtCbCv2UESrDuMpU9SpJC7HI9+6g
+	 dXqxYIeujQOZxqL1x5jOSPEcXqCFG8yi6GeItMWPSXG/SViWtpnssHQV9OuT7qeiagyBr
+	 qQSVJkx+yG23bjYlxVUTYHbwvdJLuBvSRZmx0mPbHtVa2Tyk94ynvo5t/H1vNbq17kQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="ZCQ/JGdG";
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fMvylNuh;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D02606A31C
-	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 16:50:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8D02606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E35D606A322
+	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 16:50:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3E35D606A322
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZCQ/JGdG
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fMvylNuh
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794847823;
+	s=mimecast20190719; t=1794847829;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ekrPifKeZKSKlAlu0PgB8G/oDkp8oZ++mIkvY8WR1Xw=;
-	b=ZCQ/JGdG0eYVOqimeDz5JRNgNbm+Mx7oU31bnK60yCGupeTAbv4xQC7oaLsKWvLhVRGz/p
-	Vx4kn2TZuEk/v1U18Hco00QPFE8M15mWfJsdkRgS0y416UXXUgoe2Oznz4tTQG6iQmRnFD
-	n0gFa0GpBRN2ngbES8QR3RUrSG5gSLk=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=JSlihkLJpIlxY9tcrA9GhmKKT3bZReqpBGh+tfoa3wk=;
+	b=fMvylNuhDupoFJ58NGCEJkDMJeSqU7oTsZIfshB5eYx8OmxcpeRH5JxIt8i6ys+FWUBw2G
+	d49zdNgXdWCP3jU7Xyp3YnilOEQqqsh9q6YPNNvy6qJf8Bxmg/yGZmPO9+KQ9G8qc3wLrG
+	tFxOjBZwjoTvX/aDmqS6/p76Ofolj7Y=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-627-8lYezrWfP5qJWvLzQ-03nA-1; Mon,
- 16 Nov 2026 11:50:22 -0500
-X-MC-Unique: 8lYezrWfP5qJWvLzQ-03nA-1
-X-Mimecast-MFC-AGG-ID: 8lYezrWfP5qJWvLzQ-03nA_1794847818
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-yGqqOj_WOveyFYXSrH9_ZA-1; Mon,
+ 16 Nov 2026 11:50:24 -0500
+X-MC-Unique: yGqqOj_WOveyFYXSrH9_ZA-1
+X-Mimecast-MFC-AGG-ID: yGqqOj_WOveyFYXSrH9_ZA_1794847822
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 96FF919560B9;
-	Mon, 16 Nov 2026 16:50:17 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B798B180055B;
+	Mon, 16 Nov 2026 16:50:21 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C7C59195B3C9;
-	Mon, 16 Nov 2026 16:50:11 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 007FE195B3C8;
+	Mon, 16 Nov 2026 16:50:17 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -80,9 +80,9 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
 	Marcelo Tosatti <mtosatti@redhat.com>,
 	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
 	John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 2/7] debug/mem: add tracing to qemu_vname_vma()
-Date: Mon, 16 Nov 2026 11:49:57 -0500
-Message-ID: <20261116165002.30939-3-jsnow@redhat.com>
+Subject: [PATCH v2 3/7] debug/mem: name <reserved> regions in mmap-alloc
+Date: Mon, 16 Nov 2026 11:49:58 -0500
+Message-ID: <20261116165002.30939-4-jsnow@redhat.com>
 In-Reply-To: <20261116165002.30939-1-jsnow@redhat.com>
 References: <20261116165002.30939-1-jsnow@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
@@ -98,56 +98,47 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
+For mmap memory reserved by QEMU, give it the name "<reserved>". This
+will show up in maps output as "anon: qemu: <reserved>".
+
 Signed-off-by: John Snow <jsnow@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- util/mmap-vma.c   | 6 +++++-
- util/trace-events | 3 +++
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ util/mmap-alloc.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/util/mmap-vma.c b/util/mmap-vma.c
-index 7a50965d496..46ea98f1134 100644
---- a/util/mmap-vma.c
-+++ b/util/mmap-vma.c
-@@ -7,6 +7,7 @@
-  */
- #include "qemu/mmap-vma.h"
- #include "qemu/osdep.h"
-+#include "trace.h"
+diff --git a/util/mmap-alloc.c b/util/mmap-alloc.c
+index ed14f9c64de..2133b2c9bda 100644
+--- a/util/mmap-alloc.c
++++ b/util/mmap-alloc.c
+@@ -22,6 +22,7 @@
+ #include "qemu/host-utils.h"
+ #include "qemu/cutils.h"
+ #include "qemu/error-report.h"
++#include "qemu/mmap-vma.h"
  
- #include <errno.h>
- #include <stddef.h>
-@@ -36,6 +37,7 @@ static int qemu_vname_vma(void *ptr, size_t sz, const char *fmt, va_list args)
-     int rc = 0;
+ #define HUGETLBFS_MAGIC       0x958458f6
  
- #if defined(PR_SET_VMA_ANON_NAME)
-+    int err;
-     char strbuf[VMA_MAXLEN];
+@@ -152,6 +153,7 @@ static bool map_noreserve_effective(int fd, uint32_t qemu_map_flags)
+ static void *mmap_reserve(size_t size, int fd)
+ {
+     int flags = MAP_PRIVATE;
++    void *ptr;
  
-     assert(sizeof(VMA_PREFIX) < sizeof(strbuf));
-@@ -49,8 +51,10 @@ static int qemu_vname_vma(void *ptr, size_t sz, const char *fmt, va_list args)
-     }
- 
-     rc = prctl(PR_SET_VMA, PR_SET_VMA_ANON_NAME, ptr, sz, strbuf);
-+    err = errno;
-+    trace_qemu_vname_vma(strbuf, ptr, sz, rc, err);
-     if (rc) {
--        return -errno;
-+        return -err;
-     }
+ #if defined(__powerpc64__) && defined(__linux__)
+     /*
+@@ -174,7 +176,10 @@ static void *mmap_reserve(size_t size, int fd)
+     flags |= MAP_ANONYMOUS;
  #endif
  
-diff --git a/util/trace-events b/util/trace-events
-index df549646d12..5ffc6cd205c 100644
---- a/util/trace-events
-+++ b/util/trace-events
-@@ -117,3 +117,6 @@ module_lookup_object_type(const char *name) "name %s"
- 
- # datadir.c
- load_file(const char *name, const char *path) "name %s location %s"
+-    return mmap(0, size, PROT_NONE, flags, fd, 0);
++    ptr = mmap(0, size, PROT_NONE, flags, fd, 0);
++    qemu_name_vma(ptr, size, "<reserved>");
 +
-+# mmap-vma.c
-+qemu_vname_vma(const char *name, void *addr, size_t sz, int rc, int err) "name %s addr %p size %zu: rc %i errno %i"
++    return ptr;
+ }
+ 
+ /*
 -- 
 2.56.1
 
