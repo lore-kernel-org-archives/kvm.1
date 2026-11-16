@@ -1,90 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794847858;
-	b=cki22/ANuvhpaM+qv7JwMGJ7u8XuJh71WU/FMbiI/nIH8/+OBFazkolfv2sG6ChtTcUo
-	 rDWsp5QJekxYBxPnyMeT3Jo2odyJptLAai61EG1eMGqLNMVCHGc/Mkk+8Kr9ZyHBB2Tmj
-	 ytv6g1e/cviq/TTLQGV4Q+VY/t/pOTjUQPnrK82ROHn+7vUn3hnRMZvBbFIpTbi61mhqU
-	 seybkhKyGTsktrCqT5p/jJMB1oXu+zozLpYjIYw7g4PuZkXi3tL9Cpfwtpn8m0rfpkYim
-	 x0PpiYUY0rjL6OjWExp7eBv6d0syobx+tgzOCxhUTdKr00qb+QnN917X6CjCwJ3PGZw==
+	t=1794848934;
+	b=cGtd8KZLGzp/ThQSAs3Hxjr95IeUpRP2pVF9hQN39HCPfQaB2hYiGQ1AoSuKUPWw+u0v
+	 FtITIruTxlFXPp6kFizLHOa4C6y15HlLW4JgNWvMe/G5mKI9JacF6osGs/NGYBKoiMtU1
+	 dmvwEqHLmewTzM6FLGfT5XEQJcUonlBUBMhtoe1YvZTXfv6+6DArxU7Or1Jsom+7vGT02
+	 GWdoKrhPxGD4wUggEnuf+nEcMHXoq0XwrrvpD8X83/bnWVjMTApRCOvd+RKqMb94WrHYK
+	 9J5AJixv6039inq7UqzUpMnxBy8rVgwOKsGpITpy5w7IY72Z7bDnEEIgMQfMm26DojA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794847858;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=Jp0mGo3e+aoHROpQxWmlVJQlrDv/FWEXONRrD+RSbRk=;
-	b=GMvKCFRpd3/CtGBdlKBieREVCjWurHyLoTDjm9IV1u+x47FigDKSVHYaN5ZDj9zOYdLx
-	 oBQbFMwJutU8GJIHKn3alS3i0ATsoBDSoNbf2q7f9cEIg1Rpc+zmgjsYxHwtWjm37Cq2M
-	 gAQtY6dtajPhXKNDOtTBh66uyCx/K9q2URK1WqfVCW9z+Aggf7IoYWrMMHgc80dRyxYGv
-	 y+2J351MV7TudE1DK0QYQ2XPTS4ahl3XyBqRcoJclaVzreHghHLWnKkObyYxfyrkMt7O4
-	 EGsGuila6Tt3iiMQNnMv/SHceWy4vljzn1rMxB/EKKhHabhytwJsrwcCtbVdomy4mjg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794848934;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=q42OkKb4bgPRqVKAk9ZgiGB7sUxY3YG8JGtLgs56q8g=;
+	b=0maNkTGnmMdX47osHTc7c/bXnyJbNYyyrefMNGoMUWnHNl/SKvZbVkWYCYVgKPzX4AP1
+	 Ja7rEc0fJpQM52+liKhDmdXvTvWw2IX18HpTBJCfOcL7CyFAvEsGUUsfZjFHx4t9X6U+E
+	 Be/pre/gcCSeZFVs4Xixyoj+tQbsd0SUDc5S8p4mPM0Igj+xMCNAwYyVl/KU5+118rLMu
+	 VKHARDBBwPRB5o5aGpBEKB2urOzJSg1Vz25gBgXGjlnH06ltRGx+7CibIn4BgCrMtG1uc
+	 YRCM3KpWKe0C7nvY2KMSTNhPxSHzGN/ql1ru50+bejovE6Mj7djpyfaw88GtTpi4TqA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DfpBCFhW;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PlDGmRZq;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C313606A31C
-	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 16:50:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0C313606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67CB606A31C;
+	Mon, 16 Nov 2026 17:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DfpBCFhW
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794847856;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Jp0mGo3e+aoHROpQxWmlVJQlrDv/FWEXONRrD+RSbRk=;
-	b=DfpBCFhWTlK0KbrW1pemVxsTRIITwCJbharE74+DjuHGYVqlpac66pQqBjq8yVr3+INegT
-	i1kHLDzq8TNsjzYuuUORb+W8fa9jfNskPB49lt2XbPyScK6MTxt2BWqxEKO1URgxKxwVXG
-	HjN4dtDREy6XLLMeRZ8TT9eyC2+9ICw=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-620-Xt4MFfkuMampiktxB2dtPg-1; Mon,
- 16 Nov 2026 11:50:50 -0500
-X-MC-Unique: Xt4MFfkuMampiktxB2dtPg-1
-X-Mimecast-MFC-AGG-ID: Xt4MFfkuMampiktxB2dtPg_1794847838
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EE0C1195604C;
-	Mon, 16 Nov 2026 16:50:37 +0000 (UTC)
-Received: from jsnow-thinkpadp16vgen1.westford.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A4884195B3C7;
-	Mon, 16 Nov 2026 16:50:34 +0000 (UTC)
-From: John Snow <jsnow@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	kvm@vger.kernel.org,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Fabiano Rosas <farosas@suse.de>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-	Stefan Weil <sw@weilnetz.de>,
-	Peter Xu <peterx@redhat.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>,
-	David Gibson <david@gibson.dropbear.id.au>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
-	John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 7/7] debug/mem: HACK add qemu_name_buffer
-Date: Mon, 16 Nov 2026 11:50:02 -0500
-Message-ID: <20261116165002.30939-8-jsnow@redhat.com>
-In-Reply-To: <20261116165002.30939-1-jsnow@redhat.com>
-References: <20261116165002.30939-1-jsnow@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PlDGmRZq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8591F000CA;
+	Mon, 16 Nov 2026 17:08:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794848934;
+	bh=q42OkKb4bgPRqVKAk9ZgiGB7sUxY3YG8JGtLgs56q8g=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=PlDGmRZqo0pcsqcmjVWE2yH+0fLzm0ZR5ZgTTGwHsswwiJMeE8GbLWIV5zVnOZ3SC
+	 g0ZfvenyNc5L7Okn7mXOjmxiLhuWIcxblIbAEKi4ClndOAf7hL8GhmAbZQfWV0bdUK
+	 16PSdonCdDYG1lyerVpAOart9vII5SqN2k7dC0p1uq1+AIAVZqVRZ5ze8e8K/ZOmvG
+	 YuEs8vwflQbVIzR7yDzwzoAxZf984k8A7/Hs3e+F7KpnlTSG37dm79Ph9GtPOVUPhR
+	 hlMux1uItMkUli6A2FHs18xnXPHWVcGxXdaRldYv9w++1VlykhRN+vmqSoFUp4/DWg
+	 fvUaqjcvUF2qA==
+Message-ID: <sashiko-outbox-217410@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 05/11] KVM: arm64: CCA: Tear down RTTs
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Steven Price" <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>
+In-Reply-To: <20261116164358.142785-6-steven.price@arm.com>
+References: <20261116164358.142785-1-steven.price@arm.com>
+ <20261116164358.142785-6-steven.price@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 16 Nov 2026 17:08:53 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -93,195 +59,248 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-This is a hack to allow us to name malloc'd buffers that are backed by
-anonymous mmap allocations.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issues to consider:
+- [High] KVM: arm64: unclamped stage-2 levels in get_start_level() on
+  64K pages
+- [Medium] KVM: arm64: CCA: unlocked kvm_realm_is_created() check in
+  kvm_uninit_stage2_mmu()
+- [Low] KVM: arm64: mix of guard() and goto cleanup in
+  kvm_destroy_realm()
+- [Low] KVM: arm64: possible skipped parent retry in
+  realm_tear_down_rtt_level()
+--
 
-Quite useful in my debugging, probably not quite appropriate for
-upstream unless we can figure out a more robust method for identifying
-when we get an mmap'd page from malloc and adjusting the pointer
-offset accordingly - I am currently subtracting a fixed 16 bytes
-because that "works on my system", and I have no clue if that's
-appropriate everywhere or not.
+commit 80a462fb8b46e04c72060d069b1296caf72d83ff
+Author: Steven Price <steven.price@arm.com>
 
-At least this way, my trick is published to the list for posterity.
+KVM: arm64: CCA: Tear down RTTs
 
-Signed-off-by: John Snow <jsnow@redhat.com>
----
- include/qemu/bitmap.h   |  6 ++++++
- include/qemu/mmap-vma.h |  3 +++
- hw/core/loader.c        |  3 +++
- hw/i386/x86-common.c    |  3 +++
- system/device_tree.c    |  2 ++
- system/physmem.c        |  8 ++++++--
- util/mmap-vma.c         | 23 +++++++++++++++++++++++
- 7 files changed, 46 insertions(+), 2 deletions(-)
+This commit adds stage-2 unmapping and Realm Translation Table (RTT)
+teardown for Arm CCA Realms during stage-2 MMU uninitialization and final
+Realm destruction.
 
-diff --git a/include/qemu/bitmap.h b/include/qemu/bitmap.h
-index 0044333cb51..6681c87737f 100644
---- a/include/qemu/bitmap.h
-+++ b/include/qemu/bitmap.h
-@@ -104,6 +104,12 @@ static inline unsigned long *bitmap_try_new(long nbits)
-     return g_try_new0(unsigned long, nelem);
- }
- 
-+static inline size_t bitmap_size(long nbits)
-+{
-+    long nelem = BITS_TO_LONGS(nbits);
-+    return sizeof(unsigned long) * nelem;
-+}
-+
- static inline unsigned long *bitmap_new(long nbits)
- {
-     long nelem = BITS_TO_LONGS(nbits);
-diff --git a/include/qemu/mmap-vma.h b/include/qemu/mmap-vma.h
-index 763ea5a5cab..4646657022c 100644
---- a/include/qemu/mmap-vma.h
-+++ b/include/qemu/mmap-vma.h
-@@ -15,4 +15,7 @@
- int qemu_name_vma(void *ptr, size_t sz, const char *fmt, ...)
-     G_GNUC_PRINTF(3, 4);
- 
-+int qemu_name_buffer(void *ptr, size_t sz, const char *fmt, ...)
-+    G_GNUC_PRINTF(3, 4);
-+
- #endif
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index 5cbfba0a86d..cc0e0d6979a 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -45,6 +45,7 @@
- #include "qemu/osdep.h"
- #include "qemu/datadir.h"
- #include "qemu/error-report.h"
-+#include "qemu/mmap-vma.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-machine.h"
- #include "qapi/type-helpers.h"
-@@ -1111,6 +1112,8 @@ ssize_t rom_add_file(const char *file, const char *fw_dir,
-         goto err;
-     }
- 
-+    qemu_name_buffer(rom->data, size, "%s", file);
-+
-     if (fw_dir) {
-         rom->fw_dir  = g_strdup(fw_dir);
-         rom->fw_file = g_strdup(file);
-diff --git a/hw/i386/x86-common.c b/hw/i386/x86-common.c
-index dcd4fa8eb79..608c4cf4202 100644
---- a/hw/i386/x86-common.c
-+++ b/hw/i386/x86-common.c
-@@ -25,6 +25,7 @@
- #include "qemu/cutils.h"
- #include "qemu/units.h"
- #include "qemu/datadir.h"
-+#include "qemu/mmap-vma.h"
- #include "qapi/error.h"
- #include "system/numa.h"
- #include "system/system.h"
-@@ -914,6 +915,8 @@ void x86_load_linux(X86MachineState *x86ms,
- 
-     setup  = g_malloc(setup_size);
-     kernel = g_malloc(kernel_size);
-+    qemu_name_buffer(kernel, kernel_size, "%s", kernel_filename);
-+
-     fseek(f, 0, SEEK_SET);
-     if (fread(setup, 1, setup_size, f) != setup_size) {
-         fprintf(stderr, "fread() failed\n");
-diff --git a/system/device_tree.c b/system/device_tree.c
-index 48365435ea0..816874fb299 100644
---- a/system/device_tree.c
-+++ b/system/device_tree.c
-@@ -27,6 +27,7 @@
- #include "hw/core/loader.h"
- #include "hw/core/boards.h"
- #include "qemu/config-file.h"
-+#include "qemu/mmap-vma.h"
- #include "qapi/qapi-commands-machine.h"
- #include "qobject/qdict.h"
- 
-@@ -41,6 +42,7 @@ void *create_device_tree(int *sizep)
- 
-     *sizep = FDT_MAX_SIZE;
-     fdt = g_malloc0(FDT_MAX_SIZE);
-+    qemu_name_buffer(fdt, FDT_MAX_SIZE, "device_tree");
-     ret = fdt_create(fdt, FDT_MAX_SIZE);
-     if (ret < 0) {
-         goto fail;
-diff --git a/system/physmem.c b/system/physmem.c
-index 202e3a5cd00..dc0e9540919 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -26,6 +26,7 @@
- #include "qemu/hbitmap.h"
- #include "qemu/madvise.h"
- #include "qemu/lockable.h"
-+#include "qemu/mmap-vma.h"
- 
- #ifdef CONFIG_TCG
- #include "accel/tcg/cpu-ops.h"
-@@ -2105,7 +2106,7 @@ void qemu_ram_msync(RAMBlock *block, ram_addr_t start, ram_addr_t length)
- }
- 
- /* Called with ram_list.mutex held */
--static void dirty_memory_extend(ram_addr_t new_ram_size)
-+static void dirty_memory_extend(ram_addr_t new_ram_size, const char *nickname)
- {
-     unsigned int old_num_blocks = ram_list.num_dirty_blocks;
-     unsigned int new_num_blocks = DIV_ROUND_UP(new_ram_size,
-@@ -2133,6 +2134,9 @@ static void dirty_memory_extend(ram_addr_t new_ram_size)
- 
-         for (j = old_num_blocks; j < new_num_blocks; j++) {
-             new_blocks->blocks[j] = bitmap_new(DIRTY_MEMORY_BLOCK_SIZE);
-+            qemu_name_buffer(new_blocks->blocks[j],
-+                             bitmap_size(DIRTY_MEMORY_BLOCK_SIZE),
-+                             "bitmap<%s>", nickname);
-         }
- 
-         qatomic_rcu_set(&ram_list.dirty_memory[i], new_blocks);
-@@ -2254,7 +2258,7 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-     }
- 
-     ram_size = (new_block->offset + new_block->max_length) >> TARGET_PAGE_BITS;
--    dirty_memory_extend(ram_size);
-+    dirty_memory_extend(ram_size, new_block->mr->name);
-     /* Keep the list sorted from biggest to smallest block.  Unlike QTAILQ,
-      * QLIST (which has an RCU-friendly variant) does not have insertion at
-      * tail, so save the last element in last_block.
-diff --git a/util/mmap-vma.c b/util/mmap-vma.c
-index 46ea98f1134..083400a9c2e 100644
---- a/util/mmap-vma.c
-+++ b/util/mmap-vma.c
-@@ -73,3 +73,26 @@ int qemu_name_vma(void *ptr, size_t sz, const char *fmt, ...)
- 
-     return rc;
- }
-+
-+G_GNUC_PRINTF(3, 4)
-+int qemu_name_buffer(void *ptr, size_t sz, const char *fmt, ...)
-+{
-+    /*
-+     * this is hacky as hell, but ptmalloc will occasionally use
-+     * mmap() for large buffers - when it does so, you get a pointer
-+     * to 16 bytes after the actual mmap. This function compensates
-+     * for that to guess at what the real mmap allocation was.
-+     *
-+     * This can be used unconditionally whether or not the allocation
-+     * was actually mmap'd - if it wasn't, this just fails. Yes, it's
-+     * still very ugly.
-+     */
-+    va_list args;
-+    size_t pagesz = qemu_real_host_page_size();
-+
-+    ptr = ptr - 0x10;
-+    sz = ROUND_UP(sz + 0x10, pagesz);
-+
-+    va_start(args, fmt);
-+    return qemu_vname_vma(ptr, sz, fmt, args);
-+}
--- 
-2.56.1
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index ac72db3d4505f..9baf2352d2a8f 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -1145,9 +1145,25 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kv=
+m_s2_mmu *mmu, unsigned long t
+>  	return err;
+>  }
+> =20
+> +static void kvm_realm_uninit_stage2(struct kvm_s2_mmu *mmu)
+> +{
+> +	struct kvm *kvm =3D kvm_s2_mmu_to_kvm(mmu);
+> +
+> +	mutex_lock(&kvm->arch.config_lock);
+> +	if (kvm_realm_state(kvm) =3D=3D REALM_STATE_NEW ||
+> +	    kvm_realm_state(kvm) =3D=3D REALM_STATE_ACTIVE) {
+> +		kvm_set_realm_state(kvm, REALM_STATE_DYING);
+> +		WARN_ON(kvm_realm_teardown_stage2(kvm));
+> +	}
+> +	mutex_unlock(&kvm->arch.config_lock);
+> +}
+> +
+>  void kvm_uninit_stage2_mmu(struct kvm *kvm)
+>  {
+> -	kvm_free_stage2_pgd(&kvm->arch.mmu);
+> +	if (kvm_realm_is_created(kvm))
+> +		kvm_realm_uninit_stage2(&kvm->arch.mmu);
+> +	else
+> +		kvm_free_stage2_pgd(&kvm->arch.mmu);
+>  	kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
+>  }
 
+[Severity: Medium]
+Can kvm_uninit_stage2_mmu() race with Realm creation by checking
+kvm_realm_is_created() outside kvm->arch.config_lock?
+
+If kvm_mmu_notifier_release() -> kvm_arch_flush_shadow_all() runs before
+or concurrently with Realm creation, kvm_uninit_stage2_mmu() takes the
+else branch without holding config_lock, freeing mmu->pgt and clearing
+mmu->pgd_phys while leaving realm.state at REALM_STATE_NONE.  Checking
+kvm_vm_is_realm(kvm) here and handling all realm.state transitions inside
+kvm_realm_uninit_stage2() under config_lock (including moving
+REALM_STATE_NONE to REALM_STATE_DEAD and freeing the PGD) would avoid the
+race.
+
+> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+> index 57f59b618a96e..74b89da4e8015 100644
+> --- a/arch/arm64/kvm/rmi.c
+> +++ b/arch/arm64/kvm/rmi.c
+> @@ -16,22 +16,213 @@ u32 kvm_rmm_ipa_limit(void)
+>  	return u64_get_bits(rmi_feat_reg(0), RMI_FEATURE_REGISTER_0_S2SZ);
+>  }
+> =20
+> +static int get_start_level(struct realm *realm)
+> +{
+> +	/*
+> +	 * kvm_init_ipa_range() enforces a minimum of 32 IPA bits
+> +	 * (ARM64_MIN_PARANGE_BITS).
+> +	 */
+> +	return 4 - stage2_pgtable_levels(realm->ia_bits);
+> +}
+
+[Severity: High]
+Does get_start_level() return 3 instead of 2 for a 32-bit or 33-bit IPA
+Realm on CONFIG_ARM64_64K_PAGES?
+
+stage2_pgtable_levels(ipa) evaluates ARM64_HW_PGTABLE_LEVELS((ipa) - 4),
+which is 1 for 32 or 33 IPA bits with 64K pages, whereas kvm_get_vtcr()
+clamps the stage-2 levels to at least 2:
+
+arch/arm64/kvm/hyp/pgtable.c:kvm_get_vtcr() {
+    ...
+	lvls =3D stage2_pgtable_levels(phys_shift);
+	if (lvls < 2)
+		lvls =3D 2;
+    ...
+}
+
+When get_start_level() returns 3, realm_tear_down_rtt_range() calls
+realm_tear_down_rtt_level() with level =3D 4 (> KVM_PGTABLE_LAST_LEVEL),
+triggering WARN_ON() and returning -EINVAL, which causes
+kvm_destroy_realm() to abort and leak the Realm Descriptor, RTT granules
+and stage-2 PGD pages.
+
+[ ... ]
+
+> +static int realm_tear_down_rtt_level(struct realm *realm, int level,
+> +				     unsigned long start, unsigned long end)
+> +{
+> +	ssize_t map_size;
+> +	unsigned long addr, next_addr;
+> +
+> +	if (WARN_ON(level > KVM_PGTABLE_LAST_LEVEL))
+> +		return -EINVAL;
+> +
+> +	map_size =3D kvm_granule_size(level - 1);
+> +	if (WARN_ON(!IS_ALIGNED(start, map_size)))
+> +		return -EINVAL;
+> +
+> +	for (addr =3D start; addr < end; addr =3D next_addr) {
+> +		phys_addr_t rtt_granule;
+> +		long ret;
+> +		unsigned long align_addr =3D ALIGN(addr, map_size);
+> +
+> +		next_addr =3D ALIGN(addr + 1, map_size);
+> +
+> +		if (next_addr > end || align_addr !=3D addr) {
+> +			/*
+> +			 * The target range is smaller than what this level
+> +			 * covers, recurse deeper.
+> +			 */
+> +			ret =3D realm_tear_down_rtt_level(realm,
+> +							level + 1,
+> +							addr,
+> +							min(next_addr, end));
+> +			if (ret)
+> +				return ret;
+> +			continue;
+> +		}
+> +
+> +		ret =3D realm_rtt_destroy(realm, addr, level,
+> +					&rtt_granule, &next_addr);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		switch (RMI_RESULT_STATUS(ret)) {
+> +		case RMI_SUCCESS:
+> +			free_rtt(rtt_granule);
+> +			break;
+> +		case RMI_ERROR_RTT:
+> +			if (next_addr > addr) {
+> +				/* Missing RTT, skip */
+> +				break;
+> +			}
+> +			/*
+> +			 * We tear down the RTT range for the full IPA
+> +			 * space, after everything is unmapped. Also we
+> +			 * descend down only if we cannot tear down a
+> +			 * top level RTT. Thus RMM must be able to walk
+> +			 * to the requested level. e.g., a block mapping
+> +			 * exists at L1 or L2.
+> +			 */
+> +			if (WARN_ON(RMI_RESULT_DATA_LEVEL(ret) !=3D level))
+> +				return -EBUSY;
+
+[Severity: Low]
+This question rests on an Arm CCA RMM specification detail that could not
+be confirmed from the kernel source: when SMC_RMI_RTT_DESTROY fails with
+RMI_ERROR_RTT because the RTT at @level still has live child table
+entries, can the RMM return out_top > addr (with addr < next_addr <
+addr + map_size) if the initial entries in that RTT are non-live, or report
+RMI_RESULT_DATA_LEVEL(ret) =3D=3D level - 1?
+
+If out_top advances to the first live entry inside the RTT at @level, the
+if (next_addr > addr) check treats the RTT as missing and advances addr to
+that unaligned next_addr; the next iteration then sees align_addr !=3D addr,
+destroys the remaining child RTTs at level + 1, and continues to the next
+map_size boundary without retrying realm_rtt_destroy() on the parent RTT
+at @level, leaving it live and causing rmi_realm_destroy() to fail.  If
+instead the walk terminates at level - 1 with next_addr =3D=3D addr,
+WARN_ON(RMI_RESULT_DATA_LEVEL(ret) !=3D level) fires and aborts teardown
+with -EBUSY.
+
+[ ... ]
+
+>  void kvm_destroy_realm(struct kvm *kvm)
+>  {
+>  	struct realm *realm =3D &kvm->arch.realm;
+>  	size_t pgd_size =3D kvm_pgtable_stage2_pgd_size(kvm->arch.mmu.vtcr);
+> =20
+> +	/*
+> +	 * Serialize final RMM teardown with Realm creation and stage-2 teardow=
+n,
+> +	 * which also access Realm state under config_lock.
+> +	 */
+> +	guard(mutex)(&kvm->arch.config_lock);
+> +
+>  	if (!kvm_realm_is_created(kvm))
+>  		goto out_free_sro;
+> =20
+>  	kvm_set_realm_state(kvm, REALM_STATE_DYING);
+> =20
+> +	/*
+> +	 * REALM_DESTROY requires the realm to be non-live: all RECs must have
+> +	 * been destroyed and the root RTTs must be empty. Unmap the IPA space
+> +	 * and destroy any non-root RTTs before tearing down the RD. The root
+> +	 * RTT pages are still owned by the RMM at this point, so keep the KVM
+> +	 * pgtable alive until after REALM_DESTROY and undelegation.
+> +	 */
+> +	realm_unmap_stage2(kvm);
+> +
+>  	if (realm->rd_phys) {
+>  		phys_addr_t rd_phys =3D realm->rd_phys;
+> =20
+>  		if (WARN_ON(rmi_realm_terminate(rd_phys, realm->sro)))
+>  			goto out_free_sro;
+> =20
+> +		if (WARN_ON(realm_destroy_rtts(kvm)))
+> +			goto out_free_sro;
+> +
+>  		if (WARN_ON(rmi_realm_destroy(rd_phys, realm->sro)))
+>  			goto out_free_sro;
+>  		rmi_free_delegated_page(rd_phys);
+> @@ -44,6 +235,9 @@ void kvm_destroy_realm(struct kvm *kvm)
+> =20
+>  	kvm_set_realm_state(kvm, REALM_STATE_DEAD);
+> =20
+> +	/* Now that the realm is destroyed, free the entry-level RTTs. */
+> +	kvm_free_stage2_pgd(&kvm->arch.mmu);
+> +
+>  out_free_sro:
+>  	kfree(realm->sro);
+>  	realm->sro =3D NULL;
+
+[Severity: Low]
+This isn't a bug, but kvm_destroy_realm() mixes guard(mutex) with goto
+out_free_sro cleanup.  Using __free(kfree) for realm->sro (or explicit
+mutex_lock() and mutex_unlock()) would avoid mixing scope-based cleanup
+and goto unwinding in the same function.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261116164358.1427=
+85-1-steven.price@arm.com?part=3D5
