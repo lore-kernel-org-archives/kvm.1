@@ -1,90 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794799674;
-	b=N4Tz9I1ENNgPKxGt3015VE2UxfY0f/9tOW09vu6iTs56tphogsWlu2Y3+IErwXg0qcOu
-	 9oYaqYbTEkSmxqe9WUKv9IQqCCUR2fJ6uHsCZM5h2t0R8EbADmNeH++pwzylGLZvRViOo
-	 HcIyyV3TSYRPNvuWNqKgxOwhQZ2WwiIeHWhuQFezBdQfVqBy2unE6s0Deezw3iBAwNgav
-	 rT489kM0km5Ci1e/duJ0/R1YRV8IyyfQ98R8jiH0p+xVl5EjlIkAkMp5xjONQrjs8F/H2
-	 wgxwg0LKH/XMWJatP25n6LDvO3efKpnykif1ppsc94WL1iW15QtefgZahn67qkXh2bA==
+	t=1794799675;
+	b=dBLYoI8m4No9wHJDuACJIcI7+T9FI5v44TsmiuAzj+qZMvIezjxPXR3qD9pBCLUEJ20z
+	 8ThezaqUaVw7f1zNo65VqRjHO9yc6bXcoQIz+BVtpSZDGiH7n7hqOnA34fvpfMh3benUD
+	 1fwLP8qjvCJ4nkoq+CdfJ4RNVHeSEUasfGl5+9f5p0RGtxYOElZZut5enEpm5Ewm57Q12
+	 X+iZ5P2BAAcNPMtF9kDmZcZU/LG2Y6yAgUJ75wDCiYRzlScE1fsrMvOxu4UohfUsgPNZv
+	 nKlGDX/UgqwDXrLIMVaJxayVWvCGbcWTXFf6OIJUmpIAgwYOc1edbZhcTGbRnXlQ66Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794799674;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794799675;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:
 	 X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=oOw9FcgkKeryukGH2zABKUHn8dpCkgMG2LnWEZ8xwEo=;
-	b=3DeCE8Nn+ONxUHJ7rhUXpfI/e75kulTQ3IdP/h1jd+7tLUdNWN1UdxDwYwZhQbJcsVQ8
-	 Ewor0g80Que4avM1z5MLH4Bnp8eI7QzaB2xthPBpGHPRFUNkZUp0TBFhlVfyMc2Lze5W6
-	 oNBxi/e7jTXs1MPxZwnNeb+WBUKc8LNGCsKVkIdz5fSuwLNkap0NVE5JoFr5k94QqQqft
-	 iAvJE06CSBcI3kq+kg5Plh/LHhYU4LYvp+A7CpNt0FV2c8SsYVa6WsE6wzmUF8jFHJgQW
-	 4/3cqbuCrZDOdBksX71HaU6zF/IaqOT/H+wsfpvkt+RT7kt9vjQPMyfhhepPZPcMiVQ==
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=L5nXnVzpW/caqv+K/A2q7IBbs0VCM1fpQx93oMsAzA0=;
+	b=KJDbtwLzoo6E7Z/Z+hNMVQFofdgDibV4gGpm/ivn53tEwz/7KN+7oRfc7SXDfFv/U+AH
+	 yIfujBGtpsF2M8wKjQwJXlJ5p8oBo0CMQYoGxnu5WeXmYaA0aVQhJXvB3HD7Uc5JaAoI2
+	 i9HP/DnM/kZQWvRNCvLo5npKK1Nu7FQVVyFYWaEBmIZ36KhcDAGuudZdAZxMUKb2QF3CC
+	 XzirCrliyVLK4p4DSY8TGjX/J8z/v3cLEMGbrlvDYXGvvWQtY2tuY60l9SaVGRtQDql75
+	 TQUKnAjaItjdLcSrHt5/uc9F0bvE8Z8RBT0Zg2YvG+kx1Iq31wkj1w39Yb+5P+k/yLw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aq+Y0uTi;
-	arc=none smtp.remote-ip=209.85.216.45
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="r/QqhurX";
+	arc=none smtp.remote-ip=209.85.216.47
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7952606A880
-	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 03:27:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B7952606A880
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35EDF606A883
+	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 03:27:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 35EDF606A883
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aq+Y0uTi
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3ada4c06b7bso1493664a91.2
-        for <kvm@vger.kernel.org>; Sun, 15 Nov 2026 19:27:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=r/QqhurX
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3ada4c06b7bso1493674a91.2
+        for <kvm@vger.kernel.org>; Sun, 15 Nov 2026 19:27:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794799673; x=1795404473; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oOw9FcgkKeryukGH2zABKUHn8dpCkgMG2LnWEZ8xwEo=;
-        b=aq+Y0uTiqIfoIyopGR02S8RwhmMucgmmdGmfpJijaK+iXHz5Xs+hfDp6svj+edBbjF
-         ePzOxIag7iqNRMZ9HqcHATP5DVG3pBcJ8a44lanHUM6Plqj3ftjuS2EB74mT9Ktf5qix
-         woaSDlrbFZrZsrEJRqwXRxB/QctJRvdWIMj6qCPPlUxAKv33blJDVnN6TqWEggLvxjpT
-         d295Miludt8sPTu3EVEi4efHAKO73wSzQgp+xVJoU+SgbFcTuq6rVK7X3hqbxuFy29C8
-         wd9UmFlK5Awr7j+v2vqsUuDdf+NCBImsL/cz3V8oTnMQgn2J3yIYPV5bdOc+OoQ5Py/Y
-         Ev0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794799673; x=1795404473;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1794799674; x=1795404474; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=oOw9FcgkKeryukGH2zABKUHn8dpCkgMG2LnWEZ8xwEo=;
-        b=ifWz4hXz6nX+7TUj1PmvBDzj5Zfs5kg6A0uDcAjobNHndcTJ8E9jTssUFr44LNpRWM
-         yj3ZNS/DGdSCDy9j6mMwvQYWba/eoN7xjDpQGmVfSTe+8dUK0j6HZCNknz83ctcCSe36
-         RlQ5Zg56VPfsyhkP5ckfazJrP0w2QeLmgfwLtwLlwwdMCyHw5NJ2uq9r4xF+Fsc8PSoM
-         HDZvRWDuMBxSONExyCwSsa+MBIl9n0XuE3A0i023j5MmiHeMZPPe4CboFLIe5mFKK7uo
-         NFtE/7nm9D0lZTw+fJwKRn7g05YdCVfWu+uPvILDM2GxwrPEakYoKs11R8r1lNisR3eF
-         A3eQ==
-X-Gm-Message-State: APuU4Z/rfb787CuoaM4/ONbfAYceeBwpQhOymqo1sKk7QXRLyaj+L0wZ
-	U14AcJ3fwco7zKnOQzS6quQONWkisUAh3Fbm1Nl/BE8T5AszBX3dm3AX
-X-Gm-Gg: AYBFou2lL9Lzxw/aiLgWeA3SrMja24Yssyf/UCaxc7s6hof8eaq2sJwRUwFnSUL5nbn
-	RbCjim6g24S/DV+oZLC2/joK8oY1HVylXZgqKHcoerAuy2sEZPKeiRTe075ZMEBf3wRq/FmF9Qa
-	4psNMK1behLSmvNiNTr2X6e2/S0UpGrAxHrfuV65p74saXpur8IkGTm5y2o8tqwr8/8QpmyWmIL
-	xdQXeTGFCC4lsHTyn4B/KvOlIS6Z2hIZYvG171/uSmCUeWNE/c178AWSMcMbBejELMkbwyr52PL
-	sAg2wS/ie5W1HTKaXg+i0nrekkjnZ5CcYs55d2OolwQWWwXBa0uQPgO22n6/xFp8GbVpI/vwLnU
-	1Gx8VA4g/YUNUn7DNExEmJ4Vb1aySURw0VcsXz7QnrOwkvpi+DkmNvRJNUa7spdUemBtVJNiX/Q
-	+LMO4lU8S5HpBU45yu4aosuGeIbAVJpYZNyQayvryCYTvrNMwCRbrRR+qtF14xpQ2u1SBQyUhja
-	YaHBCJm5DhbkOdzlr0xOy2FYDH6hETeExvvip/xJ+ogDYuoICDPKLw8LYPtL/vgFO2N0C+fdOkS
-	6UVvmvdZQIV0q4E4Ai//i7T2WBKJ6hIc7ztjvzUkY4AfxtiJ2ZBSyX9NMwBDGg8B8CyP50ne
-X-Received: by 2002:a17:90b:2251:b0:3a0:7261:d58e with SMTP id 98e67ed59e1d1-3b1b0a408bamr9662417a91.22.1794799672996;
-        Sun, 15 Nov 2026 19:27:52 -0800 (PST)
+        bh=L5nXnVzpW/caqv+K/A2q7IBbs0VCM1fpQx93oMsAzA0=;
+        b=r/QqhurX7n5x3gb9cO8OuK5Wb9h2upvwBF2DI9E2gkH2rzxtjh+twQ3Dz1+oWDLB9S
+         PapHbVFBbcy0XcO/V8PoUmhU7bsxXO/PHRjQLGmtWE/ePHAHIJa1brL9/bDmnv8JvM3Y
+         rjhlE85Ccd/+mvkO8WeLO4iHCigV1Mckx/o/DzrIW0nBUoiVfbq1DXr8NlaWIn4kNN+D
+         AGxTGY2i82wqjr5v5AGJNiAQeIfEVzfjkEELovU2PIGcLylZofbjzoCYHFHFbBRDurJx
+         69qxMb77mQFNO2gx173fSjNc7Ih1Q6O0HK5W/jDHszk3JeQ8CW2WPJc97sCdOsHwtr+n
+         hdNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794799674; x=1795404474;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=L5nXnVzpW/caqv+K/A2q7IBbs0VCM1fpQx93oMsAzA0=;
+        b=bZXg48GSqX6fXacM3CF1uWZ8dPjtxbDuLfxR9g7TcEVfwRXksp9v9KGDgUvpouHiGI
+         y7Ap/beFTUmHP7fv0g9OTwrusjUt1mKQkS8dm8kb31Ic0MI7SQT1U7g5DRDEK+4GW8lN
+         eEn+9wOsyYcbqnlY1Q2PeL0mk5a7f0D73/R432CnnXZLjv8fRGuFsZCHIyLGN559x5mi
+         qfAaEQHpswd60uOdkWht8scDyV91yACOH+Ej9ANA705mHazKlMPzE7rbhMnZTJAuXbOo
+         ZpcIQOyXAqDaGmAJgBVw2tDoCsYZ/+GkVST2ay8Jaa+uJaA6S89dg20eFIektE6xI+Sj
+         /NNg==
+X-Gm-Message-State: APuU4Z/j60oSnWony4Z+Tj/aEnZmNFxaEnhQzXkm5DIjmkHSPFpEXwfM
+	L/vW7S03kN0pZtlF3T1c5wsz8i66t29n+dO7ExsWSCO2JSXodj1pri4OHGTC3Q==
+X-Gm-Gg: AYBFou3qZj5VcAEqBvLJ/V/Fq4Q1k2bo3NDYrGYwVQcxD7x/IWd06SvxoTghhFPqIn1
+	1sGPzGAzlimP9ZvTLq5NLDzpmp4UdyF4/ys10GQOF+mb46aw+KD1Uw2GME8vhMAewDVbuXYtEVk
+	fYtYh0Tg9pVtmf95yjRj/zCintl7xBsbKvb19+MteQVDx7rPQoKai7aGZAqKFhztYfKJXN+re2K
+	TEjsJIC92JHE/yzEc2+h0lXzW6QGlTMr6dtVfvj1M7y6dhLh3xN7jhDWvaH9ipRJl9yHVoXL15u
+	bwyB+MAFgFH/PRpQtgRDoX5dAcQwMUgXWwg//lkUE+OrkCfLSYBZgC9X/5KLdjUBJ+153dJc8G8
+	9sOeglNh2UXdt9RZn9zOlXGSnmgeoetfWVNqWsSFPeqBbd7fnWrn40KPn7P5Hmvfzu52qx59Mla
+	oEY0YTVkAePaOy39Q9wSXGiyWHXCK+lPB1mrk2tLP7cXgtQKxP0JQS/qyQ+y4FhkP+T/W9aPZmb
+	0Ovx3icmpxNDhnvlu/2lki8YByOZvcsX4nCXL4cq6h2RHJO8S8N8VEaNQLiiDOPzLAv+zk2U6s0
+	kAR8suW1uBtFf399yXKIqmt0I6z2P1fjvR2kdqGy8W2TC/WQj5bZXyyM6CNVaE3EO7oExbWqxQ=
+	=
+X-Received: by 2002:a17:90b:4b84:b0:3ac:ad90:7090 with SMTP id 98e67ed59e1d1-3b1b0ccf3b1mr9726976a91.67.1794799674494;
+        Sun, 15 Nov 2026 19:27:54 -0800 (PST)
 Received: from FLYINGPENG-MC2.tencent.com ([43.132.141.20])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d32ea0sm18998570a91.15.2026.11.15.19.27.51
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d32ea0sm18998570a91.15.2026.11.15.19.27.53
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 15 Nov 2026 19:27:52 -0800 (PST)
+        Sun, 15 Nov 2026 19:27:54 -0800 (PST)
 From: Peng Hao <flyingpenghao@gmail.com>
 X-Google-Original-From: Peng Hao <flyingpeng@tencent.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com
 Cc: kvm@vger.kernel.org
-Subject: [RFC PATCH 0/3] KVM: Rework how halt-polling stats and per-VM debugfs use memory
-Date: Mon, 16 Nov 2026 11:27:45 +0800
-Message-ID: <20261116032748.54582-1-flyingpeng@tencent.com>
+Subject: [RFC PATCH 1/3] KVM: Add the halt-polling time to the kvm_vcpu_wakeup tracepoint
+Date: Mon, 16 Nov 2026 11:27:46 +0800
+Message-ID: <20261116032748.54582-2-flyingpeng@tencent.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20261116032748.54582-1-flyingpeng@tencent.com>
+References: <20261116032748.54582-1-flyingpeng@tencent.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -96,48 +100,71 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series replaces the halt-polling histogram Kconfig patch, as a first
-step towards a general plan for KVM stats.
+kvm_vcpu_wakeup only reports the total halt time, which includes both the
+time spent halt-polling and the time spent blocking.  Report the
+halt-polling time as well, so that the split between polling and waiting
+can be derived from the tracepoint, e.g. to build histograms equivalent to
+the halt_poll_success_hist, halt_poll_fail_hist and halt_wait_hist stats
+with BPF.
 
-Take a VM with 8 vCPUs on x86.  Each vCPU has 1104 bytes of stats, 768 of
-which are the three halt-polling histograms, i.e. 6KiB for the VM.  The VM
-also gets ~95 debugfs entries (one file per stat, plus a directory and a few
-files per vCPU), each costing a dentry and an inode, i.e. ~70KiB, all
-duplicating the binary stats.
+Signed-off-by: Peng Hao <flyingpeng@tencent.com>
+---
+ include/trace/events/kvm.h | 16 +++++++++-------
+ virt/kvm/kvm_main.c        |  3 ++-
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-The plan:
-
- 1. Counters stay embedded in the stats structs; they're cheap and
-    monitoring wants them always on.
-
- 2. Arrays and histograms move to a separately allocated block, controlled
-    by kvm.extended_stats (default on).  The binary stats ABI doesn't change;
-    the values read as zero if the block isn't allocated.  (patch 3)
-
- 3. Debug-only data goes to tracepoints and is aggregated with BPF.  Adding
-    the halt-polling time to kvm_vcpu_wakeup is enough to rebuild the three
-    histograms.  (patch 1)
-
-In addition, kvm.per_vm_debugfs (default on) allows skipping the per-VM
-debugfs directories.  (patch 2)
-
-With patch 3, struct vcpu_vmx shrinks from 8384 to 7616 bytes and struct
-vcpu_svm from 6728 to 5968 bytes.
-
-Peng Hao (3):
-  KVM: Add the halt-polling time to the kvm_vcpu_wakeup tracepoint
-  KVM: Add a module param to disable the per-VM debugfs directories
-  KVM: Move the halt-polling histograms out of struct kvm_vcpu_stat
-
- .../admin-guide/kernel-parameters.txt         | 13 ++++
- arch/powerpc/kvm/book3s_hv.c                  | 11 ++-
- include/linux/kvm_host.h                      | 24 +++++-
- include/linux/kvm_types.h                     | 10 ++-
- include/trace/events/kvm.h                    | 16 ++--
- virt/kvm/binary_stats.c                       | 29 +++++++-
- virt/kvm/kvm_main.c                           | 73 +++++++++++++++----
- 7 files changed, 144 insertions(+), 32 deletions(-)
-
+diff --git a/include/trace/events/kvm.h b/include/trace/events/kvm.h
+index 07013f88e655..d03e3954ca37 100644
+--- a/include/trace/events/kvm.h
++++ b/include/trace/events/kvm.h
+@@ -47,24 +47,26 @@ TRACE_EVENT(kvm_userspace_exit,
+ );
+ 
+ TRACE_EVENT(kvm_vcpu_wakeup,
+-	    TP_PROTO(__u64 ns, bool waited, bool valid),
+-	    TP_ARGS(ns, waited, valid),
++	    TP_PROTO(__u64 ns, __u64 poll_ns, bool waited, bool valid),
++	    TP_ARGS(ns, poll_ns, waited, valid),
+ 
+ 	TP_STRUCT__entry(
+-		__field(	__u64,		ns		)
+-		__field(	bool,		waited		)
+-		__field(	bool,		valid		)
++		__field(__u64, ns)
++		__field(__u64, poll_ns)
++		__field(bool, waited)
++		__field(bool, valid)
+ 	),
+ 
+ 	TP_fast_assign(
+ 		__entry->ns		= ns;
++		__entry->poll_ns	= poll_ns;
+ 		__entry->waited		= waited;
+ 		__entry->valid		= valid;
+ 	),
+ 
+-	TP_printk("%s time %lld ns, polling %s",
++	TP_printk("%s time %lld ns (poll %lld ns), polling %s",
+ 		  __entry->waited ? "wait" : "poll",
+-		  __entry->ns,
++		  __entry->ns, __entry->poll_ns,
+ 		  __entry->valid ? "valid" : "invalid")
+ );
+ 
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index cf4cb586f140..fff19e9239d2 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3888,7 +3888,8 @@ void kvm_vcpu_halt(struct kvm_vcpu *vcpu)
+ 		}
+ 	}
+ 
+-	trace_kvm_vcpu_wakeup(halt_ns, waited, vcpu_valid_wakeup(vcpu));
++	trace_kvm_vcpu_wakeup(halt_ns, ktime_to_ns(ktime_sub(poll_end, start)),
++			      waited, vcpu_valid_wakeup(vcpu));
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_halt);
+ 
 -- 
 2.43.7
 
