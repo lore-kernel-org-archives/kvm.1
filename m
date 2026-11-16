@@ -1,68 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794799898;
-	b=vnB2DJESlNCBPpLSg1EbIYuoJ7qFNBzT1K38/Em2jGuSSKE8Rfc0Ml082zJAN4XhyJ7D
-	 j99bbBvCg4YABkrQ/dkSjNHYUWfjoHkW9tefrlWtk6LcqW5Tm7DYrHHsKiwfdJYAS5ZUP
-	 5IX0kDEgqKFNs9/ivZ6W8FUwDmRaKvtzUjtb5zynEgtiY2OAcxkaT6afF8pL4ugNYaBXP
-	 LYqNb+bCH7+ie0+hhk818XSRqhTNovPBflJ1uo2OIaASrqicriEzhr/YZTvTqQ99OJ2iz
-	 iTfBNAq1Kb9TEnkU88YHjcWqeBw+/XWpz5QJQt7JjBqBgpsjwVG493un2dz1Pzo4JzQ==
+	t=1794800607;
+	b=oKidagZhrwxiQ4w9Rs8w39A8EVJMCC39i1rdavO9ejgzNKbs/lnYJhLnmDbtwTvmsdZN
+	 3TNrPGoPgdXL5SRjEGCqYA62uWrU5T/xyfBiO4dwpQvP13SbKwGjxqVK3qtBOKj6eN2wL
+	 qjKh8yDUCoLVoun/WAPcSD9HvtI8LcsCiCXXGj8psB5GoW4ixDpFiHJi1FU9WAkSw0Ia2
+	 rQuubvVKv9/ZjMS8eQX4FvuTgRVFf96f128KB+XvGKvBx++PCf5i1fV+IchEPO1gI2rj4
+	 jldMANqyBQbM1WvpOKvlMFvP8UX3o3I6IhdaOML5SqwDgAWoazMCNswnuQKBXv3meMg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794799898;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=pGgUABsNoxr3lMr42Lg/Dv10ONV9Iv1MysSuC98ImUg=;
-	b=o6XeRLPp4PXCcbdW2U+8ErqD8Ry3my3HxzNKVLH8u8gsReKYROqGWw70336lyLotp0tv
-	 cbGrpi6q1IRY70pgm4jenpe4WoXURp3LBNthwtJQRN3dOJQjCVPoGhXVQGycNs9A6kOf3
-	 SbiRdLiPvJBzje09rn6UgVnnPt0LyYH+VENZLJbmregqUTJF3Bn5wyCMBI2FVduwpK6EC
-	 jE2IoKBw7tpafgkEw7loyJp+9smVrD6bg2Ss1Ofu3ZFR7HI3eGT47xwCyYPNItcR3wgVB
-	 PxOzRW9ppP5CenhdREuQ+h59S043CJOhOE0o2Ry29JPiKWnQWw9xuyDH2UPI9T+d+aw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794800607;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=VyWOgVepNkSKJ6XYbNAwi+c40lbehF8ImPxg4tm2wKY=;
+	b=VuTDwi6btONE2VenRxioId73nlJ0CRS8ZSiGmdvQzVUTsnCWY6rgLucXAvHBZB5YdmZw
+	 5sruUsMg1hBAkRocGCfZeu5j3ThiZYBT8TkbeHCF3W+9hgSTAg+FGqorJHSr+0mT3jOqP
+	 tfpnC0HUl6T1tspb+aTvW6mICjxb+64F1ikNisYHee0vOYb9zK1fNbZTa9Yh2N24y/wx5
+	 SQXR9nDxzoCRmgiDpJTHOzLaGPUXqFluS3DaO6AmAj2Mjr3DVMRQBh/PAIU2l1gJlX8h2
+	 hVrXFYGCxqIPEMLqX64rM+m0Uanpi/xpQHnxUz2xIqgbNouU3bm2xTY7ZjYC7I/G/gQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WFbm1n7u;
-	arc=none smtp.remote-ip=198.175.65.18
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hyLTMH3R;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A249606A31C;
-	Mon, 16 Nov 2026 03:31:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A249606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58AA1606A31C
+	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 03:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WFbm1n7u
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794799898; x=1826335898;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=oes9flJ0JSpo5x3wjxFPFFH+FdhIg1fmD+pwTGOuot4=;
-  b=WFbm1n7upC67HiIEMz/ANC0IJsC/R73jqniRmajAN031SY7ExSjUiMX6
-   IzbcDu9Dj4WN7750PSQiIx9vfItJWtnZALurpMuMEcimOdzseffEO3sMp
-   Zqm2tEk4jF3VFeW75dySL2+0+vff26lbUSPVmvSApJrH74HtJsSSFI32i
-   ac8RjzXA5Knn9BpCxAzikkCgfILEFngW/EJdOjXoIm68Lzc/M13dxALTw
-   MQ2a54NpUTtreOdfW3owDWOAifjT7uIRPhCWINsijvZtTIbTvneuxYTvf
-   4L3TwcRohT29Ezh3H2LjVVNAasAW2IfyFot/96YBUbh0G3TS5DwSZKElL
-   w==;
-X-CSE-ConnectionGUID: eg3IhqDSQ3uxrxkaUsF+1Q==
-X-CSE-MsgGUID: tsgfk9WzRBGrkW70dPqQjQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11967"; a="3541509"
-X-IronPort-AV: E=Sophos;i="6.27,215,1787036400"; 
-   d="scan'208";a="3541509"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2026 19:31:37 -0800
-X-CSE-ConnectionGUID: U3CPZAHtQJOFgrVN9p5TRw==
-X-CSE-MsgGUID: S4IDXWZYQEaFRwmBtWMK9A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,215,1787036400"; 
-   d="scan'208";a="11217156"
-Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.249.52]) ([10.124.249.52])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2026 19:31:32 -0800
-Message-ID: <57c85edf-8400-4b45-9a64-5eddc0d29134@linux.intel.com>
-Date: Mon, 16 Nov 2026 11:31:29 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hyLTMH3R
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25821F000C4;
+	Mon, 16 Nov 2026 03:43:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794800606;
+	bh=VyWOgVepNkSKJ6XYbNAwi+c40lbehF8ImPxg4tm2wKY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=hyLTMH3Rp7aFaZP7SYIUSzO4d5GTzE9IyRnGtjMu4jr7pt9cJwbqdhxmqujV/jmR3
+	 9fzJgOEq8gCjO+s44hEAark1iFlBv6fh6SmFeXeUw6Uc6k/sqfXrI7ZUdCMVU2pT1h
+	 FFWAdR9Nj6xQCewistmrIc6cY5Fo4+NkQfAFWEKkPaL0ZmwsF46ToGjYPQbrkFlRyJ
+	 /3MOC566CXKgMa+vZ2yUUWiryTK1aP9tRN7oNyLeKXqAZBLLBi5yowcAmwp7FbY46s
+	 duVWHRRbR6/lOh/hpmMDWiSb3Lr73navQSRFi1lQ2gtAEXID9ud6c1rHPhtmmGiTAM
+	 nhGGe4DEQx3Sw==
+Message-ID: <sashiko-outbox-216141@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 2/3] KVM: Add a module param to disable the per-VM
+ debugfs directories
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Peng Hao" <flyingpenghao@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261116032748.54582-3-flyingpeng@tencent.com>
+References: <20261116032748.54582-1-flyingpeng@tencent.com>
+ <20261116032748.54582-3-flyingpeng@tencent.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 16 Nov 2026 03:43:26 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,121 +60,70 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, Robin Murphy <robin.murphy@arm.com>,
- Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>,
- Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
- Ankit Soni <Ankit.Soni@amd.com>, Nicolin Chen <nicolinc@nvidia.com>,
- John Starks <dev@jstarks.net>
-Subject: Re: [PATCH v7 10/18] iommu/vt-d: Restore IOMMU state and reclaimed
- domain ids
-To: Samiullah Khawaja <skhawaja@google.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- David Woodhouse <dwmw2@infradead.org>
-References: <20261110040828.1774343-1-skhawaja@google.com>
- <20261110040828.1774343-11-skhawaja@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20261110040828.1774343-11-skhawaja@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 11/10/2026 12:08 PM, Samiullah Khawaja wrote:
-> During boot fetch the preserved state of IOMMU unit and if found then
-> restore the state.
-> 
-> - Reuse the root_table that was preserved in the previous kernel.
-> - Reclaim the domain ids of the preserved domains for each preserved
->    devices so these are not acquired by another domain.
-> 
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> ---
->   drivers/iommu/intel/iommu.c      |  57 ++++++++++---
->   drivers/iommu/intel/iommu.h      |  14 ++++
->   drivers/iommu/intel/liveupdate.c | 139 +++++++++++++++++++++++++++++++
->   3 files changed, 197 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-> index 6c86c155d12b..a83971368bef 100644
-> --- a/drivers/iommu/intel/iommu.c
-> +++ b/drivers/iommu/intel/iommu.c
-> @@ -987,6 +987,8 @@ static void iommu_disable_translation(struct intel_iommu *iommu)
->   
->   static void release_dmar_iommu(struct intel_iommu *iommu)
->   {
-> +	intel_iommu_handle_drhd_restore_failure(iommu);
-> +
->   	/*
->   	 * All iommu domains must have been detached from the devices,
->   	 * hence there should be no domain IDs in use.
-> @@ -1452,7 +1454,7 @@ static void intel_iommu_init_qi(struct intel_iommu *iommu)
->    * Returns 0 when the ID is reserved, was already reserved, or cannot be
->    * re-assigned, and a negative errno for a genuine allocation failure.
->    */
-> -static int reserve_domain_id(struct intel_iommu *iommu, int did)
-> +int reserve_domain_id(struct intel_iommu *iommu, int did)
->   {
->   	int ret;
->   
-> @@ -1743,12 +1745,16 @@ static int copy_translation_tables(struct intel_iommu *iommu)
->   
->   static int __init init_dmars(void)
->   {
-> +	struct iommu_hw_ser *iommu_ser;
->   	struct dmar_drhd_unit *drhd;
->   	struct intel_iommu *iommu;
->   	int ret;
->   
->   	for_each_iommu(iommu, drhd) {
-> +		iommu_ser = iommu_get_restored_state(iommu->reg_phys,
-> +						     IOMMU_SER_TYPE_INTEL);
->   		if (drhd->ignored) {
-> +			intel_iommu_handle_drhd_restore_failure(iommu);
->   			iommu_disable_translation(iommu);
->   			continue;
->   		}
-> @@ -1766,7 +1772,9 @@ static int __init init_dmars(void)
->   		}
->   
->   		intel_iommu_init_qi(iommu);
-> -		init_translation_status(iommu);
-> +
-> +		if (!iommu_ser)
-> +			init_translation_status(iommu);
->   
->   		if (translation_pre_enabled(iommu) && !is_kdump_kernel()) {
->   			iommu_disable_translation(iommu);
-> @@ -1775,14 +1783,18 @@ static int __init init_dmars(void)
->   				iommu->name);
->   		}
->   
-> -		/*
-> -		 * TBD:
-> -		 * we could share the same root & context tables
-> -		 * among all IOMMU's. Need to Split it later.
-> -		 */
-> -		ret = iommu_alloc_root_entry(iommu);
-> -		if (ret)
-> -			goto free_iommu;
-> +		if (iommu_ser) {
-> +			intel_iommu_liveupdate_restore_root_table(iommu, iommu_ser);
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] KVM: debugfs leak and UAF in
+  kvm_nested_s2_ptdump_create_debugfs()
+--
 
-What happens if the incoming kernel is booted with intel_iommu=off?
+commit 6b8cad730d46b448b05e32a4f22f6d9fe9cf399b
+Author: Peng Hao <flyingpenghao@gmail.com>
 
-intel_iommu_init() calls intel_disable_iommus() before reaching this
-restore path. A preserved device may still be issuing DMA, which would
-then bypass translation.
+KVM: Add a module param to disable the per-VM debugfs directories
 
-Could we detect preserved IOMMUs and force VT-d on in that case? We
-should also ensure that the ACS configuration for preserved devices and
-their upstream bridges remains consistent with the previous kernel.
+This commit adds the kvm.per_vm_debugfs module parameter to allow skipping =
+the
+creation of per-VM and per-vCPU debugfs directories and files.
 
-Thanks,
-baolu
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index fff19e9239d2b..54a2924f9b928 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+
+[ ... ]
+
+> @@ -1024,7 +1032,7 @@ static int kvm_create_vm_debugfs(struct kvm *kvm, c=
+onst char *fdname)
+>  	int kvm_debugfs_num_entries =3D kvm_vm_stats_header.num_desc +
+>  				      kvm_vcpu_stats_header.num_desc;
+> =20
+> -	if (!debugfs_initialized())
+> +	if (!debugfs_initialized() || !per_vm_debugfs)
+>  		return 0;
+
+[Severity: Medium]
+On arm64 with CONFIG_PTDUMP_STAGE2_DEBUGFS=3Dy, does returning early here w=
+hen
+per_vm_debugfs is false cause kvm_nested_s2_ptdump_create_debugfs() to leak
+nested_mmu* files in the root of debugfs and leave dangling pointers?
+
+kvm_create_vm() initializes kvm->debugfs_dentry to ERR_PTR(-ENOENT), so
+callers passing it as a parent to debugfs_create_file() or
+debugfs_create_dir() fail as expected.  However, kvm->arch.debugfs_nv_dentry
+is zero-allocated (NULL) and is only populated when kvm_create_vm_debugfs()
+reaches kvm_arch_create_vm_debugfs() -> kvm_s2_ptdump_create_debugfs().
+
+When per_vm_debugfs is false while debugfs_initialized() is true,
+kvm->arch.debugfs_nv_dentry remains NULL.  Initializing a nested vCPU in
+kvm_vcpu_init_nested() then calls kvm_nested_s2_ptdump_create_debugfs(),
+passing NULL as the parent dentry:
+
+arch/arm64/kvm/ptdump.c:kvm_nested_s2_ptdump_create_debugfs() {
+...
+	debugfs_create_file(file_name, 0400,
+			    mmu->arch->debugfs_nv_dentry, mmu,
+			    &kvm_ptdump_guest_fops);
+}
+
+debugfs interprets a NULL parent as the root of the debugfs mount and creat=
+es
+/sys/kernel/debug/nested_mmu* with inode->i_private pointing to mmu.  When
+the VM is destroyed, these root files are never removed while
+kvm_destroy_nested() frees the nested_mmus arrays and kvm_destroy_vm() frees
+struct kvm, so opening /sys/kernel/debug/nested_mmu* afterwards triggers a
+use-after-free in kvm_ptdump_guest_open().
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261116032748.5458=
+2-1-flyingpeng@tencent.com?part=3D2
