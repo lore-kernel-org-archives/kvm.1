@@ -1,57 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794850307;
-	b=FT7JtU8W8luwe4kZuJBYQBDnbZwC4EvFBVkL7TTD9Jgt8nHc7kZfJ/WSS++DPXS5A1+w
-	 NCGh8caV4AO2OU4byrjksWKbv0MRP3ARF5HOlUtkjvvK6helb/AikSHFWN+dM8e/vWkSz
-	 eppAjakGCHLfhKpaUeiKr9ipeGLsf4Okt0ZzJuWBptWn4f76m9BYP80574xnY0dY2Hto6
-	 9N56S1WNMy6ulLp9qADrTOKd+ViTR0FRZMO5zUol3HNJwiUA8W9SqBw/dblubCNQIJkT8
-	 xoYoN9i7m94H5yJ3Ar6m4n07x0HRA9YPhfVxo/oqghKMZDw+7wXFk80RQ5EXDQAbg0A==
+	t=1794850511;
+	b=YC/jHuMaR9k7hp5xemRqKx1MKZflszg6HXXnvPX1IKzdrmVfKdGJuZM0HfUhAookkDQ3
+	 jOMCqHON6nO1hnK8/2+hotXZyLqf8Kv0yS+EuJjQng4igD/wNg5CJC7o8GNaSCFu/NfRH
+	 EKHvWy8RFf+pMzaWMx+IHaDKhGNFUShKFUx2xe9+2sUqVIUj7aNc6B9dF39dGTA0wAYP2
+	 g1zGZJecR4+7qC/q6itXFGaui3uf/jvd2m4/Z8Bifcgd7yx4vdHJ0aW5TgZWpETjt3DHv
+	 m6erRDgPrI0iaddGF8ITL73un5eB0jeiknQxa0lwy6il8B03+i1o5QOBZDGa9cK7m1Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794850307;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=Hm64xLHNibckADV1peCrsacIKe9H5aSr0f1d+XzjCzQ=;
-	b=buuuRWP2mzut8SedBkRlTEUZj1Hij1ZFY4Jp8TRDaXyWZYjmroAlJCPCPi6poJ7XOqN5
-	 0ZkUhBO91GWZDKzIZUXbdL8bmp+Ty1YL6PMaI2rftTOKP6eSU7mX+Gx7axPbWZyJPwhh2
-	 eEAIuce3C1pUOIo8iRXh38hU1p3wc+RgvAa7hKMvbb9yIvZCNQDb/T+pbAvk7m3E2nXUk
-	 LOg59vwQ1ccXktwRV89I+V0c6JWHUp/cYrG8V4u4yEKgwUiZjvaAlGn8AFPeB4ku+iJvm
-	 GGpN3G1C6khq1aIpHxpR4hP46y80YoLj6RGLGFlsOyJtHV9ANp4TC0fGpf3U6cw/HhA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794850511;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-TM-AS-GCONF:X-Authority-Analysis:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=te7C2wbyDwcJurO4QeE1wdh3aR34pYnV9S24yGWzngk=;
+	b=uDTHycdIYwIB76XC2aOKVOgfPez5Mr38subcT5of3yTAq/NmsXLNwoodQfcR/9AZjXcY
+	 frC42olhU7NAvLauwLIMmW5ne7K0raLKPSLQLuyCJDEIoFzvsn45aimpjUnTzHODvPBga
+	 muW+BjUodNvK2U9F1dQZBJjBsCQkV3M3PJpr5uH9CGx1RX1fkPzK6nkrSlYIOgQRiuRz9
+	 9WTwQfkijl2Xepcl9tEMC/FveHuhE7yo+jdvbDdhcGUKZ6ETHQytUrF13Avx+LWxKhNjY
+	 szk6NRZNm6TWlUAksb8gn0KkUTbtOgSXXyH/oHjOd1mzOt9LKBdrZWS8jwgCYfUSS8A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bbLi9RNJ;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nd2uNLnG;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4153F606A32F;
-	Mon, 16 Nov 2026 17:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5524606A31C;
+	Mon, 16 Nov 2026 17:35:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5524606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bbLi9RNJ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907671F000C4;
-	Mon, 16 Nov 2026 17:31:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794850306;
-	bh=Hm64xLHNibckADV1peCrsacIKe9H5aSr0f1d+XzjCzQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bbLi9RNJUuydZ+xDpiu4l2NnQCKDcMmTX0ejvQaNiL+rIW23Oavq82+yqexf+CMTv
-	 7ZVyTdVbSJram3xv7Fkqf/gwXbxfbmW0aZ10NaiMcFCUiRRkXhucJObawr+5hgYAbe
-	 EOfe5G2wJJF+ZmFMKjqD8LhdDolw4tU2Mvhxqf5fjnZXS25yupIQ67vg/WCLkrMyWd
-	 lxTy/Sebh1oPHsw9/WpyCN8npvBz/6pLqg+POyhnV7rTQIpjKWh9lGVpqwY7bztbGj
-	 1Bulu+b83UnmMgKGqzyGQ4dkMtOnE/zAw2gphc8tbWyQQWS+zUQsfeLP1DqAVAAqMR
-	 jBAgvAU5SeIXg==
-Message-ID: <sashiko-outbox-217436@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 09/11] KVM: arm64: CCA: Support runtime faulting of
- memory
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steven Price" <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>
-In-Reply-To: <20261116164358.142785-10-steven.price@arm.com>
-References: <20261116164358.142785-1-steven.price@arm.com>
- <20261116164358.142785-10-steven.price@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 16 Nov 2026 17:31:46 +0000
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nd2uNLnG
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGGQ69T3730012;
+	Mon, 16 Nov 2026 17:35:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=te7C2wbyDwcJurO4QeE1wdh3aR34pY
+	nV9S24yGWzngk=; b=nd2uNLnGHXV2lgGyE/n+ka0e9q5Bl0NvuqhIB9AK2Aqo/g
+	U+/ljqVSXk8rhEO97gHh/5sl+GSvCjDK0CQ8blJ8y8KvUt/tFXA86Q+zF16ClOyu
+	2tMYWXza0lz2+ePEh6EkGb9dmPOCpUHjttTaof040BlSAp9/NFUv7fcsn/QAh0q9
+	oY2VI+cwCpXs/L7V+GMwwQ3W5b9Y7E2lmmakjGOwQrnqsb3ZpY3T4omZPOrjudA6
+	vjW1owOfIeZaQPXFV06VemBxcgvjQiQE9TnFraMvqxuMqf1gC9sO9kaTxHOmcv91
+	OEH3/LFK6HZptafXpmG6w0pMuG7IR22PD0eUUCdg==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hxd2kxca1-1144
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 16 Nov 2026 17:35:05 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGC4tuc210487;
+	Mon, 16 Nov 2026 13:47:12 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hyxwt08xb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Nov 2026 13:47:11 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AGDkw8n30736644
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 16 Nov 2026 13:46:58 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EDAEB20040;
+	Mon, 16 Nov 2026 13:46:57 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7CD1820043;
+	Mon, 16 Nov 2026 13:46:57 +0000 (GMT)
+Received: from osiris (unknown [9.111.42.169])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 16 Nov 2026 13:46:57 +0000 (GMT)
+Date: Mon, 16 Nov 2026 14:46:56 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 5/5] s390/hmcdrv: Replace page allocator calls with
+ k[mz]alloc()
+Message-ID: <20261116134656.125125Fdc-hca@linux.ibm.com>
+References: <20261108-s390-char-ready-v1-0-3db507722530@kernel.org>
+ <20261108-s390-char-ready-v1-5-3db507722530@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,180 +98,119 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261108-s390-char-ready-v1-5-3db507722530@kernel.org>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=B6UsQ+tM c=1 sm=1 tr=0 ts=6afb3ec9 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=20KFwNOVAAAA:8 a=QsPt8aXxvDvY35rw5ugA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: 0aZFqTIu-qNzewmkibGc8dEsfnURC-Me
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE2MDA2OSBTYWx0ZWRfX2J8YQogyuJHm
+ qAvgBWiso6Sw3yV6Dnae9xhPai3cjw614XwCx/PQmHI3kBwFsd7nBMns91+QnIj0Rdohij0UaXK
+ nvBA4Rz4zegBqjS4kiJ5ercE6mnYH0Y=
+X-Proofpoint-ORIG-GUID: 0aZFqTIu-qNzewmkibGc8dEsfnURC-Me
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE2MDA2OSBTYWx0ZWRfX9uu4plKdGiwv
+ gQGiYTAIl7NUOdLSt32KDOXR0BJ3fABFmiyb6hkONgNeoQbfy17tX32q5eoA7MO6RYi6wDWOMEU
+ KxJhyj5ymgor0s7FmNiBdUmXabGe6wWDG07BPEMAk3FqVyi7bIW6+eVZqdhgsQ57bI2iAg8D60V
+ was10tiFTi7cZuk7pEidQxG39wSqE8P5I77Dvgx5xkVNx+BebF6BLMaynfG8IYz4izjbZ7v9NcS
+ fftsfQbDCOJ5o6n1FmExz/Pi+aHeBqTnNh6al9NQKsEaBpKo5uTpOxpge19tB5rhl63E/DY6lyi
+ FDplwSIKverwmLx6URJCPLuw0Gjs71QPMqhJNn7l2rSjBHb/CyCMgowmnLKWqTBasoB9NuoASJf
+ SFnMZgbikU1eORs4kH24n6zpjt1Q5L+vyzluYdHYVJEw/VsMvL6OGQTJXkpBSDNGT9p1fhkwrKB
+ YTU9xM8Zp2onPtA94fw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-16_05,2026-11-16_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 clxscore=1015 spamscore=0 phishscore=0 adultscore=0
+ priorityscore=1501 bulkscore=0 suspectscore=0 impostorscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611160069
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issues to consider:
-- [Medium] KVM: arm64: KVM_CAP_PRE_FAULT_MEMORY advertised for Realm VMs
-- [Medium] KVM: arm64: missing unmap on partial failure in
-  realm_map_unprotected()
-- [Low] KVM: arm64: unhandled exec fault on shared Realm IPA in
-  gmem_abort() and user_mem_abort()
---
+On Sun, Nov 08, 2026 at 10:49:02AM +0200, Mike Rapoport (Microsoft) wrote:
+> diag_ftp_cmd() allocates the DIAGNOSE 0x2C4 parameter list used for HMC
+> file transfers under z/VM, hmcdrv_ftp_probe() and hmcdrv_ftp_cmd()
+> allocate the data buffers used for the transfers and
+> hmcdrv_cache_startup() allocates the buffer that caches the contents of
+> the last file read from the HMC drive.
+> 
+> These buffers can be allocated with kmalloc() as there's nothing special
+> about them to go directly to the page allocator.
+> 
+> kmalloc() provides a better API that does not require ugly casts and
+> kfree() does not need to know the size of the freed object.
+> 
+> Performance difference between kmalloc() and __get_free_pages() is not
+> measurable as both allocators take an object/page from a per-CPU list for
+> fast path allocations.
+> 
+> For the slow path the performance is anyway determined by the amount of
+> reclaim involved rather than by what allocator is used.
+> 
+> Replace use of get_zeroed_page() and __get_free_pages() with kzalloc()
+> and kmalloc() and free_page[s]() with kfree().
+> 
+> Round transfer and cache buffers up to a page for the required 4K
+> alignment, without rounding to a power-of-two number of pages. Reject
+> unsupported sizes before rounding.
+> 
+> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  drivers/s390/char/diag_ftp.c     |  5 +++--
+>  drivers/s390/char/hmcdrv_cache.c | 18 +++++++++---------
+>  drivers/s390/char/hmcdrv_ftp.c   | 14 +++++++-------
+>  3 files changed, 19 insertions(+), 18 deletions(-)
 
-commit 5a0919ef6adc946a1afb4f6ad7cf84e5573597f3
-Author: Steven Price <steven.price@arm.com>
+...
 
-KVM: arm64: CCA: Support runtime faulting of memory
-
-This commit adds runtime stage-2 fault handling for Realm VMs, delegating
-and mapping private guest_memfd pages in the protected IPA region and
-mapping shared pages in the unprotected IPA region via the RMM.
-
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index 0db3c293fdd52..9b371159be92c 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-[ ... ]
-> @@ -1846,6 +1882,16 @@ static int gmem_abort(const struct kvm_s2_fault_de=
-sc *s2fd,
->  		goto out_unlock;
->  	}
-> =20
-> +	switch (kvm->arch.vm_flavor) {
-> +	case VM_REALM:
-> +		prot &=3D ~KVM_PGTABLE_PROT_X;
-> +		ret =3D realm_map_ipa(kvm, s2fd->fault_ipa, s2vi.pfn,
-> +				    PAGE_SIZE, prot, memcache);
-> +		goto out_unlock;
-> +	default:
-> +		break;
-> +	}
-> +
-[ ... ]
-> @@ -2242,12 +2289,15 @@ static int kvm_s2_fault_map(const struct kvm_s2_f=
-ault_desc *s2fd,
->  	if (!perm_fault_granule && !s2vi->map_non_cacheable && kvm_has_mte(kvm))
->  		sanitise_mte_tags(kvm, pfn, mapping_size);
-> =20
-> -	/*
-> -	 * Under the premise of getting a FSC_PERM fault, we just need to relax
-> -	 * permissions only if mapping_size equals perm_fault_granule. Otherwis=
-e,
-> -	 * kvm_pgtable_stage2_map() should be called to change block size.
-> -	 */
-> -	if (mapping_size =3D=3D perm_fault_granule) {
-> +	if (kvm_vm_is_realm(kvm)) {
-> +		ret =3D realm_map_ipa(kvm, s2fd->fault_ipa, pfn, mapping_size,
-> +				    prot, memcache);
-
-[Severity: Low]
-This question rests on an architecture detail that could not be confirmed
-from the kernel source: can a Realm guest instruction fetch from an
-unprotected (shared) IPA exit to the host as a stage-2 instruction abort
-that reaches kvm_handle_guest_abort()?
-
-If so, unprotected RTT mappings only encode RMI_S2AP_DIRECT_READ and
-RMI_S2AP_DIRECT_WRITE and cannot grant execute permission, but neither
-gmem_abort() nor user_mem_abort() rejects kvm_s2_fault_is_exec(s2fd) with
--ENOEXEC to inject an instruction abort.  Instead, realm_map_unprotected()
-installs a non-executable mapping, and on subsequent instruction permission
-faults at the same IPA where level >=3D req_level, unmaps and remaps the pa=
-ge
-with the same non-executable permissions and returns 0 in an endless fault
-loop.
-
-[ ... ]
-
-> @@ -3155,7 +3217,7 @@ pre_fault_bytes_consumed(gpa_t gpa, unsigned long g=
-ranule_size,
-> =20
->  int kvm_arch_pre_fault_allowed(struct kvm_vcpu *vcpu)
+>  int hmcdrv_cache_startup(size_t cachesize)
 >  {
-> -	if (is_protected_kvm_enabled())
-> +	if (is_protected_kvm_enabled() || kvm_vm_is_realm(vcpu->kvm))
->  		return -EOPNOTSUPP;
->  	if (!kvm_vcpu_initialized(vcpu))
->  		return -ENOEXEC;
+> +	if (cachesize > KMALLOC_MAX_SIZE)
+> +		return -ENOMEM;
 
-[Severity: Medium]
-Should kvm_vm_ioctl_check_extension() also report 0 for
-KVM_CAP_PRE_FAULT_MEMORY when kvm && kvm_vm_is_realm(kvm)?
+What is the reason for this check? I can see that this seems to be a
+common pattern, however the buddy allocator would warn as well for
+allocations larger than MAX_PAGE_ORDER if I'm not mistaken.
 
-Currently kvm_vm_ioctl_check_extension() only gates capabilities on
-is_protected_kvm_enabled() and otherwise unconditionally sets r =3D 1 for
-KVM_CAP_PRE_FAULT_MEMORY, advertising the capability on a Realm VM file
-descriptor even though KVM_PRE_FAULT_MEMORY always fails here with
--EOPNOTSUPP.
+> +
+>  	if (cachesize > 0) { /* perform caching ? */
+> -		hmcdrv_cache_order = get_order(cachesize);
+> +		/* the buffer must be 4k aligned, hence round up to page size */
+>  		hmcdrv_cache_file.content =
+> -			(void *) __get_free_pages(GFP_KERNEL | GFP_DMA,
+> -						  hmcdrv_cache_order);
+> +			kmalloc(round_up(cachesize, PAGE_SIZE),
+> +				GFP_KERNEL | GFP_DMA);
 
-> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> index 838f95c201ada..4cacb9fe000f4 100644
-> --- a/arch/arm64/kvm/rmi.c
-> +++ b/arch/arm64/kvm/rmi.c
-[ ... ]
-> +static int realm_map_unprotected(struct kvm *kvm,
-> +				 unsigned long ipa,
-> +				 kvm_pfn_t pfn,
-> +				 unsigned long size,
-> +				 enum kvm_pgtable_prot prot,
-> +				 struct kvm_mmu_memory_cache *memcache)
-> +{
-[ ... ]
-> +	while (ipa < ipa_top) {
-> +		unsigned long range_desc =3D addr_range_desc(realm, ipa, phys,
-> +							   ipa_top - ipa,
-> +							   RMI_OP_MEM_UNDELEGATED);
-> +		unsigned long call_top =3D ipa + RMI_ADDR_RANGE_COUNT(range_desc) *
-> +			rmi_addr_block_size_to_bytes(RMI_ADDR_RANGE_BLOCK_SIZE(range_desc));
-> +		unsigned long out_top;
-> +
-> +		ret =3D rmi_rtt_unprot_map(rd, ipa, call_top, flags, range_desc,
-> +					 &out_top);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		if (ret) {
-> +			/* Create missing RTTs and retry */
-> +			int level =3D RMI_RESULT_DATA_LEVEL(ret);
-> +			int req_level =3D KVM_PGTABLE_LAST_LEVEL -
-> +				RMI_ADDR_RANGE_BLOCK_SIZE(range_desc);
-> +
-> +			if (RMI_RESULT_STATUS(ret) !=3D RMI_ERROR_RTT ||
-> +			    ++retries > KVM_PGTABLE_LAST_LEVEL + 2)
-> +				return -ENXIO;
-> +
-> +			/* Replace an existing mapping to update its permissions. */
-> +			if (level >=3D req_level) {
-> +				realm_unmap_shared_range(kvm, ipa, ipa_top, false,
-> +							 memcache);
-> +				continue;
-> +			}
-> +
-> +			ret =3D realm_create_rtt_levels(realm, ipa, level,
-> +						      req_level,
-> +						      memcache);
-> +			if (ret)
-> +				return ret;
-> +
-> +			continue;
-> +		}
-> +
-> +		/* Retry the fault after releasing mmu_lock to service the IRQ. */
-> +		if (out_top =3D=3D ipa)
-> +			return -EAGAIN;
-> +		if (WARN_ON_ONCE(out_top < ipa || out_top > call_top))
-> +			return -ENXIO;
-> +
-> +		phys +=3D out_top - ipa;
-> +		ipa =3D out_top;
-> +		retries =3D 0;
-> +	}
+...and that check wasn't here before.
 
-[Severity: Medium]
-Can a multi-iteration call to realm_map_unprotected() leave a writable
-prefix mapped when a later iteration fails or returns -EAGAIN?
+> diff --git a/drivers/s390/char/hmcdrv_ftp.c b/drivers/s390/char/hmcdrv_ftp.c
+> index 3312b2ac00a9d..e22789b532de2 100644
+> --- a/drivers/s390/char/hmcdrv_ftp.c
+> +++ b/drivers/s390/char/hmcdrv_ftp.c
+> @@ -238,16 +238,16 @@ EXPORT_SYMBOL(hmcdrv_ftp_probe);
+>  ssize_t hmcdrv_ftp_cmd(char __kernel *cmd, loff_t offset,
+>  		       char __user *buf, size_t len)
+>  {
+> -	int order;
+> -
+>  	struct hmcdrv_ftp_cmdspec ftp = {.len = len, .ofs = offset};
+>  	ssize_t retlen = hmcdrv_ftp_parse(cmd, &ftp);
+>  
+>  	if (retlen)
+>  		return retlen;
+>  
+> -	order = get_order(ftp.len);
+> -	ftp.buf = (void *) __get_free_pages(GFP_KERNEL | GFP_DMA, order);
+> +	if (!ftp.len || ftp.len > KMALLOC_MAX_SIZE)
+> +		return -ENOMEM;
 
-For a Realm with a 32- to 34-bit IPA space on 4KB pages, get_start_level()
-is 2, so addr_range_desc() caps rmi_size at 1 (PMD_SIZE).  When a shared
-memslot is backed by a 1GB hugetlbfs VMA, kvm_s2_fault_map() passes
-mapping_size =3D PUD_SIZE and this loop runs across multiple 2MB iterations.
-If an iteration after the first is interrupted (out_top =3D=3D ipa) or hits=
- an
-error, realm_map_unprotected() returns non-zero without unmapping the
-already-installed prefix (unlike realm_map_protected()).  kvm_s2_fault_map()
-then passes !!ret (unused =3D true) to kvm_release_faultin_page() and skips
-mark_page_dirty_in_slot(), so if the faulting IPA lies in the mapped prefix,
-the guest can write to the page without marking the host folio dirty.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261116164358.1427=
-85-1-steven.price@arm.com?part=3D9
+Same here, and as far as I can tell the Sashiko finding seems to be
+valid as well, even though it looks to me as if this worked only by
+accident. Also, as far as I can see, the reported "delete" command is
+currently not used at all from the only existing user space
+application that I'm aware of. But let's not change this, please.
