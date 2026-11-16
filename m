@@ -1,68 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794855772;
-	b=L1b686BZB+6FUGN5ox9L23lpGXhGZvbgTT6SMaWbboZCi1ONowUZBRuVQEv5J1XffmGw
-	 5NldvVJwtCyEW1s9eFsabeJ4qHq4jzNlhwuhITyRwPNfzxWqeejeY/2c6XBz2JGgIH0xU
-	 a5E4ldUMlYvbqOWdK+7Ga1kkqCVewU4vBNb82FURHY0SC+sWCWGOIorp0MlDkJoj4Aauu
-	 g4SAEA310HQoM6Q9MdbB5PKDUokv9LBv/hAR62bUKG4tqCFh6Dx4v8/Hecm+pJBTFDIDd
-	 dZSRYFQ0ixgo4DRhLMqYSQJ7nOeH7Jh6dw2L+6jY4WB4kB985HVyHlsvlwI0gqOloxQ==
+	t=1794856146;
+	b=ZURBOVEtIfx/8CApYYLOIoctegD40+yibfUMBvDuQvitCsF31KpucBtvUGngx4F47MtH
+	 QFgQNF1HrMzXrM2k/BWq4JVQpkVI1fwlYDTBjz9myW+qaqiGCWTPVqlpHLYWdrx9cVyBq
+	 +kARHmE4RZbzNE2tTh3ke5rWgFPCfHMzroIbhMYLFbtz8Rv/qRepvlcoK/n3Eu1wt3cTV
+	 MO6+Bm0sEzlRWpw8106lxKlf7RHSZ518GW5Rqs3c28nSaHAePkcx/+uvBisDzSZhSp6KJ
+	 nbKolVlbPqyL8HfgP0bOQ7FvSCE9fuddzNf4cCShZ4sFU+xmzDEBDNTa5Uns2bGo8dA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794855772;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794856146;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
 	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=O6UMZeXcanN8t0djn7NJ3zl4SeBIN2aE6Bswi6j2Bic=;
-	b=5YHgV2k0clkXT3RvJZenmBl9X/XFNlS1NdQ5QBIUA/n5nxtzaZ/SZdTUy+4+d0wOzHuk
-	 2NXmZJA4639F6uutUtJc5YMZAxiH4WTi/32TQcILzSG6KeAMLFhFqc09FPdNZpVQNLIvI
-	 iCpvpCjeKQR94uUHilylk9Iy9C4bVSqrWiT7SLGOmci8YumHlMtar1CLFW+Dm1gBoCsE7
-	 40sdef+YY0cJfn3rh1bLa4uftnlyFogygP8FmzsA/FzJrRqtlQihgAnVnf6GY0CYwVpv/
-	 a37nZGuFayfY97WJaqCO3T2GWOAmCXjB8btP3lZ/iPpeoes1n8eRtPUJVpZ5SnZ6wnQ==
+	bh=xa5m2kQ4McS89naKgeW1MFetHUtXxopI9MUGzN5ygBU=;
+	b=xoeD/6hyXPdDYOkCwR5HFpZFica/YXP/VcTvE6FLarFMHyNUBR7mE70p3YBh8ibP55N2
+	 pyU9TMK+E2Hwd4i12yGyu69ETro8o07mVW8IjMdFk66e4b8mlD2tgiadU6jC9ZWuR92dx
+	 c8tl6l6tk5pubhDj31kw02NBuFR5Wh7RFM81EjqNRBuD3bTCiBdcULNC81R2N7j/gimkI
+	 O5of6IQhEZ3EN7OvATNEey/7/f46xx8wNcoZIudQV+2jI32V/BbNUOWQpOtmvn3doH8Nu
+	 nzxokJGiSC8bhETsfJPwgL4LsVE7+nHFPgWcU5HMIhBy0KQ42qsH8FTVn2bc17StNiQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="krLJ/zt0";
-	arc=none smtp.remote-ip=198.175.65.14
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD40606A332;
-	Mon, 16 Nov 2026 19:02:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CCD40606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=vLbwuybu;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACFBF606A329
+	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 19:09:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ACFBF606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=krLJ/zt0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794855771; x=1826391771;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=wQE7uNnF9LUCnfBgZItftnbCHtc1uOtISxCx3nLbEHo=;
-  b=krLJ/zt05/jW5akGL0FXG9cQLefBpx/gMTniW/DHPH/8run/Nxm54FbJ
-   jYGHJ+1g/8uiwjZAWZb7Kuxmaj6yLay7ZOiLVHcxBmc/1Gd0K4I9vU41t
-   1Z+N6WCIiyONAssi5X5RDSsODHykH6IFQGvUIQ+6xQhGKJOgrUJf4XhOV
-   y/iu9UkSHb2gKO/C5NDPgLZMaC4BG4njwxsLz1yXryJZE+Ns6q9Qu6pHp
-   NR9QPfFX4YmSHMVOZvqMWYJhxVEsRzcMWMBTJjWRkM9fVagj7mXyaPSE+
-   mzGam0snxeS54naD4tX2mLrym9LUv3P1vlfleO3lYtXoRC9Ur/TZ+gjCC
-   Q==;
-X-CSE-ConnectionGUID: 7HLKsn0CS4ebtuQqc49w7A==
-X-CSE-MsgGUID: mhibNnJRRCySq6mWw3s8ZQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11968"; a="3497664"
-X-IronPort-AV: E=Sophos;i="6.27,217,1787036400"; 
-   d="scan'208";a="3497664"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 11:02:51 -0800
-X-CSE-ConnectionGUID: keozqHRVT8qpyORtp6xvdQ==
-X-CSE-MsgGUID: +3DLGtDwTFyUZyCBR1T39A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,217,1787036400"; 
-   d="scan'208";a="9696706"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 11:02:51 -0800
-Message-ID: <553050b3-bcda-48e0-af03-754f0b697943@intel.com>
-Date: Mon, 16 Nov 2026 13:02:49 -0600
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=vLbwuybu
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 920641684;
+	Mon, 16 Nov 2026 11:09:00 -0800 (PST)
+Received: from [10.57.69.37] (unknown [10.57.69.37])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9638C3F763;
+	Mon, 16 Nov 2026 11:09:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794856143; bh=f2swxQ3wi7X4GorXhzlcfPLv2QaLk/FTXlMHUk2SH3Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=vLbwuybuJ1gnxVNNBPUef0Ug4GMpb03qX4MOQFkuIvDvKnSaA2YBECf3PHbl6Mh0S
+	 5CmTmGAzP11/8d1l6rOX4yk43dY6xvUg7SEvtmTeaHbNuJOuTmgZjUZMl+ZVE4zyYl
+	 fzz5Zk8O1bhcT12ZEDIxdCJJyZVCkD/N3LujRf1E=
+Message-ID: <5c70e40a-114d-4fe3-ad0d-506589b8e7bc@arm.com>
+Date: Mon, 16 Nov 2026 19:09:00 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -73,127 +54,122 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/21] KVM: SVM: Drop counter MSR checks in
- amd_is_valid_msr()
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
- Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
- linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20261112203227.289379-1-zide.chen@intel.com>
- <20261112203227.289379-2-zide.chen@intel.com> <avis5Ose25IiYM2S@google.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <avis5Ose25IiYM2S@google.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v3 09/11] KVM: arm64: CCA: Support runtime faulting of
+ memory
+Content-Language: en-GB
+To: sashiko-reviews@lists.linux.dev, Steven Price <steven.price@arm.com>,
+ kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
+References: <20261116164358.142785-1-steven.price@arm.com>
+ <20261116164358.142785-10-steven.price@arm.com>
+ <sashiko-outbox-217436@kernel.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <sashiko-outbox-217436@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-
-
-On 11/14/2026 12:49 PM, Yosry Ahmed wrote:
-> On Thu, Nov 12, 2026 at 01:32:07PM -0700, Zide Chen wrote:
->> amd_msr_idx_to_pmc() accurately validates individual counter MSRs by
->> checking whether the corresponding counter is supported for the vCPU.
->> Validating counter MSRs again in amd_is_valid_msr() is redundant.
->>
->> Furthermore, validating counter MSRs using broad checks like
->> "pmu->version > 0" or "PERFCTR_CORE" is inaccurate and misleading. It
->> falsely validates unexposed counters, which then fail in
->> amd_pmu_{get,set}_msr(), injecting an errant #GP instead of taking
->> KVM's fallback (read 0, write ignored) and breaking migration for
->> unadvertised counters.
->>
->> Finally, the range check in the default case is dead code because AMD
->> CPUs currently support at most 6 Core Perf counters. Even if future AMD
->> CPUs support more than 6, counter MSRs would still be sufficiently
->> validated by amd_msr_idx_to_pmc().
->>
->> Drop the counter cases and dead range check from amd_is_valid_msr(),
->> leaving counter validation solely to amd_msr_idx_to_pmc().
->>
->> Fixes: 4a2771895ca6 ("KVM: x86/svm/pmu: Add AMD PerfMonV2 support")
->> Reported-by: Jim Mattson <jmattson@google.com>
->> Signed-off-by: Zide Chen <zide.chen@intel.com>
+On 16/11/2026 17:31, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issues to consider:
+> - [Medium] KVM: arm64: KVM_CAP_PRE_FAULT_MEMORY advertised for Realm VMs
+> - [Medium] KVM: arm64: missing unmap on partial failure in
+>    realm_map_unprotected()
+> - [Low] KVM: arm64: unhandled exec fault on shared Realm IPA in
+>    gmem_abort() and user_mem_abort()
+> --
 > 
-> Should we also drop the get_gp_pmc(.., MSR_IA32_PERFCTR0),
-> get_gp_pmc(.., MSR_P6_EVNTSEL0), and get_fixed_pmc() calls from the
-> default case in intel_is_valid_msr()?
+> commit 5a0919ef6adc946a1afb4f6ad7cf84e5573597f3
+> Author: Steven Price <steven.price@arm.com>
 > 
-> They are also covered by intel_msr_idx_to_pmc() IIUC.
-It's a shame that I didn't take one step further to check the Intel code.
+> KVM: arm64: CCA: Support runtime faulting of memory
+> 
+> This commit adds runtime stage-2 fault handling for Realm VMs, delegating
+> and mapping private guest_memfd pages in the protected IPA region and
+> mapping shared pages in the unprotected IPA region via the RMM.
+> 
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 0db3c293fdd52..9b371159be92c 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+> [ ... ]
+>> @@ -1846,6 +1882,16 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
+>>   		goto out_unlock;
+>>   	}
+>>   
+>> +	switch (kvm->arch.vm_flavor) {
+>> +	case VM_REALM:
+>> +		prot &= ~KVM_PGTABLE_PROT_X;
+>> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, s2vi.pfn,
+>> +				    PAGE_SIZE, prot, memcache);
+>> +		goto out_unlock;
+>> +	default:
+>> +		break;
+>> +	}
+>> +
+> [ ... ]
+>> @@ -2242,12 +2289,15 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
+>>   	if (!perm_fault_granule && !s2vi->map_non_cacheable && kvm_has_mte(kvm))
+>>   		sanitise_mte_tags(kvm, pfn, mapping_size);
+>>   
+>> -	/*
+>> -	 * Under the premise of getting a FSC_PERM fault, we just need to relax
+>> -	 * permissions only if mapping_size equals perm_fault_granule. Otherwise,
+>> -	 * kvm_pgtable_stage2_map() should be called to change block size.
+>> -	 */
+>> -	if (mapping_size == perm_fault_granule) {
+>> +	if (kvm_vm_is_realm(kvm)) {
+>> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, pfn, mapping_size,
+>> +				    prot, memcache);
+> 
+> [Severity: Low]
+> This question rests on an architecture detail that could not be confirmed
+> from the kernel source: can a Realm guest instruction fetch from an
+> unprotected (shared) IPA exit to the host as a stage-2 instruction abort
+> that reaches kvm_handle_guest_abort()?
+> 
+> If so, unprotected RTT mappings only encode RMI_S2AP_DIRECT_READ and
+> RMI_S2AP_DIRECT_WRITE and cannot grant execute permission, but neither
+> gmem_abort() nor user_mem_abort() rejects kvm_s2_fault_is_exec(s2fd) with
+> -ENOEXEC to inject an instruction abort.  Instead, realm_map_unprotected()
+> installs a non-executable mapping, and on subsequent instruction permission
+> faults at the same IPA where level >= req_level, unmaps and remaps the page
+> with the same non-executable permissions and returns 0 in an endless fault
+> loop.
 
-I completely agree that intel_is_valid_msr() should be simplified:
+No, this is wrong. As per RMM spec, Rule XLSKP in A5.2.7 Realm access to 
+an Unprotected IPA , version 2.0-beta3:
 
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index 4824e7eb98d3..77ce713101a4 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -229,10 +229,7 @@ static bool intel_is_valid_msr(struct kvm_vcpu
-*vcpu, u32 msr)
-                        ((perf_capabilities & PERF_CAP_PEBS_FORMAT) > 3);
-                break;
-        default:
--               ret = get_gp_pmc(pmu, msr, MSR_IA32_PERFCTR0) ||
--                       get_gp_pmc(pmu, msr, MSR_P6_EVNTSEL0) ||
--                       get_fixed_pmc(pmu, msr) || get_fw_gp_pmc(pmu,
-msr) ||
--                       intel_pmu_is_valid_lbr_msr(vcpu, msr);
-+               ret = intel_pmu_is_valid_lbr_msr(vcpu, msr);
-                break;
-        }
+"Realm instruction fetch from an Unprotected IPA causes a Synchronous 
+External Abort taken to the Realm."
 
-Additionally, intel_msr_idx_to_pmc() currently misses get_fw_gp_pmc(),
-which leaves FW counter writes untracked in kvm_pmu_mark_pmc_in_use().
-Moving get_fw_gp_pmc() into intel_msr_idx_to_pmc() fixes that bug and
-allows dropping all counter checks from intel_is_valid_msr():
+So the execute permission fault do not come to the KVM.
 
-@@ -247,6 +244,7 @@ static struct kvm_pmc *intel_msr_idx_to_pmc(struct
-kvm_vcpu *vcpu, u32 msr)
-        pmc = get_fixed_pmc(pmu, msr);
-        pmc = pmc ? pmc : get_gp_pmc(pmu, msr, MSR_P6_EVNTSEL0);
-        pmc = pmc ? pmc : get_gp_pmc(pmu, msr, MSR_IA32_PERFCTR0);
-+       pmc = pmc ? pmc : get_fw_gp_pmc(pmu, msr);
+We could a comment here to make it clear.
 
-        return pmc;
- }
+> 
+> [ ... ]
+> 
+>> @@ -3155,7 +3217,7 @@ pre_fault_bytes_consumed(gpa_t gpa, unsigned long granule_size,
+>>   
+>>   int kvm_arch_pre_fault_allowed(struct kvm_vcpu *vcpu)
+>>   {
+>> -	if (is_protected_kvm_enabled())
+>> +	if (is_protected_kvm_enabled() || kvm_vm_is_realm(vcpu->kvm))
+>>   		return -EOPNOTSUPP;
+>>   	if (!kvm_vcpu_initialized(vcpu))
+>>   		return -ENOEXEC;
+> 
+> [Severity: Medium]
+> Should kvm_vm_ioctl_check_extension() also report 0 for
+> KVM_CAP_PRE_FAULT_MEMORY when kvm && kvm_vm_is_realm(kvm)?
+> 
+> Currently kvm_vm_ioctl_check_extension() only gates capabilities on
+> is_protected_kvm_enabled() and otherwise unconditionally sets r = 1 for
+> KVM_CAP_PRE_FAULT_MEMORY, advertising the capability on a Realm VM file
+> descriptor even though KVM_PRE_FAULT_MEMORY always fails here with
+> -EOPNOTSUPP.
 
-This seems a little bit too complicated in intel_msr_idx_to_pmc(),
-especially once PMU v6 is introduced and more v6 specific MSRs are
-available. We may do some cleanup (not in this series though)
+This is taken care of in the later patches on the integration branch,
+where the capabilities are restricted for Realms.
 
-- Fold get_fw_gp_pmc() into get_gp_pmc() and hide the base MSR from the
-  API signature to keep the callers clean.
-- Move these helpers from pmu.h to pmu_intel.c, since AMD already uses
-  its own helpers.
-
-@@ -245,10 +294,9 @@ static struct kvm_pmc *intel_msr_idx_to_pmc(struct
-kvm_vcpu *vcpu, u32 msr)
-        struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
-        struct kvm_pmc *pmc;
-
--       pmc = get_fixed_pmc(pmu, msr);
--       pmc = pmc ? pmc : get_gp_pmc(pmu, msr, MSR_P6_EVNTSEL0);
--       pmc = pmc ? pmc : get_gp_pmc(pmu, msr, MSR_IA32_PERFCTR0);
--       pmc = pmc ? pmc : get_fw_gp_pmc(pmu, msr);
-+       pmc = intel_get_fixed_pmc(pmu, msr);
-+       pmc = pmc ? pmc : intel_get_gp_eventsel_pmc(pmu, msr);
-+       pmc = pmc ? pmc : intel_get_gp_counter_pmc(pmu, msr);
-
-        return pmc;
- }
-
-@@ -419,18 +467,17 @@ static int intel_pmu_get_msr(struct kvm_vcpu
-*vcpu, struct msr_data *msr_info)
-                msr_info->data = pmu->pebs_data_cfg;
-                break;
-        default:
--               if ((pmc = get_gp_pmc(pmu, msr, MSR_IA32_PERFCTR0)) ||
--                   (pmc = get_gp_pmc(pmu, msr, MSR_IA32_PMC0))) {
-+               if ((pmc = intel_get_gp_counter_pmc(pmu, msr))) {
-                        u64 val = pmc_read_counter(pmc);
-                        msr_info->data =
-                                val & pmu->counter_bitmask[KVM_PMC_GP];
-
+Suzuki
