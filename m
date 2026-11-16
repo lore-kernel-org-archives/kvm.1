@@ -1,65 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794847834;
-	b=1rPvBZ1Zcx9w8SIFvKo6H5vUkhpKZOM8p7W/2Fe/xTz30J2njFQ7q7KWoIP5GxH60tcM
-	 Qa/pzybrARqNGo49/YW1nBcJ4ZmM+sIk6nLQMFpcmpiE4+c45TkDg1TwMuSGDceOK1IEf
-	 pEHveKCAFMw/JXQl2dfDGKsfbZPsOAwK1Qffv11iMCN6yGHpVd7sNm9EiLNLFhcempc+f
-	 55QcLsym+PtsbD1lPtOrTez8n9FpTJFfBdjFqVm9Dc7itlHhNn/i5VatSEt5doOyoEu8K
-	 8xJtXzylKobslnODdiwWA2PumIoLENQ8yjgPICu/yyo6g3W7e4u72J01yjfnQLdVjKA==
+	t=1794847841;
+	b=NmraQbGizt9lqgDxj1+UZ9uhTaJd+icNoY+8qEJTXYakEu7+4tINmv9xZRQISFE8XQgS
+	 QP/kzq/CVfFOXQwTNABq5lmeikjjQ/j0sAfqxrSMWG6ND8dXPL+tRVn8InoQoKJrTpRJ6
+	 ZZ+7PB6yeIxQha0gfJGdj2g1JY84OSWC5JbmEyK9IVjDtysFksrt6T5djLaVflEYbjrf1
+	 GJlUStvkdhdHlCVgPvVxK9bCFScfQJV36Y6wQqmJTpSP30Q13+Q7gM+GQ6gedP9Q+RDcP
+	 x8luvbp0tIznBh0Qeg0HGcC9tjvNXFKnFCxLc/nDCSxpmhUX9PTSYXJeSD/cDA5dSNQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794847834;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794847841;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=CRoYJNo2Ut/C9F0PKvSMgrpZBQkzD9p9HmTEG0fAlqU=;
-	b=HkAwtCWIfwWCA0USUeV2UKwOg36gdRfi38GKdUTAMQtEfKuYFEXClH8Ys1JfRwisIjSn
-	 oJBPEIkJvqP7lLwSETcbQrhy/r76ODSyLKstFqpwcuaB4j623oF+ihpgeJSA+1Og3ElkJ
-	 4oFD6VNb9a+6NKjAguh3qeLWoVHnAgEq6W9jcFP1emi4t1ySnNb8ZmGvGzsbK5HXOlMpv
-	 DdVtyVlPhg1X/JK+VQ/3aVUyUP5/Ffoethq7QpipK5wOubiCbaha8AGDLP99t9vYEeOgj
-	 40ET5vN9AJ15hkE/bJEbp9XBxr5fqYu3MA3RCFm/SNenHTEr1/mIvjlNyHfL4vP3oSQ==
+	bh=NIkcB0xFVInRVan0YUgAxqPrhANw4KC3xtWTa3NWmiE=;
+	b=19gdbr3zDUwzMvmFSu5MWB/k8nh/BXlzWzs6YF4ZmiZVN3vgB4w/pLf8fxiRdtyqst9p
+	 jVCA9YmKhqrgU7jyeWYsp/eZrz9MDPNx4RuzOqjtJoMs+Q2ttsCcf/EI7QeftUc6jYxWH
+	 RFcFegboI2DyU4qREW2YKmWrRc1CgXlsah9/h/fQQlIMz8bQ0QXyZwH4w6tod9oFDJcrN
+	 sgArLJ1EZfvah81W8uBcfS8JqzDAwXDZW8kna4kjKJXA3+Esq368MCfhTTYgc32den1k0
+	 3K2c7XdhFXyjRMokX9Y3G1En1y9wwIYBFy/gIeop08HXFN/54UkjuzlwB4S2liv02aQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BY5lOkMi;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fKv8unhj;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9723606A31C
-	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 16:50:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D9723606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5431606A32A
+	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 16:50:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B5431606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BY5lOkMi
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fKv8unhj
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794847832;
+	s=mimecast20190719; t=1794847839;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CRoYJNo2Ut/C9F0PKvSMgrpZBQkzD9p9HmTEG0fAlqU=;
-	b=BY5lOkMixy2ooPbOeSCsw/nNEm1fFjTYRP36H6FaY3KmlucGVaqz9XgAIe1QDprVs0aehc
-	px1uBVV3AH9ewHDwwjKIekb3gYRxMYgC9JqOXH3GbLv+wvhKG82LEqQ7OTdpUPMjoEoSnl
-	pLZZPd061Jd4+IljqldxwIo0evVUYyw=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=NIkcB0xFVInRVan0YUgAxqPrhANw4KC3xtWTa3NWmiE=;
+	b=fKv8unhjHurlRq7508NbrTl8qz4nA+YTAi+7IUNnHr5Lmt1yw6fjcUfzvG8tL0ltvGrlV4
+	ImOtoKH3qz3P2kHOaEeiaymek06phTo/YBeRDX83ZwvuGnReHEwAUsL73YVPAElmaY/D37
+	4ArHAmH92I7GGmdegw/110evycRyq+4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-279-zsTcbiazNmSDz6sDb0s-AQ-1; Mon,
- 16 Nov 2026 11:50:29 -0500
-X-MC-Unique: zsTcbiazNmSDz6sDb0s-AQ-1
-X-Mimecast-MFC-AGG-ID: zsTcbiazNmSDz6sDb0s-AQ_1794847827
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-534-4TvjXVxqOGu-um8TZYAVbA-1; Mon,
+ 16 Nov 2026 11:50:33 -0500
+X-MC-Unique: 4TvjXVxqOGu-um8TZYAVbA-1
+X-Mimecast-MFC-AGG-ID: 4TvjXVxqOGu-um8TZYAVbA_1794847831
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9CC5D18002FC;
-	Mon, 16 Nov 2026 16:50:27 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 40DD91955EA8;
+	Mon, 16 Nov 2026 16:50:31 +0000 (UTC)
 Received: from jsnow-thinkpadp16vgen1.westford.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4272C195B3C9;
-	Mon, 16 Nov 2026 16:50:21 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 24AB9195B3C7;
+	Mon, 16 Nov 2026 16:50:27 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -80,9 +80,9 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
 	Marcelo Tosatti <mtosatti@redhat.com>,
 	=?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
 	John Snow <jsnow@redhat.com>
-Subject: [PATCH v2 4/7] debug/mem: name pthreads
-Date: Mon, 16 Nov 2026 11:49:59 -0500
-Message-ID: <20261116165002.30939-5-jsnow@redhat.com>
+Subject: [PATCH v2 5/7] debug/mem: name coroutine stacks
+Date: Mon, 16 Nov 2026 11:50:00 -0500
+Message-ID: <20261116165002.30939-6-jsnow@redhat.com>
 In-Reply-To: <20261116165002.30939-1-jsnow@redhat.com>
 References: <20261116165002.30939-1-jsnow@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
@@ -99,85 +99,30 @@ X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- meson.build              |  8 ++++++++
- util/qemu-thread-posix.c | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 38 insertions(+)
+ util/oslib-posix.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/meson.build b/meson.build
-index d7bcb581c18..ef961df2f64 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2878,7 +2878,15 @@ config_host_data.set('CONFIG_PTHREAD_GET_NAME_NP', cc.links(osdep_prefix + '''
-     pthread_get_name_np(pthread_self(), buf, sizeof(buf));
-     return 0;
-   }''', dependencies: threads))
-+config_host_data.set('CONFIG_PTHREAD_GETATTR_NP', cc.links(osdep_prefix + '''
-+  #include <pthread.h>
+diff --git a/util/oslib-posix.c b/util/oslib-posix.c
+index dc001da66dd..454579c72df 100644
+--- a/util/oslib-posix.c
++++ b/util/oslib-posix.c
+@@ -60,6 +60,7 @@
  
-+  int main(void)
-+  {
-+    pthread_attr_t attr;
-+    pthread_getattr_np(pthread_self(), &attr);
-+    return 0;
-+  }''', dependencies: threads))
- config_host_data.set('CONFIG_PTHREAD_CONDATTR_SETCLOCK', cc.links(osdep_prefix + '''
-   #include <pthread.h>
- 
-diff --git a/util/qemu-thread-posix.c b/util/qemu-thread-posix.c
-index 089606c93fb..967e0f15f6d 100644
---- a/util/qemu-thread-posix.c
-+++ b/util/qemu-thread-posix.c
-@@ -17,6 +17,7 @@
- #include "qemu-thread-common.h"
- #include "qemu/tsan.h"
- #include "qemu/bitmap.h"
+ #include "qemu/memalign.h"
+ #include "qemu/mmap-alloc.h"
 +#include "qemu/mmap-vma.h"
  
- #if defined(CONFIG_PTHREAD_SET_NAME_NP) || defined(CONFIG_PTHREAD_GET_NAME_NP)
- #include <pthread_np.h>
-@@ -362,6 +363,13 @@ static void qemu_thread_atexit_notify(void *arg)
+ #define MAX_MEM_PREALLOC_THREAD_COUNT 32
  
- void qemu_thread_set_name(const char *name)
- {
-+# if defined(CONFIG_PTHREAD_GETATTR_NP)
-+    pthread_attr_t real_attr;
-+    void *pthread_addr;
-+    size_t stacksize;
-+    size_t guardsize;
-+# endif
-+
-     /*
-      * Attempt to set the thread name; note that this is for debug, so
-      * we're not going to fail if we can't set it.
-@@ -373,6 +381,28 @@ void qemu_thread_set_name(const char *name)
- # elif defined(CONFIG_PTHREAD_SET_NAME_NP)
-     pthread_set_name_np(pthread_self(), name);
- # endif
-+
-+# if defined(CONFIG_PTHREAD_GETATTR_NP)
-+    if (pthread_getattr_np(pthread_self(), &real_attr)) {
-+        return;
-+    }
-+
-+    if (pthread_attr_getguardsize(&real_attr, &guardsize)) {
-+        goto cleanup;
-+    }
-+
-+    if (pthread_attr_getstack(&real_attr, &pthread_addr, &stacksize)) {
-+        goto cleanup;
-+    }
-+
-+    /* Though there's a guard page, it isn't actually marked RO, so
-+     * just label the entire region */
-+    qemu_name_vma(pthread_addr - guardsize, stacksize + guardsize,
-+                  "pthread (%s)", name);
-+
-+ cleanup:
-+    pthread_attr_destroy(&real_attr);
-+# endif
- }
+@@ -742,6 +743,8 @@ void *qemu_alloc_stack(size_t *sz)
+         abort();
+     }
  
- typedef struct {
++    qemu_name_vma(ptr, *sz, "coroutine-stack");
++
+     /* Stack grows down -- guard page at the bottom. */
+     if (mprotect(ptr, pagesz, PROT_NONE) != 0) {
+         perror("failed to set up stack guard page");
 -- 
 2.56.1
 
