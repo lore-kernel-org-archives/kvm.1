@@ -1,103 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=173.37.86.79
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794861258;
-	b=BGptpIEQMx3nzGyPaTt86tb1+RktHMPHMi2ggP2eu3No37Z5A0VYI0Gui0EvRqCkfC0/
-	 9PUY3WIQ5Z6ei0BbreVKIV09MOtzI9JcgLwiL0LQNk3G5EM0r0HzDPl3jcuYGjwd9OSkq
-	 JmpIeD7qfZfb467nVePzgXZQiflNEGLg71x/iIe1Sc5AV9RjI1/O3nNey4cTj3s5fteAw
-	 lXSJGgb57qmdGdg0mh9ZGhEPFxyeUrofB6zdpZ7OwK1oX5GQLnCcYqkE6UoOtoHXlek0y
-	 Nl4+CEtK0X73VdFXDva1qCboEpt1SJ71wA2qYRhtqQFHvWsuhLQpFjxJJkjG9Z80qXw==
+	t=1794861545;
+	b=DqBLsc1N28inc2R+OhUM6tubjWkmBRImmooHQagihu5KqNUximOxMjQQuJCwIiqEVc1F
+	 Q5dEsONihc2BsQjH8xQ6RxtpGHVjFog2JNDB9+nTGGh3lBcv+/l+UmSkjD3QSaAjodUnz
+	 mZBk7MArjHpZVw/IxT0cOwiZOIS4t1WAUyDgxVcUCsrN+y4WGr0vHbP0nHiJlLssuVRPe
+	 aGRu0hNn/LgFv64bWdeFe2OkJaSwXI995CO6L0SQd53BfnJhKmE5zgxFbKS+7K3njO9HM
+	 O9Wb6frKRURvksT4d9r7fVm2eTUYesMArEYLjXcywlbDsRM8VvMHyBdaAg+Pj3EjfvQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794861258;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=FuP841QZILSYrGI+sOs3ttqavD6cxIfZJ60TQUpud2E=;
-	b=N8dy4IR7ZDmIZ6druJ2QfDYZNwq6mBCtmt7JvQQ2jzf8SRdEJm89boAzohkaYTnIjN02
-	 AkbLAGK7qrpfOuMUjiXv2ELvM5bPStQ1qI+Cri4Y66S6rhhygNbFYgbksdgyEGPGTAd8t
-	 9qO106xma/R2ABiUpdXpZbnvbkmAC50fUqTRJ6l5+77hWQvAQJbR4H3encHAFEx3Ez7NW
-	 IwJfiC72VECaL5wPqKR8zrWOmSMdtvA5whjIhivLzTZH/i9Nc7duOpgSF5HKrpphkAdIe
-	 XueuGw4FuoCoYoVQeDFU72vdbnxItbpV1qtbH0cngUKPq7rp6RHdNld1/XFO3qcnx0w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794861545;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IPAS-Result:IronPort-Data:IronPort-HdrOrdr:X-Talos-CUID:
+	 X-Talos-MUID:X-IronPort-Anti-Spam-Filtered:X-IronPort-AV:Received:
+	 Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Outbound-Client-TLS:
+	 X-Outbound-SMTP-Client:X-Outbound-Node;
+	bh=xVJ7wS5s+PAGh2ipNS10JXvI3Lsan3rvod9uIbNhZRI=;
+	b=Bq19ujVgdIwvBeZJsXGJLhOKZuO8INoMV34i5+8x6nvCXwkEQQCVHusLRQo4aK3R/Df0
+	 QX2Pck6gxnt8dniCdKm73Fz9GudDtqmOejDXEMIbd95U3CPkmQQkK+UqoQyqKEC7yATMB
+	 8WiJG8ZAPtAFNiw+nBf2Z25HNWQWeyt0DAyo8JxoGLpBN8ANlM2gQg9zSr639rOpLli7s
+	 o9q1E0xrWQZkaBudRcw1HVTbQAarGjafN916mPIQjuS/YChiqEU1cyLAEfIvIeOgCkc/o
+	 P937v37/uXn6AVbLyGO8IljFyTqixiHOECallbk7tWmdryxNB/i45izSSO1CA1MpZng==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dmIh0sGt;
-	arc=none smtp.remote-ip=209.85.214.182
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=cisco.com;
+	spf=pass smtp.mailfrom=cisco.com;
+	dkim=pass header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=GHOAy6lp;
+	arc=none smtp.remote-ip=173.37.86.79
+Received: from rcdn-iport-8.cisco.com (rcdn-iport-8.cisco.com [173.37.86.79])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1D8606A31C
-	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 20:34:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A1D8606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58E3606A334;
+	Mon, 16 Nov 2026 20:39:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C58E3606A334
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dmIh0sGt
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2efc4a84e75so15755ad.1
-        for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 12:34:17 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=GHOAy6lp
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794861257; x=1795466057; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=FuP841QZILSYrGI+sOs3ttqavD6cxIfZJ60TQUpud2E=;
-        b=dmIh0sGtUdCAx8LVvuF/0RO/gJohVjpsrtSP6D1QcLtRNEi2/v8twNsF/c14q5WWea
-         5aJpv6F0z2BBmb203b94WEPy4PXC6rPyo6J6qignUfTVY4xU1ee1WA+qn3DvYU3KJWPM
-         dO8vtHLvA4gSIufqC84szJg9Payfl1GxRnA+yj/LMoXwNhpCe1YTz9Wc24b3KkCFcWTx
-         AamxzZn8M2rcTxGe1aCkt6LGHqA2EhAWiYmonxn+RRDOAFTv6tSYKxAZ3GgzqmIqqY5d
-         MPpUrwTmupi2pLnunFZs9nEcLvGteQGea9UzdaVTBPPTcCoivc5w5biFVnrG4KR57E1E
-         eedg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794861257; x=1795466057;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FuP841QZILSYrGI+sOs3ttqavD6cxIfZJ60TQUpud2E=;
-        b=chccsKQbmtDERLlJmFIElyF0I2me8V1vvuWH8ENd5KGoOif72Drqy73DRbQNUWEpNG
-         Qw8WqzK/3scgsIIxqy6/Fs0nPfg1XWinTennGI8q+liE+3etA1jarCzutjasi5INI/dq
-         HWFWx2TbXbmELDRjFaO+IhzKkB/bRfp5fKDU1zh8WzG+nRJUGJ6o3+XtkoY96Evhwxmi
-         fNuP23TEfhusXF/IW6m5aGSWvX5w3juK5LigpHrwYRfPD6VHv50aEhuEPuyEIm2pd5hv
-         VpH2YrzBEA70Pt4gNQbT3xfs2tzGC/QJ6oOHZcGMToHKkUkrCPLRGiAcmaypVgEwW9pe
-         pLWQ==
-X-Forwarded-Encrypted: i=1; AL+hErFkrLCoDbGovTF0CUbMaqKvohT3XlTzfZYi4b8Vs1BPGKvtwZz0CxupsKNMwZEms8taBZE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+1EIL9Q8KTJX34QnQqca55XHWDSLAkQkwOyoy+BHjGHyzGAVV8
-	KTJo5T/HFQ0Td27jt1Op7lkhsVygHGZXGCOWCHWIZMuwHOKbAVR/i7Jke2iwWWvvIA==
-X-Gm-Gg: AZFdTZeLsZv/FQcuZAiIN6HZCqFc5yJoRckty8mc+3Axpo+ob+BXJRoWFAVVhN/Q8Rd
-	cPOpJ7K4sCRIooXFr8Mao8nph0YT+eZCWlUr2z812fnupTp/7IWpx4U+u4V0qLHoI+XhkzIh7o3
-	PsTZRDiuy1f0ZF5XgICecSxncLIZ2HIq1LWPdeO98tKaI5QRGClyrvOY3teepBehxir4hpp8wDQ
-	QF/oM8mq1WyR0OAwwbs+tHlSGzXv8xRka76JPVNdYbMjE+Zjyr9HK+xOvivP8pKNflfBatd0TGO
-	KlrU0wzaFf+PVb2Wn8khO4PmkwC0VCeZmNJW5y85+MEy+zZEmiK7j1UzKzC5iNZbADvjeLKFoig
-	uK/j8893ZRPdgLwhlTYGLzczT9v22p/+MJYbZZfuHOJlY1vTsHcgfXEYVEYkl4Z+ZR1gGXaGuja
-	moHeDP5i2F6SXabS5p/XoM/bNIAD1NCyNL8twQE2vnZ9XbxsKzL3ra6N8Em49CIC+7MakBJURdE
-	uKIj4Sesygzoo8vYiy+TCcoeIoP1zHEZaaNdCejSCPWd6EfrZIIbiK/eHGe997Q/GOX2jCaII2+
-	DFjnIA/QjOeNUo1IA0gYIA+kM8SjVpIOvuhwyXxKEnt1a4QwaPKx+CN8zp+ymfCWH7410qF2BGM
-	xqlXWuBC56VaAnMQX1BI72w==
-X-Received: by 2002:a17:903:37cc:b0:2ef:d87f:8a20 with SMTP id d9443c01a7336-2efdc89d1a2mr134375ad.12.1794861256762;
-        Mon, 16 Nov 2026 12:34:16 -0800 (PST)
-Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b3ab9f4c98sm775625a91.0.2026.11.16.12.34.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 12:34:14 -0800 (PST)
-Date: Mon, 16 Nov 2026 20:34:11 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, David Woodhouse <dwmw2@infradead.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
-	Vipin Sharma <vipinsh@google.com>, Ankit Soni <Ankit.Soni@amd.com>, 
-	Nicolin Chen <nicolinc@nvidia.com>, John Starks <dev@jstarks.net>
-Subject: Re: [PATCH v7 10/18] iommu/vt-d: Restore IOMMU state and reclaimed
- domain ids
-Message-ID: <avtiC6VfIf7uc5gj@google.com>
-References: <20261110040828.1774343-1-skhawaja@google.com>
- <20261110040828.1774343-11-skhawaja@google.com>
- <57c85edf-8400-4b45-9a64-5eddc0d29134@linux.intel.com>
+  d=cisco.com; i=@cisco.com; l=5061; q=dns/txt;
+  s=iport01; t=1794861544; x=1796071144;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=xVJ7wS5s+PAGh2ipNS10JXvI3Lsan3rvod9uIbNhZRI=;
+  b=GHOAy6lpy1lEzlz3zH8pJlrKK8clNIG6dLg8WYs/dCbS5Eqs6F9omjoB
+   lY4JFNRFiB5uUHgU1AwvI7tp+1z6lGlZ7b23B07TvWkV6XIYtFOGVVfHH
+   4AyheOM/q6D1vXPxqiEV1v29Y25AGGKfoNN1rkq4b16eNu8nvU+fMoSjR
+   c0wKc5U9VJ5ugxA+CybjxEWdUdcBKoz/HadFY8fMrS+ayYm95qP0ADQXS
+   uOLEiBVGogyB4Pjpma7vIcBHPAk/zG4bDn6HN997WHqYHBh/OP1x8zW1n
+   Z6qsZcXidoMtyaRL0cHLgUVuBtsTb9rrjpMtaLUXagzgmpSfI/BhDm0dk
+   A==;
+X-CSE-ConnectionGUID: 4osFWF5mRbanqGpumdQOpA==
+X-CSE-MsgGUID: mORXt0fNT+KlYWa/PISBAg==
+X-IPAS-Result: =?us-ascii?q?A0AIAAD9aPtq/5T/Ja1aGwEBAQEBAQEBBQEBARIBAQEDA?=
+ =?us-ascii?q?wEBAYF8BgEBAQsBglaBVUNJhFeIG4c4giGRT4xWgX4PAQEBD1EEAQGFBY4hA?=
+ =?us-ascii?q?iY0CQ4BAgQDAgMBAQEBAQEBAQEBAQEKAQEFAQEBAgEHBYEOE4ZckBUnBD4UN?=
+ =?us-ascii?q?QImAkgXEoMCgnUDuRd6fzOBAYR+2UuBaAELFAGBCi4BhXOCbgGBcYQIO4RCJ?=
+ =?us-ascii?q?xuBSUSBFYJ7b4gfgmoEgQ6BFIEMiBGEHIQQh1MJP4ECHANZLAFVEw0KCwcFY?=
+ =?us-ascii?q?4EFAyoLEhIYFW4yHYEjOxcvWBsGBYEcgQcEE4ESgQVdgSsoXQEhgQiBdgKCU?=
+ =?us-ascii?q?YIAAgFJQQ4HRVMJJUMSRyQiCBIJARMaLAqBGjU8CSY/FQxnCAMaBUACHwgCD?=
+ =?us-ascii?q?Qx0ORAwHiQvBRomPhsKgQ4nERgNSBEsNxUZBD0BbgeTFoIjLz0GAQEVCTsKF?=
+ =?us-ascii?q?wkKCkQuBCcITTUOHgwhkwYTMoMwjV5roRGEKoFooBAzl2qTBwGZCCOjUA8JG?=
+ =?us-ascii?q?TeEaoFoPIFZMxoIGxWDIlMZD9srJjI9AQEHAgcOAwuBaIReiyQtgU8BAQ?=
+IronPort-Data: A9a23:8h0Ke6AEvRDthRVW/6biw5YqxClBgxIJ4kV8jS/XYbTApG8k0WQAn
+ DEYCmmPM6yOY2b2Ltx0O4zgoU9QvpTQy4A2OVdlrnsFo1CmBibm6XV1Cm+qYkt+++WaFBoPA
+ /02M4eGcYZsCC+G+39BC5C5xVFkz6aEW7HgP+DNPyF1VGdMRTwo4f5Zs7ZRbrVA357jXGthh
+ fuo+5eBYQb8hWYkWo4pw/vrRC1H7ayaVAww5jTSVdgT1HfCmn8cCo4oJK3ZBxPQXolOE+emc
+ P3Ixbe/83mx109F5gSNy+uTnuUiG9Y+DCDW4pZkc/HKbitq+kTe5p0G2M80Mi+7vdkmc+dZk
+ 72hvbToIesg0zaldO41C3G0GAkmVUFKFSOuzXWX6aSuI0P6n3TEn/J1In4YYIgi8O9xGE5W6
+ PkUERcVR0XW7w626OrTpuhEnM8vKozveYgYoHwllGifBvc9SpeFSKLPjTNa9G5v3YYVQrCEO
+ pdfMGY/BPjDS0Un1lM/E5sinfyohXnXeDxDo1XTrq0yi4TW5FEtiOK0bICLILRmQ+1QuXyou
+ jrI2Vi6IRUrC9XY8Ru+2Fuj07qncSTTHdh6+KeD3vRyqFSXx2EVWFsaWDOTuvSwjEy1c91YL
+ EMQ92wlqq1a3FCkSsnVXBCipnOA+BkGVLJ4A71kwAKA0KzZ50CeHGdsZjJIdtFgtMYwXjEs/
+ luImc75Qz1prLCRD3ma89+8qDK0Ni89N2IOZSYYCwAC5rHLuIs0iADOSNdLCqO5jtTpXzr3x
+ liirzY7r6scgNRN1Kih+13DxTW2qfDhSg8z+xWSXW+/6A59TJCqapbu6lXB6/tEaoGDQTGpp
+ 2QNkcyTxP4BAIvLlyGXRugJWraz6J6tMCXVqUx+A547sT+q/haekZt4+jpyIgJtd80DYzKsO
+ RaVsgJK75gVN3yvBUNqX7+M5w0R5fCIPbzYujr8N7KivrAZmNe7wRxT
+IronPort-HdrOrdr: A9a23:yJ8Lo6ALAJ73QyLlHeky55DYdb4zR+YMi2TDGXoBLSC9Ffb4qy
+ nOppomPHDP5Qr5NEtLpTniAsa9qA3nlaKdiLN5VdyftWLd1FdAQrsSiLfK8nnKRmnC7eZW16
+ dmfcFFeb7NJGk/p8fz5we1V/YMqeP3kpyAtKPyw2hgSAdyZ7olzQtoYzzra3FedU1qCYU0EZ
+ yE6tECnTqvfnwLct+2b0N1OdQr3+e7867OUFohGwMt7hWIgHeD7b73FAXd4zIlOgk/uYvLNQ
+ P+4nbEDmLJiYDB9iPh
+X-Talos-CUID: =?us-ascii?q?9a23=3A/PlGQGvpeanunB4iVKflgk1i6It5dWbz81mNJnW?=
+ =?us-ascii?q?yAGBwZ6WITFOp37tNxp8=3D?=
+X-Talos-MUID: 9a23:hR9AKQS887jj9q6xRXTpowtSKJ9mxZjtK0Q8rpxBg+i/HwV/bmI=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.27,217,1787011200"; 
+   d="scan'208";a="540214262"
+Received: from rcdn-l-core-11.cisco.com ([173.37.255.148])
+  by rcdn-iport-8.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 16 Nov 2026 20:38:57 +0000
+Received: from [127.0.0.1] (unknown [10.25.129.52])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by rcdn-l-core-11.cisco.com (Postfix) with ESMTPS id 8F44A18000149;
+	Mon, 16 Nov 2026 20:38:56 +0000 (GMT)
+From: Satish Kharat <satishkh@cisco.com>
+Date: Mon, 16 Nov 2026 12:38:52 -0800
+Subject: [PATCH] KVM: x86: Start IRQ bypass with local interrupts enabled
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -107,105 +107,152 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <57c85edf-8400-4b45-9a64-5eddc0d29134@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261116-b4-kvm-irq-bypass-irqs-20261116-v1-1-6cc721a062fd@cisco.com>
+X-B4-Tracking: v=1; b=H4sIANtp+2oC/z2Nyw6CQAxFf4V0bSNDzAT9FeNiHkWqccQpkjGEf
+ 5dqwu6e2+bcGYQyk8CpmiHTxMLPtILZVRB6l66EHFeGpm6sMcaiP+B9eiDnF/rP4EQ0Cm737hh
+ dTTa25C2sliFTx+W3cL78Wd7+RmFUrX54J4Q+uxR6rRT3OlFai4nKuLlhWb4eoekKsAAAAA==
+X-Change-ID: 20261116-b4-kvm-irq-bypass-irqs-20261116-f9da0e6d8eb6
+To: seanjc@google.com, pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+ dave.hansen@linux.intel.com, hpa@zytor.com, stable@vger.kernel.org, 
+ Satish Kharat <satishkh@cisco.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794861536; l=5111;
+ i=satishkh@cisco.com; h=from:subject:message-id;
+ bh=ZeFucPcfC3LRZpV0j/vmi51iAxZtU4EeWQbX+0tsTLs=;
+ b=GS3vK1WlVDrrOkFv954VJ1xQ6Ls78j1H0RA604hpcneWvAv5d19Xm7CJ23zAfQix4SpxttzhJ
+ 5zPMBq/qUu/Bupu35nxtTcWmu+nCUoAlHIKn+UNBBX+MQORqhhL9Ifn
+X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
+ pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
+X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.129.52];TLSv1.3;TLS_AES_256_GCM_SHA384;256
+X-Outbound-SMTP-Client: 10.25.129.52, [10.25.129.52]
+X-Outbound-Node: rcdn-l-core-11.cisco.com
 
-On Mon, Nov 16, 2026 at 11:31:29AM +0800, Baolu Lu wrote:
->On 11/10/2026 12:08 PM, Samiullah Khawaja wrote:
->>During boot fetch the preserved state of IOMMU unit and if found then
->>restore the state.
->>
->>- Reuse the root_table that was preserved in the previous kernel.
->>- Reclaim the domain ids of the preserved domains for each preserved
->>   devices so these are not acquired by another domain.
->>
->>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->>---
->>  drivers/iommu/intel/iommu.c      |  57 ++++++++++---
->>  drivers/iommu/intel/iommu.h      |  14 ++++
->>  drivers/iommu/intel/liveupdate.c | 139 +++++++++++++++++++++++++++++++
->>  3 files changed, 197 insertions(+), 13 deletions(-)
->>
->>diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
->>index 6c86c155d12b..a83971368bef 100644
->>--- a/drivers/iommu/intel/iommu.c
->>+++ b/drivers/iommu/intel/iommu.c
->>@@ -987,6 +987,8 @@ static void iommu_disable_translation(struct intel_iommu *iommu)
->>  static void release_dmar_iommu(struct intel_iommu *iommu)
->>  {
->>+	intel_iommu_handle_drhd_restore_failure(iommu);
->>+
->>  	/*
->>  	 * All iommu domains must have been detached from the devices,
->>  	 * hence there should be no domain IDs in use.
->>@@ -1452,7 +1454,7 @@ static void intel_iommu_init_qi(struct intel_iommu *iommu)
->>   * Returns 0 when the ID is reserved, was already reserved, or cannot be
->>   * re-assigned, and a negative errno for a genuine allocation failure.
->>   */
->>-static int reserve_domain_id(struct intel_iommu *iommu, int did)
->>+int reserve_domain_id(struct intel_iommu *iommu, int did)
->>  {
->>  	int ret;
->>@@ -1743,12 +1745,16 @@ static int copy_translation_tables(struct intel_iommu *iommu)
->>  static int __init init_dmars(void)
->>  {
->>+	struct iommu_hw_ser *iommu_ser;
->>  	struct dmar_drhd_unit *drhd;
->>  	struct intel_iommu *iommu;
->>  	int ret;
->>  	for_each_iommu(iommu, drhd) {
->>+		iommu_ser = iommu_get_restored_state(iommu->reg_phys,
->>+						     IOMMU_SER_TYPE_INTEL);
->>  		if (drhd->ignored) {
->>+			intel_iommu_handle_drhd_restore_failure(iommu);
->>  			iommu_disable_translation(iommu);
->>  			continue;
->>  		}
->>@@ -1766,7 +1772,9 @@ static int __init init_dmars(void)
->>  		}
->>  		intel_iommu_init_qi(iommu);
->>-		init_translation_status(iommu);
->>+
->>+		if (!iommu_ser)
->>+			init_translation_status(iommu);
->>  		if (translation_pre_enabled(iommu) && !is_kdump_kernel()) {
->>  			iommu_disable_translation(iommu);
->>@@ -1775,14 +1783,18 @@ static int __init init_dmars(void)
->>  				iommu->name);
->>  		}
->>-		/*
->>-		 * TBD:
->>-		 * we could share the same root & context tables
->>-		 * among all IOMMU's. Need to Split it later.
->>-		 */
->>-		ret = iommu_alloc_root_entry(iommu);
->>-		if (ret)
->>-			goto free_iommu;
->>+		if (iommu_ser) {
->>+			intel_iommu_liveupdate_restore_root_table(iommu, iommu_ser);
->
->What happens if the incoming kernel is booted with intel_iommu=off?
->
->intel_iommu_init() calls intel_disable_iommus() before reaching this
->restore path. A preserved device may still be issuing DMA, which would
->then bypass translation.
->
->Could we detect preserved IOMMUs and force VT-d on in that case? We
+Move the first IRQ-bypass notification after releasing irqfds.lock so
+that the vendor callback runs with local interrupts enabled.
 
-Booting the new kernel with intel_iommu=off after a live update is a
-configuration mistake. I will check for preserved IOMMU state in
-intel_iommu_init() and force VT-d on like you suggested.
+On Intel, pi_start_bypass() issues KVM_REQ_UNBLOCK to the vCPUs through
+kvm_make_all_cpus_request(). If another CPU needs to be kicked, this can
+reach smp_call_function_many(), which requires local interrupts enabled.
+Calling the hook inside spin_lock_irq() violates that requirement and
+triggered the following warning during VFIO MSI-X setup:
 
->should also ensure that the ACS configuration for preserved devices and
->their upstream bridges remains consistent with the previous kernel.
+  WARNING: kernel/smp.c:943 at smp_call_function_many_cond
+    kvm_make_all_cpus_request [kvm]
+    kvm_arch_irq_bypass_add_producer [kvm]
+    __connect [irqbypass]
+    irq_bypass_register_producer [irqbypass]
+    vfio_msi_set_vector_signal [vfio_pci_core]
 
-The ACS configuration of the preserved devices and their upstream
-bridges is preserved and restored by the PCI live update series.
+The SMP API documents a possible deadlock in this context, including for
+non-waiting calls. No deadlock was observed in this case.
 
->
->Thanks,
->baolu
+Keep producer publication, bypass accounting and IRTE error rollback under
+the existing lock. The IRQ bypass mutex still serializes producer
+callbacks after irqfds.lock is released. Notify only for a successful
+first attachment, after any IRTE failure has been ruled out.
 
-Thanks,
-Sami
+An LLM assisted with implementation, code review and test automation.
+
+Fixes: 77e1b8332d1d ("KVM: x86: Decouple device assignment from IRQ bypass")
+Cc: stable@vger.kernel.org
+Signed-off-by: Satish Kharat <satishkh@cisco.com>
+---
+Based on kvm-x86/next at cbe54fc3462b3949ab27b9ae81fb9ddb509040c7.
+
+Validation:
+- Build-tested irq.o against kvm-x86/next with W=1 and -Werror.
+- Built the KVM core, Intel and AMD modules for a 7.4-rc1 kernel
+  and used those modules for runtime testing.
+- On Intel VT-d hardware, started a guest with an ENIC VF passed through
+  using VFIO and reloaded its driver with device-posted interrupts and
+  APICv enabled. Function-graph tracing captured pi_start_bypass() reaching
+  the real SMP call with IRQs enabled. Posted-IRTE updates and bidirectional
+  guest traffic passed.
+- On Intel, selected KVM selftests passed: irqfd_test; irq_test in xAPIC and x2APIC
+  routing modes; vmx_apicv_updates_test; nested_close_kvm_test; and
+  xapic_ipi_test.
+- On Intel, selected kvm-unit-tests passed: x2apic, xapic, ioapic, smptest and
+  smptest3. The xapic run had one expected internal skip for absent
+  x2APIC support in that test's CPU model.
+
+On a Cisco C225 M8 (AMD EPYC 9555P) with AVIC/x2AVIC and
+device-posted interrupts enabled, selected KVM selftests and
+kvm-unit-tests passed; the VMX-only test skipped.
+
+Physical NIC passthrough passed bidirectional traffic, link cycling,
+driver reload and guest shutdown with two guest kernels. Tracing
+confirmed balanced IRQ-bypass registration and successful AMD
+posted-interrupt setup.
+
+AMD has no pi_start_bypass() hook, so these are regression tests rather
+than a reproduction of the Intel warning.
+
+One guest logged an informational clocksource-check timeout, without
+a BUG/WARN or unstable-clock report. Host lockdep remained enabled.
+NetworkManager route-metric and profile-timestamp changes were
+restored and verified separately after the tests.
+
+On AMD EPYC 7343 with AVIC disabled, assigned ENIC VF traffic and
+guest-driver reload passed using VIC forwarding between the VF
+and its parent PF.
+
+External-wire traffic was not tested on AMD.
+
+The complete default test suites and forced IRTE-error runtime test were
+not run. The public-base build check compiled the changed object; it was
+not a full public-base kernel runtime test.
+
+The IRQ-disabled warning in smp_call_function_many_cond() was observed
+on multiple occasions during VFIO MSI-X setup. No deadlock was observed.
+Additional diagnostic logs are available on request.
+---
+ arch/x86/kvm/irq.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kvm/irq.c b/arch/x86/kvm/irq.c
+index 7f8b092b4479..611b3e57b09a 100644
+--- a/arch/x86/kvm/irq.c
++++ b/arch/x86/kvm/irq.c
+@@ -485,13 +485,13 @@ int kvm_arch_irq_bypass_add_producer(struct irq_bypass_consumer *cons,
+ 	struct kvm_kernel_irqfd *irqfd =
+ 		container_of(cons, struct kvm_kernel_irqfd, consumer);
+ 	struct kvm *kvm = irqfd->kvm;
++	bool start_bypass;
+ 	int ret = 0;
+ 
+ 	spin_lock_irq(&kvm->irqfds.lock);
+ 	irqfd->producer = prod;
+ 
+-	if (!kvm->arch.nr_possible_bypass_irqs++)
+-		kvm_x86_call(pi_start_bypass)(kvm);
++	start_bypass = !kvm->arch.nr_possible_bypass_irqs++;
+ 
+ 	if (irqfd->irq_entry.type == KVM_IRQ_ROUTING_MSI) {
+ 		ret = kvm_pi_update_irte(irqfd, &irqfd->irq_entry);
+@@ -502,6 +502,13 @@ int kvm_arch_irq_bypass_add_producer(struct irq_bypass_consumer *cons,
+ 	}
+ 	spin_unlock_irq(&kvm->irqfds.lock);
+ 
++	/*
++	 * Wake vCPUs with IRQs enabled. The IRQ bypass mutex keeps producer
++	 * callbacks serialized after dropping irqfds.lock.
++	 */
++	if (!ret && start_bypass)
++		kvm_x86_call(pi_start_bypass)(kvm);
++
+ 	return ret;
+ }
+ 
+
+---
+base-commit: cbe54fc3462b3949ab27b9ae81fb9ddb509040c7
+change-id: 20261116-b4-kvm-irq-bypass-irqs-20261116-f9da0e6d8eb6
+
+Best regards,
+--  
+Satish Kharat <satishkh@cisco.com>
+
