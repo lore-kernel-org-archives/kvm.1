@@ -1,124 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.143
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.244
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794843632;
-	b=IQYrtxddwH2HKZmjUqyRA+EY9cwSk0M3tQdeA+mxV4JAogm/4Gcjdg2ZdzzUYwX8J0RL
-	 VfTUIMkPcBZYpMVeZxu8rNeabajjDet5URFQZvLNDMe0Fodtnu/FQlUHUaZoNt3Kyv6wV
-	 X/Bnajn0oie/6z463vsOxqPD7F9pTu45zCNb6z8MQk+7g8rRH9x+vcGdLo5bqTTRUlhJr
-	 NmpR0lKqIqWxnH7PY0XMrzGT9m9RjJO380VX72rJU1HAhyR1IPglT0usMeAt1ObmMkf69
-	 4p7yUtBPyWSm8g4u1WacEpqanEzUPZZDthFxEiGpDewQDPyoIMy84Hzo7lgKUrGevyQ==
+	t=1794845367;
+	b=BVT/yXhrRe6PjRGLXl1MGnGFrFu0AKVfUBTwZDFnad3kQte8k69fGGRuA6Kbm/PSdBux
+	 7o8OOH09pkzMUsLrBaeGbcmoH9iKQ2KGobDTuksD5k/WnMPulR8PY+CM/Q/BYelVaZqiB
+	 cJ2YvnAdZQyKkCLwbEq7caaqdzfpVMvGIncxEtsC489BNbnDMoJMbi1Cd86W9aJK/blxd
+	 43Dh77YHm4AtQE5Qzpw4PguW0xFd3e6ZFmZa/2+rTPM2F9KzH2ifAZGFxM+ySbdvIVD0o
+	 emmgNqPwLOYg/m/fIhArDE1hHE5JTn4rXsjF11lhFYrdcDINMxcGVgAOTHN/TdwRv6A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794843632;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=K9QCMgU3/qNmk6i5Ld3qHCb7sElYSI3GaLa7Dwr1/Es=;
-	b=Rx6cSl3BZwtuNc+UNU4VGBC0eazAHOGuym58t+yiW0vkbGQupMzoMV6CXg2uXs551Rr0
-	 GlwUFpLzUxbasKmE5axmJwkd6DlAuAVLJ/07DqaVF6BMwZzgI3tMLmOllQIvwIYvBxbdF
-	 i72uouSOi8d8iVMJW8Yd34fPbrfvfsNwX5W3JIFw7IpvMg/ShFWRPGY+1XeEk5qY/GNfj
-	 ttYcT5sLXj6ovqeG3b2BoU3/u1yUjia+q1BNA1VpEcXd4RLanVVOoLIzV0f6RU4TGOavt
-	 NysTHn+XFY2JJ6j50t7tsBwSCvGmKLwKZReXJZhZRul6PSYvXi5ZNunEj9aeudRi0qg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794845367;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type;
+	bh=xuWJrrizIQaSrZTQFgUO3V0HL4ic1BmuoACdN3FzMhU=;
+	b=UisVrguzoBE/MB/XutNtEcol0x222ZENfroXO9h2SRxMJBbrSeCFdMmAVQDIARc+XZtn
+	 HqOTxnmOcwi3mrHCONasEPJsnkbZRoTFJE/TdyIyEGPi+L4vDjJnosnabEIDdlUCbqeYS
+	 vvuzSHMoSo+ForWizlsrejjWsj14fasNBJaEHNfXLsSySkQNc+GDkkSsH+NgQFVopOms5
+	 CKJRJmI44X+aGawB8Q8HqoM2ey1J3qN8GJqrBja9JPWpVSfnAz5F6TJS2rZKMBSOIMqJ3
+	 WfKZwBfMuLCTr2q8NeZtgADLjazp+YZgN8VSXIjrZRDDHzTSIwIyjXFV1yVpNdn2jGw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=shazbot.org;
-	spf=pass smtp.mailfrom=shazbot.org;
-	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=c5vejlrL;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=J+07JrxK;
-	arc=none smtp.remote-ip=103.168.172.143
-Received: from flow-a8-smtp.messagingengine.com (flow-a8-smtp.messagingengine.com [103.168.172.143])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="FZJ7H/75";
+	arc=none smtp.remote-ip=95.215.58.244
+Received: from mta1.migadu.com (out-244.mta1.migadu.com [95.215.58.244])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F60606A323
-	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 15:40:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19F60606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD75F606A323
+	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 16:09:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CD75F606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=c5vejlrL;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=J+07JrxK
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailflow.phl.internal (Postfix) with ESMTP id B91AA13819FC
-	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 10:40:25 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Mon, 16 Nov 2026 10:40:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1794843625;
-	 x=1794850825; bh=K9QCMgU3/qNmk6i5Ld3qHCb7sElYSI3GaLa7Dwr1/Es=; b=
-	c5vejlrLPwZAjCGmX1QTNDJKlbwsc42YdY1kTMK8LGTmO33r29yZEezj1WeE+l6e
-	LzavMdwNWrdwT/bFvi6WiZXAncS80b3WFjqtyTAGRbA17nevA6YwcV2mrLS9Pah6
-	0MwtGPHw4k8/XXSiuTZcy61KQLhvUkYPEIHOfoE9lx04aJIpdaVSxoiEi1qF+eWC
-	KyiTi2ASZYzgmTwfeyETmCb7Q9jH0j+8DuaNNhuMupXd9heLoX2NiUauCT5XSP6q
-	ZCbIxoBSa2ZpDZYdHpp8R69D4NixGjOmf2dymmoYUrEVMzAYVAYSHmyqgU0GuRxp
-	K1q46lYEZIwMbnw5sbseMA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794843625; x=
-	1794850825; bh=K9QCMgU3/qNmk6i5Ld3qHCb7sElYSI3GaLa7Dwr1/Es=; b=J
-	+07JrxKGH89agZwZypxfZOwjMdUvqyIWG4VSNZDpLZ3aWzRSBuSgwskD4DEjFwcv
-	H4cMAPVZ3dUNdsCmoUxxXW6lfi/biM3fs0dtH3+0Wood2ClPEYAizxyoR2Ji+1ek
-	MBf+V9PI1dLKngSamvhS6tTIWcfbla5yYKfwNgh+ytjtDE4+p4AZxkVkLjR14lpO
-	4CyE822JCpUu8UnSmdukEpszWMhCedT15Q0JLVClPVGOMb79kRceK43TqMdWSdCM
-	RAIdEJpeCqfDXs00vBE0A/kdjhRlicnOefNKMWxNzpyO1Hq/Ur31BxiJeCg4Yx+n
-	2BPaeNU3AxqS6XW+vTroA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794843625; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:sCCRjtJeZVqxhHfVg7Ir5jUaim23PlEpE0zd5zUqm9Hb524
-	xHaCjSoYZ0SwB9i8xxjKBX7hMQ7S3l+ewH/LQk405larfcbBQfh26trX3m+0HIEO
-	CGNWH2DwQzQ7TmZsbnMvWKmmZ/z/Zib1yrzOb8Sr/FgtniqmBJnNEmmh0v2mlabu
-	rriXO24c5LhKl2bbmq8Rdpr0YRm/fF1DddTa/nr7Divu/uYd+ZiRIgYgbm6YMlpQ
-	ObH5Hcz/kXrfxWTiH32AbZRDnHarnQ6MkO27vqlCUgAcYIXDDa2HX8bywWmSQh8b
-	N0LO9YjE8VZzK2oci1dIycjYa/3u+r7nGib8dVA==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:0Y5rUBlQcrCj4l8SJGkaqp48B/WhxzlQss1o6ZgaDmk=:uyJPaLysvvX+DG/VcmnnuDeB94OwMehxNJ/NW9IPFc4=;
-X-ME-Sender: <xms:6SP7arbYZxLPnoqMSJbkzf9bdAqGrjncVRwkrH2noefuznsS0958tw>
-    <xme:6SP7akcpABGQBr1tLLLtqwITwXUQNYDOzlB3bIgjLvSNGTLvU5CWbFdymGThdBEXQ
-    dMZI6lIuTYRd1Ey9Qk7mh84x-tlDeUbVMQwDjnpAjxsbWNGWZ0ieA8>
-X-ME-Received: <xmr:6SP7at24dXWer6LLNFjK-_EXxHTW7spVtv_325TekFAm15kWI8DANB8pOwPVSg>
-X-ME-Proxy-Cause: dmFkZTGVW5RRIjhX0vofYqB5DQwzIH4ybjoBD4H/QKyxz1CgmLXHNktxjRFTVAf2AvyeKF
-    q73hIbVzdZcvzHkbuLgB3bgpka+Ug6AAEs8Bf2IjKC7E0HggYTQA+yLwxz9iUkVxNDR5aL
-    /wiFcJarF2w4gyZSM+s656/q8Ksgd+nc9p7/Z7I1nCWW24fZ4zKmXtRnhrBVT8MFnGS7m/
-    AcexrVX9bO0ySKLQMR1zz1zMvDqPTk1xvBtKwBgnC9ecCoOUPoomm+ySUKIymCN597SCI2
-    0SE56QdXXrscD5un8UpxCccGd2CfIvFBLGmPf7KHRj3/y9EV3C3mHhhrzsjqLGs9u44XTT
-    lTJBjENqyAI4S5w1H1CWASLIVCxdMABFZI3UaCUBr7xHTji1N9B8vlEYztE6ZNGUheoFOZ
-    pyxFLcXsortIvWGBWl7Aa8CoyRSTE5UytnhaxlOCIlTaZWX2nvnA5fbu7r5w055BXPx4vo
-    IKSYh5DV+Pp7C7uZcmcRJZSq0UTYKiMsEipR46uitMqpsc9Uql/TfhYD8MxtcWUNzn9+Dn
-    FE0M+wS0CYePpKJ6gETx9tL823rgTdlDqPdOM3o6uqNE3naF8uBydpuB23OiF/slAbzyQi
-    4G5KLqTp4Zk+bYJDQaoN9qxTJhWVyc7mpTUwy1GUuC4rsAIKnywSmehO+PBA
-X-ME-Proxy: <xmx:6SP7ajI_W2ctdjKLR08yW-lQhzJfuw6i4mxy1P0tnyJb6ri6Bocqtw>
-    <xmx:6SP7akGSRS6L9OdvhkuliQaAc0n1pm_b16N1RMOV5vNAI53LXAB1sg>
-    <xmx:6SP7anXJ2ttPjNpQijSJ7NkwK2nEWru2_xacgV3Jnr9MIrO1GTT0yg>
-    <xmx:6SP7akxzQYMKm-59M-TQwflBtldcBipCBTPtKYdb3k6nlLcm5iXBZw>
-    <xmx:6SP7atCj-hTWBKlPFqZIWsyF72xYi-2OlrzTmDMDw3IDjzBzse2a97Iq>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 16 Nov 2026 10:40:24 -0500 (EST)
-Date: Mon, 16 Nov 2026 07:40:22 -0800
-From: Alex Williamson <alex@shazbot.org>
-To: Gustavo Andrade <gustavogyn@gmail.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>,
- kvm@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, alex@shazbot.org
-Subject: Re: [RFC PATCH 0/1] vfio/pci: Wait for GB202 firmware after reset
-Message-ID: <20261116074022.29d96bd7@shazbot.org>
-In-Reply-To: <CAPZV9qUMZcwVF=CUK4LY4G6Qoqd5ykCXE5ocX8VCy_f1c6+aBw@mail.gmail.com>
-References: <CAPZV9qUk3-eKOGEjVc7f0QzZcjb3L5QwUceAEUV0nuCdo90eGw@mail.gmail.com>
-	<20261114235828.GF3706007@nvidia.com>
-	<CAPZV9qUvgKjoBXGjYXJzwnCmqzSfu781ZSG8zW6Fn4PokUN2uQ@mail.gmail.com>
-	<CAPZV9qUMZcwVF=CUK4LY4G6Qoqd5ykCXE5ocX8VCy_f1c6+aBw@mail.gmail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=FZJ7H/75
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=xuWJrrizIQaSrZTQFgUO3V0HL4ic1BmuoACdN3FzMhU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794845365; v=1; x=1795450165;
+ b=FZJ7H/75CAqBzC58hJN+4FVMl2DuXZkS5yLiKg7VhrFHQjcPC2mBO5uMibGtItsKgKd+rfhG
+ atP8eTFXhORoUfKIRNJfeylvJAX3cmil2nmPNJxL5VSrPu1P/eUiNlFoga4Q7cGoMm/EXuresX1
+ QlbykhUYjpkfluKkigFD/EHE=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 05c0e8fd5d053a3f;
+	Mon, 16 Nov 2026 16:09:24 +0000
+X-Mizu-Trace-ID: 05c0e8fd5d053a3f
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5c14bc5a743so12532e87.0
+        for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 08:09:24 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErFrHeGwSDZMqbqe9ohNUTVWfP8DJ8bQbKjz6IBGHK7Mh6LqEk/f6OHYYBnljluXd2uGOgw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+HZ9asMDjYYjPAvQCbfjOQm2fGQcdtFuVKAboJpS5MUI37TQKZ
+	suq1pjJbE4T/E7hmwHa9fXZO/YgaeKFYUzdTRTS2kVBs203vfu4XuuQhLOOb5m5w9dNo0FGWoKz
+	lrRHCFlCPvVIaIGUxWM9H3OvrrrwLTcBJ8AC2xtw3
+X-Received: by 2002:a05:6512:1304:b0:5c1:4cc8:2f22 with SMTP id
+ 2adb3069b0e04-5c17e4b9f86mr221482e87.8.1794845363481; Mon, 16 Nov 2026
+ 08:09:23 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -128,40 +66,47 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20261110110724.3614412-1-fuad.tabba@linux.dev>
+ <20261110110724.3614412-2-fuad.tabba@linux.dev> <avM81YcTBTJ8zCMX@seanjc-mac.roam.internal>
+ <CA+EHjTz-Nb-g9YQKX2fKk61hC2BfzXfmUHv=2j+eZ18YuTv2Eg@mail.gmail.com>
+In-Reply-To: <CA+EHjTz-Nb-g9YQKX2fKk61hC2BfzXfmUHv=2j+eZ18YuTv2Eg@mail.gmail.com>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Mon, 16 Nov 2026 16:08:47 +0000
+X-Gmail-Original-Message-ID: <CA+EHjTyqJfGS+5UajX=RYTAG-qfhZ-vmGi=1SixXydWhwGHLUA@mail.gmail.com>
+X-Gm-Features: Aa3M54pa7DZ_uBY7ynCUhZPG35ZaG2vJ1bC6E24f7r2YagR26_2vzli-PPKoWqQ
+Message-ID: <CA+EHjTyqJfGS+5UajX=RYTAG-qfhZ-vmGi=1SixXydWhwGHLUA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] KVM: Stop KVM_PRE_FAULT_MEMORY when the vCPU's dirty
+ ring is full
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, kvmarm@lists.linux.dev, 
+	Wei-Lin Chang <weilin.chang@arm.com>, Will Deacon <will@kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat, 14 Nov 2026 22:47:34 -0300
-Gustavo Andrade <gustavogyn@gmail.com> wrote:
+Hi Sean,
 
-> Hi Jason,
-> 
-> Thanks for the feedback. I submitted this as an RFC because, while the
-> workaround solved the issue for me, it seemed unusual that only my
-> card required it, since I haven't seen recent reports of this issue.
-> 
-> How would you suggest I proceed? I am currently running the latest
-> VBIOS available for my card (Palit RTX 5090 GameRock, version
-> 98.02.2E.80.10), which is also the most recent version listed in the
-> TechPowerUp database.
+On Tue, 10 Nov 2026 17:18:22 +0000, Fuad Tabba <fuad.tabba@linux.dev> wrote:
+[...]
+> > Eh, I vote to just use kvm_dirty_ring_check_request(), I don't see any harm in
+> > clobbering vcpu->run->exit_reason.
+>
+> Will do.
 
-I imagine a better shape for a quirk is a resetfn in QEMU.
+After taking a closer look, the clobber is problematic on arm64, where
+KVM_RUN completes a pending MMIO exit only if run->exit_reason is
+still KVM_EXIT_MMIO. If a pre-fault stops on a full ring after an MMIO
+exit, the helper overwrites exit_reason, so the next KVM_RUN doesn't
+complete the exit and the guest repeats the MMIO access. The ring can
+be full at that point if the pre-fault dirties pages, or with NV, if
+the stage-2 walk for the MMIO access does.
 
-The fact that nova knows about this issue and has code to handle it
-suggests to me that it's only the guest initial boot and reboot, where
-the VBIOS is run before the FSP is initialized, that's causing the
-problem. We don't want to pollute every vfio-pci reset with this
-wait-for-device action (if we did, a reset_done callback would be a
-better solution) and I also don't think we want to implement a
-kernel PCI-core device specific reset.  Either of those would make the
-device behave differently in a VM, or modify the current bare metal
-behavior that's clearly expected by drivers like nova.
+I don't think changing how arm64 completes an MMIO exit should be in a
+fix for stable, so should I keep testing kvm_dirty_ring_soft_full()
+directly in v2, or do you have another suggestion?
 
-A resetfn in QEMU can be device specific, wait for FSP to initialize,
-and not affect runtime resets where it would be the driver's
-responsibility to wait for FSP, as nova already does.  For example
-something similar to vfio_radeon_reset(), but calling the
-VFIO_DEVICE_RESET ioctl and then stalling for the FSP initialization
-to complete.  Thanks,
-
-Alex
+Cheers,
+/fuad
