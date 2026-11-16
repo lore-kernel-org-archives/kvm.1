@@ -1,54 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.137
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794793185;
-	b=11zmBoTQ1XjtmYcSJCBQoi6GmJ66rkpSBzjTkXJQWyfzsuLvlwloy2Td60FNZcWS/M1u
-	 iYq9WpSPujRMkwE2zAjcSoNHGEsj77hDu4g6KG9y/a4rY434TZ/kNSh3566rHs3a33ffA
-	 7SnYFni1GPzi42vrh0r4JPb/PDxMZy+pVymmN7gWP45BjVigdOt28Hy13uNnZ6ConQV8g
-	 qE1v1c3sf2NM0V9SLgaZCBRU+F1Ypzqb5XjubdjWxrTiP5wecH3r8yZ+1eXYZpqXfdMeK
-	 kN3OU0en/yxCOVlsWudyv1WHDDgO22p0UnRFOw3Nj0x+js3uc2pJDKohA3T15RIfI0A==
+	t=1794798107;
+	b=3j5qED9XMIGqNKk+olqhDFyOuW81vkbGe9mdT3Scmnl0ztM8gi6kkevcrmVaVjfbQdoA
+	 fiiMMVY3jcy9X8GltQ1xJn9F0Sv3TLDvcDWRXV9doqigwKLlSPdMeN3bzN7mIB4NwDob1
+	 oBYZUSK4IrgAAReQ2BRUJLkynWyhiwcSyklMuvqtPY47oaZSMNTTUpgDhLrSCvDDhapIf
+	 LPd4aYG6B7Hh0OtduYNbIbyJmlTZvLtqJOofabjKAW43u8ibmiGKfoZ0JfHzE3vtMXEni
+	 BOmqOGUtvRo24/iDPWWIpbXLvsMgYvel/TTFKQDfdUuIV/kys/rwkWr9MLmvcLYunGA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794793185;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=JysQz6CZtEevZBRMKq+wJkccgNZiYfQMuPgMbxIaGSM=;
-	b=3ZRe1bnq6iZj2HxCC6Di47gaVNB9MFK/C3wcuwIqqgPtGRZp9tfrll0674XqXoq1KGvg
-	 QT9wMAlhlR79NSWtL99680f1aZ9a+u+sfLleh24DWEW8Hygsr6K7ZJkw5M3dC7yoiZ18A
-	 EVLVV1jdhExl5W8QknO3+dqWnxWTZEJVGn7cwVUSs7yFM4KOBhcXSlnpAgq20I1b/+tEL
-	 vqIJyeqAO6ZLJ9/lf7yEEDtjCtkoScnUrzSzWJRC2oRRB3C6FOkAgWC16sniNGD+IHnaw
-	 /KjjuR16Fo3owQERm2QGW7NwH+0w0Fw3uOkwXJpXlPda109ZBLRrTsOHviFj5AOIzGw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794798107;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=9yLw/WRCc0A3tXBtnMdNXih0KVmDX6sXBP0GZLNu6xw=;
+	b=ggyOxN9b0dDXZgopzDmstyRLRGRQl4yo1uSpR7Nf9jW+3raARRBvjB042lm+gjV6eyX4
+	 E9mN2C0aWGN+wJopQgF+hsl2bbH0klYcX+7OJii85yyFnORJtt/KufawT+j9WJV/UtcKl
+	 tD4KXVH9IMATDzd/zPonvWv0nHG9MGQoDbIB0zE9vwpexQf5J81LY6L5LkxJJ3XLeNlvw
+	 gxPlqx8LQ/g/ae6u72cVUuwwo9W8wXuy+tfFixJO7nNP5aJtDwGNnRMHzz3NSvTs1ljR+
+	 C6t6B83cBtuNSXP9wL+ksnl/IgUwP1Le2tBf3f/28b4hMoUQNUlYpEVpq2WkhG6Z+QA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=infradead.org;
-	spf=pass smtp.mailfrom=infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=SwJveGtN;
-	arc=none smtp.remote-ip=198.137.202.133
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sd9iF9kp;
+	arc=none smtp.remote-ip=74.125.229.137
+Received: from mail-dl2-f9.google.com (mail-dl2-f9.google.com [74.125.229.137])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6C0606A31F;
-	Mon, 16 Nov 2026 01:39:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BA6C0606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D63606A337
+	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 03:01:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0D63606A337
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=SwJveGtN
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=JysQz6CZtEevZBRMKq+wJkccgNZiYfQMuPgMbxIaGSM=; b=SwJveGtNqn04m3MYoROpqoNFU/
-	CS+l9mmQN+aP5u1WkpnJH/1RhvgUoo66X+cgieouf8yRUooKelPQL1wzjSbNtx7FGLzj+EnH3fXxa
-	NhbnFK0HAPppb7qq9LSdITr+zrAIFfe9hTJ9W+CMHTetGc6YPRhaHdyUUFCz4czm8+0GLCpaIEGSw
-	WmwBqjUMgSgXFC8YVK3WEX/1NBzDgiIwRDz642nAStUl6rMvBJKcrg3oJGiQ939a4rYKjhwBljDP9
-	U9tTlj7cmF/9LIHW+5L7jAtZlNu0YS9C0WkNVbaLRlA7c/HO8Dw+BTQyMCdZw980x05tPHTrPn1Tr
-	8V+wPx2w==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xSlh9-00000000tlg-3G1b;
-	Mon, 16 Nov 2026 01:39:43 +0000
-Message-ID: <f4063ec4-2f1e-40b4-bcfb-83c3caf98cb5@infradead.org>
-Date: Sun, 15 Nov 2026 17:39:43 -0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sd9iF9kp
+Received: by mail-dl2-f9.google.com with SMTP id a92af1059eb24-1397ad3d891so444209c88.0
+        for <kvm@vger.kernel.org>; Sun, 15 Nov 2026 19:01:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794798102; x=1795402902; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9yLw/WRCc0A3tXBtnMdNXih0KVmDX6sXBP0GZLNu6xw=;
+        b=sd9iF9kpJwxa1VQzevX1dTaoID8Pa30ReWCDLPJmBSbUyY6xnKcAKlmhn19lEVJSQ6
+         imGeI6NTtdIo9tSo6QY4d5BFyiU9r98SzL3YS70SoiNq0Pgt3FlMc/BZ/GB19Kn76qgO
+         xAbRBwiYzszsYWt47JHmRnRh3RmwK1ax9j4wOOK9rCuYTJi11jrkk8xsp04Ap5MmSh6u
+         nDjedpehZ19r5oJ9zmg0hW2Akr6OcR+/VHixwUNLMu9t3pCmCzeKMckfSeWiy76czYMg
+         g3DMoWzuemA9b3UGGOwGFSbfK/fflj+sggpd1DIOFHYz95mTkvSP8XhihGb9DrxV1xf0
+         u2Ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794798102; x=1795402902;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9yLw/WRCc0A3tXBtnMdNXih0KVmDX6sXBP0GZLNu6xw=;
+        b=owYLNxPbN3KkctPaMnVfpGMZBVJUJrTB1kl9T2ihcyJySuCaCYNCNA683tny2MnWNn
+         T3qvi3FKUDQd2AXi17Cl3xM/FvJuBeMEyE8ywK7dsKJE1rqedudHeBcdtCrp4cxQA/AS
+         pNeiWdY1IcyJbwV6Jwdp9OYXY6dCs7aTpsCPE79yR4oITUQSrENK7AITpg8/KQt8euzQ
+         GqGdC/khDFRargAgJZG1a3pdFtJPMaVoKaDYtBwwd3bzzhmGpZCI4nuBZdt16UNJLJ78
+         nLGaj2E+sgV/BdClyiKqjkKODtuSNMpHDEfBGbZ171D3EHx4uAADY89piCN3DhiJlp60
+         moEw==
+X-Forwarded-Encrypted: i=1; AL+hErE3eLM0pULndF8F99iNo6r8ze/Rt7fl8n1FrGYsevUgEgATqdmNn/HZugvP3GLDttu3FLQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+CUSXgn3C+09StUh7BB08Nu0+x/uOKpuOMnWpjpfpHqtN5BlfV
+	gZwU2931kgacACtpN0YOEHnIByBXH2yfJeGmw9Kdtdmao1tyTjhQvToQ
+X-Gm-Gg: AYBFou2N+jCa6yIkvxrugnVxK2p9oVQYLHGkq6RVry+2EWNsASe6xmZJ5uoyTPEt3ID
+	qHqd3zhgsf3LZstka3P+cKrGZ328AOBJswzbqhPVAtaiBHfsC7wgoLuab9yoWXWpI1pSrFSzo8O
+	MP7CPHnCKZ+AW/+jf8vFV1ngx6duLB++BLvcBAAcdwEovFhZdEpknnnyWC0HSI3njMp/JJvub8w
+	Ap8vd1Mt52gr3iCchg6x2VFFiWCaa5v7MsuVJFrJE1Me455xwQVxXdmSDamYqbXfljhz35Uxqf7
+	7zU59IQXFQTyeKmUMAznBeKATLqqpLrjo/6YRP4L4PUc3sjsC+dV2cUQ/MFd/itpJyO6xfwv1hj
+	KeJwvTJkvC7Aa8zIYoLWP0RlFFnMzmPvWIhP1EMz92L4e2uagKjUWRs9ZZfoF536uLaPJhmdtwM
+	5P2BLwEVL79zOvTrEkacTJFrfa/JLW0YxXJN/xtk96B0C5pW4GVakUxvXgYJ3jiV5QVdTiQOxJQ
+	WHIo7xUNqZsQBrhApOETA7pdnjZdO2qNjMvcPzrzg1/0WF0QGpYyRZWmn4xkv0FCUfh1oD08Jk9
+	FbGMEG7mrkdHWBk1/fyYkDGLj/jlPeuIelE+NA47+YLZ4X2WJw7tDmvof2Lb7ZYhG/wcrXNd7cH
+	Lzszd2seCjfw0OfnRirQKGITy5IefS0WpBpafig==
+X-Received: by 2002:a05:701b:21c5:b0:1b5:514:6a23 with SMTP id a92af1059eb24-1b505146aa3mr8786867c88.13.1794798101579;
+        Sun, 15 Nov 2026 19:01:41 -0800 (PST)
+Received: from localhost.localdomain ([98.148.34.5])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5031b98e5sm29479863c88.14.2026.11.15.19.01.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Nov 2026 19:01:41 -0800 (PST)
+From: Hungyu Lin <dennylin0707@gmail.com>
+To: yishaih@nvidia.com,
+	alex@shazbot.org
+Cc: jgg@ziepe.ca,
+	skolothumtho@nvidia.com,
+	kevin.tian@intel.com,
+	leon@kernel.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	dennylin0707@gmail.com
+Subject: [PATCH] vfio/mlx5: Fix an unwind issue in mlx5vf_add_pages()
+Date: Mon, 16 Nov 2026 03:01:30 +0000
+Message-ID: <20261116030131.15346-1-dennylin0707@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -58,55 +101,45 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/7] Documentation: KVM: Drop the stale number of vCPU
- request flags
-To: Fuad Tabba <fuad.tabba@linux.dev>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Huacai Chen <chenhuacai@kernel.org>, linux-mips@vger.kernel.org,
- Will Deacon <will@kernel.org>, Fuad Tabba <tabba@google.com>
-References: <20261111085448.1130701-1-fuad.tabba@linux.dev>
- <20261111085448.1130701-5-fuad.tabba@linux.dev>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20261111085448.1130701-5-fuad.tabba@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+mlx5vf_add_pages() gets a pointer to the page list of its caller. If
+alloc_pages_bulk() fails after some of the pages were allocated, the
+unwind flow frees them with
 
+	__free_page(*page_list[i]);
 
-On 11/11/26 12:54 AM, Fuad Tabba wrote:
-> vcpu-requests.rst states that only two request flags are defined, but
-> KVM_REQUEST_NO_ACTION is a third. Drop the number.
-> 
-> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
+The index is applied to page_list before it is dereferenced, so only
+the first page is freed. For the other pages the code reads the memory
+that follows the page list pointer of the caller and dereferences it.
+In both callers this is a dma_iova_state that is still zeroed, which
+ends in a NULL pointer dereference, and the pages are leaked.
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Thanks.
+The pages are allocated with GFP_KERNEL_ACCOUNT, so the allocation can
+fail, for example when the memory cgroup of the task is out of memory.
 
-> ---
->  Documentation/virt/kvm/vcpu-requests.rst | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/virt/kvm/vcpu-requests.rst b/Documentation/virt/kvm/vcpu-requests.rst
-> index 06718b9bc9597..eedf338d47d6a 100644
-> --- a/Documentation/virt/kvm/vcpu-requests.rst
-> +++ b/Documentation/virt/kvm/vcpu-requests.rst
-> @@ -141,8 +141,7 @@ KVM_REQUEST_MASK
->  
->  VCPU requests should be masked by KVM_REQUEST_MASK before using them with
->  bitops.  This is because only the lower 8 bits are used to represent the
-> -request's number.  The upper bits are used as flags.  Currently only two
-> -flags are defined.
-> +request's number.  The upper bits are used as flags.
->  
->  VCPU Request Flags
->  ------------------
+Dereference page_list before indexing it.
 
+Fixes: 089803c40193 ("vfio/mlx5: Enable the DMA link API")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
+---
+ drivers/vfio/pci/mlx5/cmd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/vfio/pci/mlx5/cmd.c b/drivers/vfio/pci/mlx5/cmd.c
+index 04180035a7fe..8e8514f2660f 100644
+--- a/drivers/vfio/pci/mlx5/cmd.c
++++ b/drivers/vfio/pci/mlx5/cmd.c
+@@ -518,7 +518,7 @@ static int mlx5vf_add_pages(struct page ***page_list, unsigned int npages)
+ 
+ err:
+ 	for (i = 0; i < done; i++)
+-		__free_page(*page_list[i]);
++		__free_page((*page_list)[i]);
+ 
+ 	kvfree(*page_list);
+ 	*page_list = NULL;
 -- 
-~Randy
+2.43.0
+
