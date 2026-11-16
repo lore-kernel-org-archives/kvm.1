@@ -1,84 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.179
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794851578;
-	b=ked/5lhJidrPnjDAQyybqZV4JWnyImPyj2YbRViTmWOGROhi8LpIOVO/7oBhXxkxgoSL
-	 UYHxAf/aQy04pA6Bp5b1uQqgGVMRpr60Eq/qYpMr0kqxMIJ8XJqHmVnzS5zm5lnFdM5mM
-	 8Zv/Vk5cTZGTv2MP4T8g6ki0JSKSNANBkWemuQjmDP5Qvph4rnsLb4U4Aexv/WnWs/epD
-	 kDwyb6wAbsfccGgKxXET/t/hzPOk87LNKOFKtUmDEKiEuS7rZGFmvtzGBWG5Pmz9gH/Kd
-	 KQYNYwPa79dOVRHcZjR9DwguzBMtwIWy4LNzMsUj6pGcudkb9xBk6M8W4oCRSD6CMLQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794851578;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.46
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794852205;
+	b=lvJu63XaMYIo5su55PZzW7NhH34oM/J3O/AMXl+ZmEaFjXCfs93dHgvCDYNQFGI/nVMk
+	 ZIDpa6Ffux5MuCPPVjaJafF393HC5xDt4NZuR+3PlR2oseJdpDCOyjjKZgpOlZOixyg3i
+	 jxDTio63ebtkqh3Ablk2iPVQpDexsglnyhfGAAH0QxzWfa7pqYDLFcNA0FR3sia3aTbSE
+	 pAIr6Ugkpjht5dgrVJanf7yQnJAM9LnppCxPBIaeRSYcYbbYmrgXkNPmARtxttCjUu0fQ
+	 G/vYvraUsaKZVcTj5SN6s0fV5wRBv0i5I3CRsDNb6qXQxxkk5ykqMuzcT7goAaOhGIg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794852205;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
-	bh=ZVha1LQJ+ZYa0pasaO7rOjBg6mtWgNhixYpeavUGJvw=;
-	b=HluuTOPpHDDUoJQvX9YwgbJ8ELP9JWS6FxBRYdk8VfCWVG4yu/3fM3ub1Q1mHI4jIf9W
-	 2nLoRvfVWnfvL5SnWd0VaUOicFtXBjFwKdFj1KZJagi9MR+doCLNUQNqT6h8qiwsD9T5e
-	 t7Zb0kqXy97wfDb5K5eQDv73mUkS7nr2pQKTLH8IKrzEazoUOPHUXoFfvfIrWCdweZoGi
-	 AkA1CTjG8J0urWREUVqn42rDjYd/Yrg8+AJG6LCboMenUDFoUyjWQbXwtCrYDVEMb7kNb
-	 oum5OUDCK8GLvlSJ28nqOT5Qkh+px1YtP+TrUYMxDEoVdNLi8Bvv1xMRmcMRNx4XhWg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=UsEi7nj+gIWpohML70hey3/GRg+ovwcWW0/uBKwbaX0=;
+	b=fG4dGzNhQJhffXVb6Jk1ZFCcq4h+j4XyI8+St4TY8+QnJ2IcLhNCA9EWVAqmIujvzNDh
+	 73vNiX2ccb9aflrM/cg/CZFIoT/r9/3oGt6Gs8C7xOb/bQK1IbcSEwz1jV0DvYHOp9cpO
+	 RBH2MFY4YptoXKZn3iKBrsryN6pQ3Y71pFyvV6SAAb6930YGzlNPffeXc7fNWKXLBLvmQ
+	 f9fzhCvc9q3XE4c+XpYvImJgU5pxIq+bOYlyBRTFjE1WoGvxMlvc9+u/tVOLLORCnRUgZ
+	 yuY3wo9JgY+KlP3MWHJbc3ORB3F1NBLIgt615+SVuPngYgVSy5qVIyviPhQCUVYjOGw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Mr0MWBAM;
-	arc=none smtp.remote-ip=209.85.214.179
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hD5jCwnG;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.46
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164D5606A887
-	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 17:52:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 164D5606A887
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D649606A322
+	for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 18:03:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1D649606A322
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Mr0MWBAM
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2e99b1e5b4cso22928795ad.0
-        for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 09:52:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hD5jCwnG
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c50a4a2132cso490873366b.3
+        for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 10:03:24 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794852203; cv=none;
+        d=google.com; s=arc-20260327;
+        b=VHXa65NVbfqL80SmrfJmCNnBx9f+iJybviIFOurB+DlE7NvAjX+OUrLxtHay1T9XSl
+         f5IzwwbR7YiOHTMaKSB2PTpBA89JH8waioy3lg3JyzIU0b1LwEClrveBYCjDW2nlcrFJ
+         Ox7DZf+7106huGkgmhjAslq/AalRR/CTwBQfNJj+UNfcro319W/ND7YE+Wlnn1eFipzo
+         OVTpN/QQhDCGefaLI3Ml6XDmDRWG+zHJTkZPhKjEDt5h5pVQkKC5yFS0cCoZLd5MGtzG
+         5HmitVB5/XLzU0JpjJr6JCd1FParpxWh9AkH/t2PqfPluihuuYXIjQQKrKekxipLapMh
+         1e0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=UsEi7nj+gIWpohML70hey3/GRg+ovwcWW0/uBKwbaX0=;
+        fh=psaO2uhVSdaigmJJbp32sdrR2oziL5cStSjp6lwUMaM=;
+        b=JL03y5dxtaGOOE16R0Ums0Uy382gK/5LplrTla5BKOn1Er9I5ZO1wc6g9vUA6FV1qt
+         WpIkU0Ta0ZsARs1yPSW1Jx+rX38wPsSKIRHsUo/ey1veWvz+zCd0frav6H/SWR1kJtvs
+         qjCZPrDAZ+E8eWQR1J9Uod6maPdRr8/mdRj4WJMlvP2JihMSPiyKdwZrKzIjopY+Te0I
+         15/4HP834aiY+nW/ZbwLc9AT/lzWUcC2hgZ/Ksiu0I38Rbd+DQ3Hzo8NfwyKJudWMm0m
+         YpMzSFLo0peWrL1v25JTVktIlTtaWogc7ohAw3NEkogLJDCP+8AOKdtL8NAHLZVQlDgu
+         ao5w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794851577; x=1795456377; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ZVha1LQJ+ZYa0pasaO7rOjBg6mtWgNhixYpeavUGJvw=;
-        b=Mr0MWBAM4MLlHJMOKb/4Z6+dOhVz5cE+GMuRUduu9EHxuwhijBh3tXy8WJrkhaD0vh
-         PYAoy9x9sShYaRayE53yartClLeXdWk62a//vvYlSd2zLiJvKMc9TXh7Mof3XZRTu0rx
-         GxoGIFqRYzrwZ+dbFPfJk7TnrE7kr2+1NPV9kZnPO9acPHImQGPyrlGzUI/V+O9rL+lS
-         rW57l05EwtNh4ZKXuPgI4wU7DkeDNQM3yk0RZSB8ysyrRk6y/+Fsb3SJKn/X/NOmQar9
-         V386QxKbhvhnCZ98vZnrwlnUF9YPDTCdsBALgZVykIgXLyQJuXY30X/5rtUP6x7EcqzI
-         KKdA==
+        d=google.com; s=20260707; t=1794852203; x=1795457003; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=UsEi7nj+gIWpohML70hey3/GRg+ovwcWW0/uBKwbaX0=;
+        b=hD5jCwnGpTvZNYaAr2+aCoE6cb7zi0fesWLJtmKfjHp/JQ/kaIWWIrz6e09KboJAb1
+         22Gj7G2b351eZKv4rCg7O3GyMG1MtGoWN6xg7EU2eQrnCKJD+f8uRHwt83vpvd9hqvPB
+         j53rMQM4o3q7Rg1hd8Jp/uyfVa3Rs7TKp1FVmCxM7aw8dB5JXvPGM+7605iLxZWFOQVr
+         Hzz/427CEAuvdW4FK5liL8c7JyBMf3Wp6j0Smxe/NQ/y2H4En7HwyLYAEmh4P9ItT+s3
+         3VFwCqZ15r0ILkjB9apt8n5E5rVNDQGKIc+1yYF4pQP8Uw+CYIUALhII1lJTfuUwpnZm
+         RlDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794851577; x=1795456377;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1794852203; x=1795457003;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ZVha1LQJ+ZYa0pasaO7rOjBg6mtWgNhixYpeavUGJvw=;
-        b=UHHLHVVPgvR7g5jTseVXMPH9UA2Mqlog/Fme+DiKwRi8enhioXWuDds7dJ7oTCbM3Z
-         Xe31lUIoBoRHP/ilXiPYRx+5rrnhp1yZ0tJ8jRD2hsWn57WS3F0V5enfGFlKOi6enr/B
-         2svi74VsFQuMfC2G2Bhde2T037zu4UpvPdpxCHkvyh7dEkPWjXUyY5H8I6FbeYtDaDEA
-         Y2R3nHiob27E6iM1TkuRBedX9QZFRPlC8uWxnvg3LpxhvlqRt58IjLHeryuA1m+ICnoi
-         xzwkeiskYwi+dDK/iiULbcOQawcz0374tgCIBljVnYP2Gvv7be4SfWATxjjVKShAT2TL
-         WV6Q==
-X-Forwarded-Encrypted: i=1; AL+hErGxeey26mS19Zoztfo7n17/Wkpe+SBud6wFg8bCSr7WmYNZvlmldOV3Mt7gKWsZW5IiAlY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+OJVYkjFHRGpqN57S/w2CdhYNXU3E/qXd+E4sIcEyOtEkLW19l
-	Frl/SsCKNDFzT+hbFt+wboOAFUDMLSnQaEbh2/Em2C0liaGcp8NSJVpaY38I8r2i4A==
-X-Gm-Gg: AZFdTZcSx7RGkkOMFngTPYNOSZ2guDwkoS8vM5Qt8zxQr8EueSLOxvqdSZZwzUylYza
-	sbIQ6YsNbTrMrvNKBgcqlx+jEWhkmotTFNtAAgM1kR6mj/gOdicWfrtd03CDxZKn7UCs4O10729
-	oOIahtaCPVIEYVj4ndtHUoLKJSczDzdRwq42vyTOChhkB9+YTkKsHankAGVw7vwiGIaCDkdvIy/
-	7uc58vLFJcH1UpID63JLnz1P5SuqrvuAyCxhnA0J4zvKR9CMgQ/Ih4AWcJBBkZrBkQ+cQY2/y6k
-	uNxaGPsx0WX2Fo3S7fcwI+ZNvgrhYaNty0n16U38s0Q1iUVQ4I085KR+YtkXTB3jNerP2t/9ebR
-	Un4Odw+YEzJbaN9UVSaLiwV8iUxIpT3lCn2XNO+Rx4Sjo3OPHV0pHycVxREDiV9a065IEZd0oIH
-	TQzs8nQcQs+g7Rp9xBQ1TJV6aL/C48K7fWPN2Qe86epYRytB9FxWFbLeuNsFPXGuJ0ZrWtJKD8P
-	foburgmHDXs2NeuaVmLHyCmBvBrHrkl/DGXX/mD7NAyMHNOFW5EREKISAcBoC/QGutURYwrvgOR
-	rrJZPm8z9pODFQFEEOtFXODB6wV5rlWLkQ1Grp9IEKHr7CL+SiwHUWs87lO2DNVf
-X-Received: by 2002:a17:90b:4c0c:b0:3a0:516d:9f87 with SMTP id 98e67ed59e1d1-3b1b0a1f01cmr12343648a91.13.1794851576505;
-        Mon, 16 Nov 2026 09:52:56 -0800 (PST)
-Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b3ac296b5fsm224574a91.8.2026.11.16.09.52.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Nov 2026 09:52:55 -0800 (PST)
+        bh=UsEi7nj+gIWpohML70hey3/GRg+ovwcWW0/uBKwbaX0=;
+        b=ArUeRuVwU2seeGbHHdcRo6+ga5C7cmrZUGzbIJQXds5kDEHDQ3m6wkCmW5OW6aZ9WR
+         SUvt3+mFUww7bwJp4sR2iZ2yrEV2wjn3ChdpLTr2NQzijbTfqGXKmg9OU37OX7sBZSF1
+         a1Q4Tl0G6gzGLHX7US/8XLkopGsO7K4VBkVHqtG3WDy5EWxMiBbsb6PGG+/NPA3aQRyo
+         3vg4UQ6vQxCS47+Kp2IrEfqnI+WI/5Oz0GK+5VylKNfulPGLsoLj4qArc2st40BkMY2i
+         +Q1bn1FDPqzLvtTXKuHsRLYRaznBQa7eSe47u9Z3rOvZCJJVF2+mSH84U+8Ah5xmrd0c
+         RL2Q==
+X-Forwarded-Encrypted: i=1; AL+hErEwiWnazIi5fWWdrmjJCTunFD2bq5jV7ysLHVGabEZqXtx3MTjSwCIB+MBYLmVPZmeskDU=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9954rC3uMVBWu9MyVWUq1u7grv2DCJAYgYpyavxAhi57Wdoxye
+	W1FZp1LFPb7Id4lHy3dpNzr+nKGrKKEb6nFkGMbKv9XrfcNSYyWXTa5H/vqLN1ZjR7bItnfva0y
+	jkHnnHGQWDox48Mxv5yJhB5ZWUagtnBTfoNHK4Yw3
+X-Gm-Gg: AYBFou1NMHYL/TjaEsNHlGaoAve9BoMc/A7hEocvwjy/tSUz/djy2PmXSQZAr0fj/EU
+	kNPIc8ejmAEjE1Rp5Ps8iRx6wyCpBuT8hoF/lPa/4IFVPCOTKEossbmGyuYBle4XwO2wzTI40bF
+	9rQKgdKJ0xCcpjXXG41lI1EFmoT43+YGvJzMV0mMAMHbpfFPh+n1JyP4e0/c/Ut5KUwdJLtBSHi
+	eR3vzN5yMf78F7EAW0SGMafZdOq6mvoKiRpOwMEUgH1z39JupFdTtet1aW9plrsiGywYgax37na
+	rSW/nHhfBm3rWpZOVLyjGNvC+nQN7/AOeMCRzsinWjO/u7XiG47ph3D8eEKDJcX7zTdLq9YeyhQ
+	D5GrCjcqJY3J1a5kfeNIuUaHpp7Vz0CCDRsNJa1Kn0bHGZ1BVhNiuljUvfPA=
+X-Received: by 2002:a17:907:ea92:b0:c49:cdc8:10cf with SMTP id
+ a640c23a62f3a-c50963df2ccmr868161066b.40.1794852203026; Mon, 16 Nov 2026
+ 10:03:23 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -87,256 +103,60 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20261111192411.4133780-1-dmatlack@google.com> <avYjFfqr3T/U7lvn@devgpu015.cco6.facebook.com>
+ <DMTK99TDM9AM.SAM3Z4COP9WS@google.com> <20261115231946.GB1239159@nvidia.com>
+In-Reply-To: <20261115231946.GB1239159@nvidia.com>
+From: David Matlack <dmatlack@google.com>
+Date: Mon, 16 Nov 2026 10:02:56 -0800
+X-Gm-Features: AclHuK98Rk-099iLtslJwrWtAxHkQR-ncmpykOH17KTcOCuNGBfykDUUL8uCEbE
+Message-ID: <CALzav=efnA_ABCZVicX0QeTmHknaEbMeWOy8cS+zHYVhm5z+iw@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/7] vfio: selftests: Add peer-to-peer DMA selftest
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Mastro <amastro@fb.com>, dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, 
+	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-media@vger.kernel.org, linux-pci@vger.kernel.org, 
+	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Leon Romanovsky <leon@kernel.org>, Logan Gunthorpe <logang@deltatee.com>, Matt Evans <mattev@meta.com>, 
+	Matt Evans <matt@ozlabs.org>, Mina Almasry <almasrymina@google.com>, 
+	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <shuah@kernel.org>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Vipin Sharma <vipinsh@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 16 Nov 2026 09:52:54 -0800
-Message-Id: <DMWTS6IPSI2R.3EJQC130JYVW3@google.com>
-Cc: <cjia@nvidia.com>, <kjaju@nvidia.com>, <vsethi@nvidia.com>,
- <zhiw@nvidia.com>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
- <linux-cxl@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <linux-hardening@vger.kernel.org>
-Subject: Re: [PATCH v6 31/31] selftests/vfio: Add CXL Type-2 passthrough
- tests
-From: "David Matlack" <dmatlack@google.com>
-To: <mhonap@nvidia.com>, <alex@shazbot.org>, <jgg@ziepe.ca>,
- <ankita@nvidia.com>, <jic23@kernel.org>, <dave.jiang@intel.com>,
- <alejandro.lucero-palau@amd.com>, <smadhavan@nvidia.com>, <corbet@lwn.net>,
- <skhan@linuxfoundation.org>, <dave@stgolabs.net>,
- <alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
- <iweiny@kernel.org>, <ming.li@zohomail.com>, <yishaih@nvidia.com>,
- <skolothumtho@nvidia.com>, <kevin.tian@intel.com>, <bhelgaas@google.com>,
- <dmatlack@google.com>, <kees@kernel.org>, <gustavoars@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20261016161839.2765592-1-mhonap@nvidia.com>
- <20261016161839.2765592-32-mhonap@nvidia.com>
-In-Reply-To: <20261016161839.2765592-32-mhonap@nvidia.com>
 
-On Fri Oct 16, 2026 at 9:18 AM PDT, mhonap wrote:
-> Exercise the vfio-cxl contract on a bound Type-2 device: the CXL
-> device-info flag and the two vendor-type regions, the HDM memory mmap
-> (including a 2 MB huge fault), the read-only trapped decoder region
-> against the live host-committed decoder, and the guest's DVSEC reset
-> doorbell and manual HDM discovery.
+On Sun, Nov 15, 2026 at 3:19=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> wr=
+ote:
+>
+> On Thu, Nov 12, 2026 at 01:47:03PM -0800, David Matlack wrote:
+> > On Thu Nov 12, 2026 at 12:35 PM PST, Alex Mastro wrote:
+> > > Hey David,
+> > >
+> > > On Wed, Nov 11, 2026 at 07:24:04PM +0000, David Matlack wrote:
+> > >
+> > >>     Is requiring userspace to re-issue IOMMU_IOAS_MAP_FILE the expec=
+ted
+> > >>     uAPI behavior?
+>
+> Yes. Even if we wanted to the locking is doesn't allow trying to do it
+> automatically.
+>
+> > The way I designed the P2P selftest support requires 2 things:
+> >
+> >  (A) initiator: A device that has a VFIO selftests driver.
+> >  (B) target: A device that can provide a memory BAR (vfio_pci_find_mem_=
+bar()).
+> >
+> > So far I haven't found a single device that can do both. But you are
+> > right that theoretically a single device could satisfy both
+> > requirements.
+>
+> mlx5 can do both
 
-I tried running this test in a VM with the emulated cxl-type2 device
-from your QEMU RFC [1], on an x86 q35 machine with intel-iommu. Out of
-the box the device binds as plain vfio-pci and the fixture skips
-everything. v6 now requires that the host can do CPU cache invalidation
-for CXL Reset, and cpu_cache_has_invalidate_memregion() returns false in
-a VM (x86 refuses it under a hypervisor, and arm64 has no cache
-maintenance provider in a guest).
+Looks like GPUs and NVMe can do both as well.
 
-The QEMU RFC reports 19/19 passing in an Arm guest, but that was against
-v5, which didn't have this requirement. How did you run the v6 version
-of this test without hardware? Did you use something like
-CONFIG_CXL_REGION_INVALIDATION_TEST? That option only covers region
-management in drivers/cxl/core/region.c, and depends on CXL_REGION, so
-it doesn't help here.
-
-I added a local test-only bypass (a CONFIG_CXL_RESET_INVALIDATION_TEST
-that skips the invalidation in cxl_reset_check() and
-cxl_hdm_quiesce_prepare()/cxl_hdm_ranges_invalidate()), I get 26 passes
-and 1 skip (pm_d3hot_restores_decoder, since cxl-type2 has no PM
-capability in QEMU). I think something like that belongs in the
-cxl_reset series. Otherwise this test can only be run by people with
-real Type-2 hardware.
-
-[1] https://lore.kernel.org/linux-cxl/20261106035911.1280066-1-mhonap@nvidi=
-a.com/
-
-> Check that the decoder register region reads fail with EIO while Memory
-> Space is disabled, and that the decoder reads back committed and HDM
-> access works after low power entry and exit.
-
-The series says a Type-2 device loses its committed HDM decoder in D3hot
-and D3cold (patches 17 and 30), but the emulated cxl-type2 device in
-your QEMU RFC has no PM capability, so on it these tests never take the
-decoder restore path in vfio_cxl_power_up(). Please make the emulated
-device behave the same way as the real hardware across D3hot (PM
-capability, No_Soft_Reset, and whether the decoder is lost), so that the
-selftest exercises the same vfio-cxl code paths in a VM as it does on
-hardware.
-
-To help get that right: what does lspci -vv show for the PM capability
-of the device you tested with (NoSoftRst+ or NoSoftRst-), and did you
-observe the decoder actually being lost?
-
-> Add a partial-mmap path to the vfio selftest library so the trapped
-> component BAR maps its sparse ranges, and an __iommu_map_file() helper fo=
-r
-> the dma-buf mapping.
-
-Please split the library changes into separate commits ahead of the
-test: __iommu_map_file(), the sparse mmap support in vfio_pci_bar_map(),
-and each of the new libvfio helpers suggested below. That way each one
-can be reviewed on its own, and the final commit only adds the test, its
-Makefile entry, and the MAINTAINERS line.
-
-This series is already quite long (31 patches), and with the library
-changes split out the selftest changes will grow to several patches.
-Consider sending all the VFIO selftests patches as a separate series
-that depends on this one.
-
-> +/* Return the sparse-mmap capability in @info, or NULL if the region has=
- none. */
-> +static struct vfio_region_info_cap_sparse_mmap *
-> +vfio_pci_sparse_mmap_cap(struct vfio_region_info *info)
-> +{
-> +	struct vfio_info_cap_header *hdr;
-> +	u32 offset;
-> +
-> +	if (!(info->flags & VFIO_REGION_INFO_FLAG_CAPS))
-> +		return NULL;
-> +
-> +	for (offset =3D info->cap_offset; offset; offset =3D hdr->next) {
-> +		hdr =3D (void *)info + offset;
-> +		if (hdr->id =3D=3D VFIO_REGION_INFO_CAP_SPARSE_MMAP)
-> +			return (struct vfio_region_info_cap_sparse_mmap *)hdr;
-> +	}
-> +
-> +	return NULL;
-> +}
-
-This walks the region info capability chain looking for one ID, which is
-the same thing find_region_cap() does in the test. Please add one
-generic libvfio helper that looks up a region info capability by ID, and
-use it in both places.
-
-> + * Usage: ./vfio_cxl_type2_test <BDF>  (or export VFIO_SELFTESTS_BDF=3D<=
-BDF>).
-> + * The device must be bound to vfio-pci with the vfio-cxl module availab=
-le.
-
-Please document how to run this test in more detail: the hardware
-requirements, how to set up the emulated QEMU device, and the kernel
-config needed (VFIO_CXL, IOMMUFD, any test-only bypass), so others can
-reproduce your results.
-
-> +/* vfio-pci region-offset packing is kernel-internal, not UAPI; define l=
-ocally. */
-> +#ifndef VFIO_PCI_OFFSET_SHIFT
-> +#define VFIO_PCI_OFFSET_SHIFT		40
-> +#endif
-> +#ifndef VFIO_PCI_INDEX_TO_OFFSET
-> +#define VFIO_PCI_INDEX_TO_OFFSET(i)	((uint64_t)(i) << VFIO_PCI_OFFSET_SH=
-IFT)
-> +#endif
-
-As the comment says, this is kernel-internal and not uAPI, so the test
-shouldn't depend on it. Please use vfio_region_info.offset from
-VFIO_DEVICE_GET_REGION_INFO instead, as comp_bar_sparse_mmap already
-does for the BAR. Better yet, use region access helpers in libvfio that
-take a region index and apply the offset internally (see below), so the
-test never computes region offsets itself.
-
-> +/* Find a CXL region by subtype; returns the region index or -1, @buf le=
-ft holding its info. */
-> +static int find_cxl_region(int fd, uint32_t nregions, uint32_t subtype,
-> +			   void *buf, size_t bufsz)
-> +{
-> +	uint32_t i;
-> +
-> +	for (i =3D 0; i < nregions; i++) {
-> +		struct vfio_region_info *ri =3D buf;
-> +		const struct vfio_region_info_cap_type *t;
-> +		const struct vfio_info_cap_header *hdr;
-> +
-> +		memset(buf, 0, bufsz);
-> +		ri->argsz =3D bufsz;
-> +		ri->index =3D i;
-> +		if (ioctl(fd, VFIO_DEVICE_GET_REGION_INFO, ri))
-> +			continue;
-
-This is a generic lookup of a region by type and subtype. Only the CXL
-vendor ID is specific. Please make it a libvfio helper (e.g.
-vfio_pci_find_region(device, type, subtype)) built on the existing
-region info code in libvfio.
-
-More generally, please replace the raw ioctl() calls throughout the test
-with libvfio helpers: VFIO_DEVICE_GET_INFO, VFIO_DEVICE_GET_REGION_INFO,
-and VFIO_DEVICE_FEATURE for DMA_BUF and LOW_POWER_ENTRY/EXIT. Please
-follow the existing convention, e.g. __vfio_pci_device_reset() and
-vfio_pci_device_reset(): a double-underscore variant that returns -errno
-for the tests that expect failures or skip when something isn't
-supported, and a plain variant that asserts success.
-
-> +/* Walk the PCI extended capability list for the CXL Device DVSEC. */
-> +static uint16_t find_cxl_dvsec(struct vfio_pci_device *dev)
-> +{
-
-Same here, the extended capability walk and the DVSEC match aren't
-CXL-specific. Please consider vfio_pci_find_ext_capability() and
-vfio_pci_find_dvsec(device, vendor, id) helpers in libvfio, with the
-test passing in the CXL IDs.
-
-> +/* Read config space from sysfs, which is the hardware, not the vfio vie=
-w. */
-> +static int sysfs_config_read(uint32_t off, void *buf, size_t len)
-> +{
-> +	char path[128];
-> +	ssize_t n;
-> +	int fd;
-> +
-> +	snprintf(path, sizeof(path), "/sys/bus/pci/devices/%s/config",
-> +		 device_bdf);
-> +	fd =3D open(path, O_RDONLY);
-> +	if (fd < 0)
-> +		return -errno;
-> +	n =3D pread(fd, buf, len, off);
-> +	close(fd);
-> +	return n =3D=3D (ssize_t)len ? 0 : -EIO;
-> +}
-
-This and sysfs_config() further down do the same thing. Please replace
-both with one sysfs config access helper in lib/sysfs.c, modeled after
-the existing vfio config helpers: a sysfs_config_access(bdf, write,
-offset, size, data) core with sysfs_config_read{b,w,l}() and
-sysfs_config_write{b,w,l}() wrappers that assert on failure, like
-vfio_pci_config_access() and vfio_pci_config_read{b,w,l}().
-
-Taking the BDF as a parameter also gets helpers off the device_bdf
-global. Please only use device_bdf where the device is opened
-(FIXTURE_SETUP() and close_restores_open_time_command). Everywhere else
-can use self->dev->bdf.
-
-> +/* The trapped block starts at the HDM decoder registers; CTRL 0 reads b=
-ack. */
-> +TEST_F(vfio_cxl, comp_regs_hdm_read)
-> +{
-> +	uint64_t ctrl =3D self->comp_off + CXL_HDM_DECODER0_CTRL_OFFSET(0);
-> +	uint32_t val =3D 0;
-> +
-> +	ASSERT_GE(self->comp_size, CXL_HDM_DECODER0_CTRL_OFFSET(0) + 4);
-> +	ASSERT_EQ((ssize_t)sizeof(val),
-> +		  pread(self->dev->fd, &val, sizeof(val), ctrl));
-> +}
-
-Please add region access helpers to libvfio instead of open-coding
-pread()/pwrite()/mmap() on the device fd, which this test does in about
-50 places. Something modeled on the config space helpers:
-__vfio_pci_region_access(device, index, write, offset, size, data)
-returning the number of bytes or -errno, vfio_pci_region_access()
-asserting success, and typed vfio_pci_region_read{b,w,l,q}() and
-vfio_pci_region_write{b,w,l,q}() wrappers. Then this becomes:
-
-	val =3D vfio_pci_region_readl(self->dev, self->comp_idx,
-				    CXL_HDM_DECODER0_CTRL_OFFSET(0));
-
-The double-underscore variant covers the expected failures, like
-comp_regs_read_needs_memory and the unaligned and out of range tests.
-vfio_pci_config_access() could become a wrapper around the same code
-using VFIO_PCI_CONFIG_REGION_INDEX. libvfio would need to cache the
-region info for all regions, not just config space and the BARs, so it
-can apply the offset reported by VFIO_DEVICE_GET_REGION_INFO.
-
-Similarly, __vfio_pci_region_mmap() and vfio_pci_region_mmap() could
-cover the HDM region mappings and the expected mmap failures over the
-decoder block, and vfio_pci_bar_map() could be built on them.
-
-> +/* Find a standard capability through the vfio config view. */
-> +static uint8_t find_std_cap(struct vfio_pci_device *dev, uint8_t id)
-
-Please make this a libvfio helper too, e.g.
-vfio_pci_find_capability(device, cap_id).
+How would we implement vfio_pci_find_mem_bar() for mlx5? BTW for the
+target device, by "a memory BAR" I meant "a region of a memory BAR
+that behaves like normal RAM". Sorry that was not clear.
