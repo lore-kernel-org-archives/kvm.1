@@ -1,68 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=219.143.121.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794814704;
-	b=1y61uhIVvrMLvjjpu7vEPODMxIPMki1fn3AFL4iPjf+psNNAAphK3W0qwf/oSymkxBf6
-	 mCnDiklI3B3p/PuM58orDB2Vik/c2InD2sWAlxjbLK9849gThXMG/bHqku/FUFD7ovJCo
-	 qLhkoOviIZ0y5x+jMSh7v2YwQfB8zHGD0P0m9SJq3trc3E+6z9CBQ29sZ+foBdMVWdo9u
-	 CkW9FH72ZrYFgnaM7EjlHkDis/wKHxsAZQJOlCkVZ//HN1N2PHZMi9wBp2T7Cc/TELME5
-	 kobPAPleiszy8UCRcXVOtknn6nyTZNP+ibL4bs6hwWAysocVDTua5UA+Rlk0DbbEboA==
+	t=1794816034;
+	b=ZUpuFqQp7vPevDNmWXFnoVThqN43TAZNXy15im7baorgAB5JrvN3p5qGfsrOdRGZrC6n
+	 thNr4PxZhBTI3+nEO0yvthQDHE4UsfT4c7jO8gGzKHfQZ6VH/LwlOdy+09WQtTR/Sw5n4
+	 r5ZfkzL5OzQpI5KIthDODcnMLYucv2JgyNfF+7JtwplChfNplHAJDXowt+FrmcLTlWEMK
+	 CauCiCFz3jHKk90liKp4jVWysGfTshNSVGvlAYSR1AZhh4TIAkRlO9UpVze+w0tuZv34P
+	 SLg76d+PMcHVgtI7sKt1S1k4G8sPOjUcWl6aMbopeo9PriaBRn/vo8HDdcYDBWMBGGw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794814704;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=pI+qB/jORBsA8c6hsUYOeeDt5LaDuCmT+exW9sgyzwo=;
-	b=vTN+utaggqu4OX0D5o5Eh6uwSkYmYGPBse+iUqGmefsk3ZfssqNHlwhzFi+Do7905PVs
-	 Eqdy8fiADwtAp0dAbVmhLq/go7N/4/2TS39V1imnE2+JwCBo4ljZo6eYWW7sbXSzZJwDD
-	 +AXlTCHQHaPUdpsUrNlEKAYyUWtmxQafWdAEOu+9HOdMrj3mi+rb7nnz69IzOtCAdckmv
-	 0T91sMhheuSE/ewbNnD5bvCgiRXoF7lPHQCcM4t5PGNypLacvdiy5H5D2GR15fd7x3Axh
-	 ia0lUh0WqviIGny0Hccp+Mvb4bB1/qXdViyfTH5nth5Ul/JNA5LAmoSAqWzB4ixp4Qw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794816034;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:X-Mailer:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:X-TLS:
+	 X-ENVELOPE-SENDER:X-SOURCE-IP:X-FangMail-Miltered:X-FangMail-Envelope:
+	 X-FangMail-Bounce-Flag:X-FangMail-Outinfo:X-CLEAN:Message-Id:
+	 X-Fangmail-Anti-Spam-Filtered:X-Fangmail-MID-QID;
+	bh=OpNIxYQP5qejuVWtKFHCVeasqyFNmqtZ4cu+mSDOhDg=;
+	b=aXbaEoq0xkdw19I5l+v2qiBTVQeofF6wzsZ40j6e+r0sOMllxY9Wfxx9OMOI6U9ZIZvv
+	 kxADHvNJ8HEfg9ZIt5zizAYf9w3os4g9W1A6hEWtJMPTjtL311KbGMHIPWuRGuEA8p+qr
+	 TTpqZTE/UKiHtONWCVb54+8mzJXSTa6HysPnrl8rtzg8z0T4h7Bt6/jfib215leq4IZn2
+	 QvRom86y5BqlIrzkbNHBEDtnFrPe/HOIltKJdlslOALNJyQUWc+zq5ckGT+NUS/HZzfdG
+	 dSw1wDu6zDcPgdsz2r3DymgBNZadU0RDi0iiOK0gX3SGqdgGtE020bju7pNoBkr6mMg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="VjP92/Gl";
-	arc=none smtp.remote-ip=198.175.65.19
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=isoftstone.com;
+	spf=pass smtp.mailfrom=isoftstone.com;
+	arc=none smtp.remote-ip=219.143.121.9
+Received: from spam.isoftstone.com (smg.isoftstone.com [219.143.121.9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4127606A329;
-	Mon, 16 Nov 2026 07:38:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4127606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VjP92/Gl
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794814703; x=1826350703;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=VCBdU3HmJwCtXAadN2uCRp5YZw+Cf4Kdztj+N3BY2z4=;
-  b=VjP92/GljPoN8MOjryJBcKXQLhDwucxDUhnGJpDQdVxRwwwljIMoHmbx
-   +bwGkow9H4wRxCnQAg2SIeutQO+VPVZKkIp4N6ljk9nvjn6h7HvrSwpls
-   8qfX5WaHFiqL/Ba9YKPgMC8CCD8CJBOxZJYjYaTOGzYdnOA+kwSRjekOI
-   s2dgwbBq+yB1J21B/rGcNmpotYdmLtEpQIfNmTPZcukyIR/jppQkAnM4o
-   z9UXfMVhPaPkzl8KY2xol+Ztq82wTD/QHIB/+aBtgE1NupQqxarU3i9nq
-   hxAE50Yj3M8JpQjo62fYbpavuOUzlsZecVVe8Z010f02fIGHI4NBRxc06
-   g==;
-X-CSE-ConnectionGUID: PVr9x0ymTdCOcr0s6Sz+5A==
-X-CSE-MsgGUID: EPyOmTjGQDuh5kDlHljNVQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11967"; a="3582034"
-X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; 
-   d="scan'208";a="3582034"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2026 23:38:22 -0800
-X-CSE-ConnectionGUID: zin4g8rdTdGww90ZxyGBNg==
-X-CSE-MsgGUID: ckScDyXfR6eMSDFDs7pkTQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; 
-   d="scan'208";a="9798707"
-Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.249.52]) ([10.124.249.52])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2026 23:38:17 -0800
-Message-ID: <7ef6d626-4920-434f-bbd9-eda46e7ab780@linux.intel.com>
-Date: Mon, 16 Nov 2026 15:38:14 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F608606A31C;
+	Mon, 16 Nov 2026 08:00:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F608606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isoftstone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isoftstone.com
+Received: from ldzh.. (unknown [221.226.109.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dlzhangak@isoftstone.com)
+	by spam.isoftstone.com (FangMail) with ESMTPSA id 4jSgJq153Xz73VN;
+	Mon, 16 Nov 2026 16:00:27 +0800 (CST)
+From: Daolong Zhang <dlzhangak@isoftstone.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Daolong Zhang <dlzhangak@isoftstone.com>
+Subject: [PATCH v2] KVM: VMX: Disallow 16-bit busy TSS (type 3) for TR in IA-32e mode
+Date: Mon, 16 Nov 2026 16:00:26 +0800
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20261116070819.980621-1-dlzhangak@isoftstone.com>
+References: <20261116070819.980621-1-dlzhangak@isoftstone.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,122 +59,69 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, Robin Murphy <robin.murphy@arm.com>,
- Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>,
- Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
- Ankit Soni <Ankit.Soni@amd.com>, Nicolin Chen <nicolinc@nvidia.com>,
- John Starks <dev@jstarks.net>
-Subject: Re: [PATCH v7 13/18] iommu/vt-d: Handle reattach of the restored
- domain
-To: Samiullah Khawaja <skhawaja@google.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- David Woodhouse <dwmw2@infradead.org>
-References: <20261110040828.1774343-1-skhawaja@google.com>
- <20261110040828.1774343-14-skhawaja@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20261110040828.1774343-14-skhawaja@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TLS: YES
+X-ENVELOPE-SENDER: dlzhangak@isoftstone.com
+X-SOURCE-IP: 221.226.109.28 unknown Mon, 16 Nov 2026 16:00:27 +0800
+X-FangMail-Miltered: at fangwg01 with ID 6AFAB81A.00A by FangMail milter!
+X-FangMail-Envelope: 1794816027/4jSgJq153Xz73VN/6AFAB81A.00A/221.226.109.28/[221.226.109.28]/ldzh../<dlzhangak@isoftstone.com>
+X-FangMail-Bounce-Flag: 1794816027.6AFAB81A.00A
+X-FangMail-Outinfo: 1794816027/6AFAB81A.00A/4jSgJq153Xz73VN/dlzhangak@isoftstone.com/1
+X-CLEAN: YES
+Message-Id: <1794816027.6AFAB81A.00A.4jSgJq153Xz73VN@fangwg01>
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6AFAB81A.00A/4jSgJq153Xz73VN
 
-On 11/10/2026 12:08 PM, Samiullah Khawaja wrote:
-> Reattach the restored domain to the preserved device using restored
-> domain ID. While reattaching do not setup the context and PASID entries
-> as those are preserved during liveupdate.
-> 
-> Note that in this phase nothing clears IOMMU_SER_FLAG_INCOMING of the
-> restored domain or the restored state of the device, so the restored
-> domain cannot be replaced yet. Replacing it is left to a later phase.
-> 
-> Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
-> ---
->   drivers/iommu/intel/iommu.c      |  28 ++++--
->   drivers/iommu/intel/iommu.h      |  14 +++
->   drivers/iommu/intel/liveupdate.c | 141 +++++++++++++++++++++++++++++++
->   3 files changed, 175 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-> index b3402fd9fe75..95ec37554360 100644
-> --- a/drivers/iommu/intel/iommu.c
-> +++ b/drivers/iommu/intel/iommu.c
-> @@ -3296,6 +3296,9 @@ static int intel_iommu_attach_device(struct iommu_domain *domain,
->   {
->   	int ret;
->   
-> +	if (dev_iommu_restored_state(dev))
-> +		return intel_iommu_attach_restored_device(domain, dev);
+According to Intel SDM Vol. 3C, "Checks on Guest Segment Registers", the
+TR segment type must be 11 (64-bit busy TSS) when the "IA-32e mode guest"
+VM-entry control is 1, and may be 3 (16-bit busy TSS) or 11 (32-bit busy
+TSS) only when "IA-32e mode guest" is 0.
 
-How is the restored domain's type and page table format selected? I
-don't see the allocation path using the preserved state to choose
-between different domain type and page table format. Could this result
-in a mismatch with the hardware configuration?
+Currently, tr_valid() unconditionally allows type 3 even when the guest is
+in IA-32e mode (long mode). When emulate_invalid_guest_state is enabled,
+this causes __vmx_guest_state_valid() to falsely report a valid guest state
+for a 64-bit guest with a 16-bit busy TSS, resulting in a hardware VM-Entry
+failure (EXIT_REASON_INVALID_STATE / KVM_EXIT_FAIL_ENTRY) instead of
+emulating the invalid guest state.
 
-> +
->   	device_block_translation(dev);
->   
->   	ret = paging_domain_compatible(domain, dev);
-> @@ -3426,7 +3429,8 @@ static struct iommu_device *intel_iommu_probe_device(struct device *dev)
->   	info->iommu = iommu;
->   	RB_CLEAR_NODE(&info->node);
->   	if (dev_is_pci(dev)) {
-> -		if (ecap_dev_iotlb_support(iommu->ecap) &&
-> +		if (!dev_iommu_restored_state(dev) &&
-> +		    ecap_dev_iotlb_support(iommu->ecap) &&
->   		    pci_ats_supported(pdev) &&
->   		    dmar_ats_supported(pdev, iommu)) {
->   			info->ats_supported = 1;
-> @@ -3531,12 +3535,16 @@ static void intel_iommu_release_device(struct device *dev)
->   	struct device_domain_info *info = dev_iommu_priv_get(dev);
->   	struct intel_iommu *iommu = info->iommu;
->   
-> -	iommu_disable_pci_pri(info);
-> -	iommu_disable_pci_ats(info);
-> +	if (!dev_iommu_restored_state(dev)) {
-> +		iommu_disable_pci_pri(info);
-> +		iommu_disable_pci_ats(info);
+Check is_long_mode(vcpu) in tr_valid() and reject type 3 when the vCPU is
+in IA-32e mode. Also update vmx->vt.emulation_required in vmx_set_efer() so
+that changes to EFER.LMA (such as in prepare_vmcs02() after vmx_set_cr0())
+keep emulation_required in sync with vmx_guest_state_valid().
 
-Above changes are not needed for domain reattachment, right? My
-understanding is that ATS and PRI are not supported for preserved
-devices in this phase. If so, could they be split into a separate patch?
+Fixes: 648dfaa7df2d ("KVM: VMX: Add Guest State Validity Checks")
+Signed-off-by: Daolong Zhang <dlzhangak@isoftstone.com>
+---
+v2:
+- Recompute vmx->vt.emulation_required in vmx_set_efer() so that EFER.LMA
+  updates (e.g. in prepare_vmcs02() after vmx_set_cr0()) do not leave
+  emulation_required out of sync with vmx_guest_state_valid().
+- Use full real name ("Daolong Zhang") in Author and Signed-off-by.
 
->   
-> -	if (info->pasid_enabled) {
-> -		pci_disable_pasid(to_pci_dev(dev));
-> -		info->pasid_enabled = 0;
-> +		if (info->pasid_enabled) {
-> +			pci_disable_pasid(to_pci_dev(dev));
-> +			info->pasid_enabled = 0;
-> +		}
-> +	} else {
-> +		intel_iommu_detach_restored_device(dev);
->   	}
->   
->   	mutex_lock(&iommu->iopf_lock);
-> @@ -3544,11 +3552,15 @@ static void intel_iommu_release_device(struct device *dev)
->   		device_rbtree_remove(info);
->   	mutex_unlock(&iommu->iopf_lock);
->   
-> -	if (sm_supported(iommu) && !dev_is_real_dma_subdevice(dev) &&
-> +	if (!dev_iommu_restored_state(dev) && sm_supported(iommu) &&
-> +	    !dev_is_real_dma_subdevice(dev) &&
->   	    !context_copied(iommu, info->bus, info->devfn))
->   		intel_pasid_teardown_sm_context(dev);
->   
-> -	intel_pasid_free_table(dev);
-> +	if (!dev_iommu_restored_state(dev))
-> +		intel_pasid_free_table(dev);
-> +	else
-> +		kfree(info->pasid_table);
->   	intel_iommu_debugfs_remove_dev(info);
->   	kfree(info);
->   }
+ arch/x86/kvm/vmx/vmx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Thanks,
-baolu
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index cc75feec05da..bc5137a3fb68 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -3253,6 +3253,7 @@ int vmx_set_efer(struct kvm_vcpu *vcpu, u64 efer)
+ #endif
+ 
+ 	vmx_setup_uret_msrs(vmx);
++	vmx->vt.emulation_required = vmx_emulation_required(vcpu);
+ 	return 0;
+ }
+ 
+@@ -3898,7 +3899,7 @@ static bool tr_valid(struct kvm_vcpu *vcpu)
+ 		return false;
+ 	if (tr.selector & SEGMENT_TI_MASK)	/* TI = 1 */
+ 		return false;
+-	if (tr.type != 3 && tr.type != 11) /* TODO: Check if guest is in IA32e mode */
++	if (tr.type != 11 && (is_long_mode(vcpu) || tr.type != 3))
+ 		return false;
+ 	if (!tr.present)
+ 		return false;
+-- 
+2.48.1
+
