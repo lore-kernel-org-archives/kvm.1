@@ -1,93 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.53
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794927202;
-	b=SE1UIeeymhJV3IXBLDQ/1lakSunrX6VSfXbAgFojhPEM9kX5CSKqyn4HxJ4aqlG6b23l
-	 21E+oaUTief76KCEJySaNZE8uFkuQO+vK7siek0861zc9sPJWnweYeBJ9JkgZXG37SfIC
-	 YahfXWfdSED4G58197++LTqq2MBBvqq0tPtDhiOF/UQP+i+1uHLsITpUuE49QsbHQFIqS
-	 R/WExXuU7kQg9Fo5cNTcrMC4ghXY9qg4pJ6aggLVusz2n5Usb+YVGVslKJn1glkG/NpUF
-	 E2n8GAkriEY9Vv+B0iNXCfCn70naLXrHUMia/JfrvRluLr6pMqCdIpMSAJqtSVG4OYQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794927202;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.41
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794927836;
+	b=k6sKZMl8ZcDac3ivPSB31o+votKzQ4l516G1SoW+XOfAQjZthzrehfLtl2CV5UIvBEzL
+	 bhmgLtCi25QGAo1eNZKn/uTpRWvviFKD5ySKHVbmc2uI4TBnQal70VdvxKoQ3gt4IWvdm
+	 btqGQlvh79x+jgQdL+fgDpy0gnhsFRGjpTD9YZ2El8x9L04/ur5yMb1a/kvwneTPHAJnQ
+	 1nIJRJP5ySbqeL9P7bPnDNUbksA6UBfYANXkre/cE6Lu9qd/TccOuQlQYWcgt2QXU1ekK
+	 u36e4jXn/ivTnnAh+7c4TOG0W4z3mYUE5+APmwe1cm/ZrwmTC2qmO2NnZgKlG97pGHQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794927836;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=LAxy3goky0t3VPjV6FUpbe6k2gJl15O6ptslh5cvBS4=;
-	b=1T5/ETbeSp9p17HbqiIJ89TYMJcLymMrgOUrew5aAMPAvvVR8zsxyhluAyh6kudge0Au
-	 C4LiMF71+ueHQ9I8pQq9yiV8sFhu8nsvbO1uC909UoLmLnYvqfRRIChfFIIvCnXTaphcy
-	 qQEXgf4pRsvCpePLA84DOobGJahRPGIm0Cambe/RrG8aR33lewwpH3RfIso2KFf/4sdAR
-	 NDBQGvSTEk+6j3mH7NbRO8ds5JmAb54Q/WccXkF/mSEwPqKRCMgS4KdbzedV/RmNraz3r
-	 jBTt9jpl7JWTou7XHhz9KHZ7nZi2+R+ORQU5KrMXYQIycEDWPoH+8IesXO+atTMbuXw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Fzb9MBq1;
-	arc=none smtp.remote-ip=209.85.216.53
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type;
+	bh=UR0Gfgv/fdEsWHImhEXrlTh92/mXRBGXB0/jlnan5Vo=;
+	b=vg4ZMqokYqDVvsFXWLyKzIZrhWigbsuatSE+EVGgHKZWdlifW9H1PzMCpT8q2/snrslK
+	 +A9OWWPBFWlcU/2dsqVJ8O+N9vp4f7Rg54mFXHOsMUytm1ZVIxDEKjxNTzqgAF4IEA3uR
+	 S9TyKH9Y8I6zwpHXbKwrksjjdWXeGCtuAXHWq6XBIOgiUMe9kzfSuY7ir/7115He2TtqA
+	 YmxrXS/7yOkLHbOK3vPKvdK6DgBbSoz0shanzamxgaRk8E+Dpb1gkDvZcLWmYUAecJVV+
+	 92CggMvRvbjWxMqq1rHnWGTEWtD/PJX5VDnvg/nFNb4JljiIA4j8w+SF/XtRnPE5PIQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=RLgZDS+t;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.41
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534CC606A33B
-	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 14:53:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 534CC606A33B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87867606A330
+	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 15:03:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87867606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Fzb9MBq1
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3b3c9820789so145798a91.1
-        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 06:53:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=RLgZDS+t
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5c14bc5a743so10198e87.0
+        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 07:03:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794927835; cv=none;
+        d=google.com; s=arc-20260327;
+        b=D2/e935EjFUiNg36ya8Ccjufay2uRDOgQIlwmwDaDiCazHfkqniOwJ0HVbTIlvoPFT
+         BCT6tekQ59KjCItzM6gZfXXrWmqi+RtYV62grXSyeuednGm0PYx6edQ2l4AkOoeEWqjW
+         Zjb46nLgMLP4cqdmRO+DJt7lYxonPTxgbS54tZUcEsrV8om7vrx6cAP7Ij2Tjos3XZdZ
+         mGsCadBYEU5fXw44XdVYgfXD6AdkFLo/xlxBCav5BABAxS6AMfdagqW8UgGKkkrFwKZK
+         CGcAmh0K09sLho0d6aSgD+k7Ne+ttfx6DDxuwYdUHCkRy5IPBBahvaH6nEhkC3H/qGya
+         EVNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=UR0Gfgv/fdEsWHImhEXrlTh92/mXRBGXB0/jlnan5Vo=;
+        fh=eX0UUv20AwtGz/6DjiJ0HF+j7ya/SvNd9lj9bQBJBfo=;
+        b=Z7cDDxfMtrNOF/eGZMyVp8dGLPCafZ6/nTeIA7eulG5yrvF7Zc5ShfRaYUKExDM+2Z
+         /YAxmx6wzVgzOggSlFpgQlRY0R9N2yohoUv9h6joPTVsaoKIawULOxo1EetXxm1Ze29T
+         rHQoVv0pNb/qnBAPpA4pj7a2+Z8hr0dUYIomwV2ZNAhMn/XpIEQ6rndsDk4x7LtoRnUF
+         IN1Vu+JVHm7TIT6PUTgeXrHWBCzCH1/dfp/U7flpUE/dn9y1Am0JiJ8maL273/d49F5+
+         Q/PvKp0Icfvf8BlSG3e1UCVECWtJtrfpBxhRscg70T+KjbV4xNcQpq6ymn+IuWnaSQhl
+         T6aA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794927202; x=1795532002; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LAxy3goky0t3VPjV6FUpbe6k2gJl15O6ptslh5cvBS4=;
-        b=Fzb9MBq1nqqQ5zjQ+Wx2/Vjq33FDWcUWLbn5DIgBawulgIj6LpCy5iJd/uWlAO9x9k
-         Wrz8JnYfU3Hsfb6nH+cni+gd4X00dOuvLXQf7tzTdblTB5SMd2uWyoDcBcVAnU+S745f
-         QXA1LMI79dL3VlgXr0M5a56GkxxvvIuovTWut1uUPQ9ctBxtdezWs96MKudaZQp280R7
-         TFzwaPeTNLG82php9XbT7FlWi9zDqwBjRK+nSCZRPcNeDh6skRtWIv4ErLjfK8JttYuK
-         G0Dc+csvkFhHmnt/zicMRDo8kJuztfc8rKqcvbXtXWyCX+T1hygJFv/dC9VhjQT2BPVx
-         pYBg==
+        d=google.com; s=20260707; t=1794927835; x=1795532635; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UR0Gfgv/fdEsWHImhEXrlTh92/mXRBGXB0/jlnan5Vo=;
+        b=RLgZDS+tUgc+aaNm9VRRya/8Y5bVpU4/cnLDxlbXQR24Gg5ANKvAXTLTsFYt2NCIp0
+         2jyd5aeguZJl1ctNFBKuwfCP8SbVTnExWnMKW3Fv0poSqRoXhOMUMcWnTHNuuPMkEZZW
+         VTUXELdZNIIKZd7vVYOYo0ZBBmTopJdjskXM7GNk1gDPZZbSFJghrNYpil+4I2MCEzE5
+         2PzAI+sGRJSChS27Q/oSTVEq3+DBnGcdSMXh01K9y7TcThm4Fkw4xVhjciQJ40RZVrcS
+         L62FCt+c9SrrGjUIx3SR5Oom/VMjwoSwn1FAUhMKLgUr1NmtdvCAnJZM+Ieelqyj0/9c
+         I4ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794927202; x=1795532002;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LAxy3goky0t3VPjV6FUpbe6k2gJl15O6ptslh5cvBS4=;
-        b=0spbhXO4rK0JwaB29wxZ3ltKq4rK9ypmNHxPGHIaG11kT+Ay58VWAXK5tKoxhjCeSC
-         iaF3FgPMFvL3JGjwi/y+Lm+mxiCLvL1QLvxEsWcqenA1zT0WjbAk0m3D1EX01SVyU3el
-         Avsl4Abar2MM8YMPDN8UAdl9SNIyhLxTK018Vn5hanf5Dd+95c4qyZ88xDAJHpZhyHd7
-         YnwLVMflDGzHCT7q/GArypmN/OvKD9FYEnzAQ0qV7FJL3NiDqvArZ0HXKsY6t11KSU3Q
-         Fx3sFqLCetS64fMpaRVLLwkiivoSERGynzgXlTDklhTj+Gg53wPrLn+8fT/w3OzIKUTv
-         MM8A==
-X-Gm-Message-State: APuU4Z9AFQrsuAlxBJFDemO297xSdShxnkZfGFQFr+x75VDbFbgAV4mN
-	UVgZO+uHql4eX3IqxpRlXp+Xcpjv805ewMJJCVRK2t5veP3lvPGrz+Lo
-X-Gm-Gg: AZFdTZfov6MaQU0oxpOyRj4Llas+0wGKw5ig3dTjH9/3v54wK/1s8XDcRv1AjOa+FYr
-	cPbLXNg6B1lAPObBefipRz3qRewekxIkjYtM3Z3O4hZy1OaahOl+GSfo1JWCCwzFh2azfE1Vv+u
-	UDVflcfcAnpctwC2bmJ5ZKlBdL7opI+qWnoXetbOIrCWfGi3HTCfydraNvdOzmX+MM8Vk89aVi1
-	fQm4mWmvA4gEjEar94v2uNMk3d2a/f4Osqx6HciyHrpOBhTTQE5VtD10CCGI1/lNBBSelNz5cXA
-	HBku1JuutpCGi6bov/729GUeUAzv+6KeHQ95J0IQTH7hLnRXEb0M4nHBo+53ik/Ojv2r4Lw3npj
-	cS0pA5ehrt1Gg6+zT1nsUX7+nICPVowcaJw0Cg73Ss9DTghBrIbb6naWhf7nDI1MhkC8sWdxzZp
-	zJfRe2CYnc7uM8cSquiSCkzfO3yLA8LyEti1f9Vd1DOZ9a482LQHJ3Vhh0Gmu78OfKjDzz9ncZu
-	c0r/2ZV9wfAEZETF0o5n/+G3a/nZ1oykop5OsKACyHgHBwN5Shq3EU6W5PwGGOY5NtSZIPFyBnT
-	ZbFfWY94C5UEIQwKDx/3e/6+3x1Hg4+bNWy89yZL6vtHNo57V511m6s9oJ8IwV/7zOHju0hoM7f
-	//fQeVqDY9jN5Y3l5wS3PWzU1yXTZH8mMPAXNhop6
-X-Received: by 2002:a17:90b:3a0c:b0:3b1:7329:a121 with SMTP id 98e67ed59e1d1-3b1b0a0e800mr12479951a91.12.1794927201457;
-        Tue, 17 Nov 2026 06:53:21 -0800 (PST)
-Received: from lwq-System-Product-Name.. ([2602:feda:30:cafe:ec49:29ac:0:f6])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cddc18a2191sm6056636a12.21.2026.11.17.06.53.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2026 06:53:20 -0800 (PST)
-From: Yaohan Li <shunsheng1218@gmail.com>
-To: mst@redhat.com,
-	jasowangio@gmail.com,
-	eperezma@redhat.com
-Cc: kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] vhost: synchronize worker freeing on vhost-net teardown
-Date: Tue, 17 Nov 2026 22:53:14 +0800
-Message-Id: <20261117145314.1092372-1-shunsheng1218@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20260707; t=1794927835; x=1795532635;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=UR0Gfgv/fdEsWHImhEXrlTh92/mXRBGXB0/jlnan5Vo=;
+        b=g8jtEwDF/ZaDaLvvX0ZvUxq7nhNFCqJL2FG046u7SvLnhUgn3SPGziNIU6t9KNQpoW
+         az8hzd0CxDbD3Nl7ph/HEWzxddkzlBxvLcsykqj9u2mOqPg+xftr9KuEfMbUHqwIfDWS
+         Ey01jnv1k6oaIByuyZ3rnSBsynQcL+qqAlJwYqWJhU4JS/YukRN/RRiqlf5Ha/udvnHM
+         HWV6z+qxyyGY2pV2haSBp8XGbigi+n0hS70w2vDI3qPVYaEvBTTAt4QN+L65UtnrO4lW
+         ZWiF+7tygPcuaEcsPT6NLlqLrvuzHN5C5oVCKiO3psNLd/2dLJGyFe1R3P37PTbH8tzM
+         HEPw==
+X-Gm-Message-State: APuU4Z8KRXSzLDFXq304v20xYnRK/LxBJQ8GD0crbJyhwXYoJ9HLtK71
+	zHliGGyoUX6tpw5cAgOK4pJDAhzYIbfWXaN6FkEQZ2/Gix8yRco7tmj52mxw8+B0NrMnqZcl6i7
+	nHaqYxfPL93DfUD6pW8qzuvSkgj+QL5QbCBBMV7hp
+X-Gm-Gg: AYBFou1ettmVm/6mC1nmHH/9TuPJ6tqRLRo2ZF/zqcK/e7jJJ9CNsc8oYClKud9fiPZ
+	9k0t+LIsfA5NYKLxiVTZabcKNdv1wEgISREj3IGh2uxij3TsV6v0STfJCOZX2/84PjPfzYNUz8z
+	OuJvZlUdhj2CF3OjbQeV1l3lYrQqQIIjWAHHY64c4gK/D2NilT90mj2Jioz7VxWNsxE/2kCccCZ
+	SADEeIAP6a2daCOagOIz8SoV3UkXD4sI46ZXWgsk5N8+jh0ROTNwleTpIVBxoayZKc29rKMfHH7
+	pNpiL0L8XFbYhLD3aTrp4D2LG0kSeF9EEzVY/Pg2ZPaZA3gkQRkZXG5RIho07Wac/REwEd/FA6a
+	TQpQv8MphE2SHlsgIXPdQ8TWjAtkEpXmTjCR7GyWGEqLShGq1Iex4z+5RGzKZyFXepMQH6PJhe6
+	SzUoxPGsygxxN8Yi+wJ6yTEzCl
+X-Received: by 2002:a05:6512:2249:b0:5c1:543d:2e3e with SMTP id
+ 2adb3069b0e04-5c1a2166b35mr171174e87.7.1794927834031; Tue, 17 Nov 2026
+ 07:03:54 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -97,96 +103,50 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261116164358.142785-1-steven.price@arm.com> <20261116164358.142785-11-steven.price@arm.com>
+In-Reply-To: <20261116164358.142785-11-steven.price@arm.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Tue, 17 Nov 2026 15:02:00 +0000
+X-Gm-Features: AclHuK_cslY3zjG6J6IGbNXJdnealsL3yNGOi2bev9GDyOWEmQLYI5dVsAlimaY
+Message-ID: <CA+EHjTy-0k08Ukyo+4mmzqVn9UjRnvhy=BQT9kxSj7CBzzwO_Q@mail.gmail.com>
+Subject: Re: [PATCH v3 10/11] KVM: arm64: Dispatch stage-2 destruction by VM flavor
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
+	Christoffer Dall <christoffer.dall@arm.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Kohei Enju <enju.kohei@fujitsu.com>
+Content-Type: text/plain; charset="UTF-8"
 
-vhost_workers_free() only waits for RCU readers when sync is true.  Both
-vhost-net teardown paths pass false, relying on the assumption recorded
-when the sync parameter was introduced (5efd97e6f0c7) that "net and scsi
-stop their virtqueues before the workers are freed".
+Hi Steven,
 
-That assumption does not hold when a tap queue is detached while the
-socket is still attached.  __tun_detach() runs tun_queue_purge() on the
-detaching thread, so skb_queue_purge() releases the zerocopy skbs and
-vhost_zerocopy_complete() -> vhost_poll_queue() runs there rather than on
-the vhost worker.  The vhost_dev_flush() calls in vhost_net_flush() and
-vhost_dev_stop() only wait for the vhost workers, so the queueing can
-still be in flight when vhost_dev_cleanup() frees the worker, and
-vhost_worker_queue() then dereferences freed memory.
+On Mon, 16 Nov 2026 16:43:56 +0000, Steven Price <steven.price@arm.com> wrote:
+[...]
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+[...]
+>  static void kvm_stage2_destroy(struct kvm_pgtable *pgt)
+>  {
+>          struct kvm *kvm = kvm_s2_mmu_to_kvm(pgt->mmu);
+> -        unsigned int ia_bits = VTCR_EL2_IPA(pgt->mmu->vtcr);
+> -
+> -        /*
+> -         * Realm RTTs are inaccessible to the host and may contain stale data
+> -         * after the RMM has released them. The non-root RTTs are explicitly
+> -         * destroyed through RMI before the RD is destroyed; only the root PGD
+> -         * pages remain to be freed here.
+> -         */
+> -        if (!kvm_vm_is_realm(kvm))
+> -                stage2_destroy_range(pgt, 0, BIT(ia_bits));
 
-Pass sync=true from vhost_net_release() and vhost_net_reset_owner() so a
-grace period and a flush are observed before the workers are released,
-matching the vsock RESET_OWNER path.  Both are slow paths, and the extra
-grace period buys back the races described above.
+Could this patch go before patch 4? Then patch 4 wouldn't need to add
+this check.
 
-Testing: QEMU/KVM guest with KASAN and CONFIG_VHOST_NET, zerocopy enabled
-via vhost_net.experimental_zcopytx=1.  A second thread detaches one of
-the tap queues and frees the queued skb, and vhost_worker_queue() is
-delayed with a fault-injection module so that the close() or the
-VHOST_RESET_OWNER ioctl completes in between.  The delay only widens an
-existing window; the detach, the purge and the teardown are all
-unmodified upstream behaviour.
-
-Both teardown paths reproduce the use-after-free on this base, and both
-are clean with this change while the injection is still taken.  The same
-injection reproduced on the earlier base where the analysis was done.
-
-Signed-off-by: Yaohan Li <shunsheng1218@gmail.com>
----
-Prepared against v7.4-rc1-1969-g666539eecdf4.
-
-AI assistance: the analysis, the change and its review notes were
-prepared with Claude (Anthropic) as a coding assistant.  The author
-reviewed the reasoning and takes responsibility for the content.
-
-Test details.  The guest runs a KASAN kernel with vhost_net built in and
-zerocopy enabled through vhost_net.experimental_zcopytx=1.  The trigger
-attaches a tap queue to a vhost-net socket, queues a zerocopy skb, and
-detaches the queue from a second thread while the owning process closes
-the vhost fd (or issues VHOST_RESET_OWNER).  The second thread is the one
-that reaches vhost_zerocopy_complete() and then vhost_worker_queue().
-The fault-injection module resolves vhost_worker_queue.part.0 from
-/proc/kallsyms and spins only when the caller is that detaching thread,
-which makes the window deterministic; kasan_multi_shot is used so the
-remaining reports are not lost.
-
-Results on 666539eecdf4, one run per teardown path: the close path
-reports slab-use-after-free in vhost_worker_queue() four times, and the
-RESET_OWNER path likewise four times, with the free stack going through
-vhost_dev_cleanup() and vhost_dev_reset_owner() respectively.  With this
-change both paths complete without a report and the injected hit counter
-shows the delay was taken (1 of 5 probes for vhost_worker_queue(),
-the other four being callers outside the detaching thread).  A control
-run that closes mid-test without the delay is clean.
-
-The same injection reported on three consecutive runs on 776b6be748eb,
-which is where the analysis was originally done; the reproduction above
-is the confirmation on the base of this patch.
----
- drivers/vhost/net.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index 4570a4ffbab2..631855064b3d 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -1452,7 +1452,7 @@ static int vhost_net_release(struct inode *inode, struct file *f)
- 	vhost_net_stop(n, &tx_sock, &rx_sock);
- 	vhost_net_flush(n);
- 	vhost_dev_stop(&n->dev);
--	vhost_dev_cleanup(&n->dev, false);
-+	vhost_dev_cleanup(&n->dev, true);
- 	vhost_net_vq_reset(n);
- 	if (tx_sock)
- 		sockfd_put(tx_sock);
-@@ -1661,7 +1661,7 @@ static long vhost_net_reset_owner(struct vhost_net *n)
- 	vhost_net_stop(n, &tx_sock, &rx_sock);
- 	vhost_net_flush(n);
- 	vhost_dev_stop(&n->dev);
--	vhost_dev_reset_owner(&n->dev, umem, false);
-+	vhost_dev_reset_owner(&n->dev, umem, true);
- 	vhost_net_vq_reset(n);
- done:
- 	mutex_unlock(&n->dev.mutex);
--- 
-2.34.1
-
+Cheers,
+/fuad
