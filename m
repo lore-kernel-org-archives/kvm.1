@@ -1,133 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794958399;
-	b=BsucJ5YaDbt9geavTX9iJ8/9HyvgO55+j7mEzA3uUamKIWvDsxxmf22tSdBo5TwwQA6i
-	 nDiai7INaPAT4yEd+H4oZZi8jN2pA5aG0j/ohn+dmMPicGagsMkej1r/RRRLId+bQ45u1
-	 +WReKk42OHGwUR6XIbSDGxzSQqW1C4CFzx25ai0uzcw46VNqiT6WArFixZ6QCxFkusSOL
-	 Tnr6nx4ptFwdQpooSbr3fUj3XG9lZZ9H5BZWkMMI0/VHA4B5qR8JhdX7MRaGRtge/ZYCy
-	 /xQvUfl9K4w6mIUm2R170udS9sWPkpbYGaSlmPMhOMFQRs/FsROOZynkSQnqKxWhiHg==
+	t=1794959438;
+	b=rPYrhuaggU2PS2v/npSdp7wT4azLoGwSeK0sQCol7gO+e7hNvXU1p2iXel093nFPXZmy
+	 vNPwZcUKsPS0bC3oF/POMHtF20b6NjxFT9AXjN++te1ifWOB9wUH+Q1JcGUuXMiKuALDV
+	 VRNta2Sx5c5kMeBFWSREdUuGkoMbNQkkOsapEJdjL5IpyCPnqjufm5/xI77s7CsHkXDKM
+	 5sM496+qHGdVUUSxgyJo739bYI1i8zhtbcdp2e3HxoVbo89zm9t5IBEv2vl+DmM2jz82L
+	 KHQh6WBOs7JRKx73zsANJrANaejjgaYATEKJD4tk6tgVK8Zj4ogDr7TH8X/v7pTgb+A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794958399;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=VVypS2BH7BTIDP8XvJg3P0/Wb4ccvreAy4viuz45dWY=;
-	b=OD1m4FKCb3FLDiH0U4QeZMrrKIQFgDsb5qch9duLE02ztqZ1HP4PzJORHJH8R1MbXr0W
-	 BbPgFTtOz6eHfTLBSJoyW2NleOu+PnbXJ6bwQORkxUlubtjooMrzGi8khiaCtNVzgQE8i
-	 V2yYkNc8r7AMfjwmNP562E+RGlCprx9KatbErbqqPg9dVdcjCoOc5LAxcYangPHLsj5dX
-	 +SwR4aN0qwcriCeDRPyUDwDRK+Qul33oovzTWnCZ0vYHUhQD/E0TH+ZugfojTn+O2wQQ7
-	 lCbDJxcq+jTppxJVrC0N7xzjCBH8HvQfbzS2accppmHdC6OsDjz0k31XENRd6qinHGA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794959438;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=6YCN415HfGSWGfj0hnTG5tobjSWA0w1qx2azX15hpbc=;
+	b=XJb5kY9Vw8GwXQrfP/JFpAY4polDhK5bwtmaJe2RPBgPH451CVVLwAK3O/SosSIwbV4r
+	 222N11xMOLWW4tAO+bYNjAEjnEbGKYVk9s9l5OGCOfqGC20oytsDOFGzEE1Zf4R1wTKkq
+	 K94D0GCH7ovewi4zl5plnl5d5ZMSMYbDKNrCA31FhdSzIuztmciMU4NjDJft+EEaFXigJ
+	 RetfRXL+APydsWFJdkaka9e+ajVk8pIvCHvnMVgVUDOQta6GRxaO7xpTZDUdUncmZS+xi
+	 797ATO9Nu1BYjxbSvl7fsWuOm8pAC4mPe/i6YhgfJlR7ZLw2sragQO/MrNcwFVBZHGw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=shazbot.org;
-	spf=pass smtp.mailfrom=shazbot.org;
-	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b="O/nAIQ7K";
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=wsdD1Jy0;
-	arc=none smtp.remote-ip=103.168.172.145
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=J90E0CXK;
+	arc=none smtp.remote-ip=209.85.215.197
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE33606A883
-	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 23:33:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AEE33606A883
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D022606A331
+	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 23:50:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D022606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=O/nAIQ7K;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=wsdD1Jy0
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.phl.internal (Postfix) with ESMTP id CD140EC090F
-	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 18:33:17 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Tue, 17 Nov 2026 18:33:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1794958397;
-	 x=1795044797; bh=VVypS2BH7BTIDP8XvJg3P0/Wb4ccvreAy4viuz45dWY=; b=
-	O/nAIQ7KIz9miCX8OUQv0exfIWDQo6GU4ZnGJjkSH5NHfhU0Vu2iqezwq1Tw5iwO
-	qgbLYGQ6OGMLLJgVYcoB0mG/GpNpaNRR31l/vgRmIXqEU4zrDeqdbs5KOlMYdfKW
-	OpLa/KYF8nhviereQVFZE0gdQ3s73d4iCq14zGRS5Qplir7FovxBb9D3CBNa6aRf
-	gCGrQJ88auWUxJ+H8Wv9vS+890bwngIH1beLu5uKJMERw4v/aji3xpXCiGLmQqB5
-	kEMzDNecRk1OeZZfQTF7zmHr6LuiP5zi2i+iaO7acETL4+H2omj4ugIc+QPaJZtI
-	BvBIfYwC7asH/6k94hTtqg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794958397; x=
-	1795044797; bh=VVypS2BH7BTIDP8XvJg3P0/Wb4ccvreAy4viuz45dWY=; b=w
-	sdD1Jy039J3NtkZibDurMKuGngpWJ1hYQY5vV4YjfjIBNTbCLguD9broxlEUZbaR
-	2izOMSi5IBzFXBPmHso1PSpjYvmH6+K7XexGqiHCxojQhmvNgvQG/fVewthpBS8S
-	wkT1nVPWdmVmxjxaS3tMppAfdGggY0fdKwAVo56D+JPge6u/nNTfnxRnWlzihOs5
-	cfA6U0TuFIgsnEgx1RjMzuiz+CQX/mV0QsRhr+J1rjLPnJhze2f/vCEPc8cXKQHx
-	+HMD3KuoN9iMTv5Bm2S7vSd7c6PlHL7qWJK4TySMLftqE/F0nM8H+pO8lmQVj781
-	aDIJMYARTQP8WabajZDwA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1794958397; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:uE/jxc3YUOLGFRFML/2B8ed6a4bLz7SUdlnmM60KM6rQIRL
-	Va1djcKjvF5ZYid/lrInEbWe9Wi+fDWew5wW3pd0QevMy8RJZNwF1a4WIhkM4qAa
-	uVYaYrKAtO5ERI1bvle2UrsYuOHt8J+WSSZMTVU9h2Li0CmkXDHqpiPuP4g3NwGW
-	IBFcQ6rV3yZESGxCDrwI4isEP5I7DDRg6MbdXAN94iZgfCoORQBTQ3SpAGZjxpUy
-	FO1dsGrP4+gUWqUwWPFPYC7opzYeMm3IBfXtSPlBuVxPhmSuXKFXheqDxxduRLWI
-	l5ddzBx4DGz512YLW/NXRLZtubbPdWqHzB5kxkA==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:27q+KKo7XnsStduA99iu8sekMRO96NPbttKWHrolhyQ=:G/nOOdXrvsS0XmMnQ6K7L6R8U7MrOUPnWlNPXGT9/WE=;
-X-ME-Sender: <xms:POT8aoQqA35B6qL_87dZHdopUrCwbFiYGMLmDlRhohAM_6jXOpohXg>
-    <xme:POT8ana5BD-CqIq4YCJ_VxbZH0f_RrLxPI5pYLproLh_6aS1a4uDFrGJ6LNxMEG1u
-    W72883v_U5jPM3AwBCkWTov6M-3pGhlcherrFijxKBC_PhF1FSHeprY>
-X-ME-Received: <xmr:POT8ap7gLMc5gBNgElZtmUlkErVQgRxoljrCdyGXwofOstBdGxe-RJmjuxDbMw>
-X-ME-Proxy-Cause: dmFkZTEkeKvcm2WWrV2Nam7Bf9ttXaRNcoFtwJYSfKOnyZQAU7CIanTw/rB2zVFRxoJI7h
-    IeudW+EeYwM49qZ6JZju/1GP0nP1Yv+kKkk/D4K930wUxQFcV0XlueXiz+7hjD5kmfaxRz
-    bBO3bIRzJoak1QL4Cfa4ASNcv2DAa/M8Z/hOx/jaweCnB2/0DIYpjZW1n8hrKjwCE7vNrU
-    P6wpF2p6xUeHF/dxlX9rqKdWZnj4adKNhvBP0hSS6o2uLn/cbVB7VrGdYl3wKD8Sodunof
-    tZdMmG/A6owkaSnJITXQLPNles7P2CY/46fhuo0jkSJ251dn9SMZ/Ol2LQy+TNqCcgU7Vm
-    lm1NNi1iesVxRVZxXbmKOE3n/CdMBi183kA973NWbfyZ0pnChEb3ChV7mp4YXeuqfpwxY4
-    Jqltnk4FZ6BiJAdvWafESXPMn9a7Fx26bsfnNsNFwkTO7zelG2w0PlXuQ5fzdgBMbt/sl9
-    fjaZOJinNB0XupczM3md3crznTNbVq0htZl8rExZOtos0XXkNm88ky94vlSQyxt3jRm5HS
-    2j2MH+LtkUeyPFu5ZHApXldAXs0ySexEJVl76LobcwpHdyBpfE+Ra/iVY9x6zdHO5XG1WO
-    Dky123hcOfWBFLokWvfQgqvXTUAkUdbwwKwhHUBC3Ajc2gyrbR5AkJZ2iKxQ
-X-ME-Proxy: <xmx:POT8aic-o_s9k0Y30RnqhRd18SaRIZ9tHLj3dSsdN4TuAEF6_5-QnA>
-    <xmx:POT8agcdR7quKdAGTgD1yur1yrBabZ_ij82eVJH_AtuIrQUVbEGU9w>
-    <xmx:POT8anGZIAvYlwHPBLRFCh1vJiRMyOgyn0nbg8n2MW3f1X754NtGDg>
-    <xmx:POT8avHrFNE4YwcuGc2gLce7BCcooJkx91dGrWJL_egKNT5HJLLXIg>
-    <xmx:PeT8aoxvctf3KU46eZg9ZJgxx_Q0Im4OHEmS79puSaSmXa8HwuH-7O-U>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 17 Nov 2026 18:33:14 -0500 (EST)
-Date: Tue, 17 Nov 2026 15:33:12 -0800
-From: Alex Williamson <alex@shazbot.org>
-To: Matt Evans <matt@ozlabs.org>
-Cc: Alex Mastro <amastro@fb.com>, Leon Romanovsky <leon@kernel.org>, Jason
- Gunthorpe <jgg@nvidia.com>, Christian =?UTF-8?B?S8O2bmln?=
- <christian.koenig@amd.com>, Kevin Tian <kevin.tian@intel.com>, Pranjal
- Shrivastava <praan@google.com>, Longfang Liu <liulongfang@huawei.com>,
- Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, Sumit Semwal
- <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>, Alistair
- Popple <apopple@nvidia.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- kvm@vger.kernel.org, linux-pci@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH v8 8/9] vfio/pci: Support mmap() of a VFIO DMABUF
-Message-ID: <20261117153312.781fd839@shazbot.org>
-In-Reply-To: <df301c78-2745-4c64-a331-c830efb74660@ozlabs.org>
-References: <20261006193643.76330-1-matt@ozlabs.org>
-	<20261006193643.76330-9-matt@ozlabs.org>
-	<20261013171347.54e856c7@shazbot.org>
-	<0bd00c26-4f53-4387-86be-99f0c37fa47c@ozlabs.org>
-	<df301c78-2745-4c64-a331-c830efb74660@ozlabs.org>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=J90E0CXK
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cd60e4e8bc3so282015a12.1
+        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 15:50:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794959437; x=1795564237; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6YCN415HfGSWGfj0hnTG5tobjSWA0w1qx2azX15hpbc=;
+        b=J90E0CXKuEfxl/3Iz0OXmvEMZpfBfG/M8fdH3I0t996+DyvA4qNYEPpwjyyEcw4izB
+         Dm1v5/7xbobHzZdVUUvTmt8rHaykTDJl6IzS0j2LQhlcKNmygDCOHiy8YBUs+1nZ01Ur
+         NSeie6Ywff+3E9XOLJHr8rBq+/Yn5RDKL+RyzKENPKF6REGF3T4SHhxtZkL00Kr7IANB
+         eochaIfCbeShPk9iaewk6mlWQzzsqSoXg7WriPKUZ9DRh3euwKmXmkj1Eg0pJ5OGDzvK
+         zy/D/IixIooD1/oSD+t/R504qU+uPxcmcO196319hk6OxCBsKziWIMHpDqTDQe0P0U80
+         Z7lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794959437; x=1795564237;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6YCN415HfGSWGfj0hnTG5tobjSWA0w1qx2azX15hpbc=;
+        b=zmucGPTerKp0uu04WFSX1GRLmcoonowBkJCT2suhr2Os89LDgNl1hpKgigq23HL0hH
+         whPR9Xmabi7P/XZoy2c6a4qrvxBdjqVJ7oRdM9VZxot4RIQr3Bz8sK/Lo0N2ehXwUx65
+         GA13OQrNxAvLE2nmNMxiCMUNUldOIQdL/kH3JgYq+hSc92HvWfPbQI4ni2uwVGHuMouy
+         BPLB+wIm7vix9Op7hKrvnZs3xy0JbkgYPTkTFn+B0ZezlxdAXWfMox/XL7g70icgketY
+         oL23k74mtIKsRSjBa7pU6lhQEQXD8nnmCZRifC6FqauB6gnyj3FDq/taXu7SrjhzrnBS
+         dH4g==
+X-Gm-Message-State: APuU4Z+2y6/UZf6z+8fATytTHr5RNpSo9miMKpVurMxf06MgkdkoTCVa
+	mmnxxrwUiM5B0OwO7HAY8gmv/72raZuxF0XEbSz+fxUOrbLA3zhNb7YevmGvYQk7nZh6gXqbKk1
+	UPWAxTQ==
+X-Received: from pgfv11-n1.prod.google.com ([2002:a05:6a02:874b:10b0:cd8:b4f6:1c8f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:1493:b0:3e8:b7fd:628f
+ with SMTP id adf61e73a8af0-3fe890efb36mr911730637.22.1794959436641; Tue, 17
+ Nov 2026 15:50:36 -0800 (PST)
+Date: Tue, 17 Nov 2026 15:50:35 -0800
+In-Reply-To: <sashiko-outbox-219682@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -136,150 +76,85 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20261117205428.3717-1-seanjc@google.com> <sashiko-outbox-219682@kernel.org>
+Message-ID: <avzoSx9ukQecCGq-@seanjc-mac.roam.internal>
+Subject: Re: [PATCH] KVM: Send reschedule IPIs instead of SMP function calls
+ for non-waiting requests
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org, Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, 11 Nov 2026 10:48:47 +0000
-Matt Evans <matt@ozlabs.org> wrote:
++Oliver and Marc,
 
-> Hi Alex,
->=20
-> On 14/10/2026 21:38, Matt Evans wrote:
-> > Hi Alexes,
-> >=20
-> > On 14/10/2026 00:13, Alex Williamson wrote: =20
-> >> On Tue,=C2=A0 6 Oct 2026 20:36:36 +0100
-> >> Matt Evans <matt@ozlabs.org> wrote:
-> >> =20
-> >>> A VFIO DMABUF can export a subset of a BAR to userspace by fd; add
-> >>> support for mmap() of this fd.=C2=A0 This provides another route for a
-> >>> process to map BARs, in which the process can only map a specific
-> >>> subset of a BAR represented by the exported DMABUF.
-> >>>
-> >>> mmap() support enables userspace drivers to safely delegate BAR
-> >>> sub-ranges to other processes by sharing a DMABUF fd, without having
-> >>> to share the (omnipotent) VFIO device fd with them.
-> >>>
-> >>> Since the main VFIO BAR mmap() is now DMABUF-aware, the new mmap()=20
-> >>> reuses
-> >>> the existing vm_ops.
-> >>>
-> >>> The lifecycle of an exported DMABUF remains decoupled from that of the
-> >>> device fd it came from, i.e. the device fd could be closed with DMABUF
-> >>> VMAs present, meaning a fault on a VMA could happen concurrently with
-> >>> vfio_pci_dma_buf_cleanup().
-> >>>
-> >>> To deal with this scenario, the fault handler now temporarily takes a
-> >>> VFIO device registration to ensure the vdev remains valid, and then
-> >>> vdev locks can be taken. =20
-> >>
-> >> This sounds like potentially measurable overhead if something is
-> >> slamming the fault handler where huge-fault is not supported or active.
-> >> Have you considered a fast path for the internal dmabuf where the
-> >> lifecycle is constrained? =20
-> > [snip]
-> >=20
-> > Hmm.=C2=A0 I'll hack up a test to try to measure the relative overhead =
-of VMA=20
-> > faults before/after (modulo access to meaningful HW). =20
->=20
-> Alex Mastro and I have put together some tests, and measured this=20
-> overhead on the v8 series.
->=20
-> https://github.com/evansm7/vfio-playground/tree/master/vfio-barmap-perf
->=20
-> Alex also generated a similar test with a slightly different method:
->   https://github.com/opsound/vfio-tools/blob/main/vfio_bar_bench.c
->=20
->=20
-> Test method:
->=20
-> Time accesses to a VFIO mmap'd BAR immediately after the mmap, to=20
-> measure the 'cold' initial fault time.  Re-time a second pass for which=20
-> the pagetable should now be populated, and subtract.  This should=20
-> isolate the cost of the fault (uarch exception, generic pagefault=20
-> plumbing, VFIO fault handler) from common costs (the MMIO access itself,=
-=20
-> TLB misses, the loop iterating across the BAR).  Maximise the number of=20
-> faults by disabling hugepages (per concern above).
->=20
-> This is done both for a single-threaded case which just iterates across=20
-> a new BAR mapping, and a multi-threaded contended case.  Rather than=20
-> just pthreads, this test fork()s to try to avoid seeing contention on=20
-> per-mm locks (e.g. mmap_lock) and to focus on the VMA/VFIO locking.
->=20
-> The default test mmaps before forking, meaning there's one shared=20
-> mapping/DMABUF accessed from both processes.  The fault handler should=20
-> then contend on dmabuf->resv, vdev->memory_lock, and vdev->dmabuf_lock.
->=20
-> For comparison/curiosity, the --mt-map-late option mmaps _after_=20
-> forking; this leads to a mapping/DMABUF in each process so I expect no=20
-> contention on dmabuf->resv (but still on memory_lock/dmabuf_lock).
->=20
-> Alex's test instead runs threads in-process, and goes further with=20
-> supporting a larger number of threads (though with the caveat that they=20
-> may also be fighting over intra-process mm locks).  It also supports a=20
-> mode where threads can access per-thread VMAs (which is comparable to=20
-> the 'mt-map-late' option of my test).  Both are interesting approaches IM=
-O.
->=20
->=20
-> Findings:
->=20
-> On the dusty AMD Ryzen 3950X under my desk (targeting a 256MB BAR) I=20
-> found the following averaged over 200 runs:
->=20
->   - A single-threaded/uncontended fault became 5.8% slower
->   - A two-process contended case became 8.7% slower
->    - 0.5% of this is the "early mmap" dmabuf->resv contention, i.e. using
->      mt-map-late (a mapping in each process) reduces by 0.5%.
->=20
-> Alex's runs on fancier EPYC 9334 machines show a similar (slightly=20
-> lower) overhead in the 1-2 case, and go on to show fairly high overhead=20
-> when many threads are involved (baseline times in ns, relative series v8=
-=20
-> behaviour in percentage change):
->=20
->    Threads    One shared mapping   Mapping per thread
->               7.3     v8            7.3     v8
->    --------------------------------------------
->       1       761   +4.5%           777   +2.7%
->       2       869   +6.6%           840   +5.6%
->       8      1465    +78%          1363    +47%
->      16      4152    +97%          4258    +19%
->      32      9927    +92%         10158    +12%
->=20
->=20
-> Now.  The absolute timings of these sub-microsecond faults indicate a=20
-> realistic application won't see a human-visible change.  Small BARs=20
-> mapped with 4k pages are still fast to map;  it is reasonable to ask=20
-> that applications map huge (GBs/TBs) BARs using huge (MB/GB) pages!  Of=20
-> course, this is just a one-time cost of warming up the VMA, not ongoing.
->=20
->=20
-> Alex, my preference is not to complicate the fault handler with a fast=20
-> path just yet.  It's easy to think of a contrived scenario where this=20
-> matters but in middle-of-the-road application behaviour it would be=20
-> surprising if this was noticeable.  What are your thoughts?
->=20
-> (In the previous mail I suggested keying off priv->vfile (or a flag=20
-> thereof), and it seems ~straightforward to skip the extra=20
-> synchronisation.  If you feel strongly that the fault handler doesn't=20
-> have enough if() statements yet and needs more paths then we could bring=
-=20
-> this into v9, but would prefer to follow up later. :)  A fastpath diff=20
-> appears small but the reasoning overhead is bigger.)
+FYI on what I think is a pre-existing TLB flush bug (that can affect other
+requests as well).
 
-I tend to agree.  IIUC, in the worst case concurrency (that we likely
-don't experience), if we assume huge pages, we're looking at low
-single digit millisecond total overhead to fault in an entire BAR
-(~256 max faults).  Further, if our configuration doesn't force type1 to
-fault in the entire BAR for DMA mapping, that overhead is amortized
-across every user/guest access.
+On Tue, Nov 17, 2026, sashiko-bot@kernel.org wrote:
+> KVM: Send reschedule IPIs instead of SMP function calls for non-waiting requests
+> 
+> This commit sends a reschedule IPI to each target vCPU instead of batching
+> IPIs via smp_call_function_many() when making non-waiting multi-vCPU
+> requests, allowing non-waiting requests to be made with interrupts disabled.
 
-So yes, it's probably not worth having two different locking semantics,
-but we should note that as an intentional decision in the commit log,
-potentially even as a comment in the fault handler.  Thanks,
+...
 
-Alex
+> [Severity: High]
+> Can a non-waiting request in interrupt context clobber the per-CPU
+> cpu_kick_mask of an in-progress waiting request on the same CPU?
+> 
+> kvm_make_all_cpus_request() and kvm_make_vcpus_request_mask() only disable
+> preemption via get_cpu() while building cpu_kick_mask, leaving interrupts
+> enabled for waiting requests, and still clear and populate cpu_kick_mask
+> even when KVM_REQUEST_WAIT is not set:
+> 
+> virt/kvm/kvm_main.c:kvm_make_all_cpus_request() {
+> 	me = get_cpu();
+> 
+> 	cpus = this_cpu_cpumask_var_ptr(cpu_kick_mask);
+> 	cpumask_clear(cpus);
+> 
+> 	kvm_for_each_vcpu(i, vcpu, kvm)
+> 		kvm_make_vcpu_request(vcpu, req, cpus, me);
+> 
+> 	called = kvm_kick_many_cpus(cpus, !!(req & KVM_REQUEST_WAIT));
+> 	put_cpu();
+> ...
+> }
+> 
+> If an interrupt fires mid-loop and makes a non-waiting multi-vCPU request
+> (for example on arm64 via irqfd_wakeup() -> kvm_arch_set_irq_inatomic() ->
+> ... -> vgic_queue_irq_unlock()):
+> 
+> kvm_flush_remote_tlbs()
+>   kvm_make_all_cpus_request(kvm, KVM_REQ_TLB_FLUSH)
+>     cpumask_clear(cpus)
+>     kvm_make_vcpu_request(vcpu0, ...)
+>       kvm_vcpu_exiting_guest_mode(vcpu0)
+>         cmpxchg(&vcpu0->mode, IN_GUEST_MODE, EXITING_GUEST_MODE)
+>       __cpumask_set_cpu(vcpu0->cpu, cpus)
+>     <hardirq>
+>       irqfd_wakeup()
+>         ...
+>           kvm_make_all_cpus_request(kvm, KVM_REQ_IRQ_PENDING)
+>             cpumask_clear(cpus)  <-- wipes vcpu0->cpu from cpu_kick_mask
+>             kvm_make_vcpu_request(vcpu0, ...)
+>               kvm_request_needs_ipi(vcpu0, ...)  <-- false (EXITING_GUEST_MODE)
+>     kvm_kick_many_cpus(cpus, true)  <-- misses vcpu0->cpu
+> 
+> Because the outer request already transitioned vcpu0->mode from
+> IN_GUEST_MODE to EXITING_GUEST_MODE, the nested non-waiting request sees
+> mode != IN_GUEST_MODE and neither sends a reschedule IPI nor re-adds
+> vcpu0->cpu to cpu_kick_mask.  When the interrupt returns,
+> kvm_kick_many_cpus() skips kicking and waiting for vcpu0, so the waiting
+> request (such as a remote TLB flush) can complete while vcpu0 is still in
+> guest mode or reading shadow page tables.
+> 
+> Only touching cpu_kick_mask when KVM_REQUEST_WAIT is set (and tracking
+> whether any CPU was kicked with a local boolean for the return value)
+> would avoid this.
+
+Unless I'm misreading this, clobbering cpu_kick_mask and dropping the kick for
+a waiting request is a pre-existing bug.  I'll address this in v2, and make sure
+the series is tagged for stable@.
