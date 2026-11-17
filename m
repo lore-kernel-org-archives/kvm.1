@@ -1,101 +1,100 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.53
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794876536;
-	b=Ddb5PEkNHwLhfFq6Al9EHLQZp3ak04xc7uhkpkaapGM64t7eT22gbQuBSsPonGF9/mBI
-	 //ctkms2ctg6IEqmHjaH/bl9zttqWugB6cveKIggOb/6K6U4IA1ExOITpCDY1ThTiAANu
-	 fnWCz8vVwlXhNON/0yEqXwvDCCHTJtAjy2uevbWxCN7Mlw+qxfLpBQPLJfexukJKzBE9h
-	 kfXm2NZlIL7B+l+MOHJMQBuDHfLujdgv9lJbIU4sYjBoDEph3WG8NgWor4Vw2pY1FPFJG
-	 KTXPCPAzWOW0EI8P6vmgZN9Kpoe6vB+VohNXajRoljQ+Cgec0Jbu+CPpQTLnnvHoUSw==
+	t=1794876839;
+	b=qDgkkTMqjxKsw5jm+IwSD7jsIbD6qizzHR0sVNHkXdOK3wQgtSMcQJLLvcegA6TLjV7v
+	 4y9SwCqFw90L0TsE9i5o4rQqxOYozAJyZ0VFavSmNqFLzW6e7FUy16DucgrCNfUfdljhN
+	 1r6xFt8SbBfWTa8+n2kg8+e+qLj5ne8C0zGPH7h4u7/nx7BgmEIijoPfpCYn9bpPVWCFQ
+	 tLKynVzuzocghX3TKCTN76WAL14h8kqqiIo1jazXYjVEWGHmBImY4QpOyG2yvoVnQIKdT
+	 spF92Sj4jKATGSkowceF8NKcRBNP1/8oS5U80OVGFiP9qlknD2khh36ERmafSZJ8vJg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794876536;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794876839;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=rzJlq1cSSvpPNomsaRs/y8mYSY2mPGAAaxTHlWFvxNs=;
-	b=ATObTU/sxuBCcVd9C2oiGIdeul5Rr9r/X7bqSHDufRBll3uHsdFRQoy9MJ+sW2nUkRAh
-	 4bbJYIXkSC9GCtH5uwyzTVa92We0mVUppLE2nWV6PEDZX15FQ4qMvPNaZ9dO/rQ8VUY7F
-	 grUb/ZECIJP6VtA17EvGEiFXdaf549W+I26bCYiYkz6VQDfNR0Qj1Qw5hXshb0sR3xLmJ
-	 EPLstM2Qu4G1aPn4SLNHnBMvA29XVNnb5XWRHIrYDywcpMU5403EfMDDBM/wzjznW7r8r
-	 YHymbmrs24PurZdukvy8Btqzt/e2MmxJ8d4HPzfmQnEwlsqZWZSjMzzK/CXu0HrjClA==
+	bh=A1hmyks7PnfUxhgzPsJhSUpf+ZPr50/wwC2v05STh74=;
+	b=EATaXVpzyGMT2TSOtFwofkhyPyp/ZLpe4+fyrsrYBFhjjVxBJBF5HRL2MFxh3hV6nyzu
+	 OUDhD18XlMrt6g/KF1/NcHUrpsyWhGTJAdedTRVRLMZYkPCBNB5+9PTX6euZXzutAcO6Z
+	 p6wLJ1awzofEE7hbTxZ1+7K76uS2FSQ5d5DTzOP9a+2sgM3PR1GE7BrD3ao5vSJmmSoA1
+	 dd7rOMoznWl5/cl/7NwBxlnVC2d/Fh9UIqc/Nw76Z4GGAH0ZdoqIdun1Bnm/ycN30LF5X
+	 u9J6763HvD5fbGgLbnWGE+R2ZeNrgyfthGQJeyUP0DHay8fNnU6vz1mbAEZM/V7OeEg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LpQK+XTk;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=N9RkPRkY;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.53
 Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F01606A31C
-	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 00:48:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16F01606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68C5606A31C
+	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 00:53:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C68C5606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LpQK+XTk
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6b56c90b38eso6587a12.0
-        for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 16:48:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794876534; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=N9RkPRkY
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6b56c90b38eso6623a12.0
+        for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 16:53:58 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794876837; cv=none;
         d=google.com; s=arc-20260327;
-        b=Yo8bRehe+dJL0KVIy/rjUsdvi1MEWSosi/SwyXBvWbfAmsthFq6J4hStX4qrOdUmet
-         W5ilCPqSM9DL7WNV4dxYoL+L5b5RewoE7ZgSUS0ZvXPcg9r2NG8c98j5Bl3zx6Ja+Bpo
-         07iusW/j9D9I32pq4n7UxYjqk+mCcMS/dGCMBF5iarmf+h8OPiZAmKrptlRQclnnVkTd
-         vlKI9VgHssvB54WmRmDItVmBB5196MGQISgWNxoAdhEgS9WnMJ6a4jBm0KvWQlBWWGCx
-         53vqEGgeqQO/stZhOezCQu9nQi99BFORyrSYEGrUUUX1PMnnnZqiKzotRj95JzW8V8OQ
-         mBuQ==
+        b=eUkQvQ4fb8NG7E3gJupcr4cpJ2+jnOrVuHP81xmlLeTLUf/lvRrKyOmE8wJqCH0xK7
+         7j7d7KOZATB0tupGLlXyP8pxBZIgH0fuKnmz9NuWKdOMGO1hq0jmAlLD6nZsgKmcEJlD
+         f0QceRMbmu9CwI8BsqR0CZ0FMlajhbzsSWC9wtuicw+/UWOVwZdjAcFhFY5Uywn2s0pq
+         pqT4r9WS9uViIZja1K554CU7Ayo94p2THHjekO89RTB35gadWbijrNrSz1tO9vNbk0Ct
+         zqbjJKRmXoblr6FI7rjHQTPVzfF0kCvpthhnpzCcdJzkcvPF7+7J2kkZhKURMA3ZwatX
+         bmYw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=rzJlq1cSSvpPNomsaRs/y8mYSY2mPGAAaxTHlWFvxNs=;
-        fh=S2r+LnbwUVdkaiEkV1XdiA+JIvVyXQtW9bLCLrDV5UI=;
-        b=qrE/ydUkuLqjpEU60XpQxRYrxX38aouSacMgOGZIOK0c7VfnyMV8ltFjOXtBYzV7a4
-         2L/GnDzLy5ipiu0Bvvx81k/VbH5YDEn2cSx5xxeXOi3zE/V/1OQU6ik9cvXiKk8+bpRO
-         NVHg6VDneEgTQbedTfCWXz44hAINXHla4bU7CE5Ti/Qrb84hequJLuiVPisPLCFvvwa8
-         brSoNQognyuuDqyMA7B5aGaesVMEqYukzhx4GUOO39qnI2+E7gIwr8/Ca2btHzOyeceH
-         PI8THdXs3FAX4dlKvz8zvAUiJqRhKShUPAApRqWP0whrju8mt1A5yW79J5ZSyIQUIYl1
-         ilTQ==;
+        bh=A1hmyks7PnfUxhgzPsJhSUpf+ZPr50/wwC2v05STh74=;
+        fh=bn2AwvhAXViUidqTt0NbjUNSAJpMssipI3wcbIfsOlM=;
+        b=nZfdXFB4Khol7z54NZPsqpGOMgqeUXFe0s3kCE2FqMSg8vh3nTWYeaej/52gSqAX4k
+         2F6/K47BUSF5IR+WYOJd+KKC1FXufSz9UYjpC5b3Y05MNw2Ptt1Nf9LaQw/KONJMkE6N
+         cyPz0iQsVm2Ojf2OdUaU5fKnL+Dl4YSXR5drOnwRJn3Jo4visrp0b3LvjDTk/5lAkWvp
+         Ys4JUI9P1Vyeuj//lTBbgD9yiQ8/AMhAh3DQvBaMvSuMFZHpNdHX/3oqh1ioDDu/00Uj
+         z8X+c/Dvps4QerE4GGj0vKzzm93nFk9WCszku4kQ10IM7Kq+YNZnmOevEeaUCkGTgJe3
+         WlSg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794876534; x=1795481334; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794876837; x=1795481637; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=rzJlq1cSSvpPNomsaRs/y8mYSY2mPGAAaxTHlWFvxNs=;
-        b=LpQK+XTkznPKynwMpLTifIIBrRSA/MRdl9ZsjlqfqPI49rrh8KnsKwANgEipMPLUvr
-         2LLOabuHTRTecPVfrV1mx2iFfT5BvJ0IuQqaYqNxXxusko+4H7shWfhAZcFlvyJXkeHs
-         U28A1wz9FTmfvUX7iSdScs6Ce4N2fSs2wHumUSypOevxj/Sz45sPbGmbBJyX3gGYd2NR
-         BQ4FDM7KuNZL3oo1NKspKKFSpRRRVAtp5YWaYlXeIRXZvZaQl0XVYfsIIXnfPrVXhMIh
-         9o82A5pck6wwM7byI1EVevD+0o08G9HAncbAknCc7XootGlX/HguJ1/cLZWhXOOM1KLw
-         qXhw==
+        bh=A1hmyks7PnfUxhgzPsJhSUpf+ZPr50/wwC2v05STh74=;
+        b=N9RkPRkYuf4T11DtciheLdnFwdPQCj2TpBljehj/77HdGh7+YiIBbfkA8agWdrUl4S
+         uDcyleuqudTX4u9OViPhZmIEVJKYvKLcQ1YLZJyFYiHgUnDNMls5Yl5Np7DkiFExwZdu
+         hETjmzz7HO5hEU2EfTpqmZccFb6W8Ct4cu/+6MRsnnEfRgndStwrcv3ThG7IPGfXMb2f
+         X8gpj6fs987ZLM/1hRAVBLkrxbAE5qhhoyl7zH8L4ea/A5LotkTY9hCZbIUSxSrzFcTY
+         FMHDkPd8uba8F+VzxMyZkOyY8TuHGHw9fb8NkJmPFUhXvDNgH/7bH7bOyY4cFvTgQ3Jz
+         e1nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794876534; x=1795481334;
+        d=1e100.net; s=20260707; t=1794876837; x=1795481637;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=rzJlq1cSSvpPNomsaRs/y8mYSY2mPGAAaxTHlWFvxNs=;
-        b=XALKFTya+0skiztoN4S10pqNqc/kYPL6tqX5W/P4Zp0CtzApCXx/kMqv2LKqLt+Yew
-         GpZ+Y2058B9NM24CDHA315W3iY0PiVhblLITAo0TmMm6a1RepvA0RQV0hM0LusiJotMN
-         Tdy8REcmVZKRzUTmoH8I8XBtpJkxUQT0Hp78FH7OD+rXkMTBNiRdpq9QPLBVG7cfaB/x
-         UVdo1fpQX1W/ysN0GfSZ6zn/Yu8QRzEJ2uyVKC6PJF/TkC9KlXV6/k4e+Le8QhgnX5Rb
-         tdknGUoxckyH4XChBu79+11c/t7Pkb5Okblcp/QFGGtjxwXnwGACjip9Br29U4/E4v2E
-         2EVA==
-X-Forwarded-Encrypted: i=1; AL+hErHJ0iktTUe+ArRKTMk4/T47v/1nIY5U5p4bGnVUmhuLyOqi5Lk8F5/bXO9cjYAvUh8wnCQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+32dGahaCEniA9S6zLIdJT9j38OzvYQDqq+wlOk9+zgQqTTSbq
-	FrOBqdb/AQYhtZCQxqIei0atae1QNtqPOxL9BsNWlAnQokRYYvluFyYJxkjsDFdm6m6A8lKc4aw
-	f9PU4pApTbL1dbxZG9DOVMLoDNqi/PGRY8zscGY24
-X-Gm-Gg: AYBFou3yv1aAUC5IDuQEBfRMKHdSPjBpyNLrRVKZzcxkSlwypIGiUzRX2xnZVm3/W6r
-	JSXKWHsy1YZfHdS4Egmir7cLAHEGap6N0eP91Ix6OOPgZDMViE6yBvuX1fQ6CzUNc6TzGjYtWak
-	IiP5yrxEUOzNKwHcNKxIdQD/W49VusAuvXbfajgG5UpemE2TjCVGMFw3eivTz+E+8fGm8tpeo16
-	9W85t767ogU/DsRzX7ULlr8B0kUoXRHcpVT/x++6SKf7ckDX7Ru+wKtDyYa1E9WZArMu7XVCwNR
-	guzRShyTyMsB33mC+mKeEoA5OKIItq1GBcFG4yRRAmrDRIeAHx4UKoi6yArYpfWki2Qer4Y6HpS
-	UEiKvArVH0z6ZC0mFLbrCbPPn00HB7uaf/KfH30Z51oCZtdOxptVWzcf6DYWJgXJXy0aDeDO41N
-	TokeFbbIbCgrINNJSHsw==
-X-Received: by 2002:a05:6402:c51b:10b0:6b7:91a7:a637 with SMTP id
- 4fb4d7f45d1cf-6b85b54dacbmr32211a12.6.1794876534067; Mon, 16 Nov 2026
- 16:48:54 -0800 (PST)
+        bh=A1hmyks7PnfUxhgzPsJhSUpf+ZPr50/wwC2v05STh74=;
+        b=jnSxxlk3M+B1zpDJja192SEW6madwe6T1Bz37iLqi543aCVcUXj6nxq8CZt5ljEygp
+         l6z0noZ0T2SH4DykQD3q0u0E3heHit3ocsjCW4sVV8g9IO/HhaeSrMF0i/MluL/LrGcp
+         ROfNwry0uMmjDzgVuD39yuFjCHGw/CArn3miF/tIBQKGMdrd9Ibvk3It/mtCS/jjrvR6
+         9H+kLLrkH2IYjL36RnlJh2lIDZrgZZ15sWJw/WmBJ/4dBw7z8tsSYIsMdBqoyHDkRs1l
+         +Q4GhPOCs3IRx/YjvL7hmVeA8tq8xxPQKAgne7y2CqS2T7idjwhRl11/oqfQjlRhiGr5
+         kH5Q==
+X-Forwarded-Encrypted: i=1; AL+hErHExo9dXcjApPzIm7Zo16YJx3p2RjRtLBH4/No1xBLYjKYaGw0tMvnENxNVxovw+FHrT+o=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9/ukEsXCDX64yOWhBbWg8g7hrI9gN2zq3KMUAhMovgDUHVUpZQ
+	LuEnlM1rQW/xx5gtuxoEYlrzYsKSb+cPUk+coJaIwEqQyGg0XWg/bjy9ynoaBUlfJfYvyxkAKx4
+	cJ4YP5GEJMJIQS9RRbNK2/tcNWYTO8zdwtzTn06Df0bU4BOHqQ66k8IrL
+X-Gm-Gg: AYBFou3XpcDnLxymKrj2nXrkgnRjYgmE7MkrTPMwEVScGovKdzmH+Iz6emOcbfFZvmN
+	ZT8FFiIEsTU/2W6AvqqXLQe51hoy++mELYZ4nDuLig+NRrTZ7R3/vBywTTT4h+Sf+IxHpfZNRVi
+	v15LUA91J6kLWWU5B8B/O6LAazVkfs15sx6u6bpX8rLE0HYIB7VX8SzRbPj51FHVG5/QzCPBLa2
+	/6rxCko6KjU7sTpg+1heSRdqF/CwkhgXtFkIhB3o8x9g8niCydvpxI6Jdua871uwrD+gBPIyUoT
+	qJ/uL3HyBWs3Wxsr3YtofYDamZotpoda6lF5nJmHYMuY9+Jxu/bsuWIjNJtYxEDbyIRNnPewm8P
+	RL/D0tYyTleUeVB/8zpvq5q540vVbz6zdcwoNi+7dmRLsBnSeSKRm8EjQDpNGvXUY/DKkW2Pv
+X-Received: by 2002:a05:6402:404d:10b0:6b1:c6fc:aba0 with SMTP id
+ 4fb4d7f45d1cf-6b862ea1772mr26359a12.7.1794876836831; Mon, 16 Nov 2026
+ 16:53:56 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,14 +104,14 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261116223033.3866283-1-ma.mandourr@gmail.com> <20261116223033.3866283-2-ma.mandourr@gmail.com>
-In-Reply-To: <20261116223033.3866283-2-ma.mandourr@gmail.com>
+References: <20261116223033.3866283-1-ma.mandourr@gmail.com> <20261116223033.3866283-4-ma.mandourr@gmail.com>
+In-Reply-To: <20261116223033.3866283-4-ma.mandourr@gmail.com>
 From: Jim Mattson <jmattson@google.com>
-Date: Mon, 16 Nov 2026 16:48:42 -0800
-X-Gm-Features: AclHuK8u4qyvtWd_l0Y2lGLA_aG_TmvQh08Mtzu-tbiyDdt1Gk86PTeZCcQDyUo
-Message-ID: <CALMp9eTsfGjGX6rmYYv2F8sth-WS7LPTe7UQ7aMZfFi87e=eLg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] KVM: nVMX: Fill VM-Exit instruction length before
- saving pending event
+Date: Mon, 16 Nov 2026 16:53:44 -0800
+X-Gm-Features: AclHuK-_ONAvoQV2AWzEnSTuAEHX60cMUswZ9NZQ6pnplSH0FpE2bJQY3Yp04zM
+Message-ID: <CALMp9eTadwjDENTw=oFixE_5Dp+762i0CuGVTt0pjN1q8S-fOQ@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] KVM: selftests: Verify nested VM-Exits while
+ vectoring INT3 and INTn
 To: Mahmoud Abumandour <ma.mandourr@gmail.com>
 Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
@@ -122,59 +121,11 @@ Content-Transfer-Encoding: quoted-printable
 On Mon, Nov 16, 2026 at 2:30=E2=80=AFPM Mahmoud Abumandour
 <ma.mandourr@gmail.com> wrote:
 >
-> Fill vmcs12's VM-Exit instruction length before calling
-> vmcs12_save_pending_event(), so that the length it saves for a software
-> exception isn't overwritten.  Commit c3634d25fbee ("KVM: nVMX: Leave most
-> VM-Exit info fields unmodified on failed VM-Entry") moved the assignment
-> after the call.
+> Verify that a VM-Exit while L2 is vectoring INT3 or INTn through the
+> empty IDT reports the event and its instruction length, and leaves the
+> VM-Entry instruction length alone. Only VMX is tested, as both lengths
+> are VMX fields.
 >
-> L1 sees no difference since both lengths are read from vmcs02's VM-Exit
-> instruction length.
->
-> Link: https://lore.kernel.org/all/sashiko-outbox-179791@kernel.org
+> Signed-off-by: Mahmoud Abumandour <ma.mandourr@gmail.com>
 
-Sashiko is wrong. Neither of the scenarios it cited in v1 holds:
-
-  1. After vmx_cancel_injection(): if nested_run_pending is set,
-     vmx_check_nested_events() blocks all nested VM-Exits (and
-     __nested_vmx_vmexit() warns if called with nested_run_pending set).
-     Once vmcs02 actually runs and exits, hardware copies
-     VM_ENTRY_INSTRUCTION_LEN into VM_EXIT_INSTRUCTION_LEN if a VM-Exit
-     occurs during delivery of an injected soft event (SDM vol. 3,
-     section 30.2.5). If nested_run_pending is clear,
-     VM_ENTRY_INSTRUCTION_LEN came from event_exit_inst_len, which
-     already came from vmcs02's VM_EXIT_INSTRUCTION_LEN.
-
-  2. After KVM_SET_NESTED_STATE + KVM_SET_VCPU_EVENTS:
-     kvm_vcpu_ioctl_x86_set_vcpu_events() never updates
-     vcpu->arch.event_exit_inst_len (struct kvm_vcpu_events has no
-     instruction length field), so on a reused vCPU event_exit_inst_len
-     is just stale junk.
-
-Moreover, L1 *can* see a difference, and this patch introduces a subtle
-regression for SGX enclave-mode #BP. Per the SDM, volume 3, sections
-30.2.1, 30.2.4, and 30.2.5:
-
-  - A #BP that occurs in enclave mode is reported as a hardware
-    exception (INTR_TYPE_HARD_EXCEPTION).
-  - A VM-Exit due to an exception encountered during delivery of an
-    enclave-mode exception still sets bit 27 (enclave mode) of the exit
-    reason.
-  - "If the VM exit occurred in enclave mode, this field [VM-exit
-    instruction length] is cleared (none of the previous items apply)."
-
-In __vmx_complete_interrupts(), INTR_TYPE_HARD_EXCEPTION does not update
-vcpu->arch.event_exit_inst_len, so it retains whatever stale length was
-saved on an earlier soft event. Because vmcs12_save_pending_event()
-checks kvm_exception_is_soft(nr) unconditionally, it misclassifies an
-enclave-mode #BP as a software exception (a pre-existing bug, outside
-the scope of this series). Before this patch, prepare_vmcs12() at least
-overwrote vmcs12->vm_exit_instruction_len with exit_insn_len (0). With
-this patch, vmcs12_save_pending_event() clobbers 0 with stale
-vcpu->arch.event_exit_inst_len.
-
-AFAICT, there is no valid path to prepare_vmcs12() where
-vcpu->arch.event_exit_inst_len is better than exit_insn_len. Can't we
-just drop this patch and delete both vcpu->arch.event_exit_inst_len
-assignments in vmcs12_save_pending_event() in patch 2, letting
-prepare_vmcs12() be the sole writer of vmcs12->vm_exit_instruction_len?
+You might consider testing the scenarios that Sashiko flagged in V1.
