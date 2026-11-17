@@ -1,54 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794943740;
-	b=pXlV0WKN5l7pE2zZRbwBYOYRXqGdmagwAHgK3ZP/WVV6KObhekO/WAoNd5kfW7v22hDB
-	 Tbipm0U5Il9kqrbrHpH5WJ0VmLh2iOfIvhVP+0pV4/rV6IyhDTRHBxzpf0cwxP5Z4B5FW
-	 CPzcZU1oNzJenHhFZT8Qu6QgVvTxk8WsF9NXTcA1Ri/OcL3f1hLOi1X6pTHHZlqfXBCXO
-	 zUSHjao6LL+fy4QQD6WE3YsPH5Msv6HriGry9hZVW65CLJ2/dEjyvt2oIHZpNjaCekN44
-	 xMWDH6tXmf5F+kzUv2ZYW0/OLgPomtvKVezpzBkQ5gawQskhYYk2J43AdXmancwgJ0A==
+	t=1794944281;
+	b=K1mPWD5uhr9m138+iEktEQEeOr9g0zy1zI1HVo2pVPns1WeU8OIixlO14AhcUJwR0L/z
+	 +OsurwrkGCtlHyY32UurHL797TqQf/kRv1OKGHcNjVJWSYdU1ThqDubY9LOVCOX42OT6J
+	 4UkTFCGUecqIy4aEs5f6WUf+uDJ3HsXX4sIlAkfHHspdmnVyeYD3sDveoS3zKJN2z5TrM
+	 j0cxgUar85IWdJXosDwinR662/HwK3Z2haBJvmB7HAbJNU0xmwPGd675AJUpr1whPxnfF
+	 Op8776PKfCMHkZBh1hHOvGhV4aHSX/c/Mlg4NL3b+0vZufjPr+UMnYsEpz+b/I4M/3w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794943740;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=stcmlQDByWyZV0BTn6thGU/blP7klWXKUa9CHzamk1A=;
-	b=MPb+jqlDhovFt/a1OZIYEbR4FWluhjL7yjQ6SLapzUEU+Oq9xEFpOf2PNO1lME9cuYxC
-	 DSv/4BJKz/qVwc3FPvy7Di1XxhVqmA35Cxd9TU5taIkK1VTAHKOdidS6aaJv8ejY+eMl5
-	 WyG7N9c9V/PzzTwoGoAqP+slrPZGZZhqLg+7CvYLCpRoPRWxfejX2yk5IhpkR/jOkePac
-	 akTGcsEZmoIZNz1RnACBf2VDd5NBbK7zC6vpWGfh55OrlUSxOI4DUtXfRg2Ymw7M4V7Ns
-	 LFttdhed2IVmoTnFm9p0XzdSzbi7HJ9GMVIzxrQuqVEyhYWlfyht1HPJBzTRWX8LOnw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794944281;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=5/vHAZGe7S9PuEhTy7BQu6tAJsTjB19cuWDO6dDg/VA=;
+	b=Y5kbCgSDfekRkauZLIf+sD/4HP0lxss9GsdLkRxATyidQNcWDfM6FksAw+bwAEBkGskk
+	 fW5JXKKsOSpxPCyrSanN1h8anhh7PMhxj0mIPWR64nkJe+kBvzLUSf0sbG2OMxM41Sk0p
+	 3h/pxACBvbtH5e/fSybmJx7jseB7W+JWYsgtmmKGYdDNmHHyzBlUbOpYld4TTB1wzsi4z
+	 pS+1/ePdgb6iuaVXurddzMK6SGL3M/CM7yd1ekfJEJQ1ejP05U/CLU92fjriiN2DCVDaG
+	 TC6cI8CO3Tj06dYx/rd8rKrLTD8BffRipEVdCYspM0vXOofrnfsRBTz6Pm4FtaXyPKA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F5tWJcWp;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KeoE82iV;
+	arc=none smtp.remote-ip=209.85.214.199
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4438E606A33F
-	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 19:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A7C606A330
+	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 19:38:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6A7C606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F5tWJcWp
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74AF1F000C5;
-	Tue, 17 Nov 2026 19:28:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794943740;
-	bh=stcmlQDByWyZV0BTn6thGU/blP7klWXKUa9CHzamk1A=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=F5tWJcWpTt9bCOvg6KkGTcMGgBS4u+z+gFwDBdJC5kYIDLiELenJJ7F8DKNFJRuho
-	 6Vzv/PkmShHc/ATqK06g4JuEYOuvJFbysdGTwA19nkUnBQnA2nTD+n5WW4+b3zfkJb
-	 bTV7dmwjYSjHk3Ymrh98T2fvy/6sux8zX8oUjG3y5H7/UCpG6+n6Q2+ys5xDewR81H
-	 4wO8uC2HBxm4SZQZ6SxaUH0kqmu4EHNdIb/vv49wgD+vqv23I9z2FejEgwr6vsyc4z
-	 tUfqr9YNf8A/tw0gQapVM3o8cYv0fMTfk+HhN7s4UYPzF5IDwLa2UWQo5iZGr3i6Cb
-	 IuZF4cg1dDBsg==
-Message-ID: <sashiko-outbox-219473@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: SEV: never retry after #NPF on paging structures
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>, kvm@vger.kernel.org
-In-Reply-To: <20261117185922.466255-1-pbonzini@redhat.com>
-References: <20261117185922.466255-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 17 Nov 2026 19:28:59 +0000
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KeoE82iV
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2ed00709df0so1132435ad.0
+        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 11:38:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794944280; x=1795549080; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5/vHAZGe7S9PuEhTy7BQu6tAJsTjB19cuWDO6dDg/VA=;
+        b=KeoE82iVMMT2zJBgoV+e9oDAvJROLQDtmEft4/IiA65eKdyPd/BgcIwVM+lxwNY0qC
+         9oJeenwc6gjZNMUWp8khr2M+fcQxZon8DJjl8xhiHMC+IvR2VTHOXf+jJeJ5aSEayhnY
+         t/9OLKKjnyAmNcXl8YjsxvA+/LrA3mMlGrHfjjCdjZo0cJuFJmS1uB1T84dfwzRBYUxH
+         VoBTknKoB07/nlPsTMS7LW+hxVFmY3ggdrn2j0TpV46O50Bioe+lHOrYSrzDIVvKgpE6
+         kAXr5XQVIfAh44DafQEUsls/+b8JHWZ2jgNnmLPv/Dc03haN4+e8GBEJUYZlmrf8HUoE
+         LReA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794944280; x=1795549080;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5/vHAZGe7S9PuEhTy7BQu6tAJsTjB19cuWDO6dDg/VA=;
+        b=dopG3bpMk4JtmKZBjAOdxA/qzPdj6sSM2r0oBDPo0VBsvHZnzme0hUq2BJRh9M7C8R
+         LG0Y+WmGmacoLMNlGdvbtZmQkX/i+LPLuohPZf27RZesci+8S0eOi0RGBtZYfyyV1q4t
+         wiT9uSNx5Z5VvCUMkLkEj7RR8jCvShdlRfMurYWMQGhv96FvBW70PXhWgkIoQBTv9tRq
+         pJQu4+gy7V8aFFKl62ifsGmkDbcV+5hn4skHkHtthoVF9I/JH7rfvYWcvXrKPGrZeg42
+         /q++mykHouWNGZry7e9nPj3z5XXydwkinqrwwAJ08Ohazo8j0nAAANEbs4Q0/0NWgd/8
+         w8cw==
+X-Forwarded-Encrypted: i=1; AL+hErGkpueKQBGc2INa2Wgh3RTeFG72NGAKv1kFp73RRcPFHOvLkrbQtJK8f6NFZUUV3qE94EE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+xtDbv8bxsdJ/MW90GY9dvb7P8Oj/jGhrnMGvMNX1HnNk5VjJ5
+	RXND+mtBF6+Q+kMixzg5O3PR4kD7cBz+/fvFKDoz3F7Upo5s1f36OATCE6Hq5T22+zZiSplxVxs
+	YdHTJ7A==
+X-Received: from ploh2.prod.google.com ([2002:a17:902:f702:b0:2e3:1b6e:33bb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f64e:b0:2ed:12a1:c4a9
+ with SMTP id d9443c01a7336-2eff752924cmr3212835ad.11.1794944279883; Tue, 17
+ Nov 2026 11:37:59 -0800 (PST)
+Date: Tue, 17 Nov 2026 11:37:59 -0800
+In-Reply-To: <20261117190714.GAavyl4lS15Gwpc29U@fat_crate.local>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -57,138 +77,51 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+Mime-Version: 1.0
+References: <20261117190041.158949-1-nik.borisov@suse.com> <20261117190714.GAavyl4lS15Gwpc29U@fat_crate.local>
+Message-ID: <avytF4CYn5FUkA4F@seanjc-mac.roam.internal>
+Subject: Re: [PATCH] x86/virt/tdx: Don't print error if CPU doesn't support TDX
+From: Sean Christopherson <seanjc@google.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Nikolay Borisov <nik.borisov@suse.com>, x86@kernel.org, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] KVM: SVM: unchecked exit_info_1 read in
-  svm_check_emulate_instruction()
-- [Low] KVM: SEV: commit subject says never retry instead of never
-  emulate
-It also noticed 1 related pre-existing issue this patch does not
-introduce:
-- [Medium] KVM: SVM: wrong exit_int_info mask in
-  svm_check_emulate_instruction() [1]
---
+On Tue, Nov 17, 2026, Borislav Petkov wrote:
+> On Tue, Nov 17, 2026 at 09:00:41PM +0200, Nikolay Borisov wrote:
+> > There's still plenty of Intel CPUs which do not support TDX and when a
+> > recent kernel is booted on those the user always sees the following
+> > error:
+> > 
+> > 	virt/tdx TDX not supported by hostplatform.
+> > 
+> > The same is also printed on all AMD CPUs. Fix by using pr_info.
+> > 
+> > Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+> > ---
+> > 
+> > Contrary to Pet Shop Boy's song - it's not a sin to not support TDX, yet :)
+> > 
+> >  arch/x86/virt/vmx/tdx/tdx.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> > index 96ced0494b68..b2962da24701 100644
+> > --- a/arch/x86/virt/vmx/tdx/tdx.c
+> > +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> > @@ -1276,7 +1276,7 @@ static __init int tdx_enable(void)
+> >  	int ret;
+> >  
+> >  	if (!cpu_feature_enabled(X86_FEATURE_TDX_HOST_PLATFORM)) {
+> > -		pr_err("TDX not supported by the host platform\n");
+> > +		pr_info("TDX not supported by the host platform\n");
+> >  		return -ENODEV;
+> >  	}
+> >  
+> > --
+> 
+> Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit 79cd3998685bf7eaec1673e862ee32458c3ae3ee
-Author: Paolo Bonzini <pbonzini@redhat.com>
+FWIW, I prefer Jiri's version which just drops the printk entirely:
 
-KVM: SEV: never retry after #NPF on paging structures
-
-This commit moves the PFERR_GUEST_PAGE_MASK check in
-svm_check_emulate_instruction() ahead of the insn_len check so that KVM
-resumes the SEV guest instead of attempting instruction emulation after a
-#NPF on guest page tables.
-
-> KVM: SEV: never retry after #NPF on paging structures
-
-[Severity: Low]
-Should the commit subject say "never emulate" (or "always retry") instead
-of "never retry"?  Jumping to resume_guest returns X86EMUL_RETRY_INSTR to
-resume the guest and retry the instruction rather than emulating it.
-
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index fe0cba4731b2e..65b15999cf9d8 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -5192,19 +5192,29 @@ static int svm_check_emulate_instruction(struct k=
-vm_vcpu *vcpu, int emul_type,
->  	}
-> =20
->  	/*
-> -	 * Emulate for SEV guests if the insn buffer is not empty.  The buffer
-> -	 * will be empty if the DecodeAssist microcode cannot fetch bytes for
-> -	 * the faulting instruction because the code fetch itself faulted, e.g.
-> -	 * the guest attempted to fetch from emulated MMIO or a guest page
-> -	 * table used to translate CS:RIP resides in emulated MMIO.
-> +	 * Under SEV, page tables are encrypted and cannot be read by the
-> +	 * hypervisor, so there is no way to resolve a fault on page tables.
->  	 */
-> +	error_code =3D svm->vmcb->control.exit_info_1;
-> +	if (error_code & PFERR_GUEST_PAGE_MASK)
-> +		goto resume_guest;
-> +
->  	if (likely(insn_len))
->  		return X86EMUL_CONTINUE;
-
-[Severity: Medium]
-Can moving the exit_info_1 check ahead of the insn_len check without
-checking emul_type & EMULTYPE_PF cause non-page-fault emulations to consume
-a stale exit_info_1 value?
-
-When an SEV guest executes RSM, rsm_interception() calls
-kvm_emulate_instruction_from_buffer(vcpu, rsm_ins_bytes, 2) with
-emul_type =3D=3D 0 and insn_len =3D=3D 2:
-
-arch/x86/kvm/svm/svm.c:rsm_interception() {
-	return kvm_emulate_instruction_from_buffer(vcpu, rsm_ins_bytes, 2);
-}
-
-Previously, that path returned X86EMUL_CONTINUE at if (likely(insn_len))
-before reading exit_info_1.  Because SVM_EXIT_RSM does not define
-EXITINFO1, a stale PFERR_GUEST_PAGE_MASK bit left in
-vmcb->control.exit_info_1 from an earlier #NPF causes
-svm_check_emulate_instruction() to return X86EMUL_RETRY_INSTR and loop on
-RSM instead of emulating it or injecting #UD.
-
->  	/*
-> -	 * Detect and workaround Errata 1096 Fam_17h_00_0Fh.
-> +	 * The insn buffer was empty; the DecodeAssist microcode could not fetch
-> +	 * bytes for the faulting instruction because the code fetch itself fau=
-lted,
-> +	 * e.g. the guest attempted to fetch from emulated MMIO or a guest page
-> +	 * table used to translate CS:RIP resides in emulated MMIO.
->  	 *
-> -	 * Errata:
-> +	 * A data fault instead could be Errata 1096 Fam_17h_00_0Fh, so only
-> +	 * retry for a fetch fault and otherwise try to workaround it.
-> +	 */
-> +	if (error_code & PFERR_FETCH_MASK)
-> +		goto resume_guest;
-> +
-> +	/*
->  	 * When CPU raises #NPF on guest data access and vCPU CR4.SMAP=3D1, it =
-is
->  	 * possible that CPU microcode implementing DecodeAssist will fail to
->  	 * read guest memory at CS:RIP and vmcb.GuestIntrBytes will incorrectly
-> @@ -5231,12 +5241,8 @@ static int svm_check_emulate_instruction(struct kv=
-m_vcpu *vcpu, int emul_type,
->  	 *       retrieve the instruction bytes is legitimate (see abvoe).
->  	 *
->  	 * In addition, don't apply the erratum workaround if the #NPF occurred
-> -	 * while translating guest page tables (see below).
-> +	 * while translating guest page tables (see above).
->  	 */
-> -	error_code =3D svm->vmcb->control.exit_info_1;
-> -	if (error_code & (PFERR_GUEST_PAGE_MASK | PFERR_FETCH_MASK))
-> -		goto resume_guest;
-> -
->  	smep =3D kvm_is_cr4_bit_set(vcpu, X86_CR4_SMEP);
->  	smap =3D kvm_is_cr4_bit_set(vcpu, X86_CR4_SMAP);
->  	is_user =3D svm_get_cpl(vcpu) =3D=3D 3;
-
-[Severity: Medium]
-This problem wasn't introduced by this patch, but at the start of
-svm_check_emulate_instruction() the event-vectoring check [1] masks
-exit_int_info with SVM_EXITINTINFO_TYPE_MASK instead of
-SVM_EXITINTINFO_VALID:
-
-arch/x86/kvm/svm/svm.c:svm_check_emulate_instruction() {
-	...
-	/* Check that emulation is possible during event vectoring */
-	if ((svm->vmcb->control.exit_int_info & SVM_EXITINTINFO_TYPE_MASK) &&
-	    !kvm_can_emulate_event_vectoring(emul_type))
-		return X86EMUL_UNHANDLEABLE_VECTORING;
-	...
-}
-
-Because SVM_EXITINTINFO_TYPE_INTR is 0, this test misses exits that occur
-while vectoring a hardware interrupt, allowing the vCPU to emulate or skip
-the interrupted instruction instead of returning
-X86EMUL_UNHANDLEABLE_VECTORING.
-
-[1] https://sashiko.dev/#/bug/linux-7ce5444c-332c-4505-82c7-e1440dea4b14
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261117185922.4662=
-55-1-pbonzini@redhat.com?part=3D1
+https://lore.kernel.org/all/27b6d824f7aee7078167944ce96d95676eee25cb.1793602266.git.jirislaby@kernel.org
