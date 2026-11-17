@@ -1,82 +1,101 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794944517;
-	b=oP8UbQXNLid6r2RrQ6GeJACsRJ6Soqs0XUH/Myk4PPRxvfmi2+vq8KDxIbTENL5v+1bh
-	 AcrRA0LAhxrZOx/sBccGBrwuSbbtlg6DWVJz06A/aKpFYVqdKJjbi49NPSTsOMs3etAhL
-	 lEatKfsFWkYzySW7QF0WcKTWvDKhdroR+M9hkvkz1F3WjRry1aHQ/fXW08ORP5uNHNsi3
-	 x1YbVksfwmZrni6cRoOUdpcSoY+UQPDB2ad2JH6B5O1U5XqPlvZTv7QqEDKWMktmOiaqc
-	 YKhTb3vyhzoDGm2gA4IKeQYx9R5LJ9mZ9eqGL6dRoVANpeT19IN55sWa4FC1bnw9Sfg==
+	t=1794944778;
+	b=BJpnO9YNjrm/Owqta0jM1yh7mE7sVv78uDATh+ZtDIuNOcIO+FXrzFRnIOzdCNNKGvUL
+	 DzlKye9KgwgZg1Np+BPy/Wi1h9xYvXCi4GGzZWaxF/n9QTR9U3ftrI3xScX9m79/gAt2n
+	 fEmfaGWrN/s2bzpZ3JJPJccFLTKboGHFVvAhYEPrA/bDtOsVflWq/ZEBD3jfyTD3GDgDC
+	 pIg42XkqovEN/6f+yI3jRyr8ZXuXKQVBPyIdzGR6xQawc4uLLBWRysKNVaWw3G/XnbDT9
+	 Sp3HBsab4v7PS5mQgZD9Ebl784szFJVrDsx2DBjzKW33nj5DDLVuORP9prYozw7sjTA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794944517;
-	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
-	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
-	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
-	 X-SA-Exim-Scanned;
-	bh=+M/Rtxh3yGMbVllbJRU+JtKA13rBSYOFw41bb75VE4U=;
-	b=WPFMNSher3jJfm/0IRT/5Z9ZCTIsSd8zR5e9AAlbqMa+K6U4fXexmOJIUhEvpFUbw3dV
-	 7WjULp1MsmAgk6a409G64wsgHUsvd7ckmzY9f7yufrq54mKslpj3NjVBrUloZGcUs3PbN
-	 9lTeClDbi0sLJSMYyNWX6VH8P6nIgdlmD6Bk2BkZ7oAc8KjziqAWSdR+tN/MkveT74rky
-	 pm2N+fZi6nxPJ4aWKYXs0/kEVuaKBmciesVLPYx0KWc+TNCsA0kVVQEd5CevRKiA6o1VN
-	 GaDpGnWDNE9xoVi9LxN+8WmJdyulz8gNu1kzwZUxi5NMGcBU3C7uR/GbZ2JDpSbFn4Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794944778;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:X-Patch-Reply:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=ExUxqEZt6CeU083ngWOHRCSyuGGcbWbRoHP3g8HyKtM=;
+	b=aj0Xad4Bl6OL+UYi77Ihuydr9BRB17zDic86nbjunxuQoKruUCe/1wht8BL9rdAtQJw+
+	 NlZYVFIJVElMWlmSign8yFMMGoPRp90qL+Lvbb99+u7eyZFEAPZiWY7aUSDKnMR63NIO6
+	 KCYNP/PHQTDBLjwlmHfqPTsZpLTGbOn5k8LmMbXeqqgQ5S6iPUvGUtiITvFgR+QddXCuo
+	 mZKvpj8jrhKt1GyJTVBsEl5hI8+V6D//wJ4chKmK+2tleuMDrAfkvseR+w/rQAAoS3iNb
+	 rHkvxQoK7Ydd6rpnOH2x/CRqIiPswyK7dACT9FAaN0G2SBi211Tj3woPOxMqDnjqBxQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E96h9sv4;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LmM2Fw9g;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017A4606A31C;
-	Tue, 17 Nov 2026 19:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EAC7606A31C;
+	Tue, 17 Nov 2026 19:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E96h9sv4
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9A81F000C5;
-	Tue, 17 Nov 2026 19:41:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LmM2Fw9g
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2031F000C4;
+	Tue, 17 Nov 2026 19:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794944516;
-	bh=+M/Rtxh3yGMbVllbJRU+JtKA13rBSYOFw41bb75VE4U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=E96h9sv4SckZZn0xBQJFDt4SE5F4NR5pDOuHOdrlzwystp4RmrvzVT8agTD6itkot
-	 ks6naELZWw6Yk3V0FlemoqnJDyW1/qroAm9MY/tndKlHNqAvZ28n4xtjU6nhMDzh80
-	 +iGpCfj31kUN/LzD7Vu9j3ny5m+TWL54Dco8XO2t3CuaMcEaUuGjIClY+1xzJDNl2Y
-	 uvxznDi+8xqAyhKnIJY9bl3keFC0xypVzollgnMgYNgGZc84WTPkJQGQ6iRq3szo5K
-	 eNGz3SUGSLSSYV8bFSc7fPQZx6FJfYAQhXqE/edmhJI+Zey25KSrCG01PD7nDqiIZT
-	 yql77Q9cxOw8Q==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xTP3y-0000000HCc3-2ZQd;
-	Tue, 17 Nov 2026 19:41:54 +0000
-Date: Tue, 17 Nov 2026 19:41:54 +0000
-Message-ID: <86bj7n1bzx.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Oliver Upton <oupton@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Quentin Perret <qperret@google.com>,
-	Fuad Tabba <tabba@google.com>,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
+	s=k20260515; t=1794944778;
+	bh=ExUxqEZt6CeU083ngWOHRCSyuGGcbWbRoHP3g8HyKtM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=LmM2Fw9gfbDi+AVGhDZOn7ni51zlC4OkduYjfN3OBYRvdmfWDKkYPZ/YqivYYyoVB
+	 CPf2z2Kj/kRf6q3kLA8XGFBtr9+0qUQ7N6QBOKcni0jUtLOTVjlnax82oAHDwjWu4Y
+	 Wb/G/WW/jrS4grELIH7dPPX8KpI4RSnenwJ2u0vE1UMJbXLlfbrq3lsTTF8/u/aQaP
+	 py54S1IeA7dJ9DDvZVOHfdEFotBHUh3P15g7p+6QfaC8hZOljl4qxGzF3SnwRoxEAw
+	 a3WHCXcVXjBDOwKAyeOJdMeQpeaFQxF+dvYI0bItFrVlWpjOm3fNdphqpArg4MrbaF
+	 sFIqZRxnLbXMw==
+From: Danilo Krummrich <dakr@kernel.org>
+To: Simon Song <xinmengs@nvidia.com>
+Cc: dakr@kernel.org,
+	acourbot@nvidia.com,
 	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 01/19] KVM: arm64: Hide generic ptrauth from protected VMs without ptrauth
-In-Reply-To: <20261109084854.840576-2-fuad.tabba@linux.dev>
-References: <20261109084854.840576-1-fuad.tabba@linux.dev>
-	<20261109084854.840576-2-fuad.tabba@linux.dev>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	rust-for-linux@vger.kernel.org,
+	nova-gpu@lists.linux.dev,
+	linux-pci@vger.kernel.org,
+	alex@shazbot.org,
+	jgg@nvidia.com,
+	yishaih@nvidia.com,
+	skolothumtho@nvidia.com,
+	kevin.tian@intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	markus.probst@posteo.de,
+	jhubbard@nvidia.com,
+	apopple@nvidia.com,
+	joelagnelf@nvidia.com,
+	ecourtney@nvidia.com,
+	cjia@nvidia.com,
+	smitra@nvidia.com,
+	kjaju@nvidia.com,
+	alkumar@nvidia.com,
+	ankita@nvidia.com,
+	aniketa@nvidia.com,
+	kwankhede@nvidia.com,
+	targupta@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	zhiwang@kernel.org,
+	zhiw@nvidia.com,
+	boqun@kernel.org,
+	daniel.almeida@collabora.com,
+	tamird@kernel.org,
+	work@onurozkan.dev,
+	jgg@ziepe.ca,
+	bhelgaas@google.com,
+	kwilczynski@kernel.org,
+	dri-devel@lists.freedesktop.org,
+	peter@colberg.org
+Subject: Re: (subset) [PATCH v6 00/11] Add Rust PCI SR-IOV support
+Date: Tue, 17 Nov 2026 20:46:06 +0100
+Message-ID: <20261117194606.1892840-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.56.1
+In-Reply-To: <20261111223337.508989-1-xinmengs@nvidia.com>
+References: <20261111223337.508989-1-xinmengs@nvidia.com>
+X-Patch-Reply: applied
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -85,52 +104,23 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: fuad.tabba@linux.dev, oupton@kernel.org, will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com, pbonzini@redhat.com, seanjc@google.com, shuah@kernel.org, joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, vdonnefort@google.com, qperret@google.com, tabba@google.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, 09 Nov 2026 08:48:36 +0000,
-Fuad Tabba <fuad.tabba@linux.dev> wrote:
-> 
-> A protected VM without the ptrauth vCPU features shouldn't have pointer
-> authentication in its ID registers. Commit 3d7ff00700d1 ("KVM: arm64:
-> Rework specifying restricted features for protected VMs") gated APA,
-> API, APA3 and GPA3 on vm_has_ptrauth(), but left GPA and GPI capped
-> at IMP. So generic authentication is advertised to a protected guest
-> without ptrauth, and PACGA UNDEFs.
-> 
-> Gate GPA and GPI on vm_has_ptrauth() too.
-> 
-> Fixes: 3d7ff00700d1 ("KVM: arm64: Rework specifying restricted features for protected VMs")
-> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
-> ---
->  arch/arm64/kvm/hyp/nvhe/sys_regs.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/hyp/nvhe/sys_regs.c b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
-> index 32e82653ebf7e..e5502d5651b05 100644
-> --- a/arch/arm64/kvm/hyp/nvhe/sys_regs.c
-> +++ b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
-> @@ -157,8 +157,8 @@ static const struct pvm_ftr_bits pvmid_aa64isar1[] = {
->  	MAX_FEAT(ID_AA64ISAR1_EL1, JSCVT, IMP),
->  	MAX_FEAT(ID_AA64ISAR1_EL1, FCMA, IMP),
->  	MAX_FEAT(ID_AA64ISAR1_EL1, LRCPC, LRCPC3),
-> -	MAX_FEAT(ID_AA64ISAR1_EL1, GPA, IMP),
-> -	MAX_FEAT(ID_AA64ISAR1_EL1, GPI, IMP),
-> +	MAX_FEAT_FUNC(ID_AA64ISAR1_EL1, GPA, IMP, vm_has_ptrauth),
-> +	MAX_FEAT_FUNC(ID_AA64ISAR1_EL1, GPI, IMP, vm_has_ptrauth),
->  	MAX_FEAT(ID_AA64ISAR1_EL1, FRINTTS, IMP),
->  	MAX_FEAT(ID_AA64ISAR1_EL1, SB, IMP),
->  	MAX_FEAT(ID_AA64ISAR1_EL1, SPECRES, COSP_RCTX),
+On Wed, 11 Nov 2026 14:33:25 -0800, Simon Song wrote:
+> [PATCH v6 00/11] Add Rust PCI SR-IOV support
 
-Burying a fix in a selftest series is a recipe to make sure it is
-ignored for a full cycle... Why isn't that with the "massive feature
-set" series?
+Applied, thanks!
 
-	M.
+  Branch: driver-core-testing
+  Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git
 
--- 
-Without deviation from the norm, progress is not possible.
+[5/11] rust: device: clarify the drvdata_borrow() safety requirement
+      commit: d66d8bbb0316
+
+The patch will appear in the next linux-next integration (typically within 24
+hours on weekdays).
+
+The patch is in the driver-core-testing branch and will be promoted to
+driver-core-next after validation.
