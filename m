@@ -1,96 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.174
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794874158;
-	b=HDnklbVdVx+CVcC+p6vXSGQZne+gJItxD4h0G7yI2P2luAV78/2YQtyPNPIXQULPz02G
-	 3XHpVJBsSNOSlISoST/ti9nYybtf94A2ehlRkHDWW8v02CWUDHLHUNZjqp1bjqgmnZ/IS
-	 zAiNhfAWhEcuYpAb4Tf0Ayt+1+v3bjVNEh9dAF4HXSKcbqNR+mNsV+xTHL+iDpcNj3NOY
-	 w/ar5lytjSInoZOoehSh3imPuSb6xLwgOVHHmJ8vbjC7BLhQJRsB4LN7n79uHYjdoHdNk
-	 n05Nz2+EFrItO2yHwe4mqu7AzOOWEnYuha69oQ27re+fevfwhJFLXxOvYBtNGOtVQ0A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794874158;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.53
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794876536;
+	b=Ddb5PEkNHwLhfFq6Al9EHLQZp3ak04xc7uhkpkaapGM64t7eT22gbQuBSsPonGF9/mBI
+	 //ctkms2ctg6IEqmHjaH/bl9zttqWugB6cveKIggOb/6K6U4IA1ExOITpCDY1ThTiAANu
+	 fnWCz8vVwlXhNON/0yEqXwvDCCHTJtAjy2uevbWxCN7Mlw+qxfLpBQPLJfexukJKzBE9h
+	 kfXm2NZlIL7B+l+MOHJMQBuDHfLujdgv9lJbIU4sYjBoDEph3WG8NgWor4Vw2pY1FPFJG
+	 KTXPCPAzWOW0EI8P6vmgZN9Kpoe6vB+VohNXajRoljQ+Cgec0Jbu+CPpQTLnnvHoUSw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794876536;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=pTrfmCeHoWlhZKSWNZnZzfNn/A6ww2uD6ITBjAv/o7s=;
-	b=abtu/tQoeHC9olM3bocISrhh363Jnr2+tXKtuCl0h9dK9pMxzC9E4ACbOlcB5OWXfNZ6
-	 jaxXcmn14aONnqHTg2XeK+VcUjFPijxEUFXtnNWD62SNU4LMz1mbvxcvCdS6eZ5pmyT6v
-	 X6Y1IqGV0BKb98tHrUB4YJyrxW8BuAdiyWMkPPr//429+BnIsuHtC/8zTwedaQEUY3wbr
-	 oXPzG173IakjeXTg+7V82RTOLkKxF6BZy9AhHHuf15RKcUV/5q/9y22CsdQb7CrdPUyH6
-	 kx8+da/PnzRIMIFvVD6b9OlgBLSec1ATGEBPHn4+rg8gioISxuHx90q4GPXfCbO8lNA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dntHVw1v;
-	arc=none smtp.remote-ip=209.85.215.174
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=rzJlq1cSSvpPNomsaRs/y8mYSY2mPGAAaxTHlWFvxNs=;
+	b=ATObTU/sxuBCcVd9C2oiGIdeul5Rr9r/X7bqSHDufRBll3uHsdFRQoy9MJ+sW2nUkRAh
+	 4bbJYIXkSC9GCtH5uwyzTVa92We0mVUppLE2nWV6PEDZX15FQ4qMvPNaZ9dO/rQ8VUY7F
+	 grUb/ZECIJP6VtA17EvGEiFXdaf549W+I26bCYiYkz6VQDfNR0Qj1Qw5hXshb0sR3xLmJ
+	 EPLstM2Qu4G1aPn4SLNHnBMvA29XVNnb5XWRHIrYDywcpMU5403EfMDDBM/wzjznW7r8r
+	 YHymbmrs24PurZdukvy8Btqzt/e2MmxJ8d4HPzfmQnEwlsqZWZSjMzzK/CXu0HrjClA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LpQK+XTk;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.53
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635CB606A323
-	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 00:09:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 635CB606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F01606A31C
+	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 00:48:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16F01606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dntHVw1v
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cdd9d0c9bbdso3058521a12.1
-        for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 16:09:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LpQK+XTk
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6b56c90b38eso6587a12.0
+        for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 16:48:55 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794876534; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Yo8bRehe+dJL0KVIy/rjUsdvi1MEWSosi/SwyXBvWbfAmsthFq6J4hStX4qrOdUmet
+         W5ilCPqSM9DL7WNV4dxYoL+L5b5RewoE7ZgSUS0ZvXPcg9r2NG8c98j5Bl3zx6Ja+Bpo
+         07iusW/j9D9I32pq4n7UxYjqk+mCcMS/dGCMBF5iarmf+h8OPiZAmKrptlRQclnnVkTd
+         vlKI9VgHssvB54WmRmDItVmBB5196MGQISgWNxoAdhEgS9WnMJ6a4jBm0KvWQlBWWGCx
+         53vqEGgeqQO/stZhOezCQu9nQi99BFORyrSYEGrUUUX1PMnnnZqiKzotRj95JzW8V8OQ
+         mBuQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rzJlq1cSSvpPNomsaRs/y8mYSY2mPGAAaxTHlWFvxNs=;
+        fh=S2r+LnbwUVdkaiEkV1XdiA+JIvVyXQtW9bLCLrDV5UI=;
+        b=qrE/ydUkuLqjpEU60XpQxRYrxX38aouSacMgOGZIOK0c7VfnyMV8ltFjOXtBYzV7a4
+         2L/GnDzLy5ipiu0Bvvx81k/VbH5YDEn2cSx5xxeXOi3zE/V/1OQU6ik9cvXiKk8+bpRO
+         NVHg6VDneEgTQbedTfCWXz44hAINXHla4bU7CE5Ti/Qrb84hequJLuiVPisPLCFvvwa8
+         brSoNQognyuuDqyMA7B5aGaesVMEqYukzhx4GUOO39qnI2+E7gIwr8/Ca2btHzOyeceH
+         PI8THdXs3FAX4dlKvz8zvAUiJqRhKShUPAApRqWP0whrju8mt1A5yW79J5ZSyIQUIYl1
+         ilTQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794874157; x=1795478957; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pTrfmCeHoWlhZKSWNZnZzfNn/A6ww2uD6ITBjAv/o7s=;
-        b=dntHVw1vYt0X8rejzm8+5Fc++nZ4b0a9A3nHB5izEFRQ1xt01Lf6SpVFh5sI6SGQDq
-         wYjvrawQRDLG566kS9e6TfF6DWI9JdBKxWWz436fDvYxQ1K/tlAQLdG9MuP85zuQtS5/
-         m6sPxW+XgJuUdmlysOLDCAIELFhH6ksC28fMJF2ow+5OSEBjpNVx6Vv7Wi/SPLJIEG9w
-         KjxKsw0YBA404XposGPpkDLhXcQNXVjH2cReHPHy5KSTi372KR4+BD4Noyi2C2p7s1qx
-         ezSTdpQFQAd5Ia+yQRcfGthS2ODUaSyZ4zF5mmipFb5GMWMu/Fxd9tPLPtYR1KXlHyTN
-         HnKA==
+        d=google.com; s=20260707; t=1794876534; x=1795481334; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rzJlq1cSSvpPNomsaRs/y8mYSY2mPGAAaxTHlWFvxNs=;
+        b=LpQK+XTkznPKynwMpLTifIIBrRSA/MRdl9ZsjlqfqPI49rrh8KnsKwANgEipMPLUvr
+         2LLOabuHTRTecPVfrV1mx2iFfT5BvJ0IuQqaYqNxXxusko+4H7shWfhAZcFlvyJXkeHs
+         U28A1wz9FTmfvUX7iSdScs6Ce4N2fSs2wHumUSypOevxj/Sz45sPbGmbBJyX3gGYd2NR
+         BQ4FDM7KuNZL3oo1NKspKKFSpRRRVAtp5YWaYlXeIRXZvZaQl0XVYfsIIXnfPrVXhMIh
+         9o82A5pck6wwM7byI1EVevD+0o08G9HAncbAknCc7XootGlX/HguJ1/cLZWhXOOM1KLw
+         qXhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794874157; x=1795478957;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pTrfmCeHoWlhZKSWNZnZzfNn/A6ww2uD6ITBjAv/o7s=;
-        b=T80h5Z/mHkeAn3xGmxfJZ98VlAkLutbtA64WH0JvKv4U83RFSpSMCN1nk1gSEOzGD6
-         XCoxZy5mZD36X/PESxArnaUwllofWIYyxugoRqRtg393SOPKdWsfMyVL8FIeJ8sRTJo7
-         AxffIQSqzthL8P9Xlh1veOoCQjEBpxsCcrKgiIp8lpa3UT0um6SQOozbq077Gc64xTno
-         SaqwGHGWrGSHclxsrTFSQDF02u+70Ylo5U1vxNiYKh0/l+6FKpewwsBV/pjUKqMOReCd
-         vic11V1lfmt2lkIqQ/uH5qfbaEIltimwpt15eoWVJax1qW84m4f+YSwuC1aYOVw6GGUB
-         t2Rw==
-X-Gm-Message-State: APuU4Z8RJbdTaTtZDzPgFoAkZ0GHOYpyn965BR2gD59DKv29b8a65YRN
-	SKtCKgOor5eRKECY+Vgx/hdgeUZB2i8ob5NLlNTUYZgHxP67ChFy99dG
-X-Gm-Gg: AZFdTZfpCwJoYLKG7KbVu9GT8fooM6cr4FS1THST2QFRlSIKstiMllCOa8dem5FCywg
-	FfSeqiXgckWhXlRVhHvheU9w7ZtL7Ore2SEpDBfNUpgDUwTXd/e+jvNvkaTc1pF7vjwEkniNoAJ
-	Podqax6HZwkiUbBXmlD5JT8tihTcGuMjPFmgcRz5KA8mTK5zhOFPNkXASuMSTIyWemwm1IrH/oY
-	F2iV2F5fwDBhany+Zc8iHI4qKZhgtDVXArVPCmfkro1Zdcex7C5bFdZHOq9APQbEW/eFLmoIAe+
-	9mvNiN/CSN5rMvFhz6quSdTitPniPd2W4U2hmBBFvdvX0P0S7R9G8JRwdVO68fAxtZCPz2bjUps
-	wRmPAm/Q4PpTm3vLq9P4BaKG0pqeag9wfSFfuwsTCg/CdQ9GpMpEDbwNhkHYGalXncw2Iwsn7P4
-	9llVWLF/ZD8V4sdsTs5JQgKXfJYWJMnUKZbOyqPFwa0yw/C8mKBwr/2bRXRz77EOoEj4HN0mAmY
-	84zmF94kgMREO9JSxtOHLNUDP0k6Oa2Po83B6kGxNbHUVGWun1aTMCmLiaQ0JOaIkwBj0UEWxEd
-	sTwt3tv3upukW8kX4K8EdD772zFOddyxqH8jfs21RgjpS4fX3L69+5JhtatYomJDeynfE3Q9ztG
-	vs4wa9jgx+633EkBSR7Z+4PyrlxA2HpTt9SLaVgR8gUcLpKBoGk5UKsj4tQjm+NvUd1OsNMAdp6
-	DnBc9k6cIWj3VJnga1HsCBjUQanPUO7hQ=
-X-Received: by 2002:a17:90b:2584:b0:3ac:9f00:3bc7 with SMTP id 98e67ed59e1d1-3b1b0ba61famr10684993a91.33.1794874157570;
-        Mon, 16 Nov 2026 16:09:17 -0800 (PST)
-Received: from cs-arch-srv04.cmpt.sfu.ca (cs-arch-srv04.cmpt.sfu.ca. [142.58.10.48])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1b25a365asm9273069a91.1.2026.11.16.16.09.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2026 16:09:17 -0800 (PST)
-From: Mahmoud Abumandour <ma.mandourr@gmail.com>
-To: seanjc@google.com
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ma.mandourr@gmail.com,
-	pbonzini@redhat.com
-Subject: Re: [PATCH v3 0/3] KVM: nVMX: Don't clobber VM-Entry instruction length on soft INTn exits
-Date: Mon, 16 Nov 2026 16:09:16 -0800
-Message-Id: <20261117000916.3904913-1-ma.mandourr@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <avuF8vW3g_o1t5DM@seanjc-mac.roam.internal>
-References: <avuF8vW3g_o1t5DM@seanjc-mac.roam.internal>
+        d=1e100.net; s=20260707; t=1794876534; x=1795481334;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rzJlq1cSSvpPNomsaRs/y8mYSY2mPGAAaxTHlWFvxNs=;
+        b=XALKFTya+0skiztoN4S10pqNqc/kYPL6tqX5W/P4Zp0CtzApCXx/kMqv2LKqLt+Yew
+         GpZ+Y2058B9NM24CDHA315W3iY0PiVhblLITAo0TmMm6a1RepvA0RQV0hM0LusiJotMN
+         Tdy8REcmVZKRzUTmoH8I8XBtpJkxUQT0Hp78FH7OD+rXkMTBNiRdpq9QPLBVG7cfaB/x
+         UVdo1fpQX1W/ysN0GfSZ6zn/Yu8QRzEJ2uyVKC6PJF/TkC9KlXV6/k4e+Le8QhgnX5Rb
+         tdknGUoxckyH4XChBu79+11c/t7Pkb5Okblcp/QFGGtjxwXnwGACjip9Br29U4/E4v2E
+         2EVA==
+X-Forwarded-Encrypted: i=1; AL+hErHJ0iktTUe+ArRKTMk4/T47v/1nIY5U5p4bGnVUmhuLyOqi5Lk8F5/bXO9cjYAvUh8wnCQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+32dGahaCEniA9S6zLIdJT9j38OzvYQDqq+wlOk9+zgQqTTSbq
+	FrOBqdb/AQYhtZCQxqIei0atae1QNtqPOxL9BsNWlAnQokRYYvluFyYJxkjsDFdm6m6A8lKc4aw
+	f9PU4pApTbL1dbxZG9DOVMLoDNqi/PGRY8zscGY24
+X-Gm-Gg: AYBFou3yv1aAUC5IDuQEBfRMKHdSPjBpyNLrRVKZzcxkSlwypIGiUzRX2xnZVm3/W6r
+	JSXKWHsy1YZfHdS4Egmir7cLAHEGap6N0eP91Ix6OOPgZDMViE6yBvuX1fQ6CzUNc6TzGjYtWak
+	IiP5yrxEUOzNKwHcNKxIdQD/W49VusAuvXbfajgG5UpemE2TjCVGMFw3eivTz+E+8fGm8tpeo16
+	9W85t767ogU/DsRzX7ULlr8B0kUoXRHcpVT/x++6SKf7ckDX7Ru+wKtDyYa1E9WZArMu7XVCwNR
+	guzRShyTyMsB33mC+mKeEoA5OKIItq1GBcFG4yRRAmrDRIeAHx4UKoi6yArYpfWki2Qer4Y6HpS
+	UEiKvArVH0z6ZC0mFLbrCbPPn00HB7uaf/KfH30Z51oCZtdOxptVWzcf6DYWJgXJXy0aDeDO41N
+	TokeFbbIbCgrINNJSHsw==
+X-Received: by 2002:a05:6402:c51b:10b0:6b7:91a7:a637 with SMTP id
+ 4fb4d7f45d1cf-6b85b54dacbmr32211a12.6.1794876534067; Mon, 16 Nov 2026
+ 16:48:54 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -100,12 +105,76 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261116223033.3866283-1-ma.mandourr@gmail.com> <20261116223033.3866283-2-ma.mandourr@gmail.com>
+In-Reply-To: <20261116223033.3866283-2-ma.mandourr@gmail.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Mon, 16 Nov 2026 16:48:42 -0800
+X-Gm-Features: AclHuK8u4qyvtWd_l0Y2lGLA_aG_TmvQh08Mtzu-tbiyDdt1Gk86PTeZCcQDyUo
+Message-ID: <CALMp9eTsfGjGX6rmYYv2F8sth-WS7LPTe7UQ7aMZfFi87e=eLg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] KVM: nVMX: Fill VM-Exit instruction length before
+ saving pending event
+To: Mahmoud Abumandour <ma.mandourr@gmail.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 16, 2026, Sean Christopherson wrote:
-> v2 still applies cleanly, there's no need to rebase.
-[...]
-> TL;DR: please be patient.
+On Mon, Nov 16, 2026 at 2:30=E2=80=AFPM Mahmoud Abumandour
+<ma.mandourr@gmail.com> wrote:
+>
+> Fill vmcs12's VM-Exit instruction length before calling
+> vmcs12_save_pending_event(), so that the length it saves for a software
+> exception isn't overwritten.  Commit c3634d25fbee ("KVM: nVMX: Leave most
+> VM-Exit info fields unmodified on failed VM-Entry") moved the assignment
+> after the call.
+>
+> L1 sees no difference since both lengths are read from vmcs02's VM-Exit
+> instruction length.
+>
+> Link: https://lore.kernel.org/all/sashiko-outbox-179791@kernel.org
 
-Understood, sorry for the noise. Plain git am failed on patch 3's context
-here, and I should have tried -3 before rebasing.
+Sashiko is wrong. Neither of the scenarios it cited in v1 holds:
+
+  1. After vmx_cancel_injection(): if nested_run_pending is set,
+     vmx_check_nested_events() blocks all nested VM-Exits (and
+     __nested_vmx_vmexit() warns if called with nested_run_pending set).
+     Once vmcs02 actually runs and exits, hardware copies
+     VM_ENTRY_INSTRUCTION_LEN into VM_EXIT_INSTRUCTION_LEN if a VM-Exit
+     occurs during delivery of an injected soft event (SDM vol. 3,
+     section 30.2.5). If nested_run_pending is clear,
+     VM_ENTRY_INSTRUCTION_LEN came from event_exit_inst_len, which
+     already came from vmcs02's VM_EXIT_INSTRUCTION_LEN.
+
+  2. After KVM_SET_NESTED_STATE + KVM_SET_VCPU_EVENTS:
+     kvm_vcpu_ioctl_x86_set_vcpu_events() never updates
+     vcpu->arch.event_exit_inst_len (struct kvm_vcpu_events has no
+     instruction length field), so on a reused vCPU event_exit_inst_len
+     is just stale junk.
+
+Moreover, L1 *can* see a difference, and this patch introduces a subtle
+regression for SGX enclave-mode #BP. Per the SDM, volume 3, sections
+30.2.1, 30.2.4, and 30.2.5:
+
+  - A #BP that occurs in enclave mode is reported as a hardware
+    exception (INTR_TYPE_HARD_EXCEPTION).
+  - A VM-Exit due to an exception encountered during delivery of an
+    enclave-mode exception still sets bit 27 (enclave mode) of the exit
+    reason.
+  - "If the VM exit occurred in enclave mode, this field [VM-exit
+    instruction length] is cleared (none of the previous items apply)."
+
+In __vmx_complete_interrupts(), INTR_TYPE_HARD_EXCEPTION does not update
+vcpu->arch.event_exit_inst_len, so it retains whatever stale length was
+saved on an earlier soft event. Because vmcs12_save_pending_event()
+checks kvm_exception_is_soft(nr) unconditionally, it misclassifies an
+enclave-mode #BP as a software exception (a pre-existing bug, outside
+the scope of this series). Before this patch, prepare_vmcs12() at least
+overwrote vmcs12->vm_exit_instruction_len with exit_insn_len (0). With
+this patch, vmcs12_save_pending_event() clobbers 0 with stale
+vcpu->arch.event_exit_inst_len.
+
+AFAICT, there is no valid path to prepare_vmcs12() where
+vcpu->arch.event_exit_inst_len is better than exit_insn_len. Can't we
+just drop this patch and delete both vcpu->arch.event_exit_inst_len
+assignments in vmcs12_save_pending_event() in patch 2, letting
+prepare_vmcs12() be the sole writer of vmcs12->vm_exit_instruction_len?
