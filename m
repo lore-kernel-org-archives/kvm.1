@@ -1,66 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794940346;
-	b=p6e9cur7kpqC0EfNn3KN5pum/E4f3gn+mYr0L0ZZ7mnCbgW+ZTpo+f/fLSyZAwI3pLrl
-	 0ldImO90oQk3tBqAq1tVmpw/+Y5gDHxvpam6mcj8tUZwc0FQVLrsWbfsPW/YFvv7K6+gj
-	 Euw+/NYHqq+u0EZFID7XL7qvhQu8M5I6xQ9QEUQrQbNwX2m0GDiPpKOFsdnUyPY5lUfEb
-	 Efh93rnJuf6c9EI0EG78eaJD6emdCAs6dWs0o5+jJGEs9tf5xPJ0NkItvmxWnJbnmyReN
-	 etSwosUYTeclK5PN2k4Gq5LmZift29nlBbGzTKuvbnfO9J79Me+Eg05lItOcQSgTYoA==
+	t=1794940347;
+	b=x9Z/NvI/8TwsUbPF5297m4maRQTuVpa6t+q/tk20SWZrWaUKZGZTyHl07hjJH11Jh7wr
+	 rE/0TIbyqB/yx/SZEkf2aJLzhVmdVqzEHMV4YtVmzTv+8JxfPEDW+z+u9YdMt7UdGNFTB
+	 D4VM3SigX5oSssNDPJanthNkSQGGOFrlcEvZAPGUR26ZLxoKJMtxnTEobpuRULZk3+3DK
+	 /hjMY+gM/5JzmkuANbGTh3JDjse8WNlDbQGS5Sqwl33ZmmOAp8UYdpe9SimGk5P0YZYhr
+	 Ih/MoK/WFEpRldpQ8fQhvohAjPduVw5n7/EYOdzOMObRiNNDh5lHCgQio1fr3/GMylA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794940346;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794940347;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=fXw+LB6eG9yx6O1pdvXBcm5moMPileAQ+PkQxmHtDFo=;
-	b=pXby8G6d6le5TBKIf8t0TNQUpt3dAQgXMLlzSAtZAljVlaITYawTmUsUnF/QmT7OJU8G
-	 g9mGvntUQP9qnBiJsn4QjlV0sE6ZHg+PSHxoft+ykcc6umrK4+TULpd0stdEYmd0QLRiy
-	 Qym+Fht1g4c/8r2qqIMgQxJO/nN5xpNuumTghz6MZCdwhbJu6BILBks0b4p6aP6OZJ71Q
-	 QfxwC8g8FbDjF1FyRtoBHradWljzWq6ga9K5nfpOE/drkV8KoK3fMDhz9D3tBHsv6XLCO
-	 yB8NXAIZw+VwXuQ0iZvbj/jCmL5A5g5XgwibRRa9HivyI4Z8pRm0xTOjQD+vhkA4GTg==
+	bh=+ybsgDpDL6V7uokQLj4QSvEqL4I0A+RycmDOqAOMhuA=;
+	b=qQrBcXAPzP7v3S5GUKrdaYhwxkpQsePSt7HX6NHheiPj9t72Mdqkabd3zl4awix/Ertr
+	 Xm1BewtlsxeLBCG/3LLeTj7dHCjDcyOqnBxnGpBN9oFMqT4e5l733apYAhXfm4a/jSBIA
+	 FdLOi/ea90hN56214byeJaKpxpqMxgYQrgK35qYGYq8qYkJ9Q1OnYQJS7gdvkXuOrtBDT
+	 8FVfdwg/JCVMk9415LPJ6et0DqJmc3eqpIsH1HkAJ5lIvn7lu0W1JpTBes6K7KYK2iQ/G
+	 wz4uOjP1ahaIa6Nw3m+Vm/5wgvGWxIRNNTiMoLAUmwUJcvuyrQ0B487EIA/vgWU5KKw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JSkcPI77;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=J93oMG35;
 	arc=none smtp.remote-ip=198.175.65.12
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4533460A261F;
-	Tue, 17 Nov 2026 18:32:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4533460A261F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1317960A3811;
+	Tue, 17 Nov 2026 18:32:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1317960A3811
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JSkcPI77
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=J93oMG35
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794940346; x=1826476346;
+  t=1794940347; x=1826476347;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=PsNlEn7LaIv9GsNpcpduwlDDySvS9Zu9lSvLlLrel3Y=;
-  b=JSkcPI77LFFzLzhxpTOhIBrRoTMEyGh1ZUEIUAmyf2ARXEgRrqK9WX66
-   NyFRw7Dv8V5trP/9+3AwNK7BuxyZ/ccbwNPKurZJKu9lvo1Ei/CypDAIY
-   VUTwZSryv3qqmAfKsUSdKDx3GyO+n+PrU2VuhGvtkaS/5A7wTBvJmNd2W
-   pIcDpdDYeWMxTYEetA6Dg9AQn3i/yik61rpRH2/PWGJa0U9DqaBhJ+qGp
-   COgJIFXrGktbgtW3zRyXYZf3Bip4OsZ9QBO9qt6nf63+8BBpG3pRi2vAR
-   OoLkK6UwjwwpVKmMwSBsmG0Kk/I1D5kw4uMmOxiqfsCA7mZGoIp6xbeEs
-   A==;
-X-CSE-ConnectionGUID: Y9CWYuX1QbmEJh0DTItSxQ==
-X-CSE-MsgGUID: HhUqZmO9T+e76LF1WHEydA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3607376"
+  bh=e9kKEk5EShzmKQ/HQespqG3uyBMUaLWjoN/1T9nG4HA=;
+  b=J93oMG35wOOoXoibZ+WfmdJAsqq04RZ6Kw+6JUFqup83YHLCZ7N7Z69b
+   IZYb2cJXawFZPonVEmLLqklcNHkuvd/mXlWfmhaLk7Ls9IFJjIJYbcAcb
+   BBKUkVJoDp4rwFdXJvB3S8pK36N27/GwpCzv5HYnl4OJh4yjGpKtCqi2I
+   Np79iJTojM+RY7xT/frRc5YZ53KjRHyUPCASC0NDitK8lrxmoMTirB33n
+   l6QmIE+RxkV/7aBlW8HASlz44Y7MYDuo8spl4WrxABjkUAXWXV+FwjCe8
+   nHgW0bhWkAJ46lUXdo5nc7hKP2SHqWVfiSws0MmrMY1HewWHsf8v/1GUY
+   Q==;
+X-CSE-ConnectionGUID: jODOOfPTSzK1wXAddpZ+gg==
+X-CSE-MsgGUID: m9FMp3PyTCmxRoy/DhbQqw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3607383"
 X-IronPort-AV: E=Sophos;i="6.27,218,1787036400"; 
-   d="scan'208";a="3607376"
+   d="scan'208";a="3607383"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2026 10:31:04 -0800
-X-CSE-ConnectionGUID: o4XarOoLSNWLVnMz4ere/Q==
-X-CSE-MsgGUID: rNbRQvvURZiyBQ73SxS1Rg==
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2026 10:31:06 -0800
+X-CSE-ConnectionGUID: oWuQjIybRtuCQtqwbzIvgA==
+X-CSE-MsgGUID: auR9mXz9RVCCqd79SDws/g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,218,1787036400"; 
-   d="scan'208";a="9775095"
+   d="scan'208";a="9775099"
 Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.174])
-  by orviesa003.jf.intel.com with ESMTP; 17 Nov 2026 10:31:05 -0800
+  by orviesa003.jf.intel.com with ESMTP; 17 Nov 2026 10:31:06 -0800
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 To: seanjc@google.com,
 	jmattson@google.com
@@ -70,9 +70,9 @@ Cc: pbonzini@redhat.com,
 	linux-kernel@vger.kernel.org,
 	zhao1.liu@intel.com,
 	chang.seok.bae@intel.com
-Subject: [PATCH v9 18/20] KVM: x86: Expose APX feature to userspace
-Date: Tue, 17 Nov 2026 18:03:08 +0000
-Message-ID: <20261117180310.921701-19-chang.seok.bae@intel.com>
+Subject: [PATCH v9 19/20] KVM: selftests: Add APX state and ABI test
+Date: Tue, 17 Nov 2026 18:03:09 +0000
+Message-ID: <20261117180310.921701-20-chang.seok.bae@intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261117180310.921701-1-chang.seok.bae@intel.com>
 References: <20261117180310.921701-1-chang.seok.bae@intel.com>
@@ -87,155 +87,401 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Expose the APX feature and its sub-features to userspace. Add support for
-CPUID leaf 0x29, sub-leaf 0, to enumerate the APX sub-features.
+Test APX-specific behavior and ABI interactions as these are unique
+compared to other state components:
 
-On SVM or when using eVMCS, do not advertise APX, as EGPR support is not
-implemented yet.
+  * EGPR state is saved on VM entry assembly (unlike other components).
+  * The saved state is retained even if the guest disables APX.
+  * EGPR state is exposed via the XSAVE ABI while not stored in the
+    kernel XSAVE buffer.
+  * EGPR state is initialized through the XSAVE ABI by clearing
+    XSTATE_BV[APX]
 
-Tested-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 ---
 V8 -> V9:
- * Add CPUID filtering and merge both exposure (Jim Mattson)
- * Hide when using eVMCS (Jim Mattson)
+ * Add APX clearing test (Jim Mattson)
+ * Add volatile to inline asm (Jim Mattson)
+ * uint64_t -> u64 (Jim Mattson)
 ---
- arch/x86/include/asm/cpuid/api.h |  1 +
- arch/x86/include/asm/kvm_host.h  |  1 +
- arch/x86/kvm/cpuid.c             | 21 ++++++++++++++++++++-
- arch/x86/kvm/reverse_cpuid.h     |  4 ++++
- arch/x86/kvm/svm/svm.c           |  1 +
- arch/x86/kvm/vmx/vmx.c           |  4 ++++
- 6 files changed, 31 insertions(+), 1 deletion(-)
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/include/x86/processor.h     | 120 ++++++++++
+ tools/testing/selftests/kvm/x86/apx_test.c    | 209 ++++++++++++++++++
+ 3 files changed, 330 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/x86/apx_test.c
 
-diff --git a/arch/x86/include/asm/cpuid/api.h b/arch/x86/include/asm/cpuid/api.h
-index 759b12d94bbf..80402959804f 100644
---- a/arch/x86/include/asm/cpuid/api.h
-+++ b/arch/x86/include/asm/cpuid/api.h
-@@ -183,6 +183,7 @@ static __always_inline bool cpuid_function_is_indexed(u32 function)
- 	case 0x1f:
- 	case 0x23:
- 	case 0x24:
-+	case 0x29:
- 	case 0x8000001d:
- 		return true;
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 95867977beb3..ed935da8cc3e 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -169,6 +169,7 @@ TEST_GEN_PROGS_x86 += x86/recalc_apic_map_test
+ TEST_GEN_PROGS_x86 += x86/aperfmperf_test
+ TEST_GEN_PROGS_x86 += x86/guest_memfd_conversions_test
+ TEST_GEN_PROGS_x86 += x86/tdx_vm_test
++TEST_GEN_PROGS_x86 += x86/apx_test
+ TEST_GEN_PROGS_x86 += access_tracking_perf_test
+ TEST_GEN_PROGS_x86 += coalesced_io_test
+ TEST_GEN_PROGS_x86 += dirty_log_perf_test
+diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+index 3e4351ccb359..c9a76c68fded 100644
+--- a/tools/testing/selftests/kvm/include/x86/processor.h
++++ b/tools/testing/selftests/kvm/include/x86/processor.h
+@@ -122,6 +122,7 @@ struct xstate {
+ #define XFEATURE_MASK_LBR		BIT_ULL(15)
+ #define XFEATURE_MASK_XTILE_CFG		BIT_ULL(17)
+ #define XFEATURE_MASK_XTILE_DATA	BIT_ULL(18)
++#define XFEATURE_MASK_APX		BIT_ULL(19)
+ 
+ #define XFEATURE_MASK_AVX512		(XFEATURE_MASK_OPMASK | \
+ 					 XFEATURE_MASK_ZMM_Hi256 | \
+@@ -209,6 +210,7 @@ struct kvm_x86_cpu_feature {
+ #define	X86_FEATURE_SPEC_CTRL		KVM_X86_CPU_FEATURE(0x7, 0, EDX, 26)
+ #define	X86_FEATURE_ARCH_CAPABILITIES	KVM_X86_CPU_FEATURE(0x7, 0, EDX, 29)
+ #define	X86_FEATURE_PKS			KVM_X86_CPU_FEATURE(0x7, 0, ECX, 31)
++#define	X86_FEATURE_APX			KVM_X86_CPU_FEATURE(0x7, 1, EDX, 21)
+ #define	X86_FEATURE_XTILECFG		KVM_X86_CPU_FEATURE(0xD, 0, EAX, 17)
+ #define	X86_FEATURE_XTILEDATA		KVM_X86_CPU_FEATURE(0xD, 0, EAX, 18)
+ #define	X86_FEATURE_XSAVES		KVM_X86_CPU_FEATURE(0xD, 1, EAX, 3)
+@@ -948,6 +950,124 @@ static inline void write_sse_reg(int reg, const sse128_t *data)
  	}
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 7db87bc99f4a..f3380fbc4694 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -723,6 +723,7 @@ enum kvm_only_cpuid_leafs {
- 	CPUID_7_1_ECX,
- 	CPUID_1E_1_EAX,
- 	CPUID_24_1_ECX,
-+	CPUID_29_0_EBX,
- 	NR_KVM_CPU_CAPS,
+ }
  
- 	NKVMCAPINTS = NR_KVM_CPU_CAPS - NCAPINTS,
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index f476a78a570a..2fa48efb1caa 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -1049,8 +1049,12 @@ void kvm_initialize_cpu_caps(void)
- 		F(AVX_VNNI_INT16),
- 		F(PREFETCHITI),
- 		F(AVX10),
-+		SCATTERED_F(APX),
- 	);
- 
-+	if (!IS_ENABLED(CONFIG_KVM_APX))
-+		kvm_cpu_cap_clear(X86_FEATURE_APX);
++static inline unsigned long read_egpr(int reg)
++{
++	unsigned long data = 0;
 +
- 	kvm_cpu_cap_init(CPUID_7_2_EDX,
- 		F(INTEL_PSFD),
- 		F(IPRED_CTRL),
-@@ -1095,6 +1099,10 @@ void kvm_initialize_cpu_caps(void)
- 		F(AVX10_V1_AUX),
- 	);
- 
-+	kvm_cpu_cap_init(CPUID_29_0_EBX,
-+		F(APX_NCI_NDD_NF),
-+	);
++	/* mov %r16...%r31, %rax */
++	switch (reg) {
++	case 16:
++		asm volatile(".byte 0xd5, 0x48, 0x89, 0xc0" : "=a"(data));
++		break;
++	case 17:
++		asm volatile(".byte 0xd5, 0x48, 0x89, 0xc8" : "=a"(data));
++		break;
++	case 18:
++		asm volatile(".byte 0xd5, 0x48, 0x89, 0xd0" : "=a"(data));
++		break;
++	case 19:
++		asm volatile(".byte 0xd5, 0x48, 0x89, 0xd8" : "=a"(data));
++		break;
++	case 20:
++		asm volatile(".byte 0xd5, 0x48, 0x89, 0xe0" : "=a"(data));
++		break;
++	case 21:
++		asm volatile(".byte 0xd5, 0x48, 0x89, 0xe8" : "=a"(data));
++		break;
++	case 22:
++		asm volatile(".byte 0xd5, 0x48, 0x89, 0xf0" : "=a"(data));
++		break;
++	case 23:
++		asm volatile(".byte 0xd5, 0x48, 0x89, 0xf8" : "=a"(data));
++		break;
++	case 24:
++		asm volatile(".byte 0xd5, 0x4c, 0x89, 0xc0" : "=a"(data));
++		break;
++	case 25:
++		asm volatile(".byte 0xd5, 0x4c, 0x89, 0xc8" : "=a"(data));
++		break;
++	case 26:
++		asm volatile(".byte 0xd5, 0x4c, 0x89, 0xd0" : "=a"(data));
++		break;
++	case 27:
++		asm volatile(".byte 0xd5, 0x4c, 0x89, 0xd8" : "=a"(data));
++		break;
++	case 28:
++		asm volatile(".byte 0xd5, 0x4c, 0x89, 0xe0" : "=a"(data));
++		break;
++	case 29:
++		asm volatile(".byte 0xd5, 0x4c, 0x89, 0xe8" : "=a"(data));
++		break;
++	case 30:
++		asm volatile(".byte 0xd5, 0x4c, 0x89, 0xf0" : "=a"(data));
++		break;
++	case 31:
++		asm volatile(".byte 0xd5, 0x4c, 0x89, 0xf8" : "=a"(data));
++		break;
++	default:
++		BUG();
++	}
 +
- 	kvm_cpu_cap_init(CPUID_8000_0001_ECX,
- 		F(LAHF_LM),
- 		F(CMP_LEGACY),
-@@ -1463,7 +1471,7 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
- 	switch (function) {
- 	case 0:
- 		/* Limited to the highest leaf implemented in KVM. */
--		entry->eax = min(entry->eax, 0x24U);
-+		entry->eax = min(entry->eax, 0x29U);
- 		break;
- 	case 1:
- 		cpuid_entry_override(entry, CPUID_1_EDX);
-@@ -1734,6 +1742,17 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
- 		}
- 		break;
- 	}
-+	/* APX sub-features */
-+	case 0x29:
-+		if (!kvm_cpu_cap_has(X86_FEATURE_APX)) {
-+			entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
++	return data;
++}
++
++static inline void write_egpr(int reg, unsigned long data)
++{
++	/* mov %rax, %r16...%r31 */
++	switch (reg) {
++	case 16:
++		asm volatile(".byte 0xd5, 0x18, 0x89, 0xc0" : : "a"(data));
++		break;
++	case 17:
++		asm volatile(".byte 0xd5, 0x18, 0x89, 0xc1" : : "a"(data));
++		break;
++	case 18:
++		asm volatile(".byte 0xd5, 0x18, 0x89, 0xc2" : : "a"(data));
++		break;
++	case 19:
++		asm volatile(".byte 0xd5, 0x18, 0x89, 0xc3" : : "a"(data));
++		break;
++	case 20:
++		asm volatile(".byte 0xd5, 0x18, 0x89, 0xc4" : : "a"(data));
++		break;
++	case 21:
++		asm volatile(".byte 0xd5, 0x18, 0x89, 0xc5" : : "a"(data));
++		break;
++	case 22:
++		asm volatile(".byte 0xd5, 0x18, 0x89, 0xc6" : : "a"(data));
++		break;
++	case 23:
++		asm volatile(".byte 0xd5, 0x18, 0x89, 0xc7" : : "a"(data));
++		break;
++	case 24:
++		asm volatile(".byte 0xd5, 0x19, 0x89, 0xc0" : : "a"(data));
++		break;
++	case 25:
++		asm volatile(".byte 0xd5, 0x19, 0x89, 0xc1" : : "a"(data));
++		break;
++	case 26:
++		asm volatile(".byte 0xd5, 0x19, 0x89, 0xc2" : : "a"(data));
++		break;
++	case 27:
++		asm volatile(".byte 0xd5, 0x19, 0x89, 0xc3" : : "a"(data));
++		break;
++	case 28:
++		asm volatile(".byte 0xd5, 0x19, 0x89, 0xc4" : : "a"(data));
++		break;
++	case 29:
++		asm volatile(".byte 0xd5, 0x19, 0x89, 0xc5" : : "a"(data));
++		break;
++	case 30:
++		asm volatile(".byte 0xd5, 0x19, 0x89, 0xc6" : : "a"(data));
++		break;
++	case 31:
++		asm volatile(".byte 0xd5, 0x19, 0x89, 0xc7" : : "a"(data));
++		break;
++	default:
++		BUG();
++	}
++}
++
+ static inline void invlpg(u64 addr)
+ {
+ 	__asm__ __volatile__("invlpg (%0)" : : "r"(addr) : "memory");
+diff --git a/tools/testing/selftests/kvm/x86/apx_test.c b/tools/testing/selftests/kvm/x86/apx_test.c
+new file mode 100644
+index 000000000000..fce737e623ac
+--- /dev/null
++++ b/tools/testing/selftests/kvm/x86/apx_test.c
+@@ -0,0 +1,209 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include "processor.h"
++
++enum stages {
++	GUEST_UPDATE,
++	USERSPACE_UPDATE,
++	GUEST_APXOFF,
++	USERSPACE_CLEAR,
++};
++
++enum egpr_ops {
++	EGPRS_WRITE,
++	EGPRS_CHECK,
++};
++
++#define for_each_egpr(reg)	for (reg = 16; reg <= 31; reg++)
++
++/*
++ * Deterministic per-stage test values for EGPRs so that guest and
++ * userspace can validate state transitions.
++ */
++static inline unsigned long egpr_data(enum stages stage, int reg)
++{
++	switch (stage) {
++	case GUEST_UPDATE:
++		return 0xabcd + reg;
++	case USERSPACE_UPDATE:
++		return 0xbcde + reg;
++	case GUEST_APXOFF:
++		return 0xcdef + reg;
++	case USERSPACE_CLEAR:
++	default:
++		return 0;
++	}
++}
++
++/*
++ * Read/write or validate EGPR values either directly via registers
++ * (guest context) or via a provided buffer (userspace XSAVE).
++ */
++static bool handle_egprs(enum egpr_ops ops, unsigned long *egprs, enum stages stage)
++{
++	unsigned long data;
++	int reg;
++
++	for_each_egpr(reg) {
++		data = egpr_data(stage, reg);
++
++		if (ops == EGPRS_WRITE) {
++			if (egprs)
++				egprs[reg - 16] = data;
++			else
++				write_egpr(reg, data);
++			continue;
++		}
++
++		if (ops != EGPRS_CHECK)
++			return false;
++
++		if (egprs) {
++			if (egprs[reg - 16] != data)
++				return false;
++			continue;
++		}
++
++		if (read_egpr(reg) != data)
++			return false;
++	}
++
++	return true;
++}
++
++static void write_egprs(enum stages stage)
++{
++	handle_egprs(EGPRS_WRITE, NULL, stage);
++}
++
++static bool validate_egprs(enum stages stage)
++{
++	return handle_egprs(EGPRS_CHECK, NULL, stage);
++}
++
++static void test_guest_update(void)
++{
++	write_egprs(GUEST_UPDATE);
++	GUEST_SYNC(GUEST_UPDATE);
++	GUEST_ASSERT(validate_egprs(GUEST_UPDATE));
++}
++
++static void test_userspace_update(void)
++{
++	/* Userspace updates EGPR state via the KVM XSAVE ABI */
++	GUEST_SYNC(USERSPACE_UPDATE);
++	GUEST_ASSERT(validate_egprs(USERSPACE_UPDATE));
++}
++
++static void test_guest_apxoff(void)
++{
++	write_egprs(GUEST_APXOFF);
++	/* Disable APX to verify state is preserved */
++	GUEST_ASSERT(!xsetbv_safe(0, this_cpu_supported_xcr0() & ~XFEATURE_MASK_APX));
++	GUEST_SYNC(GUEST_APXOFF);
++	GUEST_ASSERT(!xsetbv_safe(0, this_cpu_supported_xcr0()));
++	GUEST_ASSERT(validate_egprs(GUEST_APXOFF));
++}
++
++static void test_userspace_clear(void)
++{
++	/* Userspace clears XSTATE_BV[APX] via the KVM XSAVE ABI */
++	GUEST_SYNC(USERSPACE_CLEAR);
++	GUEST_ASSERT(validate_egprs(USERSPACE_CLEAR));
++}
++
++static void guest_code(void)
++{
++	set_cr4(get_cr4() | X86_CR4_OSXSAVE);
++	GUEST_ASSERT(!xsetbv_safe(0, this_cpu_supported_xcr0()));
++
++	test_guest_update();
++	test_userspace_update();
++	test_guest_apxoff();
++	test_userspace_clear();
++
++	GUEST_DONE();
++}
++
++#define X86_PROPERTY_XSTATE_APX_OFFSET	KVM_X86_CPU_PROPERTY(0xd, 19, EBX, 0, 31)
++#define XSAVE_HDR_OFFSET		512
++
++static inline unsigned long *xsave_egprs(void *xsave)
++{
++	return xsave + kvm_cpu_property(X86_PROPERTY_XSTATE_APX_OFFSET);
++}
++
++static inline void xstatebv_set(void *xsave, u64 mask)
++{
++	*(u64 *)(xsave + XSAVE_HDR_OFFSET) |= mask;
++}
++
++static inline void xstatebv_clear(void *xsave, u64 mask)
++{
++	*(u64 *)(xsave + XSAVE_HDR_OFFSET) &= ~mask;
++}
++
++static void write_xsave_egprs(void *xsave, enum stages stage)
++{
++	handle_egprs(EGPRS_WRITE, xsave_egprs(xsave), stage);
++	xstatebv_set(xsave, XFEATURE_MASK_APX);
++}
++
++static bool validate_xsave_egprs(void *xsave, enum stages stage)
++{
++	return handle_egprs(EGPRS_CHECK, xsave_egprs(xsave), stage);
++}
++
++int main(int argc, char *argv[])
++{
++	struct kvm_xsave *xsave;
++	struct kvm_vcpu *vcpu;
++	struct kvm_vm *vm;
++	enum stages stage;
++	struct ucall uc;
++	int xsave_size;
++
++	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_XSAVE));
++	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_APX));
++
++	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
++	xsave_size = vm_check_cap(vcpu->vm, KVM_CAP_XSAVE2);
++	TEST_ASSERT(xsave_size, "KVM_CAP_XSAVE2 not supported");
++	xsave = malloc(xsave_size);
++	TEST_ASSERT(xsave, "Failed to allocate XSAVE buffer");
++
++	while (1) {
++		vcpu_run(vcpu);
++		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
++
++		switch (get_ucall(vcpu, &uc)) {
++		case UCALL_ABORT:
++			REPORT_GUEST_ASSERT(uc);
++			break;
++		case UCALL_SYNC: {
++			stage = uc.args[1];
++			vcpu_xsave2_get(vcpu, xsave);
++			if (stage == USERSPACE_UPDATE) {
++				write_xsave_egprs(xsave, stage);
++				vcpu_xsave_set(vcpu, xsave);
++			} else if (stage == USERSPACE_CLEAR) {
++				xstatebv_clear(xsave, XFEATURE_MASK_APX);
++				vcpu_xsave_set(vcpu, xsave);
++			} else {
++				TEST_ASSERT(validate_xsave_egprs(xsave, stage),
++					    "EGPR state mismatch in userspace XSAVE buffer");
++			}
 +			break;
 +		}
-+		cpuid_entry_override(entry, CPUID_29_0_EBX);
-+		entry->eax = 0;
-+		entry->ecx = 0;
-+		entry->edx = 0;
-+		break;
- 	case KVM_CPUID_SIGNATURE: {
- 		const u32 *sigptr = (const u32 *)KVM_SIGNATURE;
- 		entry->eax = KVM_CPUID_FEATURES;
-diff --git a/arch/x86/kvm/reverse_cpuid.h b/arch/x86/kvm/reverse_cpuid.h
-index 1ff87fe63c3c..9a4445138a8f 100644
---- a/arch/x86/kvm/reverse_cpuid.h
-+++ b/arch/x86/kvm/reverse_cpuid.h
-@@ -69,6 +69,9 @@
- /* Intel-defined sub-features, CPUID level 0x00000024:1 (ECX) */
- #define X86_FEATURE_AVX10_V1_AUX	KVM_X86_FEATURE(CPUID_24_1_ECX, 2)
- 
-+/* Intel-defined sub-features, CPUID level 0x00000029:0 (EBX) */
-+#define X86_FEATURE_APX_NCI_NDD_NF	KVM_X86_FEATURE(CPUID_29_0_EBX, 0)
++		case UCALL_DONE:
++			goto done;
++		default:
++			TEST_FAIL("Unknown ucall %lu", uc.cmd);
++		}
++	}
 +
- /* CPUID level 0x80000007 (EDX). */
- #define KVM_X86_FEATURE_CONSTANT_TSC	KVM_X86_FEATURE(CPUID_8000_0007_EDX, 8)
- 
-@@ -112,6 +115,7 @@ static const struct cpuid_reg reverse_cpuid[] = {
- 	[CPUID_7_1_ECX]       = {         7, 1, CPUID_ECX},
- 	[CPUID_1E_1_EAX]      = {      0x1e, 1, CPUID_EAX},
- 	[CPUID_24_1_ECX]      = {      0x24, 1, CPUID_ECX},
-+	[CPUID_29_0_EBX]      = {      0x29, 0, CPUID_EBX},
- };
- 
- /*
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 5ef785811e3f..074c8dab7420 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -5730,6 +5730,7 @@ static __init void svm_set_cpu_caps(void)
- 	 * but that require explicit SVM support (that isn't yet implemented).
- 	 */
- 	kvm_cpu_cap_clear(X86_FEATURE_MSR_IMM);
-+	kvm_cpu_cap_clear(X86_FEATURE_APX);
- 
- 	/*
- 	 * LBR Virtualization must be enabled to support BusLockTrap inside the
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index ce6024a19cb3..390afa8015c5 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -8023,6 +8023,10 @@ static __init void vmx_set_cpu_caps(void)
- 	 */
- 	kvm_cpu_cap_set(X86_FEATURE_EFER_LMSLE_MBZ);
- 
-+	/* eVMCS isn't prepared yet for APX */
-+	if (kvm_is_using_evmcs())
-+		kvm_cpu_cap_clear(X86_FEATURE_APX);
-+
- 	kvm_setup_xss_caps();
- 	kvm_finalize_cpu_caps();
- }
++done:
++	free(xsave);
++	kvm_vm_free(vm);
++	return 0;
++}
 -- 
 2.53.0
 
