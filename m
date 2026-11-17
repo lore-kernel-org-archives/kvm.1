@@ -1,66 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794940324;
-	b=vfC7hbKUXqrA7deue4qJ8ryIH1SDwbHPZq2rjLVr5QLQp64wjbKEylzR9VHhFEjRWb+n
-	 fM6Dh9oaCrzdozSFbv4g+/vCirJJ2fuUqNiZfa63FOPbWhRETNkVyyni5YqgISB8axGNz
-	 E4lOzaHBGTXa0afVjKnEewtKtv7ENP4a79P/Oa5jWu+YcN0IY902lhLdGUeUB2WqRWlIB
-	 1JlQV7dNmiRC2q18QycmrIJTHqSeSOHNgL5rvS/5zNAjtXQzooQ7RjZaXcjn3lEbFPmiG
-	 5QwEdc7xskB7HekqeSOO0k2PzJ0fRJiSQbTlZs4OWBdK7AUO7rnKYrUUZLMtd9NcflA==
+	t=1794940325;
+	b=kldCMYO7oJfkzV3pq2Jo6dyxFfU81DR1wzAdS1tSY8aTaKvZ+ohWhz4YlNvsvU8Y2oZy
+	 f0jAZ0PwTqfgF11naXPEHpQnP2XRaho6+mMXwIf3l1JRyRWy3PyQGP7/bz1RSAtB2EBBC
+	 UySvcp7j3wmojqQcAEFqs1WZo86OR5z3JcGvQbYznaWUnaDaPrir3Swdr0OQfJ+MFlpaL
+	 B8KwrKW+4vh4QqD/jz1CZTxr4/bB7MtelxlQKtlP0+l1skA/fPc6j8vHhLttTvejHkgg5
+	 kj3Hv7lfIkboY/yzF7bfPvyilWiBqK10Q8T0lS4yFgQBD2rq7vtTPGzj6H1ju1cHUxw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794940324;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794940325;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=Gg+ehJ2HGC9dWPUKwLePbwD9mlm6IlQD+RPBdGpC4C4=;
-	b=onVmmTQUwIMfwn+VpBufdCGK3N1F9r/Qa7h23SuRfFR80BTIRaIfOdOWEaY/kSkEIr0B
-	 Fwi3BZV92JGdZ81vLVKbb+gopQIDVrWenq8Suyeh8dbl9i2CQQez4T3FFB+wbm8JCihJc
-	 ZGgeKQcX8usomSuDB1yx0NAYB3dqOfCUBYX50uYG6ofZ9fJ+PgD+JbuouRNeuEyAfpUak
-	 3fvbG+egEGKKkXWK9aLMSbvnKE5t684dauoy4gSJsmPmVMKyjHyCIlBZUSJCO63/WGgqz
-	 hX0Ezha6mLjr4foyRZGHXzpn+gBnz+Rq+IE+9Uh570VlcfjEDVcA2jERpR2D9XhD5AQ==
+	bh=xfNb5UM3L2NvlH69ME4RHwaknOXMZVHE/aU+WrXiHvw=;
+	b=OuZFdPQYBmYwCvbQhS6pOTRBRqFEZqElOal4L42T5tZCQySweYu5I/iJm67dRJkrPYnW
+	 IYXRiroIkbJWeLOu8Ibx7ky0Co40hEVi8laN09ZgZQueBjowz8OR5WQRsAbu5Pwt/D356
+	 anH5DEqwRZU89xmmgMcKrq4Zy45GJL4z424V0w8C6S5yh0wGL+0HJMLAZ+6keW3Jyz48y
+	 RoFJZ89QZjR7C2haAGJnglyKJwpLatvhVymy4YNcVcq3/Hlqs8OPRPC0a0+sFa99y+/CC
+	 89Pge/14FF9DMj2Xby4hIzprDa4BM1WEcYZFTPZ/jZ+za2p7xsJ9ud99pYgEf8iIlPg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=k2N5dyzZ;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PKWlppsS;
 	arc=none smtp.remote-ip=198.175.65.12
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E45560A383F;
-	Tue, 17 Nov 2026 18:32:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6E45560A383F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C002660A2612;
+	Tue, 17 Nov 2026 18:32:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C002660A2612
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=k2N5dyzZ
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PKWlppsS
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794940324; x=1826476324;
+  t=1794940325; x=1826476325;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=tVs1toSb8l0V5BYa07sP0WKwxQSV0Fe6SzcqIQLr7oI=;
-  b=k2N5dyzZALt9ZZ/Dsyfj6dVC1REU3GbC4EMhYZ2Lwxsp8kdMFfV0thms
-   GdEq9gnCZjQBwh+6kP+je++ob/r88RFFLVcQzfpgMtbtsNK3DkRsxxnvE
-   0MbcaTd7zF0OROtocl1ocdb+/CZ4jnuSZ9Xt9p8nm8kL03OqTAUHal0DN
-   SmpHIjho45uypCr+wqA4Ydm2nAFgwH+yoG0WiRmju0Nj1ZYhsyqlSGKJX
-   sd3IM6OPF2KITZEGcWSJuq+stT9/8CdEf3GPiPYTSuLZnUUh1n+Jhhdrh
-   1OLgUySQbpumvo+TDAgh5AEJBik5Qm9TIyZ+wOLVolY1Ie5JAG2IT1U67
-   g==;
-X-CSE-ConnectionGUID: DbuW7ATiR1C8Rywp6F6tFw==
-X-CSE-MsgGUID: xB5vBwXJQV+vlA4KpjnSfg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3607273"
+  bh=hRYmbUZRafMOqS3M8J+52d+4USzQ4y+3X/r0fXjH6m8=;
+  b=PKWlppsSkjLtps4YxPicMk5PANK93QyF2ZvkPh1kKd1Qy8M1u4QV1PDO
+   DBcYCjQx7ZUt+GKflQKqAu76dD9pMxJPlQXQQ3CScLbJpYbrbeci1yyFU
+   OEXBMtEgyXZNYW0Mw1rbjst4zOiF525UIqaebTWVodBd5z0bSmpssIZnp
+   E+QUUYwdgXkknRWxqlTLH4GHfEUv5rijItZLyMPM35msbJnCqDql1ibqz
+   No1Y573DDizzuoEND3ohpvbDknFnYGWWiCs1PRy2k9G1kYgVvrk6Z7niC
+   IbxvlHg5S7vCGPUois4TrlVVzCQlJA3/Ytr7kNvEYwy+LQWHl3mkVOvQp
+   A==;
+X-CSE-ConnectionGUID: LB19/rE3RvOLOji8xZRaLg==
+X-CSE-MsgGUID: /xDAk4foRCqYXO0BuE8LJQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3607282"
 X-IronPort-AV: E=Sophos;i="6.27,218,1787036400"; 
-   d="scan'208";a="3607273"
+   d="scan'208";a="3607282"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2026 10:30:50 -0800
-X-CSE-ConnectionGUID: wgC2QjPqT2GbbzFtf1m4DA==
-X-CSE-MsgGUID: 9QPHxLH4Qiu4m8nZRLz11A==
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2026 10:30:51 -0800
+X-CSE-ConnectionGUID: bM8RQdVoT++imIzQGKc5ZA==
+X-CSE-MsgGUID: 0Y05uDhPSr+0uVznMctfcA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,218,1787036400"; 
-   d="scan'208";a="9775043"
+   d="scan'208";a="9775047"
 Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.174])
-  by orviesa003.jf.intel.com with ESMTP; 17 Nov 2026 10:30:50 -0800
+  by orviesa003.jf.intel.com with ESMTP; 17 Nov 2026 10:30:51 -0800
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 To: seanjc@google.com,
 	jmattson@google.com
@@ -70,9 +70,9 @@ Cc: pbonzini@redhat.com,
 	linux-kernel@vger.kernel.org,
 	zhao1.liu@intel.com,
 	chang.seok.bae@intel.com
-Subject: [PATCH v9 07/20] KVM: VMX: Remove unused control-register access defines
-Date: Tue, 17 Nov 2026 18:02:57 +0000
-Message-ID: <20261117180310.921701-8-chang.seok.bae@intel.com>
+Subject: [PATCH v9 08/20] KVM: VMX: Refactor register index retrieval from exit qualification
+Date: Tue, 17 Nov 2026 18:02:58 +0000
+Message-ID: <20261117180310.921701-9-chang.seok.bae@intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261117180310.921701-1-chang.seok.bae@intel.com>
 References: <20261117180310.921701-1-chang.seok.bae@intel.com>
@@ -87,47 +87,91 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-CONTROL_REG_ACCESS_REG becomes misleading with EGPRs. Rather than leave
-stale, unused definitions behind, remove them all.
+Introduce a helper to extract the register index from the VMX exit
+qualification field.
 
+In addition to the VMX instruction information field, exit qualification
+also encodes a register index. This field will expand into the previously
+reserved bit for extended register IDs. This refactoring will simplify
+the extended register handling without code duplication.
+
+No functional change intended.
+
+Tested-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 Reviewed-by: Jim Mattson <jmattson@google.com>
 ---
- arch/x86/include/asm/vmx.h | 19 -------------------
- 1 file changed, 19 deletions(-)
+V8 -> V9: Rebased on 7.4-rc1
+---
+ arch/x86/include/asm/vmx.h | 1 -
+ arch/x86/kvm/vmx/common.h  | 5 +++++
+ arch/x86/kvm/vmx/nested.c  | 2 +-
+ arch/x86/kvm/vmx/vmx.c     | 4 ++--
+ 4 files changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-index e49b836c7313..def6d3a6d154 100644
+index def6d3a6d154..3c5019da4b71 100644
 --- a/arch/x86/include/asm/vmx.h
 +++ b/arch/x86/include/asm/vmx.h
-@@ -453,27 +453,8 @@ enum vmcs_field {
- /*
-  * Exit Qualifications for MOV for Control Register Access
-  */
--#define CONTROL_REG_ACCESS_NUM          0x7     /* 2:0, number of control reg.*/
--#define CONTROL_REG_ACCESS_TYPE         0x30    /* 5:4, access type */
--#define CONTROL_REG_ACCESS_REG          0xf00   /* 10:8, general purpose reg. */
- #define LMSW_SOURCE_DATA_SHIFT 16
- #define LMSW_SOURCE_DATA  (0xFFFF << LMSW_SOURCE_DATA_SHIFT) /* 16:31 lmsw source */
--#define REG_EAX                         (0 << 8)
--#define REG_ECX                         (1 << 8)
--#define REG_EDX                         (2 << 8)
--#define REG_EBX                         (3 << 8)
--#define REG_ESP                         (4 << 8)
--#define REG_EBP                         (5 << 8)
--#define REG_ESI                         (6 << 8)
--#define REG_EDI                         (7 << 8)
--#define REG_R8                         (8 << 8)
--#define REG_R9                         (9 << 8)
--#define REG_R10                        (10 << 8)
--#define REG_R11                        (11 << 8)
--#define REG_R12                        (12 << 8)
--#define REG_R13                        (13 << 8)
--#define REG_R14                        (14 << 8)
--#define REG_R15                        (15 << 8)
+@@ -463,7 +463,6 @@ enum vmcs_field {
+ #define DEBUG_REG_ACCESS_TYPE           0x10    /* 4, direction of access */
+ #define TYPE_MOV_TO_DR                  (0 << 4)
+ #define TYPE_MOV_FROM_DR                (1 << 4)
+-#define DEBUG_REG_ACCESS_REG(eq)        (((eq) >> 8) & 0xf) /* 11:8, general purpose reg. */
+ 
  
  /*
-  * Exit Qualifications for MOV for Debug Register Access
+diff --git a/arch/x86/kvm/vmx/common.h b/arch/x86/kvm/vmx/common.h
+index b2905335a2d2..30b0aa9560d5 100644
+--- a/arch/x86/kvm/vmx/common.h
++++ b/arch/x86/kvm/vmx/common.h
+@@ -110,6 +110,11 @@ static __always_inline unsigned long vt_get_exit_qual(struct kvm_vcpu *vcpu)
+ 	return vt->exit_qualification;
+ }
+ 
++static __always_inline int vt_get_exit_qual_reg(unsigned long exit_qualification)
++{
++	return (exit_qualification >> 8) & 0xf;
++}
++
+ static __always_inline u32 vt_get_intr_info(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_vt *vt = to_vt(vcpu);
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index da73ed81d99c..aebdad142d67 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -6346,7 +6346,7 @@ static bool nested_vmx_exit_handled_cr(struct kvm_vcpu *vcpu,
+ 
+ 	switch ((exit_qualification >> 4) & 3) {
+ 	case 0: /* mov to cr */
+-		reg = (exit_qualification >> 8) & 15;
++		reg = vt_get_exit_qual_reg(exit_qualification);
+ 		val = kvm_register_read(vcpu, reg);
+ 		switch (cr) {
+ 		case 0:
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index e6d77508dede..032c8988d50c 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5698,7 +5698,7 @@ static int handle_cr(struct kvm_vcpu *vcpu)
+ 
+ 	exit_qualification = vt_get_exit_qual(vcpu);
+ 	cr = exit_qualification & 15;
+-	reg = (exit_qualification >> 8) & 15;
++	reg = vt_get_exit_qual_reg(exit_qualification);
+ 	switch ((exit_qualification >> 4) & 3) {
+ 	case 0: /* mov to cr */
+ 		val = kvm_register_read(vcpu, reg);
+@@ -5817,7 +5817,7 @@ static int handle_dr(struct kvm_vcpu *vcpu)
+ 		return 1;
+ 	}
+ 
+-	reg = DEBUG_REG_ACCESS_REG(exit_qualification);
++	reg = vt_get_exit_qual_reg(exit_qualification);
+ 	if (exit_qualification & TYPE_MOV_FROM_DR) {
+ 		kvm_register_write(vcpu, reg, kvm_get_dr(vcpu, dr));
+ 		err = 0;
 -- 
 2.53.0
 
