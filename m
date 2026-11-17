@@ -1,68 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=219.143.121.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794880003;
-	b=q04w3w7wbzpOyT5LlbA5KdxhMne0j1yWCzQK21awANRjn/4HEKMTqRJtxqO07pZxnFnH
-	 cIx6H12tjsCvc5LifEGEfc5GOdY4q/Yol4rQdLQvT3BirugzLttiqmOjtT8f0hB7hHuTq
-	 uJH+KnDjHlgeA604w5FtTFE5PWGv7zpIWGDrmhAy962tzTdPg4yjLemZtIq/S+j1lgs45
-	 voLnDVp0JlP1zyxf41XYTPZrHGOH/5p9DSYI9jIvHJcqm8Ft2hA0rKghZvBJaKWxGXIYf
-	 WLagKqC9ho7T4m0dNbJ1/Ks27ujvQy2y3rXN+kDtfhqOuuH+0roz1gfggErtUSLjjWw==
+	t=1794880995;
+	b=wroKT5Lsb5ZEKxIrNEDKnTZqHwWlj9IRU3JsneU8FGyQI7sDWKCTblJiOKZTyqb1fvW3
+	 1gupur+IATGV2JxLweLiUfYuZuV2d4BhYGXvECpZw9rg7pW/UH9y7mHzDQ2sKQ6/e3wve
+	 NqVJaN7MU8tkcinadh/5XgeV+00OqjePY46y1OKoFVdggEV/enEhXqXdvbkyiU3HmN66E
+	 7fopT7J0DnAU9etwu8QyaCCc3EYAM32Rif/hJfcjWMlmmV9uH+FvBhUYrYjS5nglvquG2
+	 Zjsrcf+y+U15rad2u7jmWw0vrM5KqTsNlUuPO/UlF6/qnf07lyzUSElvhWkkQaP31Cg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794880003;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=k/EkrvzyMPcB7+7XB0j5UOtYgmhfoUiE9lB743bbi6A=;
-	b=rIZm4bLgSTz1Any483cXpkX22dNzCCUfRiwm23wFNPpfNNRdA+QuudiGT9G6fZm2f3Qe
-	 Vg4QcPvkMyZmQKoEpVkon8DoLYkCSgJ3uDViQ9+QS0cqra1R/QBZ+2KRWB6/V/sB8UCYs
-	 xXi9T1o/9bSnwhmjQH47kMbvaWALlVGClo7W+YlBegtZJR7lzPR15jbB21fUZU8MKULQJ
-	 6ZiVfqIKi4OhjVD/l2ZhoxuI3Qu3VzNyOz83FephKrNXiBny/TGff01KMM4439e7RaWRM
-	 em86S12mzw3R7w+hsXQjsDr5UmMcJ/QoB3DrRhqmNr/Oga1OnoeASD77JRc0MTWirEw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794880995;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:X-TLS:X-ENVELOPE-SENDER:X-SOURCE-IP:
+	 X-FangMail-Miltered:X-FangMail-Envelope:X-FangMail-Bounce-Flag:
+	 X-FangMail-Outinfo:X-CLEAN:Message-Id:X-Fangmail-Anti-Spam-Filtered:
+	 X-Fangmail-MID-QID;
+	bh=KcvrewBhOXlM8MEBGzrRCZe7QXU+yH/iDXAzLiw8UXY=;
+	b=eeXCLpEVRal4SfPmbbOL3ojxjUwpeQ7CTxqzsAM8+L5RR1SRt0OHsM4qwKtNQmuRkST5
+	 rJmi0Y11ih3nL5IhdPy54MRpSeH/8Dklqm+G763s6v2nT2RiuOehATd5dzKvUJNRG4IkZ
+	 PINzAR9RcKKPWLDR6fDBaX6K+hXNLgyp+HH24jH6BfxAtRj2BelmLvuhaWr3/K78t3xqO
+	 +3ai1+a+dkioCM5vC+GoumWkb7NQxPGcWpCgpBcClXtvlgVeXtxLXeljDi13Vf9tEfZR8
+	 MnMQr/Hl4eLoWbiFmLK12HOpMuKK2cx7RP1xCceZ76jUIBxeJARiOuMeO3OOW6tPQEw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bhcwWzLW;
-	arc=none smtp.remote-ip=198.175.65.21
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=isoftstone.com;
+	spf=pass smtp.mailfrom=isoftstone.com;
+	arc=none smtp.remote-ip=219.143.121.9
+Received: from spam.isoftstone.com (smg.isoftstone.com [219.143.121.9])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39DD7606A31C;
-	Tue, 17 Nov 2026 01:46:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39DD7606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bhcwWzLW
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794880003; x=1826416003;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=m/Sndf13hDJr8DhJxFGdx+xq/srB/KQKSVwl4mfyHgo=;
-  b=bhcwWzLWKbPKicnQi360M0oSpHDtqtA0rVvEgDXYZG7sbwFCxM7KkmFg
-   Vd4r9fqU34lrVZOcjlD30hEzUp37IID+atZtvZjNhWyo9EN9hkiFwhiuz
-   n7Uwjp5Mq6Sg4bzhFRxCnlYpiLGR6RPU8tTXwsMoi+xhd2FzGONl106bE
-   ZV3fci9UGleHbr3t8kgaHZtZ1PHa28FiWZCx9dq6AzDX9q9dIMQiSjZ4v
-   13TWhCWvAFCxqIX901EUnJUVql1BkKEw0qMm3Zmi4t/0xmlBayzx6u7TY
-   leUY2xBN0SKSE8JS/xhItTutqLfTgHD+KhiCGF6yvzlBEBoBc9NhAumd5
-   Q==;
-X-CSE-ConnectionGUID: jdbTJOiDTGifzV0RA52wlQ==
-X-CSE-MsgGUID: s9KbUTHfRqaj9Za1mKpFGw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11968"; a="3716473"
-X-IronPort-AV: E=Sophos;i="6.27,217,1787036400"; 
-   d="scan'208";a="3716473"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 17:46:42 -0800
-X-CSE-ConnectionGUID: lFynkrW9QvOWi6zAXa36gw==
-X-CSE-MsgGUID: d307Z+NnTcWuTmtop1izKQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,217,1787036400"; 
-   d="scan'208";a="9946123"
-Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.249.52]) ([10.124.249.52])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Nov 2026 17:46:38 -0800
-Message-ID: <05ab75bc-9630-4e62-b3be-0ada47008508@linux.intel.com>
-Date: Tue, 17 Nov 2026 09:46:35 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F191606A31C;
+	Tue, 17 Nov 2026 02:03:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9F191606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isoftstone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isoftstone.com
+Received: from ldzh.. (unknown [221.226.109.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dlzhangak@isoftstone.com)
+	by spam.isoftstone.com (FangMail) with ESMTPSA id 4jT7L63YwBz23sl;
+	Tue, 17 Nov 2026 10:03:10 +0800 (CST)
+From: Daolong Zhang <dlzhangak@isoftstone.com>
+To: Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>,
+	Song Gao <gaosong@loongson.cn>,
+	kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Daolong Zhang <dlzhangak@isoftstone.com>
+Subject: [PATCH] LoongArch: KVM: Fix uninitialized stack read in dmsintc_inject_irq()
+Date: Tue, 17 Nov 2026 10:03:10 +0800
+X-Mailer: git-send-email 2.48.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,41 +61,54 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, Pranjal Shrivastava <praan@google.com>,
- Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Vipin Sharma
- <vipinsh@google.com>, Ankit Soni <Ankit.Soni@amd.com>,
- Nicolin Chen <nicolinc@nvidia.com>, John Starks <dev@jstarks.net>
-Subject: Re: [PATCH v7 08/18] iommu: Add APIs to get iommu and device
- preserved state
-To: Samiullah Khawaja <skhawaja@google.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- David Woodhouse <dwmw2@infradead.org>
-References: <20261110040828.1774343-1-skhawaja@google.com>
- <20261110040828.1774343-9-skhawaja@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20261110040828.1774343-9-skhawaja@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TLS: YES
+X-ENVELOPE-SENDER: dlzhangak@isoftstone.com
+X-SOURCE-IP: 221.226.109.28 unknown Tue, 17 Nov 2026 10:03:10 +0800
+X-FangMail-Miltered: at fangwg01 with ID 6AFBB5DE.001 by FangMail milter!
+X-FangMail-Envelope: 1794880990/4jT7L63YwBz23sl/6AFBB5DE.001/221.226.109.28/[221.226.109.28]/ldzh../<dlzhangak@isoftstone.com>
+X-FangMail-Bounce-Flag: 1794880990.6AFBB5DE.001
+X-FangMail-Outinfo: 1794880990/6AFBB5DE.001/4jT7L63YwBz23sl/dlzhangak@isoftstone.com/1
+X-CLEAN: YES
+Message-Id: <1794880990.6AFBB5DE.001.4jT7L63YwBz23sl@fangwg01>
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6AFBB5DE.001/4jT7L63YwBz23sl
 
-On 11/10/2026 12:08 PM, Samiullah Khawaja wrote:
-> The preserved state of the device and IOMMU needs to be fetched during
-> shutdown and boot in the next kernel. Add APIs that can be used to fetch
-> the preserved state of a device and IOMMU. The APIs will only be used
-> during shutdown and after liveupdate so no locking needed.
-> 
-> Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
-> Reviewed-by: Pranjal Shrivastava<praan@google.com>
-> ---
->   drivers/iommu/liveupdate.c       | 88 ++++++++++++++++++++++++++++++++
->   include/linux/iommu-liveupdate.h | 70 +++++++++++++++++++++++++
->   2 files changed, 158 insertions(+)
+In dmsintc_inject_irq(), the local array 'vector[4]' is declared on the
+stack without initialization, and each element 'vector[i]' is only
+assigned when atomic64_read(&ds->vector_map[i]) is non-zero.
 
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Whenever any of the four 64-bit words in ds->vector_map[] is zero (for
+example, when an MSI interrupt targets a single word, or when INT_AVEC
+is injected via KVM_INTERRUPT with an empty vector_map), the remaining
+elements of 'vector[]' retain uninitialized kernel stack contents. The
+subsequent checks on vector[0..3] then OR those uninitialized stack
+values into the guest's hardware LOONGARCH_CSR_ISR0..3 registers,
+injecting spurious interrupt vectors into the guest and leaking host
+kernel stack data into guest-visible CSRs.
+
+Zero-initialize 'vector[4]' on declaration to prevent reading
+uninitialized stack memory.
+
+Fixes: 03de5eecb0f0 ("LoongArch: KVM: Add DMSINTC inject msi to vCPU")
+Signed-off-by: Daolong Zhang <dlzhangak@isoftstone.com>
+---
+ arch/loongarch/kvm/intc/dmsintc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/dmsintc.c
+index de25735ce039..ef6c064e52f1 100644
+--- a/arch/loongarch/kvm/intc/dmsintc.c
++++ b/arch/loongarch/kvm/intc/dmsintc.c
+@@ -11,7 +11,7 @@
+ void dmsintc_inject_irq(struct kvm_vcpu *vcpu)
+ {
+ 	unsigned int i;
+-	unsigned long vector[4], old;
++	unsigned long vector[4] = {}, old;
+ 	struct dmsintc_state *ds = &vcpu->arch.dmsintc_state;
+ 
+ 	if (!ds)
+-- 
+2.48.1
+
