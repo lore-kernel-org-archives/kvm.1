@@ -1,73 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794878116;
-	b=ymxed6WsQj20zf+8UDUCJZ+7RHO0rGKVWyur04x582ivcoXtPXL/znGRTcXQPwTyCHyF
-	 WIONGar5AlOk4OTX47iM/ErSzaEZNp8TNU5KbivEVSWRZ7KFSALyDTMCT/XGFVXiCVdJE
-	 /J+DvUphsl9cFX1Ws5prwSF6ccqjvf0UOLn2eTLcMr1UPufFlRMU1WQYBWghAKo9B0kY1
-	 LSwNe4NwDyLxDv1V3S9TasBV/NCjmbhjCDgvqs36VeSKDqAeXvz5ivLjYvSETRV+n0/eM
-	 gSzlecHxbdPmel/kONB/c9adrADkeDynN+YM1wsFqtbGE4/E5zjBwLRLW1Im0hP4eJw==
+	t=1794878445;
+	b=JatVUFIK/KVvECj2LdZBx6Us7yS26mXzj/0OXQql5PnHmq18BwbAEUT3i94cxi2VozhR
+	 FNwUFFamUJYVh6ZpF0FeO5JLffUDtQNK+GjUA2J90fvnOFqy7Plyo3uz5kWLRQWfGKXje
+	 DpkUyQUjrt7hBQK8OGZYAwPAEN8AgQeqAeqE9RiZw3QYJqTViRxXqPxuFepOjfjANkPIN
+	 gaDGr3KuYslXOlpmZHXM11EEKZZm9KnLEuBKcn2P4r78P/PGPavJLBxDIhjtcQ0uytzC3
+	 mWaeLNzX6NwD93QQCLhRAKy8ttQdlUP4BpD7uIHVIh2DYRE6dtBqFhvJthr5xK+yniw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794878116;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Reply-To:Date:
-	 Mime-Version:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=OfKf9iYa0JD3DIaGQL4jdglFjk83Ku8ktmH0JNxa7Ss=;
-	b=i18sz7cAeYOe2YLqVOwZqbKovabrRYSH3hAs/QzMF0S2LX3eeqsaUHSGFnf4cAVyqasF
-	 zLbR+fd2wQ1mNlbLGKT44rI/z5bRbCzTTreVrVYI1/qWkUxPGOZ5JVeiD/K1oDMhO2HYR
-	 dqidRFRWXE+FIoEkGI8WE6X1z1FHOQRImfYUePNLZ26TYvwFmZiYK+zFukTITmCr3Exiu
-	 wKvxsPUjH5KX0toG3Fmc14BacueFIuF7AHyXVXqUzphIfRW+UJiMRnHSATZOSU1vpPq6V
-	 vftZukj7xnMUrE/aAnX1BVN0rAIypg/K05zCZB8T3rPi7llWq5sGhQJ0XRbhDxP/Kqw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794878445;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
+	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Originating-IP:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:
+	 X-Proofpoint-Virus-Version;
+	bh=OCUSDcMhdyhMckP1nD+6v+1CUzBRpaT6XP/KSo+6PZo=;
+	b=VbypXWtw5rb0dNEVFoWUAQ3bMEWn83fYFyVLk+Uu3I4aMZqNV+HOh+/pFaV5k9lmXwJn
+	 fRoS5GGj3o2bdxaZhJPm3bg7VW+3EoJZ8ow8Bwpc8g4MfPTM9ViK8v7zl68avQ3OsNErt
+	 7dJdueHzufh1nWTrp8Op8el9fP/RcYaeVpf7DY8VeStMjcrWsSwfD/sF0dzn40N/hlxhs
+	 aL8pfZu314Ia6Vm9tib9TblSjhi1wNXleketcAiCXopxBkXDSWmB4Prb8sdMOnrvWvAgQ
+	 q2/oxQqlDb+1Szy4qCKYL9Owf4IA5mgiFms1TYRm3IuwLnuT+P5fFMGfNg5QzZAxWNA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ckLzIPD9;
-	arc=none smtp.remote-ip=209.85.214.198
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=meta.com;
+	spf=pass smtp.mailfrom=meta.com;
+	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=kzonGr2p;
+	arc=none smtp.remote-ip=67.231.145.42
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEB2606A32C
-	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 01:15:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8BEB2606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A955F606A31C;
+	Tue, 17 Nov 2026 01:20:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A955F606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ckLzIPD9
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ed1fbae872so25061075ad.2
-        for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 17:15:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794878115; x=1795482915; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OfKf9iYa0JD3DIaGQL4jdglFjk83Ku8ktmH0JNxa7Ss=;
-        b=ckLzIPD9h52dG90sQPAujcVw+2zscj8VjKG8x1FHk5Bpokc4HRUfmh0tdIhgTsdwty
-         AqZRzGqp33Fwv2L4hCIzEc2Lf+5P4bsqARUJECvmbJn4bB4za2cvUGFh/hO9JTr4hjdM
-         fflzORtprz+GFDzwKcvCJ97QL8oIo6pSg3obKum30idQiy0LPeImzMv28ypHWyi/n+R6
-         zsnVdZIOpybZgeeJPOd/o2VON3a140fZ+/plFVIhmy6OpQkzhpNB51vGvu5Ej1vaV+nG
-         qU1O7aJq1ut1cdO5HfrYgYqnshRbY2oWamWq+6dZJQq/Z2O44NWs4UqYYbUQyH+4rAY3
-         uwYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794878115; x=1795482915;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=OfKf9iYa0JD3DIaGQL4jdglFjk83Ku8ktmH0JNxa7Ss=;
-        b=EtOuXPYQ4Oo4IOi+pXeZII5SjVoeh81TEFJea3I10YbjTsfBk9aZT+VSYQrSH7T8gy
-         RqRAMoyYdHGALvLim+Nly41sZHWd/am7yYQAkJOImrEsCwb6vCqYVSw/VcWWUPwmQ5tX
-         TSdywm0rNO268uqY76PTemPgZEw4Wo1NglkSJQxDlExOAwyXgNmua5KgyCsykDLKXUwe
-         vNJ9sL/R++Jsp3+PDqa48UulcrlxJnItEzX6vTWpDf1ZjuKpKLhjCH95X0y3umdL/xel
-         w9GYURaMTEwJ8aCvVrbb5Ri7St/k2mgyrDeudw+8X1ay0yz4k3OeGEpEZBsEMHPCoX4R
-         0/iw==
-X-Forwarded-Encrypted: i=1; AL+hErHFc075GSgQZgHRb/tXmyx5kYbkAPY7nGsKQI3fG3A5zcrnKbza6a97U7Y2oOb1zJqR5r0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8kHiGaUXeGXyWsjU7rEM3taboLpGXDFo6m1z0LTDomYRITSm4b
-	ZF9MhHuvCmgrgijS7JsyLQXWjz5VYcZ28mUYeC4DHP9w7T2Ix2QIbBXIg/s2xWZFnolBnEQGc7s
-	vIFxAkA==
-X-Received: from pjrx21.prod.google.com ([2002:a17:90a:bc95:b0:3b1:317:bac2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1f86:b0:3ac:7556:8ee0
- with SMTP id 98e67ed59e1d1-3b1b0b666c5mr12537753a91.19.1794878114705; Mon, 16
- Nov 2026 17:15:14 -0800 (PST)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Mon, 16 Nov 2026 17:15:11 -0800
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=kzonGr2p
+Received: from pps.filterd (m0109333.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGNPxWO3668401;
+	Mon, 16 Nov 2026 17:20:34 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pps82601-s2048-2026-q3; bh=OCUSDcMhdyh
+	MckP1nD+6v+1CUzBRpaT6XP/KSo+6PZo=; b=kzonGr2pjePeH4erX4OnuT9Tq4n
+	JOALdJskj3e2MslEfcjuT/C2tBSDl4PBCDJPkCS0Bb378Y955X7gB+8LLwkpwMLh
+	eq8es+kHJzl8N7Q3Xc1xKIyKOeiCrCrZ9/aOoHrt8ixSneIX3qqNDBvocxuFfyb3
+	Ehl3CteEnL2e/V2jZ3wa2ZV4Iqzy9eZlygLbjudEe/8wHRHNKCDms4TmEttX4VUw
+	jgsOqRxZH2xCUSLfosTnr8OqeddZDoPqpGvTlDI7RIeEer0+nsJ61DQhRgj0274R
+	qbIiQMTBSPPhJwoMiLlVO53pTICQJ4XFF74poSUlXl1jfOHXLP80bVuig4A==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hxmj4e8m0-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 16 Nov 2026 17:20:34 -0800 (PST)
+Received: from localhost (2620:10d:c085:108::150d) by mail.thefacebook.com
+ (2620:10d:c08b:78::c78f) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Tue, 17 Nov
+ 2026 01:20:34 +0000
+Date: Mon, 16 Nov 2026 17:20:33 -0800
+From: Bobby Eshleman <bobbyeshleman@meta.com>
+To: <netdev-bot+sinfo@kernel.org>
+CC: Stefan Hajnoczi <stefanha@redhat.com>,
+        Stefano Garzarella
+	<sgarzare@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang
+	<jasowangio@gmail.com>,
+        Eugenio =?iso-8859-1?Q?P=E9rez?=
+	<eperezma@redhat.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        "David S.
+ Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub
+ Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>,
+        <kvm@vger.kernel.org>, <virtualization@lists.linux.dev>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] vsock: only deliver taps to namespaces that can
+ reach the device
+Message-ID: <avur4Uwbv27bGG67@devvm29614.prn0.facebook.com>
+References: <20261116-vsock-tap-net-v1-1-7e24f45adad3@meta.com>
+ <179487315810.3291.12142099363352099423@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,47 +89,58 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
-Message-ID: <20261117011513.39419-1-seanjc@google.com>
-Subject: [PATCH v4 0/2] KVM: Skip mmu_notifier invalidations for gmem-only slots
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Sashiko Bot <sashiko-bot@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Naveen N Rao <naveen@kernel.org>, Alexandru Elisei <alexandru.elisei@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <179487315810.3291.12142099363352099423@kernel.org>
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE3MDAwNCBTYWx0ZWRfX6tiSf8A8QvZ6
+ Fo0aHzb2/EikCju9G8HPPKwjgsnmuSWFHHjGheIYxN1hjK0Rj9h7+/LmI+6EN976q0cusZk9CPR
+ Xqn7R97cUs4zTBAnmwsgYYDcDceBT+g=
+X-Proofpoint-ORIG-GUID: CLI4lnM_zEfR7xHMHy2yu8qcgr_dCNHw
+X-Proofpoint-GUID: CLI4lnM_zEfR7xHMHy2yu8qcgr_dCNHw
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE3MDAwNCBTYWx0ZWRfXwADsIqFhERM5
+ c3952tnTfD9HPGKYekysLCzCIqeAJfP2qzHTlycLlXpSqhJumprgj2MXpfzCmLztckim1q1xbf5
+ +2fDKT4RVFo/QLJpnf4t0gcJy3zvsuEyjl0Iup/jO6jZ7zHfMMji+wtHniVY+kXHu/PKUfR/Zbj
+ K/P5+k7fZHGWki8iklbK2bj8YCJ3OXvtyd+pvCBWJ5GIGRh4Bjz2x1KJvT094/Hi7I/oHnhe9nK
+ fMqC+bA3rYMdidR5yyyqLiaBTE+gPtyX2vP1/lHEBT5lmRK15QpDpexH6zvvU0+/Yj7PADdFU/m
+ oYtsA71hPlRPeFMXl3AdDTW/Mch8PHz4c09V1gN/lbrnWsJ5FkwhJVUDFYQQPCqdFtDawJhvZfg
+ ElJ4Jr/df8z3jT7lb1KR8nObarhctDYbutkPnWwKyaClfTylfrkQRVCfLBJ/itcBFollGAsvmWp
+ WOLvqhmBNn0/XN/bsmw==
+X-Authority-Analysis: v=2.4 cv=Vp+2kO2n c=1 sm=1 tr=0 ts=6afbabe2 cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=tpM8CJlwf7uhpglF1g9U:22 a=VwQbUJbxAAAA:8
+ a=CG_4ueNEfuzfKVZALy4A:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-16_07,2026-11-16_01,2025-10-01_01
 
-Fix a lurking bug where KVM incorrectly prefetches SPTEs for gmem-only memslots
-using fast GUP, i.e. VMAs, and then skip mmu_notifier invalidations for
-gmem-only memslots (because as the name suggests, KVM MMUs are supposed to
-only get PFNs for gmem-only memslots straight from guest_memfd).
+On Mon, Nov 16, 2026 at 11:52:38PM +0000, netdev-bot+sinfo@kernel.org wrote:
+> Hi!
+> 
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+> 
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+> 
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by LLM and not proven at runtime). If it was triggered
+>    please include the symptoms, like the stack trace or kernel messages.
+> 
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account.
+> 
+> *IMPORTANT*: If you do repost (for other reasons) - please include
+> the relevant info in the cover letter or commit messages.
+> -- 
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
 
-v4:
- - Tack on a patch to disallow prefetching gmem-only memslots using a VMA.
-   [Sashiko, Lorenzo]
+This is a known issue and has come up in review of the guest netns
+series (so via code inspection).
 
-v3:
- - https://lore.kernel.org/all/20261113164000.467175-1-seanjc@google.com
- - v1, but with a different changelog.
-
-v2: https://lore.kernel.org/all/20260714160411.302386-1-alexandru.elisei@arm.com
-
-v1: https://lore.kernel.org/all/20260615155244.183044-1-alexandru.elisei@arm.com
-
-Alexandru Elisei (1):
-  KVM: Skip gfn-based MMU notifier invalidations for guest_memfd-only
-    memslots
-
-Sean Christopherson (1):
-  KVM: Disallow prefetching PFNs (for SPTEs) via VMAs for gmem-only
-    memslots
-
- virt/kvm/kvm_main.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-
-base-commit: d21eef2084a9af87ac2a783bc7c2b175ba114e4e
--- 
-2.56.1.703.gf848ed807c-goog
-
+Best,
+Bobby
