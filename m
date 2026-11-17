@@ -1,66 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794936078;
-	b=Lqa6FNKy493cMxgxlVRZAeudsQlGS9x6CBO5s8qIvM7oa2yaVZcpx3nQIE+0bnjWTtUU
-	 GxosfxWswrkyHwTgk6aUqirPP5WBnuH3yae5BXSdtu+Ya3rM3Vw79+/JRhY/ac0FJ7sSA
-	 NtRZ5RoXCjm2Pht3qsVpjqV53zbHBU0a0FVEQpVNma4ECm6CcuAvUDVCUhrxRbeCXBTgQ
-	 S64Uvj747Wn8YRmuYLmtdBl6ql22FJgN3+NMEwlyGXEZ+a830rIkGYSK3TDgvNVbmf0po
-	 qbLwKu9RYc0YrrAQyMSO4TYQwmg7WIjue5dAUFbaGBlwxuLOqYvT5AKmHHTFXznM7Ow==
+	t=1794936205;
+	b=inhbbJwdMRd6JQFlnm3fm4kMcMQ+QQDct7SOE1HQ7DTUSkD1TU1aKGWOwKB6L/68Ubnv
+	 EG17ZVDgJ9sceUvpNuwR4FtoZn3b4hgEzFS3HWCQMK2B8FRD/JaXxPD0B2WbQkyVfuNdf
+	 Y2D5Wd66+CWKlbEFiY+SeGe12FlkZiJXNeIipsfzA2dumLYHFPgJsMiW4UIv7CqMpPkWj
+	 aCjOaucMJVg4h4IJ/3Cvfrvkq5uYH+OlaiMWu2IQNp9yhR48YQNOkyxsNic7XkPVri2YH
+	 dTG3T/Rd+6SPo5TjQnJnkkX9qAeAuaFpQWHAaOUjI4SWTtyLyTltZq2yOSxfVeSAFAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794936078;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
-	bh=j49FQqF/5AAaYAE+Xw+IyqdKqNIf0oE/qvi3zUpU3es=;
-	b=hDtxsZnH0oIfQ5krGw/2BUWdR5cZCHqyf6YS6GoeyiaXYqD2iMdaHp9KfVfXz0RGP86Z
-	 gfnLIibUDQ6HwydAbfx9uNovCKk/G6tThO4co7XRNjqroxjW2ZisJv04MuCiRVGNDOeBW
-	 YkykzUU1Cki7xo+dX5DvbTSCvjPEHx6IvTN3kvfe07bF7BHWBS5nxKpd3oZyN9qyfelLA
-	 vg4Vt/EvxFaGM6ZMrabw6Gmkz7RF1c0tY+gK6JlBqXqV1KzV9KFx83uqpC2bgMoi5OImw
-	 gH0a0A1hxqi9cDNVoCw+p2dzs0XDR7FN9Nefxe5k+F+zF7PLoUlPzirKsxD+X+G/KUw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794936205;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type;
+	bh=qPbuxogoqNwU/qyRYw+LGXjvF5P4V0NFNB4XBiaBpkA=;
+	b=WDpe11EI6NE49c2Zevnb6YFwL64vtVl2RxLuYXyNISok6CowDLoTpR80kBR8fAudmaZn
+	 Y+Yluv6IY9i/xsP4vltrscCKpX+CmmF1VGOrAtu7GwTkXfdyS6AG7LSHHEEzXCna06vlK
+	 wfk8jnl1F/UHEHw/8P/sJLp6o6MNEbq1BVYBf4DOFYF6aJf6U3XjE2/UTzwLVTX0wtJle
+	 lkZXizC8EwfFTSthyCPDBYK39frQXaIRkdf5UkQzxIfvA53CVzICl5ukF8hdWhUcgg8kM
+	 l0GsWRx9qhUVnSyvY1CzDxzFaYjvAweoP5ia/IPF5aaddVQ/11g7gg+5eOinuBzZalw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=XISAVZ4i;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13973606A884;
-	Tue, 17 Nov 2026 17:21:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13973606A884
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oPj6c6a0;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9F5606A331
+	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 17:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=XISAVZ4i
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5DAC11A00;
-	Tue, 17 Nov 2026 09:21:14 -0800 (PST)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B426A3F632;
-	Tue, 17 Nov 2026 09:21:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794936077; bh=UF4/WZWpnvhVbjnhm5Fhiug3i+G9AJ9V+I3bAy37IEw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XISAVZ4i0KKFtENmf4YZAeVOf0w1jBZnBhSZ+hU3sV8p6PBglO0PqWm9emUhFpc9a
-	 5P4dH5Z+qPk/6NH+bBWt69XFuo+en5u+hsdgjg5xg3eFIcViu1jN33qiwD5BXvWKzf
-	 ywluq+Q2pDqzs9KM9otMDaTb7/VRQ8XTyeE450SQ=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Colton Lewis <coltonlewis@google.com>
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] KVM: arm64: Fix inverted E2H0 check for HCR_EL2.NV1
-Date: Tue, 17 Nov 2026 17:21:10 +0000
-Message-ID: <avyNBn24sLjxrfgR@LeoBrasDK>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <20261116200418.3535619-2-coltonlewis@google.com>
-References: <20261116200418.3535619-1-coltonlewis@google.com> <20261116200418.3535619-2-coltonlewis@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oPj6c6a0
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D271F000C4
+	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 17:23:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794936204;
+	bh=qPbuxogoqNwU/qyRYw+LGXjvF5P4V0NFNB4XBiaBpkA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=oPj6c6a0mIS9sdaEIQG36xIG1NhQ77AlC9xRI/0B3iw4C1VzrPoad7mLHqSYr0NQS
+	 QjKmf+7wI7X9H2SfF8j9IptaYl6ExlXoX5J+epfggrerRPl3jadIPph3gPQd4Mikwm
+	 ncG7jgPzELSQe0GbUG7860qCFsANtxIWH1fSj4cjCvETYHxIO44cbMsnM1+gLmpxxS
+	 UP3qsWIJVyLAnhTiM470e0pq8lGtmbn7cCJvY5DpKeqQPhnccM+PRO0EkoKYuUd2MB
+	 4VNdrZhDFIE/aP/8DqdnWPJ1iZ0SR4I+fVInBZes+O9xkCkNSgfCZaY6ztmKpNfHPT
+	 oLTVrxnkZ/Ltw==
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c4d30639709so687529666b.0
+        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 09:23:24 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErGWE7tL68qQ3fzAQDwV2GHlu3DyOoQ1dXIZGsVD2puxaNtkd/aSG9c4LH7wySkySjqKn00=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/U9vs2/NNWIOnSQPvktRPhw4PrSKTH/JpRAJamaiFpeqJSonuE
+	qx8E1ooHHp1yeTpU9h6kfROUJP/QZ0MsyfjDJcJH3gHCgi3Z2glTM+cZTftyT00MA3EO9zWDRPk
+	/lWE0KQr5CYiXf2f6gMKLXYu8bbdnV7U=
+X-Received: by 2002:a17:907:d27:b0:c41:1e13:8891 with SMTP id
+ a640c23a62f3a-c50963d46ecmr1184846866b.9.1794936203620; Tue, 17 Nov 2026
+ 09:23:23 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -70,73 +59,50 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+References: <20261112203227.289379-1-zide.chen@intel.com> <20261112203227.289379-7-zide.chen@intel.com>
+In-Reply-To: <20261112203227.289379-7-zide.chen@intel.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 17 Nov 2026 09:23:11 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zPD_i2aWc3jaKRr-=1Pz0td=6nqBpgBfVVaV3jfzVTAjw@mail.gmail.com>
+X-Gm-Features: AclHuK-xecCpEbInyvGGF_p4kfoSNSZz851mSQupLC1L4HsXX_kRXqRMGPskwh8
+Message-ID: <CAO9r8zPD_i2aWc3jaKRr-=1Pz0td=6nqBpgBfVVaV3jfzVTAjw@mail.gmail.com>
+Subject: Re: [PATCH v4 06/21] KVM: x86/pmu: Drop nr_arch_{gp,fixed}_counters
+ from kvm_pmu
+To: Zide Chen <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>, Andi Kleen <ak@linux.intel.com>, 
+	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, 
+	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
+	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
+	Xudong Hao <xudong.hao@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Nov 16, 2026 at 08:04:17PM +0000, Colton Lewis wrote:
-> ID_AA64MMFR4_EL1.E2H0 is a signed 4-bit field where:
->   - 0b0000 (IMP, 0): FEAT_E2H0 is implemented.
->   - 0b1111 (NI, -1): FEAT_E2H0 is not implemented, except HCR_EL2.NV1
->     is implemented.
->   - 0b1110 (NI_NV1, -2): Neither HCR_EL2.E2H == 0 nor HCR_EL2.NV1 is
->     implemented, and HCR_EL2.NV1 is RES0.
-> 
-> Prior to commit b2a324ff01fe ("KVM: arm64: Use HCR_EL2 feature map to
-> drive fixed-value bits"), kvm_init_nv_sysregs() marked HCR_EL2.NV1 as
-> RES0 when !kvm_has_feat(kvm, ID_AA64MMFR4_EL1, E2H0, NI), i.e., when the
-> signed E2H0 field is less than NI (-1), which matches NI_NV1 (-2).
-> 
-> When converting HCR_EL2 to the feature map, feat_nv2_e2h0_ni() was
-> written as !kvm_has_feat(kvm, FEAT_E2H0), where FEAT_E2H0 checks
-> E2H0 >= IMP (0). This inverted the condition: feat_nv2_e2h0_ni()
-> evaluates to true when E2H0 < 0 (including NI_NV1), leaving HCR_EL2.NV1
-> writable instead of RES0 for VHE-only nested guests where KVM advertises
-> ID_AA64MMFR4_EL1.E2H0 = NI_NV1.
-> 
-> Check kvm_has_feat(kvm, ID_AA64MMFR4_EL1, E2H0, NI) in
-> feat_nv2_e2h0_ni() so that HCR_EL2.NV1 is treated as implemented only
-> when E2H0 is IMP or NI, and forced to RES0 when E2H0 is NI_NV1.
-> 
-> Fixes: b2a324ff01fe ("KVM: arm64: Use HCR_EL2 feature map to drive fixed-value bits")
-> Signed-off-by: Colton Lewis <coltonlewis@google.com>
-> ---
->  arch/arm64/kvm/config.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
-> index adaf26ab93b85..b4f555d39f54a 100644
-> --- a/arch/arm64/kvm/config.c
-> +++ b/arch/arm64/kvm/config.c
-> @@ -258,7 +258,8 @@ static bool feat_nv2(struct kvm *kvm)
->  
->  static bool feat_nv2_e2h0_ni(struct kvm *kvm)
+>  static void amd_pmu_init(struct kvm_vcpu *vcpu)
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 136069dfcd44..e21abcedea70 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -761,24 +761,21 @@ static void svm_recalc_pmu_msr_intercepts(struct kvm_vcpu *vcpu)
 >  {
-> -	return feat_nv2(kvm) && !kvm_has_feat(kvm, FEAT_E2H0);
-> +	return feat_nv2(kvm) &&
-> +	       kvm_has_feat(kvm, ID_AA64MMFR4_EL1, E2H0, NI);
->  }
->  
->  static bool feat_rasv1p1(struct kvm *kvm)
-> -- 
-> 2.56.1.750.gf70dc682cf-goog
-> 
+>         bool intercept = !kvm_vcpu_has_mediated_pmu(vcpu);
+>         struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+> +       unsigned long gp_mask = kvm_gp_pmc_mask(pmu);
+>         int i;
+>
+>         if (!enable_mediated_pmu)
+>                 return;
+>
+>         /* Legacy counters are always available for AMD CPUs with a PMU. */
+> -       for (i = 0; i < min(pmu->nr_arch_gp_counters, AMD64_NUM_COUNTERS); i++)
+> +       for (i = 0; i < AMD64_NUM_COUNTERS; i++)
+>                 svm_set_intercept_for_msr(vcpu, MSR_K7_PERFCTR0 + i,
+> -                                         MSR_TYPE_RW, intercept);
+> +                                         MSR_TYPE_RW, intercept || !test_bit(i, &gp_mask));
 
-Hi Colton,
+This fixes a pre-existing bug that was reported internally, that can
+happen if a malicious VMM reduces the number of counters after
+initiating KVM_RUN but before VM-entry. The current code would fail to
+re-enable the intercept on the counters that become unsupported.
 
-I just read the code that uses feat_nv2_e2h0_ni(). IIUC if it returns 
-false, we get HCR_EL2.NV1 to be RES0. Otherwise it's writable.
-
-The change you suggest is returning (ID_AA64MMFR4_EL1.E2H0 >= -1), which 
-would return false in the case of NI_NV1 (-2), and make the field RES0 only 
-in that case.
-
-I think it does make sense, but maybe we should also change the name of the 
-helper from feat_nv2_e2h0_ni() to something that reflects what is being 
-tested now. feat_nv2_e2h0_imp_or_ni() would be confuse, and maybe 
-feat_nv2_e2h0_not_ni_nv1() would be as well. 
-
-Maybe feat_nv2_e2h0_not_res0(). What do you think?
-
-Thanks!
-Leo
+Might be worth splitting this out into a standalone fix.
