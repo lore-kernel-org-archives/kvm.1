@@ -1,72 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794920701;
-	b=gwsBVwKyO0TVKMnPuLubjOkUSEhEc0IBbrM285OpXAv3bNwP7PGjx6bU4jUMybiAItjU
-	 1yZIBUKE1PT+rNPyIbtp4PoHUpL456lhTFaRrkDimU5JDtYMs1lWoSRf17NV0aTW98MhY
-	 JcYQ0bXjjMC0hwTLaCuPn+TeQ6Ve6V9KqEtV3uFRfQ/v64Dj5k2fwcVBz5eMuozPlnvgX
-	 GLzspBKcA/oXfaTX3nX6eEOcdEgH2OQ4X3IqHfljs8RV4Rm4eN85/c0RjOiAG8mEqL/tQ
-	 iAxrl59tPlYvD8ogmoldSdpFTs3L47RzwaPLTR/djPWPXn7fmKxkMl6enaNUb1cn1LA==
+	t=1794921079;
+	b=Pb/LiK/uNWMkQCy9kbe4d18vVeGWnXALj3iAjWN5oRfbKa4P3rQbszbFWr2XSLbhAFT+
+	 Tn9Aff/7tBRDkSGx94EDOHTJ47C/w5WdNr3J7grApy7563E3R/BmBk87jOIPIcDwQqmvw
+	 IIK6R9x4heDps0PYUtzc2Ke1eKIaeiq8S3vbSfLTEGyxQ/PGbrcygRDCafyrsj4vLgns7
+	 p/K7F+uNN9nB86rc5R+opYTtyCPFoS677j182oPqyRWJ1kOR9klPtHJ/48VVdEhawC3bl
+	 IBS+/sTeA3bq323FUgAIK30zStXItaOmq+GMe5scvlokTYHdMYvUjAR4//b3n16LxGg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794920701;
-	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
-	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
-	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
-	 X-SA-Exim-Scanned;
-	bh=9LFSH3S79yMExFk+1qBwbTLcoT6gqxw3yAePeaVU2no=;
-	b=c/tcsMnH1Wn74mxW5Q5i6KTKZwZIiI6lVOpN+i2nSOMSJtGdElFq0IHafGj2k/7zcAh9
-	 SZMuSOOZ98je6EtMAf5AhLfoeGMFQ4XNmVK05uFuPdOhQ2p6q/vMyy0++Spb98bBKVeTz
-	 lTd+/GjYxcspQv4f+w737qurPR46rvwnKIC+iIoJRzKPVANJmTeMoyDMfc+X/FWSxINuP
-	 iw5P5iplnpVQ4D1w0/OnAuHZMAgyD++tDk0wcDaX20xReehGk6oXtTkve43SJpdQUobbA
-	 XNyefa7yYf2V9ETXF8ABAop8HhSB5v+9fCs+2E98sE2t1e/KsQd3FHb0m0VXxL3pAhA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794921079;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=6n2douVgcE4vANCNGbrlWLWJHzybROhZeQr26v8BZtw=;
+	b=Dm/mqJvbX+UT7aajg9HpHhdqSDwdDHcmzpXncMGHAUH6/OQuPW94L6ygFHZCARZlcDDP
+	 6wTAuqZv1I0vNPmBQ4ocFULobhfyV6IF0maytlYrKlZj1eWuPQI3X4LzeI5b/oiyvqUNg
+	 ovmqyuXwKuUezCrqgpYIqXHLdo0dgawxmcgGLbfDUuyX82JYjjvud0eaLjiaj6stW5P71
+	 NKGbGN/B/adQbGE0dxP28Y+E9KnqII/SUCujF+qKWmDCWV7e+EyJzRAU5JlVP1MuYKria
+	 mL8BYBLANvO8ky/4pblpGEI3+0fANSaolp/YRSMDpxT4blowBspILgqQ47hX97ZRplw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IH33jRbk;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BYQIsXtV;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074D8606A335;
-	Tue, 17 Nov 2026 13:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3009606A31C;
+	Tue, 17 Nov 2026 13:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IH33jRbk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37DB1F000C4;
-	Tue, 17 Nov 2026 13:05:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BYQIsXtV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612831F000C4;
+	Tue, 17 Nov 2026 13:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794920700;
-	bh=9LFSH3S79yMExFk+1qBwbTLcoT6gqxw3yAePeaVU2no=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=IH33jRbkgbCTnzClh4uPWtcVmy8d8zo2+fod1PZlqY0625ITG/aRoJpveNziUuuxH
-	 UQtu4t55Bz3GjSHxQOWQkXhNus369KTv+DyjyOsyDdIkxyu0I43oWSW0ltMnbmHvWa
-	 3dE+XyNsKpOCu6KEm6efZWDoJftV4wyFxVx5TuGKl1YSuh1vnVDF47ImdtJZZuxbxD
-	 HGmZDw/98qeLffrdLnXvVoa65jiSX3JhasDQz4EMEN4TAfjUv1EJRZlVJ6fUqiieuC
-	 i5BSfByiTU/l6iSy4WgsEIDby6zvI+ByJR1hmU+tjlkAbAb1xBuJfskTYvY/YP60d1
-	 I96E6nU1W9hZA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xTIrq-0000000H0kI-1LWK;
-	Tue, 17 Nov 2026 13:04:58 +0000
-Date: Tue, 17 Nov 2026 13:04:57 +0000
-Message-ID: <86fqwz1udi.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Colton Lewis <coltonlewis@google.com>
-Cc: Oliver Upton <oupton@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] KVM: arm64: selftests: Verify HCR_EL2.NV1 is RES0 when E2H0 is NI_NV1
-In-Reply-To: <20261116200418.3535619-3-coltonlewis@google.com>
-References: <20261116200418.3535619-1-coltonlewis@google.com>
-	<20261116200418.3535619-3-coltonlewis@google.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20260515; t=1794921079;
+	bh=6n2douVgcE4vANCNGbrlWLWJHzybROhZeQr26v8BZtw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BYQIsXtVevlFl8WCQNTTn97LeHyd6IFu5K4u0/lyAkgwNk5tZyhG0rcdbNovyyMfE
+	 f2YRzPQrlYyN9139S2zbp1h8RI/BsakRwtcdgqWgRbCdtTOXQ2iPoDvKk4Ils5RHJP
+	 xVQr7kNYNOsQtdACQyZJM3I8kTGGfD+vL9GSKv6ZRMT7wwKXVwnV0PYFXFKGaCxTkj
+	 xt66cPBauCsxQW70LwVrWdB8O6aYLY63GCpuKta638c/PE196O5nxExYfruOX13ESd
+	 6Tx39YxsEwGBRnBZk9w4HjDC3rn3LWCGmLNiCvd+rzjbar7dNP6nneG4YpFtRNTeZb
+	 qT9EwvnBRO+VA==
+Date: Tue, 17 Nov 2026 13:11:14 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Sashiko Bot <sashiko-bot@kernel.org>, 
+	Naveen N Rao <naveen@kernel.org>, Alexandru Elisei <alexandru.elisei@arm.com>
+Subject: Re: [PATCH v4 1/2] KVM: Disallow prefetching PFNs (for SPTEs) via
+ VMAs for gmem-only memslots
+Message-ID: <avxSaMHas9hwZH1I@gremlin>
+References: <20261117011513.39419-1-seanjc@google.com>
+ <20261117011513.39419-2-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -75,107 +58,52 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: coltonlewis@google.com, oupton@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, fuad.tabba@linux.dev, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261117011513.39419-2-seanjc@google.com>
 
-On Mon, 16 Nov 2026 20:04:18 +0000,
-Colton Lewis <coltonlewis@google.com> wrote:
-> 
-> In a VHE-only EL2 guest (KVM_ARM_VCPU_HAS_EL2 without
-> KVM_ARM_VCPU_HAS_EL2_E2H0), KVM advertises ID_AA64MMFR4_EL1.E2H0 as
-> NI_NV1, making HCR_EL2.E2H RES1 and HCR_EL2.NV1 RES0.
-> 
-> Extend hello_el2 to attempt clearing HCR_EL2.E2H and setting HCR_EL2.NV1
-> both from guest EL2 (across a trapped ID register exit) and from
-> userspace via KVM_SET_ONE_REG, verifying that HCR_EL2.E2H remains RES1
-> and HCR_EL2.NV1 is masked to RES0.
+On Mon, Nov 16, 2026 at 05:15:12PM -0800, Sean Christopherson wrote:
+> Disallow prefetching SPTEs via fast GUP, i.e. by VMA lookup, for gmem-only
+> memslots as the whole point of gmem-only memslots is that KVM MMUs should
+> get PFNs *only* via the direct guest_memfd interface.  More importantly,
+> this will allow skipping/ignoring/eliding mmu_notifier invalidations for
+> gmem-only memslots, since it will be impossible for KVM MMUs to have any
+> mappings based on the to-be-invalidated VMA (as is intended).
 >
-> Signed-off-by: Colton Lewis <coltonlewis@google.com>
+> Fixes: 576d035e2aef ("KVM: guest_memfd: Track guest_memfd mmap support in memslot")
+> Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/all/sashiko-outbox-213282@kernel.org
+> Reported-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Closes: https://lore.kernel.org/all/avdAIMDfgL_wy1rx@gremlin
+> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+
+LGTM, thanks! :)
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 > ---
->  tools/testing/selftests/kvm/arm64/hello_el2.c | 34 ++++++++++++++++---
->  1 file changed, 29 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/kvm/arm64/hello_el2.c b/tools/testing/selftests/kvm/arm64/hello_el2.c
-> index bbe6862c6ab16..46b0f63e199f0 100644
-> --- a/tools/testing/selftests/kvm/arm64/hello_el2.c
-> +++ b/tools/testing/selftests/kvm/arm64/hello_el2.c
-> @@ -13,13 +13,29 @@
->  
->  static void guest_code(void)
->  {
-> -	u64 mmfr0 = read_sysreg_s(SYS_ID_AA64MMFR0_EL1);
-> -	u64 mmfr1 = read_sysreg_s(SYS_ID_AA64MMFR1_EL1);
-> -	u64 mmfr4 = read_sysreg_s(SYS_ID_AA64MMFR4_EL1);
-> -	u8 e2h0 = SYS_FIELD_GET(ID_AA64MMFR4_EL1, E2H0, mmfr4);
-> +	u64 mmfr0, mmfr1, mmfr4, hcr;
-> +	u8 e2h0;
->  
->  	GUEST_ASSERT_EQ(get_current_el(), 2);
-> -	GUEST_ASSERT(read_sysreg(hcr_el2) & HCR_EL2_E2H);
+>  virt/kvm/kvm_main.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index cf4cb586f140..9938b753948c 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -3172,6 +3172,9 @@ int kvm_prefetch_pages(struct kvm_memory_slot *slot, gfn_t gfn,
+>  	unsigned long addr;
+>  	gfn_t entry = 0;
+>
+> +	if (kvm_memslot_is_gmem_only(slot))
+> +		return -EINVAL;
 > +
-> +	hcr = read_sysreg(hcr_el2);
-> +	GUEST_ASSERT(hcr & HCR_EL2_E2H);
-> +
-> +	/*
-> +	 * Attempt to clear HCR_EL2.E2H (RES1) and set HCR_EL2.NV1 (RES0).
-> +	 * KVM sanitises VNCR-backed HCR_EL2 across exits such as the
-> +	 * trapped ID register reads below.
-> +	 */
-> +	write_sysreg((hcr & ~HCR_EL2_E2H) | HCR_EL2_NV1, hcr_el2);
-> +
-> +	mmfr0 = read_sysreg_s(SYS_ID_AA64MMFR0_EL1);
-> +	mmfr1 = read_sysreg_s(SYS_ID_AA64MMFR1_EL1);
-> +	mmfr4 = read_sysreg_s(SYS_ID_AA64MMFR4_EL1);
-> +	e2h0 = SYS_FIELD_GET(ID_AA64MMFR4_EL1, E2H0, mmfr4);
-> +
-> +	hcr = read_sysreg(hcr_el2);
-> +	GUEST_ASSERT(hcr & HCR_EL2_E2H);
-> +	GUEST_ASSERT(!(hcr & HCR_EL2_NV1));
+>  	addr = gfn_to_hva_many(slot, gfn, &entry);
+>  	if (kvm_is_error_hva(addr))
+>  		return -1;
+> --
+> 2.56.1.703.gf848ed807c-goog
+>
 
-That's relying on a KVM-specific behaviour, and not something the
-architecture guarantees. You should test that you either get the
-original written value, or the effective value.
-
-Also, ID_AA64MMFR4_EL1 doesn't necessarily trap, since this relies on
-FGT being implemented. So on an older code (Neoverse V2, for example),
-this is unlikely to give you the correct results.
-
->  	GUEST_ASSERT_EQ(SYS_FIELD_GET(ID_AA64MMFR1_EL1, VH, mmfr1),
->  			ID_AA64MMFR1_EL1_VH_IMP);
->  
-> @@ -45,6 +61,7 @@ int main(void)
->  	struct kvm_vcpu *vcpu;
->  	struct kvm_vm *vm;
->  	struct ucall uc;
-> +	u64 hcr;
->  
->  	TEST_REQUIRE(kvm_check_cap(KVM_CAP_ARM_EL2));
->  
-> @@ -66,6 +83,13 @@ int main(void)
->  		TEST_FAIL("Unhandled ucall: %ld\n", uc.cmd);
->  	}
->  
-> +	hcr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2));
-> +	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2),
-> +		     (hcr & ~HCR_EL2_E2H) | HCR_EL2_NV1);
-> +	hcr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2));
-> +	TEST_ASSERT(hcr & HCR_EL2_E2H, "HCR_EL2.E2H should be RES1");
-> +	TEST_ASSERT(!(hcr & HCR_EL2_NV1), "HCR_EL2.NV1 should be RES0");
-> +
-
-I think this is the only reliable test you can implement.
-
->  	kvm_vm_free(vm);
->  	return 0;
->  }
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+--
+Cheers, Lorenzo
