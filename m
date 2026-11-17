@@ -1,75 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794948340;
-	b=O8FyopP6ee/GPHdea8S3lXDFzh51QjtZrORuQ6bQdihT/dK4gOhxuUPFB6EUUasLmCjt
-	 7Dt27Dzyeu3u/+URI4I35fRytasAE3Dbcgm0IUvxa8y3DI6wr3cwLul9SoEyHJQPEHRGL
-	 p3zEfr1njdNDBrgcQVT0T/ViTjd0SGnlQoXGrU2sj/aSYa47jCDxkrbazKZDcaazXa2c1
-	 gEzgT2haqVHC6+th6ix03Cf+WPL8kwCg9kAAkIN6LUHl4z93lX3l2S3ZR28JaJAIDGs/w
-	 kjx1isamRfi7xVNvT+QdvGX6LnQnT5mMVCrEiwLN2xDM3fW08rWUGML8MkIkJ+EhrYw==
+	t=1794948871;
+	b=ocArLyUKkYY2ntLcM2wcf7uSwdhoZUi+0cwFg8g/nhNb4JMWVa6GelnhOz/47LBEkJm9
+	 Sar7bK7ZV1IGpxbhfLPvhe7S91X08KsV0GSXS1zVnyuuJEVvC2EDzkUknJANHqobhihCO
+	 MiB7/8MtigI2RtzpO1XKdLZK88Siviq7bt9qM6OIw22UCYMaQdkfY1FkFkR1EfJxCHNXS
+	 JFAGexYHKfBDukp5hVVb21g0BH2JSZAaGtTljqpFpH+sKdJnCU+8PrXs4um1Xz6EBxYdS
+	 zEBDWbSRyOH7CuHCAZVmGUz84xEvhL1IRZaa6rxCR1qiH++4guYlie23P1c9jarNQ7Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794948340;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794948871;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=H5HOKL2EhRK71scz5F39xMdCNEmAUE6COZwQwhC/mXs=;
-	b=KHU7OKtcefpZtqRf9ibwJqgMwaF/NvH2yNt71ui7fh2KzRks19UWMTVdleItry82kdvI
-	 LJBiQjVrhAGtVt0jLvdADCGxihAJWNM4iP+UpaO54q2uLg83Q4afwHPF1VMxjiNYHhq+w
-	 r9AaaifxTZiyEXb8kVLg10ipkZ/YJrjjpDgRT11Ac1HWCgsdv9JqCtIqEKlOaz05Q+yXi
-	 ZyzWPdljh5pXjmGNSvyuxWPYixcM880CrCuW+FkXoiC2GFKY6tFltAj7Wp6xXTahzrUeH
-	 4ihp+XNnCe5XFQ2kROxZWFnT0zx4QdqHpsiRqScoYJ9FMRqs8otWJgb11VABKSAB1xQ==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Reply-To:Date:
+	 Mime-Version:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=jQWYmjlxMo6/xEEDxDasX03frXsDyPZi9DBQiy9773M=;
+	b=oRMcq5W2YqxWzrBvCRg6RQ3B38tXpdHfwVtZbtxgyRdDwBLUg7yUEcpf0Fqhu+qJFij3
+	 +3yDMBJDR+bVTCkamcoL9pGahVeoSlQKuAltAr2ToeyWkxKI+0WiU7K302ax2WzSyNFI0
+	 nCBgjcLFgjlObbtuXrClceq5OF8uCGs5d1KSZWo6ZzXCI7Ev2fGExVhtPRkJKg7QHZVFE
+	 TuBHuTL+aIUMZrQAcseZElwzduv5mTscOml2o9Kih81LMe0ze2I6eERWd9xsfx/TDmSbV
+	 rKL5n/c1zwebjLz5bKG/i352TRh6r6iisptSqJ7SWwfOeZqrVb+cYSxd2KFDO25R8Hw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=TIwGkQTM;
-	arc=none smtp.remote-ip=209.85.167.198
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Mtl+Njnk;
+	arc=none smtp.remote-ip=209.85.216.70
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2CF5606A888
-	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 20:45:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2CF5606A888
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4C3606A31C
+	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 20:54:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B4C3606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=TIwGkQTM
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4cc89e86e4dso175587b6e.2
-        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 12:45:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Mtl+Njnk
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3ad30487d55so182991a91.2
+        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 12:54:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794948339; x=1795553139; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=H5HOKL2EhRK71scz5F39xMdCNEmAUE6COZwQwhC/mXs=;
-        b=TIwGkQTMtlYihyV/DkdX8kDo2dmzT7E52E/RZ1arFd0jsVKlRoCDkgw2Jm86Wm7kDP
-         E3QrLEKpR+T1MRb8kknGNEisvOEjQSzG6pO6McK7D5R+265b/8+zNMvK/PNdYXmmmxjq
-         uK/1X7Odj7XOhoFrqfoVlJ6WA0aw/K5wGjmRUCUbUD5K2qUH4NHY0kEs4jIpk/eMPiU9
-         S9JpY6/ihBHu+E4bRSAYLahEtPnuDGk8eEv4m2cOlMRPtyJUmjFrWAczHEJaQ9axkNYZ
-         KdsFXsp7lyPJeG4sWhE7BFUqFz/06UPnwCzqFI2nlF1uXhtEq6isHxy9eXWu0Z8KnS7b
-         Gbpg==
+        d=google.com; s=20260707; t=1794948870; x=1795553670; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jQWYmjlxMo6/xEEDxDasX03frXsDyPZi9DBQiy9773M=;
+        b=Mtl+NjnkvTCaz4aRAZ0EwJEvYxx4/iEGPXx8ZmE0C1SrK0rP90cC3gHITqJD7Pjda+
+         sLHkrM3XB8hLtCf20UTAw/j3PF9moAx4MsARzYAAHKl1g5U7tG45B0ZLTtVfZ6jp3Mom
+         2UDxPh4x3EBNy2dZHFoccDPMpIkqr5aettqqIqEE4aNnK7Zz7Fcugp8bl7phUuArEyE5
+         soEJ+qyMZ9Fagkhkv7wfrKG3BxXZ92f/1C2b07qkvKI6wQs2nlH3rtgNSYTh2DGEgt2s
+         NeK3yXCQQz68/lGI+XsmXbD6hb3Ip07bPpEee3t6oyoI9kl8eOlKQCZLePoDbbnmSdLk
+         wmKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794948339; x=1795553139;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=H5HOKL2EhRK71scz5F39xMdCNEmAUE6COZwQwhC/mXs=;
-        b=y7RBmKxd5Yh6cIfI2gETYV0yIfuz9IRkXeHUgfvlDOwaIlRuGJ83jE1dJiaMo5oVTZ
-         UIsvn+BiVpnf7o9hlAW0LuHvML2sFMYrtgsJx5mAmqaIU5OWRYFwv9Z0tAY/6GnyLBsL
-         aTEWRUfOuKEhMNsaqtHN8MdqhJhwg2TNDY6exO+p1hGTlS5f/PZe3AZZfGmcuIwlwxM0
-         dVJR3LOZXWUUOza9C/irzzAtnJbQg2bpeFa/H+TckQOqSq8aM/5cd41YrXt4KMZZO8sb
-         K9Hc+UgsyqUZa3PyO+aUw4PM8TjFDMvqevcd6wdIivYlOpZmzeP3oq4rJCe1VYRTk6bw
-         Fs6w==
-X-Forwarded-Encrypted: i=1; AL+hErH+TNjyzG/FLO///r1kwpm5hk8GDD+/D8qXgd3eOqBNq7+DogcASE6EVB757hpQDqLzc+A=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8P6Oh6wxF9Zr4XrdJQQlqM8+vf2oMNsHcBqwnl2RnD91iNDAEw
-	Q7VSsqpu/HHfsWLNNC+zM8budHUMXAz0U760+5cWkA0KXpgDT+veeaeieB74VEEO7Ng3P0PGRpT
-	ut+u3QIz99PeiYXjiLmtJKctm7A==
-X-Received: from iobmp24-n1.prod.google.com ([2002:a05:6602:a2d8:10b0:9c7:7f8f:934f])
- (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:3096:b0:4e5:a74e:d6c0 with SMTP id 5614622812f47-57743d4c1e9mr1010823b6e.64.1794948338500;
- Tue, 17 Nov 2026 12:45:38 -0800 (PST)
-Date: Tue, 17 Nov 2026 20:45:35 +0000
-In-Reply-To: <20261117204535.4036191-1-coltonlewis@google.com>
+        d=1e100.net; s=20260707; t=1794948870; x=1795553670;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=jQWYmjlxMo6/xEEDxDasX03frXsDyPZi9DBQiy9773M=;
+        b=TuzJT1G7KM0SKPcrwEJBevYuVnBDazI83Gx1VwFe8o2XVFhdLzE/Cx/oO0HJblqA0x
+         uzdkeDMs77EE9XWRN+6WJJMOk4HOxAZ74SsGaL4O62O3cEEbcmOR4XAcP73i65ydrcTK
+         K04RzMGSmvSiV51EYubrKU+33DPZkvCc7OM96gOJaH3TBJVRczGb+n8i4/6gVozIxl+c
+         AkD60Rh08JJQnmLa0yE08D+tVTPzrFo1I6Zm/8DGVcopcog0ty5e/53EhpfoMnD880Gj
+         JELlpAreyF3yKoujfftWONpnP91k7LW9wLOyumEcSPAXybLF11MxRqH8idTlj4rxggR0
+         tvIQ==
+X-Forwarded-Encrypted: i=1; AL+hErEkUTvjilhZMJ1VxSfaxtg9K6TMlzSYJcw10yocCbK+TiRNeH08Y9NkLnqqISPKqTcCl6o=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9axmNGVzeL6eWQL/XPQfPQwlNZcz5ZbpkKci+AeIrfXwYCQzYZ
+	d8X/hQjD5iqUGCfuYr0rwabRuXjfKcVGHFHKTVnQ6wfhtdZBZGfnnnjm/HOgIuxWUhXAL5WJadx
+	Ge1hyZw==
+X-Received: from pjpb6.prod.google.com ([2002:a17:90a:9906:b0:3b3:9d13:d781])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4b8b:b0:3ab:a3ee:33ad
+ with SMTP id 98e67ed59e1d1-3b3d074da04mr556296a91.22.1794948869798; Tue, 17
+ Nov 2026 12:54:29 -0800 (PST)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Tue, 17 Nov 2026 12:54:28 -0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -79,59 +77,90 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-References: <20261117204535.4036191-1-coltonlewis@google.com>
-X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
-Message-ID: <20261117204535.4036191-3-coltonlewis@google.com>
-Subject: [PATCH v2 2/2] KVM: arm64: selftests: Verify HCR_EL2.NV1 is RES0 when
- E2H0 is NI_NV1
-From: Colton Lewis <coltonlewis@google.com>
-To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>
-Cc: Leonardo Bras <leo.bras@arm.com>, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Fuad Tabba <fuad.tabba@linux.dev>, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Colton Lewis <coltonlewis@google.com>
+X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
+Message-ID: <20261117205428.3717-1-seanjc@google.com>
+Subject: [PATCH] KVM: Send reschedule IPIs instead of SMP function calls for
+ non-waiting requests
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Satish Kharat <satishkh@cisco.com>
 Content-Type: text/plain; charset="UTF-8"
 
-In a VHE-only EL2 guest (KVM_ARM_VCPU_HAS_EL2 without
-KVM_ARM_VCPU_HAS_EL2_E2H0), KVM advertises ID_AA64MMFR4_EL1.E2H0 as
-NI_NV1, making HCR_EL2.E2H RES1 and HCR_EL2.NV1 RES0.
+When kicking multiple vCPUs for a non-waiting request, send a reschedule
+IPI to each vCPU instead of batching IPIs via a single SMP function call so
+that KVM can make non-waiting requests with IRQs disabled.  I.e. handle
+multi-vCPU kicks the same way KVM handles single-vCPU kicks, for the exact
+same reason.
 
-Extend hello_el2 to attempt clearing HCR_EL2.E2H and setting HCR_EL2.NV1
-from userspace via KVM_SET_ONE_REG, verifying that HCR_EL2.E2H remains
-RES1 and HCR_EL2.NV1 is masked to RES0.
+Avoiding SMP function calls for non-waiting requests fixes a potential
+deadlock if KVM VMX triggers KVM_REQ_UNBLOCK to all vCPUs when starting
+device assignmennt:
 
-Signed-off-by: Colton Lewis <coltonlewis@google.com>
+  WARNING: kernel/smp.c:943 at smp_call_function_many_cond
+    kvm_make_all_cpus_request [kvm]
+    kvm_arch_irq_bypass_add_producer [kvm]
+    __connect [irqbypass]
+    irq_bypass_register_producer [irqbypass]
+    vfio_msi_set_vector_signal [vfio_pci_core]
+
+Send reschedule IPIs immediately to avoid having to re-walk the set of CPUs,
+even though it makes the code slightly convoluted.  It's also generally
+advantageous to kick vCPUs as soon as possible, e.g. so that the target
+vCPU(s) can react to pending events/actions, but that's purely nice-to-have
+as there are very few paths in KVM that kick multiple vCPUs for non-waiting
+requests.
+
+Fixes: 77e1b8332d1d ("KVM: x86: Decouple device assignment from IRQ bypass")
+Cc: stable@vger.kernel.org
+Reported-by: Satish Kharat <satishkh@cisco.com>
+Closes: https://lore.kernel.org/all/20261116-b4-kvm-irq-bypass-irqs-20261116-v1-1-6cc721a062fd@cisco.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/arm64/hello_el2.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ virt/kvm/kvm_main.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/arm64/hello_el2.c b/tools/testing/selftests/kvm/arm64/hello_el2.c
-index bbe6862c6ab16..5910497f8fbe4 100644
---- a/tools/testing/selftests/kvm/arm64/hello_el2.c
-+++ b/tools/testing/selftests/kvm/arm64/hello_el2.c
-@@ -45,6 +45,7 @@ int main(void)
- 	struct kvm_vcpu *vcpu;
- 	struct kvm_vm *vm;
- 	struct ucall uc;
-+	u64 hcr;
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index cf4cb586f140..0b733746884c 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -218,7 +218,10 @@ static inline bool kvm_kick_many_cpus(struct cpumask *cpus, bool wait)
+ 	if (cpumask_empty(cpus))
+ 		return false;
  
- 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_ARM_EL2));
- 
-@@ -66,6 +67,13 @@ int main(void)
- 		TEST_FAIL("Unhandled ucall: %ld\n", uc.cmd);
- 	}
- 
-+	hcr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2));
-+	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2),
-+		     (hcr & ~HCR_EL2_E2H) | HCR_EL2_NV1);
-+	hcr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2));
-+	TEST_ASSERT(hcr & HCR_EL2_E2H, "HCR_EL2.E2H should be RES1");
-+	TEST_ASSERT(!(hcr & HCR_EL2_NV1), "HCR_EL2.NV1 should be RES0");
+-	smp_call_function_many(cpus, ack_kick, NULL, wait);
++	/* See kvm_vcpu_kick() and kvm_make_vcpu_request() for details. */
++	if (wait)
++		smp_call_function_many(cpus, ack_kick, NULL, wait);
 +
- 	kvm_vm_free(vm);
- 	return 0;
+ 	return true;
  }
+ 
+@@ -241,12 +244,20 @@ static void kvm_make_vcpu_request(struct kvm_vcpu *vcpu, unsigned int req,
+ 	 * satisfied if the vCPU migrates. Entering READING_SHADOW_PAGE_TABLES
+ 	 * after this point is also OK, as the requirement is only that KVM wait
+ 	 * for vCPUs that were reading SPTEs _before_ any changes were
+-	 * finalized. See kvm_vcpu_kick() for more details on handling requests.
++	 * finalized.
++	 *
++	 * See kvm_vcpu_kick() for more details on handling requests, including
++	 * the use of a reschedule IPI for non-waiting requests.  If waiting is
++	 * required, batch the SMP function call until after all to-be-kicked
++	 * CPUs are gathered, to avoid waiting multiple times.
+ 	 */
+ 	if (kvm_request_needs_ipi(vcpu, req)) {
+ 		cpu = READ_ONCE(vcpu->cpu);
+-		if (cpu != -1 && cpu != current_cpu)
++		if (cpu != -1 && cpu != current_cpu) {
++			if (!(req & KVM_REQUEST_WAIT))
++				smp_send_reschedule(cpu);
+ 			__cpumask_set_cpu(cpu, tmp);
++		}
+ 	}
+ }
+ 
+
+base-commit: d21eef2084a9af87ac2a783bc7c2b175ba114e4e
 -- 
-2.56.1.750.gf70dc682cf-goog
+2.56.1.703.gf848ed807c-goog
 
