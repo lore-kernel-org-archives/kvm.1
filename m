@@ -1,74 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794918417;
-	b=vjDTak9NQizRHcj+dfhbaXBpBCQlP3jdLhD4PrFJbtWJCO7C/Sl4VcxR0hQMrJ2+/kIt
-	 6BrtAG0ukFE1qZffW0GE1rxoPti7Pe8hZWe0Ef/q8O1r+gup2m1H2e5sQMAC+jyMgFEsQ
-	 3ouVfEB9juXU0amx7QLvpyUPB333QYNwfh9D5BBTuqAxDi8W9v8txvDzKl4Buxi9rPxMT
-	 HKm0mB7DU2r4dSZXi+xABaZ+wYNhpSTSzFrLe2p83Pg2XwAKB1sxEYhKmPXYPXYlfxUi7
-	 Csb4rnRlm+od0ms5elaFeH3zkGTwMyCOrsuAxGzCSBt+gZWu8vQDWwt2cWmN8TDrDpQ==
+	t=1794919491;
+	b=GNC9VNGvphLxvvUTQqJKpaWy8fPYjrVv1VAmuDa0chlfAW1qyQMpYQlNEeLku9Csmj/Q
+	 uoHobUw6Ty9zYbPguUPgtE9RUhau5Qftfd+85DQNqo7ZIA7S0n4T1MmNm+/cEcrUgO6EX
+	 1+WXotWrjjKKV9cT95CNzp/0H5/EQr9Si0yL7dOsup3D9LD3kJpleJ8Q6XT1cEtscIsey
+	 z7xEDx/n0Fxb7PK4RaHyAtddCBggu+VHl/goOpeXtXiztCAXuteZKLtNe1KKAwFUzuWQN
+	 PTRJkX/1YxyK6pthscZwbILMLMRwSPVbN6mFqgPp1/uyRaB+xDAsDBQGwWzwgujQ3xA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794918417;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Subject:From:To:Cc:
-	 Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version:X-Rspamd-Queue-Id;
-	bh=j7oY28RdLZtDDQHfpOlL4ZKSrdCmfH4ZkKpc4rt79iI=;
-	b=joQ4R1sgoxlTWPe5qs3g2+kp0xmHtz3/dPCQfHQzb17Ma49upsU9eMgAOzmiBMa1yjTm
-	 45D/GpvyjozAoU8xYGohj189qVLX055gFsEPeEFjoKHJIrMesk7v1w0MfpFcyRbnfq4j/
-	 mvAXtUczEkQGYMep0/xFFFg5sDbemrPKDcE8twU96einI7CoqJXA1jHBqOUhtRQqMWJn8
-	 /GC0uHpItC1l/GLjMp1qxS0OjT9x6cCDW6JgbQNQGxcQ+2ZrOS0Po0WBD88QCODsd2cIU
-	 76BCNCtDkidbY9ML/WDEGDCpHD05tPI91P6gnqkvjISl3ENXUFO9x2rSQ6jd4VMm02A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794919491;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=w951ovg3w2Vsfylh3ccdzN6FDyrcXZTYdvPxHdlj9QY=;
+	b=cTLC89k6GmjUQ8UofEwe8MkbBpPJunWgH6ot6ckaD5/apvqAjY+YKLbR3WwBH6kvrNNt
+	 KeAzv1iDu8hGyCo49nx9GO/MVW7k39E7cLK86IWOOc0GOPx2eSGYmtvjskO6o8Io25iV8
+	 EaRHBP4LSkBWjqOSu+O0nIirIw4qbczIo+LQD0/GeFcGkHCWaQ0WsLtxa4rJVJLxxz4UI
+	 PCue/MtOWmQEWBSS6nQSEvT9csEmQgi9Wh4iA9hgu/8wpOlW6O5k2U32+cujgQ4waNtyo
+	 gZ+zw0CXIQtrefUXjsBv6Czt7HG37fb9XNrA/xH7NnRtXZDByQj/knHJu2IfpT4CQFw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=steffen.cc;
-	spf=pass smtp.mailfrom=steffen.cc;
-	dkim=pass header.d=steffen.cc header.i=@steffen.cc header.a=rsa-sha256 header.s=MBO0001 header.b=M9kJX0yF;
-	arc=none smtp.remote-ip=80.241.56.171
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YBwzihIj;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C41606A330
-	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 12:26:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3C41606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=steffen.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=steffen.cc
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79095606A335;
+	Tue, 17 Nov 2026 12:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=steffen.cc header.i=@steffen.cc header.a=rsa-sha256 header.s=MBO0001 header.b=M9kJX0yF
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4jTP9f3P3dzMllW;
-	Tue, 17 Nov 2026 13:26:46 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=steffen.cc; s=MBO0001;
-	t=1794918406;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j7oY28RdLZtDDQHfpOlL4ZKSrdCmfH4ZkKpc4rt79iI=;
-	b=M9kJX0yF/y0YazhpqiBhxgDeA1j8FVHZSgM5Hne9xWufKwUuNRmz69zBlkmfrUS4Pomxa8
-	UZStOx2BnusssXvQL4kqqdNe0tvtyClWKdhZ9IsFYPg2rPQ5rLb5NZ9i5jiFSf6VPTeBv6
-	MFvLpI2RDMPdJhoJh2Yx7IFyP3o+DEwUgLbZtNbxGMEumwypTa/51vo7Gsg8giyVbPdDuB
-	+a9WThAiCkaaVY00p8/y0THpw46BzZw6aE+BkIgqgV9NGrdZWwVhJ2OW1VQ5is82YXAEn3
-	N+bTLW41kYDF4Z+LPrLLfK1+zwaRugNqiAXJpKZE+zuChfGP4r70g8wk58wWQQ==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=none;
-	spf=pass (outgoing_mbo_mout: domain of lists@steffen.cc designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=lists@steffen.cc
-Message-ID: <70c638d283d4521a481b7aaf5889f87f679cab21.camel@dirkwinkel.cc>
-Subject: Re: [PATCH 0/2] Support for Hyper-V's HvExtCallGetBootZeroedMemory()
-From: Steffen Dirkwinkel <lists@steffen.cc>
-To: Florian Schmidt <flosch@nutanix.com>, Cornelia Huck <cohuck@redhat.com>,
-  Marcelo Tosatti <mtosatti@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,  Peter Xu
- <peterx@redhat.com>, Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>
-Cc: kvm@vger.kernel.org, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
-	 <philmd@mailo.com>, qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Date: Tue, 17 Nov 2026 13:26:43 +0100
-In-Reply-To: <20260731095112.2975175-1-flosch@nutanix.com>
-References: <20260731095112.2975175-1-flosch@nutanix.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.62.1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YBwzihIj
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9431F000C4;
+	Tue, 17 Nov 2026 12:44:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794919491;
+	bh=w951ovg3w2Vsfylh3ccdzN6FDyrcXZTYdvPxHdlj9QY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YBwzihIj9Shh17NXGQFTAEvDovM8+5df3UglwbIP4LhlDO72jMNqyPF0WYqaMxoE5
+	 l5OzmmQDWs6bndpK3tF6rQ3lBt1zG/W2Vr4hLKm0xMK5Q3tuGJG1nrSyzrUsBppXaW
+	 SGkiwCNY7E+RlbeAppGntzan52lAp84hU06UHxtci+ahGbgAeTdRtu45d26OC8ja6O
+	 3fEkU5hLUtqSGA/TZDUwg1RsB15zGb0qJLGToS4ZL8Ufc4PY4HfNys3VnAcnlDfQwK
+	 nJPevvKsk4LSoOAzEx/JixDM6Bfp0Lr62Bqpj8jf8A4v/ui+HRG2kw8vE7zZM/LEt8
+	 9JwP4xNMylkVQ==
+Date: Tue, 17 Nov 2026 14:44:42 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 5/5] s390/hmcdrv: Replace page allocator calls with
+ k[mz]alloc()
+Message-ID: <avxMOsbgkaC_kQA_@kernel.org>
+References: <20261108-s390-char-ready-v1-0-3db507722530@kernel.org>
+ <20261108-s390-char-ready-v1-5-3db507722530@kernel.org>
+ <20261116134656.125125Fdc-hca@linux.ibm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,97 +67,119 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 4jTP9f3P3dzMllW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261116134656.125125Fdc-hca@linux.ibm.com>
 
-On Fri, 2026-07-31 at 09:51 +0000, Florian Schmidt wrote:
-> This patch series implements two new Hyper-V hypercalls. The primary goal=
- is
-> to support "zeroed memory" enlightenment via HvExtCallGetBootZeroedMemory=
-().
-> To do so, we also need to implement HvExtCallQueryCapabilities(). While
-> HvExtCallQueryCapabilities() uses another bit in EBX on CPUID leaf
-> 0x40000003, it then allows the guest to query for further "extended"
-> hypercalls via the return value of that call.
->=20
-> HvExtCallGetBootZeroedMemory() allows a Windows guest to enquire which ar=
-eas
-> of memory that were provided by the hypervisor are already zeroed out,
-> meaning that there's no need for the guest to do so again. This has obvio=
-us
-> performance benefits.
->=20
-> To get a rough idea of the performance benefit, looking at a 4-core, 64GB
-> Windows 11 guest, we can see that an otherwise idle guest takes a bit les=
-s
-> than 90 seconds to finish zeroing and settle down from the time the qemu
-> process is started. If we look at CPU usage for each vCPU task 90 seconds
-> after starting, we get:
-> 1559 498
-> 1294 343
-> 1451 314
-> 4015 2729
-> Conversely, after enabling HvExtCallGetBootZeroedMemory(), CPU usage is
-> reduced:
-> 1583 458
-> 1441 361
-> 1279 312
-> 1337 264
-> These are taken from the respective /proc/<pid>/task/<tid>/stat entries,
-> denoting user and system time per "CPU X/KVM" task, in ticks.
-> We can clearly see which to which vCPU fell the tasks of zeroing.
->=20
-> It also has the benefit of not touching all pages at boot. This can be us=
-eful
-> if, for example, the VM is started with a balloon target already set to
-> overcommit memory on the host. In this case, we don't risk memory usage s=
-pikes
-> on the host if the VM touches all memory before the balloon can catch up.
->=20
-> Major changes since RFC v2:
-> * integrated KVM ioctl (under review in parallel) into
->   HvExtCallBootZeroedMemory handler.
+On Mon, Nov 16, 2026 at 02:46:56PM +0100, Heiko Carstens wrote:
+> On Sun, Nov 08, 2026 at 10:49:02AM +0200, Mike Rapoport (Microsoft) wrote:
+> > diag_ftp_cmd() allocates the DIAGNOSE 0x2C4 parameter list used for HMC
+> > file transfers under z/VM, hmcdrv_ftp_probe() and hmcdrv_ftp_cmd()
+> > allocate the data buffers used for the transfers and
+> > hmcdrv_cache_startup() allocates the buffer that caches the contents of
+> > the last file read from the HMC drive.
+> > 
+> > These buffers can be allocated with kmalloc() as there's nothing special
+> > about them to go directly to the page allocator.
+> > 
+> > kmalloc() provides a better API that does not require ugly casts and
+> > kfree() does not need to know the size of the freed object.
+> > 
+> > Performance difference between kmalloc() and __get_free_pages() is not
+> > measurable as both allocators take an object/page from a per-CPU list for
+> > fast path allocations.
+> > 
+> > For the slow path the performance is anyway determined by the amount of
+> > reclaim involved rather than by what allocator is used.
+> > 
+> > Replace use of get_zeroed_page() and __get_free_pages() with kzalloc()
+> > and kmalloc() and free_page[s]() with kfree().
+> > 
+> > Round transfer and cache buffers up to a page for the required 4K
+> > alignment, without rounding to a power-of-two number of pages. Reject
+> > unsupported sizes before rounding.
+> > 
+> > Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> >  drivers/s390/char/diag_ftp.c     |  5 +++--
+> >  drivers/s390/char/hmcdrv_cache.c | 18 +++++++++---------
+> >  drivers/s390/char/hmcdrv_ftp.c   | 14 +++++++-------
+> >  3 files changed, 19 insertions(+), 18 deletions(-)
+> 
+> ...
+> 
+> >  int hmcdrv_cache_startup(size_t cachesize)
+> >  {
+> > +	if (cachesize > KMALLOC_MAX_SIZE)
+> > +		return -ENOMEM;
+> 
+> What is the reason for this check? I can see that this seems to be a
+> common pattern, however the buddy allocator would warn as well for
+> allocations larger than MAX_PAGE_ORDER if I'm not mistaken.
 
-Hi Florian,
+Since cachesize is a module parameter there's a very corner case when it
+could have value within a page of ULONG_MAX. Then round_up() wraps to 0 and
+kmalloc(0) returns ZERO_SIZE_PTR rather than NULL and does not warn.
 
-was there any result from the community call in September?
+The module would load with a bogus cache instead of failing as it does now.
 
-I was looking at this and found that windows only uses the hypercall in
-winload.efi once and then passes the result on to the kernel. Maybe it woul=
-d be
-fine to track until this is called with userfaultfd UFFD_FEATURE_WP_ASYNC s=
-etup
-and PAGEMAP_SCAN in the first call of the hypercall and report/monitor noth=
-ing
-afterwards?
+While it's really unlikely to happen in practice I'm sure Sashiko will be
+unhappy without this check :)
 
-I also took a look at virtualbox. It seems to report all normal memory as
-zeroed:
-https://github.com/VirtualBox/virtualbox/blob/b6bea72111fcff48f31c57c9f6636=
-5b1d3301bb9/src/VBox/VMM/VMMR3/PGMR3Phys.cpp#L1513
-This seems wrong, but it is interesting that they have had it enabled for s=
-ome
-time (Looks like at least 06.2024 for the current version).
+> > +
+> >  	if (cachesize > 0) { /* perform caching ? */
+> > -		hmcdrv_cache_order = get_order(cachesize);
+> > +		/* the buffer must be 4k aligned, hence round up to page size */
+> >  		hmcdrv_cache_file.content =
+> > -			(void *) __get_free_pages(GFP_KERNEL | GFP_DMA,
+> > -						  hmcdrv_cache_order);
+> > +			kmalloc(round_up(cachesize, PAGE_SIZE),
+> > +				GFP_KERNEL | GFP_DMA);
+> 
+> ...and that check wasn't here before.
+> 
+> > diff --git a/drivers/s390/char/hmcdrv_ftp.c b/drivers/s390/char/hmcdrv_ftp.c
+> > index 3312b2ac00a9d..e22789b532de2 100644
+> > --- a/drivers/s390/char/hmcdrv_ftp.c
+> > +++ b/drivers/s390/char/hmcdrv_ftp.c
+> > @@ -238,16 +238,16 @@ EXPORT_SYMBOL(hmcdrv_ftp_probe);
+> >  ssize_t hmcdrv_ftp_cmd(char __kernel *cmd, loff_t offset,
+> >  		       char __user *buf, size_t len)
+> >  {
+> > -	int order;
+> > -
+> >  	struct hmcdrv_ftp_cmdspec ftp = {.len = len, .ofs = offset};
+> >  	ssize_t retlen = hmcdrv_ftp_parse(cmd, &ftp);
+> >  
+> >  	if (retlen)
+> >  		return retlen;
+> >  
+> > -	order = get_order(ftp.len);
+> > -	ftp.buf = (void *) __get_free_pages(GFP_KERNEL | GFP_DMA, order);
+> > +	if (!ftp.len || ftp.len > KMALLOC_MAX_SIZE)
+> > +		return -ENOMEM;
+> 
+> Same here, and as far as I can tell the Sashiko finding seems to be
+> valid as well, even though it looks to me as if this worked only by
+> accident. Also, as far as I can see, the reported "delete" command is
+> currently not used at all from the only existing user space
+> application that I'm aware of. But let's not change this, please.
 
-Thanks
-Steffen
+Sashiko is wrong about get_order(0) returning 0, it actually returns 52, so
+__get_free_pages() returns NULL and we end up with -ENOMEM anyway :)
 
->=20
-> Florian Schmidt (2):
->   Add HvExtCallQueryCapabilities
->   Add HvExtCallGetBootZeroedMemory
->=20
->  docs/system/i386/hyperv.rst      |  14 +++
->  hw/hyperv/hyperv.c               | 202 +++++++++++++++++++++++++++++++
->  include/hw/hyperv/hyperv-proto.h |  12 ++
->  include/hw/hyperv/hyperv.h       |  13 ++
->  include/system/physmem.h         |   8 ++
->  linux-headers/linux/kvm.h        |  15 +++
->  system/memory.c                  |   7 +-
->  system/physmem.c                 |  50 ++++++++
->  target/i386/cpu.c                |   4 +
->  target/i386/cpu.h                |   2 +
->  target/i386/kvm/hyperv-proto.h   |   6 +
->  target/i386/kvm/hyperv.c         |  14 +++
->  target/i386/kvm/kvm.c            |  91 ++++++++++++++
->  target/i386/kvm/kvm_i386.h       |   2 +
->  14 files changed, 438 insertions(+), 2 deletions(-)
+So it's either keep if (!ftp.len) and let it fail for "delete" like it does
+today or have
+
+	size = round_up(ftp.len, PAGE_SIZE) ? : PAGE_SIZE;
+
+and allocate at least a page for ftp.len == 0.
+
+What's your preference?
+
+The ftp.len > KMALLOC_MAX_SIZE check seems bogus indeed.
+
+-- 
+Sincerely yours,
+Mike.
