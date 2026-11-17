@@ -1,74 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794944281;
-	b=K1mPWD5uhr9m138+iEktEQEeOr9g0zy1zI1HVo2pVPns1WeU8OIixlO14AhcUJwR0L/z
-	 +OsurwrkGCtlHyY32UurHL797TqQf/kRv1OKGHcNjVJWSYdU1ThqDubY9LOVCOX42OT6J
-	 4UkTFCGUecqIy4aEs5f6WUf+uDJ3HsXX4sIlAkfHHspdmnVyeYD3sDveoS3zKJN2z5TrM
-	 j0cxgUar85IWdJXosDwinR662/HwK3Z2haBJvmB7HAbJNU0xmwPGd675AJUpr1whPxnfF
-	 Op8776PKfCMHkZBh1hHOvGhV4aHSX/c/Mlg4NL3b+0vZufjPr+UMnYsEpz+b/I4M/3w==
+	t=1794944517;
+	b=oP8UbQXNLid6r2RrQ6GeJACsRJ6Soqs0XUH/Myk4PPRxvfmi2+vq8KDxIbTENL5v+1bh
+	 AcrRA0LAhxrZOx/sBccGBrwuSbbtlg6DWVJz06A/aKpFYVqdKJjbi49NPSTsOMs3etAhL
+	 lEatKfsFWkYzySW7QF0WcKTWvDKhdroR+M9hkvkz1F3WjRry1aHQ/fXW08ORP5uNHNsi3
+	 x1YbVksfwmZrni6cRoOUdpcSoY+UQPDB2ad2JH6B5O1U5XqPlvZTv7QqEDKWMktmOiaqc
+	 YKhTb3vyhzoDGm2gA4IKeQYx9R5LJ9mZ9eqGL6dRoVANpeT19IN55sWa4FC1bnw9Sfg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794944281;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=5/vHAZGe7S9PuEhTy7BQu6tAJsTjB19cuWDO6dDg/VA=;
-	b=Y5kbCgSDfekRkauZLIf+sD/4HP0lxss9GsdLkRxATyidQNcWDfM6FksAw+bwAEBkGskk
-	 fW5JXKKsOSpxPCyrSanN1h8anhh7PMhxj0mIPWR64nkJe+kBvzLUSf0sbG2OMxM41Sk0p
-	 3h/pxACBvbtH5e/fSybmJx7jseB7W+JWYsgtmmKGYdDNmHHyzBlUbOpYld4TTB1wzsi4z
-	 pS+1/ePdgb6iuaVXurddzMK6SGL3M/CM7yd1ekfJEJQ1ejP05U/CLU92fjriiN2DCVDaG
-	 TC6cI8CO3Tj06dYx/rd8rKrLTD8BffRipEVdCYspM0vXOofrnfsRBTz6Pm4FtaXyPKA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794944517;
+	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
+	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
+	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
+	 X-SA-Exim-Scanned;
+	bh=+M/Rtxh3yGMbVllbJRU+JtKA13rBSYOFw41bb75VE4U=;
+	b=WPFMNSher3jJfm/0IRT/5Z9ZCTIsSd8zR5e9AAlbqMa+K6U4fXexmOJIUhEvpFUbw3dV
+	 7WjULp1MsmAgk6a409G64wsgHUsvd7ckmzY9f7yufrq54mKslpj3NjVBrUloZGcUs3PbN
+	 9lTeClDbi0sLJSMYyNWX6VH8P6nIgdlmD6Bk2BkZ7oAc8KjziqAWSdR+tN/MkveT74rky
+	 pm2N+fZi6nxPJ4aWKYXs0/kEVuaKBmciesVLPYx0KWc+TNCsA0kVVQEd5CevRKiA6o1VN
+	 GaDpGnWDNE9xoVi9LxN+8WmJdyulz8gNu1kzwZUxi5NMGcBU3C7uR/GbZ2JDpSbFn4Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KeoE82iV;
-	arc=none smtp.remote-ip=209.85.214.199
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E96h9sv4;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A7C606A330
-	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 19:38:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6A7C606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017A4606A31C;
+	Tue, 17 Nov 2026 19:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KeoE82iV
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2ed00709df0so1132435ad.0
-        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 11:38:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794944280; x=1795549080; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5/vHAZGe7S9PuEhTy7BQu6tAJsTjB19cuWDO6dDg/VA=;
-        b=KeoE82iVMMT2zJBgoV+e9oDAvJROLQDtmEft4/IiA65eKdyPd/BgcIwVM+lxwNY0qC
-         9oJeenwc6gjZNMUWp8khr2M+fcQxZon8DJjl8xhiHMC+IvR2VTHOXf+jJeJ5aSEayhnY
-         t/9OLKKjnyAmNcXl8YjsxvA+/LrA3mMlGrHfjjCdjZo0cJuFJmS1uB1T84dfwzRBYUxH
-         VoBTknKoB07/nlPsTMS7LW+hxVFmY3ggdrn2j0TpV46O50Bioe+lHOrYSrzDIVvKgpE6
-         kAXr5XQVIfAh44DafQEUsls/+b8JHWZ2jgNnmLPv/Dc03haN4+e8GBEJUYZlmrf8HUoE
-         LReA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794944280; x=1795549080;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=5/vHAZGe7S9PuEhTy7BQu6tAJsTjB19cuWDO6dDg/VA=;
-        b=dopG3bpMk4JtmKZBjAOdxA/qzPdj6sSM2r0oBDPo0VBsvHZnzme0hUq2BJRh9M7C8R
-         LG0Y+WmGmacoLMNlGdvbtZmQkX/i+LPLuohPZf27RZesci+8S0eOi0RGBtZYfyyV1q4t
-         wiT9uSNx5Z5VvCUMkLkEj7RR8jCvShdlRfMurYWMQGhv96FvBW70PXhWgkIoQBTv9tRq
-         pJQu4+gy7V8aFFKl62ifsGmkDbcV+5hn4skHkHtthoVF9I/JH7rfvYWcvXrKPGrZeg42
-         /q++mykHouWNGZry7e9nPj3z5XXydwkinqrwwAJ08Ohazo8j0nAAANEbs4Q0/0NWgd/8
-         w8cw==
-X-Forwarded-Encrypted: i=1; AL+hErGkpueKQBGc2INa2Wgh3RTeFG72NGAKv1kFp73RRcPFHOvLkrbQtJK8f6NFZUUV3qE94EE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+xtDbv8bxsdJ/MW90GY9dvb7P8Oj/jGhrnMGvMNX1HnNk5VjJ5
-	RXND+mtBF6+Q+kMixzg5O3PR4kD7cBz+/fvFKDoz3F7Upo5s1f36OATCE6Hq5T22+zZiSplxVxs
-	YdHTJ7A==
-X-Received: from ploh2.prod.google.com ([2002:a17:902:f702:b0:2e3:1b6e:33bb])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f64e:b0:2ed:12a1:c4a9
- with SMTP id d9443c01a7336-2eff752924cmr3212835ad.11.1794944279883; Tue, 17
- Nov 2026 11:37:59 -0800 (PST)
-Date: Tue, 17 Nov 2026 11:37:59 -0800
-In-Reply-To: <20261117190714.GAavyl4lS15Gwpc29U@fat_crate.local>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E96h9sv4
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9A81F000C5;
+	Tue, 17 Nov 2026 19:41:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794944516;
+	bh=+M/Rtxh3yGMbVllbJRU+JtKA13rBSYOFw41bb75VE4U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=E96h9sv4SckZZn0xBQJFDt4SE5F4NR5pDOuHOdrlzwystp4RmrvzVT8agTD6itkot
+	 ks6naELZWw6Yk3V0FlemoqnJDyW1/qroAm9MY/tndKlHNqAvZ28n4xtjU6nhMDzh80
+	 +iGpCfj31kUN/LzD7Vu9j3ny5m+TWL54Dco8XO2t3CuaMcEaUuGjIClY+1xzJDNl2Y
+	 uvxznDi+8xqAyhKnIJY9bl3keFC0xypVzollgnMgYNgGZc84WTPkJQGQ6iRq3szo5K
+	 eNGz3SUGSLSSYV8bFSc7fPQZx6FJfYAQhXqE/edmhJI+Zey25KSrCG01PD7nDqiIZT
+	 yql77Q9cxOw8Q==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xTP3y-0000000HCc3-2ZQd;
+	Tue, 17 Nov 2026 19:41:54 +0000
+Date: Tue, 17 Nov 2026 19:41:54 +0000
+Message-ID: <86bj7n1bzx.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: Oliver Upton <oupton@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	Quentin Perret <qperret@google.com>,
+	Fuad Tabba <tabba@google.com>,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 01/19] KVM: arm64: Hide generic ptrauth from protected VMs without ptrauth
+In-Reply-To: <20261109084854.840576-2-fuad.tabba@linux.dev>
+References: <20261109084854.840576-1-fuad.tabba@linux.dev>
+	<20261109084854.840576-2-fuad.tabba@linux.dev>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,51 +85,52 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261117190041.158949-1-nik.borisov@suse.com> <20261117190714.GAavyl4lS15Gwpc29U@fat_crate.local>
-Message-ID: <avytF4CYn5FUkA4F@seanjc-mac.roam.internal>
-Subject: Re: [PATCH] x86/virt/tdx: Don't print error if CPU doesn't support TDX
-From: Sean Christopherson <seanjc@google.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Nikolay Borisov <nik.borisov@suse.com>, x86@kernel.org, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: fuad.tabba@linux.dev, oupton@kernel.org, will@kernel.org, catalin.marinas@arm.com, mark.rutland@arm.com, pbonzini@redhat.com, seanjc@google.com, shuah@kernel.org, joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, vdonnefort@google.com, qperret@google.com, tabba@google.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Tue, Nov 17, 2026, Borislav Petkov wrote:
-> On Tue, Nov 17, 2026 at 09:00:41PM +0200, Nikolay Borisov wrote:
-> > There's still plenty of Intel CPUs which do not support TDX and when a
-> > recent kernel is booted on those the user always sees the following
-> > error:
-> > 
-> > 	virt/tdx TDX not supported by hostplatform.
-> > 
-> > The same is also printed on all AMD CPUs. Fix by using pr_info.
-> > 
-> > Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
-> > ---
-> > 
-> > Contrary to Pet Shop Boy's song - it's not a sin to not support TDX, yet :)
-> > 
-> >  arch/x86/virt/vmx/tdx/tdx.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> > index 96ced0494b68..b2962da24701 100644
-> > --- a/arch/x86/virt/vmx/tdx/tdx.c
-> > +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> > @@ -1276,7 +1276,7 @@ static __init int tdx_enable(void)
-> >  	int ret;
-> >  
-> >  	if (!cpu_feature_enabled(X86_FEATURE_TDX_HOST_PLATFORM)) {
-> > -		pr_err("TDX not supported by the host platform\n");
-> > +		pr_info("TDX not supported by the host platform\n");
-> >  		return -ENODEV;
-> >  	}
-> >  
-> > --
+On Mon, 09 Nov 2026 08:48:36 +0000,
+Fuad Tabba <fuad.tabba@linux.dev> wrote:
 > 
-> Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+> A protected VM without the ptrauth vCPU features shouldn't have pointer
+> authentication in its ID registers. Commit 3d7ff00700d1 ("KVM: arm64:
+> Rework specifying restricted features for protected VMs") gated APA,
+> API, APA3 and GPA3 on vm_has_ptrauth(), but left GPA and GPI capped
+> at IMP. So generic authentication is advertised to a protected guest
+> without ptrauth, and PACGA UNDEFs.
+> 
+> Gate GPA and GPI on vm_has_ptrauth() too.
+> 
+> Fixes: 3d7ff00700d1 ("KVM: arm64: Rework specifying restricted features for protected VMs")
+> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
+> ---
+>  arch/arm64/kvm/hyp/nvhe/sys_regs.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/hyp/nvhe/sys_regs.c b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
+> index 32e82653ebf7e..e5502d5651b05 100644
+> --- a/arch/arm64/kvm/hyp/nvhe/sys_regs.c
+> +++ b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
+> @@ -157,8 +157,8 @@ static const struct pvm_ftr_bits pvmid_aa64isar1[] = {
+>  	MAX_FEAT(ID_AA64ISAR1_EL1, JSCVT, IMP),
+>  	MAX_FEAT(ID_AA64ISAR1_EL1, FCMA, IMP),
+>  	MAX_FEAT(ID_AA64ISAR1_EL1, LRCPC, LRCPC3),
+> -	MAX_FEAT(ID_AA64ISAR1_EL1, GPA, IMP),
+> -	MAX_FEAT(ID_AA64ISAR1_EL1, GPI, IMP),
+> +	MAX_FEAT_FUNC(ID_AA64ISAR1_EL1, GPA, IMP, vm_has_ptrauth),
+> +	MAX_FEAT_FUNC(ID_AA64ISAR1_EL1, GPI, IMP, vm_has_ptrauth),
+>  	MAX_FEAT(ID_AA64ISAR1_EL1, FRINTTS, IMP),
+>  	MAX_FEAT(ID_AA64ISAR1_EL1, SB, IMP),
+>  	MAX_FEAT(ID_AA64ISAR1_EL1, SPECRES, COSP_RCTX),
 
-FWIW, I prefer Jiri's version which just drops the printk entirely:
+Burying a fix in a selftest series is a recipe to make sure it is
+ignored for a full cycle... Why isn't that with the "massive feature
+set" series?
 
-https://lore.kernel.org/all/27b6d824f7aee7078167944ce96d95676eee25cb.1793602266.git.jirislaby@kernel.org
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
