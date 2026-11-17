@@ -1,99 +1,53 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794878622;
-	b=JANKLik8wMNkvy+nwJE22msNe666KdvvT1oI/UfF8Rl/vwzCJWUF7ANQg+oc/HsYSu0t
-	 zZqNuy67fKYifqiVHfrYMGCrORLDDO2sZgpDb7qmRrZG8vaT4FoHvObSr+p/VAe68v6vb
-	 YeoFcngYMiPcrKsKwvhQFU6VIZ7bxf/IO6XhTL+bEaWNRz06vZczPFiPvcCupbOIOSxj2
-	 SakmiyaprnlvfwfeZeyNJefN+RpXwtiwEQfL/y427lpkHIMt9yz8OpHHzWGtvYagFiG5o
-	 ADwnAMkRtDncWfVdG2U++b2K+GQm/VU8oKCUce5XR1axwUXJlzP4tUl7xURPk2XDaLg==
+	t=1794878799;
+	b=q/t+TfFHueYkNJu5f94EcnJ0mekvVvZzoR/y235e9RHoEJjg+VEBKgUhyKejwBIDQiIh
+	 66Hykc4pde73wgyooH3teNpFeoV/5UJlk/nbZMI50+4QqQKetjS63WHOWbYphS7dhVMSt
+	 LGG+gyNei3Qoy2iQqCTlwHDm0r79hCmfvit7184vqa5Fwbf732Z+JbYkNy7wuqfDrbJdf
+	 mvUKqMKksbyk3ihG1mSGPHxvdjYwxgpuW7vg0VGG9bcQt7YwtxSG55FvmyFudlqkG1Rzn
+	 85jBBHlcYcoyfYUbeMRZYnCtkurySqrmX66jp/KBmLn2C8Ai6OoFDS28g9hM8sMEC4Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794878622;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Originating-IP:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Virus-Version;
-	bh=6RCPXUXfIxo+y2UnkG/bhthPFYIMWnxtExJ5BNdZHk0=;
-	b=3SDSEoEG5x+LeCQmaZEQiaowtI08g3v7pTL/zchTp77Or2iTRLQKWhEbMpi2BST65tyO
-	 UCqCt8hsdJLZFH8mBVw28fzmRFb71JRlaN8XrVnI0J85LCKGg8uYdveQ+2eEnOtRx/Fci
-	 ED7HO3yx5YVleVmW4j3nj/MmB+HF/Z2xw0SuOC1qOQt+4x+giz/gDQS0cjSoyJPA1phiZ
-	 dVQ+DPdzKJxw0DXL91oHY7Ge8PUSuzKqDgXan8EanDR4fIwWXmpxcitBaHn+SD1x1JwYC
-	 OEvFQZux/hJWJGbMGh+Z1T3EjXOuYaHGnwn0c6DYnUuygGEE6Pvkomishl2+yXqui7Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794878799;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
+	 MIME-Version:X-Received:Date:X-Google-Appengine-App-Id:
+	 X-Google-Appengine-App-Id-Alias:Message-ID:Subject:From:To:
+	 Content-Type;
+	bh=epcchHzIS3VqSI98VVvI5q5YGH3heghlEsMhhskGTmw=;
+	b=enARuaySEdByHfnkhixox4JC6PzGTdEz9vB57WICQgiSUIgjNFLEYbMWHVIkDUQF7atU
+	 UNPKlV5FszGtVEdnF+AqvXyPSOnT5IU444qVXKQJazsR/TwlaNST8E9hZar5KmNemOnFH
+	 RmWEzg0w5uwFZqpK/xS6ieZcrtXgFkURAj7rLkRe6nBfxn+DOs7HqOKRMaWsAi2CrdgmL
+	 T9PFqTP1HPS9FLxsXsmTtv2Y5C1ZnUhp3MeK7bQptsnlDxSxnvTohtXQhpnpS5zwobM7S
+	 ict9/mr1OJY5kxTCMJS5GYxCGvRBKvKO70DkVg0zVhMW/nYNKepM0M3NZP02P4M7TcA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=SDswVXvu;
-	arc=none smtp.remote-ip=67.231.145.42
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=fail header.from=syzkaller.appspotmail.com;
+	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	arc=none smtp.remote-ip=209.85.210.70
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8854D606A31C;
-	Tue, 17 Nov 2026 01:23:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8854D606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=SDswVXvu
-Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AGNOqqu1978717;
-	Mon, 16 Nov 2026 17:23:12 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps82601-s2048-2026-q3; bh=6RCPXUXfIxo
-	+y2UnkG/bhthPFYIMWnxtExJ5BNdZHk0=; b=SDswVXvuAUI8muhYNcUukufeX/8
-	D0GSKX1dQ5mDP6hG9AJk7bmtYcsUtAXz/xqd+GyP3Czju46I9wy6c81vEzz3d+nr
-	3zzWn80O8v8Z//Bt3Pq6YemXWZ0MwbwZYeU/1VhOf3fZQlUgHarY5yfEBh1btC+q
-	FAEuQzvBZTF0bygBuW5y94wMAvw4GNVIlqD8p/O8obf0jZlUjDaNT1qoH5z5NDad
-	udafcX4jcAM+RT8yaHcFlFBzwJmYcfgYnJq+YvvLZN9xNojTZL3F/iVpC9mftDU9
-	15DSOQ7bujgsnTXW9BMI8AYcDHAkQNQ/vVw+bpDl3x68XTwDzvSFxFRHscA==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hxku5xbr2-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 16 Nov 2026 17:23:12 -0800 (PST)
-Received: from localhost (2620:10d:c085:208::7cb7) by mail.thefacebook.com
- (2620:10d:c08b:78::c78f) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Tue, 17 Nov
- 2026 01:23:11 +0000
-Date: Mon, 16 Nov 2026 17:23:10 -0800
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-To: Michal Luczaj <mhal@rbox.co>
-CC: Stefano Garzarella <sgarzare@redhat.com>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>,
-        Simon Horman <horms@kernel.org>, Jonathan Corbet
-	<corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Stefan Hajnoczi
-	<stefanha@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang
-	<jasowangio@gmail.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        Eugenio
- =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-        Shuah Khan
-	<shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
-        Donald Hunter
-	<donald.hunter@gmail.com>,
-        Eric Dumazet <edumazet@kernel.org>,
-        George Zhang
-	<georgezhang@vmware.com>, Andy King <acking@vmware.com>,
-        Dmitry Torokhov
-	<dtor@vmware.com>, <virtualization@lists.linux.dev>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>, <kvm@vger.kernel.org>,
-        <linux-kselftest@vger.kernel.org>, <sargun@sargun.me>,
-        <jlinbox@meta.com>
-Subject: Re: [PATCH net-next v6 1/8] vsock: only undo SS_CONNECTING when
- connect() fails
-Message-ID: <avusfpnZuzMV3WxB@devvm29614.prn0.facebook.com>
-References: <20261113-vsock-guest-ns-v6-0-3737ce4673c0@meta.com>
- <20261113-vsock-guest-ns-v6-1-3737ce4673c0@meta.com>
- <6bdfe6f7-aba8-4fb8-ac24-62fe020e1422@rbox.co>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD0A606A323
+	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 01:26:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5DD0A606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-8628955a085so5453713a34.3
+        for <kvm@vger.kernel.org>; Mon, 16 Nov 2026 17:26:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794878798; x=1795483598;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=epcchHzIS3VqSI98VVvI5q5YGH3heghlEsMhhskGTmw=;
+        b=0dsW1IQ8MPurB0W6RnpTBISPtifEI/N3U0OZ+qXzK8XfHdRKqV138zc9VfkF59c4vL
+         38DReJPttLl6MSUSvFkfEeriVs3TRnojUoAH/UMNVKD+XtNoQDvzOOnczF+2oqROihSK
+         CY1T6kg8tVw9fCyPoCUmFGRjGRULClC/5wazAX+ISxybBWjGIPMTDmVWdxaPZi1PxMbK
+         rMySpJJYLabnK6YIz5/pxOoDeM/pqy+C3kGp/9tL6Awn8fskr9Swbb7LZ7NC2+6vdvRT
+         y6V8AUkW7URtP6utLT1DCY1s9yyX5mAvnRuY44S/LiwW2o66V+BB9qhwz2d1vc0gsZlJ
+         33IQ==
+X-Gm-Message-State: APuU4Z+MlrKD/1qfh+XKuOSwZauBw2RmGITNhWpenAwvCy3xnuLsEtZF
+	mUmFHL3cIp0V3+05E4XVp7pMr+t385AnYlJ3UJao6gITUuUMEmONHrf9pNMzrpqA+T9O644HSQ6
+	rpIemNAcU66sEWge8qYhTo/TcaF43xuCdV1CkvXBl/aE6bCIW/BygfI5C26o=
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,75 +57,135 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <6bdfe6f7-aba8-4fb8-ac24-62fe020e1422@rbox.co>
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE3MDAwNCBTYWx0ZWRfXw+sA7WyR5fAw
- TXovZZcIazZICOswjUfauPnRZHKFDpY4OamNG3a9JpkvewckKGNTvzKwEdnOguhJtqIYtYFUORE
- Oaf8zJKi9lKXWEz7SKlSSR6GOGUZ/9s=
-X-Proofpoint-ORIG-GUID: KMXLMYJs4-5j-kqvUpTGAlw7R4_j3K2w
-X-Proofpoint-GUID: KMXLMYJs4-5j-kqvUpTGAlw7R4_j3K2w
-X-Authority-Analysis: v=2.4 cv=SuoFe/O0 c=1 sm=1 tr=0 ts=6afbac80 cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=8elwO82fXORLTBIkMd32:22 a=VwQbUJbxAAAA:8
- a=VabnemYjAAAA:8 a=LG5T7v2SAAAA:8 a=He0p99DsmHbbqY9DTv8A:9 a=CjuIK1q_8ugA:10
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE3MDAwNCBTYWx0ZWRfX7m85Y5zQnTEb
- cMVAlqDIp0L2XulWWy+37PM46rNDD2UY88oV3B2zR4ZtJPzZP+9UGqIVwRIIlZXTvIQx3EiZDC4
- gnkFY9xidHqSP4RoTbA661mzuoizyd7SYwiNmLi1KDMmkzkgvlQ4Kp61rXBcobVCl/zKyBVil60
- 7am3E8oOWIzMZlEajob5IKnlA3kjYWd5+OTUfZg7Wa/QtQBIWSXnfLK7a1ng8uVvNECyQ0aqPDD
- UH6C+hqMkjYARmkePb09z0KEEQ85Tg1J1V/c8BTRcJnODLrf2uy/E5mHretdmt9JQuCEKwf63G+
- 4lCbtvEVGeaZ3Bt2v1anQCC47V5lYoFsR5hPoMxkbtl86hPzsvl7VC9+9h4ir4te1TUs3X5BUNa
- tGwOB75rcksb/sblhi6g3vr6FErZTmmr8tAv5tODQC+Gg5tnvGhAZVQDMsqHhMfWVpDYLdPgNV+
- a7jxS+n385ic9UFqJEQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-16_07,2026-11-16_01,2025-10-01_01
+X-Received: by 2002:a05:6808:4d06:b0:572:86c8:6b4c with SMTP id
+ 5614622812f47-57286c86d22mr7066572b6e.6.1794878798015; Mon, 16 Nov 2026
+ 17:26:38 -0800 (PST)
+Date: Mon, 16 Nov 2026 17:26:37 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6afbad4d.f3cfa7c9.844a4.0002.GAE@google.com>
+Subject: [syzbot] [kvm?] WARNING in kvm_dirty_ring_push (2)
+From: syzbot <syzbot+55eaa971f4924b62c9a5@syzkaller.appspotmail.com>
+To: kvm@vger.kernel.org, lei.cao@stratus.com, linux-kernel@vger.kernel.org, 
+	pbonzini@redhat.com, peterx@redhat.com, seanjc@google.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Nov 16, 2026 at 12:10:19AM +0100, Michal Luczaj wrote:
-> On 11/14/26 04:14, Bobby Eshleman wrote:
-> > vsock_connect() sleeps with the socket unlocked. Meanwhile the transport
-> > can complete the handshake, setting sock->state to SS_CONNECTED, and then
-> > reset the connection, e.g. in vhost_vsock_reset_orphans(),
-> > virtio_vsock_reset_sock() or vmci_transport_handle_detach(). When
-> > connect() gets the lock back, it finds sk_err set and moves the socket
-> > back to SS_UNCONNECTED. Userspace can then connect() the socket again,
-> > and a connect() to a CID on another transport makes
-> > vsock_assign_transport() release the transport the socket was connected
-> > on.
-> > 
-> > Only move the socket back to SS_UNCONNECTED if it is still
-> > SS_CONNECTING. A socket that got connected stays SS_CONNECTED, and
-> > another connect() fails with -EISCONN.
-> > 
-> > Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-> > Suggested-by: Michal Luczaj <mhal@rbox.co>
-> > Link: https://lore.kernel.org/netdev/179447093204.2199510.8895677421994612994@kernel.org/
-> > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-> 
-> Reviewed-by: Michal Luczaj <mhal@rbox.co>
-> 
-> Thanks! To be precise, the Link: above is more of Sashiko's musings on
-> what's wrong with Jerome's (not merged) patch. The patch of yours makes it
-> moot.
-> 
-> I believe the first time lore mentions the issue at hand:
-> Link:
-> https://lore.kernel.org/netdev/20260909-vsock-connect-reset-closing-v1-1-50298b9ccfbf@rbox.co/
-> 
-> And there was at least one report off-list, so:
-> Reported-by: Kyle Zeng <kylebot@openai.com>
-> 
-> BTW, I've noticed Sashiko already commented on this patch. I feel I'm
-> responsible for that wall of text, so I took the liberty to reply. Hope
-> this will help.
-> 
+Hello,
 
-Got it, will address this. And I think I will actually break this out
-into a separate fix for net instead of net-next.
+syzbot found the following issue on:
 
-Yes, I much appreciated you responding in the Sashiko thread! Thanks!
+HEAD commit:    84abb955b101 Add linux-next specific files for 20261113
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=15b438bc580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1f3ae09c7e4ef77b
+dashboard link: https://syzkaller.appspot.com/bug?extid=55eaa971f4924b62c9a5
+compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
 
-Best,
-Bobby
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/62605aef5c3b/disk-84abb955.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/00d7d82886e8/vmlinux-84abb955.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/c8a7705e14db/bzImage-84abb955.xz
+
+The issue was bisected by AI to:
+
+commit fb04a1eddb1a65b6588a021bdc132270d5ae48bb
+Author: Peter Xu <peterx@redhat.com>
+Date:   Thu Oct 1 01:22:22 2020 +0000
+
+    KVM: X86: Implement ring-based dirty memory tracking
+
+AI reasoning:   https://syzkaller.appspot.com/ai_job?id=8ec79404-c0f6-4141-a152-96124787ad82
+
+AI-generated root cause summary:
+The KVM dirty ring implementation maps the per-vCPU dirty ring buffer
+(ring->dirty_gfns) writable into userspace. In kvm_dirty_ring_reset(), KVM
+iterates over entries marked with KVM_DIRTY_GFN_F_RESET and increments
+ring->reset_index without verifying that reset_index has not advanced past
+ring->dirty_index. When userspace sets KVM_DIRTY_GFN_F_RESET on un-dirtied
+entries, reset_index surpasses dirty_index, causing kvm_dirty_ring_used()
+(dirty_index - reset_index) to underflow to a large 32-bit unsigned integer
+(~UINT_MAX). On subsequent guest memory writes, kvm_dirty_ring_push() checks
+kvm_dirty_ring_full(), observes that the used entry count exceeds ring->size,
+and triggers the WARN_ON_ONCE(kvm_dirty_ring_full(ring)) assertion.
+
+full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=55eaa971f4924b62c9a5
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+55eaa971f4924b62c9a5@syzkaller.appspotmail.com
+
+The cause commit was identified by AI and may be wrong.
+If you agree with it, please also add:
+Fixes: fb04a1eddb1a ("KVM: X86: Implement ring-based dirty memory tracking")
+
+------------[ cut here ]------------
+kvm_dirty_ring_full(ring)
+WARNING: arch/x86/kvm/../../../virt/kvm/dirty_ring.c:225 at kvm_dirty_ring_push+0x2b2/0x5e0 virt/kvm/dirty_ring.c:225, CPU#0: syz.3.4/5803
+Modules linked in:
+CPU: 0 UID: 0 PID: 5803 Comm: syz.3.4 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/06/2026
+RIP: 0010:kvm_dirty_ring_push+0x2b2/0x5e0 virt/kvm/dirty_ring.c:225
+Code: 38 be 08 00 00 00 e8 8d 7e 08 01 f0 80 4b 38 08 48 83 c4 18 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc e8 af 87 88 00 90 <0f> 0b 90 e9 f8 fd ff ff e8 a1 87 88 00 90 0f 0b 90 e9 00 ff ff ff
+RSP: 0018:ffffc90004c472e0 EFLAGS: 00010283
+RAX: ffffffff81411e81 RBX: ffff88802dc68000 RCX: 0000000000080000
+RDX: ffffc90005cc2000 RSI: 0000000000015a79 RDI: 0000000000015a7a
+RBP: 1ffff11005b8d3a9 R08: 0000000000000000 R09: 1ffff1100aed72c6
+R10: dffffc0000000000 R11: ffffed100aed72c7 R12: ffff88802dc69d50
+R13: 1ffff11005b8d3aa R14: 0000000000000400 R15: 00000000fffffffe
+FS:  00007f8bbd1ba6c0(0000) GS:ffff888123136000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 0000000077000000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ make_spte+0x71a/0xc80 arch/x86/kvm/mmu/spte.c:296
+ tdp_mmu_map_handle_target_level arch/x86/kvm/mmu/tdp_mmu.c:1144 [inline]
+ kvm_tdp_mmu_map+0x140e/0x1f40 arch/x86/kvm/mmu/tdp_mmu.c:1300
+ kvm_tdp_mmu_page_fault arch/x86/kvm/mmu/mmu.c:5029 [inline]
+ kvm_tdp_page_fault+0x2f7/0x3a0 arch/x86/kvm/mmu/mmu.c:5042
+ kvm_mmu_do_page_fault+0x31d/0x640 arch/x86/kvm/mmu/mmu.c:5089
+ kvm_mmu_page_fault+0x1f8/0xc00 arch/x86/kvm/mmu/mmu.c:6698
+ vt_handle_exit+0x28/0x160 arch/x86/kvm/vmx/main.c:974
+ vcpu_enter_guest arch/x86/kvm/x86.c:8540 [inline]
+ vcpu_run+0x4da1/0x7890 arch/x86/kvm/x86.c:8695
+ kvm_arch_vcpu_ioctl_run+0xe83/0x18b0 arch/x86/kvm/x86.c:9035
+ kvm_vcpu_ioctl+0xa61/0xfd0 virt/kvm/kvm_main.c:4595
+ vfs_ioctl fs/ioctl.c:52 [inline]
+ __do_sys_ioctl fs/ioctl.c:604 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:590
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x171/0x540 arch/x86/entry/syscall_64.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x00007f8bbc3a94d9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f8bbd1ba028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f8bbc625fa0 RCX: 00007f8bbc3a94d9
+RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 0000000000000007
+RBP: 00007f8bbc438136 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f8bbc626038 R14: 00007f8bbc625fa0 R15: 00007ffc1b4cf008
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about AI bisection see: https://goo.gl/tpsmEJ#ai-bisection
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
