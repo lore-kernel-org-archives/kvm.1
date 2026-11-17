@@ -1,73 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.70
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794948871;
-	b=ocArLyUKkYY2ntLcM2wcf7uSwdhoZUi+0cwFg8g/nhNb4JMWVa6GelnhOz/47LBEkJm9
-	 Sar7bK7ZV1IGpxbhfLPvhe7S91X08KsV0GSXS1zVnyuuJEVvC2EDzkUknJANHqobhihCO
-	 MiB7/8MtigI2RtzpO1XKdLZK88Siviq7bt9qM6OIw22UCYMaQdkfY1FkFkR1EfJxCHNXS
-	 JFAGexYHKfBDukp5hVVb21g0BH2JSZAaGtTljqpFpH+sKdJnCU+8PrXs4um1Xz6EBxYdS
-	 zEBDWbSRyOH7CuHCAZVmGUz84xEvhL1IRZaa6rxCR1qiH++4guYlie23P1c9jarNQ7Q==
+	t=1794949777;
+	b=QdcWQVpulgUWMO4CkliM5ohL+b4XksfHQKipfs4F1LSQtxlBxI7OpL18DVOKLJVHolUT
+	 W/b7qlbuxIu9zUSzyirpeiMm1o+CXOrYwj65sw8WzWIByqTyqnQX1cASNFw1W6Tpqe4ag
+	 Ve6qknCd2YoY4d5EX2K7dGViWyvE5FRHefxHtRDCTpd0iGsCjCDYeaeLybTjfWEJkhx0X
+	 g3L80S/b7BMkxpnDD9bnekgMYIcslRov1IPgIyImFxcFqXoxSMyKcqQz8rkYXafAlSA9t
+	 RgEakuIAct5cjG/fmhuD/5YPYkGjfGCRtBZnsn0Cqce9JOUSWrTpyTboDjLITPHYGRw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794948871;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794949777;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Reply-To:Date:
-	 Mime-Version:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=jQWYmjlxMo6/xEEDxDasX03frXsDyPZi9DBQiy9773M=;
-	b=oRMcq5W2YqxWzrBvCRg6RQ3B38tXpdHfwVtZbtxgyRdDwBLUg7yUEcpf0Fqhu+qJFij3
-	 +3yDMBJDR+bVTCkamcoL9pGahVeoSlQKuAltAr2ToeyWkxKI+0WiU7K302ax2WzSyNFI0
-	 nCBgjcLFgjlObbtuXrClceq5OF8uCGs5d1KSZWo6ZzXCI7Ev2fGExVhtPRkJKg7QHZVFE
-	 TuBHuTL+aIUMZrQAcseZElwzduv5mTscOml2o9Kih81LMe0ze2I6eERWd9xsfx/TDmSbV
-	 rKL5n/c1zwebjLz5bKG/i352TRh6r6iisptSqJ7SWwfOeZqrVb+cYSxd2KFDO25R8Hw==
+	 X-Gm-Message-State:X-Received:Reply-To:Date:In-Reply-To:Mime-Version:
+	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=pl/LlodUrlcSe5NzIvaRWdb7e6O8SNguoZ2BYDTJJGU=;
+	b=mxBMaM205adHKUXwjM+S5345I2ilKIX0+vdHCRpWE2XkIRLh4Ha2+9Y2BUGpIgDDjP5j
+	 I2o8aDUWPZ/o3mRnkuxgQQ4pEo6Gw/2JNFEe6x/O40oalSfGfuScK2veCrbuXsMlXcVND
+	 Z6mlnzz8ZESekJoltvq9fNFyPxz9mFe8jk3P+xHCyBRZKTbYPjmlZ5T7/XHe+e0Hc+sWk
+	 zN4DfFa0WRGurughxtlD5omY7ey5PEOqqOS4sUY+eJ3+MHJ8m7+B6dus9B53SIsKsf8lr
+	 Y2eRHLcoLo8hnC+3f8rqIIbGrpWORkHyTrsyE1q+hvKw28CH2WDcK58kfKQXDGKKlMQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Mtl+Njnk;
-	arc=none smtp.remote-ip=209.85.216.70
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=RFccD00F;
+	arc=none smtp.remote-ip=209.85.216.69
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4C3606A31C
-	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 20:54:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B4C3606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED9D606A334
+	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 21:09:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7ED9D606A334
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Mtl+Njnk
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3ad30487d55so182991a91.2
-        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 12:54:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=RFccD00F
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3b175a69ab8so160135a91.1
+        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 13:09:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794948870; x=1795553670; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jQWYmjlxMo6/xEEDxDasX03frXsDyPZi9DBQiy9773M=;
-        b=Mtl+NjnkvTCaz4aRAZ0EwJEvYxx4/iEGPXx8ZmE0C1SrK0rP90cC3gHITqJD7Pjda+
-         sLHkrM3XB8hLtCf20UTAw/j3PF9moAx4MsARzYAAHKl1g5U7tG45B0ZLTtVfZ6jp3Mom
-         2UDxPh4x3EBNy2dZHFoccDPMpIkqr5aettqqIqEE4aNnK7Zz7Fcugp8bl7phUuArEyE5
-         soEJ+qyMZ9Fagkhkv7wfrKG3BxXZ92f/1C2b07qkvKI6wQs2nlH3rtgNSYTh2DGEgt2s
-         NeK3yXCQQz68/lGI+XsmXbD6hb3Ip07bPpEee3t6oyoI9kl8eOlKQCZLePoDbbnmSdLk
-         wmKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794948870; x=1795553670;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=google.com; s=20260707; t=1794949777; x=1795554577; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=jQWYmjlxMo6/xEEDxDasX03frXsDyPZi9DBQiy9773M=;
-        b=TuzJT1G7KM0SKPcrwEJBevYuVnBDazI83Gx1VwFe8o2XVFhdLzE/Cx/oO0HJblqA0x
-         uzdkeDMs77EE9XWRN+6WJJMOk4HOxAZ74SsGaL4O62O3cEEbcmOR4XAcP73i65ydrcTK
-         K04RzMGSmvSiV51EYubrKU+33DPZkvCc7OM96gOJaH3TBJVRczGb+n8i4/6gVozIxl+c
-         AkD60Rh08JJQnmLa0yE08D+tVTPzrFo1I6Zm/8DGVcopcog0ty5e/53EhpfoMnD880Gj
-         JELlpAreyF3yKoujfftWONpnP91k7LW9wLOyumEcSPAXybLF11MxRqH8idTlj4rxggR0
-         tvIQ==
-X-Forwarded-Encrypted: i=1; AL+hErEkUTvjilhZMJ1VxSfaxtg9K6TMlzSYJcw10yocCbK+TiRNeH08Y9NkLnqqISPKqTcCl6o=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9axmNGVzeL6eWQL/XPQfPQwlNZcz5ZbpkKci+AeIrfXwYCQzYZ
-	d8X/hQjD5iqUGCfuYr0rwabRuXjfKcVGHFHKTVnQ6wfhtdZBZGfnnnjm/HOgIuxWUhXAL5WJadx
-	Ge1hyZw==
-X-Received: from pjpb6.prod.google.com ([2002:a17:90a:9906:b0:3b3:9d13:d781])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4b8b:b0:3ab:a3ee:33ad
- with SMTP id 98e67ed59e1d1-3b3d074da04mr556296a91.22.1794948869798; Tue, 17
- Nov 2026 12:54:29 -0800 (PST)
+        bh=pl/LlodUrlcSe5NzIvaRWdb7e6O8SNguoZ2BYDTJJGU=;
+        b=RFccD00F5BJ2TzXW3jVAv0WC0BX0YwUEAt1HbP7B33Bgk+l2s7pC6LfFhk8OI8BIPo
+         jRwqnPa/BNn+0jyX9kFixNdJCp6+w9uiOjOejJMxp4I5NLpIhjlB5HRxooF1yiB6rAdE
+         3W/8TF8QYrzB7nLTXTUlhRTfRj4bQDtdUU6UhHmvt2K+nJ2VWc8fLe3V3aUGaEzUpbf6
+         WM2VFyP81HuaSsZd+QTTMF2XZoMe2CALpwsiLoFsobJRbrNBZobofcq1pBHF22M23luB
+         L8rLbmRzpsYnXdaQWLdjnKJp8XlWbybN3C4rKKaHkNsMdo8xVt0H2gsBNyQPx+jH+51V
+         YuUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794949777; x=1795554577;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pl/LlodUrlcSe5NzIvaRWdb7e6O8SNguoZ2BYDTJJGU=;
+        b=J7uKPTZTKs7dd6gcvSBj2auBgNVVlQybQyYol6XrkmGUoG1rE+LBwFOTBATjP/ewDT
+         neSTDLE1tXA6cQrsagvlzQkzRq9nWSxhStu8Obd1QBBLlbnyWC1/4qkvqqpJLKcRMook
+         QPBWz4ke+e83HYN9llLfzbqQ15BWKnfoTzNHIb25eNX3pgym80qJh0wR5jIX/qn2m1h9
+         UoMBDFus2Vk3o+Wn0yXCAN1kvFjVNjZhQaTP76zwOEgWWry4FKgtnU6QGPeYxGWIaeYN
+         G+3dTlPAe1ED0cU6wowrscghhQ+KsYsX92CQlOugpbe0aOvgyq2FvXEIkyYt13QEclq4
+         JYjg==
+X-Gm-Message-State: APuU4Z/LQ8hK6h0BC3vil0qy1ti5MyJwwvzJMDWCfQf90wG44/6wC+jW
+	XZnJqJTR9SjkDx8rF6FN1I+AYwLgEuD8z49y5TnmajXWn+V1jatDtqAm8LiThp+ACDDJmr4cyqc
+	W9ckzdg==
+X-Received: from pgbx27-n1.prod.google.com ([2002:a05:6a02:63db:10b0:cc7:ba91:a719])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d88f:b0:3b3:c179:45b0
+ with SMTP id 98e67ed59e1d1-3b3d07c7604mr654468a91.63.1794949776793; Tue, 17
+ Nov 2026 13:09:36 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 17 Nov 2026 12:54:28 -0800
+Date: Tue, 17 Nov 2026 13:09:30 -0800
+In-Reply-To: <20261117210934.7765-1-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,90 +78,73 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
+References: <20261117210934.7765-1-seanjc@google.com>
 X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
-Message-ID: <20261117205428.3717-1-seanjc@google.com>
-Subject: [PATCH] KVM: Send reschedule IPIs instead of SMP function calls for
- non-waiting requests
+Message-ID: <20261117210934.7765-2-seanjc@google.com>
+Subject: [PATCH v2 1/5] KVM: nSVM: Pre-check current (L2's) CR3 during KVM_SET_NESTED_STATE
 From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Satish Kharat <satishkh@cisco.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Stefan Teodorescu <fane@google.com>, Sashiko Bot <sashiko-bot@kernel.org>, 
+	syzbot@syzkaller.appspotmail.com, Chris Mason <mason@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-When kicking multiple vCPUs for a non-waiting request, send a reschedule
-IPI to each vCPU instead of batching IPIs via a single SMP function call so
-that KVM can make non-waiting requests with IRQs disabled.  I.e. handle
-multi-vCPU kicks the same way KVM handles single-vCPU kicks, for the exact
-same reason.
+When loading nested state, explicitly check that the current CR3 is valid
+before loading any state, as a misbehaving userspace can muck with guest
+CPUID to make KVM think the current CR3 is invalid, and thus cause the late
+"load" of CR3 to fail when initializing the guest's MMU.  If that happens,
+KVM will leave half-baked state in the vCPU, e.g. in L2 with L1's page
+walker, and if nested NPT is disabled, L1's PGD as well.
 
-Avoiding SMP function calls for non-waiting requests fixes a potential
-deadlock if KVM VMX triggers KVM_REQ_UNBLOCK to all vCPUs when starting
-device assignmennt:
+Alternatively, KVM could try and unwind vCPU state if the late CR3 "load"
+fails, but that is subtly quite difficult as it would require snapshotting
+and restoring the previous state.  Simply leaving nested on failure isn't
+an option either, because that too would leave the vCPU with half-baked
+state (in L1 with L2 state and a very stale MMU).
 
-  WARNING: kernel/smp.c:943 at smp_call_function_many_cond
-    kvm_make_all_cpus_request [kvm]
-    kvm_arch_irq_bypass_add_producer [kvm]
-    __connect [irqbypass]
-    irq_bypass_register_producer [irqbypass]
-    vfio_msi_set_vector_signal [vfio_pci_core]
+Pre-checking CR3 will also allow hoisting the CR3 check out of
+nested_svm_load_cr3() entirely.
 
-Send reschedule IPIs immediately to avoid having to re-walk the set of CPUs,
-even though it makes the code slightly convoluted.  It's also generally
-advantageous to kick vCPUs as soon as possible, e.g. so that the target
-vCPU(s) can react to pending events/actions, but that's purely nice-to-have
-as there are very few paths in KVM that kick multiple vCPUs for non-waiting
-requests.
+WARN and bug the VM if the late CR3 load fails, as loading nested state
+never loads PDPTRs, i.e. failure is impossible, and KVM doesn't unwind on
+failure (see above).  I.e. if the impossible happens, KVM needs to block
+all operations on the half-baked vCPU.
 
-Fixes: 77e1b8332d1d ("KVM: x86: Decouple device assignment from IRQ bypass")
+Fixes: e1779c2714c3 ("KVM: x86: nSVM: fix potential NULL derefernce on nested migration")
 Cc: stable@vger.kernel.org
-Reported-by: Satish Kharat <satishkh@cisco.com>
-Closes: https://lore.kernel.org/all/20261116-b4-kvm-irq-bypass-irqs-20261116-v1-1-6cc721a062fd@cisco.com
+Reported-by: Stefan Teodorescu <fane@google.com>
+Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/all/sashiko-outbox-210535@kernel.org
+Closes: https://lore.kernel.org/all/sashiko-outbox-205939@kernel.org
+Closes: https://lore.kernel.org/all/sashiko-outbox-193903@kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- virt/kvm/kvm_main.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ arch/x86/kvm/svm/nested.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index cf4cb586f140..0b733746884c 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -218,7 +218,10 @@ static inline bool kvm_kick_many_cpus(struct cpumask *cpus, bool wait)
- 	if (cpumask_empty(cpus))
- 		return false;
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 07554089ec05..1e3842851dae 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -2047,6 +2047,9 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+         if (((cr0 & X86_CR0_CD) == 0) && (cr0 & X86_CR0_NW))
+ 		goto out_free;
  
--	smp_call_function_many(cpus, ack_kick, NULL, wait);
-+	/* See kvm_vcpu_kick() and kvm_make_vcpu_request() for details. */
-+	if (wait)
-+		smp_call_function_many(cpus, ack_kick, NULL, wait);
++	if (!kvm_vcpu_is_legal_cr3(vcpu, vcpu->arch.cr3))
++		goto out_free;
 +
- 	return true;
- }
- 
-@@ -241,12 +244,20 @@ static void kvm_make_vcpu_request(struct kvm_vcpu *vcpu, unsigned int req,
- 	 * satisfied if the vCPU migrates. Entering READING_SHADOW_PAGE_TABLES
- 	 * after this point is also OK, as the requirement is only that KVM wait
- 	 * for vCPUs that were reading SPTEs _before_ any changes were
--	 * finalized. See kvm_vcpu_kick() for more details on handling requests.
-+	 * finalized.
-+	 *
-+	 * See kvm_vcpu_kick() for more details on handling requests, including
-+	 * the use of a reschedule IPI for non-waiting requests.  If waiting is
-+	 * required, batch the SMP function call until after all to-be-kicked
-+	 * CPUs are gathered, to avoid waiting multiple times.
+ 	/*
+ 	 * Validate host state saved from before VMRUN (see
+ 	 * nested_svm_check_permissions). Note that the g_pat field is not
+@@ -2114,7 +2117,7 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
  	 */
- 	if (kvm_request_needs_ipi(vcpu, req)) {
- 		cpu = READ_ONCE(vcpu->cpu);
--		if (cpu != -1 && cpu != current_cpu)
-+		if (cpu != -1 && cpu != current_cpu) {
-+			if (!(req & KVM_REQUEST_WAIT))
-+				smp_send_reschedule(cpu);
- 			__cpumask_set_cpu(cpu, tmp);
-+		}
- 	}
- }
+ 	ret = nested_svm_load_cr3(&svm->vcpu, vcpu->arch.cr3,
+ 				  nested_npt_enabled(svm), false);
+-	if (ret)
++	if (KVM_BUG_ON(ret, vcpu->kvm))
+ 		goto out_free;
  
-
-base-commit: d21eef2084a9af87ac2a783bc7c2b175ba114e4e
+ 	svm->nested.force_msr_bitmap_recalc = true;
 -- 
 2.56.1.703.gf848ed807c-goog
 
