@@ -1,106 +1,121 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.34
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794938313;
-	b=3RemKf0TOX3PKItYi34EikiXjYIg/U2Y7N/U6k12uKJJ2odbjOdXxZjpUrGQkPuYz3PO
-	 2vosKdUj7rSJbZtlW7SqIXulCqnYn/pVYnmmr1AYkh6L7+4bNXCFQWn+VdWr1t7JnbhQH
-	 6U/hVXWo41cnHdyHJJRljpI/gRYvczeO3NSwD7rUVgoI+aanJYF39cnmj+isIhRSsQe6X
-	 8yL5PYXrgRIoRzDZ1V6IWQgOw90JRljFjHSfI6K0+GH8IQKm/kRLRc/XRzhXl5YiRr4Wm
-	 qSeYsTNhYl+EowgDe1N7/MHXq7UFnO3K1mkacoYckP491G3z85i+KG1tg6J2chC9WIw==
+	t=1794938383;
+	b=Z+OeS6Eik3XRbxlbW+MpXBdymsrMc1oyd8aJleY2olyVjba6PurE1O4a3ri9qVrJQLKr
+	 ZuONXbzXLJ2tWfIx5LVw2KjqSQfOuP8PKyM32Y2k1KHuvq05epf03nlCQDK658cDiut9k
+	 m8Fn5x8iXizlkvF4MpQDCgMSWx+VKpJ3B6HfZA9N5W8KRGZHWYYIQVdfaglc/MONbG8E+
+	 sgJcm0G/Ly2LmOj5Nz1Pvorz3o15sNT2btWjeBe821aRjPFm/srdpPIHwpK3pR/Rphive
+	 2OHNwXabjDxJI7vSk/j2LSu74VjYVDvvAmeR55uWVw29r2gmSBgdNsmimu716wAiPgA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794938313;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=YblgKPx8tXfqrarrBnAQGz/BQ8sDs7ERhbskU0jrwQs=;
-	b=uUyHOke8acakvCrBzFnibU8G1kJGcXWtL6qo5IGHS++a9rNZxzxm+h8uqfnUlJSTtwJv
-	 IMje+04K95d7PdDQ61cI0q7rkbTjp44G7z685yUqf0LJ12N2PSO3Be+YjPpuUKvZsueWg
-	 SpwS9gEksy/YtF6pV6MOoYzDCbZwhOMuL57WL2/fH2t+mQbyD35UWlC55hNvMdVoe0B0Q
-	 LekFn/erEf5A6RMJQRZ1Da+be8CyuHKCe2aassCfi25mY9ddhpSw2YOFtC+lkAY59cf3D
-	 SPg1mo+8mlMejvF/C/53FTBGtANIiOUMvYEk+zBFwkRuq3+BkGJSm8HpMLYPlhTYrmg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794938383;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=vl1CxJaY+02I5u3HjSWg7CDXN1GxJ7x1NMxc1BTQwm0=;
+	b=xMj81bsRN1Qq3PAsr1fyC1jf9DdI5f4plzD2qh3MXtTrIPPc5g3bznVB9U71Qky+uH9M
+	 5pmZ56CNWPZatfX6z0tWSaqaAzG+jGzbZrldLv5VH3Z3/exUBvERIak6t6ZRNGuD+qtzd
+	 boK79dzIi8WAJLs7o9hBymDXE9IKwSz1uUFAvYYHJnqeuj1q+oltzCCM6vxmzYywDAFy0
+	 uiWXB9TL0KKm8DUy4d6kHv5a2r6rP9LlLsgDpv4+fGOcrpzvIW1GCxA8yyDIMvcMo9BtR
+	 VhlT8sY3tWt9aDKUT6Kjt8D70SaAbx7AyGtIEP+XyDGarhgXL5Peqy64bGJWu1v9fow==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=okstNWR1;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.34
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010034.outbound.protection.outlook.com [52.101.193.34])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IF26q7PO;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=DRVjlmXT;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25AE606A31C;
-	Tue, 17 Nov 2026 17:58:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A25AE606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C98E606A32A
+	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 17:59:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8C98E606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=okstNWR1
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eCPXNvkghKEgeqAH0w7YqTWIqmAPXpms9Sfx7zfXSyU48rTCYjEZ6IrdsuRwbV4eh7axss5CnsmtLZqDOYQ1xNr8L7UKD04GzqNrlq0xEvBMPuBKRXUbWluElq7yQmj06ksF5Lx5gI1ETMvAe34waV3AZvXn/f+Zu06DDLfHF65+cwQUKl5lke6OZ4bbV26LjoiCWkHuOYmS/nsonq9NeeMRaIgHzDJGMOpcXW0a1Nc8ZGwBc1KcRyvtflsiO+MVq//L1qF5bY0EhEp1VmWVUGSqVaXrVHquZNwv4W2/E5tDIZOkf+nUPzTTyeTDa9wOvTg6SGAEmfDJYqeOYScw+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YblgKPx8tXfqrarrBnAQGz/BQ8sDs7ERhbskU0jrwQs=;
- b=XN/bdHyp+oxYZQaiLp4mtTTo1Qw6+THkeHHXwYpRgNFI6RAFU6BcYdZq1Gp7rsldm0n5uZbzPCm0y3Rv2T+1O8OsVerzqETcuXsbcnJVFvAPyZci77hi6oZCRS2AOzxlkNdD9XdaQ1BLYn61q3jaQLAkmhx6K/sneRSY+QLcUuxg9lQpHUIKWglEkqjolI/1XtsjqbuIDVVz0mkvBj0IQpVup4TvAGVQf61JfiZVQ5q/bULzsyhOdsdA4HHddZIOVwzOAzyzf1zy2sSJqsTyJVLQCqIcV/J7ueLOz+06oi322mul+B/IZmLRGVL/4vX+vCExFa3oROeStJboeMVF8Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YblgKPx8tXfqrarrBnAQGz/BQ8sDs7ERhbskU0jrwQs=;
- b=okstNWR1+lN7eqQM5Hq+QCyEzmZn2yVsMLePdX47e1NlSNPFGDXu84KjGvCnesdWx7XVSpj9Um4Xu38AUI/Uh2w+F5ZAsC41MHVNLG9B8cz6G31ENd0muCFzUTIH3mkYT8VvE0hTv+rBhohvc58uex3bAt8Mq9MWS5OQ/797vNc=
-Received: from PH7P220CA0022.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:326::23)
- by IA0PPF1D04084C7.namprd12.prod.outlook.com (2603:10b6:20f:fc04::bca) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Tue, 17 Nov
- 2026 17:58:24 +0000
-Received: from SJ1PEPF000037A7.namprd04.prod.outlook.com
- (2603:10b6:510:326:cafe::5a) by PH7P220CA0022.outlook.office365.com
- (2603:10b6:510:326::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.9 via Frontend Transport; Tue, 17
- Nov 2026 17:58:23 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF000037A7.mail.protection.outlook.com (10.167.244.139) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Tue, 17 Nov 2026 17:58:23 +0000
-Received: from speedway8455host.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Tue, 17 Nov
- 2026 11:58:03 -0600
-From: "Pratik R. Sampat" <prsampat@amd.com>
-To: <x86@kernel.org>, <kvm@vger.kernel.org>, <linux-hyperv@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <haiyangz@microsoft.com>,
-	<wei.liu@kernel.org>, <seanjc@google.com>, <pbonzini@redhat.com>,
-	<thomas.lendacky@amd.com>, <kim.phillips@amd.com>, <nikunj@amd.com>,
-	<michael.roth@amd.com>, <ashish.kalra@amd.com>, <prsampat@amd.com>
-Subject: [Patch v5 3/3] x86/hyperv: Add guest support for Enhanced SMT Protection
-Date: Tue, 17 Nov 2026 17:57:00 +0000
-Message-ID: <c03379e62765c3408889baef5f582abc8bc19916.1794935627.git.prsampat@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1794935627.git.prsampat@amd.com>
-References: <cover.1794935627.git.prsampat@amd.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IF26q7PO;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=DRVjlmXT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794938381;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vl1CxJaY+02I5u3HjSWg7CDXN1GxJ7x1NMxc1BTQwm0=;
+	b=IF26q7POpYKm5uiHrwb5bfX7pW/PqftymPpJ4gEJJlnqnMC4ZEmhneXMjIkigcrBwZFYdZ
+	17heg/ywjqnh2nQGSbfGg1W0cohM9yOQ+siD7J30HQkc1tHnyMAvIKIEleq3j74aECQau9
+	o3TgBCxUqIYxBgTT5OLUlWpTbuuYtDg=
+Received: from mail-yx1-f69.google.com (mail-yx1-f69.google.com
+ [74.125.224.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-493-18y_1guyOhKReV-mpWXSkw-1; Tue, 17 Nov 2026 12:59:37 -0500
+X-MC-Unique: 18y_1guyOhKReV-mpWXSkw-1
+X-Mimecast-MFC-AGG-ID: 18y_1guyOhKReV-mpWXSkw_1794938376
+Received: by mail-yx1-f69.google.com with SMTP id 956f58d0204a3-67dbb53a803so4158174d50.0
+        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 09:59:37 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794938376; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HR3RNyvR2cHKF9DIFfT6E30h2bKhv1PQmRtYaYiAnosbIeMZWd2Tcf9Y0OpU4KZhYw
+         VBee0pXHjNCbOwnokqT17KzDQlVpkLfmstpW1bZa2WZ7NrD2Wudg896iMpwthDcESs9e
+         PI8p8rIQFKZfCS+yntiMc9VmAF6gj6vdiq06q4pbEzWUxLy4jbAXe3yyuOuLMDbglQK8
+         m7mu9IjzXVOsTh8qmstSMy1AfFjT+XpxrrkeGYAnzyoDBhLgpaN1yaANlb8VIFzfg5Qg
+         odtwhHjyx61IzQTh8CvRXWh1GNPFCF22I6M8Z4hWip5OGESDgVZdbgjeH9WHJ6BHwrYz
+         C3/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vl1CxJaY+02I5u3HjSWg7CDXN1GxJ7x1NMxc1BTQwm0=;
+        fh=c4MhS+e7Nz7GBnXgnPp65alANl/weVsT4MAGazDDHRI=;
+        b=PTrLnR0Trb7SWKy1Ja3PAEZgtRFrSReIV8PvYzq3DkJshr3ipQTLNIkfK32BhwZiJv
+         KoMQt3yxghmpP5Siecq7h5BR/fIEchJyanwq7tfWo36HVHHE8Z9EFk2iSMW2MsxvLfH5
+         7Esovl7rf0K3Lazj3cHZBO8DoQMwqGV6864cEGXeyBnh8zZB719dFQvq4CN+y62Th5rl
+         mBlQpYss6z8wPa/X9padxGQSnu7IFWfbjPNifongqOA/ET8KHPTLRsMnGxXGNG8e51Zz
+         eb5rBrw4LkX9fPzByVRzyBVH9maDlCHBGliziuFRxT/Qje1FMqOouQfjmnRKEhBgpGpF
+         XIdg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1794938376; x=1795543176; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vl1CxJaY+02I5u3HjSWg7CDXN1GxJ7x1NMxc1BTQwm0=;
+        b=DRVjlmXT4UCuNPY1mfvl+kRXqlRbmjk3OJleba53n22JuBnEvmqk8wVI9HCOP1sCAP
+         hptSyXPpIQe8so2YKUFrWAkuAmYR8ofCCo1EceLD4kxjsNHhrtRBe6asOElRTE44oiyU
+         0OOF6DP4ygGvNkn0ph+cTcg1AIKoZE7g6fW/3VrRcX0yQUHBTGZin+BiyKVmyYJPpRDW
+         if0rd7cShtZliOsdlWoG25r0UEKSLMMZBIGSzI4Kq8qov6W0Ne4gwSkgMq4Av/qHzT8E
+         BCebntqP4sYyphZtK1cRQxF7I6AF1MWJtSPIj7gNl/VzL2DZeiDMF7Ntgs1wMYmwSy2G
+         wJ8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794938376; x=1795543176;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vl1CxJaY+02I5u3HjSWg7CDXN1GxJ7x1NMxc1BTQwm0=;
+        b=2FR0l/Mjf3ZbeNf96BIrQiU6TuIHr1kwMDoGuQNVIpLMt2LG91n58A2uzkoyO23+bv
+         aUDe/ps6DWQNefg9IN5oSZfU0I+9z2wEE3XL9zlPnqqb/5TmcZm9HB0P5AqyaPJDJWmi
+         UtGmI4/xktboLfqMz2WkAtocCqZ1xeWotM6wRPPIdK5zboqUMskQGSt00q4xNIKVu7MZ
+         xxoDQmtBaBzyU/lVOypyLKu7Y8aVicIR4Jjm3yyb8SS3NoUg07+V/eLP4vRgG+hsOyNm
+         MCwl5/UZiOmYVyC8oIx8LPeLDxSn2XchCM0Z+hlXZEksRluHqQlX/MCAnoAoRAKRzea6
+         0KCA==
+X-Forwarded-Encrypted: i=1; AL+hErG4u+ugUqsK/8W/oJkgAqIe8wD4YecsPH3/AB5OUh6kiv8Q4zYHizomy1ySQ/kx4LujVes=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+qDKdLC1Hj2ayOLW0w813Z1dRuacX/G82gtuI3AbMc120hSftH
+	/OyImPWnHsAydpoxYEZ/TmaZ2RUofLaw7K6BYPtv66AVOuXd8Tw8vCXw9AJ9Ah9LHiTdbbOE/00
+	pPgE3DO2zQebMxREmuEkHUdnzHpgQRaWF8Og8bfvtidpb2qAsa67WD3FdEV2pyMnLtv+f73UTl8
+	Gtu117jhGvxGqhLykdjnv53pa2WeKY
+X-Gm-Gg: AZFdTZc44+QQmnhLn7evOfRywcFMbTX0eyJ0QGJ1L7GxzGqgitMy5X6oiVzKP1Ha1Vu
+	mF1zcxfI1z7ENMmKZik6C8e4uX66GPOcNqPf5MF16ePI314vbUxIIh+s4OFLu3j7ni8T7qC/yTO
+	gNpT05owKfCjiohcjYXKYAPr+zlx2gRwwP8b0zowRgm+t+b5utydthrzZxwXjOueYILBM/NUJrQ
+	IoocFCbrTfbSf8H
+X-Received: by 2002:a05:690e:4182:b0:67c:1ebe:3844 with SMTP id 956f58d0204a3-67dd3cf9c28mr211991d50.2.1794938376329;
+        Tue, 17 Nov 2026 09:59:36 -0800 (PST)
+X-Received: by 2002:a05:690e:4182:b0:67c:1ebe:3844 with SMTP id
+ 956f58d0204a3-67dd3cf9c28mr211982d50.2.1794938375902; Tue, 17 Nov 2026
+ 09:59:35 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -110,71 +125,196 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000037A7:EE_|IA0PPF1D04084C7:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4fd9c0f9-4de3-49f8-eadc-08df44d45f52
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|82310400026|1800799024|36860700016|376014|7416014|261102123227099003|261028144727099003|261026140227099003|261022075727099003|261022105027099003|261021121427099003|11063799006|10067099003|56012099006|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	iowxxLmVRtFKnn3SY62khP1/76c6968ylijyxOit5BOezXuKKC66ZsGKmCbADebkOPI1/TYtNrnNBD7BT9Cxi2/9CoPqzrTKgHtT9Vc7WC+2A6W2s1n0SbJ/j5vUoLv2g+Sei/nmmi7UN0iSXlibyF0b+8rgb4ujppfNmnx5llRR7wZM6IhJc0fKxg/eU7UY2f+IYWvnNxO9Fe2ERi+Pa+h52O6OGEKsgf8nhN731viLRGLYm9EID9vK2OZkZUxqD+AM/Wzrp/lbEM2EancBgzKBf8uR5r3XGXT9xp20IhbVNsKf7E7pPlrAjw11TQTXGWQhx2ysK3pKIt6b/RXO95Rj34Y0gGv3Lh53Fa76LUp3SG2QlzuRDSmRi/riZXOl7j2qdV+ZMQ1S7TYD+akAlF4QDvsGZklGJfzd4hsFzRozBFUWhE40hhLLlwzSJle/+E0XNelr1SEz6ipYAkL57xCvgVsrRFV2Ilvuy8VZmi6TdMqTAfqbphGvQlMb0rn2iX1z2h3mF+tzNqyy6TX84b5o38NQiLF0YrKgaf7KPFyZQ7q/XEyB21ciDeSJyK1crSv4JsRzZ1L5VMhKAbsBtBW2+TgP4vHtGU7meUVRLXAA7xIc7gRc7pei8ZR74RmbeJDXatRzpJO/qzxAThQkJ31Xel1PjNTfdQ3fY87vBz0YWZtJ14JA387xrGDjuYPe24N380CnaQ78w6JmAK0F+w==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(82310400026)(1800799024)(36860700016)(376014)(7416014)(261102123227099003)(261028144727099003)(261026140227099003)(261022075727099003)(261022105027099003)(261021121427099003)(11063799006)(10067099003)(56012099006)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	CwcZKQZTn7yhu09/7zWByR6mEg+iPPuKXP7e4tewhDtRRmy025reOituPnOtT119vtltLsm5la2SqFZb9pLPCAXrRkuWppof1rVoCutjvbXZwRBIwx6J/fJyLORFji1+tCXwzBGVHo/LDKamD8luinH8Uyu7V4/Hr8hoyamF8wM3N2qcajZT6E5KgZPncnPPy0K4VQ6vW/3p7jG/OutvlM0lkEDZXo1y8t2ltUo91J+Dyqf4HSLBKvO016CZ0/XsCCBLAs4O1v2rVkMGF2fOZwOgbMWPKqVuZR8h8vcLWbVA5PMw5xLM7O55SlAg3U4OGeZaOuvO/IRlZ5geTkLcKCrKqxkwAOBIfSq+6C5nzPpbAAH1mzbTF00O/46RMqC9QjZsJ0ziEP7L2vUxMAMUKnNLxr+rCWGy4nC7OFXcuhIP9lDrGHxyWOOYPX2YS2O7
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2026 17:58:23.2282
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4fd9c0f9-4de3-49f8-eadc-08df44d45f52
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000037A7.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPF1D04084C7
+References: <20261116165002.30939-1-jsnow@redhat.com> <20261116165002.30939-2-jsnow@redhat.com>
+ <avxZFbMNjEmnY2yK@redhat.com>
+In-Reply-To: <avxZFbMNjEmnY2yK@redhat.com>
+From: John Snow <jsnow@redhat.com>
+Date: Tue, 17 Nov 2026 12:59:23 -0500
+X-Gm-Features: AclHuK_DtNwb7PXUej_MF5pzE6TrIDPiVJKRVs4ZeA6ganrEwOTaTfhsBtGAuDk
+Message-ID: <CAFn=p-Z+LoTqzLAirksuHjt8fghkjWOyvMZ=YJdUFQftHdiA3A@mail.gmail.com>
+Subject: Re: [PATCH v2 1/7] debug/mem: add utility to name anonymous memory mappings
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+	kvm@vger.kernel.org, Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
+	Fabiano Rosas <farosas@suse.de>, Alistair Francis <alistair.francis@wdc.com>, 
+	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>, Stefan Weil <sw@weilnetz.de>, 
+	Peter Xu <peterx@redhat.com>, Richard Henderson <richard.henderson@linaro.org>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@oss.qualcomm.com>, 
+	David Gibson <david@gibson.dropbear.id.au>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, Marcelo Tosatti <mtosatti@redhat.com>, 
+	=?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add corresponding hyperv support for Enhanced SMT protection. A fully
-enlightened SEV-SNP guest on Hyper-V builds the VMSA itself when
-bringing up an AP, so populate both fields there, before the page is
-turned into a VMSA and while it is still writable.
+On Tue, Nov 17, 2026 at 8:39=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange@r=
+edhat.com> wrote:
+>
+> On Mon, Nov 16, 2026 at 11:49:56AM -0500, John Snow wrote:
+> > Add support to name mmap'd memory regions using
+> > PR_SET_VMA_ANON_NAME. On unsupported platforms, these QEMU utility
+> > functions are no-ops.
+> >
+> > This is useful primarily for debugging and profiling QEMU; being able
+> > to see and correlate each VMA segment with a specific use within QEMU.
+> >
+> > Support for PR_SET_VMA_ANON_NAME was added in Linux 5.17, and requires
+> > CONFIG_ANON_VMA_NAME=3Dy to be set in the kernel configuration. Fedora
+> > (and RHEL) do not enable this feature by default. See also
+> > https://man7.org/linux/man-pages/man2/pr_set_vma.2const.html
+> >
+> > Signed-off-by: John Snow <jsnow@redhat.com>
+> > ---
+> >  include/qemu/mmap-vma.h | 18 +++++++++++
+> >  util/mmap-vma.c         | 71 +++++++++++++++++++++++++++++++++++++++++
+> >  util/meson.build        |  1 +
+> >  3 files changed, 90 insertions(+)
+> >  create mode 100644 include/qemu/mmap-vma.h
+> >  create mode 100644 util/mmap-vma.c
+> >
+> > diff --git a/include/qemu/mmap-vma.h b/include/qemu/mmap-vma.h
+> > new file mode 100644
+> > index 00000000000..763ea5a5cab
+> > --- /dev/null
+> > +++ b/include/qemu/mmap-vma.h
+> > @@ -0,0 +1,18 @@
+> > +/*
+> > + * Utility for naming VMA allocations in linux
+> > + *
+> > + * Copyright (c) Red Hat, Inc 2026
+> > + *
+> > + * SPDX-License-Identifier: LGPL-2.1-or-later
+> > + */
+> > +
+> > +#ifndef __QEMU_MMAP_VMA_H
+> > +#define __QEMU_MMAP_VMA_H
+> > +
+> > +#include <stddef.h>
+> > +#include "osdep.h"
+> > +
+> > +int qemu_name_vma(void *ptr, size_t sz, const char *fmt, ...)
+> > +    G_GNUC_PRINTF(3, 4);
+> > +
+> > +#endif
+> > diff --git a/util/mmap-vma.c b/util/mmap-vma.c
+> > new file mode 100644
+> > index 00000000000..7a50965d496
+> > --- /dev/null
+> > +++ b/util/mmap-vma.c
+> > @@ -0,0 +1,71 @@
+> > +/*
+> > + * Utility for naming VMA allocations in linux
+> > + *
+> > + * Copyright (c) Red Hat, Inc 2026
+> > + *
+> > + * SPDX-License-Identifier: LGPL-2.1-or-later
+> > + */
+> > +#include "qemu/mmap-vma.h"
+> > +#include "qemu/osdep.h"
+> > +
+> > +#include <errno.h>
+> > +#include <stddef.h>
+> > +#include <stdio.h>
+> > +
+> > +#if defined(__linux__)
+> > +#include <sys/prctl.h>
+> > +#endif
+> > +
+> > +#define VMA_PREFIX " qemu: "
+> > +#define VMA_MAXLEN 80
+> > +
+> > +/*
+> > + * Give a human-readable name to a previously mmap'd memory segment.
+> > + * This feature is only available on Linux >=3D 5.17, and only when th=
+e
+> > + * kernel was configured with CONFIG_ANON_VMA_NAME=3Dy.
+> > + *
+> > + * For systems without this option, prctl() will return -1 and set
+> > + * errno to EINVAL, and can be safely ignored.
+> > + *
+> > + * For systems with this option, these human-readable names will be
+> > + * visible in /proc/$pid/[s]maps, pmap output, etc.
+> > + */
+> > +G_GNUC_PRINTF(3, 0)
+> > +static int qemu_vname_vma(void *ptr, size_t sz, const char *fmt, va_li=
+st args)
+>
+> As the comment says above, we can't assume the kernel will have
+> the feature enabled.
+>
+> It is harmless if we try to set the VMA name and it fails
+> though. We merely loose a bit of debug info. Thus I'd
+> suggest we make the function return type 'void', so that
+> it is clear that we do NOT expect callers to check for
+> errors.
 
-Similar to KVM, fully set the sibling mask so that all threads of the
-same guest trust each other.
+You're probably right, I think I was holding out for the possibility
+of callers being able to check if they got the memory region
+boundaries correct (in the case of naming ptmalloc buffers), but....
+with the amount of extra work it'd take to make a robust system for
+identifying actual mmap regions possible, it'd be just as easy to add
+a simple int retcode back in, so... void for now it is, sure.
 
-Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
----
-v4..v5:
-* Remove comment about vCPU sibling mask configuration - Boris
+--js
 
-v3..v4: No change
----
- arch/x86/hyperv/ivm.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-index 2ce4dfe53472..bd57cac18181 100644
---- a/arch/x86/hyperv/ivm.c
-+++ b/arch/x86/hyperv/ivm.c
-@@ -347,6 +347,11 @@ int hv_snp_boot_ap(u32 apic_id, unsigned long start_ip, unsigned int cpu)
- 	vmsa->vmpl = 0;
- 	vmsa->sev_features = sev_status >> 2;
- 
-+	if (sev_status & MSR_AMD64_SNP_ESMT_PROT) {
-+		vmsa->vcpu_id = apic_id;
-+		vmsa->vcpu_sibling_mask = U32_MAX;
-+	}
-+
- 	ret = snp_set_vmsa(vmsa, true);
- 	if (ret) {
- 		pr_err("RMPADJUST(%llx) failed: %llx\n", (u64)vmsa, ret);
--- 
-2.43.0
+>
+> > +{
+> > +    int rc =3D 0;
+> > +
+> > +#if defined(PR_SET_VMA_ANON_NAME)
+> > +    char strbuf[VMA_MAXLEN];
+> > +
+> > +    assert(sizeof(VMA_PREFIX) < sizeof(strbuf));
+> > +    strncpy(strbuf, VMA_PREFIX, sizeof(strbuf));
+> > +    rc =3D vsnprintf(strbuf + sizeof(VMA_PREFIX),
+> > +                   sizeof(strbuf) - sizeof(VMA_PREFIX), fmt, args);
+> > +    if (rc < 0) {
+> > +        return -errno;
+> > +    } else if (rc >=3D (sizeof(strbuf) - sizeof(VMA_PREFIX))) {
+> > +        sprintf(strbuf + sizeof(strbuf) - 4, "...");
+> > +    }
+> > +
+> > +    rc =3D prctl(PR_SET_VMA, PR_SET_VMA_ANON_NAME, ptr, sz, strbuf);
+> > +    if (rc) {
+> > +        return -errno;
+> > +    }
+> > +#endif
+> > +
+> > +    return rc;
+> > +}
+> > +
+> > +G_GNUC_PRINTF(3, 4)
+> > +int qemu_name_vma(void *ptr, size_t sz, const char *fmt, ...)
+> > +{
+> > +    int rc;
+> > +    va_list args;
+> > +
+> > +    va_start(args, fmt);
+> > +    rc =3D qemu_vname_vma(ptr, sz, fmt, args);
+> > +    va_end(args);
+> > +
+> > +    return rc;
+> > +}
+> > diff --git a/util/meson.build b/util/meson.build
+> > index fa174c07a57..861ee228d5b 100644
+> > --- a/util/meson.build
+> > +++ b/util/meson.build
+> > @@ -1,5 +1,6 @@
+> >  util_ss.add(files('osdep.c', 'cutils.c', 'unicode.c', 'qemu-timer-comm=
+on.c'))
+> >  util_ss.add(files('thread-context.c'), numa)
+> > +util_ss.add(files('mmap-vma.c'))
+> >  if host_os !=3D 'windows'
+> >    util_ss.add(files('aio-posix.c'))
+> >    util_ss.add(files('fdmon-poll.c'))
+> > --
+> > 2.56.1
+> >
+>
+> With regards,
+> Daniel
+> --
+> |: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
+> |: https://libvirt.org          ~~          https://entangle-photo.org :|
+> |: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
+>
 
