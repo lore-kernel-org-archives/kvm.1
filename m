@@ -1,99 +1,53 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.41
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794927836;
-	b=k6sKZMl8ZcDac3ivPSB31o+votKzQ4l516G1SoW+XOfAQjZthzrehfLtl2CV5UIvBEzL
-	 bhmgLtCi25QGAo1eNZKn/uTpRWvviFKD5ySKHVbmc2uI4TBnQal70VdvxKoQ3gt4IWvdm
-	 btqGQlvh79x+jgQdL+fgDpy0gnhsFRGjpTD9YZ2El8x9L04/ur5yMb1a/kvwneTPHAJnQ
-	 1nIJRJP5ySbqeL9P7bPnDNUbksA6UBfYANXkre/cE6Lu9qd/TccOuQlQYWcgt2QXU1ekK
-	 u36e4jXn/ivTnnAh+7c4TOG0W4z3mYUE5+APmwe1cm/ZrwmTC2qmO2NnZgKlG97pGHQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794927836;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.198
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794930048;
+	b=y3JtexY2HOJLfkaa+SyJNYu7wClrr4nv53gWuIx9QvUYWUhJI59PusNHjtWuv51tfPuC
+	 dAbzu/3mP5PuLn3R8warwZ0jSYKbhu/MgUQrPeOrtEFMlHJeBZMjn0KyMWRHQavROWPLq
+	 WH48QKhcURNsfVjvoiXzuN30Lf03b/kqIJAXJy3fdCh+0RfJ0+3fXa7x5XCZsqwhODd4A
+	 eCGgH/fcKL9XmA7yJl2ojGrhsR7N0vvB9zoWA5gBcBNgYD1265n2XKYK7Zht7evrzFz0T
+	 tH/UbrF/H272mR4cg2HbDjc66WM6Xhz+7GsslXXFiaK5R8h+oRmsBYuh7GofTA/En/A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794930048;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
+	 MIME-Version:X-Received:Date:In-Reply-To:X-Google-Appengine-App-Id:
+	 X-Google-Appengine-App-Id-Alias:Message-ID:Subject:From:To:
 	 Content-Type;
-	bh=UR0Gfgv/fdEsWHImhEXrlTh92/mXRBGXB0/jlnan5Vo=;
-	b=vg4ZMqokYqDVvsFXWLyKzIZrhWigbsuatSE+EVGgHKZWdlifW9H1PzMCpT8q2/snrslK
-	 +A9OWWPBFWlcU/2dsqVJ8O+N9vp4f7Rg54mFXHOsMUytm1ZVIxDEKjxNTzqgAF4IEA3uR
-	 S9TyKH9Y8I6zwpHXbKwrksjjdWXeGCtuAXHWq6XBIOgiUMe9kzfSuY7ir/7115He2TtqA
-	 YmxrXS/7yOkLHbOK3vPKvdK6DgBbSoz0shanzamxgaRk8E+Dpb1gkDvZcLWmYUAecJVV+
-	 92CggMvRvbjWxMqq1rHnWGTEWtD/PJX5VDnvg/nFNb4JljiIA4j8w+SF/XtRnPE5PIQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=RLgZDS+t;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.41
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	bh=2uRobH7cB+V+f7/Yy8ygzoo6bmhP7SFuLxqTJKOlnTU=;
+	b=ZDY1Ldb0dvKVjYEHJQRuCvWb+RSmsH/7nNMLbwdm4002Ze26Ov1F70RTU6OFFqusOejR
+	 b1zFE65XXLgnBX50T90L6vwrrx2Jp9TOxkBWo3EkNUSNKFxvYr5UpY3rCRQKmXz6bHQ3s
+	 3WWwLCZaE9ECLQNSfkgZpXec+YZ6chHwbvjQX5lOlNC4jN6PoX5t/nVRv9XpLpvV/RMUT
+	 jLkjq1mQh1ozOl5835qZDIHzxCWZuDserD2te1sFQJAA9UKX2Yyzhe3qZbgP2pEqRy9gJ
+	 oS2iLDrqMAP4LqGJkL+f8kXdS+4VeKdu/VBGThsbF23P0mGAulvL2qe386ZG0TQN1TQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=fail header.from=syzkaller.appspotmail.com;
+	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	arc=none smtp.remote-ip=209.85.167.198
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87867606A330
-	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 15:03:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87867606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=RLgZDS+t
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5c14bc5a743so10198e87.0
-        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 07:03:56 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794927835; cv=none;
-        d=google.com; s=arc-20260327;
-        b=D2/e935EjFUiNg36ya8Ccjufay2uRDOgQIlwmwDaDiCazHfkqniOwJ0HVbTIlvoPFT
-         BCT6tekQ59KjCItzM6gZfXXrWmqi+RtYV62grXSyeuednGm0PYx6edQ2l4AkOoeEWqjW
-         Zjb46nLgMLP4cqdmRO+DJt7lYxonPTxgbS54tZUcEsrV8om7vrx6cAP7Ij2Tjos3XZdZ
-         mGsCadBYEU5fXw44XdVYgfXD6AdkFLo/xlxBCav5BABAxS6AMfdagqW8UgGKkkrFwKZK
-         CGcAmh0K09sLho0d6aSgD+k7Ne+ttfx6DDxuwYdUHCkRy5IPBBahvaH6nEhkC3H/qGya
-         EVNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=UR0Gfgv/fdEsWHImhEXrlTh92/mXRBGXB0/jlnan5Vo=;
-        fh=eX0UUv20AwtGz/6DjiJ0HF+j7ya/SvNd9lj9bQBJBfo=;
-        b=Z7cDDxfMtrNOF/eGZMyVp8dGLPCafZ6/nTeIA7eulG5yrvF7Zc5ShfRaYUKExDM+2Z
-         /YAxmx6wzVgzOggSlFpgQlRY0R9N2yohoUv9h6joPTVsaoKIawULOxo1EetXxm1Ze29T
-         rHQoVv0pNb/qnBAPpA4pj7a2+Z8hr0dUYIomwV2ZNAhMn/XpIEQ6rndsDk4x7LtoRnUF
-         IN1Vu+JVHm7TIT6PUTgeXrHWBCzCH1/dfp/U7flpUE/dn9y1Am0JiJ8maL273/d49F5+
-         Q/PvKp0Icfvf8BlSG3e1UCVECWtJtrfpBxhRscg70T+KjbV4xNcQpq6ymn+IuWnaSQhl
-         T6aA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794927835; x=1795532635; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UR0Gfgv/fdEsWHImhEXrlTh92/mXRBGXB0/jlnan5Vo=;
-        b=RLgZDS+tUgc+aaNm9VRRya/8Y5bVpU4/cnLDxlbXQR24Gg5ANKvAXTLTsFYt2NCIp0
-         2jyd5aeguZJl1ctNFBKuwfCP8SbVTnExWnMKW3Fv0poSqRoXhOMUMcWnTHNuuPMkEZZW
-         VTUXELdZNIIKZd7vVYOYo0ZBBmTopJdjskXM7GNk1gDPZZbSFJghrNYpil+4I2MCEzE5
-         2PzAI+sGRJSChS27Q/oSTVEq3+DBnGcdSMXh01K9y7TcThm4Fkw4xVhjciQJ40RZVrcS
-         L62FCt+c9SrrGjUIx3SR5Oom/VMjwoSwn1FAUhMKLgUr1NmtdvCAnJZM+Ieelqyj0/9c
-         I4ag==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA31606A31C
+	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 15:40:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3EA31606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-5587351d419so3460302b6e.1
+        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 07:40:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794927835; x=1795532635;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=UR0Gfgv/fdEsWHImhEXrlTh92/mXRBGXB0/jlnan5Vo=;
-        b=g8jtEwDF/ZaDaLvvX0ZvUxq7nhNFCqJL2FG046u7SvLnhUgn3SPGziNIU6t9KNQpoW
-         az8hzd0CxDbD3Nl7ph/HEWzxddkzlBxvLcsykqj9u2mOqPg+xftr9KuEfMbUHqwIfDWS
-         Ey01jnv1k6oaIByuyZ3rnSBsynQcL+qqAlJwYqWJhU4JS/YukRN/RRiqlf5Ha/udvnHM
-         HWV6z+qxyyGY2pV2haSBp8XGbigi+n0hS70w2vDI3qPVYaEvBTTAt4QN+L65UtnrO4lW
-         ZWiF+7tygPcuaEcsPT6NLlqLrvuzHN5C5oVCKiO3psNLd/2dLJGyFe1R3P37PTbH8tzM
-         HEPw==
-X-Gm-Message-State: APuU4Z8KRXSzLDFXq304v20xYnRK/LxBJQ8GD0crbJyhwXYoJ9HLtK71
-	zHliGGyoUX6tpw5cAgOK4pJDAhzYIbfWXaN6FkEQZ2/Gix8yRco7tmj52mxw8+B0NrMnqZcl6i7
-	nHaqYxfPL93DfUD6pW8qzuvSkgj+QL5QbCBBMV7hp
-X-Gm-Gg: AYBFou1ettmVm/6mC1nmHH/9TuPJ6tqRLRo2ZF/zqcK/e7jJJ9CNsc8oYClKud9fiPZ
-	9k0t+LIsfA5NYKLxiVTZabcKNdv1wEgISREj3IGh2uxij3TsV6v0STfJCOZX2/84PjPfzYNUz8z
-	OuJvZlUdhj2CF3OjbQeV1l3lYrQqQIIjWAHHY64c4gK/D2NilT90mj2Jioz7VxWNsxE/2kCccCZ
-	SADEeIAP6a2daCOagOIz8SoV3UkXD4sI46ZXWgsk5N8+jh0ROTNwleTpIVBxoayZKc29rKMfHH7
-	pNpiL0L8XFbYhLD3aTrp4D2LG0kSeF9EEzVY/Pg2ZPaZA3gkQRkZXG5RIho07Wac/REwEd/FA6a
-	TQpQv8MphE2SHlsgIXPdQ8TWjAtkEpXmTjCR7GyWGEqLShGq1Iex4z+5RGzKZyFXepMQH6PJhe6
-	SzUoxPGsygxxN8Yi+wJ6yTEzCl
-X-Received: by 2002:a05:6512:2249:b0:5c1:543d:2e3e with SMTP id
- 2adb3069b0e04-5c1a2166b35mr171174e87.7.1794927834031; Tue, 17 Nov 2026
- 07:03:54 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794930047; x=1795534847;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=2uRobH7cB+V+f7/Yy8ygzoo6bmhP7SFuLxqTJKOlnTU=;
+        b=XK3pq270TUShKofzZd8XkNnC+GYzxEqzDYI7cMfzPVXEcL347sbT9wUEeH6TnB0ueD
+         NrIDOnIXBS42G3L672Xj+PO4aaherb6gu1DDSJjmu9MHiGu/YwwGWmArusudHTH4vMjC
+         WVvCdoUWxj2IQFD2zeY5TTITC0WYUEUJWU8H0Nm5qmoX7vR72nWgZUIqRXr/Dour9Jxi
+         6I9BTU12erEhzYUhWg57IzrialQljWV7TLZaT31peZ/m1YaEZhMbhRzDs65P4GHQzyTS
+         fviu3GQXPggVsFWVMKnNkyrd8N2GMVz4QGpR9CQP/ko17l1t/pgnzEkszL4QhBy8e9Tv
+         W7aw==
+X-Gm-Message-State: APuU4Z8LO7sl+kR5u3TQGTzFI6j9t6hWRVHC9/c0BmVDgGbK1B0nwD/t
+	9xJbxlTAB/brnO6G1wPUro+8791MiEeYkMsW+VKAbtP5LWP3Gi/QBqHv9E/BYBeWuf9q+rJ+zEK
+	COzMfrMTouXKJ03z+jyQdMN9p+gRz55f4IEJmSpuDrIKBQlhsN5w1M44qddQ=
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,50 +57,111 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261116164358.142785-1-steven.price@arm.com> <20261116164358.142785-11-steven.price@arm.com>
-In-Reply-To: <20261116164358.142785-11-steven.price@arm.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Tue, 17 Nov 2026 15:02:00 +0000
-X-Gm-Features: AclHuK_cslY3zjG6J6IGbNXJdnealsL3yNGOi2bev9GDyOWEmQLYI5dVsAlimaY
-Message-ID: <CA+EHjTy-0k08Ukyo+4mmzqVn9UjRnvhy=BQT9kxSj7CBzzwO_Q@mail.gmail.com>
-Subject: Re: [PATCH v3 10/11] KVM: arm64: Dispatch stage-2 destruction by VM flavor
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
-	Christoffer Dall <christoffer.dall@arm.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Kohei Enju <enju.kohei@fujitsu.com>
+X-Received: by 2002:a05:6808:8419:b0:571:a186:d6b9 with SMTP id
+ 5614622812f47-571a186df41mr10001430b6e.13.1794930047213; Tue, 17 Nov 2026
+ 07:40:47 -0800 (PST)
+Date: Tue, 17 Nov 2026 07:40:47 -0800
+In-Reply-To: <6afbad4d.f3cfa7c9.844a4.0002.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6afc757f.6a9a30c8.1f5211.0003.GAE@google.com>
+Subject: Re: [syzbot] [kvm?] WARNING in kvm_dirty_ring_push (2)
+From: syzbot <syzbot+55eaa971f4924b62c9a5@syzkaller.appspotmail.com>
+To: kvm@vger.kernel.org, lei.cao@stratus.com, linux-kernel@vger.kernel.org, 
+	pbonzini@redhat.com, peterx@redhat.com, seanjc@google.com, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
-Hi Steven,
+syzbot has found a reproducer for the following issue on:
 
-On Mon, 16 Nov 2026 16:43:56 +0000, Steven Price <steven.price@arm.com> wrote:
-[...]
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-[...]
->  static void kvm_stage2_destroy(struct kvm_pgtable *pgt)
->  {
->          struct kvm *kvm = kvm_s2_mmu_to_kvm(pgt->mmu);
-> -        unsigned int ia_bits = VTCR_EL2_IPA(pgt->mmu->vtcr);
-> -
-> -        /*
-> -         * Realm RTTs are inaccessible to the host and may contain stale data
-> -         * after the RMM has released them. The non-root RTTs are explicitly
-> -         * destroyed through RMI before the RD is destroyed; only the root PGD
-> -         * pages remain to be freed here.
-> -         */
-> -        if (!kvm_vm_is_realm(kvm))
-> -                stage2_destroy_range(pgt, 0, BIT(ia_bits));
+HEAD commit:    749a4de37040 Add linux-next specific files for 20261116
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=1341e5c3580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=fedda7175e1c0b47
+dashboard link: https://syzkaller.appspot.com/bug?extid=55eaa971f4924b62c9a5
+compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=139fd73d580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10c1e5c3580000
 
-Could this patch go before patch 4? Then patch 4 wouldn't need to add
-this check.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/9bd53057353b/disk-749a4de3.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/a0d84c6a978c/vmlinux-749a4de3.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/7e9b601ca025/bzImage-749a4de3.xz
 
-Cheers,
-/fuad
+The issue was bisected by AI to:
+
+commit fb04a1eddb1a65b6588a021bdc132270d5ae48bb
+Author: Peter Xu <peterx@redhat.com>
+Date:   Thu Oct 1 01:22:22 2020 +0000
+
+    KVM: X86: Implement ring-based dirty memory tracking
+
+AI reasoning:   https://syzkaller.appspot.com/ai_job?id=8ec79404-c0f6-4141-a152-96124787ad82
+
+AI-generated root cause summary:
+The KVM dirty ring implementation maps the per-vCPU dirty ring buffer
+(ring->dirty_gfns) writable into userspace. In kvm_dirty_ring_reset(), KVM
+iterates over entries marked with KVM_DIRTY_GFN_F_RESET and increments
+ring->reset_index without verifying that reset_index has not advanced past
+ring->dirty_index. When userspace sets KVM_DIRTY_GFN_F_RESET on un-dirtied
+entries, reset_index surpasses dirty_index, causing kvm_dirty_ring_used()
+(dirty_index - reset_index) to underflow to a large 32-bit unsigned integer
+(~UINT_MAX). On subsequent guest memory writes, kvm_dirty_ring_push() checks
+kvm_dirty_ring_full(), observes that the used entry count exceeds ring->size,
+and triggers the WARN_ON_ONCE(kvm_dirty_ring_full(ring)) assertion.
+
+full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=55eaa971f4924b62c9a5
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+55eaa971f4924b62c9a5@syzkaller.appspotmail.com
+
+The cause commit was identified by AI and may be wrong.
+If you agree with it, please also add:
+Fixes: fb04a1eddb1a ("KVM: X86: Implement ring-based dirty memory tracking")
+
+------------[ cut here ]------------
+kvm_dirty_ring_full(ring)
+WARNING: arch/x86/kvm/../../../virt/kvm/dirty_ring.c:225 at kvm_dirty_ring_push+0x2b2/0x5e0 virt/kvm/dirty_ring.c:225, CPU#0: syz.0.2477/13660
+Modules linked in:
+CPU: 0 UID: 0 PID: 13660 Comm: syz.0.2477 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/06/2026
+RIP: 0010:kvm_dirty_ring_push+0x2b2/0x5e0 virt/kvm/dirty_ring.c:225
+Code: 38 be 08 00 00 00 e8 8d 10 08 01 f0 80 4b 38 08 48 83 c4 18 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc e8 cf 84 88 00 90 <0f> 0b 90 e9 f8 fd ff ff e8 c1 84 88 00 90 0f 0b 90 e9 00 ff ff ff
+RSP: 0018:ffffc900065872e0 EFLAGS: 00010293
+RAX: ffffffff81412d31 RBX: ffff888059575100 RCX: ffff88802a9b0000
+RDX: 0000000000000000 RSI: 0000000000000400 RDI: 00000000fffffffe
+RBP: 1ffff1100b2aedc9 R08: ffff8880369ec9d7 R09: 1ffff11006d3d93a
+R10: dffffc0000000000 R11: ffffed1006d3d93b R12: ffff888059576e50
+R13: 1ffff1100b2aedca R14: 0000000000000400 R15: 00000000fffffffe
+FS:  00007f585c1b76c0(0000) GS:ffff888123134000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 000000007a420000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ make_spte+0x71a/0xc80 arch/x86/kvm/mmu/spte.c:296
+ tdp_mmu_map_handle_target_level arch/x86/kvm/mmu/tdp_mmu.c:1144 [inline]
+ kvm_tdp_mmu_map+0x140e/0x1f40 arch/x86/kvm/mmu/tdp_mmu.c:1300
+ kvm_tdp_mmu_page_fault arch/x86/kvm/mmu/mmu.c:5029 [inline]
+ kvm_tdp_page_fault+0x2f7/0x3a0 arch/x86/kvm/mmu/mmu.c:5042
+ kvm_mmu_do_page_fault+0x31d/0x640 arch/x86/kvm/mmu/mmu.c:5089
+ kvm_mmu_page_fault+0x1f8/0xc00 arch/x86/kvm/mmu/mmu.c:6698
+ vt_handle_exit+0x28/0x160 arch/x86/kvm/vmx/main.c:974
+ vcpu_enter_guest arch/x86/kvm/x86.c:8540 [inline]
+ vcpu_run+0x4da1/0x7890 arch/x86/kvm/x86.c:8695
+ kvm_arch_vcpu_ioctl_run+0xe83/0x18b0 arch/x86/kvm/x86.c:9035
+ kvm_vcpu_ioctl+0xa61/0xfd0 virt/kvm/kvm_main.c:4595
+ vfs_ioctl fs/ioctl.c:52 [inline]
+ __do_sys_ioctl fs/ioctl.c:604 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:590
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x171/0x540 arch/x86/entry/syscall_64.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x00007f585b3a94d9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f585c1b7028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f585b626090 RCX: 00007f585b3a94d9
+RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 0000000000000005
+RBP: 00007f585b438136 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f585b626128 R14: 00007f585b626090 R15: 00007ffe50d85978
+ </TASK>
