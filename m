@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.37
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.7
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794899461;
-	b=dtYUx1UxLzRf7NI0o3g2EbTRVLBeF/9zlfxEyi5J3M0tIdS7z14+6ar1y+sQh3xrMrhD
-	 G02QULj79CxFasv48HaGmME73V8qkWII8Xef6CwI7bxCquOhblI1VB013J7oOt9ligZj1
-	 7X/ruuanZbTQ60jo/fu1hOCM8YHkf2v9szFjba6DyuPWvSHNTPWmFZRhlug1zzJMnOLJY
-	 RkMSpibHbcH10v1O3SxeqH1ofB/sG8nnFpppRWBIQUWW3kmSAUsAjajezfgvyswujK1dI
-	 cslvfMzdEYYsDBZVKhnlMQfDQQ8e07X7j7rBM13RaHJTMqXkpQ5QysfnMnnb9BOdxMA==
+	t=1794900334;
+	b=rl48byphlHD5ZSjuTJAdIAQeIE7L861DjuEIDRsn7GgFBMOBYh/mtn4LBKGCgU1Bwq+8
+	 taua8/QrE3vJ8s1jBATqRkIfMPNCZqVeJ1TwmBG7t6OHMfKZP4qHPhO3nEb3DFe+262rV
+	 Nm310iHPRYs+UxNw0dAFbHj8hGB838E+scCoLblZZVEHZKiPK1/9wCUt9BLQjvPTRdYC9
+	 JyAOqvSlOUtMLAHF0/V0hociV6+Bmimjp6D1jel/ZH4US+Ci7Halg9NegKrdhXFXmdu+z
+	 pxJRfwrokwZGsLxDgKXghrl4cYSRsMXp0hYDxv5eiOZsCabm2smu5kxszby44rdKnoQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794899461;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794900334;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:
 	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
 	 Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:CC:
@@ -26,53 +26,53 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=KeJFt+9H17LiXBHaNeznIeiRG5buG5pNmTaeKTspgoU=;
-	b=skGncWdIQ/kzkwgtll0wwsPVSuIbm0bH6Yq1/fFkq5sRzNzeblNJp4AqeHRVC+pGGdQE
-	 WAKrw/JXYZyr5Npwapk8Oty83dSbbf4ZTmBZ4DbXX/SYZv7SAjEvcZR68wTbBiIROhuN9
-	 4DDKtsOceh/+FLkAz3szUAEtJ49u4gPNDEvpGPsJCxpaNZdHM19rRoGlRIRXTsUtHmN48
-	 UqoL+GMYqE4jU/L8YIxn/yPg7MTFaxr7X79x64d3zAfuaST4PR3PucBh2OgEq73mL/fnd
-	 R6e4nL9UpbLKCztLfpBD5sBN7abtTzJztsJkvrlcupZ8+D6z7XabgDxri9s0sLXIWuA==
+	bh=KRx6HHZFMN916V0dprcQvG6/STP443OYep9LaExbmjo=;
+	b=OfzIFQq/rugQphGMnRm0/leQx7KxMUfv+8k5lkcVcbxQEr/+QrCpcr7cc2c6KJbF+1RR
+	 C3zsVImnlUu0ULWn9oJzSbLhxSwM3eKhF6L9gilU29M0bcMEeKHdgp8+fl3AUleIRHJAc
+	 BU9ZINRZFME7fl7kKjQNUYPaWW2zpNjVLLihRB1rA+QK2IbrL1Ch3aDZd8zVcn0kaqb2D
+	 UZNNPTb4pLI13ubL7FfPQkWcvkUmC2QLP/11MtDGgOmH71oj0zq4Zuun8EjbHE/F0077I
+	 LZ6TOxumOSWOUTQxWm7QhXY8p7eANa/ID8+oHA5sjrkL4ArFsr7jh3+vD1zsG2huUZA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amd.com;
 	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=g53PHGcC;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.37
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010037.outbound.protection.outlook.com [52.101.193.37])
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=By5UqhBX;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.7
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010007.outbound.protection.outlook.com [52.101.56.7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBB8606A329;
-	Tue, 17 Nov 2026 07:11:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0FBB8606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2D3606A31C;
+	Tue, 17 Nov 2026 07:25:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8D2D3606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=g53PHGcC
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=By5UqhBX
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wkz1y/k3dTwmBT11wzb6LipwhLNpF0e3TOgI50c422YbNn/xAAaxgeDDuFH+lfgT386i7CCuCF9mZ3cpo0b+10C/KHU5NAcW7gJM5FVvRrG1Rq5Oo5v0sdThdhWTE9V2drl6d+4zVcu0ZQxIxZM4sNXHYh8F0DF5+Q2m5hcYFsmd9xztIb/5OqhPkApHE3eDoCJ2pBlCn4KJXiJxeYdrjwZjaQyFFTUBre2iMk/nfDABJmEyO+cVqm+jm4vyA8HHyc0BWS0eJ23Q4dGAbx0dOuzxFNTpn9sGxTk33In+3a0joUdA0XwKbd/dwQl1H8HHmaXG/+rsT6oB4P4yE8lB9g==
+ b=YUvhC80Lx+T1NhxNGcFVCnqDAAqr8ssTnAskSkUNQiHovikjdg/xizLkuu9H1zs/9YImIoLyHO18xL+Mh+JGllJn/ukgyfCnm5QGZ4ioZJMdAdVic422QXSjLsXa2wfRAS61e/mmDW1P4CNVAEnHktS7SMQe1+uvlokq7+ebn4YpW6KzZzW4u/5RZvc7v3tusOAbn3lxVaemjGlSkixG3dwdDbpnAF9uz80r+ZEpI4xdUCdo6XXo0y+TKbgUMYfEjo6CnPjkqzlc6mUw6xraJ8/MVCB0jV0/097eQV+/ntabwTwyGzRpUCUbYE/6DjoNGxwMEqbosqqzs9+AfiQUhw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KeJFt+9H17LiXBHaNeznIeiRG5buG5pNmTaeKTspgoU=;
- b=hSy4GezN+/T7KDv0EvBrJX4Bq4tSvmd9twgaIfyQ2X4IMVdP63lXesw7C2861ljbESY66a3oSGfYA1c3MwVXdMXWQmkgZ9+LnRqbHhiz89uR6y0SKVeh6vmaJnY7peisQXNa0DTA7nq3cSUC0Dt3um6YdW2+tkxn9ESY712is1hd+s6KHwA9NEF7iE8OzfbtgT0IBQP1XJ8D4B/0ISfBRiDkIfj0JBbdFl7LWmby5x0kvq3nj+pfY6R+tU2ZlxgcaNpW1MzTdZ4GMnH1f6K6t+CuwV13BnBgBD4XdQMTM/b2J9tGSwI9j5wAyA4GcWs1TKc/OoWTccf+AIsq75sb3Q==
+ bh=KRx6HHZFMN916V0dprcQvG6/STP443OYep9LaExbmjo=;
+ b=txgohodByEki1UCF88Jtsmfg3qkTLh7xJKaUsNH6EEJwU2VVaAQLaX+Q8+Eb8uipy0SccoOSjgkzaYepe6ByDe+RwKcOsX62Sok0fvY1OxJras0LuHgnWKsTmZgELAxsVbILgiVSLQzSA4GyYQZsAQqniw9dUZj5OYSQV9FvKpwpDkiqhgVF9DELqY/uNo/JtUXz01UO8PrtUXeV7x+z9uHTy0V3ptGqx2Xqbe4yN9iFSe7ciT4Smsj7iNRjdaqBaUqii9+x+SqscItwah3JsrDD78B+jFwjeIy1NjgkQcTYl4ovEn7/aVX4vCrGcP0EUno4R5FQVvuSWL/wWk9F9g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KeJFt+9H17LiXBHaNeznIeiRG5buG5pNmTaeKTspgoU=;
- b=g53PHGcCBTnFyIa3MzRgnqwOk/U0paJW5f93Fv7LSXVjZ/6YqjxdR8q9tio2oa6VjLBWwLIe+/yzNz+6db9wcPp9jfUOQsw2Agad6pR/SIJ5u0pHyOnd2o3LYnrIeK2y39uJvJE9i4Rzv2NJi0BkLFl++XNHm0KCYgyQEcdlAAw=
-Received: from CH0PR03CA0105.namprd03.prod.outlook.com (2603:10b6:610:cd::20)
- by CH2PR12MB4327.namprd12.prod.outlook.com (2603:10b6:610:7d::13) with
+ bh=KRx6HHZFMN916V0dprcQvG6/STP443OYep9LaExbmjo=;
+ b=By5UqhBXFlx0lv57DGpVIHofE5yvJtmAG1QTHVXQBTj5T9RkYfngw0dLbteZVuoUYlqoJLkT3P+tsWMndayYOYNFwj9SUjKUxmAZokwSr4VuTak9YgZw1NqrPPuSsFLXqOWiSJ2lHUntEtfD4RE+RryP3kP7F26tjGZea6AV9o8=
+Received: from BN0PR02CA0019.namprd02.prod.outlook.com (2603:10b6:408:e4::24)
+ by MN0PR12MB5763.namprd12.prod.outlook.com (2603:10b6:208:376::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Tue, 17 Nov
- 2026 07:10:56 +0000
-Received: from CH2PEPF00000144.namprd02.prod.outlook.com
- (2603:10b6:610:cd:cafe::a3) by CH0PR03CA0105.outlook.office365.com
- (2603:10b6:610:cd::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.14 via Frontend Transport; Tue,
- 17 Nov 2026 07:10:56 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.10; Tue, 17 Nov
+ 2026 07:25:28 +0000
+Received: from BN3PEPF00022BCE.namprd03.prod.outlook.com
+ (2603:10b6:408:e4:cafe::1e) by BN0PR02CA0019.outlook.office365.com
+ (2603:10b6:408:e4::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.13 via Frontend Transport; Tue,
+ 17 Nov 2026 07:25:28 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -80,18 +80,18 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
 Received: from satlexmb08.amd.com (165.204.84.17) by
- CH2PEPF00000144.mail.protection.outlook.com (10.167.244.101) with Microsoft
+ BN3PEPF00022BCE.mail.protection.outlook.com (10.167.248.165) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Tue, 17 Nov 2026 07:10:56 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
+ 15.21.639.5 via Frontend Transport; Tue, 17 Nov 2026 07:25:28 +0000
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Tue, 17 Nov
- 2026 01:10:55 -0600
-Received: from [192.168.1.100] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.57 via Frontend
- Transport; Tue, 17 Nov 2026 01:10:52 -0600
-Message-ID: <09c667a7-f5b7-42ff-aca9-838495738d3d@amd.com>
-Date: Tue, 17 Nov 2026 12:40:46 +0530
+ 2026 01:25:28 -0600
+Received: from [192.168.29.217] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.57 via Frontend
+ Transport; Tue, 17 Nov 2026 01:25:23 -0600
+Message-ID: <41a0fa08-9787-4a7f-85ee-46941c296070@amd.com>
+Date: Tue, 17 Nov 2026 12:55:17 +0530
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -102,167 +102,73 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] x86/sev: Skip DR7 write during kexec when it would
- trigger an unserviceable #VC
-To: Ashish Kalra <Ashish.Kalra@amd.com>, <tglx@kernel.org>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, <hpa@zytor.com>, <thomas.lendacky@amd.com>,
-	<nikunj@amd.com>
-CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>
-References: <20261116230335.1161521-1-Ashish.Kalra@amd.com>
+Subject: Re: [PATCH v2] KVM: nSVM: Check full nested state size before writing
+ to user buffer
+To: Priyanka Mani <priyankamani2100@gmail.com>
+CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, Dan Carpenter <dan@pereq.eu>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H . Peter Anvin"
+	<hpa@zytor.com>
+References: <75b8ccd5e278ce8f13bedeceb196f5b4ee9c5256.1794545500.git.priyankamani2100@gmail.com>
 Content-Language: en-US
-From: "Aithal, Srikanth" <Srikanth.Aithal@amd.com>
-In-Reply-To: <20261116230335.1161521-1-Ashish.Kalra@amd.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+In-Reply-To: <75b8ccd5e278ce8f13bedeceb196f5b4ee9c5256.1794545500.git.priyankamani2100@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF00000144:EE_|CH2PR12MB4327:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3d77631d-9709-498d-14f9-08df4479ecfd
+X-MS-TrafficTypeDiagnostic: BN3PEPF00022BCE:EE_|MN0PR12MB5763:EE_
+X-MS-Office365-Filtering-Correlation-Id: 139cbd0c-3e03-4571-88ef-08df447bf4bc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700016|1800799024|82310400026|23010399003|261026121527099003|261022105027099003|11063799006|56012099006|261021123027099003|261009223027099003|261021121427099003|10067099003|261102123227099003|261026140227099003|261028144727099003|18002099003|22082099003;
+	BCL:0;ARA:13230040|23010399003|7416014|82310400026|1800799024|36860700016|376014|261026121527099003|261026140227099003|261028144727099003|261021121427099003|261022105027099003|261102123227099003|56012099006|11063799006|10067099003|22082099003|18002099003|261009223027099003;
 X-Microsoft-Antispam-Message-Info:
-	h7FIcdTpL62zsdI7j+MrUTptP1sydnefkozhEZEVOtoAUp7HfSpvsdD7ts05BwwqDaLakO0TguJWs+3RyozmFvHioLqfp5+2m9IPtWxr63jjYWEH+UQdsDJI1UUq+roS5x+LkvvD1cbBFIBJDfMPcYwuuaDMjiZ0AGVKoO1WBY15q3eAzAeGsZKQmOZgGo4a/QZbX1MbEva+0k86r9REOWs6Djn7Cd6U9nRvIAvnOxv2tmMbohFPJzCWkqTWwCnueIsYhsd70Tr3HTObDNAluFGZrfHG6RmJyzeaDVxjzXEnXWNE3zVwk8mITcWOaFUjISkR/c6wJQYP/3fMShnu8sTrM3Vo6RyS5o+eOZI1xxKbxpuk61ZiIwANhdCp+yTgMtcuifcSAFlIBavnyTbchEcL3nGkV/Q6ox/JfAcdFTIHdZeAlvRkFOtxZnp5+9Qv0DQ277fae7uVrfXszyZZ/RbqE4JJSwC16jpWXp+NMkDTgh+zRIROnjnkOnv5xSudu6tH0O96QSjU6xHj7t1dqaPErrPR5SR/QyCVtkxtyBpZF9SWM+YJEvqkho45EOpNLpgHxGaMvmzc1jwVKz71Ca55uWNIL8jmkruC3EFFJw4qYmwHLRfGgACNYPF96W0mcCZP8/iVhe8kkzWtJgNGDgdHinCGZoqNna0Ls8FHJcJMUTTjYLMH5yEJwAOTQJNoga7yjfCnxHj9Up61imjZoA==
+	k1weGREViFg/NJBzWULB2S/RTXf831H7Eef7t7hqrmG6HjWbxl1avBjhQK98stqZrzjtx+DAY1LeCacgoPsMyNVofEIj1JiQtYAMiw8SmI//49ufLYEp/GGAg25vLn0GpetE9cgsOlRLlCipsFZ8JcrLETo7zhpX+0XVyXRNd9VBrpldOw6LIRKx17WbC95I+m45CDPRkZTrUEiO9aLPUawj9mn79nOwELaxAYCNkfq1AUdTJxpRqhqKrZ4XqcNKg+pA7qcPGPgQImIkjLTGex5Y0KmuBnQiy8G69RAh9N+pLfRGXDEXRTKXakVH8rl1+sdtzMUQHINX7N2pIYVrry9gzDcH/HLw+cnzYjnFMA+m7etpfOU/57LIShnO41PoJWZdUPzBwX8LWfL3bqx3dP44lvLOfITrY7OFHbKO+tpQEPQC1zzeHGkRo7SqMXhJSB2BGU0xghE02F2uZFGMhWS/tX5gNg5u1VCpyTR6Xc+JLORfqUVO7zrxG3xfXBbqvGxv4UQecvNPH7/2uZUwmnzDba0ENK3CSIWQydnTaWgKDRj0SWA9agtMIt3c5xeRS9Zj885T3hxV8lS7kAbttaz28/tEq4Kz4KelFhcCkDSB9XyviHk0G4lJD9gpQ2uLveVpydgbwVb9hChJXFewWCYVwdJih3EUXJgtcaobM797rEu8OvGZu9AlBqvKYkHgYKGAU1XMUwkNcvYI6KdKOA==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700016)(1800799024)(82310400026)(23010399003)(261026121527099003)(261022105027099003)(11063799006)(56012099006)(261021123027099003)(261009223027099003)(261021121427099003)(10067099003)(261102123227099003)(261026140227099003)(261028144727099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(82310400026)(1800799024)(36860700016)(376014)(261026121527099003)(261026140227099003)(261028144727099003)(261021121427099003)(261022105027099003)(261102123227099003)(56012099006)(11063799006)(10067099003)(22082099003)(18002099003)(261009223027099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	uRvhUSjJOxjECShPC2MLVq4yoqhFGCuuBGUXg13ce1f1Oh1CcT6TprmdzENQhToZ3wqMSl0uNCQCEebXKORIr6eQdCIUDum6fvcXQVGtQVhe7HRTQo1lR0ezqK3q0JMvzaS5cX6I6mcTmqDH9aVtgNvlXecKkHKuN24s/7q0WXBU3pQj6aFslLkSJCFpwg0icgvm4n7gdHbVy8X8MctQG+xXT3oVrsGUXpCB5G5FjULDhSWd0z+TgW0tEFvdouheAv0yqN4F/KOnB7xndunuokHJWqTBIn/H6v9/YUoZTkrfy2rIqzhSmg6rLFwa7ekcBeOq7VWv1GB+fPW5Cqs3qhzcS+fHRsrBi33h57gvtlp5HHU0qAqhKV0IrDcQmtUu62OGDcNAL+XIrDgbZtIQJD7Z22HcgT9rYW2YX7d/p3xNrN1lnMgaInr5FCl2scTU
+	gqZiz3YzkoMxY7/B/oIUukMU1zteuLE16VKtgkIvpzgQk6k7SaitCM3dnRWq4s7tiSUZ8cLZ1LtIadP3uW5qy7hmTFHCDQQBmtvyYhL8HKZe3yN4UpP5zDHM2kvcPrhh1z0/MBVnUiZORz7oL6FU2fuohzdCH7Q2MxpldH0foq5Trx6/Cs8WrWilcja3+UgtBDTyw8qGAXO4M6C0ijovDGx/OJ8oSY+bOJZqc5T8/ROzcKM72skOoAbsucGdCaWdLF6g6sH/N/2i9Ty2+U6q43LfwCUVdXrp3UeIymHlCLt5YQUIILq23ijJ7Y/zKHQjAYHSSTsa5fB2Hgj6f5C56hEuXTykK06XozdYu4FGsBePlpZmQQ14lq+WdVWnQLmgH01GZI+pw8WxXae0WHggbjRIZwh1gG2Tkh132yEOYpnknJrzjQQmnbvH8xJjdtGE
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2026 07:10:56.7102
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2026 07:25:28.7143
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3d77631d-9709-498d-14f9-08df4479ecfd
+X-MS-Exchange-CrossTenant-Network-Message-Id: 139cbd0c-3e03-4571-88ef-08df447bf4bc
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF00000144.namprd02.prod.outlook.com
+	BN3PEPF00022BCE.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4327
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5763
 
+On 13-11-26 10:31, Priyanka Mani wrote:
+> svm_get_nested_state() compares the userspace-provided buffer size against
+> kvm_state.size before adding KVM_STATE_NESTED_SVM_VMCB_SIZE for a vCPU that
+> is in guest mode.  When L2 is active and userspace passes a size that is
+> large enough for the header but too small for the vmcb12 payload, KVM thus
+> skips the early exit, copies out the header, clears and fills the full 4KiB
+> vmcb12 area past the end of the buffer described by userspace, and only
+> then does the caller notice that the returned size is larger than the
+> provided one and fail with -E2BIG.
+> 
+> As a result, KVM writes up to 4KiB beyond the buffer userspace said it
+> has, and if that memory isn't mapped, the ioctl fails with -EFAULT instead
+> of the documented -E2BIG without reporting the required size.
+> 
+> Move the size check to immediately before the first copy_to_user(), after
+> the header, including kvm_state.size, has been fully filled in, so that a
+> too-small buffer is rejected without writing anything to it, and so that
+> any future additions to the size are automatically covered by the check.
 
-On 11/17/2026 4:33 AM, Ashish Kalra wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
->
-> machine_kexec() calls hw_breakpoint_disable(), which writes DR7. On
-> SEV-ES/SNP guests that do not have DebugSwap enabled, DR7 accesses are
-> intercepted and delivered to the guest as a #VC exception, which must be
-> serviced through the GHCB.
->
-> By the time machine_kexec() runs, snp_kexec_finish() (called from
-> native_machine_shutdown()) has already converted the per-CPU GHCBs and
-> the boot GHCB back to private and set boot_ghcb to NULL, tearing down the
-> GHCB infrastructure. The DR7 write therefore raises a #VC that
-> dereferences a NULL GHCB pointer, causing a page fault and the kexec to
-> fail.
->
-> The NULL boot_ghcb pointer is a result of commit 3645eb7e3915 ("x86/fred:
-> Fix early boot failures on SEV-ES/SNP guests"): that change makes
-> __sev_get_ghcb() return the now-NULL boot_ghcb in this window, turning
-> the previously-benign teardown-window #VC (a bogus VMGEXIT the host
-> rejected but survived) into a NULL dereference.
->
-> Skip the DR7 write once the GHCBs have been torn down; the kexec'ed
-> kernel re-initializes DR7.
->
-> Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> ---
-> v2:
->   - Move the check into hw_breakpoint_disable() through a new
->     snp_hw_breakpoint_disable() helper, so the SNP-specific logic lives in
->     SEV code (Borislav Petkov).
->   - Drop CC_ATTR_GUEST_DEBUG_VIRT and read DebugSwap from sev_status.
->   - Skip only once the GHCBs have been torn down, so use_temporary_mm()
->     keeps disabling breakpoints at runtime.
->   - Trim the commit message (Borislav Petkov).
->
->   arch/x86/coco/sev/core.c        | 16 ++++++++++++++++
->   arch/x86/include/asm/debugreg.h |  4 ++++
->   arch/x86/include/asm/sev.h      |  2 ++
->   3 files changed, 22 insertions(+)
->
-> diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-> index eb2e853e950a..64a5a037a9c8 100644
-> --- a/arch/x86/coco/sev/core.c
-> +++ b/arch/x86/coco/sev/core.c
-> @@ -723,6 +723,22 @@ void snp_kexec_finish(void)
->   	}
->   }
->   
-> +/*
-> + * Without DebugSwap, a DR7 write raises a #VC, which can no longer be serviced
-> + * once snp_kexec_finish() has torn down the GHCBs.  The kexec'ed kernel
-> + * re-initializes DR7, so skip the write in that case.
-> + */
-> +bool snp_hw_breakpoint_disable(void)
-> +{
-> +	if (!cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
-> +		return false;
-> +
-> +	if (sev_status & MSR_AMD64_SNP_DEBUG_SWAP)
-> +		return false;
-> +
-> +	return !sev_cfg.ghcbs_initialized;
-> +}
-> +
->   #define __ATTR_BASE		(SVM_SELECTOR_P_MASK | SVM_SELECTOR_S_MASK)
->   #define INIT_CS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_READ_MASK | SVM_SELECTOR_CODE_MASK)
->   #define INIT_DS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_WRITE_MASK)
-> diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
-> index 854d82b88ff4..af15e2c928db 100644
-> --- a/arch/x86/include/asm/debugreg.h
-> +++ b/arch/x86/include/asm/debugreg.h
-> @@ -8,6 +8,7 @@
->   
->   #include <asm/cpufeature.h>
->   #include <asm/msr.h>
-> +#include <asm/sev.h>
->   
->   /*
->    * Define bits that are always set to 1 in DR7, only bit 10 is
-> @@ -108,6 +109,9 @@ static __always_inline void native_set_debugreg(int regno, unsigned long value)
->   
->   static inline void hw_breakpoint_disable(void)
->   {
-> +	if (snp_hw_breakpoint_disable())
-> +		return;
-> +
->   	/* Reset the control register for HW Breakpoint */
->   	set_debugreg(DR7_FIXED_1, 7);
->   
-> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-> index c7ea9845351e..f38bb521987d 100644
-> --- a/arch/x86/include/asm/sev.h
-> +++ b/arch/x86/include/asm/sev.h
-> @@ -522,6 +522,7 @@ int prepare_pte_enc(struct pte_enc_desc *d);
->   void set_pte_enc_mask(pte_t *kpte, unsigned long pfn, pgprot_t new_prot);
->   void snp_kexec_finish(void);
->   void snp_kexec_begin(void);
-> +bool snp_hw_breakpoint_disable(void);
->   
->   int snp_msg_init(struct snp_msg_desc *mdesc, int vmpck_id);
->   struct snp_msg_desc *snp_msg_alloc(void);
-> @@ -632,6 +633,7 @@ static inline int prepare_pte_enc(struct pte_enc_desc *d) { return 0; }
->   static inline void set_pte_enc_mask(pte_t *kpte, unsigned long pfn, pgprot_t new_prot) { }
->   static inline void snp_kexec_finish(void) { }
->   static inline void snp_kexec_begin(void) { }
-> +static inline bool snp_hw_breakpoint_disable(void) { return false; }
->   static inline int snp_msg_init(struct snp_msg_desc *mdesc, int vmpck_id) { return -1; }
->   static inline struct snp_msg_desc *snp_msg_alloc(void) { return NULL; }
->   static inline void snp_msg_free(struct snp_msg_desc *mdesc) { }
->
-> base-commit: 9f74092fda91ef93c2b07585785c1dc83cd7971f
+Tested the patch by passing various values in user_data_size (0, 127,
+128, 129, 4223 and 4224) while L2 is active. Now it only updates the
+size field and returns -E2BIG for every too-small buffer, and succeeds
+with the full 4224 bytes.
 
+Tested-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
 
-Tested v2 on top of 7.4.0-rc3[aebb727]; kexec works fine with this patch.
-
-Reported-by: Srikanth Aithal <Srikanth.Aithal@amd.com>
-Tested-by: Srikanth Aithal <Srikanth.Aithal@amd.com>
-
-
+Thanks,
+Shivansh
