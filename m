@@ -1,99 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.47
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794925935;
-	b=eT37Tp1i1WvQ8H8XeAcrHfX+321B42AGU/ZJyUdHbPGlqfQJ9Y4DQxKQxBnxYYi/OWse
-	 tVdQGYVDEMQycwD4Vv8J5k1rmmFt+7cu5aj3dycHyukIgl5lywoAhh07p/GJI+NAnV/gY
-	 mm0D0uY8zKaRz0JiXzTCTj5XHBANE5az53akE817u+LsNRaWrSkzviyQBiQmekjuRh17w
-	 GjC+fGtjGgelnOuQtILxAxzmIHUPpFKPpeU5PYbLPEidf3WnE4eL/wgIQTatp1pcohIJ7
-	 taSNxv7Jt5svy7Q3ehilv4NNgodaZ8DbmFNemt3Mz9c2+4we2Qm+azXldulfmGuPyRg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794925935;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type;
-	bh=D3nGp/c9ERuihiWyblYj7YcY7eqF7eIZSBxt1bWzptA=;
-	b=cX0C0sGRESBBHztQDEBgcyjEsSmBbzRuVsOoJ+L0PrEMDmApetES1ijKEyHw8cJAFSMS
-	 G8ag5itkUceTdxsAe5RYBbaUfDe3Gq4Ev2i/qNszHaf8rbcHXsqqsBa6uxmaVMY5hpiPa
-	 cbUAOTW+EfQaMuJgYm9q86PcZkXrsdE8zc5pH3HSe36bnqVKPrLzNRnbbjptIF3F9mITI
-	 /8biE1vN/oyLhiet/XB4LZXVCh0m74QUtKlVF2/0PwXeCvFz6pnR4dEzK7b4ky0ZKLpMj
-	 NWiEw+D4p+ycJSUfBr66MJWmq4btOKePMsZXwyNR9kcowBLdLqm/JXL7jdGjIeeTybw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KoCmeohz;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.47
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794926174;
+	b=hhMO3YBpGqMLuwjvcxd+N0BARNKAUrG0nSNbo9mBGsfJ1IEKkoCMM5W+nsMD4RDQ87pt
+	 wq+bVVd/Ki9TotbWotc+W6a5biGywbe38J0JyC8XhOpkbvmHxCmhtlqJ8punySx3n1oXy
+	 CiKF4T9y7t8u3kFJ1ipgHUdeeqliXHVd5BxbMA2iOFit0UzclxXpmzOtU9TdSmATITQqi
+	 XBHQWBYCzK0IhdNGAGcbBy8oHGDQRFQv9rLumaRiHXWqT5TL/A6G7ZEXMXzTH+b5FzlO3
+	 3DmCQfqCpd1WOSfnmf4G+UiPvr6XymuR1rq/dZSlJHTN7cAIm+C/v+DA9Mq8UvO+eQg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794926174;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=O6LryH0j9aDeGupJj+GdTTB2fTZI04rn2KNQvmULex8=;
+	b=LCHGtQIVwaoXpfP45FWDX77E06+jxE9pvRaoUBmBt6F12Qa1Z6agWdVpWfbkP/7bjVy3
+	 isfcm0tyqCTurg8g6fkfy8ZnyqeuSPhJSl9KnfT6gpslUWBB1c469PaFeKbuxP7kUiaTg
+	 /taf82hNlmqPDfpejNw34DcVnxl8Rbl1gASpPMfRUpPQgBncTnihq/76cO5/qbrySZ9N7
+	 CgXNoTrVOTerz0bvXIT82KnWyEeobPlKFrD7IESWNOhykTO/fRE6+UHrgzNYUMDiJhXuk
+	 Oml2mTmvxdqTWbOdeomFEwutA1EnHku6rMzhuekz1btVjN7pYAPTWYkLWrzCTUiXLyg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="K9/Ggob+";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC026606A32A
-	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 14:32:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC026606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA40B606A32C;
+	Tue, 17 Nov 2026 14:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KoCmeohz
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5c00d7ac49dso7447e87.1
-        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 06:32:14 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794925933; cv=none;
-        d=google.com; s=arc-20260327;
-        b=D5bC7ELdmmvkO8ogX2PwEGLNzm1sC3TnfMuvE4PrLGMPeROxZVHroqPdf9UiK6Bz0O
-         7/0dN1L+mIvnklHGWBYMUNIv0qA7m9QSRzunLkAFMExSc3nvQveNTH+lotlAiFqGeu9P
-         1NkyCHkPO2fal1n9l56AXkWbhHwOwlc0DIN3bComR8vUfhYOj0U6Iu0dNMUiHEBXiY3s
-         ovujKcaOgkJQwxv3o2GK27+Gu5yr4nfxTfFmGWrOVUkHGJS2Toq+eI9haL41pcC0MgU4
-         P1ePHlzkfoKI815tF/dAjkHxgMOkNhAHSn91MEAkhx0JwbDOwtXl68IP2jGtOlTIbU2A
-         ui+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=D3nGp/c9ERuihiWyblYj7YcY7eqF7eIZSBxt1bWzptA=;
-        fh=ShOtn3DH2JacjDhhRuDN/ZzoL2uaqKg1U53ZjQaTW3g=;
-        b=Y2QGKR40Blbj+2TyEo6ZlGGvmi5eUyRUHJriQ9fyuM41R4JvINTse8TdmY57e4zmnU
-         /d/3wUs3NEmgPdHpHkcJy/bqlAcrWbVNgW3so1Y+GCqyNfZgU4ObrCd8vZ6wuhQo7muC
-         IkwUSwsKH3oezR7NsLz+F9TUT5E+MDmxBMXly/Py8uzPi6emxzVe6AZxOg3r1e2A1abH
-         Rd837uzDKdKHcp5U3xRfWo+8+SKGYoFwNX/xtyuDo4UZ2OVTFzSrBPO67sBD4Fdb1ZGc
-         2IuOwXCWCYjjhJG6hcuE7P/tLSXvgN8iKxhD0ZOvfzyBuC7ye5sXte8M4C/ChX1JTwqA
-         l5eA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794925933; x=1795530733; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=D3nGp/c9ERuihiWyblYj7YcY7eqF7eIZSBxt1bWzptA=;
-        b=KoCmeohzvnR6QJRU9ePv2eAxWxwroupksthuVkMbtXcG7IVcOO2DL9t6NbR7jlcB6O
-         GaxWgc6P2aFothBBRecXJkRAlg9LCKJ3HzjhAlIJ2Qa88MRzB6jKdzCXkbiQ7SAuGVCQ
-         mybIPu617O101kLqtWC5VPzKK0HoAKquhFc/Qv2M7PFlHQUL6Hf9RHhaKS8tr3eRMS+A
-         xey2QTUwSQzZrv7VB70CCctZw3tyKOH9wtMEZeq+RWiPlbRZvn6YbO+shgWgOmeH5sSo
-         TAS1ICNHqC96dkbpSeJ8BQ4zvPe6DU3umNkVzJafDk0U35gAuVFw4yU5oQw4aSiAzr1g
-         5LNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794925933; x=1795530733;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=D3nGp/c9ERuihiWyblYj7YcY7eqF7eIZSBxt1bWzptA=;
-        b=UWm4nEyzDEGisSSn5uJyRLVhumQBwuPDh9UOat6n7tZvu/3B6dKClr5Y28NYDh/6Xv
-         0jTBQ1c9OL3k3SimYtNFAp1lbBDniDRduV1pIhj5wMZGI3bWgQiCuLzCvUMJ+2O1pHE4
-         nKJjL6DK0uTo+KtgxhrCs4rxpMO9ylFx5MyoHcdHamRTeDoODp6fEV6RjIRq7+MYWcW+
-         h08cWLxzuKbcO2/s03yNm0BKyl3ujg7D/P+vUA3zrZGLjF709E15C5RtjWJUspxUib5/
-         MX8aQ56h7Q5zXJDBdYGWTRCTzYEhfIXAKeC2Wy4yyPi9KzQiKrlQowsWFA1pr85UN/Ld
-         cndA==
-X-Gm-Message-State: APuU4Z/y1bBpqHs73oGRRHR/wLOE2C1G/pqkBnT0iqpi3djImCaZ5pln
-	ouAeoCQlw6DgcSOYtfLWoB/MLd/WxEFzsQeAA/vP3//NmL4T5Lf3o9cDUj6+LWOtvi6vdX7Ye4W
-	sp4oezZr6mwqKrP9GccSuWAkA3Y2eNA2OSQrmoVZ5
-X-Gm-Gg: AYBFou2AUk8HKuwHN6MoWFHu7IsqURI4unybgip3POThnZP5HZ0q4jhcQFuA/+dghiz
-	1rIgMEunwToZEnd20YwGhJyBttTe4a9nxdo9ZW2Ys4rOb+PJxKzIA3rGimGMgSkfF06qnQjCW9a
-	dOc4Y4tjJmd76sHSG96aF0+ZaoRrUla5V8hBUacXSjEFfp7mjOL1Vy9GwKyNbET+EJ+Rb3SRCeE
-	g2cKMDeIbPtNXNI/H2I9K6EWlCvCpN1raGBhMygH71j8b/Pg3DBP6Bg6w02zLIN3/0HN/ujEzUs
-	TlUwtOpaWvaO/gIr3LD9on6a1wwmISSpokophFIBD3NgQGLh8R5NPDffXi4iCZ64XUBunfYy10N
-	Eyle5WB3rf06CIREDEFxNYLkN3VTkV6/GEIeWaLFveAqhXS1kPXo5STlIhx9Er8A+51H/Cp2FJs
-	k/RnZxMo6n4UXYnJvAznWygZ4=
-X-Received: by 2002:a05:6512:1111:b0:5c1:4f9f:1ae6 with SMTP id
- 2adb3069b0e04-5c1a217f086mr135560e87.15.1794925932245; Tue, 17 Nov 2026
- 06:32:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K9/Ggob+
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E49A1F000C5;
+	Tue, 17 Nov 2026 14:36:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794926174;
+	bh=O6LryH0j9aDeGupJj+GdTTB2fTZI04rn2KNQvmULex8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=K9/Ggob+DsJGpbqSo81P1bFwyl19xmgdBBPix/sbGDwvXJ+/8YJHR40GuiB7nEVEs
+	 oLTpE2VDjS6KcxyTx0XEjxjdwnOKW7N3dsGpN3mOlseYmb87N2j99JA+u7zwptY3Wn
+	 EvKKF/2K2rUaEVX4MDoPywRr4QbY1+GoQXVXxLQXvoU6wxYm1y+VCgAFAt7u9E0I/b
+	 kZcO7cnGcVqR2ciWO7FLWOaSOT2rpvHUgCANr5g25cWtYGOfrz37xdpOU1fWo8LBA9
+	 JLDBKiDqFqAkYpjoecpsA+BeMizxztslcOaafULIej8fwu95w1vBp0mZOKLl/ljd9c
+	 Hq7arpYqWXpgw==
+Date: Tue, 17 Nov 2026 14:36:06 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
+	Wei-Lin Chang <weilin.chang@arm.com>, Will Deacon <will@kernel.org>, Fuad Tabba <tabba@google.com>
+Subject: Re: [PATCH v2 2/2] KVM: selftests: Test KVM_PRE_FAULT_MEMORY against
+ a full dirty ring
+Message-ID: <avxj4cTtgy6gOLyC@gremlin>
+References: <20261117074428.7544-1-fuad.tabba@linux.dev>
+ <20261117074428.7544-3-fuad.tabba@linux.dev>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,49 +63,163 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261116164358.142785-1-steven.price@arm.com> <20261116164358.142785-8-steven.price@arm.com>
-In-Reply-To: <20261116164358.142785-8-steven.price@arm.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Tue, 17 Nov 2026 14:31:35 +0000
-X-Gm-Features: AclHuK8jwarv0Qdp1aWUBJu9cvVLVN2wG1yO28RoPz1SpZjEhJ3_zh_LKO1lzYo
-Message-ID: <CA+EHjTwqYUBvhjF8dxqVA1mF_Qe1r2UZdwkZ+Zirgmm2um=skg@mail.gmail.com>
-Subject: Re: [PATCH v3 07/11] KVM: Allow architectures to reject memslot
- changes before invalidation
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
-	Christoffer Dall <christoffer.dall@arm.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Kohei Enju <enju.kohei@fujitsu.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261117074428.7544-3-fuad.tabba@linux.dev>
 
-Hi Suzuki,
+On Tue, Nov 17, 2026 at 07:44:28AM +0000, Fuad Tabba wrote:
+> Pre-fault more populated, dirty-logged pages than the vCPU's dirty ring
+> holds, and check that each call stops before the ring overflows, that a
+> retry returns ENOSPC without progress, and that each page is reported
+> exactly once. A read pre-fault can map a page read-only, or
+> access-tracked on x86 without EPT A/D bits, so skip the case if
+> pre-faulting doesn't dirty any page.
+>
+> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-On Mon, 16 Nov 2026 16:43:53 +0000, Steven Price <steven.price@arm.com> wrote:
-[...]
-> Architectures may need to reject deletion of a memory slot without
-> changing the guest's memory mappings. Currently, KVM invalidates the slot
-> and calls kvm_arch_flush_shadow_memslot() before
-> kvm_arch_prepare_memory_region() can reject the request. On arm64, this
-> unmaps the slot from stage-2. Restoring the old memslot on failure does not
-> restore those mappings, so even a rejected deletion has side effects.
-[...]
-> Move arm64's protected VM checks into the new hook so that unsupported
-> deletions and moves are rejected before stage-2 unmapping. Keep resource
-> preparation after invalidation, since invalidation drops slots_arch_lock
-> and allows concurrent updates to architecture-specific memslot metadata.
+LGTM!
 
-For pVMs the invalidation doesn't touch stage-2
-(protected_pkvm_vm_s2_ops uses no_stage2_unmap_range()), so the reason
-for the hook is the Realm case in the next patch. Can you change the
-message to say that?
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Cheers,
-/fuad
+> ---
+>  .../selftests/kvm/pre_fault_memory_test.c     | 101 ++++++++++++++++++
+>  1 file changed, 101 insertions(+)
+>
+> diff --git a/tools/testing/selftests/kvm/pre_fault_memory_test.c b/tools/testing/selftests/kvm/pre_fault_memory_test.c
+> index 3082fe09b95fa..72c501afc873b 100644
+> --- a/tools/testing/selftests/kvm/pre_fault_memory_test.c
+> +++ b/tools/testing/selftests/kvm/pre_fault_memory_test.c
+> @@ -5,6 +5,9 @@
+>   * Author:
+>   * Isaku Yamahata <isaku.yamahata at gmail.com>
+>   */
+> +#include <asm/barrier.h>
+> +#include <linux/bitmap.h>
+> +#include <linux/bitops.h>
+>  #include <linux/sizes.h>
+>
+>  #include <test_util.h>
+> @@ -17,6 +20,8 @@
+>  /* Arbitrarily chosen values */
+>  #define TEST_BASE_SIZE		SZ_2M
+>  #define TEST_SLOT		10
+> +/* Large enough for the entries every architecture reserves. */
+> +#define TEST_RING_SIZE		SZ_64K
+>
+>  /* Storage of test info to share with guest code */
+>  struct test_config {
+> @@ -281,6 +286,101 @@ static void test_pre_fault_memory(unsigned long vm_type, enum vm_mem_backing_src
+>  	for_each_guest_mode(__test_pre_fault_memory, &p);
+>  }
+>
+> +/*
+> + * Pre-fault more dirty-logged pages than the ring holds: each call has to stop
+> + * before the ring overflows, and no entry may be lost.
+> + */
+> +static void test_pre_fault_dirty_ring(void)
+> +{
+> +	const u64 entries = TEST_RING_SIZE / sizeof(struct kvm_dirty_gfn);
+> +	const u64 npages = entries + entries / 4;
+> +	struct kvm_pre_fault_memory range, left;
+> +	struct kvm_dirty_gfn *gfns, *cur;
+> +	u64 harvested = 0, size;
+> +	struct kvm_vcpu *vcpu;
+> +	unsigned long *seen;
+> +	int ret, stops = 0;
+> +	struct kvm_vm *vm;
+> +	u32 fetch = 0;
+> +	gpa_t gpa;
+> +
+> +	if (!kvm_has_cap(KVM_CAP_DIRTY_LOG_RING) && !kvm_has_cap(KVM_CAP_DIRTY_LOG_RING_ACQ_REL)) {
+> +		pr_info("Skipping the dirty ring test: no dirty ring\n");
+> +		return;
+> +	}
+> +
+> +	vm = vm_create(1);
+> +	vm_enable_dirty_ring(vm, TEST_RING_SIZE);
+> +	vcpu = vm_vcpu_add(vm, 0, NULL);
+> +	gfns = vcpu_map_dirty_ring(vcpu);
+> +
+> +	/* A ring entry is a host page. */
+> +	size = npages * getpagesize();
+> +	gpa = align_down(vm->max_gfn * vm->page_size - size, SZ_2M);
+> +	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, gpa, TEST_SLOT,
+> +				    vm_num_guest_pages(vm->mode, npages), KVM_MEM_LOG_DIRTY_PAGES);
+> +
+> +	/* Populate the pages, so that pre-faulting can map them writable. */
+> +	memset(addr_gpa2hva(vm, gpa), 1, size);
+> +
+> +	seen = bitmap_zalloc(npages);
+> +	TEST_ASSERT(seen, "Failed to allocate the bitmap of reported pages");
+> +
+> +	range = (struct kvm_pre_fault_memory) { .gpa = gpa, .size = size };
+> +	while (range.size) {
+> +		u64 n;
+> +
+> +		vcpu_ioctl(vcpu, KVM_PRE_FAULT_MEMORY, &range);
+> +
+> +		if (range.size) {
+> +			left = range;
+> +			ret = __vcpu_ioctl(vcpu, KVM_PRE_FAULT_MEMORY, &range);
+> +			TEST_ASSERT_VM_VCPU_IOCTL(ret == -1 && errno == ENOSPC,
+> +						  KVM_PRE_FAULT_MEMORY, ret, vm);
+> +			TEST_ASSERT(range.gpa == left.gpa && range.size == left.size,
+> +				    "KVM_PRE_FAULT_MEMORY made progress on a full ring");
+> +			stops++;
+> +		}
+> +
+> +		for (n = 0; ; n++) {
+> +			cur = &gfns[fetch % entries];
+> +			/* Pairs with the smp_wmb() in kvm_dirty_ring_push(). */
+> +			if (smp_load_acquire(&cur->flags) != KVM_DIRTY_GFN_F_DIRTY)
+> +				break;
+> +
+> +			TEST_ASSERT(cur->slot == TEST_SLOT && cur->offset < npages,
+> +				    "Ring entry %u: slot %u offset 0x%llx, expected slot %u offset < 0x%lx",
+> +				    fetch, cur->slot, cur->offset, TEST_SLOT, npages);
+> +			TEST_ASSERT(!__test_and_set_bit(cur->offset, seen),
+> +				    "Ring entry %u: offset 0x%llx reported twice",
+> +				    fetch, cur->offset);
+> +			/* Pairs with kvm_dirty_gfn_harvested()'s smp_load_acquire(). */
+> +			smp_store_release(&cur->flags, KVM_DIRTY_GFN_F_RESET);
+> +			fetch++;
+> +		}
+> +
+> +		/* A read pre-fault can map a page read-only, or access-tracked on x86. */
+> +		if (!n && !harvested && !range.size) {
+> +			pr_info("Skipping the dirty ring test: pre-faulting dirtied no pages\n");
+> +			bitmap_free(seen);
+> +			kvm_vm_free(vm);
+> +			return;
+> +		}
+> +		TEST_ASSERT(n, "KVM_PRE_FAULT_MEMORY pushed nothing to the ring");
+> +		TEST_ASSERT(kvm_vm_reset_dirty_ring(vm) == n,
+> +			    "KVM_RESET_DIRTY_RINGS didn't reset %lu entries", n);
+> +		harvested += n;
+> +	}
+> +
+> +	TEST_ASSERT(harvested == npages, "%lu ring entries for %lu pages", harvested, npages);
+> +	TEST_ASSERT(stops, "KVM_PRE_FAULT_MEMORY never stopped for a %lu-entry ring", entries);
+> +	pr_info("Pre-faulted %lu pages through a %lu-entry ring, stopping %d times\n",
+> +		npages, entries, stops);
+> +
+> +	bitmap_free(seen);
+> +	kvm_vm_free(vm);
+> +}
+> +
+>  static void help(char *name)
+>  {
+>  	puts("");
+> @@ -320,5 +420,6 @@ int main(int argc, char *argv[])
+>  	test_pre_fault_memory(KVM_X86_SW_PROTECTED_VM, backing, false);
+>  	test_pre_fault_memory(KVM_X86_SW_PROTECTED_VM, backing, true);
+>  #endif
+> +	test_pre_fault_dirty_ring();
+>  	return 0;
+>  }
+> --
+> 2.47.3
+>
+
+--
+Cheers, Lorenzo
