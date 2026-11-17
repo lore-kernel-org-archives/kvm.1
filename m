@@ -1,59 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.143
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794931839;
-	b=wZ679oQAD93SCdco5EaaBZ64Iibl2Z/3bifb1jNv4HK3IoAtksuTkoyqBFK94v0rQl65
-	 y9cbymG0akbCNXchgdeGAGEFsLLXpQJvSV8xbX7DM9+23mQKuWU1AvniH8C35ugvtAJZA
-	 ms4PuyJKYUOhm2h+/kckRN7K3I+SQhjXHPOlZr0VzIHXaDxPcDu26xLxcVoJ3tf7HrpB8
-	 KElmXBNOIWWNQ5kRWl96ZIvVONK5BbkmR0gpxYWc2b3kjBO2Db5HdW+o6G1omG5G97HH/
-	 WE1tCPMs9HUv3J6cB9B5RDtjS1s/LieZJwbPh7NUU/zcLR9GN/fByi0zIrkqCg4dJvw==
+	t=1794932285;
+	b=mgzVBZXSIyr+rgQlk7bi+7Qdr1+fsw50b0rMfLbJQNS4P1IBlHtlNqHsnQo+GDrL3zdQ
+	 AGZYToLrkiyajtF1LT0ncoyGXtwz+Ep7XAXLobEadjKg3YS0/qSby6xXeajd9ePPWZW5o
+	 AFhWkDK1EMWluM1+gJWkujDhhwIj4GjFVvmJX8YDeXVvijgt9+mEAvJfMin8yQxv7hlUF
+	 XvLg1ADSmKjqCU3izGrAH+rq8rSqh+e8L3NUog/2xbExk1xF9jzvz7JTBeGWGPNbknIZn
+	 onZMHr7yIDwGFizqKDuKnuG4jZLoJl/QrAVtGrHVLy2URZ3/EIYhdQnMPKQnagX/9og==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794931839;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=+Lpr9cKkxrLx73QOmdMkKVTocviV8TbIfP0oOAlS8dA=;
-	b=yDQr92Shgcc4JJhLlajcQ35QqsJBx6+Pf6m8Y9Nl/KFFpWgJ6fIByQWNO/SQ1jHXsmqX
-	 /ld7CwwExg+0AaE5S+wuTBM2RRZTwwio4SemMOnY9UhyltIf7lEEH8wDMpMp4vBXOh4pj
-	 e9TFdFajt6qz8fpo5n+0YqSx8EpRiBE0AfLeL3Til1b112tncBXpM56aYY6fNXU8AobcH
-	 OO8EA6dlyf63DXwi9AwHgIFdJ+wJDrXDWeBa1m874NirymaDKQk6rW1FCnOahMRRtP+cK
-	 KHLDKO8b826EYWf3UhA/mGxsXcJ2DjoW1mQ7gxUsAt868o7GWAEW2j6je6KdIm3S6ag==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794932285;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type;
+	bh=nVQSkvxSA2D4E7wBBlcWxeerY52SIX8ZzPPc0+UbW0Q=;
+	b=ZHRwQRVOzZX+KKZ+u/jIXUT94viqPr6rvkXrsMk90amje/RNOd80NEF5gZ7pNHhqatMA
+	 EMApA2kxsIvg2SVaW+MQ7XYuodCzcPEk1V9qAytqmtCFxZYh5YfowQlbZYPk+UzGTR6LS
+	 mm9s5Z9cDBGjtoA5N9E5LzjJnn6GvOgR+Jc86OJnvUwVNNm4AByd6tjGorPGBoomrfmuo
+	 X1Z/GFJcojyfN+x89iWVKK9aZDZL0sp2coUd75TF2xVKWokpIpTfLjZ4mwz5nukG7+XLp
+	 LS6XzZqHySSvDYDxMY+w4tmL4+T/BDnN1qFQXF5GTW5lFpRGwVA/Ow83HmSTL0XXp/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=VEv3pcJN;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A12606A32C
-	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 16:10:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89A12606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZtFmZjnh;
+	arc=none smtp.remote-ip=91.218.175.143
+Received: from mta0.migadu.com (out-143.mta0.migadu.com [91.218.175.143])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E651D606A884
+	for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 16:18:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E651D606A884
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=VEv3pcJN
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F191B1A00;
-	Tue, 17 Nov 2026 08:10:34 -0800 (PST)
-Received: from gentoo-vm (kajpuc01-mac-mini.manchester.arm.com [10.33.9.44])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 11B5D3F632;
-	Tue, 17 Nov 2026 08:10:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794931837; bh=Unmy4knUS3OUA8p8EnyBnKyXh5CQud68fonNVN+bzJ8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VEv3pcJNHMw9B8IwTAgApk/WzCeqO444iBo8wrheCJuHGi/zeEhYeZNDhz5ZFHbPs
-	 RlOR0VM1XvQvNY6oeNzYGg1bE0Bbasm2Cz44OUD/4lg7iGgx2cjzITCxyLrZRPilwj
-	 HPYN/kzbGyAVju57nzQ62vZBARknBqYezI9mfDSE=
-From: Kajetan Puchalski <kajetan.puchalski@arm.com>
-To: kvm@vger.kernel.org
-Cc: will@kernel.org,
-	julien.thierry.kdev@gmail.com,
-	kvmarm@lists.linux.dev,
-	Kajetan Puchalski <kajetan.puchalski@arm.com>
-Subject: [PATCH kvmtool 2/2] net: Use the host as a DNS proxy on loopback DNS
-Date: Tue, 17 Nov 2026 16:10:19 +0000
-Message-ID: <20261117161019.142337-2-kajetan.puchalski@arm.com>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <20261117161019.142337-1-kajetan.puchalski@arm.com>
-References: <20261117161019.142337-1-kajetan.puchalski@arm.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZtFmZjnh
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=6gwDumgKWifTcW7wg2iaB3gIO2cxXQFF5pgKIzED2/A=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794932282; v=1; x=1795537082;
+ b=ZtFmZjnh4kBx9rtbLJUBTQ99odrbwM5TmsIAzIc/k/J1WTn9M4F5V3/bgLsbdeZMD5qPpflo
+ MukFzXnDXZ/7kciJG8hI6fS8bHKBv0x+aYgfhn2g2sTmKQKe1nKyysTy3UfcBPpx5A5SpQpVzdd
+ yU5HPKJFtKH2W3y6uqHIq494=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 3ed4ef591ad2c985;
+	Tue, 17 Nov 2026 16:18:02 +0000
+X-Mizu-Trace-ID: 3ed4ef591ad2c985
+X-Migadu-Flow: FLOW_OUT
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5c14bc5a743so11146e87.0
+        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 08:17:57 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErEZo/YQuRZuDxNcckWoCG98LI6vi/CbouY82V82hAvSkydLgW1qkXQ8v87TQeZwEeUPkLw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9cfMFQG2sowN/ToF0NSOUpJqJH4XxXCed8b1Tysl5jJLhapFaI
+	ed2pa7mGDX36SwuhDZEIc9tbnCUb/Qd8Pxd4tQRZoJHdZiMqq+IFRcuMgTujs5B0w/CXN4QOUwJ
+	KC6GyvuQXM54mygrV+5sijTOq/L4EAj+8NjF7m8Mt
+X-Received: by 2002:a05:6512:3b93:b0:5c1:5bc5:f373 with SMTP id
+ 2adb3069b0e04-5c1a21bcf91mr172153e87.15.1794932276673; Tue, 17 Nov 2026
+ 08:17:56 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -63,128 +66,88 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261111145758.217946-1-steven.price@arm.com> <20261111145758.217946-12-steven.price@arm.com>
+ <c5ebf936-fbc6-4910-be59-9e89ff3a625e@arm.com>
+In-Reply-To: <c5ebf936-fbc6-4910-be59-9e89ff3a625e@arm.com>
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Tue, 17 Nov 2026 16:17:20 +0000
+X-Gmail-Original-Message-ID: <CA+EHjTxz18a-8YcJPu7Vdib5xo4bLV-2CedLJxzh+76KuWG0YQ@mail.gmail.com>
+X-Gm-Features: AclHuK9hGzky46Uw9aIIH7RYxIzDHZDA5jw0n1Qmc2z6Ij7OwGUMvY7c8hZrsUo
+Message-ID: <CA+EHjTxz18a-8YcJPu7Vdib5xo4bLV-2CedLJxzh+76KuWG0YQ@mail.gmail.com>
+Subject: Re: [PATCH v2 11/12] KVM: arm64: CCA: Support runtime faulting of memory
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Kohei Enju <enju.kohei@fujitsu.com>
+Content-Type: text/plain; charset="UTF-8"
 
-systemd-resolved populates /etc/resolv.conf with a loopback address.
-Using it as-is results in broken guest DNS due to kvmtool not
-distinguishing between a loopback and a real DNS server.
-When uip_dhcp_get_dns encounters a loopback address, mark it as
-requiring a DNS proxy and use the host address as this proxy, forwarding
-traffic to it over UDP and TCP to keep guest DNS working out of the box.
+Hi Suzuki,
 
-Signed-off-by: Kajetan Puchalski <kajetan.puchalski@arm.com>
----
- include/kvm/uip.h |  9 +++++++++
- net/uip/dhcp.c    | 25 +++++++++++++++++++++++--
- net/uip/tcp.c     |  4 +++-
- net/uip/udp.c     |  3 +++
- 4 files changed, 38 insertions(+), 3 deletions(-)
+(sorry for the resend, my email client mangled the first one)
 
-diff --git a/include/kvm/uip.h b/include/kvm/uip.h
-index efa508a..f226c6b 100644
---- a/include/kvm/uip.h
-+++ b/include/kvm/uip.h
-@@ -30,6 +30,8 @@
- #define UIP_TCP_FLAG_ACK	16
- #define UIP_TCP_FLAG_URG	32
- 
-+#define UIP_DNS_PORT		53
-+
- #define UIP_BOOTP_VENDOR_SPECIFIC_LEN	64
- #define UIP_BOOTP_MAX_PAYLOAD_LEN	300
- #define UIP_DHCP_VENDOR_SPECIFIC_LEN	312
-@@ -204,6 +206,7 @@ struct uip_info {
- 	u32 guest_netmask;
- 	u32 host_ip;
- 	u32 dns_ip[UIP_DHCP_MAX_DNS_SERVER_NR];
-+	u32 dns_proxy_ip;
- 	char *domain_name;
- 	u32 buf_nr;
- 	u32 vnet_hdr_len;
-@@ -334,6 +337,12 @@ static inline u16 uip_eth_hdrlen(struct uip_eth *eth)
- 	return sizeof(*eth);
- }
- 
-+static inline bool uip_is_dns_proxy(const struct uip_info *info, u32 dip, u16 dport)
-+{
-+	return info->dns_proxy_ip && dip == htonl(info->host_ip) &&
-+		   dport == htons(UIP_DNS_PORT);
-+}
-+
- int uip_tx(struct iovec *iov, u16 out, struct uip_info *info);
- int uip_rx(struct iovec *iov, u16 in, struct uip_info *info);
- void uip_static_init(struct uip_info *info);
-diff --git a/net/uip/dhcp.c b/net/uip/dhcp.c
-index a949a6b..0ae0ca8 100644
---- a/net/uip/dhcp.c
-+++ b/net/uip/dhcp.c
-@@ -57,9 +57,28 @@ int uip_dhcp_get_dns(struct uip_info *info)
- 		else if (strncmp("nameserver", key, 10) == 0) {
- 			if (!inet_aton(val, &addr))
- 				continue;
-+
-+			if (n >= UIP_DHCP_MAX_DNS_SERVER_NR)
-+				continue;
-+
- 			ip = ntohl(addr.s_addr);
--			if (n < UIP_DHCP_MAX_DNS_SERVER_NR)
--				info->dns_ip[n++] = ip;
-+			/*
-+			 * systemd-resolved on modern systems puts a loopback
-+			 * address in /etc/resolv.conf. Applying the loopback to
-+			 * the guest will result in broken guest DNS instead of
-+			 * the intended behaviour of using the host's DNS.
-+			 * Use the host as a DNS proxy instead.
-+			 */
-+			if ((ip >> 24) == IN_LOOPBACKNET) {
-+				/* Keep the first loopback nameserver */
-+				if (info->dns_proxy_ip)
-+					continue;
-+
-+				info->dns_proxy_ip = ip;
-+				ip = info->host_ip;
-+			}
-+
-+			info->dns_ip[n++] = ip;
- 			ret = 0;
- 		}
- 	}
-@@ -208,4 +227,6 @@ void uip_dhcp_exit(struct uip_info *info)
- {
- 	free(info->domain_name);
- 	info->domain_name = NULL;
-+	memset(info->dns_ip, 0, sizeof(info->dns_ip));
-+	info->dns_proxy_ip = 0;
- }
-diff --git a/net/uip/tcp.c b/net/uip/tcp.c
-index 42e6e99..2a87d68 100644
---- a/net/uip/tcp.c
-+++ b/net/uip/tcp.c
-@@ -83,7 +83,9 @@ static struct uip_tcp_socket *uip_tcp_socket_alloc(struct uip_tx_arg *arg, u32 s
- 
- 	pthread_cond_init(&sk->cond, NULL);
- 
--	if (ntohl(dip) == arg->info->host_ip)
-+	if (uip_is_dns_proxy(arg->info, dip, dport))
-+		sk->addr.sin_addr.s_addr = htonl(arg->info->dns_proxy_ip);
-+	else if (ntohl(dip) == arg->info->host_ip)
- 		sk->addr.sin_addr.s_addr = inet_addr("127.0.0.1");
- 
- 	ret = connect(sk->fd, (struct sockaddr *)&sk->addr, sizeof(sk->addr));
-diff --git a/net/uip/udp.c b/net/uip/udp.c
-index d2580d0..058c2b7 100644
---- a/net/uip/udp.c
-+++ b/net/uip/udp.c
-@@ -69,6 +69,9 @@ static struct uip_udp_socket *uip_udp_socket_find(struct uip_tx_arg *arg, u32 si
- 	sk->addr.sin_addr.s_addr = dip;
- 	sk->addr.sin_port	 = dport;
- 
-+	if (uip_is_dns_proxy(arg->info, dip, dport))
-+		sk->addr.sin_addr.s_addr = htonl(arg->info->dns_proxy_ip);
-+
- 	sk->sip			 = sip;
- 	sk->dip			 = dip;
- 	sk->sport		 = sport;
--- 
-2.56.1
+On Mon, 16 Nov 2026 18:36:29 +0000, Suzuki K Poulose
+<suzuki.poulose@arm.com> wrote:
+> On 11/11/2026 14:57, Steven Price wrote:
+[...]
+> > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+[...]
+> > @@ -1791,12 +1799,18 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
+> >           void *memcache = NULL;
+> >           gfn_t canonical_gfn;
+> >           int ret;
+> > +        bool is_private = false;
+> >
+> > -        if (!perm_fault) {
+> > +        if (KVM_BUG_ON(!kvm_slot_has_gmem(s2fd->memslot), kvm))
+> > +                return -EINVAL;
+> > +
+> > +        if (!perm_fault || kvm_arch_has_private_mem(kvm)) {
+>
+> should this be s/kvm_arch_has_private_mem/kvm_vm_is_realm ? I dont think
+> this would be required for pKVM yet ?
+>
+> Also, I wonder why pKVM doesnt need mmu cache pages with permission
+> faults with gmem. They do for user_mem_abort().
+> (may be because they assume Gmem is always single page ? in which case
+> we could also have the same behavior)
 
+gmem_abort() only maps single pages, so a permission fault there just
+relaxes permissions and doesn't use the memcache. In user_mem_abort(),
+a pKVM permission fault can map a block, and that uses the memcache.
+So yes, the top-up on a permission fault here is only for Realms.
+
+[...]
+> > @@ -1817,13 +1831,35 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
+> >           /* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
+> >           smp_rmb();
+> >
+> > +        if (kvm_arch_has_private_mem(kvm)) {
+>
+> --8>--
+>
+> > +                switch (kvm->arch.vm_flavor) {
+> > +                case VM_REALM:
+> > +                        is_private = kvm_realm_is_private_address(&kvm->arch.realm,
+> > +                                                                  s2fd->fault_ipa);
+>
+> Could we for now use
+>                 is_private = private_ipa_fault(kvm, s2fd->fault_ipa);
+>
+> In other words use a wrapper for detecting if a given ipa is private or
+> not ? May be something like:        kvm_ipa_is_private(kvm, ipa)? (choose ipa
+> to make it explicit, it is arm64 thing).
+>
+> Where, pKVM could hook in its own check.
+I'd keep the switch. pKVM can add its own case when it uses this path.
+
+Cheers,
+/fuad
