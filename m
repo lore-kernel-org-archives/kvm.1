@@ -1,49 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795014862;
-	b=Y2M69QEgjqGpveW/0XxkzHp+fYzO73ZGn1sKsvzaUTLCYlDRPqN4usQNSyW0/3rOA6h0
-	 BhbdX7QeSuYEMOMa4Ft0ZdF1QegGkNuUjet4p2TF2BIF/Ny7hl0AHexfX3GpieDMC6q9k
-	 xC2zKFjczczcPStPcwluiWeu1kRdJNuMqjLjkz9QNRa8VLg2ItFT1SSLYYuBoivpPO9Ry
-	 MWAcrNU8md+b3uAKJmclUstewu1leqDoP4D6SDwRmniEgsPAyEiy5rDsK1AD+Scjqemd3
-	 jsIrWs5TZ1vIAlcFrXOtSJDZ1DMBIF+yCapGoaxLJfqLORhZp0yTLfX4G3ksFEb2HfQ==
+	t=1795015021;
+	b=JPgBisgpyHq33sUJc0AN5e5NGYAScn1ZeH5h0rlRIwBsui4SURJKvvOGnHSep6kYSAu0
+	 +WJI5foD9Fdj1ywoZdlbjec4PnYu6Zo2M+5SARVanl1A85lkg4n0zq9cAdo2zqxbphu5J
+	 5LGrxtjcY+mRtAqUu1IzVb7EXfyKB8VGnmE6w1sC+tSt5/9XCtCV54vuu8+qSms7Lbaxj
+	 8uaaS0txFZ1WShVlcI3q9Y9HyK7n8mLCGQfcB5Lb+UqoYGLyskDmuMXpXB+5bASVYKpnW
+	 H1DbHOvKOiTh3kPc6JgKY85KHO+OX37flXqWrZ0lf/yvnTfmNrFvgRaYYo2yVoxxnHw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795014862;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795015021;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
 	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
 	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=eqAQDHfs/HjyigJ8QZu0i4uhdOip44peu6Dz+/HBUQ4=;
-	b=wgsFXLZofRhWY+qkcz/EgrE3SqbhPSHeFQ9GzUj2iuvU5y1JRLhY7JXn7YnNz9Nmb5Ee
-	 Lzw3dKqsnn+uNSpX9Gobd1psff0wuBKAqDHweWpsxAe88Rf4wmugBtSHoPjuPLyTGmcnx
-	 3V86pnualAfp215EQK2QgltLwsPCFJE667ytJEU3AIrTrus2keZ6qXxuEtTz3hgz6Qyqp
-	 LtfCaLohD/QdgcigVhqmf9vTYtLqCzKOnOedcsxXBoYXRbXS1zDf1G7DsmtGhf+ZLIXFF
-	 aN9TZyqd392ujC5/4ry8B0/G9H9wdwCtThEuGLE7oXdQkrNaDVKq9vuZnNE23g+JRsg==
+	bh=de0/cTu3T+jrVL0KRaILAEooiHY5vn/RFGHis6/8Bi4=;
+	b=WAab0rTp7LYTs1ITzOXx5ZsW354wc1NuS3EaGcwtxpibgWsNQaJ0LZD0qk/GCmocso3L
+	 0Ebx7ipDQtfOofkpf6914aFnK2LyWc+Qb6bLHzHbieZpXYizIBFvfg0H9572cuFyZbeQe
+	 J1pXijwKxUOqQ7ZQAQG61xp8xC9n5tFic9Ds4kmAZnekeyWjj3j0WGNfF+596zDrPL0y2
+	 emozXPDJ8ySai9FPFm/m1AxjyDYbAURucRfC90RiW5sgy7XhCCB9aXCGB+yTcYkDMrVhX
+	 tKsnOVta4/fPl+0MRDUg3cyKupFwYvq5AmJ3loF2AmBVWzmFddqLdIfrxF3QjyHMn0Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=lQlMFrIj;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="k/pAJ9XY";
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FA6606A320
-	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 15:14:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 91FA6606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868FB606A330
+	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 15:17:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 868FB606A330
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=lQlMFrIj
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=k/pAJ9XY
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F3FF91477;
-	Wed, 18 Nov 2026 07:14:17 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F05C11477;
+	Wed, 18 Nov 2026 07:16:57 -0800 (PST)
 Received: from [10.0.136.98] (M0PRX50XMG.cambridge.arm.com [10.0.136.98])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B1DA83F632;
-	Wed, 18 Nov 2026 07:14:19 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ACF3E3F632;
+	Wed, 18 Nov 2026 07:16:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795014860; bh=uMaMM661VYSYAj+zCHj6huh9RJSq359QkpBA2FPXl/I=;
+	t=1795015020; bh=N4rZz7WjbLMSngB7gJRDKNm69LzXiajw+dBw411Mr4Q=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lQlMFrIjL5RHVkFABEZccYe5hwkwSuHtZtHIQHyqUFxGM/OofRmGOAVw4zBAOnT/j
-	 qcdyuenJb5pSaTS2XhrmiDq88PS2DEWYlTXQILJt5pVpdZcQ+8DENtFZPtJUFs0hAy
-	 A/6nZSjFHjN7L7N2ohuCdJBKD9AWhNF3GXR1gs/E=
-Message-ID: <5461a63a-822f-43d8-a571-a109e468237d@arm.com>
-Date: Wed, 18 Nov 2026 15:14:18 +0000
+	b=k/pAJ9XYT6oi6POZDpraxWipRQRFohoLChiDMJ6PlHan7ZBjC5kV+oJqs8dL0aWT3
+	 xCgdFfhJMNwiLZTLYy8rSHqWLPYUQwyhw+Vghzib0QR0GP0Mp6XkRRgEQXKFK5kXTz
+	 h5Z0uAe2bg9L4fwfSo/60yBuXzx8CKa40T3Qn5Zw=
+Message-ID: <df9268c6-2137-47f7-8ab7-35859b3c92b0@arm.com>
+Date: Wed, 18 Nov 2026 15:16:58 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -54,75 +54,68 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH kvmtool v4 12/23] arm64: Describe timer PPIs for GICv5
+Subject: Re: [PATCH kvmtool v4 13/23] arm64: Assign CPU DT phandles
 To: Vladimir Murzin <vladimir.murzin@arm.com>, will@kernel.org,
  julien.thierry.kdev@gmail.com
 Cc: maz@kernel.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev,
  timothy.hayes@arm.com, Peter Maydell <peter.maydell@linaro.org>
 References: <20261102213413.4136118-1-sascha.bischoff@arm.com>
- <20261102213413.4136118-13-sascha.bischoff@arm.com>
- <6286fa85-fd00-44cb-b03e-87dae6a7107f@arm.com>
+ <20261102213413.4136118-14-sascha.bischoff@arm.com>
+ <19db29e9-ef49-44c0-a42b-e9da5c7a54b4@arm.com>
 Content-Language: en-GB
 From: Sascha Bischoff <sascha.bischoff@arm.com>
-In-Reply-To: <6286fa85-fd00-44cb-b03e-87dae6a7107f@arm.com>
+In-Reply-To: <19db29e9-ef49-44c0-a42b-e9da5c7a54b4@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 10/11/2026 15:23, Vladimir Murzin wrote:
+On 10/11/2026 15:24, Vladimir Murzin wrote:
 > On 11/2/26 21:34, Sascha Bischoff wrote:
->> GICv5 DT specifiers use absolute PPI numbers due to having separate
->> namespaces for the different interrupt types. Keep the existing
->> GICv2/v3 specifiers by subtracting the legacy PPI base for those
->> irqchips.
+>> Assign stable phandles to all arm64 CPU nodes. The GICv5 IRS DT node
+>> uses them to map IAFFIDs to CPUs; they remain unreferenced for earlier
+>> GIC models.
 >>
+> 
+> Who knows maybe one day we would need them for anything other than GIC :)
+
+Yup, maybe :) The main reason I hadn't previously emitted these in 
+general was that I was worried about affecting non-GICv5 guests due to 
+an unexpected DT change, but unreferenced phandles don't seem to make it 
+into the final FDT.
+
+> 
 >> Tested-by: Vladimir Murzin <vladimir.murzin@arm.com>
 >> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
 >> ---
->>   arm64/timer.c | 9 +++++----
->>   1 file changed, 5 insertions(+), 4 deletions(-)
+>>   arm64/fdt.c                  | 1 +
+>>   arm64/include/kvm/fdt-arch.h | 1 +
+>>   2 files changed, 2 insertions(+)
 >>
->> diff --git a/arm64/timer.c b/arm64/timer.c
->> index 2ac6144f..01b9875c 100644
->> --- a/arm64/timer.c
->> +++ b/arm64/timer.c
->> @@ -9,16 +9,18 @@ void timer__generate_fdt_nodes(void *fdt, struct kvm *kvm)
->>   {
->>   	const char compatible[] = "arm,armv8-timer\0arm,armv7-timer";
->>   	u32 cpu_mask = gic__get_fdt_irq_cpumask(kvm);
->> -	int irqs[5] = {13, 14, 11, 10, 12};
->> +	const int irqs[5] = { 29, 30, 27, 26, 28 };
->>   	int nr = ARRAY_SIZE(irqs);
->>   	u32 irq_prop[nr * 3];
->> +	u32 type = gic__get_ppi_fdt_type();
->> +	int ppi_base = gic__get_ppi_base();
+>> diff --git a/arm64/fdt.c b/arm64/fdt.c
+>> index 3cbd36e2..5413956d 100644
+>> --- a/arm64/fdt.c
+>> +++ b/arm64/fdt.c
+>> @@ -54,6 +54,7 @@ static void generate_cpu_nodes(void *fdt, struct kvm *kvm)
+>>   			_FDT(fdt_property_string(fdt, "enable-method", "psci"));
 >>   
->>   	if (!kvm->cfg.arch.nested_virt)
->>   		nr--;
->>   
->>   	for (int i = 0; i < nr; i++) {
->> -		irq_prop[i * 3 + 0] = cpu_to_fdt32(GIC_FDT_IRQ_TYPE_PPI);
->> -		irq_prop[i * 3 + 1] = cpu_to_fdt32(irqs[i]);
->> +		irq_prop[i * 3 + 0] = cpu_to_fdt32(type);
->> +		irq_prop[i * 3 + 1] = cpu_to_fdt32(irqs[i] - ppi_base);
->>   		irq_prop[i * 3 + 2] = cpu_to_fdt32(cpu_mask | IRQ_TYPE_LEVEL_LOW);
+>>   		_FDT(fdt_property_cell(fdt, "reg", mpidr));
+>> +		_FDT(fdt_property_cell(fdt, "phandle", PHANDLE_CPU_BASE + cpu));
+>>   		_FDT(fdt_end_node(fdt));
 >>   	}
 >>   
->> @@ -30,4 +32,3 @@ void timer__generate_fdt_nodes(void *fdt, struct kvm *kvm)
->>   		_FDT(fdt_property_cell(fdt, "clock-frequency", kvm->cfg.arch.force_cntfrq));
->>   	_FDT(fdt_end_node(fdt));
->>   }
->> -
-> 
-> Unintentional change?
-
-Argh, yes! Sorry, that these keep sneaking in. Fixed.
-
-> 
+>> diff --git a/arm64/include/kvm/fdt-arch.h b/arm64/include/kvm/fdt-arch.h
+>> index 8a0a460e..2b667c53 100644
+>> --- a/arm64/include/kvm/fdt-arch.h
+>> +++ b/arm64/include/kvm/fdt-arch.h
+>> @@ -11,4 +11,5 @@ enum phandles {
+>>   
+>>   void generate_dma_region_prop(void *fdt);
+>>   
+>> +#define PHANDLE_CPU_BASE PHANDLES_MAX
+>>   #endif /* ARM__FDT_H */
 >> -- 2.34.1
 >>
 > 
-> 
-> Otherwise,
+> FWIW,
 > 
 > Reviewed-by: Vladimir Murzin <vladimir.murzin@arm.com>
 
