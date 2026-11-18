@@ -1,57 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.2
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794996377;
-	b=yDluqlIU0OPNBqyWYSXSKeAVYJWpiGHxmMTM1TuH7FKMRMLb+r7cBmK0A2n4qo87zfs5
-	 qiYITm7GdejVqi9VWPOS5YpvrDvSn+Vq0x9PXj3aEFcntbZxHDR0s+ul7nrY/0+RgMgQL
-	 7zPQY0zIjWTOp9gR9EXVkNWCI8DfjU+LPc8AA3Qvv/DzIlNQcAcW7hislLccgZLQ/QSkG
-	 vfVjeAd7W/jtEbnGy9nU6cvTQwEvXpO/BMZmOpWmzb0eiiDFEAJmOcDrYQkNPL4SLxjTg
-	 iMf3EU+iI3UNtXtyFreHg6XDsUYLvpM+VbZrntrEvelkmj6lMUcnxYh9Cqis9CDo2sA==
+	t=1794996677;
+	b=S41SsSr3wZTDwiajNqPahgNYkIefJgxftFNaqogkzI2gyLdsB84BX97L1zxQmvnhwmWS
+	 OR6jR/hl9pn7vHcONljwgWiBq4TLW+zJgd4TudoOhIdNWEt3QSzA+jOppyrU/8qxbNwBt
+	 +AWL5jEEKkB2A61ToU3CFH2AgnArhriYzyJWh81DOggvUfSx8UKRD2NKFc0o7Rk5GcVP+
+	 3WXmu5uWGv7tP/c3snD8p+fzfTm4M6YanVs+BYcMl89CVnqjSIhfuXHCbRiGp3QBI7R1R
+	 plkUwQuzTiz5Q84GVt6tITgktkoBBCcqOXZBT4CDrOVP2q4LooTi3bh3DmqUaWJ+/1w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794996377;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=/y/BI38+Wr2DmR3gZbmuNB65fKyw6bGdS1gcYbxWjno=;
-	b=an2T6INfmQ70vc+sm5dN1Hg/jyNlmt1EOcve8XM/r+tMZhAuhdgZg5x3FNIq73hrAv0h
-	 b+eKI+6Tmq+V0OCxpHH9scBgHizGJFsiTm0jsFmUSzRvyGaboH1m+zYzysyODd5dCpFly
-	 EzDkQuxnTfjE/D8AMMIOHao483dL6NDMNWv4XGcQDNZe5P1x4r3ghGMqbQE7PZeineT7t
-	 UOhRZrq9airIF7MsOC0cjW5mL7WwI/cQPPbaM1tUkdh7hD/SBKxv1r9UudCTeN5HIOuFf
-	 pcqvF+LqePvobWmaCevvAhhR29p7Wwci5d3m4wsVVzgY/UhPolTTkBFRH5NlasYixog==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794996677;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-CM-TRANSID:X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
+	bh=10vF1TNZE1jmUzR5IhA4Cr9+ZCuxH/DSuBr/E3tdBrQ=;
+	b=blAoC3kfsgSRXfdGK/4ESBlpYaRHOPoG1cb4ibeOnWnuUAd3E8TTxLLbI9pF2VUlj0oD
+	 qkXSpMYHZxHQKQUjkt24O0m6O4aXPnHEp/m0pGJLOY+1kcvk6emuI3BMlqiEa6eWjYD+d
+	 +v74Tpv0gTWf6YAhhsPi7bCF/R5gvl4anlwN08g+54rigrnnqTe3O1BnkggwOUezf03Vg
+	 l/c1yMzuqkG4otg2eCY9qci1SKFcl+H8+GYUDPx3Q4pf8FEbob4CjrxUO+xXde5KLyRJ1
+	 pJjwJ+821hEZiLRgiAYE0yESNpgVb5BpY7RPSB10q1AaXWRNiTPG7LIqjMiC2VbJLDA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e2QF93dA;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=163.com;
+	spf=pass smtp.mailfrom=163.com;
+	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=XiTjr3A0;
+	arc=none smtp.remote-ip=220.197.31.2
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9746606A325;
-	Wed, 18 Nov 2026 10:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F144606A320;
+	Wed, 18 Nov 2026 10:11:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F144606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e2QF93dA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF9C1F000C4;
-	Wed, 18 Nov 2026 10:06:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794996376;
-	bh=/y/BI38+Wr2DmR3gZbmuNB65fKyw6bGdS1gcYbxWjno=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=e2QF93dAJQVfhM83WeVCui/scM67d/E1N46RRKmX6TV8sjjxDsmjhEKSwsqGByJCM
-	 8J3gdT08Xgv/3aaxWxEgwnhph93EMNuCvxphPEY2diNmihLirewkHiMKopPfa4NHEK
-	 aGuPqWBpujDEbkN1yo+NLU8B0G/OktksUcdPUIiEbKdsndEd7wkYe7sNk6BVNIspoV
-	 9gB5NsYnhD1/X/HHf3Dv/kdLgdzjfArdqi04O7duO1nfMhS6/6m/rxLiLwnObpQk30
-	 R/cmeJq7W7FWJjWEYADxrxv2coZk+6FVUnC2cgWjZ8b5OqqEEiGL5J4gtbuKbG9tpp
-	 trZ0FqiO1r64Q==
-Message-ID: <sashiko-outbox-220654@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v21 06/13] PCI/TPH: Add macros to check standard and
- extended TPH support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Chengwen Feng" <fengchengwen@huawei.com>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
-In-Reply-To: <20261118091238.45992-7-fengchengwen@huawei.com>
-References: <20261118091238.45992-1-fengchengwen@huawei.com>
- <20261118091238.45992-7-fengchengwen@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 18 Nov 2026 10:06:16 +0000
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=XiTjr3A0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=10
+	vF1TNZE1jmUzR5IhA4Cr9+ZCuxH/DSuBr/E3tdBrQ=; b=XiTjr3A0742JJy8J3g
+	2GjHnhhuzFxw72XZJs08zxmKDvpS9bc2zkFZAMMUV20tXpaw6xrI9IM0delGgf28
+	4tJElLPPI0Dc+/nfTiXKdWHSMy2tfFfzFmisZUNzIIKszIpg5cLZ9HqaYmRiKMAe
+	gB8y8+NxMy7aqrH+rj9+PkK00=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3_9WAef1qJpK6IA--.4941S2;
+	Wed, 18 Nov 2026 18:10:10 +0800 (CST)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+To: maddy@linux.ibm.com,
+	npiggin@gmail.com,
+	mpe@ellerman.id.au,
+	chleroy@kernel.org,
+	ritesh.list@gmail.com,
+	sshegde@linux.ibm.com,
+	jniethe5@gmail.com,
+	gautam@linux.ibm.com,
+	vaibhav@linux.ibm.com,
+	kconsul@linux.vnet.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <haoxiang_li2024@163.com>
+Subject: [PATCH] KVM: PPC: Book3S HV: Free nestedv2 state on vCPU creation failure
+Date: Wed, 18 Nov 2026 18:10:08 +0800
+Message-Id: <20261118101008.2242596-1-haoxiang_li2024@163.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,77 +69,47 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3_9WAef1qJpK6IA--.4941S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrZF4fAw48WF4xKrWDtw1fZwb_yoWktFX_uw
+	s2q3ZxWaykAay5uw1kAw45WF4Igr48JrW0kw10q3srC39YgrnrWws2qwn8uw1ruayjyFsx
+	G3yvvFnxJ34xKjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRR7PEUUUUUU==
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbC7gKYB2r9eYJzIwAA3P
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] PCI/TPH: pcie_*_tph_supported() macros return true when
-  pci=3Dnotph is set
-- [Medium] PCI/TPH: pcie_*_tph_supported() macro stubs do not evaluate
-  or type-check pdev
---
+When nestedv2 is enabled, kvmppc_core_vcpu_create_hv() allocates guest
+state buffers and messages through kvmhv_nestedv2_vcpu_create(). If
+the subsequent vcore lookup or allocation fails, it returns without
+releasing those resources.
 
-commit 80062e3e48e12a212317dc82386d43fd4c4bb4c9
-Author: Chengwen Feng <fengchengwen@huawei.com>
+The caller's error path only calls kvmppc_subarch_vcpu_uninit(), which
+does not free the nestedv2 state. Call kvmhv_nestedv2_vcpu_free() before
+returning from the vcore error path when nestedv2 is enabled.
 
-PCI/TPH: Add macros to check standard and extended TPH support
+Fixes: 19d31c5f1157 ("KVM: PPC: Add support for nestedv2 guests")
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+---
+ arch/powerpc/kvm/book3s_hv.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-This commit adds the pcie_std_tph_supported() and pcie_ext_tph_supported()
-helper macros to query standard and extended TPH requester support via
-pdev->tph_max_type, along with stub definitions for !CONFIG_PCIE_TPH.
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 22283d46e8fe..1a1a4e3ba412 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -3097,8 +3097,11 @@ static int kvmppc_core_vcpu_create_hv(struct kvm_vcpu *vcpu)
+ 		}
+ 	}
+ 
+-	if (!vcore)
++	if (!vcore) {
++		if (kvmhv_is_nestedv2())
++			kvmhv_nestedv2_vcpu_free(vcpu, &vcpu->arch.nestedv2_io);
+ 		return err;
++	}
+ 
+ 	spin_lock(&vcore->lock);
+ 	++vcore->num_threads;
+-- 
+2.25.1
 
-> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
-> index b2bec02f3ea0e..50640fdc84e14 100644
-> --- a/include/linux/pci-tph.h
-> +++ b/include/linux/pci-tph.h
-[ ... ]
-> @@ -21,6 +23,18 @@ enum tph_mem_type {
->  };
-> =20
->  #ifdef CONFIG_PCIE_TPH
-> +/**
-> + * pcie_std_tph_supported - check standard TPH requester support
-> + * @pdev: PCI device
-> + */
-> +#define pcie_std_tph_supported(pdev) \
-> +	((pdev)->tph_max_type >=3D PCI_TPH_REQ_TPH_ONLY)
-> +/**
-> + * pcie_ext_tph_supported - check extended TPH requester support
-> + * @pdev: PCI device
-> + */
-> +#define pcie_ext_tph_supported(pdev) \
-> +	((pdev)->tph_max_type =3D=3D PCI_TPH_REQ_EXT_TPH)
-
-[Severity: Medium]
-Do pcie_std_tph_supported() and pcie_ext_tph_supported() return true even
-when the kernel is booted with pci=3Dnotph?
-
-pci_tph_init() populates pdev->tph_max_type during probe without checking
-pci_tph_disabled, while pcie_enable_tph_ext() checks pci_tph_disabled and
-returns -EINVAL.  With pci=3Dnotph on the command line, callers such as the
-VFIO TPH code later in this series treat TPH as supported and expose it in
-virtual config space, only for hardware enablement to fail with -EINVAL.
-
->  int pcie_tph_set_st_entry(struct pci_dev *pdev,
->  			  unsigned int index, u16 tag);
->  int pcie_tph_get_cpu_st_ext(struct pci_dev *dev, enum tph_mem_type mem_t=
-ype,
-> @@ -33,6 +47,8 @@ int pcie_enable_tph(struct pci_dev *pdev, u8 mode);
->  u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
->  u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
->  #else
-> +#define pcie_std_tph_supported(pdev) false
-> +#define pcie_ext_tph_supported(pdev) false
-
-[Severity: Medium]
-Should pcie_std_tph_supported() and pcie_ext_tph_supported() be static
-inline functions taking struct pci_dev *pdev instead of macros?
-
-Because the !CONFIG_PCIE_TPH macros discard pdev without evaluating or
-type-checking it, callers whose local pdev variable is only passed to
-these helpers (such as vfio_tph_vcap_rewrite() later in this series)
-trigger a -Wunused-variable warning and break the build under
-CONFIG_WERROR=3Dy when CONFIG_PCIE_TPH is disabled.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261118091238.4599=
-2-1-fengchengwen@huawei.com?part=3D6
