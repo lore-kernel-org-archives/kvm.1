@@ -1,82 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795000442;
-	b=NUdX989gMDuMX5p0SdnrmKLORp8wBIo0DAwpy2FU7yaI3XGZVf42tZZ/maRy7e/R222D
-	 4lcUE2POSp2LyBNMKBcWZn+N8rzrongv162gCkaiwDyH75XZa6pzIJ+6MuxS22t3k+VZX
-	 h7q1FLFdPpc60RHKNTIWbYFb3ZNzkpF28cQZ2OZppvrA/VXKiYeXdiOJJc1QpOdZu3Sbn
-	 qz6VztMPiT6wTrto4st+2LVRq+/iI8FuXB8e8ybRVNAml9yIO7mxW6AfHw0eDqbRjz4L4
-	 qEfeeaqdTjfiXzeDE1ZoP/ua63CcRYs3v9xjzkNGHxjdnfESCTL6xIOkMwvgAJCbp9Q==
+	t=1795000477;
+	b=OaeYBZmHdZNQPHe6HS5x09LJjAyiTkWe8+TU+boiCg5zUIcyeyoCmbzss5GvTak2usy5
+	 j4EJt0byec0wZWKkWhViYGFxFn+a5RT31QH4kbkKUWCAyrvIbcfliIzXj8+bNRgmDL7gY
+	 W0jc8/Cj56IZCOwTaGxo6jTyLbYKo1zp0DSa7Cxm47C7jWj/eAfqZ8wCCrYL9aV9Q7PGm
+	 O0gOW34j8nZLzVJmeK0FsqKnz+6RX4tcZCZUe0pubzMWlVFk4mUKRBqtTiTT14niw1ZjD
+	 QK1yr7cA2H9Ts8+q8KLTk0mqyZXqD+rcmvcGDP9qARwhsoluJcCpPKoIXkrRW5O2ruw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795000442;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-Reinject:X-Proofpoint-Spam-Details-Enc:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=sCiJ08V+bGznwwS5+rlG2xx5khApZdRnfSKzbGyAZ2M=;
-	b=wnhyW1DXgyuw6yCmqhrakXMuS0JwNr/107+/adDvGgsDN1yMeD5ImXD5ZO4Ho/axxjWA
-	 cgFHJFEegDR1oIghHmkeZCCXjUc9vnaADXCRQAZtgtXC7hSeTx/IC1wmAW31kiT+9USnB
-	 KKbKcKgpOAf6ji+lT78KpdIoL+KCwGyBD0tPeO9bZeiURKquUY3dhS7HlOuBLkO4vKbGg
-	 9637yC6UAFlUteKaW2zYz2MysVi3sJ/pgMWkLQbD9no3KkS4wH14ZQqyj3FBpfjeJVEa4
-	 c8wRqP3bnqcFMIQV7ap130/4Wxgo5G5fXKFszj2lLF3Ul431ict55lHxLLC8IL3nJHg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795000477;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=kpFNtNivNFK5E09pZOo62DDo/NkEsRhWz34V2Kf54aw=;
+	b=QUbtJ7gKC4PHpKiVuYtZg0qvKqYf0FdBJHdmI0QGey94QUB6P5ITEa2GOyQHgEOAJLHd
+	 P9hYbEnUK+DtTydnmuDpXsJwlxfvzWB0kGioFy4yLysTDJlLCGsglsgm/XPTFek7jatKW
+	 /mKdXfitJ5EWWVHMv38mUbjvc1qx2sKZzpVFEWfeq9jx+689Ls4I3SgSA/U0rUikw19Tt
+	 4vDgXmadeUmxwSSd5rl8xc+mkSbjfLXKxj8o+ak9nQz2WB0Ikhgqx1VPtSecD63w0c/vQ
+	 xtmCfUP9SYfywGCvH6Q3h2PtZ6FeecEF3z5GkKHcg1NTNULgITEznAtvcAekoQC86rA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BEvApsCQ;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FA4606A31C;
-	Wed, 18 Nov 2026 11:14:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8FA4606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=E5gQTmv2;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2CA606A31C;
+	Wed, 18 Nov 2026 11:14:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DA2CA606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BEvApsCQ
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AI9uHbl952767;
-	Wed, 18 Nov 2026 11:13:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=sCiJ08
-	V+bGznwwS5+rlG2xx5khApZdRnfSKzbGyAZ2M=; b=BEvApsCQBFiQcQSFxnFm6T
-	EgPgjFVU/TFHqDcrZHvRvWZfLFGi/mD+usjY0wpCJ7U0CFX28vq+Y6uw7RrQpnax
-	JMI+dQxwIiWKaiUZxuFoej7FjqaMR/O9Y/8p6HOq5PVffRUKR9WDe4qDhBxekrPE
-	c9wcO2p9oJ3R1nQKX4DoyqaJV59a8lEFalaxHChnQ7CfLTXfqqZ4lG1hKRi1T5z2
-	7fFjIdgIxe+Odh67SXDNRGJavweeHDDJm+QqTRe6dwGEhLaelTvqWuWtZ4VfCzCn
-	btbGOlcqUMkWa208BjDMGMa0fRqA+JL9QWe01i2Iy6EdBjYkzKuzObBh3AeY+j9A
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j105na3ws-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 18 Nov 2026 11:13:45 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AI9o4gD1832228;
-	Wed, 18 Nov 2026 11:13:44 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j17c4rn2v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Nov 2026 11:13:44 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AIBDeFg51511788
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 18 Nov 2026 11:13:41 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CC0872004D;
-	Wed, 18 Nov 2026 11:13:39 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C160520043;
-	Wed, 18 Nov 2026 11:13:33 +0000 (GMT)
-Received: from [9.124.217.34] (unknown [9.124.217.34])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 18 Nov 2026 11:13:33 +0000 (GMT)
-Message-ID: <67d2b322-9a6b-41d5-9920-33acb36cb76a@linux.ibm.com>
-Date: Wed, 18 Nov 2026 16:43:31 +0530
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=E5gQTmv2
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D56301596;
+	Wed, 18 Nov 2026 03:14:32 -0800 (PST)
+Received: from [10.57.62.206] (unknown [10.57.62.206])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 192D23F673;
+	Wed, 18 Nov 2026 03:14:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795000475; bh=TKbqgMIPduy318TAL4Aa4U0sAxhaULPe1XRzCdumkbg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=E5gQTmv2MiIyZx1MnDRo90tJYN43gume5p7d6KB3NmpM0o7uA6PCE2zYcpBmb8Jsi
+	 t3YfPJKXHuK2Zrp0s0DHEAbc9gp1pTOZXTjE28mbBo8mvrgYgeYJhxuIMZjSTozrXA
+	 vi/rEcEBJt1XoR6wS15Ak9Tq4KWaTk6E+nieQkTo=
+Message-ID: <b1ef7241-54b0-4a17-83b6-0008e722f2f6@arm.com>
+Date: Wed, 18 Nov 2026 11:14:23 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -87,270 +54,65 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/5] powerpc/rtas: Handle ibm,open-errinjct return
- format
-To: Narayana Murty N <nnmlinux@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        "Oliver O'Halloran" <oohall@gmail.com>,
-        Timothy Pearson <tpearson@raptorengineering.com>,
-        Alex Williamson <alex@shazbot.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin
- <npiggin@gmail.com>,
-        Christophe Leroy <chleroy@kernel.org>,
-        Ritesh Harjani <ritesh.list@gmail.com>,
-        Shrikanth Hegde <sshegde@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org, sbhat@linux.ibm.com,
-        harshpb@linux.ibm.com
-References: <20261023073642.59657-1-nnmlinux@linux.ibm.com>
- <20261023073642.59657-2-nnmlinux@linux.ibm.com>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <20261023073642.59657-2-nnmlinux@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v3 01/11] KVM: arm64: guest_memfd: Check mmap support when
+ preparing memslot
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, Fuad Tabba <tabba@google.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Kohei Enju <enju.kohei@fujitsu.com>
+References: <20261116164358.142785-1-steven.price@arm.com>
+ <20261116164358.142785-2-steven.price@arm.com>
+ <CA+EHjTy5xBmavNWSYPjqU9qXtssV3ZHzsUr1s_4bVOt1GnDLVg@mail.gmail.com>
+ <6bb490cd-ebbe-41d7-adf3-d6eaf0e53478@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <6bb490cd-ebbe-41d7-adf3-d6eaf0e53478@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE4MDA0MyBTYWx0ZWRfXzSi5/+6gn4fU
- q4INOmsMpUllCKrrlN8nTvjS6r/y6Bg0LeB0ylU3OA1EZKVFzMh5XOOs3L7Qq17mDDevQHWI4i1
- 4F00DDaYSSN70RMIx7ztKVEmZo6f8Bb10OnYd3jFgUY4+qlriPZhNN3UuGVnBg7H/O2r8xy8t/S
- aFDZ42cLXTJ7FC2cnV3Hb1K11I81ies338Q5u5Nt1aecDsrnEXBJvAEcG55GFGwGQY5oNJWDCOJ
- 3eavv66xuEaJPFKSbyplRh31e+T4lGwKnDoxGTpO5KnGdSwmN0cYprMoSfFdoOW9wFRhGaGdzoo
- 4KIG0mMK28+R6dlHqqMYj3NC0E2j/ATF089ziayGe9yAHcEmrDaYAZkeHvA2qvtvKvNC1v/nOtd
- 19Iw3BWwbYvuOlgi+1o1DwnxeWWkS5e45EjVaPRJuTtaVQfBNZkJyVb/BB0Z2c0Rkiiv0mmqfKu
- CQXU7WU3MyPV/+H9iuQ==
-X-Authority-Analysis: v=2.4 cv=HN9WhYtv c=1 sm=1 tr=0 ts=6afd886a cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=1mVJ_uiqAAAA:8
- a=VnNF1IyMAAAA:8 a=R5LW5MnUpmvYC84hGPEA:9 a=QEXdDO2ut3YA:10
- a=h67g7WpEjx8dfGT80pje:22
-X-Proofpoint-GUID: ibzlfOJKHSqHkl3VA0GmRpE79_lvVk0u
-X-Proofpoint-ORIG-GUID: VSD8Qx3mZx-kOY7AbjKzpy5ZF8eWUQGm
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE4MDA0MyBTYWx0ZWRfX0uISw3wLutYc
- QXwcJoQTO43Qyu8FZh8/Z9bRQjM9MiCerRDszj1QHXZsgtQdC9N/aSlnSC6YkRTrPBoKq9zM3ap
- OT6VICzrL58xnaNSYQXVGey/nO1Vbyc=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-18_02,2026-11-16_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 priorityscore=1501 impostorscore=0 suspectscore=0 malwarescore=0
- adultscore=0 phishscore=0 lowpriorityscore=0 clxscore=1011 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611180043
 
+On 18/11/2026 10:34, Suzuki K Poulose wrote:
+> Hi Steven
+> 
+> On 17/11/2026 14:05, Fuad Tabba wrote:
+>> Hi Steven,
+>>
+>> On Mon, 16 Nov 2026 16:43:47 +0000, Steven Price
+>> <steven.price@arm.com> wrote:
+>>> Check the guest_memfd backing file when deciding whether an arm64
+>>> memslot has mappable memory rather than checking whether the slot is
+>>> gmem only. A public helper function is added to be able to reuse the
+>>> static kvm_gmem_supports_mmap() function.
+>>
+>> nit: could the message say why this is needed? It's a no-op until
+>> patch 8 defines kvm_arch_has_private_mem(), which makes every
+>> guest_memfd slot gmem-only.
+> 
+> I still don't understand why this is needed. For arm64 we have always
+> prevented guest_memfd without MMAP, in kvm_arch_prepare_memory_region().
 
+Fuad is correct, this isn't really needed until patch 8. Patch 8 defines
+kvm_arch_has_private_mem() - that means that gmem_in_place_conversion
+becomes true (see include/linux/kvm_host.h). That in turn means that
+every guest_memfd slot is KVM_MEMSLOT_GMEM_ONLY including slots backed
+by a file without mmap support.
 
-On 23/10/26 13:06, Narayana Murty N wrote:
-> ibm,open-errinjct uses a non-standard RTAS return layout:
->
->    rets[0] = session token  (output parameter)
->    rets[1] = status code
->
-> Unlike all other RTAS functions which use:
->
->    rets[0] = status code
->    rets[1..] = output parameters
->
-> Add rtas_token_is_open_errinjct() to identify this call, and
-> rtas_status_from_args() to extract status from the correct position.
->
-> Add an early guard in rtas_call() that rejects ibm,open-errinjct
-> invocations where nret < 2, since reading rets[1] would be out of
-> bounds.  This is a kernel-side call-convention error, so -EINVAL is
-> returned rather than an RTAS firmware status code:
->
->    if (rtas_token_is_open_errinjct(token) && nret < 2) {
->            WARN_ON_ONCE(1);
->            return -EINVAL;
->    }
->
-> Adjust the output-copy loop so that for ibm,open-errinjct:
->
->    return value = rets[1]   (status)
->    outputs[0]   = rets[0]   (session token)
->
-> For all other functions the existing convention is preserved:
->
->    return value = rets[0]   (status)
->    outputs[0..] = rets[1..] (non-status outputs)
->
-> Move the "/* A -1 return code... */" comment immediately before the
-> ret == -1 check so it documents the check it guards.
+But regardless the check for kvm_memslot_is_gmem_only() isn't really
+what the code is trying to do. The fact that the memslot is "gmem only"
+isn't really relevant. The thing we care about is the mappability.
 
-Nit: I think we should not documenting a minor comment movement
-in the commit message.
+But I agree the commit message could do with improving. I'll expand that.
 
-> Also fix sys_rtas() last-error status detection: add the same early
-> nret < 2 validation at the syscall boundary (returning -EINVAL) to
-> avoid entering RTAS with an invalid ibm,open-errinjct return layout.
-> After that guard, use rtas_status_from_args() to obtain the RTAS
-> status for last-error handling.
-> The prominent user librtas already passes nret = 2 for this function
-> as required by PAPR, so well-formed callers are unaffected.
->
-> Reference: OpenPOWER PAPR documentation
->             https://files.openpower.foundation/s/XFgfMaqLMD5Bcm8
-> Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
-> ---
->   arch/powerpc/kernel/rtas.c | 78 +++++++++++++++++++++++++++++++++-----
->   1 file changed, 69 insertions(+), 9 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-> index 8d81c1e7a8db..38f3d08d4228 100644
-> --- a/arch/powerpc/kernel/rtas.c
-> +++ b/arch/powerpc/kernel/rtas.c
-> @@ -1117,6 +1117,28 @@ static bool token_is_restricted_errinjct(s32 token)
->   	       token == rtas_function_token(RTAS_FN_IBM_ERRINJCT);
->   }
->   
-> +/*
-> + * ibm,open-errinjct uses a non-standard return layout:
-> + *   rets[0] = session token  (output parameter)
-> + *   rets[1] = status code
-> + *
-> + * All other RTAS functions use the standard layout:
-> + *   rets[0] = status code
-> + *   rets[1..] = output parameters
-> + */
-
-Nit: this comment describes rtas_status_from_args(), not 
-rtas_token_is_open_errinjct().
-Please move it down.
-
-> +static inline bool rtas_token_is_open_errinjct(int token)
-> +{
-> +	return token == rtas_function_token(RTAS_FN_IBM_OPEN_ERRINJCT);
-> +}
-> +
-> +static int rtas_status_from_args(int token, struct rtas_args *args, int nret)
-> +{
-> +	if (rtas_token_is_open_errinjct(token))
-> +		return be32_to_cpu(args->rets[1]);
-> +
-> +	return nret > 0 ? be32_to_cpu(args->rets[0]) : 0;
-> +}
-> +
->   /**
->    * rtas_call() - Invoke an RTAS firmware function.
->    * @token: Identifies the function being invoked.
-> @@ -1198,6 +1220,16 @@ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
->   			return -1;
->   	}
->   
-> +	/*
-> +	 * ibm,open-errinjct returns rets[0]=session_token, rets[1]=status.
-> +	 * We need nret >= 2 to read status from rets[1].  Reject early if
-> +	 * the caller forgot to account for the extra return cell.
-> +	 */
-> +	if (rtas_token_is_open_errinjct(token) && nret < 2) {
-> +		WARN_ON_ONCE(1);
-
-Nit: please switch WARN_ON_ONCE(1) to a WARN_ONCE() with a message, so 
-the log
-says what the caller got wrong. For example:
-
-WARN_ONCE(1, "rtas: ibm,open-errinjct needs nret >= 2 (got %d)\n", nret);
-
-> +		return -EINVAL;
-> +	}
-> +
->   	if ((mfmsr() & (MSR_IR|MSR_DR)) != (MSR_IR|MSR_DR)) {
->   		WARN_ON_ONCE(1);
->   		return -1;
-> @@ -1213,15 +1245,33 @@ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
->   	va_rtas_call_unlocked(args, token, nargs, nret, list);
->   	va_end(list);
->   
-> +	ret = rtas_status_from_args(token, args, nret);
-> +
->   	/* A -1 return code indicates that the last command couldn't
-> -	   be completed due to a hardware error. */
-> -	if (be32_to_cpu(args->rets[0]) == -1)
-> +	 * be completed due to a hardware error.
-> +	 */
-> +	if (ret == -1)
->   		buff_copy = __fetch_rtas_last_error(NULL);
->   
-[...]
-> -	if (nret > 1 && outputs != NULL)
-> -		for (i = 0; i < nret-1; ++i)
-> -			outputs[i] = be32_to_cpu(args->rets[i + 1]);
-> -	ret = (nret > 0) ? be32_to_cpu(args->rets[0]) : 0;
-> +	/*
-> +	 * Copy non-status outputs to the caller's buffer.
-> +	 *
-> +	 * For ibm,open-errinjct the layout is:
-> +	 *   rets[0] = session token  -> outputs[0]
-> +	 *   rets[1] = status         (returned, not copied)
-> +	 *
-> +	 * For all other RTAS functions:
-> +	 *   rets[0] = status         (returned, not copied)
-> +	 *   rets[1..nret-1] -> outputs[0..nret-2]
-> +	 */
-> +	if (outputs) {
-> +		if (rtas_token_is_open_errinjct(token)) {
-> +			outputs[0] = be32_to_cpu(args->rets[0]);
-> +		} else if (nret > 1) {
-> +			for (i = 0; i < nret - 1; ++i)
-> +				outputs[i] = be32_to_cpu(args->rets[i + 1]);
-> +		}
-> +	}
-
-Just wondering, what is the need to copy the outputs when RTAS returns 
--1 (hardware error)?
-
-However, since it has always been this way, I have no concerns regarding 
-this aspect of the patch.
-
->   
->   	lockdep_unpin_lock(&rtas_lock, cookie);
->   	raw_spin_unlock_irqrestore(&rtas_lock, flags);
-> @@ -1896,6 +1946,14 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
->   	if (block_rtas_call(func, nargs, &args))
->   		return -EINVAL;
->   
-> +	/*
-> +	 * ibm,open-errinjct places status at rets[1]; reject calls with
-> +	 * fewer than 2 return cells before entering RTAS, since reading
-> +	 * rets[1] for the -1 sentinel would be out of bounds.
-> +	 */
-> +	if (rtas_token_is_open_errinjct(token) && nret < 2)
-> +		return -EINVAL;
-> +
-
-I think it makes sense to perform this check after the security lockdown 
-check.
-
-Otherwise, it would look confusing if the kernel first reports that the 
-argument is
-less than expected, and then, when the user passes the correct argument, 
-kernel
-reports that the operation cannot be executed because it is blocked by 
-lockdown.
-
-So, let's move this check below the security lockdown check.
-
-
-- Sourabh Jain
-
-
->   	if (token_is_restricted_errinjct(token)) {
->   		int err;
->   
-> @@ -1942,9 +2000,11 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
->   	do_enter_rtas(&rtas_args);
->   	args = rtas_args;
->   
-> -	/* A -1 return code indicates that the last command couldn't
-> -	   be completed due to a hardware error. */
-> -	if (be32_to_cpu(args.rets[0]) == -1)
-> +	/*
-> +	 * A -1 return code indicates that the last command couldn't
-> +	 * be completed due to a hardware error.
-> +	 */
-> +	if (rtas_status_from_args(token, &args, nret) == -1)
->   		errbuf = __fetch_rtas_last_error(buff_copy);
->   
->   	lockdep_unpin_lock(&rtas_lock, cookie);
-
+Thanks,
+Steve
