@@ -1,99 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794965915;
-	b=ZmuFK9i3IKIkZ/1OundkSXApoAcKhsm+Ix1YeCzhxhF4VdC7Q0w+/2u2MfvzXELKwYl9
-	 AAsboqR9Z1zy4OdsePGuZddz+ovBpbgt93GwPiwL2fuM9aiftV968JeJRUQsam6yKrUIh
-	 9Ul0lBa3H2fmfgHgN6qjM9KzjSAKkKMyvKvez+7jLp9TcI/xX6261d4WYb4xIrec48yOf
-	 6gd/ZJ2LHKzDRR06L/m8x7sEzjZjLCAdVdEocLUIGdS4o9P+4ysMQKQ2zngfp4yr+eo47
-	 DSmr4HOun7v43xud3nJ7O8GYDtfkpm15yBGytWeM38Var0UdmxEL8ows0VEUCZLOF7A==
+	t=1794966301;
+	b=xQItsXZ/aDY64KA43qmGkTYMhiU25R3GVZy7YtGY71rlbpSTNi8Q7XFFfz7NmGPw0m6T
+	 TKSVVTRyAzqG+ZKhNNvErkoKXKNLtdOkSiJqpNgOOFE8VCHNSBcabk54iFFJLdC+Sj0Yu
+	 J1bimzt2CDCQoG8bqR/VlvpNzSrSmDvkJW1fPJa0FZ+l93AgF937Lzv/IdGlB7sDJyE1e
+	 sJ2u6JDrEexhznCDya7o+ELZAEW6OoNb59RkdBjUdK0cyBY0e5J273bOhTqhk0EFdRYgQ
+	 XSxfhe7PXc5MOQQVMhBkT4ByCaGyRGR0ioTgoqbczQZajBXjhV1tnjbKqkN3O2fmOhA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794965915;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=X4FNYHTT1LKVhYoSP9CXX5H2kEYFt4XaTxI0OzwyTm8=;
-	b=XOHbAcl7VHOo3L5XCSuo1CqFAkTSBaWD311lDLVMo2AD0TATVcxBVEpM0/x3DXURWDmp
-	 A6Xuox0+KakzHE628svaLwILMhQA5NqJeIlFs1IomOtfhGOUg+WV8Ua0hwfi9aJ+dIEfG
-	 1i9iBgbe/R6phNQbCINSuvbZxr4I0eiqb2PqwA97FFh9BqW0MralOmlYeaAXf7t1k3Vh1
-	 1kXFX/A+LmJf0l09fc/ixYDwdwxf0Hte48IsYMSNWZfG+e89HgfjBL3c6TXrzF5zGrWbN
-	 jFkUkBW45GZsT8/IlP4eMG+fKn8HfjkhTHEwxNBc8/W8LsWc0XXW236LmNkuGFsoW9g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794966301;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-Reinject:
+	 X-Authority-Analysis:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=uPj2X8KhO1OscrKtkgCKzVwK3Pjz1SVL5I8ga2MSWvk=;
+	b=xbUwXQJQXJ3x0fzYaq+sCjskKs0R5DcHSdhQ1OR889UBlbe6uhDlGGcGC8InyCx4lfmZ
+	 LkKN/zHWa9OZnJXKbHOI/jniLhyliqtx/LLX37w7cPfvqkeMR/Gzge2Hprl0dfWTwdKma
+	 wI/sjRMf0p4qRC7S7T8zOExcw+b0BO8TzDdlPUt4HRNSVarM53kw0V+DCTwUk6qJf7Daa
+	 Jwu0veMhv8JQZ7wyCXg40HhyssErale5aSOdLvoDzC+5zoTUgI74u6pCT4WlU33dvW61b
+	 cwLcNzfDVrrzUykbNxw7TCKC8+ZzdIaV1pQ6AePjJ64vKk5fe+N7mCGuERH6/T+ZSFw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=CDjRkcYt;
-	arc=none smtp.remote-ip=74.125.82.43
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DXYexYPX;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46A9606A330
-	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 01:38:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A46A9606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8513B606A32A;
+	Wed, 18 Nov 2026 01:45:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8513B606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=CDjRkcYt
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-14394530ec6so749610c88.1
-        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 17:38:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794965914; x=1795570714; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=X4FNYHTT1LKVhYoSP9CXX5H2kEYFt4XaTxI0OzwyTm8=;
-        b=CDjRkcYtnqM/n2li4FgiBYKjz6es1d5tWqHyQ28xR58K9oi3aeS0XCGDqydk+h2ZJl
-         IQb1uBeu24QApSjibR9lY0a8mW7UxMJsW/TXO0p3teEtfhA1zaDRF68xSPRmtrj+wTpH
-         CVLnXd4eOidWoektD9wy/NbExdwUonqzj/GQ7MqxsS26Y6JJQKmCIP05askktb0gJEka
-         0QLamCOoQgCJc3SxskW+Qodx98yEZBJ/bxnRhaoF1pOc2o9Uiv9Ik6dFPYzfrDJNI0XK
-         fhDH0XxXc9MjqALTP1QZefQld/RQ5+xI+aXnaNVNUU1SkUOVO6CzhUtnBMmepSI4IEtK
-         8TVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794965914; x=1795570714;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=X4FNYHTT1LKVhYoSP9CXX5H2kEYFt4XaTxI0OzwyTm8=;
-        b=vfu5BPnrBxAlaZq82nFT9ldfb43wufdJqIyaUhA0fKmaWSgZfIV8sT9yi9uS6gWkOK
-         Y+EhgO+I/ndFzOiA0LVw2Elp88uMuknX0qFf472FGrT6kcHNouOx0Id33DgnG/UWfiE4
-         NgA5qx49IWU1MiBEiYnZCLtlWASEl0QB5Y/sFDl+BagKErEoGRtL5pSwf7ddwZq3CvlJ
-         6POTci5hJoGkmLvaRZzQ6xZwc7jXXnJX3Ii+8nVTOcfuThDEx0GLT52YMrEwRLG0iUSM
-         z8zkZPysk6iu+E1TbRqv+AJybw3uAQE6Jjt7PPMaURwFXeSQPLsvrAJHNc3Xql8CApUs
-         bLvA==
-X-Forwarded-Encrypted: i=1; AL+hErHEnt6W1O9gy+LobooCE8dN28c9nnnY21FMigiw4ffm7/jWTamVpB7utNYOFfpsLr0iejA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9igiT4lpH1rKOIjtYkrwtO8RI6yT5Op7K/kGkFufkrCrAY388t
-	nxX4Mk2g82u98bdRLOc+DnVShE11PfR/4QH2wgVcrfhKcgLGIFm4468t
-X-Gm-Gg: AYBFou2FntgxiVvSH/8JJXDRn1rsg/0nLLM+h426FWSQLFPTfJa+l+Ybidhbg7anII7
-	nMfMXDJgYVKxxrFniU77XsCnUoZ4ZRXQFh/hEU7N2QDbPfdJW+K2JRzj9/9hw1/ok3xBs7BKRq5
-	Y/lZwL3Xa3uafFC4ywD1EDbMHphRANM8ZXsSZWmS82ZrQtukRPi8JgyOSFXtXUqnQta402rJvnj
-	xg1krQXUHu3UF3dnbXZH92jBr0L8z700zrevykk64GjpPyI0wAoDsvDtczpF58dHtxPdNFILSPM
-	9meyKPK9Pygw0Eso9VGD3rI1W+P3bNxIl0NqW2YosjWroLCA3Zprwk6umG/zJpBxULEci8qBAlR
-	ryijj/+k59ck9p/umhT4bhBfSbZ+NlTObhwir5JztAPM0dkEZL3bCsD2o/emqdad+GqQFz4GIB1
-	e+8H/XDbQAv6zcuqeeI3TnIEyjWkil9WDoPnL6hG8pQIyU5AtJ7rVE3qnY4/0QKrHDZZedtjUov
-	cey1naXDXTKRbD6HBe+8q8vd5j9a5ND0Y+LTk8uUoyshiKAreyR6CV2tcnlBDTfu0uswTitOXzS
-	9fR+ctkcFZwuJfcU2lfZjjhg49cUNA==
-X-Received: by 2002:a05:7022:170c:b0:1b5:3819:f8a with SMTP id a92af1059eb24-1b543bff8bdmr1034444c88.38.1794965913693;
-        Tue, 17 Nov 2026 17:38:33 -0800 (PST)
-Received: from phi.nguyendp ([116.86.30.120])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5447c5b02sm1909602c88.6.2026.11.17.17.38.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2026 17:38:33 -0800 (PST)
-From: Nguyen Dinh Phi <phind.uet@gmail.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Asias He <asias@redhat.com>
-Cc: Nguyen Dinh Phi <phind.uet@gmail.com>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] vhost/vsock: annotate lockless accesses to guest_cid
-Date: Wed, 18 Nov 2026 00:48:43 +0800
-Message-ID: <20261117164916.2332953-1-phind.uet@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DXYexYPX
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AHMvD3g3642039;
+	Wed, 18 Nov 2026 01:44:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=uPj2X8
+	KhO1OscrKtkgCKzVwK3Pjz1SVL5I8ga2MSWvk=; b=DXYexYPXuS9F/DZPPZ03aB
+	aYieMQWdFBVQevusWuRVxc2xjMIYmtMJ3OmZkmxKkZvc3R+f2XijRdmmCaiBNVvT
+	8HzLkjcwxKC7in8n6O+Nskn513q8P0lPkrWuEkvJKzT1F8Vj2A8AJMwRx/0a4Tiy
+	e+JO0lI3y8bF91hW/4IAo7VT+qcxyWOr4CjleK+A3eXVZ3p1nbC3oLletsRnzx9p
+	LqHYYZjALdrWYGxnxYfKRwWZPEsv5ZNl6h5poXKqZz1kXjyQ99lwosVXBnxQ9rLo
+	r9L3JES/QFzvVdHz5nQChFdzCBx1amKOMxwTpjTuER53ogrkVdfev9N/kVsbtkGg
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j105t0d6k-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 18 Nov 2026 01:44:43 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AHMo0dC030822;
+	Wed, 18 Nov 2026 01:44:43 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j067ne2jy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Nov 2026 01:44:43 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AI1idQ329032828
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Nov 2026 01:44:39 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 466212004B;
+	Wed, 18 Nov 2026 01:44:39 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8B17E20040;
+	Wed, 18 Nov 2026 01:44:34 +0000 (GMT)
+Received: from Linuxdev.ibmuc.com (unknown [9.43.63.250])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 18 Nov 2026 01:44:34 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, Amit Machhiwal <amachhiw@linux.ibm.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>,
+        Alexander Graf <agraf@suse.de>, Avi Kivity <avi@redhat.com>,
+        kvm-ppc@vger.kernel.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        R Nageswara Sastry <rnsastry@linux.ibm.com>,
+        linux-hardening@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Disable preemption around host-side HPT lock users
+Date: Wed, 18 Nov 2026 07:14:33 +0530
+Message-ID: <179496619897.633156.6514109970527173646.b4-ty@linux.ibm.com>
+X-Mailer: git-send-email 2.56.1
+In-Reply-To: <20261014185215.71832-1-amachhiw@linux.ibm.com>
+References: <20261014185215.71832-1-amachhiw@linux.ibm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,74 +101,59 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=IouL47/g c=1 sm=1 tr=0 ts=6afd030c cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=qyQGTUAR5DSMwchT5_QA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: a3dRU6Gzo3Ru-U3igaaGOBCUqlvQ5g3O
+X-Proofpoint-GUID: JjmVVTr0acEnABj2T5hmRDHE_ZUOdW9n
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE4MDAwNSBTYWx0ZWRfX9+yNv2YB5W7H
+ MxM/zGFNI/qx/4NzsMRuxO2qlwYqSUfoT7vr4Eqzpb55pShQEjmsSDwpNzSuxTWmMv5tg4EWP7g
+ BltX7lvCLcM2KgUIbvjhBWVvjPpC5RuN0oQvhqXz7DK9mzJW4mjrqPRX5G8ZCC50BWORrCHTdG+
+ 8JbzuJonsEFW/bgrI/JhYJmLk2X2JSRJw68d/+o/JG9/2iDJsZg2C+hrRtSHnd8w/Tcn9/rXfQv
+ MP03hJk0PWVbR/NOJVFsAdSUMbJuUvAqjpIjDKOuyw54lOIiapRIfgfsYvCMJZ1/dJDefbHcv+A
+ //AuDRRYv6xCJPbRw2edi5upIUt5uPgbC162T1yBVA5eXzxZYPHWsrGLgaEGMyAXqP07XyaoA5O
+ eVj0oE9+CJxc8Gx5A6uE8cTigsRGNbZwkbfbeSTRrUfyowdmp2d7o58lNGNZRJcLSxVgq0k+lJm
+ VJgCXXQ6BF3SQhz3ySw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE4MDAwNSBTYWx0ZWRfX+yJuBQ4n8Ggx
+ l+aYmtizKtNfyz67Nj5BwkiZ8h/ct5L+EMxYDM0qsv6WVYsOlkU7hLa5CZ8NHTqQ83EYcqZw7rN
+ Lw5kHXQoycTVTE69a1Jb/TlcL+pG6OA=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-17_05,2026-11-16_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0 adultscore=0 priorityscore=1501
+ lowpriorityscore=0 suspectscore=0 phishscore=0 clxscore=1015 malwarescore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
+ definitions=main-2611180005
 
-vhost_vsock.guest_cid is written by vhost_vsock_set_cid() under
-vhost_vsock_mutex, but It is also read without that mutex in
-vhost_vsock_handle_tx_kick(), and vhost_vsock_get().
+On Thu, 15 Oct 2026 00:22:15 +0530, Amit Machhiwal wrote:
+> A previous change ("KVM: PPC: Book3S HV: Add preempt_disable() around
+> virtual-mode HPTE bit-lock users") at [1] added preempt_disable() around
+> guest vCPU HPT hcalls and page fault handlers executed in virtual mode.
+> This ensures vCPU threads cannot be preempted while holding
+> HPTE_V_HVLOCK or the reverse-map lock.
+> 
+> However, several host-side virtual-mode paths in book3s_64_mmu_hv.c also
+> acquire HPTE_V_HVLOCK and lock_rmap() in process context with preemption
+> enabled.  Specifically, kvm_unmap_rmapp() and kvm_age_rmapp() take both
+> locks during MMU notifier callbacks and memslot flushes, while
+> resize_hpt_rehash_hpte() acquires HPTE_V_HVLOCK during HPT resizing.  If
+> a host thread is preempted while holding either bit-lock, any guest vCPU
+> thread scheduled on the same CPU spinning for the same lock with
+> preemption disabled will never yield, resulting in a permanent CPU hang.
+> 
+> [...]
 
-KCSAN will report data-race if we issue VHOST_VSOCK_SET_GUEST_CID
-ioctl while the device has TX traffic. For example:
+Applied to powerpc/fixes.
 
- write to 0xffff88810f1596ac of 4 bytes by task 7914 on cpu 1:
-   vhost_vsock_dev_ioctl+0x25f/0x720
-   __x64_sys_ioctl+0xc2/0x110
-   x64_sys_call+0x299/0x20a0
-   do_syscall_64+0xc9/0x510
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[1/1] KVM: PPC: Book3S HV: Disable preemption around host-side HPT lock users
+      https://git.kernel.org/powerpc/c/4e6e66ecf62185828f731914000a6b0baff355db
 
-  read to 0xffff88810f1596ac of 4 bytes by task 7910 on cpu 3:
-   vhost_vsock_handle_tx_kick+0x41b/0x740
-   vhost_run_work_list+0x97/0xc0
-   vhost_task_fn+0x98/0x1f0
-   ret_from_fork+0x2e2/0x3c0
-   ret_from_fork_asm+0x1a/0x30
-
-  value changed: 0x0000004d -> 0x00000032
-
-Both readers load the CID once and works correctly with either the
-old or the new value.
-
-Mark the store with WRITE_ONCE() and the two lockless loads with
-READ_ONCE(), so KCSAN knows the race is intentional.
-
-Fixes: 433fc58e6bf2 ("VSOCK: Introduce vhost_vsock.ko")
-Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
----
- drivers/vhost/vsock.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index 88a310390eb0..f26c59013075 100644
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -78,7 +78,7 @@ static struct vhost_vsock *vhost_vsock_get(u32 guest_cid, struct net *net)
- 
- 	hash_for_each_possible_rcu(vhost_vsock_hash, vsock, hash, guest_cid,
- 				   lockdep_is_held(&vhost_vsock_mutex)) {
--		u32 other_cid = vsock->guest_cid;
-+		u32 other_cid = READ_ONCE(vsock->guest_cid);
- 
- 		/* Skip instances that have no CID yet */
- 		if (other_cid == 0)
-@@ -572,7 +572,7 @@ static void vhost_vsock_handle_tx_kick(struct vhost_work *work)
- 		hdr = virtio_vsock_hdr(skb);
- 
- 		/* Only accept correctly addressed packets */
--		if (le64_to_cpu(hdr->src_cid) == vsock->guest_cid &&
-+		if (le64_to_cpu(hdr->src_cid) == READ_ONCE(vsock->guest_cid) &&
- 		    le64_to_cpu(hdr->dst_cid) ==
- 		    vhost_transport_get_local_cid())
- 			virtio_transport_recv_pkt(&vhost_transport, skb,
-@@ -859,7 +859,7 @@ static int vhost_vsock_set_cid(struct vhost_vsock *vsock, u64 guest_cid)
- 	if (vsock->guest_cid)
- 		hash_del_rcu(&vsock->hash);
- 
--	vsock->guest_cid = guest_cid;
-+	WRITE_ONCE(vsock->guest_cid, guest_cid);
- 	hash_add_rcu(vhost_vsock_hash, &vsock->hash, vsock->guest_cid);
- 	mutex_unlock(&vhost_vsock_mutex);
- 
--- 
-2.53.0
-
+cheers
