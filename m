@@ -1,100 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.52
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795013741;
-	b=s7E5+PRItGaCnNr/hlx19FncY3ejfZOj0ae+zHCyXCDL00jLNusehfzuseI8Af+Lj/I6
-	 aRmGWbpEUYCMyfvVu3D29fUk6FWX63waHPNUb8zU1dqHHEtikvcJPP3e5CmO2SD7xNoIt
-	 gJ7qVAfWc6ADymx72nxeOO3m33ANM/aeX0NBZYK82Boge7JuDQzr9DRTE6FmdM6FAeNqM
-	 2rlAgk+e9GoVr7yxgYcewkbEciZ7m4pkPI/EOL/eoEP+laL9RoQAVcXMODVmoiqAEV/Et
-	 9g5snu2w4715o2TLSPjLR1lDcvazwttHl6salr9mHFw7wdWoZcgQt7oqNR87siZTpeg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795013741;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=A1AMia2vi1QSpUOJn8VNp1VkrqQ7LwCEUZO4G/j54mE=;
-	b=wxNZoAesSXMuOAJPFMVHN/GsSU39sxDIIv3tvWv+3sKOfvtgWnJHr59yTZ5Kfq/tV2LQ
-	 6l0yCOK6oZ/hRfreWqykG8p5/LsRs6DVztoP37cW+CcndvEeWpRfRUi6fZL6k5rTyZ8eB
-	 RicrBvQhkLEtaVMb1ulcM97mD3iSRIy9AtsOM7H0J4OeQvdsZDhLjHfWWTxwcpLzRfYsg
-	 +34lrm/iSaSp0qTOCTmJ8kI0EDTLxblcQ2B4S8Edrr2oJwqUN8iy79dZ/Xu06bnDaoN3W
-	 Nnoi8O9FBw8Ywo+Sr1yvZvH5Mr9X8ekqBZls/aS6C5phion0tOvJS2ATY08I2B2u2eg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=flashbots.net;
-	spf=pass smtp.mailfrom=flashbots.net;
-	dkim=pass header.d=flashbots.net header.i=@flashbots.net header.a=rsa-sha256 header.s=google header.b=cHd61Vja;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.52
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D5D606A336
-	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 14:55:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28D5D606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flashbots.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flashbots.net
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795014041;
+	b=fK2qXkGf+2glEAO4qdgC2e33w8Ku4SSw4dB7nqa9BHot+5Fas9DGsXpHg4oj5xpagFAR
+	 8o+Dt3FzgxAu+TCDt7YX0v7bDrVB0VbqjfEePik+OkSAMKbn8MHuGdaggo63b96j0fVke
+	 vF2vZDGXXcRG+8uPTdtdh44W+4kPo1FsrSQJCJ8Tqy2f7uIAvx3tphb82wlFNIntJt8UQ
+	 1Iz3wZCKq6CUfYw02CwTZ2pDWPAjoPUBbh8zvOw15uQe1mcppYuf7qU8cCGhzPiQZtpu3
+	 X/MNRM2bTRi2bI+Ias3DQqSPsrYhO3nKx5XH3RBVmuIxWa/bMZssjmvhuokQpWuqBWg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795014041;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=q6/RtbwomZxmf6j2uXIJ3iUSV6HbbFnFW/ijGtRHiXM=;
+	b=pTjQmdMRiIonPLpu78K3l+9dp2SbhGLr2FSASWo0c+IaUUcXvKsTXXPgERxcQnzYPFcc
+	 r+B4TLs9Xez4YWnmysc6OE54ZxI5VjVy7VJAFOWAkVIsR0kMp53VxCN58xRpq63aUfFcG
+	 hGORoHzxv840ZZ0mkrLIGqHRks8UqkZDUTVe3JAbAuIkAtD+TU9gffuDEFzNfkKA653zI
+	 +bXfjD8Y3w/WX6I0qOd4rpDH7d0qMS+68JBw+nTUgcmhmaefk8Csy5+HlFprCAH8893eF
+	 1dFZjWCHH+AW+p/Tqq+MB7FWa9ZqTX9ZY8tv4gh+6o4l6HD8XJoyhsUV5SwpHi5f64Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=I50vTSzh;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF17606A31C
+	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 15:00:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4AF17606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flashbots.net header.i=@flashbots.net header.a=rsa-sha256 header.s=google header.b=cHd61Vja
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-8479f46ecd8so512359a34.0
-        for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 06:55:40 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795013740; cv=none;
-        d=google.com; s=arc-20260327;
-        b=MXim402q9v65Wmn4VjUns3euZEjNlYvMzb2MVlctyRP3R0BGzvACW4pxlQ2C46gKOD
-         FNjbzwhQUGTBnPC6RPKYmk1bdYaTqVwE8SRETPnGbunUXbzkHIJjpz7ladIK6/P+0kzd
-         7A8PR/Uy8++YO2PAYZPScNHNBiSMCgyZySYm20sVLAkJGIHf8ANxSUS0TwIY1xpuu7vc
-         F+xOHRYvC833o0CpLNMaYL2Pc2A/gSK6Z5cL/VxcUE1TAJmyxi5Kj1g/VizEQlQcoL6D
-         hqTaG23r9oe4YNQ+a0Qf3Dh7QlCpOuFgICrdk8QXNQ8AJc4emwlWGt/UbmEdqsauTnIh
-         FGxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=A1AMia2vi1QSpUOJn8VNp1VkrqQ7LwCEUZO4G/j54mE=;
-        fh=WNkXEsXkTjPjK3BnzXVuSEaeu66Oo9XAJixvxLYj0FY=;
-        b=VFJi9nrwTUar235CqBcF/1HfuATT37NOzCBDJidO7uf0xuXTsp+dZd+hODR4bZ9+9U
-         ngPK8P80kmCb5szPPozlbtRfpHrNHRzALOjlOOWw9pivZx7mXpI4zAqqFcA+/fNsKuP1
-         qWba2Ia5TpNaWfD9dxOgBj2RR4hkZ1kJ5WYcxaYOskLifBK9TS+JZ0L74IJwFgzzqch2
-         fLgm+ephAw0hruV0kFqbHphLQjNjKdRNrlcSOh1CS6hCWz6kERgWw7EaWFOc/CHjB2Zh
-         PvYQPnh4VsX9Bbvwh8CPfnRQQ1N5OfP2Nym70Ucsj4R4QQDF2kWz8wk9hIcTDq9xfIfN
-         2PDA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flashbots.net; s=google; t=1795013740; x=1795618540; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=A1AMia2vi1QSpUOJn8VNp1VkrqQ7LwCEUZO4G/j54mE=;
-        b=cHd61VjaSggyMDg7PknLa0M83mt6nX1/AJyuZZRJIbyeE/cwFkK5TnaQSymRVutPAy
-         P3WyQyTe4mvkz+/Z3jDryMZklVVB9VkUzzwGOm2j1R5OO+n3HeXA3x4aPuOh5C6oTAQX
-         0mYxfq6rXZNh5YnvR8k4OHZHSpuUwE9y8lN6V5KoTo9qoDJjOZtZrjQjmM7NtMu2kNA4
-         Bk+b3cSYrd74/4h5WhSoN82SLgAw7SbsPKQASWPpLeoh30jatTf+9Gs5gW7+tn0qfY5+
-         ka70TBQyJr3QV4cG7sXL5vKXdrXEznDj+SJ6hhTRlgwYAt6vbEJWQ64uQgCjZb7hHKOf
-         yOcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795013740; x=1795618540;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=A1AMia2vi1QSpUOJn8VNp1VkrqQ7LwCEUZO4G/j54mE=;
-        b=lYJ34muFGLI669q6pNIWZrNuwy9gkleFqaP4NiD0GMyVQEvsB1MsoGJV9wv1fBrlXl
-         vx0EhkSeUUExfV2yzgeDnetnIAZnrZdIDVlEpJopUde9jTqlSlq6LQRqRnZh56+HdU9t
-         Gf5VMLzIMpFfoWy6IBpu7Tss1FoHzkSI5OZ/NZpqA5k4qJZjS0PbEoGxLj1AAaDYwtk1
-         8zgvpcydQu60KWxxpseorsQplcz6fJAyGOC3cHRocVBjqH3WGx6/iLF+xUHMxg2wLuq4
-         AvCPuEOrSgo3OSxQiMkArzwn2ZOD+VcQ03UBR4KIyz/Xh47h5yv2jm+Nynh5XWzpkreu
-         20yw==
-X-Forwarded-Encrypted: i=1; AL+hErG6LrLbxfuAzZFljlhRtHKCqHXFOYkgXE+kktTT0Np9vlKjyGqCnnLDZp+siRK3bGyqvUE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8YdpRBnMVCgbTqvP1FAKrUTNPLKRY7cjHtpx1V4XRDq/hXpjOL
-	XoDAU/uwk31X6at4U7YtMQMdVxa/cjuSITDcwvre95DtI/AQMIITUSulmaqzOcSSv2lOjJ/qNFl
-	L/OwtsmtEsMwLHc7bb3tO8r1BTwnXfRD9gAY76xoyyw==
-X-Gm-Gg: AYBFou2XhxiE6eBxPkpApmtqHaQ9usmklHXLuju9hVL6HeontwpwwlJuU4GaPoFOIUR
-	7k4+4rGQMVCutH2iJUxcezlOsYd3J+HQOtUBC4bmBwSD9G/9rwHaACEK5eoVNIW1/94+RmA+GwQ
-	u0dU3/h0aluWVculBwBYSPKXeX5pvR5RXKL4LRTjwI81cthGaC/Ut+M12nEZq7lpou1GS0RTIWX
-	VmmPf+CllUwHMAGYY8G4stDL4Nu90vK5Ft/5CZ9w1t6DFuvMHQnVcYnxj4tUlj9E1D+6/9/HafL
-	ZFX2Vjg44DOL9/9rwXgsAqpfpIwtUsFIz4vItP9QoX8qToxRqgytl/yHFspBIpvcJk1FKa7Xtap
-	zT+K3r0pB478T5WIbnNYv15nI5IjtZOeKX15UCPpUfMW3qWqQL+mru/lY8U+KYZyTSDPh+uUMmE
-	BhH5k31SaUaI6BZzMqU7dHYaWKKJYXfwUSHlNwF3zj5BMEL3nOQkn7Zcy2aOz70uUU43B8o7Ru
-X-Received: by 2002:a05:6830:2b24:b0:844:4959:e856 with SMTP id
- 46e09a7af769-862f08f6d8fmr2997887a34.11.1795013739853; Wed, 18 Nov 2026
- 06:55:39 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=I50vTSzh
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B10EC1477;
+	Wed, 18 Nov 2026 07:00:37 -0800 (PST)
+Received: from [10.0.136.98] (M0PRX50XMG.cambridge.arm.com [10.0.136.98])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 70B203F632;
+	Wed, 18 Nov 2026 07:00:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795014040; bh=lAqOAZ+NRl4aSYECkflTKHgjeV0Cj+Lx8T55aGUIyiE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=I50vTSzhUV8eFc3Xt7RTfj7vRMBISNll0D+3SGSENDbfsJeSDTljnDqnghS3XQE/1
+	 VpLzeOUVKK4LwDoFPlklH9ytAOelrV54yQdE9QHFaEUKcCyCrCzPpQd/fNwn2TTIPB
+	 nm/AUeahyaEGQ58tJU9k3hjLNEwUTlYGx8pLCtnc=
+Message-ID: <a8117d07-e074-4f6e-afe5-04f1c6949810@arm.com>
+Date: Wed, 18 Nov 2026 15:00:37 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,68 +53,203 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261024-tdx-guest-quote-poll-v3-0-6a83bb767314@flashbots.net>
- <3b582cdcfe37f1d01ee71611ab2611f845261089.camel@intel.com>
- <CAKV3HMM9BKpmgWeFqRqamAsqqiofj+TG4DrOEHmbUyE0FjA7+w@mail.gmail.com>
- <0f9ba1a6acb57a8c126739175b4e38dafac08c9d.camel@intel.com>
- <CAKV3HMMfx4APmardWdtL8yhirXMuuBQMZ8xrtowHNRnTKXNRiw@mail.gmail.com> <86f99f3010775eeff6269fd9bb8f4edac10a7d85.camel@intel.com>
-In-Reply-To: <86f99f3010775eeff6269fd9bb8f4edac10a7d85.camel@intel.com>
-From: Moe Mahhouk <moe@flashbots.net>
-Date: Wed, 18 Nov 2026 14:55:28 +0000
-X-Gm-Features: AclHuK-d2hbNILXughUCStMRcZnLFB956aXQFG2DezCp6dotXFDkjtwD-G3N_ds
-Message-ID: <CAKV3HMMjyHig6LTiCsXKLvgvsW+0GVitCc0ziBD9RNxH2TAuvA@mail.gmail.com>
-Subject: =?UTF-8?Q?Re=3A_=5B=F0=9F=9A=A8ext=5D_Re=3A_=5BPATCH_v3_0=2F2=5D_virt=3A_tdx=2Dguest=3A_Fi?=
-	=?UTF-8?Q?x_and_speed_up_the_wait_for_a_Quote?=
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, "Miao, Jun" <jun.miao@intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Aktas, Erdem" <erdemaktas@google.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "djbw@kernel.org" <djbw@kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH kvmtool v4 03/23] arm64: Split GIC device setup
+To: Vladimir Murzin <vladimir.murzin@arm.com>, will@kernel.org,
+ julien.thierry.kdev@gmail.com
+Cc: maz@kernel.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ timothy.hayes@arm.com, Peter Maydell <peter.maydell@linaro.org>
+References: <20261102213413.4136118-1-sascha.bischoff@arm.com>
+ <20261102213413.4136118-4-sascha.bischoff@arm.com>
+ <e641655a-bdaf-4cd8-b61a-b5ba041d732c@arm.com>
+Content-Language: en-GB
+From: Sascha Bischoff <sascha.bischoff@arm.com>
+In-Reply-To: <e641655a-bdaf-4cd8-b61a-b5ba041d732c@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, 2026-11-18 at 01:28 +0000, Edgecombe, Rick P wrote:
-> I'd think a simpler shortening of the time would be better than something more
-> advanced. But...
+On 10/11/2026 15:00, Vladimir Murzin wrote:
+> On 11/2/26 21:33, Sascha Bischoff wrote:
+>> Separate the CPU interface, redistributor and distributor address setup
+>> from GIC device creation. Keep the per-GIC address handling in small
+>> helpers.
+>>
+>> Use the irqchip enum order to omit the GICv2 PPI CPU mask for GICv3
+>> and later generations.
+>>
+>> Suggested-by: Vladimir Murzin <vladimir.murzin@arm.com>
+>> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+>> ---
+>>   arm64/gic.c | 94 +++++++++++++++++++++++++++++++++++------------------
+>>   1 file changed, 62 insertions(+), 32 deletions(-)
+>>
+>> diff --git a/arm64/gic.c b/arm64/gic.c
+>> index f8371f50..57f3fa02 100644
+>> --- a/arm64/gic.c
+>> +++ b/arm64/gic.c
+>> @@ -142,52 +142,90 @@ out_close:
+>>   	return err;
+>>   }
+>>   
+>> -static int gic__create_msi_frame(struct kvm *kvm, enum irqchip_type type,
+>> -				 u64 msi_frame_addr)
+>> +static int gic__create_msi_frame(struct kvm *kvm, enum irqchip_type type)
+>>   {
+>>   	switch (type) {
+>>   	case IRQCHIP_GICV2M:
+>> -		return gic__create_gicv2m_frame(kvm, msi_frame_addr);
+>> +		return gic__create_gicv2m_frame(kvm, gic_msi_base);
+>>   	case IRQCHIP_GICV3_ITS:
+>> -		return gic__create_its_frame(kvm, msi_frame_addr);
+>> +		return gic__create_its_frame(kvm, gic_msi_base);
+>>   	default:	/* No MSI frame needed */
+>>   		return 0;
+> 
+> Nitpick: change is not mentioned in commit log
 
-OK. In v4, patch 2 will replace the backoff with a fixed 10 ms sleep.
-Patch 1 stays as it is. It fixes the timeout check and is marked for
-stable, so it could also go in on its own.
+Thanks, have added that to the commit message!
 
-> Shouldn't attested TLS just be used to set up some other key such that
-> subsequent connections can be as fast as normal TLS? 0.1s is still kind of slow.
+> 
+> 
+>>   	}
+>>   }
+>>   
+>> -static int gic__create_device(struct kvm *kvm, enum irqchip_type type)
+>> +static int gic__set_cpu_if(enum irqchip_type type)
+>>   {
+>> -	int err;
+>>   	u64 cpu_if_addr = ARM_GIC_CPUI_BASE;
+>> -	u64 dist_addr = ARM_GIC_DIST_BASE;
+>> -	struct kvm_create_device gic_device = {
+>> -		.flags	= 0,
+>> -	};
+>>   	struct kvm_device_attr cpu_if_attr = {
+>>   		.group	= KVM_DEV_ARM_VGIC_GRP_ADDR,
+>>   		.attr	= KVM_VGIC_V2_ADDR_TYPE_CPU,
+>>   		.addr	= (u64)(unsigned long)&cpu_if_addr,
+>>   	};
+>> -	struct kvm_device_attr dist_attr = {
+>> -		.group	= KVM_DEV_ARM_VGIC_GRP_ADDR,
+>> -		.addr	= (u64)(unsigned long)&dist_addr,
+>> -	};
+>> +
+>> +	switch (type) {
+>> +	case IRQCHIP_GICV2M:
+>> +	case IRQCHIP_GICV2:
+>> +		return ioctl(gic_fd, KVM_SET_DEVICE_ATTR, &cpu_if_attr);
+>> +	default:	/* No CPU interface needed */
+>> +		return 0;
+>> +	}
+>> +}
+>> +
+>> +static int gic__set_redist(enum irqchip_type type)
+>> +{
+>>   	struct kvm_device_attr redist_attr = {
+>>   		.group	= KVM_DEV_ARM_VGIC_GRP_ADDR,
+>>   		.attr	= KVM_VGIC_V3_ADDR_TYPE_REDIST,
+>>   		.addr	= (u64)(unsigned long)&gic_redists_base,
+>>   	};
+>>   
+>> +	switch (type) {
+>> +	case IRQCHIP_GICV3:
+>> +	case IRQCHIP_GICV3_ITS:
+>> +		return ioctl(gic_fd, KVM_SET_DEVICE_ATTR, &redist_attr);
+>> +	default:	/* No redistributor needed */
+>> +		return 0;
+>> +	}
+>> +}
+>> +
+>> +static int gic__set_dist(enum irqchip_type type)
+>> +{
+>> +	u64 dist_addr = ARM_GIC_DIST_BASE;
+>> +	struct kvm_device_attr dist_attr = {
+>> +		.group	= KVM_DEV_ARM_VGIC_GRP_ADDR,
+>> +		.addr	= (u64)(unsigned long)&dist_addr,
+>> +	};
+>> +
+>> +	switch (type) {
+>> +	case IRQCHIP_GICV2M:
+>> +	case IRQCHIP_GICV2:
+>> +		dist_attr.attr = KVM_VGIC_V2_ADDR_TYPE_DIST;
+>> +		return ioctl(gic_fd, KVM_SET_DEVICE_ATTR, &dist_attr);
+>> +	case IRQCHIP_GICV3:
+>> +	case IRQCHIP_GICV3_ITS:
+>> +		dist_attr.attr = KVM_VGIC_V3_ADDR_TYPE_DIST;
+>> +		return ioctl(gic_fd, KVM_SET_DEVICE_ATTR, &dist_attr);
+>> +	default:	/* No distributor needed */
+>> +		return 0;
+>> +	}
+>> +}
+>> +
+>> +static int gic__create_device(struct kvm *kvm, enum irqchip_type type)
+>> +{
+>> +	int err;
+>> +	struct kvm_create_device gic_device = {
+>> +		.flags	= 0,
+>> +	};
+>> +
+>>   	switch (type) {
+>>   	case IRQCHIP_GICV2M:
+>>   	case IRQCHIP_GICV2:
+>>   		gic_device.type = KVM_DEV_TYPE_ARM_VGIC_V2;
+>> -		dist_attr.attr  = KVM_VGIC_V2_ADDR_TYPE_DIST;
+>>   		break;
+>>   	case IRQCHIP_GICV3:
+>>   	case IRQCHIP_GICV3_ITS:
+>>   		gic_device.type = KVM_DEV_TYPE_ARM_VGIC_V3;
+>> -		dist_attr.attr  = KVM_VGIC_V3_ADDR_TYPE_DIST;
+>>   		break;
+>>   	case IRQCHIP_AUTO:
+>>   		return -ENODEV;
+>> @@ -199,26 +237,19 @@ static int gic__create_device(struct kvm *kvm, enum irqchip_type type)
+>>   
+>>   	gic_fd = gic_device.fd;
+>>   
+>> -	switch (type) {
+>> -	case IRQCHIP_GICV2M:
+>> -	case IRQCHIP_GICV2:
+>> -		err = ioctl(gic_fd, KVM_SET_DEVICE_ATTR, &cpu_if_attr);
+>> -		break;
+>> -	case IRQCHIP_GICV3_ITS:
+>> -	case IRQCHIP_GICV3:
+>> -		err = ioctl(gic_fd, KVM_SET_DEVICE_ATTR, &redist_attr);
+>> -		break;
+>> -	case IRQCHIP_AUTO:
+>> -		return -ENODEV;
+>> -	}
+>> +	err = gic__set_cpu_if(type);
+>> +	if (err)
+>> +		goto out_err;
+>> +
+>> +	err = gic__set_redist(type);
+>>   	if (err)
+>>   		goto out_err;
+>>   
+>> -	err = ioctl(gic_fd, KVM_SET_DEVICE_ATTR, &dist_attr);
+>> +	err = gic__set_dist(type);
+>>   	if (err)
+>>   		goto out_err;
+>>   
+>> -	err = gic__create_msi_frame(kvm, type, gic_msi_base);
+>> +	err = gic__create_msi_frame(kvm, type);
+>>   	if (err)
+>>   		goto out_err;
+>>   
+>> @@ -439,8 +470,7 @@ void gic__generate_fdt_nodes(void *fdt, struct kvm *kvm)
+>>   u32 gic__get_fdt_irq_cpumask(struct kvm *kvm)
+>>   {
+>>   	/* Only for GICv2 */
+>> -	if (kvm->cfg.arch.irqchip == IRQCHIP_GICV3 ||
+>> -	    kvm->cfg.arch.irqchip == IRQCHIP_GICV3_ITS)
+>> +	if (kvm->cfg.arch.irqchip >= IRQCHIP_GICV3)
+>>   		return 0;
+>>   
+>>   	if (kvm->nrcpus > 8)
+>> -- 2.34.1
+>>
+> 
+> FWIW:
+> 
+> Reviewed-by: Vladimir Murzin <vladimir.murzin@arm.com>
+> Tested-by: Vladimir Murzin <vladimir.murzin@arm.com>
 
-The 0.1 s was the total for ten clients connecting at once. Each Quote
-took about 8 ms with v3 of patch 2 (median of 120 back-to-back Quotes at
-HZ=250), and quote_lock runs them one after the other.
-
-Our HTTP proxy already does part of this. A client keeps its attested
-connection open and sends all its requests over it, so it needs one
-Quote per connection, not per request. What is left is the first
-connection of each client. Many clients can arrive at once, for example
-after the TD restarts. Today the last of N clients waits about N
-seconds.
-
-We don't trust a key from an earlier attestation for new connections.
-If a later connection relied only on such a key, a leaked key would be
-enough to pass as the TD without any Quote. The recent relay attacks on
-attested TLS used this kind of gap. In CVE-2026-108269 (CVSS 9.1) the
-Quote was bound to the TLS key and a client nonce but not to the
-session, so an attacker with the TLS private key could relay a genuine
-Quote onto its own connection. Binding each Quote to keying material
-exported from that session closes this. The exported value is unique to
-each handshake, so it also serves as the nonce.
-
-> In the end I think quote based attested TLS is not normally expected to be fast.
-> So is this trying to optimize the wrong thing?
-
-It does not need to be as fast as plain TLS. But the second is not the
-cost of attestation. With a local QGS the Quote is ready a few
-milliseconds after the request, but the driver does not check again for
-a full second. Any user of configfs-tsm on TDX pays that, whatever runs
-on top. The patch shortens that wait. It does not try to make the Quote
-itself faster.
-
-If that works for you, I will send v4 with the fixed interval.
