@@ -1,99 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794960389;
-	b=p6NAHZHI/mCXEef6JY4sKJc7rTRdviM0tIS0lCm0UF4yzF+mX0MORIJQjGWuswBGNLAJ
-	 Tj2lXLb1c8feicZhyDa8UHpRi35vpI1e2p0C7q8zpTQ/27S/XEvw0H8qMHxoDB+YvTWL0
-	 qC+v22OoTm+ZQXCMqWsZLVocwFOOE4Q/lPvZehMrIHv4DCijzSoHnNdVt3iREunc6V6GC
-	 3hhH/RqKx713T+wGx1OSA4Zmni+jDL0qBZDl2lZO0h/5QDbMtLryiPlog304sCiAjoml9
-	 Q7maa/YxWdAgaLceCYcFUNJ71OjRL+Bci/JmaAwS1gBNFfg5oNmmv/Qj5E1Xk+v0mxg==
+	t=1794961702;
+	b=RmIuxZEc059A02JJoyQHTcYp74h1QMHrHxfuK4K0p3aJSuMbNJYmy1UlDozyG3T88Dvn
+	 QxX4I9H045NgzNYNyTYBKqz+L0t0HGJl9fwHdHCVrsrstC5xnAkvKOjE1mEF8Kaey10+F
+	 6f4U0EHKwx0/gaiHTnem77shcvaNCD7vXiW4TqFzy+1vbFoTtkb4gLho/X9MDAgXtx0DM
+	 MwSL4DdTgxKbwcxQlyhx2mYAunA3+Zotcc+nQdJ83qWPT9K3Ky0clR808apxdecybXWfu
+	 xEd/CmW6VZC/cFSGYzQ9eeECeQLDGJrBlWvneTjpiOQFlsi2C01BAVBedSLV6gh4R8g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794960389;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=+xymGBMHB+69JfGsfO7yJc2L/tC6s5DquTHBRYW2RuM=;
-	b=DAfpk4rwGmsdAtom/WMWavm+t2K5anxlhaNvWkrLicFA40WOrnFiZjtarpJkdsLcHkMt
-	 9OV/Pra6DPGIDPlhqxeeX6pvfjh2OlDXuWocfzvb3gG+cuII9rFngcALSiw7kv285pfLr
-	 h984CrcIv0i25hYnn4p4U0O8hYEajvlgXXCnZs4+lLdQzHbXffJ6UW4gWAjh1KHzzWL+p
-	 AGoeEpy1tGtDwadm4g8nnAUx2ArSlj3MQ3c4+uvsHKWM1VmG/ceidRZt7SyWkhafblgN8
-	 uZO5Hvx3LdeCLkJotRBzLRd7udUkDoZuC/hAnaJ5JozoBfvdj7Y1QoU4cT8hN1NyhWA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794961702;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=uFBSiDjaodXEfe0pKUcpw/rrtkJmRQYfvMmGY6lnVd0=;
+	b=vqJ36ghLIQgPBd9+NWD7z0TBtlCtpqZbMmaX4+FQE5k6i7KySUALqvCjRqGZIFanjLYh
+	 /DqpEHjDg7hElN6TfjTYJMeGuhibQgAhSTRHIak6Z5dgF/bdMmx71baj680OdQFKQz1eZ
+	 dYgExtR/noCeVnRLHKMwY6ExIvKoe5yCQXLI0L3OpeXqUBaqOaeIShEr/bA29JmdI3lIo
+	 Qv5A2CYqw5aIAYJ7UlSUeUo0rwyuMj+CnleZUgNnArOnmvK0NjoCDUnQEOodLoPRPFvjL
+	 P2/w1/yYKbzg+8qhWyV2i534jBU5+KrJoDl4lXIy3hfer3APxYs0x4TmX3KTG0KspPA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=UEquQA1G;
-	arc=none smtp.remote-ip=209.85.214.182
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OzNDDXN6;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBBE606A32C
-	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 00:06:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3FBBE606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54D6606A31C;
+	Wed, 18 Nov 2026 00:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=UEquQA1G
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2e9f6a16afcso12435ad.1
-        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 16:06:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794960388; x=1795565188; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+xymGBMHB+69JfGsfO7yJc2L/tC6s5DquTHBRYW2RuM=;
-        b=UEquQA1GKaFVZK88VYdviZy0Zd0/BVA+h4rqojd8tzowKo622JYGb5eLgoDDju4ge+
-         N0SzNcmvvbwRPejifezn4wO+yOUAMLdZXzGH2bN7sr46DEvDrXw9qrshLLxfWJSm1sAd
-         j+fZ8m3hY5qaFDFJL88f9O0WKh9D8xuBCC7y2b/+eJJ8LYmfZUPu8UiAZjhqBIcLvAOx
-         5UGuieDAVUezp94H3qKjJjJM2ouD/lUopTUEfHZHEtZSL4xvkz4MRxtqWzp44wZTarye
-         XZzpMKW8+DH2Bz8U4OFX44AhEqXhDbASX72T4QpN1eKMoNQmbacBi2pOkCk9zyg1h1Xh
-         kZZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794960388; x=1795565188;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+xymGBMHB+69JfGsfO7yJc2L/tC6s5DquTHBRYW2RuM=;
-        b=xkZSmdf7AtqW8Y3IsW4E2KHJ6EZjG76zC6j52eWRxXyyQp9XLmzyuEqIXw0bIkj3Jw
-         xk+Oy437PnTtoRS+3JXI7mhHDf9o7ukjyObtEBbhYu0Od3s3ueRRwsHLvAX46xldfAoZ
-         7XcWTGabUdPyccJhMY1tLu7VkPgSqHyR/EQG/u9GJxMq/WjuIKhpjNIUCojaeJAtbmVl
-         d5ZZmQ3xi0854BEbQhvnZnufe28iQClCzl9K/hj/jXcfa6/QkGu4+XkdKoFtraFZ9NeS
-         8r5SzfbOywH5Tbzzck6LGNqAu8NvTDJbe86dL837nORtiz6RaIqPpqza9ce2v0XLgLCK
-         Qz5g==
-X-Forwarded-Encrypted: i=1; AL+hErGsgx1fQ3NCDxGQePBRz4DjXxPZCUkEBrLDcM1CF5wiFlM9rJkkMU0GoSGIGkdBoFLZ3xU=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/+me8LjZ9eR3snVwKAnaFpiTXYm1zO5GUi9aphd6nqFrg0MCg+
-	t6f7FOhDoSZoBxbwcgMZ/Tb39NUqwvVJXuaknWriG48tunNBR61Op0nuPJwlXxoDmg==
-X-Gm-Gg: AZFdTZfv4HiY0Z7Ps4E4JrkPPbuOxCFwQ0aZaXLqa+b4GTYSo5FR3JtqBa0cX470kAw
-	5ew/QsXfLuse3cfUrg0GsoPKotkQq2EYrHqp9d4QMgRl89bMuC88qB1RB1HVNpU2oy1Xw7DkAW5
-	jxHSb68K/wE/4eNWvlSEjJZ9VvpNlmX2J7aUFEv57o79zM4P7DY7QW+ekFovXyYXGcqchu++rNN
-	xdim+y21djHbVhYlBrgGQywIUVYFtyK/h59D2kTafsBfn7J1+Ep/TgvpyhfAyZaY67LKLD/kDkj
-	9ZxuoAIeSiduN7asj36k8m0J3xpFNINLNXFdT27wTgSmzeXoqbAerGGGiXv7tvF+hYq3q9ebvef
-	tHxczYD1hdDx0Q58E3wNnDiO2qRFnIf9GtkfWXS/CmoNDVt0MWQIJjTKc2yFtC0+pbFhWw7OAFv
-	hP3/XYjlkKWQ8JgYw5jedEv05RiRi7VqZ692r6eF6fQoFEQtZTJ1+dVLBnS2iFlLcJpUbJG1W12
-	/wWsaO+AeiCT/MomsbFAkZl3Hre9vOcxFDjc0qiOHu/6WZ2Z/nz+3FZDh/SfBRjVgc7M3gmTfvE
-	koh8K3eZmKetnHeM2k63Yj3eE+gg98R85LymPPFOTje45KUtwpHNaZnXq4O8k7DUKao=
-X-Received: by 2002:a17:903:3510:b0:2c9:d89f:fd98 with SMTP id d9443c01a7336-2eff77a8714mr2438805ad.1.1794960388076;
-        Tue, 17 Nov 2026 16:06:28 -0800 (PST)
-Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b3d19b5e8asm1142449a91.8.2026.11.17.16.06.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2026 16:06:27 -0800 (PST)
-Date: Tue, 17 Nov 2026 16:06:23 -0800
-From: Vipin Sharma <vipinsh@google.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: Alex Williamson <alex.williamson@nvidia.com>, 
-	kvm <kvm@vger.kernel.org>, Alex Williamson <alex@shazbot.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Kevin Tian <kevin.tian@intel.com>, linux-kernel <linux-kernel@vger.kernel.org>, 
-	linux-pci <linux-pci@vger.kernel.org>, praan@google.com
-Subject: Re: [RFC PATCH 0/5] PCI/vfio-pci: Guard resets against active SR-IOV
- VFs
-Message-ID: <20261118000511.GC2250529.vipinsh@google.com>
-References: <20260812045325.2733631-1-alex.williamson@nvidia.com>
- <an0BOyexLcOjFJw9@google.com>
- <20261117225559.GB2250529.vipinsh@google.com>
- <avzfBjBZiOnJUH4W@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OzNDDXN6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A977B1F000C8;
+	Wed, 18 Nov 2026 00:28:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794961702;
+	bh=uFBSiDjaodXEfe0pKUcpw/rrtkJmRQYfvMmGY6lnVd0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=OzNDDXN6N0xWRrhpBnc+W3KTGvAFvr86p2oyCKvDRN48enAkKdr2LzLju+I8OI2Hw
+	 GeJTD9Gs9ZyNw3m9Rs9RfNUkL+V6wS4RNOoyS0+lYhgIEYDulHiVIUustHhWL1WmE/
+	 /XszZghXRwTXs+a8HuexXD3gWb1WbPVOCztP+CMxavyL8Jlq7ZaTba6EWmj69QY55J
+	 QJmjszbtjPRXBuVJSu1u+nVbDNGno0mZ1nbqrRqteMcLm22B06tL2dFLD3n5INsLoP
+	 ht9Zyde1kpNwHgaAdPUXO/Yiy6YsQgbkl72xjnyhwt/o+fbtZEdQwF6rlpb3+g7o4M
+	 61jkRXv5qIsmg==
+Date: Wed, 18 Nov 2026 00:28:20 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: "Chen, Zide" <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>, Andi Kleen <ak@linux.intel.com>, 
+	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>, 
+	Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
+Subject: Re: [PATCH v4 01/21] KVM: SVM: Drop counter MSR checks in
+ amd_is_valid_msr()
+Message-ID: <avzw_akHKkLkb-iD@google.com>
+References: <20261112203227.289379-1-zide.chen@intel.com>
+ <20261112203227.289379-2-zide.chen@intel.com>
+ <avis5Ose25IiYM2S@google.com>
+ <553050b3-bcda-48e0-af03-754f0b697943@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,55 +66,123 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <avzfBjBZiOnJUH4W@google.com>
+In-Reply-To: <553050b3-bcda-48e0-af03-754f0b697943@intel.com>
 
-On Tue, Nov 17, 2026 at 11:31:08PM +0000, Samiullah Khawaja wrote:
-> On Tue, Nov 17, 2026 at 03:02:00PM -0800, Vipin Sharma wrote:
-> > On Thu, Aug 13, 2026 at 10:30:45PM +0000, Samiullah Khawaja wrote:
-> > > On Tue, Aug 11, 2026 at 10:53:18PM -0600, Alex Williamson wrote:
-> > > > It's recently been found[1] that vfio-pci doesn't restrict resets on PFs
-> > > > while SR-IOV is enabled.  This can not only result in an uncoordinated
-> > > > disruption of the use of the associated VFs, but the ongoing use of and
-> > > > access to the VF has the potential to result in machine checks.
-> > > >
-> > > > This series proposes that this gap is largely an oversight of
-> > > > pci_reset_function() to recognize that a PF reset affecting SR-IOV VFs
-> > > > violates the scope boundary of the pci_reset_function() API.
-> > > 
-> > > Hi Alex,
-> > > 
-> > > Thanks for sending out the RFC to fix this issue. I cherry-picked it
-> > > into my environment to verify that whether it fixes the issue I was
-> > > experiencing and it does fix it. I will continue to do more testing, but
-> > > when you send this as a formal v1, you can add:
-> > > 
-> > > Tested-by: Samiullah Khawaja <skhawaja@google.com>
-> > > Reported-by: Samiullah Khawaja <skhawaja@google.com>
-> > > 
-> > 
-> > Hi Alex,
-> > 
-> > Is this series still on your radar for formal v1?
-> > 
-> > If this is the direction we are going in I can use it for liveupdate work
-> >  https://lore.kernel.org/all/auzftbPFO_6XBYVw%40google.com/
-> > 
-> > Thanks
-> > Vipin
+On Mon, Nov 16, 2026 at 01:02:49PM -0600, Chen, Zide wrote:
 > 
-> Hi Vipin,
 > 
-> Alex asked me whether I or someone on our team could pick up this
-> series. Pranjal is working on it and will send out a new version. There
-> is some extra work needed on the IOMMU side to make sure that the device
-> is moved to a blocking domain when the reset is skipped.
-> 
-> But I think the patch you need is fairly independent and can be sent out
-> separately from this series:
-> https://lore.kernel.org/kvm/20260812045325.2733631-6-alex.williamson@nvidia.com/
-> 
+> On 11/14/2026 12:49 PM, Yosry Ahmed wrote:
+> > On Thu, Nov 12, 2026 at 01:32:07PM -0700, Zide Chen wrote:
+> >> amd_msr_idx_to_pmc() accurately validates individual counter MSRs by
+> >> checking whether the corresponding counter is supported for the vCPU.
+> >> Validating counter MSRs again in amd_is_valid_msr() is redundant.
+> >>
+> >> Furthermore, validating counter MSRs using broad checks like
+> >> "pmu->version > 0" or "PERFCTR_CORE" is inaccurate and misleading. It
+> >> falsely validates unexposed counters, which then fail in
+> >> amd_pmu_{get,set}_msr(), injecting an errant #GP instead of taking
+> >> KVM's fallback (read 0, write ignored) and breaking migration for
+> >> unadvertised counters.
+> >>
+> >> Finally, the range check in the default case is dead code because AMD
+> >> CPUs currently support at most 6 Core Perf counters. Even if future AMD
+> >> CPUs support more than 6, counter MSRs would still be sufficiently
+> >> validated by amd_msr_idx_to_pmc().
+> >>
+> >> Drop the counter cases and dead range check from amd_is_valid_msr(),
+> >> leaving counter validation solely to amd_msr_idx_to_pmc().
+> >>
+> >> Fixes: 4a2771895ca6 ("KVM: x86/svm/pmu: Add AMD PerfMonV2 support")
+> >> Reported-by: Jim Mattson <jmattson@google.com>
+> >> Signed-off-by: Zide Chen <zide.chen@intel.com>
+> > 
+> > Should we also drop the get_gp_pmc(.., MSR_IA32_PERFCTR0),
+> > get_gp_pmc(.., MSR_P6_EVNTSEL0), and get_fixed_pmc() calls from the
+> > default case in intel_is_valid_msr()?
+> > 
+> > They are also covered by intel_msr_idx_to_pmc() IIUC.
+> It's a shame that I didn't take one step further to check the Intel code.
 
-That works for me. I can send this patch separately.
+FWIW, for the patch itself:
 
-Thanks,
-Vipin
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+
+> 
+> I completely agree that intel_is_valid_msr() should be simplified:
+
+Looks good, I assume that would be a separate patch.
+
+> 
+> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+> index 4824e7eb98d3..77ce713101a4 100644
+> --- a/arch/x86/kvm/vmx/pmu_intel.c
+> +++ b/arch/x86/kvm/vmx/pmu_intel.c
+> @@ -229,10 +229,7 @@ static bool intel_is_valid_msr(struct kvm_vcpu
+> *vcpu, u32 msr)
+>                         ((perf_capabilities & PERF_CAP_PEBS_FORMAT) > 3);
+>                 break;
+>         default:
+> -               ret = get_gp_pmc(pmu, msr, MSR_IA32_PERFCTR0) ||
+> -                       get_gp_pmc(pmu, msr, MSR_P6_EVNTSEL0) ||
+> -                       get_fixed_pmc(pmu, msr) || get_fw_gp_pmc(pmu,
+> msr) ||
+> -                       intel_pmu_is_valid_lbr_msr(vcpu, msr);
+> +               ret = intel_pmu_is_valid_lbr_msr(vcpu, msr);
+>                 break;
+>         }
+> 
+> Additionally, intel_msr_idx_to_pmc() currently misses get_fw_gp_pmc(),
+> which leaves FW counter writes untracked in kvm_pmu_mark_pmc_in_use().
+> Moving get_fw_gp_pmc() into intel_msr_idx_to_pmc() fixes that bug and
+> allows dropping all counter checks from intel_is_valid_msr():
+> 
+> @@ -247,6 +244,7 @@ static struct kvm_pmc *intel_msr_idx_to_pmc(struct
+> kvm_vcpu *vcpu, u32 msr)
+>         pmc = get_fixed_pmc(pmu, msr);
+>         pmc = pmc ? pmc : get_gp_pmc(pmu, msr, MSR_P6_EVNTSEL0);
+>         pmc = pmc ? pmc : get_gp_pmc(pmu, msr, MSR_IA32_PERFCTR0);
+> +       pmc = pmc ? pmc : get_fw_gp_pmc(pmu, msr);
+> 
+>         return pmc;
+>  }
+> 
+> This seems a little bit too complicated in intel_msr_idx_to_pmc(),
+> especially once PMU v6 is introduced and more v6 specific MSRs are
+> available. We may do some cleanup (not in this series though)
+
+Yeah we can clean this up later.
+
+> 
+> - Fold get_fw_gp_pmc() into get_gp_pmc() and hide the base MSR from the
+>   API signature to keep the callers clean.
+> - Move these helpers from pmu.h to pmu_intel.c, since AMD already uses
+>   its own helpers.
+> 
+> @@ -245,10 +294,9 @@ static struct kvm_pmc *intel_msr_idx_to_pmc(struct
+> kvm_vcpu *vcpu, u32 msr)
+>         struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+>         struct kvm_pmc *pmc;
+> 
+> -       pmc = get_fixed_pmc(pmu, msr);
+> -       pmc = pmc ? pmc : get_gp_pmc(pmu, msr, MSR_P6_EVNTSEL0);
+> -       pmc = pmc ? pmc : get_gp_pmc(pmu, msr, MSR_IA32_PERFCTR0);
+> -       pmc = pmc ? pmc : get_fw_gp_pmc(pmu, msr);
+> +       pmc = intel_get_fixed_pmc(pmu, msr);
+> +       pmc = pmc ? pmc : intel_get_gp_eventsel_pmc(pmu, msr);
+> +       pmc = pmc ? pmc : intel_get_gp_counter_pmc(pmu, msr);
+> 
+>         return pmc;
+>  }
+> 
+> @@ -419,18 +467,17 @@ static int intel_pmu_get_msr(struct kvm_vcpu
+> *vcpu, struct msr_data *msr_info)
+>                 msr_info->data = pmu->pebs_data_cfg;
+>                 break;
+>         default:
+> -               if ((pmc = get_gp_pmc(pmu, msr, MSR_IA32_PERFCTR0)) ||
+> -                   (pmc = get_gp_pmc(pmu, msr, MSR_IA32_PMC0))) {
+> +               if ((pmc = intel_get_gp_counter_pmc(pmu, msr))) {
+>                         u64 val = pmc_read_counter(pmc);
+>                         msr_info->data =
+>                                 val & pmu->counter_bitmask[KVM_PMC_GP];
+> 
