@@ -1,55 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795030273;
-	b=xioIJoxIL/JdlgExumVyWGJ02akuQdauk6CxAoCY6+pNY2TOzYMFEPFxNSV5cmrApR0C
-	 87WiY+e16A4E0Vcg0oLnKQ5PFrAwzHmPBftjyg6gWcNLijc7T7FXLfdixRhuRrk7NTkmF
-	 hF3mRE5Lc3yt/7Fi+8ykhc3wcVHsoxCzxaag6HPSXDInHa9V4amrTPdvFxY8Mk0py0VM/
-	 thCZpToHlbrpehsATYtK1mCldOWRMtKS6R6j7mbhzsOO9OC5jFFz+mrFlerKI8F6zeo7M
-	 XV/83ZYQq+Oy+JqT8swwXWfG++4BmcbyRNP8KML6O4vRSnoUpu49cYLCNQ5TUy1AgCg==
+	t=1795030587;
+	b=3kewTL+GmPoHuQnuRSQHb2kEOpmDl7MLXlPmLTCpEUjpuu5iAci2qDllya5OKcg5PP2S
+	 3e3CBEwUmjgwCdSLHPN1JlfLpy/8fteKTGiN8CmVrxkthYydnOcmwa6bp2q3MQNfFnxVp
+	 qQ11T0e59gYr/kPOKbbx7AS0sCn7eIfRmnuAqImpMycSIdFNYVlfqnkbS+hle76Yoxkpq
+	 TVJerTDJJ40w5LOrQlRAz7Vmg222KArtR7EGyOMMMTVdfrvQoLD3Nt3zsqC6mx/Hlkjhl
+	 qwAGjPWDbFMdApUGVCFAMiSsOtoOZpx/N8oaMDuv4RANd3CjH/pRR+dp6NV8ijooErw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795030273;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=EDD37NjjvJNIfpw9KAFA+jcN9aRZtu7RwLQr1pxz0OI=;
-	b=me9h97aOP54iJE5uP1HSw+NgzeC96N5h1HJdXWnY8ZV40yNBkfYNYzOo8FHf7piycDux
-	 yfxNcwMVh9Il7lwGmngIidVo1A9/yMpWNerBcdaRICfU79fqm2oohPNoBT4XPvAmBiCbD
-	 7r5eW91NnONKBqpYYSX9PLlSgOzoA9kpKR0nxHttBwaVjSjs6uVbO6FbNbLlNaRIx0vA1
-	 UOOnO0E4nwfSOI4wit3gqWsWPgG3S9SGu0t3sv04FIJC8THEjWwta+2n/dDh6UeazogoD
-	 lu9ymTHZZncjbvF1/FaNpidZQ1+He0bdlfmDZ6zTs+K9sU0UI2H45JaAcatFamP+/tg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795030587;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Proofpoint-Reinject:X-Proofpoint-GUID:X-Authority-Analysis:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=UZkCw/PRNjTmgTt2H+rO8Z2cQfMEi2kXyIfcaLv6x2Q=;
+	b=g7BsvA/BPxcqTxHUPbQn1+4UynB/kGsNQfmwxYXh1qCvIGh5or5mj2Ul/FOSu2ywXLPl
+	 KEpNJYg7Hqxdu4SQ7b3FiiwwtY8vuY24tu694lrIstWslv3DBfr22h3dhZuGSc5DA0SND
+	 +bY0D2AOdiRji2PUdO/Xfvml31fPYBxWpfH5+qMY6U9PNZzzcQtThoYOEksoPazwCsK4q
+	 5IXP01NIofScmUprnU1fJdTcw+9pLjZtiXujyfUejCBC0deuwkdH93zxpLuI9IqHE434G
+	 14sXE3fKoqh5EN6dpn+rs58TbfJ4sfd6ME15tJZlcm5IVMlZlnZ5GCX8iXFCsb0hH+w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zo6mxFGv;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Dd5cSyo+;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9105606FF59
-	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 19:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF09C60A6F5F;
+	Wed, 18 Nov 2026 19:36:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EF09C60A6F5F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zo6mxFGv
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587491F000CD
-	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 19:31:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795030273;
-	bh=EDD37NjjvJNIfpw9KAFA+jcN9aRZtu7RwLQr1pxz0OI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Zo6mxFGv92To40pzc4PkJphlPw0S8B+GnmH04f6BAnRRa8VVDehu9hnrJsDD/f53P
-	 pFRTiHnx7yN1t69bvPTAd66+YXOTT0XQWWIk+U0BWaLl/plvwuWYHlUEaxbZKtKXg8
-	 snJ8iXco3PlIh4OjvxGcgHJwpeYM+d/K+e0yOD7C7PIVzk4v3XDF8qnCkvV3bC0rzY
-	 b8Gx9jcCrHqCL+h1APsvgwf2KE1ADBIfTOoJ9tUEZOqwt+HfmVlrCRuuP5kTR1/iZ/
-	 8uKjUyJvqNv3XvMBXNolr0oKnsNXjx44l5Rp6tAdqo+9CZGFHPRI4AMzIAqIrb2I1Z
-	 AGDBSJ2wP2wGA==
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c511cdd5a82so115823066b.3
-        for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 11:31:13 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErE9y+WS2/cx9BuXu1NjfnVqbVucSO3P+990OMEhBSVzNNnvr0ckf3U+FMaB3XkmAZq/Za4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9r9le/6plKiPppPTOQUIWHZET2Y/SpDBCf05GgNnxk7choczks
-	iVmDNo0rrvVToKmu4pmAkH7N0gvSlznNxG1OSlS+6ke+u68BejMmwcbsKBR9kiMyLzbAJpjYzVo
-	icNfKY0vza5BUMzRv8dmGotV7iar9ZAE=
-X-Received: by 2002:a17:906:19c2:b0:c51:24eb:4de9 with SMTP id
- a640c23a62f3a-c5124eb550emr56887566b.34.1795030272192; Wed, 18 Nov 2026
- 11:31:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Dd5cSyo+
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AIJQ2dk1979587;
+	Wed, 18 Nov 2026 19:35:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=UZkCw/
+	PRNjTmgTt2H+rO8Z2cQfMEi2kXyIfcaLv6x2Q=; b=Dd5cSyo+M+D5Giyrfmpoip
+	rBKnOl6MyvPCsJOIajXeffEK4CB42fpo5KHJS73uATwDkUPxnGM9Xy7QfnX1jtqn
+	n/1wN6sLelyjG3l7UOl5tOCx+ac/VyMF/JuIwHMe6J11VlvOW1oP2Rez1thI7vsi
+	qmM1sGU4MUE+96vZttv4n+X0Gfqb5Ha+41E4ZiQgbZOcZZTR8u/AFLO21hrXA+Hq
+	rSNHPuME74p4FUTKaMvQqpyYmYrRjyI+aOwFOqN2oIgoMwfN8UWy54sKJ5xNJqqD
+	7kSl9woUbCpBXO0U0+IuUykeFEV1mrM+w3jnmq/lXZVHNBiBszASi9WIhSezUXjw
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j105vm5s2-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 18 Nov 2026 19:35:56 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AIJKPXF2454261;
+	Wed, 18 Nov 2026 19:35:55 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j17c4t88w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Nov 2026 19:35:55 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AIJZp7q45678984
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Nov 2026 19:35:52 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D229320043;
+	Wed, 18 Nov 2026 19:35:51 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B919320040;
+	Wed, 18 Nov 2026 19:35:46 +0000 (GMT)
+Received: from [9.39.20.8] (unknown [9.39.20.8])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 18 Nov 2026 19:35:46 +0000 (GMT)
+Message-ID: <518b5813-ab4e-413e-9820-556888216090@linux.ibm.com>
+Date: Thu, 19 Nov 2026 01:05:45 +0530
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,55 +86,276 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261112203227.289379-1-zide.chen@intel.com> <20261112203227.289379-16-zide.chen@intel.com>
- <av3O9YqD6iW4UT9c@google.com> <bf360695-18f4-4fa1-8030-6df2471dae60@intel.com>
-In-Reply-To: <bf360695-18f4-4fa1-8030-6df2471dae60@intel.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 18 Nov 2026 11:30:59 -0800
-X-Gmail-Original-Message-ID: <CAO9r8zMXda60R7OrE87k7x-LJpAR14o34aUJL3CVNST-JW-84g@mail.gmail.com>
-X-Gm-Features: AclHuK9q5YNaR422g13fk9iinqVwmj-uwtSYeCa7KEEQi75iphAK3gLDpm-B2ws
-Message-ID: <CAO9r8zMXda60R7OrE87k7x-LJpAR14o34aUJL3CVNST-JW-84g@mail.gmail.com>
-Subject: Re: [PATCH v4 15/21] KVM: x86/pmu: Clamp pmu->version to kvm_pmu_cap.version
-To: "Chen, Zide" <zide.chen@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, 
-	Jim Mattson <jmattson@google.com>, Andi Kleen <ak@linux.intel.com>, 
-	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Shukla Manali <Manali.Shukla@amd.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 4/5] vfio/spapr_tce: Normalize EEH IOA error injection
+ addresses
+To: Narayana Murty N <nnmlinux@linux.ibm.com>,
+        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Timothy Pearson <tpearson@raptorengineering.com>,
+        Alex Williamson <alex@shazbot.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin
+ <npiggin@gmail.com>,
+        Christophe Leroy <chleroy@kernel.org>,
+        Ritesh Harjani <ritesh.list@gmail.com>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org, sbhat@linux.ibm.com,
+        harshpb@linux.ibm.com
+References: <20261023073642.59657-1-nnmlinux@linux.ibm.com>
+ <20261023073642.59657-5-nnmlinux@linux.ibm.com>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <20261023073642.59657-5-nnmlinux@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: hcvBwq2dZt6me__K3g3KOuyb6DtKMiFP
+X-Authority-Analysis: v=2.4 cv=HL9WhYtv c=1 sm=1 tr=0 ts=6afdfe1d cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=JDjOrm_dj_CcHeg-RfIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: 0cFkCGGAEl2b2TR8eQWKhUey1NzTvvnx
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE4MDA3NiBTYWx0ZWRfX1zWvrC+GChd9
+ NtyUvRxR9oGl8tyCR+pG+jbdsTWhDvYNAg7N0r39CdtOD+XXMbDRZXRqupY0Ub0Xwu4YazxAY4n
+ BxFwtj4G2toQE4qhqRvS3mrRRqrOeVXF2fDDk09mMXCenqoAo9r55ImPlEmw4Ygt7lOAK2k8Vxa
+ I+gK2o/KxcrSuQ/us9HMhfWWtwIPWh894udpiPgnWdGCsx5ZVtpeV0BsOkN5+9kuXVltYoltGmR
+ rgJSHY76lY4c88fgK1pIExtossG6afiBaa4nsIz6M+pLiHtAssTYDsIYOIeJnmJ1abjQF1xGbgx
+ meW+Cgxr0bYFwCjRp9LTzArKf+X6/1DABxV50rt7SLHoJtFRvNUpSBd23b86OmsHImIy0RXkted
+ vVSMZcYqKwsoj1J1CLfWIKuJQneQSINHfBYqGvd8jXuKwSPkjI7Kzh1kqs0cX/6WX2KYqrnnNGn
+ NEmimatKrNrA+Nln41w==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE4MDA3NiBTYWx0ZWRfX6hfWTLw9OnUA
+ Z8Nvg/5D8+ZUmUybL83m6ZBx80oO/lptvpIjD94c67YhA2rAwg0j9uiqIOQE0hQNhd8QVSMnC4s
+ u2EEKHtsmVtpVXeZRdZQaAmoSHvptfc=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-18_06,2026-11-16_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0 spamscore=0 priorityscore=1501 impostorscore=0
+ adultscore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611180076
 
-On Wed, Nov 18, 2026 at 11:19=E2=80=AFAM Chen, Zide <zide.chen@intel.com> w=
-rote:
->
->
->
-> On 11/18/2026 10:17 AM, Yosry Ahmed wrote:
-> >> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel=
-.c
-> >> index 5eac64ba8832..0be9956810ae 100644
-> >> --- a/arch/x86/kvm/vmx/pmu_intel.c
-> >> +++ b/arch/x86/kvm/vmx/pmu_intel.c
-> >> @@ -574,7 +574,7 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcp=
-u)
-> >>      eax.full =3D entry->eax;
-> >>      edx.full =3D entry->edx;
-> >>
-> >> -    pmu->version =3D eax.split.version_id;
-> >> +    pmu->version =3D min_t(int, eax.split.version_id, kvm_pmu_cap.ver=
-sion);
-> >
-> > Why not AMD too?
->
-> On AMD, seems pmu->version is already constrained to kvm_pmu_cap.version:
->
-> 1. When vPMU is enabled, AMD has no CPUID version field. KVM sets
-> version to 1, or 2 if guest_cpu_cap_has(PERFMON_V2). Userspace cannot
-> force version 2 on a v1 host because svm_set_cpu_caps() clears
-> PERFMON_V2 from kvm_cpu_caps whenever kvm_pmu_cap.version !=3D 2.
->
-> 2. When vPMU is disabled, kvm_pmu_refresh() sets pmu->version =3D 0 and
-> returns before vendor refresh() is called (!vcpu->kvm->arch.enable_pmu).
+  I'm finding this commit message a bit difficult to follow.
+Could you please rework it to make the changes and their purpose clearer?
 
-I see, makes sense. Thanks.
+On 23/10/26 13:06, Narayana Murty N wrote:
+> VFIO_EEH_PE_INJECT_ERR receives a target address from userspace.  For
+> userspace such as QEMU, this address may be derived from the host Linux
+> BAR resource.  The platform EEH backends, however, expect the PCI/IOA
+> bus address used by firmware error-injection interfaces.
+>
+> Normalize IOA/MMIO error-injection addresses in the sPAPR VFIO EEH
+> ioctl path before dispatching to eeh_pe_inject_err().  If the supplied
+> address is already a PCI bus BAR address it is left unchanged.  If it is
+> a Linux resource address, translate it to the corresponding PCI bus
+> address using the BAR-relative offset.
+>
+> Normalization applies only to EEH_ERR_TYPE_32 and EEH_ERR_TYPE_64 error
+> types whose error function targets a memory or IO BAR (load/store memory
+> and load/store IO functions, func 0-3 and 6-9).  Config-space functions
+> carry PCI config register offsets and DMA functions carry IOVA/TCE
+> addresses; these address domains are not PCI BAR addresses and must not
+> be translated.  Applying BAR normalization to them would incorrectly
+> return -EINVAL, blocking injection entirely for those function codes.
+>
+> An address and mask pair of zero represents a no-address injection
+> (e.g. a function-level error with no specific IOA target) and is passed
+> through without BAR translation.
+>
+> Only standard BARs (BAR0..BAR5) are searched; ROM and bridge resources
+> are not IOA bus-error targets.  Unassigned or disabled BARs are skipped:
+> pci_resource_len() returns 0 for zero-initialized BARs, and the
+> IORESOURCE_UNSET and IORESOURCE_DISABLED flags are checked explicitly to
+> avoid false matches against unassigned resources.  Hold
+> pci_rescan_remove_lock while traversing PE devices and their BAR
+> resources to prevent PCI device removal from racing the lookup.
+>
+> A pr_debug() is emitted if the address cannot be matched to any BAR, to
+> aid debugging without producing noise in the normal path.
+Which address are you referring to?
+
+
+>
+> Keep the helper local to VFIO so the address semantics of other
+> in-kernel EEH callers remain unchanged.
+
+Which helper are you referring to?
+
+
+>
+> Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
+> ---
+>   drivers/vfio/vfio_iommu_spapr_tce.c | 140 ++++++++++++++++++++++++++++
+>   1 file changed, 140 insertions(+)
+>
+> diff --git a/drivers/vfio/vfio_iommu_spapr_tce.c b/drivers/vfio/vfio_iommu_spapr_tce.c
+> index 1c0eec228cc6..d831adaa69fb 100644
+> --- a/drivers/vfio/vfio_iommu_spapr_tce.c
+> +++ b/drivers/vfio/vfio_iommu_spapr_tce.c
+> @@ -774,6 +774,131 @@ static long tce_iommu_create_default_window(struct tce_container *container)
+>   	return ret;
+>   }
+>   
+> +/*
+> + * eeh_func_needs_bar_addr - return true for error functions whose addr
+> + * argument is a PCI MMIO or IO BAR address.
+> + *
+> + * Memory and IO load/store functions target specific BAR addresses.
+> + * Config-space functions carry PCI config register offsets, and DMA
+> + * functions carry IOVA/TCE addresses; neither requires BAR translation.
+> + */
+> +static bool eeh_func_needs_bar_addr(int func)
+> +{
+> +	switch (func) {
+> +	case EEH_ERR_FUNC_LD_MEM_ADDR:
+> +	case EEH_ERR_FUNC_LD_MEM_DATA:
+> +	case EEH_ERR_FUNC_LD_IO_ADDR:
+> +	case EEH_ERR_FUNC_LD_IO_DATA:
+> +	case EEH_ERR_FUNC_ST_MEM_ADDR:
+> +	case EEH_ERR_FUNC_ST_MEM_DATA:
+> +	case EEH_ERR_FUNC_ST_IO_ADDR:
+> +	case EEH_ERR_FUNC_ST_IO_DATA:
+> +		return true;
+> +	default:
+> +		return false;
+> +	}
+> +}
+> +
+> +static int vfio_spapr_eeh_normalize_addr(struct eeh_pe *pe,
+> +					 unsigned long addr,
+> +					 unsigned long mask,
+Do we really need mask argument?
+
+> +					 unsigned long *normalized)
+
+Too much in a single function. Can you split this function as suggested
+for validate_addr_mask_in_pe() in 2/5.
+
+- Sourabh Jain
+
+> +{
+> +	struct pci_bus_region region;
+> +	struct eeh_dev *edev, *tmp;
+> +	struct pci_dev *pdev;
+> +	struct resource *res;
+> +	resource_size_t pci_start, pci_len;
+> +	resource_size_t res_start, res_len;
+> +	resource_size_t offset;
+> +	int bar, rc = -EINVAL;
+> +
+> +	if (!pe || !normalized)
+> +		return -EINVAL;
+> +
+> +	/*
+> +	 * addr == 0 and mask == 0 indicates a no-address injection (e.g.
+> +	 * function-level error with no specific IOA target).  No BAR
+> +	 * translation needed.
+> +	 */
+> +	if (!addr && !mask) {
+> +		*normalized = addr;
+> +		return 0;
+> +	}
+> +
+> +	/*
+> +	 * Walk standard BARs (BAR0..BAR5) of all devices in the PE.
+> +	 * Hold pci_rescan_remove_lock to protect pdev lifetime during the
+> +	 * traversal: pci_stop_and_remove_bus_device() requires this lock.
+> +	 * ROM and bridge resources are not IOA bus-error targets, so the
+> +	 * search is limited to PCI_STD_NUM_BARS.
+> +	 */
+> +	pci_lock_rescan_remove();
+> +	eeh_pe_for_each_dev(pe, edev, tmp) {
+> +		pdev = eeh_dev_to_pci_dev(edev);
+> +		if (!pdev)
+> +			continue;
+> +
+> +		for (bar = 0; bar < PCI_STD_NUM_BARS; bar++) {
+> +			res = &pdev->resource[bar];
+> +
+> +			/*
+> +			 * Skip unassigned or disabled BARs.  On pseries,
+> +			 * pcibios_fixup_resources() zero-bases unassigned BARs
+> +			 * (start=0, end=size-1) and sets IORESOURCE_UNSET.
+> +			 * Use pci_resource_len() which returns 0 when end==0.
+> +			 */
+> +			if (!pci_resource_len(pdev, bar))
+> +				continue;
+> +
+> +			if (!(res->flags & (IORESOURCE_MEM | IORESOURCE_IO)))
+> +				continue;
+> +
+> +			if (res->flags & (IORESOURCE_UNSET | IORESOURCE_DISABLED))
+> +				continue;
+> +
+> +			pcibios_resource_to_bus(pdev->bus, &region, res);
+> +
+> +			pci_start = region.start;
+> +			pci_len = pci_resource_len(pdev, bar);
+> +
+> +			/*
+> +			 * Case 1: userspace already supplied PCI/IOA
+> +			 * bus address.
+> +			 */
+> +			if ((resource_size_t)addr >= pci_start &&
+> +			    ((resource_size_t)addr - pci_start) < pci_len) {
+> +				*normalized = addr;
+> +				rc = 0;
+> +				goto done;
+> +			}
+> +
+> +			/*
+> +			 * Case 2: userspace supplied Linux resource/CPU
+> +			 * address.  Convert it back to PCI/IOA bus address
+> +			 * before calling the platform EEH backend.
+> +			 */
+> +			res_start = res->start;
+> +			res_len = pci_resource_len(pdev, bar);
+> +
+> +			if ((resource_size_t)addr >= res_start &&
+> +			    ((resource_size_t)addr - res_start) < res_len) {
+> +				offset = (resource_size_t)addr - res_start;
+> +				*normalized = region.start + offset;
+> +				rc = 0;
+> +				goto done;
+> +			}
+> +		}
+> +	}
+> +done:
+> +	pci_unlock_rescan_remove();
+> +
+> +	if (rc)
+> +		pr_debug("vfio EEH: addr=0x%lx not found in any PCI bus BAR of PE\n",
+> +			 addr);
+> +	return rc;
+> +}
+> +
+>   static long vfio_spapr_ioctl_eeh_pe_op(struct iommu_group *group,
+>   				       unsigned long arg)
+>   {
+> @@ -818,6 +943,21 @@ static long vfio_spapr_ioctl_eeh_pe_op(struct iommu_group *group,
+>   		if (copy_from_user(&op, (void __user *)arg, minsz))
+>   			return -EFAULT;
+>   
+> +		if ((op.err.type == EEH_ERR_TYPE_32 ||
+> +		     op.err.type == EEH_ERR_TYPE_64) &&
+> +		    eeh_func_needs_bar_addr(op.err.func)) {
+> +			unsigned long normalized;
+> +			int ret;
+> +
+> +			ret = vfio_spapr_eeh_normalize_addr(pe, op.err.addr,
+> +							    op.err.mask,
+> +							    &normalized);
+> +			if (ret)
+> +				return ret;
+> +
+> +			op.err.addr = normalized;
+> +		}
+> +
+>   		return eeh_pe_inject_err(pe, op.err.type, op.err.func,
+>   					 op.err.addr, op.err.mask);
+>   	default:
+
