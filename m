@@ -1,89 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794999730;
-	b=Kj2oLux6eGEGLqcPZ9myQyy/9lVXAlFiqI6fSpEHub0qU+1PHstAONn/J+aqkH57RI/s
-	 l5eBeK69VLZefNlsXVcg61ouOeTJhyUL2RlY5k6KGBjzUtC3beJnTbqjKHsEIJrObPS4x
-	 S4weo7+WeR1nvqmISuIqD6EfLe1hNA9qdeeUTvepwk0zDWzM3HjYFheXPqMY6/44825Fi
-	 r1c4WMKSF4+bWUuNLdBVaiOEhkmrO0IhN8VkfbwKlJUp/hWujdbs8mXkcN/qNQnL1oe5D
-	 UhFrFiu6V3sOLYMvO2frPAoH3Zbnl/nxFlawV5QlrxyT2wcL5BjeBbXcaM2tZ/Z9c8g==
+	t=1795000062;
+	b=IvpdE2io8vHeeSCLVHAClv+a9FZLdPZoN9f4bObqJURl4cizQPM0U39nXcAA6+rad5VP
+	 QYNesdHIvgWWJO/An6u+aUWYYeG2qiivdMemF+jcD/4OBpmPiTp5QxxIaL0ZMdwLqT1bo
+	 1N8HPPi+G93VmyTTrn8Pf8ywvgDMVZ2aJsja2iFUEVL43PS/QVqC2Oj/QxV3/nSn52muG
+	 pe6834toymtzhHE0vm5fCLagLsflb76hVn2jUbfXO4C0t5EaKnxKrS7LYNU2Bs2vSy3EX
+	 FNk43nzoCd9LUfNPzrpe73bgqwtgaM59hpuWXwVdfHT1W2KPqnQ7siXwRxpnM7FMAiw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794999730;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795000062;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References;
-	bh=lz6wQ0mKUNU0UkbDxsh2f3DKCiv42RamE0uqFpw1ylQ=;
-	b=xaV9Xv0YaWmN8waTkAj1bKUJ6KhwX6LmYe85AJ1yo9WvGPUuDLm3icTV66A2FB6NzCgP
-	 EYnKwsqa/9Y99+zjVPDaPt5JpUt9IG1thh2ad+PX4b9+RzvCBImdkDRd8q7yP27Q8AOoa
-	 ueswl1BF6xuZ8GdT4bivv7jiD/Za9Y4dHN4Prv34Mu1QkH8UAt5C5p1Q9+DoTiS0lnKs0
-	 MMg1DlLcLpqDe/4rc7Kp8Dp5ZhDtDqHePvdaMWxRMlDHNjZqhvPlvt0fjDfAS2+EuK1Eg
-	 IB7ENwIr84RuiBq7EP7q32S++8wx439GH3mjD5bJN7XQmMzB+o1iyZiEQH2a3mFKEFg==
+	bh=2Pa6D5jNmLHkxjKk3dgAW9SP7lKs94RaoWLtgWbGlqU=;
+	b=JHk1htnUW2g1kmiGbx/G6/RNimZZtEN8EXEhOTNhoTCfRaF4VDblIy2YdPq7t83Zu9kv
+	 mBjjseWWUHNM2v7uUgXPqi/B+ENEwORFxQpbMI8f49GrTfkNfDXgz/UqONtvCxJa1g1Od
+	 wCauOE3wkOibZL0z7Y+IwN4glIMBJN5oxyh2SexC00kZqlhle69z79IZ/51EzVSRfwdK1
+	 deoiGwpG5Kdr/ZVp+IbzT/kW/fmThnrLeIr70us3KYXHNviP2qfPBbDvV+HuG/WVJM9zs
+	 3W68bLaxv9bnUXpzXp1WoMkTlpFmqkbu2PTuqqxPdkE4UJvuRni2XHShpCfkdpI0oqg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Db10RAlg;
-	arc=none smtp.remote-ip=74.125.82.170
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ihbZp0kn;
+	arc=none smtp.remote-ip=74.125.82.49
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653A6606A333
-	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 11:02:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 653A6606A333
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC19606A31C
+	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 11:07:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9BC19606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Db10RAlg
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso2148080eec.0
-        for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 03:02:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ihbZp0kn
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-15dd124bbe7so223409c88.1
+        for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 03:07:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794999729; x=1795604529; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1795000061; x=1795604861; darn=vger.kernel.org;
         h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=lz6wQ0mKUNU0UkbDxsh2f3DKCiv42RamE0uqFpw1ylQ=;
-        b=Db10RAlgUJT1LdsOQzJ7fcLavXBei3dJ4+oWUC6WYljUFTqrPbn06u3uDFculCFNEO
-         gMZB9AJ2KVvAMasfN9WEl1BFwjq2HiHXcLYt1iyGAplDPAa2xYQWUaR6CW7fANd3Vx5Y
-         cFLWYu/2m9suxe3871zBW5tj2fIsN6dBjy2tg7/wKA2iZI/YXpbOEYaF8u6QioeizaLG
-         gAjTiIEpJjXG5ZRrySx4OrL8Y02m33m9gF5w+PSUXXs2aluRFgytyfpsJxqVqvc9bXA4
-         bMxeRNlvxxZ+UTvIs1mlUj2STK4+VYyXVzxdYCjkgn6iAZiROy900Dnw3oN5emZR2Wna
-         6HLg==
+        bh=2Pa6D5jNmLHkxjKk3dgAW9SP7lKs94RaoWLtgWbGlqU=;
+        b=ihbZp0kn1hi/160Ef8aO8WEjkDW0xfx4dHHZBrSC4ft9WJOgGZYLrGjCwz5RsI3Zmc
+         bCaOMNKUslPvT9UeZlH1WA1VrLyPszR4474lABqlrJzNg+gIBnnxkn8vAgOviQfMttla
+         CIvVKjT5377ww28/due7WbJdWyURLc1f+fLqYzrPU8HH1AYc7F4ppjAGsJnKRwWME/TQ
+         xsoM38tnsmRerMqHYCAeHDhk+vhfq82bDWDVUkhpCrT9UOXbYiYqIiHSlN57uYelFsII
+         JSMCVFpWzxh2CdxI0mheIVN40Lv9C4phl/PiWUgUSu6lTsmnllSCTDI6ptwp6IS0TE+U
+         DshQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794999729; x=1795604529;
+        d=1e100.net; s=20260707; t=1795000061; x=1795604861;
         h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=lz6wQ0mKUNU0UkbDxsh2f3DKCiv42RamE0uqFpw1ylQ=;
-        b=WNvd79/PZGv/sIdJjoHjb54RdjuK4I1SDZhMpz02G8V/zGQDqXmTnZmbaArdIuDRuF
-         WWt+E54zHsuuk+82arsZrWB1MYGLYe+075GT4S2ff5vyyXti2dQHtouS9enXU7aZumSZ
-         ehyEwSA5RtOJOfVbpNJZsmjCGXiJjbaToxi2rN3JGRgrzK8k1Q4zcOB2GOR59ssDfMOY
-         8mdtvG5b1PMuq2MyLD+4UEJl4gQpfK5NCRsWRhf3V5REKwHy757O8qI6cplGkwj7h6yV
-         2ItJ2FUkyExOJINah2Ub9mz+M708DVkvDB04tAQjBpWjD8SXiyynfSS7ubVzGkJE6GOe
-         Z6FQ==
-X-Forwarded-Encrypted: i=1; AL+hErGwDKdkxEHjc2LdkvMREeWNfh70dsKWcoVE8nHGr92Be1tTPj8bNfYciwPp+VozCI/2L8g=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+TL1pEBhTFVh8/6icAZGeDT4W/EYu3hJC3VUisMYB+BqdslWEt
-	yQf5AJmauPH7qHdf3LO6N4Xx+dPqMaxHp2d9xbJDQHuQjC8I4OxDuqQz
-X-Gm-Gg: AZFdTZdmm4iG1nNhrvMYuKsXcG6Lo/i0Vhj2bahtnivaWE0NbC5272O9EN9HxhJ3RS/
-	CJ9cFj17ecAtojT3/LwSVuU/qK8OhTe43Mv3FA2hSjen1yTRvp8L6KooWq0bC9kk4oHBncj1C42
-	8JdqVZ3XbtRUY+xThyHGH8q6LJV1fvVqph2OC+w7pjH6/VFJGpQnEtgIOG4yD1NucAbTAU3MRmX
-	fqU7xN+f2WW6EBAfECq+3KYmnXatPt0QdWnmIbAlH/cty9UOYfH/yaCDCjQ5tydkg3Y2ZdvpsMb
-	pJ3xgM1BVwvlQrGKIEsdXgRwbGIy3AEfNFfhz7GoUCjFGbNEGGGPnrWBPl+EdX3Pgosd1KV7h+C
-	6wapGIKPPgGOQ24gt6xUIDJHzB4PwJV5KOOok2oJjm8AJUAiqGMHlEYqYUGM3KrdeIYnxFO+jhS
-	qgo55PXh31/BNDZeidUo8YzdjU2Omb9IuFW29uUpchby0BvHLJgTLQlZJCLL4Hsl1avFQSM/+HR
-	H96voath99gXFmm8MLv9yUwhHDbIhn3GyphKTpfa6TLRpI0LeOveodZZCi0wnYQ72hJX4jjugU1
-	Sks6yhiss/kTAZdOLaHNg/Hs+qY=
-X-Received: by 2002:a05:693c:62c1:b0:382:1c52:da74 with SMTP id 5a478bee46e88-3828101d214mr2495287eec.25.1794999729242;
-        Wed, 18 Nov 2026 03:02:09 -0800 (PST)
+        bh=2Pa6D5jNmLHkxjKk3dgAW9SP7lKs94RaoWLtgWbGlqU=;
+        b=MdgNERCHrjotZ4eZO3KloWVXZTEKy9mQeyjIN2z8IQlLyCYG8TtOGksGthAvPgvMse
+         Vhdj//wps2OSautmbIy9NiL2W86iHO8m3R81gG0VbE9vdtYenHE/yIxi77YHVyivFaQb
+         w6RvHPdQTwR6emk07Bc0N3u1qBoZvJshXlnfvGWWt0ejZhQvGVBQIYk9nWLLPyh08d9U
+         qSXsPEm/tEZQmLx9NgWLGPYDA7tN8iyYcFqVZl0KUhXTh6VzheiRktxwVZ9AI9RJFljp
+         PEZzaVXQjIOr4MvD59lX1dzh8pVnzTmtKNHexnyUoWFBsEE+Y6hmQzGBUkIT0UzW0Vu6
+         J4NA==
+X-Forwarded-Encrypted: i=1; AL+hErHPsJKoyLubyr9S534s7tI98G9heKATYw76FZT7xAG/7U3zkoi2kYKOpqGAVMOXSat8pTk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/Y2beqcyAedrthe1lT3+klyWizb8uxD/56MIAlvEsc43rQlqck
+	5b9vphAOCuI4R8vg/++N7O0PegTroSQX90gvYbYNKnCsrYrvDPISgmWb
+X-Gm-Gg: AYBFou3xKcv9QH7FdWmX6fxJjQ5WmTieHDDJZZUutmp7nn/cCFVBBIXUqZG3r0qs21t
+	UujHvNuECFYsylT31km1XmEvZt0Amn2/8KjPc5FXurSWWbaFAAEUkPDyXipfIUNywm3dlmsoMtU
+	4gzjhObiJGNB8gNW2Xxctx0ujUw5IElkXF0SnhAvscU5Gt9Ak5B+arxSiZMrOFn7XzSdKfYJNzx
+	vpbus1sLX7umabCmtfzLNvMnNUj41wY0JMXA13ItOt+6AZaRH51dBFfFZcEuGfjpU1SwHc3+DOy
+	e8zZ5DHtro8BBgLY7DHrUHEx0hLIi/xXLe0KKfw5I4u0IagygmQbQXcxHUZ6EELxJh5o+h0G7jK
+	igm95wRBM7wQbfjAlEEXZDVUZSzoL/Y9jprjybsDwKuHQUtp9XiaKDGGCMU6obuD41FSo2XFjYe
+	ADSQzOq+J2I7TEFSvHEnElT354TclTLUO9lBxp52rEwd8LU/DKU6SDejkBIkBLS7a9t+leriepV
+	zI/G2QM3a4X5xnGVnkUgVJ7St9RnVmk3UgbivtByR21WKumxChSB9UpnKcyWWdjDLcprQDnnjic
+	mOVhgRdtIedzk0hBJN047cHZ3+Q=
+X-Received: by 2002:a05:7022:ea8a:b0:1b5:1a5a:1dc with SMTP id a92af1059eb24-1b543be9b64mr2272814c88.12.1795000060528;
+        Wed, 18 Nov 2026 03:07:40 -0800 (PST)
 Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-382a75d8015sm6984944eec.21.2026.11.18.03.02.04
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b5447c1193sm5805783c88.7.2026.11.18.03.07.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Nov 2026 03:02:07 -0800 (PST)
+        Wed, 18 Nov 2026 03:07:39 -0800 (PST)
 From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Gaurav Yadav <yadavgaurav386@gmail.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] KVM: PPC: BookE: Use vcpu_err() instead of printk() in kvmppc_dump_vcpu()
-In-Reply-To: <CANo8Ldu_Y=GduFxxukfbNQT-MOQmR8N0V8evYQPpO2+i1L1hSQ@mail.gmail.com>
-Date: Wed, 18 Nov 2026 16:31:23 +0530
-Message-ID: <pkw2769o.ritesh.list@gmail.com>
-References: <20260807084050.25216-1-yadavgaurav386@gmail.com> <a4na92vc.ritesh.list@gmail.com> <CANo8Ldu_Y=GduFxxukfbNQT-MOQmR8N0V8evYQPpO2+i1L1hSQ@mail.gmail.com>
+To: Haoxiang Li <haoxiang_li2024@163.com>, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, sshegde@linux.ibm.com, jniethe5@gmail.com, gautam@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, Haoxiang Li <haoxiang_li2024@163.com>
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Free nestedv2 state on vCPU creation failure
+In-Reply-To: <20261118101008.2242596-1-haoxiang_li2024@163.com>
+Date: Wed, 18 Nov 2026 16:33:48 +0530
+Message-ID: <o6bm765n.ritesh.list@gmail.com>
+References: <20261118101008.2242596-1-haoxiang_li2024@163.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -93,13 +93,24 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 
-Gaurav Yadav <yadavgaurav386@gmail.com> writes:
+Haoxiang Li <haoxiang_li2024@163.com> writes:
 
-> Thanks, Ritesh.
+> When nestedv2 is enabled, kvmppc_core_vcpu_create_hv() allocates guest
+> state buffers and messages through kvmhv_nestedv2_vcpu_create(). If
+> the subsequent vcore lookup or allocation fails, it returns without
+> releasing those resources.
 >
-> Adding the tag and sending a v2 shortly.
+> The caller's error path only calls kvmppc_subarch_vcpu_uninit(), which
+> does not free the nestedv2 state. Call kvmhv_nestedv2_vcpu_free() before
+> returning from the vcore error path when nestedv2 is enabled.
 >
+> Fixes: 19d31c5f1157 ("KVM: PPC: Add support for nestedv2 guests")
+> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+> ---
+>  arch/powerpc/kvm/book3s_hv.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 
-No need. b4 picks up the RB tag on it's own
+The fix for this is already posted here [1]
 
--ritesh
+[1]: https://lore.kernel.org/linuxppc-dev/082c338c69773a73a48cd4e0d0885ee0f6ef5326.1793546707.git.ritesh.list@gmail.com/
+
