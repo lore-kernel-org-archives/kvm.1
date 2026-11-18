@@ -1,47 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795004887;
-	b=3MHesBjkR/eT1EEtazzjLn7olain9ObMPp9UwrwEpDwtVKPexsxw+t2XajATXXWFx1Nj
-	 lS+zRIDGEavmuRX028QDVcSMIlMv++9MrMdzRSAp9A/B9PPf3XLYRqE9V8uRX2WtEvL2W
-	 yWYnqZdqUSpMqD6cywItHPkc3jLJ31b8u1qS/eP2JMp2yQ6HozXTJsHk70zi9i5jwRKAN
-	 Mmvp8L9tCiURYNQtqPDBobSEuB5/jh429gTvoyv3Q643r77v4FZ4i2oH+UfqR1EQCzyGL
-	 20OObDxd9HSZumZQIBnj+CuERogK1Sz3s4AcqmuBlWpNTTXN+jrP8trZaN8EUw54+pQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795004887;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=7nE1yiuDOjsLguXXYCbkeb5cqi2x+QFFIbocCPDIlo0=;
-	b=l9IVl6+VCInSHtPLlMnoO16r6smkBKzpA6HH9PdhuKfzObx4Oe5Mjx3fjl36FzWQ6zgI
-	 GRnM10F2qq4olzfxL4vvB9MjlHDnZQfsWiguLl8I/f0RNOoGsXIOphicDf+vXKqFvaGWt
-	 d8vq92TPiOdpJo2cZ3oY/wJ+LYqBo57HpduoaCEQHHrgyJ5DN7fs0th4dqPTDJSuOl9Ce
-	 8yiuSlEtTcsjbmFfRFsBCnU0a28HxEifoiK5uK/ZGtJloy0nxuqpq5z4VmiR9l/8TPpl6
-	 9aPP+fyIMCceXy2oSz3/NboUz+LQnud4aSozu6/YyBhr9ZLSf2CTNFi3I4fGsegqplQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LaaDvu4Y;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.54
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795005778;
+	b=3vCQF7Aogjzmcm8tbP+cEUWoc2D2pqmlNpYyjhqwgTsVvoTUXkhSN28Xhu89Wu5A61qU
+	 OfZW8zps9ueXCwkthTAZLt5OuNPclnGEgdffi355PeLLHYYLNO2qdqRVhRCfUdZJ8reIq
+	 o5BIQzIQx9cDrT6wMSZkOrIMwv6PgwXvks9ceHdSRuH0nK1mghfcmOYI2iA7GP8UpII8Y
+	 brQ6m517b0gqMOBZGOziT/96BeHLmblgcHuwefccWikGBvTnKFKX1fH6bykfWr13eLmL2
+	 F+tMTcmqqB7TyfgBjEzfh1rG1Jmejysny09wn6ouJPW3NFmqdtjy+IGQyca5hkZOs4g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795005778;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:
+	 Cc:Content-Type:Content-Transfer-Encoding;
+	bh=tu4WQsRLgMJNCrYncFACnd8vCyNNudt+UvD0tk9IHEI=;
+	b=DlsqJOGi8zXX+pO+GTVOWIlCpNWxnRIrKN6eo0ni3PVUUIv0ml3ZpXbV7nfMOFKCVmD1
+	 QcMfU0nC5IvSwzLD2TSpTmwmCnxW86azUzQW+5AyAKtz0NX139FqCYIqZsWJuDORY5bMc
+	 Eg6eFCPGRldKqEhP9rn/9WSup5lldWi0QTn7Nwy/cMJRptkx07qwGp5WIcWEVojAi6WGG
+	 IDdiG25g004lIbP28AVBa6c9nnzZ5DUfM7wO1bdErz0Cfq+j5OM5NwP+OowhWUIoIsJce
+	 qZAc7Hrm9+KsOEMrH+23zkmeetT2diUxkTJufFHsofox0PjgNhc/Yd9sKUKobrY6M2Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qcO03lPw;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.54
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB641606A333;
-	Wed, 18 Nov 2026 12:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D581460A2602
+	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 12:42:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D581460A2602
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LaaDvu4Y
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CD51F000C6;
-	Wed, 18 Nov 2026 12:28:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795004887;
-	bh=7nE1yiuDOjsLguXXYCbkeb5cqi2x+QFFIbocCPDIlo0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LaaDvu4YPm/fHnBCwRzmpD+68yqRHRW4X+WsoTN0tJU+7aNITlo+ALKPdsDhyzsCN
-	 qoEMNd2sXdXF1UB5rB9oitscv978YkoQA23nT38MDTYZ1sg9JGXpTM8yBOnxZbwcjP
-	 a5udyJfBq6OSTrpL3mwlST3B2NvdhvqoYCOheEp8aZAuVsVdmAtdHJlNYUYeCebOLQ
-	 LKIKCxIK6XblDRVNfhO4GJYP12jbF93CAKuFqxpr5bROMLyRUcCrNNzWcThFDXbOpC
-	 86AJjr5BI/qYlh1hdkFlcapE9oVvFkwH4uMlMny0XhSj/1RqdJktrQxy6a7N48M001
-	 E/H7GFUexQ6jg==
-Message-ID: <2a282370-025b-4c0e-8a87-4d05aa1d87a0@kernel.org>
-Date: Wed, 18 Nov 2026 13:27:58 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qcO03lPw
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6b85d0d0d52so1325817a12.3
+        for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 04:42:57 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795005776; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rUjuY7oBCBcSqlZon5dCu40nZ+5xZ4feFeErRFqKT+9GzifSk/k4d1tWgHHUF0RH9g
+         VtMCxUyQK7dFXdvK+H/VyH5XCa2sRhH4bMnW+uCbkzB1vOFq8G2gMOZj/2PtRPalanDc
+         WJM3tztorH2D3pR+tG3P6AD6XelVKKOjOz5LHOFSVrP/IS2l2chDPtC1PbLPbp5T6BVJ
+         JosiEOZcukG/YprP5Y8tUm1aBokN1RJKO6UHklZ+A+A8EoVHE7oGJteny2OKjXn0c+/B
+         QnFDXOl84MxpCFyuK1O4dDRHCkfn0Npcb69atmw0JPrQrWtDkv267BPuTvF0FxO5Zkot
+         LR+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:mime-version:dkim-signature;
+        bh=tu4WQsRLgMJNCrYncFACnd8vCyNNudt+UvD0tk9IHEI=;
+        fh=NaLZ9i44hx65Xi1diKp4fH+UMaMtNqJVKjEMSDW0wbU=;
+        b=Tcixc7T044XdqlkLVoiNLraUhxHD8ZQSukRZ11ZDGuBLdtET5Qx9zrEvxjui1CH01y
+         TEx3+MsEKg5tg71CSVPbOsRfwrNObNwX7ZWocMX3Bha0Xt2KXmgxjGy/rd7G0XvM9CM0
+         uVh8dHUU33qRXH8HqAEV/rLT3kaIybyywh1TsabxajzHjd5Gx/tD5bFXzQL+rpV6hHtj
+         Yrvfs9Kz8/apcyka9B9NAu2nw+D9eeeSm+8WGMETWbY+vHSACo+8A3egQMBU6rBPRq5S
+         VHvOHkbMkm1FJt0cshCvzvoKHh2fGFts4tce62V++IAJMJ5thw8nNDnYfyMaUGigWkQf
+         mLMw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795005776; x=1795610576; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:reply-to:mime-version:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=tu4WQsRLgMJNCrYncFACnd8vCyNNudt+UvD0tk9IHEI=;
+        b=qcO03lPwu9LuKr0krp5dfjHJOP0sWF8HTYWGANLS1W/cjnUrYMGWj3krs6DlpUamQZ
+         Smoe3Y8oR4zYCcjUYcLMdUbL7VjroxBYLxxtDF4Ql+AIMIDYNPVboOI63sSfC/p8WPCQ
+         r+2SkTRyAz1s8+CBStHQ60ovxMMoVKYTUz9q88BIkBoVqdSu5oCaRV7gdF/agCXbncVb
+         VwJa+bDYkD52JZUcBypfzc/2PwzPo/miT3Q52ii69kpplHbbowX/sK++WHFq0VpXt/Pj
+         Da6kW6rzDQFYgAqnv0dZSOASsvRorYiLEtezfvvIQRfDI4gSn803ki22NVlH3rWW/jJW
+         X6xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795005776; x=1795610576;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:reply-to:mime-version:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=tu4WQsRLgMJNCrYncFACnd8vCyNNudt+UvD0tk9IHEI=;
+        b=MO+1HGbRcWgtRJ27K2wPiH8M+BGPai1ogoLuikuZNRxIUoUUugPTzlePoAze+uv+OG
+         VdQ+be154nQhTmXR98R42Yfm1rDD9zuI+ZiDOfNo3xJgxv0wZuoHqlsOmaYRJaeOfDXo
+         +b854gLC1xIJ5knpUgplEPZGShVIkRcS4bVU4yRWJi48wcunX5eMAHVM+PKlwOPyBQvD
+         11mWgi1kJy8hk9ueSHNepOZ+jYm1K8lwJtqzY7JlY2xVqgmnY2YHoIyCLExeTBCVZvbc
+         bnQbjNq3bc4teIV5QpXy7xrT1wVTgK/HcUTQeqm59IhSBDVEKnZGJYJAkug49KA7nBeF
+         LJEg==
+X-Forwarded-Encrypted: i=1; AL+hErFFLaPXomUXM6YugMYUJlULwpNPtdz48rZjWetAo6btaIpNbkZUqyOAadmTDJbLP0LRr9U=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8CPIYLLY0oGtJMg7i6LUWNEfUzEDxc4midSBULBOVYNqc9A/yq
+	q/OWkc+DQmYdTusW1jT+Wll1JbtvPzWmqYUcJCjJXeDfCEdYOyItxA93eA0J9jGvIfBizUQbkwJ
+	tY64n+C1c6qoH6DHiGg3+gN/e6DJ+V/g=
+X-Gm-Gg: AYBFou1Xyn0BZfB6Q5GN+V3XjLmQrDQrCnIYaaPuggeVFfrQFA7tfQsBt9A87XAs3V9
+	nNI01lDEu4Qc3d3DF9F3n5WLsZ8vrp0V6o5P5gJn+KGrxfd7ABotnWDuV3D64S3SLEOuro++vjd
+	kdai5l0ED2HKdE+SXD/p6s2aeX3zSD6y7z+BqWhdBQG2Wp/LSHjYC1vl1XizPkCzG7yBKItKeK1
+	mlw8aIH6WxFU7FMGcLh5ZA5gW7s6ldDY+VzV9TumE/EFQTKM0wC2jUho+zYf2CojggTJ928i0mA
+	dtax/RdVy/aD+T3rLHtCmGI1quV7N8p72YjkEakB6j7C6rJlgksLpRUQHFGvaw5gApqabXLS+ol
+	Lk5HIZF4y2E8XF2HpoBtDYyxMx+DSqolHQ4MdVPZ+0aILuCbo6F7EnXemNBB1LJP74ERj4HUMML
+	v04uDpJSUbYlfCwiyIYOVwU2Wb+oaPEaaAB+hAJ8jli+uhv9mFzshBuKiWeSU7yw/ukUzmQ7Diy
+	0Uf
+X-Received: by 2002:a05:6402:4504:b0:6b5:7770:ce2d with SMTP id
+ 4fb4d7f45d1cf-6b887f21f0amr1932132a12.26.1795005776013; Wed, 18 Nov 2026
+ 04:42:56 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -51,181 +105,33 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 4/5] iommu/of: Require reg for iommu-addresses
-To: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>,
- Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Vasant Hegde <vasant.hegde@amd.com>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>,
- Jean-Philippe Brucker <jpb@kernel.org>, Rob Herring <robh@kernel.org>,
- Saravana Kannan <saravanak@kernel.org>,
- Tomasz Nowicki <tomasz.nowicki@caviumnetworks.com>,
- Eric Auger <eric.auger@redhat.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Joerg Roedel
- <jroedel@suse.de>, Srinath Mannam <srinath.mannam@broadcom.com>,
- Oza Pawandeep <quic_poza@quicinc.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Alex Williamson <alex@shazbot.org>
-Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
- virtualization@lists.linux.dev, devicetree@vger.kernel.org,
- kvm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-media@vger.kernel.org
-References: <20261106-add_iommu_ranges-v7-0-5c0f72083e52@oss.qualcomm.com>
- <20261106-add_iommu_ranges-v7-4-5c0f72083e52@oss.qualcomm.com>
- <3e4b6491-2b58-4b9c-90ad-0912f47cb217@kernel.org>
- <ce05d74a-58d1-f605-44c1-ceb9b9d8b9d4@oss.qualcomm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <ce05d74a-58d1-f605-44c1-ceb9b9d8b9d4@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Reply-To: ludloff@gmail.com
+From: Christian Ludloff <ludloff@gmail.com>
+Date: Wed, 18 Nov 2026 04:42:44 -0800
+X-Gm-Features: AclHuK9CtLBvDfSZS8u-mbj4wWauHAFcNWfeQbnm5RFPnJDXGikoy7UxbQ7nZeE
+Message-ID: <CAKSQd8XBwW1h9YCo0yhw1shKQyD+NdFZqN-0-55nEhJ+NMWJLw@mail.gmail.com>
+Subject: Re: Re: [PATCH v8 12/20] KVM: x86: Support REX2-prefixed opcode decode
+To: "Chang S. Bae" <chang.seok.bae@intel.com>
+Cc: Jim Mattson <jmattson@google.com>, pbonzini@redhat.com, seanjc@google.com, 
+	kvm@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	zhao1.liu@intel.com, andrew.cooper3@citrix.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 17/11/2026 17:24, Vishnu Reddy wrote:
-> Hi Krzysztof,
-> 
-> Thanks for review.
-> 
-> On 11/13/2026 6:41 PM, Krzysztof Kozlowski wrote:
->> On 06/11/2026 18:14, Vikash Garodia wrote:
->>> The "iommu-addresses" property describes an identity 1:1 mapping between
->>> an IOVA range and the physical memory specified by "reg" in the same
->>> reserved-memory node. Without "reg", there is no physical memory to map.
->> This looks like ABI break.
-> 
-> The original discussion was to avoid keeping iommu-addresses in the
-> reserved-memory, if not backed by reg. In such cases, it is more meaningful
-> to move that entry to corresponding device node.
-> Given this direction, the schema was defined accordingly and the code is now
-> updated to match the dt-schema. At least on Linux, I do not see any client
-> using iommu-addresses without reg.
+>> Does hardware raise #UD on 0x48 0x66 0xD5, or does the intervening legac=
+y
+>> prefix nullify the REX prefix as in legacy encodings?
+>
+> Yes, it is nullified and this behavior should be preserved, I think. I
+> was also able to verify this on an APX-prototyped system.
+>
+>> The text clearly permits 0x48 0x66 0xD5, since the REX prefix doesn't
+>> *immediately* precede the REX2 prefix. The table is unclear.
+>
+> I'll pass this documentation feedback along to the relevant folks.
 
-Yeah, but ABI is for all users, not only in-tree.
+Fwiw, EVO processors have MSR control bits for this =E2=80=93
+#UD vs not, REX/REX2 bits merged vs not, plus more.
 
-
-> 
->>
->>> The DT schema now requires "reg" whenever "iommu-addresses" is present.
->>> Align the kernel implementation with this requirement.
->>> https://github.com/devicetree-org/dt-schema/pull/207
->>>
->>> An identity mapping requires matching IOVA and "reg" ranges. Reject
->>> mismatched ranges and report an error.
->>>
->>> Suggested-by: Rob Herring <robh@kernel.org>
->>> Co-developed-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
->>> Signed-off-by: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
->>> Signed-off-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
->>> ---
->>>  drivers/iommu/of_iommu.c | 32 +++++++++++++++-----------------
->>>  1 file changed, 15 insertions(+), 17 deletions(-)
->>>
->>> diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
->>> index 6675fc900e6c2d55b34c61dc9effaeb48e24f18f..00b02c19f27e195fc36c4bc1d91253255147c9ab 100644
->>> --- a/drivers/iommu/of_iommu.c
->>> +++ b/drivers/iommu/of_iommu.c
->>> @@ -174,19 +174,12 @@ iommu_resv_region_get_type(struct device *dev,
->>>  {
->>>  	phys_addr_t end = start + length - 1;
->>>  
->>> -	/*
->>> -	 * IOMMU regions without an associated physical region cannot be
->>> -	 * mapped and are simply reservations.
->>> -	 */
->>> -	if (phys->start >= phys->end)
->>> -		return IOMMU_RESV_RESERVED;
->>> -
->>>  	/* may be IOMMU_RESV_DIRECT_RELAXABLE for certain cases */
->>>  	if (start == phys->start && end == phys->end)
->>>  		return IOMMU_RESV_DIRECT;
->>>  
->>> -	dev_warn(dev, "treating non-direct mapping [%pr] -> [%pap-%pap] as reservation\n", phys,
->>> -		 &start, &end);
->>> +	dev_err(dev, "non-direct mapping [%pr] -> [%pap-%pap] is not supported\n", phys,
->>> +		&start, &end);
->>>  	return IOMMU_RESV_RESERVED;
->>>  }
->>>  
->>> @@ -211,12 +204,14 @@ void of_iommu_get_resv_regions(struct device *dev, struct list_head *list)
->>>  		struct resource phys;
->>>  		int size;
->>>  
->>> -		memset(&phys, 0, sizeof(phys));
->>> +		maps = of_get_property(it.node, "iommu-addresses", &size);
->>> +		if (!maps)
->>> +			continue;
->>>  
->>>  		/*
->>> -		 * The "reg" property is optional and can be omitted by reserved-memory regions
->>> -		 * that represent reservations in the IOVA space, which are regions that should
->>> -		 * not be mapped.
->>> +		 * "iommu-addresses" must be used in combination with a "reg" that provides
->>> +		 * the physical address and size of this memory region, for an identity 1:1
->>> +		 * IOVA mapping to that physical memory.
->>>  		 */
->>>  		if (of_property_present(it.node, "reg")) {
->>>  			err = of_address_to_resource(it.node, 0, &phys);
->>> @@ -225,11 +220,11 @@ void of_iommu_get_resv_regions(struct device *dev, struct list_head *list)
->>>  					it.node, err);
->>>  				continue;
->>>  			}
->>> -		}
->>> -
->>> -		maps = of_get_property(it.node, "iommu-addresses", &size);
->>> -		if (!maps)
->> I miss the point why you are moving this part. Irrespective to actual
->> ABI break, why do you nee to check for iommu-addresses before?
-> 
-> It is more optimal to check for iommu-addresses and then read the reg. On the
-> contrary, earlier reg is read irrespective of iommu-addresses is present or
-> not. So in a way reading iommu-addresses first would ensure that reg is read
-> only if iommu-addresses is present.
-
-Sorry, I don't follow. What is here on the contrary? To what part?
-
-Best regards,
-Krzysztof
+--
+C.
