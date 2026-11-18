@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795024716;
-	b=Eezm4b7fBx9mF3dqmySOBv6ry+1dM1jlQa8bT+Zodco6oGI4nTw+pOBMS7J7UuXgvTV+
-	 WFujId3wWngRVJYRMKMF0mn9DKMikKLjNPulFMUZFqpyzKonZ6FmUM5w9bfI9ErzdwNRp
-	 Puw5Dx5xx1vA+1pRCUBLCxUkC0oKxi4KBgD0X28sxfrxrdoLh3PTwr6EbL+HbUq+gjWIS
-	 2abonPhI68DHP98k9dvo4uEFP/cPv52fVkljuwylT2L6FVckyAlRVaknEYos+9/rtAobQ
-	 iGPf3R4+Dvv2sOEmqdLF/RfWs/iCU+QXefOx5moY4jLVn7MLegTPOa+Im/vS721g6tQ==
+	t=1795024712;
+	b=UiB7QzeB9g88vdGJWcaX7NsvBZJvTHbCxlu+26AyUI8Mc+59cJ3Ar6MS3nEDLSWeNGEd
+	 RPrR2hzwUnmBTZOyWu+Cz+fnXkg7OCaHNwJMxj86geRlooONa/TiADllwwor1UUaHmoMS
+	 0fQXsMS62Opamh8S3/fdHVRMZJRj4QAnf0Ty9DTRDQN6p4i6oKMKjQQkYntLzjKVZzXNT
+	 GFAyT13pDBgr134LcQSndnaWJ+iPIEtdHAk7PWXxNMdI2HDkzRKL3uzdCDTEYMBNYZa2Y
+	 pLjUQShJEzAG6V3wII7/oHU7FSZNazkMjn91QMYfyDu67tr/q64nUxIDLz4BgDIHy6w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795024716;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795024712;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=a1rYG1TalQ9YJsdpzA/JS3EHWX9ayK0ZVdBj8cqmZ40=;
-	b=C7cpmPeeCRlYNC1lKXs2W41IDEFnHPYsBgZkP0gdnZH2U3EFEOeWmqVf8uGb3H14Vkwc
-	 83JGvuuP/LfDVuElCu9+/72fc5XuPGpg/+ToJ8psXdKlZ7g2k+3kphPrS7GG5gigtwq8j
-	 4nH9qtO84+fpEEkJpkfNn2qpv2KJmFyM9aFLBz2shi/fm1/zJQagE8Vwdx0fgCRw00Xl0
-	 yt9PZfVjUNWRinp3fO6l14XDs1enRzzxeSETxVzNM/tWyU9Td+XTBcLgkdXzYXrHUpWkG
-	 r4YED/OXO8gwDtHpB6pFJvZ81in6fU9rZtDOQR+90Rs9BApNQGqAR5sV+8Rg8c0yYQQ==
+	bh=xYBJKc8uj9UbnOrbdjNm+NrBYJVInTENicvCRdisVX8=;
+	b=Qlaq5Do+9znnUoIFgcpgJ2JrzuBKXt7vWmWk7yDlxTb6i89efVGmXSEcnb3ViNfBVxzt
+	 WgagGcC5ygvstL5TYcsbUlZ7MvumwPa2osSrCUX3tZeLiWiWHIoqZqiUles2UyV/v+5wo
+	 2vVfyxQ2Fa+05YAGreJfGyfZmySr1D0ELQuaTF2RKOk+FQFIPy3YRD+CXcuqnTlUQWUTu
+	 0KsAIoP6hihyx3P39uWRY9+Gi+0Kf2skWekDkXwYhrkPc5vVU0hkF8G3eHrEoOW1AgXf6
+	 2LwL7XN1vMTrilO5vEQLnrW5EH2Z5K5aeo+VOszDn1RRf/bTr4CD5GInVoSN+kfM4Xw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=XUorBv+5;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=IfP6XB5M;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B34606A330
-	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 17:58:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27B34606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2118606A325
+	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 17:58:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E2118606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=XUorBv+5
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=IfP6XB5M
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B952B1477;
-	Wed, 18 Nov 2026 09:58:32 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 91AA61477;
+	Wed, 18 Nov 2026 09:58:28 -0800 (PST)
 Received: from e133894.cambridge.arm.com (e133894.arm.com [10.2.80.62])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 61CD73F632;
-	Wed, 18 Nov 2026 09:58:34 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6CF083FA7A;
+	Wed, 18 Nov 2026 09:58:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795024715; bh=6LC0Esz0vtaHqOKJrOblFkqFYsHjYoYynkmx3V1YY8w=;
+	t=1795024711; bh=KTOtM25gfHZzK97uWsalaknun0VTCTwSlco+esAr2o0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XUorBv+5BYXRmwmIWIfIyz+4MgwsWz0U87h+LHxBUHSQeUvhU2DThAAs3CormI+5w
-	 Lr539mChwoOlzp2NPE0pOtVLIoLj/Hm3wuTiduKBVYBctaoZsbN/n39w62PNPGiflw
-	 ZmClNw5N21e6+6N1EGEcyVrINI22MLDfWFrxVnGI=
+	b=IfP6XB5M/qDjqFJBKihP4hyFvz4g1W6BXyvBv5oyJN6o0ZiOUQ+w9VjugzR0QzYYA
+	 ycQcQi5DrZ/J/nDpie+ZzOJdgbzfFHlR9Z1f/LS4QlZD0gM90UXmCdsQ2uMAjSpfw1
+	 wGICrYN7wk6VwwX5kg1BpQayyIdGwOLUiKM/Kgiw=
 From: Sascha Bischoff <sascha.bischoff@arm.com>
 To: will@kernel.org,
 	julien.thierry.kdev@gmail.com
@@ -51,9 +51,9 @@ Cc: vladimir.murzin@arm.com,
 	kvmarm@lists.linux.dev,
 	timothy.hayes@arm.com,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH kvmtool v5 07/23] irq: Allow the initial interrupt line number to be set
-Date: Wed, 18 Nov 2026 17:57:39 +0000
-Message-Id: <20261118175755.1946977-8-sascha.bischoff@arm.com>
+Subject: [PATCH kvmtool v5 06/23] arm64: Configure GIC interrupt bases
+Date: Wed, 18 Nov 2026 17:57:38 +0000
+Message-Id: <20261118175755.1946977-7-sascha.bischoff@arm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261118175755.1946977-1-sascha.bischoff@arm.com>
 References: <20261118175755.1946977-1-sascha.bischoff@arm.com>
@@ -68,70 +68,113 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Allow callers to select the initial IRQ line number before allocating
-any lines. Track the selected offset when reporting the number of
-allocated lines.
+Record the SPI and PPI bases for the selected irqchip and expose getters
+to code that does not receive the irqchip type. Configure the bases
+after the GIC device and MSI frame have been created.
 
 Reviewed-by: Vladimir Murzin <vladimir.murzin@arm.com>
 Tested-by: Vladimir Murzin <vladimir.murzin@arm.com>
 Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
 ---
- include/kvm/irq.h |  1 +
- irq.c             | 15 ++++++++++++++-
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ arm64/gic.c             | 48 +++++++++++++++++++++++++++++++++++++++++
+ arm64/include/kvm/gic.h |  4 ++++
+ 2 files changed, 52 insertions(+)
 
-diff --git a/include/kvm/irq.h b/include/kvm/irq.h
-index 2a3f8c9d..17113979 100644
---- a/include/kvm/irq.h
-+++ b/include/kvm/irq.h
-@@ -23,6 +23,7 @@ extern struct msi_routing_ops *msi_routing_ops;
- extern struct kvm_irq_routing *irq_routing;
- extern int next_gsi;
- 
-+int irq__init_irq_offset(u8 offset);
- int irq__alloc_line(void);
- int irq__get_nr_allocated_lines(void);
- 
-diff --git a/irq.c b/irq.c
-index cdcf9923..7c4bfec4 100644
---- a/irq.c
-+++ b/irq.c
-@@ -8,6 +8,7 @@
- #include "kvm/irq.h"
- #include "kvm/kvm-arch.h"
- 
-+static u8 irq_offset = KVM_IRQ_OFFSET;
- static u8 next_line = KVM_IRQ_OFFSET;
- static int allocated_gsis = 0;
- 
-@@ -18,6 +19,18 @@ struct msi_routing_ops *msi_routing_ops = &irq__default_routing_ops;
- 
- struct kvm_irq_routing *irq_routing = NULL;
- 
-+/* Override the default offset before the first IRQ allocation. */
-+int irq__init_irq_offset(u8 offset)
-+{
-+	if (irq__get_nr_allocated_lines())
-+		return -EBUSY;
+diff --git a/arm64/gic.c b/arm64/gic.c
+index 51a32159..df5689a7 100644
+--- a/arm64/gic.c
++++ b/arm64/gic.c
+@@ -21,6 +21,18 @@ static u64 gic_redists_size;
+ static u64 gic_msi_base;
+ static u64 gic_msi_size = 0;
+ static bool vgic_is_init = false;
++static int gic_spi_base = GIC_SPI_IRQ_BASE;
++static int gic_ppi_base = GIC_PPI_IRQ_BASE;
 +
-+	irq_offset = offset;
-+	next_line = offset;
++int gic__get_spi_base(void)
++{
++	return gic_spi_base;
++}
++
++int gic__get_ppi_base(void)
++{
++	return gic_ppi_base;
++}
+ 
+ struct kvm_irqfd_line {
+ 	unsigned int		gsi;
+@@ -211,6 +223,34 @@ static int gic__set_dist(enum irqchip_type type)
+ 	}
+ }
+ 
++static int gic__set_spi(enum irqchip_type type)
++{
++	switch (type) {
++	case IRQCHIP_GICV5:
++		gic_spi_base = GICV5_SPI_IRQ_BASE;
++		break;
++	default:
++		gic_spi_base = GIC_SPI_IRQ_BASE;
++		break;
++	}
 +
 +	return 0;
 +}
 +
- int irq__alloc_line(void)
++static int gic__set_ppi(enum irqchip_type type)
++{
++	switch (type) {
++	case IRQCHIP_GICV5:
++		gic_ppi_base = GICV5_PPI_IRQ_BASE;
++		break;
++	default:
++		gic_ppi_base = GIC_PPI_IRQ_BASE;
++		break;
++	}
++
++	return 0;
++}
++
+ static int gic__create_device(struct kvm *kvm, enum irqchip_type type)
  {
- 	return next_line++;
-@@ -25,7 +38,7 @@ int irq__alloc_line(void)
+ 	int err;
+@@ -256,6 +296,14 @@ static int gic__create_device(struct kvm *kvm, enum irqchip_type type)
+ 	if (err)
+ 		goto out_err;
  
- int irq__get_nr_allocated_lines(void)
- {
--	return next_line - KVM_IRQ_OFFSET;
-+	return next_line - irq_offset;
- }
++	err = gic__set_spi(type);
++	if (err)
++		goto out_err;
++
++	err = gic__set_ppi(type);
++	if (err)
++		goto out_err;
++
+ 	return 0;
  
- int irq__allocate_routing_entry(void)
+ out_err:
+diff --git a/arm64/include/kvm/gic.h b/arm64/include/kvm/gic.h
+index 630f0bbd..c4f78cde 100644
+--- a/arm64/include/kvm/gic.h
++++ b/arm64/include/kvm/gic.h
+@@ -4,6 +4,8 @@
+ #define GIC_SGI_IRQ_BASE		0
+ #define GIC_PPI_IRQ_BASE		16
+ #define GIC_SPI_IRQ_BASE		32
++#define GICV5_PPI_IRQ_BASE		0
++#define GICV5_SPI_IRQ_BASE		0
+ 
+ #define GIC_FDT_IRQ_NUM_CELLS		3
+ 
+@@ -34,6 +36,8 @@ enum irqchip_type {
+ 
+ struct kvm;
+ 
++int gic__get_spi_base(void);
++int gic__get_ppi_base(void);
+ int gic__alloc_irqnum(void);
+ int gic__create(struct kvm *kvm, enum irqchip_type type);
+ int gic__create_gicv2m_frame(struct kvm *kvm, u64 msi_frame_addr);
 -- 
 2.34.1
 
