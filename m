@@ -1,58 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795018373;
-	b=w9Rqd0iaSoKdchBHlN0ktHfMP5k0CCqotHiXDDwwExHpkkR7FVMDyp0Gt7avH359lBI0
-	 vNxUfjHO+8iVCeBEW+SUAZfv2ArjddTFgOUIuz9855Y8qjx8JFxKcO9XgmDqt9brNzn74
-	 WGlErMYnx6JP50PTDPX53eJM0EjPO5YFNW8Mkx2x4ZaowmFTdUcwgsQBhhuSZaKUagkBj
-	 SUoYkV8T8mHFvEK+eL95PnuImuh2zjGytIQRFBCwtHIqVnQYOj8kTZa0LrsvGso5cQY/Q
-	 sv1Ul234JqRi9n+OhZeEecxX7B9qdNA4VH9TQ7nIONQwnJSfDZLtydfZS2dDyyT9Sxg==
+	t=1795018386;
+	b=cX66NrAGaMY3+FgauyCQ6SQ2aIF7XKuZ70QFRg8KYddrJK8F6aqy/LQr2Syro21udRNy
+	 3OR5oeaTNOuDll+4qncnJiNTyF5B1LzfafRRyDgncc2WZra8oXDicTuwCOqh+82XOrgci
+	 2FuefBMrcD0xdPg7xR37ObSnL9bEOZGnwU34XQxDa9KpwSTo+dq79b9OFiwAnogeoHYCA
+	 7reTRBAXhsXR+z/RB75uQgb6YjTo4BrXbgj5KCZcoNiLhuFzCJI9y4f0TZFXT6gMqXtH4
+	 ay8JWsR0mmhK9K/gIEm0AbE1jbg99ea4B5JQjVh8Aup5xs1/LjFxrAogdItSDwZuE9A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795018373;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=y9WaZRfIR6gID15FeZtBIwQrLK8oAcd6vPRViQo7VQo=;
-	b=ZPcypy3Fdc3jeFCCsi/0Uf4O+Q8AAx2piQ0rZStlZYAPyZo+Xrmwv6p/I9dZEYwd7mgh
-	 j80c5HPBMqWUj/LK7tMaVhk7EkViefS5KP2d0G+OSIUj3GaXca+28bSMT/5R9NmF+Rm62
-	 e6etvKLNFZBtFlvChDXQ2hweAb1fl01ozfl/PxNvBNz41kBJ3EMtKn4kHT3dXWPsPUP/R
-	 YhN76CWaV5mT6PdPM6Vynz9RHS5YQ1pKCBsu/o+J6cZHsyYmeVqUbXzO4/s9WFqZpzBPE
-	 G8MRZVoUqf/+9vYPml1FO9V3KglNMifE+E5gVI8F6IkJU1AgSbJEgd2eGWd4c5sfBug==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795018386;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=yYNwdmBSIDxtuxPrHW8cdhm8SfdRppfZaAmTog96H2A=;
+	b=uZTlnzrbOhm01joCnJQcO8UebErpJzk9wSZnMqRTerf2/cBpi6CYCAxUEGo0S/aqL2sd
+	 XdZr5Dn+hlAMLW9NJbBBmQzdEoTB1156rqCpz9U9NMiT41keRoWYsL04MqHJlWsUw6Rre
+	 IyESo2V5g/iEQxf0mgmcb+x1fwN9k0W+jHGMeNK8mGVZMQSdytBUKRfTY3E+3ndyC3org
+	 IJthSnbN+8xzG9Q9FhIuAcj0F8t8BKQOOLE/WXb3DNuDQ71QQ0BWeMAnm4/tyWiXM4ssW
+	 e2ScpijtXZKnsgFoN+2meykQ1TAILoGEDDbquV8d61ka0KakxT5VdsOKlvyaakGXvqQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=If1HgjTx;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F56606A325;
-	Wed, 18 Nov 2026 16:12:53 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=VfMYMAuM;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80A3606A325;
+	Wed, 18 Nov 2026 16:13:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E80A3606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=If1HgjTx
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903B31F000C4;
-	Wed, 18 Nov 2026 16:12:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795018373;
-	bh=y9WaZRfIR6gID15FeZtBIwQrLK8oAcd6vPRViQo7VQo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=If1HgjTx8uKjn28zc7DD0NUJoDOiD/fNxiQwrO+qLWKOqzr+rUfr0fVcwBKATI0fB
-	 W/KWTnpqL2ckH1lrFTP2riEenzWZYRQY82/gpGrdF5gWk3MhYjUwgpuzuWZwyZsEr/
-	 NTpJXY3hKIHBmAoAfrpmMM3wjhc4igmIH+SbzGifJjv1sOcE5I+Zelb/ENJk/o0aR5
-	 +1A0j/b3KuDLV2Cn1sQIVF/D/idOXh0evQIMuV66hP1YQHeZcDMp/JXkRW8W19CNju
-	 wHBX/zDdxP8Acl0zaDgXcJe+vL0PR3GZ8ylW6qh0SY+4SllVMLTpDCs/nCzJ2rlNcW
-	 ELx62dyTSm4vw==
-Date: Wed, 18 Nov 2026 16:12:51 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Zide Chen <zide.chen@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, 
-	Jim Mattson <jmattson@google.com>, Andi Kleen <ak@linux.intel.com>, 
-	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>, 
-	Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
-Subject: Re: [PATCH v4 13/21] KVM: x86/pmu: Emulate
- IA32_PERF_GLOBAL_STATUS_SET MSR
-Message-ID: <av3OV2p5xvGS8Mqe@google.com>
-References: <20261112203227.289379-1-zide.chen@intel.com>
- <20261112203227.289379-14-zide.chen@intel.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=VfMYMAuM
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5FF44339;
+	Wed, 18 Nov 2026 08:13:02 -0800 (PST)
+Received: from [10.57.62.206] (unknown [10.57.62.206])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E29C53F673;
+	Wed, 18 Nov 2026 08:12:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795018385; bh=7HisUsPk+KXisBKOhhwZZBhSMTa8p36OAkhoTk09/p8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VfMYMAuMFySbcli51fpiRUiyHhsrWxVA0JvsMlnhNMKHwT3OC8N7svYDR6AXpwyRI
+	 DQ3ucKevGEEZxmSMHnhWCReSwkfPCO0oRhqJaRKuPRh1v7zUXh0fBwqw4KIilbCFx/
+	 PLAJ0VltMjZX2DM+j8kxWZtoujx0Rpj6phIcEFV0=
+Message-ID: <a36b5c53-5148-4b08-b399-ae64b1ad8707@arm.com>
+Date: Wed, 18 Nov 2026 16:12:57 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,96 +53,120 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261112203227.289379-14-zide.chen@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 02/11] KVM: arm64: CCA: Introduce Realms
+To: Fuad Tabba <tabba@google.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Kohei Enju <enju.kohei@fujitsu.com>
+References: <20261116164358.142785-1-steven.price@arm.com>
+ <20261116164358.142785-3-steven.price@arm.com>
+ <CA+EHjTwfp8p7uwP2LXEqSmTwL6ZHuDCYbvMie_Wr_30xJwfO6A@mail.gmail.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <CA+EHjTwfp8p7uwP2LXEqSmTwL6ZHuDCYbvMie_Wr_30xJwfO6A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 12, 2026 at 01:32:19PM -0700, Zide Chen wrote:
-> Intel PerfMon v4 introduces IA32_PERF_GLOBAL_STATUS_SET (0x391) to
-> allow software to set individual bits in the global status MSR. Reads
-> of IA32_PERF_GLOBAL_STATUS_SET always return zero.
+On 17/11/2026 14:07, Fuad Tabba wrote:
+> On Mon, 16 Nov 2026 16:43:48 +0000, Steven Price <steven.price@arm.com> wrote:
+> [...]
+>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> [...]
+>> @@ -1571,31 +1576,39 @@ struct kvm *kvm_arch_alloc_vm(void);
+>>
+>>  #define __KVM_HAVE_ARCH_FLUSH_REMOTE_TLBS_RANGE
+>>
+>> -#ifdef __KVM_NVHE_HYPERVISOR__
+>> +#define kvm_vm_is_protected(kvm)        ((kvm)->arch.vm_flavor >= __VM_PROTECTED)
+>>
+>> -#define kvm_vm_is_protected(kvm)                        \
+>> -        (is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor == VM_PROTECTED_PKVM))
+>> +#ifdef __KVM_NVHE_HYPERVISOR__
+>>  /*
+>>   * Accessing vcpu->kvm from nVHE hyp stub is tricky, as we need to convert the
+>>   * pointer to the hyp VA. With pKVM, the nVHE code runs with the hyp_vcpu,
+>> - * which is populated correctly and is gated on is_protected_kvm_enabled().
+>> + * which is populated correctly. Always vcpu_is_protected_pkvm(), which is
+>> + * gated on is_protected_kvm_enabled().
+>>   */
+>> -#define vcpu_is_protected(vcpu)                                                \
+>> +#define vcpu_is_protected(vcpu)                BUILD_BUG_ON(1)
+>> +#else
+>> +#define vcpu_is_protected(vcpu)                kvm_vm_is_protected((vcpu)->kvm)
+>> +#endif
+>> +
+>> +#define kvm_vm_is_protected_pkvm(kvm)                                        \
+>> +        (is_protected_kvm_enabled() && ((kvm)->arch.vm_flavor == VM_PROTECTED_PKVM))
+>> +
+>> +/*
+>> + * Rely on is_protected_kvm_enabled() check in kvm_vm_is_protected_pkvm() to
+>> + * make sure the vcpu->kvm is always valid VA in the context
+>> + */
+>> +#define vcpu_is_protected_pkvm(vcpu)                                        \
+>>          ({                                                                \
+>>                  struct kvm *__kvm = READ_ONCE((vcpu)->kvm);                \
+>>                                                                          \
+>> -                (__kvm && kvm_vm_is_protected(__kvm));                        \
+>> +                (__kvm && kvm_vm_is_protected_pkvm(__kvm));                \
+>>          })
+>>
+>> -#else
+>> -
+>> -#define kvm_vm_is_protected(kvm)        ((kvm)->arch.vm_flavor >= __VM_PROTECTED)
+>> -#define vcpu_is_protected(vcpu)                kvm_vm_is_protected((vcpu)->kvm)
 > 
-> IA32_PERF_GLOBAL_STATUS_SET is not part of the VM state, so it doesn't
-> need to be advertised to userspace, nor saved and restored during live
-> migration.
+> This brings back the _pkvm variants that Marc asked to drop in the
+> plumbing series [1]. In the nVHE hyp code, kvm_vm_is_protected() and
+> vcpu_is_protected() already mean pKVM-protected, so I think the hyp
+> side can stay as it is.
 > 
-> Always intercept IA32_PERF_GLOBAL_STATUS_SET to prevent the guest from
-> modifying status bits that are not virtualized by KVM.
-> 
-> Bit 63 (CondChgd) is architecturally reserved in STATUS_SET per the SDM.
-> Reject writes to bit 63, injecting #GP for guest writes. While older
-> processors had silicon errata that accepted writes without #GP (e.g.
-> SKX95), strictly enforce the architectural specification for
-> deterministic behavior across migrations.
-> 
-> Originally-by: Yang Weijiang <weijiang.yang@intel.com>
-> Signed-off-by: Zide Chen <zide.chen@intel.com>
-> ---
-> v4:
-> - Split out CondChgd specific handling into a separate patch since it
->   impacts MSR 0x38e and 0x390 as well.
-> - Move the defensive filtering code in pmu load to the new patch.
-> - Do not carry over Jim's Reviewed-by due to above changes.
-> 
-> v3:
-> - Split from combined v2 patch into standalone GLOBAL_STATUS_SET patch.
-> - Always intercept IA32_PERF_GLOBAL_STATUS_SET to prevent passthrough of
->   unvirtualized status bits. (Jim)
-> - Reject writing bit 63 (CondChgd) to IA32_PERF_GLOBAL_STATUS_SET. (Jim)
-> - Filter out bit 63 before writing to hardware in
->   intel_mediated_pmu_load().
-> - Store status set bits in a local variable in
->   intel_mediated_pmu_load(). (Yosry)
-> - Move validation for MSR_CORE_PERF_GLOBAL_STATUS_SET to pmu_intel.c
->   rather than common pmu.c to avoid exposing the Intel MSR on AMD.
-> ---
->  arch/x86/kvm/pmu.c           | 7 +++++++
->  arch/x86/kvm/vmx/pmu_intel.c | 2 ++
->  2 files changed, 9 insertions(+)
-> 
-> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-> index 7ba1a3b38184..bd5954e62080 100644
-> --- a/arch/x86/kvm/pmu.c
-> +++ b/arch/x86/kvm/pmu.c
-> @@ -855,6 +855,7 @@ int kvm_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
->  	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
->  	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
->  	case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
-> +	case MSR_CORE_PERF_GLOBAL_STATUS_SET:
->  		msr_info->data = 0;
->  		break;
->  	default:
-> @@ -923,6 +924,12 @@ int kvm_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
->  		if (!msr_info->host_initiated)
->  			pmu->global_status &= ~data;
->  		break;
-> +	case MSR_CORE_PERF_GLOBAL_STATUS_SET:
-> +		if (data & pmu->global_status_rsvd)
-> +			return 1;
-> +		if (!msr_info->host_initiated)
-> +			pmu->global_status |= data;
-> +		break;
+> At EL1, the pKVM-only checks that a Realm vCPU also reaches are in
+> kvm_arm_vcpu_power_off() and kvm_psci_vcpu_on(). Could they check
+> vm_flavor == VM_PROTECTED_PKVM directly?
 
-Nit: Perhaps we should follow what MSR_CORE_PERF_GLOBAL_OVF_CTRL does
-and fallthrough, leaving the pmu->global_status update shared with
-MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET.
+Ah, yes that should work better. Thanks for the suggestion.
 
->  	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
->  		if (!msr_info->host_initiated)
->  			pmu->global_status |= data & ~pmu->global_status_rsvd;
-> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-> index 4d05ec50f24f..c18d24b5c385 100644
-> --- a/arch/x86/kvm/vmx/pmu_intel.c
-> +++ b/arch/x86/kvm/vmx/pmu_intel.c
-> @@ -196,6 +196,8 @@ static bool intel_is_valid_msr(struct kvm_vcpu *vcpu, u32 msr)
->  	case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
->  	case MSR_CORE_PERF_FIXED_CTR_CTRL:
->  		return kvm_pmu_has_perf_global_ctrl(pmu);
-> +	case MSR_CORE_PERF_GLOBAL_STATUS_SET:
-> +		return pmu->version >= 4;
->  	case MSR_IA32_PEBS_ENABLE:
->  		ret = vcpu_get_perf_capabilities(vcpu) & PERF_CAP_PEBS_FORMAT;
->  		break;
-> -- 
-> 2.56.1
+>> +#define kvm_vm_is_realm(kvm)                ((kvm)->arch.vm_flavor == VM_REALM)
+>> +#define vcpu_is_rec(vcpu)                kvm_vm_is_realm((vcpu)->kvm)
 > 
+> vcpu_is_rec() isn't used anywhere in this series. Could it be dropped?
+
+Yep, I can move it after this series.
+
+> [...]
+>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> [...]
+>> @@ -906,7 +907,8 @@ static bool kvm_arm_vcpu_suspended(struct kvm_vcpu *vcpu)
+>>  /* Only the guest's CPU_ON may start a vCPU EL2 holds powered off. */
+>>  bool kvm_pkvm_vcpu_is_powered_off(struct kvm_vcpu *vcpu)
+>>  {
+>> -        return READ_ONCE(vcpu->arch.mp_state.mp_state) == KVM_MP_STATE_UNINITIALIZED;
+>> +        return vcpu_is_protected_pkvm(vcpu) &&
+>> +                READ_ONCE(vcpu->arch.mp_state.mp_state) == KVM_MP_STATE_UNINITIALIZED;
+> 
+> Only a pVM's vCPU can be in KVM_MP_STATE_UNINITIALIZED, so is this needed?
+
+I guess not. I'll drop this change.
+
+Thanks,
+Steve
+
+> Cheers,
+> /fuad
+> 
+> [1] https://lore.kernel.org/all/86pkxs2npx.wl-maz@kernel.org/
+
