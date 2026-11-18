@@ -1,64 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795024389;
-	b=433VvQfpl9bz4SEHSjTYrArO5qVgP55aa/y4rM2E9RBq8YJSNOUducmN/8GP9cHIZSA6
-	 vta4Do7GN08YKKevU+uBrMTDlrIDMatcgnq0JY5mOsxFaEXVL4Oa941KtLU3bK7AjxI6x
-	 sOlMUxChlSn7IYxZNbzkJ40RQlkmJRubqoVUIfAZ6HW7XUCQtZd5YJaiKfaR9gs0VU15a
-	 cv5oN6SpZ/nKYrE68RLoQLhmJ+9OEv6CrU/A8O1dI7Hz69uy0lKF8kvnbD6yPzyKHbnaJ
-	 j9o9m1vQiK0axKWAaRd/AqNj4kGoDi8bhs4GVEMam93109zRrLK/qFxv3ALv/PP5mcA==
+	t=1795024690;
+	b=nfBdFSeaxhp8GIPyelO8e4AuO537raUpa4hKohTEnfHZfvmw3GatyMJSyKGbc2V4RbSM
+	 f9qY6Lj8052FaGrEYuxuaMNE0nplNxuvmzJiUqOKlZ0C2m6MStKJcjZMWchySznVGkJ7b
+	 14aNGqfRYls6ZqiLCBGXF0zm58gCsC8IidscF9R1TRv4hc2Pu7FDrPsc2Zc7Odj+efWCx
+	 2JXooBTAKh4hmmHGCi1aKIIjDOa6TNQtb6pr7M2mj5ZRYANm9TYbED8v6grTGYp/WN34d
+	 AvDg4lK9EkJebTXMCyXCMqN0dpJ4t0csSVZBEWYUy+7ZOQuLAjgfHHLKuBBdNQ8RnjQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795024389;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=mIvlMhQp2XPMKkyqstwBRddoJIhsg5ZvouNFjygJYDk=;
-	b=Wph9KBHnPlR+IOL/0Fw1bzKWubCTInFZUPNsNCqJ0YRs/YR3wFYGapd8xw/bVPR6ZIOe
-	 VWirtq211OtlqSLuwx8UDhvOimkqeDoxuCggV3mNhlA1B2/hwfO/VzmFFv2HWUu6yFCTp
-	 9NDhzmmR9Gplj3LW7tR6kiD79wCUooTcgvpDuzZIJU+pWvcXsEDTRAchzaVCGEe7IbrqP
-	 tbS21LQUDLyjCv8PvZBlC/HChSk7n1YlXqGo6Jw8C6QziVqHHGx1kXiu4sf1EJg+j3not
-	 HwrC/qY7v44HRndTfLAgKMVDjYXsS1Ucaa+69XSuaSrzwSeDFsySheDV2ER35rDiFQA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795024690;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=I87w77dlPyPG2CC7nMh+FXRw3OgJv7kd1uspcdYzY2c=;
+	b=4mgNqf6nFWnKaFXHGes5Dvp5c2MpwYYTC40QX6fe6YV0PGP+TJAYy21AMXybcop/ZTD1
+	 ERo0iHkM0vD2bw9nlNAmD6AYyvUt5rc+RN8zTXCr+RRB7K8UrxcfUlvkBhIuMV+EPzMKT
+	 9hwr8KgTb/lV5DLSzHGWPJ1sar0gz3LpJd+K0r4nf1XaHZLJ6vGvev42WHPftLr1Q/FWf
+	 TAekDXMqccfN40M2DElLYefs/YQdwe94yL2GiGCi77tlWf9LZf0Cua63O4KDxm/MlqpHX
+	 EQKl3+xz1btP4sgbLl18VlqK74h8e2TmxscznF2tNZQQnOvR9rYn9oNtb5wC3KfYHVA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kKrkgOt9;
-	arc=none smtp.remote-ip=95.215.58.54
-Received: from mta1.migadu.com (out-54.mta1.migadu.com [95.215.58.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4D8606A332
-	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 17:53:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E4D8606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=tz3dNPNd;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DEF606A31C
+	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 17:58:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3DEF606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kKrkgOt9
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=+m7k99GokHGG2Xt0WNDUpUu/POJp/u8hXMkzLb7HkPI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795024385; v=1; x=1795629185;
- b=kKrkgOt9Z0+Uxd0OLSeRAMXHHLAwszcLDUbKbF12OkJtRBtdtWKPCEIzYjNBS/HTPbsasfAS
- uB5YRPSbid1q4JNdkyBI3GN/ci90xJ1VOlf8DjQgJu1KHxicG+32bBCr18ovse2tMz48PwuBhzD
- 9MA0algsT312UDIoJhrsXcmk=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 55e39e18abac30ad;
-	Wed, 18 Nov 2026 17:53:05 +0000
-X-Mizu-Trace-ID: 55e39e18abac30ad
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 18 Nov 2026 18:52:30 +0100
-From: Andrew Jones <andrew.jones@linux.dev>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	Laurent Vivier <lvivier@redhat.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-	Janosch Frank <frankja@linux.ibm.com>, Nico =?utf-8?B?QsO2aHI=?= <nrb@linux.ibm.com>, 
-	Chinmay Rath <rathc@linux.ibm.com>, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	Amit Machhiwal <amachhiw@linux.ibm.com>
-Subject: Re: [kvm-unit-tests PATCH] Move position-independant code flags into
- the target specific Makefiles
-Message-ID: <av3l0ZC64ouIp4KN@orel>
-References: <20261113120101.145183-1-thuth@redhat.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=tz3dNPNd
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0CCCC1477;
+	Wed, 18 Nov 2026 09:58:05 -0800 (PST)
+Received: from e133894.cambridge.arm.com (e133894.arm.com [10.2.80.62])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A469F3F632;
+	Wed, 18 Nov 2026 09:58:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795024688; bh=VtrwBYkpDhUcCZRgaJwzdSEv4rjIYT7scUCSiX0CTIY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tz3dNPNd6CFCKPIPrzaBqvklRkq25+RaCWZCb0hT+aGS3fQrO0wWcH+363x/taF91
+	 pdukQX7a33MX3UQxF5B6M/qnpbngnCyZ6Rs9ghtVXMpT6TblIsu7IEWFZncBF4xS0D
+	 j4LMFcmDWDrp9Bl1sSG0LeEuMYtfhjqoPhoXwpek=
+From: Sascha Bischoff <sascha.bischoff@arm.com>
+To: will@kernel.org,
+	julien.thierry.kdev@gmail.com
+Cc: vladimir.murzin@arm.com,
+	maz@kernel.org,
+	kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	timothy.hayes@arm.com,
+	Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH kvmtool v5 00/23] arm64: Support GICv5-based guests
+Date: Wed, 18 Nov 2026 17:57:32 +0000
+Message-Id: <20261118175755.1946977-1-sascha.bischoff@arm.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -68,35 +63,98 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261113120101.145183-1-thuth@redhat.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 13, 2026 at 01:01:01PM +0100, Thomas Huth wrote:
-> The settings for position-independant code are currently quite a mess:
-> It depends on the target whether we need the flags or rather should even
-> disable PIC / PIE, but currently the settings are spread between the
-> main Makefile (-fno-pic is the default, unless CONFIG_EFI has been set)
-> and the target specific Makefiles.
-> This leads to some weird situations where we have -fno-pic in the CFLAGS,
-> but link with -pie in the LDFLAGS since we still want to get a relocation
-> table, but then again need to add a "-z notext" to the linker flags to
-> avoid warnings about relocation entries in the text segment.
-> Let's face it: Always adding -fno-pic / -no-pie in the main Makefile is
-> a bad idea. Move the settings to the target specific Makefiles instead
-> where we know what we really want, and then we can finally drop the
-> "-z notext" settings, too.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->  Makefile            | 6 +-----
->  arm/Makefile.arm    | 2 ++
->  arm/Makefile.arm64  | 3 +--
->  powerpc/Makefile    | 5 ++++-
->  riscv/Makefile      | 1 +
->  s390x/Makefile      | 3 +++
->  x86/Makefile.common | 5 +++++
->  7 files changed, 17 insertions(+), 8 deletions(-)
->
+This series adds support for GICv5-based VMs to kvmtool. These are
+exposed as --irqchip=gicv5 and --irqchip=gicv5-its, where the former
+creates a vGICv5 device and the latter adds a GICv5 ITS. The GICv5
+specification can be found at [1].
 
-Acked-by: Andrew Jones <andrew.jones@linux.dev>
+The GICv5 support in KVM needed by --irqchip=gicv5 is available as of
+Linux v7.4-rc1. The GICv5 ITS support is described in [2]; using
+--irqchip=gicv5-its requires a KVM build with those changes.
+
+The series teaches kvmtool to create the GICv5 irqchip and ITS KVM
+devices. It describes the GICv5 CPU interface, IRS and ITS in the
+guest DT, updates the timer and PMU interrupt descriptions, and
+generates GICv5 interrupt specifiers for platform devices and PCI. It
+also maps PCI MSI requester IDs to the ITS. The IRS support is built
+and exposed before the ITS support, so the GICv5 irqchip support can
+be merged separately from the ITS changes.
+
+Compared with v4 [3]:
+
+* Added Vladimir's Reviewed-by and Tested-by trailers where provided,
+  and described the MSI helper's use of the global base in patch 3's
+  commit message.
+
+* Updated to check GICv5 SPI indices passed to KVM_IRQ_LINE against
+  the 0-255 range that fits kvmtool's 8-bit IRQ storage, while
+  retaining the 32-255 range for GICv2/v3.
+
+* Restored blank lines inadvertently removed in patches 9 and 12.
+
+* Made GICv5 ITS setup fall through to the common GICv5 IRS setup.
+
+* Replaced PCI MSI property selection with a switch statement.
+
+The v7.4-rc1 header sync includes GICv5 IRS UAPI, but not GICv5 ITS
+UAPI. Patch 19 mirrors the ITS definitions from [2]. Once that UAPI
+lands upstream, the headers should be resynced against the latest
+Linux headers before merging the ITS support.
+
+Thanks,
+Sascha
+
+[1] https://developer.arm.com/documentation/aes0070/latest
+[2] https://lore.kernel.org/all/20261102194454.4086911-1-sascha.bischoff@arm.com/
+[3] https://lore.kernel.org/all/20261102213413.4136118-1-sascha.bischoff@arm.com/
+
+Sascha Bischoff (23):
+  arm64: Propagate IRQ routing initialisation errors
+  arm64: Close the ITS descriptor when setup fails
+  arm64: Split GIC device setup
+  Sync kernel UAPI headers with v7.4-rc1
+  arm64: Add GICv5 irqchip device support
+  arm64: Configure GIC interrupt bases
+  irq: Allow the initial interrupt line number to be set
+  arm64: Start GICv5 SPI line allocation at zero
+  arm64: Configure the GICv5 IRS
+  arm64: Define GICv5 interrupt types
+  arm64: Describe the PMU interrupt for GICv5
+  arm64: Describe timer PPIs for GICv5
+  arm64: Assign CPU DT phandles
+  arm64: Describe the GICv5 CPU interface in the DT
+  arm64: Describe the GICv5 IRS in the DT
+  arm64: Generate GICv5 SPI specifiers for platform devices
+  arm64: Generate GICv5 PCI INTx specifiers
+  arm64: Expose the GICv5 irqchip option
+  arm64: Add proposed GICv5 ITS UAPI definitions
+  arm64: Add GICv5 ITS device support
+  arm64: Describe the GICv5 ITS in the DT
+  arm64: Map PCI MSI requester IDs to the GICv5 ITS
+  arm64: Expose the GICv5 ITS irqchip option
+
+ arm64/fdt.c                         |  13 +-
+ arm64/gic.c                         | 361 ++++++++++++++++++++++++----
+ arm64/include/asm/kvm.h             |  18 ++
+ arm64/include/kvm/fdt-arch.h        |   1 +
+ arm64/include/kvm/gic.h             |  15 ++
+ arm64/include/kvm/kvm-arch.h        |  16 ++
+ arm64/include/kvm/kvm-config-arch.h |   2 +-
+ arm64/pci.c                         |  24 +-
+ arm64/pmu.c                         |  13 +-
+ arm64/timer.c                       |   8 +-
+ include/kvm/irq.h                   |   1 +
+ include/linux/kvm.h                 |  23 ++
+ include/linux/virtio_console.h      |   2 +-
+ include/linux/virtio_ids.h          |   1 +
+ irq.c                               |  15 +-
+ powerpc/include/asm/kvm.h           |  18 ++
+ riscv/include/asm/kvm.h             |  17 ++
+ x86/include/asm/kvm.h               |   4 +-
+ 18 files changed, 483 insertions(+), 69 deletions(-)
+
+-- 
+2.34.1
+
