@@ -1,63 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794997268;
-	b=PWRT/uYu8Tfdj0BGQ9aXbmRquTq7oHfCkCwB9QNTyRsC6IhT8lWvee3dNszuY2dR9FoQ
-	 xcrqD9DBzI/1dd7UoPpzp9IBcWRE+pjmvl87eQnYlJZh0OuAB+Dm2S3YlSrSdh5jf4L14
-	 6sBQo7eOAMXiA+8Rm4G+q4+mI3664ICp7q3IrAeVXgunPYszFDj9E7mAiEOOscLukrhlp
-	 GtMMv2u9QZU72sadsgaJq5yqngkEyHQVxDZq05Qq7b1EtQgIHv3EN6DphcC+MBddh+lv4
-	 HL+KiWFjhAuXiAARc4iqDA2JQVdRlo+ZIhuNgYFaMr19kC65jCb/DFEI2IE2NL8+obw==
+	t=1794997759;
+	b=G+5xpzWRW3ploOz4PRXSbZafx9pWFvYzrEVdFBiJC27wphDefVxZ+RE59wS3go7P5N2Z
+	 mgnGqpVTZyojWw0bW0cdsTanqcVaLWbkIVfmwRVWDZJuFOTwMXtuptV3LuBrdG38mvDv2
+	 31MxwukxMcEeMF9kx+YDF4exjBoDtahhEvkHk3ZEcvms2YL3QpaQlGCue0ymrz0OyABOb
+	 XZi9hI6ipQqJ7Z4Mxyi6m76TBT32SsRzrEtw7p09SZd6eSa5frNY9XywG/IjmbuJN0iAY
+	 F+5Kf/iPgqF246cYdEKlHAU0TzgwrfXeMhyDn3H2ufv+V/b1w1L4RyPQimnCZYVL/3Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794997268;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=r0RqCgFglr6kB4r3TuGkycOFWmb74mbV5L7vdYoijp8=;
-	b=EEOYErGLm2MaZYBryr0o1EkXgaTRXLXVssu/PfGVpAnJLqzm+l9/+oS8JnMo6kgB13R4
-	 apwurM7xc4SHS3zNvZdfprgJ2NwnnmtYAAbUsv7x18RbKwjDEXN0sT+oTrJ5B0pOQK9Ba
-	 +msfIrWbIkqSpZ/oqWl3ApQVzVSIPtI/SsZmGiT8qC+XgurI1qHxxon+MoH50VyAbyLQS
-	 xk7R+NdHpyBbTLkpt1NUnfIG4bwjC48zgCxYhZJ30SyRbPzjXI2cshK+Dbzwb0MZAR6lw
-	 UUWXTH0k7eQ/RrKBo/6bBcXjyL/DMUDyTWYxlKQmqOw6fI8TTvT85wd6fO8vhGU/aKQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794997759;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=bXcaRn3cue+gl2zKwMpnwNDwBUBUe5u0O7jptOzXp2Q=;
+	b=qQwZts1ercl0PhvUOylWVRZ+3kc5sd9LbxSvLxlArnnjX6aR/8/nFRi1tywC37PMMnxp
+	 V7JpqA+VvUEOgQ8jlmp1eJIwteydDtE63I9rl+x+PwXsJAvlD4JeYJI8wkpyklnFZTHKi
+	 Cis13txYTdbvUwzVvR2CUnOgvHWkybXWgOXDdb8/22+PUK2jPQqscEgsACSUokx120KCJ
+	 So8hR91yVgwP08l8H/NCH9V34yFd164bdupZT9Y1SRjmr8njx5GCJBBVmtPpisvifor3o
+	 xYLlVh558hFK+iP2w6YZwRkust3CEOz4E7lQ+CFaNB9fBTGqYJkDZ5q9AjMEeY+qKZg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b="m1o/k522";
-	arc=none smtp.remote-ip=220.197.31.5
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mq+4Ow56;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942E5606A31C;
-	Wed, 18 Nov 2026 10:21:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 942E5606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26608606A32A;
+	Wed, 18 Nov 2026 10:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=m1o/k522
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=r0
-	RqCgFglr6kB4r3TuGkycOFWmb74mbV5L7vdYoijp8=; b=m1o/k522nqwdXg7ePx
-	c34cFrgItTX0OIZdETjwuBX91YPVQA4S/LN7W99UNxnXF1FXmyN1DLVn5suFuX9f
-	inL/k3qOre4pzM03jl4/cmfrUc4uQVhPb5DbIjgfTWmDbz0F8FJw/j5G/WRYl8/N
-	MK/rPXSrGe5vJHB/0+KrFRGY8=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wDn1Dbee_1quA9NIg--.33070S2;
-	Wed, 18 Nov 2026 18:20:14 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: maddy@linux.ibm.com,
-	npiggin@gmail.com,
-	mpe@ellerman.id.au,
-	chleroy@kernel.org,
-	ritesh.list@gmail.com,
-	sshegde@linux.ibm.com,
-	farosas@linux.ibm.com
-Cc: linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Haoxiang Li <haoxiang_li2024@163.com>
-Subject: [PATCH v2] KVM: PPC: Book3S HV: Clean up on uvmem initialization failure
-Date: Wed, 18 Nov 2026 18:20:12 +0800
-Message-Id: <20261118102012.2252221-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mq+4Ow56
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42A31F000C5;
+	Wed, 18 Nov 2026 10:29:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794997759;
+	bh=bXcaRn3cue+gl2zKwMpnwNDwBUBUe5u0O7jptOzXp2Q=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Mq+4Ow56gIEKUrXkfLniABx7AsmwRrCk0VWjxvl/+MaQ7AvBKTOzTbWrItvU5ZML7
+	 1cMviFkP/RxdN2tgB1dQoLQq9rrHO2lsWVcUjbg7qFY6k/Zce+fKg13DspPRkeD2M0
+	 dj7/QEYqe3zw3KpASpe4dDx+kh/gwWZ4sdHboDgZcoev8T27Js2x4uv6kW+cRZW37Q
+	 18vbEprXyTG7vHpBVe1ssEPiAp9yta/Abyt6c3mWwvv6yihMG34mJogV7uNDDjrV40
+	 32gEg3JhzocARDiUxIlO3dRGcADb94EKdduZdGl8At9BHaNeF4NQo/RelEF87K7jan
+	 MZgF5RqlpEx+Q==
+Message-ID: <sashiko-outbox-220692@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v21 08/13] PCI/TPH: Add pci_tph_dsm_supported() helper
+ to detect device TPH ST _DSM
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Chengwen Feng" <fengchengwen@huawei.com>
+Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
+In-Reply-To: <20261118091238.45992-9-fengchengwen@huawei.com>
+References: <20261118091238.45992-1-fengchengwen@huawei.com>
+ <20261118091238.45992-9-fengchengwen@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 18 Nov 2026 10:29:18 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,42 +60,85 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDn1Dbee_1quA9NIg--.33070S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7JF17tFy5AFWfWFW3uw1xKrg_yoWfZFXE9w
-	40qan7uw45Jr4Uu3WkZa9IgF4UJr48JrWF93yYq3srJFZ8Zws0k397trnxZry8W39FyrZx
-	uay0yr9xtr1SkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRtKsjDUUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbC7R4wnmr9e97cbQAA3e
 
-When kvmppc_uvmem_init() fails, kvmppc_book3s_init_hv() returns
-directly, bypassing the existing error path. Jump to the existing
-error path to clean up before returning the error.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [Low] PCI/TPH: commit message names pci_tph_dsm_supported() instead of
+  pcie_*
+- [Low] PCI/TPH: missing colon after Return in pcie_tph_dsm_supported()
+  kernel-doc
+- [Low] PCI/TPH: duplicated _DSM check and unused helper in
+  pcie_tph_dsm_supported()
+--
 
-Fixes: 175be7e5800e ("KVM: PPC: Book3S HV: Free allocated memory if module init fails")
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
----
-Changes in v2:
- - Change the Fixes tag.
- - Modify the patch title.
----
- arch/powerpc/kvm/book3s_hv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+commit 04c9ebfe20073a30540b5afa000403cf34aaeb34
+Author: Chengwen Feng <fengchengwen@huawei.com>
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 22283d46e8fe..620097f292b8 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -6743,7 +6743,7 @@ static int kvmppc_book3s_init_hv(void)
- 	r = kvmppc_uvmem_init();
- 	if (r < 0) {
- 		pr_err("KVM-HV: kvmppc_uvmem_init failed %d\n", r);
--		return r;
-+		goto err;
- 	}
- 
- #if defined(CONFIG_KVM_XICS)
--- 
-2.25.1
+> PCI/TPH: Add pci_tph_dsm_supported() helper to detect device TPH ST _DSM
+>
+> Add new helper pci_tph_dsm_supported() to check whether the root port
+> of a given PCI device exposes the TPH ST ACPI _DSM method.
 
+[Severity: Low]
+The commit subject and message refer to pci_tph_dsm_supported(), whereas
+the function defined and exported by the patch is pcie_tph_dsm_supported().
+
+> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+> index c8b867dd233d4..c3d940745fe4d 100644
+> --- a/drivers/pci/tph.c
+> +++ b/drivers/pci/tph.c
+> @@ -587,3 +587,31 @@ void pci_tph_init(struct pci_dev *pdev)
+>  	save_size =3D sizeof(u32) + num_entries * sizeof(u16);
+>  	pci_add_ext_cap_save_buffer(pdev, PCI_EXT_CAP_ID_TPH, save_size);
+>  }
+> +
+> +/**
+> + * pcie_tph_dsm_supported - Check if root port exposes TPH ST _DSM
+> + * @pdev: target PCI device
+> + *
+> + * Return true if root port of @pdev provides TPH ST DSM function,
+> + * false otherwise (ACPI disabled or DSM missing).
+> + */
+
+[Severity: Low]
+Return is missing a trailing colon ("Return:"), which causes kernel-doc to
+warn that no description was found for the return value of
+pcie_tph_dsm_supported().
+
+> +bool pcie_tph_dsm_supported(struct pci_dev *pdev)
+> +{
+> +#ifdef CONFIG_ACPI
+> +	struct pci_dev *rp =3D pcie_find_root_port(pdev);
+> +	acpi_handle handle;
+> +
+> +	if (!rp || !rp->bus || !rp->bus->bridge)
+> +		return false;
+> +
+> +	handle =3D ACPI_HANDLE(rp->bus->bridge);
+> +	if (!handle)
+> +		return false;
+> +
+> +	return acpi_check_dsm(handle, &pci_acpi_dsm_guid, 7,
+> +			      BIT(TPH_ST_DSM_FUNC_INDEX));
+> +#else
+> +	return false;
+> +#endif
+> +}
+> +EXPORT_SYMBOL_GPL(pcie_tph_dsm_supported);
+
+[Severity: Low]
+Could pcie_tph_get_cpu_st_ext() and tph_invoke_dsm() share a helper with
+pcie_tph_dsm_supported() instead of duplicating the Root Port ACPI handle
+lookup and acpi_check_dsm() call?
+
+Sharing the lookup would also avoid pcie_tph_get_cpu_st_ext() passing a
+NULL rp_acpi_handle to tph_invoke_dsm() -> acpi_evaluate_object(), which
+logs an acpi_handle_warn() on AE_BAD_PARAMETER when the Root Port bridge
+has no ACPI companion.
+
+In addition, none of the follow-up VFIO patches in this series call
+pcie_tph_dsm_supported(), leaving the exported helper unused in-tree.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261118091238.4599=
+2-1-fengchengwen@huawei.com?part=3D8
