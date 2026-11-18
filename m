@@ -1,56 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.210
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795016700;
-	b=BPSNJ6wLHhrDJrDTU2UM2RSJnxWc6uPd+0ckl4DUC7bnw7Mwelci6fVdLjRfJGOo4yds
-	 owfmP0QPyrLaRDmYjyF54S41sJaZCufl5gqj8og8CbQOGOIfNoWmOFmUYcpiPT9ZUWiQM
-	 NUdk+ouYlZNJHXJXEJ1LIJCyDBPDAtqRZ1ua5CUkeVVnduPVqfSCu4tAMvW2CdH5rFDyP
-	 0C/CPKWizgrk0brZBAc8O9Nw6y+xRNvrdzB3iDH7OycGA+BuNI5zp/zzTQlwtCMNF0lBO
-	 /34TgnIDvUvJxh1DVChUp5eYBfeq3vEpQ0oxsPhfqM+P/Qo6EY7OFHQobOHwgIzsa7w==
+	t=1795016786;
+	b=re5mNCVF/sct0GcAcr7O+L7uyGNN3bPjMOHztQMfYtKt6ZlQSBujGY8sYxBnehViK7Ue
+	 Hg4LCRkiw+l2OWGshQjys8sztq5e0TDyEn8rBqYiNzMvgXHBu/SJt01VOti7inmMgXZMS
+	 Lx3aee2svxyjU5xhY6RYq4l8rOlDRrandw4oNwdQrJ3+QMdtMa4/B+D4jWOcEoVA7KMbC
+	 3Cl7k4h9qmHYfTwRQKeB3CUhErhyDDFugK0paRBP6cEVMrOAwN+LtlHV5Tb4Z/53Crd+2
+	 D3ZvZLwwhEQ+t+xnOk81Ka/dNPx3KbwAraqWabgFR3zo+bW9Wkr4FqTWi5Abml33ThA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795016700;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:To:Cc:
-	 X-Mailer;
-	bh=qxpyj/UOl4zhAq0TdYWCYDtm8oNM24au5RWj8yaQrOc=;
-	b=QULuAARdP9Yh85rsIEJxoBzOOxgFSqQXxqpWyP9i6pNhYS9QNNPii/6YFR5Pc4Vzrj6b
-	 K70ldKYEKMMu+KVXUJpiL6zfl6oJOUwfbgMBDnSgUgSkpdMtr+3X8i6ceVBih/4kDJSW6
-	 hP6D+nOlcWtDijVykd4qEFZce8djKK9CKdENaC88k9Oxc7IenRq7UhTX9pZ02xv+aONle
-	 Dd9xdE31KrsQ/6zocSoMhaub9V218DIshLOLvPwp4llOEWR+87LHBc/aDkfJtHAfmygAg
-	 uqjCLHP3k9wva2RgPppiTttDvSLsoCgBGDz2ZpNEKYEovdxCrqYf7b46r4NRN0SeDUQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795016786;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=BEwIdIu+KrMDBK5eBH1rZ544ZlhtoEyfveo49Aa+So4=;
+	b=3pBsHo2fZeOBigBnebTBx1Z/0QoKf8OwMObDGf4beK3M1OJFZKdq38PBTYm/qS0p3xha
+	 ju12X2QO/wiQ4mlnddvgROhAJw8BHp3vbvhWOFYsk9visZtRLHhFHkur0do7X3ERjIqke
+	 RbXl1drGUt5iMZhOkFwlt1k6E6EeD6BcjE/GUZ06VYYba5pwNO49yfGFTQw0IcwG4NlSS
+	 uUihu+Y9xICrBnQGsVcvH2P4ZlmP5n0egos2IuRGobPM0ebr2BO/eyOjQjQMLHO0u5yfn
+	 sx5FBTg5zJ6QJJ7bbGPPR4olI1wyU7EQkotlZeSkgrVlUijucOY/sQ6E+O/1uSZ5XYg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DynUJRMD;
-	arc=none smtp.remote-ip=91.218.175.210
-Received: from mta0.migadu.com (out-210.mta0.migadu.com [91.218.175.210])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FjxhkCXe;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D472606A32F
-	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 15:44:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D472606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626C1606A320;
+	Wed, 18 Nov 2026 15:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DynUJRMD
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=rwvT+PKBDk6ZkkgKXEgIt+qum9rc4hzPVxm9qDPG2hA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795016697; v=1; x=1795621497;
- b=DynUJRMDgxipLuO3zCabfInslAA+/hv+MKt0e9yoQy3wkMUndfBYdgOkpVUbUwmqWDzTwNQ8
- +MtmXqtqwhObV/lm2lmW4ksigXQJwDKd+vY/b28OHMlz/MztXIeitsz/vwDlqV5CprYYW+ODakw
- xqXtA96mUNezocEAgbYKMr94=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 49611e44865ca4be;
-	Wed, 18 Nov 2026 15:44:57 +0000
-X-Mizu-Trace-ID: 49611e44865ca4be
-X-Migadu-Flow: FLOW_OUT
-From: Qiliang Yuan <qiliang.yuan@linux.dev>
-Date: Wed, 18 Nov 2026 10:44:51 -0500
-Subject: [PATCH] KVM: x86/mmu: Wait for freed TDP MMU pages only before
- destroying caches
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FjxhkCXe
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC771F000C5;
+	Wed, 18 Nov 2026 15:46:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795016786;
+	bh=BEwIdIu+KrMDBK5eBH1rZ544ZlhtoEyfveo49Aa+So4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FjxhkCXepVQ0gmpO+4K085SjTi6qUOwoIYpnZBaNJLJkti231dFtqBcOZ8FLtwoa1
+	 YxIyASnq7FnfY+2R6pnlGQ2Sjw7rwqNDBWeDsHjARttT3mzNrrqcsmEUuiABqyjCS0
+	 024jylVPEl33ofMcj3T4cknaYjfeQXuucH1alyOgjN6rfrFgmx679rQTWOa9Q4hIyQ
+	 gGKyRH9cx621FE5fvVxKAmZloxP4G1OnQWXvJ5XZXTtwcEdZ9SM3jg7PUEHMjiKani
+	 Cl6C1x+fgQkRhFWiS8w29jFMPHIrQViv5Kw6aF2KHwnP/eZFGUcKxhXxcy9vnriwXH
+	 nhSq0svo3z2MA==
+Date: Wed, 18 Nov 2026 15:46:24 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: "Chen, Zide" <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>, Andi Kleen <ak@linux.intel.com>, 
+	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>, 
+	Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
+Subject: Re: [PATCH v4 06/21] KVM: x86/pmu: Drop nr_arch_{gp,fixed}_counters
+ from kvm_pmu
+Message-ID: <av3IHMi-DiXMk1f3@google.com>
+References: <20261112203227.289379-1-zide.chen@intel.com>
+ <20261112203227.289379-7-zide.chen@intel.com>
+ <CAO9r8zPD_i2aWc3jaKRr-=1Pz0td=6nqBpgBfVVaV3jfzVTAjw@mail.gmail.com>
+ <e090723f-cc02-40c2-af57-ab5dfda91dcc@intel.com>
+ <avz4LTEOcubVykim@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,90 +65,63 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-feat-kvm-tdp-mmu-rcu-barrier-v1-1-24106947c616@linux.dev>
-X-B4-Tracking: v=1; b=H4sIAPLH/WoC/x3MQQqAIBAAwK/EnlvQIIu+Eh3UtlrCijUjiP6ed
- JzLPBBJmCJ0xQNCF0fetwxdFuAXu82EPGZDpSqjtW5xInviegU8xwNDSCg+obOSF0HXOFNboxQ
- ZD7k4hCa+/74f3vcDp/oxD24AAAA=
-To: Sean Christopherson <seanjc@google.com>, 
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Qiliang Yuan <qiliang.yuan@linux.dev>
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <avz4LTEOcubVykim@google.com>
 
-The TDP MMU frees page table pages from RCU callbacks, so that lockless
-walkers never see a freed table. kvm_mmu_uninit_tdp_mmu() ends with
-rcu_barrier(), which commit 7cca2d0b7e7d ("KVM: x86/mmu: Protect TDP MMU
-page table memory with RCU") added so that these callbacks run before
-the VM is torn down.
+On Wed, Nov 18, 2026 at 12:59:07AM +0000, Yosry Ahmed wrote:
+> On Tue, Nov 17, 2026 at 02:02:08PM -0600, Chen, Zide wrote:
+> > 
+> > 
+> > On 11/17/2026 11:23 AM, Yosry Ahmed wrote:
+> > >>  static void amd_pmu_init(struct kvm_vcpu *vcpu)
+> > >> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> > >> index 136069dfcd44..e21abcedea70 100644
+> > >> --- a/arch/x86/kvm/svm/svm.c
+> > >> +++ b/arch/x86/kvm/svm/svm.c
+> > >> @@ -761,24 +761,21 @@ static void svm_recalc_pmu_msr_intercepts(struct kvm_vcpu *vcpu)
+> > >>  {
+> > >>         bool intercept = !kvm_vcpu_has_mediated_pmu(vcpu);
+> > >>         struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+> > >> +       unsigned long gp_mask = kvm_gp_pmc_mask(pmu);
+> > >>         int i;
+> > >>
+> > >>         if (!enable_mediated_pmu)
+> > >>                 return;
+> > >>
+> > >>         /* Legacy counters are always available for AMD CPUs with a PMU. */
+> > >> -       for (i = 0; i < min(pmu->nr_arch_gp_counters, AMD64_NUM_COUNTERS); i++)
+> > >> +       for (i = 0; i < AMD64_NUM_COUNTERS; i++)
+> > >>                 svm_set_intercept_for_msr(vcpu, MSR_K7_PERFCTR0 + i,
+> > >> -                                         MSR_TYPE_RW, intercept);
+> > >> +                                         MSR_TYPE_RW, intercept || !test_bit(i, &gp_mask));
+> > > 
+> > > This fixes a pre-existing bug that was reported internally, that can
+> > > happen if a malicious VMM reduces the number of counters after
+> > > initiating KVM_RUN but before VM-entry. The current code would fail to
+> > > re-enable the intercept on the counters that become unsupported.
+> > > 
+> > > Might be worth splitting this out into a standalone fix.
+> > 
+> > My hesitation on a separate patch was to avoid throwaway code churn.
+> > A standalone patch would add:
+> > 
+> >         for ( ; i < AMD64_NUM_COUNTERS; i++)
+> >                 svm_enable_intercept_for_msr(vcpu, MSR_K7_PERFCTR0 + i,
+> >                                              MSR_TYPE_RW);
+> > 
+> > and then it will be immediately overwritten and collapsed into a single
+> > loop in this patch.
+> > 
+> > So basically cleaner logic vs. avoiding immediate churn. I'm happy to
+> > split it out if you prefer.
+> 
+> I think it's fine. You can also fix it by using the same loop struct we
+> end up with instead of adding another loop? i.e. loop until
+> AMD64_NUM_COUNTERS and intercept based on i < nr_arch_gp_counters
+> instead of testing the GP mask?
 
-The callbacks only free the page table page and return its kvm_mmu_page
-to mmu_page_header_cache; they do not touch the VM. Still, destroying
-any VM waits for the RCU callbacks pending on every CPU, which accounts
-for most of the time it takes to destroy a small VM and limits how fast
-sandboxes that run one short-lived VM per task can be recycled.
-
-Move the barrier to mmu_destroy_caches(), the only place that needs the
-callbacks to have run, before mmu_page_header_cache is destroyed.
-
-Each thread creates VMs with a 1 MiB memslot and one vCPU that touches
-eight guest pages, and destroys them by closing the vCPU and VM fds; 400
-VMs per run in a 32 vCPU guest with nested KVM on AMD, median of five
-runs:
-
-             destroy time per VM             VMs per second
-  threads   before (ms)  after (ms)  change   before    after   change
-        1         11.9        0.76     -94%       61      509    +734%
-        4         15.5        0.61     -96%      197     1105    +461%
-       16         23.6        2.87     -88%      429      968    +126%
-
-Signed-off-by: Qiliang Yuan <qiliang.yuan@linux.dev>
----
- arch/x86/kvm/mmu/mmu.c     | 5 +++++
- arch/x86/kvm/mmu/tdp_mmu.c | 7 -------
- 2 files changed, 5 insertions(+), 7 deletions(-)
-
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index f89e9f8a6cc2f..eec12168abc13 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -7769,6 +7769,11 @@ void kvm_mmu_invalidate_mmio_sptes(struct kvm *kvm, u64 gen)
- 
- static void mmu_destroy_caches(void)
- {
-+	/*
-+	 * Let the RCU callbacks that free TDP MMU pages of destroyed VMs
-+	 * return their headers to mmu_page_header_cache before destroying it.
-+	 */
-+	rcu_barrier();
- 	kmem_cache_destroy(pte_list_desc_cache);
- 	pte_list_desc_cache = NULL;
- 	kmem_cache_destroy(mmu_page_header_cache);
-diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index 44dad106fad19..7bfb84a1a2ff1 100644
---- a/arch/x86/kvm/mmu/tdp_mmu.c
-+++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -44,13 +44,6 @@ void kvm_mmu_uninit_tdp_mmu(struct kvm *kvm)
- 	KVM_MMU_WARN_ON(atomic64_read(&kvm->arch.tdp_mmu_pages));
- #endif
- 	WARN_ON(!list_empty(&kvm->arch.tdp_mmu_roots));
--
--	/*
--	 * Ensure that all the outstanding RCU callbacks to free shadow pages
--	 * can run before the VM is torn down.  Putting the last reference to
--	 * zapped roots will create new callbacks.
--	 */
--	rcu_barrier();
- }
- 
- static void __tdp_mmu_free_sp(struct kvm_mmu_page *sp)
-
----
-base-commit: 20eef29b7c8465ac98d7dd6d6f2ac07a8d8056ca
-change-id: 20261118-feat-kvm-tdp-mmu-rcu-barrier-b7b65a600e6c
-
-Best regards,
--- 
-Qiliang Yuan <qiliang.yuan@linux.dev>
-
+Thinking about this a bit more, I think having two different loop
+structures might be confusing when they are later changed/dropped. So
+I'd rather do what you suggested initially and add the second loop as a
+standalone fix.
