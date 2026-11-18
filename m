@@ -1,66 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794996677;
-	b=S41SsSr3wZTDwiajNqPahgNYkIefJgxftFNaqogkzI2gyLdsB84BX97L1zxQmvnhwmWS
-	 OR6jR/hl9pn7vHcONljwgWiBq4TLW+zJgd4TudoOhIdNWEt3QSzA+jOppyrU/8qxbNwBt
-	 +AWL5jEEKkB2A61ToU3CFH2AgnArhriYzyJWh81DOggvUfSx8UKRD2NKFc0o7Rk5GcVP+
-	 3WXmu5uWGv7tP/c3snD8p+fzfTm4M6YanVs+BYcMl89CVnqjSIhfuXHCbRiGp3QBI7R1R
-	 plkUwQuzTiz5Q84GVt6tITgktkoBBCcqOXZBT4CDrOVP2q4LooTi3bh3DmqUaWJ+/1w==
+	t=1794996810;
+	b=sOGj3escknz08oLvX02MwixAnltC767lrfGKnJb7OJiMOS4sKr/JFhnALIuDi2Q0yoAi
+	 E5iEy6+G9jg9NJ/Iih5YkqD3+U2Na/EEvNzFSCHpTMY5R/frxOgurf3JNgHFYJu89US65
+	 J4asap6xo7h1uwBoRTYPEXZFiHacdnm0hUIt/texUFaeFtrWSi2BGrBeZPREPgG3XLKyh
+	 Re7zvLeDFYhB2qve2HUt9pNyEdCYhqQVRjytzNW5RkKnbfPSPsYWkARgwJoVovA6elFg/
+	 c96SZLSXy1E+pbNi1ijM+EHWMfqo/ozNLYH913gxexyKQhgx7qG0Ranh/tEOXO+S9sA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794996677;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=10vF1TNZE1jmUzR5IhA4Cr9+ZCuxH/DSuBr/E3tdBrQ=;
-	b=blAoC3kfsgSRXfdGK/4ESBlpYaRHOPoG1cb4ibeOnWnuUAd3E8TTxLLbI9pF2VUlj0oD
-	 qkXSpMYHZxHQKQUjkt24O0m6O4aXPnHEp/m0pGJLOY+1kcvk6emuI3BMlqiEa6eWjYD+d
-	 +v74Tpv0gTWf6YAhhsPi7bCF/R5gvl4anlwN08g+54rigrnnqTe3O1BnkggwOUezf03Vg
-	 l/c1yMzuqkG4otg2eCY9qci1SKFcl+H8+GYUDPx3Q4pf8FEbob4CjrxUO+xXde5KLyRJ1
-	 pJjwJ+821hEZiLRgiAYE0yESNpgVb5BpY7RPSB10q1AaXWRNiTPG7LIqjMiC2VbJLDA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794996810;
+	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
+	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
+	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
+	 X-SA-Exim-Scanned;
+	bh=K7KquJB0iAeuldcjDbnxEMbU3cJg6vn2vioTN0svKlk=;
+	b=X2NRGiBlw/X/qEBJiVye+1A9eOlOHp/M1tX3JT2yGNFh9suJR7rDlIiZuIYtt5q2RriK
+	 3WjObzWz0qtPbc7ixwEUmKsRfL9R7ancaQ/D7QTDNLBE4mpoWi2jbrd1vCb87HhE2UYyH
+	 kxMKofEmhHx3KQJEWvFi4BonuxB+GvnripYYZ0sIYYUSoHpBz6zrp1QtzWZOQ5tithBxZ
+	 nmqtLGUq/bSAwEnsRc7/JIr71Pc7UC7ZpGdxLPfHubK+gD3WE+Rc/tH4s+rLo0zCA1hxM
+	 R7ey7m3KTz5aZQL7DuQgG1eXNBICMEylWKhuh9Dsrwi9o2Q582FuiMiJYBxkGI03y0A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=XiTjr3A0;
-	arc=none smtp.remote-ip=220.197.31.2
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kPUDmeEJ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F144606A320;
-	Wed, 18 Nov 2026 10:11:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F144606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B3F606A320;
+	Wed, 18 Nov 2026 10:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=XiTjr3A0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=10
-	vF1TNZE1jmUzR5IhA4Cr9+ZCuxH/DSuBr/E3tdBrQ=; b=XiTjr3A0742JJy8J3g
-	2GjHnhhuzFxw72XZJs08zxmKDvpS9bc2zkFZAMMUV20tXpaw6xrI9IM0delGgf28
-	4tJElLPPI0Dc+/nfTiXKdWHSMy2tfFfzFmisZUNzIIKszIpg5cLZ9HqaYmRiKMAe
-	gB8y8+NxMy7aqrH+rj9+PkK00=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3_9WAef1qJpK6IA--.4941S2;
-	Wed, 18 Nov 2026 18:10:10 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: maddy@linux.ibm.com,
-	npiggin@gmail.com,
-	mpe@ellerman.id.au,
-	chleroy@kernel.org,
-	ritesh.list@gmail.com,
-	sshegde@linux.ibm.com,
-	jniethe5@gmail.com,
-	gautam@linux.ibm.com,
-	vaibhav@linux.ibm.com,
-	kconsul@linux.vnet.ibm.com
-Cc: linuxppc-dev@lists.ozlabs.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kPUDmeEJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EBC1F000C4;
+	Wed, 18 Nov 2026 10:13:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794996810;
+	bh=K7KquJB0iAeuldcjDbnxEMbU3cJg6vn2vioTN0svKlk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=kPUDmeEJ1RdT5b0SHiFZS31z/zx+gJisyeUTOVI1yE5tffuKcoYFRO/5t2spiSi/3
+	 RZ4V3QOix8A4Ho2fgbs4Wxg7wBH+VIHNuPGIx0rEF+geXZ1k0H6nW85QxNSIvAkC/G
+	 Mi1xrvXJjv28sNaTm8GogfENt2u61KTctCEglf3jQduLhffRlfpYpBlU492fahfxO8
+	 85Ll8Q3hDV0UrbxKKNh9flRzO9EA40Upn20vxqJQpK0DoOjHI1wqSlXkoh3qUuDiUr
+	 1Wu2JJfy+/tpzOvQlrSqgH8MshZU7bb/p7XWGM66SEJApUjV+ahp3KBYSbryWL2tyF
+	 HnrZSLhqku14Q==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xTcfP-0000000HST2-3hYZ;
+	Wed, 18 Nov 2026 10:13:27 +0000
+Date: Wed, 18 Nov 2026 10:13:27 +0000
+Message-ID: <86a4n61m7s.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Oliver Upton <oupton@kernel.org>
+Cc: Colton Lewis <coltonlewis@google.com>,
+	Leonardo Bras <leo.bras@arm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
 	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Haoxiang Li <haoxiang_li2024@163.com>
-Subject: [PATCH] KVM: PPC: Book3S HV: Free nestedv2 state on vCPU creation failure
-Date: Wed, 18 Nov 2026 18:10:08 +0800
-Message-Id: <20261118101008.2242596-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] KVM: arm64: Fix inverted E2H0 check for HCR_EL2.NV1
+In-Reply-To: <avzZUyu9EhxAWtbd@kernel.org>
+References: <20261117204535.4036191-1-coltonlewis@google.com>
+	<20261117204535.4036191-2-coltonlewis@google.com>
+	<avzZUyu9EhxAWtbd@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -69,47 +77,110 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3_9WAef1qJpK6IA--.4941S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZF4fAw48WF4xKrWDtw1fZwb_yoWktFX_uw
-	s2q3ZxWaykAay5uw1kAw45WF4Igr48JrW0kw10q3srC39YgrnrWws2qwn8uw1ruayjyFsx
-	G3yvvFnxJ34xKjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRR7PEUUUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbC7gKYB2r9eYJzIwAA3P
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: oupton@kernel.org, coltonlewis@google.com, leo.bras@arm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, fuad.tabba@linux.dev, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-When nestedv2 is enabled, kvmppc_core_vcpu_create_hv() allocates guest
-state buffers and messages through kvmhv_nestedv2_vcpu_create(). If
-the subsequent vcore lookup or allocation fails, it returns without
-releasing those resources.
+On Tue, 17 Nov 2026 22:46:43 +0000,
+Oliver Upton <oupton@kernel.org> wrote:
+> 
+> On Tue, Nov 17, 2026 at 08:45:34PM +0000, Colton Lewis wrote:
+> > ID_AA64MMFR4_EL1.E2H0 is a signed 4-bit field where:
+> >   - 0b0000 (IMP, 0): FEAT_E2H0 is implemented.
+> >   - 0b1111 (NI, -1): FEAT_E2H0 is not implemented, except HCR_EL2.NV1
+> >     is implemented.
+> >   - 0b1110 (NI_NV1, -2): Neither HCR_EL2.E2H == 0 nor HCR_EL2.NV1 is
+> >     implemented, and HCR_EL2.NV1 is RES0.
+> > 
+> > Prior to commit b2a324ff01fe ("KVM: arm64: Use HCR_EL2 feature map to
+> > drive fixed-value bits"), kvm_init_nv_sysregs() marked HCR_EL2.NV1 as
+> > RES0 when !kvm_has_feat(kvm, ID_AA64MMFR4_EL1, E2H0, NI), i.e., when the
+> > signed E2H0 field is less than NI (-1), which matches NI_NV1 (-2).
+> > 
+> > When converting HCR_EL2 to the feature map, feat_nv2_e2h0_ni() was
+> > written as !kvm_has_feat(kvm, FEAT_E2H0), where FEAT_E2H0 checks
+> > E2H0 >= IMP (0). This inverted the condition: feat_nv2_e2h0_ni()
+> > evaluates to true when E2H0 < 0 (including NI_NV1), leaving HCR_EL2.NV1
+> > writable instead of RES0 for VHE-only nested guests where KVM advertises
+> > ID_AA64MMFR4_EL1.E2H0 = NI_NV1.
+> > 
+> > Check kvm_has_feat(kvm, ID_AA64MMFR4_EL1, E2H0, NI) so that HCR_EL2.NV1
+> > is treated as implemented only when E2H0 is IMP or NI, and forced to
+> > RES0 when E2H0 is NI_NV1. Rename the helper from feat_nv2_e2h0_ni() to
+> > feat_nv2_nv1_not_res0() to clearly reflect what it tests.
+> > 
+> > Fixes: b2a324ff01fe ("KVM: arm64: Use HCR_EL2 feature map to drive fixed-value bits")
+> > Signed-off-by: Colton Lewis <coltonlewis@google.com>
+> > ---
+> >  arch/arm64/kvm/config.c | 7 ++++---
+> >  1 file changed, 4 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
+> > index adaf26ab93b85..a975ac73ed876 100644
+> > --- a/arch/arm64/kvm/config.c
+> > +++ b/arch/arm64/kvm/config.c
+> > @@ -256,9 +256,10 @@ static bool feat_nv2(struct kvm *kvm)
+> >  		kvm_has_feat(kvm, ID_AA64MMFR2_EL1, NV, NV2));
+> >  }
+> >  
+> > -static bool feat_nv2_e2h0_ni(struct kvm *kvm)
+> > +static bool feat_nv2_nv1_not_res0(struct kvm *kvm)
+> >  {
+> > -	return feat_nv2(kvm) && !kvm_has_feat(kvm, FEAT_E2H0);
+> > +	return feat_nv2(kvm) &&
+> > +	       kvm_has_feat(kvm, ID_AA64MMFR4_EL1, E2H0, NI);
+> >  }
+> 
+> This could benefit from a comment, because testing for NI as a feature
+> is very misleading. Also, I don't why this needs to spill onto another
+> line.
+> 
+> 	/*
+> 	 * The E2H0 field is a 'negative' feature field, where a value
+> 	 * of -1 implies FEAT_E2H0 is not implemented but does not
+> 	 * restrict the use of HCR_EL2.NV1.
+> 	 */
+> 	return feat_nv2(kvm) && kvm_has_feat(kvm, ID_AA64MMFR4_EL1, E2H0, NI);
+> 
 
-The caller's error path only calls kvmppc_subarch_vcpu_uninit(), which
-does not free the nestedv2 state. Call kvmhv_nestedv2_vcpu_free() before
-returning from the vcore error path when nestedv2 is enabled.
+I really wonder why I bothered describing this, introducing a bug in
+the process. There is no known universe where we can deal with NV1 not
+being RES0, and this helper is purely academic (and therefore wrong).
 
-Fixes: 19d31c5f1157 ("KVM: PPC: Add support for nestedv2 guests")
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
----
- arch/powerpc/kvm/book3s_hv.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+My personal take on this particular problem is as follows.
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 22283d46e8fe..1a1a4e3ba412 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3097,8 +3097,11 @@ static int kvmppc_core_vcpu_create_hv(struct kvm_vcpu *vcpu)
- 		}
- 	}
+Thanks,
+
+	M.
+
+diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
+index adaf26ab93b85..2e81f45dc9921 100644
+--- a/arch/arm64/kvm/config.c
++++ b/arch/arm64/kvm/config.c
+@@ -256,11 +256,6 @@ static bool feat_nv2(struct kvm *kvm)
+ 		kvm_has_feat(kvm, ID_AA64MMFR2_EL1, NV, NV2));
+ }
  
--	if (!vcore)
-+	if (!vcore) {
-+		if (kvmhv_is_nestedv2())
-+			kvmhv_nestedv2_vcpu_free(vcpu, &vcpu->arch.nestedv2_io);
- 		return err;
-+	}
- 
- 	spin_lock(&vcore->lock);
- 	++vcore->num_threads;
+-static bool feat_nv2_e2h0_ni(struct kvm *kvm)
+-{
+-	return feat_nv2(kvm) && !kvm_has_feat(kvm, FEAT_E2H0);
+-}
+-
+ static bool feat_rasv1p1(struct kvm *kvm)
+ {
+ 	return (kvm_has_feat(kvm, ID_AA64PFR0_EL1, RAS, V1P1) ||
+@@ -1034,7 +1029,7 @@ static const struct reg_bits_to_feat_map hcr_feat_map[] = {
+ 		   HCR_EL2_NV2		|
+ 		   HCR_EL2_NV,
+ 		   feat_nv2),
+-	NEEDS_FEAT(HCR_EL2_NV1, feat_nv2_e2h0_ni), /* Missing from JSON */
++	NEEDS_FEAT_FLAG(HCR_EL2_NV1, FORCE_RESx), /* Missing from JSON, RES0 as an IMPDEF choice */
+ 	NEEDS_FEAT(HCR_EL2_API		|
+ 		   HCR_EL2_APK,
+ 		   feat_pauth),
+
 -- 
-2.25.1
-
+Without deviation from the norm, progress is not possible.
