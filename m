@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795024696;
-	b=bfvNqcGwyb7d8X+iZbhHHoudS8FJ2wSw0yWMiZHSCAabS2hxPGzw//TkXmNjt11jc30j
-	 zq4FjIi+bub6jMBe9pL7y7f0nkiQTBa74d/vjJY9sAJmyseKtyO3JwV9U1ScAJ0bS8DLv
-	 gv/8DuojXQwKs+GSCcIxQz6W/x2ZEjFIWBuwJeisQ1S3Pe9CH25JtU56hWIwresrFRf1w
-	 mm0uOQrSJvdnF/702cKUgE48q8Mg7uUD2cIc1HQVl+Uuwv7ns6k1vI1TF4OfTpWucKgf9
-	 JWxzLCx+1bbEYrqOlWt3bbQD9VUBKIAEgHjE0rgAB+lldgxF+xekX268L+ucddXz9cA==
+	t=1795024700;
+	b=HpgbXg+jAcaah0aMNuTniv4mW8He0sFU8K5I5trxUrIl0RKt/fb8gHxBQmYgLJQ4v71u
+	 Pio2PpCXIDKjepW7HyxQyYMeo8ah1r4WfAk6Xuj2jbhnB982LzxOHUSZkq9SxAFuvtNqR
+	 cjradkswDHEKlvpOe24VmzAxFggGUMdi4TCscNHVbB6UayBgPo/9xCUilleqM6xTWX5sY
+	 lXNmCdqEjpaXeEHVRFtSIzR6IIs7cZP1TCL2wa33MKupgjzpYz5sMCzQdNygKVM2G3xvV
+	 XxU0yXarfnoKFB1Si3/7e8wavmn8FuWBKuKN90CfgCf4YcLPGSg3aPu5nql1J5JztHg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795024696;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795024700;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=ptB7HBBIXmODENruQ/1q8o5lWV2aQFT5cwp/uxamfAM=;
-	b=rd1Xfw2cYQ/jo533nlY42Kf6c6QBTnvQ2ZG0xbrfQeSqxI0sk8vzUpgsgKZSrZfS9VAB
-	 yBRE4MAYKXI+rEXzEgo+aKghqZHgi/ooG81fP60Hp5fK5Zq4vSso+mAK38Nh0U5u/nSo/
-	 9xcHdezZqvqoH+GiZipqeFLP9wDrCYdyVGojjpRqIwMgvw0ELGJ+uzHXVvNibWvXyVWBk
-	 ippsstp1bcOZLyCqtzvWV7hN/vKXu9EeIlJXGeDorJcX+bdzkjN85qTsD+9aFQt3TzX+E
-	 tuGfHWTe0J0mZiZS/nfjgSqAGCrSyHFCZpOcZNqfyM+xjCY7oMa7vqH7XY92rOdhPmA==
+	bh=WtaFrv8PSZX39CqiTLLDCf+5RiYRLHF4YcowUaq983I=;
+	b=2u+VkQR0Fh3vdHqBa5x3oypF46QgINI9Mb/9bWXgz/k7vIBKsP1OIXrHIDEBJCAJb/zE
+	 dMd9ZVRHd/5gQ0w3VELM5o7YVMnU0V4mdxoXudrKYldO4cph1kn671/pE8dxVKsaX1rYM
+	 RUvmFDUb7u8vOzjy/C6GFHhJBCfLM7q+yGx4uYkcuSpByfRqkemeA98SkNNZc7q1D5cfo
+	 lOyg3pwX5xAU+ClCW29Z078cJ9qhQOJyCzBiy5R3wSOCWzQb/I/PsxXSd5adAH8q+tw2+
+	 tKLH41+qul6YH5fXDo83bG0MdnqJFLaY5u7SpkgcnLY/p+jR5+QWc1lGdBFZxBN3GmA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=l4QwO42Y;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ggEtKwE5;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34BA5606A32A
-	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 17:58:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 34BA5606A32A
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC37606A320
+	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 17:58:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6DC37606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=l4QwO42Y
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ggEtKwE5
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A12D41477;
-	Wed, 18 Nov 2026 09:58:12 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D538F1477;
+	Wed, 18 Nov 2026 09:58:16 -0800 (PST)
 Received: from e133894.cambridge.arm.com (e133894.arm.com [10.2.80.62])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7BDB63F632;
-	Wed, 18 Nov 2026 09:58:14 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 773393F632;
+	Wed, 18 Nov 2026 09:58:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795024695; bh=N8bg3ar1PWVMdyOQLfF0aNd7/iiEv1kXMmOX+0mXlJQ=;
+	t=1795024699; bh=p/U5tQIycTvuu13q2oqzYuw0WeSLjZ+OrZCPmWGuZEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l4QwO42YLmlTvxNmdIxzCJJZ9htVn58cQfoy51LMXpa6YoFNDIW7HPlFZ/0iQyNt8
-	 iI44r520nHMMorA9hVeeeMZVJhhqXM/7O0nmLaf/3EnlhK4dJIFswS/KbugeOB4ldd
-	 NSSGKb25Wu4j62dcO7tVePI8FELh6uivaYOT2W4A=
+	b=ggEtKwE5YzZSwwvXOdErsa0ewkeyr4hFT9OfTBw3SZ7ctKZMnoeg0N0Ce75wQctTQ
+	 BeyTfMxc7cMmQEI6hpr9HK1AmPrhhMqlbxaL1s5EkhBCI4gLYB8m92Z5m2s+xB7zdg
+	 ao2hmMT7eBmoWH5fX1RZW90aUr59+au/XguCRId0=
 From: Sascha Bischoff <sascha.bischoff@arm.com>
 To: will@kernel.org,
 	julien.thierry.kdev@gmail.com
@@ -51,9 +51,9 @@ Cc: vladimir.murzin@arm.com,
 	kvmarm@lists.linux.dev,
 	timothy.hayes@arm.com,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH kvmtool v5 02/23] arm64: Close the ITS descriptor when setup fails
-Date: Wed, 18 Nov 2026 17:57:34 +0000
-Message-Id: <20261118175755.1946977-3-sascha.bischoff@arm.com>
+Subject: [PATCH kvmtool v5 03/23] arm64: Split GIC device setup
+Date: Wed, 18 Nov 2026 17:57:35 +0000
+Message-Id: <20261118175755.1946977-4-sascha.bischoff@arm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261118175755.1946977-1-sascha.bischoff@arm.com>
 References: <20261118175755.1946977-1-sascha.bischoff@arm.com>
@@ -68,52 +68,179 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-gic__create_its_frame() closes the device fd if the address attribute
-is unavailable, but returns without closing it if setting the address
-or initialising the ITS fails. Route all errors after device creation
-through the same close path.
+Separate the CPU interface, redistributor and distributor address setup
+from GIC device creation. Keep the per-GIC address handling in small
+helpers.
 
-Reviewed-by: Vladimir Murzin <vladimir.murzin@arm.com>
+Have the existing MSI frame helper use the global MSI base instead of
+passing it as an argument.
+
+Use the irqchip enum order to omit the GICv2 PPI CPU mask for GICv3
+and later generations.
+
+Suggested-by: Vladimir Murzin <vladimir.murzin@arm.com>
 Tested-by: Vladimir Murzin <vladimir.murzin@arm.com>
+Reviewed-by: Vladimir Murzin <vladimir.murzin@arm.com>
 Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
 ---
- arm64/gic.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ arm64/gic.c | 94 +++++++++++++++++++++++++++++++++++------------------
+ 1 file changed, 62 insertions(+), 32 deletions(-)
 
 diff --git a/arm64/gic.c b/arm64/gic.c
-index debb0381..f8371f50 100644
+index f8371f50..57f3fa02 100644
 --- a/arm64/gic.c
 +++ b/arm64/gic.c
-@@ -124,17 +124,22 @@ static int gic__create_its_frame(struct kvm *kvm, u64 its_frame_addr)
- 	}
- 
- 	err = ioctl(its_device.fd, KVM_HAS_DEVICE_ATTR, &its_attr);
--	if (err) {
--		close(its_device.fd);
--		its_device.fd = -1;
--		return err;
--	}
-+	if (err)
-+		goto out_close;
- 
- 	err = ioctl(its_device.fd, KVM_SET_DEVICE_ATTR, &its_attr);
- 	if (err)
--		return err;
-+		goto out_close;
- 
--	return ioctl(its_device.fd, KVM_SET_DEVICE_ATTR, &its_init_attr);
-+	err = ioctl(its_device.fd, KVM_SET_DEVICE_ATTR, &its_init_attr);
-+	if (err)
-+		goto out_close;
-+
-+	return 0;
-+
-+out_close:
-+	close(its_device.fd);
-+	return err;
+@@ -142,52 +142,90 @@ out_close:
+ 	return err;
  }
  
- static int gic__create_msi_frame(struct kvm *kvm, enum irqchip_type type,
+-static int gic__create_msi_frame(struct kvm *kvm, enum irqchip_type type,
+-				 u64 msi_frame_addr)
++static int gic__create_msi_frame(struct kvm *kvm, enum irqchip_type type)
+ {
+ 	switch (type) {
+ 	case IRQCHIP_GICV2M:
+-		return gic__create_gicv2m_frame(kvm, msi_frame_addr);
++		return gic__create_gicv2m_frame(kvm, gic_msi_base);
+ 	case IRQCHIP_GICV3_ITS:
+-		return gic__create_its_frame(kvm, msi_frame_addr);
++		return gic__create_its_frame(kvm, gic_msi_base);
+ 	default:	/* No MSI frame needed */
+ 		return 0;
+ 	}
+ }
+ 
+-static int gic__create_device(struct kvm *kvm, enum irqchip_type type)
++static int gic__set_cpu_if(enum irqchip_type type)
+ {
+-	int err;
+ 	u64 cpu_if_addr = ARM_GIC_CPUI_BASE;
+-	u64 dist_addr = ARM_GIC_DIST_BASE;
+-	struct kvm_create_device gic_device = {
+-		.flags	= 0,
+-	};
+ 	struct kvm_device_attr cpu_if_attr = {
+ 		.group	= KVM_DEV_ARM_VGIC_GRP_ADDR,
+ 		.attr	= KVM_VGIC_V2_ADDR_TYPE_CPU,
+ 		.addr	= (u64)(unsigned long)&cpu_if_addr,
+ 	};
+-	struct kvm_device_attr dist_attr = {
+-		.group	= KVM_DEV_ARM_VGIC_GRP_ADDR,
+-		.addr	= (u64)(unsigned long)&dist_addr,
+-	};
++
++	switch (type) {
++	case IRQCHIP_GICV2M:
++	case IRQCHIP_GICV2:
++		return ioctl(gic_fd, KVM_SET_DEVICE_ATTR, &cpu_if_attr);
++	default:	/* No CPU interface needed */
++		return 0;
++	}
++}
++
++static int gic__set_redist(enum irqchip_type type)
++{
+ 	struct kvm_device_attr redist_attr = {
+ 		.group	= KVM_DEV_ARM_VGIC_GRP_ADDR,
+ 		.attr	= KVM_VGIC_V3_ADDR_TYPE_REDIST,
+ 		.addr	= (u64)(unsigned long)&gic_redists_base,
+ 	};
+ 
++	switch (type) {
++	case IRQCHIP_GICV3:
++	case IRQCHIP_GICV3_ITS:
++		return ioctl(gic_fd, KVM_SET_DEVICE_ATTR, &redist_attr);
++	default:	/* No redistributor needed */
++		return 0;
++	}
++}
++
++static int gic__set_dist(enum irqchip_type type)
++{
++	u64 dist_addr = ARM_GIC_DIST_BASE;
++	struct kvm_device_attr dist_attr = {
++		.group	= KVM_DEV_ARM_VGIC_GRP_ADDR,
++		.addr	= (u64)(unsigned long)&dist_addr,
++	};
++
++	switch (type) {
++	case IRQCHIP_GICV2M:
++	case IRQCHIP_GICV2:
++		dist_attr.attr = KVM_VGIC_V2_ADDR_TYPE_DIST;
++		return ioctl(gic_fd, KVM_SET_DEVICE_ATTR, &dist_attr);
++	case IRQCHIP_GICV3:
++	case IRQCHIP_GICV3_ITS:
++		dist_attr.attr = KVM_VGIC_V3_ADDR_TYPE_DIST;
++		return ioctl(gic_fd, KVM_SET_DEVICE_ATTR, &dist_attr);
++	default:	/* No distributor needed */
++		return 0;
++	}
++}
++
++static int gic__create_device(struct kvm *kvm, enum irqchip_type type)
++{
++	int err;
++	struct kvm_create_device gic_device = {
++		.flags	= 0,
++	};
++
+ 	switch (type) {
+ 	case IRQCHIP_GICV2M:
+ 	case IRQCHIP_GICV2:
+ 		gic_device.type = KVM_DEV_TYPE_ARM_VGIC_V2;
+-		dist_attr.attr  = KVM_VGIC_V2_ADDR_TYPE_DIST;
+ 		break;
+ 	case IRQCHIP_GICV3:
+ 	case IRQCHIP_GICV3_ITS:
+ 		gic_device.type = KVM_DEV_TYPE_ARM_VGIC_V3;
+-		dist_attr.attr  = KVM_VGIC_V3_ADDR_TYPE_DIST;
+ 		break;
+ 	case IRQCHIP_AUTO:
+ 		return -ENODEV;
+@@ -199,26 +237,19 @@ static int gic__create_device(struct kvm *kvm, enum irqchip_type type)
+ 
+ 	gic_fd = gic_device.fd;
+ 
+-	switch (type) {
+-	case IRQCHIP_GICV2M:
+-	case IRQCHIP_GICV2:
+-		err = ioctl(gic_fd, KVM_SET_DEVICE_ATTR, &cpu_if_attr);
+-		break;
+-	case IRQCHIP_GICV3_ITS:
+-	case IRQCHIP_GICV3:
+-		err = ioctl(gic_fd, KVM_SET_DEVICE_ATTR, &redist_attr);
+-		break;
+-	case IRQCHIP_AUTO:
+-		return -ENODEV;
+-	}
++	err = gic__set_cpu_if(type);
++	if (err)
++		goto out_err;
++
++	err = gic__set_redist(type);
+ 	if (err)
+ 		goto out_err;
+ 
+-	err = ioctl(gic_fd, KVM_SET_DEVICE_ATTR, &dist_attr);
++	err = gic__set_dist(type);
+ 	if (err)
+ 		goto out_err;
+ 
+-	err = gic__create_msi_frame(kvm, type, gic_msi_base);
++	err = gic__create_msi_frame(kvm, type);
+ 	if (err)
+ 		goto out_err;
+ 
+@@ -439,8 +470,7 @@ void gic__generate_fdt_nodes(void *fdt, struct kvm *kvm)
+ u32 gic__get_fdt_irq_cpumask(struct kvm *kvm)
+ {
+ 	/* Only for GICv2 */
+-	if (kvm->cfg.arch.irqchip == IRQCHIP_GICV3 ||
+-	    kvm->cfg.arch.irqchip == IRQCHIP_GICV3_ITS)
++	if (kvm->cfg.arch.irqchip >= IRQCHIP_GICV3)
+ 		return 0;
+ 
+ 	if (kvm->nrcpus > 8)
 -- 
 2.34.1
 
