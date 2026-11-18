@@ -1,55 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794960185;
-	b=EnIXKuXvMpzdgWBWJSMi9rAT4sPRxSaTOYIoZCwtnHfH92YjzL4Pd7l3E/r+tOGZuUqb
-	 9bqF+vMXoLXfDsF+Eejm1o7krmCDxgFICcKObGHXdAsKDkkcl/hTQ9WxSRh97IdTlroiC
-	 0ozegAnhKkoG1OlxBm5i4qpRAGxRDEQvw2wO86O1dJxYpm786swbxUyfoe9RvaIwwdzhX
-	 EwvLd8kZPBWrp+3u6aAjaFRMUjFgjHUbsUiaIINcgTalYgUQWPCAvx7Vc4gHFR2T+7TWH
-	 yYMW7K23jptiaEhc9JVYGKmKz+4Gl+SP5+t9JtG9b1JP2psIjXI1jNHagd7dMaTiotg==
+	t=1794960389;
+	b=p6NAHZHI/mCXEef6JY4sKJc7rTRdviM0tIS0lCm0UF4yzF+mX0MORIJQjGWuswBGNLAJ
+	 Tj2lXLb1c8feicZhyDa8UHpRi35vpI1e2p0C7q8zpTQ/27S/XEvw0H8qMHxoDB+YvTWL0
+	 qC+v22OoTm+ZQXCMqWsZLVocwFOOE4Q/lPvZehMrIHv4DCijzSoHnNdVt3iREunc6V6GC
+	 3hhH/RqKx713T+wGx1OSA4Zmni+jDL0qBZDl2lZO0h/5QDbMtLryiPlog304sCiAjoml9
+	 Q7maa/YxWdAgaLceCYcFUNJ71OjRL+Bci/JmaAwS1gBNFfg5oNmmv/Qj5E1Xk+v0mxg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794960185;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=ruetEu3w4F3uyV9meI9TwuIeqJjqrgOGrw8MVUmeCfo=;
-	b=u9+/Fk/nZPPczh3GBuvXHoUBPteS7E2K09QG86EqeQMWX2xLICzRdDgnlNNEWL/E8naa
-	 IjK6mxYrAPDmnsVqzyNZUmzjff8TjHiB4UHpMqu0I0GM8cwUKBy1N4ujF/d0Weni2BFdM
-	 /6CNfDkBnSZM5fhlOcXvj9F3RvqVY2Pmd/+GLON8b7Oe8EMx8r1PfsF1n47naB5L1nMhu
-	 0sRH7hmnMlqSbhDTjiTT3OBFVtUOY7V+VG7/sTtzg25I3K7LXMMTB6YbO+jXKlIbavWIQ
-	 ENN03+5E/RZNtCoa9O+SMGt/aqnl4+CLXxebEZk4u8DoPdB0F22VjjGPmNv5NEFPzlQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794960389;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=+xymGBMHB+69JfGsfO7yJc2L/tC6s5DquTHBRYW2RuM=;
+	b=DAfpk4rwGmsdAtom/WMWavm+t2K5anxlhaNvWkrLicFA40WOrnFiZjtarpJkdsLcHkMt
+	 9OV/Pra6DPGIDPlhqxeeX6pvfjh2OlDXuWocfzvb3gG+cuII9rFngcALSiw7kv285pfLr
+	 h984CrcIv0i25hYnn4p4U0O8hYEajvlgXXCnZs4+lLdQzHbXffJ6UW4gWAjh1KHzzWL+p
+	 AGoeEpy1tGtDwadm4g8nnAUx2ArSlj3MQ3c4+uvsHKWM1VmG/ceidRZt7SyWkhafblgN8
+	 uZO5Hvx3LdeCLkJotRBzLRd7udUkDoZuC/hAnaJ5JozoBfvdj7Y1QoU4cT8hN1NyhWA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HYy3Qz6I;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=UEquQA1G;
+	arc=none smtp.remote-ip=209.85.214.182
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A8C606A31C;
-	Wed, 18 Nov 2026 00:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBBE606A32C
+	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 00:06:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3FBBE606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HYy3Qz6I
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F66A1F000C4;
-	Wed, 18 Nov 2026 00:03:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794960185;
-	bh=ruetEu3w4F3uyV9meI9TwuIeqJjqrgOGrw8MVUmeCfo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HYy3Qz6I7vm9bFZz1PaRbkSlcqv71FwR8/DWJu7EjBz4xenknwu1LQf34lIDpRVQq
-	 8/8tSaqcGy8BfqniZREhfPi9n6mlUWJ2Ef8wxaNrJhP+jrK1soWKuCRTL37ApZq2TE
-	 8q2GW5DJhHOs1pXHhu/DPw9RtEbNrzPbiQlkV5snBHiSwgTV/EOeQVETERnQ+8cU34
-	 hBT3cmkr2p78CwBnkJIvy5OZrk1yWYARw59bup+gyUlPlJtgG5VOzUhK+Pc0Ufi9ak
-	 q33GFXsc1uVLziv2dypy19FuL1KfUxSVInf1k6014rYDSGFbvQlFFLDJW1irJkZ9QL
-	 RGdqnYeGpwi0g==
-Date: Tue, 17 Nov 2026 16:03:03 -0800
-From: Oliver Upton <oupton@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org,
-	Marc Zyngier <maz@kernel.org>
-Subject: Re: [PATCH] KVM: Send reschedule IPIs instead of SMP function calls
- for non-waiting requests
-Message-ID: <avzrN0IZqTg3GlC1@kernel.org>
-References: <20261117205428.3717-1-seanjc@google.com>
- <sashiko-outbox-219682@kernel.org>
- <avzoSx9ukQecCGq-@seanjc-mac.roam.internal>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=UEquQA1G
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2e9f6a16afcso12435ad.1
+        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 16:06:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794960388; x=1795565188; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+xymGBMHB+69JfGsfO7yJc2L/tC6s5DquTHBRYW2RuM=;
+        b=UEquQA1GKaFVZK88VYdviZy0Zd0/BVA+h4rqojd8tzowKo622JYGb5eLgoDDju4ge+
+         N0SzNcmvvbwRPejifezn4wO+yOUAMLdZXzGH2bN7sr46DEvDrXw9qrshLLxfWJSm1sAd
+         j+fZ8m3hY5qaFDFJL88f9O0WKh9D8xuBCC7y2b/+eJJ8LYmfZUPu8UiAZjhqBIcLvAOx
+         5UGuieDAVUezp94H3qKjJjJM2ouD/lUopTUEfHZHEtZSL4xvkz4MRxtqWzp44wZTarye
+         XZzpMKW8+DH2Bz8U4OFX44AhEqXhDbASX72T4QpN1eKMoNQmbacBi2pOkCk9zyg1h1Xh
+         kZZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794960388; x=1795565188;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+xymGBMHB+69JfGsfO7yJc2L/tC6s5DquTHBRYW2RuM=;
+        b=xkZSmdf7AtqW8Y3IsW4E2KHJ6EZjG76zC6j52eWRxXyyQp9XLmzyuEqIXw0bIkj3Jw
+         xk+Oy437PnTtoRS+3JXI7mhHDf9o7ukjyObtEBbhYu0Od3s3ueRRwsHLvAX46xldfAoZ
+         7XcWTGabUdPyccJhMY1tLu7VkPgSqHyR/EQG/u9GJxMq/WjuIKhpjNIUCojaeJAtbmVl
+         d5ZZmQ3xi0854BEbQhvnZnufe28iQClCzl9K/hj/jXcfa6/QkGu4+XkdKoFtraFZ9NeS
+         8r5SzfbOywH5Tbzzck6LGNqAu8NvTDJbe86dL837nORtiz6RaIqPpqza9ce2v0XLgLCK
+         Qz5g==
+X-Forwarded-Encrypted: i=1; AL+hErGsgx1fQ3NCDxGQePBRz4DjXxPZCUkEBrLDcM1CF5wiFlM9rJkkMU0GoSGIGkdBoFLZ3xU=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/+me8LjZ9eR3snVwKAnaFpiTXYm1zO5GUi9aphd6nqFrg0MCg+
+	t6f7FOhDoSZoBxbwcgMZ/Tb39NUqwvVJXuaknWriG48tunNBR61Op0nuPJwlXxoDmg==
+X-Gm-Gg: AZFdTZfv4HiY0Z7Ps4E4JrkPPbuOxCFwQ0aZaXLqa+b4GTYSo5FR3JtqBa0cX470kAw
+	5ew/QsXfLuse3cfUrg0GsoPKotkQq2EYrHqp9d4QMgRl89bMuC88qB1RB1HVNpU2oy1Xw7DkAW5
+	jxHSb68K/wE/4eNWvlSEjJZ9VvpNlmX2J7aUFEv57o79zM4P7DY7QW+ekFovXyYXGcqchu++rNN
+	xdim+y21djHbVhYlBrgGQywIUVYFtyK/h59D2kTafsBfn7J1+Ep/TgvpyhfAyZaY67LKLD/kDkj
+	9ZxuoAIeSiduN7asj36k8m0J3xpFNINLNXFdT27wTgSmzeXoqbAerGGGiXv7tvF+hYq3q9ebvef
+	tHxczYD1hdDx0Q58E3wNnDiO2qRFnIf9GtkfWXS/CmoNDVt0MWQIJjTKc2yFtC0+pbFhWw7OAFv
+	hP3/XYjlkKWQ8JgYw5jedEv05RiRi7VqZ692r6eF6fQoFEQtZTJ1+dVLBnS2iFlLcJpUbJG1W12
+	/wWsaO+AeiCT/MomsbFAkZl3Hre9vOcxFDjc0qiOHu/6WZ2Z/nz+3FZDh/SfBRjVgc7M3gmTfvE
+	koh8K3eZmKetnHeM2k63Yj3eE+gg98R85LymPPFOTje45KUtwpHNaZnXq4O8k7DUKao=
+X-Received: by 2002:a17:903:3510:b0:2c9:d89f:fd98 with SMTP id d9443c01a7336-2eff77a8714mr2438805ad.1.1794960388076;
+        Tue, 17 Nov 2026 16:06:28 -0800 (PST)
+Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b3d19b5e8asm1142449a91.8.2026.11.17.16.06.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 16:06:27 -0800 (PST)
+Date: Tue, 17 Nov 2026 16:06:23 -0800
+From: Vipin Sharma <vipinsh@google.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: Alex Williamson <alex.williamson@nvidia.com>, 
+	kvm <kvm@vger.kernel.org>, Alex Williamson <alex@shazbot.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Kevin Tian <kevin.tian@intel.com>, linux-kernel <linux-kernel@vger.kernel.org>, 
+	linux-pci <linux-pci@vger.kernel.org>, praan@google.com
+Subject: Re: [RFC PATCH 0/5] PCI/vfio-pci: Guard resets against active SR-IOV
+ VFs
+Message-ID: <20261118000511.GC2250529.vipinsh@google.com>
+References: <20260812045325.2733631-1-alex.williamson@nvidia.com>
+ <an0BOyexLcOjFJw9@google.com>
+ <20261117225559.GB2250529.vipinsh@google.com>
+ <avzfBjBZiOnJUH4W@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -61,55 +105,55 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <avzoSx9ukQecCGq-@seanjc-mac.roam.internal>
+In-Reply-To: <avzfBjBZiOnJUH4W@google.com>
 
-On Tue, Nov 17, 2026 at 03:50:35PM -0800, Sean Christopherson wrote:
-> +Oliver and Marc,
+On Tue, Nov 17, 2026 at 11:31:08PM +0000, Samiullah Khawaja wrote:
+> On Tue, Nov 17, 2026 at 03:02:00PM -0800, Vipin Sharma wrote:
+> > On Thu, Aug 13, 2026 at 10:30:45PM +0000, Samiullah Khawaja wrote:
+> > > On Tue, Aug 11, 2026 at 10:53:18PM -0600, Alex Williamson wrote:
+> > > > It's recently been found[1] that vfio-pci doesn't restrict resets on PFs
+> > > > while SR-IOV is enabled.  This can not only result in an uncoordinated
+> > > > disruption of the use of the associated VFs, but the ongoing use of and
+> > > > access to the VF has the potential to result in machine checks.
+> > > >
+> > > > This series proposes that this gap is largely an oversight of
+> > > > pci_reset_function() to recognize that a PF reset affecting SR-IOV VFs
+> > > > violates the scope boundary of the pci_reset_function() API.
+> > > 
+> > > Hi Alex,
+> > > 
+> > > Thanks for sending out the RFC to fix this issue. I cherry-picked it
+> > > into my environment to verify that whether it fixes the issue I was
+> > > experiencing and it does fix it. I will continue to do more testing, but
+> > > when you send this as a formal v1, you can add:
+> > > 
+> > > Tested-by: Samiullah Khawaja <skhawaja@google.com>
+> > > Reported-by: Samiullah Khawaja <skhawaja@google.com>
+> > > 
+> > 
+> > Hi Alex,
+> > 
+> > Is this series still on your radar for formal v1?
+> > 
+> > If this is the direction we are going in I can use it for liveupdate work
+> >  https://lore.kernel.org/all/auzftbPFO_6XBYVw%40google.com/
+> > 
+> > Thanks
+> > Vipin
 > 
-> FYI on what I think is a pre-existing TLB flush bug (that can affect other
-> requests as well).
-
-Thanks!
-
-> > If an interrupt fires mid-loop and makes a non-waiting multi-vCPU request
-> > (for example on arm64 via irqfd_wakeup() -> kvm_arch_set_irq_inatomic() ->
-> > ... -> vgic_queue_irq_unlock()):
-> > 
-> > kvm_flush_remote_tlbs()
-> >   kvm_make_all_cpus_request(kvm, KVM_REQ_TLB_FLUSH)
-> >     cpumask_clear(cpus)
-> >     kvm_make_vcpu_request(vcpu0, ...)
-> >       kvm_vcpu_exiting_guest_mode(vcpu0)
-> >         cmpxchg(&vcpu0->mode, IN_GUEST_MODE, EXITING_GUEST_MODE)
-> >       __cpumask_set_cpu(vcpu0->cpu, cpus)
-> >     <hardirq>
-> >       irqfd_wakeup()
-> >         ...
-> >           kvm_make_all_cpus_request(kvm, KVM_REQ_IRQ_PENDING)
-> >             cpumask_clear(cpus)  <-- wipes vcpu0->cpu from cpu_kick_mask
-> >             kvm_make_vcpu_request(vcpu0, ...)
-> >               kvm_request_needs_ipi(vcpu0, ...)  <-- false (EXITING_GUEST_MODE)
-> >     kvm_kick_many_cpus(cpus, true)  <-- misses vcpu0->cpu
-> > 
-> > Because the outer request already transitioned vcpu0->mode from
-> > IN_GUEST_MODE to EXITING_GUEST_MODE, the nested non-waiting request sees
-> > mode != IN_GUEST_MODE and neither sends a reschedule IPI nor re-adds
-> > vcpu0->cpu to cpu_kick_mask.  When the interrupt returns,
-> > kvm_kick_many_cpus() skips kicking and waiting for vcpu0, so the waiting
-> > request (such as a remote TLB flush) can complete while vcpu0 is still in
-> > guest mode or reading shadow page tables.
-> > 
-> > Only touching cpu_kick_mask when KVM_REQUEST_WAIT is set (and tracking
-> > whether any CPU was kicked with a local boolean for the return value)
-> > would avoid this.
+> Hi Vipin,
 > 
-> Unless I'm misreading this, clobbering cpu_kick_mask and dropping the kick for
-> a waiting request is a pre-existing bug.  I'll address this in v2, and make sure
-> the series is tagged for stable@.
+> Alex asked me whether I or someone on our team could pick up this
+> series. Pranjal is working on it and will send out a new version. There
+> is some extra work needed on the IOMMU side to make sure that the device
+> is moved to a blocking domain when the reset is skipped.
+> 
+> But I think the patch you need is fairly independent and can be sent out
+> separately from this series:
+> https://lore.kernel.org/kvm/20260812045325.2733631-6-alex.williamson@nvidia.com/
+> 
 
-Yeah, this looks like bad things could happen on arm64 when we pause the
-VM for global VGIC state changes among other things. CC us on the v2 if
-you don't mind.
+That works for me. I can send this patch separately.
 
 Thanks,
-Oliver
+Vipin
