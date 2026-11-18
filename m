@@ -1,85 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794969673;
-	b=V4iM/aGev3pjry8FKWtVkWwBTbbEpHMc2Sq4ZoUkVwlsQv+dr0QHM5MhFeZBilcHSJpu
-	 rQwDPVEQV86UN/8ofP0slkgMCK5lV0NTYgDiiZBRbweYX6dO1XiXbEfzIU4nr4+MjfdA8
-	 KEZ/1house30HDrClMpXYDPvHv5S1xxRAgHUyDqjUyGc+aDpWSSfCP0aYrVrT1W9u8150
-	 21o+6nImTjzPwEhByw1nkBeL6TG7wyvTn1wIYeUfxYmMoIY5gTW/mKtZ0tVS9TfkGfNEU
-	 +g7R8L+fWz7ri6yxl2C0+3YIbriHvCZqgnIBk+0t2eG/onB1dbXdABj2sTEZ0wqs9Ow==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794969673;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=6HDuddZYxiwPfkHKMQex0JGzsZG+GFTKn8vdoWJavzo=;
-	b=xMOQ9x2KfJb4pHywkkWbi1qyTGzLrs6Cx338pbpehtM5o18MsHrWN9yHDNOee8p4Uibz
-	 N0cjmtXkWgsZygrtTSE0vlkL8r1RV6S/OOOoFc61rdNb9nXsaZvvUFvlzP2mRhQ0t8Z2J
-	 mnFOGBg6w7oeBI4lUMsMKQqlkFllbr6CXRFd2QoBGj/YlW/7KxVeA/gJlKXwxyt/OAl9F
-	 r/IBp2v8NE0O4QLWgh+Kt9Dj8XUMBELklNCXZn5GxDZaJkNo2t1UdS5rmrAmNZa0sQGIR
-	 sAjfzcF9wqdPFkS9v2tKBMlrvuhkFCLihqe+zTpFxA4xCIlbTQ4gPIzCfisMgl0quWw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lG+nRkcP;
-	arc=none smtp.remote-ip=198.175.65.18
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.51
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794975149;
+	b=SHUJADmsYcUYqe/KmK+tqBe2f8Qoqy/YYIRQIdMWUKNesJ9KhkQLYItBplnq8LiyvPZX
+	 ZKXvKQFBYckqsTVtlCiysjNd5LLRkkRC9TwKunOSbwagmunw37bgq3r+UezNbt1lmW0KA
+	 VBk+9ohifn6sW34nbWS48RJmN7FTP0yamNgr6PBRgVrHaXWcw/Ks0cgH1lCFSEIpiAdWN
+	 U2Ace/PjWpiZ2+BQZFqfVikYCPM0L2AhOaxZMSNQdPxJ/U5me/BIsiHbsra1ZcWrX5Ner
+	 iGZvQpZJxIocZdKmun46CvceW9nEqCeOZn8kovPl4Wj6w8W8wnKJE5H1dOIOP2raqtQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794975149;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=o15E8VBznq3OnSKwZKdmsdReqhurd8fmzVNrgoC/tOo=;
+	b=yBaJngo6irWlQ85vrsTpAYJ9Uk2qcNxMcy44fGQLEFoukDciqdgGERoaQ4AyhEDn6Bf8
+	 XqX6RXo2cpDIkHZsNWvKRRJSu/1AB0S+VLcad+uGwAfuBORXs8pJFpUATI1iR+Zui8X6z
+	 8EuKc4NOxw+N5HwpeVC2ltSPdSN0O3Nh5cXJ/SEGPJjlcnfcEsHHDN+HHVBpCXDslKHLR
+	 w9glxpENfXgQi5QVHfnu6wOm1Z9GfDnAyjBbcBEPxRDxL36pl9KNnha9XqVZmas2mjkvj
+	 3wQ3TAMTGLj7z/LJ5OXeWJLOgE5lnJ/CgmRvqS1AfB5zwTbsCHy6fGYYQUffMEwC75Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=GREU8QmV;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.51
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E1F606A325;
-	Wed, 18 Nov 2026 02:41:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A6E1F606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB83E606A325
+	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 04:12:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB83E606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lG+nRkcP
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794969673; x=1826505673;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JMg6iADw9dsIPCjld7o8lZ1JKOgyBIjUEuX7ENSGD2w=;
-  b=lG+nRkcP3P+3Yz7EbWLgZfF4BB0AbXKKMwt0qorG6Udj3l1BRfZLmFQP
-   146u5zpNIyDW7rwCBGGj+tcnHKsLaVxC18LL2oXZnhUjw/lb3v3bPtzuV
-   QxFd5LTRZLBPaUySI9/3be5y+ky8fVh97afihQdVrw6i3Oo3Y4pZ47t+Y
-   5feN3QMRUFcIZonBtB9bt4CffQWkW6zTiihDrooA+V36kH5geDv9OUcA5
-   2kUPz2sfrWh8DLUGvXVOrZBmQtb4EqG4EyRtKMAK1wkSin6B8IyUjEQSt
-   NrC+vVZB+GKk5p127BXAa5kGKRliL6Hag3VnUhP5JGcNWAQ0cxknmP+ws
-   A==;
-X-CSE-ConnectionGUID: uWJOA1P7QgGm1f1sQY0HNw==
-X-CSE-MsgGUID: aoqTmTKbSFuA2/RVsU80IQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3783765"
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="3783765"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2026 18:41:12 -0800
-X-CSE-ConnectionGUID: cTXYupeARFiSheAMT5+C9A==
-X-CSE-MsgGUID: ZbebIHEUTF2aQGTzdp8fWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="10370005"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa007.fm.intel.com with ESMTP; 17 Nov 2026 18:41:08 -0800
-Date: Wed, 18 Nov 2026 10:32:13 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, dave.hansen@intel.com,
-	kvm@vger.kernel.org, yilun.xu@intel.com, xiaoyao.li@intel.com,
-	sohil.mehta@intel.com, adrian.hunter@intel.com,
-	kishen.maloor@intel.com, tony.lindgren@linux.intel.com,
-	peter.fang@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, chao.gao@intel.com,
-	artem.bityutskiy@linux.intel.com, nik.borisov@suse.com
-Subject: Re: [PATCH v5 3/6] x86/virt/tdx: Add extra memory to TDX module for
- the extensions
-Message-ID: <av0OLVB/PMjYz5cS@yilunxu-OptiPlex-7050>
-References: <20261111-tdx-module-ext-v5-0-c74f764abc3d@linux.intel.com>
- <20261111-tdx-module-ext-v5-3-c74f764abc3d@linux.intel.com>
- <3c82411b-dfec-4b26-9e7f-777c8f1ecb6d@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=GREU8QmV
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6b71ee00f0dso3958a12.1
+        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 20:12:28 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794975147; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qklaslCB4xsRp56Z/bRAxNgQQlPlu3nBBFCyTar+0DUKS4HuxdWu/wZhfeJnCJVY5k
+         ahn9fJx31fHdQxnwkhrCZY1vwMPY+nvEMNa1hz9eMgqJdUjhMafnUGFpkUEKx0TYUkRs
+         6lcYZvvgeU4bCkK7p75R7KYFI2geWvYxxKf8kxY6r8SNOBEAE20j3kKg/ebeU8ATO5Fz
+         nu2RjiY3wZETYT1fb7ST1OSztF4SCYN1uMuL1Mi48TaPivSRyoh+raPG5x1m6sKcIeQz
+         vVCv3ZeCefc7gWuIqtCqgdETb+QiiVmbniArqaQcdpuBEAys3tbrBCzoK3g0R2NPoS3Z
+         NVlQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=o15E8VBznq3OnSKwZKdmsdReqhurd8fmzVNrgoC/tOo=;
+        fh=5pbhKGcRoftsEZQtdb/nKZrBSNC6Zwr37Xt0EgOG8oI=;
+        b=mWOL4zQMDL8wvQ+jmWsPWL2hlKNDNQlBryvHpOSqb3M3qemuJPG5mGzduNNZO0pzhW
+         rn5S1yebSvhMOK5MNQGvy2jchKnmfHhiYKiaoGA7AEMI3OMDG7YFtexkWfZzpQsegYvS
+         fhNZGBCGHI0dv4R9p4o+XKXh97JDGYrMc20T+CK/h2wO+zUhmsxu9YsPbnPwJW75ij+K
+         cA2HXtNFHjDWTaTtYq9vqF77BbsbZzvXZxOkFL9olwvHzpV8nD+cvDA+CGk6UK+e4cCD
+         cVfgwH7Z1IPS4onRmlgk9pSqRLWykE3TdbpHpav8jkONaWnaUJeB2CyVFn2bJhAsApyB
+         KByw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794975147; x=1795579947; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=o15E8VBznq3OnSKwZKdmsdReqhurd8fmzVNrgoC/tOo=;
+        b=GREU8QmVAmeDCEVBFwNXN7MTiYaKSv5JM7liPvTgd1rHAK10tVhyIRjpvYMYqyRSzj
+         BlAuNNqBEkl8oTezNEGjdvjnfYh8fIhkgxH68zkKFc4JfNmgjS5q9ZzMgN5WaS/PISAq
+         KGMf6UqXuLGPVmawKclIVN2OpGHAZFXnx+6HxoVJut3Qvhdv6buoCtCt1BJ0gxlCtX/P
+         l9I7USGir/HiPtIAjNUuxiIpxpI0K5G4r57LMkXB3zoVSluMTICjsnn/SlacPJVtdBnb
+         IDaSzbKexvOrk7EfSAdbxz4jwzkRiPYxAWicnRHgxJhbbm49ZZ65k9BvDjQ3+hCqmzxh
+         pVqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794975147; x=1795579947;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=o15E8VBznq3OnSKwZKdmsdReqhurd8fmzVNrgoC/tOo=;
+        b=L7jIMOx0Nr34uhMQzngtbzeCI7ScaHnOkRY1V06pKhcDEEie+7Q1jW1XjkBl9jc7WX
+         I9FRyir27/6hulEobTprPnYI33L91S/fp2YTuZg0cjlmnyrWUrv1Qf5HgCKlNuo7HKTe
+         0lLQ79EMh1YRAIG8X6cS0xdQeFxBBsCdooQJpJKe6sNFgtNV2XKcDvJqZXFD/qrXOn7n
+         DrQEzVcbnoTY34yygxBsr72ZRpmvTYOtT3+VtjZ4X8VHAaclkRBFd1vnGw0Gm2OfJwK7
+         D7uxm5iQTCsEOdinIBJBFobOaHbp9VTJG5e61RVuQaUr9TUGdyuuYwx6UIzqUidB4cKQ
+         aMCQ==
+X-Forwarded-Encrypted: i=1; AL+hErF/HkkSIRq1GWDl/37AisAGLQLI6V0QYgSanPMD8ynZyLw5cXY0LSu5n56Rt8bnBf+D59g=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+2e6ckr768lyvkTwrT+UKCCs9wxDTkuJ0kZDbPCq+2Yl43kAoN
+	u5FVH79akW0LQiJOTxh5FU5ZSu+CAQSsZzP4cyVIK7b88XpmATo2PpPj8cNSB5fPlnoAehNhKRv
+	Gnczs96uMyOEjbSMeI1ytTf4XLhAmixnUaG+ZEYFa
+X-Gm-Gg: AYBFou2j3yImCuilDdCUQg2T6Qv8v9OGfel8Dr9PCeZySO9lT8YUmNctvS2j3gqPA0o
+	TaddUeDDYUxaH79SXY8stSdDRy5mWTOesAf/vanmCw50TqtUWcaKgBvx7jsnLuN/G6e+seBxFY/
+	lweb3dhAxyI/I5yV+k7e6YqkL+CCzK1S32hlW6Vqbysg0bT2HnnIlh7GirYIfp9gPDcfGwRRHqO
+	uNaALlZPdT6YPjoSp8QxdIYdwml7MqUuOmwWrtMzY3+gDfL5RIUKGReRzJOAGUMTFVImuI73Cr7
+	wgciyKW3J9ocXNCrydJUPbGlMcyB4xgxpxYzM/oIT/whs+a5c79tN07PbqEyiz7wSUPAZim24za
+	HQzy82Cwq+y3sAUbRBQ1iuPao393FIJO5xD/bPhlY5RJcNJHTRxwP+AXrCPC8BUUAIdcERc5FKh
+	QJdrItmSSjTswYoA1Xz0fxDJo28GhP6FjMdhw8YohBgCnNStM97ouy0g==
+X-Received: by 2002:aa7:c513:0:b0:6b8:7775:5154 with SMTP id
+ 4fb4d7f45d1cf-6b891f64c29mr42260a12.9.1794975146788; Tue, 17 Nov 2026
+ 20:12:26 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -89,77 +105,30 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3c82411b-dfec-4b26-9e7f-777c8f1ecb6d@amd.com>
+References: <20261117180310.921701-1-chang.seok.bae@intel.com> <20261117180310.921701-2-chang.seok.bae@intel.com>
+In-Reply-To: <20261117180310.921701-2-chang.seok.bae@intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Tue, 17 Nov 2026 20:12:14 -0800
+X-Gm-Features: AclHuK832QlDuaLhtggvyOdF46C2kT2L4KwGf1A_pjduHGRx-LZ-dnp3OGA1SHI
+Message-ID: <CALMp9eRH4d0mKKTfE3H1Di2KNWgy++Yo4LoM+wZMydGAUijc-w@mail.gmail.com>
+Subject: Re: [PATCH v9 01/20] KVM: x86: Extend VCPU registers for EGPRs
+To: "Chang S. Bae" <chang.seok.bae@intel.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, kvm@vger.kernel.org, 
+	x86@kernel.org, linux-kernel@vger.kernel.org, zhao1.liu@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 17, 2026 at 02:06:47PM +1100, Alexey Kardashevskiy wrote:
-> On 11/11/26 14:48, Xu Yilun wrote:
-> > TDX module extensions need memory for their execution environment to
-> > serve SEAMCALL leafs. The TDX architecture implements the extensions
-> > in such a way that they use the memory outside of SEAM range, so the
-> > kernel should add the memory upfront at initialization time.
-> > 
-> > Introduce a new memory adding process backed by a new SEAMCALL leaf
-> > TDH.EXT.MEM.ADD. The kernel queries TDX module how much memory needed,
-> > allocates it, adds it to the module, and never gets it back. Note that
-> > the process requires Dynamic PAMT backing. A subsequent patch adds the
-> > support. This doesn't break bisectability cause the extensions can't be
-> > enabled yet without a feature that uses them.
-> > 
-> > The TDX module accepts the memory in the form of an HPA array. This
-> > array is passed via a single 64-bit SEAMCALL leaf parameter, which
-> > encodes two values: the PFN of the container page holding the array, and
-> > the number of entries in the array. Create a helper to encode this
-> > format and name it after the TDX module term: HPA_LIST_INFO.
-> > 
-> > TDX module extensions consume tens of megabytes memory that will never
-> > be returned to the host. Use contiguous page allocation to isolate these
-> > large blocks entirely. This is a simple way to avoid permanent memory
-> > fragmentation: requiring the full size to be contiguous is more
-> > expensive than needed but should be good during the boot time. Print the
-> > allocation amount on TDX module extensions initialization for
-> > visibility.
-> > 
-> > The TDX module provides a metadata field "required_pages" to indicate
-> > the required memory size. This metadata is meaningful only after the
-> > add-on feature configuration. Don't read and cache the metadata in
-> > tdx_sysinfo. Instead read it right before allocating memory for the
-> > extensions, when it is guaranteed to be valid.
-> > 
-> > The original changelog was written by hand. AI was used to help correct
-> > grammatical errors and polish individual sentences for better
-> > readability.
-> > 
-> > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> > Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-> > Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> > Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> > ---
-> > An alternative solution is to use a loop that gives memory on a memory
-> > error code - TDX_EXT_MEMORY_POOL_REQUIRED, add one page per iteration
-> > until TDH.EXT.INIT succeeds. Something like:
-> > 
-> > 	do {
-> > 		ret = tdh_sys_init();
-> > 		if (ret == TDX_EXT_MEMORY_POOL_REQUIRED)
-> > 			tdh_ext_mem_add(); //single page
-> > 	} while (ret == TDX_EXT_MEMORY_POOL_REQUIRED);
-> > 
-> > This approach is slightly simpler as we don't have to query the module
-> > for the total memory, no memory pre-allocation or segmentation math.
-> > But allocating a single 4K page per iteration may cause permanent memory
-> > fragmentation.
-> 
-> Why not allocating new memory in 2MB chunks, reducing fragmentation? Thanks,
-
-Allocating & adding 2MB by 2MB reduces fragmentation. But we would end up
-trying to add more memory than needed, then have to deal with extra error
-handling about "memory pool full in the middle of the page list", which
-defeats the purpose of "simpler".
-
-An earlier discussion about the exact concern:
-
-https://lore.kernel.org/all/e05f49c28a78de961130655a76f415b01774016e.camel@intel.com/
-
-Thanks.
+On Tue, Nov 17, 2026 at 10:31=E2=80=AFAM Chang S. Bae <chang.seok.bae@intel=
+.com> wrote:
+>
+> Extend the storage to include extended general-purpose registers (EGPRs:
+> R16-R31) when CONFIG_KVM_APX=3Dy. This option is for VMX only.
+>
+> Although EGPR state is XSAVE-managed, and thus could be stored in the
+> guest fpstate, VCPU storage provides a more convenient and efficient
+> access path for KVM.
+>
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+> Link: https://lore.kernel.org/abL8SW5JS1aV5goa@google.com
+Reviewed-by: Jim Mattson <jmattson@google.com>
