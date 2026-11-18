@@ -1,62 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795024780;
-	b=KSz5l6izjd9kDNHYtAPbYLNG4IU6mokbx//PSfRBfDssMLjROsva41Zw3e2uKJHhfzzQ
-	 GUxjKI6YCil+gOugoAEZd8KKB/hBVYAjBsygetPaP1gQcj6UY9sU/p7sjmZPoZxEVy5J7
-	 2gRprNd4QMWXq4HxZ0G2upAPZrsZgYJzYv+WfBrMM62velhMns9dM34LET+2sWHZ63sON
-	 V6kPzvRawTVw4t0ctvys/bUD8JMz6cVBymAcWL+4olaSplu0/wyQJB7DZbqCY5ypCDGpP
-	 AR0eltLzZZsViLbUUs8IxaqhhYbKfy7nTgMGQNljtpEZUWM2PcmzRWE7wgU9LYPkpSQ==
+	t=1795026241;
+	b=1NVilyWqmbBY3nmjIl0qK/Tb5Mmgd+YCUbkGpMotVZu5R+NL6tnRNwBJOvDjp8eNcvud
+	 m/WmdRtRZ+YgQ602ha6Hc/dPzzIpIoUGZXy35jAya0+vzJTSiCNsTb4X4dSEaEvD9jnCO
+	 H/zyueH6ShhrXXLcanDq75dZhKYBVzQ4zZTmrHjjlvmTNb/pdzyW4Tb/r8wHQa3Y6xiz0
+	 Gc3VTjsXooPXfnxKD8Uk5PrbqtIdbaBWlA3tBV5HX5QB4ghxDveo9nqI66lEWd4YP0Z9h
+	 b5h2zbkA3Je6k1ptJWWo0YuP9Gv9ylzUwOLAFyL4sXNd1jJ7kAhhdNtpxWuzLPbY7DQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795024780;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=FGWOfYwVcmMVR/wlYDFuHY+4Vl32fUFqmZceclAp0Fs=;
-	b=ir1zBFl4nSjte4tWtMwB7/9NdxfRHT6L4xoJnBUivWA549DRz/qPRoVFM7cxLqCaQKrA
-	 Cjn/Qd7/fTwHoLQG9k+EizBTfTdyblV+0ZJBWj/VtqOl1P3aJiG8JPKGgjqqQpEs1uWRl
-	 UqxVosV20+tyw1X6iIu57KVSDlVnfjzSvpAsvlERkrkkI4D6ntTpd/LY5L1MPenqRZmpZ
-	 ImgzFX0afTkdRBu6iVOLWFsOznlfAqBuK4iVfCw0YP9MTZfxBCFWiKyXXEw9tMvuLJMSZ
-	 CKJojYmaW+HTS4hMssrhSFM/2fuzYu+lA22rubU+8eHnd5CiwgwJny3XRK0YgfcfjoQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795026241;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:Mail-Followup-To:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:
+	 X-TM-AS-GCONF:X-Proofpoint-Reinject:X-Proofpoint-GUID:
+	 X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=w7e84pTx1hFND/SqJPYWM+V16X6qXv0q0f3OXujMfRQ=;
+	b=qiW9Q+Ja/Xk80BoCryOfFMnhPtcv+c3XuZ3LJgWxUSHedJT4+3UMnTOkbW1XSygRb0Lr
+	 v3S/bZhbIhIZll6RUjXCcIKZw+LLkTtqRhgi3TSi3XKPchbZmcVMP9+bA5D47UDZ0zckB
+	 ZkqQsAZJVBippEfM162WN7kDQCXlpPxY/F4MGaCLaVgAMtsHoqf2ep4gmYvlAhNeSKjdc
+	 v7xJLZ0f9zsH/VYjivUX50jgEGXWuBaooDomCqWw4tAW6bFsSWC+KZUDVowzaF0f92lYz
+	 Sby6/LejLiK0E3iuOxBPic40WShXwZlALAlwbp02gBqP0ltloiAkNUn3YUdFcagHhXA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=o3wPS081;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4EBA606A32A
-	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 17:59:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A4EBA606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bUmwaVe0;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AA0606A320;
+	Wed, 18 Nov 2026 18:24:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 14AA0606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=o3wPS081
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 58E5F1596;
-	Wed, 18 Nov 2026 09:59:36 -0800 (PST)
-Received: from e133894.cambridge.arm.com (e133894.arm.com [10.2.80.62])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3642C3F632;
-	Wed, 18 Nov 2026 09:59:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795024779; bh=ZzySrxLCRitFJJvJhs98l8CuQeyaY78BvXRM1jH99/M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o3wPS081Z0jerLCLK7t6nCXeg3J1lDrUHAMvAqFgY3H7aVh/8kkFnhJxC0NQSF94y
-	 6EfYKzFUsiD5LFkaXPFPITxII/qyZfeeFrdKtYgU6zghwP03coM1KOvRW3wDs7bp5K
-	 9cae4+IkvD6lmlf/Z+7rU0jmc25PnxLGnBmFSyS4=
-From: Sascha Bischoff <sascha.bischoff@arm.com>
-To: will@kernel.org,
-	julien.thierry.kdev@gmail.com
-Cc: vladimir.murzin@arm.com,
-	maz@kernel.org,
-	kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	timothy.hayes@arm.com,
-	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH kvmtool v5 23/23] arm64: Expose the GICv5 ITS irqchip option
-Date: Wed, 18 Nov 2026 17:57:55 +0000
-Message-Id: <20261118175755.1946977-24-sascha.bischoff@arm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261118175755.1946977-1-sascha.bischoff@arm.com>
-References: <20261118175755.1946977-1-sascha.bischoff@arm.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bUmwaVe0
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AIHQD2O1730327;
+	Wed, 18 Nov 2026 18:23:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=w7e84p
+	Tx1hFND/SqJPYWM+V16X6qXv0q0f3OXujMfRQ=; b=bUmwaVe0vc+1u8ldD3hI2a
+	HjsSKqPibLmbLZ6QQYXLwzJLV2tci+Fd/Z7F6HDsapiyvWoZ6Y9SMszwzszAt0T+
+	S8MrCThxOzb1M7aSoJuLkFqP/pWgqU4820kPY4aVYZKf6yjuaUeBIoZ/JA5ogsaS
+	0rMOhD6Vbn+V3iFU4fY0JU2qWyT8pJQsBa8sskjxlcfREg6lCqv4VRhxKGlanRop
+	6Oz7lCYmL3nqjUJlyC6H6YGyjTTy5l3UAynKFLASq9y9KQzCPavLWOLLiUgZe5bY
+	xtOEBaPQRK+FKyVhLaXHdqXpCvqoDsCOA5erinypf1fq8TzRxKdfhfX1Kdam1BEg
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j105vkw3v-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 18 Nov 2026 18:23:46 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AIHJsLs2384122;
+	Wed, 18 Nov 2026 18:23:46 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j1bb59ad2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Nov 2026 18:23:45 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AIINgGB51708356
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Nov 2026 18:23:42 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1DE1B20049;
+	Wed, 18 Nov 2026 18:23:42 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3ECE820040;
+	Wed, 18 Nov 2026 18:23:39 +0000 (GMT)
+Received: from fedora (unknown [9.5.7.39])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 18 Nov 2026 18:23:39 +0000 (GMT)
+Date: Thu, 19 Nov 2026 00:02:08 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        linux-trace-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        Michal =?utf-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>,
+        Vincent Donnefort <vdonnefort@google.com>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        kvm-ppc@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4] ring-buffer: Do not check si_mem_available() before
+ deferred init completes
+Message-ID: <20261118234433.5ff52f67-db-amachhiw@linux.ibm.com>
+Mail-Followup-To: Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, linux-trace-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, Michal =?utf-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>, 
+	Vincent Donnefort <vdonnefort@google.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
+	Harsh Prateek Bora <harshpb@linux.ibm.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	kvm-ppc@vger.kernel.org, stable@vger.kernel.org
+References: <20261023145459.47516-1-amachhiw@linux.ibm.com>
+ <20261117162842.5cb22a24@gandalf.local.home>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,53 +110,122 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261117162842.5cb22a24@gandalf.local.home>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: w8oT8vA_A5CLf9XQ-aSFOYIasGSAczcu
+X-Authority-Analysis: v=2.4 cv=HL9WhYtv c=1 sm=1 tr=0 ts=6afded33 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=Mm8Sogoet2vpDDTUGKUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: FSyKhUNZuQ6tU18BMC3aNlSbju3q4FZL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE4MDA3MSBTYWx0ZWRfX9kx9zYxG0MdU
+ Xi8yFpec4HQO+pByXSpeRMKs16iU+nXxryJ3Uj4nko1Lug//s3rxtgii680Os0SVItyR109TFgo
+ MlbuaUty3DfuVtpJukmdLdrA6ALFvELcsl8pVRr5cXzBI/HbHnShJ6on/VOZ6ytwUAw++dQDMez
+ Co7vCtHx2pv1y17J8iKn8OZaCehnipDCBPRmehCcYivtoIt+8vZVuzsXwm5yZE8l3b3DJyGIUDd
+ nPpFSVvLO4zzx9ggxqkwXLO0eTwAJHMSxWWGmCZ2f6AXl+lgWs3H6Lz7tVylUpKnn0Kg9xXHojg
+ t2xADslZ3gxyUtFwDw+068ZTG+fCRi6JcwsyZUsPk19IWP5F3NlxYazvnBqJG/myWMsp0YgL/pA
+ BWEkWUP2wNBIN4xTM3rtbwTv6qo8UjLX97CxsMJwsJFfR9s3z/0pWYz0iDKWIKSdXP4aP8pSSjg
+ 3zoqo39RpcXe/xlsT2Q==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE4MDA3MSBTYWx0ZWRfXybxPwmzHkpqT
+ wmzfr8pAVR3L1cDr68BMVgOShhyjE4QX4nRzm0VnfC+ut7tQ8gC2JDt1d468KGWoQvyglZPV3yy
+ du+uzlfAA6ee+MrKmjeQ0BP4rfbImVQ=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-18_05,2026-11-16_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0 spamscore=0 priorityscore=1501 impostorscore=0
+ adultscore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611180071
 
-Allow --irqchip=gicv5-its now that the ITS DT nodes and PCI MSI
-requester mapping are in place. Start automatic irqchip selection at
-GICv5 ITS so it is preferred ahead of base GICv5 and older models.
+On 2026/11/17 04:28 PM, Steven Rostedt wrote:
+> On Fri, 23 Oct 2026 20:24:59 +0530
+> Amit Machhiwal <amachhiw@linux.ibm.com> wrote:
+> 
+> > During early boot (early_trace_init() called from start_kernel()),
+> > tracing allocates initial ring buffers (temp_buffer, array_buffer, and
+> > snapshot_buffer) for CPU 0.  Later, as secondary CPUs come online during
+> > smp_init(), each CPU's ring buffer is allocated via trace_rb_cpu_prepare().
+> > 
+> > Before attempting page allocation, __rb_allocate_pages() performs a
+> > heuristic check using si_mem_available() to return early with -ENOMEM if
+> > memory appears insufficient.
+> > 
+> > However, on kernels built with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y,
+> > NR_FREE_PAGES only reflects the initial non-deferred pool across the entire
+> > period from early_trace_init() through smp_init().  defer_init() leaves
+> > only a single section per node (e.g.  16 MiB with 64 KB pages) initialized
+> > up-front, and on kernels with large static binary footprints (debug
+> > configurations enabling PAGE_OWNER, DEBUG_PAGEALLOC, KFENCE, or SLUB_DEBUG),
+> > early core initialisations (SLUB caches, vmalloc, static ftrace records)
+> > consume virtually all managed pages in this pool.
+> > 
+> > si_mem_available() therefore returns a false negative (often 0-1 pages)
+> > across both SYSTEM_BOOTING (for the initial CPU 0 buffers) and
+> > SYSTEM_SCHEDULING (for secondary CPU buffers via trace_rb_cpu_prepare()),
+> > causing __rb_allocate_pages() to prematurely abort with -ENOMEM.
+> > 
+> > This failure is false: the buddy allocator is designed to replenish
+> > ZONE_NORMAL on demand via deferred_grow_zone() when an actual allocation
+> > is attempted.  Checking si_mem_available() before calling alloc_pages_node()
+> > short-circuits this on-demand growth entirely.
+> > 
+> > deferred_grow_zone() is only permanently disabled after page_alloc_init_late()
+> > completes (it spawns per-node kthreads and blocks until done), which happens
+> > inside kernel_init_freeable() — before system_state is set to
+> > SYSTEM_FREEING_INITMEM.  Skip the si_mem_available() check until
+> > SYSTEM_FREEING_INITMEM, at which point all deferred pages are initialized
+> > and si_mem_available() is accurate.
+> > 
+> > Use IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT) to set i = LONG_MAX during
+> > this window, unconditionally bypassing the threshold check.  On kernels
+> > without deferred init IS_ENABLED() compiles the branch away and the original
+> > check is preserved unchanged.
+> 
+> As Vincent mentioned, the above is just word salad. Please make it human
+> readable. That is, state what the actual issue is and how it's fixed and
+> remove all the AI fluff.
+> 
+> Also note, just because we no longer require an "Assisted-by" tag, it
+> should still be mentioned how the patch was created. I want to know.
 
-Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
----
- arm64/gic.c                         | 4 +++-
- arm64/include/kvm/kvm-config-arch.h | 2 +-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+Hi Steven,
 
-diff --git a/arm64/gic.c b/arm64/gic.c
-index 1f837049..774a503b 100644
---- a/arm64/gic.c
-+++ b/arm64/gic.c
-@@ -81,6 +81,8 @@ int irqchip_parser(const struct option *opt, const char *arg, int unset)
- 		*type = IRQCHIP_GICV3_ITS;
- 	} else if (!strcmp(arg, "gicv5")) {
- 		*type = IRQCHIP_GICV5;
-+	} else if (!strcmp(arg, "gicv5-its")) {
-+		*type = IRQCHIP_GICV5_ITS;
- 	} else {
- 		pr_err("irqchip: unknown type \"%s\"\n", arg);
- 		return -1;
-@@ -415,7 +417,7 @@ int gic__create(struct kvm *kvm, enum irqchip_type type)
- 
- 	switch (type) {
- 	case IRQCHIP_AUTO:
--		for (try = IRQCHIP_GICV5; try >= IRQCHIP_GICV2; try--) {
-+		for (try = IRQCHIP_GICV5_ITS; try >= IRQCHIP_GICV2; try--) {
- 			err = gic__create(kvm, try);
- 			if (!err)
- 				break;
-diff --git a/arm64/include/kvm/kvm-config-arch.h b/arm64/include/kvm/kvm-config-arch.h
-index 46130663..936b142d 100644
---- a/arm64/include/kvm/kvm-config-arch.h
-+++ b/arm64/include/kvm/kvm-config-arch.h
-@@ -59,7 +59,7 @@ int sve_vl_parser(const struct option *opt, const char *arg, int unset);
- 			   "transport (Deprecated: Use --virtio-transport "	\
- 			   "option instead)", virtio_transport_parser, kvm),	\
- 	OPT_CALLBACK('\0', "irqchip", &(cfg)->irqchip,				\
--		     "[gicv2|gicv2m|gicv3|gicv3-its|gicv5]",			\
-+		     "[gicv2|gicv2m|gicv3|gicv3-its|gicv5|gicv5-its]",		\
- 		     "Type of interrupt controller to emulate in the guest",	\
- 		     irqchip_parser, NULL),					\
- 	OPT_U64('\0', "firmware-address", &(cfg)->fw_addr,			\
--- 
-2.34.1
+To answer how this was created: I investigated the issue, carried out the RCA
+and debug runs on a Power11 KVM setup, and authored the patch logic.  When
+writing the commit message, in a (clearly failed) attempt to explain the
+details thoroughly, I ended up introducing the wordiness and fluff.  Later I did
+use an LLM for a quick rewording and spell checking, which only made it worse I
+guess.
 
+For v5, I have completely rewritten the commit message myself to be concise
+and to the point: stating the actual issue (deferred page init leaves
+NR_FREE_PAGES near zero, making si_mem_available() under-report), the
+spurious -ENOMEM failure during early_trace_init() and smp_init(), and the
+fix mechanism.
+
+<snip>
+
+> >  		i = si_mem_available();
+> > +		if (IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT) &&
+> > +		    system_state < SYSTEM_FREEING_INITMEM)
+> > +			i = LONG_MAX;
+> 
+> Make the above an if/else statement.
+> 
+> 		if (IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT) &&
+> 		    unlikely(system_state < SYSTEM_FREEING_INITMEM))
+> 			i = LONG_MAX;
+> 		else
+> 	  		i = si_mem_available();
+
+Sure, this makes more sense and avoids calling si_mem_available() when it is not
+reliable anyway.  I have incorporated this in v5.
+
+Thanks,
+Amit
