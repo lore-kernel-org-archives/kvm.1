@@ -1,99 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.170
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794984757;
-	b=rhM+C+G3FdEK8LFoTnRoALOguXi1GZMgMXdFUbIU6lBxmyCJxjd2L7J22/zJCDjoFZ61
-	 mD2RQ+EAchNWUIJaUMoFslN4Nyk6DZqUKpVfo8HITUl4KnKWIWz+id1p3z/DROaZbjr0j
-	 kZadgUJysvB6gEeh0Kg1YSFgdh79M3JyG0k5K0z0EFFqyQ3lqCMZI0g+4Mkpv+pj6LsZJ
-	 7wGbGbQJhXznDY3Ui5MevJ9mLG9Z/I4et2KOZ2K6Bfxcy1MLIyBfvFvBUnB8DcC2LeSM4
-	 4yPOc9oDHrAB4z6DcdVy81PK9ouWdHGpkwHbIANQ3KUM88MF0EFedWZR7Sx0v6zxBWA==
+	t=1794984950;
+	b=ta4U200ZIfF7Lu4nqsjks0eHiODr0aVAmLbOFV/jsZRD7HHbJZnjjTDO2B4NzOf+XSDW
+	 Gqg9Ee7s2FW6zMYnC9TPoPNQvO/03FKUMqUK2tlNY3AdB7FGIg81y8IevJKDorM2kbqmD
+	 WAfMx57Tae8zJQ+T9NQc6iUe7q7XAD2Uh2JtZwJy/IFOIMb7Po0E3UmCumv8n1i9zdjMI
+	 MN4EMLQmYuSZgGxhC8WqQ+nFcCFnofPXTJ7mIaUrBMohh0phWnUMl6l3aph7GetzFF2yu
+	 TW1MM+bd9+TOygND2ApJfg/TDKZcnxByumUG4yzOkIuKXu7JSmWX3oVIl9L4NpP9vag==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794984757;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=FKkYWihfdRNCMKKO6J64hBPhG+NVMAKKX6FQ+i+pK6Q=;
-	b=MtpgiH0bND+fdJTL6xVq5KtSukTO9t6P/akMu+GcRK23l4kghHD+5R2dnDz5nxF3E+jJ
-	 SlMmyfP64a55kr9EHslPYXtgRb3pwc1/wctohbj5a4CaU1KZBeo+n4PapGYoG2nrI3BlQ
-	 xAWb6ViJSkn/UCHHCJiJhcBF3PFllyfEroPnWlc+NGsMCh1BlnZnoID+7PacawVdbP5yH
-	 LfaDz7pLQtjCrkolz4+0gUXUaQaQRRvV6BUKABkJxUGwHZB1p4b5/MiiCxKiTHQFtvWry
-	 n9XVNOgBoQ/ABJKzpo/SMHAancQNY/8ZST1tD+eCjD9ivFn71dWVO0PKgvcCUTR5sEg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794984950;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=D3IFWTA7ou2igClaDYSbsGTVSgzRWm+OXVAzSzama/M=;
+	b=d28WMYGkAEm4jLJItP3AfhecxJOXYwmLCm+jst4tEoCpC/415kMpf+GcqCkGZG245YMx
+	 oIA0TNO7218SkSbAbiD+Qp8VdARQKm45AWuA15x1vao2pIW9/NjQReTQ/v0p3TMTI5kno
+	 6yA7w0pp2fux3pHXFFASrC/LNPKUEDLoBbC/d4oXrbS1OC8rn5gGKRdXaP37G86hLaCiD
+	 /+NyKkoxoVDeoRK/xt9uPjPQVjEd+FMyXs94f4VDexv+bAvswwdsGbulBWsrnNKLdY3sC
+	 Zy4E2/h6O9CjoNux90YkDQbYp/nju+1aqgmdzY9A5KbXPGfKBoQcxjKzMpuHHwZusxQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ND+sDlQ1;
-	arc=none smtp.remote-ip=192.198.163.13
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nM+9DlRr;
+	arc=none smtp.remote-ip=209.85.214.170
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A76606A325;
-	Wed, 18 Nov 2026 06:52:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16A76606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA40606A325
+	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 06:55:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9FA40606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ND+sDlQ1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794984757; x=1826520757;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=DrEUIZ3qyU/ux7WrUPR07gul8fRUSWl1kJJN3nWoEdY=;
-  b=ND+sDlQ1SgVvOGT1uui8wzCpLkaEnnH1xv1++l+pEDes1pC9gkWEd1NH
-   kjWa1QEc5uSCegSWV04Tch0hMS4f6zI4GqUVhfBZie20JyMfn781i45WB
-   7I5yKhAFWp29h3GgiHK21aspdHZ262c3Nt0Cx5pLJmTjwnWAK43lm82wk
-   w41fRP5/Fx4ax/GvBacWhKbe1ZrMyjqD9GiXWZDZHwHIuIDBw83XHWQwY
-   CO4RVgDUp6aF5lENeMG0DKDu/gzkzMQbalNchXahciHetgw5UiD2zxcv2
-   Vqhy9Jf/SpGTBdZJXBMRxZe8odGBBLOXBZUbGZqxuE0dDIYFgh6F4rvyU
-   g==;
-X-CSE-ConnectionGUID: kFckTLHpTRm4hmKu5Wjaxw==
-X-CSE-MsgGUID: 6ZTND1IlQ+i7BIGwUjMBuA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3772242"
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="3772242"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2026 22:52:36 -0800
-X-CSE-ConnectionGUID: T9CVNhvrRNOyjSE6/SDleg==
-X-CSE-MsgGUID: tRAtyKlLR/y4UDhkKRsFDg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="9988327"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by orviesa007.jf.intel.com with ESMTP; 17 Nov 2026 22:52:28 -0800
-Date: Wed, 18 Nov 2026 14:43:32 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, Alex Williamson <alex@shazbot.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Steven Price <steven.price@arm.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>, iommu@lists.linux.dev,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	linux-tegra@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v9 02/13] virt: coco: tsm: Remove the device from lookup
- before PCI teardown
-Message-ID: <av1JFH8W63T37bK6@yilunxu-OptiPlex-7050>
-References: <20261116081935.85372-1-aneesh.kumar@kernel.org>
- <20261116081935.85372-3-aneesh.kumar@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nM+9DlRr
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ee254f6eefso47995ad.0
+        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 22:55:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794984949; x=1795589749; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=D3IFWTA7ou2igClaDYSbsGTVSgzRWm+OXVAzSzama/M=;
+        b=nM+9DlRrSc+VH8u2ub3VdFxYKqtFiGInc/JZw8T73N7OAqXa44YAOksg8x7jKYkkuF
+         yOwhOSelLbR3ciacjrREpqKFfhwK5r7r/lk1Uuk8xfjoCoH/lNZCee8mUf7VWzgC2Bpb
+         tu4epm3+IlJ0ND44vTbQq5ss3XdQK9+PEMFYKwhU6O5AlBrQKFaQWO73Goy4f29mqVNF
+         kOuWgxQrag89XkFP2hXkoPYCBeCCPY7IogUEhAraGQ1G4jNGdi2k90Bcg85Nv9zDziAx
+         kxmiwEPofn984RQ60OOeumbDhK4iguBvHixxVMsJ3QgsnlDAMgH23D0cSlu0yXLJ2j5K
+         Zj3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794984949; x=1795589749;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=D3IFWTA7ou2igClaDYSbsGTVSgzRWm+OXVAzSzama/M=;
+        b=nO5/x3GOT3mIVheQPz0IUu83oZodZuUo1hwvGfwVMp1Qp+Q/1IOjnjQtXr4uCxukjy
+         IX6JiPE8LkfPTt1FYuH1wd753uzh+x3p5Oqiu9mGYOsaRYkTgAOBwkBQu8ihhsIAXiWg
+         4QRisoewDOjyRZVSdsM7tCCZaLCV91VpvFcXbtsjMlZMpYAgkeN23E7qpT8DRVrcSKk/
+         fUc4UmSRN5CJAFbopbi3MbcmR5xYJzozAzJokRL+Ix+VqOpwdqGVLUPqUJqVWP/IztlV
+         k8xVLIAWrN/OMxUIiaj1qtXJpqr4VLEx6p7xQ15m2X3pqWBvEE23tZlJPxaM7FMlo7WG
+         mR2A==
+X-Forwarded-Encrypted: i=1; AL+hErG7B/FI0D+QCdkGFWitp2xhH8zHyKvEpoarf2aqnFe1C83qT8QkXXsedxw2aJQupFitHuQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/Ju12WgyaF4NpEnjqZxqvmv07ErbHOVMHjCyvQ9w6kDah+Yaui
+	8GO5pyRrrRdoNuIjJJMFv/huq4RFx3NVOLWIRrl9HfjgIuCH39NI6cbnweVl8oTP5Q==
+X-Gm-Gg: AZFdTZdB8hjY6xHaCQhS9KyK7R9cEab0vj571sH86BE+6b9Ux/8x7Qd6cxn690ko6wj
+	/8YVVsU1rVMMTrvUc74LEMa15dYQxROutp6LP3kQBW9k+EF6a+YhoNgXKuudPrsFAEPSaczpOhD
+	SXnqR3Zf974bZTQhz7TtF8obzK0xZLmEECqXj8pa2qV2dSZYAK16K7r7Ytmkb8uHGXeJSScUVfb
+	3tafb5DCVMy4FUFT+yPaYPelqTakOcE2DpEvg061e6CJqnt9YucKs1MuYDfWdSM2fbnnhp0AA84
+	WGqX1Kkh+2VxcURVjyKX1gToRtMP70h6rcIxhVAAzv2FhzRtFauo8UTU3FxsjIOJeW9nOX9RLCT
+	+J8x3sAxpwSOIo795gFV/yEA30OBFRy6CTlqudLO2VzuioaTpv0bNoRwppjloJlj2m4pD4rJxAt
+	bNeQJRrGm2U5ZJHqwKClViP+u6ntm6h68FZaSNHG+9d+5XIxe3tob7/oOC4EaKVf52ZEAgC2WTB
+	0FppM/5y0XUsKsdueNp3L/j0Kt0NJCgx9Ooa3+HfUd8xSGkFNiauEwxmIQ7Ef6KmFMB6QXt/p+6
+	fvero8Q7HvH3shSocWcJTxVA5PYImpsnlDwC+8O/6X+vs1IImNDvSOUhPaAU+UJ+
+X-Received: by 2002:a17:902:ce10:b0:2e9:73e0:2a6e with SMTP id d9443c01a7336-2eff9952062mr2886095ad.17.1794984948419;
+        Tue, 17 Nov 2026 22:55:48 -0800 (PST)
+Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c5ca5bf959sm657169b3a.20.2026.11.17.22.55.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 22:55:47 -0800 (PST)
+Date: Tue, 17 Nov 2026 22:55:44 -0800
+From: Vipin Sharma <vipinsh@google.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org, ajayachandra@nvidia.com, 
+	alex@shazbot.org, amastro@fb.com, ankita@nvidia.com, apopple@nvidia.com, 
+	bhelgaas@google.com, chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net, 
+	dmatlack@google.com, graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com, 
+	jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com, kees@kernel.org, 
+	kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com, lukas@wunner.de, 
+	mattev@meta.com, michal.winiarski@intel.com, parav@nvidia.com, 
+	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org, rananta@google.com, 
+	rdunlap@infradead.org, rientjes@google.com, rodrigo.vivi@intel.com, rppt@kernel.org, 
+	saeedm@nvidia.com, schnelle@linux.ibm.com, skhan@linuxfoundation.org, 
+	vivek.kasireddy@intel.com, witu@nvidia.com, yanjun.zhu@linux.dev, yi.l.liu@intel.com
+Subject: Re: [PATCH v6 07/27] vfio/pci: Preserve vfio-pci device files across
+ Live Update
+Message-ID: <20261118064707.GD2250529.vipinsh@google.com>
+References: <20261102153656.1431701-1-vipinsh@google.com>
+ <20261102153656.1431701-8-vipinsh@google.com>
+ <au5VMy7zhOb65xIE@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,112 +112,60 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261116081935.85372-3-aneesh.kumar@kernel.org>
+In-Reply-To: <au5VMy7zhOb65xIE@google.com>
 
-On Mon, Nov 16, 2026 at 01:49:24PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> PCI connect looks up a TSM by ID under pci_tsm_rwsem. Previously,
-> pci_tsm_unregister() released that lock after tearing down PCI state
-> while the TSM was still in the class lookup. A racing connect could then
-> attach a new PCI context that the teardown would never see.
+On Fri, Nov 06, 2026 at 10:35:27PM +0000, Samiullah Khawaja wrote:
+> On Mon, Nov 02, 2026 at 07:36:36AM -0800, Vipin Sharma wrote:
+> > +/**
+> > + * struct vfio_pci_core_device_ser - Serialized state of a single VFIO PCI
+> > + * device.
+> > + *
+> > + * @domain: The device's PCI domain number (segment).
+> > + * @bdf: The device's PCI bus, device, and function number.
+> > + * @cfg_size: Size in bytes of the device's PCI configuration space
+> > + *            (``PCI_CFG_SPACE_SIZE`` or ``PCI_CFG_SPACE_EXP_SIZE``).
+> > + * @size: Total size in bytes of this serialized buffer, equal to
+> > + *        ``sizeof(struct vfio_pci_core_device_ser) + 2 * @cfg_size + @saved_state_size``.
+> > + * @flags: Bitmask of ``VFIO_PCI_SER_*`` flags; unknown bits are rejected.
+> > + * @saved_state_size: Size in bytes of the serialized &struct pci_saved_state_ser
+> > + *                    blob stored in @data after ``config_map``, or 0 if none.
+> > + * @reserved: Reserved for future use; must be 0.
+> > + * @data: Variable-length payload containing, in order:
+> > + *        1. ``u8 vconfig[@cfg_size]`` - VFIO virtualized config space snapshot
+> > + *           captured during ``freeze()``.
+> > + *        2. ``u8 config_map[@cfg_size]`` - VFIO capability map snapshot
+> > + *           captured during ``freeze()``.
+> > + *        3. ``u8 saved_state[@saved_state_size]`` - serialized
+> > + *           &struct pci_saved_state_ser captured during ``preserve()``.
+> > + */
+> > +struct vfio_pci_core_device_ser {
+> > +	u32 domain;
+> > +	u16 bdf;
+> > +	u16 cfg_size;
+> > +	u32 size;
+> > +	u32 flags;
+> > +	u32 saved_state_size;
 > 
-> Remove the device from the class lookup first, then take the PCI write
-> lock to drain in-flight operations and destroy their contexts. Drop the
-> device reference only after PCI teardown completes.
-> 
-> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-> Cc: Alexey Kardashevskiy <aik@amd.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Lukas Wunner <lukas@wunner.de>
-> Cc: linux-coco@lists.linux.dev
-> Fixes: 3225f52cde56 ("PCI/TSM: Establish Secure Sessions and Link Encryption")
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> ---
->  drivers/virt/coco/tsm-core.c | 20 +++++++++++++-------
->  1 file changed, 13 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/virt/coco/tsm-core.c b/drivers/virt/coco/tsm-core.c
-> index 03894c5663f1..57db3f14cf46 100644
-> --- a/drivers/virt/coco/tsm-core.c
-> +++ b/drivers/virt/coco/tsm-core.c
-> @@ -56,23 +56,22 @@ static struct tsm_dev *alloc_tsm_dev(struct device *parent)
->  	return no_free_ptr(tsm_dev);
->  }
->  
-> -static struct tsm_dev *tsm_register_pci_or_reset(struct tsm_dev *tsm_dev,
-> -						 struct pci_tsm_ops *pci_ops)
-> +static int __tsm_register(struct tsm_dev *tsm_dev, struct pci_tsm_ops *pci_ops)
->  {
->  	int rc;
->  
->  	tsm_dev->pci_ops = pci_ops;
->  	rc = pci_tsm_register(tsm_dev);
->  	if (rc) {
-> +		tsm_dev->pci_ops = NULL;
+> We will need space for iommufd_token when we preserve that, we should
+> probably add it now as otherwise the compatibility would be broken when
+> we add it? Is the reserved here for that?
 
-Previous comment shows this can't solve any racing connect problem.
-And with your next patch, the racing connect is solved. So I think
-remove it.
+No, reserved was just to align data[] to 4 bytes boundary.
 
->  		dev_err(tsm_dev->dev.parent,
->  			"PCI/TSM registration failure: %d\n", rc);
-> -		device_unregister(&tsm_dev->dev);
-> -		return ERR_PTR(rc);
-> +		return rc;
->  	}
->  
->  	/* Notify TSM userspace that PCI/TSM operations are now possible */
->  	kobject_uevent(&tsm_dev->dev.kobj, KOBJ_CHANGE);
-> -	return tsm_dev;
-> +	return 0;
+Based on David's suggestion, I am gonna get rid of variable length
+data[]. This whole serialization struct will be fixed length.
 
-I really don't think we need this wrapper. In next patch we move uevent
-out, so this wrapper is just:
+I think it will be fine to extend this struct by adding a new field at
+the end of struct in your series along with updated flag when you add
+iommufd support. 
 
-	tsm_dev->pci_ops = pci_ops;
-	pci_tsm_register();
+iommufd preserved vfio device cannot be rollbacked to this kernel where
+there is no support for iommufd preservation, so, flags will be correct
+to reject the change.
 
-Open code it, as Alexey and I suggest before. All kinds of xxx_tsm_register()
-are really confusing.
+Do you have some other concerns when yiou compatibility would be broken?
 
->  }
->  
->  struct tsm_dev *tsm_register(struct device *parent, struct pci_tsm_ops *pci_ops)
-> @@ -96,15 +95,22 @@ struct tsm_dev *tsm_register(struct device *parent, struct pci_tsm_ops *pci_ops)
->  	if (rc)
->  		return ERR_PTR(rc);
->  
-> -	return tsm_register_pci_or_reset(no_free_ptr(tsm_dev), pci_ops);
-> +	rc = __tsm_register(tsm_dev, pci_ops);
-> +	if (rc) {
-> +		device_del(dev);
-> +		return ERR_PTR(rc);
-> +	}
-> +	return no_free_ptr(tsm_dev);
-
-I think none of the above changes belongs to this patch. They don't
-solve any problem mentioned in the changelog.
-
-They belong to the next patch.
-
->  }
->  EXPORT_SYMBOL_GPL(tsm_register);
->  
->  void tsm_unregister(struct tsm_dev *tsm_dev)
->  {
-> +	/* Remove the class lookup first. */
-> +	device_del(&tsm_dev->dev);
->  	if (tsm_dev->pci_ops)
-
-The patch 1 rejects NULL pci_ops, so is this check still needed? Can we
-remove this check in your Patch 1?
-
->  		pci_tsm_unregister(tsm_dev);
-> -	device_unregister(&tsm_dev->dev);
-> +	put_device(&tsm_dev->dev);
->  }
->  EXPORT_SYMBOL_GPL(tsm_unregister);
->  
-> -- 
-> 2.43.0
-> 
-> 
+> > +	u32 reserved;
+> > +	u8 data[];
+> > +} __packed;
+> > +
