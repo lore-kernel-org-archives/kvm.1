@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795018630;
-	b=tev1JNzwkSRbJA5CRI+5c4y5PULRs58VcETQcRUGFWAh6dTJ4j05VAFYOlMNZ1CIOZCm
-	 t+FXyDUB5krZQBAFvwPg4g3Rm1z2A++sgXcvK+IUOKOX0OfMfApMGCkXGKwPH50ruyoCH
-	 3OKszgRuMP71Hl0DSXLkkKlvDebru1o6/36ex7XXZdaMqCc0ZJOnJNs3SyD7+gopXVFAv
-	 V9IZrkwfQdRFIXLt8MjYj1CcugzCNagKQ89SVh3OsLTdQ6OLb83L9w0iSVV8LO9HdR2rf
-	 D9sXjDIaq2O70LiMrkpvqcv/uBrlIZ3HLU4ZBmpWDh13x4FMz2nQZBqjmyf1C3KXD4Q==
+	t=1795018811;
+	b=xTFpm/jnA7FJnADFDAsyYILSIulle2Fgpz31xk+nQrpNd7Dx4A8BXOpIkhA35pn/PEPn
+	 d9CmU3t3MJ53Po/tCdmMyOzLa6prrSKv8HkQuPLjsG17I5VhW7dCsWOXoWCMyT+uY1ODY
+	 pkTDZNUjvXDuZdUP3jAjTuk7K7Dx3H9z/8zsR2oSfcUTqdLK0om4zvB81jbVE0+ucQG0d
+	 JhJnaugE5ZIEV7W4kj+1tfFWbwEdSCSOEpE5HwiPc2tv4LPtz/3e5mZExDu1Xm7DVwNVW
+	 DcY36+DgNlBwONpjTwD0BcUwn+CUPlbw8/ZkV+czhVgnIgbYjBSasUkk1sV+Lu+VeHg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795018630;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795018811;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=8frWPaVaB9d/k6ijjDWbjjjUUJ/LohWseRkfCzhWv8Q=;
-	b=TAJxNC7n3PEM2iVAshHboDA6cuyZ7mHjDQP12I+nvNQVzX2UMJQ4Ji9Qfc8300DP+1gs
-	 2+FoTiKGW1fKaX1LyQZKAkiwuuRwODURQV+ntDSE1+ChBUr5mcuoNCiShrcez9xgXiSAp
-	 rAtR2tSisbFM9A8LwqwPp66o28p2F+Y/wEHI/xu14SbEKUoQyBPAyGzNyJIiUOtzl+2pM
-	 kTFDsbBRwCWu6TQ5q+VkslkZ/q/Apb1TUiQim14xB52wYkfFFcDLOcuPv2iOKbAqXC6eS
-	 9vR6o/FM2B8PRoK0imUB1kQz/jqc1bBR99bLdM3A3nm5XC40y32SB003QV0guPEPuHg==
+	bh=sFa+8osRr+Td7hjHKGRDX6/RLhBxSgDFK1+pCtkm/bE=;
+	b=emHKTqt/iy0A7ibt05AxlZvNx7HzdoV4OI6+OHAj06BWXtZLet261dDwJCrnkVmIAwKR
+	 b9XeAIj5XFCulRucRI3JSYQqJzZ+OM/b6rJUtxE/RsNYhVnPVuuftQiaekP7N89zJKWwW
+	 5TvacP3kXjgw6nirzOxICC3VIPBW72HdGMVKit/zFcMvVMTUJay7Fyn3FdHEWY4a1VxUN
+	 igbhQcuzWnz+jts3xL0bc9eYmpRTSLGPcGfLJvJywrTlKF7pQrMKA+S2IMvWr3CrAQdpC
+	 +BxMqZxJ+RsaPNV0T1LXIC6brBwdwSFS1MKu+ctEVIegJjfN1f6bA00o9+l/VAzmB+g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jvZ55scC;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cdh1H2XA;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A05F606A32F;
-	Wed, 18 Nov 2026 16:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A30A606A31C;
+	Wed, 18 Nov 2026 16:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jvZ55scC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 826E51F000C6;
-	Wed, 18 Nov 2026 16:17:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Cdh1H2XA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7592F1F000C4;
+	Wed, 18 Nov 2026 16:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795018630;
-	bh=8frWPaVaB9d/k6ijjDWbjjjUUJ/LohWseRkfCzhWv8Q=;
+	s=k20260515; t=1795018811;
+	bh=sFa+8osRr+Td7hjHKGRDX6/RLhBxSgDFK1+pCtkm/bE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jvZ55scCw9jriUaLK5rs8KLzw3ga4j8gjai6+GQKG7VDHmKCi6+E2wZJCxvgwqGwC
-	 yFv83HyrQ81PmxWFi8G/GeB6kn3k+Z4kU9K4SnnBoH8KXDsCptoDx5v8zxZy7aCIPC
-	 aT3x5YembzkCGG0D7IkWbwGMsfcpJPIiU/ig8Hnxz0alvc4IiRbvOFcwna1Fm2cbU3
-	 P/HCIv1KNZvMAmfVctIu26E2CHZ9fxU7bCd0wapGS8Ffc/rFCKWkP4OasHL0ZN2NWr
-	 cwuHs/rwmQ7D1A41U3o+swSGH6TXX7+mcV4Wyu2spzS1Daba8r8mZfXKWkTLcRsrOn
-	 AHAHzSLjWBDHw==
-Date: Wed, 18 Nov 2026 16:17:08 +0000
+	b=Cdh1H2XAj1xjH2KEEe3ICZCx5l57Qg63s3AqU20OTD9L8rf3gUC1Nxat3vjQXIFmc
+	 s15EV6o2NaQCZw+AamDvR45fPzTN78lKBU5AUILSc+w9j9Y5qd5ZQ17MinomUPVmSr
+	 wwgf8nB7TPqn0B8HnkFYSCpjxj5/Dc36f176cRzpC7oeNtpxjR/gBtIgsYtD1mL7Qs
+	 qQJB2RpOyX/G9SzpFbdnuKu7Jj//tDxqRpa1zQ5UOxr3GQ6s2kePwN0DVzkjCqaNCG
+	 SqkZPtCSx9Ag7V2LxVRc2BCzPYgo0Q9RZBhk7DoU+KQPFDpvRqn97trAf2NWo8NB/r
+	 ybBz6m8s8A1Hw==
+Date: Wed, 18 Nov 2026 16:20:09 +0000
 From: Yosry Ahmed <yosry@kernel.org>
 To: Zide Chen <zide.chen@intel.com>
 Cc: Sean Christopherson <seanjc@google.com>, 
@@ -48,11 +48,11 @@ Cc: Sean Christopherson <seanjc@google.com>,
 	Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>, 
 	Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>, 
 	Dapeng Mi <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
-Subject: Re: [PATCH v4 15/21] KVM: x86/pmu: Clamp pmu->version to
- kvm_pmu_cap.version
-Message-ID: <av3O9YqD6iW4UT9c@google.com>
+Subject: Re: [PATCH v4 17/21] KVM: x86/pmu: Factor out fixed counter control
+ bit calculation
+Message-ID: <av3QM4Mj2KidNro3@google.com>
 References: <20261112203227.289379-1-zide.chen@intel.com>
- <20261112203227.289379-16-zide.chen@intel.com>
+ <20261112203227.289379-18-zide.chen@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -64,47 +64,23 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261112203227.289379-16-zide.chen@intel.com>
+In-Reply-To: <20261112203227.289379-18-zide.chen@intel.com>
 
-On Thu, Nov 12, 2026 at 01:32:21PM -0700, Zide Chen wrote:
-> KVM's policy of not policing guest CPUID allows userspace to configure
-> an arbitrary PMU version without KVM rejecting the ioctl or mutating
-> guest CPUID entries. As userspace is responsible for validating its
-> configuration against KVM_GET_SUPPORTED_CPUID, userspace is entitled to
-> "shoot itself in the foot" by presenting an unsupported virtual CPU
-> model.
+On Thu, Nov 12, 2026 at 01:32:23PM -0700, Zide Chen wrote:
+> Rename intel_pmu_enable_fixed_counter_bits() to
+> intel_pmu_fixed_ctrl_bits() and have it return the computed fixed
+> counter control mask instead of updating fixed_ctr_ctrl_rsvd directly.
 > 
-> Clamp pmu->version to kvm_pmu_cap.version so that KVM's internal state
-> tracks the effective PMU version that KVM supports, and avoid exposing
-> or emulating features that KVM does not support (such as MSRs gated on
-> higher PMU versions).
+> Accumulate the desired fixed counter control bits during PMU setup and
+> apply them once in intel_pmu_refresh().
 > 
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Suggested-by: Yosry Ahmed <yosry@kernel.org>
+> Move the helper earlier in the file so it can also be reused for
+> upcoming ANYTHREAD_DEPRECATION emulation.
+> 
+> No functional change intended.
+> 
 > Signed-off-by: Zide Chen <zide.chen@intel.com>
-> ---
-> v4:
-> - New patch. (Sean, Yosry)
-> ---
->  arch/x86/kvm/vmx/pmu_intel.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-> index 5eac64ba8832..0be9956810ae 100644
-> --- a/arch/x86/kvm/vmx/pmu_intel.c
-> +++ b/arch/x86/kvm/vmx/pmu_intel.c
-> @@ -574,7 +574,7 @@ static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
->  	eax.full = entry->eax;
->  	edx.full = entry->edx;
->  
-> -	pmu->version = eax.split.version_id;
-> +	pmu->version = min_t(int, eax.split.version_id, kvm_pmu_cap.version);
+> Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+> Reviewed-by: Jim Mattson <jmattson@google.com>
 
-Why not AMD too?
-
->  	if (!pmu->version)
->  		return;
->  
-> -- 
-> 2.56.1
-> 
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
