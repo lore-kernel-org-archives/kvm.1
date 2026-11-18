@@ -1,68 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.170
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794999734;
-	b=WsWSUjfUUcTKqBu4BAd0XDc2lDXPnlvH3kDrAuG8RBYALeCC2r+qKNWDTEWTtZHoIdoS
-	 BjPwuhkYHd3D5rBT7wELiKHXAw0mFkUG1TWc4JjRgiffpSffX3sbouKRMVLAb81zn7bg3
-	 LZl/6CpoPJeSBIOtd+G5vszsqDgVyWQ1/VRRtqADTXtPAmzk9NKfF/+uZxLmv31gbjagx
-	 KUxMjd8tvssHL6pemAMQQ/kJU1adQNlDAfMZjHt4EDW56CWmIWBs9AXy4I5VNNpN1wIre
-	 ApyE9JY2eH7MvS3xTkBLu7iqsOf4nm+ybmNuKrqOgGElxDMzv16L/jKUrxUOz2jVQtw==
+	t=1794999730;
+	b=Kj2oLux6eGEGLqcPZ9myQyy/9lVXAlFiqI6fSpEHub0qU+1PHstAONn/J+aqkH57RI/s
+	 l5eBeK69VLZefNlsXVcg61ouOeTJhyUL2RlY5k6KGBjzUtC3beJnTbqjKHsEIJrObPS4x
+	 S4weo7+WeR1nvqmISuIqD6EfLe1hNA9qdeeUTvepwk0zDWzM3HjYFheXPqMY6/44825Fi
+	 r1c4WMKSF4+bWUuNLdBVaiOEhkmrO0IhN8VkfbwKlJUp/hWujdbs8mXkcN/qNQnL1oe5D
+	 UhFrFiu6V3sOLYMvO2frPAoH3Zbnl/nxFlawV5QlrxyT2wcL5BjeBbXcaM2tZ/Z9c8g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794999734;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=/ppIoJSSygapoFf8d3+W2D7zVwbW79N+eyf0qrsR1iM=;
-	b=Cxbpo5TgN4aVoeZv4icMD19FV9zpIFR4U3jIiM3c72aSq71nhhgj8cNA5s7tEGSAyERN
-	 xfzjsprN5USOqSA73/5J2q2nFRm1oSPdXu9kF9xRgFttsaMPGFvSDOvH75S0u0H2dSSCE
-	 3SahoqNGjFVB3Eqxl5zTzUhPYlPsxpfNjRrU5ILKRcV07FYeTI1fh+ctwTYz/plOAtjT8
-	 Qjw0gGS9OInxmliKZHgslkw0wyfVwiwRq1AlsrZAEQf8V3XtQdCVpC2Dqn0CgraYbzlvb
-	 M1X7rEUaxPE004Z7k91pu4IxfjIxhTY0uS4DFxvm4pkgvOOOPpjmuieXNJ8WVEm3SVw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794999730;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References;
+	bh=lz6wQ0mKUNU0UkbDxsh2f3DKCiv42RamE0uqFpw1ylQ=;
+	b=xaV9Xv0YaWmN8waTkAj1bKUJ6KhwX6LmYe85AJ1yo9WvGPUuDLm3icTV66A2FB6NzCgP
+	 EYnKwsqa/9Y99+zjVPDaPt5JpUt9IG1thh2ad+PX4b9+RzvCBImdkDRd8q7yP27Q8AOoa
+	 ueswl1BF6xuZ8GdT4bivv7jiD/Za9Y4dHN4Prv34Mu1QkH8UAt5C5p1Q9+DoTiS0lnKs0
+	 MMg1DlLcLpqDe/4rc7Kp8Dp5ZhDtDqHePvdaMWxRMlDHNjZqhvPlvt0fjDfAS2+EuK1Eg
+	 IB7ENwIr84RuiBq7EP7q32S++8wx439GH3mjD5bJN7XQmMzB+o1iyZiEQH2a3mFKEFg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ike5EReS;
-	arc=none smtp.remote-ip=192.198.163.9
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Db10RAlg;
+	arc=none smtp.remote-ip=74.125.82.170
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9A3606A337;
-	Wed, 18 Nov 2026 11:02:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8B9A3606A337
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653A6606A333
+	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 11:02:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 653A6606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ike5EReS
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794999733; x=1826535733;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=8XWiTu/a1gGNV02ADUvGH4Yse9XH4Pb47goXb3WR6MI=;
-  b=ike5EReS8TjY69i2zToJ2+gtuRlc+OsB4/1T+G1e5uobiSF40cQr/KKq
-   63Ep+3xMTU58msk6Z4aPjbG9Ku2q+CjebBE2LFI8l5aSTX1DVOBOfwTj/
-   d4k/tCJlQ7s/hie8v9R8Qq3FG04ZNOwltG/h0t43w8tSYbkp1PSPl4Q+x
-   8/McJKQplHtNOMU840fuG5sREaYv5syIlWg131f6libR3kIiRBNItiO/d
-   Kj3NDempG0ok2VxmOOzKy8zQDICcBTC2APrBTPKDl15pYYEev7GBaGZ4l
-   Ivna9EboQSROSOhXvTpS5uYRl8Ux0Z1Rvny7z0+j1mUlVcgiW2DqPu+fj
-   Q==;
-X-CSE-ConnectionGUID: SMagCeWITmCXGcbycO4G/g==
-X-CSE-MsgGUID: 4mnI1qt/RIePCuk8iTE+Lg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3684584"
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="3684584"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 03:02:13 -0800
-X-CSE-ConnectionGUID: yv3n1dy3RVeyjTiA3kzxkA==
-X-CSE-MsgGUID: fvst2zP6QrWSrIoYwPxrTQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="9909357"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 03:02:10 -0800
-Message-ID: <ed90de7e-6019-4d42-bc6e-5b586b460a31@linux.intel.com>
-Date: Wed, 18 Nov 2026 19:02:07 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Db10RAlg
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso2148080eec.0
+        for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 03:02:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794999729; x=1795604529; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=lz6wQ0mKUNU0UkbDxsh2f3DKCiv42RamE0uqFpw1ylQ=;
+        b=Db10RAlgUJT1LdsOQzJ7fcLavXBei3dJ4+oWUC6WYljUFTqrPbn06u3uDFculCFNEO
+         gMZB9AJ2KVvAMasfN9WEl1BFwjq2HiHXcLYt1iyGAplDPAa2xYQWUaR6CW7fANd3Vx5Y
+         cFLWYu/2m9suxe3871zBW5tj2fIsN6dBjy2tg7/wKA2iZI/YXpbOEYaF8u6QioeizaLG
+         gAjTiIEpJjXG5ZRrySx4OrL8Y02m33m9gF5w+PSUXXs2aluRFgytyfpsJxqVqvc9bXA4
+         bMxeRNlvxxZ+UTvIs1mlUj2STK4+VYyXVzxdYCjkgn6iAZiROy900Dnw3oN5emZR2Wna
+         6HLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794999729; x=1795604529;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lz6wQ0mKUNU0UkbDxsh2f3DKCiv42RamE0uqFpw1ylQ=;
+        b=WNvd79/PZGv/sIdJjoHjb54RdjuK4I1SDZhMpz02G8V/zGQDqXmTnZmbaArdIuDRuF
+         WWt+E54zHsuuk+82arsZrWB1MYGLYe+075GT4S2ff5vyyXti2dQHtouS9enXU7aZumSZ
+         ehyEwSA5RtOJOfVbpNJZsmjCGXiJjbaToxi2rN3JGRgrzK8k1Q4zcOB2GOR59ssDfMOY
+         8mdtvG5b1PMuq2MyLD+4UEJl4gQpfK5NCRsWRhf3V5REKwHy757O8qI6cplGkwj7h6yV
+         2ItJ2FUkyExOJINah2Ub9mz+M708DVkvDB04tAQjBpWjD8SXiyynfSS7ubVzGkJE6GOe
+         Z6FQ==
+X-Forwarded-Encrypted: i=1; AL+hErGwDKdkxEHjc2LdkvMREeWNfh70dsKWcoVE8nHGr92Be1tTPj8bNfYciwPp+VozCI/2L8g=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+TL1pEBhTFVh8/6icAZGeDT4W/EYu3hJC3VUisMYB+BqdslWEt
+	yQf5AJmauPH7qHdf3LO6N4Xx+dPqMaxHp2d9xbJDQHuQjC8I4OxDuqQz
+X-Gm-Gg: AZFdTZdmm4iG1nNhrvMYuKsXcG6Lo/i0Vhj2bahtnivaWE0NbC5272O9EN9HxhJ3RS/
+	CJ9cFj17ecAtojT3/LwSVuU/qK8OhTe43Mv3FA2hSjen1yTRvp8L6KooWq0bC9kk4oHBncj1C42
+	8JdqVZ3XbtRUY+xThyHGH8q6LJV1fvVqph2OC+w7pjH6/VFJGpQnEtgIOG4yD1NucAbTAU3MRmX
+	fqU7xN+f2WW6EBAfECq+3KYmnXatPt0QdWnmIbAlH/cty9UOYfH/yaCDCjQ5tydkg3Y2ZdvpsMb
+	pJ3xgM1BVwvlQrGKIEsdXgRwbGIy3AEfNFfhz7GoUCjFGbNEGGGPnrWBPl+EdX3Pgosd1KV7h+C
+	6wapGIKPPgGOQ24gt6xUIDJHzB4PwJV5KOOok2oJjm8AJUAiqGMHlEYqYUGM3KrdeIYnxFO+jhS
+	qgo55PXh31/BNDZeidUo8YzdjU2Omb9IuFW29uUpchby0BvHLJgTLQlZJCLL4Hsl1avFQSM/+HR
+	H96voath99gXFmm8MLv9yUwhHDbIhn3GyphKTpfa6TLRpI0LeOveodZZCi0wnYQ72hJX4jjugU1
+	Sks6yhiss/kTAZdOLaHNg/Hs+qY=
+X-Received: by 2002:a05:693c:62c1:b0:382:1c52:da74 with SMTP id 5a478bee46e88-3828101d214mr2495287eec.25.1794999729242;
+        Wed, 18 Nov 2026 03:02:09 -0800 (PST)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-382a75d8015sm6984944eec.21.2026.11.18.03.02.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Nov 2026 03:02:07 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Gaurav Yadav <yadavgaurav386@gmail.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KVM: PPC: BookE: Use vcpu_err() instead of printk() in kvmppc_dump_vcpu()
+In-Reply-To: <CANo8Ldu_Y=GduFxxukfbNQT-MOQmR8N0V8evYQPpO2+i1L1hSQ@mail.gmail.com>
+Date: Wed, 18 Nov 2026 16:31:23 +0530
+Message-ID: <pkw2769o.ritesh.list@gmail.com>
+References: <20260807084050.25216-1-yadavgaurav386@gmail.com> <a4na92vc.ritesh.list@gmail.com> <CANo8Ldu_Y=GduFxxukfbNQT-MOQmR8N0V8evYQPpO2+i1L1hSQ@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,90 +92,14 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/9] x86/virt/tdx: Add SEAMCALL wrappers for IOMMU
- setup/clear
-To: Lu Baolu <baolu.lu@linux.intel.com>
-Cc: iommu@lists.linux.dev, x86@kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
- Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, yilun.xu@linux.intel.com,
- xiaoyao.li@intel.com, Chao Gao <chao.gao@intel.com>,
- linux-kernel@vger.kernel.org
-References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
- <20261112043054.2664857-2-baolu.lu@linux.intel.com>
-From: Binbin Wu <binbin.wu@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <20261112043054.2664857-2-baolu.lu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 11/12/2026 12:30 PM, Lu Baolu wrote:
-[...]
+Gaurav Yadav <yadavgaurav386@gmail.com> writes:
 
-> +
-> +/* No cache flush is needed; hardware keeps caches coherent across KeyIDs. */
+> Thanks, Ritesh.
+>
+> Adding the tag and sending a v2 shortly.
+>
 
-Nit: 
-It's a bit confusing without the all the background.
-Once Rick's patch [1] removes tdx_clflush_page() and its comment, a reader may wonder
-why this wrapper explains the cache flush but the others don't.
+No need. b4 picks up the RB tag on it's own
 
-Is it better to drop the comment and explain it in the change log?
-
-[1] https://lore.kernel.org/all/20261015191710.3632302-2-rick.p.edgecombe@intel.com/
-
-
-> +u64 tdh_iommu_setup(u64 reg_base, struct tdx_iommu_mt_param *param,
-> +		    u64 *tdx_iommu_id)
-> +{
-> +	struct tdx_module_args args = {
-> +		.rcx = reg_base,
-> +		.rdx = __pa(param),
-> +	};
-> +	u64 ret;
-> +
-> +	/*
-> +	 * Retry only on TDX_INTERRUPTED_RESUMABLE:
-> +	 *
-> +	 *  - TDX_INTERRUPTED_RESUMABLE guarantees forward progress between
-> +	 *    calls.
-> +	 *  - On TDX_INTERRUPTED_RESUMABLE, all registers except RAX remain
-> +	 *    unchanged.
-> +	 *
-> +	 * The ABI spec also allows retrying on TDX_OPERAND_BUSY, but that
-> +	 * status doesn't guarantee forward progress, so retrying could spin
-> +	 * forever. The host serializes all TDH.IOMMU.SETUP and
-> +	 * TDH.IOMMU.CLEAR calls for an IOMMU, so the TDX module should never
-> +	 * report the operand as busy.
-> +	 */
-> +	do {
-> +		ret = seamcall_ret(TDH_IOMMU_SETUP, &args);
-> +	} while (ret == TDX_INTERRUPTED_RESUMABLE);
-> +
-> +	*tdx_iommu_id = args.rcx;
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_FOR_MODULES(tdh_iommu_setup, "tdx-host");
-> +
-> +u64 tdh_iommu_clear(u64 tdx_iommu_id)
-> +{
-> +	struct tdx_module_args args = {
-> +		.rcx = tdx_iommu_id,
-> +	};
-> +	u64 ret;
-> +
-> +	/*
-> +	 * Don't retry on TDX_OPERAND_BUSY. See the comment in
-> +	 * tdh_iommu_setup().
-> +	 */
-> +	do {
-> +		ret = seamcall(TDH_IOMMU_CLEAR, &args);
-> +	} while (ret == TDX_INTERRUPTED_RESUMABLE);
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_FOR_MODULES(tdh_iommu_clear, "tdx-host");
-
+-ritesh
