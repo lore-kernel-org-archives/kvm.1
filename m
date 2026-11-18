@@ -1,66 +1,65 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.153.30
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794966927;
-	b=1qLrtoJkGBNt9Wr9EK+6vt38aJBzDjnvXTPtyVuWTougFCoxXSV+kOW2KiEA3RJ1mm6o
-	 qPEuD3BVXO6r9XtDUWpyMltO5BebEQ4Rx2QBo4xlq8Exc2FCtvyPDS+SYphfWtugwzpHf
-	 Mz5LmB+QfuqEHEZSAUB5eJCHFt5XVFsFS84nvCnM++LFA+n65nl8UwSOsJORBl8sNCGQh
-	 6Cl6VNicXkb+It/ReICxfi2clmjN2HwAR4y5HGfZoIiICp1BqSbxIHWI8eWnMOe46E4xp
-	 dhL15TJKfXiIGrFsgBNnAlwcr/a02Xp9+veyh+s6TIT22lOKoYzQii09O6jQtRGYbHA==
+	t=1794966928;
+	b=bSSA3VCcaC5Ne3RMAM3DIsJfB+hOqGsKX0U9Kk3hh5gHGHM2kY/htC3XUFtfrpojXN9S
+	 ztwG4zqpEOLWipe1mmz26BMtzw9ltXbMPgfkbQ6pB9V6lGJNzuHhnYAdNCz8ETXuy9I4K
+	 jTIsRrJ4wzMoSNk3vrVgk2vkjoKwO7PKzPsc4v8LXZSIYYNZ9E1HCv2ZkBp5qcl695Rgu
+	 XFRAHyNxDjYZ/vo3V2bod9n7nerOdISu6eJa6ro1G+SUioax4d8ry7R6AcMCq8ofXAgkx
+	 EyqO/E2KZQtFNOB4AcEoth97MWeanwSMuTzvJyIY5kYXHqiabH0mvh/wqWmrnwo9/YA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794966927;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794966928;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-ID:References:In-Reply-To:To:CC:X-Mailer:X-Originating-IP:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Info:X-Proofpoint-GUID:
+	 X-Authority-Analysis:X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
 	 X-Proofpoint-Virus-Version;
-	bh=9JUsSU/RE0kWWq5dRPxNckF6Lzz2dBkuaWrDrNZqnZ0=;
-	b=jWz6IqbEZdsGSkZtl6GDwYI7Mmodjdi3SRM4/kQl/yYWz4XhUTMu58KjIWudE2NUrWB4
-	 9AntFhQ6DCiiTS3amUKt7YNwYRkZ/m/6BRJP+lmD5ORyaSwPeqdDtbKlzKQaI8wnR1kW3
-	 yKxEGCBV+vFXTCD9gTtrxQN94uqDFprRi5Xp69OrnZM9dESk30bQt3pkpAPqX5h7mMSsJ
-	 NzxAOStUrTtROTYGBXg4rFG9OHloG+CwvNNbYKG/aDQWXaEChhXzF2F/3TjC6yTPBKeyT
-	 hTSlJlj7hyjTZgwRWvBnhc7fcEUivdktSo3cofNsnDSRcwUXN+eT8ofzPAqjPSv1UQg==
+	bh=rM+PXP8JJcUMybNdJI1OSHiTvgbrlHQWSRXWArsiwAg=;
+	b=pjujHYZSZV8zWpYb+og4ZNQGr6xf3e2BwiOah2sHXgiw9UmP6cqDboqIYrcFqcnMivr+
+	 +pKkYBYk+K6VgF7JlOMBoIKifPdaMDec3X5X+Rdz1UUDMQyO+SGp2VIV1KcvLJ+ViKOKd
+	 X4mP1/WP5ZTxCZUCTYjTro3CIonSa51c7biZF4BNdHK64qElh1FvxqY7rRAumyzaxQE/o
+	 Q0Ulb/4AKQur1OtHB19vhX12fqW5fuPH6ylRPb2QwIEhrOplPBKtVu4oRyXuq/l4+2T9/
+	 d7Fz1I471QGrHSKQpbH3G8LlCyrkMEOLhZh6m7RQeRS2fEsI24TcqSL6l+XdIbvcBdg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=meta.com;
 	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=PwPkW6hX;
+	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=NgyrMkgn;
 	arc=none smtp.remote-ip=67.231.153.30
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B81606A31C;
-	Wed, 18 Nov 2026 01:55:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41B81606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FCF606A32A;
+	Wed, 18 Nov 2026 01:55:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 71FCF606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=PwPkW6hX
-Received: from pps.filterd (m0528006.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AI11rvV1516366;
-	Tue, 17 Nov 2026 17:55:07 -0800
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=NgyrMkgn
+Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
+	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 6AI11qOJ492445;
+	Tue, 17 Nov 2026 17:55:05 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=9JUsSU/RE0kWWq5dRPxNckF6Lzz2dBkuaWrDr
-	NZqnZ0=; b=PwPkW6hX3kLRz5ai6HT8JJ+yzQB+rbuR0eNhtFW1No14hp49gj+0x
-	G5SNcQoYhrh54vWVq5xDQg1t4Iwr3Au2uFvnNTMFYb8RJwUdCqiJtAEHdWfSP/JC
-	L5Ell8QpJ1FWNvXFypzkYgbLJAtMEcPVQGD1MLy/2BqRtigRM1BBU4xTEGr3QQKC
-	bblfhBiqg0zh94zEEg976hTuxh1wWWkZN3c9/bcUCuyOZNS5MsIDvKgCzpONQUK1
-	HvnQMhP/QJyxzBT7kZa3PJ2GyDCPYiikoJZNlzdAoPX7ivnvMdmGVMHSO/2wPw5x
-	LmH0JLTvN5XMumd2BThL2N7LojXpMZ8+A==
+	pps82601-s2048-2026-q3; bh=rM+PXP8JJcUMybNdJI1OSHiTvgbrlHQWSRXWA
+	rsiwAg=; b=NgyrMkgn7zoJAejeX7xHRk/oQWDQLUDUzfZj8fdElA2XyuiX9rZT7
+	fYGZQge5cmW5hh9p6cuJkhvrwFHYWpP+RfKG7Cewiq5y4rVprUNCDL0obHYWHExO
+	E1MZOlVIMSHt+3MvpRJiNhPItno1xZQ8GssYg68be7xsvpqLAi0ATDqWFr0NoE46
+	RzrHcbM1YfD/M9bvuD0laJHTtikVgrZtY+8QG9BVBJDWONKmGZDIEpNYvp4PraYc
+	fhBAe4jyes7zAQHjvdoZ+8mBn1TwmF8+f96hbHxeGYOY2c0WZCwCyQ5ODl2Iwn0B
+	HyLOlKGspd0kdkgHzp1PBnkiHdFLgsXeg==
 Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4j0yu61by0-2
+	by m0089730.ppops.net (PPS) with ESMTPS id 4j0yu5hcsc-2
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 17 Nov 2026 17:55:07 -0800 (PST)
-Received: from localhost (2620:10d:c0a8:1b::2d) by mail.thefacebook.com
+	Tue, 17 Nov 2026 17:55:04 -0800 (PST)
+Received: from localhost (2620:10d:c0a8:fe::f072) by mail.thefacebook.com
  (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Wed, 18 Nov
- 2026 01:55:06 +0000
+ 2026 01:55:03 +0000
 From: Bobby Eshleman <bobbyeshleman@meta.com>
-Date: Tue, 17 Nov 2026 17:54:48 -0800
-Subject: [PATCH net-next v7 5/7] vsock/virtio: support guest device network
- namespace
+Date: Tue, 17 Nov 2026 17:54:45 -0800
+Subject: [PATCH net-next v7 2/7] vsock: rename the vsock pernet operations
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,7 +71,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20261117-vsock-guest-ns-v7-5-7e522ea9dd9b@meta.com>
+Message-ID: <20261117-vsock-guest-ns-v7-2-7e522ea9dd9b@meta.com>
 References: <20261117-vsock-guest-ns-v7-0-7e522ea9dd9b@meta.com>
 In-Reply-To: <20261117-vsock-guest-ns-v7-0-7e522ea9dd9b@meta.com>
 To: Stefano Garzarella <sgarzare@redhat.com>,
@@ -107,354 +106,95 @@ CC: <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
         Bobby Eshleman
 	<bobbyeshleman@meta.com>
 X-Mailer: b4 0.14.3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE4MDAwNyBTYWx0ZWRfX8+LqJPbwJDLj
- IhKTnrWH+yccWsYzYS2Taw1IbxoTyi4jd19PuTmNGQkeSjCsHXqpa5YH9U6DMnyVh2y8HA2/kd9
- 2iWsIhfv+Ru5gbzPxVvX3bZqklRtOuPKIsu1xrm0DaS++mVLza5Znjhg0Z8xktEasl/sfYQ65tF
- 3q5+/1nLkabAr4N4hKbZ+ZNYP983DLufX4ZC8LbNY+67Ei5zEJuDI3YUNuxVAKm6WHsN/M88LVv
- JU4fcBctGcsbECTbK4AFkOYJ5VmXk9npxh0j4P4U8Crp7rC4Y3lf7x/uStNDVvLD8bdN7DYZOL5
- BXl8k7GrG0h3JDH1x5g12V2edqchw7NxraLoJbfVFCbUqEMS82DHNC76LqlZwOWAwS0e2nt7SnS
- tbvKIZ9nfLiGLdAKTzicQDVofzPQUcEoz5HyQ+12mKAgBZgQQQ9DsqclJuH2yq2J/tQyHVzqaJ6
- fbSTufME1BLKJWEhMng==
-X-Proofpoint-ORIG-GUID: Gv8z5UM4pTrD-rR2cRtFtrHHkcTMI6hS
-X-Authority-Analysis: v=2.4 cv=DrnDa2/+ c=1 sm=1 tr=0 ts=6afd057b cx=c_pps
+X-Authority-Analysis: v=2.4 cv=EqFHPicA c=1 sm=1 tr=0 ts=6afd0578 cx=c_pps
  a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
  a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=kkcUborcUVj0H7zxAXTl:22 a=VabnemYjAAAA:8
- a=J5Rx3YFY5MJ4in-ODIoA:9 a=QEXdDO2ut3YA:10 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE4MDAwNyBTYWx0ZWRfX+gN8HnSHWruL
- 1r0DykYBHfPD396uevrrdpx7gWCWSuAuUvDZ6gWXwxcwlzriCEd/Jbd/FlKkKygP5aBWhHHys4Y
- CTqjlyK46NZEQ7io47xiJUOZaKhOhG0=
-X-Proofpoint-GUID: Gv8z5UM4pTrD-rR2cRtFtrHHkcTMI6hS
+ a=7x6HtfJdh03M6CCDgxCd:22 a=855S8uPTkML1Oy45N9_h:22 a=20KFwNOVAAAA:8
+ a=VabnemYjAAAA:8 a=-BBy4ptD6Xa2-Mryg3AA:9 a=QEXdDO2ut3YA:10
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE4MDAwNyBTYWx0ZWRfX24btXMYEUauj
+ mBazeTyfil3Iv7ihLkyarcYJ8/VBzLw0uzMmFVbXoLVswgkZIRmh44BKJZ5PtaEr4WVJLPDhjtj
+ KHao9RxrAmRXieasF4FIsqRXfBR7Z+s=
+X-Proofpoint-ORIG-GUID: 8GRUW8R3u0AxQ7M7fwEbViQ7m8jifeDN
+X-Proofpoint-GUID: 8GRUW8R3u0AxQ7M7fwEbViQ7m8jifeDN
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE4MDAwNyBTYWx0ZWRfXxMkPNEKAXDcu
+ mJI3Tfzq46NMeGhqbsTOeRG+kORPOj+I7hPZrAjY9/zbZgJ7Ttnvr6WajyBmOpC5+um74ronJ/t
+ 9eBMGh+Q3sQvMv71PCirns17NwX5AGakuLGlmeC9GyEik9lY5/QvkmWAEOki+UCm9MYXs+bJFFQ
+ yHBi2RzCcJqEqrl+D7VvLDcW2Xc7Zui2GK6PAH/NrC3wHaDCB4VsIUxi+IyOKdvLbzXnCGqoHfG
+ qJECJ1ly9lUJIoQf2gyAyyGiFL3R+BHbBkHhN9xuaewNLQcNuikkX3oq3bgkBmQZD74I45uMR3A
+ lfuB6ANTp6z9sj/ok8uoiLk3n/1pnYDSgfHjlUSgRw4XlazM719DnUBVhglcIoIjmkxHjxQ0mEv
+ qFugf0uyyax3vPyeQOWkqQ6tJVE4UvBHdBZ02FxXAUbyhi4J8exCdptD2SSlXZo3LMWrtRw02mO
+ Y/OCcdhxdQiW7FIeH1Q==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-17_05,2026-11-16_01,2025-10-01_01
 
-virtio-vsock did not have namespace support (the device was always
-accessible to any global namespace).
+vsock_sysctl_ops and its two callbacks are named for the sysctl tables
+they register, but the init callback already does more than that: it
+also initialises the per-namespace vsock state through vsock_net_init().
 
-Make the virtio-vsock device assignable to a namespace by setting
-.netns_assign_allow, and allow stream and seqpacket sockets from any
-netns that can reach the device rather than only from global-mode ones.
-The device starts out assigned to init_net, which is hardcoded to global
-mode, so global namespaces see no change until the assign command is
-issued. Local namespaces still cannot use the device.
+Rename them to vsock_pernet_ops, vsock_pernet_init and
+vsock_pernet_exit, so that later per-namespace work can be placed here
+too.
 
-An assign can land while virtio_transport_rx_work() is draining a
-batch, so the assigned namespace is re-read per packet rather than once
-per batch. Matching the rest of the batch against the namespace the
-device has left would reset connections that belong to the new one.
+No functional change.
 
-When the device is assigned, VSOCK_CMD_DEV_NETNS_SET closes every
-connected socket that can no longer reach it. A socket that completes
-its handshake at the same time must not slip into the connected table
-behind that sweep, so the listen and connecting receive paths now call
-vsock_maybe_set_connected(), which checks reachability and inserts the
-socket under the lock the sweep walks the table with. If the check
-fails, the handshake is aborted and the host is sent a RST.
-
-A socket closed by an assign can still try to send, e.g. a credit
-update from setsockopt(SO_RCVLOWAT) or a shutdown. To stop that,
-virtio_transport_send_pkt_info() now returns -ENETUNREACH without
-sending when the socket's netns cannot reach the device. RSTs sent by
-virtio_transport_reset_no_sock(), such as the one above, do not go
-through it and still reach the host.
-
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 ---
-Changes in v7:
-- Tap with the assigned netns, add vsock_g2h_net_rcu() (Paolo, Sashiko)
-- Fix stale comment and commit message (Sashiko)
+ net/vmw_vsock/af_vsock.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-Changes in v6:
-- Move the reachability check from virtio_transport_send_pkt() to
-  virtio_transport_send_pkt_info(), so RSTs sent by
-  virtio_transport_reset_no_sock() still reach the host after an assign
-  (Paolo, Sashiko)
-- Revert the v5 change that sent the recv_listen()/recv_connecting()
-  RSTs to the netns the packet arrived on; sock_net(sk) works again now
-  that those RSTs skip the check
-- Export vsock_g2h_reachable_sk() for virtio_transport_send_pkt_info()
-- Rewrite the commit message: drop what the previous patch already does
-  and describe the virtio_transport_send_pkt_info() check (Paolo)
-
-Changes in v5:
-- Send the RSTs in virtio_transport_recv_listen() and
-  virtio_transport_recv_connecting() to the netns the packet arrived on,
-  not the socket's: after an assign the socket's netns may no longer
-  reach the device, so the RST would be dropped by the reachability
-  check this patch adds to virtio_transport_send_pkt() (Stefano, Sashiko)
-
-Changes in v4:
-- Drop packets in virtio_transport_send_pkt() from a netns that cannot
-  reach the device, e.g. shutdown() or credit updates on a swept socket
-  (Sashiko)
-
-Changes in v3:
-- Re-read the assigned netns per packet in virtio_transport_rx_work()
-  rather than once per batch, so a mid-batch assign cannot reset the new
-  namespace's connections (Sashiko)
-- Drop the NULL netns reset in virtio_transport_rx_work(), the assigned
-  netns is now pinned
-- Drop the .reset op and the virtio_transport_reset{,_no_sock}() exports,
-  the sweep no longer sends a RST (Sashiko)
-
-Changes in v2:
-- Export virtio_transport_reset(), wire it to the new .reset op (Stefano)
-- netns_assign_allow is now a bool (Stefano)
-- Pass NULL, not &init_net, in virtio_transport_rx_work(), and
-  comment why (Stefano)
-- Drop the if (net) guard around put_net() (Stefano)
-- Drop the comments at the vsock_maybe_set_connected() call sites,
-  the commit msg seems sufficient
----
- include/net/af_vsock.h                  |  2 ++
- net/vmw_vsock/af_vsock.c                | 14 +++++++++++--
- net/vmw_vsock/virtio_transport.c        | 30 +++++++++++++++++++-------
- net/vmw_vsock/virtio_transport_common.c | 37 ++++++++++++++++++++++++++-------
- 4 files changed, 65 insertions(+), 18 deletions(-)
-
-diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-index ce945a83a919..7765fc3ee6ca 100644
---- a/include/net/af_vsock.h
-+++ b/include/net/af_vsock.h
-@@ -249,7 +249,9 @@ bool __vsock_find_cid(struct net *net, unsigned int cid);
- void vsock_linger(struct sock *sk);
- struct net *vsock_g2h_net_get(netns_tracker *tracker);
- bool vsock_g2h_net_eq(const struct net *net);
-+struct net *vsock_g2h_net_rcu(void);
- bool vsock_g2h_net_reachable(struct net *net);
-+bool vsock_g2h_reachable_sk(struct vsock_sock *vsk);
- bool vsock_maybe_set_connected(struct vsock_sock *vsk);
- 
- /**** TAP ****/
 diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index dcd39ad43eec..33b1902f2637 100644
+index a5c805f3b29e..100570d83e75 100644
 --- a/net/vmw_vsock/af_vsock.c
 +++ b/net/vmw_vsock/af_vsock.c
-@@ -128,7 +128,7 @@
-  *       error that propagates to the user (as there is for connection attempts)
-  *       because it is possible for some packet to reach this socket from
-  *       a different transport that *does* support local mode. For
-- *       example, virtio-vsock may not support local mode, but the socket
-+ *       example, hyperv-vsock does not support local mode, but the socket
-  *       may still accept a connection from vhost-vsock which does.
-  *
-  * - A guest has a single vsock device, owned by the guest->host transport.
-@@ -914,6 +914,12 @@ bool vsock_g2h_net_eq(const struct net *net)
+@@ -3117,7 +3117,7 @@ static void vsock_net_init(struct net *net)
+ 	net->vsock.g2h_fallback = 1;
  }
- EXPORT_SYMBOL_GPL(vsock_g2h_net_eq);
  
-+struct net *vsock_g2h_net_rcu(void)
-+{
-+	return rcu_dereference(vsock_g2h_net);
-+}
-+EXPORT_SYMBOL_GPL(vsock_g2h_net_rcu);
-+
- bool vsock_g2h_net_reachable(struct net *net)
+-static __net_init int vsock_sysctl_init_net(struct net *net)
++static __net_init int vsock_pernet_init(struct net *net)
  {
- 	bool reachable;
-@@ -926,13 +932,17 @@ bool vsock_g2h_net_reachable(struct net *net)
- }
- EXPORT_SYMBOL_GPL(vsock_g2h_net_reachable);
+ 	vsock_net_init(net);
  
--static bool vsock_g2h_reachable_sk(struct vsock_sock *vsk)
-+/* True if @vsk can reach the g2h device, or its transport ignores namespace
-+ * assignment.
-+ */
-+bool vsock_g2h_reachable_sk(struct vsock_sock *vsk)
- {
- 	if (!vsock_net_assignable(vsk->transport))
- 		return true;
- 
- 	return vsock_g2h_net_reachable(sock_net(sk_vsock(vsk)));
- }
-+EXPORT_SYMBOL_GPL(vsock_g2h_reachable_sk);
- 
- /* Move @vsk to TCP_ESTABLISHED and into the connected table, unless the device
-  * has moved to a namespace @vsk cannot reach. Returns false without doing
-diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-index 1ddb6839a8fb..ba9081536212 100644
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -150,7 +150,9 @@ static int virtio_transport_send_skb(struct sk_buff *skb, struct virtqueue *vq,
- 	if (ret < 0)
- 		return ret;
- 
--	virtio_transport_deliver_tap_pkt(skb, NULL);
-+	rcu_read_lock();
-+	virtio_transport_deliver_tap_pkt(skb, vsock_g2h_net_rcu());
-+	rcu_read_unlock();
+@@ -3127,14 +3127,14 @@ static __net_init int vsock_sysctl_init_net(struct net *net)
  	return 0;
  }
  
-@@ -542,7 +544,7 @@ static bool virtio_transport_msgzerocopy_allow(void)
- 
- bool virtio_transport_stream_allow(struct vsock_sock *vsk, u32 cid, u32 port)
+-static __net_exit void vsock_sysctl_exit_net(struct net *net)
++static __net_exit void vsock_pernet_exit(struct net *net)
  {
--	return vsock_net_mode_global(vsk);
-+	return vsock_g2h_net_reachable(sock_net(sk_vsock(vsk)));
+ 	vsock_sysctl_unregister(net);
  }
  
- static bool virtio_transport_seqpacket_allow(struct vsock_sock *vsk,
-@@ -587,6 +589,7 @@ static struct virtio_transport virtio_transport = {
- 		.seqpacket_has_data       = virtio_transport_seqpacket_has_data,
+-static struct pernet_operations vsock_sysctl_ops = {
+-	.init = vsock_sysctl_init_net,
+-	.exit = vsock_sysctl_exit_net,
++static struct pernet_operations vsock_pernet_ops = {
++	.init = vsock_pernet_init,
++	.exit = vsock_pernet_exit,
+ };
  
- 		.msgzerocopy_allow        = virtio_transport_msgzerocopy_allow,
-+		.netns_assign_allow       = true,
+ static int __init vsock_init(void)
+@@ -3164,7 +3164,7 @@ static int __init vsock_init(void)
+ 		goto err_unregister_proto;
+ 	}
  
- 		.notify_poll_in           = virtio_transport_notify_poll_in,
- 		.notify_poll_out          = virtio_transport_notify_poll_out,
-@@ -616,7 +619,7 @@ virtio_transport_seqpacket_allow(struct vsock_sock *vsk, u32 remote_cid)
- 	struct virtio_vsock *vsock;
- 	bool seqpacket_allow;
- 
--	if (!vsock_net_mode_global(vsk))
-+	if (!vsock_g2h_net_reachable(sock_net(sk_vsock(vsk))))
- 		return false;
- 
- 	seqpacket_allow = false;
-@@ -633,7 +636,12 @@ static void virtio_transport_rx_work(struct work_struct *work)
- {
- 	struct virtio_vsock *vsock =
- 		container_of(work, struct virtio_vsock, rx_work);
-+	struct virtio_transport *t = &virtio_transport;
-+	netns_tracker ns_tracker;
- 	struct virtqueue *vq;
-+	struct net *net;
-+
-+	net = vsock_g2h_net_get(&ns_tracker);
- 
- 	mutex_lock(&vsock->rx_lock);
- 
-@@ -680,12 +688,16 @@ static void virtio_transport_rx_work(struct work_struct *work)
- 			if (payload_len)
- 				virtio_vsock_skb_put(skb, payload_len);
- 
--			virtio_transport_deliver_tap_pkt(skb, NULL);
--
--			/* Force virtio-transport into global mode since it
--			 * does not yet support local-mode namespacing.
-+			/* Only grab a reference if the net changes underneath
-+			 * us.
- 			 */
--			virtio_transport_recv_pkt(&virtio_transport, skb, NULL);
-+			if (unlikely(!vsock_g2h_net_eq(net))) {
-+				put_net_track(net, &ns_tracker);
-+				net = vsock_g2h_net_get(&ns_tracker);
-+			}
-+
-+			virtio_transport_deliver_tap_pkt(skb, net);
-+			virtio_transport_recv_pkt(t, skb, net);
- 		}
- 	} while (!virtqueue_enable_cb(vq));
- 
-@@ -694,6 +706,8 @@ static void virtio_transport_rx_work(struct work_struct *work)
- 		virtio_vsock_rx_fill(vsock);
- out_nofill:
- 	mutex_unlock(&vsock->rx_lock);
-+
-+	put_net_track(net, &ns_tracker);
+-	if (register_pernet_subsys(&vsock_sysctl_ops)) {
++	if (register_pernet_subsys(&vsock_pernet_ops)) {
+ 		err = -ENOMEM;
+ 		goto err_unregister_sock;
+ 	}
+@@ -3188,7 +3188,7 @@ static void __exit vsock_exit(void)
+ 	misc_deregister(&vsock_device);
+ 	sock_unregister(AF_VSOCK);
+ 	proto_unregister(&vsock_proto);
+-	unregister_pernet_subsys(&vsock_sysctl_ops);
++	unregister_pernet_subsys(&vsock_pernet_ops);
  }
  
- static int virtio_vsock_vqs_init(struct virtio_vsock *vsock)
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 027fe41c676a..c8049dd80cbc 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -295,6 +295,9 @@ static struct sk_buff *virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *
-  * since a socket assigned to a transport is required.
-  *
-  * Do not use on listener sockets!
-+ *
-+ * This checks that the socket can reach the g2h device, so device-only replies
-+ * such as virtio_transport_reset_no_sock() must keep not using this path.
-  */
- static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 					  struct virtio_vsock_pkt_info *info)
-@@ -317,6 +320,9 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 	if (unlikely(!t_ops))
- 		return -EFAULT;
- 
-+	if (!vsock_g2h_reachable_sk(vsk))
-+		return -ENETUNREACH;
-+
- 	src_cid = t_ops->transport.get_local_cid();
- 	src_port = vsk->local_addr.svm_port;
- 	if (!info->remote_cid) {
-@@ -1468,8 +1474,8 @@ void virtio_transport_release(struct vsock_sock *vsk)
- EXPORT_SYMBOL_GPL(virtio_transport_release);
- 
- static int
--virtio_transport_recv_connecting(struct sock *sk,
--				 struct sk_buff *skb)
-+virtio_transport_recv_connecting(struct sock *sk, struct sk_buff *skb,
-+				 struct virtio_transport *t)
- {
- 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
- 	struct vsock_sock *vsk = vsock_sk(sk);
-@@ -1478,9 +1484,18 @@ virtio_transport_recv_connecting(struct sock *sk,
- 
- 	switch (le16_to_cpu(hdr->op)) {
- 	case VIRTIO_VSOCK_OP_RESPONSE:
--		sk->sk_state = TCP_ESTABLISHED;
-+		if (!vsock_maybe_set_connected(vsk)) {
-+			/* The net arg is required but unused: only g2h can fail
-+			 * vsock_maybe_set_connected(), and g2h
-+			 * virtio_transport_reset_no_sock() ignores the net arg.
-+			 */
-+			virtio_transport_reset_no_sock(t, skb, sock_net(sk));
-+			skerr = ECONNRESET;
-+			err = -ENETUNREACH;
-+			goto close;
-+		}
-+
- 		sk->sk_socket->state = SS_CONNECTED;
--		vsock_insert_connected(vsk);
- 		sk->sk_state_change(sk);
- 		break;
- 	case VIRTIO_VSOCK_OP_INVALID:
-@@ -1498,6 +1513,7 @@ virtio_transport_recv_connecting(struct sock *sk,
- 
- destroy:
- 	virtio_transport_reset(vsk, skb);
-+close:
- 	sk->sk_state = TCP_CLOSE;
- 	sk->sk_err = skerr;
- 	sk_error_report(sk);
-@@ -1736,8 +1752,6 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
- 
- 	lock_sock_nested(child, SINGLE_DEPTH_NESTING);
- 
--	child->sk_state = TCP_ESTABLISHED;
--
- 	vchild = vsock_sk(child);
- 	vsock_addr_init(&vchild->local_addr, le64_to_cpu(hdr->dst_cid),
- 			le32_to_cpu(hdr->dst_port));
-@@ -1758,7 +1772,14 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
- 	if (virtio_transport_space_update(child, skb))
- 		child->sk_write_space(child);
- 
--	vsock_insert_connected(vchild);
-+	if (!vsock_maybe_set_connected(vchild)) {
-+		release_sock(child);
-+		/* Only reached for g2h, whose send_pkt() ignores the netns. */
-+		virtio_transport_reset_no_sock(t, skb, sock_net(sk));
-+		sock_put(child);
-+		return -ENETUNREACH;
-+	}
-+
- 	vsock_enqueue_accept(sk, child);
- 	virtio_transport_send_response(vchild, skb);
- 
-@@ -1859,7 +1880,7 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
- 		kfree_skb(skb);
- 		break;
- 	case TCP_SYN_SENT:
--		virtio_transport_recv_connecting(sk, skb);
-+		virtio_transport_recv_connecting(sk, skb, t);
- 		kfree_skb(skb);
- 		break;
- 	case TCP_ESTABLISHED:
+ const struct vsock_transport *vsock_core_get_transport(struct vsock_sock *vsk)
 
 -- 
 2.53.1-Meta
