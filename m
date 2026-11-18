@@ -1,68 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795023903;
-	b=G+HUbV9Ko3BZAZnDvz/bpknrLYvmbAOPVH6sNFOtz/VOaazVvbcmqluR7Nq4nfVLsOXT
-	 I1UsPmIsvfcYAD/LBXDOdZdaItjBDzFkQO9CjWudJA5OlzaySYJrTaC+kB69nIPyVOHlX
-	 VQdzRSb+KJHcUEd3HMZ67V0FB1iCfDTSJlDdQYQUfrLp36M8hHkXGOc+8nKE05+fMq7Qu
-	 PwLjTmm5VMYVWgjUGFh1yLeK454YN3um+hQ8zJQbzPBZVPUs5+tlvx9sbnLS8umArQEcI
-	 nWN9mGmL6yN1k3Jdn2uyGwQhnEWTn+vHXnB7wi5AP2P7V6t/VOh407kRFHyzwirYI+Q==
+	t=1795024389;
+	b=433VvQfpl9bz4SEHSjTYrArO5qVgP55aa/y4rM2E9RBq8YJSNOUducmN/8GP9cHIZSA6
+	 vta4Do7GN08YKKevU+uBrMTDlrIDMatcgnq0JY5mOsxFaEXVL4Oa941KtLU3bK7AjxI6x
+	 sOlMUxChlSn7IYxZNbzkJ40RQlkmJRubqoVUIfAZ6HW7XUCQtZd5YJaiKfaR9gs0VU15a
+	 cv5oN6SpZ/nKYrE68RLoQLhmJ+9OEv6CrU/A8O1dI7Hz69uy0lKF8kvnbD6yPzyKHbnaJ
+	 j9o9m1vQiK0axKWAaRd/AqNj4kGoDi8bhs4GVEMam93109zRrLK/qFxv3ALv/PP5mcA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795023903;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=ed4xVqmLqh0FhNmdYjMTT+rIzLH+xgbBgiWh55TzRDc=;
-	b=WnhN9xIgPvEgGjbxTQYvW9BjxSd5W5cjd97pt70l+ardPOSWot4zHczzrQW35aVtKPQk
-	 z+uXlVxbh6NB2VcgVJ27KdEZLXGpx08DuQLKeStyhAMCL/nOu9gGHYN6xq79eIC8MibAe
-	 uvIaUg0fignCVlhKThcDq2c5K+1Ey7acirEQTpt79jhac48u/MSZBrdZ6ga3wdCPmHaEk
-	 xFGGiX/I7aZP7mRpeuAK7mZP7Hd/DpgvDBUhoqp+PBfcv1sucbfEnS8/353JlxL14xnsv
-	 jkumj7j7/5N711uXdJQw5jmHn4gQLAmUdBFjZFrfGlaMYdazF8YAhyxMabD7Ddg9Xew==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795024389;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=mIvlMhQp2XPMKkyqstwBRddoJIhsg5ZvouNFjygJYDk=;
+	b=Wph9KBHnPlR+IOL/0Fw1bzKWubCTInFZUPNsNCqJ0YRs/YR3wFYGapd8xw/bVPR6ZIOe
+	 VWirtq211OtlqSLuwx8UDhvOimkqeDoxuCggV3mNhlA1B2/hwfO/VzmFFv2HWUu6yFCTp
+	 9NDhzmmR9Gplj3LW7tR6kiD79wCUooTcgvpDuzZIJU+pWvcXsEDTRAchzaVCGEe7IbrqP
+	 tbS21LQUDLyjCv8PvZBlC/HChSk7n1YlXqGo6Jw8C6QziVqHHGx1kXiu4sf1EJg+j3not
+	 HwrC/qY7v44HRndTfLAgKMVDjYXsS1Ucaa+69XSuaSrzwSeDFsySheDV2ER35rDiFQA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=I9n4KuRX;
-	arc=none smtp.remote-ip=198.175.65.15
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kKrkgOt9;
+	arc=none smtp.remote-ip=95.215.58.54
+Received: from mta1.migadu.com (out-54.mta1.migadu.com [95.215.58.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71990606A31C;
-	Wed, 18 Nov 2026 17:45:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 71990606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4D8606A332
+	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 17:53:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5E4D8606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=I9n4KuRX
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795023904; x=1826559904;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=R+fzyJKZWVfeM44fD4H0hSYVFYgiIpP7LrshqgBod9I=;
-  b=I9n4KuRX1q1gR/FPJ0m5aQyj8Vl6/Py+CST+EJi1EdtRuKrnjIlArdu/
-   hPth9fL7atlpS6GxrTR2pmrkPYAl629oOqkhJrlt9cUbIbC4VS0gTJv6L
-   1M5XPJ0HMyZ64B1fr4J2iLHUQ8yyEOB9OeHbJfdIxlygz4ZKNY/lqNWAU
-   weibIMc6/6nFY/IfnjutkZEX8elptEmvhSIEmtNLPeR2BnjNNVGv9oeF/
-   QbEp8DdbSUIb+MTnfP8/uuK8QKAVeTyT4OFZ7JwG4VYF1g2AADSSZgTpR
-   mO1Lig7xG//7wMAuJwUVAjLp2cDSAszH6Jw+M7r4/M2asRLOWfHMVbvHe
-   A==;
-X-CSE-ConnectionGUID: XGzB1xBZR4GEUNziw6Ydeg==
-X-CSE-MsgGUID: jXvDHd0fR7WCf6dDGKvHEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3850019"
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="3850019"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 09:45:03 -0800
-X-CSE-ConnectionGUID: 5jV2dKe2Qka5LbwnLqtZ7Q==
-X-CSE-MsgGUID: 5UhYUNdlROmfbTV39yFvUw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="12015076"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.184.228]) ([10.122.184.228])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 09:45:02 -0800
-Message-ID: <704f5a24-2880-4593-9c29-63eaffdaee29@intel.com>
-Date: Wed, 18 Nov 2026 11:45:01 -0600
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kKrkgOt9
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=+m7k99GokHGG2Xt0WNDUpUu/POJp/u8hXMkzLb7HkPI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795024385; v=1; x=1795629185;
+ b=kKrkgOt9Z0+Uxd0OLSeRAMXHHLAwszcLDUbKbF12OkJtRBtdtWKPCEIzYjNBS/HTPbsasfAS
+ uB5YRPSbid1q4JNdkyBI3GN/ci90xJ1VOlf8DjQgJu1KHxicG+32bBCr18ovse2tMz48PwuBhzD
+ 9MA0algsT312UDIoJhrsXcmk=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 55e39e18abac30ad;
+	Wed, 18 Nov 2026 17:53:05 +0000
+X-Mizu-Trace-ID: 55e39e18abac30ad
+X-Migadu-Flow: FLOW_OUT
+Date: Wed, 18 Nov 2026 18:52:30 +0100
+From: Andrew Jones <andrew.jones@linux.dev>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Laurent Vivier <lvivier@redhat.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, Nico =?utf-8?B?QsO2aHI=?= <nrb@linux.ibm.com>, 
+	Chinmay Rath <rathc@linux.ibm.com>, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	Amit Machhiwal <amachhiw@linux.ibm.com>
+Subject: Re: [kvm-unit-tests PATCH] Move position-independant code flags into
+ the target specific Makefiles
+Message-ID: <av3l0ZC64ouIp4KN@orel>
+References: <20261113120101.145183-1-thuth@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,104 +68,35 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 09/21] KVM: x86/pmu: Switch to bitmask-based KVM PMU
- capabilities
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
- Andi Kleen <ak@linux.intel.com>, Stephane Eranian <eranian@google.com>,
- linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
- Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi
- <dapeng1.mi@linux.intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20261112203227.289379-1-zide.chen@intel.com>
- <20261112203227.289379-10-zide.chen@intel.com> <av3MeWKmCRprVNWx@google.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <av3MeWKmCRprVNWx@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261113120101.145183-1-thuth@redhat.com>
 
-
-
-On 11/18/2026 10:05 AM, Yosry Ahmed wrote:
-> On Thu, Nov 12, 2026 at 01:32:15PM -0700, Zide Chen wrote:
->> From: Dapeng Mi <dapeng1.mi@linux.intel.com>
->>
->> Intel platforms support non-contiguous fixed counters via CPUID.0AH:ECX
->> starting with PerfMon v5, and support non-contiguous GP counters
->> through the Architectural PerfMon Extension (CPUID leaf 23H).
->>
->> struct x86_pmu_capability now exposes {,fixed_}cntr_mask64 bitmaps,
->> which may contain sparse bits representing non-contiguous counters.
->> Switch KVM's kvm_host_pmu and kvm_pmu_cap consumers over to the new
->> bitmask fields, including iterating kvm_host_pmu bitmasks directly in
->> VMX and SVM PMU MSR intercept setup.
->>
->> CPUID.0AH:EAX[15:8] and CPUID.0AH:EDX[4:0] enumerate only contiguous
->> counters. Derive these values from kvm_pmu_cap.{,fixed_}cntr_mask64 as
->> the number of consecutive counters starting at index 0.
->>
->> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
->> Co-developed-by: Zide Chen <zide.chen@intel.com>
->> Signed-off-by: Zide Chen <zide.chen@intel.com>
->> ---
->> v4:
->> - Cleanly substitute kvm_pmu_cap.num_counters_{gp,fixed} with
->>   find_first_zero_bit() in intel_pmu_refresh() without throwaway
->>   code churn.
->> - Use find_first_zero_bit() instead of hweight64() for AMD CPUID
->>   0x80000022 EBX[3:0] (NumCorePmc) and svm_set_cpu_caps() to enumerate
->>   contiguous counters. (Yosry)
->> - Do not carry over Jim's Reviewed-by from v3 due to reworking counter
->>   clamping in intel_pmu_refresh().
->>
->> v3:
->> - Iterate kvm_host_pmu bitmasks directly in VMX and SVM intercept loops.
->> - Clamp nr_{gp,fixed}_counters to the number of contiguous counters
->>   supported by KVM in intel_pmu_refresh(). (Jim, Sashiko)
->> - Drop redundant !enable_mediated_pmu clamp on fixed_cntr_mask64.
->>   (Sashiko)
->> ---
->>  arch/x86/kvm/cpuid.c         | 17 ++++++++++++++---
->>  arch/x86/kvm/msrs.c          | 12 ++++++------
->>  arch/x86/kvm/pmu.c           | 17 ++++++++---------
->>  arch/x86/kvm/svm/pmu.c       |  2 +-
->>  arch/x86/kvm/svm/svm.c       |  8 ++++----
->>  arch/x86/kvm/vmx/pmu_intel.c | 18 +++++++++++++++---
->>  arch/x86/kvm/vmx/vmx.c       |  4 ++--
->>  7 files changed, 50 insertions(+), 28 deletions(-)
->>
->> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
->> index adafd6fa2c54..427871ec365f 100644
->> --- a/arch/x86/kvm/cpuid.c
->> +++ b/arch/x86/kvm/cpuid.c
->> @@ -1535,10 +1535,18 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
->>  		}
->>  
->>  		eax.split.version_id = kvm_pmu_cap.version;
->> -		eax.split.num_counters = kvm_pmu_cap.num_counters_gp;
->> +
->> +		/* Contiguous GP counters only. */
->> +		eax.split.num_counters =
->> +			find_first_zero_bit(kvm_pmu_cap.cntr_mask,
->> +					    KVM_MAX_NR_GP_COUNTERS);
+On Fri, Nov 13, 2026 at 01:01:01PM +0100, Thomas Huth wrote:
+> The settings for position-independant code are currently quite a mess:
+> It depends on the target whether we need the flags or rather should even
+> disable PIC / PIE, but currently the settings are spread between the
+> main Makefile (-fno-pic is the default, unless CONFIG_EFI has been set)
+> and the target specific Makefiles.
+> This leads to some weird situations where we have -fno-pic in the CFLAGS,
+> but link with -pie in the LDFLAGS since we still want to get a relocation
+> table, but then again need to add a "-z notext" to the linker flags to
+> avoid warnings about relocation entries in the text segment.
+> Let's face it: Always adding -fno-pic / -no-pie in the main Makefile is
+> a bad idea. Move the settings to the target specific Makefiles instead
+> where we know what we really want, and then we can finally drop the
+> "-z notext" settings, too.
 > 
-> Should we add helpers for the find_first_zero_bit() calls across?
-> Perhaps kvm_pmu_nr_contig_gp_counters() and
-> kvm_pmu_nr_contig_fixed_counters()?
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  Makefile            | 6 +-----
+>  arm/Makefile.arm    | 2 ++
+>  arm/Makefile.arm64  | 3 +--
+>  powerpc/Makefile    | 5 ++++-
+>  riscv/Makefile      | 1 +
+>  s390x/Makefile      | 3 +++
+>  x86/Makefile.common | 5 +++++
+>  7 files changed, 17 insertions(+), 8 deletions(-)
+>
 
-Agreed, encapsulating find_first_zero_bit() makes it more readable.
-
-static inline unsigned int kvm_pmu_nr_contig_gp_counters(void)
-{
-        return find_first_zero_bit(kvm_pmu_cap.cntr_mask,
-                                   KVM_MAX_NR_GP_COUNTERS);
-}
-
-static inline unsigned int kvm_pmu_nr_contig_fixed_counters(void)
-{
-        return find_first_zero_bit(kvm_pmu_cap.fixed_cntr_mask,
-                                   KVM_MAX_NR_FIXED_COUNTERS);
-}
+Acked-by: Andrew Jones <andrew.jones@linux.dev>
