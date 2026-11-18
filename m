@@ -1,106 +1,130 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.228
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794984273;
-	b=3pCTUf3n54UapRY0tq9IZw6U/DhVvjogglR980uMCS5RlFG85EqPezpXQUgOybbRXBd/
-	 mzsx239sfGTBg5g6W5ZWqd2BofM1evxR+qhs4c8f9Xwh2jUgBM/bbrvlaOs5zPQVpORoX
-	 Ahu+xuqXI8lnQU4Sxs4F7j3uUFToImZXHZqmYe/38XHy+6j01tngEg9YcGSUTq+GCElTI
-	 Mt/s6HiySywjY02tY1kUk2bXUJ/gjk3MBM8+rNxtK95Zl1i76bTFpkEdB+WmN7objQv/O
-	 I+NqxUGsZkXqTHalXR3lrI8SAg02tCRrOC7CDGLZa76ONnwe6yI+mvmiugFIk9O0ARQ==
+	t=1794984435;
+	b=gFlZpQa34Zuxjs/DuosgiL6kazzpRp6iTO/E2ZDqnDoRCS7Dd/SYVyWMO86gmxLFIWFx
+	 AjjUji96y5QWZ7TzuqoDGhMEzDO7rejhXFDJvBE2TqvIdSywe1REWoXJsZJob+W+XdwCb
+	 pwR2lS7tMdCXUgTLnDJ7qfF2q8sPPx1CoRGZlpH5TtPhkHZew4KeVcfeVUlzzJ8KKDUwy
+	 NkPatYNFwtnfQF7Bz78xnqFZAkLYQNKMfdGfFpi6tQR0nodyXhuHX7YkPMqILGXrlo7t7
+	 NlKLBwjncr+9iZpa10w+uVfNlyvVeunKoHTodi9n5zVxcsr5Y7kI6lD7LpBDouu79aw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794984273;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=1gbh0okTI8s6EjfIrwbYjY5j+vGizMFhIhkRj367QiY=;
-	b=SHJeONshWTsbU4Qy7+a/qndfJdi+U82cwK8EaKv9VufhAeXe+g/tVmNnPRtaEizsrqB+
-	 weOE8dep7Hjcpf0YiSVOYrLDLTw9HC/1oNLqkhXEycIr6/HsFyEBWsz2gb/HnkAykimSb
-	 5tmZrbMH9G/JPvXzxu6QuYcYv6tfA5fpe9yyXh6JETisw2EIAeXst71gkpmwicrbOqQGP
-	 y2Uv2Nl0mCZAIJuV96SLhq6JZHG35qu/zbQfZwogNWtHRquYxELe0dFQSut5e6q96yyea
-	 8QEi3XCaRda/BkFTA4aDbHYevU6HhMBPJ3OWKT5KEMu3Nc20dgvLoS83gocw7uW0R+g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794984435;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:X-Relaying-Domain:
+	 X-CFilter-Loop:Received:DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Received:X-Received:Received:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-DetectorID-Processed;
+	bh=1wn8B8AtBDch11Kn2VubYj0NKMdWprvKTv7qKouH7kM=;
+	b=K72sdk6GuOTVQVRMuvfGpRwXoAxLYQ7lWCPAhVrGblR8mCF+GFRj1HNS8/4Yv8RIUvg7
+	 gxdtyZ4yCPIx2CeWKke9cTOw0trmaq26LVOL98KMws6TZq3U9a5em8jR5Zus3ZTvzPBQ7
+	 dbORix8NUkwTDqU5viQkZZy1gN9mqhRW6+KIR8xMGG1/vBJEqpLLlz8ig5n36RB6BKobS
+	 BgYX5DCICB2+4+6dEibb7Y0xBIYVf/zKGTNrDQptlQLclOXzVkghQ2VguWsMo5HPsLTho
+	 cQFL96SfxWNGtGgIjxY8NTFycEkQfBr0xfXsUVfPL1ARmWPF8vSDVrMey5rWO6m5e/Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nky7Dkrs;
-	arc=none smtp.remote-ip=209.85.214.181
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	dmarc=pass header.from=broadcom.com;
+	spf=fail smtp.mailfrom=broadcom.com;
+	dkim=pass header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=UTcF8ktb;
+	arc=none smtp.remote-ip=209.85.222.228
+Received: from mail-qk1-f228.google.com (mail-qk1-f228.google.com [209.85.222.228])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9255606A31C
-	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 06:44:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9255606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB66606A325
+	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 06:47:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DBB66606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nky7Dkrs
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2efc4a84e75so28475ad.1
-        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 22:44:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794984272; x=1795589072; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1gbh0okTI8s6EjfIrwbYjY5j+vGizMFhIhkRj367QiY=;
-        b=nky7DkrsPveugk7ryzP6rGqlpKYzSr/WKtJDdQSOlFwiRBKnRNRfIHmLCIW949HgXi
-         2vPTXy2PnQ6BinsdBiPUyAIKjbkWDD8S8xz+D1akjZTZd8rWPctdJCyM6tZBBfcO+UFd
-         DIrc0xseyEUGcIhl7Aoq68RUWwihg4nQWxrjHVPFW02kyxLAtmTdwtK6VnHPFHz96ybg
-         2MYnoFjpG0P/RYJbUiOWZyDpc7hR58FG4OBSkjrLchuLk4ZrIKWQq62l32whcYYjcFc/
-         lWb+VNnCqNNd/aYiN1RT2QRkgt+fT6ohclin2+CBtCtzsx/hb3jd0Wyy39a6q0ew2k1x
-         NzqA==
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256 header.s=google header.b=UTcF8ktb
+Received: by mail-qk1-f228.google.com with SMTP id af79cd13be357-94965745d92so71314385a.2
+        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 22:47:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794984272; x=1795589072;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1794984434; x=1795589234;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1gbh0okTI8s6EjfIrwbYjY5j+vGizMFhIhkRj367QiY=;
-        b=Dnh7yWwTqmtvv76B9/SkV5Fk/7+wzXSunZHs5SoWw1HeCLDOuBN9ewInTXin/j75cy
-         unb7hwcLM309LgocOIc4rEzAXFIYS7rR3oqFmHTHpcthL5BFQlMMwhhI/Eg9iJFmlCGj
-         kJeeFznm/4+/yqjcqHEPtpdEayKz2W1IeDUbChrmgfH3ujMngngrSQhfKZ7GO8xJnaOQ
-         BUzlEM/RD7bLVygUvZ7N/oLOBMLOBSPBi+jTQpTJxO4kEvaVdOfuw03IzdqO4vuM9bhl
-         v0JDK7DtrDyIrw0+fIsb6/JbspDNvVQh+RUKUh1Bc+rfPmxBNWzYLhyo5FI7Ep0u6J4r
-         6Zzg==
-X-Forwarded-Encrypted: i=1; AL+hErHZ0wF+I3FKcu02KMJWE4OaScYVX7zAHhVyu8nVjkRMVrEKjUzIokAGjW2PBMVM2pMXfqg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8WDJB0ZDwleobW+026J9kcU5ixdN+BQ0gU6Y6VbSkzXpIYspgc
-	6uUk5DqHTE7eJo5rcDvxvM8qACk2acIpMOHjBTQcdwF5XHYoL/Se8Abjdjz7GF7v4A==
-X-Gm-Gg: AZFdTZe3QK/doqMcDBa8tVS2iCNx296zmouhLMERLpNWIqE5RwgyKP5g33EHUja5O1G
-	N133gdwBuDxIYlwMBVYqkYi/+wXc0iSRZM1a9URPcGdA2uppAOf6kX3H3KQ027fN1KG30RwQOLz
-	3yZ7VRqNNascJUk0mOb493fGa6/ZuC0rcgtQVn58UEj0DRgGQ0+pGAyQa9HmkZytXjaaqDVwGp6
-	uxUvsmoK8YjaJoKSxhdKhZdaU7h0KnfiXt8QwxUJQzohaiwGrQkdnVfpx3/sWsW6Dnv6A/tYScL
-	cuSyQ6Ibo7avWQUpX2wmWmCKJPqdHtatpXU1aycKoBqQBrWChrYXUg1zzHhLX31ItQZ7jtBFQ8v
-	0htJLmqBoe3pdlsoNBqOVm5ksOrGgoV/v4pxDn/oiYwhhTRq6B/5UQPudVdJPL85HOSMhCjuDa0
-	EQMzIH0H6t1yfg+OQSYbkXTU57u8VIir5MojPdsQhUk3OWu/nmmnyXLnqcxNdFi9PgrcO4rd/rW
-	bjtsmTL3AauTta61A5R1+xmUyjlwcy9vVJ4muO1DA9f1sgpqP7t4gef1qOeJglYinHbRByXiUUN
-	vAevUHaaS7unrONRwD3KDwtKTB4jnhdd97SeGszecZk43lk3wYj5kaWRMleTB1Ll
-X-Received: by 2002:a17:903:1ae8:b0:2e7:e742:8bb5 with SMTP id d9443c01a7336-2eff991431fmr2871605ad.14.1794984271479;
-        Tue, 17 Nov 2026 22:44:31 -0800 (PST)
-Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b3d187df25sm2719005a91.3.2026.11.17.22.44.30
+        bh=1wn8B8AtBDch11Kn2VubYj0NKMdWprvKTv7qKouH7kM=;
+        b=VGRfJ9SWsQaBvNhWJq381P2HPxRmtTyHc2c6Cy0bRfk7NAzp/59bnRb4JsRnuL+9LF
+         mEaUQKd4VjhCOuNbiMf2HwojYChr2D0bg1mSAa4rJjweSYKVphafXxf1pVObSxBqyl5n
+         AIGWOBpUsHzrEaX49CRpOcH2YT5wrbVCE5Zb0Cl44Xc8Z8kk4J1pzrWDr3zykUOKxyGS
+         mFi9PBzVf4c3VZo+zdULZEfG78s2OHw/C8de9fpTFg4jojGJdwXixGeIY50jroeSF8P0
+         i8RJQGaj6+9bhbWRid9eieQhSnhZsdYPHQ3IYFKWsT1veIr5cKPx3QDq03lUDk6hcPL3
+         l50Q==
+X-Forwarded-Encrypted: i=1; AL+hErFRxDv4YP9oYC6MhStVhDicaXqftyb30p1rgYVDpR3JB3CU2Gecm2gMOGSjrplU5xnLG4U=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8h4aTYbjMQwv9VRZsK9+IYaczJewmdQUk8Lk3Mn+McejmTyx6v
+	bwAx8qF/FlUcQzsZHvmzRrV0y0mKDL3Wco9mDzR8h26KPQUsY4u41nN96mJR2ohrPmO2wslj9cL
+	5GvxwX2e3dYD6c41PjAjftA1dRb8/xIwvmWy9CgE2xpGVbOCLy4Pag0H1/KhJ093dr5f3u8t0Vt
+	CR5UodcHUQb2CrqTL5E6zX+aUAbdVNYgTjue8zc5kHlEmsfyEcWzBbmIU98vOlm7mvHlUg5maga
+	se0
+X-Gm-Gg: AYBFou1zYXsiI/cF2AwH2jcCvSmqwQA3oybTs2Nqj/7sekqsDGcTtbKmRqYWx2W6/Ol
+	XxVsjgpxJlvuqLxrE1YTzdX+1pWZAzKJ+nURW/QhLZFLuP6B3Uv7P7W2jJn5JiOvnnlnlZTuMRt
+	Xi32kevw+jKBYfCx19M1Pfp2VTo1QK5M8CIAdBE/G5fCot9HWgJ895UdE/qnlFK0rp14s78WKwl
+	Wz459nWmWHUrWfZNoQ6cSi352tUVTFUn1uynYDLdT+hPTql5LCWdgOAzfEqMqwGKqd1u9SH2AQ8
+	UHJXyhBOJw8FqV27JwJyINV9fYUS3NvG1o08UzslcrakTzWAZmfKuM1VKc0+XMIxOxFPTJg7Im6
+	Nvcf9udUAevn3SXm8WZ+UXGHYKps/k7UoTGz65nXtte9plp0OL4I3TrEVl4UKrheePKgdckIGBc
+	7vVwlIuhsaM+hj9B6YOHC+UQx8bu5Yah7a
+X-Received: by 2002:a05:620a:6f05:b0:944:907:8f64 with SMTP id af79cd13be357-9499960290bmr312400185a.67.1794984433632;
+        Tue, 17 Nov 2026 22:47:13 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-26.dlp.protect.broadcom.com. [144.49.247.26])
+        by smtp-relay.gmail.com with ESMTPS id af79cd13be357-9499b4bada9sm11149985a.5.2026.11.17.22.47.13
+        for <kvm@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 17 Nov 2026 22:47:13 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-vs1-f71.google.com with SMTP id ada2fe7eead31-7d2f2df81bbso464562137.3
+        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 22:47:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1794984432; x=1795589232; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1wn8B8AtBDch11Kn2VubYj0NKMdWprvKTv7qKouH7kM=;
+        b=UTcF8ktbef/fgaus4SayC58YYDszLj/cKQW3QLPgdtvAk/olU8S7QvV/+m9ybP+Lsw
+         TXEDJO2Kg6AHyXcO3/Uh4nm/6jkCtcoNwr1feVCHkK9Pmb34YHJTgYhaUXSJJPnbVAoy
+         UY4KZUwRI3QHuF1ljFINWSxTLor7Nm8bgo5uE=
+X-Forwarded-Encrypted: i=1; AL+hErE7jxerjvkQRo2E7PFAE05UbBpbUm4y3NwayH3jigXxbJ6IMo6lG+aTwWvHhgNb6WguRmY=@vger.kernel.org
+X-Received: by 2002:a05:622a:528c:b0:533:8b99:fcd2 with SMTP id d75a77b69052e-55d5a668644mr25275731cf.40.1794984019891;
+        Tue, 17 Nov 2026 22:40:19 -0800 (PST)
+X-Received: by 2002:a05:622a:528c:b0:533:8b99:fcd2 with SMTP id d75a77b69052e-55d5a668644mr25275241cf.40.1794984019244;
+        Tue, 17 Nov 2026 22:40:19 -0800 (PST)
+Received: from vertex.localdomain (pool-173-49-113-140.phlapa.fios.verizon.net. [173.49.113.140])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d61cf3b56sm2078141cf.13.2026.11.17.22.40.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Nov 2026 22:44:30 -0800 (PST)
-Date: Tue, 17 Nov 2026 22:44:26 -0800
-From: Vipin Sharma <vipinsh@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org, ajayachandra@nvidia.com, 
-	alex@shazbot.org, amastro@fb.com, ankita@nvidia.com, apopple@nvidia.com, 
-	bhelgaas@google.com, chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net, 
-	graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, 
-	jrhilke@google.com, julianr@linux.ibm.com, kees@kernel.org, kevin.tian@intel.com, 
-	leon@kernel.org, leonro@nvidia.com, lukas@wunner.de, mattev@meta.com, 
-	michal.winiarski@intel.com, parav@nvidia.com, pasha.tatashin@soleen.com, praan@google.com, 
-	pratyush@kernel.org, rananta@google.com, rdunlap@infradead.org, rientjes@google.com, 
-	rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com, schnelle@linux.ibm.com, 
-	skhan@linuxfoundation.org, skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, 
-	yanjun.zhu@linux.dev, yi.l.liu@intel.com
-Subject: Re: [PATCH v6 07/27] vfio/pci: Preserve vfio-pci device files across
- Live Update
-Message-ID: <20261117220059.GA2250529.vipinsh@google.com>
-References: <20261102153656.1431701-1-vipinsh@google.com>
- <20261102153656.1431701-8-vipinsh@google.com>
- <auzftbPFO_6XBYVw@google.com>
+        Tue, 17 Nov 2026 22:40:18 -0800 (PST)
+From: Zack Rusin <zack.rusin@broadcom.com>
+To: Borislav Petkov <bp@alien8.de>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	x86@kernel.org
+Cc: Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	virtualization@lists.linux.dev,
+	bcm-kernel-feedback-list@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	Zack Rusin <zack.rusin@broadcom.com>
+Subject: [PATCH v4 1/3] x86/vmware: Move high-bandwidth hypercalls out of line
+Date: Wed, 18 Nov 2026 01:40:11 -0500
+Message-ID: <59bf54707b78e2a4d2072c1aff6bcf72cb35e6b2.1794206170.git.zack.rusin@broadcom.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1794206170.git.zack.rusin@broadcom.com>
+References: <cover.1794206170.git.zack.rusin@broadcom.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -110,267 +134,230 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <auzftbPFO_6XBYVw@google.com>
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On Thu, Nov 05, 2026 at 07:57:41PM +0000, David Matlack wrote:
-> On 2026-11-02 07:36 AM, Vipin Sharma wrote:
-> > + * DMA Memory Ordering Contract
-> > + * ============================
-> > + *
-> > + * Because a preserved noiommu device continues performing DMA using physical
-> > + * addresses across kexec, any memory buffer targeted by device DMA must remain
-> > + * at the same physical address in both kernels and must not be freed to the
-> > + * page allocator while the device can still access it:
-> > + *
-> > + *  * When using a LUO-preserved ``memfd``, userspace **must** preserve the
-> > + *    ``memfd`` in the **same** LUO session as the VFIO device and **before**
-> > + *    preserving the VFIO device. LUO finishes files within a session in reverse
-> > + *    preservation order (LIFO), guaranteeing that if the device is not taken
-> > + *    over in the new kernel, VFIO's ``finish()`` callback stops bus mastering
-> > + *    and resets the device before the ``memfd``'s ``finish()`` callback releases
-> > + *    its folios. Cross-session ordering is the responsibility of userspace.
-> > + *
-> > + *  * After retrieving a preserved ``memfd`` in the new kernel, its folios are
-> > + *    ordinary unpinned shmem page cache until pinned again; userspace must keep
-> > + *    the ``memfd`` alive and re-pin/map it before finishing the session, and
-> > + *    must not rely on a ``memfd`` whose ``LIVEUPDATE_SESSION_RETRIEVE_FD`` call
-> > + *    failed (failed ``memfd`` retrieval frees its folios immediately).
-> 
-> Most of this section documents LUO and memfd behavior (finish ordering
-> within and across sessions, what happens to memfd folios after
-> retrieval), which belongs in the LUO and memfd documentation rather than
-> here. The VFIO documentation should just state what VFIO requires of
-> userspace and what happens if userspace violates it. Something like:
-> 
->   DMA Memory
->   ==========
-> 
->   A preserved device keeps performing DMA across kexec to the physical
->   addresses it was programmed with before kexec. VFIO does not know
->   which memory the device accesses and does not preserve it. Userspace
->   must ensure that all memory the device can access stays allocated at
->   the same physical address in both kernels until the device is stopped,
->   either by userspace after taking it over or by VFIO when the session
->   is finished. If userspace violates this, the device can corrupt memory
->   that has been freed and reused by either kernel. VFIO cannot detect
->   this.
-> 
-> VFIO doesn't stop the device when the session is finished until
-> PATCH 11, so either add this section there or drop that clause here and
-> add it in PATCH 11.
-> 
+The high-bandwidth helpers contain inline assembly which temporarily uses
+%bp as a VMware ABI register. Keeping that assembly in vmware.h duplicates
+it in callers.
 
-Sounds good. I will remove memfd from here and mention thing what VFIO
-expects.
+Move both helpers to vmware.c and export them for the vmwgfx module.
+Preserve their unwind hints and remove the redundant caller-wide objtool
+annotations from vmwgfx.
 
-> > +	cfg_size = pdev->cfg_size;
-> > +
-> > +	if (cfg_size != PCI_CFG_SPACE_SIZE && cfg_size != PCI_CFG_SPACE_EXP_SIZE)
-> > +		return -EINVAL;
-> 
-> pdev->cfg_size isn't limited to these two values. PCI quirks set other
-> sizes, e.g. quirk_citrine() (0xA0) and quirk_nfp6000() (0x600), and
-> vfio-pci handles those devices fine since vconfig is just pdev->cfg_size
-> bytes. This check only seems to exist to bound the variable-length
-> layout of struct vfio_pci_core_device_ser, which goes away with the
-> changes suggested below. Please drop it.
-> 
-> > +	total_size = size_add(sizeof(*ser),
-> > +			      size_add(size_mul(2, cfg_size), saved_size));
-> > +	if (total_size > U32_MAX)
-> > +		return -EOVERFLOW;
-> > +
-> > +	ser = kho_alloc_preserve(total_size);
-> > +	if (IS_ERR(ser))
-> > +		return PTR_ERR(ser);
-> > +
-> > +	if (saved_size) {
-> > +		void *dst = ser->data + 2 * (size_t)cfg_size;
-> > +
-> > +		err = pci_liveupdate_serialize_saved_state(vdev->pci_saved_state,
-> > +							   dst, saved_size);
-> > +		if (err) {
-> > +			kho_unpreserve_free(ser);
-> > +			return err;
-> > +		}
-> > +	}
-> 
-> Please don't embed struct pci_saved_state_ser in VFIO's serialized
-> struct. Variable-length serialized structs should be preserved in their
-> own allocation, and VFIO should just store the physical address (0 if
-> there is no saved state). That way the PCI core owns the size, flags and
-> validation of its own ABI, either struct can grow without changing the
-> layout of the other, and the offset math here and in PATCH 11 goes away.
-> struct pci_ser already references its devices array the same way.
-> 
-> I plan to structure the PCI core helpers for serializing and
-> deserializing struct pci_saved_state to require this. The PCI core will
-> do the allocation and just return a pointer to the serialized saved
-> state. But I just wanted to call it out here.
-> 
+Preserve the argument sequence from commit e0e022004bbe ("x86/vmware:
+Fix i386 high-bandwidth hypercall arguments").
 
-Sounds good, v7 will store physical address returned by new PCI helpers.
-I will base my series on top of your PCI saved state series latest
-version. Current one is v2 at 
-  https://lore.kernel.org/all/20261106004218.604799-1-dmatlack@google.com/
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+---
+ arch/x86/include/asm/vmware.h       | 62 +-------------------------
+ arch/x86/kernel/cpu/vmware.c        | 68 +++++++++++++++++++++++++++++
+ drivers/gpu/drm/vmwgfx/vmwgfx_msg.c |  3 --
+ 3 files changed, 70 insertions(+), 63 deletions(-)
 
-> > +	ser->flags = vdev->reset_works ? VFIO_PCI_SER_RESET_WORKS : 0;
-> 
-> reset_works shouldn't be serialized. Alex's series replaces
-> vdev->reset_works with pci_reset_supported() [1], which only looks at
-> pdev->reset_methods. Those are set up at enumeration without resetting
-> the device, so the next kernel can answer the question itself. And the
-> next kernel's answer is the one that matters, since it's the kernel that
-> will reset the device.
-> 
-
-Thanks for bringing it up. I will send that specific patch separately as
-discussed in
-  https://lore.kernel.org/kvm/20261118000511.GC2250529.vipinsh@google.com/
-
-> Please base on that series (or cherry-pick that patch) and drop
-> VFIO_PCI_SER_RESET_WORKS, along with the incoming reset_works copy and
-> the reset_works argument to vfio_pci_core_liveupdate_reset() in PATCH
-> 11, and the copy in vfio_pci_liveupdate_take_over() in PATCH 14. flags
-> then has no defined bits, but please keep it (and keep rejecting unknown
-> bits) for future features, see below.
-> 
-> > +	if (!vdev->vconfig || !vdev->pci_config_map ||
-> > +	    ser->cfg_size != pdev->cfg_size)
-> > +		return -EINVAL;
-> 
-> ser->cfg_size was set from pdev->cfg_size in preserve(), and
-> pdev->cfg_size doesn't change after enumeration, so the cfg_size check
-> can't fail.
-
-Yeah, this is redundant.
-
-> 
-> > +	memcpy(ser->data, vdev->vconfig, ser->cfg_size);
-> > +	memcpy(ser->data + ser->cfg_size, vdev->pci_config_map, ser->cfg_size);
-> 
-> pci_config_map doesn't need to be preserved. PATCH 14 already rebuilds
-> it with vfio_config_init() in the next kernel and only uses the
-> preserved copy to check that the two are identical.
-> 
-> I assume the intent is to detect changes to vfio-pci's config emulation
-> between the two kernels, but the map isn't a good proxy for that. It
-> changes for differences that don't matter (e.g. hiding a capability or
-> learning the length of a new extended capability), which would fail
-> take-over and lose the Live Update on exactly the kernel upgrades Live
-> Update is meant for. And it doesn't change for differences that do
-> matter, like which bits are virtualized or writable within a capability.
-
-I think it does matter because reads and writes of unitialized
-capabilities in VFIO PCI config space goes to hardware directly. So, in
-the new kernel if pci_config_map changes it from PCI_CAP_ID_INVALID to
-others then those reads/writes can go to vconfig which will contain
-stale unitialized data from the old kernel's heap.
-
-This also changes behavior under a running user. Writes that reached
-hardware before Live Update can be silently dropped or redirected to
-vconfig. See the comment above struct perm_bits unassigned_perms{}
-in vfio_pci_config.c
-
-I do agree current patch is not protecting against bits virt/write
-changes inside a capability, which is also important.
-
-> 
-> Preserving vconfig makes vfio-pci's config emulation part of the
-> contract between kernels either way. I think changes to the config
-> emulation that affect how a preserved vconfig is interpreted need to be
-> tied to a userspace opt-in, recorded as a flag in struct
-> vfio_pci_core_device_ser. A kernel that doesn't understand the flag then
-> rejects the preserved device, and userspace shouldn't opt in while it
-> can still roll back to a kernel without the new emulation.
-
-How would a userspace opt-in? New kernel can change a capability visiblity
-or virt and write permission of the bits inside a capability. Kernel
-cannot know if userspace used the capability or not. Creating a VFIO
-device in the new kernel by default results in a opt-in and currently
-there is no way for userspace to opt-out unless we add a new
-functionality where userspace can disable/enable features something
-similar to KVM capabilities.
-
-For now, I think we don't need to worry about it. As this version will
-be a base and if any serialized data with flags set received in this
-kernel will lead to erroring out restore.
-
-In the next version, I will not preserve pci_config_map. Hopefully,
-anyone changing VFIO code doesn't forget to update flags if they change
-capability or permission bits (I will write comments at appropriate
-places.)
-
-If we want to be very careful, we can do two things in this series:
-
-1. Create a per bit valid mask for the vconfig and compare this between
-   new and old kernel during restore. In the new kernel, VFIO then takes
-   each bit from the preserved copy only where the mask says it was
-   valid, and keeps its own freshly initialized value elsewhere.
-2. Create a hash or store virt and writable bits in config space.
-   Compare it with the new kernel.
-
-Both of the above combined will safeguard against forgotten flag update
-in the code.
-
-We don't have to do it but it safeguards against mistakes. Let me know
-what you prefer.
-
-> 
-> > +	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
-> > +	vdev->liveupdate_intx_disabled = !!(cmd & PCI_COMMAND_INTX_DISABLE);
-> > +	if (!vdev->liveupdate_intx_disabled)
-> > +		pci_intx(pdev, 0);
-> 
-> This doesn't mask INTx on devices with pdev->broken_intx_masking set,
-> either because PCI_COMMAND_INTX_DISABLE isn't writable or because a
-> quirk marks INTx masking as broken. vfio-pci normally masks INTx for
-> those devices at the interrupt controller, but nothing does that across
-> kexec, so the device can still assert INTx in the next kernel before
-> anything is ready to handle it. If the line is shared, that can get the
-> line disabled as spurious and break the other device.
-> 
-> Please reject those devices in preserve() if they have an INTx pin and
-> !pci_intx_mask_supported(pdev), and add that to the Restrictions in the
-> DOC. Check the PCI core flag rather than vdev->pci_2_3, since
-> vfio_pci.nointxmask=1 clears pci_2_3 even when INTx masking works.
-
-Agree, I will reject those devices in preserve().
-> 
-> > +struct vfio_pci_core_device_ser {
-> > +	u32 domain;
-> > +	u16 bdf;
-> > +	u16 cfg_size;
-> > +	u32 size;
-> > +	u32 flags;
-> > +	u32 saved_state_size;
-> > +	u32 reserved;
-> > +	u8 data[];
-> > +} __packed;
-> 
-> Once config_map and the saved state are gone, vconfig is the only
-> variable-length part left. Please either make it a fixed-length array
-> sized for the largest config space (PCI_CFG_SPACE_EXP_SIZE), or preserve
-> it in a separate allocation like the saved state. Either way this struct
-> becomes fixed-size and data[] goes away.
-> 
-> cfg_size should stay, to record how much of vconfig is valid. The next
-> kernel computes pdev->cfg_size on its own and could come up with a
-> different value, so it needs to check that ser->cfg_size matches (and
-> fits in the vconfig buffer) before using the preserved vconfig. Doing
-> that once in retrieve() should be enough.
-> 
-> I understand this will waste some memory today, since each KHO
-> allocation must be a multiple of a PAGE_SIZE. But that is a KHO problem
-> that can be fixed later.
-> 
-
-I agree. I will change data to fixed size for vconfig. We will not need
-pci_config_map, and pci saved state array.
-
-I am planning to add two flags required and optional similar to your PCI
-serialization struct.
-
-Thanks again for the review.
+diff --git a/arch/x86/include/asm/vmware.h b/arch/x86/include/asm/vmware.h
+index fb011cef01e7..f3ffe358d2a3 100644
+--- a/arch/x86/include/asm/vmware.h
++++ b/arch/x86/include/asm/vmware.h
+@@ -253,12 +253,6 @@ unsigned long vmware_hypercall7(unsigned long cmd, unsigned long in1,
+ 	return out0;
+ }
+ 
+-#ifdef CONFIG_X86_64
+-#define VMW_BP_CONSTRAINT "r"
+-#else
+-#define VMW_BP_CONSTRAINT "m"
+-#endif
+-
+ /*
+  * High bandwidth calls are not supported on encrypted memory guests.
+  * The caller should check cc_platform_has(CC_ATTR_MEM_ENCRYPT) and use
+@@ -266,66 +260,14 @@ unsigned long vmware_hypercall7(unsigned long cmd, unsigned long in1,
+  * This assumption simplifies HB hypercall implementation to just I/O port
+  * based approach without alternative patching.
+  */
+-static inline
+ unsigned long vmware_hypercall_hb_out(unsigned long cmd, unsigned long in2,
+ 				      unsigned long in3, unsigned long in4,
+ 				      unsigned long in5, unsigned long in6,
+-				      u32 *out1)
+-{
+-	unsigned long out0;
+-
+-	asm_inline volatile (
+-		UNWIND_HINT_SAVE
+-		"mov %[in6], %%" _ASM_AX "\n\t"
+-		"push %%" _ASM_BP "\n\t"
+-		UNWIND_HINT_UNDEFINED
+-		"mov %%" _ASM_AX ", %%" _ASM_BP "\n\t"
+-		"mov %[magic], %%eax\n\t"
+-		"rep outsb\n\t"
+-		"pop %%" _ASM_BP "\n\t"
+-		UNWIND_HINT_RESTORE
+-		: "=&a" (out0), "=b" (*out1)
+-		: "b" (cmd),
+-		  "c" (in2),
+-		  "d" (in3 | VMWARE_HYPERVISOR_PORT_HB),
+-		  "S" (in4),
+-		  "D" (in5),
+-		  [in6] VMW_BP_CONSTRAINT(in6),
+-		  [magic] "i" (VMWARE_HYPERVISOR_MAGIC)
+-		: "cc", "memory");
+-	return out0;
+-}
+-
+-static inline
++				      u32 *out1);
+ unsigned long vmware_hypercall_hb_in(unsigned long cmd, unsigned long in2,
+ 				     unsigned long in3, unsigned long in4,
+ 				     unsigned long in5, unsigned long in6,
+-				     u32 *out1)
+-{
+-	unsigned long out0;
+-
+-	asm_inline volatile (
+-		UNWIND_HINT_SAVE
+-		"mov %[in6], %%" _ASM_AX "\n\t"
+-		"push %%" _ASM_BP "\n\t"
+-		UNWIND_HINT_UNDEFINED
+-		"mov %%" _ASM_AX ", %%" _ASM_BP "\n\t"
+-		"mov %[magic], %%eax\n\t"
+-		"rep insb\n\t"
+-		"pop %%" _ASM_BP "\n\t"
+-		UNWIND_HINT_RESTORE
+-		: "=&a" (out0), "=b" (*out1)
+-		: "b" (cmd),
+-		  "c" (in2),
+-		  "d" (in3 | VMWARE_HYPERVISOR_PORT_HB),
+-		  "S" (in4),
+-		  "D" (in5),
+-		  [in6] VMW_BP_CONSTRAINT(in6),
+-		  [magic] "i" (VMWARE_HYPERVISOR_MAGIC)
+-		: "cc", "memory");
+-	return out0;
+-}
+-#undef VMW_BP_CONSTRAINT
++				     u32 *out1);
+ #undef VMWARE_HYPERCALL
+ 
+ #endif
+diff --git a/arch/x86/kernel/cpu/vmware.c b/arch/x86/kernel/cpu/vmware.c
+index f7ab9e7902cf..7cfc894f0663 100644
+--- a/arch/x86/kernel/cpu/vmware.c
++++ b/arch/x86/kernel/cpu/vmware.c
+@@ -30,12 +30,14 @@
+ #include <linux/reboot.h>
+ #include <linux/static_call.h>
+ #include <linux/sched/cputime.h>
++#include <asm/asm.h>
+ #include <asm/div64.h>
+ #include <asm/x86_init.h>
+ #include <asm/hypervisor.h>
+ #include <asm/cpuid/api.h>
+ #include <asm/timer.h>
+ #include <asm/apic.h>
++#include <asm/unwind_hints.h>
+ #include <asm/vmware.h>
+ #include <asm/svm.h>
+ 
+@@ -67,6 +69,72 @@ struct vmware_steal_time {
+ static unsigned long vmware_tsc_khz __ro_after_init;
+ static u8 vmware_hypercall_mode     __ro_after_init;
+ 
++#ifdef CONFIG_X86_64
++#define VMW_BP_CONSTRAINT "r"
++#else
++#define VMW_BP_CONSTRAINT "m"
++#endif
++
++unsigned long vmware_hypercall_hb_out(unsigned long cmd, unsigned long in2,
++				      unsigned long in3, unsigned long in4,
++				      unsigned long in5, unsigned long in6,
++				      u32 *out1)
++{
++	unsigned long out0;
++
++	asm volatile(UNWIND_HINT_SAVE
++		"mov %[in6], %%" _ASM_AX "\n\t"
++		"push %%" _ASM_BP "\n\t"
++		UNWIND_HINT_UNDEFINED
++		"mov %%" _ASM_AX ", %%" _ASM_BP "\n\t"
++		"mov %[magic], %%eax\n\t"
++		"rep outsb\n\t"
++		"pop %%" _ASM_BP "\n\t"
++		UNWIND_HINT_RESTORE
++		: "=&a" (out0), "=b" (*out1)
++		: "b" (cmd),
++		  "c" (in2),
++		  "d" (in3 | VMWARE_HYPERVISOR_PORT_HB),
++		  "S" (in4),
++		  "D" (in5),
++		  [in6] VMW_BP_CONSTRAINT(in6),
++		  [magic] "i" (VMWARE_HYPERVISOR_MAGIC)
++		: "cc", "memory");
++	return out0;
++}
++EXPORT_SYMBOL_GPL(vmware_hypercall_hb_out);
++
++unsigned long vmware_hypercall_hb_in(unsigned long cmd, unsigned long in2,
++				     unsigned long in3, unsigned long in4,
++				     unsigned long in5, unsigned long in6,
++				     u32 *out1)
++{
++	unsigned long out0;
++
++	asm volatile(UNWIND_HINT_SAVE
++		"mov %[in6], %%" _ASM_AX "\n\t"
++		"push %%" _ASM_BP "\n\t"
++		UNWIND_HINT_UNDEFINED
++		"mov %%" _ASM_AX ", %%" _ASM_BP "\n\t"
++		"mov %[magic], %%eax\n\t"
++		"rep insb\n\t"
++		"pop %%" _ASM_BP "\n\t"
++		UNWIND_HINT_RESTORE
++		: "=&a" (out0), "=b" (*out1)
++		: "b" (cmd),
++		  "c" (in2),
++		  "d" (in3 | VMWARE_HYPERVISOR_PORT_HB),
++		  "S" (in4),
++		  "D" (in5),
++		  [in6] VMW_BP_CONSTRAINT(in6),
++		  [magic] "i" (VMWARE_HYPERVISOR_MAGIC)
++		: "cc", "memory");
++	return out0;
++}
++EXPORT_SYMBOL_GPL(vmware_hypercall_hb_in);
++
++#undef VMW_BP_CONSTRAINT
++
+ unsigned long vmware_hypercall_slow(unsigned long cmd,
+ 				    unsigned long in1, unsigned long in3,
+ 				    unsigned long in4, unsigned long in5,
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c b/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c
+index fd77ab6568cb..20ab4019680c 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c
+@@ -24,7 +24,6 @@
+  *
+  */
+ 
+-#include <linux/objtool.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/slab.h>
+@@ -289,7 +288,6 @@ static int vmw_send_msg(struct rpc_channel *channel, const char *msg)
+ 
+ 	return -EINVAL;
+ }
+-STACK_FRAME_NON_STANDARD_FP(vmw_send_msg);
+ 
+ 
+ /**
+@@ -384,7 +382,6 @@ static int vmw_recv_msg(struct rpc_channel *channel, void **msg,
+ 
+ 	return 0;
+ }
+-STACK_FRAME_NON_STANDARD(vmw_recv_msg);
+ 
+ 
+ /**
