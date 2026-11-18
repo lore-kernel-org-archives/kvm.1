@@ -1,72 +1,106 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.181
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794984191;
-	b=TRb8w2rCWS5YR65bZ7YebZd/gf/HT8ZWSwFgM8E1YnKi6G2/rgQMkmYByzlwXaTNEcEd
-	 2BNQIXEmA2F2u+uuBISzHBLM6drq+8S/3DuIPB98Jr5IhsdM8iHRneVgeBP+17mLKSppF
-	 bUNDpI0Yv0188ZQZ+RCC4y8LZqdB6PjSFgpSwMnSE34S8mfCy1/cssK6PCXL7hdVrbwOD
-	 jexXnkuS7/fbjuUG07HlqoDODo14vuTF6zEIawfmOupw1zNu5L7kZMYC0iwiIbhRDO0oh
-	 kJ7SgXxJi+n+OJHOF+vqdh9UwgDmN2I0jtI8CW5wdErZc/QJSTmK9YKpDZXUwISXX/Q==
+	t=1794984273;
+	b=3pCTUf3n54UapRY0tq9IZw6U/DhVvjogglR980uMCS5RlFG85EqPezpXQUgOybbRXBd/
+	 mzsx239sfGTBg5g6W5ZWqd2BofM1evxR+qhs4c8f9Xwh2jUgBM/bbrvlaOs5zPQVpORoX
+	 Ahu+xuqXI8lnQU4Sxs4F7j3uUFToImZXHZqmYe/38XHy+6j01tngEg9YcGSUTq+GCElTI
+	 Mt/s6HiySywjY02tY1kUk2bXUJ/gjk3MBM8+rNxtK95Zl1i76bTFpkEdB+WmN7objQv/O
+	 I+NqxUGsZkXqTHalXR3lrI8SAg02tCRrOC7CDGLZa76ONnwe6yI+mvmiugFIk9O0ARQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794984191;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794984273;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
-	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=2aUQnFknmFLx1QPqRVFIOwjYdEPpePYRr81dy65CA0k=;
-	b=OD89LrNNV+6PMGBN4cLXOKs4keTTX/MQ1vomWND4Fq7egwsEUZ+MxRx8UXYplksYbVva
-	 vg7gh9+ZEY4sacptfPcBlGwYO1TPNJ+BVW8LSu63wqfCka0HTpIge30ZG8y1hulI3TRaX
-	 dWMQA7VgXg6wTigbJm1nzUjmv03TEc/L3Y7Ut+rWX53iSte27Cll+ct1aZDTnd3oorjhR
-	 mEUxl+eheT3adoRUmgrn7NzVKZygIXkRdmJA9AdZn6G5vxyLFs/R0lRu/ZYOwHBo4W3on
-	 gTGWui9BRfW3Gp8FmoKNaZiev1AWAByyFZ3eqjIqmt8HKtXxiilxpTWBEPqd5yg1DOw==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=1gbh0okTI8s6EjfIrwbYjY5j+vGizMFhIhkRj367QiY=;
+	b=SHJeONshWTsbU4Qy7+a/qndfJdi+U82cwK8EaKv9VufhAeXe+g/tVmNnPRtaEizsrqB+
+	 weOE8dep7Hjcpf0YiSVOYrLDLTw9HC/1oNLqkhXEycIr6/HsFyEBWsz2gb/HnkAykimSb
+	 5tmZrbMH9G/JPvXzxu6QuYcYv6tfA5fpe9yyXh6JETisw2EIAeXst71gkpmwicrbOqQGP
+	 y2Uv2Nl0mCZAIJuV96SLhq6JZHG35qu/zbQfZwogNWtHRquYxELe0dFQSut5e6q96yyea
+	 8QEi3XCaRda/BkFTA4aDbHYevU6HhMBPJ3OWKT5KEMu3Nc20dgvLoS83gocw7uW0R+g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=IWmfqpOe;
-	arc=none smtp.remote-ip=209.85.215.199
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nky7Dkrs;
+	arc=none smtp.remote-ip=209.85.214.181
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0830606A325
-	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 06:43:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C0830606A325
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9255606A31C
+	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 06:44:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9255606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=IWmfqpOe
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc1cdfb337eso493269a12.0
-        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 22:43:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nky7Dkrs
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2efc4a84e75so28475ad.1
+        for <kvm@vger.kernel.org>; Tue, 17 Nov 2026 22:44:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794984190; x=1795588990; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2aUQnFknmFLx1QPqRVFIOwjYdEPpePYRr81dy65CA0k=;
-        b=IWmfqpOeb+LWMlmJYdky/4dPiOa49eaZ4dhuryrAX2bDh5f5ohmZt3aK1lH+SlbLuq
-         AQErwagqeMFcIpvf0MVH73CMC69DsuKB+2nnu1nO8aP6y/tU+E8fnrFGzfRnpZGd3XnH
-         Md46yKTKMDm5GhuGfoVnpXrs8DSDjb0t8C8S3YZa8aYRdLGKxCHzMkKumX3JpuQv/tCV
-         TXqVI8SdwvPvXYkCWwPr4VfPMnj0wxEfokSG69qhTnL6DYMTxNlVJQGop1qeM4lFytmf
-         TTR44AMsW7Ij5XifzEaaIrWpxJ+BRwaGqAYV/sAk+zvNONUSiein64T0iIbJjHyHVr1W
-         bq+w==
+        d=google.com; s=20260707; t=1794984272; x=1795589072; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1gbh0okTI8s6EjfIrwbYjY5j+vGizMFhIhkRj367QiY=;
+        b=nky7DkrsPveugk7ryzP6rGqlpKYzSr/WKtJDdQSOlFwiRBKnRNRfIHmLCIW949HgXi
+         2vPTXy2PnQ6BinsdBiPUyAIKjbkWDD8S8xz+D1akjZTZd8rWPctdJCyM6tZBBfcO+UFd
+         DIrc0xseyEUGcIhl7Aoq68RUWwihg4nQWxrjHVPFW02kyxLAtmTdwtK6VnHPFHz96ybg
+         2MYnoFjpG0P/RYJbUiOWZyDpc7hR58FG4OBSkjrLchuLk4ZrIKWQq62l32whcYYjcFc/
+         lWb+VNnCqNNd/aYiN1RT2QRkgt+fT6ohclin2+CBtCtzsx/hb3jd0Wyy39a6q0ew2k1x
+         NzqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794984190; x=1795588990;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
+        d=1e100.net; s=20260707; t=1794984272; x=1795589072;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=2aUQnFknmFLx1QPqRVFIOwjYdEPpePYRr81dy65CA0k=;
-        b=rVtyEHdXeQVQcYJzGmpWnSOKHtrjnOx6n9m2RnSeY2MQg4FJM0Vy9XBDr2C8FLTbvh
-         ilNfIzw7jVLNZSBkOyTLdROFIC2Xv0FDETcQPkNFRCyxZ3U6LzAa2eSzkkDU6yR+dqt3
-         si8h6TCV8ipEXGNSGVhrPLbSHNSCTO32Sxg/Ku8T5RhkNW9J77NJjpXN7dNKGOCWWWsr
-         6anoOAY6t+AkwjE61pgQwQ7lJ63CJUEYaFZprFOn6u9o2y79Sfp5LMSyi6OEEROh8Nch
-         QlI8wxhXKhVBV+amcUaxs61CsmWenFD01Nm60fLcU0XnMwcy1liLYalD9OhCX443zal9
-         YSfg==
-X-Forwarded-Encrypted: i=1; AL+hErHxG/5pAzGh1hr51kcD9mMZKn5LHiu0Do1MuTSrZ+ACZgvO81Gh5ye0PEVz/5qPTTr0mmM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9aiiiwm+F13nZXaB8FSODSo0l7ZSDChzMaBrlooIya5gXeIO2a
-	QhZRAGuhXIZlwIlIXC0lONdTIReOZf7taDAxzMlGyXAqDH0ZnW1IWYOzfrOp3khjylA70SBN2Qy
-	B0U3ucaQH
-X-Received: from plbjx13.prod.google.com ([2002:a17:903:138d:b0:2ef:fb3d:250])
- (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f78c:b0:2ed:2475:e413
- with SMTP id d9443c01a7336-2eff75814e6mr14574645ad.74.1794984189668; Tue, 17
- Nov 2026 22:43:09 -0800 (PST)
-Date: Wed, 18 Nov 2026 06:43:08 +0000
+        bh=1gbh0okTI8s6EjfIrwbYjY5j+vGizMFhIhkRj367QiY=;
+        b=Dnh7yWwTqmtvv76B9/SkV5Fk/7+wzXSunZHs5SoWw1HeCLDOuBN9ewInTXin/j75cy
+         unb7hwcLM309LgocOIc4rEzAXFIYS7rR3oqFmHTHpcthL5BFQlMMwhhI/Eg9iJFmlCGj
+         kJeeFznm/4+/yqjcqHEPtpdEayKz2W1IeDUbChrmgfH3ujMngngrSQhfKZ7GO8xJnaOQ
+         BUzlEM/RD7bLVygUvZ7N/oLOBMLOBSPBi+jTQpTJxO4kEvaVdOfuw03IzdqO4vuM9bhl
+         v0JDK7DtrDyIrw0+fIsb6/JbspDNvVQh+RUKUh1Bc+rfPmxBNWzYLhyo5FI7Ep0u6J4r
+         6Zzg==
+X-Forwarded-Encrypted: i=1; AL+hErHZ0wF+I3FKcu02KMJWE4OaScYVX7zAHhVyu8nVjkRMVrEKjUzIokAGjW2PBMVM2pMXfqg=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8WDJB0ZDwleobW+026J9kcU5ixdN+BQ0gU6Y6VbSkzXpIYspgc
+	6uUk5DqHTE7eJo5rcDvxvM8qACk2acIpMOHjBTQcdwF5XHYoL/Se8Abjdjz7GF7v4A==
+X-Gm-Gg: AZFdTZe3QK/doqMcDBa8tVS2iCNx296zmouhLMERLpNWIqE5RwgyKP5g33EHUja5O1G
+	N133gdwBuDxIYlwMBVYqkYi/+wXc0iSRZM1a9URPcGdA2uppAOf6kX3H3KQ027fN1KG30RwQOLz
+	3yZ7VRqNNascJUk0mOb493fGa6/ZuC0rcgtQVn58UEj0DRgGQ0+pGAyQa9HmkZytXjaaqDVwGp6
+	uxUvsmoK8YjaJoKSxhdKhZdaU7h0KnfiXt8QwxUJQzohaiwGrQkdnVfpx3/sWsW6Dnv6A/tYScL
+	cuSyQ6Ibo7avWQUpX2wmWmCKJPqdHtatpXU1aycKoBqQBrWChrYXUg1zzHhLX31ItQZ7jtBFQ8v
+	0htJLmqBoe3pdlsoNBqOVm5ksOrGgoV/v4pxDn/oiYwhhTRq6B/5UQPudVdJPL85HOSMhCjuDa0
+	EQMzIH0H6t1yfg+OQSYbkXTU57u8VIir5MojPdsQhUk3OWu/nmmnyXLnqcxNdFi9PgrcO4rd/rW
+	bjtsmTL3AauTta61A5R1+xmUyjlwcy9vVJ4muO1DA9f1sgpqP7t4gef1qOeJglYinHbRByXiUUN
+	vAevUHaaS7unrONRwD3KDwtKTB4jnhdd97SeGszecZk43lk3wYj5kaWRMleTB1Ll
+X-Received: by 2002:a17:903:1ae8:b0:2e7:e742:8bb5 with SMTP id d9443c01a7336-2eff991431fmr2871605ad.14.1794984271479;
+        Tue, 17 Nov 2026 22:44:31 -0800 (PST)
+Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b3d187df25sm2719005a91.3.2026.11.17.22.44.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Nov 2026 22:44:30 -0800 (PST)
+Date: Tue, 17 Nov 2026 22:44:26 -0800
+From: Vipin Sharma <vipinsh@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org, ajayachandra@nvidia.com, 
+	alex@shazbot.org, amastro@fb.com, ankita@nvidia.com, apopple@nvidia.com, 
+	bhelgaas@google.com, chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net, 
+	graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, 
+	jrhilke@google.com, julianr@linux.ibm.com, kees@kernel.org, kevin.tian@intel.com, 
+	leon@kernel.org, leonro@nvidia.com, lukas@wunner.de, mattev@meta.com, 
+	michal.winiarski@intel.com, parav@nvidia.com, pasha.tatashin@soleen.com, praan@google.com, 
+	pratyush@kernel.org, rananta@google.com, rdunlap@infradead.org, rientjes@google.com, 
+	rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com, schnelle@linux.ibm.com, 
+	skhan@linuxfoundation.org, skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, 
+	yanjun.zhu@linux.dev, yi.l.liu@intel.com
+Subject: Re: [PATCH v6 07/27] vfio/pci: Preserve vfio-pci device files across
+ Live Update
+Message-ID: <20261117220059.GA2250529.vipinsh@google.com>
+References: <20261102153656.1431701-1-vipinsh@google.com>
+ <20261102153656.1431701-8-vipinsh@google.com>
+ <auzftbPFO_6XBYVw@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -75,297 +109,268 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.1.703.gf848ed807c-goog
-Message-ID: <20261118064309.219592-1-jrhilke@google.com>
-Subject: [PATCH v8] vfio: selftests: Find devices that have VFIO selftest drivers
-From: Josh Hilke <jrhilke@google.com>
-To: Alex Williamson <alex@shazbot.org>
-Cc: David Matlack <dmatlack@google.com>, Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Sean Christopherson <seanjc@google.com>, 
-	Vipin Sharma <vipinsh@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auzftbPFO_6XBYVw@google.com>
 
-Add list_supported_devices.sh to print the PCI addresses and names of
-devices on the host that have a VFIO selftest driver. Group the output
-into supported and unusable sections based on whether vfio-pci is loaded
-and whether the vfio-pci denylist blocks the device.
+On Thu, Nov 05, 2026 at 07:57:41PM +0000, David Matlack wrote:
+> On 2026-11-02 07:36 AM, Vipin Sharma wrote:
+> > + * DMA Memory Ordering Contract
+> > + * ============================
+> > + *
+> > + * Because a preserved noiommu device continues performing DMA using physical
+> > + * addresses across kexec, any memory buffer targeted by device DMA must remain
+> > + * at the same physical address in both kernels and must not be freed to the
+> > + * page allocator while the device can still access it:
+> > + *
+> > + *  * When using a LUO-preserved ``memfd``, userspace **must** preserve the
+> > + *    ``memfd`` in the **same** LUO session as the VFIO device and **before**
+> > + *    preserving the VFIO device. LUO finishes files within a session in reverse
+> > + *    preservation order (LIFO), guaranteeing that if the device is not taken
+> > + *    over in the new kernel, VFIO's ``finish()`` callback stops bus mastering
+> > + *    and resets the device before the ``memfd``'s ``finish()`` callback releases
+> > + *    its folios. Cross-session ordering is the responsibility of userspace.
+> > + *
+> > + *  * After retrieving a preserved ``memfd`` in the new kernel, its folios are
+> > + *    ordinary unpinned shmem page cache until pinned again; userspace must keep
+> > + *    the ``memfd`` alive and re-pin/map it before finishing the session, and
+> > + *    must not rely on a ``memfd`` whose ``LIVEUPDATE_SESSION_RETRIEVE_FD`` call
+> > + *    failed (failed ``memfd`` retrieval frees its folios immediately).
+> 
+> Most of this section documents LUO and memfd behavior (finish ordering
+> within and across sessions, what happens to memfd folios after
+> retrieval), which belongs in the LUO and memfd documentation rather than
+> here. The VFIO documentation should just state what VFIO requires of
+> userspace and what happens if userspace violates it. Something like:
+> 
+>   DMA Memory
+>   ==========
+> 
+>   A preserved device keeps performing DMA across kexec to the physical
+>   addresses it was programmed with before kexec. VFIO does not know
+>   which memory the device accesses and does not preserve it. Userspace
+>   must ensure that all memory the device can access stays allocated at
+>   the same physical address in both kernels until the device is stopped,
+>   either by userspace after taking it over or by VFIO when the session
+>   is finished. If userspace violates this, the device can corrupt memory
+>   that has been freed and reused by either kernel. VFIO cannot detect
+>   this.
+> 
+> VFIO doesn't stop the device when the session is finished until
+> PATCH 11, so either add this section there or drop that clause here and
+> add it in PATCH 11.
+> 
 
-Add -q to print only the PCI addresses of usable devices so the output
-can go straight to setup.sh. Add -a for use with -q to include unusable
-devices as well.
+Sounds good. I will remove memfd from here and mention thing what VFIO
+expects.
 
-When vfio-pci is loaded with disable_denylist=Y, the script lists the
-denylisted devices under "Supported (on denylist, but denylist
-disabled):" and includes them in the -q output. When vfio-pci is not
-loaded, the script lists all devices as unusable and omits them from -q
-unless -a is also passed.
+> > +	cfg_size = pdev->cfg_size;
+> > +
+> > +	if (cfg_size != PCI_CFG_SPACE_SIZE && cfg_size != PCI_CFG_SPACE_EXP_SIZE)
+> > +		return -EINVAL;
+> 
+> pdev->cfg_size isn't limited to these two values. PCI quirks set other
+> sizes, e.g. quirk_citrine() (0xA0) and quirk_nfp6000() (0x600), and
+> vfio-pci handles those devices fine since vconfig is just pdev->cfg_size
+> bytes. This check only seems to exist to bound the variable-length
+> layout of struct vfio_pci_core_device_ser, which goes away with the
+> changes suggested below. Please drop it.
+> 
+> > +	total_size = size_add(sizeof(*ser),
+> > +			      size_add(size_mul(2, cfg_size), saved_size));
+> > +	if (total_size > U32_MAX)
+> > +		return -EOVERFLOW;
+> > +
+> > +	ser = kho_alloc_preserve(total_size);
+> > +	if (IS_ERR(ser))
+> > +		return PTR_ERR(ser);
+> > +
+> > +	if (saved_size) {
+> > +		void *dst = ser->data + 2 * (size_t)cfg_size;
+> > +
+> > +		err = pci_liveupdate_serialize_saved_state(vdev->pci_saved_state,
+> > +							   dst, saved_size);
+> > +		if (err) {
+> > +			kho_unpreserve_free(ser);
+> > +			return err;
+> > +		}
+> > +	}
+> 
+> Please don't embed struct pci_saved_state_ser in VFIO's serialized
+> struct. Variable-length serialized structs should be preserved in their
+> own allocation, and VFIO should just store the physical address (0 if
+> there is no saved state). That way the PCI core owns the size, flags and
+> validation of its own ABI, either struct can grow without changing the
+> layout of the other, and the offset math here and in PATCH 11 goes away.
+> struct pci_ser already references its devices array the same way.
+> 
+> I plan to structure the PCI core helpers for serializing and
+> deserializing struct pci_saved_state to require this. The PCI core will
+> do the allocation and just return a pointer to the serialized saved
+> state. But I just wanted to call it out here.
+> 
 
-Example on a host with Intel IOAT and Intel DSA devices when vfio-pci is
-loaded with disable_denylist=N:
+Sounds good, v7 will store physical address returned by new PCI helpers.
+I will base my series on top of your PCI saved state series latest
+version. Current one is v2 at 
+  https://lore.kernel.org/all/20261106004218.604799-1-dmatlack@google.com/
 
-$ ./list_supported_devices.sh
-Supported:
-  0000:00:04.0 - Intel IOAT SKX [8086:2021]
-  ...
-Unusable (available, but denylisted by the kernel):
-  0000:6a:01.0 - Intel DSA SPR [8086:0b25]
-  ...
+> > +	ser->flags = vdev->reset_works ? VFIO_PCI_SER_RESET_WORKS : 0;
+> 
+> reset_works shouldn't be serialized. Alex's series replaces
+> vdev->reset_works with pci_reset_supported() [1], which only looks at
+> pdev->reset_methods. Those are set up at enumeration without resetting
+> the device, so the next kernel can answer the question itself. And the
+> next kernel's answer is the one that matters, since it's the kernel that
+> will reset the device.
+> 
 
-  To use denylisted devices, load vfio-pci with disable_denylist=1
-  (or boot the kernel with vfio_pci.disable_denylist=1).
+Thanks for bringing it up. I will send that specific patch separately as
+discussed in
+  https://lore.kernel.org/kvm/20261118000511.GC2250529.vipinsh@google.com/
 
-$ ./list_supported_devices.sh -q
-0000:00:04.0
-...
+> Please base on that series (or cherry-pick that patch) and drop
+> VFIO_PCI_SER_RESET_WORKS, along with the incoming reset_works copy and
+> the reset_works argument to vfio_pci_core_liveupdate_reset() in PATCH
+> 11, and the copy in vfio_pci_liveupdate_take_over() in PATCH 14. flags
+> then has no defined bits, but please keep it (and keep rejecting unknown
+> bits) for future features, see below.
+> 
+> > +	if (!vdev->vconfig || !vdev->pci_config_map ||
+> > +	    ser->cfg_size != pdev->cfg_size)
+> > +		return -EINVAL;
+> 
+> ser->cfg_size was set from pdev->cfg_size in preserve(), and
+> pdev->cfg_size doesn't change after enumeration, so the cfg_size check
+> can't fail.
 
-$ ./list_supported_devices.sh -q -a
-0000:00:04.0
-...
-0000:6a:01.0
-...
+Yeah, this is redundant.
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Josh Hilke <jrhilke@google.com>
----
-Changelog
+> 
+> > +	memcpy(ser->data, vdev->vconfig, ser->cfg_size);
+> > +	memcpy(ser->data + ser->cfg_size, vdev->pci_config_map, ser->cfg_size);
+> 
+> pci_config_map doesn't need to be preserved. PATCH 14 already rebuilds
+> it with vfio_config_init() in the next kernel and only uses the
+> preserved copy to check that the two are identical.
+> 
+> I assume the intent is to detect changes to vfio-pci's config emulation
+> between the two kernels, but the map isn't a good proxy for that. It
+> changes for differences that don't matter (e.g. hiding a capability or
+> learning the length of a new extended capability), which would fail
+> take-over and lose the Live Update on exactly the kernel upgrades Live
+> Update is meant for. And it doesn't change for differences that do
+> matter, like which bits are virtualized or writable within a capability.
 
-v7 -> v8
-- Group devices under Supported and Unusable headers instead of
-  repeating denylist state on every line, and shorten the denylist hint
-  at the end of the denylisted section. Suggested by Sean.
-- Check /sys/bus/pci/drivers/vfio-pci to verify that vfio-pci is loaded,
-  mark devices as unusable when it is not loaded, and omit them from -q
-  unless -a is passed. Suggested by Sean.
-- Add -a for use with -q to include unusable devices in the SBDF output.
-  Suggested by Sean.
+I think it does matter because reads and writes of unitialized
+capabilities in VFIO PCI config space goes to hardware directly. So, in
+the new kernel if pci_config_map changes it from PCI_CAP_ID_INVALID to
+others then those reads/writes can go to vconfig which will contain
+stale unitialized data from the old kernel's heap.
 
-v7: https://lore.kernel.org/kvm/20261106051726.3964374-1-jrhilke@google.com/
-v6: https://lore.kernel.org/kvm/20260602222941.3133236-1-jrhilke@google.com/
-v5: https://lore.kernel.org/kvm/20260602185615.3025904-1-jrhilke@google.com/
+This also changes behavior under a running user. Writes that reached
+hardware before Live Update can be silently dropped or redirected to
+vconfig. See the comment above struct perm_bits unassigned_perms{}
+in vfio_pci_config.c
 
- tools/testing/selftests/vfio/Makefile         |   1 +
- .../vfio/scripts/list_supported_devices.sh    | 199 ++++++++++++++++++
- 2 files changed, 200 insertions(+)
- create mode 100755 tools/testing/selftests/vfio/scripts/list_supported_devices.sh
+I do agree current patch is not protecting against bits virt/write
+changes inside a capability, which is also important.
 
-diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-index 2c32c48db509..160aa989828f 100644
---- a/tools/testing/selftests/vfio/Makefile
-+++ b/tools/testing/selftests/vfio/Makefile
-@@ -16,6 +16,7 @@ TEST_GEN_PROGS += vfio_pci_sriov_uapi_test
- 
- TEST_FILES += scripts/cleanup.sh
- TEST_FILES += scripts/lib.sh
-+TEST_FILES += scripts/list_supported_devices.sh
- TEST_FILES += scripts/run.sh
- TEST_FILES += scripts/setup.sh
- 
-diff --git a/tools/testing/selftests/vfio/scripts/list_supported_devices.sh b/tools/testing/selftests/vfio/scripts/list_supported_devices.sh
-new file mode 100755
-index 000000000000..c909b2aedd01
---- /dev/null
-+++ b/tools/testing/selftests/vfio/scripts/list_supported_devices.sh
-@@ -0,0 +1,199 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+# Devices that have a driver in selftests/vfio/lib/drivers.
-+readonly DEVICES=(
-+	"8086:0b25,Intel DSA SPR"
-+	"8086:11fb,Intel DSA GNR-D"
-+	"8086:1212,Intel DSA DMR"
-+	"8086:2021,Intel IOAT SKX"
-+	"8086:10c9,Intel 82576 Gigabit Ethernet Controller"
-+	"15b3:1011,Mellanox Connect-IB"
-+	"15b3:1012,Mellanox Connect-IB VF"
-+	"15b3:1013,Mellanox ConnectX-4"
-+	"15b3:1014,Mellanox ConnectX-4 VF"
-+	"15b3:1015,Mellanox ConnectX-4LX"
-+	"15b3:1016,Mellanox ConnectX-4LX VF"
-+	"15b3:1017,Mellanox ConnectX-5"
-+	"15b3:1018,Mellanox ConnectX-5 VF"
-+	"15b3:1019,Mellanox ConnectX-5 Ex"
-+	"15b3:101a,Mellanox ConnectX-5 Ex VF"
-+	"15b3:101b,Mellanox ConnectX-6"
-+	"15b3:101c,Mellanox ConnectX-6 VF"
-+	"15b3:101d,Mellanox ConnectX-6 Dx"
-+	"15b3:101e,Mellanox ConnectX-6 Dx VF"
-+	"15b3:101f,Mellanox ConnectX-6 LX"
-+	"15b3:1021,Mellanox ConnectX-7"
-+	"15b3:1023,Mellanox ConnectX-8"
-+	"15b3:1025,Mellanox ConnectX-9"
-+	"15b3:1027,Mellanox ConnectX-10"
-+	"15b3:2101,Mellanox ConnectX-10 NVLink-C2C"
-+	"15b3:a2d2,Mellanox BlueField integrated ConnectX-5"
-+	"15b3:a2d3,Mellanox BlueField integrated ConnectX-5 VF"
-+	"15b3:a2d6,Mellanox BlueField-2 integrated ConnectX-6 Dx"
-+	"15b3:a2dc,Mellanox BlueField-3 integrated ConnectX-7"
-+	"15b3:a2df,Mellanox BlueField-4 integrated ConnectX-8"
-+)
-+
-+# Devices in DEVICES that are also on the vfio-pci denylist. The denylist is
-+# in vfio_pci_dev_in_denylist() in drivers/vfio/pci/vfio_pci.c.
-+readonly DENYLIST=(
-+	"8086:0b25"
-+)
-+
-+readonly DISABLE_DENYLIST=/sys/module/vfio_pci/parameters/disable_denylist
-+readonly VFIO_PCI_DRIVER=/sys/bus/pci/drivers/vfio-pci
-+
-+function vfio_pci_loaded() {
-+	[ -d ${VFIO_PCI_DRIVER} ]
-+}
-+
-+function denylisted() {
-+	local id
-+
-+	for id in "${DENYLIST[@]}"; do
-+		[ "${id}" = "${1}" ] && return 0
-+	done
-+
-+	return 1
-+}
-+
-+function denylist_enforced() {
-+	local value
-+
-+	read -r value 2>/dev/null < ${DISABLE_DENYLIST}
-+	[ "${value}" != "Y" ]
-+}
-+
-+function is_blocked() {
-+	if ! vfio_pci_loaded; then
-+		return 0
-+	fi
-+
-+	denylisted ${1} && denylist_enforced
-+}
-+
-+function device_name() {
-+	local entry
-+
-+	for entry in "${DEVICES[@]}"; do
-+		if [ "${entry%%,*}" = "${1}" ]; then
-+			echo "${entry#*,}"
-+			return 0
-+		fi
-+	done
-+
-+	return 1
-+}
-+
-+function print_allowed_devices() {
-+	local device
-+
-+	if vfio_pci_loaded; then
-+		echo "Supported:"
-+	else
-+		echo "Unusable (available, but vfio-pci not loaded):"
-+	fi
-+
-+	for device in "$@"; do
-+		echo "  ${device}"
-+	done
-+}
-+
-+function print_denylisted_devices() {
-+	local device
-+
-+	if ! vfio_pci_loaded; then
-+		echo "Unusable (available, but vfio-pci not loaded, and denylisted by the kernel):"
-+	elif denylist_enforced; then
-+		echo "Unusable (available, but denylisted by the kernel):"
-+	else
-+		echo "Supported (on denylist, but denylist disabled):"
-+	fi
-+
-+	for device in "$@"; do
-+		echo "  ${device}"
-+	done
-+
-+	if ! vfio_pci_loaded || denylist_enforced; then
-+		echo
-+		echo "  To use denylisted devices, load vfio-pci with disable_denylist=1"
-+		echo "  (or boot the kernel with vfio_pci.disable_denylist=1)."
-+	fi
-+}
-+
-+function usage() {
-+	echo "Usage: $0 [-q] [-a]" >&2
-+	echo >&2
-+	echo "Options:" >&2
-+	echo "  -q  Print only the PCI addresses of usable devices." >&2
-+	echo "  -a  Include unusable devices when used with -q." >&2
-+	exit 1
-+}
-+
-+# Print the segment:bus:device.function numbers of PCI devices that can be used
-+# to run VFIO selftests.
-+function main() {
-+	local denylisted_devices=()
-+	local allowed_devices=()
-+	local quiet=""
-+	local all=""
-+	local vendor
-+	local device
-+	local name
-+	local bdf
-+	local opt
-+	local id
-+
-+	while getopts "qa" opt; do
-+		case $opt in
-+			q) quiet="true" ;;
-+			a) all="true" ;;
-+			\?) usage ;;
-+		esac
-+	done
-+
-+	if [ "${all}" ] && [ -z "${quiet}" ]; then
-+		usage
-+	fi
-+
-+	for bdf in $(ls /sys/bus/pci/devices); do
-+		read -r vendor < /sys/bus/pci/devices/${bdf}/vendor
-+		read -r device < /sys/bus/pci/devices/${bdf}/device
-+		printf -v id "%04x:%04x" ${vendor} ${device}
-+
-+		name=$(device_name ${id}) || continue
-+
-+		if [ "${quiet}" ]; then
-+			if [ "${all}" ] || ! is_blocked ${id}; then
-+				echo "${bdf}"
-+			fi
-+			continue
-+		fi
-+
-+		if denylisted ${id}; then
-+			denylisted_devices+=("${bdf} - ${name} [${id}]")
-+		else
-+			allowed_devices+=("${bdf} - ${name} [${id}]")
-+		fi
-+	done
-+
-+	if [ "${quiet}" ]; then
-+		return 0
-+	fi
-+
-+	if [ ${#allowed_devices[@]} -eq 0 ] && [ ${#denylisted_devices[@]} -eq 0 ]; then
-+		echo "No devices with a VFIO selftest driver found." >&2
-+		return 0
-+	fi
-+
-+	if [ ${#allowed_devices[@]} -gt 0 ]; then
-+		print_allowed_devices "${allowed_devices[@]}"
-+	fi
-+
-+	if [ ${#denylisted_devices[@]} -gt 0 ]; then
-+		print_denylisted_devices "${denylisted_devices[@]}"
-+	fi
-+}
-+
-+main "$@"
--- 
-2.56.0.679.gc527c65306-goog
+> 
+> Preserving vconfig makes vfio-pci's config emulation part of the
+> contract between kernels either way. I think changes to the config
+> emulation that affect how a preserved vconfig is interpreted need to be
+> tied to a userspace opt-in, recorded as a flag in struct
+> vfio_pci_core_device_ser. A kernel that doesn't understand the flag then
+> rejects the preserved device, and userspace shouldn't opt in while it
+> can still roll back to a kernel without the new emulation.
 
+How would a userspace opt-in? New kernel can change a capability visiblity
+or virt and write permission of the bits inside a capability. Kernel
+cannot know if userspace used the capability or not. Creating a VFIO
+device in the new kernel by default results in a opt-in and currently
+there is no way for userspace to opt-out unless we add a new
+functionality where userspace can disable/enable features something
+similar to KVM capabilities.
+
+For now, I think we don't need to worry about it. As this version will
+be a base and if any serialized data with flags set received in this
+kernel will lead to erroring out restore.
+
+In the next version, I will not preserve pci_config_map. Hopefully,
+anyone changing VFIO code doesn't forget to update flags if they change
+capability or permission bits (I will write comments at appropriate
+places.)
+
+If we want to be very careful, we can do two things in this series:
+
+1. Create a per bit valid mask for the vconfig and compare this between
+   new and old kernel during restore. In the new kernel, VFIO then takes
+   each bit from the preserved copy only where the mask says it was
+   valid, and keeps its own freshly initialized value elsewhere.
+2. Create a hash or store virt and writable bits in config space.
+   Compare it with the new kernel.
+
+Both of the above combined will safeguard against forgotten flag update
+in the code.
+
+We don't have to do it but it safeguards against mistakes. Let me know
+what you prefer.
+
+> 
+> > +	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
+> > +	vdev->liveupdate_intx_disabled = !!(cmd & PCI_COMMAND_INTX_DISABLE);
+> > +	if (!vdev->liveupdate_intx_disabled)
+> > +		pci_intx(pdev, 0);
+> 
+> This doesn't mask INTx on devices with pdev->broken_intx_masking set,
+> either because PCI_COMMAND_INTX_DISABLE isn't writable or because a
+> quirk marks INTx masking as broken. vfio-pci normally masks INTx for
+> those devices at the interrupt controller, but nothing does that across
+> kexec, so the device can still assert INTx in the next kernel before
+> anything is ready to handle it. If the line is shared, that can get the
+> line disabled as spurious and break the other device.
+> 
+> Please reject those devices in preserve() if they have an INTx pin and
+> !pci_intx_mask_supported(pdev), and add that to the Restrictions in the
+> DOC. Check the PCI core flag rather than vdev->pci_2_3, since
+> vfio_pci.nointxmask=1 clears pci_2_3 even when INTx masking works.
+
+Agree, I will reject those devices in preserve().
+> 
+> > +struct vfio_pci_core_device_ser {
+> > +	u32 domain;
+> > +	u16 bdf;
+> > +	u16 cfg_size;
+> > +	u32 size;
+> > +	u32 flags;
+> > +	u32 saved_state_size;
+> > +	u32 reserved;
+> > +	u8 data[];
+> > +} __packed;
+> 
+> Once config_map and the saved state are gone, vconfig is the only
+> variable-length part left. Please either make it a fixed-length array
+> sized for the largest config space (PCI_CFG_SPACE_EXP_SIZE), or preserve
+> it in a separate allocation like the saved state. Either way this struct
+> becomes fixed-size and data[] goes away.
+> 
+> cfg_size should stay, to record how much of vconfig is valid. The next
+> kernel computes pdev->cfg_size on its own and could come up with a
+> different value, so it needs to check that ser->cfg_size matches (and
+> fits in the vconfig buffer) before using the preserved vconfig. Doing
+> that once in retrieve() should be enough.
+> 
+> I understand this will waste some memory today, since each KHO
+> allocation must be a multiple of a PAGE_SIZE. But that is a KHO problem
+> that can be fixed later.
+> 
+
+I agree. I will change data to fixed size for vconfig. We will not need
+pci_config_map, and pci saved state array.
+
+I am planning to add two flags required and optional similar to your PCI
+serialization struct.
+
+Thanks again for the review.
