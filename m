@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795024739;
-	b=GfQbxDzLrotcBbLU4azVkuHkYd/Bi9bLM4i7jW7CQdKvdMW9KZ87hj6ZfHOlm2gtg+u+
-	 jqsCeJop2nUcbaWPzo60modiK1PIaTZPeOW9rkj5A9ch0aBvsOLPjdiyCPC+c62P2eiE6
-	 /xA3az8sIptfjn2G9xUKPOK+XmF3mVnqm55OzVc5HzZF1XpJmipCwg6k0zOszw9BqH/zX
-	 nKnGZkCu3G+TLHOgzXYnkIt/kvRZziNaj3MWe3JBKZa7TOkz1lc4IwT0BLsqubYg0L5/r
-	 XeJIzgWXv7WIsB78WudVkIsnQA6zQmdiIVGhrLQare/phYXXveHh4lTb4vxW8332ELw==
+	t=1795024744;
+	b=HPiwNAZF4nZ0XCNY0KGMDRhVc5O4GB4pUBCXJDcMRVDu9UnGKGoCj1Pbm6lA2BQQNSdn
+	 ZPK1T3DEye4Ga6R8FXFMExDPej1bxAO7nnNmELnKBw2adjcOe1a5OfB1ShdqERaqBWa15
+	 KShpVOq6Tnq0NcntPxgBxUhIkDgFebmY/UACUwaQQuHze/duDi3+BJoDxCHAlfptog3vL
+	 j8v9ejCo9NlEcLFiZg8UtsXbTMuU3I5TZkdD0MmscELsF37e7NoE+2q+D8RY0hn1Hzj73
+	 CdG4+NOdTo+GgFe76Tx0Blt+YtKsyGfnRJR2nAN2S2mxylbSBpBfKXONgvak+NV1s4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795024739;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795024744;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=VraHm7K29SexX5+u12//lf1RRSNEeWxQZDdYUBE8ma8=;
-	b=0YkJiU606I2K8SMbTXbr9bRyWXVFvgfu5eKsGkcPzSYLcu0IGhAma969do28za2b2BdA
-	 d1qr31qfjGmcIp8UHqneC0UuGRDzt776u2SsZwpsXfL22J2huUEkzL/PXt9RxF9lQzGht
-	 9q//ujGw/6EwUesTGkVtXXz9AT8m/2tc0yTscxVGnYU7V+6hHYkJZc9QZzx22Z28sFqMD
-	 zYxFNaYF2uTAlILz4pduG8nynEyGsyD3LjGv2rjhSDihJe9D3rdTUC/TlXk+mJ0Sbg06v
-	 5W6TXJlGs3zPGLXLAlt6v0smz0ON2zrtSVKKNje6GzP+RmF/knJwN6T/wggapmqxMNg==
+	bh=0Vh6qjgrB4qBHSHWwGeEBUR8LutRinekpz7r78CiFis=;
+	b=bjT4iWZGhn7795uP6Xk/NUoOSU0PIMXUX8F6ZPhqagjz8bZTrQ7kluhCtvsPRVqF7JZQ
+	 VPsqP7L5LWVvpjU14P/75NtOT4k5oKyXnGz5JJKZOxKX95UbNCQPccYSb5tTtNyxQ0XVz
+	 Ed+t7VayvrNp6E8JBRzeCQCIb11poptcHZBMH26PWwkC1uMHLqlU23rJ/adMOGTqM2fzq
+	 MztcCsjP2z/Z3JQXespNAUY0VUbZllJreNAx5//1md5TsV9Jkle7Duxhz814nu70fXcL8
+	 4eLluqQV2Q2TP6F8WfI2VG2mpUrxu8fbBq+JO22NCS7smpexCj5chIf+k2GNGoA5Dug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=hTf3Ymye;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=m8yrUsBy;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76D7606A338
-	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 17:58:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E76D7606A338
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3985F606A335
+	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 17:59:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3985F606A335
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=hTf3Ymye
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=m8yrUsBy
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9DA0C1477;
-	Wed, 18 Nov 2026 09:58:55 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C59501477;
+	Wed, 18 Nov 2026 09:58:59 -0800 (PST)
 Received: from e133894.cambridge.arm.com (e133894.arm.com [10.2.80.62])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 792A23F632;
-	Wed, 18 Nov 2026 09:58:57 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6E2CF3F632;
+	Wed, 18 Nov 2026 09:59:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795024738; bh=lRMM8KFMZzejuSmonJyhWiiqR5eUD0xB5XotL3pAJ58=;
+	t=1795024742; bh=Xmglt/Yg6C5I/Cs+laJXteXwqEDtO4aitLEy1M2ooSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hTf3YmyeMLcaecF+eO8XgCh4VFdEl1q+xkIfoTU24/suC+aMzgQL1H4V3AKxLIhbX
-	 WRvCxqb7T+3gbGN6twLkquC01A4/nPykHelo/IsBCShpdK/yftssM9IDrSvYPrDD56
-	 as/vQWyQjt3sXQFQjF20nWnp9mJgqYRVeWqLPlXI=
+	b=m8yrUsByMiGAalk96jFprcdT8S+iSZf2mCUdWWgjGT0+5jFNSXioMJh/RlAuBc0uv
+	 Zu1qbe4/jzlf8JAGEq85z71PhJilF8nBvXy2m4xMtkdprY+f1WSATfeIhZ0BkrztpE
+	 QakVEsGGwPFdiuevwmhh3UT7W9lECtm3d0ygdcPs=
 From: Sascha Bischoff <sascha.bischoff@arm.com>
 To: will@kernel.org,
 	julien.thierry.kdev@gmail.com
@@ -51,9 +51,9 @@ Cc: vladimir.murzin@arm.com,
 	kvmarm@lists.linux.dev,
 	timothy.hayes@arm.com,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH kvmtool v5 13/23] arm64: Assign CPU DT phandles
-Date: Wed, 18 Nov 2026 17:57:45 +0000
-Message-Id: <20261118175755.1946977-14-sascha.bischoff@arm.com>
+Subject: [PATCH kvmtool v5 14/23] arm64: Describe the GICv5 CPU interface in the DT
+Date: Wed, 18 Nov 2026 17:57:46 +0000
+Message-Id: <20261118175755.1946977-15-sascha.bischoff@arm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261118175755.1946977-1-sascha.bischoff@arm.com>
 References: <20261118175755.1946977-1-sascha.bischoff@arm.com>
@@ -68,40 +68,61 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Assign stable phandles to all arm64 CPU nodes. The GICv5 IRS DT node
-uses them to map IAFFIDs to CPUs; they remain unreferenced for earlier
-GIC models.
+Emit an interrupt-controller node for the GICv5 CPU interface. This
+provides the interrupt parent and allows guests to use PPIs.
 
 Reviewed-by: Vladimir Murzin <vladimir.murzin@arm.com>
 Tested-by: Vladimir Murzin <vladimir.murzin@arm.com>
 Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
 ---
- arm64/fdt.c                  | 1 +
- arm64/include/kvm/fdt-arch.h | 1 +
- 2 files changed, 2 insertions(+)
+ arm64/gic.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/arm64/fdt.c b/arm64/fdt.c
-index 3cbd36e2..5413956d 100644
---- a/arm64/fdt.c
-+++ b/arm64/fdt.c
-@@ -54,6 +54,7 @@ static void generate_cpu_nodes(void *fdt, struct kvm *kvm)
- 			_FDT(fdt_property_string(fdt, "enable-method", "psci"));
+diff --git a/arm64/gic.c b/arm64/gic.c
+index 83b034e3..9a8f9916 100644
+--- a/arm64/gic.c
++++ b/arm64/gic.c
+@@ -519,6 +519,8 @@ static int gic__init_gic(struct kvm *kvm)
+ }
+ late_init(gic__init_gic)
  
- 		_FDT(fdt_property_cell(fdt, "reg", mpidr));
-+		_FDT(fdt_property_cell(fdt, "phandle", PHANDLE_CPU_BASE + cpu));
- 		_FDT(fdt_end_node(fdt));
++static void gic__generate_gicv5_fdt_nodes(void *fdt, struct kvm *kvm);
++
+ void gic__generate_fdt_nodes(void *fdt, struct kvm *kvm)
+ {
+ 	const char *compatible, *msi_compatible = NULL;
+@@ -549,6 +551,8 @@ void gic__generate_fdt_nodes(void *fdt, struct kvm *kvm)
+ 		reg_prop[2] = cpu_to_fdt64(gic_redists_base);
+ 		reg_prop[3] = cpu_to_fdt64(gic_redists_size);
+ 		break;
++	case IRQCHIP_GICV5:
++		return gic__generate_gicv5_fdt_nodes(fdt, kvm);
+ 	default:
+ 		return;
  	}
+@@ -582,6 +586,22 @@ void gic__generate_fdt_nodes(void *fdt, struct kvm *kvm)
+ 	_FDT(fdt_end_node(fdt));
+ }
  
-diff --git a/arm64/include/kvm/fdt-arch.h b/arm64/include/kvm/fdt-arch.h
-index 8a0a460e..2b667c53 100644
---- a/arm64/include/kvm/fdt-arch.h
-+++ b/arm64/include/kvm/fdt-arch.h
-@@ -11,4 +11,5 @@ enum phandles {
- 
- void generate_dma_region_prop(void *fdt);
- 
-+#define PHANDLE_CPU_BASE PHANDLES_MAX
- #endif /* ARM__FDT_H */
++static void gic__generate_gicv5_fdt_nodes(void *fdt, struct kvm *kvm)
++{
++	_FDT(fdt_begin_node(fdt, "gicv5-cpuif"));
++	_FDT(fdt_property_string(fdt, "compatible", "arm,gic-v5"));
++	_FDT(fdt_property_cell(fdt, "#interrupt-cells", GIC_FDT_IRQ_NUM_CELLS));
++	_FDT(fdt_property(fdt, "interrupt-controller", NULL, 0));
++	_FDT(fdt_property_cell(fdt, "#address-cells", 2));
++	_FDT(fdt_property_cell(fdt, "#size-cells", 2));
++	_FDT(fdt_property(fdt, "ranges", NULL, 0));
++
++	/* Use a hard-coded phandle for the GIC to help wire things up */
++	_FDT(fdt_property_cell(fdt, "phandle", PHANDLE_GIC));
++
++	_FDT(fdt_end_node(fdt));
++}
++
+ u32 gic__get_fdt_irq_cpumask(struct kvm *kvm)
+ {
+ 	/* Only for GICv2 */
 -- 
 2.34.1
 
