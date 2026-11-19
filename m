@@ -1,58 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.222
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.30.99
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795069557;
-	b=2pLeTvvPlRby0LG4V4H99dJP8EsfPJuGL9O/hHsnIGQgbI09bymPst0cdYxiYIZ7sqyF
-	 NGOL62WVSJo8Bf5dhwgoi+tHJA73EozRcR1Pxo1rIV0OZkmuXbO8i1OC1nVaNZDrTtOi/
-	 pu7oRmja2C6tF0gpoxzUYPAtxSyxW9N0+RqRznKo0k6HQsWcb/M2JLNTKwin7xtbGEXJ9
-	 +4pSnVCh2ZTCxdkvnCKN3ShFYtd6CrIkKXedEJhTbPSWBWyGr+aTaXJor/6F92vTXkyRa
-	 40C0j+5OjggEZHrWlSIbIhHMX4Aqzx74YrSG0rxM5qjJ5QukIuWn706VsknBx/Mi0NA==
+	t=1795072164;
+	b=TWRkttjjsv6t8UqEMqLjF7lV3l1l4zobQYAo54GW4uZuKWim2L6Iq6siwBx7tyW1lau3
+	 ZPC02/DnwvQHLvXG2jiVXhPImhkoSBWujUens0pPXqinkQe1ty1RJ1Vp/rreXVBVZnAaa
+	 HX6i1a6TQBW1ZHWQW9NatZ+z1GnNwzr9W6CHsR0SjzCPJPb/z9T3wlPbfpoG6TfPZ24gp
+	 SwaFkN0IPXOhElDM51rXx6cW9ltsIqh6pOt25pNh9oMNeZlxExln5snReA1WH8VXf+58r
+	 rtjFucoFeFMDWF5f89SGvBGbRYsOYfKkhuQQ/Ga8XTpmLcaz0dqvIcLcN1DbMArCjFw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795069557;
-	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:CC:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy;
-	bh=04B/Kbaj4vrvBkYG9X6BLP4J62xiOfE4d23QuEZ2PlQ=;
-	b=2H7AAL5M4GDmjP39SFoPg9xXpOb1tPxcSHpHVbXwfgA3KFBhlCR7klbJLZ8Nvf+t0mMY
-	 X3o3G3Cqiw2dFc/XlaSpYwcmtNd3iBV2KzMvtRHNn4VNoWyDC+oL+WjZ14ycnynQLYgyd
-	 +FA87sv+VC0rXBwJes8CcgAN1TuvY72RLQX5/e6GMZ10Xsc+RaWIuGII178AOLsH2vXmT
-	 YcOkQb0LImuctNiQz6qxSk/xWbLrUjZrpYEyAX8eOol5BVzNXhS/iuVPo4BCexnkR04H6
-	 O4gkrlHcxgGmcG1tca8zSskQlSdwFhQwlXSmZZP+L7Cw0ZiK5uIUkwb8/vGto7X2x6g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795072164;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=Scm33bqyxmBWEXFoYpBPEq1Gy5WvxEEpJh4j9nYl+go=;
+	b=dtWjnKhs2Xs1a9xqulD0vTA6hBAorD6rAOjWLq1m0jpkyUvfxz1gI0ZTSfARhsJDxW8k
+	 xw3iZ7gYh46gxM2qDR5E8F+H7tL+gcefi0Fk6QzuKkGbm5oHVK7mNqu6rlfzdJ5Ie1rTW
+	 IAx8MwEK1pG1Ys8mkAb7rCtx//Ma/dAU6Erz1m36goQiltH8BwioC+J1X6WYitXNIW+N2
+	 0KYPeofTEgx/Ide3H8n6dHIwEUfev3HMDURpqrdB37t1y93CGPhaju7ZoppulI39bvAmz
+	 4PixxJ0T8ks78x7rrvRbv/9VW++eNeVxaFqD0mfgRZm0v6TL1r7EsrZPOjQzDntZBNQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=huawei.com;
-	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=HwvqI6Ik;
-	arc=none smtp.remote-ip=113.46.200.222
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+	dmarc=pass header.from=linux.alibaba.com;
+	spf=pass smtp.mailfrom=linux.alibaba.com;
+	dkim=pass header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=AZVEflOr;
+	arc=none smtp.remote-ip=115.124.30.99
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3990B606A320;
-	Thu, 19 Nov 2026 06:25:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3990B606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9961606A33D;
+	Thu, 19 Nov 2026 07:09:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9961606A33D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=HwvqI6Ik
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=04B/Kbaj4vrvBkYG9X6BLP4J62xiOfE4d23QuEZ2PlQ=;
-	b=HwvqI6IkrbAt2Nn1mMM+JnTydUqvIxKY01wrQEbnr2uzyQmUgJHl+buYs8IzGxwwQ7ekttN7O
-	pLY/G6wxZDnL1csUzuKiFfroqKOVnRmxkezogHIbCLpvTMHJbaAbHb9gMNfRITcAJRKf4zPvP3o
-	Hi/oERqmQkVL2u8JdKkqW3c=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4jVT3v2lgKzLlSk;
-	Thu, 19 Nov 2026 14:25:31 +0800 (CST)
-Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 810BA4056C;
-	Thu, 19 Nov 2026 14:25:51 +0800 (CST)
-Received: from [10.67.121.161] (10.67.121.161) by
- kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 19 Nov 2026 14:25:51 +0800
-Message-ID: <142d6813-8677-4524-97a3-fabe77624b39@huawei.com>
-Date: Thu, 19 Nov 2026 14:25:50 +0800
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=AZVEflOr
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1795072161; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=Scm33bqyxmBWEXFoYpBPEq1Gy5WvxEEpJh4j9nYl+go=;
+	b=AZVEflOrjrmDDnswKowgwtB7k6f/gHRbVkC5NKFRhUacwDGTyr4YI1A1TTwAcnTEY+v9KyC00Y6yfT6x1ickA5EnQKUYLva6XGKAgV9Eo8TvCVSBqGPbyOtfFoSKu7HQqCpWj6aNwqP9G+mFMl43IjA8Us1nd+NVsf7I2iuA1vc=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0XF2mQ85_1795072161;
+Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0XF2mQ85_1795072161 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 19 Nov 2026 15:09:21 +0800
+From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+To: jgg@nvidia.com
+Cc: alex@shazbot.org,
+	iommu@lists.linux.dev,
+	jgg@ziepe.ca,
+	joro@8bytes.org,
+	kevin.tian@intel.com,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	robin.murphy@arm.com,
+	will@kernel.org
+Subject: [PATCH v7 3/3] iommufd: Add IOMMU_IOAS_RESERVE_IOVAS ioctl
+Date: Thu, 19 Nov 2026 15:09:05 +0800
+Message-ID: <20261119070905.1336240-4-guanghuifeng@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20261119070905.1336240-1-guanghuifeng@linux.alibaba.com>
+References: <179502940167.3851267.4719665473088413793.b4-review@b4>
+ <20261119070905.1336240-1-guanghuifeng@linux.alibaba.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,99 +69,206 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v21 06/13] PCI/TPH: Add macros to check standard and
- extended TPH support
-To: <sashiko-reviews@lists.linux.dev>
-CC: <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
-References: <20261118091238.45992-1-fengchengwen@huawei.com>
- <20261118091238.45992-7-fengchengwen@huawei.com>
- <sashiko-outbox-220654@kernel.org>
-Content-Language: en-US
-From: fengchengwen <fengchengwen@huawei.com>
-In-Reply-To: <sashiko-outbox-220654@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemo500009.china.huawei.com (7.202.194.199)
+Content-Transfer-Encoding: 8bit
 
-On 11/18/2026 6:06 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issues to consider:
-> - [Medium] PCI/TPH: pcie_*_tph_supported() macros return true when
->   pci=notph is set
-> - [Medium] PCI/TPH: pcie_*_tph_supported() macro stubs do not evaluate
->   or type-check pdev
-> --
-> 
-> commit 80062e3e48e12a212317dc82386d43fd4c4bb4c9
-> Author: Chengwen Feng <fengchengwen@huawei.com>
-> 
-> PCI/TPH: Add macros to check standard and extended TPH support
-> 
-> This commit adds the pcie_std_tph_supported() and pcie_ext_tph_supported()
-> helper macros to query standard and extended TPH requester support via
-> pdev->tph_max_type, along with stub definitions for !CONFIG_PCIE_TPH.
-> 
->> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
->> index b2bec02f3ea0e..50640fdc84e14 100644
->> --- a/include/linux/pci-tph.h
->> +++ b/include/linux/pci-tph.h
-> [ ... ]
->> @@ -21,6 +23,18 @@ enum tph_mem_type {
->>  };
->>  
->>  #ifdef CONFIG_PCIE_TPH
->> +/**
->> + * pcie_std_tph_supported - check standard TPH requester support
->> + * @pdev: PCI device
->> + */
->> +#define pcie_std_tph_supported(pdev) \
->> +	((pdev)->tph_max_type >= PCI_TPH_REQ_TPH_ONLY)
->> +/**
->> + * pcie_ext_tph_supported - check extended TPH requester support
->> + * @pdev: PCI device
->> + */
->> +#define pcie_ext_tph_supported(pdev) \
->> +	((pdev)->tph_max_type == PCI_TPH_REQ_EXT_TPH)
-> 
-> [Severity: Medium]
-> Do pcie_std_tph_supported() and pcie_ext_tph_supported() return true even
-> when the kernel is booted with pci=notph?
+Add an ioctl allowing userspace to reserve IOVA ranges in an IOAS,
+creating a restriction on the address space: reserved ranges are
+excluded from IOMMU_IOAS_IOVA_RANGES and rejected by mapping
+operations.
 
-The helper pcie_std_tph_supported() / pcie_ext_tph_supported() report hardware
-TPH capability, which is separate from the global pci_tph_disabled knob. The
-pci=notph knob only blocks pcie_enable_tph(), it does not erase hardware
-capability.
+This completes the opt-in flow for the kernel's reservation
+recommendations: userspace queries IOMMU_GET_RECOMMENDED_RESERVATIONS
+for a device, decides which ranges to honour, and feeds them back
+through this ioctl so the kernel enforces them on its behalf.  Both
+steps are optional; nothing changes for userspace that does not use
+them.
 
-> 
-> pci_tph_init() populates pdev->tph_max_type during probe without checking
-> pci_tph_disabled, while pcie_enable_tph_ext() checks pci_tph_disabled and
-> returns -EINVAL.  With pci=notph on the command line, callers such as the
-> VFIO TPH code later in this series treat TPH as supported and expose it in
-> virtual config space, only for hardware enablement to fail with -EINVAL.
-> 
->>  int pcie_tph_set_st_entry(struct pci_dev *pdev,
->>  			  unsigned int index, u16 tag);
->>  int pcie_tph_get_cpu_st_ext(struct pci_dev *dev, enum tph_mem_type mem_type,
->> @@ -33,6 +47,8 @@ int pcie_enable_tph(struct pci_dev *pdev, u8 mode);
->>  u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
->>  u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
->>  #else
->> +#define pcie_std_tph_supported(pdev) false
->> +#define pcie_ext_tph_supported(pdev) false
-> 
-> [Severity: Medium]
-> Should pcie_std_tph_supported() and pcie_ext_tph_supported() be static
-> inline functions taking struct pci_dev *pdev instead of macros?
+The semantics mirror the existing internal users of
+iopt_reserve_iova(): ranges conflicting with existing mappings or
+allowed IOVAs fail with -EADDRINUSE, and overlapping reservations are
+permitted so that recommendations queried for several devices behind
+the same host bridge can each be reserved independently.  User
+reservations carry a NULL owner and live until the IOAS is destroyed;
+accordingly the NULL-owner cleanup in iopt_destroy_table() is no
+longer conditional on CONFIG_IOMMUFD_TEST, since production userspace
+can now create such reservations.
 
-OK, will fix in static inline
+On failure the leading ranges already inserted stay reserved; because
+overlaps are permitted, retrying the whole call is idempotent.
 
-> 
-> Because the !CONFIG_PCIE_TPH macros discard pdev without evaluating or
-> type-checking it, callers whose local pdev variable is only passed to
-> these helpers (such as vfio_tph_vcap_rewrite() later in this series)
-> trigger a -Wunused-variable warning and break the build under
-> CONFIG_WERROR=y when CONFIG_PCIE_TPH is disabled.
-> 
+Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+---
+ drivers/iommu/iommufd/io_pagetable.c    |  7 +++-
+ drivers/iommu/iommufd/ioas.c            | 51 +++++++++++++++++++++++++
+ drivers/iommu/iommufd/iommufd_private.h |  1 +
+ drivers/iommu/iommufd/main.c            |  3 ++
+ include/uapi/linux/iommufd.h            | 35 +++++++++++++++++
+ 5 files changed, 95 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iommu/iommufd/io_pagetable.c b/drivers/iommu/iommufd/io_pagetable.c
+index 5ac736cf5bb5..9a10daf6491e 100644
+--- a/drivers/iommu/iommufd/io_pagetable.c
++++ b/drivers/iommu/iommufd/io_pagetable.c
+@@ -1036,8 +1036,11 @@ void iopt_destroy_table(struct io_pagetable *iopt)
+ {
+ 	struct interval_tree_node *node;
+ 
+-	if (IS_ENABLED(CONFIG_IOMMUFD_TEST))
+-		iopt_remove_reserved_iova(iopt, NULL);
++	/*
++	 * Reservations made by userspace through IOMMU_IOAS_RESERVE_IOVAS
++	 * carry a NULL owner and live until the IOAS is destroyed.
++	 */
++	iopt_remove_reserved_iova(iopt, NULL);
+ 
+ 	while ((node = interval_tree_iter_first(&iopt->allowed_itree, 0,
+ 						ULONG_MAX))) {
+diff --git a/drivers/iommu/iommufd/ioas.c b/drivers/iommu/iommufd/ioas.c
+index 8fb5271a9506..16cff45cb41c 100644
+--- a/drivers/iommu/iommufd/ioas.c
++++ b/drivers/iommu/iommufd/ioas.c
+@@ -183,6 +183,57 @@ int iommufd_ioas_allow_iovas(struct iommufd_ucmd *ucmd)
+ 	return rc;
+ }
+ 
++int iommufd_ioas_reserve_iovas(struct iommufd_ucmd *ucmd)
++{
++	struct iommu_ioas_reserve_iovas *cmd = ucmd->cmd;
++	struct iommu_iova_range __user *ranges;
++	struct iommufd_ioas *ioas;
++	u32 i;
++	int rc;
++
++	if (cmd->flags)
++		return -EOPNOTSUPP;
++
++	ioas = iommufd_get_ioas(ucmd->ictx, cmd->ioas_id);
++	if (IS_ERR(ioas))
++		return PTR_ERR(ioas);
++
++	ranges = u64_to_user_ptr(cmd->ranges);
++
++	down_write(&ioas->iopt.iova_rwsem);
++	for (i = 0; i < cmd->num_ranges; i++) {
++		struct iommu_iova_range range;
++
++		rc = copy_from_user(&range, &ranges[i], sizeof(range));
++		if (rc) {
++			rc = -EFAULT;
++			goto out_unlock;
++		}
++		if (range.last < range.start) {
++			rc = -EINVAL;
++			goto out_unlock;
++		}
++		if (range.start > ULONG_MAX || range.last > ULONG_MAX) {
++			rc = -EOVERFLOW;
++			goto out_unlock;
++		}
++
++		rc = iopt_reserve_iova(&ioas->iopt, range.start, range.last,
++				       NULL);
++		if (rc)
++			goto out_unlock;
++	}
++	up_write(&ioas->iopt.iova_rwsem);
++
++	iommufd_put_object(ucmd->ictx, &ioas->obj);
++	return 0;
++
++out_unlock:
++	up_write(&ioas->iopt.iova_rwsem);
++	iommufd_put_object(ucmd->ictx, &ioas->obj);
++	return rc;
++}
++
+ static int conv_iommu_prot(u32 map_flags)
+ {
+ 	/*
+diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
+index 8016c3efca78..361223372cf3 100644
+--- a/drivers/iommu/iommufd/iommufd_private.h
++++ b/drivers/iommu/iommufd/iommufd_private.h
+@@ -356,6 +356,7 @@ int iommufd_ioas_map(struct iommufd_ucmd *ucmd);
+ int iommufd_ioas_map_file(struct iommufd_ucmd *ucmd);
+ int iommufd_ioas_change_process(struct iommufd_ucmd *ucmd);
+ int iommufd_ioas_copy(struct iommufd_ucmd *ucmd);
++int iommufd_ioas_reserve_iovas(struct iommufd_ucmd *ucmd);
+ int iommufd_ioas_unmap(struct iommufd_ucmd *ucmd);
+ #ifdef CONFIG_IOMMUFD_NOIOMMU
+ int iommufd_ioas_noiommu_get_pa(struct iommufd_ucmd *ucmd);
+diff --git a/drivers/iommu/iommufd/main.c b/drivers/iommu/iommufd/main.c
+index 85f8ea154218..ea03a2078a37 100644
+--- a/drivers/iommu/iommufd/main.c
++++ b/drivers/iommu/iommufd/main.c
+@@ -447,6 +447,7 @@ union ucmd_buffer {
+ 	struct iommu_ioas_noiommu_get_pa noiommu_get_pa;
+ 	struct iommu_ioas_iova_ranges iova_ranges;
+ 	struct iommu_ioas_map map;
++	struct iommu_ioas_reserve_iovas ioas_reserve_iovas;
+ 	struct iommu_ioas_unmap unmap;
+ 	struct iommu_option option;
+ 	struct iommu_recommended_reservations recommended_reservations;
+@@ -509,6 +510,8 @@ static const struct iommufd_ioctl_op iommufd_ioctl_ops[] = {
+ 		 struct iommu_ioas_map_file, iova),
+ 	IOCTL_OP(IOMMU_IOAS_NOIOMMU_GET_PA, iommufd_ioas_noiommu_get_pa, struct iommu_ioas_noiommu_get_pa,
+ 		 out_phys),
++	IOCTL_OP(IOMMU_IOAS_RESERVE_IOVAS, iommufd_ioas_reserve_iovas,
++		 struct iommu_ioas_reserve_iovas, ranges),
+ 	IOCTL_OP(IOMMU_IOAS_UNMAP, iommufd_ioas_unmap, struct iommu_ioas_unmap,
+ 		 length),
+ 	IOCTL_OP(IOMMU_OPTION, iommufd_option, struct iommu_option, val64),
+diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
+index 45ba7bd7abd5..f6591c42ad5c 100644
+--- a/include/uapi/linux/iommufd.h
++++ b/include/uapi/linux/iommufd.h
+@@ -59,6 +59,7 @@ enum {
+ 	IOMMUFD_CMD_HW_QUEUE_ALLOC = 0x94,
+ 	IOMMUFD_CMD_IOAS_NOIOMMU_GET_PA = 0x95,
+ 	IOMMUFD_CMD_GET_RECOMMENDED_RESERVATIONS = 0x96,
++	IOMMUFD_CMD_IOAS_RESERVE_IOVAS = 0x97,
+ };
+ 
+ /**
+@@ -1436,4 +1437,38 @@ struct iommu_recommended_reservations {
+ };
+ #define IOMMU_GET_RECOMMENDED_RESERVATIONS \
+ 	_IO(IOMMUFD_TYPE, IOMMUFD_CMD_GET_RECOMMENDED_RESERVATIONS)
++
++/**
++ * struct iommu_ioas_reserve_iovas - ioctl(IOMMU_IOAS_RESERVE_IOVAS)
++ * @size: sizeof(struct iommu_ioas_reserve_iovas)
++ * @flags: Must be 0
++ * @ioas_id: IOAS ID to reserve ranges in
++ * @num_ranges: Number of ranges in the input array
++ * @ranges: Pointer to the input array of struct iommu_iova_range
++ *
++ * Reserve IOVA ranges in an IOAS, excluding them from mapping and from
++ * IOMMU_IOAS_IOVA_RANGES.  Intended for opting into the ranges
++ * reported by IOMMU_GET_RECOMMENDED_RESERVATIONS.
++ *
++ * Reserve before mapping: a range overlapping an existing mapping or
++ * an allowed IOVA range fails with -EADDRINUSE.  Overlapping
++ * reservations are permitted, so ranges recommended for multiple
++ * devices (e.g. behind the same host bridge) can each be reserved.
++ * A range with last < start fails with -EINVAL.  On 32-bit kernels
++ * a range exceeding the native address width fails with -EOVERFLOW.
++ * Ranges are processed in order and earlier ranges stay reserved on
++ * failure; retrying the whole call is safe.  Reservations live until
++ * the IOAS is destroyed.
++ *
++ * Return: 0 on success, negative errno on failure.
++ */
++struct iommu_ioas_reserve_iovas {
++	__u32 size;
++	__u32 flags;
++	__u32 ioas_id;
++	__u32 num_ranges;
++	__aligned_u64 ranges;
++};
++#define IOMMU_IOAS_RESERVE_IOVAS \
++	_IO(IOMMUFD_TYPE, IOMMUFD_CMD_IOAS_RESERVE_IOVAS)
+ #endif
+-- 
+2.43.7
 
