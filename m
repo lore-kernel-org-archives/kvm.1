@@ -1,86 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795114563;
-	b=5tBk5ozPTkhU8o0TDJzqhOhR6OqgozvshXVCtpaGKXQPbsBn9W4wzVxrYNpuZeQdXSvy
-	 QKkFLgGCsV4QNBsDm/1ftt8qGO9CY0mzZUvosgukrp4YPcCBIKgYvShiX6cRtFEy1A+ZF
-	 L1c25NAXDtQt+GuWp4ELBQhKUFlLVuAuZc+6uqTip3zKYTwxTagc0ya4HKSbth636Ir4j
-	 0ZUHEJYhkIwlmZRfDAUqqFzYUiIqWLScfu85RKu1UvH0kS/D+b3tDhw+H1lpCOvWUnLze
-	 SVfUlXu1a9tuscN2qaUcWYvoYeBuAVvQ6KUxGpM+TL/DPf8/s08oalKaAwdfOWkyZyw==
+	t=1795114636;
+	b=yL0XFYf4uOZrPm+ozDPVW6gxRXCmELJWRGNN/leXZ+lSQqd9vQ1Kz8lXfL04MKKRE0Zx
+	 8BaihntM5G5v5KI+iJM3bkZpdSvew1bCPCRK94E6h06FQt3YE1ljdhK3LNawO/5Jqgwii
+	 bUuvIj6zedbNE9LDBL7x22Bg/ae+wBBD7UIgkNp4IkGrjjOI7N6FgyvBPdO35EZ4MN5A5
+	 PVIpbW1MxXDPxquqBXqtiGtSpkB7gvqo34Q95nTulr7fYlEn1+wvGduTMnGkeQnHxiTz/
+	 y+j9H1RG3rFumdnb0jWhaJsZUEYs/rn7EIKa1ZMnbH8bNg79trYJquWWjAnr961beog==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795114563;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795114636;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=GYB1dTOmJBuh3HO8sbLhiXZWRlkdiO237Pd86QmoAGk=;
-	b=kBfO/nOVQS4acH73/O+Lwuy8f8Ld9vSrvwaxIgz1gNuY/42D8rIXO/eg+BcELj+eKqEa
-	 f9dHnCeBs1GZW0xFrQeP8xCxJU7qQ4+QT6UEjBQNeBUedo6/yzJSTrkv7+tiQ2XR10Z3Y
-	 pku12TCiq//AXu/M4DA91cymJKtfdXYq8IbK8ZKZ9f67ia4p+3UvsFW4hctcsAcHuosnI
-	 tVGWwhZNAzFYXHG4O7oEI01vPyVqvY02UjsGK85tL1wvwIamLjy0Rg3kCp4VaW7pqmZuB
-	 FF48OeowdeEN0TS/i3YdUQ7cCXamiXvX+8cFgRgzlKbc1tcZ15assOLylwp9vkTzUeA==
+	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-Mailer:Message-ID:
+	 Subject:From:To:Cc:Content-Type;
+	bh=2izJfUDs9XTGz3sgeKZakp6Bf+f7RLOVt6c9wC6F/Qk=;
+	b=Iyj1oYP4TpmmuxFbFK02WVWZXc0jQC8tZYcoAC+it1Li1uPkUabdLVH9JhPIi0ca7Gti
+	 qJajoXAi7JCefNPNWlcbKG896FY5UnlXxp6ihU5jGIcUjMYf+wg/HQMBZC7+v/Qxrp8Zb
+	 KhscFTqPlFFTtqIt4YyimaCnNSIgbSfhDOGWyiu2lrB0EeEgfFaM5P40+PF0OA5S1XhoH
+	 4AppnylXg04ULVxFHNCsz7dO1tCXnpZOOhkw7H3zl5g4V+KOoMbSZdXg5KQ1Rqi3OUcso
+	 pnx+h7wwoc37mwlrwqrWhR/VjqzBjyjHCqkdAovDBMlkwy7NB7IqHCRrC87P6OdxVgw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linaro.org;
-	spf=pass smtp.mailfrom=linaro.org;
-	dkim=pass header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=o3cEIyAS;
-	arc=none smtp.remote-ip=209.85.210.170
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=EcOvIMqS;
+	arc=none smtp.remote-ip=74.125.82.70
+Received: from mail-dl1-f70.google.com (mail-dl1-f70.google.com [74.125.82.70])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D40606A32A
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 18:56:02 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87D40606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88552606A320
+	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 18:57:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88552606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=o3cEIyAS
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-8c4cc85a315so120776b3a.0
-        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 10:56:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=EcOvIMqS
+Received: by mail-dl1-f70.google.com with SMTP id a92af1059eb24-1b25d977b91so90480c88.1
+        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 10:57:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1795114562; x=1795719362; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GYB1dTOmJBuh3HO8sbLhiXZWRlkdiO237Pd86QmoAGk=;
-        b=o3cEIyASu65iRaLeiCiDKL0C7/xAKHNBV5mBtTPIZd5OEELbH9ocgKxEvyGTylQg6M
-         to5c20j1nEyqO+JtAVTbz6g9j6cwUs7ZVByVkX3Ogk0ZcgvQGDwIXwAnYs0Fntflf629
-         J6ENjTEMi1DExUJr5kx467ZDKQN8juG+MGrorJa3SXTfSXgHeYBfc8m+IfUTufzifDoh
-         5XJKkYfH1z6HWV/IQpO+EtGly+FWCWuAMLEmK5m0K+/QLHAHngOqRGppzl6lsJrf22vw
-         SPr4xqsL9Xe98DtBu1dcM99PFlA/qer/63cQUskkhDZMIPI2fWplgcyho+0MDuj2ABCn
-         CJNw==
+        d=google.com; s=20260707; t=1795114635; x=1795719435; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2izJfUDs9XTGz3sgeKZakp6Bf+f7RLOVt6c9wC6F/Qk=;
+        b=EcOvIMqSTYHDHeCBGQIdSOQ1oDh+nL6nhGewobYSQFdUsefTFJ7SW8XtGIWz43QXP+
+         CEP3fh706zxLtd6iWpp/huOGS4z8h9UoKeAdzsSLe7ZKG/exEm0pueKzXWw5D6kYogsu
+         v4CyFN5LmRG9uVxWK/VltDwwQ5weqQED8kEJgaL0RIGipCQSblZMXjqpo4uIcIDCuW7T
+         lLCApkf29TVpZqVovMlALAMDehCnCW9u8NO2uaPe3Wqxdr4hhEf7088TeJTIQlgP0/nC
+         pIOPxhIulhaHcuQ+OH8hCJkrsSslLmMPKNlmu5G392btKZuTXPsOEB4w4LwcE0SAso5g
+         1ogg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795114562; x=1795719362;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=GYB1dTOmJBuh3HO8sbLhiXZWRlkdiO237Pd86QmoAGk=;
-        b=iz2qylqFrRga/bEE241jq5f+ySwFhtTCYvT4atg3u93wtJo4zMD60fMs/4L+N8qA1N
-         XttHOnm1GrfLcQqEbfQQIAaPM1LUHTndlsWRBP4rVtX2WsT5khtdMQy1XrXH+HzgewTl
-         +kfALSUEPq9f33nFbyrJIUfDuKkwjLVNxBt51ccSMwZCOQeIZW4zanbFSIA1oggmYJAW
-         n/hJnFRrbbROniulnJx3YA1E/XW0lSqnHx0nO4rCto91gS2ISwM28u82z67jylZncbE2
-         d2mDkGw2P9lTqY/hqnYRKQqRGMDaFE7ile1IGyidYisY3xk0SD3liO80EmqwlXjRD22Y
-         d9HQ==
-X-Forwarded-Encrypted: i=1; AL+hErF2f0M1Uv3t71Ww2hg2/N7lJ9KzKpbpoLrsefOHuNv4CLUnlxDt/k91FrLVa5XF7FjgL68=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8K6/Vzc3n1bVQMrwNdDHl0aQhJnF5HVuNm63tw2R1kwvKCNlXQ
-	MEQyBh3nAdN9f40924llKWI5WxZP+jxGQBnNHcg8ZUH4jwcpdHiCD65O0YaSwZVNnoo=
-X-Gm-Gg: AYBFou02xFq7u3U/SCKoHE135z+VEa7ANWQrBXNPjuyA59k+xwVs5aCCDJtYtLH+z2f
-	7DWuRYm3jpbLBc1XMdvdtcSbsSS19mTrxz7BjdSJ5BoVoxAq80HJSUFISI7JrQSplDGV+i+5Wcr
-	3DAPT0son41wWrCpaPzUj56YJ4TWZzRIs7loche3f7gG8FOe5DIuZ8gWFTQcjreTb0G2nfstFtT
-	Yt6ozwHbXyW90Z/lW6OzKGej57pBYrtzG3PhAI6PlG+88/zo+e60He804yyE0rjBHk9lcNZ6swd
-	aHHQpp3VojgA6UqFwf4oy51ErrewsPz6XKkipNbnrNT6MLiMDekstYt4qeV1406nDxQDymhGrW0
-	Tol5MiXUBxz85qExJpb/gY4ThY9NXx1wdPsLfY1euspBKTfwWCZDl9dYNKUBnbCiqMSu4vDaI1E
-	d+PCSO3JbS66uMhSM7kY7XQHkuFFe7pdc2t4OZL9m9Zm0OdnmWcJfs2wOVVUkTg3KswcDuhGN8/
-	pbjoGNwqw23xHh4cARwthmzUAW+scBQ5uIUbPKzFIJECcSujBkvIqboDAtgbZ+pzrARkIrNcEzp
-	3AdtDIaORcZkZKhCg4hpJ/Kwooc5933y8dzH9gpzvvmcoS51dvixXJwA9tyaZ/8iLvZLJTo=
-X-Received: by 2002:a05:6a00:f86:b0:89e:9084:b02c with SMTP id d2e1a72fcca58-8c87d02544fmr515635b3a.48.1795114561683;
-        Thu, 19 Nov 2026 10:56:01 -0800 (PST)
-Received: from [192.168.0.4] (174-21-68-150.tukw.qwest.net. [174.21.68.150])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c87285c15asm325734b3a.20.2026.11.19.10.56.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Nov 2026 10:56:01 -0800 (PST)
-Message-ID: <b2516ddb-9e26-43ca-b06b-197b6e6feb7e@linaro.org>
-Date: Thu, 19 Nov 2026 10:55:59 -0800
+        d=1e100.net; s=20260707; t=1795114635; x=1795719435;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2izJfUDs9XTGz3sgeKZakp6Bf+f7RLOVt6c9wC6F/Qk=;
+        b=H/75lzvQYCcObomWewOL9l5C1e6CHAMUEDz4Ss96Vb8BtcH5Wbw2fM9YtxFEG6NNvN
+         Cvc/O2RLxvskso1X9jphxMMnvCqgfFn9BkBptrMuCrvb1SiCgoYrNLJPgFBvx/ENc6z8
+         ghrh9XYIwlMeWaVGNTf0eiO0xTqu1EeiyTmubdTqqt2EWtd3AvNBr2yyNDKIBCyS3+61
+         rA6GQYe1DDUxsCFApSvWonDwtpMfm//ChB9w4g0EdwPy+86QLgQTh0rAb6eOiBgCkguL
+         cbzU1AmHBNsYouCkGQtE7IJlZKhB05AI/TdVP62kxHfnc3iVtd/osoWOvJgtCQUbSYs5
+         /QUw==
+X-Gm-Message-State: APuU4Z+K5XG+b5EHxy2sfrmEVQ84iUNB2Z8Ml/spmIqTHleywou/z9bi
+	+ocaKyc4kWMHb1jBCpRvYByLZEdlPaW7Jge+pfpsZRf/95hBpJtkt8kJJpKRtu0pSpsKNSPlM38
+	2pMEs7YEE3f1IhByDvLd4WIz6t+KNuScIftC32B1+gzN3fKLnvARbYiadmF/qjAlynD0RXR6wxE
+	gaTGJAsxATrNSU3hHnhgMY3zs8bQPSTjmajuRAezK/eIJ4KjXNsyUO4Q==
+X-Received: from dlai6.prod.google.com ([2002:a05:701b:2706:b0:1b2:375c:814])
+ (user=aaronlewis job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7022:170c:b0:1ae:59d6:91cd with SMTP id a92af1059eb24-1b5568f522fmr390300c88.38.1795114634135;
+ Thu, 19 Nov 2026 10:57:14 -0800 (PST)
+Date: Thu, 19 Nov 2026 18:56:56 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -89,34 +75,85 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] i386/cpu: mark CPU properties as const
-To: John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- kvm@vger.kernel.org, Marcelo Tosatti <mtosatti@redhat.com>
-References: <20261119180859.1044425-1-jsnow@redhat.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20261119180859.1044425-1-jsnow@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
+Message-ID: <20261119185659.889654-1-aaronlewis@google.com>
+Subject: [PATCH 0/3] vfio/type1: Fix pin leaks for reserved GUP-pinned pages
+From: Aaron Lewis <aaronlewis@google.com>
+To: kvm@vger.kernel.org
+Cc: alex@shazbot.org, dmatlack@google.com, jgg@nvidia.com, 
+	Aaron Lewis <aaronlewis@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 11/19/26 10:08, John Snow wrote:
-> Currently, these large property tables are loaded in the read-write
-> `.data` segment; by marking them as const they can be loaded as part
-> of `.rodata` instead, where these tables can be shared between multiple
-> instances of QEMU as RssFile memory instead of RssAnon memory.
-> 
-> Signed-off-by: John Snow <jsnow@redhat.com>
-> ---
->   target/i386/cpu-internal.h |  2 +-
->   target/i386/cpu-system.c   |  2 +-
->   target/i386/cpu.c          | 30 +++++++++++++++---------------
->   target/i386/kvm/tdx.c      |  2 +-
->   4 files changed, 18 insertions(+), 18 deletions(-)
+vfio/type1 uses PageReserved(), via is_invalid_reserved_pfn(), to guess
+whether a pfn was GUP-pinned or came from a VM_PFNMAP mapping. Reserved
+pfns are assumed to be PFNMAP, so they are not accounted in locked_vm
+and are never unpinned.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+That guess is wrong for reserved pages that GUP does pin, such as
+device-dax. ZONE_DEVICE struct pages are marked PG_reserved when they
+are initialized, and device-dax, unlike fsdax, can be long-term pinned.
+When such memory is DMA mapped, or pinned through vfio_pin_pages(), the
+pins are never dropped.
 
-r~
+Commit f6c84a52cc41 ("vfio/type1: optimize vfio_pin_pages_remote()")
+assumed that long-term GUP never returns reserved pages, so patch 2 also
+drops the comment that says so.
+
+This series records how each pfn was obtained instead of inferring it:
+
+- Patch 1 makes vpfn_pages() count only the externally pinned pfns that
+  were actually accounted. It fixes a locked_vm imbalance on its own,
+  and patch 2 depends on it.
+- Patch 2 tracks GUP vs PFNMAP per vfio_dma for the DMA map/unmap path.
+- Patch 3 tracks it per vfio_pfn for external page pinning.
+
+Two things to call out:
+
+- Reserved GUP-pinned pages are now charged against RLIMIT_MEMLOCK like
+  any other long-term pinned page, so mappings that used to bypass the
+  limit can now fail with -ENOMEM.
+- A single DMA mapping that contains both PFNMAP and GUP-pinned pfns
+  still falls back to the PageReserved() heuristic on unpin, because
+  type1 does not record which pfn is which. That stays correct unless
+  the GUP-pinned pages are reserved. In that case their pins still leak
+  and, since they are now accounted, so does their locked_vm accounting.
+  Closing that needs per-range tracking.
+
+The DMA map/unmap path (patch 2) was tested on vfio/next by adding
+device-dax and /dev/mem mappings locally to vfio_dma_mapping_test:
+
+1. 1GiB (262,144 pages) device-dax mapping, checking /proc/vmstat (after
+   flushing /proc/sys/vm/stat_refresh) before and after running:
+
+     ./vfio_dma_mapping_test -v vfio_type1v2_iommu_devdax_1gb <BDF>
+
+   Before fix:
+     nr_foll_pin_acquired: 27471 -> 289615 (+262144)
+     nr_foll_pin_released: 27471 -> 27471  (+0, leaked)
+
+   With fix:
+     nr_foll_pin_acquired: 18786 -> 280930 (+262144)
+     nr_foll_pin_released: 18786 -> 280930 (+262144)
+
+2. /dev/mem (VM_PFNMAP) mapping of a reserved physical page with a valid
+   struct page (memmap=4M$0x340000000), confirming DMA map/unmap still
+   succeeds with +0/+0 pin deltas and no unpin warnings.
+
+If desirable, I can add the test updates to this series, though the
+changes depend on host-specific device-dax paths and reserved physical
+addresses.
+
+Aaron Lewis (3):
+  vfio/type1: Skip reserved PFNs in vpfn_pages()
+  vfio/type1: Track GUP vs PFNMAP in DMA map/unmap
+  vfio/type1: Track GUP vs PFNMAP in external page pinning
+
+ drivers/vfio/vfio_iommu_type1.c | 147 +++++++++++++++++++-------------
+ 1 file changed, 87 insertions(+), 60 deletions(-)
+
+
+base-commit: 076d7e989cb69f6ded7d60f2a080eb909930061b
+-- 
+2.56.1.708.g77570a6a1d-goog
 
