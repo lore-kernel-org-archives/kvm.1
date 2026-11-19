@@ -1,52 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.30.148.35
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=183.62.165.209
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795094887;
-	b=QrW9bAjFCSxZECkIpIMaR0gCJfqV7ym3bXe1LEaBScBgHocFp9ZOEEWfhL2EJy9K+92Y
-	 2d6+0MaU6LO+NB/xd7fiegyha0IB5NjINcdvXH+gJ4OQvIPAbWw89sq5iUA97fSTiDLkh
-	 9rnyoeB5cZ/8g1/se5M+doBv/iiL/d704V57AxHzMAEBPwCj8Up1C66MGwtxAnGWh6pAm
-	 fn77BKBPK0Qa2PcCMW0XLPyhKyhxhy1Rwtq2a6+2uKccLAcfbPfRkeXgXuDKzLgjKDb/a
-	 nkEmGdtMxSlpKopjKsQVVKJnhXd3U2oSo9bKr58fNkdckdveuZLs4P5mbl4Cc3yNjBA==
+	t=1795094895;
+	b=QKE1rFUPTRWh3yy4KqUiaVuJbHM3TJJLehIASg0eq3dcVkPmAbHlbVEdT49HkjhosIiD
+	 99EoiNFnFStneFExyMVqioUiWSBqJBpZnX1Su0xu5UemVDbR8JkiOeXHlUKBxF+TcHjuT
+	 l+qqMOawyuIQQ1FtLhdFAetuKKOn8uk/BhjHqpckgZDyZSiiaRDzY+z27n3mO7e5L0SuE
+	 eA8qTzb+jFAgaJAoQoy2MJdLZOFgq9149FhOy5GIq3g4UvWdvCH+0ou3FFuWYOMNUhxhs
+	 Dhedywm5Yl7/yjNxO+RA/uewCrlKHvFN8cM667/0eL38RzmqtfijpFhMA0x6NvzZ4Eg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795094887;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795094895;
 	h=DMARC-Filter:Received:Received:Received:X-Zmail-TransId:
 	 X-Zmail-LocalSMTP:X-Zmail-RealSender:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 X-ZMAIL-USEORIGINALEMLTOOUTBOUND:Content-Transfer-Encoding:X-MAIL:
 	 X-TLS:X-ENVELOPE-SENDER:X-SOURCE-IP:X-CLEAN:
 	 X-Fangmail-Anti-Spam-Filtered:X-Fangmail-MID-QID;
-	bh=6DpinBGst6OfRU+Sci9rwMfyIExP4zydaXJmwKfWdOE=;
-	b=4bkeF/K/xngIN0yPLTV/ZOK/MUV+JFJ/A1Cc7D3csAhVPEfwAJr/mcZu9DY/lDiQTbrK
-	 r1eCOR88nvpM453wXvXMBC9CR6FBjYhdjlXRRiLWVGm/GYDl3toL+bE8B9lCTdYnPl22b
-	 65zx4NBHCVaIwW4oOyNOhNKyB6/0ZvKXuFQgUy6hxjKljW3fUcvuyVA2m6QddX5FgK25J
-	 5aj1vyYq0tPfDANXuwDZgem2M8UWPD34qWHBUhYYDq9v5UScrVmKnLlA2h8h7Dlbpf+VG
-	 zpss2EzhTEVtYmBPmwBrS1D8Pf/BO7bjCiJMdqooZHyEgHpLOIHRMNpT7igPs/YJaNA==
+	bh=pXs81zN/gtOWk9jcY6j4Vry1pu2j7Yic8GSrqZs0QNY=;
+	b=t1lToJJL3Zr0lEmCRg2ujmYlyQCkm4rKNOzTcgCWT/oCOwWTB8jPlExQ8pxK3X9gVajW
+	 6QEABKzjeHxmRQ6lVWu3vCRiOqNNqgoliaOQ30BUt1P+T/Q0YOUQ+IoXfGEioak+TV6C/
+	 MAH/zD7f/W3Ra2vucnnm3C2//gOgwhHzje+7cQUJ+zKRow3GGryhk0lyCtIPVoUAMjbxE
+	 FXj23sS1r2JHv1Aewj+LC8jSikNquEaOCLvCl5IvwUFHhdC8ZsBGN9SGektJLvEKhX5aa
+	 xibJElzryoadYTs9Jsxryt2e3Jm4XdppwBMCzMiY2HznDdPXp1Bn5uOxEXNsO2ZQw0w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=sanechips.com.cn;
 	spf=pass smtp.mailfrom=sanechips.com.cn;
-	arc=none smtp.remote-ip=160.30.148.35
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	arc=none smtp.remote-ip=183.62.165.209
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CC5606A32C;
-	Thu, 19 Nov 2026 13:28:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06CC5606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A82860A5BC1;
+	Thu, 19 Nov 2026 13:28:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3A82860A5BC1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sanechips.com.cn
 Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jVfRN2K35z8Xrrb;
-	Thu, 19 Nov 2026 21:28:00 +0800 (CST)
-Received: from szxlzmapp02.zte.com.cn ([10.5.231.79])
-	by mse-fl1.zte.com.cn with SMTP id 6AJDRqkO086401;
-	Thu, 19 Nov 2026 21:27:52 +0800 (+08)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4jVfRK1ktVz52SG3;
+	Thu, 19 Nov 2026 21:27:57 +0800 (CST)
+Received: from szxlzmapp03.zte.com.cn ([10.5.231.207])
+	by mse-fl1.zte.com.cn with SMTP id 6AJDRsH9086413;
+	Thu, 19 Nov 2026 21:27:54 +0800 (+08)
 	(envelope-from gong.shuai@sanechips.com.cn)
 Received: from ubuntu-35-gs (unknown [10.230.214.35])
 	by smtp (Zmail) with SMTP;
-	Thu, 19 Nov 2026 21:27:55 +0800
-X-Zmail-TransId: 3e816afef95a02f-564b4
+	Thu, 19 Nov 2026 21:27:58 +0800
+X-Zmail-TransId: 3e816afef95d02f-56508
 X-Zmail-LocalSMTP: 1
 X-Zmail-RealSender: gong.shuai@sanechips.com.cn
 From: Gong Shuai <gong.shuai@sanechips.com.cn>
@@ -67,9 +67,9 @@ Cc: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
         Tan Chi <tanchi25@mails.ucas.ac.cn>, Wu Fei <wu.fei9@sanechips.com.cn>,
         Zhao Qingye <zhao.qingye@sanechips.com.cn>,
         Gong Shuai <gong.shuai@sanechips.com.cn>
-Subject: [RFC PATCH v3 04/10] iommu/riscv: Add vIOMMU object support
-Date: Thu, 19 Nov 2026 21:27:38 +0800
-Message-ID: <20261119132744.396426-5-gong.shuai@sanechips.com.cn>
+Subject: [RFC PATCH v3 07/10] iommufd: Add RISC-V IOMMU hardware info type
+Date: Thu, 19 Nov 2026 21:27:41 +0800
+Message-ID: <20261119132744.396426-8-gong.shuai@sanechips.com.cn>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261119132744.396426-1-gong.shuai@sanechips.com.cn>
 References: <20261119132744.396426-1-gong.shuai@sanechips.com.cn>
@@ -84,154 +84,76 @@ Precedence: list
 MIME-Version: 1.0
 X-ZMAIL-USEORIGINALEMLTOOUTBOUND: 1
 Content-Transfer-Encoding: 8bit
-X-MAIL:mse-fl1.zte.com.cn 6AJDRqkO086401
+X-MAIL:mse-fl1.zte.com.cn 6AJDRsH9086413
 X-TLS: YES
 X-ENVELOPE-SENDER: gong.shuai@sanechips.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Thu, 19 Nov 2026 21:28:00 +0800
+X-SOURCE-IP: 10.5.228.132 unknown Thu, 19 Nov 2026 21:27:57 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AFEF960.000/4jVfRN2K35z8Xrrb
+X-Fangmail-MID-QID: 6AFEF95D.000/4jVfRK1ktVz52SG3
 
 From: Wu Fei <wu.fei9@sanechips.com.cn>
 
-Allow iommufd to allocate a RISC-V vIOMMU when the physical IOMMU
-supports both translation stages.
-
-Nested translation needs to associate guest-owned stage 1 contexts
-with a host-owned stage 2 parent domain. A vIOMMU provides this
-association and owns a dedicated GSCID so that guest PSCIDs cannot
-alias address spaces belonging to another vIOMMU.
+A VMM needs the physical IOMMU capabilities to decide which features
+it can expose to a guest. Define IOMMU_HW_INFO_TYPE_RISCV and struct
+iommu_hw_info_riscv so IOMMU_GET_HW_INFO can return the RISC-V
+capabilities register.
 
 Signed-off-by: Wu Fei <wu.fei9@sanechips.com.cn>
-Co-developed-by: Gong Shuai <gong.shuai@sanechips.com.cn>
 Signed-off-by: Gong Shuai <gong.shuai@sanechips.com.cn>
 ---
- drivers/iommu/riscv/iommu.c | 77 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 77 insertions(+)
+ include/uapi/linux/iommufd.h | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
-index f6e92b086c12..f2305b953f71 100644
---- a/drivers/iommu/riscv/iommu.c
-+++ b/drivers/iommu/riscv/iommu.c
-@@ -19,6 +19,7 @@
- #include <linux/dma-map-ops.h>
- #include <linux/init.h>
- #include <linux/iommu.h>
-+#include <linux/iommufd.h>
- #include <linux/iopoll.h>
- #include <linux/kernel.h>
- #include <linux/pci.h>
-@@ -856,6 +857,7 @@ struct riscv_iommu_domain {
- 	spinlock_t lock;		/* protect bonds list updates. */
- 	int pscid;
- 	int gscid;
-+	bool nest_parent;
+diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
+index fee63e6cbb7a..adc7f30b2b18 100644
+--- a/include/uapi/linux/iommufd.h
++++ b/include/uapi/linux/iommufd.h
+@@ -733,6 +733,28 @@ struct iommu_hw_info_amd {
+ 	__aligned_u64 efr2;
  };
- PT_IOMMU_CHECK_DOMAIN(struct riscv_iommu_domain, riscvpt.iommu, domain);
  
-@@ -1342,6 +1344,20 @@ static bool riscv_iommu_iohgatp_supported(struct riscv_iommu_device *iommu,
- 	return false;
- }
- 
-+static bool riscv_iommu_supports_s1(struct riscv_iommu_device *iommu)
-+{
-+	return (iommu->caps & RISCV_IOMMU_CAPABILITIES_SV57) ||
-+		(iommu->caps & RISCV_IOMMU_CAPABILITIES_SV48) ||
-+		(iommu->caps & RISCV_IOMMU_CAPABILITIES_SV39);
-+}
-+
-+static bool riscv_iommu_supports_s2(struct riscv_iommu_device *iommu)
-+{
-+	return (iommu->caps & RISCV_IOMMU_CAPABILITIES_SV57X4) ||
-+		(iommu->caps & RISCV_IOMMU_CAPABILITIES_SV48X4) ||
-+		(iommu->caps & RISCV_IOMMU_CAPABILITIES_SV39X4);
-+}
-+
- static int riscv_iommu_attach_paging_domain(struct iommu_domain *iommu_domain,
- 					    struct device *dev,
- 					    struct iommu_domain *old)
-@@ -1466,6 +1482,8 @@ static int riscv_iommu_init_domain_s2(struct device *dev,
- 	if (domain->gscid < 0)
- 		return -ENOMEM;
- 
-+	domain->nest_parent = !!(flags & IOMMU_HWPT_ALLOC_NEST_PARENT);
-+
- 	/* AMO_HWAD is checked by iommufd via IOMMU_CAP_DIRTY_TRACKING */
- 	if (flags & IOMMU_HWPT_ALLOC_DIRTY_TRACKING)
- 		domain->domain.dirty_ops = &riscv_iommu_dirty_ops;
-@@ -1662,6 +1680,63 @@ static void riscv_iommu_release_device(struct device *dev)
- 	kfree_rcu_mightsleep(info);
- }
- 
-+struct riscv_viommu {
-+	struct iommufd_viommu core;
-+	struct riscv_iommu_device *iommu;
-+	struct riscv_iommu_domain *s2_parent;
-+	int gscid;
++/**
++ * struct iommu_hw_info_riscv - RISC-V IOMMU device info
++ *                              (IOMMU_HW_INFO_TYPE_RISCV)
++ *
++ * @capabilities: Value of the RISC-V IOMMU capabilities register, defined
++ *                in "IOMMU capabilities (capabilities)" of the RISC-V
++ *                IOMMU Architecture Specification. The value is reported
++ *                raw by the hardware.
++ *
++ * The VMM is responsible to determine the appropriate fields to be
++ * exposed to the VM since certain features are not currently supported
++ * by the kernel for nested domains. Current list of supported fields:
++ * - capabilities[Sv39, Sv48, Sv57, END, AMO_HWAD]
++ *
++ * This list may expand in the future. It is important that VMMs do not
++ * expose bits outside the list to the VM, to allow for compatibility
++ * with future kernels.
++ */
++struct iommu_hw_info_riscv {
++	__aligned_u64 capabilities;
 +};
 +
-+static void riscv_viommu_destroy(struct iommufd_viommu *viommu)
-+{
-+	struct riscv_viommu *rv_viommu =
-+		container_of(viommu, struct riscv_viommu, core);
-+	/*
-+	 * All devices are detached and iodir_update() has flushed this
-+	 * GSCID, so the ID can be recycled here.
-+	 */
-+	ida_free(&riscv_iommu_gscids, rv_viommu->gscid);
-+}
-+
-+static const struct iommufd_viommu_ops riscv_viommu_ops = {
-+	.destroy = riscv_viommu_destroy,
-+};
-+
-+static size_t riscv_iommu_get_viommu_size(struct device *dev,
-+					  enum iommu_viommu_type viommu_type)
-+{
-+	struct riscv_iommu_device *iommu = dev_to_iommu(dev);
-+
-+	if (viommu_type != IOMMU_VIOMMU_TYPE_RISCV)
-+		return 0;
-+
-+	if (!riscv_iommu_supports_s1(iommu) || !riscv_iommu_supports_s2(iommu))
-+		return 0;
-+
-+	return VIOMMU_STRUCT_SIZE(struct riscv_viommu, core);
-+}
-+
-+static int riscv_viommu_init(struct iommufd_viommu *viommu,
-+			     struct iommu_domain *parent_domain,
-+			     const struct iommu_user_data *user_data)
-+{
-+	struct riscv_viommu *rv_viommu = container_of(viommu, struct riscv_viommu, core);
-+	struct riscv_iommu_device *iommu =
-+		container_of(viommu->iommu_dev, struct riscv_iommu_device, iommu);
-+	struct riscv_iommu_domain *s2_parent = iommu_domain_to_riscv(parent_domain);
-+
-+	rv_viommu->gscid = ida_alloc_range(&riscv_iommu_gscids, 1,
-+					   RISCV_IOMMU_MAX_GSCID, GFP_KERNEL);
-+	if (rv_viommu->gscid < 0)
-+		return rv_viommu->gscid;
-+
-+	rv_viommu->iommu = iommu;
-+	rv_viommu->s2_parent = s2_parent;
-+	viommu->ops = &riscv_viommu_ops;
-+
-+	return 0;
-+}
-+
- static const struct iommu_ops riscv_iommu_ops = {
- 	.of_xlate = riscv_iommu_of_xlate,
- 	.capable = riscv_iommu_capable,
-@@ -1669,6 +1744,8 @@ static const struct iommu_ops riscv_iommu_ops = {
- 	.blocked_domain = &riscv_iommu_blocking_domain,
- 	.release_domain = &riscv_iommu_blocking_domain,
- 	.domain_alloc_paging_flags = riscv_iommu_domain_alloc_paging_flags,
-+	.get_viommu_size = riscv_iommu_get_viommu_size,
-+	.viommu_init = riscv_viommu_init,
- 	.device_group = riscv_iommu_device_group,
- 	.probe_device = riscv_iommu_probe_device,
- 	.release_device	= riscv_iommu_release_device,
+ /**
+  * enum iommu_hw_info_type - IOMMU Hardware Info Types
+  * @IOMMU_HW_INFO_TYPE_NONE: Output by the drivers that do not report hardware
+@@ -743,6 +765,7 @@ struct iommu_hw_info_amd {
+  * @IOMMU_HW_INFO_TYPE_TEGRA241_CMDQV: NVIDIA Tegra241 CMDQV (extension for ARM
+  *                                     SMMUv3) info type
+  * @IOMMU_HW_INFO_TYPE_AMD: AMD IOMMU info type
++ * @IOMMU_HW_INFO_TYPE_RISCV: RISC-V IOMMU info type
+  */
+ enum iommu_hw_info_type {
+ 	IOMMU_HW_INFO_TYPE_NONE = 0,
+@@ -751,6 +774,7 @@ enum iommu_hw_info_type {
+ 	IOMMU_HW_INFO_TYPE_ARM_SMMUV3 = 2,
+ 	IOMMU_HW_INFO_TYPE_TEGRA241_CMDQV = 3,
+ 	IOMMU_HW_INFO_TYPE_AMD = 4,
++	IOMMU_HW_INFO_TYPE_RISCV = 5,
+ };
+ 
+ /**
 -- 
 2.53.0
 
