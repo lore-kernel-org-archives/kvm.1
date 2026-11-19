@@ -1,74 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.7
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795074516;
-	b=ESFB3Aw7rDcNxZP6zbqX03u00ywiQIu7Al0Mb74ZMX4PNNIa7Xup92MAOX+j97zAlzEp
-	 axzIyUfc/JrlsqymLPDqQmhvqxeJNT76XpXzR5IAPMmyJBxVKkRYbL+wN7gJD6iDSltQ3
-	 +Dj/81RfO1wJQqvmmr7lFbSLgg/9azimts6s79uWyiwPVh5DQCY1nv5SeJnu/e7noOVdt
-	 v5BIeesuF0+KwOXrXxMRD4/0DUAEutk4BUL6YINMH6QJj17vaNXjLS0zjKx5ky6a9ykSX
-	 Ql0TYNKq/j3UIPX7RKIqxpZZpFJB4jH81kdl408uBNzJW5uzHUBUxCyuDzYJ0eSjdfA==
+	t=1795074540;
+	b=HoEHuazaZfFkLQcqSIwhbRcbXfuTci4q9LVG4m1E4DxhwXUxU4ckl8k68mB1kKoA4JRX
+	 2NLPHIN0lVxvzqJ/StSXHQbO90UULyCrzsz0ekQYPLfrURY9IKXBF05dijdTN0jdvV6Ya
+	 9nnRlOz8ZGr4juyoZhwAvHNt6WN11AguDMTZb90SJzVwOXzfd2TBrDszzfxTJwNst7M59
+	 Ik9JwRdNmMAcq0RTjB2LUh/HjDqUYcHCeaNf2fK+Qg2pn67ub4Yo+FdH46ZvqLj417e7T
+	 bjyMhwEgStxKjpwifM5sdupZ6oXmKWWRteac0X4Jz3FiDv+DqUfExN+gyF5pyEVYQbg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795074516;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=9OvsCez/mnUZbbAv1gDuv9Tvo74rOa+eY/frI5444/g=;
-	b=gfawnZO13yTHdebNaB+NCDe8Hb0hDowPZtnYt+eZVR7g7jPKU6AA8Jmyls0C7ps8NzMg
-	 Sq4Mu65U/hCK5W35Q1vvNyU5S2MW8xcMkpR2bO8FGJOEoULiy4F9QujTet9skiPy+mwJH
-	 48+WMf6sCGettfwTgoDu7VDpRGKwiCkYU+Txp5CPJRHAdCTgoDLlD7xEE3yv3+PAETNOx
-	 UkvWu/6OrCE/aFt3XZQBSjZiCOWaw9TSo9YNKbD9SJ1emgH0CPUEf22BjqUgaOlV7rUj2
-	 0+Ij0G/545rEx8U2AGSV7hk2oR8fLuVnu5re6/N4B/Sey+X49LeiGtIXUur+HkYyPvA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795074540;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=2EGfK2lZXx7T9MpCgqV5Sq8wrQL5YL7OFsfI7ZoTz+Y=;
+	b=d4L7aMDLd27oh7yuGpIy9SePbi1giW0B7g1uMFv8xk9bdQdvDl3VpGYdJO/YziTX2ONT
+	 8QcNGjlOr8Ild+4cWFJfFy4SWyxbnXR3SKICmEFft9m/OABqyISWnL5o9Ml4JztGYpl3+
+	 PgE2CcRyPIoDt0Mbsk/RJ7cofzSldtnsi1DqOvFYLFX1vm4xq9lIe0Z/v95StfFRZRF5K
+	 UCPRYoI02ZQY8Uxjs6Bf0b7VAjtLddpKLNKa7E6R9vZy5jxvsTuFo/8XMpCuAD4i+vvV7
+	 yv5xYX7QYl47ZMcRvvuuxC7BHciXp1qKUDhkgNGN6oIZpAGBvtgznj8d8TfxQOsw2Hw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=GCERgFzj;
-	arc=none smtp.remote-ip=95.215.58.7
-Received: from mta1.migadu.com (out-7.mta1.migadu.com [95.215.58.7])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3F4606A338
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 07:48:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB3F4606A338
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=JlbLmPyJ;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5C5606A326;
+	Thu, 19 Nov 2026 07:48:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F5C5606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=GCERgFzj
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=BMRLbfDwuPynqr9aeLbnM0FT6gjc5bIdUFfFRqSKRNg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795074512; v=1; x=1795679312;
- b=GCERgFzjrOpzHa5cZ1WWUCE3XnLGDZPocNCttbYlXdkBomCGWKY67w6LqFrFAjRT8An8EGvw
- JKtvjpSgQhklJ3uPxdzgP4EsS+DY1X/PEuekCguPMJtKQjic3HatENtO1/3jKWuF8u4f/M+iNyl
- n+P4kId3+dvNbb3yVdkysj3s=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 6230fe79aa9c22c7;
-	Thu, 19 Nov 2026 07:48:31 +0000
-X-Mizu-Trace-ID: 6230fe79aa9c22c7
-X-Migadu-Flow: FLOW_OUT
-From: Fuad Tabba <fuad.tabba@linux.dev>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jonathan Corbet <corbet@lwn.net>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	linux-mips@vger.kernel.org,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Will Deacon <will@kernel.org>,
-	Fuad Tabba <tabba@google.com>
-Subject: [PATCH v2 7/7] KVM: Fix typos in comments
-Date: Thu, 19 Nov 2026 07:47:52 +0000
-Message-ID: <20261119074752.1027729-8-fuad.tabba@linux.dev>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261119074752.1027729-1-fuad.tabba@linux.dev>
-References: <20261119074752.1027729-1-fuad.tabba@linux.dev>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=JlbLmPyJ
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 486481575;
+	Wed, 18 Nov 2026 23:48:56 -0800 (PST)
+Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AE43F3FA7A;
+	Wed, 18 Nov 2026 23:48:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795074539; bh=S1M79WGliP/lxWdN+K7Fd2XbTpS9t6SGFAKJuLVpW88=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JlbLmPyJJnCwhWQbsry7xcElMDKIhNCUUl6erCKn7pRLZbkCdGQQ+ASHpd8HVfCma
+	 Vcv6JGFy2v761ROTPdp1/lUnSccJhUDU2BoPDgH4QFTGLcA4xQk5euxGcJlKmSoudW
+	 jqf5AlATFXena9creXGOsHunLkTfsZpKybqEtW34=
+Date: Thu, 19 Nov 2026 07:48:42 +0000
+From: Wei-Lin Chang <weilin.chang@arm.com>
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, 
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
+	Oliver Upton <oliver.upton@linux.dev>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Kohei Enju <enju.kohei@fujitsu.com>
+Subject: Re: [PATCH v3 09/11] KVM: arm64: CCA: Support runtime faulting of
+ memory
+Message-ID: <hwmtiumovuqyu7js5eqd4xt3h2zsuhjwkcygnw62hp5rrar5ph@5fhmv46iio2r>
+References: <20261116164358.142785-1-steven.price@arm.com>
+ <20261116164358.142785-10-steven.price@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,179 +72,244 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261116164358.142785-10-steven.price@arm.com>
 
-Fix typos in comments in the generic KVM code and in the KVM uAPI
-header.
+Hi Steven,
 
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
----
- include/linux/kvm_host.h | 10 +++++-----
- include/uapi/linux/kvm.h |  8 ++++----
- virt/kvm/binary_stats.c  |  2 +-
- virt/kvm/eventfd.c       |  2 +-
- virt/kvm/guest_memfd.c   |  2 +-
- virt/kvm/kvm_main.c      |  6 +++---
- 6 files changed, 15 insertions(+), 15 deletions(-)
+On Mon, Nov 16, 2026 at 04:43:55PM +0000, Steven Price wrote:
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 21207d234618a..ccc1637a4eb08 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -105,7 +105,7 @@
- #define KVM_PFN_ERR_NEEDS_IO	(KVM_PFN_ERR_MASK + 4)
- 
- /*
-- * error pfns indicate that the gfn is in slot but faild to
-+ * error pfns indicate that the gfn is in slot but failed to
-  * translate it to pfn on host.
-  */
- static inline bool is_error_pfn(kvm_pfn_t pfn)
-@@ -174,7 +174,7 @@ static inline bool kvm_is_error_gpa(gpa_t gpa)
- #define KVM_REQUEST_ARCH_BASE		8
- 
- /*
-- * KVM_REQ_OUTSIDE_GUEST_MODE exists is purely as way to force the vCPU to
-+ * KVM_REQ_OUTSIDE_GUEST_MODE exists purely as a way to force the vCPU to
-  * OUTSIDE_GUEST_MODE.  KVM_REQ_OUTSIDE_GUEST_MODE differs from a vCPU "kick"
-  * in that it ensures the vCPU has reached OUTSIDE_GUEST_MODE before continuing
-  * on.  A kick only guarantees that the vCPU is on its way out, e.g. a previous
-@@ -2185,7 +2185,7 @@ static inline int mmu_invalidate_retry_gfn(struct kvm *kvm,
- 	 * If mmu_invalidate_in_progress is non-zero, then the range maintained
- 	 * by kvm_mmu_notifier_invalidate_range_start contains all addresses
- 	 * that might be being invalidated. Note that it may include some false
--	 * positives, due to shortcuts when handing concurrent invalidations.
-+	 * positives, due to shortcuts when handling concurrent invalidations.
- 	 */
- 	if (unlikely(kvm->mmu_invalidate_in_progress)) {
- 		/*
-@@ -2471,7 +2471,7 @@ void kvm_arch_update_irqfd_routing(struct kvm_kernel_irqfd *irqfd,
- #endif /* CONFIG_HAVE_KVM_IRQ_BYPASS */
- 
- #ifdef __KVM_HAVE_INVALID_WAKEUPS
--/* If we wakeup during the poll time, was it a sucessful poll? */
-+/* If we wakeup during the poll time, was it a successful poll? */
- static inline bool vcpu_valid_wakeup(struct kvm_vcpu *vcpu)
- {
- 	return vcpu->valid_wakeup;
-@@ -2526,7 +2526,7 @@ static inline int kvm_xfer_to_guest_mode_handle_work(struct kvm_vcpu *vcpu)
- 
- /*
-  * If more than one page is being (un)accounted, @virt must be the address of
-- * the first page of a block of pages what were allocated together (i.e
-+ * the first page of a block of pages that were allocated together (i.e.
-  * accounted together).
-  *
-  * kvm_account_pgtable_pages() is thread-safe because mod_lruvec_page_state()
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 951b891b8ae60..79bd6f5416e72 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -508,7 +508,7 @@ struct kvm_run {
- 	/*
- 	 * shared registers between kvm and userspace.
- 	 * kvm_valid_regs specifies the register classes set by the host
--	 * kvm_dirty_regs specified the register classes dirtied by userspace
-+	 * kvm_dirty_regs specifies the register classes dirtied by userspace
- 	 * struct kvm_sync_regs is architecture specific, as well as the
- 	 * bits for kvm_valid_regs and kvm_dirty_regs
- 	 */
-@@ -698,7 +698,7 @@ struct kvm_enable_cap {
- /*
-  * On arm64, machine type can be used to request the physical
-  * address size for the VM. Bits[7-0] are reserved for the guest
-- * PA size shift (i.e, log2(PA_Size)). For backward compatibility,
-+ * PA size shift (i.e., log2(PA_Size)). For backward compatibility,
-  * value 0 implies the default IPA size, 40bits.
-  */
- #define KVM_VM_TYPE_ARM_IPA_SIZE_MASK	0xffULL
-@@ -1556,12 +1556,12 @@ struct kvm_dirty_gfn {
-  * @flags: Some extra information for header, always 0 for now.
-  * @name_size: The size in bytes of the memory which contains statistics
-  *             name string including trailing '\0'. The memory is allocated
-- *             at the send of statistics descriptor.
-+ *             at the end of statistics descriptor.
-  * @num_desc: The number of statistics the vm or vcpu has.
-  * @id_offset: The offset of the vm/vcpu stats' id string in the file pointed
-  *             by vm/vcpu stats fd.
-  * @desc_offset: The offset of the vm/vcpu stats' descriptor block in the file
-- *               pointd by vm/vcpu stats fd.
-+ *               pointed by vm/vcpu stats fd.
-  * @data_offset: The offset of the vm/vcpu stats' data block in the file
-  *               pointed by vm/vcpu stats fd.
-  *
-diff --git a/virt/kvm/binary_stats.c b/virt/kvm/binary_stats.c
-index c772fe7be5dd7..654381d22480f 100644
---- a/virt/kvm/binary_stats.c
-+++ b/virt/kvm/binary_stats.c
-@@ -22,7 +22,7 @@
-  * @user_buffer: start address of userspace buffer
-  * @size: requested read size from userspace
-  * @offset: the start position from which the content will be read for the
-- *          corresponding vm or vcp file descriptor
-+ *          corresponding vm or vcpu file descriptor
-  *
-  * The file content of a vm/vcpu file descriptor is now defined as below:
-  * +-------------+
-diff --git a/virt/kvm/eventfd.c b/virt/kvm/eventfd.c
-index 81ed20ec0d4a1..73db4938d5a11 100644
---- a/virt/kvm/eventfd.c
-+++ b/virt/kvm/eventfd.c
-@@ -470,7 +470,7 @@ kvm_irqfd_assign(struct kvm *kvm, struct kvm_irqfd *args)
- 
- 	/*
- 	 * Register the irqfd with the eventfd by polling on the eventfd, and
--	 * simultaneously and the irqfd to KVM's list.  If there was en event
-+	 * simultaneously add the irqfd to KVM's list.  If there was an event
- 	 * pending on the eventfd prior to registering, manually trigger IRQ
- 	 * injection.
- 	 */
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 8c97a69b16dc0..3e02acf889396 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -376,7 +376,7 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
- 	 *  CPU0				CPU1
- 	 *  kvm_gmem_get_pfn()
- 	 *    slot->gmem.file == A
--	 *					kvm_gmem_release())
-+	 *					kvm_gmem_release()
- 	 *					  slot->gmem.file = NULL
- 	 *
- 	 *					kvm_set_memory_region()
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index ba8f53ec3d718..65dc9d3eb8448 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -1628,7 +1628,7 @@ static void kvm_swap_active_memslots(struct kvm *kvm, int as_id)
- {
- 	struct kvm_memslots *slots = kvm_get_inactive_memslots(kvm, as_id);
- 
--	/* Grab the generation from the activate memslots. */
-+	/* Grab the generation from the active memslots. */
- 	u64 gen = __kvm_memslots(kvm, as_id)->generation;
- 
- 	WARN_ON(gen & KVM_MEMSLOT_GEN_UPDATE_IN_PROGRESS);
-@@ -3044,7 +3044,7 @@ static int hva_to_pfn_remapped(struct vm_area_struct *vma,
- 	/*
- 	 * Remapped memory cannot be pinned in any meaningful sense.  Bail if
- 	 * the caller wants to pin the page, i.e. access the page outside of
--	 * MMU notifier protection, and unsafe umappings are disallowed.
-+	 * MMU notifier protection, and unsafe mappings are disallowed.
- 	 */
- 	if (kfp->pin && !allow_unsafe_mappings)
- 		return -EINVAL;
-@@ -4044,7 +4044,7 @@ static bool vcpu_dy_runnable(struct kvm_vcpu *vcpu)
- /*
-  * By default, simply query the target vCPU's current mode when checking if a
-  * vCPU was preempted in kernel mode.  All architectures except x86 (or more
-- * specifical, except VMX) allow querying whether or not a vCPU is in kernel
-+ * specifically, except VMX) allow querying whether or not a vCPU is in kernel
-  * mode even if the vCPU is NOT loaded, i.e. using kvm_arch_vcpu_in_kernel()
-  * directly for cross-vCPU checks is functionally correct and accurate.
-  */
--- 
-2.47.3
+[...]
 
+> @@ -1791,12 +1799,18 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
+>  	void *memcache = NULL;
+>  	gfn_t canonical_gfn;
+>  	int ret;
+> +	bool is_private = false;
+>  
+> -	if (!perm_fault) {
+> +	if (KVM_BUG_ON(!kvm_slot_has_gmem(s2fd->memslot), kvm))
+> +		return -EINVAL;
+
+I feel this is being too cautious, gmem_abort is always run after a
+kvm_slot_has_gmem() check.
+
+> +
+> +	if (!perm_fault || kvm_arch_has_private_mem(kvm)) {
+>  		memcache = get_mmu_memcache(s2fd->vcpu);
+>  		ret = topup_mmu_memcache(s2fd->mmu, memcache);
+>  		if (ret)
+>  			return ret;
+> +	}
+> +	if (!perm_fault) {
+>  		if (kvm_is_nested_s2_mmu(kvm, pgt->mmu)) {
+>  			mapping = kmalloc_obj(struct kvm_guest_s2_mapping, GFP_KERNEL_ACCOUNT);
+>  			if (!mapping)
+> @@ -1805,7 +1819,7 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
+>  	}
+>  
+>  	s2vi.vma_pagesize = PAGE_SIZE;
+> -	s2vi.gfn = ALIGN_DOWN(s2fd->fault_ipa, s2vi.vma_pagesize) >> PAGE_SHIFT;
+> +	s2vi.gfn = gpa_to_gfn(kvm_gpa_from_fault(kvm, s2fd->fault_ipa));
+>  	canonical_gfn = get_canonical_gfn(s2fd, &s2vi);
+>  
+>  	write_fault = kvm_s2_fault_is_write(s2fd);
+> @@ -1817,13 +1831,35 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
+>  	/* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
+>  	smp_rmb();
+>  
+> +	if (kvm_arch_has_private_mem(kvm)) {
+> +		switch (kvm->arch.vm_flavor) {
+> +		case VM_REALM:
+> +			is_private = kvm_realm_is_private_address(&kvm->arch.realm,
+> +								  s2fd->fault_ipa);
+> +			break;
+> +		default:
+> +			break;
+> +		}
+> +
+> +		if (is_private != kvm_gmem_is_private_gfn(kvm, canonical_gfn)) {
+> +			if (!result)
+> +				kvm_prepare_memory_fault_exit(s2fd->vcpu,
+> +							      gfn_to_gpa(canonical_gfn),
+> +							      PAGE_SIZE,
+> +							      write_fault, exec_fault,
+> +							      is_private);
+> +			kfree(mapping);
+> +			return -EFAULT;
+> +		}
+> +	}
+> +
+>  	ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, canonical_gfn, &s2vi.pfn, NULL);
+>  	if (ret) {
+>  		/* If result is non-NULL this is a synthetic fault. */
+>  		if (!result)
+>  			kvm_prepare_memory_fault_exit(s2fd->vcpu, gfn_to_gpa(canonical_gfn),
+>  						      s2vi.vma_pagesize, write_fault, exec_fault,
+> -						      false);
+> +						      is_private);
+>  		kfree(mapping);
+>  		return ret;
+>  	}
+> @@ -1846,6 +1882,16 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
+>  		goto out_unlock;
+>  	}
+>  
+> +	switch (kvm->arch.vm_flavor) {
+> +	case VM_REALM:
+> +		prot &= ~KVM_PGTABLE_PROT_X;
+> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, s2vi.pfn,
+> +				    PAGE_SIZE, prot, memcache);
+> +		goto out_unlock;
+> +	default:
+> +		break;
+> +	}
+> +
+>  	if (perm_fault) {
+>  		/*
+>  		 * Drop the SW bits in favour of those stored in the
+> @@ -2047,7 +2093,8 @@ static int kvm_s2_fault_get_vma_info(const struct kvm_s2_fault_desc *s2fd,
+>  	 * mapping size to ensure we find the right PFN and lay down the
+>  	 * mapping in the right place.
+>  	 */
+> -	s2vi->gfn = ALIGN_DOWN(s2fd->fault_ipa, s2vi->vma_pagesize) >> PAGE_SHIFT;
+> +	s2vi->gfn = kvm_gfn_from_fault(kvm, ALIGN_DOWN(s2fd->fault_ipa,
+> +						       s2vi->vma_pagesize));
+>  
+>  	s2vi->mte_allowed = kvm_vma_mte_allowed(vma);
+>  
+> @@ -2227,7 +2274,7 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
+>  	 * possible.
+>  	 */
+>  	if (mapping_size == PAGE_SIZE && s2vi->max_map_size != PAGE_SIZE) {
+> -		if (perm_fault_granule > PAGE_SIZE) {
+> +		if (perm_fault_granule > PAGE_SIZE && !kvm_vm_is_realm(kvm)) {
+>  			mapping_size = perm_fault_granule;
+>  		} else {
+>  			mapping_size = transparent_hugepage_adjust(s2fd, &pfn, &gfn);
+> @@ -2242,12 +2289,15 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
+>  	if (!perm_fault_granule && !s2vi->map_non_cacheable && kvm_has_mte(kvm))
+>  		sanitise_mte_tags(kvm, pfn, mapping_size);
+>  
+> -	/*
+> -	 * Under the premise of getting a FSC_PERM fault, we just need to relax
+> -	 * permissions only if mapping_size equals perm_fault_granule. Otherwise,
+> -	 * kvm_pgtable_stage2_map() should be called to change block size.
+> -	 */
+> -	if (mapping_size == perm_fault_granule) {
+> +	if (kvm_vm_is_realm(kvm)) {
+> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, pfn, mapping_size,
+> +				    prot, memcache);
+> +	} else if (mapping_size == perm_fault_granule) {
+> +		/*
+> +		 * Under the premise of getting a FSC_PERM fault, we just need to relax
+> +		 * permissions only if mapping_size equals perm_fault_granule. Otherwise,
+> +		 * kvm_pgtable_stage2_map() should be called to change block size.
+> +		 */
+>  		/*
+>  		 * Drop the SW bits in favour of those stored in the
+>  		 * PTE, which will be preserved.
+> @@ -2306,15 +2356,16 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd,
+>  	/*
+>  	 * Permission faults just need to update the existing leaf entry,
+>  	 * and so normally don't require allocations from the memcache. The
+> -	 * only exception to this is when dirty logging is enabled at runtime
+> +	 * exceptions are when dirty logging is enabled at runtime
+>  	 * and a fault needs to collapse a block entry into a table.
+> +	 * Realms can also require new RTT levels when replacing a mapping.
+>  	 * Under pKVM a permission fault can also collapse pages into a block,
+>  	 * which needs a fresh mapping object, and the hypervisor requires the
+>  	 * min-pages memcache even when the install allocates nothing.
+>  	 */
+>  	memcache = get_mmu_memcache(s2fd->vcpu);
+>  	if (!perm_fault || memslot_is_logging(s2fd->memslot) ||
+> -	    is_protected_kvm_enabled()) {
+> +	    is_protected_kvm_enabled() || kvm_vm_is_realm(s2fd->vcpu->kvm)) {
+>  		ret = topup_mmu_memcache(s2fd->mmu, memcache);
+>  		if (ret)
+>  			return ret;
+> @@ -2340,12 +2391,22 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd,
+>  	return kvm_s2_fault_map(s2fd, &s2vi, prot, memcache, result);
+>  }
+
+I see that the changes to gmem_abort() and kvm_s2_fault_map() are more
+significant, and can possibly be turned into its realm version leaving
+the original unchanged. With this can we give realm_vm_s2_ops its own
+.vm_mem_abort? Something like:
+
+First, make user_mem_abort() take a function pointer, call it at the
+current kvm_s2_fault_map() place.
+
+Then realm_vm_s2_ops.vm_mem_abort = realm_mem_abort()
+
+And in realm_mem_abort() do:
+
+realm_mem_abort()
+  if gmem slot:    realm_gmem_abort()
+  if regular slot: user_mem_abort(kvm_realm_fault_map)
+
+realm_gmem_abort() and kvm_realm_fault_map() are just the realm version
+of gmem_abort() and kvm_s2_fault_map(). For example they won't need NV
+related code, and vm_flavor switch case.
+
+Proposing this because I think we would like the CCA changes more
+self-contained.
+
+Thanks,
+Wei-Lin Chang
+
+>  
+> +static bool private_ipa_fault(struct kvm *kvm, phys_addr_t fault_ipa)
+> +{
+> +	return kvm_vm_is_realm(kvm) &&
+> +		kvm_realm_is_private_address(&kvm->arch.realm, fault_ipa);
+> +}
+> +
+>  static int kvm_vm_mem_abort(const struct kvm_s2_fault_desc *s2fd)
+>  {
+>  	VM_WARN_ON_ONCE(kvm_s2_fault_is_perm(s2fd) &&
+>  			!esr_abt_is_write_fault(s2fd->esr) &&
+>  			!kvm_s2_fault_is_exec(s2fd));
+>  
+> +	if (private_ipa_fault(s2fd->vcpu->kvm, s2fd->fault_ipa) &&
+> +	    !kvm_slot_has_gmem(s2fd->memslot))
+> +		return -EINVAL;
+> +
+>  	if (kvm_slot_has_gmem(s2fd->memslot))
+>  		return gmem_abort(s2fd, NULL);
+>  	else
+> @@ -2458,10 +2519,10 @@ int kvm_handle_guest_sea(struct kvm_vcpu *vcpu)
+>   */
+>  int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+>  {
+> +	struct kvm *kvm = vcpu->kvm;
+>  	struct kvm_s2_trans nested_trans, *nested = NULL;
+>  	unsigned long esr = kvm_vcpu_get_esr(vcpu);
+>  	struct kvm_s2_mmu *mmu = vcpu->arch.hw_mmu;
+> -	struct kvm *kvm = vcpu->kvm;
+>  	phys_addr_t fault_ipa; /* The address we faulted on */
+>  	phys_addr_t ipa; /* Always the IPA in the L1 guest phys space */
+>  	struct kvm_memory_slot *memslot;
+> @@ -2554,8 +2615,9 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+>  		nested = &nested_trans;
+>  	}
+>  
+> -	gfn = ipa >> PAGE_SHIFT;
+> +	gfn = kvm_gfn_from_fault(kvm, ipa);
+>  	memslot = gfn_to_memslot(kvm, gfn);
+> +
+>  	hva = gfn_to_hva_memslot_prot(memslot, gfn, &writable);
+>  	write_fault = esr_abt_is_write_fault(esr);
+>  	if (kvm_is_error_hva(hva) || (write_fault && !writable)) {
+> @@ -2598,7 +2660,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+>  		 * of the page size.
+>  		 */
+>  		ipa |= FAR_TO_FIPA_OFFSET(kvm_vcpu_get_hfar(vcpu));
+> -		ret = io_mem_abort(vcpu, ipa);
+> +		ret = io_mem_abort(vcpu, kvm_gpa_from_fault(kvm, ipa));
+>  		goto out_unlock;
+>  	}
+>  
+
+[...]
