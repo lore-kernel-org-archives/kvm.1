@@ -1,49 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795107787;
-	b=kEyipvl80iEjGjefPs+T5qCCAAhG3wZClogOX3XFBwSntCUozem1fXOhtfADdNsDsBCQ
-	 gYjW9oozPchUDd3i3HRqSRMtSYWRmdXogkwI96irBZeakqPWbyCY6mpnUg1aA78ugGTWv
-	 b/p7pM4jsPnhd7m+0pylnUGWCVdnwdluHql1ynx4Rs800PLyx0jV0Izd9xXOMbZnb2Wxg
-	 ob0twMdP12q7J8Bbq0ywDGfocCJOXYGci1aQ2AW8hNrJjUmrS++KtXUEkWV5CQIqpuFks
-	 /L3GQxdWoiK8Qqc6LEeCoKyzuZAKwLjUaj+PKhqceb/dX73ue48wqPfITLJ260w9zew==
+	t=1795108159;
+	b=S629/gy5CikAfCuh8z4TK48Wx7tB/jbc9st8ZxtrFiXGwYqZ8nlKbIu1tuxT8RaRQM9W
+	 VbJwJcZfHRnbs6N1PrWInB45JnDaVEEsrYzMPwUtQabreS3ih6/4JAIIi4p7fkerKGdiC
+	 N4nZRjQoRgWUoKVxkVY8XgZvP44pWVSdl/Uw1RqGAGL70USywrzRpXD4LhCnKg9t3KaKO
+	 5wAwDVxXQsyh6fhgM7WLh7htOBz8wAl1NeS7oLkv9qqH/ZRmXGwdzunwr/PR19PEy5jgH
+	 I+UWmWgHW5+Qi5BAovSStDgKbQ7aJiUH6eVdc/5kansBOvonfJ0oyGG7Z8UAd8WLEUA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795107787;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=TDoDlhIOMIYb5fQsoaguqAMfZB63GoDqNNpIN0amubQ=;
-	b=eB2m+ibiB8Iy8HqpEYY5g09lolBvnkH5G0AsJAH4nqzDdDzjTgwedtGrCSqLNd06/dnG
-	 l8Zwtk9JsaZAacbk1ILJzjzDQ6WhuAdDaT4NmnObGRv1RwKm2cpV4FnCjZdZHoDPyLcwC
-	 RHiUP8xt5zrkmIP9k1879XKE8poLvY4NRKWC8xSVQ0pBGZMzDBR8B1Mje4Yb4cptqUdbG
-	 vMUo+JGPMaoJc7/otPkb/3S+gaCRGBVFblxiM9na9sb0XqLPz2JToxAgpJQMNt5oH8qBP
-	 +N+AgqfyBA2YkGREqjI5FeMjFQou51JhSsfJqgnIjUELsh3gX1x61Pgvagvp6dZVzqw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795108159;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=S8IGrx1x8iWsTP5Lmg78emE+63ORRJD0YqtAAQJu9f8=;
+	b=BJTiOtF3mxHm4yCIQlgxo0ALWW/RklSeN+hD5M9SU5e5+ULDQAKLoSjTuWgK3YXjxrVb
+	 yAxPGSTp9qqx+65Pi4ld/VrI2SI6kp8XAQh6YK9rTgaH1Gvf6vBsLN1KUNCnK7I/stPnV
+	 bIbGmZ27q8sQW5+6+2VvPyMIGeggLeUU9tAj5Na4SXxIMJOGc4Ikj2KzSMwkqyU6/HYLy
+	 ZE5vVAXxIpCy2wPTU1fkwS+fDKTbvD8PH/JYQHB1WdFujZW5x5JHLmk7t/56TG59EThCp
+	 KrvYz2bKYEgSD2VaSHlT4aJtJByj1f90EuE8nmOoQahMY8Yp5x9RyfLNz0fLDVZB5Tw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=uUeawjRk;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971DE606A325
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 17:03:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 971DE606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ze5Z6LYp;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8338760A383D
+	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 17:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=uUeawjRk
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 00DC11575;
-	Thu, 19 Nov 2026 09:03:03 -0800 (PST)
-Received: from [10.0.129.37] (e122027.cambridge.arm.com [10.0.129.37])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DC3963F673;
-	Thu, 19 Nov 2026 09:03:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795107785; bh=j2oLgYBzGMrRinjcK3J9nR0lauyqlTOxrOfoe5V349o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uUeawjRkSNxcvOgiySNXBpeqUHhAKABd5KofhwleokPjXB4bH9EyxpgcwNppazqy4
-	 /eilMHccIycz3sxexcyS4r/SWHPVj6vmoOh76QjBrGxHnKhZ4CfzmtweSO+4bD1kZM
-	 0hZHiEVrGU+fK+PW6KjybwANfq4bNKrfPZvJSn5g=
-Message-ID: <13ba7597-6f78-43ef-9521-05a7d92b1c5c@arm.com>
-Date: Thu, 19 Nov 2026 17:03:02 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ze5Z6LYp
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B933A1F000CC;
+	Thu, 19 Nov 2026 17:09:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795108159;
+	bh=S8IGrx1x8iWsTP5Lmg78emE+63ORRJD0YqtAAQJu9f8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ze5Z6LYpSNz5r4sRiArQ3u73skEahc9pQ9ZA5peRunpCvG4CJqBCkOtD+uwseclOI
+	 YSeCmNszH1jz6wVQ6c72gAbCwE6qpXLCIJDcAfYEZqNU516ojNLVRuqMnfb5cuhM3q
+	 kAcZjpukWPwgM0tkUFkBbBnloS1Q8/aSgPEetJLdeaFR0RSdnwTjrZBWsz+89SPskD
+	 UvKNsF2cMwJvVbQKKzFaU0YX17d39ZR37eFAhfINOmFc0Af7Srxm7S5Bmjs0VBiP7z
+	 uOnerceBdAAuCZtbeWCieA9cJi0no3E2PR1JOJrnSIeivQ7hvreYkHu/8DwNNn3xPj
+	 IkIC6wxyD65nQ==
+Date: Thu, 19 Nov 2026 11:09:00 -0600
+From: "Serge Hallyn (AMD)" <sergeh@kernel.org>
+To: Peter Xu <peterx@redhat.com>
+Cc: Tony Lindgren <tony.lindgren@linux.intel.com>,
+	Kishen Maloor <kishen.maloor@intel.com>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Artem Bityutskiy <dedekind1@gmail.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Fabiano Rosas <farosas@suse.de>, Jon Grimm <Jon.Grimm@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Steven Price <steven.price@arm.com>,
+	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
+	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
+	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Peter Fang <peter.fang@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+	David.Kaplan@amd.com, Mathias.Brossard@arm.com, tycho@kernel.org,
+	"Adam, Mahmoud" <Mahmoud.Adam@amd.com>
+Subject: Re: TDX migration model
+Message-ID: <av8tLIFEpHgluthp@shallyn-amd>
+References: <aq1ehHk7OUYaGCe5@zhexu-thinkpadt14gen5.rmtcaon.csb>
+ <f4f34bc3dd22c0e47b5ee764b1a4db8940cbbbec.camel@gmail.com>
+ <auyZnIfxMnxYD8rT@shallyn-amd>
+ <85f899cd277b2188cd4b33f8f21b206fa2ff6f6f.camel@gmail.com>
+ <auyx8C67zCnbPpuL@hallyn.com>
+ <c77156d1-5a47-4a93-a18b-392081fad3ff@intel.com>
+ <avF6DcmdoGeWeRxg@tlindgre-MOBL1>
+ <avJGEYIohYUN9l10@shallyn-amd>
+ <avKolvbIuZj-aLD-@tlindgre-MOBL1>
+ <av8F-DwJnTkSeYsz@zhexu-thinkpadt14gen5.rmtcaon.csb>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -53,215 +89,72 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 05/11] KVM: arm64: CCA: Tear down RTTs
-To: Suzuki K Poulose <suzuki.poulose@arm.com>,
- sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
-References: <20261116164358.142785-1-steven.price@arm.com>
- <20261116164358.142785-6-steven.price@arm.com>
- <sashiko-outbox-217410@kernel.org>
- <bbd8332b-1b2a-4a87-9232-4463d5e5a904@arm.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <bbd8332b-1b2a-4a87-9232-4463d5e5a904@arm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <av8F-DwJnTkSeYsz@zhexu-thinkpadt14gen5.rmtcaon.csb>
 
-On 19/11/2026 10:51, Suzuki K Poulose wrote:
-> On 16/11/2026 17:08, sashiko-bot@kernel.org wrote:
->> Thank you for your contribution! Sashiko AI review found 4 potential
->> issues to consider:
->> - [High] KVM: arm64: unclamped stage-2 levels in get_start_level() on
->>    64K pages
->> - [Medium] KVM: arm64: CCA: unlocked kvm_realm_is_created() check in
->>    kvm_uninit_stage2_mmu()
->> - [Low] KVM: arm64: mix of guard() and goto cleanup in
->>    kvm_destroy_realm()
->> - [Low] KVM: arm64: possible skipped parent retry in
->>    realm_tear_down_rtt_level()
->> -- 
->>
->> commit 80a462fb8b46e04c72060d069b1296caf72d83ff
->> Author: Steven Price <steven.price@arm.com>
->>
->> KVM: arm64: CCA: Tear down RTTs
->>
->> This commit adds stage-2 unmapping and Realm Translation Table (RTT)
->> teardown for Arm CCA Realms during stage-2 MMU uninitialization and final
->> Realm destruction.
->>
->>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->>> index ac72db3d4505f..9baf2352d2a8f 100644
->>> --- a/arch/arm64/kvm/mmu.c
->>> +++ b/arch/arm64/kvm/mmu.c
->>> @@ -1145,9 +1145,25 @@ int kvm_init_stage2_mmu(struct kvm *kvm,
->>> struct kvm_s2_mmu *mmu, unsigned long t
->>>       return err;
->>>   }
->>>   +static void kvm_realm_uninit_stage2(struct kvm_s2_mmu *mmu)
->>> +{
->>> +    struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
->>> +
->>> +    mutex_lock(&kvm->arch.config_lock);
->>> +    if (kvm_realm_state(kvm) == REALM_STATE_NEW ||
->>> +        kvm_realm_state(kvm) == REALM_STATE_ACTIVE) {
->>> +        kvm_set_realm_state(kvm, REALM_STATE_DYING);
->>> +        WARN_ON(kvm_realm_teardown_stage2(kvm));
->>> +    }
->>> +    mutex_unlock(&kvm->arch.config_lock);
->>> +}
->>> +
->>>   void kvm_uninit_stage2_mmu(struct kvm *kvm)
->>>   {
->>> -    kvm_free_stage2_pgd(&kvm->arch.mmu);
->>> +    if (kvm_realm_is_created(kvm))
->>> +        kvm_realm_uninit_stage2(&kvm->arch.mmu);
->>> +    else
->>> +        kvm_free_stage2_pgd(&kvm->arch.mmu);
->>>       kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
->>>   }
->>
->> [Severity: Medium]
->> Can kvm_uninit_stage2_mmu() race with Realm creation by checking
->> kvm_realm_is_created() outside kvm->arch.config_lock?
->>
->> If kvm_mmu_notifier_release() -> kvm_arch_flush_shadow_all() runs before
->> or concurrently with Realm creation, kvm_uninit_stage2_mmu() takes the
->> else branch without holding config_lock, freeing mmu->pgt and clearing
->> mmu->pgd_phys while leaving realm.state at REALM_STATE_NONE.  Checking
->> kvm_vm_is_realm(kvm) here and handling all realm.state transitions inside
->> kvm_realm_uninit_stage2() under config_lock (including moving
->> REALM_STATE_NONE to REALM_STATE_DEAD and freeing the PGD) would avoid the
->> race.
->>
->>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
->>> index 57f59b618a96e..74b89da4e8015 100644
->>> --- a/arch/arm64/kvm/rmi.c
->>> +++ b/arch/arm64/kvm/rmi.c
->>> @@ -16,22 +16,213 @@ u32 kvm_rmm_ipa_limit(void)
->>>       return u64_get_bits(rmi_feat_reg(0), RMI_FEATURE_REGISTER_0_S2SZ);
->>>   }
->>>   +static int get_start_level(struct realm *realm)
->>> +{
->>> +    /*
->>> +     * kvm_init_ipa_range() enforces a minimum of 32 IPA bits
->>> +     * (ARM64_MIN_PARANGE_BITS).
->>> +     */
->>> +    return 4 - stage2_pgtable_levels(realm->ia_bits);
->>> +}
->>
->> [Severity: High]
->> Does get_start_level() return 3 instead of 2 for a 32-bit or 33-bit IPA
->> Realm on CONFIG_ARM64_64K_PAGES?
->>
->> stage2_pgtable_levels(ipa) evaluates ARM64_HW_PGTABLE_LEVELS((ipa) - 4),
->> which is 1 for 32 or 33 IPA bits with 64K pages, whereas kvm_get_vtcr()
->> clamps the stage-2 levels to at least 2:
->>
->> arch/arm64/kvm/hyp/pgtable.c:kvm_get_vtcr() {
->>      ...
->>     lvls = stage2_pgtable_levels(phys_shift);
->>     if (lvls < 2)
->>         lvls = 2;
->>      ...
->> }
->>
->> When get_start_level() returns 3, realm_tear_down_rtt_range() calls
->> realm_tear_down_rtt_level() with level = 4 (> KVM_PGTABLE_LAST_LEVEL),
->> triggering WARN_ON() and returning -EINVAL, which causes
->> kvm_destroy_realm() to abort and leak the Realm Descriptor, RTT granules
->> and stage-2 PGD pages.
+On Thu, Nov 19, 2026 at 09:21:44AM -0500, Peter Xu wrote:
+> On Tue, Nov 10, 2026 at 07:16:06AM +0200, Tony Lindgren wrote:
+> > On Mon, Nov 09, 2026 at 04:15:45PM -0600, Serge Hallyn (AMD) wrote:
+> > > (Adding Tycho and Mahmoud, who will be working with me on this)
+> > > 
+> > > On Mon, Nov 09, 2026 at 09:45:17AM +0200, Tony Lindgren wrote:
+> > > > On Thu, Nov 05, 2026 at 06:00:41PM -0800, Kishen Maloor wrote:
+> > > > > On 11/5/26 8:42 AM, Serge E. Hallyn wrote:
+> > > > > > On Thu, Nov 05, 2026 at 05:59:01PM +0200, Artem Bityutskiy wrote:
+> > > > > >> On Thu, 2026-11-05 at 08:58 -0600, Serge Hallyn (AMD) wrote:
+> > > > > >>> ...
+> > > > > >>> So, looking at the section '### How the Setup Session Works', is it safe
+> > > > > >>> to assume that you are using the qemu migration fd for the message
+> > > > > >>> transfers?  So basically qemu loops over KVM_MIGRATE_SETUP calls, which
+> > > > > >>> ...
+> > > > > >> Yes, that's the flow. I’m not sure about the migration fd part, I believe we
+> > > > > >> pass the setup session data via ioctl buffers. I am sure Kishen will can
+> > > > > >> clarify.
+> > > > > > 
+> > > > > > If you mean pass via ioctl buffers from tdx->kvm-> back to qemu, which passes
+> > > > > > it over the migration fd to the other side, then that's what I expected.
+> > > > > > Othewise I'll be interested to the details :)
+> > > > > 
+> > > > > Hi Serge,
+> > > > > 
+> > > > > Your understanding is right. Migration setup requires a handshake of some sort
+> > > > > between the source and destination. So the messages KVM_MIGRATE_SETUP returns
+> > > > > are transferred over QEMU's migration channel to the other side and processed
+> > > > > by a matching call.
+> > > > 
+> > > > Serge, on the QEMU side, we have been enabling the return-path early for
+> > > > the key exchange before migration is active. Not sure if the key exchange
+> > > > can be done using a VMState, possibly could be if we can ensure it happens
+> > > > before the migration is active.
+> > > 
+> > > Key exchange requires bidirectional communication, so I don't think a
+> > > VMState would work, at least not on its own. If the destination's
+> > > info got send to the source out of band and delivered through migrate
+> > > command option, that could work, but it seems much nicer to me if it's
+> > > all done more transparently.  OTOH if this simplifies the qemu code
+> > > enough, maybe it's worth it.
+> > 
+> > Yeah agreed and can be revisited.
 > 
-> My bad. There is already a helper, VTCR_EL2_LVLS() to convert vtcr back
-> to levels. We could as well save it in realm, as we seem to need it
-> more than once.
+> Just FYI: on QEMU side, we should be introducing handshake for migration
+> soon, so that there'll be an early stage where the out+in messages will be
+> all done in the entrance of migration_thread(), trying to have both src/dst
+> QEMUs talk first before really starting the migration procedure.
+> 
+> Agreed that vmstate isn't designed for bi-directional conversations.
+> 
+> That was initially for other things, including channel mgmts, sync
+> migration caps/params, but it sounds like it could be useful for CoCo too.
+> 
+> Thanks,
+> 
+> -- 
+> Peter Xu
 
-Actually that's probably the best option - use VTCR_EL2_LVLS() (to
-side-step all the issues that Sashiko found), but stash the result in
-struct realm (to avoid having to pass the kvm pointer around to get to
-the VTCR). I'll make that change for v4.
+Is there a draft repo/branch where we could look at the current state of
+the 'handshake' feature?
 
-Thanks,
-Steve
-
->>
->> [ ... ]
->>
->>> +static int realm_tear_down_rtt_level(struct realm *realm, int level,
->>> +                     unsigned long start, unsigned long end)
->>> +{
->>> +    ssize_t map_size;
->>> +    unsigned long addr, next_addr;
->>> +
->>> +    if (WARN_ON(level > KVM_PGTABLE_LAST_LEVEL))
->>> +        return -EINVAL;
->>> +
->>> +    map_size = kvm_granule_size(level - 1);
->>> +    if (WARN_ON(!IS_ALIGNED(start, map_size)))
->>> +        return -EINVAL;
->>> +
->>> +    for (addr = start; addr < end; addr = next_addr) {
->>> +        phys_addr_t rtt_granule;
->>> +        long ret;
->>> +        unsigned long align_addr = ALIGN(addr, map_size);
->>> +
->>> +        next_addr = ALIGN(addr + 1, map_size);
->>> +
->>> +        if (next_addr > end || align_addr != addr) {
->>> +            /*
->>> +             * The target range is smaller than what this level
->>> +             * covers, recurse deeper.
->>> +             */
->>> +            ret = realm_tear_down_rtt_level(realm,
->>> +                            level + 1,
->>> +                            addr,
->>> +                            min(next_addr, end));
->>> +            if (ret)
->>> +                return ret;
->>> +            continue;
->>> +        }
->>> +
->>> +        ret = realm_rtt_destroy(realm, addr, level,
->>> +                    &rtt_granule, &next_addr);
->>> +        if (ret < 0)
->>> +            return ret;
->>> +
->>> +        switch (RMI_RESULT_STATUS(ret)) {
->>> +        case RMI_SUCCESS:
->>> +            free_rtt(rtt_granule);
->>> +            break;
->>> +        case RMI_ERROR_RTT:
->>> +            if (next_addr > addr) {
->>> +                /* Missing RTT, skip */
->>> +                break;
->>> +            }
->>> +            /*
->>> +             * We tear down the RTT range for the full IPA
->>> +             * space, after everything is unmapped. Also we
->>> +             * descend down only if we cannot tear down a
->>> +             * top level RTT. Thus RMM must be able to walk
->>> +             * to the requested level. e.g., a block mapping
->>> +             * exists at L1 or L2.
->>> +             */
->>> +            if (WARN_ON(RMI_RESULT_DATA_LEVEL(ret) != level))
->>> +                return -EBUSY;
->>
->> [Severity: Low]
->> This question rests on an Arm CCA RMM specification detail that could not
->> be confirmed from the kernel source: when SMC_RMI_RTT_DESTROY fails with
->> RMI_ERROR_RTT because the RTT at @level still has live child table
-> 
-> If the RTT entry at @level is live, RMM returns (RMI_ERROR_RTT, level)
-> with out_top == addr.
-> 
-> 
->> entries, can the RMM return out_top > addr (with addr < next_addr <
->> addr + map_size) if the initial entries in that RTT are non-live, or
->> report
->> RMI_RESULT_DATA_LEVEL(ret) == level - 1?
-> 
-> 
-> Suzuki
-> 
-
+thanks,
+-serge
