@@ -1,100 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.44
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795067781;
-	b=OSmBkSCCpNNWhPmoyHIufwEc6qQXVqkemYOJUQLBzbINLPxNHj+mFgMlWiRE+XuZhN3l
-	 gVwfGN9EKn/NywZ7cWSBn+rGec+Q1B431drqwY5ya4AWJ0B+s8CWKZEEUrDebm+OVsCTX
-	 daTAcMuXtdTvSZCpkMAAQWmE3xEtaPZ+zlfM1bCVbn3UaSeYa+M7w2PtYH7rnqCvdXUmA
-	 4/V+1IHRuPCEfGdq4G+5v8Y0f4ulIraD35ZDY5cvWgrdeM+EpJNZM6ZF1yxPgxplaRbvb
-	 qPKdwjwVZxn5Ws8UTatPNSX8ot6kfDn6zZIClkILhmLX7uiSq37cM1PUsQ1S5fnmIcQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795067781;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:
-	 Cc:Content-Type;
-	bh=xKhWfAhnFH1MoQBYnntrqmndPCEzikmuR8uNGBngT1E=;
-	b=vuAhw9hu0H/gSMz/A3DXha0d/Z6o8cDNg5hqKkUdgl4x6nTNuu0Zeax+yT5HevGsQJlO
-	 njrwT8kk2iPB3pxwCZlLdiAYj9QSVnUokNhG56KfP3hAHDocJ4aaUZLsHK4umE2yyHz6L
-	 V12xiKfw4s2Rur01/zvFJeEK+HfnVghGysu3XA+oVePiMwusFSPzXjwkcdzJO6+ASP0qY
-	 TPdYF0w1Y0v1onGu+FWCKDrIOlaTkzExxfB94PLoDj9ejXiTP04yqUxbHAyB6G7dXAvBo
-	 Hrl25LxscVuq4qx6qcGfUbHT3gUsyVxdne95cFuwYYLdsakT5LMUXXTFVQtiyDK09YQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Gp19Jox6;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.44
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.30.98
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795067916;
+	b=QLmvOkMQjlPjUMzRzONi5PTXUCYxlLZraN20BfcHoNR1vDwIcGwTS65SRrMhic/y3oYs
+	 VvnF8VQAxqJUl2asNPsyYzwR2ooo3pBue/gDW0peJhgJX8U9cJG8o1nuJH6gUNUBNxMyb
+	 XtwgHcGkWBvxZ50xTjRvGZ+eDoR4UNUdHc1a9gTTD+5JQ/E5emd8+1ndnV4BK36OZ0lI0
+	 dGCXwyaXJon+eHMf1/5fWCsHpD6kjqhxHvzVjV3ssijDbtsW5esvOM0NuWHs19PTaX527
+	 sW9F7buw3jfCZ9pYcS3NDI97zZJmv4+HZF696I0jk1tYnhyo1mG3lq03iB+oSsUjyFg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795067916;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=ay0rjNoHaCokGoQ+9Ck2XUH99fyrIscozeZHiL83Aoc=;
+	b=s7vvIyyqUCzEN8Ifg51QuK+WPXoHkNZLjNnl3KfZehVl7XxROvQgdRhagpUnKO083H8W
+	 Va3BkxhQWgUqeFikV82yFA1waAhVTlJwyjQK9kDUBD6rY2NlFMSswdtB6uJd7mG+hEevE
+	 secTj1XJvQGyiNORDzTP9RUrkfHJo67ZdbY8dM/UguiO9MXQbShxqz04fV74yzCD9xcWA
+	 Qr2/dL4sUlwhbQTL8feeo5nn8KlLc4x4VBLslSWMWlzfVztDG4y1dn2cP4b4RBrsNYk7M
+	 kuY2DJGDD7+KaizKByiCVglDWWYCCGhpJTzTpAPJcop7U07q+hDRTTLWEJ0o2exWb9Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.alibaba.com;
+	spf=pass smtp.mailfrom=linux.alibaba.com;
+	dkim=pass header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=HzpXI6Z0;
+	arc=none smtp.remote-ip=115.124.30.98
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FEE7606A325
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 05:56:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0FEE7606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14062606A320;
+	Thu, 19 Nov 2026 05:58:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 14062606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Gp19Jox6
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6b4bd3d98bfso2395077a12.1
-        for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 21:56:20 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795067779; cv=none;
-        d=google.com; s=arc-20260327;
-        b=lzvV1MEXMwSIG0trAicM4r77KA43tKQHbsWHQCY1j21AA1Hh85YLFJqKqL+ziZWENn
-         GefPIvD8ICJuojdWJfTRuq417OAQsyRcdAWhDWhymC9+sDj4OkV2XRptRFF+TQ3rCqqu
-         XdMbOhfjkLHdpO+peazd0Tq/cPTuIuXMZrVm8O2qtD6V0MetCwPjYT14LV+CupgMTgFF
-         BKQNSEUlwFHsceFT4o8H/RE5yMF6jt/shX+SRQN8yDN12FaafDtGGLMXx6PtNuCM4hAc
-         EeAt2pQlMVouD/TAO9Rt0NF9MKb3uLFdhyY12cUBTaPbcM/LuY/D53/uTk7sdaW93Qln
-         5sWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:reply-to:mime-version
-         :dkim-signature;
-        bh=xKhWfAhnFH1MoQBYnntrqmndPCEzikmuR8uNGBngT1E=;
-        fh=CVnWWBrL7GOeaKeSrSKLMmuf2k3jnC4sDF0P77jmDHg=;
-        b=jZi1sttxzrqSvcj/QdbXn25N9aEPzfgegOUVeimN+fYASwZMLw7DM8aXNiL8Y10HJ5
-         G9EPnVd6CTARZ9yNDmJgFr2wjrLB1dAZ9robR4imlMY4AM7LMyopECbopBKuaqFpLtTr
-         njnITa9AGxRSrgbUJ1hy+RVBA6B12WyJjoTRWUrsWKTqBNGe4/vdviNus8L5vgy6Doka
-         SY01ewRriuw/9qz/CaLX3v6EG+CaeYK7/efxsaLvo/hl+g4A18iFTJQC8yET/DN1cEGd
-         /H1NZwpFLliLrjaSfyl0fZ9jO+Lo9oyQGcChl7rf0qQPjeygmUq52eyKSWxO5VYDLBO0
-         AGiA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795067779; x=1795672579; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xKhWfAhnFH1MoQBYnntrqmndPCEzikmuR8uNGBngT1E=;
-        b=Gp19Jox6nlC9RZkWxZWAYNWjJFQn+GIAfGYru2VmYt69ZJmk2OqaT25ngUDeEZoC3C
-         jog2SioSnJt5Hy09NXwu4XCu/RpcGtxtHncgjuJvdtRW1ciKKbFX1HgCSFvS/F6ecoRC
-         iTNoX85jsdX5ZVpsZiUQoC3CAxwbq/VonYWY5VOoSHl/9gT8UQxANxrqfk21nOHfmkcT
-         ndP/hYhRGl9/ncMMyGU5d+cGVorufvBpmMnTEts4Q+Kdi/VsPlJsbrY7oBIwk9KuEE+F
-         NIFmE9ACc98c4N9fh0A58pNT0bWyEbmJJXvY2n9B2dywExQLAQHrdgTd91rGFYbQFQlS
-         mIJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795067779; x=1795672579;
-        h=content-type:cc:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=xKhWfAhnFH1MoQBYnntrqmndPCEzikmuR8uNGBngT1E=;
-        b=dotq/025++A5V6Id1MXNO9Gl0pw46uW7iiRzXH9d4zo2miJuFLqO4nu0AzGtc56Lea
-         PzeYDKa/+vh0tnhHqLGYE7gV7eFS/jqDQUNQgE0Fc4evFvKVoPGUPmZG2K2BRybh5akC
-         S38uFk7ESQYe9AV+QnMnWmuVBKt2vy9HWSXEe9vcl+pJSKTQf29FHj+8Aq9Q1oufvzrn
-         EVhqzcfyeJs+pf0YP+5THMP+ZQ5zr/YKea9eW2bnzgsYOZhv1JWi9gRsjn/1TXLDPugu
-         W7H62ABBwXHRQAc5bRzXvBPDxUymFydhic+SIam/lT7ewfIkItFTi/Rw2nILJKOtY/EU
-         F/cA==
-X-Forwarded-Encrypted: i=1; AL+hErF+w8o5yLQyy2wJ4ITD19V7Y7OUPHmGSHlMqHuaGI2wWmfskDpsy9JYuVxonBxRaZl3zo0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/J53uCFap/Gu42uPCHi47Cq0bTS0fNsxRKJ5+CKj/an5JFki6c
-	cZ8vgG8nHZ1hKbmXv4FdCdAfkk2EBH7Nmh5x7LIne7oaEbW4n73Y1JuDVeN/ugU9CLCGXCrT/P8
-	vGvOkOv8VCP1oTgZWkItB68RK1ju5acc=
-X-Gm-Gg: AYBFou2dvHi/992MPThxr4Y27NweA9QLlS7oI0X4OnpXGu+11ZgPMjO9gaBWAgPJ9nP
-	baRCSpVsv0IzgoemUi8FoNVjRLyPtQq6vRZ+jEuAlf2Qu1Urj7v2NBSQkPILc/2r3kJyHvNCSIn
-	fK1JthEOZmG2gEO7+QlSy9clWzF5iCY5L4G3Ev9pTOecvbLbTpCTNyv0nD3KOgLdESdiB6fSexE
-	X9Tx4bu+0A49VpWCXSE9ALBlIak8MczGwC1M8e8Jm0zdQGzr7MlOSfDBSiaTLZmBzWDZCWPoCzz
-	ZrqpSI3cBJuzcmgv4yo3L6rBPV8hEhQvLnjKXXUfFtFqKAHJMEiuN5nSZQT1O+XXWPlaasJGGax
-	dWOTyGJqyLUcu27Eup7DIXREtjz6r9TfRjPvlmRyXgMuv2ogalVpyqA3kvdYlXS1fBLpGZHCg7H
-	cM0XV8XndrbD6s4Xek3/Cqq9/ZOrwKMdK24214ZR+odt9Na2YyCYBi0RM=
-X-Received: by 2002:a05:6402:4285:b0:6b7:a5a4:7205 with SMTP id
- 4fb4d7f45d1cf-6b887eb1fe7mr3974112a12.12.1795067778960; Wed, 18 Nov 2026
- 21:56:18 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=HzpXI6Z0
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1795067906; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=ay0rjNoHaCokGoQ+9Ck2XUH99fyrIscozeZHiL83Aoc=;
+	b=HzpXI6Z0SASTI7u51CN2DyUqOZED/MDxFUT7fq8azrs00OQmgITmvxETfOy0QKp4cbfnD1EtwM1WHgRQeewaKEEdnE79mYRMc5R9Q6VN8nVbnZwcILVTahsgPxhtBeRSBDnTMskX2SX5MI2OyrSkW08NN85M1D/l2TjVpm1dUOA=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R691e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=weichen.chen@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0XF2Vf1m_1795067904;
+Received: from localhost.localdomain(mailfrom:weichen.chen@linux.alibaba.com fp:SMTPD_---0XF2Vf1m_1795067904 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 19 Nov 2026 13:58:25 +0800
+From: weichenchen <weichen.chen@linux.alibaba.com>
+To: kvm@vger.kernel.org,
+	seanjc@google.com,
+	pbonzini@redhat.com
+Cc: weichenchen <weichen.chen@linux.alibaba.com>,
+	x86@kernel.org,
+	linux-kernel@vger.kernel.org,
+	gleb@redhat.com,
+	srutherford@google.com,
+	avi@redhat.com
+Subject: [PATCH v2] KVM: x86: Fix stalled descriptor table accesses to MMIO
+Date: Thu, 19 Nov 2026 13:57:36 +0800
+Message-ID: <20261119055747.23819-1-weichen.chen@linux.alibaba.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,28 +65,139 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Reply-To: ludloff@gmail.com
-From: Christian Ludloff <ludloff@gmail.com>
-Date: Wed, 18 Nov 2026 21:56:07 -0800
-X-Gm-Features: AclHuK9LKYVZiEsZnTp2j0Cn26lMdh6iKrN0JdwqU91MaVZZWGmReLPcsSb0KYU
-Message-ID: <CAKSQd8Wcw-DUR_JO9YFw17u691gjNyvySwfhPW_P5P3ik=_tBQ@mail.gmail.com>
-Subject: Re: [PATCH v9 20/20] KVM: selftests: Add APX state handling and XCR0
- sanity checks
-To: "Chang S. Bae" <chang.seok.bae@intel.com>
-Cc: seanjc@google.com, jmattson@google.com, pbonzini@redhat.com, 
-	kvm@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	zhao1.liu@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-> Since APX repurposes the XSAVE area previously used by MPX in the
-> non-compacted format, add a check to ensure that MPX state is not set
-> when APX is enabled.
+Use the emulated memory accessors for the explicit operands of LGDT,
+LIDT, SGDT and SIDT.  When the operand has no backing memslot, the
+standard accessors return X86EMUL_IO_NEEDED without queuing an MMIO
+fragment.  LIDT can repeat the generic operand read at the same RIP,
+and SIDT can re-enter emulation without sending a write to userspace.
 
-For the sake of completeness...
+Check the segment bounds of both fields, then read the whole descriptor
+in one emulated access.  On a single page, this lets KVM use the
+faulting GPA for both fields without translating the base field after
+userspace has handled part of the read.  For a split operand, translate
+both pages before exiting to userspace.  Use the emulator's read cache
+to resume after MMIO and skip the redundant generic source read.
 
-EVO processors do support simultaneously
-enabled MPX and APX, with state that does
-not overlap. (And several MSR control bits.)
+Use the destination operand for common writeback of SGDT and SIDT.  This
+keeps the entire descriptor available until userspace completes a
+ten-byte MMIO write.
 
---
-C.
+Fixes: c3cd7ffaf57a ("KVM: x86 emulator: x86_emulate_insn() return -1 only in case of emulation failure")
+Fixes: 129a72a0d3c8 ("KVM: x86: Introduce segmented_write_std")
+Signed-off-by: weichenchen <weichen.chen@linux.alibaba.com>
+---
+Changes in v2:
+- Read the whole LGDT/LIDT operand in one read_emulated() call after
+  validating both fields. This avoids a second GVA translation after
+  userspace has handled the first part of a same-page read, as pointed
+  out by Sashiko.
+- v1: https://lore.kernel.org/kvm/20261119032912.94364-1-weichen.chen@linux.alibaba.com/
+
+On Intel VMX/EPT, the 64-bit LIDT and SIDT probes reached the following
+HLT with the expected data for RAM and MMIO operands. For same-page
+MMIO, both transferred eight bytes followed by two. A TDP-style mock
+with a saved GPA counted one GPA lookup and zero software translations
+through completion for both loads at all three operand sizes.
+
+Six KVM selftests passed, including a split RAM/MMIO LIDT and a segment
+limit fault before any userspace MMIO exit. Eight kvm-unit-tests suites
+at a2891d9528ef reported 445 passes, five skips and no failures. Both
+vendor modules built with KVM_WERROR. Runtime testing used Intel.
+
+Codex assisted with the emulator changes and regression testing.
+
+ arch/x86/kvm/emulate.c | 49 +++++++++++++++++++-----------------------
+ 1 file changed, 22 insertions(+), 27 deletions(-)
+
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index c1b2128218..3a9a67f4b0 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -918,23 +918,6 @@ static void *decode_register(struct x86_emulate_ctxt *ctxt, u8 modrm_reg,
+ 	return p;
+ }
+ 
+-static int read_descriptor(struct x86_emulate_ctxt *ctxt,
+-			   struct segmented_address addr,
+-			   u16 *size, unsigned long *address, int op_bytes)
+-{
+-	int rc;
+-
+-	if (op_bytes == 2)
+-		op_bytes = 3;
+-	*address = 0;
+-	rc = segmented_read_std(ctxt, addr, size, 2);
+-	if (rc != X86EMUL_CONTINUE)
+-		return rc;
+-	addr.ea += 2;
+-	rc = segmented_read_std(ctxt, addr, address, op_bytes);
+-	return rc;
+-}
+-
+ EM_ASM_2(add);
+ EM_ASM_2(or);
+ EM_ASM_2(adc);
+@@ -3447,10 +3430,9 @@ static int emulate_store_desc_ptr(struct x86_emulate_ctxt *ctxt,
+ 		ctxt->op_bytes = 4;
+ 		desc_ptr.address &= 0x00ffffff;
+ 	}
+-	/* Disable writeback. */
+-	ctxt->dst.type = OP_NONE;
+-	return segmented_write_std(ctxt, ctxt->dst.addr.mem,
+-				   &desc_ptr, 2 + ctxt->op_bytes);
++	ctxt->dst.bytes = 2 + ctxt->op_bytes;
++	memcpy(ctxt->dst.valptr, &desc_ptr, ctxt->dst.bytes);
++	return X86EMUL_CONTINUE;
+ }
+ 
+ static int em_sgdt(struct x86_emulate_ctxt *ctxt)
+@@ -3465,14 +3447,27 @@ static int em_sidt(struct x86_emulate_ctxt *ctxt)
+ 
+ static int em_lgdt_lidt(struct x86_emulate_ctxt *ctxt, bool lgdt)
+ {
+-	struct desc_ptr desc_ptr;
++	struct segmented_address addr = ctxt->src.addr.mem;
++	struct desc_ptr desc_ptr = {};
++	unsigned long limit_addr, base_addr;
++	unsigned int base_bytes, desc_bytes;
+ 	int rc;
+ 
+ 	if (ctxt->mode == X86EMUL_MODE_PROT64)
+ 		ctxt->op_bytes = 8;
+-	rc = read_descriptor(ctxt, ctxt->src.addr.mem,
+-			     &desc_ptr.size, &desc_ptr.address,
+-			     ctxt->op_bytes);
++	base_bytes = ctxt->op_bytes == 2 ? 3 : ctxt->op_bytes;
++	desc_bytes = sizeof(desc_ptr.size) + base_bytes;
++
++	/* Check both fields before an MMIO read can have side effects. */
++	rc = linearize(ctxt, addr, sizeof(desc_ptr.size), false, &limit_addr);
++	if (rc != X86EMUL_CONTINUE)
++		return rc;
++	addr.ea += sizeof(desc_ptr.size);
++	rc = linearize(ctxt, addr, base_bytes, false, &base_addr);
++	if (rc != X86EMUL_CONTINUE)
++		return rc;
++
++	rc = read_emulated(ctxt, limit_addr, &desc_ptr, desc_bytes);
+ 	if (rc != X86EMUL_CONTINUE)
+ 		return rc;
+ 	if (ctxt->mode == X86EMUL_MODE_PROT64 &&
+@@ -4074,8 +4069,8 @@ static const struct opcode group6[] = {
+ static const struct group_dual group7 = { {
+ 	II(Mov | DstMem,			em_sgdt, sgdt),
+ 	II(Mov | DstMem,			em_sidt, sidt),
+-	II(SrcMem | Priv,			em_lgdt, lgdt),
+-	II(SrcMem | Priv,			em_lidt, lidt),
++	II(SrcMem | Priv | NoAccess,		em_lgdt, lgdt),
++	II(SrcMem | Priv | NoAccess,		em_lidt, lidt),
+ 	II(SrcNone | DstMem | Mov,		em_smsw, smsw), N,
+ 	II(SrcMem16 | Mov | Priv,		em_lmsw, lmsw),
+ 	II(SrcMem | ByteOp | Priv | NoAccess,	em_invlpg, invlpg),
+
+base-commit: cbe54fc3462b3949ab27b9ae81fb9ddb509040c7
+-- 
+2.53.0
+
