@@ -1,102 +1,120 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.153.30
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795125116;
-	b=CUfQ2A0BGa2YR/JUogDorgZHOeBfZcpaOPhPLB7vmsLLaDyhuiWPD8agkny9YDnz7TlB
-	 8mrwr3LQpKBaQfr94H2/hlMywEh1Yd9LT9Myd5et/XbBQMBcuTl4P+l6Jala6qs9OiHtG
-	 peBmuvPvzb2/qheo9K8/RgKn/OJUl7jq/YAZ5fLD5TSUkjCRk89Fh8WURdcsnZIfwepL1
-	 9DRtUTj6iox6L8BtsMq82UVp2MIZiKC/NL5AKQX0HzbAgLT3/OyDaE7JxA3HcmoEgIjjs
-	 MzxMyoocG7/otF4Pb9TajVnPXguu/6q5Uw3Hzlf7FJZyMVENtEYJ+SN+GTxsvHbAwiw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795125116;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Originating-IP:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Info:X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Virus-Version;
-	bh=Ri8CK3ItJsJssm9R2a+AMX7zfGjjWTKSLJi5tTs2ofs=;
-	b=1HfJWHFeV7d3lOFqG2H4NmMIQj1PaxpPXnbwZlfyGronodFSj7o9R54E2FH7x6bo+ND1
-	 +yL/YdRaLQWPCZae1N8eKzEHYFImE1+lv4DA+VDKniCMNJwjDM4dpTL6q6wfRffA7ma14
-	 XHcHVwvh6dV1nTxeJzIfwwLLxZG60OjX221fSFqz0i6AoeOdAODw3rWzFCH/GvWnhLpEe
-	 2wOQfEmFblv3NYhHsaiGb1H0qjzlgZkuIWZi/BqwxiWIxBgu6/kicTkOOtNaxN026ecQR
-	 linb0BUqkhjvPA/fLfALaol06CeH2gTNIPcKuDjm8qxipKW+AKPLRKSscNMh5gzbQVg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=DHGBUcJM;
-	arc=none smtp.remote-ip=67.231.153.30
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.29
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795125126;
+	b=GLwAm9CwzKkFdNcOKFEWtP5kT3G7q/5+/JYLJkNBOKnQSL8yFkLf36NsYoNB62SQb3Gj
+	 7X7QiKAY0mYpRQU76/geB6prZlvof178H/07OuVfUS46dXldUoBJbaVbRnfd/+GSiPBbv
+	 WCnsJUD7MPJCe8Z+gnrn1sGlh/7tWXGrrjUBpGRD46j0jIXeNHmWL+aw+zWAZrUduSeje
+	 bnmRp+Un6fEXE9d6ABo7OFtP29mpPjQU6lTFJAerJpE+zUU6DQnAVpmXVFfUsyllOeOUu
+	 fyD2eWcmoQfGdWefeyzDmUYgx3hHzMa3wFmopjuycJEivGLMOS6feY0DstD0O/peScQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795125126;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:Content-Type:
+	 X-Originating-IP:X-ClientProxiedBy:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=SexsYJ1gA4F86Hb+z0n+hPrGNPBiHuicpheRtM6BR80=;
+	b=Fip1LnsBCLC7pfryH7nxgRyFKJePGSJgWUkeiWElGPYO7Ai5Q2XYiJ0GfYKi/iCiRSmT
+	 ghS2hLJUQve6d23lvnhP7wlI8d0q0RjecatDyoQ1H/bs23iB4WUQmZOfNlTC4w+DolCWe
+	 FqPV6hd2lbjSc1YN7id1yy2zLMnNfLsSGNYT0UyEmd6oUGDy+WZBYPMyabX3tydU61zxe
+	 TAUEYqr0dn7SpNrwgc2AkoWB2kL9vW+N3TebJuXG0YyPkGZ4vnyPRMx8eCzXwf6+DyZDs
+	 J+U37ouIwbr2fKXB3O8DTFaCGdvXuEBpxCmF5uJMoiDOggmevn1AKkK99SzutjX5QsA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=jPgO2xNJ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.29
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010029.outbound.protection.outlook.com [52.101.56.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1C060A381E;
-	Thu, 19 Nov 2026 21:51:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BA1C060A381E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A4460A2629;
+	Thu, 19 Nov 2026 21:52:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 35A4460A2629
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=DHGBUcJM
-Received: from pps.filterd (m0528005.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AJJ1LkI2754408;
-	Thu, 19 Nov 2026 13:51:24 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps82601-s2048-2026-q3; bh=Ri8CK3ItJsJ
-	ssm9R2a+AMX7zfGjjWTKSLJi5tTs2ofs=; b=DHGBUcJMMYXzIekxH9QyMTq7eci
-	SVZVf1xD6/O7voHLqsj3TWCiHW0pTsTwkmp/Sp9PwtUka34/b6VZNoQ3XhAegWHp
-	XpONuZUN0BT5PbMkq0U9Jw5rxaNbEH6ZM45118sUHONBJw1PZ/EDqM1N8pENELLL
-	6rSXBjtU4zfkfEQuuysIkDiL3qzIAJ1VUpSH/voGd5OhHjcVxH6uqOIL4qV94Mts
-	8l4+IRAgaR0HPmmg+KnSAl3PoeGsapIjh+W+qZj8eqd7rRovRjydI6BAwRArFP5o
-	k1nsJTlzvDeQ2/EH+QAf3DQtrrgl4w5/oY/3h1+h7MQ3JGWzNvfsRrvodKA==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4j228kvma1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 19 Nov 2026 13:51:23 -0800 (PST)
-Received: from localhost (2620:10d:c0a8:1b::8e35) by mail.thefacebook.com
- (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Thu, 19 Nov
- 2026 21:51:22 +0000
-Date: Thu, 19 Nov 2026 13:51:21 -0800
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-To: Sergio Lopez Pascual <slp@redhat.com>
-CC: Stefano Garzarella <sgarzare@redhat.com>,
-        Alexei Starovoitov
-	<ast@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
-	<edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Bryan Tan
-	<bryan-bt.tan@broadcom.com>,
-        Vishnu Dasa <vishnu.dasa@broadcom.com>,
-        Broadcom
- internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-        Stefan
- Hajnoczi <stefanha@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason
- Wang <jasowangio@gmail.com>,
-        Eugenio =?iso-8859-1?Q?P=E9rez?=
-	<eperezma@redhat.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        Haiyang Zhang
-	<haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
-        Dexuan Cui
-	<decui@microsoft.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Randy Dunlap
-	<rdunlap@infradead.org>,
-        <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-        <bpf@vger.kernel.org>, <linux-hyperv@vger.kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>, <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH RFC v3 0/8] vsock: add datagram support to virtio and
- vhost
-Message-ID: <av9vWRXli+JmYO8A@devvm29614.prn0.facebook.com>
-References: <20261113-vsock-dgram-support-v3-0-1523c8e9b27e@redhat.com>
- <aveMxDqYQobWwXd/@devvm29614.prn0.facebook.com>
- <CAAiTLFUQMyQXHAw1DbDKfJYus-Se+QA_SSHWQymQ9dK6-UmRTQ@mail.gmail.com>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=jPgO2xNJ
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fev2HINEoiQTwcw6mto+0OdM+jiXFcM4zAVsvAyElaKx5q0ff6TlqS7RYbiBaEOTnflXV9HcYwV9uqSnEZjJdTo2W6sSyYOmGkSvKGQsIEpcqRUGZBu3wnkkhf14H75QR1vZSMo7HFxMsNwJ341UKF+Iseni2VV/+AN8xZEhalJgMqqEdg3xzHf1I1C+83QGbHGqB7o6fs2gFA3nFHy72Zl7gv/pFZHWCxCHQ7EYfuuZsGbbK/0G57bSPtlHyYWsUEsoLcLnlx0FwaGLwBAt37ITZLA8UwKVW0sWcvN75znNCPNhvZqBv+LMnlIc6GuwcqAovzMK3DVUoi7pvmgtNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SexsYJ1gA4F86Hb+z0n+hPrGNPBiHuicpheRtM6BR80=;
+ b=hv1Tzuxy4FVZqFTpc659WNSR7KwgNhe9usCqYrOL6F4FVuOJYHZqS2hw26+MoPJS+p2ahla33CTG0jujY0JHf4r+n9eIslMWmxwiA1fjq8J6QFk1kCU9sDNvp4BSHNv3VeZLf3IUL1pHgy6HKlVJjjJiXeKspt4WBQUtAprNczqpO+/qwYVKqhFi4DA0h9lWlhTJJceNN/urG4jFpC7dSeQ9Ylu8eQ8QzGP5iUXKT8f9OmMtgPyn2y4h1DgUc4BwfJlKrcZkX0THXZ+5r7YtvBX5YJEK9EkTXNO/59uA4a+mlRxRd6oPivg+3IFHKkCtu90OjFvX7ZnoRSbrDiSQtw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SexsYJ1gA4F86Hb+z0n+hPrGNPBiHuicpheRtM6BR80=;
+ b=jPgO2xNJlr+1faSacNZfUelLOLSf7FyRutuIACphszQOCBARrwvCFCGOZL3wMkiEae8idQa7rOuRW+qt4k7NYUDOEfHiI1M/0BqU0Me3Ni1e4i4ANKBwDQq01ZcDhecOtDnh8Q9dAAe5O13eeUl9VZ5bd8iFowz6QJW8zYTjn6S61Uu1PvOKwkPCPWQsjo/Iuf1ggvJLIEynu5YbjRmA9tiL+BGW+cnKn0vt5C3R8Fj7LIS88xkp4/dBHAlvGN6quTa4A/WkKHhO1RM7RvryWQu0h0HyTHrd3HhSYxHVETgOewqqP5V9fTM0oavJiK4z2QeH9DhuDHEVKvYuRafnMQ==
+Received: from BN9PR03CA0161.namprd03.prod.outlook.com (2603:10b6:408:f4::16)
+ by DS2PR12MB9567.namprd12.prod.outlook.com (2603:10b6:8:27c::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Thu, 19 Nov
+ 2026 21:51:55 +0000
+Received: from BL4PEPF000003EE.namprd04.prod.outlook.com
+ (2603:10b6:408:f4:cafe::89) by BN9PR03CA0161.outlook.office365.com
+ (2603:10b6:408:f4::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.10 via Frontend Transport; Thu,
+ 19 Nov 2026 21:51:55 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BL4PEPF000003EE.mail.protection.outlook.com (10.167.249.10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.639.5 via Frontend Transport; Thu, 19 Nov 2026 21:51:54 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Thu, 19 Nov
+ 2026 13:51:23 -0800
+Received: from xinmengs-dev-vm-linux.nvidia.com (10.126.230.37) by
+ rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.57; Thu, 19 Nov 2026 13:51:19 -0800
+From: Simon Song <xinmengs@nvidia.com>
+To: <dakr@kernel.org>, <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
+	<rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+	<linux-pci@vger.kernel.org>
+CC: Zhi Wang <zhiw@nvidia.com>, <alex@shazbot.org>, <jgg@nvidia.com>,
+	<yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
+	<airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
+	<alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+	<bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+	<aliceryhl@google.com>, <tmgross@umich.edu>, <jhubbard@nvidia.com>,
+	<ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
+	<kjaju@nvidia.com>, <alkumar@nvidia.com>, <ankita@nvidia.com>,
+	<aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+	<linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <boqun@kernel.org>,
+	<daniel.almeida@collabora.com>, <tamird@kernel.org>, <work@onurozkan.dev>,
+	<jgg@ziepe.ca>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
+	<dri-devel@lists.freedesktop.org>, <peter@colberg.org>, <xinmengs@nvidia.com>
+Subject: [PATCH v3 8/9] gpu: nova-core: publish typed SR-IOV PF APIs
+Date: Thu, 19 Nov 2026 13:50:43 -0800
+Message-ID: <20261119215046.2892839-9-xinmengs@nvidia.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20261119215046.2892839-1-xinmengs@nvidia.com>
+References: <20261119215046.2892839-1-xinmengs@nvidia.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -106,202 +124,402 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <CAAiTLFUQMyQXHAw1DbDKfJYus-Se+QA_SSHWQymQ9dK6-UmRTQ@mail.gmail.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE5MDA4NyBTYWx0ZWRfXwzIa7BHDzrhI
- V9NPLugZeX0Dem605ATYIgoQU8DX72WI9bBs9VHmBqBAZcwlUI4+xKCLGec3yqad6e9XNHuQUKf
- wh8/Z1Mk/yEYchU1ELul3oyezvQPlMuTsK6aw11IrS/iZG2ky0YHPQ5x2fDjJxe01HuGKZlID1n
- bHRiO20kWrSLZK4gz9ob3EKfJCQ+sOo9P4S7G27w3umfmXytFXum9tJ/HanNivge0nqvRbrcLuJ
- gA5mT4Wg7ZPOq05ccIQNX2ksv3x0dRPyiOMSJ0rrulluGOEJigLTb8HpiGCpoUiziVUM9XNcjy3
- 1eWA60wrpqu5Qfr1NHxKeA8KK0UhAQZs2ign8WT+c4ph6c6rH1+NFA6L/zLq1aLANdVep2Lm5XV
- HjICGVvLKwUIxJ3LSS5blwdHhxNf41mYiTRHaqmzf4ysQYa+mVHLxeWUEJRY/H+HxjOmG7yAUPQ
- pBlTEVLGOEG9QGMJvTA==
-X-Proofpoint-GUID: EKMxB3j1syV6aAXBL7ADcf_4KtTeg0Sh
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE5MDA4NyBTYWx0ZWRfXwKAReosY9zZa
- bBwoIH2U7bvtKc0Z4koR1XE6E6nLpYuJxcDsR5HFruBknRfag+QQB5Dtcl9NFmzvJqBczeAlmXp
- QcRk/8QcO5bLyBaKyd3NyJUPaB/1FsQ=
-X-Authority-Analysis: v=2.4 cv=cYxHPXDM c=1 sm=1 tr=0 ts=6aff6f5b cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=jCddH8ec0KUNCymVuxII:22 a=VwQbUJbxAAAA:8
- a=20KFwNOVAAAA:8 a=968KyxNXAAAA:8 a=NEAV23lmAAAA:8 a=mDV3o1hIAAAA:8
- a=KMMIYZg5AAAA:8 a=VabnemYjAAAA:8 a=lvHqt9aMAKSFOjNFyPAA:9 a=CjuIK1q_8ugA:10
- a=dU3it2pj8zK4A0baVwjB:22 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-ORIG-GUID: EKMxB3j1syV6aAXBL7ADcf_4KtTeg0Sh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-19_05,2026-11-19_01,2025-10-01_01
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL4PEPF000003EE:EE_|DS2PR12MB9567:EE_
+X-MS-Office365-Filtering-Correlation-Id: 160c73dc-221b-4dfe-ddba-08df468753ce
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|7416014|376014|36860700016|23010399003|6133799003|261009223027099003|18002099003|22082099003|261026140227099003|261021121427099003|261028144727099003|261021123027099003|261102123227099003|261022105027099003|261022113327099003|56012099006|261026121527099003|10067099003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	+f94IMtRwYWbDDZPVAnPj5ZL8UzZMYKUKwGr4KZfc19a+e8ZIGMSMyrbs2fhNfV8ksRqudQ5vj1d5kNQ9tD0LilJ9vjTmAUf7cwVQsXBHIT2N0mIgnNKEB5CTI+3kQBijyu6Fe277rYMUotOZbkLhGzWM6troKBvr/uOsSoU29A27UsaxkrHZkKsvMnPl0pix0NKqAXLffHy0ASjbGqNmAQOEyi/b66RB/N6ePMN5Xaax/xIE+qcNqtInRKQyjd/7N7ppcPqdqaSNY3FMI1HnBwzRvIL1KHczxKpukEtLTK0+pl6VjF7psY9EPoVj8kv/pckhGJuOhkn+8ZA1q7/UIS0mSz9FV3rK0Q0k23//rU5fbgI+92lDsKQzGCB5gzkUpsLpyP/TXMNdwdtvswhx44pen/hQX6/2e1FooQe4aA1JZyJYXL07Iuimk/kuMRDaJZdwZNf6Bs0QdpL+GnzPoU3g2vPUoHntDS7GRb3rRgYkRsEAMBdJ3L9X0TuHo3hiWWhOwvVgt36Sjk/XYDzInGafVm6vKRT0s+QDnJko7t4qq8wXmDO/3Pv5Lq71mcoClwvEZadtSoM6jDqVgf19W4KIiYXIbqLylwmWji1XrlI/z6lq0BASBERRoGwUTb3l9pSDamH+boxs+HvL3LWcs1kF2t6Gs2U9YuNN7+yT9zd2r7yxeK3X8/no6oDXF4w+V8KSHyaTJFjgejaBi/g3w==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(376014)(36860700016)(23010399003)(6133799003)(261009223027099003)(18002099003)(22082099003)(261026140227099003)(261021121427099003)(261028144727099003)(261021123027099003)(261102123227099003)(261022105027099003)(261022113327099003)(56012099006)(261026121527099003)(10067099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	/+GXeX4yx/6Oc/tguVivecQ/0HFozUEHjV8d+wFidRWvnZRmOjNLL037O28Sjwgdz75ycG2fqkHkxEs5pWf+Zz8Z73JgtG7d6IXHa6+m6fdQpKijTpDAKtVuXQcZ0Icm6Z0+AVcN5doxBXiesW1U+EvZIKw7fnK3ja9JLOPMGTC9Xy262Ve+HvPPBmhlSwr6OJMPHF7odhOdrFEJk9J0DZtGLqlyMshq6FMHRMcuZ9lGuwCaBi1htUFD8kd7hs/DBYJQifKa7SQYzYsdVdOcMBilnHMfQA9p7b1CxnVEXTRiyyGuer2jDIsxtSdZLCNxSiQ1izWa/REKo89lULGVisXtRmxrGzebo3HHHxVbA4jD+y4j7zFgRdp5vdo3e60pXqGmKbcoa/iUWOgPsuoTizIv/wAy69S9YPMn96BvdWc5vVH5S1kOiST4d6vcG63G
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 21:51:54.9113
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 160c73dc-221b-4dfe-ddba-08df468753ce
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL4PEPF000003EE.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9567
 
-On Thu, Nov 19, 2026 at 08:06:44AM -0800, Sergio Lopez Pascual wrote:
-> Bobby Eshleman <bobbyeshleman@meta.com> writes:
-> 
-> > On Fri, Nov 13, 2026 at 06:15:40PM +0100, Sergio Lopez wrote:
-> >> This RFC adds SOCK_DGRAM support to virtio-vsock and vhost-vsock through
-> >> the existing AF_VSOCK API. It is intended for guest and host services
-> >> that exchange independent requests, responses, or events and need message
-> >> boundaries and sender addresses without a stream connection or application
-> >> framing.
-> >>
-> >> VIRTIO_VSOCK_F_DGRAM gates virtio traffic in both directions. Each virtio
-> >> send carries zero to 64 KiB of payload in one VIRTIO_VSOCK_TYPE_DGRAM
-> >> packet. On the RX virtqueue, the device may split a datagram across
-> >> page-sized guest buffers.
-> >> START and EOM delimit the message; the guest reassembles at most 64
-> >> fragments and 64 KiB before delivering it to a socket. Invalid or
-> >> incomplete messages are discarded. Datagram delivery is best effort:
-> >> there are no peer credits, acknowledgements, or retransmissions. Send
-> >> admission uses the socket send-memory limit, and SIOCOUTQ reports charged
-> >> send memory.
-> >>
-> >> Datagram sockets have a separate port space from stream and seqpacket
-> >> sockets. The latter two continue to share their port space. Datagram
-> >> routes are chosen per destination among guest-to-host, host-to-guest, and
-> >> loopback transports, with VMCI as a fallback. VMCI still owns its socket
-> >> handle when it is present; loopback works without a directional transport.
-> >> Hyper-V continues to reject datagram sockets.
-> >>
-> >> The Sashiko review of v2 also reported that a VMCI datagram bind in a
-> >> local-mode network namespace creates a receive handle in VMCI's global
-> >> port space, so a sender outside the namespace can deliver datagrams
-> >> across the namespace isolation boundary. The issue predates this series
-> >> and it's getting addressed in a separate patch:
-> >>
-> >> https://lore.kernel.org/all/20261113-vsock-vmci-netns-isolation-v1-1-ced02054ea61@redhat.com
-> >>
-> >> Within this series, local-mode namespaces bind datagrams only in the
-> >> core table and never create a VMCI handle.
-> >>
-> >> Bobby Eshleman and Amery Hung explored this feature in their v6 series
-> >> and v7 work-in-progress branch. This series is a fresh implementation
-> >> against the current vsock code. It follows the separate datagram port
-> >> space, per-destination routing, and VMCI fallback requirements discussed
-> >> there. For guest receive buffers, it uses bounded fragmentation and
-> >> reassembly rather than full-message buffers or the earlier drop/error
-> >> queue approach:
-> >>
-> >> https://lore.kernel.org/r/20240710212555.1617795-1-amery.hung@bytedance.com
-> >> https://github.com/ameryhung/linux/tree/vsock-dgram-v7
-> >>
-> >> A corresponding virtio specification update has been drafted separately.
-> >> The wire format and feature negotiation still need specification review
-> >> before this series can be considered for merging.
-> >>
-> >> The first patches expose the core port allocator and add datagram queue
-> >> reporting, then implement the common data path, guest and host feature
-> >> negotiation, routing, and RX fragmentation. The last patch extends
-> >> vsock_test with local and peer tests for message boundaries, routing,
-> >> connected peers, port sharing, queue accounting, and delayed reads.
-> >>
-> >> Testing used QEMU with the F_DGRAM property patch below, an x86-64
-> >> KASAN/lockdep kernel, paired guest tests, and a nested Linux vhost-vsock
-> >> backend. The tested paths include 64 KiB messages, delayed-read bursts,
-> >> feature-disabled ingress, stream and seqpacket controls, and header-only
-> >> guest RX buffers. A temporary userspace backend still fails stream test
-> >> 21 on both the series base and tip; that case passes with Linux vhost.
-> >> VMCI's host personality was exercised in a QEMU guest, including
-> >> coexistence with virtio and self-send without loopback. A VMware VMCI guest
-> >> device and Hyper-V hardware were not exercised.
-> >>
-> >> https://lists.gnu.org/archive/html/qemu-devel/2026-10/msg08074.html
-> >>
-> >> Code was written and reviewed both manually and assisted by Codex
-> >> (GPT-6.1-Sol) and Claude (Opus 4.6).
-> >>
-> >> Signed-off-by: Sergio Lopez <slp@redhat.com>
-> >> ---
-> >> Changes in v3:
-> >> - Preserve Hyper-V stream routing and prefer virtio for guest CID_HOST
-> >>   datagrams (thanks to Sashiko AI bot).
-> >> - Bind explicit non-VMCI CIDs and local-mode sockets without a VMCI
-> >>   handle, resolve wildcard destinations, and retain VMCI self routes
-> >>   (thanks to Sashiko AI bot).
-> >> - Recheck bound addresses after receive takes the socket lock and set
-> >>   TO_HOST only for forwarded guest sources (thanks to Sashiko AI bot).
-> >> - Probe negotiated virtio datagrams and numeric local CIDs before running
-> >>   dependent tests; cover wildcard and VMCI coexistence (thanks to Sashiko
-> >>   AI bot).
-> >> - Link to v2: https://lore.kernel.org/r/20261113-vsock-dgram-support-v2-0-bacfc85b71ce@redhat.com
-> >>
-> >> Changes in v2:
-> >> - Keep guest RX buffers page-sized; add START/EOM framing and bounded
-> >>   datagram reassembly (thanks to Alexei Starovoitov and Bobby Eshleman).
-> >> - Preserve stream and seqpacket data when an RX buffer has no payload
-> >>   room.
-> >> - Separate datagram and connection-oriented port spaces, and share
-> >>   receive metadata and queueing (thanks to Alexei Starovoitov).
-> >> - Check negotiated support and destination CID on ingress, and require
-> >>   an exact connected peer CID and port (thanks to Sashiko AI bot).
-> >> - Select a capable route for each destination, retain VMCI as fallback,
-> >>   and support loopback-only sockets (thanks to Alexei Starovoitov).
-> >> - Preserve the connected peer address across temporary parent fallback
-> >>   (thanks to Sashiko AI bot).
-> >> - Use socket write-memory accounting for datagram SIOCOUTQ instead of
-> >>   separate transport counters (thanks to Alexei Starovoitov).
-> >> - Extend selftests for fragmentation, delayed reads, port sharing,
-> >>   connected peers, and capability-based skips; fix the test build and
-> >>   README entries (thanks to Alexei Starovoitov, Bobby Eshleman,
-> >>   and Sashiko AI bot).
-> >> - Link to v1: https://lore.kernel.org/r/20261028-vsock-dgram-support-v1-0-e457cf7cee78@sinrega.org
-> >>
-> >> ---
-> >> Sergio Lopez (8):
-> >>       vsock: expose the core port allocator to transports
-> >>       vsock: report datagram receive and send queue state
-> >>       vsock/virtio: implement the datagram data path
-> >>       vsock/virtio: negotiate datagram support on the guest
-> >>       vhost/vsock: negotiate datagram support with guests
-> >>       vsock: allow datagrams to use directional transports
-> >>       vsock: fragment datagrams across receive buffers
-> >>       vsock: add datagram tests to vsock_test
-> >>
-> >>  Documentation/admin-guide/sysctl/net.rst |    8 +-
-> >>  drivers/vhost/vsock.c                    |   51 +-
-> >>  include/linux/virtio_vsock.h             |    8 +-
-> >>  include/net/af_vsock.h                   |   31 +-
-> >>  include/uapi/linux/virtio_vsock.h        |   10 +
-> >>  net/vmw_vsock/af_vsock.c                 |  526 +++++++++++----
-> >>  net/vmw_vsock/hyperv_transport.c         |   11 +-
-> >>  net/vmw_vsock/virtio_transport.c         |  167 ++++-
-> >>  net/vmw_vsock/virtio_transport_common.c  |  172 ++++-
-> >>  net/vmw_vsock/vmci_transport.c           |  124 ++--
-> >>  net/vmw_vsock/vsock_bpf.c                |    3 +-
-> >>  net/vmw_vsock/vsock_loopback.c           |    2 +-
-> >>  tools/testing/vsock/Makefile             |    3 +-
-> >>  tools/testing/vsock/README               |   33 +-
-> >>  tools/testing/vsock/util.c               |   62 +-
-> >>  tools/testing/vsock/util.h               |   10 +
-> >>  tools/testing/vsock/vsock_test.c         |  175 ++++-
-> >>  tools/testing/vsock/vsock_test_dgram.c   | 1061 ++++++++++++++++++++++++++++++
-> >>  tools/testing/vsock/vsock_test_dgram.h   |   30 +
-> >>  19 files changed, 2195 insertions(+), 292 deletions(-)
-> >> ---
-> >> base-commit: 65ba8f34ec886ec72b2c07ddc8cf3d815c32869d
-> >> change-id: 20261027-vsock-dgram-support-683a4e0aebe7
-> >>
-> >> Best regards,
-> >> --
-> >> Sergio Lopez <slp@redhat.com>
-> >>
-> >
-> > Hey Sergio,
-> >
-> > Just a gentle heads up that net-next asks for 24hrs before reposting.
-> 
-> Whoops, sorry!
-> 
-> > I'll start working my way through the series, sorry if my reviews come
-> > back spread out across a few days, not sure I'll have enough time in a
-> > single sitting.
-> 
-> I was planning on sending a v4 fixing Sashiko's issues. Should I wait
-> for your review first?
-> 
-> Thanks!
-> Sergio.
-> 
+From: Zhi Wang <zhiw@nvidia.com>
 
-Feel free to send without my review, I'm lagging behind!
+Register NovaCoreVfApi as typed SR-IOV PF data once the GPU is initialized.
 
-Best,
-Bobby
+Enable and disable VFs through the sriov_enable() and sriov_disable()
+callbacks. The VF registration removes VFs before dropping its PF API
+data. Declare the registration before the GPU so its borrowed services
+remain valid through VF teardown.
+
+Expose a VF-side handle that borrows these services for each operation.
+Return an owned instance on open and close it on drop while the VF
+remains bound.
+
+Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+Signed-off-by: Simon Song <xinmengs@nvidia.com>
+---
+ drivers/gpu/nova-core/driver.rs        |  34 ++++-
+ drivers/gpu/nova-core/nova_core.rs     |   3 +-
+ drivers/gpu/nova-core/vgpu.rs          |   1 -
+ drivers/gpu/nova-core/vgpu/vgpu_api.rs | 178 +++++++++++++++++++------
+ 4 files changed, 171 insertions(+), 45 deletions(-)
+
+diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
+index 1785a5294823..a306e4233df6 100644
+--- a/drivers/gpu/nova-core/driver.rs
++++ b/drivers/gpu/nova-core/driver.rs
+@@ -29,7 +29,8 @@
+         NovaCoreFwCtl,
+         NovaCoreFwCtlData, //
+     },
+-    gpu::Gpu, //
++    gpu::Gpu,
++    vgpu::vgpu_api::NovaCoreVfApi, //
+ };
+ 
+ /// Counter for generating unique auxiliary device IDs.
+@@ -41,6 +42,10 @@ pub(crate) struct NovaCore<'bound> {
+     _reg: auxiliary::Registration<'bound, ForLt!(NovaCoreApi<'_>)>,
+     /// Unregisters fwctl and drains its callbacks before GPU resources are dropped.
+     _fwctl: fwctl::Registration<'bound, NovaCoreFwCtl>,
++    #[allow(clippy::type_complexity)]
++    #[pin]
++    #[uses('gpu: invariant)]
++    _vf_registration: pci::VfRegistration<'gpu, ForLt!(NovaCoreVfApi<'_>)>,
+     #[pin]
+     pub(crate) gpu: Gpu<'bound>,
+     bar: pci::Bar<'bound, BAR0_SIZE>,
+@@ -112,6 +117,10 @@ fn probe<'bound>(
+ 
+         try_pin_init!(NovaCore {
+             _: {
++                if pdev.is_virtfn() {
++                    return Err(ENODEV);
++                }
++
+                 pdev.enable_device_mem()?;
+                 pdev.set_master();
+             },
+@@ -150,6 +159,12 @@ fn probe<'bound>(
+                 Ok(())
+             }),
+ 
++            // SAFETY: The registration is stored in `NovaCore`, this driver's bus device
++            // private data.
++            _vf_registration <- unsafe {
++                pci::VfRegistration::new(pdev, NovaCoreVfApi::new(pdev, gpu))
++            },
++
+             _reg: {
+                 // TODO: Use `&gpu` self-referential pin-init syntax once available.
+                 //
+@@ -198,4 +213,21 @@ fn probe<'bound>(
+             },
+         })
+     }
++
++    fn sriov_enable<'a>(
++        _dev: &'a pci::Device<Core<'_>>,
++        _this: Pin<&Self::Data<'a>>,
++        token: pci::SriovEnable<'a>,
++    ) -> Result<pci::SriovEnabled<'a>> {
++        token.enable_all()
++    }
++
++    fn sriov_disable<'a>(
++        _dev: &'a pci::Device<Core<'_>>,
++        _this: Pin<&Self::Data<'a>>,
++        token: pci::SriovDisable<'a>,
++    ) -> Result {
++        token.disable();
++        Ok(())
++    }
+ }
+diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
+index 5f09b69f3b54..a840b663cf73 100644
+--- a/drivers/gpu/nova-core/nova_core.rs
++++ b/drivers/gpu/nova-core/nova_core.rs
+@@ -31,9 +31,10 @@
+ mod vbios;
+ mod vgpu;
+ 
+-#[cfg(CONFIG_PCI_IOV)]
+ pub use vgpu::vgpu_api::{
+     NovaCoreVfApi,
++    NovaCoreVfApiHandle,
++    VgpuInstance,
+     VgpuTypeInfo, //
+ };
+ 
+diff --git a/drivers/gpu/nova-core/vgpu.rs b/drivers/gpu/nova-core/vgpu.rs
+index f198fa218297..38dcd68f52e7 100644
+--- a/drivers/gpu/nova-core/vgpu.rs
++++ b/drivers/gpu/nova-core/vgpu.rs
+@@ -42,7 +42,6 @@
+ mod instance;
+ mod log;
+ mod scrubber;
+-#[cfg_attr(not(CONFIG_PCI_IOV), expect(dead_code, unreachable_pub))]
+ pub(crate) mod vgpu_api;
+ mod vram;
+ 
+diff --git a/drivers/gpu/nova-core/vgpu/vgpu_api.rs b/drivers/gpu/nova-core/vgpu/vgpu_api.rs
+index f9f3e527bdc0..cfac0ca10c1e 100644
+--- a/drivers/gpu/nova-core/vgpu/vgpu_api.rs
++++ b/drivers/gpu/nova-core/vgpu/vgpu_api.rs
+@@ -8,7 +8,8 @@
+ use kernel::{
+     device,
+     pci,
+-    prelude::*, //
++    prelude::*,
++    types::ForLt, //
+ };
+ 
+ use crate::{
+@@ -52,29 +53,41 @@ fn from_vgpu_type(vgpu_type: &VgpuType) -> Self {
+ }
+ 
+ /// PF-owned operations available while a VF driver is bound.
+-pub struct NovaCoreVfApi<'gpu> {
++#[pin_data]
++pub struct NovaCoreVfApi<'gpu>
++where
++    // The GPU resources are invariant in their lifetime, which outlives this API borrow.
++    exists<'gpu_resources>: 'gpu,
++{
+     pdev: &'gpu pci::Device<device::Bound>,
+-    cmdq: &'gpu Cmdq<'gpu>,
+-    bar: Bar0<'gpu>,
+-    vgpu: Option<&'gpu VgpuManager<'gpu>>,
++    #[uses('gpu_resources: invariant)]
++    cmdq: &'gpu Cmdq<'gpu_resources>,
++    #[uses('gpu_resources)]
++    bar: Bar0<'gpu_resources>,
++    #[uses('gpu_resources: invariant)]
++    vgpu: Option<&'gpu VgpuManager<'gpu_resources>>,
+     total_vfs: Option<NonZero<u16>>,
+ }
+ 
+ impl<'gpu> NovaCoreVfApi<'gpu> {
+-    #[expect(dead_code)]
+-    pub(crate) fn new(gpu: &'gpu Gpu<'gpu>, pdev: &'gpu pci::Device<device::Bound>) -> Self {
+-        Self {
++    /// Creates the PF services that VF drivers access through the VF registration.
++    pub(crate) fn new<'res: 'gpu>(
++        pdev: &'gpu pci::Device<device::Bound>,
++        gpu: Pin<&'gpu Gpu<'res>>,
++    ) -> impl PinInit<Self, Error> + use<'gpu, 'res> {
++        let gpu = gpu.get_ref();
++        try_pin_init!(Self {
+             pdev,
+             cmdq: gpu.cmdq(),
+             bar: gpu.bar0(),
+             vgpu: gpu.vgpu_manager(),
+             total_vfs: gpu.vgpu_total_vfs(),
+-        }
++        })
+     }
+ 
+     /// Returns whether the PF booted with vGPU support enabled.
+     pub fn is_available(&self) -> bool {
+-        self.vgpu.is_some()
++        self.with_vgpu(|vgpu| vgpu.is_some())
+     }
+ 
+     fn gfid(&self, gfid: u32) -> Result<Gfid> {
+@@ -84,11 +97,29 @@ fn gfid(&self, gfid: u32) -> Result<Gfid> {
+ }
+ 
+ impl NovaCoreVfApi<'_> {
++    /// Obtains the enabled PF services for a bound VF.
++    pub fn handle(vf: &pci::Device<device::Bound>) -> Result<NovaCoreVfApiHandle<'_>> {
++        let handle = NovaCoreVfApiHandle { vf };
++        handle.with(|api| {
++            if api.is_available() {
++                Ok(())
++            } else {
++                Err(ENODEV)
++            }
++        })?;
++        Ok(handle)
++    }
++
+     /// Creates and boots an instance for a one-based VF ID.
+     ///
+     /// `sbdf` encodes the VF address as `(segment << 16) | (bus << 8) | devfn`.
+     /// `vm_pid` identifies the VM process's thread group. This call may sleep.
+-    pub fn open_instance(&self, gfid: u32, sbdf: u32, vm_pid: u32) -> Result<VgpuTypeInfo> {
++    pub fn open_instance(
++        self: Pin<&Self>,
++        gfid: u32,
++        sbdf: u32,
++        vm_pid: u32,
++    ) -> Result<VgpuTypeInfo> {
+         let dev = self.pdev.as_ref();
+         let gfid = self.gfid(gfid)?;
+         let dbdf = Dbdf::from_raw(sbdf);
+@@ -100,31 +131,33 @@ pub fn open_instance(&self, gfid: u32, sbdf: u32, vm_pid: u32) -> Result<VgpuTyp
+             dbdf.into_raw()
+         );
+ 
+-        let bar = self.bar;
+-        let cmdq = self.cmdq;
+-        let vgpu = self.vgpu.ok_or(ENODEV)?;
+-
+-        let type_id = query_assigned_vf_type(dev, cmdq, dbdf)?;
+-        dev_dbg!(
+-            dev,
+-            "vgpu_open: gfid={} assigned type_id={}\n",
+-            gfid.get(),
+-            type_id
+-        );
+-
+-        let vgpu_type = query_vgpu_type(dev, cmdq, type_id)?;
+-        dev_dbg!(
+-            dev,
+-            "vgpu_open: gfid={} vgpu_type={} fb_length={:#x}\n",
+-            gfid.get(),
+-            vgpu_type.vgpu_type_id,
+-            vgpu_type.fb_length
+-        );
+-
+-        let type_info = VgpuTypeInfo::from_vgpu_type(&vgpu_type);
+-        vgpu.create_instance(bar, InstanceInfo::new(gfid, dbdf, vgpu_type, vm_pid))?;
+-
+-        Ok(type_info)
++        self.with_project_ref(|this| {
++            let bar = *this.bar;
++            let cmdq = *this.cmdq;
++            let vgpu = this.vgpu.ok_or(ENODEV)?;
++
++            let type_id = query_assigned_vf_type(dev, cmdq, dbdf)?;
++            dev_dbg!(
++                dev,
++                "vgpu_open: gfid={} assigned type_id={}\n",
++                gfid.get(),
++                type_id
++            );
++
++            let vgpu_type = query_vgpu_type(dev, cmdq, type_id)?;
++            dev_dbg!(
++                dev,
++                "vgpu_open: gfid={} vgpu_type={} fb_length={:#x}\n",
++                gfid.get(),
++                vgpu_type.vgpu_type_id,
++                vgpu_type.fb_length
++            );
++
++            let type_info = VgpuTypeInfo::from_vgpu_type(&vgpu_type);
++            vgpu.create_instance(bar, InstanceInfo::new(gfid, dbdf, vgpu_type, vm_pid))?;
++
++            Ok(type_info)
++        })
+     }
+ 
+     /// Tears down an instance, retaining resources if firmware cleanup fails.
+@@ -136,11 +169,13 @@ pub fn close_instance(&self, gfid: u32) -> Result {
+ 
+         dev_dbg!(dev, "vgpu_close: gfid={}\n", gfid.get());
+ 
+-        let result = self.vgpu.ok_or(ENODEV)?.close_instance(gfid);
+-        if let Err(error) = result {
+-            dev_err!(dev, "vgpu_close: gfid={} failed: {:?}\n", gfid.get(), error);
+-        }
+-        result
++        self.with_vgpu(|vgpu| {
++            let result = vgpu.ok_or(ENODEV)?.close_instance(gfid);
++            if let Err(error) = result {
++                dev_err!(dev, "vgpu_close: gfid={} failed: {:?}\n", gfid.get(), error);
++            }
++            result
++        })
+     }
+ 
+     /// Resets an instance and scrubs its guest VRAM. This call may sleep.
+@@ -150,9 +185,68 @@ pub fn reset_instance(&self, gfid: u32) -> Result {
+ 
+         dev_dbg!(dev, "vgpu_reset: gfid={}\n", gfid.get());
+ 
+-        self.vgpu.ok_or(ENODEV)?.reset_instance(gfid)?;
++        self.with_vgpu(|vgpu| vgpu.ok_or(ENODEV)?.reset_instance(gfid))?;
+ 
+         dev_dbg!(dev, "vgpu_reset: gfid={} done\n", gfid.get());
+         Ok(())
+     }
+ }
++
++/// Access to PF services for the lifetime of a VF driver binding.
++///
++/// The PF's registration keeps these services available until VF removal
++/// completes and is dropped before the GPU resources they borrow.
++pub struct NovaCoreVfApiHandle<'vf> {
++    vf: &'vf pci::Device<device::Bound>,
++}
++
++impl<'vf> NovaCoreVfApiHandle<'vf> {
++    /// Borrows the typed PF services for a single operation.
++    fn with<R>(
++        &self,
++        f: impl for<'borrow, 'data> FnOnce(Pin<&'borrow NovaCoreVfApi<'data>>) -> Result<R>,
++    ) -> Result<R> {
++        self.vf
++            .vf_registration_data_with::<ForLt!(NovaCoreVfApi<'_>), _>(f)?
++    }
++
++    /// Creates and boots an instance that closes when dropped.
++    ///
++    /// The arguments have the same meaning as in [`NovaCoreVfApi::open_instance`].
++    pub fn open(&self, gfid: u32, dbdf: u32, vm_pid: u32) -> Result<VgpuInstance<'vf>> {
++        let type_info = self.with(|api| api.open_instance(gfid, dbdf, vm_pid))?;
++        Ok(VgpuInstance {
++            api: Self { vf: self.vf },
++            gfid,
++            type_info,
++        })
++    }
++
++    /// Resets an active instance and scrubs its guest VRAM.
++    pub fn reset(&self, gfid: u32) -> Result {
++        self.with(|api| api.reset_instance(gfid))
++    }
++}
++
++/// An active instance whose teardown runs while its VF driver remains bound.
++///
++/// Dropping this guard may sleep while firmware teardown completes.
++pub struct VgpuInstance<'vf> {
++    api: NovaCoreVfApiHandle<'vf>,
++    gfid: u32,
++    type_info: VgpuTypeInfo,
++}
++
++impl VgpuInstance<'_> {
++    /// Returns the assigned PCI IDs and BAR1 aperture size.
++    #[inline]
++    pub fn type_info(&self) -> &VgpuTypeInfo {
++        &self.type_info
++    }
++}
++
++impl Drop for VgpuInstance<'_> {
++    fn drop(&mut self) {
++        let _ = self.api.with(|api| api.close_instance(self.gfid));
++    }
++}
+-- 
+2.43.7
+
