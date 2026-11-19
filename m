@@ -1,101 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.45
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795124474;
-	b=uVv58tjoNb48VZhC0jgzWBucBSD2rO12j9WQZ2Ws0Ql0916W6cX5LSXXPMIBLrE8PKSr
-	 pFFOA9OODisJ01yJwmV7fBQ9hYv6EW/0Fr++vPQVl+Cl8muReOdSUh/nulCmzjFDicciR
-	 2N0ml/kh8aiYPY1uDtYN1XIJmevp6wa32B8KTzBRWuAoZkxTkDu/7pyvPizfsaN/XinIu
-	 anW1DnN7tnUHrpQ1nwIC+fc5uvO1pH0j2Ygw7tTh5BvVvEL5gg8R2SI4HBOCxwuEOS71e
-	 to/XUqBO+QtTexnorI4NhXXKEb5D5deptBVk5iEOGof/kFX0t5RcLSotQ70UWpkV1wg==
+	t=1795124844;
+	b=oBIuUrilMjowrnJi/HiSNDjiuWTx4Mq+vowcu4aA3Kx+6ESUVnJIe77v/cjJA56gAGJC
+	 Vwtsg7rbRfBaKzLqInp5V4UJb/Y7V2+CUouvGzGWrB1nWhQuw0XUVtmDZBi0k0CFAp7Nr
+	 3xLHIwdJx83KMoDTeI9oWLvaa3cCK05lnfzWepNsvxoGedZcVIfz+c/yvePOKExOQ2Yrz
+	 rIlykr4Ez5xR4SsAcHXyRTIZDVLDm80ZloqibCSGaFKHroeVxXdu/miuVJstgLl4Y/If1
+	 hsnbPCQu6mrG1jCkbTc2GaYa/SwgAfFvPzIhgc5qlHSeGk60wmTLFLNb3jKweBzCDaA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795124474;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795124844;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=kDU29mIYVbX6MgdkOf8i59+de2UC///eq4pVelmEHVw=;
-	b=YLQn9MYa421a4Q/LM7rYycirL8jiEtKBMM4dwX05R20Dj28+/60c9N2lh+CTW/U24N2Q
-	 IyT7McmVHyzqTMGpe0Y4f/IzHU5a7B7pgUdmIic2UmGwpYIuojK7SMf84IRXRlMCnvE9v
-	 PLl0+BVjyo+EyiyvWwhYL6phlDG5TayZsg50ZO/7zgu+DXTtPmPYe8IzMC3VI6YAwmacT
-	 hUuSsaSmnf4CRkOixTWKoyVnJNvNt/IlbM3MKTFnpuaZhY/x0ZF6GYouodXCVW9i0DOTT
-	 O2Gg3keKEpDL00pGAu2O5/pUS9E2naHA8lPgiWOz43jlolq0XQWSUL4P+ef094lCOSA==
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:MIME-Version:Date:X-Gm-Features:Message-ID:Subject:To:
+	 Content-Type;
+	bh=L7EofMK/Ds2aCpVQ+mBzdmSBmTPWhoy8WE97V8cVUk4=;
+	b=TUX2jSzfoHHLBjLZrCfXUn56/qdDyEr5YzhPhb0sMk0xyAqaEtYEIWZ6DpOECE7G3NIB
+	 cyJkjLhpE1wzMO3sqOx6LKg2qbJ/DciKnoBWgHQg1qNsBsiHg3ctTc4fhuclXw1VHcLXM
+	 GYIVPA/huEJ0UPNeGGFQWen3pGSogep8hXoCKbB0ftY1YQnrtHR1tTocQ16Nor1FCd7Cg
+	 8JSwMp2hjz8hgNSoCvQteo0rNvfp40db8wxS0m8fBrDnQDDhoRMrdWA0Mo3Q5MS0eh7pu
+	 jPOoPvEGNrzIZGHhb1V3WUSHLxS+0y/PFDxLUawjnr/3f46K5bkoiXjdmWQ8014pqCA==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="ilDK/JZ3";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.46
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=FhfCqjZ9;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.45
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1466C606A320
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 21:41:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1466C606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937E3606A324
+	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 21:47:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 937E3606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ilDK/JZ3
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6ba2bd43dd8so1179a12.1
-        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 13:41:13 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795124472; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=FhfCqjZ9
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-92104b67a9aso3176396d6.2
+        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 13:47:23 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795124842; cv=none;
         d=google.com; s=arc-20260327;
-        b=HONUAPD6BxTK7IED34D5WWG86UbN18zzEMR79d/Yrwsi96rdVmaoKLGiVSnz2JJbw7
-         K933p31ZRk6RyWn7zZqkEukph4SwZgA6gu/+Jq/tqxkQCmv+vUbwLZEfN7iKG5Ct8Q1W
-         kT1d264pF6CmZj2/5dXiViD4OnouuT9TCqr4pss/AFXJuRk7OLcRBLiKhF783lZ2bhYR
-         yYrat1T1YKSK1UOGxgFuOX+kCKZVtdQep0Kfyz0UA13QgSoPRqeJa9LrY1A5FDuFxlHT
-         D0elmJSK3beZEMIc5PAk6bIxbAHi7hBGQa2WZJgCvm5deexiYELPIe4vqd0ZUM3tw9sH
-         xiWA==
+        b=igcM9L2hCaJpokm+aTJhkU36UikYWyA+WErFDMo2nxYpyFknwf0vmNKnS8A3G+Qmw3
+         aw7fZo1FPd2XUI4U+Dp7faa7gRcwi+yjrDnnTlvBtEcjqmiAGS0vZyKPisPC1JS9j+/z
+         qGO6lI64lpGUF8LthQKk5fTHoSs9uQXmaKAQhwNpmDE3xUycd72o+Gt7ZPsCC1VpLlHU
+         z0iT9OeWxI3/ryfzQW/1V0pRrELGJxVjn6Sz4ukwc/GJ+7k5B6uCsgHjjlyTLANNJuTl
+         FdQuKOnL/4PuTz944d2Jz/1P6OSAimuPRnlBnm/YwZEesAn/kOdb+WvLGKKg08Ff5WaO
+         3Pvw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=kDU29mIYVbX6MgdkOf8i59+de2UC///eq4pVelmEHVw=;
-        fh=8MOZO32Hxws3fULCY+47eI8AaGhCuD/yWlwxLk8+6G0=;
-        b=AikHfWkPbJFkaoRtPmCCls3nPEXtriyzLK8BeIVZkTpIBnGfeIS0YpOoLW2Nq+w9yF
-         h89JupEcfAHMU93giRZvwseXDfen9TxoJ8FyYAdq66LACvB11KENftsd9+yXQxZNTIRL
-         7wrhi5pv3KHib32ufUVCxP3fapkDljnPbPfoleonguZqzY+/nYxTN6Vyka1awv786bL+
-         8dLA9Df33BM5aVWiV85UNN2oXz7NKCAKO0WIYY/XG9U/16YIRlKQ7JS1SKE3qHQWjm28
-         YerYfXlrVSw3APJn9Qzpb5t6HeM/lV8OmtiawwFaLyOPCO393FcuBmHI10ASAVghGnm4
-         msaQ==;
+        h=to:subject:message-id:date:mime-version:from:dkim-signature;
+        bh=L7EofMK/Ds2aCpVQ+mBzdmSBmTPWhoy8WE97V8cVUk4=;
+        fh=MWDhOKLn0/JLwn5oyZWezoehjcgd92Ze3bFvq3M4mLo=;
+        b=IL3Tb1e24LjLk9ekqAZNl87EG7UzHHAzDz8+F0JxWK+XV0sdfCjGo5iO3J3HR/93jZ
+         RD8yNbBY6i8s4JZjTdXPW0rCmDASY5S8jtX7xS5LBq72oNVxjxl27B1Vkd99dvebH3ok
+         p+zTokdH+YXJDvjRGlkekA5j2ziWPSsqregoXVkIutov76Tz3Vy8KfqT3mgA0maL8W7u
+         +tk93gRgUeWujhguO5QW9rnA54JDcJSp/mp5s2KPxGiPeQojWAldaPXnhHIXvuHe+9lZ
+         84+ldtQw/D931dYw2tUhjZBaOQIYYVAxr/6+bX+exh4ovlbu93T68je8S59mPIdZbIWk
+         XjLw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795124472; x=1795729272; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kDU29mIYVbX6MgdkOf8i59+de2UC///eq4pVelmEHVw=;
-        b=ilDK/JZ3iEhPmA6fqX2i/BpAabmE/voFmCJTFAAWDESlKgB9pllQ1/l/7DVqZwMCw7
-         Y8zmPO55IGLBEUXYzWQH7MdJiWX3yMBo7hKFNqbIEt68RSsqm/x/F5a7dVSbXx/SH1Wo
-         Z8IFTE3EWw7O2v79rIXjKXJ2lEjmomWf2JtoRmDd/Cw+lS5/IApS8BSVyacoha2cvfmq
-         d/eB1nOn/1xJ2os1IfAsQF3HQNCpIGycC6f0PGvBINo4pbI6lzYsB1hA4s2oIvUfevk2
-         lBzsn2Ii3sXcUB8pKB9gaIlFAWNXC1awm1Z1gic3HdwP46Awc1xnJih4wTGbYbc6UFoQ
-         tX2Q==
+        d=google.com; s=20260707; t=1795124842; x=1795729642; darn=vger.kernel.org;
+        h=content-type:to:subject:message-id:date:mime-version:from:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=L7EofMK/Ds2aCpVQ+mBzdmSBmTPWhoy8WE97V8cVUk4=;
+        b=FhfCqjZ9kHq0VM02oTsUQ3txYTYlT0QUPVw6yotQ4PPUYClDEqOk7micH8qS4jPPtz
+         FfyzUoq6ggbBfSEtUkXT+sqwWC6ZadBE2m2edPu4zU6iXjj0GAFgqjM62n3ssnE2cZND
+         uvnjXIJTIjrYhcL/nBMwghqrpkdUcdqPoog3cfLv+Fj+Oib1kC27gq6O7QJLMQyfhAkp
+         WtckTKUpcinQCKll9j2wu4/TUjJPuDg4gj1CvNmirVJ2RJe+s8oAtaM0WoFCoUCAzHbR
+         QrJS03MyoQf5IQQ6MKdVNIyKis9vo6tf2u5gPShqQLWCs8ig0orKHuemeparyp1wUYEt
+         +34Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795124472; x=1795729272;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1795124842; x=1795729642;
+        h=content-type:to:subject:message-id:date:mime-version:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=kDU29mIYVbX6MgdkOf8i59+de2UC///eq4pVelmEHVw=;
-        b=1eJWmelAlrGqroDcnZIoEbhtvk4KW+fjNOk2vBYzLLSGvORRpDE8FVpqpihHQahMyB
-         YavOXwc5FPdgTR5Ut7REzM5dlmx90w7KjpAErPuhwoD5UswefmIsOEIlYCUl2KRzCWCE
-         c8NolpLSvxzMtfmt9tEonsCjkSNaPlPQbWOygjTYDAMfugx2HTBatFT9resdtXxFST4q
-         BC5TqHqzHs2BCifUlFJfAkN7eWXt/kS9qAknfkDwY1W1LW1HELxweWe2GNvNysAF01rM
-         bwd8qs7Owpao7JmrDGYej7gSTE3tjxV5JstZ4w/vhEwXkfy9EDu392dX6jU1R5s7R4tv
-         svNQ==
-X-Forwarded-Encrypted: i=1; AL+hErHckeXlN4IHV2guRsg8aMh/DIVRTgRGEkITNB7fGKCt6ibOsUxZSSeU9IIrw1mFLibKWGw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+m+RyUPBGWv/n9dKoT46QwvYCgsJnDElp61eLSd09w31MSgE/L
-	domEUYqeLbQA0rtWVLFcO73VwZSPusdyd61jnL8HS+xLppdegPgcPNEWNDAxWzl0k071ML3wUtk
-	OfhqfYZENqDGlCf3TFyfKt82kPpkBKegkn860k7wt
-X-Gm-Gg: AYBFou1m48mcI/VFBlmYruElxaPZgdM+JsxW9kTjuRG9kQkPoebf1nGuY7ReqaQuYF7
-	O+KIdErz1JOFYrk+MCiRmtslnxPEUH5xM/jC3OteQu7NdMb6Dr+rE0n78rQ+wqum5zRk4Dv4Qat
-	ruhjDG+j/6Ydl/8rUHWNd2SZckr9K9FFJoh+rMXtAJ46CuesFNUMfBly5ogEpibd69REROmucX3
-	fu5b4hyqd7QKC7EoAbn143Q2B6od+Pu4vnHM2SrgS42JwHAUtbZMMInjQdsdhOZL7Oi/4aga9Iy
-	zqpfR5tzWLjXihbwn5bubV5Q022nqVlevmcBwDfeB2X5v5RQ1/JDn+2aQQSUhZZdalHNGSw0ZsF
-	NQzaeiRk3F/TN287ADaze/XOIJJSEU5TTCMxgx/IEc8Bbo00XIZ78w8yKJyjYHNNXJAtUuU+MLv
-	THWUr/Nl2+Iq2gDjELVGnxy2jDSoiQqJ7PA6foa9aae5SuR045JkD3fg==
-X-Received: by 2002:a05:6402:a218:10b0:6b1:a517:5bce with SMTP id
- 4fb4d7f45d1cf-6ba3f5dcb39mr6485a12.16.1795124471909; Thu, 19 Nov 2026
- 13:41:11 -0800 (PST)
+        bh=L7EofMK/Ds2aCpVQ+mBzdmSBmTPWhoy8WE97V8cVUk4=;
+        b=hKnNjFE94qREdwWOI8SJTryuJqpqI3KUHyCf4CrU5C+e1Z0Tq2TcPsSrYkOr9HOFN+
+         1b/7YTWCPlK0TrB2VinVGLw04HsaNZWj+evGY6uBT/459stwQ1qBM1XHNSLf1r4lbM3H
+         fdbf0KZbcOXXAI0pfp1mpj+ANc0+ztDk8hLKCNAOajtHl/cvDG+wYrH6rFZ/JbP63CbF
+         ouPSqyowhrpkCwjV/AHgIwAwq9wpi6UiVw03SKJDa58XUh45a7mAVJWjKqAjIJuCq25u
+         2XP7aMbL+2+5MV4Df41euWSyt55F7eFoSkJGgUljz3kgQBU/7jZXYpaetgIzJD/rVCkY
+         KqQQ==
+X-Forwarded-Encrypted: i=1; AL+hErF5N8uHegHKvguk4fMUSA1DEuPbt9gLiZMLfiQubK9EyfxhOMEXHwedjhIJoFnR2xcxR5o=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/tf8FlAgtOBcAeHrKU0hsqOYuUQp+NW0N6sV2zP+ONdMJqaJi8
+	VLKppvy7QRvyeKFwS07A88Tuhfpm4jQRfR70awFgbKe6gv15/QcymNjMEoePbysrEJh0BuEi+5h
+	TMnljy4HZTD/2RlfSS/QEiMI5tPbEGosBVOZbySUX
+X-Gm-Gg: AZFdTZdHatqfFfT8a23AU+tWX3OfNvxyyfn5wvYSQHTGTodoZBl4nARbi+DPu3uyZre
+	rQ2oMhTrs2JqTsVjQNcZ7nL8vgVjrjcrdounnoswI+IYqS217zbjzcXZGUF6XZvNsBsoemnKxtE
+	Vqkk66pi9aCIdkX6lERH/heESXfwjTPPvM7E03E+aoFUmZAPD8QCwpO+85vIh17rJg8OCfUM3T6
+	I4EkcEufMNN/Be1rkOFLSU32wv/qW3OC4pRutT2vFno1rRlFJeVZpSS+Y6oxo4BXgkEy16szvkX
+	WZubfqE3zzfrxkOGCRZfB1TBfA74sNtTJzX2vWivjeSEsHVxTb1GodPrFqKIZElRhhUK9bJskgT
+	7XkzZwjjQN8CDYEdnu5ixxnfpGRGCYkjhM5zvPeKIhM/G18+hc9/ActjpB/ek88X0C+woKD6UYC
+	AOt+wG/7prGwZixogWRr0m+x8=
+X-Received: by 2002:a05:6214:460b:b0:921:3585:de48 with SMTP id
+ 6a1803df08f44-9213585e1c5mr10964386d6.40.1795124841760; Thu, 19 Nov 2026
+ 13:47:21 -0800 (PST)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 19 Nov 2026 13:47:20 -0800
+From: Ackerley Tng <ackerleytng@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,88 +105,50 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019210532.378628-1-shivansh.dhiman@amd.com>
- <CALMp9eRS8Pg1E76yeFYd5Cq6O9EGcj3LMLV4X6-54ozFamsNsA@mail.gmail.com> <3ff9ea37-f70f-41a2-be3a-0af2c68c48b3@amd.com>
-In-Reply-To: <3ff9ea37-f70f-41a2-be3a-0af2c68c48b3@amd.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 19 Nov 2026 13:40:59 -0800
-X-Gm-Features: AclHuK-THxc7myE4vHruM5DxsNF8cnuQUt6G9cD5Y2L_LD4SkB6Kg2nWoFGflwY
-Message-ID: <CALMp9eQ7a4tgH7DGdPZDE+xwie5c7DvvP66FbVM3wMPBJKZRmQ@mail.gmail.com>
-Subject: Re: [PATCH v2 00/12] KVM: SVM: Add support for AMD LBR Extension v2
-To: Shivansh Dhiman <shivansh.dhiman@amd.com>
-Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de, 
-	mingo@redhat.com, peterz@infradead.org, acme@kernel.org, kvm@vger.kernel.org, 
-	x86@kernel.org, yosry@kernel.org, thomas.lendacky@amd.com, 
-	nikunj.dadhania@amd.com
+Date: Thu, 19 Nov 2026 13:47:20 -0800
+X-Gm-Features: Aa3M54rWsn9wxe2P3t1_p7RxahQjwFGHSbiMXqoPeTbRFHx6sSpgmtl4W0fkKbs
+Message-ID: <CAEvNRgHpOQsF1E78uMs8OejSnNxWdRg-1_b-V56Z=kmotJt6fQ@mail.gmail.com>
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-12-10
+ (2026-11-26 cancelled)
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	KVM <kvm@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Nov 15, 2026 at 12:33=E2=80=AFPM Shivansh Dhiman
-<shivansh.dhiman@amd.com> wrote:
->
->
->
-> On 21-10-26 00:53, Jim Mattson wrote:
-> > On Mon, Oct 19, 2026 at 2:06=E2=80=AFPM Shivansh Dhiman <shivansh.dhima=
-n@amd.com> wrote:
-> >>
-> >> This series adds SVM support for virtualizing AMD's Last Branch Record
-> >> Extension Version 2 (LbrExtV2) in KVM.
-> >>
-> >> Background
-> >> ----------
-> >> LbrExtV2, introduced on Zen 4, is a branch sampling facility. It recor=
-ds
-> >> the last taken branches in a 16-entry stack of dedicated MSRs:
-> >>   * MSR 0xC000010E - Last Branch Stack Select  (LBR_SELECT)
-> >>   * MSR 0xC000010F - Debug Extension Control   (DBG_EXTN_CFG)
-> >>   * MSR 0xC0010300..0xC001031F - 16 LBR FROM/TO MSR pairs
-> >>
-> >> AMD hardware extends the VMCB save area with fields for these MSRs. Wh=
-en
-> >> V_LBR (VMCB.MISC_CTL2.LBR_VIRTUALIZATION_ENABLE) is set, the CPU saves
-> >> and restores the guest's LbrExtV2 state on VMRUN/#VMEXIT. Thus, the
-> >> guest can use LBRv2 without interception.
-> >
-> > Only DebugExtnCtl is actually swapped. APM vol. 2 (rev. 3.45), section
-> > 15.23.1, says:
-> >
-> >> VMRUN only restores the guest state and #VMEXIT only saves the guest s=
-tate of the LastBranchStackFromIp, LastBranchStackToIp and LastBranchStackS=
-elect MSRs.
-> >
-> > That is, the host's LBR stack and LBR_SELECT are simply lost on VMRUN,
-> > and the CPU doesn't put them back on #VMEXIT.
-> >
-> > Isn't this already a problem today, before this series?
-> >
-> > At the base commit, KVM sets V_LBR whenever the guest sets
-> > DEBUGCTL.LBR or DEBUGCTL.BUS_LOCK_DETECT, for vmcb02 whenever L1 sets
-> > V_LBR in vmcb12, and for all SEV-ES and SNP guests.
-> >
-> > Since KVM knows nothing (yet) about the LBR stack fields in the VMCB,
-> > they are all zero. So, on Zen4 and later, a VMRUN with V_LBR set wipes
-> > out the LBR stack of an active host perf session and clears
-> > LBR_SELECT. DebugExtnCtl *is* restored on #VMEXIT, so the host resumes
-> > recording, but with no history and no hardware branch filter until
-> > perf next gets around to calling amd_pmu_lbr_enable_all().
-> >
-> > AFAICT, this series doesn't address that issue.
->
-> For the new LBRv2 support, my understanding is that the mediated PMU
-> restores the host state. KVM exposes LbrExtV2 only with the mediated
-> PMU. After each #VMEXIT, perf_put_guest_context() schedules the host PMU
-> context in again. For an active host LBR event, this runs
-> amd_pmu_lbr_enable_all(), which writes LBR_SELECT and sets LBRV2EN
-> again. Thus, the host filter is back, and the host LBR stack starts
-> empty, as after a host context switch.
->
-> Is this correct, or am I missing something here?
+Hi,
 
-My comment was about a pre-existing bug. When the mediated PMU is *not* in
-use, perf_load_guest_context() and perf_put_guest_context() are never
-called. Yet KVM still sets V_LBR whenever (a) the guest sets DEBUGCTL.LBR,
-(b) the guest sets DEBUGCTL.BUS_LOCK_DETECT, (c) L1 sets V_LBR in vmcb12,
-and (d) for all SEV-ES and SNP guests. On Zen 4 and later, VMRUN with V_LBR
-set wipes out the host's LBR stack and zeroes LBR_SELECT, and #VMEXIT
-re-enables host recording via DebugExtnCtl with LBR_SELECT=3D0.
+Next Thursday's guest_memfd upstream call (2026-11-26) will be cancelled
+due to US Thanksgiving.
+
+Our following guest_memfd upstream call on Thursday, 2026-12-10 will be
+shifted 2 hours earlier than the usual slot, to:
+
+ - 6:00 - 7:00 AM PST (Portland, GMT-08:00)
+ - 3:00 - 4:00 PM CET (Munich, GMT+01:00)
+ - 10:00 - 11:00 PM CST (China, GMT+08:00)
+
+On our agenda for 2026-12-10:
+
+ - TDX huge pages (Yan Zhao from Intel)
+
+P.S. I've also adjusted the time zone for the meeting to be
+America/Los_angeles so it's always 8 am in Portland. (It's what David
+used to do for daylight savings too. He's nice to US folks :))
+
+
+We'll be using the following Google Meet:
+https://meet.google.com/wxp-wtju-jzw
+
+The meeting notes can be found at [1], where we also link recordings and
+collect current guest_memfd upstream proposals. If you want a Google
+calendar invitation that also covers all future meetings, just write me
+or David a mail.
+
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
+
+[1] https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+
+Thanks,
+
+Ackerley
