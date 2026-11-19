@@ -1,62 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.216
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795087245;
-	b=iODWqSc+0gtXmrlsIUyHabLMVxJ06xDS7UPqmTe+/E12/nAITNJxdMHrZoABePSGnd+7
-	 6+u6A7pCLUM7nz9amtUk53YU5WtdWzGIe8poWU2/d+0UWtw1976LPk3SsiEhJLZ2MWhXl
-	 rhEhVMnNe9lurz3ErMdPr25vrDPx6uMMH1iM+rY39N4x63543Y161wxn14ZwAsec4jWOA
-	 sK3QsMNVBqUJz8+jyIwtVZYpa1y/mAl1Go9kXr2Na1MZj5SfYr72dA36PX2qtwDI17JYv
-	 z2fYXIP0jhDzJ/XlW6CB5tMBE5PwoGZD8QEc0I/Pj5wGClURT7U83GaIt+dbqGkO/SA==
+	t=1795087849;
+	b=nak702jr3QGfk0/zRhvDp8xsL6IsOe8tLampmRfUgJVvt5m3ZWmxE9NM1AKXfd6TcW3c
+	 GT+v1n6snx/eylCskEUUWr7k7w8LUv1yG30q/xXtbx27o4WPllECyPN/52tUF2e3Y0O5I
+	 VK+JnUKZ+3PlIgR6/N6XLbeFPtgOcG0nSEAsGr96F6Pt+UVIqUWKNLj5nJ2HGMPqEy30F
+	 6lj7DICHkZkI/Q+JcpVapFCsA5gvpcO462s1crfR/+HQQjQkLfmON4ybJdiGF2TRGwHPa
+	 9a/s8vxqdNqy0yQhtJnKxucaCBHVyy3IbYJJP42Nrxme4t9tuXeRMXi91XGrWsG5vUQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795087245;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=/P5mabH0JHkQS/tGtMzwsxMvwb/yv9fD2MpxixKyD8U=;
-	b=ZBAX9nImM5qE7+kamuGX3kBQ6dbP9k5MhavUDjWUTIPSYftX9BxJr5BhqnuXvkbuD+/J
-	 oSx+FvwX4Nh1WEGeNhRhCsEtKIrJ9Yg6xNPNqnsKhDJGepvHYqSIyXuxt2va5r+ZWzo+J
-	 HgVirMh56G7k3rDdyuf9DgIXXOMQ123N3vxGx8unIpEUaiNNDXO5KHJyf4+zkns5ZISmQ
-	 e8h3aDXYHPMIDisV1rSFpAFMDjurlKYeS8RKb5v0aCPuUMjRDLTbFedoAHF+nqO9UG8Qc
-	 2xdKg6u+gdQGiXyAwhRyA1RnHPxa6PJqZCNapWjaolqmQR8Om8IAylXm0mioZyUR7rA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795087849;
+	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:CC:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy;
+	bh=z0E2lZlV2yoBMZ56bSiufGGAa3c0rIjegx9XME1SsuA=;
+	b=q48nJ2Yjc/5g70dQx4MRzWgfkbVCMKbC38lvLl2TedqCBUTeMa/WK54WQfV11cYoM1hT
+	 7eDax9UJJ76RpaI1k6MiCevD5xQbs8r/Pj+yQGZZ14uP1N/TqoHXKpVoxQmNAe6VLOubd
+	 pZyipE3Udfj0lX29P2KpVS398RgS2r65UtJQ4oJ+4ksSFhsjTGpmeNTVA78dAPapl7H0E
+	 cR1AugaaUGhDLtXAck+jbSzV2ot9Y/x4zFIfjH1KzkX+R5+68/xb6VoEzP7nH6J4pCUKd
+	 gVK8SOOn3cvxzVYXBlq64vAhmyqjbw/sId8ePC8r1GvZqKomRb6GkrFbtda7pOxCXGQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J6QRnhqe;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=huawei.com;
+	spf=pass smtp.mailfrom=huawei.com;
+	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=FO7D36Ur;
+	arc=none smtp.remote-ip=113.46.200.216
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07F7606A320;
-	Thu, 19 Nov 2026 11:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085DE606A320;
+	Thu, 19 Nov 2026 11:30:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 085DE606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J6QRnhqe
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 320261F000C5;
-	Thu, 19 Nov 2026 11:20:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795087245;
-	bh=/P5mabH0JHkQS/tGtMzwsxMvwb/yv9fD2MpxixKyD8U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=J6QRnhqeiU7je1XkiTOaqNrgMzrdoqP/BPZSq+iaDn+oJkHi+orLkPCpF8TyD1CJw
-	 lIE0ZQgzfPutKfLZwqyvZguVZaw9OvPeTT/qEZsGxXTylHmdhhHW9qXcLM+Asinnil
-	 AABvpa8cMTRXIbsymHkB0WFv9VyoUftBs38JkcgsHR+xm0RaA1E0qqsBt6TCkTM6oX
-	 qR6iqG9DfHXJ2+YGHLWmNevEs5VG2yy+n3mtoZYWY/TtWu0Im0ExGSeuqrjEhBqwF7
-	 vRs93CTwLCONIKIsH7e8vNqdzBjiaNH01eBP3cb4bLKR7PSle64WJLqRjoky4S3MpZ
-	 tbJdB43hK8U5g==
-Date: Thu, 19 Nov 2026 11:20:38 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Fuad Tabba <fuad.tabba@linux.dev>, Paolo Bonzini <pbonzini@redhat.com>, 
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Isaku Yamahata <isaku.yamahata@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
-	Wei-Lin Chang <weilin.chang@arm.com>, Will Deacon <will@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] KVM: Stop KVM_PRE_FAULT_MEMORY when the vCPU's
- dirty ring is full
-Message-ID: <av7bYb1geEGzaj8e@gremlin>
-References: <20261117074428.7544-1-fuad.tabba@linux.dev>
- <20261117074428.7544-2-fuad.tabba@linux.dev>
- <avxfgWNePsGPK9mm@gremlin>
- <CA+EHjTzUrDxLSMEo6X66XhKtQ-=ew3zZhMdFWR6U9Ga17WLWkw@mail.gmail.com>
- <av5CBjbeidUUWiLq@seanjc-mac.roam.internal>
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=FO7D36Ur
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=z0E2lZlV2yoBMZ56bSiufGGAa3c0rIjegx9XME1SsuA=;
+	b=FO7D36UrX7bZtaxDXteU563jvlJyGcPLEvuvew7jirOzcsUkDJa7r7jipCvKI8QW9Q9+GAfSX
+	OLVaxJqNUhlQrJYkx6dT67m1ValxjILRAyaHmHEePh3QnIslz3nu9q7SbRoGklcUaKb41jl5qMf
+	oqfOAoKIJ/3UbJ12SIiCmok=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4jVbqG1Ywcz1T4Fp;
+	Thu, 19 Nov 2026 19:30:02 +0800 (CST)
+Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7759D4057D;
+	Thu, 19 Nov 2026 19:30:43 +0800 (CST)
+Received: from [10.67.121.161] (10.67.121.161) by
+ kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 19 Nov 2026 19:30:42 +0800
+Message-ID: <d66eb438-97d3-4f75-9d43-06b994e8edba@huawei.com>
+Date: Thu, 19 Nov 2026 19:30:42 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,65 +62,157 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <av5CBjbeidUUWiLq@seanjc-mac.roam.internal>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v21 12/13] vfio/pci: Reset PCIe TPH state on device open
+ and close
+To: <sashiko-reviews@lists.linux.dev>
+CC: <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
+References: <20261118091238.45992-1-fengchengwen@huawei.com>
+ <20261118091238.45992-13-fengchengwen@huawei.com>
+ <sashiko-outbox-220903@kernel.org>
+Content-Language: en-US
+From: fengchengwen <fengchengwen@huawei.com>
+In-Reply-To: <sashiko-outbox-220903@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemo500009.china.huawei.com (7.202.194.199)
 
-On Wed, Nov 18, 2026 at 04:25:42PM -0800, Sean Christopherson wrote:
-> On Tue, Nov 17, 2026, Fuad Tabba wrote:
-> > > But the overflow bug only applies to x86 (see below), so is this something
-> > > we should worry about at all?
-> >
-> > The ring overflows on arm64 too (below). As for exit_reason, I asked
-> > Sean about the arm64 MMIO case on v1, and his answer was that a VMM
-> > that pre-faults between a KVM_EXIT_MMIO return and the next KVM_RUN
-> > "gets to deal with the fallout" [1]. I think the same goes for riscv's
-> > exits.
-> >
-> > [...]
-> > > > diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> > [...]
-> > > >  The dirty ring can get full.  When it happens, the KVM_RUN of the
-> > > > -vcpu will return with exit reason KVM_EXIT_DIRTY_RING_FULL.
-> > > > +vcpu will return with exit reason KVM_EXIT_DIRTY_RING_FULL, and
-> > > > +KVM_PRE_FAULT_MEMORY on the vcpu will process no more pages until the
-> > > > +ring has been harvested and reset.
-> > >
-> > > Maybe worth mentioning the exit_reason thing if we keep this arch-generic?
-> >
-> > Sure, I'll document that userspace should complete a pending exit with
-> > KVM_RUN before it pre-faults on that vCPU.
->
-> If we're going to do a documentation update, I vote to keep it vague and scary,
-> otherwise readers might think the exception proves the rule.  I.e. if we say
-> that KVM_PRE_FAULT_MEMORY isn't supported, then userspace might think all other
-> ioctls are safe, which is most definitely not the case.  E.g. something like
+On 11/18/2026 8:20 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issues to consider:
+> - [Medium] vfio/pci: pcie_disable_tph() after reset in
+>   vfio_pci_core_enable()
 
-Yes definitely, like drivers, users can get up to all sorts of mischief if not
-properly forewarned :>)
+We move pcie_disable_tph() before pci_try_reset_function() in
+vfio_pci_core_enable().
+With tph_enabled cleared before reset, PCI core will not save and
+restore stale TPH_CTRL and ST table entries during reset.
+The new user session starts with a clean hardware TPH state, and the
+subsequent pci_save_state captures this clean state.
 
->
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> index e95c9cda085d..45dc1e3c0b03 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -6971,10 +6971,13 @@ to the byte array.
->
->        The pending state of the operation is not preserved in state which is
->        visible to userspace, thus userspace should ensure that the operation is
-> -      completed before performing a live migration.  Userspace can re-enter the
-> -      guest with an unmasked signal pending or with the immediate_exit field set
-> -      to complete pending operations without allowing any further instructions
-> -      to be executed.
-> +      completed before performing a live migration.  In general, userspace should
-> +      exercise extreme caution when invoking ioctls other than KVM_RUN prior to
-> +      completing the original operation.
-> +
-> +      Userspace can re-enter the guest with an unmasked signal pending or with
-> +      the immediate_exit field set to complete pending operations without
-> +      allowing any further instructions to be executed.
->
->  ::
+> - [Medium] vfio/pci: unsafe TPH teardown order and cpuhp race in
+>   vfio_pci_core_disable()
 
---
-Cheers, Lorenzo
+The root issue is use-after-free caused by freeing tph_st_cpu before
+draining in-flight CPU hotplug offline callbacks.
+We reorder the TPH deinit to run before MSI-X teardown:
+- Call pcie_disable_tph() first to block new TPH programming;
+- Use cpuhp_state_remove_instance() instead of
+  cpuhp_state_remove_instance_nocalls(), which waits for running offline
+  handlers to complete;
+- Free tph_st_cpu only after all cpuhp callbacks finish.
+Since TPH deinit completes before MSI-X is disabled, the cpuhp offline
+handlers run while MSI-X is still valid, so the spurious -ENXIO error is
+naturally resolved without extra memory lock wrapping inside the callback.
+
+> - [Medium] vfio/pci: stale PCIe TPH state across runtime resets and
+>   config writes
+
+This case is already handled by existing VFIO state restore logic. VFIO
+restores hardware registers after runtime reset, so we do not need additional
+pcie_disable_tph() calls in FLR/hot-reset/ioctl-reset paths.
+
+Thanks
+
+> --
+> 
+> commit 339ada87f2084ce58d1ead31609b94d5bab56bf3
+> Author: Chengwen Feng <fengchengwen@huawei.com>
+> 
+> vfio/pci: Reset PCIe TPH state on device open and close
+> 
+> This commit calls pcie_disable_tph() in vfio_pci_core_enable() and
+> vfio_pci_core_disable() to reset PCIe TPH state when opening and closing
+> a VFIO PCI device.
+> 
+>> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+>> index 049392831b35f..8d3d532cd51ab 100644
+>> --- a/drivers/vfio/pci/vfio_pci_core.c
+>> +++ b/drivers/vfio/pci/vfio_pci_core.c
+>> @@ -606,6 +606,8 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+>>  		goto out_disable_device;
+>>  
+>>  	vdev->reset_works = !ret;
+>> +	/* Reset TPH state for new user session */
+>> +	pcie_disable_tph(vdev->pdev);
+>>  	pci_save_state(pdev);
+>>  	vdev->pci_saved_state = pci_store_saved_state(pdev);
+>>  	if (!vdev->pci_saved_state)
+> 
+> [Severity: Medium]
+> Should pcie_disable_tph() run before pci_try_reset_function() instead of
+> after it?
+> 
+> If pdev->tph_enabled is still set when entering vfio_pci_core_enable(),
+> pci_try_reset_function() calls pci_save_tph_state() before the reset and
+> pci_restore_tph_state() after it, writing the stale PCI_TPH_CTRL and
+> capability-located Steering Tag table entries back into hardware.
+> pcie_disable_tph() then clears only PCI_TPH_CTRL and sets
+> pdev->tph_enabled = 0, leaving the restored ST table entries in hardware.
+> Because pdev->tph_enabled is now 0, the following pci_save_state() ->
+> pci_save_tph_state() returns early without updating the saved buffer, so
+> vdev->pci_saved_state retains the stale pre-disable TPH state.
+> 
+>> @@ -762,6 +764,9 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
+>>  
+>>  	vfio_pci_zdev_close_device(vdev);
+>>  
+>> +	/* Reset TPH state on user session exit */
+>> +	pcie_disable_tph(vdev->pdev);
+>> +
+>>  	/*
+>>  	 * If we have saved state, restore it.  If we can reset the device,
+>>  	 * even better.  Resetting with current state seems better than
+> 
+> [Severity: Medium]
+> Is calling pcie_disable_tph() this late in vfio_pci_core_disable() safe
+> against MSI-X teardown and CPU hotplug?
+> 
+> vfio_pci_set_irqs_ioctl() disables MSI-X and vfio_pci_tph_dev_deinit()
+> runs before pcie_disable_tph() is reached here.  Meanwhile,
+> vfio_pci_tph_dev_deinit() frees vdev->tph_st_cpu without vdev->tph_lock
+> before removing the cpuhp instance:
+> 
+> CPU0                                  CPU1
+> vfio_pci_core_disable()               vfio_pci_tph_cpuhp_offline()
+>   vfio_pci_set_irqs_ioctl()
+>   ...
+>   vfio_pci_tph_dev_deinit()
+>                                         if (vdev->tph_st_cpu == NULL)
+>     kfree(vdev->tph_st_cpu);
+>     vdev->tph_st_cpu = NULL;
+>                                         mutex_lock(&vdev->tph_lock);
+>                                         vdev->tph_st_cpu[i]
+>                                           <-- use-after-free / NULL deref
+>     cpuhp_state_remove_instance_nocalls()
+> 
+> In addition, if a CPU goes offline after vfio_pci_set_irqs_ioctl()
+> disables MSI-X on a PCI_TPH_LOC_MSIX device while pdev->tph_enabled is
+> still 1, vfio_pci_tph_cpuhp_offline() -> pcie_tph_set_st_entry() ->
+> pci_msix_write_tph_tag() fails with -ENXIO and logs a pci_err().
+> vfio_pci_tph_dev_init() similarly registers vdev->tph_cpuhp_node before
+> allocating and initializing vdev->tph_st_cpu to -1, and
+> vfio_pci_tph_cpuhp_offline() calls pcie_tph_set_st_entry() without
+> vfio_pci_memory_lock_and_enable().
+> 
+> [Severity: Medium]
+> What happens to pdev->tph_enabled across runtime resets during an active
+> user session?
+> 
+> This patch disables TPH on open and close, but runtime reset paths
+> (vfio_pci_ioctl_reset(), vfio_pci_dev_set_hot_reset(), and PCIe/AF FLR in
+> vfio_exp_config_write() and vfio_af_config_write()) do not call
+> pcie_disable_tph() or reset vdev->tph_st_cpu.  When pdev->tph_enabled is
+> 1 across pci_try_reset_function() or pci_reset_bus(), pci_save_tph_state()
+> and pci_restore_tph_state() restore PCI_TPH_CTRL after the reset, leaving
+> TPH enabled with wiped device-specific ST tables and causing subsequent
+> guest writes to PCI_TPH_CTRL in vfio_tph_config_write() to either drop
+> ST mode changes when req == org_req or fail in pcie_enable_tph_ext() with
+> -EBUSY.  If a reset clears hardware PCI_TPH_CTRL to 0 without restoring
+> it while pdev->tph_enabled remains 1, vfio_tph_config_write() reads
+> org_req == 0 from hardware, so enabling TPH fails with -EBUSY in
+> pcie_enable_tph_ext() while writing PCI_TPH_REQ_DISABLE exits early at
+> req == org_req without calling pcie_disable_tph().
+> 
+
