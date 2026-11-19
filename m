@@ -1,69 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795111825;
-	b=m13IbcZEO1Jmmi7M81SNEFRYie9efH06nCZuwXL8Nmufyd3r6KZuqU5gpEG+JatcSyRA
-	 5hc507+jGZJU2xC7M2zJlgMihWUSokgpbvDbB7pSzyDRbTcapIRpVbL6azO/PN4suvKO6
-	 kdBCVy5/InePXw1MloQuonkwSaOOjsxBjXnjKy490WrOIp1TBd+T/0xok6InUw9mTZre7
-	 NhpWbhkjkWH+T0mI7USy77ziwK0i/rAmYCtlOefTIBD4dN4hF2M2Cp2f/+D/66zt/Twyy
-	 ZLamIgC6KU6GSUkENQR/YUQ0sYHpZDZ3molgqt0mJNtrJomgOw0nh51mrAbWwcjpQ7w==
+	t=1795112991;
+	b=odua0ESCV4MfdNKJyH2eVtKT9WTNWVWqHzKDt/2qA1Ya9RW+9WfML23cNOVAPo276TFq
+	 Cx3g4wtOQ6/BNTTWVWgKAjF25xcdynr0g3vUJXXpjyE9rOOslu3qZfNEEwz3rTvjFleoC
+	 hDOJVcFdxN4zfZxRQG7EqcePax779bHCovz5+gm4u5OJSv50DboslESw5+e4OqLA+6t/W
+	 kIIRNfJSE7POUdOx9zwZK+ULXPb6uAFF3tpwRvY150eC+MApTN30xJtfqJqM7Tt8JV9O7
+	 jZ78EuKzmaRAYlizQKfIGWswsjq4oPLHHWDasl7PWvUSru5QQjZbir64W88MMcDcJrg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795111825;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795112991;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
 	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
 	 Content-Language:Autocrypt:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=AJP2Rdfb/1/jgZJgZybKKFbo5ZXlPiUcwYvzFJMOVPQ=;
-	b=t8eauOSAcA0Ujs920iKRu8fn73XL6z0V9scOUJfPVOMCgupRoAxWaLPMqvGNS2Pt7Znn
-	 Dhqtpcnx0qrnQYrgh6ZnUAGe+hK9J5GxPDZ70h6UNBskExELHTCf+WbnnIOH0T0GoOzdQ
-	 53mlejtXPZZ/x5usexa3J1fUb0jiSQmSQWyH0FtHGsetw7+vG2tBW0CBfxACT2K8S+aN3
-	 CZEvwGAmtncL553yGmepzIj3baWBohqgB4sK9wZS0AbuuCSAksOI7lsjExLVQ13lZRU4K
-	 xQvfGf1zcblaXRWI3rOBY3NRvd4H9zRrUSQ6VNISikJBAN4yesmWVyhaVjk21JtocNA==
+	bh=vFMNYqyl6jEw8Q4EFDMzq3dXiyQJScZ7YFx/Cum528c=;
+	b=Et+NxiuPq5oi/T/uTxl4HPUJOlM0cGvx/MzZtUY1heLghHm7uId+evg19A77qWU4QMxe
+	 EFuW5HdIF6rj5XeDSXPzvKL1PspkwS4LgFcZgo/bJaS8hNGql81aFlisFvQWF+p6r3OrI
+	 sr4xhb1o2mbGNuiDp7/4VGqu3p4of7kaVi8L9hB2wv/PC5YuWZmE2euR650Y/BfLR22Fm
+	 lBMndY9LeXSHJDbVITBQqlC7B8NBYBKjQEQU2Ajdiu46oBDD8xVThRlmeKowvsT38zuaY
+	 nDSD/G2oa5d5mfRrLF9fvAzvUgeLyXKgvmlBgW3Slsm7ym+5idRyL224YzZ18cvZ9oQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LuLhOGzU;
-	arc=none smtp.remote-ip=192.198.163.17
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HWE8wuQo;
+	arc=none smtp.remote-ip=192.198.163.18
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66370606A324;
-	Thu, 19 Nov 2026 18:10:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66370606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28048606A32F;
+	Thu, 19 Nov 2026 18:29:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 28048606A32F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LuLhOGzU
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HWE8wuQo
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795111826; x=1826647826;
+  t=1795112991; x=1826648991;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=/K+h0XAbvgnld2iWah2eSuvOqFYOUxj/pEOeu3WiHmg=;
-  b=LuLhOGzUsxWnNof6Qy81/h4B/VY0mUZwG29x4q+O1FcGEIDkfXV8uTMG
-   Z6rbY3w7gmNyne75jZ4T+z1nsCs8/bi++MavLVlMj5R/zuk9rqnh6Uxs+
-   ICsyp5jDpYZoZyXs8FpqF4SC2MUjiGpFPrtX/BuQyGitxKWqBQXLVTEc7
-   EtBxIJ1QpPfofwq/DRysDuKWur1/NfMSz2jphHu0TcG6geMz6kAvOU0dn
-   H6Bbe5GREMc57gqpI+79vr4JAZxpXI6VlmjN8u5+DgZYoE39gwt+FKpLL
-   Kj+CrhLjQdkVQ70d2cpwKfuEp+Pvpj8+8oK/mVJAw5tLyOnLPNgNhhOj3
+  bh=yIdfq1HWsCusznRO7nttY+lq13DjDZmX/BbLDgRYaoI=;
+  b=HWE8wuQojS1tE/aBmKtvxeoCLXh9ls7c3Vp8bxOmVfBsGsxHPzM1sFBo
+   Zmysvsq7b6s9Uk/Yh0c7t+17/5tF/3gRnJAZmE7FaN/taqYNFcKzDn3pJ
+   cofqjaZAL0OA6e9JZypAvoE1mCE+pckK8Ciub6C90ePArG4cY46hFwCic
+   sVwu3kpddJIxHjySCjMf0NRW/bn2yCh3phXRJlJKr7vuM4i9QR8jXkAGt
+   tWPk769mVB/q7pz8r9PG2iC9X9sDFZpfQkP+QBAahTHEjKIftNKfcQtNn
+   9v+1ZCrDRJxDNPC7YQaoPJAhW2ZaLdIpb1Hi1Jq6WfH+XDZVy0vozEP0n
    g==;
-X-CSE-ConnectionGUID: fmtKimZ8TBK2Sv9D9Fvgug==
-X-CSE-MsgGUID: XKQGuMZBSPevl0LGzsymzA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="3968061"
+X-CSE-ConnectionGUID: +94NHvFlQZKpM4+YXnIi4Q==
+X-CSE-MsgGUID: lB5UY7b8RyuSCZrDbbP/0Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="4009121"
 X-IronPort-AV: E=Sophos;i="6.27,221,1787036400"; 
-   d="scan'208";a="3968061"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 10:10:24 -0800
-X-CSE-ConnectionGUID: soM2pdXMTxaiS4gLC01Xyw==
-X-CSE-MsgGUID: DuWx02lzRSGVyWOEwwWUSQ==
+   d="scan'208";a="4009121"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 10:29:39 -0800
+X-CSE-ConnectionGUID: YtVdytzWR6Gj+mlF0EFANQ==
+X-CSE-MsgGUID: 3OXK13bWS/mCf/471LIUMQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,221,1787036400"; 
-   d="scan'208";a="10525331"
+   d="scan'208";a="10391560"
 Received: from aduenasd-mobl5.amr.corp.intel.com (HELO [10.125.109.68]) ([10.125.109.68])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 10:10:23 -0800
-Message-ID: <bed831ec-b4e8-4762-83e1-f4a72075fa9a@intel.com>
-Date: Thu, 19 Nov 2026 10:10:19 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 10:29:32 -0800
+Message-ID: <78382e8b-b696-408f-b12a-b89ce9db956a@intel.com>
+Date: Thu, 19 Nov 2026 10:29:27 -0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -74,18 +74,24 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] x86/virt/seamldr: Support large TDX module
- binaries
-To: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org
-Cc: yilun.xu@intel.com, arjan.van.de.ven@intel.com,
- binbin.wu@linux.intel.com, Thomas Gleixner <tglx@kernel.org>,
+Subject: Re: [PATCH v10 00/28] KVM: Enable FRED support with KVM VMX
+To: Sohil Mehta <sohil.mehta@intel.com>, kvm@vger.kernel.org, x86@kernel.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-References: <20261119074925.3933804-1-chao.gao@intel.com>
- <20261119074925.3933804-2-chao.gao@intel.com>
+ Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin"
+ <hpa@zytor.com>, Xin Li <xin@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Andrew Cooper <andrew.cooper3@citrix.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
+ Shivansh Dhiman <shivansh.dhiman@amd.com>,
+ David Woodhouse <dwmw@amazon.co.uk>, Chao Gao <chao.gao@intel.com>,
+ Binbin Wu <binbin.wu@linux.intel.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Yosry Ahmed <yosry@kernel.org>, David Matlack <dmatlack@google.com>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20260911213659.2025974-1-sohil.mehta@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -131,55 +137,21 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20261119074925.3933804-2-chao.gao@intel.com>
+In-Reply-To: <20260911213659.2025974-1-sohil.mehta@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 11/18/26 23:49, Chao Gao wrote:
-> TDX module binaries are limited to just under 2MB. The binary is handed
-> to P-SEAMLDR as a list of page physical addresses in
-> 'struct seamldr_params', and the list must fit in a single 4KB page
-> along with a few other fields.
-> 
-> TDX modules are gaining features and are about to outgrow that limit.
-> 
-> The P-SEAMLDR ABI was extended to let the list continue onto more 4KB
-> pages. The last u64 of each page holds the physical address of the next
-> page, chaining the pages together.
-> 
-> Grow module_pages_pa_list[] so that 'struct seamldr_params' spans 16
-> pages, and chain the pages together in populate_pa_list().
-> 
-> Each page uses its last entry for chaining, so the maximum module page
-> count is the array size minus one entry per page. The user-supplied
-> image is checked against this count.
-> 
-> The 16-page size is somewhat arbitrary. It fits modules of up to about
-> 32MB, far above the roughly 2MB of current modules. It wastes 60KB for
-> today's modules, which is fine because the memory is freed right after
-> the update.
-> 
-> Do not query P-SEAMLDR for chaining support. Userspace selects the
-> update image and is responsible for ensuring the module is compatible
-> with P-SEAMLDR.
-> 
-> A 496-page module (the old maximum) used to fit in a single page. Now
-> the last entry of that page is used for chaining, so the final address
-> moves to a second page and the module requires chaining support. Do not
-> special-case this size to make it work with a P-SEAMLDR without
-> chaining support. No released module has exactly 496 pages, so nothing
-> breaks. Leave it to userspace to ensure any future 496-page module is
-> paired with a P-SEAMLDR that supports chaining, as with larger modules.
+On 9/11/26 14:36, Sohil Mehta wrote:
+>  42 files changed, 1471 insertions(+), 135 deletions(-)
 
-This seems to be getting worse, not better.
+This set is too big and is stuck. I also kinda want to see it move
+forward. Could you please take all of the cleanups out of here?
 
-Maybe I'm being dense, but I *still* don't have a clear picture in my
-head of what the before and after data structures look like.
+If it's plain non-KVM x86 gunk and you need it for this series. I'll
+merge it today if it's halfway sane. For instance, why is:
 
-> +#define SEAMLDR_NR_MODULE_PA_ENTRIES	((SEAMLDR_PARAMS_NR_PAGES * PAGE_SIZE - 128) / sizeof(u64))
+	x86/cea: Prefix event stack names with ESTACK_
 
-The "128" is a hard-coded struct offset. To me, that's a big
-anti-pattern. Use the structs themselves.
+even *in* this stack?
 
-I'd suggest a way to do it if I had a clear picture of the data
-structures in my head, which I don't at this point.
+Please just send those to me directly, in another series.
