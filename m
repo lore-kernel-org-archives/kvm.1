@@ -1,25 +1,25 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.30.148.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795094888;
-	b=HcAGeZzs3XDldKXy7KMGnWlUQPbQxjyNlbgJEm32Hd2tXvkllg4mIUpD9TRVvnQ7GJGK
-	 Nzqqgzhg9fYXOEb73BkNfZuKF0AD8cSrQ2xwGNAhT/MEn554VhBI1wjQB+/bbUegRlhTQ
-	 AcCC7rNDHDPTUyXno5v3G9207vO1tyGY5yf3IhORXxYUQbgBiyGHYT11Z5Bp5BXDwNvKp
-	 rRgNoikkb1zfSvcX/cBd53stYBalIddz+Srg90pjgas2/WDWGbSjO1Xn+imV7cVSwn69s
-	 tDhM1pjxuvGISlO/8k71jigm8DiVXpn/FBE8uqDWoAv8hbGOZHbj+rYhOfkZvcTxlYw==
+	t=1795094893;
+	b=mNOgirDr6TXJPU+NUmS5O7HYG4J7OH8mD48BW6xYlpEF6xDi/GomIdZD7y3+PZCnbiq1
+	 qTqimzgxktWKekYFvZj+sUg7BAdT0rwNx29b7ff6kQJTBzYEgLmvfyR0INIpY7SFQvTG9
+	 S7q7YGgM/ya4/nJnZUH7BFpiYsCUQR5p6/QKSCaK92IcaAS0gsqDkztLsu0OigfJg+IRi
+	 bDcCyHUnjdrM0EWumlpfaLTeRoknZ7qGUf/zLjuwy8hh8gV6nmHLhP07QCbfxW+GbwwE4
+	 9ql69bZmQmNFOpbnwBZivPAcPwo/pej4YpJ0mhfbO5xayXF01RorIXD/qrjiHpneNoA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795094888;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795094893;
 	h=DMARC-Filter:Received:Received:Received:X-Zmail-TransId:
 	 X-Zmail-LocalSMTP:X-Zmail-RealSender:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 X-ZMAIL-USEORIGINALEMLTOOUTBOUND:Content-Transfer-Encoding:X-MAIL:
 	 X-TLS:X-ENVELOPE-SENDER:X-SOURCE-IP:X-CLEAN:
 	 X-Fangmail-Anti-Spam-Filtered:X-Fangmail-MID-QID;
-	bh=S1wsRggrARZweiDv9YftbPDoThnyJyFxdlO6MAgPKJo=;
-	b=Kgh0EPzw5Wkgf2eU5raKMIvVvHFOWqfIQdHOUlXO6eelZrh1zVqgufxcB5WFmxjL99wU
-	 joDNGM19qz3ckTcV8s6iv4fNwQh78yXoW5IJs7ToFXEF03ChfpCBrAxc5njiHJqAP6QO/
-	 0xftLSaHqLzB2mGyEfbaoitCN2F2wle7XGltvyA8Tu8ltSvp9LnMnf87oNxZKeUG+MDXC
-	 LrvtF/3Jwwjp/FRZzeS+E/sol9IPvbqbgLcXvbg5iBpXZR719WSLo2jWbivA63eQ02TA5
-	 iYhdgjBu/MHws+7CO0lD6S+0uz1DGJgzZ2ctqjSYElFYQkIfxOruIa2rfqDGixXQ1bw==
+	bh=e4Z3fhhmLJhkjK5JFDJG7f0kbcabGFdXK4tvadL231g=;
+	b=Sm+WuxPQagAK91ndBPKIlIrcPv8OxOwCrMHmhaWpL7a7q4pz4ZdxfySIncFOPyopMbkm
+	 ZnKpQaimGVkJlYvTe/e/Fnh3P4qba+CSG+JbQgtsqz1aTDEm5ajzw0VcYBcl5ko8M1Wnr
+	 PeL60F2rc0MGZ1sgHIlyqIacCL5VanindFVcHaqaY0BLl8kfRZpeJOL3M6S2UPkdyr/Br
+	 uT9+kSDSwZf+uoVG75saWafoOT89q6sh0ZF2YQWRDBxW12E0qUJ/v6JNxD/OSpsVD2Y33
+	 x598lqYftLUpzX85lXDxUqS0PtgmtJz1mf0VILR2FBO5atQDgPx9IBVtV1BoHebwlXQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=sanechips.com.cn;
 	spf=pass smtp.mailfrom=sanechips.com.cn;
@@ -28,25 +28,25 @@ Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB70660A380D;
-	Thu, 19 Nov 2026 13:28:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EB70660A380D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C47760A5BD2;
+	Thu, 19 Nov 2026 13:28:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C47760A5BD2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sanechips.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jVfRP4wMQz5BNS0;
-	Thu, 19 Nov 2026 21:28:01 +0800 (CST)
-Received: from szxlzmapp04.zte.com.cn ([10.5.231.166])
-	by mse-fl1.zte.com.cn with SMTP id 6AJDRtDM086414;
-	Thu, 19 Nov 2026 21:27:55 +0800 (+08)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jVfRb27QCz4yjjW;
+	Thu, 19 Nov 2026 21:28:11 +0800 (CST)
+Received: from szxl2zmapp06.zte.com.cn ([10.1.32.108])
+	by mse-fl2.zte.com.cn with SMTP id 6AJDRv0W070523;
+	Thu, 19 Nov 2026 21:27:57 +0800 (+08)
 	(envelope-from gong.shuai@sanechips.com.cn)
 Received: from ubuntu-35-gs (unknown [10.230.214.35])
 	by smtp (Zmail) with SMTP;
-	Thu, 19 Nov 2026 21:27:58 +0800
-X-Zmail-TransId: 3e816afef95e02f-56520
+	Thu, 19 Nov 2026 21:28:00 +0800
+X-Zmail-TransId: 3e816afef95f02f-56564
 X-Zmail-LocalSMTP: 1
 X-Zmail-RealSender: gong.shuai@sanechips.com.cn
 From: Gong Shuai <gong.shuai@sanechips.com.cn>
@@ -67,9 +67,9 @@ Cc: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
         Tan Chi <tanchi25@mails.ucas.ac.cn>, Wu Fei <wu.fei9@sanechips.com.cn>,
         Zhao Qingye <zhao.qingye@sanechips.com.cn>,
         Gong Shuai <gong.shuai@sanechips.com.cn>
-Subject: [RFC PATCH v3 08/10] iommu/riscv: Add riscv_iommu_hw_info
-Date: Thu, 19 Nov 2026 21:27:42 +0800
-Message-ID: <20261119132744.396426-9-gong.shuai@sanechips.com.cn>
+Subject: [RFC PATCH v3 10/10] iommu/riscv: Flush the right address space on bond unlink
+Date: Thu, 19 Nov 2026 21:27:44 +0800
+Message-ID: <20261119132744.396426-11-gong.shuai@sanechips.com.cn>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261119132744.396426-1-gong.shuai@sanechips.com.cn>
 References: <20261119132744.396426-1-gong.shuai@sanechips.com.cn>
@@ -84,58 +84,68 @@ Precedence: list
 MIME-Version: 1.0
 X-ZMAIL-USEORIGINALEMLTOOUTBOUND: 1
 Content-Transfer-Encoding: 8bit
-X-MAIL:mse-fl1.zte.com.cn 6AJDRtDM086414
+X-MAIL:mse-fl2.zte.com.cn 6AJDRv0W070523
 X-TLS: YES
 X-ENVELOPE-SENDER: gong.shuai@sanechips.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Thu, 19 Nov 2026 21:28:01 +0800
+X-SOURCE-IP: 10.5.228.133 unknown Thu, 19 Nov 2026 21:28:11 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AFEF961.000/4jVfRP4wMQz5BNS0
+X-Fangmail-MID-QID: 6AFEF96B.000/4jVfRb27QCz4yjjW
 
-From: Wu Fei <wu.fei9@sanechips.com.cn>
+When the last bond to an IOMMU is removed, the entries cached for the
+address space it used must be invalidated. Nested and second-stage bonds
+are identified by GSCID, first-stage paging bonds by PSCID.
 
-Implement the hw_info op to return the physical IOMMU capabilities
-register. This allows IOMMU_GET_HW_INFO to report the available host
-features to a VMM.
-
-Signed-off-by: Wu Fei <wu.fei9@sanechips.com.cn>
 Signed-off-by: Gong Shuai <gong.shuai@sanechips.com.cn>
 ---
- drivers/iommu/riscv/iommu.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/iommu/riscv/iommu.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
-index 4df4411be417..97d360318fe2 100644
+index e8d894f3e760..a106105bd31b 100644
 --- a/drivers/iommu/riscv/iommu.c
 +++ b/drivers/iommu/riscv/iommu.c
-@@ -1979,9 +1979,27 @@ static int riscv_viommu_init(struct iommufd_viommu *viommu,
- 	return 0;
- }
+@@ -934,6 +934,7 @@ static void riscv_iommu_bond_unlink(struct riscv_iommu_domain *domain,
+ 	struct riscv_iommu_device *iommu = dev_to_iommu(dev);
+ 	struct riscv_iommu_bond *bond, *found = NULL;
+ 	struct riscv_iommu_command cmd;
++	int gscid = 0;
+ 	int count = 0;
  
-+static void *riscv_iommu_hw_info(struct device *dev, u32 *length,
-+				 enum iommu_hw_info_type *type)
-+{
-+	struct iommu_hw_info_riscv *info;
-+	struct riscv_iommu_device *iommu = dev_to_iommu(dev);
-+
-+	info = kzalloc_obj(*info);
-+	if (!info)
-+		return ERR_PTR(-ENOMEM);
-+
-+	info->capabilities = iommu->caps;
-+	*length = sizeof(*info);
-+	*type = IOMMU_HW_INFO_TYPE_RISCV;
-+
-+	return info;
-+}
-+
- static const struct iommu_ops riscv_iommu_ops = {
- 	.of_xlate = riscv_iommu_of_xlate,
- 	.capable = riscv_iommu_capable,
-+	.hw_info = riscv_iommu_hw_info,
- 	.identity_domain = &riscv_iommu_identity_domain,
- 	.blocked_domain = &riscv_iommu_blocking_domain,
- 	.release_domain = &riscv_iommu_blocking_domain,
+ 	if (!domain)
+@@ -948,18 +949,27 @@ static void riscv_iommu_bond_unlink(struct riscv_iommu_domain *domain,
+ 		else if (dev_to_iommu(bond->dev) == iommu)
+ 			count++;
+ 	}
+-	if (found)
++	if (found) {
++		gscid = found->gscid;
+ 		list_del_rcu(&found->list);
++	}
+ 	spin_unlock(&domain->lock);
+ 	kfree_rcu(found, rcu);
+ 
+ 	/*
+-	 * If this was the last bond between this domain and the IOMMU
+-	 * invalidate all cached entries for domain's PSCID.
++	 * If this was the last bond between this domain and the IOMMU,
++	 * invalidate all cached entries for the address space used by that
++	 * bond. Nested and second-stage bonds are identified by GSCID,
++	 * first-stage paging bonds by PSCID.
+ 	 */
+ 	if (!count) {
+-		riscv_iommu_cmd_inval_vma(&cmd);
+-		riscv_iommu_cmd_inval_set_pscid(&cmd, domain->pscid);
++		if (gscid) {
++			riscv_iommu_cmd_inval_gvma(&cmd);
++			riscv_iommu_cmd_inval_set_gscid(&cmd, gscid);
++		} else {
++			riscv_iommu_cmd_inval_vma(&cmd);
++			riscv_iommu_cmd_inval_set_pscid(&cmd, domain->pscid);
++		}
+ 		riscv_iommu_cmd_send(iommu, &cmd);
+ 
+ 		riscv_iommu_cmd_sync(iommu, RISCV_IOMMU_IOTINVAL_TIMEOUT);
 -- 
 2.53.0
 
