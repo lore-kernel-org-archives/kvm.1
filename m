@@ -1,68 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795072747;
-	b=2Zjx/nbAjOZACuwKttclDxXjCZdVfTO1hdYfJaczMisR6J/vaq3L0RNs0vTx+s14zqjI
-	 LDcOrgQA8/PaXuTTtGuflstH0+bHngws3C2dBRnQlcpf1XrLHdwolR4I8o3a2xK27IcWd
-	 zEUNfouf3B3hQYiKF6dM2b1dZZac8UO4r2CW3LX5HP2ifV2+Q/XiRnpJYlBEqnmXijYMr
-	 zxysOq6y/WkHaDbd6EOiWsTg3wXCThZmOQnV4iC8W/fI4oWLZulpF/oqkuzyj0bxGJtQc
-	 SFWOJKBbMQ2+ztz7zHaPLfKs3ZFry1wQ8ACQI3WVQiqogEA/CMbMMknrNwHJjgadQ0g==
+	t=1795073183;
+	b=KVYJV4ZzhuwcZN5ZBNKWl/TtnaIycQFSP+G5RfrKRBW0QGwtIYmM4uPzx+KKBgcnTvc5
+	 3e5L5IyjB41sIw/k/ZtE9kL5A5/9t5xIpB5FQsPfNIkVJd9NUwV5gu3WTX2XaVJHyLi0R
+	 UFpfmaCXIZVGpR+ngGoBmrhjW6lOWwTFSwH+PedHmNJlzlw0FDRton/zkxACBI1YGqJR1
+	 bjh9h8S6s6X1lD3Dq020zmCItmJD70NtuDJmlmyhhhdXvbNIlHcQBe5EHl6+abAX5Fjsl
+	 mdoEo5AZQLO+UMLrVqNRCvffXUsVnsaLfret+SPhYNnQ4+2qdQWCVMri+BX4N9RBSDg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795072747;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=E7h8y9q5NeM+rdkgTl7ssLz1V6qUb/C0JHpQHZ+0bxs=;
-	b=Ffk2YWrnmb8jar0LITwxh7zlrxj+USiLTza4YEF+Rp1Hj6iMnTKUjr2fBaV7XkF0BRTH
-	 p3mLdBAcOl8z9eFoVbzUaV0mT9Drd7RsZYzvVromqF6DHxIvQ6y8ABOYxR6gIqGZbdSlw
-	 xUj+axykA8hvkSkz308iwOcj06KO0+Zc0IYLll4/qfZU/cjO0W+yiSjQEsZh4IMxDvVPk
-	 t0m5KNSuKzIKLGveJeDrhJnOh1U1gmZ+Q2o6P9jmiuD34S85muuWiicWnetAU/mBef1mX
-	 7e206/uoZoFQO+boAEU0aovcY/t+KJ8TTyttJG0pB6UeZeG5st1opwgZGfI6BRKHffA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795073183;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
+	 To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:X-Mutt-Fcc;
+	bh=3j6KmbtXLvsmTJiTThzFS5hiEYdNxo/Fgv8rfbB+Ypg=;
+	b=jZT3vkaFIA1GlbaQdteehKXEw54KTWvkhEi18jNY4A0p8RZvddmQOt8Why+aGyJvTKtR
+	 gwPoRJwp1LsvnabIg5vndd8ewLt/vT5oHuPeMUAcvyCzadWm6wRZwskMzXUORMD70qAfw
+	 TAzOwGlY16396Fo+vB8z8+bFjX+Jk5Vdg6Tm1+taR+35BY1wLsVJwGxtakSUk7aGGY2sg
+	 xRSZbPi4IjIDQdJn3IuQqoB6TfVP+YMXF4I7oKQzBrqBVWWllEkNIQO5z6u+zrbO452kq
+	 f07aAiRM5ug0Mk+hihdL9GsIUNfIChcaxqimN0UArP0K6D2olgFhO950eHM5y1a9Wtw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PZ0zE6AQ;
-	arc=none smtp.remote-ip=198.175.65.21
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gdeH2uDW;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=F7rRIAyt;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2273A606A333;
-	Thu, 19 Nov 2026 07:19:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2273A606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3E9606A325
+	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 07:26:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD3E9606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PZ0zE6AQ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795072747; x=1826608747;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=3DN1/OgZfO6kqe/noeYjCjobh7lUNxQjvfpeYc0fl00=;
-  b=PZ0zE6AQUr7rSBE2UfbYoC68H7paaWqJGSO4qi3nTvPeqaeU6XyM+kIC
-   p0J6V40KWpUqUxhiCdFSM2Eg5KSBJ4658BjdpmA3ZIKPrLbpPOqUF80+W
-   /yHCVzC04/Sl9hh8cERH83ie2B/z7hiDAZp/bvI450e/4wMpoOwrgyKp4
-   3rVCbFZltMLEpJQuntX61CRgbeI47TPV5IASkVhbGL8QkDwBOaG/cZjzs
-   B3JFvK3kdVfvlmXgCBKikOdJcg/yANTVjcgVsxLQVdsiuK2WSsiyzNYyW
-   umkF+IWWjvvdGY4DiySzUQmuP23hA+4JynRwC9jnujTTR7II84HgeFeMw
-   w==;
-X-CSE-ConnectionGUID: NgG+aoPnQMKyQtRM75okpw==
-X-CSE-MsgGUID: pU1lUkqKS+WFmTV2li4feQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3991642"
-X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
-   d="scan'208";a="3991642"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 23:19:06 -0800
-X-CSE-ConnectionGUID: iHQUrNNQQoW2AgElOEgTwA==
-X-CSE-MsgGUID: 4Ehj8R4lSQCZoiG7usmh1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
-   d="scan'208";a="10453034"
-Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 23:18:56 -0800
-Message-ID: <a594edd6-6184-4381-9b48-004c18efa56f@linux.intel.com>
-Date: Thu, 19 Nov 2026 15:18:54 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gdeH2uDW;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=F7rRIAyt
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1795073181;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=3j6KmbtXLvsmTJiTThzFS5hiEYdNxo/Fgv8rfbB+Ypg=;
+	b=gdeH2uDWu8itjh6NHKhUx86u22inkN6eOj7JOIjIaOssT3k1IbkiGiHmooIpkV52lt2ldj
+	kFDpVwUGei0XCR3OCPyQQrtAHdDTQM8yji8S4ngIneTCHttdtOFBnelgx1J2LjKpyq6IEi
+	1K1RPS8s57f7KLUCUurBdEOQ0rFvmWg=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-148-AThboTxhNLeHCXY-eZCCvA-1; Thu, 19 Nov 2026 02:26:20 -0500
+X-MC-Unique: AThboTxhNLeHCXY-eZCCvA-1
+X-Mimecast-MFC-AGG-ID: AThboTxhNLeHCXY-eZCCvA_1795073179
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4a3705ea6ccso573491f8f.2
+        for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 23:26:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1795073179; x=1795677979; darn=vger.kernel.org;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3j6KmbtXLvsmTJiTThzFS5hiEYdNxo/Fgv8rfbB+Ypg=;
+        b=F7rRIAyt3wWCkr/uIq7CcsZAeA9N2ckYQaSb9PfrHzzdrhLoatK0jPKUtp+a7bx4zw
+         Ke1VCtmj7C1COq4SH1DMhKo2Ccl9K7tOI42jExCQFi7YHv1F+j0DeQnYLHFOJllMVk5T
+         t2Hal6qIZufy2ggOPnNvB12f4qax7PvUPO5vOts5DVv1q8s8jnGomTr9maN07NLHj81v
+         GsL59um+fiT/322vCvC1fsnbBl1QmFpLuvWWvkOEpUPm4fWEQ51aFMUTyFQ7v0lGn2U6
+         ZCM/9e2zx93L7vZkG4kMo77jDjMqrJlJiTu6EWtXGU/v1melySXVeVmdbJPyQnN6s+gP
+         LWAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795073179; x=1795677979;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3j6KmbtXLvsmTJiTThzFS5hiEYdNxo/Fgv8rfbB+Ypg=;
+        b=AGfCK2nP6SdvSOg42sVTMKsJmTi2Hb6352VlnrBXV1woqfgpQwHHc0RAPgKr1EIgzZ
+         Co4rymEFP/qDdjt/ic4x5to7I0x+o9PD448a2UAY+E+DTTkR31Z0ouUXWX4hBvVQhH8G
+         UQckr6DS1o7JmbL5K16zA+IMrSqqAobROnp4TCxpIyBZib6T/GF6X20QpcK736JxVLeg
+         Z2oq0Zt7bvVVZx5S9B4eIyw8MREG+i1rN+J1Ea0DL1szJqCb/4sytUwmvEz4P1HPfgeV
+         YZ1oTK0CweHhHYxLayZW7Sku/IdBLd3+wWe3A5wo/OXw537/KWr9UM2s1LBijjZ2HTWH
+         I86g==
+X-Gm-Message-State: APuU4Z9SzqDtyh08tsAfysrZePYJYwHtyY4KApWYsxs7jshgYj0pkSKN
+	QtNHN5VDUhwQzTgmfX0pfFq6Bxu4Axqyu4AQ5Nbh+VKWzC/T/RKKuZl3ApA9CX8Nu1SiEQT9zrr
+	Jwve7q05qeHVDsNZTt+H8YOMj6t4nZxH+lDA3yjLg4M0P3QE1zwf+4w==
+X-Gm-Gg: AZFdTZdDeXtDEiqAmdv9YyPIhu4XpXrildw2XyN8mp6bC9YoF+PYv9w5WpFYtZYGv7F
+	mldO+kSK//1nQj68YUwSp8Z8Z5TvhmwyTlF8fnJoc60c+K9X41pBIZ2sNt9Nj+79ikrzJQKTwUJ
+	sz+MR9Nm01tX9gYZgRD9KmqfJcyH/7kdZlRcwfA2eyRfPgDhQ/9cCM1LgX3mFfF0/hsH6LSWiIN
+	tRBJambawRRvCqQgSSTS+6GQYR3ugVW2mNyFCfx4gSV0hwcO32YVbatKoME2k6DcIG2MAzmsr2e
+	ndOz1V/W9omklsb98gV19C/YzWFq6VIiCZPUWkVhXcU5IEydIcnOHY87I8bBmcyg2FefpWivi8B
+	HiIgdOKJV3aftXHy8U2Pp/44U3ckSK+pPVtl/GeupZ+A=
+X-Received: by 2002:a05:6000:4703:b0:4a6:4f35:336b with SMTP id ffacd0b85a97d-4a64f353379mr8871395f8f.5.1795073178840;
+        Wed, 18 Nov 2026 23:26:18 -0800 (PST)
+X-Received: by 2002:a05:6000:4703:b0:4a6:4f35:336b with SMTP id ffacd0b85a97d-4a64f353379mr8871351f8f.5.1795073178254;
+        Wed, 18 Nov 2026 23:26:18 -0800 (PST)
+Received: from redhat.com ([2a0d:6fc0:1520:4400:d78d:7b2d:2f5d:e08f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4a65541f3f7sm9540259f8f.24.2026.11.18.23.26.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Nov 2026 23:26:17 -0800 (PST)
+Date: Thu, 19 Nov 2026 02:26:15 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	bioloidgp@gmail.com, jasowangio@gmail.com, minki@morningstarsec.dev,
+	mst@redhat.com, stable@vger.kernel.org
+Subject: [GIT PULL] vhost: bugfix
+Message-ID: <20261119022615-mutt-send-email-mst@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,52 +112,33 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, Alex Williamson <alex@shazbot.org>,
- Alexey Kardashevskiy <aik@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
- Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
- Nicolin Chen <nicolinc@nvidia.com>, Robin Murphy <robin.murphy@arm.com>,
- Samuel Ortiz <sameo@rivosinc.com>,
- Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- Steven Price <steven.price@arm.com>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
- Xu Yilun <yilun.xu@linux.intel.com>, Ashish Kalra <ashish.kalra@amd.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, iommu@lists.linux.dev,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
- linux-tegra@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v9 01/13] virt: coco: tsm: Require PCI operations when
- registering a TSM
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- linux-coco@lists.linux.dev
-References: <20261116081935.85372-1-aneesh.kumar@kernel.org>
- <20261116081935.85372-2-aneesh.kumar@kernel.org>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20261116081935.85372-2-aneesh.kumar@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mutt-Fcc: =sent
 
-On 11/16/2026 4:19 PM, Aneesh Kumar K.V (Arm) wrote:
-> Reject a NULL pci_ops argument in tsm_register(). Every registered TSM
-> then has PCI operations, so registration no longer needs separate paths
-> for TSMs without them.
-> 
-> Cc: Alexey Kardashevskiy<aik@amd.com>
-> Cc: Jason Gunthorpe<jgg@ziepe.ca>
-> Cc: Lukas Wunner<lukas@wunner.de>
-> Cc:linux-coco@lists.linux.dev
-> Signed-off-by: Aneesh Kumar K.V (Arm)<aneesh.kumar@kernel.org>
-> ---
->   drivers/virt/coco/tsm-core.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+The following changes since commit 1a577f9402c1780cc1e663f48d5dd54c02051b09:
 
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+  virtio_pci: don't take the MSI mutex under cpu_hotplug_lock (2026-11-03 07:32:14 -0500)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+
+for you to fetch changes up to 5570a998b884c988dbe105430d7e2d8e9411e37e:
+
+  vhost: split out-of-order used ring batches at every wrap (2026-11-12 07:44:36 -0500)
+
+----------------------------------------------------------------
+vhost: bugfix
+
+One bugfix here. I am testing a couple more
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+----------------------------------------------------------------
+Michael S. Tsirkin (1):
+      vhost: split out-of-order used ring batches at every wrap
+
+ drivers/vhost/vhost.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
+
