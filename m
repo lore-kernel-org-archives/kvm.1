@@ -1,65 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.30.110
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795072170;
-	b=oF13QY/7x0Qg0QJGQcyTx0HbjHXfJ/57uXuTnqswAk9dFpX0/in3JoG1/ntW4rKIaLCc
-	 6h3rNT2ETZsjgD84tYmXH9HRo7WnrIdHKeEDPLNrhbtR2vMdZnP+kaYUSJTi+5BYELwwn
-	 zqAK55jpDVENFmsB5/8olwTm8uvQhr3rhh/gjEDiZcAkQ38ca/ipD1XH/NzZ6X/rDkwV4
-	 pb6OglnuBy69HFHAaglwvVWOdUtdMlYGVxRnFlwKNMAwkryCFF/+XuMCgFNeGqDn1sxKo
-	 /eQRopeKf/csyy+UyRsL+zeMEO49mVL2tRPtC5/jsup78dq8/4bYy4U/0CftxvwmxuA==
+	t=1795072747;
+	b=2Zjx/nbAjOZACuwKttclDxXjCZdVfTO1hdYfJaczMisR6J/vaq3L0RNs0vTx+s14zqjI
+	 LDcOrgQA8/PaXuTTtGuflstH0+bHngws3C2dBRnQlcpf1XrLHdwolR4I8o3a2xK27IcWd
+	 zEUNfouf3B3hQYiKF6dM2b1dZZac8UO4r2CW3LX5HP2ifV2+Q/XiRnpJYlBEqnmXijYMr
+	 zxysOq6y/WkHaDbd6EOiWsTg3wXCThZmOQnV4iC8W/fI4oWLZulpF/oqkuzyj0bxGJtQc
+	 SFWOJKBbMQ2+ztz7zHaPLfKs3ZFry1wQ8ACQI3WVQiqogEA/CMbMMknrNwHJjgadQ0g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795072170;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=iDtWAtQ9UJlQ7QtpVTKrQvbSoxBnQV9Ww8wHGNhN9T8=;
-	b=NQmFWq2SqxNFk6ormToGbtpT8GSYj94fUzJdvTGZiMRnYVeN9jo3Q1pkbG07KhVZUwvT
-	 dxziF4gZGBSFOShepE1Qd0vZir2LdFDsTMXyN7frzKJknO/9accDJ1QXzwSLLDoWobMv+
-	 BHfzhyTJwtGE6NCbGpc4QbtZlKvJLNmAu89A7aOUEEd9AReH0lvdJT52x5HJ+w75mp6a6
-	 sGt4GMKlO+g/bzVibpWVbvWfr2pBfRGpsZA7Ls2Jz4B17afIVA7Hk7lYidtR/czWu6yIr
-	 YP5xHqo1ST3zpJth5IA8WA4nNyliPvew6T+C33J0D57Wq6kYQu/uFKnxP+gISB3iH3w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795072747;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=E7h8y9q5NeM+rdkgTl7ssLz1V6qUb/C0JHpQHZ+0bxs=;
+	b=Ffk2YWrnmb8jar0LITwxh7zlrxj+USiLTza4YEF+Rp1Hj6iMnTKUjr2fBaV7XkF0BRTH
+	 p3mLdBAcOl8z9eFoVbzUaV0mT9Drd7RsZYzvVromqF6DHxIvQ6y8ABOYxR6gIqGZbdSlw
+	 xUj+axykA8hvkSkz308iwOcj06KO0+Zc0IYLll4/qfZU/cjO0W+yiSjQEsZh4IMxDvVPk
+	 t0m5KNSuKzIKLGveJeDrhJnOh1U1gmZ+Q2o6P9jmiuD34S85muuWiicWnetAU/mBef1mX
+	 7e206/uoZoFQO+boAEU0aovcY/t+KJ8TTyttJG0pB6UeZeG5st1opwgZGfI6BRKHffA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.alibaba.com;
-	spf=pass smtp.mailfrom=linux.alibaba.com;
-	dkim=pass header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=gz1Z4UWK;
-	arc=none smtp.remote-ip=115.124.30.110
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PZ0zE6AQ;
+	arc=none smtp.remote-ip=198.175.65.21
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C02760A2617;
-	Thu, 19 Nov 2026 07:09:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0C02760A2617
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2273A606A333;
+	Thu, 19 Nov 2026 07:19:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2273A606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=gz1Z4UWK
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1795072161; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=iDtWAtQ9UJlQ7QtpVTKrQvbSoxBnQV9Ww8wHGNhN9T8=;
-	b=gz1Z4UWKsrJQgO3nvTN+Q5D6GpHJPHBcSBgM84eDfZHx9mt0OhlFHlHpcSC3/aUIJxp1Nr7LZEIv8mC4yz2XeWXkzyrnY9pj0HxVay98TpQQp97LC8GykO90SGCwxMnIbGX8G1kRcRjd/G4lEUxNOE/WSaMcFHKOhMcHAkkd/pM=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0XF2mQ8-_1795072160;
-Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0XF2mQ8-_1795072160 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 19 Nov 2026 15:09:20 +0800
-From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
-To: jgg@nvidia.com
-Cc: alex@shazbot.org,
-	iommu@lists.linux.dev,
-	jgg@ziepe.ca,
-	joro@8bytes.org,
-	kevin.tian@intel.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	robin.murphy@arm.com,
-	will@kernel.org
-Subject: [PATCH v7 2/3] iommufd: Add IOMMU_GET_RECOMMENDED_RESERVATIONS ioctl
-Date: Thu, 19 Nov 2026 15:09:04 +0800
-Message-ID: <20261119070905.1336240-3-guanghuifeng@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20261119070905.1336240-1-guanghuifeng@linux.alibaba.com>
-References: <179502940167.3851267.4719665473088413793.b4-review@b4>
- <20261119070905.1336240-1-guanghuifeng@linux.alibaba.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PZ0zE6AQ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795072747; x=1826608747;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=3DN1/OgZfO6kqe/noeYjCjobh7lUNxQjvfpeYc0fl00=;
+  b=PZ0zE6AQUr7rSBE2UfbYoC68H7paaWqJGSO4qi3nTvPeqaeU6XyM+kIC
+   p0J6V40KWpUqUxhiCdFSM2Eg5KSBJ4658BjdpmA3ZIKPrLbpPOqUF80+W
+   /yHCVzC04/Sl9hh8cERH83ie2B/z7hiDAZp/bvI450e/4wMpoOwrgyKp4
+   3rVCbFZltMLEpJQuntX61CRgbeI47TPV5IASkVhbGL8QkDwBOaG/cZjzs
+   B3JFvK3kdVfvlmXgCBKikOdJcg/yANTVjcgVsxLQVdsiuK2WSsiyzNYyW
+   umkF+IWWjvvdGY4DiySzUQmuP23hA+4JynRwC9jnujTTR7II84HgeFeMw
+   w==;
+X-CSE-ConnectionGUID: NgG+aoPnQMKyQtRM75okpw==
+X-CSE-MsgGUID: pU1lUkqKS+WFmTV2li4feQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3991642"
+X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
+   d="scan'208";a="3991642"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 23:19:06 -0800
+X-CSE-ConnectionGUID: iHQUrNNQQoW2AgElOEgTwA==
+X-CSE-MsgGUID: 4Ehj8R4lSQCZoiG7usmh1g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
+   d="scan'208";a="10453034"
+Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 23:18:56 -0800
+Message-ID: <a594edd6-6184-4381-9b48-004c18efa56f@linux.intel.com>
+Date: Thu, 19 Nov 2026 15:18:54 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -69,200 +72,52 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, Alex Williamson <alex@shazbot.org>,
+ Alexey Kardashevskiy <aik@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
+ Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+ Nicolin Chen <nicolinc@nvidia.com>, Robin Murphy <robin.murphy@arm.com>,
+ Samuel Ortiz <sameo@rivosinc.com>,
+ Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+ Steven Price <steven.price@arm.com>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+ Xu Yilun <yilun.xu@linux.intel.com>, Ashish Kalra <ashish.kalra@amd.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, iommu@lists.linux.dev,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+ linux-tegra@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH v9 01/13] virt: coco: tsm: Require PCI operations when
+ registering a TSM
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ linux-coco@lists.linux.dev
+References: <20261116081935.85372-1-aneesh.kumar@kernel.org>
+ <20261116081935.85372-2-aneesh.kumar@kernel.org>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20261116081935.85372-2-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add a per-device query ioctl that reports the IOVA ranges the kernel
-recommends reserving for a given device.  For PCI devices these are
-the MMIO windows of the host bridge the device sits behind: DMA using
-IOVAs inside those windows could be misrouted as peer-to-peer traffic
-by a PCIe switch instead of reaching the root complex for IOMMU
-translation.
+On 11/16/2026 4:19 PM, Aneesh Kumar K.V (Arm) wrote:
+> Reject a NULL pci_ops argument in tsm_register(). Every registered TSM
+> then has PCI operations, so registration no longer needs separate paths
+> for TSMs without them.
+> 
+> Cc: Alexey Kardashevskiy<aik@amd.com>
+> Cc: Jason Gunthorpe<jgg@ziepe.ca>
+> Cc: Lukas Wunner<lukas@wunner.de>
+> Cc:linux-coco@lists.linux.dev
+> Signed-off-by: Aneesh Kumar K.V (Arm)<aneesh.kumar@kernel.org>
+> ---
+>   drivers/virt/coco/tsm-core.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
 
-The interface is advisory, and deliberately named after the general
-concept of recommended reserved regions rather than its first source:
-the kernel reports recommendations and userspace decides whether to
-act on them, either by feeding them back through
-IOMMU_IOAS_RESERVE_IOVAS or by avoiding the ranges in its own IOVA
-allocation.  This follows the principle that PCI window information
-should not be forced onto userspace through the IOMMU reserved-region
-API, as established when the earlier attempt was reverted in commit
-cd2c9fcf5c66 ("iommu/dma: Move PCI window region reservation back into dma specific path.")
-
-The output reuses struct iommu_iova_range and follows the array +
-count + EMSGSIZE protocol established by IOMMU_IOAS_IOVA_RANGES.
-Per-device granularity is chosen because the recommendations derive
-from the device's bus topology and are available immediately after
-VFIO_DEVICE_BIND_IOMMUFD, before any IOAS attachment.
-
-Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
----
- drivers/iommu/iommufd/device.c          | 65 +++++++++++++++++++++++++
- drivers/iommu/iommufd/iommufd_private.h |  1 +
- drivers/iommu/iommufd/main.c            |  4 ++
- include/uapi/linux/iommufd.h            | 38 +++++++++++++++
- 4 files changed, 108 insertions(+)
-
-diff --git a/drivers/iommu/iommufd/device.c b/drivers/iommu/iommufd/device.c
-index 1b0bdf57ac8a..eedda48012a1 100644
---- a/drivers/iommu/iommufd/device.c
-+++ b/drivers/iommu/iommufd/device.c
-@@ -1749,3 +1749,68 @@ int iommufd_get_hw_info(struct iommufd_ucmd *ucmd)
- 	iommufd_put_object(ucmd->ictx, &idev->obj);
- 	return rc;
- }
-+
-+struct recommended_resv_ctx {
-+	struct iommu_iova_range __user *out_ranges;
-+	u32 max_ranges;
-+	u32 num_ranges;
-+};
-+
-+static int recommended_resv_window_fn(phys_addr_t start, phys_addr_t end,
-+				      void *data)
-+{
-+	struct recommended_resv_ctx *ctx = data;
-+
-+	if (ctx->num_ranges < ctx->max_ranges) {
-+		struct iommu_iova_range elm = {
-+			.start = start,
-+			.last = end,
-+		};
-+
-+		if (copy_to_user(&ctx->out_ranges[ctx->num_ranges], &elm,
-+				 sizeof(elm)))
-+			return -EFAULT;
-+	}
-+	ctx->num_ranges++;
-+	return 0;
-+}
-+
-+int iommufd_device_get_recommended_reservations(struct iommufd_ucmd *ucmd)
-+{
-+	struct iommu_recommended_reservations *cmd = ucmd->cmd;
-+	struct recommended_resv_ctx ctx;
-+	struct iommufd_device *idev;
-+	int rc;
-+
-+	if (cmd->flags)
-+		return -EOPNOTSUPP;
-+
-+	idev = iommufd_get_device(ucmd, cmd->dev_id);
-+	if (IS_ERR(idev))
-+		return PTR_ERR(idev);
-+
-+	if (!dev_is_pci(idev->dev)) {
-+		rc = -EOPNOTSUPP;
-+		goto out_put;
-+	}
-+
-+	ctx.out_ranges = u64_to_user_ptr(cmd->out_ranges);
-+	ctx.max_ranges = cmd->num_ranges;
-+	ctx.num_ranges = 0;
-+
-+	rc = iommu_for_each_pci_mmio_window(to_pci_dev(idev->dev),
-+					    recommended_resv_window_fn, &ctx);
-+	if (rc)
-+		goto out_put;
-+
-+	cmd->num_ranges = ctx.num_ranges;
-+	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
-+	if (rc)
-+		goto out_put;
-+	if (ctx.num_ranges > ctx.max_ranges)
-+		rc = -EMSGSIZE;
-+
-+out_put:
-+	iommufd_put_object(ucmd->ictx, &idev->obj);
-+	return rc;
-+}
-diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
-index eb2e85b27e42..8016c3efca78 100644
---- a/drivers/iommu/iommufd/iommufd_private.h
-+++ b/drivers/iommu/iommufd/iommufd_private.h
-@@ -534,6 +534,7 @@ iommufd_device_get_iommu_dev(struct iommufd_device *idev)
- 
- void iommufd_device_pre_destroy(struct iommufd_object *obj);
- void iommufd_device_destroy(struct iommufd_object *obj);
-+int iommufd_device_get_recommended_reservations(struct iommufd_ucmd *ucmd);
- int iommufd_get_hw_info(struct iommufd_ucmd *ucmd);
- 
- struct device *iommufd_global_device(void);
-diff --git a/drivers/iommu/iommufd/main.c b/drivers/iommu/iommufd/main.c
-index 9a921b153162..85f8ea154218 100644
---- a/drivers/iommu/iommufd/main.c
-+++ b/drivers/iommu/iommufd/main.c
-@@ -449,6 +449,7 @@ union ucmd_buffer {
- 	struct iommu_ioas_map map;
- 	struct iommu_ioas_unmap unmap;
- 	struct iommu_option option;
-+	struct iommu_recommended_reservations recommended_reservations;
- 	struct iommu_vdevice_alloc vdev;
- 	struct iommu_veventq_alloc veventq;
- 	struct iommu_vfio_ioas vfio_ioas;
-@@ -480,6 +481,9 @@ static const struct iommufd_ioctl_op iommufd_ioctl_ops[] = {
- 		 struct iommu_fault_alloc, out_fault_fd),
- 	IOCTL_OP(IOMMU_GET_HW_INFO, iommufd_get_hw_info, struct iommu_hw_info,
- 		 __reserved),
-+	IOCTL_OP(IOMMU_GET_RECOMMENDED_RESERVATIONS,
-+		 iommufd_device_get_recommended_reservations,
-+		 struct iommu_recommended_reservations, out_ranges),
- 	IOCTL_OP(IOMMU_HW_QUEUE_ALLOC, iommufd_hw_queue_alloc_ioctl,
- 		 struct iommu_hw_queue_alloc, length),
- 	IOCTL_OP(IOMMU_HWPT_ALLOC, iommufd_hwpt_alloc, struct iommu_hwpt_alloc,
-diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
-index 010f47f7d3d2..45ba7bd7abd5 100644
---- a/include/uapi/linux/iommufd.h
-+++ b/include/uapi/linux/iommufd.h
-@@ -58,6 +58,7 @@ enum {
- 	IOMMUFD_CMD_VEVENTQ_ALLOC = 0x93,
- 	IOMMUFD_CMD_HW_QUEUE_ALLOC = 0x94,
- 	IOMMUFD_CMD_IOAS_NOIOMMU_GET_PA = 0x95,
-+	IOMMUFD_CMD_GET_RECOMMENDED_RESERVATIONS = 0x96,
- };
- 
- /**
-@@ -1398,4 +1399,41 @@ struct iommu_hw_queue_alloc {
- 	__aligned_u64 length;
- };
- #define IOMMU_HW_QUEUE_ALLOC _IO(IOMMUFD_TYPE, IOMMUFD_CMD_HW_QUEUE_ALLOC)
-+
-+/**
-+ * struct iommu_recommended_reservations - ioctl(IOMMU_GET_RECOMMENDED_RESERVATIONS)
-+ * @size: sizeof(struct iommu_recommended_reservations)
-+ * @flags: Must be 0
-+ * @dev_id: The device bound to iommufd to query
-+ * @num_ranges: Input/output number of recommended ranges
-+ * @out_ranges: Pointer to the output array of struct iommu_iova_range
-+ *
-+ * Query the IOVA ranges the kernel recommends reserving for @dev_id.
-+ * For a PCI device these are the MMIO windows of its host bridge,
-+ * where a PCIe switch could misroute DMA as peer-to-peer traffic.
-+ * Advisory only: userspace may feed the ranges back through
-+ * IOMMU_IOAS_RESERVE_IOVAS or handle them itself.
-+ *
-+ * Ranges are reported in resource order, not guaranteed sorted, and
-+ * should be treated as a set.  Query each device and take the union
-+ * when multiple devices are in use.
-+ *
-+ * On input num_ranges is the length of the out_ranges array.  On
-+ * output it is the total number of ranges.  The ioctl will return
-+ * -EMSGSIZE and set num_ranges to the required value if num_ranges is
-+ * too small.
-+ *
-+ * Return: 0 on success, -EOPNOTSUPP if the device has no
-+ * recommendations, -ENOENT if @dev_id is invalid, -EMSGSIZE if the
-+ * output array is too small.
-+ */
-+struct iommu_recommended_reservations {
-+	__u32 size;
-+	__u32 flags;
-+	__u32 dev_id;
-+	__u32 num_ranges;
-+	__aligned_u64 out_ranges;
-+};
-+#define IOMMU_GET_RECOMMENDED_RESERVATIONS \
-+	_IO(IOMMUFD_TYPE, IOMMUFD_CMD_GET_RECOMMENDED_RESERVATIONS)
- #endif
--- 
-2.43.7
-
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
