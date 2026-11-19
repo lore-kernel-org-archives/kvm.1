@@ -1,85 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795108159;
-	b=S629/gy5CikAfCuh8z4TK48Wx7tB/jbc9st8ZxtrFiXGwYqZ8nlKbIu1tuxT8RaRQM9W
-	 VbJwJcZfHRnbs6N1PrWInB45JnDaVEEsrYzMPwUtQabreS3ih6/4JAIIi4p7fkerKGdiC
-	 N4nZRjQoRgWUoKVxkVY8XgZvP44pWVSdl/Uw1RqGAGL70USywrzRpXD4LhCnKg9t3KaKO
-	 5wAwDVxXQsyh6fhgM7WLh7htOBz8wAl1NeS7oLkv9qqH/ZRmXGwdzunwr/PR19PEy5jgH
-	 I+UWmWgHW5+Qi5BAovSStDgKbQ7aJiUH6eVdc/5kansBOvonfJ0oyGG7Z8UAd8WLEUA==
+	t=1795109175;
+	b=0WnrzUfq9kMkUGu71CJo7JF9dA8DDIyGeZpVpnNR0B6+ntvFvuU7HPCcV2Uk9BSGdbDs
+	 yg5nBQ8vXenJxnu+OHu2lYgXv//rp8cs1+vhpQTiyT1TKRVgQ5PiNv2mZa0ubVbOLPE1Q
+	 xgzMh5UJaHgOEfv81FewW6e7xxQj2tY0QKI+ie3KmEo8rCPGZPkyZGAdJ+NSXe35QOhqv
+	 YpVVmHhgmguNdF1SI4lNYRXp2nhBVhJM+JfNwgtZmWRLhLCiDcUznyf1H5+KyVuvrvq9k
+	 TKNuZ64/FguqB41ebp9aM2IIrxOZV0N9taZ9JyEu3bvORqfbVeKAGDig7gf9CFlaDpg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795108159;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=S8IGrx1x8iWsTP5Lmg78emE+63ORRJD0YqtAAQJu9f8=;
-	b=BJTiOtF3mxHm4yCIQlgxo0ALWW/RklSeN+hD5M9SU5e5+ULDQAKLoSjTuWgK3YXjxrVb
-	 yAxPGSTp9qqx+65Pi4ld/VrI2SI6kp8XAQh6YK9rTgaH1Gvf6vBsLN1KUNCnK7I/stPnV
-	 bIbGmZ27q8sQW5+6+2VvPyMIGeggLeUU9tAj5Na4SXxIMJOGc4Ikj2KzSMwkqyU6/HYLy
-	 ZE5vVAXxIpCy2wPTU1fkwS+fDKTbvD8PH/JYQHB1WdFujZW5x5JHLmk7t/56TG59EThCp
-	 KrvYz2bKYEgSD2VaSHlT4aJtJByj1f90EuE8nmOoQahMY8Yp5x9RyfLNz0fLDVZB5Tw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795109175;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
+	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Originating-IP:
+	 X-Proofpoint-Spam-Details-Enc:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
+	 X-Proofpoint-Virus-Version;
+	bh=baTpZUjod5GD/amHfc55ByHpGuIJoaIfPWwl3/4IbyE=;
+	b=MYAdIE8iE8sH/aOA36OPC32CdCGmh1DXa8JDye8qUV5slV9xG4U2rzSxP8vtuqEUnqJ5
+	 ohsurUf6fwxusQhUhi6cvwuCLbwT3XjhGBl1Hc2J1LWmniaGBdQ2fjjyKdURVjYsE6mzp
+	 Y18/vXKB15OAN7YXC+Yk+/GYjaCuS7Z9exfzk9ahOr0j1YRXvOsXLNJCF1q32wuhMG24s
+	 YBfIr7aJo9ztpnJy6vRbN1sgaRtNV6ad3R91BW52O8E78fJC+JqYZdBj2vqskXxgbSifc
+	 qLP6LcjoNDjXjbcp9taak/tJdiRLjVBhjYGx532KvxDWkCVUMSFcvz8S0m4oyYeTSbw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ze5Z6LYp;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=meta.com;
+	spf=pass smtp.mailfrom=meta.com;
+	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=CueZNpJ4;
+	arc=none smtp.remote-ip=67.231.145.42
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8338760A383D
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 17:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824FF606A324;
+	Thu, 19 Nov 2026 17:26:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 824FF606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ze5Z6LYp
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B933A1F000CC;
-	Thu, 19 Nov 2026 17:09:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795108159;
-	bh=S8IGrx1x8iWsTP5Lmg78emE+63ORRJD0YqtAAQJu9f8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ze5Z6LYpSNz5r4sRiArQ3u73skEahc9pQ9ZA5peRunpCvG4CJqBCkOtD+uwseclOI
-	 YSeCmNszH1jz6wVQ6c72gAbCwE6qpXLCIJDcAfYEZqNU516ojNLVRuqMnfb5cuhM3q
-	 kAcZjpukWPwgM0tkUFkBbBnloS1Q8/aSgPEetJLdeaFR0RSdnwTjrZBWsz+89SPskD
-	 UvKNsF2cMwJvVbQKKzFaU0YX17d39ZR37eFAhfINOmFc0Af7Srxm7S5Bmjs0VBiP7z
-	 uOnerceBdAAuCZtbeWCieA9cJi0no3E2PR1JOJrnSIeivQ7hvreYkHu/8DwNNn3xPj
-	 IkIC6wxyD65nQ==
-Date: Thu, 19 Nov 2026 11:09:00 -0600
-From: "Serge Hallyn (AMD)" <sergeh@kernel.org>
-To: Peter Xu <peterx@redhat.com>
-Cc: Tony Lindgren <tony.lindgren@linux.intel.com>,
-	Kishen Maloor <kishen.maloor@intel.com>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Artem Bityutskiy <dedekind1@gmail.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Fabiano Rosas <farosas@suse.de>, Jon Grimm <Jon.Grimm@amd.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Steven Price <steven.price@arm.com>,
-	Anup Patel <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>,
-	Jakub =?utf-8?B?UsWvxb5pxI1rYQ==?= <jakub.ruzicka@matfyz.cz>,
-	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Peter Fang <peter.fang@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
-	David.Kaplan@amd.com, Mathias.Brossard@arm.com, tycho@kernel.org,
-	"Adam, Mahmoud" <Mahmoud.Adam@amd.com>
-Subject: Re: TDX migration model
-Message-ID: <av8tLIFEpHgluthp@shallyn-amd>
-References: <aq1ehHk7OUYaGCe5@zhexu-thinkpadt14gen5.rmtcaon.csb>
- <f4f34bc3dd22c0e47b5ee764b1a4db8940cbbbec.camel@gmail.com>
- <auyZnIfxMnxYD8rT@shallyn-amd>
- <85f899cd277b2188cd4b33f8f21b206fa2ff6f6f.camel@gmail.com>
- <auyx8C67zCnbPpuL@hallyn.com>
- <c77156d1-5a47-4a93-a18b-392081fad3ff@intel.com>
- <avF6DcmdoGeWeRxg@tlindgre-MOBL1>
- <avJGEYIohYUN9l10@shallyn-amd>
- <avKolvbIuZj-aLD-@tlindgre-MOBL1>
- <av8F-DwJnTkSeYsz@zhexu-thinkpadt14gen5.rmtcaon.csb>
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=CueZNpJ4
+Received: from pps.filterd (m0528009.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AJF8jD13256812;
+	Thu, 19 Nov 2026 09:26:01 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pps82601-s2048-2026-q3; bh=baTpZUjod5G
+	D/amHfc55ByHpGuIJoaIfPWwl3/4IbyE=; b=CueZNpJ4YJ8ALUOc215uhnpE+ff
+	dQX1OjfrScxov1md8Q3g97pe4M6hcrZzuOMXtkFx3ctvGpEvlfrGcahlwu1xyZI3
+	ckBI3glM/YRXa9qgYAgrAWKmo6cVMaW8SnOuyhTFzo+YAyw145PDy91KLpeQ2ZfP
+	dnVvv03X4rNsngwF+TDtjIVnHNWmLgNIoQdw7LlI+jTA6EYvC+JBIMASraK6fytM
+	t976vQHHMTc0CZTxej92055SNoQmA3SWCgOJjkkkYWdZVbc8KaLN6T3MjPCFDs0M
+	N7BlqPWCBD7KxEFhIMpzEWyA3EjwWdK9Xt2TNmZ7U9KQkdVnGM3n81aueyw==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4j1yjjk3ut-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Thu, 19 Nov 2026 09:26:00 -0800 (PST)
+Received: from localhost (2620:10d:c0a8:1b::8e35) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Thu, 19 Nov
+ 2026 17:25:58 +0000
+Date: Thu, 19 Nov 2026 09:25:57 -0800
+From: Bobby Eshleman <bobbyeshleman@meta.com>
+To: Paolo Abeni <pabeni@redhat.com>
+CC: <netdev-bot+sinfo@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>,
+        Stefano Garzarella <sgarzare@redhat.com>,
+        "Michael S. Tsirkin"
+	<mst@redhat.com>,
+        Jason Wang <jasowangio@gmail.com>,
+        Eugenio
+ =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+        Xuan Zhuo
+	<xuanzhuo@linux.alibaba.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric
+ Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Simon Horman
+	<horms@kernel.org>, <kvm@vger.kernel.org>,
+        <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] vsock: only deliver taps to namespaces that can
+ reach the device
+Message-ID: <av8xJb3skp2S9a1D@devvm29614.prn0.facebook.com>
+References: <20261116-vsock-tap-net-v1-1-7e24f45adad3@meta.com>
+ <179487315810.3291.12142099363352099423@kernel.org>
+ <avur4Uwbv27bGG67@devvm29614.prn0.facebook.com>
+ <a3049b70-fae9-488c-9de7-0c1613e6c480@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -89,72 +91,72 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <av8F-DwJnTkSeYsz@zhexu-thinkpadt14gen5.rmtcaon.csb>
+In-Reply-To: <a3049b70-fae9-488c-9de7-0c1613e6c480@redhat.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE5MDA2OSBTYWx0ZWRfXzKS0vfGJ72KO
+ zIyDazw0AxLGffzEGQwkkEj5SntZA4LKayi0WiUzH/ViegYsmljCHZt1zG8QADoL3QM7A/EUYZx
+ 9UMEmnD6ZoYfCXlJH2g+Bs/Vr+atw/164axcQRQ75ErEza1WtcY1k9dSHWptyH07MFjDK3i7YfY
+ JCB4fmPNh7gmiVpgWclTMhLO2H4+fwUQJUUU8MWjMW4zPhFIMFFtU+PgM7deuUP0PlUmS29MIk/
+ oXVQX5vX83mKiP8bj1Xj7SwK1UXU4WoPBiC2UcLlENghvHjM1o4rdpUr4UTGMOGEdM+bTAOm6BN
+ 3CfR/7gO+PAJPsKjx1U+Dnfz/R9TmxEzImwUWg0txQpwZKO7jdPKcLogyxCjtAyhflOZUw3m0JF
+ eIyDZRhoOkHKmryiop+MQbllNzetpU89I15vZzADAtAl+dQKLz5QkLTVrnPz3g4ozpLCvRfMyBD
+ 1JUdORy6Vnqhn+beb0g==
+X-Authority-Analysis: v=2.4 cv=GLKdgeNK c=1 sm=1 tr=0 ts=6aff3128 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=U_y8lYiYyhHBU5rMqhb2:22 a=VwQbUJbxAAAA:8
+ a=a3FyozKr4OXg-YhadtQA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE5MDA2OSBTYWx0ZWRfX5hKU9AMUQXG6
+ Rjy/dDLFZFeasosjQbDO4Fdh5aF5XlcQvx93ACOqlpus6ZKbdGZgY0hstBR4Xt6fLLuRu9tMjWc
+ pVi2SCh3B32Uja3txi7dyGOSXMa4BRA=
+X-Proofpoint-ORIG-GUID: aN6qMjTUmxqAt-mKuIb1wprEufQV4ud9
+X-Proofpoint-GUID: aN6qMjTUmxqAt-mKuIb1wprEufQV4ud9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-19_04,2026-11-19_01,2025-10-01_01
 
-On Thu, Nov 19, 2026 at 09:21:44AM -0500, Peter Xu wrote:
-> On Tue, Nov 10, 2026 at 07:16:06AM +0200, Tony Lindgren wrote:
-> > On Mon, Nov 09, 2026 at 04:15:45PM -0600, Serge Hallyn (AMD) wrote:
-> > > (Adding Tycho and Mahmoud, who will be working with me on this)
+On Thu, Nov 19, 2026 at 10:03:10AM +0100, Paolo Abeni wrote:
+> On 11/17/26 02:20, Bobby Eshleman wrote:
+> > On Mon, Nov 16, 2026 at 11:52:38PM +0000, netdev-bot+sinfo@kernel.org wrote:
+> > > Hi!
 > > > 
-> > > On Mon, Nov 09, 2026 at 09:45:17AM +0200, Tony Lindgren wrote:
-> > > > On Thu, Nov 05, 2026 at 06:00:41PM -0800, Kishen Maloor wrote:
-> > > > > On 11/5/26 8:42 AM, Serge E. Hallyn wrote:
-> > > > > > On Thu, Nov 05, 2026 at 05:59:01PM +0200, Artem Bityutskiy wrote:
-> > > > > >> On Thu, 2026-11-05 at 08:58 -0600, Serge Hallyn (AMD) wrote:
-> > > > > >>> ...
-> > > > > >>> So, looking at the section '### How the Setup Session Works', is it safe
-> > > > > >>> to assume that you are using the qemu migration fd for the message
-> > > > > >>> transfers?  So basically qemu loops over KVM_MIGRATE_SETUP calls, which
-> > > > > >>> ...
-> > > > > >> Yes, that's the flow. I’m not sure about the migration fd part, I believe we
-> > > > > >> pass the setup session data via ioctl buffers. I am sure Kishen will can
-> > > > > >> clarify.
-> > > > > > 
-> > > > > > If you mean pass via ioctl buffers from tdx->kvm-> back to qemu, which passes
-> > > > > > it over the migration fd to the other side, then that's what I expected.
-> > > > > > Othewise I'll be interested to the details :)
-> > > > > 
-> > > > > Hi Serge,
-> > > > > 
-> > > > > Your understanding is right. Migration setup requires a handshake of some sort
-> > > > > between the source and destination. So the messages KVM_MIGRATE_SETUP returns
-> > > > > are transferred over QEMU's migration channel to the other side and processed
-> > > > > by a matching call.
-> > > > 
-> > > > Serge, on the QEMU side, we have been enabling the return-path early for
-> > > > the key exchange before migration is active. Not sure if the key exchange
-> > > > can be done using a VMState, possibly could be if we can ensure it happens
-> > > > before the migration is active.
+> > > This is an automated message. This series looks like a fix, but its
+> > > commit messages seem to be missing some information:
 > > > 
-> > > Key exchange requires bidirectional communication, so I don't think a
-> > > VMState would work, at least not on its own. If the destination's
-> > > info got send to the source out of band and delivered through migrate
-> > > command option, that could work, but it seems much nicer to me if it's
-> > > all done more transparently.  OTOH if this simplifies the qemu code
-> > > enough, maybe it's worth it.
+> > >   - How the issue was discovered, e.g. hit in production, hit during
+> > >     development, syzbot report, manual code inspection, LLM or static
+> > >     analysis tool scan.
+> > > 
+> > >   - Whether the issue was actually triggered, or is only theoretical
+> > >     (e.g. found by LLM and not proven at runtime). If it was triggered
+> > >     please include the symptoms, like the stack trace or kernel messages.
+> > > 
+> > > Please do not repost the series just to address the above. Instead,
+> > > reply to this email with the missing information, so that reviewers
+> > > can take it into account.
+> > > 
+> > > *IMPORTANT*: If you do repost (for other reasons) - please include
+> > > the relevant info in the cover letter or commit messages.
+> > > -- 
+> > > The evaluation is done by an LLM so it may be wrong, if you think
+> > > that is the case please reply and explain.
 > > 
-> > Yeah agreed and can be revisited.
+> > This is a known issue and has come up in review of the guest netns
+> > series (so via code inspection).
+> My reading of the above is this feels like more an improvement than a
+> regression fix. As such I'll move this to net-next. Please scream out
+> loudly very soon if you disagree.
 > 
-> Just FYI: on QEMU side, we should be introducing handshake for migration
-> soon, so that there'll be an early stage where the out+in messages will be
-> all done in the entrance of migration_thread(), trying to have both src/dst
-> QEMUs talk first before really starting the migration procedure.
+> /P
 > 
-> Agreed that vmstate isn't designed for bi-directional conversations.
-> 
-> That was initially for other things, including channel mgmts, sync
-> migration caps/params, but it sounds like it could be useful for CoCo too.
-> 
-> Thanks,
-> 
-> -- 
-> Peter Xu
 
-Is there a draft repo/branch where we could look at the current state of
-the 'handshake' feature?
+My net-next guest ns series actually needs this to build, maybe I should
+pull it back into that series?
 
-thanks,
--serge
+My rationale for sending to net was that it also fixes the issue for the
+already merged vhost-vsock ns support. I don't have a strong opinion
+either way.
+
+Best,
+Bobby
