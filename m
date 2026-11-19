@@ -1,74 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795046527;
-	b=o8g46jPJl6azTj3AQB+HDlZutF8qpzMTpzcD/i1lpH1nIfpEOqI5k3LTvnfreiCpJ8ce
-	 JjvCOY1K2pgNNFVQcRjmgWM5Y1FzWWx0624h+rFsuA6tVc1/wmzuee+khK568RJI7xHzF
-	 6tcEcr6oSNeXWS+Ybzp07LxS4e3n2/iDGEptzRjugyQ5jYug7BUQBG45Lvh7fPtSpcwV+
-	 Yx793K1YnX9cgtM6QH1Lhz56GEercV+ru9uekp7EC3bxUZURA4Q2HPIn3q2y+fZoRMMy4
-	 etbvCzBxbOHzjRW0ETszd/7ksqOTpI7DKhtBQFDvbSdI0QUD4bZA3ge7H25EJOpoajg==
+	t=1795046963;
+	b=pqZ1ZEmiXG5zNTL3w2RGTfdh72pB71qVaDUpz+0C7Q7FF8CXmOHpCamTzShuOaxaBfdh
+	 3ZajSFbSd2g0TLs4zZI2bBmZoKbmHSYVDlnzfPbQ6c7YlFtG0y1p70/KtrmwfgVXQMDn6
+	 cR4PUg0dby0WghQh8oH4akfk2mPQ/KjFyuNFLSkJfikHLpW8EuCsa4TtwESex8K83I8hZ
+	 e/KYccqbMTMBeK6CmPDhayuGV2Pex2G9guGPjCwn3QKTebFVkp7mIInR9q+vv5yPHcEdy
+	 4Ttr+iPDsd4xy/ZtWO+LPwpuGkmxHREOSVvxuD+IUeYlWNdM36jJEwyJsf0MioJMfEA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795046527;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=HPFw4rbLyAAw0EodXoO87GmwMVo+rA3zhzGO26T6THI=;
-	b=A96waYYLoUUJXJ1dkL+Xtv2UGbUiyPmeKBT5+fkhb85Q1CYSJJtIJpWS7kJpMiT87oEw
-	 dAyaV8Vvj7k6uxbTcFOkLUoad0VwWgJqrKk2pGi7W81bAEUlHBu0qXFA8/ZNTODpaA36r
-	 sl6MESIR7y/zaMgz0EGz1GX4Y96NuzoEwy3iv/5GZlWe372CEEDe6ZGD4SY/qZ3LpNKtd
-	 H3jQ//GD7MYb/IHstvxncvIKsa6mPNSD4VMXXkGRWUve9PWyA80ZOCHQg9gvftyhXBzkG
-	 dLRbPp0kdifkCW6EaFLH1t+1Y0MqxJlGOJ2IAtFP0Li9X65jwpZKPQYfU2vkWNoQaUQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795046963;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=dXWPAd34kgxbyGowuwR2K6K9x5gIy8WAMudygfgqw5I=;
+	b=tRxw7+WkPvxu5yloSlbqgao8FN3fhAi9cJ7OdK0DwAre7PokFMCfyG2HIzxvdgR7MQlf
+	 zRY73RI47NMUqNviQyZF9T8yqV8c3hoQahwyGVtjRoJwXRXbfULy60j4RAjxnGhNCBW14
+	 fcqviGH1nm5a8j09YiAG+J8DtEqj1MndDpLyvUF3o8EKHfrUdo/yzX+yzgB/h6hzyuzCp
+	 lhqLSlR7Phl3kGovSCXZQc75KZlNGsLB0ArF88exSIekbgv/1JCn5Fbv45N0Q4rHdWML6
+	 LUsFLr9/c2zDBa2ATYAQCK7njX1Lqtj+WLQUr8Qzvl3CXU2zUzq7xJJE2AigCUCrzlQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=BiepogfD;
-	arc=none smtp.remote-ip=209.85.167.199
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=On50cq4E;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C2160A5BE5
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 00:02:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 54C2160A5BE5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dmatlack.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C532606A31C;
+	Thu, 19 Nov 2026 00:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=BiepogfD
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4cc89e86e9eso1694654b6e.3
-        for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 16:02:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795046526; x=1795651326; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HPFw4rbLyAAw0EodXoO87GmwMVo+rA3zhzGO26T6THI=;
-        b=BiepogfDCoyJSnNNxOFQ3GVuPvwSSkEtR5JE47DUJAFBDLSoemWcscI0twJF1A0Xqf
-         p0cJL9ezvcvgfrc0rR79qbTjJlsB0t5xUGrMCaWTzFprqtOT6HjQ2doboKJeHHdIXh1P
-         st7UMk5yopQXRNBlFMmxRNFdusjlh/DnwCu+X7FEw4SyBDc95qzQ2EiZTTLphuMqWc3l
-         86XWAblJ8O3ro4nvDaFFP1cNd7Lx+tu0LeS6tdSA572STVHGsURQDHEW+lj2C0FyckxL
-         IooOmyGRcrRgEuFpvWos3leSp25riYlEGZAELshd3xc859zsJlSr1Z5GUa+zzsLG3dFe
-         3LrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795046526; x=1795651326;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HPFw4rbLyAAw0EodXoO87GmwMVo+rA3zhzGO26T6THI=;
-        b=VRS9bd2hoKejXTdJ2O85Wy70sDTk1BsICZ4Q+yOym7OQATupMDGp4qC2dgnTTWfZON
-         CSDz97CeAKLycX2+ckQyIx81y/xq2UCPtcN+Z1pVvuIHa9RGcn4YbFSInChYUHE757Ck
-         TymNy09Xj+gKOIlsaSFwHV5xr8gHr7GdzUyxkKrgcZu3SVQECXCMB4TyNAJ/QY2Mk74d
-         m1dpmWzPXiAAcyvXeVLFanA2sqiis5T8iQ4BB9IE6dN8zEONFIOPKV28LDuPrhROdv14
-         u1hAMULGyi0pVsGmxJewXmkCO8qbvB3GaAiZuI0I2VFvTvuTmVaCXbDgDxk4nSOMVMTf
-         E46w==
-X-Gm-Message-State: APuU4Z+MH1+CCttWJiESNVeU4WQWeYjf/63HU1LpE28D1YZX+o9t781f
-	X7dr8CVqv90wWKKtGVVyodmpfXvqJ/ZDY5eIAQVGVs1k7nwt5tKWG+W8rIPuUy5trLP1HUpeKJw
-	X8nenTHorINKGrRPOZ3LoaX+rgEtjFxHoYoHFGsBc01PK2MIbKcNdeoHaiOS01sIy6VNUnzdJqw
-	CPysb7kryFWYxgCorBJd3aSqAd9SMKUZeHwZ22FEUQN2M=
-X-Received: from ioai18.prod.google.com ([2002:a05:6602:72d2:b0:9c7:d55f:a8af])
- (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:4f07:b0:564:3fe1:2f95 with SMTP id 5614622812f47-57741c1af9bmr5343225b6e.56.1795046525841;
- Wed, 18 Nov 2026 16:02:05 -0800 (PST)
-Date: Thu, 19 Nov 2026 00:01:50 +0000
-In-Reply-To: <20261119000151.442543-1-dmatlack@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=On50cq4E
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20F91F000C4;
+	Thu, 19 Nov 2026 00:09:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795046963;
+	bh=dXWPAd34kgxbyGowuwR2K6K9x5gIy8WAMudygfgqw5I=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=On50cq4EQg2XuJ/k/TfG9lAUXvmXHBUBuSa4qvdIHxVQH+dXD5QYecZ4OrMs8+AFA
+	 MLccB8B5Zd5Hwf/WlxxA+DGTgW98S3cx0KvCBR7r4p4956XtNj89Ae/e9i+HPPA0iG
+	 ygs6ThB8PkNEF7pBSU8uAunpDTjAqnCWVxCE/WTy0TcPdeydG1jTy/Reh9iFqk3Uaq
+	 tsALcxR0oCAGosPJ3NP3WD5OrPaCurq37BgI7/abVym8J742TN3JL9xVov4SRnz4b7
+	 uAjlCvTMupkO2AsvqPvePBO8Q6hrweKuTTCTJhz6VwxdXWwAMC62ZZwYnvQ+bGivxQ
+	 zMsPuc4+TBo1A==
+Message-ID: <sashiko-outbox-222233@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] vfio: Allow untainted use of driver_override
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Alex Williamson" <alex@shazbot.org>
+Cc: linux-trace-kernel@vger.kernel.org, virtualization@lists.linux.dev, intel-xe@lists.freedesktop.org, kvm@vger.kernel.org, "Michael
+ S. Tsirkin" <mst@redhat.com>, "Eugenio Perez" <eperezma@redhat.com>
+In-Reply-To: <20261118235645.2907908-2-alex@shazbot.org>
+References: <DMYH4ED3GWDO.29DGXPK4M82VR@kernel.org>
+ <20261118235645.2907908-2-alex@shazbot.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 19 Nov 2026 00:09:22 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,325 +60,57 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261119000151.442543-1-dmatlack@google.com>
-X-Mailer: git-send-email 2.56.1.708.g77570a6a1d-goog
-Message-ID: <20261119000151.442543-9-dmatlack@google.com>
-Subject: [PATCH v2 8/8] vfio: selftests: Add test for device power state transitions
-From: David Matlack <dmatlack@google.com>
-To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, stable@vger.kernel.org
-Cc: Abhishek Sahu <abhsahu@nvidia.com>, Alex Williamson <alex@shazbot.org>, 
-	David Matlack <dmatlack@google.com>, Raghavendra Rao Ananta <rananta@google.com>, Shuah Khan <shuah@kernel.org>, 
-	Vipin Sharma <vipinsh@google.com>
-Content-Type: text/plain; charset="UTF-8"
 
-Add vfio_pci_power_state_test to exercise VFIO's handling of device
-power state changes initiated by userspace through the PM capability in
-config space.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [High] vfio: build failure due to missing support_driver_override in
+  device_driver
+- [Medium] vfio: missing support_driver_override on s390 vfio_ccw and
+  vfio_ap drivers
+--
 
-The test covers:
+commit e1a4bdaaf4e34e9a150096261c67507d2bd63625
+Author: Alex Williamson <alex@shazbot.org>
 
- - Closing a device in D3hot and then reopening it, which must leave
-   the device in D0.
- - Enabling SR-IOV while the PF is in D3hot, which must return the PF to
-   D0 and prevent it from leaving D0 while VFs are enabled.
- - Racing a close of the device while it is in D3hot against enabling
-   SR-IOV, both of which transition the device back to D0.
+vfio: Allow untainted use of driver_override
 
-The SR-IOV tests are skipped if the device does not support SR-IOV,
-already has VFs enabled, or SR-IOV cannot be configured on it (e.g.
-vfio-pci with vfio_pci.enable_sriov=N). If an SR-IOV test case fails,
-any VFs it left enabled are disabled so they don't affect later test
-cases.
+This commit sets the support_driver_override flag on the embedded device
+driver structures across vfio drivers so that binding devices via
+driver_override continues to work without tainting the kernel.
 
-Fail the test if /sys/kernel/warn_count changes between fixture setup
-and teardown, since bugs such as the close vs. SR-IOV enable race show
-up only as kernel warnings. When that happens, print the warnings
-logged to /dev/kmsg during the test so that the failure can be debugged
-from the test log.
+> Set the support_driver_override flag on the driver struct across all
+> vfio drivers.
 
-Signed-off-by: David Matlack <dmatlack@google.com>
----
- tools/testing/selftests/vfio/Makefile         |   1 +
- .../vfio/vfio_pci_power_state_test.c          | 256 ++++++++++++++++++
- 2 files changed, 257 insertions(+)
- create mode 100644 tools/testing/selftests/vfio/vfio_pci_power_state_test.c
+[Severity: Medium]
+Should the s390 vfio drivers outside drivers/vfio/ also set
+support_driver_override?
 
-diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-index 2c32c48db509..e2b152528560 100644
---- a/tools/testing/selftests/vfio/Makefile
-+++ b/tools/testing/selftests/vfio/Makefile
-@@ -12,6 +12,7 @@ TEST_GEN_PROGS += vfio_iommufd_setup_test
- TEST_GEN_PROGS += vfio_pci_device_test
- TEST_GEN_PROGS += vfio_pci_device_init_perf_test
- TEST_GEN_PROGS += vfio_pci_driver_test
-+TEST_GEN_PROGS += vfio_pci_power_state_test
- TEST_GEN_PROGS += vfio_pci_sriov_uapi_test
- 
- TEST_FILES += scripts/cleanup.sh
-diff --git a/tools/testing/selftests/vfio/vfio_pci_power_state_test.c b/tools/testing/selftests/vfio/vfio_pci_power_state_test.c
-new file mode 100644
-index 000000000000..5b185c174036
---- /dev/null
-+++ b/tools/testing/selftests/vfio/vfio_pci_power_state_test.c
-@@ -0,0 +1,256 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <pthread.h>
-+#include <stdlib.h>
-+#include <unistd.h>
-+
-+#include <linux/pci_regs.h>
-+
-+#include <libvfio.h>
-+
-+#include "kselftest_harness.h"
-+
-+/* PCI_PM_CTRL_STATE_MASK values */
-+#define D0	0
-+#define D3HOT	3
-+
-+static const char *device_bdf;
-+
-+static u16 power_state_get(struct vfio_pci_device *device, u8 pm_cap)
-+{
-+	return vfio_pci_config_readw(device, pm_cap + PCI_PM_CTRL) &
-+	       PCI_PM_CTRL_STATE_MASK;
-+}
-+
-+static void power_state_set(struct vfio_pci_device *device, u8 pm_cap,
-+			    u16 state)
-+{
-+	u16 pmcsr = vfio_pci_config_readw(device, pm_cap + PCI_PM_CTRL);
-+
-+	pmcsr &= ~PCI_PM_CTRL_STATE_MASK;
-+	pmcsr |= state;
-+
-+	vfio_pci_config_writew(device, pm_cap + PCI_PM_CTRL, pmcsr);
-+}
-+
-+/*
-+ * Set by test cases that enable VFs, so that disable_vfs() can disable any VFs
-+ * left enabled if the test case fails. Only set in the child process that runs
-+ * the test case.
-+ */
-+static bool test_enabled_vfs;
-+
-+/*
-+ * Disable VFs left enabled by a failed test case, so they don't affect later
-+ * test cases. Called from fixture teardown, which runs when an ASSERT fails,
-+ * and from an atexit() handler, which runs when a library helper exits the
-+ * test process early (e.g. on a VFIO_ASSERT() failure).
-+ */
-+static void disable_vfs(void)
-+{
-+	if (test_enabled_vfs && sysfs_sriov_numvfs_get(device_bdf) > 0)
-+		__sysfs_sriov_numvfs_set(device_bdf, 0);
-+}
-+
-+/*
-+ * Check whether the test can enable VFs on the device, briefly enabling one VF
-+ * to find out. Returns the reason to skip the test, or NULL if it can run.
-+ */
-+static const char *sriov_skip_reason(void)
-+{
-+	int ret;
-+
-+	if (sysfs_sriov_totalvfs_get(device_bdf) <= 0)
-+		return "Device does not support SR-IOV";
-+
-+	if (sysfs_sriov_numvfs_get(device_bdf) != 0)
-+		return "SR-IOV is already enabled on the device";
-+
-+	/* From here on, any VFs on the device were enabled by this test. */
-+	test_enabled_vfs = true;
-+
-+	/* -ENOENT means SR-IOV cannot be configured on the device. */
-+	ret = __sysfs_sriov_numvfs_set(device_bdf, 1);
-+	if (ret == -ENOENT)
-+		return "Cannot enable SR-IOV on the device (vfio-pci requires enable_sriov=1)";
-+
-+	VFIO_ASSERT_EQ(ret, 0);
-+	sysfs_sriov_numvfs_set(device_bdf, 0);
-+	return NULL;
-+}
-+
-+FIXTURE(vfio_pci_power_state_test) {
-+	struct iommu *iommu;
-+	struct vfio_pci_device *device;
-+	u8 pm_cap;
-+	int warn_count;
-+	int kmsg_fd;
-+};
-+
-+FIXTURE_SETUP(vfio_pci_power_state_test)
-+{
-+	/*
-+	 * Snapshot the kernel's warning count so that teardown can check that
-+	 * the test did not trigger any kernel warnings, which are otherwise
-+	 * invisible to the test. Open /dev/kmsg first so that any warning
-+	 * counted after the snapshot can be printed if the check fails.
-+	 */
-+	self->kmsg_fd = kmsg_open();
-+	self->warn_count = sysfs_kernel_warn_count_get();
-+
-+	self->iommu = iommu_init(default_iommu_mode);
-+	self->device = vfio_pci_device_init(device_bdf, self->iommu);
-+
-+	self->pm_cap = vfio_pci_find_capability(self->device, PCI_CAP_ID_PM);
-+	if (!self->pm_cap)
-+		SKIP(return, "Device does not have a PM capability\n");
-+
-+	ASSERT_EQ(power_state_get(self->device, self->pm_cap), D0);
-+}
-+
-+FIXTURE_TEARDOWN(vfio_pci_power_state_test)
-+{
-+	disable_vfs();
-+
-+	if (self->device)
-+		vfio_pci_device_cleanup(self->device);
-+
-+	iommu_cleanup(self->iommu);
-+
-+	if (self->warn_count >= 0) {
-+		int warn_count = sysfs_kernel_warn_count_get();
-+
-+		if (warn_count != self->warn_count && self->kmsg_fd >= 0)
-+			kmsg_print_warnings(self->kmsg_fd);
-+
-+		EXPECT_EQ(warn_count, self->warn_count);
-+	}
-+
-+	if (self->kmsg_fd >= 0)
-+		close(self->kmsg_fd);
-+}
-+
-+/*
-+ * Put the device into D3hot via config space, close it, and then reopen it.
-+ * Closing the device while it is in D3hot must not trigger any kernel warnings
-+ * (checked during fixture teardown), and the device must be in D0 when it is
-+ * reopened.
-+ *
-+ * Note that this does not verify that VFIO returns the device to D0 during
-+ * close, since that is not reliably observable from userspace: the device may
-+ * runtime suspend after it is closed, and opening it also transitions it to
-+ * D0.
-+ */
-+TEST_F(vfio_pci_power_state_test, reopen_after_close_in_d3hot)
-+{
-+	power_state_set(self->device, self->pm_cap, D3HOT);
-+	ASSERT_EQ(power_state_get(self->device, self->pm_cap), D3HOT);
-+
-+	vfio_pci_device_cleanup(self->device);
-+
-+	self->device = vfio_pci_device_init(device_bdf, self->iommu);
-+	ASSERT_EQ(power_state_get(self->device, self->pm_cap), D0);
-+}
-+
-+/*
-+ * Put the device into D3hot via config space and then enable SR-IOV. VFIO
-+ * must return the PF to D0 before enabling VFs, and must not allow the PF to
-+ * leave D0 while VFs are enabled.
-+ */
-+TEST_F(vfio_pci_power_state_test, sriov_enable_in_d3hot)
-+{
-+	const char *skip_reason = sriov_skip_reason();
-+
-+	if (skip_reason)
-+		SKIP(return, "%s", skip_reason);
-+
-+	power_state_set(self->device, self->pm_cap, D3HOT);
-+	ASSERT_EQ(power_state_get(self->device, self->pm_cap), D3HOT);
-+
-+	sysfs_sriov_numvfs_set(device_bdf, 1);
-+	EXPECT_EQ(power_state_get(self->device, self->pm_cap), D0);
-+
-+	power_state_set(self->device, self->pm_cap, D3HOT);
-+	EXPECT_EQ(power_state_get(self->device, self->pm_cap), D0);
-+
-+	sysfs_sriov_numvfs_set(device_bdf, 0);
-+
-+	power_state_set(self->device, self->pm_cap, D3HOT);
-+	EXPECT_EQ(power_state_get(self->device, self->pm_cap), D3HOT);
-+
-+	power_state_set(self->device, self->pm_cap, D0);
-+	EXPECT_EQ(power_state_get(self->device, self->pm_cap), D0);
-+}
-+
-+struct sriov_enable_args {
-+	pthread_barrier_t barrier;
-+	int delay_us;
-+};
-+
-+static void *sriov_enable_thread(void *arg)
-+{
-+	struct sriov_enable_args *args = arg;
-+
-+	pthread_barrier_wait(&args->barrier);
-+	usleep(args->delay_us);
-+	sysfs_sriov_numvfs_set(device_bdf, 1);
-+	return NULL;
-+}
-+
-+/*
-+ * Race closing the device while it is in D3hot against enabling SR-IOV. Both
-+ * paths transition the device back to D0, which must be serialized by VFIO,
-+ * e.g. to avoid restoring the PF's BARs after VFs have been enabled or
-+ * double-freeing the saved PM state.
-+ *
-+ * The D3hot->D0 transition during close includes a delay (10ms by default)
-+ * before the device's state is restored. Use a barrier to start closing the
-+ * device and enabling SR-IOV at the same time, and then delay enabling SR-IOV
-+ * by a few milliseconds so that it lands inside that window. Vary the delay
-+ * across iterations to account for differences in timing across systems and
-+ * kernel configs.
-+ */
-+TEST_F(vfio_pci_power_state_test, close_in_d3hot_races_sriov_enable)
-+{
-+	struct sriov_enable_args args;
-+	pthread_t thread;
-+	const char *skip_reason;
-+	int i;
-+
-+	skip_reason = sriov_skip_reason();
-+	if (skip_reason)
-+		SKIP(return, "%s", skip_reason);
-+
-+	ASSERT_EQ(pthread_barrier_init(&args.barrier, NULL, 2), 0);
-+
-+	/*
-+	 * Keep the number of iterations low since each one enables and
-+	 * disables SR-IOV, which can take over a second.
-+	 */
-+	for (i = 0; i < 10; i++) {
-+		args.delay_us = 2000 + i * 500;
-+
-+		power_state_set(self->device, self->pm_cap, D3HOT);
-+		ASSERT_EQ(power_state_get(self->device, self->pm_cap), D3HOT);
-+
-+		ASSERT_EQ(pthread_create(&thread, NULL, sriov_enable_thread, &args), 0);
-+		pthread_barrier_wait(&args.barrier);
-+		vfio_pci_device_cleanup(self->device);
-+		self->device = NULL;
-+		ASSERT_EQ(pthread_join(thread, NULL), 0);
-+
-+		sysfs_sriov_numvfs_set(device_bdf, 0);
-+
-+		self->device = vfio_pci_device_init(device_bdf, self->iommu);
-+		ASSERT_EQ(power_state_get(self->device, self->pm_cap), D0);
-+	}
-+
-+	ASSERT_EQ(pthread_barrier_destroy(&args.barrier), 0);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	device_bdf = vfio_selftests_get_bdf(&argc, argv);
-+	VFIO_ASSERT_EQ(atexit(disable_vfs), 0);
-+
-+	return test_harness_run(argc, argv);
-+}
--- 
-2.56.1.708.g77570a6a1d-goog
+Both vfio_ccw_sch_driver in drivers/s390/cio/vfio_ccw_drv.c and
+vfio_ap_drv in drivers/s390/crypto/vfio_ap_drv.c bind to devices via
+device_match_driver_override() on css_bus_type and ap_bus_type, so
+omitting them will deny or taint driver_override bindings for vfio_ccw
+subchannels and vfio_ap queues.
 
+> diff --git a/drivers/vfio/cdx/main.c b/drivers/vfio/cdx/main.c
+> index 28dc8c8256006..fb7679bf92fd3 100644
+> --- a/drivers/vfio/cdx/main.c
+> +++ b/drivers/vfio/cdx/main.c
+> @@ -358,6 +358,7 @@ static struct cdx_driver vfio_cdx_driver =3D {
+>  	.match_id_table	=3D vfio_cdx_table,
+>  	.driver	=3D {
+>  		.name	=3D "vfio-cdx",
+> +		.support_driver_override =3D true,
+>  	},
+>  	.driver_managed_dma =3D true,
+>  };
+
+[Severity: High]
+Is this missing the prerequisite driver-core patch that adds
+support_driver_override to struct device_driver?  In this tree, struct
+device_driver in include/linux/device/driver.h has no
+support_driver_override member, so building any of the 13 modified vfio
+drivers fails with an unknown field in initializer error.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261118235645.2907=
+908-2-alex@shazbot.org?part=3D1
