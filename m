@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.17
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795055328;
-	b=34aDvSciu+VuXD/et3jyybROxuAfCrviCUTTrPI9Ma0bgr465Eguo5eqmO8APXFcfqDF
-	 a49wBhyGO4RZR82CpwtMrUl46/NIDZ5eygYnosoCrkoBzxQv66UYyZNx7D6ohzV84QK8E
-	 EUSYVztHth5IpAAF09nDp3apBDJUxLuvTqm5hUTFwQekJnxLpsrKDJ/va/qXR+DCiUMW0
-	 Vx+pXH+PCLJpiB/u5ugM3O+eh9alElTF+Vh7X8lwEVAAhGKjFQrHyPrgxMlL3i8NvtX4g
-	 jDbvCGFyn606IQIZ/yrlKP3p0FMWSbmRdhkpYX6T8JO9UHgGymo80+Xs7p2xad9G6EQ==
+	t=1795056750;
+	b=Q+CZI4U/ICH7ghQv6dl80WOUKpPmvgpZi21zrFjFpy8jFD8Q/fFeXG9xAQ5dsvZDU32Z
+	 zNFJUEhO6MufO9eKNjy3568UY5B5qog1GMUGmbUCNKtzDyjKmUDOhWjKv+scy8k5L/pij
+	 JQKKle/P6JrqGtSSCF5psGmvwV8TOib9QzrYwXFKQ3rPzBd51kdpXk2xuioXd7Us8J5Mv
+	 +ZZQz1PWqBRJasF5cpRtOHYfzQAg6WbPujDivPD14H819tVrhjtPJJsT5l5t5qKeylU2Y
+	 rFLqNaHVHrh5Xz+RJ18MN7cnxcralTQeyKghoNyf2xXvmYc/Na/fLfqRZeAPsJ8KZHA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795055328;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=VSmr5vXbmsuCRGN7b7MuI6UN6XrNtVVzPed/LUHALvg=;
-	b=PtcKdM5/s7H0yo6P1thEp61epdoV9IkHTrT3EDmJXMAOKslq8dOFK4PgGTPdx9MjG52G
-	 YQ4Y9PXU9CYyBN3K/NBumzPOWbKVfpsDdZRiXzEWm8FFX7JzrnrMnMccbqoPwjTaZL8Q0
-	 z4ARHI/ql7NPwTb5hSDZ8Kx9TMnAnbFBEtk7TXryLDYqVoH+pxppFSe3aw7GXpLtzkXZc
-	 4z2WQjrcWJNVLZ91DHgD6Oy5KS2CwjugKv8AIo+1LzZbQEFFHSl9dxTf3Cy2IXpPUto/d
-	 iZnT/lNt6BGjkDyGthw+kGQE1Z07z3F0AzKvR5z9BAefFgjrzHfADq0iU5Mj4QrFnNg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795056750;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=hqaJ3AKKV5UoAnmGdJpR51q3f45RxukokiAmVcUo/ns=;
+	b=agwy8KdkHfuZQUFK5GGOcx8q7YLuIxBwW10exP2xyDXyihm6NtXEJLGzE6HY8fAP9oRM
+	 vvRTQParlRIfpw3dldmKFQqImITc+t1RIG6F22owq/Z0JymlQRGEkbp6RrDZxc6KVwDiW
+	 nQq69NIeMPj6CEpVmbRuQJjJbGiz+sK0hM5O++nHLvF0o00+YuNYujcQPtn0U2m0/cU20
+	 6/RJEjXvLf7On9fqUwedqMDee3Fu1qhcYFw+ehG7nzDf3uR2PB9Un+PGdOnMez2iguIM4
+	 IicDm2ZGvI2m3VaRZrSbLURyURAOkuS5ZWVSa9bRea73drXGUybGN77RpaIKbyjmNfA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QCf8TzyK;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CVtbOSvm;
+	arc=none smtp.remote-ip=198.175.65.17
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26248606A330;
-	Thu, 19 Nov 2026 02:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF704606A32A;
+	Thu, 19 Nov 2026 02:52:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AF704606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QCf8TzyK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85101F000C4;
-	Thu, 19 Nov 2026 02:28:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795055327;
-	bh=VSmr5vXbmsuCRGN7b7MuI6UN6XrNtVVzPed/LUHALvg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=QCf8TzyKY+FlztwuipmblRq0WGMCQ00jFnkGWbjo5MJ4EngICXY+S6N0DfoO5YAjp
-	 c9M4WFmnKvN75qwy32jrIRSBJfG/hJz3sNpIHm9n6K6c1EevqY118uf9Gosph6nz7y
-	 NsFPPqZ1wZyUp18XZXx2uTZ5+0AP4zoX2WQwj8xViiLt73GxQ/OfUcBPYOk9rM2cIX
-	 /i4yXRU59k7XNjxjy/8F8PM/vIOJTFbfuXWKi5ruEs65omlMkreIHesaYmkx2GItNH
-	 jHJkHQ5axVnvJY1hsnPLFvy4a0/Y5iejnpry8NLSsu23kEHhqq7axp5ZxWA7/WeaQf
-	 3oYcL2bSn71YQ==
-Date: Wed, 18 Nov 2026 18:28:46 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Bobby Eshleman <bobbyeshleman@meta.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>, Stefan Hajnoczi <stefanha@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?UTF-8?B?UMOpcmV6?=
- <eperezma@redhat.com>, Shuah Khan <shuah@kernel.org>, Randy Dunlap
- <rdunlap@infradead.org>, Donald Hunter <donald.hunter@gmail.com>, Eric
- Dumazet <edumazet@kernel.org>, George Zhang <georgezhang@vmware.com>, Andy
- King <acking@vmware.com>, Dmitry Torokhov <dtor@vmware.com>,
- <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
- <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <sargun@sargun.me>, <jlinbox@meta.com>, Bobby Eshleman
- <bobbyeshleman@gmail.com>
-Subject: Re: [PATCH net-next v7 0/7] vsock: assign the guest vsock device to
- a network namespace
-Message-ID: <20261118182846.4ab756d1@kernel.org>
-In-Reply-To: <20261117-vsock-guest-ns-v7-0-7e522ea9dd9b@meta.com>
-References: <20261117-vsock-guest-ns-v7-0-7e522ea9dd9b@meta.com>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CVtbOSvm
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795056749; x=1826592749;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=l8yCQ1ySx0XtQMlmK6BwZg43oQMUFeCh0WIqFay6wAg=;
+  b=CVtbOSvms1Grx1Nk2ulxag0EOge+OP8by6gHVhrzb/aqL82rTgN9c8nI
+   fwAxE3Xhvs1gc1CsLClRvyGT1jxDgsdaj8V0nneJEw0ragCvm3CYWtVu2
+   DgkPoDxqIKcGcS6z0z8RmvOmcxwF1DZWVXCDmDy3cdJ4N3AVv40q5IeLj
+   FG+GAdLhil0K9RLDibkzicgiYevALn6ogbbudPppm2ym7e1bVH7fJiov0
+   7pu2maQ0G52uRtsuRQlXT8qOdt3MK6i0EF+GLKVxU92bHHWNvC/F6v7/V
+   7Q7ZRnAihuknW+wTt8LMzjOIpi5v7kJJG2Qest84ycQUzFXqOC3dbuSU0
+   Q==;
+X-CSE-ConnectionGUID: 1HUma6mhT8uLHTT5O0l/mw==
+X-CSE-MsgGUID: 2X7/BIhSRqaxHHCG2VUoFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3902041"
+X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
+   d="scan'208";a="3902041"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 18:52:28 -0800
+X-CSE-ConnectionGUID: UBmr5AoKQZ6XNpdnwx8bYg==
+X-CSE-MsgGUID: HKAlHNiISz+5v4TblkfH9w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
+   d="scan'208";a="10555744"
+Received: from unknown (HELO [10.238.2.135]) ([10.238.2.135])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 18:52:26 -0800
+Message-ID: <de1011bc-1cc0-4409-af76-4e90dcef6cf4@linux.intel.com>
+Date: Thu, 19 Nov 2026 10:52:22 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,12 +72,70 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 7/9] coco/tdx-host: Add skeleton to support PCI link
+ encryption
+To: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: iommu@lists.linux.dev, x86@kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+ Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, yilun.xu@linux.intel.com,
+ xiaoyao.li@intel.com, Chao Gao <chao.gao@intel.com>,
+ linux-kernel@vger.kernel.org
+References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
+ <20261112043054.2664857-8-baolu.lu@linux.intel.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
+Content-Language: en-US
+In-Reply-To: <20261112043054.2664857-8-baolu.lu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Tue, 17 Nov 2026 17:54:43 -0800 Bobby Eshleman wrote:
-> vsock network namespaces let a host put each VM in a namespace of its
-> own. A guest has no equivalent yet. It has a single G2H device that
-> cannot be assigned to a network namespace.
+On 11/12/2026 12:30 PM, Lu Baolu wrote:
+> Register a Link TSM instance to support host side TSM operations for
+> TDISP, when the TDX Connect support bit is set by TDX Module in
+> tdx_feature0.
+> 
+> This is the main purpose of an independent tdx-host module out of TDX
+> core. Recall that a TEE Security Manager (TSM) is a platform agent that
+> speaks the TEE Device Interface Security Protocol (TDISP) to PCIe
+> devices and manages private memory resources for the platform. An
+> independent tdx-host module allows for device-security enumeration and
+> initialization flows to be deferred from other TDX Module initialization
+> requirements. Crucially, when / if TDX Module init moves earlier in x86
+> initialization flow this driver is still guaranteed to run after IOMMU
+> and PCI init (i.e. subsys_initcall() vs device_initcall()).
+> 
+> The ability to unload the module, or unbind the driver is also useful
+> for debug and coarse grained transitioning between PCI TSM operation and
+> PCI CMA operation (native kernel PCI device authentication).
+> 
+> For now only check for TDX Connect support in the TDX Module and
+> register the Link TSM. The TSM support is basic boilerplate with
+> operation flows to be added later.
+> 
+> Based on work by Yilun and Dan.
+> 
+> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
 
-PW says this did not apply at the time of posting, pls respin
+[...]
+
+>  
+>  static int tdx_host_probe(struct faux_device *fdev)
+>  {
+> -	return seamldr_init(&fdev->dev);
+> +	int ret;
+> +
+> +	ret = seamldr_init(&fdev->dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return tdx_tdisp_init(&fdev->dev);
+
+If tdx_tdisp_init() fails, it will also disable TDX module update and the
+version sysfs attributes.  If this is intended, could you add some description
+in the change log about it?
+
+>  }
+>  
+>  static const struct faux_device_ops tdx_host_ops = {
+
