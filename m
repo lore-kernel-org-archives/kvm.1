@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795114368;
-	b=33JeHIjXPSN3oKfXUeEOX3TcGTGUATOeT3TTchV4V1OPjdLdqXQDCUtcXr3vy1R81eJ1
-	 fzUWnA4SnCyQ4wQZHcR5y8j7RS6QQ6N1owClZ+EW7+VEdw5tH6OBvUsg/sVh84oNeDjoR
-	 9Vv629IJt83r0WoyJx/PZ7dQM25PWrg4w99ufFD86XzbZpJ3Tnx85oZVy8rXkfC8qjQql
-	 xAWMfvlK99sObv9IngHzVpRaTZlTuGO2NCnTUpIhWB4IesKnZiIwsZTkCS7Qd4+teo7D+
-	 BwKGLqyd8c6igRK7GdavzaE2s2zs2hfm4LBpQg3uES4vHyi5hRXEq3LsuQQn9lRuxwQ==
+	t=1795114358;
+	b=mXlhJ1QdiL8LeYE14XQUCJrqD8f/NvCQgW/I6XGwt6i8WOt1xFPfQCt9Ro5edCNfSlq8
+	 8ZvQwiVTFRhyxDuJpJ5S2B5sLgJsg1ZDZbVUQVCmx67N5OwDzlsvM+aLE3Tq3dZX4I59q
+	 RvmWBc7KzdZ23wdWVdo9T1osQ2fi6VkzDGfYjGjy9UcplRlxZ5KkmeErvcWlAupdjwkJm
+	 eh9b2f7bTQkC2mXS9Cwckzk3BWfN/dSKfncz3Ot8Tx3F6BG4aDcNGX+BDZaRLxCWVTln/
+	 YDP44lpiK3Y5FWuprWchVZbO2PDBN/qhDHQZM2VqjWWu7NWZ/GLa1/RwCT+CFGwhpuQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795114368;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795114358;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=wgoC6kwXy8A/C0dx8SZHvUCPruFTOKn2cEN7Wk/LnjU=;
-	b=B+ngQPDQfBV6nrkhbr1ivZR6+5n4V+ScPKc4cgGBj+HkrJ+5oeayjrTHLuRa9yJ06crz
-	 pz7anwf+wIv0qUMiMgB8m67n6glnlB2/gX95ayUhhkAHnvtXMfF+usF6kJZGsPO8YOtHL
-	 EwZz3zENStDOdLcTHUshyfBKJdyCBkNEKomNADfnLMsPHBxjDZPODcHcBdwOxtMXeOUuz
-	 3c698Vpiz9DYTwtF2ucS6G2IPLG6VU7hfzikbewjNxlwYpGliuTum+ODY/aJjT8cIuOa7
-	 cXWakTaNd6Yt24d7kK07b5/hYkyt7J+ppiazmKqFZzlcHzMPtqdPnjKcSWYdTxponJA==
+	bh=ZrQiJeW1/ZGAZNj9EqpY+oYKcoF1CcN9MBzVSNJZPxc=;
+	b=wqoidsoNbCGsfFW4cBZIO70Bz+Eh3KXPe75wZ4gNjoKgM8nfStzGrZf828sU4ntEonZA
+	 4ea5LFCRklutbJ8NMdkmo3bqDTlapwxKwgbfiecmEUwfkJ7iX2xE/wolB1EYuDXf73TN0
+	 jH55m61j3pokPh+BgH2ZsW6dbwbNGzfJ7zi0XXdtvcE2oMcH83jlGeTUCLaUZQc1ZlgOB
+	 aAnBimrJX3yJ2xYKJmjo1gC9QJcuJWoGbixGR1LzE/92w5aKcVmXwEDMrM3R6x4jnyQ/j
+	 DFqudjmMTfg2hz6fib0dUKRtUnC9THtLA3nXVJDBg+vqnLM5Kdn1oFIVcAiZne0gR5A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=UHPM6fWq;
-	arc=none smtp.remote-ip=209.85.167.197
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=djTQwvGo;
+	arc=none smtp.remote-ip=209.85.167.200
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3525A607316D
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 18:52:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3525A607316D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AA8606E8D0
+	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 18:52:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4AA8606E8D0
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=UHPM6fWq
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4cc89e86e9eso172781b6e.3
-        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 10:52:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=djTQwvGo
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4ab8b4887d4so146097b6e.1
+        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 10:52:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795114367; x=1795719167; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1795114357; x=1795719157; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=wgoC6kwXy8A/C0dx8SZHvUCPruFTOKn2cEN7Wk/LnjU=;
-        b=UHPM6fWqWEt/09cNK5Rf944Y1/0k1sbjONubj/DTy8n5zCl4RCe77b6Ao6wTJnrULW
-         sS3kJrUh6GsyG2hU+8XLb3/6pbOZMjhNlxgwA1qRktI4Ga8STJqLz0PkYhstY6oOO2R7
-         C0rFdYizHzYSbMbzCpJP1nMiqDBP7XM+mrdo4NyrIhBOS7qnk/kBURSBJ+t0MOnFNoba
-         tnR8KqKpDtKryw5w11iZ4DDk9s2b1Hur+fRm5RWc01lY9lZO6eT0szNdDOd2hYzCVrqx
-         HqI9s9LkIQ2NTmhJObHT9FFQ2SEQROhwqQlU6A5LAy4M9kids2Wwq4iIYeHG3rtrCrRR
-         nzPA==
+        bh=ZrQiJeW1/ZGAZNj9EqpY+oYKcoF1CcN9MBzVSNJZPxc=;
+        b=djTQwvGouuLjxkWqR3c9bPKwN/fycxEJsz46gazrcL55seCy00j+IlwKtjdnHf423Q
+         nDqhlPtjai7dC7ZgHo5qWbK5qUAefvDOdgQ63QdA4Yngef/ylXyu9KPSipd6OdWGf6oN
+         6qdA2OSrq2S5LuamR8CrJ4IgvL3krCF9KruFSWJed3J5qHLxH15nreaOEc2auIvqb4+w
+         R8mav+ERdQ2k2IcsqRDdXiicDyPX0bz0Nn56HIhrS5jMhVxVjzFcOuFB8maAUzMBjDwR
+         /3w0OAvtg6Ey+mYrIIB7CtSMGY6zwpkOXXemuz3r1IWrr7q90Sbkye6vss/SyHrSO7Lr
+         EWkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795114367; x=1795719167;
+        d=1e100.net; s=20260707; t=1795114357; x=1795719157;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wgoC6kwXy8A/C0dx8SZHvUCPruFTOKn2cEN7Wk/LnjU=;
-        b=GUrTS4CtVdrkowXKbl5yOEd0TxZKlbJel7MfE4QnOSVWrVduxDAnr7Klo2s4HGX8yz
-         Rzqzl8JwAs8ywc4ejqZDqzxfNYu8EhSzN476GuscmXU8mRcf7P47RHw59w8firg+Bat7
-         27CL6av28r8jQiuvPhV5YkphdAdxipY/aJQ2RZCTJINp/b/7I8pcotCUngDdJoYOGuWb
-         2WS7zWnYpu4qrPGs4LbGaHFkB0Kzsn2nC7Kwkf3eqvpphbDgYe7WVSIHJvE+UwMl+5Kr
-         uzLqXh3xoK6Pg6NHyyBM3E5ZgblMPf9a/MDBAfZnsJkmERaOqgYpq5CzUU0QzY63eST1
-         d53Q==
-X-Forwarded-Encrypted: i=1; AL+hErHumk2KWO6xzVZiaZ0X8p+Z6i7htJtqp9Lc4hOEBNFOirFSsW6JK8KlGpsweykCeCegqUI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9ubbdf5qxBUHtrePxmdmTctEi5Ndy+hE6UKXOJ0TG/rcEz3ci7
-	2Mdm0HGFmAwBXB/D9V1UqkDUslwY3Vy6VgGpCo9HZLXFvjaMVDpvoC33UKz6X0vEBDcI9JiLjJ+
-	fSs0cNig9JCGU2brEBrxhM5PLVw==
-X-Received: from iloo7-n2.prod.google.com ([2002:a05:6e02:6107:20b0:54e:86af:fe5d])
+        bh=ZrQiJeW1/ZGAZNj9EqpY+oYKcoF1CcN9MBzVSNJZPxc=;
+        b=HQ21nkLXQkWtA5dUOOONNGU362mce9rrbCDs5BZ+34DziYl1jAzN2QVZhWSiIiI1m6
+         rmoFP5ratWOMTG+HJs2d0krMDGo1tB0faEjo3m4BFqva6MsCBA54UqdoklOD7EBKeO5y
+         Jfn7ZP68e5dAvIPiXmpEg62n07R2VXfWBWSgQsAw+Vte2hHIpIBInHCCV+qy/G9Luntk
+         UGesB4KYbaeo/Xajv4ZXM1qDqSE2qWCBbnXfxTOfU93sxtElmUqEbpSUWqveP/OjyTMK
+         tFqu5a+wLw11vNFWywhYfzEWeAyvbEL+dlhRPUohus8pERfnZqiDuDv22lHxNjCY5pS0
+         KXIQ==
+X-Forwarded-Encrypted: i=1; AL+hErFx9zDKkFKGNKQlHvGt6hufsoGi1zv0AK391pPynpojzYBh09BtMuqiPGXse103pZ1qo08=@vger.kernel.org
+X-Gm-Message-State: APuU4Z89LemdZHHKUKmwd0VgDPUq8uHGh6WDhcJFJbTdMazMfAfCM8SP
+	ADFXKMouyP3nkKsQX9EOw1j7RXYw/xi+yg2dafKNSD4HsEMEZa6B6d6lcNlCKll/CMwekRhDDJu
+	F2liBXjOLxjXAETB2nV+WyZnk0w==
+X-Received: from iof12.prod.google.com ([2002:a5d:9c4c:0:b0:9c4:b80b:7605])
  (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:191a:b0:4d5:291b:b850 with SMTP id 5614622812f47-57a0c4b956amr1020128b6e.54.1795114366859;
- Thu, 19 Nov 2026 10:52:46 -0800 (PST)
-Date: Thu, 19 Nov 2026 18:52:14 +0000
+ 2002:a05:6808:1384:b0:4ce:a4fc:a848 with SMTP id 5614622812f47-57a06a0da3amr989109b6e.6.1795114356571;
+ Thu, 19 Nov 2026 10:52:36 -0800 (PST)
+Date: Thu, 19 Nov 2026 18:52:03 +0000
 In-Reply-To: <20261119185215.632334-1-coltonlewis@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,8 +81,9 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261119185215.632334-1-coltonlewis@google.com>
 X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
-Message-ID: <20261119185215.632334-33-coltonlewis@google.com>
-Subject: [PATCH v10 32/33] KVM: selftests: Add find_bit to KVM library
+Message-ID: <20261119185215.632334-22-coltonlewis@google.com>
+Subject: [PATCH v10 21/33] KVM: arm64: Allow kvm_vcpu_pmu_resync_el0() to
+ resync filters in process context
 From: Colton Lewis <coltonlewis@google.com>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>
 Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
@@ -99,38 +100,48 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Add lib/find_bit.c to the KVM selftests build using the same wrapper
-pattern as lib/rbtree.c so selftests that depend on find_bit helpers
-link cleanly when built standalone.
+Previously, kvm_vcpu_pmu_resync_el0() only scheduled
+KVM_REQ_RESYNC_PMU_EL0 when called from interrupt context (such as an
+IPI reprogramming host perf events). When perf_pmu_resched_update() is
+invoked synchronously from process context during vCPU load/put to
+reschedule host events around guest-reserved counters,
+armv8pmu_enable_event() calls kvm_set_pmu_events() and
+kvm_vcpu_pmu_resync_el0() in process context.
+
+Update kvm_vcpu_pmu_resync_el0() to call kvm_vcpu_pmu_restore_guest()
+directly when not in interrupt context so that newly rescheduled host
+perf events have their EL0 exclusion filters applied immediately.
 
 Tested-by: James Clark <james.clark@linaro.org>
 Signed-off-by: Colton Lewis <coltonlewis@google.com>
 ---
- tools/testing/selftests/kvm/Makefile.kvm   | 1 +
- tools/testing/selftests/kvm/lib/find_bit.c | 2 ++
- 2 files changed, 3 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/lib/find_bit.c
+ arch/arm64/kvm/pmu.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 17a4256e90819..79b67a86208c3 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -5,6 +5,7 @@ all:
+diff --git a/arch/arm64/kvm/pmu.c b/arch/arm64/kvm/pmu.c
+index dbbe219ac874f..d3fd438a57b09 100644
+--- a/arch/arm64/kvm/pmu.c
++++ b/arch/arm64/kvm/pmu.c
+@@ -213,14 +213,17 @@ void kvm_vcpu_pmu_resync_el0(void)
+ {
+ 	struct kvm_vcpu *vcpu;
  
- LIBKVM += lib/assert.c
- LIBKVM += lib/elf.c
-+LIBKVM += lib/find_bit.c
- LIBKVM += lib/guest_modes.c
- LIBKVM += lib/kvm_util.c
- LIBKVM += lib/lru_gen_util.c
-diff --git a/tools/testing/selftests/kvm/lib/find_bit.c b/tools/testing/selftests/kvm/lib/find_bit.c
-new file mode 100644
-index 0000000000000..5534248c663f7
---- /dev/null
-+++ b/tools/testing/selftests/kvm/lib/find_bit.c
-@@ -0,0 +1,2 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include "../../../../lib/find_bit.c"
+-	if (!has_vhe() || !in_interrupt())
++	if (!has_vhe())
+ 		return;
+ 
+ 	vcpu = kvm_get_running_vcpu();
+ 	if (!vcpu)
+ 		return;
+ 
+-	kvm_make_request(KVM_REQ_RESYNC_PMU_EL0, vcpu);
++	if (in_interrupt())
++		kvm_make_request(KVM_REQ_RESYNC_PMU_EL0, vcpu);
++	else
++		kvm_vcpu_pmu_restore_guest(vcpu);
+ }
+ 
+ void kvm_host_pmu_init(struct arm_pmu *pmu)
 -- 
 2.56.1.708.g77570a6a1d-goog
 
