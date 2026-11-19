@@ -1,54 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.174
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795132457;
-	b=z/DYUIa31IpXY8gUR4KvL9Rf/Wt5xq13aqjA+dIIQL2FtoOhnNILl20MOxQpxo8y0fTM
-	 Vu5Kd/oEz41sheXAf+p32VocL3N7cUwwaWIvW9ajyEZZMPpY41ERSZzxUK1cHgnoCesmZ
-	 DSdGD/dIqfLsvjYPIXL2JpVapL+LWwsZfi5jZCDvrjIAO4SaF+Oxh4iXgZBaAONsmP9kc
-	 ++sX/OXvXU3iF3qTsoEeeELeASCUh0n3kDp1wNrrWUcY+zUxjwSpSh4TmPuD7/oNY6NNY
-	 uYZyi/S5dUMpEofLJAmKJbaiqGeLG7rGYhtVFg76cH/o6PdGy3ZBvqQpYhdvJq+482Q==
+	t=1795132623;
+	b=pTZKeIYnqLjdIwnojMQPkqeZ19N3WkyHVQ05pK3o6e2O85WoJOut1hugHEbo73nb2hbe
+	 VtAfzlzMznqjJ1TdJppCm7FiQdYhDZzkSG3lS7lNWtJDy00TMBPrb332gBJcYe9Uggr8/
+	 wq/nrZhNssK72CD0uZhqYNxkzO4u+3C3o03wah9Xe44s1W5ZCEX5mSF8ah+auDCUP/Rq8
+	 fXc4RpZJ3t8XTwmRCDJonAx5ldkhJg4knSHnXLbZRaDYbBsWb0eRBQviOTs3eZOHiQ4x3
+	 qbXNfl3/+Y0Bot5JjQX3wMFuu9cJRFo227Mu2G8j0hQOpt1wR9ff58obtKpMSbl3lbg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795132457;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Message-ID:Date:MIME-Version:User-Agent:
-	 Cc:Subject:To:References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=o8Jkl3D6PyKBQ9flRwdsQA2PhUfjW1xzSb0OsieXFqU=;
-	b=rlpIsaq7XHbGxA/X++KxnofzQZ/eaBmZcdwVr6jMEwnVP3yItE5qkr9e5jmfe8/cJnng
-	 OJKy3zzPWp+rrS+tpVwanbvWXJ56Ibrxxe7B9hrBa33bACugXy0fOxLb3O/irnVw/RBAL
-	 F1YtYOkolBAMKCRUWq+uuhD3vdkoisALJ62ruuKKFvBSZZdUNqSDyL+zdJpyPTPNYqYok
-	 GMasa0g0isNQE/usq1jI5XWIUQzJg4eHi7NKk8L0PT+eIv7tpkRrVcZx2NrgE+vg5GOuc
-	 9Uk+M1Q7tG4qxPT78mwgA+O+0ooThXpHAgNqfrvxdTcYJCFoHHZoBuV6TobGJuOiZLw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795132623;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Reply-To:Date:
+	 Mime-Version:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=1UMF/d6dH5AR6IZAi49o7hGEKd8lEIEJySIIOWnfd0g=;
+	b=O4zqjslYtIZnkIYMZV1y93LIDmWFL/1uWPSHGUWAdnHmV7I1s/mHLlgB9EmkPk7FKy1f
+	 rAOci0Zzd4xf5kQywu2WZrcEtkyhCSRjTLfhJ6fH7jlN5CGUUyYXrIUTIXNb4OJJHzf90
+	 Xd3JN3SZ/3jAxsez6OmgFOI97RJaPvyvbVYeSkcEc4vPNCbkeZatno4c7LKDIuRUu2CMx
+	 6eg6HQ2SoHqZ6YM5twzVwC3QAQfJSAIFhtMm4E+DHabF1Z1GyhO6ZfyV9eyvTrIDPBw9P
+	 lfWcjqg9gMwLr3JYutVuGhsqahvOgnvkKQRiJEJrIUpy51Rn4tzXUF2TnVxfse/uk7A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=q70IX0lu;
-	arc=none smtp.remote-ip=95.215.58.174
-Received: from mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZZu+pzr0;
+	arc=none smtp.remote-ip=209.85.214.200
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E8D606A330
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 23:54:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 77E8D606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807FA606A325
+	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 23:57:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 807FA606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=q70IX0lu
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=SVZrlJks8sXPVt3xrpYdTAoVZmdk9CSrl7P148bcFmU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795132454; v=1; x=1795737254;
- b=q70IX0luUcbU6FCiJYBpmUfdNrXaCDzDyverVa5nohERhVo++3RcTQWOyKaGqDjVgz3oc5Fx
- VBY96WxGxsdaNk3gHTfIfp6AF/YK/SO2tPRF0sI/OQFkm0I4B33qwJ5F3URCKw0ij+tnYR3yJa0
- Gw0mzX4e9eiXeXHZeFdigyFI=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id eca0a2cac3c52e86;
-	Thu, 19 Nov 2026 23:54:14 +0000
-X-Mizu-Trace-ID: eca0a2cac3c52e86
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <1ea66d73-4d40-4d95-855f-4235cbd1d809@linux.dev>
-Date: Fri, 20 Nov 2026 07:53:53 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZZu+pzr0
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2ed00709df0so2362885ad.0
+        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 15:57:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795132622; x=1795737422; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1UMF/d6dH5AR6IZAi49o7hGEKd8lEIEJySIIOWnfd0g=;
+        b=ZZu+pzr09ebaZms0nwX8vEbo2zxm7kqYm1FXDDUo8hFkRm+el2EwKmaD0KurLU9HQS
+         nLHHcvxdGeZJzBWhEO3jOrUTiaGOW3lpZFFgV/0MCPv0BZLb1oHrv+5JXs0N+JLJXxja
+         7QLbZgsluC824mGMxpFjR9HFpb9AbpRkHXw887ZupR3Vm2etuvcwO9gz8W7jOUZKTd61
+         gx3OBHPvfgaDhz57IOQfj5QKydo6YohjQJhxEtJzud50hmm0FG4NmAfGUoBFQwPheJg2
+         l+OQMlCckh1cRiqedlDIAQ5lvJO1dXI8YeUvyzXliASCbyv8+4M5js4Ud+MkHd1StyGf
+         bXHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795132622; x=1795737422;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=1UMF/d6dH5AR6IZAi49o7hGEKd8lEIEJySIIOWnfd0g=;
+        b=1itsgpQJG2qoZCvNZZgmY2cVf7CXQzpFsUZnPr00A3tEWbRGczQNLuNIvidpGbVwEh
+         WSl+sg/Ple7jkvPmHaRiu9yyeBnbOnvdYzicZuPwd0bTzY2WoIO8/W9DaKah3DQdqVyl
+         d6LQXEX2rHg5NcsQeQ7mDRmWkUdL/dFyMt4pCsU5oQHXu8tUgq6DP5FOFi1NJFb7DvfJ
+         GAYsYcmMSXPEbi4V1mzoo06pFm8Bu0QLpyDXSwxh0+wPmHiap9AWGPUsuTWs23qgB65+
+         KKP4IWb2PzgCZna6sNEPoQ0FMFPeZ1Ibt8zNxQMqfkuP3Of1a8GcTvgIsOzLRkYPv5JQ
+         /dTQ==
+X-Forwarded-Encrypted: i=1; AL+hErFTtlbXZ3yyBOA0zUcCSqeKwy7PUeiBEeBpLsRqPXiBLvStdyLMAugMQ5r82lIG4uFadSk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z931LrfgMHGf7oWdrj6GXnSCpqW6mDNIjOhM6R0MJHOmCuL4yVG
+	XzgoGZuRHj5M24c4na7om1JwHs4lpaSq9DxCOWIemeD+csM5L+FRCYwNAeCFz9UvpPflYOOwJmc
+	hzBR2vw==
+X-Received: from plbkd12.prod.google.com ([2002:a17:903:13cc:b0:2f0:43fa:d088])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:607:b0:2f0:2c63:69b2
+ with SMTP id d9443c01a7336-2f03f17d1femr9933105ad.16.1795132621632; Thu, 19
+ Nov 2026 15:57:01 -0800 (PST)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Thu, 19 Nov 2026 15:56:50 -0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -57,188 +76,46 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: cui.tao@linux.dev, akpm@linux-foundation.org, dgilbert@interlog.com,
- mkp@kernel.org, loberman@redhat.com, jmeneghi@redhat.com, kraxel@redhat.com,
- vivek.kasireddy@intel.com, jasowangio@gmail.com, eperezma@redhat.com,
- stefanha@redhat.com, sgarzare@redhat.com, rostedt@goodmis.org,
- vdonnefort@google.com, mhiramat@kernel.org, jgg@ziepe.ca,
- kevin.tian@intel.com, axboe@kernel.dk, linux-mm@kvack.org,
- James.Bottomley@hansenpartnership.com, sumit.semwal@linaro.org,
- christian.koenig@amd.com, phasta@kernel.org, joro@8bytes.org,
- will@kernel.org, linux-scsi@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
- iommu@lists.linux.dev, io-uring@vger.kernel.org,
- linux-kernel@vger.kernel.org, bobbyeshleman@meta.com,
- mathieu.desnoyers@efficios.com, robin.murphy@arm.com, mason@kernel.org,
- aesteve@redhat.com, tjmercier@google.com, harry@kernel.org, vbabka@suse.cz,
- cuitao@kylinos.cn
-Subject: Re: [PATCH 3/7] vhost: account the per-device kernel allocations to
- memcg
-To: "Michael S. Tsirkin" <mst@redhat.com>
-References: <20261106131829.3228926-1-cui.tao@linux.dev>
- <20261106131829.3228926-4-cui.tao@linux.dev>
- <20261119101239-mutt-send-email-mst@kernel.org>
-From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <20261119101239-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.1.708.g77570a6a1d-goog
+Message-ID: <20261119235656.70315-1-seanjc@google.com>
+Subject: [PATCH v2 0/6] KVM: Send reschedule IPIs for non-waiting requests
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Satish Kharat <satishkh@cisco.com>, Sashiko Bot <sashiko-bot@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hello, Michael,
+My apologies to the s390 folks for dragging you into KVM's mess.  Y'all are
+Cc'd because I want to use smp_send_reschedule() to fix a KVM bug, and KVM
+can be built as a module on s390.  I'm hoping to get an Ack on patch 1,
+definitely feel free to ignore the rest.
 
-在 2026/11/19 23:12, Michael S. Tsirkin 写道:
-> On Fri, Nov 06, 2026 at 09:18:25PM +0800, Tao Cui wrote:
->> From: Tao Cui <cuitao@kylinos.cn>
->>
->> Everything except the worker struct is allocated with plain GFP_KERNEL:
->> the per-vq iovec and log arrays at VHOST_SET_OWNER, the memory table at
->> VHOST_SET_MEM_TABLE whose size follows the user supplied region count,
->> the pending message nodes, and the vhost_net/vhost_vsock device structs
->> with their fallback to vmalloc.  The worker has been accounted since the
->> vhost_task conversion.
->>
->> A container that can open /dev/vhost-net or /dev/vhost-vsock, which
->> device plugins hand out with passthrough, holds roughly 150KB of
->> resident kernel memory per device after SET_OWNER.  Charge the rest the
->> same way the worker already is.
->>
->> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-> 
-> 
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> 
-> should each patch be merged individually?
-> 
-Yes, I think merging them individually is the cleaner path here: the series spans six subsystems, and each maintainer taking their own piece keeps things simple. Jason has already taken patch 5 into iommufd.  Please feel free to take patch 3 through your tree.
+For the KVM changes, fix two bugs with using the SMP function call framework,
+by switching to smp_send_reschedule() for non-waiting requests:
 
-Thanks,
-Tao
-> 
->> ---
->>  drivers/vhost/net.c   | 14 ++++++++------
->>  drivers/vhost/vhost.c | 16 ++++++++++------
->>  drivers/vhost/vsock.c |  5 +++--
->>  3 files changed, 21 insertions(+), 14 deletions(-)
->>
->> diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
->> index 4570a4ffbab2..bab6597c696d 100644
->> --- a/drivers/vhost/net.c
->> +++ b/drivers/vhost/net.c
->> @@ -249,7 +249,7 @@ vhost_net_ubuf_alloc(struct vhost_virtqueue *vq, bool zcopy)
->>  	/* No zero copy backend? Nothing to count. */
->>  	if (!zcopy)
->>  		return NULL;
->> -	ubufs = kmalloc_obj(*ubufs);
->> +	ubufs = kmalloc_obj(*ubufs, GFP_KERNEL_ACCOUNT);
->>  	if (!ubufs)
->>  		return ERR_PTR(-ENOMEM);
->>  	atomic_set(&ubufs->refcount, 1);
->> @@ -302,7 +302,8 @@ static int vhost_net_set_ubuf_info(struct vhost_net *n)
->>  		if (!zcopy)
->>  			continue;
->>  		n->vqs[i].ubuf_info =
->> -			kmalloc_objs(*n->vqs[i].ubuf_info, UIO_MAXIOV);
->> +			kmalloc_objs(*n->vqs[i].ubuf_info, UIO_MAXIOV,
->> +				     GFP_KERNEL_ACCOUNT);
->>  		if  (!n->vqs[i].ubuf_info)
->>  			goto err;
->>  	}
->> @@ -1344,17 +1345,18 @@ static int vhost_net_open(struct inode *inode, struct file *f)
->>  	struct xdp_buff *xdp;
->>  	int i;
->>  
->> -	n = kvmalloc_obj(*n, GFP_KERNEL | __GFP_RETRY_MAYFAIL);
->> +	n = kvmalloc_obj(*n, GFP_KERNEL | __GFP_RETRY_MAYFAIL |
->> +			 __GFP_ACCOUNT);
->>  	if (!n)
->>  		return -ENOMEM;
->> -	vqs = kmalloc_objs(*vqs, VHOST_NET_VQ_MAX);
->> +	vqs = kmalloc_objs(*vqs, VHOST_NET_VQ_MAX, GFP_KERNEL_ACCOUNT);
->>  	if (!vqs) {
->>  		kvfree(n);
->>  		return -ENOMEM;
->>  	}
->>  
->>  	queue = kmalloc_array(VHOST_NET_BATCH, sizeof(void *),
->> -			      GFP_KERNEL);
->> +			      GFP_KERNEL_ACCOUNT);
->>  	if (!queue) {
->>  		kfree(vqs);
->>  		kvfree(n);
->> @@ -1362,7 +1364,7 @@ static int vhost_net_open(struct inode *inode, struct file *f)
->>  	}
->>  	n->vqs[VHOST_NET_VQ_RX].rxq.queue = queue;
->>  
->> -	xdp = kmalloc_objs(*xdp, VHOST_NET_BATCH);
->> +	xdp = kmalloc_objs(*xdp, VHOST_NET_BATCH, GFP_KERNEL_ACCOUNT);
->>  	if (!xdp) {
->>  		kfree(vqs);
->>  		kvfree(n);
->> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
->> index ea127af58ada..d1274106ad5d 100644
->> --- a/drivers/vhost/vhost.c
->> +++ b/drivers/vhost/vhost.c
->> @@ -526,11 +526,14 @@ static long vhost_dev_alloc_iovecs(struct vhost_dev *dev)
->>  
->>  	for (i = 0; i < dev->nvqs; ++i) {
->>  		vq = dev->vqs[i];
->> -		vq->indirect = kmalloc_objs(*vq->indirect, UIO_MAXIOV);
->> -		vq->log = kmalloc_objs(*vq->log, dev->iov_limit);
->> -		vq->heads = kmalloc_objs(*vq->heads, dev->iov_limit);
->> +		vq->indirect = kmalloc_objs(*vq->indirect, UIO_MAXIOV,
->> +					    GFP_KERNEL_ACCOUNT);
->> +		vq->log = kmalloc_objs(*vq->log, dev->iov_limit,
->> +				       GFP_KERNEL_ACCOUNT);
->> +		vq->heads = kmalloc_objs(*vq->heads, dev->iov_limit,
->> +					 GFP_KERNEL_ACCOUNT);
->>  		vq->nheads = kmalloc_array(dev->iov_limit, sizeof(*vq->nheads),
->> -					   GFP_KERNEL);
->> +					   GFP_KERNEL_ACCOUNT);
->>  		if (!vq->indirect || !vq->log || !vq->heads || !vq->nheads)
->>  			goto err_nomem;
->>  	}
->> @@ -2053,7 +2056,8 @@ static long vhost_set_memory(struct vhost_dev *d, struct vhost_memory __user *m)
->>  		return -E2BIG;
->>  	if (max_iotlb_entries <= 0)
->>  		return -EINVAL;
->> -	newmem = kvzalloc_flex(*newmem, regions, mem.nregions);
->> +	newmem = kvzalloc_flex(*newmem, regions, mem.nregions,
->> +			       GFP_KERNEL_ACCOUNT);
->>  	if (!newmem)
->>  		return -ENOMEM;
->>  
->> @@ -3405,7 +3409,7 @@ EXPORT_SYMBOL_GPL(vhost_disable_notify);
->>  struct vhost_msg_node *vhost_new_msg(struct vhost_virtqueue *vq, int type)
->>  {
->>  	/* Make sure all padding within the structure is initialized. */
->> -	struct vhost_msg_node *node = kzalloc_obj(*node);
->> +	struct vhost_msg_node *node = kzalloc_obj(*node, GFP_KERNEL_ACCOUNT);
->>  	if (!node)
->>  		return NULL;
->>  
->> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
->> index 0cb87971d749..600daeb05e7b 100644
->> --- a/drivers/vhost/vsock.c
->> +++ b/drivers/vhost/vsock.c
->> @@ -721,11 +721,12 @@ static int vhost_vsock_dev_open(struct inode *inode, struct file *file)
->>  	/* This struct is large and allocation could fail, fall back to vmalloc
->>  	 * if there is no other way.
->>  	 */
->> -	vsock = kvmalloc_obj(*vsock, GFP_KERNEL | __GFP_RETRY_MAYFAIL);
->> +	vsock = kvmalloc_obj(*vsock, GFP_KERNEL | __GFP_RETRY_MAYFAIL |
->> +			     __GFP_ACCOUNT);
->>  	if (!vsock)
->>  		return -ENOMEM;
->>  
->> -	vqs = kmalloc_objs(*vqs, ARRAY_SIZE(vsock->vqs));
->> +	vqs = kmalloc_objs(*vqs, ARRAY_SIZE(vsock->vqs), GFP_KERNEL_ACCOUNT);
->>  	if (!vqs) {
->>  		ret = -ENOMEM;
->>  		goto out;
->> -- 
->> 2.43.0
-> 
+ 1. Making SMP function calls with IRQs disable can lead to deadlock.
+ 2. Batching IPIs for SMP function calls using the per-CPU cpumask can corrupt
+    the mask if KVM kicks CPUs from hard IRQ context, as arm64 does when
+    handling KVM_IRQFD signals.
+
+Sean Christopherson (6):
+  s390/smp: Export arch_smp_send_reschedule() for KVM
+  KVM: Add struct and helpers to handle kicking multiple (v)CPUs
+  KVM: Add dedicated flag to track if multi-vCPU request needs at least
+    one kick
+  KVM: Don't kick offline CPUs when making a multi-vCPU request
+  KVM: Send reschedule IPIs instead of SMP function calls for
+    non-waiting requests
+  KVM: Extract and dedup the kick code to check if a CPU needs an IPI
+
+ arch/s390/kernel/smp.c |   1 +
+ virt/kvm/kvm_main.c    | 101 ++++++++++++++++++++++++-----------------
+ 2 files changed, 61 insertions(+), 41 deletions(-)
+
+
+base-commit: d21eef2084a9af87ac2a783bc7c2b175ba114e4e
+-- 
+2.56.1.708.g77570a6a1d-goog
 
