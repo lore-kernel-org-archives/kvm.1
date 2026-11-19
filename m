@@ -1,93 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.16
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795066714;
-	b=5l6pQW6Lbr00ye2H8VrXqwNsHQHJuGsM+9UvE3jk2drMqkwzU5399dL0yLi+ye5b1juJ
-	 G5Lnz6cH5+7PEgNWBI4pOOxRDNapCIW4JFWDuGXnKmvMqjvbqzCjUrBwfQHEQ5gp4x3gI
-	 07mwsVCO30mE7qbHg5e5MFT1LuO1QUoidjndHrndYrSjM4o4jkGboUGkdHZmZXKlKAnr4
-	 oWaFoHeOQpw2vxU1t3l2QghjIQTkExpAOzf8rFT8y+ucNWEurwa7mFNbzEFhgUPJrcToH
-	 3WDBadXts9spRvjJxFk3G8p/u8FMQ4dG6nl0M7DM4Q15prMWI7R4+VJ4H7m7lVwSziQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795066714;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=QfwgZ2UU3p6kh7MSAj1RKc0yq+hEXqvPX6KlaPJKwRU=;
-	b=P1n0qc6KZQpl51ss19ko6o9aVkZ/+WNNrtu4unmtJdCDzagmXc1v35ubaSTzl0XcHGxo
-	 CQpfDVzJxGMae/paXerE6Cq4dxAwa3Smgr1peBLDAmg/NMUPwsevUbTE34nrAYE12ofQ0
-	 isXULdyTiWZAEY+DbzK7u3K9IdHOwximR5NCuAvF+Oar/N3+7EYfi/fzM+3H/IHy9H97k
-	 SwN/PPefGPciKew7eUZfOUi1/PrvN7EygwKoE6PO2fi7OWDFKibsQZPPV9JhzMxE7rXNJ
-	 2TLpfAmGsBLLiPckLKvE+wmP9wc9PqHOPcP9RhP8Qnf0p9Tms2AP13pRMGC5fQbIU3A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZzXcALvP;
-	arc=none smtp.remote-ip=198.175.65.16
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.44
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795067781;
+	b=OSmBkSCCpNNWhPmoyHIufwEc6qQXVqkemYOJUQLBzbINLPxNHj+mFgMlWiRE+XuZhN3l
+	 gVwfGN9EKn/NywZ7cWSBn+rGec+Q1B431drqwY5ya4AWJ0B+s8CWKZEEUrDebm+OVsCTX
+	 daTAcMuXtdTvSZCpkMAAQWmE3xEtaPZ+zlfM1bCVbn3UaSeYa+M7w2PtYH7rnqCvdXUmA
+	 4/V+1IHRuPCEfGdq4G+5v8Y0f4ulIraD35ZDY5cvWgrdeM+EpJNZM6ZF1yxPgxplaRbvb
+	 qPKdwjwVZxn5Ws8UTatPNSX8ot6kfDn6zZIClkILhmLX7uiSq37cM1PUsQ1S5fnmIcQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795067781;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:
+	 Cc:Content-Type;
+	bh=xKhWfAhnFH1MoQBYnntrqmndPCEzikmuR8uNGBngT1E=;
+	b=vuAhw9hu0H/gSMz/A3DXha0d/Z6o8cDNg5hqKkUdgl4x6nTNuu0Zeax+yT5HevGsQJlO
+	 njrwT8kk2iPB3pxwCZlLdiAYj9QSVnUokNhG56KfP3hAHDocJ4aaUZLsHK4umE2yyHz6L
+	 V12xiKfw4s2Rur01/zvFJeEK+HfnVghGysu3XA+oVePiMwusFSPzXjwkcdzJO6+ASP0qY
+	 TPdYF0w1Y0v1onGu+FWCKDrIOlaTkzExxfB94PLoDj9ejXiTP04yqUxbHAyB6G7dXAvBo
+	 Hrl25LxscVuq4qx6qcGfUbHT3gUsyVxdne95cFuwYYLdsakT5LMUXXTFVQtiyDK09YQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Gp19Jox6;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.44
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E515606B420;
-	Thu, 19 Nov 2026 05:38:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8E515606B420
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FEE7606A325
+	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 05:56:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0FEE7606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZzXcALvP
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795066714; x=1826602714;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NRinQjRHkW4U0zTnypLWeNN2CiIEFsQXaG25rZCZeCk=;
-  b=ZzXcALvPmb2m4v+GMMfnaDOvHXC2THs1JBUQV8gY7EETpr3qF3cMOAvd
-   nasc4pK+vrcSNKsIhb7983gqoQbjDewCgsNsaYrDGyGBOmFbVygEy8BzD
-   OY9FET2pSzQLS6rkA4qjJ4A1dKjXu69G0fGG/mS2UWvbDTfvUfM057xId
-   BaPAldrrajdaek4Txl/rdRw9p4/0GVNgXDJGYP81aA5I4uoqMXYsxLK/G
-   Y1K1s7xNJE3NIzBOwv4OiIkypZaMGJnNn5S4BA2t9WmZrkXyf4p+9jBgv
-   XxO0UbvfuTrEk91OK+JfNac9e0CpHg9Cj9pp4Qxpwa36kjJFfmJ3uUP43
-   w==;
-X-CSE-ConnectionGUID: ZeJWLjAmQJyHrMAE87bbnw==
-X-CSE-MsgGUID: qqzWzZ0VQg6uEyR1oW2b5w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3896956"
-X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
-   d="scan'208";a="3896956"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 21:38:33 -0800
-X-CSE-ConnectionGUID: OULyuR10TQC6J3AdE2XqdQ==
-X-CSE-MsgGUID: yLN+pAyjQRyKUraKRfVpqQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
-   d="scan'208";a="10674379"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa006.fm.intel.com with ESMTP; 18 Nov 2026 21:29:26 -0800
-Date: Thu, 19 Nov 2026 13:20:21 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"Hunter, Adrian" <adrian.hunter@intel.com>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-	"kas@kernel.org" <kas@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>,
-	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>,
-	"nik.borisov@suse.com" <nik.borisov@suse.com>,
-	"Mehta, Sohil" <sohil.mehta@intel.com>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"Gao, Chao" <chao.gao@intel.com>,
-	"Fang, Peter" <peter.fang@intel.com>,
-	"Maloor, Kishen" <kishen.maloor@intel.com>
-Subject: Re: [PATCH v5 5/6] x86/virt/tdx: Make TDX module initialize the
- extensions
-Message-ID: <av6HFbQIxxfmUJYM@yilunxu-OptiPlex-7050>
-References: <20261111-tdx-module-ext-v5-0-c74f764abc3d@linux.intel.com>
- <20261111-tdx-module-ext-v5-5-c74f764abc3d@linux.intel.com>
- <e658fad644d8f79afa77f48368f0dcd375554bad.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Gp19Jox6
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6b4bd3d98bfso2395077a12.1
+        for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 21:56:20 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795067779; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lzvV1MEXMwSIG0trAicM4r77KA43tKQHbsWHQCY1j21AA1Hh85YLFJqKqL+ziZWENn
+         GefPIvD8ICJuojdWJfTRuq417OAQsyRcdAWhDWhymC9+sDj4OkV2XRptRFF+TQ3rCqqu
+         XdMbOhfjkLHdpO+peazd0Tq/cPTuIuXMZrVm8O2qtD6V0MetCwPjYT14LV+CupgMTgFF
+         BKQNSEUlwFHsceFT4o8H/RE5yMF6jt/shX+SRQN8yDN12FaafDtGGLMXx6PtNuCM4hAc
+         EeAt2pQlMVouD/TAO9Rt0NF9MKb3uLFdhyY12cUBTaPbcM/LuY/D53/uTk7sdaW93Qln
+         5sWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:reply-to:mime-version
+         :dkim-signature;
+        bh=xKhWfAhnFH1MoQBYnntrqmndPCEzikmuR8uNGBngT1E=;
+        fh=CVnWWBrL7GOeaKeSrSKLMmuf2k3jnC4sDF0P77jmDHg=;
+        b=jZi1sttxzrqSvcj/QdbXn25N9aEPzfgegOUVeimN+fYASwZMLw7DM8aXNiL8Y10HJ5
+         G9EPnVd6CTARZ9yNDmJgFr2wjrLB1dAZ9robR4imlMY4AM7LMyopECbopBKuaqFpLtTr
+         njnITa9AGxRSrgbUJ1hy+RVBA6B12WyJjoTRWUrsWKTqBNGe4/vdviNus8L5vgy6Doka
+         SY01ewRriuw/9qz/CaLX3v6EG+CaeYK7/efxsaLvo/hl+g4A18iFTJQC8yET/DN1cEGd
+         /H1NZwpFLliLrjaSfyl0fZ9jO+Lo9oyQGcChl7rf0qQPjeygmUq52eyKSWxO5VYDLBO0
+         AGiA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795067779; x=1795672579; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xKhWfAhnFH1MoQBYnntrqmndPCEzikmuR8uNGBngT1E=;
+        b=Gp19Jox6nlC9RZkWxZWAYNWjJFQn+GIAfGYru2VmYt69ZJmk2OqaT25ngUDeEZoC3C
+         jog2SioSnJt5Hy09NXwu4XCu/RpcGtxtHncgjuJvdtRW1ciKKbFX1HgCSFvS/F6ecoRC
+         iTNoX85jsdX5ZVpsZiUQoC3CAxwbq/VonYWY5VOoSHl/9gT8UQxANxrqfk21nOHfmkcT
+         ndP/hYhRGl9/ncMMyGU5d+cGVorufvBpmMnTEts4Q+Kdi/VsPlJsbrY7oBIwk9KuEE+F
+         NIFmE9ACc98c4N9fh0A58pNT0bWyEbmJJXvY2n9B2dywExQLAQHrdgTd91rGFYbQFQlS
+         mIJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795067779; x=1795672579;
+        h=content-type:cc:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xKhWfAhnFH1MoQBYnntrqmndPCEzikmuR8uNGBngT1E=;
+        b=dotq/025++A5V6Id1MXNO9Gl0pw46uW7iiRzXH9d4zo2miJuFLqO4nu0AzGtc56Lea
+         PzeYDKa/+vh0tnhHqLGYE7gV7eFS/jqDQUNQgE0Fc4evFvKVoPGUPmZG2K2BRybh5akC
+         S38uFk7ESQYe9AV+QnMnWmuVBKt2vy9HWSXEe9vcl+pJSKTQf29FHj+8Aq9Q1oufvzrn
+         EVhqzcfyeJs+pf0YP+5THMP+ZQ5zr/YKea9eW2bnzgsYOZhv1JWi9gRsjn/1TXLDPugu
+         W7H62ABBwXHRQAc5bRzXvBPDxUymFydhic+SIam/lT7ewfIkItFTi/Rw2nILJKOtY/EU
+         F/cA==
+X-Forwarded-Encrypted: i=1; AL+hErF+w8o5yLQyy2wJ4ITD19V7Y7OUPHmGSHlMqHuaGI2wWmfskDpsy9JYuVxonBxRaZl3zo0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/J53uCFap/Gu42uPCHi47Cq0bTS0fNsxRKJ5+CKj/an5JFki6c
+	cZ8vgG8nHZ1hKbmXv4FdCdAfkk2EBH7Nmh5x7LIne7oaEbW4n73Y1JuDVeN/ugU9CLCGXCrT/P8
+	vGvOkOv8VCP1oTgZWkItB68RK1ju5acc=
+X-Gm-Gg: AYBFou2dvHi/992MPThxr4Y27NweA9QLlS7oI0X4OnpXGu+11ZgPMjO9gaBWAgPJ9nP
+	baRCSpVsv0IzgoemUi8FoNVjRLyPtQq6vRZ+jEuAlf2Qu1Urj7v2NBSQkPILc/2r3kJyHvNCSIn
+	fK1JthEOZmG2gEO7+QlSy9clWzF5iCY5L4G3Ev9pTOecvbLbTpCTNyv0nD3KOgLdESdiB6fSexE
+	X9Tx4bu+0A49VpWCXSE9ALBlIak8MczGwC1M8e8Jm0zdQGzr7MlOSfDBSiaTLZmBzWDZCWPoCzz
+	ZrqpSI3cBJuzcmgv4yo3L6rBPV8hEhQvLnjKXXUfFtFqKAHJMEiuN5nSZQT1O+XXWPlaasJGGax
+	dWOTyGJqyLUcu27Eup7DIXREtjz6r9TfRjPvlmRyXgMuv2ogalVpyqA3kvdYlXS1fBLpGZHCg7H
+	cM0XV8XndrbD6s4Xek3/Cqq9/ZOrwKMdK24214ZR+odt9Na2YyCYBi0RM=
+X-Received: by 2002:a05:6402:4285:b0:6b7:a5a4:7205 with SMTP id
+ 4fb4d7f45d1cf-6b887eb1fe7mr3974112a12.12.1795067778960; Wed, 18 Nov 2026
+ 21:56:18 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -97,29 +104,28 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e658fad644d8f79afa77f48368f0dcd375554bad.camel@intel.com>
+Reply-To: ludloff@gmail.com
+From: Christian Ludloff <ludloff@gmail.com>
+Date: Wed, 18 Nov 2026 21:56:07 -0800
+X-Gm-Features: AclHuK9LKYVZiEsZnTp2j0Cn26lMdh6iKrN0JdwqU91MaVZZWGmReLPcsSb0KYU
+Message-ID: <CAKSQd8Wcw-DUR_JO9YFw17u691gjNyvySwfhPW_P5P3ik=_tBQ@mail.gmail.com>
+Subject: Re: [PATCH v9 20/20] KVM: selftests: Add APX state handling and XCR0
+ sanity checks
+To: "Chang S. Bae" <chang.seok.bae@intel.com>
+Cc: seanjc@google.com, jmattson@google.com, pbonzini@redhat.com, 
+	kvm@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	zhao1.liu@intel.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Nov 18, 2026 at 10:44:06PM +0000, Edgecombe, Rick P wrote:
-> On Wed, 2026-11-11 at 11:48 +0800, Xu Yilun wrote:
-> > Continue fleshing out the extension initialization process. At this
-> > point the kernel has provided all memory and the TDX module is ready to
-> > initialize the extensions on the memory.
-> > 
-> > Initialize TDX module extensions via TDH.EXT.INIT. This process takes on
-> > the order of 100's of milliseconds, during which the TDX module loads
-> > its internal extension image into this memory and builds the execution
-> > environment. Once initialized, those add-on features can use their
-> > SEAMCALL leafs normally.
-> > 
-> > Note that TDH.EXT.INIT builds all configured extensions. The SEAMCALL
-> > leaf fails if any extension fails to initialize. The kernel does simple
-> > error handling - just fails the whole TDX initialization on any error.
-> > This is OK cause all extensions are considered necessary for security.
->              ^because? "cause" in the use is more of a colloquialism. As a word
-> "cause" is like "The cause of A is B". But sometimes informally "because" is
-> said like "'cause" where the "be" is sort of sloppily dropped. So this reads
-> like that.
+> Since APX repurposes the XSAVE area previously used by MPX in the
+> non-compacted format, add a check to ensure that MPX state is not set
+> when APX is enabled.
 
-Thanks. I'll check it throughout my logs.
+For the sake of completeness...
+
+EVO processors do support simultaneously
+enabled MPX and APX, with state that does
+not overlap. (And several MSR control bits.)
+
+--
+C.
