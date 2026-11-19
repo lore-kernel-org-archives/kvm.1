@@ -1,115 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795080911;
-	b=kH7YPJTyOLfE8ihkzaDy2EdzJgTi+huE5ZD46z6TrsM2fnj2MfAEPLxV6raSyJ9SeBdD
-	 pytGUuGlw55tx8Uk69w808LkJe0G11luTkqPeS0aB6KLaomMLRmbc6Z2rTBhTk+7uO2fY
-	 WxphTMiPsmRZPqykDf/O19FkBJ2KqDiTrrbYMYVwdohxMayI0FSOJEtfLg0D8yEspbTdV
-	 wjeEOMewKvtPkII5dgJvVDNDXWM1kO70xdi2Ee1r70HaxPWdLRhS0XWsYjVZqmbE8dCzl
-	 16T1bo0hxDs10QIKETnEEbzxFQarITQ5ApJbnuRPtXqEfrWCCuGJthgn5JDeiRR4FaQ==
+	t=1795081243;
+	b=vuYi0VTd/PnUiPjSSv/BqdhyMbM+2TY3y5eLChSZdoOv7BCweR30kPJiQobZFrFh81LE
+	 ZbYPJJEaPoPkciN/E77XrO2ULS7cepnXwWCWhoBg2Ft+QI8gcSQrYDp1kzYymm2pykg9f
+	 Pa0p0x6f4zgN0CSmq6ca90SBPo5L3xj47KirVlqkHhEpDp6lrYktTuTeo0eS51sNBs76x
+	 prBy2XM+kVPXNqd4G505Ab5r5dy446CxbyCFr+HHq1cpj5TIgjhZVLFEb/FfDkFH0UquW
+	 bYRW441MDLUeM7/uXoX9A907TJqgAq8GZ//Ajo3+LgeoVoJO1w/qvtj7c4cI9CadwVw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795080911;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
-	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=CQyK9hhzQUtdCIaKwh8qFL6kiw3hBK7e02jXrxk3Q5M=;
-	b=EnQzhY4O/ZhrGSqMVaG5uNW5EszJXmpUWBioK8czzLqwzVXrROT+KnSSbdgnbQgVG/+R
-	 o8jDVZJp5nGGUn6pPPlfExvPjTRV/FTXcUkYehJ+YpizniIp4hb5JpbmTkuh1pSWJkHwu
-	 BUkBQXavbwOIWCL57UL9l/X/zx8R1VKpfZyTUXPOjvW4FsfsVSNjZ+Ewsz9AxcFMGq0+A
-	 AP4uS5vNbF63qX2c4Iocf+NlFNlJKIbwP59TXp/eK+0d9wdmbkuvaG30FHorsHi2BSrtd
-	 TmbldGiHm9O00WiNCI1dFrdIJiLZ/HGGIoZiv+hLAvg+k3OjpT5xCBQcQ2rxGhYWObA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795081243;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=FMkxKUtJmddBDjY85NzCM0i5sDrxXnUOJOgPzj5R0NI=;
+	b=MOc/lJ24uTHs2pvoLzQdLsKMIqFAF7BcKV4/bkjSCFsHEUBe2oL5dNg+tnNZZ+MZTZLV
+	 Z/BvRPKsqA2L9pmqII7AjD0CCPtCr3AmNQfOH5rZ1/DGZdUxOVs6/DSTVX6l/W0CSRWQ7
+	 PCh98Sk3JQ+0Lzendbf8d55mhd1LD2aiZqfvSk0w6EPZ7VFZ0db6esSM1tEN+Lm0Sk0nX
+	 +iqV27EfsMV98Z93OAhPKPSdsYg4nbPqpLI4oedA5hteqievHF8wP5WGzJR+m4s/Z3Ost
+	 Di2/7viva8oN7D68l+TUsA9t8RdxjnvjiufYkxv2pp25XgBYHvL+ZI7P7fWYoLZa7IA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=trPf9+9S;
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719F9606A33E;
-	Thu, 19 Nov 2026 09:35:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 719F9606A33E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=pEol8JRM;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7D9606A324
+	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 09:40:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EA7D9606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=trPf9+9S
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 9242AC4CBEF;
-	Thu, 19 Nov 2026 09:35:13 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3D3E660237;
-	Thu, 19 Nov 2026 09:35:08 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 145C311BC315F;
-	Thu, 19 Nov 2026 10:34:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795080902; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=CQyK9hhzQUtdCIaKwh8qFL6kiw3hBK7e02jXrxk3Q5M=;
-	b=trPf9+9SmvXq7f3i06Ocu8PXp2wkKO6ORNKTA4/AjOKcQKVFePqcO/1BhMn+K4JKXgVetW
-	9Yr+85a0u4rw/+pGQPZDRSMsRMDGawEXfnQ9jCtNv2zr3C8ZQd4iUe048cU50ECPRyFurf
-	rsmMLyDo3rueQxG7RuwY+EBebjyTZuhqh1PyoyvCDfGRSYoPSTyfx/hwy85QgTWFsAil0Q
-	X6TU5TJA2EpRSA3/3QyU7eQBfCRlHqNmOlSA+ByZVazhopQuZSLgxPNhpRVe5QgDh43L/T
-	HBMPjxwGs9avJmS68J25IgXRGZqvRkZ+RC3EyDq//xlN7GCwXICCDykv7Bhitw==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org,  Jonathan Corbet <corbet@lwn.net>,  Shuah
- Khan <skhan@linuxfoundation.org>,  linux-doc@vger.kernel.org,  David
- Hildenbrand <david@kernel.org>,  Andrew Morton
- <akpm@linux-foundation.org>,  Jason Gunthorpe <jgg@nvidia.com>,  Leon
- Romanovsky <leonro@nvidia.com>,  linux-mm@kvack.org,  Jaroslav Kysela
- <perex@perex.cz>,  Takashi Iwai <tiwai@suse.com>,
-  linux-sound@vger.kernel.org,  Jens Axboe <axboe@kernel.dk>,
-  linux-block@vger.kernel.org,  Marcel Holtmann <marcel@holtmann.org>,
-  Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-  linux-bluetooth@vger.kernel.org,  Willem de Bruijn
- <willemdebruijn.kernel@gmail.com>,  Jason Wang <jasowangio@gmail.com>,
-  David Heidelberg <david@ixit.cz>,  oe-linux-nfc@lists.linux.dev,  Chas
- Williams <3chas3@gmail.com>,  "David S. Miller" <davem@davemloft.net>,
-  Eric Dumazet <edumazet@kernel.org>,  Jakub Kicinski <kuba@kernel.org>,
-  Paolo Abeni <pabeni@redhat.com>,  netdev@vger.kernel.org,  Helge Deller
- <deller@gmx.de>,  linux-fbdev@vger.kernel.org,
-  dri-devel@lists.freedesktop.org,  MPT-FusionLinux.pdl@broadcom.com,
-  "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,  "Martin
- K. Petersen" <mkp@kernel.org>,  linux-scsi@vger.kernel.org,  Richard
- Weinberger <richard@nod.at>,  Vignesh Raghavendra <vigneshr@ti.com>,
-  Zhihao Cheng <chengzhihao1@huawei.com>,  linux-mtd@lists.infradead.org,
-  Neill Kapron <nkapron@google.com>,  Andrey Konovalov
- <andreyknvl@gmail.com>,  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-  linux-usb@vger.kernel.org,  Juergen Gross <jgross@suse.com>,  Stefano
- Stabellini <sstabellini@kernel.org>,  xen-devel@lists.xenproject.org,
-  Hans de Goede <hansg@kernel.org>,  Arnd Bergmann <arnd@arndb.de>,
-  "Michael S. Tsirkin" <mst@redhat.com>,  Eugenio =?utf-8?Q?P=C3=A9rez?=
- <eperezma@redhat.com>,  Sean Christopherson <seanjc@google.com>,  Paolo
- Bonzini <pbonzini@redhat.com>,  kvm@vger.kernel.org,
-  virtualization@lists.linux.dev,  Jan Kara <jack@suse.cz>,
-  linux-fsdevel@vger.kernel.org,  "Theodore Ts'o" <tytso@mit.edu>,
-  linux-ext4@vger.kernel.org,  Mike Marshall <hubcap@omnibond.com>,
-  devel@lists.orangefs.org,  Paulo Alcantara <pc@manguebit.org>,  Namjae
- Jeon <linkinjeon@kernel.org>,  linux-cifs@vger.kernel.org,  Jaegeuk Kim
- <jaegeuk@kernel.org>,  Chao Yu <chao@kernel.org>,
-  linux-f2fs-devel@lists.sourceforge.net,  Florian Fainelli
- <florian.fainelli@broadcom.com>,  Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,  Tzung-Bi Shih
- <tzungbi@kernel.org>,  Benson Leung <bleung@chromium.org>,  David Airlie
- <airlied@gmail.com>,  Simona Vetter <simona@ffwll.ch>,  Alex Deucher
- <alexander.deucher@amd.com>,  Christian =?utf-8?Q?K=C3=B6nig?=
- <christian.koenig@amd.com>,
-  amd-gfx@lists.freedesktop.org,  Jani Nikula
- <jani.nikula@linux.intel.com>,  Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>,  Rodrigo Vivi <rodrigo.vivi@intel.com>,
-  Tvrtko Ursulin <tursulin@ursulin.net>,  intel-gfx@lists.freedesktop.org,
-  Matthew Brost <matthew.brost@intel.com>,  Thomas =?utf-8?Q?Hellstr=C3=B6?=
- =?utf-8?Q?m?=
- <thomas.hellstrom@linux.intel.com>,  intel-xe@lists.freedesktop.org
-Subject: Re: [PATCH v2 07/12] docs: ioctl-number: update MTD entries
-In-Reply-To: <20261119053514.255348-8-rdunlap@infradead.org> (Randy Dunlap's
-	message of "Wed, 18 Nov 2026 21:35:08 -0800")
-References: <20261119053514.255348-1-rdunlap@infradead.org>
-	<20261119053514.255348-8-rdunlap@infradead.org>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Thu, 19 Nov 2026 10:34:37 +0100
-Message-ID: <87bj7lf9le.fsf@bootlin.com>
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=pEol8JRM
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 16ED81575;
+	Thu, 19 Nov 2026 01:40:38 -0800 (PST)
+Received: from [10.0.154.42] (e121487-lin.cambridge.arm.com [10.0.154.42])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3DEA63F882;
+	Thu, 19 Nov 2026 01:40:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795081241; bh=a3G5hfSBILwd9EwEB9393QV7mSCJMA51FdgnpKmpIQA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=pEol8JRMP4xQQYfdi8P7Wvm31nzISRXbi10A8eGYXCYPJAA8nGCmJDH7ujNLkB1FZ
+	 VJMXgRyU+XPv5iaLARArCyTunw83EpgkNXTgetkI+VRD/ob8ekkdl0g8F2wDXcjO9i
+	 qfTPpuFcCb+86Xq6H4AKfpv55EQ+8yCmBIif1pMQ=
+Message-ID: <7eb028fc-b647-49d2-9528-7d79bc4e4f29@arm.com>
+Date: Thu, 19 Nov 2026 09:40:37 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -119,26 +53,148 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH kvmtool v5 09/23] arm64: Configure the GICv5 IRS
+To: Sascha Bischoff <sascha.bischoff@arm.com>, will@kernel.org,
+ julien.thierry.kdev@gmail.com
+Cc: maz@kernel.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ timothy.hayes@arm.com, Peter Maydell <peter.maydell@linaro.org>
+References: <20261118175755.1946977-1-sascha.bischoff@arm.com>
+ <20261118175755.1946977-10-sascha.bischoff@arm.com>
+Content-Language: en-GB
+From: Vladimir Murzin <vladimir.murzin@arm.com>
+In-Reply-To: <20261118175755.1946977-10-sascha.bischoff@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Randy,
+On 11/18/26 17:57, Sascha Bischoff wrote:
+> Place the IRS CONFIG and SETLPI frames in two 64 KiB regions below the
+> guest AXI area, and pass the IRS base to KVM through
+> KVM_VGIC_V5_ADDR_TYPE_IRS.
+> 
+> The GICv5 NR_IRQS attribute counts SPIs without the 32 SGI/PPI lines
+> included for earlier GICs. Use that count for GICv5 while retaining
+> the existing count for GICv2/v3. Allow zero-based GICv5 IRQ numbers
+> when setting the level through KVM_IRQ_LINE.
+> 
+> Tested-by: Vladimir Murzin <vladimir.murzin@arm.com>
+> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+> ---
+>  arm64/gic.c                  | 30 ++++++++++++++++++++++++++++--
+>  arm64/include/kvm/kvm-arch.h |  8 ++++++++
+>  2 files changed, 36 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arm64/gic.c b/arm64/gic.c
+> index 58644036..5034b034 100644
+> --- a/arm64/gic.c
+> +++ b/arm64/gic.c
+> @@ -18,6 +18,7 @@
+>  static int gic_fd = -1;
+>  static u64 gic_redists_base;
+>  static u64 gic_redists_size;
+> +static u64 gicv5_irs_base;
+>  static u64 gic_msi_base;
+>  static u64 gic_msi_size = 0;
+>  static bool vgic_is_init = false;
+> @@ -201,6 +202,22 @@ static int gic__set_redist(enum irqchip_type type)
+>  	}
+>  }
+>  
+> +static int gic__set_irs(enum irqchip_type type)
+> +{
+> +	struct kvm_device_attr irs_attr = {
+> +		.group	= KVM_DEV_ARM_VGIC_GRP_ADDR,
+> +		.attr	= KVM_VGIC_V5_ADDR_TYPE_IRS,
+> +		.addr	= (u64)(unsigned long)&gicv5_irs_base,
+> +	};
+> +
+> +	switch (type) {
+> +	case IRQCHIP_GICV5:
+> +		return ioctl(gic_fd, KVM_SET_DEVICE_ATTR, &irs_attr);
+> +	default:	/* No IRS needed */
+> +		return 0;
+> +	}
+> +}
+> +
+>  static int gic__set_dist(enum irqchip_type type)
+>  {
+>  	u64 dist_addr = ARM_GIC_DIST_BASE;
+> @@ -291,6 +308,10 @@ static int gic__create_device(struct kvm *kvm, enum irqchip_type type)
+>  	if (err)
+>  		goto out_err;
+>  
+> +	err = gic__set_irs(type);
+> +	if (err)
+> +		goto out_err;
+> +
+>  	err = gic__set_dist(type);
+>  	if (err)
+>  		goto out_err;
+> @@ -376,6 +397,7 @@ int gic__create(struct kvm *kvm, enum irqchip_type type)
+>  		gic_msi_base = gic_redists_base - gic_msi_size;
+>  		break;
+>  	case IRQCHIP_GICV5:
+> +		gicv5_irs_base = ARM_GICV5_IRS_BASE;
+>  		break;
+>  	default:
+>  		return -ENODEV;
+> @@ -397,8 +419,9 @@ static int gic__init_gic(struct kvm *kvm)
+>  	int ret;
+>  
+>  	int lines = irq__get_nr_allocated_lines();
+> -	u32 nr_irqs = ALIGN(lines, 32) + GIC_SPI_IRQ_BASE;
+>  	u32 maint_irq = GIC_PPI_IRQ_BASE + GIC_MAINT_IRQ;
+> +	u32 nr_irqs = max(ALIGN(lines, 32), 32);
+> +
+>  	struct kvm_device_attr nr_irqs_attr = {
+>  		.group	= KVM_DEV_ARM_VGIC_GRP_NR_IRQS,
+>  		.addr	= (u64)(unsigned long)&nr_irqs,
+> @@ -412,6 +435,8 @@ static int gic__init_gic(struct kvm *kvm)
+>  		.attr	= KVM_DEV_ARM_VGIC_CTRL_INIT,
+>  	};
+>  
+> +	nr_irqs += gic__get_spi_base();
+> +
+>  	/*
+>  	 * If we didn't use the KVM_CREATE_DEVICE method, KVM will
+>  	 * give us some default number of interrupts. The GIC initialization
+> @@ -540,12 +565,13 @@ u32 gic__get_fdt_irq_cpumask(struct kvm *kvm)
+>  
+>  void kvm__irq_line(struct kvm *kvm, int irq, int level)
+>  {
+> +	int spi_base = gic__get_spi_base();
+>  	struct kvm_irq_level irq_level = {
+>  		.irq	= KVM_IRQCHIP_IRQ(irq),
+>  		.level	= !!level,
+>  	};
+>  
+> -	if (irq < GIC_SPI_IRQ_BASE || irq > GIC_MAX_IRQ)
+> +	if (irq < spi_base || irq > GIC_MAX_IRQ)
+>  		pr_warning("Ignoring invalid GIC IRQ %d", irq);
+>  	else if (ioctl(kvm->vm_fd, KVM_IRQ_LINE, &irq_level) < 0)
+>  		pr_warning("Could not KVM_IRQ_LINE for irq %d", irq);
+> diff --git a/arm64/include/kvm/kvm-arch.h b/arm64/include/kvm/kvm-arch.h
+> index e7dd5269..94140364 100644
+> --- a/arm64/include/kvm/kvm-arch.h
+> +++ b/arm64/include/kvm/kvm-arch.h
+> @@ -57,6 +57,14 @@
+>  #define ARM_GIC_CPUI_SIZE	0x20000
+>  
+>  
+> +/* GICv5 IRS CONFIG and SETLPI frames occupy the end of the MMIO area. */
+> +#define ARM_GICV5_IRS_BASE		(ARM_AXI_AREA - ARM_GICV5_IRS_SIZE)
+> +#define ARM_GICV5_IRS_SIZE		(ARM_GICV5_IRS_CONFIG_SIZE + ARM_GICV5_IRS_SETLPI_SIZE)
+> +#define ARM_GICV5_IRS_CONFIG_BASE	ARM_GICV5_IRS_BASE
+> +#define ARM_GICV5_IRS_CONFIG_SIZE	0x10000
+> +#define ARM_GICV5_IRS_SETLPI_BASE	(ARM_GICV5_IRS_CONFIG_BASE + ARM_GICV5_IRS_CONFIG_SIZE)
+> +#define ARM_GICV5_IRS_SETLPI_SIZE	0x10000
+> +
+>  #define KVM_PCI_CFG_AREA	ARM_AXI_AREA
+>  #define ARM_PCI_CFG_SIZE	(1ULL << 28)
+>  #define KVM_PCI_MMIO_AREA	(KVM_PCI_CFG_AREA + ARM_PCI_CFG_SIZE)
+> -- 2.34.1
+> 
 
-On 18/11/2026 at 21:35:08 -08, Randy Dunlap <rdunlap@infradead.org> wrote:
+FWIW,
 
-> Update the list of files where MTD ioctls are defined and update
-> the ranges of function numbers that are used.
->
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-
-Acked-by: Miquel Raynal <miquel.raynal@bootlin.com>
-
-> [Since having multiple maintainers trying to merge these would
-> cause some conflicts, it would be more manageable for Jon to
-> take all of these through the docs-next tree.]
-
-Agreed.
-
-Thanks,
-Miqu=C3=A8l
+Reviewed-by: Vladimir Murzin <vladimir.murzin@arm.com>
