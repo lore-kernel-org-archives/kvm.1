@@ -1,52 +1,52 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=183.62.165.209
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.30.148.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795094894;
-	b=mCzJcZ9EtyXiBBJojf38+6E18wGCbaE9cEro2KlGutlqbYCgJJVQvLwCXfLNh/VyXs30
-	 x6T9xoFWWA7I+sB0Y2eJ4FLMWNefsnJLgcPKCe36AqPzOX+VUyJM4MV58BpnvllxxH9tS
-	 85yR6qdRg1lP8KLZw+v3Tll9/NeiORjfKlpYiy+wlYhYjXbhLIpOBlvoOZxgc3Cx2ES7M
-	 aCwHVcwlQhQb7xaSpPftebkfFzT+vPGv7P65XtOYUIDXahLc6QRu38vDQBrLR68t3KzXF
-	 FAQ+vythCsqkBcXohdkvZL8v0wu8+ZVkLpn9534pdtoS0ZkaWMprkVDNig73Sm5ogcQ==
+	t=1795094885;
+	b=gPuR1L4O/Hrn3vjn9bEqyOtUIxhq/Vjxpzsdv0Yul6e4W5X2khsD1KiEm14e6iT1N9qj
+	 LKzeucnoUemyIGlt3FMgzFQ9rkGkR3f/5T0QgsrihSF48TxuNFm0Iuw2rBJGe30IABvkg
+	 amc4AUJ2aYqRvnXX2hlHDWPuFKEupyt5PBMEvxuCbIvaqTbco9YVY093WqMquerG+VYx0
+	 2HyPS2nUMvF7LqeCDIxJp694hbBYe8Su2uIokY3RDR/36NV++Z9hiDbteGYjm18DQck1X
+	 cpd2OL7yLkVe7x0XCD50fFzrjM+tZERAZt/+0S4MUm79exeiFNj9cyIGXKB8PwYCQiw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795094894;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795094885;
 	h=DMARC-Filter:Received:Received:Received:X-Zmail-TransId:
 	 X-Zmail-LocalSMTP:X-Zmail-RealSender:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 X-ZMAIL-USEORIGINALEMLTOOUTBOUND:Content-Transfer-Encoding:X-MAIL:
 	 X-TLS:X-ENVELOPE-SENDER:X-SOURCE-IP:X-CLEAN:
 	 X-Fangmail-Anti-Spam-Filtered:X-Fangmail-MID-QID;
-	bh=T2SA+VjaAktf51GZmIL5ucd5Ml8ZCK9fgBWtfq5fj/o=;
-	b=k3PpbgeNQ6V9sW6Ib7N8oJctW8oA711D7hLNtgVRKqQyNMncXU7JdMhLLdtabdMG9X+o
-	 ribrdbPNtr+cqbGgi8cyfJHSGBJuLBLkzAuTTrp5g0lkAD/y2kUXsUxsbI71sCshA3wJn
-	 JHn1hW707BqTRQbM6Hw+51L8VBJ0h0PwrIUOKoTu9uANiLj7IbAwWS3sFktJL4OAmHwOa
-	 w2eqph+fGnOFepAxUAOfIp81xeUdbSqoQoIyr5LHF0yfNvDEBDEL0Y/oaE7tdzILvL6Rt
-	 0zBJFijnj+cSZiIoUilFzhz+O5k6jRbZdefudomFndfUWPRCpGeN/A2gXdpTakI2afQ==
+	bh=N7WurjAFhrGZqrc3woGQbsUMcIKJoBFDTIsgaOcvBks=;
+	b=usUDUMtKysHtSMo4qyO//O+be/KXX0kZKLLYWOC9neXgMt6KOGvrDf/qcUciANmtNXI2
+	 tVHryNUGEtnCUXQC8N141ZvpE6IK4P7WgsAavSabCWhm+Cgf+qyjFvXmYxrBqqXguY8Xb
+	 a6Q1QUO6GIMiWAYgzpPk0A3ifT7HffwYH9Innoe06FCTM+BnIpw1PH93sSd+guMFbmkbC
+	 +bTn0m9GwfEpNzLDVEsKXhjJR1zpqPwrT6EHUzv1kYVDvRhw+t86agrFzEojcCFF+Sfcg
+	 gbQ7Mqf7VOd+E+UG3o5yZl18KJj9Ia6DBGuSSPSFqBEswEO/IfihielajQoyYue+ThA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=sanechips.com.cn;
 	spf=pass smtp.mailfrom=sanechips.com.cn;
-	arc=none smtp.remote-ip=183.62.165.209
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+	arc=none smtp.remote-ip=160.30.148.34
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B968D60A5BCA;
-	Thu, 19 Nov 2026 13:28:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B968D60A5BCA
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807EE606A324;
+	Thu, 19 Nov 2026 13:28:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 807EE606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sanechips.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4jVfRQ3Cr7z52SGK;
-	Thu, 19 Nov 2026 21:28:02 +0800 (CST)
-Received: from szxl2zmapp06.zte.com.cn ([10.1.32.108])
-	by mse-fl2.zte.com.cn with SMTP id 6AJDRrRi070477;
-	Thu, 19 Nov 2026 21:27:53 +0800 (+08)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jVfRH6RKlz4yjjL;
+	Thu, 19 Nov 2026 21:27:55 +0800 (CST)
+Received: from szxl2zmapp05.zte.com.cn ([10.1.32.37])
+	by mse-fl1.zte.com.cn with SMTP id 6AJDRnNh086379;
+	Thu, 19 Nov 2026 21:27:49 +0800 (+08)
 	(envelope-from gong.shuai@sanechips.com.cn)
 Received: from ubuntu-35-gs (unknown [10.230.214.35])
 	by smtp (Zmail) with SMTP;
-	Thu, 19 Nov 2026 21:27:56 +0800
-X-Zmail-TransId: 3e816afef95b02f-564cc
+	Thu, 19 Nov 2026 21:27:53 +0800
+X-Zmail-TransId: 3e816afef95802f-56482
 X-Zmail-LocalSMTP: 1
 X-Zmail-RealSender: gong.shuai@sanechips.com.cn
 From: Gong Shuai <gong.shuai@sanechips.com.cn>
@@ -67,9 +67,9 @@ Cc: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
         Tan Chi <tanchi25@mails.ucas.ac.cn>, Wu Fei <wu.fei9@sanechips.com.cn>,
         Zhao Qingye <zhao.qingye@sanechips.com.cn>,
         Gong Shuai <gong.shuai@sanechips.com.cn>
-Subject: [RFC PATCH v3 05/10] iommu/riscv: Add nested domain allocation
-Date: Thu, 19 Nov 2026 21:27:39 +0800
-Message-ID: <20261119132744.396426-6-gong.shuai@sanechips.com.cn>
+Subject: [RFC PATCH v3 02/10] iommufd: Add RISC-V IOMMU hwpt and vIOMMU types
+Date: Thu, 19 Nov 2026 21:27:36 +0800
+Message-ID: <20261119132744.396426-3-gong.shuai@sanechips.com.cn>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261119132744.396426-1-gong.shuai@sanechips.com.cn>
 References: <20261119132744.396426-1-gong.shuai@sanechips.com.cn>
@@ -84,196 +84,99 @@ Precedence: list
 MIME-Version: 1.0
 X-ZMAIL-USEORIGINALEMLTOOUTBOUND: 1
 Content-Transfer-Encoding: 8bit
-X-MAIL:mse-fl2.zte.com.cn 6AJDRrRi070477
+X-MAIL:mse-fl1.zte.com.cn 6AJDRnNh086379
 X-TLS: YES
 X-ENVELOPE-SENDER: gong.shuai@sanechips.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Thu, 19 Nov 2026 21:28:02 +0800
+X-SOURCE-IP: 10.5.228.132 unknown Thu, 19 Nov 2026 21:27:55 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AFEF962.000/4jVfRQ3Cr7z52SGK
+X-Fangmail-MID-QID: 6AFEF95B.001/4jVfRH6RKlz4yjjL
 
 From: Wu Fei <wu.fei9@sanechips.com.cn>
 
-A nested domain describes two-stage translation through guest and
-host page tables. Iommufd exposes this domain as a nested hwpt.
+Add IOMMU_HWPT_DATA_RISCV_S1 and struct iommu_hwpt_riscv to carry
+the guest device context in base format for nested hwpt allocation.
+Add IOMMU_VIOMMU_TYPE_RISCV so user space can request a RISC-V
+vIOMMU.
 
-User space needs to provide the guest stage 1 configuration when
-allocating a nested hwpt. Validate the configuration before storing
-it for use in a physical device context.
+The RISC-V nested translation support added later needs these types.
 
 Signed-off-by: Wu Fei <wu.fei9@sanechips.com.cn>
 Co-developed-by: Gong Shuai <gong.shuai@sanechips.com.cn>
 Signed-off-by: Gong Shuai <gong.shuai@sanechips.com.cn>
 ---
- drivers/iommu/riscv/iommu.c | 153 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 153 insertions(+)
+ include/uapi/linux/iommufd.h | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
-index f2305b953f71..4f8ce579ef08 100644
---- a/drivers/iommu/riscv/iommu.c
-+++ b/drivers/iommu/riscv/iommu.c
-@@ -1698,8 +1698,161 @@ static void riscv_viommu_destroy(struct iommufd_viommu *viommu)
- 	ida_free(&riscv_iommu_gscids, rv_viommu->gscid);
- }
- 
-+struct riscv_iommu_nested_domain {
-+	struct iommu_domain domain;
-+	struct riscv_viommu *viommu;
-+
-+	u64 tc;
-+	u64 ta;
-+	u64 iosatp;
-+};
-+
-+#define to_riscv_iommu_nested_domain(domain) \
-+	container_of(domain, struct riscv_iommu_nested_domain, domain)
-+
-+static void riscv_iommu_domain_nested_free(struct iommu_domain *domain)
-+{
-+	kfree(to_riscv_iommu_nested_domain(domain));
-+}
-+
-+static const struct iommu_domain_ops riscv_iommu_nested_ops = {
-+	.free = riscv_iommu_domain_nested_free,
-+};
-+
-+static int riscv_iommu_validate_vdc(struct riscv_iommu_device *iommu,
-+				    struct iommu_hwpt_riscv *arg)
-+{
-+	u64 tc = arg->dc[0];
-+	u64 fsc = arg->dc[3];
-+	u64 mode;
-+
-+	if (!(tc & RISCV_IOMMU_DC_TC_V)) {
-+		arg->dc[0] = 0;
-+		arg->dc[3] = 0;
-+		return 0;
-+	}
-+
-+	/*
-+	 * Reject reserved/custom bits, the physical IOMMU may treat the
-+	 * DC as misconfigured.
-+	 */
-+	if (tc & ~RISCV_IOMMU_DC_TC_DEFINED)
-+		return -EINVAL;
-+	if (fsc & ~(RISCV_IOMMU_DC_FSC_PPN | RISCV_IOMMU_DC_FSC_MODE))
-+		return -EINVAL;
-+
-+	/* Process directory tables are not supported now. */
-+	if (tc & RISCV_IOMMU_DC_TC_PDTV)
-+		return -EOPNOTSUPP;
-+
-+	/* With PDTV=0 the DPE bit is reserved for future use. */
-+	if (tc & RISCV_IOMMU_DC_TC_DPE)
-+		return -EINVAL;
-+
-+	/* Only 64-bit (SXL=0) stage-1 is supported. */
-+	if (tc & RISCV_IOMMU_DC_TC_SXL)
-+		return -EOPNOTSUPP;
-+
-+	/* ATS/PRI/T2GPA/PRPR consistency. */
-+	if (!(iommu->caps & RISCV_IOMMU_CAPABILITIES_ATS) &&
-+	    (tc & (RISCV_IOMMU_DC_TC_EN_ATS | RISCV_IOMMU_DC_TC_EN_PRI |
-+		   RISCV_IOMMU_DC_TC_PRPR)))
-+		return -EINVAL;
-+	if ((tc & RISCV_IOMMU_DC_TC_EN_PRI) &&
-+	    !(tc & RISCV_IOMMU_DC_TC_EN_ATS))
-+		return -EINVAL;
-+	if ((tc & RISCV_IOMMU_DC_TC_PRPR) &&
-+	    !(tc & RISCV_IOMMU_DC_TC_EN_PRI))
-+		return -EINVAL;
-+	if ((tc & RISCV_IOMMU_DC_TC_T2GPA) &&
-+	    (!(iommu->caps & RISCV_IOMMU_CAPABILITIES_T2GPA) ||
-+	     !(tc & RISCV_IOMMU_DC_TC_EN_ATS)))
-+		return -EINVAL;
-+
-+	/*
-+	 * A/D update behavior on stage-2 PTEs is owned by the host,
-+	 * decide it's value from the AMO_HWAD capability.
-+	 */
-+	tc &= ~RISCV_IOMMU_DC_TC_GADE;
-+	if (iommu->caps & RISCV_IOMMU_CAPABILITIES_AMO_HWAD)
-+		tc |= RISCV_IOMMU_DC_TC_GADE;
-+
-+	/*
-+	 * A/D update behavior on stage-1 PTEs is owned by the guest but
-+	 * needs AMO_HWAD support.
-+	 */
-+	if ((tc & RISCV_IOMMU_DC_TC_SADE) &&
-+	    !(iommu->caps & RISCV_IOMMU_CAPABILITIES_AMO_HWAD))
-+		return -EOPNOTSUPP;
-+
-+	/* SBE must match the IOMMU byte order unless END is supported. */
-+	if (!(iommu->caps & RISCV_IOMMU_CAPABILITIES_END) &&
-+	    (!!(tc & RISCV_IOMMU_DC_TC_SBE) !=
-+	     !!(iommu->fctl & RISCV_IOMMU_FCTL_BE)))
-+		return -EINVAL;
-+
-+	/* Validate the stage-1 mode. */
-+	mode = FIELD_GET(RISCV_IOMMU_DC_FSC_MODE, fsc);
-+	if (mode == RISCV_IOMMU_DC_FSC_MODE_BARE) {
-+		/* No stage-1 translation, root pointer is unused. */
-+		fsc = 0;
-+	} else {
-+		switch (mode) {
-+		case RISCV_IOMMU_DC_FSC_IOSATP_MODE_SV39:
-+		case RISCV_IOMMU_DC_FSC_IOSATP_MODE_SV48:
-+		case RISCV_IOMMU_DC_FSC_IOSATP_MODE_SV57:
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		if (!riscv_iommu_fsc_supported(iommu, mode))
-+			return -EOPNOTSUPP;
-+	}
-+
-+	arg->dc[0] = tc;
-+	arg->dc[3] = fsc;
-+
-+	return 0;
-+}
-+
-+static struct iommu_domain *
-+riscv_viommu_alloc_domain_nested(struct iommufd_viommu *viommu, u32 flags,
-+				 const struct iommu_user_data *user_data)
-+{
-+	struct riscv_viommu *rv_viommu = container_of(viommu, struct riscv_viommu, core);
-+	struct riscv_iommu_nested_domain *nested_domain;
-+	struct iommu_hwpt_riscv arg;
-+	int ret;
-+
-+	if (flags)
-+		return ERR_PTR(-EOPNOTSUPP);
-+
-+	ret = iommu_copy_struct_from_user(&arg, user_data,
-+					  IOMMU_HWPT_DATA_RISCV_S1, dc);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	ret = riscv_iommu_validate_vdc(rv_viommu->iommu, &arg);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	nested_domain = kzalloc_obj(*nested_domain, GFP_KERNEL_ACCOUNT);
-+	if (!nested_domain)
-+		return ERR_PTR(-ENOMEM);
-+
-+	nested_domain->domain.type = IOMMU_DOMAIN_NESTED;
-+	nested_domain->domain.ops = &riscv_iommu_nested_ops;
-+	nested_domain->viommu = rv_viommu;
-+	nested_domain->tc = arg.dc[0];
-+	nested_domain->ta = arg.dc[2] & RISCV_IOMMU_DC_TA_PSCID;
-+	nested_domain->iosatp = arg.dc[3];
-+
-+	return &nested_domain->domain;
-+}
-+
- static const struct iommufd_viommu_ops riscv_viommu_ops = {
- 	.destroy = riscv_viommu_destroy,
-+	.alloc_domain_nested = riscv_viommu_alloc_domain_nested,
+diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
+index 010f47f7d3d2..809f4d44c0b0 100644
+--- a/include/uapi/linux/iommufd.h
++++ b/include/uapi/linux/iommufd.h
+@@ -506,18 +506,48 @@ struct iommu_hwpt_amd_guest {
+ 	__aligned_u64 dte[4];
  };
  
- static size_t riscv_iommu_get_viommu_size(struct device *dev,
++/**
++ * struct iommu_hwpt_riscv - RISC-V IOMMU stage-1 page table data
++ *			     (IOMMU_HWPT_DATA_RISCV_S1)
++ *
++ * @dc: The guest device-context (DC) in the base format defined in
++ *      "Leaf DDT entry" of the RISC-V IOMMU Architecture Specification,
++ *      refer to "Device-context fields" for the meaning of each
++ *      doubleword. Only the guest-owned doublewords are validated:
++ *      - dc[0] (tc): Allowed bits are V, EN_ATS, EN_PRI, T2GPA, DTF,
++ *        PRPR, SADE and SBE. GADE is owned by the host and the value
++ *        here is ignored. PDTV, DPE and SXL are not supported and must
++ *        be 0.
++ *      - dc[2] (ta): PSCID is guest-owned. Within one vIOMMU the guest
++ *        must use a unique PSCID for each stage-1 address space. All
++ *        other fields are ignored and managed by the host.
++ *      - dc[3] (fsc): Carries iosatp when tc.PDTV=0, allowed fields
++ *        are MODE (Bare, Sv39, Sv48, Sv57) and PPN; Carries pdtp when
++ *        tc.PDTV=1, which not supported now.
++ *
++ *      The host-owned doubleword dc[1] (iohgatp) is ignored and installed
++ *      by the kernel from the nesting parent at attach time. The
++ *      extended-format MSI doublewords are configured by the host for
++ *      interrupt remapping and are not passed via this structure.
++ */
++struct iommu_hwpt_riscv {
++	__aligned_u64 dc[4];
++};
++
+ /**
+  * enum iommu_hwpt_data_type - IOMMU HWPT Data Type
+  * @IOMMU_HWPT_DATA_NONE: no data
+  * @IOMMU_HWPT_DATA_VTD_S1: Intel VT-d stage-1 page table
+  * @IOMMU_HWPT_DATA_ARM_SMMUV3: ARM SMMUv3 Context Descriptor Table
+  * @IOMMU_HWPT_DATA_AMD_GUEST: AMD IOMMU guest page table
++ * @IOMMU_HWPT_DATA_RISCV_S1: RISC-V IOMMU stage-1 page table
+  */
+ enum iommu_hwpt_data_type {
+ 	IOMMU_HWPT_DATA_NONE = 0,
+ 	IOMMU_HWPT_DATA_VTD_S1 = 1,
+ 	IOMMU_HWPT_DATA_ARM_SMMUV3 = 2,
+ 	IOMMU_HWPT_DATA_AMD_GUEST = 3,
++	IOMMU_HWPT_DATA_RISCV_S1 = 4,
+ };
+ 
+ /**
+@@ -1103,6 +1133,7 @@ struct iommu_fault_alloc {
+  * @IOMMU_VIOMMU_TYPE_ARM_SMMUV3: ARM SMMUv3 driver specific type
+  * @IOMMU_VIOMMU_TYPE_TEGRA241_CMDQV: NVIDIA Tegra241 CMDQV (extension for ARM
+  *                                    SMMUv3) enabled ARM SMMUv3 type
++ * @IOMMU_VIOMMU_TYPE_RISCV: RISC-V IOMMU driver specific type
+  */
+ enum iommu_viommu_type {
+ 	IOMMU_VIOMMU_TYPE_DEFAULT = 0,
+@@ -1113,6 +1144,7 @@ enum iommu_viommu_type {
+ 	 *   VMM must wire the HYP_OWN bit to 0 in guest VINTF_CONFIG register
+ 	 */
+ 	IOMMU_VIOMMU_TYPE_TEGRA241_CMDQV = 2,
++	IOMMU_VIOMMU_TYPE_RISCV = 3,
+ };
+ 
+ /**
 -- 
 2.53.0
 
