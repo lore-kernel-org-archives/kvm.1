@@ -1,73 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795114642;
-	b=n7YbwyNuEQwhDclY8XCN/Ai77lkwcJShMW6WaTESGyjxCzLzfu24EhakAG9EYLV16sN5
-	 ec7MwBCZPgSMukA2vFRxP6KBqJ2zxK89OGiOzJOEJnVyXI2TVMSwdQXL0FKwWA6Sqmnv+
-	 GnytVuJ/vflTDIhYcjzFrcWNarGE10DHNkUwkQBHlU3Hfy6NB+bKQzxiIUri2xJpimUTb
-	 ZvVCsfClB35r+KcfdSfCnEPediUkGMnaIq52ZM/+uES2sJ8FUQ/jvA4YeZ+Gca+8/7pz2
-	 abUp+M/B1T86yftWYISJOOHYWStRBBm5MrlJi1kZ7CxZbKWsKRldwaQn/yXSXy6gLtg==
+	t=1795114646;
+	b=v8qR5s55T3v8JtQ6A+Hm2xWwhuw5hkL+9dWimrl+EAejWhIbu9Iez2pYkZoBiid0nkod
+	 odtWMTAilbTdyByTs7YnfTbT3WjC1VPiW7xPJcHJ8sWpIw/FWsGPo2fqGVFI3Ou78E9f1
+	 09Yov72JkKvepl2KRgZod9DVanVx4iQgQg+qXRZobO1TbQY/1NATZxE/MLETd+CdWPe0R
+	 FlcJQoEierd12l0H86JAqNxA35qbqGWt/SIgeEY6TryaoU+FfU70pc4oQyosLauES4xk7
+	 be6KfMpIflAKmXKzrmIyFNF5P7pnlFo5nqDoWlzhupnSHS9JIztTtsHUgzNLm92A8cg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795114642;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795114646;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
 	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=SwfEFTwvAkrGo1uIFQIK6qC1G/PkQTUsdHH3b1a9bwk=;
-	b=mZzz4BOLVoER6z6GfMMZA0MHHbbSMSqPsn22d62I7epsLOExmVr1qd7ZMl56HIeGcWTv
-	 GVJhXFnAtqBVjDz4ZCjTQUHr3e+ClzKWzGYt07F6ZH9FtOTNGn++Q98rn+IXxd8hOdEno
-	 WZa3sskbPFDXf7aYVDJz/AXXX1y0vs+QUep+04mXxObYhdSCWXYuGYwTpMiZvHcn3OOuZ
-	 Ng4nsGBjzWChHCchizs3zJdsBSLtwUpMNvIvtukZQaTOg2ytojTXdMbfXko78uj7UKRFQ
-	 x6/GWZI93X1+adDWiwPx0JFRqtt+2L/w9W/7EYHBDizyahLdBVDVXrVjY0Hrw1xq1ig==
+	bh=4fSH6nFt1ylg4ZgX5UgR/mWodCmv4OdEwxIuaClQQ7Y=;
+	b=Pb+lPZMi3YzBct9PMj4X0pPnW4pWjIyZlsRBkohA/AZ+KoFzzwQuY5QUP0V9shHNRuvW
+	 lU9QMjuu65342m+GGnGfDn7aLQBIuzgL6i58hVAKduvOesXlRLCr5iPdXfkN7oLW1UlWa
+	 Pz/50hFnQiAdA/1+CjqmLNfQ9m1dTfpYiZAerUuzSAKSW2gLvHfUOD0PDXh0ESSNhJEC7
+	 VX7dVypAxMHjYR5HgPxhHZxVnjgUNcPAfjheB9k37A9aEZzZIfAypEfvw2sy4EpcpcJTI
+	 RULgDyzloaXrr8Zbh6CwexaUxZ3zV3HVQ96TJBFAlSScQ1N0pW60tUVh6pnPBnh2E3Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=USdfg0Rj;
-	arc=none smtp.remote-ip=74.125.82.69
-Received: from mail-dl1-f69.google.com (mail-dl1-f69.google.com [74.125.82.69])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=BnzKZTP9;
+	arc=none smtp.remote-ip=74.125.82.70
+Received: from mail-dl1-f70.google.com (mail-dl1-f70.google.com [74.125.82.70])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30464606A324
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 18:57:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 30464606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95B2606A32A
+	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 18:57:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A95B2606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=USdfg0Rj
-Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-1af203073e0so73129c88.1
-        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 10:57:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=BnzKZTP9
+Received: by mail-dl1-f70.google.com with SMTP id a92af1059eb24-1b25d977b91so90725c88.1
+        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 10:57:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795114641; x=1795719441; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1795114645; x=1795719445; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SwfEFTwvAkrGo1uIFQIK6qC1G/PkQTUsdHH3b1a9bwk=;
-        b=USdfg0RjnhZ9KvGtsiUTAdyCoiVx+jLNXrmypqqY1p3NQVZqw5paIS1lOxj+46T/zN
-         kgWNYtr1HahbajqkRgiq4ImQGjo5GnRsuJW4jRu3dVvOXFmQoA8yisD4AWRTI9xUyBV4
-         YBD45zM8gstwNRwRQqKIrm158P5EXKumtxtnSoqrU/Cw1naovRhj7LD81Fvk4G0+aqpk
-         kNd/+v4SbSpuuETLyCSxh76I+U++ZR90fGbwsJQdFw48AmRORhJ1/nPfmpYzDE5DeHLj
-         ctJYzwgmda9YfrKPeoqA6KU1LOVsamkmTtEcGkE8mOI4NMcRC6ff4p7cqCxJqhMSTXye
-         FaHA==
+        bh=4fSH6nFt1ylg4ZgX5UgR/mWodCmv4OdEwxIuaClQQ7Y=;
+        b=BnzKZTP95RjLteFVMpVko/9FRsRq7TOOVyI57115A7tWE/MNdSXZwdsVTV7BcnTWhl
+         /DroAACyDlip9LgbmdDq3NH+q1mo/vH01UVtGissOddDIgxmbKvX5EHLNcqMfHE4xXkS
+         W+c9yGNR5H1LA5kNjDmLg77r/l2nSRLo/5xDLYYmW3FfgqtivfecZ/cKfNxtUTIHGJsm
+         MDV2g9MFaisB8v2pLsJi3zY2u+uE/rtZfADhLG+9rgZRLRmHB8CTaQpMT6NPz8M+qRGi
+         wNJmWzGMop5Bd6+gfvDIvMGWtc28MMWsK2ZaOA9m6UCpHc/Pw8fO6J+6XBqUdxvrpiUv
+         cGcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795114641; x=1795719441;
+        d=1e100.net; s=20260707; t=1795114645; x=1795719445;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=SwfEFTwvAkrGo1uIFQIK6qC1G/PkQTUsdHH3b1a9bwk=;
-        b=ebOCycgVo4P1uH/7HEbwvKyzPSjpGQ6g1+IS1ysU6CaTwSAUU8g/0cyy0V73STb92T
-         s1Sz65De9uDnmQDcxlQamIdI+XyufNyIAe52nEPMTqaOO/qOhlb6R7zd0Bjf/clCj1/x
-         j+HRLwQ6YUQqrcl5HyIdg530tA1Jz6bK2xn+eLm4yAuen6BEgxUlxLIxCERAC+Zj3IaX
-         WL1swFBKZUGgu8s5uRM4TDBsiFaz4d3SLeM0c6YorKZ2yl1dwtS6DJlseGW8cwBmhtrH
-         OkqyEiYewDXTry2PszV6IYEPXEbjyDnL3mgH0X1blzh0GeB9fcUu8EZe4fV2/3NzkxpC
-         1gzA==
-X-Gm-Message-State: APuU4Z+mh7X2ON3I1uXnc9KYQOiv6IHBP4VLEkBE36hpPoIDrtOdT671
-	C8/k6WbTeMhcid4XHZoXc7+sghwei+VYxIAgWauVD0qFRAakNRin5NnBOc779qNO0WirSLtSdeb
-	PrVqqs13qnen3sBSwAg4r2tJeQcpetqHS65Y2TpBqOiCK2E9TizCap8CCaDdDKkabqryxuwe7bX
-	ofp+d5P0/YVT2jd3S6sph3x+CGVw1m+R5Bg6fGss9qnVM4tMu5bOHrFA==
-X-Received: from dlcio7.prod.google.com ([2002:a05:7023:c007:b0:1b5:9e8:8738])
+        bh=4fSH6nFt1ylg4ZgX5UgR/mWodCmv4OdEwxIuaClQQ7Y=;
+        b=qTvzecY3m7ysxvf793wvn0RMd75+nR5RmPo78YG4GVBOsQMSS2FxC7D0i49QARmTKu
+         WQWMT/2f0tTXkMXEJwRpHJl4zC217BkFtunSBtwDZarp5TORscsy30sT5QTX00eAqsEj
+         Xm1O3ZT3glmNDikxcI5UIVP0sflyQwk+W+8w6tQWjaTXScJllAibis2F3WDECQsYdHf4
+         WDgoEHW4Xab6X6qN/uocI3IbogohuGvwbuZ/JZdQ6UJ2ql9Vvj7fYGidWI0S/g6JwBBy
+         lvqVEg56PoGrTiQyOhtkOnhZ5FVXPVFR2yO0to/Yz/Sz2Rq1d01QUcBPM+tdvTTQ637H
+         sh2w==
+X-Gm-Message-State: APuU4Z/2UpgyIhoocRl5+js/lIRFAINjM2yBgxggR9xBf7gTi7QpA8jS
+	Dhl0jWRerXv6uneN5+pnU4IKizn4YuTLzi3htF8N6J1sJovn/FtZbI4pFrfmNIbZogJmtSG6inP
+	Y5o/mg3Uz8u84XHFUjw/CVNlQ4ErueorJ/oXtXo3OtlMOFSDGW2H/FdNGP4mEoZvKZzaqhGPf+L
+	N0aMSb1naCsm4Rbbck9Hn8IuFnF4WREMth+kLCz5Hd3dLRetl5bQMtTA==
+X-Received: from dlbsw11.prod.google.com ([2002:a05:7022:3a8b:b0:19a:1425:bb9c])
  (user=aaronlewis job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:701b:2608:b0:15b:afce:62c2 with SMTP id a92af1059eb24-1b55691337bmr405059c88.41.1795114640730;
- Thu, 19 Nov 2026 10:57:20 -0800 (PST)
-Date: Thu, 19 Nov 2026 18:56:58 +0000
+ 2002:a05:701b:2088:10b0:1b3:a22c:7f68 with SMTP id a92af1059eb24-1b5568d349fmr499819c88.29.1795114644360;
+ Thu, 19 Nov 2026 10:57:24 -0800 (PST)
+Date: Thu, 19 Nov 2026 18:56:59 +0000
 In-Reply-To: <20261119185659.889654-1-aaronlewis@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -80,274 +80,188 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261119185659.889654-1-aaronlewis@google.com>
 X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
-Message-ID: <20261119185659.889654-3-aaronlewis@google.com>
-Subject: [PATCH 2/3] vfio/type1: Track GUP vs PFNMAP in DMA map/unmap
+Message-ID: <20261119185659.889654-4-aaronlewis@google.com>
+Subject: [PATCH 3/3] vfio/type1: Track GUP vs PFNMAP in external page pinning
 From: Aaron Lewis <aaronlewis@google.com>
 To: kvm@vger.kernel.org
 Cc: alex@shazbot.org, dmatlack@google.com, jgg@nvidia.com, 
 	Aaron Lewis <aaronlewis@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Both vfio_pin_pages_remote() and vfio_unpin_pages_remote() use
-PageReserved() as a heuristic to infer whether a page was PFNMAP'd or
-GUP-pinned in vaddr_get_pfns(). That heuristic breaks down when the same
-reserved struct pages can appear on both paths:
+Like the DMA map/unmap path, external page pinning for emulated IOMMU
+drivers (vfio_iommu_type1_pin_pages()) uses the same heuristic
+(is_invalid_reserved_pfn()) to infer if a struct vfio_pfn was PFNMAP'd
+or GUP-pinned in vaddr_get_pfns().
 
-- DevDax pages mapped from /dev/dax* are reserved and GUP-pinned.
-- Those same pages mapped from /dev/mem (PFNMAP) are also reserved,
-  but they are *not* GUP-pinned.
+That heuristic falls apart for reserved GUP-pinned mappings such as
+device-dax. They are treated as PFNMAP, so they are never unpinned,
+which leaks page pins and refcounts. They are also left out of locked_vm
+accounting.
 
-Because of this, when unpinning the DMA region, vfio_unpin_pages_remote()
-doesn't know whether those reserved pages were GUP-pinned and skips
-unpinning them altogether, *leaking page pins and refcounts*.
+Record in struct vfio_pfn whether vaddr_get_pfns() used the PFNMAP path,
+and use that (vpfn->pfnmap) across all external pinning, unpinning, and
+locked_vm accounting paths instead of inferring it.
 
-Fix this by replacing has_rsvd and has_non_rsvd in struct vfio_dma with
-has_pfnmap and has_gup_pinned, tracking which path vaddr_get_pfns()
-actually used, and clearing them when a DMA range is unpinned. Since
-PFNMAP pages bypass struct vfio_batch, this also fixes locked_vm
-accounting and batch error-unwind unpinning for reserved GUP-pinned
-pages.
+As with the DMA map/unmap path, GUP-pinned reserved pages are now
+charged against RLIMIT_MEMLOCK. When no IOMMU-backed domain is present,
+vfio_pin_pages() on such memory can now fail with -ENOMEM where it
+previously bypassed the limit.
 
-This isn't an exhaustive fix because mixed mappings are still allowed.
-For example, if a single DMA region contains both GUP-pinned and
-PFNMAP pages, vfio_unpin_pages_remote() can't tell them apart. Handle
-this by preserving the existing put_pfn() fallback, and add
-a comment explaining the situation.
+Opportunistically, drop the forward declaration of put_pfn(), which is
+no longer needed.
 
-Lastly, clear the new flags once a vfio_dma is fully unpinned. A vfio_dma
-can outlive its pins and be pinned again later, after
-vfio_iommu_unmap_unpin_reaccount() or a failed vfio_iommu_replay(), by
-which time the user may have remapped the range. A stale has_rsvd only
-selected the slower unpin path, but a stale has_pfnmap would send a
-mapping that is now entirely GUP-pinned down the wrong unpin path.
-
-Fixes: 3565fce3a659 ("mm, x86: get_user_pages() for dax mappings")
+Fixes: a54eb55045ae ("vfio iommu type1: Add support for mediated devices")
 Signed-off-by: Aaron Lewis <aaronlewis@google.com>
 ---
- drivers/vfio/vfio_iommu_type1.c | 103 ++++++++++++++++++--------------
- 1 file changed, 58 insertions(+), 45 deletions(-)
+ drivers/vfio/vfio_iommu_type1.c | 39 ++++++++++++++++++++-------------
+ 1 file changed, 24 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index 7bad0508dd21..ee40ba942fd5 100644
+index ee40ba942fd5..b9c67ac0b16e 100644
 --- a/drivers/vfio/vfio_iommu_type1.c
 +++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -93,8 +93,8 @@ struct vfio_dma {
- 	bool			iommu_mapped;
- 	bool			lock_cap;	/* capable(CAP_IPC_LOCK) */
- 	bool			vaddr_invalid;
--	bool			has_rsvd;	/* has 1 or more rsvd pfns */
--	bool			has_non_rsvd;	/* has 1 or more !rsvd pfns */
-+	bool			has_pfnmap;	/* has 1 or more pfnmap pfns */
-+	bool			has_gup_pinned;	/* has 1 or more GUP-pinned pfns */
- 	struct task_struct	*task;
- 	struct rb_root		pfn_list;	/* Ex-user pinned pfn list */
- 	unsigned long		*bitmap;
-@@ -416,6 +416,13 @@ static struct vfio_pfn *vfio_iova_get_vfio_pfn(struct vfio_dma *dma,
- 	return vpfn;
- }
+@@ -130,6 +130,7 @@ struct vfio_pfn {
+ 	dma_addr_t		iova;		/* Device address */
+ 	unsigned long		pfn;		/* Host pfn */
+ 	unsigned int		ref_count;
++	bool			pfnmap;
+ };
  
-+static inline void put_gup_pfns(unsigned long start_pfn, unsigned long npage,
-+				int prot)
-+{
-+	unpin_user_page_range_dirty_lock(pfn_to_page(start_pfn), npage,
-+					 prot & IOMMU_WRITE);
-+}
-+
- static int vfio_iova_put_vfio_pfn(struct vfio_dma *dma, struct vfio_pfn *vpfn)
- {
- 	int ret = 0;
-@@ -523,12 +530,11 @@ static void vfio_batch_init_single(struct vfio_batch *batch)
+ struct vfio_regions {
+@@ -152,8 +153,6 @@ struct vfio_regions {
+ #define DIRTY_BITMAP_PAGES_MAX	 ((u64)INT_MAX)
+ #define DIRTY_BITMAP_SIZE_MAX	 DIRTY_BITMAP_BYTES(DIRTY_BITMAP_PAGES_MAX)
  
- static void vfio_batch_unpin(struct vfio_batch *batch, struct vfio_dma *dma)
- {
--	while (batch->size) {
--		unsigned long pfn = page_to_pfn(batch->pages[batch->offset]);
+-static int put_pfn(unsigned long pfn, int prot);
 -
--		put_pfn(pfn, dma->prot);
--		batch->offset++;
--		batch->size--;
-+	if (batch->size) {
-+		unpin_user_pages_dirty_lock(&batch->pages[batch->offset],
-+					    batch->size,
-+					    dma->prot & IOMMU_WRITE);
-+		batch->size = 0;
- 	}
+ static struct vfio_iommu_group*
+ vfio_iommu_find_iommu_group(struct vfio_iommu *iommu,
+ 			    struct iommu_group *iommu_group);
+@@ -384,7 +383,7 @@ static void vfio_unlink_pfn(struct vfio_dma *dma, struct vfio_pfn *old)
  }
  
-@@ -673,6 +679,15 @@ static long vpfn_pages(struct vfio_dma *dma,
- 	return ret;
- }
- 
-+/*
-+ * After a successful vaddr_get_pfns(), GUP populates batch->pages while
-+ * VM_PFNMAP leaves the batch empty.
-+ */
-+static bool vfio_batch_is_pfnmap(const struct vfio_batch *batch)
-+{
-+	return batch->size == 0;
-+}
-+
- /*
-  * Attempt to pin pages.  We really don't want to track all the pfns and
-  * the iommu can only map chunks of consecutive pfns anyway, so get the
-@@ -685,7 +700,7 @@ static long vfio_pin_pages_remote(struct vfio_dma *dma, unsigned long vaddr,
- 	unsigned long pfn;
- 	struct mm_struct *mm = current->mm;
- 	long ret, pinned = 0, lock_acct = 0;
--	bool rsvd;
-+	bool pfnmap = false;
- 	dma_addr_t iova = vaddr - dma->vaddr + dma->iova;
- 
- 	/* This code path is only user initiated */
-@@ -696,7 +711,6 @@ static long vfio_pin_pages_remote(struct vfio_dma *dma, unsigned long vaddr,
- 		/* Leftover pages in batch from an earlier call. */
- 		*pfn_base = page_to_pfn(batch->pages[batch->offset]);
- 		pfn = *pfn_base;
--		rsvd = is_invalid_reserved_pfn(*pfn_base);
- 	} else {
- 		*pfn_base = 0;
- 	}
-@@ -721,12 +735,18 @@ static long vfio_pin_pages_remote(struct vfio_dma *dma, unsigned long vaddr,
- 
- 			if (!*pfn_base) {
- 				*pfn_base = pfn;
--				rsvd = is_invalid_reserved_pfn(*pfn_base);
-+				pfnmap = vfio_batch_is_pfnmap(batch);
-+			} else if (pfnmap != vfio_batch_is_pfnmap(batch)) {
-+				/*
-+				 * Handle PFNMAP and GUP pages separately; any
-+				 * GUP pages remain in batch for the next call.
-+				 */
-+				goto out;
- 			}
- 
- 			/* Handle pfnmap */
--			if (!batch->size) {
--				if (pfn != *pfn_base + pinned || !rsvd)
-+			if (pfnmap) {
-+				if (pfn != *pfn_base + pinned)
- 					goto out;
- 
- 				pinned += ret;
-@@ -742,32 +762,20 @@ static long vfio_pin_pages_remote(struct vfio_dma *dma, unsigned long vaddr,
- 		 * due to the fact that vaddr_get_pfns() needs to provide the
- 		 * initial pfn for pfnmaps.  Therefore to reduce redundancy,
- 		 * the next pfn is fetched at the end of the loop.
--		 * A PageReserved() page could still qualify as page backed
--		 * and rsvd here, and therefore continues to use the batch.
- 		 */
- 		while (true) {
--			long nr_pages, acct_pages = 0;
-+			long nr_pages, acct_pages;
- 
--			if (pfn != *pfn_base + pinned ||
--			    rsvd != is_invalid_reserved_pfn(pfn))
-+			if (pfn != *pfn_base + pinned)
- 				goto out;
- 
--			/*
--			 * Using GUP with the FOLL_LONGTERM in
--			 * vaddr_get_pfns() will not return invalid
--			 * or reserved pages.
--			 */
- 			nr_pages = num_pages_contiguous(
- 					&batch->pages[batch->offset],
- 					batch->size);
--			if (!rsvd) {
--				acct_pages = nr_pages;
--				acct_pages -= vpfn_pages(dma, iova, nr_pages);
--			}
-+			acct_pages = nr_pages - vpfn_pages(dma, iova, nr_pages);
- 
- 			/*
--			 * Reserved pages aren't counted against the user,
--			 * externally pinned pages are already counted against
-+			 * Externally pinned pages are already counted against
- 			 * the user.
- 			 */
- 			if (acct_pages) {
-@@ -796,29 +804,21 @@ static long vfio_pin_pages_remote(struct vfio_dma *dma, unsigned long vaddr,
- 	}
- 
- out:
--	dma->has_rsvd |= rsvd;
--	dma->has_non_rsvd |= !rsvd;
- 	ret = vfio_lock_acct(dma, lock_acct, false);
- 
- unpin_out:
- 	if (ret < 0) {
--		if (pinned && !rsvd) {
--			for (pfn = *pfn_base ; pinned ; pfn++, pinned--)
--				put_pfn(pfn, dma->prot);
--		}
-+		if (pinned && !pfnmap)
-+			put_gup_pfns(*pfn_base, pinned, dma->prot);
- 		vfio_batch_unpin(batch, dma);
- 
- 		return ret;
- 	}
- 
--	return pinned;
--}
-+	dma->has_pfnmap |= pfnmap;
-+	dma->has_gup_pinned |= !pfnmap;
- 
--static inline void put_valid_unreserved_pfns(unsigned long start_pfn,
--		unsigned long npage, int prot)
--{
--	unpin_user_page_range_dirty_lock(pfn_to_page(start_pfn), npage,
--					 prot & IOMMU_WRITE);
-+	return pinned;
- }
- 
- static long vfio_unpin_pages_remote(struct vfio_dma *dma, dma_addr_t iova,
-@@ -827,16 +827,23 @@ static long vfio_unpin_pages_remote(struct vfio_dma *dma, dma_addr_t iova,
+ static int vfio_add_to_pfn_list(struct vfio_dma *dma, dma_addr_t iova,
+-				unsigned long pfn)
++				unsigned long pfn, bool pfnmap)
  {
- 	long unlocked = 0, locked = vpfn_pages(dma, iova, npage);
+ 	struct vfio_pfn *vpfn;
  
--	if (dma->has_rsvd) {
--		if (dma->has_non_rsvd) {
-+	if (dma->has_pfnmap) {
-+		if (dma->has_gup_pinned) {
- 			unsigned long i;
+@@ -395,6 +394,7 @@ static int vfio_add_to_pfn_list(struct vfio_dma *dma, dma_addr_t iova,
+ 	vpfn->iova = iova;
+ 	vpfn->pfn = pfn;
+ 	vpfn->ref_count = 1;
++	vpfn->pfnmap = pfnmap;
+ 	vfio_link_pfn(dma, vpfn);
+ 	return 0;
+ }
+@@ -429,7 +429,10 @@ static int vfio_iova_put_vfio_pfn(struct vfio_dma *dma, struct vfio_pfn *vpfn)
  
-+			/*
-+			 * Because there is no way to tell if this DMA region
-+			 * was PFNMAP or GUP-pinned, fall back to the
-+			 * heuristic in put_pfn() of skipping invalid and
-+			 * reserved pfns, which fails to unpin reserved pages
-+			 * that were GUP-pinned.
-+			 */
- 			for (i = 0; i < npage; i++)
- 				if (put_pfn(pfn++, dma->prot))
- 					unlocked++;
- 		}
- 	} else {
--		put_valid_unreserved_pfns(pfn, npage, dma->prot);
-+		put_gup_pfns(pfn, npage, dma->prot);
- 		unlocked = npage;
+ 	vpfn->ref_count--;
+ 	if (!vpfn->ref_count) {
+-		ret = put_pfn(vpfn->pfn, dma->prot);
++		if (!vpfn->pfnmap) {
++			put_gup_pfns(vpfn->pfn, 1, dma->prot);
++			ret = 1;
++		}
+ 		vfio_remove_from_pfn_list(dma, vpfn);
  	}
- 	if (do_accounting)
-@@ -1232,6 +1239,9 @@ static long vfio_unmap_unpin(struct vfio_iommu *iommu, struct vfio_dma *dma,
- 					    &iotlb_gather);
- 	}
- 
-+	dma->has_pfnmap = false;
-+	dma->has_gup_pinned = false;
-+
- 	if (do_accounting) {
- 		vfio_lock_acct(dma, -unlocked, true);
+ 	return ret;
+@@ -655,7 +658,7 @@ static long vpfn_pages(struct vfio_dma *dma,
+ 	if (likely(!top))
  		return 0;
-@@ -1947,6 +1957,9 @@ static int vfio_iommu_replay(struct vfio_iommu *iommu,
- 			vfio_unpin_pages_remote(dma, iova, phys >> PAGE_SHIFT,
- 						size >> PAGE_SHIFT, true);
- 		}
-+
-+		dma->has_pfnmap = false;
-+		dma->has_gup_pinned = false;
+ 
+-	if (!is_invalid_reserved_pfn(top->pfn))
++	if (!top->pfnmap)
+ 		ret++;
+ 
+ 	prev = next = &top->node;
+@@ -664,7 +667,7 @@ static long vpfn_pages(struct vfio_dma *dma,
+ 		vpfn = rb_entry(prev, struct vfio_pfn, node);
+ 		if (vpfn->iova < iova_start)
+ 			break;
+-		if (!is_invalid_reserved_pfn(vpfn->pfn))
++		if (!vpfn->pfnmap)
+ 			ret++;
  	}
  
- 	vfio_batch_fini(&batch);
+@@ -672,7 +675,7 @@ static long vpfn_pages(struct vfio_dma *dma,
+ 		vpfn = rb_entry(next, struct vfio_pfn, node);
+ 		if (vpfn->iova >= iova_end)
+ 			break;
+-		if (!is_invalid_reserved_pfn(vpfn->pfn))
++		if (!vpfn->pfnmap)
+ 			ret++;
+ 	}
+ 
+@@ -853,7 +856,8 @@ static long vfio_unpin_pages_remote(struct vfio_dma *dma, dma_addr_t iova,
+ }
+ 
+ static int vfio_pin_page_external(struct vfio_dma *dma, unsigned long vaddr,
+-				  unsigned long *pfn_base, bool do_accounting)
++				  unsigned long *pfn_base, bool do_accounting,
++				  bool *pfnmap)
+ {
+ 	struct vfio_batch batch;
+ 	struct mm_struct *mm;
+@@ -869,12 +873,13 @@ static int vfio_pin_page_external(struct vfio_dma *dma, unsigned long vaddr,
+ 	if (ret != 1)
+ 		goto out;
+ 
++	*pfnmap = vfio_batch_is_pfnmap(&batch);
+ 	ret = 0;
+ 
+-	if (do_accounting && !is_invalid_reserved_pfn(*pfn_base)) {
++	if (do_accounting && !*pfnmap) {
+ 		ret = vfio_lock_acct(dma, 1, false);
+ 		if (ret) {
+-			put_pfn(*pfn_base, dma->prot);
++			put_gup_pfns(*pfn_base, 1, dma->prot);
+ 			if (ret == -ENOMEM)
+ 				pr_warn("%s: Task %s (%d) RLIMIT_MEMLOCK "
+ 					"(%ld) exceeded\n", __func__,
+@@ -957,6 +962,7 @@ static int vfio_iommu_type1_pin_pages(void *iommu_data,
+ 		unsigned long phys_pfn;
+ 		dma_addr_t iova;
+ 		struct vfio_pfn *vpfn;
++		bool pfnmap;
+ 
+ 		iova = user_iova + PAGE_SIZE * i;
+ 		dma = vfio_find_dma(iommu, iova, PAGE_SIZE);
+@@ -978,7 +984,7 @@ static int vfio_iommu_type1_pin_pages(void *iommu_data,
+ 
+ 		remote_vaddr = dma->vaddr + (iova - dma->iova);
+ 		ret = vfio_pin_page_external(dma, remote_vaddr, &phys_pfn,
+-					     do_accounting);
++					     do_accounting, &pfnmap);
+ 		if (ret)
+ 			goto pin_unwind;
+ 
+@@ -987,10 +993,13 @@ static int vfio_iommu_type1_pin_pages(void *iommu_data,
+ 			goto pin_unwind;
+ 		}
+ 
+-		ret = vfio_add_to_pfn_list(dma, iova, phys_pfn);
++		ret = vfio_add_to_pfn_list(dma, iova, phys_pfn, pfnmap);
+ 		if (ret) {
+-			if (put_pfn(phys_pfn, dma->prot) && do_accounting)
+-				vfio_lock_acct(dma, -1, true);
++			if (!pfnmap) {
++				put_gup_pfns(phys_pfn, 1, dma->prot);
++				if (do_accounting)
++					vfio_lock_acct(dma, -1, true);
++			}
+ 			goto pin_unwind;
+ 		}
+ 
+@@ -2471,7 +2480,7 @@ static void vfio_iommu_unmap_unpin_reaccount(struct vfio_iommu *iommu)
+ 			struct vfio_pfn *vpfn = rb_entry(p, struct vfio_pfn,
+ 							 node);
+ 
+-			if (!is_invalid_reserved_pfn(vpfn->pfn))
++			if (!vpfn->pfnmap)
+ 				locked++;
+ 		}
+ 		vfio_lock_acct(dma, locked - unlocked, true);
 -- 
 2.56.1.708.g77570a6a1d-goog
 
