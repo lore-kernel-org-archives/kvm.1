@@ -1,55 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.222
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795069298;
-	b=Q7ZJWEOmUzMhJcg6Xe09uqn5ummXFE28s+vtdrVd5bFSOxiaWFmMRu37iFXOOiDxfSpO
-	 qNVLlWlPKoi4m/H9J6tpbYr5LVC0MQFgHEaGw7zXh02gm7S0ce16BJBRvlXUNKfsYtFY7
-	 xIO831mfug6/702r5F4mUKOdJUineEmHxIyrvOxjlOPbhL3SYjtA8TBExqGlS7Q6OgeRK
-	 kskY+AG/oIvqJqXsYKkKUYX07GUs82LRnrIGt0EztJNWIEJbWLks7GG15ty/LjLHtlaWl
-	 jzRH2wjDx2a1LgCYDPRy9mkN4WykRYkPAMySCF1XZrVRtF73UJ1Ck0PfUhXGPl+DiMw==
+	t=1795069557;
+	b=2pLeTvvPlRby0LG4V4H99dJP8EsfPJuGL9O/hHsnIGQgbI09bymPst0cdYxiYIZ7sqyF
+	 NGOL62WVSJo8Bf5dhwgoi+tHJA73EozRcR1Pxo1rIV0OZkmuXbO8i1OC1nVaNZDrTtOi/
+	 pu7oRmja2C6tF0gpoxzUYPAtxSyxW9N0+RqRznKo0k6HQsWcb/M2JLNTKwin7xtbGEXJ9
+	 +4pSnVCh2ZTCxdkvnCKN3ShFYtd6CrIkKXedEJhTbPSWBWyGr+aTaXJor/6F92vTXkyRa
+	 40C0j+5OjggEZHrWlSIbIhHMX4Aqzx74YrSG0rxM5qjJ5QukIuWn706VsknBx/Mi0NA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795069298;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=d5V7Rieq2NNhaZfYLI5iX2cWop0GoiKomqH5pxfTh2c=;
-	b=Q2YN138HbrnTxgtYVUtdx7lW4EQfTVqrp3OUxDPuD6tNcEf0UEUdqkJaJI7EYF6I0wPW
-	 T3CKv9tEH2f9D7Q4BQGsZEBt10QQzJvXInACl8IIYDj8v8QE9+TkhgwJC4GIuRlWTYIhS
-	 h4DRh86jD2AHTiD2m62nD1+slzx1tdo0j4ykrMTJKDGoBEXDShEpseJHiPu1J8h7MSSJU
-	 yh1HsBMJBHtyPQBsehfEbt2xi6+TNoH5Owta08SCMa6HLyf04XLLs4qRPqMT7Tpgf674/
-	 LXwNqwadLCq5fRyZTvoCvOezp2HSWPkEBfFEHrLledFlX+xRuoCs4sBgZJ2DxFbQ2Zg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795069557;
+	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:CC:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy;
+	bh=04B/Kbaj4vrvBkYG9X6BLP4J62xiOfE4d23QuEZ2PlQ=;
+	b=2H7AAL5M4GDmjP39SFoPg9xXpOb1tPxcSHpHVbXwfgA3KFBhlCR7klbJLZ8Nvf+t0mMY
+	 X3o3G3Cqiw2dFc/XlaSpYwcmtNd3iBV2KzMvtRHNn4VNoWyDC+oL+WjZ14ycnynQLYgyd
+	 +FA87sv+VC0rXBwJes8CcgAN1TuvY72RLQX5/e6GMZ10Xsc+RaWIuGII178AOLsH2vXmT
+	 YcOkQb0LImuctNiQz6qxSk/xWbLrUjZrpYEyAX8eOol5BVzNXhS/iuVPo4BCexnkR04H6
+	 O4gkrlHcxgGmcG1tca8zSskQlSdwFhQwlXSmZZP+L7Cw0ZiK5uIUkwb8/vGto7X2x6g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="BCK//JTq";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=huawei.com;
+	spf=pass smtp.mailfrom=huawei.com;
+	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=HwvqI6Ik;
+	arc=none smtp.remote-ip=113.46.200.222
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3C0606A333
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 06:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3990B606A320;
+	Thu, 19 Nov 2026 06:25:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3990B606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BCK//JTq
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30761F000C4;
-	Thu, 19 Nov 2026 06:21:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795069298;
-	bh=d5V7Rieq2NNhaZfYLI5iX2cWop0GoiKomqH5pxfTh2c=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=BCK//JTqYcoY1HSUSkOu+5scdvk1Ms/rTU6djj1fJ2/9ladrVqhBzkw4yY3+xY6Jq
-	 y/4A9dzyF9cIaCWXB8GxOLwPTdIa+wYPnXVMTZ8w37jpPb7Vh/vKXiOVM32iK6ljVQ
-	 FEGAXKvPpbfinGEk+hyxowB9xR2LXML90MaLtYoJI68Y+Wi6pSnPQAaGKyTwS2LEyD
-	 ASiNJBQrgnw8apFuyo4DsPRUo7m3Pke4MCM64lXbBvzsgJ0B+njn3x9gEdLGU0hkoC
-	 49ZwxXt6qkwiw1LeK1v1SDLn0NnWQD0St9DBalsDsX6gdpsgrqRcg0UDyOcPcGXZrx
-	 oi4CILTY63pnA==
-Message-ID: <sashiko-outbox-222518@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] KVM: x86: Fix stalled descriptor table accesses to
- MMIO
-Reply-To: sashiko-reviews@lists.linux.dev
-To: weichenchen <weichen.chen@linux.alibaba.com>, kvm@vger.kernel.org
-In-Reply-To: <20261119055747.23819-1-weichen.chen@linux.alibaba.com>
-References: <20261119055747.23819-1-weichen.chen@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 19 Nov 2026 06:21:37 +0000
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=HwvqI6Ik
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=04B/Kbaj4vrvBkYG9X6BLP4J62xiOfE4d23QuEZ2PlQ=;
+	b=HwvqI6IkrbAt2Nn1mMM+JnTydUqvIxKY01wrQEbnr2uzyQmUgJHl+buYs8IzGxwwQ7ekttN7O
+	pLY/G6wxZDnL1csUzuKiFfroqKOVnRmxkezogHIbCLpvTMHJbaAbHb9gMNfRITcAJRKf4zPvP3o
+	Hi/oERqmQkVL2u8JdKkqW3c=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4jVT3v2lgKzLlSk;
+	Thu, 19 Nov 2026 14:25:31 +0800 (CST)
+Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id 810BA4056C;
+	Thu, 19 Nov 2026 14:25:51 +0800 (CST)
+Received: from [10.67.121.161] (10.67.121.161) by
+ kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 19 Nov 2026 14:25:51 +0800
+Message-ID: <142d6813-8677-4524-97a3-fabe77624b39@huawei.com>
+Date: Thu, 19 Nov 2026 14:25:50 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -58,75 +61,100 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v21 06/13] PCI/TPH: Add macros to check standard and
+ extended TPH support
+To: <sashiko-reviews@lists.linux.dev>
+CC: <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
+References: <20261118091238.45992-1-fengchengwen@huawei.com>
+ <20261118091238.45992-7-fengchengwen@huawei.com>
+ <sashiko-outbox-220654@kernel.org>
+Content-Language: en-US
+From: fengchengwen <fengchengwen@huawei.com>
+In-Reply-To: <sashiko-outbox-220654@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemo500009.china.huawei.com (7.202.194.199)
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] KVM: x86: unmasked addr.ea increment in em_lgdt_lidt() breaks
-  32-bit wrap
---
+On 11/18/2026 6:06 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issues to consider:
+> - [Medium] PCI/TPH: pcie_*_tph_supported() macros return true when
+>   pci=notph is set
+> - [Medium] PCI/TPH: pcie_*_tph_supported() macro stubs do not evaluate
+>   or type-check pdev
+> --
+> 
+> commit 80062e3e48e12a212317dc82386d43fd4c4bb4c9
+> Author: Chengwen Feng <fengchengwen@huawei.com>
+> 
+> PCI/TPH: Add macros to check standard and extended TPH support
+> 
+> This commit adds the pcie_std_tph_supported() and pcie_ext_tph_supported()
+> helper macros to query standard and extended TPH requester support via
+> pdev->tph_max_type, along with stub definitions for !CONFIG_PCIE_TPH.
+> 
+>> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
+>> index b2bec02f3ea0e..50640fdc84e14 100644
+>> --- a/include/linux/pci-tph.h
+>> +++ b/include/linux/pci-tph.h
+> [ ... ]
+>> @@ -21,6 +23,18 @@ enum tph_mem_type {
+>>  };
+>>  
+>>  #ifdef CONFIG_PCIE_TPH
+>> +/**
+>> + * pcie_std_tph_supported - check standard TPH requester support
+>> + * @pdev: PCI device
+>> + */
+>> +#define pcie_std_tph_supported(pdev) \
+>> +	((pdev)->tph_max_type >= PCI_TPH_REQ_TPH_ONLY)
+>> +/**
+>> + * pcie_ext_tph_supported - check extended TPH requester support
+>> + * @pdev: PCI device
+>> + */
+>> +#define pcie_ext_tph_supported(pdev) \
+>> +	((pdev)->tph_max_type == PCI_TPH_REQ_EXT_TPH)
+> 
+> [Severity: Medium]
+> Do pcie_std_tph_supported() and pcie_ext_tph_supported() return true even
+> when the kernel is booted with pci=notph?
 
-commit 14df3ccaae0dc59c054ba57d9b0335ad6207effb
-Author: weichenchen <weichen.chen@linux.alibaba.com>
+The helper pcie_std_tph_supported() / pcie_ext_tph_supported() report hardware
+TPH capability, which is separate from the global pci_tph_disabled knob. The
+pci=notph knob only blocks pcie_enable_tph(), it does not erase hardware
+capability.
 
-KVM: x86: Fix stalled descriptor table accesses to MMIO
+> 
+> pci_tph_init() populates pdev->tph_max_type during probe without checking
+> pci_tph_disabled, while pcie_enable_tph_ext() checks pci_tph_disabled and
+> returns -EINVAL.  With pci=notph on the command line, callers such as the
+> VFIO TPH code later in this series treat TPH as supported and expose it in
+> virtual config space, only for hardware enablement to fail with -EINVAL.
+> 
+>>  int pcie_tph_set_st_entry(struct pci_dev *pdev,
+>>  			  unsigned int index, u16 tag);
+>>  int pcie_tph_get_cpu_st_ext(struct pci_dev *dev, enum tph_mem_type mem_type,
+>> @@ -33,6 +47,8 @@ int pcie_enable_tph(struct pci_dev *pdev, u8 mode);
+>>  u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
+>>  u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
+>>  #else
+>> +#define pcie_std_tph_supported(pdev) false
+>> +#define pcie_ext_tph_supported(pdev) false
+> 
+> [Severity: Medium]
+> Should pcie_std_tph_supported() and pcie_ext_tph_supported() be static
+> inline functions taking struct pci_dev *pdev instead of macros?
 
-This commit switches LGDT, LIDT, SGDT, and SIDT operand accesses from
-standard memory accessors to emulated memory accessors and common writeback
-so MMIO operands do not stall emulation.
+OK, will fix in static inline
 
-> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-> index c1b21282187f3..3a9a67f4b0d7c 100644
-> --- a/arch/x86/kvm/emulate.c
-> +++ b/arch/x86/kvm/emulate.c
+> 
+> Because the !CONFIG_PCIE_TPH macros discard pdev without evaluating or
+> type-checking it, callers whose local pdev variable is only passed to
+> these helpers (such as vfio_tph_vcap_rewrite() later in this series)
+> trigger a -Wunused-variable warning and break the build under
+> CONFIG_WERROR=y when CONFIG_PCIE_TPH is disabled.
+> 
 
-[ ... ]
-
-> @@ -3465,14 +3447,27 @@ static int em_sidt(struct x86_emulate_ctxt *ctxt)
-> =20
->  static int em_lgdt_lidt(struct x86_emulate_ctxt *ctxt, bool lgdt)
->  {
-> -	struct desc_ptr desc_ptr;
-> +	struct segmented_address addr =3D ctxt->src.addr.mem;
-> +	struct desc_ptr desc_ptr =3D {};
-> +	unsigned long limit_addr, base_addr;
-> +	unsigned int base_bytes, desc_bytes;
->  	int rc;
-> =20
->  	if (ctxt->mode =3D=3D X86EMUL_MODE_PROT64)
->  		ctxt->op_bytes =3D 8;
-> -	rc =3D read_descriptor(ctxt, ctxt->src.addr.mem,
-> -			     &desc_ptr.size, &desc_ptr.address,
-> -			     ctxt->op_bytes);
-> +	base_bytes =3D ctxt->op_bytes =3D=3D 2 ? 3 : ctxt->op_bytes;
-> +	desc_bytes =3D sizeof(desc_ptr.size) + base_bytes;
-> +
-> +	/* Check both fields before an MMIO read can have side effects. */
-> +	rc =3D linearize(ctxt, addr, sizeof(desc_ptr.size), false, &limit_addr);
-> +	if (rc !=3D X86EMUL_CONTINUE)
-> +		return rc;
-> +	addr.ea +=3D sizeof(desc_ptr.size);
-> +	rc =3D linearize(ctxt, addr, base_bytes, false, &base_addr);
-> +	if (rc !=3D X86EMUL_CONTINUE)
-> +		return rc;
-> +
-> +	rc =3D read_emulated(ctxt, limit_addr, &desc_ptr, desc_bytes);
-
-[Severity: Medium]
-Does incrementing addr.ea without 32-bit masking break 32-bit address
-wraparound for LGDT/LIDT at the top of a 4GB segment?
-
-Because addr.ea is a 64-bit unsigned long, an operand at 0xfffffffe or
-0xffffffff in 16-bit or 32-bit mode overflows addr.ea to 0x100000000 or
-0x100000001, causing the second linearize() call to fail the addr.ea > lim
-check and inject a spurious #GP(0) or #SS(0) when lim =3D=3D 0xffffffff.
-
-A single linearize(ctxt, addr, desc_bytes, false, &limit_addr) call (or
-segmented_read(ctxt, ctxt->src.addr.mem, &desc_ptr, desc_bytes)) already
-checks that the full descriptor fits within the segment limit when
-lim !=3D 0xffffffff while preserving 32-bit wraparound when lim =3D=3D 0xff=
-ffffff,
-and avoids the unused base_addr variable.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261119055747.2381=
-9-1-weichen.chen@linux.alibaba.com?part=3D1
