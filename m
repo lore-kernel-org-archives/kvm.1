@@ -1,58 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795087036;
-	b=jzb5vJC+PwVBAMWvStQ/5to/VVF2UM8mMFfIao2xO2NgYFsCPbP6ffCWrWxBWYODJHUm
-	 NAqF+m2pkNmlcRTsUdSbccqjbk++U8GNQQL+2ibqVXit3cBkcXwWTWqe3C/5sC30X5Uu9
-	 e+W2GgdiX4yt0l8zsu1yRWkNyNIq36FJLZa2PCODlW9kiSxOk2Z97ALRQM/oaboRA/6Hp
-	 37YdmMoR3jLCY2OrAshDMg1CZqVua9zqS+S37uBlCGsS0MHrN51DzBnnZWR15vIR2J6wP
-	 zj0mt0gLqDISWkcPyhBYoItzCufMuPWcufjchllJvM2XHIO/V2+nXeEjDcD03qnH/cw==
+	t=1795087136;
+	b=fEqmBy8RAD5mDqaYJokXHoBPyuJYAwkZt7UZUg/2V4DFLK5y2D3/l8psKGk8KDjm+9uU
+	 IQ8sa7/Co305U+oiDttO6n6WKbqEI69aNIEJGfDMjWyLYdxhvmVM3gLuxBpwzUaIYO0gc
+	 g+DLb8X4aTxT5aK2cqVU1T/Jc5ENQieZwWHNaN2XgmBolnkx+TEAMEMl/wxofmAwI2cW4
+	 yDT2BwupJIXxlGihm2DzKq3UKDMto42X5nuIws24U+tj2KGwN0Odw4HDTzYVdowwgiEPz
+	 C11P5/A6NlQb3BOvrH72SeZe7aeL33VZawpGOwbUqjQmyX3ZRPdBgZDOvIf4auYIHDQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795087036;
-	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:CC:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy;
-	bh=FZlWxWQOfTu8MIOnQs8tHPP8BaxZ5f7gPpwsp5HI3JE=;
-	b=wU01Ut+Iwp4Hcj2nR7up3qxa8wbZ7tJiwlnMScy1GG+dP0WlSAq4o4NICjl15H3e4+AQ
-	 /kv+9PIt+Y1xAS+lTldqgu+/GLRX+vpM9e7VOqs4n8pl9yte9nMgYXkmEfU6BxRqCgVmb
-	 TaJJLnDq7sLgSr14bfAPvHfljyoB7hjS6bfUFVIV7Ix43jOWlbXHcZjovS+PinOCZhtVy
-	 d/inFzclbgRpQgN6f1jeD0hYVD1Z5Ox4GHxQuVW20cETC/eLBeWhYFmMU2wlueqwRPF8a
-	 CtnUzsl1rTPIlKey8kEdLD6hcm1tbXKmE9MaplH7fZ4n1iKmqg+19WKpQD8y6R4LxBw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795087136;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=hdo31yiX1NgSplArPnMAKiWS3jJZJbo/7jmD/8lHOoY=;
+	b=VuqaQTikJ7+X3jPNFqSu2r4Dr/YbD0sY2Bqh/SeevOLhQ5R2RzgQGS70XWDhpoYa0lMx
+	 VhXsQXmp/aZ4unAVbQC35zDS6LgjvFicGPlR8os64q5SV2gDGELimyd8ri1Hk0czhOOFo
+	 Gp4agHAdB+o5AWmXqYXtbrVLHX0swjZ7XYVTqGqSq9cHnU3fMV/l0GvNi3xK4VmEFxgeL
+	 /06k5ZnCSy7+9s9HpHg0dK7FGJSL7Gr8vIT4S+aZx0rVE8L/q2RcmeGgmwc69jjfw43jV
+	 7ma4hDz+wKVOxrzltBjMUKheBKWigcubdY0o53XIJcMXg4DYBhp3KlkV3pS2vDAJl2g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=huawei.com;
-	spf=pass smtp.mailfrom=huawei.com;
-	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=H1GB+9zF;
-	arc=none smtp.remote-ip=113.46.200.219
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ddrhrIw1;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D18606A324;
-	Thu, 19 Nov 2026 11:17:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 32D18606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D625606A325;
+	Thu, 19 Nov 2026 11:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=H1GB+9zF
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=FZlWxWQOfTu8MIOnQs8tHPP8BaxZ5f7gPpwsp5HI3JE=;
-	b=H1GB+9zFnW/SvJtslH91Df7ak3Dzog+aP+lyrVw1I7r6dh9GV5S+L03tSEKKGfYwlVytvhFB2
-	TODpNqzuAqKhW2Zu+equ7CxRDwUWygOGaeB5xtszGCgHTaKWQ7IgYPgk4ErJG64Tq7WbEN+lc+5
-	mOZfGxBxxMjTz1M8ZhJTYCM=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4jVbX875bQz1prM1;
-	Thu, 19 Nov 2026 19:16:56 +0800 (CST)
-Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8AB4640537;
-	Thu, 19 Nov 2026 19:17:10 +0800 (CST)
-Received: from [10.67.121.161] (10.67.121.161) by
- kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 19 Nov 2026 19:17:10 +0800
-Message-ID: <dba7bad1-e9d1-4a13-8045-0ea9fd739244@huawei.com>
-Date: Thu, 19 Nov 2026 19:17:09 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ddrhrIw1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29CC1F000C5;
+	Thu, 19 Nov 2026 11:18:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795087136;
+	bh=hdo31yiX1NgSplArPnMAKiWS3jJZJbo/7jmD/8lHOoY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ddrhrIw1o9OVE4VgtDLgA5LFH4se0zgUcw/IhmX6IlqCklkfPIUaTJdcseNoMuXGV
+	 M8l22jgHiVbDAEcRccHDsU6jQcY3+iHpd8WImqjSMBF+Vu0ryJYnED7Dh3GCxIXVKg
+	 FWX4eHPzDkvkk70inKrKaXzsAWc/+aqZqS+tB4z6y4clAvMdmr/vAOj2uIqYfXfkek
+	 MWER2rFzg/1eir/OJH2OricpYI5bxvk9z/EtjL2ctHgCC2sOT1KFkzZL74vsWKuTnY
+	 Kk5YfVowFmViXJSMQt9xWFHlnGXSg0h16loCM4LsZwuh7RjVTBy6/XP5wnGcoHP2yt
+	 dtfLZgk7v0jmw==
+Date: Thu, 19 Nov 2026 11:18:48 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, kvmarm@lists.linux.dev, 
+	Wei-Lin Chang <weilin.chang@arm.com>, Will Deacon <will@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] KVM: Stop KVM_PRE_FAULT_MEMORY when the vCPU's
+ dirty ring is full
+Message-ID: <av7S4fY7f6H_bW8t@gremlin>
+References: <20261117074428.7544-1-fuad.tabba@linux.dev>
+ <20261117074428.7544-2-fuad.tabba@linux.dev>
+ <avxfgWNePsGPK9mm@gremlin>
+ <CA+EHjTzUrDxLSMEo6X66XhKtQ-=ew3zZhMdFWR6U9Ga17WLWkw@mail.gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,220 +65,140 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v21 11/13] vfio/pci: Add DS-ST TPH policy and TPH_RESOLVE
- capability
-To: <sashiko-reviews@lists.linux.dev>
-CC: <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
-References: <20261118091238.45992-1-fengchengwen@huawei.com>
- <20261118091238.45992-12-fengchengwen@huawei.com>
- <sashiko-outbox-220836@kernel.org>
-Content-Language: en-US
-From: fengchengwen <fengchengwen@huawei.com>
-In-Reply-To: <sashiko-outbox-220836@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemo500009.china.huawei.com (7.202.194.199)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+EHjTzUrDxLSMEo6X66XhKtQ-=ew3zZhMdFWR6U9Ga17WLWkw@mail.gmail.com>
 
-Thanks for the review. Here is how we fix these three issues:
+On Tue, Nov 17, 2026 at 05:05:49PM +0000, Fuad Tabba wrote:
+> Hi Lorenzo,
+>
+> On Tue, 17 Nov 2026 14:23:09 +0000, "Lorenzo Stoakes (ARM)"
+> <ljs@kernel.org> wrote:
+> [...]
+> > > The check also sets run->exit_reason, and arm64's KVM_RUN completes a
+> > > pending MMIO exit only if exit_reason is still KVM_EXIT_MMIO. If a
+> > > pre-fault stops on a full ring while an MMIO exit is pending, the next
+> > > KVM_RUN doesn't complete the exit and the guest repeats the MMIO
+> > > access. Userspace can avoid that by completing the exit with KVM_RUN
+> > > before it pre-faults.
+> >
+> > That's also true for riscv:
+> >
+> >         switch (run->exit_reason) {
+> >         case KVM_EXIT_MMIO:
+> >                 /* Process MMIO value returned from user-space */
+> >                 ret = kvm_riscv_vcpu_mmio_return(vcpu, vcpu->run);
+> >                 break;
+> >         case KVM_EXIT_RISCV_SBI:
+> >                 /* Process SBI value returned from user-space */
+> >                 ret = kvm_riscv_vcpu_sbi_return(vcpu, vcpu->run);
+> >                 break;
+> >         case KVM_EXIT_RISCV_CSR:
+> >                 /* Process CSR value returned from user-space */
+> >                 ret = kvm_riscv_vcpu_csr_return(vcpu, vcpu->run);
+> >                 break;
+> >         }
+> >
+> > (note that it skips CSR, SBI also with a changed exit_reason).
+>
+> Ack.
 
-On 11/18/2026 7:43 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issues to consider:
-> - [High] vfio/pci: vfio_pci_core_feature_tph_resolve() fails when
->   !has_arch_st
+Probably worth referencing in commit msg I guess?
 
-DS‑ST CPU steering tag resolution can work without an architected ST table.
-Currently vfio_pci_tph_get_src_mask() only enables CPU source mask when
-CAP_PROG_ST_CPU is set, which is gated on architected ST table.
-We update the mask check to accept CAP_PROG_ST_CPU *or* CAP_RESOLVE_CPU_ST.
-Pure DS‑ST devices with only resolution capability will now accept CPU source
-handles for RESOLVE.
+>
+> > But the overflow bug only applies to x86 (see below), so is this something
+> > we should worry about at all?
+>
+> The ring overflows on arm64 too (below). As for exit_reason, I asked
+> Sean about the arm64 MMIO case on v1, and his answer was that a VMM
+> that pre-faults between a KVM_EXIT_MMIO return and the next KVM_RUN
+> "gets to deal with the fallout" [1]. I think the same goes for riscv's
+> exits.
 
-> - [Medium] vfio/pci: vfio_tph_config_write() drops ST mode and active
->   req updates
+I mean generally yeah, users doing silly things can expect silly results I
+guess! :)
 
-The existing check only compares requester bits and ignores mode.
-For DS‑ST, userspace may set DS mode while requester is disabled, then enable
-requester in a separate write; the mode is lost.
-We compare both requester and mode. Any change triggers pcie_enable_tph_ext()
-to sync hardware.
-We also auto-disable TPH before enabling a new requester mode to avoid -EBUSY.
+>
+> [...]
+> > > diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> [...]
+> > >  The dirty ring can get full.  When it happens, the KVM_RUN of the
+> > > -vcpu will return with exit reason KVM_EXIT_DIRTY_RING_FULL.
+> > > +vcpu will return with exit reason KVM_EXIT_DIRTY_RING_FULL, and
+> > > +KVM_PRE_FAULT_MEMORY on the vcpu will process no more pages until the
+> > > +ring has been harvested and reset.
+> >
+> > Maybe worth mentioning the exit_reason thing if we keep this arch-generic?
+>
+> Sure, I'll document that userspace should complete a pending exit with
+> KVM_RUN before it pre-faults on that vCPU.
 
-> - [Medium] vfio/pci: vfio_pci_tph_get_capability() skips
->   pcie_tph_dsm_supported()
+Thanks!
 
-Both CAP_PROG_ST_CPU and CAP_RESOLVE_CPU_ST require TPH ST _DSM for CPU-to-ST
-translation.
-We trim tph_vcap centrally: if _DSM is not available, clear both CPU-related
-capability bits, leaving only NO‑ST capability.
-This logic is sufficient for the current series and will be revisited when P2P
-support is added in follow-up patches.
+>
+> [...]
+> > I wonder if this shouldn't just be an x86-only fix, since no other arch is
+> > impacted AFAICT.
+> >
+> > arm64 and riscv never map a dirty-logged memslot writable, so they're never
+> > pushed to the rin, and s390 doesn't have a dirty ring at all:
+> >
+> > arm64:
+> >
+> > static int kvm_s2_fault_compute_prot(const struct kvm_s2_fault_desc *s2fd,
+> >                                      const struct kvm_s2_fault_vma_info *s2vi,
+> >                                      enum kvm_pgtable_prot *prot)
+> > {
+> >         ...
+> >         if (s2vi->map_writable && (s2vi->device ||
+> >                                    !memslot_is_logging(s2fd->memslot) ||
+> >                                    kvm_s2_fault_is_write(s2fd)))
+> >                 *prot |= KVM_PGTABLE_PROT_W;
+> >         ...
+> > }
+>
+> arm64 does map a logged slot as writable today. memslot_is_logging()
+> tests memslot->dirty_bitmap, which isn't allocated when only the dirty
+> ring is enabled, and patch 2's selftest triggers the WARN in
+> kvm_dirty_ring_push() on arm64 without patch 1. Wei-Lin's fix to
+> memslot_is_logging() [2] is in kvmarm/fixes, not in mainline yet.
 
-Thanks
+But Wei-Lin's fix was taken? So I don't think predicating things on the
+basis of it not being there really makes any sense.
 
-> --
-> 
-> commit 5b864ef3e267f2d34a7496c96455a9bee2cc860b
-> Author: Chengwen Feng <fengchengwen@huawei.com>
-> 
-> vfio/pci: Add DS-ST TPH policy and TPH_RESOLVE capability
-> 
-> This commit adds the DS-ST policy level to vfio-pci and introduces the
-> VFIO_DEVICE_FEATURE_TPH_RESOLVE ioctl feature for resolving CPU steering
-> tags on DS-ST capable devices.
-> 
->> diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
->> index 398f8db8b8ff0..8e47f84216b0d 100644
->> --- a/drivers/vfio/pci/vfio_pci_config.c
->> +++ b/drivers/vfio/pci/vfio_pci_config.c
->> @@ -1218,7 +1218,7 @@ static int vfio_tph_config_write(struct vfio_pci_core_device *vdev, int pos,
->>  	cap = vdev->tph_vcap;
->>  	mode = FIELD_GET(PCI_TPH_CTRL_MODE_SEL_MASK, new_ctrl);
->>  	req = FIELD_GET(PCI_TPH_CTRL_REQ_EN_MASK, new_ctrl);
->> -	if (mode > PCI_TPH_ST_IV_MODE || !(cap & (1u << mode)) ||
->> +	if (mode > PCI_TPH_ST_DS_MODE || !(cap & (1u << mode)) ||
->>  		req == 0x2 /* reserved */ ||
->>  		(req == PCI_TPH_REQ_EXT_TPH && !(cap & PCI_TPH_CAP_EXT_TPH)))
->>  		goto out; /* Drop invalid or unsupported write value. */
-> 
-> [Severity: Medium]
-> Can vfio_tph_config_write() drop or overwrite ST Mode Select updates?
-> 
-> Right below this check, vfio_tph_config_write() still skips hardware
-> updates whenever req == org_req:
-> 
-> drivers/vfio/pci/vfio_pci_config.c:vfio_tph_config_write() {
->     ...
-> 	vfio_user_config_read(pdev, start + PCI_TPH_CTRL, &ctrl_val, 4);
-> 	vfio_default_config_write(vdev, start + PCI_TPH_CTRL, 4, perm,
-> 				  PCI_TPH_CTRL, ctrl_val);
->     ...
-> 	org_req = FIELD_GET(PCI_TPH_CTRL_REQ_EN_MASK, org_ctrl);
-> 	if (req == org_req)
-> 		goto out; /* Only care about requester enable. */
-> 
-> 	if (req == PCI_TPH_REQ_TPH_ONLY || req == PCI_TPH_REQ_EXT_TPH)
-> 		pcie_enable_tph_ext(pdev, mode, req);
-> 	else if (req == PCI_TPH_REQ_DISABLE)
-> 		pcie_disable_tph(vdev->pdev);
->     ...
-> }
-> 
-> If userspace writes PCI_TPH_ST_DS_MODE while the requester is disabled
-> (req == org_req == PCI_TPH_REQ_DISABLE) before enabling it in a second
-> write, the first write is not committed to hardware and the second write
-> clobbers vconfig[start + PCI_TPH_CTRL] from hardware (where mode is still
-> 0), enabling the device in NO-ST mode.
-> 
-> Similarly, changing mode while TPH is already enabled is ignored because
-> req == org_req, disabling the requester via pcie_disable_tph() zeroes the
-> entire hardware PCI_TPH_CTRL register including ST Mode Select, and
-> switching req between PCI_TPH_REQ_TPH_ONLY and PCI_TPH_REQ_EXT_TPH while
-> enabled fails in pcie_enable_tph_ext() with -EBUSY because pdev->tph_enabled
-> is already set.
-> 
->> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
->> index 23ed8ea396575..049392831b35f 100644
->> --- a/drivers/vfio/pci/vfio_pci_core.c
->> +++ b/drivers/vfio/pci/vfio_pci_core.c
->> @@ -1710,12 +1710,17 @@ static void vfio_pci_tph_dev_deinit(struct vfio_pci_core_device *vdev)
->>  static u32 vfio_pci_tph_get_capability(struct vfio_pci_core_device *vdev)
->>  {
->>  	bool has_arch_st;
->> +	u32 cap = 0;
->>  
->>  	has_arch_st = vfio_pci_tph_has_architected_st(vdev);
->> -	if (!has_arch_st)
->> -		return 0;
->> +	if (has_arch_st)
->> +		cap |= VFIO_DEVICE_TPH_CAP_PROG_ST_NONE |
->> +		       VFIO_DEVICE_TPH_CAP_PROG_ST_CPU;
->>  
->> -	return VFIO_DEVICE_TPH_CAP_PROG_ST_NONE | VFIO_DEVICE_TPH_CAP_PROG_ST_CPU;
->> +	if (vdev->tph_vcap & PCI_TPH_CAP_ST_DS)
->> +		cap |= VFIO_DEVICE_TPH_CAP_RESOLVE_CPU_ST;
->> +
->> +	return cap;
->>  }
-> 
-> [Severity: Medium]
-> Should vfio_pci_tph_get_capability() check pcie_tph_dsm_supported(vdev->pdev)
-> before advertising VFIO_DEVICE_TPH_CAP_PROG_ST_CPU and
-> VFIO_DEVICE_TPH_CAP_RESOLVE_CPU_ST?
-> 
-> Commit "PCI/TPH: Add pci_tph_dsm_supported() helper to detect device TPH
-> ST _DSM" earlier in this series added pcie_tph_dsm_supported() to check
-> whether the root port exposes the ACPI TPH _DSM method, but nothing calls
-> it.  On systems without CONFIG_ACPI or without that _DSM on the root port,
-> VFIO_DEVICE_FEATURE_TPH GET advertises CPU steering tag support that will
-> always fail when invoked.
-> 
->> @@ -1901,6 +1906,50 @@ static int vfio_pci_core_feature_tph_program(struct vfio_pci_core_device *vdev,
->>  	return ret;
->>  }
->>  
->> +static int vfio_pci_core_feature_tph_resolve(struct vfio_pci_core_device *vdev,
->> +			u32 flags,
->> +			struct vfio_device_feature_tph_resolve __user *arg,
->> +			size_t argsz)
->> +{
->> +	struct vfio_device_feature_tph_resolve resolve;
->> +	u32 user_flags, src_mask;
->> +	bool extended;
->> +	u16 tag = 0;
->> +	int ret;
->> +
->> +	if (!vdev->tph_opt_in || !(vdev->tph_vcap & PCI_TPH_CAP_ST_DS))
->> +		return -EOPNOTSUPP;
->> +
->> +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_GET,
->> +				 sizeof(resolve));
->> +	if (ret != 1)
->> +		return ret;
->> +
->> +	if (copy_from_user(&resolve, arg, sizeof(resolve)))
->> +		return -EFAULT;
->> +
->> +	user_flags = resolve.flags;
->> +	extended = !!(user_flags & VFIO_DEVICE_TPH_EXTENDED);
->> +	if (extended && !pcie_ext_tph_supported(vdev->pdev))
->> +		return -EOPNOTSUPP;
->> +	user_flags &= ~VFIO_DEVICE_TPH_EXTENDED;
->> +
->> +	src_mask = vfio_pci_tph_get_src_mask(vdev) & ~VFIO_DEVICE_TPH_SRC_NONE;
->> +	if (user_flags & ~src_mask || !is_power_of_2(user_flags))
->> +		return -EINVAL;
-> 
-> [Severity: High]
-> Does vfio_pci_core_feature_tph_resolve() always fail with -EINVAL on DS-ST
-> devices that do not also have an architected ST table?
-> 
-> vfio_pci_tph_get_src_mask() only checks VFIO_DEVICE_TPH_CAP_PROG_ST_CPU,
-> which is gated on vfio_pci_tph_has_architected_st(vdev), and ignores
-> VFIO_DEVICE_TPH_CAP_RESOLVE_CPU_ST:
-> 
-> drivers/vfio/pci/vfio_pci_core.c:vfio_pci_tph_get_src_mask() {
-> 	u32 flags = vfio_pci_tph_get_capability(vdev);
-> 	u32 src_mask = 0;
-> 
-> 	if (flags & VFIO_DEVICE_TPH_CAP_PROG_ST_NONE)
-> 		src_mask |= VFIO_DEVICE_TPH_SRC_NONE;
-> 	if (flags & VFIO_DEVICE_TPH_CAP_PROG_ST_CPU)
-> 		src_mask |= VFIO_DEVICE_TPH_SRC_CPU_VOLATILE |
-> 			    VFIO_DEVICE_TPH_SRC_CPU_PERSISTENT;
-> 
-> 	return src_mask;
-> }
-> 
-> When a DS-ST device has PCI_TPH_LOC_NONE (storing steering tags in
-> device-specific MMIO or firmware rather than an architected ST table),
-> vfio_pci_tph_get_src_mask() returns 0, so src_mask is 0 and every
-> VFIO_DEVICE_FEATURE_TPH_RESOLVE call is rejected with -EINVAL.
-> Checking (flags & (VFIO_DEVICE_TPH_CAP_PROG_ST_CPU |
-> VFIO_DEVICE_TPH_CAP_RESOLVE_CPU_ST)) in vfio_pci_tph_get_src_mask() would
-> allow CPU source resolution when only VFIO_DEVICE_TPH_CAP_RESOLVE_CPU_ST
-> is supported.
-> 
+However...
 
+>
+> With it, the s2vi->device case above still maps a device page writable
+> on a read fault in a logged slot. kvm_arch_prepare_memory_region()
+> rejects logging on a VM_PFNMAP VMA, so that requires userspace to map
+> the device under the slot after creating it (I haven't tested it).
+
+...Given that this possibility exists and device pages are unconditionally
+marked writable (even if it's mildly contrived to get there), it's fair
+enough to put it in the generic code.
+
+>
+> So I think the check should be in the generic loop.
+>
+> [...]
+> > An x86-only version would be pretty simple, something like the below.
+> >
+> > This also covers off the retry (RET_PF_RETRY) loop which a generic version
+> > doesn't.
+>
+> True. To overflow there, the retries for one page would have to push
+> more entries than the ring has in reserve (at least 64), and I don't
+> see a way to get that, so I left it alone.
+
+Yep that's fair enough!
+
+>
+> Cheers,
+> /fuad
+>
+> [1] https://lore.kernel.org/all/avs5UD79FB_DG1Vs@seanjc-mac.roam.internal/
+> [2] https://lore.kernel.org/all/20261029175238.3214788-2-weilin.chang@arm.com/
+
+--
+Cheers, Lorenzo
