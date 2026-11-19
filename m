@@ -1,137 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795100186;
-	b=hzJw1l7AxjEhUT4rKLSLxLZ4mysQ4OhAeyg14ddsp/Dcxe7SiTe9dFTUCNy1ErJ96Wcf
-	 6yMFLs0aU5sD7aYNWXKQwknQit13aiiTCkYx0C/nHeAsmJ0a1SICrdSiEn3SxKecY3j9E
-	 WfTgkk63XHcMxNf0h2AbXi5VUhrxdazds9xrMhRE55weNX2PFbAESvgPee+jIiXtTFo5l
-	 sutmxYvUV3X794LeldTo+7NlLUHF0mPfDdEEGNY+VxMQCBqUevZyb3qddG3C8DprcOdD/
-	 1i9vuPLy7+y19EbtO7nqon7saNC4pWZL+N6lZ9tMqFIhje02JR4v5ZzY+LHUYy1YWNw==
+	t=1795100590;
+	b=xiblAkmMNBSvEiUu0A7JtC/Oph1oSfnJAQydvi42CBb+bOT+ZjV4jioqW7VyxD8eZ3Xa
+	 ZCxoGU8Cex3w1r+T6pm9XbuvrhQclSRJTj5zRylKtJWdB+LWUKkhy3VnpB7gM4bB7X4ti
+	 xnb8TrEofwFMZ+lCYjUF5a7RUp4w/sQ7kWPYLeWlgd07dKydcjUaPuXJis9t7cyoYSxqm
+	 8FIG0Lqxzvb2PKOMvVdhNSQCjO9cc81/bvaR3H0Ie5l0UtQK1U+0syPZeBBEgCa8uqsz7
+	 mmkMWCEvwcm2Bv4pZyDG+9/mKkNtYusHFwYmlXKwozCINpnkR3lWBM5Jhyntagxd85g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795100186;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=bMbyjACtLzAau3mHjynkxDTW6eWUIU5ieVZSzXwOIHE=;
-	b=RsOQPG+aNljkNFv759Dp2WLb1SVDHz+VGYLK+KilXh0nn+VpyYHFJ5ap2YaowZFviXEj
-	 oXNNz2zaIGo5akUcU+nzERv0A2hqkG07Aro/8cnEMt3PRPOHQKpsqjJ555L5ZqSEaZTil
-	 e1ZP6zXcjCoUPFcSbaS6ukleH+t2bXZejp4f7MW4NFxPUpUiYLHF/roeKFfRsSRq9lBrD
-	 lxvAp9d2NjhrTR/ajb45RZMGXeXoSW57u3Elg5IxOJs5e42LOVjU5KEKMpj0cUI9aSKcN
-	 rYjBcgAiS5sar6oG3v6lQU9JrHQ+c0+VGa0hbkmF0ZF5jK2vHuttmGOsVcRrRB30tuQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795100590;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:Content-Language:From:To:Cc:
+	 References:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=P+ZIy8aH9ITo5eh4D5fwyzhSNQ9D+PcunkDFedH/A1o=;
+	b=GBZKnbv1OGtk/RtkIGFvZC/SFh1oH5rMiU/HoFyadhNPa7yXkpCxvo749Czp4ovuUazY
+	 IJCwJDlZfwrEmoIbglZaf9KWqGU9FD0nl55DaYhMa3a4+Pi0iuwfyEGvb7JWvdQ80oD+G
+	 RAD1+6tE4un8DCRFrC4tzODz1NHvomVroHfb4MmzuiAKDlknLsK8ZCdIJ6T/ASmGZsEtN
+	 19RhLQ60bTNu7Lgy8tGd0/wIpMEepWIvZxWH8woRqRhZKyuQXOdtMMltoFwfDbzJosM+N
+	 dIXkTwuZKlZwfp9wPNApYl5jqqNcs4k+IDNopupRWN+GRMfO3aWSZcpIIaquS9NIaig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=b5TUgwvF;
-	arc=none smtp.remote-ip=209.85.128.48
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB62606A325
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 14:56:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DAB62606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=TpFtQPMr;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E8A606A33F
+	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 15:03:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 69E8A606A33F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=b5TUgwvF
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4bb5b33e2ffso44715e9.1
-        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 06:56:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795100184; x=1795704984; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bMbyjACtLzAau3mHjynkxDTW6eWUIU5ieVZSzXwOIHE=;
-        b=b5TUgwvFYcVrC0LOg2IULJtqFlnDVpcYRRC0cTfg9QswAYhwPZPDrcQIrzjwvc0wn5
-         EzRGpwmbzA4Xmk7HpuJ8jv+2WMpZDpPgeKn3UJNXnnlXY0qdnMCWJfehEc5j9Ljb2oMs
-         3IzLQXakIPjzLFv/aL8+6AkfgnY0SvdM93E0JAw3YXjYdV3REyGnxAXXJgAiEQW7ijix
-         R1LQpKuwdNosskHSJKsqlyFrXAbR8Ot53tL0esWuTGOnAU94+vKQfiDR+Uju/SvWhVQz
-         BYoUvJHfHGz2Xt+gabEjfbYvc16kUz2ROiveyuaRLmHo2qjBMzm9u24OULe1pgf0W0Lm
-         E0OQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795100184; x=1795704984;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=bMbyjACtLzAau3mHjynkxDTW6eWUIU5ieVZSzXwOIHE=;
-        b=VaZu2JuDkUZo6WQ0J8Lpt1yeFQ5xuCnM9MgUja9S204yGpF3tjpvJeWXbsQiYfscBi
-         cM7xoE9WBuQeHAs8Cd84fyCUqDjnS7V0SGC7iAitAyPbeHKzmMFMM5ocyQYEHtJqpyxo
-         b9K1FhJx+SzL52mTXja7ATkeE2ueM00WrBkPi89vyTwLWdBiRwlESnrJbgT9s4Brd4KI
-         qnGoWDxkJSKMFU4l2QjEhnp5ULqwG0Ea4urPKVEItBrEJqHRWOyFak7NAZPq3MeuorJr
-         qNX/K+9aV2xjIokSPbqTLeevuB9AhPCCEy2mJkVUhO68pRyQsaPY1EL1j4pKOzXZEL3a
-         JiAQ==
-X-Forwarded-Encrypted: i=1; AL+hErFlMA2Pu6nyNfm7FqAhL+8RZ21SXkfMiQ7DCBkFB7IvV8WvhgctkB5TJGvn93+XpNvXobY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/n2oM0z5NYw6noXEk3sKBz4fzEjCX1QklHRUjP2FrRracsRs5O
-	mG+zVBuomzMKM+WrfTlvgigH60yNOiM3DFO+9b8NjqK74zZDASkK5HjG7XQ2srnmhA==
-X-Gm-Gg: AYBFou2ODL2hRUqxf343B6FVj/0ef4536OQhwN5Anbo7QD/ryazDURoZbiL7JZkOxAC
-	/zr9aGNcCP/yyUJC2lCzz4w6w3bwU+LZjZT0mYQ+/DfGLInSA5DeL52xQhvVcMoafgzGZ+Z+Wvy
-	i2UZIcEGTgLDmMpqkDBISgXSIJuDiOFSBXvAmZRyMJr7LtLhlpwtnaCict6ztweq/TdMdaClR9V
-	Cw8X2XmJIgHBh4jpPnjn0Qg/ZI2ENACjjJhLy8+teZpGVcqs/EqWemfNE5OvZOW1m8Z2B6+pjpD
-	AUhQNDoa+jeFq9dMNjjZmyd5eMe8gTPRWiug78Oi9654QoTb3Vtk1SGLYVVBApXC97frIjf7qTf
-	JOgyRV2M14cPILDw9XTy4tDoj3l3uCYnRGZM3591pHzO5B43nc0pgyomgZ1TAtJRcZm+OBV+YpJ
-	xhicXOeDWem+VrARfCVZRVFq2DrHO8WMm/DxWXp52FFNgWTYz9A7qQZslxP9em00aAIKjfzJbDk
-	OAj5WRTc4EUNNMPtUgVXlpdCnOUIdx2mTNiOo54SjsOAUOYcwy2+axmGF3jAWPNMc+svNlG/pjr
-	pQksZWJevd9sQEgXVqRwKSac7LK40/Jc1o4ICuWXzEbTUgxLikTWQgFdn5MSz3ZeXu2NRH8=
-X-Received: by 2002:a05:600c:1d01:b0:4a1:e384:5e12 with SMTP id 5b1f17b1804b1-4bb85193dc1mr748295e9.7.1795100183663;
-        Thu, 19 Nov 2026 06:56:23 -0800 (PST)
-Received: from google.com (160.193.189.35.bc.googleusercontent.com. [35.189.193.160])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853b216esm43338685e9.12.2026.11.19.06.56.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2026 06:56:22 -0800 (PST)
-Date: Thu, 19 Nov 2026 14:56:18 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: Alex Williamson <alex@shazbot.org>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Johan Hovold <johan@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	David Lechner <dlechner@baylibre.com>, Armin Wolf <W_Armin@gmx.de>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Karl Mehltretter <kmehltretter@gmail.com>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Marco Elver <elver@google.com>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Bradley Morgan <brads@mainlining.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Pnina Feder <pnina.feder@mobileye.com>,
-	Mete Durlu <meted@linux.ibm.com>,
-	Aaron Tomlin <atomlin@atomlin.com>,
-	Rio <rioo.tsukatsukii@gmail.com>,
-	Feng Tang <feng.tang@linux.alibaba.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-trace-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Longfang Liu <liulongfang@huawei.com>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
-	Julian Ruess <julianr@linux.ibm.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>, qat-linux@intel.com,
-	virtualization@lists.linux.dev, intel-xe@lists.freedesktop.org,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH] vfio: Allow untainted use of driver_override
-Message-ID: <av8OEgaW0jEJC1OF@google.com>
-References: <DMYH4ED3GWDO.29DGXPK4M82VR@kernel.org>
- <20261118235645.2907908-2-alex@shazbot.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=TpFtQPMr
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BDB111575;
+	Thu, 19 Nov 2026 07:03:06 -0800 (PST)
+Received: from [10.0.129.3] (Suzukis-MBP.cambridge.arm.com [10.0.129.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E521C3F882;
+	Thu, 19 Nov 2026 07:03:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795100589; bh=vmOaRyVveMHXPngdaDt5C75x34UiZI+ujGTl+l0JLps=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=TpFtQPMrlKc11d4l23KDGKBUy4VfSJAEebFHth//GPfGi7SUbl+4MOe0JfVy0OnOQ
+	 7o72w/vm6GYeUgkDpmJuvtfhVG0l0BsQ/a1fsRJM5c8vXjOBM48978xmt6C4CIlBAo
+	 EBkjxkmYub7fBEDSCZYMkO7GGr9SAPEDV9lb7w4M=
+Message-ID: <6049409f-3d32-49cb-9223-9128d8e764c7@arm.com>
+Date: Thu, 19 Nov 2026 15:03:07 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -141,241 +53,215 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 05/11] KVM: arm64: CCA: Tear down RTTs
+Content-Language: en-GB
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+To: sashiko-reviews@lists.linux.dev, Steven Price <steven.price@arm.com>,
+ kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
+References: <20261116164358.142785-1-steven.price@arm.com>
+ <20261116164358.142785-6-steven.price@arm.com>
+ <sashiko-outbox-217410@kernel.org>
+ <bbd8332b-1b2a-4a87-9232-4463d5e5a904@arm.com>
+In-Reply-To: <bbd8332b-1b2a-4a87-9232-4463d5e5a904@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261118235645.2907908-2-alex@shazbot.org>
 
-On Wed, Nov 18, 2026 at 04:56:44PM -0700, Alex Williamson wrote:
-> Driver overrides are the standard mechanism for binding vfio drivers
-> to devices.  With the introduction of the support_driver_override flag
-> in the core driver struct, it's now required for drivers to declare
-> themselves as driver_override compatible, otherwise driver_override
-> bindings will be denied or generate a kernel taint.
+On 19/11/2026 10:51, Suzuki K Poulose wrote:
+> On 16/11/2026 17:08, sashiko-bot@kernel.org wrote:
+>> Thank you for your contribution! Sashiko AI review found 4 potential
+>> issues to consider:
+>> - [High] KVM: arm64: unclamped stage-2 levels in get_start_level() on
+>>    64K pages
+>> - [Medium] KVM: arm64: CCA: unlocked kvm_realm_is_created() check in
+>>    kvm_uninit_stage2_mmu()
+>> - [Low] KVM: arm64: mix of guard() and goto cleanup in
+>>    kvm_destroy_realm()
+>> - [Low] KVM: arm64: possible skipped parent retry in
+>>    realm_tear_down_rtt_level()
+>> -- 
+>>
+>> commit 80a462fb8b46e04c72060d069b1296caf72d83ff
+>> Author: Steven Price <steven.price@arm.com>
+>>
+>> KVM: arm64: CCA: Tear down RTTs
+>>
+>> This commit adds stage-2 unmapping and Realm Translation Table (RTT)
+>> teardown for Arm CCA Realms during stage-2 MMU uninitialization and final
+>> Realm destruction.
+>>
+>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>>> index ac72db3d4505f..9baf2352d2a8f 100644
+>>> --- a/arch/arm64/kvm/mmu.c
+>>> +++ b/arch/arm64/kvm/mmu.c
+>>> @@ -1145,9 +1145,25 @@ int kvm_init_stage2_mmu(struct kvm *kvm, 
+>>> struct kvm_s2_mmu *mmu, unsigned long t
+>>>       return err;
+>>>   }
+>>> +static void kvm_realm_uninit_stage2(struct kvm_s2_mmu *mmu)
+>>> +{
+>>> +    struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
+>>> +
+>>> +    mutex_lock(&kvm->arch.config_lock);
+>>> +    if (kvm_realm_state(kvm) == REALM_STATE_NEW ||
+>>> +        kvm_realm_state(kvm) == REALM_STATE_ACTIVE) {
+>>> +        kvm_set_realm_state(kvm, REALM_STATE_DYING);
+>>> +        WARN_ON(kvm_realm_teardown_stage2(kvm));
+>>> +    }
+>>> +    mutex_unlock(&kvm->arch.config_lock);
+>>> +}
+>>> +
+>>>   void kvm_uninit_stage2_mmu(struct kvm *kvm)
+>>>   {
+>>> -    kvm_free_stage2_pgd(&kvm->arch.mmu);
+>>> +    if (kvm_realm_is_created(kvm))
+>>> +        kvm_realm_uninit_stage2(&kvm->arch.mmu);
+>>> +    else
+>>> +        kvm_free_stage2_pgd(&kvm->arch.mmu);
+>>>       kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
+>>>   }
+>>
+>> [Severity: Medium]
+>> Can kvm_uninit_stage2_mmu() race with Realm creation by checking
+>> kvm_realm_is_created() outside kvm->arch.config_lock?
+>>
+>> If kvm_mmu_notifier_release() -> kvm_arch_flush_shadow_all() runs before
+>> or concurrently with Realm creation, kvm_uninit_stage2_mmu() takes the
+>> else branch without holding config_lock, freeing mmu->pgt and clearing
+>> mmu->pgd_phys while leaving realm.state at REALM_STATE_NONE.  Checking
+>> kvm_vm_is_realm(kvm) here and handling all realm.state transitions inside
+>> kvm_realm_uninit_stage2() under config_lock (including moving
+>> REALM_STATE_NONE to REALM_STATE_DEAD and freeing the PGD) would avoid the
+>> race.
+>>
+>>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+>>> index 57f59b618a96e..74b89da4e8015 100644
+>>> --- a/arch/arm64/kvm/rmi.c
+>>> +++ b/arch/arm64/kvm/rmi.c
+>>> @@ -16,22 +16,213 @@ u32 kvm_rmm_ipa_limit(void)
+>>>       return u64_get_bits(rmi_feat_reg(0), RMI_FEATURE_REGISTER_0_S2SZ);
+>>>   }
+>>> +static int get_start_level(struct realm *realm)
+>>> +{
+>>> +    /*
+>>> +     * kvm_init_ipa_range() enforces a minimum of 32 IPA bits
+>>> +     * (ARM64_MIN_PARANGE_BITS).
+>>> +     */
+>>> +    return 4 - stage2_pgtable_levels(realm->ia_bits);
+>>> +}
+>>
+>> [Severity: High]
+>> Does get_start_level() return 3 instead of 2 for a 32-bit or 33-bit IPA
+>> Realm on CONFIG_ARM64_64K_PAGES?
+>>
+>> stage2_pgtable_levels(ipa) evaluates ARM64_HW_PGTABLE_LEVELS((ipa) - 4),
+>> which is 1 for 32 or 33 IPA bits with 64K pages, whereas kvm_get_vtcr()
+>> clamps the stage-2 levels to at least 2:
+>>
+>> arch/arm64/kvm/hyp/pgtable.c:kvm_get_vtcr() {
+>>      ...
+>>     lvls = stage2_pgtable_levels(phys_shift);
+>>     if (lvls < 2)
+>>         lvls = 2;
+>>      ...
+>> }
+>>
+>> When get_start_level() returns 3, realm_tear_down_rtt_range() calls
+>> realm_tear_down_rtt_level() with level = 4 (> KVM_PGTABLE_LAST_LEVEL),
+>> triggering WARN_ON() and returning -EINVAL, which causes
+>> kvm_destroy_realm() to abort and leak the Realm Descriptor, RTT granules
+>> and stage-2 PGD pages.
 > 
-> Set the support_driver_override flag on the driver struct across all
-> vfio drivers.
-> 
-> Cc: Yishai Hadas <yishaih@nvidia.com>
-> Cc: Longfang Liu <liulongfang@huawei.com>
-> Cc: Ankit Agrawal <ankita@nvidia.com>
-> Cc: Brett Creeley <brett.creeley@amd.com>
-> Cc: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-> Cc: Michał Winiarski <michal.winiarski@intel.com>
-> Cc: Julian Ruess <julianr@linux.ibm.com>
-> Cc: Nipun Gupta <nipun.gupta@amd.com>
-> Cc: Nikhil Agarwal <nikhil.agarwal@amd.com>
-> Cc: Eric Auger <eric.auger@redhat.com>
-> Cc: Mostafa Saleh <smostafa@google.com>
-> Cc: Pranjal Shrivastava <praan@google.com>
-> Cc: Ioana Ciornei <ioana.ciornei@nxp.com>
-> Cc: qat-linux@intel.com
-> Cc: virtualization@lists.linux.dev
-> Cc: intel-xe@lists.freedesktop.org
-> Cc: kvm@vger.kernel.org
-> Signed-off-by: Alex Williamson <alex@shazbot.org>
+> My bad. There is already a helper, VTCR_EL2_LVLS() to convert vtcr back 
+> to levels. We could as well save it in realm, as we seem to need it
+> more than once.
 
-Reviewed-by: Mostafa Saleh <smostafa@google.com>
+Or even we should reuse the code by wrapping the above logic in
+kvm_get_vtcr() to something like:
 
-Thanks,
-Mostafa
+  int kvm_stage2_pgtable_levels(phys_shift)
 
-> ---
+Suzuki
+
 > 
-> Uwe, this should cover all the vfio drivers that expect to use
-> driver_override.  Thanks,
+>>
+>> [ ... ]
+>>
+>>> +static int realm_tear_down_rtt_level(struct realm *realm, int level,
+>>> +                     unsigned long start, unsigned long end)
+>>> +{
+>>> +    ssize_t map_size;
+>>> +    unsigned long addr, next_addr;
+>>> +
+>>> +    if (WARN_ON(level > KVM_PGTABLE_LAST_LEVEL))
+>>> +        return -EINVAL;
+>>> +
+>>> +    map_size = kvm_granule_size(level - 1);
+>>> +    if (WARN_ON(!IS_ALIGNED(start, map_size)))
+>>> +        return -EINVAL;
+>>> +
+>>> +    for (addr = start; addr < end; addr = next_addr) {
+>>> +        phys_addr_t rtt_granule;
+>>> +        long ret;
+>>> +        unsigned long align_addr = ALIGN(addr, map_size);
+>>> +
+>>> +        next_addr = ALIGN(addr + 1, map_size);
+>>> +
+>>> +        if (next_addr > end || align_addr != addr) {
+>>> +            /*
+>>> +             * The target range is smaller than what this level
+>>> +             * covers, recurse deeper.
+>>> +             */
+>>> +            ret = realm_tear_down_rtt_level(realm,
+>>> +                            level + 1,
+>>> +                            addr,
+>>> +                            min(next_addr, end));
+>>> +            if (ret)
+>>> +                return ret;
+>>> +            continue;
+>>> +        }
+>>> +
+>>> +        ret = realm_rtt_destroy(realm, addr, level,
+>>> +                    &rtt_granule, &next_addr);
+>>> +        if (ret < 0)
+>>> +            return ret;
+>>> +
+>>> +        switch (RMI_RESULT_STATUS(ret)) {
+>>> +        case RMI_SUCCESS:
+>>> +            free_rtt(rtt_granule);
+>>> +            break;
+>>> +        case RMI_ERROR_RTT:
+>>> +            if (next_addr > addr) {
+>>> +                /* Missing RTT, skip */
+>>> +                break;
+>>> +            }
+>>> +            /*
+>>> +             * We tear down the RTT range for the full IPA
+>>> +             * space, after everything is unmapped. Also we
+>>> +             * descend down only if we cannot tear down a
+>>> +             * top level RTT. Thus RMM must be able to walk
+>>> +             * to the requested level. e.g., a block mapping
+>>> +             * exists at L1 or L2.
+>>> +             */
+>>> +            if (WARN_ON(RMI_RESULT_DATA_LEVEL(ret) != level))
+>>> +                return -EBUSY;
+>>
+>> [Severity: Low]
+>> This question rests on an Arm CCA RMM specification detail that could not
+>> be confirmed from the kernel source: when SMC_RMI_RTT_DESTROY fails with
+>> RMI_ERROR_RTT because the RTT at @level still has live child table
 > 
-> Alex
+> If the RTT entry at @level is live, RMM returns (RMI_ERROR_RTT, level) 
+> with out_top == addr.
 > 
->  drivers/vfio/cdx/main.c                        | 1 +
->  drivers/vfio/fsl-mc/vfio_fsl_mc.c              | 1 +
->  drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 3 ++-
->  drivers/vfio/pci/ism/main.c                    | 3 ++-
->  drivers/vfio/pci/mlx5/main.c                   | 3 ++-
->  drivers/vfio/pci/nvgrace-gpu/main.c            | 3 ++-
->  drivers/vfio/pci/pds/pci_drv.c                 | 3 ++-
->  drivers/vfio/pci/qat/main.c                    | 3 ++-
->  drivers/vfio/pci/vfio_pci.c                    | 3 ++-
->  drivers/vfio/pci/virtio/main.c                 | 3 ++-
->  drivers/vfio/pci/xe/main.c                     | 3 ++-
->  drivers/vfio/platform/vfio_amba.c              | 1 +
->  drivers/vfio/platform/vfio_platform.c          | 1 +
->  13 files changed, 22 insertions(+), 9 deletions(-)
 > 
-> diff --git a/drivers/vfio/cdx/main.c b/drivers/vfio/cdx/main.c
-> index 28dc8c825600..fb7679bf92fd 100644
-> --- a/drivers/vfio/cdx/main.c
-> +++ b/drivers/vfio/cdx/main.c
-> @@ -358,6 +358,7 @@ static struct cdx_driver vfio_cdx_driver = {
->  	.match_id_table	= vfio_cdx_table,
->  	.driver	= {
->  		.name	= "vfio-cdx",
-> +		.support_driver_override = true,
->  	},
->  	.driver_managed_dma = true,
->  };
-> diff --git a/drivers/vfio/fsl-mc/vfio_fsl_mc.c b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
-> index 15b05b8c0c90..1603f81e0257 100644
-> --- a/drivers/vfio/fsl-mc/vfio_fsl_mc.c
-> +++ b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
-> @@ -597,6 +597,7 @@ static struct fsl_mc_driver vfio_fsl_mc_driver = {
->  	.remove		= vfio_fsl_mc_remove,
->  	.driver	= {
->  		.name	= "vfio-fsl-mc",
-> +		.support_driver_override = true,
->  	},
->  	.driver_managed_dma = true,
->  };
-> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> index c82c59246a3f..5c56aff8db01 100644
-> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> @@ -1737,7 +1737,8 @@ static struct pci_driver hisi_acc_vfio_pci_driver = {
->  	.id_table = hisi_acc_vfio_pci_table,
->  	.probe = hisi_acc_vfio_pci_probe,
->  	.remove = hisi_acc_vfio_pci_remove,
-> -	.driver = { .pm = pm_ptr(&hisi_acc_vf_pm_ops) },
-> +	.driver = { .pm = pm_ptr(&hisi_acc_vf_pm_ops),
-> +		    .support_driver_override = true },
->  	.err_handler = &hisi_acc_vf_err_handlers,
->  	.driver_managed_dma = true,
->  };
-> diff --git a/drivers/vfio/pci/ism/main.c b/drivers/vfio/pci/ism/main.c
-> index cce3bdf1f070..263b377e87c4 100644
-> --- a/drivers/vfio/pci/ism/main.c
-> +++ b/drivers/vfio/pci/ism/main.c
-> @@ -399,7 +399,8 @@ static struct pci_driver ism_vfio_pci_driver = {
->  	.id_table = ism_device_table,
->  	.probe = ism_vfio_pci_probe,
->  	.remove = ism_vfio_pci_remove,
-> -	.driver	= { .pm = pm_ptr(&ism_vfio_pm_ops) },
-> +	.driver	= { .pm = pm_ptr(&ism_vfio_pm_ops),
-> +		    .support_driver_override = true },
->  	.err_handler = &ism_vfio_err_handlers,
->  	.driver_managed_dma = true,
->  };
-> diff --git a/drivers/vfio/pci/mlx5/main.c b/drivers/vfio/pci/mlx5/main.c
-> index 18a6d224b1fd..63c89e461be8 100644
-> --- a/drivers/vfio/pci/mlx5/main.c
-> +++ b/drivers/vfio/pci/mlx5/main.c
-> @@ -1451,7 +1451,8 @@ static struct pci_driver mlx5vf_pci_driver = {
->  	.id_table = mlx5vf_pci_table,
->  	.probe = mlx5vf_pci_probe,
->  	.remove = mlx5vf_pci_remove,
-> -	.driver	= { .pm = pm_ptr(&mlx5vf_pm_ops) },
-> +	.driver	= { .pm = pm_ptr(&mlx5vf_pm_ops),
-> +		    .support_driver_override = true },
->  	.err_handler = &mlx5vf_err_handlers,
->  	.driver_managed_dma = true,
->  };
-> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
-> index 5ddec340b73b..946da32c61ff 100644
-> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
-> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
-> @@ -1438,7 +1438,8 @@ static struct pci_driver nvgrace_gpu_vfio_pci_driver = {
->  	.id_table = nvgrace_gpu_vfio_pci_table,
->  	.probe = nvgrace_gpu_probe,
->  	.remove = nvgrace_gpu_remove,
-> -	.driver = { .pm = pm_ptr(&nvgrace_gpu_pm_ops) },
-> +	.driver = { .pm = pm_ptr(&nvgrace_gpu_pm_ops),
-> +		    .support_driver_override = true },
->  	.err_handler = &nvgrace_gpu_vfio_pci_err_handlers,
->  	.driver_managed_dma = true,
->  };
-> diff --git a/drivers/vfio/pci/pds/pci_drv.c b/drivers/vfio/pci/pds/pci_drv.c
-> index cf7e33d4d17b..1fcef987f1b0 100644
-> --- a/drivers/vfio/pci/pds/pci_drv.c
-> +++ b/drivers/vfio/pci/pds/pci_drv.c
-> @@ -184,7 +184,8 @@ static struct pci_driver pds_vfio_pci_driver = {
->  	.id_table = pds_vfio_pci_table,
->  	.probe = pds_vfio_pci_probe,
->  	.remove = pds_vfio_pci_remove,
-> -	.driver = { .pm = pm_ptr(&pds_vfio_pm_ops) },
-> +	.driver = { .pm = pm_ptr(&pds_vfio_pm_ops),
-> +		    .support_driver_override = true },
->  	.err_handler = &pds_vfio_pci_err_handlers,
->  	.driver_managed_dma = true,
->  };
-> diff --git a/drivers/vfio/pci/qat/main.c b/drivers/vfio/pci/qat/main.c
-> index 69448fa57df4..8a616f9b6494 100644
-> --- a/drivers/vfio/pci/qat/main.c
-> +++ b/drivers/vfio/pci/qat/main.c
-> @@ -695,7 +695,8 @@ static struct pci_driver qat_vf_vfio_pci_driver = {
->  	.id_table = qat_vf_vfio_pci_table,
->  	.probe = qat_vf_vfio_pci_probe,
->  	.remove = qat_vf_vfio_pci_remove,
-> -	.driver	= { .pm = pm_ptr(&qat_vf_pm_ops) },
-> +	.driver	= { .pm = pm_ptr(&qat_vf_pm_ops),
-> +		    .support_driver_override = true },
->  	.err_handler = &qat_vf_err_handlers,
->  	.driver_managed_dma = true,
->  };
-> diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
-> index e7c012febe91..fde2c3fc88eb 100644
-> --- a/drivers/vfio/pci/vfio_pci.c
-> +++ b/drivers/vfio/pci/vfio_pci.c
-> @@ -260,7 +260,8 @@ static struct pci_driver vfio_pci_driver = {
->  	.remove			= vfio_pci_remove,
->  	.sriov_configure	= vfio_pci_sriov_configure,
->  	.err_handler		= &vfio_pci_err_handlers,
-> -	.driver		= { .pm = pm_ptr(&vfio_pci_pm_ops) },
-> +	.driver		= { .pm = pm_ptr(&vfio_pci_pm_ops),
-> +			    .support_driver_override = true },
->  	.driver_managed_dma	= true,
->  };
->  
-> diff --git a/drivers/vfio/pci/virtio/main.c b/drivers/vfio/pci/virtio/main.c
-> index 123ff5193812..1e02a8fd4a61 100644
-> --- a/drivers/vfio/pci/virtio/main.c
-> +++ b/drivers/vfio/pci/virtio/main.c
-> @@ -222,7 +222,8 @@ static struct pci_driver virtiovf_pci_driver = {
->  	.id_table = virtiovf_pci_table,
->  	.probe = virtiovf_pci_probe,
->  	.remove = virtiovf_pci_remove,
-> -	.driver = { .pm = pm_ptr(&virtiovf_pm_ops) },
-> +	.driver = { .pm = pm_ptr(&virtiovf_pm_ops),
-> +		    .support_driver_override = true },
->  	.err_handler = &virtiovf_err_handlers,
->  	.driver_managed_dma = true,
->  };
-> diff --git a/drivers/vfio/pci/xe/main.c b/drivers/vfio/pci/xe/main.c
-> index 7dab3e024aa8..e0ab61f604de 100644
-> --- a/drivers/vfio/pci/xe/main.c
-> +++ b/drivers/vfio/pci/xe/main.c
-> @@ -592,7 +592,8 @@ static struct pci_driver xe_vfio_pci_driver = {
->  	.id_table = xe_vfio_pci_table,
->  	.probe = xe_vfio_pci_probe,
->  	.remove = xe_vfio_pci_remove,
-> -	.driver = { .pm = pm_ptr(&xe_vfio_pm_ops) },
-> +	.driver = { .pm = pm_ptr(&xe_vfio_pm_ops),
-> +		    .support_driver_override = true },
->  	.err_handler = &xe_vfio_pci_err_handlers,
->  	.driver_managed_dma = true,
->  };
-> diff --git a/drivers/vfio/platform/vfio_amba.c b/drivers/vfio/platform/vfio_amba.c
-> index fa754f203b2d..2c87caf1b7f7 100644
-> --- a/drivers/vfio/platform/vfio_amba.c
-> +++ b/drivers/vfio/platform/vfio_amba.c
-> @@ -137,6 +137,7 @@ static struct amba_driver vfio_amba_driver = {
->  	.id_table = vfio_amba_ids,
->  	.drv = {
->  		.name = "vfio-amba",
-> +		.support_driver_override = true,
->  	},
->  	.driver_managed_dma = true,
->  };
-> diff --git a/drivers/vfio/platform/vfio_platform.c b/drivers/vfio/platform/vfio_platform.c
-> index a4d3ace3e02d..93d06032cdde 100644
-> --- a/drivers/vfio/platform/vfio_platform.c
-> +++ b/drivers/vfio/platform/vfio_platform.c
-> @@ -116,6 +116,7 @@ static struct platform_driver vfio_platform_driver = {
->  	.remove		= vfio_platform_remove,
->  	.driver	= {
->  		.name	= "vfio-platform",
-> +		.support_driver_override = true,
->  	},
->  	.driver_managed_dma = true,
->  };
-> -- 
-> 2.54.0
+>> entries, can the RMM return out_top > addr (with addr < next_addr <
+>> addr + map_size) if the initial entries in that RTT are non-live, or 
+>> report
+>> RMI_RESULT_DATA_LEVEL(ret) == level - 1?
 > 
+> 
+> Suzuki
+> 
+
