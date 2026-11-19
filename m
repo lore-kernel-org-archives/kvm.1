@@ -1,49 +1,119 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795107679;
-	b=DAZfhvL8d+/Zd2D+T8Op69ztm+uX4acp7z8sS/sGjStK6tFYIMmZ9E8g8SznSZo/n3ND
-	 piz8U+qn4S7uexl4ELv/6nWmtY8gXvka8vBD4L8hNvy6FIdu89fqM9KvGj+YXI+Oo+N3v
-	 MRVCk/CknnqJ8tF4t0odJAWPZz401J7LIY2wRbEFdVAt/K0AY8ljQV9uYJb5UaUz8kui4
-	 S8iNrZpxZipnXRjz8sJBYe+3sLdryJVZOXWGq30phWX5a84DogMQbnM8D4y71s/9GYJos
-	 bHLrUZ1qm18I7XoCT2q5SlFoWssnHcZ+xy9TvljjXk2yRATlOw9cbV/xlmz05ERghtw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795107679;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=HuvbqePajCm3jKp9iOjUnXA/SrQymMd79cA69qsQnQI=;
-	b=G5l4y/50orhJIThJDZEDmNKBszRm60vsONtpRqbGSW2I1WfNtMQxwwC9jrJSibnZJL+Z
-	 iESs7Thmx659aeyGGMdF+nhJaCopXje0XfCwvZ6QmbMZ76x81t1WF61SDUdB+xyniVIib
-	 ynMr1bbLN6eIhRMAM6qOqg6MqD4HxDbicIJffhKVjlIHiU9SiRFHdGT5Yz1nZRxI5BVUo
-	 75Gz3egoWlGxD81FJk59Hnd8PsfQP2UwQMpCIyBLx4DOCVYNZLI9sh+26JbMb2G9lPnGW
-	 3oVmU2CJ9D+qMoo4D3F3a2pbLLzqT9xFEFqaSzihjrI9Dk8DJuLCx+e6aXmIwgTY8iA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="Ow/Bbh3a";
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED381606A320;
-	Thu, 19 Nov 2026 17:01:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ED381606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795107694;
+	b=z8iGV7CWaykOiAJj5DOhGRcOQ+SF3ukXUjjbo6o5jUI/7Ez7mHHSTwO325EQy4ALXLjn
+	 294n75PrYZrTEBsLWYxVmzCbOn0F/cShjYWEiujaMYjdDXCpcgm/CjNyPdwKEhPrA575f
+	 qltBbtMDxRFY12tHufuh5S63pYIkF/XNXWK/c1y9YP7yWCN9A0qiZIMSKXOYMUJwCq28e
+	 +kF6wLxqipHUETMkq7S+qiG2Tj9ibWFAgZ26tpEdyhN+I3fekMqZTR26vZYzhIX10Zvmg
+	 Bg2eGohVUlL5vy9xkfqtK1rQ6PDtvO0+QxkhmiTiUjswGkLfEh6zr5HpFvaXQmJjs9A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795107694;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:MIME-Version:
+	 References:In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:
+	 Cc:Content-Type:Content-Transfer-Encoding;
+	bh=lmwABRT/K3bySUSn1MLjdfbH6s8COt5WtqnptFackNs=;
+	b=fsSJ3ynb+tbnJuZCx9efKkFg7lVlS45EuHSXnU+0FMuKkrkwYvvhnKQCGftiDT9csIjJ
+	 coRdJe77nNYp09Oh+RzcQlDFKMIvYxKjvA1lT94gF7GsVm0dXqGfkzpT0xWMjILFqjJWF
+	 +hXlkjsVqRCYHyaae5Xj8W1/FcUsMatNR1gkG7P8osmcnt2xhVP0W0LfmnbLtswc5p7CQ
+	 3uN0Viw1CmNOEomn8B5DIq5NqDHnNySArdciyZqdJZyLgG9GGGlfvEDlv3j0d+Y9sotI6
+	 yJbpgyDyXiJKOHMsV/O7ju8dyiHGkGVWM1GN7nfaFJlL8XbW8v2il4PzAS46A2HUggg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EnwLxlcy;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=LnuptCKh;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F7E606A320
+	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 17:01:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B6F7E606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Ow/Bbh3a
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 548EC1575;
-	Thu, 19 Nov 2026 09:01:14 -0800 (PST)
-Received: from [10.0.129.37] (e122027.cambridge.arm.com [10.0.129.37])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A32483F673;
-	Thu, 19 Nov 2026 09:01:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795107677; bh=Yb/X4lEMD/TYhBRp9Ovm5Bp1Hk6z6MRsu5RbwGNenBw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ow/Bbh3agrnb3+CsDs6QKApKERkYiMWf301VWP/bOwjWZBQEkVRYePRhAC2T3DmGN
-	 awlzauDaMWP4kiGf8To7uBXM8+Ku4XjJ3N5kxbs/QsbCuq/n1q/dSTa+itAP4L8Gh3
-	 +odwVNoQgClJtQNTEd4R04QKcKENjcXPEx/y6dp0=
-Message-ID: <bf4da8b7-0714-4253-9841-cf83cb65b92d@arm.com>
-Date: Thu, 19 Nov 2026 17:01:10 +0000
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EnwLxlcy;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=LnuptCKh
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1795107692;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lmwABRT/K3bySUSn1MLjdfbH6s8COt5WtqnptFackNs=;
+	b=EnwLxlcyMafNx2JDTDVFOUg6DA/urKG3Ke1Uj09NZ/FvtUxnRm7I1388zNAEtpEgH0OlOi
+	1fgSpha9pxStGIg+AQGC6V9ogwA2/Dwjv89ERV7OYA5220KRzuKRRIoLzlTn9eXMaboOMm
+	6Tdn+uU6MZ3HM5dLFpSNXoq/+HH7ylg=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-576-lBGQTh4nPUyHoMsqNklF9Q-1; Thu, 19 Nov 2026 12:01:30 -0500
+X-MC-Unique: lBGQTh4nPUyHoMsqNklF9Q-1
+X-Mimecast-MFC-AGG-ID: lBGQTh4nPUyHoMsqNklF9Q_1795107689
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3b167bc8e16so24513a91.1
+        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 09:01:30 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795107689; cv=none;
+        d=google.com; s=arc-20260327;
+        b=THEV462tooOa2zpzBmWjJ5A0KAsE4d075N4gdnv1QbRbmpQguRHL1aYgNgb0vz4jrw
+         GOkWH241kSAFJwMHg6VWmk/k9GwQ0Qf7mkMhIbCfhJKlrm1qbk3Tp85xajVSFE6HjiFv
+         W/PF8dl+PvmR9ftorDuiv1bdYWz7ZOxN9gNFZN/ytnYuywQASJTTB4gs8l3uWoLeJYo3
+         3b01XBAUVEPAcvee1bBqnCvhmvBBbk5L/KBrz6MKis7IjQwEnm/i2brzxNPzNuhkiG0i
+         gunAi8bI4h+rLEw6cYYCN/e+WV9lPn7llYCH3ST1eqLfEO2SGcuFupN4c9ab+DGjzqN5
+         wmew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=lmwABRT/K3bySUSn1MLjdfbH6s8COt5WtqnptFackNs=;
+        fh=lUx5loLpNmK+yksydx6y27DalwmQNU1hOw5Mk7oFqm4=;
+        b=IKV5nH396IC/sXOUy1dGRR1jbd0qq/qBfoYT5xzU2ooqRZRxIXKQ9dRKLfhGGVfZQF
+         zAL1Vy5gpQ+9U974KOi+0QP1d4VSSTBJHluYnaIk5sRJayGEOCO7BWPV+4ZW/bmDdUXE
+         Lu+lT4EpgaBjnvJ6Ea4X/ZpZ7cEKdxHH/410QTRkagsMbSh+KpgdMD0XOwphkRpmkNIt
+         VD5SWcAmhEu+xV4vsxl+E1rc6c0d0KqDDzleQWYNZ5E9kOtZwjzdE92KDkW7K2drfpAu
+         jg1jwyKBW+57mxqzRwafnjRgkx4iIlSMGcgPNkPfIrL4NETVjLqmQ7vokfdPN1kLP1pA
+         jRhA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1795107689; x=1795712489; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=lmwABRT/K3bySUSn1MLjdfbH6s8COt5WtqnptFackNs=;
+        b=LnuptCKhiewPtlzNYcj22AgqS0jkiivyHH/2i/kHd/TYuVuivbPameYJuMsDooGOKK
+         A/FbMsp01am+vPY52tweefpmoMMGNmVbc1S3AU8EQKglIk3/FGQXnRUWsX2Gcw5+NBxd
+         REZMqPNyrMY8Jpg0LZT/b6vw5Ql86rk1qPpuTaqpHx/wRGqbTsmVQb4vEgQ2Ghag4jlS
+         wElT49hTTPPFxsWgAgUi82iTuwoUwlYiz+dewdFtmLOtj13gquwGBEF3Kjovs4beXGfE
+         PeW7OEVvl3uCUP+Z2eBqaAKYzPFXEL1sDRjx2oVV/IEhdpbb0EvrtUn4JoTkolekZArG
+         CgUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795107689; x=1795712489;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lmwABRT/K3bySUSn1MLjdfbH6s8COt5WtqnptFackNs=;
+        b=RBfuPARdQhWzIVSt7bCd+S2xKCkLVsbvm5mqxMdPmlH+XEUCzDRDxLRyYgsNAn+RT8
+         IFUYqkZwBGXEQSRP0c0rJVd5DIDf1xzNWi4J2HugIAVTOdOTsGdWKOu6jv3WvC76U8wg
+         ksKzmmAXnZtTcLm8nNHlXiHIxVtiZqPg2wJmRIEqQaRoGVTSJLqLyM1sp7tmWWk9UHiJ
+         LuizL2z9xjR5eHvi2IjgP5y9vAHAIMvEyIKCX5jg+LiBqshSEoa3lietq5Y72+UKnGZw
+         ELmALuoIKkYCn/jUcLOqPdzArzeMXUxQuBhNcUeNXGV6YGMG/oOUCs7u5RXYk1M/yIfD
+         vUKA==
+X-Gm-Message-State: APuU4Z8/Te41kG1JD/ER3DQsrcUp92/koo5Tnsr3r+WCQ4/nwoQrCm/0
+	WR0E4V+5jC7W1hUf4SVnWtoGUpK1jMKX0ojfltUR5eYuos9LYrtIsf1UgHJIEp/InBuMl2Bs4a4
+	hUKI+h9kTOv+YeqXcVURnBpYndSOSmSyq7Tpi5sFQwvNYmLx2GJf3FSLSXMVgAaPEF6ssnU8my7
+	MD1hOzEeVybH3aTTc3jelfwFiDixzQ
+X-Gm-Gg: AZFdTZdREFqW6d/P4rMJnaYVk96TIrPl95RFsxB5+GbFtOMmr1wYDp0aLzQt0P8tXL2
+	xCW+Wn7uxzLM23BgELiLIvQbka9rH84gAGoehCQIdXtI1wB6+/7zNlFuZkmfiJ4C00ByNqU7mU3
+	Sz9k6joDLxWt2ZSdIsxXj4Wb82cDJLv9gqFq//h/HyL7BJwfNlArkXT7R2fAKmLGqVnPcN9EBoA
+	Q9nPWMsIL4fGQPVeVjE7fMbQaZqAmKM/gkxtDoep0X/pppB9+38OmxXc5cF
+X-Received: by 2002:a17:90b:3b48:b0:3b3:b71e:b2f3 with SMTP id 98e67ed59e1d1-3b3d07d45e5mr6391823a91.45.1795107689349;
+        Thu, 19 Nov 2026 09:01:29 -0800 (PST)
+X-Received: by 2002:a17:90b:3b48:b0:3b3:b71e:b2f3 with SMTP id
+ 98e67ed59e1d1-3b3d07d45e5mr6391785a91.45.1795107688774; Thu, 19 Nov 2026
+ 09:01:28 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -53,281 +123,90 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/11] KVM: arm64: CCA: Support runtime faulting of
- memory
-To: Wei-Lin Chang <weilin.chang@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Kohei Enju <enju.kohei@fujitsu.com>
-References: <20261116164358.142785-1-steven.price@arm.com>
- <20261116164358.142785-10-steven.price@arm.com>
- <hwmtiumovuqyu7js5eqd4xt3h2zsuhjwkcygnw62hp5rrar5ph@5fhmv46iio2r>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <hwmtiumovuqyu7js5eqd4xt3h2zsuhjwkcygnw62hp5rrar5ph@5fhmv46iio2r>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20261106164958.431978-1-borntraeger@linux.ibm.com>
+In-Reply-To: <20261106164958.431978-1-borntraeger@linux.ibm.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 19 Nov 2026 18:01:17 +0100
+X-Gm-Features: AclHuK9gbMLbzJlV5OY-0UEhrBFcgOdr2MuiGO3o20p9P6uVz6SxjkcfZmnaOTc
+Message-ID: <CABgObfZYZxd2RMaWxyMwEoi860hAmtkjGCLh+YB9G7tpUVwStg@mail.gmail.com>
+Subject: Re: [GIT PULL 0/6] KVM: s390: Fixes for 7.4
+To: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: KVM <kvm@vger.kernel.org>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, David Hildenbrand <david@kernel.org>, 
+	linux-s390 <linux-s390@vger.kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Christoph Schlameuss <schlameuss@linux.ibm.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Gautam Gala <ggala@linux.ibm.com>, 
+	Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 19/11/2026 07:48, Wei-Lin Chang wrote:
-> Hi Steven,
-> 
-> On Mon, Nov 16, 2026 at 04:43:55PM +0000, Steven Price wrote:
-> 
-> [...]
-> 
->> @@ -1791,12 +1799,18 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
->>  	void *memcache = NULL;
->>  	gfn_t canonical_gfn;
->>  	int ret;
->> +	bool is_private = false;
->>  
->> -	if (!perm_fault) {
->> +	if (KVM_BUG_ON(!kvm_slot_has_gmem(s2fd->memslot), kvm))
->> +		return -EINVAL;
-> 
-> I feel this is being too cautious, gmem_abort is always run after a
-> kvm_slot_has_gmem() check.
+On Fri, Nov 6, 2026 at 5:50=E2=80=AFPM Christian Borntraeger
+<borntraeger@linux.ibm.com> wrote:
+>
+> Paolo,
+>
+> first bunch of fixes. Some more are pending for the next round
+> but I have not fully processed those. Those will come next week
+> depending on how KVM forum works.
 
-Fair point - I'll drop that.
+Pulled now, thanks.
 
->> +
->> +	if (!perm_fault || kvm_arch_has_private_mem(kvm)) {
->>  		memcache = get_mmu_memcache(s2fd->vcpu);
->>  		ret = topup_mmu_memcache(s2fd->mmu, memcache);
->>  		if (ret)
->>  			return ret;
->> +	}
->> +	if (!perm_fault) {
->>  		if (kvm_is_nested_s2_mmu(kvm, pgt->mmu)) {
->>  			mapping = kmalloc_obj(struct kvm_guest_s2_mapping, GFP_KERNEL_ACCOUNT);
->>  			if (!mapping)
->> @@ -1805,7 +1819,7 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
->>  	}
->>  
->>  	s2vi.vma_pagesize = PAGE_SIZE;
->> -	s2vi.gfn = ALIGN_DOWN(s2fd->fault_ipa, s2vi.vma_pagesize) >> PAGE_SHIFT;
->> +	s2vi.gfn = gpa_to_gfn(kvm_gpa_from_fault(kvm, s2fd->fault_ipa));
->>  	canonical_gfn = get_canonical_gfn(s2fd, &s2vi);
->>  
->>  	write_fault = kvm_s2_fault_is_write(s2fd);
->> @@ -1817,13 +1831,35 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
->>  	/* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
->>  	smp_rmb();
->>  
->> +	if (kvm_arch_has_private_mem(kvm)) {
->> +		switch (kvm->arch.vm_flavor) {
->> +		case VM_REALM:
->> +			is_private = kvm_realm_is_private_address(&kvm->arch.realm,
->> +								  s2fd->fault_ipa);
->> +			break;
->> +		default:
->> +			break;
->> +		}
->> +
->> +		if (is_private != kvm_gmem_is_private_gfn(kvm, canonical_gfn)) {
->> +			if (!result)
->> +				kvm_prepare_memory_fault_exit(s2fd->vcpu,
->> +							      gfn_to_gpa(canonical_gfn),
->> +							      PAGE_SIZE,
->> +							      write_fault, exec_fault,
->> +							      is_private);
->> +			kfree(mapping);
->> +			return -EFAULT;
->> +		}
->> +	}
->> +
->>  	ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, canonical_gfn, &s2vi.pfn, NULL);
->>  	if (ret) {
->>  		/* If result is non-NULL this is a synthetic fault. */
->>  		if (!result)
->>  			kvm_prepare_memory_fault_exit(s2fd->vcpu, gfn_to_gpa(canonical_gfn),
->>  						      s2vi.vma_pagesize, write_fault, exec_fault,
->> -						      false);
->> +						      is_private);
->>  		kfree(mapping);
->>  		return ret;
->>  	}
->> @@ -1846,6 +1882,16 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
->>  		goto out_unlock;
->>  	}
->>  
->> +	switch (kvm->arch.vm_flavor) {
->> +	case VM_REALM:
->> +		prot &= ~KVM_PGTABLE_PROT_X;
->> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, s2vi.pfn,
->> +				    PAGE_SIZE, prot, memcache);
->> +		goto out_unlock;
->> +	default:
->> +		break;
->> +	}
->> +
->>  	if (perm_fault) {
->>  		/*
->>  		 * Drop the SW bits in favour of those stored in the
->> @@ -2047,7 +2093,8 @@ static int kvm_s2_fault_get_vma_info(const struct kvm_s2_fault_desc *s2fd,
->>  	 * mapping size to ensure we find the right PFN and lay down the
->>  	 * mapping in the right place.
->>  	 */
->> -	s2vi->gfn = ALIGN_DOWN(s2fd->fault_ipa, s2vi->vma_pagesize) >> PAGE_SHIFT;
->> +	s2vi->gfn = kvm_gfn_from_fault(kvm, ALIGN_DOWN(s2fd->fault_ipa,
->> +						       s2vi->vma_pagesize));
->>  
->>  	s2vi->mte_allowed = kvm_vma_mte_allowed(vma);
->>  
->> @@ -2227,7 +2274,7 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
->>  	 * possible.
->>  	 */
->>  	if (mapping_size == PAGE_SIZE && s2vi->max_map_size != PAGE_SIZE) {
->> -		if (perm_fault_granule > PAGE_SIZE) {
->> +		if (perm_fault_granule > PAGE_SIZE && !kvm_vm_is_realm(kvm)) {
->>  			mapping_size = perm_fault_granule;
->>  		} else {
->>  			mapping_size = transparent_hugepage_adjust(s2fd, &pfn, &gfn);
->> @@ -2242,12 +2289,15 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
->>  	if (!perm_fault_granule && !s2vi->map_non_cacheable && kvm_has_mte(kvm))
->>  		sanitise_mte_tags(kvm, pfn, mapping_size);
->>  
->> -	/*
->> -	 * Under the premise of getting a FSC_PERM fault, we just need to relax
->> -	 * permissions only if mapping_size equals perm_fault_granule. Otherwise,
->> -	 * kvm_pgtable_stage2_map() should be called to change block size.
->> -	 */
->> -	if (mapping_size == perm_fault_granule) {
->> +	if (kvm_vm_is_realm(kvm)) {
->> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, pfn, mapping_size,
->> +				    prot, memcache);
->> +	} else if (mapping_size == perm_fault_granule) {
->> +		/*
->> +		 * Under the premise of getting a FSC_PERM fault, we just need to relax
->> +		 * permissions only if mapping_size equals perm_fault_granule. Otherwise,
->> +		 * kvm_pgtable_stage2_map() should be called to change block size.
->> +		 */
->>  		/*
->>  		 * Drop the SW bits in favour of those stored in the
->>  		 * PTE, which will be preserved.
->> @@ -2306,15 +2356,16 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd,
->>  	/*
->>  	 * Permission faults just need to update the existing leaf entry,
->>  	 * and so normally don't require allocations from the memcache. The
->> -	 * only exception to this is when dirty logging is enabled at runtime
->> +	 * exceptions are when dirty logging is enabled at runtime
->>  	 * and a fault needs to collapse a block entry into a table.
->> +	 * Realms can also require new RTT levels when replacing a mapping.
->>  	 * Under pKVM a permission fault can also collapse pages into a block,
->>  	 * which needs a fresh mapping object, and the hypervisor requires the
->>  	 * min-pages memcache even when the install allocates nothing.
->>  	 */
->>  	memcache = get_mmu_memcache(s2fd->vcpu);
->>  	if (!perm_fault || memslot_is_logging(s2fd->memslot) ||
->> -	    is_protected_kvm_enabled()) {
->> +	    is_protected_kvm_enabled() || kvm_vm_is_realm(s2fd->vcpu->kvm)) {
->>  		ret = topup_mmu_memcache(s2fd->mmu, memcache);
->>  		if (ret)
->>  			return ret;
->> @@ -2340,12 +2391,22 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd,
->>  	return kvm_s2_fault_map(s2fd, &s2vi, prot, memcache, result);
->>  }
-> 
-> I see that the changes to gmem_abort() and kvm_s2_fault_map() are more
-> significant, and can possibly be turned into its realm version leaving
-> the original unchanged. With this can we give realm_vm_s2_ops its own
-> .vm_mem_abort? Something like:
-> 
-> First, make user_mem_abort() take a function pointer, call it at the
-> current kvm_s2_fault_map() place.
-> 
-> Then realm_vm_s2_ops.vm_mem_abort = realm_mem_abort()
-> 
-> And in realm_mem_abort() do:
-> 
-> realm_mem_abort()
->   if gmem slot:    realm_gmem_abort()
->   if regular slot: user_mem_abort(kvm_realm_fault_map)
-> 
-> realm_gmem_abort() and kvm_realm_fault_map() are just the realm version
-> of gmem_abort() and kvm_s2_fault_map(). For example they won't need NV
-> related code, and vm_flavor switch case.
-> 
-> Proposing this because I think we would like the CCA changes more
-> self-contained.
+Paolo
 
-It's a little marginal - there's quite a bit of common code between the
-realm path and the normal path. But it does have the advantage that you
-mention of making CCA more self contained. So it's probably worth it.
-
-Thanks,
-Steve
-
-> Thanks,
-> Wei-Lin Chang
-> 
->>  
->> +static bool private_ipa_fault(struct kvm *kvm, phys_addr_t fault_ipa)
->> +{
->> +	return kvm_vm_is_realm(kvm) &&
->> +		kvm_realm_is_private_address(&kvm->arch.realm, fault_ipa);
->> +}
->> +
->>  static int kvm_vm_mem_abort(const struct kvm_s2_fault_desc *s2fd)
->>  {
->>  	VM_WARN_ON_ONCE(kvm_s2_fault_is_perm(s2fd) &&
->>  			!esr_abt_is_write_fault(s2fd->esr) &&
->>  			!kvm_s2_fault_is_exec(s2fd));
->>  
->> +	if (private_ipa_fault(s2fd->vcpu->kvm, s2fd->fault_ipa) &&
->> +	    !kvm_slot_has_gmem(s2fd->memslot))
->> +		return -EINVAL;
->> +
->>  	if (kvm_slot_has_gmem(s2fd->memslot))
->>  		return gmem_abort(s2fd, NULL);
->>  	else
->> @@ -2458,10 +2519,10 @@ int kvm_handle_guest_sea(struct kvm_vcpu *vcpu)
->>   */
->>  int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->>  {
->> +	struct kvm *kvm = vcpu->kvm;
->>  	struct kvm_s2_trans nested_trans, *nested = NULL;
->>  	unsigned long esr = kvm_vcpu_get_esr(vcpu);
->>  	struct kvm_s2_mmu *mmu = vcpu->arch.hw_mmu;
->> -	struct kvm *kvm = vcpu->kvm;
->>  	phys_addr_t fault_ipa; /* The address we faulted on */
->>  	phys_addr_t ipa; /* Always the IPA in the L1 guest phys space */
->>  	struct kvm_memory_slot *memslot;
->> @@ -2554,8 +2615,9 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->>  		nested = &nested_trans;
->>  	}
->>  
->> -	gfn = ipa >> PAGE_SHIFT;
->> +	gfn = kvm_gfn_from_fault(kvm, ipa);
->>  	memslot = gfn_to_memslot(kvm, gfn);
->> +
->>  	hva = gfn_to_hva_memslot_prot(memslot, gfn, &writable);
->>  	write_fault = esr_abt_is_write_fault(esr);
->>  	if (kvm_is_error_hva(hva) || (write_fault && !writable)) {
->> @@ -2598,7 +2660,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->>  		 * of the page size.
->>  		 */
->>  		ipa |= FAR_TO_FIPA_OFFSET(kvm_vcpu_get_hfar(vcpu));
->> -		ret = io_mem_abort(vcpu, ipa);
->> +		ret = io_mem_abort(vcpu, kvm_gpa_from_fault(kvm, ipa));
->>  		goto out_unlock;
->>  	}
->>  
-> 
-> [...]
+>
+> The following changes since commit 6628e7d4c6b25c8d18f1345e3a20d21829aae7=
+e4:
+>
+>   Linux 7.4-rc1 (2026-11-01 13:26:31 -0800)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git  tags/k=
+vm-s390-master-7.4-1
+>
+> for you to fetch changes up to 62aef2c04e0e69a9b88affa74ff699ce5c4e8652:
+>
+>   selftests: drivers/s390x: Select uvdevice tests using the target archit=
+ecture (2026-11-05 16:40:22 +0100)
+>
+> ----------------------------------------------------------------
+> KVM: s390: Fixes
+>
+> - Fixes for the arm layer
+>         - sashiko: https://sashiko.dev/#/patchset/20261103-s390_arm64_kvm=
+_fixups-v1-0-21c36fedd878%40linux.ibm.com
+> - Fix ESSA instruction handling in migration mode
+>         - sashiko: https://sashiko.dev/#/patchset/20261015104822.77062-1-=
+ggala%40linux.ibm.com
+> - Fix crypto instruction no-hook handling
+>         - https://sashiko.dev/#/patchset/20261020082534.481867-1-ggala%40=
+linux.ibm.com
+> - Fix selftest for uvdevice
+>
+> ----------------------------------------------------------------
+> Andreas Grapentin (2):
+>       KVM: s390: arm64: Declare enum vcpu_sysreg
+>       KVM: s390: arm64: Fix kvm_arm64 module naming consistency
+>
+> Gautam Gala (2):
+>       KVM: s390: fix ESSA addressing exception injection in migration mod=
+e
+>       KVM: s390: pqap: fix AP status written to wrong half of GR1
+>
+> Sasha Levin (1):
+>       selftests: drivers/s390x: Select uvdevice tests using the target ar=
+chitecture
+>
+> Steffen Eiden (1):
+>       KVM: s390: arm64: Turn vcpu->arch.pause into a counter
+>
+>  arch/s390/include/asm/kvm_host_arm64.h                |  8 ++++----
+>  arch/s390/kvm/arm64/Makefile                          | 12 ++++++------
+>  arch/s390/kvm/gmap/dat.c                              |  5 ++++-
+>  arch/s390/kvm/s390/priv.c                             |  8 +++++---
+>  .../testing/selftests/drivers/s390x/uvdevice/Makefile | 19 ++++++-------=
+------
+>  5 files changed, 25 insertions(+), 27 deletions(-)
+>
 
