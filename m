@@ -1,101 +1,125 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.44
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795127418;
-	b=Q8t7fLxQzNAvWjFqQHdtDzItRL8M5qFq+RZep4au5TwXN6nVyc9qGWJ54q8GWySe+drg
-	 z5RbkvbZMX1anzv/FMx/dsE+AUlkwBviNy58a143hK19cA90TxYV8GzvUatFo6WCiJdMT
-	 rBCi3TkXlkolzfH7mWqMMkyU+fRb5/BQvHT66n/+JXMvVJRG2LEIXNjeD1SxZF1oqCk0P
-	 rhvlfdmgDTRcyYl5fA9rbIEzGAFigILopzzf4MSN8r5UW0nZJ3o28hT7ZhXkxYBGyfWMz
-	 r9rdFLGe3//g+TRHvGu2gfZlP89ENiuxmdldGZg22XYjxGhesPEQJ6InsuQpL7uP++Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795127418;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=5A6h2+MBLnhrrhUhH+f2KFMN1UGH7u4zFbI2kpKjwJw=;
-	b=hCSK3lkjv1VTG32hY/wUccIxFgnPIyYPs4GGHUZL4+LdfNxbWmTKJNU1Q5U0Nnr6GmnD
-	 8lgAJFmaQwiLBdz4Js1iNXsoFcr+wP2PC2aL305KvZ9GM+ho0iV+Qn1y/Ajid1YJ4agXN
-	 xQQdihNnWb3IxE8aTO0mx5kSmUR9K9vm/hXWnFSeEjXHc7heDHwFCSWKRAeIsh1QGMqUZ
-	 yHXKxkRurD0pgd2d5VCSltGLqMZvUjPLecMXGtXONL3QEVkO8ZU6osSye9WaaQrtYMcT1
-	 N5Ma3/x4Sj1ErnJDFnSp2c3Ws6GK2CCOnhTXSDRJdr15PwIObphJLgkNTvz2TSiP3Ig==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iNeFIXPm;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.44
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.157
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795127565;
+	b=a9sei6xeUp5wxw1wEmdb3hiABTXZHVx7y6ZIVMsvG9II8uzy4xoc530npMPh/VDVPL9U
+	 7e/XqR2qnW5YVol/PncH35jPVZh/96TdlRw9SZoEzUMB5tmvzxn4u+aySLsK0k7+KMkiT
+	 i3Y/jnhfl5aKD0qXjf5tlXFDfb0OGv/zvjG2qjQr6eUsQlLQkA6iZr+RLs4Wzhf1PoEtd
+	 k2oeSwJ+tGMNfwxEnvPPMQsHKdmjT/CtcTmAAPje4KBaOAYbxz6OxFmNQMuE5JW7JyOoR
+	 dG4uiXjvzCvPDUFO7Yr2olyXGxq9C4ygEFXETWgd9ular++Qszheqnahdq6FG3WEkJw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795127565;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=8diG5IpF+frcATzn1tCDRrk4aGE/jCsGXdXvNn/J5ck=;
+	b=Mo/IkH3R1VN46SgyeT0IG3S8GJtyFQXQSkveTBwziahEjntq3rXM4h0N0gZMiyJeaolP
+	 o77xpmurk8IUpC9C6vTjX8D4u8IeaLjgnyhzsdedp5f+iX0W06TP1+qHkPzR44AoDrt92
+	 /dH/IsNYVBmwCazhtyFLxT/AsrGdz4eJKvboLFiCwPqo1xFKP8c15H8FJ4943JHFwk8ZP
+	 XMOQ5p3iK0eptJEOaqxPeU8Jm5PeHdnX0zH4XYSj2U+HdwRKPpsvRd8PT4949Un/FXDYz
+	 KFTpV28JBTebixc9u3SSoGrrkI1ZhAM14yhb5HMHaaa9FLu62lFIkQ58j9nYBWJFdfg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=shazbot.org;
+	spf=pass smtp.mailfrom=shazbot.org;
+	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=cSl4wkgK;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b="FS/aneqP";
+	arc=none smtp.remote-ip=202.12.124.157
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2024606A320
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 22:30:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2024606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF58606A336
+	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 22:32:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4EF58606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=iNeFIXPm
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6b71ee00f0dso1582a12.1
-        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 14:30:17 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795127416; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HxU8YZowItw5bFJQfqSB4PdzV1dmwz2FcKlnjSCMOUNm6cNaEwDFZeyKws7+yHuBDW
-         7gQO1sCsWtK8iTlg2SnANW3zVelmcoTuOBgBem8idzfyzpmwENehlXJDyOLpORwvfyzr
-         Z38QbU4nTJEWhGcNUVTQie5BFk/lJEw8MvirmFl527mQRVFuKajZETG1e1pI/3py0hsl
-         CjYxO2drEvfcrnS6ofW7QeyIf0tBh0cIFanpLASgKjiOPr/0dmIK+SFPACkl90aRvXC5
-         2phG+H2wufQSgS/X9JlfMeWkiV4GI0dRgqYyA+n+AaxPrV7c9tbXi3FJbqPVCWlXKpix
-         T3gw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5A6h2+MBLnhrrhUhH+f2KFMN1UGH7u4zFbI2kpKjwJw=;
-        fh=SzFIoEdOppr0KDLYDfoQBznEIFvwSIqEEBUvTJZX/io=;
-        b=dcm0tVxk1I24xlhOoE+HUptudkQ9vRyFflnLxgoou1AVjx2fUD0Dd59+hnO9S9ff9p
-         M9Ict1NPATWqL6ZgJ8PJBwfCOenRazELrvwwUdnEdCzbzpDqh8p4G5ZUNXDUVysRjQPx
-         1BvOyG7eBKqH+3p2Hb9HSa5u/RvtylkwnFerp6r+2vF/sJcruUalA3HpNbDTynqwlnlM
-         cUcB7ajkuomfMRHfVC7T6pgyNS6rJ1NzReRm4cDaV6v4u9vkCmzYBzVki6GXxMvzpcqv
-         jESjtBbhPatES8Qrh8/eMieZLAdxBxNd+yW7IE8MsTdGJq/IL6FYEvLdBaMkrYK/pG7/
-         9CQA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795127416; x=1795732216; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5A6h2+MBLnhrrhUhH+f2KFMN1UGH7u4zFbI2kpKjwJw=;
-        b=iNeFIXPmVuzoUGuYB0+JmPLp51BoBmelppWd0Ho0aHKXcQTeWaGA60ZzDD3HcC5Ywh
-         Sj9U5FwvxSgLrwHRDO6tXK1tcJ/rlmR20qSExMBU0YCVEjAfkIAe8FmrhvYoq1baI7Sh
-         P0RSZFkCKw3oj+cM8ZVtep+mg3prlgzVrKcouv1MnXQCiPCbAMuvF5IaqET+UXvOnQxz
-         Q0vKzveFgJ+gL+2jzZOoF/pejSZrD96zOSBAwsbiUu1iaOGlr2F4kGORs4Y9hW6ubZbz
-         pkRDu5idvC9YRiejDYBe37DnrIE0mugWT6BpXSYmDf0urs4WS4nciXJOuI9YH56tQV7c
-         EjnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795127416; x=1795732216;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5A6h2+MBLnhrrhUhH+f2KFMN1UGH7u4zFbI2kpKjwJw=;
-        b=djlSiJJJt0nhQhTMcS5gKuk/UIingI2EVRj5BDlaraenCF5lfFfnfGWLtxhREtRkyv
-         yY0vXo9052QboUC0X6GW9ny945lQW7+4k9pfMhfZO4ydYlRbgG5wqg9dgNgcxZwZRIym
-         4Tf9+Sa/4Wvd/AB1EhQJZ8ShMqZEhWWCFJ0xIEbIs5+TYIumQKiDqYuHdNzSvliMJHCf
-         vr2KxIUSHLw2cG/ZNp0FAB5KZ0vedZSGzpQtCnfE4qqexnfJVax7OEPj+2VbhHyNWtRn
-         y/K0O2Qk+UwGV+fw/KRsDNaAC5/JHaiI0fXkC6ke2JZtagfEjd9CpCViPlaGM+l/Gu6Q
-         aTSg==
-X-Forwarded-Encrypted: i=1; AL+hErGqYoviomG9g5gPbO7W9/rJmBzYM/oX0wAHkosNm80twOoyifxrzEzzBEFcUnk3zQn7Uaw=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+dMb3nj68KVRjbViyJwKwE3SosArfZzX1Aq9yObXbZlTF3gqsL
-	yjKaV0dkLCw66ztI8omKzdKZIeFM5N52JFD2A5IY8CvDvs5B4u8398ne1xE1MrZRkX9eoo0fNab
-	t+Jt36cC+awL6pvBoZt6Gafox2XB27CLg2CPMe/oYsw81r2M3XaNjRLP4gEo=
-X-Gm-Gg: AZFdTZdjXWoN/EdfmUrly5Rqw2MRjn3Vv1wwA3huEmNmxHCOHdJ7cOj5fCrmO68P9mC
-	1A2UL2Ni0wnjtUfnMfHqLAB4whYmXbA+CRfwX464dQWYCrJa6S2qG3Src/OMPqCqMKXi9iV6UUV
-	3/fSF8NEF7EvCKGxW/kicW/FdbI7CmaRN3zXLUFrb21+8mLz5n/sGfleHUbuamviVqAur/XDqm3
-	zRrwqf+1rGm8fx0enpHgn/s/tTTfo34gIGltk6vy0fewi3odVdZ5ssT5lz/UUyUSTL/U5bqE3v5
-	Gv1kXUlajeRPUSCrgPmPUZ/txKfrW6d5Nm4sn1ccZGwDpK6mXilzb6etSfo2cTIA3Q//IO4BCef
-	VLARe0F4vOzynIW1hcJqlfvZOWeRur31dFctn2Xsh2HWg3MEtJniKN5usnRHUY2Of4JcZLC3wTR
-	EMWvFd1MHjLUk2x2tzCyqilDLCs0Jem6hdIj8nykIq05Tx5CoFT5YQrQ==
-X-Received: by 2002:a05:6402:c522:20b0:6a6:7dff:61ab with SMTP id
- 4fb4d7f45d1cf-6ba413f0ff5mr10216a12.15.1795127415737; Thu, 19 Nov 2026
- 14:30:15 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=cSl4wkgK;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=FS/aneqP
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 996C57A0305
+	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 17:32:43 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Thu, 19 Nov 2026 17:32:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1795127562;
+	 x=1795213962; bh=8diG5IpF+frcATzn1tCDRrk4aGE/jCsGXdXvNn/J5ck=; b=
+	cSl4wkgKfjRP7WNr0a/cbQRv/zNmQSh5wdb/YjvF1FN7b1KL+aQFXzSJ98goWTPB
+	uSY9KySBtziYR6nts/wkVbdMf6P0aiHG7LYSGVhzsW+z7bmfAeySqxq1QJhi/2+5
+	NhUMAG+/6vZtyzToFbvJSO+SnXYPyiBQyNZ1cqiDIfrr6oSTmwZd6Qi7AZdD/l1f
+	hYZrKNHn5JNypzTtYf4N7iTzF28vlBYOZnC0mXF+8H3u+jhhmYhxyR+qQawFe/0Y
+	4AQdBuLF0SSKajxZUJn+9Vw4i/2GTk+MSBDC019O18V8HEXmzUO5TfIA+prxIits
+	QTlgAu7fx5IxSipUFRBx3A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795127562; x=
+	1795213962; bh=8diG5IpF+frcATzn1tCDRrk4aGE/jCsGXdXvNn/J5ck=; b=F
+	S/aneqPozRGzBrvFEQCufODXIgHQCEKW84Dt3KWjayayQMwzoCzpGC+khyeHYP4s
+	vY796mGofLYA5D8Mr2xOYdRlmXzKs0k4kKfEiyn4GkcYSu/nah6Eg+1v6gAIrgR1
+	cx7ySqPqP8r2wSsCGBS4D+nIUl1OAVydUrBD994UIphEhjIFl2g8YJRuV1t2HJbP
+	4bhukU94Ye212LJmb+aWmpjDhYal+VB4Z+9irhY0i48/o3W0oTWo8HKoR7bzatNt
+	Ta+AvLc9a8HlhsgsKosVPe3BM0kYS8lNOUZk0DhCz4zNk2sTmMeVTKgPdb9W+Tg+
+	Q8LpnFG9mIFfnomKkJQjg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=shazbot.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1795127562; d=shazbot.org;
+	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:BYiPx7rksh+tS7VTd11ojMhDXcui+kYZMucbd8NCGXEm5VH
+	7fyTkLTEet4XSr0xjv46Zce7UJSxFgUplxXEZfzI1J7dm51OC7xb1HkwE+JvVbm4
+	TtysXwF2Oq9MMl9P3wjB0MS2RFjAAOA/+5HDwcfP4+yp7hBXxrOK/9B/FOz3XbLZ
+	3Pfy0Z8gmZrJOksJC6ob5LFZnd9PeGv5f+UpGneq6D6+QQ/FrMP4a28JUrUK4Yio
+	r6/2qTBq8KUn7vqnx7XS4ge2xQl9zsZTRb7vuSoU8muvFUne0Sr5h+mTqCazi1dW
+	yHq9wL/W/27T24CRCXOUtmFEnqCkfHIvOgUj/Yw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:AQNlEiex0ldxclYibpZOPfODfuT/zfuzD4Xg8gCmKWk=:bYeZfzXOr4Rhv4svyoyB+ZYS3EKLFU+K87x7maL3L00=;
+X-ME-Sender: <xms:Cnn_ajdaAd7I0UhnxHZNkBHR-b7UQBrjQss8APYopmC6qDKUMalUIg>
+    <xme:Cnn_avlRv-yjXsvP0GxpkVhBWrsVCPBSUXhFWEARzrwA-wW_S5lLI_G1Mr6_7U1Yi
+    Pj8w3EURxx0wQkCLGFEjvjhrhCqJOWYe5viQy-1szn47_ZpclWfhFU>
+X-ME-Received: <xmr:Cnn_aoy-l62MGZh2uIp5wwaZnF41kCT93qK64VeVR0_85di9mN0PU4Sn4e3v9w>
+X-ME-Proxy-Cause: dmFkZTFZJhTXKlYSH79FRKyJqfUU3CwaZRjJx1rze6Hqz9Rw4v/3eoVS9nbaIjU+j5QFld
+    jBsDPeSxNksX4fiXerstFo/n5mijIA7DHyU2Uqr3+pYjuaMveGp808l+a7lQhBB/AwjpHx
+    1eY1jdSeGNpmlVc5Bq0Ii/d4Ki81EvmKUhP32WPEZlBLvsGKkKaX7VczVbLLq8eh3yt7FY
+    HEwOnFCqEtKK72PL463J653AeU8vp+btN45J3a0FNhSBw0wGTvJ/Fg5etepjTNW7GJVYUm
+    tfHG3I2Pt7vxb67gpwhwUzt56IibJ/RvVkhfrhWw+HTZySLla2FNaknyNpleDyrlRlc9Iz
+    IJSZYj8acqhZR6XE+s/dT4mDWp3YbgplxUl92lZkJg3OKWUOFVzGl4BNJC0maEv7DxofYY
+    YyNKl0s8UcAjEKkkl4B3memcieFCGUPXbBCW4H5WC+btddQKN4rqootnwLkDHrR/HIibSj
+    puh1Okq+i4fqSFiHggpms4XsGkQt+k7o8AqltkNWxaD4YyrJ2Djmep09pzHL+cpcXs/Md/
+    S2Bmlm1oHKPphDzFOo/0jFnzU0xi4GIaZrCiMxFR0AotzDJ7eNXnuN8jckY4xrFmI1Pmh3
+    bHtIEhxRMOicBNTCGKPbg5eyhUPvoQQuIEh5mG5iWshwSJ8qdQVNtu9JTsSQ
+X-ME-Proxy: <xmx:Cnn_aiyJS7VSubvwd397BMsClbu4xRXLFm_2-I6dEiwqGvBNcYMQSg>
+    <xmx:Cnn_aoX64ENNZD9xnM9tjpZbISmuHJKcpBaU9A5PU9IezSBWITRmhQ>
+    <xmx:Cnn_apR0JF7nmNr_DTGOPA95r-JM_u8KaFd1dtfHlX1ZGo9xmop9vA>
+    <xmx:Cnn_agR-oCCEj1zp3r4-ju0ZOyln0t0eoAg-2YY1MRHgPjG0RRahZQ>
+    <xmx:Cnn_ahpKGAyTc_yDWUvhvR17sWsbeu7_78gsuqX-UoZK4FBb91TrB7bT>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 19 Nov 2026 17:32:40 -0500 (EST)
+Date: Thu, 19 Nov 2026 14:32:37 -0800
+From: Alex Williamson <alex@shazbot.org>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Kevin Tian <kevin.tian@intel.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Anthony Pighin <anthony.pighin@nokia.com>,
+ Dave Jiang <dave.jiang@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+ kvm@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, alex@shazbot.org
+Subject: Re: [PATCH] vfio/pci: Only lock the upstream bridge if the reset
+ may need it
+Message-ID: <20261119143237.4bf54796@shazbot.org>
+In-Reply-To: <20261118163706.7138d246@shazbot.org>
+References: <20261112235700.2029562-1-skhawaja@google.com>
+	<20261118163706.7138d246@shazbot.org>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,62 +129,137 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019210532.378628-1-shivansh.dhiman@amd.com> <20261019210532.378628-11-shivansh.dhiman@amd.com>
-In-Reply-To: <20261019210532.378628-11-shivansh.dhiman@amd.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 19 Nov 2026 14:30:03 -0800
-X-Gm-Features: Aa3M54qsLoRZTc452G96ErWYvtt96wWlw7wb2uvEac3se3Klhy2tTf3OL8kk824
-Message-ID: <CALMp9eRVB4gYMgjmTj4Hh4fo6VY+6_SWHrRYXcA1QLrtCkf-eg@mail.gmail.com>
-Subject: Re: [PATCH v2 10/12] KVM: nSVM: Pass through LBRv2 MSRs to L2
-To: Shivansh Dhiman <shivansh.dhiman@amd.com>
-Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de, 
-	mingo@redhat.com, peterz@infradead.org, acme@kernel.org, kvm@vger.kernel.org, 
-	x86@kernel.org, yosry@kernel.org, thomas.lendacky@amd.com, 
-	nikunj.dadhania@amd.com, sandipan.das@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 19, 2026 at 2:08=E2=80=AFPM Shivansh Dhiman <shivansh.dhiman@am=
-d.com> wrote:
->
-> Add the LBRv2 MSRs to merge_msrs[] so that their MSRPM bits are merged
-> into msrpm02, letting L2 access them without taking a VM-Exit. Grow the
-> merge offsets array to 12, as needed by 32-bit kernels where each offset
-> covers 16 MSRs rather than 32.
->
-> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
-> ---
->
-> Changes in v2:
-> * New patch.
->
-> ---
->  arch/x86/kvm/svm/nested.c | 23 ++++++++++++++++++++++-
->  1 file changed, 22 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index b356a091e320..84154f353935 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-> @@ -209,7 +209,7 @@ void nested_vmcb02_recalc_intercepts(struct vcpu_svm =
-*svm)
->   * Hardcode the capacity of the array based on the maximum number of _of=
-fsets_.
->   * MSRs are batched together, so there are fewer offsets than MSRs.
->   */
-> -static int nested_svm_msrpm_merge_offsets[10] __ro_after_init;
-> +static int nested_svm_msrpm_merge_offsets[12] __ro_after_init;
->  static int nested_svm_nr_msrpm_merge_offsets __ro_after_init;
->  typedef unsigned long nsvm_msrpm_merge_t;
->
-> @@ -253,6 +253,27 @@ int __init nested_svm_init_msrpm_merge_offsets(void)
->                 MSR_AMD64_PERF_CNTR_GLOBAL_STATUS,
->                 MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR,
->                 MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET,
-> +
-> +               MSR_AMD_DBG_EXTN_CFG,
-> +               MSR_AMD64_LBR_SELECT,
+On Wed, 18 Nov 2026 16:37:06 -0800
+Alex Williamson <alex@shazbot.org> wrote:
 
-Why add MSR_AMD_DBG_EXTN_CFG here? L0 only disables interception of
-MSR_AMD_DBG_EXTN_CFG for SEV-ES guests, which don't support nested
-SVM.
+> On Thu, 12 Nov 2026 23:57:00 +0000
+> Samiullah Khawaja <skhawaja@google.com> wrote:
+> 
+> > Commit 962ae6892d8b ("vfio/pci: Lock upstream bridge for
+> > vfio_pci_core_disable()") makes vfio_pci_core_disable() trylock the
+> > upstream bridge before resetting the device, and skips the reset if the
+> > trylock fails.
+> > 
+> > All VFs of a PF have the same upstream bridge. Take a device with two
+> > VFs, both used by one process. When the process is killed, both VFs can
+> > be released at the same time. The first one takes the bridge lock and
+> > does its FLR, the second one fails the trylock and is never reset.
+> > 
+> > The bridge lock is only needed for a bus reset, which is done through
+> > the bridge. A VF is reset with FLR, and pci_parent_bus_reset() never
+> > resets the bus for it because the PF and the other VFs are on the same
+> > bus.
+> > 
+> > Add pci_reset_needs_bridge_lock(), which returns true if any reset
+> > method enabled for the device is a bus reset, and only lock the bridge
+> > in vfio_pci_core_disable() when it does.
+> > 
+> > Fixes: 962ae6892d8b ("vfio/pci: Lock upstream bridge for vfio_pci_core_disable()")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> > ---
+> > Tested in QEMU with an igb PF behind a PCIe root port, bound to vfio-pci
+> > with two VFs. Both VFs are opened through VFIO and then closed from two
+> > threads at the same time, counting FLRs with a kprobe on pcie_flr().
+> > Without this patch one VF missed its FLR in 50 of 50 rounds, with it
+> > both VFs were reset in every round. I will send a VFIO selftest for this
+> > separately.
+> > ---
+> >  drivers/pci/pci.c                | 28 ++++++++++++++++++++++++++++
+> >  drivers/vfio/pci/vfio_pci_core.c |  3 ++-
+> >  include/linux/pci.h              |  1 +
+> >  3 files changed, 31 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> > index 7c6f2aba8144..c44e4d4d8774 100644
+> > --- a/drivers/pci/pci.c
+> > +++ b/drivers/pci/pci.c
+> > @@ -5256,6 +5256,34 @@ int __pci_reset_function_locked(struct pci_dev *dev)
+> >  }
+> >  EXPORT_SYMBOL_GPL(__pci_reset_function_locked);
+> >  
+> > +/**
+> > + * pci_reset_needs_bridge_lock - check whether a reset of @dev may need the
+> > + * upstream bridge to be locked
+> > + * @dev: PCI device to check
+> > + *
+> > + * A bus reset of @dev is done through its upstream bridge, so the caller must
+> > + * hold the bridge lock. The other reset methods only access @dev itself.
+> > + *
+> > + * Return: true if any of the reset methods enabled for @dev is a bus reset.
+> > + */
+> > +bool pci_reset_needs_bridge_lock(struct pci_dev *dev)
+> > +{
+> > +	int i, m;
+> > +
+> > +	for (i = 0; i < PCI_NUM_RESET_METHODS; i++) {
+> > +		m = dev->reset_methods[i];
+> > +		if (!m)
+> > +			break;
+> > +
+> > +		if (pci_reset_fn_methods[m].reset_fn == pci_reset_bus_function ||
+> > +		    pci_reset_fn_methods[m].reset_fn == cxl_reset_bus_function)  
+> 
+> This looks like a maintenance nightmare.  What if instead we did
+> something like:
+> 
+> bool pci_parent_bus_reset_possible(struct pci_dev *dev)
+> {
+> 	struct pci_dev *pdev;
+>    
+> 	if (pci_is_root_bus(dev->bus) || dev->subordinate ||
+> 	    !dev->bus->self || dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET)
+> 		return false;
+> 
+> 	list_for_each_entry(pdev, &dev->bus->devices, bus_list)
+> 		if (pdev != dev)
+> 			return false;
+> 
+> 	return true;
+> }
+> EXPORT_SYMBOL_GPL(pci_parent_bus_reset_possible);
+>   
+> static int pci_parent_bus_reset(struct pci_dev *dev, bool probe)
+> {
+> 	if (!pci_parent_bus_reset_possible(dev))
+> 		return -ENOTTY;
+> 
+> 	if (probe)
+> 		return 0;
+> 
+> 	return pci_bridge_secondary_bus_reset(dev->bus->self);
+> }
+> 
+> Where we'd then condition acquiring the bridge lock on whether it's
+> even possible for a function scoped reset to perform a bus reset.
+> 
+> It's a bit broader of a test than whether we actually have the necessary
+> methods in our reset_fn list, but since we're not locking the reset_fn
+> list between test and function-reset, it's also safer.  Thanks,
+
+After exploring Ionut's patch[1], what I propose above is probably
+wrong.  We don't have any guarantees that the sibling topology is
+static and this bus-reset-possible function presents it as immutable.
+The existing bus-reset function has the same race, but the gap is
+smaller, let's not make it bigger.
+
+There are however immutable properties we can test that cover a fair
+number of cases.  For example:
+
+bool pci_reset_function_needs_bridge_lock(struct pci_dev *dev)
+{
+	return pci_upstream_bridge(dev) &&
+		!(dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET) && !dev->is_virtfn;
+}
+EXPORT_SYMBOL_GPL(pci_reset_function_needs_bridge_lock);
+
+We should be able to use this as a condition on whether we acquire the
+bridge device lock, in pci_reset_function() and in vfio-pci code.
+Thanks,
+
+Alex
+
+[1]https://lore.kernel.org/all/20261119123504.25906-2-ionut.nechita@windriver.com/
