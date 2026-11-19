@@ -1,91 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795105751;
-	b=gknHU2mgzdi3AMc455DKkF05gLoE9V98W9013cdcybPcz0lM+a1UYeuQJ0yF4ZipYlin
-	 coP7RKrf9y3/FLOmKw4a2e9+mAxxfOQRDZ2gYsd8YgTKBaEc/cKYsDjTUS/Un7au1yB4A
-	 jI47UrD4Yxgs/gP4mZnj8fvXs3vPJyabvcmYpwyad2tdFMzQUFnq3Mx9CqOiQjVhhRd6u
-	 hWP2ALCnn85SQpJHOIVxU8HVuHgE5piTTzrg4rrdEC8YAKzwV8y0ZBRezWOfD7k8oAnIG
-	 9jFX5y31epttU5o9WUxXHqFhQ5ejy7tihZ1pc1f9PI3ef/YAsCko+qn6PqR77YGXZ1g==
+	t=1795105826;
+	b=hqYmLGJvvyrnW70fFdmR25S/736Mb3m4LvPui6VvQHJoCgpqMRb1nRMoT6CfbxoRrB0x
+	 L6YVtVMdfBeWHRYvus9mHVNcwzxtQpyKoEGODKH20NVPSFaiz6QOKLFWTtMWJlZcd6rEV
+	 J/RvB1eMrLT+Qq5McfRhTuLegECC39kF4v+KexXlkLI7v9fvylFiom17vHzoF9MCjVulh
+	 YT/FP1E6LLTvjOy13HhQtYNXbInave2xrHkEQL/+Mcc9WG0yor1ynO7RYLiGgFBgAOme0
+	 7Bn/OzjCXrU7h6bTM4gW3CJ1Zk1XULShnyM0jmVAuUuT4XSiV8di0yLTg8+DFnSlo6g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795105751;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-TM-AS-GCONF:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=V4Ti7QECuOCWcX8sxonoOjHmQwctYghDJX9WWm8VVNI=;
-	b=MY8sQ5130an4rMoNQe0WQM/zo0TD3XXmSrDPx5pZA5sfhvrhypjCUBxnBRRZat8B2qvm
-	 GpHSwZw5HL5z4SAiyXtO+mG5bs3zw3S9vz7gZFjA8Ns06TVmUM2E83qFnJ6suv//b/2W2
-	 iJG8r9mYUaf9xhlnEC2EHp6PkNJtuBk50OlJd/2xSz1BtSuqpm1RKwcnPEl8dtQG2XZUG
-	 hm1RMXUfxotBiBgA2smUucUpvXd45PsUBWu81gFBQfRyQx/xf8R9xxoln8Ya0Sbxb9FyO
-	 Xe2mGk7gxRxn2juzLp2DMccsUshzwP5K0wZGlwTzi3rnxNu/D2lRpmAGJdVHbbO0IaA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795105826;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=B7S41Zukdg+I/ZQxYfdUjeKVx5b0WM1uS5IcxJRO3Jc=;
+	b=g5PDvHu3sqoyN4TFLCNbC4KssM+u5KGaMilmb8VMGufTuOzjMC43z6wSFoOvykJyEC4D
+	 ZN7nYerv5siJv1KeCi+5Bv0F1ddUsxcfussIb+bJsI5yMs0juTO4qo7Y8SWFVS7grb8To
+	 zbA85y8DoU00i55KTaJwCixue8jClqQa+DC9oQ59+eQb/bA/jJ4LstxltzFAN2t3QVL69
+	 Ntl8LpnoTnv6iwvg3ajj91/9vcfsn2xU86lIAxDEIPJUZsDdKy+fNQHAHiBEnjP1ziQ9V
+	 Td+sivE1U/qqij0BkxayKHAMumNPEsVRJfa0O9nlctVznTaUM0Nr5IsFNOSFv7GzMJA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qiziYuPp;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2864606A32F;
-	Thu, 19 Nov 2026 16:29:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F2864606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="BfxBm/fV";
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD4C606A326
+	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 16:30:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2FD4C606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qiziYuPp
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AJFQNVh321020;
-	Thu, 19 Nov 2026 16:29:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=V4Ti7QECuOCWcX8sxonoOjHmQwctYg
-	hDJX9WWm8VVNI=; b=qiziYuPp/8gMtQadrq4m7u3Sd3LmUc50O6WMCNNcj1TbU+
-	FtjgvgAizYfNoyer4A0QcaHUKzuAQUj4DNyE44VBPUKFxjW+OEORIw4SY43uYI/M
-	hGOtEStL/EeLC38SZhLDwwvg0l+Aahvr6ixcUcCWpVWKN1yr2YVOlUTdx4WZY4+C
-	89EmPQo16BO8wxRh2JH08RHaodVSiiAVNaJhBToxpU0WwGikoKK6aoxSBdPflPB8
-	CwjiTxYKU+FD2AuTPgsszWc1E17lGfvoN58zVsX15s9VWTdnLJR1LlYINhzFNAJX
-	6ovt+foBabVzUOzaoX2Wc0WWzafTpWz9dVAztvOw==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j105x269m-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 19 Nov 2026 16:29:07 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AJF5xOi1052573;
-	Thu, 19 Nov 2026 16:29:07 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j1hd6wen4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Nov 2026 16:29:07 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AJGT3jN48365874
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 19 Nov 2026 16:29:03 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4124E20040;
-	Thu, 19 Nov 2026 16:29:03 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0ABA22004E;
-	Thu, 19 Nov 2026 16:29:03 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.68.17.117])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 19 Nov 2026 16:29:02 +0000 (GMT)
-Date: Thu, 19 Nov 2026 17:29:01 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Omar Elghoul <oelghoul@linux.ibm.com>, Alex Williamson <alex@shazbot.org>
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com, schnelle@linux.ibm.com,
-        mjrosato@linux.ibm.com, alifm@linux.ibm.com, farman@linux.ibm.com,
-        gbayer@linux.ibm.com, pasic@linux.ibm.com, frankja@linux.ibm.com,
-        imbrenda@linux.ibm.com
-Subject: Re: [PATCH v13 0/5] vfio-pci/zdev: Improved zPCI Function
- Measurement Support
-Message-ID: <05ba9f68-58b7-4629-9a9b-cb87fcd7eb99-agordeev@linux.ibm.com>
-References: <20261111162758.9792-1-oelghoul@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=BfxBm/fV
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 297411575;
+	Thu, 19 Nov 2026 08:30:21 -0800 (PST)
+Received: from [10.0.129.37] (e122027.cambridge.arm.com [10.0.129.37])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6C63E3F673;
+	Thu, 19 Nov 2026 08:30:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795105824; bh=TfeeoY3dbjuoXmWt8STXVUxkB4zqZ4VB5GwHRYqCWgo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=BfxBm/fVGNFz9TQPGkkzc/eHqs6DUHUOOipdcMQe09W7FtjjWo8/X81fI2NcVOkmO
+	 isXEDZBejSROWABKqcfkZvdE0PcqAvbehF/ZYKfFwJeWoBQRG2qjZm167goR0Ex6LO
+	 VDGTbPiWQGZx6Pz1LH64JFNH0rYtFHAcJ2ox2HrA=
+Message-ID: <2cfeaf5c-e329-4f57-ad9f-1e729f02f5c2@arm.com>
+Date: Thu, 19 Nov 2026 16:30:20 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -95,84 +53,197 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261111162758.9792-1-oelghoul@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: hvoxb-symRQX-A7gLBaP2Lkq-5dbk8Tg
-X-Proofpoint-GUID: hvoxb-symRQX-A7gLBaP2Lkq-5dbk8Tg
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE5MDA2NSBTYWx0ZWRfX4dMlUVSvvldS
- aNYqRuogeLOw6Kh41bLqNlEH5dLVImjP11qwxHmC1uc11wSN5hLp98X15H/SPDvGQcY9O41LDzr
- qgNNCY+TeDGZprvrIVyB24H27F+Co9gXcrEkOXv4bYDao7cp3zkRGAXg3Cd/3Pz9c9YFILxTVJj
- h4MIbN+wWDIv4vSbAuHghIqKdUkpg2OfOyV5iRIbx7an812xRoiX3192fopQpQVNb3jT5ql/Ida
- O5xEAVtctSKgYhHUTlDQSsGPQNAvqi+n/8yFqmygPNruNzuozquj3mU6h1jizkCYqoVH6F0k2jl
- RUmgAZJ7V0XU3DI5mAgNAXIASbHLYemNvOW9hE1FzsHxaQKSvS+FASTrnrQC0JN/soBu9vF/U1J
- MGU0grY0q0jSoLE6p0QWU5XZqgLh51PRjy14tvv6yfewp8LHOad8l3na54vRBxoVyQNJ9GYHJOR
- ggP5ru9jqpQbUjO7g7g==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE5MDA2NSBTYWx0ZWRfX9ll3nMZHJZDi
- kqwi5WBexg6Ns4FSE5XG0sO/DmGixhUEJghhzbvsS/UEuvc1MaJJmyiFnZwIWDcZFVeLDcJtc5h
- G/4UvblJovOaNOmFYgqcHXzz5GY8PgA=
-X-Authority-Analysis: v=2.4 cv=K+m3jCWI c=1 sm=1 tr=0 ts=6aff23d4 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
- a=_RPdNGorA9cjcCUAOnoA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-19_04,2026-11-19_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 clxscore=1015 adultscore=0 spamscore=0
- priorityscore=1501 impostorscore=0 phishscore=0 lowpriorityscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611190065
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 09/11] KVM: arm64: CCA: Support runtime faulting of
+ memory
+To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
+References: <20261116164358.142785-1-steven.price@arm.com>
+ <20261116164358.142785-10-steven.price@arm.com>
+ <sashiko-outbox-217436@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <sashiko-outbox-217436@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 11, 2026 at 11:27:53AM -0500, Omar Elghoul wrote:
-> This patch series improves support for function measurement for zPCI
-> passthrough devices on s390.
-...
-> Motivation
-> ==========
-> The firmware on s390x machines allows for tracking a variety of statistics
-> relating to zPCI devices in a function measurement block (FMB). However,
-> the kernel currently lacks a structured mechanism of sharing this
-> information with userspace, beyond /sys/kernel/debug/pci/ID/statistics.
-> This can lead to shortcomings when running a guest on KVM with PCI
-> passthrough devices, as QEMU is unable to provide an accurate FMB snapshot
-> to the guest.
+On 16/11/2026 17:31, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issues to consider:
+> - [Medium] KVM: arm64: KVM_CAP_PRE_FAULT_MEMORY advertised for Realm VMs
+> - [Medium] KVM: arm64: missing unmap on partial failure in
+>   realm_map_unprotected()
+> - [Low] KVM: arm64: unhandled exec fault on shared Realm IPA in
+>   gmem_abort() and user_mem_abort()
+> --
 > 
-> Proposal
-> ========
-> We propose adding a new VFIO device feature to zPCI passthrough devices,
-> allowing userspace programs to read the latest FMB snapshot as it is
-> written by the firmware. We ensure that function measurement enablement is
-> preserved across device resets on the host. Furthermore, we guard against
-> host tampering with the FMB via sysfs when the zPCI device is in
-> passthrough to protect the VM's state.
+> commit 5a0919ef6adc946a1afb4f6ad7cf84e5573597f3
+> Author: Steven Price <steven.price@arm.com>
 > 
-> I'd appreciate some feedback on these patches.
+> KVM: arm64: CCA: Support runtime faulting of memory
 > 
-> Thanks in advance.
+> This commit adds runtime stage-2 fault handling for Realm VMs, delegating
+> and mapping private guest_memfd pages in the protected IPA region and
+> mapping shared pages in the unprotected IPA region via the RMM.
 > 
-> Omar Elghoul (5):
->   s390/pci: Hold fmb_lock when enabling or disabling PCI devices
->   s390/pci: Improve function measurement state management
->   s390/pci: Improve FMB memory management
->   s390/pci: Fence FMB enable/disable via debugfs for passthrough devices
->   vfio-pci/zdev: Add VFIO FMB device features
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 0db3c293fdd52..9b371159be92c 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+> [ ... ]
+>> @@ -1846,6 +1882,16 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
+>>  		goto out_unlock;
+>>  	}
+>>  
+>> +	switch (kvm->arch.vm_flavor) {
+>> +	case VM_REALM:
+>> +		prot &= ~KVM_PGTABLE_PROT_X;
+>> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, s2vi.pfn,
+>> +				    PAGE_SIZE, prot, memcache);
+>> +		goto out_unlock;
+>> +	default:
+>> +		break;
+>> +	}
+>> +
+> [ ... ]
+>> @@ -2242,12 +2289,15 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
+>>  	if (!perm_fault_granule && !s2vi->map_non_cacheable && kvm_has_mte(kvm))
+>>  		sanitise_mte_tags(kvm, pfn, mapping_size);
+>>  
+>> -	/*
+>> -	 * Under the premise of getting a FSC_PERM fault, we just need to relax
+>> -	 * permissions only if mapping_size equals perm_fault_granule. Otherwise,
+>> -	 * kvm_pgtable_stage2_map() should be called to change block size.
+>> -	 */
+>> -	if (mapping_size == perm_fault_granule) {
+>> +	if (kvm_vm_is_realm(kvm)) {
+>> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, pfn, mapping_size,
+>> +				    prot, memcache);
 > 
->  arch/s390/include/asm/pci.h      |   8 +-
->  arch/s390/pci/pci.c              | 123 +++++++++++++++++++++++--------
->  arch/s390/pci/pci_debug.c        |  15 +++-
->  drivers/vfio/pci/vfio_pci_core.c |   4 +
->  drivers/vfio/pci/vfio_pci_priv.h |  18 +++++
->  drivers/vfio/pci/vfio_pci_zdev.c |  64 ++++++++++++++++
->  include/uapi/linux/vfio.h        |  30 ++++++++
->  7 files changed, 226 insertions(+), 36 deletions(-)
+> [Severity: Low]
+> This question rests on an architecture detail that could not be confirmed
+> from the kernel source: can a Realm guest instruction fetch from an
+> unprotected (shared) IPA exit to the host as a stage-2 instruction abort
+> that reaches kvm_handle_guest_abort()?
+> 
+> If so, unprotected RTT mappings only encode RMI_S2AP_DIRECT_READ and
+> RMI_S2AP_DIRECT_WRITE and cannot grant execute permission, but neither
+> gmem_abort() nor user_mem_abort() rejects kvm_s2_fault_is_exec(s2fd) with
+> -ENOEXEC to inject an instruction abort.  Instead, realm_map_unprotected()
+> installs a non-executable mapping, and on subsequent instruction permission
+> faults at the same IPA where level >= req_level, unmaps and remaps the page
+> with the same non-executable permissions and returns 0 in an endless fault
+> loop.
 
-Applied and put on a branch, as agreed:
+Suzuki already covered this. I'll add a comment in the code.
 
-git://git.kernel.org/pub/scm/linux/kernel/git/s390/linux.git zpci-meas-enh
+> [ ... ]
+> 
+>> @@ -3155,7 +3217,7 @@ pre_fault_bytes_consumed(gpa_t gpa, unsigned long granule_size,
+>>  
+>>  int kvm_arch_pre_fault_allowed(struct kvm_vcpu *vcpu)
+>>  {
+>> -	if (is_protected_kvm_enabled())
+>> +	if (is_protected_kvm_enabled() || kvm_vm_is_realm(vcpu->kvm))
+>>  		return -EOPNOTSUPP;
+>>  	if (!kvm_vcpu_initialized(vcpu))
+>>  		return -ENOEXEC;
+> 
+> [Severity: Medium]
+> Should kvm_vm_ioctl_check_extension() also report 0 for
+> KVM_CAP_PRE_FAULT_MEMORY when kvm && kvm_vm_is_realm(kvm)?
+> 
+> Currently kvm_vm_ioctl_check_extension() only gates capabilities on
+> is_protected_kvm_enabled() and otherwise unconditionally sets r = 1 for
+> KVM_CAP_PRE_FAULT_MEMORY, advertising the capability on a Realm VM file
+> descriptor even though KVM_PRE_FAULT_MEMORY always fails here with
+> -EOPNOTSUPP.
 
-Thanks!
+As Suzuki says, this is handled in later patches in the integration
+branch. I don't think we want to complicate matters by trying to pull it
+into this series.
 
+>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+>> index 838f95c201ada..4cacb9fe000f4 100644
+>> --- a/arch/arm64/kvm/rmi.c
+>> +++ b/arch/arm64/kvm/rmi.c
+> [ ... ]
+>> +static int realm_map_unprotected(struct kvm *kvm,
+>> +				 unsigned long ipa,
+>> +				 kvm_pfn_t pfn,
+>> +				 unsigned long size,
+>> +				 enum kvm_pgtable_prot prot,
+>> +				 struct kvm_mmu_memory_cache *memcache)
+>> +{
+> [ ... ]
+>> +	while (ipa < ipa_top) {
+>> +		unsigned long range_desc = addr_range_desc(realm, ipa, phys,
+>> +							   ipa_top - ipa,
+>> +							   RMI_OP_MEM_UNDELEGATED);
+>> +		unsigned long call_top = ipa + RMI_ADDR_RANGE_COUNT(range_desc) *
+>> +			rmi_addr_block_size_to_bytes(RMI_ADDR_RANGE_BLOCK_SIZE(range_desc));
+>> +		unsigned long out_top;
+>> +
+>> +		ret = rmi_rtt_unprot_map(rd, ipa, call_top, flags, range_desc,
+>> +					 &out_top);
+>> +		if (ret < 0)
+>> +			return ret;
+>> +
+>> +		if (ret) {
+>> +			/* Create missing RTTs and retry */
+>> +			int level = RMI_RESULT_DATA_LEVEL(ret);
+>> +			int req_level = KVM_PGTABLE_LAST_LEVEL -
+>> +				RMI_ADDR_RANGE_BLOCK_SIZE(range_desc);
+>> +
+>> +			if (RMI_RESULT_STATUS(ret) != RMI_ERROR_RTT ||
+>> +			    ++retries > KVM_PGTABLE_LAST_LEVEL + 2)
+>> +				return -ENXIO;
+>> +
+>> +			/* Replace an existing mapping to update its permissions. */
+>> +			if (level >= req_level) {
+>> +				realm_unmap_shared_range(kvm, ipa, ipa_top, false,
+>> +							 memcache);
+>> +				continue;
+>> +			}
+>> +
+>> +			ret = realm_create_rtt_levels(realm, ipa, level,
+>> +						      req_level,
+>> +						      memcache);
+>> +			if (ret)
+>> +				return ret;
+>> +
+>> +			continue;
+>> +		}
+>> +
+>> +		/* Retry the fault after releasing mmu_lock to service the IRQ. */
+>> +		if (out_top == ipa)
+>> +			return -EAGAIN;
+>> +		if (WARN_ON_ONCE(out_top < ipa || out_top > call_top))
+>> +			return -ENXIO;
+>> +
+>> +		phys += out_top - ipa;
+>> +		ipa = out_top;
+>> +		retries = 0;
+>> +	}
+> 
+> [Severity: Medium]
+> Can a multi-iteration call to realm_map_unprotected() leave a writable
+> prefix mapped when a later iteration fails or returns -EAGAIN?
+> 
+> For a Realm with a 32- to 34-bit IPA space on 4KB pages, get_start_level()
+> is 2, so addr_range_desc() caps rmi_size at 1 (PMD_SIZE).  When a shared
+> memslot is backed by a 1GB hugetlbfs VMA, kvm_s2_fault_map() passes
+> mapping_size = PUD_SIZE and this loop runs across multiple 2MB iterations.
+> If an iteration after the first is interrupted (out_top == ipa) or hits an
+> error, realm_map_unprotected() returns non-zero without unmapping the
+> already-installed prefix (unlike realm_map_protected()).  kvm_s2_fault_map()
+> then passes !!ret (unused = true) to kvm_release_faultin_page() and skips
+> mark_page_dirty_in_slot(), so if the faulting IPA lies in the mapped prefix,
+> the guest can write to the page without marking the host folio dirty.
+> 
+
+Valid point, I'll unmap if things fail.
+
+Thanks,
+Steve
