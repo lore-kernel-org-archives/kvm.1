@@ -1,101 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795127802;
-	b=TM9bNodyqt7cdG87DpWexgmjsBKkOcqdm6wmQ6YW9dTVpPKacw+M637dpQT+RNG4uvxl
-	 uBtlqo625cPSNCx7vTTr1xv4+HQBEjMGlAvFN+ur9toLgE5V7LNX5P9wU5fYAA4wrIT3W
-	 hHW3OyljhRrq9KjM+oHnUb9/5sgGKASq26jVMV56nc0TiR0Bmt2JwZgihN7/H4MujEQ9h
-	 ceufyGq8owQuTiJ+Fgt36TO0zUKxCARERTQhpUPcG3uOqRGANUkvgYaBYhmYxQ2N1Nguc
-	 ENF3CaRhgOgxw1n4RLoKq3gOQKU4Kt3R9Zkx86q4vA4DHK1PquX4ESBx9EJrPkuVKAg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795127802;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.200
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795132001;
+	b=1mz2179GPE3BT7T/d7pxnH/l31NdI8+PBfT+K0Q4bLdK+rmuvES3+8+RtNiKl3T3jxHI
+	 SKe50FWZTVS0Fin5WRO0PbkgjdSZC9K622sI8gZxyLR0CwDcjmQtlLwX8/lEgP9SRfsOA
+	 4MIiHEho7WoJ+xcyDeAxNzeIOqaACB/lYYxgCvB/ylfhN9+B5IMVI3OYi3XZoRhOjZ51E
+	 1Ixhrdi9YJiEdUnkQS5v7hyRFBy/HL16MtrFsdWh/WVZBSMMfnrZbI/a/a1Eqz8k+6Spr
+	 wcrfFJCtLpUBLhD/2vilnx+B8y9rNJNOWh2jV/Fg6Cq9xWESUcsJPLrrxu2knJyYZQQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795132001;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=vm1Xggef21FFhVVRJr8Gw21MyLFEoXYAO2V+bkXqunQ=;
-	b=Ts2arBCA+aOUS6GXk8gKz32h4JUcm/7MVjk0nmYIgafqZy8tQPnI0wUVKuAoIyDnY3dS
-	 xCBTZfpqttvsg9KVA9cg/xtRxvrndT8VL11eCOqDPllvZINpsdNdPqvYNF0/nuKzt5RbJ
-	 tYeDd2w1IpXm7hdrMFiRkM+VcUbQwaz2RcPTCkFsAZOI/ou/7uBbZ5DbKMCpFFM7Kd4HF
-	 zkYzQ/0jIdCSjKCoCS76g9098BYfXzAHxjt1Jw1lGfFuYm+PwStRy9cmIIpD8bd9iT3z2
-	 y37NFU5URBXYBEqJ/2Ff+fsUbpgwFO2g0jA6p2zS1p6uTBE8GJq4KLeHZBEyLqxQ2kw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=Mmj7uiRX9ASaqnLzbDsK8IjMEcNt8OmjrVBlhYSaY/Y=;
+	b=FlsjY2YzZ7iFVQ7ykkZd3Lw294oCRw4QK4LC30t0yYgaiNS5eKwFilbPY6Ci8JI+jHKo
+	 +748kbor4jUoZAwUlvULhGG+5IkOIdy8gok5tLpw+pae6VR6ZOIhlurYxsMUEXy8q6Lci
+	 RvD0+/BuKgxfg5daS0ySRRfE4malGael8MvCtx824ujNtbHO7pYRnS27roHOjIUDgKSgN
+	 cvD1rslbCXrfv9oSw+G8bvHvdNANWvd6mTXAySq/0QkhwofXAyswOzpoaPPsitVDpZqoh
+	 7/hFc5Xpal0oimTeyZ2klUO3uPBWfMCBAiM/pY+1Ha1/ihx2YGemPMaTU7TKoY5W+Ig==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=RXEhT0pl;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.45
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PfPCB2B8;
+	arc=none smtp.remote-ip=209.85.215.200
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479EF606A337
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 22:36:42 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 479EF606A337
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CCE606A325
+	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 23:46:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8CCE606A325
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=RXEhT0pl
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6ba2bd43dd8so1905a12.1
-        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 14:36:42 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795127801; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FWsElmrN6Q73svSCriWzqdCiE+e/QQdBQ6hMUyMhI89ZN5usAGjHGslFam+8mTnDhy
-         9jkRSqUQN+NYR1UKe1MJON3xIH33I7oBL20lvhDhL2ieWw/gGU0cnlVgTNwnZ1VITULI
-         n/zRIcVGR9izwxV3vB6JtPj+L54tKYLvVm0VTkt95/lXaXjpDSKLP5+9NHkp3CXd9NnB
-         hXIGwZRzRQQEmKMi4JShVju06TXD1244nWoDsxJXWi9AsF5X8a/i4fTE5olW2UcjXP8M
-         JntgQ2aKr6uXXJKrPuEjKMVzXPSZDtaBmng/kaFxlrMY6ntmBjaRE2UqQb249yQV3srF
-         FUBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vm1Xggef21FFhVVRJr8Gw21MyLFEoXYAO2V+bkXqunQ=;
-        fh=jy9b9TIUhEGl2VaKTRB1/2/0H66muDu67sGrZ2B5nQk=;
-        b=MgW9BuQuhKRy9PSrhr2PwF9yxof+AfXyEjsaEGSHi4cLwmOLnx3FCUyIj4x84fcI/X
-         AnHnbkIigrU8AkaKpeHXKlpQaVzr8byb9voXMqkzzpW5nA6Rjw8eAl9AMy2suF2Tl8IY
-         Wrig/PVkh2U4/+AGgqgUh1FkH1oOzUzLMWCv49dngZsopStMHusP/DXbOceS7aB6m/pB
-         QLgL/mYklvqBPG1Cqfp82QB43Oj8prmmQDA4HDfzesKlL3gQNaVVuiqS8fJTeZd9vAEw
-         RHPI/Hxv/aBHma3qsTjZ0sziUsX+uMIiF9+CZBd6MlPfb4OTwLfs1XZJtJXfAzJu2ifd
-         7kxg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PfPCB2B8
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cdd769cc9deso162112a12.0
+        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 15:46:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795127801; x=1795732601; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=vm1Xggef21FFhVVRJr8Gw21MyLFEoXYAO2V+bkXqunQ=;
-        b=RXEhT0plXkn3AdQum7MiLXCIvTGAIOr4yEaPZ3MzJ8JOaxk1V3+pwEIwcTBsT8SB/D
-         W15L0Nq9UWdEPv6UZN1utcQNUjNqQcqnJGRV4aDWPM4ePL/zva0RMDP14KddpBbkKCPj
-         fkTpxyKFR7MZ4wk0W48TJR4KgR5CXsaF6g1Nz9ab2DsLMQyRURIYMIZx6/8A6CQFg0dH
-         VDLK+oc4q9SC/Wz61rfAR64NFUgffHWXq10895FznA6lGE2CXX5PDh/++Ch5MbC3PQZa
-         dcttRl98J3YejFLgV+cbxgkAjaJUGOhVAHAfRNuUI9s9Ue+k1VAoM3OuLZXxu2uxs5fo
-         lyAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795127801; x=1795732601;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20260707; t=1795132000; x=1795736800; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=vm1Xggef21FFhVVRJr8Gw21MyLFEoXYAO2V+bkXqunQ=;
-        b=A/3SsAFlUK7d9f+39s5iZUWNDuTVHgRE3dZO9zrVFgvSp4kGg+Tm4VOb7p3xHnl86T
-         8jmfH7CYA7194MK096lMPytnJwYoicN7nBVZM1xi+SaOHOZPfWDGS5RBowryvAr3AmwK
-         2GadtPJK49mWLciZKdeHQdY0Fo+SbU+qigi/hwEatGc4WootRQRG0Fu2jFJzdJLPpyrE
-         xpAmp39ACABJDAFq4h8TCdOz7ksvjH/rWxCMQU1aIyk/JpN7X9N3EryDHL/6SIl/ldex
-         uwA7vl0agb3nj74866a43ZOmSaDVz16J5lh7/w/aayZ88UUE1uxx2q++ExuqihO9GxUs
-         b7Wg==
-X-Forwarded-Encrypted: i=1; AL+hErGtLPoTDmfnu3QEggqT+e8G82Yr52Rg/amSHyA3Oes8Tfd1UpCyZDCQRwOlc1b+DU3AqE8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9NL3SrLPRwXWtn5srDsdUfw1ehaBwy+3lhQ9BfwfbnUlFsybbO
-	/tsxsy7OzYHG2vxdvK0aQEzo/Q9YHU2lQsvDEUVNbeks+q3BQEdXK2JKUsW4QtwRITzNIc1sBvi
-	wx6jhrbrprkfICxifXyCeJpTa/YqnTxiPbG1I9PiW
-X-Gm-Gg: AZFdTZeOHe5hRKNNgi9rdK4jt9sHFfFBKNicNgJaZdhDzb22c+qjPBsW1FahZdfI9z7
-	r3T76cinGdP0R/FwSmtO0xUgLbegBubbkNLkwCaxV2Y4u72erhBZaqDZqyNUwNvAn/Ucm63qLNL
-	vWlgoJpMbqQd3ve9OYyzRzLYbPI6Or06bhYh4sy2u27Z+w+QanUYzzE1dQGbsZYEcfEFK4V+Is/
-	DUj7QTEdMo89E0pcDw3J7UuOOd02R6qHptv3qkrufkNrSB4QdTQbeJ9spPuinkDDihaBm3fbcPk
-	DL6JWeqURApgj3+TV+hEq1ciMwTs37SZzrnHgzBp4TZ0DGddeTgurvMhANmVXdVi8IsXk+vXTKo
-	LbgrURjZgf58PTYfUKTWc5XHIU4yXcvjIjvETsysILSFk3Fotni7TPvAN9mQ7+1rsDQbuPmfYMH
-	AIRPdIT7hxBZFDvVSCcz8NMo2aVVyvgzdq6J0HrXPhmdHyzlpnbPeEbA==
-X-Received: by 2002:aa7:d155:0:b0:6b7:7598:67f9 with SMTP id
- 4fb4d7f45d1cf-6ba3d4d761fmr11184a12.8.1795127800271; Thu, 19 Nov 2026
- 14:36:40 -0800 (PST)
+        bh=Mmj7uiRX9ASaqnLzbDsK8IjMEcNt8OmjrVBlhYSaY/Y=;
+        b=PfPCB2B8+jbTRNukEIfvY9mNcYdpPVkb7icW4/v3iBUNHJl1OOE1qUKWzozDd37S13
+         sjjeX8nHWD5DHa+nn1EGYsbLhtcJ4LAgbPeclqFWYNmuogs1K+ig03ihqqClRx4yBVVA
+         uGirnnCCqpqQvpOlveAjpUKeezcO0yAWpFRC/wocIi4tpsNXdwKEorXv9uCc9Xd3Dh6r
+         2O4AFlC7eDx3biYhffE5Nu4LaxZh/uwAkaRq8mfhaEqjhmiFpdtDp2GhQxsEY9cVmzbN
+         AlMJ2UHz/yfsGi/S6QsHYhN0aO4BnMS2jUDMziOlJMft+cA4DEwIxQdTLWCaHziLurHH
+         O5hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795132000; x=1795736800;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Mmj7uiRX9ASaqnLzbDsK8IjMEcNt8OmjrVBlhYSaY/Y=;
+        b=o0B1zfF6j548K+ZlE/oh7Ap0Mkiq8sAnr5vtPQLm7V96jzSwlhqoD1yb+AA5XjRDPj
+         m3zqmPK89JcUUdjlgdGJwmNjlNBnphvrMJnk0a35i23EzPS/efToxKrAfmnNcMDf+iMy
+         Zv1oz/QxssRVNPjdq/iK/rL+I2YVqYaEmG+BDuHcTQWRHnk4y2T4R1j/SP8A6yzwtS1V
+         SLPWf2wk9k8jfHIV8yIK5a4lWgRUmR3rqnvknYHE6o2Wg7shVki+Id4SufdlyJDrk17z
+         g/7T0ingmtKYQDaS78o0+pf9Y+x0S2qMLAV5alRHtcrQyWfEgA3fideot/Hdd0+f+Ol5
+         krXQ==
+X-Forwarded-Encrypted: i=1; AL+hErEzfz1HGhiqwXxlkFe+x4+/xujpAdqAfkBOLfjE9XPcGKGNz6E+Q7R4045Ls8xeaSVoy6U=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/Pm3SRdyeZK8QIYwI109e/iCjycd8QxhYwR0xPpeOhuvAIjt+a
+	MvgKwmoEf66TISFqpi2twJEol272VUyuCn7NozNtVCyPsiHIYXRXEo/bL8OmxC5014KJXpwOYyw
+	MXRB++A==
+X-Received: from pjbbx13.prod.google.com ([2002:a17:90a:f48d:b0:3b1:cec2:5b9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2d88:b0:3b4:e6e:1aba
+ with SMTP id 98e67ed59e1d1-3b41c96fdacmr908217a91.59.1795131999774; Thu, 19
+ Nov 2026 15:46:39 -0800 (PST)
+Date: Thu, 19 Nov 2026 15:46:38 -0800
+In-Reply-To: <6aff732e.d9dac7f4.1ece0.0000.GAE@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,34 +77,105 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20261019210532.378628-1-shivansh.dhiman@amd.com> <20261019210532.378628-12-shivansh.dhiman@amd.com>
-In-Reply-To: <20261019210532.378628-12-shivansh.dhiman@amd.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 19 Nov 2026 14:36:27 -0800
-X-Gm-Features: Aa3M54rIx69mqx_bcZgWUQFRTJzOQnVb9GX5k2DrbhvJwVsL5RoulXdsSWhW67o
-Message-ID: <CALMp9eRSN21gJbRPzsp6x0Tag=d6RF4_tJS8+bvHOEmu7XYD3Q@mail.gmail.com>
-Subject: Re: [PATCH v2 11/12] KVM: SVM: Add LBR/PMC freeze support
-To: Shivansh Dhiman <shivansh.dhiman@amd.com>
-Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de, 
-	mingo@redhat.com, peterz@infradead.org, acme@kernel.org, kvm@vger.kernel.org, 
-	x86@kernel.org, yosry@kernel.org, thomas.lendacky@amd.com, 
-	nikunj.dadhania@amd.com, sandipan.das@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <6aff732e.d9dac7f4.1ece0.0000.GAE@google.com>
+Message-ID: <av-KXoa9oozbmHa8@seanjc-mac.roam.internal>
+Subject: Re: [syzbot] [kvm-x86?] WARNING in __nested_vmx_vmexit
+From: Sean Christopherson <seanjc@google.com>
+To: syzbot <syzbot+483ee9b97423483ca602@syzkaller.appspotmail.com>
+Cc: bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com, 
+	pbonzini@redhat.com, syzkaller-bugs@googlegroups.com, tglx@kernel.org, 
+	x86@kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Oct 19, 2026 at 2:09=E2=80=AFPM Shivansh Dhiman <shivansh.dhiman@am=
-d.com> wrote:
->
-> Add support for the LBR and PMC freeze-on-PMI feature (CPUID
-> 0x80000022.EAX[2]). This feature is very often used with LBRv2. Permit
-> the guest to enable freezing via DEBUGCTL only when the feature is
-> advertised to it, and advertise it accordingly.
+On Thu, Nov 19, 2026, syzbot wrote:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    7475ea8b5861 Linux 7.4-rc2
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=12372a4e580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=1cf189394a856f11
+> dashboard link: https://syzkaller.appspot.com/bug?extid=483ee9b97423483ca602
+> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1360d4d9580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17839409580000
+> 
+> Downloadable assets:
+> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-7475ea8b.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/db4e8a9a4461/vmlinux-7475ea8b.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/2abcfcabee20/bzImage-7475ea8b.xz
+> 
+> AI-generated root cause summary:
+> When an L1 vCPU encounters a hardware VM-Fail on VM-Entry, `vmx_handle_exit()`
+> processes the failure and returns KVM_EXIT_FAIL_ENTRY to userspace without
+> clearing the `vmx->fail` flag. If userspace then calls KVM_SET_NESTED_STATE with
+> KVM_STATE_NESTED_GUEST_MODE set, the vCPU enters guest mode without resetting
+> `vmx->fail`. If the VM is subsequently torn down without another KVM_RUN,
+> `vmx_leave_nested()` synthesizes a nested VM-exit where `__nested_vmx_vmexit()`
+> observes the stale `vmx->fail == 1` and reads VM_INSTRUCTION_ERROR from vmcs02
+> (which was never launched), triggering a WARN_ON_ONCE because
+> VM_INSTRUCTION_ERROR is not VMXERR_ENTRY_INVALID_CONTROL_FIELD.
+> 
+> full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=483ee9b97423483ca602
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+483ee9b97423483ca602@syzkaller.appspotmail.com
+> 
+> kvm_intel: set kvm_intel.dump_invalid_vmcs=1 to dump internal KVM state.
+> ------------[ cut here ]------------
+> vmcs_read32(VM_INSTRUCTION_ERROR) != VMXERR_ENTRY_INVALID_CONTROL_FIELD
+> WARNING: arch/x86/kvm/vmx/nested.c:5149 at __nested_vmx_vmexit+0x2734/0x4000 arch/x86/kvm/vmx/nested.c:5149, CPU#1: syz.0.17/6007
+> Modules linked in:
+> CPU: 1 UID: 0 PID: 6007 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> RIP: 0010:__nested_vmx_vmexit+0x2734/0x4000 arch/x86/kvm/vmx/nested.c:5149
+> Code: ff ff e8 0f a0 67 00 90 bf 0e 44 00 00 e8 c4 ed f8 ff 90 31 db e9 01 ec ff ff e8 f7 9f 67 00 e8 f2 1b 48 0a e8 ed 9f 67 00 90 <0f> 0b 90 e9 6a ff ff ff e8 df 9f 67 00 90 bf 00 44 00 00 e8 94 ed
+> RSP: 0018:ffffc9000338f960 EFLAGS: 00010293
+> RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+> RDX: ffff88802c514b00 RSI: ffffffff81a6e113 RDI: 0000000000000005
+> RBP: ffffc9000338fac0 R08: 0000000000000007 R09: 0000000000000000
+> R10: ffff888035f7003f R11: 0000000000000000 R12: 0000000000000001
+> R13: ffff8880382442ec R14: 0000000000000000 R15: ffff888035f70000
+> FS:  00005555645d0500(0000) GS:ffff8880d4571000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 000055b5cc929ff0 CR3: 000000003db67000 CR4: 0000000000352ef0
+> Call Trace:
+>  <TASK>
+>  nested_vmx_vmexit arch/x86/kvm/vmx/nested.h:46 [inline]
+>  vmx_leave_nested arch/x86/kvm/vmx/nested.c:6895 [inline]
+>  nested_vmx_free_vcpu+0xb3/0xd0 arch/x86/kvm/vmx/nested.c:389
+>  vmx_vcpu_free+0x94/0x340 arch/x86/kvm/vmx/vmx.c:7519
+>  kvm_arch_vcpu_destroy+0x159/0x3e0 arch/x86/kvm/x86.c:9558
+>  kvm_vcpu_destroy virt/kvm/kvm_main.c:477 [inline]
+>  kvm_destroy_vcpus+0x24e/0x3c0 virt/kvm/kvm_main.c:497
+>  kvm_arch_destroy_vm+0xc7/0x230 arch/x86/kvm/x86.c:10129
+>  kvm_destroy_vm virt/kvm/kvm_main.c:1313 [inline]
+>  kvm_put_kvm+0x556/0xc00 virt/kvm/kvm_main.c:1350
+>  kvm_vm_release+0x65/0x80 virt/kvm/kvm_main.c:1375
+>  __fput+0x3fb/0xb50 fs/file_table.c:512
+>  fput_close_sync+0x118/0x250 fs/file_table.c:618
+>  filp_close_sync+0x75/0xa0 fs/open.c:1574
+>  __range_close+0x4a6/0x8b0 fs/file.c:919
+>  __do_sys_close_range fs/file.c:1003 [inline]
+>  __se_sys_close_range fs/file.c:954 [inline]
+>  __x64_sys_close_range+0x1f8/0x430 fs/file.c:954
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+>  do_syscall_64+0x123/0x7b0 arch/x86/entry/syscall_64.c:89
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7f5f6ab9fb19
+> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007fff0931e598 EFLAGS: 00000246 ORIG_RAX: 00000000000001b4
+> RAX: ffffffffffffffda RBX: 00007fff0931e680 RCX: 00007f5f6ab9fb19
+> RDX: 0000000000000000 RSI: 000000000000001e RDI: 0000000000000003
+> RBP: 000000000000e232 R08: 0000000000000001 R09: 0000000000000000
+> R10: 0000001b2fb20000 R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007f5f6ae25fac R14: 00007f5f6ae25fa8 R15: 00007f5f6ae25fa0
+>  </TASK>
 
-What about software-incremented events with the mediated PMU
-(kvm_pmu_instruction_retired() and kvm_pmu_branch_retired())? In
-arch/x86/kvm/pmu.c, kvm_pmu_trigger_event() doesn't check
-GLOBAL_STATUS_COUNTERS_FROZEN before incrementing counters, and
-kvm_pmu_incr_counter() doesn't set GLOBAL_STATUS_COUNTERS_FROZEN or
-GLOBAL_STATUS_LBRS_FROZEN in pmu->global_status when a counter with PMI
-enabled wraps to zero while FPMCI or FLBRI is set in guest DEBUGCTL.
+Oh, _now_ you find it on an upstream kernel? :-D  This presumably the same thing
+that was fixed by:
+
+#syz test https://github.com/kvm-x86/linux.git 40c0e9dd6b6dfbdbbdbf5d7936d2819b2d84d25c
