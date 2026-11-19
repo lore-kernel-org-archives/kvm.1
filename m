@@ -1,68 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.10
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795074540;
-	b=HoEHuazaZfFkLQcqSIwhbRcbXfuTci4q9LVG4m1E4DxhwXUxU4ckl8k68mB1kKoA4JRX
-	 2NLPHIN0lVxvzqJ/StSXHQbO90UULyCrzsz0ekQYPLfrURY9IKXBF05dijdTN0jdvV6Ya
-	 9nnRlOz8ZGr4juyoZhwAvHNt6WN11AguDMTZb90SJzVwOXzfd2TBrDszzfxTJwNst7M59
-	 Ik9JwRdNmMAcq0RTjB2LUh/HjDqUYcHCeaNf2fK+Qg2pn67ub4Yo+FdH46ZvqLj417e7T
-	 bjyMhwEgStxKjpwifM5sdupZ6oXmKWWRteac0X4Jz3FiDv+DqUfExN+gyF5pyEVYQbg==
+	t=1795074708;
+	b=3LNvfd2UPHKfy7BGFHsPZkAm3LGb5pI9tmG93Vbf0/U+cuqcYK7QMLzVi5+CGF+3uVEv
+	 UvDhP52shLw34YPEPOSpyfnGBkXxKNmHgUjusoBgPoEhOQSJ4HgEo7YZ0oIOSWQ76Fm6w
+	 mPK57oyDM0HHwq/NizPE86jDWgbAuUpuiMLo0B1TlH+wbg2TJ/9FT7CYtrn/dw8d2I6lz
+	 PthtTPOzibtGqrQDZU6ItlFeKesNOcMolsa5gyRfdpM0ecse067WWbiqyz7zYONsNCxEE
+	 7gkGsAoXG4bNyW8eL3oHjOFX6/5HxMneiHbIe+i7IfjQ1x/sgCBN2998SG4QaxbsGkw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795074540;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	a=rsa-sha256; c=relaxed/relaxed; t=1795074708;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=2EGfK2lZXx7T9MpCgqV5Sq8wrQL5YL7OFsfI7ZoTz+Y=;
-	b=d4L7aMDLd27oh7yuGpIy9SePbi1giW0B7g1uMFv8xk9bdQdvDl3VpGYdJO/YziTX2ONT
-	 8QcNGjlOr8Ild+4cWFJfFy4SWyxbnXR3SKICmEFft9m/OABqyISWnL5o9Ml4JztGYpl3+
-	 PgE2CcRyPIoDt0Mbsk/RJ7cofzSldtnsi1DqOvFYLFX1vm4xq9lIe0Z/v95StfFRZRF5K
-	 UCPRYoI02ZQY8Uxjs6Bf0b7VAjtLddpKLNKa7E6R9vZy5jxvsTuFo/8XMpCuAD4i+vvV7
-	 yv5xYX7QYl47ZMcRvvuuxC7BHciXp1qKUDhkgNGN6oIZpAGBvtgznj8d8TfxQOsw2Hw==
+	bh=/xMcofbYLH/BQGqdyQHY3s09vTq6s+sJcSXrp+UZcQQ=;
+	b=3d1rQSxh7DzUB78KuWZxM18y0+qvsx2/osaB8NIfIw4XyMDD0g5WFjCr7ronUbJsP3Wq
+	 uXQCMJa+Mq+/GC7/lmhAGIkHYWjmaNOMPIGjwBrjijtwjiusgiRWc1tpukYCeG9ssfCeB
+	 9N9uhc1J1VRjDmcyhvP5FCZagO0keEVxDqRzPs4G48Xqj64F/+afxJnxiViG5pf1g22xE
+	 YKIFCa1msQCAMcp3y5t4Hw023tj4hibixLIyOX9indUMttFe6Da6vctyLeMHtplsg4B+Z
+	 Eb55smWFuKudK+qhsY96NicTHMyivYEz17EJ+4wmBjFTqUFI3OJfX0bj2E2jeGHRMYw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=JlbLmPyJ;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5C5606A326;
-	Thu, 19 Nov 2026 07:48:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F5C5606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V5F6EWtP;
+	arc=none smtp.remote-ip=198.175.65.10
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263D6606A320;
+	Thu, 19 Nov 2026 07:51:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 263D6606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=JlbLmPyJ
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 486481575;
-	Wed, 18 Nov 2026 23:48:56 -0800 (PST)
-Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AE43F3FA7A;
-	Wed, 18 Nov 2026 23:48:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795074539; bh=S1M79WGliP/lxWdN+K7Fd2XbTpS9t6SGFAKJuLVpW88=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JlbLmPyJJnCwhWQbsry7xcElMDKIhNCUUl6erCKn7pRLZbkCdGQQ+ASHpd8HVfCma
-	 Vcv6JGFy2v761ROTPdp1/lUnSccJhUDU2BoPDgH4QFTGLcA4xQk5euxGcJlKmSoudW
-	 jqf5AlATFXena9creXGOsHunLkTfsZpKybqEtW34=
-Date: Thu, 19 Nov 2026 07:48:42 +0000
-From: Wei-Lin Chang <weilin.chang@arm.com>
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Kohei Enju <enju.kohei@fujitsu.com>
-Subject: Re: [PATCH v3 09/11] KVM: arm64: CCA: Support runtime faulting of
- memory
-Message-ID: <hwmtiumovuqyu7js5eqd4xt3h2zsuhjwkcygnw62hp5rrar5ph@5fhmv46iio2r>
-References: <20261116164358.142785-1-steven.price@arm.com>
- <20261116164358.142785-10-steven.price@arm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V5F6EWtP
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795074709; x=1826610709;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+vBK1UvG33M73tQvAAVwvyLux0vIdvn8UJxqBDjdbtc=;
+  b=V5F6EWtPBg1N9y6Cl6cNdGzVWpYmXL85BpTbToszECb7I4qUOzb1EQJa
+   yS7rqg9kmEv6RUDKEGNIoKXmT4kOTRMRyV3xoM5IAdHopg80ShLH+jEPo
+   OysV6afiwJkYNfRCmAkl0EHrfsrMyKOEAiN3j4LZ5glCTbnPGxZraWaXa
+   vXRMRqAlZd0zfqb+ZuTL6luztbFD3iZBWob8lit4q7gRN4IpGXWKWLJ1O
+   Im4q9aJiGVlmCzzG3uSEXs/ASuWnR/E5zTqEl5oUnbk2dR93IoD9WC3Ee
+   8ZyfJGWePCR4XhEgsu6CryBd3sefCJ28260mOWlPuofmSIum/X8m6+DxP
+   A==;
+X-CSE-ConnectionGUID: wK8+UVghRraqfPWSp4BYVA==
+X-CSE-MsgGUID: 0vkofEAtQWaUr0cXLT4Abg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3833635"
+X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
+   d="scan'208";a="3833635"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 23:51:48 -0800
+X-CSE-ConnectionGUID: RDOcz9zFR+u9DyrXHiCCvA==
+X-CSE-MsgGUID: xSAgjB7xTLWP9PsKVyyFew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
+   d="scan'208";a="10358887"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 18 Nov 2026 23:51:44 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xTwvm-00000001FLu-0FqS;
+	Thu, 19 Nov 2026 07:51:42 +0000
+Date: Thu, 19 Nov 2026 15:50:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: Chengwen Feng <fengchengwen@huawei.com>, alex@shazbot.org, jgg@ziepe.ca,
+	helgaas@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, wathsala.vithanage@arm.com,
+	wei.huang2@amd.com, zhipingz@meta.com, wangzhou1@hisilicon.com,
+	wangyushan12@huawei.com, liuyonglong@huawei.com,
+	kvm@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v21 09/13] vfio/pci: Add basic NO-ST TPH VFIO device
+ feature support
+Message-ID: <202611191515.xWHTgH9X-lkp@intel.com>
+References: <20261118091238.45992-10-fengchengwen@huawei.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -74,242 +88,70 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261116164358.142785-10-steven.price@arm.com>
+In-Reply-To: <20261118091238.45992-10-fengchengwen@huawei.com>
 
-Hi Steven,
+Hi Chengwen,
 
-On Mon, Nov 16, 2026 at 04:43:55PM +0000, Steven Price wrote:
+kernel test robot noticed the following build warnings:
 
-[...]
+[auto build test WARNING on awilliam-vfio/next]
+[also build test WARNING on pci/next pci/for-linus linus/master v7.4-rc3 next-20261116]
+[cannot apply to awilliam-vfio/for-linus]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> @@ -1791,12 +1799,18 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
->  	void *memcache = NULL;
->  	gfn_t canonical_gfn;
->  	int ret;
-> +	bool is_private = false;
->  
-> -	if (!perm_fault) {
-> +	if (KVM_BUG_ON(!kvm_slot_has_gmem(s2fd->memslot), kvm))
-> +		return -EINVAL;
+url:    https://github.com/intel-lab-lkp/linux/commits/Chengwen-Feng/PCI-TPH-Fix-pcie_tph_get_st_table_loc-field-extraction/20261118-171226
+base:   https://github.com/awilliam/linux-vfio.git next
+patch link:    https://lore.kernel.org/r/20261118091238.45992-10-fengchengwen%40huawei.com
+patch subject: [PATCH v21 09/13] vfio/pci: Add basic NO-ST TPH VFIO device feature support
+config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20261119/202611191515.xWHTgH9X-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261119/202611191515.xWHTgH9X-lkp@intel.com/reproduce)
 
-I feel this is being too cautious, gmem_abort is always run after a
-kvm_slot_has_gmem() check.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611191515.xWHTgH9X-lkp@intel.com/
 
-> +
-> +	if (!perm_fault || kvm_arch_has_private_mem(kvm)) {
->  		memcache = get_mmu_memcache(s2fd->vcpu);
->  		ret = topup_mmu_memcache(s2fd->mmu, memcache);
->  		if (ret)
->  			return ret;
-> +	}
-> +	if (!perm_fault) {
->  		if (kvm_is_nested_s2_mmu(kvm, pgt->mmu)) {
->  			mapping = kmalloc_obj(struct kvm_guest_s2_mapping, GFP_KERNEL_ACCOUNT);
->  			if (!mapping)
-> @@ -1805,7 +1819,7 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
->  	}
->  
->  	s2vi.vma_pagesize = PAGE_SIZE;
-> -	s2vi.gfn = ALIGN_DOWN(s2fd->fault_ipa, s2vi.vma_pagesize) >> PAGE_SHIFT;
-> +	s2vi.gfn = gpa_to_gfn(kvm_gpa_from_fault(kvm, s2fd->fault_ipa));
->  	canonical_gfn = get_canonical_gfn(s2fd, &s2vi);
->  
->  	write_fault = kvm_s2_fault_is_write(s2fd);
-> @@ -1817,13 +1831,35 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
->  	/* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
->  	smp_rmb();
->  
-> +	if (kvm_arch_has_private_mem(kvm)) {
-> +		switch (kvm->arch.vm_flavor) {
-> +		case VM_REALM:
-> +			is_private = kvm_realm_is_private_address(&kvm->arch.realm,
-> +								  s2fd->fault_ipa);
-> +			break;
-> +		default:
-> +			break;
-> +		}
-> +
-> +		if (is_private != kvm_gmem_is_private_gfn(kvm, canonical_gfn)) {
-> +			if (!result)
-> +				kvm_prepare_memory_fault_exit(s2fd->vcpu,
-> +							      gfn_to_gpa(canonical_gfn),
-> +							      PAGE_SIZE,
-> +							      write_fault, exec_fault,
-> +							      is_private);
-> +			kfree(mapping);
-> +			return -EFAULT;
-> +		}
-> +	}
-> +
->  	ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, canonical_gfn, &s2vi.pfn, NULL);
->  	if (ret) {
->  		/* If result is non-NULL this is a synthetic fault. */
->  		if (!result)
->  			kvm_prepare_memory_fault_exit(s2fd->vcpu, gfn_to_gpa(canonical_gfn),
->  						      s2vi.vma_pagesize, write_fault, exec_fault,
-> -						      false);
-> +						      is_private);
->  		kfree(mapping);
->  		return ret;
->  	}
-> @@ -1846,6 +1882,16 @@ static int gmem_abort(const struct kvm_s2_fault_desc *s2fd,
->  		goto out_unlock;
->  	}
->  
-> +	switch (kvm->arch.vm_flavor) {
-> +	case VM_REALM:
-> +		prot &= ~KVM_PGTABLE_PROT_X;
-> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, s2vi.pfn,
-> +				    PAGE_SIZE, prot, memcache);
-> +		goto out_unlock;
-> +	default:
-> +		break;
-> +	}
-> +
->  	if (perm_fault) {
->  		/*
->  		 * Drop the SW bits in favour of those stored in the
-> @@ -2047,7 +2093,8 @@ static int kvm_s2_fault_get_vma_info(const struct kvm_s2_fault_desc *s2fd,
->  	 * mapping size to ensure we find the right PFN and lay down the
->  	 * mapping in the right place.
->  	 */
-> -	s2vi->gfn = ALIGN_DOWN(s2fd->fault_ipa, s2vi->vma_pagesize) >> PAGE_SHIFT;
-> +	s2vi->gfn = kvm_gfn_from_fault(kvm, ALIGN_DOWN(s2fd->fault_ipa,
-> +						       s2vi->vma_pagesize));
->  
->  	s2vi->mte_allowed = kvm_vma_mte_allowed(vma);
->  
-> @@ -2227,7 +2274,7 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
->  	 * possible.
->  	 */
->  	if (mapping_size == PAGE_SIZE && s2vi->max_map_size != PAGE_SIZE) {
-> -		if (perm_fault_granule > PAGE_SIZE) {
-> +		if (perm_fault_granule > PAGE_SIZE && !kvm_vm_is_realm(kvm)) {
->  			mapping_size = perm_fault_granule;
->  		} else {
->  			mapping_size = transparent_hugepage_adjust(s2fd, &pfn, &gfn);
-> @@ -2242,12 +2289,15 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
->  	if (!perm_fault_granule && !s2vi->map_non_cacheable && kvm_has_mte(kvm))
->  		sanitise_mte_tags(kvm, pfn, mapping_size);
->  
-> -	/*
-> -	 * Under the premise of getting a FSC_PERM fault, we just need to relax
-> -	 * permissions only if mapping_size equals perm_fault_granule. Otherwise,
-> -	 * kvm_pgtable_stage2_map() should be called to change block size.
-> -	 */
-> -	if (mapping_size == perm_fault_granule) {
-> +	if (kvm_vm_is_realm(kvm)) {
-> +		ret = realm_map_ipa(kvm, s2fd->fault_ipa, pfn, mapping_size,
-> +				    prot, memcache);
-> +	} else if (mapping_size == perm_fault_granule) {
-> +		/*
-> +		 * Under the premise of getting a FSC_PERM fault, we just need to relax
-> +		 * permissions only if mapping_size equals perm_fault_granule. Otherwise,
-> +		 * kvm_pgtable_stage2_map() should be called to change block size.
-> +		 */
->  		/*
->  		 * Drop the SW bits in favour of those stored in the
->  		 * PTE, which will be preserved.
-> @@ -2306,15 +2356,16 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd,
->  	/*
->  	 * Permission faults just need to update the existing leaf entry,
->  	 * and so normally don't require allocations from the memcache. The
-> -	 * only exception to this is when dirty logging is enabled at runtime
-> +	 * exceptions are when dirty logging is enabled at runtime
->  	 * and a fault needs to collapse a block entry into a table.
-> +	 * Realms can also require new RTT levels when replacing a mapping.
->  	 * Under pKVM a permission fault can also collapse pages into a block,
->  	 * which needs a fresh mapping object, and the hypervisor requires the
->  	 * min-pages memcache even when the install allocates nothing.
->  	 */
->  	memcache = get_mmu_memcache(s2fd->vcpu);
->  	if (!perm_fault || memslot_is_logging(s2fd->memslot) ||
-> -	    is_protected_kvm_enabled()) {
-> +	    is_protected_kvm_enabled() || kvm_vm_is_realm(s2fd->vcpu->kvm)) {
->  		ret = topup_mmu_memcache(s2fd->mmu, memcache);
->  		if (ret)
->  			return ret;
-> @@ -2340,12 +2391,22 @@ static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd,
->  	return kvm_s2_fault_map(s2fd, &s2vi, prot, memcache, result);
->  }
+All warnings (new ones prefixed by >>):
 
-I see that the changes to gmem_abort() and kvm_s2_fault_map() are more
-significant, and can possibly be turned into its realm version leaving
-the original unchanged. With this can we give realm_vm_s2_ops its own
-.vm_mem_abort? Something like:
+   drivers/vfio/pci/vfio_pci_config.c: In function 'vfio_tph_vcap_rewrite':
+>> drivers/vfio/pci/vfio_pci_config.c:1130:25: warning: unused variable 'pdev' [-Wunused-variable]
+    1130 |         struct pci_dev *pdev = vdev->pdev;
+         |                         ^~~~
 
-First, make user_mem_abort() take a function pointer, call it at the
-current kvm_s2_fault_map() place.
 
-Then realm_vm_s2_ops.vm_mem_abort = realm_mem_abort()
+vim +/pdev +1130 drivers/vfio/pci/vfio_pci_config.c
 
-And in realm_mem_abort() do:
+  1126	
+  1127	static void vfio_tph_vcap_rewrite(struct vfio_pci_core_device *vdev, int pos)
+  1128	{
+  1129		__le32 *vptr = (__le32 *)&vdev->vconfig[pos + PCI_TPH_CAP];
+> 1130		struct pci_dev *pdev = vdev->pdev;
+  1131		u32 val = le32_to_cpu(*vptr);
+  1132	
+  1133		if (!pcie_ext_tph_supported(pdev)) {
+  1134			/* Remove extended TPH if root-port doesn't support */
+  1135			val &= ~PCI_TPH_CAP_EXT_TPH;
+  1136		}
+  1137	
+  1138		if (vdev->tph_policy == VFIO_PCI_TPH_POLICY_NO_ST) {
+  1139			/*
+  1140			 * NO-ST policy: mask IV/DS mode, ST location and ST size fields.
+  1141			 * Userspace only sees NO-ST capability.
+  1142			 */
+  1143			val &= ~(PCI_TPH_CAP_ST_IV | PCI_TPH_CAP_ST_DS |
+  1144				 PCI_TPH_CAP_LOC_MASK | PCI_TPH_CAP_ST_MASK);
+  1145		}
+  1146	
+  1147		*vptr = cpu_to_le32(val);
+  1148	
+  1149		/* Cache the final virtualized TPH capability value */
+  1150		vdev->tph_vcap = val;
+  1151	}
+  1152	
 
-realm_mem_abort()
-  if gmem slot:    realm_gmem_abort()
-  if regular slot: user_mem_abort(kvm_realm_fault_map)
-
-realm_gmem_abort() and kvm_realm_fault_map() are just the realm version
-of gmem_abort() and kvm_s2_fault_map(). For example they won't need NV
-related code, and vm_flavor switch case.
-
-Proposing this because I think we would like the CCA changes more
-self-contained.
-
-Thanks,
-Wei-Lin Chang
-
->  
-> +static bool private_ipa_fault(struct kvm *kvm, phys_addr_t fault_ipa)
-> +{
-> +	return kvm_vm_is_realm(kvm) &&
-> +		kvm_realm_is_private_address(&kvm->arch.realm, fault_ipa);
-> +}
-> +
->  static int kvm_vm_mem_abort(const struct kvm_s2_fault_desc *s2fd)
->  {
->  	VM_WARN_ON_ONCE(kvm_s2_fault_is_perm(s2fd) &&
->  			!esr_abt_is_write_fault(s2fd->esr) &&
->  			!kvm_s2_fault_is_exec(s2fd));
->  
-> +	if (private_ipa_fault(s2fd->vcpu->kvm, s2fd->fault_ipa) &&
-> +	    !kvm_slot_has_gmem(s2fd->memslot))
-> +		return -EINVAL;
-> +
->  	if (kvm_slot_has_gmem(s2fd->memslot))
->  		return gmem_abort(s2fd, NULL);
->  	else
-> @@ -2458,10 +2519,10 @@ int kvm_handle_guest_sea(struct kvm_vcpu *vcpu)
->   */
->  int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->  {
-> +	struct kvm *kvm = vcpu->kvm;
->  	struct kvm_s2_trans nested_trans, *nested = NULL;
->  	unsigned long esr = kvm_vcpu_get_esr(vcpu);
->  	struct kvm_s2_mmu *mmu = vcpu->arch.hw_mmu;
-> -	struct kvm *kvm = vcpu->kvm;
->  	phys_addr_t fault_ipa; /* The address we faulted on */
->  	phys_addr_t ipa; /* Always the IPA in the L1 guest phys space */
->  	struct kvm_memory_slot *memslot;
-> @@ -2554,8 +2615,9 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->  		nested = &nested_trans;
->  	}
->  
-> -	gfn = ipa >> PAGE_SHIFT;
-> +	gfn = kvm_gfn_from_fault(kvm, ipa);
->  	memslot = gfn_to_memslot(kvm, gfn);
-> +
->  	hva = gfn_to_hva_memslot_prot(memslot, gfn, &writable);
->  	write_fault = esr_abt_is_write_fault(esr);
->  	if (kvm_is_error_hva(hva) || (write_fault && !writable)) {
-> @@ -2598,7 +2660,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
->  		 * of the page size.
->  		 */
->  		ipa |= FAR_TO_FIPA_OFFSET(kvm_vcpu_get_hfar(vcpu));
-> -		ret = io_mem_abort(vcpu, ipa);
-> +		ret = io_mem_abort(vcpu, kvm_gpa_from_fault(kvm, ipa));
->  		goto out_unlock;
->  	}
->  
-
-[...]
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
