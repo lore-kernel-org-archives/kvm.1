@@ -1,73 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.17
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795111756;
-	b=x5RIkqdFZ0AeP46v4BF9wp5CO+xEpinCYBQYpRHGvXXT0x7We2Sjlv9W554ruTiZ/lGa
-	 t5cnC1D03UpdpH4dAYT3ATKOC5hjvpcFbfWQ7CD7j1HdH9W0F3bEnhZUATqtFviE7LXYY
-	 KF6xNhTOdBVzxnRlZ39IzIflzev0PCkz61nhGbdoNoPfSlFdWtmsgqE3DxETD2dYeX0Wj
-	 sZObeSzaWx1BtdofjHaAE6ptC3i7n2P8/+WtnB/q7wDHZXZX79Uwf+EGBsZ/pFUeZkV6R
-	 Rup/y6ZgY8UmY/48nqviUMpJqe9d50LxmS4tYWJdMMFj7BaW1+KcL6Uj6BcGfB3Y8zQ==
+	t=1795111825;
+	b=m13IbcZEO1Jmmi7M81SNEFRYie9efH06nCZuwXL8Nmufyd3r6KZuqU5gpEG+JatcSyRA
+	 5hc507+jGZJU2xC7M2zJlgMihWUSokgpbvDbB7pSzyDRbTcapIRpVbL6azO/PN4suvKO6
+	 kdBCVy5/InePXw1MloQuonkwSaOOjsxBjXnjKy490WrOIp1TBd+T/0xok6InUw9mTZre7
+	 NhpWbhkjkWH+T0mI7USy77ziwK0i/rAmYCtlOefTIBD4dN4hF2M2Cp2f/+D/66zt/Twyy
+	 ZLamIgC6KU6GSUkENQR/YUQ0sYHpZDZ3molgqt0mJNtrJomgOw0nh51mrAbWwcjpQ7w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795111756;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:MIME-Version:Content-Transfer-Encoding:X-Scanned-By;
-	bh=jkIlbtmZVumTJJBY5ABYx0TdF26cp657auFpnsOuiRk=;
-	b=BShZLbT9UDtJ68yKIty+4wwgmT37V+mTpHecrRIh80KlBWqQLOMt49LOMWVlFUSeX4HD
-	 rpDJ5XLTb/3nC7EHbTY3c8Sb2OmAcJh98y9up6USqGhNW+Gtj2niky5/zqfAEDEVefLR2
-	 8ra/TRGKszhZjO3mVT0zuakiGSJ80fTlxiviqN6uUSZKnvjwwDxEo+XazGAbWdbtn9Y4A
-	 Npormh4NYYF57gfLwoCo3QWXzeXDJVk1QA5afQnJz5p1ZXqv1tqwRjERPuTwOf0sMXszE
-	 gzCj6Zs0ByTjB43CrKDc2/QWf6QAdn66f7IaN1yAjUFHX/3XXnoWWlOHyEz8r7cH6sw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795111825;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:Autocrypt:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=AJP2Rdfb/1/jgZJgZybKKFbo5ZXlPiUcwYvzFJMOVPQ=;
+	b=t8eauOSAcA0Ujs920iKRu8fn73XL6z0V9scOUJfPVOMCgupRoAxWaLPMqvGNS2Pt7Znn
+	 Dhqtpcnx0qrnQYrgh6ZnUAGe+hK9J5GxPDZ70h6UNBskExELHTCf+WbnnIOH0T0GoOzdQ
+	 53mlejtXPZZ/x5usexa3J1fUb0jiSQmSQWyH0FtHGsetw7+vG2tBW0CBfxACT2K8S+aN3
+	 CZEvwGAmtncL553yGmepzIj3baWBohqgB4sK9wZS0AbuuCSAksOI7lsjExLVQ13lZRU4K
+	 xQvfGf1zcblaXRWI3rOBY3NRvd4H9zRrUSQ6VNISikJBAN4yesmWVyhaVjk21JtocNA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EVvai2OP;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LuLhOGzU;
+	arc=none smtp.remote-ip=192.198.163.17
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC99606A32F
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 18:09:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6FC99606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66370606A324;
+	Thu, 19 Nov 2026 18:10:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66370606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EVvai2OP
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795111754;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jkIlbtmZVumTJJBY5ABYx0TdF26cp657auFpnsOuiRk=;
-	b=EVvai2OP9wGbkd82oPZ6b+UHxETGs5unGOK+VtG4hRhzqPK9tNkaw0maM9ZIs5sQfQKECi
-	5KWYX7utpD8OOEBCjpgiIX+WJxjAIu+MpVtzLIOvEA6K4Oix+a2Ag7yqhRJS02oFxFbNeI
-	GoTU9y/WBtjsIZ1nm9TU9Xk9TilccT0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-359-x9NM4C08O_ORDXCuauK3yQ-1; Thu,
- 19 Nov 2026 13:09:09 -0500
-X-MC-Unique: x9NM4C08O_ORDXCuauK3yQ-1
-X-Mimecast-MFC-AGG-ID: x9NM4C08O_ORDXCuauK3yQ_1795111748
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5FD681800546;
-	Thu, 19 Nov 2026 18:09:08 +0000 (UTC)
-Received: from jsnow-thinkpadp16vgen1.westford.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E593430000D3;
-	Thu, 19 Nov 2026 18:09:02 +0000 (UTC)
-From: John Snow <jsnow@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	John Snow <jsnow@redhat.com>
-Subject: [PATCH] i386/cpu: mark CPU properties as const
-Date: Thu, 19 Nov 2026 13:08:59 -0500
-Message-ID: <20261119180859.1044425-1-jsnow@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LuLhOGzU
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795111826; x=1826647826;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=/K+h0XAbvgnld2iWah2eSuvOqFYOUxj/pEOeu3WiHmg=;
+  b=LuLhOGzUsxWnNof6Qy81/h4B/VY0mUZwG29x4q+O1FcGEIDkfXV8uTMG
+   Z6rbY3w7gmNyne75jZ4T+z1nsCs8/bi++MavLVlMj5R/zuk9rqnh6Uxs+
+   ICsyp5jDpYZoZyXs8FpqF4SC2MUjiGpFPrtX/BuQyGitxKWqBQXLVTEc7
+   EtBxIJ1QpPfofwq/DRysDuKWur1/NfMSz2jphHu0TcG6geMz6kAvOU0dn
+   H6Bbe5GREMc57gqpI+79vr4JAZxpXI6VlmjN8u5+DgZYoE39gwt+FKpLL
+   Kj+CrhLjQdkVQ70d2cpwKfuEp+Pvpj8+8oK/mVJAw5tLyOnLPNgNhhOj3
+   g==;
+X-CSE-ConnectionGUID: fmtKimZ8TBK2Sv9D9Fvgug==
+X-CSE-MsgGUID: XKQGuMZBSPevl0LGzsymzA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="3968061"
+X-IronPort-AV: E=Sophos;i="6.27,221,1787036400"; 
+   d="scan'208";a="3968061"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 10:10:24 -0800
+X-CSE-ConnectionGUID: soM2pdXMTxaiS4gLC01Xyw==
+X-CSE-MsgGUID: DuWx02lzRSGVyWOEwwWUSQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,221,1787036400"; 
+   d="scan'208";a="10525331"
+Received: from aduenasd-mobl5.amr.corp.intel.com (HELO [10.125.109.68]) ([10.125.109.68])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 10:10:23 -0800
+Message-ID: <bed831ec-b4e8-4762-83e1-f4a72075fa9a@intel.com>
+Date: Thu, 19 Nov 2026 10:10:19 -0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,200 +73,113 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] x86/virt/seamldr: Support large TDX module
+ binaries
+To: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org
+Cc: yilun.xu@intel.com, arjan.van.de.ven@intel.com,
+ binbin.wu@linux.intel.com, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+References: <20261119074925.3933804-1-chao.gao@intel.com>
+ <20261119074925.3933804-2-chao.gao@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20261119074925.3933804-2-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Currently, these large property tables are loaded in the read-write
-`.data` segment; by marking them as const they can be loaded as part
-of `.rodata` instead, where these tables can be shared between multiple
-instances of QEMU as RssFile memory instead of RssAnon memory.
+On 11/18/26 23:49, Chao Gao wrote:
+> TDX module binaries are limited to just under 2MB. The binary is handed
+> to P-SEAMLDR as a list of page physical addresses in
+> 'struct seamldr_params', and the list must fit in a single 4KB page
+> along with a few other fields.
+> 
+> TDX modules are gaining features and are about to outgrow that limit.
+> 
+> The P-SEAMLDR ABI was extended to let the list continue onto more 4KB
+> pages. The last u64 of each page holds the physical address of the next
+> page, chaining the pages together.
+> 
+> Grow module_pages_pa_list[] so that 'struct seamldr_params' spans 16
+> pages, and chain the pages together in populate_pa_list().
+> 
+> Each page uses its last entry for chaining, so the maximum module page
+> count is the array size minus one entry per page. The user-supplied
+> image is checked against this count.
+> 
+> The 16-page size is somewhat arbitrary. It fits modules of up to about
+> 32MB, far above the roughly 2MB of current modules. It wastes 60KB for
+> today's modules, which is fine because the memory is freed right after
+> the update.
+> 
+> Do not query P-SEAMLDR for chaining support. Userspace selects the
+> update image and is responsible for ensuring the module is compatible
+> with P-SEAMLDR.
+> 
+> A 496-page module (the old maximum) used to fit in a single page. Now
+> the last entry of that page is used for chaining, so the final address
+> moves to a second page and the module requires chaining support. Do not
+> special-case this size to make it work with a P-SEAMLDR without
+> chaining support. No released module has exactly 496 pages, so nothing
+> breaks. Leave it to userspace to ensure any future 496-page module is
+> paired with a P-SEAMLDR that supports chaining, as with larger modules.
 
-Signed-off-by: John Snow <jsnow@redhat.com>
----
- target/i386/cpu-internal.h |  2 +-
- target/i386/cpu-system.c   |  2 +-
- target/i386/cpu.c          | 30 +++++++++++++++---------------
- target/i386/kvm/tdx.c      |  2 +-
- 4 files changed, 18 insertions(+), 18 deletions(-)
+This seems to be getting worse, not better.
 
-diff --git a/target/i386/cpu-internal.h b/target/i386/cpu-internal.h
-index 7f234cfd1b7..fbe767ca906 100644
---- a/target/i386/cpu-internal.h
-+++ b/target/i386/cpu-internal.h
-@@ -53,7 +53,7 @@ typedef struct FeatureWordInfo {
-     uint64_t no_autoenable_flags;
- } FeatureWordInfo;
- 
--extern FeatureWordInfo feature_word_info[];
-+extern const FeatureWordInfo feature_word_info[];
- 
- void x86_cpu_expand_features(X86CPU *cpu, Error **errp);
- 
-diff --git a/target/i386/cpu-system.c b/target/i386/cpu-system.c
-index c03cece7bd8..50de1170447 100644
---- a/target/i386/cpu-system.c
-+++ b/target/i386/cpu-system.c
-@@ -62,7 +62,7 @@ static QDict *x86_cpu_static_props(void)
-     }
- 
-     for (w = 0; w < FEATURE_WORDS; w++) {
--        FeatureWordInfo *fi = &feature_word_info[w];
-+        const FeatureWordInfo *fi = &feature_word_info[w];
-         int bit;
-         for (bit = 0; bit < 64; bit++) {
-             if (!fi->feat_names[bit]) {
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index eab0d5a4d4a..988193207f8 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -78,7 +78,7 @@ struct CPUID2CacheDescriptorInfo {
-  * TLB, prefetch and sectored cache related descriptors are not included.
-  * From Intel SDM Volume 2A, CPUID instruction
-  */
--struct CPUID2CacheDescriptorInfo cpuid2_cache_descriptors[] = {
-+const struct CPUID2CacheDescriptorInfo cpuid2_cache_descriptors[] = {
-     [0x06] = { .level = 1, .type = INSTRUCTION_CACHE, .size =   8 * KiB,
-                .associativity = 4,  .line_size = 32, },
-     [0x08] = { .level = 1, .type = INSTRUCTION_CACHE, .size =  16 * KiB,
-@@ -241,7 +241,7 @@ static uint8_t cpuid2_cache_descriptor(CPUCacheInfo *cache, bool *unmacthed)
-     assert(cache->line_size > 0);
-     assert(cache->associativity > 0);
-     for (i = 0; i < ARRAY_SIZE(cpuid2_cache_descriptors); i++) {
--        struct CPUID2CacheDescriptorInfo *d = &cpuid2_cache_descriptors[i];
-+        const struct CPUID2CacheDescriptorInfo *d = &cpuid2_cache_descriptors[i];
-         if (d->level == cache->level && d->type == cache->type &&
-             d->size == cache->size && d->line_size == cache->line_size &&
-             d->associativity == cache->associativity) {
-@@ -1047,7 +1047,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
-             CPUID_8000_0021_EAX_NULL_SEL_CLR_BASE | \
-             CPUID_8000_0021_EAX_KERNEL_FEATURES)
- 
--FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-+const FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-     [FEAT_1_EDX] = {
-         .type = CPUID_FEATURE_WORD,
-         .feat_names = {
-@@ -1879,7 +1879,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
- 
- bool is_feature_word_cpuid(uint32_t feature, uint32_t index, int reg)
- {
--    FeatureWordInfo *wi;
-+    const FeatureWordInfo *wi;
-     FeatureWord w;
- 
-     for (w = 0; w < FEATURE_WORDS; w++) {
-@@ -2223,7 +2223,7 @@ static inline uint64_t x86_cpu_xsave_xss_components(X86CPU *cpu)
-  */
- static uint64_t x86_cpu_get_migratable_flags(X86CPU *cpu, FeatureWord w)
- {
--    FeatureWordInfo *wi = &feature_word_info[w];
-+    const FeatureWordInfo *wi = &feature_word_info[w];
-     CPUX86State *env = &cpu->env;
-     uint64_t r = 0;
-     int i;
-@@ -2458,7 +2458,7 @@ static const CPUCaches epyc_cache_info = {
-     },
- };
- 
--static CPUCaches epyc_v4_cache_info = {
-+static const CPUCaches epyc_v4_cache_info = {
-     .l1d_cache = &(CPUCacheInfo) {
-         .type = DATA_CACHE,
-         .level = 1,
-@@ -2512,7 +2512,7 @@ static CPUCaches epyc_v4_cache_info = {
-     },
- };
- 
--static CPUCaches epyc_v5_cache_info = {
-+static const CPUCaches epyc_v5_cache_info = {
-     .l1d_cache = &(CPUCacheInfo) {
-         .type = DATA_CACHE,
-         .level = 1,
-@@ -7422,7 +7422,7 @@ static const TypeInfo max_x86_cpu_type_info = {
-     .class_init = max_x86_cpu_class_init,
- };
- 
--static char *feature_word_description(FeatureWordInfo *f)
-+static char *feature_word_description(const FeatureWordInfo *f)
- {
-     assert(f->type == CPUID_FEATURE_WORD || f->type == MSR_FEATURE_WORD);
- 
-@@ -7463,7 +7463,7 @@ void mark_unavailable_features(X86CPU *cpu, FeatureWord w, uint64_t mask,
-                                const char *verbose_prefix)
- {
-     CPUX86State *env = &cpu->env;
--    FeatureWordInfo *f = &feature_word_info[w];
-+    const FeatureWordInfo *f = &feature_word_info[w];
-     int i;
-     g_autofree char *feat_word_str = feature_word_description(f);
- 
-@@ -7491,7 +7491,7 @@ void mark_forced_on_features(X86CPU *cpu, FeatureWord w, uint64_t mask,
-                              const char *verbose_prefix)
- {
-     CPUX86State *env = &cpu->env;
--    FeatureWordInfo *f = &feature_word_info[w];
-+    const FeatureWordInfo *f = &feature_word_info[w];
-     int i;
- 
-     if (!cpu->force_features) {
-@@ -7794,7 +7794,7 @@ static void x86_cpu_get_feature_words(Object *obj, Visitor *v,
-     X86CPUFeatureWordInfoList *list = NULL;
- 
-     for (w = 0; w < FEATURE_WORDS; w++) {
--        FeatureWordInfo *wi = &feature_word_info[w];
-+        const FeatureWordInfo *wi = &feature_word_info[w];
-         /*
-                 * We didn't have MSR features when "feature-words" was
-                 *  introduced. Therefore skipped other type entries.
-@@ -8111,7 +8111,7 @@ static void x86_cpu_list(void)
- 
-     names = NULL;
-     for (i = 0; i < ARRAY_SIZE(feature_word_info); i++) {
--        FeatureWordInfo *fw = &feature_word_info[i];
-+        const FeatureWordInfo *fw = &feature_word_info[i];
-         for (j = 0; j < 64; j++) {
-             if (fw->feat_names[j]) {
-                 names = g_list_append(names, (gpointer)fw->feat_names[j]);
-@@ -8214,7 +8214,7 @@ static uint8_t x86_cpu_get_host_avx10_version(void)
- 
- uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w)
- {
--    FeatureWordInfo *wi = &feature_word_info[w];
-+    const FeatureWordInfo *wi = &feature_word_info[w];
-     uint64_t r = 0;
-     uint64_t unavail = 0;
- 
-@@ -9617,7 +9617,7 @@ static void x86_cpu_adjust_level(X86CPU *cpu, uint32_t *min, uint32_t value)
- static void x86_cpu_adjust_feat_level(X86CPU *cpu, FeatureWord w)
- {
-     CPUX86State *env = &cpu->env;
--    FeatureWordInfo *fi = &feature_word_info[w];
-+    const FeatureWordInfo *fi = &feature_word_info[w];
-     uint32_t eax = fi->cpuid.eax;
-     uint32_t region = eax & 0xF0000000;
- 
-@@ -10497,7 +10497,7 @@ static void x86_cpu_register_feature_bit_props(X86CPUClass *xcc,
-                                                FeatureWord w,
-                                                int bitnr)
- {
--    FeatureWordInfo *fi = &feature_word_info[w];
-+    const FeatureWordInfo *fi = &feature_word_info[w];
-     const char *name = fi->feat_names[bitnr];
- 
-     if (!name) {
-diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-index 52bb2ec6ced..ec38e3625a6 100644
---- a/target/i386/kvm/tdx.c
-+++ b/target/i386/kvm/tdx.c
-@@ -885,7 +885,7 @@ static int tdx_check_features(X86ConfidentialGuest *cg, CPUState *cs)
-     struct kvm_cpuid_entry2 *entry;
-     X86CPU *cpu = X86_CPU(cs);
-     CPUX86State *env = &cpu->env;
--    FeatureWordInfo *wi;
-+    const FeatureWordInfo *wi;
-     FeatureWord w;
-     bool mismatch = false;
-     int r = -1;
--- 
-2.56.1
+Maybe I'm being dense, but I *still* don't have a clear picture in my
+head of what the before and after data structures look like.
 
+> +#define SEAMLDR_NR_MODULE_PA_ENTRIES	((SEAMLDR_PARAMS_NR_PAGES * PAGE_SIZE - 128) / sizeof(u64))
+
+The "128" is a hard-coded struct offset. To me, that's a big
+anti-pattern. Use the structs themselves.
+
+I'd suggest a way to do it if I had a clear picture of the data
+structures in my head, which I don't at this point.
