@@ -1,54 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795060573;
-	b=pHSNOPX5ZqKOw9CkF9rnpJqk0CbTNmxLH+nQQzOWx7KO9RvAYcoTwbUkBQkGgQBlr4Kd
-	 VRIRNpxW1VMhgRmLwl0YZq+uVch7vO2zh/zzaSZNR58e49hUgtlgM8U66dnMmYYdGfkCj
-	 m5pdIwZhf+jvqNQnwTXzDaqrBeqlV/TrzbuwwFfVfSD0RxVvQzN14TVHWedQHnME2RaOc
-	 iq3uCtmAnZFrH61tYBoEOM+b94/2YzaXxjb4DgSjgpsZlfaSdbJg/Zfa2CSnRa7CQxuHQ
-	 I1azcWlHPcixW/IAUsad/A9rrjT1RM43xlorO/GvuGGG4pbDeu/Y6CcBl6m/1X4QTXA==
+	t=1795064396;
+	b=E07jN119wGyCVD07LqsMtvcIJwXqSkn998ZycFSzdjAV2WiC+buexP/fuPBYWSZjxy+y
+	 kEiHdalQ7DSKkex2m9Lzg8yFCRnfWXoz2Hrpvy0n+u2SSeV1nhyXqHc3HH2ZpnAiJUKvp
+	 Yh/Z/3z2DGKquIAwJWzl44gkpY6YSS4aaYhTUhMa2DFMxv0dhQA9M4TVrlfwvY4dwxjnF
+	 UL1L+Teal5TO9Q3OXcksESQ4XOnPjAsAMKhDElRyqgQHqgBg5zPS923+xqVrHek8n9f3L
+	 BApKASYDv/gp28cWmST2Un1Z4yjfkpABpTLu0FDTmgR8hBZgAEBiC5Y6gw1T1rcDn0g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795060573;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=dOMPY9WUSUWLYEvW493dk7aTnS5OLqAXoLwrmutfcZY=;
-	b=AxKkPwcgskOcvRrudhHaeJVVee4TpbGixrZO0Qb55uKfJP2w60yvyJzGR8WfNeSohEJJ
-	 9Yx/CLLkiO9pZ9fI6F147LpwhTjsqspaicZEGVuSP/aHKJX7cojWKzmwFnXkEtsyoofoY
-	 BrAbXEY0Cus1E4xqfrv76x6n8imiqPFihbaWwnKJCSCd4WjJjYbqbq5WoydEyg1/WhoTa
-	 9UktCYPuvERoHBP7V3t/r2lQGLZpVNwjQ/re+mWDv9OIg4O+x3PiPvTXelc9pxcI7e0qV
-	 PYMtXBBtBvyuL+AgV6bXFOhMQQ0Pm8joq2siS3QrtPoHWhVAV61jjXyYn52BMGtbLRA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795064396;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
+	bh=jMqv+WmHe6KSjsQn12JMd1CH5g0dD1KBpdiRzwl7dys=;
+	b=aYlnYJ2Ojz2AYVoAnL9OSWWFkfzrlzhsLwLu9vS+ZinYTy7MlNdL4LJCRloj+9fVgq5b
+	 Wygj0DAMjRu6elG1GYZeukpT+L4V/iGjxZWYfG2UZ6ZnoBmDiuAmpy5+BczdAIiJJnkjT
+	 IdV6l2WeDfnLPbK6ebijUzddeCgO1BhZZ+AFFyghiBp2TVpBgMyWUeOxLRGdRg1nIXNuj
+	 CkCaMOdCGy3bN8Pg5u9aq5ldr7OV/99MhTuqY5xOF7nJI3g32UL5OiN1dl5IimtfUIRn3
+	 KrlyOP6N+f4wACaLfx+4QmQFsl1aemMcYtljfM6c0FwI1zHgc0XW4Ch7PQHM3TVX3Iw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bnUOSC5M;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FN+FM2Gx;
+	arc=none smtp.remote-ip=192.198.163.12
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2B9606A336
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 03:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4719606A320;
+	Thu, 19 Nov 2026 04:59:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4719606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bnUOSC5M
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A163D1F000CA;
-	Thu, 19 Nov 2026 03:56:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795060572;
-	bh=dOMPY9WUSUWLYEvW493dk7aTnS5OLqAXoLwrmutfcZY=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=bnUOSC5MHMRAfiAL2AtmpWyouCc1wftpyerIxIBUvhZpZMiNw1JtOgMev9l5bSiIw
-	 y+ibS2/+k3VZc/RP6EKd5q7r83mC9bI3kWUx/acbIqLelkxglTlh64N3Z9OOaSs6ou
-	 3hMlFrdxQXmJpdhSU8ovhw3pUmiQxSdvliAYhVUboiLYPIp9FUwVmBopud5BIj86HE
-	 1Af03fkVFaE5c73eGVx/I46w9z75xQB+tKmCK1iT19Z+vmTfDSyFeXnTPl5OUrGlrK
-	 Q6B17KOt2ljoIA2SncbrnuACrR0j3vjA69BOxED4LIVjqJa0TsqY/GhbMfIPiWW4im
-	 O6qaiJufTruuA==
-Message-ID: <sashiko-outbox-222423@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: x86: Fix stalled descriptor table accesses to MMIO
-Reply-To: sashiko-reviews@lists.linux.dev
-To: weichenchen <weichen.chen@linux.alibaba.com>, kvm@vger.kernel.org
-In-Reply-To: <20261119032912.94364-1-weichen.chen@linux.alibaba.com>
-References: <20261119032912.94364-1-weichen.chen@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 19 Nov 2026 03:56:12 +0000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FN+FM2Gx
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795064397; x=1826600397;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=GOMNghIp9e507wYO2A44QEGbBR8kguUmnyOQTfQHe1I=;
+  b=FN+FM2GxmQ6UokW0wO1LrqidKU9RjArGpuZLRPaJVj6SSx1TTuD0gZRt
+   8RB9xwraCFe6EbmxzJ/nOTLd7I/9ia/74XtuxHg3SHDT2E6Xshpo047Kc
+   9dEm4L41h5IzY9+hrlt6+kz7SwQHqX8dp79BRURrfdtIqRR/Q3GVV/Mpt
+   umw7BpI7DDGSlWqWVRt5VrLNlaQSnn+s+RkkvC5jWwE/OgV5a12N73c7o
+   TsD2nihsZgKuAoCCnKcFk6bSPKEgXqNlxCx3sqh9nlWatLdQRUasqlf5u
+   J2K9mBQDYktdDo/stng0R7LlodIj75GL2S7QaUsm7C449qxrz46hKBSjV
+   g==;
+X-CSE-ConnectionGUID: biRKWzrjQLqQi2pmbK8kQQ==
+X-CSE-MsgGUID: /xtSTww1Q5WSjKLdpS6+IQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3799934"
+X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
+   d="scan'208";a="3799934"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 20:59:56 -0800
+X-CSE-ConnectionGUID: R1Nz+1B7SHaqcqE2TAUOnQ==
+X-CSE-MsgGUID: gSyXI9flQWC3SoY9qh4NDg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
+   d="scan'208";a="10579170"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa008.fm.intel.com with ESMTP; 18 Nov 2026 20:59:50 -0800
+Date: Thu, 19 Nov 2026 12:50:47 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+	"kas@kernel.org" <kas@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>,
+	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>,
+	"nik.borisov@suse.com" <nik.borisov@suse.com>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"Gao, Chao" <chao.gao@intel.com>,
+	"Fang, Peter" <peter.fang@intel.com>,
+	"Maloor, Kishen" <kishen.maloor@intel.com>
+Subject: Re: [PATCH v5 3/6] x86/virt/tdx: Add extra memory to TDX module for
+ the extensions
+Message-ID: <av6AJ4KAPqSco7ma@yilunxu-OptiPlex-7050>
+References: <20261111-tdx-module-ext-v5-0-c74f764abc3d@linux.intel.com>
+ <20261111-tdx-module-ext-v5-3-c74f764abc3d@linux.intel.com>
+ <f9c89d6da82cd737bcb7d72eb6ca5f5bf121be2b.camel@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -57,98 +96,68 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f9c89d6da82cd737bcb7d72eb6ca5f5bf121be2b.camel@intel.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] KVM: x86: split single-page reads in em_lgdt_lidt() miss
-  saved GPA
---
+On Wed, Nov 18, 2026 at 10:18:39PM +0000, Edgecombe, Rick P wrote:
+> On Wed, 2026-11-11 at 11:48 +0800, Xu Yilun wrote:
+> > TDX module extensions need memory for their execution environment to
+> > serve SEAMCALL leafs. The TDX architecture implements the extensions
+> > in such a way that they use the memory outside of SEAM range, so the
+> > kernel should add the memory upfront at initialization time.
+> > 
+> > Introduce a new memory adding process backed by a new SEAMCALL leaf
+> > TDH.EXT.MEM.ADD. The kernel queries TDX module how much memory needed,
+> > allocates it, adds it to the module, and never gets it back. Note that
+> > the process requires Dynamic PAMT backing.
+> 
+> The process requires it, or the memory does?
 
-commit db71a6d851801384a40299e7d8acce741f81c256
-Author: weichenchen <weichen.chen@linux.alibaba.com>
+I'll change to "the memory requires..."
 
-KVM: x86: Fix stalled descriptor table accesses to MMIO
+> 
+> >  A subsequent patch adds the
+> > support. This doesn't break bisectability cause the extensions can't be
+>                                             ^because?
+> > enabled yet without a feature that uses them.
+> 
+> Not clear whether the TDX module needs a new feature or the kernel does.
 
-This commit switches LGDT, LIDT, SGDT and SIDT from standard guest memory
-accessors to emulated memory accessors so that descriptor table accesses
-targeting MMIO queue MMIO fragments and complete properly across userspace
-exits.
+How about:
 
-> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-> index c1b21282187f3..3bd720d983f8e 100644
-> --- a/arch/x86/kvm/emulate.c
-> +++ b/arch/x86/kvm/emulate.c
-[ ... ]
-> @@ -3465,14 +3447,35 @@ static int em_sidt(struct x86_emulate_ctxt *ctxt)
-> =20
->  static int em_lgdt_lidt(struct x86_emulate_ctxt *ctxt, bool lgdt)
->  {
-> -	struct desc_ptr desc_ptr;
-> +	struct segmented_address addr =3D ctxt->src.addr.mem;
-> +	struct desc_ptr desc_ptr =3D {};
-> +	unsigned long limit_addr, base_addr;
-> +	unsigned int base_bytes, desc_bytes;
->  	int rc;
-> =20
->  	if (ctxt->mode =3D=3D X86EMUL_MODE_PROT64)
->  		ctxt->op_bytes =3D 8;
-> -	rc =3D read_descriptor(ctxt, ctxt->src.addr.mem,
-> -			     &desc_ptr.size, &desc_ptr.address,
-> -			     ctxt->op_bytes);
-> +	base_bytes =3D ctxt->op_bytes =3D=3D 2 ? 3 : ctxt->op_bytes;
-> +	desc_bytes =3D sizeof(desc_ptr.size) + base_bytes;
-> +
-> +	/* Check both fields before an MMIO read can have side effects. */
-> +	rc =3D linearize(ctxt, addr, sizeof(desc_ptr.size), false, &limit_addr);
-> +	if (rc !=3D X86EMUL_CONTINUE)
-> +		return rc;
-> +	addr.ea +=3D sizeof(desc_ptr.size);
-> +	rc =3D linearize(ctxt, addr, base_bytes, false, &base_addr);
-> +	if (rc !=3D X86EMUL_CONTINUE)
-> +		return rc;
-> +
-> +	/* Defer userspace MMIO until both pages have been translated. */
-> +	if (offset_in_page(limit_addr) + desc_bytes > PAGE_SIZE) {
-> +		rc =3D read_emulated(ctxt, limit_addr, &desc_ptr, desc_bytes);
-> +	} else {
-> +		rc =3D read_emulated(ctxt, limit_addr, &desc_ptr.size, sizeof(desc_ptr=
-.size));
-> +		if (rc !=3D X86EMUL_CONTINUE)
-> +			return rc;
-> +		rc =3D read_emulated(ctxt, base_addr, &desc_ptr.address, base_bytes);
-> +	}
+    Note that the memory requires Dynamic PAMT backing, which is supported
+    via a subsequent patch. This doesn't break bisectability because the
+    extensions can't be enabled yet until some subsequent kernel change
+    enables a feature that uses them.
 
-[Severity: Medium]
-Why split the single-page case into two read_emulated() calls instead of
-always issuing a single read_emulated(ctxt, limit_addr, &desc_ptr,
-desc_bytes)?
+[...]
 
-On a single-page MMIO operand, the first read at limit_addr matches the
-hardware-saved GPA in emulator_read_write_onepage(), but the second read on
-resume passes base_addr (limit_addr + 2), which misses the page-offset
-check:
+> > +	page = alloc_contig_pages(ext.required_pages, GFP_KERNEL,
+> > +				  numa_mem_id(), &node_online_map);
+> > +	if (!page) {
+> > +		ret = -ENOMEM;
+> > +		goto out_free_hpa_list;
+> > +	}
+> > +
+> > +	/* Print the amount so users know the cost. */
+> > +	pr_info("%lu KB allocated for TDX module extensions\n",
+> > +		ext.required_pages * PAGE_SIZE / 1024);
+> 
+> I wonder if this line is absolutely required for a minimal set?
 
-arch/x86/kvm/x86.c:emulator_read_write_onepage() {
-    ...
-	if ((ctxt->gpa_access & (write ? ACC_WRITE_MASK : ACC_READ_MASK)) &&
-	    emulator_can_use_gpa(ctxt) &&
-	    (addr & ~PAGE_MASK) =3D=3D (ctxt->gpa_val & ~PAGE_MASK)) {
-		gpa =3D ctxt->gpa_val;
-		ret =3D vcpu_is_mmio_gpa(vcpu, addr, gpa, write);
-	} else {
-		ret =3D vcpu_mmio_gva_to_gpa(vcpu, addr, &gpa, exception, write);
-    ...
-}
+Yeah I remember the concern is: we enable extensions automatically
+because we think people enabling TDX have big servers and won't miss the
+memory. But also we print the amount of memory that we use because we
+think they will care. They are a bit at odds.
 
-Because vcpu->arch.mmio_gva is 0 when TDP is enabled,
-vcpu_mmio_gva_to_gpa() falls back to walking the guest page tables in
-software after the first 2-byte MMIO read has already exited to userspace.
-On SEV guests with encrypted guest page tables, that software walk reads
-ciphertext as PTEs and injects a spurious #PF or translates a bogus GPA; on
-SMP guests, a concurrent PTE update between the two MMIO exits can fault mi=
-d-
-instruction after the first MMIO read has already taken effect.
+I don't have strong perference, but slightly lean to keeping the print,
+so we can keep monitoring how the memory grows, and decide if it's time
+to revisit the above "automatically enable whatever is supported" policy.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261119032912.9436=
-4-1-weichen.chen@linux.alibaba.com?part=3D1
+This print is originally required by Dave [*]. So Dave could you help on
+this?
+
+[*]: https://lore.kernel.org/all/62bec236-4716-4326-8342-1863ad8a3f24@intel.com/
