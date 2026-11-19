@@ -1,101 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.42
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795125524;
-	b=r4iGU4XvKGWgu9H5znCXNuRsWrBjhHai/vFPsV+eaFZ/rH779Y9NcaDAWnqZsxe92/hr
-	 wtOtTnVelJ569rwjUnOwY2K4RTnqNSDOoObyaFwnSjt+V9QM7rFiwQWWW4a3a8wbQK6n/
-	 HLUevX7MJhPNsHrkcqGnO0SapfwCXHmCpOOT8PLH3/9Cl7aX7Hbgm42YUr7U/4RMEN8HT
-	 6XzeWGLyFBZxZb41oRHGhCqToDUZQ6qQ1i0+TyNdQsECzIsl2FyjayDEVO8S4LyvsYuOy
-	 h57kQjHhBmsqfA6tPlN5rjSKRdNdoNtpshUch0c8gJ9st2z0FmNMr0AXx4ifdimfo8g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795125524;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=C9ebDCpBthQgMMScktgvqBM0r+0RjQ/KSXq1saFehrw=;
-	b=D11duheA8gNcGwpmfXWg9pUoF+0U4fUibdZ7wPRIQT+7edSM/7tSLHNUqdnlrn+dDpRE
-	 0gEGKROKYMYi56OG+GAFcbePK4Q/Z+J5Of1l+fjXoE8ZrTw/wkpoE8Sz8dOAC2jlJ+hZV
-	 y8CfvE77kqM00oQz2sCHcIDzfzZrmuuK/FhS33F96qjHLo2u9H6VGXjAbWxpsXxXpD1g2
-	 esTZ3mLJQ7E9E/zrUWqET5h8rsYSB3Z956kkm38ba2Dz0vH979NMuHLiQChzbbELAP5Ka
-	 uXycUJjkrFpIsD5PO/W7g4kT9tXgPVcdQKw1mY3Vg99+OzV6PCBviw4XZerXg8gaTqw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=njqeqSGh;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.42
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.70
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795126064;
+	b=Pwj2AY29E6pJ9hPLDPZZfh8OtUr0VP+cDy0lpF5udE/Q1revd8fPcPOoQwSTPWTQ6PDx
+	 RjWHFruBaPVDlnjaWAKTSq46zhJNDmUfTpT926FVIdfbiNkzmOfMAZuCGZKTGLcei+FDQ
+	 0GDfCl2P7YGZrcirwlWvCbbrBy8j2qAMJQEAcz1GVsMVSi5QtfRPEXL9TZ30syc0fk3Pl
+	 80WR30L7K37fMV3OAZ76Xiy5ma++KEtDog3wbhNk2uHeYll7v99zZ//uEi9p1EjbCKwVU
+	 HF42IQ2I3V8gfhdso+/d7/L5ZeFxpFQcpAh7Ni/R/5UEkla/DgxfAu/wK4pMUJOZPag==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795126064;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:MIME-Version:X-Received:Date:
+	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
+	 Subject:From:To:Content-Type;
+	bh=6P+RyyJwpxahGR7rDRI0rdU4ZKtS3hog8XYO8XVNAu0=;
+	b=2MXdyC3i9XJ+EI0aZAGFdbaT7xQ/Gq5ITBun1ogxKyrfQB9XHIUGyU6qvwcYch00Fc4k
+	 hV+wdpZQ1eegAhqG8J60LAJjMdodcN2Uxns/9cwCLmhddJJs6tvv+5inKwNEAf4F5L7uR
+	 B7W1xYIGRSPnRDMdOfTdrHsxqfnyJLnAOuRJ4BEdHjRsyWIr5zyOc4j5UL8wFANygBCVz
+	 E+EDIDmhQqhOvw6hGUebl6Zg2YR7MA2WrhogNRrliGskVlc7+biB/2CTDwzOSc6CBMiFz
+	 L6m47kDnS30f5D8xIe0C4AmMaGW+p+pZ6a9bxVrhylUyV3IH6uJKq9pbhe0wt7OzdQw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=fail header.from=syzkaller.appspotmail.com;
+	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	arc=none smtp.remote-ip=209.85.210.70
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB47606A320
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 21:58:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2BB47606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=njqeqSGh
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6b869ea8224so4103a12.0
-        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 13:58:43 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795125522; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WqZ0LOGGYyun8xIq2yMnnRINlGkTi2F/Ei9725rauww64ydCNJzLewnfkqARfTvATx
-         NvefmE+zndKZRURlsHVUHxdcMnE0w9oD48KDP1MT1W30cTBWAkKXGKS5KRf20/5Ab+KP
-         h7VuEvq0AoMAHkhCZrNueJwqgMZY0qBi2jugZVZqcqkDbKPHh1Qm6NcBpfpn23nIMkvD
-         SxW1imCa0wamUVITFMc91AE9zhkm6hNDtQf6VHfHh5F/IXEERsrw3WgYqUizKOeRMhCe
-         HzWhpAgfBi5FTBKMELbeBu6U8TdAtt5yfNhSKwLxDFrXTHukhUnMVd1hq48s+KIYNw3U
-         eclw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=C9ebDCpBthQgMMScktgvqBM0r+0RjQ/KSXq1saFehrw=;
-        fh=lrYHIeFChdGnV7/zTC2rXaCbXq4W+AW8NNgX8A0DocI=;
-        b=P1jkSb55oQxwVXUVOi6ocXs0gv+1j55deHDdx7EFRDMAD6CxtEFqTyHDwxVe7TgEcQ
-         UeBSLEoVDTNjcs44jutbYYWxV8cGCRfR+xcvkqtzXBsWpqqfVQEXnzv0RdqXIJ7U663N
-         21pxfnGAocH0Ty9HhjU2fAQviaZ+Yu3G0t1lSaCdfjZAZMmXHJEnm34nhZEvsEVn6xUt
-         fIjqj9IvR0tkd1AIc1lBicxZEycIDxKohimzMpvQPRrSB5lu9JeAJtXXutSx1iqHGDRe
-         tMrJdBnBk9n5CFBHzw2jjyDwXLyE6xdJXeirMgyw+8z7trVmw4SgAMXXIsm9z1gNYrUK
-         D+TA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795125522; x=1795730322; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=C9ebDCpBthQgMMScktgvqBM0r+0RjQ/KSXq1saFehrw=;
-        b=njqeqSGh6rjzW+SELuX9P314gQhFWBF9vyyY6ezpjF1hTaib56qYsSyRYkJ1t18EO4
-         mOrEojR3dxUgEs3ntMCJAYuJE0yUBDzK8UkqzWR2Kc+7j/7Sj9ecWbo+9X6CzILipmQk
-         iBh9Q4IELC6NmUXJUESoIEw4wZd8JGEtJ+z1/OnudS+iyVyP+3/DB7jhSDqRHk/Kbken
-         A870U62wPLLh/osVM+4aDChvFf+FRir6ArwcAdYuNVCrTc+fAT5UUHJpZvbo5vmNc+8Q
-         h2o2zIT8USGzPuZe0P3ohQzaBu+G//2I0oboy961ht6KLVlNAFzPYEEjJkc+S5zNcOlz
-         Smaw==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA02606A325
+	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 22:07:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DBA02606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-862b952fb06so282127a34.0
+        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 14:07:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795125522; x=1795730322;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1795126063; x=1795730863;
+        h=content-type:to:from:subject:message-id:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=C9ebDCpBthQgMMScktgvqBM0r+0RjQ/KSXq1saFehrw=;
-        b=Mw2zSooZ8wBSYTjLMb5XtEvbhM7NEBL0t15BfaGu99xjdzEikTUk3Ir2Qojt3jup6O
-         eOwYC3d5Pd46glYh5KRjqMpEA5mepINMHGFYz3QmYfN3DzQ6IvVC4Qm7s9aUSccWyQ3d
-         pTkKSJZiQl9GqcrNHHxnkzAmUQA3WJpvcsO8AD5BDPE9sVmhSFIBojbobwWLZqaf94us
-         oHkjcmJ7tf00tJnzxMnfPWGhVrQ9SA+09SWPir3dOIx/lEZtlRVqPWBRFPBsTHwiSp/9
-         k8pD4/aldNtClUFIL6MCxhdx7+p2S7z14pkqof7Zae75aDiVbYOqB+avM4jA5NyUAqKj
-         S52g==
-X-Forwarded-Encrypted: i=1; AL+hErHOMCSM/9DgTBl7bQiYzp81GVJm3QQdKqhJSVnCVBc8yrJVRX482xV6PD9tiMzI2msIAj4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/C77PB0NBF1Pd+qcqPMb1+9a7m1wSiqXxcwo2nIoAPMJW6F6AV
-	dU9YfnEfveyyz+52/SXbjtUx5uZEiB4XLvUwUVwyWICi7AF1R2IBNllxWYFuVxmJuz6e30lwUYY
-	kY8k7HQIcZND1NP1C/NPfsOu1FU+mB7Gep87rPVTC
-X-Gm-Gg: AYBFou387QUgD53M6s1YsUR3f3LjTQiEG8MmP3bY1H5sI4I3f3f7T+FWnyiGpCi2BDl
-	TfCPyj+QL4FkXq6n6TIey9J6PUDlN4Q67yawROqd8T4J0KHsLtmkGrV24kLcO4YEjBWkRVYMEbf
-	4StQixNoc0C5SnS46Z83g+cihDiSqiSBq+Cqupdtt7XOfFido5iV6cze5i53HdKdhHCRa02f5gh
-	QUinOTxGJ/U+muqse66gZh+O6hYbKCuIKQuSU4a853IwQx9EvxA+RjkSoHYSsiso7VPryVtmogy
-	6TZkcy+S2bV01TR/Lp6JJ09km7bK+UyJ9u42nDbuQuMVhskUpBaM6/+I56LryWjYPka7+116KiC
-	BIeSkhy3K0mSS0ZMEwqb97Is8V71oWqwtvQ3pQJsj/lOZq++43TTuX4CgGV0HdeyIN4s6nfQSqB
-	xAReTVFhURi3a94D6b7iEoUTGq8GnhNRA/a1+MDxpCsV64WdJa/qqVrA==
-X-Received: by 2002:a05:6402:c4c6:10b0:6b5:77a4:e7c9 with SMTP id
- 4fb4d7f45d1cf-6ba38153010mr27681a12.2.1795125522153; Thu, 19 Nov 2026
- 13:58:42 -0800 (PST)
+        bh=6P+RyyJwpxahGR7rDRI0rdU4ZKtS3hog8XYO8XVNAu0=;
+        b=V2LEcXwrK4L9u5AnN7q2/dLu6HolQ8GXzOXzoDn7h6WCl1yOg5LsDRzDmU79jkUFjj
+         Zl7U0K/PyNWxRERmxkxSX+4tiQaWurQldy7EEZVUuaQIBSu/LuOBjQQPf7Of5uDqbhBo
+         YzIPhKLHBBj58sEFS+xwje/OY86qXao8SM1yPCA7jkM5AqVvHpX0iM+SqzOVo83g8AZy
+         S7pGQtuvIpPUYum0bQ6AY5kRmvuBHUCJBoMhfcJgIWD18JhPPK+dOaKfVuFodXTkEK0S
+         fmwShe6Z+x/8kgqBQDtf8pI2S/D/kyWOIJY9sD9gzx8RSRivzG7Op+WIUAepqDWI9gJ6
+         3VHw==
+X-Forwarded-Encrypted: i=1; AL+hErFV/RJqwSXftcSEWbmU3E/gII3XuXYhS1fcifKzXK8JJA6yofe6UfDvEkj/PtISOF9fwE4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/0WFhH+cDh/zALbCtAmzafpUeBLj3CwQ99jLPrNSNCowA8dVk3
+	vhC4xuiebmHL5hEmKZDpPuh/UPW1hg0zGvl0MpYTzqS02fSedgDt6Gs5nk3eBm9uIh9b/2fFDVy
+	xzBDm00zsVOQ6GOugCHworniyOS9vtIiYU3EhA3QJoy/+J/NuDFxCSmKfTpg=
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,51 +58,124 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261019210532.378628-1-shivansh.dhiman@amd.com>
- <20261019210532.378628-8-shivansh.dhiman@amd.com> <CALMp9eQmOcq0Edb6Txfe1NPASbY=3u=NSkQrVAbtqtecr6WWqA@mail.gmail.com>
- <cc34f113-d67c-4c9d-875b-5f44ccc5c5ab@amd.com>
-In-Reply-To: <cc34f113-d67c-4c9d-875b-5f44ccc5c5ab@amd.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 19 Nov 2026 13:58:29 -0800
-X-Gm-Features: AclHuK9Ty81194q1WR7jKMvgrsnHWSR1mIt9uEvg-GWj2iIO-RiQZ4F2M7CLysw
-Message-ID: <CALMp9eRs85yTG-wgtv2S+eVCwWt2SmjH4OAOPm5cQjQB8yv9tg@mail.gmail.com>
-Subject: Re: [PATCH v2 07/12] KVM: SVM: Advertise LbrExtV2 to userspace
-To: Shivansh Dhiman <shivansh.dhiman@amd.com>
-Cc: seanjc@google.com, pbonzini@redhat.com, tglx@linutronix.de, 
-	mingo@redhat.com, peterz@infradead.org, acme@kernel.org, kvm@vger.kernel.org, 
-	x86@kernel.org, yosry@kernel.org, thomas.lendacky@amd.com, 
-	nikunj.dadhania@amd.com, sandipan.das@amd.com
+X-Received: by 2002:a05:6808:244d:b0:55b:f88d:6e8b with SMTP id
+ 5614622812f47-57a0a10c8b9mr1833089b6e.13.1795126062844; Thu, 19 Nov 2026
+ 14:07:42 -0800 (PST)
+Date: Thu, 19 Nov 2026 14:07:42 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6aff732e.d9dac7f4.1ece0.0000.GAE@google.com>
+Subject: [syzbot] [kvm-x86?] WARNING in __nested_vmx_vmexit
+From: syzbot <syzbot+483ee9b97423483ca602@syzkaller.appspotmail.com>
+To: bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com, 
+	pbonzini@redhat.com, seanjc@google.com, syzkaller-bugs@googlegroups.com, 
+	tglx@kernel.org, x86@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 4, 2026 at 10:42=E2=80=AFPM Shivansh Dhiman <shivansh.dhiman@am=
-d.com> wrote:
->
->
->
-> On 22-10-26 05:19, Jim Mattson wrote:
-> > On Mon, Oct 19, 2026 at 2:08=E2=80=AFPM Shivansh Dhiman <shivansh.dhima=
-n@amd.com> wrote:
-> >>
-> >> Now that LBRv2 is fully virtualized, advertise it and report the LBR
-> >> stack depth in CPUID. Gate the advertisement on LBR virtualization, th=
-e
-> >> mediated PMU, PerfMonV2 and a 16-entry host stack, so KVM never expose=
-s a
-> >> configuration it cannot faithfully virtualize.
-> >>
-> >> Co-developed-by: Sandipan Das <sandipan.das@amd.com>
-> >> Signed-off-by: Sandipan Das <sandipan.das@amd.com>
-> >> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
-> >> ---
-> >
-> > In addition to what Sashiko said, I think this needs to come after
-> > patch 08/12. Ortherwise, we can hit the KVM_BUG_ON(is_sev_es_guest) in
-> > __svm_disable_lbrv().
->
-> Makes sense. In next version, I will put this patch after the SEV-ES
-> patch. Thanks.
+Hello,
 
-Please put it after the nSVM patches (09/12 and 10/12) as well, so
-that KVM doesn't advertise LbrExtV2 to userspace before nested support
-is in place.
+syzbot found the following issue on:
+
+HEAD commit:    7475ea8b5861 Linux 7.4-rc2
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=12372a4e580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1cf189394a856f11
+dashboard link: https://syzkaller.appspot.com/bug?extid=483ee9b97423483ca602
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1360d4d9580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17839409580000
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-7475ea8b.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/db4e8a9a4461/vmlinux-7475ea8b.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/2abcfcabee20/bzImage-7475ea8b.xz
+
+AI-generated root cause summary:
+When an L1 vCPU encounters a hardware VM-Fail on VM-Entry, `vmx_handle_exit()`
+processes the failure and returns KVM_EXIT_FAIL_ENTRY to userspace without
+clearing the `vmx->fail` flag. If userspace then calls KVM_SET_NESTED_STATE with
+KVM_STATE_NESTED_GUEST_MODE set, the vCPU enters guest mode without resetting
+`vmx->fail`. If the VM is subsequently torn down without another KVM_RUN,
+`vmx_leave_nested()` synthesizes a nested VM-exit where `__nested_vmx_vmexit()`
+observes the stale `vmx->fail == 1` and reads VM_INSTRUCTION_ERROR from vmcs02
+(which was never launched), triggering a WARN_ON_ONCE because
+VM_INSTRUCTION_ERROR is not VMXERR_ENTRY_INVALID_CONTROL_FIELD.
+
+full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=483ee9b97423483ca602
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+483ee9b97423483ca602@syzkaller.appspotmail.com
+
+kvm_intel: set kvm_intel.dump_invalid_vmcs=1 to dump internal KVM state.
+------------[ cut here ]------------
+vmcs_read32(VM_INSTRUCTION_ERROR) != VMXERR_ENTRY_INVALID_CONTROL_FIELD
+WARNING: arch/x86/kvm/vmx/nested.c:5149 at __nested_vmx_vmexit+0x2734/0x4000 arch/x86/kvm/vmx/nested.c:5149, CPU#1: syz.0.17/6007
+Modules linked in:
+CPU: 1 UID: 0 PID: 6007 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:__nested_vmx_vmexit+0x2734/0x4000 arch/x86/kvm/vmx/nested.c:5149
+Code: ff ff e8 0f a0 67 00 90 bf 0e 44 00 00 e8 c4 ed f8 ff 90 31 db e9 01 ec ff ff e8 f7 9f 67 00 e8 f2 1b 48 0a e8 ed 9f 67 00 90 <0f> 0b 90 e9 6a ff ff ff e8 df 9f 67 00 90 bf 00 44 00 00 e8 94 ed
+RSP: 0018:ffffc9000338f960 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: ffff88802c514b00 RSI: ffffffff81a6e113 RDI: 0000000000000005
+RBP: ffffc9000338fac0 R08: 0000000000000007 R09: 0000000000000000
+R10: ffff888035f7003f R11: 0000000000000000 R12: 0000000000000001
+R13: ffff8880382442ec R14: 0000000000000000 R15: ffff888035f70000
+FS:  00005555645d0500(0000) GS:ffff8880d4571000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055b5cc929ff0 CR3: 000000003db67000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ nested_vmx_vmexit arch/x86/kvm/vmx/nested.h:46 [inline]
+ vmx_leave_nested arch/x86/kvm/vmx/nested.c:6895 [inline]
+ nested_vmx_free_vcpu+0xb3/0xd0 arch/x86/kvm/vmx/nested.c:389
+ vmx_vcpu_free+0x94/0x340 arch/x86/kvm/vmx/vmx.c:7519
+ kvm_arch_vcpu_destroy+0x159/0x3e0 arch/x86/kvm/x86.c:9558
+ kvm_vcpu_destroy virt/kvm/kvm_main.c:477 [inline]
+ kvm_destroy_vcpus+0x24e/0x3c0 virt/kvm/kvm_main.c:497
+ kvm_arch_destroy_vm+0xc7/0x230 arch/x86/kvm/x86.c:10129
+ kvm_destroy_vm virt/kvm/kvm_main.c:1313 [inline]
+ kvm_put_kvm+0x556/0xc00 virt/kvm/kvm_main.c:1350
+ kvm_vm_release+0x65/0x80 virt/kvm/kvm_main.c:1375
+ __fput+0x3fb/0xb50 fs/file_table.c:512
+ fput_close_sync+0x118/0x250 fs/file_table.c:618
+ filp_close_sync+0x75/0xa0 fs/open.c:1574
+ __range_close+0x4a6/0x8b0 fs/file.c:919
+ __do_sys_close_range fs/file.c:1003 [inline]
+ __se_sys_close_range fs/file.c:954 [inline]
+ __x64_sys_close_range+0x1f8/0x430 fs/file.c:954
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x123/0x7b0 arch/x86/entry/syscall_64.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f5f6ab9fb19
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff0931e598 EFLAGS: 00000246 ORIG_RAX: 00000000000001b4
+RAX: ffffffffffffffda RBX: 00007fff0931e680 RCX: 00007f5f6ab9fb19
+RDX: 0000000000000000 RSI: 000000000000001e RDI: 0000000000000003
+RBP: 000000000000e232 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000001b2fb20000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f5f6ae25fac R14: 00007f5f6ae25fa8 R15: 00007f5f6ae25fa0
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
