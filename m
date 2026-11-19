@@ -1,156 +1,128 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795100719;
-	b=SoUWAV74c43zq5KOQSrV2uGiGWK9GiaXHgVDTJDgT8BqSYUMbR18Q67ILNIhtJsAYONl
-	 BdOzdoi3/4CcyXx9wkFiZc4R0DE0MX+crqawg31v2p8dvCkyNj0T1UZ2YE1nhfX18Iw1V
-	 OBB6L8vqfdb5sMzlKJTz3yOgh1P7SLeWdaJZRGYGKmNODoUvHzs3aWx3mp+b4BaOVLeUH
-	 kQD8nU2SlGlvrpZdFTXs9go54vbBwVftwopcIfuWIVbR9P0B5t+BevduonZGQCwyoZmJb
-	 rwtTWF6I2BrAcHTWZw727m8RvUKiSZZp2rhaXHc8WwhrnkPQGeXoUUl8AOn58G5mRfg==
+	t=1795101193;
+	b=3bzVbZfuaxl2gMzkvwcIX+fg1VHuR20cq/ok9eIRkrSVDr4fi7OyKaHVUPCYR3lGuXA+
+	 vuJO78TBfvm3ien82G1vaklA/XGPnJboyjsF1t7M83P+Xm/XiB6xiYKnvpJcg7feTN5Bi
+	 3sb3e4yLi9mCiMylDM3d9FaOOpvwpu9aWE5/79OE3WXXjFGVIO9s2P2vn5LcC20xhrp2x
+	 4/32d1SDQB+d5pSTEZmXU2GOXAQsZ0lgEfXinOsMiYe1wEAvtUTrIg2tr3Ac2AIf8autM
+	 1ZZgV2dZcuzZFarRB7a3qRkMtxqme7EIdYmvaciXgAsClyml3XMu487DGmXfieY7Q6w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795100719;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795101193;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
 	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=cra6Vs20NtPqxX9EfP/IC1RWThkucYohNUCRfJABY3A=;
-	b=U/ueDBKH2dunSiZrM8GhupHeVXv3Z7d63rBDtlePCTSG+BLpN9YwnXh6seMRyPWfsXod
-	 c0ZKXQSjL4iJxvZU77sVWDnhKvWzswm1ldFg6Ix0eiI9F7HbZdX5JwLzTuD9QrZu6YKwa
-	 VQznXsYEb/mZ+2M5AurYj7ogsNIGhhxDtFdkb//zRVsTX8RVefabL2gtJ9/xGBl2atjgt
-	 O9XBdeUYm9QHXzAglkALV/Mj1DYkxWDfdaMDEj9eutCX4HLRU0W0DpnqTDL/uPk+3HoPz
-	 nwRCdYQVsQk1MYSUAov39fhPzdcNfnuUhAv34U3zzBl1AjB5e8gI/d6pLq4dipbo49Q==
+	bh=aUaUnGVOD0AnB0qQi2tHlDtmvMhT+a6tdGKKo0EDxDI=;
+	b=oKP2o5G9HZ3a4ENkIsZj4QTjH9ER0dpWMObCqAHR5xjNylntmy9Pfy2gi7ePo5DCc3J7
+	 1wRurIp52/lwOOUV+s0rMZEe5CX1/wHTyVd4HaRQzrDal3N+N6GbbWBEApdC7/bh6akl5
+	 lkE4dGAOV5modpfiFs3XRM9wb87/95ijx9D8ei9LNkMnzE5LgookhAdhBqZY07NgfQhkj
+	 56OsA/Hnu0djf5/D8prsyIS7plNrORAapb62gtsRs3BhDiLfjkN7bPXqTZ0m73MThbY8H
+	 WwAVOy70pwlCvicUVqbmQOKGkbEkTm/ERJT6QQRpHhy9HNncsi3plUypRcLG5CAkHrA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QOfZmYHN;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b="M/u5pjsP";
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b7pFSSAx;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=uIMFT2Q8;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85856606A339
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 15:05:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 85856606A339
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F35E60A2608
+	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 15:13:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8F35E60A2608
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QOfZmYHN;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=M/u5pjsP
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b7pFSSAx;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=uIMFT2Q8
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795100717;
+	s=mimecast20190719; t=1795101191;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cra6Vs20NtPqxX9EfP/IC1RWThkucYohNUCRfJABY3A=;
-	b=QOfZmYHNys9bR2nbd1exheChTNjkPoAodW3ImevLtfz07NoverccJ+VI8Y4wGZkukD89Nn
-	H9O2XRVqaQ1En6ZsjXQLk/7rGmhgbfdY8sfIRkJVOlxkhpoDu58otsUm/vS9r8zMfpxGqD
-	U9EV5U2rWxeH+LmiiAIbIVK9O7IXUZ0=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=aUaUnGVOD0AnB0qQi2tHlDtmvMhT+a6tdGKKo0EDxDI=;
+	b=b7pFSSAxI+E9EaZtsEfbolehGk2Tu+XE3olI4Vs/ypKruP6HT5txdO/AAW6Kw6DOBoGuQD
+	KjM+SJ9zqBvEX0Tf2YD1b2Ppz8GrMZzCjINvDF5x6gQW6ncfqjiD7zXGFlsYZrAVw3vo4j
+	GJuplVbUUZPlYyzsJRv6NkbPDFHGjvI=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-37-8tZgi3hAMzOFID6zrZWNLg-1; Thu, 19 Nov 2026 15:05:14 +0000
-X-MC-Unique: 8tZgi3hAMzOFID6zrZWNLg-1
-X-Mimecast-MFC-AGG-ID: 8tZgi3hAMzOFID6zrZWNLg_1795100713
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-4a82fb7e71eso911250f8f.0
-        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 07:05:14 -0800 (PST)
+ us-mta-516-4IvIyJNnPJKjDlPpG9UcOw-1; Thu, 19 Nov 2026 10:13:08 -0500
+X-MC-Unique: 4IvIyJNnPJKjDlPpG9UcOw-1
+X-Mimecast-MFC-AGG-ID: 4IvIyJNnPJKjDlPpG9UcOw_1795101186
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a4654add56so17349555e9.2
+        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 07:13:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1795100713; x=1795705513; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1795101186; x=1795705986; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=cra6Vs20NtPqxX9EfP/IC1RWThkucYohNUCRfJABY3A=;
-        b=M/u5pjsPyc/9N48N/0EssEYRJNakgsn9YHzqC55V6mGYpInsHPPwTiFmhSBQO/BNZV
-         47Kpio0IOkENBcK9jv3h+/TjwnmbJ2XGS0YtNGeWAYwhvdPzkgGuyEjhWabd4gma47rW
-         i2eUQQSi7w0yJ2Fi/tlkxRAXz6GKQNJi2/ljwIsdjmFgBclryKidDJpR+gwmiBh0HW2o
-         dsKTdRjIvuSYyb2z6vL7dtmSrF+B96YFT+sVc7u0qKw5xxvnY1tyBxtsYsefkJXSf8/C
-         uOhND8uVg4zZEtSa+qnHT/eisLZ4jO9wuU01H4loGp/MneMJHowW2nIWRIvykEkgWaSz
-         eigg==
+        bh=aUaUnGVOD0AnB0qQi2tHlDtmvMhT+a6tdGKKo0EDxDI=;
+        b=uIMFT2Q8PmwavS9NEqE0h+UAUF0TVPPrepbqUcVYtImSmrBGEpC/IpWDBJ7mtY6zmZ
+         sbQ1uIr2CnqNvfjn1DlAq6AtwD9dPCNLnMyGzQZgSFvqMbuC2DAP99pBymaYMf/xx20o
+         MWpEpEK77N6KDJ7HYgKlPRvaT5Vh+DrnsqbQGV/jf8N3qI+dtm52bKMcItGA8tnsm9bi
+         8hCR9ok+WZR2vRkBQvA7jIbMBoCw/f51ruQWTRjG2j+wEHH2yKf7N+i3kTeh7lEevBdM
+         TS5ZR73v3NH8ivc0PEGN3k8BOrxCae2Jol/+r4LzeRpe0hV8im4QOJb7GaN20LQHP8Wc
+         eBgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795100713; x=1795705513;
+        d=1e100.net; s=20260707; t=1795101186; x=1795705986;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=cra6Vs20NtPqxX9EfP/IC1RWThkucYohNUCRfJABY3A=;
-        b=aRQsEpLEjbSJBBGSV3jYzWOtnDrAMu6VpB2Q0H0RjK2VGTQ3uBFkk3PiD3f7SmuNcj
-         Pwf+f8IvwHAp/sbVhmmhZ+xvn/bUEC69xXfMdcTPR+LEVUC0XDLRm+CJgS++6aVhxzTK
-         2fwtyQts97YAnPUvEsYKhkK6XgkCoqLT8HFfDcLdE4unkkGsLwVMsNLD7eCGb1GCIbeb
-         bJmkkANEB5Mk1IzJpHpY0n3Jyj+NTLLY6g7eYaxqycGFo60z0W1CFItzxUj7Mp4IBy9B
-         k7mLx0FiAoZFdV2+JLc1OyO1pPp5qMQ9fu2IiyiO9n6zAERZzzEEqnRXrvTt95CkPT2q
-         lFwQ==
-X-Forwarded-Encrypted: i=1; AL+hErG/VMl51q1NjZXtIT529SZUw9PBUobYw2WNDFq6jQSHO58JS56XSq5aZr6ez0rCwoj0CGU=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8af+Xr8jq8bWD4tSPZGSWaN7UAVZpr760BXeS3ggMZXnoV8Kiw
-	4D1GoEPan5V6gkNEC/K/TQLysALuJM2RJg7iP+zTKvxsUfiVFY/g00lp30kw7IPnTrEJk71ZeBx
-	BLOLWTB5zEcJPofzgV8n2mDaoPFdQtZLdpkprPM1afWgu4xpVWoWNRw==
-X-Gm-Gg: AZFdTZfQB+MgXn1ulOmlUzZr6aMMYH+27/Q0MujT9UyJ1yv52hEjHgxoCC8GYI022A9
-	KxCgR/Gqapv+zuUUKCXUq9Qo/jiz9/MzJ7QPqKMhF8DF7TcL5JGVYRnA9Fh0c6tIIk+5WiUmgAw
-	EYdSICQcEuKBxS/lNYK7ePD+RtTNgzCUmyye4Ex6EYGwW9AIJSdCSBUuqCiLPhpbTFxW8ZMGo5h
-	o1H7C/wk5AvJ+2ylkwxtKB/vISashCqm1B+QRTMbfJ1n529vQMLTbwEvTEfK74KS6qFze3o5q3f
-	BCt1p03Z0Uv57sroNF9yTr5aZGTJ5qpLGNvrPwQuQmUaM9CG+HqR3f2bM61h5k046wYgiPduiSz
-	00BPTGJDNlSdXrxggaMznQSErC18mBx23XNzX8p1v6g==
-X-Received: by 2002:a05:6000:2608:b0:4a9:2728:fdfc with SMTP id ffacd0b85a97d-4a92728ff7amr4686374f8f.28.1795100713234;
-        Thu, 19 Nov 2026 07:05:13 -0800 (PST)
-X-Received: by 2002:a05:6000:2608:b0:4a9:2728:fdfc with SMTP id ffacd0b85a97d-4a92728ff7amr4686266f8f.28.1795100712535;
-        Thu, 19 Nov 2026 07:05:12 -0800 (PST)
+        bh=aUaUnGVOD0AnB0qQi2tHlDtmvMhT+a6tdGKKo0EDxDI=;
+        b=DIcHqoWdWfTLArA72jbmtOHTlfbdLzZBqyv+9gTB5+yxIWs5nyYTGRX8lAs+fSafsV
+         vqfYwStiEZiE92IvG1LTm4LZ8FbjSSRuCuaFONAROYWWklDf2wjUnHEH4U4pE209zffi
+         qPKvGonV0oUt24htA4kq4ze9rJ3IaaPW0S2gtV23KC0XhkfM+Vduc7E57wkPGXhVx1Oj
+         2pXxGTnQKegeT8oZ6dFD2qivlU3960gYjxtgxXE1FfHlPczkuLJKTr2WX9yXyiVObE+6
+         8f3o7LNubcvwLpQY7uyvCXOwLY9z6y9+YgIqj/l8h+dUDhMIQ5sR7KBIH2bQWVgKdbTe
+         2l8g==
+X-Forwarded-Encrypted: i=1; AL+hErHSp08LfveOl5KFxNOV1nZfHCVKwBDacnzDNXYgI6bztxRTNOLsZT2vOeyO2ykJpWpgf+o=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8eMse6OGnDmKWdHDEB85Xpsg/tlxuVWwiwA1C2PURVmFvsux7V
+	kwUj8EeJ38ilGbRc+gHn3fr1Eg0+AZrSoyi/YQYijW9gmlM024r3c4vEQSkiQrie3Cs5+kE0xO6
+	FY7oJkqq3TFnMwF8gZFViQn2C2lqcrWcdQDehwwEIGe7h09Yu87aKHw==
+X-Gm-Gg: AYBFou1sEbTCwiwK1oOKnweIG6+enMAgJt/a4ioyR3oZNzVIS6GweitCSmdgolXpX/5
+	uOP5zeV7exCAGEUN3N771DYk9fW5dl5qyaDu6eFMQBtfKOa/GGUcPK7LUBpKIA8kGtRGHoAQa79
+	uhd5bFThSOllkw6zpY3sWi487X1fcRJcL5xSMi6wV26wOeDE8lmD3tGF1MFGe4kFNgSA0d1QRDx
+	sREZvK5ec8tbOdaEUKbNjIbN2dLfr14RrvMBICWsZJUWRzGX+yx+2mhYv0XnMsNAzHMwb0LOR6A
+	3HLjhx1bmWIK1pQyY34uGNREF9fzH4IT/MZ693qtNpzQstMdY7Efcg3eA898pZH809DNVNyHgIA
+	CsbGrye+MSQyBmRqstgKoqiCElsxnJwuxLzw4C1zVrQ==
+X-Received: by 2002:a05:600c:3107:b0:4ba:eb:eb9b with SMTP id 5b1f17b1804b1-4bb7da1272cmr124142255e9.8.1795101185837;
+        Thu, 19 Nov 2026 07:13:05 -0800 (PST)
+X-Received: by 2002:a05:600c:3107:b0:4ba:eb:eb9b with SMTP id 5b1f17b1804b1-4bb7da1272cmr124141275e9.8.1795101185168;
+        Thu, 19 Nov 2026 07:13:05 -0800 (PST)
 Received: from redhat.com ([2a0d:6fc0:1522:6500:ac93:c62:f076:48c6])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6c61e53asm61225f8f.59.2026.11.19.07.05.06
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb884a3a3dsm3221365e9.10.2026.11.19.07.13.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2026 07:05:11 -0800 (PST)
-Date: Thu, 19 Nov 2026 10:05:05 -0500
+        Thu, 19 Nov 2026 07:13:04 -0800 (PST)
+Date: Thu, 19 Nov 2026 10:12:58 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Ondrej =?utf-8?B?TW9zbsOhxI1law==?= <omosnacek@gmail.com>,
-	Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Ryan Chen <ryan_chen@aspeedtech.com>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Abel Vesa <abelvesa@kernel.org>, Jens Wiklander <jenswi@kernel.org>,
-	Sumit Garg <sumit.garg@kernel.org>,
-	Scott Branden <scott.branden@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
-	linux-sgx@vger.kernel.org, selinux@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
-	linux-arm-msm@vger.kernel.org, op-tee@lists.trustedfirmware.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 14/14] vhost-vdpa: convert mmap hook to mmap_prepare
-Message-ID: <20261119100450-mutt-send-email-mst@kernel.org>
-References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
- <20261105-late-2026-mmap_prepare-v1-14-c56aadfbab8a@kernel.org>
+To: Tao Cui <cui.tao@linux.dev>
+Cc: akpm@linux-foundation.org, dgilbert@interlog.com, mkp@kernel.org,
+	loberman@redhat.com, jmeneghi@redhat.com, kraxel@redhat.com,
+	vivek.kasireddy@intel.com, jasowangio@gmail.com,
+	eperezma@redhat.com, stefanha@redhat.com, sgarzare@redhat.com,
+	rostedt@goodmis.org, vdonnefort@google.com, mhiramat@kernel.org,
+	jgg@ziepe.ca, kevin.tian@intel.com, axboe@kernel.dk,
+	linux-mm@kvack.org, James.Bottomley@hansenpartnership.com,
+	sumit.semwal@linaro.org, christian.koenig@amd.com,
+	phasta@kernel.org, joro@8bytes.org, will@kernel.org,
+	linux-scsi@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	kvm@vger.kernel.org, virtualization@lists.linux.dev,
+	linux-trace-kernel@vger.kernel.org, iommu@lists.linux.dev,
+	io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
+	bobbyeshleman@meta.com, mathieu.desnoyers@efficios.com,
+	robin.murphy@arm.com, mason@kernel.org, aesteve@redhat.com,
+	tjmercier@google.com, harry@kernel.org, vbabka@suse.cz,
+	cuitao@kylinos.cn
+Subject: Re: [PATCH 3/7] vhost: account the per-device kernel allocations to
+ memcg
+Message-ID: <20261119101239-mutt-send-email-mst@kernel.org>
+References: <20261106131829.3228926-1-cui.tao@linux.dev>
+ <20261106131829.3228926-4-cui.tao@linux.dev>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -162,80 +134,152 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261105-late-2026-mmap_prepare-v1-14-c56aadfbab8a@kernel.org>
+In-Reply-To: <20261106131829.3228926-4-cui.tao@linux.dev>
 
-On Thu, Nov 05, 2026 at 09:05:45PM +0000, Lorenzo Stoakes (ARM) wrote:
-> Move from the deprecated mmap hook to the new mmap_prepare hook. The hook
-> only validates the request and sets the VMA flags, operations and page
-> protection.
+On Fri, Nov 06, 2026 at 09:18:25PM +0800, Tao Cui wrote:
+> From: Tao Cui <cuitao@kylinos.cn>
 > 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Everything except the worker struct is allocated with plain GFP_KERNEL:
+> the per-vq iovec and log arrays at VHOST_SET_OWNER, the memory table at
+> VHOST_SET_MEM_TABLE whose size follows the user supplied region count,
+> the pending message nodes, and the vhost_net/vhost_vsock device structs
+> with their fallback to vmalloc.  The worker has been accounted since the
+> vhost_task conversion.
+> 
+> A container that can open /dev/vhost-net or /dev/vhost-vsock, which
+> device plugins hand out with passthrough, holds roughly 150KB of
+> resident kernel memory per device after SET_OWNER.  Charge the rest the
+> same way the worker already is.
+> 
+> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
 
 
-feel free to merge with rest of this.
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+
+should each patch be merged individually?
+
 
 > ---
->  drivers/vhost/vdpa.c | 23 ++++++++++++-----------
->  1 file changed, 12 insertions(+), 11 deletions(-)
+>  drivers/vhost/net.c   | 14 ++++++++------
+>  drivers/vhost/vhost.c | 16 ++++++++++------
+>  drivers/vhost/vsock.c |  5 +++--
+>  3 files changed, 21 insertions(+), 14 deletions(-)
 > 
-> diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-> index ff7d90719171..993b2d7c8927 100644
-> --- a/drivers/vhost/vdpa.c
-> +++ b/drivers/vhost/vdpa.c
-> @@ -1573,19 +1573,19 @@ static const struct vm_operations_struct vhost_vdpa_vm_ops = {
->  	.fault = vhost_vdpa_fault,
->  };
+> diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+> index 4570a4ffbab2..bab6597c696d 100644
+> --- a/drivers/vhost/net.c
+> +++ b/drivers/vhost/net.c
+> @@ -249,7 +249,7 @@ vhost_net_ubuf_alloc(struct vhost_virtqueue *vq, bool zcopy)
+>  	/* No zero copy backend? Nothing to count. */
+>  	if (!zcopy)
+>  		return NULL;
+> -	ubufs = kmalloc_obj(*ubufs);
+> +	ubufs = kmalloc_obj(*ubufs, GFP_KERNEL_ACCOUNT);
+>  	if (!ubufs)
+>  		return ERR_PTR(-ENOMEM);
+>  	atomic_set(&ubufs->refcount, 1);
+> @@ -302,7 +302,8 @@ static int vhost_net_set_ubuf_info(struct vhost_net *n)
+>  		if (!zcopy)
+>  			continue;
+>  		n->vqs[i].ubuf_info =
+> -			kmalloc_objs(*n->vqs[i].ubuf_info, UIO_MAXIOV);
+> +			kmalloc_objs(*n->vqs[i].ubuf_info, UIO_MAXIOV,
+> +				     GFP_KERNEL_ACCOUNT);
+>  		if  (!n->vqs[i].ubuf_info)
+>  			goto err;
+>  	}
+> @@ -1344,17 +1345,18 @@ static int vhost_net_open(struct inode *inode, struct file *f)
+>  	struct xdp_buff *xdp;
+>  	int i;
 >  
-> -static int vhost_vdpa_mmap(struct file *file, struct vm_area_struct *vma)
-> +static int vhost_vdpa_mmap_prepare(struct vm_area_desc *desc)
+> -	n = kvmalloc_obj(*n, GFP_KERNEL | __GFP_RETRY_MAYFAIL);
+> +	n = kvmalloc_obj(*n, GFP_KERNEL | __GFP_RETRY_MAYFAIL |
+> +			 __GFP_ACCOUNT);
+>  	if (!n)
+>  		return -ENOMEM;
+> -	vqs = kmalloc_objs(*vqs, VHOST_NET_VQ_MAX);
+> +	vqs = kmalloc_objs(*vqs, VHOST_NET_VQ_MAX, GFP_KERNEL_ACCOUNT);
+>  	if (!vqs) {
+>  		kvfree(n);
+>  		return -ENOMEM;
+>  	}
+>  
+>  	queue = kmalloc_array(VHOST_NET_BATCH, sizeof(void *),
+> -			      GFP_KERNEL);
+> +			      GFP_KERNEL_ACCOUNT);
+>  	if (!queue) {
+>  		kfree(vqs);
+>  		kvfree(n);
+> @@ -1362,7 +1364,7 @@ static int vhost_net_open(struct inode *inode, struct file *f)
+>  	}
+>  	n->vqs[VHOST_NET_VQ_RX].rxq.queue = queue;
+>  
+> -	xdp = kmalloc_objs(*xdp, VHOST_NET_BATCH);
+> +	xdp = kmalloc_objs(*xdp, VHOST_NET_BATCH, GFP_KERNEL_ACCOUNT);
+>  	if (!xdp) {
+>  		kfree(vqs);
+>  		kvfree(n);
+> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> index ea127af58ada..d1274106ad5d 100644
+> --- a/drivers/vhost/vhost.c
+> +++ b/drivers/vhost/vhost.c
+> @@ -526,11 +526,14 @@ static long vhost_dev_alloc_iovecs(struct vhost_dev *dev)
+>  
+>  	for (i = 0; i < dev->nvqs; ++i) {
+>  		vq = dev->vqs[i];
+> -		vq->indirect = kmalloc_objs(*vq->indirect, UIO_MAXIOV);
+> -		vq->log = kmalloc_objs(*vq->log, dev->iov_limit);
+> -		vq->heads = kmalloc_objs(*vq->heads, dev->iov_limit);
+> +		vq->indirect = kmalloc_objs(*vq->indirect, UIO_MAXIOV,
+> +					    GFP_KERNEL_ACCOUNT);
+> +		vq->log = kmalloc_objs(*vq->log, dev->iov_limit,
+> +				       GFP_KERNEL_ACCOUNT);
+> +		vq->heads = kmalloc_objs(*vq->heads, dev->iov_limit,
+> +					 GFP_KERNEL_ACCOUNT);
+>  		vq->nheads = kmalloc_array(dev->iov_limit, sizeof(*vq->nheads),
+> -					   GFP_KERNEL);
+> +					   GFP_KERNEL_ACCOUNT);
+>  		if (!vq->indirect || !vq->log || !vq->heads || !vq->nheads)
+>  			goto err_nomem;
+>  	}
+> @@ -2053,7 +2056,8 @@ static long vhost_set_memory(struct vhost_dev *d, struct vhost_memory __user *m)
+>  		return -E2BIG;
+>  	if (max_iotlb_entries <= 0)
+>  		return -EINVAL;
+> -	newmem = kvzalloc_flex(*newmem, regions, mem.nregions);
+> +	newmem = kvzalloc_flex(*newmem, regions, mem.nregions,
+> +			       GFP_KERNEL_ACCOUNT);
+>  	if (!newmem)
+>  		return -ENOMEM;
+>  
+> @@ -3405,7 +3409,7 @@ EXPORT_SYMBOL_GPL(vhost_disable_notify);
+>  struct vhost_msg_node *vhost_new_msg(struct vhost_virtqueue *vq, int type)
 >  {
-> -	struct vhost_vdpa *v = vma->vm_file->private_data;
-> +	struct vhost_vdpa *v = desc->file->private_data;
->  	struct vdpa_device *vdpa = v->vdpa;
->  	const struct vdpa_config_ops *ops = vdpa->config;
->  	struct vdpa_notification_area notify;
-> -	unsigned long index = vma->vm_pgoff;
-> +	unsigned long index = desc->pgoff;
+>  	/* Make sure all padding within the structure is initialized. */
+> -	struct vhost_msg_node *node = kzalloc_obj(*node);
+> +	struct vhost_msg_node *node = kzalloc_obj(*node, GFP_KERNEL_ACCOUNT);
+>  	if (!node)
+>  		return NULL;
 >  
-> -	if (vma->vm_end - vma->vm_start != PAGE_SIZE)
-> +	if (vma_desc_size(desc) != PAGE_SIZE)
->  		return -EINVAL;
-> -	if ((vma->vm_flags & VM_SHARED) == 0)
-> +	if (!vma_desc_test(desc, VMA_SHARED_BIT))
->  		return -EINVAL;
-> -	if (vma->vm_flags & VM_READ)
-> +	if (vma_desc_test(desc, VMA_READ_BIT))
->  		return -EINVAL;
->  	if (!ops->get_vq_notification)
->  		return -ENOTSUPP;
-> @@ -1598,12 +1598,13 @@ static int vhost_vdpa_mmap(struct file *file, struct vm_area_struct *vma)
->  		return -EINVAL;
->  	if (notify.addr & (PAGE_SIZE - 1))
->  		return -EINVAL;
-> -	if (vma->vm_end - vma->vm_start != notify.size)
-> +	if (vma_desc_size(desc) != notify.size)
->  		return -ENOTSUPP;
+> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+> index 0cb87971d749..600daeb05e7b 100644
+> --- a/drivers/vhost/vsock.c
+> +++ b/drivers/vhost/vsock.c
+> @@ -721,11 +721,12 @@ static int vhost_vsock_dev_open(struct inode *inode, struct file *file)
+>  	/* This struct is large and allocation could fail, fall back to vmalloc
+>  	 * if there is no other way.
+>  	 */
+> -	vsock = kvmalloc_obj(*vsock, GFP_KERNEL | __GFP_RETRY_MAYFAIL);
+> +	vsock = kvmalloc_obj(*vsock, GFP_KERNEL | __GFP_RETRY_MAYFAIL |
+> +			     __GFP_ACCOUNT);
+>  	if (!vsock)
+>  		return -ENOMEM;
 >  
-> -	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
-> -	vm_flags_set(vma, VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP);
-> -	vma->vm_ops = &vhost_vdpa_vm_ops;
-> +	desc->page_prot = pgprot_noncached(desc->page_prot);
-> +	vma_desc_set_flags(desc, VMA_IO_BIT, VMA_PFNMAP_BIT, VMA_DONTEXPAND_BIT,
-> +			   VMA_DONTDUMP_BIT);
-> +	desc->vm_ops = &vhost_vdpa_vm_ops;
->  	return 0;
->  }
->  #endif /* CONFIG_MMU */
-> @@ -1615,7 +1616,7 @@ static const struct file_operations vhost_vdpa_fops = {
->  	.write_iter	= vhost_vdpa_chr_write_iter,
->  	.unlocked_ioctl	= vhost_vdpa_unlocked_ioctl,
->  #ifdef CONFIG_MMU
-> -	.mmap		= vhost_vdpa_mmap,
-> +	.mmap_prepare	= vhost_vdpa_mmap_prepare,
->  #endif /* CONFIG_MMU */
->  	.compat_ioctl	= compat_ptr_ioctl,
->  };
-> 
+> -	vqs = kmalloc_objs(*vqs, ARRAY_SIZE(vsock->vqs));
+> +	vqs = kmalloc_objs(*vqs, ARRAY_SIZE(vsock->vqs), GFP_KERNEL_ACCOUNT);
+>  	if (!vqs) {
+>  		ret = -ENOMEM;
+>  		goto out;
 > -- 
-> 2.56.0
+> 2.43.0
 
