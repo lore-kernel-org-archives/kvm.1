@@ -1,82 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.216
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795074708;
-	b=3LNvfd2UPHKfy7BGFHsPZkAm3LGb5pI9tmG93Vbf0/U+cuqcYK7QMLzVi5+CGF+3uVEv
-	 UvDhP52shLw34YPEPOSpyfnGBkXxKNmHgUjusoBgPoEhOQSJ4HgEo7YZ0oIOSWQ76Fm6w
-	 mPK57oyDM0HHwq/NizPE86jDWgbAuUpuiMLo0B1TlH+wbg2TJ/9FT7CYtrn/dw8d2I6lz
-	 PthtTPOzibtGqrQDZU6ItlFeKesNOcMolsa5gyRfdpM0ecse067WWbiqyz7zYONsNCxEE
-	 7gkGsAoXG4bNyW8eL3oHjOFX6/5HxMneiHbIe+i7IfjQ1x/sgCBN2998SG4QaxbsGkw==
+	t=1795074770;
+	b=CaakKwbX3GuVHLE8xr3ESRf4OjzKeZrg+/of27OhSQ9gQYdikfgrPLdV/8zlI3pmpNth
+	 5/+8wmEQxciyuylfXvXiG8lPaPQu3x8xyfjX79AF+fZTW+St82lnqhV4atxZ0sr3xIE4W
+	 vLRZzbS2NN94eCzoiRTWR6iS6gnExEBShOr+fKPYqEej6tI5RUjFbb+UW/3T9pcKswB73
+	 s2QGCGHYHGbdfu7594EAke77OqpWDelxcu1Nf/VQjlNbI7s35IQqtfq9JGG5d4le3LEME
+	 rp6oKVEs5Zjek9IGHdxT4z1PdxHsEKQs5WFbnbA6RJ0JpwI35sJ3m0981UiKrnBw3zA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795074708;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
-	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=/xMcofbYLH/BQGqdyQHY3s09vTq6s+sJcSXrp+UZcQQ=;
-	b=3d1rQSxh7DzUB78KuWZxM18y0+qvsx2/osaB8NIfIw4XyMDD0g5WFjCr7ronUbJsP3Wq
-	 uXQCMJa+Mq+/GC7/lmhAGIkHYWjmaNOMPIGjwBrjijtwjiusgiRWc1tpukYCeG9ssfCeB
-	 9N9uhc1J1VRjDmcyhvP5FCZagO0keEVxDqRzPs4G48Xqj64F/+afxJnxiViG5pf1g22xE
-	 YKIFCa1msQCAMcp3y5t4Hw023tj4hibixLIyOX9indUMttFe6Da6vctyLeMHtplsg4B+Z
-	 Eb55smWFuKudK+qhsY96NicTHMyivYEz17EJ+4wmBjFTqUFI3OJfX0bj2E2jeGHRMYw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795074770;
+	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Originating-IP:
+	 X-ClientProxiedBy;
+	bh=XDGSq+NYY9XzLBrI14hyUS/fB+/Exw2w2j7dzo+fazs=;
+	b=FTslMrBt3oRvocUtMc3GH966ewmBTv1I6vU+nKQiGkcz7x1P0DJPLWcqJ85m5XPQL+8b
+	 LqRCuEPcqRDUGT03ccSWrlhcTXpRyVybrc+8FwtrTpFde2BOSA3dp7I32GUqkBsHCwkrq
+	 9YbbqZX3W7Q46NraEqxxkXhCigpQiGOtWbBjSGVfaGjR79FgpqQIOmPY4jWwuwGSrZv1k
+	 2kEXK+G6VGauuXWiZ50kXFcfxbz/djwfogOkYr9lvTrsCscunV+MRcq59K1GyqBIhc9Fw
+	 b0k3l22KeqtiMtpmvNXI776gbkmYBKvznix7OCdpM7XJJh62A54SoWboPPzailqS3UQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V5F6EWtP;
-	arc=none smtp.remote-ip=198.175.65.10
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=huawei.com;
+	spf=pass smtp.mailfrom=huawei.com;
+	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=LCSdGyGP;
+	arc=none smtp.remote-ip=113.46.200.216
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263D6606A320;
-	Thu, 19 Nov 2026 07:51:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 263D6606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169F4606A324;
+	Thu, 19 Nov 2026 07:52:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 169F4606A324
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V5F6EWtP
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795074709; x=1826610709;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+vBK1UvG33M73tQvAAVwvyLux0vIdvn8UJxqBDjdbtc=;
-  b=V5F6EWtPBg1N9y6Cl6cNdGzVWpYmXL85BpTbToszECb7I4qUOzb1EQJa
-   yS7rqg9kmEv6RUDKEGNIoKXmT4kOTRMRyV3xoM5IAdHopg80ShLH+jEPo
-   OysV6afiwJkYNfRCmAkl0EHrfsrMyKOEAiN3j4LZ5glCTbnPGxZraWaXa
-   vXRMRqAlZd0zfqb+ZuTL6luztbFD3iZBWob8lit4q7gRN4IpGXWKWLJ1O
-   Im4q9aJiGVlmCzzG3uSEXs/ASuWnR/E5zTqEl5oUnbk2dR93IoD9WC3Ee
-   8ZyfJGWePCR4XhEgsu6CryBd3sefCJ28260mOWlPuofmSIum/X8m6+DxP
-   A==;
-X-CSE-ConnectionGUID: wK8+UVghRraqfPWSp4BYVA==
-X-CSE-MsgGUID: 0vkofEAtQWaUr0cXLT4Abg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3833635"
-X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
-   d="scan'208";a="3833635"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2026 23:51:48 -0800
-X-CSE-ConnectionGUID: RDOcz9zFR+u9DyrXHiCCvA==
-X-CSE-MsgGUID: xSAgjB7xTLWP9PsKVyyFew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
-   d="scan'208";a="10358887"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 18 Nov 2026 23:51:44 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xTwvm-00000001FLu-0FqS;
-	Thu, 19 Nov 2026 07:51:42 +0000
-Date: Thu, 19 Nov 2026 15:50:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Chengwen Feng <fengchengwen@huawei.com>, alex@shazbot.org, jgg@ziepe.ca,
-	helgaas@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, wathsala.vithanage@arm.com,
-	wei.huang2@amd.com, zhipingz@meta.com, wangzhou1@hisilicon.com,
-	wangyushan12@huawei.com, liuyonglong@huawei.com,
-	kvm@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v21 09/13] vfio/pci: Add basic NO-ST TPH VFIO device
- feature support
-Message-ID: <202611191515.xWHTgH9X-lkp@intel.com>
-References: <20261118091238.45992-10-fengchengwen@huawei.com>
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=LCSdGyGP
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=XDGSq+NYY9XzLBrI14hyUS/fB+/Exw2w2j7dzo+fazs=;
+	b=LCSdGyGPdamq0ZtVH+kQdHhms9IgZI22Kjo79DM7xUImrxVEK+DP8tfMlYQ5/G9pKXP//eJpt
+	hiHyy9nA5IKmAKkHxPR9kSEkq3RilXY3DPsQUifasfgYSS15KqerDXrYYPbjxP+UQ9aehn1f8Gu
+	fSS+3VMnGKoM25dNCsLD0so=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4jVVzd5Ky2z1T4Fr;
+	Thu, 19 Nov 2026 15:51:57 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id C976C203AB;
+	Thu, 19 Nov 2026 15:52:38 +0800 (CST)
+Received: from [10.67.120.103] (10.67.120.103) by
+ kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 19 Nov 2026 15:52:37 +0800
+Message-ID: <ceb91298-3d05-486e-a900-1291963dde24@huawei.com>
+Date: Thu, 19 Nov 2026 15:52:37 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -86,72 +62,115 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261118091238.45992-10-fengchengwen@huawei.com>
-
-Hi Chengwen,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on awilliam-vfio/next]
-[also build test WARNING on pci/next pci/for-linus linus/master v7.4-rc3 next-20261116]
-[cannot apply to awilliam-vfio/for-linus]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Chengwen-Feng/PCI-TPH-Fix-pcie_tph_get_st_table_loc-field-extraction/20261118-171226
-base:   https://github.com/awilliam/linux-vfio.git next
-patch link:    https://lore.kernel.org/r/20261118091238.45992-10-fengchengwen%40huawei.com
-patch subject: [PATCH v21 09/13] vfio/pci: Add basic NO-ST TPH VFIO device feature support
-config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20261119/202611191515.xWHTgH9X-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261119/202611191515.xWHTgH9X-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611191515.xWHTgH9X-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/vfio/pci/vfio_pci_config.c: In function 'vfio_tph_vcap_rewrite':
->> drivers/vfio/pci/vfio_pci_config.c:1130:25: warning: unused variable 'pdev' [-Wunused-variable]
-    1130 |         struct pci_dev *pdev = vdev->pdev;
-         |                         ^~~~
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 06/15] KVM: arm64: Add support for FEAT_HDBSS
+To: Leonardo Bras <leo.bras@arm.com>
+CC: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
+	<will@kernel.org>, <corbet@lwn.net>, <pbonzini@redhat.com>,
+	<yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>, <yangjinqian1@huawei.com>,
+	<caijian11@h-partners.com>, <liuyonglong@huawei.com>,
+	<tangchengchang@huawei.com>, <yezhenyu2@huawei.com>, <yubihong@huawei.com>,
+	<linuxarm@huawei.com>, <joey.gouly@arm.com>, <kvmarm@lists.linux.dev>,
+	<kvm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <seiden@linux.ibm.com>,
+	<suzuki.poulose@arm.com>, <fuad.tabba@linux.dev>, <mark.rutland@arm.com>,
+	<seanjc@google.com>, <rdunlap@infradead.org>, <linux-doc@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <skhan@linuxfoundation.org>
+References: <20260929103655.85107-1-zhengtian10@huawei.com>
+ <20260929103655.85107-7-zhengtian10@huawei.com> <at-X_hFbsBU_Dsgr@LeoBrasDK>
+ <a301e884-f6d1-4082-8551-8d8a17276dc3@huawei.com>
+ <auSml6yTVYIQe7NZ@LeoBrasDK>
+From: Tian Zheng <zhengtian10@huawei.com>
+In-Reply-To: <auSml6yTVYIQe7NZ@LeoBrasDK>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
 
 
-vim +/pdev +1130 drivers/vfio/pci/vfio_pci_config.c
 
-  1126	
-  1127	static void vfio_tph_vcap_rewrite(struct vfio_pci_core_device *vdev, int pos)
-  1128	{
-  1129		__le32 *vptr = (__le32 *)&vdev->vconfig[pos + PCI_TPH_CAP];
-> 1130		struct pci_dev *pdev = vdev->pdev;
-  1131		u32 val = le32_to_cpu(*vptr);
-  1132	
-  1133		if (!pcie_ext_tph_supported(pdev)) {
-  1134			/* Remove extended TPH if root-port doesn't support */
-  1135			val &= ~PCI_TPH_CAP_EXT_TPH;
-  1136		}
-  1137	
-  1138		if (vdev->tph_policy == VFIO_PCI_TPH_POLICY_NO_ST) {
-  1139			/*
-  1140			 * NO-ST policy: mask IV/DS mode, ST location and ST size fields.
-  1141			 * Userspace only sees NO-ST capability.
-  1142			 */
-  1143			val &= ~(PCI_TPH_CAP_ST_IV | PCI_TPH_CAP_ST_DS |
-  1144				 PCI_TPH_CAP_LOC_MASK | PCI_TPH_CAP_ST_MASK);
-  1145		}
-  1146	
-  1147		*vptr = cpu_to_le32(val);
-  1148	
-  1149		/* Cache the final virtualized TPH capability value */
-  1150		vdev->tph_vcap = val;
-  1151	}
-  1152	
+On 10/30/2026 10:15 PM, Leonardo Bras wrote:
+> On Fri, Oct 30, 2026 at 10:53:57AM +0800, Tian Zheng wrote:
+>>
+>>
+>> On 10/27/2026 2:12 AM, Leonardo Bras wrote:
+>>> On Tue, Sep 29, 2026 at 06:36:46PM +0800, Tian Zheng wrote:
+>>>> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+>>>> index 32102c3912fa..12fa37328dd2 100644
+>>>> --- a/arch/arm64/kernel/cpufeature.c
+>>>> +++ b/arch/arm64/kernel/cpufeature.c
+>>>> @@ -2158,6 +2158,11 @@ static bool hvhe_possible(const struct arm64_cpu_capabilities *entry,
+>>>>    	return arm64_test_sw_feature_override(ARM64_SW_FEATURE_OVERRIDE_HVHE);
+>>>>    }
+>>>>
+>>>> +static bool has_vhe_hdbss(const struct arm64_cpu_capabilities *entry, int scope)
+>>>> +{
+>>>> +	return is_kernel_in_hyp_mode() && has_cpuid_feature(entry, scope);
+>>>> +}
+>>>> +
+>>>
+>>
+>> Hi leo,
+>>
+>>> IIUC you run this on every cpu in the system, to make sure it's matching
+>>> the feature. Is there any chance the kernel is in EL2 only on some of the
+>>> cpus here?
+>>>
+>>
+>> It's impossible for the system to have only some CPUs in EL2 and others
+>>   not.
+>>
+>>> If not, maybe we can run it on system_supports_hdbss() instead, which would
+>>> be easier for the user to understand it only runs in EL2, on top of not
+>>> needing the above.
+>>>
+>>
+>> However, The question is whether a cap should mean "this system can use
+>> the feature" or "this hardware supports the feature". If the cap only
+>> tracks hardware support, users may be confused when the hardware
+>> supports HDBSS but the system runs in nVHE mode — they would mistakenly
+>> believe they can use the feature.
+>>
+>> So I think we should keep is_kernel_in_hyp_mode() in has_vhe_hdbss(),
+>> and add a comment in system_supports_hdbss() explaining this.
+>>
+>> Does that work for you? Looking forward to your reply.
+> 
+> Well,
+> That's just my personal view of this:
+> 
+> If we have a function called "has_hdbss" it should only report if the
+> system has the feature available.
+> 
+> On the "system_supports_*" we have to figure out if the system itself
+> supports the feature, which checks the feature bits itself and could mean
+> checking for other features being there, such as hyp_mode.
+> 
+> What do you think?
+> 
+> Thx,
+> Leo
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Hi Leo,
+
+Sorry for the slow reply. I've been looking into how other cpufeatures
+are configured on arm64, on and off, and that's why it took a while.
+
+My reading is that detected: HDBSS should mean "this system can use
+HDBSS", not just "the silicon has it".
+
+Several caps already add conditions beyond the ID bits. CNP returns
+false for kdump and under ARM64_WORKAROUND_DISABLE_CNP, NV and pKVM
+match on kvm_get_mode(), and can_trap_icv_dir_el1() starts with
+is_hyp_mode_available(). So in practice a SYSTEM_FEATURE cap answers
+"can this kernel use it on this system".
+
+HDBSS is EL2-only (HDBSSBR_EL2/HDBSSPROD_EL2, VTCR_EL2.HDBSS),
+implemented only under hyp/vhe, and used only by KVM, so "the hardware
+is there" is not the same as "this kernel can use it". That is why I'd
+keep the gate in has_vhe_hdbss() rather than moving it to the consumer.
+
+I'd be interested to hear how you see it.
+
+Thanks,
+Tian
