@@ -1,76 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.30.148.35
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795092981;
-	b=jSNQgYo78VYF+hkhK0brSDSIBsGcErgqT7EXTV5MwKnojxZFUHaXz16NVd/KCExueyU1
-	 5aCedqfTtIjSC4ujX51QLzihstHxoLQI1G47EsB8+WoEVrzyv7e07+ODTFtE0+uez6HSV
-	 OiGWZ5N4xN46BkeMTwLFNe3j/w+5MO2flLFwuJbRw53wfNALyV5X/Q/3NGQxpDPpq7U70
-	 2S0mxAN3+5lDoyE/e8yljL7kN/Qv1fRkjj6i6zH45eQvxj10fKKUE9JbX2m2zhMa4mckb
-	 RL4cBNzO1JO/GFfaD3qRf9mZc+3p1cEcRQ1Yu3NuwebWH7T4j7gm9Tu79MPqXOwYU3g==
+	t=1795094884;
+	b=pR6E6z7wHXHUKR5E6PiPKc8/OBJ9e02Iowt8oS0+/s2hlsl1vAGAIvkEvXp/Qhc0qrKm
+	 Qm58Iz5AnloHRNg8lnScDrJjfTeGldLxGIiL+H35KW0O+bIBZV6imGH+CjM/CdXbcv3h5
+	 lyec4N/b/iTg07xBwyPYcuj2Bz0vOQ53cWKtzv0fuR3H0IVeR1ydBeaa+ZPfj4GBe42/d
+	 9A4c5yuD4zBOAC6n6gjA46+TVpKPCoPH24IVgwfisAjtvUz20JEUajKrymkiEdLL/h2cc
+	 s/0XbPxGUqmIIUyH3nDUROEZZKyBAR34Kd2bT4TkmRNMlX7Cf0WKdEpd/2SxsPNLUOg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795092981;
-	h=Received:DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding:X-SA-Exim-Connect-IP:
-	 X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:X-SA-Exim-Scanned;
-	bh=WNzetZFExbVUnIn8RIkQ20Rzs3Hjz4CEnnAdhS2hOx4=;
-	b=I6PAjF3PTU209GlAy4f2kWFvQsfXkxvV5TQN6gZTsi3x1rADuhkty2Zxm1IEazGc0pQs
-	 Slj3FZ2nbeaO4GVCRV8USGIqI5GDrCOh2rrpDHaE3uYhmY/96g+R7OTyI10D+hG0KqFEd
-	 MmknpzSNZpVkIZr6R6Pew+MyrFaBkxG47hd+6I0UJZm6gY/ZncFfgunv22nyF3e47EZWG
-	 OscQS2hJ87Aaue1vrPmxT6nU1K7mYphxXLKyNHSVhFrC262TBJDYOaIGgbS24Rbn4tkRh
-	 Lm0qqDnoUBFxI93jMiLPlfepvTFMAefxzU0Xx34ApfMK6y0MHMCwrymTN3jFC9DLARQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795094884;
+	h=DMARC-Filter:Received:Received:Received:X-Zmail-TransId:
+	 X-Zmail-LocalSMTP:X-Zmail-RealSender:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:X-ZMAIL-USEORIGINALEMLTOOUTBOUND:
+	 Content-Transfer-Encoding:X-MAIL:X-TLS:X-ENVELOPE-SENDER:X-SOURCE-IP:
+	 X-CLEAN:X-Fangmail-Anti-Spam-Filtered:X-Fangmail-MID-QID;
+	bh=DdeABvnXD8ErsgEI1yFw+VhglyiJdjcWNifor1GeJ2I=;
+	b=fv5GDdAIqPeZOpOUzFQ74l6bYJI8sexwjUptDB6MHmk0VuTtUgnXTvlQJTTepnNQEZFu
+	 ylkeCJRjgeO1lU4z8RlXOZ7zxCE5ICj81LNrZwsn89ac2bFq/D3pUv+qadn7rMQ7QkWir
+	 9WNI8Vpx/e0FVYxnbLdoWJcS5EdyyWICY37R6EWWWrLgZZHav3Rd83dyDiYmmw5sXAYsI
+	 vRPMLlzB2QMCishjlPg5chh8txsw1d51i3i6trpMAeXRcfSGIGQ5D17z1ausJtJhzL0tk
+	 Q9/ljGlz/2ziya+2cjD5Lsg12GXFzHnepmpCTR3mC5Fz6I9/qM5SDCWp6gPIu6KYNxA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="H1Ck/HHD";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=sanechips.com.cn;
+	spf=pass smtp.mailfrom=sanechips.com.cn;
+	arc=none smtp.remote-ip=160.30.148.35
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7866C606A325;
-	Thu, 19 Nov 2026 12:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H1Ck/HHD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F611F000C4;
-	Thu, 19 Nov 2026 12:56:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795092981;
-	bh=WNzetZFExbVUnIn8RIkQ20Rzs3Hjz4CEnnAdhS2hOx4=;
-	h=From:To:Cc:Subject:Date;
-	b=H1Ck/HHDHIDm49YTmHflRYG1906MK/bcWcVqx678JA6tbRjT/rMtgbt4vU+uUba/8
-	 j/fYGJQNkgTA7WqJaxFGgpuLHCbyo72isTHLmClaiYbHfVRUAZhGEzeFJ91F2UTPw7
-	 aNIwrL2pHP3LWsv3OqYKbmM/RxFX0c6vNeAdw4xLZBR8/CmyEmA2M3T6wnsMKxRmln
-	 FA/I7lzfPN0rlA8lijj8UhC2Gbwpp+ilYE93zLm0y3gpMt+oM+Hlt/qyynG68O+x/D
-	 +/Rpsm9I+IfZvgFiZZerxn+rSAj4Qw0+voDQRe/ZuDxcjlMYO+IkOLaURT+QZ7JPst
-	 YH25iVN1WVe8A==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xU1gY-00000000SEK-31q7;
-	Thu, 19 Nov 2026 12:56:18 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Colton Lewis <coltonlewis@google.com>,
-	Dan Carpenter <dan@pereq.eu>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	Michael Reeves <michael.reeves077@gmail.com>,
-	Mostafa Saleh <smostafa@google.com>,
-	Myria Sarvay <myrialsarvay@gmail.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Will Deacon <will@kernel.org>,
-	Xuheng Li <xuheng@cs.columbia.edu>,
-	Yureka Lilian <yureka@cyberchaos.dev>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org
-Subject: [GIT PULL] KVM/arm64 fixes for 7.4, take #3
-Date: Thu, 19 Nov 2026 12:56:08 +0000
-Message-ID: <20261119125608.3939330-1-maz@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBB4606A32C;
+	Thu, 19 Nov 2026 13:28:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8DBB4606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sanechips.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sanechips.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jVfRH1jbzz8XrrJ;
+	Thu, 19 Nov 2026 21:27:55 +0800 (CST)
+Received: from szxl2zmapp06.zte.com.cn ([10.1.32.108])
+	by mse-fl1.zte.com.cn with SMTP id 6AJDRmY7086378;
+	Thu, 19 Nov 2026 21:27:48 +0800 (+08)
+	(envelope-from gong.shuai@sanechips.com.cn)
+Received: from ubuntu-35-gs (unknown [10.230.214.35])
+	by smtp (Zmail) with SMTP;
+	Thu, 19 Nov 2026 21:27:51 +0800
+X-Zmail-TransId: 3e816afef95002f-56441
+X-Zmail-LocalSMTP: 1
+X-Zmail-RealSender: gong.shuai@sanechips.com.cn
+From: Gong Shuai <gong.shuai@sanechips.com.cn>
+To: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        iommu@lists.linux.dev
+Cc: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
+        Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+        Tomasz Jeznach <tomasz.jeznach@linux.dev>,
+        "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
+        Andrew Jones <andrew.jones@oss.qualcomm.com>,
+        Fangyu Yu <fangyu.yu@linux.alibaba.com>,
+        Tan Chi <tanchi25@mails.ucas.ac.cn>, Wu Fei <wu.fei9@sanechips.com.cn>,
+        Zhao Qingye <zhao.qingye@sanechips.com.cn>,
+        Gong Shuai <gong.shuai@sanechips.com.cn>
+Subject: [RFC PATCH v3 00/10] iommu/riscv: Add nested translation (vIOMMU) support
+Date: Thu, 19 Nov 2026 21:27:34 +0800
+Message-ID: <20261119132744.396426-1-gong.shuai@sanechips.com.cn>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -80,138 +79,194 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+X-ZMAIL-USEORIGINALEMLTOOUTBOUND: 1
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: pbonzini@redhat.com, catalin.marinas@arm.com, coltonlewis@google.com, dan@pereq.eu, fuad.tabba@linux.dev, michael.reeves077@gmail.com, smostafa@google.com, myrialsarvay@gmail.com, oupton@kernel.org, vdonnefort@google.com, will@kernel.org, xuheng@cs.columbia.edu, yureka@cyberchaos.dev, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-MAIL:mse-fl1.zte.com.cn 6AJDRmY7086378
+X-TLS: YES
+X-ENVELOPE-SENDER: gong.shuai@sanechips.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Thu, 19 Nov 2026 21:27:55 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6AFEF95B.000/4jVfRH1jbzz8XrrJ
 
-Paolo,
+An IOMMU allows an OS to restrict device DMA to the intended memory.
+It also gives device drivers an IOVA space that is independent of the
+physical memory layout. A guest OS needs these capabilities when it
+directly controls a device, just as a native OS does.
 
-As promissed in my previous missive, I'm back with a few more
-presents...
+Exposing a vIOMMU to the guest is not enough for a passthrough device.
+DMA from the physical device must also obey the mappings that the guest
+creates through its vIOMMU. Otherwise the guest cannot use its IOMMU to
+protect guest memory or provide IOVA mappings for the assigned device.
 
-This round of fixes is mostly a Dan Carpenter special, as they seem to
-have hit the jackpot with some new formal analysis tool, and found a
-number of issues in NV. I am very surprised (/s).
+The RISC-V IOMMU architecture supports this usage with two-stage
+translation. Stage 1 applies the guest's vIOMMU configuration. Stage 2
+is controlled by the hypervisor and restricts the device to memory
+assigned to the VM. This division gives the guest control of its own
+DMA mappings without allowing the device to escape the VM.
 
-The rest is a bunch of pKVM fixes and workarounds for ugly hardware.
+The Linux RISC-V IOMMU driver does not yet support this model through
+iommufd. A VMM cannot provide the guest stage 1 configuration to the
+physical IOMMU or synchronize its translation caches after the guest
+updates its page tables. This series adds the missing nested
+translation support so device passthrough can work with a guest that
+uses its own vIOMMU.
 
-I will be back next week same time for more of the same!
+This is an RFC and comments on the design are welcome.
 
-Please pull,
+Patch organization
 
-	M.
+Patch 1 prepares device context handling for nested translation.
+Patches 2 and 3 add the uAPI for nested allocation and cache
+invalidation.
+Patches 4 to 6 add the vIOMMU, nested domains and cache invalidation.
+Patches 7 and 8 allow a VMM to discover the physical IOMMU
+capabilities.
+Patch 9 adds nested device attachment.
+Patch 10 fixes bond unlink so it invalidates the correct address space.
 
-The following changes since commit 181a701fc14d3d468c603b5ecfb9f12115c5fb72:
+Dependencies
 
-  Merge branch kvm-arm64/misc-7.4-1 into kvmarm-master/fixes (2026-11-03 18:14:37 +0000)
+The series applies on top of iommu/master at commit 9f9dc924a01e,
+together with the RISC-V hardware dirty tracking series v7 [1] and
+its dependencies.
 
-are available in the Git repository at:
+Testing
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git tags/kvmarm-fixes-7.4-3
+The test requires MSI support, but the related dependencies are still
+under review, so the interrupt changes are not included in this series.
+The test needs the MSI remapping series v6 [2], the irqbypass series
+RFC v3 [3] and a KVM client from Andrew's github repo [4]. A branch with
+the complete test stack, including the additional nested interrupt
+support, is available at github repo [5].
 
-for you to fetch changes up to 3385a832525527801012f5993d1f6a7a3d23092c:
+The host is a RISC-V machine whose physical IOMMU is provided by an outer
+QEMU riscv-iommu model, which implements both translation stages. An NVMe
+controller under it is bound to vfio-pci and passed through to the guest.
+The guest is started by a QEMU built with the accel series [6][7], which
+exposes a first stage IOMMU to the guest and leaves the second stage to
+the host IOMMU. For simplicity the guest runs the same kernel as the host,
+and inside the guest it mainly uses the normal IOMMU driver and the NVMe
+driver.
 
-  Merge branch kvm-arm64/mmu-fixes-7.4-2 into kvmarm-master/fixes (2026-11-19 11:16:29 +0000)
+The layering of the setup is
 
-----------------------------------------------------------------
-KVM/arm64 fixes for 7.4, take #3
+Host HW, a RISC-V virt machine from latest QEMU(v11.1.3), with a
+riscv-iommu model that implements two stage translation and with the NVMe
+controller
 
-* MMU fixes:
+    Host OS, the kernel with this series
+      riscv-iommu driver, second stage and MSI table vfio-pci and KVM
 
-  - Fix arbitrary truncation to 32bit when dealing with pool size
+        Guest HW, QEMU with the accel series [6][7]
+          riscv-iommu accel, first stage only
 
-  - Correctly order page pin refconting
+            Guest OS, the same kernel as the host
+              riscv-iommu driver, NVMe driver
 
-  - Prevent a HYP block mapping from being replaced with a table
+A DMA address from the NVMe controller is translated by the guest first
+stage and then by the host second stage on the physical IOMMU. An MSI
+address is translated by the guest first stage into a guest IMSIC address,
+which the flat MSI table then resolves straight to the interrupt file of
+the target vCPU, instead of walking the second stage.
 
-  - Fix NV Range invalidation by extending the boundaries to the
-    next block mapping
+    DMA    device --> guest first stage --> host second stage --> RAM
+    MSI    device --> guest first stage --> MSI table --> VS-file
 
-  - Make sure the correct hw_mmu gets picked on the first run,
-    should userspace restore a nested context between init and
-    the first vcpu_load().
+The host was started with
 
-  - Reject TLBI IPAS2E1 that fall outside of the S2 range
+$HOST_QEMU \
+  -M virt,aia=aplic-imsic,aia-guests=7,iommu-sys=on \
+  -cpu rva23s64,sv48=on -nographic \
+  -smp 16 -m 16G \
+  -kernel $HOST_KERNEL \
+  -append "root=/dev/vda rw earlycon=sbi console=ttyS0 iommufd.allow_unsafe_interrupts=1" \
+  -drive file=$HOST_ROOTFS,if=none,id=d0,format=qcow2 -device virtio-blk-device,drive=d0 \
+  -device pcie-root-port,id=port0,chassis=0,slot=0,addr=3.0 \
+  -drive file=fake-nvme-disk.img,if=none,id=nvme0,format=qcow2 \
+  -device nvme,drive=nvme0,serial=deadbeef,bus=port0,addr=0.0
 
-* System register fixes:
+and the guest with
 
-  - Correctly forward POE/PIE/TVAL EL2 register traps
+$GUEST_QEMU \
+  -machine virt,accel=kvm,aia=aplic-imsic,aia-guests=5 \
+  -cpu host -nographic \
+  -smp 4 -m 4G \
+  -object iommufd,id=iommufd0 \
+  -device riscv-iommu-pci,addr=1.0,s-stage=on,g-stage=off,accel=on \
+  -device vfio-pci,host=0000:01:00.0,iommufd=iommufd0 \
+  -kernel $GUEST_KERNEL \
+  -append "root=/dev/vda rw earlycon=sbi console=ttyS0 iommu.passthrough=0 iommu.strict=1" \
+  -drive file=$GUEST_ROOTFS,if=none,id=d0,format=qcow2 -device virtio-blk-device,drive=d0
 
-  - Add a sanity check for missing trap forwarding
+Correctness was checked by running fio with verification enabled against
+the passed through disk.
 
-  - Correctly hide generic PAuth for pKVM protected guests when
-    the feature PAuth has been exluced from the feature set
+Known limitations and future work
 
-  - Make sure that HCR_EL2.NV1 is always RES0
+- PASID and the process directory table are not supported.
+- The ATS, PRI and T2GPA fields are validated on the nested domain, but
+  ATS.INVAL and the PRI queue are not forwarded.
+- One single physical IOMMU instance on host is assumed for now.
+- The new uAPI types have no selftest coverage yet.
 
-* Misc fixes:
+Coding assistants based on LLMs were used during development for code
+exploration, patch review, test execution and for drafting and editing
+commit messages. We have reviewed and finalized all resulting code and
+text.
 
-  - Flag Apple M3, M4 and M6 CPUs as having a broken vgic and
-    a wonky PMUv3 emulation.
+Changes in v3:
 
-  - Correctly handle 64bit offsets into an MMIO region from
-    userspace
+- Rebased on iommu/master at 9f9dc924a01e and the hardware
+  dirty tracking series v7 [2].
+- Use the guest PSCID directly and allocate a separate host GSCID for
+  each vIOMMU to ensure that the (GSCID, PSCID) pair programmed into the
+  physical DC uniquely identifies the correct nested address space
+  (suggested by Tan Chi and Jason).
+- Fixes bond unlink so it invalidates the correct address space, using
+  GSCID for second stage bonds and PSCID for first stage bonds.
+- Link to v2:
+  https://lore.kernel.org/linux-riscv/20261029061131.584453-1-gong.shuai@sanechips.com.cn/
 
-  - Ensure that a vcpu is loaded when injecting an event
+Changes in v2:
 
-----------------------------------------------------------------
-Colton Lewis (2):
-      KVM: arm64: Force HCR_EL2.NV1 to RES0 unconditionally
-      KVM: arm64: selftests: Verify HCR_EL2.NV1 is RES0 when E2H0 is NI_NV1
+- Rebased on linux-iommu/next at 20bfd25757659f and the hardware
+  dirty tracking series v5.
+- Rewrote the commit messages and updated the uAPI definitions (Jason's
+  suggestions).
+- Drop the MSI related patches (Jason's suggestions).
+- Link to v1:
+  https://lore.kernel.org/linux-riscv/20261015065232.604503-1-gong.shuai@sanechips.com.cn/
 
-Dan Carpenter (9):
-      KVM: arm64: nv: Invalidate whole L1 blocks on TLBI RIPAS2E1
-      KVM: arm64: vgic: Don't truncate offsets in vgic_find_mmio_region()
-      KVM: arm64: nv: Initialize hw_mmu to NULL for nested vCPUs
-      KVM: arm64: nv: Forward PIR_EL2, PIRE0_EL2 and POR_EL2 traps
-      KVM: arm64: nv: Forward CNTP_TVAL_EL02 and CNTV_TVAL_EL02 traps
-      KVM: arm64: nv: Report EL2 registers with no trap forwarding
-      KVM: arm64: Load the vcpu in KVM_SET_VCPU_EVENTS
-      KVM: arm64: nv: Fix NULL dereference in kvm_pmu_nested_transition()
-      KVM: arm64: nv: Ignore TLBI IPAS2E1 above the IPA limit
 
-Fuad Tabba (1):
-      KVM: arm64: Hide generic ptrauth from protected VMs without ptrauth
+[1] https://lore.kernel.org/linux-riscv/20261103120236.53474-1-fangyu.yu@linux.alibaba.com/
+[2] https://lore.kernel.org/all/20260925151659.419512-1-andrew.jones@oss.qualcomm.com/
+[3] https://lore.kernel.org/all/20260928143113.49838-1-andrew.jones@oss.qualcomm.com/
+[4] https://github.com/jones-drew/linux/commits/riscv/iommu-irqbypass-rfc-v3-kvm/
+[5] https://github.com/leaprise/linux/tree/riscv/iommu-nested-rfc-v3
+[6] https://lore.kernel.org/qemu-devel/20261119131524.395861-1-gong.shuai@sanechips.com.cn/
+[7] https://github.com/leaprise/qemu/tree/riscv/iommu-nested-rfc-v3
 
-Marc Zyngier (3):
-      Merge branch kvm-arm64/misc-7.4-2 into kvmarm-master/fixes
-      Merge branch kvm-arm64/sysreg-fixes-7.4-2 into kvmarm-master/fixes
-      Merge branch kvm-arm64/mmu-fixes-7.4-2 into kvmarm-master/fixes
 
-Michael Reeves (1):
-      arm64: Apply existing Apple Silicon CPU workarounds to newer CPUs
+Gong Shuai (3):
+  iommu/riscv: Use DC.tc.V as the device context valid bit
+  iommu/riscv: Add vIOMMU cache invalidation
+  iommu/riscv: Flush the right address space on bond unlink
 
-Mostafa Saleh (1):
-      KVM: arm64: Use consistent type for pool size
+Wu Fei (7):
+  iommufd: Add RISC-V IOMMU hwpt and vIOMMU types
+  iommufd: Add RISC-V IOMMU cache invalidation data type
+  iommu/riscv: Add vIOMMU object support
+  iommu/riscv: Add nested domain allocation
+  iommufd: Add RISC-V IOMMU hardware info type
+  iommu/riscv: Add riscv_iommu_hw_info
+  iommu/riscv: Add riscv_iommu_attach_dev_nested
 
-Myria Sarvay (1):
-      arm64: Add CPU part numbers for newer Apple Silicon CPUs
+ drivers/iommu/riscv/iommu-bits.h |  19 ++
+ drivers/iommu/riscv/iommu.c      | 468 ++++++++++++++++++++++++++++---
+ include/uapi/linux/iommufd.h     |  84 ++++++
+ 3 files changed, 533 insertions(+), 38 deletions(-)
 
-Xuheng Li (2):
-      KVM: arm64: Don't replace a valid hyp block mapping with a table
-      KVM: arm64: Order a later pinner's accesses after the hyp mapping
+-- 
+2.53.0
 
- arch/arm64/include/asm/cputype.h              | 28 +++++++++++++++++++
- arch/arm64/include/asm/kvm_host.h             |  2 +-
- arch/arm64/include/asm/kvm_pgtable.h          |  2 +-
- arch/arm64/kernel/cpu_errata.c                | 12 +++++++++
- arch/arm64/kernel/cpufeature.c                | 12 +++++++++
- arch/arm64/kvm/arm.c                          |  8 ++++--
- arch/arm64/kvm/config.c                       |  7 +----
- arch/arm64/kvm/emulate-nested.c               | 10 ++++++-
- arch/arm64/kvm/hyp/include/nvhe/early_alloc.h |  2 +-
- arch/arm64/kvm/hyp/include/nvhe/gfp.h         |  4 +--
- arch/arm64/kvm/hyp/nvhe/early_alloc.c         |  2 +-
- arch/arm64/kvm/hyp/nvhe/mem_protect.c         |  8 ++++++
- arch/arm64/kvm/hyp/nvhe/page_alloc.c          |  6 ++---
- arch/arm64/kvm/hyp/nvhe/sys_regs.c            |  4 +--
- arch/arm64/kvm/hyp/pgtable.c                  | 10 ++++++-
- arch/arm64/kvm/nested.c                       |  8 ++++++
- arch/arm64/kvm/pmu-emul.c                     |  3 +++
- arch/arm64/kvm/sys_regs.c                     | 39 ++++++++++++++++++++++++---
- arch/arm64/kvm/vgic/vgic-mmio.c               |  4 +--
- arch/arm64/kvm/vgic/vgic-mmio.h               |  2 +-
- tools/testing/selftests/kvm/arm64/hello_el2.c | 15 +++++++++++
- 21 files changed, 161 insertions(+), 27 deletions(-)
