@@ -1,124 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.170
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795048633;
-	b=UZcq82xniC2cxFZS6YaKZFv8r19UBbGiWjOtYS3u8GFa0C1MgYJjFQxr+g7/ezHTRGpg
-	 NAw9bBezYU/vLjajr2lAeNqZepR/Gf6dy4f4gx9Leh3U0zhTRXKMo5FPlmJ4sys7cj2VM
-	 1XAgFVjnDd+jFE1khRMr3BmWtM/7OP/oF+5zVbumS5rrKyR6lwWbKlhW3H1BrXWeagbwB
-	 gRtTF874wyrMtMf0Wh5jH+3j6yp6BvYWGPzC0fsWdgADl+mXLxV/E6NGCxY2mLcqVQKYb
-	 0WprQy96WgTIBDBU3IftJaELS/DN1q4nYHI04/ciD0faCVbd0ua/C/BT/cnxmvQ7obg==
+	t=1795048992;
+	b=lLHcYCrtNc8JHfnYbIOLOtDTfjyWizvg02s6sCcwaHAQ2FM6lfcGNpxJezjs9/Llbkkb
+	 urYdOZTRo6P1n61s3i8A1BxfYbpHqQ7I3PG72RsEdVPseG61NivByP5ji4EYCq+9oJCZ/
+	 E6sCPxGc+Vzb11YgOuTN5cpnL12/tLxp4ih6ZPD6cGiJJVtETbcepOaWBHjnygSw2nKDD
+	 46uVInPAkFpDpQ0RrmsficeDk+Y44Yu1E5eaIfGFaUNcpGiQd0ide2BBKaG32Yp6a0pOm
+	 qCA0YnNxbneZJ/h2OTZ9D8gWopUod1jFHkjOsmbWZkYUAfUHeabfGvInnGWqOf8IiMw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795048633;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=qpIpwK9XpX5/GXTayDyB/zpYQosbDeDg7lgyOZwSIWA=;
-	b=wHV1TbHJBrAn5Zw4JPKx14IQoY+ZChCmLODwxfgdbmzZF7ixCW1MfV1jSo10KLY90nT5
-	 NZVQNkM9zcupsVc4LBI1bByF6iyqYgWNDqxk+zbeTKvHwbDLOh2vdl5o489bZLfskynaA
-	 ArBRCfE5V3FATUqHLg1aenGNxXTFRrMXIHcRvVPXB+GzC19CXXV9vg3Q58invehXYMZWn
-	 FsBFVupSC3mT/73DPxXKv7xzH2U6SO2Ky9pwnLWBSgIf8jflsLtq7ngCssPOzynhnrZ6r
-	 3pZMq9gSWSXR59YWwZKmJDVraOw90jTifEEMMTEQHwisRMdLUprixxv2NGtTmQ7A6iw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795048992;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 From:To:Cc:Subject:X-Mailer:References:In-Reply-To;
+	bh=rXGPcSA1LAN7NCQ0xg//sWiI3uTTDA49S1RmMjXykwc=;
+	b=xK6cRm2H9X9aJLE1gBmaLvb2Qnur0TESfxByatWbQNFSpKyr0WvbUNd/okBkO/vkPgJ6
+	 TrjLLopCtdb0ot8zyeCKdFAy4Qvtya2tAkQ/84uEAkyJkfA2vz+mO7Gz0a+A/gjEl/lDj
+	 V1D6BfT7T+2y2D9WqqX+qqB79kqLHWCPzFcLKOnTlPqSdC+Ak+DVpWvlFu8eJOf33ZLzr
+	 2MgV2OSS70+sXZPbdOS6Dm3MIj++39z5IbmqRPOLoStSI99FoQzdS6pdEFqs28iGQSWe4
+	 k6KwlnTGc8vkKBuIRLt2G4XGUe88QTb0DvVu5PZSCJipwsud87LCTMQcTZtsREK8W0g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=shazbot.org;
-	spf=pass smtp.mailfrom=shazbot.org;
-	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=rnnMjSiE;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=Mcm3y5EF;
-	arc=none smtp.remote-ip=103.168.172.145
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LIPAilQv;
+	arc=none smtp.remote-ip=209.85.214.170
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A26606A331
-	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 00:37:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 00A26606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F97606A32F
+	for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 00:43:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 03F97606A32F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=rnnMjSiE;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=Mcm3y5EF
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id 1306FEC08A9
-	for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 19:37:11 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Wed, 18 Nov 2026 19:37:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1795048631;
-	 x=1795135031; bh=qpIpwK9XpX5/GXTayDyB/zpYQosbDeDg7lgyOZwSIWA=; b=
-	rnnMjSiEWU1AOPLY9OYHeS6d+S+bRpylNEcgpjJ/TJoLYwsIZ0I3O5zndcxxAhat
-	Djo+TQXWU2bChqKsToejSPf9jLM1jHgQytGu5Y/fqVLD9sWIMqC01ZdGOcK4NzL3
-	yqqEU0cWFHUUrwxbPCOBQNwQ+Rtqe+0HBgOPT3gCCM/HPrd33E0CMBP3cCX/q0J1
-	xvCbanyZ7vmUpfMtdpZnqsLs2IKWJNflQfEGgmWD8pA0tYoMJf8+MiUAe3vQcrc4
-	1m1IOO+DrQuxdXCNaT5RlKhyLMu0p2Iipt3uhul9IPnFzfosAZCeII18UWWmp0M7
-	U7lu4jTUAC0XF29g7auFCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795048631; x=
-	1795135031; bh=qpIpwK9XpX5/GXTayDyB/zpYQosbDeDg7lgyOZwSIWA=; b=M
-	cm3y5EF+AH7IuZjgZ1KLAC2sZBtr6lnKXEzjq9iU5YpKUjmvndlwrzVN2n1yKxqh
-	zJoQ36S3xA/bEOWGMfBqq+q0nTxMgqqu5/qNsMM/DQnj2b7RJApfxixQpmGnw7lO
-	y4HeqpI4cWIpgZ/nxqft2W5PjnCeLyc6bUJXKOEqh9lt4EMEXjhUiWfhEat48VNR
-	AO2g/RO5KoX2fRbgoXsLGLb88mXC3inUnjFW/4TbyTU6+yKJ3tf5vK6u14afpcg/
-	PA906xkw0NIpH5NvQS1ioKzJ6IYZpcmIovTgJ5YKUXQkGucC6ctqBw9zbowTDHS0
-	nCTO/j3w8GcldrhqHHQ7Q==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1795048631; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:WtHOD74cpZYKu3pMXoIX3HEigKPT7vgmNuCVRrK6Qqc80dd
-	ntmkidnmBDBB8cqWJILqwcEcl98lXJR1eHTbySWfg1Z9JqfuS6oEHANlIQX3ASGm
-	ZfBB7ndMIxyDm1WARhB/hCPr7+7yp0UaObFLXhKaLrer2eaU8q+tFFg5BD9Id08K
-	zcKC5NbNVSHNvGRlqsGgIFkRWq138yjR3unB1uYwPtaMJ/SRnmU6+KBK24BMWxLB
-	EHF5EHTHBZCkAbuNqPxwg5jzi3DD60qebo9oisUKdvEl1o97DssyxP1NINOHZb7X
-	O1JH77fJqoakv2RQ01zanBH3JoNPBHwkIPczC+w==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:Cl8OXxmcCEAdRYan5CeUap1qnNrhJ0yy3z+nON3YliE=:9cvHxKZg+asX8ehKkhLJPZdP2WAjU/8Zzk5ApZCkuk8=;
-X-ME-Sender: <xms:tkT-ama6x7b8k052Fm_BhU13d1cQWKEq-Id-qvkAewmKSfZdsh4mbQ>
-    <xme:tkT-avx_9OBWxvr09IyyjX38K7iyq21zU-o3W2YJtx_ZbMSAsNNIcyHqYavZ11uzg
-    TcZV_6cWgL_P3RieEpx03DQAjcW_5qc3RvbL7OlQXw9RfEl63t9Z1A>
-X-ME-Received: <xmr:tkT-atMHV3TmlWlONYw3v7QsBY64IvRPyRzOrn54q8Fks7cm-0Ntr0CqwBjVpg>
-X-ME-Proxy-Cause: dmFkZTEPC5mauUjeYZHtjsRY6AjwwCMgO7qscRFz4rjP/wC6GkjGAlT/otJM7HQfG+d2+l
-    IGQUpbGx1SNIRj9iMI5+o+FJUIuMmIccN9ILK5cpXM9+43i8VqmyhF/1MtEyPHSnyUTuCl
-    52H3rdeqlcZAmSRsrnl3GOMI7cXX1RdwccQNqVC6zv5SNPwETB96QwEdLd7VEETgXKFesq
-    onleEJEi4cuoaz/QVma2f8XsbOPYnQXDe/X1HfV4kFdPmvmx7RlHnDzIlwarVfHHC9OsOf
-    CPFlOSOGAabR2hD+t4AzvRNKFnK3aCiL/JiVLcCHAJOTitsExJau7lwT8OULuwp/X2DhUZ
-    w05R3/9XPP3lwyY8RcdAs3Q8BxTi1BHzUWDYkuz+RmYnjYckGeeiG9uNMGW0DBnpwztnmq
-    U24ptAYNISnVKfhx1u6AlGSh+x7ERXSjhIL6eAMvxaju8zukGJaGqgDEFV4RR5FwqVdfZJ
-    MtrYtNDufkzhvx818ip2CzHUo0nIRrGiLbWLB4TqzDFqjpUT8M1d+7e0nMZHmcKgPq6rfp
-    hw7LbpWlZpRgYKvp5/AX8+PF/6i0W80vrRaEL+urHbQ0Xjldhpt33S+zP6nvuke4XZWRTk
-    6Y59dnB761Wndy53YUjjdKSeSMGNBoRQXpguDRodrQi9Ob8yrhVIKmWOg0tA
-X-ME-Proxy: <xmx:tkT-ameGB1AQK_6qWCFsbiAnTWD3TqsKohclbFp7j8tSfYQYVmJWKQ>
-    <xmx:tkT-aqTO0qf6Xsl5nrhv0x3LNUUGcz4rFNKUpP-EpnH0Rljpu1h2zA>
-    <xmx:tkT-asefQ5_RFySHvl1TM8fjHModUmeP3XKOuTwHAQJ0WUOc3j4LSQ>
-    <xmx:tkT-aru0uej0XqvKwvNeipTanoDj76ARQPoxqMYXCVJmA91SSXOE_w>
-    <xmx:t0T-aqHhzTNtlcs9qs1pvgtatdOaKRAkWL2ak28rplVpgYsVmiFT3i9_>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 18 Nov 2026 19:37:09 -0500 (EST)
-Date: Wed, 18 Nov 2026 16:37:06 -0800
-From: Alex Williamson <alex@shazbot.org>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Kevin Tian <kevin.tian@intel.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Anthony Pighin <anthony.pighin@nokia.com>,
- Dave Jiang <dave.jiang@intel.com>, Dan Williams <dan.j.williams@intel.com>,
- kvm@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH] vfio/pci: Only lock the upstream bridge if the reset
- may need it
-Message-ID: <20261118163706.7138d246@shazbot.org>
-In-Reply-To: <20261112235700.2029562-1-skhawaja@google.com>
-References: <20261112235700.2029562-1-skhawaja@google.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LIPAilQv
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2e9995ce866so13098455ad.0
+        for <kvm@vger.kernel.org>; Wed, 18 Nov 2026 16:43:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795048991; x=1795653791; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=rXGPcSA1LAN7NCQ0xg//sWiI3uTTDA49S1RmMjXykwc=;
+        b=LIPAilQvJZip+dNvCDt+jwWHOxTTJwBxK4WHMwkJtdslpQXa9vKtcLwza0BmGiflCG
+         vR7u1/6PSH8ehBRSv/FqNaG3VIbKmkm2umJuQ0NvsDRFELLmSbYniTo4wtGYHjknJMmS
+         6rnMkilATkEdzoQ79oSfop9eD+uYyLFOFVZLwY5rjVEuHbMpb7Twl3fGNNQ3Y7NF2AbZ
+         RLWK4G/YGruAqz2iGuv79KBz7BCLI7n5BsCNhYqEaVqwOQJQSlF4UuTVh0/LEIRuPmW/
+         FRxxDYqR5GwD28lkPzgZCcX8YqlL9ujMEJ7mc27zEwJ5QAZOXFXOgARXjFhN4ipvMOHW
+         7xUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795048991; x=1795653791;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rXGPcSA1LAN7NCQ0xg//sWiI3uTTDA49S1RmMjXykwc=;
+        b=WqY6pH9XtO7s/C9JkPre7fjGl8NddTOs1XV8sgIAYtLKXFX7kgw5QDrlU4DVVk4rp5
+         waju/fYF+DqLHYjadTwT+cijPjIlyTXzKomqLZ5BWwVIV7fv875VMSEhqExGM1GhpJQO
+         ftC6c8pM8a4oYB4Q/3o3PloOKTwnXqi14cXX0udtY1wUnZKzuOgw3MUjNWKb4mo+kRCj
+         2qKlOZC0XKIuRExR3vhupdbyMvVVGQlFfdXK84NswquLo6xrZCaYij8XpuuELOU22fNk
+         BeAY9gxcr8CGAoma5fOBT4M6ajrKbQ0ucW/bnKcKRXemyMkAsP02tblgyLSjkoyBzAGu
+         ytuw==
+X-Forwarded-Encrypted: i=1; AL+hErHnVtaCVaGmfgi3go/95b8RAVn8d8ncXjB8xElfq9Q6KyjavcuXdlJvaU1mscju2s0Tkvc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8dK8O0Quv0LkpvuSXXYpG1E9N4LrZIAUU3LhRqVhtxQVBpFMPB
+	XS+F0HHiM1Azq3Mb1Dwy+aXl7E21C8b3dAv4B0hIH6rcBRmPH51M5/wpGZxt3cEWvg==
+X-Gm-Gg: AZFdTZcoDELx37FMTTb1o0JgJcWPflxOcuR3Cj4jysyyXiPFRN9laljJdhNm+NcHRnC
+	4w/muidM2gYog1RuK5tolv4GVk8RpozezuMdvmfrX4hnHHv6O4FEKvfjDNzjDw/jPWctwGR0ghQ
+	XHgavJc2ugbN6olhQVROdulW7SPv52YH0EulhYmcWN7UWB7AkhWvl3rx9yX5QFhyLR80PkNwlim
+	q+AmQkLBm9/fomAmdB/ezBlwVst+BtI2zKqK78TnjrmD12ofLFMZhNi/1PGdzNISOEiotpLy1jU
+	9gFyOFvGQfLPZ1a5dZQeKrhtIG7xW9H8rmeSGY0kUWJZdqHH3YwUEiYZSu+kKmAHANii82Q5vMe
+	cMdb9YCZAralFzwyePOOFgrIc6iwZ0M88Ah/6H8ANHUTuXExvprXUJhDxOcJq86iHHaWmtddBG4
+	2YP4glxZ9hn65TwSkg6KqcZtqVv1jQq90/lBXNc1nHzRKziYrOPrA3mRq0kLd/vUnuzNrZZcoel
+	T5OMisfv7C7kRS02/JzUoZkj34OuHeVJPjoeK/IVugPSLTln3n+ZFiKQYA2g1eV4zRws2jK798I
+	rfZ49xRBIqnNVZo6LMTwRadhPOJ8p1KAyj6lrAXwOh3kTCWpfcaO3x7Y1XXu5DMk
+X-Received: by 2002:a17:903:a8f:b0:2ed:205e:eabc with SMTP id d9443c01a7336-2eff7525970mr42302875ad.32.1795048989252;
+        Wed, 18 Nov 2026 16:43:09 -0800 (PST)
+Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2eff6214cd8sm20785035ad.44.2026.11.18.16.43.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Nov 2026 16:43:08 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -127,153 +87,99 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 18 Nov 2026 16:43:07 -0800
+Message-Id: <DMYRRCPO4FL8.HP2LYDQ286E0@google.com>
+From: "David Matlack" <dmatlack@google.com>
+To: "Josh Hilke" <jrhilke@google.com>, "Alex Williamson" <alex@shazbot.org>
+Cc: "David Matlack" <dmatlack@google.com>, <kvm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Sean Christopherson" <seanjc@google.com>,
+ "Vipin Sharma" <vipinsh@google.com>
+Subject: Re: [PATCH v8] vfio: selftests: Find devices that have VFIO
+ selftest drivers
+X-Mailer: aerc 0.21.0
+References: <20261118064309.219592-1-jrhilke@google.com>
+In-Reply-To: <20261118064309.219592-1-jrhilke@google.com>
 
-On Thu, 12 Nov 2026 23:57:00 +0000
-Samiullah Khawaja <skhawaja@google.com> wrote:
+On Tue Nov 17, 2026 at 10:43 PM PST, Josh Hilke wrote:
+> +# Devices that have a driver in selftests/vfio/lib/drivers.
+> +readonly DEVICES=3D(
+> +	"8086:0b25,Intel DSA SPR"
+> [...]
+> +	"15b3:a2df,Mellanox BlueField-4 integrated ConnectX-8"
+> +)
 
-> Commit 962ae6892d8b ("vfio/pci: Lock upstream bridge for
-> vfio_pci_core_disable()") makes vfio_pci_core_disable() trylock the
-> upstream bridge before resetting the device, and skips the reset if the
-> trylock fails.
-> 
-> All VFs of a PF have the same upstream bridge. Take a device with two
-> VFs, both used by one process. When the process is killed, both VFs can
-> be released at the same time. The first one takes the bridge lock and
-> does its FLR, the second one fails the trylock and is never reset.
-> 
-> The bridge lock is only needed for a bus reset, which is done through
-> the bridge. A VF is reset with FLR, and pci_parent_bus_reset() never
-> resets the bus for it because the PF and the other VFs are on the same
-> bus.
-> 
-> Add pci_reset_needs_bridge_lock(), which returns true if any reset
-> method enabled for the device is a bus reset, and only lock the bridge
-> in vfio_pci_core_disable() when it does.
-> 
-> Fixes: 962ae6892d8b ("vfio/pci: Lock upstream bridge for vfio_pci_core_disable()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> ---
-> Tested in QEMU with an igb PF behind a PCIe root port, bound to vfio-pci
-> with two VFs. Both VFs are opened through VFIO and then closed from two
-> threads at the same time, counting FLRs with a kprobe on pcie_flr().
-> Without this patch one VF missed its FLR in 50 of 50 rounds, with it
-> both VFs were reset in every round. I will send a VFIO selftest for this
-> separately.
-> ---
->  drivers/pci/pci.c                | 28 ++++++++++++++++++++++++++++
->  drivers/vfio/pci/vfio_pci_core.c |  3 ++-
->  include/linux/pci.h              |  1 +
->  3 files changed, 31 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 7c6f2aba8144..c44e4d4d8774 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -5256,6 +5256,34 @@ int __pci_reset_function_locked(struct pci_dev *dev)
->  }
->  EXPORT_SYMBOL_GPL(__pci_reset_function_locked);
->  
-> +/**
-> + * pci_reset_needs_bridge_lock - check whether a reset of @dev may need the
-> + * upstream bridge to be locked
-> + * @dev: PCI device to check
-> + *
-> + * A bus reset of @dev is done through its upstream bridge, so the caller must
-> + * hold the bridge lock. The other reset methods only access @dev itself.
-> + *
-> + * Return: true if any of the reset methods enabled for @dev is a bus reset.
-> + */
-> +bool pci_reset_needs_bridge_lock(struct pci_dev *dev)
-> +{
-> +	int i, m;
-> +
-> +	for (i = 0; i < PCI_NUM_RESET_METHODS; i++) {
-> +		m = dev->reset_methods[i];
-> +		if (!m)
-> +			break;
-> +
-> +		if (pci_reset_fn_methods[m].reset_fn == pci_reset_bus_function ||
-> +		    pci_reset_fn_methods[m].reset_fn == cxl_reset_bus_function)
+This is missing GPUs that are supported by the nv_falcon driver.
 
-This looks like a maintenance nightmare.  What if instead we did
-something like:
+I saw in the v7 changelog that you left them out because
+nv_falcon_probe() matches on PMC_BOOT_0 rather than PCI ID. But the
+first thing nv_falcon_probe() does is check vendor =3D=3D 0x10de and base
+class =3D=3D PCI_BASE_CLASS_DISPLAY, and the script can get both of those
+from sysfs. And past that, nv_falcon_probe() only rejects GPUs with an
+unknown architecture; unverified GPUs are accepted with a "possibly not
+supported" message. So matching on vendor and class gets the script
+about as close as the driver itself gets.
 
-bool pci_parent_bus_reset_possible(struct pci_dev *dev)
-{
-	struct pci_dev *pdev;
-   
-	if (pci_is_root_bus(dev->bus) || dev->subordinate ||
-	    !dev->bus->self || dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET)
-		return false;
+e.g. something like:
 
-	list_for_each_entry(pdev, &dev->bus->devices, bus_list)
-		if (pdev != dev)
-			return false;
+	read -r class < /sys/bus/pci/devices/${bdf}/class
+	if [ "${vendor}" =3D "0x10de" ] && [ $((class >> 16)) -eq 3 ]; then
+		...
+	fi
 
-	return true;
-}
-EXPORT_SYMBOL_GPL(pci_parent_bus_reset_possible);
-  
-static int pci_parent_bus_reset(struct pci_dev *dev, bool probe)
-{
-	if (!pci_parent_bus_reset_possible(dev))
-		return -ENOTTY;
+Also, nv_falcon does not implement send_msi(), so on NVIDIA GPUs the
+send_msi tests in vfio_pci_driver_test are skipped and kvm/irq_test
+does not run at all. The script should make this clear when it reports
+an NVIDIA GPU so users know they're getting reduced coverage.
 
-	if (probe)
-		return 0;
+Since the script can't check the GPU architecture itself, it would also
+help to tell the user which architectures nv_falcon supports, so they
+can check their GPU themselves. e.g. something like:
 
-	return pci_bridge_secondary_bus_reset(dev->bus->self);
-}
+  Supported:
+    0000:00:04.0 - Intel IOAT SKX [8086:2021]
 
-Where we'd then condition acquiring the bridge lock on whether it's
-even possible for a function scoped reset to perform a bus reset.
+  Possibly supported (depends on GPU architecture):
+    0000:3b:00.0 - NVIDIA GPU [10de:1eb8]
 
-It's a bit broader of a test than whether we actually have the necessary
-methods in our reset_fn list, but since we're not locking the reset_fn
-list between test and function-reset, it's also safer.  Thanks,
+    nv_falcon supports Kepler, Maxwell, Pascal, Volta, Turing, Ampere,
+    Ada, and Hopper GPUs. It does not support send_msi().
 
-Alex
+Please add a comment next to the list of architectures pointing at
+nv_gpu_arch_lookup() so the two stay in sync.
 
-> +			return true;
-> +	}
-> +
-> +	return false;
+I think it's fine to include these GPUs in the -q output. If the GPU
+turns out to be unsupported, vfio_pci_driver_test will just skip.
+
+Printing the selftest driver name for each device might also help
+here, and would make it easier to tie the list back to lib/drivers/.
+
+> +function vfio_pci_loaded() {
+> +	[ -d ${VFIO_PCI_DRIVER} ]
 > +}
-> +EXPORT_SYMBOL_GPL(pci_reset_needs_bridge_lock);
 > +
->  /**
->   * pci_init_reset_methods - check whether device can be safely reset
->   * and store supported reset mechanisms.
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index fcbb2da860e2..ba3dfdadae39 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -777,7 +777,8 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
->  	 * overwrite the previously restored configuration information.
->  	 */
->  	if (vdev->reset_works) {
-> -		bridge = pci_upstream_bridge(pdev);
-> +		bridge = pci_reset_needs_bridge_lock(pdev) ?
-> +			 pci_upstream_bridge(pdev) : NULL;
->  		if (bridge && !pci_dev_trylock(bridge))
->  			goto out_restore_state;
->  		if (pci_dev_trylock(pdev)) {
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index aa3765a20a96..cb2856f444ca 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -1486,6 +1486,7 @@ void pcie_print_link_status(struct pci_dev *dev);
->  int pcie_reset_flr(struct pci_dev *dev, bool probe);
->  int pcie_flr(struct pci_dev *dev);
->  int __pci_reset_function_locked(struct pci_dev *dev);
-> +bool pci_reset_needs_bridge_lock(struct pci_dev *dev);
->  int pci_reset_function(struct pci_dev *dev);
->  int pci_reset_function_locked(struct pci_dev *dev);
->  int pci_try_reset_function(struct pci_dev *dev);
-> 
-> base-commit: 7475ea8b58616b33c04afb976cf0fbaad9dd63fb
+> +function denylisted() {
+> [...]
+> +function denylist_enforced() {
+> [...]
+> +function is_blocked() {
 
+Please consistently use is_*() for functions that check a condition,
+e.g. is_vfio_pci_loaded(), is_denylisted(), is_denylist_enforced(), and
+is_blocked(). That makes call sites like this one read more clearly:
+
+	if [ "${all}" ] || ! is_blocked ${id}; then
+
+> +	if [ ${#allowed_devices[@]} -gt 0 ]; then
+> +		print_allowed_devices "${allowed_devices[@]}"
+> +	fi
+> +
+> +	if [ ${#denylisted_devices[@]} -gt 0 ]; then
+> +		print_denylisted_devices "${denylisted_devices[@]}"
+> +	fi
+
+nit: When both groups have devices, there's no blank line between the
+last "Supported:" entry and the "Unusable ...:" header, which makes the
+output harder to scan.
