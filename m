@@ -1,73 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.219
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795181794;
-	b=oQ1H7Fy/LxGXFhsSK212aReZRf8kf1IXq+HiPUDuKzNIo0omBjCAztPnN1TEZXe68nFW
-	 1eRnJWZE46/73X0cecO0fE8cHbkLtmUSOKm+iEg1aHaJOx+qYHORw7Oq88qHN9qwaSaw/
-	 0+v29NbpOFbx3H53qKMvuRmavV4hoZ9dVi1UvXnHvm/zX4ETNvuRRlqAWv//dyPCsDUbv
-	 DM+X9bu0ds1lYgxJraZydR3oOFPZ6WQ8805FLs6wqSKcQeuaO4e3N6I/Y9xuESllo0iOZ
-	 +oatN7bMxKpWocMirlfJkypvEckJ/uh0Yt8gniYiuq4esNZmaSKsnHFPywY0nf5ijMw==
+	t=1795182601;
+	b=z+pmnhzsOlG+Qjobp5/1TTEey7ElD5Ji2eXPdw5Us+sj2j7m7tJ6S9uxgjF1UHHHKF1U
+	 4x44Sw0Hw8tUJQtdQbVix1krQo9lnkX1p0tHh9Xo3zRZUB6OqwkmHIVEQcplpU5X/ShbB
+	 0U4mE6USHsy4K8DsQx52ev+JEfpN3uZ7UIDg2cIUebAAkA9IvbXZuO+DuvO8sC2mB30TX
+	 icC74qJHRsO1N0FWc8NLv9xHCs9puTF/N2cRopuP9Epqk/EwcV/vu8s2MZLuXana6S88V
+	 1VQd7494Cu1ejgVfJ7DyCtTQjPJKN6kUZYgPBtpL5QeP+vhcdADUQuE23yiyF+QzQDg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795181794;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:MIME-Version:Content-Transfer-Encoding:X-Scanned-By;
-	bh=JB6yJU/tPLmNVtr5U4XzW0AQKtEoPkXmKtJ0W88w+8Q=;
-	b=YCT8o5IhGbPhPi/cZMXenBPaS0100TRajfcunYlb1Dw1gtsR7OMonDPhHgbhbEhRFgQ7
-	 +cp55QpPg3Xj5m46mzcCBQngwSgbbAtXr7iuIzGF5zNxrrFQ1o5uK2KKrxdt9MohS+vcZ
-	 L2c7NVF4nsV2t3CTqadKyTafOGqb9g3SCE+8NMvtkhLB1y+IhOVCMbBTHlz4Ebrl6oAVZ
-	 7ghVln7f0dNcekI5nkn0ahGCqCA4HDI/1KaAgdyxdTkzkV9xajKunsy2k3nRkCSFf/R0S
-	 e3asMB9aGrpAp+WQCbQuJ2ybVBuppoZG3+xRVhX+IsbLLfOVtmr0oYG7Q5qWxHLvHKw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795182601;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=BWuntrYZKLmbGJDcepGI0+XkvJsR4/iUmqxL36v3osE=;
+	b=CAOIEA7+x1fQUglgK33nfwd5F6XFtyqo4gqdlk/BaK49ex5iUFNeEhfLZEfyIEGSSNgd
+	 BRzAtMd+8qWyp8rd8mB0rVNe9yc+0yi4GwW2mrsHBYCs1LMa5angfcNEWalR74oXo//iV
+	 WYodJCdENALzWD5YjREvGs+u/32yEHedhklmvg/oYuZkaDcLgYIgJhA10alNnI4zcMnLN
+	 rkIeCrU9tzY4Y6XX0/98TLbaEe2KYEHqKu6mYRRpKpVLj2ve1GQwFfRPIJCD+pRDmWi+0
+	 L2B8wWyw/rgSek5cupIHX/SF/s96NfFLQbggSVmFj3c9f2yazV8aroTCxVOthZlbXoQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CkwSGSpb;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=d22FHTaa;
+	arc=none smtp.remote-ip=91.218.175.219
+Received: from mta0.migadu.com (out-219.mta0.migadu.com [91.218.175.219])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08E1606A320
-	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 13:36:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B08E1606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CA7606A32A
+	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 13:49:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C6CA7606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CkwSGSpb
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795181791;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=JB6yJU/tPLmNVtr5U4XzW0AQKtEoPkXmKtJ0W88w+8Q=;
-	b=CkwSGSpbJy/awq6y/xE9rh/y0fab5mZoF/k8VJV/2Jz1AbLSGnN1y2NnzIh9P1xcZRcQKJ
-	C3EyFMrm74cQNqRMxrudsqjcRwqOeB5uzkFYsW1jZW0qu8EW3+zEyEOsrbcPG+KCD4KgRM
-	QE8UFzzt754oSbgoaUkkAnrfJ/IVFic=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-629-lZQ7p09zOwyfL8gkZ1Sa6g-1; Fri,
- 20 Nov 2026 13:36:27 +0000
-X-MC-Unique: lZQ7p09zOwyfL8gkZ1Sa6g-1
-X-Mimecast-MFC-AGG-ID: lZQ7p09zOwyfL8gkZ1Sa6g_1795181786
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 66A3919560B4;
-	Fri, 20 Nov 2026 13:36:26 +0000 (UTC)
-Received: from pbonzini-thinkpadx1carbon6th.rmtit.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 85216195B3CD;
-	Fri, 20 Nov 2026 13:36:24 +0000 (UTC)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: seanjc@google.com,
-	npiggin@gmail.com,
-	maddy@linux.ibm.com,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] KVM: PPC: implement .flush_memslot for BookE and Book3S-PR
-Date: Fri, 20 Nov 2026 14:36:23 +0100
-Message-ID: <20261120133623.479601-1-pbonzini@redhat.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=d22FHTaa
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=mseadl3+prfV3Njbj2odlN7ph9bWDdh3UmBz/VyOYco=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795182597; v=1; x=1795787397;
+ b=d22FHTaaGQa1/D4Q5Ht21DMci3OqGuuFl6t6pWV49ADz5XmOJ91DRc7uAbaqGKWvJq6ubBIO
+ 6KTGDYiwk4WD6oaEKWqqAijDfLFzBInGDz6jpU4eTn8AVWchD6gFayg+oU1y8M7oSuAR6BHjc6y
+ kbvLQh+ikLKMa3Mp387ZtDqE=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 60c44ff64fed04d7;
+	Fri, 20 Nov 2026 13:49:57 +0000
+X-Mizu-Trace-ID: 60c44ff64fed04d7
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 20 Nov 2026 14:49:26 +0100
+From: Andrew Jones <andrew.jones@linux.dev>
+To: Xiang W <wangxiang@iscas.ac.cn>
+Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	pbonzini@redhat.com, thuth@redhat.com
+Subject: Re: [kvm-unit-tests PATCH v2 7/8] riscv: initialize ISA extensions
+ for all harts in cpu_init
+Message-ID: <awBPzACbLy95U5yE@orel>
+References: <20261105082035.133680-1-wangxiang@iscas.ac.cn>
+ <20261105082035.133680-8-wangxiang@iscas.ac.cn>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,64 +65,58 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261105082035.133680-8-wangxiang@iscas.ac.cn>
 
-kvm_arch_flush_shadow_memslot() is called when memslots are deleted and
-moved, with no MMU notifier invalidation.  This means that the shadow
-pages (HPTEs for PR, TLB entries for e500) retain mappings from host
-pfns to the old slot's gfns.
+"initialize" should be capitalized in the patch summary.
 
-Implement the callback by unmapping the GFNs in the same way that Book3S-HV
-does it.  Note that kvmppc_core_flush_memslot_pr() does not need TLB
-invalidation, because kvmppc_mmu_pte_pflush() calls invalidate_pte()
-on the entries, and that in turn invalidates the entry through either
-the tlbie instruction or mmu_hash_ops.hpte_invalidate().
-
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/powerpc/kvm/book3s_pr.c | 8 +++++++-
- arch/powerpc/kvm/booke.c     | 8 ++++++++
- 2 files changed, 15 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
-index 1894968f2c25..66a9e446ab64 100644
---- a/arch/powerpc/kvm/book3s_pr.c
-+++ b/arch/powerpc/kvm/book3s_pr.c
-@@ -1893,7 +1893,13 @@ static int kvm_vm_ioctl_get_dirty_log_pr(struct kvm *kvm,
- static void kvmppc_core_flush_memslot_pr(struct kvm *kvm,
- 					 struct kvm_memory_slot *memslot)
- {
--	return;
-+	struct kvm_gfn_range range = {
-+		.slot = memslot,
-+		.start = memslot->base_gfn,
-+		.end = memslot->base_gfn + memslot->npages,
-+	};
-+
-+	kvm_unmap_gfn_range_pr(kvm, &range);
- }
- 
- static int kvmppc_core_prepare_memory_region_pr(struct kvm *kvm,
-diff --git a/arch/powerpc/kvm/booke.c b/arch/powerpc/kvm/booke.c
-index ba762ac1fb56..fffb28fe9a0f 100644
---- a/arch/powerpc/kvm/booke.c
-+++ b/arch/powerpc/kvm/booke.c
-@@ -1844,6 +1844,14 @@ void kvmppc_core_commit_memory_region(struct kvm *kvm,
- 
- void kvmppc_core_flush_memslot(struct kvm *kvm, struct kvm_memory_slot *memslot)
- {
-+	struct kvm_gfn_range range = {
-+		.slot = memslot,
-+		.start = memslot->base_gfn,
-+		.end = memslot->base_gfn + memslot->npages,
-+	};
-+
-+	if (kvm_unmap_gfn_range(kvm, &range))
-+		kvm_flush_remote_tlbs(kvm);
- }
- 
- void kvmppc_set_epcr(struct kvm_vcpu *vcpu, u32 new_epcr)
--- 
-2.56.0
-
+On Thu, Nov 05, 2026 at 04:20:34PM +0800, Xiang W wrote:
+> Move `isa_init()` from `thread_info_init()` to `cpu_init()`.
+> 
+> Previously it only ran for the current hart; now it is called for every
+> hart so that ISA extensions are parsed for the whole system.
+> 
+> Signed-off-by: Xiang W <wangxiang@iscas.ac.cn>
+> ---
+>  lib/riscv/processor.c | 1 -
+>  lib/riscv/setup.c     | 4 ++++
+>  2 files changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/riscv/processor.c b/lib/riscv/processor.c
+> index b055acc9..ddecc25e 100644
+> --- a/lib/riscv/processor.c
+> +++ b/lib/riscv/processor.c
+> @@ -81,7 +81,6 @@ void thread_info_init(void)
+>  	unsigned long hartid = csr_read(CSR_SSCRATCH);
+>  	int cpu = hartid_to_cpu(hartid);
+>  
+> -	isa_init(&cpus[cpu]);
+>  	csr_write(CSR_SSCRATCH, &cpus[cpu]);
+>  }
+>  
+> diff --git a/lib/riscv/setup.c b/lib/riscv/setup.c
+> index f1121573..8c16686f 100644
+> --- a/lib/riscv/setup.c
+> +++ b/lib/riscv/setup.c
+> @@ -16,6 +16,7 @@
+>  #include <on-cpus.h>
+>  #include <vmalloc.h>
+>  #include <asm/csr.h>
+> +#include <asm/isa.h>
+>  #include <asm/mmu.h>
+>  #include <asm/page.h>
+>  #include <asm/processor.h>
+> @@ -105,6 +106,9 @@ static void cpu_init(void)
+>  		cpu_init_acpi();
+>  	}
+>  
+> +	for (int cpu = 0; cpu < nr_cpus; cpu++)
+> +		isa_init(&cpus[cpu]);
+> +
+>  	me = hartid_to_cpu(csr_read(CSR_SSCRATCH));
+>  	assert(cpu_present(me));
+>  	set_cpu_online(me, true);
+> -- 
+> 2.47.3
+> 
