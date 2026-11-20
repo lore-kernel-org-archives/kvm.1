@@ -1,122 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.177
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795199705;
-	b=RApV30wlvnopvswPkA8BvcdkGNP3Xb9z0EpUOYLunLJwyCBZVnEbnIVqY3Jbv0eHwviy
-	 /+Ug0uqKUD1gQVWLHlIWEyepTLLdEJa+6eh6u0muR75kqXqOL+DEnToDQVeNnCvhC6LQn
-	 gTtXpmeS8wz0Fagkkehde5s6pSapOFXdMKCuCiAQkZ7T4t6ZTZakxU/h4f8rHBs42mi1V
-	 LcO/OTjKCVC5A2RBd65QcpACGn9DjkH6mSTGSqhnkMhfQ9uz/FV4AUFywicORnXSO9BR5
-	 8aG/3E1BCmiXJB5CLmR5BILrdjcKHGiWbU58eLFKej5/FV9RxkBFB1wpV8F2EUX5bfg==
+	t=1795200859;
+	b=Uegq2OLS8gfqiZh5iUOUFEKRFltd1uyCWdvEqvIYHVyDAEPVaLDPLs21ozVlPwUwaG/+
+	 ttEkyNl4pE6Uwm4xZuke6vpvdtugKi288027vxhtNysQzrR9Cp9ehWU7TCcc1QTKQsh04
+	 ZMhMakCy+szEKbAK/2VXqz0g1x2WI0vyN9IQd+yma+Ik/AoiQ8WOMxUKUPbU2Lej8ceu/
+	 8M0bgSlOCYwaI3aRlguessLcb3ETNxlsEibRZllzQ/oFZFTqYMjDmQD5+M6RicrGDzFVp
+	 jyMqrC9n8O05mm3QtMBHlhB7PQ/rHtDSBzYPMshICrthT42wdkDmufY5Snys9j2WAig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795199705;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795200859;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=jPtMMj+TNQI4z5t6onBp93FYMjBvk5RvCFaoZZ65vCY=;
-	b=5o+dXZK0rpd4PAW1y7dUnIClGqPaqoWYe+ErGONLT9QwK2NQ8lQY8LKvVFGRmLuU/Fvj
-	 4JJDZFdb38WTI587t/Utladd6yTx13e6zYJxHsTzLeTVIMogx+V1ru1V4c4GVSOpMF861
-	 H/VHEetxpW2mFLAXEJ9b4bndlKsgihBKVTRtlC+uFzraONIzcjbUPkr7jdrYSUX/e3AQl
-	 CrLo8/KEITE3IdgEr6DyLliO57SGJECpFK+9lu6zh5/6ClRDHiEMIdwQEW8lQBF7xGdj3
-	 GGaKT2cgGzg+ZjNRQ3upRmJ+guK3CDw95qneYEdfd/Ep9dEweXF2irF+h0XgQkNquqQ==
+	bh=2cDvgzaEPEJPCI6Ok0IK34cIag8JscyuYpBaCTCvSvo=;
+	b=Z9xOMqbSqkH3o2q4tNky9vM4HYQByltksMUfe/FmfVGNxs3UXMlAhKsqEDMkPYdLU4/B
+	 IllIcbLCtXn0wpI4Cv5o91r2gyvh1fYv9crVvRYlKraddTo+tsSXFtL7ATmw1M27+xeIw
+	 ShbRLhn+LyxH6I5XUZrn4OxmRTXNnMZ4sPSGYzMlR31XxSCiia0d6GpHi65pPpGsse4KD
+	 ihXjmMSw0MHVTIng7eIs/ZpT+MRXeCzoatr8WTmLD3eLXeWyO4bN5sYhbIwOvLTsh/rvf
+	 4sPVEJ+JVrm81a/H4T7hRH4TK/qYiqMkhcFT/neD60Buu6HBP3LjrL9YRI0odA+MRbg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=ziepe.ca;
 	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=JM5nliiE;
-	arc=none smtp.remote-ip=209.85.219.46
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=PxUyExOQ;
+	arc=none smtp.remote-ip=209.85.222.177
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A23D60A2614
-	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 18:34:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A23D60A2614
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C8260A2620
+	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 18:54:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87C8260A2620
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=JM5nliiE
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-9212aaefc11so12974766d6.1
-        for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 10:34:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=PxUyExOQ
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-94960131b30so133472785a.0
+        for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 10:54:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1795199699; x=1795804499; darn=vger.kernel.org;
+        d=ziepe.ca; s=google; t=1795200857; x=1795805657; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=jPtMMj+TNQI4z5t6onBp93FYMjBvk5RvCFaoZZ65vCY=;
-        b=JM5nliiElBRIEJ+B90qYXzTnYzd/+stv+wN4hwHPgqTVP8FYNDHiBWaWDvaGRGBFxN
-         DqILVZ3+XhMDQbPxlO8nhrLm/3w+AS8V4/RKa0SdUR6IexGhtW/Uv60cJ4DkbyFlLhOE
-         Pl5l+2oZREQoIwCUMY+E4wr8rSVuY88AyEEMkOvGbhgTCninzjOvTw2NxmuFvZ7F+iej
-         DSP94PiPMzI29zQ2p9efX119ggGHZGyIOl6SqlcuiuwZZ8zvQMORhl9uXP/+Kg0BjB6g
-         LN1AMmDfqP8DHpgXbQTq5ecBBCz9h9vFIy3naJJn1zHRpF8CqaAU+DUip0emRErZQjgp
-         a4nA==
+        bh=2cDvgzaEPEJPCI6Ok0IK34cIag8JscyuYpBaCTCvSvo=;
+        b=PxUyExOQamKrAoNEpUWtU2MH9fyiBoDE+oyzzWlBCvln/cdtZhzS8I5kFGTGU8UK4s
+         VqHhE4Vt2QC0JD6xKAIKBwlckOueByn4Mi0ughCh4Nrr229Xl1hXBMSAbxW+HnaEcLpD
+         grrx6A8C/3YbVNUlOircjbOUQgbWr/s5ei3yo9JC4HsqqHqSe3sommFF/pddgnoIDw5G
+         krk8Ra0WyE6At2RXi2ZH5L+qfuBkTL1hQltq2S+R6I/WEuaVAF46YIMp0l1MdHmRy965
+         7QtohddcDJfzDDOAFJQqDK3KgIG6fgcaNRwuZ4TkNb84VQdsz9mOMj6HyiNGOGMNenPq
+         r5Cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795199699; x=1795804499;
+        d=1e100.net; s=20260707; t=1795200857; x=1795805657;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=jPtMMj+TNQI4z5t6onBp93FYMjBvk5RvCFaoZZ65vCY=;
-        b=ACqWZI0eolrXugWFMgCsMxf1xBCKDjq+LjSLgm8jWxvQ3iCDNCFsXjCpSqT01RhEE5
-         CkpjD26t8sYyYlriTc7SYSuzBO/QSpVWzhurRBt4aPQ9zmAzGI0jZ8SD1G68LKMHarlc
-         Hw2T1A7hF/6RZruRFSZoNmxONcw80EEmfjjXUItnTIHbPU+WMZPtsFX3wVPBmsy/KrEi
-         FgytmSR023Bwd+v9T9pFNeBHVjWk/9ZEZRaj+TLIsdjJqccc2nkf/ILqZ+OIT2XY+dvX
-         bYMHqs6Gq9wh4v9f5erBPzJEyYF/qJEJpHQCqD2Rm7GpActHJb5KQSChP7JcpdJz7Yg6
-         5h/w==
-X-Forwarded-Encrypted: i=1; AL+hErFU07ziLIpYDN/NXxs6Xs+dC0YQTBbewRbRmUJeiFqoU8pKldtV5zFX5wJOVEguZl8mAMk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+z/Spp6giwpC+dRXxoqTgvO7z1AmMsa11lBG8sr99aAvkl/SgR
-	dgcXA8v6SIk7k4Kr8XM+mwK0xfQLpJ5siOT8sF3b+NtNMimf6jC5NmhkCYUrRgMrxb0=
-X-Gm-Gg: AZFdTZd9u7veS+Y50YVPSl9C0auyFoCH9XGge/qd/nbuUWdgKTM3Gm6d0mUIGFzTUuv
-	XU4umfxsLlNuRUqZoDUh4SBGHlCORMuFiXe+rvjWreOEKKrUVCXKOEoCEWd6SRUiNrBd2TKch5E
-	zcfb5AXRU3LFYJpOubNkm2BvdBPOhytHObAOqKzEY641H+JSS6N+/vhk8lqRyCLnMi33CeO8R0U
-	wQsREh7e3G2/WuUCWVvCnKXsj6FySJTE2dTjSdYgWvHoXYXlCHPYu9D7jHxVbhpCX7Anp1C+cNq
-	Zb+JA3ZBjzQfemrIG3iEjbFvViNgqwFwFuSf5eYyJ0GXipPCyVKoKDqfT9xW2Bf3P7VNdxOwsjI
-	RJI/FcYxEvGFrvzRMv4BX0lWztc1H1ghw41n7PngofRJxB1lHXQDSuE5eaFhZ3uhLaTlTFy44YW
-	t/uNGt9ooBEhabruaEs+MYxUcr0+tQ5Um6N6RdEXGhWJNfN63/m6eR/cc7kIXCUOsU/aMS36K2T
-	FwCMRatJKNDFP8knSWSqsj1M9zbsKvX9MbNTldp+dmYmuHEeT1NGOLZP+lJQLDDcY784UiC4rI6
-	GEHT7g==
-X-Received: by 2002:a05:6214:4881:b0:921:152a:4e48 with SMTP id 6a1803df08f44-92134b1abb5mr65747176d6.32.1795199698766;
-        Fri, 20 Nov 2026 10:34:58 -0800 (PST)
+        bh=2cDvgzaEPEJPCI6Ok0IK34cIag8JscyuYpBaCTCvSvo=;
+        b=zolVlSsSj98QfCmUTSoo/sGRZMR2vekvPIn+XBNQqWg2bUxCQ8bMY+P3ta7lN3jri2
+         bV5bzNErigaqSiKNBst5fTIqEs+9JUVRG2kiRpn7eaZmVfeTr4mI356D0vJO5pRkoLc+
+         gmEDuAIc8do7jtc9j1TbI3DOhuE21xajgB/zJt+G6rqVz4VL9RbhnHGr+9YoWJQv5x0/
+         qdNQdnFRoinXZ/uV56XCkZZ9lLAOEYJPpYJbR6bWjuJpY8GazX+M/RnbFdgxoPARAwRG
+         F6NTbqpa5g36m9Y7H5C2CM6wquO+Uj3zt+kzr/YkW8XTSPPiQwaKMLod57Bd2O7ob32M
+         LhFA==
+X-Forwarded-Encrypted: i=1; AL+hErGWtrAqAKV7HYzG6husgXjExbOOePikuSzeKwUzMTDI8ipZWj8wSspN7Stv18TkNPfBbiY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+1AaUYZ7f+alEHW+eu0bNCNsnXnIqt/FxGmYaIXBpaNdpYscZZ
+	fLB38MwdBMzbGLHUSEQNHVJ8bUtlKPeQN6T4VSeWhQp8Fm/VMol0p5g2vC3cqy9cHYw=
+X-Gm-Gg: AYBFou12NPZEi4ipa7qkutJ+NDOfkE3fZkmsiTdq9VJqIe8OHkSkClhx5O8BK3q2l6e
+	/HYg7Fha+uMe/4uFWkF2UjmMgBHGfH7yYu28Y3PBhg8AV+XeI/SHMFG7Xyf73p43roRB0B2+XbM
+	frr2bOF0xcJEadfhynhFrTyoY04HWwAnRPMj/M1JyTV3zroLVtMSH/RfFa1gPGHVxDI9B9mjaCe
+	hZCIFmghxasCUgIO7RrLOxrnv4cAHSULcwbgzYJKwtFYGLTGcYRIiH3lX2qf47EtHWpmaXwopXF
+	6yaiiKj69jSMupi24qhjo3IcbNCDPFx115wiXsoovAXbrTEFg/mENnJWw4CYzkwjdgZWO8sZD4G
+	/tDj4OFlJNsaU1YSDbWiZBiYItPRkqPDhmbS9BUKdgHb81rEROmAGo36cZJkEKL0VdDgr63cqqT
+	ISLBK5ORjmBuZzxnHSHx7fhoYOa+NaZZz14Ru/9SmO7rnUoaSXMRtut5f74+dS9Clw7pATITdkn
+	1gk+ErSkcTeKfMZ4pAYC7vLk8ikaHjOMYVGgkwlgv29GLzInB1Kre+Q5fY6nYx71WVBRxecGNV0
+	enzpVw==
+X-Received: by 2002:a05:620a:7008:b0:949:5fee:afc6 with SMTP id af79cd13be357-949baa07369mr665380885a.63.1795200857416;
+        Fri, 20 Nov 2026 10:54:17 -0800 (PST)
 Received: from ziepe.ca ([142.166.156.71])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-92134a16754sm32821016d6.39.2026.11.20.10.34.58
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-949bb38322csm256798785a.17.2026.11.20.10.54.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2026 10:34:58 -0800 (PST)
+        Fri, 20 Nov 2026 10:54:16 -0800 (PST)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1xUTRp-00000004jZ9-0OT6;
-	Fri, 20 Nov 2026 14:34:57 -0400
-Date: Fri, 20 Nov 2026 14:34:57 -0400
+	id 1xUTkV-00000004ls7-3duu;
+	Fri, 20 Nov 2026 14:54:15 -0400
+Date: Fri, 20 Nov 2026 14:54:15 -0400
 From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Jacob Pan <jacob.pan@linux.microsoft.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev, Alex Williamson <alex@shazbot.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Steven Price <steven.price@arm.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>, iommu@lists.linux.dev,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	linux-tegra@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v9 09/13] iommufd/viommu: Select vIOMMU operations before
- allocation
-Message-ID: <20261120183457.GQ3115493@ziepe.ca>
-References: <20261116081935.85372-1-aneesh.kumar@kernel.org>
- <20261116081935.85372-10-aneesh.kumar@kernel.org>
- <20261120094207.00002e89@linux.microsoft.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, alex@shazbot.org, den@openvz.org,
+	khorenko@virtuozzo.com
+Subject: Re: [PATCH 0/1] vfio: fix KVM reference leak on QEMU CPR
+Message-ID: <20261120185415.GA1133597@ziepe.ca>
+References: <20261120154730.882393-1-andrey.drobyshev@virtuozzo.com>
+ <1075a283-b745-418b-b49a-2dfd41faba3b@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -128,17 +105,37 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261120094207.00002e89@linux.microsoft.com>
+In-Reply-To: <1075a283-b745-418b-b49a-2dfd41faba3b@redhat.com>
 
-On Fri, Nov 20, 2026 at 09:42:07AM -0800, Jacob Pan wrote:
-> > Temporarily disable AMD vIOMMU allocation by returning NULL from
-> > amd_iommufd_get_viommu_ops() while the vIOMMU interfaces are being
-> > updated.
+On Fri, Nov 20, 2026 at 05:52:09PM +0100, Paolo Bonzini wrote:
+> On 11/20/26 16:47, Andrey Drobyshev wrote:
+> > When a VM has a VFIO device and QEMU does a CPR (CheckPoint and Restart)
+> > live update, QEMU creates a new VM and keeps the device open.  The
+> > device holds a reference to the VM it was opened with, so the old VM is
+> > not destroyed.  It stays until the device is closed, which usually means
+> > for as long as the guest runs.
 > > 
-> why? if this merged, it would break AMD driver vIOMMU functionality.
-> And not temporary as I didn't see enabling in this set.
+> > It is one stale VM, not one per update.  It is also visible: after
+> > cpr-exec the kernel logs "kvm: debugfs: duplicate directory <pid>-<fd>",
+> > and the new VM gets no debugfs directory.
+> > 
+> > This patch makes the device take that reference only if its driver uses
+> > it.
+> 
+> There are two problems with this patch:
+> 
+> 1) It sweeps the bug under the carpet and only solves the case that *you*
+> care about.  If the device keeps a reference to the VM it was first bound
+> to, the problem is that there's no handoff from the old file descriptor to
+> the new one.
 
-It is broken already, it is missing some series to finish it. It was a
-mistake to leave it on like this.
+Yeah, reflowing the kvm fd is not something vfio broadly supports at
+all, there a several issues with even trying to do this this I think.
+
+If qemu is doing a live update it probably has to keep the kvm fd
+alive across the update too..
+
+Ie when we get to things like confidential VMs there is state inside
+that the kvm FD that cannot be checkpointed.
 
 Jason
