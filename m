@@ -1,119 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795183842;
-	b=AH/Md+U+DTn63uO29KdOM8SkeOOh+tYbxFNFZBCeXW3PzFAoSbxF8DhylgbYi3oxyh3r
-	 05ILDBFM0FbPtkqFHlJEROPkvBAUlpZlaQLqVTd+4bP0OQNKljjEEnQHs0NGFh9/bT84h
-	 s53+XYK76zXOMv9xk1IY6iFYPpTNRRbggTEHCZERIw1HBsxdA8wL/OIwIZRLnNfw1AI3L
-	 xvSAlZV01uGrGo4u9z+twFh08K4gkTLta1fSz6gIZ5FifFjQuDNwRpcA7WdoyEaAPPJaU
-	 Kbzbx+hmAR1/g/XK++ZPYx8pH6iWQwk07o42qwoiHQel6LzSElNRRDRiElSoODT0DpQ==
+	t=1795184067;
+	b=ilYfzmMMmU+D+SbFGw6MQeHApcJCTZSUhNbuYUZT+25PU5WvA/SWt7jBzpKEvlOIqQJL
+	 98m8Bnp+677l8NbXutIFtCH2sHIZSgUbfgV0W45vW0m5EQQDU4d4w5GalqsYFfnQq5GoZ
+	 PdbngHEFoA7oXti5BHZjGlS4dzzTNSAsGTKL93gDjsfd8deadIoklMtkoPR4FuPWRFEsg
+	 QybQpX9uFKmucxy4O/D1zeFVJYG06sOaJkVVCQsZyuAWbQXKWg26kY4VXMgS46pRLSw8u
+	 CMnUQKsWXPs1sWyT3UdGN9dxP2X3X12sYOh+WHRSY3U2KGVvJ6atQRJyHblRQhU/ZeA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795183842;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=5S4P9EVhrzfLBPEUlAs5RhZwbxTfoymelcBjiUJ2aGo=;
-	b=EWLmArzlFG6N8naycDuZ1iIcso5o8u5PNO7EkUaZLdt7WaDaPq3SFEdMoMwL1ccTcRtu
-	 3Utd/yNUP5KxTk86xpjMkZMsEyF7NRbeIe18o03b8TlXlcjQAwnEYnuTLfAMwIM6FAyfX
-	 i9fxvC/a2Mg0KFhq8w2t4cB43R+v/NtUmXQtNAYWpzYZ/hgdtZsxbhrhyrxlv3Weziuj/
-	 g7Ks0gLiG+esRLMg9HRJREEfYBxRxY/cSlUb2tD6X9RNP90gOz1gdb9Ee16Gysa+UX0r7
-	 v9jOk0DknT7zDtt7HFHAdGJASx4ik+zDsJIJRqQsD9IbHLq7OuQ0B7fY3PPmv5zYd7A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795184067;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-TM-AS-GCONF:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=PvPx8KemO0xcM9BvIjOEVvpcXVwQS3ehLVp+q+/Y12c=;
+	b=Rn+4Fg+pps8FwYGfgFGUcBaKEHaQCiHgpyBpFhflAMuEgV/52AOv9BAYL/tbvfSZOmuy
+	 17gJU5rnLZQUEAlBx8Du16TrIqFJUYFXKvhOq7YTvA+oGioSnSKASbTB/OJzfplzgism5
+	 vaFzCDzHUHtwO474PMGjrSSY+LRJms1k1uQLQ1ELXYB/W5WdFDaYaaEfthfWtuywEEd6c
+	 K3tfQRxIIC1Vbfw0/hVmag/R6wan+PC1lwFItlmRkJBvldnOu97PSYbdBBJKPG1SerWDd
+	 GsA3gVSYyKymmxw/N4pOfbt2WYo62o2dzprhXOwfysdSMSOI/1DqctkpYGeBd/PvFyQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=baylibre.com;
-	spf=pass smtp.mailfrom=baylibre.com;
-	dkim=pass header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=GtG1iaQR;
-	arc=none smtp.remote-ip=209.85.221.47
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=B5DXBemK;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F56606A334
-	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 14:10:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9F56606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D65606A320;
+	Fri, 20 Nov 2026 14:14:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B3D65606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=GtG1iaQR
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4ac109a8a12so477900f8f.3
-        for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 06:10:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1795183840; x=1795788640; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5S4P9EVhrzfLBPEUlAs5RhZwbxTfoymelcBjiUJ2aGo=;
-        b=GtG1iaQRI9u9ARXabDEe2D8SnnTyfL+8UjK/8tqYjNwSU2a9LuKhrlTU/lolo1fBCy
-         RDXey437ySP9hiMo5QnJD6PtHaw+F6Wm4BqNZ5ctCKbAFymc2+vqkB6N6NXnQATAuFRD
-         yJb5e8zbLw74CQfoie3zzYHaCY6EU9YGVeRppeU8xhgcUI60o0ILXKInDYZh1OPny0rP
-         euD7j7EKrlNYddojjjsLrgMjEaCgk74eQrjoFa8jw3DzuIq57Zg2AbYdM1+ZRrk9PgFs
-         cU2/mDTVEffUIcg1EQR80oRe7thSm0zVOcNSnsDNUgyUVQfMBfSB01AnLEf87AeP79MZ
-         VJDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795183840; x=1795788640;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5S4P9EVhrzfLBPEUlAs5RhZwbxTfoymelcBjiUJ2aGo=;
-        b=n+3oFT0mWr/kbWayXrFHeFBNaxfKAY5j8UsQ7ZV/gUWn/Bmyc/wu6mFU1Ej/ASt7YK
-         4gntKVTDDnOrINmf2pauD2ulorHqPUi2lcU1cIsU5wbdHpGkrOQ+2zfJZtT+7qU4dibt
-         +RPZiWtGAFYQqc68ya4VofAqKcmFofhiXcQurYHneXl8CgX2E4usO+9TY9Nd7bFbC0kk
-         6owzYixRjz0Hed5m/fv/ededA2XEfGhJBSKJD8jh9+TsxDYcHTBBDyFLA7fmVOKJXKp8
-         ctTo9DUxMVVXgXe0CJcs6rACkcyp3pZL1/23Q7JeEIC+20ZylfhptfI8PdoGletFUjWS
-         +K0Q==
-X-Forwarded-Encrypted: i=1; AL+hErHq9I5PvwqsR24Lzuo9AtsGHwFiKVQ2pZSvZwXXBbcisWZYY5QTm2l3A9ENjMutMMCqayk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8u3BW5qHRDLqMKBr/FG/3VANaC8iTrGqXzat6UezGQxJkxqS2R
-	qGSJxsH73908bjZ3utVg071ezeVAYjNIwxRu9G3iNycYLRs4vfxzlir/3izeGHMDAvQ=
-X-Gm-Gg: AYBFou0oVNz0TT1XzWyV+tVsqzQaCJ5Pa9ViFdQOfJuzln38RBBngYc+CuRrsBMpvZ0
-	iAIaKUcn4ewYxeotHqpGpyQ5BGDo6ckZRiOBNtY2XKe52/e1fp1zDm8TuCrQ/JOe3ulWfMlgN78
-	O8sSqYqu5Pk6ws2htcsbMzo2WKoDRbYpQoVZ2jlhf2AxPnPnVJKMe+vNBwd9bZ9OL2DcMgBdc9u
-	jdY+YFCiaa8qQREGKLjAkcKUiYwIGb8Df2uyH4kIUKNR5s2Hg9YFiNHYjKPGixPF9n0vcWpjnmK
-	Zbho+HEXzhWMnYMNk+antHYQmUcLMFlm3OOtAinYwanUFordf1DG1AohjzuQyuK4Xzfw+RKT1BE
-	Fv+DroW9xmhjHXAL4qe1mIZncZxGQ8P8CEclr11enthrfBssEpDpsCRegT2wNFlDUQoy7BJamyb
-	okvz0Sfg3iopK2KHJeWurBdAsf2F0nvd9tgfFVcGWMWgsGduDTFXg2h/nM8cPEWiVyoBHWqa4EN
-	5JLknoXTgZxErtmGlwl4Aqq0avvJ8VT6vlfi2fne85bB10vwDgDpLsNlaBnClfGbwoP/jFscM0e
-	R2LnO2n4f+Ggtxvl6mtEHuwb11G8guv5q9HVb1MZxBRqB76XFtsj4Ys2XxST0okNPkU6fNFzH+/
-	C4AhD1W9ddwuo+3zW
-X-Received: by 2002:a05:600c:3b1a:b0:4a7:8fe8:130c with SMTP id 5b1f17b1804b1-4bb8881d4damr71087005e9.28.1795183840190;
-        Fri, 20 Nov 2026 06:10:40 -0800 (PST)
-Received: from localhost (p200300f65f19a9041d3eb07d772156f3.dip0.t-ipconnect.de. [2003:f6:5f19:a904:1d3e:b07d:7721:56f3])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4bb895f66e1sm37012445e9.0.2026.11.20.06.10.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2026 06:10:39 -0800 (PST)
-Date: Fri, 20 Nov 2026 15:10:38 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Yao Yuan <yaoyuan@linux.alibaba.com>
-Cc: Alex Williamson <alex@shazbot.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	"Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Johan Hovold <johan@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	David Lechner <dlechner@baylibre.com>, Armin Wolf <W_Armin@gmx.de>, 
-	Thierry Reding <thierry.reding@kernel.org>, Mike Rapoport <rppt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Karl Mehltretter <kmehltretter@gmail.com>, "Paul E . McKenney" <paulmck@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
-	Marco Elver <elver@google.com>, Ethan Nelson-Moore <enelsonmoore@gmail.com>, 
-	Jeff Layton <jlayton@kernel.org>, Bradley Morgan <brads@mainlining.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Petr Mladek <pmladek@suse.com>, 
-	Pnina Feder <pnina.feder@mobileye.com>, Mete Durlu <meted@linux.ibm.com>, 
-	Aaron Tomlin <atomlin@atomlin.com>, Rio <rioo.tsukatsukii@gmail.com>, 
-	Feng Tang <feng.tang@linux.alibaba.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	driver-core@lists.linux.dev, linux-trace-kernel@vger.kernel.org, 
-	Mark Brown <broonie@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Yishai Hadas <yishaih@nvidia.com>, Longfang Liu <liulongfang@huawei.com>, 
-	Ankit Agrawal <ankita@nvidia.com>, Brett Creeley <brett.creeley@amd.com>, 
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, =?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>, 
-	Julian Ruess <julianr@linux.ibm.com>, Nipun Gupta <nipun.gupta@amd.com>, 
-	Nikhil Agarwal <nikhil.agarwal@amd.com>, Eric Auger <eric.auger@redhat.com>, 
-	Mostafa Saleh <smostafa@google.com>, Pranjal Shrivastava <praan@google.com>, 
-	Ioana Ciornei <ioana.ciornei@nxp.com>, qat-linux@intel.com, virtualization@lists.linux.dev, 
-	intel-xe@lists.freedesktop.org, kvm@vger.kernel.org
-Subject: Re: [PATCH] vfio: Allow untainted use of driver_override
-Message-ID: <awBUG7-QzXplEiUT@monoceros>
-References: <DMYH4ED3GWDO.29DGXPK4M82VR@kernel.org>
- <20261118235645.2907908-2-alex@shazbot.org>
- <xzp5gljhburzbpol5bgnyyzwdrgpw3fj6ff3j23ein27raiidw@kti7moeuwvb5>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=B5DXBemK
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AKAueo32861278;
+	Fri, 20 Nov 2026 14:13:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=PvPx8KemO0xcM9BvIjOEVvpcXVwQS3
+	ehLVp+q+/Y12c=; b=B5DXBemKh9Lh8Rak/aftkySB8nUn7NsasM5g/+jda1/202
+	SNHoaGCp4T50AfG5uoLucmeIAlvT28FDySN7p1NkD6ZtwATMuH03SW5Q07GNENBL
+	LZ8crLwhAp9yp516a+PR34CiZCkRsP1Uzum3VC3B7DLgM9v/MJ96zLNFPPuer3MJ
+	EzzVOF0TcZzPwB++1501FHuJDNsHZ1mUAKrl8Wz5m6WwODC8ajQQvRUHTNfQLbnV
+	D65Zv3Pw8HNWgu/r8A+wSIjspJXowyQ/dbRGgq/UWQbIwNf2dkuwF5eWySI59VZ0
+	ecI6tQDSJ7Zbd3DNa6/jIzSO/ax9WVj+5PFGXxHw==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j105x8hq4-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 20 Nov 2026 14:13:49 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AKDVBTa1220811;
+	Fri, 20 Nov 2026 14:13:48 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j2q5ng6nn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Nov 2026 14:13:48 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AKEDdaU47513900
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 20 Nov 2026 14:13:40 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DDBFB20043;
+	Fri, 20 Nov 2026 14:13:39 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B608F20040;
+	Fri, 20 Nov 2026 14:13:38 +0000 (GMT)
+Received: from osiris (unknown [9.111.86.180])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 20 Nov 2026 14:13:38 +0000 (GMT)
+Date: Fri, 20 Nov 2026 15:13:37 +0100
+From: Steffen Eiden <seiden@linux.ibm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oupton@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>,
+        Joey Gouly <joey.gouly@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu <yuzenghui@huawei.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+        Andreas Grapentin <gra@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Friedrich Welter <fritz@linux.ibm.com>,
+        Gautam Gala <ggala@linux.ibm.com>,
+        Hariharan Mari <hari55@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Nico Boehr <nrb@linux.ibm.com>,
+        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>, Paolo Bonzini <pbonzini@redhat.com>,
+        linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org,
+        Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Subject: Re: [PATCH v3 01/23] KVM: arm64: Refactor idreg caching into
+ dedicated structure
+Message-ID: <20261120141337.222720-A-seiden@linux.ibm.com>
+References: <20261106-sysreg-v3-0-75e95980fb10@linux.ibm.com>
+ <20261106-sysreg-v3-1-75e95980fb10@linux.ibm.com>
+ <87ik1z8gsy.wl-maz@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -123,62 +116,54 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="76ybofus6n5n73yb"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <xzp5gljhburzbpol5bgnyyzwdrgpw3fj6ff3j23ein27raiidw@kti7moeuwvb5>
+In-Reply-To: <87ik1z8gsy.wl-maz@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ifAOkSVLFCM3CzBERqJcC9NJg_rpimD7
+X-Proofpoint-GUID: ifAOkSVLFCM3CzBERqJcC9NJg_rpimD7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIwMDA1NSBTYWx0ZWRfX1grFYOpSlxGw
+ 8U9gaIC7JaaXQFyArTP2A4hWJieHkkamYfmrPYx3g789KdPdqcGyBy/D//k1xZUO/aKYRm7wd94
+ Ku39vjASwOWmvQOP1BiIQYSMpAUaNbyY8cGOnYjdniXsPxKNBnpOpKq0IbNmOjW7h+mOMIFqlZ2
+ D12fcqRyN0Q8Dzpj8uJsm81mAiWtP2HGXzHwX3OfxYVDev84qTYQIpoaWWxXpALxsgvrJq2feQu
+ 7Y2foONElooJcrbPU0AEp8si+PAHtwolJRuL0i+rxnPZ3u0oYpRL6JFfrFEQTKkA/Gpyojc0CQP
+ Qs0WuDmgkafbkyu4WHYIPYbPbYBtDgw3G4s+VhNuZ8c4vlsihN57gNFQ4mGErRqUWeOOsPPwxCu
+ T0zJosPU7KFjQ8NQWg3bsRtOp8XlW+gn9R35ybhBCRVuPDgOP3/TWmIq7PE3KuASaFl27PvPeYB
+ YH0n81NxFpODIyhAqMQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIwMDA1NSBTYWx0ZWRfX7PEZIeKNrAen
+ Ko9rFLMVrRfFLFVd1IbxaNDtLwwIRNzqqlwdxybsCQ/kVtWEXSxjeCUfFIm6G/pC8kyzqQzy/4L
+ MjqKT4QezrVLsftKJw8+LmRsM8tmVwo=
+X-Authority-Analysis: v=2.4 cv=K+m3jCWI c=1 sm=1 tr=0 ts=6b00559d cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=5Px26FCybgXTlaf_HfoA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-20_04,2026-11-19_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0 clxscore=1015 adultscore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 phishscore=0 lowpriorityscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
+ definitions=main-2611200055
 
+On Sat, Nov 14, 2026 at 05:27:09PM +0000, Marc Zyngier wrote:
+> On Fri, 06 Nov 2026 16:07:34 +0000,
+> Steffen Eiden <seiden@linux.ibm.com> wrote:
+> > 
 
---76ybofus6n5n73yb
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] vfio: Allow untainted use of driver_override
-MIME-Version: 1.0
+...
 
-On Fri, Nov 20, 2026 at 10:17:46AM +0800, Yao Yuan wrote:
-> On Wed, Nov 18, 2026 at 04:56:44PM +0800, Alex Williamson wrote:
-> > Driver overrides are the standard mechanism for binding vfio drivers
-> > to devices.  With the introduction of the support_driver_override flag
-> > in the core driver struct, it's now required for drivers to declare
-> > themselves as driver_override compatible, otherwise driver_override
-> > bindings will be denied or generate a kernel taint.
-> >
->=20
-> Hi Alex,
->=20
-> > Set the support_driver_override flag on the driver struct across all
-> > vfio drivers.
->=20
-> LGTM.
->=20
-> Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
+> 
+> Overall, I'd like to see a first patch introducing helpers that the
+> code uses everywhere possible, then another patch that introduces the
+> structure, the renaming, and changes the accessors without touching
+> the rest of the code.
 
-I missed your reply when I sent the next revision of this patch. I had
-to trim the recipients of the v2 because gmail refused to send it with
-everyone on Cc: who was emitted by get_maintainer.pl. So please see
-https://lore.kernel.org/kvm/fb0df5c89336b77a373ae0f890f63427e4adbb28.179517=
-1088.git.u.kleine-koenig@baylibre.com
+Sounds good. I'll implement that.
 
-But also note, that if v2 is picked up using `b4 am`, your Reviewed-by:
-is considered as the patch didn't change.
+Thank you!
 
-Best regards
-Uwe
+	Steffen
 
---76ybofus6n5n73yb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmsAVNwACgkQj4D7WH0S
-/k5TyQf/eHBkTiGwub1DLzfSI9Ji/DkzXua0OriEhTmok4cd+2dbl8OfLn0CXg3e
-B7W5T3PuQPmIapUivPRGpIJ31hN6+UScHDdfNvj1Xbret/ZoqA+0l48dqU/ikpgB
-X4WK2ENvhE+glZpB32rPkpeMadqauuBUmh1TjWnpLKn4QmgLyf+pHIJSnUmH7XkQ
-BV2i7AIctyUc2PP/Y+URhj62+6B5pxn3+5BlligAvpjkpg98TxVTctcCEgP4apyk
-TI6uZtnd9maFMXHbUJHEArWhVKI8FLAzZySY9/E7u4+tsY0gz/JMib7RngFR2IY4
-MPZB/liFV473f+eDblZh9CKsu8DAJA==
-=wiOu
------END PGP SIGNATURE-----
-
---76ybofus6n5n73yb--
