@@ -1,79 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795208838;
-	b=Fb9aj5ZCrm+mrVGazK1Zcv+g+r+58RjBQQr6JSCdnsesUNuHFgb4yoi/MlVj4QzH5F8i
-	 5/pXLuDIdUK1YIYuE6R1Y3m5QimqWzKxwB7coL7FCfmPNaYKrqcAcKFmYAjELgS+aUwkD
-	 uZrqikvohrSqxloxfrlXAXRUO1x88LXriyEITshruTA798UOgusApIHodsEAdPixjRGMS
-	 NFp8ZVA+ALkmTkBflNMqVPnvt6ubsVBtbxeS8n+Fk0RKUWlofnXuZSj3AUWaHSJA5SOuB
-	 cVuMI/nIJYSFDut2M7ExHrS5Mh21EjWm9wWTTV+GVxuQaHYBNLgKViSK4A4ZP+EIcLA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795208838;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=AMh54TR0Yx74ZrJDPkxnOx/lYr8Z2aFztvrYWkfWUx4=;
-	b=HNQqXP49BiU88hkcPyaGwHr6zsuvctrz/+zaTiPQPY/lH1ic1RNDffTq1ryihpUK9Pqg
-	 SEaS0lEOjOc9t3xlR2IswvDg9VKXEzsPv0FskGq91/RwYjwKJjNjqjnj2oj+35nrYM9UN
-	 GkJ+sk/CrM6j35FQllSPaiJL7gzdRuVvU0ze7LflVcThYd2uIy++sZN+Zlx5IS4BIyfWD
-	 LM2XQON69zoJGKLW3vlOesqwdW7WeYk1ApttYTuG3c7yfJVkUXHjQa4IqokVpPRpevEUI
-	 zPYlHNV4g0aFg+/e0ITjHlMwrpvRjdrqisP/USmsH/sIUIRfSDUo6iXh87cVMDEIG+g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SFCGdy7D;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CD560A2618;
-	Fri, 20 Nov 2026 21:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SFCGdy7D
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795208838;
-	b=aF1+noMmSDu1eEMq9EgQt+NTUKZdXUpikM3XRycAj+jzmx49H90cXKl5ccq3CgShbD7w
-	 iigXPdhs/wDPBNJIMFjtPM7+v3aIMVKekBnJszwDa3YZ0cacWyxxhXgB7WHRfotmmV8ze
-	 yiqLWsf4+jfm056jh8s1DLXoqDXttJR6AwtIavAI1D3wenLo81kg2MqV3ecPmQaqFqIhQ
-	 9WIXAtD9mf8ufAOIjEid57nFXbQVs0vLjxtmTL/i04hVpEsQBXkc9j9CCVCtTg2f+I+30
-	 YBKt56jcVz5tzf2Glt/diU/Sz5cwSadAFp6Ax7rNIIKK95rxgTOAsnZPgqDiiRHVJ8w==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795208838;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=AMh54TR0Yx74ZrJDPkxnOx/lYr8Z2aFztvrYWkfWUx4=;
-	b=q9eNIiEgBgiCwhEVQ/v7+/eLoATFNyZKFRzst7IoyZ1FTGlQrDIMR6rMDFRsLWS+Sl5P
-	 2KFn2j32eRNm0EqjLl09AiNE2j8UojnNSonBhcnCDaexY9Zl+uJyb5UyJPN8PvR8CcytG
-	 UoNGH1GrrxRmn14wP64iRqvx/EO50djsb/b/woymnD+UB4HPZvOGsdOT+aPoZ1ErTUwz4
-	 dzbiea+dRo4DNOZlCYaCd8JE83lHHvtiIFUXnTvVA+/67ZCk3fqO/4nqJCSwu0KmWC4z/
-	 EhYovxWtS8gvHN22dBXVkJA+1ObjYEx8BddsE7jGm4RcyBEo7v/05uwzbfiCOrtWKLw==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.171
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795213291;
+	b=g0PEe3nldldvrYLYvoqxIKNTmJZTR7yRA85sWTGxw7OSu5QBWln2aL/kI1FAmxA3qP6o
+	 ew50qT47GClbjqL4TGKInH/CgXNVuvBnPk6ZWyiv8P9D4UsfjqQ5ZvuS50khCX9ptXBaF
+	 x6NG9S86fgqx0Gr9ZdTWBnMBTD+KGQ17rR0PGjSdd4ZQhrxg6NHPwSGy0CTtHNy2XruJg
+	 5KErQ/DazCz4A859MRcIIowgSjRgZPxdR3vzq5kTwIyD34jFsPT/05IWNT2nO5PFEpC1y
+	 5c63d0/7JMaTpmHpj43eqnRtxXaUK9is5hC9UIC2AOPkI9dw4kaQUT/mS5uHSaJeYDA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795213291;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=YWAHn2Sutfx4jyhpprq+KziM+rM4UEONRsPYaYW8qwc=;
+	b=oNkCTHTj/aDtMcukuvgXwRXErS6Z2AXjTTxAt9ba83OfK7a1zgj8gzq5GHSZf0+SRESr
+	 AFWiTguQX5DMlzfLWQ57BKZytl2YFcyPONMZHsZSXu2pk/ywR8q/gZQiV9JOrL+p34xzD
+	 sBOVbmWHFTM0oXCbhOq0gyJ4vwEMGlZ5H8KcuDbcKq9X6WptupRwFRwPDy4htBtrPt/VC
+	 oCDGmklQAQdRwnEnaLKYi5K9XKX9HKuHL+7QtVCgocH8mVeMGfGKw0E1+vg0pJGoIcPTx
+	 4Do2BrwcFEmSJiX/XfZTixdE2RElB/6VuZHhZCuXwzWPy1tA11VjgJEiADQYfNPHSpQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bz3wayi8;
+	arc=none smtp.remote-ip=209.85.214.171
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 4D3151F000CA;
-	Fri, 20 Nov 2026 21:07:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795208837;
-	bh=AMh54TR0Yx74ZrJDPkxnOx/lYr8Z2aFztvrYWkfWUx4=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=SFCGdy7DDgmsgow98a2HISw7cH+2OYk0QVUHjbHHGoC7WP/5+VUpCk/da7mkhVXaj
-	 3BcqC0U5IqWtFtReGWtFHFoV3Le4MTWofxhjVN46HLC7rAFqre7ijGa0/mLLKV7H2u
-	 NIRE5by29Eyhl16pHyEiPFMADYWbFEd2QMYnjSRy/ChCwonFjAAsxhwXPI7RpqGSF7
-	 +WiXv3ouCHqOldgzf8TYIxqYf30wUbLu7vgRyYvdsPSe5lWxhftSihddkdt7fEcEjC
-	 LXT6QT9p8wwS/KjQKieNizfuQpMlpXLNzTgQqy05wMGGoDpoKYxbCi68pz86Na+s6y
-	 pLBEQ82GuFH1Q==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id C46064BA28;
-	Fri, 20 Nov 2026 21:07:13 +0000 (UTC)
-From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 20 Nov 2026 13:07:12 -0800
-Subject: [PATCH] KVM: x86/mmu: Prevent hugepage recovery on non-guest_memfd
- private GFNs
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447B5606A6BE
+	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 22:21:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 447B5606A6BE
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=bz3wayi8
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ee254f6eefso23955ad.0
+        for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 14:21:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795213280; x=1795818080; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=YWAHn2Sutfx4jyhpprq+KziM+rM4UEONRsPYaYW8qwc=;
+        b=bz3wayi8B/xIUJTpaTICcqniOfrt9ZQ2O5ws4WZNSkusMBsHs2I/thNsWx6oHBiyu1
+         rxmeeuu9MSwUWkBQgoh/X7UFXStSc+bSoH6Bj5SYQ9VA1XX9L7avbCiWFFo+7HW+M2Sd
+         Nryp8H/8z2/IIOMnPGHIMJQpEC4+0G82NJXUtArYx8JN2s3gf0YrWXWBquUMRa1BcSGC
+         x/34nNIycszYPus7tr+3O1vG9CST34P3Nz8kNYoNPrnIEHedaQywda3XpwVYpBeTlA/G
+         aMQ4jpGZ/6mVs+suP/p+F9cScqj4dHUnf7nDzzZQsYwM1HDwIquA+iAeoXkj6cxlVAXo
+         iZ1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795213280; x=1795818080;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YWAHn2Sutfx4jyhpprq+KziM+rM4UEONRsPYaYW8qwc=;
+        b=c9FzV+nqA3M+rAK+MIABAQDLuGASJ2ZZ69h9ItNGfu4o9sOpyBUigI3Byb7ABlDY7V
+         xHt0nQcfUIutEoE7ggafwwyB+EYkJcPxhmdMJnVEeiKl4fGYsymrGAw3SmHgKVW7d+Ew
+         gsPnla/hvP/R0CvhDKhgx0HMO73ChgCDLvGKIPUcjkXvWfgt81h2jOHsJA9c16erj6pj
+         cIpdny+5g20J2DRHbF7qIqQZxAvuJePZvAVmTc2ZBijtN/T3+Xvb2d+LsNfHCTo+n3Ij
+         2jcdHE7qMhEGDqNl8VOc4ZUhSsvERzo7b1aEMrtU/aek4BomkoI7h6OlmdsXwmF0BEp4
+         Ctwg==
+X-Forwarded-Encrypted: i=1; AL+hErFyLTXyi38/Nh9825jyNrq/IpsY+8806owqeULEy/as2w9b7PSNlBZZsvmS3og9fT7OcXE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9IN92epKIY1+XBtsQswrMRs74PsgNs2nMCsZOCelU30Ya861Wf
+	7n46rVn61njcuudsS4N97N1kB2P7GBBw/9gmnFyEyuk92tF6jKlsds7DfMousQjO3A==
+X-Gm-Gg: AZFdTZfHv73E4qzvzbe2lseQBhIDgEIyYh+s3PCKTtJg16HPa/Le1Z/9tAw9SDxRsyF
+	MisDyh8CPGIWPvr/7GmLz5In4fId9m09BgTmbrIJRu8OZTeABjoZM3pDMd5nibbKa3W7+myxfvw
+	cVh7Y3nY3FbZcokr44JuGSeEHnzkSWXp21oPvbCetxLrKLFAGmqFMTnt4+5vHPqcGi2J88bX/uo
+	e5Ta6B+ghJiz7KDfcjsEt6IO29GDdElfdrraAtdUhwDksBA4fmkNKMPGNyaFyMT9E5gSLGRMMHn
+	RchxcSWOqAYfq6LP+Sb9ec6HCgcoVU/H87kADlmeH0ViPV60lq/lnRDnblNLGzldrm5jBRo1EFn
+	peMh37TlT6S0OJ/+vRONiBqls0CEcxXCz6j7QAIJGUxxmvITMmzkF2is25q586DQKDXoj78fd+5
+	3q1AsTHQUF6R6L8uhCcoip4Zd2D61SP7yiJHaBLel/trXpG2+Z4HrT3nn6Ahva86tvFCZMKh7k3
+	/TvD9en3x/ARObbNdAJe3/1woL92q0MJ9YRQhZvLLsvc3ZfRe2dsht2uz+UlZB87Qsk/AIS9xJu
+	EL6evvVVflpzDIawjSA0P52zWoeyq5hcEQrTrzTmp77ktBG+Exn8YrRS/0kTdHPnpBpoHcosTZ3
+	EZMKFySOVHFLP5gt2XFBC3g==
+X-Received: by 2002:a17:902:f709:b0:2e6:1735:f645 with SMTP id d9443c01a7336-2f062b91bfdmr1318055ad.4.1795213280161;
+        Fri, 20 Nov 2026 14:21:20 -0800 (PST)
+Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41ad0a33fsm5793510a91.6.2026.11.20.14.21.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Nov 2026 14:21:18 -0800 (PST)
+Date: Fri, 20 Nov 2026 22:21:16 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Alex Williamson <alex@shazbot.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Anthony Pighin <anthony.pighin@nokia.com>, 
+	Dave Jiang <dave.jiang@intel.com>, Dan Williams <dan.j.williams@intel.com>, kvm@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] vfio/pci: Only lock the upstream bridge if the reset may
+ need it
+Message-ID: <awC5Ldqmue6DiO44@google.com>
+References: <20261112235700.2029562-1-skhawaja@google.com>
+ <20261118163706.7138d246@shazbot.org>
+ <20261119143237.4bf54796@shazbot.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -83,98 +102,123 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261120-gmem-fix-gmem-max-mapping-level-v1-1-108788914fe8@google.com>
-X-B4-Tracking: v=1; b=H4sIAH+2AGsC/yWNwQqDMBBEf0X23AUTaYX+SukhWbdxi0lDoiKI/
- 95tPQzMg+HNDpWLcIV7s0PhVap8koK5NECjS4FRBmWwrb0ZY1sMkSO+ZDtLdJsmZ0kBJ155Qkf
- kfW+o664W1JIL6/r/8HieXBf/Zpp/WjiOLytk3UKDAAAA
-X-Change-ID: 20261120-gmem-fix-gmem-max-mapping-level-accbb71c3352
-To: Sean Christopherson <seanjc@google.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Fuad Tabba <fuad.tabba@linux.dev>, 
- David Hildenbrand <david@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Ackerley Tng <ackerleytng@google.com>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795208833; l=2547;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=Y0i6Euk/xaC1ZCsSKIuwJUQwvKbcrEW4zjiLBGkW4HE=;
- b=yGonGreEgc0BdPMVqeglPV5HUwVFM4Dw1iv2Lr9P4AMWQ6f6wM0eyzt/GT2B9ke6JNrIpdkAm
- uf9Z/wXEoTuBqibEvSAT8CtdDu+DCZhw5/hWtY5LzPjcfz/kBPIaVu4
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
- pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
- auth_id=649
-X-Original-From: Ackerley Tng <ackerleytng@google.com>
-Reply-To: ackerleytng@google.com
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20261119143237.4bf54796@shazbot.org>
 
-From: Ackerley Tng <ackerleytng@google.com>
+On Thu, Nov 19, 2026 at 02:32:37PM -0800, Alex Williamson wrote:
+>On Wed, 18 Nov 2026 16:37:06 -0800
+>Alex Williamson <alex@shazbot.org> wrote:
+>
+>> On Thu, 12 Nov 2026 23:57:00 +0000
+>> Samiullah Khawaja <skhawaja@google.com> wrote:
+>>
+>> > Commit 962ae6892d8b ("vfio/pci: Lock upstream bridge for
+>> > vfio_pci_core_disable()") makes vfio_pci_core_disable() trylock the
+>> > upstream bridge before resetting the device, and skips the reset if the
+>> > trylock fails.
+>> >
+>> > All VFs of a PF have the same upstream bridge. Take a device with two
+>> > VFs, both used by one process. When the process is killed, both VFs can
+>> > be released at the same time. The first one takes the bridge lock and
+>> > does its FLR, the second one fails the trylock and is never reset.
+>> >
+>> > The bridge lock is only needed for a bus reset, which is done through
+>> > the bridge. A VF is reset with FLR, and pci_parent_bus_reset() never
+>> > resets the bus for it because the PF and the other VFs are on the same
+>> > bus.
+>> >
+>> > Add pci_reset_needs_bridge_lock(), which returns true if any reset
+>> > method enabled for the device is a bus reset, and only lock the bridge
+>> > in vfio_pci_core_disable() when it does.
+>> >
+>> > Fixes: 962ae6892d8b ("vfio/pci: Lock upstream bridge for vfio_pci_core_disable()")
+>> > Cc: stable@vger.kernel.org
+>> > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>> > ---
+>> > Tested in QEMU with an igb PF behind a PCIe root port, bound to vfio-pci
+>> > with two VFs. Both VFs are opened through VFIO and then closed from two
+>> > threads at the same time, counting FLRs with a kprobe on pcie_flr().
+>> > Without this patch one VF missed its FLR in 50 of 50 rounds, with it
+>> > both VFs were reset in every round. I will send a VFIO selftest for this
+>> > separately.
+>> > ---
+>> >  drivers/pci/pci.c                | 28 ++++++++++++++++++++++++++++
+>> >  drivers/vfio/pci/vfio_pci_core.c |  3 ++-
+>> >  include/linux/pci.h              |  1 +
+>> >  3 files changed, 31 insertions(+), 1 deletion(-)
+>> >
 
-When determining the maximum mapping level outside of a page fault
-(such as when disabling dirty logging), KVM queries the VM memory
-attributes to determine whether a GFN is private. Userspace can mark a
-GFN as private in the VM attributes even when the covering memslot is
-not backed by guest_memfd.
+[snip]
 
-Previously, this caused the mapping level calculation to fall into
-kvm_gmem_max_mapping_level(), triggering a kernel warning.
+>> > +
+>> > +		if (pci_reset_fn_methods[m].reset_fn == pci_reset_bus_function ||
+>> > +		    pci_reset_fn_methods[m].reset_fn == cxl_reset_bus_function)
+>>
+>> This looks like a maintenance nightmare.  What if instead we did
+>> something like:
+>>
+>> bool pci_parent_bus_reset_possible(struct pci_dev *dev)
+>> {
+>> 	struct pci_dev *pdev;
+>>
+>> 	if (pci_is_root_bus(dev->bus) || dev->subordinate ||
+>> 	    !dev->bus->self || dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET)
+>> 		return false;
+>>
+>> 	list_for_each_entry(pdev, &dev->bus->devices, bus_list)
+>> 		if (pdev != dev)
+>> 			return false;
+>>
+>> 	return true;
+>> }
+>> EXPORT_SYMBOL_GPL(pci_parent_bus_reset_possible);
+>>
+>> static int pci_parent_bus_reset(struct pci_dev *dev, bool probe)
+>> {
+>> 	if (!pci_parent_bus_reset_possible(dev))
+>> 		return -ENOTTY;
+>>
+>> 	if (probe)
+>> 		return 0;
+>>
+>> 	return pci_bridge_secondary_bus_reset(dev->bus->self);
+>> }
+>>
+>> Where we'd then condition acquiring the bridge lock on whether it's
+>> even possible for a function scoped reset to perform a bus reset.
+>>
+>> It's a bit broader of a test than whether we actually have the necessary
+>> methods in our reset_fn list, but since we're not locking the reset_fn
+>> list between test and function-reset, it's also safer.  Thanks,
+>
+>After exploring Ionut's patch[1], what I propose above is probably
+>wrong.  We don't have any guarantees that the sibling topology is
+>static and this bus-reset-possible function presents it as immutable.
+>The existing bus-reset function has the same race, but the gap is
+>smaller, let's not make it bigger.
+>
+>There are however immutable properties we can test that cover a fair
+>number of cases.  For example:
+>
+>bool pci_reset_function_needs_bridge_lock(struct pci_dev *dev)
+>{
+>	return pci_upstream_bridge(dev) &&
+>		!(dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET) && !dev->is_virtfn;
+>}
+>EXPORT_SYMBOL_GPL(pci_reset_function_needs_bridge_lock);
+>
+>We should be able to use this as a condition on whether we acquire the
+>bridge device lock, in pci_reset_function() and in vfio-pci code.
+>Thanks,
 
-Here's 1 way to trigger the warning on a TDX VM, with VM memory attributes
-enabled on KVM.
+This sounds good and it will also fix the bug that I am seeing.
 
-1. Create a non-guest_memfd memslot covering a 1G-aligned base GFN with
-   dirty logging enabled.
-2. In that memslot, fault a shared page outside the first 2M chunk so a
-   non-leaf PTE at the 1G level is installed.
-3. Mark the first 2M chunk (at the 1G-aligned base GFN) private. Conversion
-   zaps that 2M chunk, while the shared mapping outside it keeps the 1G
-   non-leaf PTE present.
-4. Disable dirty logging on the memslot.
+The only caveat is that pci_dev_wait() might fail during VF reset and
+then it might try to do a bus reset if the VF is behind a pciehp or CXL
+port. I would prefer to do it only for vfio-pci code as that is where
+the reset skip issue is. pci_reset_function() takes the lock and
+serializes the VF reset. Are you ok with doing it just for vfio-pci?
 
-Hugepage recovery iterates over the present 1G non-leaf PTE, sees that its
-base GFN is private and the 2M range is not mixed, and calls into
-kvm_gmem_max_mapping_level() without a fault context, hitting the WARN.
-
-Return 4K as the maximum mapping level when a GFN is marked private in
-a non-fault path for a memslot without guest_memfd. Fault paths already
-disallow mapping private GFNs in non-guest_memfd memslots, and
-returning 4K prevents hugepage recovery on such GFNs.
-
-Fixes: a3522ac71f5e ("KVM: x86/mmu: Enforce guest_memfd's max order when recovering hugepages")
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- arch/x86/kvm/mmu/mmu.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index f89e9f8a6cc2f..af40fbe9001a7 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -3489,6 +3489,14 @@ int kvm_mmu_max_mapping_level(struct kvm *kvm, struct kvm_page_fault *fault,
- 	} else {
- 		max_level = PG_LEVEL_NUM;
- 		is_private = kvm_is_private_gfn(kvm, gfn);
-+
-+		/*
-+		 * is_private (set in VM attributes) should never have been used
-+		 * with a non-guest_memfd memslot. Return PG_LEVEL_4K to prevent
-+		 * hugepage recovery.
-+		 */
-+		if (is_private && !kvm_slot_has_gmem(slot))
-+			return PG_LEVEL_4K;
- 	}
- 
- 	max_level = min(max_level, max_huge_page_level);
-
----
-base-commit: d0f871bfb831705d9f55479f5b2b40f636ea7b16
-change-id: 20261120-gmem-fix-gmem-max-mapping-level-accbb71c3352
-
-Best regards,
---  
-Ackerley Tng <ackerleytng@google.com>
-
-
+Thanks,
+Sami
