@@ -1,61 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795166088;
-	b=Bsv4KLPFy6Ablr+XaKHIPMWIXru6tHKRksRR4O3giFX8VKZSy2fDAPuohbpPrNGoqcJQ
-	 PrS2DiAX8Q0cFOeKjdbre5MfBRtP6gZErs3N/AKyhYw8A1tubY9nKluy/xN0NgZPdpZ2r
-	 fn1BTcmhkvXIRowhPg93PladZCr4s5INC3Kzk4lbtlTv+ji/9U3o+SQXIli5SHt2LieZh
-	 kc/WKwbMcqyQGUS/Yor5GCzrByOIxhO277LBQ3d2/MZcxb8Eo/PeAveCf45xyxM1CU3St
-	 Chmnz/E7eHCkbQT8wi9+XJbrVW4AiH/rfgQtMjLpxIbKtcnsttPuYlApA6GaG+xlI/g==
+	t=1795166712;
+	b=W18eS6XAeqRl/butvtt/efkmLh1nX7Gq4wUVzwIFo8DqtQm/BRNpatuAhi7viXQE1/1y
+	 Sf7bgMlHKpfmVmcJ6ET31fbwh35PEghFzq2PxNSds+C49s7bujvIg/jiURm2OXQCzVQJO
+	 rntfiFmHalAXHyptC0gAg0CbqfRbhfJdlJlU/2E9izuK8FXNp5TYayB7/jr5uzRPFO1BM
+	 QhypUIU5vOaGWE4xBJCf0+r/RMEmhgKBafGuY+r41s0ATg4UTzZfRgCZALulH2N+5hDrn
+	 MiXGwp5dzSqQgkFuJtQVlh8jfyS5bIUCEmkMWf3b6s57zY5pu6FgCFXyMuRoWIGfFhA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795166088;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=eJEZijoyJwAJ1iYg0RqPHalSgS8AeupSa9kFOgar1fA=;
-	b=kYmfuORIYMMGeHaRqEyBtsZamViASf2WFqg1aFJe1ZNhbCda//GmmyMfiHrQUGKGKdGu
-	 Z0vDf59wH0ur04HngfOPNHG1tw4U7qrgRsne28nX9I4MRudR+mly8iMcWrKA+hmjB4UtG
-	 +3PGx7nxRIy94wrtcelzEjZHw8xRZvqjkvijDswJ0UNPhqdAmQNtF5tVczFOAytjJzTey
-	 Q6UbPixeD5BaOtfqPiZEVlnfPYbQVdk6kDVWl6pSWibzZEAX/wirgMr6mvM/J5l3MHHRJ
-	 1KdGhZpK6LwnAhxs017jZkgowlw8e9gsLyixPScbvxYNUkVPORLZj0PATnnj9JRMP9Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795166712;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=8SzIHclfGO7rIjAKlxWY7h5C1tqRdUP4RNaZqN79MuM=;
+	b=BKLFDbSczu3hCnb0LpEiQHCQ4qQINJ5ZWRX3nw5xbvQzNYsY7wcW0NiTwMWUad4UsPbQ
+	 Yh5Z9n7083tknndTPfzWLGzpKF5RMbbWxU516lCnUyuyKUJTqvHZVtY+Ol8j8TTY1ZO40
+	 Z/IBZGd5NBrK7ehroLs2jvRxQpDv8l+si0Exg3lh1iHeKoNmN1jGxqZMRg0D2kwZjXgU6
+	 yxc+vRu2MJzYgOK0mn/M1goaYPnTnAFVPBhevL+6lcyW3WWYuu++dqs8odRmDDnY3N3/+
+	 y/jmRSR+QtQj3eqk9GtxzKRhk1zpc2mK2ySy23k45+AKWl+M9DRv8vxj/ZJm5NXbxmg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=IP3LqZIQ;
-	arc=none smtp.remote-ip=95.215.58.131
-Received: from mta1.migadu.com (out-131.mta1.migadu.com [95.215.58.131])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B5ZDMOWE;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1176D606A326
-	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 09:14:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1176D606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDAC606A336
+	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 09:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=IP3LqZIQ
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=uRITAmfSiSUdZSBQ2vzurT5jha/a7G3BdG1Vu73+siU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795166085; v=1; x=1795770885;
- b=IP3LqZIQFet7yFL1AEDFOL8PjNnd7keZwe49KIrdK3nQvpmxtfYr3AdAJN98EDl5A6TJXaTE
- k8O7o1Wt5Yj4/tImSGhqVQayuzxfPQkvmPaY54x8E71Q5RvuSOUqHZaDqNxU2PS7+lDaMVRsNIq
- Yxia9NSyT4PjPASK6PTJhzPo=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id cf8e84fe6a0cfa9f;
-	Fri, 20 Nov 2026 09:14:45 +0000
-X-Mizu-Trace-ID: cf8e84fe6a0cfa9f
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 20 Nov 2026 10:14:13 +0100
-From: Andrew Jones <andrew.jones@linux.dev>
-To: Xiang W <wangxiang@iscas.ac.cn>
-Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	pbonzini@redhat.com, thuth@redhat.com
-Subject: Re: [kvm-unit-tests PATCH v2 4/8] riscv: Add ACPI support for ISA
- string discovery
-Message-ID: <awAMfrnZbDemHE8o@orel>
-References: <20261105082035.133680-1-wangxiang@iscas.ac.cn>
- <20261105082035.133680-5-wangxiang@iscas.ac.cn>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B5ZDMOWE
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674F51F000EE
+	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 09:25:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795166712;
+	bh=8SzIHclfGO7rIjAKlxWY7h5C1tqRdUP4RNaZqN79MuM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=B5ZDMOWEHdnhh2/umOUmDyebT2Q50s1hgR4xDpum/5dqqoMqtjXVEdU8aCG9sLmQA
+	 7A6AoINlMkFawC02saPlGU/UG/hx+Ve8Q49Ae/eZlx2izAu6qkxYbT8PBExCep30Qc
+	 cIKFHKeYrow0KilYBJXAu05Oo1CIxqWoGzdcAB4xOFdSnA5ipUK+6pmAZZGQKczT57
+	 5U5FYX0g1tEu7APgsdhwFuInYTVpzswscUD4Z8Qs45W2nDr1nbveiYtNzYB4TrppYV
+	 8pctZ+ScqMMKXovSWloMW7pcezlqSREFM6P5p3mvobzMNRf9HWvMu2KMDKw0zP2X5m
+	 a5xa8vTyeJJhw==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5c1465bbbdaso476762e87.3
+        for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 01:25:12 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErEktccmy+v/PJv59TTo7kJDhvqOnQHfWEtXPqhhR0GBy7DViXQ+/3E+jY6MUtX1mQVsEo0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/ArLzdI4iOw8hH5hxsG/vMHOCkHMRXzpWgXKqvhb+P2PPTkvsl
+	Uv1Ntqx7i/1r98HTqDhazXGaiN6fciKD9LvCuKw1AnOSV5QZJFd5V7jd3GDquJ+dAmImIXYVzaR
+	oBfrPO5WV1UWqKSVjUP6AVZYoXjWJ4hU=
+X-Received: by 2002:a05:6512:3e26:b0:5bf:dfb9:33db with SMTP id
+ 2adb3069b0e04-5c1bc894b28mr761513e87.38.1795166710840; Fri, 20 Nov 2026
+ 01:25:10 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -65,105 +59,59 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105082035.133680-5-wangxiang@iscas.ac.cn>
+References: <20261015142552.4128028-1-ryan.roberts@arm.com>
+In-Reply-To: <20261015142552.4128028-1-ryan.roberts@arm.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Fri, 20 Nov 2026 10:24:58 +0100
+X-Gmail-Original-Message-ID: <CAD++jLnXQHkYvCO4raM8enm2NNwU5WDNE4cFhvcVUnUZVHMPLA@mail.gmail.com>
+X-Gm-Features: Aa3M54qJyeIPO-XfHd9glHLeVqDiREjcacNXijYh3kod1cJY-VZmSyNAF3F7zP0
+Message-ID: <CAD++jLnXQHkYvCO4raM8enm2NNwU5WDNE4cFhvcVUnUZVHMPLA@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 00/15] Arm Core Local Accelerator Driver
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@nvidia.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jean-Philippe Brucker <jpb@kernel.org>, Oded Gabbay <ogabbay@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org, devicetree@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 05, 2026 at 04:20:31PM +0800, Xiang W wrote:
-...
-> +static int acpi_rhct_for_each_hart(void (*func)(struct acpi_table_rhct *,
-> +						 struct acpi_rhct_node_hart_info *,
-> +						 void *), void *data)
+Hi Ryan,
 
-Check the alignment of these parameters. There's an extra space.
+please keep me on CC for future series for an SoC perspective
+on this.
 
-> +{
-> +	u32 offset;
-> +	struct acpi_table_rhct *rhct;
-> +	struct acpi_rhct_node *node;
-> +	struct acpi_rhct_node_hart_info *hart_info;
-> +
-> +	rhct = find_acpi_table_addr(RHCT_SIGNATURE);
-> +	if (rhct == NULL)
-> +		return -1;
-> +
-> +	offset = rhct->node_offset;
-> +	for (int i = 0; i < rhct->node_count; i++) {
-> +		if (offset >= rhct->length)
-> +			return -1;
-> +
-> +		node = (void *)rhct + offset;
-> +		if (node->length < sizeof(*node))
-> +			return -1;
-> +
-> +		if (node->type == ACPI_RHCT_NODE_TYPE_HART_INFO) {
-> +			hart_info = (void *)node;
-> +			func(rhct, hart_info, data);
-> +		}
-> +
-> +		offset += node->length;
-> +	}
-> +
-> +	return 0;
->  }
-> +#endif
->  
->  void isa_init(struct thread_info *ti)
->  {
->  	struct isa_info info = {
-> -		.hartid = ti->hartid,
->  		.func = isa_bit,
->  		.data = ti,
->  	};
->  	int ret;
->  
->  	if (dt_available()) {
-> +		info.id = ti->hartid;
->  		ret = dt_for_each_cpu_node(isa_parse_fdt, &info);
->  		assert(ret == 0);
->  	} else {
-> -		isa_init_acpi();
-> +#ifdef CONFIG_EFI
-> +		info.id = ti->uid;
-> +		ret = acpi_rhct_for_each_hart(isa_parse_acpi, &info);
-> +		assert(ret == 0);
+On Thu, Oct 15, 2026 at 4:26=E2=80=AFPM Ryan Roberts <ryan.roberts@arm.com>=
+ wrote:
 
-assert_msg(ret == 0, "ACPI: Failed to parse RHCT");
+> * The location of the driver: although most accelerators will likely be c=
+ompute
+>   ones, CLA is a generic MMIO interface that could handle any kind of
+>   accelerator. It's currently implemented as a misc driver. accel is anot=
+her
+>   potential option, but given the current SVA approach, we would not use =
+any of
+>   the services (memory-management or otherwise) that accel provides.
 
-> +#else
-> +		assert_msg(false, "ACPI not available");
-> +#endif
->  	}
->  }
->  
->  bool cpu_has_extension_name(int cpu, const char *ext)
->  {
->  	struct isa_info info = {
-> -		.hartid = cpus[cpu].hartid,
->  		.func = isa_name,
->  		.data = &(struct isa_check){ .ext = ext, },
->  	};
-> @@ -116,10 +176,17 @@ bool cpu_has_extension_name(int cpu, const char *ext)
->  	int ret;
->  
->  	if (dt_available()) {
-> +		info.id = cpus[cpu].hartid;
->  		ret = dt_for_each_cpu_node(isa_parse_fdt, &info);
->  		assert(ret == 0);
->  	} else {
-> +#ifdef CONFIG_EFI
-> +		info.id = cpus[cpu].uid;
-> +		ret = acpi_rhct_for_each_hart(isa_parse_acpi, &info);
-> +		assert(ret == 0);
+Given the extremely ARM64-specific nature of the accelerator it has a
+lot to do with arch/arm64 but then again it is a platform device + driver
+associated with the cores and we don't want platform device drivers
+under arch/*, so it kind of falls between the chairs.
 
-assert_msg(ret == 0, "ACPI: Failed to parse RHCT");
+My spontaneous placement would be to put this in drivers/soc/arm/*
+what do you think about this option?
 
-> +#else
->  		assert_msg(false, "ACPI not available");
-> +#endif
->  	}
->  
->  	return check->found;
-> -- 
-> 2.47.3
-> 
+The argument would be that this is arm-specific, we do not expect
+the code to be reused by other archs, and it is used on some specific
+ARM SoCs, so it goes under drivers/soc/arm.
+
+If a very similar feature arrives on other archs which use very similar
+code we may have to rethink this but for now I believe this is the best
+option.
+
+Yours,
+Linus Walleij
