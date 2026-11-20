@@ -1,74 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.135
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795185276;
-	b=SQb2TXV/K7XGdVteeYov8WC7fWSepCrE1LBa/ylHXVtsy1erdH+GbFpPecqeZo0TFSa1
-	 3qGw11mBatRycJFAXDXpuAUxBVNDW2YW1ZIUUl5VPO5bw5tA12LvfHZnPCTM8DPGgYIYA
-	 mVSs1gn8j4FA+bVYYxsaghXfzrWWD6e7Q4rX8zgouwVIy/KUhQYIq9GLVz/1XBnyxyOGA
-	 tYKXY+UibzdfgyZK2KyZywr2doPkCSbpxxSw3oQypoJ6OUiK6OdRiU3GAHUCXuMumeTXX
-	 V6/5KGCFkV5BePEjOMveb1LV5jWLRazxiQk9q2CJXVn81mERQGGOJjQXZgN5TPL74Wg==
+	t=1795185540;
+	b=aD0buPN/CZib6mFH/Vu6h3ZqdqBcpa+DKyzf2uWm/m01aSBWQeH3yRCmWCBLqfX9+f7C
+	 VGP9VR4AAiqsyGqoz1SzGF5EwWdoxecumcMYYM46A3NYpu292izzE8aGTvtzfafieeurR
+	 2MxzAjSvDCZGh4QOd80YeK7BzLSzDF35pC1uDNqMO9dfVFgr8dvjqvsl9qUT84RJWAbx+
+	 /OfLxbQh/uCg1PUn1mxUSbDUnr/pSgyB/H4CeDSib2hP2kLX2gWmSmhoF6SOhcPxhfRsB
+	 ufv6D6CeA57a2BYDfnkol9Gd8rpg5d4uq3QMPH3GgBv+gm6Ze/kUnpjBKqRu8abmYfg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795185276;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=TexTSYlANwi+Z3VNOr7rkhMmBTNnuXd95ijh1g8jBbs=;
-	b=Xthf8PQ5+/oMJhfP6VcMe5my5E83NjbkrgTCQC6F5vJnu8Lcf6/lAY45ycLapDXHGqXp
-	 ow/jURWmZmfMMxNOXOGFkgqECIfZQbxSrPKNlw41HBFfnsD8LFMKOwfxO6LrPjiIPU71Q
-	 c5OG0qGX15ofvUqN2Avbtj6I07TJz8gfn4LFFnPmrdULYP4EVWBN9LmI8NLdwnmLgrJlU
-	 nm+EIzgL/vJT5lBZI7A/tOEMEzmd8hSVRynWALyQ+L5Do2F+UOLV9sr+Mc3KnHou2V64O
-	 NERjtOzreGTC+9rZYXcm3pYgT3FbVV4p3lqdkp9ATYg6bGKuuvjgBFEcRBFjQCZfsqQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795185540;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=RD/JwSVMdYCkTqN36PUhFUFbXpufIIjTnS0XSwKWXaU=;
+	b=NF3bK6ddFthFYDeCBtaxcozXHREKyhPxqrSWn/ec1YKwTVxcP1eufUz90zkoY1Cv9Fvm
+	 f1JvejBJM/2VGS17ucEQi+UrzwJ/diVa4SSd4zvPH1CHJVLET7GfUxT7eov0O69v+rVF4
+	 xxx9H7AIGZ1IqLVO9/eTjbUNxty/LMP5o2lAO2lTR64k/dOsqLDvYrN+4sWyW69EL1k7U
+	 QiVc6+SR0gr8pmmOB1vlkIRJp7jD6ZQnXSli21btRI+IiNBTf3Cw1yXk2ZC07dXY2b6fL
+	 iTzUNj3AkVgoWnfmAXsw5eRHXxlzfLNbLrDlniAM9DC8frUw4AcA44gC/c7jyS8JocA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b="JtAsT/rK";
-	arc=none smtp.remote-ip=209.85.216.69
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kjd00MDm;
+	arc=none smtp.remote-ip=91.218.175.135
+Received: from mta0.migadu.com (out-135.mta0.migadu.com [91.218.175.135])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A578606A325
-	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 14:34:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2A578606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9C0606A325
+	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 14:38:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A9C0606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=JtAsT/rK
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3aed37745bcso1782640a91.1
-        for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 06:34:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795185275; x=1795790075; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TexTSYlANwi+Z3VNOr7rkhMmBTNnuXd95ijh1g8jBbs=;
-        b=JtAsT/rK6zOSNMWwW1o5I7X/fLpjy3EbAQi2mnyA1YHYQk6tJOFzrZLhQi+hHjfZn1
-         b20jxPt+RyF5UmK6dTedjTBlkJewRCsInA55bXqsiqTCf0RmTATJfFNToN40ALRUD514
-         P642W8VAkF+PieTnXEQALcR85tLmzCckqWY3w6e1JKI1o7RAjCZcY5a3XRW+Z7dWZSDn
-         3zlxY9gr0PTrDRtWkyl7sXcnGW8v7BJmSlITWMDQJMmweY2xsWnqSulPyThL8hbkmX1V
-         f3tRAlEuubZkfXKEKm5w3llWAncPzVQ5RkWS7hYznLM+gIbGyoW0m3qvye/rAxPxP68Q
-         rC4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795185275; x=1795790075;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=TexTSYlANwi+Z3VNOr7rkhMmBTNnuXd95ijh1g8jBbs=;
-        b=Tx4mtnI5KoMtHOCtcm6zz1e4Y/qxwqOG8PgrVFZMqqbdCdGCJUtz+a/oeq3A4IiFOM
-         Qg9cK45XbHL+5urksDgdDp3ibkisdg06zRqUiQjA5n70tmAC8tIHi+w4X1k0WiBzEAoT
-         ufX8EUDhnA1n8fzSIGRFIzdQ/efaU2ihNfDRnX1Gd3ISmBprBuDQjG1AJVJlgRRvfCei
-         Y/+raSz23QuOT37KYx6Chxp6xsnA+9Br0iwjk3pPnKaJjKGUK/TtT8wEN6wQVo2oLiQT
-         Kjq3h72uRfuuanqmmSanO33O6VJWyGBMuGRYFRjrx/VZZDuHPeRncl145P4Eo2boMr2S
-         SA7g==
-X-Forwarded-Encrypted: i=1; AL+hErGDadhcSTmgO2Sxdg/DJfVAYcvdyzESTVg8lfBzSkMG/Ago4FR8G5CgvRBg9JjTBmId3aU=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/vlQQOebKn5JmaysFCOuD89kRoy65owed/4eYIIXevP/nAZ9CS
-	rhftaEqUI+A+GyrwfUVX5otkWzkFVZFWvQCV6YSUhhXmjv4iSi8oei/BjqmzX6d3TcBGxCJE8+b
-	wjajIWA==
-X-Received: from pgjk27-n2.prod.google.com ([2002:a05:6a02:81db:20b0:cdd:b3ae:c565])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4d87:b0:3b4:68e:1b77
- with SMTP id 98e67ed59e1d1-3b40a5dda03mr3693597a91.20.1795185275224; Fri, 20
- Nov 2026 06:34:35 -0800 (PST)
-Date: Fri, 20 Nov 2026 06:34:34 -0800
-In-Reply-To: <20261120-provokant-zyklisch-schutt-55d8eddf2ce4@brauner>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kjd00MDm
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=bb8afq8xtL/vMdBAzmEQguclD73wS9FLs8xAh3tR7mo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795185537; v=1; x=1795790337;
+ b=kjd00MDmBkPyoJr3LkxkLjrAiwy4y/zyj5li4Ot/YPTsFUKIdmwf4jrFnjdkTvJSM7mRpjVA
+ KEmHVja0TizmwDNWkyQlRdkUV27H6/kcXZlfCyH/eA7IO5PCD4S+ppABBUZDICVbLCt3PPq3T6V
+ ZfahDXjARkJrlbDUHJnlkkQc=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 5380d9ba85e98829;
+	Fri, 20 Nov 2026 14:38:57 +0000
+X-Mizu-Trace-ID: 5380d9ba85e98829
+X-Migadu-Flow: FLOW_OUT
+From: Andrew Jones <andrew.jones@linux.dev>
+To: kvm@vger.kernel.org
+Cc: pbonzini@redhat.com,
+	thuth@redhat.com
+Subject: [kvm-unit-tests PATCH] kbuild: Regenerate asm-offsets when headers change
+Date: Fri, 20 Nov 2026 15:38:26 +0100
+Message-ID: <20261120143826.1428887-1-andrew.jones@linux.dev>
+X-Mailer: git-send-email 2.56.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,68 +62,33 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
- <20261106-gmem-alternative-providers-v3-3-8484dde66a7e@google.com> <20261120-provokant-zyklisch-schutt-55d8eddf2ce4@brauner>
-Message-ID: <awBaeiUw0i-uEQzM@seanjc-mac.roam.internal>
-Subject: Re: [PATCH RFC v3 03/88] mm: shmem: Implement guest_memfd provider
- operations for tmpfs
-From: Sean Christopherson <seanjc@google.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: ackerleytng@google.com, Alexey Kardashevskiy <aik@amd.com>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	David Woodhouse <dwmw2@infradead.org>, Fred Griffoul <fgriffo@amazon.co.uk>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jianxiong Gao <jxgao@google.com>, 
-	John Starks <John.Starks@microsoft.com>, Michael Roth <michael.roth@amd.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Tarun Sahu <tarunsahu@google.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
-	Fuad Tabba <fuad.tabba@linux.dev>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 20, 2026, Christian Brauner wrote:
-> On Fri, Nov 06, 2026 at 04:36:37PM -0800, Ackerley Tng via B4 Relay wrote:
-> > I put guest_memfd_provider_operations as a pointer in struct
-> > file_operations. Being in file_operations generalizes well to other kinds
-> > of providers, like devices, which don't have their own super_operations.
-> 
-> > @@ -1960,6 +1961,9 @@ struct file_operations {
-> >  	int (*uring_cmd_iopoll)(struct io_uring_cmd *, struct io_comp_batch *,
-> >  				unsigned int poll_flags);
-> >  	int (*mmap_prepare)(struct vm_area_desc *);
-> > +#ifdef CONFIG_KVM_GUEST_MEMFD
-> > +	const struct guest_memfd_provider_operations *gmem_provider_ops;
-> > +#endif
-> >  } __randomize_layout;
-> 
-> Sorry, no! struct file_operations is not the place to hang KVM specific
-> callbacks off of. We didn't let KHO/LUO hang an ops table off of struct
-> file either and nobody else is getting one in file_operations.
-> 
-> LUO registers handlers that recognize their files by f_op instead,
-> memfd_luo just uses shmem_file(). And KVM already does the same for
-> VFIO: kvm_vfio_file_is_valid() -> vfio_file_is_valid(). Do the same for
-> providers and leave struct file_operations alone.
+The asm-offsets rule template expands $(CC) $(CFLAGS) at eval time,
+before the top-level Makefile adds $(autodepend-flags), so no
+dependency file is generated and header changes leave stale offsets.
+Escape them so they're expanded when the recipe runs.
 
-Eww.  I really, really want to avoid having to update KVM just to recognize a
-new provider, and I shudder to think of the potential module dependency hell we
-could end up in.
+Fixes: b9423a4fc5a9 ("kbuild: Allow multiple asm-offsets file to be generated")
+Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
+---
+ scripts/asm-offsets.mak | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-That said, I 100% agree that having something explicitly KVM specific in
-file_operations is a non-starter.  Would you be open to a more generic interface
-for connecting providers and consumers, e.g. something like this?
+diff --git a/scripts/asm-offsets.mak b/scripts/asm-offsets.mak
+index a5fdbf5d6d6d..1e38897d081b 100644
+--- a/scripts/asm-offsets.mak
++++ b/scripts/asm-offsets.mak
+@@ -35,7 +35,7 @@ endef
+ 
+ define gen_asm_offsets_rules
+ $(1).s: $(1).c
+-	$(CC) $(CFLAGS) -fverbose-asm -S -o $$@ $$<
++	$$(CC) $$(CFLAGS) -fverbose-asm -S -o $$@ $$<
+ 
+ $(1).h: $(1).s
+ 	$$(call make_asm_offsets,$(1))
+-- 
+2.56.0
 
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 99caef43ff3c..96e4c2547d5e 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -1934,6 +1934,7 @@ struct file_operations {
- 	long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);
- 	long (*compat_ioctl) (struct file *, unsigned int, unsigned long);
- 	int (*mmap) (struct file *, struct vm_area_struct *);
-+	int (*connect) (struct file *, struct memory_consumer *);
- 	int (*open) (struct inode *, struct file *);
- 	int (*flush) (struct file *, fl_owner_t id);
- 	int (*release) (struct inode *, struct file *);
