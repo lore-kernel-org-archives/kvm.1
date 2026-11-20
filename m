@@ -1,74 +1,153 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795201252;
-	b=pWZ6r2S8Exc1o+I+RyLYPx1hplBSvUVLZGtAlYfNgLnvaKN65kPLQAVFWUtptkqo+ff5
-	 dttihTRCd0QAdAu/1EmiEgWI3RVmmIOsHEWPDjJvuXvjhBtw+y/PVDvNwZ+qZJP/+eLx1
-	 yjHRMOjaM/ViUhFU04N8Y5godRwCCQnl5YnmQfvo4rBjm4wj1R3/KHrCJdMKqJcH3dltH
-	 j4G7SNzSb8VPw1ukxMvQop4DeK3zTlOOe8Vv3qtH6up5HjeB75HxsZx/33vNpsHyMlSwJ
-	 mUrSZfTHYn8XtYHqqeDiG2ez8W6Fwa83SK6niOSr7jjwhCig7QSCw+PNVXB6T20BsSQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795201252;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Originating-IP:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:
-	 X-Proofpoint-Virus-Version;
-	bh=4lpNV2jmhoKFdDPX/CDwLD6+HSpFiqIgbtHFCV1Iw9s=;
-	b=vMGZJHpSXW8kVrAYntrRvaapArDAkWz2hUzjqlfgzFqmmiAD4xb0h4CH261FllR6LeiG
-	 sbTa6uQhPsImpztrZgVrd8otGEkB5FwYGcxi0Fy0jGeurYPcvzVw720huM02tVTaI+15D
-	 vOpGQzXBzAAABxnQlHJlOcQIUK44F4P66BjziHa001ud2SztB/DO52iPkPDStImhCif+S
-	 adBSxJHMIPXSxTcFtQZNWyK2qOrtk87nZl5CM6c6tNFmfFW2wQLSVbJ0/N8nj5ovHazds
-	 5yrW8miJziT+k0ztPuw096mb/aYjrIHxMlsmfKmRxrZw4FyJpTNinmZILyHWpKap0DQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=UsjNcrb9;
-	arc=none smtp.remote-ip=67.231.145.42
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.10.94
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795205311;
+	b=esuzKKd3wUttE+ye4kt5VKr+KVv/GDbXDQSNow2q2LaGoZsyx7RdFQ8SSuxcD+LZDAny
+	 Sr6WNhWMjQCrYOUJQrSlLA21fgCk2JCEtHq+dcETpDy74/V2J9Gq2UmY4vdiMuMs/MHzP
+	 yuTOc5fjNnB8bj9f8dXPL/ph49gWmx4OEavdG34xZuj1Tkz9SfEuMl41hQy69+9c8Gf6l
+	 /M5fS19dzQeX9cbEndEJQihFZxvU64ZiU1wcaVlHAsJFjEWepY3Xs+QbYI4dfh3cqSoOQ
+	 OLvnnV1Kd77Mgk5q0TnhkUPhMMw4jb+LSxBrF37VfQ+Odoqw4D05ls+qL3TaDCyF6dw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795205311;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:
+	 x-ms-exchange-slblob-mailprops:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:
+	 X-MS-Exchange-CrossTenant-rms-persistedconsumerorg:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=c3L+Jv/9IG4SANB3cN+RAGebcUQA1e5kXkGdadSXBaM=;
+	b=LbuOScwO3zagXo0M81khLYNBGad2HAqprBa+tVTvdTU737i3LwIEKK0ma4Kf/VKo9I5d
+	 5CfkQhM1DhJFfNWXWezTsyjK0AD7eXKe5vl5Httr+rXvQ7b402wy9PsgfQBYmHIHSYVRx
+	 FtsmA62aAR+5Kedeh80aYKIIRxAVT99OTRZm7mlJucelEmdQL31trWzbdnF78lc40JIJt
+	 BYWzZ/mzSlx6MogXS8npI4psH8269ktBvurc7otpl6i/HJGNYHggEk1b1hnq3ztamvBW/
+	 JM3LqUKXYWq56QUmWuLc2hC66DIt1FGGhoEjKyEbf/vfGJireCHfxO8l+0A5maFzRWw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=outlook.com;
+	spf=pass smtp.mailfrom=outlook.com;
+	dkim=pass header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=uIprtqrd;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.10.94
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azolkn19010094.outbound.protection.outlook.com [52.103.10.94])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3A860A3809
-	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 19:00:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3B3A860A3809
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028B9606A6C4;
+	Fri, 20 Nov 2026 20:08:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 028B9606A6C4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=UsjNcrb9
-Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AKGrwLe650468;
-	Fri, 20 Nov 2026 11:00:44 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps82601-s2048-2026-q3; bh=4lpNV2jmhoK
-	FdDPX/CDwLD6+HSpFiqIgbtHFCV1Iw9s=; b=UsjNcrb9daup5TMZLVT3bUxcrBv
-	H5Y52ZXvrpPnjdagi77cZygAkp3D+scjxj69oV53Rm17MxeA11+APc+VezwEHURb
-	WjfBlj2GaVlA571w3/+jc9it1nus9IahzTcW9UPXJKoHuABz5GyYlTZBtfbdLse+
-	NcZzTHx9d0+93gBSDwp56XOOw2dEInBT7/UYil0eTERWL0XFsbNsXGg3Y0LtC+R1
-	uxfgVg3abQKpNeBPjSuGn7C0S19Q4uGW8dIwPZGgerQFkEWGQnydP9mgr4iUj3To
-	EKsE8ykrNvnZyPO0NObmvD1JlvPOvAHFspq4ifjXlByKmi412+3Z+8P4inw==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4j2t4ks2au-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 20 Nov 2026 11:00:44 -0800 (PST)
-Received: from localhost (2620:10d:c0a8:1b::30) by mail.thefacebook.com
- (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Fri, 20 Nov
- 2026 19:00:42 +0000
-Date: Fri, 20 Nov 2026 11:00:41 -0800
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-To: <sashiko-reviews@lists.linux.dev>
-CC: <virtualization@lists.linux.dev>, <kvm@vger.kernel.org>,
-        "Michael S.
- Tsirkin" <mst@redhat.com>,
-        Eugenio Perez <eperezma@redhat.com>
-Subject: Re: [PATCH net-next v7 4/7] vsock: add a netlink command to assign
- the g2h device to a netns
-Message-ID: <awCY2UrEthUvfihw@devvm29614.prn0.facebook.com>
-References: <20261117-vsock-guest-ns-v7-0-7e522ea9dd9b@meta.com>
- <20261117-vsock-guest-ns-v7-4-7e522ea9dd9b@meta.com>
- <sashiko-outbox-222310@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=uIprtqrd
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=w72UfFiCX5qSjaTvU5a1Sgbb5p1CSjDj7cmCg6dPSZtTO+FZcaQk4n2HP+dVXQtqig3hBfMrcxyAYY0RiNYeAR+4tU3VTpRxGN6ABrGxzp0hi7SwhKmV1AwEdpTVeAnfmysShedaj6qKPIKhxI2XkDNJU/wCRoYU3yunDiq48s+weW9LM1FVQgWlQXGTVifAXygB9E4xl7XgfW9sqNSdVucqRnLNKOZfXO1o12JHS5X2NtuEcrcne07R6xfXZVK3OD68BKf9TKMqRAM5B5jzyb2gC6sttKmzwgLWu4xMhwrnN/UaFw6Z9z6x9oIiX7WHzOcyORvaePOtQ0aqDctv1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c3L+Jv/9IG4SANB3cN+RAGebcUQA1e5kXkGdadSXBaM=;
+ b=MxuBE0QZke7mgiXrCu6d1xh/AHtvn7Y0k6MtZbb9C3FyHUfqq7BCnvSCLD7k/iaJIiGxOlrXLf/7X2q3snXZBCOD9A4aiVyzo1TzGYct/+JE3rk1D5cVX9HLKhhRlL1qW7w8Ehic4d2/Vw4I6UTPqa1wSQsLDYu0MB0YYkd05r72FGvSLWL3y/EV2E7nASoGTpcklUyRR9wPIBhvjbDQ3YZv+H02TuHP+gKBF3jVhs6kSlO4Dvs4wWYSMYz6CRZFLhUisJrC7gUuUZO1xwQzbwGt37m/618evqodj+qvE9Gs4hn4ENI9KnUY7A65SPssUErUvzCPbE7O8Xp+Ihv+UA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=c3L+Jv/9IG4SANB3cN+RAGebcUQA1e5kXkGdadSXBaM=;
+ b=uIprtqrd1rcnYujdX4unMi/kGBwx+CJokavIa/G2GxyGyqzbQUmDPkXL/Xa0Q7PyHjJazyjYev4ky92iOw+H3dJvsgzL3ZmmJvaNsgi2x943ExI8i/NYD2G9ACbP6ZDicYgqZF0K/i6hbrTqxyGKW44U+Fyr9PTI2knNG7OBe74qs+s2JT6+r3/EfDuMzX62tP7j6E4h38P8joblSy0woNB8Gnu1PQVasHVY8o3RidgJa3MVm9o6PsySf+l/MU5GWOXgACPi5nYKdF/9Ql5CxFEzRr4/i+GYMHu2oDH7pY44U8Q4ihNRBTNW+pUuEZNu+TidhUjdm0PIm0J5C6HO3A==
+Received: from MN2PR02MB6863.namprd02.prod.outlook.com (2603:10b6:208:1d7::20)
+ by CO1PR02MB8635.namprd02.prod.outlook.com (2603:10b6:303:15e::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.10; Fri, 20 Nov
+ 2026 20:08:29 +0000
+Received: from MN2PR02MB6863.namprd02.prod.outlook.com
+ ([fe80::da67:fd0f:d96d:ac53]) by MN2PR02MB6863.namprd02.prod.outlook.com
+ ([fe80::da67:fd0f:d96d:ac53%4]) with mapi id 15.21.0639.010; Fri, 20 Nov 2026
+ 20:08:29 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: =?iso-8859-1?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Haiyang Zhang
+	<haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
+	<decui@microsoft.com>, "Michael S. Tsirkin" <mst@redhat.com>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Subject: RE: [PATCH v2 05/10] uio: Allow untainted use of driver_override
+Thread-Topic: [PATCH v2 05/10] uio: Allow untainted use of driver_override
+Thread-Index: AQMfJRX+ztp9Zvox4aPtllK0egdUugIWEi9PtKM2iFA=
+Date: Fri, 20 Nov 2026 20:08:28 +0000
+Message-ID:
+ <MN2PR02MB6863416350047853E8C13756D4782@MN2PR02MB6863.namprd02.prod.outlook.com>
+References: <cover.1795171088.git.u.kleine-koenig@baylibre.com>
+ <190f97fdc22c161c4721283a2beb20bb477f9e56.1795171088.git.u.kleine-koenig@baylibre.com>
+In-Reply-To:
+ <190f97fdc22c161c4721283a2beb20bb477f9e56.1795171088.git.u.kleine-koenig@baylibre.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN2PR02MB6863:EE_|CO1PR02MB8635:EE_
+x-ms-office365-filtering-correlation-id: d5796a99-1f8c-4823-4ec9-08df47420b2b
+x-ms-exchange-slblob-mailprops:
+ 02NmSoc12Dcj/mAxI/NGvzdUkjNASRo/jjyMcAHWl72QJU+4aM73nXBhiRKihK/yFBUsB4HUkEf8LXUkf9ZkFAUvK82MnoTDTQH4GDAciYAifFaygP+1dS8Omr8GkLf8q5T5CkoklX1PxE7JEc9abcIuEsqrhgqLTgEY8W3bXqFGuSerTDY5ZTkf/svwkL9R8k5nkvtU4uIiWLEejTxppV/J/PmcJtiPE0reAu4buhlhTcXQ0WJTpdUp36guNwuBFLZvRCMDOxeotmCWctC8/pJZXeJypOkfWgNu0VoNdvkK+bl9jhiQ+bvoJYkYW/vcIJM2150+BHbRCmEIy2zLS2A7pEK3Y+mpwOtX//XItjhwWLSIoljoC5K472nNlPKGXP6S71TxKa3I135AAj+8oQTqNmfOIyX5VHFBKUvIOBRDi3GlnxjG/a4M3Z9RVONhGWX0ox7dQu+8KiNQ96eB4WhdFTdQ6N+HxaAFVkkVlk7YcomvLWu8AyNY3wFTrCk93WKFYlvhbCIKC+eWC5FLKKtV85/KSYp7mFetvvoOU8CmG7bfpxE6zHa5XWNarB8i6SjVKqoa7grsTgLRMg4K5hnmpyLTP2y1vHCeK4wtKV7QaekpsWaSBwWAXT6qUAv1hcRUphx4gkYd76rZAUDFLD1Vo64LM+ewRNkcEVwdAy5nTYyfeKCOi9tD4EdRrGyQRLQdWC7sqHmWjZLaD9rR95vZ/7orce3jE6MnOT7Q4LFspJ6VjyBt3IcZVAhnCN9n
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|55001999006|19110799012|8060799015|8062599012|24021099003|25010399006|51005399006|13091999003|31061999003|15080799012|37011999003|40105399003|102099032|3412199025|440099028;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?t0bRVgAfE2upcEbQVL/ceJKnhyZXV6RFP+vozWwQkS344LosQxpYX+fh6g?=
+ =?iso-8859-1?Q?irIcVSV0gumOFnrFLFksA1cRTxU9jK5eAkP7dfhGp1Z3RLb2KYxAjTO/B6?=
+ =?iso-8859-1?Q?9ValOvQci2sKE7XHaa4dGBzVuvUW80ybM83FhhJP224HeuR8ajWbUcd/bh?=
+ =?iso-8859-1?Q?gpCB1cRwhI4h0EdA8aOtgfl63YQfBKLtFnWVCIR6CiUbDLB1KsSYZe9J3i?=
+ =?iso-8859-1?Q?rM6IzQK7ZrCjlZcLwrtcFdVEI10gzS1ggnFfO69rtxGH6JGLCFoMJ1Ya4d?=
+ =?iso-8859-1?Q?Wgt4ar3oOpEClA9HeOCsMus4A0pnAXbpXXdOTiOYQb4rw3PtbYrk4GHd53?=
+ =?iso-8859-1?Q?EWBfpajEVpDEsZKUcjOhT4EUyEHByxmaAydMNyTl6RSLixJTt4/NxgkbqU?=
+ =?iso-8859-1?Q?0yaDzk9D+pz/yU+2W2boe6g1r36yh/zBkSqXbjSoT15xHUf0xbjWjW3gP0?=
+ =?iso-8859-1?Q?CX49A/Vh2cU7yHzkcDD27qFjCvRcRAylg7np9hE9dCfCwyTrFmJvUFFlgf?=
+ =?iso-8859-1?Q?Yxr5mBowXoMI91BBdbFLRSL0dc/a0muP+HGqAbRA330ODhWr8cHeql8kGs?=
+ =?iso-8859-1?Q?LVrWUOYEDWAkGyFpJR5EqdF3z2x8CIZKdO47fUyT+UsxlOmMkn8IT4oVAb?=
+ =?iso-8859-1?Q?RScbB7E/WghZ64AApgFT8x51pX/IgDI7I49z9cOImXkt00pDnQH4rb3RWP?=
+ =?iso-8859-1?Q?j4jaVZjmTpWgVZTvqFFCnE08/v7sF3ALeMTNjPf6r5hgIvfkJs088GEb8r?=
+ =?iso-8859-1?Q?Kk7KAi5XRc8XDo4nTpecyopXlhys7bkPlsVULOtojHZnZCEIhvdE2hV7x/?=
+ =?iso-8859-1?Q?VEIkSPMohJOsQPgDiK1GXNnPoOJ9OXqUyTgHkhbEwry4CF+DnNL2Csxfi4?=
+ =?iso-8859-1?Q?9qrkolHooVRci0y5T5+DQPWXDbMs8ch5m+Xx24DOPUg446YRwAmZ12Qgn1?=
+ =?iso-8859-1?Q?ZHeLsj0mzs8NKGExajzrTWmadldYuriAJVhkFQRn83nUnCBDX4+GI3Rjb3?=
+ =?iso-8859-1?Q?JxqCeFiBUEajmq9XLE5r6L8YVVilSZ2y2DBEIMD5vP7J0t1tjyHr8DPe2/?=
+ =?iso-8859-1?Q?7WmBL9SNWQhxIjdlXlj9NWc=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?5UqVlBsFVrYBQmx96iCDSc0QWIm03z6/J/TwRuSDZUecuuVTchc0D/oeIg?=
+ =?iso-8859-1?Q?vzUz9JO3WkojwPIbPk4V26tIogiDZfGYabPzs8dEK1VNZfauF/9eNCS1Jm?=
+ =?iso-8859-1?Q?9Hd3+Fzwvaw4dJz2piW7dzg5RbBIgRpO/gMl7tyMHSFZydyWYNZm7uF2lW?=
+ =?iso-8859-1?Q?woLdiOd9HxCkTcO7s6tjMOwSh1u2GwBvxFUhnzvKu/8vQLl0txrm50fZVR?=
+ =?iso-8859-1?Q?FRh8SWWpAIwpt7B6n3iG5gNtLZEpkCGRHjyIVoRgrroXpjc/8LNVTOCXKY?=
+ =?iso-8859-1?Q?IwEK1pBKBsbkd1m2AC9kloIkItUrDJJ7tCXypVFqFB301PjWjvqDcqzsfs?=
+ =?iso-8859-1?Q?MdNowKu29pEV/90+Vd8EWRQ8NXV/SmHmKFtfm25J+TEAGtFFtAPvJ7/fk7?=
+ =?iso-8859-1?Q?4eEXPXSZnwq+0H45Q+bIGQGQNsSv5S62Gl1vJOLCeXvZrAEmCmHoAHvNNI?=
+ =?iso-8859-1?Q?MDWVJSInGD9lspGxxAwg1c5R0A0h1LUfCyiyrKXuPsViOk8jsACjzi7jfF?=
+ =?iso-8859-1?Q?3/vrG0B5dz93iA6zgP55eqvjHXZWAO51UmVVDxFaCVIV9QVT/gJ1LtvYPF?=
+ =?iso-8859-1?Q?throbVcBl749ON+9pHP/1xBwtRtYc+qPznh53BspWCrbnQAH4moLwm7D60?=
+ =?iso-8859-1?Q?xT5jFzYn0w0PiEZtxVpydierqDkLYuOIiQs+yAPUdgoLZSqgIBXnGPo9WJ?=
+ =?iso-8859-1?Q?QLsbEKWwTv7E+C71eMILGeGTBfyWER9LHR0PV5ISO5ZmS2MECMC0J2sczt?=
+ =?iso-8859-1?Q?C4NF/x6ND6lQddFy8lcs6+sLtLo50QRQ/7r7GIm15P9No9A7KUuhCqyzVl?=
+ =?iso-8859-1?Q?2be88EfyarUNKvQjKb469nKIynShoCtG+ZUh3kWH34nFBGoQSk2N7Ddon6?=
+ =?iso-8859-1?Q?2TZwRY8P+XDpTiuSc2z5Uljo7tVwGTBJJkroF8dZbaJ47Ey3F+5VGvUPo8?=
+ =?iso-8859-1?Q?RdFXUVc3D+zzl/KCfLoLvYrSTQKmay+qf7KhCrbWvDSM5HM1hTMRoyzNaR?=
+ =?iso-8859-1?Q?TAeTUA0QjYTGusv926tfbivIEksbYlOVfKAJrYGDFWifEaKZLbpU2ZWmmW?=
+ =?iso-8859-1?Q?XJCag5TONHIuoXeyIg7OKDX1pCnS5W0b4b16UFLijxXQalNZ5t36DGfVZR?=
+ =?iso-8859-1?Q?Nqp2qAc13etvBEKgY3nASy8K6K+wHMptOM2+LELdKqsTxbNuLVP1mztLBj?=
+ =?iso-8859-1?Q?13RNVMMu1RLOkW50yX4TMZSg2zYmmnICDFU1/0IpbcadhqcnqkSTtlmy4K?=
+ =?iso-8859-1?Q?qen6ox3k94BGqp/S4pE8YKq8iQ0ZTwV3ld2eVMJkHDt1L5fvzRwSVb4Mrt?=
+ =?iso-8859-1?Q?ZGLgsrjgOr8a2/lXBIIL7LZzsuNcK5mIKjrHyzO1ladmKbhPxOvo67w7sL?=
+ =?iso-8859-1?Q?TQASuyOt7s+reVKJ33Iv8wWUnBT8d6cqp6RxKMJXSbhYbjzBWFhHg=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,173 +157,90 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <sashiko-outbox-222310@kernel.org>
-X-Proofpoint-GUID: h-WS7pbn4eeYsfvf9CVS1nyMHZiSTbmv
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIwMDA3NSBTYWx0ZWRfX2I4XJmqEmoUc
- eKUN/Wk6bnr1/QgzweUAZmZOf6uOwr0FrYprUWa5JyDPGK/G19rdSaIf+dZ+w4HgNCUNrOempMQ
- PJa9XhvE1zL9hda/cVBrNuhBKF5Q6q99Bt5ZWtxXOZmwnb5yDUDdx7j/k3kGg+RWHKf0cz7dwBP
- lZAURflCV+UJgg5AIo7dKrTLI528jqOTIqBAjh0bPYstYOM1oZyjq01Z68TvWaZ59qDgTOK9lVh
- Vs5MP+gcNOAJ3CULzM8kZm0XjU9HWcEpqHl1etTpW5LU8JBlEtBmGCeCKFAvUxE2kbrOwJpz1xi
- ZlXaZXXw5bcMHw0U79DM8qBCaUJv6VFt4cgzXzAWWcZEDKvuzxbisz6U/1PRD/tNC1OIYOYnie3
- SrQTsfpcLMhY2LFmvez1aU/IBGFOJC/n2P1w+tNjBWbsoZsAtqQpN8G/wyd3mDA7BjgLbDbofT+
- dNCiyaXIyWqNHLatxow==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIwMDA3NSBTYWx0ZWRfX3TR+u+180G8r
- NecHghQNIInc2c7DRH6HSzXm95OWZj4jdoGgxDkrRslzOm0LnKaA0uVx1CSmogggCcMS05mr3Ks
- CObdekvTihWPFiIHMXSqcJJD4s5jK0A=
-X-Proofpoint-ORIG-GUID: h-WS7pbn4eeYsfvf9CVS1nyMHZiSTbmv
-X-Authority-Analysis: v=2.4 cv=HZyB3SE8 c=1 sm=1 tr=0 ts=6b0098dc cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=8elwO82fXORLTBIkMd32:22 a=VwQbUJbxAAAA:8
- a=nKUyGthK1eciPSpQ-oIA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-20_05,2026-11-19_01,2025-10-01_01
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR02MB6863.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: d5796a99-1f8c-4823-4ec9-08df47420b2b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Nov 2026 20:08:29.0102
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR02MB8635
 
-On Thu, Nov 19, 2026 at 01:55:35AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issues to consider:
-> - [Medium] vsock: swept sockets lose seqpacket data and return EOF
->   instead of ECONNRESET
-> - [Medium] vsock: vsock_shutdown() clears SOCK_DONE on swept sockets in
->   connected table
+From: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com> Sent: Friday, Novem=
+ber 20, 2026 3:11 AM
+>=20
+> uio drivers support being matched to devices using the driver_override
+> mechanism. Add .support_driver_override =3D true to continue having
+> this mechanism work for them without tainting the kernel.
+>=20
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
+
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>   # uio_hv_generic.c chang=
+e only
+
+> ---
+>  drivers/uio/uio_dmem_genirq.c | 1 +
+>  drivers/uio/uio_hv_generic.c  | 1 +
+>  drivers/uio/uio_pci_generic.c | 1 +
+>  drivers/uio/uio_pdrv_genirq.c | 1 +
+>  4 files changed, 4 insertions(+)
+>=20
+> diff --git a/drivers/uio/uio_dmem_genirq.c b/drivers/uio/uio_dmem_genirq.=
+c
+> index 263c1ebc2d57..71992431770e 100644
+> --- a/drivers/uio/uio_dmem_genirq.c
+> +++ b/drivers/uio/uio_dmem_genirq.c
+> @@ -309,6 +309,7 @@ static struct platform_driver uio_dmem_genirq =3D {
+>  	.driver =3D {
+>  		.name =3D DRIVER_NAME,
+>  		.of_match_table =3D of_match_ptr(uio_of_genirq_match),
+> +		.support_driver_override =3D true,
+>  	},
+>  };
+>=20
+> diff --git a/drivers/uio/uio_hv_generic.c b/drivers/uio/uio_hv_generic.c
+> index dff92dcbb10d..255c2b5730f6 100644
+> --- a/drivers/uio/uio_hv_generic.c
+> +++ b/drivers/uio/uio_hv_generic.c
+> @@ -407,6 +407,7 @@ static struct hv_driver hv_uio_drv =3D {
+>  	.id_table =3D hv_uio_id_table,
+>  	.probe =3D hv_uio_probe,
+>  	.remove =3D hv_uio_remove,
+> +	.driver.support_driver_override =3D true,
+>  };
+>=20
+>  static int __init
+> diff --git a/drivers/uio/uio_pci_generic.c b/drivers/uio/uio_pci_generic.=
+c
+> index c0cab3adb7b0..9785df9fc5de 100644
+> --- a/drivers/uio/uio_pci_generic.c
+> +++ b/drivers/uio/uio_pci_generic.c
+> @@ -140,6 +140,7 @@ static struct pci_driver uio_pci_driver =3D {
+>  	.name =3D "uio_pci_generic",
+>  	.id_table =3D NULL, /* only dynamic id's */
+>  	.probe =3D probe,
+> +	.driver.support_driver_override =3D true,
+>  };
+>=20
+>  module_pci_driver(uio_pci_driver);
+> diff --git a/drivers/uio/uio_pdrv_genirq.c b/drivers/uio/uio_pdrv_genirq.=
+c
+> index 87e43821ab0c..022178248962 100644
+> --- a/drivers/uio/uio_pdrv_genirq.c
+> +++ b/drivers/uio/uio_pdrv_genirq.c
+> @@ -261,6 +261,7 @@ static struct platform_driver uio_pdrv_genirq =3D {
+>  	.driver =3D {
+>  		.name =3D DRIVER_NAME,
+>  		.of_match_table =3D of_match_ptr(uio_of_genirq_match),
+> +		.support_driver_override =3D true,
+>  	},
+>  };
+>=20
 > --
+> 2.56.0.rc1
+>=20
 
-I'm going to respin this and there will be some changes that I think
-will resolve this back-and-forth with sashiko.
-
-Replying below to explain what the next rev will do differently, to give
-context for review when that comes out.
-
-pw-bot: cr
-
-[...]
-
-> 
-> [Severity: Medium]
-> Can calling shutdown() on a swept socket clear SOCK_DONE and cause
-> vsock_g2h_should_reset() to match it again?
-> 
-> When vsock_g2h_reset_unreachable() sweeps a socket that has unread data
-> queued, it leaves the socket in vsock_connected_table with sk->sk_state set
-> to TCP_ESTABLISHED and relies on SOCK_DONE to prevent
-> vsock_g2h_should_reset() from matching it again.  However, vsock_shutdown()
-> unconditionally clears SOCK_DONE whenever sock->state is not SS_UNCONNECTED:
-> 
-> net/vmw_vsock/af_vsock.c:vsock_shutdown() {
-> 	...
-> 	if (sock->state == SS_UNCONNECTED) {
-> 		err = -ENOTCONN;
-> 		if (sock_type_connectible(sk->sk_type))
-> 			goto out;
-> 	} else {
-> 		sock->state = SS_DISCONNECTING;
-> 		err = 0;
-> 	}
-> 
-> 	/* Receive and send shutdowns are treated alike. */
-> 	mode = mode & (RCV_SHUTDOWN | SEND_SHUTDOWN);
-> 	if (mode) {
-> 		...
-> 		if (sock_type_connectible(sk->sk_type)) {
-> 			sock_reset_flag(sk, SOCK_DONE);
-> 			vsock_send_shutdown(sk, mode);
-> 		}
-> 	}
-> }
-> 
-> Because vsock_next_connected_socket() restarts from the head of the current
-> bucket on each iteration, a process calling shutdown() on its swept socket
-> makes vsock_g2h_should_reset() true again and re-matches the same socket in a
-> loop under vsock_g2h_assign_mutex.  On a swept socket with sk->sk_state set
-> to TCP_CLOSING, clearing SOCK_DONE also causes subsequent recvmsg() calls to
-> return -ENOTCONN, and on a TCP_ESTABLISHED swept socket it bypasses the
-> sock_flag(sk, SOCK_DONE) check in virtio_transport_recv_pkt() if the device
-> later moves back to a reachable namespace.
-
-In this series I've been trying to make the socket losing access to the
-device moving to another netns equal in behavior to the socket receiving
-a peer RST, which keeps sockets in TCP_ESTABLISHED and uses SOCK_DONE to
-distinguish between "peer alive" and "peer reset" instead of ->sk_state.
-
-The last several versions have been trying to get this mental model
-working race and edge-case free... but the last several revisions have
-just been a game of a whack-a-mole.
-
-Instead, I think a better and simpler model is to treat the move as if
-the device had been removed, the way virtio_vsock_reset_sock() already
-handles a device unplug, i.e., just set TCP_CLOSE and ECONNRESET. This
-problem then goes away because we aren't messing with SOCK_DONE and
-shutdown won't cause this re-matching in the iterator.
-
-> 
-> > +
-> > +/* Close every connected socket of @t that can no longer reach the g2h device.
-> > + */
-> > +static void vsock_g2h_reset_unreachable(const struct vsock_transport *t)
-> > +{
-> > +	struct vsock_sock *vsk;
-> > +	unsigned int i = 0;
-> > +	struct sock *sk;
-> > +	bool reset;
-> > +
-> > +	lockdep_assert_held(&vsock_g2h_assign_mutex);
-> > +	lockdep_assert_not_held(&vsock_register_mutex);
-> > +
-> > +	/* lock_sock() cannot be taken under vsock_table_lock, so pick the
-> > +	 * sockets one at a time, then recheck each under both locks.
-> > +	 */
-> > +	while ((sk = vsock_next_connected_socket(t, &i,
-> > +						 vsock_g2h_should_reset))) {
-> > +		vsk = vsock_sk(sk);
-> > +
-> > +		lock_sock(sk);
-> > +
-> > +		reset = false;
-> > +		spin_lock_bh(&vsock_table_lock);
-> > +		/* It may have been closed since we dropped the table lock. */
-> > +		if (__vsock_in_connected_table(vsk) && vsk->transport == t &&
-> > +		    vsock_g2h_should_reset(vsk))
-> > +			reset = true;
-> > +		spin_unlock_bh(&vsock_table_lock);
-> > +
-> > +		if (reset) {
-> > +			sock_set_flag(sk, SOCK_DONE);
-> > +			WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
-> > +			/* Same as a peer reset, stay TCP_ESTABLISHED while data
-> > +			 * is queued so that recv() can still read it.
-> > +			 */
-> > +			if (vsock_connectible_has_data(vsk) <= 0)
-> > +				sk->sk_state = TCP_CLOSING;
-> > +			sk->sk_err = ECONNRESET;
-> > +			sk_error_report(sk);
-> > +			if (t->cancel_pkt)
-> > +				t->cancel_pkt(vsk);
-> > +		}
-> 
-> [Severity: Medium]
-> Does setting sk->sk_err = ECONNRESET and sk->sk_state = TCP_CLOSING here
-> cause SOCK_SEQPACKET sockets to drop queued messages and empty sockets to
-> return 0 instead of -ECONNRESET?
-> 
-> When a SOCK_SEQPACKET socket has unread messages queued at sweep time,
-> sk->sk_state remains TCP_ESTABLISHED and __vsock_seqpacket_recvmsg() dequeues
-> the message, but then checks sk->sk_err and overwrites the return value with
-> -ECONNRESET, discarding each queued message:
-
-Yes, this will go away when loss of netns access behaves the same as
-device removal... sk_state == TCP_CLOSE with !sock_flag(sk, SOCK_DONE)
-will cause recvmsg to return -ENOTCONN. If a reader is already blocked
-in recvmsg() then seqpacket may return 0 / EOF. I think this will be the
-right move and overall much simpler.
-
-I'm expecting Sashiko to complain again about some of the quirks that
-were there when trying this approach before: -ENOTCONN instead of
--ECONNRESET, the lockless socket-state change, and a few others... but
-all of them are tractable/tolerable issues or actually belong in a
-different series.
-
-Best,
-Bobby
