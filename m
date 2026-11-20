@@ -1,84 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795136483;
-	b=BCYngivAPkNodKm3i6DHkml/7RES+J3nOzdEI3Fu2ZxZNoehCyjRdqGLnHvObHDugBmN
-	 P69Hpxmyq9MhN2xmTEo0G3YYFe4nnaB5Nt14ZDljiJsHg5KAYZzQmB04e+PIxSgF4VEHo
-	 6n3j7TpAvRpe/4viJcDYaaupHI211bH8egGtIMkB3nxyVaPWH/oQRABJwYxun383GxByV
-	 Y+hPlawBNMryo/N72NUicDdMCPdjIbMpBFo9qsD1mzqEDdMDXDrHsSy6bCnz36B+xfzZr
-	 EYBEnGvubIhE8tNF+UhWR4wMLR3qMM2nx7rMdAI2hnLLYGwPsnv5QUHOP+RU8RSFNGw==
+	t=1795137461;
+	b=tEehvPXur07DEhBbCQTc/bJ3LBpHSAZXEh/63zJU9VG/1l86jUzsqwP8UkVjh4ZoAHUi
+	 taosaZ4/vlFvxy9euFNLTxxzZ+WMxh39zUcIQqdvfh8kT2VMxYSp958bUH2Q8jm5qx12b
+	 n+jiyRQerV6JZ6uSv3WvDYndpV2LCL14fmEdmF5S1yq0QcBJ093t08SpcrMd8ImrIaRQj
+	 M/iypv5eDHIJ7FC59UtjGv9SchiwW47DUVo+Yq+tApx8QVeKbXtXRZ8UZJJ/HLctbkS5m
+	 N0Tw3SFSEynfPxGYR/ayQA3uSqfWUb0gVswGy/zFTIv1jy27z9Vw1RHWE17UmRDNbkg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795136483;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
-	bh=tQwX2YSXjHFZhdcGcul9Os/DsNb3L2Z/dlwRM94y3qk=;
-	b=H1KgR7287yslyGCM1lnuyJI0aP4QkPVYUnj/vmht2cjowRuTBVRwE2wCKNOttUlowlFk
-	 W7pjETx5FbnFU0lbSdjq/CEkGzviQorgA/f0zjTRYS1uIoxnf3y/T1dQSXePPsed7Sz9Y
-	 BPxnVMvVJOH4hveiVIl+JaMEUlB96l9XFEY0fRp4jRNJCz27HS72cBZ599AFOJkhlAkTP
-	 tsbjkaePu00dn4rGAFi+p0rIeelipWBkcWmLN/mFJIs7uGawP35F2MSyRVMvjBuFgtqXt
-	 AaXH4dDG33f8Oa8UU8R/iA2pfCB+U3SwhvIQ8df2eZMQayPHyoCneM/NNwJt6hL4pOg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795137461;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=JWqZphWtsTTHGvtPX+nDXnK7WB6OveEljmDurlpZ0No=;
+	b=qQR6niDOkf9Gy6POC53j5RXjRDZv/FhmNggkTTT+9QmFF+kTtn1YUNH0Ceh0XF1RZ9Bz
+	 ddNdKyZ5LMSHcsSwkt4c9T0WRGchRcrt40uKG+7MTr6MSnEbg0ED/jhOQW1k5DEOwB0kC
+	 TtR3FW+aBQTF9PIWD+nok3XQa12+xBM2K+YNeMxpWZ2JehvpODF8JKhSEyN6lej4qeBoI
+	 oMPxoT963UJEgLItC9L+VHcM5XVxF7vspxbpBaH4n27OWNR6i6Qs8AS9AF1SUffVzTKdY
+	 UBBhHLadcBbNBzCqnY5cqqnbnwmavUGMSXgpSjipryzeGWylEiPiiEbKPbGLhQaFwLw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=aB8MFpMM;
-	arc=none smtp.remote-ip=209.85.215.182
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aPghIyo8;
+	arc=none smtp.remote-ip=192.198.163.8
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FC2606A32A
-	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 01:01:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 27FC2606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C82606A325;
+	Fri, 20 Nov 2026 01:17:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 31C82606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=aB8MFpMM
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cddff772fffso106305a12.0
-        for <kvm@vger.kernel.org>; Thu, 19 Nov 2026 17:01:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795136482; x=1795741282; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=tQwX2YSXjHFZhdcGcul9Os/DsNb3L2Z/dlwRM94y3qk=;
-        b=aB8MFpMMrxKiPFy6+JAlCebkuTAfB8STJ/MwS9WIwLqCpnefzKeDmhq5EVEBXBTAtk
-         iZsFiOjSaZIDuUxvIML1Q/Pli5/DbL6gnCoGLgbUYawH5QdgI21J9H40Mcs3J1SkkOvI
-         uWizmt1tDmGonLNXZ5YXlF2PsmUADiZT4OHccB3JI6LVrjbu/MATocrXjp79XyuUs34p
-         GeFTzL2WyAVHxcYDZfAvaAkSSL4rOyfBbi+O8FFV0R2xboCacObeig/kcXV1qJPWJG1I
-         K7A5+1J8wG+SXMXJhKIY8LO6D59Ticfnt/qzBmbcW/9Y7XR175kyxD2+3VefSFEg2uUQ
-         J/Vw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795136482; x=1795741282;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tQwX2YSXjHFZhdcGcul9Os/DsNb3L2Z/dlwRM94y3qk=;
-        b=LIzWrQisMkm+01n/Oc4W+++ddZSkCIz7M+USx3lTb+4p+GK1vZ/aC9xUT49PF0HzFs
-         SZqjwV3Ryrdh3bu9xbaNjeERLozz7clUn2PCGM4YUfaxn3zsXVF+iR1exgWFN5HnNgVC
-         URkRqkQOIkx71GXVXrmD8nVVD3CKCc9ZZYUrOdlXUY8z1TXnW284F4H+c4nOK2W+S789
-         +xT2WV5gWacK3oYkPJPIPnWSf1txlICM2ag4aKxfvBDJu+zssBWF6QcLT+QHytpszpO6
-         KLFlfvCONu74smGesXKSjiNdSKhAcRFp/1HkD0eHlATcWa+sJ+Jcc9/YYhcan3YXlPY+
-         HYIw==
-X-Forwarded-Encrypted: i=1; AL+hErHvRiMFZDlfuCbkqZzGI4xaUfy/0Q9MkKT1nxeFMD1qnFmSZ1t4hUy/NZVnTRjhxw5EpNs=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/9oAxnC3Kfp7fmJvtJiM/w+g30PjtHIK137OKLwIGoeshBlKFc
-	ybDshzd9ZFLUpLS7LNKjaNd7CjHJ2fuSP81KlsB/VRYvI4rkx0s+6gY8WTKUwGlkuQ==
-X-Gm-Gg: AZFdTZfJN6BMcKhQ2fNTNrw5JRJKeLo/Trb3e3O1Hd1VOZU6Nk/kHivSuDPtGUIKTLB
-	Xcz+vEzm5FyoE4o5ZWJ2a5VM0kBU5vG+OFzWI4F34wdfQC3tP8EC4hScj+FBQQcCaQDhLC10XBN
-	1gCFkA7s+umhVOqMwmQUAT4ly2eAxGVwmPUdmbuJS5Y11FsbqKMdaS3jOeYLyWnKcCwuQrTSRCV
-	nULxTSbRxCFw1gM0Kr/sCQMOAdbX2soPUtkPpHdgQ3LrzI/XDGhvnvPmpwLn7DtA544COI5dG+o
-	Q8zhID0FTFUDTXm3kLuqmW7z4ouuVCdPGJzq2ifkdzB+zDqBu+6nhkNOHkioT/axD6peNOIJEbH
-	3c+g2fy70dzFkddPqxXUohtFJX5ABVr9trA3YcCAeonNA9VUHe5GgHUZGLwt89usr+6O9VlgALq
-	lYOSjanEe7TjwkCgkXWbtjJgsgIFoOdRgaiQAFV9mVMBhInc1WViBfjDXoz1G+JD1iQ/90EBzvC
-	8xRq7QvS3vZfMRMzZrw3x3bPPKADEteWQ7FWuZJ7QeKkGomuQeJHtznRR0ZHkp7v3wc2SDeVA9O
-	oRp2BBxzOzdcoj7S9pC8gyikkCnhSvfAI+aE27RPKmA4gLDdoPExRTdfiP+zfjcd
-X-Received: by 2002:a17:90b:4b87:b0:3b4:a63:d55c with SMTP id 98e67ed59e1d1-3b41c93b17cmr965473a91.30.1795136481385;
-        Thu, 19 Nov 2026 17:01:21 -0800 (PST)
-Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b405d639fdsm4865271a91.10.2026.11.19.17.01.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Nov 2026 17:01:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aPghIyo8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795137461; x=1826673461;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=tSIkeLpI67gd3O+5LLJj1iLHNmboO3o26BMKDZZIKS4=;
+  b=aPghIyo8Z1W1kb/cxIa0wLjw6A4YTOtfIdXrqpHYns3irNqFTHetajdl
+   Q02ZSeW0gIMQkmldP1A6abda4RmyAWICoDQrr6Ir30/aYonZ5OrwSOt1o
+   mKL2psiG51rsaBWssbXryauQPKcyp5Y+s/aMTV5tuR7NV2UNe/VypjQSV
+   T8ZP+USZXWvyvitmtDYRPDSzkLq0+ZscmgIuzLqJibTnxJ6/HK+CxQZmF
+   MaKRmqSvAi56ep1y3flg+DkdDDDguZ59XkO4V43zya+Wqqf4bcLMHIE+d
+   VyCZJsX5LtR3oAXpcUkFlF4pKNlALZJR+2E+3qbkjCgnyMBvBWd0wNC4G
+   w==;
+X-CSE-ConnectionGUID: zdMHTuVJRyWqFm/d66qo6Q==
+X-CSE-MsgGUID: XL79DZygTaOQ9IYeUE2yIg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="3908754"
+X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
+   d="scan'208";a="3908754"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 17:17:40 -0800
+X-CSE-ConnectionGUID: 6v5FeCvQRiSoxhgN7PCPHA==
+X-CSE-MsgGUID: l3gJMTkWTfSiu/FcIwximA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
+   d="scan'208";a="10478625"
+Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 17:17:32 -0800
+Message-ID: <3201ab57-cba6-4484-8dbd-7cfb79d731cf@linux.intel.com>
+Date: Fri, 20 Nov 2026 09:17:30 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -87,207 +71,69 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Nov 2026 17:01:19 -0800
-Message-Id: <DMZMRTXS7OSC.M79XF39ZVEWE@google.com>
-Cc: <ajayachandra@nvidia.com>, <alex@shazbot.org>, <amastro@fb.com>,
- <ankita@nvidia.com>, <apopple@nvidia.com>, <bhelgaas@google.com>,
- <chrisl@kernel.org>, <christian.koenig@amd.com>, <corbet@lwn.net>,
- <dmatlack@google.com>, <graf@amazon.com>, <jacob.pan@linux.microsoft.com>,
- <jgg@nvidia.com>, <jgg@ziepe.ca>, <jrhilke@google.com>,
- <julianr@linux.ibm.com>, <kees@kernel.org>, <kevin.tian@intel.com>,
- <leon@kernel.org>, <leonro@nvidia.com>, <lukas@wunner.de>,
- <mattev@meta.com>, <michal.winiarski@intel.com>, <parav@nvidia.com>,
- <pasha.tatashin@soleen.com>, <praan@google.com>, <pratyush@kernel.org>,
- <rananta@google.com>, <rdunlap@infradead.org>, <rientjes@google.com>,
- <rodrigo.vivi@intel.com>, <rppt@kernel.org>, <saeedm@nvidia.com>,
- <schnelle@linux.ibm.com>, <skhan@linuxfoundation.org>,
- <skhawaja@google.com>, <vivek.kasireddy@intel.com>, <witu@nvidia.com>,
- <yanjun.zhu@linux.dev>, <yi.l.liu@intel.com>
-Subject: Re: [PATCH v6 11/27] vfio/pci: Retrieve preserved device files
- after Live Update
-From: "David Matlack" <dmatlack@google.com>
-To: "Vipin Sharma" <vipinsh@google.com>, <kexec@lists.infradead.org>,
- <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
- <kvm@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-kselftest@vger.kernel.org>, <linux-pci@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20261102153656.1431701-1-vipinsh@google.com>
- <20261102153656.1431701-12-vipinsh@google.com>
-In-Reply-To: <20261102153656.1431701-12-vipinsh@google.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, Alex Williamson <alex@shazbot.org>,
+ Alexey Kardashevskiy <aik@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
+ Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+ Nicolin Chen <nicolinc@nvidia.com>, Robin Murphy <robin.murphy@arm.com>,
+ Samuel Ortiz <sameo@rivosinc.com>,
+ Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+ Steven Price <steven.price@arm.com>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+ Xu Yilun <yilun.xu@linux.intel.com>, Ashish Kalra <ashish.kalra@amd.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, iommu@lists.linux.dev,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+ linux-tegra@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH v9 06/13] iommufd: Add a vDEVICE operation ioctl framework
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ linux-coco@lists.linux.dev
+References: <20261116081935.85372-1-aneesh.kumar@kernel.org>
+ <20261116081935.85372-7-aneesh.kumar@kernel.org>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20261116081935.85372-7-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon Nov 2, 2026 at 7:36 AM PST, Vipin Sharma wrote:
-> Enable userspace to retrieve preserved VFIO device files after a Live
-> Update by implementing the retrieve() and finish() file handler
-> callbacks.
->
-> During retrieve():
->  * Validate the handed-over struct vfio_pci_core_device_ser header,
->    sizes, and flags.
-> [...]
+On 11/16/2026 4:19 PM, Aneesh Kumar K.V (Arm) wrote:
+> Add IOMMU_VDEVICE_OP to execute operations on a vDEVICE using separate
+> request and response buffers. Each operation defines its request and
+> response formats, with response capacity checked before changing device
+> state.
+> 
+> Look up the vDEVICE and check its supported_ops mask before dispatching
+> an operation. Reject out-of-range operation numbers before testing the
+> corresponding bit. Backends set the mask during vdevice_init().
+> 
+> This patch defines no operations. The default dispatch returns
+> -EOPNOTSUPP; later patches can add operations independently.
+> 
+> Cc: Jason Gunthorpe<jgg@ziepe.ca>
+> Cc: Kevin Tian<kevin.tian@intel.com>
+> Cc: Joerg Roedel<joro@8bytes.org>
+> Cc: Will Deacon<will@kernel.org>
+> Cc: Robin Murphy<robin.murphy@arm.com>
+> Cc: Alexey Kardashevskiy<aik@amd.com>
+> Cc: Lukas Wunner<lukas@wunner.de>
+> Cc:iommu@lists.linux.dev
+> Signed-off-by: Aneesh Kumar K.V (Arm)<aneesh.kumar@kernel.org>
+> ---
+>   drivers/iommu/iommufd/iommufd_private.h |  1 +
+>   drivers/iommu/iommufd/main.c            |  3 +++
+>   drivers/iommu/iommufd/viommu.c          | 36 +++++++++++++++++++++++++
+>   include/linux/iommufd.h                 |  3 +++
+>   include/linux/tsm.h                     |  1 +
+>   include/uapi/linux/iommufd.h            | 33 +++++++++++++++++++++++
+>   6 files changed, 77 insertions(+)
 
-Please make the commit messages in this series easier to read. They are
-mostly long bulleted lists of everything the code does, which is hard to
-follow and largely repeats the diff. A commit message should explain, in
-prose, what problem the patch solves and why it solves it this way, and
-only call out details that a reviewer can't easily get from the code.
-This applies to most of the patches in the series (e.g. PATCH 07 and
-PATCH 13 too).
-
-> Do not implement can_finish(): closing a retrieved LUO session invokes
-> finish, and refusing can_finish() would leak the session and leave
-> unclaimed devices running. Instead, finish() always completes:
->  * If the retrieved device was claimed by opening it via
->    VFIO_DEVICE_BIND_IOMMUFD (which consumes vdev->liveupdate_incoming;
->    subsequent patches replace the open-time reset with non-reset
->    take-over, reject opening incoming devices other than via retrieve(),
->    and protect incoming kept-running devices across runtime PM, dev_set
->    resets, and non-noiommu boots), finish() simply completes its PCI
->    Live Update participation.
->  * If the device was not claimed (never retrieved, retrieve() failed, or
->    retrieved but never bound via VFIO_DEVICE_BIND_IOMMUFD),
->    vfio_pci_core_liveupdate_reset() logs one pci_warn() naming the
->    device, clears PCI_COMMAND_MASTER, resets the function, and restores
->    the inherited pci_saved_state just as closing the device would. If
->    the device has a function reset but is not reset, e.g. because
->    pci_dev_trylock() contends with a concurrent driver unbind, latch
->    vdev->liveupdate_reset_pending so vfio_pci_core_unregister_device()
->    completes the function reset and state restoration via
->    vfio_pci_core_liveupdate_reset_locked() under the device lock held by
->    device_release_driver(). Opening the device after finish() resets it
->    like any open, so it drops the latch.
->  * If the device was not retrieved, look it up under pci_dev_lock(),
->    which waits for a vfio-pci probe in progress. If it is bound to
->    vfio-pci, finish it as above. If it has no driver, clear bus
->    mastering and reset it. Otherwise leave it to the bound driver.
->  * Call pci_liveupdate_finish() and kho_restore_free() on every path.
-
-This is a lot of complexity for one commit, and it's hard to review. I'd
-like to start with the simplest approach and build from there: implement
-can_finish() and have it return false until the device is fully
-retrieved, i.e. retrieved and taken over by VFIO_DEVICE_BIND_IOMMUFD.
-Then finish() only needs to free the incoming state and call
-pci_liveupdate_finish().
-
-That gets rid of vfio_pci_core_liveupdate_reset(),
-vfio_pci_core_liveupdate_reset_locked(),
-vfio_pci_liveupdate_finish_lookup() and its bridge and device locking,
-liveupdate_reset_pending, and most of the finish documentation. If you
-want to handle the other scenarios (devices that are never retrieved or
-never bound, devices bound to other drivers, unbind racing with finish),
-please add them in separate commits on top, each with its own
-justification.
-
-As for closing the session leaking it and leaving unclaimed devices
-running: that only happens if userspace closes the session without
-taking over all of its devices, and leaving the device running with its
-memory still preserved is safe. Resetting the device in that case is
-something that can be added later.
-
-It also has a nice side effect: LUO calls can_finish() on every file in
-a session before finishing any of them, so a memfd in the same session
-that the device DMAs into can't be finished before the device has been
-taken over.
-
-> +static int
-> +vfio_pci_liveupdate_attach_incoming(struct vfio_pci_core_device *vdev,
-> +				    struct vfio_pci_liveupdate_incoming *in)
-> +{
-> +	guard(mutex)(&vdev->vdev.dev_set->lock);
-> +
-> +	if (vdev->liveupdate_incoming || vdev->liveupdate_claimed ||
-> +	    !pci_liveupdate_is_incoming(vdev->pdev))
-> +		return -EBUSY;
-> +
-> +	vdev->liveupdate_incoming =3D in;
-> +	return 0;
-> +}
-
-The pci_liveupdate_is_incoming() check here is redundant with the one in
-vfio_pci_liveupdate_retrieve(). Nothing can clear it in between, since
-only finish() should do that (see below) and LUO holds the session mutex
-across both retrieve and finish.
-
-The liveupdate_claimed check is redundant too: LUO only lets a token be
-retrieved successfully once, PATCH 12 prevents opening an incoming
-device any other way, and the liveupdate_incoming check already prevents
-attaching twice.
-
-> +	if (!pci_liveupdate_is_incoming(pdev) ||
-> +	    ser->cfg_size !=3D pdev->cfg_size) {
-> +		ret =3D -EINVAL;
-> +		goto out_put_dev;
-> +	}
-
-If the device isn't incoming here, that's a kernel bug. The previous
-kernel only preserves the file after pci_liveupdate_preserve()
-succeeds, the PCI core marks the device incoming when it's enumerated,
-and only VFIO's finish() should clear it. So this should be a
-WARN_ON_ONCE().
-
-> +	if (pci_liveupdate_is_incoming(pdev))
-> +		pci_liveupdate_finish(pdev);
-> +}
-
-Likewise, the device must still be incoming here, so
-pci_liveupdate_finish() can be called unconditionally.
-
-> +static inline void
-> +vfio_pci_liveupdate_unregister_dev(struct vfio_pci_core_device *vdev)
-> +{
-> +	struct pci_dev *pdev =3D vdev->pdev;
-> +
-> +	scoped_guard(mutex, &vdev->vdev.dev_set->lock) {
-> +		/*
-> +		 * Complete a reset that finish() could not do, see
-> +		 * vfio_pci_liveupdate_finish_vdev().
-> +		 */
-> +		if (vdev->liveupdate_reset_pending) {
-> +			vfio_pci_core_liveupdate_reset_locked(vdev);
-> +			vdev->liveupdate_reset_pending =3D false;
-> +		}
-> +		vfio_pci_liveupdate_free_incoming(vdev);
-> +	}
-> +
-> +	if (pci_liveupdate_is_incoming(pdev))
-> +		pci_liveupdate_finish(pdev);
-> +}
-
-VFIO should only call pci_liveupdate_finish() from its finish()
-callback (see the kernel-doc of pci_liveupdate_finish()).
-
-If vfio-pci is unbound from an incoming device before finish(), it
-should just leave the device and its Live Update state alone. That's
-fine: if vfio-pci is bound to the device again, the device is still
-incoming and can still be retrieved. And once the device has been
-retrieved, LUO holds a reference to the device file until finish(), so
-vfio_unregister_group_dev() already blocks unbinding it like it does for
-any other open device file.
-
-If userspace binds a different driver to the device instead, that's
-userspace's problem. The PCI core documentation already says it is the
-user's responsibility to ensure that incoming preserved devices are
-bound to the correct driver.
-
-So I don't think the unbind path needs any Live Update handling at all.
-
->  #ifdef CONFIG_VFIO_PCI_LIVEUPDATE
->  	bool			liveupdate_frozen;
->  	bool			liveupdate_intx_disabled;
-> +	bool			liveupdate_claimed;
-> +	bool			liveupdate_reset_pending;
-> +	struct vfio_pci_liveupdate_incoming *liveupdate_incoming;
->  #endif
-
-With the simpler finish(), I don't think liveupdate_claimed or
-liveupdate_reset_pending are needed.
-
-PATCH 13 later inverts liveupdate_claimed into liveupdate_kept_running
-and uses it to block dev_set resets while a preserved device is still
-running. That can use pci_liveupdate_is_incoming() instead. It blocks
-resets until finish() rather than until take-over, but since finish()
-now requires take-over, userspace controls that window. If some flag is
-still needed later, please introduce it once with its final name and
-meaning instead of adding it here and inverting it in PATCH 13.
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
