@@ -1,68 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795157407;
-	b=Ts+wyZ5zW5pS2ahDDxTPMt8O8lxGxXJ9VcZBGzQ0lYbkhZKSBxbuVZpWVFmB67l0D1Rl
-	 IfpYzCPhxKZB764HRimBZmVkU8/44qnZzSA3yoW0BwXCU5Sk7DF4qZSiN4SY7rBaO/bF2
-	 nT1eBZYNtGLSdZd8iEbUIeBmDqxDHmGhU20zcUjG3sAraft4oQ4jvnFXFsP9y3J3wJDq/
-	 wvQ0oBNIXs2gRtnYCfU/AqWjV5HeUfQ90BysxZUMFZYyfQd1XetCg4N+SkqrjGeuqNMpp
-	 oRZZNuUVHgp3azX6uUONZNGdpKjwPWybFxPqkHFX2pgMAZxnIfvO+z6txyFHGQELLVg==
+	t=1795158184;
+	b=hNzc0ysJYcVBD1aG8odtIeqBi902fccf9OcrCkieKhDjG+Xi/hJ4RemFgwCDQfa0x0/X
+	 oyNR3hGwD5wkRVUAe6LT/s/J9dJvxK1QQN6HCnvqVudmYWp3aisQFA+Fcol4575ZJ/u/M
+	 n/W/BXIkLJ36kC6a3YAi1oz/M075DwrY2pWeXXrpk1SXZfwBLeV8Uq2dsTUm5YgruXXXO
+	 CN4Ro75D4jMtqdG26W4JKxy0FzZ+vznd5ukN66+kT1LJhL42C+8m8WOymfrZWlVbAPvBQ
+	 ODIEbC7YUHEftpiMAAxybNXgi/s+WeOW43+GUoGUOnvuYlI93+moiCV+9mdx2zKDmMw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795157407;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=wkd4nqwFfR5tsb8FGSQqj7aBv7pRJtWn5SfKVCnGq1M=;
-	b=KtYOsybHDCpaTN/5dfior5/YeH2r1lV6MXbF5giusrvjNJK6MIM25TwmzGUotC//HbBQ
-	 vSusNKH1E7sgomwiAuTSAxvqUtJADO9+75rfkxy3CpvkIFYUkHkVpMLpSlu04YoEJgKG2
-	 IhsjwR2SumAwRFg6IdVEI3UTK/TKUt5pYiej6gMEb5G1mwK/vu+xU/m+amGTZ09M4snAv
-	 kqNJhXRXVC7x8etL8HojrXY68xXPiJ/ioBGvqZU9BQhkXrDloSsmfVm8TnVL5MantfYkR
-	 5yS6BGgPKNvkLt4Fl+mmj45tejIJWMig4mp0BfFS8GiglcTtijR5jUVMXg2GjKeXzQQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795158184;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-TM-AS-GCONF:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=afa95FYRycSTILjMsqGzLRYXv+PeRp5wBtIh6n6xeOo=;
+	b=dgrhO209pgRCsbB9hSRUtZMQWy7dcVZi1zaSq0NdIO0OiU/F2KnQB43TiLcisA3+o2pK
+	 p8n49V5IauvC1zX3zhFDnycq9YrWiyUhXWmlImxo4uHO/Tfstlq7fBEFX2rSLNn0oWXMJ
+	 mdD6ACK5ryQIgkS73af/Q/ElQRaPyHQXMH2L1+8Vc8eyMP+XlyT23kIrutAO6zCI4Gtm8
+	 wTDbcTIPc3iX/EVWmQNVvWVB4J9+NZh9z0DD1m2X9tlhWiW8rQdHCcbx4jo8RoLHRpYO/
+	 WiOLxX9V3/hV6vpJ5sQ2UWv9oj5vi9iUiyi93i2LSvxtJ2pBNiyWCeoC2eDAfmL1xMA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="mC+/2vpJ";
-	arc=none smtp.remote-ip=198.175.65.17
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=imaK9aMz;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5287C606A320;
-	Fri, 20 Nov 2026 06:50:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5287C606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1E4606A325;
+	Fri, 20 Nov 2026 07:03:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E1E4606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mC+/2vpJ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795157407; x=1826693407;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=mhxWMgCH5HMfkFHe/VNr+MzQbbFwX222p1eoUESgZ50=;
-  b=mC+/2vpJKLUoyNiAaJYLKqpzKytvyIkXnevDls1utEX1t6Y2ECP+SqCh
-   MI/HHtDef+e4ObLv0rx0WRBzK5GPGbF66dzKgQ4gYn3/H84OTOxm+fhT/
-   8HSLEaZLclpM8/wAPKS3Y9JRUgJ5QARoAzPbfYzzirgLPXKJCPFxT6QqG
-   J5zXqeflFwtOn/Fey87NCi+eCNdK7N/wWnNgyexdu8dAYXtfkTyfsvETo
-   t9x+yxdMahzsi7XGibmiCNp6A/EiQZRNf5YkA5/a6hypqk3Kj2O7v9DzZ
-   SqnbjQ0wBWuFIRUDPsbD61mFWDb5Mt0hINwMzClMumObNLx0QwZAbk8/W
-   Q==;
-X-CSE-ConnectionGUID: /+UgXO6PSW2pLPCx36YEng==
-X-CSE-MsgGUID: fJ/kFsQTQ52tOscxyslVDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="4037347"
-X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
-   d="scan'208";a="4037347"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 22:50:05 -0800
-X-CSE-ConnectionGUID: Y2qOi1RRQBGJruwAMXvr9Q==
-X-CSE-MsgGUID: spG0wXLKRgukaky3T7VPjg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
-   d="scan'208";a="10525531"
-Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 22:49:58 -0800
-Message-ID: <620712ae-e21e-4daa-9cd3-0c5d06ffb67f@linux.intel.com>
-Date: Fri, 20 Nov 2026 14:49:56 +0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=imaK9aMz
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AK3uab61965675;
+	Fri, 20 Nov 2026 07:02:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=afa95FYRycSTILjMsqGzLRYXv+PeRp
+	5wBtIh6n6xeOo=; b=imaK9aMz6We9WdCUTzVaTg7txsXokdCrRM0xgJq/DmbmUX
+	CXm/mN7NYuQLdyd6iHdiF0MtOh5rzYuaGlWmm1HAxZPxaEwHQNEgTWBlAaxwrd5k
+	fsZ3J8cl1NEeFTTp2XUa2TOZ9sasCtUxUIAydid42mjZgn0n9+jixFEmoH5p3ZpI
+	NV5IEUZdFWj4W40YGSpV+OKPhwp+Og1D1Dq6nrp61Urw/m7Ll3buMxtZDK4GqanK
+	N3e2D7OXjE8M+TrrGO59+Br/VWY3dYzg47DOy4yu4spFAYCxHRlJk8z6KiGpqiA4
+	w9lr3HufL4G/lQUbs1pJjVAJunfRWQfiVjgNut4Q==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j105x6cqa-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 20 Nov 2026 07:02:56 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AK6xKEQ600883;
+	Fri, 20 Nov 2026 07:02:56 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j1bb5jpsn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Nov 2026 07:02:55 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AK72qqZ46924182
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 20 Nov 2026 07:02:52 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F16492004E;
+	Fri, 20 Nov 2026 07:02:51 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7B98620049;
+	Fri, 20 Nov 2026 07:02:51 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.24.221])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 20 Nov 2026 07:02:51 +0000 (GMT)
+Date: Fri, 20 Nov 2026 08:02:50 +0100
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 0/5] s390/char: replace page allocator calls with
+ k[mz]alloc()
+Message-ID: <fe72024b-da3d-44ba-ad41-79dd5da7fac2-agordeev@linux.ibm.com>
+References: <20261108-s390-char-ready-v1-0-3db507722530@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,278 +97,100 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, Alex Williamson <alex@shazbot.org>,
- Alexey Kardashevskiy <aik@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
- Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
- Nicolin Chen <nicolinc@nvidia.com>, Robin Murphy <robin.murphy@arm.com>,
- Samuel Ortiz <sameo@rivosinc.com>,
- Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- Steven Price <steven.price@arm.com>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
- Xu Yilun <yilun.xu@linux.intel.com>, Ashish Kalra <ashish.kalra@amd.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, iommu@lists.linux.dev,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
- linux-tegra@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v9 11/13] iommufd/viommu: Allow vIOMMUs without a parent
- HWPT
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- linux-coco@lists.linux.dev
-References: <20261116081935.85372-1-aneesh.kumar@kernel.org>
- <20261116081935.85372-12-aneesh.kumar@kernel.org>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20261116081935.85372-12-aneesh.kumar@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261108-s390-char-ready-v1-0-3db507722530@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: _Qgos3NoeD80laCUZJqkS_1Bn37hEhS4
+X-Proofpoint-GUID: _Qgos3NoeD80laCUZJqkS_1Bn37hEhS4
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIwMDAyNyBTYWx0ZWRfX1RXMLaCa/04M
+ aOYxs5DvyYE09AE2LUAJHqxmF5pRsVK/0iA69ltyJ1WFiwHmZG1Z0WIi19JXkzwH8Wj3pNUHQ7C
+ i2/4XUoH/zBxUN2HnXd1/WtQrlRPfs8D+reuF4AJ1nCOuNpZfUHoftK+ac1VaMsrXV3TBGm+xVp
+ Q4VdoBPPH2KJf1vmiHamehbe1FxxGi+AIOfelUffUCtLfI9+XNt7yKzJZc1qZPuE3FlaTb+1BcL
+ gw5vhc9f0tE5f8zDd9Mm2kHL+iWwvwhVjq6+WS8imU7dlsO2Ub9v8WUWZaib+SIua3j6oadyBfC
+ No7Wp/Zn9/DDIv4C/w07jac/NGp6Jg10U+JFNKQ6kbr5cRVlLA3XV+i+cVGxCqN6I+j8u92fct1
+ GcrYuZ6I4UUigdmovTIECHWgubKpUmQRIs4divExlQ+OCA/UPUfxCRNrUrU7OSMftD1JiYvkeG9
+ k9pvPKPlVaQPnYcN27g==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIwMDAyNyBTYWx0ZWRfXxJEDkFN3YIbF
+ XIlkKdwXpookl1+MSBo3hkM8LNHRBVxbFVpd6sLoa/15c+FAdlIv7xody3pmScoq5FjW+NhpD0P
+ +ixyYCwvYW7Sgce59CvWtrfe6qqg4i4=
+X-Authority-Analysis: v=2.4 cv=K+m3jCWI c=1 sm=1 tr=0 ts=6afff0a0 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=pGLkceISAAAA:8 a=bKjcd7YqMW8_FUSzF1wA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-20_02,2026-11-19_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0 clxscore=1015 adultscore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 phishscore=0 lowpriorityscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
+ definitions=main-2611200027
 
-On 11/16/2026 4:19 PM, Aneesh Kumar K.V (Arm) wrote:
-> VIOMMU_ALLOC currently requires a nesting parent HWPT_PAGING even when
-> the selected vIOMMU implementation has no use for one. This would force
-> implementations such as the following Arm Realm vIOMMU to create an
-> unused parent.
+On Sun, Nov 08, 2026 at 10:48:57AM +0200, Mike Rapoport (Microsoft) wrote:
+> This the next episode of conversion of page allocator calls to kmalloc
+> family :)
 > 
-> Add IOMMUFD_VIOMMU_NO_HWPT so an implementation can opt out. Require
-> hwpt_id to be zero in that case and pass a NULL parent domain to its
-> initialization callback. For implementations that require a HWPT, verify
-> that the parent supports nesting and its domain belongs to the device's
-> physical IOMMU driver before invoking viommu_init().
+> This series covers s390 character drivers other than SCLP.
 > 
-> Reject nested domain and hardware queue allocation for a vIOMMU without
-> a parent, and document the two allocation modes in the UAPI.
+> = tl;dr cover letter copied from the previous posts:
 > 
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Kevin Tian <kevin.tian@intel.com>
-> Cc: Joerg Roedel <joro@8bytes.org>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Robin Murphy <robin.murphy@arm.com>
-> Cc: iommu@lists.linux.dev
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> This is a (small) part of larger work of replacing page allocator calls
+> with kmalloc.
+> 
+> My initial intention a few month ago was to remove ugly casts [1], but then
+> willy pointed out that Linus objected to something like this [2] and it
+> looks like more than a decade old technical debt.
+> 
+> Largely, anything that doesn't need struct page (or a memdesc in the
+> future) should just use kmalloc() or kvmalloc() to allocate memory.
+> kmalloc() guarantees alignment, physical contiguity and working
+> virt_to_phys() and beside nicer API that returns void * on alloc and
+> doesn't require to know the allocation size on free, kmalloc() provides
+> better debugging capabilities than page allocator.
+> 
+> Another thing is that touching these allocation sites gives the reviewers
+> opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
+> another size is appropriate.
+> 
+> For larger allocations that don't need physically contiguous memory
+> kvmalloc() can be a better option that __get_free_pages() because under
+> memory pressure it's is easier to allocate several order-0 pages than a
+> physically contiguous chunk with the same number of pages.
+> 
+> And last, but not least, removing needless calls to page allocator should
+> help with memdesc (aka project folio) conversion. There will be way less
+> places to audit to see if the user was actually using struct page.
+> 
+> The patches are deliberately kept small, so that every conversion can be
+> reviewed, and if needed reverted, on its own.
+> 
+> Also in git:
+> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/s390-char
+> 
+> [1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
+> [2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
+> 
 > ---
->   Documentation/userspace-api/iommufd.rst | 44 +++++++++---------
->   drivers/iommu/iommufd/hw_pagetable.c    | 14 ++++--
->   drivers/iommu/iommufd/viommu.c          | 62 +++++++++++++++----------
->   include/linux/iommufd.h                 | 13 ++++--
->   include/uapi/linux/iommufd.h            |  3 +-
->   5 files changed, 81 insertions(+), 55 deletions(-)
+> Mike Rapoport (Microsoft) (5):
+>       s390/zcore: Replace __get_free_page() with kmalloc()
+>       s390/vmur: Replace __get_free_page() with kmalloc()
+>       s390/vmlogrdr: Replace get_zeroed_page() with kzalloc()
+>       s390/uvdevice: Replace get_zeroed_page() with kzalloc()
+>       s390/hmcdrv: Replace page allocator calls with k[mz]alloc()
 > 
+>  drivers/s390/char/diag_ftp.c     |  5 +++--
+>  drivers/s390/char/hmcdrv_cache.c | 18 +++++++++---------
+>  drivers/s390/char/hmcdrv_ftp.c   | 14 +++++++-------
+>  drivers/s390/char/uvdevice.c     |  4 ++--
+>  drivers/s390/char/vmlogrdr.c     |  4 ++--
+>  drivers/s390/char/vmur.c         |  8 ++++----
+>  drivers/s390/char/zcore.c        |  8 ++++----
+>  7 files changed, 31 insertions(+), 30 deletions(-)
 
-[...]
+> Sincerely yours,
+> Mike.
 
-> diff --git a/drivers/iommu/iommufd/hw_pagetable.c b/drivers/iommu/iommufd/hw_pagetable.c
-> index ae62db50885c..52e52ef089a2 100644
-> --- a/drivers/iommu/iommufd/hw_pagetable.c
-> +++ b/drivers/iommu/iommufd/hw_pagetable.c
-> @@ -306,6 +306,10 @@ iommufd_viommu_alloc_hwpt_nested(struct iommufd_viommu *viommu, u32 flags,
->   		return ERR_PTR(-EOPNOTSUPP);
->   	if (!user_data->len)
->   		return ERR_PTR(-EOPNOTSUPP);
-> +	if (!viommu->hwpt)
-> +		return ERR_PTR(-EOPNOTSUPP);
-> +	if (!viommu->iommu_dev)
-> +		return ERR_PTR(-EOPNOTSUPP);
->   	if (!viommu->ops || !viommu->ops->alloc_domain_nested)
->   		return ERR_PTR(-EOPNOTSUPP);
->   
-> @@ -404,10 +408,12 @@ int iommufd_hwpt_alloc(struct iommufd_ucmd *ucmd)
->   		struct iommufd_viommu *viommu;
->   
->   		viommu = container_of(pt_obj, struct iommufd_viommu, obj);
-> -		iommu_dev = iommufd_device_get_iommu_dev(idev);
-> -		if (!iommu_dev || viommu->iommu_dev != iommu_dev) {
-> -			rc = -EINVAL;
-> -			goto out_unlock;
-> +		if (viommu->iommu_dev) {
-> +			iommu_dev = iommufd_device_get_iommu_dev(idev);
-> +			if (!iommu_dev || viommu->iommu_dev != iommu_dev) {
-> +				rc = -EINVAL;
-> +				goto out_unlock;
-> +			}
-
-Is it intended that every tsm-provided viommu has viommu->iommu_dev ==
-NULL?
-
-If so, could the tsm-provider patch make provider selection exclusive by
-looking up the physical iommu only on the fallback path? All checks
-against viommu->iommu_dev should be in that patch. This non-parent-hwpt
-viommu support patch should no longer check viommu->iommu_dev.
-
-Also, if viommu->iommu_dev and viommu->tsm_dev are mutually exclusive,
-could that be made explicit in a comment or by using a tagged union?
-
->   		}
->   		hwpt_nested = iommufd_viommu_alloc_hwpt_nested(
->   			viommu, cmd->flags, &user_data);
-> diff --git a/drivers/iommu/iommufd/viommu.c b/drivers/iommu/iommufd/viommu.c
-> index 7e74d3992ae4..cadd8a5ca912 100644
-> --- a/drivers/iommu/iommufd/viommu.c
-> +++ b/drivers/iommu/iommufd/viommu.c
-> @@ -17,7 +17,8 @@ void iommufd_viommu_destroy(struct iommufd_object *obj)
->   		viommu->ops->destroy(viommu);
->   	if (viommu->tsm_dev)
->   		tsm_put_device(viommu->tsm_dev);
-> -	refcount_dec(&viommu->hwpt->common.obj.users);
-> +	if (viommu->hwpt)
-> +		refcount_dec(&viommu->hwpt->common.obj.users);
->   	if (viommu->kvm_file)
->   		fput(viommu->kvm_file);
->   	xa_destroy(&viommu->vdevs);
-> @@ -31,11 +32,11 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
->   		.uptr = u64_to_user_ptr(cmd->data_uptr),
->   		.len = cmd->data_len,
->   	};
-> -	struct iommufd_hwpt_paging *hwpt_paging;
-> +	struct iommufd_hwpt_paging *hwpt_paging = NULL;
->   	struct tsm_dev *tsm_dev = NULL;
->   	struct iommufd_viommu *viommu;
->   	struct iommufd_device *idev;
-> -	struct iommu_device *iommu_dev;
-> +	struct iommu_device *iommu_dev = NULL;
->   	const struct iommufd_viommu_ops *ops;
->   	size_t viommu_size;
->   	int rc;
-> @@ -47,11 +48,6 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
->   	if (IS_ERR(idev))
->   		return PTR_ERR(idev);
->   
-> -	iommu_dev = iommufd_device_get_iommu_dev(idev);
-> -	if (!iommu_dev) {
-> -		rc = -EOPNOTSUPP;
-> -		goto out_put_idev;
-> -	}
->   	tsm_dev = tsm_get_device(idev->dev);
->   	if (IS_ERR(tsm_dev)) {
->   		rc = PTR_ERR(tsm_dev);
-> @@ -68,6 +64,11 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
->   			tsm_put_device(tsm_dev);
->   			tsm_dev = NULL;
->   		}
-> +		iommu_dev = iommufd_device_get_iommu_dev(idev);
-> +		if (!iommu_dev) {
-> +			rc = -EOPNOTSUPP;
-> +			goto out_put_idev;
-> +		}
->   		if (!iommu_dev->ops->get_viommu_ops) {
->   			rc = -EOPNOTSUPP;
->   			goto out_put_idev;
-> @@ -93,15 +94,22 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
->   		goto out_put_idev;
->   	}
->   
-> -	hwpt_paging = iommufd_get_hwpt_paging(ucmd, cmd->hwpt_id);
-> -	if (IS_ERR(hwpt_paging)) {
-> -		rc = PTR_ERR(hwpt_paging);
-> -		goto out_put_idev;
-> -	}
-> -
-> -	if (!hwpt_paging->nest_parent) {
-> -		rc = -EINVAL;
-> -		goto out_put_hwpt;
-> +	if (ops->flags & IOMMUFD_VIOMMU_NO_HWPT) {
-> +		if (cmd->hwpt_id) {
-> +			rc = -EINVAL;
-> +			goto out_put_idev;
-> +		}
-> +	} else {
-> +		hwpt_paging = iommufd_get_hwpt_paging(ucmd, cmd->hwpt_id);
-> +		if (IS_ERR(hwpt_paging)) {
-> +			rc = PTR_ERR(hwpt_paging);
-> +			goto out_put_idev;
-> +		}
-> +		if (!hwpt_paging->nest_parent || !iommu_dev ||
-> +		    hwpt_paging->common.domain->owner != iommu_dev->ops) {
-> +			rc = -EINVAL;
-> +			goto out_put_hwpt;
-> +		}
->   	}
->   
->   	viommu = (struct iommufd_viommu *)_iommufd_object_alloc_ucmd(
-> @@ -119,7 +127,8 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
->   	viommu->tsm_dev = tsm_dev;
->   	tsm_dev = NULL;
->   	viommu->hwpt = hwpt_paging;
-> -	refcount_inc(&viommu->hwpt->common.obj.users);
-> +	if (viommu->hwpt)
-> +		refcount_inc(&viommu->hwpt->common.obj.users);
->   	INIT_LIST_HEAD(&viommu->veventqs);
->   	init_rwsem(&viommu->veventqs_rwsem);
->   	/*
-> @@ -130,7 +139,7 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
->   	viommu->iommu_dev = iommu_dev;
->   
->   	rc = ops->viommu_init(viommu, idev->dev,
-> -			      hwpt_paging->common.domain,
-> +			      hwpt_paging ? hwpt_paging->common.domain : NULL,
->   			      user_data.len ? &user_data : NULL);
->   	if (rc)
->   		goto out_put_hwpt;
-> @@ -140,7 +149,8 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
->   	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
->   
->   out_put_hwpt:
-> -	iommufd_put_object(ucmd->ictx, &hwpt_paging->common.obj);
-> +	if (hwpt_paging)
-> +		iommufd_put_object(ucmd->ictx, &hwpt_paging->common.obj);
->   out_put_idev:
->   	if (tsm_dev)
->   		tsm_put_device(tsm_dev);
-> @@ -240,10 +250,12 @@ int iommufd_vdevice_alloc_ioctl(struct iommufd_ucmd *ucmd)
->   		goto out_put_idev;
->   	}
->   
-> -	iommu_dev = iommufd_device_get_iommu_dev(idev);
-> -	if (!iommu_dev || viommu->iommu_dev != iommu_dev) {
-> -		rc = -EINVAL;
-> -		goto out_put_idev;
-> +	if (viommu->iommu_dev) {
-> +		iommu_dev = iommufd_device_get_iommu_dev(idev);
-> +		if (!iommu_dev || viommu->iommu_dev != iommu_dev) {
-> +			rc = -EINVAL;
-> +			goto out_put_idev;
-> +		}
->   	}
->   
->   	mutex_lock(&idev->igroup->lock);
-> @@ -463,7 +475,7 @@ int iommufd_hw_queue_alloc_ioctl(struct iommufd_ucmd *ucmd)
->   	if (IS_ERR(viommu))
->   		return PTR_ERR(viommu);
->   
-> -	if (!viommu->ops || !viommu->ops->get_hw_queue_size ||
-> +	if (!viommu->hwpt || !viommu->ops || !viommu->ops->get_hw_queue_size ||
->   	    !viommu->ops->hw_queue_init_phys) {
->   		rc = -EOPNOTSUPP;
->   		goto out_put_viommu;
-> diff --git a/include/linux/iommufd.h b/include/linux/iommufd.h
-> index a4b29915d0ca..4d5995956cce 100644
-> --- a/include/linux/iommufd.h
-> +++ b/include/linux/iommufd.h
-> @@ -6,6 +6,7 @@
->   #ifndef __LINUX_IOMMUFD_H
->   #define __LINUX_IOMMUFD_H
->   
-> +#include <linux/bits.h>
->   #include <linux/err.h>
->   #include <linux/errno.h>
->   #include <linux/iommu.h>
-> @@ -102,6 +103,7 @@ void iommufd_ctx_get(struct iommufd_ctx *ictx);
->   struct iommufd_viommu {
->   	struct iommufd_object obj;
->   	struct iommufd_ctx *ictx;
-> +	/* Physical IOMMU backing, or NULL. */
->   	struct iommu_device *iommu_dev;
->   	struct iommufd_hwpt_paging *hwpt;
->   	struct file *kvm_file;
-
-[...]
-
-Thanks,
-baolu
+Applied, thanks!
