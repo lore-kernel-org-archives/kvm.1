@@ -1,17 +1,17 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.71
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.47
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795174140;
-	b=VUXCefXH0l5v6SJ3GUXNU97QxGUIWOvbz92aKpXFlWbbj788aKdnxCGtPukKI20EQsjQ
-	 dx9YXlJpEjjjnGijsWqsW9WdtERZv94/m3fQDdcaKCB6kcNE5tBIlyiNJ0wt+JhwHalfE
-	 3LwyW/w2po+TDFiB+kcFsRtJjctEeiiKg1o1BMMcsfBwPDIO5UacyNplDd2gicz5wOd+j
-	 WX3tM9bwqB+0IgrivhcuXAKl9hBegHwUEKSe9k79qVtn7up3MfBf31lJ9pIBcVhIi/osA
-	 ptDO9tbnnHDUkh75ZxCN2G47udXf+HDNEmplsRKm0e0sL0+uRDuScZ60VfVEtNQQelg==
+	t=1795174144;
+	b=usjvraH6eH3dsLCR85IZdqAu/1KVUA7Xpoq7VATLTfsPWoCqd1nCj8Yubh8Oaq63+hwE
+	 aaDEdQca4LhiR8Gxrtnr9q/b3uhLOtqkJ4EPzZZaIIss/JCMAUvlzZQaG7WIFUTYkFKUX
+	 Ti2Tkwr7pmURJygEAvIiXPT36Us068QupqGAL+nAktTGRHmYxz5sHR/CoW0h7rE4a9sZR
+	 G1CkqkiKM82F+5s0pXBXWsPFtB644Aoyhnryssyq/ln/kzULnAr2KYkhsZmL+cu7qAb5c
+	 /lcxWybADzmuKTkHFwjYd5NSE12ilDDC8AploAPdYFLkm5NCZIRcu7h2K5juWyDCArQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795174140;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795174144;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:
 	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 From:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:CC:X-Mailer:
+	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-ID:References:In-Reply-To:To:CC:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Originating-IP:
 	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
 	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
@@ -27,53 +27,53 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=uQw025XTO9QxbB8lnF8KcWPVp9vI5ezmiS2ZjFO9ha4=;
-	b=OwJLSVsr0LmsFOIoD1XgzRxuJ4x9sctyPAwIitttqAcPxQlV+vXtFvUHrUZHUTaDG75z
-	 Hbw2MU0Txj26GVxYQAZ7D+3jJ9XKF5rxvMc6wY4TLVeJ2fL/GmWeKp/Lu+acVra0DIpuQ
-	 BNlDjmvtKtD5Z4W7VIdvfddQU/GG2Xx4KGUQ1mVscXUU/lJTnXeXkARAN6Jh797D8Q/QY
-	 FjUsIh5KaHZ1ydWv+ucPxjReS71TBtSBqb2h4CnDRhqlnWWoN321f9bNIOQUSooMrbP+I
-	 Ay4p1PgBp1pucT5r0sFLTQ882RPN8SsKNifVPndXyx7OcnyPjAKVtb7dAEL8xsBie9w==
+	bh=wWToSiKRAsRKT/5OiQwHnJqL6/EgcT4uX0i+K+swT9M=;
+	b=nAz2R6tmYtrnvkgpc3fjqeD6kVEfYmWRbxKwZRIWFN7iNZmPVh676o8tsCMWfKGx9guI
+	 T2QoyfZECTjJR+FLSCzHF7LY06DjmJOtOrFbc4eiZw086qTQxqPCR5HPsMYT9nkZggPh4
+	 WNczMg+/kJxWyXJIGWeGMf5Bvu8RLfm8iGNHhTDqJ28u9SHGaZda8l/EOnS8RhhC0wv9c
+	 9a3rvkSs+UCXzQdNSaZbdN5O2eCbzed/6dyM42FFI5YMcCo+sz7lPvyJ5s5ATLpadpstp
+	 dzBGUNj4KUxPeKPx5Ha/SO7K8W9qoF4ctX/ehZhO8hiOY5UO23xmQxNEqEr7KxROG+Q==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amd.com;
 	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=myRRMjIc;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.71
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011071.outbound.protection.outlook.com [52.101.52.71])
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=LDWPzGEZ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.48.47
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012047.outbound.protection.outlook.com [52.101.48.47])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80CA3606A320;
-	Fri, 20 Nov 2026 11:28:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 80CA3606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD5D606A326;
+	Fri, 20 Nov 2026 11:29:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5DD5D606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=myRRMjIc
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=LDWPzGEZ
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ii8zX/7vn5xzqdZicD3IPPxVRq4q/D6AegfDhUNJqkjGRRN2kEDchq4vpStjpRQo7HL+y7tVv9Tn6bvAzgeWGA0y6RdcnwrjDR6oTg3kpLMwd9Zo7men1Zg+YQxsZonnD14jHfnKb1rciln93YVp9HBVo1OKx211fEoWP7apq8EdzqNwB7WGyjcwk74frEL2G8MK0uVA/ZNiJpKg0IN9Rr/6OW3CS/cGaTwExQrm/FhkoizE1tveleLPM+AEp9GnCUu66hOsQlSpbq04XkmAdMPKLRU/RkkbaXauenVSDysbKWeJzy83FxFO+uqV5hynwUasGJWzYKLAZqwqOWtamQ==
+ b=HDWWRZoaajKTwAh1gK94OaWllsmrDR3PTNxfyMPitpTjWly2BaDuo9hh4PAkpB1z0quUIytp6oSS/8Ax7ZPIajWw7rhemuQvKhC7RpkixIUXrMiYRNy18iZGYzRxIGtf+LqULuJsLNsMqJ09i8M79q0mRuFSzDpImshmyGcvok1GSqZmaZ+i9VlwgZENxHZNtlFXzcsuOAZxQtoGK9qEKio27KcnbHUIK4UQnBVq3mUr+9X2ZhDX38gNHlowY0DBXuSuxbQT9s6cFUNnsb2EWHvsBkhAu9VhfDvkiPhszk9fObN2oq0bn0+6lIywAdqzmAoYm9Akr9DfziPoG5wO2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uQw025XTO9QxbB8lnF8KcWPVp9vI5ezmiS2ZjFO9ha4=;
- b=KXbPTLntQ5I4/M/fhGGV41JlcfbuENf5apiRt1Q8HuH3DhX2+MbfI7YDKrNfkF0ffTwYs4PkihvD0Id39qiIUXojQTeI9NLQ+aUnjm1nbQvvKOM+jx1z8vHaXD8zJnSecenKP+nEJ+oRQwabMSabG+xACDTbnuNOQp7mdy+uwlkPBYEdPLKoDwJZ+shU81Cm3H0n8NojmL3MZJBHOvPGfbvrzc0qBnE4p1n+E+9LMGSMBfNw9W9T4Ms53M64UjVWkTn58Bi2bIqHCUeycM13rHXbx1zW80TZJRK0jb1FDQYF0F56qVysRfCDnOKy6S1M56Rn6NnWBWYpME6UOaluoQ==
+ bh=wWToSiKRAsRKT/5OiQwHnJqL6/EgcT4uX0i+K+swT9M=;
+ b=DZbXroqes2+++rkSLYkBKxlkLumWcaroN3hTyMmtChtJTtXcXkRrB6k6trvu+kK7+Bpzom7EjSevZ+urDlw660csxsNHAXWK1HDaI5pkXR8PAvqfecNJoVtirLqUTF39P/KbtqjTOvRzKbWlX92BsJJ8spiao8kFdTzyIu9K0NrcZpwFU9zGNvcafEQ/pGTcxyX4OvYjRmW6rnjUFHDxcSiWE858TXpFSZDAcKtYD0c3vxreDgAv7uGpEYeNlarRahcWPQhinsY65gLmUMN0+I5P3D+67UihTCXt0FwXjG7hF/H7oKuSw2Ln9df+UOPxTP1K7lhg60i4Zglm2gGDyQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uQw025XTO9QxbB8lnF8KcWPVp9vI5ezmiS2ZjFO9ha4=;
- b=myRRMjIc8cLKw4toRGfKgatYLP0EC4/bItqELsMozbnt6qRfXCLIIHA/uLREtdSFiY4f4AXJu0oWZvc3sXo50gZJGTGUFCRZKOklDxbQjrJiOdwTaMFiou6UgIpVr7p+lFG7R/NhNxl4pOl+3FyVzAn1JC06Pe1iX+BukQoecyI=
-Received: from PH8P220CA0029.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:348::13)
- by MN0PR12MB6151.namprd12.prod.outlook.com (2603:10b6:208:3c5::13) with
+ bh=wWToSiKRAsRKT/5OiQwHnJqL6/EgcT4uX0i+K+swT9M=;
+ b=LDWPzGEZUSNaG8F2XI2YmSAAOBwc6UFEIPH5vL8JtYOCgsVnpaGTcXKWkyQ7vmgc/R0HjZb/fQt8HWUaMknDTH5U/4a+KKbdYrztuRp4df0vY740t9InhxkPt1LqSdkVhTHT3TKBacRllPDd9rw45ENHkYA0NBSFLuwLPEhHQYA=
+Received: from DS7P220CA0060.NAMP220.PROD.OUTLOOK.COM (2603:10b6:8:224::25) by
+ BY5PR12MB4081.namprd12.prod.outlook.com (2603:10b6:a03:20e::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.12; Fri, 20 Nov
- 2026 11:28:55 +0000
-Received: from CY8PEPF00000059.namprd21.prod.outlook.com
- (2603:10b6:510:348:cafe::7c) by PH8P220CA0029.outlook.office365.com
- (2603:10b6:510:348::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.10; Fri, 20 Nov
+ 2026 11:28:59 +0000
+Received: from CY8PEPF0000005B.namprd21.prod.outlook.com
+ (2603:10b6:8:224:cafe::56) by DS7P220CA0060.outlook.office365.com
+ (2603:10b6:8:224::25) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.639.12 via Frontend Transport; Fri,
- 20 Nov 2026 11:28:55 +0000
+ 20 Nov 2026 11:28:59 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -81,17 +81,17 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- CY8PEPF00000059.mail.protection.outlook.com (10.167.247.22) with Microsoft
+ CY8PEPF0000005B.mail.protection.outlook.com (10.167.247.25) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.662.0 via Frontend Transport; Fri, 20 Nov 2026 11:28:54 +0000
+ 15.21.662.0 via Frontend Transport; Fri, 20 Nov 2026 11:28:58 +0000
 Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Fri, 20 Nov
- 2026 05:28:50 -0600
+ 2026 05:28:54 -0600
 From: Shivank Garg <shivankg@amd.com>
-Subject: [PATCH RESEND v3 0/4] KVM: guest_memfd: fix NUMA selftests
-Date: Fri, 20 Nov 2026 11:28:38 +0000
-Message-ID: <20261120-gmem-selftests-fix-v3-0-d94ffe17ead6@amd.com>
+Date: Fri, 20 Nov 2026 11:28:39 +0000
+Subject: [PATCH RESEND v3 1/4] KVM: selftests: Prepare guest_memfd_test for
+ arbitrary NUMA nodes
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,12 +103,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32PvU4DMRCEX+XkGkf+jeNUFKSlICWiWPvWiSWcA
- 9ucgqK8e1YHEhSIcma038xeWMOasbHtcGEV59zydCKh7wYWj3A6IM8jaaaEWgsvJD8ULLzha+r
- YeuMpn7kCi95Ir5LzjA7fKpK9QJ/Z026/e3xgL+Qfc+tT/Vy6ZrWk/2FnxQW3oJyWVmtr4j2Uc
- RWnssBm/Rvg/gRoAjgwAW2UMW7gB3D9mlnx/YNe7t9bAzTklJfct0OkM5OiNmsVtDcegnLBA25
- kCn4cg6VaI6Ij2PUGtfneBEcBAAA=
-X-Change-ID: 20260901-gmem-selftests-fix-2a5e94192f79
+Message-ID: <20261120-gmem-selftests-fix-v3-1-d94ffe17ead6@amd.com>
+References: <20261120-gmem-selftests-fix-v3-0-d94ffe17ead6@amd.com>
+In-Reply-To: <20261120-gmem-selftests-fix-v3-0-d94ffe17ead6@amd.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
 	<pbonzini@redhat.com>, David Hildenbrand <david@kernel.org>, Shuah Khan
 	<shuah@kernel.org>, Jim Mattson <jmattson@google.com>, Peter Shier
@@ -118,85 +115,173 @@ To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
 CC: <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, Shivank Garg <shivankg@amd.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795174124; l=1943;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795174124; l=5772;
  i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
- bh=BpggX0TRAkbOUAEZ9fxuhy71gbtUNZ9g5B3Rg+dxnUI=;
- b=O//Sn1JY6dQGvxNGQgMDsa2Cie3HIYn9tB3tM5m7mdNws9wesw7+i23ALAlPvIZ3oNMHjHXVQ
- xwtrUTwCjRPDL7xsIOdatFrg/I3yvZw6VEGkP8F17GxsZ4NVRA6KyXT
+ bh=o0ENxN5scgtW4qPSQidhouUo3qOYkeufndh1ddmSKe4=;
+ b=1kuYYZiUVhu7J2N5rcF+A6ZbYoF5ZbV8xr1xfi9RA9AhSSSjopPb8pqFyfiObbj+UgzwO10ng
+ zvU3pJW2MvpBQguhd2S3siQjX9xd24p9hgsihXgoF5LqhFRXaMVwQJE
 X-Developer-Key: i=shivankg@amd.com; a=ed25519;
  pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
 X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PEPF00000059:EE_|MN0PR12MB6151:EE_
-X-MS-Office365-Filtering-Correlation-Id: c51d198d-2d22-4c7b-517d-08df46f975f1
+X-MS-TrafficTypeDiagnostic: CY8PEPF0000005B:EE_|BY5PR12MB4081:EE_
+X-MS-Office365-Filtering-Correlation-Id: ee056b92-eb64-48e9-8ab2-08df46f97862
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|36860700016|82310400026|921020|11063799006|261026140227099003|261021123027099003|261009223027099003|261021121427099003|261102123227099003|10067099003|261022105027099003|56012099006|261028144727099003|18002099003|6133799003|13003099007;
+	BCL:0;ARA:13230040|82310400026|23010399003|7416014|376014|1800799024|36860700016|6133799003|18002099003|261009223027099003|22082099003|921020|11063799006|10067099003|56012099006|261102123227099003|261028144727099003|261026140227099003|261021121427099003|261022105027099003|261021123027099003;
 X-Microsoft-Antispam-Message-Info:
-	CHtIa9TDJaAwqG28J0eqmiTNPz+DD3n1jroRH9v57VWemzH98Kojs82wsKYz6vmZCdw0J1Lvv1wArcpU/w6lYyF2Sa25cCHwAijN1XvE/NMW1dmMLyHDxdXLgMJUymjvJyhh/8nkz173PRbQeXd6rgzR+YZKDOe5m0AE+TxFmGhwXJnooqAJNtqRkZriR8DMqbwQ53ErGnYq5uaY10dhiPaLfUYUSSEKBswKSU5gpH0DBL39Nu+gXqY9orUdpCAjsjPKP3g2ntabP/JR9xS6Xd5pB8e3nLkDXIp+J+KH3+b32xTrWEyhZiQhfMQ620isHXvtMoZ+FH1iQEnNcMFF9fbYP+H/gULB63p4Wz0+BtAflfozc0VSMcGH24Z7Ti4Q0HCYdrIGFBtZ416PXTzDie9Ty44k/pQOBBFbOHTCfnpr4kNlplMuR3/qh3NceVTZ4/fO9muZq1S+fJxe4KbCXt+hqK/roSpo15iGcPPPj8sA9Mnge2gshSSC4BHs6JIXbT/xUpcVPY+ykbI19yr7jIES35P7pM+BDHRJHxqC5ymzInNl58xsZc8y9qFvpcu7hVSyxbdk/3FIoSBj8EkhTSrTD20SPzFCHypkba04NxqmKWxXnT9WVpQz0s7Ds2OT/pOXv9jwjIL2//upCe1ePVBKjrQDj5rwleTG9Q5AkPi9uQ69U9fMwMncYdhC8HKO/JWgRAXukLs0clA9zYcGFw==
+	jgxZiEdnAaOkFq90Nhdvlxg/CQFeKQMuitiUF5rUttEhX61nxXS4I61WO5qWAfzFBXCdlCZmx8vEJVeO0l8vGgIR/vDNQyt5UqnrjT3n0qxndvJWGu6YdNWqkqjhOnPdr4lZvOnld1M75bS4ysE1RvX02Nr5tvyHJ8/O3RJJAhqzeeQ3j2cT08V/o7xBFA5cV8zaNulmzjOcWfMe1xTy6R6LTrYGsZGcYzySSx55EICSZlbcrdWH+AQDFt7xSdtKGeGKbe225Weue3ja9dRZsPOmWWhe6C85mPQ54AaFtB3KaAivB1HamDSntm/fwpOflUiVx/Nsh87Dl+OAPUOhOUrr3adLeyb5m2ncllLG7yVwbCSn0/2l8Wp8UrePSMaN/VpApXq82kaDhWY7EIr/6hdzwcD/PaF6gkg19Mbtw1yW0ZZxm9YiYJgD5flSIv5AFygnnF3KbZMCdOLnK+lkyj9B+g9CcF97UoriVdwFHV+KGqla9r8LJEqzjvkYtygduODn5HM97unI+MhotsCEdYH8LB8Sz2hBo5sT6xNMGdldtaG3EKWdh4aH96gLn7I4pejkix/YLd75/fXAQ13H4XQx5Tc5FbqLtX+s7Xp6JSYAA8ufctv1ZV2u1uWBIacYrkOAKSD6bh3QjvvVCkV+IcLfojuEjvaQnf71FLmhscwkAuekpsHW36F3Do8fqIMlEL1qLyDcCDlC3AN0rvMmAJKYn9a5a7IgH1C7VXXZzXOzlON663IsBF/WN1KQoPfZ
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(36860700016)(82310400026)(921020)(11063799006)(261026140227099003)(261021123027099003)(261009223027099003)(261021121427099003)(261102123227099003)(10067099003)(261022105027099003)(56012099006)(261028144727099003)(18002099003)(6133799003)(13003099007);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(23010399003)(7416014)(376014)(1800799024)(36860700016)(6133799003)(18002099003)(261009223027099003)(22082099003)(921020)(11063799006)(10067099003)(56012099006)(261102123227099003)(261028144727099003)(261026140227099003)(261021121427099003)(261022105027099003)(261021123027099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	TRCW3u4TqHi7mWCAWDN7YgDbGnZaQkIaQdl4iXra9+7CSU1GnKAlRWqceMTg5j49NjhXsQRdbnmItxnQfhguTnoail/JG0SKP59Yr2HzcAaCLrLEbsjd1vUMJOYMYYX7NRCYMl4k5vKDgUqvM9LZaw4urVgZup7sMucpH9wf2UfL1ZhLGkocuCQCl4w9TzT/B2DUvHKxmWN83hSKYRkbXKSDHmIkYyuyj3BonrPZ6g1XzyHg+VtMuaECyW9I3+O5Oh+AfUm4gIcm2m/7VMzzTAM+oFqo4T75+Dg7cw3kjOdm6Cn82mJwJ3G4USAJAIsjRPgpHkuK3FiAM3CySB5ZM/bYc/wIjeG3vkK+6EVf5fo0+4mHPARemz6DC7Gpp5KNdW/z5tWunw7gsRt6w8gZeBhfUpPbmlhUnq8aK5nGQTcEtCIMEbsuh4GEOTbkqb3Z
+	xj3idMLsmAhgapBecybFfceF2JdMr30jtdjz8JIyVp1Gduor6Iv2lKXNWoz3tz0iwdJyJh9TVc3AJrNq5kslPTjXO/X8uhqmXyuqX1G4ISVNDB8nxU/rJhj+xxVJFyMf35yvlt/qNh0Qek8mxdiL4ty5+JUFLEiVS1hxfQQms2nyfimxaJyDAk28Jg8z/nqsXvUp2Q8/KXAvAwWYQIVrVhG3C69DNUOU6oVIMewwgBMEJVyjLDay14zsLgGZcqTKMHKlHGxo6x9u4qkwqYxtrbDO/FCr6QG4kslI2Tpt56hYwbWxl4zAaM4IbtlqiaLHjsEJ7qH9hSOJlMmztQ6WoMUVcA5sixAMl0Nt+4INs/h2nGwxPjGAaxKBDgROFxaLYa+nyUSFzSOyOTZVM1BoriM29uqcAbRhAS4jP8BEsmmwz9frJcWXlyTXHpbfOw9w
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2026 11:28:54.8567
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2026 11:28:58.9537
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c51d198d-2d22-4c7b-517d-08df46f975f1
+X-MS-Exchange-CrossTenant-Network-Message-Id: ee056b92-eb64-48e9-8ab2-08df46f97862
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CY8PEPF00000059.namprd21.prod.outlook.com
+	CY8PEPF0000005B.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6151
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4081
 
-NUMA selftests in guest_memfd_test assumes that node 0 and 1 exist and
-have memory. However, nodes can be sparse or memoryless which would
-break this selftest.  Select the nodes from MPOL_F_MEMS_ALLOWED instead.
+Store the NUMA node IDs used by test_mbind() and
+test_numa_allocation(), build nodemasks from those IDs, and use the IDs
+when checking move_pages() results.  This prepares both tests to select
+nodes at runtime instead of assuming nodes 0 and 1.
 
-Based on kvm-x86/next.
-
-Tested on bare metal and in QEMU. Without this series, the test fails
-with EINVAL when node 0 or node 1 is not an allowed memory node. With it,
-the test passes for any set of allowed NUMA nodes.
-
-RESEND:
-- Rebase on kvm-x86/next. No code changes.
-- Link to v3: https://lore.kernel.org/r/20260907-gmem-selftests-fix-v3-0-7a4be5c1cc8a@amd.com
-
-Changes in v3:
-- Rebase on Sean's spin-off series [1] which picks up patch 1 and 2.
-- Drop Patch 3 as version in [1] is better. (Sean)
-- Split patch 4 of V2 into 4 patches. (Sean)
-- Use MAXNODE_FOR_MASK() for maxnode value. (Sean)
-- Link to v2: https://lore.kernel.org/r/20260901-gmem-selftests-fix-v2-0-5a273153354c@amd.com
-
-Changes in V2:
-- Split from unbind race fix. (Sean)
-- Include <linux/bits.h> that defines BITS_PER_TYPE for self-containment. (Sashiko)
-- Link to V1: https://lore.kernel.org/kvm/20260823-shivank-gmem-fix-split-v1-0-512a29fb8e86@amd.com
+No functional change intended.
 
 Signed-off-by: Shivank Garg <shivankg@amd.com>
 ---
-Shivank Garg (4):
-      KVM: selftests: Prepare guest_memfd_test for arbitrary NUMA nodes
-      KVM: selftests: Use an allowed memory node in test_mbind()
-      KVM: selftests: Use allowed memory nodes in test_numa_allocation()
-      KVM: selftests: Drop unused sysfs NUMA helpers
+ tools/testing/selftests/kvm/guest_memfd_test.c | 53 +++++++++++++++++---------
+ 1 file changed, 35 insertions(+), 18 deletions(-)
 
- tools/testing/selftests/kvm/guest_memfd_test.c | 61 +++++++++++++++++---------
- tools/testing/selftests/kvm/include/numaif.h   | 52 ----------------------
- 2 files changed, 40 insertions(+), 73 deletions(-)
----
-base-commit: cbe54fc3462b3949ab27b9ae81fb9ddb509040c7
-base-tree: https://github.com/kvm-x86/linux.git next
-change-id: 20260901-gmem-selftests-fix-2a5e94192f79
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+index cd5df88bc642..b3bd03167ba8 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -78,31 +78,35 @@ static void test_mmap_supported(int fd, size_t total_size)
+ 
+ static void test_mbind(int fd, size_t total_size)
+ {
+-	const unsigned long nodemask_0 = 1; /* nid: 0 */
+ 	unsigned long nodemask = 0;
+ 	unsigned long maxnode = MAXNODE_FOR_MASK(nodemask);
++	unsigned long bind_nodemask;
+ 	int policy;
+ 	char *mem;
++	int nid;
+ 	int ret;
+ 
+ 	if (!is_multi_numa_node_system())
+ 		return;
+ 
++	nid = 0;
++	bind_nodemask = BIT(nid);
++
+ 	mem = kvm_mmap(total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd);
+ 
+ 	/* Test MPOL_INTERLEAVE policy */
+-	kvm_mbind(mem, page_size * 2, MPOL_INTERLEAVE, &nodemask_0, maxnode, 0);
++	kvm_mbind(mem, page_size * 2, MPOL_INTERLEAVE, &bind_nodemask, maxnode, 0);
+ 	kvm_get_mempolicy(&policy, &nodemask, maxnode, mem, MPOL_F_ADDR);
+-	TEST_ASSERT(policy == MPOL_INTERLEAVE && nodemask == nodemask_0,
++	TEST_ASSERT(policy == MPOL_INTERLEAVE && nodemask == bind_nodemask,
+ 		    "Wanted MPOL_INTERLEAVE (%u) and nodemask 0x%lx, got %u and 0x%lx",
+-		    MPOL_INTERLEAVE, nodemask_0, policy, nodemask);
++		    MPOL_INTERLEAVE, bind_nodemask, policy, nodemask);
+ 
+ 	/* Test basic MPOL_BIND policy */
+-	kvm_mbind(mem + page_size * 2, page_size * 2, MPOL_BIND, &nodemask_0, maxnode, 0);
++	kvm_mbind(mem + page_size * 2, page_size * 2, MPOL_BIND, &bind_nodemask, maxnode, 0);
+ 	kvm_get_mempolicy(&policy, &nodemask, maxnode, mem + page_size * 2, MPOL_F_ADDR);
+-	TEST_ASSERT(policy == MPOL_BIND && nodemask == nodemask_0,
++	TEST_ASSERT(policy == MPOL_BIND && nodemask == bind_nodemask,
+ 		    "Wanted MPOL_BIND (%u) and nodemask 0x%lx, got %u and 0x%lx",
+-		    MPOL_BIND, nodemask_0, policy, nodemask);
++		    MPOL_BIND, bind_nodemask, policy, nodemask);
+ 
+ 	/* Test MPOL_DEFAULT policy */
+ 	kvm_mbind(mem, total_size, MPOL_DEFAULT, NULL, 0, 0);
+@@ -112,7 +116,7 @@ static void test_mbind(int fd, size_t total_size)
+ 		    MPOL_DEFAULT, policy, nodemask);
+ 
+ 	/* Test with invalid policy */
+-	ret = mbind(mem, page_size, 999, &nodemask_0, maxnode, 0);
++	ret = mbind(mem, page_size, 999, &bind_nodemask, maxnode, 0);
+ 	TEST_ASSERT(ret == -1 && errno == EINVAL,
+ 		    "mbind with invalid policy should fail with EINVAL");
+ 
+@@ -121,9 +125,9 @@ static void test_mbind(int fd, size_t total_size)
+ 
+ static void test_numa_allocation(int fd, size_t total_size)
+ {
+-	unsigned long node0_mask = 1;  /* Node 0 */
+-	unsigned long node1_mask = 2;  /* Node 1 */
++	unsigned long node0_mask, node1_mask;
+ 	unsigned long maxnode = 8;
++	int nid0, nid1;
+ 	void *pages[4];
+ 	int status[4];
+ 	char *mem;
+@@ -132,6 +136,11 @@ static void test_numa_allocation(int fd, size_t total_size)
+ 	if (!is_multi_numa_node_system())
+ 		return;
+ 
++	nid0 = 0;
++	nid1 = 1;
++	node0_mask = BIT(nid0);
++	node1_mask = BIT(nid1);
++
+ 	mem = kvm_mmap(total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd);
+ 
+ 	for (i = 0; i < 4; i++)
+@@ -149,10 +158,14 @@ static void test_numa_allocation(int fd, size_t total_size)
+ 
+ 	/* Validate if pages are allocated on specified NUMA nodes */
+ 	kvm_move_pages(0, 4, pages, NULL, status, 0);
+-	TEST_ASSERT(status[0] == 1, "Expected page 0 on node 1, got it on node %d", status[0]);
+-	TEST_ASSERT(status[1] == 1, "Expected page 1 on node 1, got it on node %d", status[1]);
+-	TEST_ASSERT(status[2] == 0, "Expected page 2 on node 0, got it on node %d", status[2]);
+-	TEST_ASSERT(status[3] == 0, "Expected page 3 on node 0, got it on node %d", status[3]);
++	TEST_ASSERT(status[0] == nid1, "Expected page 0 on node %d, got it on node %d",
++		    nid1, status[0]);
++	TEST_ASSERT(status[1] == nid1, "Expected page 1 on node %d, got it on node %d",
++		    nid1, status[1]);
++	TEST_ASSERT(status[2] == nid0, "Expected page 2 on node %d, got it on node %d",
++		    nid0, status[2]);
++	TEST_ASSERT(status[3] == nid0, "Expected page 3 on node %d, got it on node %d",
++		    nid0, status[3]);
+ 
+ 	/* Punch hole for all pages */
+ 	kvm_fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE, 0, total_size);
+@@ -163,10 +176,14 @@ static void test_numa_allocation(int fd, size_t total_size)
+ 	memset(mem, 0xaa, total_size);
+ 
+ 	kvm_move_pages(0, 4, pages, NULL, status, 0);
+-	TEST_ASSERT(status[0] == 0, "Expected page 0 on node 0, got it on node %d", status[0]);
+-	TEST_ASSERT(status[1] == 0, "Expected page 1 on node 0, got it on node %d", status[1]);
+-	TEST_ASSERT(status[2] == 1, "Expected page 2 on node 1, got it on node %d", status[2]);
+-	TEST_ASSERT(status[3] == 1, "Expected page 3 on node 1, got it on node %d", status[3]);
++	TEST_ASSERT(status[0] == nid0, "Expected page 0 on node %d, got it on node %d",
++		    nid0, status[0]);
++	TEST_ASSERT(status[1] == nid0, "Expected page 1 on node %d, got it on node %d",
++		    nid0, status[1]);
++	TEST_ASSERT(status[2] == nid1, "Expected page 2 on node %d, got it on node %d",
++		    nid1, status[2]);
++	TEST_ASSERT(status[3] == nid1, "Expected page 3 on node %d, got it on node %d",
++		    nid1, status[3]);
+ 
+ 	kvm_munmap(mem, total_size);
+ }
 
-Best regards,
---  
-Shivank Garg <shivankg@amd.com>
+-- 
+2.53.0
 
