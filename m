@@ -1,77 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.153.30
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795207659;
-	b=tOR0p/uC/hreBqxx8izuBVYqgpQ4dv0bpQuk1S9imcVipW4W9Z733X0QmVmnaDSk/jH0
-	 nlMFMOiORCPLIKsYRt3NWkJtI+9Tetflktg5asRRptHG/5WjcJxI4N55NFh51MJV9mnGm
-	 0aGoYfYaUQ0wG/P5lnyuJp7Bf/bVvTrzmc0tQloEojy9PhHOYRj5kwFKO5MddT9IX3KpO
-	 nE2lmz2+pew1XZ/yNe0GH8PfwAQz7TdPC+HD4occgfsK6dSH7ZGpaplzs0nMc2S3AIQwM
-	 /U6ajl4TLO08RWzRvmSpHHdfQIAOt6wfIBo6NZt1v59T7qzbQ8zcONpnnuwlsDVN9cw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795207659;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Originating-IP:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:X-Authority-Analysis:
-	 X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Virus-Version;
-	bh=yVEZdfrqnWoREnyQLPgTpyCdDOhNLBO5hd1CUBjj4Qg=;
-	b=cM1sPHf/07R3QCJZIo6DFg7ebNszRuWCzM8BLl24ER1mDoR96SabkdB1Z03rEey7HzaR
-	 VKVYRanzXB0cPoZLl9IpC5YYYNLQo4v7xh51uQ19kiC1I8uWCn35XpUmDJtV6dFDGR4dn
-	 mwDZI1dqnotK3glCgNXhiAefL3zg0Nhe6Ny5LnNDzFPm80qPSrrpU29P5Ugj46VJ2lRME
-	 q+VesV6h5WIV7yZ+1P81gRF/oaWfqqUoOsF65gsWoo4JCgiLsvAWCK9jx++s+1opwUb8P
-	 VPcwC3DJBwrfR/ufZoiIRF/4LBwLLPhDC8jIEDTxPmcQ89qOnowkN1emCDKz5lmIfAQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=AIlfUdj1;
-	arc=none smtp.remote-ip=67.231.153.30
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795208838;
+	b=Fb9aj5ZCrm+mrVGazK1Zcv+g+r+58RjBQQr6JSCdnsesUNuHFgb4yoi/MlVj4QzH5F8i
+	 5/pXLuDIdUK1YIYuE6R1Y3m5QimqWzKxwB7coL7FCfmPNaYKrqcAcKFmYAjELgS+aUwkD
+	 uZrqikvohrSqxloxfrlXAXRUO1x88LXriyEITshruTA798UOgusApIHodsEAdPixjRGMS
+	 NFp8ZVA+ALkmTkBflNMqVPnvt6ubsVBtbxeS8n+Fk0RKUWlofnXuZSj3AUWaHSJA5SOuB
+	 cVuMI/nIJYSFDut2M7ExHrS5Mh21EjWm9wWTTV+GVxuQaHYBNLgKViSK4A4ZP+EIcLA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795208838;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=AMh54TR0Yx74ZrJDPkxnOx/lYr8Z2aFztvrYWkfWUx4=;
+	b=HNQqXP49BiU88hkcPyaGwHr6zsuvctrz/+zaTiPQPY/lH1ic1RNDffTq1ryihpUK9Pqg
+	 SEaS0lEOjOc9t3xlR2IswvDg9VKXEzsPv0FskGq91/RwYjwKJjNjqjnj2oj+35nrYM9UN
+	 GkJ+sk/CrM6j35FQllSPaiJL7gzdRuVvU0ze7LflVcThYd2uIy++sZN+Zlx5IS4BIyfWD
+	 LM2XQON69zoJGKLW3vlOesqwdW7WeYk1ApttYTuG3c7yfJVkUXHjQa4IqokVpPRpevEUI
+	 zPYlHNV4g0aFg+/e0ITjHlMwrpvRjdrqisP/USmsH/sIUIRfSDUo6iXh87cVMDEIG+g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SFCGdy7D;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CD560A2618;
+	Fri, 20 Nov 2026 21:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SFCGdy7D
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1795208838;
+	b=aF1+noMmSDu1eEMq9EgQt+NTUKZdXUpikM3XRycAj+jzmx49H90cXKl5ccq3CgShbD7w
+	 iigXPdhs/wDPBNJIMFjtPM7+v3aIMVKekBnJszwDa3YZ0cacWyxxhXgB7WHRfotmmV8ze
+	 yiqLWsf4+jfm056jh8s1DLXoqDXttJR6AwtIavAI1D3wenLo81kg2MqV3ecPmQaqFqIhQ
+	 9WIXAtD9mf8ufAOIjEid57nFXbQVs0vLjxtmTL/i04hVpEsQBXkc9j9CCVCtTg2f+I+30
+	 YBKt56jcVz5tzf2Glt/diU/Sz5cwSadAFp6Ax7rNIIKK95rxgTOAsnZPgqDiiRHVJ8w==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1795208838;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=AMh54TR0Yx74ZrJDPkxnOx/lYr8Z2aFztvrYWkfWUx4=;
+	b=q9eNIiEgBgiCwhEVQ/v7+/eLoATFNyZKFRzst7IoyZ1FTGlQrDIMR6rMDFRsLWS+Sl5P
+	 2KFn2j32eRNm0EqjLl09AiNE2j8UojnNSonBhcnCDaexY9Zl+uJyb5UyJPN8PvR8CcytG
+	 UoNGH1GrrxRmn14wP64iRqvx/EO50djsb/b/woymnD+UB4HPZvOGsdOT+aPoZ1ErTUwz4
+	 dzbiea+dRo4DNOZlCYaCd8JE83lHHvtiIFUXnTvVA+/67ZCk3fqO/4nqJCSwu0KmWC4z/
+	 EhYovxWtS8gvHN22dBXVkJA+1ObjYEx8BddsE7jGm4RcyBEo7v/05uwzbfiCOrtWKLw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595A7606A6E0
-	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 20:47:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 595A7606A6E0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=AIlfUdj1
-Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AKHA4km1877707;
-	Fri, 20 Nov 2026 12:47:08 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps82601-s2048-2026-q3; bh=yVEZdfrqnWo
-	REnyQLPgTpyCdDOhNLBO5hd1CUBjj4Qg=; b=AIlfUdj1UWpwHAKlNe10VDFmUMi
-	rgn3PmdUOrYQqUaOe3M5TrEW5FxLSPZeIw7XHmGEZaKY4zS1m9UsBes6uxfpGhDK
-	Zy12zzS1umyDlAYRUseJSRtMNklW3Gob6oFwDSFckoqiS7wo1hBG5WnY1fTYcmxv
-	lIN2NIAAKqV5FFzu9LwXfx0L3kzvWjPKF9qU7NsTE79CzCkhpjOVOYqXvcuyQcm6
-	8goQ+fHF/F2k2gb7nAAki1tZowd4kGOqFAcQupo3nJngCuTo5tdAHrHIsfa5PKQ+
-	83nLgwPR8TsmkxRHbPkCtUrEFd8dOB43VpIO3IlbhHp6UBperhRO7KmksOw==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4j2tc41pjv-18
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 20 Nov 2026 12:47:07 -0800 (PST)
-Received: from localhost (2620:10d:c085:108::4) by mail.thefacebook.com
- (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Fri, 20 Nov
- 2026 20:47:07 +0000
-Date: Fri, 20 Nov 2026 12:47:06 -0800
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-To: Tao Cui <cui.tao@linux.dev>
-CC: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
-        Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-        Stefan Hajnoczi
-	<stefanha@redhat.com>,
-        Stefano Garzarella <sgarzare@redhat.com>,
-        Andrey
- Drobyshev <andrey.drobyshev@virtuozzo.com>,
-        <virtualization@lists.linux.dev>, <kvm@vger.kernel.org>,
-        <linux-mm@kvack.org>, <akpm@linux-foundation.org>, <cuitao@kylinos.cn>
-Subject: Re: [PATCH v2] vhost: account the per-device kernel allocations to
- memcg
-Message-ID: <awCxyqE/9iSYBjZF@devvm29614.prn0.facebook.com>
-References: <20261120054517.526275-1-cui.tao@linux.dev>
+	by smtp.kernel.org (Postfix) with ESMTPS id 4D3151F000CA;
+	Fri, 20 Nov 2026 21:07:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795208837;
+	bh=AMh54TR0Yx74ZrJDPkxnOx/lYr8Z2aFztvrYWkfWUx4=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=SFCGdy7DDgmsgow98a2HISw7cH+2OYk0QVUHjbHHGoC7WP/5+VUpCk/da7mkhVXaj
+	 3BcqC0U5IqWtFtReGWtFHFoV3Le4MTWofxhjVN46HLC7rAFqre7ijGa0/mLLKV7H2u
+	 NIRE5by29Eyhl16pHyEiPFMADYWbFEd2QMYnjSRy/ChCwonFjAAsxhwXPI7RpqGSF7
+	 +WiXv3ouCHqOldgzf8TYIxqYf30wUbLu7vgRyYvdsPSe5lWxhftSihddkdt7fEcEjC
+	 LXT6QT9p8wwS/KjQKieNizfuQpMlpXLNzTgQqy05wMGGoDpoKYxbCi68pz86Na+s6y
+	 pLBEQ82GuFH1Q==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id C46064BA28;
+	Fri, 20 Nov 2026 21:07:13 +0000 (UTC)
+From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Date: Fri, 20 Nov 2026 13:07:12 -0800
+Subject: [PATCH] KVM: x86/mmu: Prevent hugepage recovery on non-guest_memfd
+ private GFNs
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -81,180 +83,98 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261120054517.526275-1-cui.tao@linux.dev>
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIwMDA4MiBTYWx0ZWRfX4xJSOFOxWakw
- f0+6TcEAk+PtYtOm+LJafn/EIiSWnGMpUHlq7Ynou6Qm90/9/nkMRLNtF1Zmgre7RHXF+3L//9N
- YhQnGqBqFtrXFo3jCpCd6EVEsGN1PQ4=
-X-Proofpoint-ORIG-GUID: sbvE7vr0sW5nObX-GRT6i78cDrRadJ8W
-X-Authority-Analysis: v=2.4 cv=PuMG/AM3 c=1 sm=1 tr=0 ts=6b00b1cb cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=JnKecZnUtZousrUlYMGU:22 a=VwQbUJbxAAAA:8
- a=20KFwNOVAAAA:8 a=VabnemYjAAAA:8 a=je9U-9MI8qmF_auVsecA:9 a=CjuIK1q_8ugA:10
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-GUID: sbvE7vr0sW5nObX-GRT6i78cDrRadJ8W
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIwMDA4MiBTYWx0ZWRfX3tINTm8axShi
- +1eTy2E3e4veKEtl8JzihHLuiMVfs8cD04Qb/vCI2OV4fPa1paI1r6hBZXt0H6fzsTeA4wNZYXJ
- 0vnhQ4GlMyBFODqEUBLvkuXvi1EJRj5YRHhHhK+kIXNf4kz5D3TfslknX/USx/elFeQkijcNy4L
- 4OIyud5pc2ZAq+HUJMNCtkvgfsZQDlMYRfaKWwzQFjXKVys9VeXbjILL9zUpaslbCE74ZrSHaur
- ubsPYUTA/3O40T2Yk56omgcfBvVGD8iv1YuB52sctsySvWu4Y1I4Fhir7pyskat8pgamrYTPgHH
- CFUD+4zWTp3hRtNAvuIdeLEpBvL3HCoVwmRZDNdnsIZeY8364z81gBF8gDX5G0iSZENSgJrIVdp
- B7SqnYav3WXOJl43gTaDF2uqo7/if+3RKrgpqj5NYKc27JK+r+Qo0c0k1SKu/PpNicS2a4KGy7l
- R+Hq812rDBCQ3OU3m6Q==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-20_05,2026-11-19_01,2025-10-01_01
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261120-gmem-fix-gmem-max-mapping-level-v1-1-108788914fe8@google.com>
+X-B4-Tracking: v=1; b=H4sIAH+2AGsC/yWNwQqDMBBEf0X23AUTaYX+SukhWbdxi0lDoiKI/
+ 95tPQzMg+HNDpWLcIV7s0PhVap8koK5NECjS4FRBmWwrb0ZY1sMkSO+ZDtLdJsmZ0kBJ155Qkf
+ kfW+o664W1JIL6/r/8HieXBf/Zpp/WjiOLytk3UKDAAAA
+X-Change-ID: 20261120-gmem-fix-gmem-max-mapping-level-accbb71c3352
+To: Sean Christopherson <seanjc@google.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, Fuad Tabba <fuad.tabba@linux.dev>, 
+ David Hildenbrand <david@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Ackerley Tng <ackerleytng@google.com>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795208833; l=2547;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=Y0i6Euk/xaC1ZCsSKIuwJUQwvKbcrEW4zjiLBGkW4HE=;
+ b=yGonGreEgc0BdPMVqeglPV5HUwVFM4Dw1iv2Lr9P4AMWQ6f6wM0eyzt/GT2B9ke6JNrIpdkAm
+ uf9Z/wXEoTuBqibEvSAT8CtdDu+DCZhw5/hWtY5LzPjcfz/kBPIaVu4
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
+ pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
+ auth_id=649
+X-Original-From: Ackerley Tng <ackerleytng@google.com>
+Reply-To: ackerleytng@google.com
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 20, 2026 at 01:45:17PM +0800, Tao Cui wrote:
-> From: Tao Cui <cuitao@kylinos.cn>
-> 
-> Everything except the worker struct is allocated with plain GFP_KERNEL:
-> the per-vq iovec and log arrays at VHOST_SET_OWNER, the memory table at
-> VHOST_SET_MEM_TABLE whose size follows the user supplied region count,
-> the pending message nodes, and the vhost_net/vhost_vsock device structs
-> with their fallback to vmalloc.  The worker has been accounted since the
-> vhost_task conversion.
-> 
-> A container that can open /dev/vhost-net or /dev/vhost-vsock, which
-> device plugins hand out with passthrough, holds roughly 150KB of
-> resident kernel memory per device after SET_OWNER.  Charge the rest the
-> same way the worker already is.
-> 
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-> ---
-> Changes in v2:
-> - rebased on next-20261118, where the vq->nheads allocation now uses
->   kmalloc_objs(); the flag addition follows the new form.  No
->   functional change.  Carries Michael's Acked-by from v1.
-> Link to v1: https://lore.kernel.org/r/20261106131829.3228926-4-cui.tao@linux.dev
-> 
->  drivers/vhost/net.c   | 14 ++++++++------
->  drivers/vhost/vhost.c | 17 +++++++++++------
->  drivers/vhost/vsock.c |  5 +++--
->  3 files changed, 22 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-> index 435d8ed3851f..390858056d20 100644
-> --- a/drivers/vhost/net.c
-> +++ b/drivers/vhost/net.c
-> @@ -249,7 +249,7 @@ vhost_net_ubuf_alloc(struct vhost_virtqueue *vq, bool zcopy)
->  	/* No zero copy backend? Nothing to count. */
->  	if (!zcopy)
->  		return NULL;
-> -	ubufs = kmalloc_obj(*ubufs);
-> +	ubufs = kmalloc_obj(*ubufs, GFP_KERNEL_ACCOUNT);
->  	if (!ubufs)
->  		return ERR_PTR(-ENOMEM);
->  	atomic_set(&ubufs->refcount, 1);
-> @@ -302,7 +302,8 @@ static int vhost_net_set_ubuf_info(struct vhost_net *n)
->  		if (!zcopy)
->  			continue;
->  		n->vqs[i].ubuf_info =
-> -			kmalloc_objs(*n->vqs[i].ubuf_info, UIO_MAXIOV);
-> +			kmalloc_objs(*n->vqs[i].ubuf_info, UIO_MAXIOV,
-> +				     GFP_KERNEL_ACCOUNT);
->  		if  (!n->vqs[i].ubuf_info)
->  			goto err;
->  	}
-> @@ -1340,17 +1341,18 @@ static int vhost_net_open(struct inode *inode, struct file *f)
->  	struct xdp_buff *xdp;
->  	int i;
->  
-> -	n = kvmalloc_obj(*n, GFP_KERNEL | __GFP_RETRY_MAYFAIL);
-> +	n = kvmalloc_obj(*n, GFP_KERNEL | __GFP_RETRY_MAYFAIL |
-> +			 __GFP_ACCOUNT);
->  	if (!n)
->  		return -ENOMEM;
-> -	vqs = kmalloc_objs(*vqs, VHOST_NET_VQ_MAX);
-> +	vqs = kmalloc_objs(*vqs, VHOST_NET_VQ_MAX, GFP_KERNEL_ACCOUNT);
->  	if (!vqs) {
->  		kvfree(n);
->  		return -ENOMEM;
->  	}
->  
->  	queue = kmalloc_array(VHOST_NET_BATCH, sizeof(void *),
-> -			      GFP_KERNEL);
-> +			      GFP_KERNEL_ACCOUNT);
->  	if (!queue) {
->  		kfree(vqs);
->  		kvfree(n);
-> @@ -1358,7 +1360,7 @@ static int vhost_net_open(struct inode *inode, struct file *f)
->  	}
->  	n->vqs[VHOST_NET_VQ_RX].rxq.queue = queue;
->  
-> -	xdp = kmalloc_objs(*xdp, VHOST_NET_BATCH);
-> +	xdp = kmalloc_objs(*xdp, VHOST_NET_BATCH, GFP_KERNEL_ACCOUNT);
->  	if (!xdp) {
->  		kfree(vqs);
->  		kvfree(n);
-> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> index dc973287567c..e8f9dce52aa7 100644
-> --- a/drivers/vhost/vhost.c
-> +++ b/drivers/vhost/vhost.c
-> @@ -526,10 +526,14 @@ static long vhost_dev_alloc_iovecs(struct vhost_dev *dev)
->  
->  	for (i = 0; i < dev->nvqs; ++i) {
->  		vq = dev->vqs[i];
-> -		vq->indirect = kmalloc_objs(*vq->indirect, UIO_MAXIOV);
-> -		vq->log = kmalloc_objs(*vq->log, dev->iov_limit);
-> -		vq->heads = kmalloc_objs(*vq->heads, dev->iov_limit);
-> -		vq->nheads = kmalloc_objs(*vq->nheads, dev->iov_limit);
-> +		vq->indirect = kmalloc_objs(*vq->indirect, UIO_MAXIOV,
-> +					    GFP_KERNEL_ACCOUNT);
-> +		vq->log = kmalloc_objs(*vq->log, dev->iov_limit,
-> +				       GFP_KERNEL_ACCOUNT);
-> +		vq->heads = kmalloc_objs(*vq->heads, dev->iov_limit,
-> +					 GFP_KERNEL_ACCOUNT);
-> +		vq->nheads = kmalloc_objs(*vq->nheads, dev->iov_limit,
-> +					  GFP_KERNEL_ACCOUNT);
->  		if (!vq->indirect || !vq->log || !vq->heads || !vq->nheads)
->  			goto err_nomem;
->  	}
-> @@ -2052,7 +2056,8 @@ static long vhost_set_memory(struct vhost_dev *d, struct vhost_memory __user *m)
->  		return -E2BIG;
->  	if (max_iotlb_entries <= 0)
->  		return -EINVAL;
-> -	newmem = kvzalloc_flex(*newmem, regions, mem.nregions);
-> +	newmem = kvzalloc_flex(*newmem, regions, mem.nregions,
-> +			       GFP_KERNEL_ACCOUNT);
->  	if (!newmem)
->  		return -ENOMEM;
->  
-> @@ -3407,7 +3412,7 @@ EXPORT_SYMBOL_GPL(vhost_disable_notify);
->  struct vhost_msg_node *vhost_new_msg(struct vhost_virtqueue *vq, int type)
->  {
->  	/* Make sure all padding within the structure is initialized. */
-> -	struct vhost_msg_node *node = kzalloc_obj(*node);
-> +	struct vhost_msg_node *node = kzalloc_obj(*node, GFP_KERNEL_ACCOUNT);
->  	if (!node)
->  		return NULL;
->  
-> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-> index 88a310390eb0..2fa205967f8a 100644
-> --- a/drivers/vhost/vsock.c
-> +++ b/drivers/vhost/vsock.c
-> @@ -719,11 +719,12 @@ static int vhost_vsock_dev_open(struct inode *inode, struct file *file)
->  	/* This struct is large and allocation could fail, fall back to vmalloc
->  	 * if there is no other way.
->  	 */
-> -	vsock = kvmalloc_obj(*vsock, GFP_KERNEL | __GFP_RETRY_MAYFAIL);
-> +	vsock = kvmalloc_obj(*vsock, GFP_KERNEL | __GFP_RETRY_MAYFAIL |
-> +			     __GFP_ACCOUNT);
->  	if (!vsock)
->  		return -ENOMEM;
->  
-> -	vqs = kmalloc_objs(*vqs, ARRAY_SIZE(vsock->vqs));
-> +	vqs = kmalloc_objs(*vqs, ARRAY_SIZE(vsock->vqs), GFP_KERNEL_ACCOUNT);
->  	if (!vqs) {
->  		ret = -ENOMEM;
->  		goto out;
-> -- 
-> 2.53.0
-> 
+From: Ackerley Tng <ackerleytng@google.com>
 
-The vsock bits look good to me!
+When determining the maximum mapping level outside of a page fault
+(such as when disabling dirty logging), KVM queries the VM memory
+attributes to determine whether a GFN is private. Userspace can mark a
+GFN as private in the VM attributes even when the covering memslot is
+not backed by guest_memfd.
 
-Acked-by: Bobby Eshleman <bobbyeshleman@meta.com>
+Previously, this caused the mapping level calculation to fall into
+kvm_gmem_max_mapping_level(), triggering a kernel warning.
+
+Here's 1 way to trigger the warning on a TDX VM, with VM memory attributes
+enabled on KVM.
+
+1. Create a non-guest_memfd memslot covering a 1G-aligned base GFN with
+   dirty logging enabled.
+2. In that memslot, fault a shared page outside the first 2M chunk so a
+   non-leaf PTE at the 1G level is installed.
+3. Mark the first 2M chunk (at the 1G-aligned base GFN) private. Conversion
+   zaps that 2M chunk, while the shared mapping outside it keeps the 1G
+   non-leaf PTE present.
+4. Disable dirty logging on the memslot.
+
+Hugepage recovery iterates over the present 1G non-leaf PTE, sees that its
+base GFN is private and the 2M range is not mixed, and calls into
+kvm_gmem_max_mapping_level() without a fault context, hitting the WARN.
+
+Return 4K as the maximum mapping level when a GFN is marked private in
+a non-fault path for a memslot without guest_memfd. Fault paths already
+disallow mapping private GFNs in non-guest_memfd memslots, and
+returning 4K prevents hugepage recovery on such GFNs.
+
+Fixes: a3522ac71f5e ("KVM: x86/mmu: Enforce guest_memfd's max order when recovering hugepages")
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+---
+ arch/x86/kvm/mmu/mmu.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index f89e9f8a6cc2f..af40fbe9001a7 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -3489,6 +3489,14 @@ int kvm_mmu_max_mapping_level(struct kvm *kvm, struct kvm_page_fault *fault,
+ 	} else {
+ 		max_level = PG_LEVEL_NUM;
+ 		is_private = kvm_is_private_gfn(kvm, gfn);
++
++		/*
++		 * is_private (set in VM attributes) should never have been used
++		 * with a non-guest_memfd memslot. Return PG_LEVEL_4K to prevent
++		 * hugepage recovery.
++		 */
++		if (is_private && !kvm_slot_has_gmem(slot))
++			return PG_LEVEL_4K;
+ 	}
+ 
+ 	max_level = min(max_level, max_huge_page_level);
+
+---
+base-commit: d0f871bfb831705d9f55479f5b2b40f636ea7b16
+change-id: 20261120-gmem-fix-gmem-max-mapping-level-accbb71c3352
+
+Best regards,
+--  
+Ackerley Tng <ackerleytng@google.com>
+
+
