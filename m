@@ -1,119 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795166824;
-	b=0x2QJOXMgiLRsJjVx1TwADuA2EDOV/+wGqIrlqSgfW8mk1me4MNvIkXWaiIZdz8w0Le2
-	 zKIVeBTxW9EcT4rjYlyl1aKEs4jeLkUMBtkDrcusDqGnV105jSwoWIPgztL8fwA0AdOk3
-	 WDKJjSq8Vk8YhXXRC2Fne4xoHKGF/9jq7GOYlFnpJFeH1Llq0/hClvyX0krY0drvghIGJ
-	 pgTvdgx2FlHC2DkB7GxXzNQu5KJ2c+1/gUh4TD5sP3UNJ67hngcUxvLl1LrnnsYMsvIL/
-	 pMnWwS9+rKzNmHsliszOYb9FdsAzMLHuwztheME9Kt9o4QS9oA87ci+N/CHcEy2ZwCA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795166824;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:MIME-Version:
-	 References:In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:
-	 Cc:Content-Type:Content-Transfer-Encoding;
-	bh=h8djd06ryjIB56cOT1YweoAp4sCU4+zNTVV/16X4KXY=;
-	b=1YT2xm+EHa51Ja0UM93xmr+zt3+l8IsBGROmDsR/BD5Q+5pHtfYBhAC9NmqAteCNxlSI
-	 z0hxOPDakwB+vq8Qq5j+kzNDZLwBH8KR8C39AY+MuoCrnhouCcYVcMgx2tqMjXE3Fcux1
-	 YVJsp/HYCB4T/GYsySzlzDKVHN6sHKod247YVvDTQs7m+LsdHUIq/Co2RFHOE0vOgh3py
-	 wDhHquKyGE3nExZSc89JDcl8xn5g5bjki3Xndf9PkamWr0z9GtZsnocs4Svx61CAgO8d/
-	 fsbjyun2FBWIpEbHkZYzNo0JIU9abSavV8mf0UHmvzPScTpt6z6DlPfTsY8H0n9gKhQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D72aomLM;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=U+2bhLBh;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795167012;
+	b=fRXeg/exmrIAvZaPoOSOISXGaYYwySgsO+nSg0Lde/7vKLrSTs8YaLautoW3vQWchGDN
+	 DDqsL3uyuMBgLRa5SaIvP+9oTqR6VWEAzXpXSxIaqy9W17R3rSYrzSyPnALYZagQVXlPC
+	 /v24GXIU1a3QXYwnY6wWVoDVSwUQJCdgb64+iQRfBwaCSTk5UfU0C03q2LN1upuhawIBT
+	 5rKquki6Zl7ULliC0Xa6XWmBzUERxA+6YDNpffI1uRRJwt2oEhfAObkCt/1TBRz2VAiyC
+	 o5sDrC1S+QdDdPAWZmqpP/cdNN7Pta9L5DoblKbFsmL1XnuXKIgZXGxMesLQkO4wBaw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795167012;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Proofpoint-Reinject:X-Proofpoint-Spam-Details-Enc:
+	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=V9pATyht+zzlh8iKmMje1WGu+X+9da3pJjQWiWPYMyY=;
+	b=raub0Lx3G5cadTbwESjR1BQI2b0+iAcrbV1UcM9JsemBeGU8DR2//wJoLNBMxAxIAYqU
+	 iS614H6FjUqlagHTZEIgX+ii6VA0Ce3zdL1yh73H+TSbXLRqyJN7nSncdwxAf/vavzv56
+	 ekwaWQw+JZMltUrSGG+CJj26ps2b5ktLOaiVJTBRVYeaiAVF7+KV/tfFk+NtT56mS26WG
+	 PvTX5UQSOOUKsDmTrJatmoxSZUdMjz78Cs+oMATx2FuozELtJ+JgH8nlaTCnbKIU6vumd
+	 4O335x/KEkNczsNrnxhEoqBzudk4ghHKi6aiMd/WKGpv/5+8xeKRIVa7WV2ajdNdTYg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R+bLnIVY;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6E8606A320
-	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 09:27:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7D6E8606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8166D606A330;
+	Fri, 20 Nov 2026 09:30:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8166D606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D72aomLM;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=U+2bhLBh
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795166822;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h8djd06ryjIB56cOT1YweoAp4sCU4+zNTVV/16X4KXY=;
-	b=D72aomLMsd/jG8+DIAphil/gMvd4WRoIcAO2NtPofIHi1VZMke57cxMYOPjvAeq3gR0khV
-	uBydj5xcSuw8YdTvOoHA3sAY8RTCIHh9M0ciSRs7TaGI6/nWnkD7xbV4+XMqKzx/HhpmF/
-	WC3RlqkoLjbgIWSoVS/+ZuB0FMmUlB8=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-606-hoIN2Kt5Mr6bLsIlfnmn-A-1; Fri, 20 Nov 2026 09:26:59 +0000
-X-MC-Unique: hoIN2Kt5Mr6bLsIlfnmn-A-1
-X-Mimecast-MFC-AGG-ID: hoIN2Kt5Mr6bLsIlfnmn-A_1795166818
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8b5e3b5daffso971099b3a.2
-        for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 01:26:59 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795166818; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hJjaBWjlfcAgbjYGTgreb4mj0NcgKOB7hh/RulQdT9tM3VrTiJP/d1NkxhAGSYiyIZ
-         U9ExZMHHthfW9BQg94rOHlq47JgZax3zEg6bhOUmhRCvUKFECqQogWkvgOwVx/7krWB0
-         9Ex4P8v3DiFg4qVHV3LkjVjXhqyrKNjrS1ICtnJm2T3oqk61ZB7LM6myBvpc4vYjtKRY
-         kw6xZzxHjvD1zr8SXyBnc4iev+dbHmGFlwX/cM0zfTvkSF0uITW46dLuEescxeIJ541n
-         eEp2b8T8h36NT7JzvDqyNGIFw3EdACX059q2WEG9u38zoxsSX7FsdP8BgXwWxT1J4GVn
-         AORg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=h8djd06ryjIB56cOT1YweoAp4sCU4+zNTVV/16X4KXY=;
-        fh=qaYm4b6GKYlZ0T3gtLZ7fjEfCEC8jMv5XzYe6fOhw1Y=;
-        b=U82fMlmdaMYyGir9tlW3qQ7lDhDCINdGB7EPDqUOwDT8V+7RVy7B/5qsgsP6pc9q+2
-         4dybB5Omgy2RiwIImCY8oZ6A1DjucEZ5Gk7qgvzxoQqa9RHa2Z4ttKR2gJWpHqvIARRH
-         J0cbBq3U/HI+UihaAyMdGolgvGOGDtn7XT0UWbrucymIm6CHdjYwpW/sXtoZkDx3oIji
-         rGPXtW0vRYKI8QoN9nRvAXEK0c18APxqDXiMVlxPWWXit2IXANtFoL91iU0WjxUAKLUS
-         bFtor173bQMIh7crmIFK2I9/YGXw2GGAaJlRucNAFRFtmewa6xLdh5Fe6mNxlcqd84DF
-         HTFw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1795166818; x=1795771618; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=h8djd06ryjIB56cOT1YweoAp4sCU4+zNTVV/16X4KXY=;
-        b=U+2bhLBhzQM6qD5gTxIy9rDa9cQZrHvDPAWdgvfjySfONMUnWdFNWOYQzBahC6ztkR
-         DumNTyOeX4/pdri0be+VF3J5ieWQM1YhDN9NmY/NxYkcpBYqDZuJ5WWmcYlzufRuqcqt
-         UfqtdP8aVXk5QtWU+RgUd15QqdnqqGn+nhEpQWla0LixlpngvbRyMcZhgPFadVWONX04
-         f4Y6D9cJimiUgzU22KF8RJOuzWjwsym55iTeMCY5FlgXhEFPhLbd92kmPvPLqoQOrbaq
-         1X2NLW+Mi3UBOC4NixOT9kS7X0Hn6myI6yTGsqPJCZYocq3wHuZzxKVcwd/7yOlXhtjM
-         b+6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795166818; x=1795771618;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=h8djd06ryjIB56cOT1YweoAp4sCU4+zNTVV/16X4KXY=;
-        b=mSrW0o7PuQpq9vkXluVoZV1Ug9LIQ/YxW2jfyDbOSEDXneRTXF6qdB2EthpufmVvMG
-         CRx/qq9NzPhJSUcgjb7DmILZMJz4YgY4Gr6WWxUKujowqBWisqHSkjLj3Vge5o0j2Hzk
-         uVkbj5YAIqsNbNgfM7uduNxpnDTn6lP6gluvm+LFSX9ZCKOIAqbJNU0G4pECZkwHEN5T
-         pHJ8z4G0AVeQp89SHa84wZxZxjYLtTFZcxejPaUfT48iO2/ASgPaebjbOMKqf38h/KcJ
-         vCoKM/O059KKObT0Uo9njfeRSqkdXAM6R/d6WUq2q5LH72y5WNLN9AdhAFUsbI8iNrjb
-         Lwuw==
-X-Gm-Message-State: APuU4Z9akZvW7T/9DyeipGvsUa3TvToGR7hHb0fbs8uV5cIg2hlMZi6u
-	4gTPZTpd0L3tpsAJzmLZA0M8yJ1KY+12MUTCVSFelTlCCXEQzt8jlUuzwEIYlj9fYPy/sf8I6Dj
-	MWKM73stDcrQxPVtnzYLCNPrQr1OBYftgJ00JZABA/ZzxkNDW+0wk+Dca45kZtaZeEvMUTO95VU
-	RXVhcbc/3n2kAuc075oCS3rAup6x6M
-X-Gm-Gg: AYBFou1xSMhF7KNd3PMuMGGDDpybsPruIHKORXQkAA7Ki4g12dwYwIjNq3jOwDMh0s9
-	kBy97EQLmK2ZUz7U21fFGS8xzpXKPYiYvQa92nDEFFxn4x3nUfUakw3S8N+naG/huNaxdimHWMY
-	bDmLterOxfInDoP2TIW4iA8qdrLvzBM6T9bWghDR/okvYBElI+1Bb1S9S4PbP11wpxJO4zrSyBd
-	1dxm7VzSFnzLg8ziLemRMEYQGys+2zKHbsgMTIXeMR3vuVDToBOiAYRe71h
-X-Received: by 2002:a05:6a21:32a6:b0:3fb:3a56:e41b with SMTP id adf61e73a8af0-4014db62821mr3386137637.48.1795166818240;
-        Fri, 20 Nov 2026 01:26:58 -0800 (PST)
-X-Received: by 2002:a05:6a21:32a6:b0:3fb:3a56:e41b with SMTP id
- adf61e73a8af0-4014db62821mr3386114637.48.1795166817791; Fri, 20 Nov 2026
- 01:26:57 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R+bLnIVY
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AK7u1nu2648953;
+	Fri, 20 Nov 2026 09:30:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=V9pATy
+	ht+zzlh8iKmMje1WGu+X+9da3pJjQWiWPYMyY=; b=R+bLnIVY9rOS4yxND13PA4
+	fti6lWHJieU7UR42N3o9VaB/D0HLtgksEp9tRsdtKja+bJ3Dn8RV9GdP9CtNQHsz
+	t7IFDHDkO7PuLQetDZ1nlaUMZvWXSACjigYySdbPbUBTjUUgQLujwRvpbGrYACp1
+	/Q8btaGFLM4+xSDz8gIz1D4+QBlL/Jh3gpBRKEAT33dV3pEAyLkjzV9i7noZCw72
+	8HD5FvyYYJjsAvn0CSxbokGfXNWI/SlYAtARkBvG3/BUiizne9A/Yo4IOLSMAdZD
+	oQqEMyF+LifvpM38OV4+pU0V7vPhYKB8Jhfe0faAc2Mmo0VPhlca4+6lUxqr3Wpw
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j105nqdkt-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 20 Nov 2026 09:30:04 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AK7o3uY1951636;
+	Fri, 20 Nov 2026 09:30:03 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j1m3j1abb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Nov 2026 09:30:03 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AK9Twpr37945746
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 20 Nov 2026 09:29:59 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2ED4E2004B;
+	Fri, 20 Nov 2026 09:29:56 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A418220049;
+	Fri, 20 Nov 2026 09:29:55 +0000 (GMT)
+Received: from [9.111.50.236] (unknown [9.111.50.236])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 20 Nov 2026 09:29:55 +0000 (GMT)
+Message-ID: <c1f4764b-884f-4844-868f-5347c7d71fb2@linux.ibm.com>
+Date: Fri, 20 Nov 2026 10:29:55 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -123,165 +86,78 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261119201813.15320-1-seanjc@google.com>
-In-Reply-To: <20261119201813.15320-1-seanjc@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 20 Nov 2026 10:26:46 +0100
-X-Gm-Features: AclHuK8G7DuVvIhaxwHzPN8dYRpQJQwUQlq8SQJhdYRX7vQWCoLICNcclQQ7y0Y
-Message-ID: <CABgObfY_iw6-Yp+hJB3pbV4spTMJfLc2M0jMs8_tu9xumM2wHQ@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM: Fixes for 7.4-rcN
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/7] Documentation: KVM: Fix the function that implements
+ halt polling
+To: Fuad Tabba <fuad.tabba@linux.dev>, Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Huacai Chen <chenhuacai@kernel.org>, linux-mips@vger.kernel.org,
+        Will Deacon <will@kernel.org>, Fuad Tabba <tabba@google.com>
+References: <20261111085448.1130701-1-fuad.tabba@linux.dev>
+ <20261111085448.1130701-4-fuad.tabba@linux.dev>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20261111085448.1130701-4-fuad.tabba@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIwMDAzNyBTYWx0ZWRfXwWdzv1CH41LN
+ 8/zCVD+nEpbifRvkEI0flxDKgvkR9ASjHOL9vaIZuHpyC8TgOzXZXY4lAAqkB2N1jbS/5yOChpJ
+ n2RS9h/CCUW1p28+qD0iEPatH/1TwyebmG6Mcm4m2uvginJPeOAWuKp4mzW0KpMs4a8BURlAfla
+ zf5gqRCCz/rgXO/TIw7hPzo6OunVJmiJeApcugsDGQscY/UK1FB2SCKXjOMWoZl6FDVlh68L1Ge
+ nqzHcM7EPLu55l0Cs50MZAxEWc+IvaJUkpUGQNihFUO48AVo0MF+PSBUocT9/jlB8bECQDNIKZ1
+ p4mVcxRhe6VcwLYK0QoNuXf3qtMSIOw/5d9Jbd2+x8gRrAJTRHToVv/1xwcpi67thCqGle+swGo
+ wq+IpViR4SCjatS6pfTJa1q8p5ZFWqhX3Gdy6hr9O0gf/MoV6Jv5wOMZ3qbij5GT/M5wYR1tZ7C
+ yWoOV4uCFg0wFRox7Zw==
+X-Authority-Analysis: v=2.4 cv=HN9WhYtv c=1 sm=1 tr=0 ts=6b00131c cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=JMxS_pt2InJvb4wTJLEA:9 a=QEXdDO2ut3YA:10 a=zgiPjhLxNE0A:10
+X-Proofpoint-GUID: 7uIP5KddXKm0EKGl07up1bv-p5Fzf3kJ
+X-Proofpoint-ORIG-GUID: Rwawl2F0CDmVVDiciCZNfqCZYYZDdIfv
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIwMDAzNyBTYWx0ZWRfX5RTK0GdPKZ/S
+ RUN0l3w4woLWIdCR0P7P3XSw/9pc9IkZ2e9kj0jtBxkuBVw7Eih4SF+alyqEIvQP3dwgKpxDg5y
+ 0nxfsKkAQL0LhKmdE42tq2Fj6fONd3Q=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-20_03,2026-11-19_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 priorityscore=1501 impostorscore=0 suspectscore=0 malwarescore=0
+ adultscore=0 phishscore=0 lowpriorityscore=0 clxscore=1011 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611200037
 
-On Thu, Nov 19, 2026 at 9:18=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> Please pull a somewhat random smattering of fixes.  The biggest (but prob=
-ably
-> not scariest?) is to rework single-vCPU kicks to ensure waiting requests
-> actually wait.  It's big only because PPC is weird and required refactori=
-ng
-> a bunch of code just to avoid throwing in more hacks.  Including this man=
-y
-> patches obviously isn't ideal, but failing to wait breaks the flow to for=
-ce
-> vCPUs to invalidate their SNP VMSA.  Prior to 7.4 the race condition was =
-all
-> but impossible to hit, but in-place conversion makes it a *lot* easier to=
- hit
-> the window, which is why I included the fix here.
->
-> Speaking of PPC, the scariest fix for me is the patch to actually impleme=
-nt
-> kvm_arch_flush_shadow_all().  Some PPC folks reviewed it, so it's probabl=
-y
-> good?  But I'm still flabbergasted that such a blatant bug has gone unnot=
-iced
-> for so long, which makes we worried I'm missing something.
+Am 11.11.26 um 09:54 schrieb Fuad Tabba:
+> The generic halt polling code is in kvm_vcpu_halt() since
+> commit 91b99ea706578 ("KVM: Rename kvm_vcpu_block() =>
+> kvm_vcpu_halt()"), but halt-polling.rst still names kvm_vcpu_block().
+> 
+> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-Pulled, thanks. I'll give it another round of reviews...
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 
-Paolo
 
-> The following changes since commit 7475ea8b58616b33c04afb976cf0fbaad9dd63=
-fb:
->
->   Linux 7.4-rc2 (2026-11-08 16:22:20 -0800)
->
-> are available in the Git repository at:
->
->   https://github.com/kvm-x86/linux.git tags/kvm-x86-fixes-7.4-rc4
->
-> for you to fetch changes up to bcc359264f15095d3d167535cf5de0b7e4800279:
->
->   KVM: nVMX: Clear nested.smm.guest_mode on a failed RSM-to-L2 (2026-11-1=
-0 14:42:26 -0800)
->
-> ----------------------------------------------------------------
-> KVM fixes for 7.4-rcN
->
->  - Mitigate a class of (x86) bugs where KVM can read/write guest (userspa=
-ce)
->    memory using the wrong mm, i.e. using the wrong user page tables.
->
->  - Don't force a full nested VMX VM-Exit when destroying a vCPU, as proce=
-ssing
->    the MSR load/store lists and writing back the shadow vmcs12 is wildly =
-wrong
->    when VM is dying.
->
->  - Implement "flush shadow all" on KVM PPC to ensure KVM's mappings are t=
-orn
->    down when the VM and/or owning process is dying.
->
->  - Provide empty installation rules for architectures that aren't support=
-ed by
->    KVM selftests to fix build issues in CI environments.
->
->  - Fix KVM selftests' rules for generating arm64's sysreg headers so that=
- the
->    headers are properly (re)generated on incremental builds.
->
->  - Clear only the VMCB save area on an intercepted SHUTDOWN on SVM, partl=
-y to
->    avoid unnecessary churn, but mostly to prevent KVM from clobbering the=
- PML
->    index.
->
->  - Update the tracked pCPU on task migration for both vmcb01 and vmcb02 t=
-o fix
->    an edge case where KVM can use a stale ASID across pCPUs.
->
->  - Rework the single-vCPU kick logic to fix a bug where KVM would fail to=
- wait
->    for a target vCPU to respond if another in-flight, non-waiting kick ch=
-anged
->    the vCPU's mode to EXITING_GUEST_MODE.
->
->  - Clear nVMX's smm.guest_most when freeing nested state, and if a RSM to=
- L2
->    ultimately fails (and queues a TRIPLE_FAULT to L1).
-> ----------------------------------------------------------------
-> Amirmohammad Eftekhar (1):
->       KVM: nVMX: Clear nested.smm.guest_mode on a failed RSM-to-L2
->
-> Fuad Tabba (1):
->       KVM: selftests: Fix arm64 sysreg header dependencies
->
-> Josef Bacik (1):
->       KVM: nVMX: Clear nested.smm.guest_mode when freeing nested state
->
-> Sasha Levin (1):
->       KVM: selftests: Provide empty installation rules on unsupported ARC=
-Hs
->
-> Sean Christopherson (10):
->       KVM: Reject user accesses to guest memory if current->mm !=3D kvm->=
-mm
->       KVM: nVMX: Don't force a full nested VM-Exit when destroying a vCPU
->       KVM: PPC: Flush/zap all memslots on kvm_arch_flush_shadow_all()
->       KVM: s390: Drop unused and unreachable kvm_arch_vcpu_should_kick()
->       KVM: Add a @force param to __kvm_vcpu_kick() for PPC backwards comp=
-atibility
->       KVM: PPC: Explicitly force IPIs when directly kicking vCPUs
->       KVM: MIPS: Rework kvm_arch_vcpu_should_kick() to use standard imple=
-mentation
->       KVM: Move kvm_arch_vcpu_should_kick() to common code as kvm_vcpu_sh=
-ould_kick()
->       KVM: Plumb the full request into __kvm_vcpu_kick()
->       KVM: Drop kvm_vcpu_should_kick() and use kvm_request_needs_ipi()
->
-> Shivansh Dhiman (1):
->       KVM: SVM: Clear VMCB save area instead of entire VMCB on shutdown i=
-ntercept
->
-> Yosry Ahmed (1):
->       KVM: SVM: Update tracked pCPU on pCPU switch
->
->  arch/arm64/kvm/arm.c                     |  5 ---
->  arch/loongarch/kvm/vcpu.c                |  5 ---
->  arch/mips/kvm/mips.c                     |  5 ---
->  arch/powerpc/include/asm/kvm_host.h      |  1 -
->  arch/powerpc/include/asm/kvm_ppc.h       | 13 +++++++-
->  arch/powerpc/kvm/book3s.c                |  4 +--
->  arch/powerpc/kvm/book3s_pr.c             |  2 +-
->  arch/powerpc/kvm/booke.c                 |  6 ++--
->  arch/powerpc/kvm/e500_emulate.c          |  2 +-
->  arch/powerpc/kvm/powerpc.c               | 18 +++++++----
->  arch/riscv/kvm/vcpu.c                    |  5 ---
->  arch/s390/kvm/s390/s390.c                |  7 -----
->  arch/x86/kvm/svm/svm.c                   | 43 ++++++++++++++++++--------
->  arch/x86/kvm/vmx/nested.c                | 10 +++++-
->  arch/x86/kvm/vmx/sgx.c                   |  2 +-
->  arch/x86/kvm/vmx/vmx.c                   | 15 ++++++---
->  arch/x86/kvm/x86.c                       |  5 ---
->  include/linux/kvm_host.h                 | 32 ++++++++++++++++----
->  tools/testing/selftests/kvm/Makefile     |  4 +--
->  tools/testing/selftests/kvm/Makefile.kvm | 16 +++++++---
->  virt/kvm/kvm_main.c                      | 52 +++++++++++++++++---------=
-------
->  21 files changed, 149 insertions(+), 103 deletions(-)
->
+> ---
+>   Documentation/virt/kvm/halt-polling.rst | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/virt/kvm/halt-polling.rst b/Documentation/virt/kvm/halt-polling.rst
+> index a6790a67e2058..c311aac1ff9e9 100644
+> --- a/Documentation/virt/kvm/halt-polling.rst
+> +++ b/Documentation/virt/kvm/halt-polling.rst
+> @@ -22,7 +22,7 @@ savings of not invoking the scheduler are distinguishable.
+>   
+>   The generic halt polling code is implemented in:
+>   
+> -	virt/kvm/kvm_main.c: kvm_vcpu_block()
+> +	virt/kvm/kvm_main.c: kvm_vcpu_halt()
+>   
+>   The powerpc kvm-hv specific case is implemented in:
+>   
 
