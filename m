@@ -1,98 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.200
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795198111;
-	b=EP2mPRPdcXFNnt8+eVWAoTvRvI7t5BqiPPNux1m9m57wyVgUWqwf0qM58tWyUu0Mpjtc
-	 OIB+gOb1rhivdrvBlg31G8yacGJSIof0FmX+uPu74uhBN+bC+zL55AfO5H+MRTWHl0OMu
-	 vb0pyUmoSskPhiJqCFHzD7dahq35yriYjeO+pej/78eVUYUOO8zGOvGFvvl6izxEgeNNZ
-	 mtDxN5d3+G2k95EfllA58eufI7cH4jCBN9sy0kQcPrud2cD3hrwnSsXCc9IZvPmS4HAL8
-	 WuZIVyWUoujZ4ohXvPiM1tCTtbLl2X493rL4rsGVzdB0hRfClA1daaK0Qc5xJRodjsA==
+	t=1795198286;
+	b=b1Q5ZC/fIFWDjDUsyldwCGUMjs4TwpG+5uVDbxBsxtLAr396qvbRSVeFM1jT2s5LOJrL
+	 eumDfy96df8z6EHgdrCR6Ztb7fE45avjT+z+QNZWmli4XhelKE49yq8Dvp1+HBgVqgWz1
+	 mDnaub5AZwKp/Je1uib3Go061i+aCo34Jkr8LifUVjN3omH8f6659r9oIbqpK93WTfFZi
+	 9jTNasGsA99rMBXPM+/xWkCshjzLAKToTKRBlZ6va4yzmNdC1PRzWfa3QhAtEKhgbcjEa
+	 cvBj1JfNezDzdrKYzCEZkO0FyNqXRF4NurDy3ECnnsMjneH2VQbjndCrGiSCEyrJpyw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795198111;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Originating-IP:X-Authority-Analysis:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-GUID:X-Proofpoint-Virus-Version;
-	bh=0lbcaJ8L0yzVbe6zUbN1cAVyzh8iJfnZ5U61Z9GQ5bo=;
-	b=FwBcrakhLwxwiDnkpIVxstmzRGw2Kn7asrmyGKFWeKY9KgF3kgvXXXscVJiYrw3U2Z9Y
-	 lD2iQZwX6vIZsedduESov5T/WJy4/snVWPhvrvlU2Kak8ZBzPJC7UP5h+iaWKoMTWZSch
-	 EzOBqxeuQkbyqR+RL79GwvvU1OTty3iGttU2BQIDYzy/CO4bRveoY+FRHntllRnQXWZ//
-	 XX9CkVVz6LOd8m7V0Fczt5yi84kZegfflUIMZ6R4k5RCsmMNck2vUU7G2CPdAsN0rUpg3
-	 gMNr9m8WtfVS9GfCzJxQ6GNO4aYLb+ahryPwXNlJMR/bTJeHQr350sIb9UoNSn/nF8g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795198286;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
+	 References:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=JDzbhiCoFBsB1LUGSE+FNJ8fs+B+4L9p62TVlpx0yJ4=;
+	b=Mb22TfP4Zth39HgxkvTmyPUxorNIp+RKNhZCHlxhPO2DsfL1eAhqL/2YvlX9tXfeLyo7
+	 tyY4gVj5UJJBHT/bFZJbp6hUspJ5ty2D0s+A+qFdM3NoUSXe9+YDFZIRf1wmRkIecJbay
+	 5gv7/hJnNFOS/Q/5XmOmbQMjp5hudeuLLOQh96o6G1TBTRrIJ2xnYYWBv/qH1SrJWmK4X
+	 QShsx5zITyTT98N5onFsuRk3u1DUzzwl2zY+0dMiUDp1AGMIiDba9TgepaxrGTrUJJFRI
+	 tPlG4LTnWdLC1Tw5UfILpWxr2nVaQRDAbNPmXfKmzp6W05Ts4UpgaXGuznynwxrnD6w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=OnnzqY9b;
-	arc=none smtp.remote-ip=67.231.153.30
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PVGHrCoa;
+	arc=none smtp.remote-ip=209.85.214.200
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6278D606A33A;
-	Fri, 20 Nov 2026 18:08:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6278D606A33A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDAD607A0DE
+	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 18:11:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DBDAD607A0DE
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=OnnzqY9b
-Received: from pps.filterd (m0109332.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AKH3c402027770;
-	Fri, 20 Nov 2026 10:08:05 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps82601-s2048-2026-q3; bh=0lbcaJ8L0yz
-	Vbe6zUbN1cAVyzh8iJfnZ5U61Z9GQ5bo=; b=OnnzqY9btO1a9LoHSl5f9i07I2t
-	3DSWQV5THMV//yn5ZW1IT8Jd9wUYh+nd8u+gE855io3Xb0jr0EXjdj9U9xgsnIVv
-	wwM4HEXWhi3jA8GaUkqYyW2JWjo2nG/XPYEPpcxVcvH3q5BH7gY7BBT7cmaC8pZI
-	+8gOkP5TdeNwK7gMBIkzJDVv3gPGjODbl+fNM4k4qBv55nenlV9RCie02O4LPdRR
-	Sj4/EQb+48DAm8erItCCl48BeebChJICwA+S2hqGcWPb3dk+zoE1u9ChORcsTe6T
-	qUTnjiEAZpi5rfNx86cTDPglLAD4hWssvOf4BDXBrE49s3H+M31uXzv6ZGg==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4j2t99rm3a-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 20 Nov 2026 10:08:05 -0800 (PST)
-Received: from localhost (2620:10d:c0a8:1c::1b) by mail.thefacebook.com
- (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Fri, 20 Nov
- 2026 18:08:04 +0000
-Date: Fri, 20 Nov 2026 10:08:02 -0800
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Stefano Garzarella <sgarzare@redhat.com>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan
-	<skhan@linuxfoundation.org>,
-        Stefan Hajnoczi <stefanha@redhat.com>,
-        "Michael
- S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowangio@gmail.com>,
-        Xuan Zhuo
-	<xuanzhuo@linux.alibaba.com>,
-        Eugenio =?iso-8859-1?Q?P=E9rez?=
-	<eperezma@redhat.com>,
-        Shuah Khan <shuah@kernel.org>, Randy Dunlap
-	<rdunlap@infradead.org>,
-        Donald Hunter <donald.hunter@gmail.com>,
-        "Eric
- Dumazet" <edumazet@kernel.org>,
-        George Zhang <georgezhang@vmware.com>,
-        "Andy
- King" <acking@vmware.com>, Dmitry Torokhov <dtor@vmware.com>,
-        <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-        <sargun@sargun.me>, <jlinbox@meta.com>
-Subject: Re: [PATCH net-next v7 0/7] vsock: assign the guest vsock device to
- a network namespace
-Message-ID: <awCMglMftdwqzDu1@devvm29614.prn0.facebook.com>
-References: <20261117-vsock-guest-ns-v7-0-7e522ea9dd9b@meta.com>
- <20261118182846.4ab756d1@kernel.org>
- <av807G4qhzToOIMT@devvm29614.prn0.facebook.com>
- <20261119135303.54642e8e@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=PVGHrCoa
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2f05c68629cso1876475ad.1
+        for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 10:11:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795198285; x=1795803085; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JDzbhiCoFBsB1LUGSE+FNJ8fs+B+4L9p62TVlpx0yJ4=;
+        b=PVGHrCoaAP/5w1paicQ+hrt9379ckz/YstH15fDT/2OfPNc3NuS+VgVBK31Y4KWR1c
+         6PEILfGm8mXVSYnE+ShXHiGg2+cjwadNYr6CVRAtBkojKCy3wAzMBHiN/hgp9Fr8I0rw
+         pVTVrnraiWylu9/TACtXKP/yfxDi0m6zABmX4xVo2kPJHlkl/y54aRsSc9U/9fMEB2PJ
+         esMW2rw0ckWd4dJpkMIpx7R4IXIDSCQJYl5yEpK1fzu07+gEa1XoH+hwVcUZ/VsnRp4j
+         ChOPqNE4+HHfBFewHGbf5rwxwTNCY+3Zt+DtgYKz0OqIEnlWRHpodKCpTGesETGHl6Vc
+         6OIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795198285; x=1795803085;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JDzbhiCoFBsB1LUGSE+FNJ8fs+B+4L9p62TVlpx0yJ4=;
+        b=qSe9ELfw4PX5iBfBDXemGKmhE8ndW13s+TuPBw9foM2qeQ/KwIAmu2U3NftMtrdiNc
+         5TLGc/aVgsyfcOkvAEfO21z8g1E5E6230NaF+Lx9mecSXTK8Ac4swKRx9BfFOymr9/mv
+         jpZyDKRyVl65PmyNU8xaCgV8JGrD06K7lw4Z54re8P2SQ9hI5tUyYkuSLgw2zmO1I8ig
+         VfjWxFmSdwTji383r2w+Fx3E0ZgTj2XxfA1oauBM504SFIBGhlYP4gfADacJG26pI3Gr
+         2qHyRi24SbIZ2N1rsnVvNb1tenJ3KZLeXD5DgA08lLva1jrKBI10wfy7UP1/MfOeR9pF
+         0FlA==
+X-Gm-Message-State: APuU4Z+Mci6bDEy5NUEXXa/xDmUPLHPWKRQ+lWThE02T/3SB5boV4rS0
+	FrK3r/xzNyj9IEWu9tOJGa7eSePZsTtlcYK3odXBpovvZ3rsm8xgsmaI4KrTid/LD43hiABOa7h
+	fQ1pbtw==
+X-Received: from plup11.prod.google.com ([2002:a17:903:4b2b:b0:2ed:e056:7a80])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:cf08:b0:2f0:59dd:4d07
+ with SMTP id d9443c01a7336-2f059dd50f7mr8708795ad.38.1795198285056; Fri, 20
+ Nov 2026 10:11:25 -0800 (PST)
+Date: Fri, 20 Nov 2026 10:11:24 -0800
+In-Reply-To: <5F8F490B-BC93-41EA-B77E-9EC108C09DBE@infradead.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -101,65 +76,70 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20261113170535.79246-1-dwmw2@infradead.org> <avdEkNbqPWamMErl@google.com>
+ <5F8F490B-BC93-41EA-B77E-9EC108C09DBE@infradead.org>
+Message-ID: <awCNTITOOiS1JEod@seanjc-mac.roam.internal>
+Subject: Re: [PATCH v2 0/4] KVM: x86: hyper-v: Forward unimplemented
+ hypercalls to userspace
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
+	Joerg Roedel <joro@8bytes.org>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	Thara Gopinath <tgopinath@linux.microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Michael Kelley <mhklinux@outlook.com>, Nicolas Saenz Julienne <nsaenz@amazon.com>, 
+	Nikolas Wipper <nik.wipper@gmx.de>, Mushahid Hussain <hmushi@amazon.co.uk>, 
+	Sriram Nambakam <snambakam@linux.microsoft.com>, Zack Rusin <zack.rusin@broadcom.com>, 
+	Doug Covelli <doug.covelli@broadcom.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H . Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, 
+	Shuah Khan <shuah@kernel.org>, Paul Durrant <paul@xen.org>, Xin Li <xin@zytor.com>, 
+	Francesco Lavra <flavra@baylibre.com>, 
+	"Radim =?utf-8?B?S3LEjW3DocWZ?=" <rkrcmar@ventanamicro.com>, Liran Alon <liran.alon@oracle.com>, 
+	Arbel Moshe <arbel.moshe@oracle.com>, David Woodhouse <dwmw@amazon.co.uk>
 Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261119135303.54642e8e@kernel.org>
-X-Authority-Analysis: v=2.4 cv=LvQHWXdc c=1 sm=1 tr=0 ts=6b008c85 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=xtH7KyWI9dI7BmFOsl-x:22 a=VwQbUJbxAAAA:8
- a=VabnemYjAAAA:8 a=oC9WaInZJ1af5pm4xKkA:9 a=CjuIK1q_8ugA:10
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-ORIG-GUID: e_pV_QEf9KJrrYzdE5m5xEFAncVLEaKF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIwMDA3MSBTYWx0ZWRfX1Sc4JYQvrjPd
- uM07N837UQp0cqrLl62gDESgLL4sknWLgK/6A6ZG/QQwoRK54pAgk+qJLgoRXbxud+sxyO6pwIR
- +zwh3rsC9HWMNTAowk/o+0w0QAYEaEZBaaFXBCnPyU6vaeOoMnv0rZzTy1Ht6eADYSlviSHyYgR
- UFWL69qGbI/qaFx+tImhd7u2rF5w8u8r/FEbXQHoTCwUlgY4kbDLrHFun5Nv85Ljj9xb5oEdOUf
- a5ZpHSy+b7pJQGX1zJ5pNkQNjj1ZZSHUuKzL2STpBHgkn0zzrJf1PZwl3q2zozhxCtE6nPuqMzX
- il70beOuSUz3bthbq/lhQnUgQK+F/ZQ/SvBCfG8Bo9mviiBViSE6cn1cYvt1IdAzmGgwkWxvQw1
- atyTgr2PyeXH1CZ8RW9ZLTVlRQi784tl7X/b6ZPxuwEQ6kdtQdGv++CxeSvNM9CCzigHPy5X0i6
- 6ruMSdLg8RLAYt/VgRQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIwMDA3MSBTYWx0ZWRfX9HizSq1mZ519
- RZHw+lNUbZSx9VF6cG8jmYvt8YDCHlbgcDrKoeIcwwe8Ic6c/MgXSblrkOb5wMxHaqf9F4nvbol
- 8mWWGK2fqageO7BIl0moSZ9dxhaJpZk=
-X-Proofpoint-GUID: e_pV_QEf9KJrrYzdE5m5xEFAncVLEaKF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-20_05,2026-11-19_01,2025-10-01_01
 
-On Thu, Nov 19, 2026 at 01:53:03PM -0800, Jakub Kicinski wrote:
-> On Thu, 19 Nov 2026 09:42:04 -0800 Bobby Eshleman wrote:
-> > On Wed, Nov 18, 2026 at 06:28:46PM -0800, Jakub Kicinski wrote:
-> > > On Tue, 17 Nov 2026 17:54:43 -0800 Bobby Eshleman wrote:  
-> > > > vsock network namespaces let a host put each VM in a namespace of its
-> > > > own. A guest has no equivalent yet. It has a single G2H device that
-> > > > cannot be assigned to a network namespace.  
-> > > 
-> > > PW says this did not apply at the time of posting, pls respin  
-> > 
-> > Ah I forgot to call out in the cover that this now depends on this fix in
-> > net:
-> > 
-> > https://lore.kernel.org/all/20261116-vsock-tap-net-v1-1-7e24f45adad3@meta.com/
+On Fri, Nov 13, 2026, David Woodhouse wrote:
+> On 13 November 2026 10:10:40 GMT-07:00, Sean Christopherson <seanjc@google.com> wrote:
+> >On Fri, Nov 13, 2026, David Woodhouse wrote:
+> >> From: David Woodhouse <dwmw@amazon.co.uk>
+> >> 
+> >> KVM implements a fixed set of Hyper-V hypercalls and fails every other
+> >> code with HV_STATUS_INVALID_HYPERCALL_CODE. A VMM that wants to
+> >> implement more of the TLFS, such as the VSM hypercalls Windows uses for
+> >> Virtualization Based Security, never sees them.
+> >> 
+> >> This series adds KVM_CAP_HYPERV_FORWARD_HCALL. As with KVM_CAP_XEN_HVM
+> >> and KVM_CAP_EXIT_HYPERCALL, KVM_CHECK_EXTENSION returns a bitmask of
+> >> features and KVM_ENABLE_CAP takes the subset to enable, rejecting any
+> >> bit the kernel does not report. The first feature,
+> >> KVM_HYPERV_HCALL_FORWARD_UNKNOWN, sends the hypercalls KVM does not
+> >> implement, and extended hypercalls in fast form, out through the
+> >> existing KVM_EXIT_HYPERV_HCALL exit, whose format does not change at
+> >> all.
+> >
+> >I'm not a fan of fowarding unknown hypercalls.  It seems like it would be quite
+> >easy to end up with a mess where it's difficult for KVM to implement "native"
+> >support without breaking userspace.
+> >
+> >How much code (and ongoing churn) would it be to add an allowlist of hypercalls
+> >to forward to userspace?  And then obviously require userspace to configure its
+> >forwarding "intercepts".
 > 
-> If there's a dependency the posting has to be an RFC
-> 
-> > In that thread Paolo is also wondering if it is really an improvement
-> > rather than a fix, which is a fair take, so unless there are objections
-> > I'll just pull that patch into this series.
-> 
-> No need to repost that patch, we can apply it to net-next as is.
-> The blocker is lack of an ACK from the vsock maintainers from my PoV.
-> Please just wait for the net[-next] patch to settle, don't repost this.
-> Enough noise on the list.
+> I'm following the model we used for Xen support, where the default assumption
+> is that we do everything in userspace, then accelerate only what's absolutely
+> necessary in the kernel.
 
-Sounds good, I'll wait for that patch before the respin of this one.
+Oh, right.  I was worried about people getting clever and abusing the Hyper-V
+handling to implement bespoke, out-of-tree hypercalls, but that ship has sailed.
 
-@Stefano, IIRC you may be on PTO right now, but if not do you mind
-giving a look at
-https://lore.kernel.org/all/20261116-vsock-tap-net-v1-1-7e24f45adad3@meta.com/
-?
+> Userspace can opt *in* to having the kernel support certain hypercalls, and
+> later patches waiting in the wings already add the in-kernel VTL switching
+> enabled via a bitmask when enabling the capability. 
 
-Best,
-Bobby
+Oh yeah, duh.  We need a capability either way.
