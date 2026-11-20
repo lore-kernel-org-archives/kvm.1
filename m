@@ -1,68 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.204.34.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795143536;
-	b=cWFZZ4tuFGcbK8pFnJfj9mfB7kg053VfZoyRC/qOrABBGjzYpWBfAC7/sD/Un1s2nJji
-	 54MBiTWcYVNniIl6u88uDFnpiRDxRlBs2drA+ZS9JM2Bsu9r4ZXrRMBJ8IkqUpr8Vyaom
-	 ck1mmk3noaWkpp5+0/+w3WuCodwBI8qjNge5M2Z7jDOHYyK3ypFTBR6kRJq6uW4K2c6Hj
-	 eQUqEI1eTGyIO3RT70WD0nj+c8WzSybuxpeXycwH4gaUCiUK4WudjxloIcrWyogsyjPRk
-	 1Tvb3Zg89cEvuMZmuRjMqdtbQE18f6GbKLQE64YFZrKp5gFLyXZaCZUZUw23sGiHBgw==
+	t=1795145981;
+	b=lObNNR/JT7NRMjGD5v7gCvM/6qU71OxjkeJzNDk/wXnjdcxWt1PaP3XjA37nntUGz0JP
+	 A9ktQGnr2YBGmF2zBUt1HqXRYHu/LmbHDh4tWzd8qBB0xDXHiR/HE2lFRSh/+530u3JJo
+	 9jAXLOjSiBiCHuw+jK2dZC8IzVyPt8TD0EgsdDVjyNW+GQlEuOT+IjFPDDY4ijQ2dIRev
+	 vFwvX5PASSXQpwJL9Tv4rgrWRJHxbas9HtcYUQ9ClgLWFbdviaxmz8iLh4hRihLMtQghI
+	 4P+XkTm3qA+HH+69RHuIgt0I+EZGRzoliqunylGYZDhfyWi1+aRF4yoTyppnHPghKcg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795143536;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=jwjWgtW4kRseoA0zVDGCPLIdUcXknOULKOmu6gYkLdw=;
-	b=mpA7oQFN7mt2fQlg3xgxUFqll5veFA0qsWdVJGZIqP6Mhb0ces/hFg9wJwBMP1vrxPNh
-	 HSb2AyMDEJ4plrZ/qFJWSzrLRRx66F4hbDVqpE1LDNgA9hmfUT4SXXCzueC1XHUXrwjnz
-	 CpsW9SVWIL01kfxhiqCMi+T0IfvcH8qo6fIXO8QrLyL/GaXpqmmOi9hnglZ0xq3rUplpx
-	 M9LeD2eCSqtiriH82Zj6HE03cAFmmjgZYdizgRbYWCaLt0vU8FD0XwMHOI8IovFWjI2g/
-	 7HX/N5UGbr+HCWm/HeMTP6clXWQ7huKJushdNjkb6jAaMqMY4xLq0wbYUPG/zDnIytg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795145981;
+	h=DMARC-Filter:DKIM-Signature:X-QQ-mid:X-QQ-Originating-IP:Received:
+	 X-QQ-SSF:X-QQ-GoodBg:X-BIZMAIL-ID:EX-QQ-RecipientCnt:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding:X-QQ-SENDSIZE:Feedback-ID:X-QQ-XMAILINFO:
+	 X-QQ-XMRINFO:X-QQ-RECHKSPAM;
+	bh=6ID25TASgB9mY3j+/9ivqOm1LKio+2OprW84VL0Grno=;
+	b=F2ALR8kWF+f2XIYn8F3lJk8/GtFX8i3YBmcimttYcBddQT97WN7CwP4jXielDHFNgawP
+	 G7yjceeqT4f2L7VQk3ZScpAQxquDGSPIGuhzfIZSpEzPcTAfe2Zc480XI7ot4wbzfXtRM
+	 SPK2YApzRXeNH85enKTobynNbsS2hefxNXHBzXXDGgqBmrVAOl67wayA00DJUxzx2DpT/
+	 INNJDQGJ3NwnHGCQ/tYt9WQRTrZjUKjoMsyL/vraaQeF2vpi3zulfJrMKYD5P8zp1c6St
+	 ozfeGD55l+FC0+64wPP5dH2vxg6p4VdR75uhRcyPQrPlENbYcvztNpzLBrTEij7Z20g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PPI2Tz45;
-	arc=none smtp.remote-ip=198.175.65.10
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	dmarc=pass header.from=uniontech.com;
+	spf=pass smtp.mailfrom=uniontech.com;
+	dkim=pass header.d=uniontech.com header.i=@uniontech.com header.a=rsa-sha256 header.s=onoh2408 header.b=RaDWpzLq;
+	arc=none smtp.remote-ip=54.204.34.130
+Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8627B606A326;
-	Fri, 20 Nov 2026 02:58:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8627B606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A38606A325;
+	Fri, 20 Nov 2026 03:39:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 72A38606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PPI2Tz45
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795143537; x=1826679537;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=hj2txJligqlKIDnOrXcY2GWTzSNfobaEGxDoiQKT+JY=;
-  b=PPI2Tz45fCY26IlHxGlcVdrBe9LJcBwKiK+Lr1+Cp6OhwabuGGDATSYZ
-   2P/MBq0Y3ywqlWF6sshTrccU6JFoyOK5fB7GqFFudc4Zc5rdODNZlAVk1
-   G4YFa5L51tDd7O3r3FoW+YGiIEqoKHX2M/7rr7wfRiPj3n+0uzJ99/uXk
-   gQ/yd4+V3EWaNhxI/S+pCOEJdbuENmLlWnGNzsYzGK90K3bT4ism7LI/r
-   kRNGYKBgt63o6OcJ4iC3DQqDZL5/lYP916vHkB9nu+0WM/YLSr81W/nbd
-   3GA3n2j8o9ENSTiuypXsZv0Ot34UWZe8AKJFgqBcIA8SJ0nWup/3nr1d9
-   Q==;
-X-CSE-ConnectionGUID: nrH7I9XvTSqg6Se3hh8oAA==
-X-CSE-MsgGUID: pHY5ORR6S7OVd0XHKsuKFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="3931082"
-X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
-   d="scan'208";a="3931082"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 18:58:56 -0800
-X-CSE-ConnectionGUID: pk12LqTwRhqc5Oao+l9uWg==
-X-CSE-MsgGUID: fKSf6pqqQ4++4flk103ZCA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
-   d="scan'208";a="10591451"
-Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 18:58:46 -0800
-Message-ID: <0996eead-a63e-4a17-96d3-45ccd48cd4b1@linux.intel.com>
-Date: Fri, 20 Nov 2026 10:58:44 +0800
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.a=rsa-sha256 header.s=onoh2408 header.b=RaDWpzLq
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1795145912;
+	bh=6ID25TASgB9mY3j+/9ivqOm1LKio+2OprW84VL0Grno=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=RaDWpzLqCdYYGRlKySuGUQaSPqkaLKbto6xE75Z7DkWkxQkTgTfeRG0R94NcJFHIo
+	 wZa943Zh1rATL+aq0YIJh0YyEYetiF/YBgVPubX62zIUIoXfixEo6Rm6SQSyUkWBcf
+	 FklDE/31hdDk2EvwxWiT95VlBDo+MowuMgkvLIjc=
+X-QQ-mid: zesmtpgz9t1795145907t2b7c356a
+X-QQ-Originating-IP: 2Dvc6PhiaE8wquu067dn3SVToxhwDgWWzXwvNhwqyak=
+Received: from PEN202512010004 ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 20 Nov 2026 11:38:25 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 5714097690566660774
+EX-QQ-RecipientCnt: 10
+From: raoxu <raoxu@uniontech.com>
+To: mst@redhat.com
+Cc: jasowangio@gmail.com,
+	eperezma@redhat.com,
+	davem@davemloft.net,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	raoxu@uniontech.com,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] vhost/net: Fix receive queue test in busy poll
+Date: Fri, 20 Nov 2026 11:38:24 +0800
+Message-ID: <1B3A1B72438119BC+20261120033824.681219-1-raoxu@uniontech.com>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,67 +74,97 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, Alex Williamson <alex@shazbot.org>,
- Alexey Kardashevskiy <aik@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
- Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
- Nicolin Chen <nicolinc@nvidia.com>, Robin Murphy <robin.murphy@arm.com>,
- Samuel Ortiz <sameo@rivosinc.com>,
- Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- Steven Price <steven.price@arm.com>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
- Xu Yilun <yilun.xu@linux.intel.com>, Ashish Kalra <ashish.kalra@amd.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, iommu@lists.linux.dev,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
- linux-tegra@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v9 08/13] PCI/TSM: Keep connections active while device
- contexts exist
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- linux-coco@lists.linux.dev
-References: <20261116081935.85372-1-aneesh.kumar@kernel.org>
- <20261116081935.85372-9-aneesh.kumar@kernel.org>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20261116081935.85372-9-aneesh.kumar@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: N4kMhpKju7/pug6xHKTvHbdchBT/IBEy6aGk8cOlUz33hi8Qj9qKk5tl
+	QKAN9A5QI2vypQtXDC+lvRXzrp5RxsvkTRBRys8mK7lGs2KZ5tmCHrfrirdFMSmIHiCXJAK
+	clPUZd9F7/qorsVB4CddiztQNYlu6beQmVo2r2yLggA3uu0YVK1vCu2B3BVSo8LA3zP+rDn
+	28sdh0LC+Jg1Ys4G2x7+/9IjRVZ4+9NyAV3l9J+fjQ26kFFD3dhO/qTWmI+xuTM52kQaf//
+	plUnZL0+GUDFWBERGBdjY2pi/S6j4bh+gicodXtr6nDl21mF7eXU0KZNVzNr2z48XMAdT2f
+	x26Os8BHGNLwS5F3WCnmZ/fcpTjF1RiPJi6gKw+yrY9XwCZi6BTP2AYYLi22R2frK+uN0Xu
+	mVcsRkiP0M915XrEjLSXh+5UzyKS0MtKDbvXMO838UfyOI325p5SGFsKbWyt3R5qcAhQ4Tm
+	w5HCaIsSEBDvqVeN81rWamaJgR+U5sh8rLwZvMXt749NSaeh/+kM9GJaiP7pT8K8VAyFYtK
+	ZoLPQoTZeiYhsrBVmOrjpbbxZSjpqV8JUviv+ppXjvM5YlrzPHvnTzuMPfzwbkOlwyhPKul
+	3CtLQOubykvgiyPC8zOiUmM0I2edOoxuZ+74AWoFV/kdPcpZz4+nC7Mhr0W9AYKeLFDKXlY
+	9Gp52SqGvXltQvcgqC6s3avxCWBoItbpHA4acWscVPYPVhqg0kSJYgB/d+EL633dhDFeGEE
+	F2GaPqnpLCJdMreuggwjoNSj1qeGJxWfbS1sYgeEVJzyHWGS6+Do9iuZzq9FnlFRoXB+4oq
+	qJHSUQYqXjz2aoWMOWZTrTIXmL0qWir3Qw/5bV+5seH+ZtwKW9zZNnPBTjULfdS6vlvgKQ5
+	GGhG439/uZDSx0JPnJ1LLausWze/MXqKfI89LSwOxJRMR9q3VlTP/8V8Z7Oj6zztWIFMLGm
+	TC2ACTEPbeIO3xN5aTP6lmfbjDGjyYhEKyraEG3b8tPgX6LfGJSzFJGFWQKr17eneavmVjH
+	6WVi4a4cjyB2E+NRkl4irctZ/s+7PSxK2g6Wa4OeVpWFyo7yEcVHLgWJBoDvbDZ2R0xgnpC
+	p6J483PVEMJ76aQYexPo3g=
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+X-QQ-RECHKSPAM: 0
 
-On 11/16/2026 4:19 PM, Aneesh Kumar K.V (Arm) wrote:
-> Add PCI TEE Security Manager (TSM) contexts that prevent PF0 disconnect
-> while in use. Verify that the device is connected to the requested TSM.
-> Each successful get returns a separate context and requires a matching
-> put. Reject disconnect with -EBUSY until all contexts are released.
-> 
-> Remove the legacy bind and unbind interface. Device security state is
-> managed by the backend, so also remove the associated "bound" sysfs
-> attribute and its ABI documentation.
+From: Xu Rao <raoxu@uniontech.com>
 
-This patch does two things: add pci tsm contexts to keep the pf0 active
-while in use, and remove the old device bind/unbind interface. Could
-these changes be split into separate patches? That would make the
-changes easier to review.
+sock_has_rx_data() returns a positive value when receive data is
+available. For sockets without a peek_len() callback, however, its
+fallback returns skb_queue_empty(), which has the opposite meaning.
 
-> 
-> Cc: Bjorn Helgaas<bhelgaas@google.com>
-> Cc:linux-pci@vger.kernel.org
-> Cc: Alexey Kardashevskiy<aik@amd.com>
-> Cc: Jason Gunthorpe<jgg@ziepe.ca>
-> Cc: Lukas Wunner<lukas@wunner.de>
-> Signed-off-by: Aneesh Kumar K.V (Arm)<aneesh.kumar@kernel.org>
-> ---
->   Documentation/ABI/testing/sysfs-bus-pci |  15 +-
->   drivers/pci/tsm/core.c                  | 227 ++++++++++--------------
->   include/linux/pci-tsm.h                 |  71 +++++---
->   3 files changed, 136 insertions(+), 177 deletions(-)
+An AF_PACKET SOCK_RAW socket is accepted by get_raw_socket() as a
+vhost-net backend, and its socket operations do not provide peek_len().
+With busy polling enabled for this backend, an empty receive queue is
+treated as ready and a nonempty queue as not ready. This can make
+vhost_net_busy_poll() stop polling prematurely or fail to stop for
+queued receive data, and invert its receive-side scheduling decision.
+TUN and TAP backends provide peek_len() and are unaffected.
 
-Thanks,
-baolu
+Negate skb_queue_empty() so the fallback matches the callback and the
+readiness checks in vhost_net_busy_poll().
+
+The issue was found during AI-assisted code review. The helper's
+incorrect result was confirmed on x86_64 running 6.6.0-amd64-desktop
+using a temporary diagnostic module containing the original and fixed
+helpers. An AF_PACKET SOCK_RAW socket, without PACKET_RX_RING, was
+bound to loopback in a private network namespace. Across three cycles
+of sending and receiving a 60-byte frame, the original helper returned
+1 for an empty queue and 0 for a queued frame. The fixed helper returned
+0 and 1 respectively, matching socket readability in all nine checks.
+This tests helper copies on real sockets, not the running vhost-net
+busy-poll path; the vhost-net module was not replaced.
+
+The patched drivers/vhost/net.o was also build-tested on the net tree
+with x86_64 GCC 12.3 and W=1 under allmodconfig and allyesconfig.
+No end-to-end vhost tests or kernel selftests were run.
+
+Fixes: 1576d9860599 ("tun: switch to use skb array for tx")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xu Rao <raoxu@uniontech.com>
+---
+Changes in v2:
+  - Target net and add the introducing commit's Fixes tag.
+  - Explain the raw packet socket backend and busy-poll decisions.
+  - State the AI-assisted discovery method and document the diagnostic
+    module test, its results and its helper-level coverage.
+  - Document the targeted build tests.
+  - Keep the code change unchanged from v1.
+
+v1: https://lore.kernel.org/virtualization/20261110051642.249640-1-raoxu@uniontech.com/
+
+AI assistance: OpenCode was used to inspect the history, prepare and run
+the diagnostic module test, run build checks, and revise this message.
+The code change is unchanged from v1. The discovery method was confirmed
+by the author.
+
+ drivers/vhost/net.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+index 4570a4ffbab2..10ed2d55ff07 100644
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -538,7 +538,7 @@ static int sock_has_rx_data(struct socket *sock)
+ 	if (sock->ops->peek_len)
+ 		return sock->ops->peek_len(sock);
+ 
+-	return skb_queue_empty(&sock->sk->sk_receive_queue);
++	return !skb_queue_empty(&sock->sk->sk_receive_queue);
+ }
+ 
+ static void vhost_net_busy_poll_try_queue(struct vhost_net *net,
+
+base-commit: 435cbdaf9b03687498dc16fe4af8d16a977e21d0
+-- 
+2.50.1
