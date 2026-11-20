@@ -1,59 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.17
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795156530;
-	b=RNmPFo4aQNCxNSNHOkYIRvbZkO586YtK4WVEUFQwWIDLGaUD4j8NbO66TlgAQzZ63s9i
-	 YYHWeJJfZnu+tA43vTtqm3aHZNxBzYlnjCEFwkHjRPTxMUO+ioRRXIHIJSjc9HfMladbp
-	 zYk1WTHi6PFDOZRSVU6E53Fqkrvvb26TEFVRk+33E2aa2a3mxutmY2xQALrNe94tVA3WN
-	 4Okdl7q4eg5cfksetIJBhwt8bBJT+6Y7fpP+f9zXy1zfkpzqgEafLsi9jbDd0B4qc7MJg
-	 0pWPe5uYy1yzcdXu0BfTh0e/9CtEUtyC6UbHDl9Toiic3RPWjcNEwjCFjlycMw1K5+A==
+	t=1795157407;
+	b=Ts+wyZ5zW5pS2ahDDxTPMt8O8lxGxXJ9VcZBGzQ0lYbkhZKSBxbuVZpWVFmB67l0D1Rl
+	 IfpYzCPhxKZB764HRimBZmVkU8/44qnZzSA3yoW0BwXCU5Sk7DF4qZSiN4SY7rBaO/bF2
+	 nT1eBZYNtGLSdZd8iEbUIeBmDqxDHmGhU20zcUjG3sAraft4oQ4jvnFXFsP9y3J3wJDq/
+	 wvQ0oBNIXs2gRtnYCfU/AqWjV5HeUfQ90BysxZUMFZYyfQd1XetCg4N+SkqrjGeuqNMpp
+	 oRZZNuUVHgp3azX6uUONZNGdpKjwPWybFxPqkHFX2pgMAZxnIfvO+z6txyFHGQELLVg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795156530;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=G0zRAkGF+KSljQO9yS6uVarLN8Ga3GC3k9CquE6CytE=;
-	b=a8VYvW05iGf8JqjgPcl6SJmpbb1npM6GP23Ht6rYdQLLwqkYMCBsYkea7ILa5DeUuuqH
-	 E7u8nAYbsbenisZ5Y9gCzTJnH4jxwnfHI6pLgVOtWjCGqtVqoAtNjV3KZ0Lh3NdzJuVB5
-	 bdhFvG8Y1CZ6XvzSSA1x+yPwJ7e2VcqS+duV9cSc6FayhMWOHear4Qe6T1MAkJBQWMzeQ
-	 W737wdPHuOvmSouTUW/mhr8BKo4lhBA5AePhIloavfHnXRBcjfEbTDzxL2lcWtEaWsd43
-	 knzwCalOj9/mXkJZ80z0nLhESXSnXV3Di8mmr6PIi3gazio2dPj/zFZbtUn5MBsDw+g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795157407;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=wkd4nqwFfR5tsb8FGSQqj7aBv7pRJtWn5SfKVCnGq1M=;
+	b=KtYOsybHDCpaTN/5dfior5/YeH2r1lV6MXbF5giusrvjNJK6MIM25TwmzGUotC//HbBQ
+	 vSusNKH1E7sgomwiAuTSAxvqUtJADO9+75rfkxy3CpvkIFYUkHkVpMLpSlu04YoEJgKG2
+	 IhsjwR2SumAwRFg6IdVEI3UTK/TKUt5pYiej6gMEb5G1mwK/vu+xU/m+amGTZ09M4snAv
+	 kqNJhXRXVC7x8etL8HojrXY68xXPiJ/ioBGvqZU9BQhkXrDloSsmfVm8TnVL5MantfYkR
+	 5yS6BGgPKNvkLt4Fl+mmj45tejIJWMig4mp0BfFS8GiglcTtijR5jUVMXg2GjKeXzQQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Di93BNen;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66254606A320;
-	Fri, 20 Nov 2026 06:35:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66254606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="mC+/2vpJ";
+	arc=none smtp.remote-ip=198.175.65.17
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5287C606A320;
+	Fri, 20 Nov 2026 06:50:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5287C606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Di93BNen
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3CA231596;
-	Thu, 19 Nov 2026 22:35:24 -0800 (PST)
-Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7A5F23F673;
-	Thu, 19 Nov 2026 22:35:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795156527; bh=9NBvwpZWWadQFsksHSrJpVxb+kXxaiMwW0jNcvt09fU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Di93BNenvzv0wKdOUq8XuyZIWeSMqudpmup+ZeGHxESB3mFad4ROccBlHY+KY1RMq
-	 YmpSudlqMEGiUgBwc4t4ChCNRiUewCRr+yAnqnYnQ9lahA7yJhyNWy/UyUcdIbcCt2
-	 VKbK6kzV42daCTPUI60IKJmjJeTXTuFCc4qYwvKo=
-Date: Fri, 20 Nov 2026 06:35:12 +0000
-From: Wei-Lin Chang <weilin.chang@arm.com>
-To: Colton Lewis <coltonlewis@google.com>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>
-Cc: Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Fuad Tabba <fuad.tabba@linux.dev>, Steffen Eiden <seiden@linux.ibm.com>, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: nv: Fix guest stage-2 mapping leak on
- sub-block unmap
-Message-ID: <iyfa5sagkdapb4plle575uhbxbmjdcxvbe35nnlxkqzfqnztqd@mmweqvqmil6x>
-References: <20261119185105.626343-1-coltonlewis@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mC+/2vpJ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795157407; x=1826693407;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=mhxWMgCH5HMfkFHe/VNr+MzQbbFwX222p1eoUESgZ50=;
+  b=mC+/2vpJKLUoyNiAaJYLKqpzKytvyIkXnevDls1utEX1t6Y2ECP+SqCh
+   MI/HHtDef+e4ObLv0rx0WRBzK5GPGbF66dzKgQ4gYn3/H84OTOxm+fhT/
+   8HSLEaZLclpM8/wAPKS3Y9JRUgJ5QARoAzPbfYzzirgLPXKJCPFxT6QqG
+   J5zXqeflFwtOn/Fey87NCi+eCNdK7N/wWnNgyexdu8dAYXtfkTyfsvETo
+   t9x+yxdMahzsi7XGibmiCNp6A/EiQZRNf5YkA5/a6hypqk3Kj2O7v9DzZ
+   SqnbjQ0wBWuFIRUDPsbD61mFWDb5Mt0hINwMzClMumObNLx0QwZAbk8/W
+   Q==;
+X-CSE-ConnectionGUID: /+UgXO6PSW2pLPCx36YEng==
+X-CSE-MsgGUID: fJ/kFsQTQ52tOscxyslVDw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="4037347"
+X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
+   d="scan'208";a="4037347"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 22:50:05 -0800
+X-CSE-ConnectionGUID: Y2qOi1RRQBGJruwAMXvr9Q==
+X-CSE-MsgGUID: spG0wXLKRgukaky3T7VPjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
+   d="scan'208";a="10525531"
+Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 22:49:58 -0800
+Message-ID: <620712ae-e21e-4daa-9cd3-0c5d06ffb67f@linux.intel.com>
+Date: Fri, 20 Nov 2026 14:49:56 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -63,205 +72,278 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261119185105.626343-1-coltonlewis@google.com>
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, Alex Williamson <alex@shazbot.org>,
+ Alexey Kardashevskiy <aik@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
+ Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+ Nicolin Chen <nicolinc@nvidia.com>, Robin Murphy <robin.murphy@arm.com>,
+ Samuel Ortiz <sameo@rivosinc.com>,
+ Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+ Steven Price <steven.price@arm.com>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+ Xu Yilun <yilun.xu@linux.intel.com>, Ashish Kalra <ashish.kalra@amd.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, iommu@lists.linux.dev,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+ linux-tegra@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH v9 11/13] iommufd/viommu: Allow vIOMMUs without a parent
+ HWPT
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ linux-coco@lists.linux.dev
+References: <20261116081935.85372-1-aneesh.kumar@kernel.org>
+ <20261116081935.85372-12-aneesh.kumar@kernel.org>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20261116081935.85372-12-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 19, 2026 at 06:51:05PM +0000, Colton Lewis wrote:
-> When a shadow stage-2 block mapping (for example, 2M at PMD level) is
-> partially invalidated by a smaller guest unmap such as a 4K TLBI
-> IPAS2E1IS, kvm_pgtable_stage2_unmap() shatters and clears the entire
-
-"shatters" sounds like it breaks the block into page mappings, so maybe
-just "clears the entire block.."?
-
-> block descriptor in mmu->pgt. However, kvm_remove_guest_s2_mappings()
-
-nit: I think "the shadow page table" is clearer than "mmu->pgt"
-
-> only removes a struct kvm_guest_s2_mapping node when its entire
-> [nested_start, nested.last] span lies within the unmap range. As a
-> result, every sub-block invalidation followed by a re-fault leaks a
-
-Doesn't the block tracking node get leaked regardless of whether a
-re-fault happens?
-
-> stale block-sized tracking node in mmu->guest_s2_mappings and
-> kvm->arch.mmu.guest_s2_mappings until the shadow MMU is destroyed,
-> allowing an L1 guest to grow host kernel memory and degrade subsequent
-> TLBI IPAS2E1IS walks to O(N) under write_lock(&kvm->mmu_lock).
+On 11/16/2026 4:19 PM, Aneesh Kumar K.V (Arm) wrote:
+> VIOMMU_ALLOC currently requires a nesting parent HWPT_PAGING even when
+> the selected vIOMMU implementation has no use for one. This would force
+> implementations such as the following Arm Realm vIOMMU to create an
+> unused parent.
 > 
-> Conversely, unconditionally removing any overlapping tracking node on a
-> sub-block unmap would be unsafe when a shadow block mapping has been
-> split into a child table (such as on a page-granule fault under dirty
-> logging or a racing shared walk returning -EAGAIN), because sibling
-> sub-page PTEs outside the unmapped range remain live in mmu->pgt and
-
-What are sub-page PTEs? :P
-
-> still rely on the block-sized tracking node for host MMU notifier
-> unmaps.
+> Add IOMMUFD_VIOMMU_NO_HWPT so an implementation can opt out. Require
+> hwpt_id to be zero in that case and pass a NULL parent domain to its
+> initialization callback. For implementations that require a HWPT, verify
+> that the parent supports nesting and its domain belongs to the device's
+> physical IOMMU driver before invoking viommu_init().
 > 
-> Since stage2_unmap_walker() unlinks empty child page tables in
-> KVM_PGTABLE_WALK_TABLE_POST as soon as their last valid entry is
-> cleared, check mmu->pgt via kvm_pgtable_get_leaf() on partial-overlap
-> candidates: when no valid entry or split sub-table remains at or below
- 
-You use "or" here.                ^^
-
-> the recorded mapping granule (!kvm_pte_valid(pte) &&
-
-but this is an AND?                                 ^^
-so I don't quite understand.
-
-> kvm_granule_size(level) >= map_size), remove and free the tracking node;
-> otherwise retain it to cover surviving split sub-entries.
-
-"sub-entries" doesn't really make sense to me..
-Maybe "... to cover other entries within the range"?
-
-For this third paragraph can you improve it by stating how the problem
-is fixed upfront? The first two paragraphs describe the problem, then
-you started to talk about stage2_unmap_walker all of a sudden (which I'm
-not sure how much it helps), and the fix itself is not emphasised. The
-combination makes it pretty difficult to get what the patch is doing.
-
+> Reject nested domain and hardware queue allocation for a vIOMMU without
+> a parent, and document the two allocation modes in the UAPI.
 > 
-> In addition, suppress exact-match duplicate insertions in
-> kvm_record_guest_s2_mapping() when concurrent faults or -EAGAIN retries
-> record an identical (nested, canonical) range on the same shadow MMU.
-
-I believe this is better split into its own patch, it's doing another
-thing.
-
-> 
-> Fixes: 5491980c1a41 ("KVM: arm64: nv: Track guest stage-2 mapping removal")
-> Fixes: c2778d14cd2f ("KVM: arm64: nv: Track guest stage-2 mapping creation")
-
-Since there isn't a real bug in the original implementation do we need
-these tags?
-
-> Signed-off-by: Colton Lewis <coltonlewis@google.com>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Kevin Tian <kevin.tian@intel.com>
+> Cc: Joerg Roedel <joro@8bytes.org>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Robin Murphy <robin.murphy@arm.com>
+> Cc: iommu@lists.linux.dev
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 > ---
->  arch/arm64/kvm/nested.c | 68 ++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 61 insertions(+), 7 deletions(-)
+>   Documentation/userspace-api/iommufd.rst | 44 +++++++++---------
+>   drivers/iommu/iommufd/hw_pagetable.c    | 14 ++++--
+>   drivers/iommu/iommufd/viommu.c          | 62 +++++++++++++++----------
+>   include/linux/iommufd.h                 | 13 ++++--
+>   include/uapi/linux/iommufd.h            |  3 +-
+>   5 files changed, 81 insertions(+), 55 deletions(-)
 > 
-> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> index 4d83281a7a28b..2b1c85de5b719 100644
-> --- a/arch/arm64/kvm/nested.c
-> +++ b/arch/arm64/kvm/nested.c
-> @@ -896,6 +896,30 @@ static unsigned long s2_mapping_to_nested_start(struct kvm_guest_s2_mapping *map
->  	return mapping->nested.start & ~S2_MMU_IDX_MASK;
->  }
->  
-> +static bool guest_s2_mapping_exists(struct kvm_s2_mmu *mmu,
-> +				    struct kvm_guest_s2_mapping *mapping)
-> +{
-> +	struct interval_tree_node *node;
-> +
-> +	for (node = interval_tree_iter_first(&mmu->guest_s2_mappings,
-> +					     mapping->nested.start,
-> +					     mapping->nested.last);
-> +	     node;
-> +	     node = interval_tree_iter_next(node, mapping->nested.start,
-> +					    mapping->nested.last)) {
-> +		struct kvm_guest_s2_mapping *curr;
-> +
-> +		curr = container_of(node, struct kvm_guest_s2_mapping, nested);
-> +		if (curr->nested.start == mapping->nested.start &&
-> +		    curr->nested.last == mapping->nested.last &&
-> +		    curr->canonical.start == mapping->canonical.start &&
-> +		    curr->canonical.last == mapping->canonical.last)
-> +			return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +
->  void kvm_record_guest_s2_mapping(struct kvm_s2_mmu *mmu, gpa_t canonical_ipa,
->  				 gpa_t nested_ipa, size_t map_size,
->  				 struct kvm_guest_s2_mapping *mapping)
-> @@ -915,9 +939,32 @@ void kvm_record_guest_s2_mapping(struct kvm_s2_mmu *mmu, gpa_t canonical_ipa,
->  
->  	tag_s2_mapping_mmu(mapping, mmu);
->  
-> -	guard(spinlock)(&kvm->arch.guest_s2_tracking_lock);
-> -	interval_tree_insert(&mapping->nested, &mmu->guest_s2_mappings);
-> -	interval_tree_insert(&mapping->canonical, &kvm->arch.mmu.guest_s2_mappings);
-> +	scoped_guard(spinlock, &kvm->arch.guest_s2_tracking_lock) {
-> +		if (!guest_s2_mapping_exists(mmu, mapping)) {
-> +			interval_tree_insert(&mapping->nested,
-> +					     &mmu->guest_s2_mappings);
-> +			interval_tree_insert(&mapping->canonical,
-> +					     &kvm->arch.mmu.guest_s2_mappings);
-> +			mapping = NULL;
+
+[...]
+
+> diff --git a/drivers/iommu/iommufd/hw_pagetable.c b/drivers/iommu/iommufd/hw_pagetable.c
+> index ae62db50885c..52e52ef089a2 100644
+> --- a/drivers/iommu/iommufd/hw_pagetable.c
+> +++ b/drivers/iommu/iommufd/hw_pagetable.c
+> @@ -306,6 +306,10 @@ iommufd_viommu_alloc_hwpt_nested(struct iommufd_viommu *viommu, u32 flags,
+>   		return ERR_PTR(-EOPNOTSUPP);
+>   	if (!user_data->len)
+>   		return ERR_PTR(-EOPNOTSUPP);
+> +	if (!viommu->hwpt)
+> +		return ERR_PTR(-EOPNOTSUPP);
+> +	if (!viommu->iommu_dev)
+> +		return ERR_PTR(-EOPNOTSUPP);
+>   	if (!viommu->ops || !viommu->ops->alloc_domain_nested)
+>   		return ERR_PTR(-EOPNOTSUPP);
+>   
+> @@ -404,10 +408,12 @@ int iommufd_hwpt_alloc(struct iommufd_ucmd *ucmd)
+>   		struct iommufd_viommu *viommu;
+>   
+>   		viommu = container_of(pt_obj, struct iommufd_viommu, obj);
+> -		iommu_dev = iommufd_device_get_iommu_dev(idev);
+> -		if (!iommu_dev || viommu->iommu_dev != iommu_dev) {
+> -			rc = -EINVAL;
+> -			goto out_unlock;
+> +		if (viommu->iommu_dev) {
+> +			iommu_dev = iommufd_device_get_iommu_dev(idev);
+> +			if (!iommu_dev || viommu->iommu_dev != iommu_dev) {
+> +				rc = -EINVAL;
+> +				goto out_unlock;
+> +			}
+
+Is it intended that every tsm-provided viommu has viommu->iommu_dev ==
+NULL?
+
+If so, could the tsm-provider patch make provider selection exclusive by
+looking up the physical iommu only on the fallback path? All checks
+against viommu->iommu_dev should be in that patch. This non-parent-hwpt
+viommu support patch should no longer check viommu->iommu_dev.
+
+Also, if viommu->iommu_dev and viommu->tsm_dev are mutually exclusive,
+could that be made explicit in a comment or by using a tagged union?
+
+>   		}
+>   		hwpt_nested = iommufd_viommu_alloc_hwpt_nested(
+>   			viommu, cmd->flags, &user_data);
+> diff --git a/drivers/iommu/iommufd/viommu.c b/drivers/iommu/iommufd/viommu.c
+> index 7e74d3992ae4..cadd8a5ca912 100644
+> --- a/drivers/iommu/iommufd/viommu.c
+> +++ b/drivers/iommu/iommufd/viommu.c
+> @@ -17,7 +17,8 @@ void iommufd_viommu_destroy(struct iommufd_object *obj)
+>   		viommu->ops->destroy(viommu);
+>   	if (viommu->tsm_dev)
+>   		tsm_put_device(viommu->tsm_dev);
+> -	refcount_dec(&viommu->hwpt->common.obj.users);
+> +	if (viommu->hwpt)
+> +		refcount_dec(&viommu->hwpt->common.obj.users);
+>   	if (viommu->kvm_file)
+>   		fput(viommu->kvm_file);
+>   	xa_destroy(&viommu->vdevs);
+> @@ -31,11 +32,11 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
+>   		.uptr = u64_to_user_ptr(cmd->data_uptr),
+>   		.len = cmd->data_len,
+>   	};
+> -	struct iommufd_hwpt_paging *hwpt_paging;
+> +	struct iommufd_hwpt_paging *hwpt_paging = NULL;
+>   	struct tsm_dev *tsm_dev = NULL;
+>   	struct iommufd_viommu *viommu;
+>   	struct iommufd_device *idev;
+> -	struct iommu_device *iommu_dev;
+> +	struct iommu_device *iommu_dev = NULL;
+>   	const struct iommufd_viommu_ops *ops;
+>   	size_t viommu_size;
+>   	int rc;
+> @@ -47,11 +48,6 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
+>   	if (IS_ERR(idev))
+>   		return PTR_ERR(idev);
+>   
+> -	iommu_dev = iommufd_device_get_iommu_dev(idev);
+> -	if (!iommu_dev) {
+> -		rc = -EOPNOTSUPP;
+> -		goto out_put_idev;
+> -	}
+>   	tsm_dev = tsm_get_device(idev->dev);
+>   	if (IS_ERR(tsm_dev)) {
+>   		rc = PTR_ERR(tsm_dev);
+> @@ -68,6 +64,11 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
+>   			tsm_put_device(tsm_dev);
+>   			tsm_dev = NULL;
+>   		}
+> +		iommu_dev = iommufd_device_get_iommu_dev(idev);
+> +		if (!iommu_dev) {
+> +			rc = -EOPNOTSUPP;
+> +			goto out_put_idev;
 > +		}
-> +	}
-> +
-> +	kfree(mapping);
+>   		if (!iommu_dev->ops->get_viommu_ops) {
+>   			rc = -EOPNOTSUPP;
+>   			goto out_put_idev;
+> @@ -93,15 +94,22 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
+>   		goto out_put_idev;
+>   	}
+>   
+> -	hwpt_paging = iommufd_get_hwpt_paging(ucmd, cmd->hwpt_id);
+> -	if (IS_ERR(hwpt_paging)) {
+> -		rc = PTR_ERR(hwpt_paging);
+> -		goto out_put_idev;
+> -	}
+> -
+> -	if (!hwpt_paging->nest_parent) {
+> -		rc = -EINVAL;
+> -		goto out_put_hwpt;
+> +	if (ops->flags & IOMMUFD_VIOMMU_NO_HWPT) {
+> +		if (cmd->hwpt_id) {
+> +			rc = -EINVAL;
+> +			goto out_put_idev;
+> +		}
+> +	} else {
+> +		hwpt_paging = iommufd_get_hwpt_paging(ucmd, cmd->hwpt_id);
+> +		if (IS_ERR(hwpt_paging)) {
+> +			rc = PTR_ERR(hwpt_paging);
+> +			goto out_put_idev;
+> +		}
+> +		if (!hwpt_paging->nest_parent || !iommu_dev ||
+> +		    hwpt_paging->common.domain->owner != iommu_dev->ops) {
+> +			rc = -EINVAL;
+> +			goto out_put_hwpt;
+> +		}
+>   	}
+>   
+>   	viommu = (struct iommufd_viommu *)_iommufd_object_alloc_ucmd(
+> @@ -119,7 +127,8 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
+>   	viommu->tsm_dev = tsm_dev;
+>   	tsm_dev = NULL;
+>   	viommu->hwpt = hwpt_paging;
+> -	refcount_inc(&viommu->hwpt->common.obj.users);
+> +	if (viommu->hwpt)
+> +		refcount_inc(&viommu->hwpt->common.obj.users);
+>   	INIT_LIST_HEAD(&viommu->veventqs);
+>   	init_rwsem(&viommu->veventqs_rwsem);
+>   	/*
+> @@ -130,7 +139,7 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
+>   	viommu->iommu_dev = iommu_dev;
+>   
+>   	rc = ops->viommu_init(viommu, idev->dev,
+> -			      hwpt_paging->common.domain,
+> +			      hwpt_paging ? hwpt_paging->common.domain : NULL,
+>   			      user_data.len ? &user_data : NULL);
+>   	if (rc)
+>   		goto out_put_hwpt;
+> @@ -140,7 +149,8 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
+>   	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
+>   
+>   out_put_hwpt:
+> -	iommufd_put_object(ucmd->ictx, &hwpt_paging->common.obj);
+> +	if (hwpt_paging)
+> +		iommufd_put_object(ucmd->ictx, &hwpt_paging->common.obj);
+>   out_put_idev:
+>   	if (tsm_dev)
+>   		tsm_put_device(tsm_dev);
+> @@ -240,10 +250,12 @@ int iommufd_vdevice_alloc_ioctl(struct iommufd_ucmd *ucmd)
+>   		goto out_put_idev;
+>   	}
+>   
+> -	iommu_dev = iommufd_device_get_iommu_dev(idev);
+> -	if (!iommu_dev || viommu->iommu_dev != iommu_dev) {
+> -		rc = -EINVAL;
+> -		goto out_put_idev;
+> +	if (viommu->iommu_dev) {
+> +		iommu_dev = iommufd_device_get_iommu_dev(idev);
+> +		if (!iommu_dev || viommu->iommu_dev != iommu_dev) {
+> +			rc = -EINVAL;
+> +			goto out_put_idev;
+> +		}
+>   	}
+>   
+>   	mutex_lock(&idev->igroup->lock);
+> @@ -463,7 +475,7 @@ int iommufd_hw_queue_alloc_ioctl(struct iommufd_ucmd *ucmd)
+>   	if (IS_ERR(viommu))
+>   		return PTR_ERR(viommu);
+>   
+> -	if (!viommu->ops || !viommu->ops->get_hw_queue_size ||
+> +	if (!viommu->hwpt || !viommu->ops || !viommu->ops->get_hw_queue_size ||
+>   	    !viommu->ops->hw_queue_init_phys) {
+>   		rc = -EOPNOTSUPP;
+>   		goto out_put_viommu;
+> diff --git a/include/linux/iommufd.h b/include/linux/iommufd.h
+> index a4b29915d0ca..4d5995956cce 100644
+> --- a/include/linux/iommufd.h
+> +++ b/include/linux/iommufd.h
+> @@ -6,6 +6,7 @@
+>   #ifndef __LINUX_IOMMUFD_H
+>   #define __LINUX_IOMMUFD_H
+>   
+> +#include <linux/bits.h>
+>   #include <linux/err.h>
+>   #include <linux/errno.h>
+>   #include <linux/iommu.h>
+> @@ -102,6 +103,7 @@ void iommufd_ctx_get(struct iommufd_ctx *ictx);
+>   struct iommufd_viommu {
+>   	struct iommufd_object obj;
+>   	struct iommufd_ctx *ictx;
+> +	/* Physical IOMMU backing, or NULL. */
+>   	struct iommu_device *iommu_dev;
+>   	struct iommufd_hwpt_paging *hwpt;
+>   	struct file *kvm_file;
 
-In my understanding kfree() can be called while holding locks, so we
-don't need the extra level of indentation.
-
-> +}
-> +
-> +static bool guest_s2_mapping_unmapped(struct kvm_s2_mmu *mmu,
-> +				      gpa_t nested_start, size_t map_size)
-> +{
-> +	kvm_pte_t pte;
-> +	s8 level;
-> +
-> +	if (!mmu->pgt)
-> +		return true;
-> +
-> +	if (kvm_pgtable_get_leaf(mmu->pgt, nested_start, &pte, &level, 0))
-> +		return false;
-> +
-> +	return !kvm_pte_valid(pte) && kvm_granule_size(level) >= map_size;
->  }
->  
->  void kvm_remove_guest_s2_mappings(struct kvm_s2_mmu *mmu, gpa_t nipa,
-> @@ -937,17 +984,24 @@ void kvm_remove_guest_s2_mappings(struct kvm_s2_mmu *mmu, gpa_t nipa,
->  	node = interval_tree_iter_first(&mmu->guest_s2_mappings, nipa, nipa_end);
->  	while (node) {
->  		unsigned long nested_start;
-> +		size_t map_size;
->  
->  		next = interval_tree_iter_next(node, nipa, nipa_end);
->  		mapping = container_of(node, struct kvm_guest_s2_mapping,
->  				       nested);
->  		/*
-> -		 * Tracking must be conservative on removal, only remove
-> -		 * mappings that are within the unmap range.
-> +		 * A sub-block unmap tears down an unsplit shadow block entry
-> +		 * in mmu->pgt, whereas a split block may still have valid
-
-Does "split block" make sense? Either it is a block mapping or a page
-mapping.
-
-> +		 * sub-page entries outside [nipa, nipa_end]. Remove the
-
-Same "sub-page entries" wording issue here.
+[...]
 
 Thanks,
-Wei-Lin Chang
-
-> +		 * tracking entry when it lies within the unmap range or no
-> +		 * mappings remain across its span in mmu->pgt.
->  		 */
->  		nested_start = s2_mapping_to_nested_start(mapping);
-> -		if (nipa <= nested_start && nipa_end >= mapping->nested.last) {
-> -			interval_tree_remove(&mapping->nested, &mmu->guest_s2_mappings);
-> +		map_size = mapping->nested.last - nested_start + 1;
-> +		if ((nipa <= nested_start && nipa_end >= mapping->nested.last) ||
-> +		    guest_s2_mapping_unmapped(mmu, nested_start, map_size)) {
-> +			interval_tree_remove(&mapping->nested,
-> +					     &mmu->guest_s2_mappings);
->  			interval_tree_remove(&mapping->canonical,
->  					     &kvm->arch.mmu.guest_s2_mappings);
->  			kfree(mapping);
-> 
-> base-commit: 4405c18c95d2d0f99f6c581ef0ee8591a1aa6ccd
-> -- 
-> 2.56.1.809.ga0b61035b5-goog
-> 
+baolu
