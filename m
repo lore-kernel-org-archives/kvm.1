@@ -1,93 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795158184;
-	b=hNzc0ysJYcVBD1aG8odtIeqBi902fccf9OcrCkieKhDjG+Xi/hJ4RemFgwCDQfa0x0/X
-	 oyNR3hGwD5wkRVUAe6LT/s/J9dJvxK1QQN6HCnvqVudmYWp3aisQFA+Fcol4575ZJ/u/M
-	 n/W/BXIkLJ36kC6a3YAi1oz/M075DwrY2pWeXXrpk1SXZfwBLeV8Uq2dsTUm5YgruXXXO
-	 CN4Ro75D4jMtqdG26W4JKxy0FzZ+vznd5ukN66+kT1LJhL42C+8m8WOymfrZWlVbAPvBQ
-	 ODIEbC7YUHEftpiMAAxybNXgi/s+WeOW43+GUoGUOnvuYlI93+moiCV+9mdx2zKDmMw==
+	t=1795159209;
+	b=1Hwx4For4e1hdwK/V7UkzwkMczxNriVV2tMdPaiIBCWavAoN5jYdzkJJH63df8ZhMrlh
+	 G7Ti4shvTjxnPM1D/o6ViAIY7AF5btc79YA8IkwFsFM3SSfnOJxfotkEVfbPslw34Kz65
+	 z6BxK13umVzVw9axcJ10JL7SaqlqcrLvJzGCerLQuAeG3+RyQY3drBslDyMnLB54GoYzo
+	 JA88FW9S5wxl+j6+F9NSBzuO4HpHp22bEhlIMzIvU7dMo4yMAnvyOVpxNGm2RHZz09vDg
+	 bH+VLkaiXW0NI1iXQi4Tpqr2SOo2iMeapbYpNwQ2AHSPUptE8UhkadBN140BGS6uAmg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795158184;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795159209;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-TM-AS-GCONF:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Proofpoint-Reinject:X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
 	 X-Proofpoint-Spam-Details;
-	bh=afa95FYRycSTILjMsqGzLRYXv+PeRp5wBtIh6n6xeOo=;
-	b=dgrhO209pgRCsbB9hSRUtZMQWy7dcVZi1zaSq0NdIO0OiU/F2KnQB43TiLcisA3+o2pK
-	 p8n49V5IauvC1zX3zhFDnycq9YrWiyUhXWmlImxo4uHO/Tfstlq7fBEFX2rSLNn0oWXMJ
-	 mdD6ACK5ryQIgkS73af/Q/ElQRaPyHQXMH2L1+8Vc8eyMP+XlyT23kIrutAO6zCI4Gtm8
-	 wTDbcTIPc3iX/EVWmQNVvWVB4J9+NZh9z0DD1m2X9tlhWiW8rQdHCcbx4jo8RoLHRpYO/
-	 WiOLxX9V3/hV6vpJ5sQ2UWv9oj5vi9iUiyi93i2LSvxtJ2pBNiyWCeoC2eDAfmL1xMA==
+	bh=1vKQPpdu/ypRpROkCywYng/vV1+x0TjDmBtFpI4IKrM=;
+	b=GoG/3f3vZutzGc8KNvDyuPcxchPt2hRv2+7e8oIGeiAMFoEckpAnBPknt8MPegla/D9B
+	 KynxuJivzjPZKpWET58qYSrumh4bbaiY6L/o4iQVMSY5dN435Q9ebuxapmf1yywKXbpxj
+	 3JfNK9fA1FQoMCHiuzEOIUQ/4CRXhR7v4d3ko+wA6fDxuFd+nJo3D4KzktepeLgpdqF+h
+	 ktfB7MA776Otpk+K4nzALffda2CuT9jPa54+GNf/TjwhcNs85iAqxMpoAhpNYMfObo1zV
+	 bu8NWJZIAFJMV2kgJa0f6azJCmPkh5J0gLwMclRaSZ4E1AhhNhM/30zP6snSzfDBJWw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.ibm.com;
 	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=imaK9aMz;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jfZeollE;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1E4606A325;
-	Fri, 20 Nov 2026 07:03:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E1E4606A325
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCF7606A32A;
+	Fri, 20 Nov 2026 07:20:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9CCF7606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=imaK9aMz
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AK3uab61965675;
-	Fri, 20 Nov 2026 07:02:57 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jfZeollE
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AK3uNia1981948;
+	Fri, 20 Nov 2026 07:19:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=afa95FYRycSTILjMsqGzLRYXv+PeRp
-	5wBtIh6n6xeOo=; b=imaK9aMz6We9WdCUTzVaTg7txsXokdCrRM0xgJq/DmbmUX
-	CXm/mN7NYuQLdyd6iHdiF0MtOh5rzYuaGlWmm1HAxZPxaEwHQNEgTWBlAaxwrd5k
-	fsZ3J8cl1NEeFTTp2XUa2TOZ9sasCtUxUIAydid42mjZgn0n9+jixFEmoH5p3ZpI
-	NV5IEUZdFWj4W40YGSpV+OKPhwp+Og1D1Dq6nrp61Urw/m7Ll3buMxtZDK4GqanK
-	N3e2D7OXjE8M+TrrGO59+Br/VWY3dYzg47DOy4yu4spFAYCxHRlJk8z6KiGpqiA4
-	w9lr3HufL4G/lQUbs1pJjVAJunfRWQfiVjgNut4Q==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j105x6cqa-1
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=1vKQPp
+	du/ypRpROkCywYng/vV1+x0TjDmBtFpI4IKrM=; b=jfZeollE1IbBJTKB6xGgts
+	DErkLPKKgfaMeNVUO70LyV3OQ8NiNDTpm9BFvu/p6ogGcr9su5l/I3w0BUzdd7Tn
+	bB7fcAbkvyEqy+z96Q92Kg4ccFHhCbPLUpjcofq8Rwl1GdU3rfzAXD6MBrfYQIau
+	39oN7dn9J4RjI7oxv1Zz9M+aXMjELZghBxxvPZtiqqApDwWDmiBmNyWzbILLUWCa
+	d71OtO03IKHtVSKsRsvHnMj4sISC/7UsQHAwfzwKcmuP1oB/c0lVxkqmYmkYhJr1
+	6jMG4ruxtjRoa7uiTZbcSdXJg+95O0J7Ui6cnAdNO/gNGH7IeTlQzP/Z4zRy0f5Q
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j105tevmn-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 20 Nov 2026 07:02:56 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AK6xKEQ600883;
-	Fri, 20 Nov 2026 07:02:56 GMT
+	Fri, 20 Nov 2026 07:19:39 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AK782eS3627471;
+	Fri, 20 Nov 2026 07:19:38 GMT
 Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j1bb5jpsn-1
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j1v9xep9g-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Nov 2026 07:02:55 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AK72qqZ46924182
+	Fri, 20 Nov 2026 07:19:38 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AK7JXCD43057554
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Nov 2026 07:02:52 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F16492004E;
-	Fri, 20 Nov 2026 07:02:51 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7B98620049;
-	Fri, 20 Nov 2026 07:02:51 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.24.221])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 20 Nov 2026 07:02:51 +0000 (GMT)
-Date: Fri, 20 Nov 2026 08:02:50 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 0/5] s390/char: replace page allocator calls with
- k[mz]alloc()
-Message-ID: <fe72024b-da3d-44ba-ad41-79dd5da7fac2-agordeev@linux.ibm.com>
-References: <20261108-s390-char-ready-v1-0-3db507722530@kernel.org>
+	Fri, 20 Nov 2026 07:19:33 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 59D052004B;
+	Fri, 20 Nov 2026 07:19:33 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E441320043;
+	Fri, 20 Nov 2026 07:19:29 +0000 (GMT)
+Received: from [9.124.218.70] (unknown [9.124.218.70])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 20 Nov 2026 07:19:29 +0000 (GMT)
+Message-ID: <a149f6b8-2aba-4e99-a64a-ef9ec7f0d449@linux.ibm.com>
+Date: Fri, 20 Nov 2026 12:49:28 +0530
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -97,100 +86,433 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261108-s390-char-ready-v1-0-3db507722530@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/5] powerpc/pseries/eeh: Add RTAS error injection
+ helpers
+To: Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Timothy Pearson <tpearson@raptorengineering.com>,
+        Alex Williamson <alex@shazbot.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin
+ <npiggin@gmail.com>,
+        Christophe Leroy <chleroy@kernel.org>,
+        Ritesh Harjani <ritesh.list@gmail.com>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org, sbhat@linux.ibm.com,
+        harshpb@linux.ibm.com
+References: <20261023073642.59657-1-nnmlinux@linux.ibm.com>
+ <20261023073642.59657-3-nnmlinux@linux.ibm.com>
+ <864398a6-8a74-43df-9594-452a9edd99e9@linux.ibm.com>
+Content-Language: en-US
+From: Narayana Murty N <nnmlinux@linux.ibm.com>
+In-Reply-To: <864398a6-8a74-43df-9594-452a9edd99e9@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: _Qgos3NoeD80laCUZJqkS_1Bn37hEhS4
-X-Proofpoint-GUID: _Qgos3NoeD80laCUZJqkS_1Bn37hEhS4
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIwMDAyNyBTYWx0ZWRfX1RXMLaCa/04M
- aOYxs5DvyYE09AE2LUAJHqxmF5pRsVK/0iA69ltyJ1WFiwHmZG1Z0WIi19JXkzwH8Wj3pNUHQ7C
- i2/4XUoH/zBxUN2HnXd1/WtQrlRPfs8D+reuF4AJ1nCOuNpZfUHoftK+ac1VaMsrXV3TBGm+xVp
- Q4VdoBPPH2KJf1vmiHamehbe1FxxGi+AIOfelUffUCtLfI9+XNt7yKzJZc1qZPuE3FlaTb+1BcL
- gw5vhc9f0tE5f8zDd9Mm2kHL+iWwvwhVjq6+WS8imU7dlsO2Ub9v8WUWZaib+SIua3j6oadyBfC
- No7Wp/Zn9/DDIv4C/w07jac/NGp6Jg10U+JFNKQ6kbr5cRVlLA3XV+i+cVGxCqN6I+j8u92fct1
- GcrYuZ6I4UUigdmovTIECHWgubKpUmQRIs4divExlQ+OCA/UPUfxCRNrUrU7OSMftD1JiYvkeG9
- k9pvPKPlVaQPnYcN27g==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIwMDAyNyBTYWx0ZWRfXxJEDkFN3YIbF
- XIlkKdwXpookl1+MSBo3hkM8LNHRBVxbFVpd6sLoa/15c+FAdlIv7xody3pmScoq5FjW+NhpD0P
- +ixyYCwvYW7Sgce59CvWtrfe6qqg4i4=
-X-Authority-Analysis: v=2.4 cv=K+m3jCWI c=1 sm=1 tr=0 ts=6afff0a0 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
- a=pGLkceISAAAA:8 a=bKjcd7YqMW8_FUSzF1wA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=IouL47/g c=1 sm=1 tr=0 ts=6afff48b cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=QyXUC8HyAAAA:8 a=VnNF1IyMAAAA:8 a=ixBu7NUsdrZfyz3qS-wA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: eeMZ-iM_2ZyyVSI9tGB8Wh31tcUIcEjA
+X-Proofpoint-GUID: wdZVyLO5ALUo9HSDPak7na1Q-GCYRdz2
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIwMDAyNyBTYWx0ZWRfX+lJsDuIxBMvU
+ 3NIIeedaAemZy+On3mhg6y+IXpS0Dev3hmNFqBEEa/xhvXtNO37cdyGHJdmD0u3YfdrF4mM7eZe
+ fudYx0TYhqAV1u1bQid93+Bgpc+3vRbMvUP8+OOLspE0bu7jXldK6Vsg0b0uB7Q083eOWTlxX57
+ yjm/FjFh/tVC5zavGj/XXJ9MnI3BOdam0gpLaUOfrsbH41pSg2GcRX+fXonB26fY6qdxjmpHaPK
+ Dhp9uxJyu5Pdes+ro/1S6lkJHvg2pJgcKSZGce2gOgwDIMszb2wwiG44UZDps9YbvVv/437Gd/8
+ LwxoDVLmqeo8z9zuriz/6+aZ/hp18vZSpOyyrTdFJzZHWK3+6mklLB9yqlgYTj9raSyjE6zZDgo
+ AFbZkqMDJI+rsR9c4zFqFXAd+ZbBTTqMoeOIOvBSUIRXj8LHxbiCVHMk9T11yx6ddau5qi+hg5M
+ h063OrMT229yyRPAEBQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIwMDAyNyBTYWx0ZWRfX3c53QemF85v8
+ y+gn/1nybU7TMtyL9GllozKKScNWNoWqunTcShgIPzHOk0pKwmJXtj7YXXzxLIMn4+94IOLB+Fk
+ 15WFbfrYr8sDiOXfPSNP48AmxVIjp40=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-20_02,2026-11-19_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 clxscore=1015 adultscore=0 spamscore=0
- priorityscore=1501 impostorscore=0 phishscore=0 lowpriorityscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
+ impostorscore=0 spamscore=0 adultscore=0 priorityscore=1501
+ lowpriorityscore=0 suspectscore=0 phishscore=0 clxscore=1015 malwarescore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
  definitions=main-2611200027
 
-On Sun, Nov 08, 2026 at 10:48:57AM +0200, Mike Rapoport (Microsoft) wrote:
-> This the next episode of conversion of page allocator calls to kmalloc
-> family :)
-> 
-> This series covers s390 character drivers other than SCLP.
-> 
-> = tl;dr cover letter copied from the previous posts:
-> 
-> This is a (small) part of larger work of replacing page allocator calls
-> with kmalloc.
-> 
-> My initial intention a few month ago was to remove ugly casts [1], but then
-> willy pointed out that Linus objected to something like this [2] and it
-> looks like more than a decade old technical debt.
-> 
-> Largely, anything that doesn't need struct page (or a memdesc in the
-> future) should just use kmalloc() or kvmalloc() to allocate memory.
-> kmalloc() guarantees alignment, physical contiguity and working
-> virt_to_phys() and beside nicer API that returns void * on alloc and
-> doesn't require to know the allocation size on free, kmalloc() provides
-> better debugging capabilities than page allocator.
-> 
-> Another thing is that touching these allocation sites gives the reviewers
-> opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
-> another size is appropriate.
-> 
-> For larger allocations that don't need physically contiguous memory
-> kvmalloc() can be a better option that __get_free_pages() because under
-> memory pressure it's is easier to allocate several order-0 pages than a
-> physically contiguous chunk with the same number of pages.
-> 
-> And last, but not least, removing needless calls to page allocator should
-> help with memdesc (aka project folio) conversion. There will be way less
-> places to audit to see if the user was actually using struct page.
-> 
-> The patches are deliberately kept small, so that every conversion can be
-> reviewed, and if needed reverted, on its own.
-> 
-> Also in git:
-> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/s390-char
-> 
-> [1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
-> [2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
-> 
-> ---
-> Mike Rapoport (Microsoft) (5):
->       s390/zcore: Replace __get_free_page() with kmalloc()
->       s390/vmur: Replace __get_free_page() with kmalloc()
->       s390/vmlogrdr: Replace get_zeroed_page() with kzalloc()
->       s390/uvdevice: Replace get_zeroed_page() with kzalloc()
->       s390/hmcdrv: Replace page allocator calls with k[mz]alloc()
-> 
->  drivers/s390/char/diag_ftp.c     |  5 +++--
->  drivers/s390/char/hmcdrv_cache.c | 18 +++++++++---------
->  drivers/s390/char/hmcdrv_ftp.c   | 14 +++++++-------
->  drivers/s390/char/uvdevice.c     |  4 ++--
->  drivers/s390/char/vmlogrdr.c     |  4 ++--
->  drivers/s390/char/vmur.c         |  8 ++++----
->  drivers/s390/char/zcore.c        |  8 ++++----
->  7 files changed, 31 insertions(+), 30 deletions(-)
+Hi Sourabh,
 
-> Sincerely yours,
-> Mike.
+On 18/11/26 10:13 PM, Sourabh Jain wrote:
+> Hello Narayana,
+> 
+> The commit message contains several implementation details that make it 
+> difficult to
+> understand the actual purpose of this patch. Could you simplify and 
+> restructure it to
+> focus on the functionality being introduced and why it is needed?
+> 
+Sure. I'll merge this patch with 3/5 and rework the commit message.
+This will also address the unused static functions reported by Sashiko.
+> On 23/10/26 13:06, Narayana Murty N wrote:
+>> Prepare the pSeries EEH backend for RTAS error injection by adding
+>> helpers that:
+>>
+>>    * map generic EEH error types to RTAS/PAPR error types;
+>>    * validate IOA addresses against the target PE.
+>>
+>> Define pr_fmt unconditionally at the top of eeh_pseries.c so all
+>> pr_*() calls carry the "EEH: " prefix.
+> 
+> I don't think there's a need to mention pr_fmt here, as it's not a key
+> objective of the patch. This could simply be a note at the end.
+> 
+Agreed. I'll drop this from the commit message.
+>> Define RTAS firmware error-type encodings as file-local constants.
+>> Only the two IOA bus-error types are supported; other PAPR encodings
+>> are not reachable through the generic EEH_ERR_TYPE_* UAPI:
+>>
+>>    RTAS_ERR_TYPE_IOA_BUS_ERROR     0x07
+>>    RTAS_ERR_TYPE_IOA_BUS_ERROR_64  0x0f
+>>
+>> Add RTAS_ERRINJCT_BUF_SIZE for the ibm,errinjct work buffer size.
+> 
+> I'm not sure RTAS_ERRINJCT_BUF_SIZE needs to be included in this patch,
+> as it seems unrelated and isn't used by any of the APIs introduced here.
+> Would it make more sense to move this to the patch where it is actually 
+> used?
+> 
+Yes, this will be addressed by merging the two patches.
+>> Add pseries_eeh_type_to_rtas() to translate the two generic EEH error
+>> types (EEH_ERR_TYPE_32, EEH_ERR_TYPE_64) into the corresponding RTAS
+>> ibm,errinjct encodings.
+>>
+>> Add validate_addr_mask_in_pe() to verify that a caller-provided address
+>> falls within a BAR of some device in the PE.  RTAS IOA bus-error
+>> injection requires a PCI/IOA bus address; validate_addr_mask_in_pe()
+>> accepts only PCI bus addresses.  VFIO userspace resource addresses are
+>> normalized to PCI bus addresses in vfio_iommu_spapr_tce.c before
+>> reaching this backend; no resource-address fallback is added here.
+>>
+>> Use pcibios_resource_to_bus() to convert each BAR resource to PCI bus
+>> address space before validating the address.  Only standard BARs
+>> (BAR0..BAR5) are searched; ROM and bridge resources are not IOA
+>> bus-error targets.  Hold pci_rescan_remove_lock while traversing PE
+>> devices and their BAR resources so PCI device removal cannot race the
+>> address validation.
+>>
+>> Skip unassigned or disabled BARs explicitly: on pseries,
+>> pcibios_fixup_resources() zero-bases unassigned BARs (start=0,
+>> end=size-1) and sets IORESOURCE_UNSET, so resource_size() is non-zero
+>> for them and pcibios_resource_to_bus() treats them as bus address zero.
+>> Use pci_resource_len() (which returns 0 when end==0) instead of
+>> resource_size(), and reject BARs with IORESOURCE_UNSET or
+>> IORESOURCE_DISABLED set.
+>>
+>> Returns -EINVAL (Linux errno) rather than a raw RTAS status.
+> 
+> This is another example where I'm having difficulty understanding
+> how the above statement relates to the new APIs introduced by this patch.
+>
+Agreed. This detail is unnecessary here. >> validate_errinjct_args() and 
+prepare_errinjct_buffer() are introduced
+>> in the next patch alongside their callers so each intermediate commit
+>> builds cleanly with CONFIG_WERROR.
+>>
+>> pseries_eeh_err_inject() retains the existing MMIO injection body
+>> unchanged in this patch.
+> 
+> 
+> Okay, but could you clarify how these are related to the APIs introduced 
+> in this patch?
+> 
+>> It is replaced by the full RTAS session
+>> implementation in the next patch.  This keeps the patch bisectable:
+>> each commit builds and functions correctly independently.
+> 
+> Could you help me understand the need to mention git bisect-ability here?
+> 
+> I'm also not sure why the above two paragraphs are needed. Why do we need
+> to document the nuances of other APIs in this patch when they are introduce
+> or modified in subsequent patches?
+> 
+The intention was to introduce the helpers without breaking
+intermediate builds. However, the current split still leaves unused
+static functions. I'll merge the patches and drop these explanations.
+>>
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Closes: https://lore.kernel.org/oe-kbuild-all/202512101130.EYUo0oZx- 
+>> lkp@intel.com/
+> 
+> 
+> Aren't these tags intended for cases where the issue is fixed in a 
+> separate patch/commit,
+> rather than in a revised version of the same patch? Do we really these 
+> tags?
+> 
+Agreed. I'll drop these tags and retain the details in the changelog.
+> 
+>> Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
+>> ---
+>>   arch/powerpc/platforms/pseries/eeh_pseries.c | 134 +++++++++++++++++++
+>>   1 file changed, 134 insertions(+)
+>>
+>> diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/ 
+>> powerpc/platforms/pseries/eeh_pseries.c
+>> index b12ef382fec7..28b1fd19e8bc 100644
+>> --- a/arch/powerpc/platforms/pseries/eeh_pseries.c
+>> +++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
+>> @@ -12,6 +12,8 @@
+>>    * Copyright Linas Vepstas 2005, 2006
+>>    */
+>> +#define pr_fmt(fmt) "EEH: " fmt
+>> +
+>>   #include <linux/atomic.h>
+>>   #include <linux/delay.h>
+>>   #include <linux/export.h>
+>> @@ -23,6 +25,7 @@
+>>   #include <linux/rbtree.h>
+>>   #include <linux/sched.h>
+>>   #include <linux/seq_file.h>
+>> +#include <linux/sizes.h>
+>>   #include <linux/spinlock.h>
+>>   #include <linux/crash_dump.h>
+>> @@ -786,6 +789,137 @@ static int pseries_notify_resume(struct eeh_dev 
+>> *edev)
+>>   }
+>>   #endif
+>> +/*
+>> + * RTAS firmware error-type encodings (PAPR).  These are pseries- 
+>> private;
+>> + * user-space sees only the generic EEH_ERR_TYPE_* values from eeh.h.
+>> + * Only IOA bus-error types are supported; other PAPR encodings are not
+>> + * reachable through the generic EEH_ERR_TYPE_* UAPI.
+>> + */
+>> +#define RTAS_ERR_TYPE_IOA_BUS_ERROR        0x07
+>> +#define RTAS_ERR_TYPE_IOA_BUS_ERROR_64        0x0f
+>> +
+>> +/* Size of the ibm,errinjct work buffer as defined by PAPR */
+>> +#define RTAS_ERRINJCT_BUF_SIZE            SZ_1K
+> 
+> Wouldn't it be better to move this to the first patch where it is used?
+> 
+Yes. Addressed by merging 2/5 and 3/5.
+>> +
+>> +/**
+>> + * pseries_eeh_type_to_rtas - Map generic EEH error type to RTAS 
+>> encoding
+>> + * @type: generic EEH error type (EEH_ERR_TYPE_32, EEH_ERR_TYPE_64)
+>> + *
+>> + * Translates the generic VFIO/EEH error type passed from userspace into
+>> + * the RTAS-specific ibm,errinjct error type encoding defined by PAPR.
+>> + *
+>> + * Return: RTAS error type on success, -EINVAL for unknown types.
+>> + */
+>> +static int pseries_eeh_type_to_rtas(int type)
+>> +{
+>> +    switch (type) {
+>> +    case EEH_ERR_TYPE_32:
+>> +        return RTAS_ERR_TYPE_IOA_BUS_ERROR;
+>> +    case EEH_ERR_TYPE_64:
+>> +        return RTAS_ERR_TYPE_IOA_BUS_ERROR_64;
+>> +    default:
+>> +        return -EINVAL;
+>> +    }
+>> +}
+>> +
+>> +/**
+>> + * validate_addr_mask_in_pe - Validate addr against PCI bus BAR 
+>> addresses in PE
+>> + * @pe:   EEH PE containing one or more PCI devices
+>> + * @addr: PCI bus address to validate
+>> + * @mask: address mask (passed to firmware unchanged)
+> 
+> Is the mask really necessary?
+> 
+No. It is only used to identify the no-address injection case
+where both addr and mask are zero. I'll move that check to
+the caller and remove the mask argument from this helper.
+> 
+>> + *
+>> + * RTAS IOA bus-error injection uses PCI bus addresses.  Linux PCI 
+>> resources
+>> + * are CPU/resource addresses and may differ on pseries due to PHB 
+>> window
+>> + * translation.  Convert each BAR resource to PCI bus address space 
+>> before
+>> + * validating @addr.
+> 
+> The same comment is also present inside the function. Could we drop one to
+> avoid duplication? I think keeping it inside the function would be better.
+> 
+> 
+Sure.
+>> + *
+>> + * Zero addr and mask are accepted without BAR lookup (no-address 
+>> injection).
+>> + *
+>> + * Return: 0 if valid, -EINVAL on invalid input.
+> 
+> I think, -EINVAL otherwise. would be more accurate.
+> 
+Agreed.
+>> + */
+>> +static int validate_addr_mask_in_pe(struct eeh_pe *pe, unsigned long 
+>> addr,
+>> +                    unsigned long mask)
+>> +{
+>> +    struct pci_bus_region region;
+>> +    struct eeh_dev *edev, *tmp;
+>> +    struct pci_dev *pdev;
+>> +    struct resource *res;
+>> +    resource_size_t bus_start;
+>> +    resource_size_t bus_len;
+>> +    bool found = false;
+>> +    int bar;
+>> +
+>> +    if (!addr && !mask)
+>> +        return 0;
+>> +
+>> +    if (!pe)
+>> +        return -EINVAL;
+>> +
+>> +    /*
+>> +     * RTAS IOA bus-error injection uses PCI bus addresses. Linux PCI
+>> +     * resources are CPU/resource addresses and may differ on pseries 
+>> due
+>> +     * to PHB window translation. Convert each BAR resource to PCI bus
+>> +     * address space before validating @addr.
+>> +     *
+>> +     * Hold pci_rescan_remove_lock across the traversal to protect pdev
+>> +     * lifetime: pci_stop_and_remove_bus_device() requires this lock.
+> 
+> Wouldn't it be more meaningful to explain why this lock is needed here
+> rather than listing other APIs that use it?
+> 
+Agreed. The lock is intended to protect the traversal against
+concurrent PCI device removal. I'll simplify the comment.
+>> +     */
+>> +    pci_lock_rescan_remove();
+>> +    eeh_pe_for_each_dev(pe, edev, tmp) {
+>> +        pdev = eeh_dev_to_pci_dev(edev);
+>> +        if (!pdev)
+>> +            continue;
+>> +
+>> +        /*
+>> +         * Validate against standard BARs (BAR0..BAR5) only.
+>> +         * ROM and bridge resources are not IOA bus-error targets.
+>> +         */
+>> +        for (bar = 0; bar < PCI_STD_NUM_BARS; bar++) {
+>> +            res = &pdev->resource[bar];
+>> +
+>> +            /*
+>> +             * Skip unassigned or disabled BARs.  On pseries,
+>> +             * pcibios_fixup_resources() zero-bases unassigned BARs
+>> +             * (start=0, end=size-1) and sets IORESOURCE_UNSET.
+>> +             * resource_size() is non-zero for such BARs, and
+>> +             * pcibios_resource_to_bus() treats them as bus address
+>> +             * zero, so they must be excluded explicitly.
+>> +             * Use pci_resource_len() which returns 0 when end==0.
+>> +             */
+>> +            if (!pci_resource_len(pdev, bar))
+>> +                continue;
+>> +
+>> +            if (!(res->flags & (IORESOURCE_MEM | IORESOURCE_IO)))
+>> +                continue;
+>> +
+>> +            if (res->flags & (IORESOURCE_UNSET | IORESOURCE_DISABLED))
+>> +                continue;
+> 
+> Nit: Would it be better to check the above conditions before calling 
+> pci_resource_len()?
+> 
+Sure. I'll check the resource flags first.
+>> +
+>> +            pcibios_resource_to_bus(pdev->bus, &region, res);
+>> +
+>> +            bus_start = region.start;
+>> +            bus_len = pci_resource_len(pdev, bar);
+> 
+> How the bus_len returned by pci_resource_len(...) is different from?
+> bus_len = region.end - region.start + 1;
+> 
+There is no difference for a valid BAR, as the translation
+preserves the resource size. I'll avoid the redundant calculation.
+>> +
+>> +            if ((resource_size_t)addr >= bus_start &&
+>> +                ((resource_size_t)addr - bus_start) < bus_len) {
+>> +                pr_debug("addr=0x%lx mask=0x%lx validated in PCI bus 
+>> BAR[%d] of %s: bus range 0x%llx-0x%llx\n",
+>> +                     addr, mask, bar, pci_name(pdev),
+>> +                     (unsigned long long)region.start,
+>> +                     (unsigned long long)region.end);
+>> +                found = true;
+>> +                goto done;
+>> +            }
+>> +        }
+>> +    }
+>> +done:
+>> +    pci_unlock_rescan_remove();
+>> +
+>> +    if (!found)
+>> +        pr_err("addr=0x%lx mask=0x%lx not within any PCI bus BAR of 
+>> any device in PE\n",
+>> +               addr, mask);
+>> +    return found ? 0 : -EINVAL;
+> 
+> This check is repeated twice here. I think we can improve this. How about
+> restructuring the function as follows:
+> 
+> 
+> static bool addr_in_pdev_bars(pdev, addr)
+> {
+>      for (bar = 0; bar < 6; bar++) {
+>          len = pci_resource_len(pdev, bar);
+>          if (!len || !is_mem_or_io(res) || is_unset_or_disabled(res))
+>              continue;
+> 
+>          pcibios_resource_to_bus(pdev->bus, &region, res);
+>          if (addr >= region.start && addr - region.start < len)
+>              return true;
+>      }
+>      return false;
+> }
+> 
+> static int validate_addr_mask_in_pe(pe, addr, mask)
+> {
+>      if (!addr && !mask)
+>          return 0;
+>      if (!pe)
+>          return -EINVAL;
+> 
+>      pci_lock_rescan_remove();
+>      for_each_dev(pe, pdev) {
+>          if (pdev && addr_in_pdev_bars(pdev, addr)) {
+>              pci_unlock_rescan_remove();
+>              return 0;
+>          }
+>      }
+>      pci_unlock_rescan_remove();
+> 
+>      pr_err("addr not in any BAR of PE\n");
+>      return -EINVAL;
+> }
+> 
+> 
+> Splitting out the BAR check gets rid of the goto and the found flag.
+> The lock and unlock now sit around one simple loop.
+> 
+Agreed. I'll split the per-device BAR lookup from the PE
+traversal as suggested, with the no-address check moved to
+the caller.
+> - Sourabh Jain
+> 
+>> +}
+>> +
+>>   /**
+>>    * pseries_eeh_err_inject - Inject specified error to the indicated PE
+>>    * @pe: the indicated PE
+Thnks,
+Narayana Murty.
+> 
 
-Applied, thanks!
