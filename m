@@ -1,79 +1,121 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795175939;
-	b=1T4l7zPqfIrNgXuuvkdStA8+peFWNFouzjBFOVJcYkA9w+oR5tCpx4C+T3yoP0cm+a7U
-	 th4HYvw5SYeC8i7mOjFl1DuHIe/l4IzEMBQ+hiTTpCVd0Re15GhyakeUW8p5DONna1PjW
-	 nN1hu28JQebhBaDg6rzw+ovjPNEGTcylbFZwrUarwewFL4hV5VoIiVKsiFh7fI/1hHtwi
-	 dmJ7kj7YPovYMIuhVXBJ8AI3FSqfIYSQBQoTNNiNXE+hOj9xIMrhajEVfPuLkhijYPV/G
-	 2BTs2q37VwvbaFsCbWuKynMHf8ysb843V4w2bwacqzCe4qQnqJJmAS9tEQyBv1AvPOA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795175939;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:MIME-Version:Date:From:To:Cc:
-	 Subject:Reply-To:Mail-Reply-To:In-Reply-To:References:Message-ID:
-	 X-Sender:Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-GUID:X-Authority-Analysis:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=643jHikEVLMh3nZMvT4w/7bz5bdTWmQiE5NT90PD5uY=;
-	b=5l5SGEK5nA8pZWC3SiH9KSKb1Cl2dTRrrvvyrZ6sldhb+NOE484KBs3toOzWmLj76qpI
-	 Ew9va/t0awSibr0bBTTeM4os8E+L9gtaacw5gBIStWpd48JSMIZ6AMzq+8WCoJ4PI8wSx
-	 qId0EmI/tC6tutL5wovk0lXnsp8ZKKeEQvGN9vXdOJvFbfuUb1YYYzK2SVWuMO4D/KagA
-	 cObNh5EzUBH7soc3aF1JLfLjrg2VhFT1qJV0S6Y5m7YTlur+ymzid0Y5L7ieUkpfwirzi
-	 UB4nljpUVOnBHY8e+m00BEbhb5qGLJ+oNhbgygZyqXdF30KEL7UvNTQ43r0MQQBk/YQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ro4JhA1T;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795176271;
+	b=lVaYBCVDqI3esSe3YOFdZmejenhUR5YzFELZ7DzvbxJz49K+vO2MZVfakSda2dwGACO3
+	 gLe0dNWlsOcuopY2jRdH50uPcuPpLwYzKUnwQYSPBrdovsl3nW0WS+ReO1VG17/mcp65A
+	 pWZVoPJ7EnpCgjq7ghB/HkpiSAi+8sDf9v4c4oWEA2AlWd+pk7BIelwIuMkGiz6xlsZjt
+	 lmAuKqP6UeHWqft8333WfJFjUING08ewipK6h3Ama8JhCoW7hDWr0h0IB2rcFcwqyj+Gk
+	 HK6vRLao6W6vt3pJK5fBzEoEkBZczgVrj0fiNJc/IPzG+SkHOcn8Vf2s0z/h78yjkIg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795176271;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=XQu0hGy1KA1uO4Dt43vnkVWs8fGf8xNR3xdR0Qb+GQo=;
+	b=Dmo7F62djJNrCoJFRCwxW1ZDKAtG45LZMPaavNYbrcGjWAmwWcCEvmGR44HFEH70RQDf
+	 5SiiqfP3YGSGHtat6i35P+76rXKlGxDlhfCFOaEOIrrEPrQNXbn7ZxsR4j/XZoNA6NizP
+	 AntlEPFErlOq6PZ3h3il1sKrB4u222z3PUUF2B4d+m3k5+EhRNUOJCJeEqjipr/9wwcLK
+	 lrWqWbu5unebfK5pZZRIzmJ6r71/15Bh5K2jTYC8+PTzhWTVAqyCT7mUG7X5t74CeyAgp
+	 Cdnjd7gkKVnNFmBaEd+XKcS4gz2Ytn9VJRzxSnsdAfiuOzZa90xAxFXVBgxTPXExiJw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=M3uQpmZf;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=nxZbC5YZ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613E0606A320;
-	Fri, 20 Nov 2026 11:58:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 613E0606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A7B606A326
+	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 12:04:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66A7B606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ro4JhA1T
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AKAuP931669033;
-	Fri, 20 Nov 2026 11:58:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:to; s=pp1;
-	 bh=643jHikEVLMh3nZMvT4w/7bz5bdTWmQiE5NT90PD5uY=; b=Ro4JhA1TYx/B
-	1g+VmTWKXhwJVyrOkv6+EdiFPoLkWrnisOJgb7PPIMq615E6LoY0XPEvZnl+LO0z
-	a/ghSLE5VGDbjtMeOphp2Fg76Lf84WSzzUeq2w1ekXHeN8A6dVzRXKVBOp+tVQ9+
-	i5ZawEM6Hx5pKvC6f+I6hyDcOn15HLjBOdnT6Qw/Cp2mA11Qy5x0hHcTTxxITCF/
-	9zkswU5COTs3iZvIeZPhCl4+1xgxLIKuvGUgi5FL6rRuqb+EXaJfodZG5O6+NnQp
-	pCFXen8h+eG83aX/gWOV4z0D6Bap0B9I3Jf7oaSHavzAAqwzBWgeu1ZDWwt/fp6w
-	8W8wouNm3A==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j105w7rkc-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 20 Nov 2026 11:58:55 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AKB4pcs355201;
-	Fri, 20 Nov 2026 11:58:55 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j23dwdgvr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Nov 2026 11:58:55 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AKBwsG519006146
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Nov 2026 11:58:54 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0B4555805D;
-	Fri, 20 Nov 2026 11:58:54 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BEAC05805C;
-	Fri, 20 Nov 2026 11:58:52 +0000 (GMT)
-Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 20 Nov 2026 11:58:52 +0000 (GMT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=M3uQpmZf;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=nxZbC5YZ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1795176269;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XQu0hGy1KA1uO4Dt43vnkVWs8fGf8xNR3xdR0Qb+GQo=;
+	b=M3uQpmZfqbVJjPN6Ut5ffQ1KdCKMRl+8gJz1myYwkFG1aq0X3VKJEUVBQLP3doPi+DUNx9
+	2PX39Dt772bPI5TJ3ToksloECLyXG7+xp/tyBJmpkxe4MCgCA9C87PzUJ9F7cyp5D37Xl4
+	2D5/e7fhqHGtwbEwFgIDC3pPnrYT0gk=
+Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
+ [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-547-RUP0wC2EPR6-G4-8oaepqA-1; Fri, 20 Nov 2026 12:04:27 +0000
+X-MC-Unique: RUP0wC2EPR6-G4-8oaepqA-1
+X-Mimecast-MFC-AGG-ID: RUP0wC2EPR6-G4-8oaepqA_1795176267
+Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-67532014b2fso1431406d50.2
+        for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 04:04:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795176267; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CVoA6NBcKMrQZ7nOvHntP4c4lO4BTVnpjn70nqm3CvaPyXpgyrxFyPluJNELHxwDsT
+         GTOmsozflunwAJD7jpjZEuQGOBU83U3CjGbEAXg5U9DWaToTrQNUu2DhBBeXvJgLWXto
+         Z/jninUpoc3P4WBEWjJO8pwY6m69ORJcvgWz5frbyzZI+rDV9wxMqMbqjF9+OFlrNfTk
+         bRVy7DREQ/EOy+hQtKUjyPTXNB9xJaI5R6I5HB68rvX3rNR1M+MdrGgiybVTYR2zKfaW
+         yUXaSdo1WcRdr2/BA9UoKUerX+f77yUm4LOF4O+WZ6xU9FcUBC5MlVQdSIsMBsh9+fhO
+         dzcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XQu0hGy1KA1uO4Dt43vnkVWs8fGf8xNR3xdR0Qb+GQo=;
+        fh=6WLd4xwgWDQHTh1qTx7UxLAs+mCt9phoU2I6E+vdbPI=;
+        b=ndYWzcuF3UOhcZ4BULP0urS+tB6ytsGV9KPrcDru/wrN5cxshTt4QyuuSdMMgBhcIH
+         rzkVio+dNlR2T6/dWVvWPNGb6Exgb8aVxkXISF5a/ASHYquz+FY8+DBfD6+MNqxjPi5R
+         moZCjZomHxqW/kYElisH5xQC+Gb2vstFJH9LP7672mpaZLJTKkSGGQvFVnC7mZV9HviS
+         sAatz1/iz20nuP7HfrXg+XPFtAEGwk/DIcV341pDxgjultC4rtvhWVBoXN7EK3TEQL6O
+         AEZFQy9RGDTlgndYdoyJtWC72gMcUwsX/TqTN7xIYREODlOc9yrGyssciu0Ut72XXXPZ
+         9/kg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1795176267; x=1795781067; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XQu0hGy1KA1uO4Dt43vnkVWs8fGf8xNR3xdR0Qb+GQo=;
+        b=nxZbC5YZPCZegBCOvX5RXZwjKOHM2FpbX/qijsdCCMZcrhShfupgktsMIEG4L0klfF
+         serIHzmSktODQUIH3r8fukMrSL0LHU0b6zXUR/MVjlMKgEwkfeOqkVS70vfM6FNK88nx
+         ejBvkJTRPPtgHvGqo0giJuLDixu/zqKbUDE0eJ7TuYK5q5qo8e0laqgvCAMJF2s0bO20
+         Ji1X4aWOm38bQSTrJuEX04mAr2p1CgU/oUw/5sIh45K1Qo0obp6PSHXwcxOr2WoqKpUD
+         Y+YyYNi0sVkd2YB1fs4rMRlknFOP46imWMpVB98pmMl6J+oxotUsSMUgzYgVAC2F4HXR
+         kxgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795176267; x=1795781067;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XQu0hGy1KA1uO4Dt43vnkVWs8fGf8xNR3xdR0Qb+GQo=;
+        b=1iAjf9iuGBpBEvAvOTh2BDZvsl+pPOklYNwdlVh1N6rV1SS9nYl5suGsZ0JHh+ycha
+         y9Pzk/oetGB+ni6wprXhsd8I41OGU9s6fBYtHU6AaTHKmNdnpS4QZC/ycfPQEH2VVaN6
+         J7ZES3Sso6L7NGO2+tpcewm8/n2d1lnez2O5cK0gx66TUz3nAZ+i48ALwg/OVao4HFRX
+         tAv21p3aj0pcD1hYdzsjw5aLqWjcicoKRbvdaHmZ5f1UPVLmuGg1+n55WsSvxeTVnQLP
+         29MaxxjIW1CGJT14tGLiw9tlHeJXCEhxVrb33S9eEA0vHC6zKQ1wi2YvuyR99MLdeu1M
+         4zgw==
+X-Forwarded-Encrypted: i=1; AL+hErE4LHwI4wluaj6CGFL7RC5jxwO6wNJQI/rihWcRT2shV14AtNksg5+MWHWjx64hPF+7HCo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+kCGdnejLffEutGQs6EZE9y/s3fO+C9n17WkIy3HwkHgBVbehe
+	HcI6AWM0Dj/NWAHTAKdeXuaGq4lWvbHWA8l4MBJKFR4YTNRsAKlxVNNY2N4t4pMjQDU28qJDmR9
+	//xciQmZWpld/y5PCpkfuxjkxNW9PoNXYkgirvMbFKKp0MCKaa9Z+BedtZe/MEZjh8Wl7eAlH7b
+	JXycXjC0w0UQlpzFE84VayMlwVa7oc
+X-Gm-Gg: AZFdTZfqrrfezz67Vp4xzQ9EItA4dSrh8cT5La3Cj5f0zdXnBbJzaybx5QO/xwptuR3
+	6oJOqehREqyTdbJjSCO+0/Ld3vA/2z+P+NIBUdY7eYXQnhmbmge8IheOpPS2kaUTcpJZaRoH/CK
+	JRtJ5KeYUzLpHSlQeffmFDxffMmMvhCDSdeV/QlalKz55LcDKvZbLrdKwCcNBiubW7OGMVhCVz/
+	ZeRPMIoZyq94oEj+mIwPa590xHdKPRWTCRqZkX/47E3ar1zkU/ScNK7lwA=
+X-Received: by 2002:a05:690e:4090:b0:67c:69f:b1db with SMTP id 956f58d0204a3-67df43cf48fmr1438613d50.18.1795176266604;
+        Fri, 20 Nov 2026 04:04:26 -0800 (PST)
+X-Received: by 2002:a05:690e:4090:b0:67c:69f:b1db with SMTP id
+ 956f58d0204a3-67df43cf48fmr1438589d50.18.1795176265935; Fri, 20 Nov 2026
+ 04:04:25 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -83,125 +125,96 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Fri, 20 Nov 2026 12:58:52 +0100
-From: Harald Freudenberger <freude@linux.ibm.com>
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Eric Farman
- <farman@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Tony
- Krowiak <akrowiak@linux.ibm.com>,
-        Jason Herne <jjherne@linux.ibm.com>,
-        Holger Dengler <dengler@linux.ibm.com>,
-        Alex Williamson <alex@shazbot.org>,
-        Vineeth Vijayan <vneethv@linux.ibm.com>,
-        Peter Oberparleiter
- <oberpar@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik
- <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org,
-        kvm@vger.kernel.org
-Subject: Re: [PATCH v2 04/10] s390/vfio: Allow untainted use of
- driver_override
-Reply-To: freude@linux.ibm.com
-Mail-Reply-To: freude@linux.ibm.com
-In-Reply-To: <a53e12ad841fb18e45b3cf7a4580846943ed0c6d.1795171088.git.u.kleine-koenig@baylibre.com>
-References: <cover.1795171088.git.u.kleine-koenig@baylibre.com>
- <a53e12ad841fb18e45b3cf7a4580846943ed0c6d.1795171088.git.u.kleine-koenig@baylibre.com>
-Message-ID: <8548e9504ec70bec02c6f2cebf69ea91@linux.ibm.com>
-X-Sender: freude@linux.ibm.com
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: vA3rAfGQn9UEbNMBDcHBKe_wwTnqCVkR
-X-Authority-Analysis: v=2.4 cv=Z8x5j3RA c=1 sm=1 tr=0 ts=6b0035ff cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=r1p2_3pzAAAA:8
- a=IpJZQVW2AAAA:8 a=ewj62i4Pj_Zr8X8fTNkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=r_pkcD-q9-ctt7trBg_g:22 a=IawgGOuG5U0WyFbmm1f5:22
-X-Proofpoint-ORIG-GUID: vA3rAfGQn9UEbNMBDcHBKe_wwTnqCVkR
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIwMDA0NyBTYWx0ZWRfX97j6kTSozYTV
- nucn4XEuzVRo5Xl62ReCJ63S+s5CBD07IcfHV6Wz3z/n9Gcb3ZI8bgjpIlXZ5Yf+HFVgswLfy6t
- dAA+WaaQj8xO5WWk7zc1vMD+U3Jj6SM=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIwMDA0NyBTYWx0ZWRfX+stVmO8EEaeo
- blFE0ltcfvUPWRGbzD7salvphryKkg1BLQyYe8Juu3vbItFzCQzumsX4uiobLRbJrpAtIPLCo1b
- P83JzqPlebXHaTLHmcS7dDn0DHTsQPEXUQJ4kCZ3O/lMae+G1hJPRRBhrRCPzpQ4uHjrXkrMaeZ
- VYxzbHsAI88O3iW0WoGE/thArgu4r3HCtfRqSOeqz3lqRgVFu/tKnfeGfH9Z/yMF9zE/ZtAV4jH
- ElidfSd6zzrEJM520b2gCiMsjFhVPG1Itgr8x9ORcNLshHSLuwQwznAQLPito3E2unKE3jl7WPl
- Ih06aStvrtzkaJIWHHLB/Y535g/xom5ng0cPy/vRV9UwG1zUkaR1QLhHWks06oI8EU1TTTALbRJ
- pRBSC80x+nT35cc17R3473Kat0mLIwMcTrgxvJOPDMUFIyEE7L/WweRQOUVUDPqFh1f/Z8HkPsL
- MVeZcQWjWYXLppafOaA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-20_04,2026-11-19_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 lowpriorityscore=0 spamscore=0 malwarescore=0
- adultscore=0 bulkscore=0 clxscore=1011 impostorscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611200047
+References: <1B3A1B72438119BC+20261120033824.681219-1-raoxu@uniontech.com>
+In-Reply-To: <1B3A1B72438119BC+20261120033824.681219-1-raoxu@uniontech.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Fri, 20 Nov 2026 13:03:49 +0100
+X-Gm-Features: AclHuK-i5EtKvbqYrIjTizPF6lX03AG63KfWC612II-z105w9vnQhBI_r_r_XiY
+Message-ID: <CAJaqyWfpkenRAYdkeG2+XEWRhJbmV4ARZ+eMm=EibcA6i0z-5g@mail.gmail.com>
+Subject: Re: [PATCH net v2] vhost/net: Fix receive queue test in busy poll
+To: raoxu <raoxu@uniontech.com>
+Cc: mst@redhat.com, jasowangio@gmail.com, davem@davemloft.net, 
+	kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-11-20 12:11, Uwe Kleine-König wrote:
-> From: Alex Williamson <alex@shazbot.org>
-> 
-> The vfio_ap and vfio_ccw drivers bind devices through driver_override.
-> With the introduction of the support_driver_override flag in the core
-> driver struct, it's now required for drivers to declare themselves as
-> driver_override compatible, otherwise driver_override bindings will be
-> denied or generate a kernel taint.
-> 
-> Set the support_driver_override flag on the vfio_ap and vfio_ccw driver
-> structs.
-> 
-> Signed-off-by: Alex Williamson <alex@shazbot.org>
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+On Fri, Nov 20, 2026 at 4:39=E2=80=AFAM raoxu <raoxu@uniontech.com> wrote:
+>
+> From: Xu Rao <raoxu@uniontech.com>
+>
+> sock_has_rx_data() returns a positive value when receive data is
+> available. For sockets without a peek_len() callback, however, its
+> fallback returns skb_queue_empty(), which has the opposite meaning.
+>
+> An AF_PACKET SOCK_RAW socket is accepted by get_raw_socket() as a
+> vhost-net backend, and its socket operations do not provide peek_len().
+> With busy polling enabled for this backend, an empty receive queue is
+> treated as ready and a nonempty queue as not ready. This can make
+> vhost_net_busy_poll() stop polling prematurely or fail to stop for
+> queued receive data, and invert its receive-side scheduling decision.
+> TUN and TAP backends provide peek_len() and are unaffected.
+>
+> Negate skb_queue_empty() so the fallback matches the callback and the
+> readiness checks in vhost_net_busy_poll().
+>
+> The issue was found during AI-assisted code review. The helper's
+> incorrect result was confirmed on x86_64 running 6.6.0-amd64-desktop
+> using a temporary diagnostic module containing the original and fixed
+> helpers. An AF_PACKET SOCK_RAW socket, without PACKET_RX_RING, was
+> bound to loopback in a private network namespace. Across three cycles
+> of sending and receiving a 60-byte frame, the original helper returned
+> 1 for an empty queue and 0 for a queued frame. The fixed helper returned
+> 0 and 1 respectively, matching socket readability in all nine checks.
+> This tests helper copies on real sockets, not the running vhost-net
+> busy-poll path; the vhost-net module was not replaced.
+>
+> The patched drivers/vhost/net.o was also build-tested on the net tree
+> with x86_64 GCC 12.3 and W=3D1 under allmodconfig and allyesconfig.
+> No end-to-end vhost tests or kernel selftests were run.
+>
+> Fixes: 1576d9860599 ("tun: switch to use skb array for tx")
+> Cc: stable@vger.kernel.org
+
+Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+
+> Signed-off-by: Xu Rao <raoxu@uniontech.com>
 > ---
->  drivers/s390/cio/vfio_ccw_drv.c   | 1 +
->  drivers/s390/crypto/vfio_ap_drv.c | 1 +
->  2 files changed, 2 insertions(+)
-> 
-> diff --git a/drivers/s390/cio/vfio_ccw_drv.c 
-> b/drivers/s390/cio/vfio_ccw_drv.c
-> index 7546bd137e4e..77765cde87f7 100644
-> --- a/drivers/s390/cio/vfio_ccw_drv.c
-> +++ b/drivers/s390/cio/vfio_ccw_drv.c
-> @@ -375,6 +375,7 @@ static struct css_driver vfio_ccw_sch_driver = {
->  	.drv = {
->  		.name = "vfio_ccw",
->  		.owner = THIS_MODULE,
-> +		.support_driver_override = true,
->  	},
->  	.subchannel_type = vfio_ccw_sch_ids,
->  	.irq = vfio_ccw_sch_irq,
-> diff --git a/drivers/s390/crypto/vfio_ap_drv.c
-> b/drivers/s390/crypto/vfio_ap_drv.c
-> index 8e69ed286bb9..2d47dc643269 100644
-> --- a/drivers/s390/crypto/vfio_ap_drv.c
-> +++ b/drivers/s390/crypto/vfio_ap_drv.c
-> @@ -62,6 +62,7 @@ static struct ap_driver vfio_ap_drv = {
->  	.on_config_changed = vfio_ap_on_cfg_changed,
->  	.on_scan_complete = vfio_ap_on_scan_complete,
->  	.ids = ap_queue_ids,
-> +	.driver.support_driver_override = true,
->  };
-> 
->  static void vfio_ap_matrix_dev_release(struct device *dev)
+> Changes in v2:
+>   - Target net and add the introducing commit's Fixes tag.
+>   - Explain the raw packet socket backend and busy-poll decisions.
+>   - State the AI-assisted discovery method and document the diagnostic
+>     module test, its results and its helper-level coverage.
+>   - Document the targeted build tests.
+>   - Keep the code change unchanged from v1.
+>
+> v1: https://lore.kernel.org/virtualization/20261110051642.249640-1-raoxu@=
+uniontech.com/
+>
+> AI assistance: OpenCode was used to inspect the history, prepare and run
+> the diagnostic module test, run build checks, and revise this message.
+> The code change is unchanged from v1. The discovery method was confirmed
+> by the author.
+>
+>  drivers/vhost/net.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+> index 4570a4ffbab2..10ed2d55ff07 100644
+> --- a/drivers/vhost/net.c
+> +++ b/drivers/vhost/net.c
+> @@ -538,7 +538,7 @@ static int sock_has_rx_data(struct socket *sock)
+>         if (sock->ops->peek_len)
+>                 return sock->ops->peek_len(sock);
+>
+> -       return skb_queue_empty(&sock->sk->sk_receive_queue);
+> +       return !skb_queue_empty(&sock->sk->sk_receive_queue);
+>  }
+>
+>  static void vhost_net_busy_poll_try_queue(struct vhost_net *net,
+>
+> base-commit: 435cbdaf9b03687498dc16fe4af8d16a977e21d0
+> --
+> 2.50.1
+>
 
-Hm, honestly I don' get this...
-The driver_override is a bus thing. So the AP bus has support for 
-driver_override.
-The sysfs functions are in drivers/s390/crypto/ap_queue.c. There exist 
-currently
-two drivers which shall be bound to an AP queue: vfio_ap and the default 
-driver
-which is the zcrypt driver "cex4queue". It sounds like the driver needs 
-the
-tagging about driver_override support and then similar to the 
-vfio_ap_drv.c
-the static struct ap_driver initialization may also need a
-.driver.support_driver_override = true line.
-
-regards
-Harald Freudenberger
