@@ -1,66 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795190777;
-	b=XCAdGoCLZSi+o6tRQS/KFNiGgq8kCkDUBItq3MUPwbTZ0/voHMihLeVDmh6BQOcmt0ch
-	 Mft1pwWjdu/GX6vgeu44RUArtmMJxOC+Yk0BNUNygA1t5ULpoXt3ixFkDxrY+w75nq+8u
-	 twX3kR+ahlaHpZm0ieBESxpR9uqqtUMOEK9U4SI3uiqeqKIgcdMta1e/aeRzUP3BnJ0Ap
-	 YCwLmSp2lkFNfYZPy/TD8Wpod5MOQB8TE3GrQJl99h4d2uQxmsN1bM7iI88/T9j6szoWn
-	 1RkaUu4XgXXI6Ndgg5x0nJ/37f2m9YZZyU2X1mRvSjo3IRilNjipSppXKUF9neoC62Q==
+	t=1795191070;
+	b=Y4vEZlK/PhLcutyFqQ8NULR0zOaqEgg/Gwb8++gU23IW86C2OlZ0hsf+/L4ozZ7DFL8T
+	 UtHEGojp8qKqOMTZRNyNzjuDG0hRV+hcaY4uwd5qSfhHwmQPTRNFPXBxjSzaqkigaDuTi
+	 zWlvIQxJosXOa9YkbGDFadQy9qYNh4o60Rn2pqfCoY9e/tKkbgo8EXSvTydEZXzYv+GCR
+	 /KVRKGYp2+wf4tLiS2dyYTFYuBLRQpwkWV6Bk/7J9+8Jc/MERcpl6oQgyxujTaqdfA+7Z
+	 E4Asi2e8lMxkUQ8FdMVB3WyYPM/QEEJhBNowD3aAVlHkyjOXqDCthZLSA/EJIYiPt3A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795190777;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-SRS-Rewrite;
-	bh=/ihHdUU+jVviFggXvCzCtgwm16AszawpC1LIVwl/qQE=;
-	b=M933Fq3k4VXDvN49FVDh1BRXO6ye4rV6iF2ZUBKaKKrmuq+xVAqXX6pu2nPSG+Jz0nT0
-	 0+fm/uW+InwSaFCgatKb4oYRu9nkbUkSZpHWsFo1eUjXEZ2qh+DsBVyEXJEqP0ZRIFPuR
-	 nFcTyUXGunEQV2sFwElla4u9NkM04iQDwllUu0QszzFP4uXG+sxFk2D9CcilBcltWJrEy
-	 QXzlx+dOZB3z/hYpaE+ZfpxZPjy5wqsfswcCPWfdWEST1tBDjG3/lggaQvcNAbOCqoGrn
-	 CbAlTgmc6V0JgQVe0US81tMa2gcld74UGo+3BRpULcSJZtEukbR/pH+FIKVWmhv61EQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795191070;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:User-Agent:MIME-Version:Content-Type;
+	bh=ZFb+S8Es0NvUmNBR5T6fgVNGrRH2yKZK48f5XbLVIEc=;
+	b=P2p5kzauUHLuxrumgWE+zbud/Uupj72MsNvf8MJ2y4QKAsPtN95gcU7IJXLexI4FtrR/
+	 bQttkJmfTPNtPgVsmynltZX+/Gn3Y97WPpAXsSh6kYU1FzFQ+GaqBPDXLxPdtiXyxUvx6
+	 2lPRq0uH86bY/n/F/O4P4+aXRRkvQ3z0He9KLTzXHJ5lKuqIUkSTXcYIGrUqzWU/WyxZu
+	 2GtNJbydq5LYEDKZJYC8e6U6e9+QsjkjYb8h3tTpJR+7g1mMU6TiOsZ0BXpWUkFMYKvwY
+	 PPWmznkCcR/j13O3xYp12J1sWa1cAnq/PeXAKiuG67uKOdwoonkIaqKAlHW0qqSUs5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=infradead.org;
-	spf=none smtp.mailfrom=bombadil.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b="ZB+h/5GB";
-	arc=none smtp.remote-ip=198.137.202.133
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="H/VuAI5B";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB03606A32A;
-	Fri, 20 Nov 2026 16:06:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ABB03606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8AC3606A325;
+	Fri, 20 Nov 2026 16:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ZB+h/5GB
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=/ihHdUU+jVviFggXvCzCtgwm16AszawpC1LIVwl/qQE=; b=ZB+h/5GBbqvAkJ54ekxLjvGA9O
-	D9LNJkH8aKH9mziEUcEVeeNVW2eYGGN+jTB+vaoKK2DQgefgBdVSUC0euwaul76MaXXzFGDda38w+
-	CV0HQYku2mlycBmx7xX50bcgh02e8WB6duHoVw6iN5E4vh+UiiLohZ0W4TpcgZ4sOV99I5tvJit2c
-	68reAYpL8/lyYbw3n35mPFLIMmbRicjxfdsTw5KiOvU8QL/I+AfqCK8T2Ep/sGYTxHxleNyUs6cJ9
-	Fyt0bfHGbyQV6TfKt92/kvpu1GtQWsEPV/dyOSyL9dPgWZDp2vTpqx/50Qk3hkzlOf+tFUU/u/Sb/
-	2OzNA4UA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xUR7u-0000000FVv0-3ZjW;
-	Fri, 20 Nov 2026 16:06:14 +0000
-Date: Fri, 20 Nov 2026 08:06:14 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Khan Zhao <zhaoguohan@kylinos.cn>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Jason Wang <jasowang@redhat.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	kvm@vger.kernel.org, virtualization@lists.linux.dev,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH RFC] vhost: set dirty log bits without pinning pages on
- x86
-Message-ID: <awBv9nN-ZkyKi3vT@infradead.org>
-References: <af7f05bf637337d35fdd10f3e0dbb5e39d7780e7.1794480795.git.mst@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H/VuAI5B
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A251F000C6;
+	Fri, 20 Nov 2026 16:11:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795191069;
+	bh=ZFb+S8Es0NvUmNBR5T6fgVNGrRH2yKZK48f5XbLVIEc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=H/VuAI5BtuQwQd0zk9hcNYwSPn6N63WihBmZ3f6agPjw5j6X4nhjl+xkuBInj2K3G
+	 pOag/mfhsLJCuDBPE43lBZguYkWm5Q0XnOYHt8I9NqdQ+atTKMgFYlb1IaF+jtQGld
+	 3sUfi6lcLYmIyXlLtnVutUfX01YNRwxTD426bjxP/ztOBKmBROpGn/s6ksznIb2w4q
+	 Au1te+hWzLmOyeSjczvD2gxa37Gi2iRY6JeY1uNgS+FOo6aHN7HdwWzWJ76IhqubZC
+	 I7wV52HU+JBPo3Q8L36yOGgOyjynFxkC/8obE8WBrvul2HbGE4EceWsI1QomsynUz+
+	 KVYj1KF0dneuA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Tarun Sahu <tarunsahu@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Mike Rapoport
+ <rppt@kernel.org>,  robin.murphy@arm.com,  maz@kernel.org,
+  will@kernel.org,  David Matlack <dmatlack@google.com>,  Alexander Graf
+ <graf@amazon.com>,  seanjc@google.com,  jgg@nvidia.com,
+  loganodell@google.com,  arnd@arndb.de,  dwmw2@infradead.org,
+  baolu.lu@linux.intel.com,  Bjorn Helgaas <bhelgaas@google.com>,
+  oupton@kernel.org,  alex@shazbot.org,  gle.com@google.com,
+  pbonzini@redhat.com,  Andrew Morton <akpm@linux-foundation.org>,
+  kevin.tian@intel.com,  joro@8bytes.org,  kvmarm@lists.linux.dev,
+  linux-pci@vger.kernel.org,  Pratyush Yadav <pratyush@kernel.org>,
+  kexec@lists.infradead.org,  kvm@vger.kernel.org,  iommu@lists.linux.dev,
+  linux-arm-kernel@lists.infradead.org,  skhawaja@google.com,
+  sagis@google.com,  linux-arch@vger.kernel.org,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 02/19] kho: block: Record the entry size in the block
+ header
+In-Reply-To: <20261110050202.529473-3-tarunsahu@google.com> (Tarun Sahu's
+	message of "Tue, 10 Nov 2026 05:01:45 +0000")
+References: <20261110050202.529473-1-tarunsahu@google.com>
+	<20261110050202.529473-3-tarunsahu@google.com>
+Date: Fri, 20 Nov 2026 16:11:01 +0000
+Message-ID: <2vxz8q2n1o16.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -70,43 +73,90 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <af7f05bf637337d35fdd10f3e0dbb5e39d7780e7.1794480795.git.mst@redhat.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain
 
-On Thu, Nov 12, 2026 at 05:53:47AM -0500, Michael S. Tsirkin wrote:
-> vhost had a TODO to replace page pinning with a version
-> of set_bit that works on userspace memory, since forever.
-> 
-> It is really best to avoid GUP on fast path entirely.
-> Implement set_user_bit and use it in vhost, to do just that.
-> 
-> Should not be too hard for non-x86 too.
-> 
-> Reported-by: Khan Zhao <zhaoguohan@kylinos.cn>
-> Link: https://lore.kernel.org/all/20261112085631.128819-1-zhaoguohan@kylinos.cn/
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+On Tue, Nov 10 2026, Tarun Sahu wrote:
+
+> Subsystems using the KHO Serialization Blocks framework currently do
+> not record the serialized entry size in the block header. The entry size
+> is only known to individual callers, which must track and store it in an
+> owning serialized data structure. If a newer source kernel adds fields
+> to an entry, the changed entry size breaks the stride when an older
+> target kernel iterates over blocks.
+>
+> Add an entry_size field to struct kho_block_header_ser. On the outgoing
+> side, record bs->entry_size into every block header during allocation.
+> During restoration, derive the entry stride directly from the block
+> header instead of relying on caller-supplied dimensions. The
+> kho_block_set_init() interface remains unchanged. A zero entry size,
+> or one that differs between blocks of a set, is rejected during
+> restoration.
+
+Yeah, I agree with David here. It makes little sense to have callers
+pass in the entry size only to have it ignored (or, only used for
+rejection). It would be much better to use the recorded entry size and
+hand it over to callers.
+
+>
+> This change modifies the serialized layout of struct kho_block_header_ser
+> and shifts the offset of serialized entries within preserved blocks.
+> Bump KHO_FDT_COMPATIBLE from kho-v4 to kho-v5 so that pre-v5 and post-v5
+> kernels cleanly reject mismatched handover state during boot. Also
+> update the stale compatible string example in the documentation.
+>
+> Suggested-by: Pratyush Yadav <pratyush@kernel.org>
+> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
 > ---
-> 
-> 
-> lightly tested. pls test and resubmit with your tool.
-> 
->  arch/x86/include/asm/uaccess.h | 18 ++++++++++++++++++
->  drivers/vhost/vhost.c          |  7 +++++++
->  2 files changed, 25 insertions(+)
-> 
-> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-> index 3a0dd3c2b233e..ba1e7c3f83c8e 100644
-> --- a/arch/x86/include/asm/uaccess.h
-> +++ b/arch/x86/include/asm/uaccess.h
-> @@ -594,6 +594,24 @@ _label:									\
->  	__ret;								\
->  							})
+>  include/linux/kho/abi/block.h          | 10 ++++----
+>  include/linux/kho/abi/kexec_handover.h |  6 ++---
+>  kernel/liveupdate/kho_block.c          | 32 +++++++++++++++++++++++---
+>  3 files changed, 38 insertions(+), 10 deletions(-)
+>
+> diff --git a/include/linux/kho/abi/block.h b/include/linux/kho/abi/block.h
+> index 36bdbaf9b3b8..a40b0906c821 100644
+> --- a/include/linux/kho/abi/block.h
+> +++ b/include/linux/kho/abi/block.h
+> @@ -40,9 +40,10 @@
 >  
-> +/* set_bit() on a byte of user memory; returns -EFAULT on fault. */
-> +#define set_bit_user(nr, addr)					\
+>  /**
+>   * struct kho_block_header_ser - Header for the serialized data block.
+> - * @next:  Physical address of the next struct kho_block_header_ser.
+> - * @count: The number of entries that immediately follow this header in the
+> - *         memory block.
+> + * @next:       Physical address of the next struct kho_block_header_ser.
+> + * @count:      The number of entries that immediately follow this header in the
+> + *              memory block.
+> + * @entry_size: The size in bytes of each serialized entry in the block.
+>   *
+>   * This structure is located at the beginning of a block of physical memory
+>   * preserved across a kexec. It provides the necessary metadata to interpret
+> @@ -51,9 +52,10 @@
+>  struct kho_block_header_ser {
+>  	u64 next;
+>  	u64 count;
+> +	u64 entry_size;
 
-Please make this an inline that actually has proper __user annotations
-for sparse type checking.
+I think this is the wrong place to put this. This header goes before
+each block, so it should only hold metadata _for this block_, not for
+the whole data structure. Because if you do that, you end up having the
+field present in each block, but only the first block is special and the
+value is only valid there. The feature header coming later makes this
+problem worse.
 
+I think we should follow down the lines of kho_vmalloc and have a
+out-of-band structure that describes the whole block set, and then each
+block only holds metadata relevant to it.
+
+So this would look like:
+
+	struct kho_block_ser {
+		DECLARE_KHOSER_PTR(first, struct kho_block_header_ser *);
+		u64 entry_size;
+		/* Other things like flags, size, etc... */
+	};
+
+[...]
+
+-- 
+Regards,
+Pratyush Yadav
