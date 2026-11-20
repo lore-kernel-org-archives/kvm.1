@@ -1,68 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795149865;
-	b=FBMESHNmKDdroLuJoomQ2dMgar0hUUu+vZLaEKrwY05jhA6fxH0Hg0mRJii9HvrlnI8t
-	 ME0XpxNHr4R6LeFBEDNfkpQcPA+Yfy2Wk/m+LSRYt4wPCMNDOv7t4F9CxqA9EZovEnNno
-	 jpagB805K37bH4GaGVFnUkunktXmf2W089ICqiyZ9HW7MGNeAR5eHyvd0SP21Ap8mK61i
-	 lg2cANZlrmYXhnfO9mT0uELG7BE5R0jbC/nyFzQo42rUTx3qDxANVLbpf3yMLPdgR9/lx
-	 yfkdLdKDUxnTDE94BL8USdNE5CF6iGtRZukHjRHNLWBqBTOkqWYr7XsGNJi8CIs+Mnw==
+	t=1795149914;
+	b=qiL2rDq6XApVLZyyi4FAgvI/P+NrDwwyBu3vwzziq8CQ3I825rA8SCrqvrA9jGXnymG9
+	 PlebcImml4W5h9RAKrYrqJNttWW2dH9hf0ATWlvOLHxGK6rcd1ce1yn7x2wrVoETHcPZm
+	 xIZGhIU2beZqyT8v8YmEn8nGCktZVAHHsb0cAdMh2E5fXekhokqchv8l8YuYZa8tDNB0q
+	 1Pmh9FGeJpBlmDvn8y5Dz/KZqd9B3t5hh09h21j4os/wL4u4sI4GML+RzS4+V5tc/vvE7
+	 gNEVKzymDdto5N7MrHcMEqBX5TIaFI2j7tadlsrNPD98mNBWDEHM2BtR69Eg3yesKbw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795149865;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=PT0FK9wWU0tkRsvayMQ1N9RgAm8dfnFyjV1OONVZR3Y=;
-	b=HHohirWKVbCPX6IaQN8PcaidzHNmj0YCl/o2gGD05rrEgjkVynG3m2dwUyaotEe/WXTp
-	 maC97NXPEE9kcko0AbXh+9CJgFv26A3nJBh7IqhkiClD40Q6dHSiKLe0Ikc8DfZSts3Nf
-	 2ekmDf2ysoZ1TnNI/LhmJbSS9mtDdBUvkwzAwuUyPi7dsJ3KPpQ61oS/5Hhk/mto8rULd
-	 GNnjeoSG8x8oZ89/elnpiCQZ0Y3/0X/QfUtwZUfV1wDQGnbjFcuZckWdSrGKz4PI9wXvq
-	 mFVM2Fmz2108yfe0wIbRhFip6ln8fvyM1MkHRiHq4WuVHlwws7Hb7tJ7Ykx+54hmq8A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795149914;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Authority-Analysis:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=v+B77fwkqptEoKN+IMmcaaDy0E8T0emPfjLkiSTP7Sk=;
+	b=gvGs6nIEQYsWgvXtg5jiHMX2/8GlEMt620hVmUYAP6YbBQVdATRN3gY90KbD/XT7oPOo
+	 bVugVU/WuuhORciK3HorY16dYR675F6UXABMB9klLNM798CYfYIod2vXz7PGzuH5Ictl+
+	 61z2/uv0v2D9/8Q/fizxZ+soPF4QhfVB0VJcm2ssFHVXwbyFa1564gUmXWKkwF5m82HYA
+	 YRaHXmmqZ5kouTBopoQkxAza+wf2fSEbLp/VMfGsd5KEkWvDARhMbnIoK6h8+hXVkvZy4
+	 hlBgH+pkdQbKnEdmg5Och7CTgXKXZHyqWSa9/lpp3eD5EMMjt5kgWqy4XFSI9bwVV2Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DR0FNyfi;
-	arc=none smtp.remote-ip=198.175.65.21
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b="BmjHRpV/";
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864F0606A325;
-	Fri, 20 Nov 2026 04:44:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 864F0606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E779606A325;
+	Fri, 20 Nov 2026 04:45:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E779606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DR0FNyfi
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795149864; x=1826685864;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Y/i10jyYjFWeI3DRZs4bsQaJGnLxtLrgwJ61Ht7xyRw=;
-  b=DR0FNyfiJbgVMvIiDbiObMPhvOgv11ebf+6ZrmDb4Ghzi0NGAlPENyQr
-   Mjt4hA6zEL3OnXgVc5HZP/wbxGKjsdHluR5EpuHtvUj+VXNYpegost5L6
-   FNP5xBPEQaomV9Y0zwBFEcWFJ7EEs7e/lLiD1N4lsSu2IJuH1awi0zc3E
-   3RsBw6aVqC+S639YFyniScQSHXulefvSMxrLetOit3cgVnpKa2G9e3iw7
-   K1olt2PeqMMkQL+fGaRPQlg68n0/N6HcL2zF+98rlWCkbr6yyxBo9bFQT
-   X3i31IFUyGL4W19DRluwRhsKt9hvRA8DCEYBprXKGAHz7TDGSYhNjARjg
-   A==;
-X-CSE-ConnectionGUID: ZGkyvhzSSpq4YqADXJjX9w==
-X-CSE-MsgGUID: Mr0vFrVMS2O4vI7nU3O2Sg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="4101317"
-X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
-   d="scan'208";a="4101317"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 20:44:22 -0800
-X-CSE-ConnectionGUID: H3ytyTdhTSWu5lchEfXTeQ==
-X-CSE-MsgGUID: QpvzWzgNR6iJN9JsRdkisQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
-   d="scan'208";a="11037850"
-Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 20:44:14 -0800
-Message-ID: <2e8a853f-9e7b-4cce-b578-2dac0c564eb5@linux.intel.com>
-Date: Fri, 20 Nov 2026 12:44:10 +0800
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BmjHRpV/
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AK3ufha1982242;
+	Fri, 20 Nov 2026 04:45:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=v+B77f
+	wkqptEoKN+IMmcaaDy0E8T0emPfjLkiSTP7Sk=; b=BmjHRpV/gzb8K+Mon94K9d
+	ShVXQaDyM2DM/QlXY0OTJOkkE6LZel9KO+j3nKq2QTXOzpmg2nQRxO3qa1raiLjk
+	QWmGGPcKFQiFWHH/OzI6ad/kcxdSKpZuPW9Ika8JVNLh7FiwPz0WTzukpZH8Be1J
+	8zldysRrsQgQZW3oUpJEUGEER5znCSqRSkUNuYCvuDeJxyhtfy7X5HH5S6C5agiB
+	MF2xd+7nLMpRceznU7iXP7BL0kr5uS8BarslVhdCpFad1taXQO9DiQNnDOhKF4pF
+	GjKwN3/xOoM6vb3P3qZApV+lFdcfKlXh9olZwLBDY4ES3+cB8/NDz+Qkfx1+usOw
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j105te7dn-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 20 Nov 2026 04:45:05 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AK3Z0Lk1655855;
+	Fri, 20 Nov 2026 04:45:04 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j1m3j05wc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Nov 2026 04:45:04 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AK4j2iG45744426
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 20 Nov 2026 04:45:02 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4DDE420043;
+	Fri, 20 Nov 2026 04:45:02 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9CBE52004B;
+	Fri, 20 Nov 2026 04:45:01 +0000 (GMT)
+Received: from [9.124.218.70] (unknown [9.124.218.70])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 20 Nov 2026 04:45:01 +0000 (GMT)
+Message-ID: <538f4b23-d533-46c9-b580-c8c0f1ef14e0@linux.ibm.com>
+Date: Fri, 20 Nov 2026 10:15:00 +0530
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -73,242 +86,165 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, Alex Williamson <alex@shazbot.org>,
- Alexey Kardashevskiy <aik@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
- Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
- Nicolin Chen <nicolinc@nvidia.com>, Robin Murphy <robin.murphy@arm.com>,
- Samuel Ortiz <sameo@rivosinc.com>,
- Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
- Steven Price <steven.price@arm.com>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
- Xu Yilun <yilun.xu@linux.intel.com>, Ashish Kalra <ashish.kalra@amd.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, iommu@lists.linux.dev,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
- linux-tegra@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v9 09/13] iommufd/viommu: Select vIOMMU operations before
- allocation
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
- linux-coco@lists.linux.dev
-References: <20261116081935.85372-1-aneesh.kumar@kernel.org>
- <20261116081935.85372-10-aneesh.kumar@kernel.org>
+Subject: Re: [PATCH v6 2/5] powerpc/pseries/eeh: Add RTAS error injection
+ helpers
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+References: <20261023073642.59657-1-nnmlinux@linux.ibm.com>
+ <20261023073642.59657-3-nnmlinux@linux.ibm.com>
+ <sashiko-outbox-182440@kernel.org>
 Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20261116081935.85372-10-aneesh.kumar@kernel.org>
+From: Narayana Murty N <nnmlinux@linux.ibm.com>
+In-Reply-To: <sashiko-outbox-182440@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=IouL47/g c=1 sm=1 tr=0 ts=6affd051 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=QyXUC8HyAAAA:8 a=VnNF1IyMAAAA:8 a=9vqKEf5Rp1BOlTc_L4UA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: 5b6ws5LknsHjSdTpxe9vCohWMaBL8Tql
+X-Proofpoint-GUID: 5b6ws5LknsHjSdTpxe9vCohWMaBL8Tql
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIwMDAxNyBTYWx0ZWRfX1Syqa4lCQtXe
+ 1VfBxutd1na1qZe+cC1Pfyhzhs7Xp9VNMQCX2aSww9xBeaiN6654ldLp0/DSnJG4TxNYVRSyNa3
+ 3iyvWRitfBxAwgcwp1GO4LUjaRqlRmFPhMUD8injfkjGiI8GaSf5UtidBnRXqTQL7bQRe8lWIX3
+ Dy+s396Orp88YpyIOeqGnj0V7jiFAx9M6BM9IKbVxeOKVuJdJE+8MoLytjBhVxKt2j+ZVlhHq3b
+ 5/GHgbzz9YVj0fSlk99Qm/OhyU4oN6W0FW2c/yFupvN6qSEET3N+WnFZEjGtNa6tMZSYwpsIutP
+ lCv3FnQYAzfY0+90SzZVJDX6vP4Q6xMr5E8uIIyqZA9RlKojLcTm+AvjHQ00jMGSINzj1BFDFak
+ VySVK8Fb/DwAxV0AcOD8nQqlpAw6NrzfvKvfUjyGEwd3zq2uKbMeUvDnTllSCE4IlhHM81vaRs1
+ WdOkB0kaoAtX1aGYa9g==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIwMDAxNyBTYWx0ZWRfX6YvbTN2iG4Y8
+ DCMFh++iDT58ARaFkL98OVicV/luyvG65wE6CkvZsa4aYgoCBLDxu+gL5/JqxTO/DnM5ogOtppZ
+ 2rH7/sISnW2Mfms+IS+q/XnceLGk5hw=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-20_02,2026-11-19_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0 adultscore=0 priorityscore=1501
+ lowpriorityscore=0 suspectscore=0 phishscore=0 clxscore=1015 malwarescore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
+ definitions=main-2611200017
 
-On 11/16/2026 4:19 PM, Aneesh Kumar K.V (Arm) wrote:
-> Physical IOMMU drivers currently provide the vIOMMU size and
-> initialization callbacks through iommu_ops. The initialization callback
-> then selects and installs the corresponding iommufd_viommu_ops.
+
+
+On 23/10/26 1:19 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Low] powerpc/pseries/eeh: static RTAS helpers defined without callers
+> --
 > 
-> Add iommu_ops::get_viommu_ops() to select the operations from the
-> physical device and requested vIOMMU type before allocation. Move the
-> size and initialization callbacks into iommufd_viommu_ops. The core can
-> then validate the selected operations, allocate the driver structure,
-> initialize it, and install the operations.
+> commit 8b171281b038661dc89a614c1b95db68271706f4
+> Author: Narayana Murty N <nnmlinux@linux.ibm.com>
 > 
-> Convert AMD, Arm SMMUv3, Tegra CMDQV, and the selftest backend to the
-> new interface.
+> powerpc/pseries/eeh: Add RTAS error injection helpers
 > 
-> The current code requires a valid parent HWPT before calling
-> viommu_init(), which selects the vIOMMU operations. A later patch adds
-> an operations flag indicating that a vIOMMU type does not require a
-> parent HWPT. Selecting the operations earlier allows the core to check
-> that flag before deciding whether to look up and validate a parent HWPT.
+> This patch adds static RTAS error injection helper functions,
+> pseries_eeh_type_to_rtas() and validate_addr_mask_in_pe(), to prepare
+> the pSeries EEH backend for RTAS-based error injection.
 > 
-> Temporarily disable AMD vIOMMU allocation by returning NULL from
-> amd_iommufd_get_viommu_ops() while the vIOMMU interfaces are being
-> updated.
+> Closes: https://lore.kernel.org/oe-kbuild-all/202512101130.EYUo0oZx-lkp@intel.com/
 > 
-> Cc: Joerg Roedel <joro@8bytes.org>
-> Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-> Cc: Vasant Hegde <vasant.hegde@amd.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Robin Murphy <robin.murphy@arm.com>
-> Cc: Thierry Reding <thierry.reding@kernel.org>
-> Cc: Krishna Reddy <vdumpa@nvidia.com>
-> Cc: Jonathan Hunter <jonathanh@nvidia.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Kevin Tian <kevin.tian@intel.com>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-tegra@vger.kernel.org
-> Cc: iommu@lists.linux.dev
-> Based on original patch by Jason Gunthorpe <jgg@nvidia.com>
-> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> ---
->   drivers/iommu/amd/iommu.c                     |  3 +-
->   drivers/iommu/amd/iommufd.c                   | 18 ++++++---
->   drivers/iommu/amd/iommufd.h                   | 11 ++++--
->   drivers/iommu/amd/nested.c                    |  4 +-
->   .../arm/arm-smmu-v3/arm-smmu-v3-iommufd.c     | 37 +++++++++++--------
->   drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c   |  7 ++--
->   drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h   | 16 ++++----
->   .../iommu/arm/arm-smmu-v3/tegra241-cmdqv.c    | 24 ++++++++----
->   drivers/iommu/iommufd/selftest.c              | 31 +++++++++++-----
->   drivers/iommu/iommufd/viommu.c                | 32 ++++++++--------
->   include/linux/iommu.h                         | 20 +++-------
->   include/linux/iommufd.h                       | 14 +++++++
->   12 files changed, 129 insertions(+), 88 deletions(-)
+>> diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
+>> index b12ef382fec70..28b1fd19e8bcd 100644
+>> --- a/arch/powerpc/platforms/pseries/eeh_pseries.c
+>> +++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
+> 
+> [ ... ]
+> 
+>> @@ -786,6 +789,137 @@ static int pseries_notify_resume(struct eeh_dev *edev)
+>>   }
+>>   #endif
+>>   
+>> +/*
+>> + * RTAS firmware error-type encodings (PAPR).  These are pseries-private;
+>> + * user-space sees only the generic EEH_ERR_TYPE_* values from eeh.h.
+>> + * Only IOA bus-error types are supported; other PAPR encodings are not
+>> + * reachable through the generic EEH_ERR_TYPE_* UAPI.
+>> + */
+>> +#define RTAS_ERR_TYPE_IOA_BUS_ERROR		0x07
+>> +#define RTAS_ERR_TYPE_IOA_BUS_ERROR_64		0x0f
+>> +
+>> +/* Size of the ibm,errinjct work buffer as defined by PAPR */
+>> +#define RTAS_ERRINJCT_BUF_SIZE			SZ_1K
+>> +
+>> +/**
+>> + * pseries_eeh_type_to_rtas - Map generic EEH error type to RTAS encoding
+>> + * @type: generic EEH error type (EEH_ERR_TYPE_32, EEH_ERR_TYPE_64)
+>> + *
+>> + * Translates the generic VFIO/EEH error type passed from userspace into
+>> + * the RTAS-specific ibm,errinjct error type encoding defined by PAPR.
+>> + *
+>> + * Return: RTAS error type on success, -EINVAL for unknown types.
+>> + */
+>> +static int pseries_eeh_type_to_rtas(int type)
+>> +{
+>> +	switch (type) {
+>> +	case EEH_ERR_TYPE_32:
+>> +		return RTAS_ERR_TYPE_IOA_BUS_ERROR;
+>> +	case EEH_ERR_TYPE_64:
+>> +		return RTAS_ERR_TYPE_IOA_BUS_ERROR_64;
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +}
+>> +
+>> +/**
+>> + * validate_addr_mask_in_pe - Validate addr against PCI bus BAR addresses in PE
+>> + * @pe:   EEH PE containing one or more PCI devices
+>> + * @addr: PCI bus address to validate
+>> + * @mask: address mask (passed to firmware unchanged)
+>> + *
+>> + * RTAS IOA bus-error injection uses PCI bus addresses.  Linux PCI resources
+>> + * are CPU/resource addresses and may differ on pseries due to PHB window
+>> + * translation.  Convert each BAR resource to PCI bus address space before
+>> + * validating @addr.
+>> + *
+>> + * Zero addr and mask are accepted without BAR lookup (no-address injection).
+>> + *
+>> + * Return: 0 if valid, -EINVAL on invalid input.
+>> + */
+>> +static int validate_addr_mask_in_pe(struct eeh_pe *pe, unsigned long addr,
+>> +				    unsigned long mask)
+> 
+> [Severity: Low]
+> Does defining pseries_eeh_type_to_rtas() and validate_addr_mask_in_pe() in
+> arch/powerpc/platforms/pseries/eeh_pseries.c without callers or
+> __maybe_unused cause a -Werror=unused-function build failure at this commit?
+> 
+> The commit message notes that validate_errinjct_args() and
+> prepare_errinjct_buffer() were deferred to the next patch ("powerpc/pseries/eeh:
+> Implement RTAS-based EEH error injection") and that pseries_eeh_err_inject()
+> retains its existing MMIO body here so each intermediate commit builds
+> cleanly with CONFIG_WERROR:
+> 
+> arch/powerpc/platforms/pseries/eeh_pseries.c:pseries_eeh_err_inject() {
+> 	struct	eeh_dev	*pdev;
+> 
+> 	/* Check on PCI error type */
+> 	if (type != EEH_ERR_TYPE_32 && type != EEH_ERR_TYPE_64)
+> 		return -EINVAL;
+>      ...
+> }
+> 
+> However, those deferred functions and the updated pseries_eeh_err_inject() are
+> the only callers of pseries_eeh_type_to_rtas() and validate_addr_mask_in_pe().
+> When building with CONFIG_PPC_PSERIES=y and CONFIG_PPC_WERROR=y (in
+> arch/powerpc/Kbuild) or CONFIG_WERROR=y (in scripts/Makefile.warn), won't
+> this commit fail to compile with -Werror=unused-function until the follow-up
+> patch adds their callers?
+
+Yes, good catch.
+
+Although validate_errinjct_args() and prepare_errinjct_buffer()
+were moved to the implementation patch, the remaining two static
+helpers are still introduced before their first callers.
+
+I'll merge patches 2/5 and 3/5 in the next revision so that all
+helpers are introduced alongside their callers, avoiding the
+unused-function warnings in the intermediate commit.
+
+Regards,
+Narayana Murty.
 > 
 
-[...]
-
-> diff --git a/drivers/iommu/iommufd/viommu.c b/drivers/iommu/iommufd/viommu.c
-> index 0d162a3fdc98..2eba1562a704 100644
-> --- a/drivers/iommu/iommufd/viommu.c
-> +++ b/drivers/iommu/iommufd/viommu.c
-> @@ -33,7 +33,7 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
->   	struct iommufd_viommu *viommu;
->   	struct iommufd_device *idev;
->   	struct iommu_device *iommu_dev;
-> -	const struct iommu_ops *ops;
-> +	const struct iommufd_viommu_ops *ops;
->   	size_t viommu_size;
->   	int rc;
->   
-> @@ -49,23 +49,25 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
->   		rc = -EOPNOTSUPP;
->   		goto out_put_idev;
->   	}
-> -	ops = iommu_dev->ops;
-> -	if (!ops->get_viommu_size || !ops->viommu_init) {
-> +	if (!iommu_dev->ops->get_viommu_ops) {
->   		rc = -EOPNOTSUPP;
->   		goto out_put_idev;
->   	}
-> -
-> -	viommu_size = ops->get_viommu_size(idev->dev, cmd->type);
-> -	if (!viommu_size) {
-> +	ops = iommu_dev->ops->get_viommu_ops(idev->dev, cmd->type);
-> +	if (!ops) {
->   		rc = -EOPNOTSUPP;
->   		goto out_put_idev;
->   	}
-> -
->   	/*
-> -	 * It is a driver bug for providing a viommu_size smaller than the core
-> -	 * vIOMMU structure size
-> +	 * It is a driver bug to omit the required operations or provide a size
-> +	 * smaller than the core vIOMMU structure.
->   	 */
-> -	if (WARN_ON_ONCE(viommu_size < sizeof(*viommu))) {
-> +	if (WARN_ON_ONCE(!ops->get_viommu_size || !ops->viommu_init)) {
-> +		rc = -EOPNOTSUPP;
-> +		goto out_put_idev;
-> +	}
-> +	viommu_size = ops->get_viommu_size(idev->dev, cmd->type);
-> +	if (!viommu_size || WARN_ON_ONCE(viommu_size < sizeof(*viommu))) {
->   		rc = -EOPNOTSUPP;
->   		goto out_put_idev;
->   	}
-> @@ -104,16 +106,12 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
->   	 */
->   	viommu->iommu_dev = iommu_dev;
->   
-> -	rc = ops->viommu_init(viommu, hwpt_paging->common.domain,
-> +	rc = ops->viommu_init(viommu, idev->dev,
-> +			      hwpt_paging->common.domain,
->   			      user_data.len ? &user_data : NULL);
->   	if (rc)
->   		goto out_put_hwpt;
-> -
-> -	/* It is a driver bug that viommu->ops isn't filled */
-> -	if (WARN_ON_ONCE(!viommu->ops)) {
-> -		rc = -EOPNOTSUPP;
-> -		goto out_put_hwpt;
-> -	}
-> +	viommu->ops = ops;
->   
->   	cmd->out_viommu_id = viommu->obj.id;
->   	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
-> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-> index ef5043752a36..f27064917df7 100644
-> --- a/include/linux/iommu.h
-> +++ b/include/linux/iommu.h
-> @@ -46,6 +46,7 @@ struct iommu_dma_msi_cookie;
->   struct iommu_fault_param;
->   struct iommufd_ctx;
->   struct iommufd_viommu;
-> +struct iommufd_viommu_ops;
->   struct msi_desc;
->   struct msi_msg;
->   
-> @@ -669,16 +670,8 @@ __iommu_copy_struct_to_user(const struct iommu_user_data *dst_data,
->    *		- IOMMU_DOMAIN_DMA: must use a dma domain
->    *		- 0: use the default setting
->    * @default_domain_ops: the default ops for domains
-> - * @get_viommu_size: Get the size of a driver-level vIOMMU structure for a given
-> - *                   @dev corresponding to @viommu_type. Driver should return 0
-> - *                   if vIOMMU isn't supported accordingly. It is required for
-> - *                   driver to use the VIOMMU_STRUCT_SIZE macro to sanitize the
-> - *                   driver-level vIOMMU structure related to the core one
-> - * @viommu_init: Init the driver-level struct of an iommufd_viommu on a physical
-> - *               IOMMU instance @viommu->iommu_dev, as the set of virtualization
-> - *               resources shared/passed to user space IOMMU instance. Associate
-> - *               it with a nesting @parent_domain. It is required for driver to
-> - *               set @viommu->ops pointing to its own viommu_ops
-> + * @get_viommu_ops: Return the vIOMMU operations supported by @dev for a type.
-> + *                  Return NULL if the type is unsupported.
->    * @owner: Driver module providing these ops
->    * @identity_domain: An always available, always attachable identity
->    *                   translation.
-> @@ -729,11 +722,8 @@ struct iommu_ops {
->   
->   	int (*def_domain_type)(struct device *dev);
->   
-> -	size_t (*get_viommu_size)(struct device *dev,
-> -				  enum iommu_viommu_type viommu_type);
-> -	int (*viommu_init)(struct iommufd_viommu *viommu,
-> -			   struct iommu_domain *parent_domain,
-> -			   const struct iommu_user_data *user_data);
-> +	const struct iommufd_viommu_ops *(*get_viommu_ops)(
-> +		struct device *dev, enum iommu_viommu_type viommu_type);
->   
->   	const struct iommu_domain_ops *default_domain_ops;
->   	struct module *owner;
-> diff --git a/include/linux/iommufd.h b/include/linux/iommufd.h
-> index d1fd7888fc91..5f5c67b24134 100644
-> --- a/include/linux/iommufd.h
-> +++ b/include/linux/iommufd.h
-> @@ -148,6 +148,15 @@ struct iommufd_hw_queue {
->   
->   /**
->    * struct iommufd_viommu_ops - vIOMMU specific operations
-> + * @get_viommu_size: Get the size of a driver-level vIOMMU structure for a given
-> + *                   @dev corresponding to @viommu_type. Driver should return 0
-> + *                   if vIOMMU isn't supported accordingly. It is required for
-> + *                   driver to use the VIOMMU_STRUCT_SIZE macro to sanitize the
-> + *                   driver-level vIOMMU structure related to the core one
-> + * @viommu_init: Init the driver-level struct of an iommufd_viommu on a physical
-> + *               IOMMU instance @viommu->iommu_dev, as the set of virtualization
-> + *               resources shared/passed to user space IOMMU instance. Associate
-> + *               it with a nesting @parent_domain.
->    * @destroy: Clean up all driver-specific parts of an iommufd_viommu. The memory
->    *           of the vIOMMU will be free-ed by iommufd core after calling this op
->    * @alloc_domain_nested: Allocate a IOMMU_DOMAIN_NESTED on a vIOMMU that holds a
-> @@ -190,6 +199,11 @@ struct iommufd_hw_queue {
->    *                      does, it should set it to the @hw_queue->destroy pointer
->    */
->   struct iommufd_viommu_ops {
-> +	size_t (*get_viommu_size)(struct device *dev,
-> +		enum iommu_viommu_type type);
-> +	int (*viommu_init)(struct iommufd_viommu *viommu, struct device *dev,
-> +		struct iommu_domain *parent_domain,
-> +		const struct iommu_user_data *user_data);
->   	void (*destroy)(struct iommufd_viommu *viommu);
->   	struct iommu_domain *(*alloc_domain_nested)(
->   		struct iommufd_viommu *viommu, u32 flags,
-
-For changes in iommufd/viommu common code,
-
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
