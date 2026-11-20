@@ -1,97 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.228.123
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795195520;
-	b=w4gk1STDMclicqQk2YIoIKnfyD/IhkLSlj5SZBfTpbm2zvEkhLmgVsDogutc2PJ5KtEx
-	 iUS4Zh403MMowCWPx5RHLno7wPYuk64sv1+rUrMrheuauKT3/qGTs4TXGJegxXY1khaYx
-	 ql+NtspoLPFSAtdynA9T9MZ7yo4hQp8v2f+QoesJRVdF6eGEce4JI3AvN5wHmu9/fDXUb
-	 k9GUCxMEZ6xLO0964KvtmN9cGCYet3M5yd7Gt6iVN2tLDT+rvG4wggjN1GFAIRh2yAO3h
-	 jdzmoJenT3cJ2PiEKl9Xh7O78YNQUxf767vYz/bSBgjJ+KY614zoceG3Rca2w+hQfQg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795195520;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=/JvcarMLiWryRrHUBFt4iOlI6gW3LQB+YbPwQJ+9S3M=;
-	b=b+WlCMgogjGf6p8LZwqdY5uEHVt9EfZZYbjwO8x5XrUUHD5hKqrYnUnddVAwx07gr2cB
-	 Etw1oC0agKpCW14bJ3GSdEXjRoQcKwXHaTz01q85qv1n2Q9I/YwdYI1ZKrAiJtqVXvfSC
-	 lmKF3ep7wPA6YGZ7Dp8NKBi4ghAHrZhMKIlQu/PsdMiCKWNQaZQ2VORo2MbZeED1mt/sd
-	 B6CJRnQei5mFTs5qIV9SbVmziERTXr0+wRnkoDJdLbSOzUbgVJGbdg3L0b5OA6MGOnB6K
-	 N31Hc4ThKyxLFRmEI1uMnp1YJsxkYN+nsLhTj3ObWkbaI4DIUq8BhzewjaJobQrQOhQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=valinux.co.jp;
-	spf=pass smtp.mailfrom=valinux.co.jp;
-	dkim=pass header.d=valinux.co.jp header.i=@valinux.co.jp header.a=rsa-sha256 header.s=selector1 header.b=FotCfS9b;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.228.123
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11020123.outbound.protection.outlook.com [52.101.228.123])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C01606A320;
-	Fri, 20 Nov 2026 17:25:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16C01606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=13.77.154.182
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795196549;
+	b=C1Eh2Vrqp72rbXJDbZgSDhJTXGLPRjAzv/TL0yhqpToOElcNX5SlRfcFgnZzIH1iYRMQ
+	 kdka2p7go86xSzEvU5BWQtpTU7FF4vvunX1hLEssmhgW9xTnFvkmkiKxJGQCBpEdCqnni
+	 Kl6GlPIz3op3Yv3xqAiMTihlELjo7LJUCmpb6dU8LDk9DxMIP07RwipTzAoM7pOhOqdTc
+	 2cDGcxo8NfR0h+zy8Gf5+cq3+N5MQmtqPJYLZVDmnp139CW86aoPS5+onS5tQnNlmNEjK
+	 P8cBeMQNCM9FFavICCyzEMvarL6nC38SWhZlPantlpvkI7iaftOnLU7KlJQeijPePsw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795196549;
+	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:In-Reply-To:References:Organization:X-Mailer:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-Spam-Status:
+	 X-Spam-Checker-Version;
+	bh=IHQiyVPknCKcSZ6nudhvEAN+UH/HvXb1mXjm6my0pms=;
+	b=dVpnaiEirbDlAR7A6D+5WFTBH8HQ72cngZD+C/gPKSF3JQRTaGt3qA0v7ddTr8X854y0
+	 UqA0adj7Jv0sASvSLRIHpiYYajoLlms+Ya5JpQKwOlKgZF9YdpwcvFt1uQVJ9eOcKAfor
+	 icuqzjgiKY2ArjOv6CpE7Axt8d3Qm90DeJw7512I8C3YYhFCHX+p64G++tphbSNRf+xqP
+	 ii9WIeRvFHuzeBxCLen4HdXOonBRVWg0b367rajoDuWTmeBOxk4TrLsGXvkg9aC1JjQk4
+	 GA3ZuzmkqjbhWHmF9uhtRqfP4/RzHicf6VtLSzQy1Lf7dnMzEWC31GxTMl3Ua8ux7ew==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.microsoft.com;
+	spf=pass smtp.mailfrom=linux.microsoft.com;
+	dkim=pass header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=isXZpF1b;
+	arc=none smtp.remote-ip=13.77.154.182
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEC8606A7F6;
+	Fri, 20 Nov 2026 17:42:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2CEC8606A7F6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=valinux.co.jp header.i=@valinux.co.jp header.a=rsa-sha256 header.s=selector1 header.b=FotCfS9b
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AeuLbeG4/DVwLB1zDxdKur1APrwPUEOkQ4FSl5BPemc+2JKO0a7WeTzz7zFcKTZXcPmRKSwbyuGh03bbdhhEzEgTM/o3RtdhfCTo8l1gs8qoxbcjLNJobz1jKMwTnGK6jfjtLSHE6tGcDkZyrziSiLS3LR7gluA5AFKzAQE/YAXSv2tHgRrGajjaWtHJFvvTk3+suqyZPZslRwKtdnOVcksUGl1snKfqPMLiBM6KAfcg34MZlym9D9aVLqCkKFeksePhJrsxi7gUmxT//BdbF4y2nuqnCmfl8lAh25hRVf9RLsfil1FglFYlkVdd5L44hixfgD6CQdmzU+JzE3fktA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/JvcarMLiWryRrHUBFt4iOlI6gW3LQB+YbPwQJ+9S3M=;
- b=AU8Z1Bl9LZ3PUNa8FU2PtgwQtgpRM6XFUnBDj8B04q7j45tA2IgfEXaADuQVvN3bzd4qQyensAsUYKIljmwwgVA1g5L4v2jkmvMirCXoXN5Txf1a/YyfOfcafenUhHAP9Th9/FcAVlwCjuhwTuWYdHEVpXkGdW6haKHppVP0QYpsoN+lt0Zggaf33V15oWtm5z2FhH2HIazzLF6g0DoLNNmOsa5R0zo7twNojDiug97hR/bkcCqnEPXY8vldMIhNbt4o7unTqYr1ZNl4pfzOlcCQdzmeUyvFill3VHoHD0Klv+ihELR/7OF4hBMqWcdjrQ9OAzeL7A/wksQj+WKaLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
- header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/JvcarMLiWryRrHUBFt4iOlI6gW3LQB+YbPwQJ+9S3M=;
- b=FotCfS9bl/BSPLGadUim+VDTmcZyRZ75Bf1zI4HfKuju4zW0ek8sUo59gn0EMWs/2kAq9l749wun2prXJuxLMYGH6qYJy6h/4Bqeixks3HSA5PWhfIQkdiTKoHm14WUzdlcIZBXCksncgQ/WfllEA3kz/v92EQe/DabCI3LAHxA=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=valinux.co.jp;
-Received: from TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:325::11)
- by OS9P286MB7997.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:475::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.10; Fri, 20 Nov
- 2026 17:25:16 +0000
-Received: from TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
- ([fe80::cce5:2aa8:53f9:dba9]) by TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
- ([fe80::cce5:2aa8:53f9:dba9%5]) with mapi id 15.21.0639.011; Fri, 20 Nov 2026
- 17:25:16 +0000
-Date: Sat, 21 Nov 2026 02:25:15 +0900
-From: Koichiro Den <den@valinux.co.jp>
-To: Andrew Jones <andrew.jones@linux.dev>
-Cc: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Bingyu Xian <shanbeeyoo@gmail.com>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] RISC-V: KVM: Skip steal-time updates when run_delay
- is unchanged
-Message-ID: <awCBn-a_i8k2hkbe@z790sl>
-References: <20261118062242.2914385-1-den@valinux.co.jp>
- <20261118062242.2914385-3-den@valinux.co.jp>
- <awB4BxCHBu6nacbO@orel>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <awB4BxCHBu6nacbO@orel>
-X-ClientProxiedBy: TY4PR01CA0094.jpnprd01.prod.outlook.com
- (2603:1096:405:37d::18) To TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:325::11)
+	dkim=pass (1024-bit key, unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=isXZpF1b
+Received: from localhost (unknown [4.194.122.136])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 6820020B716E;
+	Fri, 20 Nov 2026 09:42:10 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6820020B716E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1795196544;
+	bh=IHQiyVPknCKcSZ6nudhvEAN+UH/HvXb1mXjm6my0pms=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=isXZpF1beaCi2I9ewSeS0IAXuv1A9IS/qcHY7uYwjQOy+KCRtFaCKsEbxvAu8xfJ5
+	 hLtZYYjF9drBMPFqtioVreFwJnEy6HMKf42TUp8R/jonaj8fuh2+cJf7pJOWrtGlo8
+	 sromy/ZBhp488b6flHykLhv7zQCzypAvp9cbo1uw=
+Date: Fri, 20 Nov 2026 09:42:07 -0800
+From: Jacob Pan <jacob.pan@linux.microsoft.com>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, Alex Williamson <alex@shazbot.org>, Alexey
+ Kardashevskiy <aik@amd.com>, Bjorn Helgaas <bhelgaas@google.com>, Catalin
+ Marinas <catalin.marinas@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>, Joerg
+ Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>, Jonathan
+ Hunter <jonathanh@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, Krishna
+ Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Nicolin Chen
+ <nicolinc@nvidia.com>, Robin Murphy <robin.murphy@arm.com>, Samuel Ortiz
+ <sameo@rivosinc.com>, Shameer Kolothum
+ <shameerali.kolothum.thodi@huawei.com>, Steven Price
+ <steven.price@arm.com>, Suravee Suthikulpanit
+ <suravee.suthikulpanit@amd.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Thierry Reding <thierry.reding@kernel.org>, Vasant Hegde
+ <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>, Xu Yilun
+ <yilun.xu@linux.intel.com>, Ashish Kalra <ashish.kalra@amd.com>, Herbert Xu
+ <herbert@gondor.apana.org.au>, iommu@lists.linux.dev, Jonathan Cameron
+ <jonathan.cameron@huawei.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-pci@vger.kernel.org, linux-tegra@vger.kernel.org,
+ patches@lists.linux.dev, jacob.pan@linux.microsoft.com
+Subject: Re: [PATCH v9 09/13] iommufd/viommu: Select vIOMMU operations
+ before allocation
+Message-ID: <20261120094207.00002e89@linux.microsoft.com>
+In-Reply-To: <20261116081935.85372-10-aneesh.kumar@kernel.org>
+References: <20261116081935.85372-1-aneesh.kumar@kernel.org>
+	<20261116081935.85372-10-aneesh.kumar@kernel.org>
+Organization: LSG
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-w64-mingw32)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -101,119 +81,656 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY7P286MB6866:EE_|OS9P286MB7997:EE_
-X-MS-Office365-Filtering-Correlation-Id: 95ec5c13-4fed-4aaf-9aae-08df472b3e53
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|10070799003|366016|7416014|1800799024|4143699003|10067099003|56012099006|261026140227099003|261022105027099003|261021123027099003|261021121427099003|261028144727099003|261102123227099003|261009223027099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	XRBPU8NoiIWjXJ1cSMU8jEghLh5vTXF1KDbmQbgZZXlbTIm00/c38GhjyiRzWmF+DzN3a6xS1/MRHrQl4xY/uRRHYk2zy2BiM7JsHamVENCIhWD3dzSd1q9J7Jattl8Oa55jl0Re/QHDEsTcn6NCtUL68UbZB9eKfIHxIhw6f8qQZitFAhxIOduNOG3snDOokEPLTqihFfqcaLOduoWStrCkbWpCQa3vGEbiDqd7zM84fIlJsLc4Q6Bq9oQi/qP6PygNO+4pQ6aeeRDybzVHtAdgOwtWhTCNNVMICqWEAM44REbFEDBlWhDNM5G7HAqVP3r8FNALNkmzdD2//PxdWzsN6iUjqllQI7faZJTKsQFOLKYtIH3R0t4/j+wDpNIkz2ftiBjvjzuuokxZiPpmNNjEQF951pI/xH4kgIMscOWvB714AIow3YtMwMgnHksQCfF1lKvgKNaNCoHijy1dz94/ibgAe6+sH9N7sDTvrZo7L+JI2YOPI/bU1JEfRoQlaH6Yz04dTRoZ7c7YsZPo45TL64WKx8Q/R9XoKiKSF2rU71saMAc53w7q8v2AXcuoYKDOk/fezGTpfGPKDl9sjYS8YtScFt/H2k9BuTNCq+7v6GCZCa/0lrAwW/Ot79kUABTHsY5+x1s0rnTV8w5eQOmKMQUN689bDpeuRJ5psHc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(10070799003)(366016)(7416014)(1800799024)(4143699003)(10067099003)(56012099006)(261026140227099003)(261022105027099003)(261021123027099003)(261021121427099003)(261028144727099003)(261102123227099003)(261009223027099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?VudRp4caP9n3JN0uAzkYSAKett4fnK9kFVWxuWGSOT1t8keUDEmndnuw+Vda?=
- =?us-ascii?Q?PdVsq5ohtOEy90V2QcP2/fwcXY221Fejy9loJMfXIe8pWRhXoSq8bdRyeICb?=
- =?us-ascii?Q?IPgv3aEYef428xh+pg3gPoLo3LsXXZd0H5K4Y//4AifuZVCISsAOnnXdHysV?=
- =?us-ascii?Q?D3nO/LdtYxvcbnxxSnx5yAZ7Dr39x+LfyQktTm6c6itYFLPpDqn3oko4nBYV?=
- =?us-ascii?Q?/mPZHL68Wj0Y3z7cTX0+I6AHZB15w8I6uqCXWKHsh2R4bCq+89FJ1ucCRtLz?=
- =?us-ascii?Q?+RqOLyFRXQcCejzxPunUmzaBfKtWlmxh8DML4QnutQ1VzY+JMO0ci+TA2r3O?=
- =?us-ascii?Q?b+BQoXlc/EME54IMaPin5NBxXXTC5+fiAAryLEjc02iy84PY4JBui+I2IgUX?=
- =?us-ascii?Q?V0pGmt4YVf/fW8yxzUgJNdIj1CD+2qCrwN2yVCcjuHVCHRWKHbiU/AxqyFpc?=
- =?us-ascii?Q?2vtT+wG/GccnLR2SZHjD54yqhVydBuk1jrK/qcQIV0pLro1swiF6z+dazH3p?=
- =?us-ascii?Q?/XfEmY+IE5KhdLP1IRgzh29+e4VSHgwHA6TY2I6MDW3WrgY7pPl49tJKSvEH?=
- =?us-ascii?Q?4lixm0jcnjhVC1qQ2yZH+BKjrw5CozNXz3uCKIfuI9iehrelC9pLuxBA5pQF?=
- =?us-ascii?Q?as1PJ97G6KD0+TQE0SnIVKJsWRR1jcrW1S7a+IB/zVDMX4CILIbwCHceJFQa?=
- =?us-ascii?Q?d1FpNdNZoPL1D4zdLL7X/qFfKotEdOTw5hsJah0yYw/xMhg8fwikh41OujPm?=
- =?us-ascii?Q?PG3RrwC3VBCw1tUcmTly9i7ShXnWUv95VXzXvuJ6t/AJUeP0Kk8X5xN7C9Hy?=
- =?us-ascii?Q?Uq+QpsiRy4Ordfcmv6vCibYeeBw4ISDa/dfrJkipoVyVq5YCVwF0Utid53vN?=
- =?us-ascii?Q?6+rkzBRaHFmDCriX+BGaLBSvKDr0wBKW1RjokarFgdd1KzETrmThU6OQjRjC?=
- =?us-ascii?Q?qheVORBNsGrboz/ptMUGk1EE1SVfV7uBYgdnTOBfbnNv+iIIGzl9m6hhStFQ?=
- =?us-ascii?Q?4zSo4vFQFVdwrqUiV2reumaEmlNxghh7Au32Ic1yIa4XjUeCwwMDy/+E7Yp3?=
- =?us-ascii?Q?G6UCC/CmySVBuiu5eomwWXLl9ImqxGGDatFQ9DOKtNREE8V96md9S/47xmwN?=
- =?us-ascii?Q?BXvG//F1gKmadV6EhfBzI9cKu8tq6d61BfALuuNLY8OqLqezoJYLJS9othWE?=
- =?us-ascii?Q?IF3hZ9PLLwjoEf6KbuoN7gBznZfOQbF9+ZEXEb160bEoQJHX3aWLgyi33rv8?=
- =?us-ascii?Q?4URcndDswPJMf+9F0lodROt4n1k1Pw+7E5VV7lcB5HklZRAxtFnnHFDo8NcL?=
- =?us-ascii?Q?75A9ADWM/p1ijDELmTUf9OID5ZeSe80TYrzVdfigEa8RNykagqvIRYrTlMVk?=
- =?us-ascii?Q?FF9ebqP9M8q4+HvUSSntPmZ5Z6kJBq/R2Wd2Cdwgf+dpmmfwKd8Ia0lYu0xE?=
- =?us-ascii?Q?ZBecuwKx+WC2Zj0+B0ixBTDWOJ95/wB9/2KIh7TEqKJjccg54iJ2xKtVWkPX?=
- =?us-ascii?Q?RXivgH1Idh31SUxuSQB/zPH1cSMkquc4K9wQ+cmMFWCMYCYIb5MSsoz5/pif?=
- =?us-ascii?Q?iiV0gxPpneVmfaeHv8V+tqs4e+I7yb4JGCgw3y7+PZ5TofKnTxcr3I6IEhFk?=
- =?us-ascii?Q?YUvwZe1vE8DOWfdV3lwPhM3fMDKzhTXtk0c0qOoGBWZz2Np/GfilpF+SdZWs?=
- =?us-ascii?Q?+OTAbXTtlFGEWT3UxzdanG2x7WFyFT6NqKIUUdRYhRbigA24+Wn3byLeDbb0?=
- =?us-ascii?Q?tA8LD/22EQkYTrGvHem8iH3sW3tgk4J+n8sNtJ9aN5vdmwtmrh6Q?=
-X-OriginatorOrg: valinux.co.jp
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95ec5c13-4fed-4aaf-9aae-08df472b3e53
-X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2026 17:25:16.6186
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: itFApcfnog+2CuVWkDAL4LDGePN1obPtqizGkCjmNF6S/4z5FuzVSlLnI2CD2Pgjpnw0ch8KkFVFr7apGV5usA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS9P286MB7997
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 20, 2026 at 05:45:09PM +0100, Andrew Jones wrote:
-> On Wed, Nov 18, 2026 at 03:22:42PM +0900, Koichiro Den wrote:
-> > Check run_delay against last_steal and skip the update if they match.
-> > This avoids accessing the SBI STA shared structure and marking its page
-> > dirty on vCPU loads with no new steal time to report.
-> > 
-> > Signed-off-by: Koichiro Den <den@valinux.co.jp>
-> > ---
-> >  arch/riscv/kvm/vcpu_sbi_sta.c | 8 ++++++--
-> >  1 file changed, 6 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/riscv/kvm/vcpu_sbi_sta.c b/arch/riscv/kvm/vcpu_sbi_sta.c
-> > index cfc6f22c3e33..8b2499876fb4 100644
-> > --- a/arch/riscv/kvm/vcpu_sbi_sta.c
-> > +++ b/arch/riscv/kvm/vcpu_sbi_sta.c
-> > @@ -31,7 +31,7 @@ void kvm_riscv_vcpu_record_steal_time(struct kvm_vcpu *vcpu)
-> >  	__le32 sequence_le;
-> >  	__le64 steal_le;
-> >  	u32 sequence;
-> > -	u64 steal;
-> > +	u64 steal, run_delay;
-> >  	unsigned long hva;
-> >  	bool dirty = false, success = false;
-> >  	gfn_t gfn;
-> > @@ -52,6 +52,10 @@ void kvm_riscv_vcpu_record_steal_time(struct kvm_vcpu *vcpu)
-> >  		return;
-> >  	}
-> >  
-> > +	run_delay = READ_ONCE(current->sched_info.run_delay);
-> > +	if (run_delay == last_steal)
-> > +		return;
-> > +
-> 
-> If we move the new check to just below the 'if (shmem == INVALID_GPA)'
-> check then we also avoid a memslot lookup.
+Hi Aneesh,
 
-Indeed. Thanks for pointing that out! Will move the check in v2.
+On Mon, 16 Nov 2026 13:49:31 +0530
+"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
 
-Best regards,
-Koichiro Den
+> Physical IOMMU drivers currently provide the vIOMMU size and
+> initialization callbacks through iommu_ops. The initialization
+> callback then selects and installs the corresponding
+> iommufd_viommu_ops.
+> 
+> Add iommu_ops::get_viommu_ops() to select the operations from the
+> physical device and requested vIOMMU type before allocation. Move the
+> size and initialization callbacks into iommufd_viommu_ops. The core
+> can then validate the selected operations, allocate the driver
+> structure, initialize it, and install the operations.
+The patch title is slightly misleading since it does not change the
+order between setting viommu_ops and allocation. IMHO, it is more like:
+"Move vIOMMU ops selection into the core"
 
+> Convert AMD, Arm SMMUv3, Tegra CMDQV, and the selftest backend to the
+> new interface.
 > 
-> >  	st = (struct sbi_sta_struct __user *)(hva + offset_in_page(shmem));
-> >  	might_fault();
-> >  	if (WARN_ON(!user_access_begin(st, sizeof(*st))))
-> > @@ -66,7 +70,7 @@ void kvm_riscv_vcpu_record_steal_time(struct kvm_vcpu *vcpu)
-> >  	smp_wmb();
-> >  	unsafe_get_user(steal_le, &st->steal, update_sequence);
-> >  	steal = le64_to_cpu(steal_le);
-> > -	vcpu->arch.sta.last_steal = READ_ONCE(current->sched_info.run_delay);
-> > +	vcpu->arch.sta.last_steal = run_delay;
-> >  	steal += vcpu->arch.sta.last_steal - last_steal;
-> >  	unsafe_put_user(cpu_to_le64(steal), &st->steal, update_sequence);
-> >  	success = true;
-> > -- 
-> > 2.54.0
-> >
+> The current code requires a valid parent HWPT before calling
+> viommu_init(), which selects the vIOMMU operations. A later patch adds
+> an operations flag indicating that a vIOMMU type does not require a
+> parent HWPT. Selecting the operations earlier allows the core to check
+> that flag before deciding whether to look up and validate a parent
+> HWPT.
 > 
-> Otherwise,
+> Temporarily disable AMD vIOMMU allocation by returning NULL from
+> amd_iommufd_get_viommu_ops() while the vIOMMU interfaces are being
+> updated.
 > 
-> Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
+why? if this merged, it would break AMD driver vIOMMU functionality.
+And not temporary as I didn't see enabling in this set.
+
+> Cc: Joerg Roedel <joro@8bytes.org>
+> Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+> Cc: Vasant Hegde <vasant.hegde@amd.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Robin Murphy <robin.murphy@arm.com>
+> Cc: Thierry Reding <thierry.reding@kernel.org>
+> Cc: Krishna Reddy <vdumpa@nvidia.com>
+> Cc: Jonathan Hunter <jonathanh@nvidia.com>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Kevin Tian <kevin.tian@intel.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-tegra@vger.kernel.org
+> Cc: iommu@lists.linux.dev
+> Based on original patch by Jason Gunthorpe <jgg@nvidia.com>
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> ---
+>  drivers/iommu/amd/iommu.c                     |  3 +-
+>  drivers/iommu/amd/iommufd.c                   | 18 ++++++---
+>  drivers/iommu/amd/iommufd.h                   | 11 ++++--
+>  drivers/iommu/amd/nested.c                    |  4 +-
+>  .../arm/arm-smmu-v3/arm-smmu-v3-iommufd.c     | 37
+> +++++++++++-------- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c   |
+> 7 ++-- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h   | 16 ++++----
+>  .../iommu/arm/arm-smmu-v3/tegra241-cmdqv.c    | 24 ++++++++----
+>  drivers/iommu/iommufd/selftest.c              | 31 +++++++++++-----
+>  drivers/iommu/iommufd/viommu.c                | 32 ++++++++--------
+>  include/linux/iommu.h                         | 20 +++-------
+>  include/linux/iommufd.h                       | 14 +++++++
+>  12 files changed, 129 insertions(+), 88 deletions(-)
+> 
+> diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+> index 41ee4ad1dcf8..2b318d8c82a0 100644
+> --- a/drivers/iommu/amd/iommu.c
+> +++ b/drivers/iommu/amd/iommu.c
+> @@ -3265,8 +3265,7 @@ const struct iommu_ops amd_iommu_ops = {
+>  	.is_attach_deferred = amd_iommu_is_attach_deferred,
+>  	.def_domain_type = amd_iommu_def_domain_type,
+>  	.page_response = amd_iommu_page_response,
+> -	.get_viommu_size = amd_iommufd_get_viommu_size,
+> -	.viommu_init = amd_iommufd_viommu_init,
+> +	.get_viommu_ops = amd_iommufd_get_viommu_ops,
+>  };
+>  
+>  #ifdef CONFIG_IRQ_REMAP
+> diff --git a/drivers/iommu/amd/iommufd.c b/drivers/iommu/amd/iommufd.c
+> index 52300b867c1f..dcbe80fcb8c7 100644
+> --- a/drivers/iommu/amd/iommufd.c
+> +++ b/drivers/iommu/amd/iommufd.c
+> @@ -32,13 +32,21 @@ void *amd_iommufd_hw_info(struct device *dev, u32
+> *length, enum iommu_hw_info_ty return hwinfo;
+>  }
+>  
+> -size_t amd_iommufd_get_viommu_size(struct device *dev, enum
+> iommu_viommu_type viommu_type) +static size_t
+> amd_iommufd_get_viommu_size(struct device *dev,
+> +		enum iommu_viommu_type viommu_type)
+Making this function static seems unrelated.
+
+>  {
+>  	return VIOMMU_STRUCT_SIZE(struct amd_iommu_viommu, core);
+>  }
+>  
+> -int amd_iommufd_viommu_init(struct iommufd_viommu *viommu, struct
+> iommu_domain *parent,
+> -			    const struct iommu_user_data *user_data)
+> +const struct iommufd_viommu_ops *
+> +amd_iommufd_get_viommu_ops(struct device *dev, enum
+> iommu_viommu_type viommu_type) +{
+> +	return NULL;
+> +}
+> +
+> +int amd_iommufd_viommu_init(struct iommufd_viommu *viommu,
+> +		struct device *dev, struct iommu_domain *parent,
+> +		const struct iommu_user_data *user_data)
+>  {
+>  	unsigned long flags;
+>  	struct protection_domain *pdom = to_pdomain(parent);
+> @@ -47,8 +55,6 @@ int amd_iommufd_viommu_init(struct iommufd_viommu
+> *viommu, struct iommu_domain * xa_init_flags(&aviommu->gdomid_array,
+> XA_FLAGS_ALLOC1); aviommu->parent = pdom;
+>  
+> -	viommu->ops = &amd_viommu_ops;
+> -
+>  	spin_lock_irqsave(&pdom->lock, flags);
+>  	list_add(&aviommu->pdom_list, &pdom->viommu_list);
+>  	spin_unlock_irqrestore(&pdom->lock, flags);
+> @@ -73,5 +79,7 @@ static void amd_iommufd_viommu_destroy(struct
+> iommufd_viommu *viommu)
+>   * struct iommufd_viommu_ops - vIOMMU specific operations
+>   */
+>  static const struct iommufd_viommu_ops amd_viommu_ops = {
+> +	.get_viommu_size = amd_iommufd_get_viommu_size,
+> +	.viommu_init = amd_iommufd_viommu_init,
+>  	.destroy = amd_iommufd_viommu_destroy,
+>  };
+> diff --git a/drivers/iommu/amd/iommufd.h b/drivers/iommu/amd/iommufd.h
+> index 62e9e1bebfbe..0d8e7c0902cf 100644
+> --- a/drivers/iommu/amd/iommufd.h
+> +++ b/drivers/iommu/amd/iommufd.h
+> @@ -8,13 +8,16 @@
+>  
+>  #if IS_ENABLED(CONFIG_AMD_IOMMU_IOMMUFD)
+>  void *amd_iommufd_hw_info(struct device *dev, u32 *length, enum
+> iommu_hw_info_type *type); -size_t amd_iommufd_get_viommu_size(struct
+> device *dev, enum iommu_viommu_type viommu_type); -int
+> amd_iommufd_viommu_init(struct iommufd_viommu *viommu, struct
+> iommu_domain *parent,
+> -			    const struct iommu_user_data *user_data);
+> +const struct iommufd_viommu_ops *
+> +amd_iommufd_get_viommu_ops(struct device *dev,
+> +		enum iommu_viommu_type viommu_type);
+> +int amd_iommufd_viommu_init(struct iommufd_viommu *viommu,
+> +		struct device *dev, struct iommu_domain *parent,
+> +		const struct iommu_user_data *user_data);
+>  #else
+>  #define amd_iommufd_hw_info NULL
+>  #define amd_iommufd_viommu_init NULL
+> -#define amd_iommufd_get_viommu_size NULL
+> +#define amd_iommufd_get_viommu_ops NULL
+>  #endif /* CONFIG_AMD_IOMMU_IOMMUFD */
+>  
+>  #endif /* AMD_IOMMUFD_H */
+> diff --git a/drivers/iommu/amd/nested.c b/drivers/iommu/amd/nested.c
+> index f1c7987fc585..a4d856689e57 100644
+> --- a/drivers/iommu/amd/nested.c
+> +++ b/drivers/iommu/amd/nested.c
+> @@ -90,7 +90,7 @@ static void *gdom_info_load_or_alloc_locked(struct
+> xarray *xa, 
+>  /*
+>   * This function is assigned to struct
+> iommufd_viommu_ops.alloc_domain_nested()
+> - * during the call to struct iommu_ops.viommu_init().
+> + * during the call to struct iommufd_viommu_ops.viommu_init().
+>   */
+>  struct iommu_domain *
+>  amd_iommu_alloc_domain_nested(struct iommufd_viommu *viommu, u32
+> flags, @@ -198,7 +198,7 @@ static void set_dte_nested(struct
+> amd_iommu *iommu, struct iommu_domain *dom, 
+>  	/*
+>  	 * The nest parent domain is attached during the call to the
+> -	 * struct iommu_ops.viommu_init(), which will be stored as
+> part
+> +	 * struct iommufd_viommu_ops.viommu_init(), which will be
+> stored as part
+>  	 * of the struct amd_iommu_viommu.parent.
+>  	 */
+>  	if (WARN_ON(!ndom->viommu || !ndom->viommu->parent))
+> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
+> b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c index
+> e68b46485095..d8c837df9f47 100644 ---
+> a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c +++
+> b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c @@ -533,20
+> +533,29 @@ int arm_vsmmu_cache_invalidate(struct iommufd_viommu
+> *viommu, return ret; }
+>  
+> +static size_t arm_vsmmu_get_size(struct device *dev,
+> +				 enum iommu_viommu_type viommu_type)
+> +{
+> +	return VIOMMU_STRUCT_SIZE(struct arm_vsmmu, core);
+> +}
+> +
+>  static const struct iommufd_viommu_ops arm_vsmmu_ops = {
+> +	.get_viommu_size = arm_vsmmu_get_size,
+> +	.viommu_init = arm_vsmmu_init,
+>  	.alloc_domain_nested = arm_vsmmu_alloc_domain_nested,
+>  	.cache_invalidate = arm_vsmmu_cache_invalidate,
+>  	.vdevice_init = arm_vsmmu_vdevice_init,
+>  };
+>  
+> -size_t arm_smmu_get_viommu_size(struct device *dev,
+> -				enum iommu_viommu_type viommu_type)
+> +const struct iommufd_viommu_ops *
+> +arm_smmu_get_viommu_ops(struct device *dev,
+> +		enum iommu_viommu_type viommu_type)
+>  {
+>  	struct arm_smmu_master *master = dev_iommu_priv_get(dev);
+>  	struct arm_smmu_device *smmu = master->smmu;
+>  
+>  	if (!(smmu->features & ARM_SMMU_FEAT_NESTING))
+> -		return 0;
+> +		return NULL;
+>  
+>  	/*
+>  	 * FORCE_SYNC is not set with FEAT_NESTING. Some study of
+> the exact HW @@ -554,7 +563,7 @@ size_t
+> arm_smmu_get_viommu_size(struct device *dev,
+>  	 * any change to remove this.
+>  	 */
+>  	if (WARN_ON(smmu->options & ARM_SMMU_OPT_CMDQ_FORCE_SYNC))
+> -		return 0;
+> +		return NULL;
+>  
+>  	/*
+>  	 * Must support some way to prevent the VM from bypassing
+> the cache @@ -566,19 +575,19 @@ size_t
+> arm_smmu_get_viommu_size(struct device *dev, */
+>  	if (!arm_smmu_master_canwbs(master) &&
+>  	    !(smmu->features & ARM_SMMU_FEAT_S2FWB))
+> -		return 0;
+> +		return NULL;
+>  
+>  	if (viommu_type == IOMMU_VIOMMU_TYPE_ARM_SMMUV3)
+> -		return VIOMMU_STRUCT_SIZE(struct arm_vsmmu, core);
+> +		return &arm_vsmmu_ops;
+>  
+> -	if (!smmu->impl_ops || !smmu->impl_ops->get_viommu_size)
+> -		return 0;
+> -	return smmu->impl_ops->get_viommu_size(viommu_type);
+> +	if (!smmu->impl_ops || !smmu->impl_ops->get_viommu_ops)
+> +		return NULL;
+> +	return smmu->impl_ops->get_viommu_ops(viommu_type);
+>  }
+>  
+> -int arm_vsmmu_init(struct iommufd_viommu *viommu,
+> -		   struct iommu_domain *parent_domain,
+> -		   const struct iommu_user_data *user_data)
+> +int arm_vsmmu_init(struct iommufd_viommu *viommu, struct device *dev,
+> +		struct iommu_domain *parent_domain,
+> +		const struct iommu_user_data *user_data)
+>  {
+>  	struct arm_vsmmu *vsmmu = container_of(viommu, struct
+> arm_vsmmu, core); struct arm_smmu_device *smmu =
+> @@ -593,10 +602,8 @@ int arm_vsmmu_init(struct iommufd_viommu *viommu,
+>  	/* FIXME Move VMID allocation from the S2 domain allocation
+> to here */ vsmmu->vmid = s2_parent->s2_cfg.vmid;
+>  
+> -	if (viommu->type == IOMMU_VIOMMU_TYPE_ARM_SMMUV3) {
+> -		viommu->ops = &arm_vsmmu_ops;
+> +	if (viommu->type == IOMMU_VIOMMU_TYPE_ARM_SMMUV3)
+>  		return 0;
+> -	}
+>  
+>  	return smmu->impl_ops->vsmmu_init(vsmmu, user_data);
+>  }
+> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+> b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c index
+> 100b34f07032..62dd769f1f6c 100644 ---
+> a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c +++
+> b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c @@ -4597,8 +4597,7 @@
+> static const struct iommu_ops arm_smmu_ops = {
+> .get_resv_regions	= arm_smmu_get_resv_regions,
+> .page_response		= arm_smmu_page_response,
+> .def_domain_type	= arm_smmu_def_domain_type,
+> -	.get_viommu_size	= arm_smmu_get_viommu_size,
+> -	.viommu_init		= arm_vsmmu_init,
+> +	.get_viommu_ops	= arm_smmu_get_viommu_ops,
+>  	.user_pasid_table	= 1,
+>  	.owner			= THIS_MODULE,
+>  	.default_domain_ops = &(const struct iommu_domain_ops) {
+> @@ -5761,8 +5760,8 @@ static struct arm_smmu_device
+> *arm_smmu_impl_probe(struct arm_smmu_device *smmu) 
+>  	ops = new_smmu->impl_ops;
+>  	if (ops) {
+> -		/* get_viommu_size and vsmmu_init ops must be paired
+> */
+> -		if (WARN_ON(!ops->get_viommu_size !=
+> !ops->vsmmu_init)) {
+> +		/* get_viommu_ops and vsmmu_init ops must be paired
+> */
+> +		if (WARN_ON(!ops->get_viommu_ops !=
+> !ops->vsmmu_init)) { ret = -EINVAL;
+>  			goto err_remove;
+>  		}
+> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
+> b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h index
+> bb048e08d613..d93388e8eefb 100644 ---
+> a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h +++
+> b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h @@ -931,7 +931,8 @@
+> struct arm_smmu_impl_ops { */
+>  	void *(*hw_info)(struct arm_smmu_device *smmu, u32 *length,
+>  			 enum iommu_hw_info_type *type);
+> -	size_t (*get_viommu_size)(enum iommu_viommu_type
+> viommu_type);
+> +	const struct iommufd_viommu_ops *(*get_viommu_ops)(
+> +		enum iommu_viommu_type viommu_type);
+>  	int (*vsmmu_init)(struct arm_vsmmu *vsmmu,
+>  			  const struct iommu_user_data *user_data);
+>  };
+> @@ -1321,11 +1322,12 @@ struct arm_vsmmu {
+>  #if IS_ENABLED(CONFIG_ARM_SMMU_V3_IOMMUFD)
+>  void *arm_smmu_hw_info(struct device *dev, u32 *length,
+>  		       enum iommu_hw_info_type *type);
+> -size_t arm_smmu_get_viommu_size(struct device *dev,
+> -				enum iommu_viommu_type viommu_type);
+> -int arm_vsmmu_init(struct iommufd_viommu *viommu,
+> -		   struct iommu_domain *parent_domain,
+> -		   const struct iommu_user_data *user_data);
+> +const struct iommufd_viommu_ops *
+> +arm_smmu_get_viommu_ops(struct device *dev,
+> +		enum iommu_viommu_type viommu_type);
+> +int arm_vsmmu_init(struct iommufd_viommu *viommu, struct device *dev,
+> +		struct iommu_domain *parent_domain,
+> +		const struct iommu_user_data *user_data);
+>  int arm_smmu_attach_prepare_vmaster(struct arm_smmu_attach_state
+> *state, struct arm_smmu_nested_domain *nested_domain);
+>  void arm_smmu_attach_commit_vmaster(struct arm_smmu_attach_state
+> *state); @@ -1337,7 +1339,7 @@ arm_vsmmu_alloc_domain_nested(struct
+> iommufd_viommu *viommu, u32 flags, int
+> arm_vsmmu_cache_invalidate(struct iommufd_viommu *viommu, struct
+> iommu_user_data_array *array); #else
+> -#define arm_smmu_get_viommu_size NULL
+> +#define arm_smmu_get_viommu_ops NULL
+>  #define arm_smmu_hw_info NULL
+>  #define arm_vsmmu_init NULL
+>  #define arm_vsmmu_alloc_domain_nested NULL
+> diff --git a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
+> b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c index
+> 710a4c694b94..b48306b67ac2 100644 ---
+> a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c +++
+> b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c @@ -892,11 +892,14
+> @@ static void *tegra241_cmdqv_hw_info(struct arm_smmu_device *smmu,
+> u32 *length, return info; }
+>  
+> -static size_t tegra241_cmdqv_get_vintf_size(enum iommu_viommu_type
+> viommu_type) +static const struct iommufd_viommu_ops
+> tegra241_cmdqv_viommu_ops; +
+> +static const struct iommufd_viommu_ops *
+> +tegra241_cmdqv_get_viommu_ops(enum iommu_viommu_type viommu_type)
+>  {
+>  	if (viommu_type != IOMMU_VIOMMU_TYPE_TEGRA241_CMDQV)
+> -		return 0;
+> -	return VIOMMU_STRUCT_SIZE(struct tegra241_vintf, vsmmu.core);
+> +		return NULL;
+> +	return &tegra241_cmdqv_viommu_ops;
+>  }
+>  
+>  static struct arm_smmu_impl_ops tegra241_cmdqv_impl_ops = {
+> @@ -907,7 +910,7 @@ static struct arm_smmu_impl_ops
+> tegra241_cmdqv_impl_ops = { .device_remove = tegra241_cmdqv_remove,
+>  	/* For user-space use */
+>  	.hw_info = tegra241_cmdqv_hw_info,
+> -	.get_viommu_size = tegra241_cmdqv_get_vintf_size,
+> +	.get_viommu_ops = tegra241_cmdqv_get_viommu_ops,
+>  	.vsmmu_init = tegra241_cmdqv_init_vintf_user,
+>  };
+>  
+> @@ -1289,7 +1292,15 @@ static int tegra241_vintf_init_vsid(struct
+> iommufd_vdevice *vdev) return 0;
+>  }
+>  
+> -static struct iommufd_viommu_ops tegra241_cmdqv_viommu_ops = {
+> +static size_t tegra241_cmdqv_get_vintf_size(struct device *dev,
+> +					    enum iommu_viommu_type
+> viommu_type) +{
+> +	return VIOMMU_STRUCT_SIZE(struct tegra241_vintf, vsmmu.core);
+> +}
+> +
+> +static const struct iommufd_viommu_ops tegra241_cmdqv_viommu_ops = {
+> +	.get_viommu_size = tegra241_cmdqv_get_vintf_size,
+> +	.viommu_init = arm_vsmmu_init,
+>  	.destroy = tegra241_cmdqv_destroy_vintf_user,
+>  	.alloc_domain_nested = arm_vsmmu_alloc_domain_nested,
+>  	/* Non-accelerated commands will be still handled by the
+> kernel */ @@ -1312,7 +1323,7 @@ tegra241_cmdqv_init_vintf_user(struct
+> arm_vsmmu *vsmmu, int ret;
+>  
+>  	/*
+> -	 * Unsupported type should be rejected by
+> tegra241_cmdqv_get_vintf_size.
+> +	 * Unsupported type should be rejected by
+> tegra241_cmdqv_get_viommu_ops.
+>  	 * Seeing one here indicates a kernel bug or some data
+> corruption. */
+>  	if (WARN_ON(vsmmu->core.type !=
+> IOMMU_VIOMMU_TYPE_TEGRA241_CMDQV)) @@ -1364,7 +1375,6 @@
+> tegra241_cmdqv_init_vintf_user(struct arm_vsmmu *vsmmu,
+> dev_dbg(cmdqv->dev, "VINTF%u: allocated with vmid (%d)\n",
+> vintf->idx, vintf->vsmmu.vmid); 
+> -	vsmmu->core.ops = &tegra241_cmdqv_viommu_ops;
+>  	return 0;
+>  
+>  free_mmap:
+> diff --git a/drivers/iommu/iommufd/selftest.c
+> b/drivers/iommu/iommufd/selftest.c index b17cca7096b6..09d1b0f8f1da
+> 100644 --- a/drivers/iommu/iommufd/selftest.c
+> +++ b/drivers/iommu/iommufd/selftest.c
+> @@ -767,7 +767,19 @@ static int mock_hw_queue_init_phys(struct
+> iommufd_hw_queue *hw_queue, u32 index, return rc;
+>  }
+>  
+> -static struct iommufd_viommu_ops mock_viommu_ops = {
+> +static int mock_viommu_init(struct iommufd_viommu *viommu, struct
+> device *dev,
+> +		struct iommu_domain *parent_domain,
+> +		const struct iommu_user_data *user_data);
+> +
+> +static size_t mock_get_viommu_size(struct device *dev,
+> +				   enum iommu_viommu_type
+> viommu_type) +{
+> +	return VIOMMU_STRUCT_SIZE(struct mock_viommu, core);
+> +}
+> +
+> +static const struct iommufd_viommu_ops mock_viommu_ops = {
+> +	.get_viommu_size = mock_get_viommu_size,
+> +	.viommu_init = mock_viommu_init,
+>  	.destroy = mock_viommu_destroy,
+>  	.alloc_domain_nested = mock_viommu_alloc_domain_nested,
+>  	.cache_invalidate = mock_viommu_cache_invalidate,
+> @@ -775,17 +787,18 @@ static struct iommufd_viommu_ops
+> mock_viommu_ops = { .hw_queue_init_phys = mock_hw_queue_init_phys,
+>  };
+>  
+> -static size_t mock_get_viommu_size(struct device *dev,
+> -				   enum iommu_viommu_type
+> viommu_type) +static const struct iommufd_viommu_ops *
+> +mock_get_viommu_ops(struct device *dev,
+> +		enum iommu_viommu_type viommu_type)
+>  {
+>  	if (viommu_type != IOMMU_VIOMMU_TYPE_SELFTEST)
+> -		return 0;
+> -	return VIOMMU_STRUCT_SIZE(struct mock_viommu, core);
+> +		return NULL;
+> +	return &mock_viommu_ops;
+>  }
+>  
+>  static int mock_viommu_init(struct iommufd_viommu *viommu,
+> -			    struct iommu_domain *parent_domain,
+> -			    const struct iommu_user_data *user_data)
+> +		struct device *dev, struct iommu_domain
+> *parent_domain,
+> +		const struct iommu_user_data *user_data)
+>  {
+>  	struct mock_iommu_device *mock_iommu = container_of(
+>  		viommu->iommu_dev, struct mock_iommu_device,
+> iommu_dev); @@ -827,7 +840,6 @@ static int mock_viommu_init(struct
+> iommufd_viommu *viommu, mutex_init(&mock_viommu->queue_mutex);
+>  	mock_viommu->s2_parent = to_mock_domain(parent_domain);
+>  
+> -	viommu->ops = &mock_viommu_ops;
+>  	return 0;
+>  
+>  err_destroy_mmap:
+> @@ -854,8 +866,7 @@ static const struct iommu_ops mock_ops = {
+>  	.probe_device = mock_probe_device,
+>  	.page_response = mock_domain_page_response,
+>  	.user_pasid_table = true,
+> -	.get_viommu_size = mock_get_viommu_size,
+> -	.viommu_init = mock_viommu_init,
+> +	.get_viommu_ops = mock_get_viommu_ops,
+>  };
+>  
+>  static void mock_domain_free_nested(struct iommu_domain *domain)
+> diff --git a/drivers/iommu/iommufd/viommu.c
+> b/drivers/iommu/iommufd/viommu.c index 0d162a3fdc98..2eba1562a704
+> 100644 --- a/drivers/iommu/iommufd/viommu.c
+> +++ b/drivers/iommu/iommufd/viommu.c
+> @@ -33,7 +33,7 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd
+> *ucmd) struct iommufd_viommu *viommu;
+>  	struct iommufd_device *idev;
+>  	struct iommu_device *iommu_dev;
+> -	const struct iommu_ops *ops;
+> +	const struct iommufd_viommu_ops *ops;
+>  	size_t viommu_size;
+>  	int rc;
+>  
+> @@ -49,23 +49,25 @@ int iommufd_viommu_alloc_ioctl(struct
+> iommufd_ucmd *ucmd) rc = -EOPNOTSUPP;
+>  		goto out_put_idev;
+>  	}
+> -	ops = iommu_dev->ops;
+> -	if (!ops->get_viommu_size || !ops->viommu_init) {
+> +	if (!iommu_dev->ops->get_viommu_ops) {
+>  		rc = -EOPNOTSUPP;
+>  		goto out_put_idev;
+>  	}
+> -
+> -	viommu_size = ops->get_viommu_size(idev->dev, cmd->type);
+> -	if (!viommu_size) {
+> +	ops = iommu_dev->ops->get_viommu_ops(idev->dev, cmd->type);
+> +	if (!ops) {
+>  		rc = -EOPNOTSUPP;
+>  		goto out_put_idev;
+>  	}
+> -
+>  	/*
+> -	 * It is a driver bug for providing a viommu_size smaller
+> than the core
+> -	 * vIOMMU structure size
+> +	 * It is a driver bug to omit the required operations or
+> provide a size
+> +	 * smaller than the core vIOMMU structure.
+>  	 */
+> -	if (WARN_ON_ONCE(viommu_size < sizeof(*viommu))) {
+> +	if (WARN_ON_ONCE(!ops->get_viommu_size ||
+> !ops->viommu_init)) {
+> +		rc = -EOPNOTSUPP;
+> +		goto out_put_idev;
+> +	}
+> +	viommu_size = ops->get_viommu_size(idev->dev, cmd->type);
+> +	if (!viommu_size || WARN_ON_ONCE(viommu_size <
+> sizeof(*viommu))) { rc = -EOPNOTSUPP;
+>  		goto out_put_idev;
+>  	}
+> @@ -104,16 +106,12 @@ int iommufd_viommu_alloc_ioctl(struct
+> iommufd_ucmd *ucmd) */
+>  	viommu->iommu_dev = iommu_dev;
+>  
+> -	rc = ops->viommu_init(viommu, hwpt_paging->common.domain,
+> +	rc = ops->viommu_init(viommu, idev->dev,
+> +			      hwpt_paging->common.domain,
+>  			      user_data.len ? &user_data : NULL);
+>  	if (rc)
+>  		goto out_put_hwpt;
+> -
+> -	/* It is a driver bug that viommu->ops isn't filled */
+> -	if (WARN_ON_ONCE(!viommu->ops)) {
+> -		rc = -EOPNOTSUPP;
+> -		goto out_put_hwpt;
+> -	}
+> +	viommu->ops = ops;
+>  
+>  	cmd->out_viommu_id = viommu->obj.id;
+>  	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
+> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+> index ef5043752a36..f27064917df7 100644
+> --- a/include/linux/iommu.h
+> +++ b/include/linux/iommu.h
+> @@ -46,6 +46,7 @@ struct iommu_dma_msi_cookie;
+>  struct iommu_fault_param;
+>  struct iommufd_ctx;
+>  struct iommufd_viommu;
+> +struct iommufd_viommu_ops;
+>  struct msi_desc;
+>  struct msi_msg;
+>  
+> @@ -669,16 +670,8 @@ __iommu_copy_struct_to_user(const struct
+> iommu_user_data *dst_data,
+>   *		- IOMMU_DOMAIN_DMA: must use a dma domain
+>   *		- 0: use the default setting
+>   * @default_domain_ops: the default ops for domains
+> - * @get_viommu_size: Get the size of a driver-level vIOMMU structure
+> for a given
+> - *                   @dev corresponding to @viommu_type. Driver
+> should return 0
+> - *                   if vIOMMU isn't supported accordingly. It is
+> required for
+> - *                   driver to use the VIOMMU_STRUCT_SIZE macro to
+> sanitize the
+> - *                   driver-level vIOMMU structure related to the
+> core one
+> - * @viommu_init: Init the driver-level struct of an iommufd_viommu
+> on a physical
+> - *               IOMMU instance @viommu->iommu_dev, as the set of
+> virtualization
+> - *               resources shared/passed to user space IOMMU
+> instance. Associate
+> - *               it with a nesting @parent_domain. It is required
+> for driver to
+> - *               set @viommu->ops pointing to its own viommu_ops
+> + * @get_viommu_ops: Return the vIOMMU operations supported by @dev
+> for a type.
+> + *                  Return NULL if the type is unsupported.
+>   * @owner: Driver module providing these ops
+>   * @identity_domain: An always available, always attachable identity
+>   *                   translation.
+> @@ -729,11 +722,8 @@ struct iommu_ops {
+>  
+>  	int (*def_domain_type)(struct device *dev);
+>  
+> -	size_t (*get_viommu_size)(struct device *dev,
+> -				  enum iommu_viommu_type
+> viommu_type);
+> -	int (*viommu_init)(struct iommufd_viommu *viommu,
+> -			   struct iommu_domain *parent_domain,
+> -			   const struct iommu_user_data *user_data);
+> +	const struct iommufd_viommu_ops *(*get_viommu_ops)(
+> +		struct device *dev, enum iommu_viommu_type
+> viommu_type); 
+>  	const struct iommu_domain_ops *default_domain_ops;
+>  	struct module *owner;
+> diff --git a/include/linux/iommufd.h b/include/linux/iommufd.h
+> index d1fd7888fc91..5f5c67b24134 100644
+> --- a/include/linux/iommufd.h
+> +++ b/include/linux/iommufd.h
+> @@ -148,6 +148,15 @@ struct iommufd_hw_queue {
+>  
+>  /**
+>   * struct iommufd_viommu_ops - vIOMMU specific operations
+> + * @get_viommu_size: Get the size of a driver-level vIOMMU structure
+> for a given
+> + *                   @dev corresponding to @viommu_type. Driver
+> should return 0
+> + *                   if vIOMMU isn't supported accordingly. It is
+> required for
+> + *                   driver to use the VIOMMU_STRUCT_SIZE macro to
+> sanitize the
+> + *                   driver-level vIOMMU structure related to the
+> core one
+> + * @viommu_init: Init the driver-level struct of an iommufd_viommu
+> on a physical
+> + *               IOMMU instance @viommu->iommu_dev, as the set of
+> virtualization
+> + *               resources shared/passed to user space IOMMU
+> instance. Associate
+> + *               it with a nesting @parent_domain.
+>   * @destroy: Clean up all driver-specific parts of an
+> iommufd_viommu. The memory
+>   *           of the vIOMMU will be free-ed by iommufd core after
+> calling this op
+>   * @alloc_domain_nested: Allocate a IOMMU_DOMAIN_NESTED on a vIOMMU
+> that holds a @@ -190,6 +199,11 @@ struct iommufd_hw_queue {
+>   *                      does, it should set it to the
+> @hw_queue->destroy pointer */
+>  struct iommufd_viommu_ops {
+> +	size_t (*get_viommu_size)(struct device *dev,
+> +		enum iommu_viommu_type type);
+> +	int (*viommu_init)(struct iommufd_viommu *viommu, struct
+> device *dev,
+> +		struct iommu_domain *parent_domain,
+> +		const struct iommu_user_data *user_data);
+>  	void (*destroy)(struct iommufd_viommu *viommu);
+>  	struct iommu_domain *(*alloc_domain_nested)(
+>  		struct iommufd_viommu *viommu, u32 flags,
+
