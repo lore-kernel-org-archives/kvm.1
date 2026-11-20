@@ -1,82 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795149431;
-	b=YbNE8qgmcSl5q+KidTshdefhG2nF2OrJSeBCI40IdKgtpEju5o+NV5ORxM2akdelPadN
-	 gimjxzjDlbZCAAgxjPexEwABx6oKVmqT7LjNWXYwMIhHbx06nm5mXb8wtQbmZE/aBlgkF
-	 OZan/FKwkfC0LUIkX3XgMpausFP00BtTFP10OKoRVBD0+6Yvon60VKn7C0o99WiScsGSW
-	 LGjDE2D4TVGsYthMBngm/6R836R3rvAdvq4F2Y+h5MxizgCSVTNRfg82K1I7fbh5MfpLJ
-	 2K/Wp2cTabJeyHiIKfjYSzjzwQQk4/WBSrz9lOidq4rBf5z9h6rNn6ppT77Y4sYtjVA==
+	t=1795149865;
+	b=FBMESHNmKDdroLuJoomQ2dMgar0hUUu+vZLaEKrwY05jhA6fxH0Hg0mRJii9HvrlnI8t
+	 ME0XpxNHr4R6LeFBEDNfkpQcPA+Yfy2Wk/m+LSRYt4wPCMNDOv7t4F9CxqA9EZovEnNno
+	 jpagB805K37bH4GaGVFnUkunktXmf2W089ICqiyZ9HW7MGNeAR5eHyvd0SP21Ap8mK61i
+	 lg2cANZlrmYXhnfO9mT0uELG7BE5R0jbC/nyFzQo42rUTx3qDxANVLbpf3yMLPdgR9/lx
+	 yfkdLdKDUxnTDE94BL8USdNE5CF6iGtRZukHjRHNLWBqBTOkqWYr7XsGNJi8CIs+Mnw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795149431;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-Reinject:X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=kmfn6Jpbn2u+si0e53LG1Wq3zSw1RBKGHEshvmQ2JGo=;
-	b=B56hZH3psjKVaQ4XCVsi3Q0ZLYh1I6NgDFlxUdKnSukchICds7fTL1x8laWw+08O79wx
-	 p7dsRFhZ2E9aCI9uwfnSI9m0MbUYTNYbE/LoyFQ+OlNP6zioeIaNcP20FyavDAMZfwtPU
-	 WdZfexUr6K8YnQIQc/RHVSl4+5uPhrDCC2b8gPOVKByDuvTLPBMwaolB3DE0n2BvPb/Ez
-	 rApUGHoh0W/0VZ0bqkfgt8JkCj2QhO7FtDonZIG7zqYTTXa7b6NKnUU9RtUkV13Pa0YIj
-	 doHmpyyj5hU2mFrcHrbMhqzxRs0IR9/WKJDxf/1gkpjIsWd5qI/YNlvmizTyJiez9og==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795149865;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=PT0FK9wWU0tkRsvayMQ1N9RgAm8dfnFyjV1OONVZR3Y=;
+	b=HHohirWKVbCPX6IaQN8PcaidzHNmj0YCl/o2gGD05rrEgjkVynG3m2dwUyaotEe/WXTp
+	 maC97NXPEE9kcko0AbXh+9CJgFv26A3nJBh7IqhkiClD40Q6dHSiKLe0Ikc8DfZSts3Nf
+	 2ekmDf2ysoZ1TnNI/LhmJbSS9mtDdBUvkwzAwuUyPi7dsJ3KPpQ61oS/5Hhk/mto8rULd
+	 GNnjeoSG8x8oZ89/elnpiCQZ0Y3/0X/QfUtwZUfV1wDQGnbjFcuZckWdSrGKz4PI9wXvq
+	 mFVM2Fmz2108yfe0wIbRhFip6ln8fvyM1MkHRiHq4WuVHlwws7Hb7tJ7Ykx+54hmq8A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ccf9VyTp;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DR0FNyfi;
+	arc=none smtp.remote-ip=198.175.65.21
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C69606A320;
-	Fri, 20 Nov 2026 04:37:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 50C69606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864F0606A325;
+	Fri, 20 Nov 2026 04:44:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 864F0606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ccf9VyTp
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AK3ufwH1965793;
-	Fri, 20 Nov 2026 04:36:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=kmfn6J
-	pbn2u+si0e53LG1Wq3zSw1RBKGHEshvmQ2JGo=; b=ccf9VyTpA74TJeMYOQuq1i
-	oqKDob6Urz0+swI4vMwtXu0E4WThQobIS48Zp/XWlFoOcze3RwwVtkFIKWppJ4UW
-	3ayC5OrrMHssnPKyncYsGcoy647z6Kole9UWovQnXGi7coYIHAM4bJZBXjGF5VAb
-	udpzv7kld4k85FmkFHENHWzVc8nfMBoRlGyZAWKrF3h4L9VcOUw99HSb8lrz48WG
-	DtGL1QsM+AOgjm5q8N2kfUVv+6OwTrC6IfjII60mnQoSzzHrFfU3YOvFkudcMdMa
-	V898IBDqLl9NOF1r8c6pvAyd3mLrHEeQYMVsnLKHB6uiXdo8WAbhmlC65CNBsdHA
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j105x5sfu-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 20 Nov 2026 04:36:41 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AK3YsKG3627107;
-	Fri, 20 Nov 2026 04:36:40 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j1v9xe1r3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Nov 2026 04:36:40 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AK4abma36700622
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Nov 2026 04:36:37 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E514520040;
-	Fri, 20 Nov 2026 04:36:36 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AE37A20043;
-	Fri, 20 Nov 2026 04:36:33 +0000 (GMT)
-Received: from [9.124.218.70] (unknown [9.124.218.70])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 20 Nov 2026 04:36:33 +0000 (GMT)
-Message-ID: <b4f81254-26e7-436d-9688-8b9d457436eb@linux.ibm.com>
-Date: Fri, 20 Nov 2026 10:06:32 +0530
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DR0FNyfi
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795149864; x=1826685864;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Y/i10jyYjFWeI3DRZs4bsQaJGnLxtLrgwJ61Ht7xyRw=;
+  b=DR0FNyfiJbgVMvIiDbiObMPhvOgv11ebf+6ZrmDb4Ghzi0NGAlPENyQr
+   Mjt4hA6zEL3OnXgVc5HZP/wbxGKjsdHluR5EpuHtvUj+VXNYpegost5L6
+   FNP5xBPEQaomV9Y0zwBFEcWFJ7EEs7e/lLiD1N4lsSu2IJuH1awi0zc3E
+   3RsBw6aVqC+S639YFyniScQSHXulefvSMxrLetOit3cgVnpKa2G9e3iw7
+   K1olt2PeqMMkQL+fGaRPQlg68n0/N6HcL2zF+98rlWCkbr6yyxBo9bFQT
+   X3i31IFUyGL4W19DRluwRhsKt9hvRA8DCEYBprXKGAHz7TDGSYhNjARjg
+   A==;
+X-CSE-ConnectionGUID: ZGkyvhzSSpq4YqADXJjX9w==
+X-CSE-MsgGUID: Mr0vFrVMS2O4vI7nU3O2Sg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="4101317"
+X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
+   d="scan'208";a="4101317"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 20:44:22 -0800
+X-CSE-ConnectionGUID: H3ytyTdhTSWu5lchEfXTeQ==
+X-CSE-MsgGUID: QpvzWzgNR6iJN9JsRdkisQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
+   d="scan'208";a="11037850"
+Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 20:44:14 -0800
+Message-ID: <2e8a853f-9e7b-4cce-b578-2dac0c564eb5@linux.intel.com>
+Date: Fri, 20 Nov 2026 12:44:10 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -87,284 +73,242 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/5] powerpc/rtas: Handle ibm,open-errinjct return
- format
-To: Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        "Oliver O'Halloran" <oohall@gmail.com>,
-        Timothy Pearson <tpearson@raptorengineering.com>,
-        Alex Williamson <alex@shazbot.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin
- <npiggin@gmail.com>,
-        Christophe Leroy <chleroy@kernel.org>,
-        Ritesh Harjani <ritesh.list@gmail.com>,
-        Shrikanth Hegde <sshegde@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org, sbhat@linux.ibm.com,
-        harshpb@linux.ibm.com
-References: <20261023073642.59657-1-nnmlinux@linux.ibm.com>
- <20261023073642.59657-2-nnmlinux@linux.ibm.com>
- <67d2b322-9a6b-41d5-9920-33acb36cb76a@linux.ibm.com>
+Cc: baolu.lu@linux.intel.com, Alex Williamson <alex@shazbot.org>,
+ Alexey Kardashevskiy <aik@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
+ Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+ Nicolin Chen <nicolinc@nvidia.com>, Robin Murphy <robin.murphy@arm.com>,
+ Samuel Ortiz <sameo@rivosinc.com>,
+ Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+ Steven Price <steven.price@arm.com>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+ Xu Yilun <yilun.xu@linux.intel.com>, Ashish Kalra <ashish.kalra@amd.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, iommu@lists.linux.dev,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+ linux-tegra@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH v9 09/13] iommufd/viommu: Select vIOMMU operations before
+ allocation
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ linux-coco@lists.linux.dev
+References: <20261116081935.85372-1-aneesh.kumar@kernel.org>
+ <20261116081935.85372-10-aneesh.kumar@kernel.org>
 Content-Language: en-US
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
-In-Reply-To: <67d2b322-9a6b-41d5-9920-33acb36cb76a@linux.ibm.com>
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20261116081935.85372-10-aneesh.kumar@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: JnzMgZrHY0X2MHbBhEnfMmWcD7ChQ37L
-X-Proofpoint-GUID: zSLf6-HV1q9QayUWhMrzOE3mONuEx4JA
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIwMDAxNyBTYWx0ZWRfX+OnRGDWC+N4b
- xNuSlqZSkb2WScGNVX47An9dQknV16Yh3vvnEWQSWjGmgCQiwYWqPPDSqAkcIzjPOl34NVyeXIX
- CceipFAnwsnvKTUdb7qep/dguD76WPGzAIvJdZl3UwxzRA5YKMh9qhIQ1mRqRnm4mZc7VobuljV
- r+F5TACTDJVR1QMhqzY1Dzqa3c/SnkntpmMP+feAJvBgvpWsMAXNbDrvYrjdd0hmcncWYssgoSK
- /MeBc0lfKWonBXQAd1zVyUDbSztvN4OWkVVedwLtg47C2hZg7P3GoqZEGTjjD6x+IA4p8NkNhFc
- 3b5v5ag4MEE4b37aU9ahh95+65xiaFLglC8NL94HGf8rWE6jR7HG9qkj+iwAu1cIEofX+hvLMBY
- wfhICnxYRDEipCY6P7/pWpt7p6KOMf+5QLgerhmbFDK72mdwfLwEAEMgFCjCsQKn1VoJ0/M89gM
- a/wtignIDVt567HhG/A==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIwMDAxNyBTYWx0ZWRfXw4MIUloQ9GV6
- hSR/L2h6wgbym8VxB5fEzHyPzhZl54K714qAdjK2PriKTpb/FE0o0pAVlue7EK67m/LyYSxXvLQ
- wvLD0RFVCidYFoueevowLIrf8qMmBFM=
-X-Authority-Analysis: v=2.4 cv=K+m3jCWI c=1 sm=1 tr=0 ts=6affce59 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=1mVJ_uiqAAAA:8
- a=VnNF1IyMAAAA:8 a=FTTUi5KaBWCru4Fr2KsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=h67g7WpEjx8dfGT80pje:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-20_02,2026-11-19_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 clxscore=1015 adultscore=0 spamscore=0
- priorityscore=1501 impostorscore=0 phishscore=0 lowpriorityscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611200017
+Content-Transfer-Encoding: 7bit
 
-Hi Sourabh,
-thank you reviewing the patch series.
-
-On 18/11/26 4:43 PM, Sourabh Jain wrote:
+On 11/16/2026 4:19 PM, Aneesh Kumar K.V (Arm) wrote:
+> Physical IOMMU drivers currently provide the vIOMMU size and
+> initialization callbacks through iommu_ops. The initialization callback
+> then selects and installs the corresponding iommufd_viommu_ops.
 > 
+> Add iommu_ops::get_viommu_ops() to select the operations from the
+> physical device and requested vIOMMU type before allocation. Move the
+> size and initialization callbacks into iommufd_viommu_ops. The core can
+> then validate the selected operations, allocate the driver structure,
+> initialize it, and install the operations.
 > 
-> On 23/10/26 13:06, Narayana Murty N wrote:
->> ibm,open-errinjct uses a non-standard RTAS return layout:
->>
->>    rets[0] = session token  (output parameter)
->>    rets[1] = status code
->>
->> Unlike all other RTAS functions which use:
->>
->>    rets[0] = status code
->>    rets[1..] = output parameters
->>
->> Add rtas_token_is_open_errinjct() to identify this call, and
->> rtas_status_from_args() to extract status from the correct position.
->>
->> Add an early guard in rtas_call() that rejects ibm,open-errinjct
->> invocations where nret < 2, since reading rets[1] would be out of
->> bounds.  This is a kernel-side call-convention error, so -EINVAL is
->> returned rather than an RTAS firmware status code:
->>
->>    if (rtas_token_is_open_errinjct(token) && nret < 2) {
->>            WARN_ON_ONCE(1);
->>            return -EINVAL;
->>    }
->>
->> Adjust the output-copy loop so that for ibm,open-errinjct:
->>
->>    return value = rets[1]   (status)
->>    outputs[0]   = rets[0]   (session token)
->>
->> For all other functions the existing convention is preserved:
->>
->>    return value = rets[0]   (status)
->>    outputs[0..] = rets[1..] (non-status outputs)
->>
->> Move the "/* A -1 return code... */" comment immediately before the
->> ret == -1 check so it documents the check it guards.
+> Convert AMD, Arm SMMUv3, Tegra CMDQV, and the selftest backend to the
+> new interface.
 > 
-> Nit: I think we should not documenting a minor comment movement
-> in the commit message.
+> The current code requires a valid parent HWPT before calling
+> viommu_init(), which selects the vIOMMU operations. A later patch adds
+> an operations flag indicating that a vIOMMU type does not require a
+> parent HWPT. Selecting the operations earlier allows the core to check
+> that flag before deciding whether to look up and validate a parent HWPT.
 > 
-Agree, I will remove.
->> Also fix sys_rtas() last-error status detection: add the same early
->> nret < 2 validation at the syscall boundary (returning -EINVAL) to
->> avoid entering RTAS with an invalid ibm,open-errinjct return layout.
->> After that guard, use rtas_status_from_args() to obtain the RTAS
->> status for last-error handling.
->> The prominent user librtas already passes nret = 2 for this function
->> as required by PAPR, so well-formed callers are unaffected.
->>
->> Reference: OpenPOWER PAPR documentation
->>             https://files.openpower.foundation/s/XFgfMaqLMD5Bcm8
->> Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
->> ---
->>   arch/powerpc/kernel/rtas.c | 78 +++++++++++++++++++++++++++++++++-----
->>   1 file changed, 69 insertions(+), 9 deletions(-)
->>
->> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
->> index 8d81c1e7a8db..38f3d08d4228 100644
->> --- a/arch/powerpc/kernel/rtas.c
->> +++ b/arch/powerpc/kernel/rtas.c
->> @@ -1117,6 +1117,28 @@ static bool token_is_restricted_errinjct(s32 
->> token)
->>              token == rtas_function_token(RTAS_FN_IBM_ERRINJCT);
->>   }
->> +/*
->> + * ibm,open-errinjct uses a non-standard return layout:
->> + *   rets[0] = session token  (output parameter)
->> + *   rets[1] = status code
->> + *
->> + * All other RTAS functions use the standard layout:
->> + *   rets[0] = status code
->> + *   rets[1..] = output parameters
->> + */
+> Temporarily disable AMD vIOMMU allocation by returning NULL from
+> amd_iommufd_get_viommu_ops() while the vIOMMU interfaces are being
+> updated.
 > 
-> Nit: this comment describes rtas_status_from_args(), not 
-> rtas_token_is_open_errinjct().
-> Please move it down.
-> 
-Agreed. I'll move the comment above rtas_status_from_args().
->> +static inline bool rtas_token_is_open_errinjct(int token)
->> +{
->> +    return token == rtas_function_token(RTAS_FN_IBM_OPEN_ERRINJCT);
->> +}
->> +
->> +static int rtas_status_from_args(int token, struct rtas_args *args, 
->> int nret)
->> +{
->> +    if (rtas_token_is_open_errinjct(token))
->> +        return be32_to_cpu(args->rets[1]);
->> +
->> +    return nret > 0 ? be32_to_cpu(args->rets[0]) : 0;
->> +}
->> +
->>   /**
->>    * rtas_call() - Invoke an RTAS firmware function.
->>    * @token: Identifies the function being invoked.
->> @@ -1198,6 +1220,16 @@ int rtas_call(int token, int nargs, int nret, 
->> int *outputs, ...)
->>               return -1;
->>       }
->> +    /*
->> +     * ibm,open-errinjct returns rets[0]=session_token, rets[1]=status.
->> +     * We need nret >= 2 to read status from rets[1].  Reject early if
->> +     * the caller forgot to account for the extra return cell.
->> +     */
->> +    if (rtas_token_is_open_errinjct(token) && nret < 2) {
->> +        WARN_ON_ONCE(1);
-> 
-> Nit: please switch WARN_ON_ONCE(1) to a WARN_ONCE() with a message, so 
-> the log
-> says what the caller got wrong. For example:
-> 
-> WARN_ONCE(1, "rtas: ibm,open-errinjct needs nret >= 2 (got %d)\n", nret);
-> 
-Makes sense. I'll use WARN_ONCE() with the suggested message.
->> +        return -EINVAL;
->> +    }
->> +
->>       if ((mfmsr() & (MSR_IR|MSR_DR)) != (MSR_IR|MSR_DR)) {
->>           WARN_ON_ONCE(1);
->>           return -1;
->> @@ -1213,15 +1245,33 @@ int rtas_call(int token, int nargs, int nret, 
->> int *outputs, ...)
->>       va_rtas_call_unlocked(args, token, nargs, nret, list);
->>       va_end(list);
->> +    ret = rtas_status_from_args(token, args, nret);
->> +
->>       /* A -1 return code indicates that the last command couldn't
->> -       be completed due to a hardware error. */
->> -    if (be32_to_cpu(args->rets[0]) == -1)
->> +     * be completed due to a hardware error.
->> +     */
->> +    if (ret == -1)
->>           buff_copy = __fetch_rtas_last_error(NULL);
-> [...]
->> -    if (nret > 1 && outputs != NULL)
->> -        for (i = 0; i < nret-1; ++i)
->> -            outputs[i] = be32_to_cpu(args->rets[i + 1]);
->> -    ret = (nret > 0) ? be32_to_cpu(args->rets[0]) : 0;
->> +    /*
->> +     * Copy non-status outputs to the caller's buffer.
->> +     *
->> +     * For ibm,open-errinjct the layout is:
->> +     *   rets[0] = session token  -> outputs[0]
->> +     *   rets[1] = status         (returned, not copied)
->> +     *
->> +     * For all other RTAS functions:
->> +     *   rets[0] = status         (returned, not copied)
->> +     *   rets[1..nret-1] -> outputs[0..nret-2]
->> +     */
->> +    if (outputs) {
->> +        if (rtas_token_is_open_errinjct(token)) {
->> +            outputs[0] = be32_to_cpu(args->rets[0]);
->> +        } else if (nret > 1) {
->> +            for (i = 0; i < nret - 1; ++i)
->> +                outputs[i] = be32_to_cpu(args->rets[i + 1]);
->> +        }
->> +    }
-> 
-> Just wondering, what is the need to copy the outputs when RTAS returns 
-> -1 (hardware error)?
-> 
-> However, since it has always been this way, I have no concerns regarding 
-> this aspect of the patch.
-> 
-Yes, the intention here is to preserve the existing behavior of
-rtas_call() while handling the non-standard return layout of
-ibm,open-errinjct.
->>       lockdep_unpin_lock(&rtas_lock, cookie);
->>       raw_spin_unlock_irqrestore(&rtas_lock, flags);
->> @@ -1896,6 +1946,14 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user 
->> *, uargs)
->>       if (block_rtas_call(func, nargs, &args))
->>           return -EINVAL;
->> +    /*
->> +     * ibm,open-errinjct places status at rets[1]; reject calls with
->> +     * fewer than 2 return cells before entering RTAS, since reading
->> +     * rets[1] for the -1 sentinel would be out of bounds.
->> +     */
->> +    if (rtas_token_is_open_errinjct(token) && nret < 2)
->> +        return -EINVAL;
->> +
-> 
-> I think it makes sense to perform this check after the security lockdown 
-> check.
-> 
-> Otherwise, it would look confusing if the kernel first reports that the 
-> argument is
-> less than expected, and then, when the user passes the correct argument, 
-> kernel
-> reports that the operation cannot be executed because it is blocked by 
-> lockdown.
-> 
-> So, let's move this check below the security lockdown check.
-> 
-Agreed. I'll move the nret validation below the security lockdown
-check.
-> 
-> - Sourabh Jain
-> 
-> 
-Thanks,
-Narayana Murty.
->>       if (token_is_restricted_errinjct(token)) {
->>           int err;
->> @@ -1942,9 +2000,11 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user 
->> *, uargs)
->>       do_enter_rtas(&rtas_args);
->>       args = rtas_args;
->> -    /* A -1 return code indicates that the last command couldn't
->> -       be completed due to a hardware error. */
->> -    if (be32_to_cpu(args.rets[0]) == -1)
->> +    /*
->> +     * A -1 return code indicates that the last command couldn't
->> +     * be completed due to a hardware error.
->> +     */
->> +    if (rtas_status_from_args(token, &args, nret) == -1)
->>           errbuf = __fetch_rtas_last_error(buff_copy);
->>       lockdep_unpin_lock(&rtas_lock, cookie);
+> Cc: Joerg Roedel <joro@8bytes.org>
+> Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+> Cc: Vasant Hegde <vasant.hegde@amd.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Robin Murphy <robin.murphy@arm.com>
+> Cc: Thierry Reding <thierry.reding@kernel.org>
+> Cc: Krishna Reddy <vdumpa@nvidia.com>
+> Cc: Jonathan Hunter <jonathanh@nvidia.com>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Kevin Tian <kevin.tian@intel.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-tegra@vger.kernel.org
+> Cc: iommu@lists.linux.dev
+> Based on original patch by Jason Gunthorpe <jgg@nvidia.com>
+> Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> ---
+>   drivers/iommu/amd/iommu.c                     |  3 +-
+>   drivers/iommu/amd/iommufd.c                   | 18 ++++++---
+>   drivers/iommu/amd/iommufd.h                   | 11 ++++--
+>   drivers/iommu/amd/nested.c                    |  4 +-
+>   .../arm/arm-smmu-v3/arm-smmu-v3-iommufd.c     | 37 +++++++++++--------
+>   drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c   |  7 ++--
+>   drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h   | 16 ++++----
+>   .../iommu/arm/arm-smmu-v3/tegra241-cmdqv.c    | 24 ++++++++----
+>   drivers/iommu/iommufd/selftest.c              | 31 +++++++++++-----
+>   drivers/iommu/iommufd/viommu.c                | 32 ++++++++--------
+>   include/linux/iommu.h                         | 20 +++-------
+>   include/linux/iommufd.h                       | 14 +++++++
+>   12 files changed, 129 insertions(+), 88 deletions(-)
 > 
 
+[...]
+
+> diff --git a/drivers/iommu/iommufd/viommu.c b/drivers/iommu/iommufd/viommu.c
+> index 0d162a3fdc98..2eba1562a704 100644
+> --- a/drivers/iommu/iommufd/viommu.c
+> +++ b/drivers/iommu/iommufd/viommu.c
+> @@ -33,7 +33,7 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
+>   	struct iommufd_viommu *viommu;
+>   	struct iommufd_device *idev;
+>   	struct iommu_device *iommu_dev;
+> -	const struct iommu_ops *ops;
+> +	const struct iommufd_viommu_ops *ops;
+>   	size_t viommu_size;
+>   	int rc;
+>   
+> @@ -49,23 +49,25 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
+>   		rc = -EOPNOTSUPP;
+>   		goto out_put_idev;
+>   	}
+> -	ops = iommu_dev->ops;
+> -	if (!ops->get_viommu_size || !ops->viommu_init) {
+> +	if (!iommu_dev->ops->get_viommu_ops) {
+>   		rc = -EOPNOTSUPP;
+>   		goto out_put_idev;
+>   	}
+> -
+> -	viommu_size = ops->get_viommu_size(idev->dev, cmd->type);
+> -	if (!viommu_size) {
+> +	ops = iommu_dev->ops->get_viommu_ops(idev->dev, cmd->type);
+> +	if (!ops) {
+>   		rc = -EOPNOTSUPP;
+>   		goto out_put_idev;
+>   	}
+> -
+>   	/*
+> -	 * It is a driver bug for providing a viommu_size smaller than the core
+> -	 * vIOMMU structure size
+> +	 * It is a driver bug to omit the required operations or provide a size
+> +	 * smaller than the core vIOMMU structure.
+>   	 */
+> -	if (WARN_ON_ONCE(viommu_size < sizeof(*viommu))) {
+> +	if (WARN_ON_ONCE(!ops->get_viommu_size || !ops->viommu_init)) {
+> +		rc = -EOPNOTSUPP;
+> +		goto out_put_idev;
+> +	}
+> +	viommu_size = ops->get_viommu_size(idev->dev, cmd->type);
+> +	if (!viommu_size || WARN_ON_ONCE(viommu_size < sizeof(*viommu))) {
+>   		rc = -EOPNOTSUPP;
+>   		goto out_put_idev;
+>   	}
+> @@ -104,16 +106,12 @@ int iommufd_viommu_alloc_ioctl(struct iommufd_ucmd *ucmd)
+>   	 */
+>   	viommu->iommu_dev = iommu_dev;
+>   
+> -	rc = ops->viommu_init(viommu, hwpt_paging->common.domain,
+> +	rc = ops->viommu_init(viommu, idev->dev,
+> +			      hwpt_paging->common.domain,
+>   			      user_data.len ? &user_data : NULL);
+>   	if (rc)
+>   		goto out_put_hwpt;
+> -
+> -	/* It is a driver bug that viommu->ops isn't filled */
+> -	if (WARN_ON_ONCE(!viommu->ops)) {
+> -		rc = -EOPNOTSUPP;
+> -		goto out_put_hwpt;
+> -	}
+> +	viommu->ops = ops;
+>   
+>   	cmd->out_viommu_id = viommu->obj.id;
+>   	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
+> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+> index ef5043752a36..f27064917df7 100644
+> --- a/include/linux/iommu.h
+> +++ b/include/linux/iommu.h
+> @@ -46,6 +46,7 @@ struct iommu_dma_msi_cookie;
+>   struct iommu_fault_param;
+>   struct iommufd_ctx;
+>   struct iommufd_viommu;
+> +struct iommufd_viommu_ops;
+>   struct msi_desc;
+>   struct msi_msg;
+>   
+> @@ -669,16 +670,8 @@ __iommu_copy_struct_to_user(const struct iommu_user_data *dst_data,
+>    *		- IOMMU_DOMAIN_DMA: must use a dma domain
+>    *		- 0: use the default setting
+>    * @default_domain_ops: the default ops for domains
+> - * @get_viommu_size: Get the size of a driver-level vIOMMU structure for a given
+> - *                   @dev corresponding to @viommu_type. Driver should return 0
+> - *                   if vIOMMU isn't supported accordingly. It is required for
+> - *                   driver to use the VIOMMU_STRUCT_SIZE macro to sanitize the
+> - *                   driver-level vIOMMU structure related to the core one
+> - * @viommu_init: Init the driver-level struct of an iommufd_viommu on a physical
+> - *               IOMMU instance @viommu->iommu_dev, as the set of virtualization
+> - *               resources shared/passed to user space IOMMU instance. Associate
+> - *               it with a nesting @parent_domain. It is required for driver to
+> - *               set @viommu->ops pointing to its own viommu_ops
+> + * @get_viommu_ops: Return the vIOMMU operations supported by @dev for a type.
+> + *                  Return NULL if the type is unsupported.
+>    * @owner: Driver module providing these ops
+>    * @identity_domain: An always available, always attachable identity
+>    *                   translation.
+> @@ -729,11 +722,8 @@ struct iommu_ops {
+>   
+>   	int (*def_domain_type)(struct device *dev);
+>   
+> -	size_t (*get_viommu_size)(struct device *dev,
+> -				  enum iommu_viommu_type viommu_type);
+> -	int (*viommu_init)(struct iommufd_viommu *viommu,
+> -			   struct iommu_domain *parent_domain,
+> -			   const struct iommu_user_data *user_data);
+> +	const struct iommufd_viommu_ops *(*get_viommu_ops)(
+> +		struct device *dev, enum iommu_viommu_type viommu_type);
+>   
+>   	const struct iommu_domain_ops *default_domain_ops;
+>   	struct module *owner;
+> diff --git a/include/linux/iommufd.h b/include/linux/iommufd.h
+> index d1fd7888fc91..5f5c67b24134 100644
+> --- a/include/linux/iommufd.h
+> +++ b/include/linux/iommufd.h
+> @@ -148,6 +148,15 @@ struct iommufd_hw_queue {
+>   
+>   /**
+>    * struct iommufd_viommu_ops - vIOMMU specific operations
+> + * @get_viommu_size: Get the size of a driver-level vIOMMU structure for a given
+> + *                   @dev corresponding to @viommu_type. Driver should return 0
+> + *                   if vIOMMU isn't supported accordingly. It is required for
+> + *                   driver to use the VIOMMU_STRUCT_SIZE macro to sanitize the
+> + *                   driver-level vIOMMU structure related to the core one
+> + * @viommu_init: Init the driver-level struct of an iommufd_viommu on a physical
+> + *               IOMMU instance @viommu->iommu_dev, as the set of virtualization
+> + *               resources shared/passed to user space IOMMU instance. Associate
+> + *               it with a nesting @parent_domain.
+>    * @destroy: Clean up all driver-specific parts of an iommufd_viommu. The memory
+>    *           of the vIOMMU will be free-ed by iommufd core after calling this op
+>    * @alloc_domain_nested: Allocate a IOMMU_DOMAIN_NESTED on a vIOMMU that holds a
+> @@ -190,6 +199,11 @@ struct iommufd_hw_queue {
+>    *                      does, it should set it to the @hw_queue->destroy pointer
+>    */
+>   struct iommufd_viommu_ops {
+> +	size_t (*get_viommu_size)(struct device *dev,
+> +		enum iommu_viommu_type type);
+> +	int (*viommu_init)(struct iommufd_viommu *viommu, struct device *dev,
+> +		struct iommu_domain *parent_domain,
+> +		const struct iommu_user_data *user_data);
+>   	void (*destroy)(struct iommufd_viommu *viommu);
+>   	struct iommu_domain *(*alloc_domain_nested)(
+>   		struct iommufd_viommu *viommu, u32 flags,
+
+For changes in iommufd/viommu common code,
+
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
