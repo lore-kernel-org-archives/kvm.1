@@ -1,99 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.71
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795173915;
-	b=0waHsaqj8apxccVDgsuffVvZN1Se4wuC5RiTsoJiaKd3qRO0gtVOqQiLKP56uRPSD+XF
-	 5lS3po5Mzgc6MDjJZqaaRnYvnh0PsfqYgwcsT7IZvB+8ZU9c5zuD8jkeCiCh5AZR6dVmh
-	 F9qQBEiEhVJO+IbAXRMODg4pPdhmVs/eGbQ4zgmqD3K0+RxqgX1sIO9AjyTpkm/px70Hn
-	 7ROjEp+Ti5py0aASuYzsDSQJy/xTcV5SRdkGdBgWs0GIO9oC7TlYUjsXVaiF9sR11o3jG
-	 sjHPNtbdXpYN95Ou+wFgfRUpFNUBdxIsIuZgKn0bNXA8PBwUKQpb2as0eFmWE3mqMkw==
+	t=1795174140;
+	b=VUXCefXH0l5v6SJ3GUXNU97QxGUIWOvbz92aKpXFlWbbj788aKdnxCGtPukKI20EQsjQ
+	 dx9YXlJpEjjjnGijsWqsW9WdtERZv94/m3fQDdcaKCB6kcNE5tBIlyiNJ0wt+JhwHalfE
+	 3LwyW/w2po+TDFiB+kcFsRtJjctEeiiKg1o1BMMcsfBwPDIO5UacyNplDd2gicz5wOd+j
+	 WX3tM9bwqB+0IgrivhcuXAKl9hBegHwUEKSe9k79qVtn7up3MfBf31lJ9pIBcVhIi/osA
+	 ptDO9tbnnHDUkh75ZxCN2G47udXf+HDNEmplsRKm0e0sL0+uRDuScZ60VfVEtNQQelg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795173915;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type;
-	bh=T/oeAUI0ByDf7dPHx/8xzMZxbOAspRa0FQ1QEHteMRw=;
-	b=aRdTANaOzewldIeyBk3jl1ztIYn9tKJlUFHXQ0xfU1b4RnwEfiW3WHIsncCeZPirmJM0
-	 59BOhSsUbknLH9bLhxdduYBKs4zJhuLEL/avw8oKDJZvOZV9URk2onnTC+LgAD2Pi0kXk
-	 9jewEZxvIXqgLpsup19/SO95Wbo8NNynhcawVLCnsp4rgfeYUKhFws97AHNTgb6keG2Cc
-	 T1LHQ5yB+A2OpvWIg/0YfozH+gIF9R9WrwNIO177XrW1pW/MdSvY4YNiXoz+BocgmKYdv
-	 7KNjE6Zn29xGbVkXifpFBwoF5zLt03/2c6UpNBkwPDP/p/k6Upvbm3RYqwuSza1C9Ng==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795174140;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 From:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:CC:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Originating-IP:
+	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=uQw025XTO9QxbB8lnF8KcWPVp9vI5ezmiS2ZjFO9ha4=;
+	b=OwJLSVsr0LmsFOIoD1XgzRxuJ4x9sctyPAwIitttqAcPxQlV+vXtFvUHrUZHUTaDG75z
+	 Hbw2MU0Txj26GVxYQAZ7D+3jJ9XKF5rxvMc6wY4TLVeJ2fL/GmWeKp/Lu+acVra0DIpuQ
+	 BNlDjmvtKtD5Z4W7VIdvfddQU/GG2Xx4KGUQ1mVscXUU/lJTnXeXkARAN6Jh797D8Q/QY
+	 FjUsIh5KaHZ1ydWv+ucPxjReS71TBtSBqb2h4CnDRhqlnWWoN321f9bNIOQUSooMrbP+I
+	 Ay4p1PgBp1pucT5r0sFLTQ882RPN8SsKNifVPndXyx7OcnyPjAKVtb7dAEL8xsBie9w==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=brainfault.org;
-	spf=none smtp.mailfrom=brainfault.org;
-	dkim=pass header.d=brainfault.org header.i=@brainfault.org header.a=rsa-sha256 header.s=google header.b=LEDGdlRJ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.54
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=myRRMjIc;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.71
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011071.outbound.protection.outlook.com [52.101.52.71])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D16606A325
-	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 11:25:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 21D16606A325
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80CA3606A320;
+	Fri, 20 Nov 2026 11:28:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 80CA3606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=brainfault.org header.i=@brainfault.org header.a=rsa-sha256 header.s=google header.b=LEDGdlRJ
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-49465892f7bso619029f8f.1
-        for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 03:25:14 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795173913; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QPkOOI8B9IMTIw58TOPvaUJwRuMPVb0Psa58x+dVBMhKT3BaU4m5fWD2M6thfK6ZAh
-         l7d/+8Iq+zSBNC416lOTFk0nSxymTNgzt2Leb0f82qwKChe6XZNAzDn8F0/OysVaxpMU
-         Ri3DGzjFk5Hkq8pCe6fBVvn7FvIvmD0P+s+T5pfzitZ6OHuhLYcBC7fjRFeCX+wTxqEp
-         JwSCrVYoUTwdNzGJI7xiuPnQ039V3wDhXkwTxUKPgdgjdEkIFnxti2G7Lh83c8hnD+MS
-         eZicLhGnBmaUB655zmmt2BrA3veo4M5gBZ+3fJaTFgu2CvxnvvP+2BannOWNCuDyU7xW
-         +jeg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=T/oeAUI0ByDf7dPHx/8xzMZxbOAspRa0FQ1QEHteMRw=;
-        fh=yPjn7V+z2KDQvGG6BGYq/77aMX+EdqlKoecSDlZ49ME=;
-        b=WjoHr76DAnDYfoZgyMvVQ53QBil8Eesq5fgm1k7XI2efpix1m4Mbzeh1NYwB6u8Iqf
-         Dhqloshxg6+hbrCKG2HHCAJXKJiTEb2/BJNqoTeIK6WZ4maVzt2pbKDqJBW7soLpJsLX
-         6sSnfQehCIruNSQF9ABbRUgJTZBYbNCueHIK7pY7kNX5tV/vGfAZ0Vf4z6LuyNuTVDrV
-         CviAOk6UPzZPQcVGtLgJsQzw1lHhuy4qEowGPLJZtUFIbsQLmuZeigUzXWu+pouIFLmt
-         FbgUfhnURnotCxYRMd3b8jJ6mZLnpmB15gujWZKKI54CJACc39i8dlwQGv5iv6Umn2OI
-         7YFw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1795173913; x=1795778713; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=T/oeAUI0ByDf7dPHx/8xzMZxbOAspRa0FQ1QEHteMRw=;
-        b=LEDGdlRJfUZdEgO775BxyiUgafkJKiUUg9X09f5a5Zx8xaxSzU5nUM9QSpvRaJfr7V
-         wwlHdEPdY5g1R26R0MJMywTSKfZvaCm3F6rHkgsh0SSj70p7fq9kBDWAxeXOBr467ILU
-         RElE57kjQSQwA1gPgZPDts+3IariWqcqC/DNiUxMyzZRlR8evf/M6lgJTmUtMTxTCpA2
-         XxCP/LIj6QPGO3ymx5scv57Dbxftq/wzemf32x7TXQzyYFH0HFjfLXPTwLKgCHczhn3Y
-         ulZp6d8wD+kJL75FAgp+Ged6qwylZYYGt8sJixbqcSAGxlbk+4Zl6mGmzj56JFAV/0L4
-         +Wpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795173913; x=1795778713;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=T/oeAUI0ByDf7dPHx/8xzMZxbOAspRa0FQ1QEHteMRw=;
-        b=K6qMuCR5cyZoLUolJqGLSJRUw8U0nwayYHwH/b8ZX/s4n3/4kw/BrOMf53Smm6fYEu
-         tchhRoHGuM2wnrT7n1XgMJniuYYmT58k2QiboHTUZggNEy8GpVcPwi6DePCp4Gv2dwoO
-         1hjc6nm7IWQdXWv2La9uXDnM0LZxv8OVjvAasL+vKX5a4uZixh0UAhfnWW5PoIpkKhyn
-         UFG8qk+Eb0Q4IIuoOYnGEaRQn9NLIT6iIx1MOUGbB3kQ9zxyIaOs8xEXgKRuNrQIv4Ru
-         m0PAittVRnrQ1h5VLcxZmQB/MhDsBU9HNenkLPaUqYY+RN+HOU3X9x3RcgcHkskRbOKz
-         Assg==
-X-Forwarded-Encrypted: i=1; AL+hErFp34cfDuTRp5v15bF/Ue1GWo/YpnvAZPg1inCtUqrAjxwSCBstOvWwDHJNCIJY/HuTPMk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8G8cL7lp4p+PSUdUUxO/0cw4uLVgbwSHczHLDGnJWiqPJY1kRd
-	6BFpU2Qq6uuiezRgh0/V4kOWMKtQl39GHIYdi9c20CLSCIQt9Un2Ve6RJMuy1LfDjao0jV2Zol+
-	9bqDRdw6KBxn5OPAGzSseB8Q3spMQF5zXv1NkTMG87pMfmQWiSUaBZOA=
-X-Gm-Gg: AZFdTZesMiSoURFW+HGZwbQhu8AXenJPHKedR06Z1CfTkXr0lBFbTPc7xxZ5c+VEL7X
-	q9RHchO9N39My7dIrWn+P8/XOScjSi/HhZOPzDLTrs3Bm9dWk+Z0wgNm7w+eR7AMals/Oq+i5NS
-	G9ufriHMwrGcKHWHD7jiustGHaIY7LMwFfHXQIoZhwi5Rsv+kbQCXygXvHwX8gRwukbgwOqk04D
-	OTYl0JNxzkiGjkBelsWgDfQBfUnpFkuGQlCJSyKvzO+Sx659IiUq95O1UJQF6npcGMollhRdOBq
-	2/h0d7j2KkbPtxl+RSYN4cGteq49lneTioprfd0FcNf8fasJCPgX/N25+VcRIsFIIqsTF1a88lb
-	0cXkNCcBYi+tqrdrMRrduAPUBAqwCgCZe2b1/hxfe5pJSpmei7bRCGSMl+TbjM/EncYjxkTacPv
-	CaYkz3PtZi+6lDHyD57Tblewh4ucsuDGa6ImUDLz50pkhZ+qtZtDFiCcb3yn3620uYjsgOyF0eQ
-	Q==
-X-Received: by 2002:a05:6000:2489:b0:48e:2108:4d28 with SMTP id
- ffacd0b85a97d-4abb1baaa3emr5589260f8f.13.1795173913277; Fri, 20 Nov 2026
- 03:25:13 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=myRRMjIc
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ii8zX/7vn5xzqdZicD3IPPxVRq4q/D6AegfDhUNJqkjGRRN2kEDchq4vpStjpRQo7HL+y7tVv9Tn6bvAzgeWGA0y6RdcnwrjDR6oTg3kpLMwd9Zo7men1Zg+YQxsZonnD14jHfnKb1rciln93YVp9HBVo1OKx211fEoWP7apq8EdzqNwB7WGyjcwk74frEL2G8MK0uVA/ZNiJpKg0IN9Rr/6OW3CS/cGaTwExQrm/FhkoizE1tveleLPM+AEp9GnCUu66hOsQlSpbq04XkmAdMPKLRU/RkkbaXauenVSDysbKWeJzy83FxFO+uqV5hynwUasGJWzYKLAZqwqOWtamQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uQw025XTO9QxbB8lnF8KcWPVp9vI5ezmiS2ZjFO9ha4=;
+ b=KXbPTLntQ5I4/M/fhGGV41JlcfbuENf5apiRt1Q8HuH3DhX2+MbfI7YDKrNfkF0ffTwYs4PkihvD0Id39qiIUXojQTeI9NLQ+aUnjm1nbQvvKOM+jx1z8vHaXD8zJnSecenKP+nEJ+oRQwabMSabG+xACDTbnuNOQp7mdy+uwlkPBYEdPLKoDwJZ+shU81Cm3H0n8NojmL3MZJBHOvPGfbvrzc0qBnE4p1n+E+9LMGSMBfNw9W9T4Ms53M64UjVWkTn58Bi2bIqHCUeycM13rHXbx1zW80TZJRK0jb1FDQYF0F56qVysRfCDnOKy6S1M56Rn6NnWBWYpME6UOaluoQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uQw025XTO9QxbB8lnF8KcWPVp9vI5ezmiS2ZjFO9ha4=;
+ b=myRRMjIc8cLKw4toRGfKgatYLP0EC4/bItqELsMozbnt6qRfXCLIIHA/uLREtdSFiY4f4AXJu0oWZvc3sXo50gZJGTGUFCRZKOklDxbQjrJiOdwTaMFiou6UgIpVr7p+lFG7R/NhNxl4pOl+3FyVzAn1JC06Pe1iX+BukQoecyI=
+Received: from PH8P220CA0029.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:348::13)
+ by MN0PR12MB6151.namprd12.prod.outlook.com (2603:10b6:208:3c5::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.12; Fri, 20 Nov
+ 2026 11:28:55 +0000
+Received: from CY8PEPF00000059.namprd21.prod.outlook.com
+ (2603:10b6:510:348:cafe::7c) by PH8P220CA0029.outlook.office365.com
+ (2603:10b6:510:348::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.639.12 via Frontend Transport; Fri,
+ 20 Nov 2026 11:28:55 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CY8PEPF00000059.mail.protection.outlook.com (10.167.247.22) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.662.0 via Frontend Transport; Fri, 20 Nov 2026 11:28:54 +0000
+Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Fri, 20 Nov
+ 2026 05:28:50 -0600
+From: Shivank Garg <shivankg@amd.com>
+Subject: [PATCH RESEND v3 0/4] KVM: guest_memfd: fix NUMA selftests
+Date: Fri, 20 Nov 2026 11:28:38 +0000
+Message-ID: <20261120-gmem-selftests-fix-v3-0-d94ffe17ead6@amd.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,91 +101,102 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-From: Anup Patel <anup@brainfault.org>
-Date: Fri, 20 Nov 2026 16:55:01 +0530
-X-Gm-Features: Aa3M54oHwQOVnudG2qxplu2UhUX6GqklCT0V-Jph6298Y8vWTvDHUntIEuLbZcc
-Message-ID: <CAAhSdy32nAjcz2vyN37Fb7nKc9jbUxWjUYjiYGda7NPhweJhTw@mail.gmail.com>
-Subject: [GIT PULL] KVM/riscv fixes for 7.4 take #1
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, 
-	Atish Patra <atish.patra@linux.dev>, 
-	"KVM RISC-V (KVM/riscv)" <kvm-riscv@lists.infradead.org>, KVM General <kvm@vger.kernel.org>, 
-	linux-riscv <linux-riscv@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32PvU4DMRCEX+XkGkf+jeNUFKSlICWiWPvWiSWcA
+ 9ucgqK8e1YHEhSIcma038xeWMOasbHtcGEV59zydCKh7wYWj3A6IM8jaaaEWgsvJD8ULLzha+r
+ YeuMpn7kCi95Ir5LzjA7fKpK9QJ/Z026/e3xgL+Qfc+tT/Vy6ZrWk/2FnxQW3oJyWVmtr4j2Uc
+ RWnssBm/Rvg/gRoAjgwAW2UMW7gB3D9mlnx/YNe7t9bAzTklJfct0OkM5OiNmsVtDcegnLBA25
+ kCn4cg6VaI6Ij2PUGtfneBEcBAAA=
+X-Change-ID: 20260901-gmem-selftests-fix-2a5e94192f79
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, David Hildenbrand <david@kernel.org>, Shuah Khan
+	<shuah@kernel.org>, Jim Mattson <jmattson@google.com>, Peter Shier
+	<pshier@google.com>, Ricardo Koller <ricarkol@google.com>, Ackerley Tng
+	<ackerleytng@google.com>, Fuad Tabba <fuad.tabba@linux.dev>, Steven Price
+	<steven.price@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>
+CC: <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Shivank Garg <shivankg@amd.com>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795174124; l=1943;
+ i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
+ bh=BpggX0TRAkbOUAEZ9fxuhy71gbtUNZ9g5B3Rg+dxnUI=;
+ b=O//Sn1JY6dQGvxNGQgMDsa2Cie3HIYn9tB3tM5m7mdNws9wesw7+i23ALAlPvIZ3oNMHjHXVQ
+ xwtrUTwCjRPDL7xsIOdatFrg/I3yvZw6VEGkP8F17GxsZ4NVRA6KyXT
+X-Developer-Key: i=shivankg@amd.com; a=ed25519;
+ pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY8PEPF00000059:EE_|MN0PR12MB6151:EE_
+X-MS-Office365-Filtering-Correlation-Id: c51d198d-2d22-4c7b-517d-08df46f975f1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|36860700016|82310400026|921020|11063799006|261026140227099003|261021123027099003|261009223027099003|261021121427099003|261102123227099003|10067099003|261022105027099003|56012099006|261028144727099003|18002099003|6133799003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	CHtIa9TDJaAwqG28J0eqmiTNPz+DD3n1jroRH9v57VWemzH98Kojs82wsKYz6vmZCdw0J1Lvv1wArcpU/w6lYyF2Sa25cCHwAijN1XvE/NMW1dmMLyHDxdXLgMJUymjvJyhh/8nkz173PRbQeXd6rgzR+YZKDOe5m0AE+TxFmGhwXJnooqAJNtqRkZriR8DMqbwQ53ErGnYq5uaY10dhiPaLfUYUSSEKBswKSU5gpH0DBL39Nu+gXqY9orUdpCAjsjPKP3g2ntabP/JR9xS6Xd5pB8e3nLkDXIp+J+KH3+b32xTrWEyhZiQhfMQ620isHXvtMoZ+FH1iQEnNcMFF9fbYP+H/gULB63p4Wz0+BtAflfozc0VSMcGH24Z7Ti4Q0HCYdrIGFBtZ416PXTzDie9Ty44k/pQOBBFbOHTCfnpr4kNlplMuR3/qh3NceVTZ4/fO9muZq1S+fJxe4KbCXt+hqK/roSpo15iGcPPPj8sA9Mnge2gshSSC4BHs6JIXbT/xUpcVPY+ykbI19yr7jIES35P7pM+BDHRJHxqC5ymzInNl58xsZc8y9qFvpcu7hVSyxbdk/3FIoSBj8EkhTSrTD20SPzFCHypkba04NxqmKWxXnT9WVpQz0s7Ds2OT/pOXv9jwjIL2//upCe1ePVBKjrQDj5rwleTG9Q5AkPi9uQ69U9fMwMncYdhC8HKO/JWgRAXukLs0clA9zYcGFw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(36860700016)(82310400026)(921020)(11063799006)(261026140227099003)(261021123027099003)(261009223027099003)(261021121427099003)(261102123227099003)(10067099003)(261022105027099003)(56012099006)(261028144727099003)(18002099003)(6133799003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	TRCW3u4TqHi7mWCAWDN7YgDbGnZaQkIaQdl4iXra9+7CSU1GnKAlRWqceMTg5j49NjhXsQRdbnmItxnQfhguTnoail/JG0SKP59Yr2HzcAaCLrLEbsjd1vUMJOYMYYX7NRCYMl4k5vKDgUqvM9LZaw4urVgZup7sMucpH9wf2UfL1ZhLGkocuCQCl4w9TzT/B2DUvHKxmWN83hSKYRkbXKSDHmIkYyuyj3BonrPZ6g1XzyHg+VtMuaECyW9I3+O5Oh+AfUm4gIcm2m/7VMzzTAM+oFqo4T75+Dg7cw3kjOdm6Cn82mJwJ3G4USAJAIsjRPgpHkuK3FiAM3CySB5ZM/bYc/wIjeG3vkK+6EVf5fo0+4mHPARemz6DC7Gpp5KNdW/z5tWunw7gsRt6w8gZeBhfUpPbmlhUnq8aK5nGQTcEtCIMEbsuh4GEOTbkqb3Z
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2026 11:28:54.8567
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c51d198d-2d22-4c7b-517d-08df46f975f1
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY8PEPF00000059.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6151
 
-Hi Paolo,
+NUMA selftests in guest_memfd_test assumes that node 0 and 1 exist and
+have memory. However, nodes can be sparse or memoryless which would
+break this selftest.  Select the nodes from MPOL_F_MEMS_ALLOWED instead.
 
-We have the following fixes for 7.4 kernel:
-1) Validate AIA MMIO address ranges before AIA is initialized
-2) Disallow GPA-width changes after AIA is initialized
-3) Fix double free of the split page cache
-4) Do not touch the envcfg CSRs on the SiFive P550
-    (Note: SiFive P550 is based on Priv v1.11 so it
-     does not have envcfg CSR hence this fix)
-5) Set Accessed bit in dirty-log write fault fast-path
-6) Validate PMU counter info using available counters
-7) Fix G-stage page table memory leak on VM destroy
-    (Note: This one was a pretty embarrassing issue
-     which we totally missed over the years)
+Based on kvm-x86/next.
 
-Please pull.
+Tested on bare metal and in QEMU. Without this series, the test fails
+with EINVAL when node 0 or node 1 is not an allowed memory node. With it,
+the test passes for any set of allowed NUMA nodes.
 
-Regards,
-Anup
+RESEND:
+- Rebase on kvm-x86/next. No code changes.
+- Link to v3: https://lore.kernel.org/r/20260907-gmem-selftests-fix-v3-0-7a4be5c1cc8a@amd.com
 
-The following changes since commit aebb7274476403040d582c61478df8f4a7bf9cd3:
+Changes in v3:
+- Rebase on Sean's spin-off series [1] which picks up patch 1 and 2.
+- Drop Patch 3 as version in [1] is better. (Sean)
+- Split patch 4 of V2 into 4 patches. (Sean)
+- Use MAXNODE_FOR_MASK() for maxnode value. (Sean)
+- Link to v2: https://lore.kernel.org/r/20260901-gmem-selftests-fix-v2-0-5a273153354c@amd.com
 
-  Linux 7.4-rc3 (2026-11-15 14:30:11 -0800)
+Changes in V2:
+- Split from unbind race fix. (Sean)
+- Include <linux/bits.h> that defines BITS_PER_TYPE for self-containment. (Sashiko)
+- Link to V1: https://lore.kernel.org/kvm/20260823-shivank-gmem-fix-split-v1-0-512a29fb8e86@amd.com
 
-are available in the Git repository at:
+Signed-off-by: Shivank Garg <shivankg@amd.com>
+---
+Shivank Garg (4):
+      KVM: selftests: Prepare guest_memfd_test for arbitrary NUMA nodes
+      KVM: selftests: Use an allowed memory node in test_mbind()
+      KVM: selftests: Use allowed memory nodes in test_numa_allocation()
+      KVM: selftests: Drop unused sysfs NUMA helpers
 
-  https://github.com/kvm-riscv/linux.git tags/kvm-riscv-fixes-7.4-1
+ tools/testing/selftests/kvm/guest_memfd_test.c | 61 +++++++++++++++++---------
+ tools/testing/selftests/kvm/include/numaif.h   | 52 ----------------------
+ 2 files changed, 40 insertions(+), 73 deletions(-)
+---
+base-commit: cbe54fc3462b3949ab27b9ae81fb9ddb509040c7
+base-tree: https://github.com/kvm-x86/linux.git next
+change-id: 20260901-gmem-selftests-fix-2a5e94192f79
 
-for you to fetch changes up to e9bf49bbc4227048685c78f97e1446845760df4f:
+Best regards,
+--  
+Shivank Garg <shivankg@amd.com>
 
-  RISC-V: KVM: Fix G-stage page table memory leak on VM destroy
-(2026-11-16 18:06:25 +0530)
-
-----------------------------------------------------------------
-KVM/riscv fixes for 7.4, take #1
-
-- Validate AIA MMIO address ranges before AIA is initialized
-- Disallow GPA-width changes after AIA is initialized
-- Fix double free of the split page cache
-- Do not touch the envcfg CSRs on the SiFive P550
-- Set Accessed bit in dirty-log write fault fast-path
-- Validate PMU counter info using available counters
-- Fix G-stage page table memory leak on VM destroy
-
-----------------------------------------------------------------
-Davidlohr Bueso (1):
-      RISC-V: KVM: Do not touch the envcfg CSRs on the SiFive P550
-
-Li Jinyue (1):
-      RISC-V: KVM: Fix double free of the split page cache
-
-Pengpeng Hou (2):
-      RISC-V: KVM: Validate AIA MMIO address ranges
-      RISC-V: KVM: Disallow GPA-width changes after AIA init
-
-Qingwei Hu (1):
-      RISC-V: KVM: Validate PMU counter info using available counters
-
-SeungJu Cheon (1):
-      KVM: riscv: Set Accessed bit in dirty-log write fault fast path
-
-Yangyu Chen (1):
-      RISC-V: KVM: Fix G-stage page table memory leak on VM destroy
-
- arch/riscv/include/asm/kvm_gstage.h |  2 ++
- arch/riscv/include/asm/kvm_host.h   |  1 +
- arch/riscv/kvm/aia_device.c         | 49 ++++++++++++++++++++++++++++++++++---
- arch/riscv/kvm/gstage.c             | 22 +++++++++++++++++
- arch/riscv/kvm/main.c               |  9 +++++++
- arch/riscv/kvm/mmu.c                | 12 ++++-----
- arch/riscv/kvm/vcpu.c               |  6 +++--
- arch/riscv/kvm/vcpu_config.c        | 16 +++++++-----
- arch/riscv/kvm/vcpu_pmu.c           |  2 +-
- arch/riscv/kvm/vcpu_sbi_fwft.c      | 20 +++++++++++----
- arch/riscv/kvm/vm.c                 |  5 +++-
- 11 files changed, 118 insertions(+), 26 deletions(-)
