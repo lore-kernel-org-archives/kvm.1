@@ -1,73 +1,158 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795172986;
-	b=QkYunjjUJ7MO9CHq1RMeTzSBoup/mmBI95ycVMColFoZOKhNd37w40Dki+zarMW9yKbk
-	 QYKguRsrE6zP4ZTwGtJ1NDKEF3+PV7CQwTIP5DDM/mWBrmcGqSEHHgYyQ28DSgJhgAACm
-	 xBgU7Aw2rM5UZ2Ukv/fQxq8XmGugeJJtO/WP9wp4uf4AbRG/BCUq7EX7JlsChtWoJDHu0
-	 7DQikdecxLyBUTkk4TaRua5JeCG+5G9QnjcdTB7zSQdG3e57o1NWxAQahQibDSHx2NXWU
-	 gopBkruimuVHh5iqjtiO9Y3WN2CDVxWak+7InIH5YvUfDhucB4E+N02ddGDMHcQpQ4Q==
+	t=1795173097;
+	b=w1no/lBa8vK2fJ9J1BncVowExwT15FJMvOuzETwlOzvW4uKQLMFFVq9sG6mdmy4OFTV+
+	 y8KqtMIQ+MlZ9LvgDISRXN45tiB2r6c9n+S8cPKo5CDLGaMf4rwpctXzYM3PnfbLb+T5f
+	 sf3Vs0DQC+ADDABz55sTlpseZy8QXYotI0qOxBqXfIsrE35FiOZw+8W+MEu/dybajhR24
+	 pJ48THUSEhwXkBWbUAWXDBxcbTTGxbLIFlvLKeryuO11NsJZRvwefTV5ZnCxPBqHzKjss
+	 78OJbHtaEEHjBh9HN2bL7JlYUgHpAyna7vGjaFhPjLoZi/J1cqmyzDZ6aHfuVBuagYw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795172986;
-	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
-	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
-	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
-	 X-SA-Exim-Scanned;
-	bh=2RuimmOKEdckylLVvtsFC7k8j+dPt2aTJXFr5gsiNwk=;
-	b=pda4+uy0nrCVVqansmmTK9/SBRoTlNNqisZ0Hu7tvjsZL5jzwn3LJrKQTRatxn5HTL4g
-	 1r2Pfk3uaQqVATukrzDWd8LRbF4aOJSmnmOrVfVFKQQ2/epxmU5MuEBrrQaC3J59Uuot7
-	 bcYA6AyQXzgDUbH9tOx3qJQENTsjXMxH5G6pUzGGr95oVm9deVXtqnHficDO60eDmx/iK
-	 eRgES8nck4ELfLPR94GTzh45AezhENaLrUWKoZHI+EbAcTS6w9KFN7RKaQF8mi7PDHnTO
-	 wVQfp28zHP87i8CYBBpZVWT2gLfeMbWpM9Ioz55PValFb7evohztprS7RgeWhxwmVOg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795173097;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
+	 X-Developer-Signature:X-Developer-Key:Content-Transfer-Encoding;
+	bh=6iowvnjr0RIgWlIDQQOFrlHY5uCtXtYYlYEEp/cOH20=;
+	b=Q4mbJigT8OwJqy/YApB8E/iAL77OCaIPjZuYaBVkDegyjR2vVx+HTKiAx3P+fprkD7v5
+	 xTSc90phRzScQgz+H8IhGFdUI9ywAr+jA5sCRHMY0YWaA1S9G9p+8y+4lIJnPULvsbQHQ
+	 b8+fE+htG6Yz/cUAaKybkWg5o8G/Fh1CgvAyUnbNH6uIZbQHA/l0bk8HcVoVGGnm7yBbs
+	 m7oE4psRqq1lXZJ8CBdjVjZR1XWcEmzLluHBnfejcTy+guHf/lTwCFyT7+dRSOxMbH4E4
+	 b7qE83Ub+b6+d4RBqEgHOZhHMccuWPBuVPYXeJJK+J3mRABeP3OxOHrVcITvVzFhaBg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AMikXPr3;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=baylibre.com;
+	spf=pass smtp.mailfrom=baylibre.com;
+	dkim=pass header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=cy0T8JFY;
+	arc=none smtp.remote-ip=209.85.221.50
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC111606A325;
-	Fri, 20 Nov 2026 11:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692AF60A2633
+	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 11:11:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 692AF60A2633
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AMikXPr3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D051F000C4;
-	Fri, 20 Nov 2026 11:09:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795172985;
-	bh=2RuimmOKEdckylLVvtsFC7k8j+dPt2aTJXFr5gsiNwk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=AMikXPr37HdnbqD8nENh/uDeTqYDteieNAvjGhJ1zvCMDR2DGqHUYAtV/5oG6jK8M
-	 UeFx8bmTJ7V/EOoasqkHLStLmdwhiQWF/y72dJt6TYp7dtqGyY/UUW9jH4wvA+fjLx
-	 CaryP2Y4Ld6Cv5dSsGqPfucT8Puw48jyy2OSGXPuig012l6JTHfWaJcTwpEl63dn08
-	 hbgyBHXzdPPdZgPHS4dyjiXLFfRHAPkHfQiYj5Uq8g1g32ndGfyuffKHEGmWUwC97a
-	 dXkKduKi24RxjMbYZVw0s8r9ID+2L2xBkod6s6aR5r2+Utc6lWtoSo+vEmwEwYwo1u
-	 SKUDMOC/zQEUQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xUMUw-00000000wOs-3zvf;
-	Fri, 20 Nov 2026 11:09:43 +0000
-Date: Fri, 20 Nov 2026 11:13:09 +0000
-Message-ID: <87cxrz92nu.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Colton Lewis <coltonlewis@google.com>
-Cc: Oliver Upton <oupton@kernel.org>,
-	Wei-Lin Chang <weilin.chang@arm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.a=rsa-sha256 header.s=google header.b=cy0T8JFY
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-4a7b8abe209so525409f8f.0
+        for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 03:11:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1795173093; x=1795777893; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6iowvnjr0RIgWlIDQQOFrlHY5uCtXtYYlYEEp/cOH20=;
+        b=cy0T8JFYf6te/xTc1kjLehflkRMCyCLyy11kt5kR0iiTkUeh72a0VfbQtLsWdxQKbC
+         cFhL1NyNlrILzdeaX46VwkVy4MeXP+mFwxsgogALnuIqFabIzDYbfPIl3XyCnmwy3ai5
+         8T6EK3t8OE8eX7WpS5CBBnJ9gcHuPx45xGmWl0vctudKI11NB8OsFG4EaWegB9jAqjdE
+         yLVMj47I7qQc00jYFIsxNT/1utXJQ9rQvvCMZFbRZLgflQn5wfH6nc0qoZ6hPFJoQBZA
+         5jVraI3baGqMgrr/3P3ZFrjwysBQ3aAxoi2icTr9AnuVXVlkHmUvOvgDDhNFO4YMaSSw
+         JBMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795173093; x=1795777893;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6iowvnjr0RIgWlIDQQOFrlHY5uCtXtYYlYEEp/cOH20=;
+        b=fLTtoPkfmqGlSoIm4UwkIRFSs0QV0kqCZwnNMay+XAQvaBlBia5FFbaDDPNzw6EHIL
+         GzlkoIgxoePd8v3k0p7ccuf51gDrXOT/TkQwl1gp78AOY0NPKJ8J8J/yJQrgAIIAD9/N
+         nbvOYJTyddm/fNfVazGXQ4APrHwkFk7aU0TzWFXvM9fcn2hkvLCGLieSPh/b/KTSzofI
+         GuAZvZdygEZATMmz15anjgOyhSX0ChIPTxQDPex64BeUF40uNkEnMPqo0kXeWyAW9AU2
+         swlHCogi6+CvmDalNL1qAtjOuLWUutAz2pJt849GWr68+pX4eDJPgij/H4ZJZWQeekXg
+         EbDQ==
+X-Forwarded-Encrypted: i=1; AL+hErF+fqbrRGU6YnDekAiBO0sTyhmjD+X1OhagNx7yCsOe9U4coJdhjxd006qtUaaQtVsI760=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9Gefs1NqnaNiiIhjz0/L4jFfIx8qO1q7e4LgH6ZnsKJeir0Ed6
+	Z0RQsHEkc1vIcLhw4YjXuFPpcQQ9MPeBO6rYlxQuJs9EX0OlUM4FdKRuyiGPkNF2KYg=
+X-Gm-Gg: AYBFou3faiazKhP0lG+nmluY/jCpuZZlFtfuWs6O5Q3SG8h7G1xaCWhJdqr7RHkSMr+
+	ThNTT4B1uCVc7Q/WlW36zdMilCy0EVAzDAm3vJXBT4evEOGad/sK1Qg19xf2R7thI21Jrg0PJhi
+	jrfujiBtBTmXPpqC7LXqd0Ssld2iLgZ1H/m4CfpkEI5ksuDyzjCrEGuifCno8Db3UZYXt3JwlAb
+	xd6HESIndjwTPi9A+48JK7iuQn668Rl6M5iSW+0xu37Ef0I8657Qm/V4Ty/lnjAHFnnpCitmDi1
+	rZuhb/+RzwF4HfuztMfCXxLMB1hO6SPpMXO7AFYDSBDmPHpGPgDadiuy+eVP1dXW9w/gbhCtRR5
+	XsqM9/gxFJhoo3fcSh72IprjbkL6zqegKvGiKZVZMvnYCRE8QxX15TgwY5/gzrcOzDK2Jd+GNhy
+	G5Kt8+oE1JJXkFyoksKr78YnGoV0HvVlm/teGEUjZbbi8VirljnCEq1Ejr/6inc9w0XfonsHzs8
+	VDhbmi4AIKeccVG065FBhEBnKQU5pl0RS67OEk1tLxBR/EV9GkmL91VORyP4cAksPfGa2o8ACBx
+	wBoWNWftVdikqP7reifKywqUgmIYH+y6iIMm7fOd/58kEYEbkCWpmxm9AVNVrzz3Tcbnku8DyqA
+	52BsSOF0IBSg/hj6C
+X-Received: by 2002:a05:600c:3b0e:b0:4a1:efba:511 with SMTP id 5b1f17b1804b1-4bb8882508emr60110635e9.35.1795173092340;
+        Fri, 20 Nov 2026 03:11:32 -0800 (PST)
+Received: from localhost (p200300f65f19a904be03815e1634e776.dip0.t-ipconnect.de. [2003:f6:5f19:a904:be03:815e:1634:e776])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4bb884a15absm67887745e9.9.2026.11.20.03.11.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Nov 2026 03:11:31 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Longfang Liu <liulongfang@huawei.com>,
+	Julian Ruess <julianr@linux.ibm.com>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	=?utf-8?q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Eric Farman <farman@linux.ibm.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Tony Krowiak <akrowiak@linux.ibm.com>,
+	Jason Herne <jjherne@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
+	Abel Vesa <abelvesa@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Brian Masney <bmasney+clk@redhat.com>,
+	Jerome Brunet <jbrunet+clk@baylibre.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Bradley Morgan <bradley.morgan@linux.dev>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	linux-doc@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	Alex Williamson <alex@shazbot.org>,
+	Mostafa Saleh <smostafa@google.com>,
 	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: nv: Fix guest stage-2 mapping leak on sub-block unmap
-In-Reply-To: <20261119185105.626343-1-coltonlewis@google.com>
-References: <20261119185105.626343-1-coltonlewis@google.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	qat-linux@intel.com,
+	virtualization@lists.linux.dev,
+	intel-xe@lists.freedesktop.org,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	linux-s390@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	linux-clk@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-remoteproc@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	Takashi Iwai <tiwai@suse.com>
+Subject: [PATCH v2 00/10] driver core: Disable driver overriding by default
+Date: Fri, 20 Nov 2026 12:11:01 +0100
+Message-ID: <cover.1795171088.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,74 +161,111 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: coltonlewis@google.com, oupton@kernel.org, weilin.chang@arm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, fuad.tabba@linux.dev, seiden@linux.ibm.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4896; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=zb+igsuXLt8tOTuUjhzAr7HaxCaZLq4II70BN40Br9Y=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBrACrJx1qga/LvoqPeQ2w7AGsIzkvZ0u8Ei7ilD OnkWyRDOleJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCawAqyQAKCRCPgPtYfRL+ TrT2B/4h+7Q3cE0LlxcXdMzSjo72DibWSV5sOQkmoVdvDT2jirOpWioUU86bki4NAIk6Z4fKuAQ Tq67UAFcdu/x0sb+TsWnSkdYqWbFXP1E9qqHzS6LbgG2Wo9AfXLnJRQPoIkCW5R3i/w6jmyDLiI LkWjw6qUO85o5cf3veZf7uvTVs/F1HlPcGi5H2XR8SEvtsTQoNcOqyDD/XO+JfY5VRim2QTygzC /LqpSYXX2fMI/PZcft+vtXeHkKEsua161Yxgcwt3mnXV1cWuUQhOgqkI5MNgrbn/8PHF60B4GWC cbYFOHiY7+15odYG/kF7YqO0HOLOodN9ndNTOKA9GdiXGD/D
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-On Thu, 19 Nov 2026 18:51:05 +0000,
-Colton Lewis <coltonlewis@google.com> wrote:
-> 
-> When a shadow stage-2 block mapping (for example, 2M at PMD level) is
-> partially invalidated by a smaller guest unmap such as a 4K TLBI
-> IPAS2E1IS,
+Hello,
 
-What does that mean? If we have a 2MB shadow mapping, then the guest
-cannot have something smaller in its own PTs. And how do you get a "4K
-TLBI IPAS2E1IS"? TTL == {4kB, L3}? If that's the case, we have every
-right to *ignore* this TLBI, because it cannot possibly reflect the
-original state of the PTs. If this is an unqualified address (no TTL),
-then the whole block *must* go.
+here comes v2 which addresses the review feedback I got for (implicit)
+v1. See https://lore.kernel.org/linux-kernel/20261116110853.3418077-2-u.kleine-koenig@baylibre.com
+for the discussion about that previous submission.
+ 
+The objective is to deny force binding a device to a driver that isn't
+prepared for that. There are many drivers that run in a null pointer
+exception when this happens and only very few drivers are supposed to be
+used like that. So the first patch implements an explicit opt-in for
+drivers and denies other matches; the remaining patches implement the
+opt-in for drivers that rely on it. This makes it unnecessary to fix
+individual drivers to explicitly refuse such bindings. See commit
+1e50a0349012 ("iio: adc: mcp3564: reject devices without match data")
+for an example of such a driver-specific fix.
 
-There is no such thing as "partial invalidation".
+Changes since (implicit) v1:
+ 
+ - Rework parameter parsing to just use `allow_driver_override` on the
+   kernel commandline
+ - Add review tags
+ - Add patches by Alex Williamson setting .support_driver_override in
+   pci and vfio drivers
+ - Add patches for uio, spidev and a few more drivers setting
+   .support_driver_override
+ - align wording in Documentation/admin-guide/tainted-kernels.rst with 
+   tools/debugging/kernel-chktaint
 
-> kvm_pgtable_stage2_unmap() shatters and clears the entire
-> block descriptor in mmu->pgt.
+It is sensible to merge the driver core change (patch #1) together with
+the individual driver patches setting .support_driver_override because
+with the driver core change the driver override doesn't work any more
+for the unmodified drivers (unless the new kernel parameter is provided
+and a taint is accepted). So I suggest (once there is agreement that the
+patches are fine) to merge them all in one go and provide a stable
+branch in case a driver was missed to be adapted. I can create such a
+branch and ask Greg or Linus to pull it, or Greg can do that.
 
-Shatters? Or clears the entire block? It cannot be "and" because the
-two are polar opposites.
+So if you're the maintainer of one of the drivers touched by patches #2
+and later and assuming your ok with that patch, please provide your Ack
+(plus the required coordination if applicable) for not merging via your
+usual tree.
 
-> However, kvm_remove_guest_s2_mappings()
-> only removes a struct kvm_guest_s2_mapping node when its entire
-> [nested_start, nested.last] span lies within the unmap range.
+Best regards
+Uwe
 
-What do you call "the unmap range"? What we have removed from the
-shadow S2? What the guest gives us as part of the TLBI instruction?
-Something else?
+Alex Williamson (3):
+  PCI: Allow untainted driver_override for PCI stub drivers
+  vfio: Allow untainted use of driver_override
+  s390/vfio: Allow untainted use of driver_override
 
-> As a
-> result, every sub-block invalidation followed by a re-fault leaks a
-> stale block-sized tracking node in mmu->guest_s2_mappings and
-> kvm->arch.mmu.guest_s2_mappings until the shadow MMU is destroyed,
+Uwe Kleine-König (7):
+  driver core: Disable driver overriding by default
+  uio: Allow untainted use of driver_override
+  spi: spidev: Allow untainted use of driver_override
+  clk: imx: scu: Allow untainted use of driver_override
+  remoteproc: Allow untainted use of driver_override
+  slimbus: qcom-ngd-ctrl: Allow untainted use of driver_override
+  ASoC: samsung: i2s: Allow untainted use of driver_override
 
-Leaks? A leak is something that is still allocated, but not linked to
-an existing data structure, and therefore not recoverable. This looks
-to me like exact opposite of a leak...
+ .../admin-guide/kernel-parameters.txt         |  6 +++
+ Documentation/admin-guide/tainted-kernels.rst | 54 ++++++++++---------
+ drivers/base/bus.c                            | 51 ++++++++++++++++++
+ drivers/clk/imx/clk-scu.c                     |  1 +
+ drivers/pci/pci-pf-stub.c                     |  1 +
+ drivers/pci/pci-stub.c                        |  1 +
+ drivers/rpmsg/rpmsg_ctrl.c                    |  1 +
+ drivers/rpmsg/rpmsg_ns.c                      |  5 +-
+ drivers/s390/cio/vfio_ccw_drv.c               |  1 +
+ drivers/s390/crypto/vfio_ap_drv.c             |  1 +
+ drivers/slimbus/qcom-ngd-ctrl.c               |  1 +
+ drivers/spi/spidev.c                          |  1 +
+ drivers/uio/uio_dmem_genirq.c                 |  1 +
+ drivers/uio/uio_hv_generic.c                  |  1 +
+ drivers/uio/uio_pci_generic.c                 |  1 +
+ drivers/uio/uio_pdrv_genirq.c                 |  1 +
+ drivers/vfio/cdx/main.c                       |  1 +
+ drivers/vfio/fsl-mc/vfio_fsl_mc.c             |  1 +
+ .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    |  3 +-
+ drivers/vfio/pci/ism/main.c                   |  3 +-
+ drivers/vfio/pci/mlx5/main.c                  |  3 +-
+ drivers/vfio/pci/nvgrace-gpu/main.c           |  3 +-
+ drivers/vfio/pci/pds/pci_drv.c                |  3 +-
+ drivers/vfio/pci/qat/main.c                   |  3 +-
+ drivers/vfio/pci/vfio_pci.c                   |  3 +-
+ drivers/vfio/pci/virtio/main.c                |  3 +-
+ drivers/vfio/pci/xe/main.c                    |  3 +-
+ drivers/vfio/platform/vfio_amba.c             |  1 +
+ drivers/vfio/platform/vfio_platform.c         |  1 +
+ include/linux/device.h                        | 19 +------
+ include/linux/device/driver.h                 |  2 +
+ include/linux/panic.h                         |  3 +-
+ include/trace/events/module.h                 |  3 +-
+ kernel/panic.c                                |  3 +-
+ sound/soc/samsung/i2s.c                       |  1 +
+ tools/debugging/kernel-chktaint               |  9 ++++
+ 36 files changed, 144 insertions(+), 55 deletions(-)
 
-> allowing an L1 guest to grow host kernel memory and degrade subsequent
-> TLBI IPAS2E1IS walks to O(N) under write_lock(&kvm->mmu_lock).
 
-Honestly, this wall of text is not an explanation. That's just a whole
-lot of LLM gunk that you have generously copy pasted.
-
->
-> Conversely, unconditionally removing any overlapping tracking node on a
-> sub-block unmap would be unsafe when a shadow block mapping has been
-> split into a child table (such as on a page-granule fault under dirty
-> logging or a racing shared walk returning -EAGAIN), because sibling
-> sub-page PTEs outside the unmapped range remain live in mmu->pgt and
-> still rely on the block-sized tracking node for host MMU notifier
-> unmaps.
-
--ENOPARSE. Sub-page PTEs sounds like a great idea.
-
-I stopped reading here. Please come back with an actual description of
-the problem that you will have produced yourself, or provide the
-original LLM report (it cannot be much worse than the above).
-
-	M.
-
+base-commit: 7cfbf79c66c63e807ea452abf0546e6f6d6833a6
 -- 
-Jazz isn't dead. It just smells funny.
+2.56.0.rc1
+
