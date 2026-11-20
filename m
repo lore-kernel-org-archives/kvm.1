@@ -1,55 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.17
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795168071;
-	b=C9ZnqFLrh1f9XYiCTUYaz4c+RvW8t9N6vic+G6+jn7NUnTAjP3NCo7sq8ygi1NELByyT
-	 rbUiynMTgRl4QzxLbFgzhm/pLGmec/tCYQg7R0BGUPKPrt5txE0/lP5YZPr+SSrvGUoK2
-	 Ye2+LJO8wMly5z31AxRw+J6yCeTOh8E8N1JnBGaicUQ8MTJWFZMmSkLhn59F/oKjvzrMU
-	 6dPoG1qj5IoqEn4x5N/IyWYtWQmZKW+rkbxHAOYV8OEUWoJsRdRQXPvdJjklP8+1KYL/M
-	 4rDQpenDfTqVGUO00NGh8pat26dHAPC0cPjO5HWGhF7Yru0atZawoT8ssnqbGvs9saA==
+	t=1795168706;
+	b=HIiOzY3sk4TGKrrqa8dNJtIaSXXw5vty7L9XUlHPICcVbe2LKqsgg8Q2RKlVnmyg4HWr
+	 VntEAqdqvapOpqXUgfnrhTQ0hVyW7fXVMxMkx6tFPvOeAekgQoNzAaXOiFbfP1lOZ7+ix
+	 5TFfmjNGjeDC+vCye8hT3rWlG785nfxYthG8fSMtf2BxKpBzgyHJLnhE8AiRjRbsmPUUD
+	 PCbAqheS9uh2kk/9vKzQkleckTMf1eDGN7Wvfv+HrtcR64ZdSCiykrRe0sjhU7YsZRq03
+	 Z8f+a78lurDMM0fz82ASkJCGQx4Kxg1ysgymuVcC1kXoSpEZP0j3QKKGepcj217fiVA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795168071;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=YU5P8Wuc2M6bZTL3XK84wjuebJ0zvL/QXfNPgZyOqi0=;
-	b=OwcJUYQW0PD0AWRVHAc7ZcgcLuuxHXUIVK6f8DBs95udq813zOsjKywdJM8mZFdw002C
-	 y9coCcGnW0gSaup0ixf5vRggbEdqpA8nDNVhDQdHntSwopoT1SLWMGJH/D4bU762Plp4H
-	 7wlEMfCUYoQc54GBHpVe1txTaqbL+ePXWBSZeW8Zub8uuxWVB5QkBqC9IXJNNyvhTz1sa
-	 /zmRcuR44GFOkufuzSXrJF2wXAVglr4Vd/OedjAkoM+7y6GxSw995PmfXz8xoL+45Rn9Q
-	 TwRZuIp9z7SJ3sxzi850WCVwexGq9lZADPTIBz6136XCMwq6ZOTZ4uPYs1qwNb2cxYQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795168706;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
+	bh=TN8NkqYXPqqaP4HiWogaPI2uV4tpxwPQMmBsUcR390A=;
+	b=mYF+4djU59spNtRPt/EwlK/xuwpl3seVnWhpAG0kasujhtXC+pl3u6sY/rJkzPNsgI5Z
+	 Qcd/hKlYhZ3m3qs83ixf/JoE5sPIvZIRjA7ZZm2AIFXsUF6ZAWWHSO8FdsEAx05toYuiw
+	 nXkMrgAgEIDtoXjmxwj3RA1Sm2AJkem1G2PBIHLAOinueIwbpFwfPRVB2QMrlpuueh+ZO
+	 /vH+BS0b8n0dTsZsMnmBe/o075eigw7HsLEe+Gz9q921Jobn7DwyaCkMooACw6oh0+5+b
+	 gao6nlp6/+xkkh2ivqFiSEU+CRrP/ja9ggHkzLMpR2ZzAT37UfHsJ0ag03L/E+Hm/Dg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TTQIJQdF;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="liYEAsq/";
+	arc=none smtp.remote-ip=198.175.65.17
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C170D606A326
-	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 09:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3140606A33E
+	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 09:58:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E3140606A33E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TTQIJQdF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431D01F000ED
-	for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 09:47:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795168071;
-	bh=YU5P8Wuc2M6bZTL3XK84wjuebJ0zvL/QXfNPgZyOqi0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=TTQIJQdFmsgcCJvZ5orSt7w0DatjFVZQwcM9IEaWaC+WjWprBbCupEHBw2ZEdEY5b
-	 BIBCQ8gTLt9anGc3R+WoUEP/8X0wqmmRyUA0Is+/tDt6D0Coe+GssnIRmwyUztMzR9
-	 n9c4oX6NDEhgWoC9wYM7VnNjMV3ikjcOOi9DiBzT4NUIQQANyKjVCwoQ9tX93LQ4Td
-	 Wyq5vz3a4GnOFKlXnvezyfJNzLPLOgMgy6KV/q8eVLSgE7z+o4JrHPe3rMwYrkadWP
-	 lboTcbWu9QSv9dLAlRzQXsDKcewPjqfaR/lq9p/AjBDOYgb+cEVXKzHr7WrFntR/Gm
-	 Qp/UOxFXEysyQ==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5c126fa1e3aso355998e87.2
-        for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 01:47:51 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErEWVQ+axTtfRELyDs4prdOmovfTbtc+H/t4pAgxla6+v6ONG+DTl7WnQw1E+gB56xLzKs8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+34bqVxlbHM/B3iX2qIpL+DQ3BvRbI9T43TGy5CayV8eIxbiVZ
-	KuRawK8W83pi2SbOXE/5ZraDmKY9ljUzcs0tqonjdkNMcuC2jIuqg66i69v+Rs/qA4JxqVZKhHw
-	W6/HT78Ixg1fCYkD+jHRlgVPOFjQcFWA=
-X-Received: by 2002:a05:6512:6d0:b0:5c0:463:7b4d with SMTP id
- 2adb3069b0e04-5c1bc85f15fmr656116e87.46.1795168069914; Fri, 20 Nov 2026
- 01:47:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=liYEAsq/
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795168706; x=1826704706;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=VqfWWyNKP41xggbE8G4O+U9tuF1EbfzC3ALH58eUH8E=;
+  b=liYEAsq/W0sDy4yJVa/l5lo5zDAppkErx9e0VuFTvwNmfLeYKiGq1wlX
+   lYlkv2aU609IBVtpJGep2BbzokfAF0kIN/WR5jAIyAYPe0CpWYf+bJTmJ
+   pI3f0+qCpL4RYXVKWWZTVsUoS3cpdtAZI/wN4SAFAotRoFRL3EFgoFiGG
+   Q3U9OOQKeHyqKGaWEnrG3SWsiFe6aK1ohThIO94XKAc5XLD/iyjPKtKxU
+   mlj7/7cvwLx9l0J8nsWR63dELUM7f+aNXnhSntfrJrwMOmnJDn8ToKiBQ
+   kgg+W7XV+VOwjfANexF/1Bk5Dvz20C+A3FRSf+BFejUlaOJWPAZtke5MF
+   A==;
+X-CSE-ConnectionGUID: tjf0AGeATFynlFjgKyKyWg==
+X-CSE-MsgGUID: nqif8w4cSISXVYfgTB3gzA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="4052250"
+X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
+   d="scan'208";a="4052250"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2026 01:58:26 -0800
+X-CSE-ConnectionGUID: vh4oHUzHSYqdJIcu7sa0SQ==
+X-CSE-MsgGUID: BBkncL18Qvi715stShz4RA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
+   d="scan'208";a="10605541"
+Received: from zhaoliu1-desk.sh.intel.com (HELO localhost) ([10.112.226.173])
+  by orviesa007.jf.intel.com with ESMTP; 20 Nov 2026 01:58:24 -0800
+Date: Fri, 20 Nov 2026 17:58:23 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org, Marcelo Tosatti <mtosatti@redhat.com>,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH] i386/cpu: mark CPU properties as const
+Message-ID: <awAZv3AsmNdJ7oUW@intel.com>
+References: <20261119180859.1044425-1-jsnow@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,68 +79,74 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261015142552.4128028-1-ryan.roberts@arm.com> <20261015142552.4128028-2-ryan.roberts@arm.com>
-In-Reply-To: <20261015142552.4128028-2-ryan.roberts@arm.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Fri, 20 Nov 2026 10:47:37 +0100
-X-Gmail-Original-Message-ID: <CAD++jLkrWojU3FeTPGOCFHHsbmTGYG0Tz3b2nrn7mMfsDssCQw@mail.gmail.com>
-X-Gm-Features: Aa3M54rOrfZtY95RmYFxRv97HUcFxeSdg2w3O8Cm90EYC1dabPW2gsgZ-nnS-cY
-Message-ID: <CAD++jLkrWojU3FeTPGOCFHHsbmTGYG0Tz3b2nrn7mMfsDssCQw@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 01/15] misc/arm-cla: Add driver skeleton and documentation
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@nvidia.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jean-Philippe Brucker <jpb@kernel.org>, Oded Gabbay <ogabbay@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org, devicetree@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=gb2312
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261119180859.1044425-1-jsnow@redhat.com>
 
-On Thu, Oct 15, 2026 at 4:26=E2=80=AFPM Ryan Roberts <ryan.roberts@arm.com>=
- wrote:
+Hi John,
 
-> +Inter-Accelerator Communication
-> +-------------------------------
-> +
-> +On some platforms, multiple accelerators, each attached to a separate CL=
-A within
-> +a cluster, are also directly connected to each other via a shared bus to
-> +accelerate cooperation between accelerators. The accelerators sharing a =
-bus
-> +cannot be isolated from each other. When collaborative operations are la=
-unched
-> +on each of the participating accelerators, they synchronize over the bus=
-,
-> +stalling until all are ready.
+On Thu, Nov 19, 2026 at 01:08:59PM -0500, John Snow wrote:
+> Date: Thu, 19 Nov 2026 13:08:59 -0500
+> From: John Snow <jsnow@redhat.com>
+> Subject: [PATCH] i386/cpu: mark CPU properties as const
+> 
+> Currently, these large property tables are loaded in the read-write
+> `.data` segment; by marking them as const they can be loaded as part
+> of `.rodata` instead, where these tables can be shared between multiple
+> instances of QEMU as RssFile memory instead of RssAnon memory.
+> 
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> ---
+>  target/i386/cpu-internal.h |  2 +-
+>  target/i386/cpu-system.c   |  2 +-
+>  target/i386/cpu.c          | 30 +++++++++++++++---------------
+>  target/i386/kvm/tdx.c      |  2 +-
+>  4 files changed, 18 insertions(+), 18 deletions(-)
 
-What the patch series needs to do is tell us how this topology is discovere=
-d.
-I.e. will it be discoverable from the hardware itself, or will this topolog=
-y be
-described in device tree or ACPI for example?
+I'm fine with the "const" change, but it seems only
+cpuid2_cache_descriptors can move to .rodata:
 
-The kernel must certainly know this topology to be able to synchronize
-work across several cores? What happens if an asynchronous acceleration
-task is running on some cores and no actual CPU load is on any of them
-and the kernel want to put them to idle or shut them down? Same problem
-on the cluster level?
+$ objdump -t build/libqemu-x86_64-softmmu.a.p/target_i386_cpu.c.o | grep -wE 'feature_word_info|cpuid2_cache_descriptors|epyc_v5_cache_info|epyc_v4_cache_info'
+0000000000005fa0 l     O .data.rel.ro.local     0000000000000020 epyc_v4_cache_info
+0000000000005f80 l     O .data.rel.ro.local     0000000000000020 epyc_v5_cache_info
+0000000000000d20 g     O .rodata        0000000000001284 cpuid2_cache_descriptors
+00000000000060a0 g     O .data.rel.ro.local     0000000000006a80 feature_word_info
 
-Further since this appears to be hardware topology userspace must obtain
-this information from the kernel, not the other way around: we cannot
-have a situation where userspace "just knows" stuff about the hardware,
-keeping the kernel in the dark.
+I think it's because FeatureWordInfo and CPUCaches have pointer fields.
 
-I think this is a wider question about the discovery of these CLA:s:
-there must be a coherent story about how userspace finds it and maps
-it topology and that information must come from the kernel, so the
-kernel and userspace have the same map of the world.
+So with the commit message fixed:
 
-Right now IIUC the driver probes from discovery in the hardware from
-CPU-specific registers so does this discovery also include the topology?
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-Yours,
-Linus Walleij
+...
+
+Futhermore, for CPUCaches, it could embed the cache info by value:
+
+typedef struct CPUCaches {
+    CPUCacheInfo l1d_cache;
+    CPUCacheInfo l1i_cache;
+    CPUCacheInfo l2_cache;
+    CPUCacheInfo l3_cache;
+} CPUCaches;
+
+although the cache info will be stored in .rodata, this would also give
+each vCPU its own copy, so smp-cache would no longer modify the global
+tables. The cost is that CPUX86State grows per vCPU (from 4 pointers to
+4 full CPUCacheInfo). So, maybe there¡¯s room for further optimization,
+but that¡¯s a separate issue, not a blocker for this patch.
+
+For FeatureWordInfo, what I can think of right now is to make the
+feature name array a fixed length like:
+
+#define FEAT_NAME_SIZE 36   /* strlen("vmx-invept-single-context-noglobals") + 1 */
+
+typedef struct FeatureWordInfo {
+    FeatureWordType type;
+    char feat_names[64][FEAT_NAME_SIZE];
+    ...
+} FeatureWordInfo;
+
+Thanks,
+Zhao
+
