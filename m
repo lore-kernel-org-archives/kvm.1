@@ -1,87 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795152968;
-	b=fQKjE0t7HEmtKVsCDmqEwNgtg0OcwmBPrtRYhbdtV5xplrPxaAN0XecpQMXYcBJl7Cqa
-	 mOrU5rn86UPwZvHiwIDaDj+psXYtZdh8/UmNBC22V1DHDKD3vSkFNzQF0f3e4u2pk4+Fi
-	 UcbhHDaWmPxOlUV615fNiszqUIFXhq0NzpMORGrvg+OTk9HwPle+j58pe/a8EUSakG7K3
-	 bKEeu4SpqDrYh4oFSber5BtZO1HiNcewdPE60IKfCudzsvq7h3EgT2XkWrfLkOLBfMzPn
-	 7+egI2VwnukWsvDYExHTT/LQKqJizeohrQj4bjzfvL+p6O1oLjbrZUQYL3gqSwnyXMQ==
+	t=1795153186;
+	b=2inuGccm+61WAlCDWZJ01KOwtjksPkYHeQ6Iibme85zkcQITjDOGQ13vYTGc+dSjrv3Y
+	 iVFtxCE/S2v6Roi9AxE0ilSs8YAkR7xlMRcFm4mpsijos4fFLtj6SJ3O7ny/M7Ew7e6NR
+	 yEdytRLpv+8vND354f3Ys2CVrzjL/LIRdaHG/HX1wjUg+Hkpg30GlOgdca3dAqg+7Osmo
+	 3SKD828VBZ4tuyQXrIDGrqUtTt5kkGYJVhTa05exmxXi7XZkARdxmj1b3gu2PY8GQQSxW
+	 Dm2ITb607CuPFA6HRdIxorOW74D0lBWHxSG5jOd1uvmOsNNW1i3L3RpclhaOre1QC9g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795152968;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=tqyp9zPjjrIezYjpSAwpdJah8XiLFf3uLh8Q8IRH3Y0=;
-	b=AtE907VPzJHE0Sjm518TlplAqm0EFhiUgGhD0D2mAITRQSBtavuqIA7w77f7R6IiS+Y0
-	 JK4VyHO4upqSxvhgBWoyq5gCuM1hB5g0ud68HQ7i6rvaGvpuTXxnwu/BFIHt0zhtNOPjl
-	 pmPnabq4puz20qCsUxzDUBqRlpOueOQeMpmogODZQRZD7iAR4Ug/71GOnfirrDHscPgul
-	 87aC+om0P8Ayv7jmReFkhyytSo5pqHdRrS5rcbGEtPB4A7KoIvwgQKNSmBEit2xplbpfm
-	 F0cQygStJ0FkbO5zQ6dlieK20NwsbrRkE/ucFK4Q3dzVtC2V/0fahUuU2lfkS3S5ikw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795153186;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=ElvNMLPb9nWTefCnh+Wvm1TWF1EkTveOzrAIj5NeSzA=;
+	b=bR5lYuxVucIT+zSppDcadBeyfG2wZzhtJS6ppg6mnUKauRuL0cSxNAKBANDuUF9tOCTE
+	 8l2qI7DxD25HbfkuspJgUFNJGE4RDFlyATsvKIkyGOx8L00EmWttJ4ltAO2euTY/OIlFP
+	 4erjZ/VDvYea4ix3k/I4p7D4ON7HMnOGuKaVZveEipHLK7SR6a3o8LPLUm6f/qnbfWHmR
+	 tRkWFatx+0l7TXzPN8DFjnX+9QwokoMsjJjnn1LCh5Nlc8iYV3lqPKVJhjQNpARc2FihE
+	 cYfSqtiN6RWJbdY5JuSXj59hwYaSMl1sDcB8CmIDV6LorSEfrKzie+WFgxVgaDbdVEg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eze1Mzwt;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=l3wTozIw;
+	arc=none smtp.remote-ip=192.198.163.8
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD58606A320;
-	Fri, 20 Nov 2026 05:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA32606A325;
+	Fri, 20 Nov 2026 05:39:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DAA32606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eze1Mzwt
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9EBB1F000CF;
-	Fri, 20 Nov 2026 05:36:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795152967;
-	bh=tqyp9zPjjrIezYjpSAwpdJah8XiLFf3uLh8Q8IRH3Y0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eze1Mzwt1W+/jjpdnS4Mc6QQGi7FHo4IRG4Jao3lIte7M/tv9sgiqFgzFJgqdn1Wg
-	 CMDoNFUjH0MKHAMwCYD/g6xavaGlisejHwL4hdvtHm5aASz1Z2O5amwKoGDupAO3Pg
-	 IdEqIV9EyTe5Ck5P8UoEA4oJnX0znhaLzxBfrxFlP36lsgUFxdOFykApvtM9pKUMjo
-	 L3EoiQUfJrOlHG4kOs2MsDsE1XDy8gKBjGRm/AASTcV2+72O/kvXJKm4/bXo2bihfP
-	 31CDZ1VR4ONh2hBQe6FEep0/vD70MLSZVOEiI8zDuP09QLwQKmpmLnM8q+MaS+9kRg
-	 X1V0IXqJoOkqQ==
-Message-ID: <sashiko-outbox-224494@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 02/12] docs: ioctl-number: update sound entries
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Randy Dunlap" <rdunlap@infradead.org>
-Cc: "Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "David
- Hildenbrand" <david@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>, "Jason
- Gunthorpe" <jgg@nvidia.com>, "Leon Romanovsky" <leonro@nvidia.com>, linux-mm@kvack.org, "Jaroslav
- Kysela" <perex@perex.cz>, "Takashi Iwai" <tiwai@suse.com>, linux-sound@vger.kernel.org, "Jens
- Axboe" <axboe@kernel.dk>, "Marcel Holtmann" <marcel@holtmann.org>, "Luiz
- Augusto von Dentz" <luiz.dentz@gmail.com>, "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>, "Jason
- Wang" <jasowangio@gmail.com>, "David Heidelberg" <david@ixit.cz>, "Chas
- Williams" <3chas3@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, "Helge Deller" <deller@gmx.de>, dri-devel@lists.freedesktop.org, MPT-FusionLinux.pdl@broadcom.com, "James
- E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K.
- Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org, "Miquel Raynal" <miquel.raynal@bootlin.com>, "Richard
- Weinberger" <richard@nod.at>, "Vignesh Raghavendra" <vigneshr@ti.com>, "Zhihao
- Cheng" <chengzhihao1@huawei.com>, linux-mtd@lists.infradead.org, "Neill
- Kapron" <nkapron@google.com>, "Andrey Konovalov" <andreyknvl@gmail.com>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, "Juergen
- Gross" <jgross@suse.com>, "Stefano Stabellini" <sstabellini@kernel.org>, "Hans
- de Goede" <hansg@kernel.org>, "Arnd Bergmann" <arnd@arndb.de>, "Michael S.
- Tsirkin" <mst@redhat.com>, =?utf-8?b?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>, "Sean
- Christopherson" <seanjc@google.com>, "Paolo Bonzini" <pbonzini@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, "Jan
- Kara" <jack@suse.cz>, =?utf-8?b?VGhlb2RvcmUgVHMnbw==?= <tytso@mit.edu>, linux-ext4@vger.kernel.org, "Mike
- Marshall" <hubcap@omnibond.com>, devel@lists.orangefs.org, "Paulo Alcantara" <pc@manguebit.org>, "Namjae
- Jeon" <linkinjeon@kernel.org>, "Jaegeuk Kim" <jaegeuk@kernel.org>, "Chao Yu" <chao@kernel.org>, "Florian
- Fainelli" <florian.fainelli@broadcom.com>, "Broadcom internal kernel review
- list" <bcm-kernel-feedback-list@broadcom.com>, "Tzung-Bi Shih" <tzungbi@kernel.org>, "Benson
- Leung" <bleung@chromium.org>, "David Airlie" <airlied@gmail.com>, "Simona
- Vetter" <simona@ffwll.ch>, "Alex Deucher" <alexander.deucher@amd.com>,
- =?utf-8?b?Q2hyaXN0aWFuIEvDtm5pZw==?= <christian.koenig@amd.com>, amd-gfx@lists.freedesktop.org, "Jani
- Nikula" <jani.nikula@linux.intel.com>, "Joonas Lahtinen" <joonas.lahtinen@linux.intel.com>, "Rodrigo
- Vivi" <rodrigo.vivi@intel.com>, "Tvrtko Ursulin" <tursulin@ursulin.net>, intel-gfx@lists.freedesktop.org, "Matthew
- Brost" <matthew.brost@intel.com>, =?utf-8?b?VGhvbWFzIEhlbGxzdHLDtm0=?= <thomas.hellstrom@linux.intel.com>, intel-xe@lists.freedesktop.org, "Takashi
- Sakamoto" <o-takashi@sakamocchi.jp>
-In-Reply-To: <20261119053514.255348-3-rdunlap@infradead.org>
-References: <20261119053514.255348-1-rdunlap@infradead.org>
- <20261119053514.255348-3-rdunlap@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 20 Nov 2026 05:36:04 +0000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=l3wTozIw
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795153186; x=1826689186;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=JOXloh/WTQ18M0f0+orJ8jQWk9eyZPfHxhSzgmLwgig=;
+  b=l3wTozIwOlQzZcAXQL7AANbVSETjXCnF+BlPDw7BG/vVoi+UTII+0z2C
+   9s2swZ8PNkbi2D28lgJuT7myndMdAFiS/LjdTafX3c2fSFAH/cyWb/KWi
+   KHTL6mO/VhZY9ASGCCVaHniMXUV8Df3zFhM8HJmKN7KaKe55OZDuay46U
+   FMWIs/l2sGChWtMbWIQ4MEow5FTsi0aXVDZ6FHF2wArUeG3VSrWs8WtTk
+   iix+4eG00KcUsNpv7x2NS9QOD9AOcym5m8HCljZzep9p3HDxBVX4of6up
+   SZvpIhGWcA+26+4oLLSMwyaKPGvQuq6RKfcrNXJO8iiiwz0winuOQHc0J
+   Q==;
+X-CSE-ConnectionGUID: DE6hYKnITSKP6NJL3OZ2gg==
+X-CSE-MsgGUID: PlkqC3YBQKiGkJyFx2C+0Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="3926486"
+X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
+   d="scan'208";a="3926486"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 21:39:45 -0800
+X-CSE-ConnectionGUID: NCD7hbrERneuQrgdNmaJMQ==
+X-CSE-MsgGUID: qCE/ag8EST2VFpCAsOOiuA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
+   d="scan'208";a="12327914"
+Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2026 21:39:36 -0800
+Message-ID: <2d8af908-4dd5-43a9-b618-d1ee4189f6ba@linux.intel.com>
+Date: Fri, 20 Nov 2026 13:39:34 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -90,51 +71,86 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, Alex Williamson <alex@shazbot.org>,
+ Alexey Kardashevskiy <aik@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
+ Krishna Reddy <vdumpa@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+ Nicolin Chen <nicolinc@nvidia.com>, Robin Murphy <robin.murphy@arm.com>,
+ Samuel Ortiz <sameo@rivosinc.com>,
+ Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+ Steven Price <steven.price@arm.com>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Vasant Hegde <vasant.hegde@amd.com>, Will Deacon <will@kernel.org>,
+ Xu Yilun <yilun.xu@linux.intel.com>, Ashish Kalra <ashish.kalra@amd.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, iommu@lists.linux.dev,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+ linux-tegra@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH v9 10/13] iommufd/viommu: Allow PCI TSM backends to
+ provide vIOMMU operations
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+ linux-coco@lists.linux.dev
+References: <20261116081935.85372-1-aneesh.kumar@kernel.org>
+ <20261116081935.85372-11-aneesh.kumar@kernel.org>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20261116081935.85372-11-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] docs: ioctl-number: incomplete sequence range for
-  sound/scarlett2.h
---
+On 11/16/2026 4:19 PM, Aneesh Kumar K.V (Arm) wrote:
+> In confidential-computing configurations, a vIOMMU may be implemented by
+> a TSM driver rather than by the physical IOMMU driver. Such an
+> implementation also needs the TSM identity when creating and validating
+> vdevices.
+> 
+> Allow VIOMMU_ALLOC to first query the TSM associated with the target PCI
+> device for vIOMMU operations. Fall back to the physical IOMMU driver
+> when the TSM does not provide operations for the requested vIOMMU type.
+> 
+> Resolve the PCI TSM association under pci_tsm_rwsem, take a TSM device
+> reference, and pin the module providing the operations. Store the TSM
+> device in the vIOMMU. Release the device reference and module pin on
+> allocation failure, fallback to the physical IOMMU driver, or vIOMMU
+> destruction. Drop the device reference before releasing the module pin,
+> since the final put may call into the backend module.
+> 
+> The device reference preserves the TSM allocation. Backends providing
+> vIOMMU operations must not unregister their TSM while the module is pinned,
+> since the reference does not prevent backend resource teardown.
+> 
+> Cc: Jason Gunthorpe<jgg@ziepe.ca>
+> Cc: Kevin Tian<kevin.tian@intel.com>
+> Cc: Joerg Roedel<joro@8bytes.org>
+> Cc: Will Deacon<will@kernel.org>
+> Cc: Robin Murphy<robin.murphy@arm.com>
+> Cc: Bjorn Helgaas<bhelgaas@google.com>
+> Cc: Alexey Kardashevskiy<aik@amd.com>
+> Cc: Lukas Wunner<lukas@wunner.de>
+> Cc: Xu Yilun<yilun.xu@linux.intel.com>
+> Cc:iommu@lists.linux.dev
+> Cc:linux-pci@vger.kernel.org
+> Signed-off-by: Aneesh Kumar K.V (Arm)<aneesh.kumar@kernel.org>
+> ---
+>   drivers/iommu/iommufd/viommu.c | 35 +++++++++++++++++++++++++++-----
+>   drivers/pci/tsm/core.c         | 22 ++++++++++++++++++++
+>   drivers/virt/coco/tsm-core.c   | 37 ++++++++++++++++++++++++++++++++++
+>   include/linux/iommufd.h        |  2 ++
+>   include/linux/pci-tsm.h        | 24 ++++++++++++++++++++++
+>   include/linux/tsm.h            | 25 +++++++++++++++++++++++
+>   6 files changed, 140 insertions(+), 5 deletions(-)
 
-commit 93a4f635ed001735e939a3dc4a2526e8af9e9bd0
-Author: Randy Dunlap <rdunlap@infradead.org>
+This change spans both PCI/TSM and IOMMUFD. Could it be split into
+separate patches for each subsystem—for example, one adding the TSM
+lookup interface and another updating IOMMUFD to use it?
 
-docs: ioctl-number: update sound entries
-
-This commit updates the ioctl-number documentation table with additional
-sound subsystem files and sequence number ranges.
-
-> diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documen=
-tation/userspace-api/ioctl/ioctl-number.rst
-> index e1d56d5cccd14..f29d2c17ca7b9 100644
-> --- a/Documentation/userspace-api/ioctl/ioctl-number.rst
-> +++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
-
-[ ... ]
-
-> @@ -204,6 +209,9 @@ Code  Seq#    Include File                           =
-                  Comments
->  'S'   80-81  scsi/scsi_ioctl.h                                         c=
-onflict!
->  'S'   82-FF  scsi/scsi.h                                               c=
-onflict!
->  'S'   00-7F  sound/asequencer.h                                        c=
-onflict!
-> +'S'   20-52  sound/core/seq/seq_compat.c                               c=
-onflict!
-> +'S'   60-63  sound/scarlett2.h                                         c=
-onflict!
-
-[Severity: Low]
-Should the sequence range for sound/scarlett2.h be 60-64?
-include/uapi/sound/scarlett2.h also defines
-SCARLETT2_IOCTL_GET_ERASE_PROGRESS with sequence number 0x64:
-
-include/uapi/sound/scarlett2.h:
-#define SCARLETT2_IOCTL_GET_ERASE_PROGRESS \
-	_IOR('S', 0x64, struct scarlett2_flash_segment_erase_progress)
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261119053514.2553=
-48-1-rdunlap@infradead.org?part=3D2
+Thanks,
+baolu
