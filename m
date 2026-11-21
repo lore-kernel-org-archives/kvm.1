@@ -1,84 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795293973;
-	b=aRRVRIvfHMsc9KQNx40bvxCGFff2dlKKWbV7BeyzlNJ7v/Tr+KWXTUKMDCLY+NodkmqT
-	 PhrEE18lwTlAPS4y9osNzLzWx9Qwv2boPVZcIv/rl2UwKRDArRFcriXrdcjJgRjZdjCgJ
-	 kvOV6Pl8tohMpZsm7w3oaMUf8dbD/ix8/CMu0RjKUKefwHGCQVPEEkdRB5e8SNyVXTXLj
-	 eFTJqeOUYrvtcueiWVmY5ItrzsOBDMl9Ck23XEfWqE2du7g/Tpb0/K3WApBBHXviUz93V
-	 ABmJCGbWqsKWLKHzGPkmcwNFgVkV5JUpoirksV6va0hzRfezu0silVbbUniXexsvUog==
+	t=1795293976;
+	b=GzDHiXLS+cNL+KHThlHQUKG0X4hlQ1+gzfbOPIfak8zl5uonWlaw9h6Be6FA65Iokinw
+	 ixMjVHw8Xa1rIecC1Q+SeMdUgIula4q2gsjiicuaBojOqtAD5Iw07OHY9HkwNWAGEk3n9
+	 DGI2iCQw63GD8TWg6sF9JkzmWFvfotIYJSeVSNV/w8jujOCUyqrWhOwvNcomQtNPLevc7
+	 2ptN7FSfEWaz3xJWQ9LBVzCfQbNQMzxjGM0A3Yo3WdY1Pglerx5PPZqh+cx7Wlwnwywri
+	 fkFxGgrG8roSei4wiC5flYtfWZya+mrmP8upYHvU/3PsNPImgoiw35y71s8Gl/76dfw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795293973;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795293976;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=6cw4bVM/elmiYBT/hpISiGamNAca35rw9WaolQpyJgc=;
-	b=c8Bx6ivHtKiDD3vG3ZtQETr8ANbK6XqOAZn3a+hlg85ZJFbX1TfgnVtl+GdLZeNbqePb
-	 scFNPoRCtXR1Th/VzhfCuaHnGZOgNkUhdWjfvxTzrXwY6V0SCUoYH34wi0EBpFuy9o/bw
-	 U73d6cLn5Lhm0YFQffk2G3rOka2uh0mAXnv4qLlThYCTupcZ2c9wx3EWF+GHupKsE6NEz
-	 N4srHweTncJkQByoomw79zav87ZQOvg7+mQKfKjLfLIN1ilkGV46J6faP88uUKEB+01zq
-	 LmtZS1KBbuqfCTFxXJ7j2QnlJWJE2SteH+iKmxUAMS7AG56t1yRXkHblwkLKpLyvGOg==
+	bh=dR4oPwMzXZwkzKBHINmHc4eivvVzlJdhh6T4Ur7acMs=;
+	b=fcy34fflcBTlbycy5d1bX8Mwwo9XYpcW2LoAIKrzCbuKE3FCABK+vcX90HjdbgREtzFe
+	 4U4lxOUtFaqaWX/r94bqXWVzmMnFkC6Ts8FgH2yojX7nhyB3lt8o7SP+5E1Zrm4bqEb/T
+	 WmlGmxot+yQ3C5TQcXouzQs6KKCztzS9/DeQ+HIzepLn87R3aWZOckYwi3xPrtZc2BHdh
+	 LuxplTbgJNhsBJHeMhfLKocEEZ2ius7P9ekPaAaWddrwaZjdgxfqqMKvYcv4sCAoOcPkr
+	 /39pcIlK//LqmLb4hAd8RIDcTH/H5XTmgmuCPlyjX9tVwMfkNufy6UKAr3yr1M3z4ZQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="bDxoDuF/";
-	arc=none smtp.remote-ip=209.85.128.48
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=a8SgEOwj;
+	arc=none smtp.remote-ip=209.85.128.49
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266F5606A320
-	for <kvm@vger.kernel.org>; Sat, 21 Nov 2026 20:46:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 266F5606A320
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B2A606A320
+	for <kvm@vger.kernel.org>; Sat, 21 Nov 2026 20:46:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63B2A606A320
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bDxoDuF/
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4b467581b98so18773885e9.0
-        for <kvm@vger.kernel.org>; Sat, 21 Nov 2026 12:46:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=a8SgEOwj
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a2153c8525so15251665e9.3
+        for <kvm@vger.kernel.org>; Sat, 21 Nov 2026 12:46:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795293971; x=1795898771; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1795293975; x=1795898775; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=6cw4bVM/elmiYBT/hpISiGamNAca35rw9WaolQpyJgc=;
-        b=bDxoDuF/TNuE0QPVD3HoUpk7igtlTF7aoLO70tJbpRbnkpZqbh9YA4+ZJS7+9M4uxM
-         oVipd+R4Zcbe2N+ru45RwOPhIhOTKm2mE41iP/I4rgqTeJ8uJtDIhTw4udWuiBfx4L8I
-         9iHg5s5uh+crKurWI1Sy6sayuLlSnyJcIWQ0ROFSB0Vnj3GNA9e2GPu7zlMtqd+b+Ipm
-         xpZLeLru1/me2ZSxajG8xdMTQ5xnro7gV8bz1Qkwju3rTbe8xFHCVJafNRowNWJNUd5G
-         VGGlWRjJIyPLjumhel1Db6/qxa3aP3Xq6phxrcLuMRPwwSe07cwEdVBGLGkoPn929jSL
-         8h5g==
+        bh=dR4oPwMzXZwkzKBHINmHc4eivvVzlJdhh6T4Ur7acMs=;
+        b=a8SgEOwjuzFBX0s+z/nEHP0QBO3OR4JGOUscVQDIL3zKkdqvNqr9+TeMwoSRbXI4hf
+         pkpHcTj35LDMIko1V5ClEEjqP2ukQ6GZpZ5MdckhTki3xkPGS6zaW3Ob8h7+cwOTwoCl
+         HVf1NFAVEPt6OQzmkIGSQq5j12M8APa+0fFeCPAs/qAF2E4GCjepq5okG4Ee0QS616te
+         910kxm9wr1EySRHR6KoN5Zw7lTqK8ovDE2FRAewW274yDKZYiDSTexccXiNvr6ve7Fa2
+         mFxLqzJJfPdEf/ghNgZnIjmTtWXr+46Y66yn9cjw/saxPA06zbPEsFOPNJ4/BCrs8oMa
+         LZ4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795293971; x=1795898771;
+        d=1e100.net; s=20260707; t=1795293975; x=1795898775;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6cw4bVM/elmiYBT/hpISiGamNAca35rw9WaolQpyJgc=;
-        b=O5QyOsp1SgL2vn026s00nC3Kao3c8rVPSTByBCfzP9OqU67IhPNtB6g2MjyYfkFUVQ
-         rtJt7y3VT82JbWJsHWbFlyh9pZ9yyRSqSk8UrwW+CO48ohfnud5SVb4jmvpXpy1ArEEK
-         cxe8ASUDf7zNiiaQVIr3+4SjA7jpRFpuWAhNNwx16B9eLObNlcJmrpLa0fhCdDUzad5F
-         ThpOIS56cXaafPDpZOIm6A9CIlg4vMM7Z/4e38iYmH9J13WcpOSLGVSkfLDVbeh846yj
-         Nbx81rMfZ53HCuNnNjNQcW7L9PUc7fm6ShUF6tz8SpLGtZlU0/oPBsIPw/AHPNl9pz9u
-         u6qA==
-X-Forwarded-Encrypted: i=1; AL+hErFucUdwumyM7yovwly7rR3DTgOww7fFFEm848x7rJ4vcVIlwlUDtC0Uw+8Ez1l8WXcRONc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8T7us7T3BYqLx6Z5HgPSfJqxCOEYhsasZjRSpMAJ6wYFyCjR4M
-	7OSmRT0m2CeIZR1S3j/I+4qxRPEjCjSmMKb3ln5JjJ2f4KRmcQXLrLFW
-X-Gm-Gg: AZFdTZcoUbLx5hKNGd+XXsxDZO8EyhsJoU2bpgVh/Kdhefgqxo66k3Va16feQdJEEMu
-	WbcQj5lkkwLUKRlBowE9nTPJalAoJpIOOKqA6lWOkQWKaVdKWMGZOEX8wvSr4sT/rRw4ezBRkv/
-	WhoriLEb8eUR2EQpPeegLvmgXRyJmAK8OVQOfS2XMiM8j/mio/k1nrWCEeD8Z1QbKo7wOo5+2qU
-	5ejY76bP579gpxNrK134abDCUuNvCqr4tesOBStOM1xHzsSWkB7Lr/jhH6aHaT9cmlTsQ1nJ3vh
-	3e1NAu5Kx94RvBQqJ7JEhrE0VsvWNjOvlMvjWMZ+aD23d9mQZ5nbpk3pQhzLQf9E2irowrmA1uV
-	0sjxtJE9MgGBEJA4m/8F/HazJufZDEKw0nNgL1TH2lsKiUapv40/0ljUbE8XN3iw0V2XisQUntj
-	TVwXlp/LoZgzLPwdY9q9x222RkwuNG0rlJXAfTJBghp+ZgpgalS58XqTQkSENS46pCQh5arbo3q
-	1mKVExHsGPbN3LEfHXM1igQ1y8gEN6yCRfsHLuuNhtcIe4X614XDERRe2eMomcgt7jfSS8QhZPv
-	0QM0lNR6dWVRS3it6cSQz7q/qXkk5LO1i6fch63N8Wr9e37z86OVXLtceixkr8Hlx/bE5Y/10Ja
-	fT3ukpHjfmFLl9dJhG3IOTqA=
-X-Received: by 2002:a05:600c:190d:b0:4ba:2bfc:c8b5 with SMTP id 5b1f17b1804b1-4bb888267aemr149715085e9.10.1795293971472;
-        Sat, 21 Nov 2026 12:46:11 -0800 (PST)
+        bh=dR4oPwMzXZwkzKBHINmHc4eivvVzlJdhh6T4Ur7acMs=;
+        b=pn2mGC+RMkQ/jaZjA2C3x7UTOxEhOQ18Cy7+77Q/XkW/ZWajqN+4YOyBUR3q5udowe
+         EAhrOTfT1W8XeRPB7dFwxroPRSNGITnid3xY6EF/U/R1fxHXD9R8352H7++esqpOZX72
+         rW0jMCOOY7zXgJMYCbnkyOOs83ujOc5tZsmSg2a5aIZCQhBi0BZY/E/OGyUHoM1Ur69+
+         nZzk+PInT948Hpqmaxo2X4giDEi8zWNylpFDaVd7m+BX40k+4F1bidg5eT1HN//9hHY/
+         ykU6J70MXDUZp0zbeD90/Hul7lAGLKspisuO1DarIFuHREzHdP7+ZMB2UdfxWX8YtAoN
+         u6Cg==
+X-Forwarded-Encrypted: i=1; AL+hErFZU6DKHK0oJuhj38NbTms+dM30wHY757WweIp+A9f4+dIptQaiKpp0LPvEdNPi5tgmoNM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8bF7qWHZE06TSr0ZWE3u0SvL4ohzwutQ6BEQR0Rxy9DZq1R6tZ
+	IFniY+9WCBHOMnnBDQIzUQ78KR851eR10eJFiprJmYckGa7sEqJzc0pb
+X-Gm-Gg: AZFdTZcuiRDyeYEQTIJaRngQeCHEGRC6jGsL2j/nLaYiV3Q7evCTc00xDt+ntCir5Mi
+	EqX9SnEoMBs/dtv5UhP6HKk82tcogaGh0OgMgjZMTrFFB/xyj0uh+QeU+eBkhYBKk2Ui+QJE9wa
+	lck8uxBpVyARqaAOzR1qwBIA+BXTYdpQHTMYJZQ2Vmn4Hg7WpRxEQXAb+bGq8wYjEa5GiQFMrEV
+	ROngXyJOmikmUMNgPzlkHpTZog8/yMlGexyFMJMNZ/M9YCk09+vkgFutkHBsEpY7qUqWRtYm9Um
+	IIrjpx1uCsZ0fR+zfavr0FZGZxbOlHIHPdThVbH1M1OwLhh+oNSom27fl1YVOvQKsr/6oiBaaC/
+	BXyrIbU5TNjK3+Lz+edrm08n2dmftf7oYpk4ofriq070Dfq/r+3kZjNMaUxbLv/LRZfT+e2cs0b
+	JGWkbJwHxRsHCebqJa/s9MrDMkYQLMptw6IvAZHvHP9dniwSPJsovuKlr/I8o12Pv4koP5AQpvT
+	/gDQS5En9eiVClaHdGWNaXjUIaIVyRz0Tw8oRh3dvfF+gAIy3TRpJptUaEjI1S0bownY2Xu9Rmr
+	rV4PG0d4Yb7J2gJP6yzR7SbRt7K8tLYVaOJGOXmCzYacczwwgK1UJNbE5od3xESu0jH+LpdUPmO
+	1OHIsMgle7Vhg7rMO2sBQMPg=
+X-Received: by 2002:a05:600c:4515:b0:4bb:6f67:ca0b with SMTP id 5b1f17b1804b1-4bb888267f4mr158170395e9.29.1795293974532;
+        Sat, 21 Nov 2026 12:46:14 -0800 (PST)
 Received: from PKL-HASEEBA-LT.. ([39.36.59.78])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb884b39b6sm180652385e9.12.2026.11.21.12.46.08
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb884b39b6sm180652385e9.12.2026.11.21.12.46.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Nov 2026 12:46:11 -0800 (PST)
+        Sat, 21 Nov 2026 12:46:14 -0800 (PST)
 From: Haseeb Ashraf <haseebashraf091@gmail.com>
 To: Peter Maydell <peter.maydell@linaro.org>,
 	qemu-arm@nongnu.org
@@ -91,9 +91,9 @@ Cc: Haseeb Ashraf <haseeb.ashraf@siemens.com>,
 	Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>,
 	qemu-devel@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [RFC PATCH v2 1/3] target/arm/kvm: Add kvm_arm_el2_e2h0_supported()
-Date: Sun, 22 Nov 2026 01:45:59 +0500
-Message-ID: <20261121204601.741616-2-haseebashraf091@gmail.com>
+Subject: [RFC PATCH v2 2/3] target/arm/kvm: Let SYSREG_ID_AA64MMFR1_EL1_VH select an nVHE EL2
+Date: Sun, 22 Nov 2026 01:46:00 +0500
+Message-ID: <20261121204601.741616-3-haseebashraf091@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261121204601.741616-1-haseebashraf091@gmail.com>
 References: <20261121095636.289814-1-haseebashraf091@gmail.com>
@@ -111,83 +111,251 @@ Content-Transfer-Encoding: 8bit
 
 From: Haseeb Ashraf <haseeb.ashraf@siemens.com>
 
-Add a helper reporting whether KVM can limit a nested guest to an
-nVHE-only EL2 (HCR_EL2.E2H RES0) through the
-KVM_ARM_VCPU_HAS_EL2_E2H0 vCPU feature.  KVM advertises this with
-KVM_CAP_ARM_EL2_E2H0.
+KVM runs a nested guest with a VHE-only EL2 (HCR_EL2.E2H RES1) unless
+KVM_ARM_VCPU_HAS_EL2_E2H0 is requested at KVM_ARM_VCPU_INIT time.  With
+that feature FEAT_VHE is hidden: ID_AA64MMFR1_EL1.VH reads 0 and
+HCR_EL2.E2H is RES0.  Guest hypervisors which only support nVHE, such as
+Xen, can only run in the latter mode.
 
-The next patch uses it to let the user select an nVHE-only EL2.
+Do not add a dedicated machine or CPU option for it.  Derive the vCPU
+init feature from the ID register field selected by the user instead:
+SYSREG_ID_AA64MMFR1_EL1_VH=0 requests KVM_ARM_VCPU_HAS_EL2_E2H0.
 
+KVM does not let userspace write ID_AA64MMFR1_EL1.VH, so the generic
+"writable fields only" rule would not create the property.  Expose it
+explicitly when the host supports KVM_CAP_ARM_EL2_E2H0.  As KVM already
+reports the requested value after vCPU init, applying the property does
+not need a KVM_SET_ONE_REG for this field, and the query-cpu-model-expansion
+dry run on the scratch vCPU skips it.  Setting VH=0 without
+virtualization=on is rejected.
+
+Only ID_AA64MMFR1_EL1.VH is updated in QEMU's copy of the ID registers.
+Other fields which KVM derives from E2H0 (e.g. ID_AA64MMFR4_EL1) are
+not refreshed.
+
+Suggested-by: Marc Zyngier <maz@kernel.org>
+Suggested-by: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
 Signed-off-by: Haseeb Ashraf <haseeb.ashraf@siemens.com>
 ---
- target/arm/kvm-stub.c |  5 +++++
- target/arm/kvm.c      |  5 +++++
- target/arm/kvm_arm.h  | 13 +++++++++++++
- 3 files changed, 23 insertions(+)
 
-diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
-index c9387f5c8c..88e35909c4 100644
---- a/target/arm/kvm-stub.c
-+++ b/target/arm/kvm-stub.c
-@@ -42,6 +42,11 @@ bool kvm_arm_el2_supported(void)
-     return false;
- }
+v2:
+ - Use Eric Auger's SYSREG framework instead of a dedicated vhe
+   machine/CPU property.
+ - Expose the init-driven VH field only when KVM supports E2H0.
+ - Add the virtualization=on consistency check and document VH=0.
+ docs/system/arm/cpu-features.rst | 22 ++++++++++++++
+ target/arm/cpu-idregs.h          | 31 +++++++++++++++++++
+ target/arm/cpu64.c               | 51 +++++++++++++++++++++++++-------
+ target/arm/kvm.c                 | 24 +++++++++++++--
+ 4 files changed, 114 insertions(+), 14 deletions(-)
+
+diff --git a/docs/system/arm/cpu-features.rst b/docs/system/arm/cpu-features.rst
+index 13454783cf..cde26c04b9 100644
+--- a/docs/system/arm/cpu-features.rst
++++ b/docs/system/arm/cpu-features.rst
+@@ -579,6 +579,28 @@ either not writable with the specific host kernel, unknown to this QEMU
+ build, or intentionally not exposed because it overlaps a legacy composite
+ option.
  
-+bool kvm_arm_el2_e2h0_supported(void)
-+{
-+    return false;
-+}
++Selecting an nVHE-only EL2
++--------------------------
 +
- /*
-  * These functions should never actually be called without KVM support.
-  */
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 36a5faf537..8ef5597c68 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -2178,6 +2178,11 @@ bool kvm_arm_el2_supported(void)
-     return kvm_check_extension(kvm_state, KVM_CAP_ARM_EL2);
- }
++With ``-machine virt,virtualization=on``, KVM presents a VHE-only EL2 to
++the guest (``HCR_EL2.E2H`` is RES1) by default.  A guest hypervisor which
++only supports nVHE, such as a type-1 hypervisor like Xen, needs VHE to be
++hidden.  This is done by setting ``ID_AA64MMFR1_EL1.VH`` to 0::
++
++  $ qemu-system-aarch64 -M virt,virtualization=on -accel kvm \
++        -cpu host,SYSREG_ID_AA64MMFR1_EL1_VH=0
++
++QEMU then requests ``KVM_ARM_VCPU_HAS_EL2_E2H0`` when initializing the
++vCPUs, so that ``HCR_EL2.E2H`` is RES0 for the guest.  Leaving the
++property unset, or setting it to 1, keeps the default VHE-only EL2.
++Setting it to 0 requires ``virtualization=on``.
++
++KVM does not allow userspace to write ``ID_AA64MMFR1_EL1.VH`` directly, so
++this is an exception to the rule that only writable fields get a
++property: the ``SYSREG_ID_AA64MMFR1_EL1_VH`` property is exposed when the
++host kernel supports ``KVM_CAP_ARM_EL2_E2H0``.  Without this support the
++property does not exist.
++
+ A note on compatibility
+ -----------------------
  
-+bool kvm_arm_el2_e2h0_supported(void)
-+{
-+    return kvm_check_extension(kvm_state, KVM_CAP_ARM_EL2_E2H0);
-+}
-+
- bool kvm_arm_mte_supported(void)
- {
-     return kvm_check_extension(kvm_state, KVM_CAP_ARM_MTE);
-diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-index 2e7e02e4a4..0916a5fdb4 100644
---- a/target/arm/kvm_arm.h
-+++ b/target/arm/kvm_arm.h
-@@ -200,6 +200,14 @@ bool kvm_arm_mte_supported(void);
-  * Returns true if KVM can enable EL2 and false otherwise.
-  */
- bool kvm_arm_el2_supported(void);
+diff --git a/target/arm/cpu-idregs.h b/target/arm/cpu-idregs.h
+index 465ec83c97..76d7b94858 100644
+--- a/target/arm/cpu-idregs.h
++++ b/target/arm/cpu-idregs.h
+@@ -73,4 +73,35 @@ int arm_cpu_apply_sysreg_props(ARMCPU *cpu, ARMSysregPropApplyFn accel_apply_fn,
+ bool arm_cpu_validate_sysreg_prop(ARMCPU *cpu, ARM64SysRegField *field,
+                                   uint64_t value, Error **errp);
+ 
++/**
++ * arm_cpu_sysreg_prop_get:
++ *
++ * Look up the value the user set through a SYSREG_<IDREG>_<FIELD>
++ * property, before it is applied to the vcpu.  Accelerators use it to
++ * derive vcpu init settings from the requested ID register values.
++ *
++ * @cpu: vcpu the property belongs to
++ * @reg_idx: ID register index (<REG>_EL1_IDX)
++ * @shift: lowest bit of the field
++ * @value: set to the requested field value when the property was set
++ *
++ * returns true if the property was set by the user
++ */
++bool arm_cpu_sysreg_prop_get(ARMCPU *cpu, int reg_idx, int shift,
++                             uint64_t *value);
 +
 +/**
-+ * kvm_arm_el2_e2h0_supported:
++ * arm_cpu_sysreg_field_init_driven:
 + *
-+ * Returns true if KVM can limit EL2 to nVHE (HCR_EL2.E2H RES0) through
-+ * KVM_ARM_VCPU_HAS_EL2_E2H0, and false otherwise.
++ * Some fields cannot be written with the accelerator once the vcpu exists
++ * but are selected through a vcpu init feature instead (for instance
++ * ID_AA64MMFR1_EL1.VH with KVM_ARM_VCPU_HAS_EL2_E2H0).  Their SYSREG
++ * property is exposed even if the field is not writable.
++ *
++ * @field: ID register field
++ *
++ * returns true if @field is selected at vcpu init time on this host
 + */
-+bool kvm_arm_el2_e2h0_supported(void);
- #else
- 
- static inline bool kvm_arm_aarch32_supported(void)
-@@ -216,6 +224,11 @@ static inline bool kvm_arm_el2_supported(void)
- {
-     return false;
- }
++bool arm_cpu_sysreg_field_init_driven(ARM64SysRegField *field);
 +
-+static inline bool kvm_arm_el2_e2h0_supported(void)
-+{
-+    return false;
-+}
  #endif
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index c08eba7010..1fc3a4bb7c 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -835,6 +835,21 @@ static ARM64SysRegField *arm_sysreg_get_field(ARM64SysReg *reg, int bit)
+     return NULL;
+ }
  
++bool arm_cpu_sysreg_prop_get(ARMCPU *cpu, int reg_idx, int shift,
++                             uint64_t *value)
++{
++    gpointer value_ptr;
++    uint64_t key = IDREG_FIELD_KEY(reg_idx, shift);
++
++    if (!g_hash_table_lookup_extended(cpu->sysreg_props,
++                                      GUINT_TO_POINTER(key), NULL,
++                                      &value_ptr)) {
++        return false;
++    }
++    *value = GPOINTER_TO_UINT(value_ptr);
++    return true;
++}
++
  /**
+  * arm_cpu_validate_sysreg_prop:
+  *
+@@ -879,6 +894,13 @@ bool arm_cpu_validate_sysreg_prop(ARMCPU *cpu, ARM64SysRegField *field,
+             error_setg(errp, "%s is non null whereas pmu is unset", propname);
+             return false;
+         }
++    /* nVHE-only EL2, selected at vcpu init time */
++    } else if (!strcmp(propname, "SYSREG_ID_AA64MMFR1_EL1_VH")) {
++        if (value == 0 && !cpu->has_el2) {
++            error_setg(errp, "%s=0 requires -machine virtualization=on",
++                       propname);
++            return false;
++        }
+     /* aarch64=off */
+     } else if (!arm_feature(&cpu->env, ARM_FEATURE_AARCH64)) {
+         if ((!strcmp(propname, "SYSREG_ID_AA64PFR0_EL1_EL0") ||
+@@ -988,17 +1010,9 @@ static void get_sysreg_prop(Object *obj, Visitor *v,
+     int index = field->index;
+     int lower = field->shift;
+     int length = field->length;
+-    gpointer value_ptr;
+     uint64_t value;
+-    uint64_t key = IDREG_FIELD_KEY(index, lower);
+-    gboolean exists;
+-
+-    exists = g_hash_table_lookup_extended(cpu->sysreg_props,
+-                                          GUINT_TO_POINTER(key), NULL,
+-                                          &value_ptr);
+-    if (exists) {
+-        value = GPOINTER_TO_UINT(value_ptr);
+-    } else {
++
++    if (!arm_cpu_sysreg_prop_get(cpu, index, lower, &value)) {
+         uint64_t mask = MAKE_64BIT_MASK(lower, length);
+         uint64_t *idregs = cpu->isar.idregs;
+ 
+@@ -1028,6 +1042,20 @@ static const char * const aarch64_sysreg_prop_skip_list[] = {
+     "SYSREG_ID_AA64ISAR2_EL1_GPA3",
+ };
+ 
++/*
++ * Fields which KVM does not let userspace write with KVM_SET_ONE_REG,
++ * but which QEMU can still select through a vcpu init feature, see
++ * kvm_arm_vcpu_prepare_init_features().  ID_AA64MMFR1_EL1.VH is hidden
++ * by KVM_ARM_VCPU_HAS_EL2_E2H0, which requests an nVHE-only EL2.
++ */
++bool arm_cpu_sysreg_field_init_driven(ARM64SysRegField *field)
++{
++    /* Compare the field first: this runs for every ID register field */
++    return field->index == ID_AA64MMFR1_EL1_IDX &&
++           field->shift == R_ID_AA64MMFR1_VH_SHIFT &&
++           kvm_enabled() && kvm_arm_el2_e2h0_supported();
++}
++
+ static bool aarch64_sysreg_prop_skipped(const char *prop_name)
+ {
+     for (int i = 0; i < ARRAY_SIZE(aarch64_sysreg_prop_skip_list); i++) {
+@@ -1084,7 +1112,8 @@ aarch64_add_one_idreg_properties(Object *obj, ARM64SysReg *reg,
+         }
+         map = map & ~field_mask;
+ 
+-        if (writable_only && !field_writable_mask) {
++        if (writable_only && !field_writable_mask &&
++            !arm_cpu_sysreg_field_init_driven(field)) {
+             continue;
+         }
+ 
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 8ef5597c68..bb4ca7e8d1 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -1324,9 +1324,15 @@ bool kvm_idreg_write_scratch_vcpu(ARMCPU *cpu, int cpufd,
+         return false;
+     }
+ 
+-    ret = kvm_arm_override_idreg_field(cpufd, field, newfv, errp);
+-    if (ret) {
+-        return false;
++    /*
++     * Init-driven fields (e.g. VH) are selected through a vcpu init
++     * feature, which the scratch vcpu may not have: do not write them.
++     */
++    if (!arm_cpu_sysreg_field_init_driven(field)) {
++        ret = kvm_arm_override_idreg_field(cpufd, field, newfv, errp);
++        if (ret) {
++            return false;
++        }
+     }
+ 
+     cpu->isar.idregs[field->index] =
+@@ -2239,7 +2245,19 @@ static void kvm_arm_vcpu_prepare_init_features(ARMCPU *cpu)
+                                       1 << KVM_ARM_VCPU_PTRAUTH_GENERIC);
+     }
+     if (cpu->has_el2 && kvm_arm_el2_supported()) {
++        uint64_t vh;
++
+         cpu->kvm_init_features[0] |= 1 << KVM_ARM_VCPU_HAS_EL2;
++        /*
++         * KVM exposes a VHE-only EL2 by default.  An nVHE-only EL2 can
++         * only be selected at vcpu init time, so derive it from the
++         * requested ID_AA64MMFR1_EL1.VH value.
++         */
++        if (arm_cpu_sysreg_prop_get(cpu, ID_AA64MMFR1_EL1_IDX,
++                                    R_ID_AA64MMFR1_VH_SHIFT, &vh) &&
++            vh == 0) {
++            cpu->kvm_init_features[0] |= 1 << KVM_ARM_VCPU_HAS_EL2_E2H0;
++        }
+     }
+ }
+ 
 -- 
 2.34.1
 
