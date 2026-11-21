@@ -1,108 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=173.38.203.68
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795274696;
-	b=teU1yrR9me7d/YFenMLGVizMjCmR+ac6U8O4lg7YpmtF0FB8xqTH4FCQG9PCEcHunxt0
-	 V6tKwFky434IeKbOLn12ROGiVpNHX39aImxdWppIJ/SDD93STgN+yBHwoXMlMn7awZnkq
-	 +G6pmFc1kpdjtyZfEavP1fGpQtbywTn+5AUJCY9SnQJqS9UMkpUbQZijE6QQjFkAq48gq
-	 2gzgI6Nk9TB32FhdcBfvGmdFA3aLMPp5Z0Lmd1uUXTNKcT5EjATxv4GwOgUEYA9+ptX4V
-	 OFBKPnvXBo8FtJd8inDaL9OQaEV9iy2RT1Mwh2xpXtLcLJu0Xj7ije3zRrt3Nn7I77g==
+	t=1795276171;
+	b=JgA6Iv6MEC8ax3GnXiQo38ZQhXnQKOLdCrJ2n+1vPqPMVnAgNTpMgW73/C1AEM2OyUs6
+	 J07ywgZiox2gzyZgXnPRnN7D4ZKUO4RKuC0lV0T1fQ47a0gyubncKWrBpuQAIoxAjUjcB
+	 +kY4k56AVgTOuW5wUHxkpB9VsS25ifGL4BMdKssO9WBffvpi/P7XUwUnTGmZz0BtmUFYH
+	 GukXE1zNCQg5KjBSPK1ghrE4DPuM8UFZXwauNlkJjZqFl1n6bB8wc4pfz7h3Teh6HBycK
+	 7qAYvKFn7ezJ7rlRVsfCIicycJEb/LvxQLf5U0Nr+z1DmGQXYTt01jiGqkr0kP89wiA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795274696;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IPAS-Result:IronPort-Data:IronPort-HdrOrdr:X-Talos-CUID:
-	 X-Talos-MUID:X-IronPort-Anti-Spam-Filtered:X-IronPort-AV:Received:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:
-	 X-Outbound-Client-TLS:X-Outbound-SMTP-Client:X-Outbound-Node;
-	bh=1m+4+4Gjf2WUHXsHYkn5LWKFpyyZZgpg0hPU7qpx32Q=;
-	b=SaHCzDA3j2qW6n6Hu+lsQrLFYyHVjQp1+6yn14hQ56h8o5lBqV3X+/U81iueZj+crQf4
-	 QPnfU16DwIGqCKbyhvfMaaKNnAtFkggMlOdbVjMD8KG25hBQ+ao8pE656X7bLiR4eBVw9
-	 6gfoEeKxxAopDUn0Ho+ywFFlGsT+/1fPT7PLUrrQX7vUXzI3qjdxtto94GBIOKcC6p934
-	 5r+lpatDueRZGTgpNp36+6rM7HXoPBd1MzM1dMcf3G/Jlmgk/K++Dq8iiVSHkbNwvociA
-	 hVZPrbhic9PohkZGxG7Vm2lJjYoAXRxJR154pmYxOR42gXwPaRrT1x9EVnFkgW/Lx/Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795276171;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=0YZb9vl8h3h2s9tCOBwKg7YDMBx7IJ0VENcqcFynRLs=;
+	b=J6tSzRTdiodSq3FUKik2sOKxsyN5Gj/6Hlg62XDq5oftox7BDTdxOBKy2e/nVwfgwI8H
+	 XigOEH9tGtZCMkmnQBYI/5gWn0jubI33p0MeAn8k6fjqH94gNI6YYQQi1M7YenRTXvmD4
+	 t9Rggm0XrwKKlf9sZ8T8eVzvOXhAwBgYs+rKyP9u6gRefkjk9kbeW/6PBhVrRkez1aMgn
+	 oDok1A0fI+IXZFWd0T4yqcMruamLneNQYos1ROhxUXz/8nlB/pRFD1RxFvXM/Rtf47G2I
+	 3dyu63iUQ0YCKaQTiCHCJQvIj9bXGqyN+jHN58OZD8DqP3ku6973nQF6GGV4YO7/KNg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cisco.com;
-	spf=pass smtp.mailfrom=cisco.com;
-	dkim=pass header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=StVPJBcW;
-	arc=none smtp.remote-ip=173.38.203.68
-Received: from aer-iport-6.cisco.com (aer-iport-6.cisco.com [173.38.203.68])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=w2pR9wVL;
+	arc=none smtp.remote-ip=95.215.58.108
+Received: from mta1.migadu.com (out-108.mta1.migadu.com [95.215.58.108])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F05A606A320;
-	Sat, 21 Nov 2026 15:24:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9F05A606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920E6606A320
+	for <kvm@vger.kernel.org>; Sat, 21 Nov 2026 15:49:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 920E6606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=StVPJBcW
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=2585; q=dns/txt;
-  s=iport01; t=1795274696; x=1796484296;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=1m+4+4Gjf2WUHXsHYkn5LWKFpyyZZgpg0hPU7qpx32Q=;
-  b=StVPJBcWLCGc61K39dDcDuUr1QSk4CZunULr3qTUTAo1K9K3ACdfxMpI
-   D0TB5X/O52zyQGjfhkj6Xi4wLYceYK0U6a+xEBUKi00daDqy2QAjJ1yZV
-   bqNRMvXqimfXAkKi+GYa4Jf+ZDCZBL/671Js1fTRXFb5ueIZDZHlO6Vbz
-   i1xDqQGMcb6EUhSCYKSM0tzleCz6a/VFhV9XMLyx7dhmnsHJUxad+Mt1D
-   a4xmbJSUFHR8q4/3zqpfq4uZypEbrUUUm2ertOckXi5rE2JWhDXiZjx0s
-   143MyF+qq3kdFBPPCbXxBsZW0MHflPcd3bwNIrzhsgRjksiIT3ySvNDuK
-   w==;
-X-CSE-ConnectionGUID: UX6DZANYRFmbwEYirrHpRg==
-X-CSE-MsgGUID: kjchhqeSTAShB4SvwOpQKQ==
-X-IPAS-Result: =?us-ascii?q?A0BdAwAatgFr/89K/pBaHgEBCxIMggULhCxDSZZLA54pg?=
- =?us-ascii?q?X4PAQEBD1EEAQGFBQKOIQImNAkOAQIEAwIDAQEBAQEBAQEBAQEBCgEBBQEBA?=
- =?us-ascii?q?QIBBwWBDhOGXJATAQEBAycLAUYQCxguVgYTgwKCdQO5NYF5M4EB3kmBdBWBO?=
- =?us-ascii?q?IV0h3J2G4RiJxuBSUSBFAGCezE+gQUBigMEgiKBDIEHhwmILIgwSAqBFANZL?=
- =?us-ascii?q?AFVEw0KCwcFgSVDAzUSKhUjDzwFLR2BIzsXEXYbBgUSICpAQ1uBEoEDXYErK?=
- =?us-ascii?q?F0BAh9GLRWBdgKCUYEjXQIBSUEOB0VTCSVDEkckIggSCQETGiwKgRo1PAkmP?=
- =?us-ascii?q?xUMWwwIAxoFGiYCHwgCCwIMdCgREBMdHiQvBRomPhsKgQwnHx4bDgIfEAYZG?=
- =?us-ascii?q?A1IESwUIxUZBD5uB5N2gxhbgVsldB5Fkm2SPaERhCuBaJ92GjOqcpkIpAsZN?=
- =?us-ascii?q?4RqgWg8gVkzGggbFYMiUxkPji4LCxzSHyYyPQEBBwIHDgMLgWiRfgEB?=
-IronPort-Data: A9a23:scS9yKLNnV5KeJBwFE+R8ZQlxSXFcZb7ZxGr2PjKsXjdYENShDRUm
- DEdUGmFPfveM2unfd9+YYy+oUgBuZbWyoVrGwEd+CA2RRqmiyZq6fd1j6vUF3nPRiEWZBs/t
- 63yUvGZcoZpCCea9k3wWlTYhSEU/bmSQbbhA/LzNCl0RAt1IA8skhsLd9QR2uaEuvDnRVnS0
- T/Oi5eHYgH8gmQtaj58B5+r8XuDgtyj4Fv0gXRmDRx7lAe2v2UYCpsZOZawIxPQKqFIHvS3T
- vr017qw+GXU5X8FUrtJRZ6iLyXm6paLVeS/oiI+t5qK23CulQRuukoPD8fwXG8M49m/c3+d/
- /0W3XC4YV9B0qQhA43xWTEAe811FfUuFLMqvRFTvOTLp3AqfUcAzN1TPB8aD6Q+y9xZBGtR2
- M0ZMiotdiqM0rfeLLKTEoGAh+wqIdOuOMYUvWttiGmHS/0nWpvEBa7N4Le03h9p2pwIR6uCI
- ZVFL2A3M3wsYDUXUrsTIIk3gOazhnr/WzZZs1mS46Ew5gA/ySQsgeW8bYGFI7RmQ+1WnE2Yp
- nvLxFjQOREwaOeB1h2dy1GV07qncSTTHdh6+KeD3uVniVuRzUQcDxoZUVb9qv684ma7UsB3K
- EEO/Ccq668o+ySDScTlQxq+iH2JpBgRX5xXCeJSwBmHzazG4gCYLnIJQj5IdJots8pebT800
- 3eXkN7zQz9iqruYTTSa7Lj8hTezPzUFaGwPfykJSSMb7NT55oI+lBTCSpBkCqHdszHuMTj92
- XWO6SM5nbhW1ZBN3KSg9leBiDWpznTUcjMICszsdjrNxmtEiESNPuRENXCzAS58Ebuk
-IronPort-HdrOrdr: A9a23:FmAf8KA5C2vPr03lHemM55DYdb4zR+YMi2TDGXocdfUzSL39qy
- nAppomPHPP4gr5HUtQ+uxoW5PwJE80l6QV3WB5B97LNzUO+lHYTr2KhrGM/9SPIUDDH5ZmtZ
- tIQuxZFMD6C0R8gILR5Qm1FMtl/fy8mZrY4ts3CxxWPHhXg2YK1XYeNjqm
-X-Talos-CUID: 9a23:HGG/4GwelZ8NuIWYr2QbBgUpKp4JQFT7/U3+JkWnJFdoUqe1UWWfrfY=
-X-Talos-MUID: =?us-ascii?q?9a23=3AHTSPFA/NoTZFRPjzufPqSDyQf8Rq6KSuEU02rbw?=
- =?us-ascii?q?9u+PYDjJvHC+krw3iFw=3D=3D?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.27,225,1787011200"; 
-   d="scan'208";a="59595381"
-Received: from aer-l-core-06.cisco.com ([144.254.74.207])
-  by aer-iport-6.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 21 Nov 2026 15:24:47 +0000
-Received: from satishkh-l-mj0bbv6x.cisco.com (unknown [10.25.129.52])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by aer-l-core-06.cisco.com (Postfix) with ESMTPS id A4208180001DA;
-	Sat, 21 Nov 2026 15:24:43 +0000 (GMT)
-From: Satish Kharat <satishkh@cisco.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Satish Kharat <satishkh@cisco.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Oliver Upton <oupton@kernel.org>,
-	Marc Zyngier <maz@kernel.org>
-Subject: Re: [PATCH v2 5/6] KVM: Send reschedule IPIs instead of SMP function calls for non-waiting requests
-Date: Sat, 21 Nov 2026 07:24:30 -0800
-Message-ID: <20261121152434.955716-1-satishkh@cisco.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261119235656.70315-6-seanjc@google.com>
-References: <20261119235656.70315-1-seanjc@google.com> <20261119235656.70315-6-seanjc@google.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=w2pR9wVL
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=87tG5wTJqa8KKU5Vw1XcYaRFIKmNyRkg1DQIqfjExPM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795276168; v=1; x=1795880968;
+ b=w2pR9wVLVUEmNc/0xvbGAfErcyc7Q064cNe2Qb0JIQ8E3trfNPtCcUuXokXWWavloaXnxfRU
+ Y3drjX4obip27K21vOfT/kadJGIDVNpdHfim3KoKCHqoBpoWUFI7VggUrR3pFshFi6VvgDpAEym
+ dXAczSt5dyLO0XQ6IT/CY/Lk=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 1cf4a9c89376da71;
+	Sat, 21 Nov 2026 15:49:28 +0000
+X-Mizu-Trace-ID: 1cf4a9c89376da71
+X-Migadu-Flow: FLOW_OUT
+Date: Sat, 21 Nov 2026 16:48:51 +0100
+From: Andrew Jones <andrew.jones@linux.dev>
+To: Gong Shuai <gong.shuai@sanechips.com.cn>
+Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, 
+	Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Tomasz Jeznach <tomasz.jeznach@linux.dev>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, 
+	Andrew Jones <andrew.jones@oss.qualcomm.com>, Fangyu Yu <fangyu.yu@linux.alibaba.com>, 
+	Tan Chi <tanchi25@mails.ucas.ac.cn>, Wu Fei <wu.fei9@sanechips.com.cn>, 
+	Zhao Qingye <zhao.qingye@sanechips.com.cn>
+Subject: Re: [RFC PATCH v3 09/10] iommu/riscv: Add
+ riscv_iommu_attach_dev_nested
+Message-ID: <awG5Q7pmntSme1A2@orel>
+References: <20261119132744.396426-1-gong.shuai@sanechips.com.cn>
+ <20261119132744.396426-10-gong.shuai@sanechips.com.cn>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -112,65 +75,32 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.129.52];TLSv1.3;TLS_AES_256_GCM_SHA384;256
-X-Outbound-SMTP-Client: 10.25.129.52, [10.25.129.52]
-X-Outbound-Node: aer-l-core-06.cisco.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261119132744.396426-10-gong.shuai@sanechips.com.cn>
 
-On Thu, Nov 19, 2026 at 03:56:55PM -0800, Sean Christopherson wrote:
-> When kicking multiple vCPUs for a non-waiting request, send a reschedule
-> IPI to each vCPU instead of batching IPIs via a single SMP function call so
-> that KVM can make non-waiting requests with IRQs disabled.
-> 
-> Avoiding SMP function calls for non-waiting requests fixes a potential
-> deadlock if KVM VMX triggers KVM_REQ_UNBLOCK to all vCPUs when starting
-> device assignmennt:
-> 
->   WARNING: kernel/smp.c:943 at smp_call_function_many_cond
->     kvm_make_all_cpus_request [kvm]
->     kvm_arch_irq_bypass_add_producer [kvm]
->     __connect [irqbypass]
->     irq_bypass_register_producer [irqbypass]
->     vfio_msi_set_vector_signal [vfio_pci_core]
+On Thu, Nov 19, 2026 at 09:27:43PM +0800, Gong Shuai wrote:
+...
+> +	if (riscv_iommu_bond_link(s2_parent, dev, nested_domain->viommu->gscid))
+> +		return -ENOMEM;
+> +
+> +	riscv_iommu_iodir_update(iommu, dev, &dc);
+> +	riscv_iommu_bond_unlink(info->domain, dev);
+> +	info->domain = s2_parent;
+> +
 
-Thanks for picking this up. I reported the splat above, so I ran the series
-against the workload that originally triggered it.
+When moving between the S2 parent and a nested domain on it, the parent
+briefly has two bonds for dev. bond_link() puts the new bond after the
+first bond with the same GSCID, which may come before dev's old bond,
+and since it's then dev's first bond, bond_unlink() removes it. dev is
+left bonded with its old GSCID, so its new GSCID misses invalidations
+once no other device's bond has it.
 
-Setup:
- - Intel VT-d host (Cisco UCS C220 M7, Xeon Platinum), APICv and
-   device-posted interrupts enabled.
- - Guest with a Cisco VIC (enic) VF assigned via VFIO.
- - KVM built from this series as modules and loaded against the running
-   kernel (no reboot). To confirm the series itself does the work, my
-   arch/x86/kvm/irq.c change was intentionally not applied.
- - Trigger: reload the guest's enic driver to re-arm the VF's MSI-X vectors
-   while other vCPUs spin in guest mode, i.e.
-     vfio_msi_set_vector_signal() -> irq_bypass_register_producer() ->
-     kvm_arch_irq_bypass_add_producer() -> pi_start_bypass() ->
-     kvm_make_all_cpus_request(KVM_REQ_UNBLOCK) with IRQs disabled.
+Passing the old domain to bond_unlink(), like I do in [1] for a
+different reason, would let it remove the bond matching both dev and
+old's GSCID.
 
-Before/after, same trigger:
- - With a build that has neither my irq.c fix nor this series, the warning
-   reproduces on the first cycle.
- - With this series applied, no warning across repeated reload cycles.
-   Function tracing shows the bypass callback issuing reschedule IPIs
-   (native_smp_send_reschedule) for the non-waiting request instead of
-   reaching smp_call_function_many_cond(); waiting requests still use the
-   batched SMP call with IRQs enabled. Bidirectional VF traffic (ICMP and
-   TCP) and repeated driver reloads pass, lockdep stays enabled, and no new
-   warnings appear.
-
-irqfd_test, irq_test, vmx_posted_intr_test and smptest also pass with the
-series applied.
-
-This was Intel-only and module-against-running-kernel; I did not exercise
-the arm64 KVM_IRQFD path, s390, or AMD, so the tag below is for the x86
-VFIO / KVM_REQ_UNBLOCK path I can vouch for.
-
-Tested-by: Satish Kharat <satishkh@cisco.com>
-
-Test automation was LLM-assisted; all results were reviewed by me. Full
-logs available on request.
+[1] https://lore.kernel.org/all/20260928143113.49838-12-andrew.jones@oss.qualcomm.com/
 
 Thanks,
-Satish
+drew
