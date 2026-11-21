@@ -1,57 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=79.135.106.102
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795265951;
-	b=Z4+x9J0JSPcFS/grRYNJBCH+6sIuAqjDllBc+QxCzDhiOEhCdm1Bz65wFprzvI6A823E
-	 aqMCYabV+CQvDuRxRw6B7YJkFoMaTNp+aVa4KelA1fb+gEVRihxSgEvcwRpRhT/NOFGFR
-	 nuoGNreCOwnftXRgTcvc/QYLj7D4GX2DedTs4MYLES0UKbAoP3Vdl8lgHZSoJfoD5ZJnp
-	 rizRFfClwKcq7PPNDJ73CW6rVGhtTz8/OySyfqZwEbl85c6cNrilaG/i334l3Rp7K55Mf
-	 IDCSK4HnMmcXw/AIzN5TQiXw6TmkP9uzacQv3Cgix2dG17Ii4elBBkQJ3T5wpVy1SkQ==
+	t=1795269150;
+	b=olwFWTl0jM4JpPqfHI58+091LBplmbkE8Dm7tUCeM+5dxB+BUCXmgvd/vMV0aH7s9xjQ
+	 ZuZFh2mllB07cNhmLS/XCDNEnNexcOErLq1fwrZULMRkQOTFRWmkmerW6O70wAgni83EE
+	 d1rJUFN55yVjbfMu/NyteG3xVH//AoS0svYipg4UXd2e+PwbfBi+YrTt1Bb9rd9YfH8f/
+	 oBZxiAUz9B2jtY7RjdFVXkGcv+XEBIdzNC/uaL7XfWDSvcqxkRkwT/EVxORDma1FATTzj
+	 wCvXDovDyDJQCMnDznmu6xKj9LEsFmBJ1xR4zmleZUXZP4XmGXgRj1edyVHYuuqloJg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795265951;
-	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
-	 Feedback-ID:X-Pm-Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=LHw9hhByR5W+5isYku0aOkbyv5R/DWvbzdf1tvKzPQQ=;
-	b=PFOORLSLbrA1QeJ104/zXajgCxV99hAu639NVznDRI4mocyV+UggRwgnrXSRHEPoUqHO
-	 J6FkBmTfan3VeIHqGWyVO6jEHV8HjIQ3KBcRjxgv2Z65jcyWVP58xYMrrtwpzhitPb9ru
-	 P6zBgBYw+0ksbuIod8/VV1d9S+F3QXAT5JWDqxfOTX7JLkEPW+5xqtyGVDK8zmczBzq5k
-	 vqkbteXbbZyTugoDyTGpcNjuqKMm7AkHtutcqCNjbmErn+/sdLaH/c2aAzIBuwJrxTJB9
-	 It2Tjf5E5qadiqN+YLssolDUHweP9dnyvJnHpnVDYRWhWuGvMkxQLkzGEvbb1+agF9w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795269150;
+	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
+	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
+	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
+	 X-SA-Exim-Scanned;
+	bh=I/rNC1WiZD81B1MWUnQsVljik6e2kf/u4y9BCYhd1x0=;
+	b=1z56mIBndWE0k5/EgpVj0MgoNSYjEWUy0+/R1mFyhOYrWgxAr6MXNnk7t1yE6WndnMWO
+	 KNuUoHTofC3mN3rd+ah8PHM0R+Er2O8yLeVsWOF+EcQuctIsTiDJ0ixApedRKbes9UpG+
+	 PlI+MMbX3Em9cIbHXXUFFLjd/ho/bsDFFDjQMcFfLG5/n0BKbvTYBMngvfG19Pi80JMPR
+	 Xp/ylt4VueZiKiVVmz0fq0FE6/l5vejYYoVQm424WOdIQdmOuHlJH64C71g4Y31QncAwH
+	 Jj58RLeK3lm78PDyOrZhq+wrV9iU147T38R9G1xU8F4LrP3e6JD1n83PUiia7b1DkcA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=protonmail.com;
-	spf=pass smtp.mailfrom=protonmail.com;
-	dkim=pass header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail3 header.b=NyZEmAHn;
-	arc=none smtp.remote-ip=79.135.106.102
-Received: from mail-106102.protonmail.ch (mail-106102.protonmail.ch [79.135.106.102])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VK+QHNyq;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24787606A320
-	for <kvm@vger.kernel.org>; Sat, 21 Nov 2026 12:59:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 24787606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DEE9606A320
+	for <kvm@vger.kernel.org>; Sat, 21 Nov 2026 13:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256 header.s=protonmail3 header.b=NyZEmAHn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1795265949; x=1795525149;
-	bh=LHw9hhByR5W+5isYku0aOkbyv5R/DWvbzdf1tvKzPQQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=NyZEmAHnlA/LIiFfV+YpEXhc1y+scANQbm9GQbwAQkg6mTs1KKXT2p0ch0aYEHPAW
-	 Xb05MlByxrROp2AZJVXh/Rn/Kd60yG4zPXjVHE3FDz6NNTcn2ELGNmB126uBxVz6zQ
-	 4yilCvgEw/4LDuROZvWkhX8ZiUxVVZZ2KLdlmZnFSoP9JfVHLrftWbqgA/n6V2U+n2
-	 YEtsjHSjyq300Tba1xZY9mTux6nmjeajJouoZ9XiVz/NQjUnghBF31f3Apnn0T0PK0
-	 i569kZFOckLDlfi7fKc/9svgQ1JYufmiY6/FQ8zYOZlUi6n0lcXr494fJIEPLK4iju
-	 0TNi+/6wz1iUw==
-Date: Sat, 21 Nov 2026 12:59:05 +0000
-To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-From: Turritopsis Dohrnii Teo En Ming <teo.en.ming@protonmail.com>
-Cc: "ceo@teo-en-ming-corp.com" <ceo@teo-en-ming-corp.com>
-Subject: Linux KVM Flaw CVE-2026-99312 Lets Guest VMs Access Host Memory on AMD Hosts
-Message-ID: <Ql3dvLz2uQYZFACks5SUAF1ReTATGk4LY66UljA6BX-2k-MFc2C9OZG0tJa25DX_ecvJV-qZBF2wYkJp0Kq5G6ox9-iS-K4CSBB-0nkfbfk=@protonmail.com>
-Feedback-ID: 39510961:user:proton
-X-Pm-Message-ID: de9151258ec482e799eb65274afb91296798cbdc
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VK+QHNyq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB601F000C6;
+	Sat, 21 Nov 2026 13:52:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795269150;
+	bh=I/rNC1WiZD81B1MWUnQsVljik6e2kf/u4y9BCYhd1x0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=VK+QHNyqrqC9s0fNIhyuxVpffVlB928gbe9bAkjrjvEZFBSsuaMEm/+3nB+xYm6PM
+	 VWh6HxGR/Cq99hNNRsUXSTX6JLhLKy/bz7j4zWhRZcjoRqJ3JXl+xknBwGJR3O+6QU
+	 brPvrjWYl1M2VVbSx8hzKEYtldKlS+4CW1bl/mOevdFgAuMnbr7oaRvwQojyiTNZLb
+	 9KszQQ3AcX0fftsSx4EC/GhaSF7ruUnfDXEERzvchWDCJuJd3d6r62W63HqclUfNqO
+	 vdyrm0ZMt+VudXU0RLKCyZpbS/jHIhknsHl7kK0+1SRREYQOuc/2DUb6nKCUfhh1wP
+	 uv57dkNYgIFNA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xUlVz-00000001Md6-35ux;
+	Sat, 21 Nov 2026 13:52:27 +0000
+Date: Sat, 21 Nov 2026 13:52:27 +0000
+Message-ID: <86qzgez3z8.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Haseeb Ashraf <haseebashraf091@gmail.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+	qemu-arm@nongnu.org,
+	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Volodymyr Babchuk <volodymyr.babchuk@epam.com>,
+	Haseeb Ashraf <haseeb.ashraf@siemens.com>,
+	qemu-devel@nongnu.org,
+	kvm@vger.kernel.org, Eric Auger <eauger@redhat.com>
+Subject: Re: [PATCH 0/1] hw/arm/virt: add vhe option for nested virtualization
+In-Reply-To: <20261121095636.289814-1-haseebashraf091@gmail.com>
+References: <20261121095636.289814-1-haseebashraf091@gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,32 +73,42 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: haseebashraf091@gmail.com, peter.maydell@linaro.org, qemu-arm@nongnu.org, pierrick.bouvier@oss.qualcomm.com, pbonzini@redhat.com, volodymyr.babchuk@epam.com, haseeb.ashraf@siemens.com, qemu-devel@nongnu.org, kvm@vger.kernel.org, eauger@redhat.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Subject: Linux KVM Flaw CVE-2026-99312 Lets Guest VMs Access Host Memory on=
- AMD Hosts
+On Sat, 21 Nov 2026 09:56:35 +0000,
+Haseeb Ashraf <haseebashraf091@gmail.com> wrote:
+> 
+> Hi,
+> 
+> The virt board currently enables VHE whenever virtualization=on.  There
+> is no way to expose EL2 in nVHE mode to a type-1 guest hypervisor.
+> 
+> This series adds a vhe machine property, enabled by default for
+> compatibility.  Setting vhe=off propagates the requested mode to the
+> guest CPU, limits TCG's advertised VHE feature, and requests the KVM
+> HAS_EL2_E2H0 vCPU initialization feature.  Unsupported accelerators
+> and KVM hosts fail clearly instead of silently ignoring the option.
 
-Good day from Singapore,
++ Eric
 
-Here is an article which I would like to share.
+Adding yet another random property for something that is a feature of
+the emulated CPU strikes me as going in the wrong direction.
 
-Article: Linux KVM Flaw CVE-2026-99312 Lets Guest VMs Access Host Memory on=
- AMD Hosts
-Link: https://thehackernews.com/2026/11/new-linux-kvm-flaw-cve-2026-99312-l=
-ets.html
-Date of article: 20 Nov 2026
+I'd rather see this being directly driven by Eric's feature framework
+as posted at [1], which lets *any* feature being selected by the user.
+The KVM feature flag can then be derived from what the user has
+selected (and matched against what the host can provide).
 
-Thank you.
+Thanks,
 
-Regards,
+	M.
 
-Mr. Turritopsis Dohrnii Teo En Ming
-Targeted Individuals Singapore
-21 Nov 2026 Saturday 8.57 pm Singapore Time
+[1] https://lore.kernel.org/r/20261010133725.642498-1-eric.auger@redhat.com
 
-
-
-
-
+-- 
+Without deviation from the norm, progress is not possible.
