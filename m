@@ -1,45 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795223831;
-	b=srBavq3Q6cHLoLnQpTlp9uPfNIQFvqjKYtu/dqcVIbDvgCwwGym5WrpeEr298mfvav6D
-	 i/SgL6aKEo9YoGNTHt7iL7i/GsXOAhuw1CdJyVXddC7PBbiMwGfJ7LHbezbFs/+sqnnht
-	 EprhjgsRhzVlxkAMcsP9cyV6NYRGbnVvyttSLeOX1BdIvl4jGAOUeD5ig9NoeKuhBa5el
-	 iik0uveIGL3YIrEMewzKPhdUzLvJs+7cLjTN4Dkz2hmIoMSURxiF40xACUQEjp13UMWXN
-	 ucrWcfpUmK/F9TQEYt9p6n8rjCy88OCr0BKuEoQivxAhDa7vlxyLf2ihth58rCnqM8g==
+	t=1795223981;
+	b=3uJYiFrRdWkJK3mA+8u2PKgJ/zFvG2tWdvTZe+bke2yzGuNRru53pqymJn5lefwnEfta
+	 Jusjb5AyP6TdGlDme8orgHpN/x/ajLvJEWcTsneal5o6mdjouxc9q7MNS0QhkDzZqDx9M
+	 v7U8fkAJkQaV45UBLS/w/8v9b/VVhQX3ZUbvHNWe58L9I9tE6n6YBLxOdpVK6Pwp1mhIs
+	 I9DSjIN0xAzzoSIQeP/v4zfYD6uQC2vK4uexj/jzfvAJonDaLlS3ZQJ3MwQiRDjWfkZNG
+	 Rd6T56wk4+YoZVMaQ1HsvKjmTGFLWfRnXXVjBF/weZ4KrjOOHNUCxZkPTOFUnVMoeIw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795223831;
-	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:Cc:To:From:Subject:References:
-	 In-Reply-To;
-	bh=QklyuLab+Ko9mnpTo5UeclQww95mzIqhLo3F7I/BQkg=;
-	b=wFVV4gYWrx01cnFSnadL5PevvX3j04xWSPddAXakIWD+eXJLlH0ZIsjFZradl0gada+n
-	 JWzLydX9rKP6CIQV2qLNrY/ZqZ5EMrmfpRIwH1B540gc1VhzEDXMsJteCDMgoC34CYI1f
-	 CzYDVn2+X4WE+Sa04XwHimGmnBk4XJmNdxBfyBVxB5adOkHWqJFerm/lZ8GEw46B00xjo
-	 DPlVj6KH+VTyxJ9o2qucMHz6wvor4wnvxkz44NEur9Prs+VGLzqW5ZhTQk+dn4sTFo413
-	 3DnR9KY3K1+EMFmWNRgAAyR35ktqZd2fCn1lWZoHm43YAe/vDLZosZZjqhdCOBLDO+A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795223981;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Received:Reply-To:Date:Mime-Version:X-Mailer:
+	 Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=boy6I7YzdeV1IlgS2ODm4n4eVmwaOPrG03iw2OUgD9o=;
+	b=ZJwMPlx8aR5Co6n2HlZ6uTrRUytzP9s9w9sEssdQFAK2AN0+xvr5RkWRGh0cXUbdkt4U
+	 4F9nrCRjh0f/6bActzwNond0VyjaiM4yflzt6ssuxTtBEhoUjT4LETlv69dj/jACG0d7U
+	 Ha+TkU9o5ptpSwEF20hhg7M0EmPRGLVb7yaou9uHwDBqxZappnKfYfsNFOw86Bb/OFcS0
+	 oQ3/MUk6Zo4A+5GssteiuVS1fWb/uc2lN6eVCJRVFwD3Pe5nhprv6N9zQ5xVal6ZQI9s3
+	 SY/e7DV2OzPRdkp5j8RgT45sb/aKeHvGLmVzISvqWnKMcgWgnOvO6JXEtafcwvrQDWw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gm8eJtOH;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZbH2MK9D;
+	arc=none smtp.remote-ip=209.85.214.199
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C352606A684;
-	Sat, 21 Nov 2026 01:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C6B606A68B
+	for <kvm@vger.kernel.org>; Sat, 21 Nov 2026 01:19:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8C6B606A68B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gm8eJtOH
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE01B1F000CA;
-	Sat, 21 Nov 2026 01:16:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795223829;
-	bh=QklyuLab+Ko9mnpTo5UeclQww95mzIqhLo3F7I/BQkg=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To;
-	b=gm8eJtOHhBnaOZe7LwDMFJ8mofPVVmX1YGRFpGCBO2m5hz8UlzXX+WvNJUsq934h9
-	 Gtdb+AerXFQPif6SLfOq2/dWtEgcQTz7bh3I6KV8pXYeGgzuMqRHyjcJnn/Sn8iwhx
-	 YAqVTjTNfeSW2VdEJcGvIBkg4/J19L82jz9PAn9h9IkH5umIAy3FYAYFk2uVRLQd+T
-	 s94/ADqCteDEcqO9mcewjaHUBrR90XdQUJorq/NHZbaKSRZNalAGYYTXYCWvSW+hsc
-	 zi51JiNKnL+ynxLP/WhWXj9KNLrvetlXTYZdQhOtRoJb5Hc2rzkXDPGGzjDTCgK7xr
-	 LOe4azsm+AuJg==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZbH2MK9D
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2eb5375cd68so16130885ad.0
+        for <kvm@vger.kernel.org>; Fri, 20 Nov 2026 17:19:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795223980; x=1795828780; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=boy6I7YzdeV1IlgS2ODm4n4eVmwaOPrG03iw2OUgD9o=;
+        b=ZbH2MK9DAY2FxSG3Y4gngUfmRNmM/cRJIlLMfpYITyMkBMgM5x6MUdRkfCXG6fc4E1
+         ZBY82La6PAba57yZRG4kDO347m0ynuN/48NBYIFFASf87clrhLkKKCFRnuWdpGYtqpoL
+         ElRvL2OD9hBLotFsP9Z3eUumNHdFWe0ly+qjlNHGY90ia/i4GL2p+CCJyKLVcac+RtEL
+         sL6lR/X2FzM8I81JdyXMuLzuXPGeskAwwh4dRcSUWFlBxMqHyp5ioNLDyeX5n4lXL+6M
+         XfIwJ+ytuMiygZ35LNrGspJggi4LsyLC2K2Xt2IbxVksw+8hx/CjUj8zAp2CswhL005g
+         9VpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795223980; x=1795828780;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=boy6I7YzdeV1IlgS2ODm4n4eVmwaOPrG03iw2OUgD9o=;
+        b=U9EavkWS0G1/5g/zXxOjkFe93zhKqVqwliATmeSQ6fWMO6GmJ+mQeJ31QfGFtiWVSd
+         VbRRn5vRg6CChNbA3Kyr7jgXrrR2sgfeP3ulEDwfTNC9eqpPh+mYXVzJnwaH3waSOwRE
+         q3JkWZyfhQ+3spdczaqcOr/VOF3VORdYygR2qP4hvkOAU0wLI2IPTOr24pgoTeoWH+cm
+         12ix0RywVuh4F8NCdkNijlX2JQDXcyYyrx17JASgV1IJ4TiaAG5birfYr2+FzK1Rc1KQ
+         btW0MoDDvZYTG33v4MS0zQD4ktbnjhw0Q39nyBi1v6F4Q4P4vSbs39OueWZR1mqVg6Md
+         869w==
+X-Gm-Message-State: APuU4Z8nQkZkOhZC6kicBjqADhLMHE4UChthKVALIzQ0jYfaIx9/Sjws
+	NhWOvyw1H/Gy2MyTjuiJSgTZZ5pSSr90L0GlWhynMIZmFaMqwSRtJLCq/GiOJ/xlj0vo4vBQAWg
+	s5ujX/A==
+X-Received: from plhk14.prod.google.com ([2002:a17:902:d58e:b0:2ef:dcba:ebc9])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e811:b0:2f0:22b2:bfe2
+ with SMTP id d9443c01a7336-2f03f201151mr46755895ad.31.1795223979813; Fri, 20
+ Nov 2026 17:19:39 -0800 (PST)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri, 20 Nov 2026 17:19:38 -0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -49,76 +76,12 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 21 Nov 2026 02:16:56 +0100
-Message-Id: <DN0HQBTG5VUY.1F40HSFIRRGNQ@kernel.org>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Johan Hovold"
- <johan@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>, "Nipun Gupta"
- <nipun.gupta@amd.com>, "Nikhil Agarwal" <nikhil.agarwal@amd.com>, "Ioana
- Ciornei" <ioana.ciornei@nxp.com>, "Longfang Liu" <liulongfang@huawei.com>,
- "Julian Ruess" <julianr@linux.ibm.com>, "Ankit Agrawal"
- <ankita@nvidia.com>, "Brett Creeley" <brett.creeley@amd.com>, "Giovanni
- Cabiddu" <giovanni.cabiddu@intel.com>, =?utf-8?q?Micha=C5=82_Winiarski?=
- <michal.winiarski@intel.com>, "Eric Auger" <eric.auger@redhat.com>, "Eric
- Farman" <farman@linux.ibm.com>, "Matthew Rosato" <mjrosato@linux.ibm.com>,
- "Tony Krowiak" <akrowiak@linux.ibm.com>, "Jason Herne"
- <jjherne@linux.ibm.com>, "Harald Freudenberger" <freude@linux.ibm.com>,
- "Holger Dengler" <dengler@linux.ibm.com>, "Haiyang Zhang"
- <haiyangz@microsoft.com>, "Wei Liu" <wei.liu@kernel.org>, "Dexuan Cui"
- <decui@microsoft.com>, "Michael S. Tsirkin" <mst@redhat.com>, "Mark Brown"
- <broonie@kernel.org>, "Abel Vesa" <abelvesa@kernel.org>, "Stephen Boyd"
- <sboyd@kernel.org>, "Brian Masney" <bmasney+clk@redhat.com>, "Jerome
- Brunet" <jbrunet+clk@baylibre.com>, "Bjorn Andersson"
- <andersson@kernel.org>, "Mathieu Poirier" <mathieu.poirier@linaro.org>,
- "Srinivas Kandagatla" <srini@kernel.org>, "Sylwester Nawrocki"
- <s.nawrocki@samsung.com>, "Liam Girdwood" <lgirdwood@gmail.com>, "Jaroslav
- Kysela" <perex@perex.cz>, "Jonathan Corbet" <corbet@lwn.net>, "Rafael J.
- Wysocki" <rafael@kernel.org>, "Steven Rostedt" <rostedt@goodmis.org>,
- "Bradley Morgan" <bradley.morgan@linux.dev>, "Armin Wolf" <W_Armin@gmx.de>,
- "Masami Hiramatsu" <mhiramat@kernel.org>, <linux-doc@vger.kernel.org>,
- <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <linux-trace-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>, "Alex
- Williamson" <alex@shazbot.org>, "Mostafa Saleh" <smostafa@google.com>,
- <kvm@vger.kernel.org>, <qat-linux@intel.com>,
- <virtualization@lists.linux.dev>, <intel-xe@lists.freedesktop.org>,
- "Vineeth Vijayan" <vneethv@linux.ibm.com>, "Peter Oberparleiter"
- <oberpar@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
- Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>,
- <linux-s390@vger.kernel.org>, <linux-hyperv@vger.kernel.org>,
- <linux-spi@vger.kernel.org>, "Frank Li" <Frank.Li@nxp.com>, "Sascha Hauer"
- <s.hauer@pengutronix.de>, <linux-clk@vger.kernel.org>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <linux-remoteproc@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
- <linux-sound@vger.kernel.org>, "Takashi Iwai" <tiwai@suse.com>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 00/10] driver core: Disable driver overriding by
- default
-References: <cover.1795171088.git.u.kleine-koenig@baylibre.com>
-In-Reply-To: <cover.1795171088.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
+Message-ID: <20261121011938.433314-1-seanjc@google.com>
+Subject: [ANNOUNCE] PUCK Agenda - 2026.11.25 - CANCELED
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri Nov 20, 2026 at 12:11 PM CET, Uwe Kleine-K=C3=B6nig wrote:
-> It is sensible to merge the driver core change (patch #1) together with
-> the individual driver patches setting .support_driver_override because
-> with the driver core change the driver override doesn't work any more
-> for the unmodified drivers (unless the new kernel parameter is provided
-> and a taint is accepted). So I suggest (once there is agreement that the
-> patches are fine) to merge them all in one go and provide a stable
-> branch in case a driver was missed to be adapted. I can create such a
-> branch and ask Greg or Linus to pull it, or Greg can do that.
-
-I think it should be good enough to just take them all through driver-core.=
- If
-it turns out in linux-next that we missed a driver we can always add anothe=
-r
-patch to the driver-core tree.
-
-Those patches only set support_driver_override =3D true, so there shouldn't=
- be
-interactions with other trees.
-
-So, let's keep it simple. I can pick this up once we have all the ACKs.
-
-Thanks,
-Danilo
+PUCK is canceled for next week, as most of us US-based folk will be offline.
