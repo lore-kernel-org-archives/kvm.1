@@ -1,99 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.125.84
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795273179;
-	b=pEsRcMkmUkn7QMSjy9kHzeD2EE2wKIHettQsi8p/rc1gfn77LLVQ9aOynoV3wZVFeoAc
-	 g4e6d5xX8lZa6/qAmWmWixG0jU6sCGi8fyfJL56eXg014vlol3yn/QQBMMgy7ZASOur8f
-	 WByUv8sgUEj3y08g8XmWFcl4LpRPfN+ZGTemaMOeRwrCQRpHeHDYwUdO2IhD6wwL6Psfv
-	 Ur+fNYkp2BSdVYh4L5pl3jpnifkJ35jaIWnWWNbcKFa2RY2uWHpF6aUdh+KYXmChrxW9d
-	 6y0gZtEviF1Qjweih50WCXMpOz5cfS0p3iMPl/EBqlTtF0yiaTMpWQN60agM0nFSJzA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795273179;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=QGLKBJGKJmG8wTC85yxU4LzEhwN+ufN/tKb6of50/Sw=;
-	b=w3D2SQqC8uV7U2EImlILqiykHBlcC7AwW659KgfUGvh4IYHi/bXHIMhKyPYxWfXpv4Lp
-	 jUtWQX2nLHrtyDrqsQ1gudOulbNWD8+pGzPkwoLdQDm/aJQRCKZXe2/roFO0J7Qg2TNnZ
-	 7MpjtI9FXaWqM9EHkIWHheb8lTQUd6UuGrqspqY8blkhOIYfBMVe90UmjPwoJTJJbrYoL
-	 GWdf6yzXvh5Y+zvjggWmobFI/1ROGrvMWgXl9REpGwZv9hTcKfr3sztrw/t4NBiE1lhX4
-	 IHM/dq4ytS0B+DOYZ+JegIOL/aRcLGKpSXPSNTXr1CMglLqhGNKhd7YkkekF6Yh2oIQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=valinux.co.jp;
-	spf=pass smtp.mailfrom=valinux.co.jp;
-	dkim=pass header.d=valinux.co.jp header.i=@valinux.co.jp header.a=rsa-sha256 header.s=selector1 header.b=MmyNSjg3;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.125.84
-Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11021084.outbound.protection.outlook.com [52.101.125.84])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=173.38.203.68
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795274696;
+	b=teU1yrR9me7d/YFenMLGVizMjCmR+ac6U8O4lg7YpmtF0FB8xqTH4FCQG9PCEcHunxt0
+	 V6tKwFky434IeKbOLn12ROGiVpNHX39aImxdWppIJ/SDD93STgN+yBHwoXMlMn7awZnkq
+	 +G6pmFc1kpdjtyZfEavP1fGpQtbywTn+5AUJCY9SnQJqS9UMkpUbQZijE6QQjFkAq48gq
+	 2gzgI6Nk9TB32FhdcBfvGmdFA3aLMPp5Z0Lmd1uUXTNKcT5EjATxv4GwOgUEYA9+ptX4V
+	 OFBKPnvXBo8FtJd8inDaL9OQaEV9iy2RT1Mwh2xpXtLcLJu0Xj7ije3zRrt3Nn7I77g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795274696;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IPAS-Result:IronPort-Data:IronPort-HdrOrdr:X-Talos-CUID:
+	 X-Talos-MUID:X-IronPort-Anti-Spam-Filtered:X-IronPort-AV:Received:
+	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:
+	 X-Outbound-Client-TLS:X-Outbound-SMTP-Client:X-Outbound-Node;
+	bh=1m+4+4Gjf2WUHXsHYkn5LWKFpyyZZgpg0hPU7qpx32Q=;
+	b=SaHCzDA3j2qW6n6Hu+lsQrLFYyHVjQp1+6yn14hQ56h8o5lBqV3X+/U81iueZj+crQf4
+	 QPnfU16DwIGqCKbyhvfMaaKNnAtFkggMlOdbVjMD8KG25hBQ+ao8pE656X7bLiR4eBVw9
+	 6gfoEeKxxAopDUn0Ho+ywFFlGsT+/1fPT7PLUrrQX7vUXzI3qjdxtto94GBIOKcC6p934
+	 5r+lpatDueRZGTgpNp36+6rM7HXoPBd1MzM1dMcf3G/Jlmgk/K++Dq8iiVSHkbNwvociA
+	 hVZPrbhic9PohkZGxG7Vm2lJjYoAXRxJR154pmYxOR42gXwPaRrT1x9EVnFkgW/Lx/Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=cisco.com;
+	spf=pass smtp.mailfrom=cisco.com;
+	dkim=pass header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=StVPJBcW;
+	arc=none smtp.remote-ip=173.38.203.68
+Received: from aer-iport-6.cisco.com (aer-iport-6.cisco.com [173.38.203.68])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C61606A320;
-	Sat, 21 Nov 2026 14:59:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 73C61606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F05A606A320;
+	Sat, 21 Nov 2026 15:24:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9F05A606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=valinux.co.jp header.i=@valinux.co.jp header.a=rsa-sha256 header.s=selector1 header.b=MmyNSjg3
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=P51rUx8cZa0p2i/KTSqtMsRMbp7p3LcqKgOnUTFYrOu0w+NCiBkcHnLEWd0flzxc0BAQs4cotGzWhL7EaDX2NcXifqs+IA8GtYUM0pmih6/aqHUkIHM+YKqgCYyndITu/F6pJiEWFTh3TAJtL+52mq4cbOFsNXevpKkJorVVDgwetceWcIQeKBRznZa9QADdHZeBSldx4zvIyYCiH0hti3uyVag8DWnRTOimBHVEXxfg30o5xuoszqZKcEV6rcrz9AVgZh8S6c1t8RC/jRFEQ5/8Icmt829k//Wm0xDkEvWSkiYZU4Eo+AgkvKbdn1+IvhbIkNJBU1VW5fyKQLXFhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QGLKBJGKJmG8wTC85yxU4LzEhwN+ufN/tKb6of50/Sw=;
- b=tNe1BIKrtNDyQ5aHCrdRcxjnJ2OpZj9nBbdaRZSl51vSVJGOOLfyIDc2MprooBuOlaBIQSt5Kik4B/AqLzB8WYMH1o1BObBUcyDLzji4Q2KeE7e8NfDN4624QfXlSuB/Y2I7CY8rPnqDWRqBDVSb225YRG+oGhmF9XDdnO9PINOlaJq/yV3DJyoErffxZ4+hbzqE+S8sVlJNwaGrBcH6t/AHXnjd3t+HRWvHu4o/rEo0J2CMRS4ERR0HkzUZ/gt806z9iml4i6ogPg5+Ul8V09+H9y4pudBBeTce1UU8Pcy7WZ7u+ue6g61rcWnjKHzZmXTVTKxHcsVQdgQC0214lQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
- header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QGLKBJGKJmG8wTC85yxU4LzEhwN+ufN/tKb6of50/Sw=;
- b=MmyNSjg38Q/D58y7WL+pU5vz4iepRATldu8pOyshggzDQCTxTiN8LfybuirzZ6pcxZZ5xW7zmJfqs54fdfACcu5i5y8JcjRuwtqu5AkJqa9J9CN77mjZXALc3l/j78pNT7OGgeNyMDbk0jZsoGahKaQS9qvw90jgVgHxX77fbB8=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=valinux.co.jp;
-Received: from TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:325::11)
- by OSOP286MB4177.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:304::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.13; Sat, 21 Nov
- 2026 14:59:35 +0000
-Received: from TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
- ([fe80::cce5:2aa8:53f9:dba9]) by TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
- ([fe80::cce5:2aa8:53f9:dba9%5]) with mapi id 15.21.0639.012; Sat, 21 Nov 2026
- 14:59:35 +0000
-Date: Sat, 21 Nov 2026 23:59:33 +0900
-From: Koichiro Den <den@valinux.co.jp>
-To: Andrew Jones <andrew.jones@linux.dev>
-Cc: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Bingyu Xian <shanbeeyoo@gmail.com>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] RISC-V: KVM: Batch user accesses when updating steal
- time
-Message-ID: <awGevuQAuA349gO8@z790sl>
-References: <20261118062242.2914385-1-den@valinux.co.jp>
- <20261118062242.2914385-2-den@valinux.co.jp>
- <awB1hZGh3LYztjqL@orel>
- <awB6FpVOpZ9fhMt1@z790sl>
- <awGJaUFUmBOa4xfO@orel>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <awGJaUFUmBOa4xfO@orel>
-X-ClientProxiedBy: TY4P301CA0070.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:36a::8) To TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:325::11)
+	dkim=pass (2048-bit key, unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=StVPJBcW
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=cisco.com; i=@cisco.com; l=2585; q=dns/txt;
+  s=iport01; t=1795274696; x=1796484296;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=1m+4+4Gjf2WUHXsHYkn5LWKFpyyZZgpg0hPU7qpx32Q=;
+  b=StVPJBcWLCGc61K39dDcDuUr1QSk4CZunULr3qTUTAo1K9K3ACdfxMpI
+   D0TB5X/O52zyQGjfhkj6Xi4wLYceYK0U6a+xEBUKi00daDqy2QAjJ1yZV
+   bqNRMvXqimfXAkKi+GYa4Jf+ZDCZBL/671Js1fTRXFb5ueIZDZHlO6Vbz
+   i1xDqQGMcb6EUhSCYKSM0tzleCz6a/VFhV9XMLyx7dhmnsHJUxad+Mt1D
+   a4xmbJSUFHR8q4/3zqpfq4uZypEbrUUUm2ertOckXi5rE2JWhDXiZjx0s
+   143MyF+qq3kdFBPPCbXxBsZW0MHflPcd3bwNIrzhsgRjksiIT3ySvNDuK
+   w==;
+X-CSE-ConnectionGUID: UX6DZANYRFmbwEYirrHpRg==
+X-CSE-MsgGUID: kjchhqeSTAShB4SvwOpQKQ==
+X-IPAS-Result: =?us-ascii?q?A0BdAwAatgFr/89K/pBaHgEBCxIMggULhCxDSZZLA54pg?=
+ =?us-ascii?q?X4PAQEBD1EEAQGFBQKOIQImNAkOAQIEAwIDAQEBAQEBAQEBAQEBCgEBBQEBA?=
+ =?us-ascii?q?QIBBwWBDhOGXJATAQEBAycLAUYQCxguVgYTgwKCdQO5NYF5M4EB3kmBdBWBO?=
+ =?us-ascii?q?IV0h3J2G4RiJxuBSUSBFAGCezE+gQUBigMEgiKBDIEHhwmILIgwSAqBFANZL?=
+ =?us-ascii?q?AFVEw0KCwcFgSVDAzUSKhUjDzwFLR2BIzsXEXYbBgUSICpAQ1uBEoEDXYErK?=
+ =?us-ascii?q?F0BAh9GLRWBdgKCUYEjXQIBSUEOB0VTCSVDEkckIggSCQETGiwKgRo1PAkmP?=
+ =?us-ascii?q?xUMWwwIAxoFGiYCHwgCCwIMdCgREBMdHiQvBRomPhsKgQwnHx4bDgIfEAYZG?=
+ =?us-ascii?q?A1IESwUIxUZBD5uB5N2gxhbgVsldB5Fkm2SPaERhCuBaJ92GjOqcpkIpAsZN?=
+ =?us-ascii?q?4RqgWg8gVkzGggbFYMiUxkPji4LCxzSHyYyPQEBBwIHDgMLgWiRfgEB?=
+IronPort-Data: A9a23:scS9yKLNnV5KeJBwFE+R8ZQlxSXFcZb7ZxGr2PjKsXjdYENShDRUm
+ DEdUGmFPfveM2unfd9+YYy+oUgBuZbWyoVrGwEd+CA2RRqmiyZq6fd1j6vUF3nPRiEWZBs/t
+ 63yUvGZcoZpCCea9k3wWlTYhSEU/bmSQbbhA/LzNCl0RAt1IA8skhsLd9QR2uaEuvDnRVnS0
+ T/Oi5eHYgH8gmQtaj58B5+r8XuDgtyj4Fv0gXRmDRx7lAe2v2UYCpsZOZawIxPQKqFIHvS3T
+ vr017qw+GXU5X8FUrtJRZ6iLyXm6paLVeS/oiI+t5qK23CulQRuukoPD8fwXG8M49m/c3+d/
+ /0W3XC4YV9B0qQhA43xWTEAe811FfUuFLMqvRFTvOTLp3AqfUcAzN1TPB8aD6Q+y9xZBGtR2
+ M0ZMiotdiqM0rfeLLKTEoGAh+wqIdOuOMYUvWttiGmHS/0nWpvEBa7N4Le03h9p2pwIR6uCI
+ ZVFL2A3M3wsYDUXUrsTIIk3gOazhnr/WzZZs1mS46Ew5gA/ySQsgeW8bYGFI7RmQ+1WnE2Yp
+ nvLxFjQOREwaOeB1h2dy1GV07qncSTTHdh6+KeD3uVniVuRzUQcDxoZUVb9qv684ma7UsB3K
+ EEO/Ccq668o+ySDScTlQxq+iH2JpBgRX5xXCeJSwBmHzazG4gCYLnIJQj5IdJots8pebT800
+ 3eXkN7zQz9iqruYTTSa7Lj8hTezPzUFaGwPfykJSSMb7NT55oI+lBTCSpBkCqHdszHuMTj92
+ XWO6SM5nbhW1ZBN3KSg9leBiDWpznTUcjMICszsdjrNxmtEiESNPuRENXCzAS58Ebuk
+IronPort-HdrOrdr: A9a23:FmAf8KA5C2vPr03lHemM55DYdb4zR+YMi2TDGXocdfUzSL39qy
+ nAppomPHPP4gr5HUtQ+uxoW5PwJE80l6QV3WB5B97LNzUO+lHYTr2KhrGM/9SPIUDDH5ZmtZ
+ tIQuxZFMD6C0R8gILR5Qm1FMtl/fy8mZrY4ts3CxxWPHhXg2YK1XYeNjqm
+X-Talos-CUID: 9a23:HGG/4GwelZ8NuIWYr2QbBgUpKp4JQFT7/U3+JkWnJFdoUqe1UWWfrfY=
+X-Talos-MUID: =?us-ascii?q?9a23=3AHTSPFA/NoTZFRPjzufPqSDyQf8Rq6KSuEU02rbw?=
+ =?us-ascii?q?9u+PYDjJvHC+krw3iFw=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.27,225,1787011200"; 
+   d="scan'208";a="59595381"
+Received: from aer-l-core-06.cisco.com ([144.254.74.207])
+  by aer-iport-6.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 21 Nov 2026 15:24:47 +0000
+Received: from satishkh-l-mj0bbv6x.cisco.com (unknown [10.25.129.52])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by aer-l-core-06.cisco.com (Postfix) with ESMTPS id A4208180001DA;
+	Sat, 21 Nov 2026 15:24:43 +0000 (GMT)
+From: Satish Kharat <satishkh@cisco.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Satish Kharat <satishkh@cisco.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Oliver Upton <oupton@kernel.org>,
+	Marc Zyngier <maz@kernel.org>
+Subject: Re: [PATCH v2 5/6] KVM: Send reschedule IPIs instead of SMP function calls for non-waiting requests
+Date: Sat, 21 Nov 2026 07:24:30 -0800
+Message-ID: <20261121152434.955716-1-satishkh@cisco.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261119235656.70315-6-seanjc@google.com>
+References: <20261119235656.70315-1-seanjc@google.com> <20261119235656.70315-6-seanjc@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,125 +112,65 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY7P286MB6866:EE_|OSOP286MB4177:EE_
-X-MS-Office365-Filtering-Correlation-Id: a9e5fece-e322-4d03-9e15-08df47e00e3a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|10070799003|1800799024|366016|7416014|376014|261026121527099003|261026140227099003|261022105027099003|261022075727099003|261028144727099003|261021121427099003|10067099003|4143699003|56012099006|261102123227099003|261009223027099003|18002099003|22082099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	F4bPLYUZbCQ7oOkuKaj2CyYtv8lQUSbX9KTFgX9I/1fgLbVhu7J1jqfQBCaZMNjyYh7zumyFPpR7uIEJtV5SZyw59R0A6DvTB65pKEEXylcL8l08jLvfpwgydSTjQMAOgm9x6AEQAUvGadldRYqWakMU6LSWNO7LgQu1S4rke+HYcZgXIJl0m62FQidy16SFnfQVcFV/DhHwseT84bQaCVg05WVq9iCEskoCtDSGx8/rjTMwfrFTH1Lhyj7Gr9hIlNIUrw0uROS98SXan7SFg/nTC0eTEjXGnzBWfMMF5JC54RhIq8qRoDH5lK80f8gp+F6/XkbpVG3YbyuT6LiqhRQWvTfFJA1KmLkWsfviFCC0v5paQ7cuz066O+8JAVOEn0OMPCvtUBqHDud5d3rggG9jozB4K/P+5B0ogvvpI6nsNICru7uy45fqxzb69rhNV5WeNF/Dsl0I2s5ZlXEN3tD9PExbKwOq31BWGjgDD3kQ6Ey/MVLRizcrtGPMWTcJjJ/N1xHg0BKd+4FYtGF1qrLYLVGc6bDWmVLq4qZS2sWLyoCSgG1kQM6avUNEDJs473FU2X9AN2Fav1+q4XNrpjAOtxcykAstKEGcTkZmmRc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(1800799024)(366016)(7416014)(376014)(261026121527099003)(261026140227099003)(261022105027099003)(261022075727099003)(261028144727099003)(261021121427099003)(10067099003)(4143699003)(56012099006)(261102123227099003)(261009223027099003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?okExQm1sYlTfvAD669SzVcQTKApY5A0HchtowQXKVGqz0wSKs1BE7b4Lz9C5?=
- =?us-ascii?Q?H9CvPD7F3m+RCqfuCkHb8AG0w9/SIjbqzni/WgwhUlfOn9rWTRrVyaK20Udh?=
- =?us-ascii?Q?Mvvq+TrolxMs7ufiEXDDGdI5JUjhLhrl9OIWg+BFlZvCitLXFZRmRneNQXE1?=
- =?us-ascii?Q?NxzFo5BayoRerLvpL1h1/AYHMhaKYs8Xw8dizTw/mPlUOEbq+rVwsYmbkje7?=
- =?us-ascii?Q?Ifc3gaRcbscDAS87MJr/qmexGfRuS00VFrtphECdDc79gCR5Iuo/pBYt5Cpv?=
- =?us-ascii?Q?R5ZdkC4+g8UaaZzrx4CxqcE4gu3OyDl0FA6ZIcARijTCGuSPR2bK6Xt23rq1?=
- =?us-ascii?Q?pV1yssjncjhVV6hKWQ2eYxafM/FDIobGDUavz/KcWI3PYqhpLuFFsrhlRdA+?=
- =?us-ascii?Q?+1Zm5gz40Fkg7liVPo5+thcrXwgTIm18kj6ID8ltTNCOrBHBik27gP6KRxHH?=
- =?us-ascii?Q?JbXmgmwywpzBT0Tow9CbWpM9K10ybWybnV8y4q+G8sjyzPkodP9iLTEOwSAh?=
- =?us-ascii?Q?bnHSUWsmVqFLeYhNNOoTyE/0bTh06/1XLMK6ymordsa40P/iX6RwTuZlQZjv?=
- =?us-ascii?Q?4Mqms7nJgwMTy3Of+lkAS9Qcd1JcKYZYtS9SHfR/d4IrtUXJZ11nhWWpu6qu?=
- =?us-ascii?Q?Iw9eIN2sX4ME71ucJDv7Fhvct7Eafz621UW/dzWlanUtZsG9gZdyHeA1xyUC?=
- =?us-ascii?Q?b/JA1HwTMHOIpapxNPDAswxcjzszVU+SuiZhPZ31CtguDtstf2Y0it2yrlz/?=
- =?us-ascii?Q?ZG+MWNR21qPJkZ2FVrpFLkizcnvv8BVpsmRCvGoIo+umg+U2xy5jawjHsbh9?=
- =?us-ascii?Q?C/sk4PS7RuC5m7OWTNjWFPeNkUSXCWz3JAgo6YhyiJWiPuk4wbINymPWbinO?=
- =?us-ascii?Q?tNYIpWStMrFcu9GJ9smaOIDnsId0kpyjN1fK0E6RHCq6Hr3tiWjFwYDrwcGB?=
- =?us-ascii?Q?NcEFp46F7yzRACY+ivq3O2AMhciA2a0/tZf7mQXCvrqBJm30j9DT7q7xTNvL?=
- =?us-ascii?Q?N8FnsbutNSuP7SiOQ8wOm2HCLT9pk4ajvdEEdvLVaFkXBLOCVy8I8okxKOSV?=
- =?us-ascii?Q?7IBbOa5Z7cpSu7kUWaTeuBUZCep+4J6RKGfZEOeSl6kC1/TV39vsG/0TcL1C?=
- =?us-ascii?Q?eZZmSC8h1DBWidznEDqJTlVUGKetucQXqKeIIhbIP4jOH8tiFKytBajWo2nO?=
- =?us-ascii?Q?8Fl+fvw7PORZQnnW0X/v/qRyb5r02Q2Wyod3ISgoMDXLtMBDGJiVV4nOYZTJ?=
- =?us-ascii?Q?n2JiWYf7iZNioStkV7qikvQreVdQIihAGg2lYe0Sjpfe0gdYap/awlHWB++e?=
- =?us-ascii?Q?ghD0n02n4qyBr+GUKA/0Tf+KsUJh/5aWD5vE3dr1H7Pg50tls4jASu8CGzCG?=
- =?us-ascii?Q?fHV1gfWSkHwk5ImyVkttHi4pStxaiJIeXHwNbKaYYvfVqEps+XPqZi6QlpX4?=
- =?us-ascii?Q?OMFL6x3zs6G3MNF5eKrUqrGNrRWpVlZDqlpJqWX3SWYOh52Nn6v5BAIXzsaL?=
- =?us-ascii?Q?lVZnceuv2b2M0MGIh7XqszSuopt2R5rGUOxXHqJTjq09sPjdKyxdNRcMJaFd?=
- =?us-ascii?Q?79DHGOL7mKlVhhMdLaD01Q7dMId+GNf4nZOCGDFAGA9JW2nAb7VFGaUrGcCe?=
- =?us-ascii?Q?q6uAcNk5zXx1QYVP9cxFMaGTOacBjIUZWgXwRU0uj+jJZjfDpUcawda5sMtc?=
- =?us-ascii?Q?aAiXYaWi6EtRTh1UdvslmmNhnxRqFMx6qeW5f8C1a0qjXtl3eC6EwtEF4HL6?=
- =?us-ascii?Q?Fo/1IdMbtvPRqFJHgnv9GXWQvOWyGQiy/q5BfbXw0ATCZ6C65mty?=
-X-OriginatorOrg: valinux.co.jp
-X-MS-Exchange-CrossTenant-Network-Message-Id: a9e5fece-e322-4d03-9e15-08df47e00e3a
-X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2026 14:59:34.9569
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tnJSfFP8FcI7YLx/nscpPqGEgaswXKW8HaOslbnfswnK/5Lj7B+8dkk0fCJl89QqdkLs3BVmMu4U5j+ECINBDA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSOP286MB4177
+Content-Transfer-Encoding: 8bit
+X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.129.52];TLSv1.3;TLS_AES_256_GCM_SHA384;256
+X-Outbound-SMTP-Client: 10.25.129.52, [10.25.129.52]
+X-Outbound-Node: aer-l-core-06.cisco.com
 
-On Sat, Nov 21, 2026 at 01:23:43PM +0100, Andrew Jones wrote:
-> On Sat, Nov 21, 2026 at 02:20:17AM +0900, Koichiro Den wrote:
-> > On Fri, Nov 20, 2026 at 05:40:29PM +0100, Andrew Jones wrote:
-> > > On Wed, Nov 18, 2026 at 03:22:41PM +0900, Koichiro Den wrote:
-> > > > Updating the SBI STA shared structure performs 2x get_user() + 3x
-> > > > put_user() calls, each of which toggles sstatus.SUM.
-> > > > 
-> > > > Keep SUM enabled across all five accesses to the shared structure.
-> > > > 
-> > > > Note that write barriers are added to order the odd sequence store
-> > > > before the steal-time update and the even sequence store after it.
-> > 
-> > Hi Andrew, thanks for the review.
-> > 
-> > > 
-> > > The barrier additions should probably be posted separately with a Fixes
-> > > tag.
-> > 
-> > That's exactly what I wasn't sure about when I read the ISA spec.
-> > It was unclear to me from the Zicsr ordering rules whether the SUM toggle in
-> > the old code's get_user() and put_user() calls also order the stores to 'sequence'
-> > and 'steal' as seen by another hart.
-> > (I don't think they do, but I'm not 100% sure. It feels a bit like trying to
-> > prove a negative, as I couldn't find a clear statement. I may have missed one
-> > though. OTOH, the new code surely needs the barrier, so I included them.)
-> > 
-> > Do you read the spec as allowing another hart to observe those stores out of
-> > order in the old code? If so, I agree the barriers can go in a separate patch.
+On Thu, Nov 19, 2026 at 03:56:55PM -0800, Sean Christopherson wrote:
+> When kicking multiple vCPUs for a non-waiting request, send a reschedule
+> IPI to each vCPU instead of batching IPIs via a single SMP function call so
+> that KVM can make non-waiting requests with IRQs disabled.
 > 
-> Yes, we always needed the barriers since we need something to pair with
-> the virt_rmb()'s in pv_time_steal_clock(). get/put_user weren't covering
-> for that omission either because CSR accesses are weakly ordered.
-
-Thanks. What I had in mind was the exception in [1] for a CSR access that
-"modifies the execution behavior of the instruction that performs the explicit
-memory access". I wondered whether toggling it between the stores in the old
-code also ordered them as seen by another hart. I agree we can't rely on that.
-
-I'll split the barriers out into the first patch of v2 and add a Fixes tag.
-
-[1] https://docs.riscv.org/reference/isa/v20260120/unpriv/zicsr.html#5-1-1-1-csr-access-ordering
-
+> Avoiding SMP function calls for non-waiting requests fixes a potential
+> deadlock if KVM VMX triggers KVM_REQ_UNBLOCK to all vCPUs when starting
+> device assignmennt:
 > 
-> > 
-> > > 
-> > > > 
-> > > > Signed-off-by: Koichiro Den <den@valinux.co.jp>
-> > > > ---
-> > > > To reviewers: please let me know if you'd prefer
-> > > > scoped_user_rw_access() here.
-> 
-> For scoped_ or not, whatever you think reads the best. I prefer scoped_
-> when it makes sense, as it's harder to get wrong, but readability also
-> matters.
+>   WARNING: kernel/smp.c:943 at smp_call_function_many_cond
+>     kvm_make_all_cpus_request [kvm]
+>     kvm_arch_irq_bypass_add_producer [kvm]
+>     __connect [irqbypass]
+>     irq_bypass_register_producer [irqbypass]
+>     vfio_msi_set_vector_signal [vfio_pci_core]
 
-Makes sense. After polishing up the scoped_ version locally and looking at both
-side by side, I now agree the scoped_ version looks a bit cleaner. I'll use it
-in v2.
+Thanks for picking this up. I reported the splat above, so I ran the series
+against the workload that originally triggered it.
 
-Thanks for the review.
+Setup:
+ - Intel VT-d host (Cisco UCS C220 M7, Xeon Platinum), APICv and
+   device-posted interrupts enabled.
+ - Guest with a Cisco VIC (enic) VF assigned via VFIO.
+ - KVM built from this series as modules and loaded against the running
+   kernel (no reboot). To confirm the series itself does the work, my
+   arch/x86/kvm/irq.c change was intentionally not applied.
+ - Trigger: reload the guest's enic driver to re-arm the VF's MSI-X vectors
+   while other vCPUs spin in guest mode, i.e.
+     vfio_msi_set_vector_signal() -> irq_bypass_register_producer() ->
+     kvm_arch_irq_bypass_add_producer() -> pi_start_bypass() ->
+     kvm_make_all_cpus_request(KVM_REQ_UNBLOCK) with IRQs disabled.
 
-Best regards,
-Koichiro Den
+Before/after, same trigger:
+ - With a build that has neither my irq.c fix nor this series, the warning
+   reproduces on the first cycle.
+ - With this series applied, no warning across repeated reload cycles.
+   Function tracing shows the bypass callback issuing reschedule IPIs
+   (native_smp_send_reschedule) for the non-waiting request instead of
+   reaching smp_call_function_many_cond(); waiting requests still use the
+   batched SMP call with IRQs enabled. Bidirectional VF traffic (ICMP and
+   TCP) and repeated driver reloads pass, lockdep stays enabled, and no new
+   warnings appear.
 
-> 
-> Thanks,
-> drew
+irqfd_test, irq_test, vmx_posted_intr_test and smptest also pass with the
+series applied.
+
+This was Intel-only and module-against-running-kernel; I did not exercise
+the arm64 KVM_IRQFD path, s390, or AMD, so the tag below is for the x86
+VFIO / KVM_REQ_UNBLOCK path I can vouch for.
+
+Tested-by: Satish Kharat <satishkh@cisco.com>
+
+Test automation was LLM-assisted; all results were reviewed by me. Full
+logs available on request.
+
+Thanks,
+Satish
