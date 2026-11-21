@@ -1,99 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.230.74
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.125.120
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795282136;
-	b=RcWRSMVBlYh16K95tjoxm1wuvuEYHmeT8wGnBieqrqv3s7GNTjLVOY67sf9d5n0jwmsj
-	 zWz+dpJvTrW1zPzPl10nG315zVanLm75digLvN1OMqlm9937Eg6qBxXWFB/Rf61EBxGQh
-	 5jXwDCfcfnXbkAk3zMk0bR35f/qJGWxKZzmbkk61uQoDXNdUlOSULJoEHZHx8QP0YkEhE
-	 +s1cMmHtthPROiuP3ETH8d3vkmJlMpKlcXNUMwxuNl5WlU1U3lN+GF6tdsvuq7i7SZnxp
-	 qeICD8bp0bc7COfbyF+Eg62MPR6iGV+kfvdufOBxj2G9KzKrrT69WtW98KFZhEZO31w==
+	t=1795282535;
+	b=oeY7FWsxtWLDhmE3O1RtGJ5SXkfkcEEfnMt3QWmNdvSxK0wOBCg2efH8x0Ko8suO8CGX
+	 AW576aJ+1I3co2xkERQOnPRIOYytPwrB19KVyYE8bFFmpJ/jbeDG145N1WZNXZ3EqnXI9
+	 OQzBF4GCgoWdi//fW+CVSKeaCSJBTtvCDbVVcu5NsNpykR6IJ8xOrZ1Y8p+IMHqmAbqVT
+	 ykiSmLY1AKWwH3C5RHs/tfK4kJjJbE9E6KrA02Bcdo4CG4PzFVsgyZrO3nDjmWPU8zID6
+	 d45+Tt717AnfUmPKkAW5qlfKaD50JdEZh3tGGLS1XLQi48ETWajVCGPULdw0EBpE7ww==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795282136;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=DCLA3o2NGcsUsCeKdpfpu0O9OUOc9q0N8lXAsyG+wTU=;
-	b=Vl0UJmnKmyipLMcugP9oPrNuPO0jqOgdxvVqBY+BJ2Vnru/Qxl24e8XAFh5ZLNFG0kZg
-	 J7juf/UUKeOov+7l5Fy75MFx/pK+f+yukogTY0zU7FLa1qnknHecDByRGw4nB1W1lDbaH
-	 2azYDSNwWJ3Iil3xtlws/KQgt0O2fvPkLGEw/fvjzbkeQEIHgJGwvPVPEoh9JlCyCPusb
-	 ZHPANOOUviL8f3C9iHvaHwxVJflL9J1zwHdItoHMoQuXZET2uMQ/dzfpZQ7Um2qrliem4
-	 VLWA1XmgFsEGFre8nN+uuVYcxIVKUWLEsabtc2xp/fclWIR5v1YLuDCPi4MQXwDsV1A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795282535;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:Content-Transfer-Encoding:Content-Type:
+	 X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=2CmVX3mHznKL42+UvNvVHMd56rdYAOHtrtm1B1OsuQA=;
+	b=sgMYKLd+Rl/Jg6DTS+kNpd0HYGRNafumEBXXrgn8CJKPgBoifQl2qKH6BEDmLubMwQ9w
+	 sexhhgihbnyVkF6jdz6A7bXc7+usaYrnd1PYd/3lZdrKWAsYZapGjQsDfJSXGoZRAqRe9
+	 ylcAT8KAJwa2KwVbScGeY+bc8KuAZP/Xt85CZbI1nnrQOFSplJN7t0RX4yYlZQt00NHxG
+	 aH9YGBi3po5fdKMU2NrTGPX/E1h5sXLrUkZLkiZlDpyzzVZsXVXKwk8pj3zUP6Bq59LZL
+	 jlfA/8ETYrbfuqfMpXAZ5d0kqNqVwyeerxcjvoTE934YVynVtJGBVBZnVfAzxMVwxtg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=T6ExzVG5;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.230.74
-Received: from mail-lr2-f10.google.com (mail-lr2-f10.google.com [74.125.230.74])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=valinux.co.jp;
+	spf=pass smtp.mailfrom=valinux.co.jp;
+	dkim=pass header.d=valinux.co.jp header.i=@valinux.co.jp header.a=rsa-sha256 header.s=selector1 header.b=VHD8uZjs;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.125.120
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11021120.outbound.protection.outlook.com [52.101.125.120])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BD2606A32C
-	for <kvm@vger.kernel.org>; Sat, 21 Nov 2026 17:28:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 60BD2606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39839606A32C;
+	Sat, 21 Nov 2026 17:35:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39839606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=T6ExzVG5
-Received: by mail-lr2-f10.google.com with SMTP id 38308e7fff4ca-3acdab5afe2so9338981fa.0
-        for <kvm@vger.kernel.org>; Sat, 21 Nov 2026 09:28:56 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795282134; cv=none;
-        d=google.com; s=arc-20260327;
-        b=sDp9TnpX1tYOK3SxkZsfwlrKUUTiW64G3OyuVAeGYIycqgeQ/zYysTFgpyi2oS9utM
-         oocSkdcO+gmoeY33QC/v4sC0ky2GJ/Lil1JxskUJGs51e8YlZe1HfW4L9kUryGJtjx/U
-         8uvQtBUlnszaUFqWVDNl2yNA9oGOOWdoLGc77/1lqJLTzdr19KrZGMG+D4F2zQ5X6CWr
-         GII0L1EVQp0CCisV0TnsvhGtRS5T4m+EmZ5J+t4C0EU7iDghP6Yk+HhHiv9Boy7D5Z32
-         DTltAOZDsEOmcHKq1SsNMwyRfieSbPvm2K9U1GqEXVSP2p1I+DhzCq7J+cdWgrNH9+F0
-         IweA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:dkim-signature;
-        bh=DCLA3o2NGcsUsCeKdpfpu0O9OUOc9q0N8lXAsyG+wTU=;
-        fh=icv7v3n4lRZPudG5fIqhhCSAjMwwsoewalCsQVGXsTw=;
-        b=l7crGGj9RPp0K8sv3JN+Q+3vGn+UbZXejaMLhYu3ZbjX7ZKA2147Cm4ZAdq/vSEZQj
-         V9vuIVHq6mnisyRjaCTA4SLEN/J6GogL2QajDCAEWVbU3SDrwI/qat8xX9WbHn7zynAb
-         CsrbFD4X3zdYKodKENrNvuLaFd4es5i4Api+HLs3yTJqjXuIpUMIKIhxvFcuDk2cC28o
-         pgiqzpIo6J+O5tatZSNnwVTdaaaITcrg5yt9f3Ph/oCRYB16zyQNjZAWdiSCAl+C8MbW
-         K52MKXt+IGKGzsqzxXmlFBR79DRw+81QWLkLc1v88gXZtEtAqDDX7/mZZpOvo3WXOZYf
-         PLvg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795282134; x=1795886934; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DCLA3o2NGcsUsCeKdpfpu0O9OUOc9q0N8lXAsyG+wTU=;
-        b=T6ExzVG5mcuJck4DhhXHwFnq05jr1J+iXdpeMcOWYtX77NCIj8mZw4kbmdZxUlbHjV
-         glzDxATmczYJkAR0bjDcTAUob7wuAdPocb+w5N4PDnhAuWUl53eu7IYBBFgjWbqgF1iD
-         lQdXjfocflO6ysTPTzhtyypjTbASznp3WM1jN3o2WTEGyf/uNdCZ/RvFSjmNeXIjRhUS
-         /zoV8ayJ27pbJcXQ3wVex5KttZLDtXEVzsvaLOmvy3Ij7ipqv0LnegzkLYPGQM7ghUua
-         vumpFLTG4pgUp3e6WWmvl9URKRbHl37pixItPFX3y6DsJwdpDL3CQfYIta8WsgW0OrYB
-         RKdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795282134; x=1795886934;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=DCLA3o2NGcsUsCeKdpfpu0O9OUOc9q0N8lXAsyG+wTU=;
-        b=NrkFQW32bVRBKXbtA3wIgVRidBGWpd//PaIL14eM11RQR+e5oeY2wv6j456hgeAYBJ
-         kqyZqPnrxezHbwmoMuW29HSlFz+fJIxWn6H389ZYoPDaV3TjXTF1Bbnfb5FQvSoQX77V
-         gLfrX7VXrUu6uBhxd8LhEFMRT3d4dycGKHSNy9JXlhO9Xeg1Dk4a4/irMQQ4AQ3xWe7T
-         kEm5t5NhQa7tg1p4DA+4HFGxvkCdCBaGDEb1Vae90849/FmBtWXGDt9FBBurT/ORiaQ2
-         IERTjh/RoKX/ewBTARHIw4ESOu91VqQhpy1Bb2zv8Fn8CR6mvGnkSIp3B07uji6nzUjF
-         z7/w==
-X-Forwarded-Encrypted: i=1; AL+hErECYtk/3vt2bZmUqvZ66ZGgVtKVZZ0cvVDytiymCS7GoSg+evl/NGG3+DDmNVMDIkl519s=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8UOndOoClvGS0c5GzLjwRUR+ApLPwB9fMUf0JwYeaaH+gGzspV
-	FjmSaCvHMeC3Rn1GaDEQ343qd2OnS6zZWp9gT/ZWiE6DqRbMTx0NAj6speNcLYy1lOSombQUXMO
-	LU/u2HFqsOP/u/FvuBHVcsojxEmqtT5c=
-X-Gm-Gg: AZFdTZed4QRi6ctwwRb4bd8wtd/HS2oNAtw7/woAk1nFJrGRWiY99VwpUeAMidAZp6Z
-	xOvLLXXEquqNlTUrlQW9RQCdCO4UN1oJihr/4L/GVamOno7cgxEGApqg42A7AmUe6K0RYqITlP8
-	4W6j0Fs9FsIExBIF8EtaIhKngZ3ck61zdbzoWwOhbO74R0lcEKILUqE6t2x3HiqrEU+dZTl7ATq
-	nv9KC09HUOfJb30RaxvIny2LIHJpXmUIorIqcylt7+/3LrUIumcOKholwpxv3Bp3OWFWRV6Cfzc
-	DewIlyClGPexPQ1S+A6GdYwaO/FlbpUi28zDV0mp/HbnrrHOr2zfDOotrDM7V+cxJq2HahpU+Aa
-	+Zm1Dx7Cg8tVcB1ZdKZ7eMOqH0d1Ytegaj9H/ZdXKOkmI+H8elQ/1Xkx0jQitpcTIG8U=
-X-Received: by 2002:a05:651c:419b:b0:3a3:7682:49a1 with SMTP id
- 38308e7fff4ca-3ae7fa3ac6fmr17559001fa.22.1795282134270; Sat, 21 Nov 2026
- 09:28:54 -0800 (PST)
+	dkim=pass (1024-bit key, unprotected) header.d=valinux.co.jp header.i=@valinux.co.jp header.a=rsa-sha256 header.s=selector1 header.b=VHD8uZjs
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ms2bg7u8Ih7hRzEl53w0ebPQq7u/2W05MCY+YS2RHpPbjaGwLoASSoxKiDzEtoKARDd3HoKoKlZcA9/pvsJ+B8rZoihYxMoUZFNUp/PBSfWtPkw4P8OyNruuZgUK+V//DTIzoBlu5hTmu3QXuEWZndvK7RRqqxjBrDlB4t9/yiS7Zq8Qvza0PcTp95KiRbWZfk8EUIUfLtXG9w/OnmTK3irlhIOfJqSX3gFUTfAIu21aCbko+/G0AOOe4YIgKT2UFdRGqVxufVYRzb+LLTG8ymMVV4ldxS5Z3OCrQgzwifuBCDauPKKx8oIY+2NDULJ8HIvXPRlQ/Ooli+8aB/w09Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2CmVX3mHznKL42+UvNvVHMd56rdYAOHtrtm1B1OsuQA=;
+ b=CaHVhRNi7pQZ1zLB5uRwY3LzP3jthMLZ9FSOCK4W6ywlQgVJTtsedn5wXI9zKhCLX+sYcwcEGrmMUoHVaF0ZpAd3WJnVYQnZje0x3z3GjPMdqwKRxsEgzA8/DxFRUGHaUDiw418MjnOfKtmN0Ue0QSa8xyolgr4lKalLKUq85FD0pMIkLkHK0JJYhGTiLMHd7X9N/okd+Y9iUs1KmvwyDUZVBloRK8JpRCznXh91ML2e6Py2eusQ3C9eqck+VkwSLW6oi1DfAcCCSZctua0gfI8nJvim9xXuQgGq6hIvZtPuj3Nu7Hdf3nGjdM+k439ja64r3LFfN3OzAyRGxB3X9w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2CmVX3mHznKL42+UvNvVHMd56rdYAOHtrtm1B1OsuQA=;
+ b=VHD8uZjsME5qnUI7/yv7I2c6bJKhIxTvbCFEzIvzQJPEhIkiAXK/G7qk+J4u7PBIcZZVzeeuAWe8Lp3IvQt0kYofBpSWcGEpT/kknhKc9NqAMRMREo+8FT0BKKP2iOmxd5FtKkLDeN/muzwHM31idvp4esem3N3B5AGK0XO5e8M=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:325::11)
+ by OS9P286MB5134.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:30f::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.13; Sat, 21 Nov
+ 2026 17:35:30 +0000
+Received: from TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::cce5:2aa8:53f9:dba9]) by TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::cce5:2aa8:53f9:dba9%5]) with mapi id 15.21.0639.012; Sat, 21 Nov 2026
+ 17:35:30 +0000
+From: Koichiro Den <den@valinux.co.jp>
+To: Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	Andrew Jones <andrew.jones@linux.dev>
+Cc: Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Bingyu Xian <shanbeeyoo@gmail.com>,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/3] RISC-V: KVM: Lessen steal time update overhead
+Date: Sun, 22 Nov 2026 02:35:23 +0900
+Message-ID: <20261121173526.892344-1-den@valinux.co.jp>
+X-Mailer: git-send-email 2.54.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TY4P301CA0081.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:36f::15) To TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:325::11)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -103,147 +103,107 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-From: Zheng Zheng <fengaojigui88@gmail.com>
-Date: Sun, 22 Nov 2026 01:28:39 +0800
-X-Gm-Features: Aa3M54plDJziP3_T6TamE_LALOBZqkSmXnp5uvjP_CU0mpq17_H4ujLNSncIBDs
-Message-ID: <CAO-4RZ3VRVmg-8wrej_cs5fopaEjKLtusEAyah9G4y+XLcWj4Q@mail.gmail.com>
-Subject: [BUG] WARNING in __kvm_gpc_refresh (virt/kvm/pfncache.c:267, v7.4-rc3)
-To: pbonzini@redhat.com
-Cc: seanjc@google.com, dwmw@amazon.co.uk, kvm@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB6866:EE_|OS9P286MB5134:EE_
+X-MS-Office365-Filtering-Correlation-Id: 37ac5348-3e79-4bf2-9f13-08df47f5d6a4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|7416014|10070799003|1800799024|23010399003|18002099003|6133799003|56012099006|260925022911599003|260925021911599003|260925021311599003|261028144727099003|261102123227099003|261022105027099003|261021123027099003|261021121427099003|261022075727099003|261026135527099003|261026140227099003|261009223027099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	5alztBNy4pRSuaoHW4Ouwe/cKyP5sPpBofXy8xUIiQ3UwOlqzA5BVGL/qYi8uXWF8Kkb/gnfeYYY2LHBQRXP6TuesVvddlwFzB+wcXsHhtH9LD+quMXQBQzA5reK9IB+BeNt38Jb786y9PCtQBTKpxwN25lMTtGBn60zFwDDA+TNSuPLDvW2u96/EA2oBlDgXc+MH/nT1PFoPoXOCR1fH6THMp8xT6aCbQyp02tnIK+eh4vWdvz/NCUrKn4u2KrC2fkr1+WVfP8iSEbDT3PiogxASli13bqwhmESDQK3nvnFfmDp6tSyj+YBwPK7EPuFStHVRy8MCbzDmLTiueNsXnG2lf96bkzrWsn5RTBOTFk2+7EgSTH/6kQBxEnpy0b8qszstQ48lEntmds2E6zFXyzvtu93/L1nR996XdUAhvHit4TYGtPm76vkM+7IACkEoM9hbcXAmgV59liiJQd1020IhpGx2q8xBxumh7N1YvNlVIs3NqEhl7SG/pQzPj60RcYpUnMBplvI+i80tVTzMEiW/FUXGHbywauRGiWNHcoPzkyHOxFfw7v7FolJF20BAjLlD9/R/reRodL6BOEgo5dZMLqak/mZYfqxS8P1cew=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(10070799003)(1800799024)(23010399003)(18002099003)(6133799003)(56012099006)(260925022911599003)(260925021911599003)(260925021311599003)(261028144727099003)(261102123227099003)(261022105027099003)(261021123027099003)(261021121427099003)(261022075727099003)(261026135527099003)(261026140227099003)(261009223027099003)(10067099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?RDxpraYI62/zEOJ+3f6W0KODSs1hlLb3s1RhWXNjR5bWHIJYObA4mKO91dUG?=
+ =?us-ascii?Q?bU/kjAfKtwhQw4GhbecDgOTWl/RBubDGQj0lrAfgpPqBnGkao6a8/aukqATa?=
+ =?us-ascii?Q?vd68tsE4Va2WJDflJ8wq2sMX62ORtuGhbeBQHMNua+FPLtm5ZVqMlM6PmLWj?=
+ =?us-ascii?Q?Ggp0b2MHKEjsVra/u4Bvp41xUbYBM/DjED4zExHoIhAc67UMyQNVnaQMO83R?=
+ =?us-ascii?Q?QAQxYWfYTXzDUIHEi85Ftlkk8ob1Oy5OEF7i91oh6tuEhvFZVzHnss8kN3/s?=
+ =?us-ascii?Q?qCjfdN5iPceiyLzeTvknESj7lJUQ3+B6+GavjyNoNePsQNpzVL6cY7f4cKpH?=
+ =?us-ascii?Q?YLO9fN4zYHJ3coaIn6zSuR0YATpHkc5PPFHlpHbBXSbSDf1sEXtM2M+D1DQE?=
+ =?us-ascii?Q?k8MPPOdhi1ch78pB0XGUijM5tjCjy5W/R+ScKCf+/ZA0PeSKNSJDvA2vehDN?=
+ =?us-ascii?Q?hB2hNC2QLb6XNv6o3ToVUuBd9ezWAW8xFOPXZ60/qW/CbdfJwot75o/aQyla?=
+ =?us-ascii?Q?h1b+w4/D0hzBzBx2b1DdYW0r44Uer/6fzDC/cHI7NjnFTVuxLhIXFNCEH+eA?=
+ =?us-ascii?Q?k5sOp8bYouOjSbjuo7pgIj48efIeqn5kiwqV1RrwzNw9lxyoqagUbMRYbD8e?=
+ =?us-ascii?Q?Urr1aAYo09p7R82AiIQN8rhw+7DtDA5Z4KfQrpD/eES/9UGKz7jJyJNW2d8d?=
+ =?us-ascii?Q?iiJ8aDOrIGO9iprbCq584Y44DYpDXq7KI1y0/N5INYZkneEDqza1+6oXwZyb?=
+ =?us-ascii?Q?XCHmfCfJULkeSaVPMBeuT7bkCsyYKVannUyEv0PEz+3FSuDJA67yPlbiTUTy?=
+ =?us-ascii?Q?PdwN4YPSot7yYdJwbPmhxmNweZzR/Fdq1ZnWgTza6FekZzyMs5ujhMMcQj7q?=
+ =?us-ascii?Q?CEIORirdwCv1RfyuL42yg9NgMMXuUBtf5rQfwQI0MSnf4YjPLxADI2TeCI2h?=
+ =?us-ascii?Q?lhJamvOfhIq+jMRQqxqF2K6o/gPl4xhjAdcnR9Xgc7ZFUJR0IT3m+VZ364BK?=
+ =?us-ascii?Q?o8PENBjy5BPswjNiM+G9o43Situn1f4vAm/1WXyOteKYEpgoAsveHUHa2xD9?=
+ =?us-ascii?Q?GgfwVsf6yY5IVUsc8xmTRBcg7uzV0SiLgp54Jcduqoy4hcq9bZsNn5hrIo2G?=
+ =?us-ascii?Q?HboWAvF8+rf/oUuDfL/fLwMmy49jmB2mcLrsc566HgIeLKpPituwqj5kLhZT?=
+ =?us-ascii?Q?G7JNzzTyKUpyMllqJVVg+8Q5geOLh+bB2mbJBKgod/vZ9u+aDv8SThr7D73b?=
+ =?us-ascii?Q?VBHktL42oKpXINahLsOb2qs+Wn1iIQCW2Oq6SaOwq2rl5EDvCahgr6J4kzpo?=
+ =?us-ascii?Q?RvVHhmJ5LAoWkYDw9kQb/iDSVeFkGMVPJvhW17AAxkN9zgwqZFY5OdZPJy+Z?=
+ =?us-ascii?Q?LOtlu6QkAU10/PM71luX8MiHBEL3XtwkiKe3qRjnsw6I+wBd2q1kP8XMD/bS?=
+ =?us-ascii?Q?/v2fAyqkMZ51oQbfxno0sIj9uZ6AC/md0lc7kViqBdqczfG4ISbw0dWH7374?=
+ =?us-ascii?Q?S46jrtvyom4G0aiLg9pzstVv5JIIwX2r1znjLC+lkS5chKJsXs8MbDZXroxF?=
+ =?us-ascii?Q?jgyjWAYKo4RLhO+ZLT4GqPcP+L2elZAwukDI5wSkZPM7afO4hQlEWkpjcp/p?=
+ =?us-ascii?Q?uEZAEYTZM4/2EeCj5OCEmO8Q2bNgRYj4SvcUPBIPHFBV1SPWWPBqSX6PHT58?=
+ =?us-ascii?Q?L+r4i71X+K0non+9Nox++B4WajCwJxPeCT/VR34ZBoU8LkxC6QQ9GGa6q7Tn?=
+ =?us-ascii?Q?bhH0Z1ps+fXvLGrtPUbf6ySoDyGChMtgaG3pD+3ziqc5WAetEPsR?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37ac5348-3e79-4bf2-9f13-08df47f5d6a4
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2026 17:35:30.7096
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: APsquEpMtuTDBmgyyN0yrv0NDJpXUZjwszveyBTcyT51oNZ7/XQYC5DQXpXY0WYbzd8Md7Pt8UGiUTiGEwfWFA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS9P286MB5134
 
-Hi Paolo, Sean, David,
+Hi,
 
-We found a reproducible warning on v7.4-rc3 with syzkaller: the KVM guest
-page cache invariant "either gpa or uhva must be valid, but not both" is
-violated while KVM emulates a Xen event-channel send.  The supplied
-recipe reproduced on independent fresh VMs; no state snapshot is
-required.
+For guests that register an SBI STA shared-memory area, this small patch
+set reduces update overhead by batching user accesses and also skipping
+updates when run_delay is unchanged.
 
-Repository and reproducer:
+Tested on SpacemiT K3:
+The benchmark uses KVM selftest helpers. The guest registers its STA
+shared memory and calls GUEST_UCALL_NONE() in a loop. The vCPU thread is
+pinned to one host CPU and re-enters KVM_RUN after each exit.
 
-  https://github.com/Zheng-zheng-codes/kvm-gpc-refresh-warning
-  commit f9bb1f09b4070e6b19fdc49a10297b2afe7e5fb8
+The table shows the median vCPU thread CPU time per round trip (from
+host userspace to the guest and back), measured with
+CLOCK_THREAD_CPUTIME_ID. Each case has five runs of 1,000,000
+iterations, preceded by 10,000 warm-up iterations per run.
+Below, "contended" adds a busy loop on that CPU.
 
-Report
-------
+                Before      After
+  ------------  ----------  -------------------
+  uncontended   2900.01 ns  2669.59 ns (-7.95%)
+  contended     2876.42 ns  2670.01 ns (-7.18%)
 
-  kvm_is_error_gpa(gpa) =3D=3D kvm_is_error_hva(uhva)
-  WARNING: arch/x86/kvm/../../../virt/kvm/pfncache.c:267 at
-__kvm_gpc_refresh+0x1692/0x1e40
-  RIP: 0010:__kvm_gpc_refresh+0x1692/0x1e40 virt/kvm/pfncache.c:267
-  Call Trace:
-   kvm_gpc_refresh+0xed/0x160 virt/kvm/pfncache.c:382
-   kvm_xen_set_evtchn.part.0+0x1b3/0x280 arch/x86/kvm/xen.c:2014
-   kvm_xen_set_evtchn arch/x86/kvm/xen.c:2115 [inline]
-   kvm_xen_hvm_evtchn_send+0x22f/0x290 arch/x86/kvm/xen.c:2105
+Based off of riscv_kvm_next, commit e9bf49bbc422 ("RISC-V: KVM: Fix
+G-stage page table memory leak on VM destroy")
 
-The warning site:
+Best regards,
+Koichiro Den
+---
+v1->v2 changes:
+  - Address Andrew's feedback. See the individual patches for details.
+  - Rerun the benchmark on SpacemiT K3 and update the results.
+  - Add Andrew's Reviewed-by to patch 3.
 
-  /* Either gpa or uhva must be valid, but not both */
-  if (WARN_ON_ONCE(kvm_is_error_gpa(gpa) =3D=3D kvm_is_error_hva(uhva)))
-          return -EINVAL;
+v1: https://lore.kernel.org/r/20261118062242.2914385-1-den@valinux.co.jp/
 
-kvm_xen_set_evtchn() retries kvm_xen_set_evtchn_fast(), and on
--EWOULDBLOCK calls kvm_gpc_refresh(&kvm->arch.xen.shinfo_cache,
-PAGE_SIZE), which re-refreshes the gpc with whatever gpa/uhva state the
-cache currently holds.  In the failing run both representations were in
-the same error state, so the refresh warned and returned -EINVAL and the
-event-channel write failed.  The setup was a nested-KVM guest fuzzing the
-KVM ioctls, including Xen HVM shared-info/event-channel configuration.
 
-No memory corruption was observed; the effect is the WARN plus the failed
-evtchn delivery.
+Koichiro Den (3):
+  RISC-V: KVM: Order writes to the SBI STA shared structure
+  RISC-V: KVM: Batch user accesses when updating steal time
+  RISC-V: KVM: Skip steal-time updates when run_delay is unchanged
 
-Reproduction
-------------
+ arch/riscv/kvm/vcpu_sbi_sta.c | 68 ++++++++++++++++++++---------------
+ 1 file changed, 39 insertions(+), 29 deletions(-)
 
-  git clone https://github.com/Zheng-zheng-codes/kvm-gpc-refresh-warning
-  cd kvm-gpc-refresh-warning
 
-  # boot v7.4-rc3 with the supplied kernel config
-  # using a Debian trixie x86_64 guest
+base-commit: e9bf49bbc4227048685c78f97e1446845760df4f
+-- 
+2.54.0
 
-  # in the guest, as root:
-  syz-execprog -procs=3D1 -threaded -repeat=3D1 \
-      -executor ./syz-executor \
-      reproducer/repro.kernsight.prog
-
-The recipe is a state-reconstruction sequence (74 replay programs
-followed by the crashing testcase).  The warning depends on the kernel
-state built by the recipe; the testcase alone is not sufficient.  The
-recipe must run with -procs=3D1; using -procs=3D8 did not reproduce the
-warning under our tests.
-
-Expected result: within about two minutes of starting the reproducer the
-guest console shows
-
-  kvm_is_error_gpa(gpa) =3D=3D kvm_is_error_hva(uhva)
-  WARNING: arch/x86/kvm/../../../virt/kvm/pfncache.c:267 at
-__kvm_gpc_refresh+0x1692/0x1e40
-
-and the event-channel write that triggered it fails.  All five of our
-fresh-VM verification runs hit this at 120-121 seconds.
-
-Verification:
-
-- pipeline auto-repro: attempt 1 triggered (160 replay programs) but was
-  not verified within the 20-minute budget; attempt 2 verified
-  (confirmed=3Dtrue, status=3Dverified, fresh-VM recipe replay, 74 replay
-  programs, 2026-11-21T14:59:08Z)
-- stability on fresh VMs: five independent runs, 5/5 reproductions,
-  120-121 s to the warning in every run (2026-11-21, external-verify/)
-- C reproducer: not generated; the syzkaller recipe is the primary
-  reproducer
-
-Repository contents
--------------------
-
-  README.md               overview, analysis and verification table
-  environment.txt         kernel/guest hashes and exact QEMU command line
-  kernel.config           kernel configuration used for the reproduction
-  description             original crash title
-  SHA256SUMS              SHA-256 checksums covering every file in the
-repository
-                        (including the five verification runs and
-their HIT markers)
-  logs/                   original crash evidence
-    log0 =E2=80=94 fuzzer log of the verified attempt
-    machineInfo0 =E2=80=94 VM/environment record
-    report0 =E2=80=94 crash report of the verified attempt
-    title-stat =E2=80=94 occurrence statistics
-  reproducer/             the reproducer and its provenance
-    repro.kernsight.prog =E2=80=94 the reproducer: 74 replay programs follo=
-wed
-by the crashing testcase (log format)
-    repro.prog =E2=80=94 the crashing testcase alone (not sufficient)
-    repro.priming.prog =E2=80=94 the replay/priming prefix
-    repro.priming.json =E2=80=94 priming trace (candidate picks, distances)
-    repro.context.json =E2=80=94 reproduction context (fresh_vm_recipe_repl=
-ay)
-    repro.state.json =E2=80=94 measured 539-D pre-crash state vector
-    repro.report =E2=80=94 raw crash report of the reproduction
-    repro.stats =E2=80=94 phase/timing log of the reproduction
-    repro.README.txt =E2=80=94 original bundle description
-  external-verify/        five independent fresh-VM verification runs
-    README.md             methodology and per-run results
-    run-1 ... run-5/
-      serial.log =E2=80=94 full guest console of the run
-      run.log =E2=80=94 harness log with hashes and timings
-      HIT =E2=80=94 marker written when the target appeared
-
-Kernel/guest details:
-
-  kernel: v7.4-rc3, bzImage sha256
-    0c16409f8aec508ac44a63e631c2bd352536401f3fd0856df1d839fb953a1882
-  guest: Debian trixie x86_64, 6 GiB RAM, 4 vCPU, QEMU/KVM, nested KVM
-  boot: oops=3Dpanic panic_on_warn=3D1 hung_task_panic=3D0 kvm-intel.nested=
-=3D1
-  config: CONFIG_KASAN=3Dy, CONFIG_PROVE_LOCKING=3Dy, CONFIG_KVM=3Dy,
-    CONFIG_KVM_XEN=3Dy
-
-Thanks,
-Zheng
