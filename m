@@ -1,56 +1,126 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.30.132
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795341041;
-	b=eXUlZAfyyoUDMC5nnsARFXGsqyVFauRL5darPHlzAgEE5d5azv1FQSfqAMy7nmTurvWJ
-	 43CUgVkeD7UrDLbyHJh1fXkwlw4ngKcO9aZBN6P8g6Hb1/YB9NRKoYfwNJq1mVbtjPOTh
-	 RLbAZQTlKcvxqW0ziHoYIOroCG5UDi7PJ1nGZ7Nc8adyKl6TpxAgXi1fEScgEPG4+rVUw
-	 TtuN8N2Zx5DlcH+DcEwC559UCQ8KPfDdp4SKY33OvtGZh/bvADfko6XXvLljT8u73zfeX
-	 gNC/XJX56/snyixoXlRUJHEJB446H+1UHoF9K6JEBQaGE4v+5lTFE5VXh7ju03Q1J1w==
+	t=1795347938;
+	b=m3crKOkMRZDaCSG4SYDo5VxQNoSb0Nq+zGjFyeVLT2/Lt+oEdVt55o7TiIU3xtyEFQdt
+	 QGAPKjBInMUf3i+CXCVFxFp65rwS2a6/Wu/U8dm8BgYbgu118uV7qpZ9HzDdEJ1g0NHcp
+	 47X/NKXwAsR0JLppJX4meAgWKof6gplYxc1GBwKwh80GYpFZYKiznzFjZIgDxfADr9Khb
+	 V4vd6fIbXUyPl1JeIsXr4t+RCI+EAw0bpwfo21yVdhw58DyODEIv8EDSGKMaBNr8SzUBo
+	 yI5IB/UDdobgiit0Ghn2h3aeRC46349OswrhHqRkWnG57EIpw/VZLuHor99c19w2Rtw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795341041;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=ufr71PY4qGevTHv4/Xt0Aoe+LguNLXQIUPKTi4k0c3Y=;
-	b=2Rzxov+B0fmn8bcGsGXiLK3d5/vP22q4mAEw+bGpJ7zdkcyHKKEUu0NA69uAKqrSo+Af
-	 Ojab7nyFMuCROoTjToMsc8smeAxUxlnmVIdeRDiWTSu8paFE7dyDVSO7e8Ppbgl2qFzAV
-	 x6tLyLatqIcGOVHk9juk/RkmIaK9asY/Ibv6vg8iYVKa6sLZPBEJxpdc60YbI6Ow/lJ/5
-	 f8IblNjeV0jntfnVYvmXFgDlkN+/iSz+7GYGBgJbsKgawE603b1v4LEhUbS7Rr25fc4q6
-	 lYSquHy4zjD1RMteh1QSqdZ9a/tXK1Cusmw6QsVnlecOBF8MnUsExzTK9Q9g6ra0cww==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795347938;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=cLMcqM1+ID1GgGq+PerrzsvqYkDe3KsyjwqtE/Ytfio=;
+	b=KUnpO4+r9c5mZjgDZWSyQcnD9//TVtxyJvTg31aOdWKdo07+4BbgoUJhBS/5k0/Un+98
+	 vEwR2AdnZvz6PdeAYUucvK6SoChEkN9MMq7ooFz6PqECuxZZ/IQMbPMKr3Gz3sbrLW9/l
+	 o/2Tu+0GVYrl535iXuc3MXL9s+kplovnjA+VqYRZ4xK6EQ5OX4OD8LLkKt1yMO2Y6hNSt
+	 8Iii0S7e81ncxSm1uyaiA2Wu8fGzxd9hmxEDNN0VTUAyCVbCntVMCPLefPYi3+wrcm++t
+	 aB4DpaHVRiKpd5WK/zdJTL0OyWdAFVYdnD670my4JpDEbYSVaZxnHVAxbzcQR3XR1Ng==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.alibaba.com;
-	spf=pass smtp.mailfrom=linux.alibaba.com;
-	dkim=pass header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=ajb5VSKx;
-	arc=none smtp.remote-ip=115.124.30.132
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JBZbk8ZB;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBD7606A320;
-	Sun, 22 Nov 2026 09:50:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DDBD7606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6462E606A33F;
+	Sun, 22 Nov 2026 11:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=ajb5VSKx
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1795341032; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=ufr71PY4qGevTHv4/Xt0Aoe+LguNLXQIUPKTi4k0c3Y=;
-	b=ajb5VSKxgRmURiP2zwcNwk8x8em7oGv1SE5tpbjvzOOi2ECCv1Xqr7bE0q6PSoGOuM4C7mnkofKkgG+N6Tv7KTPfXF13D2ibtAWCSzzupTbNhX5SHS0Ew9+tIEl5rZkUi9lfSSqYZNZiu0iQCWS0cV4hGF6KGfd0mlteOPkN6Tg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=shijing.wuqi@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0XFAcuiG_1795341018;
-Received: from localhost.localdomain(mailfrom:shijing.wuqi@linux.alibaba.com fp:SMTPD_---0XFAcuiG_1795341018 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sun, 22 Nov 2026 17:50:32 +0800
-From: Qi Wu <shijing.wuqi@linux.alibaba.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JBZbk8ZB
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C711F000C0;
+	Sun, 22 Nov 2026 11:45:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795347938;
+	bh=cLMcqM1+ID1GgGq+PerrzsvqYkDe3KsyjwqtE/Ytfio=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JBZbk8ZBopVc78PPFvWeVTIg2CMujdUlqemdavr/HCyWWlIQmFZkcrGxwSI3F8Lj7
+	 DNLer9OUFPLbOa4J4Swvhd/E17PbHJNYpl75QSvfOs502Qnq+SIVf6x8BaBZgxP/BT
+	 TLhC5kAcmMHclzMqgFcvdBPgsnO0el8R7pGYvxVYVMfFAdpjXa9S5pH5onsvDFitkW
+	 F7xoQFwGUBjexAU1BbMzjGktImA7HZrErJM176ZMcRKXKM7Cl6WdGzAwr72CinZqC4
+	 cUMiH2XukT43gci2XSUdvkVEDyb0hb22fl5gp/8fIaWZ7ym7dU5tWM0l+OzRL/g3Qu
+	 BJv0P33zLAReA==
+Date: Sun, 22 Nov 2026 12:45:16 +0100
+From: Ingo Molnar <mingo@kernel.org>
+To: Juergen Gross <jgross@suse.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
+	virtualization@lists.linux.dev, linux-ide@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	kvm@vger.kernel.org, linux-edac@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-acpi@vger.kernel.org,
+	linux-hwmon@vger.kernel.org, linux-mtd@lists.infradead.org,
+	platform-driver-x86@vger.kernel.org,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	David Airlie <airlied@redhat.com>, Helge Deller <deller@gmx.de>,
+	linux-geode@lists.infradead.org,
+	Olivia Mackall <olivia@selenic.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
 	Sean Christopherson <seanjc@google.com>,
-	kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Subject: [PATCH] KVM: irqfd: Publish the resampler after adding its first member
-Date: Sun, 22 Nov 2026 17:50:10 +0800
-Message-ID: <20261122095010.444794-1-shijing.wuqi@linux.alibaba.com>
-X-Mailer: git-send-email 2.47.3
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Pu Wen <puwen@hygon.cn>, Tony Luck <tony.luck@intel.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Ben Horgan <ben.horgan@arm.com>, Dave Martin <Dave.Martin@arm.com>,
+	James Morse <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>,
+	Drew Fustini <fustini@kernel.org>,
+	Tony W Wang-oc <TonyWWang-oc@zhaoxin.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Len Brown <lenb@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>,
+	Huang Rui <ray.huang@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Perry Yuan <perry.yuan@amd.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Artem Bityutskiy <dedekind1@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Ashok Raj <ashok.raj.linux@gmail.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
+	Xi Pardee <xi.pardee@linux.intel.com>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	xen-devel@lists.xenproject.org,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: treewide: Re: [PATCH v6 00/12] msr: Drop 32-bit MSR interfaces
+Message-ID: <awLVzKJWWfC3eJsH@gmail.com>
+References: <20261116150208.1572254-1-jgross@suse.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,72 +130,36 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261116150208.1572254-1-jgross@suse.com>
 
-kvm_irqfd_assign() publishes a new resampler before adding its first
-member and then calls synchronize_srcu_expedited() to drain readers that
-may have seen an empty member list.  This per-new-resampler grace period
-runs under resampler_lock and adds to VM creation / snapshot restore
-latency.
 
-Add the first member while the resampler is private, then publish it to
-both global entries.  RCU list insertion guarantees any reader that finds
-the resampler also sees its first member, so the empty-list state is never
-visible and the first member needs no grace period; later members still
-synchronize.  This also prevents kvm_notify_irqfd_resampler() from finding
-an empty resampler and dropping a pending interrupt on IOAPIC unmask.
+* Juergen Gross <jgross@suse.com> wrote:
 
-synchronize_srcu() calls per path (regression check; only the first row
-changes):
+> For accessing the MSR registers on the local CPU, there are 2 types of
+> interfaces: the "modern" 64-bit ones (rdmsrq() etc.) and the 32-bit
+> ones (rdmsr() etc.) which are using the upper and lower 32-bit halves
+> of the 64-bit wide MSR register values.
 
-  path                              before  after
-  new resampler, first member         1       0
-  existing resampler, next member     1       1
-  non-resample irqfd assign           0       0
-  irqfd_shutdown (UAF fix)            1       1
-  deassign, non-last member           1       1
-  deassign, last member               1       1
+>  140 files changed, 572 insertions(+), 690 deletions(-)
 
-Build-tested with gcc/clang and KASAN+PROVE_RCU+PROVE_LOCKING / KCSAN
-(KVM subsystem and selftests compile); checkpatch --strict clean.
+So I've applied this to a separate branch/tree under tip:core/msr,
+because I think this series is mature enough and after about a year
+worth of (very patient) iterations by you we've reached the limit of
+what will be picked up by maintainers.
 
-This patch was prepared with AI assistance; the author reviewed and owns
-the change.
+The commit with the widest impact is automatically generated
+via a semantic patch:
 
-Signed-off-by: Qi Wu <shijing.wuqi@linux.alibaba.com>
----
- virt/kvm/eventfd.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+  treewide: Convert rdmsrq() from a macro to an inline function
 
-diff --git a/virt/kvm/eventfd.c b/virt/kvm/eventfd.c
-index f43b8b25bc85..74851accd881 100644
---- a/virt/kvm/eventfd.c
-+++ b/virt/kvm/eventfd.c
-@@ -444,14 +444,18 @@ kvm_irqfd_assign(struct kvm *kvm, struct kvm_irqfd *args)
- 			resampler->notifier.irq_acked = irqfd_resampler_ack;
- 			INIT_LIST_HEAD(&resampler->link);
- 
--			list_add_rcu(&resampler->link, &kvm->irqfds.resampler_list);
--			kvm_register_irq_ack_notifier(kvm,
--						      &resampler->notifier);
- 			irqfd->resampler = resampler;
--		}
- 
--		list_add_rcu(&irqfd->resampler_link, &irqfd->resampler->list);
--		synchronize_srcu_expedited(&kvm->irq_srcu);
-+			/*
-+			 * Publish last so no reader sees an empty member list.
-+			 */
-+			list_add_rcu(&irqfd->resampler_link, &resampler->list);
-+			list_add_rcu(&resampler->link, &kvm->irqfds.resampler_list);
-+			kvm_register_irq_ack_notifier(kvm, &resampler->notifier);
-+		} else {
-+			list_add_rcu(&irqfd->resampler_link, &irqfd->resampler->list);
-+			synchronize_srcu_expedited(&kvm->irq_srcu);
-+		}
- 
- 		mutex_unlock(&kvm->irqfds.resampler_lock);
- 	}
--- 
-2.47.3
+  139 files changed, 493 insertions(+), 495 deletions(-)
 
+and I'm reasonably certain that whatever merge impact this may have
+on -next can be addressed quickly and in a simple fashion. Let's see
+how this goes.
+
+Thanks,
+
+	Ingo
