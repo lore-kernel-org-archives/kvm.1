@@ -1,55 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.17
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795307298;
-	b=VBPxDF8QrkIsVYcOTzv/YwqaWBwZ9dKNoM+V0B7yIUCWMS6/CeyOF5/pMjL5nCOu7UdR
-	 rhCFQqnoPDAeGPuTLl4xhf0U9njmyeAnMcJuHQMtonaOHIiDp1ueHibIkBmnxZ3Mt/pK3
-	 ICQN8tFMB6fe9GWMA+gnQeQF1zjzVF1L0Q1TGuhj2uObc5LYpnG9Y+TgrukqLiZkJlk8m
-	 z7smvyx3Z4O6Ue9eejHtfSjKe6awexv0DbMg09UpyafL2nKue9WeCilKNnxnL4sqD9DMF
-	 QtniaWOc1RmfJ8eVbtUt4BaIQzTyAwSjUPBHKCnEM9EnNGPutaIOeYs0RmMubp+NWOQ==
+	t=1795319450;
+	b=2u5Rnym9ot5BKPJuU9VvNCd/scjOKEWAC2gVK9SYZmU9qh7AGGmcFFhJDL4Rhc3nfpdQ
+	 CIfe7dZMmenYI0hFo9//yemCMB/QkmyymPNdxooz5qisJGSsVX7xXcxP/lFYz+L7X17Tp
+	 fQSKBknwqy/cl9g6a7KhH6YdKEWrgwH0uaf6LpC/SWaCTfR+DQ0iTr6OLi15ZxRx43Rb/
+	 WnuVuh4/pnu1nU18UF2g5PFHfoZdaY2miv0cJ1RvvIAItwMaIl6+ZlDbwAyLUNVQctNc5
+	 +WzdSCSp9xYTslUtBfrg3Qgo6svgyQuIaHWv6u4xCvuW2JhjQabjSdUkh6itPNVslcA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795307298;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=8RhArZNo8p16GcHuh6NIuiaO1SE3vke5Fkl7bF9WXX4=;
-	b=o/GG/T1zLfiGlZZbMqx3uTeEM6jVzOx4J5X5i5X/1/4QjJPHUkca5inenIG2DPymDR/p
-	 yh/hflqacbs3vjUEbIM6k1HJPpdXk/VEeaVve/P24TUiSoI4okfXFda/MCfumqZ1vKBxO
-	 qQLkN/a6JCaA8Fm8fUqA2HouJcH8rwYKYQHASQBTTbtNwRM2VuPGlJdp2ePTN8q92CQYX
-	 oy+s177yEOiTWb01PLMyf+xEhtOTOXuVUz3y7px4Io4FUKELGCdtsAk4IvGnyonppuw16
-	 mE+p/Zc/molnb+JxjfUQV1IvAh0GaSZcEZvDALBcFVqMTw2hqtlAs6XL6QlHIA6RjJA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795319450;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Message-ID:
+	 Subject:From:To:Cc:Date:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:User-Agent:MIME-Version;
+	bh=K5EnhnRA88GWc7NKadVmxiNMdMbACdMfjR5tfrqsDQQ=;
+	b=mCfwO3i7ZlYKBasjr2xeqjGTZkJwXQMU+DYO6raCE9xEag9S3e7flxWGSMi5p4SNLNxN
+	 x1BjUVt6/ZZKag65RZMXdi+atOs6p7SBy4xoUbgtd3YvOPCd/rFzHg/1Fs2FC/UIK/i2Z
+	 CqVDzBPvdOrJx/RLi9wC6u1tt8qe/oZdXQlE0654YD+K7ILJsEthgJUYEXLQPGX07l911
+	 9TNM/DaATYkvzQlQApuRFPu++uISBjeNZbW+FfOJ+linl/AuIGYDfVH9f0eisW6Zg1H3u
+	 p6/7ePDqeOlRv64dEX4j5dYRwLKpCsxfRvJeQGBcpimabU3Z6TAT5cPurLaL2bzQD8g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UGhRLrFg;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="E6QjLs/j";
+	arc=none smtp.remote-ip=198.175.65.17
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5D8606A320
-	for <kvm@vger.kernel.org>; Sun, 22 Nov 2026 00:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC0B606A331;
+	Sun, 22 Nov 2026 03:50:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5CC0B606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UGhRLrFg
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D151A1F000E0
-	for <kvm@vger.kernel.org>; Sun, 22 Nov 2026 00:28:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795307297;
-	bh=8RhArZNo8p16GcHuh6NIuiaO1SE3vke5Fkl7bF9WXX4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=UGhRLrFgtuywO9ZMC+tmRQw0GrZhEJWe37Hj5LwNPGYSWfalQC+IuGbM0vR7f33cm
-	 QbFU3k0iT31YsR/mr5ZQrOvtpgJuwcVSDLVtGQWZxPx+MC/vRZagmohzuwEJh4BMfk
-	 VeOqpsQ+P9mxUKmCdzQyaOc8UNTFQA28tmFMMhZyg2/eU0KGlf2xjRH3+xP9pvBANe
-	 h7ekRMiLhsLBcJbjAAGcBTq6emCPbJ6yVgmrOL/YNmau1hDfbSGG0hfp9JsGpeL8Am
-	 q9ZmXv08zExR02+uWxG4Tsd2JZLe0OOGPDNUycMothSucpHj5Zlg8x3vTEqXQfIJGY
-	 qUBaS4S5jzaOw==
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5be47aa555cso2584977e87.3
-        for <kvm@vger.kernel.org>; Sat, 21 Nov 2026 16:28:17 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErHlVlhSx/99texZwQCY/0e0Ub9xDGJVFpdAZEGSX4/pjIe74q06mJ2Ln1BfDyWREODOk4I=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+TFAmABctxb+r0a82U+1QWMqCp+LnarW0FVWnRd1oQ3OY3uVh0
-	NB1k4+nW65XU30r14PY4vW6nairgM+OIe7qA5RwYeuII4TLOGQaMnjWjIlkfdvMhkTmahn+RuqK
-	lEDxvxCp2MIMaagm7RVPdL+6DeNHNVz0=
-X-Received: by 2002:a05:6512:1042:b0:5c1:606b:ae8f with SMTP id
- 2adb3069b0e04-5c1bc660882mr2353410e87.7.1795307296619; Sat, 21 Nov 2026
- 16:28:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=E6QjLs/j
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795319450; x=1826855450;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=WSnI0fuzlcLmBWsud4Ap/Cbc62vFF+a3GpsYW9jGD5c=;
+  b=E6QjLs/jlAnDZtWGmGGQsKH23U1e8uojSpxwrqGduc/HU9CwRIFylMXF
+   nFtmYlDamPbTVsNY1J/GtGayFYXcmkI9jRTCsOvrt6oLi7V2MGuJJOZXi
+   CnqU8mir54DwMAI9rWQ821i5PcMj/0Oui382uEfufV2KAuq+b8nK2Ev5b
+   7JSWe3PCIu+WVfqm1eE6z5TvMZiy3mmFU9rlicGsUNglG7NGJ7fXHpwAD
+   6USWU9sERd5RaXSLVC4BFRuGdT/H8Ud6C8we1kGpXvw6FRW8hQPxY/unl
+   57wSKHkJVN/GdgqJFMrw2+0+MnE1rqRuAWktouurUYweBDK6RBYtGi8JL
+   Q==;
+X-CSE-ConnectionGUID: dzMNtqf1TXSM6XPXJBM4hA==
+X-CSE-MsgGUID: 0uFKxfrdQ/6UtLfQ5aRvAg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11973"; a="4164707"
+X-IronPort-AV: E=Sophos;i="6.27,226,1787036400"; 
+   d="scan'208";a="4164707"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2026 19:50:49 -0800
+X-CSE-ConnectionGUID: scw4q4upThOpWvTqI5ZpuQ==
+X-CSE-MsgGUID: mPvYgkQNSf+766xbxS+mQQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,226,1787036400"; 
+   d="scan'208";a="11096971"
+Received: from linux.intel.com ([10.54.29.200])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2026 19:50:49 -0800
+Received: from [10.245.244.140] (abityuts-desk1.ger.corp.intel.com [10.245.244.140])
+	by linux.intel.com (Postfix) with ESMTP id 375EC20B8CD1;
+	Sat, 21 Nov 2026 19:50:42 -0800 (PST)
+Message-ID: <d012c58931efa38a782ac3484ea930d05a6407a9.camel@linux.intel.com>
+Subject: Re: [PATCH v5 2/6] x86/virt/tdx: Configure add-on features on TDX
+ module init
+From: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe	
+ <rick.p.edgecombe@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	dave.hansen@intel.com, kvm@vger.kernel.org, yilun.xu@intel.com, 
+	xiaoyao.li@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com, 
+	kishen.maloor@intel.com, tony.lindgren@linux.intel.com,
+ peter.fang@intel.com, 	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+ chao.gao@intel.com, 	nik.borisov@suse.com
+Date: Sun, 22 Nov 2026 05:50:41 +0200
+In-Reply-To: <20261111-tdx-module-ext-v5-2-c74f764abc3d@linux.intel.com>
+References: <20261111-tdx-module-ext-v5-0-c74f764abc3d@linux.intel.com>
+	 <20261111-tdx-module-ext-v5-2-c74f764abc3d@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,69 +93,85 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261015142552.4128028-1-ryan.roberts@arm.com> <20261015142552.4128028-7-ryan.roberts@arm.com>
-In-Reply-To: <20261015142552.4128028-7-ryan.roberts@arm.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Sun, 22 Nov 2026 01:28:04 +0100
-X-Gmail-Original-Message-ID: <CAD++jLkik4jJd0h2jnZFFQa_rZrnkoF6U2n69vPOoDMEFo5tgg@mail.gmail.com>
-X-Gm-Features: Aa3M54o4IKo8fD9YUMMNm9Se3tMa7QPg9dEL1ZzSewcxTabcAD38a3EgY369qO4
-Message-ID: <CAD++jLkik4jJd0h2jnZFFQa_rZrnkoF6U2n69vPOoDMEFo5tgg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 06/15] misc/arm-cla: Accelerator context save and restore
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@nvidia.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jean-Philippe Brucker <jpb@kernel.org>, Oded Gabbay <ogabbay@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org, devicetree@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Ryan, Jean-Philippe,
+Hi Yilun,
 
-thanks for your patch!
+The patch looks good, but its framing can be improved.
 
-On Thu, Oct 15, 2026 at 4:27=E2=80=AFPM Ryan Roberts <ryan.roberts@arm.com>=
- wrote:
+Remove references to enabling all add-ons to improve it. This patch adds
+plumbing, it should not dictate/discuss whether all or only some add-ons
+should be enabled. See comments below.
 
-> From: Jean-Philippe Brucker <jpb@kernel.org>
->
-> Add helpers to save and restore CLA context for later domain switching.
-> The saved state includes DATA registers, LRESP, per-accelerator SRSTATE
-> and any implementation-defined internal accelerator state exposed
-> through the IAS register window.
->
-> Use ENTERSR to stop each accelerator and collect SRSTATE, then read the
-> advertised internal register state with REGREAD. Restore by entering SR
-> mode from a reset, idle accelerator, writing the saved internal state
-> with REGWRITE and completing the transition with EXITSR.
->
-> Reject accelerators that require SAVE/RESTORE operations during setup,
-> since that path needs a DMA buffer for state storage. Allocate
-> per-device save areas for all CLAs in a domain, sized from the combined
-> IASSIZE discovered at setup time.
->
-> Signed-off-by: Jean-Philippe Brucker <jpb@kernel.org>
+On Wed, 2026-11-11 at 11:48 +0800, Xu Yilun wrote:
+> The TDX architecture identifies some features that are off by default.
+> They are classified as add-on features because enabling them affects
+> existing TDX systems: they may change existing feature behavior, or
+> reserve more memory.
+>=20
+> However, the impact of the first add-on features will be low enough to
+> pursue a simple approach - the kernel just enables them when supported.
+> If a feature with a very high overhead appears in the future, this can
+> be revisited.
 
-This just describes mechanism and not use.
+This sounds like all supported add-ons will be enabled for simplicity.
 
-I see what the code is doing but not how it is used.
+The reviewer keeps this in mind now.
 
-E.g. part of me think: if it is technically a part of the CPU,
-why is the context not stored in pt_regs?
+... snip ...
 
-So I assume the context change at other points than when
-the process on the current CPU is preempted or scheduled
-in.
+> Pass the bitmap of features that are supported by both kernel & TDX
+> module to TDH.SYS.CONFIG. Initially, the bitmap is 0. It will be updated
+> to contain specific feature bits as full kernel support lands.
 
-This context (ha!) is needed here so we can understand
-the *purpose* of this context switch.
+But this says that it enables no add-ons. Now reviewer needs to spend
+brain cycles to process the contradiction, unnecessarily.
 
-Maybe the use of contexts and context switching need to
-be in the cover letter?
+... snip ...
 
-Yours,
-Linus Walleij
+>  arch/x86/virt/vmx/tdx/tdx.c | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+>=20
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index c7bd0b01786d..3bfe78b4b538 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -1033,9 +1033,19 @@ static __init int construct_tdmrs(struct list_head=
+ *tmb_list,
+> =20
+>  #define TDX_SYS_CONFIG_DYNAMIC_PAMT	BIT(16)
+> =20
+> +/* List all kernel-supported add-on features0 bits here */
+> +#define TDX_KERNEL_SUPPORTED_ADDON_FEATURES0	(0)
+
+Suggested comment:
+
+/* Specify add-on feature bits to enable=E2=80=9D instead */
+
+I think that this patch should not dictate "all" vs "some", no need.
+
+... snip ...
+
+> +	/*
+> +	 * Use SEAMCALL version 1 that supports add-on features if any are
+> +	 * requested. Otherwise use version 0 for backward compatibility.
+> +	 */
+> +	if (addon_features0) {
+> +		args.r9 =3D addon_features0;
+> +		args.version =3D 1;
+> +	}
+
+Separate nitpick for the comment.
+
+Suggested comment:
+
+/*
+ * Avoid unnecessarily requiring version 1 when no add-on features to
+ * request.
+ */
+
+I was confused by "for backward compatibility=E2=80=9D, which sounds like t=
+he
+kernel or the seamcall falls back to version 0 if version 1 is not
+supported.
+
+Thanks, Artem.
