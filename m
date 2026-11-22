@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795365547;
-	b=mT9sSASz/C2SVKCThSNDIu1fvcJdVQsR4oXXR/imjfb4HDe86JCHutyDnC+554V1yCWK
-	 +W4ecADEaf9P38d7eB+VEZMfe8bLTQb6nr+/bEVmcL/aw3Q6XTZzu8YfXRM01dRP3ikz9
-	 14aCnvOenZLF4aS0ZU+vTaU+apSuUwyWgYdK5u6l3LOFSU8F4ReD84I7pEZEIxwR52bHS
-	 lYhclJhbnxssj13pXf27PITv9BPeEUmKRyOrFAXFVEGXrwYm9uIQp8vOPYZzvJCtjfSGW
-	 5RJhGivbYtqJ9MUBj8Az8jARu0MOuT7LU56dweIj0uA8iE42exWr22YKz9vROqRVT8g==
+	t=1795365903;
+	b=xEGBsagS6CcdO+WhU9YMC0GzjusZD6PH5UqQRvoCMBOKBv4UB027/UGBoGAdaVtCGKeV
+	 4q0woFG6B0hs1ZvKMABOFpVR4qHIA1EvEgknyReMkruHE8g0VTN8xuGA0Yp0DlBzpLog2
+	 O/p29xjXjEWgQ4WJ4EyoeihIPcKDyuMn6GwY9FY80oRcJweRGzfRunjuA87okvvm6zGvd
+	 5NpEYSPKl/og8GbwKDExduVWL9lf+PEbPpnROb19J4asKsb1W6tG2DNnOVRWu/m1oi8sy
+	 dHM4jtC3N02Y0yNeQiHQ5dyVL6mH/s6pAPu4AztMS1E1Zx7kOPCBbp7j3JgNM4vINdg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795365547;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795365903;
 	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=9z9YNC3S7P3k9nmw4kE1f70zUErr4DC5KffY6HobqDE=;
-	b=tHBUQ+XWjHE0woDTrOI9MDnw1O9NsYo+rbmmq7Mv7jj6dJCfXaliACH94l2Od+NcWvSe
-	 FC/KEda5mQdbMkBwQx1uQiXajUnDja2QkzTaeCtth/mfCyv8C+eDbsY4gwV0oE8PGQSVb
-	 CD4UXxetfhVDei3buC+R7+bTcZCHHVk1agCb2JuwhgF7VpUucc+q4CH1MqCqG0e9Vxj3h
-	 PU4iL6/uZd8H0vx2UjbqQ6mWGvFsDacqvHjS14LArcLJ2r5GpDiO1Isy9J1BIhRmUTHiA
-	 PCWCL/YoXUjcHpfs9ziHUZwF7ejaf2+7LXvbIoUGkwAOmxWfX3y8fBI4M8yPl1+Q2pA==
+	bh=KaWb+s8zeKhF6AnCeqIf7E7Vx2X7tWNhfZmMdCpaUGM=;
+	b=oyPMFCpK5ZPox66jGK3PRRauKhJC8ZHm4SE+m8TL2VEvOO6Nfpty8q/qQLskGP3lrtm0
+	 88ARTGM8caucQhIXFx+rV32dTxSOoJLXU4XHWu9ATNGovE89Oo6cTCC09Aqh+zXJFIpbs
+	 hh1Wb0vixBp4AVI2Fm65ETfzT3t5mXwupb7C/ApGHzF6sbLY2Oes7ZNtBP0C9HKnOcFN0
+	 4prLaf+TqvzEAePYiMhL2NHNR/v6Clz/R1Ne4EMvLGAuPkU+5Gx9UDOEPIVuUdrfC8GhX
+	 foBQy03xMw7AMiJYtIBWpaq7K8XNMllr/vW3uZ6OFIHvMTO2ua1tFOIrMKrzlV86TcQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WvtFRTlu;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D28Dshub;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EC6606A330;
-	Sun, 22 Nov 2026 16:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E17D606A330;
+	Sun, 22 Nov 2026 16:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WvtFRTlu
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A4511F000C6;
-	Sun, 22 Nov 2026 16:39:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D28Dshub
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E31261F000C0;
+	Sun, 22 Nov 2026 16:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795365547;
-	bh=9z9YNC3S7P3k9nmw4kE1f70zUErr4DC5KffY6HobqDE=;
+	s=k20260515; t=1795365902;
+	bh=KaWb+s8zeKhF6AnCeqIf7E7Vx2X7tWNhfZmMdCpaUGM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WvtFRTluWYnIGZohs5S/7EcqAZ+PiyH5rkX9M/wKqV0r6hRKweQWi7IrAuv+OkKhu
-	 YycXPJZt/gQPSTgikiDkoB4w8/sn6a8qatZr+8UogpHdC6LJVHd1pSqQZW0f59lphq
-	 fDls7ND7UZ9HRAtNewuO+RZTz/nsxaRGzyKsEDu41tRIVtaYPRdcW65zuwO0a5Q7fT
-	 1od6U5F2gcy+4qpLEmHCicd6runxYZ5vMsvwqZ6iHu0CCrhWezC5cfhzgIJyHoq/i1
-	 tRNXwiWfcWl4wRPDXigptB6mt7mqY8tgxV5J5hnC5R93IGyAYI/1ewXC5b8zzimXqA
-	 mfvaGS4zde2zA==
-Message-ID: <7941cfea-9555-4b26-8f1c-f3fb2b410bf1@kernel.org>
-Date: Sun, 22 Nov 2026 17:38:57 +0100
+	b=D28DshubZKDMkBzwpviztYrerD4E6ol3oEYrrdiVPaZa2+dpN2bHePhFa523xOEjS
+	 P1SGChtJYjqqQGZD2zkdtpgdYRa0/HNZ2kH6GTQebbVKLsSAL0gg+JYqxLlmytiYS5
+	 Ex+Q/i3balIADfHYMBT/5LHmS2G1PdFaQdI+lP6MdSDtTM8POMdy2nVFhfHqkjTzFt
+	 VAqP7rZnD0U6kEi2PEGaayOVN50eRaORis8lozJH94u8IIhs5NPEt6fZScZ2PH3LQa
+	 midpnrtMUVqUYfFER4rDCmJOVOxGcX3/jgg/5wwPmZ83fxuv0vniu2uXZmIF5M/xmU
+	 af6CVbJu8vTXQ==
+Message-ID: <cb535634-2d87-451f-be28-ba975281dde8@kernel.org>
+Date: Sun, 22 Nov 2026 17:44:54 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -52,27 +52,26 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/4] mm/huge_memory: copy file THPs at fork like
- copy_present_ptes() does
-To: Konstantin Khorenko <khorenko@virtuozzo.com>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
+Subject: Re: [PATCH v6 4/4] selftests/mm: test fork of PMD-mapped shmem THPs
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Konstantin Khorenko <khorenko@virtuozzo.com>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
  "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
  Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
  Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
  Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Peter Xu <peterx@redhat.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
- =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>,
- linux-kselftest@vger.kernel.org, dri-devel@lists.freedesktop.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Peter Xu <peterx@redhat.com>, Alex Williamson <alex@shazbot.org>,
+ kvm@vger.kernel.org, =?UTF-8?Q?Lo=C3=AFc_Molinari?=
+ <loic.molinari@collabora.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
  "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
  linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
- stable@vger.kernel.org, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+ Yeoreum Yun <yeoreum.yun@arm.com>
 References: <20261119-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v6-0-efa7817a2bb3@virtuozzo.com>
- <20261119-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v6-2-efa7817a2bb3@virtuozzo.com>
+ <20261119-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v6-4-efa7817a2bb3@virtuozzo.com>
+ <20261119103210.24a7612ee26c3ffc3db49451@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,58 +118,102 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261119-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v6-2-efa7817a2bb3@virtuozzo.com>
+In-Reply-To: <20261119103210.24a7612ee26c3ffc3db49451@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 11/19/26 14:44, Konstantin Khorenko wrote:
-> This fixes no bug: it makes fork copy a PMD the way copy_present_ptes()
-> copies a PTE. Until now copy_huge_pmd() skipped every folio PMD of a
-> non-anonymous VMA and left the child to fault them in again, while the
-> PTEs of the same VMA are copied.
+On 11/19/26 19:32, Andrew Morton wrote:
+> On Thu, 19 Nov 2026 14:44:05 +0100 Konstantin Khorenko <khorenko@virtuozzo.com> wrote:
 > 
-> Treat file folios as the PTE path does: take a reference, duplicate the
-> rmap and account them. fork then pays a reference and an rmap update
-> per PMD, and saves the child a fault per PMD it touches. The next patch
-> sends PFN mappings through the same tail.
+>> Fork a process that maps shmem THPs with PMDs, in a VMA whose page
+>> tables fork copies: a private mapping with an anon_vma, and a shared
+>> one with a guard region. The child must find the PMDs before it
+>> touches the mapping, and its exit must leave the parent's mapping and
+>> the system-wide ShmemPmdMapped counter as they were.
+>>
+>> With folio_dup_file_rmap_pmd() adding PTE mappings, the child's exit
+>> takes the parent's share off ShmemPmdMapped while the parent still maps
+>> the folios. Unmapping them drops it once more, so every mapping stays
+>> until exit, where the kernel reports "Bad page cache", or hits a
+>> VM_BUG_ON with CONFIG_DEBUG_VM. A kernel that leaves file THPs to a
+>> refault in the child skips the test.
+>>
+>> ShmemPmdMapped is system-wide, and reclaim or NUMA balancing can take a
+>> PMD from the parent while the test runs. So the test makes up to three
+>> attempts, each on a fresh file, and fails only if all of them see the
+>> counter drop by exactly the parent's share: the bug does that on every
+>> fork, other processes only by chance. It passes on the first clean
+>> attempt and skips when none is clean.
+>>
+>> The test mounts a tmpfs with huge=always over /tmp in a private mount
+>> namespace, so it leaves the THP settings and the host's mounts and
+>> files alone.
+>>
+>> ...
+>>
+>> +static void test_fork(bool shared)
+>> +{
+>> +	const char *desc = shared ? "shared mapping with a guard region" :
+>> +				    "private mapping with an anon_vma";
+>> +	long before = 0, after = 0;
+>> +	enum result res = NO_THP;
+>> +	int i, drops = 0;
+>> +	char *mem;
+>> +
+>> +	for (i = 0; i < ATTEMPTS; i++) {
+>> +		mem = map_file(shared);
+>> +		/* Make fork copy the page tables; the last PMD gets zapped. */
+>> +		if (shared) {
+>> +			if (madvise(mem + size - pagesize, pagesize,
+>> +				    MADV_GUARD_INSTALL)) {
+>> +				ksft_test_result_skip("%s: MADV_GUARD_INSTALL: %s\n",
+>> +						      desc, strerror(errno));
+>> +				return;
+>> +			}
+>> +		} else {
+>> +			mem[size - pagesize] = 'p';
+>> +		}
+>> +
+>> +		res = pmds_ok(mem) ? fork_once(mem, shared, &before, &after) :
+>> +				     res == NO_THP ? NO_THP : LOST_PMDS;
+>> +		/* Later children get only their own mapping. */
+>> +		madvise(mem, size, MADV_DONTFORK);
 > 
-> That covers the VMAs vma_needs_copy() sends here:
+> autobot want the return value checked:
 > 
-> - private file mappings with an anon_vma;
-> - VM_COPY_ON_FORK ones: uffd-wp and uffd-rwp, VM_MIXEDMAP, and
->   VM_MAYBE_GUARD, which shared shmem, file and DAX mappings get from a
->   guard region.
+> : If this fails, the next child inherits an earlier test mapping too. 
+> : Its exit can then change ShmemPmdMapped by more than the expected
+> : amount, causing the test to skip a real failure.
 > 
-> A folio over the page cache refcount limit is not copied, as in
-> copy_present_ptes(): the child faults it in, and fork() fails with
-> -ENOMEM only in a VM_MIXEDMAP VMA, which may have no fault handler.
-> Unlike a skipped PTE, the PMD needs no uffd marker: a file PMD never
-> carries the uffd bit, as protecting it splits it.
+> which seems ignorable - MADV_DONTFORK failures are super unlikely at present.
 > 
-> The DAX huge zero PMD is copied too, with a reference taken by
-> mm_get_huge_zero_folio() as for anonymous VMAs. A migration entry of a
-> file folio is copied and accounted like copy_nonpresent_pte() does, and
-> made read-only in both processes only in a CoW mapping. A device
-> private entry gets the same CoW check, as in copy_nonpresent_pte().
+>>
+>> ...
+>>
+>> +int main(void)
+>> +{
+>> +	ksft_print_header();
+>> +	pagesize = getpagesize();
+>> +	pmdsize = read_pmd_pagesize();
 > 
-> The copy then gets the same tail as __copy_present_ptes(): write
-> protect both sides in a CoW mapping, mark the child's copy clean in a
-> shared one, and drop the uffd-wp bit where the child is not armed. An
-> anonymous THP is now write protected only when its PMD is writable, as
-> a PTE is.
+> This is going to ruin Mark's day again, thanks to "kselftest: mm:
+> rename read_pmd_pagesize() to pmd_psize()".
 > 
-> A page table is deposited under the copy where the fault paths deposit
-> one: in anonymous VMAs, and wherever the architecture needs one.
+> I think I'll alter Yeoreum's above patch like this (presently untested):
 > 
-> Cc: stable@vger.kernel.org # needed by the next patch
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
-> ---
+> --- a/tools/testing/selftests/mm/vm_util.h~kselftest-mm-rename-read_pmd_pagesize-to-pmd_psize-fix
+> +++ a/tools/testing/selftests/mm/vm_util.h
+> @@ -93,6 +93,8 @@ unsigned long pagemap_get_pfn(int fd, ch
+>  void clear_softdirty(void);
+>  bool check_for_pattern(FILE *fp, const char *pattern, char *buf, size_t len);
+>  uint64_t pmd_psize(void);
+> +/* temporary cross-tree compatibility thing: */
+> +#define read_pmd_pagesize() pmd_psize()
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Thanks! Otherwise we could route selftest through a single tree.
+
+They would fail on the tree until the fix is in ... but that's rpecisely what
+selftests are for.
 
 -- 
 Cheers,
