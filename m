@@ -1,55 +1,196 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795382950;
-	b=kfn4I02275Zu7t+ay8KunIfZE6JeF26cbT7oykY+WnfvIxBiYuoWkC97aZeFn725xBPe
-	 MIqRh4rOATNCp8ejoSxG+qYvS5oWC3px1J7LvWr4qR7F1lhPzNi4TksE/e8b5par/4iRD
-	 unmQPkMYFEAH7ple2VUcP6hUEgjg58sDq/GLJ1j0st7ksxf2bczW1ajtzqF92dFYlMtwi
-	 0ssg6aglKxavZX7JHWTeSuqmIgdNNW/fzpPWtLpac/bYCfxPcbqA8eso9hBUy3WghDBJ3
-	 Oqy2/NTemJKJmMgd8ZiUYmCXDNHAeIdQiOnfJhUEov32cEwVjYiTuZ98EAZhjEnC7eg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795382950;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=BTV0zF8Ij6zUMNBE+Oz8/N1ZVrqV9XG9B7wmhsB51vI=;
-	b=UTd54S6AtFo8hF2QuU2sgIvEMOHCB7/SQKX8Ovpei/kmDqhZoY0wPY8zO3+Hpt/BrxQk
-	 PrhQLs+iSSzgeyI1qOGMLmTOvf0zBfTQESKoIya60BAIE33Nbpbo4SPVGAKfuaZVdXInZ
-	 OJS+O07bbzM6IMGBQAXIrhhGX/nGHu57h+l8jAuKtOGjY7Xe3667YEn3/O87Xthw9+2wr
-	 CtJO949H91KAXk2b4ZQjcYAe+j2LWx5JXTQWT93eNkEJy/U6ni38nY14Kwfq1E6CdPWO5
-	 +YWDGeKE4J4FtGzAdUYkU+Nh1cahHj/9f8d8YvNmmC409gwhIgTP+dLjY7JOujqgaCw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WG54opzt;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.2.48
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795383512;
+	b=v5HaIaq3VxW98fOVWk7IR4P/0GKXcJ28TIPVmVsanHm0oj4xJJZ7DcQXWsFxtOF/6EUM
+	 xxAEFwgGT1OrJJpB5Hijv1LI5Rclp/IPmVSSl3PaNbbxN4i9y5KFY1EZFm+JTePZNxAbU
+	 wiKGAOzlXTOmGrWgDTIfkHqG0HMw6eWMJPbHzooGKBTnkFMjXHBauuDIoJ2CY+eOV2Wwf
+	 vOZCUgbMC7TRyfyWq/V0gK7opDMw3ifStTpFYdxUiX+qwnuOA3GEX4eqkqy6rMdHiEvRy
+	 HA98SMS+F0AmHwjpQEs8ZOLnYb46iSTkPtteZsJbZ0cRxvfwBR0xNt0n6fQtqccZ3+A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795383512;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:
+	 X-MS-Exchange-CrossTenant-rms-persistedconsumerorg:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=uI6N0yy3nE3r3l3B3HOfIN6e/2icGcmSb0OOdqzMBF8=;
+	b=Y+hQWhHLdVQhnROdFvxe+/nlbld9x1Rdyi7r/RGzFxSID321QkP2vIP5VDGzrni976G0
+	 hQNGOT0oeOaUrqp/s+zc0D3xJ0pPprX10PhFzUKK53stm3Hs7oDYzlPF1EkLmCXcWoDDG
+	 G5FTcmhUuZxI5KYP7ejZUp9WwS8xFPOnRZZAzDCdZmDSUMGuvNIn1OPH3dINZstV9REXW
+	 WE/XcPWzmhQnF/KL5QB40lIXaLxiSWmr6R//L3CGGgTzW5StJzeOiVIxrVssldB5ooW9c
+	 cXWfpOFur/sWxc8AMpJM3g2at3d01ychygteMP+p2BhFBik2UaVvVQVMV6//Frs2ggw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=outlook.com;
+	spf=pass smtp.mailfrom=outlook.com;
+	dkim=pass header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=qBqDzVZ6;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.2.48
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazolkn19012048.outbound.protection.outlook.com [52.103.2.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F81606A31A
-	for <kvm@vger.kernel.org>; Sun, 22 Nov 2026 21:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB45606A31A;
+	Sun, 22 Nov 2026 21:38:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0FB45606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WG54opzt
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E94651F000D1
-	for <kvm@vger.kernel.org>; Sun, 22 Nov 2026 21:29:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795382949;
-	bh=BTV0zF8Ij6zUMNBE+Oz8/N1ZVrqV9XG9B7wmhsB51vI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=WG54opztWi+ll7+PUc6eBXqw494LZjxIVJ0DKsOEfPBVjJTxRSg1R7ywaqbRHIXza
-	 VazTaVz5alcKWtxPjpyt9HYyPuJTofmTz+8e/maD+l2IpS8DqfZjP0zUXVTezJDte0
-	 SjZsXl9DSYkB8/hove8ERjgLKOc+ZHNEs6IDjDzHL7NxRuWchw69iLDkGo0NLU2xdo
-	 8Hzau6EhHX6AhVk1259DZeOfEqoymIG0dhHjJsBRCeEcaYjJk3ioWBZwitbEi/yBjj
-	 IA20Phq6/J8wU/WfLd6OgMcWvRFunqG5FUMxAlFCKFdiywCWLU+exJ7jprSB+jKsuv
-	 X2O/DctYxrKAA==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3ae7d1ce1bfso23468771fa.1
-        for <kvm@vger.kernel.org>; Sun, 22 Nov 2026 13:29:08 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErHY3RnLw6Kb0e8vR/jW0Dtt0qk4+Stq1o6s9KywosffWQm98Ckl0YN3WUhfDcJY23brgGc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+c5mbXUOxIBqh+0S3q+5ajPpYpK2zb5UGX/wjVUzRx6HnaDKBy
-	dTFJ51daPYzMxA3aS45cqwbmCr9W6/elLgr4LIt5DcPCd2rPg0Yrer6CM4rp1YLIMHwhcuwL86D
-	c0fch8uzI6FGP3S4wan4Hszl7dNR8FsI=
-X-Received: by 2002:a05:6512:4207:b0:5bf:ce41:b440 with SMTP id
- 2adb3069b0e04-5c1bc7d6de5mr2517796e87.31.1795382947589; Sun, 22 Nov 2026
- 13:29:07 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=qBqDzVZ6
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eHsedMCn7C50ZvPquEEzIE0KxsSJ1g9WVAkN9oKP78ErnF9bESFAEjxUNYDhCWkSY3xWZFw7+STEKReuBBKAPriHjnBQpCxvzcI19MoLkOFsyLSnVNSmCsuCFu7+5bgXPRM+djCruW2gz5es9jEyDZQph0BIvANXC0ZcOCKjVwYy+6JdKyyqMlVmRVnDpkdbbmIcqIbfWmMmTW7SyQH0JHv2nuzoK4chntljN8AsXUZTFahnsmqLJsQS5xk4v4lxlCwfMF/WA51g+QQgNqMeMp4ryLT+0JK2IVwgL+KgfsRU+FAqv2xREMuJ4j3VSoPDrlLOkqRBVYRcjoAPePvU9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uI6N0yy3nE3r3l3B3HOfIN6e/2icGcmSb0OOdqzMBF8=;
+ b=CMmyqIMRuTxuZMRMH8HgGLtk5WJ3sXq/MaoQi8WOar6ewkWsSBMS/E7W/PpT/fLK7khb1aUhXX0ShnhMZRZ/yZJW5hIFHP4307GrSpj8VjtHpv9rZ6Uq+kq5zk9p6vg32XWUT1NP6n9ObmP+z/VLsb6X+WOUdprYoG7lcn9P+tW8c5qHsxDU8MDjf79anTX5E7pKMo/2BsagBvebodGyzUFJEGVm9jsBSx1NKOxEqakrhA+ooI/a0P6sTC9uQ+HVZKvygbd9RT7BLVoI2XeNDP7mAia2z2uqlm6coFX3RzIXDfYZqKV4GkMAEUI4yn8zA2nEc1pZoqvrRi62++HgmA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uI6N0yy3nE3r3l3B3HOfIN6e/2icGcmSb0OOdqzMBF8=;
+ b=qBqDzVZ6/a8ws8nTEw5FDFuFazPpP4qYEnSp0GO+eqlHBFB27AvNXA6HvlUkKPoP690dLNi/eBfeKY47mincDIxO+Sx0Ua5+M0kE7tma4Gpm/2kqxh/dP53yRsVBDTOfpqv8/3w7x/bRv160CJmH8CGdnQFy1Npu+YBV2mLpWvmeHiGVqYBYWGucBc5tcjhJpD4yPJjsCCBQTz1mhIZsGQjs+6R0I0wGI0McS9Q09GTnjg6w+j4MJfwXVP4ZkxlcZua7jiahjs9NYeoJ54c4hciEO8enztxr/HW20hY8PgYx7vnqzi/L6UmYo9S/NdGrhypIVMkqgvH2Ty7sdrZlXg==
+Received: from MN2PR02MB6863.namprd02.prod.outlook.com (2603:10b6:208:1d7::20)
+ by CH0PR02MB7945.namprd02.prod.outlook.com (2603:10b6:610:102::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.12; Sun, 22 Nov
+ 2026 21:38:29 +0000
+Received: from MN2PR02MB6863.namprd02.prod.outlook.com
+ ([fe80::da67:fd0f:d96d:ac53]) by MN2PR02MB6863.namprd02.prod.outlook.com
+ ([fe80::da67:fd0f:d96d:ac53%4]) with mapi id 15.21.0639.012; Sun, 22 Nov 2026
+ 21:38:29 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>, Oleksandr Tyshchenko
+	<oleksandr_tyshchenko@epam.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)"
+	<ritesh.list@gmail.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, Haiyang
+ Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
+	<decui@microsoft.com>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang
+	<jasowangio@gmail.com>, =?utf-8?B?RXVnZW5pbyBQw6lyZXo=?=
+	<eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Jarkko
+ Sakkinen <jarkko@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav
+ Petkov <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, Jan Kara <jack@suse.com>, Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	=?utf-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>, Joel Stanley
+	<joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, Ryan Chen
+	<ryan_chen@aspeedtech.com>, Billy Tsai <billy_tsai@aspeedtech.com>, Bjorn
+ Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>,
+	Abel Vesa <abelvesa@kernel.org>, Jens Wiklander <jenswi@kernel.org>, Sumit
+ Garg <sumit.garg@kernel.org>, Scott Branden <scott.branden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Richard Cochran <richardcochran@gmail.com>,
+	David Woodhouse <dwmw2@infradead.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-hyperv@vger.kernel.org"
+	<linux-hyperv@vger.kernel.org>, "virtualization@lists.linux.dev"
+	<virtualization@lists.linux.dev>, "linux-sgx@vger.kernel.org"
+	<linux-sgx@vger.kernel.org>, "selinux@vger.kernel.org"
+	<selinux@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-aspeed@lists.ozlabs.org"
+	<linux-aspeed@lists.ozlabs.org>, "linux-arm-msm@vger.kernel.org"
+	<linux-arm-msm@vger.kernel.org>, "op-tee@lists.trustedfirmware.org"
+	<op-tee@lists.trustedfirmware.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+Subject: RE: [PATCH 03/14] mshv_vtl: convert mmap hooks to mmap_prepare
+Thread-Topic: [PATCH 03/14] mshv_vtl: convert mmap hooks to mmap_prepare
+Thread-Index: AQJWRfE/+SnpOcttkojsctxhrcm2aAGmAms6tjvViOA=
+Date: Sun, 22 Nov 2026 21:38:28 +0000
+Message-ID:
+ <MN2PR02MB6863B08CA2829AD44A1518C5D4462@MN2PR02MB6863.namprd02.prod.outlook.com>
+References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
+ <20261105-late-2026-mmap_prepare-v1-3-c56aadfbab8a@kernel.org>
+In-Reply-To: <20261105-late-2026-mmap_prepare-v1-3-c56aadfbab8a@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN2PR02MB6863:EE_|CH0PR02MB7945:EE_
+x-ms-office365-filtering-correlation-id: d8b2336d-6caa-47a5-85d9-08df48e0f280
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|37011999003|31061999003|41001999006|8060799015|8062599012|19110799012|15080799012|4140399003|13091999003|55001999006|24021099003|25010399006|3412199025|440099028|102099032|52005399003|40105399003|41105399003;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?Z2t4T2Vac0NjdThNc0dYc21lZ1h3bXA0M0s0ek42QUx3QWNTUm95WHFmdERV?=
+ =?utf-8?B?bFp0dnVwYzRXWStzOFhpZko2aHduVFFPUUdycmNIQmFMaVZVWkt5MHlYQitK?=
+ =?utf-8?B?MS9CVGh2NFFzdUpzc3R1bVFzU0J3bTlyUytkdGd4c2ozcVNPNUxuY1RoY2Nu?=
+ =?utf-8?B?S0F0TzloYktKNmoraEhrUnFoUnpzWE8vT1RlRGdSdTRjNkNuZkkvbUlFOFNX?=
+ =?utf-8?B?S3dpblR4NTErTGxwbi9yMVpTT3RpbHBUdHVibk10R3hDTGhuRVRxU2U5a08x?=
+ =?utf-8?B?R0czUjlsUDhzNkVpNmk5bGFvbUx4OElHS1RFRDE0ZUpnODdEbEs2NFdGZGtv?=
+ =?utf-8?B?SU1nR3RRcUZuREllZFdoTDU4MkJlTVdrZWVBU09tOWlzcVlqUnlkcnRvUCtB?=
+ =?utf-8?B?MVh2QzgxQUpYV3VWTnhUY0xGTDIxZExxbGZtemFaeU5BWGsrVExYdDJ1aWFV?=
+ =?utf-8?B?dCtnRTBrUnlhaXhxK3JyY0tlUmVDUXNpMlErWWpNTXlsYXA3VFdDTzBNem5E?=
+ =?utf-8?B?QlVYSUZyV1labW44YkhGbzc4QnBLbTMvSG9uZzVKTDNwa0RLM0FnV1I4WFU5?=
+ =?utf-8?B?eTNFZU8zUldjQ3NxOEVRbHRoVmtlWEVEZXptK1hTZk5yM3ZRYW9hdWhMdStU?=
+ =?utf-8?B?Nzhld0NReWxoQzN2Y0dDS3NqUXBsV0Z6Y3p6THl4eTBEYnBIMTUwZ2VYQlBx?=
+ =?utf-8?B?elNXN3U3YlJiNnRLcU9FVFVaQml5RXFpVzhzOTZtL1M2Z2NZbDRyUVNrK01z?=
+ =?utf-8?B?K0w4REIwSzlWRlNiTGV2bnlYeldySFVRWUtUYjJqeXpxNUlmNTlDTHhGbUNz?=
+ =?utf-8?B?OG1qT25tdmZQQVpjQTBZNnhsbWNOdVAvaUN2YUpweGJVWDNxenpkeVpjK1Ux?=
+ =?utf-8?B?bk5aK3U3SDBNOHJHZ21EZWJhNGZrSTBBSW96TFJqVk5BT3VhZ2xtZzRCclBs?=
+ =?utf-8?B?cnJLL1E1Vmg4Vm56eVBtNFNjVFVTU3E5ZjVaVHF5WjZKT0Nhdi95RDMycEtm?=
+ =?utf-8?B?a2tVSCtjVnJURUVRU3Q5K2lOdWdpOEJydFFWYzlvcjJwOGFlVnBsbXNyb2hW?=
+ =?utf-8?B?REFWMVBlM3UzNG5WMWQyd2M2N2YwUEtMeHlIQ0YvV2VxRFdHY3RDazluR3Jz?=
+ =?utf-8?B?b08wNWtzRVBvOUd2d0NpUjBnTGk5ZmdKY0drOWRSTnBRSURaQnlETHA2VFho?=
+ =?utf-8?B?WlNDdGIyNllNd0dZV1hxQWJhUSt6aEdtVElVYk1oYUJMSit6Tmp3YWE3Q01j?=
+ =?utf-8?B?Vm4wdnArcUFsbTlpMDFoNnFRY0xuUHBNejZoSTF2RndNdnZpdEtSQm92VDRK?=
+ =?utf-8?B?dGJCNVN4bldXclRabTB3NWtTcDFWQStHd3BJcmlzRlNsYWJWM2FhMDBPWFV0?=
+ =?utf-8?B?a3BsS20yZ3dWbjVKSm1Odm5lU283VFNVd1VFZHJTSWNsYTZ1NG1GN2NnMW53?=
+ =?utf-8?B?OC9tZFhhd05WbjE5QUN4TGxlbnlaTWNVN1lhVkdRNys2cGZWeHFXTlQxbnV2?=
+ =?utf-8?Q?4bODTQ=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?a3Jkbnpkb08wQ25uRXFYRmVCdVh4NU9ob0Q2VDZ6L2M0bWtBNTN5ZlR4cGkv?=
+ =?utf-8?B?T3JsYUdkbnFEUjFvNzAyZkt2ZkRULy9Ra3pXakQvcDU3Tm4vL0hETWtUUFY3?=
+ =?utf-8?B?T0Y4TzBSMFpoa0ZPaWFlMWc4Qi8wckFjT3piRGRHUDdaM2Q2NEtZY3JZYW1E?=
+ =?utf-8?B?aGIvQzFqNHZ4NitLWjdqOFFKTFR1dWYxZjNtSkluU3hUR1ByM212MEVGMUtV?=
+ =?utf-8?B?QkRnVzl1YmcvdzZSQnZJeGFoWHIwVUxwelhnZTZIQVlvZ1RpdXpCclFLUkgw?=
+ =?utf-8?B?OUJxUitVR1crUVlmbkJOV1h6WVhhMitUYzBZa2lORWdRaDNmV2VORW8xTUI3?=
+ =?utf-8?B?VlZscnZ5bWpwbU9rWEs4dSs0TzI5V1E0SVJsaXAxQStiK0t1blJ5VmJmRFJi?=
+ =?utf-8?B?U3ppM0VWSlJQbGErSHRmVmhMaEdodDFkM0w3TklLczhsWHFSVTFFdDNncEVp?=
+ =?utf-8?B?UGhWRnczTytBSHQ0WXBjR2xhTTYvcG1KRnBSOHYrMkdkV1BxMzBGc1IyRCtM?=
+ =?utf-8?B?S2FZUmZHTytDQUttdUdtd3M5L2F6dWZXWEZ1eDJGL2VQQW96TXU0UHh2OWJv?=
+ =?utf-8?B?Wm9BWEJST3FSYkN5VlU2dTJXWjZMTUwxdGo5TDljMnF3aVd2RVQ1ZitCdS82?=
+ =?utf-8?B?OGNkSzJmWnpvbS9BQldkTjM1aklZK0dZdWNLdEdPQjBoRGVvU3RLSDlUU3A2?=
+ =?utf-8?B?dWVuMXpHOFVnU3V6SmlIWnF2ZjJNWXRwaTBIcEQ2dmtKclVDVkNIUEJLRWs0?=
+ =?utf-8?B?ZTF4aWc4azdtYXZIdUlDblVtUXZsTTdrZTgwVG80SzhTWUc0SThMbFc2bWNW?=
+ =?utf-8?B?VDZwODhaeU9oODFJakJCNXVmSC9RZWdWMTYvV3pwWHZtNDFwYzBoQ3FKMG95?=
+ =?utf-8?B?Rzc2SG9KeGszTWMzbUZuUUdnbjIrSWxuV3lvUjQ2YWt2TEpHSzB6TDh2N0tm?=
+ =?utf-8?B?OFVKcEUzS3RNU0Vpb2NkOFFUcHRMajdkQ1R0SGNHY3dyQkdMU1UyeEZEc1h5?=
+ =?utf-8?B?UENHU0lZU0g1WXFpckRBUG56SmdjajIxWUZ5Zi9tY0xuak5Xc1BsSWhIdHVp?=
+ =?utf-8?B?NXREN1htNWRBYlBSS1NJUHJtS1U1d0JuTmpzZFZZQnVYajIwYXhRMW4rOEJ6?=
+ =?utf-8?B?ZDRVQVhSYms0bGZWWWowUWc4NlU2RnlHYWh6R29aaWdkekd5UTFTQkNFK3JE?=
+ =?utf-8?B?MkgyT3R0dFo1SWJIcnlXRmE0clpJbFZmQ1ArWFljTTNZRVp4MjIyNmozbEdk?=
+ =?utf-8?B?dS9HLzZUc2R5R3Jpd252VUdlcGJqUGIwR2tOWDFSZDBmYW5HUkRHK0xYQ3Vq?=
+ =?utf-8?B?dmJTaWJWV3R6dlRVK0pOL1NOanJVSUxCSU4veVBWb0luSmRKdHZUU0Noczg5?=
+ =?utf-8?B?L0hHTWEyYUNCczVla1hTMUNuN2MvQi9MdmptS2pna0ltZ2NmUU11TVVJRnln?=
+ =?utf-8?B?UFRYWmtTQU1uc09nQ3E3RjNOT24ybEp6SDgxUnh0UGRxS1J4V25YTWdmdmkr?=
+ =?utf-8?B?bjVVK0ZjbW5FV0h5cm02OUlwZlJzT3hDQWtVT2dSc0VGTHpoNHp5OEo4YVpJ?=
+ =?utf-8?B?Qm5qc014K3J3elRGbVo0VHFmVEQ5T3JUNW10STc0aHZWelFaOGV4QzJwNk9B?=
+ =?utf-8?B?UWRNWkxzclh2cW1ZcHN0MC9uZWxVTFVLTXdFb3Y5eHRDdFlRVml6RTF0VjFn?=
+ =?utf-8?B?emNpa1BFZm1sOVF3WGswTlpJUUhtdUFCT25XVVJqbnlKTGhQTE14VXNzMDNn?=
+ =?utf-8?B?R3pBTFcvbXVMaGlFSmNYS3FOMEF6bERtdHpYUjJvQ0gwQWxJREtSOVpvZTRT?=
+ =?utf-8?Q?uT9cCdOV8g+FDsxLKA/qcigNmJzvkoF5SRKro=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,436 +200,55 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261015142552.4128028-1-ryan.roberts@arm.com> <20261015142552.4128028-9-ryan.roberts@arm.com>
-In-Reply-To: <20261015142552.4128028-9-ryan.roberts@arm.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Sun, 22 Nov 2026 22:28:54 +0100
-X-Gmail-Original-Message-ID: <CAD++jLnY3dagTQDzBa5e=g3fJ1rDOvyRHPKVtpadV4c0nXYV4Q@mail.gmail.com>
-X-Gm-Features: Aa3M54r6B7e9BLC1UO5yqTkRPrBtuKJXzOWhi_mL44xox65BnkoSkli_lYPdSwU
-Message-ID: <CAD++jLnY3dagTQDzBa5e=g3fJ1rDOvyRHPKVtpadV4c0nXYV4Q@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 08/15] misc/arm-cla: Manage domain contexts
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@nvidia.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jean-Philippe Brucker <jpb@kernel.org>, Oded Gabbay <ogabbay@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org, devicetree@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hi Ryan,
-
-thanks for your patch!
-
-On Thu, Oct 15, 2026 at 4:27=E2=80=AFPM Ryan Roberts <ryan.roberts@arm.com>=
- wrote:
-
-> A CLA domain cannot be used by multiple address spaces concurrently
-
-Which address space? The physical one? The virtual address
-space of the CPU for a certain CLA? The virtual address space
-of the CLA on a certain CPU, as found from it's TTBR0/1?
-I suspect the last one, but it needs clarifying.
-
-And so the domain is definied in hardware but there is
-a footgun waiting to be fired by not defining the virtual
-address space exactly the same on all CLA:s in the domain?
-
-Please elaborate.
-
-> because its devices share a memory translation context and may
-> communicate without isolation.
-
-Again I stumble here. "without isolation". So this kind of resoning
-implies I know of some isolation that I cannot have. But I don't
-know that, I have no idea what kind of isolation I would want here.
-
-This needs to be explained differently.
-
-> Represent each user of a domain with a
-> context keyed by the mm_struct and device file description, and track
-> contexts in a per-domain hash table.
-
-This I understand.
-
-> Add a domain scheduler that queues contexts for assignment
-
-Are these contexts the software abstraction of hardware
-constraints (such as the virtual memory space)
-around a certain domain, and since they are scheduled,
-these constraints are then applied over a certain time window?
-
-> and gives
-> each one a fixed time slice. Before switching, revoke the outgoing
-> context's mappings from all VMAs for the device file. Then save its
-> accelerator state and remove its MTC, before installing the incoming
-> context's MTC and restoring the incoming accelerator state.
-
-I think I start to understand a little...
-
-> Run hardware operations through CPU-bound kthread workers, since each
-> CLA can only be accessed from its local CPU. Coordinate the per-device
-> workers with a domain worker so that every CLA in the domain is switched
-> as a single assignment unit.
->
-> Treat a failure on any device as a failure of the whole domain. Stop
-> further assignments and wake all waiters when a domain becomes unusable.
->
-> Co-developed-by: Jean-Philippe Brucker <jpb@kernel.org>
-> Signed-off-by: Jean-Philippe Brucker <jpb@kernel.org>
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-
-OK this is some kind of scheduler let's look, but right before we
-start you should probably define the principles of this scheduler?
-FIFO? round-robin? Something else?
-
->  extern struct xarray cla_domains;
-
-Nice use of xarray
-
-
-> +static inline void cla_ctx_get(struct cla_ctx *ctx)
-> +{
-> +       kref_get(&ctx->refcnt);
-> +}
-> +
-> +static inline void cla_ctx_put(struct cla_ctx *ctx)
-> +{
-> +       kref_put(&ctx->refcnt, cla_ctx_free);
-> +}
-
-Rename these something like _addref/_dropref or just inline
-the kref calls. These names upsets the kernel conventions
-for _get()/_put() of resources, see below.
-
-> +/**
-> + * cla_ctx_create - Create a context or increase its user count
-
-Something that creates or increase a context should be named
-cla_ctx_get() to avoid ambiguousness.
-
-> +/**
-> + * cla_ctx_destroy - Drop a context user
-
-No it drops the reference and drops the context (destroy it) if the
-usecount =3D=3D 0.
-
-Name it cla_ctx_put() to follow kernel patterns.
-
-> +       /* Release initial reference from cla_ctx_create(). */
-> +       cla_ctx_put(ctx);
-
-So this needs a different name.
-
-> +++ b/drivers/misc/arm-cla/cla-sched.c
-
-I wanna spend some time here since this is RFC and we are looking
-more at design than code details.
-
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Arm CLA driver - domain scheduling
-
-In this header explain the principles for the scheduling, as well as in the
-commit message.
-
-> +#include <linux/cpuhplock.h>
-> +#include <linux/rhashtable.h>
-> +
-> +#include "arm-cla.h"
-> +
-> +static struct cla_ctx invalid_ctx;
-> +
-> +static const struct rhashtable_params ctxs_rht_params =3D {
-> +       .head_offset =3D offsetof(struct cla_ctx, node),
-> +       .key_offset =3D offsetof(struct cla_ctx, key),
-> +       .key_len =3D sizeof(((struct cla_ctx *)0)->key),
-> +       .automatic_shrinking =3D true,
-> +};
-
-Neat!
-
-> +static int __cla_domain_switch_ctx(struct cla_domain *domain,
-> +                                  struct cla_ctx *prev_ctx,
-> +                                  struct cla_ctx *next_ctx)
-
-Is this one of those "__ means __inner_function()"?
-
-Name it for exactly what it does instead.
-
-> +static int cla_domain_switch_ctx(struct cla_domain *domain,
-> +                                struct cla_ctx *prev_ctx,
-> +                                struct cla_ctx *next_ctx,
-> +                                struct cla_ctx **assigned_ctx)
-
-Looks OK.
-
-> +/*
-> + * Run on the cla's local CPU, either in its worker or a CPU hotplug cal=
-lback.
-> + * Work submitters hold cpus_read_lock() until completion, excluding hot=
-plug
-> + * callbacks and keeping the worker bound. Hotplug callbacks hold domain=
-->lock
-> + * to protect the assigned context. Other devices may switch concurrentl=
-y.
-> + * On failure, mark the device broken; the caller handles domain failure=
-.
-> + */
-> +int cla_dev_switch_ctx(struct cla_dev *dev, struct cla_ctx *prev_ctx,
-> +                      struct cla_ctx *next_ctx)
-
-Good explanation and name, easy to understand.
-
-> +void cla_dev_switch_ctx_work(struct kthread_work *work)
-
-Here too
-
-> +static inline struct cla_ctx *cla_domain_get_next_ctx(struct cla_domain =
-*domain)
-> +{
-> +       return list_first_entry_or_null(&domain->queued_ctxs, struct cla_=
-ctx,
-> +                                       queue_node);
-> +}
-
-This looks like a FIFO thing?
-
-> +static inline struct cla_ctx *cla_domain_get_prev_ctx(struct cla_domain =
-*domain,
-> +                                                     struct cla_ctx *nex=
-t_ctx)
-> +{
-> +       if (domain->assigned_ctx && (next_ctx || cla_ctx_is_dying(domain-=
->assigned_ctx)))
-> +               return domain->assigned_ctx;
-> +       return NULL;
-> +}
-> +
-> +static void cla_vma_zap_domain(struct vm_area_struct *vma, struct cla_do=
-main *domain)
-
-"zap" is a very ambiguous word. This function needs to have
-a name that express exactly what it does.
-
-It looks like it should rather be infixed _initialize_?
-
-cla_domain_initialize_vma()?
-cla_domain_reinitialize_vma()?
-
-> +{
-> +       unsigned long vma_start =3D vma->vm_pgoff;
-> +       unsigned long vma_end =3D vma_start + vma_pages(vma);
-> +       unsigned long domain_start =3D domain->pg_offset;
-> +       unsigned long domain_end =3D domain_start + domain->nr_devs;
-> +       unsigned long start =3D max(vma_start, domain_start);
-> +       unsigned long end =3D min(vma_end, domain_end);
-> +       unsigned long addr;
-> +       unsigned long size;
-> +
-> +       if (start >=3D end)
-> +               return;
-> +
-> +       addr =3D vma->vm_start + ((start - vma_start) << PAGE_SHIFT);
-> +       size =3D (end - start) << PAGE_SHIFT;
-> +       zap_special_vma_range(vma, addr, size);
-
-That goes for that function too by the way. Two wrongs does not
-make one right.
-
-It might be that everyone in memory management disagree with
-me and think this is crystal clear, then I can have other opinions.
-
-> +static void cla_domain_zap(struct cla_domain *domain, struct cla_ctx *ct=
-x)
-
-And this one.
-
-cla_domain_init()?
-cla_domain_reinit()?
-
-> +static void cla_domain_reassign(struct kthread_work *work)
-
-What about a comment above this function explaining
-what is being reassigned to what?
-
-> +       /*
-> +        * Exclude cpuhp until assigned_ctx reflects the hardware again. =
-cpuhp
-> +        * callbacks use it to save/restore the local device and must not=
- see
-> +        * invalid_ctx. Take before domain->lock, also used by cpuhp call=
-backs.
-> +        */
-> +       cpus_read_lock();
-> +       mutex_lock(&domain->lock);
-> +       if (domain->broken)
-> +               goto out_unlock;
-> +
-> +       /* Figure out prev_ctx and next_ctx. NULL indicates don't [un]ass=
-ign. */
-> +       next_ctx =3D cla_domain_get_next_ctx(domain);
-> +       prev_ctx =3D cla_domain_get_prev_ctx(domain, next_ctx);
-> +
-> +       if (!prev_ctx && !next_ctx)
-> +               goto out_unlock;
-> +
-> +       /* prev_ctx already holds its assignment reference. */
-> +       if (next_ctx)
-> +               cla_ctx_get(next_ctx);
-> +
-> +       /*
-> +        * We need to grab mmap_lock, but can't do so while holding the d=
-omain
-> +        * lock (since cla_vma_fault() grabs the domain lock while holdin=
-g
-> +        * mmap_lock). The queue may change and contexts may be killed by
-> +        * cla_ctx_destroy() while the lock is dropped.
-> +        *
-> +        * No user is allowed to access CLA while we are reassigning. Dis=
-able
-> +        * assigned_ctx before zapping so cla_vma_fault() won't re-map th=
-e
-> +        * domain during reassignment. The sentinel also defers broken-do=
-main
-> +        * cleanup until we know which context hardware may still access.
-> +        */
-> +       WRITE_ONCE(domain->assigned_ctx, &invalid_ctx);
-> +       mutex_unlock(&domain->lock);
-> +
-> +       /* Prevent prev_ctx from accessing any device in the domain. */
-> +       cla_domain_zap(domain, prev_ctx);
-> +
-> +       /* cpus_read_lock() ensures workers remain cpu-bound and alive. *=
-/
-> +       ret =3D cla_domain_switch_ctx(domain, prev_ctx, next_ctx, &assign=
-ed_ctx);
-> +
-> +       mutex_lock(&domain->lock);
-> +       WRITE_ONCE(domain->assigned_ctx, assigned_ctx);
-> +
-> +       /* Also handle failure reported by another thread during the swit=
-ch. */
-> +       if (ret || domain->broken) {
-> +               cla_domain_set_broken(domain);
-> +               goto out_unlock;
-> +       }
-> +
-> +       /*
-> +        * Remove next_ctx from the queue and wake up all waiters so that=
- the
-> +        * fault handler can map the domain into the newly assigned proce=
-ss.
-> +        * assigned_ctx must have been updated prior to waking the waiter=
-s.
-> +        *
-> +        * If next_ctx was killed while we were assigning it, schedule an=
-other
-> +        * reassignment to deassign it.
-> +        */
-> +       if (next_ctx) {
-> +               if (cla_ctx_is_dying(next_ctx)) {
-> +                       cla_domain_schedule_reassignment(domain);
-> +                       goto out_unlock;
-> +               }
-> +               list_del_init(&next_ctx->queue_node);
-> +               wake_up_all(&next_ctx->waitq);
-> +       }
-> +
-> +       /* If there are more queued ctxs, schedule the next reassignment.=
- */
-> +       if (!list_empty(&domain->queued_ctxs))
-> +               cla_domain_schedule_reassignment(domain);
-> +
-> +out_unlock:
-> +       mutex_unlock(&domain->lock);
-> +       cpus_read_unlock();
-> +
-> +       /* Deliberately put references outside of the locks. */
-> +       if (next_ctx && next_ctx !=3D assigned_ctx)
-> +               cla_ctx_put(next_ctx);
-> +       if (prev_ctx && prev_ctx !=3D assigned_ctx)
-> +               cla_ctx_put(prev_ctx);
-> +}
-
-This function contains a bunch of comments that are hard for me
-to understand without context (ha!) but it's probably all right,
-I bet they are helpful once you get the hang of it.
-
-> +int cla_domain_sched_init(struct cla_domain *domain)
-
-OK.
-
-> +/**
-> + * cla_domain_sched_exit - Tear down scheduling for a CLA domain
-> + * @domain: CLA domain
-> + *
-> + * Drain final deassignment, destroy the domain worker, and destroy the =
-context
-> + * table. All context users must have exited before calling this.
-> + */
-> +void cla_domain_sched_exit(struct cla_domain *domain)
-
-OK.
-
-> +void cla_domain_set_broken(struct cla_domain *domain)
-
-OK.
-
-> +struct cla_ctx *cla_domain_lookup_ctx(struct cla_domain *domain,
-> +                                     struct cla_ctx_key *key)
-(...)
-> +int cla_domain_insert_ctx(struct cla_domain *domain, struct cla_ctx *ctx=
-)
-(...)
-> +void cla_domain_remove_ctx(struct cla_domain *domain, struct cla_ctx *ct=
-x)
-
-Clever use of rhashtable, good names.
-
-> +/**
-> + * cla_domain_schedule_reassignment - Schedule domain reassignment
-> + * @domain: CLA domain
-> + *
-> + * The caller must hold the domain lock. If a live context is currently
-> + * assigned, schedule with a delay (CLA_SLICE_MS), otherwise reassign
-> + * immediately. Do nothing if the domain is broken or a switch is in pro=
-gress;
-> + * the running switch handles new requests before returning. If reassign=
-ment is
-> + * already scheduled, the delay is modified.
-> + */
-> +void cla_domain_schedule_reassignment(struct cla_domain *domain)
-
-Schedule reassign of the domain to ... what?
-
-This use of verbs is really confusing me, I understand for example
-"assign timeslice to process" then I know a timeslice is assigned to
-a process. There is something implicit here making this really
-hard to understand.
-
-> +void cla_domains_sched_exit(void)
-
-OK.
-
-But where is the cla_schedule() function in this scheduler
-akin to Linux' schedule() call? It feels like this is implicit
-in some call order semantic, and the function
-cla_domain_get_next_ctx() implements an implicit
-FIFO scheduling principle.
-
-Alternatively the scheduling isn't actually driven here
-but from somehwere else, like userspace. Then that
-needs to be explained. Then this file doesn't actually
-implement any scheduling, it's a scheduling context
-library nothing more.
-
-This kind of stuff needs to be explained so I can review the
-patch properly.
-
-Yours,
-Linus Walleij
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR02MB6863.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: d8b2336d-6caa-47a5-85d9-08df48e0f280
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Nov 2026 21:38:28.8213
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR02MB7945
+
+RnJvbTogTG9yZW56byBTdG9ha2VzIChBUk0pIDxsanNAa2VybmVsLm9yZz4gU2VudDogVGh1cnNk
+YXksIE5vdmVtYmVyIDUsIDIwMjYgMTowNiBQTQ0KPiANCj4gTW92ZSBmcm9tIHRoZSBkZXByZWNh
+dGVkIG1tYXAgaG9vayB0byB0aGUgbmV3IG1tYXBfcHJlcGFyZSBob29rIGZvciBib3RoDQo+IHRo
+ZSBtc2h2X3Z0bCBhbmQgbXNodl92dGxfbG93IGRldmljZXMuIFRoZXNlIG9ubHkgc2V0IFZNQSBv
+cGVyYXRpb25zIGFuZA0KPiBmbGFncy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IExvcmVuem8gU3Rv
+YWtlcyAoQVJNKSA8bGpzQGtlcm5lbC5vcmc+DQoNClJldmlld2VkLWJ5OiBNaWNoYWVsIEtlbGxl
+eSA8bWhrbGludXhAb3V0bG9vay5jb20+DQoNCj4gLS0tDQo+ICBkcml2ZXJzL2h2L21zaHZfdnRs
+X21haW4uYyB8IDE0ICsrKysrKystLS0tLS0tDQo+ICAxIGZpbGUgY2hhbmdlZCwgNyBpbnNlcnRp
+b25zKCspLCA3IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaHYvbXNo
+dl92dGxfbWFpbi5jIGIvZHJpdmVycy9odi9tc2h2X3Z0bF9tYWluLmMNCj4gaW5kZXggZDgyMjUy
+NDJjNzNmLi5lMzcyZDRjMDE4OGQgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvaHYvbXNodl92dGxf
+bWFpbi5jDQo+ICsrKyBiL2RyaXZlcnMvaHYvbXNodl92dGxfbWFpbi5jDQo+IEBAIC04MzIsOSAr
+ODMyLDkgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCB2bV9vcGVyYXRpb25zX3N0cnVjdCBtc2h2X3Z0
+bF92bV9vcHMgPSB7DQo+ICAJLmZhdWx0ID0gbXNodl92dGxfZmF1bHQsDQo+ICB9Ow0KPiANCj4g
+LXN0YXRpYyBpbnQgbXNodl92dGxfbW1hcChzdHJ1Y3QgZmlsZSAqZmlscCwgc3RydWN0IHZtX2Fy
+ZWFfc3RydWN0ICp2bWEpDQo+ICtzdGF0aWMgaW50IG1zaHZfdnRsX21tYXBfcHJlcGFyZShzdHJ1
+Y3Qgdm1fYXJlYV9kZXNjICpkZXNjKQ0KPiAgew0KPiAtCXZtYS0+dm1fb3BzID0gJm1zaHZfdnRs
+X3ZtX29wczsNCj4gKwlkZXNjLT52bV9vcHMgPSAmbXNodl92dGxfdm1fb3BzOw0KPiANCj4gIAly
+ZXR1cm4gMDsNCj4gIH0NCj4gQEAgLTg1Miw3ICs4NTIsNyBAQCBzdGF0aWMgY29uc3Qgc3RydWN0
+IGZpbGVfb3BlcmF0aW9ucyBtc2h2X3Z0bF9mb3BzID0gew0KPiAgCS5vd25lciA9IFRISVNfTU9E
+VUxFLA0KPiAgCS51bmxvY2tlZF9pb2N0bCA9IG1zaHZfdnRsX2lvY3RsLA0KPiAgCS5yZWxlYXNl
+ID0gbXNodl92dGxfcmVsZWFzZSwNCj4gLQkubW1hcCA9IG1zaHZfdnRsX21tYXAsDQo+ICsJLm1t
+YXBfcHJlcGFyZSA9IG1zaHZfdnRsX21tYXBfcHJlcGFyZSwNCj4gIH07DQo+IA0KPiAgc3RhdGlj
+IHZvaWQgbXNodl92dGxfc3luaWNfbWFza192bWJ1c19zaW50KHZvaWQgKmluZm8pDQo+IEBAIC0x
+MjgzLDEwICsxMjgzLDEwIEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3Qgdm1fb3BlcmF0aW9uc19zdHJ1
+Y3QgbXNodl92dGxfbG93X3ZtX29wcyA9IHsNCj4gIAkuaHVnZV9mYXVsdCA9IG1zaHZfdnRsX2xv
+d19odWdlX2ZhdWx0LA0KPiAgfTsNCj4gDQo+IC1zdGF0aWMgaW50IG1zaHZfdnRsX2xvd19tbWFw
+KHN0cnVjdCBmaWxlICpmaWxwLCBzdHJ1Y3Qgdm1fYXJlYV9zdHJ1Y3QgKnZtYSkNCj4gK3N0YXRp
+YyBpbnQgbXNodl92dGxfbG93X21tYXBfcHJlcGFyZShzdHJ1Y3Qgdm1fYXJlYV9kZXNjICpkZXNj
+KQ0KPiAgew0KPiAtCXZtYS0+dm1fb3BzID0gJm1zaHZfdnRsX2xvd192bV9vcHM7DQo+IC0Jdm1f
+ZmxhZ3Nfc2V0KHZtYSwgVk1fSFVHRVBBR0UgfCBWTV9NSVhFRE1BUCk7DQo+ICsJZGVzYy0+dm1f
+b3BzID0gJm1zaHZfdnRsX2xvd192bV9vcHM7DQo+ICsJdm1hX2Rlc2Nfc2V0X2ZsYWdzKGRlc2Ms
+IFZNQV9IVUdFUEFHRV9CSVQsIFZNQV9NSVhFRE1BUF9CSVQpOw0KPiANCj4gIAlyZXR1cm4gMDsN
+Cj4gIH0NCj4gQEAgLTEyOTQsNyArMTI5NCw3IEBAIHN0YXRpYyBpbnQgbXNodl92dGxfbG93X21t
+YXAoc3RydWN0IGZpbGUgKmZpbHAsIHN0cnVjdCB2bV9hcmVhX3N0cnVjdCAqdm1hKQ0KPiAgc3Rh
+dGljIGNvbnN0IHN0cnVjdCBmaWxlX29wZXJhdGlvbnMgbXNodl92dGxfbG93X2ZpbGVfb3BzID0g
+ew0KPiAgCS5vd25lcgkJPSBUSElTX01PRFVMRSwNCj4gIAkub3BlbgkJPSBtc2h2X3Z0bF9sb3df
+b3BlbiwNCj4gLQkubW1hcAkJPSBtc2h2X3Z0bF9sb3dfbW1hcCwNCj4gKwkubW1hcF9wcmVwYXJl
+CT0gbXNodl92dGxfbG93X21tYXBfcHJlcGFyZSwNCj4gIH07DQo+IA0KPiAgc3RhdGljIHN0cnVj
+dCBtaXNjZGV2aWNlIG1zaHZfdnRsX2xvdyA9IHsNCj4gDQo+IC0tDQo+IDIuNTYuMA0KPiANCg0K
