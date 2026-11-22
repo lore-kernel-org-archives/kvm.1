@@ -1,92 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.30.132
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795323350;
-	b=jo8PTpamcx7rJ+i9YesIEbivooysGP8smWEsIEwW5RDPPeDbP/5hKEFdXQBr13/f39RJ
-	 PkT3d3rAVjUQKSSt0a6X8De2QyLbzfS3Lg88RoPUP81ks7PBFzo9HP0qiuXCzW3SrF+oo
-	 BsuzChDsfjb6AMtD2xcgPtJBzhKXSQbqtmZNX0BBd6SBmPtv76f2HPh1LpatMEr/QelT9
-	 6Y8DC8102Dejs89hNoTwVpBaPZP2uh7Y0Fr7+52v5l+2pNKBuOnsIpgw7fVFIo2HQNWN2
-	 U/UqiFlLLz5nbkSegWEMlZLqIWycMZP3BsYDCrgQxMhBhlerUAG4wiaYhijFnab/bxQ==
+	t=1795341041;
+	b=eXUlZAfyyoUDMC5nnsARFXGsqyVFauRL5darPHlzAgEE5d5azv1FQSfqAMy7nmTurvWJ
+	 43CUgVkeD7UrDLbyHJh1fXkwlw4ngKcO9aZBN6P8g6Hb1/YB9NRKoYfwNJq1mVbtjPOTh
+	 RLbAZQTlKcvxqW0ziHoYIOroCG5UDi7PJ1nGZ7Nc8adyKl6TpxAgXi1fEScgEPG4+rVUw
+	 TtuN8N2Zx5DlcH+DcEwC559UCQ8KPfDdp4SKY33OvtGZh/bvADfko6XXvLljT8u73zfeX
+	 gNC/XJX56/snyixoXlRUJHEJB446H+1UHoF9K6JEBQaGE4v+5lTFE5VXh7ju03Q1J1w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795323350;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-Reinject:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=KewcbK56oZjNmCRF93X2jQ9HTPDY+IubXbrWyxoc+jw=;
-	b=FcoFmIAAdn1tW4DL/HKD37WCID+/kQeNoGNms6N4MZ2zxBatkxQrC+1hDcYhoW4hg4CN
-	 nQfFV47njs1ic6lXoj1et1W/Gq74ziHfxdfbar8l6Blg+ZphFLZFMQQWqG9Pkg0AIfwGg
-	 XlNLNgmWsp9RXrz1vnVKdMPr/lCLVFAD1dLkK5SBxBb9W5jkjcuuMDhd5K8U5/RL2qgYC
-	 TSYPhi2uvvF/Rs2aKp1SX1Cd8Gh2r9AQI8cRG6MIa8hUXy96cIZDX+CU+YSQHEZT6QByj
-	 uwSr8rcbX/zMVUqg4NMUX1JsvVVcWNCBmuFWHnbnqiaqBjiXIX2QKKHGDjrqhQODovQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795341041;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=ufr71PY4qGevTHv4/Xt0Aoe+LguNLXQIUPKTi4k0c3Y=;
+	b=2Rzxov+B0fmn8bcGsGXiLK3d5/vP22q4mAEw+bGpJ7zdkcyHKKEUu0NA69uAKqrSo+Af
+	 Ojab7nyFMuCROoTjToMsc8smeAxUxlnmVIdeRDiWTSu8paFE7dyDVSO7e8Ppbgl2qFzAV
+	 x6tLyLatqIcGOVHk9juk/RkmIaK9asY/Ibv6vg8iYVKa6sLZPBEJxpdc60YbI6Ow/lJ/5
+	 f8IblNjeV0jntfnVYvmXFgDlkN+/iSz+7GYGBgJbsKgawE603b1v4LEhUbS7Rr25fc4q6
+	 lYSquHy4zjD1RMteh1QSqdZ9a/tXK1Cusmw6QsVnlecOBF8MnUsExzTK9Q9g6ra0cww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XwLamNMf;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	dmarc=pass header.from=linux.alibaba.com;
+	spf=pass smtp.mailfrom=linux.alibaba.com;
+	dkim=pass header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=ajb5VSKx;
+	arc=none smtp.remote-ip=115.124.30.132
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA7B606A320;
-	Sun, 22 Nov 2026 04:55:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3BA7B606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBD7606A320;
+	Sun, 22 Nov 2026 09:50:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DDBD7606A320
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XwLamNMf
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AM44oX63672982;
-	Sun, 22 Nov 2026 04:55:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=KewcbK
-	56oZjNmCRF93X2jQ9HTPDY+IubXbrWyxoc+jw=; b=XwLamNMf87+ta/lbVmPRAO
-	OKfQUc7gQF9SokjYt5kI7cdaZRPOpJaf6e3l4+gUi/dYzzidnia4CJOxTf1hnSXS
-	yYRaxVHHFui8sAEv0JPsbRSLIE0YbjqBTMqOl1j3d/5nOoGhcaaBgldazGR2A9ie
-	BuL7Vqf4FPdNux+TxxaurtoVOW+ZRoLS1+paW/qM9+JBFyNz+4Lo+Tl7HAMtXt4A
-	ALJ85afqBq8wt1TE21zyNEjC+MIDIavebeN7qKSOnzsmF5+gGL+fVBVuFCFgW8E8
-	gk0QRz6dMmtZo0mkxzqz62Qtq7QSkE1jVVKKsxBB4sT7+vDiMTKv52rHYO00P5gQ
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34guvumc-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sun, 22 Nov 2026 04:55:32 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AM3nJfv2766997;
-	Sun, 22 Nov 2026 04:55:31 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j3qufgegd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 22 Nov 2026 04:55:31 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AM4tTx645613436
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 22 Nov 2026 04:55:29 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BDE7020043;
-	Sun, 22 Nov 2026 04:55:29 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1B34920040;
-	Sun, 22 Nov 2026 04:55:27 +0000 (GMT)
-Received: from Linuxdev.ibmuc.com (unknown [9.43.90.96])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 22 Nov 2026 04:55:26 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-        Gaurav Yadav <yadavgaurav386@gmail.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] KVM: PPC: BookE: Use vcpu_err() instead of printk() in kvmppc_dump_vcpu()
-Date: Sun, 22 Nov 2026 10:25:25 +0530
-Message-ID: <179532322375.92012.11986007993512084245.b4-ty@linux.ibm.com>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <20260807084050.25216-1-yadavgaurav386@gmail.com>
-References: <20260807084050.25216-1-yadavgaurav386@gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=ajb5VSKx
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1795341032; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=ufr71PY4qGevTHv4/Xt0Aoe+LguNLXQIUPKTi4k0c3Y=;
+	b=ajb5VSKxgRmURiP2zwcNwk8x8em7oGv1SE5tpbjvzOOi2ECCv1Xqr7bE0q6PSoGOuM4C7mnkofKkgG+N6Tv7KTPfXF13D2ibtAWCSzzupTbNhX5SHS0Ew9+tIEl5rZkUi9lfSSqYZNZiu0iQCWS0cV4hGF6KGfd0mlteOPkN6Tg=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=shijing.wuqi@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0XFAcuiG_1795341018;
+Received: from localhost.localdomain(mailfrom:shijing.wuqi@linux.alibaba.com fp:SMTPD_---0XFAcuiG_1795341018 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Sun, 22 Nov 2026 17:50:32 +0800
+From: Qi Wu <shijing.wuqi@linux.alibaba.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: irqfd: Publish the resampler after adding its first member
+Date: Sun, 22 Nov 2026 17:50:10 +0800
+Message-ID: <20261122095010.444794-1-shijing.wuqi@linux.alibaba.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -96,51 +60,72 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=CYCdd7rl c=1 sm=1 tr=0 ts=6b0275c4 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
- a=MdpIrRKBePn9w66PKCMA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIyMDAxOCBTYWx0ZWRfXz/YxoQvCypfA
- ceWttOwK0ZFOPx2R/Q+7pzuCBMA3yYhzTVQ3k2IpRZ5ZSASF+jJiooZYT9wFKlspFITe7KFU4Zo
- 17zR3lhPQUlkRf8dVoFTvfunF2+WdKE=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIyMDAxOCBTYWx0ZWRfX9h7479ulO/dX
- LHJx//TeCYVofoXUCaDxS37dnl/QR3qeIyimrW+Jp1pW0xa5RSHFk3q3VkS2N2fIcYu70RTwZuj
- 071G/nFDbH35ejfezkQpVUF+E4XIkY39D+Pmufd4YE5AQso3w8V94lI6F1JF4zUitQlNcIyEdUX
- 4whawB4NlL3ZEPRPqWXrl2XplO74v3j3CrGBFdcE7c8ZRpxpKXNy1KJhPJcQyMYN9GbSaAMydKk
- Tstno5/3/Awk6/uSQ+/cNsJOGuxDUN0adwLAVdUBrFPx4bRY4MvW61kpnOXqdUKrDWPRWJNYWCy
- w0nXoWq/3WRidDtMMEnBiLHKXa/1umXlk0/EuDBnx2paFNf0enbpyPJMtvr9yBWPyxzBuI9t047
- U8xRdInKRiuwQzlFeYbUIl7RPx/sj5oufOtC4VJHykZtLIcwRJyQNJYzmGjsUdP7wjMQ6c4ho38
- XowrPnrz+w8SNezBb3w==
-X-Proofpoint-ORIG-GUID: 8ayBAf8X8rEvDU0NCMa86urG__PzPvtf
-X-Proofpoint-GUID: N2uqNbXCFFjR_JRDdvaJ3IFDov1BhLGO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-22_01,2026-11-19_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0
- clxscore=1015 spamscore=0 bulkscore=0 impostorscore=0 adultscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611220018
 
-On Fri, 07 Aug 2026 14:10:50 +0530, Gaurav Yadav wrote:
-> Replace generic printk() calls in kvmppc_dump_vcpu() with vcpu_err()
-> and remove the corresponding TODO comment.
-> 
-> Using vcpu_err() provides vCPU-aware logging context, making it easier
-> to associate register dumps with specific vCPU instances in logs.
-> 
-> 
-> [...]
+kvm_irqfd_assign() publishes a new resampler before adding its first
+member and then calls synchronize_srcu_expedited() to drain readers that
+may have seen an empty member list.  This per-new-resampler grace period
+runs under resampler_lock and adds to VM creation / snapshot restore
+latency.
 
-Applied to powerpc/fixes.
+Add the first member while the resampler is private, then publish it to
+both global entries.  RCU list insertion guarantees any reader that finds
+the resampler also sees its first member, so the empty-list state is never
+visible and the first member needs no grace period; later members still
+synchronize.  This also prevents kvm_notify_irqfd_resampler() from finding
+an empty resampler and dropping a pending interrupt on IOAPIC unmask.
 
-[1/1] KVM: PPC: BookE: Use vcpu_err() instead of printk() in kvmppc_dump_vcpu()
-      https://git.kernel.org/powerpc/c/54efc2e1e9af9e3a14264db5686330e4fd477286
+synchronize_srcu() calls per path (regression check; only the first row
+changes):
 
-cheers
+  path                              before  after
+  new resampler, first member         1       0
+  existing resampler, next member     1       1
+  non-resample irqfd assign           0       0
+  irqfd_shutdown (UAF fix)            1       1
+  deassign, non-last member           1       1
+  deassign, last member               1       1
+
+Build-tested with gcc/clang and KASAN+PROVE_RCU+PROVE_LOCKING / KCSAN
+(KVM subsystem and selftests compile); checkpatch --strict clean.
+
+This patch was prepared with AI assistance; the author reviewed and owns
+the change.
+
+Signed-off-by: Qi Wu <shijing.wuqi@linux.alibaba.com>
+---
+ virt/kvm/eventfd.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/virt/kvm/eventfd.c b/virt/kvm/eventfd.c
+index f43b8b25bc85..74851accd881 100644
+--- a/virt/kvm/eventfd.c
++++ b/virt/kvm/eventfd.c
+@@ -444,14 +444,18 @@ kvm_irqfd_assign(struct kvm *kvm, struct kvm_irqfd *args)
+ 			resampler->notifier.irq_acked = irqfd_resampler_ack;
+ 			INIT_LIST_HEAD(&resampler->link);
+ 
+-			list_add_rcu(&resampler->link, &kvm->irqfds.resampler_list);
+-			kvm_register_irq_ack_notifier(kvm,
+-						      &resampler->notifier);
+ 			irqfd->resampler = resampler;
+-		}
+ 
+-		list_add_rcu(&irqfd->resampler_link, &irqfd->resampler->list);
+-		synchronize_srcu_expedited(&kvm->irq_srcu);
++			/*
++			 * Publish last so no reader sees an empty member list.
++			 */
++			list_add_rcu(&irqfd->resampler_link, &resampler->list);
++			list_add_rcu(&resampler->link, &kvm->irqfds.resampler_list);
++			kvm_register_irq_ack_notifier(kvm, &resampler->notifier);
++		} else {
++			list_add_rcu(&irqfd->resampler_link, &irqfd->resampler->list);
++			synchronize_srcu_expedited(&kvm->irq_srcu);
++		}
+ 
+ 		mutex_unlock(&kvm->irqfds.resampler_lock);
+ 	}
+-- 
+2.47.3
+
