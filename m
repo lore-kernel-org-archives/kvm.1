@@ -1,96 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.52
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795349366;
-	b=KFKLV7V3dm99WkgvrYguZtXQdkRx9Eg+r6P+wE4g+OV9nnRQ3oS7OcD5sXnMPc+2GklL
-	 X/VKdYBHqSqjn4JEK639KzqIyLt8utjvfrtzVgYewhXkWwjFGvn9Lpi0nPh468jQFy/Od
-	 D53zLGe+J3I/oxyZUhLuyXMUGbNauyZo5mImbdKR+TxM3UNi+JqRi5Oz1flJ7eRuTvpz5
-	 UysTOI7lMqK1T0rjdALDyxpwU9Bq/fPui9pA5p7QohjBZyC1iJk2SdyXe0p+NrJzL7+1q
-	 hausU1a0YKVmb6bCfOncC+L7hfDgMMXZPNddW4exY5Zfaw5ka5n0IoR12aT6Qb7f1SQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795349366;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=Vo8KO2KJ+xe5NqcgWpWn5sRi3V4otNrp6pD7wdiaeIg=;
-	b=BJwYXR+O59+69TjZpYzJVxZtvdKIC++dzZkV0sRCQiawCsKfJlSc+elIy122CHEWMDOX
-	 SenoUWocM3rzLuhmCm7phi7sR0obW2rC9swCUfUyJ9OYofOn13IuSmqucnsSJvqFMj4/B
-	 JymHzxFLKuS41wLFE7mhh4pG4a9X83X7FChh+3Wch67uvtKhZbbb8l/OtcWelJUbv6g8e
-	 gmLhjboYJKtJOZO8izbkGB3KHbqBmvTKHouKuDlYJ0+evWtaBsRZrxdsVtq2D952unmo+
-	 bkRtkpkvxe+KCuXuh0FyDCCfaTzgOn1obf4Kj5p5i6YS/4BM2/WYiyyEuowQb5aVVww==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cs.unc.edu;
-	spf=pass smtp.mailfrom=cs.unc.edu;
-	dkim=pass header.d=cs.unc.edu header.i=@cs.unc.edu header.a=rsa-sha256 header.s=google header.b=Iv2edekw;
-	arc=none smtp.remote-ip=74.125.224.52
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795353590;
+	b=iut7d6NEdUAQy5K8SAH4gokSbC7uMhasdARu+kI/CQh7r+JlqO3OM5SG/ZpNsUZc2ZyW
+	 ZZKwmnNcPjLxC8om4lMIghOp8kLkLSsWH0zv1KrVSFR9DH+/sEdxrlTPqP2FI6HLSl5f9
+	 UZ20B+o2mGcYkLR1jKhz4o/Oyxb9plHuFq2bFUldiH8f7tnb5knnlT33dPfFZVvVR8sj9
+	 9sNBx/1h+xcaM4mFQYRL0a21KwLVa5JYoI8KtcaRwCqhzpFZE++NcEHiZcWZUjQpZpNez
+	 FbjPhQQRWgINPFeZ34Y/G6Sf597bsReCY7PY3Xs3rMtc9SGhcZ1z2gq/vai2qUI0Cmg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795353590;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=YzpLgUS63R59GVJgQ2irGnTERPliChXawhwVX069f0Y=;
+	b=jJGv4SNubzxTqbBYwvvxAvOSX0RAWv1Ixbpu0cp4eG4yKH5+88QZgTpJHJ4lF1ulnpPc
+	 7WwoIJsuU0SkTEsg/fk42AatKqiYJcmiNcGqb0GdRW1Mrte2llkTnuK5nZM0gHyrcUdOY
+	 Dnxibb2NDgKlUiVWlknR/VKHHWNM6fYD/RDWZIuIUMjfAvPil5+ViL1vzeUffAuYWI/77
+	 0hdeVldprm3CJopS1EGoCWqMP1EsKB/VZFPBfn8uG56tfatxzY9O3qk5/V6UO4xFTnnFL
+	 SVGMAjMBPg0BPzUXQBycIX+NuNsg10l/oSf6VqDhdWVX5Bp6UnDK5EpGtEWVdCS3pLQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fCwSgOM4;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB6A606A320;
+	Sun, 22 Nov 2026 13:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fCwSgOM4
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1795353589;
+	b=AqZGg3DBddTNZk/DQF74h0AxPeExsmbQZR/s4XXwB52x2Muf5d9DL5DlTlyPAj6xPVGL
+	 STJmIFDeAjZ2pQjwRA6+QrgR2Z7O/dJF2ezCMsze5f0Rwf9xE3/exhqQJ81DqoBPwOeDa
+	 kxsbe5mOYhqiNEbaG1sY2GTawkfQvAP/eV3VtsKhJvo0gcAKLHjuiSH3F35hnCBaZ44Yn
+	 LbdlNYoi+f0FDva1WqWi1a6o8rGRzM5mXqhHrnsHsFrMSTl3BLdPt8v4TH6/kAlJ5+Bpg
+	 uArl9W/fa6PFii07+sWMUpJJCNTK1c7z/DVrBE0fzWpqmUXohyzX7AnJwXDgRrE2eHQ==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1795353589;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=YzpLgUS63R59GVJgQ2irGnTERPliChXawhwVX069f0Y=;
+	b=CUyWX6h0ITZK1gVLE57EiXVCOOfg9SoaG+r0ugNhVn5GvHECfSpEl9fRlZw2Oaz5iAEz
+	 TGxJylJgeOq7Efodc90y3Ctm+ZQE7XHC0oIadr91UpVX+4y+dyRz/HZnQOJI/nh/BOokx
+	 iV1DPMeVC8gpDPyetfxLm3Sjj/CNSbeqLa+8DCb1FIYLJUu1VRdcZKV/3lijEoqZIlJ+O
+	 EVwa2emb9YhEWtO+haJWdPqLMUYC6iu4JDCQ/adnoogAb3jeP/6//aJoAaOnhcWylhZO5
+	 rKOk4chgzXxZ27Rziigmiv0S80PZS/avyxfGSFjbJV9zf7azBNo8U9EmtiUbekOtevw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A471606A331
-	for <kvm@vger.kernel.org>; Sun, 22 Nov 2026 12:09:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A471606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cs.unc.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.unc.edu
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.unc.edu header.i=@cs.unc.edu header.a=rsa-sha256 header.s=google header.b=Iv2edekw
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-67da62357acso3177324d50.0
-        for <kvm@vger.kernel.org>; Sun, 22 Nov 2026 04:09:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cs.unc.edu; s=google; t=1795349364; x=1795954164; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Vo8KO2KJ+xe5NqcgWpWn5sRi3V4otNrp6pD7wdiaeIg=;
-        b=Iv2edekwCcVIQp9JIMsfLhk6KtoiV0WhRuD1FoDIRhUZsxLA2kgzsksYDDlnY5NdLj
-         QTmbmISW8g0su/g5+BFFz+65uDTd6p7xZ4n5+iHa21Cf9mBL/0iwxOGqjUi2dR2vr9+O
-         UyN8+2lSQ4KEgbwZTJIMOzO7HpzYQW1qneGMuVKZHYveD1XscsYYGBp1JauYkNyuMvpb
-         DQ7lS29jTR8iypzv1awMBPRFuN0pyyKlUiDxvXF8n04RhcYHVGPSRlpXAdX1TW/U8O78
-         8HbEkFnVxM2h4kREUrWn+N5bIMsV6ge5D3B59Kkdro3yg6DDF/VJptuL1Q4Aj+GXRvTl
-         WGNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795349364; x=1795954164;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Vo8KO2KJ+xe5NqcgWpWn5sRi3V4otNrp6pD7wdiaeIg=;
-        b=aRiI5gOpioqS4glPTNC81MKs9WW9Bb3+4PBoB+lT9vDp9HdzqSUB7pyK8V8huQSKFB
-         SCq/Z2jpnshaWIaoOBwfhbCL1rvgTRbW9z2K9UQ08QZtvJmTK8qlSIaFu21OILiPn++o
-         +uPYHjQq4OH3JGFHOCnvDD5COtCtOmakWe4P49l1VGoP+VMmfseOkzTcuNqm4GRu3mcL
-         eEyD7c6GcBkBfDk/xkuDnpg1WlHmsWiM5Fa3jcuvYsz1/pCGEa9qC6309XSr3wmok02h
-         ey2FgIA2l4pxQ0v7Mgu3WBSnNoShxJ9MaA084TYxD6vD4gmko92jKUuZDk7wEGUjWs6s
-         WFsQ==
-X-Forwarded-Encrypted: i=1; AL+hErG9+7LKTcfyuKxTGh5zEzl+1ygI3hac1M+SUg5ykSCWLl3IXOXHzBpzkOaqaK2DRF3keNs=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9aCxHF5oYYNLB30M+xFEp1pl124LzpL5Gg6RUWfuPeEycNotRX
-	Am+KLRyRr8inCRYInKms91GMj3lNs3LqYVqKD8iUHwqUkPJzBH4isXJhfmpJIk7qgg==
-X-Gm-Gg: AZFdTZc5IRTNviKeK/4oLmALsbmz4Lfk5hVVYz+pbtSpTYd/M9avmhJPtLa340wwrEU
-	qP6p+n+JjB9oGkmfSojLdxqi+p/87SyPgCJMZPWTcGRA76Kmz15bpBG40Fgr1/rlCFucworSMQv
-	NokIpRB6r0yyOYbW6K1KfUEF/LRvq1hoXOtTIXrUPSdTeqJOziGRof8Iyr09yGK/6ji6Wo+c/hu
-	qONXru6gpFASpoSWAjEZ8/rljeEIsA0imgBKC7CmhP0JOMxeBuDsYlr/B/Fl/IHJc8Jr715rcIg
-	sYt655cpgx0pm1IoHItNbTTmZBUsGXwfRIRkJO9+Xcflg4/2+XjZlV4/ZV0e6T1GwixmGg+az0N
-	F6t/Ysv29l7donmVhbwPpe7XE9t49f8fB5lSsqpM0UuclVhQw2OovnNYI6E/aWLyrUN0OkcBWtq
-	yjeyQYOcRMu7GDMtherUc8E9BJxE2WPVgljUTdZy/UOOZQ+fn/U4wKSDpNw0LXmeEEgApjC4RFV
-	5MzSJfWX2fK7ZrLmedG06waHcWYhfmtHTI22r+1aHTzefJnqesCjySP6razknGyEyXcJpcyBhxL
-	tXV33hJFhIn4HobZ3tQ60qelomILp7UEMxazQmsCiks/f1t3cFdH
-X-Received: by 2002:a05:690c:6088:b0:8b4:d26a:aa7d with SMTP id 00721157ae682-8b5204ff21bmr37330077b3.56.1795349364614;
-        Sun, 22 Nov 2026 04:09:24 -0800 (PST)
-Received: from cobra01.cs.unc.edu (cobra01.cs.unc.edu. [152.2.130.143])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b5201ba5absm34801557b3.4.2026.11.22.04.09.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Nov 2026 04:09:24 -0800 (PST)
-From: Hengyu Liang <hengyul@cs.unc.edu>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowangio@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] vhost/net: bound the count of VHOST_SET_FEATURES_ARRAY
-Date: Sun, 22 Nov 2026 07:09:19 -0500
-Message-ID: <20261122120919.1718445-1-hengyul@cs.unc.edu>
-X-Mailer: git-send-email 2.53.0
+	by smtp.kernel.org (Postfix) with ESMTPS id 7210A1F000CF;
+	Sun, 22 Nov 2026 13:19:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795353589;
+	bh=YzpLgUS63R59GVJgQ2irGnTERPliChXawhwVX069f0Y=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=fCwSgOM4j9qXS81kjewxgEOyprfe/ACKdpeKV4gu0tyEKPeG1RwmdK7btZx1NiBRL
+	 XW383ZmGxwbjeicsB1JNGdqgWBOOEdAcB2VQkMqRXLCecbl0qMGrNaztoxLG6j3Dvy
+	 HIUT67jLtrF3p8FWbZ8L+cvH06RdQnI4C5oEJ/clD+kX6USIssXqsub/bAakA9F3zg
+	 Jb9Z8u4N8rj6t0yJOxUVHWTDfcIbsS3c/j+UKRdAc+bK2f+043W+URi/W2HUZJ8D6w
+	 0XvSihVzJ/1h0SYPvtJtSfsVyVBz5kSzXD051vhd1QwqHhZYWyBvlv5aCWzmqm4l94
+	 ln5KHx5Vsma9w==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 042154C04C;
+	Sun, 22 Nov 2026 13:19:42 +0000 (UTC)
+From: YanXin Li via B4 Relay <devnull+fadouse.pm.me@kernel.org>
+Date: Sun, 22 Nov 2026 21:19:07 +0800
+Subject: [PATCH] vhost: mask the in-order used-ring log cursor
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -100,64 +82,130 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261122-b4-06-vhost-in-order-log-oob-v1-35efdba8fbab-v1-1-fc1253d60351@pm.me>
+X-B4-Tracking: v=1; b=H4sIAMvrAmsC/yWNQQ7CIBBFr9KwdiIMIzZexbgYYLCYphiojcZ4d
+ 1tdvpef/96qSc3S1Kl7qypLbrlMK5hdp8LA01Ugx5UVanTGIIIn0A6WobQZ8gSlRqkwliuU4mE
+ xYA+Souc+efZA9miJo9FJs1ov71VSfv5y58uf28PfJMxbY1t4bgK+8hSGTVUZ+QWb3AcioylZR
+ xj5iNo40oQOrVBvsbeO13DsRX0+XwQsXgnWAAAA
+X-Change-ID: 20261122-b4-06-vhost-in-order-log-oob-v1-35efdba8fbab-43734ad10f0a
+To: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Jason Wang <jasowangio@gmail.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
+Cc: Linfeng Sun <linfeng.sun.dev@gmail.com>, 
+ Fang Xieyan <fangxy@xiaopeng.com>, kvm@vger.kernel.org, 
+ virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795353580; l=4082;
+ i=fadouse@pm.me; s=b4-relay-20261122; h=from:subject:message-id;
+ bh=b9KCl8TEKKfFvwWrPZOWWYYFr6aHOdYXisG6z2qF2xQ=;
+ b=rtGYSwT0f96cTkFcdpMJC+bA4UrATMjPWmfopHMa0rBlOaH2wrG5I0MbE+YBClP4375a69FHy
+ oFvkhR6y+yyBBISZAXu8+XeXvpCilWOKqBUPiOyInwVPBvKzjWURmbW
+X-Developer-Key: i=fadouse@pm.me; a=ed25519;
+ pk=b4DyzHJDRd8853IHUSKPA5wwzChj8eF4MTnZuyPz1PQ=
+X-Endpoint-Received: by B4 Relay for fadouse@pm.me/b4-relay-20261122 with
+ auth_id=1597
+X-Original-From: YanXin Li <fadouse@pm.me>
+Reply-To: fadouse@pm.me
+Content-Transfer-Encoding: 7bit
 
-Commit 333c515d1896 ("vhost-net: allow configuring extended features")
-added VHOST_SET_FEATURES_ARRAY. The ioctl reads the number of feature
-words from user space and checks that every word above the supported
-ones is zero, one word at a time in a loop.
+From: YanXin Li <fadouse@pm.me>
 
-However, the loop has no upper bound and no scheduling point. As of now,
-a caller can pass a count of U64_MAX and a pointer into a large
-zero-filled mapping. The ioctl then stays in the kernel for as long as
-the mapping is readable, and a fatal signal is not handled until it
-ends. On a v6.18 debug kernel booted with preempt=none, two such calls
-from a non-root user, each on a 4 GiB mapping, froze a 2-CPU VM for
-56 s with soft lockup reports.
+vhost_add_used_n_in_order() plays the batch of used-ring writes back a
+second time for dirty logging.  Commit e244725e86be ("vhost: fix used
+ring index wrap in vhost_add_used_n_in_order") masked the index in the
+descriptor-publishing loop.  The dirty-logging loop introduced by
+bfcde6b64769 still uses the single-subtraction form
 
-Interfaces that take an extensible structure from user space limit it
-to one page (openat2, clone3, sched_setattr).
+    next = start + nheads[i];
+    if (next >= vq->num)
+        next -= vq->num;
 
-On a KASAN kernel with a 1 GiB mapping: before commit 333c515d1896
-("vhost-net: allow configuring extended features"), the ioctl does not
-exist and the call fails with EPERM at once. After that commit, it
-fails with EFAULT after 26.0 s. With this patch, it fails with E2BIG at
-once. A reproducer is available on request.
+If the guest refills the available ring while get_rx_bufs() collects
+one mergeable-RX packet, that packet can consume more heads than
+vq->num.  get_rx_bufs() permits up to UIO_MAXIOV = 1024 descriptor
+chains in one call, so a single subtraction is not enough.  For
+vq->num = 32, last_used_idx = 0 and nheads[0] = 64, next becomes
+64 - 32 = 32, which is still equal to vq->num and out of bounds.  The
+next iteration then logs
 
-This patch will reject counts above one page of words (512 on a 4 KiB
-page, or 32768 feature bits; 128 are defined today) before the walk
-starts.
+    used = vq->used->ring + 32;
+    log_used(vq, 4 + 32 * 8, 8);
 
-Fixes: 333c515d1896 ("vhost-net: allow configuring extended features")
-Cc: stable@vger.kernel.org # v6.17+
-Signed-off-by: Hengyu Liang <hengyul@cs.unc.edu>
+which starts past the end of the 260-byte ring body (4 + 32 * 8).
+For a used ring placed inside page 7 at guest address 0x7ef8 (so the
+entire 262-byte ring occupies [0x7ef8, 0x7ffe) and
+vq_log_used_access_ok() validates only log_base[0]), log_used()
+marks [0x7ffc, 0x8004) as dirty.  log_write() then sets a bit in
+log_base[1] for page 8, past the single validated byte.  On a
+vhost-net RX queue configured with VIRTIO_F_IN_ORDER,
+VIRTIO_NET_F_MRG_RXBUF,
+VHOST_F_LOG_ALL, VHOST_VRING_F_LOG, vq->num = 32, and
+log_guest_addr = 0x7ef8, delivering one 8 KiB frame consuming 64
+mergeable buffers followed by one 1-buffer frame in the same
+count = 2 flush writes
+
+    log_base[1] = 0x01
+
+where log_base[0] = 0x80 is the only byte the kernel was entitled to
+touch.  A guest attached to a vhost-net backend with dirty-page
+logging enabled (for example during live migration) and a small RX
+ring can therefore corrupt dirty-log bitmap memory that the VMM owns
+outside the region registered for this ring.
+
+Wrap the logging loop index the same way the first loop does:
+
+    next = (start + nheads[i]) & (vq->num - 1);
+
+vhost_vring_set_num() already enforces that vq->num is a nonzero
+power of two, so this is well defined for every accepted ring size.
+The coalescing invariant is preserved: if a run is not flushed,
+next == start + 1.  When start == vq->num - 1, start + 1 == vq->num,
+whereas the masked next is always less than vq->num.  The run is
+therefore flushed before the cursor wraps.
+With this change the same vhost-net configuration publishes
+used->idx = 65 and confines the dirty log to log_base[0] = 0x80,
+leaving log_base[1] = 0x00.  The mask keeps next in [0, vq->num) for
+every accepted power-of-two ring size.  As a bounded cross-check of
+the index arithmetic, a Z3 model over ring sizes {1, 2, 4, 8, 16, 32}
+and buffer counts in [1, 64] finds an out-of-range result for the old
+subtraction (vq->num = 16, start = 15, nheads = 17) and none for the
+mask within those bounds.
+
+Runtime verification and fix validation were performed in an x86-64
+QEMU/KVM guest running mainline after v7.4-rc3, with Generic KASAN,
+UBSAN, lockdep, and DEBUG_OBJECTS.
+
+Fixes: bfcde6b64769 ("vhost: fix dirty logging for in-order used ring entries")
+Cc: stable@vger.kernel.org
+Signed-off-by: YanXin Li <fadouse@pm.me>
 ---
-I found this while comparing the behavior of different kernel versions.
-I used an LLM to analyze the problem and to draft the patch and this
-message, and I analyzed the result myself.
+ drivers/vhost/vhost.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Tested on the vhost tree at 44293796526f with KASAN and lockdep: counts
-of 0, 2, 3 and 512 words still succeed, a nonzero word above the
-supported ones still gives EOPNOTSUPP, and VHOST_GET_FEATURES_ARRAY is
-unchanged.
- drivers/vhost/net.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index 631855064b3d..22e06b44d2ed 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -1795,6 +1795,8 @@ static long vhost_net_ioctl(struct file *f, unsigned int ioctl,
- 	case VHOST_SET_FEATURES_ARRAY:
- 		if (copy_from_user(&count, featurep, sizeof(count)))
- 			return -EFAULT;
-+		if (count > PAGE_SIZE / sizeof(u64))
-+			return -E2BIG;
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index dc973287567..80b887e1511 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -3206,9 +3206,7 @@ static int vhost_add_used_n_in_order(struct vhost_virtqueue *vq,
+ 				log_start = start;
+ 			log_count++;
  
- 		virtio_features_zero(all_features);
- 		argp += sizeof(u64);
+-			next = start + nheads[i];
+-			if (next >= vq->num)
+-				next -= vq->num;
++			next = (start + nheads[i]) & (vq->num - 1);
+ 			if (i + 1 == count || next != start + 1) {
+ 				used = vq->used->ring + log_start;
+ 				log_used(vq,
 
-base-commit: 44293796526f4343639f87b2acc53811c78b5d54
--- 
-2.53.0
+---
+base-commit: c44104f3642da720164042623e4832836aefdd8e
+change-id: 20261122-b4-06-vhost-in-order-log-oob-v1-35efdba8fbab-43734ad10f0a
+
+Best regards,
+--  
+YanXin Li <fadouse@pm.me>
+
 
