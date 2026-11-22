@@ -1,114 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795374851;
-	b=cHomxu3T8Ny3hSa+O5IJTioe/i1UTOuoN8ZsDCxrb70DDbiZMJsWELB9+eSbw1wwJ8T3
-	 nspFMDGmSLusf7sFJklniPe9ZwQmTSj4qbYi9SiBQDczz0b/xOLXjdm29iiGIIcUBC1Pu
-	 xrJKQ2JaTQGmJlEfPEcUacqodMvGVKyIVphzR3jF7oJTaOkl0CxwVg+qbhf0wsGSAun0b
-	 4Nr3M2WJkg9qMQmHoCN1Fyw82gsV4p9HM+12ASYduPkTvnjjzc/UF1LU1DA+fL5DVfH3q
-	 XmgYlxYOuYYRJwPSPTWsKg+jT7n45WJCotWoP8RLwcj3SWJXv113tO4oskrX02Jg9Hw==
+	t=1795377072;
+	b=Hn6Wzw+XD3dPRYXUDBTWMQfk+zsndyeP/RxmGTGTDTpUpUteUfep8a8hg4EctDOUVkpw
+	 AsSImhtzpHIPt8KZUlYAvZ49JceKl4jheVNUbFDqMSmPt1R2aXCKkaL/IYr36Gx/9JE+I
+	 hYv87onELVR60fXC9jVbiR3gQRLC4jCstiL1xTPboOFkUDIlCgI/F/nHiWE0Qa8nldNtW
+	 yruJ7HhK2QaeGYVKyc/KSEtl3vKDzDN3H2Zb9dpazlCyIx72oYp2c5wNLyJXohJEycRVU
+	 Agr/hAFtpebTkDAJr03a0V3UiXdfHZA5JA9MRjG6KvHkJL+mD3hgAxfgZFmtKKey/UA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795374851;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=SPoTViWJGHL7QSLz+I0tDgbdnIX9thSbIOpbmEgxuw8=;
-	b=UOxrt3iwc6Uswcdm6CcrDmrXFffHwvQGFGUEVYhKEv4JutcwVkNOdfWXelhsNiPrkzqw
-	 9xYsSlYeFt1hOb9PgTPzdwXqNO/U8bG5rDpZnVO9UXTGnCTNDQP2lFYLgcmOPZ+2FQFXf
-	 8peigEN6Gr4aQ6asS4vQ6pOTR3MLbpeXoJfVvfMTU5sYLseGNzEH46OUPvEHs2e/mrLgS
-	 ijzbZFOJDHmLqBoexCc41UP9RduyYHgunSK1AsQ+C7UFmC4xQdIFVXG5LNb+yBolxo3v9
-	 pFZPK9JVS01eJEpVC6WEq1QzXLNaHRxOLoBOmiaY+C50/rXDpDedE5G7lCuQesuxxPw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795377072;
+	h=Received:DKIM-Signature:Received:From:To:Subject:Date:
+	 X-Bugzilla-Reason:X-Bugzilla-Type:X-Bugzilla-Watch-Reason:
+	 X-Bugzilla-Product:X-Bugzilla-Component:X-Bugzilla-Version:
+	 X-Bugzilla-Keywords:X-Bugzilla-Severity:X-Bugzilla-Who:
+	 X-Bugzilla-Status:X-Bugzilla-Resolution:X-Bugzilla-Priority:
+	 X-Bugzilla-Assigned-To:X-Bugzilla-Flags:X-Bugzilla-Changed-Fields:
+	 Message-ID:Content-Type:Content-Transfer-Encoding:X-Bugzilla-URL:
+	 Auto-Submitted:MIME-Version;
+	bh=SM3ukCOF6/Ex4qdznBpXqwfNhfkDEI11TBQXbVwrMiU=;
+	b=d+PDMC8SI8vjzspcaMRwuGHDdFkx42YDJJSTDs4MVAOPB780n3oeX1EM0U+zrDhlMYlg
+	 lJZ0wn1OuKCl3xeyB2REN80c0Wrn0486Z8NIWG11QDzJ4lq/eqJEkvC06vI42hZWO1feu
+	 WTxExGIc+XcAeY2gRKiD0+gfyqZHvhSs3pzvLOtrs3PjkkWTbwISo/UYQCX1b3UzYIdk2
+	 nzexck2KHbb1Jzh5OjKt/AYunCR0TDTCCRG+PNVfiPUUX1N8AXL8af5iDbjRHht8DFPvQ
+	 fKpevYlamfZWB0vkg1++eHNtauvUjstusqDySifJ3UOFtN8MyWLd4X18Bwf0NN7vK9Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZpAwrYuL;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=I+9gw4J3;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IcDFIXQb;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0C9606A320
-	for <kvm@vger.kernel.org>; Sun, 22 Nov 2026 19:14:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A0C9606A320
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C0E606A31A
+	for <kvm@vger.kernel.org>; Sun, 22 Nov 2026 19:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZpAwrYuL;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=I+9gw4J3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795374850;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SPoTViWJGHL7QSLz+I0tDgbdnIX9thSbIOpbmEgxuw8=;
-	b=ZpAwrYuLf5EdLloLxtncynvxdkf3IrcU3uWbIR/1vn8nDClXS68XwwZqoZEaHb4EEWypM7
-	if1l767wKwZ72NATFFD+S78SrI6tfnWhXMGf6KGmtG31XeFcBx1KlJPtHHT/yLha4LI1b3
-	bO8IaXfLRF2/9MoTLpg/x08hhJSGBzw=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-211-_eqn8H_gP3KRW8gBuly_vA-1; Sun, 22 Nov 2026 19:14:08 +0000
-X-MC-Unique: _eqn8H_gP3KRW8gBuly_vA-1
-X-Mimecast-MFC-AGG-ID: _eqn8H_gP3KRW8gBuly_vA_1795374847
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48e0af48c18so1574892f8f.2
-        for <kvm@vger.kernel.org>; Sun, 22 Nov 2026 11:14:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1795374847; x=1795979647; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=SPoTViWJGHL7QSLz+I0tDgbdnIX9thSbIOpbmEgxuw8=;
-        b=I+9gw4J3CXiFaFKNO8WIQqKcUIlUxmMmLmeqeDzziAmXvCXmDmgPzFJrv1qGn61o9i
-         Lr3kEFiyPxYYT8ELEJS2aIroU6GwFekZNB7ohrLW5gm97gAwuRUbv0cNOZtkdNjHtO9+
-         P2MyFgopF4CcvZij8UHwjiiicla7IY2Pr6o2anJI+75rTB6OJPfQlIFQCKA0PWmHPN04
-         3qQy0rnJRuECatkNhiUkUEWO48rl5O8aNwbGNRr5NpqaMTlizV0rZipvIs8odH/R1le/
-         ZWNM0BdgolBZ5KBFI2ImmGtSGSCALIH9dX+t2tmX8p33ZpQngxHj6NZlnuDEQT2drhLO
-         2EkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795374847; x=1795979647;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SPoTViWJGHL7QSLz+I0tDgbdnIX9thSbIOpbmEgxuw8=;
-        b=JrQr3iUU01jK16z9wrfeGDQ6UKhsedv1pDrFZ+/mMe1xJjn4Lup+sdaMoQZshTD1uz
-         GatesEqIjSiaDZxAxfOMfNtJY2evHnLAasn++9vOZlVl86h9XtZ8nMfQ71IS0RNRWQaS
-         kmTt4kjT28zGj7zYmHLmV9pIoUwVdB+o6bzUyuuHpQjX/6cmxZpihVSU4d4oGeMIvv28
-         KsYWWPWXDgjwgdyirE7qRB4IUfDowfIrKuj28WXk9Gu+//5vRUa8YeAArpdGmDk572AQ
-         /fUm2ab6Pc8niD08QPjsrc1kPUKRd/MjrbZx6FSN1xAmhM2zhnY8MKPPO9eDkWU/7Kpb
-         0f9g==
-X-Forwarded-Encrypted: i=1; AL+hErEMAw+Ee+qPzDqZD6yWp6R3QSn78jxwa1h7mUEkYDp//IWSHhSuRsjpvABKTUfVZdprSsQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/Kwcc/eZSze+Qzvl3svhgYdy0G03VvL0C4jP43vHD1jzKhzC3I
-	y7ZdG3FmjWMidZvQ25OwEP1v3q7ACEPg95fpzqqSOpa19JDJvdWBl4515hjCAo3f02fW2DuAjES
-	AYW70oQ1KuDsMVZoDCXad7joDQARiKgWELURekKRNO8Me3CsYszljIA==
-X-Gm-Gg: AZFdTZfQq6mjatHyfuR/AsPUpDIekNcJ+eZhGD78geLeFO9Hz8iPI+jS7VR/f9qQfda
-	Fgky66cKaBzwxK3FUqSoPjJplj3LDPktLxQ38KA2IoZWd+sFiPk58rYxyIZsGA+Q/LINn9d3QMm
-	9krU05zmBGhTgQJOUbDQnSaRKJ+LAH36jDY8gSjcSAv112pyJDO7TxEclJ8WG06cP8QXV63lCPP
-	o5pH0KsScLomrbjcmzPlmmwbEe6MroetWx1U6NXYvpMwZqg2mCVebDDeuG0VP8hWSZpV/psFUdJ
-	XxkiT+OGBons458nHf4sgGU6PL3eIc37RyGf3Z9XgRnp6XqEovEYELw+IeViD8iVkfRFY7Q+uZP
-	JCoQMdWPeY99c93qex2s/i7GuxWe20DLEoT8WMoNE
-X-Received: by 2002:a05:600c:3b8c:b0:4b7:6c16:7b43 with SMTP id 5b1f17b1804b1-4bb8881d019mr195708845e9.10.1795374847338;
-        Sun, 22 Nov 2026 11:14:07 -0800 (PST)
-X-Received: by 2002:a05:600c:3b8c:b0:4b7:6c16:7b43 with SMTP id 5b1f17b1804b1-4bb8881d019mr195708385e9.10.1795374846810;
-        Sun, 22 Nov 2026 11:14:06 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1524:9e00:c39b:a740:e7:3fcf])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb90660cb4sm198874085e9.2.2026.11.22.11.14.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Nov 2026 11:14:06 -0800 (PST)
-Date: Sun, 22 Nov 2026 14:14:03 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Hengyu Liang <hengyul@cs.unc.edu>
-Cc: Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] vhost/net: bound the count of VHOST_SET_FEATURES_ARRAY
-Message-ID: <20261122134901-mutt-send-email-mst@kernel.org>
-References: <20261122092235-mutt-send-email-mst@kernel.org>
- <20261122143829.2674252-1-hengyul@cs.unc.edu>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IcDFIXQb
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EFF0A1F000C4
+	for <kvm@vger.kernel.org>; Sun, 22 Nov 2026 19:51:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795377072;
+	bh=SM3ukCOF6/Ex4qdznBpXqwfNhfkDEI11TBQXbVwrMiU=;
+	h=From:To:Subject:Date;
+	b=IcDFIXQbkGV1zKwLJzKXDr1jOR8gzBRt0RrfglL/aOGL6OjiDsZISrfORGfmOVObe
+	 TO/82TaZGlInX3phdm4Y4AKTKSXhPiDyv8s8bovNIXaoh3GDKImA1oLdxMw5nzvFLX
+	 t9wLNwzskBw1SvgArtaENu0uEpMoHtny3Q1EPspdj8tR5Du/w/v7j31EwRrWxCLStk
+	 D/jL3xWw0huaeEEJReYy2Nj9M4MMBa+Qnkvu8GwSgFjKIZ/z/x2/aZaDSixNm/lzZ0
+	 Ccc1mQP86Lr5kEyup/HvOPT8AYmK0TOfe1oRt9I71e5xCjfMqj6iOOV/q94nlalolv
+	 h2UEye99K8NLA==
+Received: by aws-us-west-2-korg-bugzilla-alma10-1.codeaurora.org (Postfix, from userid 48)
+	id EC1CC240040C; Sun, 22 Nov 2026 19:51:11 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: kvm@vger.kernel.org
+Subject: [Bug 222317] New: pci: 8086:4c43 host bridge enumerated as class
+ 0x0604 breaks Intel IGD passthrough
+Date: Sun, 22 Nov 2026 19:51:11 +0000
+X-Bugzilla-Reason: CC
+X-Bugzilla-Type: new
+X-Bugzilla-Watch-Reason: None
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: PCI
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: 2039475150@qq.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: drivers_pci@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_id short_desc product version rep_platform
+ op_sys bug_status bug_severity priority component assigned_to reporter cc
+ cf_regression
+Message-ID: <bug-222317-28872@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -118,62 +83,158 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261122143829.2674252-1-hengyul@cs.unc.edu>
 
-On Sun, Nov 22, 2026 at 09:38:29AM -0500, Hengyu Liang wrote:
-> On Sun, Nov 22, 2026 at 09:25:37AM -0500, Michael S. Tsirkin wrote:
-> > this is followed by:
-> >
-> >                 virtio_features_zero(all_features);
-> >                 argp += sizeof(u64);
-> >                 copied = min(count, (u64)VIRTIO_FEATURES_U64S);
-> >                 if (copy_from_user(all_features, argp, copied * sizeof(u64)))
-> >                         return -EFAULT;
-> >
-> > copies at most 8 bytes.
-> >
-> >
-> > did you test that this patch actually helps anything?
-> 
-> That first copy is bounded, yes. The unbounded part is the loop right
-> after it, which is outside the diff context:
-> 
-> 		for (i = copied; i < count; ++i) {
-> 			if (copy_from_user(&features, featurep + 1 + i,
-> 					   sizeof(features)))
-> 				return -EFAULT;
-> 			if (features)
-> 				return -EOPNOTSUPP;
-> 		}
+https://bugzilla.kernel.org/show_bug.cgi?id=3D222317
 
-I see. So all it is doing is checking that these features
-are > 0 and erroring out.
-Let's just not do it - we don't have to.
+            Bug ID: 222317
+           Summary: pci: 8086:4c43 host bridge enumerated as class 0x0604
+                    breaks Intel IGD passthrough
+           Product: Drivers
+           Version: 2.5
+          Hardware: Intel
+                OS: Linux
+            Status: NEW
+          Severity: normal
+          Priority: P3
+         Component: PCI
+          Assignee: drivers_pci@kernel-bugs.osdl.org
+          Reporter: 2039475150@qq.com
+                CC: kvm@vger.kernel.org
+        Regression: No
 
+Filed under Drivers/PCI because the underlying defect is the PCI class code
+enumeration of the CPU host bridge; the visible failure happens in vfio-pci.
+CC'd VFIO/KVM people for the driver side.
 
-> It reads one u64 per iteration up to the count from user space. With
-> count = U64_MAX and a large zero-filled mapping, it only stops at the
-> first unreadable address.
-> 
-> Yes, I tested it, on the vhost tree at 44293796526f (KASAN + lockdep),
-> count = U64_MAX:
-> 
->   1 GiB zero-filled mapping:
->     without the patch: EFAULT after 27.4 s
->     with the patch:    E2BIG at once
-> 
->   2 GiB mapping, SIGKILL sent 1 s into the ioctl:
->     without the patch: the process is reaped 46.7 s after the kill
->     with the patch:    the ioctl has already returned
-> 
-> I have a small reproducer (a few lines of C). Since I found this with
-> the help of an LLM, Documentation/process/security-bugs.rst asks me to
-> treat it as public and not post the reproducer to a public list, so I
-> have not included it here. I am happy to send it to you off-list if it
-> would help.
-> 
-> Thanks,
-> Hengyu
+Passing the integrated GPU (Intel UHD Graphics P750, 8086:4c90) to a QEMU/K=
+VM
+guest fails on this machine. vfio_pci_igd_cfg_init() returns -EINVAL during
+vfio_pci_open_device(), so QEMU never gets the device:
 
+    vfio-pci 0000:00:02.0: resetting
+    vfio-pci 0000:00:02.0: reset done
+    vfio-pci 0000:00:02.0: Failed to setup Intel IGD regions
+    kvm: -device vfio-pci,host=3D0000:00:02.0,...: vfio 0000:00:02.0:
+         error getting device from group 0: Invalid argument
+
+Root cause
+----------
+
+drivers/vfio/pci/vfio_pci_igd.c, vfio_pci_igd_cfg_init():
+
+    host_bridge =3D pci_get_domain_bus_and_slot(0, 0, PCI_DEVFN(0, 0));
+    if (!host_bridge)
+            return -ENODEV;
+
+    if (host_bridge->vendor !=3D PCI_VENDOR_ID_INTEL ||
+        host_bridge->class !=3D (PCI_CLASS_BRIDGE_HOST << 8)) {
+            pci_dev_put(host_bridge);
+            return -EINVAL;
+    }
+
+This firmware enumerates the CPU host bridge 00:00.0 (Intel 8086:4c43,
+Rocket Lake-S Host Bridge/DRAM Controller) with class code 0x060400
+(PCI-to-PCI bridge) instead of the architecturally correct 0x060000
+(Host Bridge):
+
+    $ setpci -s 00:00.0 0x09.b 0x0a.b 0x0b.b
+    00 04 06          # class 0x060400
+
+    $ setpci -s 00:00.0 HEADER_TYPE.b
+    01                # type 1 header, i.e. looks like a PCI bridge
+
+    $ setpci -s 00:00.0 0x18.l
+    ffffffff          # primary/secondary/subordinate bus numbers all 0xff
+
+lspci -t shows the PCI core actually walking that bogus secondary bus:
+
+    -[0000:00]-+-00.0-[ff]--
+               +-01.0-[02]----00.0
+               +-02.0
+               ...
+
+The other half of the IGD check passes: the OpRegion is valid.
+
+    $ setpci -s 00:02.0 fc.l
+    953ce018          # OpRegion base in PCI config space 0xFC
+
+    # read at that physical address:
+    000000  49 6e 74 65 6c 47 72 61 70 68 69 63 73 4d 65 6d  IntelGraphicsM=
+em
+    000010  08 00 00 00 00 00 01 02 ...                      size =3D 8 KB
+
+So vfio_pci_igd_opregion_init() succeeds and only
+vfio_pci_igd_cfg_init() fails. The IGD itself is fine; the failure is purely
+the host-bridge class check.
+
+Why this is worth fixing in the kernel
+--------------------------------------
+
+The class code is a read-only PCI register and 0x0604 here is a firmware
+defect. A user cannot fix it. The only workaround I found is patching the
+cmpl immediate inside vfio-pci.ko after every kernel upgrade:
+
+    bf3: 81 78 44 00 00 06 00   cmpl $0x60000,0x44(%rax)   # stock
+         81 78 44 00 04 06 00   cmpl $0x60400,0x44(%rax)   # patched
+
+With that two-byte change the check passes and the host-bridge, LPC and
+OpRegion regions all register correctly; QEMU then reports a real Intel IGD
+instead of a plain PCI device. This is a poor long-term solution: it breaks=
+ on
+every rebuild and requires stripping the module signature.
+
+Suggested fixes
+---------------
+
+1. Preferred: a DMI-scoped quirk in drivers/pci/quirks.c that restores
+   dev->class =3D PCI_CLASS_BRIDGE_HOST << 8 for 8086:4c43 on the affected
+   board(s) only. This keeps the change off the other machines that report
+   8086:4c43 with the correct 0x0600, and it fixes the value for every
+   consumer instead of only vfio.
+
+       static void quirk_intel_host_bridge_class(struct pci_dev *dev)
+       {
+               dev->class =3D PCI_CLASS_BRIDGE_HOST << 8;
+       }
+       DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x4c43,
+                               quirk_intel_host_bridge_class);
+
+   guarded by dmi_check_system() for Gigabyte/W480 VISION W.
+
+2. Alternative: an explicit escape hatch in vfio-pci (module parameter or
+   sysfs attribute) to relax the host-bridge class check, so affected users
+   do not have to binary-patch the module.
+
+I understand neither option "fixes the firmware", and that the class
+check\nexists for a reason. Option 1 seems the least invasive way to make t=
+his
+hardware usable.
+
+Environment
+-----------
+
+    CPU:      Intel Xeon W-1390P (Rocket Lake)
+    Board:    Gigabyte W480 VISION W, BIOS F25a (2026-06-11)
+    iGPU:     0000:00:02.0  Intel UHD Graphics P750 [8086:4c90] rev 04
+    Host Br:  0000:00:00.0  Intel [8086:4c43] rev 01, class 0x060400
+    IOMMU:    group 0, iGPU alone
+    Kernel:   7.0.14-28-pve (Proxmox VE 9.2, based on Ubuntu-7.0.0 + stable)
+    cmdline:  BOOT_IMAGE=3D/boot/vmlinuz-7.0.14-28-pve root=3D/dev/mapper/p=
+ve-root
+ro quiet
+    CONFIG_VFIO_PCI=3Dm
+
+Note: this board also hit a separate PCI bug involving
+CONFIG_PCI_DYNAMIC_OF_NODES
+(CVE-2026-98504, fixed in 7.3-rc5 / 6.18.55). That is unrelated to this rep=
+ort;
+CONFIG_PCI_DYNAMIC_OF_NODES is not even enabled in this build.
+
+Note 2: the failing sequence above was observed on an earlier kernel on this
+machine; on the current 7.0.14-28-pve the module is locally patched, so dme=
+sg
+no longer shows it. drivers/vfio/pci/vfio_pci_igd.c is unchanged in v7.3.3.
+
+--=20
+You are receiving this mail because:
+You are on the CC list for the bug.=
