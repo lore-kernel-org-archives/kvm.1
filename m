@@ -1,62 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795456255;
-	b=iMEj5Vwoa3f5ky4lr6rkqicnjW5WI/4kyTMvc7YJHKzhUjjtRTL85btZpJZvtzIPsNnW
-	 x72VBgm3lFXT1vOo0cz3VwcSFinuREbaFXJhfO84FrtJv4OB3wKltO4zsAv6i24cG1/sg
-	 e5ekrG2B30t8Nh48v3OtG4lFZjdPA0tC4OncS6mL+o5xmdRXh2WomaehChvlIiftqHJkN
-	 OzIMIe7PqeD8wOdA92bEkpkNC3iP653pwBmSUXIbYWUnr+mBxCsOCekLLmcD4/0MdXtGm
-	 OwzUrztUbB5Kk4v0uD/NsUVxwuERMKxPETxU9k3ePIPzbVw/RgfXWjQ+lIKljDzUxMA==
+	t=1795456521;
+	b=X27nQoCzYU4VFvSACiQ35t9633MtY3isAijpH+VjrFghzTTdJLZJSFmUgwF1nuItUs6t
+	 ZV++PCBOz8KEUiIxxgjJA9oKAMlEPab+T14HVnCGyS4AQ0hpiJj99w9uLK2XtXtCLqcE7
+	 r2wMqdTR8thQtHsXtBWgCDzBeQO6Da2MJrhA/sWKkXthotOCcFl95KpG+AVpdsS4aqiWa
+	 s3M7gBZ436Xvq3VP5fwPYv8qHP80c5LghwmVGSzW6bnQqV7hMKriTKzQYL9BigdsRsAfa
+	 /wb5FGut5LYbfzq/zXklq95B3h76HV1vVlvYmc6dY1bkarAM+DLvHgATfULjortpWQg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795456255;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=BmdihYOxirTm+1eTZLfQO693ehUdXJrj7zcBiNWtsTU=;
-	b=EI63RUyGy9TUVrDVSmQG04oVxXV9eQa/apzL6GLlMUutVogwyYZQIJZvPAoTne489k5Q
-	 Jfsy67/6Q6Vg+DCLOB8mlT36pCx4ePiJWLnDuKbIyc48o0kmE5DuBeK/MquHGbG1wjhKp
-	 ewHP0j7Ate5HmtjS++EXUwyQl6hijFYmBd0rP1LWxhLjwl6y+JAdLNJRQdPScAd72S/89
-	 36pzyyDSpPm0L4lfQkykQVrQnoVcUdFaJ36xGc2ysVKujAhWT2bla938ETBicE53z6aN0
-	 nPLDCFzQcVEMxaoMEeR35OY7AvN86qhaqhEfFxpVEiNyYKvnTGBXGfi79tiucOcj+XA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795456521;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:Content-Type:MIME-Version:Content-Transfer-Encoding:
+	 X-Scanned-By;
+	bh=vLgFOuW+3fpp+Z/KRz7RQ6CiaNcfXmAoTsd+2oIgOoA=;
+	b=B7Lih/oksuu86XZm3WgYFYo2TtZOD8tkvmey2KLM5Yh9OteKCDmezU60QzwZMz/avWNl
+	 frXXTEaJ3cf9iD7kxw0d9uSKA3PIBhxp9E/zbWAxYSg+Ru5dpkrfPqQp5uS1thHly+mtD
+	 D0HdncJ8PM090SaJCsMnnkRYjwL6GByC5VryTgcrIz6AAXqUEC+69KxQ7L0u2nAKbRz+t
+	 5sKwH7cp9eCF+ArMn6Pa1kbLbKlvD426Dk/hS83sQQXGicY5ewANwwzhzidihS1Hn86Ov
+	 auXzn/UpJQh/QCiOE0LcoMl5Y7tJPBRuASA01l+jUiTUvt+E5LQsjLjKNAF/MRTV7HA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nSRmqnb+;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gjUIFXlP;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54937606A32E;
-	Mon, 23 Nov 2026 17:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141CB606A31E
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 17:55:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 141CB606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nSRmqnb+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 654B31F000E1;
-	Mon, 23 Nov 2026 17:50:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795456254;
-	bh=BmdihYOxirTm+1eTZLfQO693ehUdXJrj7zcBiNWtsTU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=nSRmqnb+fUbrWxvbElJY6njf1lvjAVkusLXLFpjaFxEgQ+kYXgZgf4ZMN68xKQ+YZ
-	 ZDuOeDeOvEWuXxAdz4qv+/1uDMRZHkpDyX1hQ1mnfoWDZcWUddJmIEI6qTPdBUTbDg
-	 awoNG1kWDag7/uPxC53z6rUsK6vHnGFypQu7hk2+cVKf5+sypF3nTrEcss5aYpXMw+
-	 xoDcJp5Jg6FpDbcSSK1DeP6iO6/SlQUJfg6gEnYBS9hlbKJYlzvCxsOFMRDYGV3Chi
-	 5TT1OusQZKg4Q+PiFJOYRjcC7vso4DnCTC4vreS0mgIU0gaaEptbrENdnfFZRF2lxm
-	 Et+USmiUgrwyw==
-Date: Mon, 23 Nov 2026 17:50:46 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Jia He <justin.he@arm.com>, Oliver Upton <oupton@kernel.org>, 
-	Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Shuah Khan <shuah@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 1/3] KVM: arm64: Don't load hardware vCPU state before
- first run
-Message-ID: <awR4AzA5xeyNmz7i@gremlin>
-References: <20261123150917.2679600-1-justin.he@arm.com>
- <20261123150917.2679600-2-justin.he@arm.com>
- <86eccbzcqh.wl-maz@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gjUIFXlP
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1795456520;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vLgFOuW+3fpp+Z/KRz7RQ6CiaNcfXmAoTsd+2oIgOoA=;
+	b=gjUIFXlPCPwpARTu2jgKIt29QAO1eCN3r0iyqErV5GqKipsBXxI+nsfw2gOG6i5rttcryJ
+	Y8ul4lzXL1x0D5iGqC2oOZ6c+gzups71ehWCIwWfniniSHXIZrDMpql2T/Wsx3iIL7rkQl
+	/M9kP75mnA4ezNNWN46xzwXh74kvkcE=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-642-xbNwopUmMeuJFdqwl0y8Tw-1; Mon,
+ 23 Nov 2026 17:55:15 +0000
+X-MC-Unique: xbNwopUmMeuJFdqwl0y8Tw-1
+X-Mimecast-MFC-AGG-ID: xbNwopUmMeuJFdqwl0y8Tw_1795456514
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9EE1618004F5;
+	Mon, 23 Nov 2026 17:55:14 +0000 (UTC)
+Received: from mlevitsk-thinkpadt14gen3.ibmmarkh.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 92BC8421;
+	Mon, 23 Nov 2026 17:55:13 +0000 (UTC)
+From: Maxim Levitsky <mlevitsk@redhat.com>
+To: kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	x86@kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Maxim Levitsky <mlevitsk@redhat.com>
+Subject: [PATCH v3 0/5] KVM: nVMX: fix nested APICv emulation for windows guests
+Date: Mon, 23 Nov 2026 12:55:07 -0500
+Message-ID: <20261123175512.80438-1-mlevitsk@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,93 +79,47 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <86eccbzcqh.wl-maz@kernel.org>
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-On Mon, Nov 23, 2026 at 05:20:06PM +0000, Marc Zyngier wrote:
-> [+ Lorenzo]
->
-> Hey Jia,
->
-> On Mon, 23 Nov 2026 15:09:15 +0000,
-> Jia He <justin.he@arm.com> wrote:
-> >
-> > KVM_PRE_FAULT_MEMORY calls vcpu_load() as soon as KVM_ARM_VCPU_INIT has
-> > completed. On arm64, however, kvm->arch.sysreg_masks, the trap
-> > configuration, vncr_tlb and nested vGIC state are only set up on the
-> > first KVM_RUN in kvm_arch_vcpu_run_pid_change().
->
-> I think I'm going to queue a patch disabling prefaulting immediately,
-> and then we can fix this crap.
+Fix two problems that were recently discovered that cause nested APICv=0D
+to malfunction on windows with hyperv enabled.=0D
+=0D
+The first problem is that unlike KVM, windows doesn't set PIR.ON when=0D
+sending posted interrupts. X86 spec actually allows this.=0D
+=0D
+The second problem is that unlilke KVM, which mostly ignores them,=0D
+windows depends on accurate delivery of the posted notification=0D
+interrupts, and currently it is possible for a posted notification=0D
+to get lost it it arrives at the same time as the nested VM exit.=0D
+=0D
+V2: to avoid spurious notification in L1, process the posted=0D
+notification in L2, just before VM exit.=0D
+=0D
+V3: rework the patch series following the pseudocode that Paolo suggested=0D
+(Thanks!!)=0D
+=0D
+Best regards,=0D
+	Maxim Levitsky=0D
+=0D
+Maxim Levitsky (5):=0D
+  KVM: nVMX: don't check PIR.ON when processing nested posted interrupts=0D
+  KVM: x86: split vcpu->arch.hflags into nested_guest_mode and smm_mode=0D
+  KVM: x86: convert nested_guest_state into an atomic variable=0D
+  KVM: x86: nVMX: move nested APICv state to nested_guest_state=0D
+  KVM: x86: nVMX: fix races in delivery of nested posted interrupts=0D
+=0D
+ arch/x86/include/asm/kvm_host.h | 22 +++++++----=0D
+ arch/x86/kvm/regs.h             |  9 +++--=0D
+ arch/x86/kvm/smm.c              |  8 ++--=0D
+ arch/x86/kvm/smm.h              |  2 +-=0D
+ arch/x86/kvm/vmx/nested.c       | 67 ++++++++++++++++++++++-----------=0D
+ arch/x86/kvm/vmx/vmx.c          | 61 +++++++++++++++---------------=0D
+ arch/x86/kvm/vmx/vmx.h          |  2 -=0D
+ arch/x86/kvm/x86.c              | 11 +++---=0D
+ 8 files changed, 107 insertions(+), 75 deletions(-)=0D
+=0D
+-- =0D
+2.56.1=0D
+=0D
 
-Ack, will prioritise looking through Jia's series.
-
->
-> >
-> > Running the full vcpu_load() path before then reads unsanitised guest
-> > sysregs and touches uninitialised nested state: get_s2_mmu_nested()
-> > populates nested_mmus[] from raw VTTBR_EL2/VTCR_EL2/HCR_EL2 values, FGT
-> > and HCRX_EL2 are written before kvm_calculate_traps() has run, and
-> > kvm_vgic_load() can enter vgic_v3_load_nested() early. In particular, if
-> > userspace creates an EL2 vCPU with ID_AA64MMFR4_EL1.NV_frac cleared to 0
-> > (so vncr_tlb is never allocated), sets HCR_EL2.NV=1 and an EL1 PSTATE,
-> > and calls KVM_PRE_FAULT_MEMORY, kvm_vcpu_load_hw_mmu() queues
-> > KVM_REQ_MAP_L1_VNCR_EL2. The next KVM_RUN then dereferences a NULL
-> > vncr_tlb in kvm_map_l1_vncr() with preemption disabled and kvm->mmu_lock
-> > held for read:
-> >
-> >   [   73.636014] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000078
-> >   [   73.801972] pc : kvm_map_l1_vncr+0x48/0x2d0
-> >   [   73.884820] Call trace:
-> >   [   73.887253]  kvm_map_l1_vncr+0x48/0x2d0 (P)
-> >   [   73.891422]  check_nested_vcpu_requests+0xb8/0x168
-> >   [   73.896200]  check_vcpu_requests+0x2a0/0x428
-> >   [   73.900458]  kvm_arch_vcpu_ioctl_run+0x2d8/0x6d8
-> >   [   73.905062]  kvm_vcpu_ioctl+0x388/0xaf0
-> >
-> > KVM_PRE_FAULT_MEMORY still needs generic vcpu_load() to set
-> > kvm_running_vcpu for dirty-ring tracking in mark_page_dirty_in_slot(),
-> > but kvm_arch_vcpu_pre_fault_memory() only walks and populates
-> > &kvm->arch.mmu and does not use any hardware vCPU state. Skip the arch
-> > vcpu_load()/vcpu_put() callbacks until vcpu_has_run_once() is true. In
-> > KVM_RUN, vcpu->pid is set under vcpu->mutex right after
-> > kvm_arch_vcpu_run_pid_change() succeeds and before
-> > kvm_arch_vcpu_ioctl_run() calls vcpu_load().
-> >
-> > Since kvm_running_vcpu can now be set without VHE state on the CPU, use
-> > host_ctxt->__hyp_running_vcpu in VHE enter_vmid_context() (matching
-> > nVHE)
->
-> Can you clarify under which circumstances we end-up on the TLB
-> invalidation path? Simply faulting things in should not result in
-> invalidation. Unless we end-up with MMU notifiers firing?
-
-Yeah I think the issue is that an enter_vmid_context() /
-exit_vmid_context() pair flushing some other MMU could end up writing
-the vCPU's (canonical) hw_mmu into VTTBR_EL2/VTCR_EL2 on exit, even
-though it was never loaded in the first place.
-
-But that would just get overwritten when next loaded anyway?
-
-So I think it's probably the right change but makes no difference in
-practice ATM?
-
->
-> > and check vcpu_has_run_once() in vgic_maintenance_handler().
->
-> I have similar questions here. It isn't obvious how you end-up getting
-> a VGIC MI if you don't run and don't load the state on the CPU.
-
-Yeah I don't think there is a way? Maybe this is just defensive?
-
->
-> Thanks,
->
-> 	M.
->
-> --
-> Without deviation from the norm, progress is not possible.
-
---
-Cheers, Lorenzo
