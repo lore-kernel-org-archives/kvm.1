@@ -1,65 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795416654;
-	b=llhY0NeL4RwEeyu9vYJ5k6PTFuvDKY5lb/WCOGIUo0c7XZAK85O+lI0J6c0hyppwQoet
-	 /rRGVu5ChpuYc8qYLDt2JR+K6pKUfLqokPj8HNvFBsHADYkw0pBc/Nq96WoWLkt5v9wGp
-	 bjHXv4P0YKhNDGH48l4GzX9B+Xb0bJTyhK6f9O6IlCiIvjmaoJy41sdAUKi6tyx4BK4PL
-	 Y16fdztVKZQpZlWGqV7K/0QQYKvakxT9leYmSN425r12b/7r1F2fyzmaKhmulRjEKwdSQ
-	 spc1pRy+UjK4y4PLU1cFoowl6NKYKbW28qXOaxYOYE+KOUC8AqfLDJeEw39Lv2ePPbg==
+	t=1795416802;
+	b=i73iCEqP6OvDjH22UXj+xjN6qPYqQdAL+eVjLslunFeJEu8JMYu7bPh8fbd6Td14v4MR
+	 C7iwVGdSFWZV9xjlpytizjOJNZtc9ObJeNG4pHPKd4jnYgSeT+9YqyKHHAjwETBjomPx0
+	 jVgWgV+wwl4Q2LtpDz7nd14ybaxO67i/2/3AI0Nv5G8bG4hGtbOuRtStY1tvhDcueOh1i
+	 7RYKrle6c8FzxhKu0/pM2QiM2p/rU27CWDxzFzDE5c+BZuKMK/YtokLe9bEiWzk1lq5dn
+	 lZce183p3W2ZoCBYYUAPlYI1iMirehuxbXrASKeMo+oQDS2pBT9+FxLWQxoq8BD4muw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795416654;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-CM-TRANSID:X-Coremail-Antispam:
-	 X-CM-SenderInfo;
-	bh=tHlnf2LKqk1x9hZynTXX0rVO585CVFuslk9OIJSwAIA=;
-	b=KsqRccynHzVczVFrWLEFqps7AKuDYx6O7EEg7v+yftRM0dXCcYjFILDXm+8dXkcVKvji
-	 itauWTJTCWj1lnwsuYvEiVydWPr9W/hDfEIeMBbj7cAcB11ks66tD5u7GnIh9yxspOcO5
-	 5AITBqWpHYnJku+Y93d8MQPmdnBHS91SvMSOS8dvsS9lTbEaGXCPn8Z+HSQZQwGO3gvxi
-	 ycdzX2bPX5NSaxhprYcAcHP8b4Gjs4D+c7CjubyhLRdUmXmJQ4Yrrg8/vDRHboO+Dztoe
-	 swlCnWLbOGx9SJiZIpthtyVGSiDyqlrUHZIPfflBudB5XFHAUy6jq8AZ7Mn+J/P1big==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795416802;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Proofpoint-Reinject:X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-GUID:X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=LYFLUK4X0v4eb/H71FRu0YrCnuzDn+tDFLUu8DbmnA0=;
+	b=rSWKVj2aXXhuT2wFcQn1Yc793zi18o0V384cW4NnBT9Ax/hXxPFotNprjqU+wkCv/I5T
+	 1tYNc121ctPNHpbnyonRhxn19L54nNOxZsMzt/ZdBL7/8hnVRh3otFPxGTFPHJ3HOR52a
+	 BtSC/fq+8mYCDj0lZhPVhK572nVeBFjA5FhOCzLHQX4OkHmuY5b1f4X1b4uWnAsCXhpu2
+	 ZCBhOkslGQcivKTkPGlgW5pDImbRxN3XvboncC1gQzGpO/KcCb6IV9UjrV/ifIeaGf5qi
+	 GxlCVh2uOdHNV7D3F7hMvK3FUSiYm8FhXXzAEvoQDnDKau5NZlI6CeNeVqqsnHD99qA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=163.com;
-	spf=pass smtp.mailfrom=163.com;
-	dkim=pass header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=D751r6Q3;
-	arc=none smtp.remote-ip=220.197.31.4
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cWwTfVAA;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20AA8606A31A;
-	Mon, 23 Nov 2026 06:50:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 20AA8606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A38606A31A;
+	Mon, 23 Nov 2026 06:53:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 59A38606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=D751r6Q3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=tH
-	lnf2LKqk1x9hZynTXX0rVO585CVFuslk9OIJSwAIA=; b=D751r6Q3TtrOXCGLX8
-	3/AQ+Qfj+tI7R26aqwn/l+X3JeK/q06PtvCVkkg76WLbnHC+oBjpmQlbB4Z2TF7D
-	gZ6YSQBdT/XrNOpDP7opMPI85iHskLApqYEG27kveD8bWquKgreHEnBECg2/G1/v
-	qsdf67ASzh/w/BRKIC5uKQiKQ=
-Received: from leoqi-System-Product-Name.. (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgDnF4b_4QNrsN4_Gw--.61939S2;
-	Mon, 23 Nov 2026 14:49:42 +0800 (CST)
-From: Can Qi <qican5708@163.com>
-To: anup@brainfault.org
-Cc: atish.patra@linux.dev,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] KVM: riscv: Allow rescheduling during G-stage unmap
-Date: Mon, 23 Nov 2026 14:49:35 +0800
-Message-Id: <20261123064935.1608890-1-qican5708@163.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261123055036.1554937-1-qican5708@163.com>
-References: <20261123055036.1554937-1-qican5708@163.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cWwTfVAA
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AN54eG62633014;
+	Mon, 23 Nov 2026 06:53:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=LYFLUK
+	4X0v4eb/H71FRu0YrCnuzDn+tDFLUu8DbmnA0=; b=cWwTfVAAWnl1nytN9GhvQ3
+	BzWMjNOnY5i5dvwNM63/AASQTZaMC0oza8uDjYT7pREkqmmJ7lKFXeTUgG71AlpM
+	AR45SqA2Dm9W9x9Vzw5lHZVGMm5AKBiLK0zOrzl1Fm9kTNGHrEuLrDdeNjA196Do
+	YoecBMwjh7Gvca4MBxrD46vGtFui+/Z81n003tCBTzGJ20GRCWmofqtx9AMAZlbW
+	hSaSes8frXoKJh/PLc02LrqXRtT8UEK2Vr1tqU9D7DBLikRSHb4cLAOB6zS+e9HK
+	yPl5XwLXL/LC+vFYMGDqoPiLA5rKvLjeXJnDYNhZYNn2dqu4R0WP27EWvYNjE3vg
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34g11kyf-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 23 Nov 2026 06:53:02 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AN54F2P2817213;
+	Mon, 23 Nov 2026 06:53:02 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j3pmjwnjq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Nov 2026 06:53:01 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AN6qvu128770570
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 23 Nov 2026 06:52:57 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A8C6A2004B;
+	Mon, 23 Nov 2026 06:52:57 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2038020049;
+	Mon, 23 Nov 2026 06:52:52 +0000 (GMT)
+Received: from [9.124.208.184] (unknown [9.124.208.184])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 23 Nov 2026 06:52:51 +0000 (GMT)
+Message-ID: <b5383e66-c777-4e96-9ee8-5548d84f6e89@linux.ibm.com>
+Date: Mon, 23 Nov 2026 12:22:49 +0530
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -69,420 +85,174 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 5/5] powerpc/powernv/eeh: Map generic EEH error types
+ to OPAL
+To: Narayana Murty N <nnmlinux@linux.ibm.com>,
+        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Timothy Pearson <tpearson@raptorengineering.com>,
+        Alex Williamson <alex@shazbot.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin
+ <npiggin@gmail.com>,
+        Christophe Leroy <chleroy@kernel.org>,
+        Ritesh Harjani <ritesh.list@gmail.com>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org, sbhat@linux.ibm.com,
+        harshpb@linux.ibm.com
+References: <20261023073642.59657-1-nnmlinux@linux.ibm.com>
+ <20261023073642.59657-6-nnmlinux@linux.ibm.com>
+ <2ed69cf8-eca2-41ed-a100-844f9d84c2ad@linux.ibm.com>
+ <9efa20ba-d79b-47b8-9677-474c19aa9168@linux.ibm.com>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <9efa20ba-d79b-47b8-9677-474c19aa9168@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgDnF4b_4QNrsN4_Gw--.61939S2
-X-Coremail-Antispam: 1Uf129KBjvAXoWfGF4fGrWfKF13Ar4kJFy8uFg_yoW8XrW8uo
-	W0va1ruF48ury0yFy8Aw17tFyjqFW0krZxWF15XFWYgryjq348uryjkrZ8Ja47Wr1UuFyf
-	ZFWfXr17XF18G3Wfn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUrnmRDUUUU
-X-CM-SenderInfo: ptlft0avxqmqqrwthudrp/xtbCzQZVE2sD4gbMPgAA3z
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: POTtVaHnrtjaDJOwoyhxmcXptX7oATw5
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIzMDAyNiBTYWx0ZWRfX7zji1cl3E3Hu
+ W7rGuHoEeK2vuHLCJY1l6nbaXcH4oHV+L2QxHVnUxWosFYjfIpZZTPWI1HVpIBkwflh5+hhjCqP
+ Wt6AJ3wWw18GMcE4/sMBRaFGZM7SIP4=
+X-Proofpoint-GUID: 0ODn4djClxTQZDVoDpOsbuaXnGG_WbY7
+X-Authority-Analysis: v=2.4 cv=c8M+0h9l c=1 sm=1 tr=0 ts=6b03e2ce cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=p_t55juraV-f5WWF2IAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIzMDAyNiBTYWx0ZWRfXy7eA93pfZPq/
+ El0yeVZG4uYdcedVjb80xp6cQVQMI8kXzrIF0XLQ0Z3DXQ4h0Amb8mXIeHvmZEuYPNihguwpUnt
+ Pzp1dkiJm5zLzrX5XCjsKMeryy913cE3exeq9SHvL6ekBfusSEWsriXcxYo9NueiOMauQwW96R1
+ Bjp6CT+ppRqTWm8VCOFVKR9UekN+FHbzUtSHSKe7+MikQIpcUaOtoiPGfgH9DXYcUB7ZzMZEHug
+ +ln7JdKOGBemWOmsgpUOiRXapWuDLDNLfc5o9jLfjIdCFkRpXfP+Zu9DkEm1a+4pHBqUIRT15a/
+ 7xuXyRof9rVWTPSg9p4/QLrikn4/q7SdHnSamhvvu9QiAMgJvIa7H4rUYnFOhp1RYT56TPj7PW+
+ 3B3I/hurA4MK7jKHe7vD22V3ZubBXCMchluezw46Juw3zfyCCo+WkmM9TRJr1E2NvMebeFakTCp
+ 8VR5KqUSbzi81rh/Wow==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-23_01,2026-11-22_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 malwarescore=0 suspectscore=0 bulkscore=0
+ priorityscore=1501 phishscore=0 adultscore=0 spamscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611230026
 
-Removing a populated memslot or destroying a VM can require walking a
-large G-stage range while holding mmu_lock. Let these callers use the
-existing write-lock reschedule helper to bound the time spent holding
-the lock continuously.
 
-Snapshot the shared root under mmu_lock and stop the walk if the root
-has been detached while the lock was dropped. Flush pending batches
-before yielding so a concurrent invalidation cannot miss PTEs cleared
-by the current walker. Finish memslot invalidation under the write
-lock and synchronize the VM before releasing a detached root.
-Return whether any cleared PTEs still need a flush at the end of the
-walk, so callers can skip a second flush when the batches have
-already been synchronized.
 
-Free the VM-owned split-page cache in kvm_arch_destroy_vm(), after
-notifier callbacks have completed. Notifier release can be invoked
-by both address-space teardown and notifier unregister.
+On 20/11/26 13:09, Narayana Murty N wrote:
+> Hi Sourabh,
+>
+> On 19/11/26 1:11 AM, Sourabh Jain wrote:
+>> Hello Narayana,
+>>
+>> For my understanding, could you clarify why this change is needed as 
+>> part of this series?
+>> The series is about enabling RTAS-based error injection, and PowerNV 
+>> doesn't support RTAS.
+>> How does this change fit with the earlier patches in the series?
+>>
+> The intention was to decouple the generic EEH error types from the
+> platform-specific OPAL encodings, similar to the explicit mapping
+> introduced for pSeries.
+>
+> However, the generic EEH error-type values remain unchanged, and
+> the PowerNV mapping is not a prerequisite for RTAS-based error
+> injection.
+>
+> I'll drop this patch from the next revision and will post it as 
+> seperate patch.
 
-The first revision passed the QEMU KVM selftests, KASAN and lockdep
-runs, and tracing of rescheduling and remote TLB request handling.
-For v2, rebuild the kernel and modules and rerun the two-vCPU MMU
-stress selftest. Tracing confirms the full flush still runs on root
-detach even when the walker returns with no pending invalidations.
+I don't mind keeping this patch as part of the series. The only thing 
+missing is an
+explanation in the commit message of why and how this patch is needed 
+for the
+RTAS-based error injection support for pSeries introduced by the 
+previous patches.
 
-Codex assisted with implementation and validation. Sashiko identified
-the pending-flush ordering concern in an earlier revision.
+It would be helpful to include a scenario explaining why these changes 
+are needed
+for RTAS-based error injection support on pSeries.
 
-Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
-Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
-Signed-off-by: Can Qi <qican5708@163.com>
----
-Changes in v2
+- Sourabh Jain
 
-- Return only pending TLB work from kvm_riscv_gstage_unmap_range(), so
-  callers can skip the final range flush if earlier batches already
-  synchronized all cleared PTEs. Keep the full flush on root detach.
-
- arch/riscv/include/asm/kvm_gstage.h | 11 ++++-
- arch/riscv/kvm/gstage.c             | 31 +++++++++---
- arch/riscv/kvm/mmu.c                | 95 ++++++++++++++++++-------------------
- arch/riscv/kvm/vm.c                 |  3 ++
- 4 files changed, 84 insertions(+), 56 deletions(-)
-
-diff --git a/arch/riscv/include/asm/kvm_gstage.h b/arch/riscv/include/asm/kvm_gstage.h
-index aaf080ba1..ea57df965 100644
---- a/arch/riscv/include/asm/kvm_gstage.h
-+++ b/arch/riscv/include/asm/kvm_gstage.h
-@@ -77,6 +77,7 @@ enum kvm_riscv_gstage_op {
- bool kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
- 			     pte_t *ptep, u32 ptep_level, enum kvm_riscv_gstage_op op);
- 
-+/* Returns true if cleared PTEs still need a TLB flush. */
- bool kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
- 				  gpa_t start, gpa_t size, bool may_block);
- 
-@@ -104,13 +105,21 @@ static inline unsigned long kvm_riscv_gstage_mode(unsigned long pgd_levels)
- 	}
- }
- 
--static inline void kvm_riscv_gstage_init(struct kvm_gstage *gstage, struct kvm *kvm)
-+/* The caller must hold mmu_lock while accessing the shared page tables. */
-+static inline bool kvm_riscv_gstage_init(struct kvm_gstage *gstage, struct kvm *kvm)
- {
-+	lockdep_assert_held(&kvm->mmu_lock);
-+
-+	if (!kvm->arch.pgd)
-+		return false;
-+
- 	gstage->kvm = kvm;
- 	gstage->flags = 0;
- 	gstage->vmid = READ_ONCE(kvm->arch.vmid.vmid);
- 	gstage->pgd = kvm->arch.pgd;
- 	gstage->pgd_levels = kvm->arch.pgd_levels;
-+
-+	return true;
- }
- 
- #endif
-diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-index be70607a3..47b906769 100644
---- a/arch/riscv/kvm/gstage.c
-+++ b/arch/riscv/kvm/gstage.c
-@@ -423,9 +423,19 @@ bool kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
- 	bool found_leaf;
- 	unsigned long page_size;
- 	gpa_t addr = start, end = start + size;
--	bool flush = false;
-+	gfn_t last_flush_gfn = start >> PAGE_SHIFT;
-+	bool pending_flush = false;
-+
-+	if (!(gstage->flags & KVM_GSTAGE_FLAGS_LOCAL))
-+		lockdep_assert_held_write(&gstage->kvm->mmu_lock);
- 
- 	while (addr < end) {
-+		/* A concurrent teardown may have freed the root while unlocked. */
-+		if (!(gstage->flags & KVM_GSTAGE_FLAGS_LOCAL) &&
-+		    (!gstage->kvm->arch.pgd ||
-+		     gstage->pgd != gstage->kvm->arch.pgd))
-+			break;
-+
- 		found_leaf = kvm_riscv_gstage_get_leaf(gstage, addr, &ptep, &ptep_level);
- 		ret = gstage_level_to_page_size(gstage, ptep_level, &page_size);
- 		if (ret)
-@@ -434,10 +444,10 @@ bool kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
- 		if (!found_leaf) {
- 			addr = ALIGN(addr + 1, page_size);
- 		} else {
--			if (!(addr & (page_size - 1)) && ((end - addr) >= page_size))
--				flush |= kvm_riscv_gstage_op_pte(gstage, addr, ptep,
-+			if (!(addr & (page_size - 1)) && ((end - addr) >= page_size)) {
-+				pending_flush |= kvm_riscv_gstage_op_pte(gstage, addr, ptep,
- 								 ptep_level, GSTAGE_OP_CLEAR);
--			else {
-+			} else {
- 				WARN_ONCE(1, "Skip unmap range addr: %#llx, end: %#llx, page_size: %#lx\n",
- 						addr, end, page_size);
- 			}
-@@ -448,12 +458,21 @@ bool kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
- 		/*
- 		 * If the range is too large, release the kvm->mmu_lock
- 		 * to prevent starvation and lockup detector warnings.
-+		 * Flush first so another invalidator cannot miss cleared PTEs.
- 		 */
--		if (!(gstage->flags & KVM_GSTAGE_FLAGS_LOCAL) && may_block && addr < end)
-+		if (!(gstage->flags & KVM_GSTAGE_FLAGS_LOCAL) && may_block && addr < end &&
-+		    (need_resched() || rwlock_needbreak(&gstage->kvm->mmu_lock))) {
-+			if (pending_flush) {
-+				kvm_flush_remote_tlbs_range(gstage->kvm, last_flush_gfn,
-+							    (addr >> PAGE_SHIFT) - last_flush_gfn);
-+				pending_flush = false;
-+			}
-+			last_flush_gfn = addr >> PAGE_SHIFT;
- 			cond_resched_rwlock_write(&gstage->kvm->mmu_lock);
-+		}
- 	}
- 
--	return flush;
-+	return pending_flush;
- }
- 
- bool kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, gpa_t end)
-diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index 738d9ee1e..0d0ab1127 100644
---- a/arch/riscv/kvm/mmu.c
-+++ b/arch/riscv/kvm/mmu.c
-@@ -26,12 +26,11 @@ static void mmu_wp_memory_region(struct kvm *kvm, int slot)
- 	phys_addr_t start = memslot->base_gfn << PAGE_SHIFT;
- 	phys_addr_t end = (memslot->base_gfn + memslot->npages) << PAGE_SHIFT;
- 	struct kvm_gstage gstage;
--	bool flush;
--
--	kvm_riscv_gstage_init(&gstage, kvm);
-+	bool flush = false;
- 
- 	write_lock(&kvm->mmu_lock);
--	flush = kvm_riscv_gstage_wp_range(&gstage, start, end);
-+	if (kvm_riscv_gstage_init(&gstage, kvm))
-+		flush = kvm_riscv_gstage_wp_range(&gstage, start, end);
- 	write_unlock(&kvm->mmu_lock);
- 	if (flush)
- 		kvm_flush_remote_tlbs_memslot(kvm, memslot);
-@@ -44,7 +43,7 @@ int kvm_riscv_mmu_ioremap(struct kvm *kvm, gpa_t gpa, phys_addr_t hpa,
- 	pgprot_t prot;
- 	unsigned long pfn;
- 	phys_addr_t addr, end;
--	unsigned long pgd_levels = kvm->arch.pgd_levels;
-+	unsigned long pgd_levels = kvm_riscv_gstage_max_pgd_levels;
- 	struct kvm_mmu_memory_cache pcache = {
- 		.gfp_custom = (in_atomic) ? GFP_ATOMIC | __GFP_ACCOUNT : 0,
- 		.gfp_zero = __GFP_ZERO,
-@@ -52,8 +51,6 @@ int kvm_riscv_mmu_ioremap(struct kvm *kvm, gpa_t gpa, phys_addr_t hpa,
- 	struct kvm_gstage_mapping map;
- 	struct kvm_gstage gstage;
- 
--	kvm_riscv_gstage_init(&gstage, kvm);
--
- 	end = (gpa + size + PAGE_SIZE - 1) & PAGE_MASK;
- 	pfn = __phys_to_pfn(hpa);
- 	prot = pgprot_noncached(PAGE_WRITE);
-@@ -72,7 +69,10 @@ int kvm_riscv_mmu_ioremap(struct kvm *kvm, gpa_t gpa, phys_addr_t hpa,
- 			goto out;
- 
- 		write_lock(&kvm->mmu_lock);
--		ret = kvm_riscv_gstage_set_pte(&gstage, &pcache, &map);
-+		if (kvm_riscv_gstage_init(&gstage, kvm))
-+			ret = kvm_riscv_gstage_set_pte(&gstage, &pcache, &map);
-+		else
-+			ret = -EFAULT;
- 		write_unlock(&kvm->mmu_lock);
- 		if (ret)
- 			goto out;
-@@ -88,12 +88,11 @@ int kvm_riscv_mmu_ioremap(struct kvm *kvm, gpa_t gpa, phys_addr_t hpa,
- void kvm_riscv_mmu_iounmap(struct kvm *kvm, gpa_t gpa, unsigned long size)
- {
- 	struct kvm_gstage gstage;
--	bool flush;
--
--	kvm_riscv_gstage_init(&gstage, kvm);
-+	bool flush = false;
- 
- 	write_lock(&kvm->mmu_lock);
--	flush = kvm_riscv_gstage_unmap_range(&gstage, gpa, size, false);
-+	if (kvm_riscv_gstage_init(&gstage, kvm))
-+		flush = kvm_riscv_gstage_unmap_range(&gstage, gpa, size, false);
- 	write_unlock(&kvm->mmu_lock);
- 
- 	if (flush)
-@@ -146,7 +145,7 @@ static bool mmu_split_huge_pages(struct kvm_gstage *gstage,
- 			write_lock(&kvm->mmu_lock);
- 		}
- 
--		if (!kvm->arch.pgd)
-+		if (!kvm->arch.pgd || gstage->pgd != kvm->arch.pgd)
- 			return flush;
- 
- 		flush |= kvm_riscv_gstage_split_huge(gstage, pcache, addr, 0, false);
-@@ -167,7 +166,8 @@ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
- 	phys_addr_t end = (base_gfn + __fls(mask) + 1) << PAGE_SHIFT;
- 	struct kvm_gstage gstage;
- 
--	kvm_riscv_gstage_init(&gstage, kvm);
-+	if (!kvm_riscv_gstage_init(&gstage, kvm))
-+		return;
- 
- 	kvm_riscv_gstage_wp_pt_masked(&gstage, base_gfn, mask);
- 
-@@ -205,16 +205,15 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
- 	gpa_t gpa = slot->base_gfn << PAGE_SHIFT;
- 	phys_addr_t size = slot->npages << PAGE_SHIFT;
- 	struct kvm_gstage gstage;
--	bool flush;
--
--	kvm_riscv_gstage_init(&gstage, kvm);
-+	bool flush = false;
- 
- 	write_lock(&kvm->mmu_lock);
--	flush = kvm_riscv_gstage_unmap_range(&gstage, gpa, size, false);
--	write_unlock(&kvm->mmu_lock);
-+	if (kvm_riscv_gstage_init(&gstage, kvm))
-+		flush = kvm_riscv_gstage_unmap_range(&gstage, gpa, size, true);
- 	if (flush)
- 		kvm_flush_remote_tlbs_range(kvm, gpa >> PAGE_SHIFT,
- 					    size >> PAGE_SHIFT);
-+	write_unlock(&kvm->mmu_lock);
- }
- 
- static void mmu_split_memory_region(struct kvm *kvm, int slot)
-@@ -224,12 +223,11 @@ static void mmu_split_memory_region(struct kvm *kvm, int slot)
- 	phys_addr_t start = memslot->base_gfn << PAGE_SHIFT;
- 	phys_addr_t end = (memslot->base_gfn + memslot->npages) << PAGE_SHIFT;
- 	struct kvm_gstage gstage;
--	bool flush;
--
--	kvm_riscv_gstage_init(&gstage, kvm);
-+	bool flush = false;
- 
- 	write_lock(&kvm->mmu_lock);
--	flush = mmu_split_huge_pages(&gstage, start, end);
-+	if (kvm_riscv_gstage_init(&gstage, kvm))
-+		flush = mmu_split_huge_pages(&gstage, start, end);
- 	write_unlock(&kvm->mmu_lock);
- 
- 	if (flush)
-@@ -334,12 +332,10 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
- 	struct kvm_gstage gstage;
- 	bool flush;
- 
--	if (!kvm->arch.pgd)
--		return false;
--
- 	lockdep_assert_held_write(&kvm->mmu_lock);
- 
--	kvm_riscv_gstage_init(&gstage, kvm);
-+	if (!kvm_riscv_gstage_init(&gstage, kvm))
-+		return false;
- 	flush = kvm_riscv_gstage_unmap_range(&gstage, range->start << PAGE_SHIFT,
- 					     (range->end - range->start) << PAGE_SHIFT,
- 					     range->may_block);
-@@ -356,12 +352,11 @@ bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
- 	u64 size = (range->end - range->start) << PAGE_SHIFT;
- 	struct kvm_gstage gstage;
- 
--	if (!kvm->arch.pgd)
-+	if (!kvm_riscv_gstage_init(&gstage, kvm))
- 		return false;
- 
- 	WARN_ON(size != PAGE_SIZE && size != PMD_SIZE && size != PUD_SIZE);
- 
--	kvm_riscv_gstage_init(&gstage, kvm);
- 	if (!kvm_riscv_gstage_get_leaf(&gstage, range->start << PAGE_SHIFT,
- 				       &ptep, &ptep_level))
- 		return false;
-@@ -376,12 +371,11 @@ bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
- 	u64 size = (range->end - range->start) << PAGE_SHIFT;
- 	struct kvm_gstage gstage;
- 
--	if (!kvm->arch.pgd)
-+	if (!kvm_riscv_gstage_init(&gstage, kvm))
- 		return false;
- 
- 	WARN_ON(size != PAGE_SIZE && size != PMD_SIZE && size != PUD_SIZE);
- 
--	kvm_riscv_gstage_init(&gstage, kvm);
- 	if (!kvm_riscv_gstage_get_leaf(&gstage, range->start << PAGE_SHIFT,
- 				       &ptep, &ptep_level))
- 		return false;
-@@ -563,12 +557,12 @@ static bool kvm_riscv_mmu_dirty_log_write_fault_fast(struct kvm *kvm,
- 	bool dirty_marked = false;
- 	bool ret;
- 
--	kvm_riscv_gstage_init(&gstage, kvm);
- 	mmu_seq = kvm->mmu_invalidate_seq;
- 
- 	read_lock(&kvm->mmu_lock);
- 
--	if (mmu_invalidate_retry_gfn(kvm, mmu_seq, gfn)) {
-+	if (!kvm_riscv_gstage_init(&gstage, kvm) ||
-+	    mmu_invalidate_retry_gfn(kvm, mmu_seq, gfn)) {
- 		ret = false;
- 		goto out_unlock;
- 	}
-@@ -640,8 +634,6 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
- 	struct kvm_gstage gstage;
- 	struct page *page;
- 
--	kvm_riscv_gstage_init(&gstage, kvm);
--
- 	/* Setup initial state of output mapping */
- 	memset(out_map, 0, sizeof(*out_map));
- 
-@@ -649,8 +641,8 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
- 	    kvm_riscv_mmu_dirty_log_write_fault_fast(kvm, memslot, gpa, out_map))
- 		return 0;
- 
--	/* We need minimum second+third level pages */
--	ret = kvm_mmu_topup_memory_cache(pcache, kvm->arch.pgd_levels);
-+	/* Size the cache before acquiring the shared root under mmu_lock. */
-+	ret = kvm_mmu_topup_memory_cache(pcache, kvm_riscv_gstage_max_pgd_levels);
- 	if (ret) {
- 		kvm_err("Failed to topup G-stage cache\n");
- 		return ret;
-@@ -722,6 +714,11 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
- 
- 	write_lock(&kvm->mmu_lock);
- 
-+	if (!kvm_riscv_gstage_init(&gstage, kvm)) {
-+		ret = -EFAULT;
-+		goto out_unlock;
-+	}
-+
- 	if (mmu_invalidate_retry(kvm, mmu_seq)) {
- 		unused = true;
- 		goto out_unlock;
-@@ -829,24 +826,24 @@ void kvm_riscv_mmu_free_pgd(struct kvm *kvm)
- 	bool flush = false;
- 
- 	write_lock(&kvm->mmu_lock);
--	if (kvm->arch.pgd) {
--		kvm_riscv_gstage_init(&gstage, kvm);
-+	if (kvm_riscv_gstage_init(&gstage, kvm)) {
- 		flush = kvm_riscv_gstage_unmap_range(&gstage, 0UL,
--			kvm_riscv_gstage_gpa_size(kvm->arch.pgd_levels), false);
--		pgd = READ_ONCE(kvm->arch.pgd);
--		kvm->arch.pgd = NULL;
--		kvm->arch.pgd_phys = 0;
--		kvm->arch.pgd_levels = 0;
-+			kvm_riscv_gstage_gpa_size(gstage.pgd_levels), true);
-+		/* Only the caller that still owns the root may detach it. */
-+		if (gstage.pgd == kvm->arch.pgd) {
-+			pgd = kvm->arch.pgd;
-+			kvm->arch.pgd = NULL;
-+			kvm->arch.pgd_phys = 0;
-+			kvm->arch.pgd_levels = 0;
-+		}
- 	}
--	write_unlock(&kvm->mmu_lock);
--
--	if (flush)
-+	/* Synchronize before another invalidator can observe the detached root. */
-+	if (flush || pgd)
- 		kvm_flush_remote_tlbs(kvm);
-+	write_unlock(&kvm->mmu_lock);
- 
- 	if (pgd)
- 		free_pages((unsigned long)pgd, get_order(kvm_riscv_gstage_pgd_size));
--
--	kvm_mmu_free_memory_cache(&kvm->arch.pgd_split_page_cache);
- }
- 
- void kvm_riscv_mmu_update_hgatp(struct kvm_vcpu *vcpu)
-diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
-index 58500a19b..7d467b0c5 100644
---- a/arch/riscv/kvm/vm.c
-+++ b/arch/riscv/kvm/vm.c
-@@ -54,6 +54,9 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
- 	kvm_destroy_vcpus(kvm);
- 
- 	kvm_riscv_aia_destroy_vm(kvm);
-+
-+	/* MMU notifier callbacks have finished before VM destruction. */
-+	kvm_mmu_free_memory_cache(&kvm->arch.pgd_split_page_cache);
- }
- 
- int kvm_vm_ioctl_irq_line(struct kvm *kvm, struct kvm_irq_level *irql,
-
-base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
--- 
-2.34.1
+>
+> Thanks,
+> Narayana Murty.
+>> On 23/10/26 13:06, Narayana Murty N wrote:
+>>> eeh_pe_inject_err() is called with generic EEH error types defined in
+>>> the VFIO/EEH userspace ABI (EEH_ERR_TYPE_32, EEH_ERR_TYPE_64).  The
+>>> PowerNV backend previously compared these generic values directly 
+>>> against
+>>> OPAL firmware constants (OPAL_ERR_INJECT_TYPE_IOA_BUS_ERR and
+>>> OPAL_ERR_INJECT_TYPE_IOA_BUS_ERR64).
+>>>
+>>> This is fragile: it relies on the generic EEH ABI values being
+>>> numerically identical to OPAL-specific values, and would silently
+>>> misbehave if they ever diverged.
+>>>
+>>> Add an explicit mapping in pnv_eeh_err_inject() that translates:
+>>>    EEH_ERR_TYPE_32 -> OPAL_ERR_INJECT_TYPE_IOA_BUS_ERR
+>>>    EEH_ERR_TYPE_64 -> OPAL_ERR_INJECT_TYPE_IOA_BUS_ERR64
+>>>
+>>> Return -ERANGE for unsupported error types, preserving the behavior
+>>> of the original code.  Decouples the VFIO/EEH interface from OPAL
+>>> implementation details.
+>>>
+>>> No change to existing userspace ABI or PowerNV behavior.
+>>>
+>>> Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
+>>> ---
+>>>   arch/powerpc/platforms/powernv/eeh-powernv.c | 22 
+>>> +++++++++++++++-----
+>>>   1 file changed, 17 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/ 
+>>> powerpc/platforms/powernv/eeh-powernv.c
+>>> index db3370d1673c..01dae760cecb 100644
+>>> --- a/arch/powerpc/platforms/powernv/eeh-powernv.c
+>>> +++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
+>>> @@ -1167,12 +1167,24 @@ static int pnv_eeh_err_inject(struct eeh_pe 
+>>> *pe, int type, int func,
+>>>   {
+>>>       struct pci_controller *hose = pe->phb;
+>>>       struct pnv_phb *phb = hose->private_data;
+>>> +    int opal_err_type;
+>>>       s64 rc;
+>>> -    if (type != OPAL_ERR_INJECT_TYPE_IOA_BUS_ERR &&
+>>> -        type != OPAL_ERR_INJECT_TYPE_IOA_BUS_ERR64) {
+>>> -        pr_warn("%s: Invalid error type %d\n",
+>>> -            __func__, type);
+>>> +    /*
+>>> +     * eeh_pe_inject_err() receives generic EEH error types from the
+>>> +     * VFIO/EEH userspace ABI.  The PowerNV backend must not rely on
+>>> +     * these generic values being numerically identical to OPAL 
+>>> firmware
+>>> +     * values.  Translate to OPAL-specific types before calling 
+>>> firmware.
+>>> +     */
+>>> +    switch (type) {
+>>> +    case EEH_ERR_TYPE_32:
+>>> +        opal_err_type = OPAL_ERR_INJECT_TYPE_IOA_BUS_ERR;
+>>> +        break;
+>>> +    case EEH_ERR_TYPE_64:
+>>> +        opal_err_type = OPAL_ERR_INJECT_TYPE_IOA_BUS_ERR64;
+>>> +        break;
+>>> +    default:
+>>> +        pr_warn("%s: Invalid error type %d\n", __func__, type);
+>>>           return -ERANGE;
+>>>       }
+>>> @@ -1192,7 +1204,7 @@ static int pnv_eeh_err_inject(struct eeh_pe 
+>>> *pe, int type, int func,
+>>>       /* Do error injection */
+>>>       rc = opal_pci_err_inject(phb->opal_id, pe->addr,
+>>> -                 type, func, addr, mask);
+>>> +                 opal_err_type, func, addr, mask);
+>>>       if (rc != OPAL_SUCCESS) {
+>>>           pr_warn("%s: Failure %lld injecting error "
+>>>               "%d-%d to PHB#%x-PE#%x\n",
+>>
+>
 
