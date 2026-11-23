@@ -1,74 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795428071;
-	b=Su1yBAsCuAEolA0eJ6vCsuoHEXJ8IfkSwwOHHL2ozUJx1EuZLANhYvOa6cU+phj6z2JO
-	 u2PtcbheSNu2rkYF8m7mbx2EV8IiSl9/stLqYe8ZY5K2qVXGpefxrvZjEBwSIkc6TSYfC
-	 a20TncxkWgSESSv0nBCX251ul4TA4C8bq+newKboczPV5zuDuOi+lnTkFqF76E8xy16bR
-	 YFPJnaJL9MxrNNI0uRT0vRsRnMAvWtMJPTFBi9pIycilcSslUartEloNnKtYQYCI8v9gS
-	 iDrqhQ2vxfZI+lANfzgwwpE35L/4TsgIQ15X+6ywvVEo8bPC4Q7AI6QzHMOAnxWQL2A==
+	t=1795428333;
+	b=why4SpfQrE5iqj8jpzra5hgFB0iq2NJzgdiHe6bbEtAcJYDtSIU6f21GP5Q9pKAYz4r+
+	 iwGSxhN2DI0eTjZudN4L0pxFX1unxcYYSivQV3h/6+EXI8MhEyAYvZjkXu5BI1Da66ZWl
+	 LsM9r/2nG3fgJBy/RCTFBLI7kbjWxLVSrm/tqjQXQxGpg3veCOqwnUAewyacO0Yrp/S59
+	 LJdAHwT64WLzBjyolDfV7NF3MQ+Ze+YvlQjIPYuv0RL15UOQkzW/gRhQK64m2tIsVVzyn
+	 h/zfI37oOeCCF5IWNhFjsQjjAcUQOCdPLP9/nqbZokC4U8WbR4EFd8R3gvoolPmkKOg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795428071;
-	h=DMARC-Filter:Date:DKIM-Signature:DKIM-Signature:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=KF7KKMHocEIKMtcEZJueNr7Dv5+NOCFPSOPv6oq3C0U=;
-	b=bNV6wSN3qoDdjXclGs3gtlCeOXQyEwrKeKsU8MQtw5syu0Um4u+uG8Em5oajZaPzxXz1
-	 SJEfn7F/Fq39OOql/BQYWCISOSowuvh5Yr3h9SAFPPYPd/MZxtYZ4DFe/59mgkHU4FBVm
-	 OsVZyPW4pwJD6w/81MPFZXNnGQo9SACq7k+NHFDOgQZF3bxmmotT5ydmBFPZ3nH9MR3dW
-	 ripAxQehgv4AVzFS4Ydd79JTEqjItpxi2EWoDIfg6ldsDw8YfLAlBWE1bewr1Wrd9lZ9J
-	 xAuA8+G1sWxT9ffDmUBodeHJONiDPtLKEjAvV/o0IjL4JFqQSSZ0acARCS+eeV2Ygvw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795428333;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=y/HSexjMmo/WIYccGb61Tikt056TyM/xZd6TbhFwre4=;
+	b=XeZL6sCkgSuVm271Od5QHF5Jaay5f2dzll5cLZydmb6HVXc6vAqgSM4d0M8P3KWBcpE8
+	 DX7F4SN5q5uH6kAEXH025sqR5Eng2Ec4dUcX8W+8KWXpAA1gSxGtTdBRJta4vEGIH7G/x
+	 UI9bNYCOpSrxSOINeAVJtThSmyLXY/bolLYwbvQ1j6yADpHN4nf1Jp94Wguse0YeDhJD3
+	 3ClTxXIJZ84RUOoMmFy2RCF8JZ/DjQi/5rl0oPLo1e0WHhHWQPaqxJ9IDR8r6QZigecGu
+	 p2nTyzkOxzdzXWLs+xTWhuVetv3r4OlRQLVG9QLK4zO4gnuymIeGuW3xBBIYCT9xtlQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linutronix.de;
-	spf=pass smtp.mailfrom=linutronix.de;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=0C3DGkSM;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=w677fCLK;
-	arc=none smtp.remote-ip=193.142.43.55
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="Hpllc/Z2";
+	arc=none smtp.remote-ip=192.198.163.15
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6808606A31E;
-	Mon, 23 Nov 2026 10:01:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B6808606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233EF606A327;
+	Mon, 23 Nov 2026 10:05:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 233EF606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=0C3DGkSM;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=w677fCLK
-Date: Mon, 23 Nov 2026 11:01:08 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1795428068;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KF7KKMHocEIKMtcEZJueNr7Dv5+NOCFPSOPv6oq3C0U=;
-	b=0C3DGkSMNxdoQijZTT1Pd0/49k8ksvpkiee53RaBAssYvJAeUS35fVqreH2YpmDLCnGY7J
-	rO7Gn5wzAYN9/F4vvozI6w9BzC77u+HXStilWB//WP/jCLiHL3EwvLERUMRhyTKm31TMC7
-	KpFWDUgDZ9oEwKUmRluJIcsleJqxI3m/3IO6SUQ6iBg3DQpuTFLdttDhdIjUgCRF+K4UX8
-	1ZqWy0QrOQGINGD9OBCHXgwC/xyk/mMVxzgCYfWKcgAoQQPeB2k6fucPyU5bjbb2tUvTyF
-	daEFudcshBIRlr1uzixuvtVp59NZk52rwAQ0az4y31SvRDMxk19gGkRKwezWNw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1795428068;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KF7KKMHocEIKMtcEZJueNr7Dv5+NOCFPSOPv6oq3C0U=;
-	b=w677fCLKAWIMDtF3ru07E1bEooFnMvLBIN8Fpo0OkUEt4pY06etT7kQklR7LsARKwrGHA5
-	iEX+EeySi8i/r/AA==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, David Hildenbrand <david@redhat.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, kvm@vger.kernel.org, 
-	linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] KVM: s390: Don't use %pK through debug printing
-Message-ID: <20261123104414-a16f70e3-223d-4000-a3d0-3983e2e668d1@linutronix.de>
-References: <20250217-restricted-pointers-s390-v1-0-0e4ace75d8aa@linutronix.de>
- <20250217-restricted-pointers-s390-v1-2-0e4ace75d8aa@linutronix.de>
- <d2e2ffaa-70ad-460f-bd85-0834a354f232@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Hpllc/Z2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795428333; x=1826964333;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=P9wbQxTRNwsiyK5ikQ7Oil1SwRKlOTy7gU93ZVXmlF4=;
+  b=Hpllc/Z2advHSvHVUQXY1CjZ3BvY4sh13eT3NUizM3u4QnXJs7YN1F4Y
+   Wn6I+MZEH8O9Yp48t8eWWVVU1kz1bCiy8Nv1EQqZ9Vp/qg62yMHujrLXn
+   rEISxTkoRrIJG5gedlcdH1euwLKYL3b2Ko6QUoPNbKbpsUiiKN+rKC3Fg
+   XIE2BtS80bCawmTR0Oo1ZBb+oZN5MtZsAxbxAcK/tbOZXtpkv7mOYhiAQ
+   awEGyKLcDNBTdIsk+udkJfhxyVAX20NLxvbi51CbR+tALGqAVrjeXMp7n
+   wl+r7RpV3JpThNkT1SaSFGgYvDx92rOnLU7o92CCezM7n/C6VdUnV0diM
+   A==;
+X-CSE-ConnectionGUID: BIf5zvv+QB6Cp9Qvb9M1xw==
+X-CSE-MsgGUID: r5kZQQqwT/OVv9CGmEzfcA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4210436"
+X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
+   d="scan'208";a="4210436"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 02:05:32 -0800
+X-CSE-ConnectionGUID: NVyJ/2V+SYGZ3ZFiptzs3w==
+X-CSE-MsgGUID: tzZd5xu0QwyVbTEiakQ8fg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
+   d="scan'208";a="11144445"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by orviesa004.jf.intel.com with ESMTP; 23 Nov 2026 02:05:30 -0800
+Date: Mon, 23 Nov 2026 17:55:50 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: iommu@lists.linux.dev, x86@kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, xiaoyao.li@intel.com,
+	Chao Gao <chao.gao@intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/9] x86/virt/tdx: Add SEAMCALL wrappers for IOMMU
+ setup/clear
+Message-ID: <awQNpgjgIlwhXrqT@yilunxu-OptiPlex-7050>
+References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
+ <20261112043054.2664857-2-baolu.lu@linux.intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,29 +84,92 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d2e2ffaa-70ad-460f-bd85-0834a354f232@linux.ibm.com>
+In-Reply-To: <20261112043054.2664857-2-baolu.lu@linux.intel.com>
 
-On Mon, Nov 23, 2026 at 10:41:13AM +0100, Christian Borntraeger wrote:
-> Am 17.02.25 um 14:13 schrieb Thomas Weiﬂschuh:
-> > Restricted pointers ("%pK") are only meant to be used when directly
-> > printing to a file from task context.
-> > Otherwise it can unintentionally expose security sensitive,
-> > raw pointer values.
-> > 
-> > Use regular pointer formatting instead.
-> > 
-> > Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
-> > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index 4cce77b6a31f..a1f35188a272 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -2567,3 +2567,56 @@ void tdx_sys_disable(void)
+>  	if (ret && (ret & TDX_SW_ERROR) != TDX_SW_ERROR)
+>  		pr_err("TDH.SYS.DISABLE failed: 0x%016llx\n", ret);
+>  }
+> +
+> +/* No cache flush is needed; hardware keeps caches coherent across KeyIDs. */
+> +u64 tdh_iommu_setup(u64 reg_base, struct tdx_iommu_mt_param *param,
+
+param is too general, name it iommu_mt, is it better?
+
+> +		    u64 *tdx_iommu_id)
+> +{
+> +	struct tdx_module_args args = {
+> +		.rcx = reg_base,
+> +		.rdx = __pa(param),
+> +	};
+> +	u64 ret;
+> +
+> +	/*
+> +	 * Retry only on TDX_INTERRUPTED_RESUMABLE:
+> +	 *
+> +	 *  - TDX_INTERRUPTED_RESUMABLE guarantees forward progress between
+> +	 *    calls.
+> +	 *  - On TDX_INTERRUPTED_RESUMABLE, all registers except RAX remain
+> +	 *    unchanged.
+> +	 *
+> +	 * The ABI spec also allows retrying on TDX_OPERAND_BUSY, but that
+> +	 * status doesn't guarantee forward progress, so retrying could spin
+> +	 * forever. The host serializes all TDH.IOMMU.SETUP and
+> +	 * TDH.IOMMU.CLEAR calls for an IOMMU, so the TDX module should never
+> +	 * report the operand as busy.
+
+Many SEAMCALLs return TDX_OPERAND_BUSY, and this is the generally expected
+handling. I don't think we don't need the comment if nothing special.
+
+> +	 */
+> +	do {
+> +		ret = seamcall_ret(TDH_IOMMU_SETUP, &args);
+> +	} while (ret == TDX_INTERRUPTED_RESUMABLE);
+> +
+> +	*tdx_iommu_id = args.rcx;
+
+I remember there was an internal debate about whether to only assign the
+output upon success.
+
+There are several examples in tdx.c that assign the output regardless.
+But all of them holds error information, which makes total sense to
+assign on error.
+
+This rcx output however doesn't hold info on error. So I think early
+exit is the right choice. Also see tdh_phymem_pamt_remove()
+
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_FOR_MODULES(tdh_iommu_setup, "tdx-host");
+> +
+> +u64 tdh_iommu_clear(u64 tdx_iommu_id)
+> +{
+> +	struct tdx_module_args args = {
+> +		.rcx = tdx_iommu_id,
+> +	};
+> +	u64 ret;
+> +
+> +	/*
+> +	 * Don't retry on TDX_OPERAND_BUSY. See the comment in
+> +	 * tdh_iommu_setup().
+> +	 */
+
+ditto
+
+> +	do {
+> +		ret = seamcall(TDH_IOMMU_CLEAR, &args);
+> +	} while (ret == TDX_INTERRUPTED_RESUMABLE);
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_FOR_MODULES(tdh_iommu_clear, "tdx-host");
+> -- 
+> 2.43.0
 > 
-> Just realized that will debugging something, but this change was wrong.
-> The VM_EVENT, KVM_EVENT are not printks, it will rather populate output
-> in debugfs files and this output is populated at read time as the debug
-> feature stores the format string and the value. So %pK was actually the
-> right thing - I think.
-
-Indeed. OTOH %pK is going away completely anyways. So the change should stay.
-
-(...)
