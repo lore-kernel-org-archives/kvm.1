@@ -1,102 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795447991;
-	b=JClTBDwgZPUnMxs/oPNW0A311Xoqqq7S4CVO+Mw10kBKfOfEpKMDD+JGUBcV3idqhaq6
-	 bODlUhgnz/j9A4afIlgh7yE784uVw8PwojhdpOunI4kkPck/NtpZhVBVRoOtZtARn9TW5
-	 I67fSUPIJxaCHZj0g1DDow1qpDpqGA81s3V96OVtMB96vdtRtI/8x+/DrtTxsbjqctgyA
-	 o5WjQDAhaZLhSou5C9HTcVKJc+13GhNETAZ4NEpVkZK6HDdiYNmCuSpz4y6YhxDMM1AE8
-	 BjBSoncEkFO95KPrVBET+Kf9EmeZzeLcyu/2EdAsRCUzdF7ad70eUKt656aifplJsMg==
+	t=1795448110;
+	b=c799Ae3wWpCGjmfRQcDYLb4gZyA7jyl3enYSnWfuvWG0LG+Z6d2ubCjRNTs6i4n6jzWS
+	 Bvk77QwI5cZ0N16iRIh8E0qUad+0mM5lJWu3KXN9MhTFTROlkaoT6U4pvGxUqu4jlcorX
+	 OuRpEiBD9ma2xJAxUuyReymUN0Uqr1qITuE3kVPfMGPr++kO/CvatNtrU+U8PTiXw7eyq
+	 dkKpOsnfs/Y1K8PQXUZIm27sDStALhRxxiKpAApvLFkn2DKcWnaORLVk3THgppof9eXw5
+	 LhBGhRl2jubjRgbanxcLkzCf7Xo8K2NBVxokEBdZGydPGA0Ek5dDWbnEdApNo9x/q5w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795447991;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795448110;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=Om3+ZF0XtREIm6HCfdv7ugOGpXmbs7kvx8h4qtcjszM=;
-	b=oTtwE13RrUzhPc0eGJhSu0zifaEQ6RP3EBcq0CS7+vJiaTbzbPdDEd0Rf7ZkAfmftTOt
-	 UlUDlTCvWMRZuS/mhOpplSTmgYPnZAysHLQ1hkKo0PUEgHnEtqPJnvh2CbWO90vKhICC0
-	 MUlE2DmlHhNzXElDwYhRnmF8zMDZ5cnGTdGMpKPVrvVGEIi7Pk9JL/WmtMF1XOefDeapu
-	 BTJ1VYTZHw3y+uRqYzDIrRhvwVAZlhzo3CRzmCZQ+h3k75l0w8N9H83U6w0SAlSsHK7Wq
-	 B05AuHBQRRi3nXZpC3op6AnSvJKB+09Eop+/FdUTKC3flM3j/L7mAphrm05a+q4ddIw==
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=jVozDBZgp+27gMR99l+UaMITrh6vU8pxKuFZh102SrU=;
+	b=vGqI2S6gTJhka0+hUaljjuVduUfMoOScAUMzQwvHzW9IR5+q32Y1Lj17aKlIqup7+X2J
+	 S0/yBMIvBMQD4D85Ll1MitQrAkNG5ojSuTJupT0RCcPBx2lG0sAXBxVVj/ZMGxqkfHZAI
+	 +bQiySR2dhuQs+ngv7cYfWzPsCc7q2RyLd/gZVLECRqqPOp/0X8QgoxBUvvqGBZgO8vX0
+	 L7jAqi7KijOAgeBWekaI0CZWfRDC63Ik3M4HI3rYUyZuISc+Wirfq+tnRgmlfmavmHMQy
+	 6SLT6WyxzvPH/9KFRwKkcn51uni/2x02VuRSbMHfx0CVXthVil6WNlS72AlTpTQuO7Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=asu.edu;
-	spf=pass smtp.mailfrom=asu.edu;
-	dkim=pass header.d=asu.edu header.i=@asu.edu header.a=rsa-sha256 header.s=google header.b=PDpaJYuZ;
-	arc=none smtp.remote-ip=74.125.82.169
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=E7fzHGXy;
+	arc=none smtp.remote-ip=209.85.222.42
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCA3606A686
-	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 15:33:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6CCA3606A686
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B865606A331
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 15:35:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B865606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.a=rsa-sha256 header.s=google header.b=PDpaJYuZ
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-38587f3de36so4146459eec.0
-        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 07:33:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=E7fzHGXy
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-98301b325c4so821851241.1
+        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 07:35:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1795447989; x=1796052789; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Om3+ZF0XtREIm6HCfdv7ugOGpXmbs7kvx8h4qtcjszM=;
-        b=PDpaJYuZb+DORPk4kwRe6ZpuRcQHMCKRWIbtR2XvtYy7GdBAgIH2GezVfCd2rGjJ/m
-         5rT5z5RSWLl+ftMa7vlJPFotH8mJMWu2CrcEm5RMDRWU8d2bkS+Z3C/phqgJUa9eWb2u
-         vRZOgjAG6HY0Xg+nGeLndPrxNDTdJNzCO1jsRN/vPHvTTilRiRPPmku299ZIt+FF22Bd
-         4abR9gbzYe4ZB04LCtHIb+foAkU33R8OGQJJIpvfjuM3CDKzXR0fSQh6EeOtL7Hd4L53
-         VvQl9Ol7LHDS12NQB5k2i9m531Q4Z8bTahV/i+OEi1Rtd2o3zIiMS65VwcYGnbPMARGb
-         juDQ==
+        d=ziepe.ca; s=google; t=1795448109; x=1796052909; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jVozDBZgp+27gMR99l+UaMITrh6vU8pxKuFZh102SrU=;
+        b=E7fzHGXyqQHyaWH5h7Xdq7Fk7oF+GetICIiSFtZybwSIU8tOsJ7Nm9s209ex5I3yka
+         eJPASN/N8bgwyXhR7UtesH8MDUTuVQjtajdXRJbOopshCSKsCcEMtaWdmFeY4c4uw8E7
+         LN7OGePjrbqQxAnrITu0+L44cy+/QRsKNwlu2B8atxNpyv4+klJs9H/NgkeA60MnXd9f
+         m5009TltosQB1uZx/ZqKs8tYNaa4yH4hdc06E7R3V/kiVxsvZMlxfQZDvvTz3yvuiuTN
+         0PiaWcMU9ofUMII6MRxjTaFTfpFeeTJLbuFfoRMFUlAISoaimk/wB+D3Pr/Ry8TsPter
+         ozaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795447989; x=1796052789;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Om3+ZF0XtREIm6HCfdv7ugOGpXmbs7kvx8h4qtcjszM=;
-        b=HIWhsjbpgMPHJPWKvkU8BqNkPs91HCn6LLnW1u79hxkCQgMCqlkMGvaA+XxeDtkrk3
-         SLAuwCKkKtEe5a3VODrzDeiLE27YdIg1fAFNNHQlFU6CAsVl+P3duHmodnlorqL6WNLs
-         mrmFJ7PR2amcqkY/v2Bban0MW8tdm4h5oYnG0IHEscw9pcKrFFQwjQfiRgvEg+8rnKzB
-         FY2c5xFSrOCO7ypDGhPbqmMK4tEJkCTe0MRbzl7hdbYUmRCIjd4K7IHN/pc+7lIfepk7
-         HM7K0RbmxAQOE9WATrYx7AEXNzyAU6V6N+iOUb11mmwtmtRL8gThcnMIclCM9swTzDiQ
-         WJfg==
-X-Forwarded-Encrypted: i=1; AL+hErHgkZPh+Hs2P2F0af8ZGcqQ1WiYzmdPBj++du2h7c37bo/OQZvN3LkfNLIivXvFyqScLxs=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9rLpmNK6lhfQHlz2VhkrvtwXPhli0MnvDArg24nmh53fkORvVh
-	yJwqcWSh7pDuapqix5nePPu4XptRIHk4FYm0Ho8X5gV1eG6lfGauoIFh2raRj+i0Erv/rcb+Gho
-	pUzNkpg==
-X-Gm-Gg: AZFdTZfEo9v74s3vWK6yNdVTkMQ3Hyc5UtMsfBKGVtVoi7RbdNv0N1kGAxNWTduBADT
-	qgfVsi0LnwRgyTymhCVfWM6zAJSOUkMqOdmPn+WbpZv6BSCdZfgGQr/fr6VMnAtDL2ulKc30dgT
-	4niJjbj4cJYEaUZwurIdyHv5kmrKHecCkcKXmCmURJC2GU8ZH5Po+Prr9Ms9rerrJFNSccjM3bu
-	kerVkj8w8xEIPxpm4stQzUbdCapeUtEyTh4Wl33RtyuEX1bxWlGIWU5AGXDHd1CL9Js15CTJxpK
-	QlygaZmC/XD0ltU0IuKt5M/7dSCAiFmUicZZJ/4r8BxU5DRIuxLKWPIYTehhODS6lDyuhMT08pi
-	Cojx5uGFDhBj2+Fn6zR6fLmMGpdeJK7nG8u7+D8UDxqMXHOMwnq1+JwuA61UkeHt3xKO9d/Ohy3
-	KuJIhVJWMKZV3499TogD0ksGNkzE4SXnS+D27HO4lXEdZMuiGdonpD/Cxc0CNk4rn1U76yNZoOZ
-	c4/mDsN35iQvMoSfWiCXthBTx8POkUiEgcIa1JhsHdrVnSJSVNpEj51w6ZOAodV9OMOeEBWO6QU
-	JsLFeARYFxppzRtEBVtcMph//fvqDa8gEW9fcVFPpA==
-X-Received: by 2002:a05:693c:8947:20b0:386:9ef2:8e01 with SMTP id 5a478bee46e88-3869ef28fe2mr6486341eec.0.1795447989335;
-        Mon, 23 Nov 2026 07:33:09 -0800 (PST)
-Received: from localhost.localdomain ([2600:8800:1e00:25f0:3391:10c3:1717:1522])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-385672ce402sm34601237eec.16.2026.11.23.07.33.08
+        d=1e100.net; s=20260707; t=1795448109; x=1796052909;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jVozDBZgp+27gMR99l+UaMITrh6vU8pxKuFZh102SrU=;
+        b=PibcbuDd3bmZusCCJuiwVw4PhlF7ZdRxjrwu5yjABx8xky9pCm2lPT5sXOfidrG0WR
+         HMB9qfYtDmV/A9DJfLPNyJY6qvTcJcI3KQ3Y+WaiCcf4vgYcSwr74YJOuYjcUuDuReVT
+         3K4F0yw4XMqlWxpUC0i6fxZr1+IQBXS9nFx8OL8kHE7Oz6/oUDDg6mMZreCziPN7tAPY
+         YKOZ445eMg5visbb++H7AX00YbT2t8X+L2+BsQ9+gQphZdaihSTt6NOXVpwXUVJdpu8N
+         YJU1S0aWp87PypY+umtlkVCUo1bi34ctpdpaWNArg0DhwmnabRyn16b878pvKR6+OZze
+         vLiQ==
+X-Forwarded-Encrypted: i=1; AL+hErHbsGqU/VQpqrwnTlxihOPeAi1iMtZtuunH3Iy5B/If5SBw9BTs96VQA/4CfPhfAcUvpfA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9n3NO5QwG69X9Ex+BiASSfrstZGvp+f2JQ2FWFPWZY6FSHIiDc
+	F3AZ7E3I9P7yjpgfLDsRLqug5Tn9coWkPk3cIlcYj82oTVTUPzgxJkp+2aEFMIkAxaI=
+X-Gm-Gg: AZFdTZch04+peB41WJWUbxyHSmp4U3H+UF56gjwZGo8zDmZrppmV21fDhHzrBdv//9p
+	GDr9OHyH6Gc9J0e092r7W9Wgc/5lTnfedA1bLZs3eBovWaPJ00VmMVebYGEXc0m5aDUDJ5b2I2v
+	/6DMm/H7q3TC2+GuA91iGXu1lKm9RC7w44UnBq/XG2io163/xrActXYoHC/2FknTEpP4WZOAxPb
+	AwKwa9LmMkEuvIlkSKzBqzMpKfBQopHjR8SmkH2MsYVYF26yJAPdl6HGETWT0cXbpZrvuevIiww
+	Y1jZA+Ke9X49DFT4vsPVFWf2yZBJ8jQLx6xTR8KWhVtdXzKRkxAiCvfRrb9bAjW0ddWSnM2U44k
+	7Ys+R6X11AVxae8P8YDOV6erBu37bOFRlqWTfEGf2ix4bI2nws8gA+qyjPfF5c/vYr61VHvaQwd
+	a6D0QvjnqCnLpxMHKWQRTDllUuk1oUqQwqFOL23K4K13usifH6Ae15OCM94mlDuLL05NAuKv9R8
+	c2ad6Gpw3HNqark+jSaX6UZEmBazSU3DcJ9qVd6e/gA3ozosFzPhb3Qvv7QXIfAipWa3zlX+jil
+	preNtWU2OeCfMkGUH/S9+F2y27ELJDYX7E01BHftxJI360Ppdk9mBe0rijW+fNY8WcN9jbdwyAv
+	jwfw=
+X-Received: by 2002:a05:6102:5811:b0:7d2:76af:fcce with SMTP id ada2fe7eead31-7d7393c88e2mr5087905137.9.1795448108741;
+        Mon, 23 Nov 2026 07:35:08 -0800 (PST)
+Received: from ziepe.ca (stjhnbsu6iw-159-2-142-59.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.142.59])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-949bb0315f4sm823500485a.3.2026.11.23.07.35.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 07:33:09 -0800 (PST)
-From: Siddharth Mishra <smish149@asu.edu>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Cc: Shuah Khan <shuah@kernel.org>,
-	Peter Xu <peterx@redhat.com>,
-	James Houghton <jthoughton@google.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Siddharth Mishra <smish149@asu.edu>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] KVM: Disable preemption while pushing to the dirty ring
-Date: Mon, 23 Nov 2026 08:32:37 -0700
-Message-ID: <20261123153238.1036972-2-smish149@asu.edu>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261123153238.1036972-1-smish149@asu.edu>
-References: <20261123153238.1036972-1-smish149@asu.edu>
+        Mon, 23 Nov 2026 07:35:08 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xVW4R-00000000swq-2uP1;
+	Mon, 23 Nov 2026 11:35:07 -0400
+Date: Mon, 23 Nov 2026 11:35:07 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Lukas Wunner <lukas@wunner.de>, Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
+	kvm@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH v1 05/10] PCI/TSM: Add association locking helpers for
+ evidence acceptance
+Message-ID: <20261123153507.GH179082@ziepe.ca>
+References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
+ <20261123083337.2731019-6-aneesh.kumar@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -106,49 +116,41 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261123083337.2731019-6-aneesh.kumar@kernel.org>
 
-Disable preemption in kvm_dirty_ring_push() so that another push to the
-same dirty ring cannot run in the middle of it.
+On Mon, Nov 23, 2026 at 02:03:32PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> Later attestation patches let userspace finish device setup through
+> evidence-accept after host sysfs connect or guest sysfs lock returns.
+> Those commands use a saved struct pci_tsm and must prevent disconnect or
+> guest unlock from changing pci_dev::tsm or freeing the saved structure
+> while setup is in progress.
+> 
+> Add pci_tsm_trylock_association() to acquire pci_tsm_rwsem for write and
+> check that pci_dev::tsm still points to the saved structure. For a TSM
+> implementing devsec_ops, first take device::mutex to prevent driver
+> attachment during MMIO validation and device acceptance. This matches
+> the device-mutex-before-rwsem order used by PCI DMA preparation.
 
-kvm_dirty_ring_push() selects an entry with dirty_index, fills the entry,
-and only then increments dirty_index, all with preemption enabled, e.g.
-when vmx_flush_pml_buffer() pushes the logged GPAs on VM-Exit.  If the
-vCPU task is preempted in that window, kvm_sched_out() calls
-kvm_arch_vcpu_put() while kvm_running_vcpu still points at the vCPU, and
-kvm_steal_time_set_preempted() or kvm_xen_runstate_set_preempted() marks
-a page dirty, which pushes to the same ring.  That push fills the
-selected entry and increments dirty_index, then the interrupted push
-overwrites the entry and increments dirty_index again.  The entry after
-it is never written, its flags stay zero, and the entries after that one
-are dirty.
+This doesn't seem the API I'd expect here.
 
-Userspace harvests the ring in order and stops at the first entry that
-is not dirty, so it never harvests any later entry, and the GFN of the
-overwritten push is lost.  A VMM that tracks dirty memory with the dirty
-ring, e.g. for live migration or to restore a snapshot, then misses every
-page that the vCPU dirties afterwards.
+When we trigger SPDM session start AKA lock through the CTLV it needs
+to capture some kind of 'session cookie' for this locked that ties
+back to whatever the TSM is using to prevent a hostile host from
+locking/unlocking while we are working.
 
-Fixes: fb04a1eddb1a ("KVM: X86: Implement ring-based dirty memory tracking")
-Cc: stable@vger.kernel.org
-Signed-off-by: Siddharth Mishra <smish149@asu.edu>
----
- virt/kvm/dirty_ring.c | 2 ++
- 1 file changed, 2 insertions(+)
+That cookie should be held in the attestation driver and when we get
+to acceptance it should be presented to confirm that nothing has been
+tampered with.
 
-diff --git a/virt/kvm/dirty_ring.c b/virt/kvm/dirty_ring.c
-index 572b854edf74..1ed8b8771c3e 100644
---- a/virt/kvm/dirty_ring.c
-+++ b/virt/kvm/dirty_ring.c
-@@ -221,6 +221,8 @@ void kvm_dirty_ring_push(struct kvm_vcpu *vcpu, u32 slot, u64 offset)
- 	struct kvm_dirty_ring *ring = &vcpu->dirty_ring;
- 	struct kvm_dirty_gfn *entry;
- 
-+	guard(preempt)();
-+
- 	/* It should never get full */
- 	WARN_ON_ONCE(kvm_dirty_ring_full(ring));
- 
--- 
-2.54.0
+It is a further reason why we can't have lock under sysfs control.
 
+It should be attestation that provides a general purpose lock that
+serializes all attestation operations including lock/unlock so we
+don't need a TSM lock like this.
+
+The driver should rely on that lock and use its internal mechanism to
+process the cookie.
+
+Jason
