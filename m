@@ -1,68 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795407519;
-	b=tuepFK3qrqXO2De/UkYm8IxJr+FQQj/F2moPUfhHji/hUi/TMoxha0QhHR6Bm3LcvGCX
-	 gwTBvKlsHtTrykk7A1rQngvQkHU2HUhiTelZLZ804AgxScFWxODdRazsTxQg4Kj38Jjxb
-	 SDbSZSfecT9v8WNZLNgv8G/h3M73Bw8w66X9Xi9QilmEm+gjx/oOmbqOVmL4RFQFwblh3
-	 8yMhaGD3wgeZ8hLPiaFiBv48MfzfRmoJbz+goyUJqzxUJzbbX5qezSSc1PGFaYFpX+w8g
-	 ajG4PCLP5xQcX3mMb8Rm10T0BDVbZnPpCk0oSn5cZwp/X4HlcxIaHTlG+lJO5aVdUmw==
+	t=1795407785;
+	b=Xd77ul3xBrqVqpvfXKuxZuMVPsiR5A7fV0eNVqxWMU0lGRCe2Q0WsHsqqDbsRSqy7/T4
+	 SleM5d01Juz++h0WHnvdFo5HAjqb/vzbn5avuY6Do4SVegFc1oOrhYKkQT5l+MNfRMum+
+	 idkLBUJDFxAi0TwihRt+xc9sb/S8WfAR4pX9yfQT0cy6ymliFZq4RQ3snuBNUm6aumyKD
+	 ffBNOoOqS6xaorLQur5OedmEIrvJPgvwcMQKLueweY+xe//gwUOnCH7sHBIrM07xikarz
+	 9zr7sgb0oqtaPg2ZqPkt8rZnlAu7UCi6qAvyCnNLwYxI7w/YUokztjUmFbR5pZhHXZg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795407519;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=OboeEQwN2DSTx/ZhMkIP+Y0ItKq3Ok17t5dAL2d50wU=;
-	b=CHmZ0i5l9g70gozOc/rTFtjmFUQ9RSi1SKvGiN3rk4dhtzGeacFXF1IpxJ/3a2jhfniH
-	 WNtT/rqOxxVyIAhITtfpABGEzbCMfJ6XGqOM80gPwRbn0xjBWhEfCIUdPA2DKa//jKwfu
-	 g7DKI6/IkbTJMh9XK2Xh9hO0iBQJUDhfqe5O7m6oU/5QjAp55D6YKZH3PeScWoqWaZOOZ
-	 5ao+bXPiPhNaZWQD6ZoKyZ1f3v1KJ1KsGmX1V/PZpa+qcuMrsR64bA5KG2Zw+6KxyYISo
-	 JB0dYb4oZlpG7CIB6lCGe0/sDJqlCxf/ZbIXEJhUeRmlNTXMJ7rUt2YIvE0sUMHbQfg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795407785;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=Z7nPTI5arwtfLvJ1u0SNc3tfHxfngmeM3rWmqkRPFe0=;
+	b=vl48i6Ff3xggvBrgqDjcEmq9L0wCfYwQDGvYtXEq888unrOkB7gEnaMnYQDNzErZPELx
+	 Cupcxc9ot87RM01owVyqfOKnyB8PJuA8B0kxscnoOjqlI04Xu5q/f1TY/O9S2Yy9x2qdz
+	 Y/hIm5hz8iHnQWNHpSgxQCts9GwDqN+xvqyHqEFzPu9tCv2z63c6oIYuO957HU9KR4SUk
+	 I1W+CYwgG0sf6BNH1lqByP6s/nfyEouR4JuPwm0RjvrV/dzo6vmVLwjMESK0M53ZiQtfA
+	 PYI2MkbmaeIygwT9mWTNedtafUABJsgePDJBul1P+mGh5Zo2+prC7zUgxia00cK/jhQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NtlLlRNE;
-	arc=none smtp.remote-ip=192.198.163.11
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=cs.unc.edu;
+	spf=pass smtp.mailfrom=cs.unc.edu;
+	dkim=pass header.d=cs.unc.edu header.i=@cs.unc.edu header.a=rsa-sha256 header.s=google header.b=Akvb2KTo;
+	arc=none smtp.remote-ip=209.85.222.178
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C87606A31A;
-	Mon, 23 Nov 2026 04:18:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8C87606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D92606A31A
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 04:23:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 70D92606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cs.unc.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.unc.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NtlLlRNE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795407519; x=1826943519;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=sxfmlOqgbG1BdG0keawdWgiWbllTvI9Wx2mxgRVK8MI=;
-  b=NtlLlRNEUhtTpHvZyJ7F4Fc1woz9IZMegzqFU9R3oZEHTki7u5Q4G+YT
-   Tyn03yzeWYJ7ttFDqMHGzDGuAJ+S5FveomFmq4MXGdf3v+zNw0AgJAfXW
-   SZ+4oKWeJk+DthDVSWiehfQCZYnsstaAS3Pso1My5z0nQTLPZqedSKLfL
-   v/R+co2Pxhfit/cewJk7qosfe1H0b3ALzWHQ/w1Vy4Cob7zGYT7/vxtnk
-   7XFqLvWO1A5v7va0Hk9JxRTx2AXOyoVxEBAxfoC8KuCSbZZVqkKwj84tJ
-   crgLPVQiDvnRfdZb+TGJ/+Kcmtpc98WqzNdPmVR8XHsTq8AOjHXO0Ho4V
-   A==;
-X-CSE-ConnectionGUID: tKcA9GUtQdWMC0OZ8syLIQ==
-X-CSE-MsgGUID: pJyPQDj3R0e2vlMarfW1tQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4114429"
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="4114429"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 20:18:38 -0800
-X-CSE-ConnectionGUID: BLlZDDyWTliRYZty8NwoZw==
-X-CSE-MsgGUID: cupNifp9QZ6Z6cj8qgjxTg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="11766555"
-Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 20:18:35 -0800
-Message-ID: <d77bab15-3e35-4185-b328-99712f607435@linux.intel.com>
-Date: Mon, 23 Nov 2026 12:18:32 +0800
+	dkim=pass (2048-bit key) header.d=cs.unc.edu header.i=@cs.unc.edu header.a=rsa-sha256 header.s=google header.b=Akvb2KTo
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-93f20c3aaa5so270410485a.2
+        for <kvm@vger.kernel.org>; Sun, 22 Nov 2026 20:23:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cs.unc.edu; s=google; t=1795407783; x=1796012583; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Z7nPTI5arwtfLvJ1u0SNc3tfHxfngmeM3rWmqkRPFe0=;
+        b=Akvb2KToJ3Ak1XsuDnYKBtbnhh9DBx5jCOEwkXgnAWKJ1gOMmH78uj2GxxBO9gCO6t
+         GMt8G8Mqg3loK9qNScCW+6j/7XOvuTeqYCQZlHM1+earUWSLsh/SpnyfnGV70d64iCPn
+         6hvDtDHLV1GNruB06Gsukzt+tYEQ3lamByTnCv3vBIwLPmRqUNcdQl1qzCVH9tnVjpXu
+         3zp+Ixy2fD4tL6Nyl3HL9sKrUcyufJGYp/c7X/CwpDeNtlSJSGClfjEqPDCnzSGwdrCt
+         Q4LD2xw+qGpGsL1TrBKx1iV2YizypbOUYUfiSsq6Shnz3VoWUz9cg7SEZzBRjnTSABfn
+         9BDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795407783; x=1796012583;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Z7nPTI5arwtfLvJ1u0SNc3tfHxfngmeM3rWmqkRPFe0=;
+        b=ZFmSLKsOSgCsuHbYhoNEal74T7y9U/PmZ1HS1Atnn3/CiHUuxwk4iJABICgFuk+qfz
+         LdcPgLnCYYoQxosACLoYecNlHVvA5Xbn2mKUEQJZ+sZvXKeO7GhAwF8vSKMxwR4dG4ym
+         XyotZbD7812MV2R+lKYXnp3X56vkMnftS1FR6UJwBKH/wNG3AyjGlrc4pIDfrNWLmtcG
+         deTh07A3WmpRk8XAzO43fA2qdFUKBb66G0SS/dId6NGem35PwVpU+o5bp6+2LcKloVGR
+         aqGti/E3CBYAXWYOXdFjgpVL5SxR6zO+FxeOWqRM2JUK7hNnVWibH4GrHDlDuqxoILpN
+         9Udg==
+X-Forwarded-Encrypted: i=1; AL+hErEUBd5h0l0xVRdiJEmrSfFPQtsfKnJlgeguzyLAyTHs+L+AKNh2Uw9urru1kyEBc4AoyVk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+yPo5kNQPE0hgryylcrrunh4Rq5f3YAW1n4N7wh2QtsGvLnslk
+	ITjF+TfqaXY5ZLAwXv5FcIZZXCtxXaCfZrilXfkFt2yp5EEvTuXaGtANh405L2lTcg==
+X-Gm-Gg: AZFdTZfpP3jNECMfatzjk+/+BfLiZtNyeQ9xtnFbNeOtLS3t/ESzPY4BtLAqZPLcgBF
+	80Is3/T9GJrxeaP9GhjX06qe5kBZt01pXFGsUg25wZjvGs/1lFfdIaKwxaPaAyzdH5gjBYcZqmS
+	CKtAPeQJp/Roy0ISkUukOe+HWL4EUIsnUT+KFM0hXUynqYunzD9Ln6RvWuiRTIlccE6UpYHuxDh
+	O7Axv83GXwROozO9pFieWu8IgsgfhH0qulpeF6JD9sEuparQax0Ort2vgYNCtWyuN0zj0VJUHES
+	jd2DNv5AG/u5hkC9bR/VQmJG3tubenUiZNrxP+8SKbHfIbio9P5CAeGysAbDP9KmvwE+SrG/f04
+	fOS0vwoRzyIgCwLLs6ArWIApX1UOBqyxaJ+8QfsDkyRxJwVIpDrN7O2utTNl2LlG3zxS/fkwg6S
+	v8rhS8XpC87Omq2rlG2qLqT8RxJqNr24kQSpzAbKekzNe1ofL24P3f3ChvO4/Re+cRGux5MjGja
+	078EZpn1PvbhlQD8z5yjB7dl2vM916oRHKadPX2WByiJepTlQz/HdRIl3JD459Z/B/J4yifsZ9C
+	/+QVpQ9rZ8eXfSrU2TGjH8MudT024O6YyEyJ/snBG8/atTZ/+DvK
+X-Received: by 2002:a05:620a:4397:b0:93c:8e3f:3036 with SMTP id af79cd13be357-949ba827abemr1807820185a.4.1795407783349;
+        Sun, 22 Nov 2026 20:23:03 -0800 (PST)
+Received: from cobra01.cs.unc.edu (cobra01.cs.unc.edu. [152.2.130.143])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-949bb34a38bsm717421185a.13.2026.11.22.20.23.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Nov 2026 20:23:03 -0800 (PST)
+From: Hengyu Liang <hengyul@cs.unc.edu>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowangio@gmail.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] vhost/net: ignore extra words in VHOST_SET_FEATURES_ARRAY
+Date: Sun, 22 Nov 2026 23:22:59 -0500
+Message-ID: <20261123042259.3484334-1-hengyul@cs.unc.edu>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,114 +100,74 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, iommu@lists.linux.dev, x86@kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
- Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, yilun.xu@linux.intel.com,
- xiaoyao.li@intel.com, Chao Gao <chao.gao@intel.com>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 7/9] coco/tdx-host: Add skeleton to support PCI link
- encryption
-To: Binbin Wu <binbin.wu@linux.intel.com>
-References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
- <20261112043054.2664857-8-baolu.lu@linux.intel.com>
- <de1011bc-1cc0-4409-af76-4e90dcef6cf4@linux.intel.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <de1011bc-1cc0-4409-af76-4e90dcef6cf4@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/19/2026 10:52 AM, Binbin Wu wrote:
-> On 11/12/2026 12:30 PM, Lu Baolu wrote:
->> Register a Link TSM instance to support host side TSM operations for
->> TDISP, when the TDX Connect support bit is set by TDX Module in
->> tdx_feature0.
->>
->> This is the main purpose of an independent tdx-host module out of TDX
->> core. Recall that a TEE Security Manager (TSM) is a platform agent that
->> speaks the TEE Device Interface Security Protocol (TDISP) to PCIe
->> devices and manages private memory resources for the platform. An
->> independent tdx-host module allows for device-security enumeration and
->> initialization flows to be deferred from other TDX Module initialization
->> requirements. Crucially, when / if TDX Module init moves earlier in x86
->> initialization flow this driver is still guaranteed to run after IOMMU
->> and PCI init (i.e. subsys_initcall() vs device_initcall()).
->>
->> The ability to unload the module, or unbind the driver is also useful
->> for debug and coarse grained transitioning between PCI TSM operation and
->> PCI CMA operation (native kernel PCI device authentication).
->>
->> For now only check for TDX Connect support in the TDX Module and
->> register the Link TSM. The TSM support is basic boilerplate with
->> operation flows to be added later.
->>
->> Based on work by Yilun and Dan.
->>
->> Signed-off-by: Lu Baolu<baolu.lu@linux.intel.com>
-> [...]
-> 
->>   
->>   static int tdx_host_probe(struct faux_device *fdev)
->>   {
->> -	return seamldr_init(&fdev->dev);
->> +	int ret;
->> +
->> +	ret = seamldr_init(&fdev->dev);
->> +	if (ret)
->> +		return ret;
->> +
->> +	return tdx_tdisp_init(&fdev->dev);
-> If tdx_tdisp_init() fails, it will also disable TDX module update and the
-> version sysfs attributes.  If this is intended, could you add some description
-> in the change log about it?
+Commit 333c515d1896 ("vhost-net: allow configuring extended features")
+added VHOST_SET_FEATURES_ARRAY. The ioctl reads the number of feature
+words from user space, copies the words it supports, and then reads
+every remaining word, one at a time, to check that it is zero.
 
-You are right. That side effect is unnecessary. Module update and the
-version attributes don't depend on TDISP. How about fixing this by
-making the TDISP failure non-fatal so tdx-host still provides module
-update?
+That loop has no upper bound and no scheduling point. A caller can pass
+a count of U64_MAX and a pointer into a large zero-filled mapping. The
+ioctl then stays in the kernel for as long as the mapping is readable,
+and a fatal signal is not handled until it ends. On a v6.18 debug kernel
+booted with preempt=none, two such calls from a non-root user, each on a
+4 GiB mapping, froze a 2-CPU VM for 56 s with soft lockup reports.
 
-Something like:
+The check is not needed: the extra words can only hold features that
+this kernel does not know about, and they are never stored. Drop the
+loop and ignore them. A nonzero extra word is now ignored instead of
+failing with EOPNOTSUPP. Unsupported bits in the words the kernel knows
+still fail with EOPNOTSUPP.
 
--static int tdx_tdisp_init(struct device *dev)
-+static void tdx_tdisp_init(struct device *dev)
-  {
-      const struct tdx_sys_info *sysinfo = tdx_get_sysinfo();
-      struct tsm_dev *link;
+Fixes: 333c515d1896 ("vhost-net: allow configuring extended features")
+Cc: stable@vger.kernel.org # v6.17+
+Suggested-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Hengyu Liang <hengyul@cs.unc.edu>
+---
+Changes in v2:
+- Drop the loop instead of rejecting counts above one page (Michael).
+- v1: https://lore.kernel.org/r/20261122120919.1718445-1-hengyul@cs.unc.edu
 
-      if (!sysinfo || !tdx_supports_tdisp(sysinfo))
--		return 0;
-+		return;
+I found this while comparing the behavior of different kernel versions.
+I used an LLM to analyze the problem and to draft the patch and this
+message, and I analyzed the result myself.
 
-      link = tsm_register(dev, &tdx_tsm_link_ops);
--	if (IS_ERR(link))
--		return dev_err_probe(dev, PTR_ERR(link),
--				     "failed to register TSM\n");
-+	if (IS_ERR(link)) {
-+		dev_warn(dev, "failed to register TSM: %pe\n", link);
-+		return;
-+	}
+Tested on the vhost tree at 44293796526f with KASAN and lockdep. With a
+count of U64_MAX on a 1 GiB zero-filled mapping, the ioctl now returns
+at once (before: EFAULT after 27.4 s), and a SIGKILL sent during the
+call no longer waits for the walk. Counts of 0, 2, 3, 512 and 514 with
+zero words succeed as before. Unsupported bits in the first two words
+still give EOPNOTSUPP. A nonzero third word now succeeds instead of
+giving EOPNOTSUPP. VHOST_GET_FEATURES_ARRAY is unchanged.
+ drivers/vhost/net.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
--	return devm_add_action_or_reset(dev, unregister_link_tsm, link);
-+	if (devm_add_action_or_reset(dev, unregister_link_tsm, link))
-+		dev_warn(dev, "failed to register TSM cleanup\n");
-  }
-@@
-  static int tdx_host_probe(struct faux_device *fdev)
-  {
-      int ret;
+diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+index 631855064b3d..f6b59def4a21 100644
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -1802,18 +1802,6 @@ static long vhost_net_ioctl(struct file *f, unsigned int ioctl,
+ 		if (copy_from_user(all_features, argp, copied * sizeof(u64)))
+ 			return -EFAULT;
+ 
+-		/*
+-		 * Any feature specified by user-space above
+-		 * VIRTIO_FEATURES_BITS is not supported by definition.
+-		 */
+-		for (i = copied; i < count; ++i) {
+-			if (copy_from_user(&features, featurep + 1 + i,
+-					   sizeof(features)))
+-				return -EFAULT;
+-			if (features)
+-				return -EOPNOTSUPP;
+-		}
+-
+ 		for (i = 0; i < VIRTIO_FEATURES_U64S; i++)
+ 			if (all_features[i] & ~vhost_net_features[i])
+ 				return -EOPNOTSUPP;
 
-      ret = seamldr_init(&fdev->dev);
-      if (ret)
-          return ret;
+base-commit: 44293796526f4343639f87b2acc53811c78b5d54
+-- 
+2.53.0
 
--	return tdx_tdisp_init(&fdev->dev);
-+	tdx_tdisp_init(&fdev->dev);
-+
-+	return 0;
-  }
-
-Thanks,
-baolu
