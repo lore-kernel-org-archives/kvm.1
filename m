@@ -1,66 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795457890;
-	b=DcDoDwuq/VQ/lZlYK8cyHmILKipY+SoqJbJm1LKz36iYzIJyY9/cBuzmxSgSJ6hAwerN
-	 87sxfzODaxMxR5xw3cFeRP0+fHHoqkQA+kOzoslKO4vLn/c1f9JTM4xOvoK+plgz4skAO
-	 iYj0ggrA0VyNOTum36SkQ1eQmfuwbSaNTJBDiHZSvwIyh6M7uV2WO6JwmTFquEh8/zW5J
-	 G1nt2LeypSEG4upUMC+P9VB3/6Y8agdOfIZmAixvSQgS6rUQjbkLNaxxmz6l+cep4f5rM
-	 4mdeXVAII4wHcOA0oPPZroC4+fHcVcsA18QVVvKxh6eKqZQnGuspnm7Vo9/7z9EitQA==
+	t=1795457892;
+	b=V6K984DoaRK7DrqB4tkNyR9LCvTVuYOdC+Dk9spHAMtcMi/aSTO4Um8lg3EQX0PzGFqS
+	 Km0G3EnvvqcSyH/ppVt1ErM0micqGte2BwEGVhPsTydg+gd/J896ZgcbePN+5QpQhyeHz
+	 HjBH0YUI8An0sWR0SrzeoqupxbcPTaFyTbaw+JN9fBYvung6F+Up0J8RFhHM49UkJVz1d
+	 hJo27tB0a6ityVNF+JaEFjQWKrG8L95zVAyYm/PfugwX+3mSAp89s2q6Y5apKkWs77W4t
+	 II2fN/juvi/e2P7qnQC40g1HP2/KIjPGYozk5L09KYfShOYFHWdXx/i2vs7f9B4Zq0A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795457890;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795457892;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=hbEzsj2VUxF9bmuyjXO37zsnxste6rzSyipIhG+p3qk=;
-	b=FEJB4O4PXqgSXG+9EKBxd+wubxCTMMv4kz4AjUNxUe7xtE1Wh+hMPdXo7Qv/l3NaGyaS
-	 3vUkoivFttvkeHM0pnZH4TW8SrYE+uPKYdARp2Ea/l2ImMWCNAPYnLzMxkap6TsXpu4Aq
-	 t7276Ix2Xg6WwRdZYWBfVi4qRfuszQjbt+P1CLa1m5h2BCoPpWS19OMYc0XFW5Wmtsqwm
-	 hR0ER42dIG46gnMU7jsaqxzn+3vtho2vSwbgY5J+UbgY5273YHHPnoQzK5GyOQ0d8HcBw
-	 2bQFjSEhwfkb6I+7ObshYVwq6qxMvTU2JyLsOBL2QWxvzFR4+UQj35czqX0xidy4IFA==
+	bh=8ddN5ZA29Ts2hTnH3cvKyYmTCkEzZCs049kB7I7V2l8=;
+	b=4RTmQDjip33mgAPm3bNGbOS0JcQ40vRCHrmTT2wPCCfBd2Rtf5/YrJnO2bzVysxT4bzb
+	 91/6e4bvAD98sx5ZRzNQGnwtvkHLycVFjhRdpP6VJIun8oqc+0UTzSoRAsjLAM+spYmCC
+	 A05RsRU4HAjZJyup2uHwggnYXQ2hawkpFlWyCZaPasMfq5YZTfEmWa/9EmU4zadxkq+8v
+	 kzPq7kdMM4r1Tp4oN8OWn1z8JmzAt7kgv7JWYE3sjfga9YgUV7bFtEUoCBhEhkJUZyn04
+	 mkb13DqgxpWaWxcyKZ89NXBljWVo6JYoZ30GiTXBbLJWXAuRTaUNvgXlin5DmJjT3Ew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=En+oSH5h;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FxMn6PbQ;
 	arc=none smtp.remote-ip=198.175.65.15
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5541460A6F77;
-	Mon, 23 Nov 2026 18:18:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5541460A6F77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A04606AE05;
+	Mon, 23 Nov 2026 18:18:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93A04606AE05
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=En+oSH5h
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FxMn6PbQ
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795457890; x=1826993890;
+  t=1795457892; x=1826993892;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=QESkkAr0sX7IhiZEoMVmvU6IAAmj8KDUOlejoqDwr5o=;
-  b=En+oSH5hfF9lwKT3R5WOKJPeHb9RhnVAhjgumnyIWHKZessWd3P7Kgqs
-   aLj95pF/njHIXJzYHCufQr5xh6IQGhDmb+9CazZA//CyATzZIuZHuAIcr
-   q/81E775jPfFIiDL9x1AxQmDPfQO+DanH2YXcF3Pc5ED1H9m1kFy398FB
-   5YltSsU/2PYsovT8/3iqp+1Z1DXPww1sTUF3aEzFYdSEHyPX8CIHkBpgb
-   qf8MijDu2/AixrOgj6eshi/Hm7J2kVQ0lFY1PnbWGvmPgZVY37v+RtARC
-   nBfUfsslAJKVEmRWyOxWyZOHRczervxw1VFiZHbpKxe/n1U0ZmmCsQOAu
+  bh=QQOeZx3PshKrdiTHfxbpnU2vc62voj3HDAU3ca8Xr8I=;
+  b=FxMn6PbQPXrsWnCJzrhTAZP9cHG0s7fg7DZkXXNXWDutp/2yucO+V33K
+   P4WzN0zGi6Wx5DcvKKcTtjNO2p0Sly6sMH1vVrK5LLya950xLWpwbodjw
+   0kWCwtRf4JPEksGG6McS+p3acN33Eseigw9Y3UPQ2dkqLoaOC0meUiy3d
+   T6PLGPuJLmhOtJpVW0IyecHlaXR2ivb3VpQn/m51XX35jCy55sJ1S1Ym0
+   3M5cn+FtLPWPbiu3T4DpyLQW7GTzAl6e/ceNbeaOh4axCJNMV/SlWftjU
+   rUpGJiE1z9DiudHNTDRBUdw4IkkTaijO3w7smjYmUugYdhNdfUtYB3bCg
    w==;
-X-CSE-ConnectionGUID: e8OqluFRQQWqkWgOM8qOCA==
-X-CSE-MsgGUID: cpNb3ry+TK6NyALKcV2dYw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4288870"
+X-CSE-ConnectionGUID: 3txNZMHRSii8tKYPhesOTg==
+X-CSE-MsgGUID: WsIgaiPrRAyqRhUS7iRQxw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4288901"
 X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; 
-   d="scan'208";a="4288870"
+   d="scan'208";a="4288901"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 10:05:30 -0800
-X-CSE-ConnectionGUID: PFWqBDC9Rw66m0G7DH+Uvg==
-X-CSE-MsgGUID: VJAiQhm2Q2SQv01/ZhKxyA==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 10:05:36 -0800
+X-CSE-ConnectionGUID: u8mNMD6YSdmYs+gAURmZ1g==
+X-CSE-MsgGUID: hCeQsZGMRr6s1xC6eI/O3w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; 
-   d="scan'208";a="11241158"
+   d="scan'208";a="11241177"
 Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.174])
-  by orviesa004.jf.intel.com with ESMTP; 23 Nov 2026 10:05:30 -0800
+  by orviesa004.jf.intel.com with ESMTP; 23 Nov 2026 10:05:36 -0800
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 To: seanjc@google.com,
 	jmattson@google.com
@@ -70,9 +70,9 @@ Cc: pbonzini@redhat.com,
 	linux-kernel@vger.kernel.org,
 	zhao1.liu@intel.com,
 	chang.seok.bae@intel.com
-Subject: [PATCH v10 15/20] KVM: x86: Move KVM_SUPPORTED_{XCR0,XSS} into kvm_x86_vendor_init()
-Date: Mon, 23 Nov 2026 17:37:27 +0000
-Message-ID: <20261123173732.1072124-16-chang.seok.bae@intel.com>
+Subject: [PATCH v10 18/20] KVM: x86: Expose APX feature to userspace
+Date: Mon, 23 Nov 2026 17:37:30 +0000
+Message-ID: <20261123173732.1072124-19-chang.seok.bae@intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261123173732.1072124-1-chang.seok.bae@intel.com>
 References: <20261123173732.1072124-1-chang.seok.bae@intel.com>
@@ -87,82 +87,154 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sean Christopherson <seanjc@google.com>
+Expose the APX feature and its sub-features to userspace. Add support for
+CPUID leaf 0x29, sub-leaf 0, to enumerate the APX sub-features.
 
-Move KVM_SUPPORTED_{XCR0,XSS} into kvm_x86_vendor_init() as "const u64"
-values so that KVM's initialization code can further manipulate the set
-of supported XCR0/XSS features without ugly #ifdeffery and without
-risking other code treating KVM_SUPPORTED_{XCR0,XSS} as 100%
-authoritative.
+On SVM or when using eVMCS, do not advertise APX, as EGPR support is not
+implemented yet.
 
-No functional change intended.
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Tested-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Jim Mattson <jmattson@google.com>
-Link: https://lore.kernel.org/ahmtyMNsj2BCoEEo@google.com
 ---
- arch/x86/kvm/cpuid.c |  2 +-
- arch/x86/kvm/x86.c   | 25 +++++++++++++------------
- 2 files changed, 14 insertions(+), 13 deletions(-)
+V9 -> V10: Collect a review tag
+---
+ arch/x86/include/asm/cpuid/api.h |  1 +
+ arch/x86/include/asm/kvm_host.h  |  1 +
+ arch/x86/kvm/cpuid.c             | 21 ++++++++++++++++++++-
+ arch/x86/kvm/reverse_cpuid.h     |  4 ++++
+ arch/x86/kvm/svm/svm.c           |  1 +
+ arch/x86/kvm/vmx/vmx.c           |  4 ++++
+ 6 files changed, 31 insertions(+), 1 deletion(-)
 
+diff --git a/arch/x86/include/asm/cpuid/api.h b/arch/x86/include/asm/cpuid/api.h
+index 759b12d94bbf..80402959804f 100644
+--- a/arch/x86/include/asm/cpuid/api.h
++++ b/arch/x86/include/asm/cpuid/api.h
+@@ -183,6 +183,7 @@ static __always_inline bool cpuid_function_is_indexed(u32 function)
+ 	case 0x1f:
+ 	case 0x23:
+ 	case 0x24:
++	case 0x29:
+ 	case 0x8000001d:
+ 		return true;
+ 	}
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 327d26e38cbc..abf73bd75bd1 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -729,6 +729,7 @@ enum kvm_only_cpuid_leafs {
+ 	CPUID_7_1_ECX,
+ 	CPUID_1E_1_EAX,
+ 	CPUID_24_1_ECX,
++	CPUID_29_0_EBX,
+ 	NR_KVM_CPU_CAPS,
+ 
+ 	NKVMCAPINTS = NR_KVM_CPU_CAPS - NCAPINTS,
 diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 7c6825000928..f476a78a570a 100644
+index f476a78a570a..2fa48efb1caa 100644
 --- a/arch/x86/kvm/cpuid.c
 +++ b/arch/x86/kvm/cpuid.c
-@@ -265,7 +265,7 @@ static u32 kvm_apply_cpuid_pv_features_quirk(struct kvm_vcpu *vcpu)
+@@ -1049,8 +1049,12 @@ void kvm_initialize_cpu_caps(void)
+ 		F(AVX_VNNI_INT16),
+ 		F(PREFETCHITI),
+ 		F(AVX10),
++		SCATTERED_F(APX),
+ 	);
+ 
++	if (!IS_ENABLED(CONFIG_KVM_APX))
++		kvm_cpu_cap_clear(X86_FEATURE_APX);
++
+ 	kvm_cpu_cap_init(CPUID_7_2_EDX,
+ 		F(INTEL_PSFD),
+ 		F(IPRED_CTRL),
+@@ -1095,6 +1099,10 @@ void kvm_initialize_cpu_caps(void)
+ 		F(AVX10_V1_AUX),
+ 	);
+ 
++	kvm_cpu_cap_init(CPUID_29_0_EBX,
++		F(APX_NCI_NDD_NF),
++	);
++
+ 	kvm_cpu_cap_init(CPUID_8000_0001_ECX,
+ 		F(LAHF_LM),
+ 		F(CMP_LEGACY),
+@@ -1463,7 +1471,7 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
+ 	switch (function) {
+ 	case 0:
+ 		/* Limited to the highest leaf implemented in KVM. */
+-		entry->eax = min(entry->eax, 0x24U);
++		entry->eax = min(entry->eax, 0x29U);
+ 		break;
+ 	case 1:
+ 		cpuid_entry_override(entry, CPUID_1_EDX);
+@@ -1734,6 +1742,17 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
+ 		}
+ 		break;
+ 	}
++	/* APX sub-features */
++	case 0x29:
++		if (!kvm_cpu_cap_has(X86_FEATURE_APX)) {
++			entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
++			break;
++		}
++		cpuid_entry_override(entry, CPUID_29_0_EBX);
++		entry->eax = 0;
++		entry->ecx = 0;
++		entry->edx = 0;
++		break;
+ 	case KVM_CPUID_SIGNATURE: {
+ 		const u32 *sigptr = (const u32 *)KVM_SIGNATURE;
+ 		entry->eax = KVM_CPUID_FEATURES;
+diff --git a/arch/x86/kvm/reverse_cpuid.h b/arch/x86/kvm/reverse_cpuid.h
+index 1ff87fe63c3c..9a4445138a8f 100644
+--- a/arch/x86/kvm/reverse_cpuid.h
++++ b/arch/x86/kvm/reverse_cpuid.h
+@@ -69,6 +69,9 @@
+ /* Intel-defined sub-features, CPUID level 0x00000024:1 (ECX) */
+ #define X86_FEATURE_AVX10_V1_AUX	KVM_X86_FEATURE(CPUID_24_1_ECX, 2)
+ 
++/* Intel-defined sub-features, CPUID level 0x00000029:0 (EBX) */
++#define X86_FEATURE_APX_NCI_NDD_NF	KVM_X86_FEATURE(CPUID_29_0_EBX, 0)
++
+ /* CPUID level 0x80000007 (EDX). */
+ #define KVM_X86_FEATURE_CONSTANT_TSC	KVM_X86_FEATURE(CPUID_8000_0007_EDX, 8)
+ 
+@@ -112,6 +115,7 @@ static const struct cpuid_reg reverse_cpuid[] = {
+ 	[CPUID_7_1_ECX]       = {         7, 1, CPUID_ECX},
+ 	[CPUID_1E_1_EAX]      = {      0x1e, 1, CPUID_EAX},
+ 	[CPUID_24_1_ECX]      = {      0x24, 1, CPUID_ECX},
++	[CPUID_29_0_EBX]      = {      0x29, 0, CPUID_EBX},
+ };
  
  /*
-  * Calculate guest's supported XCR0 taking into account guest CPUID data and
-- * KVM's supported XCR0 (comprised of host's XCR0 and KVM_SUPPORTED_XCR0).
-+ * KVM's supported XCR0 (the host's actual XCR0 masked by what KVM supports).
-  */
- static u64 cpuid_get_supported_xcr0(struct kvm_vcpu *vcpu)
- {
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index b2d44c2f70e6..131f18534816 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -210,19 +210,7 @@ module_param(pi_inject_timer, bint, 0644);
- static bool __read_mostly mitigate_smt_rsb;
- module_param(mitigate_smt_rsb, bool, 0444);
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 5ef785811e3f..074c8dab7420 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -5730,6 +5730,7 @@ static __init void svm_set_cpu_caps(void)
+ 	 * but that require explicit SVM support (that isn't yet implemented).
+ 	 */
+ 	kvm_cpu_cap_clear(X86_FEATURE_MSR_IMM);
++	kvm_cpu_cap_clear(X86_FEATURE_APX);
  
--#define KVM_SUPPORTED_XCR0     (XFEATURE_MASK_FP | XFEATURE_MASK_SSE \
--				| XFEATURE_MASK_YMM | XFEATURE_MASK_BNDREGS \
--				| XFEATURE_MASK_BNDCSR | XFEATURE_MASK_AVX512 \
--				| XFEATURE_MASK_PKRU | XFEATURE_MASK_XTILE)
--
- #define XFEATURE_MASK_CET_ALL	(XFEATURE_MASK_CET_USER | XFEATURE_MASK_CET_KERNEL)
--/*
-- * Note, KVM supports exposing PT to the guest, but does not support context
-- * switching PT via XSTATE (KVM's PT virtualization relies on perf; swapping
-- * PT via guest XSTATE would clobber perf state), i.e. KVM doesn't support
-- * IA32_XSS[bit 8] (guests can/must use RDMSR/WRMSR to save/restore PT MSRs).
-- */
--#define KVM_SUPPORTED_XSS	(XFEATURE_MASK_CET_ALL)
+ 	/*
+ 	 * LBR Virtualization must be enabled to support BusLockTrap inside the
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 3c1d4629a00c..1ef1fbc95982 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -8023,6 +8023,10 @@ static __init void vmx_set_cpu_caps(void)
+ 	 */
+ 	kvm_cpu_cap_set(X86_FEATURE_EFER_LMSLE_MBZ);
  
- bool __read_mostly allow_smaller_maxphyaddr = 0;
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(allow_smaller_maxphyaddr);
-@@ -7121,6 +7109,19 @@ static void kvm_x86_check_cpu_compat(void *ret)
- 
- int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops)
- {
-+	const u64 KVM_SUPPORTED_XCR0 = XFEATURE_MASK_FP | XFEATURE_MASK_SSE |
-+				       XFEATURE_MASK_YMM | XFEATURE_MASK_BNDREGS |
-+				       XFEATURE_MASK_BNDCSR | XFEATURE_MASK_AVX512 |
-+				       XFEATURE_MASK_PKRU | XFEATURE_MASK_XTILE;
-+	/*
-+	 * Note, KVM supports exposing PT to the guest, but does not support
-+	 * context switching PT via XSTATE (KVM's PT virtualization relies on
-+	 * perf; swapping PT via guest XSTATE would clobber perf state), i.e.
-+	 * KVM doesn't support IA32_XSS[bit 8] (guests can/must use RDMSR/WRMSR
-+	 * to save/restore PT MSRs).
-+	 */
-+	const u64 KVM_SUPPORTED_XSS = XFEATURE_MASK_CET_ALL;
++	/* eVMCS isn't prepared yet for APX */
++	if (kvm_is_using_evmcs())
++		kvm_cpu_cap_clear(X86_FEATURE_APX);
 +
- 	u64 host_pat;
- 	int r, cpu;
- 
+ 	kvm_setup_xss_caps();
+ 	kvm_finalize_cpu_caps();
+ }
 -- 
 2.53.0
 
