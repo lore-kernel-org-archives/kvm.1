@@ -1,79 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795442145;
-	b=jR+r0TWuYbM3jri02dMeYMetXd356Gf+zadxAHHTIJl2kMnYlpAKu52+MmGnIQ9Y2F2s
-	 Ovq/msANJsz16acAdaU7XDPW9QhR2xCYFFNP2Z1xe9RoCRHGQb76oKT7BfDppFsqUy2zI
-	 axLxnuUARAlf2TUlJRqbRI3Ml1JjvXGNY2NIyoBfEkgxjT+tcvXjvJ/n6D9DHVd+dkSwo
-	 PjdDoDsZxfQDDaJTXnWYUnPLIYMfkyCUKJTU1UMR3QkrcDE5emI3UYFAa1GQgzmk8vDlv
-	 ZFmOKc0DCQq9f9FWVU83ofjpNErrsV4myEYxZ38S2rYCLmYTh8IiPimzHjKx8WI3hCw==
+	t=1795442204;
+	b=nHsgZCibnH14OPTB7YZH+mcyMdlVvBrqoFrZxDNFjlckaQ1z9mPkSusbS6otmgKTdadR
+	 IuMVjnyoIwkBLW0p/DwQ5EzGX4t79gdRfyuOR3XKdcaiwMTwwbBOcF1IBEMcFtxw6cY5V
+	 7MFFi/C2wfB1fchiTLnHV8G5fZdICLVEdXj26onYHzua0si93CghA5yaDwoM8ABOUEs/3
+	 n3yzGkQZUnFRDndApWpJlVUM9uiIHeRzPW6UEAfxRlOto+g/XKrun0G68M3N1C3xiinFb
+	 cCy+palGSGCTIcXN69MCu2aQeb+QhWn7c8jxrqYJmOypICn5Y/ekBkhZSQVJTBTFagA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795442145;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:MIME-Version:Date:From:To:Cc:
-	 Subject:Reply-To:Mail-Reply-To:In-Reply-To:References:Message-ID:
-	 X-Sender:Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=gIPXt/+bM63fjGxIjoB7JBdhrAARgaP5EU3/iuA05zo=;
-	b=mnotkLN1hHzk8WNOMmNblK4HHZ3uBXXmnR+MfGeQpHJ9EO29d51jqKgk2ARZjW+vDVql
-	 Tec/W/chrKnzTZHPJA/KxoMepOczpdidCGaI50/WAuv2StNWvK7DE9EKjpzS2vjQ9Ij3z
-	 7xtqkfgUFdlGzRl7kg3ZmdzidNAB5fdMtdBo2U+w45R/dtQY4NN6PfhzcDpIA9OU+8NA1
-	 xDG8QSUZXUztDCuatnaml8D7lKDNzn/QIqvT/DYyAuVETZW5QFEG29S4McGAcuvEa5LhD
-	 3xmwVd+Ntw/6m9rnNIbwZJ6BueKNfi5sOgBWeNDjwYMTwlS5RY5VWW1kZHOgPY0Q0zg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795442204;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=YvJuJhFp5l2kJagzPQ2SnYyg6xkop1iejbQq4U7qdYc=;
+	b=bH2vbH7Wof1GriRGy4hhtXQjx0avuEg/agOcK84LezT3fyCI3YQWL0pgBQS0kmbPHKf4
+	 f2MSW69hG9tf2dR6Cm6n6THKpn+iRSP2eUmlwzC55oElIZ8MUMeeZUIJCVsYb13lXA4DA
+	 XmsD/kaoIxXB9LNLQcFJCoFcs7n2VRNApnoV+Nx1kQvukpo4aeR0KIdXqKR+6febl3J/h
+	 SMt8C3NdN4Ka/Nwee/HiH5fDvQ+yIPUvapt6MP/GsDUwEfd2DYMuOTM8g3gnd0QNZW0Qn
+	 J6V/pCRm0K/Gu5uQfgscbU7bz8OzzKuWQikLkwwg7nFggTFBTAe6YOGg/uMPx4OzyxA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kzmfZLKr;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eUBIT6ZK;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFC4606A31E;
-	Mon, 23 Nov 2026 13:55:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9DFC4606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1036C606A31F;
+	Mon, 23 Nov 2026 13:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kzmfZLKr
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ANDYvrG3885567;
-	Mon, 23 Nov 2026 13:55:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:to; s=pp1;
-	 bh=gIPXt/+bM63fjGxIjoB7JBdhrAARgaP5EU3/iuA05zo=; b=kzmfZLKrIP3P
-	IY/Vco4C4kz9q0DhbAHYN9ii+MJQp0a8piSCdgJAiir5LLvpA1t+ljXpc7Ofnl/C
-	839cXmy25GBw5UtrHQxdD7RUjiIVViGf2gX4fE6WkqpJ7hQ4d+JYeeYnJ7EqBjqI
-	08uwg0BwdEfYMi6uSA7lp0iiWRXOdlLpdWpYKDp3oVtqBmZFL0KRrF+hKfFWIR79
-	Yi1Js9R7LufzsPTApVZIt4lWV8L/Ub8ScvJ3iOQVGKSm5pIfMHmKjdzH1KxALoyP
-	hhLzWKO9NkE5l9jlM1hQAOmwrMcslmHWGktyANPqd4c+eL97b5XjNyZdXlwm3mvc
-	uAmO5Kjp1A==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34fa3ey3-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 23 Nov 2026 13:55:40 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6ANDJds53030689;
-	Mon, 23 Nov 2026 13:55:39 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j3q4h6x5w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Nov 2026 13:55:39 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6ANDtbnI29360752
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Nov 2026 13:55:38 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC9EF58068;
-	Mon, 23 Nov 2026 13:55:37 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F077D58056;
-	Mon, 23 Nov 2026 13:55:36 +0000 (GMT)
-Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 23 Nov 2026 13:55:36 +0000 (GMT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eUBIT6ZK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993FB1F000D0;
+	Mon, 23 Nov 2026 13:56:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795442203;
+	bh=YvJuJhFp5l2kJagzPQ2SnYyg6xkop1iejbQq4U7qdYc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=eUBIT6ZKbzq+Bc9lN79cX0NuNYT/6SfEdlBwvpzcUIY7OSqN21qmPUdmVBJX5KGP4
+	 HasU6uQJJYARzZeImuxEd3H3OPBFWct3ME1vzMKYLmJj+j/7GOk91V0UiieaHPVujm
+	 Z4J0GGf54gKjlkpyrfejJ2pYvy9U5yPljBqj1zm5opqk3IfbOD4SfaTCRp8VFCgbuV
+	 Apmt1QapavcCY4qK/VBVFICq4PVNYuu7wgh+IPPL2ELiFGGfM05AoAYyWPQCB5JrGY
+	 JV1cYVFnBTdPAYQGSOKQ0bzo9KDJ+hppLFp7MvYDRk7oGieN/9KBLWPZFDSJ960sHg
+	 5rU5hQMu2VrQw==
+Date: Mon, 23 Nov 2026 15:56:38 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Lukas Wunner <lukas@wunner.de>, Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
+	kvm@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH v1 00/10] PCI/TSM: Support guest TSM drivers
+Message-ID: <20261123135638.GO14811@unreal>
+References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
+ <2026112325-emit-squeezing-5d96@gregkh>
+ <20261123090623.GK14811@unreal>
+ <yq5a7bi3riha.fsf@kernel.org>
+ <20261123115803.GN14811@unreal>
+ <yq5awlq3pto0.fsf@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -83,131 +74,107 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Mon, 23 Nov 2026 14:55:36 +0100
-From: Harald Freudenberger <freude@linux.ibm.com>
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Eric Farman
- <farman@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Tony
- Krowiak <akrowiak@linux.ibm.com>,
-        Jason Herne <jjherne@linux.ibm.com>,
-        Holger Dengler <dengler@linux.ibm.com>,
-        Alex Williamson <alex@shazbot.org>,
-        Vineeth Vijayan <vneethv@linux.ibm.com>,
-        Peter Oberparleiter
- <oberpar@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik
- <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org,
-        kvm@vger.kernel.org
-Subject: Re: [PATCH v2 04/10] s390/vfio: Allow untainted use of
- driver_override
-Reply-To: freude@linux.ibm.com
-Mail-Reply-To: freude@linux.ibm.com
-In-Reply-To: <a53e12ad841fb18e45b3cf7a4580846943ed0c6d.1795171088.git.u.kleine-koenig@baylibre.com>
-References: <cover.1795171088.git.u.kleine-koenig@baylibre.com>
- <a53e12ad841fb18e45b3cf7a4580846943ed0c6d.1795171088.git.u.kleine-koenig@baylibre.com>
-Message-ID: <7ff78d9a05bbec91fd494938508c1567@linux.ibm.com>
-X-Sender: freude@linux.ibm.com
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIzMDA1NCBTYWx0ZWRfX3pPKp3I7tVkg
- hFcsQZiHl3zIM/agLnjqmqyoYftPBj4H49EUyzylenB0BFxd4M/2+SAB8FMOY0hKLbSwapgNWjX
- ZTzWX+2qpAfIK0JdlB2Jl2wgkJ3ok0JIaBtI0lhlh5Cf5hYccbDTSLhTgC80pKWTVilZWCBcIja
- q26jlJ/IYHXu7UOl6Ru8oAfqQh6egiWlXEws80ku7A+2BzqMlC++/zzbaOPxBZS0sdonwSf5ogx
- rjX6ai47xSWiYU0cg16+5n+mVC/7pWcAqA1uH4D+5b31uXjr4BETb5+vZsPxNj7L5uTsBSOLOaJ
- 80UjyfPV/2u/knEaUTT5qX+eQwWSkHzXLKOnc11jiSneM1K42RWtfPkTK5eL8lIce7MixjBHdXX
- iQduG2pp1QD7GK5pRVofYSg62BtuCbOhyQCUczQj+pOza8788EwbhNUzoWGcwEuJiTdTTSV42DF
- JQAjk2ndQhilxMMyyDw==
-X-Proofpoint-ORIG-GUID: qLSMTyvi56QssC3yRpKR7fgW4Y4bsn1y
-X-Authority-Analysis: v=2.4 cv=U6QHnuru c=1 sm=1 tr=0 ts=6b0445dc cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=r1p2_3pzAAAA:8
- a=IpJZQVW2AAAA:8 a=VnNF1IyMAAAA:8 a=b35nFPcqQqUy3iSUCi0A:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=r_pkcD-q9-ctt7trBg_g:22 a=IawgGOuG5U0WyFbmm1f5:22
-X-Proofpoint-GUID: qLSMTyvi56QssC3yRpKR7fgW4Y4bsn1y
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIzMDA1NCBTYWx0ZWRfXwBl6q24OZao6
- 5Q+QPE+snqQMSKKSVl9qRZKkDInI+wj7pX6QpDjtoScvAzmZIkUzpFRTczXp57bLwTftm5g0ipr
- X/F/VzFiYKIZYDotqWBLGpr5lpwOcnQ=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-23_03,2026-11-23_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 lowpriorityscore=0 spamscore=0 impostorscore=0
- clxscore=1015 bulkscore=0 suspectscore=0 adultscore=0 phishscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611230054
+In-Reply-To: <yq5awlq3pto0.fsf@kernel.org>
 
-On 2026-11-20 12:11, Uwe Kleine-König wrote:
-> From: Alex Williamson <alex@shazbot.org>
+On Mon, Nov 23, 2026 at 06:54:31PM +0530, Aneesh Kumar K.V wrote:
+> Leon Romanovsky <leon@kernel.org> writes:
 > 
-> The vfio_ap and vfio_ccw drivers bind devices through driver_override.
-> With the introduction of the support_driver_override flag in the core
-> driver struct, it's now required for drivers to declare themselves as
-> driver_override compatible, otherwise driver_override bindings will be
-> denied or generate a kernel taint.
+> > On Mon, Nov 23, 2026 at 03:13:13PM +0530, Aneesh Kumar K.V wrote:
+> >> Leon Romanovsky <leon@kernel.org> writes:
+> >> 
+> >> > On Mon, Nov 23, 2026 at 09:40:55AM +0100, Greg Kroah-Hartman wrote:
+> >> >> On Mon, Nov 23, 2026 at 02:03:27PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> >> >> > This series adds the PCI/TSM support needed by a TEE Security Manager
+> >> >> > (TSM) driver in a confidential guest. It adds device lock/unlock,
+> >> >> > helpers for recording device acceptance and parsing MMIO reports, and
+> >> >> > DMA callbacks used during PCI driver attachment. The guest TSM driver and
+> >> >> > attestation commands using these interfaces are in follow-up series.
+> >> >> > 
+> >> >> > This series is based on Dan Williams' "[PATCH v2 00/19] PCI/TSM: TEE I/O
+> >> >> > infrastructure" posting [1], particularly the guest LOCK/UNLOCK, ACCEPT
+> >> >> > and MMIO report work [2-4]. It retains device_cc_accepted() and the
+> >> >> > confidential-device acceptance model from that posting, with changes
+> >> >> > adapted to the current PCI/TSM structures and reference APIs. Dan's
+> >> >> > device-core acceptance helper and per-host-bridge IDE stream reporting
+> >> >> > patch are also included.
+> >> >> > 
+> >> >> > This series does not adopt the Device Trust changes from Dan's "Device
+> >> >> > Evidence and Trust for PCI Security Protocol (TDISP)" [5]. That work is
+> >> >> > being developed separately in Leon Romanovsky's "driver core: Authorize
+> >> >> > device trust before driver binding" series, [6]. Confidential-device
+> >> >> > acceptance is kept separate from that driver-binding trust policy.
+> >> >> 
+> >> >> But it should not, as you are making driver core changes that will
+> >> >> mirror the same thing that that patchset is attempting to do.  Please
+> >> >> work together on this.
+> >> >
+> >> > +10000000,
+> >> >
+> >> > Greg,
+> >> >
+> >> > This series came as a surprise to me given the fact that device trust
+> >> > series is exactly for that - allow confidential computing.
+> >> >
+> >> > Adversarial is equal to the "cc_accepted".
+> >> 
+> >> I think the confusion stems from this thread:
+> >> 
+> >> https://lore.kernel.org/all/yq5amrr8yldi.fsf@kernel.org
+> >> 
+> >> Based on that discussion, I understood TRUST and eligibility for private
+> >> DMA to be complementary attributes. Device acceptance determines whether
+> >> a device may access private memory, while trust determines whether the
+> >> core must enforce additional restrictions. I understood that supporting
+> >> an accepted but adversarial device would require either a private IOTLB
+> >> to restrict its access or an IOMMU.
+> >
+> > I reached a completely different conclusion from that discussion.
+> >
+> > Device trust does little beyond preventing driver binding and recording the
+> > trust decision in "struct device". The missing piece, which I would expect
+> > you to address, is ensuring that the IOMMU and private DMA are configured
+> > only after the trust level has been decided or as part of that decision,
+> > rather than beforehand, as they are today.
+> >
 > 
-> Set the support_driver_override flag on the vfio_ap and vfio_ccw driver
-> structs.
 > 
-> Signed-off-by: Alex Williamson <alex@shazbot.org>
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-> ---
->  drivers/s390/cio/vfio_ccw_drv.c   | 1 +
->  drivers/s390/crypto/vfio_ap_drv.c | 1 +
->  2 files changed, 2 insertions(+)
+> I agree that the trust decision must precede DMA configuration and
+> driver probe. My integration tree shared in the cover letter already
+> includes your trust framework, with PCI/TSM DMA setup following that
+> decision.
 > 
-> diff --git a/drivers/s390/cio/vfio_ccw_drv.c 
-> b/drivers/s390/cio/vfio_ccw_drv.c
-> index 7546bd137e4e..77765cde87f7 100644
-> --- a/drivers/s390/cio/vfio_ccw_drv.c
-> +++ b/drivers/s390/cio/vfio_ccw_drv.c
-> @@ -375,6 +375,7 @@ static struct css_driver vfio_ccw_sch_driver = {
->  	.drv = {
->  		.name = "vfio_ccw",
->  		.owner = THIS_MODULE,
-> +		.support_driver_override = true,
->  	},
->  	.subchannel_type = vfio_ccw_sch_ids,
->  	.irq = vfio_ccw_sch_irq,
-> diff --git a/drivers/s390/crypto/vfio_ap_drv.c
-> b/drivers/s390/crypto/vfio_ap_drv.c
-> index 8e69ed286bb9..2d47dc643269 100644
-> --- a/drivers/s390/crypto/vfio_ap_drv.c
-> +++ b/drivers/s390/crypto/vfio_ap_drv.c
-> @@ -62,6 +62,7 @@ static struct ap_driver vfio_ap_drv = {
->  	.on_config_changed = vfio_ap_on_cfg_changed,
->  	.on_scan_complete = vfio_ap_on_scan_complete,
->  	.ids = ap_queue_ids,
-> +	.driver.support_driver_override = true,
->  };
-> 
->  static void vfio_ap_matrix_dev_release(struct device *dev)
+> What I am still trying to understand is how you view the DMA allocation
+> and mapping paths determining whether a device can access private
+> memory. Paths such as force_dma_unencrypted() and SWIOTLB receive a
+> struct device pointer and need to decide whether to use private memory
+> or shared buffers.
 
-Please add the s390 zcrypt device driver ("cex4queue") to this patch:
+After the IOMMU cleanup, I expect we’ll be able to create a cyclic
+trust-level state machine that lets us reset the trust level when a
+driver is unbound. We can then add internal states to the trust-level
+FSM, which DMA/SWIOTLB can check.
 
-diff --git a/drivers/s390/crypto/zcrypt_cex4.c 
-b/drivers/s390/crypto/zcrypt_cex4.c
-index 43871cd89b04..2765f82f32d6 100644
---- a/drivers/s390/crypto/zcrypt_cex4.c
-+++ b/drivers/s390/crypto/zcrypt_cex4.c
-@@ -746,6 +746,7 @@ static void zcrypt_cex4_queue_remove(struct 
-ap_device *ap_dev)
-  }
-
-  static struct ap_driver zcrypt_cex4_queue_driver = {
-+       .driver.support_driver_override = true,
-         .probe = zcrypt_cex4_queue_probe,
-         .remove = zcrypt_cex4_queue_remove,
-         .ids = zcrypt_cex4_queue_ids,
-
-and when done add
-Acked-by: Harald Freudenberger <freude@linux.ibm.com>
+In theory, we could make this final improvement before the IOMMU cleanup.
+However, the risk of creating a mess is higher than if we follow a
+straightforward, sequential engineering approach.
 
 Thanks
+
+> 
+> We could move cc_accepted into struct pci_tsm_devsec, outside driver
+> core. How would you expect the generic DMA code to obtain that
+> information? Adding another flag to struct device would effectively
+> recreate the state we are trying to remove.
+> 
+> This goes back to my question here:
+> https://lore.kernel.org/all/yq5amrr8yldi.fsf@kernel.org/
+> 
+> If we remove device_cc_accepted(), what should those callers use
+> instead? How do you see your trust framework supporting that decision?
+> 
+> -aneesh
+> 
+> 
