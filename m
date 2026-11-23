@@ -1,98 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.220
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795423679;
-	b=PcGun1XmPpIUlmjv/yqUSvbx7o2MiLfw/2br8u0BGTXPRPuEAu1S1K4WvYVboCjaswq4
-	 svYivXXnL1hmUCMIbC9822msEx5IpVpshkxuRPVdqRgnIz1WFUBhMx1L1Yqmkaoa3w5i4
-	 OxixB7rk14bANVq2O7IbtcNQ4QJrX9flk+OZMpA/8oqEaJTAsJWedrL5+Or5Xr+CoY7AV
-	 DI1Ykv8lFp56T8r03qV7jHa2gl3hTM0b18s+/gH041QRY+pTdDdcWZPfY5bNyfsXX1DF0
-	 tV+HUE/vkI5DxQKjEpXEiofj89xqJpA8GwUXel2rLfRNCIq7cj3eWhXoGUHF0WWURSQ==
+	t=1795424000;
+	b=sKr8TyP73L/BRPh4ybg8HB0Si9U5pkbBQTgkHp/kc5hW1lnl/1/gLelh0VHTP+JSiRzT
+	 SUI+IgDBlooi4Ey0Omq3B/OcjLZL5IE2f/SXMZOQG/PuyaSb8HACko7LiXQnBHM/7GuIX
+	 2A+fJNa1XxDk3CSptsAvclpSX6+LrqnvEORecGJbTBvTgNofODyBEogvSESRftuwB056k
+	 dnmDgr+43EzmMSZAtzkSw3KSbQIPvLMaQQZPNKGG7jAqq92xlRrB+hWmBHUrLCmpweZGy
+	 MOz5zNHSHCzSxKE3U62+dGIvkY0qNmWU0X6jXB3PJYB3RgsCGbxXPs0sMmVkpyxmtpw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795423679;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-Reinject:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Authority-Analysis:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=jtPmF+KNP7DwnoRQ+DopIkz1VDyOzRPcRfk8tIoDwYo=;
-	b=YhFS/8+VcEfuzfpBGp8ori6sD1Ryj/Uvt1/XV9WB17urLXJ9I8kqOuxgBQyAlG7OYYww
-	 fmgMY+DWLhLfHUWWS/gdsk5TBNa6PEL4ZI5sKfLVUjT80auQebOlymXvEFFKbfQq54K6g
-	 ME4qnZZljZf4+5pA92GeRvnxZiVnGuvKg675zcje5hTP6fu3fkjz9TbGSZwdRZw+MCVEl
-	 f1x1Efg5GlHxEBg9lZBKVLhpbxICZxjh0cosjkxhlnmgnHPS0OERLyKNMgL5yJ8/JB92p
-	 U+xIPo900IVz9iklrktKTtdp3MfNXuB+xJ4P8MyWfxjnM2TwHjbG8Ezj3CL4yr2JoSA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795424000;
+	h=DMARC-Filter:dkim-signature:Received:Received:Received:Subject:To:CC:
+	 References:From:Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-Originating-IP:
+	 X-ClientProxiedBy;
+	bh=6btJdVn7D7gz89a4EFk5GN2s9zXWiQL6EGDEhvkvBic=;
+	b=APRyxeR/KCFs53Wnv2krU+VzLj6dq6HZ+XpZiAItFnpYicK8FdixzT7GQz2EajEvjJLP
+	 x8plks6fvbNoMtI+ca3OdEy//cvje/3PjJzRkNoCG3mc+q10V7FT8+FBvcYOJHYAWsJ2d
+	 0NJhkhjKoCBEApG7sCqdgn+n59Ay9D9saGE+zFXedo1ITQY1wqdcdzNajqOWrNlq6VB9H
+	 8tcD04iK1Scmjmu3cUb50sZgXf0QE5U1naP0oibvUSEwxyTXtYhxlhBxS2ByVgZVosrdF
+	 9jvNzkfR7clmMqARg3ZBElwH4lIt3M19zeX3USy4s32oU5ORbT9VkmwHnxpRjQAhnTw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b="AP/jkJTU";
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	dmarc=pass header.from=huawei.com;
+	spf=pass smtp.mailfrom=huawei.com;
+	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=EgK1mxZ4;
+	arc=none smtp.remote-ip=113.46.200.220
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04ACB606A333;
-	Mon, 23 Nov 2026 08:47:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 04ACB606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A13606A31F
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 08:53:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E2A13606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AP/jkJTU
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AN54q4g1364721;
-	Mon, 23 Nov 2026 08:47:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=jtPmF+KNP7DwnoRQ+
-	DopIkz1VDyOzRPcRfk8tIoDwYo=; b=AP/jkJTU6qwWdm3GDdkCBChVcblaOmqqw
-	a/kvPplyrAPd97cpYcp3bsJe9psPxBAQqCBTu6Gxo+8KfbVUD8cSi7iP5eYOVNma
-	7SSazqKVgsS6mGF3qMCvy0ZI10M1tPmQExq/RAIokZlz0Vbzo52g9hZUyaSEVfXu
-	xEKaomQpGVFYiHeCx6DrXcnPIJn2+RHy8fZkl4XOMFzvfcIb7P7pq84L68B4oKEv
-	eAK2gLbClYqeN2DtApRzdCPK1Avhz7S4jrsrCpgdPNga0mIFcXxDHw8NUZXvwLAl
-	jeDhcwp9gU8l3Rwehv8IrO5TkXYjNNGS4jfZ0N+pNvTogxYJjtRzw==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34p49v23-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 23 Nov 2026 08:47:34 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AN54ORC2817259;
-	Mon, 23 Nov 2026 08:47:33 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j3pmjx0t6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Nov 2026 08:47:33 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AN8lT9M46334392
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Nov 2026 08:47:29 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4D08D2004D;
-	Mon, 23 Nov 2026 08:47:29 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5ACCE2005A;
-	Mon, 23 Nov 2026 08:47:26 +0000 (GMT)
-Received: from Narayanas-MacBook-Pro.bl1-in.ibm.com (unknown [9.123.4.64])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 23 Nov 2026 08:47:26 +0000 (GMT)
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
-To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        "Oliver O'Halloran" <oohall@gmail.com>,
-        Timothy Pearson <tpearson@raptorengineering.com>,
-        Alex Williamson <alex@shazbot.org>
-Cc: sourabhjain@linux.ibm.com, Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <chleroy@kernel.org>,
-        Ritesh Harjani <ritesh.list@gmail.com>,
-        Shrikanth Hegde <sshegde@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org, sbhat@linux.ibm.com,
-        harshpb@linux.ibm.com
-Subject: [PATCH v7 4/4] powerpc/powernv/eeh: Map generic EEH error types to OPAL
-Date: Mon, 23 Nov 2026 14:17:02 +0530
-Message-ID: <20261123084658.61330-8-nnmlinux@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261023073642.59657-1-nnmlinux@linux.ibm.com> (raw)
-References: <20261023073642.59657-1-nnmlinux@linux.ibm.com> (raw)
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=EgK1mxZ4
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=6btJdVn7D7gz89a4EFk5GN2s9zXWiQL6EGDEhvkvBic=;
+	b=EgK1mxZ4rwf0FdYKvbAyk3tKWhnlkpXMdq2lnKI0aHqEZSVBmVklN5XelXoaob/YyvSZtTXi2
+	EkoTI0jfU9k6Wh7anGXw2mzcQUhqbQSI/u3bkpaUD1AiKrMQ1kf8Xk0e40Z5AziNwAb6KjpaIuc
+	KIqMJB47Mw78+G44YMIp8MU=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4jY07Y0Qyvz12LFt;
+	Mon, 23 Nov 2026 16:52:25 +0800 (CST)
+Received: from whupemk100014.china.huawei.com (unknown [7.152.184.20])
+	by mail.maildlp.com (Postfix) with ESMTPS id 62D064058C;
+	Mon, 23 Nov 2026 16:53:14 +0800 (CST)
+Received: from [10.67.121.110] (10.67.121.110) by
+ whupemk100014.china.huawei.com (7.152.184.20) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Mon, 23 Nov 2026 16:53:12 +0800
+Subject: Re: [PATCH v2 03/10] vfio: Allow untainted use of driver_override
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@baylibre.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Nipun Gupta
+	<nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>, Ioana Ciornei
+	<ioana.ciornei@nxp.com>, Julian Ruess <julianr@linux.ibm.com>, Ankit Agrawal
+	<ankita@nvidia.com>, Brett Creeley <brett.creeley@amd.com>, Giovanni Cabiddu
+	<giovanni.cabiddu@intel.com>, =?UTF-8?Q?Micha=c5=82_Winiarski?=
+	<michal.winiarski@intel.com>, Eric Auger <eric.auger@redhat.com>
+CC: Alex Williamson <alex@shazbot.org>, Mostafa Saleh <smostafa@google.com>,
+	<kvm@vger.kernel.org>, <qat-linux@intel.com>,
+	<virtualization@lists.linux.dev>, <intel-xe@lists.freedesktop.org>
+References: <cover.1795171088.git.u.kleine-koenig@baylibre.com>
+ <fb0df5c89336b77a373ae0f890f63427e4adbb28.1795171088.git.u.kleine-koenig@baylibre.com>
+From: liulongfang <liulongfang@huawei.com>
+Message-ID: <724662fc-4927-6e75-7fe3-cb9a1079b6dd@huawei.com>
+Date: Mon, 23 Nov 2026 16:52:57 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -102,107 +78,223 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+In-Reply-To: <fb0df5c89336b77a373ae0f890f63427e4adbb28.1795171088.git.u.kleine-koenig@baylibre.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIzMDAzNCBTYWx0ZWRfX6EbCewMDKnIb
- S13DcLgnublBt4ugEd0HKCx84mGoywPoMUVNyNz46uBS1UOE4t1lG2yYDdvd/IWF40Wh7h1+Nst
- 5A0UUo1arkfnf3SoqyI+48X3Xv0D9HM=
-X-Proofpoint-GUID: hNK09LV_UAt2WejEAoo1gY31wbRsnz8p
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIzMDAzNCBTYWx0ZWRfXxxjZfwbhCoHT
- emuGRu4UQavQOASBYOZtpj5WkuOdaJKzub0S3nkV7gUFTTqmMoisg331IBBmKmcwetcI/BMoDCF
- MsAUQhzCboH0CBrWwM3rH0GcYfydxlQR5lJDSw4vkVMSTiXxYtuznDoF0sjucOOVBA/aSfT6Apw
- Rjlk04S1tUuZuYpLgaZ8XCF0g6zMiuBcsHkWUdNP8NAkeInv9UX7d+z8jesKj/eCdk58JuPp5oa
- ondqBjjWDQ2UlwQM7nOMkXHxkmA41F/GZs+Ad/2qVJ8leCsSeeISieZggqChazy/LK9gixbH+JE
- c7mC4dRW50IQT68t53blkSLG3O8e3jROGj17WYpN7VzEZH5G+U8RDh/oGKneA+qIe8RgUbl1867
- vKMuEyJTueapKLxswCZmUJhVLb3dISmIu/D4VNFWNEijQIwZHM1m+E9XrhjdEigauw1KVQfRpWP
- p1gpmHFaDy/vJYYDk+w==
-X-Proofpoint-ORIG-GUID: FSVLxOQlCIZa9g7jUmfE5BfrMw-LsBj6
-X-Authority-Analysis: v=2.4 cv=QabzLcbv c=1 sm=1 tr=0 ts=6b03fda6 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=6j_9x97VlVn643bU65YA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-23_01,2026-11-22_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0
- bulkscore=0 priorityscore=1501 clxscore=1015 malwarescore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611230034
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ whupemk100014.china.huawei.com (7.152.184.20)
 
-eeh_pe_inject_err() is called with generic EEH error types defined in
-the VFIO/EEH userspace ABI (EEH_ERR_TYPE_32, EEH_ERR_TYPE_64). The
-PowerNV backend previously compared these generic values directly against
-OPAL firmware constants (OPAL_ERR_INJECT_TYPE_IOA_BUS_ERR and
-OPAL_ERR_INJECT_TYPE_IOA_BUS_ERR64).
+On 2026/11/20 19:11, Uwe Kleine-König wrote:
+> From: Alex Williamson <alex@shazbot.org>
+> 
+> Driver overrides are the standard mechanism for binding vfio drivers
+> to devices.  With the introduction of the support_driver_override flag
+> in the core driver struct, it's now required for drivers to declare
+> themselves as driver_override compatible, otherwise driver_override
+> bindings will be denied or generate a kernel taint.
+> 
+> Set the support_driver_override flag on the driver struct across all
+> vfio drivers.
+> 
+> Signed-off-by: Alex Williamson <alex@shazbot.org>
+> Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+> Reviewed-by: Mostafa Saleh <smostafa@google.com>
+> Reviewed-by: Ankit Agrawal <ankita@nvidia.com>
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+> ---
+>  drivers/vfio/cdx/main.c                        | 1 +
+>  drivers/vfio/fsl-mc/vfio_fsl_mc.c              | 1 +
+>  drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 3 ++-
+>  drivers/vfio/pci/ism/main.c                    | 3 ++-
+>  drivers/vfio/pci/mlx5/main.c                   | 3 ++-
+>  drivers/vfio/pci/nvgrace-gpu/main.c            | 3 ++-
+>  drivers/vfio/pci/pds/pci_drv.c                 | 3 ++-
+>  drivers/vfio/pci/qat/main.c                    | 3 ++-
+>  drivers/vfio/pci/vfio_pci.c                    | 3 ++-
+>  drivers/vfio/pci/virtio/main.c                 | 3 ++-
+>  drivers/vfio/pci/xe/main.c                     | 3 ++-
+>  drivers/vfio/platform/vfio_amba.c              | 1 +
+>  drivers/vfio/platform/vfio_platform.c          | 1 +
+>  13 files changed, 22 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/vfio/cdx/main.c b/drivers/vfio/cdx/main.c
+> index 28dc8c825600..fb7679bf92fd 100644
+> --- a/drivers/vfio/cdx/main.c
+> +++ b/drivers/vfio/cdx/main.c
+> @@ -358,6 +358,7 @@ static struct cdx_driver vfio_cdx_driver = {
+>  	.match_id_table	= vfio_cdx_table,
+>  	.driver	= {
+>  		.name	= "vfio-cdx",
+> +		.support_driver_override = true,
+>  	},
+>  	.driver_managed_dma = true,
+>  };
+> diff --git a/drivers/vfio/fsl-mc/vfio_fsl_mc.c b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
+> index 15b05b8c0c90..1603f81e0257 100644
+> --- a/drivers/vfio/fsl-mc/vfio_fsl_mc.c
+> +++ b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
+> @@ -597,6 +597,7 @@ static struct fsl_mc_driver vfio_fsl_mc_driver = {
+>  	.remove		= vfio_fsl_mc_remove,
+>  	.driver	= {
+>  		.name	= "vfio-fsl-mc",
+> +		.support_driver_override = true,
+>  	},
+>  	.driver_managed_dma = true,
+>  };
+> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+> index c82c59246a3f..5c56aff8db01 100644
+> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+> @@ -1737,7 +1737,8 @@ static struct pci_driver hisi_acc_vfio_pci_driver = {
+>  	.id_table = hisi_acc_vfio_pci_table,
+>  	.probe = hisi_acc_vfio_pci_probe,
+>  	.remove = hisi_acc_vfio_pci_remove,
+> -	.driver = { .pm = pm_ptr(&hisi_acc_vf_pm_ops) },
+> +	.driver = { .pm = pm_ptr(&hisi_acc_vf_pm_ops),
+> +		    .support_driver_override = true },
 
-This is fragile: it relies on the generic EEH ABI values being
-numerically identical to OPAL-specific values, and would silently
-misbehave if they ever diverged.
+Reviewed-by: Longfang Liu <liulongfang@huawei.com>
 
-The preceding patches introduce RTAS-based error injection on pSeries,
-mapping generic EEH error types to PAPR error-injection classes. Apply
-the same explicit translation in the PowerNV backend, which uses OPAL
-instead of RTAS.
+Thanks.
+Longfang.
 
-Add an explicit mapping in pnv_eeh_err_inject() that translates:
-EEH_ERR_TYPE_32 -> OPAL_ERR_INJECT_TYPE_IOA_BUS_ERR
-EEH_ERR_TYPE_64 -> OPAL_ERR_INJECT_TYPE_IOA_BUS_ERR64
-
-Return -ERANGE for unsupported error types, preserving the behavior
-of the original code. This decouples the VFIO/EEH interface from OPAL
-implementation details.
-
-No change to the existing userspace ABI or PowerNV behavior.
-
-Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
----
- arch/powerpc/platforms/powernv/eeh-powernv.c | 22 +++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
-
-diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
-index db3370d1673c..01dae760cecb 100644
---- a/arch/powerpc/platforms/powernv/eeh-powernv.c
-+++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
-@@ -1167,12 +1167,24 @@ static int pnv_eeh_err_inject(struct eeh_pe *pe, int type, int func,
- {
- 	struct pci_controller *hose = pe->phb;
- 	struct pnv_phb *phb = hose->private_data;
-+	int opal_err_type;
- 	s64 rc;
- 
--	if (type != OPAL_ERR_INJECT_TYPE_IOA_BUS_ERR &&
--	    type != OPAL_ERR_INJECT_TYPE_IOA_BUS_ERR64) {
--		pr_warn("%s: Invalid error type %d\n",
--			__func__, type);
-+	/*
-+	 * eeh_pe_inject_err() receives generic EEH error types from the
-+	 * VFIO/EEH userspace ABI.  The PowerNV backend must not rely on
-+	 * these generic values being numerically identical to OPAL firmware
-+	 * values.  Translate to OPAL-specific types before calling firmware.
-+	 */
-+	switch (type) {
-+	case EEH_ERR_TYPE_32:
-+		opal_err_type = OPAL_ERR_INJECT_TYPE_IOA_BUS_ERR;
-+		break;
-+	case EEH_ERR_TYPE_64:
-+		opal_err_type = OPAL_ERR_INJECT_TYPE_IOA_BUS_ERR64;
-+		break;
-+	default:
-+		pr_warn("%s: Invalid error type %d\n", __func__, type);
- 		return -ERANGE;
- 	}
- 
-@@ -1192,7 +1204,7 @@ static int pnv_eeh_err_inject(struct eeh_pe *pe, int type, int func,
- 
- 	/* Do error injection */
- 	rc = opal_pci_err_inject(phb->opal_id, pe->addr,
--				 type, func, addr, mask);
-+				 opal_err_type, func, addr, mask);
- 	if (rc != OPAL_SUCCESS) {
- 		pr_warn("%s: Failure %lld injecting error "
- 			"%d-%d to PHB#%x-PE#%x\n",
--- 
-2.54.0
-
+>  	.err_handler = &hisi_acc_vf_err_handlers,
+>  	.driver_managed_dma = true,
+>  };
+> diff --git a/drivers/vfio/pci/ism/main.c b/drivers/vfio/pci/ism/main.c
+> index cce3bdf1f070..263b377e87c4 100644
+> --- a/drivers/vfio/pci/ism/main.c
+> +++ b/drivers/vfio/pci/ism/main.c
+> @@ -399,7 +399,8 @@ static struct pci_driver ism_vfio_pci_driver = {
+>  	.id_table = ism_device_table,
+>  	.probe = ism_vfio_pci_probe,
+>  	.remove = ism_vfio_pci_remove,
+> -	.driver	= { .pm = pm_ptr(&ism_vfio_pm_ops) },
+> +	.driver	= { .pm = pm_ptr(&ism_vfio_pm_ops),
+> +		    .support_driver_override = true },
+>  	.err_handler = &ism_vfio_err_handlers,
+>  	.driver_managed_dma = true,
+>  };
+> diff --git a/drivers/vfio/pci/mlx5/main.c b/drivers/vfio/pci/mlx5/main.c
+> index 18a6d224b1fd..63c89e461be8 100644
+> --- a/drivers/vfio/pci/mlx5/main.c
+> +++ b/drivers/vfio/pci/mlx5/main.c
+> @@ -1451,7 +1451,8 @@ static struct pci_driver mlx5vf_pci_driver = {
+>  	.id_table = mlx5vf_pci_table,
+>  	.probe = mlx5vf_pci_probe,
+>  	.remove = mlx5vf_pci_remove,
+> -	.driver	= { .pm = pm_ptr(&mlx5vf_pm_ops) },
+> +	.driver	= { .pm = pm_ptr(&mlx5vf_pm_ops),
+> +		    .support_driver_override = true },
+>  	.err_handler = &mlx5vf_err_handlers,
+>  	.driver_managed_dma = true,
+>  };
+> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+> index 5ddec340b73b..946da32c61ff 100644
+> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
+> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+> @@ -1438,7 +1438,8 @@ static struct pci_driver nvgrace_gpu_vfio_pci_driver = {
+>  	.id_table = nvgrace_gpu_vfio_pci_table,
+>  	.probe = nvgrace_gpu_probe,
+>  	.remove = nvgrace_gpu_remove,
+> -	.driver = { .pm = pm_ptr(&nvgrace_gpu_pm_ops) },
+> +	.driver = { .pm = pm_ptr(&nvgrace_gpu_pm_ops),
+> +		    .support_driver_override = true },
+>  	.err_handler = &nvgrace_gpu_vfio_pci_err_handlers,
+>  	.driver_managed_dma = true,
+>  };
+> diff --git a/drivers/vfio/pci/pds/pci_drv.c b/drivers/vfio/pci/pds/pci_drv.c
+> index cf7e33d4d17b..1fcef987f1b0 100644
+> --- a/drivers/vfio/pci/pds/pci_drv.c
+> +++ b/drivers/vfio/pci/pds/pci_drv.c
+> @@ -184,7 +184,8 @@ static struct pci_driver pds_vfio_pci_driver = {
+>  	.id_table = pds_vfio_pci_table,
+>  	.probe = pds_vfio_pci_probe,
+>  	.remove = pds_vfio_pci_remove,
+> -	.driver = { .pm = pm_ptr(&pds_vfio_pm_ops) },
+> +	.driver = { .pm = pm_ptr(&pds_vfio_pm_ops),
+> +		    .support_driver_override = true },
+>  	.err_handler = &pds_vfio_pci_err_handlers,
+>  	.driver_managed_dma = true,
+>  };
+> diff --git a/drivers/vfio/pci/qat/main.c b/drivers/vfio/pci/qat/main.c
+> index 69448fa57df4..8a616f9b6494 100644
+> --- a/drivers/vfio/pci/qat/main.c
+> +++ b/drivers/vfio/pci/qat/main.c
+> @@ -695,7 +695,8 @@ static struct pci_driver qat_vf_vfio_pci_driver = {
+>  	.id_table = qat_vf_vfio_pci_table,
+>  	.probe = qat_vf_vfio_pci_probe,
+>  	.remove = qat_vf_vfio_pci_remove,
+> -	.driver	= { .pm = pm_ptr(&qat_vf_pm_ops) },
+> +	.driver	= { .pm = pm_ptr(&qat_vf_pm_ops),
+> +		    .support_driver_override = true },
+>  	.err_handler = &qat_vf_err_handlers,
+>  	.driver_managed_dma = true,
+>  };
+> diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
+> index e7c012febe91..fde2c3fc88eb 100644
+> --- a/drivers/vfio/pci/vfio_pci.c
+> +++ b/drivers/vfio/pci/vfio_pci.c
+> @@ -260,7 +260,8 @@ static struct pci_driver vfio_pci_driver = {
+>  	.remove			= vfio_pci_remove,
+>  	.sriov_configure	= vfio_pci_sriov_configure,
+>  	.err_handler		= &vfio_pci_err_handlers,
+> -	.driver		= { .pm = pm_ptr(&vfio_pci_pm_ops) },
+> +	.driver		= { .pm = pm_ptr(&vfio_pci_pm_ops),
+> +			    .support_driver_override = true },
+>  	.driver_managed_dma	= true,
+>  };
+>  
+> diff --git a/drivers/vfio/pci/virtio/main.c b/drivers/vfio/pci/virtio/main.c
+> index 123ff5193812..1e02a8fd4a61 100644
+> --- a/drivers/vfio/pci/virtio/main.c
+> +++ b/drivers/vfio/pci/virtio/main.c
+> @@ -222,7 +222,8 @@ static struct pci_driver virtiovf_pci_driver = {
+>  	.id_table = virtiovf_pci_table,
+>  	.probe = virtiovf_pci_probe,
+>  	.remove = virtiovf_pci_remove,
+> -	.driver = { .pm = pm_ptr(&virtiovf_pm_ops) },
+> +	.driver = { .pm = pm_ptr(&virtiovf_pm_ops),
+> +		    .support_driver_override = true },
+>  	.err_handler = &virtiovf_err_handlers,
+>  	.driver_managed_dma = true,
+>  };
+> diff --git a/drivers/vfio/pci/xe/main.c b/drivers/vfio/pci/xe/main.c
+> index 7dab3e024aa8..e0ab61f604de 100644
+> --- a/drivers/vfio/pci/xe/main.c
+> +++ b/drivers/vfio/pci/xe/main.c
+> @@ -592,7 +592,8 @@ static struct pci_driver xe_vfio_pci_driver = {
+>  	.id_table = xe_vfio_pci_table,
+>  	.probe = xe_vfio_pci_probe,
+>  	.remove = xe_vfio_pci_remove,
+> -	.driver = { .pm = pm_ptr(&xe_vfio_pm_ops) },
+> +	.driver = { .pm = pm_ptr(&xe_vfio_pm_ops),
+> +		    .support_driver_override = true },
+>  	.err_handler = &xe_vfio_pci_err_handlers,
+>  	.driver_managed_dma = true,
+>  };
+> diff --git a/drivers/vfio/platform/vfio_amba.c b/drivers/vfio/platform/vfio_amba.c
+> index fa754f203b2d..2c87caf1b7f7 100644
+> --- a/drivers/vfio/platform/vfio_amba.c
+> +++ b/drivers/vfio/platform/vfio_amba.c
+> @@ -137,6 +137,7 @@ static struct amba_driver vfio_amba_driver = {
+>  	.id_table = vfio_amba_ids,
+>  	.drv = {
+>  		.name = "vfio-amba",
+> +		.support_driver_override = true,
+>  	},
+>  	.driver_managed_dma = true,
+>  };
+> diff --git a/drivers/vfio/platform/vfio_platform.c b/drivers/vfio/platform/vfio_platform.c
+> index a4d3ace3e02d..93d06032cdde 100644
+> --- a/drivers/vfio/platform/vfio_platform.c
+> +++ b/drivers/vfio/platform/vfio_platform.c
+> @@ -116,6 +116,7 @@ static struct platform_driver vfio_platform_driver = {
+>  	.remove		= vfio_platform_remove,
+>  	.driver	= {
+>  		.name	= "vfio-platform",
+> +		.support_driver_override = true,
+>  	},
+>  	.driver_managed_dma = true,
+>  };
+> 
