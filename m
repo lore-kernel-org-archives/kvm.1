@@ -1,68 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=113.46.200.223
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795424950;
-	b=Oq3caeav14SueV8SeQMLII990v/g8JLNE1kY0+aRwZkJcMKtc94Rl36Xnemq0w/0MvY8
-	 BIbEv4JqN2RY+bVOwo/U5gXjPWZY4t6taPgoFAcrpsa8217JefTiQI9X+nJ7DrwqsHs3Q
-	 crKnGi3npX6MBo9FVwaH+YJsCabkcVyvfx4/nCwi4MoKytsGOsDJ16tzBi6R3dGgcImFq
-	 nIwKTxLYACJsSVydQ63eQoFKUb8yaLBW1I6wceLmu82noHp7QKdlgTin2ZFHAjJBxwcgQ
-	 nbz5g6taZ+UQuMsGnPXBIR/nwOriCwg4i+F2GojWzeGWgh5Z0F1iQK04Wzp24p6M+/g==
+	t=1795425233;
+	b=y6pncpsaLx2SdRXExYxECQbkdddT/Ogz/3bqsWEMmI3n/1DPKTNzolznjoCpsgZtiEqi
+	 Y6paB8xOJ8Tlaiv1Jg5XGSJeCw3viEYtZEfluTTS6PKBLXFKAScB0nhhsT1X/6li01j2f
+	 4NaIqbcPUAzwOrJx2j6c2l3tSaKfxJzB4i7mmGnmNmH1ggOMHjSV80eBYvkKoM49+Zmb4
+	 R7g6KBe4O9BlP0TKQYU9WakhGXpcEg64arcwZOsHZrCoQGicKqST67M3eNbQ94gTs3Ao1
+	 QrAzNUe9lYUm5R+EOxW7fAybcfVsLnSu5Hd6SA/r7WGG+LLhxzoNAxp9EPvBXTcClxg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795424950;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=O02VVtRWSBlBTffNTMdkr0d21ECe3B1DyZ7TQUqkyYc=;
-	b=Oy2uh9N1/2hIyADVX6XuWeQ7lrts8uz4Bxq9BhDWvY7agjOfk1wvSi6qdnivrgmuwjKd
-	 bY/Ekkh6dRiRtf1UBDvKIXgf3WnolYwBa3GKUb/oCOBGT/UVm6H7M31kW7bmjvZd+bR8z
-	 +lbk2KXCkOQe+xB8M0a/doSE/Sl3v0iCUayu4wiRLU8Tt4EBswYuiAzNImPmhVom33R02
-	 OZb1m9CAZE8Ik34eXs1v4E8/gMffh8+GyERZwYHAkzgDSt0RqTxBt88OH80x0fqYivdhW
-	 SiN2rDPatPxNQ8duJ+sI6cWd/n52nDtoDvDGinOTLv7E71OCCewdNebI16yJFCMYhuA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795425233;
+	h=DMARC-Filter:dkim-signature:Received:Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Originating-IP:
+	 X-ClientProxiedBy;
+	bh=PNz8/jThACatQrxxgBfShzbz4pyu8AsglZobIfmyAmA=;
+	b=sWMzavc26xL4WXttaE95jNWMTWFGNGieabsMHusg+FsaFfsPtcsHtPLQ82AgJz8DcDJK
+	 8KqlNweMpoQpJvCT1Yw1DFDDfgAVnl0IN+LGdfekkkKDeRsMShd1eapmHgA5q+u3XwzqI
+	 GVvR0f/20ZN2FXHCWXB/wPLhlsZTnfbpD5SSosvVb9v0yjmVOaeIr/w080SH3s11Q2+Uk
+	 VFmn/ITH/NqTRIQxXmjYxqOUnQpV58xKyrQixLDAzg7aNjeu07JzBlcK/Uf+vjDGGKCa/
+	 JKiM4MTygD0qD2fFze1gU9ZGTvHge1ssNCd6fF9IcALyt1umb3+Q3rbhGuP1vT0Rm4Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=qS0UZJq0;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A821606A321;
-	Mon, 23 Nov 2026 09:09:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A821606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=huawei.com;
+	spf=pass smtp.mailfrom=huawei.com;
+	dkim=pass header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=SrDuu9va;
+	arc=none smtp.remote-ip=113.46.200.223
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67490606A31E
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 09:13:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67490606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=qS0UZJq0
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9B53A1476;
-	Mon, 23 Nov 2026 01:09:06 -0800 (PST)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 08FBC3F632;
-	Mon, 23 Nov 2026 01:09:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795424949; bh=jm/tu+I4qmiRATBKNiNwWj7t44LL0Pz4nclHyYCT45w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qS0UZJq0Kphetvr/RKKkXdDctKNYhKx2Lb7gDOhRTb+fw+Pt7bJLaCJFjIOCuaDet
-	 WzNxU0kfTkTwgpy1gCegKFTBnvk5ksbsvMaHz3veGEgevLHwY3BpX9MKubSvB90g1M
-	 OeAl6pNM3coIibp4WW/8Wwm3yziZe2NFBgy7L1Gg=
-Date: Mon, 23 Nov 2026 09:09:02 +0000
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, jgg@ziepe.ca, david.quigley@intel.com,
-	lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com,
-	cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com,
-	James.Bottomley@hansenpartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
-	jarkko@kernel.org, zohar@linux.ibm.com, yeoreum.yun@arm.com,
-	aneesh.kumar@kernel.org, dave.jiang@intel.com, nik.borisov@suse.com,
-	sergii.dmytruk@3mdeb.com
-Subject: Re: [PATCH RFC v2 9/9] attestation: Add the TDX family implementation
-Message-ID: <awQCrnD5CtEhKRWz@e129823.arm.com>
-References: <20261113160838.2512652-1-jiri@resnulli.us>
- <20261113160838.2512652-10-jiri@resnulli.us>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=SrDuu9va
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=PNz8/jThACatQrxxgBfShzbz4pyu8AsglZobIfmyAmA=;
+	b=SrDuu9vaZiChaDMfB+FzRKchqdFncFCexaNYmvtoQFjyxz1BtUNyYYBaPKzsZWzyR1mpOTTOl
+	v8goqh8fqTe59eA2QvFKllDS7Lqyq4TJgMgYxOHiNsQ/LzreJ8QlacqSm9kHSsUAJLfWH5RF0R+
+	0p5yBRuUpklU9vchEGU6CUE=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4jY0bn2TJQzmV7s;
+	Mon, 23 Nov 2026 17:13:25 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id DDD254055B;
+	Mon, 23 Nov 2026 17:13:47 +0800 (CST)
+Received: from [10.67.120.103] (10.67.120.103) by
+ kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 23 Nov 2026 17:13:47 +0800
+Message-ID: <069ff131-882c-43a8-8654-006cb9942eba@huawei.com>
+Date: Mon, 23 Nov 2026 17:13:46 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,66 +62,265 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261113160838.2512652-10-jiri@resnulli.us>
-
-Hi Jiri,
-
-[...]
-
-> +static void __iomem *tdx_attestation_log_map(size_t *length)
-> +{
-> +	struct acpi_table_header *header;
-> +	struct acpi_table_ccel *ccel;
-> +	void __iomem *log = NULL;
-> +
-> +	if (ACPI_FAILURE(acpi_get_table(ACPI_SIG_CCEL, 0, &header)))
-> +		return NULL;
-> +	ccel = container_of(header, struct acpi_table_ccel, header);
-> +	if (header->length >= sizeof(*ccel) && ccel->log_area_start_address &&
-> +	    ccel->log_area_minimum_length &&
-> +	    ccel->log_area_minimum_length <= UINT_MAX)
-> +		log = acpi_os_map_iomem(ccel->log_area_start_address,
-> +					ccel->log_area_minimum_length);
-> +	if (log)
-> +		*length = ccel->log_area_minimum_length;
-> +	acpi_put_table(header);
-> +	return log;
-> +}
-> +
-
-I think we don't need to dump log area with the log_area_minimum_length
-since the area would include none-event otherwise, pre-exist tool (i.e.
-tpm2_eventlog) reports error for them like:
-
-  ...
-  - EventNum: 21
-    PCRIndex: 2
-    EventType: EV_EFI_ACTION
-    DigestCount: 1
-    Digests:
-    - AlgorithmId: sha256
-      Digest: "b54f7542cbd872a81a9d9dea839b2b8d747c7ebd5ea6615c40f42f44a6dbeba0"
-    EventSize: 40
-    Event: |-
-      Exit Boot Services Returned with Success
-  ERROR: corrupted log, insufficient size for event header: 3
-  ERROR: failed to parse tpm2 eventlog
-  ERROR: Unable to run tpm2_eventlog
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 14/15] KVM: arm64: Document HDBSS buffer size ioctl
+To: <sashiko-reviews@lists.linux.dev>
+CC: <kvmarm@lists.linux.dev>, <kvm@vger.kernel.org>, Marc Zyngier
+	<maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+	"tangchengchang@huawei.com" <tangchengchang@huawei.com>
+References: <20260929103655.85107-1-zhengtian10@huawei.com>
+ <20260929103655.85107-15-zhengtian10@huawei.com>
+ <20260929110638.D19171F000FF@smtp.kernel.org>
+From: Tian Zheng <zhengtian10@huawei.com>
+In-Reply-To: <20260929110638.D19171F000FF@smtp.kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
 
 
-So, what about export *real size* of eventlog like
-tpm2_calc_event_log_size()?
 
+On 9/29/2026 7:06 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 4 potential issue(s) to consider:
+> - [Critical] kvm: arm64: missing vCPU kick in kvm_arch_update_hw_dirty_mode causes data corruption
+> - [High] kvm: arm64: stage2_wrprotect_walker clobbers concurrent hardware PTE updates
+> - [Medium] kvm: uapi: enabling dirty ring silently resets HDBSS buffer size
+> - [Low] kvm: uapi: KVM_CHECK_EXTENSION misused to return mutable VM state
+> --
+> 
+> commit ad3d8df658768bdca959742e1b61e3dd3914fdd8
+> Author: Tian Zheng <zhengtian10@huawei.com>
+> 
+> KVM: arm64: Document HDBSS buffer size ioctl
+>      
+> Document KVM_CAP_ARM_HDBSS_BUFFER_SIZE, which lets userspace configure the
+> per-vCPU HDBSS buffer size for hardware-assisted dirty tracking during live
+> migration.
+> 
+>> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+>> --- a/Documentation/virt/kvm/api.rst
+>> +++ b/Documentation/virt/kvm/api.rst
+>> @@ -9056,6 +9056,34 @@ enabled, cmma can't be enabled anymore and pfmfi and the storage key
+>>   interpretation are disabled. If cmma has already been enabled or the
+>>   hpage_2g module parameter is not set to 1, -EINVAL is returned.
+>>   
+>> +7.48 KVM_CAP_ARM_HDBSS_BUFFER_SIZE
+>> +-----------------------------------
+>> +
+>> +:Architectures: arm64
+>> +:Target: VM
+>> +:Parameters: args[0] is the per-vCPU HDBSS buffer size in bytes
+>> +:Returns: 0 on success; -EINVAL if the size is invalid or vCPUs have already
+>> +          been created; -EBUSY if the buffer size was already configured.
+>> +
+>> +This capability configures the per-vCPU HDBSS buffer size used for
+>> +hardware-assisted dirty tracking during live migration.
+>> +
+>> +Userspace sets the size in bytes via KVM_ENABLE_CAP. KVM allocates
+>> +per-vCPU HDBSS buffers of the requested size.
+>> +
+>> +KVM_CHECK_EXTENSION returns the maximum supported size (``SZ_2M``)
+>> +when queried without a VM, or the configured per-VM size (default
+>> +``PAGE_SIZE``) when queried with a VM.
+> 
+> [Severity: Low]
+> KVM_CHECK_EXTENSION is designed to advertise static feature support and
+> limits, not to serve as a GET interface for mutable, dynamically configured
+> VM attributes.
+> 
+> Would it be better to use a dedicated interface to read back this dynamic
+> state instead of KVM_CHECK_EXTENSION?
+> 
+>> +
+>> +Constraints:
+>> +
+>> +- The size must be a power of two in [``PAGE_SIZE``, ``SZ_2M``].
+>> +- Dirty-bitmap mode only: rejected with -EINVAL once the dirty ring
+>> +  (``KVM_CAP_DIRTY_LOG_RING``) is enabled, and enabling the ring after
+>> +  a size was set resets it to the default.
+> 
 
-Otherwise, look good to me.
+You are right, we will fix this. KVM_CHECK_EXTENSION now returns the 
+maximum supported size only, matching how KVM_CAP_DIRTY_LOG_RING reports 
+the ring size limit:
 
-[...]
+```
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -519,11 +519,7 @@ int kvm_vm_ioctl_check_extension(str
+        case KVM_CAP_ARM_HDBSS_BUFFER_SIZE:
+-             if (!system_supports_hdbss())
+-                     r = 0;
+-             else if (kvm)
+-                     r = kvm->arch.hdbss_buffer_size;
+-             else
+-                     r = KVM_ARM_HDBSS_MAX_SIZE;
++             r = system_supports_hdbss() ? KVM_ARM_HDBSS_MAX_SIZE : 0;
+                break;
+```
 
+> [Severity: Medium]
+> The KVM guidelines mandate that new memslot and vCPU flags default to
+> immutable.
+> 
+> Instead of silently mutating previously configured state (which can lead to
+> unpredictable state-machine transitions that userspace is not prepared
+> for), should this incompatible capability configuration fail explicitly by
+> returning an error like -EINVAL?
+> >> +- Must be set before any vCPU is created; a second setting is rejected
+>> +  with -EBUSY.
+>>   
+>> diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
+>> --- a/arch/arm64/kvm/hyp/pgtable.c
+>> +++ b/arch/arm64/kvm/hyp/pgtable.c
+> 
 
-Thanks!
+You were right, and the reset is gone. The ring enable never touches the 
+buffer size, and the two are now fully decoupled: any buffer size works 
+with any ring size.
 
--- 
-Sincerely,
-Yeoreum Yun
+> [ ... ]
+> 
+>> @@ -1285,12 +1298,47 @@ static int stage2_update_leaf_attrs(struct kvm_pgtable *pgt, u64 addr,
+>>   	return 0;
+>>   }
+>>   
+>> +static int stage2_wrprotect_walker(const struct kvm_pgtable_visit_ctx *ctx,
+>> +				   enum kvm_pgtable_walk_flags visit)
+>> +{
+>> +	kvm_pte_t new = ctx->old & ~KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
+>> +
+>> +	/* We remove DBM on blocks so they can fault and get split */
+>> +	if (ctx->level < KVM_PGTABLE_LAST_LEVEL)
+>> +		new &= ~KVM_PTE_LEAF_ATTR_HI_S2_DBM;
+>> +
+>> +	if (kvm_pte_valid(ctx->old) && ctx->old != new &&
+>> +	    (ctx->old & KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W) &&
+>> +	    ctx->mm_ops->mark_page_dirty)
+>> +		ctx->mm_ops->mark_page_dirty(kvm_pte_to_phys(ctx->old));
+>> +
+>> +	/*
+>> +	 * The plain WRITE_ONCE races with hardware updates; both are
+>> +	 * benign.
+>> +	 *
+>> +	 * AF: the update may be lost, and is set on the next access.
+>> +	 *
+>> +	 * Dirty state: we only rewrite entries whose old value had S2AP[1]
+>> +	 * set, while hardware only promotes entries with S2AP[1] clear, so
+>> +	 * the two never touch the same entry. The one overlap is DBM removal
+>> +	 * on writable-clean blocks: a racing promotion is demoted back to
+>> +	 * read-only, but the write is still recorded in the HDBSS buffer and
+>> +	 * the folio was marked dirty at fault-in, so nothing is lost.
+>> +	 */
+>> +	if (kvm_pte_valid(ctx->old) && ctx->old != new)
+>> +		WRITE_ONCE(*ctx->ptep, new);
+> 
+> [Severity: High]
+> The global review guidelines strictly mandate: When KVM updates SPTE bits that
+> the hardware page-table walker also writes (Dirty/Access on leaf entries), the
+> update must not clobber a concurrent hardware update.
+> 
+> Since WRITE_ONCE unconditionally overwrites the PTE with the old masked
+> value, could this non-atomic write in stage2_wrprotect_walker() clobber
+> concurrent hardware updates to the Access Flag (AF) or Dirty Bit on leaf
+> PTEs?
+> 
+
+The AF race is real but known and harmless. stage2_attr_walker(), which 
+upstream uses for the same write-protect path, has the exact same 
+read-modify-write pattern and its own comment on it:
+
+"We may race with the CPU trying to set the access flag
+here, but worst-case the access flag update gets lost and
+will be set on the next access instead."
+
+For the dirty bit the two writers are disjoint. The walker only rewrites 
+entries it read as already dirty, while hardware only promotes clean 
+entries, so they never touch the same PTE, and a leaf whose value is 
+unchanged is not written at all.
+
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+> 
+> [ ... ]
+> 
+>> @@ -2581,6 +2629,45 @@ int __init kvm_mmu_init(u32 hyp_va_bits)
+>>   	return err;
+>>   }
+>>   
+>> +/*
+>> + * The VM's hardware dirty-management mode is a derived value, a pure
+>> + * function of the static capabilities and the number of logging
+>> + * memslots, so recomputing it on every event cannot lose an update
+>> + * and needs no locking against racing writers:
+>> + *
+>> + *   logging && HDBSS-capable  ->  HD|HA|HDBSS (hardware tracking)
+>> + *   logging, no HDBSS         ->  off (write-protect faults)
+>> + *   !logging && HAFDBS-cap.   ->  HD|HA (only written pages go dirty)
+>> + */
+>> +void kvm_arch_update_hw_dirty_mode(struct kvm *kvm)
+>> +{
+>> +	unsigned long cur, target;
+>> +	bool logging = atomic_read(&kvm->nr_memslots_dirty_logging) != 0;
+>> +
+>> +	if (logging && kvm_supports_hdbss(kvm))
+>> +		target = VTCR_EL2_HD | VTCR_EL2_HA | VTCR_EL2_HDBSS;
+>> +	else if (logging || !kvm_supports_hafdbs())
+>> +		target = 0;
+>> +	else
+>> +		target = VTCR_EL2_HD | VTCR_EL2_HA;
+>> +
+>> +	cur = kvm->arch.mmu.vtcr & (VTCR_EL2_HD | VTCR_EL2_HA | VTCR_EL2_HDBSS);
+>> +	if (cur == target)
+>> +		return;
+>> +
+>> +	kvm->arch.mmu.vtcr = (kvm->arch.mmu.vtcr &
+>> +			      ~(VTCR_EL2_HD | VTCR_EL2_HA | VTCR_EL2_HDBSS)) |
+>> +			     target;
+>> +
+>> +	kvm_make_all_cpus_request(kvm, KVM_REQ_RELOAD_STAGE2);
+>> +
+>> +	/*
+>> +	 * The request only reloads VTCR_EL2; cached translations keep
+>> +	 * the old permissions until invalidated.
+>> +	 */
+>> +	kvm_flush_remote_tlbs(kvm);
+> 
+> [Severity: Critical]
+> Inside kvm_arch_update_hw_dirty_mode(), kvm_make_all_cpus_request() is issued
+> with KVM_REQ_RELOAD_STAGE2, which is defined as:
+> 
+> #define KVM_REQ_RELOAD_STAGE2 \
+> 	KVM_ARCH_REQ_FLAGS(12, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
+> 
+> The KVM_REQUEST_NO_WAKEUP flag prevents the request from interrupting running
+> vCPUs. The subsequent kvm_flush_remote_tlbs() executes a hardware broadcast TLBI
+> and also does not send IPIs.
+> 
+> Because running vCPUs are never kicked out of guest mode, won't they
+> continue executing with their physical VTCR_EL2 register holding the
+> stale state (HD=1)?
+> 
+> If software dirty logging is active but HDBSS is not correctly synchronized
+> on the CPU, the hardware page table walker could silently promote
+> writable-clean PTEs to writable-dirty without trapping. Since KVM never
+> sees the write, could this cause silent data loss during live migration?
+> 
+>> +}
+> 
+
+They are kicked out. KVM_REQUEST_NO_WAKEUP only skips waking halted 
+vCPUs, the IPI decision in kvm_request_needs_ipi() never consults it, 
+and with KVM_REQUEST_WAIT the request IPIs every vCPU in guest mode and 
+waits for all of them to leave, the same flag pair KVM_REQ_TLB_FLUSH 
+relies on. Re-entering the guest goes through check_vcpu_requests(), 
+which calls __load_stage2() for this request, and a halted vCPU passes 
+the same check on wakeup, so no guest execution ever runs with the old VTCR.
+
+Thanks,
+Tian
