@@ -1,121 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795450130;
-	b=AN20ZTPTg5LC/qq2XOK2Rq9oq1txD5gi0Y9pb1OvV12FI4OsErKLSszQJYz3EILSQcUN
-	 TygDUdMTJ1L2wtO8eyogOjNqrkXbAKW2apXpPn++S+WlEy8EbnQyZkUsHQDq2C80iRdtQ
-	 mO0wStOSrpjeZFh43Clg8xaL8Dk3c6x9FclbW0bTb988pUmH3SK74ik77aZmLpA85pk+U
-	 BEOwwzuNHZZTbeeJvcCW14c35LoSmgzMJ3ua2x5BFoJaNIkvHIW+IRXT5ifwWuvQdthGH
-	 CaVyPbuHblaeK2c+LQJr5xcktclZFEDC1Qv6QKDlLBniEOdkCqz6ZTeniSVzmb0UMMQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795450130;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=lzGh06KvbW29kTdCwqSFpXTG7Ti9DVLUu53y+m7EPw8=;
-	b=stjLoAkFO/6N58DGE4+AC+juYDOW4pYX9A+F/nQceI6P07GaBVtAqID8F/KVx+/Lmsxm
-	 XylDeFrMYhagxzdtzbapse7dN1cxgt3BrbnDkdQevME3RwrNqV69TOByq364qqtnusWQ1
-	 V/CCvVW3Rgj7KzRbTKEyYrBrrNnItogEvVDGk48cSjtOUE1B3D2bOWYlud9DyqrjQsDCj
-	 DFwwFxTKNMWcumF+uOZI47Cs9sCsc7QoHEcUM1ZnEhf6i96PRsLf8D6GQghfSc4v8YfcB
-	 3MYLewr0Vif5BsJa84l4Zy7vV4RjQwoM+1na2DOvP2O9SGvq2MSEC6vZfLpG5Z4/Z5g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=C5nucsP5;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=F8XSS4AH;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.153.30
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795450748;
+	b=b+y255wm9HPCGmMV9Vqv6yPISX5KELGqtHIjVXHUOYCMIsqjiEnnB9GRz5BKS6ETjdTM
+	 dqgKF6ElxYUoFDY7ElDixZ0uem8RGQEhGda8OfAbLPNLWsoTGeEfh43dGH65ePyhe0MNn
+	 VqqFFM1shLzPYrXCr5Y5jvn9RnpEiQj864Yiur8it8KlmbuBz1uG5IA0O4NvxhS356jEd
+	 9lEss5jd8jBUWFxuzVbEIM5dJmYT5lu1arLSN+h7lTaO9h86jOG+O+UDfJdGYiKkcxUZR
+	 nnne2CQ6K4+hTCMnHiWCZhRW5HkwPU4ofn1xR8tUdj6hhe4MtOt6Xh8UZcip6QGzy8A==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795450748;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
+	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Originating-IP:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-GUID:X-Authority-Analysis:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Virus-Version;
+	bh=T3dIrp743mScXUEVTG9HzJg8wQXGZt9Ea7srRCQkNSQ=;
+	b=e5Z0nnWOQ6vqHriltUtsVCP35Y2jQwXX/L1OEmPo1Z80HBId/y242FrzkkuZvVjS24Jx
+	 so9Dbuf/cAqrTyq3TCxNRxlPvcRzxVOvAB6I+z195j05gh5DSQQWyEEjMCpiINRJXxEyo
+	 LvkSqvCvR4adDtYDDw2RbgCWz/b3EkX9qypZ0urlG/89g5JeFd7lIGGIVEphGalDRMQ2v
+	 d3zyHy4qdwS+H3/YlHpNH+iwMHBj8inzeknrjTZhMVzfGViHpr2RHVLLJN4/NbXDko8bh
+	 Nb+Z18nQuOqEK3vpPTVUC7L8ZonCRiXPC/81XRa/3ncKCPye+XviuhjtwzazITtPUNA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=meta.com;
+	spf=pass smtp.mailfrom=meta.com;
+	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=ftmTbLuk;
+	arc=none smtp.remote-ip=67.231.153.30
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80592606A32C
-	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 16:08:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 80592606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424EC606A31E;
+	Mon, 23 Nov 2026 16:19:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 424EC606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=C5nucsP5;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=F8XSS4AH
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795450128;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lzGh06KvbW29kTdCwqSFpXTG7Ti9DVLUu53y+m7EPw8=;
-	b=C5nucsP50WObmK5Q7uRc+TveRbQ433qzGh7y2uyYQKa3lu8VBblMI/jfSafsNlAU5bzqM3
-	2Oof31kKa1N1IDRagkxQGSOfEn7xcPfxwBTeYUwTJmOllC7W87Xmt98CG4KzUEqxzOoPdu
-	PXhmAJmsmsCBRCvg+AyMrINooTjHRUA=
-Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com
- [74.125.224.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-136-TYmpQx8_PEKoFa1Tv9W9Ug-1; Mon, 23 Nov 2026 16:08:46 +0000
-X-MC-Unique: TYmpQx8_PEKoFa1Tv9W9Ug-1
-X-Mimecast-MFC-AGG-ID: TYmpQx8_PEKoFa1Tv9W9Ug_1795450125
-Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-67bda487981so4861063d50.2
-        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 08:08:46 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795450125; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RNPAT2voJcu7BRHW9/SCqL/y7BCyAjwlApC5A966uJyxtwoy/YHRPG/gHxMc/bLZvK
-         dh/S/XbFDwc03SgHT4gZbuUB80jpO1Cb41fBBBvls0qVSqS9wFqPz+SAnSISzwNWsOqo
-         zTyP6eKGuulYFDvXcW19f/CtqkMakrKAWaoLnLetB8Gni+6akA1pfI+6oSJUV7eBAGxY
-         SxtgsQFW4GlVIJMHiXxvo2K6WSdcwrP2VNI9u14cR+9mnf8fHLkKSgvBxiToq/8F5KQ0
-         r2X5Ata/VlmD+83Ra6QlJy5HvzF29qH/XJcaHENIpX4PfDK1VLxoGpHX++dR/O7lNPid
-         sN+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=lzGh06KvbW29kTdCwqSFpXTG7Ti9DVLUu53y+m7EPw8=;
-        fh=7qA3UzGzYsjTVK7O07RpMrxdQziP+VhO63baluMwRRI=;
-        b=aZlPcRkptnHk78wm3EIzbEK4Cvvi2+wHpOwrfpb7fkj7n0BpuD495xuMWMlBsiSMD8
-         KhT9NX9mEfd6nZgpZuHydhMYb7iaPgc2afbVLmOY5KqMzIPA7tcMmRjReslvSlHfYhlB
-         lPEiiJ3ybyxmWAGO4p7EmiaGFow8RE3W66r9VfQjXAXiqB6+8Qry30rs70JR4oNVDhd5
-         dkxpobSh03XBsfSh3A+d4sGluHMdgwy3dahoQe01c9faHrt/u6UqAeBx6KsE2CnOUDsK
-         a9KB0lMiTMS/Lpom1hasjFgZdPAwY+eSAV05bwRo/ND6FDAbt97LtyUHag7utHBVUVDu
-         RwYw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1795450125; x=1796054925; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lzGh06KvbW29kTdCwqSFpXTG7Ti9DVLUu53y+m7EPw8=;
-        b=F8XSS4AH+jbfK2n80Q2fOBkgol2BK+9eeiWpA3qc8uNnYfSmPR4Lym9UL4/4Fj3eSv
-         3EL2QMlTsdxU+ehYxtFFrMazhADuiBCIji4xQ9n4t879wnYluCOMdAchmuxwSd94ednu
-         utGQvW+/dyQ3oJHulzSQawqw9RBDRot4tfwdyFc4EwnQH4S2bWJmc5z59jsrm/TXL/hh
-         IguYUiWQAL/T13tuXolEsly8Sb54z/s69Brb3G8P1eO9ycyFu2+k954xKX3zgkrjzYei
-         nlaj+wQF1bQ11UxgmVAyx4og8R0hq2o6UL51yxdY1cFW6/K7KQplVcCtr7OM+jYf9UN+
-         AVtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795450125; x=1796054925;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lzGh06KvbW29kTdCwqSFpXTG7Ti9DVLUu53y+m7EPw8=;
-        b=H7HRRhhpzcJtA6YRpRzq91/paxY+lM6Y7hBvH72iOylOXZvRPnRiPuupeS729WZffL
-         L5wG0C3vuEjeNEjyD+ZAeuQRURCHj3vOGMJMNMHzyRFNUDBLnp7bGIgoAb0sIcIlACTI
-         ihlqwvkKYhwRxoOZLkqpQG12ZRpBkIM7mNXJE4cfFkuowmX5Zj6f6/3leMGrwS+jV4Dm
-         us/uKCLqsEgJeVJuYIhC3dies4vH3lOl3J6rvUg04lEwEiCP6lPRph9TOsK/D0ktrhFT
-         i5GgJJZHNwPJ4kCBzjNpZAsI9qHBk7SqvjKZwycRxX2zlAoK00DfnVop5GqZJkeNAQSJ
-         IHjw==
-X-Forwarded-Encrypted: i=1; AL+hErGFmGOcxsSw8JKBBgHibVjMFbDi0njupt1hSB3AZKCN+GK2BiseD8+0A6QiuvCdsmCjTYs=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+NXoS17aKBoQW+wc08DctAF6PTgnWQbEoWKQq6AV6ZqZY3lYkO
-	f8nkFPC3Is2s/pk20uhSkvhH3Baz0kv85shG5QcOTr/Gco3Id1wUNQoWSmkL/cgo6ZdsFqmVDUs
-	uxtuv0njEkBo/fnPOdlEN14f7YKB48cAWVErPdcwCcTXx1gdtjzMkqLrBDWmOfDnzRNPrb0nzE/
-	wUp6rL/nCxL4JTXI/crPe2s5HIXwZD
-X-Gm-Gg: AZFdTZf+rZGrzWDuU7TRFo8rTiZXSnfWygH7vO/R8/zrwvycsncxA6FC6pZt0xsD8cs
-	mw1E/B36DZZaZK7GHUrdSlLSaK5EYsiR6CPvbVSizRPPLYU5xr4BXIH3uDpveEIsiMZXU0LcPjS
-	i+woT9DiOSLz9lFb7/flS9eR7k+TVFJL3C7dp03d/bbp3XqRcc+wA+fihhTgvwtN+XItg42Ygey
-	7BFM8nuzMyn0Ezb6kOwyEE2XCwcqwDi8WICjEKSZordgghs3d61IvN/Qmo=
-X-Received: by 2002:a05:690e:4883:10b0:677:d5bd:8349 with SMTP id 956f58d0204a3-67df445d5bfmr2252250d50.63.1795450125561;
-        Mon, 23 Nov 2026 08:08:45 -0800 (PST)
-X-Received: by 2002:a05:690e:4883:10b0:677:d5bd:8349 with SMTP id
- 956f58d0204a3-67df445d5bfmr2252240d50.63.1795450125014; Mon, 23 Nov 2026
- 08:08:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=ftmTbLuk
+Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
+	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 6ANGIIRg3716626;
+	Mon, 23 Nov 2026 08:18:49 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pps82601-s2048-2026-q3; bh=T3dIrp743mS
+	cXUEVTG9HzJg8wQXGZt9Ea7srRCQkNSQ=; b=ftmTbLuksZ18qcfFfRkriR971dv
+	dEYLc8rH4Og7I8wESceYbNcIzKBwhPNKt+zG3i8U5lIgQrebN0Ae1QFkj1HVVePN
+	7u87nd31X7efKdDfnkGw2B2tqxWkc3oVUvlCgJXauNpsnV9gddXaElDys2VcXhxR
+	+8Y76P6oINjFpwHqdywWh/DaySDNZZaHDz7VfFK2dIT0IYKtkMyvUs6dtONqjzZn
+	WgpHGJPDTSMWbiw3CGI87ALp6M4+dzo9poARQtizBW9erbRjn09Ojy3TdtO/fVn9
+	qrWHiWuhnGDZ7Apkmwln6u9VeCfa7gKZPJ2QnKW9K39cHkLFi8sBLTCbMaw==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by m0001303.ppops.net (PPS) with ESMTPS id 4j37udt00r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 23 Nov 2026 08:18:49 -0800 (PST)
+Received: from localhost (2620:10d:c085:208::f) by mail.thefacebook.com
+ (2620:10d:c08b:78::c78f) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Mon, 23 Nov
+ 2026 16:18:47 +0000
+Date: Mon, 23 Nov 2026 08:18:47 -0800
+From: Bobby Eshleman <bobbyeshleman@meta.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+CC: Paolo Abeni <pabeni@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowangio@gmail.com>,
+        Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+        Xuan Zhuo
+	<xuanzhuo@linux.alibaba.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric
+ Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Simon Horman
+	<horms@kernel.org>, <kvm@vger.kernel.org>,
+        <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] vsock: only deliver taps to namespaces that can
+ reach the device
+Message-ID: <awRnZ9S+3B996VqJ@devvm29614.prn0.facebook.com>
+References: <20261116-vsock-tap-net-v1-1-7e24f45adad3@meta.com>
+ <awQJo8WE5Gn4nYHp@sgarzare-redhat>
+ <12a2b44d-3d24-4b77-9dd5-24361d5fe910@redhat.com>
+ <awQ5xzF8P0NJiCsv@sgarzare-redhat>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -125,95 +88,70 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261123135646.3962652-2-dtatulea@nvidia.com> <20261123135646.3962652-3-dtatulea@nvidia.com>
-In-Reply-To: <20261123135646.3962652-3-dtatulea@nvidia.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Mon, 23 Nov 2026 17:08:08 +0100
-X-Gm-Features: Aa3M54pR7ZVMpPP5oNO1OCA7GwyP-se96UdMP4VNO94DAWt_5DL7ZGYCWayniuk
-Message-ID: <CAJaqyWedvj6htnM4rJyrbynW3u1k=6uLHrfuK05YvM5z8v1Hjg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] vdpa/mlx5: Fix error cleanup when VQ setup fails in .dev_add
-To: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Gal Pressman <gal@nvidia.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <awQ5xzF8P0NJiCsv@sgarzare-redhat>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIzMDA2NCBTYWx0ZWRfX5r3cneGfkihi
+ SNwtFPkMtyBsD7xby0vFdVN7Veu2bLp9FJANDCVXDLDMydzzHzPMOksVokwfKKSRKQHEnNI5+K2
+ K6sqW7IFpidNYXSPeBclQv5eMZqHjZ6seFeXsN7/syjfQjRGZnkcUra+gWVfdIhGS/U9ik3etY4
+ qcM4PxkjSJCYUIgeTaRb3/V2OsCL6Pj0/LPpqCZjNXaqr8/f3ged9Y7ROkd5ICkyvoF8phbLeAe
+ EbI3LegRksfvyc9X1yPcbJEyiAZSvw6d7b5aQZrsqjDILmd3VwKOAU0Jj0tp8uW7F3N4tVX/2BN
+ 7xs2aACmI7uynv+HqSbUKS9z63YAH/AEP2ivj75gAvrsegqaQvSg4EcmXAdJi884ZEkzftbUV29
+ JShS/Hy1Blccvx/uYdP9Ucu/YPenqXTtRXsAVWsLSfgyDUpBr+T7QghZYuh8M29+GF4dSFrnFuZ
+ oJahC5jVyqebJ9kJ/kg==
+X-Proofpoint-ORIG-GUID: vkp3xM5VmOZ-hvVr8sf5yf6TGZeYqnHg
+X-Proofpoint-GUID: vkp3xM5VmOZ-hvVr8sf5yf6TGZeYqnHg
+X-Authority-Analysis: v=2.4 cv=VK5IDNPX c=1 sm=1 tr=0 ts=6b046769 cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=_78whYxrdx1mplLwxq1U:22 a=20KFwNOVAAAA:8
+ a=QUIw27DrvkiG4lpEvKAA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIzMDA2NCBTYWx0ZWRfXzO4NYOeXqdXM
+ PEcKJjN339C23yg71j/WjRFVdZZbuea4Qe4n/IVN3nQQAA6rgPm+GG8A/srvFX7rwgRb6LAiPHf
+ wWo7XD7TXJgA5MvgfJ43rvR9CgzuLUg=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-23_04,2026-11-23_01,2025-10-01_01
 
-On Mon, Nov 23, 2026 at 2:59=E2=80=AFPM Dragos Tatulea <dtatulea@nvidia.com=
-> wrote:
->
-> When setup_vq_resources() fails in mlx5_vdpa_dev_add(), e.g. because the
-> firmware rejects the provisioned features (HOST_TSO4/6 without CSUM),
-> the error path unregisters the vdpa device first and then keeps using
-> it:
->
-> - _vdpa_unregister_device() drops the last reference to the device, so
->   mlx5_vdpa_free() runs and ndev is freed.
-> - destroy_workqueue(mvdev->wq) then reads the freed ndev.
-> - put_device() on the freed device underflows the refcount:
->
->   refcount_t: underflow; use-after-free.
->   WARNING: lib/refcount.c:28 at refcount_warn_saturate+0x59/0x90
->   Call Trace:
->    mlx5_vdpa_dev_add+0x3e0/0x760 [mlx5_vdpa]
->    vdpa_nl_cmd_dev_add_set_doit+0x362/0x440 [vdpa]
->    ...
->
-> - mgtdev->ndev is left pointing to the freed ndev, so every following
->   "vdpa dev add" on this management device fails with -ENOSPC.
->
-> mlx5_vdpa_dev_del() already does the cleanup properly so use that. Just
-> make sure that an extra reference is taken during the call to avoid
-> _vdpa_unregister_device() from freeing the device under us.
->
-> Fixes: ffb1aae43ed5 ("vdpa/mlx5: Pre-create hardware VQs at vdpa .dev_add=
- time")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-> ---
->  drivers/vdpa/mlx5/net/mlx5_vnet.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/ml=
-x5_vnet.c
-> index 6830a80e8543..7a39b0bbbee3 100644
-> --- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> +++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> @@ -161,6 +161,8 @@ static void mvqs_set_defaults(struct mlx5_vdpa_net *n=
-dev);
->  static int setup_vq_resources(struct mlx5_vdpa_net *ndev, bool filled);
->  static void teardown_vq_resources(struct mlx5_vdpa_net *ndev);
->  static int resume_vq(struct mlx5_vdpa_net *ndev, struct mlx5_vdpa_virtqu=
-eue *mvq);
-> +static void mlx5_vdpa_dev_del(struct vdpa_mgmt_dev *v_mdev,
-> +                             struct vdpa_device *dev);
->
->  static bool mlx5_vdpa_debug;
->
-> @@ -4043,7 +4045,10 @@ static int mlx5_vdpa_dev_add(struct vdpa_mgmt_dev =
-*v_mdev, const char *name,
->         return 0;
->
->  err_setup_vq_res:
-> -       _vdpa_unregister_device(&mvdev->vdev);
-> +       get_device(&mvdev->vdev.dev);
-> +       mlx5_vdpa_dev_del(&mgtdev->mgtdev, &mvdev->vdev);
-> +       put_device(&mvdev->vdev.dev);
-> +       return err;
+On Mon, Nov 23, 2026 at 02:17:54PM +0100, Stefano Garzarella wrote:
+> On Mon, Nov 23, 2026 at 12:58:38PM +0100, Paolo Abeni wrote:
+> > On 11/23/26 10:43, Stefano Garzarella wrote:
+> > > On Mon, Nov 16, 2026 at 03:46:49PM -0800, Bobby Eshleman wrote:
+> > > > vsock_deliver_tap() clones every packet to every vsockmon device on the
+> > > > system. Creating one needs only CAP_NET_ADMIN in the owning user
+> > > > namespace, so an unprivileged user can capture the traffic of local mode
+> > > > namespaces.
+> > > > 
+> > > > Pass the packet's netns to vsock_deliver_tap() and only deliver to
+> > > > devices that pass vsock_net_check_mode(), the same rule socket lookups
+> > > > use. vhost passes the vhost_vsock netns, loopback the sending socket's
+> > > > netns, and virtio-vsock NULL (global mode).
+> > > 
+> > > For local namespaces I think we are fine, but what about global?
+> > > 
+> > > Is it okay that a namespace with global can capture all the packets of other global namespaces?
+> > > 
+> > > Asking because at this point the CAP_NET_ADMIN is useless, since an user on a global namespace, without CAP_NET_ADMIN, can just create a namespace to have CAP_NET_ADMIN and access all the traffic. Should we fix also that?
+> > My take is that the above question is quite orthogonal to the current patch
+> > and may impact old applications relying on the legacy behavior.
+> 
+> True, but I'm not sure that behavior was correct since the beginning.
+> E.g., what is the point of having CAP_NET_ADMIN requirement if an
+> unprivileged user can just crate a new namespace and get it?
+> 
+> Anyway, it's eventually pre-existing netns support in vsock, so it should be
+> fixed with a followup.
+> 
+> 
+> Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+> 
+> Thanks,
+> Stefano
+> 
 
-As a suggestion, the cleanup could be more symmetric if
-mlx5_vdpa_dev_del checks for NULLs.
+Its a fair point and I agree we should take it up in a follow up. My
+current instinct is that CAP_NET_ADMIN probably shouldn't be enforced
+for some (all?) of these global-mode paths.
 
-But I'm ok if you prefer this way,
-
-Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-
-Thanks!
-
->  err_reg:
->         destroy_workqueue(mvdev->wq);
->  err_alloc:
-> --
-> 2.54.0
->
->
-
+Best,
+Bobby
