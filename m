@@ -1,49 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795476504;
-	b=JPpw3+mYuFa37gMhOfUqBUoRdIf5HMfgsz+REPFRHm7Ans5e1JaLUwTMs8VGfcOnsQUI
-	 oCrWiLmDAP5IKnqefhTXc22t1E2jwT6ugWVPAwaNF5A9mgwLv+Qg0xsAYcYt62FQi4Tmh
-	 kdq32hhdpcSND2lr/AwFmey1fk2MUXWiEvrMOcxMVrJweQit0kJQY+yGxxuPQAwFcQxds
-	 tf7pVLmOVon3gZcmQyBNVtNypsEl6ETwcw2jygiXtAa85aO0cPb5sQC9xmFVergvnadNt
-	 Jnsn1nJl1Cg+RIS1cRqGvrO/amHHfcvijUvMopnC4s5lg5N6amyOC89gS0gK/DIRPQw==
+	t=1795476739;
+	b=cEDRzZX35cif9hyEglquyClOScqRUvxKX/0X96tsC9/IKwTgSeoywNqA3cPlmGPLnek1
+	 PtrnfNmTqhwhm64JaWRrsuMv16MWjMIvL8gDq85zPCOA1Z0CXSycaI0IyEnUEZJxtCRVG
+	 yf7G7G1M2tF3brDSMe/Pas/vIyyo5j2qJR8gTgYS7E4wL0ZOLcubFPV7jjNVRx0mLpRUJ
+	 EBmEoTF5HE9DoXSBf7y4F91uKe5q7AmgtfOIlraNAYgxcMxGE0OInUHwmASGtfyL6QxZc
+	 zXYZ4fFsCgOvBUmYipX5X7Q1Gzj4Qs5DplnNE62d3nh4gt2SF5lKNzdwxmwf1QKJcDw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795476504;
-	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Spam-Status:
-	 X-Spam-Checker-Version;
-	bh=Z4q2lcvDeMyQnvMma/TSV0pjEr8kXRVVL/7uiZixGfQ=;
-	b=GmXV8TMZsQxCfITlv+MzVcNL5bYgDgcrpAx9d2SDpNcfhsJ10XCAVR6BILs2Rgp9Tlx1
-	 PrM+HPWkP73i1Y8BXm8y5RBaTkojVzAA7xz1H9zA8wdabtAj6+L7qysVlnRh1bb1o8jXG
-	 qk6Jv6bqNgrv6MIcUrmbuUQVbHpKGwWdxWaTLsTsrDF9WlTUbyombohma9mAoSDFoUW+0
-	 NozGRttGAp5H6lGCeImiwrD7p1dH3rPtGzosojCh2aINF9oI3xLGAiv1eiRFZcLF8F1PK
-	 t+T5/gVLABB68iyJDojqdCZaKgrbZNgJsptukIFfuDusf9x+1PxSSj15IrWd2JeMXbQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795476739;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=p2ZKC1QFeR/1HgUOsmgqd18a9gAL3iFEjKlpTYV0FRs=;
+	b=NsqMcywovxFcf9M33EpInWMYlV87mpN2piCQxvR9Atyb3pngZnHY50P7WRLxaH2/B/QG
+	 KWsmh1ZX4kohWl5jJyuzzDiX7FtTXXIKRgZw+i4C/3kBvf5zmhCpJvcF4SZIlNWoVSTFi
+	 L8V9ZBc9GF64t3BSJEqQ7uGRuldKfY8K0cZasBbaTVxHUlC6M7QP0ulelMU8g58S9fh24
+	 wUHqnP+BTWC6x4Mc0+dlhXJP5NfP/LWFFD7yF7trnV1gk4W1wDo4hlsODXNhbPJQdov9G
+	 1hD4ht5m5B71IEdc2I+ThtB7f5u00aKMjEeiegpKIJzAGpL1e998x177uj3lgGLHRcQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.microsoft.com;
-	spf=pass smtp.mailfrom=linux.microsoft.com;
-	dkim=pass header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=GBCBOGHy;
-	arc=none smtp.remote-ip=13.77.154.182
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E976E606A321;
-	Mon, 23 Nov 2026 23:28:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E976E606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ajz8lhzy;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3091A606A327;
+	Mon, 23 Nov 2026 23:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=GBCBOGHy
-Received: from [192.168.159.19] (unknown [4.194.122.136])
-	by linux.microsoft.com (Postfix) with ESMTPSA id DCBAB20B7167;
-	Mon, 23 Nov 2026 15:27:54 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DCBAB20B7167
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1795476499;
-	bh=Z4q2lcvDeMyQnvMma/TSV0pjEr8kXRVVL/7uiZixGfQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GBCBOGHyS/woweuMXp/5IiE28nI/q/RWX2fOSyY1oqRdeq6mlJhA0Uy5CY+vntB9X
-	 OBTSWMmuYPNMyZOn37AlljwgO2+M5LQQTDHUqK0know9vyyT8rD60yDr0IBXlfgUHN
-	 T50QratbJQPYi89ozm+6Qtlk7+5eXdmnoqz5Vvmg=
-Message-ID: <ba8c4cdb-ba60-4166-8d0f-812db13ee90a@linux.microsoft.com>
-Date: Mon, 23 Nov 2026 15:27:55 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ajz8lhzy
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7667A1F000D4;
+	Mon, 23 Nov 2026 23:32:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795476738;
+	bh=p2ZKC1QFeR/1HgUOsmgqd18a9gAL3iFEjKlpTYV0FRs=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Ajz8lhzyWjZtFjP4/O2QqpuAkDRBmtpzQ0+XEm7XyQD8myN0b1mIrCzFzuwGk2IlH
+	 pSOMp4joiio/iZVIm2K0dz0v3AFd+D+0OcrWxppnBgyYHmTNgiAkJAPqhNuyvNBzco
+	 j5YavBdsZHeDGqLdbddOmJyLDZDqEr2zJXK+CocAWVQgtvOLYjAoVYrxuWc92neijW
+	 pRQ7EdmyLx0Z68/Pa0hcmP8jDRsb4g7dOoktMc1PFZ6TIutU5z1lXywqufYDep3piM
+	 WfUoQ5/6qXDaFdnaBwE6w0R+f+M9ZnJaQMdZntYD7cSRGqFDDxVrzBBvxr4L30ey8Y
+	 kxpFbFuXqPYEw==
+Message-ID: <sashiko-outbox-230210@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/2] KVM: arm64: nv: Avoid duplicate guest stage-2
+ mapping entries
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Colton Lewis" <coltonlewis@google.com>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>, "Marc
+ Zyngier" <maz@kernel.org>
+In-Reply-To: <20261123232647.3733149-3-coltonlewis@google.com>
+References: <20261123232647.3733149-1-coltonlewis@google.com>
+ <20261123232647.3733149-3-coltonlewis@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 23 Nov 2026 23:32:18 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -52,127 +61,36 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/14] mshv_vtl: convert mmap hooks to mmap_prepare
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
- linux-sgx@vger.kernel.org, selinux@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
- linux-arm-msm@vger.kernel.org, op-tee@lists.trustedfirmware.org,
- netdev@vger.kernel.org, Juergen Gross <jgross@suse.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowangio@gmail.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- Jarkko Sakkinen <jarkko@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner
- <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.com>,
- Paul Moore <paul@paul-moore.com>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>,
- Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>,
- Ryan Chen <ryan_chen@aspeedtech.com>, Billy Tsai
- <billy_tsai@aspeedtech.com>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
- Jens Wiklander <jenswi@kernel.org>, Sumit Garg <sumit.garg@kernel.org>,
- Scott Branden <scott.branden@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Richard Cochran <richardcochran@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
- <20261105-late-2026-mmap_prepare-v1-3-c56aadfbab8a@kernel.org>
-Content-Language: en-US
-From: Kameron Carr <kameroncarr@linux.microsoft.com>
-In-Reply-To: <20261105-late-2026-mmap_prepare-v1-3-c56aadfbab8a@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 11/5/2026 1:05 PM, Lorenzo Stoakes (ARM) wrote:
-> Move from the deprecated mmap hook to the new mmap_prepare hook for both
-> the mshv_vtl and mshv_vtl_low devices. These only set VMA operations and
-> flags.
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] KVM: arm64: nv: missing Fixes trailer for
+  kvm_record_guest_s2_mapping() leak
+--
 
-I don't see this causing any functional changes, but quickly ran basic
-regression testing on it anyway. I couldn't find b61fa14ce; I tested
-based on v7.4-rc1.
+commit 948b2b35956480d91765ab46d7a685fc1f8ebecc
+Author: Colton Lewis <coltonlewis@google.com>
 
-No issues seen.
+> KVM: arm64: nv: Avoid duplicate guest stage-2 mapping entries
+>
+> kvm_record_guest_s2_mapping() unconditionally inserts a new entry into
+> both guest_s2_mappings interval trees. Parallel stage-2 faults on the
+> same IPA or retries after -EAGAIN can therefore insert identical
+> entries for the same nested and canonical IPA range.
+>
+> Check mmu->guest_s2_mappings under guest_s2_tracking_lock before
+> inserting, and free the new entry if an identical one is already
+> present.
+>
+> Signed-off-by: Colton Lewis <coltonlewis@google.com>
 
-Tested-by: Kameron Carr <kameroncarr@linux.microsoft.com>
-Reviewed-by: Kameron Carr <kameroncarr@linux.microsoft.com>
+[Severity: Low]
+This fixes unconditional insertion in kvm_record_guest_s2_mapping().
+Should the commit message include a Fixes tag:
 
--- 
-Regards,
-Kameron
+  Fixes: c2778d14cd2f ("KVM: arm64: nv: Track guest stage-2 mapping creatio=
+n")
 
-> ---
->  drivers/hv/mshv_vtl_main.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/hv/mshv_vtl_main.c b/drivers/hv/mshv_vtl_main.c
-> index d8225242c73f..e372d4c0188d 100644
-> --- a/drivers/hv/mshv_vtl_main.c
-> +++ b/drivers/hv/mshv_vtl_main.c
-> @@ -832,9 +832,9 @@ static const struct vm_operations_struct mshv_vtl_vm_ops = {
->  	.fault = mshv_vtl_fault,
->  };
->  
-> -static int mshv_vtl_mmap(struct file *filp, struct vm_area_struct *vma)
-> +static int mshv_vtl_mmap_prepare(struct vm_area_desc *desc)
->  {
-> -	vma->vm_ops = &mshv_vtl_vm_ops;
-> +	desc->vm_ops = &mshv_vtl_vm_ops;
->  
->  	return 0;
->  }
-> @@ -852,7 +852,7 @@ static const struct file_operations mshv_vtl_fops = {
->  	.owner = THIS_MODULE,
->  	.unlocked_ioctl = mshv_vtl_ioctl,
->  	.release = mshv_vtl_release,
-> -	.mmap = mshv_vtl_mmap,
-> +	.mmap_prepare = mshv_vtl_mmap_prepare,
->  };
->  
->  static void mshv_vtl_synic_mask_vmbus_sint(void *info)
-> @@ -1283,10 +1283,10 @@ static const struct vm_operations_struct mshv_vtl_low_vm_ops = {
->  	.huge_fault = mshv_vtl_low_huge_fault,
->  };
->  
-> -static int mshv_vtl_low_mmap(struct file *filp, struct vm_area_struct *vma)
-> +static int mshv_vtl_low_mmap_prepare(struct vm_area_desc *desc)
->  {
-> -	vma->vm_ops = &mshv_vtl_low_vm_ops;
-> -	vm_flags_set(vma, VM_HUGEPAGE | VM_MIXEDMAP);
-> +	desc->vm_ops = &mshv_vtl_low_vm_ops;
-> +	vma_desc_set_flags(desc, VMA_HUGEPAGE_BIT, VMA_MIXEDMAP_BIT);
->  
->  	return 0;
->  }
-> @@ -1294,7 +1294,7 @@ static int mshv_vtl_low_mmap(struct file *filp, struct vm_area_struct *vma)
->  static const struct file_operations mshv_vtl_low_file_ops = {
->  	.owner		= THIS_MODULE,
->  	.open		= mshv_vtl_low_open,
-> -	.mmap		= mshv_vtl_low_mmap,
-> +	.mmap_prepare	= mshv_vtl_low_mmap_prepare,
->  };
->  
->  static struct miscdevice mshv_vtl_low = {
-> 
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261123232647.3733=
+149-1-coltonlewis@google.com?part=3D2
