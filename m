@@ -1,81 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795457888;
-	b=YUTdzgEDyG0aOtnXxQBGeuh2h4CZp2V2qnyICsYe9dbAQC27AYte0vDugn9byakWSq3t
-	 PsZ1Q8vM17F4luKrhYdvS9VOyQT5gxhsv0F2fWsV9Sg9N1l1QRcHMqH0IpMuV/YOXXPJw
-	 ly5/EnldyoX2t1Fj69PY1r5XUFupK7VcvX3YvnSQI2k/dm7cOp+msA4wZANDfiY2LEoFr
-	 g6txvUvHUOxq/PflXyw4xTAfpVQP68xQ79xpEgYl9n8r8HF+O/g4eG9IiXLXlP1obFiwe
-	 yDoGdUuTLpWvMl3F5rj3Guu0kDpRGKd0wlnfcTvI6JAhH13QQ+WWhcxIZkkQMw5HVuQ==
+	t=1795457952;
+	b=AI8KMawlBV7EDFTTipjeoQjcFkcHtfUHC1egsXk53DQ0S71TIPNpvFCL9FnqzfXz8d+d
+	 VhfFXt09s9KB5xoppHd02je3Vn/5izZKnJ8G/aDImJTm4ILN1+IoAloH52QzACcFfTOSx
+	 9bKlFRgipRaIXUCLYz2318sVT4P/qtoi5MajdxCivVsOqqSyyDks/K6Zc2VbD94ElG3LF
+	 YCBaqmHF7i4+soL7Pg1pV2W7gUzpj6Ec6FDDjOADTqo1057MKVKk6cStYKhRPi+JQ2VuQ
+	 KRXIReRizwUiMtSYrDhXMnMAbollUmDEU87zENxO0W1KpIo60cvN83YShYRB4BBtKcA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795457888;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=/D3jeXWjIZicrVcDLYoYO62YViuPL2W6b/yLM29yp5s=;
-	b=y3ut4MYc47HxDcZ0sKJNqvBBaXDtJFxfX7XS3ihddDRczmt/Z+Nh75g39Ha6RvGKJeh/
-	 T31XIWd9BBP+aCN3dkX7tbW+O1oLkGzfhnkHWQO8Kx46sDNuAj/9S+LMLsa0yPUtuEiTD
-	 oBaVYea6uFSN8ZEJlK23p1CXsphC3KkQNcbCx2kDN8EUewOc3MME/m+mcZgOU5JpyYw9p
-	 z7gHbRqH/iyI57LJgS7wRbJREOFG7KlUdTXsx359MrKp5yD6VggPcOgSadVD1P3whgvtH
-	 aj9910VvXsYZ6TA0E0dZKHZ5t8zsksGG7LOBMgMzbQbBp2ePrywZTcA0BgbAfmC43Ng==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795457952;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=PiDR7HMQHKt2K0TK+R/UfymKDEOmp8ekjpQEWJGGcY4=;
+	b=Z3xA+J/jvgfdSTpuqj0xQsRs5HEe1E99v5FK7O3EVinyipjue4bJKq/0PmgNO6FwnHVm
+	 CG2vr1xvEy+x/nLbZ0+JmztSLbjY1IcpYmsZEfKCHcYiZdK81NYojHe8RD5JIRa9QmzxD
+	 nx4zAoTMVKAkMDD7jWiO+x9obTErg2qAXoiRxTCUcRhVQwBnMm8DyH1u/cz3rc5E3H3WT
+	 1SIcEvLBGVqbIqIBPRI5/1259N37JtQAgRhpIgqmgno5qaTu0gacls2QBq2R+R/2oWARJ
+	 56b4qkI+rQv8ms40yST73Tqqeu8PlDf0AlDurs8dDrtwXWrjFfwyTLenLfJIvJRXxHw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=G6N4akyS;
-	arc=none smtp.remote-ip=198.175.65.15
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W3MibbUz;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16018606A69C;
-	Mon, 23 Nov 2026 18:18:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16018606A69C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E535606A32D
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 18:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=G6N4akyS
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795457888; x=1826993888;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=8UKh3ypT9l3AGaC1yTS4XxmNj/kYDB1MmgCPqo9Md2c=;
-  b=G6N4akyS9ykLXiUEl4K31d0BUcAqijpr6HB4acK9W4jxOG56Ugiot3au
-   wtfjZskeuEElMSFA/+G7i/TaQRESBgCV5O9YlN5dGgG+9m/9LqcGPPPXN
-   CR92zaj0V8wPI0qwq9bFXciVobik+hM00gYg75685KgNeOaS60PbYMMqx
-   cC0uPXNfWwFVYWwDIwTcpfL5adWMOS9a0KWbaZMLFPltKl4DBOIBExYo0
-   fJPhRttinrGjV/vog5wf+pg1rMdlLz8i7NBDT8yS/VZkqh9XiQ/Ttfwig
-   adcwBZq7Nr5n8sTj/k3nBGzp0LjflzGuyr0yHoyXNKTheAhDpb6Ma4BGW
-   w==;
-X-CSE-ConnectionGUID: RARJtS07RhGxGNmLtWW0+Q==
-X-CSE-MsgGUID: 3WujMnLyTEGmbXcnD3EPGA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4288840"
-X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; 
-   d="scan'208";a="4288840"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 10:05:23 -0800
-X-CSE-ConnectionGUID: FpvUmG0oSaa+EQFY//1CmA==
-X-CSE-MsgGUID: UeeJvbxdTkqt3C3jEkxH3A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; 
-   d="scan'208";a="11241136"
-Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.174])
-  by orviesa004.jf.intel.com with ESMTP; 23 Nov 2026 10:05:23 -0800
-From: "Chang S. Bae" <chang.seok.bae@intel.com>
-To: seanjc@google.com,
-	jmattson@google.com
-Cc: pbonzini@redhat.com,
-	kvm@vger.kernel.org,
-	x86@kernel.org,
-	linux-kernel@vger.kernel.org,
-	zhao1.liu@intel.com,
-	chang.seok.bae@intel.com
-Subject: [PATCH v10 11/20] KVM: x86: Support EGPR accessing and tracking for emulator
-Date: Mon, 23 Nov 2026 17:37:23 +0000
-Message-ID: <20261123173732.1072124-12-chang.seok.bae@intel.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261123173732.1072124-1-chang.seok.bae@intel.com>
-References: <20261123173732.1072124-1-chang.seok.bae@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W3MibbUz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16041F000D4;
+	Mon, 23 Nov 2026 18:19:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795457952;
+	bh=PiDR7HMQHKt2K0TK+R/UfymKDEOmp8ekjpQEWJGGcY4=;
+	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
+	b=W3MibbUzBBmykluJbmcxBkUuUD88FkGe5Jpq7gWJrsLjm/zBcywr3r03bN8Prg3VS
+	 y8l325vJ/j3/Zu+VSM8xoYPgJr1H+9kWSV15eYKAmcihaSLQ7ASpfun4RY8SC+aFE8
+	 i+VRYjlD0I/M7EGb2/2ryctWe0AkEPLn+Y4P/OAUtv2UpTDnEuniI9JNJA01SlWOQW
+	 uuRq/Ya38tSRkwYbuGNZO/3xlToIfh45wBPB1zn5ZOFW9/ChuWQY/SX9jGldf5T301
+	 5922XXE3fNABmgxVWSdcXhU4I7wNybhjsQSK+NlgHWHCWGfqOrqsrI6DAkXua7V8Ja
+	 oOqrzT5I7dRDg==
+Message-ID: <sashiko-outbox-229799@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 5/5] KVM: x86: nVMX: fix races in delivery of nested
+ posted interrupts
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Maxim Levitsky" <mlevitsk@redhat.com>, kvm@vger.kernel.org
+In-Reply-To: <20261123175512.80438-6-mlevitsk@redhat.com>
+References: <20261123175512.80438-1-mlevitsk@redhat.com>
+ <20261123175512.80438-6-mlevitsk@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 23 Nov 2026 18:19:11 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,89 +59,73 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Extend the emulator context and GPR accessors to handle EGPRs before
-adding support for REX2-prefixed instructions. Like vCPU cache, the
-emulator can uniformly cache and track all GPRs.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [High] KVM: nVMX: unhandled error and unmapped state in
+  __nested_vmx_vmexit() PI completion
+--
 
-Also replace `1 << reg` with `BIT(reg)` in reg_read()/reg_write(). The
-former performs a signed 32-bit shift, which becomes undefined for R31.
-BIT() instead shifts an unsigned value that is suitable for all indices.
+commit daa28df8cd412bbb1c1a76b22827fb7d30241474
+Author: Maxim Levitsky <mlevitsk@redhat.com>
 
-Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Tested-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Jim Mattson <jmattson@google.com>
----
- arch/x86/kvm/kvm_emulate.h | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+KVM: x86: nVMX: fix races in delivery of nested posted interrupts
 
-diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
-index 10886bea82c9..52f0aaa38c4c 100644
---- a/arch/x86/kvm/kvm_emulate.h
-+++ b/arch/x86/kvm/kvm_emulate.h
-@@ -109,13 +109,13 @@ struct x86_instruction_info {
- struct x86_emulate_ops {
- 	void (*vm_bugged)(struct x86_emulate_ctxt *ctxt);
- 	/*
--	 * read_gpr: read a general purpose register (rax - r15)
-+	 * read_gpr: read a general purpose register (rax - r31)
- 	 *
- 	 * @reg: gpr number.
- 	 */
- 	ulong (*read_gpr)(struct x86_emulate_ctxt *ctxt, unsigned reg);
- 	/*
--	 * write_gpr: write a general purpose register (rax - r15)
-+	 * write_gpr: write a general purpose register (rax - r31)
- 	 *
- 	 * @reg: gpr number.
- 	 * @val: value to write.
-@@ -321,7 +321,9 @@ typedef void (*fastop_t)(struct fastop *);
-  * also uses _eip, RIP cannot be a register operand nor can it be an operand in
-  * a ModRM or SIB byte.
-  */
--#ifdef CONFIG_X86_64
-+#if defined(CONFIG_KVM_APX)
-+#define NR_EMULATOR_GPRS	32
-+#elif defined(CONFIG_X86_64)
- #define NR_EMULATOR_GPRS	16
- #else
- #define NR_EMULATOR_GPRS	8
-@@ -381,9 +383,9 @@ struct x86_emulate_ctxt {
- 	u8 lock_prefix;
- 	u8 rep_prefix;
- 	/* bitmaps of registers in _regs[] that can be read */
--	u16 regs_valid;
-+	u32 regs_valid;
- 	/* bitmaps of registers in _regs[] that have been written */
--	u16 regs_dirty;
-+	u32 regs_dirty;
- 	/* modrm */
- 	u8 modrm;
- 	u8 modrm_mod;
-@@ -547,8 +549,8 @@ static inline ulong reg_read(struct x86_emulate_ctxt *ctxt, unsigned nr)
- 	if (KVM_EMULATOR_BUG_ON(nr >= NR_EMULATOR_GPRS, ctxt))
- 		nr &= NR_EMULATOR_GPRS - 1;
- 
--	if (!(ctxt->regs_valid & (1 << nr))) {
--		ctxt->regs_valid |= 1 << nr;
-+	if (!(ctxt->regs_valid & BIT(nr))) {
-+		ctxt->regs_valid |= BIT(nr);
- 		ctxt->_regs[nr] = ctxt->ops->read_gpr(ctxt, nr);
- 	}
- 	return ctxt->_regs[nr];
-@@ -562,8 +564,8 @@ static inline ulong *reg_write(struct x86_emulate_ctxt *ctxt, unsigned nr)
- 	BUILD_BUG_ON(sizeof(ctxt->regs_dirty) * BITS_PER_BYTE < NR_EMULATOR_GPRS);
- 	BUILD_BUG_ON(sizeof(ctxt->regs_valid) * BITS_PER_BYTE < NR_EMULATOR_GPRS);
- 
--	ctxt->regs_valid |= 1 << nr;
--	ctxt->regs_dirty |= 1 << nr;
-+	ctxt->regs_valid |= BIT(nr);
-+	ctxt->regs_dirty |= BIT(nr);
- 	return &ctxt->_regs[nr];
- }
- 
--- 
-2.53.0
+This commit synchronizes nested posted interrupt delivery with nested
+VM-Exit using atomic operations on vcpu->arch.nested_guest_state and
+processes pending nested posted interrupts in __nested_vmx_vmexit().
 
+> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> index 61f50175ecb79..845825c018bf5 100644
+> --- a/arch/x86/kvm/vmx/nested.c
+> +++ b/arch/x86/kvm/vmx/nested.c
+[ ... ]
+> @@ -5122,7 +5128,13 @@ void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, u3=
+2 vm_exit_reason,
+>  	if (enable_ept && is_pae_paging(vcpu))
+>  		vmx_ept_load_pdptrs(vcpu);
+> =20
+> -	leave_guest_mode(vcpu);
+> +	old_nested_state =3D leave_guest_mode(vcpu);
+> +
+> +	/* pairs with implicit memory barrier in vmx_deliver_nested_posted_inte=
+rrupt */
+> +	smp_mb__after_atomic();
+> +
+> +	if (old_nested_state & KVM_NESTED_PI_PENDING)
+> +		__vmx_complete_nested_posted_interrupt(vcpu);
+> =20
+>  	if (nested_cpu_has_preemption_timer(vmcs12))
+>  		hrtimer_cancel(&to_vmx(vcpu)->nested.preemption_timer);
+
+[Severity: High]
+What happens when __vmx_complete_nested_posted_interrupt() fails or runs
+before vmcs12 pages are mapped?
+
+If L1 configures an unbacked or MMIO GPA for posted_intr_desc_addr or
+virtual_apic_page_addr, vmx->nested.pi_desc or virtual_apic_map.hva is NULL.
+__vmx_complete_nested_posted_interrupt() then calls
+kvm_handle_memory_failure(), setting vcpu->run->exit_reason to
+KVM_EXIT_INTERNAL_ERROR and returning -ENXIO.  Because __nested_vmx_vmexit()
+ignores the return value, callers such as nested_vmx_reflect_vmexit() and
+vmx_check_nested_events() continue running L1 in-kernel instead of exiting
+to userspace, while non-KVM_RUN callers via vmx_leave_nested() clobber
+vcpu->run->exit_reason.
+
+In addition, when entering L2 with from_vmentry =3D=3D false (KVM_SET_NESTE=
+D_STATE
+or RSM), nested_vmx_enter_non_root_mode() defers nested_get_vmcs12_pages()
+via KVM_REQ_GET_NESTED_STATE_PAGES while publishing KVM_NESTED_PI_ACTIVE in
+vcpu->arch.nested_guest_state.  If a nested posted interrupt arrives and an
+L2->L1 exit happens before the first L2 entry, __nested_vmx_vmexit() clears
+KVM_REQ_GET_NESTED_STATE_PAGES without mapping pi_desc, so
+__vmx_complete_nested_posted_interrupt() drops the interrupt and triggers a
+spurious KVM_EXIT_INTERNAL_ERROR.
+
+Finally, running __vmx_complete_nested_posted_interrupt() when vmx->fail is
+true clears pi_desc->on and writes max_irr into vmcs02 GUEST_INTR_STATUS,
+which is then lost because sync_vmcs02_to_vmcs12() is skipped on vmx->fail.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261123175512.8043=
+8-1-mlevitsk@redhat.com?part=3D5
