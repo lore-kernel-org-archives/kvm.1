@@ -1,68 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795409511;
-	b=1JoI0TJukQlzphAm80eXCO+ieEL3biDC43Kb3LoI1L4VBBD7wx7PjbPomUlXj/W/x0II
-	 JIotM9YuRYNgF5Dfw8sxDPm5DxF4xgQ6F9StFD4FJUk+KnFNgGf1r+XFLeOSKLYbEOrKz
-	 qRCIAplXkl0rr9EcnRKfo8d/3aZ4ycN7D0bmKA0p2ZUHtaCFtEBHI8YHsVSysZNOZYEG1
-	 CMuKOoPDDvNta97vXqvnMGOTnaub+69hmDlfciM5fAaucOrl4Ad4WfHCEOLYSp0vSAobh
-	 jpKvMNZEsUxTWOjt2z/juZi/ZsIOOMSbWMJ84Ff0PxGoSWVr7EiURU6X3vLjR1yYKBQ==
+	t=1795410215;
+	b=KSXMrnSQbz7m1COAXISbgTO5WtxYf6ks0I8w6jDTKDnTF7EBClYiIki94YAHzKl8MJOh
+	 6jhqc1FKwZkQE2qeC/JZGZSE4F2VFHjr4nVB2fJP7NX3DmsRRSqQFOEjgeW0EoNRRsqIo
+	 zfUbeTT0Th7IW1z+/pa59ooPgfQzycvlab+37TTYbnmHjuGE9KSa1s9GSdjzA6d6maUcQ
+	 6NnqivjowlIOiVNzD8A9/8/ABijmtDVlE/N8JEIehWMZO9LENCafohoVOmzu+KQf8ThLF
+	 o5cH/EuwHkuHq66YZ46VjtIS+l6WhOqzHRO2CRVdGbBQk/RVy418GoPgAPhcEzUMCnQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795409511;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=7fAmMaiUPDgzxUIirHcZv/9ixx+ut7rJdqmw0V+8t2o=;
-	b=1yGtPytgsqcyvj8/baGvppgGioeTb8DDErTT8xfUEACsevjkuxMoJeGt7ShOdh8CGVWj
-	 CUN65/RcmiTR+MbTI/V+Avz9QKGnJDmXwLLxEHThzhabWWuYjnntphQKrDy1zgUjbdMgt
-	 My1u0Ye/RZEVrm2BJzMBEJie25DL0cMW/FcA6XfG4mq7oBvS83E0X+TmVKIpUa+zaN9NS
-	 uOKY9qk5I+8XyN60WnXcD7Nss+y9SVrWQo9ZHVUuiT6cKlxkHtg8X5zEe51ufbkZhZsIW
-	 Ww2x8XNsBJvVvvUPsdtn7LCIXX4yunSLJFqviKkZT0nOWes1NuKWfZvX5UHAT1Zuqng==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795410215;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=Ja68ta5Uvv/X7tlfS/FLMn/QCYhgN6RFfe6zUh8PhNE=;
+	b=Ataw5TA0tT0NV+E4IBck5eWpejqFUWb/m5lpzI+ikNT510HfBUF+eQfmKaKVD5YDMTvE
+	 eDsd/4B2vMjiPPkRTuQvl8/mcvb1KExxCw2aRsts0slRe2StY46BCQTJR00NEw/kiWpDT
+	 bHbfAwMS5vnW2DZouWKvbAmjfF+7VEDSDqprPseC1oyKA3hRBTbgfeIScLF8kdWOLZxWC
+	 2PRJZPvDgjmJQZynoh7955+qjrhoR2VGsbx0x4AqOmF5sCTVM6Nor7PLzIQcliBtmXfPb
+	 N0i2gJUxCIqVIj6XsgyjKDyukawPIJ+AnwjOEvmywzhtDyPK4XC24RLvUYJRfucEGXA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kQDCD6cU;
-	arc=none smtp.remote-ip=192.198.163.19
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kDYfBxbU;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78FA606A31A;
-	Mon, 23 Nov 2026 04:51:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C78FA606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7371606A31A
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 05:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kQDCD6cU
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795409510; x=1826945510;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=WzLuMbzuFNFek+LLgWAg5DpJARYEwx2sHm0/ACrnLYg=;
-  b=kQDCD6cUtq7WVvjYawr6vHvBgNdHDVihyt30JF42cWu0EOZ5MnlETLJn
-   UB3+YEyRPKTEmKMw90I3X/bP6Dwlyq6MtxyHBn8qvWDpvXTAd+M4+iR+s
-   VLW/3sQcWUHQNPkJMkB5tZIPUzm8xwO1QZPtc48+cNbj1jGEKPUTrhBXf
-   m6YHEnQ+LW8Kx5yO5JO1/hONh3rn7N5uB/zlhTPJV302a0PoeKp7WU6ZY
-   8S9ZfYDW+Rtzw/h9kww36MbGYPUftfYUkW6CUA+wdoqwEwJ/pDqRY4Qlv
-   Zte5yZ3HcMDKvsiHetpbOtH+vXroh9BMwrAFHWsPYVBWy6kImzU8E998q
-   A==;
-X-CSE-ConnectionGUID: Kfn5yEsDQbehgbg1++aLsQ==
-X-CSE-MsgGUID: Qj2v3epAQAWGBSRreZXrWQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4306971"
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="4306971"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 20:51:49 -0800
-X-CSE-ConnectionGUID: cYq88QI+RfaykNMl2xLLUg==
-X-CSE-MsgGUID: YQGrMIldTtWxBDJt+fPyrw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="11619999"
-Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 20:51:45 -0800
-Message-ID: <479a91e0-fe36-43ac-b915-c839afe1672b@linux.intel.com>
-Date: Mon, 23 Nov 2026 12:51:43 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kDYfBxbU
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F391F000C6;
+	Mon, 23 Nov 2026 05:03:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795410215;
+	bh=Ja68ta5Uvv/X7tlfS/FLMn/QCYhgN6RFfe6zUh8PhNE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=kDYfBxbUjUiajsOIA3Gi0XTFzODZfSTDlj2eGTsSBK2XQ3c1iZmh5emqaXK6C5Jer
+	 bBbZtFTzk5Nv0kLYk6b2Xlz9XCueH4AA+KXi1xys9tzInXXflF1BVjk9VWMlvg5aOy
+	 qqCwKEsmZ0nNcpasd4mE7eOHw/N6XeF3uWOO86UxIHP5TNGcUE8zUKydJisBNBUTRE
+	 QKdnlfrNqSp1saxTA1I1wYBOtKr7KnikDwGhhkogJU/dWzKFW8FChPeoB0m3Md/Ukw
+	 fm82MpvN8ySO+DGYMjz2gAwH6TciOM58Y4Oj8uJqfmezu+lcJ8NYpNyqDwkjmq4DDE
+	 29m58iLaPAVig==
+Message-ID: <sashiko-outbox-228696@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v8 14/18] iommu/vt-d: Handle reattach of the restored
+ domain
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Samiullah Khawaja" <skhawaja@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261123044949.3610702-15-skhawaja@google.com>
+References: <20261123044949.3610702-1-skhawaja@google.com>
+ <20261123044949.3610702-15-skhawaja@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 23 Nov 2026 05:03:34 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,277 +60,84 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, iommu@lists.linux.dev, x86@kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
- Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, yilun.xu@linux.intel.com,
- xiaoyao.li@intel.com, Binbin Wu <binbin.wu@linux.intel.com>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 9/9] coco/tdx-host: Enable trusted DMA on IOMMUs on
- device connect
-To: Chao Gao <chao.gao@intel.com>
-References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
- <20261112043054.2664857-10-baolu.lu@linux.intel.com>
- <av1dr3IGMqWA1-7r@intel.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <av1dr3IGMqWA1-7r@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 11/18/2026 4:11 PM, Chao Gao wrote:
-> On Thu, Nov 12, 2026 at 12:30:54PM +0800, Lu Baolu wrote:
->> Assigning a device to a TD for private memory access requires that DMA
->>from that device be translated by structures the TDX module controls.
->> An Intel IOMMU that implements the trusted DMA extension provides a
->> parallel set of translation and invalidation resources for this purpose.
->> They become usable once TDH.IOMMU.SETUP puts the IOMMU into Secure TDX
->> Mode and the TDX module initializes them. The host keeps the regular
->> translation path.
->>
->> Issue TDH.IOMMU.SETUP on demand, when the first device behind an IOMMU
->> is connected through the TSM, rather than for every capable IOMMU at
->> probe time. Secure TDX Mode costs host resources: the TDX module's
->> metadata pages and half of the IOMMU's domain ID space. That cost should
->> only be paid for IOMMUs that actually serve such devices.
->>
->> tdx_iommu_get() and tdx_iommu_put() keep a per-IOMMU refcount. The first
->> get() issues TDH.IOMMU.SETUP and the last put() issues TDH.IOMMU.CLEAR.
->> A single mutex covers both the refcount and the SEAMCALL that follows,
->> so a device cannot join an IOMMU that is being cleared or whose setup
->> has not finished. The refcount lives here rather than in the VT-d
->> driver because tdx-host already owns the per-IOMMU state that must
->> outlive TDH.IOMMU.SETUP: the IOMMU_MT pages and the TDX IOMMU ID.
->>
->> The IOMMU_MT parameter page lists two contiguous buffers for the
->> trusted invalidation queue, followed by the metadata pages. The TDX
->> module reports how many metadata pages it needs in its global metadata.
->>
->> With Dynamic PAMT, every 4K page given to the TDX module needs PAMT
->> backing first. Take it for each page of the invalidation queue buffers
->> and the metadata pages before TDH.IOMMU.SETUP, and drop it if setup
->> fails or once TDH.IOMMU.CLEAR succeeds. The parameter page itself only
->> carries the page list into the SEAMCALL and needs no backing.
->>
->> If TDH.IOMMU.CLEAR fails, the TDX module may still reference the
->> IOMMU_MT pages, so they are leaked together with their PAMT backing,
->> and the IOMMU is marked unusable. Later get() calls for that IOMMU fail
->> with -EBUSY rather than reuse an IOMMU in an unknown state. tdx-host
->> pins itself while such an IOMMU exists, so unloading can't lose track
->> of it. If the failure happens during unload itself, only the tracking
->> entry is freed; the VT-d driver still has the IOMMU acquired and keeps
->> rejecting it.
-> 
-> If the pin can fail anyway, what's the point of taking it at all?
-> 
-> If tdx-host is reloaded, we can rely on the VT-d driver or the TDX module
-> to reject transitioning the IOMMU to secure mode.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] iommu/vt-d: guard(mutex) mixed with goto in
+  domain_attach_restored_iommu()
+--
 
-You are right. VT-d already refuses to reuse an IOMMU whose clear
-failed, even after tdx-host is reloaded. I will drop this.
+commit 693fa762fb6f04c8a284677c5b4a1aeaceac5c22
+Author: Samiullah Khawaja <skhawaja@google.com>
 
->>
->> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
->> ---
->> drivers/virt/coco/tdx-host/Kconfig   |   5 +
->> drivers/virt/coco/tdx-host/Makefile  |   1 +
->> drivers/virt/coco/tdx-host/private.h |  21 ++
->> drivers/virt/coco/tdx-host/main.c    |  11 +
->> drivers/virt/coco/tdx-host/viommu.c  | 401 +++++++++++++++++++++++++++
->> 5 files changed, 439 insertions(+)
->> create mode 100644 drivers/virt/coco/tdx-host/private.h
->> create mode 100644 drivers/virt/coco/tdx-host/viommu.c
->>
->> diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
->> index f8c8cc29d46c..1395929f05bb 100644
->> --- a/drivers/virt/coco/tdx-host/Kconfig
->> +++ b/drivers/virt/coco/tdx-host/Kconfig
->> @@ -6,3 +6,8 @@ config TDX_HOST_SERVICES
->> 	select FW_UPLOAD
->> 	select PCI_TSM
->> 	default m
->> +
->> +config TDX_CONNECT
->> +	def_bool y
->> +	depends on TDX_HOST_SERVICES
->> +	depends on INTEL_IOMMU
-> 
-> Do we need this TDX_CONNECT config? We can just add "depends on
-> INTEL_IOMMU" to TDX_HOST_SERVICES, and then drop the stub functions
-> in private.h. Patch 7 already makes TDX_HOST_SERVICES depend on PCI
-> in the same way.
-> 
-> The cost is that without INTEL_IOMMU, none of the tdx-host services
-> are available, including TDX module updates. But I doubt anyone would
-> want to launch CoCo VMs while compiling out INTEL_IOMMU entirely.
-> 
-> We can always add this option back if such a configuration turns out
-> to be practical.
+iommu/vt-d: Handle reattach of the restored domain
 
-I'd like to accept this unless anyone has concerns about the downside.
+This commit implements reattachment and detachment of restored domains to
+preserved devices across liveupdate using the preserved domain ID, without
+modifying preserved context and PASID table entries.
 
-> 
->> +/*
->> + * Serializes the refcounts together with TDH.IOMMU.SETUP and
->> + * TDH.IOMMU.CLEAR, so a device can't join an IOMMU that is being
->> + * cleared, or one whose setup hasn't finished.
->> + */
->> +static DEFINE_MUTEX(tdx_iommu_lock);
->> +static LIST_HEAD(tdx_iommu_list);
->> +
->> +static void *tdx_iommu_alloc_pages(int node, size_t size)
->> +{
->> +	struct folio *folio;
->> +
->> +	if (node == NUMA_NO_NODE)
->> +		node = numa_mem_id();
->> +
->> +	folio = __folio_alloc_node(GFP_KERNEL | __GFP_ZERO, get_order(size), node);
-> 
-> Would kzalloc_node() work here? kzalloc_node() handles NUMA_NO_NODE
-> itself, and there's no need to convert between folios and void *.
+> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveu=
+pdate.c
+> index 34651698b8e9a..f907e52576e57 100644
+> --- a/drivers/iommu/intel/liveupdate.c
+> +++ b/drivers/iommu/intel/liveupdate.c
+> @@ -444,6 +444,176 @@ void intel_iommu_handle_drhd_restore_failure(struct=
+ intel_iommu *iommu)
 
-Yes. kzalloc_node() returns naturally aligned buffers for power-of-two
-sizes, which covers the 4K and 8K allocations here. Will switch to it in
-the next version.
+[ ... ]
 
-> 
->> +	if (!folio)
->> +		return NULL;
->> +
->> +	return folio_address(folio);
->> +}
->> +
->> +static void tdx_iommu_free_pages(void *virt)
->> +{
->> +	if (!virt)
->> +		return;
->> +
->> +	folio_put(virt_to_folio(virt));
->> +}
->> +
->> +/* Number of 4K pages backing IOMMU_MT entry @i. */
->> +static unsigned int mt_entry_nr_pages(unsigned int i)
->> +{
->> +	return i < TDX_IOMMU_MT_IQ_NR ? IQ_BUFFER_SIZE >> PAGE_SHIFT : 1;
->> +}
->> +
->> +/*
->> + * Drop the PAMT backing of the first @nr 4K pages handed to the TDX
->> + * module, in the order mt_pamt_get() took it. Pass UINT_MAX for all.
->> + */
->> +static void mt_pamt_put(struct tdx_iommu_pages *mt, unsigned int nr)
->> +{
->> +	unsigned int i, j;
->> +
->> +	for (i = 0; i < mt->nr_entries && nr; i++) {
->> +		unsigned long pfn = PHYS_PFN(__pa(mt->pages[i]));
->> +
->> +		for (j = 0; j < mt_entry_nr_pages(i) && nr; j++, nr--)
->> +			tdx_pamt_put(pfn + j);
->> +	}
->> +}
->> +
->> +/*
->> + * With Dynamic PAMT, every 4K page handed to the TDX module needs PAMT
->> + * backing first. This covers the IQ buffers and the metadata pages, not
->> + * the root page, which only carries the list of pages into the
->> + * SEAMCALL. tdx_pamt_get() is a no-op without Dynamic PAMT.
->> + */
->> +static int mt_pamt_get(struct tdx_iommu_pages *mt)
->> +{
->> +	unsigned int i, j, nr = 0;
->> +	int ret;
->> +
->> +	for (i = 0; i < mt->nr_entries; i++) {
->> +		unsigned long pfn = PHYS_PFN(__pa(mt->pages[i]));
->> +
->> +		for (j = 0; j < mt_entry_nr_pages(i); j++) {
->> +			ret = tdx_pamt_get(pfn + j, NULL);
->> +			if (ret) {
->> +				mt_pamt_put(mt, nr);
->> +				return ret;
->> +			}
->> +			nr++;
->> +		}
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +static void free_mt_pages(struct tdx_iommu_pages *array)
->> +{
->> +	unsigned int i;
->> +
->> +	if (IS_ERR_OR_NULL(array))
->> +		return;
->> +
->> +	mt_pamt_put(array, UINT_MAX);
->> +
->> +	for (i = 0; i < array->nr_entries; i++)
->> +		tdx_iommu_free_pages(array->pages[i]);
->> +
->> +	tdx_iommu_free_pages(array->root);
->> +	kfree(array->pages);
->> +	kfree(array);
->> +}
->> +
->> +DEFINE_FREE(free_mt_pages, struct tdx_iommu_pages *, free_mt_pages(_T))
->> +
->> +static void **alloc_mt_pages(unsigned int nr_entries, int node)
->> +{
->> +	unsigned int i;
->> +	void **pages;
->> +	void *vaddr;
->> +
->> +	pages = kzalloc_objs(*pages, nr_entries);
->> +	if (!pages)
->> +		return NULL;
->> +
->> +	/* Allocate two contiguous buffers for the invalidation queue. */
->> +	pages[0] = tdx_iommu_alloc_pages(node, IQ_BUFFER_SIZE);
->> +	if (!pages[0])
->> +		goto free_pages;
->> +
->> +	pages[1] = tdx_iommu_alloc_pages(node, IQ_BUFFER_SIZE);
->> +	if (!pages[1])
->> +		goto free_pages;
-> 
-> You can use mt_entry_nr_pages() to fold the two IQ buffer allocations
-> into the loop below.
+> +static int domain_attach_restored_iommu(struct dmar_domain *domain,
+> +					struct intel_iommu *iommu,
+> +					struct iommu_device_ser *device_ser)
+> +{
+> +	struct iommu_domain_info *info, *curr;
+> +	struct iommu_domain_ser *domain_ser;
+> +	struct iommu_hw_ser *iommu_hw_ser;
+> +	int restored_did;
+> +	int ret;
 
-Good point. I'll fold them into a single loop, using mt_entry_nr_pages()
-for the size.
+[ ... ]
 
-     for (i = 0; i < nr_entries; i++) {
-         pages[i] = kzalloc_node(mt_entry_nr_pages(i) << PAGE_SHIFT,
-                     GFP_KERNEL, node);
-         if (!pages[i])
-             goto free_pages;
-     }
+> +	info =3D kzalloc_obj(*info);
+> +	if (!info)
+> +		return -ENOMEM;
+> +
+> +	guard(mutex)(&iommu->did_lock);
+> +	curr =3D xa_load(&domain->iommu_array, iommu->seq_id);
+> +	if (curr) {
+> +		kfree(info);
+> +		if (WARN_ON(curr->did !=3D restored_did))
+> +			return -EINVAL;
+> +
+> +		curr->refcnt++;
+> +		return 0;
+> +	}
+> +
+> +	info->refcnt	=3D 1;
+> +	info->did	=3D restored_did;
+> +	info->iommu	=3D iommu;
+> +	curr =3D xa_cmpxchg(&domain->iommu_array, iommu->seq_id,
+> +			  NULL, info, GFP_KERNEL);
+> +	if (curr) {
+> +		ret =3D xa_err(curr) ? : -EBUSY;
+> +		goto err_unlock;
+> +	}
+> +
+> +	return 0;
+> +
+> +err_unlock:
+> +	kfree(info);
+> +	return ret;
+> +}
 
-> 
->> +
->> +	/* Allocate the required number of pages for the IOMMU metadata. */
->> +	for (i = TDX_IOMMU_MT_IQ_NR; i < nr_entries; i++) {
->> +		vaddr = tdx_iommu_alloc_pages(node, SZ_4K);
->> +		if (!vaddr)
->> +			goto free_pages;
->> +		pages[i] = vaddr;
->> +	}
->> +
->> +	return pages;
->> +
->> +free_pages:
->> +	for (i = 0; i < nr_entries; i++)
->> +		tdx_iommu_free_pages(pages[i]);
->> +	kfree(pages);
->> +
->> +	return NULL;
->> +}
+[Severity: Low]
+This isn't a bug, but domain_attach_restored_iommu() mixes
+guard(mutex)(&iommu->did_lock) with a single-use goto err_unlock label (whe=
+re
+the lock is still held at the label and released by the guard on return).
+Following cleanup.h conventions, info could be freed inline before returning
+on the xa_cmpxchg() failure path, or managed with __free(kfree).
 
-Thanks,
-baolu
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261123044949.3610=
+702-1-skhawaja@google.com?part=3D14
