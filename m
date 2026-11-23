@@ -1,82 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795443795;
-	b=HDYXVFR5EnPYMMNGX+p4xl/uRUlAw0HCI5EPF0+LK9POraGB+LMbwvnECqlTgzko3OD3
-	 d3vkjvl2N+jmDvYJ7MZhozsuJ5NbYDFSW243Bbx/pL9od7UMSHzibHLUTOvj6AcJVyy9W
-	 6mPcrCgSO6+4lHxBl5uHW8weNWmINXHqr/TwfcuEoMAFJISjgGrIUoC+hbnV+h+iZtyxc
-	 vdHSo5ltpzNqzPqAwSp1KHMCJ9yyyU8sdOTceW1usCk4oQA7dSgTeh0FUIJRo/h9gb03e
-	 0h1Z8UlqTBRHbJrDftBDxuISYqH/sY5XpEQVfDC5KyaBMTqHgMTx7bWIVyMXkZxtu+g==
+	t=1795444411;
+	b=KsO5WhL66B60m+DOSx9cF7EMKzbzE52HoulPbvlb75kFGntzzArshp07zoUgY91lfinm
+	 ep9mLnHJI5FLZrDsdJ8lm9LNBkKl7Y8gCDOmqrH7KZMda5LakgXRbf6LeIRX0snMAtXac
+	 O2+ELSJ3qF36q7wyEdw+GPmLLaYtIKvgW29ji1I7aiECC2qYUPW8njU3I6sUnbQNoXGoW
+	 6vDWISJPqGqUV/gfcVoEOUMeRIUeV/7AznEYCBv7DIzf2dezF1EiAodxrjhNWjcBVR30Z
+	 55NfxioXV+0alar001NBV4xVPMS9vEC8lvtn3NcM/cGlnOixH1U0V0pm9btxPuODv6w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795443795;
-	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
-	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
-	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
-	 X-SA-Exim-Scanned;
-	bh=UqgaRl/LQSFKZbxctWfIJSioOqpnACPmqjUCBtWSvIA=;
-	b=i+WaCVurvu2lwK68qQ7+5i61dZFT2AP/2je2aRxlhE/JfY5N+mR+rAD2XS0AKFU8pmPT
-	 yfZdbI/v4IekjPn6dI4iWvPu8oxVXv3C0iO9Yagjhlg/ZUBKn/E2q7m6fPFLc4LpHQyu2
-	 j6VFB8oaA7HdAPOClMKHe1wsuu5cA+0mWwPIOu3YkWrOWIYg17Ptsw337M83Zuy3xlIEe
-	 FY/YTSmx/0ysiXgUsG9QRwX9MK/ARRfQuKVPRZDG4GCmpEhPkxCrETImSmYs523BwzhVA
-	 zkV4QMJyflfkcd5NW2A19i6iSdFC0/a6MgF2G2ijfDRHV1No8oI7vQdnSb7N5t0WDrA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795444411;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=OCPSiHkYqSNvnClc+FUc66tTva53YlW4lXZmEaSjud0=;
+	b=Vnjvlu9yDbUSJHCqyo0t5+LKaBTl0ZdNZrERAajs236gDK4l7N3DlB9VWrsXUr7z6P0P
+	 AM+WEniYpCAlsQjI3o/0lYGOtpZLu/tjJqSjJHL5SOKKBE8rPgheH+9oAZC1vj0BPTzyP
+	 eHSs3p6YU9NbNUzaZ54XbUxS3yqqBEdFXRyIPqPWRNlchRnCOf1jirj1Ei683e6m65JWw
+	 gl+2o7mMJZGr48e3SxrUIZcM/Y+9zrfkrbg5QGoMD3GODgo0su+o1oQACpUQ5WwoVV2kd
+	 LhyYWggly/mIiPJ9A/KuP5Irerw+iQUT/4lkl+PbkQWlqWaI7PP/MWD6BQx1eHUtrxw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hlcNvac6;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=xiaopeng.com;
+	spf=pass smtp.mailfrom=xiaopeng.com;
+	dkim=pass header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=RkycBL4G;
+	arc=none smtp.remote-ip=115.124.28.1
+Received: from out28-1.mail.aliyun.com (out28-1.mail.aliyun.com [115.124.28.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659FD606A31A;
-	Mon, 23 Nov 2026 14:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF03606A31A;
+	Mon, 23 Nov 2026 14:33:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6CF03606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hlcNvac6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1F61F000D0;
-	Mon, 23 Nov 2026 14:23:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795443794;
-	bh=UqgaRl/LQSFKZbxctWfIJSioOqpnACPmqjUCBtWSvIA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=hlcNvac6vwok/7CieJjhHh3PFZe3EyPF7vLUnjW/zfIxKZyPr+iDkUp1VjUF/qJhc
-	 ryq9ScXld34BM0RBzO8yLA6gI2vNM8AjOMdzTZNXrHzT7eUTWgjEghYaGZHafT5DKl
-	 fXt9GWwRwFRSCqWX1YfTidD1dokw4IV2jm6Kfhk77hjiEP8RnoomGkmRdfn7qIsw1B
-	 +xLNzebD3QrGUi/CeKvbpfEzHCdtTGNSALkq8rqw2Y66IJoSwNNdK+0Xh45C15q92l
-	 ixB4qLF+XzgxQbF6O+43m2qeKOEQjFUFoN05BFhsHi/UlZfd4igw+9p4MrqKUhAkdY
-	 VyvX2OJG40u5A==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xVUwq-000000021WE-0roY;
-	Mon, 23 Nov 2026 14:23:12 +0000
-Date: Mon, 23 Nov 2026 14:23:11 +0000
-Message-ID: <86fqwrzkxc.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
+	dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=RkycBL4G
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xiaopeng.com; s=default;
+	t=1795444400; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=OCPSiHkYqSNvnClc+FUc66tTva53YlW4lXZmEaSjud0=;
+	b=RkycBL4GD2EXhFYzp0KJkFi4j9vZnxYhH3VRJI9Qdrhr8JAxOmt0E2PeSnBtmCG4fwM84QAhno1JafzbyNRDPCfZXll792hP5JfMxnBhTZ+ZSI+PkBSVe+mZJalXkxYLLJb2a78JPVkFjnCVhiajTRR0vvnLNALV3DTcbtO5ChY=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.04439905|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00493033-8.00282e-06-0.995062;FP=6621435113100027107|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037034017;MF=fangxy@xiaopeng.com;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.k8K2y1G_1795444398;
+Received: from localhost.localdomain(mailfrom:fangxy@xiaopeng.com fp:SMTPD_---.k8K2y1G_1795444398 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Mon, 23 Nov 2026 22:33:20 +0800
+From: Fang Xieyan <fangxy@xiaopeng.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
+Cc: Xie Yongji <xieyongji@bytedance.com>,
+	stable@vger.kernel.org,
+	virtualization@lists.linux.dev,
 	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Isaku Yamahata <isaku.yamahata@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	kvmarm@lists.linux.dev,
-	Wei-Lin Chang <weilin.chang@arm.com>,
-	Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>,
-	kvm-riscv@lists.infradead.org,
-	Will Deacon <will@kernel.org>,
-	Fuad Tabba <tabba@google.com>
-Subject: Re: [PATCH v3 0/3] KVM: Bound KVM_PRE_FAULT_MEMORY by the vCPU's dirty ring
-In-Reply-To: <20261123113435.1170711-1-fuad.tabba@linux.dev>
-References: <20261123113435.1170711-1-fuad.tabba@linux.dev>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] vhost-vdpa: skip unmapped gap in vhost_vdpa_va_map()
+Date: Mon, 23 Nov 2026 22:33:18 +0800
+Message-ID: <20261123143318.73514-1-fangxy@xiaopeng.com>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -85,74 +64,85 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: fuad.tabba@linux.dev, pbonzini@redhat.com, seanjc@google.com, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, corbet@lwn.net, skhan@linuxfoundation.org, isaku.yamahata@intel.com, rick.p.edgecombe@intel.com, ljs@kernel.org, alexandru.elisei@arm.com, oupton@kernel.org, kvmarm@lists.linux.dev, weilin.chang@arm.com, anup@brainfault.org, atish.patra@linux.dev, kvm-riscv@lists.infradead.org, will@kernel.org, tabba@google.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, 23 Nov 2026 11:34:32 +0000,
-Fuad Tabba <fuad.tabba@linux.dev> wrote:
-> 
-> Hi folks,
-> 
-> Changes since v2 [1]:
->   - Added patch 2, which warns in api.rst against calling ioctls other
->     than KVM_RUN while an exit is pending. (Sean)
->   - Mentioned riscv as well as arm64 in patch 1's exit_reason
->     paragraph. (Lorenzo)
->   - Collected Lorenzo's Acked-by on patch 3. (thanks!)
-> 
-> KVM_PRE_FAULT_MEMORY never checks the vCPU's dirty ring, so one call
-> over a large enough range of populated, dirty-logged pages overflows
-> it. The first patch stops the loop at the soft limit, as KVM_RUN does.
-> The second warns userspace against calling ioctls other than
-> KVM_RUN while an exit is pending. The third adds the case to
-> pre_fault_memory_test.
-> 
-> Pre-faulting isn't the only ioctl that can push past the ring's
-> reserve. On x86, KVM_SET_MSRS does too when it writes the wall clock or
-> the Hyper-V hypercall page. A guest can also push past the reserve
-> within one exit, for example through the arm64 ITS. What those paths
-> should do when the ring fills is an open question for the dirty ring
-> API, which I don't think belongs in this series.
-> 
-> I didn't include the kvm_dirty_ring_check_request() rewrite that Sean
-> sketched on v1, since I think it can lose a request. It tests the
-> request first and clears it afterwards. If the vCPU is scheduled out in
-> between, loongarch sets the PV preempted flag in guest memory and x86
-> updates a Xen guest's runstate area, either of which pushes an entry.
-> When that push makes the ring soft full, the request it makes is then
-> cleared, and the vCPU runs with the ring soft full until its next push.
-> Clearing first and re-setting, as the code does now, doesn't have that
-> window.
-> 
-> Based on Linux 7.4-rc2 (7475ea8b58616; also applies to kvm-x86/next
-> cbe54fc3462b3 with git am -3).
-> 
-> Cheers,
-> /fuad
-> 
-> [1] https://lore.kernel.org/all/20261117074428.7544-1-fuad.tabba@linux.dev/
-> 
-> Fuad Tabba (3):
->   KVM: Stop KVM_PRE_FAULT_MEMORY when the vCPU's dirty ring is full
->   KVM: Warn userspace against ioctls while an exit is pending
->   KVM: selftests: Test KVM_PRE_FAULT_MEMORY against a full dirty ring
-> 
->  Documentation/virt/kvm/api.rst                |  20 ++--
->  include/linux/kvm_dirty_ring.h                |   5 +
->  .../selftests/kvm/pre_fault_memory_test.c     | 102 ++++++++++++++++++
->  virt/kvm/kvm_main.c                           |   5 +
->  4 files changed, 126 insertions(+), 6 deletions(-)
-> 
-> 
-> base-commit: 7475ea8b58616b33c04afb976cf0fbaad9dd63fb
+find_vma() returns the first VMA with vm_end > uaddr; when uaddr lies
+in an unmapped gap, vma->vm_start > uaddr and the offset arithmetic
 
-Acked-by: Marc Zyngier <maz@kernel.org>
+	offset = (vma->vm_pgoff << PAGE_SHIFT) + uaddr - vma->vm_start;
 
-	M.
+produces an incorrect file offset, potentially wrapping in u64
+arithmetic.
 
+The incorrect offset is stored in map_file->offset and passed to
+the mapping backend. Meanwhile, map_size includes the gap, causing
+the corresponding IOVA range to be mapped without valid backing.
+
+Skip the gap: stop if the whole remaining request is gap, otherwise
+shrink size, pin uaddr to vm_start and advance map_iova by the gap.
+The gap is left unmapped without error.
+
+Testing:
+- make W=1 drivers/vhost/vdpa.o
+- QEMU/KVM v7.4-rc1 with a probe vDPA parent; tested partial
+  gap, whole-gap and contiguous IOTLB updates.
+
+Fixes: d8945ec41120 ("vdpa: Support transferring virtual addressing during DMA mapping")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
+---
+ drivers/vhost/vdpa.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+Reproducer: userspace model of va_map() with a mock find_vma(); shared
+file-backed VMA [0x2000,0x3000) at file offset 0, unmapped gap
+[0x1000,0x2000).
+
+  UPDATE iova=0x100000 uaddr=0x1000 size=0x2000 (partial gap):
+    without fix: ret=0, one map over the gap,
+                 file_offset=0xfffffffffffff000
+    with fix:    ret=0, map at iova=0x101000 uaddr=0x2000
+                 size=0x1000 file_offset=0x0
+  UPDATE uaddr=0x1000 size=0x1000 (whole request in gap):
+    without fix: ret=0, bogus map with underflowed offset
+    with fix:    ret=0, no mapping created
+
+Build: make W=1 drivers/vhost/vdpa.o completed without warnings on
+v7.4-rc1 (defconfig + VHOST/VDPA/VHOST_VDPA).
+
+Runtime: On v7.4-rc1 under QEMU/KVM, a userspace test client sent
+VHOST_IOTLB_UPDATE messages through the /dev/vhost-vdpa chardev to a
+probe vDPA parent with use_va enabled and dma_map logging.  Without
+the fix the parent receives offset=0xfffffffffffff000 for gap
+requests; with the fix the gap is skipped (map_iova advanced,
+offset=0), an all-gap request creates no mapping, and contiguous
+requests are unchanged.
+diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+index ff7d907..4a6a946 100644
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -1109,6 +1109,20 @@ static int vhost_vdpa_va_map(struct vhost_vdpa *v,
+ 			ret = -EINVAL;
+ 			break;
+ 		}
++		/*
++		 * uaddr may lie in an unmapped gap before vma->vm_start; skip
++		 * the gap so the offset calculation below uses an address in the VMA.
++		 */
++		if (uaddr < vma->vm_start) {
++			u64 gap = vma->vm_start - uaddr;
++
++			if (gap >= size)
++				break;
++			size -= gap;
++			uaddr = vma->vm_start;
++			map_iova += gap;
++			continue;
++		}
+ 		map_size = min(size, vma->vm_end - uaddr);
+ 		if (!(vma->vm_file && (vma->vm_flags & VM_SHARED) &&
+ 			!(vma->vm_flags & (VM_IO | VM_PFNMAP))))
 -- 
-Without deviation from the norm, progress is not possible.
+2.50.1
+
