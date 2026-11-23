@@ -1,88 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795452520;
-	b=AfMPfMtu83VOyU3ForUulDQSmdqjh1mUvJRSd3/YYNfnxPnIBHytLz9yVNu2wPNRE2g+
-	 wKrGReZq89XwnZrGRvSft1j44O3LzEmXeApe00KSeSsj1H+ziiCOSzs+WcAU2Z+0f0hEZ
-	 2JhuLr8KXzauBQsVNvNUD2T2OhPwVk64fwrKhC8QeQ9bgF0wslGsQaoNpFHG4IPyF3eN5
-	 HcGLA9Uu0XBYnrY4zGHiheSLFDsxuSZsnU7OWq6DA83GYgwcoIC5kvICjFWZaTh868f5i
-	 pEJkDeUVg+gpr3ZMuVGJKps1oQY2mjZhdgjB5PJN5EpwfNmG8my716i57EabP+IcaDA==
+	t=1795454410;
+	b=l26j+WVR05nWeiG8rQTMeG9P9Bi/Q0bdatF0W2ogkglbku55ujlelBG/U04KQUYAebRA
+	 IYSJTekqJixoNv3veIiUdyhkLdzNRNMky2gc60TGo4jOvOxwlXjZS/uCqcazITHVYDU32
+	 P2JjFlKaulq/393HcstOgCrTqYP+enVkYOAsefLADsBRQ7hObldCWIfWrq619d2yI2UIg
+	 YinlV98QVhdDp2wKJma9UaRFgoUFwFKb4BO4T4WWaOrhB7TwPciXrGeMGifDzxTpRY1jA
+	 4kEcayVvchenPXsWuU8hfjy7r3j7Pshj9W5Fd6+XTYsbeyIMqFLpnwk0xZETuoyiuIA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795452520;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=QTHxkjwnWdi0Sg67/NbYoTIjq9LWwP65YaigHl4xtvM=;
-	b=aejYB1BLDAoLweyJLCauFO5x1Z1AsKcQQNaHwZRzBWDfcnKRYcyWTEswkziJgrt96g6Z
-	 1RMj6v80QfKpi7NHgM7xGFq49BFDAQugQVM7l24xo5t19/mCbo8rnrDSPe4Qsjo/OOT6d
-	 QgnP7En7Jk7u1554I03i3XXFsDAHrh5DP///TmdC0Ee2OaE+vSWaDbrGRt3p+hZuDqJA0
-	 SdetFMK9RpbMGg6Dg7gjr9UITiKI7uU5EbIKHF4dFm+rbP4tsDtrea3DOFy3zTs22iEIH
-	 cVMeyKtnrc2tS+5UMvu/h6N/N1Q4XkCz9wZsHqaTMnJo+2gQyjbGtYgr8LGPdvN4wJA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795454410;
+	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
+	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
+	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
+	 X-SA-Exim-Scanned;
+	bh=oGfpPu9gr9IBoVaVzDyYn6H9qOc8GM5ox900QdAqGB8=;
+	b=Y2Gl4RBhZ/kEBrCo+RiaHDJ1qu/liRslSEhUOcQ6zwcfSWYf3YtbncIrBN7TIZuF9SSQ
+	 pqLhAoc9Q9E2ljxuJU+WVDAW5UpeuoQBbZ1YUomYoNPXeDZV7xQnaU9No3qlZDubbEeCO
+	 9tnHI4YzaFLLKEu7xq+AJU6KwE0L+cYuXhnnF6JOBg0aZdasIniDZ7f+D8qhB8IRDZVPN
+	 +qBIPY2CrYdwgu+6rZ2tckYEVC/FoVuHWHqKfsAQLuHGGyJXn8qwVGoRQpAkYtqd77bd1
+	 +awhmS5A448TMx+9DUx5ZThFSOUBRjGLPp+CUVpHRepOZ3xXVV9JakGUX98yRsUBRWA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EWsuP7zJ;
-	arc=none smtp.remote-ip=209.85.210.179
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UnEfzNiL;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5250C606A33D
-	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 16:48:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5250C606A33D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DE4606A31F;
+	Mon, 23 Nov 2026 17:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EWsuP7zJ
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8a07078200fso1771451b3a.2
-        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 08:48:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795452520; x=1796057320; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QTHxkjwnWdi0Sg67/NbYoTIjq9LWwP65YaigHl4xtvM=;
-        b=EWsuP7zJJNvbfMPNG7SLHEF3yL+QlEtMOmwu3by8A/WNpiRSTgAdB++0K9EZ63MAyy
-         GH/dq6DxwptKu20HOnCL709zeFibKErwDUJ31x2cknJd4fyN/snaHcQZfAwyzZ7yh7Uk
-         BAukFuqFnE2UP7n0BRfkKl8mvELW8MPhSm0MFsHS0iPEnAERpzScvrIcCwoT+sO9f6T+
-         VSqQ1de51OHqXLQT4UXz6dUD25pV6axh9dJhq1X56+pbxs/zElSZ8gf62GpCsQpHQhtK
-         4VyxmcuYiel5SCFACJZlWnEXUlLsGRSxqRA2YKsm7toBb/R8Ho9MJQnbZwdc5+6GdhCa
-         bcaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795452520; x=1796057320;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QTHxkjwnWdi0Sg67/NbYoTIjq9LWwP65YaigHl4xtvM=;
-        b=1jGT0y14CbwocQC4ab+KsoUrW4i7eHeLGrPFrA5crzChO3j/w70UxLNZ/9O9oxPSxe
-         r9I9pfU/l0TNf1mEkZVsAERt+3HVYwDgizn6rOSWlcydTyt0bmdoKHJCuqzittdg4uyh
-         p5xxQuTJ/Of4CtlNO9Fqtb3fsHKPmgjQ2tUKmRI4Ve4M8Yom/VUOOR05UEGfLftrSzyJ
-         BUG0SJaaxh+SsDhb1K6o7yMG1SH7xL6u4F9Wi4n9t3IIMObcD7YHzdDaHv6xssH04MV+
-         DAZ0USZiHzWWyi2i66O/02DM63ViH1Y3FnbFkHF9SlXyKpp6NHGqc/lG+k2Lp0aFKXRs
-         SVdQ==
-X-Forwarded-Encrypted: i=1; AL+hErGTm8FA4mU/A02c6U7MQI/AgxhbmFw9Jreyw9RwW1yd/bNyFpFhxuw/Z1Acm/Ii+WtXfBM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+SzxXmEd3bsfX7YZNesnDz/4uCpsnQ+gSafGUULq601rXej52o
-	CofiJexLguvlIylRtizt9JY8zlN9hYx0ADqR3An3eQvTj9yPONq8jQKI
-X-Gm-Gg: AZFdTZdCq8dEhbCSkrASetP+9rmuWyPN61Ua0upADLuebtO4Cmcfxnve615So+BKd4a
-	GmxBAnsdyE47FOCSUYUY5va1IpfiI3GJj/q0iLMuJdPTBswCKNib1j1uEaXsAwtSeuQlXWL5zRx
-	9OFCG0XErEfZc0R5HQMUyg31FO00J0nWrcWY/DE/kxDKAzMCcYytyhnI3CJ8NmxHNt4hiOi8vem
-	6ywdoNrFUkkIPXdxhgjJ3XkUShcaYkguj52hnFe2dJZW4s1xk6iCVT8NjxNV6K47p9mY1Is0+Lk
-	kWGykMdIcxOutm43vle9xhP0wNw470twdCGYZVI8xrzYoX+pRZpGc/UCCvCpSovUNa4lvRpmAaf
-	/yYwYAfH+HTt/z+EIhsiBYxv3Ku7RxgbJsFMgpnMx5mpO/THGV8yEgcmSiO0CR6l1zwuXP7Tm93
-	2AfdxdkexDe9EDU3sjnLWZCidTA9gH3pxJOzhQcrBkDTljKn3l1Tk/puwQBasI/ELDy061SHSZ+
-	pqTNdCwW9QyeT+uBLvSPtpKQAbtWXKpPwO9Eoa2UK8T/kVGnNVJEqrVY/NFN/oPP4YvCPFVPYWY
-	L76WICcmFX1G8cDSRY25I+VP0oXyfaEo8BhDf2tOFklntGk=
-X-Received: by 2002:a05:6a20:c992:b0:3f9:9114:804f with SMTP id adf61e73a8af0-4014d15937dmr11140810637.27.1795452519544;
-        Mon, 23 Nov 2026 08:48:39 -0800 (PST)
-Received: from [10.2.0.2] ([159.26.115.37])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c87343fe6csm6085691b3a.37.2026.11.23.08.48.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Nov 2026 08:48:39 -0800 (PST)
-Message-ID: <a7752192-b417-4e70-8f39-a3cdc983f447@gmail.com>
-Date: Tue, 24 Nov 2026 00:48:34 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UnEfzNiL
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E221F000C6;
+	Mon, 23 Nov 2026 17:20:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795454409;
+	bh=oGfpPu9gr9IBoVaVzDyYn6H9qOc8GM5ox900QdAqGB8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=UnEfzNiLgh2CDX2b+d3Smms3qMKcqnyozT00s6XocFhOkS7x2tV931WGfPqKEvQpB
+	 w2dWPboF0hP8MbVd7XATAoaa6Z79hwZfCqldawUWJyWvweCzL8qiQTG6aQ3ctQFD6m
+	 3fr0ypskBJLYsAOeuB8ip7R/vGMHEB5JEz8av9um4SKPhBDBLltdmfS/UhA/3xpOf2
+	 MXvAbcklkyy60QPzz6ODPBkb7BBQOSbo4ZB6HkRXaxbQ2oLFRFMoPdbkNXkWo8D3kA
+	 UGGqsHMwv3y2H69Bm6JLDKSv3CG8t5RG4Pli+HDcwa4Szhw4drNnm8IKiwopEEMXKB
+	 kpBR+3IKTHeGw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xVXi2-000000026r2-3t1k;
+	Mon, 23 Nov 2026 17:20:07 +0000
+Date: Mon, 23 Nov 2026 17:20:06 +0000
+Message-ID: <86eccbzcqh.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Jia He <justin.he@arm.com>
+Cc: Oliver Upton <oupton@kernel.org>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Sascha Bischoff <Sascha.Bischoff@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Lorenzo Stoakes <ljs@kernel.org>
+Subject: Re: [PATCH 1/3] KVM: arm64: Don't load hardware vCPU state before first run
+In-Reply-To: <20261123150917.2679600-2-justin.he@arm.com>
+References: <20261123150917.2679600-1-justin.he@arm.com>
+	<20261123150917.2679600-2-justin.he@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -91,107 +85,75 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] vhost/vsock: annotate lockless accesses to guest_cid
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Bobby Eshleman <bobbyeshleman@meta.com>, Jason Wang <jasowangio@gmail.com>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Asias He <asias@redhat.com>, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261117164916.2332953-1-phind.uet@gmail.com>
- <20261118012321-mutt-send-email-mst@kernel.org>
-Content-Language: en-US
-From: Nguyen Dinh Phi <phind.uet@gmail.com>
-In-Reply-To: <20261118012321-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: justin.he@arm.com, oupton@kernel.org, fuad.tabba@linux.dev, joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, pbonzini@redhat.com, seanjc@google.com, shuah@kernel.org, Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, ljs@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 11/18/2026 2:33 PM, Michael S. Tsirkin wrote:
-> On Wed, Nov 18, 2026 at 12:48:43AM +0800, Nguyen Dinh Phi wrote:
->> vhost_vsock.guest_cid is written by vhost_vsock_set_cid() under
->> vhost_vsock_mutex, but It is also read without that mutex in
->> vhost_vsock_handle_tx_kick(), and vhost_vsock_get().
->>
->> KCSAN will report data-race if we issue VHOST_VSOCK_SET_GUEST_CID
->> ioctl while the device has TX traffic. For example:
->>
->>  write to 0xffff88810f1596ac of 4 bytes by task 7914 on cpu 1:
->>    vhost_vsock_dev_ioctl+0x25f/0x720
->>    __x64_sys_ioctl+0xc2/0x110
->>    x64_sys_call+0x299/0x20a0
->>    do_syscall_64+0xc9/0x510
->>    entry_SYSCALL_64_after_hwframe+0x76/0x7e
->>
->>   read to 0xffff88810f1596ac of 4 bytes by task 7910 on cpu 3:
->>    vhost_vsock_handle_tx_kick+0x41b/0x740
->>    vhost_run_work_list+0x97/0xc0
->>    vhost_task_fn+0x98/0x1f0
->>    ret_from_fork+0x2e2/0x3c0
->>    ret_from_fork_asm+0x1a/0x30
->>
->>   value changed: 0x0000004d -> 0x00000032
->>
->> Both readers load the CID once and works correctly with either the
->> old or the new value.
->>
->> Mark the store with WRITE_ONCE() and the two lockless loads with
->> READ_ONCE(), so KCSAN knows the race is intentional.
+[+ Lorenzo]
+
+Hey Jia,
+
+On Mon, 23 Nov 2026 15:09:15 +0000,
+Jia He <justin.he@arm.com> wrote:
 > 
-> You make it sounds like it is just KCSAN false positive.
-> Is it?
-> if yes, this should be data_race. If no, document why.
->
+> KVM_PRE_FAULT_MEMORY calls vcpu_load() as soon as KVM_ARM_VCPU_INIT has
+> completed. On arm64, however, kvm->arch.sysreg_masks, the trap
+> configuration, vncr_tlb and nested vGIC state are only set up on the
+> first KVM_RUN in kvm_arch_vcpu_run_pid_change().
 
-This is an actual data race, not a false positive. The value of guest_cid
-can change while the TX worker or lookup path reads it with plain accesses.
-Because each check loads the CID once and either value is valid, the result
-is equivalent to the read running just before or just after the ioctl.
-Even so, plain concurrent accesses are a data race under the Linux kernel
-memory model, and using READ_ONCE()/WRITE_ONCE() also prevents
-compiler re-fetching or tearing rather than just silencing KCSAN.
+I think I'm going to queue a patch disabling prefaulting immediately,
+and then we can fix this crap.
 
->>
->> Fixes: 433fc58e6bf2 ("VSOCK: Introduce vhost_vsock.ko")
->> Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
->> ---
->>  drivers/vhost/vsock.c | 6 +++---
->>  1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
->> index 88a310390eb0..f26c59013075 100644
->> --- a/drivers/vhost/vsock.c
->> +++ b/drivers/vhost/vsock.c
->> @@ -78,7 +78,7 @@ static struct vhost_vsock *vhost_vsock_get(u32 guest_cid, struct net *net)
->>  
->>  	hash_for_each_possible_rcu(vhost_vsock_hash, vsock, hash, guest_cid,
->>  				   lockdep_is_held(&vhost_vsock_mutex)) {
->> -		u32 other_cid = vsock->guest_cid;
->> +		u32 other_cid = READ_ONCE(vsock->guest_cid);
->>  
->>  		/* Skip instances that have no CID yet */
->>  		if (other_cid == 0)
->> @@ -572,7 +572,7 @@ static void vhost_vsock_handle_tx_kick(struct vhost_work *work)
->>  		hdr = virtio_vsock_hdr(skb);
->>  
->>  		/* Only accept correctly addressed packets */
->> -		if (le64_to_cpu(hdr->src_cid) == vsock->guest_cid &&
->> +		if (le64_to_cpu(hdr->src_cid) == READ_ONCE(vsock->guest_cid) &&
->>  		    le64_to_cpu(hdr->dst_cid) ==
->>  		    vhost_transport_get_local_cid())
->>  			virtio_transport_recv_pkt(&vhost_transport, skb,
 > 
-> Will prevent compiler from hoisting the reads out of the loops.
-> Does it matter?
+> Running the full vcpu_load() path before then reads unsanitised guest
+> sysregs and touches uninitialised nested state: get_s2_mmu_nested()
+> populates nested_mmus[] from raw VTTBR_EL2/VTCR_EL2/HCR_EL2 values, FGT
+> and HCRX_EL2 are written before kvm_calculate_traps() has run, and
+> kvm_vgic_load() can enter vgic_v3_load_nested() early. In particular, if
+> userspace creates an EL2 vCPU with ID_AA64MMFR4_EL1.NV_frac cleared to 0
+> (so vncr_tlb is never allocated), sets HCR_EL2.NV=1 and an EL1 PSTATE,
+> and calls KVM_PRE_FAULT_MEMORY, kvm_vcpu_load_hw_mmu() queues
+> KVM_REQ_MAP_L1_VNCR_EL2. The next KVM_RUN then dereferences a NULL
+> vncr_tlb in kvm_map_l1_vncr() with preemption disabled and kvm->mmu_lock
+> held for read:
 > 
+>   [   73.636014] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000078
+>   [   73.801972] pc : kvm_map_l1_vncr+0x48/0x2d0
+>   [   73.884820] Call trace:
+>   [   73.887253]  kvm_map_l1_vncr+0x48/0x2d0 (P)
+>   [   73.891422]  check_nested_vcpu_requests+0xb8/0x168
+>   [   73.896200]  check_vcpu_requests+0x2a0/0x428
+>   [   73.900458]  kvm_arch_vcpu_ioctl_run+0x2d8/0x6d8
+>   [   73.905062]  kvm_vcpu_ioctl+0x388/0xaf0
+> 
+> KVM_PRE_FAULT_MEMORY still needs generic vcpu_load() to set
+> kvm_running_vcpu for dirty-ring tracking in mark_page_dirty_in_slot(),
+> but kvm_arch_vcpu_pre_fault_memory() only walks and populates
+> &kvm->arch.mmu and does not use any hardware vCPU state. Skip the arch
+> vcpu_load()/vcpu_put() callbacks until vcpu_has_run_once() is true. In
+> KVM_RUN, vcpu->pid is set under vcpu->mutex right after
+> kvm_arch_vcpu_run_pid_change() succeeds and before
+> kvm_arch_vcpu_ioctl_run() calls vcpu_load().
+> 
+> Since kvm_running_vcpu can now be set without VHE state on the CPU, use
+> host_ctxt->__hyp_running_vcpu in VHE enter_vmid_context() (matching
+> nVHE)
 
-Not much in practice: because the loop body calls non-inline functions, the
-field needs to be reloaded across calls anyway (and in `vhost_vsock_get()`,
-the `vsock` pointer changes on every iteration). I checked with gcc 16.2 and
-clang 21, and the compiler does not hoist the load out of the loop even
-without the patch.
+Can you clarify under which circumstances we end-up on the TLB
+invalidation path? Simply faulting things in should not result in
+invalidation. Unless we end-up with MMU notifiers firing?
 
+> and check vcpu_has_run_once() in vgic_maintenance_handler().
 
+I have similar questions here. It isn't obvious how you end-up getting
+a VGIC MI if you don't run and don't load the state on the CPU.
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
