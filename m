@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795456967;
-	b=0tYMomdlSVu+tStop2d3jivex5w61gH80mkciwlhjgolAx5sAxVxz4AFbs6KOBAusx0f
-	 dSVwWdnXSBC2rHhqLTdiKVzT+Su5tLYllLNhlViVUrFEWhNK+OMNTELp+9215kCQHh88o
-	 Y1txEvRrIdVC8dItU3dKah7zJjsU91oZgTvN+neKSz9y/g+K1eQoghgAWuJBJDaHnkBw2
-	 00TukvdPwaF3Zi04KIFUz8Xdc/8CCxtCafeZZwqfNy/fOc9IDLGknPK9HN4O1zoWOFVCm
-	 N7MReuTZvvEH/99g4d6pPKfLDUYIbL0QIY9wfx99yUkpr32CLKvOP5vTc/ACirCwc0w==
+	t=1795456987;
+	b=4FIK4STn/8ofWMwY0bNo5g+oEIoDLijp9f+R1yQyB/8T8sAL2fvZdByuMYtaibDXKmTB
+	 aPZY8UxAGw0ipUVynYgd3u6+hCKnVXQy4XFgbgM09qfLxSuOXcVdB/E0Y3I9fkjhj3JL6
+	 cF+fEjrYBkkfjUZb1uhP73/pgAdy982xtngdRxIHdD2m5lYJMWILQW/peN+7w9S8lSzEF
+	 niu70dYVddu3ug8dbYqXIj/NkxeHXtb6wz7No9kPcbnUJQJyFitFGCI4fCK1ZMyqAk4KR
+	 QRSQ7/AVh3XGLGLtpF3TndXW6fBwo4mZhE8+xrlkiUPEHrYHmPQOVUtSb/EKfx+Xufg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795456967;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795456987;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=3J70vx+UFwT/CKgCREVaEnKIq2mzPLeIJwVvWoQTl90=;
-	b=aCdJVFZIWh7RxDe+YsZJWNSf+ZUEanZatT8pjGIUA78ar6pp0vxDq2671RXbFFRIrs93
-	 NZDM5wp6DLpY7Mr1AhCoxj9kWkxRBJ7+Ai/4foY3JfO5c7pyiMmpkmkCHtgTLcOl/CLEB
-	 RftPeq7Dnuc4UCZ8QoWy0oWwTtklgj3ONdTTBZCTQHI3e07LZy4Eg4GWF/Kc9YJaX3zrk
-	 8xex2tJJTymtx4Seov0yNTZpYnbiwwtvn8+qJx5LPssBhcFjZPPr/Oy2dJP59j5vGVuld
-	 Q6lWKNvWDTgF+ZT1qoWTbPnAgj7z+zCdD+5TWhyqb2no44t8M8pww7jLi2rTak9fNCA==
+	bh=ucj5Vibk0wP4QqlCmy5tuR1KFaKoo/7/DdUDKRr8QwY=;
+	b=PbXKnfI79bXjWqxCfN182Dip6wlXQN8BF7ppDH5p6dxk11VXcjoMHf61jiDSOcXAsftf
+	 0PIHhnvFDBiSRSA20nncVIe7IJFY/Cj6OjOEgpyzjgJAEsuwq6i+WDjjFClnaB+L6YSgO
+	 XEUGEkEsAZ/rIDo8mXFvcu6RdF4i06sU6qhoex6XkzlGKmCJASpjhVeNreskFVxJiboTu
+	 8/SiDDiURn5whUL7waTbZpzJ71G+LXiQf1skMpuaEdfZ8okRA6UQ7ZUfGD6GIi84MfvQ4
+	 nx5xAanPlou3EN03sq0ox2CYrTofVqPMnvUt7ol1cxXLN5JJ3Aq0lJGBJEhhVc/6rfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NxPUaLJk;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BoNEZdMM;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F760606A31A
-	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 18:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DCE606A31A
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 18:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NxPUaLJk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B95F1F000CF;
-	Mon, 23 Nov 2026 18:02:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BoNEZdMM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929451F000C0;
+	Mon, 23 Nov 2026 18:03:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795456966;
-	bh=3J70vx+UFwT/CKgCREVaEnKIq2mzPLeIJwVvWoQTl90=;
+	s=k20260515; t=1795456986;
+	bh=ucj5Vibk0wP4QqlCmy5tuR1KFaKoo/7/DdUDKRr8QwY=;
 	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=NxPUaLJklO5O4L3xQZin+kdBSFXEAmWf/2h1AoDXyrvc+LMT2RqOegFy4s9jG8qy0
-	 Golv00FWt6mbC2AfVcPn6J3wDiHzijermXera8+Z+glL0FTY6Nqx3JmqDNjknIxYks
-	 yhgGRbPnDjnxYZ+U4KUp5nHyZpn567NP/6C1kgRhCTnR8JUWqiWIuD4m97XqfFT7Y1
-	 edzyseJ+r7kieWPWCBNzmeEs8yif60ST3Wt6TpFW/SFIMASs4ZfOJVQC3NsEpl4skB
-	 eYMB/xjBDBFuBKuCe0clpcTpR2d+IPZfBEkHw1RULRwT5/klLs2yuwpVigz/cV1OwI
-	 nLkOT3usJ/eMg==
-Message-ID: <sashiko-outbox-229790@kernel.org>
+	b=BoNEZdMMRMgTJEGzq7mOUuU4VBrcerG1+s0mIsQCJwbeWuPsB2QSIrPwDTaBpal30
+	 GvFZ/CQmIXbwmcJnPNg0Q9voa8vkWcOI24Yi44Dj+DuqtyapDqmZJPEMRTeoDpH0h3
+	 woKx3p1SgB4Q05UwTAyseXBVAxYvrSGKajQKoU7iMWywRghB8LIBwSXDGbnCJg3YUb
+	 mdRfeIpvX5mrkBbbfEYd6u7htJ3qGH+e305MUTTBCBv7js63sR8yVc7RBZwffAKbdZ
+	 3cNegV8Tk31H9vVwAO8cJqDbt2Uf+KmDTBkgwCyBRiII90EZ66bF8drLUZjwGduEc+
+	 03/W+yoqGi3ZA==
+Message-ID: <sashiko-outbox-229793@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/5] KVM: nVMX: don't check PIR.ON when processing
- nested posted interrupts
+Subject: Re: [PATCH v3 2/5] KVM: x86: split vcpu->arch.hflags into
+ nested_guest_mode and smm_mode
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Maxim Levitsky" <mlevitsk@redhat.com>, kvm@vger.kernel.org
-In-Reply-To: <20261123175512.80438-2-mlevitsk@redhat.com>
+In-Reply-To: <20261123175512.80438-3-mlevitsk@redhat.com>
 References: <20261123175512.80438-1-mlevitsk@redhat.com>
- <20261123175512.80438-2-mlevitsk@redhat.com>
+ <20261123175512.80438-3-mlevitsk@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 23 Nov 2026 18:02:46 +0000
+Date: Mon, 23 Nov 2026 18:03:06 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,45 +60,84 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] KVM: nVMX: missing Fixes: trailers for nested posted-interrupt
-  PID.ON checks
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [High] KVM: x86: build failure in kvm_vcpu_reset() when
+  CONFIG_KVM_SMM=3Dn
+- [Low] KVM: x86: commit log names nested_guest_mode instead of
+  nested_guest_state
 --
 
-commit b99242cc2d5d177888bd387559bf392b46fc1d67
+commit f779a065108faeca6cdd5ce21f760f2b6bdeb40c
 Author: Maxim Levitsky <mlevitsk@redhat.com>
 
-> KVM: nVMX: don't check PIR.ON when processing nested posted interrupts
->
-> Despite the suggestion to test and set the PIR.ON and avoid sending
-> a posted interrupt if it is already set, there is no requirement
-> for this bit to be set for posted interrupt processing to happen
-> when the target CPU receives the posted notification vector.
->
-> See section 30.6 POSTED-INTERRUPT PROCESSING:
->
->    "The processor clears the outstanding-notification bit in
->     the posted-interrupt descriptor. This is done atomically so as to lea=
-ve
->     the remainder of the descriptor unmodified
->     (e.g., with a locked AND operation)."
->
-> Apparently Windows' implementation of APICv does exactly this:
-> it sets bits in PIR, without bothering to also set the PIR.ON.
->
-> Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+KVM: x86: split vcpu->arch.hflags into nested_guest_mode and smm_mode
+
+This commit replaces vcpu->arch.hflags with separate nested_guest_state
+and smm_mode fields in struct kvm_vcpu_arch.
+
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
+ost.h
+> index 683bb8bf43a94..17308713a2904 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -735,7 +735,6 @@ struct kvm_vcpu_arch {
+>  	unsigned long cr8;
+>  	u32 host_pkru;
+>  	u32 pkru;
+> -	u32 hflags;
+>  	u64 efer;
+>  	u64 host_debugctl;
+>  	u64 apic_base;
+> @@ -755,6 +754,16 @@ struct kvm_vcpu_arch {
+>  	u64 arch_capabilities;
+>  	u64 perf_capabilities;
+> =20
+> +#define KVM_NESTED_IN_GUEST	BIT(8)
+> +	/* Non zero when the guest is executing another guest */
+> +	u16 nested_guest_state;
 
 [Severity: Low]
-This fixes nested posted-interrupt processing and wakeup checks when L1
-triggers the notification vector without setting PID.ON.  Should this
-include:
+This isn't a bug, but the commit subject and message call this field
+nested_guest_mode while the code names it nested_guest_state.
 
-  Fixes: 705699a13994 ("KVM: nVMX: Enable nested posted interrupt processin=
-g")
-  Fixes: 27c4fa42b11a ("KVM: nVMX: Check for pending posted interrupts when=
- looking for nested events")
+> +
+> +#ifdef CONFIG_KVM_SMM
+> +#define SMM_MASK		BIT(0)
+> +#define SMM_INSIDE_NMI_MASK	BIT(1)
+> +	/* Non zero when the guest is in SMM*/
+> +	u16 smm_mode;
+> +#endif
+>  	/*
+>  	 * Paging state of the vcpu
+>  	 *
+
+[ ... ]
+
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index aad065d035fbb..4e515bcdc85cb 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+
+[ ... ]
+
+> @@ -9558,7 +9558,8 @@ void kvm_vcpu_reset(struct kvm_vcpu *vcpu, bool ini=
+t_event)
+>  	kvm_lapic_reset(vcpu, init_event);
+> =20
+>  	WARN_ON_ONCE(is_guest_mode(vcpu) || is_smm(vcpu));
+> -	vcpu->arch.hflags =3D 0;
+> +	vcpu->arch.smm_mode =3D 0;
+> +	vcpu->arch.nested_guest_state =3D 0;
+> =20
+>  	vcpu->arch.smi_pending =3D 0;
+>  	vcpu->arch.smi_count =3D 0;
+
+[Severity: High]
+Does this break the build when CONFIG_KVM_SMM is disabled?  smm_mode in
+struct kvm_vcpu_arch is guarded by #ifdef CONFIG_KVM_SMM, but
+kvm_vcpu_reset() clears vcpu->arch.smm_mode unconditionally.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261123175512.8043=
-8-1-mlevitsk@redhat.com?part=3D1
+8-1-mlevitsk@redhat.com?part=3D2
