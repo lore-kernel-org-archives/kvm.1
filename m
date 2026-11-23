@@ -1,70 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795440281;
-	b=kYVUsq7h/196KNz2xNKeQSxWTAd78R/A3PsePCW0FJVddKkJ+MXW3py8tVXUHVkKMcdt
-	 VZPC4e6xg3W3GtE6xVHIyE6yNWJsJA5papZ0A87is7x9SaoOVtDcZ16FzuXJqcjV0kSnp
-	 aQzxe9LpoWgjK7PwRa2Wl130gtCt6bRC8ydw4cxlgRvD/ocR14mgpun/ImCnAAoVaMUO/
-	 qAVEuh7cs8lx2CoCMGkUqhM3O2ZjbSmr52mZ9uGwI7d0Lvj7DONBMToQqFn0h6nGV98R6
-	 oXtlYFDCGELCyXFlVZYlvE2DJGm3IIM6zyxk1jo5ryut+fAR24EavVaZfC0/NC+zrlg==
+	t=1795440742;
+	b=uTmTVIGULP5iAW5ocM8Z6G+eeMkjfcOIFB3KpYDVr6RH9+NJng+FV0WyM8c87viatEi4
+	 Y2ArR5gwr93BZQDJMpa4UjvcbzstubzRNNrUjeooJT1Wd1fw0+POgO8i79tlx8wkiaabj
+	 lDSvb8mpjfbtuWh2ImiGU8m7B95UnmAkrqlMYqhQyrmpFm1C7tTM/KKTqjntviHN0S1V1
+	 4Mndj9y5zY9ZF35oNwgZbZaInGdE/IZpQU5K5gJOe5n39bZzLFpQT10NcrtaglKJCDSNb
+	 9PI4ZTthfAHhmzj9dWSPP3y11JVJaVZ1xAzWPK6+OxJZHGaB/Ikmg3xOKuP+or7rceg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795440281;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=jLv9CLcIu1QdSA1kmYNp8Rb0YGi/d/JwNxve0vmO/sU=;
-	b=cDHvuXiMJWiEo92c7yzgitiTiqgWh+GQRR4Bgx8ix3pBc83Jds+eCbN96uc7QFiluU2i
-	 MTlEQZ6E+YXWZTruzb9jhtGP8IS1t6z26+Bt2KftpTZi+pzKqenhYJqkZkHe6PBtKtq19
-	 EoCdQBg4hy26y8Z2g4YTY7SHTk3Q9p55t0gOCAaJMGnyPg7B+53XgvjoSBj9yP0ZbNljN
-	 oeuw0OCYQ4u2TbdHH7pWiz8yqas+aMQloSn/MNH+i8hjFxCwkNz8N5iZT/MWJ5qYIVUSh
-	 k+RFE8ohdsxd8eNETCHaQL68CZR/o1D5U7Gj93Vu+q2NGhhWHISK/FKY4tAU3Ro8fug==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795440742;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:Content-Language:To:Cc:References:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=0bvStAAxeZ8Gkfe5Tw5hh4wU3B/vHxdCM1DeCTbELao=;
+	b=YNKshA/79p3nLruVvw0F/huE2oslEy076JzY8GePiuitmv0ARGr5qUD7QGXmRhSwfBOa
+	 lX3uc5NYmaXLdp9JTCu7EW5lvBfCq5+8b250yWAK+lwdUWTzUQKdODVKaTA0OevNl+1zi
+	 iHra75kxBJJLjN+3TtgAFq5x/GKYXTR9euQ0GYoDQ27eiDv8lOzFrAVXosuIqmiAk2GeL
+	 lzRObpEZp+gOKe/Tj2oziTKs5SS8vboc0DEz+c6KgCahPTJoQXwvYoUVNrvX2ntTOGtww
+	 2XgXVxZph6/gU0UgdH0BsPXwWpT52USBviNlIeAsZIF2WjtU3kpGxbrtIQfEQbz6LwQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iaAgsD65;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4337606A31F;
-	Mon, 23 Nov 2026 13:24:41 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=JhGBw1bG;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1B1606A321;
+	Mon, 23 Nov 2026 13:32:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DC1B1606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iaAgsD65
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1536A1F000C4;
-	Mon, 23 Nov 2026 13:24:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795440281;
-	bh=jLv9CLcIu1QdSA1kmYNp8Rb0YGi/d/JwNxve0vmO/sU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=iaAgsD653MyS8Dnstwa+FbDv4hWrojjI4EITadwmhB+lk0rlHlPSgISzz4VZXsj0B
-	 aUBYSS1Fd3kB8+FB8eFw0ca2BEFoI+FUA1TVrSE4ovO4V7n8YEuBOwKsdObHNKOjVe
-	 zdyfy41Uvq3BsBBtQ8gAOQ9Ro02DLpQkEzyy9gixsfnqGmQEcNU3AuZK2/FqCeuoQf
-	 Tn+6pTYDNXo5Ednau3nWFteuMPi6jgmv23qOKdW9AsencEo5EQ2oCvrw1mFv4+JYkC
-	 e6l3DoY4td/NLn9orESZtZey6ebiOcaV2GyJGyGHiZzZWjVO4Ks8z6P14k7EN4dCgo
-	 9wCiGLStuvCrw==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v1 00/10] PCI/TSM: Support guest TSM drivers
-In-Reply-To: <20261123115803.GN14811@unreal>
-References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
- <2026112325-emit-squeezing-5d96@gregkh> <20261123090623.GK14811@unreal>
- <yq5a7bi3riha.fsf@kernel.org> <20261123115803.GN14811@unreal>
-Date: Mon, 23 Nov 2026 18:54:31 +0530
-Message-ID: <yq5awlq3pto0.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=JhGBw1bG
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E63DA143D;
+	Mon, 23 Nov 2026 05:32:17 -0800 (PST)
+Received: from [10.0.129.12] (Suzukis-MBP.cambridge.arm.com [10.0.129.12])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 258BF3F86F;
+	Mon, 23 Nov 2026 05:32:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795440740; bh=o6hmJo//5wX2bOXoad+z4zz40/4XRN6NpGXUmq6iWS0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=JhGBw1bGfH7RhQ7jNe1Smx3D+gZlG+FUW1byFCfFuf6p6ojgIrqzytv1khguy8lQC
+	 k9St/nUgNMFcrNzz+9t6s9WV5Y7fZKu9n6pUkwCGY26ICJ+aKcOSO6xgai0x/e2Whe
+	 tzoWgRShMgYtuRSC29OBsisHnBm8nPoJPCy7Qoo0=
+Message-ID: <d332948e-48ac-4f84-b620-d39d36992c55@arm.com>
+Date: Mon, 23 Nov 2026 13:32:15 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -74,90 +53,55 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 07/11] KVM: arm64: CCA: Add Realm RTT mapping and
+ invalidation helpers
+Content-Language: en-GB
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Kohei Enju <enju.kohei@fujitsu.com>
+References: <20261123104233.95710-1-steven.price@arm.com>
+ <20261123104233.95710-8-steven.price@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20261123104233.95710-8-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Leon Romanovsky <leon@kernel.org> writes:
-
-> On Mon, Nov 23, 2026 at 03:13:13PM +0530, Aneesh Kumar K.V wrote:
->> Leon Romanovsky <leon@kernel.org> writes:
->> 
->> > On Mon, Nov 23, 2026 at 09:40:55AM +0100, Greg Kroah-Hartman wrote:
->> >> On Mon, Nov 23, 2026 at 02:03:27PM +0530, Aneesh Kumar K.V (Arm) wrote:
->> >> > This series adds the PCI/TSM support needed by a TEE Security Manager
->> >> > (TSM) driver in a confidential guest. It adds device lock/unlock,
->> >> > helpers for recording device acceptance and parsing MMIO reports, and
->> >> > DMA callbacks used during PCI driver attachment. The guest TSM driver and
->> >> > attestation commands using these interfaces are in follow-up series.
->> >> > 
->> >> > This series is based on Dan Williams' "[PATCH v2 00/19] PCI/TSM: TEE I/O
->> >> > infrastructure" posting [1], particularly the guest LOCK/UNLOCK, ACCEPT
->> >> > and MMIO report work [2-4]. It retains device_cc_accepted() and the
->> >> > confidential-device acceptance model from that posting, with changes
->> >> > adapted to the current PCI/TSM structures and reference APIs. Dan's
->> >> > device-core acceptance helper and per-host-bridge IDE stream reporting
->> >> > patch are also included.
->> >> > 
->> >> > This series does not adopt the Device Trust changes from Dan's "Device
->> >> > Evidence and Trust for PCI Security Protocol (TDISP)" [5]. That work is
->> >> > being developed separately in Leon Romanovsky's "driver core: Authorize
->> >> > device trust before driver binding" series, [6]. Confidential-device
->> >> > acceptance is kept separate from that driver-binding trust policy.
->> >> 
->> >> But it should not, as you are making driver core changes that will
->> >> mirror the same thing that that patchset is attempting to do.  Please
->> >> work together on this.
->> >
->> > +10000000,
->> >
->> > Greg,
->> >
->> > This series came as a surprise to me given the fact that device trust
->> > series is exactly for that - allow confidential computing.
->> >
->> > Adversarial is equal to the "cc_accepted".
->> 
->> I think the confusion stems from this thread:
->> 
->> https://lore.kernel.org/all/yq5amrr8yldi.fsf@kernel.org
->> 
->> Based on that discussion, I understood TRUST and eligibility for private
->> DMA to be complementary attributes. Device acceptance determines whether
->> a device may access private memory, while trust determines whether the
->> core must enforce additional restrictions. I understood that supporting
->> an accepted but adversarial device would require either a private IOTLB
->> to restrict its access or an IOMMU.
->
-> I reached a completely different conclusion from that discussion.
->
-> Device trust does little beyond preventing driver binding and recording the
-> trust decision in "struct device". The missing piece, which I would expect
-> you to address, is ensuring that the IOMMU and private DMA are configured
-> only after the trust level has been decided or as part of that decision,
-> rather than beforehand, as they are today.
->
+On 23/11/2026 10:42, Steven Price wrote:
+> Add the RMI RTT creation and unmap helpers needed by CCA Realm stage-2
+> memory operations. REC exit handling and guest requested RIPAS changes
+> follow in the vCPU series.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> 
+...
 
 
-I agree that the trust decision must precede DMA configuration and
-driver probe. My integration tree shared in the cover letter already
-includes your trust framework, with PCI/TSM DMA setup following that
-decision.
 
-What I am still trying to understand is how you view the DMA allocation
-and mapping paths determining whether a device can access private
-memory. Paths such as force_dma_unencrypted() and SWIOTLB receive a
-struct device pointer and need to decide whether to use private memory
-or shared buffers.
+--8>--
 
-We could move cc_accepted into struct pci_tsm_devsec, outside driver
-core. How would you expect the generic DMA code to obtain that
-information? Adding another flag to struct device would effectively
-recreate the state we are trying to remove.
+>   static int realm_destroy_rtts(struct kvm *kvm)
+>   {
+>   	struct realm *realm = &kvm->arch.realm;
+>   	unsigned int ia_bits = realm->ia_bits;
+>   
+>   	lockdep_assert_held(&kvm->arch.config_lock);
+> +	if (WARN_ON_ONCE(!realm->stage2_unmapped))
+> +		return -EINVAL;
 
-This goes back to my question here:
-https://lore.kernel.org/all/yq5amrr8yldi.fsf@kernel.org/
+minor nit: Does this hunk belong to the previous patch ?
 
-If we remove device_cc_accepted(), what should those callers use
-instead? How do you see your trust framework supporting that decision?
-
--aneesh
-
+Suzuki
