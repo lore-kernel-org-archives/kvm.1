@@ -1,49 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795435806;
-	b=gLCip39tkvDO/+6GSIrUxz3zkzshPv6ioGttzXwPWies9bYe3BGmEgQ2vST6tSyfy56C
-	 8zMo3jtLsIiw0iBrBB321umwQrI6VteXYy5+VASHkqOHwm/n9v98HcaFXUb7AOXYdO5rn
-	 PsWQougUF55I9XegLEHR1bZX/PE3UwsJUhAFJROK1n/6yjRWbJihaTMawWluXjXTqdgax
-	 vsFaDhBaANbmqwt6O956qBcPknS37qot4RB8DEy7Ebi0Q/l7mbyTuXPH65IBPILPyaHWK
-	 PAlSV2XlMFukBuoiHQI7y2I9dTDbcpCWciYDWkXZsrF9JQuqIVaVKoXQ2nSA1UAwDpQ==
+	t=1795436713;
+	b=WHSE0IEhxwiXzUx7Yesnr9zssbIiFTMznFUkQ7hG6GtGPFYJkw3nydmwNkfYM3kQhWp4
+	 Ie9eVIgFym08TwLPackD3guDlZegSHjpu6GHNOeAQllJfeG0+tRbBuk3BAM90f9FhQRf4
+	 gApWW5qsnWiKG5actvbs6UpFcc2YsDynA4vJW2YoHFVAFn0/gJOgPDsBD3SKGG/3qz+eA
+	 NwyGWn3Q56vSJ4a14nld+7VdWPq8T5LMFAz/W/SSc7FxRNzf5JVPV0nPJ14+EsWQEk6LQ
+	 KHrwVOvMursJd0tiwpK3MF3+lucGSnHRCtKG8ZVqtZJM+rDFE5VFsCJzrYNuluEbktQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795435806;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc;
-	bh=4VuFSntfCljx51xVr7ZgTt4+piYTB/31ijcvK7Rfmk4=;
-	b=JHmwauPas6Bi28nZVvXQTJ6RJuVWwwpMchya3g/B+VK1cnmYiDDqUPeogGbqXqI+NKRB
-	 rS6rWyX/V4uPJ51O2dxg5BbvGmQfCb0dvzPVYh/jeh/ecj7Soae4KvQ6WfOnLYQE9H9uX
-	 JBB7X4z/MzOpuGWsVRUyMFpo65Ej80FNlpcHads0BBtEuxVMqK8LAVmvm7WwIIRtkIEfr
-	 G3dwZS9Jkp639p6BRcW8kWea75sKYTNFpjrtTq51VPpmvMs9Gx4OhUqbiMolCljo1wuag
-	 EsI7iqP30D5NyS6OIeLKjQ7UyfvGaX4lSQisSbRqa8vfu/W+NFwER6/Rq06GAwq6Sig==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795436713;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=zP/rdP6cAnm6xwOfkN9ZnCreMYEXoK89xKV+B10aH8c=;
+	b=AqbFNcWSj3sGHyNG4eQTRCnk8fDgwHhcMclLrErvsK7dHxzS9mknKSQ2M28w+0CD5XzT
+	 Oe0E6BFrEN/xXOwd7bi20A5WCbLPwJi7ROC/N1glO2msQRVDnBG8QPMvq7X8Xx3H1ySIj
+	 RNFq5ilVH6Om61YVOKdN56NlJKUxSM9VDK+8JyJ/S25Iqn6l6qBuQp2xc/nsgZdtIQiyu
+	 bqF7bMZpTnjLHGT1uxPVpZJenDy9tiOGQrbe4MauuH049p7kKRpGma8H5CQdrvJ8/I4VX
+	 2SARoGG+qTvpll+uGjHILmJhen/JPRmrMKsshyNFg0IwK0n3p0I9HQflX3Pj8xyJelg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VLkdNyIL;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YdC5w0o2;
+	arc=none smtp.remote-ip=192.198.163.9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0634F606A31A;
-	Mon, 23 Nov 2026 12:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70510606A31A;
+	Mon, 23 Nov 2026 12:25:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 70510606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VLkdNyIL
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DE91F000CA;
-	Mon, 23 Nov 2026 12:10:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795435805;
-	bh=4VuFSntfCljx51xVr7ZgTt4+piYTB/31ijcvK7Rfmk4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=VLkdNyIL0Ywxj+kTsBAUxrA/lkMe3ezbWSOkn26RnyYgMCVwFQBpeOyzjJBQ1pEq6
-	 88HYhhZmYQp5d23WpcUpCrXxXbkwPXgVQsUJUR0jVE/vRtLxPNzgKliENy6dunzrbJ
-	 3EPKQz7bc+iPXKxl9zwZwemIptdLivSK5FmAaaPX+bQJerpfcafoC2w6vaNYP3rmf4
-	 l2qSaOMJsR86qaGwIWQex0+Lir73rohTmfd1l44bsGCiV+fY+eXUcd0F8AMJJDaTlw
-	 d6rYvxpgY21UAO8oKlUl2CPT1d0JfzOkOVNnNRFgTkRbXGGAZtQXD/p9sWeV6O/lJv
-	 gTrIp92CIwU0w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7744B392ED9E;
-	Mon, 23 Nov 2026 12:10:05 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YdC5w0o2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795436712; x=1826972712;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=hqAosn83DjPHxx+6NwmAJxE8M8zatUgc/LZqvz8JAx4=;
+  b=YdC5w0o2Jcwfp79ic/xYnZx3iaRLVU+bfnTeoVXfAM21bVyXd1QvtCSA
+   Xja4OH9EACvbAZUOjXybKRtb8bOAHDexwozLKd2GOMCSDsELW6XEEMR/T
+   ynhPTFbODy4zxFNdnus6nwWBz0lzxnJ8CNJXkaRstOKD5WVtWfkTQssEV
+   ETy3uN7qsokJ1ghPUgwv0XOZ5/O2NpXe8cegiYd91I8f0zUSBacLJNR9O
+   Gdyx8bRCdeEYwCfhGVi4//hKy3iYpWd05iYGpOwZbx28DZ6+H09v128/8
+   xg4D8VEb7bh8bJlXhK2hPKDTnPgIigu9oCYJkO+lPwBuhIm9gVg0mWcyU
+   w==;
+X-CSE-ConnectionGUID: FTJ9nCFFREWU1mDHmqZwRw==
+X-CSE-MsgGUID: WJpQMw1RQb2JRaqMR2+nLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4127843"
+X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
+   d="scan'208";a="4127843"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 04:25:11 -0800
+X-CSE-ConnectionGUID: Dg9BzfPwSCqaLFRAmsmGmA==
+X-CSE-MsgGUID: Kz9etXi9RiCl4tLIjip+hw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
+   d="scan'208";a="11481356"
+Received: from emr-371.sh.intel.com ([10.112.106.129])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 04:25:10 -0800
+From: Baoli Zhang <baoli.zhang@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: kvm@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Yanx L Liu <yanx.l.liu@intel.com>,
+	Baoli Zhang <baoli.zhang@linux.intel.com>
+Subject: [PATCH 6.18.y 0/4] KVM: x86: Fix DR6.BLD regression in guests
+Date: Mon, 23 Nov 2026 20:14:23 +0800
+Message-ID: <20261123121427.2803358-1-baoli.zhang@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -54,46 +81,51 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] vsock: only deliver taps to namespaces that can reach
- the device
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179543580428.2348707.16200731284263459418.git-patchwork-notify@kernel.org>
-Date: Mon, 23 Nov 2026 12:10:04 +0000
-References: <20261116-vsock-tap-net-v1-1-7e24f45adad3@meta.com>
-In-Reply-To: <20261116-vsock-tap-net-v1-1-7e24f45adad3@meta.com>
-To: Bobby Eshleman <bobbyeshleman@meta.com>
-Cc: stefanha@redhat.com, sgarzare@redhat.com, mst@redhat.com,
- jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, kvm@vger.kernel.org, virtualization@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Hello:
+Hi,
 
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+a58917a271cb ("KVM: x86: Preserve DR6.BLD (Bus Lock Detect) when
+delivering #DB payload"), upstream 719a1d58bf43, went into 6.18.61
+without the rest of its upstream series. Since then kvm-unit-tests
+x86/debug fails on hosts with Bus Lock Detect when the guest CPU model
+doesn't have it, e.g. the default qemu64:
 
-On Mon, 16 Nov 2026 15:46:49 -0800 you wrote:
-> vsock_deliver_tap() clones every packet to every vsockmon device on the
-> system. Creating one needs only CAP_NET_ADMIN in the owning user
-> namespace, so an unprivileged user can capture the traffic of local mode
-> namespaces.
-> 
-> Pass the packet's netns to vsock_deliver_tap() and only deliver to
-> devices that pass vsock_net_check_mode(), the same rule socket lookups
-> use. vhost passes the vhost_vsock netns, loopback the sending socket's
-> netns, and virtio-vsock NULL (global mode).
-> 
-> [...]
+  FAIL: Wanted #DB on 0x400da7 w/ DR6 = 0xffff0ff4, got 1 #DBs, addr[0] = 0x400da7, DR6 = 0xffff07f4
+  ...
+  SUMMARY: 25 tests, 17 unexpected failures
 
-Here is the summary with links:
-  - [net] vsock: only deliver taps to namespaces that can reach the device
-    https://git.kernel.org/netdev/net-next/c/2388bb763e32
+Once KVM stops intercepting DR accesses, the guest's write of 0 to DR6
+goes to hardware and clears BLD. sync_dirty_debug_regs() copies that into
+vcpu->arch.dr6, and since a58917a271cb the #DB payload path no longer
+sets BLD back, so the guest sees it cleared.
 
-You are awesome, thank you!
+Later patches in the same series fix this upstream (v7.4-rc1). This
+backports those two fixes and the two cleanups they depend on. Patch 3
+needed a small change: 6.18 has no arch/x86/kvm/regs.h, so the new
+declaration goes in asm/kvm_host.h.
+
+Tested on an Intel host with bus_lock_detect with a 6.18.64-based kernel
+whose DR6 handling matches v6.18.64: x86/debug goes from 17 failures to
+all 25 passing.
+
+7.3.y, 6.12.y, 6.6.y and 6.1.y picked up the same commit (in 7.3.2,
+6.12.117, 6.6.163 and 6.1.193) and probably need these too. I haven't
+tested those, but can send backports if wanted.
+
+Thanks,
+Baoli
+
+Sean Christopherson (4):
+  KVM: x86: Rename kvm_dr6_fixed() => kvm_get_dr6_fixed_1()
+  KVM: Return an "unsigned long", not "u64" for the fixed-1 DR6 bits
+  KVM: x86: Force fixed-1 bits in DR6 after synchronizing with hardware
+  KVM: x86: Set guest's fixed-1 DR6 bits when delivering #DB payload
+
+ arch/x86/include/asm/kvm_host.h | 1 +
+ arch/x86/kvm/regs.c             | 7 ++++---
+ arch/x86/kvm/x86.c              | 3 ++-
+ 3 files changed, 7 insertions(+), 4 deletions(-)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
