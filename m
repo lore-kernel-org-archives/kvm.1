@@ -1,78 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795429442;
-	b=Qp2ydCgUC5Bz2FaOg/ernjCUnBICpv4yAllVX1QiI7m2JxKdeGU5fl1w5UAaOWP4DLVv
-	 RFy/ZX45T8u0xLMSWSodqL4DTESGaL65tClpscyqYzEHBBzryGcVCPSimkSfmDGe8nJCH
-	 ut2u7BjGKRoeKQzXWY4ALxZVQqdGMOuIsnwJQbWDSiYqsHdKZZFDmvhM3e9JrZ+UyVyxL
-	 b0M7IQN0lYLbDFKNf4RFaM+nKiZSkFloC7ZFyny4zYgo4gSciuH5DOLE2vgnfmNozKh+W
-	 k0d4mAG8v3Hs4ptFLL7mMDLjqtzvdCzbp2nc6icWX5sAn5e44eCJOs5FagOsWbgYK8A==
+	t=1795429438;
+	b=LTagPs7K/BVjod6nfqoTKloP7He3DrFtxAFwva7Uj/jXKpmIMlDf3mJz3PLjVd4ikGvn
+	 sQVrVEy58FnPKA0Fl8ZZuELnMldB0R7ihkStMtTgtZOub3AZK2C0aWGpMiVvik81hSAWV
+	 /QTXFR+FHzxIBjD0gtxn9EhpSzMk70yfM0alHGUQ+gR9JqmtQZSssuCjtxSv6PIm/677q
+	 qYi9kHsjThwulJgWYrOqoqAr3WMwyPMsyxyirb0aOONgJwKhCdhEjLMM5tqtHk3/Yzx+z
+	 vv26loTBXZnM838WDyfA8GDFKZfIJQ8aTJrQRpkOhGAvfqc0cN3cWWMTBJAr77GEByQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795429442;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795429438;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
 	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-TM-AS-GCONF:X-Proofpoint-Reinject:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:X-Proofpoint-GUID:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:
+	 X-Authority-Analysis:X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
 	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=fk4Xq849+8+EE6qHawhUwxyOI8ZUR4PXXj7Hb0IUYXo=;
-	b=CoDMM49vyc8vnf1O29R10T7e3KyQi/C1ITOlIU3PDjn8CzhLP6hI5Zb8GCiy9ndhFYic
-	 qKUu9P/8+IoDQnNSHSHg/ue42dBcZfOWXUnJyTMnNUiHb2mnDWg9rSAeLdpT39CJ1jrhx
-	 nsgW0VuDK4xNqLY+T36LXmrVxlhFO0c0hFwuqTXCy0SE206a1P2VMykLtMWesf4yH51yL
-	 y6UtFCda1xzJaWAfVHN8eHCnrpaCQUST+LFSsylHy4cQdZGqixJcZ1yxC4/cMTpvk4sfE
-	 wjsDlrKkCCkSMTMDNPJH2iyKg/0Mgwkr+fMbNbGSaU9uQefLNh695bzdDDDtyKuDbPw==
+	bh=STJNmQF8MmoNoyb0xS/Wfci/XJ6MVx3kwSNucWIBo1E=;
+	b=DP/Ngud5SJ1kkUDbCX8U9Ofo/Zd5t/k0EbJr/q85oZ/Cyj31xTm7laEoKdTCpc8Ccyaw
+	 s+sJi/IYtWNi9lhwMKDrLFOoF498/DED4+nJiztk7qQmVBJ6msGpUbU86vfsg3k//XxJz
+	 BU3/Dc7slykWldAMsJ9gP3hEzRIeA0t0GzroQ2i0C1Ci9n8DL/aQeFYPxDIcDGINQVduq
+	 TidNGbrNHK3/mNXWOzmPCWCUO8Szhz2hnHmdpXghIpVoiIWjpCFD0yK7fBBpXKlIlii+R
+	 ccVz/xxKpJMIbdHDWfn9uwQOodESV84oFCkvHKJUjyw2LqnxMlDoJZ/Vv7bGJLmbtNQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.ibm.com;
 	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PW8O3Glp;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gtDncTZ1;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B159606A31E;
-	Mon, 23 Nov 2026 10:24:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4B159606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D50E606A31A;
+	Mon, 23 Nov 2026 10:23:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4D50E606A31A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PW8O3Glp
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AN9YxXu3252521;
-	Mon, 23 Nov 2026 10:23:32 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gtDncTZ1
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AN9Z09J1602087;
+	Mon, 23 Nov 2026 10:23:33 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=fk4Xq849+8+EE6qHa
-	whUwxyOI8ZUR4PXXj7Hb0IUYXo=; b=PW8O3GlpmHlDC36trtq3iOiWXRlTDhYF8
-	fHbyogscwdK4wT563+EpCiHKwJi+3eVV7MtsuINFNhG6Hm/XhuSNhlL7KuNfCFxI
-	xTeqN7HUfrV9gjaFdQc+A69UH5cRhDZs4XDPTaYEWf9yGD8c/EpL/wfi6vDndozv
-	1bBNNgU28o1HZ3mAZa2mzS9Ga5XKhLOLcilVoIgpAc/b3Kxtom/SL4UiDBzK1Man
-	99MOK+ByiYuN74qlvy3gyRpGuAu/iaBr7z6ztp8awAgrGeeTPuG/oRMM6PDQPpgh
-	W9vMCughTvkiWpUGoufFXUzwXwBQNHiK1ejqCODz/et6Y7GFdGcXA==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34g12a6e-1
+	:mime-version:references:subject:to; s=pp1; bh=STJNmQF8MmoNoyb0x
+	S/Wfci/XJ6MVx3kwSNucWIBo1E=; b=gtDncTZ1Z+qa/TNVYrUTzoQFsNsyz7gHO
+	1+GwYQzYO1ZHeYaVEB9dfGg86KSNMq/wgM15CCnwRVWC9Ma0Qcl62mZ9DhtuY2WT
+	CL37bY4sxLQob9KdAAXQkplct9979cdF2da1N3f1Yhn18u7JXIWOtj9pRMCu2D41
+	kNyVa06vHT6yC/9Lkdqf+nx3kuTCn9nXQWL0FKMIbZaGBmsRZXKUjWANSQmedFlk
+	x9evUe+8te2zUHamv0IJCfeifxkThEMfsSDtCSzCGjArRl7e1B7mhL57T8sUzpR2
+	F9Z/eIJr08qsoyXlqhnN8XZlUyUpbzYrcCG/ISj0unW7phCIjQugg==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34g32kyt-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 23 Nov 2026 10:23:31 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AN9JJbt956227;
-	Mon, 23 Nov 2026 10:23:30 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j3p0vee7n-1
+	Mon, 23 Nov 2026 10:23:33 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AN9JTLO1617443;
+	Mon, 23 Nov 2026 10:23:32 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j3nmqegj6-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Nov 2026 10:23:30 +0000 (GMT)
+	Mon, 23 Nov 2026 10:23:32 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6ANANPKR51249620
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6ANANS1b39190852
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Nov 2026 10:23:25 GMT
+	Mon, 23 Nov 2026 10:23:28 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6F5A32004F;
+	by IMSVA (Postfix) with ESMTP id 8E12E2004F;
+	Mon, 23 Nov 2026 10:23:28 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BEF7120043;
 	Mon, 23 Nov 2026 10:23:25 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A763820043;
-	Mon, 23 Nov 2026 10:23:22 +0000 (GMT)
 Received: from Narayanas-MacBook-Pro.bl1-in.ibm.com (unknown [9.123.4.64])
 	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 23 Nov 2026 10:23:22 +0000 (GMT)
+	Mon, 23 Nov 2026 10:23:25 +0000 (GMT)
 From: Narayana Murty N <nnmlinux@linux.ibm.com>
 To: Madhavan Srinivasan <maddy@linux.ibm.com>,
         "Oliver O'Halloran" <oohall@gmail.com>,
@@ -84,9 +84,9 @@ Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
         Shrikanth Hegde <sshegde@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
         linux-kernel@vger.kernel.org, kvm@vger.kernel.org, sbhat@linux.ibm.com,
         harshpb@linux.ibm.com
-Subject: [PATCH v7 1/4] powerpc/rtas: Handle ibm,open-errinjct return format
-Date: Mon, 23 Nov 2026 15:52:39 +0530
-Message-ID: <20261123102237.95860-7-nnmlinux@linux.ibm.com>
+Subject: [PATCH v7 2/4] powerpc/pseries/eeh: Implement RTAS-based EEH error injection
+Date: Mon, 23 Nov 2026 15:52:40 +0530
+Message-ID: <20261123102237.95860-8-nnmlinux@linux.ibm.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261123102237.95860-6-nnmlinux@linux.ibm.com>
 References: <20261123102237.95860-6-nnmlinux@linux.ibm.com>
@@ -102,270 +102,520 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: Z-lwtN-HP5xEnbe_S1LqRvx6Q_M_pG0D
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIzMDA0MCBTYWx0ZWRfX6/UHFCmS/NOx
- iSJsTbLBFZJ4ltH2ixnEyvfvk/x2g0FwM7fIDKnQZA1qK0keYhOD9PpP0ZqE8ZrQ97iq7JMJZH+
- pg9HMjkQ3rLMF7/9gZFB79nrartMBAE=
-X-Proofpoint-GUID: nEQgdE4DsoWBelyikVkLT8oB6I3Wpz5l
-X-Authority-Analysis: v=2.4 cv=c8M+0h9l c=1 sm=1 tr=0 ts=6b041423 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Authority-Analysis: v=2.4 cv=SoQFe/O0 c=1 sm=1 tr=0 ts=6b041425 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
  a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=1mVJ_uiqAAAA:8 a=VnNF1IyMAAAA:8
- a=W6-AMay0JfweMWvUZhgA:9 a=O8hF6Hzn-FEA:10 a=h67g7WpEjx8dfGT80pje:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIzMDA0MCBTYWx0ZWRfXwnL2+oEh6xOM
- NM3h8wA9hsavyynpeFwaRUllX33DVKTmpBkwdAN3AudHgE+zeUC1FAz2DFPOZlb8pc1UKxSEBTb
- uXH7vpxdseAaAQdK8Fda13f9IM7rxh1/3D79Au0gFOwfGGJyPDeBPKV50waNJKo4qjOp0UAE0Ym
- q4vmyChfRxceW8vJO914r8sFzn4ndZYCiHvLA8tDNog8YIUHOZVh/YyHtT7X9O+B/ax7PcOpZZU
- 0ZJYDSW6gefcEL7YzocNmdBO+lZrCp8cjF8keWR1gWzGX8GifmTvukCq8ZH36f7CFRy+hqgNrrN
- CVDhK9DYLvwHkcMbqrlUoWL96wMOt+MyxL538tskIaMkUgYFau2zDVOy03qSSeAVgXtL4FvpKoA
- 0Fn7Ipg9Y7lBcM9O25EwPQcJnYIA6/4atYzx5bheIu93kCMY+mIdTbGmU1we494XaWyp9l46bMc
- cj6dYJVoT84ZdfdLIRg==
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=1Ikmz3f0NeihYkZ13NQA:9
+ a=O8hF6Hzn-FEA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIzMDA0MCBTYWx0ZWRfXwlsP4C1hZCLJ
+ qo27L/cKhBGPc3C4TQlL0YfPjZUG2NOgpKX/suKuuMSsdylvz1Em0hv6pjp6eLec2Qmaz1a0XgU
+ 3aG2i7i/kdsrwu0UUb736zJOqay0riI=
+X-Proofpoint-ORIG-GUID: D0UL3liAHuxTZsHEKxRxWzVnWL9L1nkX
+X-Proofpoint-GUID: Tw_WG_b-LSjYjEZGu64YrPYAXhvjOdT4
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIzMDA0MCBTYWx0ZWRfX1pPnqb6df8Vh
+ jkEZ5AiPE0hmzJj3tey5UCZGAeMepQIjDWx7GeQnNlaQx8qac1tblirfNCseSifO89Lpg3bJXSo
+ m6n7cxdf2MFoflDsMABCNFEEMIYoU3TddefIMwBsz3gjKut4imwGuEMooS59U0jgOJweXibhb2I
+ Y4rDjqlWystplx4qWyVgjnfQd8aY9+rL/hDI/HL9CG6Wb/rlm2FQjoTfSOdTIg5EcPnmcvRBZRP
+ A4xGWtiC4rD144MUlVOg0jIcKOltZl6YJ9fk/UUsJ+RTCU0kZzc8eCYgFOz1upcbI/AQvsG7Qp1
+ PhNS+NSaHWZfUR0A8R35DTSkl7uAUd4YeKJJ9jEwE+qYX5XMrJMPvxcy9VinELO7Vyq49sxGH9g
+ UzjU6Jq3eBKtrutoLeXJm0lEHmJndoLkia3VaFhxi5fw5hv88eNC0bx/S+PDhAEZbSEP7myN5pI
+ NhvSniZL9CCk5eIEWFA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-23_02,2026-11-22_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015 malwarescore=0 suspectscore=0 bulkscore=0
- priorityscore=1501 phishscore=0 adultscore=0 spamscore=0 lowpriorityscore=0
+ priorityscore=1501 suspectscore=0 spamscore=0 bulkscore=0 adultscore=0
+ lowpriorityscore=0 clxscore=1015 malwarescore=0 impostorscore=0 phishscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611230040
 
-ibm,open-errinjct returns the session token in rets[0] and the status in
-rets[1], unlike other RTAS functions, which return the status in rets[0].
-rtas_call() would report the session token as the status and drop the
-real status.
+pseries_eeh_err_inject() only emulates MMIO errors in software and
+ignores the address and mask.  Use the PAPR RTAS services
+ibm,open-errinjct, ibm,errinjct and ibm,close-errinjct instead, so the
+platform raises the error for a given IOA bus address.
 
-Take the status from rets[1] for this function and return the session
-token in outputs[0].  This needs exactly two return cells, so reject any
-other count from kernel callers with -EINVAL and a one-time warning, and
-document the exception in the rtas_call() kernel-doc.
+EEH_ERR_TYPE_32 and EEH_ERR_TYPE_64 select the ioa-bus-error and
+ioa-bus-error-64 classes and the matching parameter buffer layout.  The
+class token is read from the "ibm,errinjct-tokens" property of /rtas; if
+the class is not advertised the request fails with -EOPNOTSUPP.  The
+buffer comes from the RTAS work area allocator, and the session is closed
+on every exit path after a successful open.  A mutex serializes sessions
+started through this backend.  Statuses specific to these services, such
+as "already open", are mapped to errno locally; rtas_error_rc() is
+unchanged.
 
-Give the rtas_output tracepoint the index of the status cell, so that it
-reports rets[1] as the status and the session token as an additional
-output for this function.  A call with no return cells reports status 0
-instead of reading a cell that does not exist.
+For memory and I/O load/store functions the address must be a PCI bus
+address within an assigned standard BAR (BAR0-BAR5) of the matching type,
+memory or I/O, of a device in the PE.  pci_lock_rescan_remove() protects
+the PE device list walk and snapshots the PE address and BUID before
+releasing the lock and opening the RTAS session.  Config-space and DMA
+functions, and requests with address and mask both zero, are not checked.
+The mask is passed to firmware unchanged.
 
-Ensure __fetch_rtas_last_error() and sys_rtas() initialize rtas_args.rets
-to point into rtas_args.args[] after copying local arguments, preventing
-tracepoint handlers from dereferencing uninitialized memory or reading
-stale on-stack values.
+Remove eeh_pe_inject_mmio_error().  eeh_break_device() is now used only by
+debugfs, so build it only with CONFIG_DEBUG_FS.
 
-sys_rtas() still copies the raw return cells to userspace.  It uses the
-status from the right cell for hardware-error (-1) detection and, after
-the lockdown check, rejects fewer than two return cells for this function.
+Firmware without the ERRINJCT services or class token no longer gets the
+software-emulated injection; the request fails with -ENODEV or
+-EOPNOTSUPP.
 
-Link: https://files.openpower.foundation/s/XFgfMaqLMD5Bcm8
 Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
 ---
- arch/powerpc/include/asm/trace.h | 26 +++++++---
- arch/powerpc/kernel/rtas.c       | 83 ++++++++++++++++++++++++++------
- 2 files changed, 88 insertions(+), 21 deletions(-)
+ arch/powerpc/include/asm/eeh.h               |  26 +-
+ arch/powerpc/kernel/eeh.c                    |  10 +-
+ arch/powerpc/platforms/pseries/eeh_pseries.c | 334 +++++++++++++++++--
+ 3 files changed, 338 insertions(+), 32 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/trace.h b/arch/powerpc/include/asm/trace.h
-index a7b69b25296b..d731f70aead7 100644
---- a/arch/powerpc/include/asm/trace.h
-+++ b/arch/powerpc/include/asm/trace.h
-@@ -146,25 +146,37 @@ TRACE_EVENT(rtas_input,
- 	)
- );
+diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
+index b7ebb4ac2c71..f7743dcf75a4 100644
+--- a/arch/powerpc/include/asm/eeh.h
++++ b/arch/powerpc/include/asm/eeh.h
+@@ -9,6 +9,7 @@
+ #ifdef __KERNEL__
  
-+/*
-+ * @status_idx is the index in rets[] of the status cell: 1 for
-+ * ibm,open-errinjct, which returns its session token in rets[0], and 0 for
-+ * every other function.  The remaining cells are reported as other outputs.
-+ */
- TRACE_EVENT(rtas_output,
- 
--	TP_PROTO(struct rtas_args *rtas_args, const char *name),
-+	TP_PROTO(struct rtas_args *rtas_args, const char *name,
-+		 unsigned int status_idx),
- 
--	TP_ARGS(rtas_args, name),
-+	TP_ARGS(rtas_args, name, status_idx),
- 
- 	TP_STRUCT__entry(
- 		__field(__u32, nr_other)
- 		__field(__s32, status)
- 		__string(name, name)
--		__dynamic_array(__u32, other_outputs, be32_to_cpu(rtas_args->nret) - 1)
-+		__dynamic_array(__u32, other_outputs,
-+				be32_to_cpu(rtas_args->nret) ?
-+				be32_to_cpu(rtas_args->nret) - 1 : 0)
- 	),
- 
- 	TP_fast_assign(
--		__entry->nr_other = be32_to_cpu(rtas_args->nret) - 1;
--		__entry->status = be32_to_cpu(rtas_args->rets[0]);
-+		u32 nret = be32_to_cpu(rtas_args->nret);
-+		u32 *other = __get_dynamic_array(other_outputs);
-+		u32 i;
-+
-+		__entry->nr_other = nret ? nret - 1 : 0;
-+		__entry->status = nret ? be32_to_cpu(rtas_args->rets[status_idx]) : 0;
- 		__assign_str(name);
--		be32_to_cpu_array(__get_dynamic_array(other_outputs),
--				  &rtas_args->rets[1], __entry->nr_other);
-+		for (i = 0; i < __entry->nr_other; i++)
-+			other[i] = be32_to_cpu(rtas_args->rets[i < status_idx ? i : i + 1]);
- 	),
- 
- 	TP_printk("%s status: %d, other outputs: %s", __get_str(name), __entry->status,
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index 8d81c1e7a8db..201be33d9bd3 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -693,6 +693,32 @@ static const struct rtas_function *rtas_token_to_function(s32 token)
- /* This is here deliberately so it's only used in this file */
- void enter_rtas(unsigned long);
- 
-+static inline bool rtas_token_is_open_errinjct(s32 token)
-+{
-+	return token == rtas_function_token(RTAS_FN_IBM_OPEN_ERRINJCT);
-+}
+ #include <linux/init.h>
++#include <linux/ioport.h>
+ #include <linux/list.h>
+ #include <linux/string.h>
+ #include <linux/time.h>
+@@ -310,7 +311,30 @@ int eeh_pe_reset(struct eeh_pe *pe, int option, bool include_passed);
+ int eeh_pe_configure(struct eeh_pe *pe);
+ int eeh_pe_inject_err(struct eeh_pe *pe, int type, int func,
+ 		      unsigned long addr, unsigned long mask);
+-int eeh_pe_inject_mmio_error(struct pci_dev *pdev);
 +
 +/*
-+ * Return the index of the status cell in rets[].  ibm,open-errinjct returns
-+ * the session token in rets[0] and the status in rets[1].  Every other RTAS
-+ * function returns the status in rets[0].
++ * Return the resource type (IORESOURCE_MEM or IORESOURCE_IO) of the BAR that
++ * error function @func addresses, or 0 if it does not take a BAR address.
++ * Config-space functions take a config register offset and DMA functions
++ * take a DMA address.
 + */
-+static unsigned int rtas_status_idx(s32 token, u32 nret)
++static inline unsigned long eeh_err_func_to_res_type(int func)
 +{
-+	return (nret >= 2 && rtas_token_is_open_errinjct(token)) ? 1 : 0;
-+}
-+
-+/* Return the status of a completed call, or 0 if it has no return cells. */
-+static int rtas_status_from_args(s32 token, struct rtas_args *args)
-+{
-+	u32 nret = be32_to_cpu(args->nret);
-+
-+	if (!nret)
++	switch (func) {
++	case EEH_ERR_FUNC_LD_MEM_ADDR:
++	case EEH_ERR_FUNC_LD_MEM_DATA:
++	case EEH_ERR_FUNC_ST_MEM_ADDR:
++	case EEH_ERR_FUNC_ST_MEM_DATA:
++		return IORESOURCE_MEM;
++	case EEH_ERR_FUNC_LD_IO_ADDR:
++	case EEH_ERR_FUNC_LD_IO_DATA:
++	case EEH_ERR_FUNC_ST_IO_ADDR:
++	case EEH_ERR_FUNC_ST_IO_DATA:
++		return IORESOURCE_IO;
++	default:
 +		return 0;
-+
-+	return be32_to_cpu(args->rets[rtas_status_idx(token, nret)]);
++	}
 +}
-+
- static void __do_enter_rtas(struct rtas_args *args)
- {
- 	enter_rtas(__pa(args));
-@@ -719,7 +745,9 @@ static void __do_enter_rtas_trace(struct rtas_args *args)
- 	__do_enter_rtas(args);
  
- 	trace_rtas_ll_exit(args);
--	trace_rtas_output(args, func->name);
-+	trace_rtas_output(args, func->name,
-+			  rtas_status_idx(be32_to_cpu(args->token),
-+					  be32_to_cpu(args->nret)));
+ /**
+  * EEH_POSSIBLE_ERROR() -- test for possible MMIO failure.
+diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+index 2d7898ef6b8c..d4c018849787 100644
+--- a/arch/powerpc/kernel/eeh.c
++++ b/arch/powerpc/kernel/eeh.c
+@@ -1571,6 +1571,8 @@ static int proc_eeh_show(struct seq_file *m, void *v)
+ }
+ #endif /* CONFIG_PROC_FS */
+ 
++#ifdef CONFIG_DEBUG_FS
++
+ static int eeh_break_device(struct pci_dev *pdev)
+ {
+ 	struct resource *bar = NULL;
+@@ -1664,14 +1666,6 @@ static int eeh_break_device(struct pci_dev *pdev)
+ 	return 0;
  }
  
- static void do_enter_rtas(struct rtas_args *args)
-@@ -1034,6 +1062,7 @@ static char *__fetch_rtas_last_error(char *altbuf)
+-int eeh_pe_inject_mmio_error(struct pci_dev *pdev)
+-{
+-	return eeh_break_device(pdev);
+-}
+-
+-#ifdef CONFIG_DEBUG_FS
+-
+-
+ static struct pci_dev *eeh_debug_lookup_pdev(struct file *filp,
+ 					     const char __user *user_buf,
+ 					     size_t count, loff_t *ppos)
+diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
+index b12ef382fec7..c8466017d1e4 100644
+--- a/arch/powerpc/platforms/pseries/eeh_pseries.c
++++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
+@@ -17,13 +17,17 @@
+ #include <linux/export.h>
+ #include <linux/init.h>
+ #include <linux/list.h>
++#include <linux/mutex.h>
+ #include <linux/of.h>
+ #include <linux/pci.h>
+ #include <linux/proc_fs.h>
+ #include <linux/rbtree.h>
+ #include <linux/sched.h>
+ #include <linux/seq_file.h>
++#include <linux/sizes.h>
+ #include <linux/spinlock.h>
++#include <linux/string.h>
++#include <linux/unaligned.h>
+ #include <linux/crash_dump.h>
  
- 	save_args = rtas_args;
- 	rtas_args = err_args;
-+	rtas_args.rets = &rtas_args.args[2];
+ #include <asm/eeh.h>
+@@ -32,6 +36,7 @@
+ #include <asm/machdep.h>
+ #include <asm/ppc-pci.h>
+ #include <asm/rtas.h>
++#include <asm/rtas-work-area.h>
  
- 	do_enter_rtas(&rtas_args);
+ /* RTAS tokens */
+ static int ibm_set_eeh_option;
+@@ -786,41 +791,324 @@ static int pseries_notify_resume(struct eeh_dev *edev)
+ }
+ #endif
  
-@@ -1122,20 +1151,28 @@ static bool token_is_restricted_errinjct(s32 token)
-  * @token: Identifies the function being invoked.
-  * @nargs: Number of input parameters. Does not include token.
-  * @nret: Number of output parameters, including the call status.
-- * @outputs: Array of @nret output words.
-+ * @outputs: Array of @nret - 1 output words, or NULL.
-  * @....: List of @nargs input parameters.
-  *
-  * Invokes the RTAS function indicated by @token, which the caller
-  * should obtain via rtas_function_token().
-  *
-  * The @nargs and @nret arguments must match the number of input and
-- * output parameters specified for the RTAS function.
-+ * output parameters specified for the RTAS function.  @nret includes the
-+ * status cell, so @outputs normally receives the remaining @nret - 1
-+ * return cells.
-  *
-- * rtas_call() returns RTAS status codes, not conventional Linux errno
-- * values. Callers must translate any failure to an appropriate errno
-- * in syscall context. Most callers of RTAS functions that can return
-- * -2 or 990x should use rtas_busy_delay() to correctly handle those
-- * statuses before calling again.
-+ * ibm,open-errinjct is the exception: it returns its status in rets[1]
-+ * and a session token in rets[0].  rtas_call() still returns the status,
-+ * and @outputs[0] receives the session token.  @nret must be 2 for this
-+ * function; any other value fails with -EINVAL, a Linux errno rather
-+ * than an RTAS status, without calling RTAS.
++/* Size of the ibm,errinjct work buffer */
++#define RTAS_ERRINJCT_BUF_SIZE			SZ_1K
++
++/*
++ * Look up the ibm,errinjct class token for a generic EEH error type in the
++ * "ibm,errinjct-tokens" property of the /rtas node.  The property is a
++ * packed list of (NUL-terminated class name, big-endian 32-bit token)
++ * entries, so tokens are not necessarily aligned.
 + *
-+ * Apart from that case, rtas_call() returns RTAS status codes, not
-+ * conventional Linux errno values. Callers must translate any failure to
-+ * an appropriate errno in syscall context. Most callers of RTAS functions
-+ * that can return -2 or 990x should use rtas_busy_delay() to correctly
-+ * handle those statuses before calling again.
-  *
-  * The return value descriptions are adapted from 7.2.8 [RTAS] Return
-  * Codes of the PAPR and CHRP specifications.
-@@ -1198,6 +1235,12 @@ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
- 			return -1;
- 	}
- 
-+	if (rtas_token_is_open_errinjct(token) && nret != 2) {
-+		WARN_ONCE(1, "rtas: ibm,open-errinjct requires exactly two return cells (got %d)\n",
-+			  nret);
++ * rtas.dev holds a reference on the /rtas node for the life of the system,
++ * so none is taken here.
++ *
++ * Return: 0 and *@token set on success, -EINVAL for an unsupported @type,
++ * -EOPNOTSUPP if firmware does not advertise the class, -EIO if the
++ * property is malformed.
++ */
++static int pseries_eeh_get_errinjct_token(int type, u32 *token)
++{
++	const char *name, *p;
++	size_t namelen, remaining;
++	int len;
++
++	switch (type) {
++	case EEH_ERR_TYPE_32:
++		name = "ioa-bus-error";
++		break;
++	case EEH_ERR_TYPE_64:
++		name = "ioa-bus-error-64";
++		break;
++	default:
 +		return -EINVAL;
 +	}
 +
- 	if ((mfmsr() & (MSR_IR|MSR_DR)) != (MSR_IR|MSR_DR)) {
- 		WARN_ON_ONCE(1);
- 		return -1;
-@@ -1215,13 +1258,20 @@ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
- 
- 	/* A -1 return code indicates that the last command couldn't
- 	   be completed due to a hardware error. */
--	if (be32_to_cpu(args->rets[0]) == -1)
-+	if (rtas_status_from_args(token, args) == -1)
- 		buff_copy = __fetch_rtas_last_error(NULL);
- 
--	if (nret > 1 && outputs != NULL)
--		for (i = 0; i < nret-1; ++i)
--			outputs[i] = be32_to_cpu(args->rets[i + 1]);
--	ret = (nret > 0) ? be32_to_cpu(args->rets[0]) : 0;
-+	if (rtas_token_is_open_errinjct(token)) {
-+		/* nret is 2: rets[0] is the session token, rets[1] the status. */
-+		if (outputs)
-+			outputs[0] = be32_to_cpu(args->rets[0]);
-+		ret = be32_to_cpu(args->rets[1]);
-+	} else {
-+		if (nret > 1 && outputs != NULL)
-+			for (i = 0; i < nret-1; ++i)
-+				outputs[i] = be32_to_cpu(args->rets[i + 1]);
-+		ret = (nret > 0) ? be32_to_cpu(args->rets[0]) : 0;
++	p = of_get_property(rtas.dev, "ibm,errinjct-tokens", &len);
++	if (!p)
++		return -EOPNOTSUPP;
++
++	for (remaining = len; remaining; ) {
++		namelen = strnlen(p, remaining);
++
++		/* Need the NUL terminator and a whole token after it. */
++		if (namelen == remaining ||
++		    remaining - namelen - 1 < sizeof(u32)) {
++			pr_warn_once("EEH: malformed ibm,errinjct-tokens\n");
++			return -EIO;
++		}
++
++		if (!strcmp(p, name)) {
++			*token = get_unaligned_be32(p + namelen + 1);
++			return 0;
++		}
++
++		namelen += 1 + sizeof(u32);
++		p += namelen;
++		remaining -= namelen;
 +	}
++
++	return -EOPNOTSUPP;
++}
++
++/*
++ * Return true if @addr, a PCI bus address, lies within an assigned, enabled
++ * standard BAR (BAR0-BAR5) of @pdev whose resource type is @res_type.
++ * Expansion ROM, SR-IOV resources and bridge windows are not supported.
++ *
++ * On pseries, unassigned BARs are zero-based and flagged IORESOURCE_UNSET,
++ * so they would otherwise translate to a bus range starting at zero.
++ */
++static bool addr_in_pdev_bars(struct pci_dev *pdev, unsigned long res_type,
++			      unsigned long addr)
++{
++	struct pci_bus_region region;
++	struct resource *res;
++	resource_size_t len;
++	int bar;
++
++	for (bar = 0; bar < PCI_STD_NUM_BARS; bar++) {
++		res = &pdev->resource[bar];
++
++		if (resource_type(res) != res_type)
++			continue;
++
++		if (res->flags & (IORESOURCE_UNSET | IORESOURCE_DISABLED))
++			continue;
++
++		len = pci_resource_len(pdev, bar);
++		if (!len)
++			continue;
++
++		pcibios_resource_to_bus(pdev->bus, &region, res);
++		if (addr >= region.start && addr - region.start < len)
++			return true;
++	}
++
++	return false;
++}
++
++/*
++ * Check that @addr, a PCI bus address, lies within a standard BAR of type
++ * @res_type of a device in @pe. Must be called with pci_lock_rescan_remove()
++ * held to protect PE device list traversal and PCI resource consistency.
++ */
++static int validate_addr_in_pe(struct eeh_pe *pe, unsigned long res_type,
++			       unsigned long addr)
++{
++	struct eeh_dev *edev, *tmp;
++	struct pci_dev *pdev;
++
++	eeh_pe_for_each_dev(pe, edev, tmp) {
++		pdev = eeh_dev_to_pci_dev(edev);
++		if (pdev && addr_in_pdev_bars(pdev, res_type, addr))
++			return 0;
++	}
++
++	pr_debug("EEH: addr 0x%lx is not within any matching BAR of the PE\n",
++		 addr);
++	return -EINVAL;
++}
++
++/*
++ * Fill the ibm,errinjct work buffer.  The layout depends on the generic EEH
++ * error type, not on the firmware class token.  @addr is a PCI bus address
++ * and @mask is passed to firmware unchanged.  Word layouts are defined by
++ * PAPR for ioa-bus-error and ioa-bus-error-64.
++ */
++static void prepare_errinjct_buffer(void *buf, u32 pe_addr, u64 buid, int type,
++				    int func, unsigned long addr,
++				    unsigned long mask)
++{
++	__be64 *buf64 = buf;
++	__be32 *buf32 = buf;
++
++	memset(buf, 0, RTAS_ERRINJCT_BUF_SIZE);
++
++	switch (type) {
++	case EEH_ERR_TYPE_32:
++		buf32[0] = cpu_to_be32((u32)addr);
++		buf32[1] = cpu_to_be32((u32)mask);
++		buf32[2] = cpu_to_be32(pe_addr);
++		buf32[3] = cpu_to_be32(BUID_HI(buid));
++		buf32[4] = cpu_to_be32(BUID_LO(buid));
++		buf32[5] = cpu_to_be32(func);
++		break;
++	case EEH_ERR_TYPE_64:
++		buf64[0] = cpu_to_be64(addr);
++		buf64[1] = cpu_to_be64(mask);
++		buf32[4] = cpu_to_be32(pe_addr);
++		buf32[5] = cpu_to_be32(BUID_HI(buid));
++		buf32[6] = cpu_to_be32(BUID_LO(buid));
++		buf32[7] = cpu_to_be32(func);
++		break;
++	}
++
++	pr_debug("EEH: errinjct buffer: type=%d func=%d addr=0x%lx mask=0x%lx\n",
++		 type, func, addr, mask);
++}
++
++/*
++ * PAPR allows only one open ERRINJCT session: while one is open,
++ * ibm,open-errinjct returns -4 ("already open") to any other caller.  Hold
++ * this mutex across open/inject/close so concurrent requests through this
++ * backend run one after another instead of failing.  It does not exclude
++ * direct sys_rtas() users of the same facility, who still get the firmware
++ * status.
++ */
++static DEFINE_MUTEX(errinjct_mutex);
++
++/*
++ * Map an ibm,{open,errinjct,close}-errinjct status to an errno.  rtas_error_rc()
++ * does not know the statuses specific to these services, so the mapping is
++ * local.  A -1 may be a firmware hardware error or a kernel lockdown denial,
++ * which rtas_call() does not distinguish, so it is reported as -EIO.
++ */
++static int pseries_errinjct_errno(const char *op, int rc, bool is_open)
++{
++	pr_debug("EEH: %s failed: status=%d\n", op, rc);
++
++	switch (rc) {
++	case RTAS_HARDWARE_ERROR:
++		return -EIO;
++	case RTAS_INVALID_PARAMETER:
++		return -EINVAL;
++	case -4:
++		/* open: already open; others: not the opener, or not open */
++		return is_open ? -EBUSY : -EIO;
++	case -5:
++		/* open: PCI error injection is not available */
++		if (is_open)
++			return -EOPNOTSUPP;
++		fallthrough;
++	default:
++		pr_warn_ratelimited("EEH: %s failed: unexpected status %d\n",
++				    op, rc);
++		return -ERANGE;
++	}
++}
++
+ /**
+  * pseries_eeh_err_inject - Inject specified error to the indicated PE
+  * @pe: the indicated PE
+- * @type: error type
+- * @func: specific error type
+- * @addr: address
+- * @mask: address mask
+- * The routine is called to inject specified error, which is
+- * determined by @type and @func, to the indicated PE
++ * @type: generic EEH error type (EEH_ERR_TYPE_32 or EEH_ERR_TYPE_64)
++ * @func: error function (EEH_ERR_FUNC_*)
++ * @addr: address; its meaning depends on @func
++ * @mask: address mask, passed to firmware unchanged
++ *
++ * Inject the error using the RTAS ibm,open-errinjct, ibm,errinjct and
++ * ibm,close-errinjct sequence, with the ibm,errinjct class token taken from
++ * the "ibm,errinjct-tokens" property.
++ *
++ * For memory and I/O load/store functions @addr is a PCI bus address within
++ * a standard BAR (BAR0-BAR5) of the matching resource type (memory or I/O)
++ * of a device in the PE; otherwise -EINVAL is returned. Expansion ROM,
++ * SR-IOV resources and bridge windows are not supported. This includes @addr
++ * of zero with a non-zero @mask. Config-space and DMA functions pass @addr
++ * through unchanged. A request with @addr and @mask both zero carries no
++ * address and is passed through. EEH_ERR_TYPE_32 uses 32-bit address and
++ * mask words and EEH_ERR_TYPE_64 uses 64-bit ones.
++ *
++ * pci_lock_rescan_remove() is held while validating device BARs and
++ * snapshotting PE configuration parameters, but is released before
++ * acquiring errinjct_mutex and entering RTAS to avoid holding the global
++ * rescan/remove lock across firmware latency.
++ *
++ * Return: 0 on success, negative errno on failure.
+  */
+ static int pseries_eeh_err_inject(struct eeh_pe *pe, int type, int func,
+ 				  unsigned long addr, unsigned long mask)
+ {
+-	struct	eeh_dev	*pdev;
++	int open_token, errinjct_token, close_token;
++	struct rtas_work_area *area;
++	unsigned long res_type;
++	int session_token;
++	u32 class_token;
++	u32 pe_addr;
++	u64 buid;
++	int close_rc;
++	int rc;
  
- 	lockdep_unpin_lock(&rtas_lock, cookie);
- 	raw_spin_unlock_irqrestore(&rtas_lock, flags);
-@@ -1904,6 +1954,10 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
- 			return err;
- 	}
+-	/* Check on PCI error type */
+-	if (type != EEH_ERR_TYPE_32 && type != EEH_ERR_TYPE_64)
++	if (!pe || !pe->phb)
+ 		return -EINVAL;
  
-+	/* ibm,open-errinjct needs rets[1] for its status. */
-+	if (rtas_token_is_open_errinjct(token) && nret < 2)
+-	switch (func) {
+-	case EEH_ERR_FUNC_LD_MEM_ADDR:
+-	case EEH_ERR_FUNC_LD_MEM_DATA:
+-	case EEH_ERR_FUNC_ST_MEM_ADDR:
+-	case EEH_ERR_FUNC_ST_MEM_DATA:
+-		/* injects a MMIO error for all pdev's belonging to PE */
+-		pci_lock_rescan_remove();
+-		list_for_each_entry(pdev, &pe->edevs, entry)
+-			eeh_pe_inject_mmio_error(pdev->pdev);
+-		pci_unlock_rescan_remove();
+-		break;
+-	default:
+-		return -ERANGE;
++	if (func < EEH_ERR_FUNC_MIN || func > EEH_ERR_FUNC_MAX)
 +		return -EINVAL;
 +
- 	/* Need to handle ibm,suspend_me call specially */
- 	if (token == rtas_function_token(RTAS_FN_IBM_SUSPEND_ME)) {
++	rc = pseries_eeh_get_errinjct_token(type, &class_token);
++	if (rc)
++		return rc;
++
++	/* The 32-bit buffer format carries 32-bit address and mask words. */
++	if (type == EEH_ERR_TYPE_32 &&
++	    (upper_32_bits(addr) || upper_32_bits(mask)))
++		return -EINVAL;
++
++	res_type = eeh_err_func_to_res_type(func);
++
++	pci_lock_rescan_remove();
++	if (res_type && (addr || mask)) {
++		rc = validate_addr_in_pe(pe, res_type, addr);
++		if (rc) {
++			pci_unlock_rescan_remove();
++			return rc;
++		}
+ 	}
  
-@@ -1939,12 +1993,13 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
- 	cookie = lockdep_pin_lock(&rtas_lock);
+-	return 0;
++	pe_addr = pe->addr;
++	buid = pe->phb->buid;
++	pci_unlock_rescan_remove();
++
++	open_token = rtas_function_token(RTAS_FN_IBM_OPEN_ERRINJCT);
++	errinjct_token = rtas_function_token(RTAS_FN_IBM_ERRINJCT);
++	close_token = rtas_function_token(RTAS_FN_IBM_CLOSE_ERRINJCT);
++
++	if (open_token == RTAS_UNKNOWN_SERVICE ||
++	    errinjct_token == RTAS_UNKNOWN_SERVICE ||
++	    close_token == RTAS_UNKNOWN_SERVICE)
++		return -ENODEV;
++
++	mutex_lock(&errinjct_mutex);
++
++	do {
++		rc = rtas_call(open_token, 0, 2, &session_token);
++	} while (rtas_busy_delay(rc));
++
++	if (rc) {
++		rc = pseries_errinjct_errno("ibm,open-errinjct", rc, true);
++		goto out_unlock;
++	}
++
++	/* ibm,errinjct takes the physical address of a 1KB work buffer. */
++	area = rtas_work_area_alloc(RTAS_ERRINJCT_BUF_SIZE);
++	prepare_errinjct_buffer(rtas_work_area_raw_buf(area), pe_addr, buid,
++				type, func, addr, mask);
++
++	do {
++		rc = rtas_call(errinjct_token, 3, 1, NULL, class_token,
++			       session_token, rtas_work_area_phys(area));
++	} while (rtas_busy_delay(rc));
++
++	if (rc)
++		rc = pseries_errinjct_errno("ibm,errinjct", rc, false);
++
++	rtas_work_area_free(area);
++
++	/* Always close the session; keep the injection status if it failed. */
++	do {
++		close_rc = rtas_call(close_token, 1, 1, NULL, session_token);
++	} while (rtas_busy_delay(close_rc));
++
++	if (close_rc) {
++		close_rc = pseries_errinjct_errno("ibm,close-errinjct",
++						  close_rc, false);
++		if (!rc)
++			rc = close_rc;
++	}
++
++out_unlock:
++	mutex_unlock(&errinjct_mutex);
++	return rc;
+ }
  
- 	rtas_args = args;
-+	rtas_args.rets = &rtas_args.args[nargs];
- 	do_enter_rtas(&rtas_args);
- 	args = rtas_args;
- 
- 	/* A -1 return code indicates that the last command couldn't
- 	   be completed due to a hardware error. */
--	if (be32_to_cpu(args.rets[0]) == -1)
-+	if (rtas_status_from_args(token, &args) == -1)
- 		errbuf = __fetch_rtas_last_error(buff_copy);
- 
- 	lockdep_unpin_lock(&rtas_lock, cookie);
+ static struct eeh_ops pseries_eeh_ops = {
 -- 
 2.54.0
 
