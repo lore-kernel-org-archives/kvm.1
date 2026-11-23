@@ -1,68 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.16
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795446964;
-	b=SsEfjlV/jGPP+tepcOzUozHM8lG8ywXVBXeRCf0JbE4chkoWlucWnyuU3pDRH7SIyXNU
-	 RuffR40pHeue7OwNi6zpJP7Kg4N0qQ47tQZO5y5v1NLfk7a9thfyR09Sg76BNrhbdD87c
-	 2sf/hW8UfmVCvU+8x96K0M1gcM+nUnXmsHnWt8eE7alsWf/raxWRw2l3aoGeM/ZZx+zYw
-	 82Gz3gWVAgAuK36Zme1/IqhjEgT1jpY+H74qoNeo+7zKlPb3i6Hhi5ecIW/yfu+8XHlhe
-	 orYvw2+3HDJydKA3pU+RJ00DWwuX5pvg4tAEAo9D0IJNeEkLIsKFImV0tOemAclnGvw==
+	t=1795447250;
+	b=n5JH9Hw7fPhYFo+8XqqK9OwjeO0ZirkwgS3431MW+F6Qoftgu5uc6YCbFrcCIMbU0Wrz
+	 WYK+JXRY8vZqWDW3H4Ge8y0naH+vK/XRy736CixtyCSA3oR/yruDn+su2BnD95x/e4qWO
+	 wYs/dBCFUhxsRNhFBbShijIy4lKKSL44YbLmi+8ge93MP49mr8miDxRrJD8bRYpE6y5to
+	 VreKX7yt+mhqhBExQvlZJsfQ/ZrrGoJa0ifCGBaoAA1txpGMIGt0PjV9/c+mDMumw+4pk
+	 C2APZyf7xUiJoZovEm0J+QNy9vNKHULzH225I2Q1jP5CqjdsY/MuIlEIrWcpQEN2cdg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795446964;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=Yw9cCn0CIO0jjIfkfgWF97yMkgCCAH2a1Wqmh2ZFkkg=;
-	b=2HLm5VPu18XuaFCtS3oaFo12tKryX/6luoPCeNYRgo+5/OEpTw88uyVXI2VUMCRaIouJ
-	 vLA1bOVBGImJzeJ/riW16FEea9vP3yuKlLbr/Nk4UsDDWgg19Ni78NTIXomYMDbSlbgk0
-	 Xk3+Z+py+YCH88O7jeqtrCt0DpdzLugz5ujA6HM/djWGsUCOGdMWSbhd4+qzxT3Tz3tXe
-	 zyPohLlyyOi8riN1KWc68h8ixEu+AGC2Ew5rFDJ5JwwDkOjcB2JiGsLp1OXwK/4gbDYVF
-	 YHeJSyUHnhEr0ZMSSEoccNeBQ2CYjTTHnfkB4bK825Hehxl76egucn3Sq2o4rG6FQLQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795447250;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=KnHPy1hhJFM96Jur6TKylq8tiIqT2jgnnLbxXbR2WEA=;
+	b=l7sUi1pgctkobg5+inubh9aSa+gHaqtZ0q7clMQ9m6RhZU4ef8/osWPAR+Zz/41iLF9m
+	 onILjKIyW0q0WwqBaWSDhgqGz9XQ+Z+vaUZtrVuKbwVxv+ZRLKwMpBxRw8MdaNxKwbmmB
+	 XE81Pbqj8cZl9oebOJwBqY72PPUrHNZKVchpMcVnHqQNKVDzoV7JB7/lI5Q+iW5O0iY66
+	 2hLO25zZn6fV0xuoRnjRr3VT5lDncQIhzTP8VSNsxgq700oHNUJbSfMtsmuHlSsY2/4eS
+	 fmvz1vZP5ZYK4csGgDFHny4n8E3AX7lMUdCp6RayXE5iueU6ImOtJirf/BT9NXmcEpQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RfqzJa46;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SDqqVwC5;
+	arc=none smtp.remote-ip=192.198.163.16
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id CC8C6606A32C;
-	Mon, 23 Nov 2026 15:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939ED606A31F;
+	Mon, 23 Nov 2026 15:20:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 939ED606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RfqzJa46
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 437981F00A00;
-	Mon, 23 Nov 2026 15:16:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795446964;
-	bh=Yw9cCn0CIO0jjIfkfgWF97yMkgCCAH2a1Wqmh2ZFkkg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RfqzJa461hlxdRfUNStU6dOzBjnUTN27T5Pf8O5+h1yq37MBOix+RnogdWb7lwKkg
-	 49QhbIxqPOmHbebgKIDDe0MGIZbybkzBVtZ8skfq5ni26BvhMY6DtZe5fu2nO/1JOP
-	 3LJqvZJ/ZkBFM60f4ep4Av+m9nWOEOx9pD2GU3viUUU7pfAW8QkCJvvTXJoYvCphqb
-	 McO0BTGs6ui9RupZq3oMnGY5jddUQqgR18Ti1vx1TbrSSF9LN+y60ez1466bw77Zad
-	 ZTO3WVnmyEmPVDpaWxf2KMLsxnxz89OFUvWPYfF6tc0kw1gm8q5woM40NpZI4dBrdC
-	 ed9frS/+EmDmQ==
-Date: Mon, 23 Nov 2026 17:15:59 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Jiri Pirko <jiri@resnulli.us>,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
-	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
-	sameo@meta.com, drdeeglaze@gmail.com,
-	James.Bottomley@hansenpartnership.com, aik@amd.com,
-	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
-	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
-	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
-	zohar@linux.ibm.com, aneesh.kumar@kernel.org, dave.jiang@intel.com,
-	nik.borisov@suse.com, sergii.dmytruk@3mdeb.com
-Subject: Re: [PATCH RFC v2 9/9] attestation: Add the TDX family implementation
-Message-ID: <awRYr7yB8IWj7S3G@kernel.org>
-References: <20261113160838.2512652-1-jiri@resnulli.us>
- <20261113160838.2512652-10-jiri@resnulli.us>
- <awQCrnD5CtEhKRWz@e129823.arm.com>
- <awQz1P6iXYrL8lv0@kernel.org>
- <20261123151128.GD179082@ziepe.ca>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SDqqVwC5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795447249; x=1826983249;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jEhltNhYqHsmjiCu7dIjRvqg/4zmhsCr7YHqofX1yDo=;
+  b=SDqqVwC5eIntr4Lv2hR+IiPl14puUH6OR33y/OYEVk3G8RuCrL91lx/1
+   3RDCA3p5l2d9MKDMZ1Iv8GbuvZgTNQUJYWYhfVX3RB4QTH3A4RNHGDc2s
+   Q77D9NrRDRNyVQdlQkkm3biB2JhyCqnH/VsAKqgG8narjCjC+/m5THE/R
+   hxvui/dQYfQFKV7MeCRWMtkVF4+mnBMIfJ55FSXZqn34jVhksaC1QkhK7
+   ET2Q6KSjzxh8436YFM/9IW25ro+lH9l729LClNdcuQ/y2neDczpGk3UfP
+   uq2rOaWIxKKbT09jktIJe3Adj8I7FDpV4KdnXQTDQ7lj+7Sk19fIR2PJz
+   g==;
+X-CSE-ConnectionGUID: DVYPTA7GTQKNGCfAWXf3bg==
+X-CSE-MsgGUID: anbR5AfETHmCebGoIikS1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4292270"
+X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; 
+   d="scan'208";a="4292270"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 07:17:56 -0800
+X-CSE-ConnectionGUID: CeKYDNsLTKeqsA654pVU/w==
+X-CSE-MsgGUID: N6b6/JfDTT6hqzBIDYN4UA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; 
+   d="scan'208";a="11523457"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by fmviesa002.fm.intel.com with ESMTP; 23 Nov 2026 07:17:53 -0800
+Date: Mon, 23 Nov 2026 23:08:12 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: iommu@lists.linux.dev, x86@kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, xiaoyao.li@intel.com,
+	Chao Gao <chao.gao@intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 4/9] iommu/vt-d: Add interface for tdx-host when
+ enabling trusted DMA
+Message-ID: <awRW3ESp3sBoxtJ9@yilunxu-OptiPlex-7050>
+References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
+ <20261112043054.2664857-5-baolu.lu@linux.intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -74,89 +86,138 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261123151128.GD179082@ziepe.ca>
+In-Reply-To: <20261112043054.2664857-5-baolu.lu@linux.intel.com>
 
-On Mon, Nov 23, 2026 at 11:11:28AM -0400, Jason Gunthorpe wrote:
-> On Mon, Nov 23, 2026 at 02:38:44PM +0200, Jarkko Sakkinen wrote:
-> > On Mon, Nov 23, 2026 at 09:09:02AM +0000, Yeoreum Yun wrote:
-> > > Hi Jiri,
-> > > 
-> > > [...]
-> > > 
-> > > > +static void __iomem *tdx_attestation_log_map(size_t *length)
-> > > > +{
-> > > > +	struct acpi_table_header *header;
-> > > > +	struct acpi_table_ccel *ccel;
-> > > > +	void __iomem *log = NULL;
-> > > > +
-> > > > +	if (ACPI_FAILURE(acpi_get_table(ACPI_SIG_CCEL, 0, &header)))
-> > > > +		return NULL;
-> > > > +	ccel = container_of(header, struct acpi_table_ccel, header);
-> > > > +	if (header->length >= sizeof(*ccel) && ccel->log_area_start_address &&
-> > > > +	    ccel->log_area_minimum_length &&
-> > > > +	    ccel->log_area_minimum_length <= UINT_MAX)
-> > > > +		log = acpi_os_map_iomem(ccel->log_area_start_address,
-> > > > +					ccel->log_area_minimum_length);
-> > > > +	if (log)
-> > > > +		*length = ccel->log_area_minimum_length;
-> > > > +	acpi_put_table(header);
-> > > > +	return log;
-> > > > +}
-> > > > +
-> > > 
-> > > I think we don't need to dump log area with the log_area_minimum_length
-> > > since the area would include none-event otherwise, pre-exist tool (i.e.
-> > > tpm2_eventlog) reports error for them like:
-> > > 
-> > >   ...
-> > >   - EventNum: 21
-> > >     PCRIndex: 2
-> > >     EventType: EV_EFI_ACTION
-> > >     DigestCount: 1
-> > >     Digests:
-> > >     - AlgorithmId: sha256
-> > >       Digest: "b54f7542cbd872a81a9d9dea839b2b8d747c7ebd5ea6615c40f42f44a6dbeba0"
-> > >     EventSize: 40
-> > >     Event: |-
-> > >       Exit Boot Services Returned with Success
-> > >   ERROR: corrupted log, insufficient size for event header: 3
-> > >   ERROR: failed to parse tpm2 eventlog
-> > >   ERROR: Unable to run tpm2_eventlog
-> > > 
-> > > 
-> > > So, what about export *real size* of eventlog like
-> > > tpm2_calc_event_log_size()?
-> > 
-> > Nothing in the patch (neither commit message nor any comment in code)
-> > says that TDX attestion registers share the same format as TPM2 even
-> > log.
+> Add a per-device interface so that an IOMMU is put into Secure TDX Mode
+> only when a device behind it needs trusted DMA. tdx-host tracks how many
+> devices use each IOMMU and calls into the VT-d driver only for the first
+> and the last of them:
 > 
-> It comes from the UEFI spec's definition of CCEL:
-> 
->  38.1 Virtual Platform CC Event Log
-> 
->  If a virtual firmware with confidential computing (CC) capability
->  supports measurement and an event is created, virtual firmware should
->  report the event log with the same data structure in TCG Platform
->  Firmware Profile (PFP) specification with
->  EFI_TCG2_EVENT_LOG_FORMAT_TCG_2 format. The index created by the
->  virtual firmware in the event log should be the index for the
->  confidential computing (CC) measurement register. It is CC vendor
->  specific.
-> 
-> It makes sense that the kernel would size it correctly.
-> 
-> > As per the function, perhaps tpm2_calc_event_log_size() should be
-> > relocated to lib and have non-TPM name like firmware_event_log_size()
-> > or something.
-> 
-> Probably under drivers/attestation since that is where all the TCG
-> formatted logs should end up. It should be 'tcg_event_log_size()' or
-> something. Maybe a tiny module for it like we would have done in lib/
+> - dmar_tdxc_get_params() looks up the DMAR unit translating the device
 
-+1 for the name, as it is obviously more accurate prefix.
+I think tdxc is not a good name since "TDX Connect" is not preferred as
+a technical term. These APIs would be used by x86/tdx, so can we at
+least avoid using tdxc for these APIs?
 
+[...]
+
+> +static void dmar_tdxc_fill_params(struct dmar_drhd_unit *drhd,
+> +				  struct dmar_tdxc_params *params)
+> +{
+> +	params->reg_base_addr = drhd->reg_base_addr;
+> +	params->node = drhd->iommu->node;
+> +	/*
+> +	 * params->drhd stays valid because trusted DMA-capable units are
+> +	 * never hot-removed.
+> +	 */
+> +	params->drhd = drhd;
+
+Why we store drhd in the params, any information to expose to TDX via
+drhd?
+
+[...]
+
+> +/*
+> + * dmar_tdxc_get_params() - Get the IOMMU information for a device
+> + * @dev: PCI device that will use trusted DMA
+> + * @params: Filled in on success
+> + *
+> + * Look up the IOMMU that translates @dev and return what tdx-host needs
+> + * to issue TDH.IOMMU.SETUP and TDH.IOMMU.CLEAR on it. This only reads
+> + * information and doesn't change any state. Devices behind the same
+> + * IOMMU get the same @params->reg_base_addr.
+> + *
+> + * Return 0 on success and error code on failure.
+> + */
+> +int dmar_tdxc_get_params(struct pci_dev *pdev, struct dmar_tdxc_params *params)
+> +{
+> +	struct dmar_drhd_unit *drhd = dmar_tdxc_find_drhd(pdev);
+> +
+> +	if (IS_ERR(drhd))
+> +		return PTR_ERR(drhd);
+> +
+> +	dmar_tdxc_fill_params(drhd, params);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_FOR_MODULES(dmar_tdxc_get_params, "tdx-host");
+> +
+> +/*
+> + * dmar_tdxc_acquire() - Acquire an IOMMU for TDH.IOMMU.SETUP
+> + * @dev: PCI device that will use trusted DMA
+> + * @params: Returned by dmar_tdxc_get_params() for @dev
+> + *
+> + * Call this right before issuing TDH.IOMMU.SETUP for the first user of
+> + * the IOMMU. On success, the caller must issue TDH.IOMMU.SETUP and call
+> + * dmar_tdxc_release() if it fails. The caller owns the per-IOMMU refcount
+> + * and must serialize all calls for the same IOMMU.
+> + *
+> + * Return: 0 on success and error code on failure.
+> + */
+> +int dmar_tdxc_acquire(struct pci_dev *pdev,
+> +		      const struct dmar_tdxc_params *params)
+> +{
+> +	struct dmar_drhd_unit *drhd = params->drhd;
+> +	struct intel_iommu *iommu = drhd->iommu;
+> +	int ret;
+> +
+> +	if (WARN_ON(dmar_tdxc_find_drhd(pdev) != drhd))
+
+We can get drhd via pci_dev, then why we require callers to input
+this info and judge? Like an intelligence test?
+
+Thanks,
+Yilun
+
+> +		return -EINVAL;
+> +
+> +	guard(mutex)(&drhd->tdxc_lock);
+> +	/* Still set if TDH.IOMMU.CLEAR failed and tdx-host was reloaded. */
+> +	if (iommu->tdxc_acquired)
+> +		return -EBUSY;
+> +
+> +	/*
+> +	 * TDH.IOMMU.SETUP requires DMA translation, queued invalidation and
+> +	 * scalable mode to be enabled. Catch these here so the error is
+> +	 * -EINVAL rather than an opaque TDX_IOMMU_INVALID_STATE.
+> +	 */
+> +	if (!(iommu->gcmd & DMA_GCMD_TE) || !iommu->qi || !sm_supported(iommu))
+> +		return -EINVAL;
+> +
+> +	ret = dmar_tdxc_reserve_did(iommu);
+> +	if (ret)
+> +		return ret;
+> +
+> +	dmar_tdxc_set_acquired(iommu, true);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_FOR_MODULES(dmar_tdxc_acquire, "tdx-host");
+> +
+> +/*
+> + * dmar_tdxc_release() - Take an IOMMU out of Secure TDX Mode
+> + * @dev: PCI device whose IOMMU was acquired via dmar_tdxc_acquire()
+> + * @params: Returned by dmar_tdxc_get_params() for @dev
+> + *
+> + * Call this if TDH.IOMMU.SETUP fails, or for the last user of the IOMMU
+> + * after TDH.IOMMU.CLEAR has succeeded.
+> + */
+> +void dmar_tdxc_release(struct pci_dev *pdev,
+> +		       const struct dmar_tdxc_params *params)
+> +{
+> +	struct dmar_drhd_unit *drhd = params->drhd;
+> +
+> +	if (WARN_ON(dmar_tdxc_find_drhd(pdev) != drhd))
+> +		return;
+> +
+> +	guard(mutex)(&drhd->tdxc_lock);
+> +	if (WARN_ON(!drhd->iommu->tdxc_acquired))
+> +		return;
+> +
+> +	dmar_tdxc_set_acquired(drhd->iommu, false);
+> +	dmar_tdxc_unreserve_did(drhd->iommu);
+> +}
+> +EXPORT_SYMBOL_FOR_MODULES(dmar_tdxc_release, "tdx-host");
+> -- 
+> 2.43.0
 > 
-> Jason
-
-Br, Jarkko
