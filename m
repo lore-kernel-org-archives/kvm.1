@@ -1,65 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.112
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795433322;
-	b=NkLH2M0xaA47gDvbmOwqbT8/0U0LleHJ8uV2U3/Jxn3khNfHhocDArx6UhS/DqdeojLO
-	 V+1j/5my8tMc5R6f0bNFOQ9bu4hrNE5AVVHsITYZwZcYylcCm4Txj2rKpE9l2JGsBxhrD
-	 NoGaDuBlYvQ7egE9+tpPHsWc8rmzhHUKIbe8SwhQpKvH/6BK25EROmR4PMT7vbrkektPc
-	 A5r5Jjr1Kr1zCrrxGQKt3vL+Y5HznyhrUUMk2UsLzK9qshcVPbikHNV9XfIQ0e8zXE71O
-	 ElajVPlcZjT2nWtsTz6bWk/7KhBOf0LJ+AhJ6S8U/F0FTP2RdTRLRAnRe+zwrIypeng==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795433322;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:In-Reply-To:
-	 References:User-Agent:Date:Message-ID:MIME-Version:Content-Type:
-	 X-ZohoMailClient;
-	bh=HBmcfBMsncZWaLYvWSW4Mgzs7WRw3YFpQ2wUaFbGx9c=;
-	b=UhDO+9kxmd7xdXtQ5dwM8kcGALkN3StNYSn3NOhPgoz6zaZKkjE48O0Jt6He+6F96DKb
-	 9wMD4hyb6u+sfkNIyeSXTLWM7VQtEvSdcov5sapBWYttNm4YQju0e78rqRYVo6H73foqn
-	 ZSenT2EKGFhdtlFRroDyNQYGdR2BkgyJHLSWgLnampooSZ1XsjMQgPaE4VNOp+Tu7tx6P
-	 yGpjac2M5g80Fdyr0I2sYMaE8Db7ucxIeYO5Cmbij7wAGzllPuo43B+d9Hvg3q+YOVqby
-	 pB/IV8nuO+yf3H2Vb8wsrCBaFoWNIWBiyrWIx5B54RtrMddgZeSQ7qeNweK6RYAPGZg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=collabora.com;
-	spf=pass smtp.mailfrom=collabora.com;
-	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=hGwIk7UN;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.182.112
-Received: from sender5-pp-f112.zoho.com (sender5-pp-f112.zoho.com [165.173.182.112])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.69
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795433682;
+	b=Z0/dP1DWF5l7EzfbYZsGBFF4WI/gXSLs7BhVh0b3RwVcY0foAAekbp4zCHtBUFrr7bZ1
+	 J+AzVth9IXv6lWfyHVj+Q/CkuJDT7UqGLhVZZPmqlTX3gffVgfGpH66lu8pgHG8SB/REX
+	 Dyjxse1AkMn8E/kmHsmI7nMwjZkFUunfbYgvyLlufMPjbrgQV0YKf0sVAMJ8+TliT5LuL
+	 XyJYcP7fVvX5nrbsZ7QwN8Q7v6/yPf90W+Wo9s8AiWB29ZpGU0NNC5DQ5c/JfRlLymfwk
+	 mPhpnrsoV2r9yKIAmJG9bbFEGskl08UCOAZL7u7gTHPI88Hk0jDa40xTstBvUvbWhOQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795433682;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=NPRhYDnwJRvicd4u9ac46NRRTHp7yf2uOQ6I7pysTOs=;
+	b=lg8nWk9mt8bAgjbWYQVuXeNx9IaCnNBQsL3YL13V5pZ5Y7CaxU3rQxCWcMcwi+c5uugl
+	 DyKFoBwOM4fgTrJ1pXTv+5gyiO+PbJq4/RoZoMKL/14M6fHIogg9JyWyfAr3uUmJ6b5pN
+	 TSVyJ1grYMlKlwmcHMoEy5H9pINWOK3lsw1WMNmZ950UciiU1IXwyMKvJF3VIrOGTdinx
+	 nsAQTnhhoqtysfCdAkDiavO1+LHj2vE3AGT1lgH3rJu8C/upAAc29WMrR4WFevsS1q6pU
+	 VaHx3jSadTiFDHIGNSQEUU7CtyNaETt7hT1616qdFrR7eSumEPatHByIA2/LuRYHTQg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LJyZfoTK;
+	arc=none smtp.remote-ip=91.218.175.69
+Received: from mta0.migadu.com (out-69.mta0.migadu.com [91.218.175.69])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F056B606A31A;
-	Mon, 23 Nov 2026 11:28:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F056B606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E045606A31A
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 11:34:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2E045606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=hGwIk7UN
-ARC-Seal: i=1; a=rsa-sha256; t=1795433306; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Rd9dL3w5RmM5mNjMIZK5GcbwkUrkfRsX8xvy2c/fFR3Sa7lGIMAtGd2dqAnqhWU0lbffuI88emP9BkZHs5yyvZo0d0hlpDUirUDhgDW7LJ0/+LxaqWQkhorLptSiBOBQTIPB4UZOTobQldj2gtGhelPOWB8W7v7A/RU92aqL0oo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1795433306; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=HBmcfBMsncZWaLYvWSW4Mgzs7WRw3YFpQ2wUaFbGx9c=; 
-	b=iA+zThXqapx8kVop40FijmJvkL5lFYRCpRedOBrWjsLxdZJgE8CWA5Mjk2FJaBrfoG3NZt1jokMCgNpZI71U438vzEuRqg1dyU0fa7FSA+DQe/n6fQ0bAtEvtzB2bbQi5ZpPoEuSN/ph6tDg8I4VGgJ/UTlPXKYw8lsu9xupQB4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=matthew.leach@collabora.com;
-	dmarc=pass header.from=<matthew.leach@collabora.com>
-DKIM-Signature: a=rsa-sha256; b=hGwIk7UNQaUYI/S6vqf/9wFUIRBsTUd0DMd5tA8cEAo0vgXJ0BLI2IpCB3MU00fXl3yADSOC2OKQ0nRf45Gm/2hsNKjcy52Sixxu2rHMkUzy6d/6+azXRXweO0YSB6i8/EwgJSb1TOBmKMGT+CL4OvC8e/syqVZ24uZoY4THj1c=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=HBmcfBMsncZWaLYvWSW4Mgzs7WRw3YFpQ2wUaFbGx9c=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
-Received: by smtp.zohomail.com with SMTPS id 1795433301737770.8977295672257;
-	Mon, 23 Nov 2026 03:28:21 -0800 (PST)
-From: Matthew Leach <matthew.leach@collabora.com>
-To: "Jiaming Fan" <fan.jiaming@hotmail.com>
-Cc: "Sean Christopherson" <seanjc@google.com>,  "Paolo Bonzini"
- <pbonzini@redhat.com>,  <kvm@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>,  <kernel@collabora.com>
-Subject: Re: [PATCH] KVM: x86: Reevaluate pending interrupts when enabling
- ExtINT through LVT0
-In-Reply-To: <OS3PR01MB10251C0B5CDCF9538DA3A1727E77C2@OS3PR01MB10251.jpnprd01.prod.outlook.com>
-References: <auuQ8pE439EB63tm@google.com>
-	<OS3PR01MB10251C0B5CDCF9538DA3A1727E77C2@OS3PR01MB10251.jpnprd01.prod.outlook.com>
-User-Agent: mu4e 1.14.3; emacs 31.1
-Date: Mon, 23 Nov 2026 11:28:17 +0000
-Message-ID: <87wlq3n5wu.fsf@collabora.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LJyZfoTK
+X-Envelope-To: kvm@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=sjV6qrYMC8GhJztUOTln5L8ygixllt0tnTT6CrNeYyI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1795433680; v=1; x=1796038480;
+ b=LJyZfoTK8ZtIYq9wmTcSMfhlUK4V/QQiyUq0/16fublnXDwgzY+bHufptb+40LP4Btx/jvBA
+ tgXKmtXeFKVh5OcpvJu9iiFbyoBSjybXUlU/ZuYeQdOrleefE2eqzdiLKQDG/oSAAlKgTUANJKM
+ GQzMMepdx6XCOdQtir/HYZbE=
+X-Envelope-To: kvm@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id b141b18848b98b72;
+	Mon, 23 Nov 2026 11:34:40 +0000
+X-Mizu-Trace-ID: b141b18848b98b72
+X-Migadu-Flow: FLOW_OUT
+From: Fuad Tabba <fuad.tabba@linux.dev>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Isaku Yamahata <isaku.yamahata@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	kvmarm@lists.linux.dev,
+	Wei-Lin Chang <weilin.chang@arm.com>,
+	Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	kvm-riscv@lists.infradead.org,
+	Will Deacon <will@kernel.org>,
+	Fuad Tabba <tabba@google.com>
+Subject: [PATCH v3 0/3] KVM: Bound KVM_PRE_FAULT_MEMORY by the vCPU's dirty ring
+Date: Mon, 23 Nov 2026 11:34:32 +0000
+Message-ID: <20261123113435.1170711-1-fuad.tabba@linux.dev>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -69,75 +81,62 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 8bit
 
-Hi Jiaming,
+Hi folks,
 
-"Jiaming Fan" <fan.jiaming@hotmail.com> writes:
+Changes since v2 [1]:
+  - Added patch 2, which warns in api.rst against calling ioctls other
+    than KVM_RUN while an exit is pending. (Sean)
+  - Mentioned riscv as well as arm64 in patch 1's exit_reason
+    paragraph. (Lorenzo)
+  - Collected Lorenzo's Acked-by on patch 3. (thanks!)
 
-> On Wed, Nov 04, 2026, Sean Christopherson wrote:
->> Ahh, but there's nowhere for edge-triggered events to be latched, so this only
->> affects level-triggered events.  Which means, this?
->>
->> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
->> index d6e5fbc3c58c..b72930a8516d 100644
->> --- a/arch/x86/kvm/lapic.c
->> +++ b/arch/x86/kvm/lapic.c
->> @@ -2554,6 +2554,8 @@ static int kvm_lapic_reg_write(struct kvm_lapic *apic, u32 reg, u32 val)
->>  			val |= APIC_LVT_MASKED;
->>  		val &= apic_lvt_mask[index];
->>  		kvm_lapic_set_reg(apic, reg, val);
->> +		if (!(val & APIC_LVT_MASKED) && (val & APIC_LVT_LEVEL_TRIGGER))
->> +			kvm_make_request(KVM_REQ_EVENT, apic->vcpu);
->>  		break;
->>  	}
->
-> The trigger mode check doesn't catch the case Matthew hit. Linux's
-> setup_local_APIC() writes LVT0 as plain APIC_DM_EXTINT, without
-> APIC_LVT_LEVEL_TRIGGER, so no request is made and the "noapic" hang
-> remains.
+KVM_PRE_FAULT_MEMORY never checks the vCPU's dirty ring, so one call
+over a large enough range of populated, dirty-logged pages overflows
+it. The first patch stops the loop at the soft limit, as KVM_RUN does.
+The second warns userspace against calling ioctls other than
+KVM_RUN while an exit is pending. The third adds the case to
+pre_fault_memory_test.
 
-That's right, this version of the patch wouldn't fix the issue.
+Pre-faulting isn't the only ioctl that can push past the ring's
+reserve. On x86, KVM_SET_MSRS does too when it writes the wall clock or
+the Hyper-V hypercall page. A guest can also push past the reserve
+within one exit, for example through the arm64 ITS. What those paths
+should do when the ring fills is an open question for the dirty ring
+API, which I don't think belongs in this series.
+
+I didn't include the kvm_dirty_ring_check_request() rewrite that Sean
+sketched on v1, since I think it can lose a request. It tests the
+request first and clears it afterwards. If the vCPU is scheduled out in
+between, loongarch sets the PV preempted flag in guest memory and x86
+updates a Xen guest's runstate area, either of which pushes an entry.
+When that push makes the ring soft full, the request it makes is then
+cleared, and the vCPU runs with the ring soft full until its next push.
+Clearing first and re-setting, as the code does now, doesn't have that
+window.
+
+Based on Linux 7.4-rc2 (7475ea8b58616; also applies to kvm-x86/next
+cbe54fc3462b3 with git am -3).
+
+Cheers,
+/fuad
+
+[1] https://lore.kernel.org/all/20261117074428.7544-1-fuad.tabba@linux.dev/
+
+Fuad Tabba (3):
+  KVM: Stop KVM_PRE_FAULT_MEMORY when the vCPU's dirty ring is full
+  KVM: Warn userspace against ioctls while an exit is pending
+  KVM: selftests: Test KVM_PRE_FAULT_MEMORY against a full dirty ring
+
+ Documentation/virt/kvm/api.rst                |  20 ++--
+ include/linux/kvm_dirty_ring.h                |   5 +
+ .../selftests/kvm/pre_fault_memory_test.c     | 102 ++++++++++++++++++
+ virt/kvm/kvm_main.c                           |   5 +
+ 4 files changed, 126 insertions(+), 6 deletions(-)
 
 
-> For ExtINT the pending interrupt is latched in the 8259A, whose output
-> stays asserted until the guest acks it, not in the LVT entry, so the
-> trigger mode bit doesn't tell whether anything is pending. Your first
-> version (any unmasked LVT) does work for LVT0.
-
-That matches my understanding. I think the right approach is Sean's
-first suggestion (any unmasked LVT).
-
-> There is a second path with the same problem that neither version
-> covers: hardware-disabling the APIC through IA32_APIC_BASE. With the
-> APIC disabled, kvm_apic_accept_pic_intr() returns true, so an ExtINT
-> latched while LVT0 was masked becomes deliverable, but
-> __kvm_apic_set_base() doesn't request KVM_REQ_EVENT either:
->
-> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-> --- a/arch/x86/kvm/lapic.c
-> +++ b/arch/x86/kvm/lapic.c
-> @@ -2825,6 +2825,7 @@ static void __kvm_apic_set_base(struct kvm_vcpu *vcpu, u64 value)
->  		} else {
->  			static_branch_inc(&apic_hw_disabled.key);
->  			atomic_set_release(&apic->vcpu->kvm->arch.apic_map_dirty, DIRTY);
-> +			kvm_make_request(KVM_REQ_EVENT, vcpu);
->  		}
->  	}
-
-Nice catch! Looks like a very similar problem.
-
-[...]
-
-> Matthew, are you planning a v2? If so, I'm happy to hand over the
-> selftest and the APIC_BASE fix. Otherwise I can post a series with
-> your patch (reworked per Sean's first suggestion) followed by the
-> APIC_BASE fix and the selftest.
-
-Looks like you've done much more digging into this than I have, so
-please go ahead and fold my patch into your series.
-
-Regards,
+base-commit: 7475ea8b58616b33c04afb976cf0fbaad9dd63fb
 -- 
-Matt
+2.47.3
+
