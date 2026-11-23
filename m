@@ -1,13 +1,13 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795414485;
-	b=2N9ItEkaLgI7ek8INbjOD8toS/WygQJvCJESnlGKDZKvd/YJNjBd9VKbKevYLhTlpexq
-	 vqhuLmJurFCU/R9nMzXJz68c0RQMqYJGXLpW7dt2PNhUYT1JWvUEyKxpz2XYRVJCieZkS
-	 zpj5mW/CmLIRO4QSgkQgh8IzOIDl0hpG7I7d2hpDenC5LAbm2aEvAhZiIot7IG9meFkRd
-	 D5QvlqqiAwryXPNys6tBMwzNoCRydmAJ+q9fKgws8MGEdVgGM/fagsjQ0I95v++Mg70P9
-	 ev7yAIwwBEm7xV23B9pIxn1POab1wPvtUEn/1ryw7UcGKakOngZPaKW7DyK01aEnMqQ==
+	t=1795414524;
+	b=Woa6HfcSDMJpJhnn94jBtlumJhOt7sOih4oHNZQsS4mgCB6KZpo5LH5tcdZ2jyxreax+
+	 bKlHVpFnDaXASXztamPioLvRdnG/KHzcHZIh5FR2JiDfICAn0c1mzr7sIGcjiHutLsFBJ
+	 Qw0ynQDdNc1PAF0/7xivbCEi9yPyA4FZZ1xquMi1SEhIWcmbZgsvlmc3XRuMxPN6TYNM9
+	 SUM0WNHLMSj7lfitjLJQJiIVrREKbYzVAIrPT1kw1t8PZDsUgL9X4jqHlp+UJqodODYA4
+	 cq1PQg6Wb9kNb+HoVkeHKfjhwlJu5cAVdQzyTqUs7bKql2r436GaFlVCagkFZPCv6QQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795414485;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795414524;
 	h=Received:DKIM-Signature:Received:From:To:Subject:Date:
 	 X-Bugzilla-Reason:X-Bugzilla-Type:X-Bugzilla-Watch-Reason:
 	 X-Bugzilla-Product:X-Bugzilla-Component:X-Bugzilla-Version:
@@ -16,42 +16,42 @@ ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	 X-Bugzilla-Assigned-To:X-Bugzilla-Flags:X-Bugzilla-Changed-Fields:
 	 Message-ID:In-Reply-To:References:Content-Type:
 	 Content-Transfer-Encoding:X-Bugzilla-URL:Auto-Submitted:MIME-Version;
-	bh=SyVZIMI6+9jzreJlkqlfcvi2m/s+Ya1w4ujIvB49DTA=;
-	b=H/QS0/9IQ+sxHhgAZUZFoSpzkzDPkmY/Z6HIM2RWE2bdA7K7j3E5mOiYKpLSo9KFjkPM
-	 4hPsTvDOd0C9NXEPC2MGrzkwHrTYBDBf2SBbrWgtscIUPGsbOOZXG4lwsBUP/HmVbUx0e
-	 HV+4O0VTcGPCR8+1yoSl/fjPNFTZFV3xxGhsZ/dtvul7Z7CmbK/B+8B99sp2GJGY8Nctk
-	 qVsVDDrhwx0W4xzv4gVmobOD6OnMEi6aHdfIpJsVCFDBIcRKJdiUM7FDWtvk40xYmcPR6
-	 rQXiP29ZCZ7SCT/C+qojpXRmvixTKSQjDvuX/uCdh6DfAJTkHtGWV07NCSAdZAw/BDQ==
+	bh=o1/dxlsEKBmI2TT7ny9rYvM66DLCWSfxu50uH9NKb30=;
+	b=LmWUS0pMxpsOeEMLvjQynpCJQIFlh76zgXQqs9NyeGKU4fmV46HX1AIH3xzGqOMLAI0i
+	 C/Xekc4BnICcIeQKV6BUQg1zfEdqkHHbc07qtNdLHkRg13xqkmyPnD/NKR/f8CYOxCGrh
+	 MM/Vuwh0YA+T238guARuccwzYAn/vsAwu3JRslvS3XDv7rvWa8gtOEmMtBXXS52OKSvFn
+	 nvasVb+r8k6leQQIMI0eAXc9y4asd9EDuwh7mQHPlWdzIIyqzVjM4Zv8m7v/j1xR37Wq1
+	 UaY9RoVoG9nIcVuA7iPVltdloUgyasZqzi11QXU4v63xuCAErs8rSIJfHHh5O7Bxrcw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BBOY82s9;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bbHngCR2;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BE3606A32D
-	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 06:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107B2606A31E
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 06:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BBOY82s9
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 307A51F000CF
-	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 06:14:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bbHngCR2
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 67C001F000D4
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 06:15:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795414485;
-	bh=SyVZIMI6+9jzreJlkqlfcvi2m/s+Ya1w4ujIvB49DTA=;
+	s=k20260515; t=1795414523;
+	bh=o1/dxlsEKBmI2TT7ny9rYvM66DLCWSfxu50uH9NKb30=;
 	h=From:To:Subject:Date:In-Reply-To:References;
-	b=BBOY82s9+H9JNDRmsTFrNqvTPPkU1TGpzvdHAZVUERCYcNsdnNPqN4uW6CsJehcu5
-	 Z1nSNiNVgdThiA6oC1tp3oezg89G6idCA7nCGoMS0D97uIZdHl1j5baMLzQs9xquZ3
-	 Pe8dffjV6sjQxCpbvYjuUjQz4JF7+lT8xUthOOArXVaRBA+y4MrW8XtyD/P56zWxP0
-	 W7EURzETp5hFRkLQE9WUxbjWmFBOM9/awsqKTUuJsT2YHFFsn/loWHjMCjwbdhsEKZ
-	 Kec4WVHzVGqNbCOHGTPvBQ0tJIXGKQ3i6qR45JLVCp0qnr1+ae/U/6F3W5EysmYIrL
-	 gp4ViNfIk/8cw==
+	b=bbHngCR2P9xHiW+UsnmOg6u+Of68u/yboOQazXIFehngXAh2jnrKaYhdrCrF+EP0u
+	 n8+6XHP0ZD/A2oDarjScCBmojZp8PkhZRRP0xApWDFK3Q3zynX4ZBhDwlbKvBwrYtV
+	 SGo868qtfMmojEN/h9Ul3ATChDsrRSEDeWtm1y/XFn5c2chpwFLLGr3Nym2B9JYzaS
+	 uTsRWv+DfofUWwT/vYvdOP+5ulNOsj7P4jf/uHHpqarSho1PIdQMHTncCWXqxJlY/Y
+	 KDGivIsArDBxXFZqlKYStw3Q6sIR0h2ze3yaeLml8gbrwE9lixEwAfNI351BrjdtfX
+	 v6wf5RKwa862w==
 Received: by aws-us-west-2-korg-bugzilla-alma10-1.codeaurora.org (Postfix, from userid 48)
-	id 1B61A240040F; Mon, 23 Nov 2026 06:14:45 +0000 (UTC)
+	id 5E66E240041C; Mon, 23 Nov 2026 06:15:23 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: kvm@vger.kernel.org
 Subject: [Bug 222317] pci: 8086:4c43 host bridge enumerated as class 0x0604
  breaks Intel IGD passthrough
-Date: Mon, 23 Nov 2026 06:14:44 +0000
+Date: Mon, 23 Nov 2026 06:15:22 +0000
 X-Bugzilla-Reason: CC
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: None
@@ -67,7 +67,7 @@ X-Bugzilla-Priority: P3
 X-Bugzilla-Assigned-To: drivers_pci@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-222317-28872-9RC42TEwNt@https.bugzilla.kernel.org/>
+Message-ID: <bug-222317-28872-MVsUYj9Xc5@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-222317-28872@https.bugzilla.kernel.org/>
 References: <bug-222317-28872@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -86,10 +86,10 @@ MIME-Version: 1.0
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D222317
 
---- Comment #1 from 2039475150@qq.com ---
-Created attachment 311567
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D311567&action=3Dedit
-dmesg, kernel 7.0.14-28-pve
+--- Comment #2 from 2039475150@qq.com ---
+Created attachment 311568
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D311568&action=3Dedit
+lspci -vv, full
 
 --=20
 You are receiving this mail because:
