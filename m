@@ -1,69 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.70
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795427002;
-	b=kme8u+pXqDfXKsR/+0ndLb8bet+v1MgQtAvIamL748LoU0VETaPln45INkkxqbK2CjYL
-	 ktptDwv8XOwzcjRTcAgh1Pdqu9mZqhzu2NaUc3pdAgtM9tMjXxWVbKEOQW7iAaqPecirc
-	 6Oyk5BSHP8TjU5oFYt3/zsSMRBHsgh6UUtG0dSUch2ks7pEwMBIulXkm3iMYpQHRb3oNt
-	 mCadP7LSp5TtwmkYQj85NGqZkKfMhr9z1zf2peaz7P0bwKQNcZrivssxPSzN+ijFAZpTs
-	 FwBIsFynUEU4k4L1XsZUxkd9IVlINf8fPWnTaz5mNsDREKkWQab9JjWfx26y+BBdUiw==
+	t=1795427353;
+	b=NQu2NR/3taahHRJWvP4FnYuA74jUwyISLRRHQvvrWbrl2Jtc2r+UIbDpp+wxFfYHBudJ
+	 8ei+k4+wry3wVfOyfAvJue3qYaxt6yoitfscEBMqnaMQXisArqPo7q2TAg4oxrgaAoj0A
+	 mb4vi/oe+Uu7NdW5fO44ALUkj3Izh3p79/+v+/6a1dCP3GCjvRSyROQCvWgVmKtvLYd8y
+	 U8pYc3fIL7pJUssOVwoWpjeRQ/Q9kwtMPN2Ur4cKXoZ5h+J33vN8wOGtD57VOiQ+GZ8j2
+	 9mSNjrp/y2KO9Ortetk0lyoza9EfCkipp94g3jhL8hq50qpWuYpYqEqY/D0Bvbo6IQQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795427002;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=ovTZpuEFEoWoBniAauFNolmkozpPhbGaZO8n0GhWEtw=;
-	b=l1zpcriE/T38qTfvruvXA8v8FqBONOxtRa7Vl5m8pbfZrVvCqLptgmaZB94+YW8mpp/g
-	 D4PfluwYYz581Jzd7EvS6ZdW5ZXoIDIeZ8ZQ+hhnBgRnwFjffecqeLtl8ton5wi7XvK8E
-	 dm4L9oVGg2C0of27vMHcrr4vohOE8QR47EVBJPHrCgxX9Sag14/gg3k4YSn3FJ2k/+KmC
-	 3SLnxsUFPfXt1YkaGvH7gqSBD5YZVzb6MA617u4AdCpwQFZh80hRvuBZyfW9f1poin85a
-	 WFWC8F/OjkdLwBnBMbnuaGOB1Aww2tUFj3VKJlY+gJYeMHSk1+V3Fo5XJW1PB6p/Cnw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795427353;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=5g6rxDcE+XSPvTO4IYmwgvIS3I7HcVTmR8Q7VnCTKgE=;
+	b=ZR7kDgwQoPzVj3+cfAjyPlxJxvvGefGltXUP1MEFnr6ZO5TzaqC6mNjxkgjRFpBMgWas
+	 Vb7HBOzkAVMjCVfDiR+K7jvvNAy25n1niSsHnjX8+o1VUAGrfabzVeSqAYIzj1fxWWcrf
+	 UIOSim6HAn9GIxWZ/7k5MYir1WK3BA2SNlRuJUj5HKG9ID9rmdyMM7aP2fCBcO2IHs+m3
+	 xbVGiWpsitJ6zV8eOSbBgsZ5PWCmSl1v9VwgZf2hSDL2fFRo7uUwjXPV4UYmymaEfXHWe
+	 weoPT6Cbe8U1sCN+p+/0PKokcZUpR7iSIJhlCiBr6skrmq4tivDAA6EKG8SzQ15kfoA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=orv0xpNT;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--mmol.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Y+PTMQJb;
+	arc=none smtp.remote-ip=209.85.218.70
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58B2606A31A;
-	Mon, 23 Nov 2026 09:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A77606A31E
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 09:49:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 59A77606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmol.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=orv0xpNT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FFB21F000D0;
-	Mon, 23 Nov 2026 09:43:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795427002;
-	bh=ovTZpuEFEoWoBniAauFNolmkozpPhbGaZO8n0GhWEtw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=orv0xpNTXOq+Hp2bUGf2xot20ap+p8J9/WaqyVRXto96awU4Yf/gQHFGtkG2rKN/l
-	 QXNxbcpqxfpeV70kidCicmpZ4CwNXlXbGAzxj8dUMM8Mk1BRBmeqIqjCHlC8kuVaWh
-	 wuLb3ZSEH0gv69+b2Ae/+lnpWTpqk53dHAiYAkAIeJvqsNsQjZRwdRXjHIQBAlcxJf
-	 5+tKU0Wxwe4Uh7Y0jbOJdbvx7WssEGSiGZxxutLlpq5q0o2K//pKtKz/M80jRHEccF
-	 +ycfRBr08AO3EYKHdeAJgggQ+sgnf4g9NaFcWMaCwglHb8nA2Y50liAZ+djH7DRR4O
-	 dl1cyWBw42D0g==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Leon Romanovsky <leon@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v1 00/10] PCI/TSM: Support guest TSM drivers
-In-Reply-To: <20261123090623.GK14811@unreal>
-References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
- <2026112325-emit-squeezing-5d96@gregkh> <20261123090623.GK14811@unreal>
-Date: Mon, 23 Nov 2026 15:13:13 +0530
-Message-ID: <yq5a7bi3riha.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Y+PTMQJb
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c5101fd59e3so264684266b.0
+        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 01:49:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795427351; x=1796032151; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5g6rxDcE+XSPvTO4IYmwgvIS3I7HcVTmR8Q7VnCTKgE=;
+        b=Y+PTMQJb2NRM0EXrjo7lt8ZaSyhMbJA8qNIirzqo3mXE6aqQ5VeSkZl0JLv2NWzIwq
+         n69UfG0nqzoW1Ewaq1KEdXYUw9aHZ0jMi7Xrl7Gdca9X8xJ/xJvDYvk6CuKJ2KqHausp
+         EYKkB1kwgJxi6hKiyi0DM8sAo1nNLLmqlBIsyrcFhkPzI/i6H/7+qL5mj9f9j9860DAm
+         87FHPI4XSenuRV3YQ8d2VXDp5NfDC8U7bW+uwL14FSmKU/St4BOt1ZBcPQJUg/EJXNaf
+         U7TzDJfHsEnFjkZEG2lrVOoKSEidQ9RbrJVApJBCZDf/d2jZkeGmpKQCiYiVO2rXP1V/
+         SlaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795427351; x=1796032151;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5g6rxDcE+XSPvTO4IYmwgvIS3I7HcVTmR8Q7VnCTKgE=;
+        b=pVIxpAA85YMyEAitvKNTHdMjXaf+ITtGa5B24ePc3ybRDB99CpH3iwDYZ0jtr/dSOc
+         vCS2BWxnB3Uj6CFi1FD9lxKMRFnXnhDH9LuGKpCfd+DNQQvlIoiJGaBaZ230DUsruStt
+         u9XnSjxaHDkTjgPd8G8sfSO6OUqAkmfoTKf6JA1y4PVblqlX5SMwFWHXq0Mg8hU4gD2H
+         cP8ovSwukKNeTMYeyZbXfYBYelFXzdmhhHjkhV9rk6Kw7P826bqTpoOltZoxpy6oBmj2
+         8hr2+IwCVWN4Q/ZJJTcupguFzdLX+TMbbTM4uoRYvTeN5VDvVIpF6loEpBb6TalPeh+o
+         Bzcw==
+X-Forwarded-Encrypted: i=1; AL+hErG95cbCECsI9VmptRvUSc/A1YmREBL6HuPcaekz26j2ojbSkeArD3yocN98H04QajE5JGw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/pTrnAx9iR8T9CiJcbwBNkpyA3heN0Q+TlvmIkWBlvGw3v+zPl
+	Ja/zaiQAoyCskqxrmhF1qqnUIkvSBpVrADuY+6+SfK9WN4GDrOh0qx3yxDHpRkWK/WTgOBphtQ=
+	=
+X-Received: from edtg7.prod.google.com ([2002:aa7:c847:0:b0:6b8:98f6:dcc5])
+ (user=mmol job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:46d3:b0:6b6:f429:4802
+ with SMTP id 4fb4d7f45d1cf-6ba37ea3508mr5728784a12.25.1795427350480; Mon, 23
+ Nov 2026 01:49:10 -0800 (PST)
+Date: Mon, 23 Nov 2026 09:48:52 +0000
+In-Reply-To: <20261109084854.840576-1-fuad.tabba@linux.dev>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,70 +78,33 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20261109084854.840576-1-fuad.tabba@linux.dev>
+X-Mailer: git-send-email 2.56.1.750.gf70dc682cf-goog
+Message-ID: <20261123094852.2435494-1-mmol@google.com>
+Subject: Re: [PATCH v2 00/19] KVM: arm64: selftests: Tests for protected VMs
+From: Mihai Moldovanu <mmol@google.com>
+To: fuad.tabba@linux.dev
+Cc: catalin.marinas@arm.com, joey.gouly@arm.com, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	mark.rutland@arm.com, maz@kernel.org, oupton@kernel.org, pbonzini@redhat.com, 
+	qperret@google.com, seanjc@google.com, seiden@linux.ibm.com, shuah@kernel.org, 
+	suzuki.poulose@arm.com, tabba@google.com, vdonnefort@google.com, 
+	will@kernel.org, yuzenghui@huawei.com, Mihai Moldovanu <mmol@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Leon Romanovsky <leon@kernel.org> writes:
+Hi Fuad,
 
-> On Mon, Nov 23, 2026 at 09:40:55AM +0100, Greg Kroah-Hartman wrote:
->> On Mon, Nov 23, 2026 at 02:03:27PM +0530, Aneesh Kumar K.V (Arm) wrote:
->> > This series adds the PCI/TSM support needed by a TEE Security Manager
->> > (TSM) driver in a confidential guest. It adds device lock/unlock,
->> > helpers for recording device acceptance and parsing MMIO reports, and
->> > DMA callbacks used during PCI driver attachment. The guest TSM driver and
->> > attestation commands using these interfaces are in follow-up series.
->> > 
->> > This series is based on Dan Williams' "[PATCH v2 00/19] PCI/TSM: TEE I/O
->> > infrastructure" posting [1], particularly the guest LOCK/UNLOCK, ACCEPT
->> > and MMIO report work [2-4]. It retains device_cc_accepted() and the
->> > confidential-device acceptance model from that posting, with changes
->> > adapted to the current PCI/TSM structures and reference APIs. Dan's
->> > device-core acceptance helper and per-host-bridge IDE stream reporting
->> > patch are also included.
->> > 
->> > This series does not adopt the Device Trust changes from Dan's "Device
->> > Evidence and Trust for PCI Security Protocol (TDISP)" [5]. That work is
->> > being developed separately in Leon Romanovsky's "driver core: Authorize
->> > device trust before driver binding" series, [6]. Confidential-device
->> > acceptance is kept separate from that driver-binding trust policy.
->> 
->> But it should not, as you are making driver core changes that will
->> mirror the same thing that that patchset is attempting to do.  Please
->> work together on this.
->
-> +10000000,
->
-> Greg,
->
-> This series came as a surprise to me given the fact that device trust
-> series is exactly for that - allow confidential computing.
->
-> Adversarial is equal to the "cc_accepted".
+I have tested this series based on v7.4-rc1 in QEMU
+with gic-version=3, -cpu max, pauth=off, -smp 4, -m 8G
 
-I think the confusion stems from this thread:
+All pkvm_* selftests pass. I confirmed that the skips you mentioned are
+features that pKVM doesn't expose to protected guests.
+pkvm_id_regs fails with patch 1 reverted and passes with it applied.
+Each patch builds individually (tested with git rebase --exec).
 
-https://lore.kernel.org/all/yq5amrr8yldi.fsf@kernel.org
+Tested-by: Mihai Moldovanu <mmol@google.com>
 
-Based on that discussion, I understood TRUST and eligibility for private
-DMA to be complementary attributes. Device acceptance determines whether
-a device may access private memory, while trust determines whether the
-core must enforce additional restrictions. I understood that supporting
-an accepted but adversarial device would require either a private IOTLB
-to restrict its access or an IOMMU.
-
-Therefore, with this series, a request to enable private memory DMA is
-handled as follows:
-
-	if (!device_cc_accepted(&pdev->dev)) {
-		ret = -EACCES;
-		goto out;
-	}
-
-	/* Adversarial devices are unsupported for confidential DMA. */
-	if (device_is_adversarial(&pdev->dev)) {
-		ret = -EOPNOTSUPP;
-		goto out;
-	}
-
-
--aneesh
+Thanks,
+Mihai
