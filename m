@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795409397;
-	b=QPjOHxol+hf1Q7CyBGWKoOKLh0IYP4eHxLha9KAqRCzF4d9IkrySkxMHnIR0TArKhgVC
-	 fv+nM5iS1Un0amTrEaDcXSH4Y/SULPzJ1Xktiw1TurNYuTmRJtYFf9CMY4kA8cDTFYKDY
-	 jybwiUhBrM+uIWKrORInAaywCSARALufnW+tkUNxire0bKMGfhi0kSVQR25mUjFvOs/d7
-	 kSx6ramiDrsO3iur9mztnTPxx3g0eHp2n1WNCzT9k+s9JFDafcRspJs5j9fL0Tdy8T1lM
-	 rgXOTIG0lFI9ztbwRmBL9b0ssyOwy2kv+5k//TJfvgjMxAT09z9UnsncHwtcVHL2hkQ==
+	t=1795409402;
+	b=AJHZ/oYtq6I/YqRiSNd2W375k8R3KYe+W/wbc2eEahHFHhEE1NPzoXmJtEjQeGuGQRCQ
+	 bsTLn3TFLH0FwFR6HTb0vDTTzR/8XNsYs2/oUMKzVwba7B69BClCPT3cJJaCXicl/BSEM
+	 mId0qaizQAs5iSWChUoVKjbftjKZbWkyKulWLUGZeyt2j+wjIGmilDsVSQuezFGOpdn3+
+	 OfJOWph2FFD6J2FmySnRwpDMRWzVC7zOQoqkl7cT4gGyJIqwhrNXo3S7HS0Qq68k4gwgc
+	 9HOA87njdvQLHKx81H25xk6GCzeKakdcnhhe3lHZle4I8JPmijzGwvZhPQxYGga3Pig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795409397;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795409402;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=Z8BQO3KrgykwRtgGi0Q1dGoj+G3A1sp7JKxsrHaGsP4=;
-	b=mQ2LUmYX6jJNrjgBVroBeCqWfToPsexrmD6/Px/VZJ19kDTUCG9DxEd30ACWxa+yyK4n
-	 A9Z/GLOeCCUiSXTy/AqdOD0URUgNumMYwU4Yeow65aiFyEfrr1iB3weQBZrfXYDKooylB
-	 LkkrUbmjvvOrFSqc/jPZOQdIcECLw5UMcaCBuIChAWIU46DZnULpFMj0LLHQYwoHnbFYj
-	 /wzI1fqXsw8H+VsBdfhyuGuebYaYcezoi3wkuhVODXlIHQlc76Ak1Lmax52Owd4vwfinv
-	 BWihuoPMASzR+51ttWZdfHRDMnngPNn7HSroKZgqrhiQ92WgTqaJkoybNsX/BfxjClQ==
+	bh=6MNIHKKL1TyoX4SD1X7Fi8nLR6k5WbA5DIiwx/onbm8=;
+	b=OQeS3+VSHBlzODBx8t+zrhYD5b7Y01mp/mtbFVwr4vZw7VpibG7b3llxZzG2mA5WewQy
+	 H/nd7Ggz7o+PNJYALJEqNUuw+SfyevXB1rzcCiYO20YQRkaPmCGLzRMwVplO/xDh4ML+J
+	 8ibt66qYMmgc2TGsWFawbmw3/CBilrWsrxbG+AoTLS5NnIhhSDAcaPwpxz38881M3g7oZ
+	 s7n3OBdGtZtVlCPVZJf+oxhcZ/8r7APl9vB97lt3XwdC7z2ASf5kdVsrxH6PXGfBMUFOW
+	 VytrNScNOI3/y+dRxImlUWZCVCvuHoPpPPTKs0WBNf131f65nJiNYg9XxoKLFkuwRig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=BFBYjWDy;
-	arc=none smtp.remote-ip=209.85.214.200
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Vs0H0DIP;
+	arc=none smtp.remote-ip=209.85.215.199
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F26960A2605
-	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 04:49:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9F26960A2605
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01675606A6A9
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 04:50:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 01675606A6A9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=BFBYjWDy
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2f033dc37cfso28224385ad.0
-        for <kvm@vger.kernel.org>; Sun, 22 Nov 2026 20:49:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Vs0H0DIP
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cdb45b4ed6bso2483604a12.3
+        for <kvm@vger.kernel.org>; Sun, 22 Nov 2026 20:50:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795409396; x=1796014196; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1795409400; x=1796014200; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Z8BQO3KrgykwRtgGi0Q1dGoj+G3A1sp7JKxsrHaGsP4=;
-        b=BFBYjWDyNCMAZ4eabi/KLvr2pVa5tUBLFFu4ZWnbnLFYC1ThzbtmzCvOp4xJDFpfSL
-         JHMpVsZJDrA4tabv64d4VTY3TVNQyEW+DxWAL2VIlxIa6847glgodhiruAzOe6fCnKvH
-         XbVl8R6XKrXiQdJ03TV2QgaKaxBrO+W17gJYAWWZMHsAWGVgmL/HbqjB5qtVaNxRIjYe
-         5EO8dLawtpqN+JFGMAoH2DMk+xqoQlQSGNvJoyZHIEF76E2Nucng2/ytvUniqNqZ/JYv
-         Gl4/sT4kGrG0iKbgBimDVJnj9OQ1dEoe356z3Cfm1DLhneABjqEk6h+mWwxwZvcrTuA3
-         SDsQ==
+        bh=6MNIHKKL1TyoX4SD1X7Fi8nLR6k5WbA5DIiwx/onbm8=;
+        b=Vs0H0DIPyy4AEnzecTHnp6UBjOlGDzHMN2cAUP5J7RvfJnt0AERF2SSsqfsfeRNkBX
+         nqXYKcxp/wZGXkI5ab7TLuFsge+4HX+bfSpjlujkw8g06nd901qI0Gb0DRXGQMpoEL4N
+         nb3K3/BEIRpVxGAeETe/Du4Ptkz4wFjt04C4Ek3Da6SSEQNz0sTdl4g8KtGbRr7RI6uA
+         ulzLzAwAF4GcVBhf2WwpVtQ+mOdI0CRetavK31N+KwOxrnRoF/jreirB0b7Oenle4Vy3
+         ICxHqUrMcROQ4m4wa7OY2PdLKddzOMBkXlmlrMTrH0CV1PLkzX354xzaoA7UmeIq9NvX
+         BY5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795409396; x=1796014196;
+        d=1e100.net; s=20260707; t=1795409400; x=1796014200;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Z8BQO3KrgykwRtgGi0Q1dGoj+G3A1sp7JKxsrHaGsP4=;
-        b=SZvAVucfO/+aq4gq9+dJ9vAoWE8aqJNsinQO1+XC5yllky+1HczPOHAm6bgbhCFqUl
-         4CEPrMPPYts/5vWdM/hSomvZ7d+eGnMHu/AMYOUH6eh6Vs7KPs+sK4yvDC8mIohyOXh6
-         LZIm5+ybz4eMHcbaq2rMAqXZefaEwzzLuBkUDpu6xtiBFjqwGf3jR0MsJkk8/10JKh5u
-         dyHZoWiMvyDRv6N2f4GJbBbwbjSOCXxF4vLYwAy4Uj32KwcUKTArtG3O9NKvItxQ2YSp
-         gtlBPa/fcWeeCcjW8tXTEmk8TV3jySubMF8ILsT9a77oXlLXuVXfT6ViJzlQ9sf2SlGn
-         d/5Q==
-X-Forwarded-Encrypted: i=1; AL+hErHhk7ve94boa8V8Ft+JBoRxqtpXjZ1H98nQeOG76nQ+UfcDGT06R9DtEqPeAFIVe8QfyYo=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9SDDcjmfvyVj9Ta4YzzLvNRJPVPQbCLqFppTHQVwf04cNHu3pO
-	vHRxdrGWvJ0zZtCIKXfgCZteW+8nsfSlpWRQErUcD7tXe6hsOWb5XLlWkm2UvdzehlsmAzEUjAf
-	0oFbnh7snha2FbQ==
-X-Received: from pla14.prod.google.com ([2002:a17:902:ffce:b0:2e8:44b9:5c18])
+        bh=6MNIHKKL1TyoX4SD1X7Fi8nLR6k5WbA5DIiwx/onbm8=;
+        b=BF6pGTk6ieAvXAr4+IrzK24AQBZCXn6e1RHiEqLKA5GDi8Eps+8ilEu0MHS3pI0k0s
+         F66b1aavWPLDtoiA25hBl/Qnf7NFYmWYhMKLYbRFubLwSrynvzs0HOfv1sTbCtlb4yGH
+         gNsCQCKTmLUY6RWiR+BUFVLWfnVHCIwFP4Uahncofln3joKk16PcTR8QiRo/h7axT11j
+         wDPmIk9xqMFiPk6IT2tPJo/RX1MrNnwch4AV0L3bGnR6JpxrMcx6BkF8HU2lrZvv+2+G
+         FkTVAhlvYPBCfwdpUJuWpCEnBFs29Fa4HFfViRP/Fb3gGgDAhlEh7wBigPed9I9bHsTh
+         SPlA==
+X-Forwarded-Encrypted: i=1; AL+hErFbD1502tbGmwvOMyZ6zYzM5sIBe1mtI+cnT7id9RKASgiOiSsIbKmE/J2X/4fKEOQQhEw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8+GqWpewhfxHomWGmSGp5DRcBH8VAOLYOWcV80CNwcONqot3JL
+	VUDsKe0c0zJeps/Y6jTNljDiC6d4gOmFKdmRa+bwLKxVnuK2scdmbuf7PW5SerGwf6aB1/jDQSQ
+	2XPI0VMTeeWYLhw==
+X-Received: from plho3.prod.google.com ([2002:a17:903:23c3:b0:2ef:a836:c1be])
  (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:24b:b0:2e9:9bac:2e90 with SMTP id d9443c01a7336-2f03f1aa1d0mr89749225ad.65.1795409395769;
- Sun, 22 Nov 2026 20:49:55 -0800 (PST)
-Date: Mon, 23 Nov 2026 04:49:36 +0000
+ 2002:a17:903:2f87:b0:2ec:ff7f:6f8 with SMTP id d9443c01a7336-2f03f268843mr97692615ad.57.1795409400082;
+ Sun, 22 Nov 2026 20:50:00 -0800 (PST)
+Date: Mon, 23 Nov 2026 04:49:41 +0000
 In-Reply-To: <20261123044949.3610702-1-skhawaja@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,228 +81,120 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261123044949.3610702-1-skhawaja@google.com>
 X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
-Message-ID: <20261123044949.3610702-6-skhawaja@google.com>
-Subject: [PATCH v8 05/18] iommu: Implement IOMMU domain preservation
+Message-ID: <20261123044949.3610702-11-skhawaja@google.com>
+Subject: [PATCH v8 10/18] iommu/vt-d: Combine disable_dmar_iommu() and free_dmar_iommu()
 From: Samiullah Khawaja <skhawaja@google.com>
 To: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
 	Lu Baolu <baolu.lu@linux.intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
 	David Woodhouse <dwmw2@infradead.org>
-Cc: Samiullah Khawaja <skhawaja@google.com>, Pranjal Shrivastava <praan@google.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+Cc: Samiullah Khawaja <skhawaja@google.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, 
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
 	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
 	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vipin Sharma <vipinsh@google.com>, Ankit Soni <Ankit.Soni@amd.com>, 
+	Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>, Ankit Soni <Ankit.Soni@amd.com>, 
 	Nicolin Chen <nicolinc@nvidia.com>, John Starks <dev@jstarks.net>
 Content-Type: text/plain; charset="UTF-8"
 
-Add IOMMU domain preserve and unpreserve APIs that can be used to
-preserve an IOMMU domain across liveupdate. These APIs use the iommupt
-preserve and unpreserve ops of the domain to perform the respective live
-update operations.
+Every caller of disable_dmar_iommu() immediately follows it with a call
+to free_dmar_iommu(). Combine the two helpers into release_dmar_iommu()
+and simplify the teardown and error paths in init_dmars(),
+intel_iommu_add(), and dmar_iommu_hotplug().
+
+Also drop the early return when
+WARN_ON(!ida_is_empty(&iommu->domain_ida)) triggers so translation is
+still disabled before freeing the IOMMU resources.
 
 Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
 Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
 ---
- drivers/iommu/liveupdate.c       | 119 +++++++++++++++++++++++++++++++
- include/linux/iommu-liveupdate.h |  11 +++
- include/linux/iommu.h            |   5 ++
- 3 files changed, 135 insertions(+)
+ drivers/iommu/intel/iommu.c | 30 ++++++++++--------------------
+ 1 file changed, 10 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
-index a1f40e242d93..a98f16d11727 100644
---- a/drivers/iommu/liveupdate.c
-+++ b/drivers/iommu/liveupdate.c
-@@ -37,6 +37,7 @@
- #define pr_fmt(fmt)    "iommu: liveupdate: " fmt
- 
- #include <linux/errno.h>
-+#include <linux/generic_pt/iommu.h>
- #include <linux/iommu-liveupdate.h>
- #include <linux/iommu.h>
- #include <linux/kexec_handover.h>
-@@ -67,6 +68,35 @@ struct iommu_flb_obj {
- 	struct iommu_ser_set device_set;
- };
- 
-+/*
-+ * Reserve a new serialized object at the end of the set. The deleted objects
-+ * are not reused, so the objects never move and can be referenced by their
-+ * physical address.
-+ */
-+static void *iommu_ser_set_alloc(struct iommu_ser_set *set)
-+{
-+	struct iommu_hdr_ser *hdr;
-+	int ret;
-+
-+	ret = kho_block_set_grow(&set->bs, set->count + 1);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	if (!set->count)
-+		kho_block_set_it_init(&set->it, &set->bs);
-+
-+	hdr = kho_block_set_it_reserve_entry(&set->it);
-+	if (WARN_ON_ONCE(!hdr))
-+		return ERR_PTR(-ENOSPC);
-+
-+	set->count++;
-+	*set->head_pa = kho_block_set_head_pa(&set->bs);
-+
-+	hdr->ref_count = 1;
-+	hdr->size = set->bs.entry_size;
-+	return hdr;
-+}
-+
- /*
-  * Restore a set of serialized objects from the previous kernel. The objects
-  * are read using the size recorded by the previous kernel in their header.
-@@ -239,3 +269,92 @@ void iommu_liveupdate_unregister_flb(struct liveupdate_file_handler *handler)
- 	liveupdate_unregister_flb(handler, &iommu_flb);
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index d31d2d5845e6..6c86c155d12b 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -985,21 +985,17 @@ static void iommu_disable_translation(struct intel_iommu *iommu)
+ 	raw_spin_unlock_irqrestore(&iommu->register_lock, flag);
  }
- EXPORT_SYMBOL_GPL(iommu_liveupdate_unregister_flb);
-+
-+/**
-+ * iommu_preserve_domain() - Preserve an IOMMU domain across live update
-+ * @domain: Domain to preserve
-+ * @ser: Pointer to receive the virtual serialized domain state handle
-+ *
-+ * Return: 0 on success, or negative error code.
-+ */
-+int iommu_preserve_domain(struct iommu_domain *domain, struct iommu_domain_ser **ser)
-+{
-+	struct pt_iommu *pt = iommupt_from_domain(domain);
-+	struct iommu_domain_ser *domain_ser;
-+	struct iommu_flb_obj *flb_obj;
-+	int ret;
-+
-+	if (!pt || !pt->ops->preserve || !pt->ops->unpreserve)
-+		return -EOPNOTSUPP;
-+
-+	ret = liveupdate_flb_get_outgoing(&iommu_flb, (void **)&flb_obj);
-+	if (ret)
-+		return ret;
-+
-+	mutex_lock(&flb_obj->lock);
-+	if (domain->domain_ser) {
-+		ret = -EBUSY;
-+		goto out_unlock;
-+	}
-+
-+	domain_ser = iommu_ser_set_alloc(&flb_obj->domain_set);
-+	if (IS_ERR(domain_ser)) {
-+		ret = PTR_ERR(domain_ser);
-+		goto out_unlock;
-+	}
-+
-+	ret = pt->ops->preserve(pt, domain_ser);
-+	if (ret) {
-+		domain_ser->hdr.flags |= IOMMU_SER_FLAG_DELETED;
-+		goto out_unlock;
-+	}
-+
-+	domain->domain_ser = domain_ser;
-+	*ser = domain_ser;
-+	ret = 0;
-+out_unlock:
-+	mutex_unlock(&flb_obj->lock);
-+	liveupdate_flb_put_outgoing(&iommu_flb);
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(iommu_preserve_domain);
-+
-+/**
-+ * iommu_unpreserve_domain() - Unpreserve a preserved IOMMU domain
-+ * @domain: Domain to unpreserve
-+ */
-+void iommu_unpreserve_domain(struct iommu_domain *domain)
-+{
-+	struct pt_iommu *pt = iommupt_from_domain(domain);
-+	struct iommu_domain_ser *domain_ser;
-+	struct iommu_flb_obj *flb_obj;
-+	int ret;
-+
-+	if (WARN_ON(!pt || !pt->ops->unpreserve))
-+		return;
-+
-+	ret = liveupdate_flb_get_outgoing(&iommu_flb, (void **)&flb_obj);
-+	if (WARN_ON(ret))
-+		return;
-+
-+	mutex_lock(&flb_obj->lock);
-+	if (!domain->domain_ser)
-+		goto out_unlock;
-+
-+	/*
-+	 * There is no check for attached devices here. The correctness relies
-+	 * on the Live Update Orchestrator's session lifecycle. All resources
-+	 * (iommufd, vfio devices) are preserved within a single session. If the
-+	 * session is torn down, the .unpreserve callbacks for all files will be
-+	 * invoked, ensuring a consistent cleanup without needing explicit
-+	 * refcounting for the serialized objects here.
-+	 */
-+	domain_ser = domain->domain_ser;
-+	pt->ops->unpreserve(pt, domain_ser);
-+	domain_ser->hdr.flags |= IOMMU_SER_FLAG_DELETED;
-+	domain->domain_ser = NULL;
-+out_unlock:
-+	mutex_unlock(&flb_obj->lock);
-+	liveupdate_flb_put_outgoing(&iommu_flb);
-+}
-+EXPORT_SYMBOL_GPL(iommu_unpreserve_domain);
-diff --git a/include/linux/iommu-liveupdate.h b/include/linux/iommu-liveupdate.h
-index 4755ab3cd67a..caa9778eee2d 100644
---- a/include/linux/iommu-liveupdate.h
-+++ b/include/linux/iommu-liveupdate.h
-@@ -15,6 +15,8 @@
- #ifdef CONFIG_IOMMU_LIVEUPDATE
- int iommu_liveupdate_register_flb(struct liveupdate_file_handler *handler);
- void iommu_liveupdate_unregister_flb(struct liveupdate_file_handler *handler);
-+int iommu_preserve_domain(struct iommu_domain *domain, struct iommu_domain_ser **ser);
-+void iommu_unpreserve_domain(struct iommu_domain *domain);
- #else
- static inline int iommu_liveupdate_register_flb(struct liveupdate_file_handler *handler)
+ 
+-static void disable_dmar_iommu(struct intel_iommu *iommu)
++static void release_dmar_iommu(struct intel_iommu *iommu)
  {
-@@ -24,5 +26,14 @@ static inline int iommu_liveupdate_register_flb(struct liveupdate_file_handler *
- static inline void iommu_liveupdate_unregister_flb(struct liveupdate_file_handler *handler)
- {
+ 	/*
+ 	 * All iommu domains must have been detached from the devices,
+ 	 * hence there should be no domain IDs in use.
+ 	 */
+-	if (WARN_ON(!ida_is_empty(&iommu->domain_ida)))
+-		return;
++	WARN_ON(!ida_is_empty(&iommu->domain_ida));
+ 
+ 	if (iommu->gcmd & DMA_GCMD_TE)
+ 		iommu_disable_translation(iommu);
+-}
+ 
+-static void free_dmar_iommu(struct intel_iommu *iommu)
+-{
+ 	if (iommu->copied_tables) {
+ 		bitmap_free(iommu->copied_tables);
+ 		iommu->copied_tables = NULL;
+@@ -1867,10 +1863,8 @@ static int __init init_dmars(void)
+ 	return 0;
+ 
+ free_iommu:
+-	for_each_active_iommu(iommu, drhd) {
+-		disable_dmar_iommu(iommu);
+-		free_dmar_iommu(iommu);
+-	}
++	for_each_active_iommu(iommu, drhd)
++		release_dmar_iommu(iommu);
+ 
+ 	return ret;
  }
-+
-+static inline int iommu_preserve_domain(struct iommu_domain *domain, struct iommu_domain_ser **ser)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static inline void iommu_unpreserve_domain(struct iommu_domain *domain)
-+{
-+}
- #endif
- #endif /* _LINUX_IOMMU_LIVEUPDATE_H */
-diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-index ef5043752a36..77f78c88c627 100644
---- a/include/linux/iommu.h
-+++ b/include/linux/iommu.h
-@@ -14,6 +14,7 @@
- #include <linux/err.h>
- #include <linux/of.h>
- #include <linux/iova_bitmap.h>
-+#include <linux/kho/abi/iommu.h>
- #include <uapi/linux/iommufd.h>
+@@ -2280,12 +2274,12 @@ static int intel_iommu_add(struct dmar_drhd_unit *dmaru)
+ 	if (ecap_prs(iommu->ecap)) {
+ 		ret = intel_iommu_enable_prq(iommu);
+ 		if (ret)
+-			goto disable_iommu;
++			goto out;
+ 	}
  
- #define IOMMU_READ	(1 << 0)
-@@ -249,6 +250,10 @@ struct iommu_domain {
- 			struct list_head next;
- 		};
- 	};
-+
-+#ifdef CONFIG_IOMMU_LIVEUPDATE
-+	struct iommu_domain_ser *domain_ser;
-+#endif
- };
+ 	ret = dmar_set_interrupt(iommu);
+ 	if (ret)
+-		goto disable_iommu;
++		goto out;
  
- static inline bool iommu_is_dma_domain(struct iommu_domain *domain)
+ 	iommu_set_root_entry(iommu);
+ 	iommu_enable_translation(iommu);
+@@ -2293,10 +2287,8 @@ static int intel_iommu_add(struct dmar_drhd_unit *dmaru)
+ 	iommu_disable_protect_mem_regions(iommu);
+ 	return 0;
+ 
+-disable_iommu:
+-	disable_dmar_iommu(iommu);
+ out:
+-	free_dmar_iommu(iommu);
++	release_dmar_iommu(iommu);
+ 	return ret;
+ }
+ 
+@@ -2310,12 +2302,10 @@ int dmar_iommu_hotplug(struct dmar_drhd_unit *dmaru, bool insert)
+ 	if (iommu == NULL)
+ 		return -EINVAL;
+ 
+-	if (insert) {
++	if (insert)
+ 		ret = intel_iommu_add(dmaru);
+-	} else {
+-		disable_dmar_iommu(iommu);
+-		free_dmar_iommu(iommu);
+-	}
++	else
++		release_dmar_iommu(iommu);
+ 
+ 	return ret;
+ }
 -- 
 2.56.1.809.ga0b61035b5-goog
 
