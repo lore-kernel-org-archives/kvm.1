@@ -1,60 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.70.43.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795437098;
-	b=Azm6/a8pG5wt6ug+yWh8U4xNbztfQoyhK7jWZhdbvPbl53N8J3NyinG5K1/3U4wD1zlF
-	 hjE+DuVODJG84K9ipH72QeyU3akWKeA3rxqTsWLxIdJ8vTLeF0leG46PeFHYy7H5KwLPf
-	 Tu4EN3w3E5T+BCmORHMV0OHCxvClXtV9QL8xzZQoYFXy6mDz4KnCYXrseJ4IiX3KH7oZd
-	 8gT7Ia0Usi+1tXyqw8JobeW5u9qc3Oy/jcr/fCcyWyp1L+SJBbMR7wDK1Un99wuLI5LP+
-	 B8RMotIKaDU3gBgEpnr43bTPEaCbDb22+3I+K+s/3eXTFmzITscxUm3lNk30zkMP6Sg==
+	t=1795437196;
+	b=dCgzAiCAY4/kQnniBv5t6L8aJ2MaZdr6eBfqroF1mhvgpv2Z2mvV6UZJkcdILcy+vrSV
+	 WJcldZ4EBpDjPh2ggSJkICeNL4wlXSCTvTJLEqnkeQbRHqPrj155WRgvtLCJtFDzFwY77
+	 AKSB5zS59ILEjsLUXlKf9yR4THQENeV5FEE79u52v9Jsk8H6vi1pqyOiW+1b4TzzmvV19
+	 3d/sixvpyGiwE64n+m6jJT2fz0GVwWcaGKi2coMkXDNMAXXQhntl3bfpk7a63KkFuJVWu
+	 hED627Z0oOhEI9qa0vohPkUOaFZ0Fxrgp7B43SOn2c4vjjf5fp53zc1FpoD2nWlr7PA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795437098;
-	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
-	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
-	 Content-Type;
-	bh=L2yPIhyBQV7RPo2ReCzKyh/mpAYLjnCAGbEpJpcII3U=;
-	b=jckGytw+cWYLQS7tTMD1+Vtsll9zxIrFmry4TkdTe6mwBAXzmz6JHZzmA29qTsZ+7dKB
-	 RSdDxStDieQaFTLEPaq5yfDqVIU8Hj+4qUCQp/BRabibeut1D9D4YcKKqycgV3gFpixHw
-	 771fZ9JNRW7ZhxGTLDj4pdxeCDw3I4xNU53pxIMqXpcE9RyuXAIhjFw2nqMTpu6C+xROQ
-	 abke4w8k40abcCYGot3zgP0/YptxpDwJGlFHRVZS8mkrLfPkJxA5aYzFt5Myw8PDMkjS5
-	 Js7Rt+DtrJJWgzAt9SZXIjcSSJ2O2n9FUf5K7yIz1Jlh+qH+wOpGat6+H6Vavpp7DgA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795437196;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=Hn7QLnatls3YJLh9hvARkpylGvnCInTwrPxLQjvpHck=;
+	b=Nc06UHvZ7jpUvaCJrc9TUvc8Y7yyfstWz86kT1OekHmcvyPaLimgqx8s3PSeKQY8KE+r
+	 rq8vGvfEAyRFXdrTr4Tn3zdDjQxi9Y8Lu6xtsCJvDf3arwnPYXu5hvKBjzlh3ddxsnLTq
+	 ibsMXQf8JTghNgcF8eCgQVI3OSwreE9qQX+o1xuo9OS2ylFtO05e9XxQr2/L1E992YXWt
+	 JY4fArJu2y+5tudTVLijife6wTVBcnv3GoTQ5m7UK/0BheZa+uI7Mtmq3l2Dcazf0mYrL
+	 MmJYOdJSYCMgtPdmDY2MO1KFcFcw6uhyCpzUHgz+FcorMA3wTid38qms6WO6stWfHTg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=pm.me;
-	spf=pass smtp.mailfrom=pm.me;
-	dkim=pass header.d=pm.me header.i=@pm.me header.a=rsa-sha256 header.s=protonmail3 header.b=orGAHYfC;
-	arc=none smtp.remote-ip=185.70.43.101
-Received: from mail-43101.protonmail.ch (mail-43101.protonmail.ch [185.70.43.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w0sKEFMU;
+	arc=none smtp.remote-ip=74.125.227.130
+Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2941606A31A
-	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 12:31:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F2941606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DD7606A31A
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 12:33:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 07DD7606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pm.me header.i=@pm.me header.a=rsa-sha256 header.s=protonmail3 header.b=orGAHYfC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1795437095; x=1795696295;
-	bh=L2yPIhyBQV7RPo2ReCzKyh/mpAYLjnCAGbEpJpcII3U=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=orGAHYfCAh/lZAMNLANfqkImnJkAZx7I0N2gPUn2w43PmkCvXmNgS2NxjuYIsmrz0
-	 mzVF5+F9yLgu7pAxg4kOFIlMKMkt6Pg1F/0qu9Kfkhw9yiKci+BN8/KulgDJYBk5Ii
-	 Q7xAd4061oaXr8nu7hDsbqhRe9YSvcQ2E4vJPGxhIVs4g1so9xhGhjqytp5vXpC3QO
-	 mQi4azq0ihr9qSuRJc3VBJBz8pgMXAqDOZTE6f4CijtDLw+RYA/RawTa2FdbCyfzwc
-	 byOjDRU4ptYNlLyAD/63tpSEz8QK5S4JVdRr2urb9XsD3dOyPX+CStsVM5r1mch4tG
-	 Kzk30t+OP8SVg==
-Date: Mon, 23 Nov 2026 12:31:31 +0000
-To: Jiaming Fan <fan.jiaming@hotmail.com>
-From: fadouse <fadouse@pm.me>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, =?utf-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, Linfeng Sun <linfeng.sun.dev@gmail.com>, Fang Xieyan <fangxy@xiaopeng.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] vhost: mask the in-order used-ring log cursor
-Message-ID: <UyUECMkza3HsE8hlpqg49_Lm19szdV5Hc9zB7OETazRoRNW-HGoOQBwhufIzmdCbvO8WNSuWqN6mL1cZHGDY_keWvbNqVZI3H9MA1dYzBJM=@pm.me>
-In-Reply-To: <OS3PR01MB10251C7A76A9ED480E3C497FEE7452@OS3PR01MB10251.jpnprd01.prod.outlook.com>
-References: <20261122-b4-06-vhost-in-order-log-oob-v1-35efdba8fbab-v1-1-fc1253d60351@pm.me> <OS3PR01MB10251C7A76A9ED480E3C497FEE7452@OS3PR01MB10251.jpnprd01.prod.outlook.com>
-Feedback-ID: 173252840:user:proton
-X-Pm-Message-ID: 5cf0a3bb38be6b505433c93e8bf104a4c41df515
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=w0sKEFMU
+Received: by mail-pj2-f2.google.com with SMTP id 98e67ed59e1d1-3b14c80b210so706417a91.0
+        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 04:33:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795437195; x=1796041995; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Hn7QLnatls3YJLh9hvARkpylGvnCInTwrPxLQjvpHck=;
+        b=w0sKEFMU+eaG9tWtdrJg66TGM2vOfSgYBXGN/RT18135qMoZytktIisMy13P9sdgdZ
+         MmnDhx6FBcBKvrXLWbIRrhrRP05nQj6TXfQ3A928lxHhbqYIY6w1XayAgPI0pwYJkvOF
+         j99uhIwSqxS2yvq/a8e1N0R1X7IySSi9XfN03R33ucwJGD5kUQyVu57yAv9bZ15ZuBbT
+         Pf1YZz296rAeJqDnJdPnQySNvePN3LpefZdTWU+dWREBerrB3Z930oUuJ2hmHRwhrUlW
+         EnScyeYoQ/i7vUwix4ZiZeYpFGyD5sWoIrEFnZLJ63hwMcbKnjJaVdMgDuSv0uwDNhh2
+         dchg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795437195; x=1796041995;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Hn7QLnatls3YJLh9hvARkpylGvnCInTwrPxLQjvpHck=;
+        b=s4nXe4GzZf1Gl6wpnaAsLqOa/Vear3pk/olQHs2gcpHIDTUoRBJDPImYG9hGOigZyR
+         f9hGxh5QUrh1ZkWQ7euicfITsTpSJ+kB4pIPOeCANFvqRg/twoCU6w1rHA7FrVAFoxnO
+         VVbxcE9O3ahfg0Kc8mMOOAk4NlmKeWVmhM6gdisc1L6A11NnvUrP3MWrDC2LWiV7bS0u
+         uYPW88X50heRjgcZub1fvBgWbnV/M/MLPwXuPcVPZn4hFTecq2sWP1UaKb80/ec3bVY+
+         GMWLKEOCnLb48SvWs+Nzppkt94uq+f7xHopROqr0wRycdzBog60fxYftfUuWmot0ibFV
+         KEhw==
+X-Gm-Message-State: APuU4Z+RH+1uBjsRg7+fCdfnosZ40om/zs1NLl7i4BYA0vHzY+WDucgT
+	deaPaweKVt9ADBocKpvavtYt3sfplidXunjVfNE7tFx1SCICV0ScOHG2
+X-Gm-Gg: AZFdTZdYfMMA0khqwDOCYxgFh1TrwZeWSYf1Yt9bnH1g8URkxPg9q/og/53S1LmOSCe
+	e4L6I0bHwgFFhahlwOyXaDdGU8WbxUrJFuh8P63h+5pP8fYd6GK9NSsJKY2Q0+3tYEoHeHWbXn6
+	0Pdbg5EsVnwIpDSPwu3nQR40EJW1D2caSwSfP7k2QS0IcmBv875e3++IimYHN3O5To+hqaZly1A
+	PkdqxNk1YRSg6W19V9XtMLakJqBajCA0JXob9j2NmEEn5hiEtD0+vM2R70wPto/dgBp8InpVP4y
+	QeNni7uYd061rptvAnPOGsuHmFmegDOTWyMnSJrYTz05PgBj5e2koz5uuepDPD0rVJeY42dOGW1
+	CwW3o++x3RWtloKdQjHjTPkExSYOT5zghA+Q3cEHBGCQXtKKbxK42NmPqWYD3Td8dQpafM8Cxc9
+	yAP1Gi5Vii2ETVFwurLsz5CRtUt4/ROMjVLHpGX7H8zHV6TJWsas/gZ+jLSLfFbwHP5N20jseh5
+	Pam5oiOendtWAWuYVonSQGtX5+Z+tnd6Ftd+zlYxLtCb0PLpFiee7dyG9IAJaa96/AfV2sEwUvf
+	rE+0BLPYYBYmMsSpzDx65zwpLrNISZYSPpB6+Dy2kphpF8lW
+X-Received: by 2002:a17:90b:268f:b0:3b3:afdc:2e5 with SMTP id 98e67ed59e1d1-3b41c9cf56bmr7964160a91.30.1795437195128;
+        Mon, 23 Nov 2026 04:33:15 -0800 (PST)
+Received: from [192.168.50.100] ([114.252.97.9])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b44b217a5bsm7472471a91.0.2026.11.23.04.33.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Nov 2026 04:33:14 -0800 (PST)
+Message-ID: <4ac66d3b-7343-4ff8-8ebe-d3bf9ab25da4@gmail.com>
+Date: Mon, 23 Nov 2026 20:33:04 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -64,344 +89,87 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha512; boundary="------131195ce22d4e3494741ac7e4a8fcd905c43f07926a9b8163a5d63b446f9ad82"; charset=utf-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 05/10] iommu/riscv: Add nested domain allocation
+To: Andrew Jones <andrew.jones@linux.dev>,
+ Gong Shuai <gong.shuai@sanechips.com.cn>
+Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux.dev, Anup Patel <anup@brainfault.org>,
+ Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Tomasz Jeznach <tomasz.jeznach@linux.dev>,
+ "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Kevin Tian <kevin.tian@intel.com>,
+ Andrew Jones <andrew.jones@oss.qualcomm.com>,
+ Fangyu Yu <fangyu.yu@linux.alibaba.com>, Tan Chi
+ <tanchi25@mails.ucas.ac.cn>, Wu Fei <wu.fei9@sanechips.com.cn>,
+ Zhao Qingye <zhao.qingye@sanechips.com.cn>
+References: <20261119132744.396426-1-gong.shuai@sanechips.com.cn>
+ <20261119132744.396426-6-gong.shuai@sanechips.com.cn> <awGP5H2JdjxW8WXG@orel>
+From: Gong Shuai <gsh517025@gmail.com>
+In-Reply-To: <awGP5H2JdjxW8WXG@orel>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------131195ce22d4e3494741ac7e4a8fcd905c43f07926a9b8163a5d63b446f9ad82
-Content-Type: multipart/mixed;boundary=---------------------db2a6f9e247f33a80a9db7509317076d
+Hi Andrew,
 
------------------------db2a6f9e247f33a80a9db7509317076d
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;charset=utf-8
+On 11/21/2026 8:37 PM, Andrew Jones wrote:
+> On Thu, Nov 19, 2026 at 09:27:39PM +0800, Gong Shuai wrote:
+>> From: Wu Fei <wu.fei9@sanechips.com.cn>
+>> 
+>> A nested domain describes two-stage translation through guest and
+>> host page tables. Iommufd exposes this domain as a nested hwpt.
+>> 
+>> User space needs to provide the guest stage 1 configuration when
+>> allocating a nested hwpt. Validate the configuration before storing
+>> it for use in a physical device context.
+>> 
+>> Signed-off-by: Wu Fei <wu.fei9@sanechips.com.cn>
+>> Co-developed-by: Gong Shuai <gong.shuai@sanechips.com.cn>
+>> Signed-off-by: Gong Shuai <gong.shuai@sanechips.com.cn>
+>> ---
+>>  drivers/iommu/riscv/iommu.c | 153 ++++++++++++++++++++++++++++++++++++
+>>  1 file changed, 153 insertions(+)
+>> 
+>> diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
+>> index f2305b953f71..4f8ce579ef08 100644
+>> --- a/drivers/iommu/riscv/iommu.c
+>> +++ b/drivers/iommu/riscv/iommu.c
+>> @@ -1698,8 +1698,161 @@ static void riscv_viommu_destroy(struct iommufd_viommu *viommu)
+>>  	ida_free(&riscv_iommu_gscids, rv_viommu->gscid);
+>>  }
+>>  
+>> +struct riscv_iommu_nested_domain {
+>> +	struct iommu_domain domain;
+>> +	struct riscv_viommu *viommu;
+>> +
+>> +	u64 tc;
+>> +	u64 ta;
+>> +	u64 iosatp;
+>> +};
+>> +
+>> +#define to_riscv_iommu_nested_domain(domain) \
+>> +	container_of(domain, struct riscv_iommu_nested_domain, domain)
+>> +
+> 
+> Please rename the macro parameter so it doesn't collide with the domain
+> member name, otherwise macro expansion replaces the member name too.
 
-Hi Jiaming,
+Thanks for catching this, silly mistake on my part:)
+I'll rename it in the next version.
 
-> The mask looks right to me. What I don't follow is how `nheads[0]`
-> gets to 64 on a 32-entry queue. Those buffers haven't been returned to
-> the driver yet, so what can it put back on the ring? Can this happen
-> with a conforming driver, or does the test guest reuse descriptors
-> that are still in flight?
+Best regards,
+Shuai
 
-It is a non-conforming guest reusing in-flight ring slots; a conforming
-driver would not advance avail->idx past last_used_idx + vq->num.
-
-vhost accepts this because vhost_get_avail_idx() checks against
-vq->last_avail_idx rather than vq->last_used_idx:
-
-  if (unlikely((u16)(avail_idx - vq->last_avail_idx) > vq->num))
-
-With vq->num =3D 32 and an 8180-byte frame (+ 12B vnet hdr =3D 64 x 128B
-buffers) followed by a 64-byte frame (1 buffer):
-
-  1. Guest publishes avail->idx =3D 32 and kicks.  get_rx_bufs() runs dry
-     at 32 buffers and calls vhost_discard_vq_desc(), rewinding
-     last_avail_idx to 0 while leaving vq->avail_idx =3D 32 cached.
-  2. Guest advances avail->idx to 64 and kicks again.
-     vhost_get_vq_desc_n() consumes cached 0..31 (last_avail_idx -> 32,
-     last_used_idx still 0), then refreshes avail->idx =3D 64:
-     (u16)(64 - 32) =3D=3D 32 <=3D vq->num passes, so get_rx_bufs() collec=
-ts
-     32..63 into the same frame (nheads[0] =3D 64).
-  3. The test polls buf0[12] (with pages 1..31 dropped via
-     madvise(MADV_DONTNEED) to widen the copy window) and tries to
-     publish avail->idx =3D 65 during the frame-0 copy so handle_rx() can
-     pick up the 1-buffer frame and flush both in a single
-     vhost_add_used_n_in_order() batch (count =3D 2, nheads =3D {64, 1}).
-
-(Minor correction to my commit message: without VIRTIO_RING_F_EVENT_IDX
-the used ring is 260 bytes at [0x7ef8, 0x7ffc) rather than 262 bytes;
-vq_log_used_access_ok() still validates only log_base[0], and the
-unmasked flush logs [0x7ffc, 0x8004) into log_base[1].)
-
-> Could you share the RX test program you used?
-
-Build with `gcc -O2 -Wall -Wextra test_vhost_inorder.c -o test_vhost_inord=
-er`
-and run as root (exit 2 =3D bug reproduced, 0 =3D fixed, 3 =3D timing retr=
-y):
-
-----8<----
-// SPDX-License-Identifier: GPL-2.0
-#include <arpa/inet.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <linux/if_tun.h>
-#include <linux/vhost.h>
-#include <linux/virtio_config.h>
-#include <linux/virtio_net.h>
-#include <linux/virtio_ring.h>
-#include <net/if.h>
-#include <netpacket/packet.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/eventfd.h>
-#include <sys/ioctl.h>
-#include <sys/mman.h>
-#include <sys/socket.h>
-#include <unistd.h>
-
-#define GUEST_MEM_SIZE	(16UL * 1024 * 1024)
-#define IOVA_DESC	0x0000
-#define IOVA_AVAIL	0x1000
-#define IOVA_USED	0x7ef8
-#define BUF_IOVA_BASE	0x20000
-#define VQ_NUM		32
-#define BUF_LEN		128
-#define FRAME0_LEN	8180	/* + 12B vnet hdr =3D 64 * 128B */
-#define FRAME1_LEN	64
-#define NHEADS0		64
-#define TOTAL_AVAIL	65
-
-typedef uint8_t  u8;
-typedef uint16_t u16;
-typedef uint64_t u64;
-
-static void die(const char *msg)
-{
-	fprintf(stderr, "%s: %s\n", msg, strerror(errno));
-	exit(1);
-}
-
-static void publish_avail(struct vring_avail *avail, u16 v)
-{
-	__atomic_store_n(&avail->idx, v, __ATOMIC_RELEASE);
-}
-
-static void kick(int efd)
-{
-	u64 one =3D 1;
-
-	if (write(efd, &one, sizeof(one)) !=3D sizeof(one))
-		die("kick");
-}
-
-int main(void)
-{
-	int vfd, tfd, pkt, sock, kick_fd, call_fd, ifindex;
-	struct ifreq ifr =3D {};
-	struct vring_desc *desc;
-	struct vring_avail *avail;
-	struct vring_used *used;
-	struct sockaddr_ll sll =3D {};
-	unsigned char frame0[FRAME0_LEN], frame1[FRAME1_LEN];
-	struct {
-		struct vhost_memory m;
-		struct vhost_memory_region r[1];
-	} memtable =3D {
-		.m =3D { .nregions =3D 1 },
-		.r =3D { { .guest_phys_addr =3D 0, .memory_size =3D GUEST_MEM_SIZE } },
-	};
-	struct vhost_vring_state vs =3D {};
-	struct vhost_vring_addr va =3D {};
-	struct vhost_vring_file vf =3D {};
-	u64 features, log_base_ptr;
-	void *guest_mem;
-	unsigned char *log_base;
-	u8 *buf0;
-
-	guest_mem =3D mmap(NULL, GUEST_MEM_SIZE, PROT_READ | PROT_WRITE,
-			 MAP_PRIVATE | MAP_ANONYMOUS | MAP_POPULATE, -1, 0);
-	if (guest_mem =3D=3D MAP_FAILED)
-		die("mmap guest_mem");
-	log_base =3D mmap(NULL, 4096, PROT_READ | PROT_WRITE,
-			MAP_PRIVATE | MAP_ANONYMOUS | MAP_POPULATE, -1, 0);
-	if (log_base =3D=3D MAP_FAILED)
-		die("mmap log_base");
-
-	desc  =3D (struct vring_desc *)((u8 *)guest_mem + IOVA_DESC);
-	avail =3D (struct vring_avail *)((u8 *)guest_mem + IOVA_AVAIL);
-	used  =3D (struct vring_used *)((u8 *)guest_mem + IOVA_USED);
-	buf0  =3D (u8 *)guest_mem + BUF_IOVA_BASE;
-
-	for (int i =3D 0; i < VQ_NUM; i++) {
-		desc[i] =3D (struct vring_desc){
-			.addr  =3D BUF_IOVA_BASE + 4096 * i,
-			.len   =3D BUF_LEN,
-			.flags =3D VRING_DESC_F_WRITE,
-		};
-		avail->ring[i] =3D i;
-	}
-	for (int i =3D 1; i < VQ_NUM; i++)
-		madvise((u8 *)guest_mem + BUF_IOVA_BASE + 4096 * i,
-			4096, MADV_DONTNEED);
-
-	tfd =3D open("/dev/net/tun", O_RDWR);
-	if (tfd < 0)
-		die("open /dev/net/tun");
-	ifr.ifr_flags =3D IFF_TAP | IFF_NO_PI | IFF_VNET_HDR;
-	snprintf(ifr.ifr_name, IFNAMSIZ, "vh%d", getpid() % 1000);
-	if (ioctl(tfd, TUNSETIFF, &ifr))
-		die("TUNSETIFF");
-	{
-		int hdr_sz =3D 12;
-
-		if (ioctl(tfd, TUNSETVNETHDRSZ, &hdr_sz))
-			die("TUNSETVNETHDRSZ");
-	}
-	{
-		char path[128];
-		int fd;
-
-		snprintf(path, sizeof(path),
-			 "/proc/sys/net/ipv6/conf/%s/disable_ipv6",
-			 ifr.ifr_name);
-		fd =3D open(path, O_WRONLY);
-		if (fd >=3D 0) {
-			if (write(fd, "1", 1) < 0) {}
-			close(fd);
-		}
-	}
-
-	sock =3D socket(AF_INET, SOCK_DGRAM, 0);
-	if (sock < 0)
-		die("socket");
-	if (ioctl(sock, SIOCGIFFLAGS, &ifr))
-		die("SIOCGIFFLAGS");
-	ifr.ifr_flags |=3D IFF_UP | IFF_RUNNING;
-	if (ioctl(sock, SIOCSIFFLAGS, &ifr))
-		die("SIOCSIFFLAGS");
-	if (ioctl(sock, SIOCGIFINDEX, &ifr))
-		die("SIOCGIFINDEX");
-	ifindex =3D ifr.ifr_ifindex;
-	ifr.ifr_mtu =3D 9000;
-	if (ioctl(sock, SIOCSIFMTU, &ifr))
-		die("SIOCSIFMTU");
-
-	pkt =3D socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
-	if (pkt < 0)
-		die("socket packet");
-	sll.sll_family =3D AF_PACKET;
-	sll.sll_protocol =3D htons(ETH_P_ALL);
-	sll.sll_ifindex =3D ifindex;
-	if (bind(pkt, (struct sockaddr *)&sll, sizeof(sll)))
-		die("bind");
-
-	vfd =3D open("/dev/vhost-net", O_RDWR);
-	if (vfd < 0)
-		die("open /dev/vhost-net");
-	if (ioctl(vfd, VHOST_SET_OWNER, 0))
-		die("VHOST_SET_OWNER");
-	memtable.r[0].userspace_addr =3D (u64)guest_mem;
-	if (ioctl(vfd, VHOST_SET_MEM_TABLE, &memtable))
-		die("VHOST_SET_MEM_TABLE");
-	log_base_ptr =3D (u64)log_base;
-	if (ioctl(vfd, VHOST_SET_LOG_BASE, &log_base_ptr))
-		die("VHOST_SET_LOG_BASE");
-
-	features =3D (1ULL << VIRTIO_NET_F_MRG_RXBUF) |
-		   (1ULL << VIRTIO_F_IN_ORDER) |
-		   (1ULL << VHOST_F_LOG_ALL);
-	if (ioctl(vfd, VHOST_SET_FEATURES, &features))
-		die("VHOST_SET_FEATURES");
-
-	kick_fd =3D eventfd(0, 0);
-	call_fd =3D eventfd(0, 0);
-	if (kick_fd < 0 || call_fd < 0)
-		die("eventfd");
-
-	vs.num =3D VQ_NUM;
-	if (ioctl(vfd, VHOST_SET_VRING_NUM, &vs))
-		die("VHOST_SET_VRING_NUM");
-	vs.num =3D 0;
-	if (ioctl(vfd, VHOST_SET_VRING_BASE, &vs))
-		die("VHOST_SET_VRING_BASE");
-
-	va.flags =3D 1U << VHOST_VRING_F_LOG;
-	va.desc_user_addr =3D (u64)desc;
-	va.avail_user_addr =3D (u64)avail;
-	va.used_user_addr =3D (u64)used;
-	va.log_guest_addr =3D IOVA_USED;
-	if (ioctl(vfd, VHOST_SET_VRING_ADDR, &va))
-		die("VHOST_SET_VRING_ADDR");
-
-	vf.fd =3D kick_fd;
-	if (ioctl(vfd, VHOST_SET_VRING_KICK, &vf))
-		die("VHOST_SET_VRING_KICK");
-	vf.fd =3D call_fd;
-	if (ioctl(vfd, VHOST_SET_VRING_CALL, &vf))
-		die("VHOST_SET_VRING_CALL");
-	vf.fd =3D tfd;
-	if (ioctl(vfd, VHOST_NET_SET_BACKEND, &vf))
-		die("VHOST_NET_SET_BACKEND");
-
-	memset(frame0, 0xAB, sizeof(frame0));
-	memset(frame1, 0xCD, sizeof(frame1));
-	frame0[12] =3D frame1[12] =3D 0x08;
-	frame0[13] =3D frame1[13] =3D 0x00;
-	if (sendto(pkt, frame0, sizeof(frame0), 0, NULL, 0) !=3D sizeof(frame0))
-		die("sendto frame0");
-	if (sendto(pkt, frame1, sizeof(frame1), 0, NULL, 0) !=3D sizeof(frame1))
-		die("sendto frame1");
-
-	publish_avail(avail, VQ_NUM);
-	kick(kick_fd);
-	usleep(100 * 1000);
-	publish_avail(avail, NHEADS0);
-	kick(kick_fd);
-
-	for (int i =3D 0; i < 5000000 && *(volatile u8 *)(buf0 + 12) =3D=3D 0; i+=
-+)
-		;
-	publish_avail(avail, TOTAL_AVAIL);
-
-	for (int i =3D 0; i < 30 && used->idx < TOTAL_AVAIL; i++)
-		usleep(100 * 1000);
-
-	printf("avail->idx=3D%u used->idx=3D%u log_base[0]=3D0x%02x log_base[1]=3D=
-0x%02x\n",
-	       avail->idx, used->idx, log_base[0], log_base[1]);
-	if (used->idx !=3D TOTAL_AVAIL)
-		return 3;
-	return log_base[1] ? 2 : 0;
-}
----->8----
-
-unpatched: avail->idx=3D65 used->idx=3D65 log_base[0]=3D0x80 log_base[1]=3D=
-0x01 (exit 2)
-patched:   avail->idx=3D65 used->idx=3D65 log_base[0]=3D0x80 log_base[1]=3D=
-0x00 (exit 0)
-
-Thanks,
-YanXin
------------------------db2a6f9e247f33a80a9db7509317076d
-Content-Type: application/pgp-keys; filename="publickey - fadouse@pm.me - 0x99485AA3.asc"; name="publickey - fadouse@pm.me - 0x99485AA3.asc"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="publickey - fadouse@pm.me - 0x99485AA3.asc"; name="publickey - fadouse@pm.me - 0x99485AA3.asc"
-
-LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tCgp4ak1FYVV1T01SWUpLd1lCQkFI
-YVJ3OEJBUWRBdG5ZbFN6SFRMSEEySXp1TkUxQXk4SnJLVUN4NmhQKy8KdGM0TERYQ25yZXpOSFda
-aFpHOTFjMlZBY0cwdWJXVWdQR1poWkc5MWMyVkFjRzB1YldVK3dzQVJCQk1XCkNnQ0RCWUpwUzQ0
-eEF3c0pCd2tRdVoxZ3QrWG0yWFJGRkFBQUFBQUFIQUFnYzJGc2RFQnViM1JoZEdsdgpibk11YjNC
-bGJuQm5jR3B6TG05eVp6bTBCcDNlRVhSV2tuSWdDbFd3dmR4Wm1vMVhuVmI2RmthalhUVk0KMUIv
-akF4VUtDQVFXQUFJQkFoa0JBcHNEQWg0QkZpRUVtVWhhbzNaL0FuQkk0TEJZdVoxZ3QrWG0yWFFB
-CkFMcTJBUUQ3OEs2cGVkU1gzbGROeXFkM09IMXVNak8zdjdMWU1oTytsN2NuU0xXckVBRCtPQ1Nx
-MTFTZQphS29ic1ZHckxlalRNc21Nc1BCOGpueGZpZDNoQ04rcGV3VE9PQVJwUzQ0eEVnb3JCZ0VF
-QVpkVkFRVUIKQVFkQXdYZHpWSXFFSC94OEhaalIvUE90MkFpRmJFbTZZcVhYMmoydjJpS0RzUU1E
-QVFnSHdyNEVHQllLCkFIQUZnbWxMampFSkVMbWRZTGZsNXRsMFJSUUFBQUFBQUJ3QUlITmhiSFJB
-Ym05MFlYUnBiMjV6TG05dwpaVzV3WjNCcWN5NXZjbWRkS05RWURGV2NFVmQzeE9IZVFwNnN5bjc5
-TkZwTnFrSHoraXpwSUxCblVnS2IKREJZaEJKbElXcU4yZndKd1NPQ3dXTG1kWUxmbDV0bDBBQUR6
-UWdEL2NJSjA4OUprbm9nVHM2dnZRWitKCjNMUklEYUk5K1FtK1Q1cU9tTms0eVhFQkFMUElsSkNT
-OGFoNWRCWVphOUwrSHFqYkRtZVNnRG81OHVTeAoraVd3KzZVTAo9TXVzVAotLS0tLUVORCBQR1Ag
-UFVCTElDIEtFWSBCTE9DSy0tLS0tCg==
------------------------db2a6f9e247f33a80a9db7509317076d--
-
---------131195ce22d4e3494741ac7e4a8fcd905c43f07926a9b8163a5d63b446f9ad82
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wrsEARYKAG0FgmsEMhIJELmdYLfl5tl0RRQAAAAAABwAIHNhbHRAbm90YXRp
-b25zLm9wZW5wZ3Bqcy5vcmc6DEGO4FmydXLK4uX6uT4FRrKSW2K1NE7sPXWB
-4r0ZfBYhBJlIWqN2fwJwSOCwWLmdYLfl5tl0AAAuIAD+IvChTnLjCRfefwKS
-b63Mi/ku38U3TMyguYNcYTi1BaIBAMhH95MbkJJJj8oAiazsDvCQCM3kkQSL
-smpgMmWhnawI
-=yU1D
------END PGP SIGNATURE-----
-
-
---------131195ce22d4e3494741ac7e4a8fcd905c43f07926a9b8163a5d63b446f9ad82--
+> 
+> Thanks,
+> drew
+> 
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
 
