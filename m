@@ -1,94 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795461920;
-	b=FCdHx090P1s+MTnFlWsuzeDu2K3bFcHRfpyxk8PVUbj1eKjIzjHwA6X6CCeq1XOwcdIx
-	 wQGHc5lF9K/Q4CjCj0BG9H0s4iCw6ED66HhpnI+wGU2MMi1I0Q71Ytv/roQ4wSra9MDzS
-	 Xbs8Mup4WgzlqI5PLUbkSyeTGQqGq8wETcTuxikPscFbU0VQ/ZRahRKxe/2PwLAB7xziZ
-	 6VqI/c0meB0V9butIH9JD+7/GkBlGa+aTMcwxADM97vV/Hv0C2aNspg8ptJKBTIKyxuvn
-	 0utloheXU6yp83sCVjjigxOSOVsT/bDod7z+xjCEtQDokH/O/eyA9321h+dkdXtEKoQ==
+	t=1795461923;
+	b=1QkXFkQ8stIXabDbMHCdAavHZZvgMe210BZR4FOoX0fAMc8zcXEAKRuMuwhUgalyBvef
+	 zo1U2AFtx4X2UTc8LHBS7g+AYg6hMMHsTb2zGiFwRdRdMioJ/D4Ov6+9RoLQdfm/1Rr6b
+	 sAwpJVrmDb+Iicy09QKYJ6ySm/OyoBikiNLs1inLw1tHxZzcFZd7USGEySUS0irr+pxCl
+	 c2+P0gZJRrLEt9VV1PUEpN4oN9vxMqUpQIVUIvieN89Y5vo8noz2AP0LruYIvOfGJwHTL
+	 I2Zr+uuhCWxfHOMN7XtHYG9GuXQl2wrGoE1J5mag9UKfONyemt+SahJKQzthL+Y4fjg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795461920;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=Ivc+yZF1e+YkHBH2XdPHCIshByex18b++1Ftez3VniI=;
-	b=0+kgozmhlXZmI3IhynPUO3Co3O2cN3lbsL4fxPdP89+CaLioDhxxHgP5CtkurUCh0dn2
-	 xup9GEz+ATK6zLvjTop2nQdOw75CpaRP/OkCCkeokskj/NWKl3UKH2wPM+FgxKPopFp1M
-	 2hRz1W/oR0eVUbKs7Oq8kbi4AEBxzc1MB83N1Ex9FRvaO/btDC1KT2QugATYyn7PJ9SRk
-	 ekKve8n+yMQMd8JHiJ4IJuDzqXHUHF2ZzEqEUTLEvA3RXcDQRUzcLFAGCrX/GuAMn4JH7
-	 FCqiE42yYzgqEC3it4KOijvDBSr/UEMllXn0LBSfarpTC6zjY6194Bp+SbMObzfEu5g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795461923;
+	h=Received:DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:
+	 X-SA-Exim-Mail-From:X-SA-Exim-Scanned;
+	bh=zmVxPhrkR14QOKBOA497ooAnDetAusOCP6ZoyvLD3sA=;
+	b=oCjLjaFWwFoY9cf2SUaqJCz/siBHydRxWd2JUYgJCFsIe8RgbedO1FA9PJziQqQqd5qX
+	 Zg6Tj1vzIkQu0L6QsDTd8DW1vgWQaFpkOUb7lfUyrJjo2jCHOnfmgSWbzHb1slP2esF8M
+	 yl9OZHgzJTUtcL2oi7N2GGHmLMj3dLXlwVJpk2anGob0p61xI3bpxNnqOF2fcKkcUHexK
+	 zYuxSeIxxjduo/7D7C7ySsaCNZHMIn2cd4N/FPhB6MTR/XYvJt3xrQhL1LRXePzlZs5W1
+	 O6IbQ6St4iDW0uPYgdurOZAJc+VP1ca209veiU3qx7S9sx6nknXcXLDbCpsmrQRLflw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=pereq.eu;
-	spf=pass smtp.mailfrom=cryspen.com;
-	arc=none smtp.remote-ip=209.85.128.43
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cVg6EEUp;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0959606A31E
-	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 19:25:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0959606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=pereq.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cryspen.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a210470b49so36215905e9.2
-        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 11:25:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pereq.eu; s=google; t=1795461913; x=1796066713; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Ivc+yZF1e+YkHBH2XdPHCIshByex18b++1Ftez3VniI=;
-        b=InABI5AX3pKbG9IQdQzgyiryQgftPzVdm8SbCVlAtvY6rv1Dbtd3WqRdOsoSQNuH4Q
-         3Hds5U7UsF6QV8qA/kmA2nRBZ4Bo3v0/ytG7/lYk+1RArBNhdK7fiIVbuC3ll8By/hi0
-         Ikf4sYbQPmXmxTlwH+35fLzxfkcgAfi/mw9Uzruc3wtQN/4hWf7yzDrpAKG5QdXETgzH
-         sNJZq4jptTzE51wqCMmE0cg/8YPaNt+NCpP+wxH4fX2qT2bPokgyQ82oIdUI8kOOv1Kn
-         mYJsZKAzW/NPFxLiVy/8eLQxuR2qnqfuuPnxRRk4prHaTeLuB49nvoqgY1OPh75ADAcZ
-         CwTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795461913; x=1796066713;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ivc+yZF1e+YkHBH2XdPHCIshByex18b++1Ftez3VniI=;
-        b=esEvNgn5T9HpZYIPDaxi/nlwd4JRr/6KeeIL2CTSUb1PZlZels4cYmH+NMsUXGAT+K
-         8RpEA85q3f8BDAZ30cjx0Lie7x29+UALQy2xPX8PPw0FVoQns1WAPYaztBQRPsyiSVTx
-         ltTWkURG82fYDK/ZTocXfHYXUhdj4Y/WSoJTob9Op8dbPReajIp6n9cssH0g2Al9ATx/
-         SEsmoQedJRzWNLdS1IOSxKw6Pq7jhyj4XmbHyNGKqL1TqXzaxHk9FekQmYAfuCiEMTWe
-         WI41J3pTab0Gbix+WNCKGIk6iJu9l7JqujZK1x0RtOhNc+3qKxZ18n0CpirHlUb+DbzW
-         8LFg==
-X-Forwarded-Encrypted: i=1; AL+hErGIwa2hSBUmJ/l8HqFJ/6Ut0Ou7C3zq0y57z2tLulMN+DAAuEwRDwaJkj3BZr0NpCWlg9A=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+n7naT6y0AX+qRIFzBwyD7CM/7pk8JNLYR3w2YvBAwO1qJt08G
-	9HOu+piN3NEk8xupGsFctidbprhRj1N0Sf1BGC+VDMLVcsRpagYDmD3ywjDA7jzK5tk=
-X-Gm-Gg: AZFdTZfesseEd4Rub+/c7tr3KlZvvNFU0vj5ZMvPRo2nm4z7+9X5JCK9t70u278vapI
-	+b71Io+E/WR4VZxZ3egOwKza/NwCcnaENy7TL9StdFgDI8QbCdA74t3PEjKXnSLz/dLZj4HcKJi
-	R/sqw3chpLiYDs2lTfHCIGmA/fBJdy02456yRjQJmkBht9HQSDJtjxcJnt5v5k5u0jK16oTW9rn
-	29D1WGL0Jp8tU4mJheWdM52Cg/j7Ne13oQgII2VnQyakmO+9FQn+7ZjAUNlNN9RIIoFshJbe/KU
-	kt2sHGe06rvQ3HP3DPJ3Rp/ot923SVE9XWkF0B5jAXjO0tS75pJl67wsbgNol/5Nd1JmFxNSu7p
-	xx06wRtqSb0Ov63ABytkOx/Qa6nTFwvjv+7OZd78kUYgCOTANbuETj9XF7Hhhkl7Jj8smMmC3DH
-	njWdWwl3kpH1ouDDwB8HPAwMPq1kjgYYJfjt5wIQZVBb2R9wjkAyAByYHSmgUkkZXF9CZMdrMPN
-	9/C2PBmdv1mTW/BwGQV7AhK7i39nfYvNj6P39HuVnYmO7gt62XlRF4Bmfi8aNTGV4n1jG9pfg4C
-	OmOR/tENhHgQzIXkduc=
-X-Received: by 2002:a05:600c:670b:b0:4a6:30c3:1114 with SMTP id 5b1f17b1804b1-4bb88922df3mr240330235e9.12.1795461912931;
-        Mon, 23 Nov 2026 11:25:12 -0800 (PST)
-Received: from localhost ([2c0f:3d00:6be:8900:ce5e:9212:ea4b:f30])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb884911e3sm442986305e9.6.2026.11.23.11.25.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 11:25:12 -0800 (PST)
-Date: Mon, 23 Nov 2026 22:25:09 +0300
-From: Dan Carpenter <dan@pereq.eu>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Steffen Eiden <seiden@linux.ibm.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD38F606A31F;
+	Mon, 23 Nov 2026 19:25:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cVg6EEUp
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C8AC1F000C6;
+	Mon, 23 Nov 2026 19:25:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795461923;
+	bh=zmVxPhrkR14QOKBOA497ooAnDetAusOCP6ZoyvLD3sA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=cVg6EEUptzy0VPQfFFH3wrWrJySAXz3x/yCfSGxOC80cTQqikrZdsGgFCN515Sbb5
+	 48gXBGuP7Fi2fsP75+ON6U/+9PZmSy+QNvaSSSplZC1Y1zGMxEkpXXRhPJSMMTPXZJ
+	 rvidbeasmP+6vp1XwiLGEAJY6zrkrpxvxZz95jbPw2tpahNN3cgwcuoGSYVnuPMV7n
+	 pPrHcyFn8Cij4OyE5jxhhoM4OR2uwE8ocjPVzS4IixvlB52+VJIPEWQvwrbg3MLWU9
+	 nT3TWwuIJsulxtOAdPaBU1wKEAV35oxy9eq3lYk6L91sXwUX+TN24emHjlt3i/vELL
+	 jT/7/fPzv7d+Q==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=localhost.localdomain)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xVZfF-00000002A6V-16Dm;
+	Mon, 23 Nov 2026 19:25:21 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Steffen Eiden <seiden@linux.ibm.com>,
 	Joey Gouly <joey.gouly@arm.com>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>, stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: nv: Upgrade sub-page TTL hint to maximum size
-Message-ID: <awSTFVxQQuz1tbk4@stanley.mountain>
-References: <20261123182312.4842-1-maz@kernel.org>
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>
+Subject: [PATCH 1/3] KVM: arm64: Add enum support to idreg sanitisation
+Date: Mon, 23 Nov 2026 19:24:55 +0000
+Message-ID: <20261123192457.8700-2-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261123192457.8700-1-maz@kernel.org>
+References: <20261123192457.8700-1-maz@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -98,45 +72,120 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261123182312.4842-1-maz@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, fuad.tabba@linux.dev
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Mon, Nov 23, 2026 at 06:23:12PM +0000, Marc Zyngier wrote:
-> Should a guest be slightly foolish and submit a S2 TLBI with a TTL hint
-> that describe a base granule size smaller than the host's page size,
-> we take the resulting size at face value and feed it to the S2 unmapping
-> code. Which legitimately screams about something not being page-aligned.
-> 
-> The architecture allows us to drop the TLBI on the floor, as we don't
-> support a S2 granule size smaller than the host's page size. But it turns
-> out that doing so is proving pretty hard (we call compute_tlb_inval_range
-> from a number of places, none of which is amenable to an early out).
-> 
-> Instead, detect the annoying case, and pretend that we don't have a TTL
-> hint at all, leaving the size upgrade mechanism to take place and use
-> the largest possible size for the guest's S2 granule size.
-> 
-> This will still allow nonsensical stuff to get through, such as a 4kB
-> level 2 (aka 2MB) from a guest with a 64kB S2 base granule size running
-> on a 16kB page size host, but that's not worse than doing nothing, and
-> the host code won't get shouty.
-> 
-> Reported-by: Dan Carpenter <dan@pereq.eu>
-> Link: https://lore.kernel.org/r/20261123-inval_range-v1-1-815e15797089@pereq.eu
-> Fixes: d1de1576dc21 ("KVM: arm64: nv: Handle FEAT_TTL hinted TLB operations")
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> Cc: stable@vger.kernel.org
-> ---
-> 
-> Notes:
->     Reposting this as a first class patch, as I'd like to plug that one
->     as early as possible (and Dan has plenty of other patches in flight...)
+While a good deal of ID register fields are simple booleans, simply
+indicating whether a feature is supported, a number of them are more
+structured and indicate a level of support.
 
-Tested-by: Dan Carpenter <dan@pereq.eu>
+Reuse the existing framework in a nested way to expose which level
+applies for the current configuration. This relies on the levels
+being ordered from the most to the least capable, and the fallback
+to have a NULL callback.
 
-Although obviously zero is handled on the next line so there wasn't
-much call for testing, but I still did do the testing.
+Yes, this is pretty obscure, but the following patches will make
+this clearer (at least one hopes...).
 
-regards,
-dan carpenter
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+---
+ arch/arm64/kvm/config.c | 44 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
+index cfdb6c7133204..40965513ebacf 100644
+--- a/arch/arm64/kvm/config.c
++++ b/arch/arm64/kvm/config.c
+@@ -28,6 +28,7 @@ struct reg_bits_to_feat_map {
+ #define	REQUIRES_E2H1	BIT(5)	/* Add HCR_EL2.E2H RES1 as a pre-condition */
+ #define	RES1_WHEN_E2H0	BIT(6)	/* RES1 when E2H=0 and not supported */
+ #define	RES1_WHEN_E2H1	BIT(7)	/* RES1 when E2H=1 and not supported */
++#define	IDREG_FIELDS	BIT(8)	/* idreg fields */
+ 
+ 	unsigned long	flags;
+ 
+@@ -40,6 +41,7 @@ struct reg_bits_to_feat_map {
+ 			s8	lo_lim;
+ 		};
+ 		bool	(*match)(struct kvm *);
++		const struct reg_bits_to_feat_map *idreg_field_deps;
+ 	};
+ };
+ 
+@@ -73,6 +75,13 @@ struct reg_feat_map_desc {
+ 		.lo_lim	= id ##_## fld ##_## lim	\
+ 	}
+ 
++#define __NEEDS_FEAT_2(m, f, w, dummy, deps)		\
++	{						\
++		.w	= (m),				\
++		.flags = (f),				\
++		.idreg_field_deps = (deps),		\
++	}
++
+ #define __NEEDS_FEAT_1(m, f, w, fun)			\
+ 	{						\
+ 		.w	= (m),				\
+@@ -95,6 +104,11 @@ struct reg_feat_map_desc {
+ #define NEEDS_FEAT_MASKS(p, ...)				\
+ 	__NEEDS_FEAT_FLAG(p, MASKS_POINTER, masks, __VA_ARGS__)
+ 
++#define NEEDS_FEAT_FIELD(m, ...)				\
++	__NEEDS_FEAT_FLAG(m, IDREG_FIELDS, bits, blah, __VA_ARGS__)
++
++#define ENUM_FEAT(e, f)	{ .bits = e, .match = f }
++
+ /*
+  * Declare the dependency between a set of bits and a set of features,
+  * generating a struct reg_bit_to_feat_map.
+@@ -1456,6 +1470,27 @@ static const struct reg_feat_map_desc *idreg_feat_maps[] = {
+ 	&id_aa64mmfr3_el1_desc,
+ };
+ 
++static struct resx compute_idreg_field_deps(struct kvm *kvm,
++					    const struct reg_bits_to_feat_map *map)
++{
++	const struct reg_bits_to_feat_map *tmp;
++	struct resx resx;
++
++	/*
++	 * Assume the enum values are ordered in reverse order of
++	 * capability (from most to least capable). A NULL callback
++	 * value indicates the ultimate fallback (not implemented).
++	 */
++	for (tmp = map->idreg_field_deps; tmp->match; tmp++)
++		if (tmp->match(kvm))
++			break;
++
++	resx.res0 = field_prep(map->bits, ~(tmp->bits));
++	resx.res1 = field_prep(map->bits, tmp->bits);
++
++	return resx;
++}
++
+ static bool idreg_apply_deps(struct kvm *kvm, const struct reg_feat_map_desc *r)
+ {
+ 	struct resx resx = {};
+@@ -1463,8 +1498,15 @@ static bool idreg_apply_deps(struct kvm *kvm, const struct reg_feat_map_desc *r)
+ 
+ 	for (int i = 0; i < r->bit_feat_map_sz; i++) {
+ 		if ((r->bit_feat_map[i].flags & CALL_FUNC) &&
+-		    !r->bit_feat_map[i].match(kvm))
++		    !r->bit_feat_map[i].match(kvm)) {
+ 			resx.res0 |= reg_feat_map_bits(&r->bit_feat_map[i]);
++		} else if (r->bit_feat_map[i].flags & IDREG_FIELDS) {
++			struct resx tmp;
++
++			tmp = compute_idreg_field_deps(kvm, &r->bit_feat_map[i]);
++			resx.res0 |= tmp.res0;
++			resx.res1 |= tmp.res1;
++		}
+ 	}
+ 
+ 	val = kvm->arch.id_regs[r->idreg_idx];
+-- 
+2.47.3
+
