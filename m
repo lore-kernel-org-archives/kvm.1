@@ -1,92 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795420328;
-	b=q9P5C4OzUe/AecyvGA5NB55nQJq8Sxo0MvqT6kHyOa6C2o3VCNLMUPlqp81IHrKIHYPs
-	 tj0MoGuvIVHMjpWmtuYLr2CrmPehUq7mQGizTMPdeFytl1yGmlQYMYu7h/4pge+NVsjzQ
-	 HTHjGenV4ufceIeWNevVou9j8PhKUDcbsv5ynalZbJ4XhLvykrhEMBlLPukUps22QtV5l
-	 I14UEqOgNcDtLI3HVG4pCZWPE4B37/QCAKR0xxnoXgK4gZdn1+cm1esreRE64Zmm8R5Jv
-	 3k5fWDazjnbEcMQPyCyv3aM9qEF2ERgUk/8oKsQ9OSPHJGq2H7jNNzubhBmMZ+TIoHw==
+	t=1795422828;
+	b=q1TRZKNbRWuZ9Fb1x9gyCYIZ0CibJHrJVWTceJr3IIOJhYQyoe3XhxcxpBO5sooce5n3
+	 4E7vm0L21dn+t1et8Hc2yis7C19UxKpaONakaHV+/BOeCtjwEYu6Kp7OmVtB3w8pcG57L
+	 xFpc/HAyglZKJAfToWhvmXI8XM3GUVyZBoDekNVEySLEaDJbcsWITl1uwtdSgYYMUoz+g
+	 +CtKS4G8Nq7kVK6utTkGvCGGRCbygq/I4HE3t39lrCYDYm5DXKL3p4fxvIAuZj2fpeXuD
+	 D/jOHVjETG/RU/K7CwTN4F294CTlaDawsQYx+L5ErS3Tm98GMF1UbYsj0oyOn6MX8/w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795420328;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Message-ID:
-	 Subject:From:To:Cc:Date:In-Reply-To:References:Content-Type:
-	 Content-Transfer-Encoding:User-Agent:MIME-Version;
-	bh=k/cLt6sLs/i57UjSMAYGmUyFLydITmwhGeX0xPWPgS0=;
-	b=M7qWNAEwqtcojpvFGQKLZD8Bt3sk0jjFWU+cV0ZI+wH3+sgMaoCmVb304QX+d+qHSpgz
-	 4GFaVfDoDQ9uVIsZkkxtzvH8bXKUYGZRjGY90xOt1uRR1NfSIBq/QyKjkt4qL12Yw/pCx
-	 nNeR6NHNLzIko2ZcB0sjWvf9lbkafVLw2f4jZC76/FBu4vUWH13vwZ5aB2QFy88oIpODR
-	 wqZOhNoz36vVNUrp1wA2yWUELLtxXWonLbNnu4lxlmjkrd78LuD+cpTjL8Pvbs/RjG01z
-	 Knh3Cl986ClrMvCsoNwGJcxSt2n5mBwisxqx9whGX3C9Css1hgUOcBF5p4zXX9XR3AA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795422828;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=+1fZ+krt+vzNzwK8rFQAhFc+bk+b5FPV1LAd7hc8WOA=;
+	b=nTPa5j2HZ/AX9pSIWEld6qlxOLjc9kuKrv17M9AryfkE3K3cUbjKDdSfH06UURfpvtTV
+	 Px3GE+uDXpMPPfZ5BxX7yWtHJ+odgmfO5nVKt/S6UPjW3pkL/1yGFXiIYiQrJ/zQl6sJ6
+	 8/NBeS57DqCyGrV+NBfN8LvWlqP5fr5YUW4ErstZysn+XVeTgO/VqruQzkukb9a+yNbqg
+	 +0QMdQOhaOwd51L3IG1uaqY0MymH8dNA5SIMFJRr/LnFaKXaLJFvGHiYqPPzeDfeFKT9A
+	 rVarI251PzRbqupK7iB4CzVxTrwNuCG6Gylpnc4q0fidFhi9ktcJHXr5159pSUspG7A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=My9E5fxt;
-	arc=none smtp.remote-ip=192.198.163.10
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=liy8onB1;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFC2606A32C;
-	Mon, 23 Nov 2026 07:52:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1AFC2606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E5E606A31A;
+	Mon, 23 Nov 2026 08:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=My9E5fxt
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795420329; x=1826956329;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=k/cLt6sLs/i57UjSMAYGmUyFLydITmwhGeX0xPWPgS0=;
-  b=My9E5fxte1lnXHEZB6P0y5PtNheYmtNAlBq2WyyFJYzCp8ghNT2cThwi
-   WvpoBg42g8OeTery2amYeXdUDNSRt9wICbXti08jK/g042Kggykahs/FP
-   Qr7oQRJfS27EBvCY6idHe12bLCz1R0ItY2Peyx3vg4SOc28soKxGxdCSI
-   0h5UTi24gK1axJUrPX6qcWMBNCQUfs0mHKXfWAszYlBSxH62/hzuHsV3D
-   djLPX2FdLYM0s1CL5JAFEbpMl6goA21AwPOx3F1NW6VHAHlR2J6RxsQ/7
-   qTcJ9DBBv3omIbm7y7ME3M8yJJqqy3gpimvCc4S5dJFUTHp4Hwrc83R1q
-   g==;
-X-CSE-ConnectionGUID: AGuLlqC5T5uR/9u+18Ty7Q==
-X-CSE-MsgGUID: GAv2nxHaT+O3uBGNRTX6Mw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4089504"
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="4089504"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 23:52:03 -0800
-X-CSE-ConnectionGUID: SaASRl1uSRaMxGCpBNNV4w==
-X-CSE-MsgGUID: Mg5Yn3UlTi63srEUJBum4A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="11568566"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 23:52:03 -0800
-Received: from [10.245.244.212] (abityuts-desk1.ger.corp.intel.com [10.245.244.212])
-	by linux.intel.com (Postfix) with ESMTP id D8B1C20B8CD1;
-	Sun, 22 Nov 2026 23:51:55 -0800 (PST)
-Message-ID: <31de312c72b2c4ac3b937c91005e24cd0631c876.camel@linux.intel.com>
-Subject: Re: [PATCH v5 2/6] x86/virt/tdx: Configure add-on features on TDX
- module init
-From: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org,  Kiryl Shutsemau	 <kas@kernel.org>, Rick
- Edgecombe <rick.p.edgecombe@intel.com>, Dave Hansen	
- <dave.hansen@linux.intel.com>, dave.hansen@intel.com, kvm@vger.kernel.org, 
-	yilun.xu@intel.com, xiaoyao.li@intel.com, sohil.mehta@intel.com, 
-	adrian.hunter@intel.com, kishen.maloor@intel.com,
- tony.lindgren@linux.intel.com, 	peter.fang@intel.com,
- baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, 	chao.gao@intel.com,
- nik.borisov@suse.com
-Date: Mon, 23 Nov 2026 09:51:54 +0200
-In-Reply-To: <awPtUgf+YZ0xfD6v@yilunxu-OptiPlex-7050>
-References: <20261111-tdx-module-ext-v5-0-c74f764abc3d@linux.intel.com>
-	 <20261111-tdx-module-ext-v5-2-c74f764abc3d@linux.intel.com>
-	 <d012c58931efa38a782ac3484ea930d05a6407a9.camel@linux.intel.com>
-	 <awPtUgf+YZ0xfD6v@yilunxu-OptiPlex-7050>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=liy8onB1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28CC01F000C4;
+	Mon, 23 Nov 2026 08:33:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795422827;
+	bh=+1fZ+krt+vzNzwK8rFQAhFc+bk+b5FPV1LAd7hc8WOA=;
+	h=From:To:Cc:Subject:Date;
+	b=liy8onB1uUxbEhYfGGD4DjWd1yVqyirivYPRPnm3vzEiPIT1y6VX2p8ykP/osZhAQ
+	 cmKsabaXtGVw3sHAWHHBVAUh9Dnz1m0KBNGO6C24F9ryY0OZ0zOtOUmDITGAoz5suE
+	 +zmSEcXwl6oV3Wyue6SIfQg2LvLcJIKbVGENnXdnrpbiusVk+/JCX6PDmNq5zQQMrk
+	 NBAdoH4PIE2DgVA60mgi4cswkeTVgh1aD+6S7z5DP+4TxMxN1XfuUBzjbua+NY3a++
+	 FYKsNWXBu3rrlWUlbuMSFw5U7rM50sLczieE9QiCD17lkRunB+ks+vyzEVBQK1OnZY
+	 rI1GW9bkdtwsw==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: linux-coco@lists.linux.dev
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Dan Williams <djbw@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	driver-core@lists.linux.dev,
+	linux-pci@vger.kernel.org,
+	kvm@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [PATCH v1 00/10] PCI/TSM: Support guest TSM drivers
+Date: Mon, 23 Nov 2026 14:03:27 +0530
+Message-ID: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -96,14 +74,145 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2026-11-23 at 15:37 +0800, Xu Yilun wrote:
-> The get_tdx_usable_addon_features0() in this patch is enabling all
-> add-ons that *the kernel supports*. And this policy definitely needs
-> explanation.
+This series adds the PCI/TSM support needed by a TEE Security Manager
+(TSM) driver in a confidential guest. It adds device lock/unlock,
+helpers for recording device acceptance and parsing MMIO reports, and
+DMA callbacks used during PCI driver attachment. The guest TSM driver and
+attestation commands using these interfaces are in follow-up series.
 
-Ah, that part I missed, apologies. My suggestions were based on an
-assumption that this patch does not enable any add-on so far, just
-adds plumbing.
+This series is based on Dan Williams' "[PATCH v2 00/19] PCI/TSM: TEE I/O
+infrastructure" posting [1], particularly the guest LOCK/UNLOCK, ACCEPT
+and MMIO report work [2-4]. It retains device_cc_accepted() and the
+confidential-device acceptance model from that posting, with changes
+adapted to the current PCI/TSM structures and reference APIs. Dan's
+device-core acceptance helper and per-host-bridge IDE stream reporting
+patch are also included.
 
-Thanks!
+This series does not adopt the Device Trust changes from Dan's "Device
+Evidence and Trust for PCI Security Protocol (TDISP)" [5]. That work is
+being developed separately in Leon Romanovsky's "driver core: Authorize
+device trust before driver binding" series, [6]. Confidential-device
+acceptance is kept separate from that driver-binding trust policy.
+
+The guest flow separates three operations:
+
+* Lock the device through tsm/lock. This requests the TEE Device Interface
+  Security Protocol (TDISP) LOCKED state, so userspace can verify evidence
+  about the locked configuration. Unlock releases the device configuration
+  and the TSM driver's per-device state. Neither operation is permitted
+  while a PCI driver is attached.
+* Request device use through the attestation evidence-accept operation.
+  A follow-up guest TSM driver validates the reported MMIO mappings,
+  requests TDISP RUN and marks the device accepted. This series supplies
+  the device acceptance state, MMIO report helpers and PCI/TSM locking
+  helpers needed for that work.
+* Enable DMA during PCI driver attachment, after platform DMA configuration
+  and IOMMU setup, before the PCI driver's probe function. Disable DMA
+  during driver detach and setup cleanup. Hold TSM user, device and module
+  references until DMA cleanup finishes calling the TSM driver.
+
+Compared with the earlier posting, evidence retrieval and acceptance use
+attestation rather than PCI/TSM evidence storage and the sysfs accept
+attribute.
+
+This series is based on the IOMMUFD/TSM vIOMMU and vDEVICE work [7]. It
+uses that series' TSM references, unregister waits and struct pci_tsm_context
+references. The architecture-specific CCA host and guest drivers and their
+SPDM attestation operations are in separate follow-up series.
+
+The full patchset, including attestation, Device Trust, IOMMUFD,
+guest_memfd and the Arm CCA host and guest changes, is available at:
+
+  https://git.gitlab.arm.com/linux-arm/linux-cca.git
+  branch: cca/topics/7.4/cca-da-integration-v1
+
+Notes:
+* Codex assisted with implementation, review and series organization.
+
+[1] https://lore.kernel.org/all/20260303000207.1836586-1-dan.j.williams@intel.com/
+[2] https://lore.kernel.org/all/20260303000207.1836586-7-dan.j.williams@intel.com/
+[3] https://lore.kernel.org/all/20260303000207.1836586-8-dan.j.williams@intel.com/
+[4] https://lore.kernel.org/all/20260303000207.1836586-10-dan.j.williams@intel.com/
+[5] https://lore.kernel.org/all/20260705220819.2472765-1-djbw@kernel.org/
+[6] https://lore.kernel.org/all/20261105-device-trust-core-v1-0-1e536825b4eb@nvidia.com/
+[7] https://lore.kernel.org/all/20261116081935.85372-1-aneesh.kumar@kernel.org/
+
+Cc: Dan Williams <djbw@kernel.org>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Alexey Kardashevskiy <aik@amd.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Rafael J. Wysocki <rafael@kernel.org>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Lukas Wunner <lukas@wunner.de>
+Cc: Ashish Kalra <ashish.kalra@amd.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: driver-core@lists.linux.dev
+Cc: linux-pci@vger.kernel.org
+Cc: kvm@vger.kernel.org
+Cc: patches@lists.linux.dev
+
+Aneesh Kumar K.V (Arm) (9):
+  coco: tsm: Register the TSM class before device drivers
+  PCI/TSM: Let TSM drivers discover the CMA DOE mailbox
+  PCI/TSM: Defer TSM vDEVICE allocation until device setup completes
+  PCI/TSM: Add association locking helpers for evidence acceptance
+  PCI/TSM: Notify TSM drivers before waiting for TSM user references
+  device core: Add helpers to record confidential device acceptance
+  PCI/TSM: Add sysfs lock and unlock for guest-assigned devices
+  PCI/TSM: Build encrypted MMIO descriptors from a supplied report
+  PCI/TSM: Configure accepted device DMA during driver attachment
+
+Dan Williams (1):
+  PCI/TSM: Report active IDE streams per host bridge
+
+ Documentation/ABI/testing/sysfs-bus-pci   |  35 +-
+ Documentation/ABI/testing/sysfs-class-tsm |  32 +
+ Documentation/driver-api/pci/tsm.rst      |  47 ++
+ MAINTAINERS                               |   1 +
+ drivers/base/Kconfig                      |   4 +
+ drivers/base/Makefile                     |   1 +
+ drivers/base/base.h                       |   9 +
+ drivers/base/coco.c                       |  68 ++
+ drivers/crypto/ccp/sev-dev-tsm.c          |   7 +
+ drivers/pci/Kconfig                       |   2 +
+ drivers/pci/ide.c                         |   4 +
+ drivers/pci/pci-driver.c                  |  31 +-
+ drivers/pci/tsm.c                         | 749 ++++++++++++++++++++--
+ drivers/virt/coco/tsm-core.c              | 150 ++++-
+ include/linux/device.h                    |  22 +
+ include/linux/ioport.h                    |   1 +
+ include/linux/pci-ide.h                   |   2 +
+ include/linux/pci-tsm.h                   | 130 +++-
+ include/linux/pci.h                       |   1 +
+ include/linux/tsm.h                       |   4 +
+ 20 files changed, 1248 insertions(+), 52 deletions(-)
+ create mode 100644 drivers/base/coco.c
+
+
+base-commit: 65e4fd942f72a9dba0e4e257290c4fa1aa756854
+prerequisite-patch-id: 121492d71cc22b2adbfdedd668868c5a449ad764
+prerequisite-patch-id: 266d2641e47ccf8f57f8ca77d90d193f9cfabbbd
+prerequisite-patch-id: 5502ecfa0b2659885b221f103d44d473c72fec03
+prerequisite-patch-id: 6ec85de28f71ce761596e493a68a56242327c0b1
+prerequisite-patch-id: f6e97602a5b06ffddd2cd3c2815bed27411d51e3
+prerequisite-patch-id: 03d76de408efeb5a2205079bb61face09255ca60
+prerequisite-patch-id: 51872ad4fcd244f3425b81f5a0f05acd4ffa5c39
+prerequisite-patch-id: b56e823a40dc6d1e70e74a00cf3e1da2d0ecc9d7
+prerequisite-patch-id: 53dcbe1d39b6848f778eba736a2779b0e587cfcb
+prerequisite-patch-id: 66c884ec28e3d15a174dfb288858b174fb21480d
+prerequisite-patch-id: 18a7425cf79e0a14ac934cb2a194b27a62d50c9d
+prerequisite-patch-id: e47eb53d14d6f6180eb0606d721bfd55d74c96b3
+prerequisite-patch-id: ce898fc01b883c3318a6bdb883578b8b4e4299a2
+prerequisite-patch-id: 416778d72f4ade8c0f13b9fe3e619ec9d5e9634b
+prerequisite-patch-id: d30d30bbe67196c41b592e79fd0c15a78bec0ae7
+-- 
+2.43.0
+
