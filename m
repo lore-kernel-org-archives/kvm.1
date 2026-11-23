@@ -1,85 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.136
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795437370;
-	b=CgRDKbXHf4dm7c1R0eohwjSlPSW8uyE9QBMConeWDdrQkE4ZxMJvPAjOxgWP7/sGrwsc
-	 rsV7yVuAW0IadtcmNWJpd1iuAemL1t6kgxV1faQriF7GCJK1OsqtzU+wnAa4E2WgjB/nk
-	 2mrS64heuxsahnJOX6efJuv+m2qEVXTZA0WEuE4ONu9vtjYcrtuZ2sGkuWOIMBtakHeys
-	 6BZguaA7Kv9Y9BUWg+EChZNTk8l5asmb97S+fbRN9E7eddmERLoRDAlU1Zx123Yffd7Id
-	 90OHVglWNM1wsplYw2uxJKzzqFaY9raPQdWIhhL+iTG36Vjg9Du9d7Md4ydl/3l+rQA==
+	t=1795437528;
+	b=wVxPkYpsEjlTBf0mRudkITk4kUnTqyj7lbTj20sH2EyzARIfo7BYOO1/BsCYgj7HhXej
+	 4RRDKIiVwz1OBwGFUsC6KAPaUu7AzFm+m08+oAswzdChceU15FmKQZ4CStiny+RZ4A/YR
+	 ZCVYTwoMuUvV61NILtJxri3vGhySi12ad0C1eXvGc9P+83WzpGx3lTgJED7sMTmp73vMU
+	 iAChR95rq23kg6u2BvSLO2MzgvCVLv1xnP6+VmbyhpewbMc9axcOOyoUfcYqAegrGB02N
+	 /EdpU2dVz14B8ZuO5krHH7xxOppndqsqy0LDyGNLgMFVnDyB+KyvOaasFSBOjrx1K0g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795437370;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=U/uD1Gm/ThsK3UVlqQr4l1VJFGDwFXp2U6warxXaR1w=;
-	b=DPHCoFYGQt+YpweEPwKMbymXK184k/6npe8glelTFuGhi/YGYWyHqXntyTtZv1FyJ4Ui
-	 7mT/f9cjoNvuNGLReOq+OhHxZeLgcW8qt1Zt73ZUrvLpmXnBRWLak+LwYmMJNa3dyGNgT
-	 xSwVxA78YqKjTPcWBwtgkMwxR2lU4s34YNy1H0pj0zbAs8fShbIgpiXEGTWFUspVWM30k
-	 Q6OpmN8fy2qwayjRRx6ZjJsyTw037Alub35KkKSQZabe+qcX3IKh8on68pBv5oRpXtOBk
-	 sxWL4Trj1hyI/GkSHX+ShHFCZ2HkRRHGWXDfef4GCVDGvdnr7kKbhTvJ82Gvz5L6tXQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795437528;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=wgdw9pPnqudyZcHtC7gRmtcks/LYJQ7P/2uuTiaSpCE=;
+	b=vGOBZvEthuTrkMwrMAqpPlJZjgfeu7zAiEfFnlUxfwos7guufNgfxMNZGi3me9kqpgtC
+	 FzPQ1Hc4hmbd/0WTfR1d47goDSFMCjmeuoFRhoO//ZTZYZXwswT1cBcl+moF9qNMV37AH
+	 GbmHni5YTmZmmnhP89SnolhOo0JqVyTXJ0XO3+2a1zOxngYnMTen1VFYeyQu8lntYle0g
+	 p8KLY4XN2xeAs1ETS2xjddWVIz4FzJL27D3bZJBl85g92j9IlCkYeuGd7Eei9EgMaKI1+
+	 sp3AuUhnq1lFNljhSR7lmnR5Yixys6R+nHRzR/a0+n6o6HM1MS+tHxIGpefjA4zn4KQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=X4d4kmW8;
-	arc=none smtp.remote-ip=74.125.227.136
-Received: from mail-pj2-f8.google.com (mail-pj2-f8.google.com [74.125.227.136])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O7HwZ9ed;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B67606A69B
-	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 12:36:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 74B67606A69B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 761BC606A31A;
+	Mon, 23 Nov 2026 12:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=X4d4kmW8
-Received: by mail-pj2-f8.google.com with SMTP id 98e67ed59e1d1-3ae93a86008so1767078a91.0
-        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 04:36:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795437370; x=1796042170; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=U/uD1Gm/ThsK3UVlqQr4l1VJFGDwFXp2U6warxXaR1w=;
-        b=X4d4kmW8MoeFSWSHykypJXTCQ9sxdfL8zvhoE66K6Sj3h/x0tCzJHWjyeNcIqmYJX7
-         33uMM8OD9rktP9s+hYv7SVfmx+FeIdJHCtXn6/T1yfNIjSZg6zr5N2/uBNPgp+s/dvmq
-         fUnJByPx57vrBt9LcrpB47M8hjODYv2XAtjtC4qshjGvL+5K3hrV5fnWQwn52FDlDKQC
-         Yj9k41pAqekeHYLpXkL+XAmZk9gQ+eS9gQQf+F9TS75He2K9ZB1bfry+pOx5aQ9nK69E
-         OroZyQjtslM8K4H7qnWIyby1ff9PkyzT4OzlTcTLU5wRVR01qaS4fU/cgvcd5E53uwQl
-         gBSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795437370; x=1796042170;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=U/uD1Gm/ThsK3UVlqQr4l1VJFGDwFXp2U6warxXaR1w=;
-        b=j4Qhn3gVIrZjTTnZO8+KFvkpR4+L8R6doBHiqRXm48aYMhUKP0cHvpWh5hPPOYZ5+6
-         AY/secOdKqNs4E/Ups3iHKoJpoi9cXNG8Fb/VhQyesYTnCDYPP+mN7FOan1oxYXxqjE5
-         2SUXskeNGqWifFIqXoKDBsxYuoSCct+S6lDP85Oz5DtiXaQQGWf9kzHtkrLeZbCY+Ifk
-         qgeuDeNn5/TJqIRSu2bIgQYyBr22ZHwNHZOqRPoghkd8vMOCvQhy9D8fgepyqOBYeRR6
-         QXU5Z+uECm2EeDNli585L2ZcHcYzgOXjEAOUtrEwkQKu33W2/X05YOzoZfgtUcJ7Diz/
-         op4Q==
-X-Gm-Message-State: APuU4Z+6UWkW2fmwX3e/URRaIT3asYccVd8VnAy8GERCSxabtu1lWfC+
-	SS8zHpwz2e2KzvW8QiUi2/+xtAmVHxQ4miVbEZYM6iiCGjWL884B+11g
-X-Gm-Gg: AZFdTZcFvjT6Jtz8JTVY9tYYf3vU1/0sx3/x8EtoGab06AfanEqwDSD3LV4HCvfVeCZ
-	piD6XpcKB4cDTfQnCTtPls17LLKSzXAfNXwCN9HHKuT/ytpx8wewN+c9qkx8wtKorG5/7ikMyJ3
-	aP8f3XhMfm9scCFuzSUIOcNvGS2XtGBPNM3Du/N/ezWCmXZOTzYKzyvGGzlx6IPrgw3ofCSltiX
-	uzYorvZmH7WsjDYWpwBobiuNv8oyp/B+wMBRwD+Be0JYyB0aXq1fHE/6Z/RtkZBtHGLbf5XRlCy
-	zLu8kmEb/1LWnQtfvuDz2slTH81bywaB8fk401NSOMYELR6/pq34Tz4n/N08uYWrq9z7b1Aka6A
-	MibL7Y63xTpvHtOoXMmPnrtpYWAUVz5iLaHmj0ACh2p5etOEX5Q7y4qh8b8bTI6LsbBA48JtKqJ
-	BjD5a4X4QBMTeiPIL2iKWCYnmM3GKj/C/v7mj8Zor2Ah+ZJSNsteyQx0Yfik1pvw6YGxsrCF6zU
-	Za91Y8u5xhwcyQehHzSdgEjxKFoGX+xDvgINkSTYSGfVu9Aakx89AIVIXZA0yHtofHuTvCDM1iQ
-	rjR48wRQaH41llae2dc/MdiSCDTB3Gx5YtR/yIeRMcvrOuU=
-X-Received: by 2002:a17:90b:3c07:b0:3ac:3588:b548 with SMTP id 98e67ed59e1d1-3b41c9b2529mr10221008a91.13.1795437369821;
-        Mon, 23 Nov 2026 04:36:09 -0800 (PST)
-Received: from [192.168.50.100] ([114.252.97.9])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b44b8733e6sm6119715a91.3.2026.11.23.04.36.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Nov 2026 04:36:09 -0800 (PST)
-Message-ID: <7225496f-222b-46f6-a609-89921d6572d7@gmail.com>
-Date: Mon, 23 Nov 2026 20:35:57 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O7HwZ9ed
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 3869C1F000C4;
+	Mon, 23 Nov 2026 12:38:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795437527;
+	bh=wgdw9pPnqudyZcHtC7gRmtcks/LYJQ7P/2uuTiaSpCE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=O7HwZ9ed0qjYQGF+5m/LM7lsw9NNNpVO+v17o9k4r29ALiKw8N3+95VwUb1/W1MXm
+	 uGX8o4caIIHC5itax3bCc6GPpKSPb5AxTQPCPeK13+axXc3B8fEpbZ0yYCRAm2Xv1W
+	 dpgQXMFsEHbkPnmffPmlzCrKg8sTkbl038FJ6Kwp+vcIJWZ85dEb3uqAzJ2e/67VGO
+	 BvZkfrUx9RwT20o2VE0VRxQhTTQI1adBVfD8/7jjGZeKsIE2JI2TQXqJzapWKUUbLY
+	 IGoZOWG3CokgqlxdmKg6OwRBFgD6Up7WeWaxtwfNF5HEAPQ8q8yLJLr0SG2BpCLpmp
+	 05HU5IQQ8VeTg==
+Date: Mon, 23 Nov 2026 14:38:44 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+	x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	jgg@ziepe.ca, david.quigley@intel.com, lukas@wunner.de,
+	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
+	sameo@meta.com, drdeeglaze@gmail.com,
+	James.Bottomley@hansenpartnership.com, aik@amd.com,
+	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
+	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
+	zohar@linux.ibm.com, aneesh.kumar@kernel.org, dave.jiang@intel.com,
+	nik.borisov@suse.com, sergii.dmytruk@3mdeb.com
+Subject: Re: [PATCH RFC v2 9/9] attestation: Add the TDX family implementation
+Message-ID: <awQz1P6iXYrL8lv0@kernel.org>
+References: <20261113160838.2512652-1-jiri@resnulli.us>
+ <20261113160838.2512652-10-jiri@resnulli.us>
+ <awQCrnD5CtEhKRWz@e129823.arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -89,78 +70,81 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 09/10] iommu/riscv: Add
- riscv_iommu_attach_dev_nested
-To: Andrew Jones <andrew.jones@linux.dev>,
- Gong Shuai <gong.shuai@sanechips.com.cn>
-Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux.dev, Anup Patel <anup@brainfault.org>,
- Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Tomasz Jeznach <tomasz.jeznach@linux.dev>,
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Kevin Tian <kevin.tian@intel.com>,
- Andrew Jones <andrew.jones@oss.qualcomm.com>,
- Fangyu Yu <fangyu.yu@linux.alibaba.com>, Tan Chi
- <tanchi25@mails.ucas.ac.cn>, Wu Fei <wu.fei9@sanechips.com.cn>,
- Zhao Qingye <zhao.qingye@sanechips.com.cn>
-References: <20261119132744.396426-1-gong.shuai@sanechips.com.cn>
- <20261119132744.396426-10-gong.shuai@sanechips.com.cn>
- <awG5Q7pmntSme1A2@orel>
-From: Gong Shuai <gsh517025@gmail.com>
-In-Reply-To: <awG5Q7pmntSme1A2@orel>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <awQCrnD5CtEhKRWz@e129823.arm.com>
 
-Hi Andrew,
-
-On 11/21/2026 11:48 PM, Andrew Jones wrote:
-> On Thu, Nov 19, 2026 at 09:27:43PM +0800, Gong Shuai wrote:
-> ...
->> +	if (riscv_iommu_bond_link(s2_parent, dev, nested_domain->viommu->gscid))
->> +		return -ENOMEM;
->> +
->> +	riscv_iommu_iodir_update(iommu, dev, &dc);
->> +	riscv_iommu_bond_unlink(info->domain, dev);
->> +	info->domain = s2_parent;
->> +
+On Mon, Nov 23, 2026 at 09:09:02AM +0000, Yeoreum Yun wrote:
+> Hi Jiri,
 > 
-> When moving between the S2 parent and a nested domain on it, the parent
-> briefly has two bonds for dev. bond_link() puts the new bond after the
-> first bond with the same GSCID, which may come before dev's old bond,
-> and since it's then dev's first bond, bond_unlink() removes it. dev is
-> left bonded with its old GSCID, so its new GSCID misses invalidations
-> once no other device's bond has it.
-
-Thanks, you are right.
-
+> [...]
 > 
-> Passing the old domain to bond_unlink(), like I do in [1] for a
-> different reason, would let it remove the bond matching both dev and
-> old's GSCID.
+> > +static void __iomem *tdx_attestation_log_map(size_t *length)
+> > +{
+> > +	struct acpi_table_header *header;
+> > +	struct acpi_table_ccel *ccel;
+> > +	void __iomem *log = NULL;
+> > +
+> > +	if (ACPI_FAILURE(acpi_get_table(ACPI_SIG_CCEL, 0, &header)))
+> > +		return NULL;
+> > +	ccel = container_of(header, struct acpi_table_ccel, header);
+> > +	if (header->length >= sizeof(*ccel) && ccel->log_area_start_address &&
+> > +	    ccel->log_area_minimum_length &&
+> > +	    ccel->log_area_minimum_length <= UINT_MAX)
+> > +		log = acpi_os_map_iomem(ccel->log_area_start_address,
+> > +					ccel->log_area_minimum_length);
+> > +	if (log)
+> > +		*length = ccel->log_area_minimum_length;
+> > +	acpi_put_table(header);
+> > +	return log;
+> > +}
+> > +
 > 
-> [1] https://lore.kernel.org/all/20260928143113.49838-12-andrew.jones@oss.qualcomm.com/
+> I think we don't need to dump log area with the log_area_minimum_length
+> since the area would include none-event otherwise, pre-exist tool (i.e.
+> tpm2_eventlog) reports error for them like:
+> 
+>   ...
+>   - EventNum: 21
+>     PCRIndex: 2
+>     EventType: EV_EFI_ACTION
+>     DigestCount: 1
+>     Digests:
+>     - AlgorithmId: sha256
+>       Digest: "b54f7542cbd872a81a9d9dea839b2b8d747c7ebd5ea6615c40f42f44a6dbeba0"
+>     EventSize: 40
+>     Event: |-
+>       Exit Boot Services Returned with Success
+>   ERROR: corrupted log, insufficient size for event header: 3
+>   ERROR: failed to parse tpm2 eventlog
+>   ERROR: Unable to run tpm2_eventlog
+> 
+> 
+> So, what about export *real size* of eventlog like
+> tpm2_calc_event_log_size()?
 
-I'll use the old domain to resolve the old bond domain and its GSCID,
-pass the latter to bond_unlink() as old_gscid, and match both
+Nothing in the patch (neither commit message nor any comment in code)
+says that TDX attestion registers share the same format as TPM2 even
+log.
 
-     bond->dev == dev && bond->gscid == old_gscid
+I was just trying to understand where does this derive from but since
+there is no reference, I'm confused.
 
-so that the old bond is removed rather than the newly added one.
-
-Best regards,
-Shuai
+As per the function, perhaps tpm2_calc_event_log_size() should be
+relocated to lib and have non-TPM name like firmware_event_log_size()
+or something.
 
 > 
-> Thanks,
-> drew
 > 
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+> Otherwise, look good to me.
+> 
+> [...]
+> 
+> 
+> Thanks!
+> 
+> -- 
+> Sincerely,
+> Yeoreum Yun
 
+Br, Jarkko
