@@ -1,74 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795446630;
-	b=MuQb3SsjxBVwNFuDmGOHZMQA3sW9UMbbn4g3GFhmlf2WqdSnF9mLwRqSXXRfcV9hbhj8
-	 HWdbkDMd73bAOiTpAv39eexGeE0EwJvlPEhAbHFWE06MVg/OkXBTKt8F6/c26oOjjbL6k
-	 GFDOii+bDbXWoDv5sK1Y7aAwzFhAKZbxWr3eNQvmiZFfZK4ct399Mlgxjl1dg4X5Eb8ik
-	 7ZpN3ztww8Wdw3MddIwO/n0kMZKq242tUALO5azyFQYr/1G2smNN3dSh5YtI66S2pz2Go
-	 43Bb4z0M+hIG/+k1GoHB7qvuBJY2N8pmjvolyOqr6Oh3wdtSXTT7GsYcwjE9JC5oTzw==
+	t=1795446691;
+	b=JWhQTRJ/wnHf9JUN78qWof5A/kaAUwzs1ozsiRO1366zHYhrsh9yJNQuOf6CO7wvQyQe
+	 fBHJebAsmc1aMcGKMOiyl9ns4cTbrojuGDcv/TdhGc8Pci9PXiWT067Np/rXZ/ayDUHZ8
+	 /5sXuk7/+v1aG8e57BbNn0fHB7SDVLE0okPxDhsDbb4zU8OjlZbOhNOkobvEHH0Vi7ebW
+	 ksWwTi9YmLvx27/tfrb5bLhM3I/kbq/uPR3Fb/QNv5KiiLIZ2XE2jLvJTHWtjs0/QV0Yn
+	 NL+P8S1wsbX+vp3NMWGZ5v5xRc9jvJMG9RIXpd15afY6rsH7n7BljCGbhEiFxmbFRLQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795446630;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=QD0nNj4E35Kis9XWNnLNRRy+zAstNQ9se2vTJvGkvqI=;
-	b=j1RpjSIA8jhI8I4iEydL+i5iL+gJJd+hGGPPIiiUlybUE1gK5kb5dY2CFhlVns99aZ6j
-	 XAFh71vqDdU/hzaLKYiQ7RGBcpTYDcLZbKkel4ZpK0jGQDH67ocr/CBlQrtQiVGRWirzy
-	 /Xuvp0BEqlnCMS1FeKm+sGcUqmlGPNIt/GQ88nKpF+lvnSEhVoL+4uxG6bjbOEQbOuk4f
-	 iCL3rp6Al6e3GONgq9ThoxA7epLrZiYYCGb5mX9E3Q+O+wgUJEtNqtlbBrauzRQiyQKZR
-	 OyxAWxYVKAR/G3K+XR958e/H3632P89pyNyN7BfAE1Zg7LSbUmtVMdGRotHw7aKlzcQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795446691;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=S6J608SnbhlVzTHO8nTfTbyQzCC0Wef9AXmftuQK8FM=;
+	b=n+WCP4HSAvD9ZwmpHeTldsRu0BXXf8dwAm7FKTx1quZXDQKE7wZad4oUAkb16ZM1LdtJ
+	 yX/x/hTwJU3LK/18YGrTr3wl0ixtJCox5YjqnG7xVRSKoxYAtLgVOjZbdFs2mafRQF804
+	 K8SKuyXgHfcp/Jtvhx4c6ktZh1CGveN8hcrBb9uBdusM+Hd0Nigf4NUAZwTqeWNNDJ6KZ
+	 8XpQohNeyBjgPi/uaQ2YmulRqGkfZgUEstOtbZER19s1SwiXz7h/JWBZyM69I4hPGBB43
+	 3x8i3cRrrJ+dxiuoJpBznFrExRyOHQoWJDIq2mYtFTI2ZQE6DgKEITq2gpf9cIojq3w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="OE2u4eg/";
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BBE606A31F;
-	Mon, 23 Nov 2026 15:10:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0BBE606A31F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=ULnOCYsQ;
+	arc=none smtp.remote-ip=209.85.219.45
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBAD0606A681
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 15:11:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CBAD0606A681
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=OE2u4eg/
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 25D0A176B;
-	Mon, 23 Nov 2026 07:10:26 -0800 (PST)
-Received: from entos-yitian-01.Arm.com (unknown [10.168.196.233])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D3EAF3F632;
-	Mon, 23 Nov 2026 07:10:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795446629; bh=KAV5zzw6aH2fqGdF4DX2/b+XyZ6zGL5MKFGisav5AaE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OE2u4eg/Mu7QwC9WS7aQnXK0x/7kz34F5Q6JK++tfMEDiigrh94zkDz1NQ1W3EsgA
-	 BhE0e9WOwq9h1s6bmDGBC5k+kVSGrGE6+7TZTZlLkSUYse36Qe8iQ0IWGt0qn8l+Iz
-	 N4A8iPh6zS+hYmtljF0FAOas2lG4UvQksiPU3UdQ=
-From: Jia He <justin.he@arm.com>
-To: Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Sascha Bischoff <Sascha.Bischoff@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Jia He <justin.he@arm.com>
-Subject: [PATCH 3/3] KVM: selftests: arm64: Test KVM_PRE_FAULT_MEMORY before first KVM_RUN
-Date: Mon, 23 Nov 2026 15:09:17 +0000
-Message-Id: <20261123150917.2679600-4-justin.he@arm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261123150917.2679600-1-justin.he@arm.com>
-References: <20261123150917.2679600-1-justin.he@arm.com>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=ULnOCYsQ
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-92100b756b0so29393726d6.3
+        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 07:11:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1795446690; x=1796051490; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=S6J608SnbhlVzTHO8nTfTbyQzCC0Wef9AXmftuQK8FM=;
+        b=ULnOCYsQhWIKDt7pAFJxN5BdezB6uuwO2wH7M3H75HnvcnHu0ePPTzZKt+/E8HJbsq
+         8xNQcunddG9jd5Lyy5gXDUoI6tNcqkgliwQBuS09bcwR4F/99g5XmNioCqy1g81xleyk
+         LHhAxO/sQfFLnE4JLEDu/YBjhGAidQN37cDWd2dzzVWGUITLsdgtKfpXw8jO/nNEuElh
+         tyEhFp/7OKJTeRItfxiGqKUkSnpdV0wQ/c4bCV2HFB7OEb8h0vw3dWK2Ty+VuV9E6Ewn
+         yDkmNQkEnylRuyYGR1sqGLaQPOKxcWwfhEHqIAlHska+tD6+MsFsnDzdHU0merc4Sqat
+         NOxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795446690; x=1796051490;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=S6J608SnbhlVzTHO8nTfTbyQzCC0Wef9AXmftuQK8FM=;
+        b=1HI75T3YabTE3flyJn17KrfX1Ed19U3kCwWRa9TT0I6NUNrxMVummPpI6wvhTedtfJ
+         BPwj0Urr3inSXIOdLZ14+qAThE6SYinofV9W8/z1UXakH8+OdEOFhRekXG71aAhxovfb
+         +uT/FeJROox7AWEwez4fqttGek3lUig9DR6C9nswY+YDX+VYKXB6b1/MNtDafo6z713O
+         gvSjX3+RExMr/vIpilJbx4/p6xztUKk4Cz55XxI6g8zRH79qaDmqvj0PgylAtLmYSl2v
+         sxIHXo5ZTghvDuOELGxtY10I9E1skUqHeBEjl/uKr4CrXOKzm/CqNaONqTjBGHP0SY2w
+         8q0Q==
+X-Forwarded-Encrypted: i=1; AL+hErF68tdzK+NJ5PJUA6nARQ7ZMJyCYvhXUIFygEAy5AEmDnC7Fxi1v2jFoQKEJj9JxKgMOfo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/+lG91Dmfa5wZYIGaRs0s8MogtgBHy9HT67ghvlzBeFE9ifx7c
+	BXLGWByV9nwZdIBMSTuqvsTOT0DUY+T1P8/kuYpvvaIqqLcJKjqYUIuyMgXQ12B7mOQ=
+X-Gm-Gg: AZFdTZfzbSWTorQ6vnCGkkDXqWJcpgUEi4erohUR260AIHe+MRrWz4QzGbDyZA7boY7
+	/cF1f2oXdRdVs86+tVhlyD+qj7oxTAE3m/Oh79LmglJj5mvJFUhP8+1wwQXcWv1ujPPbP3yy9L1
+	6DwC4K/6s1izE6HKwC5+H/87wSQsWgg05WXA4QBg1q2RvEWmQRCW3DUdOfCfuTr4RcVVcCezguE
+	mmF1z0Se6Dq09WTf/EqHR+EXChT3+sTekReAids86MiySaN5XwKA21Vmxzl/m2hM8U8xfOYE5pr
+	hHk3d5tbenlslN+S9JzegWCPPEcrVJUkF5RZDPQ/mg7PJlBLvby4ZRHNIypLeLrg2ftYr98p/m8
+	HTfd1iGS/HLi70eGMibIAYlbpe2zC/S8Cxz+0HXhO6f8a5SeelXhizRKlBmCx0G9xjQwNKsmhQ4
+	8I5FNBg1kCzBuIQv6Oj9P3fZ95iSnsZDm5c+o0yqipxQHDpAKIWQDVmiI4Cp6SRwAC0vmrdN/eq
+	ONe6OvrdRKA/YPPz2Ifx0yPnYAulvqiLzm8a3NWbnSqIQYuiRD6g7xZYpCA7Hvu+PtDP9xMTSTx
+	goLMKqduqbwov7AU5GDpNdOCa4vJj82SVATqGGLcpCTOOQS5vhPpSgur+Zu8sZr0a9p09NiJsNn
+	ENKc=
+X-Received: by 2002:a05:6214:4108:b0:921:266f:50ff with SMTP id 6a1803df08f44-92134b3f207mr208575596d6.52.1795446689538;
+        Mon, 23 Nov 2026 07:11:29 -0800 (PST)
+Received: from ziepe.ca (stjhnbsu6iw-159-2-142-59.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.142.59])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-921349b50besm106533186d6.9.2026.11.23.07.11.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Nov 2026 07:11:29 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xVVhY-00000000ro7-1hOk;
+	Mon, 23 Nov 2026 11:11:28 -0400
+Date: Mon, 23 Nov 2026 11:11:28 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Jiri Pirko <jiri@resnulli.us>,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, david.quigley@intel.com, lukas@wunner.de,
+	ksinyuk@kernel.org, rodrigo.vivi@intel.com, cedric.xing@intel.com,
+	sameo@meta.com, drdeeglaze@gmail.com,
+	James.Bottomley@hansenpartnership.com, aik@amd.com,
+	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
+	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
+	zohar@linux.ibm.com, aneesh.kumar@kernel.org, dave.jiang@intel.com,
+	nik.borisov@suse.com, sergii.dmytruk@3mdeb.com
+Subject: Re: [PATCH RFC v2 9/9] attestation: Add the TDX family implementation
+Message-ID: <20261123151128.GD179082@ziepe.ca>
+References: <20261113160838.2512652-1-jiri@resnulli.us>
+ <20261113160838.2512652-10-jiri@resnulli.us>
+ <awQCrnD5CtEhKRWz@e129823.arm.com>
+ <awQz1P6iXYrL8lv0@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,417 +116,85 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <awQz1P6iXYrL8lv0@kernel.org>
 
-Extend nv_pre_fault_memory_test to exercise KVM_PRE_FAULT_MEMORY before
-the first KVM_RUN.
+On Mon, Nov 23, 2026 at 02:38:44PM +0200, Jarkko Sakkinen wrote:
+> On Mon, Nov 23, 2026 at 09:09:02AM +0000, Yeoreum Yun wrote:
+> > Hi Jiri,
+> > 
+> > [...]
+> > 
+> > > +static void __iomem *tdx_attestation_log_map(size_t *length)
+> > > +{
+> > > +	struct acpi_table_header *header;
+> > > +	struct acpi_table_ccel *ccel;
+> > > +	void __iomem *log = NULL;
+> > > +
+> > > +	if (ACPI_FAILURE(acpi_get_table(ACPI_SIG_CCEL, 0, &header)))
+> > > +		return NULL;
+> > > +	ccel = container_of(header, struct acpi_table_ccel, header);
+> > > +	if (header->length >= sizeof(*ccel) && ccel->log_area_start_address &&
+> > > +	    ccel->log_area_minimum_length &&
+> > > +	    ccel->log_area_minimum_length <= UINT_MAX)
+> > > +		log = acpi_os_map_iomem(ccel->log_area_start_address,
+> > > +					ccel->log_area_minimum_length);
+> > > +	if (log)
+> > > +		*length = ccel->log_area_minimum_length;
+> > > +	acpi_put_table(header);
+> > > +	return log;
+> > > +}
+> > > +
+> > 
+> > I think we don't need to dump log area with the log_area_minimum_length
+> > since the area would include none-event otherwise, pre-exist tool (i.e.
+> > tpm2_eventlog) reports error for them like:
+> > 
+> >   ...
+> >   - EventNum: 21
+> >     PCRIndex: 2
+> >     EventType: EV_EFI_ACTION
+> >     DigestCount: 1
+> >     Digests:
+> >     - AlgorithmId: sha256
+> >       Digest: "b54f7542cbd872a81a9d9dea839b2b8d747c7ebd5ea6615c40f42f44a6dbeba0"
+> >     EventSize: 40
+> >     Event: |-
+> >       Exit Boot Services Returned with Success
+> >   ERROR: corrupted log, insufficient size for event header: 3
+> >   ERROR: failed to parse tpm2 eventlog
+> >   ERROR: Unable to run tpm2_eventlog
+> > 
+> > 
+> > So, what about export *real size* of eventlog like
+> > tpm2_calc_event_log_size()?
+> 
+> Nothing in the patch (neither commit message nor any comment in code)
+> says that TDX attestion registers share the same format as TPM2 even
+> log.
 
-Without EL2, cover immediate_exit on the first KVM_RUN, retrying after a
-failed first KVM_RUN, and pre-faulting while the vCPU moves from the
-main thread to a worker thread for its first run and back to the main
-thread for its second run. The two threads are pinned to different CPUs
-when at least two are available.
+It comes from the UEFI spec's definition of CCEL:
 
-With EL2, additionally cover an EL2 vCPU with ID_AA64MMFR4_EL1.NV_frac
-cleared to 0 and HCR_EL2.NV=1 at EL1h (the NULL vncr_tlb reproducer), an
-EL2 vCPU with a vEL1 context and asymmetric HCR_EL2.IMO/FMO staged before
-the first run, and the same thread handoff. An unfixed kernel reports
-the staged context case only as a WARN in the kernel log; the test
-itself still passes.
+ 38.1 Virtual Platform CC Event Log
 
-Signed-off-by: Jia He <justin.he@arm.com>
----
- .../kvm/arm64/nv_pre_fault_memory_test.c      | 335 ++++++++++++++++--
- 1 file changed, 298 insertions(+), 37 deletions(-)
+ If a virtual firmware with confidential computing (CC) capability
+ supports measurement and an event is created, virtual firmware should
+ report the event log with the same data structure in TCG Platform
+ Firmware Profile (PFP) specification with
+ EFI_TCG2_EVENT_LOG_FORMAT_TCG_2 format. The index created by the
+ virtual firmware in the event log should be the index for the
+ confidential computing (CC) measurement register. It is CC vendor
+ specific.
 
-diff --git a/tools/testing/selftests/kvm/arm64/nv_pre_fault_memory_test.c b/tools/testing/selftests/kvm/arm64/nv_pre_fault_memory_test.c
-index 09c1db303856..6dbcf3b0ef13 100644
---- a/tools/testing/selftests/kvm/arm64/nv_pre_fault_memory_test.c
-+++ b/tools/testing/selftests/kvm/arm64/nv_pre_fault_memory_test.c
-@@ -1,15 +1,13 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * nv_pre_fault_memory_test - Test KVM_PRE_FAULT_MEMORY on a vCPU whose
-- * last-run context is nested.
-- *
-- * The guest enters vEL2, sets up its EL2 translation configuration into the
-- * real EL1 registers then ERETs to vEL1 and exits to userspace so its vCPU
-- * last-run context is nested backed by a shadow stage 2 MMU.
-- *
-- * Assert that pre-faulting ignores that and targets the canonical stage-2
-- * page tables only.
-+ * nv_pre_fault_memory_test - Test KVM_PRE_FAULT_MEMORY on arm64 before the
-+ * first KVM_RUN, across vCPU thread changes, and, with nested virtualisation,
-+ * from a live nested context.
-  */
-+#include <pthread.h>
-+#include <sched.h>
-+
-+#include "kvm_syscalls.h"
- #include "kvm_util.h"
- #include "processor.h"
- #include "test_util.h"
-@@ -22,6 +20,18 @@
- #define TEST_MEM_SIZE		SZ_2M
- #define TEST_MEM_GPA		SZ_1G
- 
-+static void guest_el1_touch_and_done(void)
-+{
-+	u64 offset;
-+
-+	GUEST_ASSERT_EQ(get_current_el(), 1);
-+
-+	for (offset = 0; offset < TEST_MEM_SIZE; offset += SZ_4K)
-+		READ_ONCE(*(u64 *)(TEST_MEM_GPA + offset));
-+
-+	GUEST_DONE();
-+}
-+
- static void guest_el1_code(void)
- {
- 	u64 offset;
-@@ -97,22 +107,56 @@ static void pre_fault(struct kvm_vcpu *vcpu, u64 gpa, u64 size)
- 	TEST_ASSERT_EQ(range.size, 0);
- }
- 
--int main(void)
-+static void expect_ucall_sync(struct kvm_vcpu *vcpu, u64 expected)
-+{
-+	struct ucall uc;
-+
-+	switch (get_ucall(vcpu, &uc)) {
-+	case UCALL_SYNC:
-+		TEST_ASSERT_EQ(uc.args[1], expected);
-+		break;
-+	case UCALL_ABORT:
-+		REPORT_GUEST_ASSERT(uc);
-+		break;
-+	default:
-+		TEST_FAIL("Unhandled ucall: %ld", uc.cmd);
-+	}
-+}
-+
-+static void expect_ucall_done(struct kvm_vcpu *vcpu)
-+{
-+	struct ucall uc;
-+
-+	switch (get_ucall(vcpu, &uc)) {
-+	case UCALL_DONE:
-+		break;
-+	case UCALL_ABORT:
-+		REPORT_GUEST_ASSERT(uc);
-+		break;
-+	default:
-+		TEST_FAIL("Unhandled ucall: %ld", uc.cmd);
-+	}
-+}
-+
-+static struct kvm_vm *setup_test_vm(bool has_el2, bool has_sve,
-+				    void *guest_fn, struct kvm_vcpu **vcpu_out)
- {
- 	struct kvm_vcpu_init init;
- 	struct kvm_vcpu *vcpu;
- 	struct kvm_vm *vm;
--	struct ucall uc;
- 	u64 npages;
- 
--	TEST_REQUIRE(test_supports_el2());
--	TEST_REQUIRE(kvm_check_cap(KVM_CAP_PRE_FAULT_MEMORY));
--
- 	vm = vm_create(1);
- 
- 	kvm_get_default_vcpu_target(vm, &init);
--	init.features[0] |= BIT(KVM_ARM_VCPU_HAS_EL2);
--	vcpu = aarch64_vcpu_add(vm, 0, &init, guest_code);
-+	if (has_el2)
-+		init.features[0] |= BIT(KVM_ARM_VCPU_HAS_EL2);
-+	else
-+		init.features[0] &= ~BIT(KVM_ARM_VCPU_HAS_EL2);
-+	if (has_sve)
-+		init.features[0] |= BIT(KVM_ARM_VCPU_SVE);
-+
-+	vcpu = aarch64_vcpu_add(vm, 0, &init, guest_fn);
- 	kvm_arch_vm_finalize_vcpus(vm);
- 
- 	npages = TEST_MEM_SIZE / vm->page_size;
-@@ -120,39 +164,256 @@ int main(void)
- 				    TEST_MEM_SLOT, npages, 0);
- 	virt_map(vm, TEST_MEM_GPA, TEST_MEM_GPA, npages);
- 
-+	*vcpu_out = vcpu;
-+	return vm;
-+}
-+
-+static void test_nested_post_run_pre_fault(void)
-+{
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+
-+	pr_info("Testing post-run pre-fault from nested vEL1 context\n");
-+	vm = setup_test_vm(true, false, guest_code, &vcpu);
-+
- 	/* Run the guest until it has ERET'd from vEL2 to vEL1. */
- 	vcpu_run(vcpu);
--	switch (get_ucall(vcpu, &uc)) {
--	case UCALL_SYNC:
--		TEST_ASSERT_EQ(uc.args[1], 1);
--		break;
--	case UCALL_ABORT:
--		REPORT_GUEST_ASSERT(uc);
--		break;
--	default:
--		TEST_FAIL("Unhandled ucall: %ld", uc.cmd);
--	}
-+	expect_ucall_sync(vcpu, 1);
- 
- 	/*
- 	 * The vCPU's last-run context is vEL1, so its hw_mmu is a shadow
--	 * stage-2 MMU.
--	 *
--	 * Pre-faulting must ignore that and populate the canonical stage-2.
-+	 * stage-2 MMU. Pre-faulting must ignore that and populate the
-+	 * canonical stage-2.
- 	 */
- 	pre_fault(vcpu, TEST_MEM_GPA, TEST_MEM_SIZE);
- 
- 	/* Resume at vEL1 and touch the prefaulted range. */
- 	vcpu_run(vcpu);
--	switch (get_ucall(vcpu, &uc)) {
--	case UCALL_DONE:
--		break;
--	case UCALL_ABORT:
--		REPORT_GUEST_ASSERT(uc);
--		break;
--	default:
--		TEST_FAIL("Unhandled ucall: %ld", uc.cmd);
-+	expect_ucall_done(vcpu);
-+
-+	kvm_vm_free(vm);
-+}
-+
-+/*
-+ * Pre-fault before the first KVM_RUN with ID_AA64MMFR4_EL1.NV_frac == 0
-+ * (no vncr_tlb) and HCR_EL2.NV=1 at EL1h.
-+ */
-+static void test_pre_first_run_no_nv2(void)
-+{
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	u64 val;
-+
-+	pr_info("Testing pre-first-run pre-fault with NV_frac=0 and HCR_EL2.NV=1\n");
-+	vm = setup_test_vm(true, false, guest_el1_touch_and_done, &vcpu);
-+
-+	/* Copy the EL2 S1 configuration into the EL1 sysregs for vEL1. */
-+	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_SCTLR_EL1),
-+		     vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_SCTLR_EL2)));
-+	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_TCR_EL1),
-+		     vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_TCR_EL2)));
-+	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_TTBR0_EL1),
-+		     vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_TTBR0_EL2)));
-+	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MAIR_EL1),
-+		     vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MAIR_EL2)));
-+	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_CPACR_EL1), 3ULL << 20);
-+	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_VBAR_EL1),
-+		     vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_VBAR_EL2)));
-+	vcpu_set_reg(vcpu, ARM64_CORE_REG(sp_el1),
-+		     vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_SP_EL2)));
-+
-+	val = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_ID_AA64MMFR4_EL1));
-+	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_ID_AA64MMFR4_EL1),
-+		     val & ~ID_AA64MMFR4_EL1_NV_frac);
-+
-+	val = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2));
-+	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2),
-+		     (val & ~HCR_EL2_TGE) | HCR_EL2_NV | HCR_EL2_RW);
-+	vcpu_set_reg(vcpu, ARM64_CORE_REG(regs.pstate),
-+		     PSR_MODE_EL1h | PSR_F_BIT | PSR_I_BIT | PSR_A_BIT | PSR_D_BIT);
-+
-+	pre_fault(vcpu, TEST_MEM_GPA, TEST_MEM_SIZE);
-+
-+	vcpu_run(vcpu);
-+	expect_ucall_done(vcpu);
-+
-+	val = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2));
-+	TEST_ASSERT(!(val & HCR_EL2_NV),
-+		    "Expected HCR_EL2.NV to be masked RES0, got 0x%lx", val);
-+
-+	kvm_vm_free(vm);
-+}
-+
-+/*
-+ * Stage a vEL1 context with asymmetric HCR_EL2.IMO/FMO before the first
-+ * KVM_RUN. If pre-faulting loads this context onto the CPU, the nested vGIC
-+ * code hits a WARN in the kernel log. The test itself still passes, so this
-+ * case needs a kernel log check.
-+ */
-+static void test_pre_first_run_nested_ctxt(void)
-+{
-+	u64 orig_hcr, orig_pstate;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+
-+	pr_info("Testing pre-first-run pre-fault with staged vEL1 context\n");
-+	vm = setup_test_vm(true, false, guest_code, &vcpu);
-+
-+	orig_hcr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2));
-+	orig_pstate = vcpu_get_reg(vcpu, ARM64_CORE_REG(regs.pstate));
-+
-+	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2),
-+		     HCR_EL2_E2H | HCR_EL2_RW | HCR_EL2_VM | HCR_EL2_IMO);
-+	vcpu_set_reg(vcpu, ARM64_CORE_REG(regs.pstate),
-+		     PSR_MODE_EL1h | PSR_F_BIT | PSR_I_BIT | PSR_A_BIT | PSR_D_BIT);
-+
-+	pre_fault(vcpu, TEST_MEM_GPA, TEST_MEM_SIZE);
-+
-+	vcpu_set_reg(vcpu, KVM_ARM64_SYS_REG(SYS_HCR_EL2), orig_hcr);
-+	vcpu_set_reg(vcpu, ARM64_CORE_REG(regs.pstate), orig_pstate);
-+
-+	vcpu_run(vcpu);
-+	expect_ucall_sync(vcpu, 1);
-+	vcpu_run(vcpu);
-+	expect_ucall_done(vcpu);
-+
-+	kvm_vm_free(vm);
-+}
-+
-+struct handoff_args {
-+	struct kvm_vcpu *vcpu;
-+	int cpu;
-+};
-+
-+static void maybe_pin_self_to_cpu(int cpu)
-+{
-+	if (cpu >= 0)
-+		pin_self_to_cpu(cpu);
-+}
-+
-+static void *first_run_worker(void *arg)
-+{
-+	struct handoff_args *h = arg;
-+
-+	maybe_pin_self_to_cpu(h->cpu);
-+	pre_fault(h->vcpu, TEST_MEM_GPA + SZ_1M, TEST_MEM_SIZE - SZ_1M);
-+
-+	vcpu_run(h->vcpu);
-+	expect_ucall_sync(h->vcpu, 1);
-+	return NULL;
-+}
-+
-+/*
-+ * Pre-fault in the main thread, run the vCPU for the first time in a worker
-+ * thread, then pre-fault and run it again in the main thread. This changes
-+ * vcpu->pid both before and after the first run. If at least two CPUs are
-+ * available, the two threads are pinned to different CPUs.
-+ */
-+static void test_thread_handoff(bool has_el2)
-+{
-+	struct handoff_args h = { .cpu = -1 };
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	cpu_set_t allowed;
-+	int cpu, cpu0 = -1;
-+	pthread_t thr;
-+
-+	pr_info("Testing pre-fault across a thread handoff (%s vCPU)\n",
-+		has_el2 ? "EL2" : "EL1");
-+
-+	CPU_ZERO(&allowed);
-+	kvm_pthread_getaffinity(pthread_self(), &allowed);
-+	for (cpu = 0; cpu < CPU_SETSIZE; cpu++) {
-+		if (!CPU_ISSET(cpu, &allowed))
-+			continue;
-+		if (cpu0 < 0) {
-+			cpu0 = cpu;
-+		} else {
-+			h.cpu = cpu;
-+			break;
-+		}
-+	}
-+	if (h.cpu < 0)
-+		pr_info("Only one CPU available, not testing CPU migration\n");
-+
-+	maybe_pin_self_to_cpu(cpu0);
-+	vm = setup_test_vm(has_el2, false,
-+			   has_el2 ? guest_code : guest_el1_code, &vcpu);
-+	pre_fault(vcpu, TEST_MEM_GPA, SZ_1M);
-+
-+	h.vcpu = vcpu;
-+	kvm_pthread_create(&thr, NULL, first_run_worker, &h);
-+	kvm_pthread_join(thr, NULL);
-+
-+	pre_fault(vcpu, TEST_MEM_GPA, TEST_MEM_SIZE);
-+	vcpu_run(vcpu);
-+	expect_ucall_done(vcpu);
-+
-+	kvm_pthread_setaffinity(pthread_self(), &allowed);
-+
-+	kvm_vm_free(vm);
-+}
-+
-+static void test_pre_first_run_el1(void)
-+{
-+	int feature = KVM_ARM_VCPU_SVE;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	int ret;
-+
-+	pr_info("Testing pre-first-run pre-fault with immediate_exit\n");
-+	vm = setup_test_vm(false, false, guest_el1_touch_and_done, &vcpu);
-+	pre_fault(vcpu, TEST_MEM_GPA, vm->page_size);
-+
-+	vcpu->run->immediate_exit = 1;
-+	ret = __vcpu_run(vcpu);
-+	TEST_ASSERT(ret == -1 && errno == EINTR,
-+		    "Expected -EINTR on immediate_exit, got ret=%d errno=%d",
-+		    ret, errno);
-+	vcpu->run->immediate_exit = 0;
-+
-+	pre_fault(vcpu, TEST_MEM_GPA, TEST_MEM_SIZE);
-+	vcpu_run(vcpu);
-+	expect_ucall_done(vcpu);
-+	kvm_vm_free(vm);
-+
-+	if (!kvm_check_cap(KVM_CAP_ARM_SVE)) {
-+		pr_info("SVE not supported, skipping failed first KVM_RUN test\n");
-+		return;
- 	}
- 
-+	pr_info("Testing pre-fault after a failed first KVM_RUN\n");
-+	vm = setup_test_vm(false, true, guest_el1_touch_and_done, &vcpu);
-+	pre_fault(vcpu, TEST_MEM_GPA, vm->page_size);
-+
-+	ret = __vcpu_run(vcpu);
-+	TEST_ASSERT(ret == -1 && errno == EPERM,
-+		    "Expected -EPERM before SVE finalisation, got ret=%d errno=%d",
-+		    ret, errno);
-+
-+	pre_fault(vcpu, TEST_MEM_GPA + vm->page_size, vm->page_size);
-+	vcpu_ioctl(vcpu, KVM_ARM_VCPU_FINALIZE, &feature);
-+	vcpu_run(vcpu);
-+	expect_ucall_done(vcpu);
- 	kvm_vm_free(vm);
-+}
-+
-+int main(void)
-+{
-+	TEST_REQUIRE(kvm_check_cap(KVM_CAP_PRE_FAULT_MEMORY));
-+
-+	test_pre_first_run_el1();
-+	test_thread_handoff(false);
-+
-+	if (!test_supports_el2()) {
-+		pr_info("EL2 not supported, skipping nested tests\n");
-+		return 0;
-+	}
-+
-+	test_nested_post_run_pre_fault();
-+	test_pre_first_run_no_nv2();
-+	test_pre_first_run_nested_ctxt();
-+	test_thread_handoff(true);
-+
- 	return 0;
- }
--- 
-2.34.1
+It makes sense that the kernel would size it correctly.
 
+> As per the function, perhaps tpm2_calc_event_log_size() should be
+> relocated to lib and have non-TPM name like firmware_event_log_size()
+> or something.
+
+Probably under drivers/attestation since that is where all the TCG
+formatted logs should end up. It should be 'tcg_event_log_size()' or
+something. Maybe a tiny module for it like we would have done in lib/
+
+Jason
