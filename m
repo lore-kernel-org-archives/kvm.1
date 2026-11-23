@@ -1,60 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=79.135.106.120
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795437872;
-	b=4fKnnRnsrf5zjc2Mb5vIwbKegTBog+SAVGvL9vyXTCShGjTdzIkS1F2Yw1i/snsN+5Ar
-	 nmbYs6fb5BK2Bu799yJuN8OyR9cnBEosz4lmusCpumGfD+0bsIhiY6vbUUDU2oCYayXfw
-	 m2RgeIPRtdP7u4GZTK6p9yUN3+jDnR9CuDOAv4OvR9SCHhROhFH5H3CgpL6ApN00sVGOo
-	 qWX5OnMlxwcBCGomjbVP+0HAzoeE5pWV0Wi601JH/IOdGsJtCQc3wXwkMi6rW9FQE9s94
-	 Jh7hpGp5qfVm3C3BsO1L7iBqHT9PKiYIgH8iDVx9tAphpmwxFIq42QFGPzsNeJPGHdw==
+	t=1795438980;
+	b=3H4QY1JsZtwH5YIDQEcVhkvRZFw+wKd8fHzxBl+x8sRgJsPqacHBFBlAn1oOl2MlMN5I
+	 URTTAYghpn6oSavCetXiz8G87fHtPKQkUWFRaN/VHUfgh20SnCkOTqvYkXHVqgHZWeaIp
+	 OvtLFqLw4WHES1u+oi9mbY/wgry7ntzGaDHNoBhNukpJpl/yEQLw7cTYvQJZMjHbFoXF1
+	 cU6QJpuTaL510haAu54P9jeuLMnRUpL1Njharq1hsM1F39qMeSoyxsE+m3uCvjPkwKcsk
+	 iyYLgWuxGAWOdSdRxa4vs+zErOeuOXLssS+VumdOFikpVVFhf7J5973vRZhgde0i5Rw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795437872;
-	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
-	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
-	 Content-Type;
-	bh=0b+/w/Gu7/81yyJrjZNFubpzFxZIbcXJGpm7HBlFaXw=;
-	b=zrzZe+Y+py93wd93IsCp6+O52pChaw00aPKYreLyJrn3Tuo7qWTuee5sQ5/3r9EpAyj5
-	 eWByLJj08QsB6tm67u9mERKbfJCmUxckkJKfRkE6a5VyC/aSyOF4M3q4lLdPDxuPSo5x5
-	 aE5rXLyvb8/BbW3S/ufQ/SBKO6iETmLiXleVJf/XwmbmhQR8HTRcZI0+kL7Ga6oJNBbzS
-	 C2zyD4YR4FyDEA6SaG4ahUIxHj88KaOPLcG/asx0yFkBPq+8Ipt6AJIlahgpqpz3RlBsQ
-	 5fOun06cEhpVgW3EN57bWVKfzo5UGWrrR24/8C7bemr93N05r/tA3XvUonvMNbzgxaQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795438980;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Authority-Analysis:X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=sd6mG3Bx/nhwPBMmF+KUQNMT5XN0aCjqv/klBzEyo8I=;
+	b=Kq2MH06Tp3hVtWhK9fhflr/r8UTK0DayqUes/CX2B9xGdj+f6hjOQ5bf8GCwA3eInli2
+	 RfKb9RceIcZY5jOItwS4O3wxAWylBITmesp9TygGfKVjPIh/lBE8vlH4oLcl3MO1ej5mn
+	 GzgtzaFJ53ywRz0/HDcuisoih9BKykuTmj3VSgxeW5g1qLM9HtHdhRh5sA+s/hrU4yCxE
+	 edZ8ZXTkYw9mHmZVXGEiJhfijRWliF3COVmmp/+d9ud5CLGrJFtv8WiWP/j9GN7HgcwGl
+	 b0ePqg12eo8Nmg+rkNeShtAvq39ZCX20fJd8/Gm1fULKm5rMqkuSqNAuTR0QCZl9fcw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=pm.me;
-	spf=pass smtp.mailfrom=pm.me;
-	dkim=pass header.d=pm.me header.i=@pm.me header.a=rsa-sha256 header.s=protonmail3 header.b=S37Ksspv;
-	arc=none smtp.remote-ip=79.135.106.120
-Received: from mail-106120.protonmail.ch (mail-106120.protonmail.ch [79.135.106.120])
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JjbEU848;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCEA606A31A
-	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 12:44:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4BCEA606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BB1606A31A;
+	Mon, 23 Nov 2026 13:03:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 63BB1606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.a=rsa-sha256 header.s=protonmail3 header.b=S37Ksspv
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1795437870; x=1795697070;
-	bh=0b+/w/Gu7/81yyJrjZNFubpzFxZIbcXJGpm7HBlFaXw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=S37Ksspv6FMqeI67YJdulvHnqRcN/UI+pKp65mZ2bogVh145crzoixmMolgKrQa9E
-	 idfpE8XCqH4Oe46Ca3wc7PTRyNXcMpYk+7EcxYOHuoP67Ro4kDMs16RlVcuznuAXri
-	 vyd+J6WYYaFs3ZxbZmv+WQhG0Eo+VxGI8OMhlzFdowGQQ7gPy2zewf3eIwa4F00WC/
-	 jP1Mk99FKjYHZ/TWzqZtBa6lZCbOSb/zLCW9drubMU5p4HWvsFOhcNXDaiMoigAhJk
-	 RSyjKz2kTFpzIQ72gY/HPuY4mPtf7WrTfJHADbY5WjhOySyWgussHw6cQcCeQF1kc+
-	 BrHvEwPM3y98g==
-Date: Mon, 23 Nov 2026 12:44:24 +0000
-To: Eugenio Perez Martin <eperezma@redhat.com>
-From: fadouse <fadouse@pm.me>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, Linfeng Sun <linfeng.sun.dev@gmail.com>, Fang Xieyan <fangxy@xiaopeng.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] vhost: mask the in-order used-ring log cursor
-Message-ID: <uD642sRa0jdIPD2nCoKzjJDfS2fpCefT340JqjRvOUyFkoXpwNAAabmjwSltui9-PD1DNwFJrw0xrsZqbYKJ5x3fraz9Wv46l3OrkBVA3vc=@pm.me>
-In-Reply-To: <CAJaqyWdOF3LVF+WHaGw8gimULaCunRkuLnKAhciB7HWpYhnm9w@mail.gmail.com>
-References: <20261122-b4-06-vhost-in-order-log-oob-v1-35efdba8fbab-v1-1-fc1253d60351@pm.me> <CAJaqyWdOF3LVF+WHaGw8gimULaCunRkuLnKAhciB7HWpYhnm9w@mail.gmail.com>
-Feedback-ID: 173252840:user:proton
-X-Pm-Message-ID: bafe6e04ebbed8c7cdd7426462ae83353df9de95
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JjbEU848
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ANCZ57C1981609;
+	Mon, 23 Nov 2026 13:02:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=sd6mG3
+	Bx/nhwPBMmF+KUQNMT5XN0aCjqv/klBzEyo8I=; b=JjbEU848XKHwXgE655cL4z
+	aLv5wrCEyPTY5m/krZKfG0zAZpje36SbiMCNkiT2XrKw7Y1edrBz0EGKS0L9C52Y
+	lvcxgLSLvFkzjCiWVLVBVZCgpy9nhY+igqj1HPEGHptePaUEvW1sNxSyVNgSkJnn
+	yMa1fpJZ33b3AUwd4o+kkf2qCKo9uHA0J8K11kYWT4l0fXVo2evEARrWcEqg7xNI
+	RbTEGLQmj+RtJOERE4+iofxDcvZzYlYn6K5egBFXaejswxH8Xca/WmXmrAZWmaj7
+	wWxEAafb7LslT17MSsdh90ks9qEnAYsl+15gjX69nu2zYOzWXhkBIC5X3kRr8BbA
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34g338kq-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 23 Nov 2026 13:02:51 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6ANCJRtr1819064;
+	Mon, 23 Nov 2026 13:02:51 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j3nmqf23w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Nov 2026 13:02:50 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AND2leD31392464
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 23 Nov 2026 13:02:47 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3553D2004E;
+	Mon, 23 Nov 2026 13:02:47 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CC3EE20043;
+	Mon, 23 Nov 2026 13:02:46 +0000 (GMT)
+Received: from [9.68.16.159] (unknown [9.68.16.159])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 23 Nov 2026 13:02:46 +0000 (GMT)
+Message-ID: <88ed21d7-deee-4be7-ae83-a3eec9da3e6e@linux.ibm.com>
+Date: Mon, 23 Nov 2026 14:02:46 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -64,97 +85,77 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha512; boundary="------58b4c18d041a1900b7efe55bc7f3f43ca00cda905f3a1cbf8a2befe5d918f9b7"; charset=utf-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 0/2] KVM: s390: fix migration mode teardown in memslot
+ handling
+To: Gautam Gala <ggala@linux.ibm.com>, kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Steffen Eiden <seiden@linux.ibm.com>,
+        Andreas Grapentin <gra@linux.ibm.com>, Marc Zyngier <maz@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>
+References: <20261120075345.116521-1-ggala@linux.ibm.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20261120075345.116521-1-ggala@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=SoQFe/O0 c=1 sm=1 tr=0 ts=6b04397b cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=LV0xR08TYvLYdXShQnMA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIzMDA1MCBTYWx0ZWRfX0BFX6BCOJLNN
+ 0B94/Z+Ymhe/dEjyexfY9OQh9YbmAqTm8LoWRgn9tQVG9vW5K0g+HDOfiGuUVfeoHU4r8jvhDAe
+ Aganm3yHyDV641SiyJ8pIulsNAXdsdU=
+X-Proofpoint-ORIG-GUID: 4JmKci6gwdefVd5US6YZG9z-msgTQKnv
+X-Proofpoint-GUID: 4JmKci6gwdefVd5US6YZG9z-msgTQKnv
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIzMDA1MCBTYWx0ZWRfX7/4uWZj7RNoh
+ BhsCblQyUJtOjTeS6eQpoG6dgszHTqiG/bXlU0wmi7cCrXZmsR/8O6EBOCgPyxa+UVniV1JRdNP
+ SW3CdfhmMArNe87pvYWW4ACykEcsZKj+RveRgPrNbEDhihoa5m1yCMiRPp/xXcKcFBh0IxoK9hT
+ ejnU4xus/rnirbe/NwwLj23nJPdgp/wonxAKtWkCFAAosbRTmrRK4oVZnedERXAZqDKWpTW4mGO
+ 1o1qrinmyXWdi7OZM65BmO3/Bc32CM9sKK1In87pYkLuqSRwhxMT4uLImLga9NbAdz8oo3LkUEN
+ KIrI1zfvyNzdxS0saI+u5zI1MBF3yTouldJjT7G0DRsUkqCpFj46YzJ7G5wuhOd2uE/rXPLYWPf
+ mRg9OHezh35mkcVKYhi2fTJgngtft4wafaFMHYu1dloQbuTQDsklQUujIZqxdVv/xwVFJzxWsDY
+ YIM/fn0z7MWCha1xNDg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-23_02,2026-11-23_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 spamscore=0 bulkscore=0 adultscore=0
+ lowpriorityscore=0 clxscore=1015 malwarescore=0 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611230050
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------58b4c18d041a1900b7efe55bc7f3f43ca00cda905f3a1cbf8a2befe5d918f9b7
-Content-Type: multipart/mixed;boundary=---------------------d069c3b756c1c87bc344816b0df5f7b0
+Am 20.11.26 um 08:53 schrieb Gautam Gala:
+> Two small fixes for migration mode handling in
+> s390_kvm_mmu_prepare_memory_region().
+> 
+> Patch 1 fixes an error-path bug: if the mmu cache reservation fails
+> after migration mode was already stopped, the ioctl fails but the CMMA
+> state cleared by kvm_s390_vm_stop_migration() cannot be restored, so an
+> in-flight migration aborts over an unrelated allocation failure.
+> Reserving the cache first keeps both memslots and migration state
+> untouched on failure.
+> 
+> Patch 2 is a cleanup on top: kvm_s390_vm_stop_migration() cannot fail,
+> so it returns void and the always-false WARN() at its call site is
+> dropped.
+> 
+> Gautam Gala (2):
+>    KVM: s390: reserve mmu cache before stopping migration mode
+>    KVM: s390: make kvm_s390_vm_stop_migration() void
+> 
+>   arch/s390/kvm/arm64/arm.h    |  3 +--
+>   arch/s390/kvm/gmap/kvm_mmu.c | 18 ++++++++++--------
+>   arch/s390/kvm/s390/s390.c    | 10 +++++-----
+>   arch/s390/kvm/s390/s390.h    |  2 +-
+>   4 files changed, 17 insertions(+), 16 deletions(-)
 
------------------------d069c3b756c1c87bc344816b0df5f7b0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;charset=utf-8
-
-Hi Eugenio,
-
-> Although I'm ok with the proposed patch as hardening or optimization,
-> this sounds more like a bug in get_rx_bufs. Where are the memory
-> addresses for these pieces stored if there are no more buffers in the
-> virtqueue? Or is it able to loop through the vq?
-
-Yes =E2=80=94 get_rx_bufs() loops around the same virtqueue when a
-non-conforming guest advances avail->idx while earlier descriptors are
-still in flight.  handle_rx() passes quota =3D UIO_MAXIOV (1024) for
-mergeable RX, and each vhost_get_vq_desc_n() call appends the
-translated buffer addresses into vq->iov (also sized to UIO_MAXIOV).
-Because vhost_get_avail_idx() compares avail_idx against
-vq->last_avail_idx rather than vq->last_used_idx, it rejects only when
-
-  (u16)(avail_idx - vq->last_avail_idx) > vq->num
-
-so the guest can reuse the 32 ring slots mid-packet and get_rx_bufs()
-appends those addresses again into vq->iov[32..63], returning
-headcount =3D 64.
-
-Bounding get_rx_bufs() (e.g. capping its quota against vq->num, or
-checking in-flight descriptors more broadly) is certainly worth
-looking at separately, while keeping the mask in
-vhost_add_used_n_in_order() keeps the dirty-logging cursor consistent
-with the publishing loop from commit e244725e86be.  If you think a
-follow-up check in get_rx_bufs() makes sense, I'm happy to look into
-that as a separate patch.
-
-> Can you post the reproducer? Even better if it is integrated in
-> tools/virtio/vhost_net_test.c.
-
-I just posted the standalone C reproducer in my reply to Jiaming in
-this thread.  Note that tools/virtio/vhost_net_test.c drives the ring
-through the conforming vring_new_virtqueue() / virtqueue_add_inbuf()
-API, whereas reproducing this requires a raw vring advancing avail->idx
-past last_used_idx + vq->num with VIRTIO_F_IN_ORDER |
-VIRTIO_NET_F_MRG_RXBUF | VHOST_F_LOG_ALL and VHOST_VRING_F_LOG set in
-VHOST_SET_VRING_ADDR.  If you'd still like a raw-vring test case added
-under tools/virtio/, I'm happy to include it in a v2 (along with fixing
-the minor 262 -> 260 byte used-ring size typo in the commit message).
-
-Thanks,
-YanXin
------------------------d069c3b756c1c87bc344816b0df5f7b0
-Content-Type: application/pgp-keys; filename="publickey - fadouse@pm.me - 0x99485AA3.asc"; name="publickey - fadouse@pm.me - 0x99485AA3.asc"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="publickey - fadouse@pm.me - 0x99485AA3.asc"; name="publickey - fadouse@pm.me - 0x99485AA3.asc"
-
-LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tCgp4ak1FYVV1T01SWUpLd1lCQkFI
-YVJ3OEJBUWRBdG5ZbFN6SFRMSEEySXp1TkUxQXk4SnJLVUN4NmhQKy8KdGM0TERYQ25yZXpOSFda
-aFpHOTFjMlZBY0cwdWJXVWdQR1poWkc5MWMyVkFjRzB1YldVK3dzQVJCQk1XCkNnQ0RCWUpwUzQ0
-eEF3c0pCd2tRdVoxZ3QrWG0yWFJGRkFBQUFBQUFIQUFnYzJGc2RFQnViM1JoZEdsdgpibk11YjNC
-bGJuQm5jR3B6TG05eVp6bTBCcDNlRVhSV2tuSWdDbFd3dmR4Wm1vMVhuVmI2RmthalhUVk0KMUIv
-akF4VUtDQVFXQUFJQkFoa0JBcHNEQWg0QkZpRUVtVWhhbzNaL0FuQkk0TEJZdVoxZ3QrWG0yWFFB
-CkFMcTJBUUQ3OEs2cGVkU1gzbGROeXFkM09IMXVNak8zdjdMWU1oTytsN2NuU0xXckVBRCtPQ1Nx
-MTFTZQphS29ic1ZHckxlalRNc21Nc1BCOGpueGZpZDNoQ04rcGV3VE9PQVJwUzQ0eEVnb3JCZ0VF
-QVpkVkFRVUIKQVFkQXdYZHpWSXFFSC94OEhaalIvUE90MkFpRmJFbTZZcVhYMmoydjJpS0RzUU1E
-QVFnSHdyNEVHQllLCkFIQUZnbWxMampFSkVMbWRZTGZsNXRsMFJSUUFBQUFBQUJ3QUlITmhiSFJB
-Ym05MFlYUnBiMjV6TG05dwpaVzV3WjNCcWN5NXZjbWRkS05RWURGV2NFVmQzeE9IZVFwNnN5bjc5
-TkZwTnFrSHoraXpwSUxCblVnS2IKREJZaEJKbElXcU4yZndKd1NPQ3dXTG1kWUxmbDV0bDBBQUR6
-UWdEL2NJSjA4OUprbm9nVHM2dnZRWitKCjNMUklEYUk5K1FtK1Q1cU9tTms0eVhFQkFMUElsSkNT
-OGFoNWRCWVphOUwrSHFqYkRtZVNnRG81OHVTeAoraVd3KzZVTAo9TXVzVAotLS0tLUVORCBQR1Ag
-UFVCTElDIEtFWSBCTE9DSy0tLS0tCg==
------------------------d069c3b756c1c87bc344816b0df5f7b0--
-
---------58b4c18d041a1900b7efe55bc7f3f43ca00cda905f3a1cbf8a2befe5d918f9b7
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wrsEARYKAG0FgmsENRsJELmdYLfl5tl0RRQAAAAAABwAIHNhbHRAbm90YXRp
-b25zLm9wZW5wZ3Bqcy5vcmdj965l96TGsIIKmmxQU32Zw/dVnWCzLdb8YQz0
-Gr3K8RYhBJlIWqN2fwJwSOCwWLmdYLfl5tl0AAD7hQD/fwtoieRvuhRodIxq
-IWCsEyxpCrl4gXWSL/hGE2HK77gBAPyNdErgg+xso5um/oMKGA/E16dhYy4H
-l2dwd5UCXaEH
-=1GBE
------END PGP SIGNATURE-----
-
-
---------58b4c18d041a1900b7efe55bc7f3f43ca00cda905f3a1cbf8a2befe5d918f9b7--
+Thanks applied. 
 
