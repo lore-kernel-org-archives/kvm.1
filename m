@@ -1,65 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795424788;
-	b=ooB4V1QuDEnh0Gvwdz9h5+z0kBA0IB0KRxnWw4afsv8f7O3aNGcsgYoZrQWihDAVpR4E
-	 4AlwjVQP/stJgcxSb1BHNXQUWLBXJKyiERJuNdT9fXmo/QyNPmJJUslYTNuwz4Mdfez28
-	 NrsuSrpEAXY0KXBhP0zS8V/1BjxVJnLq0QvM0sBQyVTo8DzRitGuRb5wYclwk6RpYnQ6K
-	 +9DVuGrLQ4+n9Ie1QkGpZDDXWpzYbanS1f3c43yDqNxduOCh8/1qIeD3KpvRwbBjfNkaT
-	 WGa7RKinCv9273mfZLc9cVTNVQcBVoNxAqUjLlhZyfBzhrpqHN/WBD9YEkDH9fT/JBA==
+	t=1795424950;
+	b=Oq3caeav14SueV8SeQMLII990v/g8JLNE1kY0+aRwZkJcMKtc94Rl36Xnemq0w/0MvY8
+	 BIbEv4JqN2RY+bVOwo/U5gXjPWZY4t6taPgoFAcrpsa8217JefTiQI9X+nJ7DrwqsHs3Q
+	 crKnGi3npX6MBo9FVwaH+YJsCabkcVyvfx4/nCwi4MoKytsGOsDJ16tzBi6R3dGgcImFq
+	 nIwKTxLYACJsSVydQ63eQoFKUb8yaLBW1I6wceLmu82noHp7QKdlgTin2ZFHAjJBxwcgQ
+	 nbz5g6taZ+UQuMsGnPXBIR/nwOriCwg4i+F2GojWzeGWgh5Z0F1iQK04Wzp24p6M+/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795424788;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=z3DrjhrQrO2BYHo1W8YewL8VZiJu1abw+mdAXkVRo10=;
-	b=j56fXpiCDQI4XBf4ao1VifKFBwtLkv9+laVRuz+1Ub6fCi5s8UfrDKf+ZcAmk/1ODXvw
-	 1dBUZQbpoD9oRjbHph/drW//pAKYU4ujgUIzB8X3+iEuQWKWvWGlFZCI1lq5lm1ULvxAy
-	 70QaLEqs+iqMPkgpuGXySi6ajUcBXfSezaXQtU0Pa4MAkGqI9oQCv7pYyB/e4udU80zr2
-	 lt/MdMKt8A2ZSgaSHBrLIqy/QBglSCLQIqRqqRuW1u4bZuEduNqzW9t4aRUm9nYcyqumM
-	 hAWilUxg8uOMCNIuI2ajzitSTWCpTfBYEjHzd1zIJnC3F2315Ier8SBHkUkkLaDhWmQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795424950;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=O02VVtRWSBlBTffNTMdkr0d21ECe3B1DyZ7TQUqkyYc=;
+	b=Oy2uh9N1/2hIyADVX6XuWeQ7lrts8uz4Bxq9BhDWvY7agjOfk1wvSi6qdnivrgmuwjKd
+	 bY/Ekkh6dRiRtf1UBDvKIXgf3WnolYwBa3GKUb/oCOBGT/UVm6H7M31kW7bmjvZd+bR8z
+	 +lbk2KXCkOQe+xB8M0a/doSE/Sl3v0iCUayu4wiRLU8Tt4EBswYuiAzNImPmhVom33R02
+	 OZb1m9CAZE8Ik34eXs1v4E8/gMffh8+GyERZwYHAkzgDSt0RqTxBt88OH80x0fqYivdhW
+	 SiN2rDPatPxNQ8duJ+sI6cWd/n52nDtoDvDGinOTLv7E71OCCewdNebI16yJFCMYhuA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Ev/KbF3O";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C426E606A31A;
-	Mon, 23 Nov 2026 09:06:28 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=qS0UZJq0;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A821606A321;
+	Mon, 23 Nov 2026 09:09:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A821606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ev/KbF3O
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866181F000C6;
-	Mon, 23 Nov 2026 09:06:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795424788;
-	bh=z3DrjhrQrO2BYHo1W8YewL8VZiJu1abw+mdAXkVRo10=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ev/KbF3OKJT1NrTyypHir43Ji3PypA3Ny9jOe/nVKGfsjHzqeP+Cwa+SPtqolXMGN
-	 lydZKWAOvT/HA8KHudaFIV+wagOvjUDyePIcmfTVqITJ9limgPbzSAN+FO1kMxrZMt
-	 6owFBS5no6R0UIhs/But10CR9q+ciC9TrvGjKNnlzVBK7ou00dslYtGotEAIEKIDT3
-	 0fQXhs/xSoF3Lkv6qqOkx8RJcVmJsK03JZkNV5cG30uqETnh/WIYOwF+okO9AdHcI6
-	 ezuJfAtXmsEFZDFKStxv7Jq4HAQo4w+gOXH/S2IQWa4/peGaVy9ZxxB2+J8JKKON0p
-	 CzCFWyHfddqZA==
-Date: Mon, 23 Nov 2026 11:06:23 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Lukas Wunner <lukas@wunner.de>, Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v1 00/10] PCI/TSM: Support guest TSM drivers
-Message-ID: <20261123090623.GK14811@unreal>
-References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
- <2026112325-emit-squeezing-5d96@gregkh>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=qS0UZJq0
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9B53A1476;
+	Mon, 23 Nov 2026 01:09:06 -0800 (PST)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 08FBC3F632;
+	Mon, 23 Nov 2026 01:09:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795424949; bh=jm/tu+I4qmiRATBKNiNwWj7t44LL0Pz4nclHyYCT45w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qS0UZJq0Kphetvr/RKKkXdDctKNYhKx2Lb7gDOhRTb+fw+Pt7bJLaCJFjIOCuaDet
+	 WzNxU0kfTkTwgpy1gCegKFTBnvk5ksbsvMaHz3veGEgevLHwY3BpX9MKubSvB90g1M
+	 OeAl6pNM3coIibp4WW/8Wwm3yziZe2NFBgy7L1Gg=
+Date: Mon, 23 Nov 2026 09:09:02 +0000
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-api@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, jgg@ziepe.ca, david.quigley@intel.com,
+	lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com,
+	cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com,
+	James.Bottomley@hansenpartnership.com, aik@amd.com,
+	jpiotrowski@nvidia.com, qinkun@google.com, pgonda@google.com,
+	jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com,
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com,
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com,
+	jarkko@kernel.org, zohar@linux.ibm.com, yeoreum.yun@arm.com,
+	aneesh.kumar@kernel.org, dave.jiang@intel.com, nik.borisov@suse.com,
+	sergii.dmytruk@3mdeb.com
+Subject: Re: [PATCH RFC v2 9/9] attestation: Add the TDX family implementation
+Message-ID: <awQCrnD5CtEhKRWz@e129823.arm.com>
+References: <20261113160838.2512652-1-jiri@resnulli.us>
+ <20261113160838.2512652-10-jiri@resnulli.us>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,46 +74,64 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2026112325-emit-squeezing-5d96@gregkh>
+In-Reply-To: <20261113160838.2512652-10-jiri@resnulli.us>
 
-On Mon, Nov 23, 2026 at 09:40:55AM +0100, Greg Kroah-Hartman wrote:
-> On Mon, Nov 23, 2026 at 02:03:27PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> > This series adds the PCI/TSM support needed by a TEE Security Manager
-> > (TSM) driver in a confidential guest. It adds device lock/unlock,
-> > helpers for recording device acceptance and parsing MMIO reports, and
-> > DMA callbacks used during PCI driver attachment. The guest TSM driver and
-> > attestation commands using these interfaces are in follow-up series.
-> > 
-> > This series is based on Dan Williams' "[PATCH v2 00/19] PCI/TSM: TEE I/O
-> > infrastructure" posting [1], particularly the guest LOCK/UNLOCK, ACCEPT
-> > and MMIO report work [2-4]. It retains device_cc_accepted() and the
-> > confidential-device acceptance model from that posting, with changes
-> > adapted to the current PCI/TSM structures and reference APIs. Dan's
-> > device-core acceptance helper and per-host-bridge IDE stream reporting
-> > patch are also included.
-> > 
-> > This series does not adopt the Device Trust changes from Dan's "Device
-> > Evidence and Trust for PCI Security Protocol (TDISP)" [5]. That work is
-> > being developed separately in Leon Romanovsky's "driver core: Authorize
-> > device trust before driver binding" series, [6]. Confidential-device
-> > acceptance is kept separate from that driver-binding trust policy.
-> 
-> But it should not, as you are making driver core changes that will
-> mirror the same thing that that patchset is attempting to do.  Please
-> work together on this.
+Hi Jiri,
 
-+10000000,
+[...]
 
-Greg,
+> +static void __iomem *tdx_attestation_log_map(size_t *length)
+> +{
+> +	struct acpi_table_header *header;
+> +	struct acpi_table_ccel *ccel;
+> +	void __iomem *log = NULL;
+> +
+> +	if (ACPI_FAILURE(acpi_get_table(ACPI_SIG_CCEL, 0, &header)))
+> +		return NULL;
+> +	ccel = container_of(header, struct acpi_table_ccel, header);
+> +	if (header->length >= sizeof(*ccel) && ccel->log_area_start_address &&
+> +	    ccel->log_area_minimum_length &&
+> +	    ccel->log_area_minimum_length <= UINT_MAX)
+> +		log = acpi_os_map_iomem(ccel->log_area_start_address,
+> +					ccel->log_area_minimum_length);
+> +	if (log)
+> +		*length = ccel->log_area_minimum_length;
+> +	acpi_put_table(header);
+> +	return log;
+> +}
+> +
 
-This series came as a surprise to me given the fact that device trust
-series is exactly for that - allow confidential computing.
+I think we don't need to dump log area with the log_area_minimum_length
+since the area would include none-event otherwise, pre-exist tool (i.e.
+tpm2_eventlog) reports error for them like:
 
-Adversarial is equal to the "cc_accepted".
+  ...
+  - EventNum: 21
+    PCRIndex: 2
+    EventType: EV_EFI_ACTION
+    DigestCount: 1
+    Digests:
+    - AlgorithmId: sha256
+      Digest: "b54f7542cbd872a81a9d9dea839b2b8d747c7ebd5ea6615c40f42f44a6dbeba0"
+    EventSize: 40
+    Event: |-
+      Exit Boot Services Returned with Success
+  ERROR: corrupted log, insufficient size for event header: 3
+  ERROR: failed to parse tpm2 eventlog
+  ERROR: Unable to run tpm2_eventlog
 
-Thanks
 
-> 
-> thanks,
-> 
-> greg k-h
+So, what about export *real size* of eventlog like
+tpm2_calc_event_log_size()?
+
+
+Otherwise, look good to me.
+
+[...]
+
+
+Thanks!
+
+-- 
+Sincerely,
+Yeoreum Yun
