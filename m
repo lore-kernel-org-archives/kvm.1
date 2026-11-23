@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795430607;
-	b=Ed+wuCMdUpggjMpITlDDkSWuHnsAkMIGXdMkYMcF9qF3Fg/+WtQssFNRsY8hcJTb2qPO
-	 NTKhRDUDQpbIgV8/No5MTFaLq/Z0ETu2rqsl/1YylKG0svKUeUSinIgyfoBqRKmx1pCJ0
-	 cK8lAlrilAIszJMykuXCaQflY7m0GTwF2nAh2L480QCtemgcajyuF3LAwdWdtlUXPq7+M
-	 4/e2mXlxkr7Z3WsHd2bPpgn7j73T17L1/qQ53OaFlRSPIwSn25PcIlU4x5KVBs0iQuY2t
-	 jlV2s7H4E77I2bT0uWFzeHHOkWegrTdGukth2tp1db490+wi+l5KkZILiWC01EfXqJg==
+	t=1795430610;
+	b=g483XTPA2SerH6QFz+LWQAoYuh73XX9Ed7oXs67Xjq7bMiPZwg7JyMJnoBtnbKgBukKI
+	 zITBcRn1FhiHJk91J/obT7AoXsaL9bsZE/28oemHxMDHkA0kaNrTKFX4q/2ryCUIZKGHz
+	 bL/02kCr4td89MlDKo/4AnCIy49Ci/X50E7bV5aphkY6yP4koTX4SU9swZiMY2hdeG4nK
+	 rZ5lv42lfFtaaPUdRMBQMerxdUofxyfWEhdq7MFGGLXcP+jEl8vNSePHFWuYKjoYgKO5o
+	 /+F9Awm1HweFdDh0XaHtm2BOVdnGSg9En6WOpQA8ZAmz1b0Kaxb0K6g/hiJj3RQDftA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795430607;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795430610;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=xDq8jWKD1Tkn7UDdHQMx+yCJ9a+gMe3VhSKH6tJC09E=;
-	b=RsNrM0MYedqMausOk/o0ACAwZOpT9wizHlsS27mvRKTGUaOmE45cQ4S0chKBfWji72xa
-	 HoS5xxKQ9LKeWXWQYmLtvwochIqwoL9i2a0omRihZeIqEp9hsJdzPX/2w4LFeAYrTdR72
-	 af4ffcHH4cleu/KBbf+Co7J6OC4dwopKkaf7AZvBPLEZHNJnT7luY5EGphaAGf55k+ws9
-	 jW6oje4eSd9uIHILL8172cGEm3ar3Wltw65ilnGvJbiSNtE5SOLZJQ2XwdPMWbAvgRaeA
-	 N4XH9AZlhnhlb0JcvY86MmcoTOF3UmerYxwa8jd1CUDXTjlgnhr3rATNWkJvT+c5kPg==
+	bh=F8qHgosTivfubEojhD9h/g4AbrUIaCm94vrYMofZ18Q=;
+	b=fAlXh25VpuSgHrqZia71U0I5THGevlkBcN3l9gZydvsSPv+c2LgMOIk4JX9I+JduiFS5
+	 Nl+2vZQFcFpd57VpqfgfrJA65z/TPPRXn18oTomShpc2yoTmh+AH/r0UZ0bO6B/VGwY54
+	 KdpbD6osQu4eqlRTUn1AHG0ppzkm/ziEYwUhnJHV9W/kh7YV2Gxec14s6SypvRFPCElew
+	 v5LPlGQsrqzoPpKXTTkD28DlEJWya/EH0U0nLUK7RPpyZhG4BG1nOfpBexvo+89YmFQGo
+	 wEmXJvrTvy5hQ0haazV0J9OtcaU5fiahJDB+mDhTfhmIUN3jr2cXTihFd2yZof9m3YQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=nDJSF8o6;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=WtMPcweJ;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C39B606A31F;
-	Mon, 23 Nov 2026 10:43:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2C39B606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA40606A685;
+	Mon, 23 Nov 2026 10:43:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4EA40606A685
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=nDJSF8o6
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=WtMPcweJ
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A4DB919F0;
-	Mon, 23 Nov 2026 02:43:22 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D44D719F6;
+	Mon, 23 Nov 2026 02:43:26 -0800 (PST)
 Received: from e122027.arm.com (unknown [10.57.63.212])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 190DC3F632;
-	Mon, 23 Nov 2026 02:43:20 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EE50C3F9AB;
+	Mon, 23 Nov 2026 02:43:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795430605; bh=h+elrh3KEqbdurKxnJLUmiROABEwZ9CVOBbA0PVHx30=;
+	t=1795430609; bh=GpnTkMmsNJrsBbQSV3YzUlyu+crXLKIz/ySS7mBnD+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nDJSF8o6uiOvLvGXdpQaXO69AQhuiN3ZhyGM9GndC5RsxTnvAlFze5gb1DQNA3Rxq
-	 D40BD4SgqSuXkLYmGsyBwZiLI00m8saHhVgkYnhxcdlUiydk0ku8pN42A7roTbvO6F
-	 8ijMEUbGZ7oquk1su1qixvrqn8fec0ht8lOU6+70=
+	b=WtMPcweJKiumfvm11ci2Pif5apy4/M+un7rFjM4tdSighLl1mM+siXPnz+UpNSH0j
+	 7cUmfuBWsTjpfoILV2zA8uz2BI9fGqIjBO2of0XKlEkeP3b92Mj4Phspor14tDYg8p
+	 0w+JRxyVK4FvYxXps+WJPHlENuraEqCYtoGFK6dU=
 From: Steven Price <steven.price@arm.com>
 To: kvm@vger.kernel.org,
 	kvmarm@lists.linux.dev
@@ -70,9 +70,9 @@ Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Lorenzo Pieralisi <lpieralisi@kernel.org>,
 	Kohei Enju <enju.kohei@fujitsu.com>,
 	Steven Price <steven.price@arm.com>
-Subject: [PATCH v4 08/11] KVM: Allow architectures to reject memslot changes before invalidation
-Date: Mon, 23 Nov 2026 10:42:28 +0000
-Message-ID: <20261123104233.95710-9-steven.price@arm.com>
+Subject: [PATCH v4 09/11] KVM: arm64: CCA: Prevent memslot modifications after Realm creation
+Date: Mon, 23 Nov 2026 10:42:29 +0000
+Message-ID: <20261123104233.95710-10-steven.price@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261123104233.95710-1-steven.price@arm.com>
 References: <20261123104233.95710-1-steven.price@arm.com>
@@ -89,193 +89,122 @@ Content-Transfer-Encoding: 8bit
 
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-The next patch needs to reject changes to a realm guest_memfd memslot
-before invalidation. KVM currently invalidates the slot and calls
-kvm_arch_flush_shadow_memslot() before kvm_arch_prepare_memory_region()
-can reject the request. For a realm, invalidation unmaps stage-2
-mappings; restoring the old memslot on failure does not restore those
-mappings. Thus a rejected deletion or move would still have side effects.
+Once the Realm is created, prevent changes to guest_memfd backed
+memslots, which can provide private memory. Validate these changes
+before KVM invalidates the old memslot, so a rejected deletion leaves
+its stage-2 mappings intact. Realm stage-2 faults will also validate
+the private memory backing in a later commit.
 
-Add kvm_arch_validate_memory_region() and invoke it before invalidating
-the slot, with slots_lock and slots_arch_lock held. The hook performs
-validation only, allowing architectures to reject a request without
-changing the memslot or its mappings. Provide a weak no-op implementation
-for architectures that do not need early validation.
+Require Realm memslots to lie in the lower half of the IPA space, as the
+upper, shared half aliases the lower, protected half.
 
-Move arm64's existing pVM checks into the new hook as part of early
-validation. pVM invalidation uses no_stage2_unmap_range(), so the realm
-case motivates this hook. Keep resource preparation after invalidation,
-since invalidation drops slots_arch_lock and allows concurrent updates
-to architecture-specific memslot metadata.
+Define kvm_arch_has_private_mem() so generic KVM recognizes Realm VMs
+as supporting private memory. Defining the macro also makes
+gmem_in_place_conversion true for every arm64 VM, so guest_memfd
+memslots are marked gmem-only even for non-Realm VMs. A well-formed
+KVM_SET_MEMORY_ATTRIBUTES2 request on a non-Realm guest_memfd now
+reaches the VM check and returns -EINVAL instead of -ENOTTY.
+
+Additionally, similar to pKVM, do not support dirty logging or
+read-only memslots.
 
 Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 Signed-off-by: Steven Price <steven.price@arm.com>
 
 ---
 Changes since v3:
-- Clarify that Realm stage-2 invalidation motivates the early
-  validation hook; pVM invalidation does not unmap stage-2.
----
- arch/arm64/kvm/mmu.c     | 22 ++++++++++++++++------
- arch/arm64/kvm/pkvm.c    |  2 +-
- include/linux/kvm_host.h |  4 ++++
- virt/kvm/kvm_main.c      | 33 ++++++++++++++++++++++++++-------
- 4 files changed, 47 insertions(+), 14 deletions(-)
+- Explain the arm64-wide in-place conversion effect and keep the
+  general IPA limit comment.
 
+Changes since v1:
+- Preserve private mappings if KVM invalidates a Realm guest_memfd
+  slot before the prepare hook rejects its deletion.
+---
+ arch/arm64/include/asm/kvm_host.h |  2 ++
+ arch/arm64/kvm/mmu.c              | 37 ++++++++++++++++++++++++-------
+ 2 files changed, 31 insertions(+), 8 deletions(-)
+
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+index 3ddeddfacd06..55673d08e3eb 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -1607,6 +1607,8 @@ struct kvm *kvm_arch_alloc_vm(void);
+ 
+ #define kvm_vm_is_realm(kvm)		((kvm)->arch.vm_flavor == VM_REALM)
+ 
++#define kvm_arch_has_private_mem(kvm) kvm_vm_is_realm(kvm)
++
+ #define kvm_has_mte(kvm)					\
+ 	(system_supports_mte() &&				\
+ 	 test_bit(KVM_ARCH_FLAG_MTE_ENABLED, &(kvm)->arch.flags))
 diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index 4a975715375c..800333a345cd 100644
+index 800333a345cd..9af5fe6d87f0 100644
 --- a/arch/arm64/kvm/mmu.c
 +++ b/arch/arm64/kvm/mmu.c
-@@ -2854,13 +2854,12 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
- 	}
- }
- 
--int kvm_arch_prepare_memory_region(struct kvm *kvm,
--				   const struct kvm_memory_slot *old,
--				   struct kvm_memory_slot *new,
--				   enum kvm_mr_change change)
-+int kvm_arch_validate_memory_region(struct kvm *kvm,
-+				    const struct kvm_memory_slot *old,
-+				    const struct kvm_memory_slot *new,
-+				    enum kvm_mr_change change)
+@@ -2861,17 +2861,32 @@ int kvm_arch_validate_memory_region(struct kvm *kvm,
  {
--	hva_t hva, reg_end;
--	int ret = 0;
-+	lockdep_assert_held(&kvm->slots_lock);
+ 	lockdep_assert_held(&kvm->slots_lock);
  
- 	if (kvm_vm_is_protected(kvm)) {
+-	if (kvm_vm_is_protected(kvm)) {
++	if (kvm_vm_is_protected(kvm) && new &&
++	    (new->flags & (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY)))
++		return -EPERM;
++
++	switch (kvm->arch.vm_flavor) {
++	case VM_PROTECTED_PKVM:
  		/* Cannot modify memslots once a pVM has run. */
-@@ -2875,6 +2874,17 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
- 		}
+ 		if (pkvm_hyp_vm_is_created(kvm) &&
+-		    (change == KVM_MR_DELETE || change == KVM_MR_MOVE)) {
++		    (change == KVM_MR_DELETE || change == KVM_MR_MOVE))
+ 			return -EPERM;
+-		}
++		break;
++	case VM_REALM:
++		/*
++		 * Once the Realm is created, we cannot modify any slots that
++		 * could be providing private memory. i.e., guest_memfd backed
++		 * slots.
++		 * TODO: Handle trusted device private memory slots
++		 */
++		if (!kvm_realm_is_created(kvm))
++			break;
+ 
+-		if (new &&
+-		    new->flags & (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY)) {
++		if (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new))
+ 			return -EPERM;
+-		}
++		break;
++	default:
++		break;
  	}
- 
-+	return 0;
-+}
-+
-+int kvm_arch_prepare_memory_region(struct kvm *kvm,
-+				   const struct kvm_memory_slot *old,
-+				   struct kvm_memory_slot *new,
-+				   enum kvm_mr_change change)
-+{
-+	hva_t hva, reg_end;
-+	int ret = 0;
-+
- 	if (change != KVM_MR_CREATE && change != KVM_MR_MOVE &&
- 			change != KVM_MR_FLAGS_ONLY)
- 		return 0;
-diff --git a/arch/arm64/kvm/pkvm.c b/arch/arm64/kvm/pkvm.c
-index 8241a05e25d1..72f98f3bd6a6 100644
---- a/arch/arm64/kvm/pkvm.c
-+++ b/arch/arm64/kvm/pkvm.c
-@@ -262,7 +262,7 @@ int pkvm_create_hyp_vm(struct kvm *kvm)
- 	int ret = 0;
- 
- 	/*
--	 * Synchronise with kvm_arch_prepare_memory_region(), as we
-+	 * Synchronise with kvm_arch_validate_memory_region(), as we
- 	 * prevent memslot modifications on a pVM that has been run.
- 	 */
- 	mutex_lock(&kvm->slots_lock);
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index f65728a713ec..15848221860f 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1255,6 +1255,10 @@ int kvm_set_internal_memslot(struct kvm *kvm,
- 			     const struct kvm_userspace_memory_region2 *mem);
- void kvm_arch_free_memslot(struct kvm *kvm, struct kvm_memory_slot *slot);
- void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen);
-+int kvm_arch_validate_memory_region(struct kvm *kvm,
-+				    const struct kvm_memory_slot *old,
-+				    const struct kvm_memory_slot *new,
-+				    enum kvm_mr_change change);
- int kvm_arch_prepare_memory_region(struct kvm *kvm,
- 				const struct kvm_memory_slot *old,
- 				struct kvm_memory_slot *new,
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index cf4cb586f140..3ef370d71818 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -1682,6 +1682,20 @@ static void kvm_swap_active_memslots(struct kvm *kvm, int as_id)
- 	slots->generation = gen;
- }
- 
-+/*
-+ * Validate a memslot change before invalidation, which may irreversibly reclaim
-+ * private guest memory. Called with slots_lock and slots_arch_lock held.
-+ * Implementations must not modify memslot state or allocate resources; leave
-+ * those operations to kvm_arch_prepare_memory_region().
-+ */
-+__weak int kvm_arch_validate_memory_region(struct kvm *kvm,
-+					   const struct kvm_memory_slot *old,
-+					   const struct kvm_memory_slot *new,
-+					   enum kvm_mr_change change)
-+{
-+	return 0;
-+}
-+
- static int kvm_prepare_memory_region(struct kvm *kvm,
- 				     const struct kvm_memory_slot *old,
- 				     struct kvm_memory_slot *new,
-@@ -1934,6 +1948,10 @@ static int kvm_set_memslot(struct kvm *kvm,
- 	 */
- 	mutex_lock(&kvm->slots_arch_lock);
- 
-+	r = kvm_arch_validate_memory_region(kvm, old, new, change);
-+	if (r)
-+		goto unlock_err;
-+
- 	/*
- 	 * Invalidate the old slot if it's being deleted or moved.  This is
- 	 * done prior to actually deleting/moving the memslot to allow vCPUs to
-@@ -1950,22 +1968,22 @@ static int kvm_set_memslot(struct kvm *kvm,
- 	if (change == KVM_MR_DELETE || change == KVM_MR_MOVE) {
- 		invalid_slot = kzalloc_obj(*invalid_slot, GFP_KERNEL_ACCOUNT);
- 		if (!invalid_slot) {
--			mutex_unlock(&kvm->slots_arch_lock);
--			return -ENOMEM;
-+			r = -ENOMEM;
-+			goto unlock_err;
- 		}
- 		kvm_invalidate_memslot(kvm, old, invalid_slot);
- 	}
- 
- 	r = kvm_prepare_memory_region(kvm, old, new, change);
- 	if (r)
--		goto err;
-+		goto revert_slot;
- 
- 	if (change == KVM_MR_CREATE && (new->flags & KVM_MEM_GUEST_MEMFD)) {
- 		r = kvm_gmem_commit_memory_region(kvm, new);
- 		if (r) {
- 			kvm_arch_free_memslot(kvm, new);
- 			kvm_destroy_dirty_bitmap(new);
--			goto err;
-+			goto unlock_err;
- 		}
- 	}
- 
-@@ -2000,7 +2018,7 @@ static int kvm_set_memslot(struct kvm *kvm,
  
  	return 0;
+@@ -2883,6 +2898,7 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+ 				   enum kvm_mr_change change)
+ {
+ 	hva_t hva, reg_end;
++	gfn_t ipa_limit;
+ 	int ret = 0;
  
--err:
-+revert_slot:
+ 	if (change != KVM_MR_CREATE && change != KVM_MR_MOVE &&
+@@ -2891,9 +2907,14 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+ 
  	/*
- 	 * For DELETE/MOVE, revert the above INVALID change.  No modifications
- 	 * required since the original slot was preserved in the inactive slots.
-@@ -2009,9 +2027,10 @@ static int kvm_set_memslot(struct kvm *kvm,
- 	if (change == KVM_MR_DELETE || change == KVM_MR_MOVE) {
- 		kvm_activate_memslot(kvm, invalid_slot, old);
- 		kfree(invalid_slot);
--	} else {
--		mutex_unlock(&kvm->slots_arch_lock);
-+		return r;
- 	}
-+unlock_err:
-+	mutex_unlock(&kvm->slots_arch_lock);
- 	return r;
- }
+ 	 * Prevent userspace from creating a memory region outside of the IPA
+-	 * space addressable by the KVM guest IPA space.
++	 * space addressable by the KVM guest IPA space. Realm shared IPAs alias
++	 * the corresponding private IPAs, so Realm memslots must reside entirely
++	 * in the lower half of that space.
+ 	 */
+-	if ((new->base_gfn + new->npages) > (kvm_phys_size(&kvm->arch.mmu) >> PAGE_SHIFT))
++	ipa_limit = kvm_phys_size(&kvm->arch.mmu) >> PAGE_SHIFT;
++	if (kvm_vm_is_realm(kvm))
++		ipa_limit >>= 1;
++	if (new->base_gfn + new->npages > ipa_limit)
+ 		return -EFAULT;
  
+ 	/*
 -- 
 2.43.0
 
