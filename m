@@ -1,80 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795430137;
-	b=snEklHAu/s7tYxM2OD0SoWNC3wkd5zcKmCZliy2pGgo/R5RBU9J3WSAHbV/lj1nsFisr
-	 eASQxxdsK66Ivg6zIX9zA8dSte1nGtj/L/W7y2OUwSi8GJcaf2CrAkOo30OMluFU4fOj9
-	 GZGMsJQfHtnamzW6rcmGKcDhuq+wfmiGI890QNGFEbfYXcZTPVeP2Wz1Ceqgf4chY+Jp4
-	 VIxi1g0qfJl6edEqwLnFYEaDyxbcAKgRI39zWjZ0g/QwbFg0QMWkt6u+PYAyqavoMU6C3
-	 SPZGeDEwTzpUiOEUeTvB+U3xK3/pIG1a0GqgKVicq1BUkXFJxri3kjtRQ3Wr8LZR/oA==
+	t=1795430568;
+	b=d2M3uPyla+AEOVplS3RrdrJXvMsQ8Wpmsc/LhOtGDCoECcGu5tQ9ZExZuF2yvk45Y5oo
+	 c3z7uargMJAjuBJUSDsVv5QgeCoE/meseuuTPypbJBQqrj8jWQa4KPQzsksCzDkVGUeFY
+	 dq5N2G9MJYli7ShK9Jq98XX+A9jgCt1bnDkB92ycH6o0u5NUFf1NjDRxAeqFHREqxQXXc
+	 MRP57aT4UI0wS7nb8p3I2E8+zZpcgvDwuLF+Xl9CLxBH9t5hrNw5GF+z/5S/5GRYJjYps
+	 RABTRVzrYoszW8AdUHK6K5tKJWLSWZWrrgHXUQK52TE/Sgfj52H7sEVj9/rGGldJXXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795430137;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=ZO4wNAj29ID7m/8F00or4c6Hhyo17pCJTJybg9NHhHU=;
-	b=pg2rIHIxzIGcoSEivbcuosl9+13SmdieqRMxecQGtdIuZ7W+fft/KbElA0DxVfRyR7fD
-	 u7s6wSn7hH/xWi52tefehWuGhtzwL3ZvX0WinHtaG2l+eenKjcMXD2Q2hahrDKDaEnget
-	 Wlr+XBZ1Z3xCWdcnOw77dLdmTiq+1cRkqNrj2O9sH89zU0Q0IwJn/d/1ZF54s0PSJxc4M
-	 BB6bsbi08l8o58SwtGuf+JW+zvTIkcn/oY65At653e37h5AFKsMKlYuXFiWxYDuKaPZzP
-	 Xphwz4KYfQstSEQ/gkDERRwVHk9VWklZ/iWsEifYD7noY9V/ans1l0VdI9dszlgI1Zg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795430568;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=Be/8xc5ORGOFPfFJHIrsM95JcXKu+UwLET9LQk3L8R0=;
+	b=vXEbn8CGQELLFEF5FhY/MeHUL4EtCMQXdWQ6cNWtQYj/beN+DZ0nUyGfITPKMzGZ129f
+	 Aej7tIdAHvNDISuqzPgqCToI4Wq0ZXKLL3XW1NM4ciqVVobgXTeRAB2+/YRhFj7CAQtrl
+	 ndyCTIH7264rJnkw+N1N8EuP3HyWxiyD3Di8qdYgNzg4AwuR1WOJ+bXoH19NLCGYL3M5s
+	 rzmbfz2M6bFbiSnl0sqnIsduptPR28Z8gWiWvYFCIsHohmFSwylyns207W2boFq/d9yLG
+	 3XxMgA0wk1IUXEMYiLJvkF2V+jQCVA5Paa9SNdiuXR5HoftyqNSL3/PDh4ACClqLBPg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iD4XBVCy;
-	arc=none smtp.remote-ip=198.175.65.9
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D11606A31A;
-	Mon, 23 Nov 2026 10:35:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90D11606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=dMpXN6Jk;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC60606A6A6;
+	Mon, 23 Nov 2026 10:42:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AFC60606A6A6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iD4XBVCy
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795430137; x=1826966137;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WtkR+urVVb+auFp9r6p/Vhvy/v3Cd5NomGcGQA0332k=;
-  b=iD4XBVCy1qXqz5cmK4Dkr/Nj0m5xDBRSHjmP6m+Q7/PDErE+nAMaklEA
-   R71s9oDvnRUv9j826qwrqhspWHQlBfV9F5owusLK+we2cqd8clDW/4rSB
-   +ZbqB3dksrMACFWYfxFWAlH7/7nCwnQjVS0SHyh+fjYDVTyWmaYN5zBvv
-   qpPmW7uJapDh/rQeyfr8bVI064Dp/ba4FpYimF0q9v7FALFTHZ4PHtuZv
-   HVBfwPtpKChwxfDFL3P5fKmWUoMOw+yvJAJ038aR8HZLDHK7sLuJ9FnJa
-   nLZkps+N1SRlf43QBXHIJAgWWOJ50VvYUxVZ+77dCkZxJtdRcGIMErSYF
-   Q==;
-X-CSE-ConnectionGUID: kTEuJvyWS1ue6rH8LDq06g==
-X-CSE-MsgGUID: dYmpzDkaRIOEwfMr1ZtZ/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4080044"
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="4080044"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 02:35:37 -0800
-X-CSE-ConnectionGUID: RF2iP6doQIOftGwuxqeJqg==
-X-CSE-MsgGUID: i0Y78dacQxumlSb9BW/6TQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="11583821"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa006.fm.intel.com with ESMTP; 23 Nov 2026 02:35:33 -0800
-Date: Mon, 23 Nov 2026 18:25:54 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Lu Baolu <baolu.lu@linux.intel.com>
-Cc: iommu@lists.linux.dev, x86@kernel.org, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
-	Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, xiaoyao.li@intel.com,
-	Chao Gao <chao.gao@intel.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/9] x86/virt/tdx: Export Dynamic PAMT helpers to
- tdx-host
-Message-ID: <awQUsufmV3NipqGX@yilunxu-OptiPlex-7050>
-References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
- <20261112043054.2664857-4-baolu.lu@linux.intel.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=dMpXN6Jk
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 34B5D175D;
+	Mon, 23 Nov 2026 02:42:44 -0800 (PST)
+Received: from e122027.arm.com (unknown [10.57.63.212])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9CF3C3F632;
+	Mon, 23 Nov 2026 02:42:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795430567; bh=6OOoc7VR1HsEaaNieiQpuBPH2IyUlBC3LPyM0eQOoUE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=dMpXN6Jk6PaxuEz6PytQ5F57ADGDhjyFXPrjYMqRSTAui9cUTO5hbHLgaDY4/kjH8
+	 MBArU3H5JOUAILQ4JTvpeuq65gngelUudGofuSJJ3bTFQuJDZmEsDB1ym/b4qFzh6W
+	 Owq/mj4aFDUAykFvQc/iN6ynR6YRd22E26as7rNQ=
+From: Steven Price <steven.price@arm.com>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	WeiLin.Chang@arm.com,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Kohei Enju <enju.kohei@fujitsu.com>
+Subject: [PATCH v4 00/11] KVM: arm64: CCA: Prepare Realm memory management
+Date: Mon, 23 Nov 2026 10:42:20 +0000
+Message-ID: <20261123104233.95710-1-steven.price@arm.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,32 +82,105 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261112043054.2664857-4-baolu.lu@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 12, 2026 at 12:30:48PM +0800, Lu Baolu wrote:
-> With Dynamic PAMT, any page handed to the TDX module needs PAMT backing
-> first, via tdx_pamt_get(), and must drop it with tdx_pamt_put() once the
-> TDX module gives the page back. Besides KVM, the tdx-host driver now
-> hands pages to the TDX module: the IOMMU_MT pages for TDH.IOMMU.SETUP.
-> 
-> Export the two helpers to tdx-host as well. A symbol can only be
-> exported once, so replace EXPORT_SYMBOL_FOR_KVM() with an explicit list.
-> Only kvm-intel calls these helpers in KVM.
+This series adds the memory management plumbing for CCA, building on the
+basic RMM support [1]. Thanks to everyone who reviewed and tested the
+earlier versions.
 
-We are seeking for some simplified intial implementation without DPAMT
-for TDX huge page feature. So we could also drop DPAMT support for TDX
-Trusted I/O currently.
+The patches introduce internal Realm VM state, prepare Realm stage-2
+setup and teardown, and provide RTT mapping and invalidation helpers.
+Realm memslots are restricted to the lower half of the IPA space because
+the protected and shared halves alias each other. The final patch
+connects the helpers to KVM's stage-2 MMU operations.
 
-As an temporary solution, we can disable TDX Trusted I/O if DPAMT is on.
+This is the memory management portion of the larger Realm host series.
+Realm descriptor creation, REC entry and exit, activation, and the new
+uAPI follow in the integration stack. This series alone does not enable
+Realm creation.
 
-for example:
+The integration branch [2] includes Realm creation, REC entry and exit,
+and the remaining host support on top of this series. The MM branch [3]
+contains just this series.
 
-static inline bool tdx_supports_trusted_io(const struct tdx_sys_info *sysinfo)
-{
-	if (tdx_supports_dynamic_pamt(sysinfo))
-		return false;
+Changes since v3:
+- Keep pKVM-specific protected VM handling in the nVHE path and move
+  stage-2 destruction dispatch before basic Realm infrastructure.
+- Derive the Realm RTT start level from VTCR, matching KVM's minimum
+  two-level stage-2 layout for narrow IPAs on 64K-page hosts.
+- Split Realm guest_memfd and userspace-backed faults into dedicated
+  paths, leaving the native fault handlers unchanged.
+- Unmap earlier shared mappings when a later RMI map call fails.
+- Clarify the early memslot validation rationale and the arm64-wide
+  effect of in-place guest_memfd conversion.
 
-	...
-}
+Changes since v2:
+- Move RMM mode reservation and RMI availability and feature checks to
+  the integration stack.
+- Require mmap-capable guest_memfd backing for all arm64 VMs and route
+  all guest_memfd faults through gmem_abort().
+- Store the Realm Descriptor physical address from initial Realm setup,
+  and improve SRO cleanup and RTT teardown error handling.
+- Use a local MMU cache for RTT invalidation, handle failed splits, and
+  validate returned RTT levels.
+- Bound protected RMI mapping calls to the encoded range and tighten
+  RTT creation, retry, and error handling.
+- Split common stage-2 destruction dispatch into its own patch before
+  registering the Realm stage-2 MMU operations.
+
+Changes since v1:
+- Add a guest_memfd prerequisite patch that checks whether the backing
+  file supports mmap when preparing an arm64 memslot.
+- Combine the RMI availability and feature checks into one patch, and
+  move Realm vCPU feature restrictions to the integration stack.
+- Correct Realm IPA sizing and RTT teardown, including teardown before
+  activation, RTT accounting, and handling of missing or folded RTTs.
+- Rework RTT mapping to respect IPA and physical alignment, handle
+  partial RMI progress, and retry interrupted operations.
+- Preserve private mappings when a Realm guest_memfd memslot deletion is
+  rejected, and tighten Realm fault handling and stage-2 destruction.
+
+[1] https://lore.kernel.org/all/20261007073537.2454351-1-suzuki.poulose@arm.com/
+[2] https://gitlab.arm.com/linux-arm/linux-cca
+    branch: cca-host-mm/v4/integration
+[3] https://gitlab.arm.com/linux-arm/linux-cca
+    branch: cca-host-mm/v4/mm
+
+Steven Price (6):
+  KVM: arm64: guest_memfd: Check mmap support when preparing memslot
+  KVM: arm64: Dispatch stage-2 destruction by VM flavor
+  KVM: arm64: CCA: Add basic infrastructure for creating a realm
+  KVM: arm64: CCA: Destroy RTTs
+  KVM: arm64: CCA: Add Realm RTT mapping and invalidation helpers
+  KVM: arm64: CCA: Support runtime faulting of memory
+
+Suzuki K Poulose (5):
+  KVM: arm64: CCA: Introduce Realms
+  KVM: arm64: Pass range filter to stage2_unmap_range
+  KVM: Allow architectures to reject memslot changes before invalidation
+  KVM: arm64: CCA: Prevent memslot modifications after Realm creation
+  KVM: arm64: CCA: Add Realm stage-2 MMU operations
+
+ arch/arm64/include/asm/kvm_emulate.h |  29 +
+ arch/arm64/include/asm/kvm_host.h    |  27 +-
+ arch/arm64/include/asm/kvm_mmu.h     |   4 +-
+ arch/arm64/include/asm/kvm_rmi.h     | 105 +++
+ arch/arm64/kvm/Kconfig               |   1 +
+ arch/arm64/kvm/Makefile              |   2 +-
+ arch/arm64/kvm/arm.c                 |  13 +-
+ arch/arm64/kvm/mmu.c                 | 368 +++++++++--
+ arch/arm64/kvm/pkvm.c                |   4 +-
+ arch/arm64/kvm/psci.c                |   3 +-
+ arch/arm64/kvm/rmi.c                 | 930 +++++++++++++++++++++++++++
+ drivers/firmware/arm_rmm/rmi.c       |  10 -
+ include/linux/arm-rmi-cmds.h         |   8 +
+ include/linux/kvm_host.h             |   5 +
+ virt/kvm/guest_memfd.c               |   6 +
+ virt/kvm/kvm_main.c                  |  33 +-
+ 16 files changed, 1471 insertions(+), 77 deletions(-)
+ create mode 100644 arch/arm64/include/asm/kvm_rmi.h
+ create mode 100644 arch/arm64/kvm/rmi.c
+
+-- 
+2.43.0
+
