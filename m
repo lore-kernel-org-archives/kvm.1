@@ -1,68 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795395796;
-	b=aMFcn2TNSZY2f1dbcATb2d8YCeD6Ub1PkMfdmdLCzKw6I115khPhNKN1CV3dkdSdPiTa
-	 UbE+v0x8yP22fzYgngQy9SYpQyahkpRKIYvulAzY15V2F5UxUh5tYIrfMgb+oubu6BdIY
-	 49DS0mO8ks0UAqJ/12s8nnnusrYU+kVwUtG5VPPr2K/Sr/299D5VY5TQMB6LGvjaa5D7M
-	 lNPFrfKeGTlraMgUq07bJEi7tZkcp0hSa3SHD4VPZKYOWTcTwZ3SVSc4/l+MdAJaZ+jH5
-	 btQ8sB7QpoquLZZTi8pX7oc5vrVIDgwMAaAlhLjEIqrgjvR8JUyJ2rpjnz29c/Rtdaw==
+	t=1795396454;
+	b=zi5CmbsyWWIP6YcQ/4Fam+GvM7peZZwKt/YIGlQtl/6OKgHMFyzsT15Agz7Vx8bqtkbM
+	 GAq3PTSrvx6U84peo4eUzpgskES8ERlNgm48wOYmNlP6DdI05KxPqn4HVh3h9BIAjslP5
+	 9F/AEk173YcK4hPNj4w7MqeoYvLqQzWfCpMcXtjAvNE8DjnOPnZNjaYteMW7ToVdmwb9K
+	 vFNh63HZdgszbwnqP3GQhw5U3SAqBbUUoYcNeYyp/DR+5S8tTg0UKWqahvnpXXtzztHwQ
+	 O9ZJGDKJY3J/3f0NdVbUCqonjBwR6P0lwAYDanVSSxl/X3i7SI6Uk7gmnyConHSfTVg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795395796;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=wXwVlOMUg0Gf5TYfdk4Le3TcS6+D30wddziXN4/+dTY=;
-	b=YP+Kr2szM2EiPGwL77FajniIQk4P/y+QH1ec9l8QOn208DAjbUxhJTvyrCpkCEMNY0fM
-	 VijoBuKMYSNfhrOR4EmcgZMedIv7CaUDSgpk9tuFeRVpsa6O6KnijlqeEMg+XQAAyXHnG
-	 HBTmGLxipIpHrpGOlUiPDX69fdR2N8mj7+64VfjDO+WFQyw+mf1EV00pL5oIthpf3qxeK
-	 5E43ZEeNkgjFSfnmLe89tgbbu0rr001DrLLmIxPXoN/yqECn7Osm0skbBA+hP5UfmnbVk
-	 IrvtJCuUM2UyLDUV9L0y+bLpHLLUSP80g2jC8c8F9s9sFtizv8qMQIeJ06cNz3j2bsQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795396454;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=1nAFz1rE2Zgq0kT2UJ5pKEhQqcU8lxqQXw2MrFx+Nfc=;
+	b=pYZrMBTfNg/tmd5x+6LlDdoeixZlNJ55dAWeRxY8ztf03HR0s7/UdHR9gNKc9N/uWePj
+	 4CkIGVm9AcUqiXxBqwnrsZb+cPSGX6GMJevdtDz5+Ovu5QxGWCZENhHVJp23xUYqrtls0
+	 WiCfI/oIN+MLF2RqmZsp2raJBZnwj1VGeEe8iwJ+o8MrsqTpq+5f3RFNf8mmgpDYOOGnG
+	 pmishOdd7aYSQGCApUZyOAiwFORtgvvtqfZafCILuLUB4GraLHtu4L5eaypgZ1P+Rge2X
+	 6ZhW1/QNp0FrcTvIJ/w0UhpauL/DmjKewRbsub40ZyTUp5IqRzi42cJpfvrkBkDp5QA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FLgtTtN9;
-	arc=none smtp.remote-ip=198.175.65.10
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m5brb9u8;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7C6606A31A;
-	Mon, 23 Nov 2026 01:03:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8B7C6606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE13606A332;
+	Mon, 23 Nov 2026 01:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FLgtTtN9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795395797; x=1826931797;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=9n8NgUBZkrhrbWY+88ZHr9pyt0E9dLpjgtsFacqXGI8=;
-  b=FLgtTtN9MPKdlfiMxDIsn3eN3v+gu+phg0tAlLVLtCyUiclgbg/MvfUA
-   IhKKHjh+lD8vSPthly+HekINnxmWI8Z0Fzhruuc+kyO5DGObvbfplHziM
-   71uL1D+q5c20lMFDe/CzRtqGNKu/mglgTvAP/T43uuTZtyb6FAHdgDVvi
-   Tpgdr57uOUvYQ7V4d2DgE+zINXI3941fOMetJW/G9xXXGBmfwN767o2Fc
-   2FIH+tRlf5ywiu4MOBPZ7jh7VGrip2YkErYWSAZFN6xlj3aBT2DbFY48p
-   KKoeRjRLGrmBFQmxm71FRvdDv6KoQUD1f+N2M1r/N9+1OhaVaDYvETN/B
-   Q==;
-X-CSE-ConnectionGUID: rQyyHjsgRK6VT8Kh5Yr7qw==
-X-CSE-MsgGUID: yCZxLA0gRU+i6vuChvxchQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4103828"
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="4103828"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 17:03:17 -0800
-X-CSE-ConnectionGUID: 9b+YkXoaQAOwW/OkLGJnng==
-X-CSE-MsgGUID: amt3vq6PTYSh+VednyeP8w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="11466940"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.245.162]) ([10.124.245.162])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 17:03:15 -0800
-Message-ID: <58aa1669-68b9-4123-9852-6c7158074cc8@linux.intel.com>
-Date: Mon, 23 Nov 2026 09:03:12 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m5brb9u8
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C351F000C0;
+	Mon, 23 Nov 2026 01:14:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795396453;
+	bh=1nAFz1rE2Zgq0kT2UJ5pKEhQqcU8lxqQXw2MrFx+Nfc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=m5brb9u8foWKbi7SrlcdW6nE2yWIS8IEGVU5QHSZYMih+9IEkmiqaNM0lLx2EYbPE
+	 Ene3Ka2hJ1BAvW2vOWqYEoxo49rMX/8KuHKgTHWJQeFE3NrlIrAf3xeYL6VLmMY+/l
+	 ekFXnTI29+zSfV1Cj1JiY8g0iM3LpoM2wMrgHM/4k71UbfvjD94MuJKD4cUZLqKZBp
+	 tapIlLzsw5cg25rKFRJ3Wy6OzHRx9WFNJ4Dy/E+S8IHUzJbf1ziPCMSD/LFgujVS+y
+	 I6gkNfNt8+7zFmlY0xlcmT0RV+dcWLazJhMGzWNLJfBLUPxJ9MdE0Cw4N9AumibzJ+
+	 +Zbi9zcgZuE0w==
+Date: Mon, 23 Nov 2026 01:13:59 +0000
+From: Tzung-Bi Shih <tzungbi@kernel.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-mm@kvack.org,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	linux-sound@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+	linux-block@vger.kernel.org, Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	linux-bluetooth@vger.kernel.org,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>, David Heidelberg <david@ixit.cz>,
+	oe-linux-nfc@lists.linux.dev, Chas Williams <3chas3@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, Helge Deller <deller@gmx.de>,
+	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	MPT-FusionLinux.pdl@broadcom.com,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	linux-mtd@lists.infradead.org, Neill Kapron <nkapron@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	xen-devel@lists.xenproject.org, Hans de Goede <hansg@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
+	linux-ext4@vger.kernel.org, Mike Marshall <hubcap@omnibond.com>,
+	devel@lists.orangefs.org, Paulo Alcantara <pc@manguebit.org>,
+	Namjae Jeon <linkinjeon@kernel.org>, linux-cifs@vger.kernel.org,
+	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
+	linux-f2fs-devel@lists.sourceforge.net,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Benson Leung <bleung@chromium.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	intel-gfx@lists.freedesktop.org,
+	Matthew Brost <matthew.brost@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	intel-xe@lists.freedesktop.org
+Subject: Re: [PATCH v2 11/12] docs: ioctl-number: update platform entries
+Message-ID: <awOTV4kbshpi_cxp@google.com>
+References: <20261119053514.255348-1-rdunlap@infradead.org>
+ <20261119053514.255348-12-rdunlap@infradead.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,76 +114,20 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] KVM: Skip gfn-based MMU notifier invalidations for
- guest_memfd-only memslots
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Sashiko Bot <sashiko-bot@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Naveen N Rao <naveen@kernel.org>,
- Alexandru Elisei <alexandru.elisei@arm.com>
-References: <20261117011513.39419-1-seanjc@google.com>
- <20261117011513.39419-3-seanjc@google.com>
-From: Binbin Wu <binbin.wu@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <20261117011513.39419-3-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261119053514.255348-12-rdunlap@infradead.org>
 
-On 11/17/2026 9:15 AM, Sean Christopherson wrote:
-> From: Alexandru Elisei <alexandru.elisei@arm.com>
+On Wed, Nov 18, 2026 at 09:35:12PM -0800, Randy Dunlap wrote:
+> Update the list of platform/ files where ioctls are defined and update
+> the ranges of function numbers that are used.
 > 
-> Don't invalidate gmem-only memslots when responding to MMU notifier
-> invalidations, as the entire point of gmem-only memslots is so that KVM
-> doesn't need a VMA to install mappings into KVM's MMU.  Specifically,
-> page faults are resolved by going straight to guest_memfd, using the gfn
-> and the associated memslot's gmem.file.  I.e. whether or not userspace
-> happens to have valid mappings to the same gmem instance is irrelevant,
-> as are any invalidations for those mappings.
-> 
-> Note!  The exception is KVM's gfn_to_pfn_cache implementation which isn't
-> yet wired up to pull pfns directly from guest_memfd, i.e. still relies on
-> userspace mappings/VMAs and thus need to be invalidated, e.g. to ensure KVM
-> doesn't retain a kernel mapping+pointer to PRIVATE memory.  However, as of
-> commit da260bcb56fe ("KVM: pfncache: use a dedicated invalidation sequence
-> for cache refresh"), GPC invalidation no longer relies on memslot lookups,
-> because GPCs also support HVA-based mappings.  I.e. KVM *must* be able to
-> detect and handle relevant MMU notifier invalidations even if there is *no*
-> memslot whatsoever.
-> 
-> In addition to the obvious performance benefits, avoiding unnecessary and
-> spurious SPTE zaps and TLB flushes will allow KVM to support features like
-> ARM's Statistical Profiling Extension (SPE)[1] and x86's Secure AVIC[2],
-> both of which rely on the pages *never* being unmapped from the stage-2
-> page tables.
-> 
-> Link: https://lore.kernel.org/all/20260903160623.315525-1-alexandru.elisei@arm.com [1]
-> Link: https://lore.kernel.org/all/cover.1783490022.git.naveen@kernel.org [2]
-> Cc: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Cc: Naveen N Rao (AMD) <naveen@kernel.org>
-> Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
-> [sean: rewrite changelog to capture the new gpc behavior]
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 > ---
->  virt/kvm/kvm_main.c | 4 ++++
->  1 file changed, 4 insertions(+)
+> v2: no change
 > 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 9938b753948c..f0d95e8c37f4 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -601,6 +601,10 @@ static __always_inline kvm_mn_ret_t kvm_handle_hva_range(struct kvm *kvm,
->  			unsigned long hva_start, hva_end;
->  
->  			slot = container_of(node, struct kvm_memory_slot, hva_node[slots->node_idx]);
-> +
-> +			if (kvm_slot_has_gmem(slot) && kvm_memslot_is_gmem_only(slot))
-> +				continue;
-> +
->  			hva_start = max_t(unsigned long, range->start, slot->userspace_addr);
->  			hva_end = min_t(unsigned long, range->end,
->  					slot->userspace_addr + (slot->npages << PAGE_SHIFT));
+> [Since having multiple maintainers trying to merge these would
+> cause some conflicts, it would be more manageable for Jon to
+> take all of these through the docs-next tree.]
 
+Acked-by: Tzung-Bi Shih <tzungbi@kernel.org> # cros_ec
