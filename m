@@ -1,57 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795402715;
-	b=N9op+mBcX+p6kWXVCtUGzVz3o7PQCCarWnn5Vkhmy+AbVRxW9EPRdOkc/OsyoJxAj/ZI
-	 H6OHoC0vbVTOUZ5VMlUCGjb/7Dnc6TeLwQkP74qGkIIV2LxWgMfGYytzw5VxIpLB1koai
-	 p3fV9K7p+6/XGeSTgWeFD1RhM+ZBcHIjsaBYBLkm8m1Opm3IaryqFZQc18U0RvR0j4XZ/
-	 AttTE/lA675eZX4b4P/Fq03hTkpz2OAeSyXvjAnlMA0v07WCvTDkV4bJdjlXkANzljWRU
-	 ao9DsWjqY3T9O4rnQjaoU91Pe9WBaQ4FjlY+3+Wurc/a+tJ/bgn0dxz3dbbK+jrx0+A==
+	t=1795404619;
+	b=zErw2gZ41rA/3GErkn6Vc8LmNZBTnh0ViKDljb+eA03KsJ9FeZ4P8Rb0pHYa3sHLVOx9
+	 u4T43UMsZZjkx8YlkDmXOYBb0HLpMXKqCbOrhq/0k0MwdEbgTQG0WYMJmbbh0NFoFNCaA
+	 ugKWMXW720KO3eZfcyCsncA4nylt4HjB9WuZBEpPwk7sVYmaj/wmENJm0bTh7A4MpZXJE
+	 f2XXDmwgT6E30tYUeCYWHfNPTDNivaK0A/HkhOCeLui2Ij2HIfO/h7bGKjlySTLFEclcm
+	 lEX6D+MkYgDG5qmYiMsfAiDPU5m32xReRDPjlRI/SdlztKHuaF/spyo0td6ykPqLCcA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795402715;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=szCxED7tT/qWKtYqtJBYo+KP1S1fLxObYojqIzS8jBw=;
-	b=TZdcVaRiOzJFKp4o1spT3QG4TTr7ZKqwX7cvDDbeC1M65kVECriAS6g9pkYgzXEi1ANm
-	 jp7fCHfmTuuJ3KsT2eGe3LFm+xRYMK+jUnSYOghigdUAQrHJSuyLGkix3HEAoMxvNN7nc
-	 ZKvsf+6XjNh9E8OU22o+N+lZ8UixgrLYervEZbMTJINAQXBAwLf3BQWyOhbv0CzE0oFYf
-	 ATeGSJA0Gapn/7qb+x4lppGuer8jE6X/NSn5PiLXbIbj88v+VzPmAcJakOgT2eDGRv8oi
-	 lvdzzh0yHMUQmMPwui1PkRgRN3BhzQdqRfUsJThrV12YdDf29Tt7D5jcORMhoSCstBg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795404619;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=+OVrc8f7SUe5j7bd8dyYAonTbCTM23PZtBQVesUqE24=;
+	b=oV+bLUAliHDnxsArUA/ybOOe9K+1MMdsEByOFE/rRUkaxJAslfeKp1z4UO3FA1CtdUFH
+	 HOGm4bj2nz2VqX/oZN4mq73a1lYdVGgLldtqVbHVL8HKAQEo0HgLAaF2WgUOM6eX+pSgo
+	 cH2HKTho6gaVzr8iadSIlnQ70fr3e8A1xk1BuQJ3oUwqm0eqYLPfLRSuS75pGD33LzJKJ
+	 Ujnyz6t9ap9dRWRDXtK8Z+W3HdXFc9k9E+POuJHFXJSLjJ6Z6al/HlAGH3ilXp1TwBYyD
+	 k7htltshs2I8Vmm++rigvukdYaUC372gTwSPcUCAIu2pEzvuHHux5ep6rr3mXcbdPGw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lBjsuDDX;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cv8N9fr7;
+	arc=none smtp.remote-ip=198.175.65.9
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F661606A31A;
-	Mon, 23 Nov 2026 02:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4AD606A31E;
+	Mon, 23 Nov 2026 03:30:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2E4AD606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lBjsuDDX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2B61F000C0;
-	Mon, 23 Nov 2026 02:58:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795402714;
-	bh=szCxED7tT/qWKtYqtJBYo+KP1S1fLxObYojqIzS8jBw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lBjsuDDXmLtphgcSFpJZ89D4nfo8A57gt8fsl/3SiPBpO4MoHvQVCAtmP4r/uGDlm
-	 /F01FYE4eN+Ka+sha+Wt/pY+P/OR3lT2Ry+VB+ycf2V/fsSRrkRKWtWT4IjpCaQ5ih
-	 rKDAGVRUDSRMB6m16mVu5ycE3AD13UwhoypP4BRkfXjkd3EdHLeY/lAusUjwPYnuyQ
-	 GKd0cMaGXzQAO9hPYLpstLkSofEtd/oDU/3ItlGclgYpFWPbt7ID8RHQ92jIDKPj86
-	 g5cVNnHI9hBYw0lGYUMrbfmwEfdlQ7SbqsOkuohgafUAw8EsKkNe94ZzittXaMlljc
-	 038sA5Oa+opZQ==
-Message-ID: <sashiko-outbox-228576@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v22 11/13] vfio/pci: Add IV-ST TPH policy and
- TPH_PROGRAM batch programming support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Chengwen Feng" <fengchengwen@huawei.com>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
-In-Reply-To: <20261123023628.7728-12-fengchengwen@huawei.com>
-References: <20261123023628.7728-1-fengchengwen@huawei.com>
- <20261123023628.7728-12-fengchengwen@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 23 Nov 2026 02:58:32 +0000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cv8N9fr7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795404619; x=1826940619;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=xQIf2XWpxRiu8ABULLh3LCmmUoL/rgjSVpR1sePhql4=;
+  b=cv8N9fr7RUcqfk1PGwMYHJciMYHleIDBheBowwAjty9hCHC19ZlktLAo
+   +4ZOKLQzJrYgjxlRRa2YWckgE1zLvdZ56SmJtOFMBO8bT/pIMOW9g/i3X
+   thG2n6X7UUcOPzjGjc96bET6twKy/8Dzl2bJzotEp/TnvbCFqC2Hp3rfx
+   jTmIehrymAEjkZ24XlyOun52EpwfcSSR7XWRP5SXd/q+2TabDT7mfCnrU
+   RVq5z+3QlglyNCiyLOqNFU/AcOAay9wwjBUG55yYZV7vmP1e3P38cYK9/
+   wWsUTBnTK3YPeaQ1smuFuPLK/wWvQZbCL7XFjEFi3vWRrSwGP0LTzvn/C
+   Q==;
+X-CSE-ConnectionGUID: ETIGGjT7SMC45tq8jFG1YQ==
+X-CSE-MsgGUID: QNrkWdXjQ5GJljbuZdSOqw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4048901"
+X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
+   d="scan'208";a="4048901"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 19:30:18 -0800
+X-CSE-ConnectionGUID: j/CYp5VnSHujdnBwlrkLmg==
+X-CSE-MsgGUID: HB1n6Xb3SQy5H+W5CZc+DQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
+   d="scan'208";a="11081924"
+Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 19:30:15 -0800
+Message-ID: <d9f3eecf-5655-4779-9e8a-b3ff4cbdb667@linux.intel.com>
+Date: Mon, 23 Nov 2026 11:30:12 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,216 +71,269 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, iommu@lists.linux.dev, x86@kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, yilun.xu@linux.intel.com,
+ xiaoyao.li@intel.com, Binbin Wu <binbin.wu@linux.intel.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 7/9] coco/tdx-host: Add skeleton to support PCI link
+ encryption
+To: Chao Gao <chao.gao@intel.com>
+References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
+ <20261112043054.2664857-8-baolu.lu@linux.intel.com>
+ <av1QxRYY9sXtC--P@intel.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <av1QxRYY9sXtC--P@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issues to consider:
-- [High] vfio/pci: OOB read in vfio_pci_tph_resolve_st_tag() on
-  cpu_online()
-- [Medium] vfio/pci: ST table desync across TPH enable/mode and MSI-X
-  transitions
-- [Medium] vfio/pci: ST table and config accesses while device is
-  suspended or in D3
-- [Low] vfio/pci: unconditional memory_lock and per-entry ST writes on
-  CPU offline
---
+On 11/18/2026 3:16 PM, Chao Gao wrote:
+> On Thu, Nov 12, 2026 at 12:30:52PM +0800, Lu Baolu wrote:
+>> Register a Link TSM instance to support host side TSM operations for
+>> TDISP, when the TDX Connect support bit is set by TDX Module in
+>> tdx_feature0.
+> 
+> s/TDX Module/TDX module for the whole patch. Existing code and docs mostly
+> use "TDX module".
+> 
+> Also s/tdx_feature0/tdx_features0.
 
-commit e8463ab09aa5bab8dbaf6df575e6c544d6e783aa
-Author: Chengwen Feng <fengchengwen@huawei.com>
+Updated. Thanks!
 
-vfio/pci: Add IV-ST TPH policy and TPH_PROGRAM batch programming support
+>>
+>> This is the main purpose of an independent tdx-host module out of TDX
+>> core. Recall that a TEE Security Manager (TSM) is a platform agent that
+>> speaks the TEE Device Interface Security Protocol (TDISP) to PCIe
+>> devices and manages private memory resources for the platform. An
+>> independent tdx-host module allows for device-security enumeration and
+>> initialization flows to be deferred from other TDX Module initialization
+>> requirements. Crucially, when / if TDX Module init moves earlier in x86
+>> initialization flow this driver is still guaranteed to run after IOMMU
+>> and PCI init (i.e. subsys_initcall() vs device_initcall()).
+> 
+> This changelog is outdated. TDX module initialization has already moved
+> earlier in x86 initialization.
 
-This commit adds the VFIO_PCI_TPH_POLICY_IV_ST policy, introduces the
-VFIO_DEVICE_FEATURE_TPH_PROGRAM ioctl to batch program architected
-steering tag entries, and registers a CPU hotplug offline callback to
-clear entries bound to offlined CPUs.
+Updated. Thanks!
 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
-_core.c
-> index be7d1921f5f31..83b81d1a61227 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-[ ... ]
-> @@ -1603,12 +1613,135 @@ static int vfio_pci_core_feature_token(struct vf=
-io_pci_core_device *vdev,
->  	return 0;
->  }
-> =20
-> -static u32 vfio_pci_tph_get_capability(struct vfio_pci_core_device *vdev)
-> +static enum cpuhp_state vfio_tph_cpuhp_state;
-> +
-> +static int vfio_pci_tph_cpuhp_offline(unsigned int cpu, struct hlist_nod=
-e *node)
->  {
-> -	/* NO-ST only, no capability bits exposed now */
-> +	struct vfio_pci_core_device *vdev =3D
-> +		hlist_entry(node, struct vfio_pci_core_device, tph_cpuhp_node);
-> +	u16 cmd;
-> +	int i;
-> +
-> +	if (vdev->tph_st_cpu =3D=3D NULL)
-> +		return 0;
-> +
-> +	mutex_lock(&vdev->tph_lock);
-> +	cmd =3D vfio_pci_memory_lock_and_enable(vdev);
-> +	for (i =3D 0; i < vdev->tph_st_size; i++) {
-> +		if (vdev->tph_st_cpu[i] !=3D (s64)cpu)
-> +			continue;
-> +		pcie_tph_set_st_entry(vdev->pdev, i, 0);
-> +		vdev->tph_st_cpu[i] =3D (s64)-1;
-> +	}
-> +	vfio_pci_memory_unlock_and_restore(vdev, cmd);
-> +	mutex_unlock(&vdev->tph_lock);
-> +
->  	return 0;
->  }
+> 
+>>
+>> The ability to unload the module, or unbind the driver is also useful
+>> for debug and coarse grained transitioning between PCI TSM operation and
+>> PCI CMA operation (native kernel PCI device authentication).
+>>
+>> For now only check for TDX Connect support in the TDX Module and
+>> register the Link TSM. The TSM support is basic boilerplate with
+>> operation flows to be added later.
+>>
+>> Based on work by Yilun and Dan.
+>>
+>> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+>> ---
+>> drivers/virt/coco/tdx-host/Kconfig    |   2 +
+>> arch/x86/include/asm/tdx.h            |   8 ++
+>> drivers/virt/coco/tdx-host/tdx-host.c | 118 +++++++++++++++++++++++++-
+>> 3 files changed, 127 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
+>> index 57d0c01a4357..f8c8cc29d46c 100644
+>> --- a/drivers/virt/coco/tdx-host/Kconfig
+>> +++ b/drivers/virt/coco/tdx-host/Kconfig
+>> @@ -1,6 +1,8 @@
+>> config TDX_HOST_SERVICES
+>> 	tristate
+>> 	depends on INTEL_TDX_HOST
+>> +	depends on PCI
+>> 	select FW_LOADER
+>> 	select FW_UPLOAD
+>> +	select PCI_TSM
+>> 	default m
+>> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+>> index 0ed0062c9b0a..fc284a555984 100644
+>> --- a/arch/x86/include/asm/tdx.h
+>> +++ b/arch/x86/include/asm/tdx.h
+>> @@ -142,6 +142,14 @@ int tdx_topup_pamt_cache(struct tdx_pamt_cache *cache, unsigned long npages);
+>> int tdx_pamt_get(kvm_pfn_t pfn, struct tdx_pamt_cache *cache);
+>> void tdx_pamt_put(kvm_pfn_t pfn);
+>>
+>> +static inline bool tdx_supports_tdisp(const struct tdx_sys_info *sysinfo)
+>> +{
+>> +	if (!(sysinfo->features.tdx_features0 & TDX_FEATURES0_TDXCONNECT))
+>> +		return false;
+>> +
+>> +	return false; /* To be enabled when kernel is ready */
+>> +}
+> 
+> Patch 2 open-codes the same TDX_FEATURES0_TDXCONNECT check. Can this
+> helper be moved to patch 2 and used there?
 
-[Severity: Medium]
-Can vfio_pci_tph_cpuhp_offline() and vfio_pci_core_feature_tph_program()
-access config space and the MSI-X table BAR while the device is runtime
-suspended or in PCI_D3hot?
+These checks serve different purposes: the metadata patch checks whether
+the TDX module supports TDX Connect; tdx_supports_tdisp() decides
+whether the kernel is ready to register the link tsm. The latter may
+include additional checks, such as quirks, so I would like to keep the
+helper for the tsm registration.
 
-Unlike VFIO file operations, vfio_pci_tph_cpuhp_offline() runs from a CPU
-hotplug thread without calling pm_runtime_resume_and_get().  In both this
-callback and vfio_pci_core_feature_tph_program(),
-vfio_pci_memory_lock_and_enable() sets PCI_COMMAND_MEMORY without checking
-or transitioning pdev->current_state out of guest-initiated PCI_D3hot, so
-pcie_tph_set_st_entries() -> pci_msix_write_tph_tag() can issue MMIO
-accesses to the MSI-X BAR while the device is in D3hot or D3cold.
+> 
+>> +
+>> int tdx_guest_keyid_alloc(void);
+>> u32 tdx_get_nr_guest_keyids(void);
+>> void tdx_guest_keyid_free(unsigned int keyid);
+>> diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
+>> index e8ed8dfa526e..0908aaaa28ac 100644
+>> --- a/drivers/virt/coco/tdx-host/tdx-host.c
+>> +++ b/drivers/virt/coco/tdx-host/tdx-host.c
+>> @@ -9,10 +9,14 @@
+>> #include <linux/firmware.h>
+>> #include <linux/module.h>
+>> #include <linux/sysfs.h>
+>> +#include <linux/pci.h>
+>> +#include <linux/pci-tsm.h>
+>> +#include <linux/tsm.h>
+>>
+>> #include <asm/cpu_device_id.h>
+>> #include <asm/seamldr.h>
+>> #include <asm/tdx.h>
+>> +#include <asm/tdx_global_metadata.h>
+>>
+>> static const struct x86_cpu_id tdx_host_ids[] = {
+>> 	X86_MATCH_FEATURE(X86_FEATURE_TDX_HOST_PLATFORM, NULL),
+>> @@ -20,6 +24,112 @@ static const struct x86_cpu_id tdx_host_ids[] = {
+>> };
+>> MODULE_DEVICE_TABLE(x86cpu, tdx_host_ids);
+>>
+>> +struct tdx_tsm_link {
+>> +	struct pci_tsm_pf0 pci;
+>> +};
+>> +
+>> +static struct tdx_tsm_link *to_tdx_tsm_link(struct pci_tsm *tsm)
+>> +{
+>> +	return container_of(tsm, struct tdx_tsm_link, pci.base_tsm);
+>> +}
+>> +
+>> +static int tdx_tsm_link_connect(struct pci_dev *pdev)
+>> +{
+>> +	return -ENXIO;
+>> +}
+>> +
+>> +static void tdx_tsm_link_disconnect(struct pci_dev *pdev)
+>> +{
+>> +}
+>> +
+>> +static struct pci_tsm *tdx_tsm_link_pf0_probe(struct tsm_dev *tsm_dev,
+>> +					      struct pci_dev *pdev)
+>> +{
+>> +	int rc;
+>> +
+>> +	struct tdx_tsm_link *tlink __free(kfree) = kzalloc_obj(*tlink);
+> 
+> tdx-host goes through the tip tree. It looks like Dave prefers plain
+> error handling over __free() [*]. I think we should drop __free() for
+> tdx-host code. Same for tdx_tsm_link_fn_probe() below.
+> 
+> *: https://lore.kernel.org/kvm/691e16318f5ea_1eb85100ce@dwillia2-mobl4.notmuch/
 
-Also, on devices with vdev->needs_pm_restore set,
-vfio_pci_set_power_state() saves config space into vdev->pm_save on D3hot
-entry and restores it via pci_restore_state() -> pci_restore_tph_state()
-on return to PCI_D0, which overwrites any ST entries cleared on CPU
-offline while in D3hot.
+Okay, so I will update it like this:
 
-[Severity: Low]
-Does vfio_pci_tph_cpuhp_offline() need to acquire vdev->memory_lock and
-read/write PCI_COMMAND when no ST entry is bound to the offlined CPU?
+diff --git a/drivers/virt/coco/tdx-host/main.c 
+b/drivers/virt/coco/tdx-host/main.c
+index a815dbe5127a..af887c49a027 100644
+--- a/drivers/virt/coco/tdx-host/main.c
++++ b/drivers/virt/coco/tdx-host/main.c
+@@ -56,17 +56,22 @@ static void tdx_tsm_link_disconnect(struct pci_dev 
+*pdev)
+  static struct pci_tsm *tdx_tsm_link_pf0_probe(struct tsm_dev *tsm_dev,
+  					      struct pci_dev *pdev)
+  {
++	struct tdx_tsm_link *tlink;
+  	int rc;
 
-Because vfio_pci_tph_dev_init() registers every open device with an
-architected ST table, every CPU offline event takes vdev->memory_lock in
-write mode and touches PCI_COMMAND even when no entries match cpu, and
-calling pcie_tph_set_st_entry() per entry repeatedly toggles PCI_TPH_CTRL
-and re-reads PCI_TPH_CAP for each matching entry.
+-	struct tdx_tsm_link *tlink __free(kfree) = kzalloc_obj(*tlink);
++	tlink = kzalloc_obj(*tlink);
+  	if (!tlink)
+  		return NULL;
 
-[ ... ]
+  	rc = pci_tsm_pf0_constructor(pdev, &tlink->pci, tsm_dev);
+  	if (rc)
+-		return NULL;
++		goto err_free;
 
-> @@ -1644,6 +1777,144 @@ static int vfio_pci_core_feature_tph(struct vfio_=
-pci_core_device *vdev,
->  	return copy_to_user(arg, &tph, sizeof(tph)) ? -EFAULT : 0;
->  }
-> =20
-> +static u32 vfio_pci_tph_get_src_mask(struct vfio_pci_core_device *vdev)
-> +{
-> +	u32 flags =3D vfio_pci_tph_get_capability(vdev);
-> +	u32 src_mask =3D 0;
-> +
-> +	if (flags & VFIO_DEVICE_TPH_CAP_PROG_ST_NONE)
-> +		src_mask |=3D VFIO_DEVICE_TPH_SRC_NONE;
-> +	if (flags & VFIO_DEVICE_TPH_CAP_PROG_ST_CPU)
-> +		src_mask |=3D VFIO_DEVICE_TPH_SRC_CPU_VOLATILE |
-> +			    VFIO_DEVICE_TPH_SRC_CPU_PERSISTENT;
-> +
-> +	return src_mask;
-> +}
-> +
-> +static int vfio_pci_tph_resolve_st_tag(struct pci_dev *pdev, u32 src_bit=
-s,
-> +				       u32 src_handle, bool extended, u16 *st)
-> +{
-> +	u8 req_type =3D extended ? PCI_TPH_REQ_EXT_TPH : PCI_TPH_REQ_TPH_ONLY;
-> +	u32 cpu_srcs =3D VFIO_DEVICE_TPH_SRC_CPU_VOLATILE |
-> +		       VFIO_DEVICE_TPH_SRC_CPU_PERSISTENT;
-> +	int ret =3D 0;
-> +
-> +	if ((src_bits & cpu_srcs) && !cpu_online(src_handle)) {
-> +		*st =3D 0;
-> +		return -EINVAL;
-> +	}
+-	return &no_free_ptr(tlink)->pci.base_tsm;
++	return &tlink->pci.base_tsm;
++
++err_free:
++	kfree(tlink);
++	return NULL;
+  }
 
-[Severity: High]
-Can a user-supplied src_handle >=3D nr_cpu_ids trigger an out-of-bounds read
-in cpu_online(src_handle)?
+  static void tdx_tsm_link_pf0_remove(struct pci_tsm *tsm)
+@@ -80,17 +85,22 @@ static void tdx_tsm_link_pf0_remove(struct pci_tsm *tsm)
+  static struct pci_tsm *tdx_tsm_link_fn_probe(struct tsm_dev *tsm_dev,
+  					     struct pci_dev *pdev)
+  {
++	struct pci_tsm *pci_tsm;
+  	int rc;
 
-vfio_pci_core_feature_tph_program() copies arbitrary u32 values from
-program.srcs into src_handle[] and passes them here without bounds
-checking.  On SMP kernels, cpu_online() calls cpumask_test_cpu(), which
-expects cpu < nr_cpu_ids and performs an unchecked test_bit() read relative
-to __cpu_online_mask.  Checking src_handle >=3D nr_cpu_ids before calling
-cpu_online() avoids the out-of-bounds access.
+-	struct pci_tsm *pci_tsm __free(kfree) = kzalloc_obj(*pci_tsm);
++	pci_tsm = kzalloc_obj(*pci_tsm);
+  	if (!pci_tsm)
+  		return NULL;
 
-> +
-> +	if (src_bits & VFIO_DEVICE_TPH_SRC_NONE)
-> +		*st =3D 0;
-> +	else if (src_bits & VFIO_DEVICE_TPH_SRC_CPU_VOLATILE)
-> +		ret =3D pcie_tph_get_cpu_st_ext(pdev, TPH_MEM_TYPE_VM,
-> +					      req_type, src_handle, st);
-> +	else if (src_bits & VFIO_DEVICE_TPH_SRC_CPU_PERSISTENT)
-> +		ret =3D pcie_tph_get_cpu_st_ext(pdev, TPH_MEM_TYPE_PM,
-> +					      req_type, src_handle, st);
-> +	else
-> +		ret =3D -EINVAL;
-> +
-> +	if (ret !=3D 0)
-> +		*st =3D 0;
-> +
-> +	return ret;
-> +}
-[ ... ]
-> +	if (i > 0) {
-> +		mutex_lock(&vdev->tph_lock);
-> +
-> +		cmd =3D vfio_pci_memory_lock_and_enable(vdev);
-> +		ret =3D written =3D pcie_tph_set_st_entries(pdev, program.start, i,
-> +							tags);
-> +		vfio_pci_memory_unlock_and_restore(vdev, cmd);
-> +
-> +		if (written > 0) {
-> +			for (k =3D 0; k < written; k++)
-> +				vdev->tph_st_cpu[program.start + k] =3D
-> +					(tags[k] =3D=3D 0) ?
-> +					(s64)-1 : (s64)src_handle[k];
-> +		}
-> +
-> +		mutex_unlock(&vdev->tph_lock);
-> +	}
+  	rc = pci_tsm_link_constructor(pdev, pci_tsm, tsm_dev);
+  	if (rc)
+-		return NULL;
++		goto err_free;
 
-[Severity: Medium]
-Can vdev->tph_st_cpu[] become desynchronized from the hardware ST table
-across PCI_TPH_CTRL mode/enable and MSI-X transitions?
+-	return no_free_ptr(pci_tsm);
++	return pci_tsm;
++
++err_free:
++	kfree(pci_tsm);
++	return NULL;
+  }
 
-In drivers/pci/tph.c, pcie_tph_set_st_entries() returns -EINVAL when
-!pdev->tph_enabled and returns count without writing to hardware when
-pdev->tph_mode =3D=3D PCI_TPH_ST_NS_MODE (and pci_msix_write_tph_tag() retu=
-rns
--ENXIO when !pdev->msix_enabled):
+  static struct pci_tsm *tdx_tsm_link_probe(struct tsm_dev *tsm_dev,
+-- 
+2.43.0
 
-drivers/pci/tph.c:pcie_tph_set_st_entries() {
-    ...
-	if (!pdev->tph_enabled)
-		return -EINVAL;
 
-	if (!count)
-		return -EINVAL;
+>> +	if (!tlink)
+>> +		return NULL;
+>> +
+>> +	rc = pci_tsm_pf0_constructor(pdev, &tlink->pci, tsm_dev);
+>> +	if (rc)
+>> +		return NULL;
+>> +
+>> +	return &no_free_ptr(tlink)->pci.base_tsm;
+>> +}
+>> +
+>> +static void tdx_tsm_link_pf0_remove(struct pci_tsm *tsm)
+>> +{
+>> +	struct tdx_tsm_link *tlink = to_tdx_tsm_link(tsm);
+>> +
+>> +	pci_tsm_pf0_destructor(&tlink->pci);
+>> +	kfree(tlink);
+>> +}
+>> +
+>> +static struct pci_tsm *tdx_tsm_link_fn_probe(struct tsm_dev *tsm_dev,
+>> +					     struct pci_dev *pdev)
+>> +{
+>> +	int rc;
+>> +
+>> +	struct pci_tsm *pci_tsm __free(kfree) = kzalloc_obj(*pci_tsm);
+>> +	if (!pci_tsm)
+>> +		return NULL;
+>> +
+>> +	rc = pci_tsm_link_constructor(pdev, pci_tsm, tsm_dev);
+>> +	if (rc)
+>> +		return NULL;
+>> +
+>> +	return no_free_ptr(pci_tsm);
+>> +}
 
-	/* No need to write tag if device is in "No ST Mode" */
-	if (pdev->tph_mode =3D=3D PCI_TPH_ST_NS_MODE)
-		return count;
-    ...
-}
-
-If userspace invokes VFIO_DEVICE_FEATURE_TPH_PROGRAM while TPH is enabled
-in PCI_TPH_ST_NS_MODE, pcie_tph_set_st_entries() skips the hardware writes
-and returns i, so vdev->tph_st_cpu[] and the return value report that the
-entries were programmed even though the hardware ST table was not updated.
-
-Conversely, if a bound CPU goes offline while userspace has temporarily
-disabled TPH, switched to PCI_TPH_ST_NS_MODE, or disabled MSI-X,
-pcie_tph_set_st_entry(vdev->pdev, i, 0) in vfio_pci_tph_cpuhp_offline()
-does not clear the hardware entry, yet vdev->tph_st_cpu[i] is reset to -1,
-leaving the offlined CPU's stale Steering Tag in hardware when IV-ST mode
-or MSI-X is later re-enabled.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261123023628.7728=
--1-fengchengwen@huawei.com?part=3D11
+Thanks,
+baolu
