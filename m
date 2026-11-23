@@ -1,68 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795417012;
-	b=i9hrxOQjWSfqc+khPw1/9wYEOvdrQw/AISYiKQTnG9yVEskcVYffAz14oSM4P9zDBw1J
-	 9sBSwTq190k+olmIeC5y60Xn9PCMDmQD2RpwuL1K/kHwjib5u0fZHNdkEPM3v4zWv90CF
-	 VNJcTnbabmUydMAPRIT5gYrC2SzgGDAYsYXtNH6uEXThB41ymfdFPZ3vQ+rrwEnhCmAm+
-	 C7D/UD6IJMxZIGZY6VXsbbDaKqPDDQv3Lpjmw8dXTjHMPqVoJBFESytgZ4+JJXj8z94tG
-	 ny8otFfkIJRf+eajk7WV6j0mGywI317XEE30f0qI6s4erXPRi0ARwIm63rXdSnKTt7w==
+	t=1795418211;
+	b=aOVbi7lvyF++8r2MUhxR8kqUV7HmD/1U3RpK3xcsdSuphj9YaAV8jHjc+uYobdwtB0ki
+	 r4WOhX6bYFiH9Hxwh+hix55btFyeXWcPDa2P0kc9SfDgy+YzfhkdedU9mTi3XH6Nah11M
+	 DydRkhrwXWkH+vSaI/rWs2/OMNjdtzEtq4wjUjki8EDrqZ8OiBLjDolC2H1xzeq0kiaBm
+	 DiQc4hGb3CovWxQ9/JZUa5PCiEHIe/PgWD/KMO+YQxfzGGn3Bpwu6AjT4Ln1167oqJ38t
+	 e4ZAhb6uCSqAOeoGGMxmgwjb57cyMdpEPZk3yx7B3KUGd4+Si+97tBz8IEkBXhpqTkg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795417012;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=QPC2xSiezq9/+xbCAN6Ly1G7V33iCP9kEl4PZLvCvTQ=;
-	b=RDXy9KyDQkRtCSZyHoQXx3jNdN03+OOq4j8kNWdDjXBZEeG4nY+aVKiWI0NL9fFMOXAv
-	 7f12Ro4KJYbTJQpCSz8w9UZHo+fxa0mqHJOCdEGAfcnT9t2SMwTVcoNPaFvN9qO5zeiJ3
-	 EIXBQ0/Q5VJc9bIBqldzXy2WmbrgWqP7xesBwG+60PKFUjttWuro5zfKFUcQEVqJGB/3B
-	 ERPG0TD9RB+/CuLaMeQyJ3As35VlEprjHVbuyrDVhF1bFAcx0ofKb8A9gWUmDnW6Sz1CK
-	 C1T4EyNffRurIbgMFBXrMxvPCd+dn+CHGCvGv4Gy5xz2DVq86wzd3cF949IEsm98iJg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795418211;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=R8nnthYJtQcOqupos5IpMh/Cqigu81rJdCskRizSqvo=;
+	b=Xjb+aUfy1zV4WzNK2ec2ICVo1RY0J1wKJncoxSM+EWRzibSLQPeee5CAil6R1hkGuRzB
+	 G3ybFCRRWLRNCvxh/7oNO5BTEhIw8zgdkB7xSdQT5vFFZGz6gwZZF1kkMZXQUSStlNNzB
+	 3UohvOrrY9x2j3SgBr/r/w8Qds0yVZAdEtll2GTMXhmlJ0zCtMGC2Nq6zeOGUZJEqvPaX
+	 XEr5huEaoiqDy/9FiDk4H8wyH+HuK5T26bCD76TCLbFczUIIFvdj2c5tHjSM5HrZ5ujxM
+	 jdKpTi0Kjom6n5OwwZ9424AZoM4lgAwRDK3CXGXYZ7cbSBSLxirHg6AFjauHDOwmAEw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="jwDiOS/K";
-	arc=none smtp.remote-ip=198.175.65.10
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=on5nguRw;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038CF606A31A;
-	Mon, 23 Nov 2026 06:56:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 038CF606A31A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA62A606A31A
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 07:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jwDiOS/K
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795417012; x=1826953012;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=4z3/TUhePIQkYeGiWHGOtPC2mWHdb9QMrezfaVrRXTE=;
-  b=jwDiOS/KwucFVVNmcZRrSHZU76gZboWUmc6yOlljuuUj/85jexaRqwi1
-   iYpYFOpJ72QnrCL/dlgbfI6+iZmhtSIJH2Nbevpbxhp6+cLIWvdi6x4UF
-   R27600YTGNoMEf4VPCQgir0oQjocftN2zjijpMYV9z5oFJZTrbH84siIs
-   FIGpWRwnAP3f8GqeI7Sz2CWg6Fi8Smj82QjoaMgycZGXm4Y9EYJgw2ZA3
-   Ds2+bH3neNDBIhd07Z03E23BCyiGuP+SENSL5aYX2+gsbfAOmDkXxD/Bi
-   AyaTil2IqKTDp19sMVAVn2ik/UI1meEJ8ZoZBkIvM8nZ0H4xf91gqdfAn
-   w==;
-X-CSE-ConnectionGUID: PazZ1ZOCSeeq1nOuSwsF/w==
-X-CSE-MsgGUID: 2EzVEajQQ22ghtjlK0iS7w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4123822"
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="4123822"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 22:56:45 -0800
-X-CSE-ConnectionGUID: RapmhKIQT4yLfAwgdOH2tw==
-X-CSE-MsgGUID: YdzHOtYnSqiOQ8sIKG7O3w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="11426154"
-Received: from unknown (HELO [10.238.2.135]) ([10.238.2.135])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 22:56:40 -0800
-Message-ID: <f29fb935-8877-4488-861a-3c88c12d664f@linux.intel.com>
-Date: Mon, 23 Nov 2026 14:56:37 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=on5nguRw
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A5081F000CA;
+	Mon, 23 Nov 2026 07:16:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795418210;
+	bh=R8nnthYJtQcOqupos5IpMh/Cqigu81rJdCskRizSqvo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=on5nguRw+dvQ0o0nVdXzFm7NSTjf36itqpRBUm6BvxGHhaVlxYUT9MwSVMiIq9zQW
+	 lgYEwFbp9oJs+5GQiVYnR+CgjtxfB+hVTn3kvZ0PDfPSbLDMk1PoZU7mwxph22aYZb
+	 BFkOG9peEYuiMDNgU0r8psZlXsEsN+0zfdzQp+lEfawaQHh2YHw1gcwj+MU/ashtbA
+	 ZnRMGCjN4Qay7j5UVoVOcUT+u+OUen2UIeS9ik6RhABw5RsHmyRNbayS1g1ROn47FF
+	 1FIYD29+E7sLnoTei2KBo0mff4z6aFuWQlzxZ7WaUfm8lCxr/H8gwIGRurt0/oii4E
+	 9w7ORxh+BrbnA==
+Message-ID: <sashiko-outbox-228803@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] KVM: riscv: Allow rescheduling during G-stage unmap
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Can Qi" <qican5708@163.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261123064935.1608890-1-qican5708@163.com>
+References: <20261123055036.1554937-1-qican5708@163.com>
+ <20261123064935.1608890-1-qican5708@163.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 23 Nov 2026 07:16:49 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,46 +59,78 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] x86/cea: Index exception stacks by the ordering enum
-To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, Borislav Petkov
- <bp@alien8.de>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>, Xin Li <xin@zytor.com>,
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Tom Lendacky <thomas.lendacky@amd.com>,
- "Chang S . Bae" <chang.seok.bae@intel.com>, Chao Gao <chao.gao@intel.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Dave Hansen <dave.hansen@intel.com>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261120235025.2809042-1-sohil.mehta@intel.com>
- <20261120235025.2809042-3-sohil.mehta@intel.com>
-From: Binbin Wu <binbin.wu@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <20261120235025.2809042-3-sohil.mehta@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 11/21/2026 7:50 AM, Sohil Mehta wrote:
-> The exception stacks are generated by ESTACKS_MEMBERS(), which pastes
-> each stack name into a member name, once for the physical storage and
-> once for the CEA mapping.
-> 
-> The macro used to be the only thing keeping the two structures in the
-> same order, but there is no ordering requirement left to enforce. The
-> stacks are mapped one at a time and have been paired by name for a
-> while. Also, the sizes stopped matching once the #VC stacks became
-> config dependent.
-> 
-> So, spell out the physical storage and index the mapping by the stack
-> ordering enum. Also drop CEA_ESTACK_SIZE, which just duplicated
-> EXCEPTION_STKSZ.
-> 
-> The stack addresses and the guard pages are unchanged. No functional
-> change intended.
-> 
-> Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] KVM: riscv: callers re-flush full range after batched unmap
+  yields
+--
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+commit 98e1340ab679b1cafbeb059326e3045e4ca36e66
+Author: Can Qi <qican5708@163.com>
+
+KVM: riscv: Allow rescheduling during G-stage unmap
+
+This commit allows G-stage unmap walks to yield mmu_lock, flushing pending
+TLB batches before rescheduling and stopping if the root page table is
+detached concurrently.
+
+> diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
+> index be70607a33ea0..47b906769f497 100644
+> --- a/arch/riscv/kvm/gstage.c
+> +++ b/arch/riscv/kvm/gstage.c
+> @@ -423,9 +423,19 @@ bool kvm_riscv_gstage_unmap_range(struct kvm_gstage =
+*gstage,
+>  	bool found_leaf;
+>  	unsigned long page_size;
+>  	gpa_t addr =3D start, end =3D start + size;
+> -	bool flush =3D false;
+> +	gfn_t last_flush_gfn =3D start >> PAGE_SHIFT;
+> +	bool pending_flush =3D false;
+
+[ ... ]
+
+> @@ -448,12 +458,21 @@ bool kvm_riscv_gstage_unmap_range(struct kvm_gstage=
+ *gstage,
+>  		/*
+>  		 * If the range is too large, release the kvm->mmu_lock
+>  		 * to prevent starvation and lockup detector warnings.
+> +		 * Flush first so another invalidator cannot miss cleared PTEs.
+>  		 */
+> -		if (!(gstage->flags & KVM_GSTAGE_FLAGS_LOCAL) && may_block && addr < e=
+nd)
+> +		if (!(gstage->flags & KVM_GSTAGE_FLAGS_LOCAL) && may_block && addr < e=
+nd &&
+> +		    (need_resched() || rwlock_needbreak(&gstage->kvm->mmu_lock))) {
+> +			if (pending_flush) {
+> +				kvm_flush_remote_tlbs_range(gstage->kvm, last_flush_gfn,
+> +							    (addr >> PAGE_SHIFT) - last_flush_gfn);
+> +				pending_flush =3D false;
+> +			}
+> +			last_flush_gfn =3D addr >> PAGE_SHIFT;
+>  			cond_resched_rwlock_write(&gstage->kvm->mmu_lock);
+> +		}
+>  	}
+> =20
+> -	return flush;
+> +	return pending_flush;
+>  }
+
+[Severity: Medium]
+Does returning only pending_flush discard last_flush_gfn and cause callers
+to re-flush the entire original range whenever a PTE is cleared after the
+last yield?
+
+When kvm_riscv_gstage_unmap_range() yields and then clears a PTE in the
+remaining tail, kvm_arch_flush_shadow_memslot() and kvm_unmap_gfn_range()
+call kvm_flush_remote_tlbs_range() from the start of the full range
+instead of from last_flush_gfn.  Because
+kvm_riscv_local_hfence_gvma_vmid_gpa() falls back to a full-VMID TLB flush
+when the range exceeds PTRS_PER_PTE (512 pages), any unmap of a range
+larger than 2 MiB that yields and clears a tail PTE still triggers a
+full-VMID flush across all vCPUs in addition to the intermediate batch
+flushes.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261123064935.1608=
+890-1-qican5708@163.com?part=3D1
