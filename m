@@ -1,56 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795462497;
-	b=bKL/NKdoH80Z1wRzBZtubXP4M0jtJIjNSZH0A+4muv5IGSmvJu4xtjo5kWeD+ZFQZ2Kz
-	 4Wy6B7wNA6Y8+QW1Hs/xhKIQmMFF6o4HcOYw4dIsAnawMY6TW2/H8N30q/QYTvWhnYkk6
-	 p8ylAr/bGON9eKUXxr4nxLXjFIXrBAxOsXioQuZ2wHoo2alQyco4zwACuKo7Q6LmDUFtV
-	 Lrh6qOK+16RyEFsZLRPZCZv0K3GgYF8Nwla7xKhHhPcOMHq8ojm6VmyBgbyr6lQnBuXkA
-	 KjbHkBjwEzk0DPMFpwMbnZUMpXAlJXtTLH7mo7sdewtPY6SZ6w5JIXsEiejdR7Guj1A==
+	t=1795464733;
+	b=zHpIwCTIL1UPvrcHN11Vcub2VoXf+UqCMMGe6hJBttvAM/eOD/rQdo41QaOpPv6gb97O
+	 oIX8KBjqvZlZ+KCyWNv/aNToaR98qS339oDZYE02XqJrJzc51vEosiClyjoSRuitv2RYJ
+	 rCwyIZTozo2HmhA/miFc87byU9/xqMJ/lyHM7cIqDfkIAYDgHGyC6wTB2FKGNbLQNBPcD
+	 OQLEExyJORT1pxOEKDQaNh1ZZpBZTrZSIEXSatryLdN2qnAa9bY3jwBzJS8cCeS8fz1H+
+	 Ktoqm0yyHWqRUoLG+aKs94U8nJIPD92EnGSfcrv8Kzz/tsQQNpVzha6CS8zjP+xzPAw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795462497;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=P9smyWWFNbqZ0JC5hQlWxI90ybr781jHhc3XD7suVuE=;
-	b=gL1KVd+ZQl8QhTVrZQlKA1h61ZKnTXEm88IXvacaLUWZwJ4pIbH9RJiDxHh/SgkLTm5s
-	 ENYgCyvk6dmYzvZcvpFTxXHARYD4NvQNxi/zcGY6Z+CtkxgMnHuSuI3xJ1GRQe4W931h9
-	 MAnJs8XA6bfVYe2C4LuYxmR36Gjhb8RIhwHc8bKld7mQi5hXvficmQqu6vouNpBc9W7zc
-	 sVFOpUYYz94Cq0Fd5KpIZqcQ0TLxidAFkm24TJjgSLUUAwxzv3HeSqnR3ymKglSSA62bN
-	 eyaOZ4PBOZOPvlEOeuYcqf5jLPG0Bx09I5zmofTFhlCLz7QhQoaFGJbGtwzwOagNUQw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795464733;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=p9GjRkDbyeFLjmCTR3HgXfh5+QYEICACuiJ0UKaOX9I=;
+	b=WRFrAuFMcDJ448ybPKpnEyL5l8g/78CdZs7Ytd/XTMftZ4Nlg+lsitPaj2wc7tapkcXf
+	 68DU8tPKmhtFU4awqlBiVIbHVENyZrqkZpQo/P+EXMtXVOl5Dn5oGYxGT0eoGSFpCJB+5
+	 bt2fYbcf3ubC+GOUjlVX40Zcu9iwYyKUADQbd2OFuaem9a6lz9pP/elLtii7Nq2LyMsZb
+	 sBW3k8iPV1fxOsuTNoEA3OL1DZJgKTkBkBdPK160a2aRk7l232Tf9NCdz3Oty/hsTxXAt
+	 w+vkl68UpeFs+2jC4IfClpikcGn1d0GrPiHCGHSDdwvbOgeYRA28C0QnQhYZESLSQWQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ONrNRncj;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aAEM38V0;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE23606A31A;
-	Mon, 23 Nov 2026 19:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839A9606A31E
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 20:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ONrNRncj
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 457E61F000C0;
-	Mon, 23 Nov 2026 19:34:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aAEM38V0
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF5F1F000CF
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 20:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795462496;
-	bh=P9smyWWFNbqZ0JC5hQlWxI90ybr781jHhc3XD7suVuE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ONrNRncjUgabik9vUUm2LrPo2AuAwo9+/QszLkCuVKHeEir3TXKVm7GdxTutH4Im7
-	 iejkMb0B5CaMEgpcb0H5gKTI7nC1SyvdO3ro4hWtXEs5whiKQ21HL9WaVmaShvglNA
-	 7eVTMde8N9mitr7QwZxfEuZYh8+utqfkCj23ThUWTsri2mgTxEOEhsBfvWJ1j8OhvB
-	 6yii5aGEMXqGoPXz02y2PQLvU2SPCiRbB/hub9vvRAcZxzu53kFO9gCnc0Mh55YFIF
-	 LHaexEv9+NFHIlS211LfY7tDE+L4//6p9f6X7qpLumVX9JGn0Ptx9eUp+wp/zTea4K
-	 X+q4eXzxaaX7Q==
-Message-ID: <sashiko-outbox-229945@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/3] KVM: arm64: Add enum support to idreg sanitisation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Marc Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev, kvm@vger.kernel.org
-Cc: "Oliver Upton" <oupton@kernel.org>
-In-Reply-To: <20261123192457.8700-2-maz@kernel.org>
-References: <20261123192457.8700-1-maz@kernel.org>
- <20261123192457.8700-2-maz@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 23 Nov 2026 19:34:55 +0000
+	s=k20260515; t=1795464733;
+	bh=p9GjRkDbyeFLjmCTR3HgXfh5+QYEICACuiJ0UKaOX9I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=aAEM38V0SdWRa6RzQQGWSa+DFlprlEM9H1dbbRVzL3vVlzlha0nG31uDI5X3bHQDC
+	 jKJij0VxY3UuSm/2eXjKKnJZ2Jel8Gj0bxQS/2ynxihcufoxhTTQH3eobSf72LbJBf
+	 l51lLkSIsZ9xsq3U0ux2bIfIhJw9XwBo7SdnSLzqOolhfOVqlxoH66jUaxi0N8O2jj
+	 /dcUmMKWAKzfQ98SCmOhUccEOWdCN98QTqtM2q20lpBj5ghqXvSxxvDOq4owichCQH
+	 6LYbgpXvFgGNs+aTd7Pj/7vOMNaEB0Ivb9oWXEeq2CGuCh8DMvi+J0ATc407gh2Yqh
+	 1BNAH1QMkBlnA==
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c4203bbb1e9so614810266b.3
+        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 12:12:13 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErF9/PzD9neU5HiEwJNPgX2eQEJK+u8MK6UcIHlpKl0vW+HGU2JCULwA6PyHpJc6f/wt/Co=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9TRuYwzR1tQNrxYDjXPnXlKWF6EhT0F/ZmlrB7ypznq22CWXu5
+	DPfUAg+rVvK7cMy+wmD4/YriVrtxkvGmJbr3UbWQojzqh5jUIv4BfacanW9n8m+dTf63mDQhCOl
+	0vOxeyVPBwu2skGqGQ9NFNTOPB1hWqIo=
+X-Received: by 2002:a17:906:9555:b0:c50:52b5:e17 with SMTP id
+ a640c23a62f3a-c513a5e1d53mr869861466b.13.1795464732153; Mon, 23 Nov 2026
+ 12:12:12 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,66 +58,63 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+References: <20260428133524.3628482-1-imammedo@redhat.com> <20260428133524.3628482-3-imammedo@redhat.com>
+ <asSgCLgeSCKh33_n@google.com>
+In-Reply-To: <asSgCLgeSCKh33_n@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 23 Nov 2026 12:12:00 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zN_6afHGXu0rN4zZVuwn63eH=tbsnsKu1+CG8mUrRQeNA@mail.gmail.com>
+X-Gm-Features: Aa3M54pUGXQWvVOGsAAatrCCjQMcySJzHD-CrDFpFyPR__zxvbf77SKMx3Ktg6c
+Message-ID: <CAO9r8zN_6afHGXu0rN4zZVuwn63eH=tbsnsKu1+CG8mUrRQeNA@mail.gmail.com>
+Subject: Re: [kvm-unit-tests PATCH 2/2] x86/apic: add retry logic to test_apic_change_mode
+To: Sean Christopherson <seanjc@google.com>
+Cc: Igor Mammedov <imammedo@redhat.com>, kvm@vger.kernel.org, pbonzini@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] KVM: arm64: oversized value in field_prep() in
-  compute_idreg_field_deps()
---
+On Tue, Oct 6, 2026 at 12:15=E2=80=AFAM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Tue, Apr 28, 2026, Igor Mammedov wrote:
+> > The APIC timer runs at wall clock time under KVM. If vCPU is stalled fo=
+r
+> > long enough, timer can expire before the guest reads TMCCT or tick well
+> > past expected values, causing various false test failures [1].
+> >
+> > Add retry attempts with increasing timer period (10ms, 60ms, 700ms)
+> > if any test fails, to handle spurious failures due to vCPU stalls.
+> >
+> > 1) Failures we sometimes observe in CI are:
+> >   "FAIL: TMCCT should have a non-zero value"
+> >   "FAIL: TMCCT should be reset to the initial-count"
+> >   "FAIL: TMCCT should not be reset to TMICT value"
+> > Seen on both Intel and AMD hosts.
+> >
+> > PS:
+> > on most test runs, test completes fine on the 1st iteration.
+> > The patch would affect only failure path which will be slowed down
+> > due to retries but still fail if there is a bug with benefit of
+> > getting rid of false positives caused by vCPU stalls.
+> >
+> > PS2:
+> > Number of tries and tmict delta comes from analyzing vcpu stalls
+> > on heavily overcommited Haswell host with test being bounced between
+> > 2 sockets.
+> > Typically 2nd iteration (60ms) is enough to get rid of
+> > false positives.
+>
+> Blech.  I would rather rework the testcases to simply not be flaky.  I do=
+n't see
+> any value in waiting for the TMCCT to be half of TMICT; just validate tha=
+t it
+> counts down across switches, and that it can wrap in PERIODIC but not in =
+ONESHOT.
+> We have a KVM selftest to validate the timer counts at the correct rate, =
+so just
+> validate the core functionality here.
+>
+> E.g. roughly something like this?
 
-commit db63f3732a88cac7f7573382f03761fa97deb813
-Author: Marc Zyngier <maz@kernel.org>
-
-KVM: arm64: Add enum support to idreg sanitisation
-
-This commit extends the ID register dependency framework to evaluate nested
-ordered enum feature descriptors and compute the corresponding RES0 and RES1
-masks for ID register fields.
-
-> diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
-> index 6f668148ccc11..9763d021a5ecd 100644
-> --- a/arch/arm64/kvm/config.c
-> +++ b/arch/arm64/kvm/config.c
-
-[ ... ]
-
-> @@ -1557,6 +1571,27 @@ static const struct reg_feat_map_desc *idreg_feat_=
-maps[] =3D {
->  	&id_aa64mmfr3_el1_desc,
->  };
-> =20
-> +static struct resx compute_idreg_field_deps(struct kvm *kvm,
-> +					    const struct reg_bits_to_feat_map *map)
-> +{
-> +	const struct reg_bits_to_feat_map *tmp;
-> +	struct resx resx;
-> +
-> +	/*
-> +	 * Assume the enum values are ordered in reverse order of
-> +	 * capability (from most to least capable). A NULL callback
-> +	 * value indicates the ultimate fallback (not implemented).
-> +	 */
-> +	for (tmp =3D map->idreg_field_deps; tmp->match; tmp++)
-> +		if (tmp->match(kvm))
-> +			break;
-> +
-> +	resx.res0 =3D field_prep(map->bits, ~(tmp->bits));
-> +	resx.res1 =3D field_prep(map->bits, tmp->bits);
-> +
-> +	return resx;
-> +}
-
-[Severity: Low]
-Can passing ~(tmp->bits) to field_prep() trigger a compile-time BUILD_BUG_ON
-("field_prep: value too large for the field") if the compiler constant-folds
-map->bits and tmp->bits?
-
-tmp->bits is a 64-bit unsigned value holding an unshifted field value, so
-~(tmp->bits) always has upper bits set outside the field width, which
-violates __BF_FIELD_CHECK_MASK() in __FIELD_PREP().  Computing resx.res1
-first and deriving resx.res0 as map->bits & ~resx.res1 avoids passing an
-out-of-range value to field_prep().
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261123192457.8700=
--1-maz@kernel.org?part=3D1
+Igor/Sean, do you intend to send a new version? I am running into the
+same problem when running the test in a VM (i.e. nested).
