@@ -1,84 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795455141;
-	b=Mfwr1Jsx2hCNfBwxRxa6ZQz0MJcrAsX8Ur4hekh/kG71VypkGj2AF4iUMAKrjUklri5i
-	 jjjeDgDlCMMYxVEAJ8qPnVvvJwsbFvNtOuy4NAIkpMR0p2BVl8wSerkjB35PmFpciWVt1
-	 a65LU0xS3CYLxc0s1d8/EM1ZQXuQhXRvLmvvOUPKbFx8bC8mYMbGLve9TelGdCULw6TTm
-	 7fvwaNKrNefB37axu/3JLbn4nBIK4nK3C66TIV8yXYHRHlaMS4FfBHoCVCbdYaCKHNlpV
-	 x8LFlnnbO1EFPUwettiZhprqJg/FAujE7+mQDThKhN7NrxL6hWcWsd52Teqx0lXttVg==
+	t=1795455412;
+	b=FDrofl5PgYoqvIVG0CoRsyF4BVnIdATtApuY1iNK8lT7Ly6yb6HqdoqZ9Z/nGM7HhkLN
+	 dq93OloMwzrEB/tLC4Bd+mIlbCEnnr3dYWs9G1sYeG0QcEikXrSG265WXRb/KJB/s+ZkS
+	 cK74hbkHrMyL/mh/tVwI8K6Kh7uKJHSID3Lu5kjhgReMsevPM6VJcI/hNKiHxLS6TrJR/
+	 yfr8vZd7k0X5Norh7hJFDuR8taWB5xNMVLX16fyBOaTXqDy7i4AJHHwu9Mqp+zJAeNtM7
+	 4+Cio72XGbC+YRlTmGFW2EtxSKpSNZQIsPd1pDOYE/H0ssxioaRX1sz1C4ftwfe5Z4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795455141;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 From:To:Cc:Subject:X-Mailer:References:In-Reply-To;
-	bh=P+l/VRR07HqPbgm9tEPK7SVr6Tlf5vY5XKwCiYVXpnE=;
-	b=4M89ukzCV8NOPcb8j1v2oaJ6ALANepkkl25H9Y+lO1fmCz9NWJt4vw/KilmlScaIJzUS
-	 lufY79qgGrAf4Jx++15mOVpukAFd4DTK4Pc/5NnvdNr7UDI2iLrr13wdZaH2QmAys6UcZ
-	 J003kal0SLn9w22C2vQ1KWVhsnF01sxrXN22q30S8x8DwTKAreleuPq8wrE1WX9raIC14
-	 T70QW7usUFY4WvqkQi2HbAQX7XmJ0RH+gUwurSGclaLR/SFQAFtSTDS1tEVA4xrK88xIw
-	 YIHy0AKyM0mcYBB/bWnEks9LdNwUz7Osx1ti03jJn6P3hiRsn8H859mGguKUrNDcKEA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795455412;
+	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
+	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
+	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
+	 X-SA-Exim-Scanned;
+	bh=worv+Y03ljvU23jf61f6lVoQSFBcO1gUtcVibu/cXn8=;
+	b=M1OiJMCl7VPytwK4e39stqbQccj5h+MbVqmOul899qoDqz/vtaC8XSdl34yVyi1yu+Ax
+	 rkAHTHj7dIsvL81SKmdT8GfDpXz07kOspZRL3B5pt6UqH1JRLand2yCZc20MAPIFtMRSt
+	 Sj8zZAXahjfiiZpDGFPMVwK2BfMiEmJzZEi85j/73txY9ksXjY25B0mGhYTVSFklQCLHD
+	 rOkC6echM6XFU4hOzFaciHOQEpTpzNjg3bRNNsYAOeiBI5spi53xrxSHTl1Bb3kG8Qj8S
+	 lV1N47DJn53egfNM86UY5riqfoT82lTjOIxt3WOcf5Ii/7UuWv+rDXzLikBB6rutaxA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=GUqMwfdW;
-	arc=none smtp.remote-ip=209.85.214.181
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SJk8boVo;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4223D606A321
-	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 17:32:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4223D606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED096606A69E;
+	Mon, 23 Nov 2026 17:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=GUqMwfdW
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2f07a960666so16497135ad.1
-        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 09:32:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795455140; x=1796059940; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=P+l/VRR07HqPbgm9tEPK7SVr6Tlf5vY5XKwCiYVXpnE=;
-        b=GUqMwfdWySOE88STspofkPaLQaaZjEwFfhZBDcvXCKXUdwt0IqoJuHyz6c4xJs/dnO
-         RLel3qR6lTtHRWvCqUUH6V5nO10hZZlnSxyrXXoEH6W8FwXVOVGLxiAv30EQ6HvrMt1x
-         4gFCm0+JmjZI5aW6RAsyZvO6EbM46xOijpgUC6/Gi8xQTSRJxGbSJwxabd7/tnVmiQXO
-         v4nAVDKIubL2xTU2aRRz7NEg9/ux/TdNw2zEhqyeTsdVJAu9Sgw1uALVn6Q6ZcCySPur
-         zNiBzRfxUKrP/aEvbxj+n/QxJwBzo3JvMo7sIRnvm9/J8aQiFzLnERdkb664faMxpA5G
-         xcwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795455140; x=1796059940;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=P+l/VRR07HqPbgm9tEPK7SVr6Tlf5vY5XKwCiYVXpnE=;
-        b=OqAeVZc/dGoxe6wwWir+xoNOnhWiMv7Yfp0HiR0qnCI7hTbihVbQl05mDLCnugLKTC
-         8UB8H9io9sEmwFtFdm6TKRSHrcV46Jpa6wWbgjn7QRsV1npAY26lHJ03+yVA6yLFkWNe
-         /RtzL75kfpmG5Pdzn3q4CW3gn+cr5vIT1/E7xoIgZiKR5I8hFejFzDm7Efz0bBm+A/s1
-         blpEDCJIjFECk6a1jyvIdkj/BXSyinlxtcM+NzmrgJvmRBQfOHHt/2Ze0Fd+XOKfYLqE
-         VQr+Rx6kzdAzYEC5pxbFRjGrAPvp8QlpayYeK599pfRT2Eh84MGNY85ulhmVPzxyCWNf
-         +mQA==
-X-Forwarded-Encrypted: i=1; AL+hErHMolJhoTyaf7E0C67Jst2NwAOS2q/96UqMrRerSwQlYv3gWywPz8CzUr37czsSWbUTE0Q=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9y1VrLOq93sVtuIw1M+pB5N8StGS6wtn/LSX2z8ZA8p6W3TXQp
-	hbfHdk9FgED3sHZkt4yqfaP9B5eQmXe4gG/vbbrfe/+LQ+vocpcB7LVrL5KMWzXa2g==
-X-Gm-Gg: AZFdTZfVwIiC8HPNG3qocPdR2wLnyVx6snArojKVf1AkafEieFYQUlZZ60kXQSrrw7W
-	oS6gLzAVM3JkbnN3N2e9P3ffgTabawY+3V7Wzi+Wjiz478Ab7dUM+hF7OasIMyfKrqBEOHz5ucd
-	K3NLT6Yayyvw84oUvXklgIJm3MiHObVPfXhPb1DuhZvHzGpldCfP3LtLP7S9UhwPPTGuwXAlQdT
-	r/CRZyALVATh65OAdJC42R+zMUY1rqBYWy0oJGWCWcWdSGoZ7OFRYjSppC2j3opihB6rRKUv7vc
-	35ks7rf0BLt02CpmIaGJSv4SwzHWpElxGNUCs3z1KclPR9qM9VjYxI6OkmH5O5UlcQkPnCV3l2x
-	XmE0tboJ6DHBeFd95WA6pvVmx4QrlKmzxQMiXlZ5XW0JlXoaqmqR0Uf/0T88hRO2RE4bbJbEweo
-	ou95YGF92KV7brGndZON62tZTilbvI5+blkoB14unbc8CrBagJ7W31KpbpKcDhDqvU7Okb/8kFD
-	kC+MaHo8+HLMRk4b57bbdQJoADfvdikTua54OF3avh/iRjRBF+4FDt0Rn+tR6hw9B8m5Glh43us
-	2BEbvwSCD01wZqQt4FxPF8ZtBvxB/B4l1r9HeQZmUYxxX2RU4zjKcPI/IfeN9VGt
-X-Received: by 2002:a17:902:e807:b0:2ee:1fab:158f with SMTP id d9443c01a7336-2f03f167d4emr115089865ad.43.1795455139780;
-        Mon, 23 Nov 2026 09:32:19 -0800 (PST)
-Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2f051a566f7sm45650825ad.41.2026.11.23.09.32.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Nov 2026 09:32:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SJk8boVo
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F671F000C0;
+	Mon, 23 Nov 2026 17:36:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795455411;
+	bh=worv+Y03ljvU23jf61f6lVoQSFBcO1gUtcVibu/cXn8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=SJk8boVobebpbSdbYgq+ftbo1Hu42e9YjaF2dfLHBZ1M7fH90f13dklbfXyjek4KM
+	 +yXJYaFac1o47GUKLAKEwIfPpHNwhem1lMn4A7/2Mzi6YofnonARX+s6yIeIYUJWNF
+	 N3lJm6rLkZ534B1Xu3KSZHUmH4ud8cAOv3R+qjkR8VKlLQQCNWbE3qA0z7GBzQI3Y1
+	 955gnreLohaj+uevvYp4aNE+VDxjSpvxYmRISbfcvM2FqEtYHy04ITMqnGrrGxkQza
+	 pwIlD9bEFTsy4xcXXzPJevZPQSvLns/RP3AmZTZKrSYk8sGmeMMalYsRfE9MbZh3Fm
+	 C7wSD1bRpQTMg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xVXyC-000000027Gl-3QWM;
+	Mon, 23 Nov 2026 17:36:48 +0000
+Date: Mon, 23 Nov 2026 17:36:48 +0000
+Message-ID: <86cxrvzbyn.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Jia He <justin.he@arm.com>
+Cc: Oliver Upton <oupton@kernel.org>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Sascha Bischoff <Sascha.Bischoff@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 2/3] KVM: arm64: nv: Don't request or attempt L1 VNCR mapping without vncr_tlb
+In-Reply-To: <20261123150917.2679600-3-justin.he@arm.com>
+References: <20261123150917.2679600-1-justin.he@arm.com>
+	<20261123150917.2679600-3-justin.he@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -87,89 +84,68 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 23 Nov 2026 09:32:17 -0800
-Message-Id: <DN2RQ7LGX224.3W3PSQ2PBHTJZ@google.com>
-From: "David Matlack" <dmatlack@google.com>
-To: "Pratyush Yadav" <pratyush@kernel.org>, "Tarun Sahu"
- <tarunsahu@google.com>
-Cc: "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Mike Rapoport"
- <rppt@kernel.org>, <robin.murphy@arm.com>, <maz@kernel.org>,
- <will@kernel.org>, "David Matlack" <dmatlack@google.com>, "Alexander Graf"
- <graf@amazon.com>, <seanjc@google.com>, <jgg@nvidia.com>,
- <loganodell@google.com>, <arnd@arndb.de>, <dwmw2@infradead.org>,
- <baolu.lu@linux.intel.com>, "Bjorn Helgaas" <bhelgaas@google.com>,
- <oupton@kernel.org>, <alex@shazbot.org>, <gle.com@google.com>,
- <pbonzini@redhat.com>, "Andrew Morton" <akpm@linux-foundation.org>,
- <kevin.tian@intel.com>, <joro@8bytes.org>, <kvmarm@lists.linux.dev>,
- <linux-pci@vger.kernel.org>, <kexec@lists.infradead.org>,
- <kvm@vger.kernel.org>, <iommu@lists.linux.dev>,
- <linux-arm-kernel@lists.infradead.org>, <skhawaja@google.com>,
- <sagis@google.com>, <linux-arch@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 05/19] kho: Add feature header for fine-grained ABI
- compatibility
-X-Mailer: aerc 0.21.0
-References: <20261110050202.529473-1-tarunsahu@google.com>
- <20261110050202.529473-6-tarunsahu@google.com>
- <2vxzse0rzjdn.fsf@kernel.org>
-In-Reply-To: <2vxzse0rzjdn.fsf@kernel.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: justin.he@arm.com, oupton@kernel.org, fuad.tabba@linux.dev, joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, pbonzini@redhat.com, seanjc@google.com, shuah@kernel.org, Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Mon Nov 23, 2026 at 6:56 AM PST, Pratyush Yadav wrote:
-[...]
+On Mon, 23 Nov 2026 15:09:16 +0000,
+Jia He <justin.he@arm.com> wrote:
+> 
+> vcpu->arch.vncr_tlb is only allocated when ID_AA64MMFR4_EL1.NV_frac
+> advertises FEAT_NV2. When NV_frac is cleared to 0 (or E2H0 is selected),
+> vncr_tlb is NULL for the lifetime of the vCPU.
+> 
+> Don't set KVM_REQ_MAP_L1_VNCR_EL2 in kvm_vcpu_load_hw_mmu() when
+> vncr_tlb is NULL. The only other place that sets this request is
+> kvm_translate_vncr(), which only runs on a FEAT_NV2 VNCR abort. Warn and
+> return early in kvm_map_l1_vncr() if vt is NULL before disabling
+> preemption and taking kvm->mmu_lock.
+> 
+> Signed-off-by: Jia He <justin.he@arm.com>
+> ---
+>  arch/arm64/kvm/nested.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> index 4d83281a7a28..2f52c128f3a7 100644
+> --- a/arch/arm64/kvm/nested.c
+> +++ b/arch/arm64/kvm/nested.c
+> @@ -979,7 +979,8 @@ void kvm_vcpu_load_hw_mmu(struct kvm_vcpu *vcpu)
+>  				vcpu->arch.hw_mmu = get_s2_mmu_nested(vcpu);
+>  		}
+>  
+> -		if (__vcpu_sys_reg(vcpu, HCR_EL2) & HCR_EL2_NV)
+> +		if (vcpu->arch.vncr_tlb &&
+> +		    (__vcpu_sys_reg(vcpu, HCR_EL2) & HCR_EL2_NV))
+>  			kvm_make_request(KVM_REQ_MAP_L1_VNCR_EL2, vcpu);
 
-> When we have all this available, I don't see the point in
-> differentiating between optional and required features at the ABI level.
-> At the ABI level, all that matters is what the incoming kernel
-> understands. If the incoming kernel does not understand a specific
-> field, the outgoing kernel should just not use it. There's no point.
-> Best case, it gets ignored.
+How do we even get here? Now that you have short-circuited the vcpu
+state loading, I can't see how this code is reachable before we've
+actually initialised the relevant state.
 
-I pretty strongly disagree.
+What am I missing?
 
-An optional feature is one that the next kernel does not need to
-understand to correctly restore the object. A required feature is one
-that the next kernel must understand to correctly restore the object.
-Optional features can be enabled without any compatibility concerns.
-Required features must be enabled carefully (IMO via uAPI) to avoid
-breaking Live Update.
+>  	}
+>  }
+> @@ -1761,6 +1762,9 @@ static void kvm_map_l1_vncr(struct kvm_vcpu *vcpu)
+>  	struct vncr_tlb *vt = vcpu->arch.vncr_tlb;
+>  	pgprot_t prot;
+>  
+> +	if (WARN_ON_ONCE(!vt))
+> +		return;
+> +
 
-I agree it's a good idea for the outgoing kernel to check that the next
-kernel supports all of the required features it is using, so the Live
-Update can be stopped before the kexec. But that doesn't remove the
-need for the distinction. The next kernel still has to decide what to
-do when it sees a feature bit it doesn't understand, e.g. because no
-spec was provided, the spec was wrong, or we kexec'd into a different
-kernel than planned. Without the distinction it can only:
+I don't think we want this. Either the code is rock solid, and the
+warning pointless, or we have terrible problems, and I really want to
+see the kernel exploding, specially given that NV is still an
+experimental feature.
 
- A. Treat all features as optional, which risks misinterpreting state
-    and corrupting memory if the previous kernel did not properly
-    validate the next kernel's capabilities.
+Thanks,
 
- B. Treat all features as required, which means no new feature can be
-    enabled until every kernel it might Live Update to (including
-    rollback targets) understands it, even when those kernels could
-    safely ignore it.
+	M.
 
-Neither of those is a good outcome.
-
-> The semantics of required or optional then become "can I describe this
-> object with the capabilities I can use?". If the answer is yes,
-> serialization succeeds, if the answer is no, serialization fails. So
-> with this, KHO_MAP_F_MULTI_INDEX or KHO_MAP_F_DYN_DEPTH are indeed
-> optional. All memfds can be described without these, they just will be
-> less efficient.
-
-I think this is a different meaning of "optional". Whether the outgoing
-kernel can choose not to use a feature is a decision for the serializer.
-Whether the next kernel can safely ignore a feature's data is a property
-of the ABI. KHO_MAP_F_MULTI_INDEX is optional in the first sense, but
-required in the second: a kernel that doesn't understand it will
-misinterpret the map. The header needs to convey the second.
-
-So I see the spec and required bits as complementary: the spec lets the
-outgoing kernel avoid features the next kernel doesn't support and fail
-before kexec, and required bits let the next kernel fail safely if that
-check was skipped or wrong.
+-- 
+Without deviation from the norm, progress is not possible.
