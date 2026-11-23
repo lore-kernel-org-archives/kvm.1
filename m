@@ -1,75 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.19
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795409405;
-	b=K3q6QWccF0SZJL55Zb7gkFOuZ/ueOtJb1TIBJzR9Qg+L/nbH/LhXQf+7OgPhgls2TxAo
-	 wZXXoNlokZ+XcygjE04SoSgG6vofzM1RCynUt0ZLkRMqeF58//wv/AiPRnh3KTccYExKW
-	 aWQ9MpL/LtceCW10DY5E2AhpnhHtixYQXOw1Don5581TWAZLUHinwCco3zXSWPYXcjsRL
-	 bDZgk1U9UDaN0ukvdeMBZkBd77/5jgwWf2mV7Gn82NQm9TmaJdp1LcqNWRBozJBxXVxkU
-	 uFKCCkEhy8cLnmr0KZg9OvHqrP1aPbKArYRs/NPmse90Q0gD8ZsGeo0WSy6xNV/7Oeg==
+	t=1795409511;
+	b=1JoI0TJukQlzphAm80eXCO+ieEL3biDC43Kb3LoI1L4VBBD7wx7PjbPomUlXj/W/x0II
+	 JIotM9YuRYNgF5Dfw8sxDPm5DxF4xgQ6F9StFD4FJUk+KnFNgGf1r+XFLeOSKLYbEOrKz
+	 qRCIAplXkl0rr9EcnRKfo8d/3aZ4ycN7D0bmKA0p2ZUHtaCFtEBHI8YHsVSysZNOZYEG1
+	 CMuKOoPDDvNta97vXqvnMGOTnaub+69hmDlfciM5fAaucOrl4Ad4WfHCEOLYSp0vSAobh
+	 jpKvMNZEsUxTWOjt2z/juZi/ZsIOOMSbWMJ84Ff0PxGoSWVr7EiURU6X3vLjR1yYKBQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795409405;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
-	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
-	 Content-Type;
-	bh=39/so1FjaFdi6WcGoZaDeWQdPor+TxvpgEJoYfxHlTU=;
-	b=UPd3gxDMmrejCkYuKRXKo610xSabXkgAplBts7UhHEtJ/5eONp1bABOkhVeRrcw7K/r0
-	 uxfBvT8suCt/pgUpNrJ/NBhIJG0lBIu/F2v9iMl0qWy5iYfuyHf4bq8pm100bE60v2exV
-	 j4HIo3kE+C9b9rgTyD85IauLYcwfaB+fVMLG+0qB3EU/zxAfw7CeWap4Lh+pD9yBLt2Ax
-	 9f39YeXB2436C8PfPBWWCM7zVx627btGu3pW1rSEYyUfF+T5R9HCCo/hLKICIV2G73qQO
-	 MGvgIIrCAjg0DiDd5tdA9KZbggKOi/WKWMY6GwkcVq5/yQWiAaKNXANKctPsxtXbQuQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795409511;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=7fAmMaiUPDgzxUIirHcZv/9ixx+ut7rJdqmw0V+8t2o=;
+	b=1yGtPytgsqcyvj8/baGvppgGioeTb8DDErTT8xfUEACsevjkuxMoJeGt7ShOdh8CGVWj
+	 CUN65/RcmiTR+MbTI/V+Avz9QKGnJDmXwLLxEHThzhabWWuYjnntphQKrDy1zgUjbdMgt
+	 My1u0Ye/RZEVrm2BJzMBEJie25DL0cMW/FcA6XfG4mq7oBvS83E0X+TmVKIpUa+zaN9NS
+	 uOKY9qk5I+8XyN60WnXcD7Nss+y9SVrWQo9ZHVUuiT6cKlxkHtg8X5zEe51ufbkZhZsIW
+	 Ww2x8XNsBJvVvvUPsdtn7LCIXX4yunSLJFqviKkZT0nOWes1NuKWfZvX5UHAT1Zuqng==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Id2lfava;
-	arc=none smtp.remote-ip=209.85.214.198
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kQDCD6cU;
+	arc=none smtp.remote-ip=192.198.163.19
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E2960A6F75
-	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 04:50:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B1E2960A6F75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78FA606A31A;
+	Mon, 23 Nov 2026 04:51:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C78FA606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Id2lfava
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2f0467a525eso20806665ad.2
-        for <kvm@vger.kernel.org>; Sun, 22 Nov 2026 20:50:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795409404; x=1796014204; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=39/so1FjaFdi6WcGoZaDeWQdPor+TxvpgEJoYfxHlTU=;
-        b=Id2lfavaJq6FoSq7O1jj211cQUmv6o2m6/C/u0HiKiYJTWU/qasdgVqQJhEMI99Ukb
-         JqMjGZAxUPfAVbmwAkfbJDvGzE/soUgI8EzHS0tydpMHu+CLfEWAX7Jd8DwFP1CReFaD
-         N7p2zTugAQ1zhIeut0BW/H49YD8MitWLDYEhdrqw6UDCJA0AACe9cSIIuSi0gHfOitYv
-         ZSzHFrk6B2yK4tZnZeAPzVHkbUN65UlwNayCstIywd4uV7YJZxL20GTTCFj7C8T0v94v
-         MM5Jl99UkQY2YLsjTmft7C8NKvqSzm1PO65Z2+GujwJ++mjkvgMDkTv7Fist/IHKI66L
-         8jww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795409404; x=1796014204;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=39/so1FjaFdi6WcGoZaDeWQdPor+TxvpgEJoYfxHlTU=;
-        b=jYxCndjyTJ45qgSEzyWxOgF6c3oomUs0ITuda2Pdvmy9JazZaPNY7+nnLv2BN+5iMt
-         3WhlojLkx12Va359KRRCon51hcVRrhQh7cVP3XI98I3M8xb0HoZs1JooN2pXIG9yiveC
-         Gl61lo9sq8byY+uFHGVLQGsJ1ULFLjhwHTYgaoMNFSA7tkfeNkCPt1hJoXm1JwH/wR1s
-         lZmEHV0Epm9wqAhV0U8wYDjDE8E/zsvrPmOTEhj4s1M9Nz7zfQr+MFdBwY0t50un/4pN
-         75ywM7H+GUZmf6xSfCInJMvek9Z9cQtDXaIjXLdyN14QVbN7i+3JfUr113rsZvESkmDV
-         GGNA==
-X-Forwarded-Encrypted: i=1; AL+hErFoI7qUoqaZBbC1911QLFJZQtEShzfvgFJsZfSJU/ts1tvPG/uL87Y08XjwxIo1v7QzxkU=@vger.kernel.org
-X-Gm-Message-State: APuU4Z89JzkxBJdU3Fu9fWMB2EP804FJFb5BVHnmCJ4ifBymJ8B8g2it
-	J2Bzhnyqy8lHraWkn8pDQ7vs23dWyEd09mNql8txM0jUvWkmlRAa/Aq3iKCdmrQPSxlTclrB/LM
-	Qtz94WZkeuP8X6Q==
-X-Received: from plbkc3.prod.google.com ([2002:a17:903:33c3:b0:2f0:424a:82c6])
- (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:1ac8:b0:2f0:a586:81d9 with SMTP id d9443c01a7336-2f0a58682a8mr7145295ad.50.1795409404019;
- Sun, 22 Nov 2026 20:50:04 -0800 (PST)
-Date: Mon, 23 Nov 2026 04:49:46 +0000
-In-Reply-To: <20261123044949.3610702-1-skhawaja@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kQDCD6cU
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795409510; x=1826945510;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=WzLuMbzuFNFek+LLgWAg5DpJARYEwx2sHm0/ACrnLYg=;
+  b=kQDCD6cUtq7WVvjYawr6vHvBgNdHDVihyt30JF42cWu0EOZ5MnlETLJn
+   UB3+YEyRPKTEmKMw90I3X/bP6Dwlyq6MtxyHBn8qvWDpvXTAd+M4+iR+s
+   VLW/3sQcWUHQNPkJMkB5tZIPUzm8xwO1QZPtc48+cNbj1jGEKPUTrhBXf
+   m6YHEnQ+LW8Kx5yO5JO1/hONh3rn7N5uB/zlhTPJV302a0PoeKp7WU6ZY
+   8S9ZfYDW+Rtzw/h9kww36MbGYPUftfYUkW6CUA+wdoqwEwJ/pDqRY4Qlv
+   Zte5yZ3HcMDKvsiHetpbOtH+vXroh9BMwrAFHWsPYVBWy6kImzU8E998q
+   A==;
+X-CSE-ConnectionGUID: Kfn5yEsDQbehgbg1++aLsQ==
+X-CSE-MsgGUID: Qj2v3epAQAWGBSRreZXrWQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4306971"
+X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
+   d="scan'208";a="4306971"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 20:51:49 -0800
+X-CSE-ConnectionGUID: cYq88QI+RfaykNMl2xLLUg==
+X-CSE-MsgGUID: YQGrMIldTtWxBDJt+fPyrw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
+   d="scan'208";a="11619999"
+Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2026 20:51:45 -0800
+Message-ID: <479a91e0-fe36-43ac-b915-c839afe1672b@linux.intel.com>
+Date: Mon, 23 Nov 2026 12:51:43 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -78,289 +71,277 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261123044949.3610702-1-skhawaja@google.com>
-X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
-Message-ID: <20261123044949.3610702-16-skhawaja@google.com>
-Subject: [PATCH v8 15/18] iommufd: Implement ioctl to mark HWPT for preservation
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	David Woodhouse <dwmw2@infradead.org>
-Cc: YiFei Zhu <zhuyifei@google.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Pranjal Shrivastava <praan@google.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, 
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vipin Sharma <vipinsh@google.com>, Ankit Soni <Ankit.Soni@amd.com>, 
-	Nicolin Chen <nicolinc@nvidia.com>, John Starks <dev@jstarks.net>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, iommu@lists.linux.dev, x86@kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, yilun.xu@linux.intel.com,
+ xiaoyao.li@intel.com, Binbin Wu <binbin.wu@linux.intel.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 9/9] coco/tdx-host: Enable trusted DMA on IOMMUs on
+ device connect
+To: Chao Gao <chao.gao@intel.com>
+References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
+ <20261112043054.2664857-10-baolu.lu@linux.intel.com>
+ <av1dr3IGMqWA1-7r@intel.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <av1dr3IGMqWA1-7r@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: YiFei Zhu <zhuyifei@google.com>
+On 11/18/2026 4:11 PM, Chao Gao wrote:
+> On Thu, Nov 12, 2026 at 12:30:54PM +0800, Lu Baolu wrote:
+>> Assigning a device to a TD for private memory access requires that DMA
+>>from that device be translated by structures the TDX module controls.
+>> An Intel IOMMU that implements the trusted DMA extension provides a
+>> parallel set of translation and invalidation resources for this purpose.
+>> They become usable once TDH.IOMMU.SETUP puts the IOMMU into Secure TDX
+>> Mode and the TDX module initializes them. The host keeps the regular
+>> translation path.
+>>
+>> Issue TDH.IOMMU.SETUP on demand, when the first device behind an IOMMU
+>> is connected through the TSM, rather than for every capable IOMMU at
+>> probe time. Secure TDX Mode costs host resources: the TDX module's
+>> metadata pages and half of the IOMMU's domain ID space. That cost should
+>> only be paid for IOMMUs that actually serve such devices.
+>>
+>> tdx_iommu_get() and tdx_iommu_put() keep a per-IOMMU refcount. The first
+>> get() issues TDH.IOMMU.SETUP and the last put() issues TDH.IOMMU.CLEAR.
+>> A single mutex covers both the refcount and the SEAMCALL that follows,
+>> so a device cannot join an IOMMU that is being cleared or whose setup
+>> has not finished. The refcount lives here rather than in the VT-d
+>> driver because tdx-host already owns the per-IOMMU state that must
+>> outlive TDH.IOMMU.SETUP: the IOMMU_MT pages and the TDX IOMMU ID.
+>>
+>> The IOMMU_MT parameter page lists two contiguous buffers for the
+>> trusted invalidation queue, followed by the metadata pages. The TDX
+>> module reports how many metadata pages it needs in its global metadata.
+>>
+>> With Dynamic PAMT, every 4K page given to the TDX module needs PAMT
+>> backing first. Take it for each page of the invalidation queue buffers
+>> and the metadata pages before TDH.IOMMU.SETUP, and drop it if setup
+>> fails or once TDH.IOMMU.CLEAR succeeds. The parameter page itself only
+>> carries the page list into the SEAMCALL and needs no backing.
+>>
+>> If TDH.IOMMU.CLEAR fails, the TDX module may still reference the
+>> IOMMU_MT pages, so they are leaked together with their PAMT backing,
+>> and the IOMMU is marked unusable. Later get() calls for that IOMMU fail
+>> with -EBUSY rather than reuse an IOMMU in an unknown state. tdx-host
+>> pins itself while such an IOMMU exists, so unloading can't lose track
+>> of it. If the failure happens during unload itself, only the tracking
+>> entry is freed; the VT-d driver still has the IOMMU acquired and keeps
+>> rejecting it.
+> 
+> If the pin can fail anyway, what's the point of taking it at all?
+> 
+> If tdx-host is reloaded, we can rely on the VT-d driver or the TDX module
+> to reject transitioning the IOMMU to secure mode.
 
-Userspace provides a token to mark the HWPT for preservation. Note that
-this token is not the LUO token that is used to preserve the iommufd.
-Once all the required HWPT are marked for preservation, the user can
-preserve the iommufd into LUO. The iommufd will preserve the HWPTs that
-are marked for preservation.
+You are right. VT-d already refuses to reuse an IOMMU whose clear
+failed, even after tdx-host is reloaded. I will drop this.
 
-The marked HWPTs are tracked using a new XArray mark protected by a new
-liveupdate mutex. This mutex will also be used during iommufd
-preservation to protect against any race with the mark preserve ioctl.
+>>
+>> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+>> ---
+>> drivers/virt/coco/tdx-host/Kconfig   |   5 +
+>> drivers/virt/coco/tdx-host/Makefile  |   1 +
+>> drivers/virt/coco/tdx-host/private.h |  21 ++
+>> drivers/virt/coco/tdx-host/main.c    |  11 +
+>> drivers/virt/coco/tdx-host/viommu.c  | 401 +++++++++++++++++++++++++++
+>> 5 files changed, 439 insertions(+)
+>> create mode 100644 drivers/virt/coco/tdx-host/private.h
+>> create mode 100644 drivers/virt/coco/tdx-host/viommu.c
+>>
+>> diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
+>> index f8c8cc29d46c..1395929f05bb 100644
+>> --- a/drivers/virt/coco/tdx-host/Kconfig
+>> +++ b/drivers/virt/coco/tdx-host/Kconfig
+>> @@ -6,3 +6,8 @@ config TDX_HOST_SERVICES
+>> 	select FW_UPLOAD
+>> 	select PCI_TSM
+>> 	default m
+>> +
+>> +config TDX_CONNECT
+>> +	def_bool y
+>> +	depends on TDX_HOST_SERVICES
+>> +	depends on INTEL_IOMMU
+> 
+> Do we need this TDX_CONNECT config? We can just add "depends on
+> INTEL_IOMMU" to TDX_HOST_SERVICES, and then drop the stub functions
+> in private.h. Patch 7 already makes TDX_HOST_SERVICES depend on PCI
+> in the same way.
+> 
+> The cost is that without INTEL_IOMMU, none of the tdx-host services
+> are available, including TDX module updates. But I doubt anyone would
+> want to launch CoCo VMs while compiling out INTEL_IOMMU entirely.
+> 
+> We can always add this option back if such a configuration turns out
+> to be practical.
 
-The HWPT token will be used during restore to identify this HWPT. The
-restoration logic is not implemented and will be added later.
+I'd like to accept this unless anyone has concerns about the downside.
 
-Signed-off-by: YiFei Zhu <zhuyifei@google.com>
-Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
----
- MAINTAINERS                             |  1 +
- drivers/iommu/iommufd/Makefile          |  1 +
- drivers/iommu/iommufd/iommufd_private.h | 17 ++++++
- drivers/iommu/iommufd/liveupdate.c      | 75 +++++++++++++++++++++++++
- drivers/iommu/iommufd/main.c            |  9 +++
- include/uapi/linux/iommufd.h            | 31 ++++++++++
- 6 files changed, 134 insertions(+)
- create mode 100644 drivers/iommu/iommufd/liveupdate.c
+> 
+>> +/*
+>> + * Serializes the refcounts together with TDH.IOMMU.SETUP and
+>> + * TDH.IOMMU.CLEAR, so a device can't join an IOMMU that is being
+>> + * cleared, or one whose setup hasn't finished.
+>> + */
+>> +static DEFINE_MUTEX(tdx_iommu_lock);
+>> +static LIST_HEAD(tdx_iommu_list);
+>> +
+>> +static void *tdx_iommu_alloc_pages(int node, size_t size)
+>> +{
+>> +	struct folio *folio;
+>> +
+>> +	if (node == NUMA_NO_NODE)
+>> +		node = numa_mem_id();
+>> +
+>> +	folio = __folio_alloc_node(GFP_KERNEL | __GFP_ZERO, get_order(size), node);
+> 
+> Would kzalloc_node() work here? kzalloc_node() handles NUMA_NO_NODE
+> itself, and there's no need to convert between folios and void *.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0c66ccfd9c8f..81fb1fed6a6a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14152,6 +14152,7 @@ M:	Samiullah Khawaja <skhawaja@google.com>
- R:	Pranjal Shrivastava <praan@google.com>
- L:	iommu@lists.linux.dev
- S:	Maintained
-+F:	drivers/iommu/iommufd/liveupdate.c
- F:	drivers/iommu/liveupdate.c
- F:	include/linux/iommu-liveupdate.h
- F:	include/linux/kho/abi/iommu.h
-diff --git a/drivers/iommu/iommufd/Makefile b/drivers/iommu/iommufd/Makefile
-index 67207914bb6e..cfd5b4b14ccb 100644
---- a/drivers/iommu/iommufd/Makefile
-+++ b/drivers/iommu/iommufd/Makefile
-@@ -12,6 +12,7 @@ iommufd-y := \
- 
- iommufd-$(CONFIG_IOMMUFD_NOIOMMU) += hwpt_noiommu.o
- iommufd-$(CONFIG_IOMMUFD_TEST) += selftest.o
-+iommufd-$(CONFIG_IOMMU_LIVEUPDATE) += liveupdate.o
- 
- obj-$(CONFIG_IOMMUFD) += iommufd.o
- obj-$(CONFIG_IOMMUFD_DRIVER) += iova_bitmap.o
-diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
-index eb2e85b27e42..a33b32708afa 100644
---- a/drivers/iommu/iommufd/iommufd_private.h
-+++ b/drivers/iommu/iommufd/iommufd_private.h
-@@ -44,6 +44,11 @@ struct iommufd_ctx {
- 	struct file *file;
- 	struct xarray objects;
- 	struct xarray groups;
-+#ifdef CONFIG_IOMMU_LIVEUPDATE
-+#define IOMMUFD_OBJ_LIVEUPDATE_MARK XA_MARK_1
-+	/* @liveupdate_mutex: Protects the preservation of HWPTs. */
-+	struct mutex liveupdate_mutex;
-+#endif
- 	wait_queue_head_t destroy_wait;
- 	struct rw_semaphore ioas_creation_lock;
- 	struct maple_tree mt_mmap;
-@@ -392,6 +397,9 @@ struct iommufd_hwpt_paging {
- 	bool auto_domain : 1;
- 	bool enforce_cache_coherency : 1;
- 	bool nest_parent : 1;
-+#ifdef CONFIG_IOMMU_LIVEUPDATE
-+	u64 liveupdate_token;
-+#endif
- 	/* Head at iommufd_ioas::hwpt_list */
- 	struct list_head hwpt_item;
- 	struct iommufd_sw_msi_maps present_sw_msi;
-@@ -729,6 +737,15 @@ void iommufd_vdevice_abort(struct iommufd_object *obj);
- int iommufd_hw_queue_alloc_ioctl(struct iommufd_ucmd *ucmd);
- void iommufd_hw_queue_destroy(struct iommufd_object *obj);
- 
-+#ifdef CONFIG_IOMMU_LIVEUPDATE
-+int iommufd_hwpt_liveupdate_mark_preserve(struct iommufd_ucmd *ucmd);
-+#else
-+static inline int iommufd_hwpt_liveupdate_mark_preserve(struct iommufd_ucmd *ucmd)
-+{
-+	return -ENOTTY;
-+}
-+#endif
-+
- #ifdef CONFIG_IOMMUFD_TEST
- int iommufd_test(struct iommufd_ucmd *ucmd);
- void iommufd_selftest_destroy(struct iommufd_object *obj);
-diff --git a/drivers/iommu/iommufd/liveupdate.c b/drivers/iommu/iommufd/liveupdate.c
-new file mode 100644
-index 000000000000..9d73917157cd
---- /dev/null
-+++ b/drivers/iommu/iommufd/liveupdate.c
-@@ -0,0 +1,75 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+/*
-+ * Copyright (C) 2026, Google LLC
-+ * Author: Samiullah Khawaja <skhawaja@google.com>
-+ */
-+
-+#define pr_fmt(fmt) "iommufd: " fmt
-+
-+#include <linux/file.h>
-+#include <linux/iommufd.h>
-+#include <linux/liveupdate.h>
-+
-+#include "iommufd_private.h"
-+
-+int iommufd_hwpt_liveupdate_mark_preserve(struct iommufd_ucmd *ucmd)
-+{
-+	struct iommu_hwpt_liveupdate_mark_preserve *cmd = ucmd->cmd;
-+	struct iommufd_ctx *ictx = ucmd->ictx;
-+	struct iommufd_hwpt_paging *hwpt;
-+	struct iommufd_object *obj;
-+	unsigned long index;
-+	bool marked = false;
-+	int rc = 0;
-+
-+	if (cmd->flags || cmd->__reserved)
-+		return -EOPNOTSUPP;
-+
-+	hwpt = iommufd_get_hwpt_paging(ucmd, cmd->hwpt_id);
-+	if (IS_ERR(hwpt))
-+		return PTR_ERR(hwpt);
-+
-+	mutex_lock(&ictx->liveupdate_mutex);
-+
-+	xa_lock(&ictx->objects);
-+
-+	/* PRI use cases are not supported. */
-+	if (hwpt->common.fault) {
-+		rc = -EOPNOTSUPP;
-+		goto out_unlock;
-+	}
-+
-+	xa_for_each_marked(&ictx->objects, index, obj, IOMMUFD_OBJ_LIVEUPDATE_MARK) {
-+		struct iommufd_hwpt_paging *hwpt_marked;
-+
-+		if (WARN_ON_ONCE(obj->type != IOMMUFD_OBJ_HWPT_PAGING))
-+			continue;
-+
-+		hwpt_marked = to_hwpt_paging(container_of(obj, struct iommufd_hw_pagetable, obj));
-+
-+		if (hwpt_marked == hwpt)
-+			marked = true;
-+
-+		if (hwpt_marked->liveupdate_token == cmd->hwpt_token) {
-+			if (hwpt_marked == hwpt)
-+				goto out_unlock;
-+
-+			rc = -EADDRINUSE;
-+			goto out_unlock;
-+		}
-+	}
-+
-+	__xa_set_mark(&ictx->objects, hwpt->common.obj.id, IOMMUFD_OBJ_LIVEUPDATE_MARK);
-+
-+	if (marked)
-+		pr_warn_ratelimited("Overwriting HWPT liveupdate token from: %llu to %llu\n",
-+				    hwpt->liveupdate_token, cmd->hwpt_token);
-+	hwpt->liveupdate_token = cmd->hwpt_token;
-+
-+out_unlock:
-+	xa_unlock(&ictx->objects);
-+	mutex_unlock(&ictx->liveupdate_mutex);
-+	iommufd_put_object(ictx, &hwpt->common.obj);
-+	return rc;
-+}
-diff --git a/drivers/iommu/iommufd/main.c b/drivers/iommu/iommufd/main.c
-index 9a921b153162..fe8610fd58e3 100644
---- a/drivers/iommu/iommufd/main.c
-+++ b/drivers/iommu/iommufd/main.c
-@@ -333,6 +333,9 @@ static int iommufd_fops_open(struct inode *inode, struct file *filp)
- 	init_rwsem(&ictx->ioas_creation_lock);
- 	xa_init_flags(&ictx->objects, XA_FLAGS_ALLOC1 | XA_FLAGS_ACCOUNT);
- 	xa_init(&ictx->groups);
-+#ifdef CONFIG_IOMMU_LIVEUPDATE
-+	mutex_init(&ictx->liveupdate_mutex);
-+#endif
- 	ictx->file = filp;
- 	mt_init_flags(&ictx->mt_mmap, MT_FLAGS_ALLOC_RANGE);
- 	init_waitqueue_head(&ictx->destroy_wait);
-@@ -395,6 +398,9 @@ static int iommufd_fops_release(struct inode *inode, struct file *filp)
- 	 * iommufd_object_tombstone_user()
- 	 */
- 	xa_destroy(&ictx->objects);
-+#ifdef CONFIG_IOMMU_LIVEUPDATE
-+	mutex_destroy(&ictx->liveupdate_mutex);
-+#endif
- 
- 	WARN_ON(!xa_empty(&ictx->groups));
- 
-@@ -440,6 +446,7 @@ union ucmd_buffer {
- 	struct iommu_hwpt_alloc hwpt;
- 	struct iommu_hwpt_get_dirty_bitmap get_dirty_bitmap;
- 	struct iommu_hwpt_invalidate cache;
-+	struct iommu_hwpt_liveupdate_mark_preserve mark_preserve;
- 	struct iommu_hwpt_set_dirty_tracking set_dirty_tracking;
- 	struct iommu_ioas_alloc alloc;
- 	struct iommu_ioas_allow_iovas allow_iovas;
-@@ -516,6 +523,8 @@ static const struct iommufd_ioctl_op iommufd_ioctl_ops[] = {
- 		 __reserved),
- 	IOCTL_OP(IOMMU_VIOMMU_ALLOC, iommufd_viommu_alloc_ioctl,
- 		 struct iommu_viommu_alloc, out_viommu_id),
-+	IOCTL_OP(IOMMU_HWPT_LIVEUPDATE_MARK_PRESERVE, iommufd_hwpt_liveupdate_mark_preserve,
-+		 struct iommu_hwpt_liveupdate_mark_preserve, hwpt_token),
- #ifdef CONFIG_IOMMUFD_TEST
- 	IOCTL_OP(IOMMU_TEST_CMD, iommufd_test, struct iommu_test_cmd, last),
- #endif
-diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
-index 010f47f7d3d2..6ab890e041c0 100644
---- a/include/uapi/linux/iommufd.h
-+++ b/include/uapi/linux/iommufd.h
-@@ -58,6 +58,7 @@ enum {
- 	IOMMUFD_CMD_VEVENTQ_ALLOC = 0x93,
- 	IOMMUFD_CMD_HW_QUEUE_ALLOC = 0x94,
- 	IOMMUFD_CMD_IOAS_NOIOMMU_GET_PA = 0x95,
-+	IOMMUFD_CMD_HWPT_LIVEUPDATE_MARK_PRESERVE = 0x96,
- };
- 
- /**
-@@ -1398,4 +1399,34 @@ struct iommu_hw_queue_alloc {
- 	__aligned_u64 length;
- };
- #define IOMMU_HW_QUEUE_ALLOC _IO(IOMMUFD_TYPE, IOMMUFD_CMD_HW_QUEUE_ALLOC)
-+
-+/**
-+ * struct iommu_hwpt_liveupdate_mark_preserve - ioctl(IOMMU_HWPT_LIVEUPDATE_MARK_PRESERVE)
-+ * @size: sizeof(struct iommu_hwpt_liveupdate_mark_preserve)
-+ * @flags: Must be 0
-+ * @hwpt_id: HW pagetable ID to preserve for liveupdate
-+ * @__reserved: Must be 0
-+ * @hwpt_token: Token to identify this hwpt upon restore
-+ *
-+ * The target HWPT will be preserved during iommufd preservation.
-+ * Only file-based memory mappings (e.g. memfd) are supported for HWPTs marked
-+ * for preservation. Mapping anonymous memory into a preserved HWPT will result
-+ * in a failure during the preservation phase.
-+ *
-+ * The hwpt_token is provided by userspace. If userspace enters a token
-+ * already in use within this iommufd, -EADDRINUSE is returned from this ioctl.
-+ *
-+ * Note: There is no 'unmark' operation, so any HWPTs pooled in userspace that
-+ * are marked for preservation must be destroyed after use.
-+ */
-+struct iommu_hwpt_liveupdate_mark_preserve {
-+	__u32 size;
-+	__u32 flags;
-+	__u32 hwpt_id;
-+	__u32 __reserved;
-+	__aligned_u64 hwpt_token;
-+};
-+#define IOMMU_HWPT_LIVEUPDATE_MARK_PRESERVE \
-+	_IO(IOMMUFD_TYPE, IOMMUFD_CMD_HWPT_LIVEUPDATE_MARK_PRESERVE)
-+
- #endif
--- 
-2.56.1.809.ga0b61035b5-goog
+Yes. kzalloc_node() returns naturally aligned buffers for power-of-two
+sizes, which covers the 4K and 8K allocations here. Will switch to it in
+the next version.
 
+> 
+>> +	if (!folio)
+>> +		return NULL;
+>> +
+>> +	return folio_address(folio);
+>> +}
+>> +
+>> +static void tdx_iommu_free_pages(void *virt)
+>> +{
+>> +	if (!virt)
+>> +		return;
+>> +
+>> +	folio_put(virt_to_folio(virt));
+>> +}
+>> +
+>> +/* Number of 4K pages backing IOMMU_MT entry @i. */
+>> +static unsigned int mt_entry_nr_pages(unsigned int i)
+>> +{
+>> +	return i < TDX_IOMMU_MT_IQ_NR ? IQ_BUFFER_SIZE >> PAGE_SHIFT : 1;
+>> +}
+>> +
+>> +/*
+>> + * Drop the PAMT backing of the first @nr 4K pages handed to the TDX
+>> + * module, in the order mt_pamt_get() took it. Pass UINT_MAX for all.
+>> + */
+>> +static void mt_pamt_put(struct tdx_iommu_pages *mt, unsigned int nr)
+>> +{
+>> +	unsigned int i, j;
+>> +
+>> +	for (i = 0; i < mt->nr_entries && nr; i++) {
+>> +		unsigned long pfn = PHYS_PFN(__pa(mt->pages[i]));
+>> +
+>> +		for (j = 0; j < mt_entry_nr_pages(i) && nr; j++, nr--)
+>> +			tdx_pamt_put(pfn + j);
+>> +	}
+>> +}
+>> +
+>> +/*
+>> + * With Dynamic PAMT, every 4K page handed to the TDX module needs PAMT
+>> + * backing first. This covers the IQ buffers and the metadata pages, not
+>> + * the root page, which only carries the list of pages into the
+>> + * SEAMCALL. tdx_pamt_get() is a no-op without Dynamic PAMT.
+>> + */
+>> +static int mt_pamt_get(struct tdx_iommu_pages *mt)
+>> +{
+>> +	unsigned int i, j, nr = 0;
+>> +	int ret;
+>> +
+>> +	for (i = 0; i < mt->nr_entries; i++) {
+>> +		unsigned long pfn = PHYS_PFN(__pa(mt->pages[i]));
+>> +
+>> +		for (j = 0; j < mt_entry_nr_pages(i); j++) {
+>> +			ret = tdx_pamt_get(pfn + j, NULL);
+>> +			if (ret) {
+>> +				mt_pamt_put(mt, nr);
+>> +				return ret;
+>> +			}
+>> +			nr++;
+>> +		}
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static void free_mt_pages(struct tdx_iommu_pages *array)
+>> +{
+>> +	unsigned int i;
+>> +
+>> +	if (IS_ERR_OR_NULL(array))
+>> +		return;
+>> +
+>> +	mt_pamt_put(array, UINT_MAX);
+>> +
+>> +	for (i = 0; i < array->nr_entries; i++)
+>> +		tdx_iommu_free_pages(array->pages[i]);
+>> +
+>> +	tdx_iommu_free_pages(array->root);
+>> +	kfree(array->pages);
+>> +	kfree(array);
+>> +}
+>> +
+>> +DEFINE_FREE(free_mt_pages, struct tdx_iommu_pages *, free_mt_pages(_T))
+>> +
+>> +static void **alloc_mt_pages(unsigned int nr_entries, int node)
+>> +{
+>> +	unsigned int i;
+>> +	void **pages;
+>> +	void *vaddr;
+>> +
+>> +	pages = kzalloc_objs(*pages, nr_entries);
+>> +	if (!pages)
+>> +		return NULL;
+>> +
+>> +	/* Allocate two contiguous buffers for the invalidation queue. */
+>> +	pages[0] = tdx_iommu_alloc_pages(node, IQ_BUFFER_SIZE);
+>> +	if (!pages[0])
+>> +		goto free_pages;
+>> +
+>> +	pages[1] = tdx_iommu_alloc_pages(node, IQ_BUFFER_SIZE);
+>> +	if (!pages[1])
+>> +		goto free_pages;
+> 
+> You can use mt_entry_nr_pages() to fold the two IQ buffer allocations
+> into the loop below.
+
+Good point. I'll fold them into a single loop, using mt_entry_nr_pages()
+for the size.
+
+     for (i = 0; i < nr_entries; i++) {
+         pages[i] = kzalloc_node(mt_entry_nr_pages(i) << PAGE_SHIFT,
+                     GFP_KERNEL, node);
+         if (!pages[i])
+             goto free_pages;
+     }
+
+> 
+>> +
+>> +	/* Allocate the required number of pages for the IOMMU metadata. */
+>> +	for (i = TDX_IOMMU_MT_IQ_NR; i < nr_entries; i++) {
+>> +		vaddr = tdx_iommu_alloc_pages(node, SZ_4K);
+>> +		if (!vaddr)
+>> +			goto free_pages;
+>> +		pages[i] = vaddr;
+>> +	}
+>> +
+>> +	return pages;
+>> +
+>> +free_pages:
+>> +	for (i = 0; i < nr_entries; i++)
+>> +		tdx_iommu_free_pages(pages[i]);
+>> +	kfree(pages);
+>> +
+>> +	return NULL;
+>> +}
+
+Thanks,
+baolu
