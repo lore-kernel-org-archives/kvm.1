@@ -1,84 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795450748;
-	b=b+y255wm9HPCGmMV9Vqv6yPISX5KELGqtHIjVXHUOYCMIsqjiEnnB9GRz5BKS6ETjdTM
-	 dqgKF6ElxYUoFDY7ElDixZ0uem8RGQEhGda8OfAbLPNLWsoTGeEfh43dGH65ePyhe0MNn
-	 VqqFFM1shLzPYrXCr5Y5jvn9RnpEiQj864Yiur8it8KlmbuBz1uG5IA0O4NvxhS356jEd
-	 9lEss5jd8jBUWFxuzVbEIM5dJmYT5lu1arLSN+h7lTaO9h86jOG+O+UDfJdGYiKkcxUZR
-	 nnne2CQ6K4+hTCMnHiWCZhRW5HkwPU4ofn1xR8tUdj6hhe4MtOt6Xh8UZcip6QGzy8A==
+	t=1795450876;
+	b=b3clZJ6Eq1msB7AFl3lXeiTsTPobYG+MGguVYhEzfJYIKFIqHAAhaIgwyMy7/GoEroxR
+	 RbO4fu8JAYZVDF8s5jjENhz71hPWI/J4bwZUJyo/IvZZj51Hs+IHYUI0Mhpl315172JPw
+	 30/MyCX1QCdEbG34NVLymh77MoRT4Wzu8ubfe5kMVBLKn011ECkCxU8cXV1ereknl2VQV
+	 9Wyz2zExobHP7j5Isa6P8fXCPiqUO8P9MtwBd3cyja8yz0RONZkE7nLfI33cJuAnVECeh
+	 kXD4npFyirl0ZNgcKYzhH6awXVb+3W8wHn57ZPDWXbITQyJkDA8aMgX2UBfJL3dYoKA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795450748;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Originating-IP:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-GUID:X-Authority-Analysis:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Virus-Version;
-	bh=T3dIrp743mScXUEVTG9HzJg8wQXGZt9Ea7srRCQkNSQ=;
-	b=e5Z0nnWOQ6vqHriltUtsVCP35Y2jQwXX/L1OEmPo1Z80HBId/y242FrzkkuZvVjS24Jx
-	 so9Dbuf/cAqrTyq3TCxNRxlPvcRzxVOvAB6I+z195j05gh5DSQQWyEEjMCpiINRJXxEyo
-	 LvkSqvCvR4adDtYDDw2RbgCWz/b3EkX9qypZ0urlG/89g5JeFd7lIGGIVEphGalDRMQ2v
-	 d3zyHy4qdwS+H3/YlHpNH+iwMHBj8inzeknrjTZhMVzfGViHpr2RHVLLJN4/NbXDko8bh
-	 Nb+Z18nQuOqEK3vpPTVUC7L8ZonCRiXPC/81XRa/3ncKCPye+XviuhjtwzazITtPUNA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795450876;
+	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
+	 References:Date:Message-ID:MIME-Version:Content-Type;
+	bh=INOa4kV3oG92y+8V9TagV8Pu1IayJqy+GVQ0Gn3qaGU=;
+	b=IyWuWCZd4KH6cbEjBvfMZUAxqI5vo6cYuyBKtoQEeI/GYrcUZL0SjGxoTXGVkvzAi70j
+	 DcJMW/B8feZCKO0/iIC8Wx0oX/rgYFSu2LtDTVb62BV7zx65ZMLI/LEEKX7WsqifZw1bu
+	 C5qiKWvUdgR9dzsojxMlYsEBAe8SzRPXS0mwDPsx73WQrrwLGNfFtH0ErWsKNolvLmsh2
+	 5tlDbOQUjyYWOW1etoKtwG/WHGctLf2DSva/3P1Aj76hmxnhSKYT0T6NbeXXq7yqKVYED
+	 mTH9xWSt9qeYMb7sGZBGO4Y3k7yRIU7ngsEez2v5YLbjmITFyoSlI0FRlTRMESjt5qg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=ftmTbLuk;
-	arc=none smtp.remote-ip=67.231.153.30
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HBJ9VHSW;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424EC606A31E;
-	Mon, 23 Nov 2026 16:19:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 424EC606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9C6606A334;
+	Mon, 23 Nov 2026 16:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=ftmTbLuk
-Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
-	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 6ANGIIRg3716626;
-	Mon, 23 Nov 2026 08:18:49 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps82601-s2048-2026-q3; bh=T3dIrp743mS
-	cXUEVTG9HzJg8wQXGZt9Ea7srRCQkNSQ=; b=ftmTbLuksZ18qcfFfRkriR971dv
-	dEYLc8rH4Og7I8wESceYbNcIzKBwhPNKt+zG3i8U5lIgQrebN0Ae1QFkj1HVVePN
-	7u87nd31X7efKdDfnkGw2B2tqxWkc3oVUvlCgJXauNpsnV9gddXaElDys2VcXhxR
-	+8Y76P6oINjFpwHqdywWh/DaySDNZZaHDz7VfFK2dIT0IYKtkMyvUs6dtONqjzZn
-	WgpHGJPDTSMWbiw3CGI87ALp6M4+dzo9poARQtizBW9erbRjn09Ojy3TdtO/fVn9
-	qrWHiWuhnGDZ7Apkmwln6u9VeCfa7gKZPJ2QnKW9K39cHkLFi8sBLTCbMaw==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by m0001303.ppops.net (PPS) with ESMTPS id 4j37udt00r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 23 Nov 2026 08:18:49 -0800 (PST)
-Received: from localhost (2620:10d:c085:208::f) by mail.thefacebook.com
- (2620:10d:c08b:78::c78f) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Mon, 23 Nov
- 2026 16:18:47 +0000
-Date: Mon, 23 Nov 2026 08:18:47 -0800
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-CC: Paolo Abeni <pabeni@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowangio@gmail.com>,
-        Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-        Xuan Zhuo
-	<xuanzhuo@linux.alibaba.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric
- Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Simon Horman
-	<horms@kernel.org>, <kvm@vger.kernel.org>,
-        <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] vsock: only deliver taps to namespaces that can
- reach the device
-Message-ID: <awRnZ9S+3B996VqJ@devvm29614.prn0.facebook.com>
-References: <20261116-vsock-tap-net-v1-1-7e24f45adad3@meta.com>
- <awQJo8WE5Gn4nYHp@sgarzare-redhat>
- <12a2b44d-3d24-4b77-9dd5-24361d5fe910@redhat.com>
- <awQ5xzF8P0NJiCsv@sgarzare-redhat>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HBJ9VHSW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C8CB1F000CA;
+	Mon, 23 Nov 2026 16:21:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795450875;
+	bh=INOa4kV3oG92y+8V9TagV8Pu1IayJqy+GVQ0Gn3qaGU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=HBJ9VHSWa5FJ88g6/jfPijZU6l1xJoOy4ReuonJZNMf10mQKZaZAyxKhmD0Z5KzVD
+	 OlaE6/ZqU5PUJBYufl1CrrFrxmoLVvF2tKxkE6KjNtCzsawwejBQSKui20ma2cbQfx
+	 /Rr5ZOIfCpjGmDTJIC8ymePf2JPORNDV3ptobGw4mAKVwU/0zgfEPVhdap6GQbzCQe
+	 EycC30XaetDia+bbLaXR/VBmxRh4RV1sDIPTXsgDzy9eczijCH9pOT0u6X2ZuuR/uP
+	 /CCuHiU3uOVN5Z8xKCz1MsiPK7oINS5hEOjMD3IyA+rijpWRRLZaMOUYF+bTa6F63Z
+	 8HdBH64Mg7Naw==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Nicolin Chen <nicolinc@nvidia.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
+	kvm@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH v1 00/10] PCI/TSM: Support guest TSM drivers
+In-Reply-To: <20261123152533.GE179082@ziepe.ca>
+References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
+ <2026112325-emit-squeezing-5d96@gregkh> <20261123090623.GK14811@unreal>
+ <yq5a7bi3riha.fsf@kernel.org> <20261123115803.GN14811@unreal>
+ <yq5awlq3pto0.fsf@kernel.org> <20261123135638.GO14811@unreal>
+ <20261123152533.GE179082@ziepe.ca>
+Date: Mon, 23 Nov 2026 21:51:04 +0530
+Message-ID: <yq5aik1n4iz3.fsf@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -88,70 +76,114 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <awQ5xzF8P0NJiCsv@sgarzare-redhat>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTIzMDA2NCBTYWx0ZWRfX5r3cneGfkihi
- SNwtFPkMtyBsD7xby0vFdVN7Veu2bLp9FJANDCVXDLDMydzzHzPMOksVokwfKKSRKQHEnNI5+K2
- K6sqW7IFpidNYXSPeBclQv5eMZqHjZ6seFeXsN7/syjfQjRGZnkcUra+gWVfdIhGS/U9ik3etY4
- qcM4PxkjSJCYUIgeTaRb3/V2OsCL6Pj0/LPpqCZjNXaqr8/f3ged9Y7ROkd5ICkyvoF8phbLeAe
- EbI3LegRksfvyc9X1yPcbJEyiAZSvw6d7b5aQZrsqjDILmd3VwKOAU0Jj0tp8uW7F3N4tVX/2BN
- 7xs2aACmI7uynv+HqSbUKS9z63YAH/AEP2ivj75gAvrsegqaQvSg4EcmXAdJi884ZEkzftbUV29
- JShS/Hy1Blccvx/uYdP9Ucu/YPenqXTtRXsAVWsLSfgyDUpBr+T7QghZYuh8M29+GF4dSFrnFuZ
- oJahC5jVyqebJ9kJ/kg==
-X-Proofpoint-ORIG-GUID: vkp3xM5VmOZ-hvVr8sf5yf6TGZeYqnHg
-X-Proofpoint-GUID: vkp3xM5VmOZ-hvVr8sf5yf6TGZeYqnHg
-X-Authority-Analysis: v=2.4 cv=VK5IDNPX c=1 sm=1 tr=0 ts=6b046769 cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=_78whYxrdx1mplLwxq1U:22 a=20KFwNOVAAAA:8
- a=QUIw27DrvkiG4lpEvKAA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTIzMDA2NCBTYWx0ZWRfXzO4NYOeXqdXM
- PEcKJjN339C23yg71j/WjRFVdZZbuea4Qe4n/IVN3nQQAA6rgPm+GG8A/srvFX7rwgRb6LAiPHf
- wWo7XD7TXJgA5MvgfJ43rvR9CgzuLUg=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-23_04,2026-11-23_01,2025-10-01_01
+Content-Type: text/plain
 
-On Mon, Nov 23, 2026 at 02:17:54PM +0100, Stefano Garzarella wrote:
-> On Mon, Nov 23, 2026 at 12:58:38PM +0100, Paolo Abeni wrote:
-> > On 11/23/26 10:43, Stefano Garzarella wrote:
-> > > On Mon, Nov 16, 2026 at 03:46:49PM -0800, Bobby Eshleman wrote:
-> > > > vsock_deliver_tap() clones every packet to every vsockmon device on the
-> > > > system. Creating one needs only CAP_NET_ADMIN in the owning user
-> > > > namespace, so an unprivileged user can capture the traffic of local mode
-> > > > namespaces.
-> > > > 
-> > > > Pass the packet's netns to vsock_deliver_tap() and only deliver to
-> > > > devices that pass vsock_net_check_mode(), the same rule socket lookups
-> > > > use. vhost passes the vhost_vsock netns, loopback the sending socket's
-> > > > netns, and virtio-vsock NULL (global mode).
-> > > 
-> > > For local namespaces I think we are fine, but what about global?
-> > > 
-> > > Is it okay that a namespace with global can capture all the packets of other global namespaces?
-> > > 
-> > > Asking because at this point the CAP_NET_ADMIN is useless, since an user on a global namespace, without CAP_NET_ADMIN, can just create a namespace to have CAP_NET_ADMIN and access all the traffic. Should we fix also that?
-> > My take is that the above question is quite orthogonal to the current patch
-> > and may impact old applications relying on the legacy behavior.
-> 
-> True, but I'm not sure that behavior was correct since the beginning.
-> E.g., what is the point of having CAP_NET_ADMIN requirement if an
-> unprivileged user can just crate a new namespace and get it?
-> 
-> Anyway, it's eventually pre-existing netns support in vsock, so it should be
-> fixed with a followup.
-> 
-> 
-> Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-> 
-> Thanks,
-> Stefano
-> 
+Jason Gunthorpe <jgg@ziepe.ca> writes:
 
-Its a fair point and I agree we should take it up in a follow up. My
-current instinct is that CAP_NET_ADMIN probably shouldn't be enforced
-for some (all?) of these global-mode paths.
+> On Mon, Nov 23, 2026 at 03:56:38PM +0200, Leon Romanovsky wrote:
+>> > >> >> But it should not, as you are making driver core changes that will
+>> > >> >> mirror the same thing that that patchset is attempting to do.  Please
+>> > >> >> work together on this.
+>> > >> >
+>> > >> > +10000000,
+>> > >> >
+>> > >> > Greg,
+>> > >> >
+>> > >> > This series came as a surprise to me given the fact that device trust
+>> > >> > series is exactly for that - allow confidential computing.
+>
+> Device trust's primary role in enabling confidential computing is to
+> give space for the userspace to do all the TSM and attestation stuff
+> to get the device into T=1 private DMA mode.
+>
+> It is the userspace that does all this and the userspace bridges from
+> "I got the device into T=1 mode" to "Now it meets my userspace policy
+> to be trust level Full" and then finally "Now I can bind and start a
+> driver"
+>
+> The two concepts work together, but they are not linked inside the
+> kernel.
+>
+>> > >> > Adversarial is equal to the "cc_accepted".
+>
+> I expect most policies would make "cc_accepted" as a full trust level,
+> but we do want to allow adversarial as an option too.
+>
+>> > >> I think the confusion stems from this thread:
+>> > >> 
+>> > >> https://lore.kernel.org/all/yq5amrr8yldi.fsf@kernel.org
+>> > >> 
+>> > >> Based on that discussion, I understood TRUST and eligibility for private
+>> > >> DMA to be complementary attributes. Device acceptance determines whether
+>> > >> a device may access private memory, while trust determines whether the
+>> > >> core must enforce additional restrictions. 
+>
+> Yes.
+>
+>> > > Device trust does little beyond preventing driver binding and recording the
+>> > > trust decision in "struct device". The missing piece, which I would expect
+>> > > you to address, is ensuring that the IOMMU and private DMA are configured
+>> > > only after the trust level has been decided or as part of that decision,
+>> > > rather than beforehand, as they are today.
+>
+> They are orthogonal and unrelated.
+>
+> All the TDISP and T=1 DMA flow is about how the DMA API works and has
+> no direct impact on trust level. You can choose any trust level for a
+> device using T=1 DMA.
+>
+> Getting the device into T=1 should influence how the userspace decides
+> to set the trust level, but it doesn't interact inside the kernel.
+>
+> Aneesh has it right that these are orthogonal and unrelated
+> activities. There may be some confusion as Dan attempted to couple
+> them, but after discussion we have moved away from that since it
+> doesn't meet all the use cases.
+>
+>> > What I am still trying to understand is how you view the DMA allocation
+>> > and mapping paths determining whether a device can access private
+>> > memory. Paths such as force_dma_unencrypted() and SWIOTLB receive a
+>> > struct device pointer and need to decide whether to use private memory
+>> > or shared buffers.
+>
+> It is Nicolin's work here that needs to go before the TSM drivers:
+>
+> https://lore.kernel.org/all/cover.1794343501.git.nicolinc@nvidia.com/
+>
 
-Best,
-Bobby
+
+This adds
+
+index 429e39f647cf9..01d7877d0b571 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -604,6 +604,8 @@ struct device_physical_location {
+  *		ancestor device.
+  * @DEV_FLAG_OFFLINE_DISABLED: If set, the device is permanently online.
+  * @DEV_FLAG_OFFLINE: Set after successful invocation of bus type's .offline().
++ * @DEV_FLAG_DMA_CC_PRIVATE: The device is able to access private (encrypted)
++ *		memory, no shared memory bouncing is required from the DMA API.
+  * @DEV_FLAG_COUNT: Number of defined struct_device_flags.
+  */
+ enum struct_device_flags {
+@@ -617,6 +619,7 @@ enum struct_device_flags {
+ 	DEV_FLAG_OF_NODE_REUSED = 7,
+ 	DEV_FLAG_OFFLINE_DISABLED = 8,
+ 	DEV_FLAG_OFFLINE = 9,
++	DEV_FLAG_DMA_CC_PRIVATE = 10,
+ 
+ 	DEV_FLAG_COUNT
+ };
+
+...
+
++void dma_set_cc_private(struct device *dev, bool private)
++{
++	dev_assign_dma_cc_private(dev, private);
++}
+
+This could easily replace device_cc_accept()/device_cc_accepted() used
+in this series. I can switch to it if that's the direction we want to
+take.
+
+-aneesh
