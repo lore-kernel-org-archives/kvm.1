@@ -1,67 +1,108 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795435088;
-	b=FlQwOHRh6GAI5G2pdDD9D7QocSVaafHkH/XsJkDn1PtElyMkZfAz1bLs+iA+eoKWAd6N
-	 2XcHe9hgp2xiRzTtl8fK9sbSnz3xsjGWHieThwRh4GeCocEZBnKwXqFcoBHv5NUu07CIB
-	 XTnlLbC5wOYgZBPvL00i/Z1yF0TEb8fx9YmxZwKFSF/GTocSQahcCSDw1liFmOeZ1VqjP
-	 eQu9TG4ghCyl6pwbbdoRz4tD7W4qjUHkgXAw5LYWXmb7CgwaNBBE0bqrqkpU6kZU21FFS
-	 fhLNARTWsi0e6jSMLAnVq3WJwBCe4uCgleV4eNfQIB8vYnsDHLP7iC3IOr0XWRAecVg==
+	t=1795435126;
+	b=hHN1f03DvwNOBcwt9kb8gqie7ZuPSdBk1dfEiuBQNUI/lSuzwsQ0IU73MpluuVFO1HsS
+	 78zjfSLlmJ4QPCd7z6fygQluB2zukjvkafX+ohZY8BQXavXJ1z/s0MYnXP+jh6f1zrJT4
+	 C4KOKT0QTp7+1tDMyVu5nvQ5ssBSWDcO+SMEPAKEcFNOBVEc/UavP59uIHSr84lbGxU60
+	 T+VzaGPuYNypYAyOv+Sm1Qxazoix8esz/I9T4XTAqnj/GpGjEBNMULXjH/+QHdrJ+Yvk8
+	 gJsaAuDE9A8ycKS9MJ/+VFtVeEqsB8B9a01yGr8wlLuRBEgEPRE05IrQYoc79GHcnzQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795435088;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=0TmBe1tXlcWpfCVrfd1KqqoznT5l5Jx1iU5TZr+SAgw=;
-	b=hTZKecc1gtevVLiSXQoVsKHWKeZnSB+WS1vor/ZQ36UPTcGhm+XQGFeZaeKzQD6TTvqw
-	 GFiHWUhaScbiRSiJ1ByGDL61nhnERH+V6glyCaFM9mQKzukqVxF2JrmqG0hXlN/G8e7Or
-	 rsfd1ZChixV7MlQWboZGzxynuCj/9eekfEe4Qq3W4PitAEj9eDXY+8oD5CG3rbUU4NEXH
-	 zjbeud6kxUV+f1Q4ErdUn7DpvwXKuHy1FPiZ+ggQOr18w4BGOs1b0NSiq/hKOHsahLjYX
-	 7QCn1AlO/8DbJZLeLWmyZryDPzTpFVlPrjJ/ZinAfi0gaZcCwkjgYPJs9LKFRsM6Jaw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795435126;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=CQFmq1pcPFYCkE6jKPYZE7YR7p9AbOoikjbaytK0pAI=;
+	b=qZgTVGJ8u/N423cnaK8Vb78B9tppwKaAKMkKLtWKC3GMtK95yvTMJgII2GPKW9BDJZLK
+	 lDx00m27iPIq/jm+/zsM92w2rfeHMxo9/M1grxsRiq7WINOZTLApTp9AsCnzb6dO2iG8B
+	 6NAd2SJE/a/T9UsDpAOGJF0g1lgp8KWaUQk1GwlrXfNNDLDv1Kv5YRxWysoaDF+SOX5oo
+	 htMfcEF74Ykc6sHluf4UD+EAaInF/whK3yuJhWPASFKtRu+FpInj02ugh/9lq+weDaZte
+	 K7A5/cxTGiW5yn3Tbze2lYawtzHlk4ZsCsUP0TLiPiM+Awq8f8Y5hWujRb7FzaQfDOw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Du1Kyd/P";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WVyIUyKV;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=q8TvksT7;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EB5606A31E;
-	Mon, 23 Nov 2026 11:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683DC606A31F
+	for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 11:58:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 683DC606A31F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Du1Kyd/P
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C5A1F000C4;
-	Mon, 23 Nov 2026 11:58:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795435088;
-	bh=0TmBe1tXlcWpfCVrfd1KqqoznT5l5Jx1iU5TZr+SAgw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Du1Kyd/P8Lt8CAlnCV7czApRJxSEjYBL842wCUV0K57v809kCt9syFf0KB08w77MM
-	 JujsWwgrqh7lztdFxkWRgR4X3WQmsCsj5/8FFfoeif8cO/de/Whfz74lZZCwQ8R6UW
-	 8NJHIwr/RI+Fmc/6yn5zCmCebhKDshF6qsqaP0jfF1oRjGYll/8c3EvfDv3dzSVYj+
-	 dDpJrLtmJkj5SnWHMzQ5EhjhM2UNnM2mtqOPQnVlG/BrW0+x94gc9vI5q2USFGxw5R
-	 cl/r6ieFsaF4x+9d24X2yRBTgGfDQsxUumN0rmfCjpqZvFzIZ07Y9Xr11v4JuwFvi2
-	 MBF1PVHTKOhjA==
-Date: Mon, 23 Nov 2026 13:58:03 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Lukas Wunner <lukas@wunner.de>, Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v1 00/10] PCI/TSM: Support guest TSM drivers
-Message-ID: <20261123115803.GN14811@unreal>
-References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
- <2026112325-emit-squeezing-5d96@gregkh>
- <20261123090623.GK14811@unreal>
- <yq5a7bi3riha.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WVyIUyKV;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=q8TvksT7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1795435124;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CQFmq1pcPFYCkE6jKPYZE7YR7p9AbOoikjbaytK0pAI=;
+	b=WVyIUyKVj5fBF4k4rbvny0i3aN2XVanH0LIcFu5Id8t6l30DKQhkKuArKZigQmuy5IZHfM
+	jW+s/VgxGFFyxLoOpXnrvbwY60271EyUNPZJop+MmDc98Eo0TRhuDPPwAc9F1WOGNNCtvV
+	Nm/fHesEa6wqnLMMQvaC1UXKtazcDFE=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-614-g7qbRI9nMlWSFexdFs5idw-1; Mon, 23 Nov 2026 11:58:42 +0000
+X-MC-Unique: g7qbRI9nMlWSFexdFs5idw-1
+X-Mimecast-MFC-AGG-ID: g7qbRI9nMlWSFexdFs5idw_1795435121
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-4ab855a8c21so2647255f8f.1
+        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 03:58:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1795435121; x=1796039921; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CQFmq1pcPFYCkE6jKPYZE7YR7p9AbOoikjbaytK0pAI=;
+        b=q8TvksT7v+CwaSNg6yS0Ed+NoDfkvAKLjmmEv1N6E+Ohw/DzECgpHU/dhfU0sdnuEB
+         GH7KNmXRPUHXc5e68qXSP8cqyHF3XOj5wjU7pbkLvgCw0e+kcwkoEkYxpH2Zug+m/sHu
+         dVOOVUoSeobuB+fj1j3Fl8viG4yqaJoaB7OCwD547OI7b0jQj5BK5TwuOauxVLFsuj12
+         o+p+x8xr3y5Qv175Vg4ag4CkJvDPS19ioV48IY7bGhucRGecgMcWDrGTtIyaJdLeI/I3
+         s9HULmRI2IyWBl13ki4YeM2X1DP1Gg0vgBJjNONDTetVN+f52hj8vycFuKePFzj1uAK7
+         NP8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795435121; x=1796039921;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CQFmq1pcPFYCkE6jKPYZE7YR7p9AbOoikjbaytK0pAI=;
+        b=h/HoDzNYxpJkiedR015rO1ECnGJ8xIwfk6ERC0JONYb0uVccfCiRyLWygtex0t+eYM
+         5gRwiBF65B+4sdcEe1StGm+R/o3sXAX8yOpOAbbOA1SkInOcQcIRARIBadZPsdj5VOg2
+         +w631XUWSck17nS3NLIaQExr0uCAyHOWkTlgUGKA6HJQFAwjDewNjLVsknPjOveMVAUw
+         GCvF9Hybd1JgYD0/pT4Rgf9WY1VYPDIY0fXz/XooEbnOhoV1MJmZbxFYReohy0WQp7t1
+         P0NJUWAmQReGU3/Tz2mPZCOAFn9tqzqNqXlH/r9ONWCSbQspHaBMR5O95R0Sj1qWD7vF
+         W97A==
+X-Forwarded-Encrypted: i=1; AL+hErHoh1U+PhZAZFZaPrYNyb7LNZaYaC2u5IXv0/i9WGmwhfC0OQSeAM+Jf/0Ru+VSo4KB+aA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9Vmo9RCnauz2acGGpzRH0RrjgC/ZmHmUMpRUjxH9CltJv7tHin
+	KaXvcE2gisGx1yRmHKjNl7pLKZBnLyLkntEfC1QHpAqgRCuwarGG0FQSMyvj0+YZ3F33rMDWDXj
+	rj6m6L8qSxxsxAVPf8qgiMYSS8I/qsyDJKR4klP4njxJoz/3wzGJDoQ==
+X-Gm-Gg: AZFdTZe5q66+2B5jzk4B7T/llO+fe4wYEWa/VYU7ymx48AhlZqLgUQg4CBVhtdoRwtM
+	OERRGbFSaIzzmejxzATl/M+ynAYkGzAa0Er5R/UWZPTeA7PPrtb/CxV5x8Kkq17KQ/Q98Vxl463
+	KJAtEgC8Rs9CdsYQfMN6EttlJYQlSeOQq2RGd+3Xvp5rKEESnHLgeuwkhIzGNKejERD2CKoG8m9
+	vEXs31hFbZ4OREqhLCCYQ4iLCDGBpA+TovTDkjk/4UR1uDamns3zCSprO/aYCWByCwdjfpc5EdE
+	IICeRIMz3aLBJ3fUZJ/vkYoM/ZA5gqzTFMtfQm3qmQGXeOcDBMS934T1NSD5Yjc3DhMx29dli7f
+	NltZPCxCPXpuTM7dxgFEKcUB44tiuaUb/xOgkAeVdFMhGLe53mhvitKSWpGr/FmmTGZ21s0a8Nd
+	wHdpyyfNGECmLYhbV+AE7RaPvqFe9KSRYUihjYGlAONP2H
+X-Received: by 2002:a5d:5f85:0:b0:4a7:1613:7206 with SMTP id ffacd0b85a97d-4abb57f7b6fmr21998993f8f.47.1795435121058;
+        Mon, 23 Nov 2026 03:58:41 -0800 (PST)
+X-Received: by 2002:a5d:5f85:0:b0:4a7:1613:7206 with SMTP id ffacd0b85a97d-4abb57f7b6fmr21998958f8f.47.1795435120674;
+        Mon, 23 Nov 2026 03:58:40 -0800 (PST)
+Received: from [192.168.88.30] (ip231-128-192-82.pool-bba.aruba.it. [82.192.128.231])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6b10b2c9sm22672307f8f.31.2026.11.23.03.58.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Nov 2026 03:58:40 -0800 (PST)
+Message-ID: <12a2b44d-3d24-4b77-9dd5-24361d5fe910@redhat.com>
+Date: Mon, 23 Nov 2026 12:58:38 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,92 +112,46 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5a7bi3riha.fsf@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] vsock: only deliver taps to namespaces that can reach
+ the device
+To: Stefano Garzarella <sgarzare@redhat.com>,
+ Bobby Eshleman <bobbyeshleman@meta.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261116-vsock-tap-net-v1-1-7e24f45adad3@meta.com>
+ <awQJo8WE5Gn4nYHp@sgarzare-redhat>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <awQJo8WE5Gn4nYHp@sgarzare-redhat>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 23, 2026 at 03:13:13PM +0530, Aneesh Kumar K.V wrote:
-> Leon Romanovsky <leon@kernel.org> writes:
+On 11/23/26 10:43, Stefano Garzarella wrote:
+> On Mon, Nov 16, 2026 at 03:46:49PM -0800, Bobby Eshleman wrote:
+>> vsock_deliver_tap() clones every packet to every vsockmon device on the
+>> system. Creating one needs only CAP_NET_ADMIN in the owning user
+>> namespace, so an unprivileged user can capture the traffic of local mode
+>> namespaces.
+>>
+>> Pass the packet's netns to vsock_deliver_tap() and only deliver to
+>> devices that pass vsock_net_check_mode(), the same rule socket lookups
+>> use. vhost passes the vhost_vsock netns, loopback the sending socket's
+>> netns, and virtio-vsock NULL (global mode).
 > 
-> > On Mon, Nov 23, 2026 at 09:40:55AM +0100, Greg Kroah-Hartman wrote:
-> >> On Mon, Nov 23, 2026 at 02:03:27PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> >> > This series adds the PCI/TSM support needed by a TEE Security Manager
-> >> > (TSM) driver in a confidential guest. It adds device lock/unlock,
-> >> > helpers for recording device acceptance and parsing MMIO reports, and
-> >> > DMA callbacks used during PCI driver attachment. The guest TSM driver and
-> >> > attestation commands using these interfaces are in follow-up series.
-> >> > 
-> >> > This series is based on Dan Williams' "[PATCH v2 00/19] PCI/TSM: TEE I/O
-> >> > infrastructure" posting [1], particularly the guest LOCK/UNLOCK, ACCEPT
-> >> > and MMIO report work [2-4]. It retains device_cc_accepted() and the
-> >> > confidential-device acceptance model from that posting, with changes
-> >> > adapted to the current PCI/TSM structures and reference APIs. Dan's
-> >> > device-core acceptance helper and per-host-bridge IDE stream reporting
-> >> > patch are also included.
-> >> > 
-> >> > This series does not adopt the Device Trust changes from Dan's "Device
-> >> > Evidence and Trust for PCI Security Protocol (TDISP)" [5]. That work is
-> >> > being developed separately in Leon Romanovsky's "driver core: Authorize
-> >> > device trust before driver binding" series, [6]. Confidential-device
-> >> > acceptance is kept separate from that driver-binding trust policy.
-> >> 
-> >> But it should not, as you are making driver core changes that will
-> >> mirror the same thing that that patchset is attempting to do.  Please
-> >> work together on this.
-> >
-> > +10000000,
-> >
-> > Greg,
-> >
-> > This series came as a surprise to me given the fact that device trust
-> > series is exactly for that - allow confidential computing.
-> >
-> > Adversarial is equal to the "cc_accepted".
+> For local namespaces I think we are fine, but what about global?
 > 
-> I think the confusion stems from this thread:
+> Is it okay that a namespace with global can capture all the packets of other global namespaces?
 > 
-> https://lore.kernel.org/all/yq5amrr8yldi.fsf@kernel.org
-> 
-> Based on that discussion, I understood TRUST and eligibility for private
-> DMA to be complementary attributes. Device acceptance determines whether
-> a device may access private memory, while trust determines whether the
-> core must enforce additional restrictions. I understood that supporting
-> an accepted but adversarial device would require either a private IOTLB
-> to restrict its access or an IOMMU.
+> Asking because at this point the CAP_NET_ADMIN is useless, since an user on a global namespace, without CAP_NET_ADMIN, can just create a namespace to have CAP_NET_ADMIN and access all the traffic. Should we fix also that?
+My take is that the above question is quite orthogonal to the current patch
+and may impact old applications relying on the legacy behavior.
 
-I reached a completely different conclusion from that discussion.
+/P
 
-Device trust does little beyond preventing driver binding and recording the
-trust decision in "struct device". The missing piece, which I would expect
-you to address, is ensuring that the IOMMU and private DMA are configured
-only after the trust level has been decided or as part of that decision,
-rather than beforehand, as they are today.
-
-Thanks
-
-> 
-> Therefore, with this series, a request to enable private memory DMA is
-> handled as follows:
-> 
-> 	if (!device_cc_accepted(&pdev->dev)) {
-> 		ret = -EACCES;
-> 		goto out;
-> 	}
-> 
-> 	/* Adversarial devices are unsupported for confidential DMA. */
-> 	if (device_is_adversarial(&pdev->dev)) {
-> 		ret = -EOPNOTSUPP;
-> 		goto out;
-> 	}
-
-The snippet above clearly shows why it is a good idea to wait until support
-for device trust levels is accepted. An adversarial device is untrusted
-from the PCI perspective and must have private DMA and a separate IOMMU
-group.
-
-Thanks
-
-> 
-> 
-> -aneesh
-> 
