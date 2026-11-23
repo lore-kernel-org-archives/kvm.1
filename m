@@ -1,66 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795457892;
-	b=V6K984DoaRK7DrqB4tkNyR9LCvTVuYOdC+Dk9spHAMtcMi/aSTO4Um8lg3EQX0PzGFqS
-	 Km0G3EnvvqcSyH/ppVt1ErM0micqGte2BwEGVhPsTydg+gd/J896ZgcbePN+5QpQhyeHz
-	 HjBH0YUI8An0sWR0SrzeoqupxbcPTaFyTbaw+JN9fBYvung6F+Up0J8RFhHM49UkJVz1d
-	 hJo27tB0a6ityVNF+JaEFjQWKrG8L95zVAyYm/PfugwX+3mSAp89s2q6Y5apKkWs77W4t
-	 II2fN/juvi/e2P7qnQC40g1HP2/KIjPGYozk5L09KYfShOYFHWdXx/i2vs7f9B4Zq0A==
+	t=1795457893;
+	b=MoimicI2wKTeg1jQynj5bgT8cBxbdS+3AzRvO981p/n2iktEYAisucXu8oF4m24EXiQi
+	 OGKTZZ8uT3q5Matcst0uXImYwVGacMvqK4GodbLceAETTgoZmFONPfjVRNKveA5IDAJh9
+	 Fd0tn6VC9EOUvgFDIVbHpZxLJ71nZ6aoJyo1L77LEDXiZ52Wi9VqV9p31ZrvMXUJUQPgk
+	 4dVoSbvIBNw4XeoxTej15IX5tXOElXOFeOpRV1fKnZUHgC6f2ipcxAt68hk7ZLWR5H9jZ
+	 UBY75f7wuq12q2NB0CsXsDl4ZcWqovUgZHgBeMjAB0VQgsGCAquiGcnZmZGNthGwP4A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795457892;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795457893;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=8ddN5ZA29Ts2hTnH3cvKyYmTCkEzZCs049kB7I7V2l8=;
-	b=4RTmQDjip33mgAPm3bNGbOS0JcQ40vRCHrmTT2wPCCfBd2Rtf5/YrJnO2bzVysxT4bzb
-	 91/6e4bvAD98sx5ZRzNQGnwtvkHLycVFjhRdpP6VJIun8oqc+0UTzSoRAsjLAM+spYmCC
-	 A05RsRU4HAjZJyup2uHwggnYXQ2hawkpFlWyCZaPasMfq5YZTfEmWa/9EmU4zadxkq+8v
-	 kzPq7kdMM4r1Tp4oN8OWn1z8JmzAt7kgv7JWYE3sjfga9YgUV7bFtEUoCBhEhkJUZyn04
-	 mkb13DqgxpWaWxcyKZ89NXBljWVo6JYoZ30GiTXBbLJWXAuRTaUNvgXlin5DmJjT3Ew==
+	bh=oSEvoi0ea2goxyB/FH21gAIlok4zi1iIF9z0KyQZf80=;
+	b=X3XprDeMBL89Ga4eWlduWzuidtUKvOSr4Jx/w5d4/+cb1leYt7UQK7pU6Fdo5rU9HyBY
+	 QE4u4Oc1ZUOigaBMna7DshgIlkYjUn0aj22AqJuMz3eK9PXFH3LlOuBKpq2khaV5T3f5k
+	 m6Rf3V5NnQOs1pmn7TgCDCe2IAs4sLA7w3HjTZkejmDQNUDZlPCKyeSbZPwZyXYAfYy4G
+	 YT0XwX5mJ2gaRQbcc8u0dCfFMJO1PdIZ0VyF4i8h9v2Tqrrm7DwOeLkD0TxWdLma1BSu2
+	 J2akuUs0MCZZIRTE1Rc3nEoJxuKqd/yp5GxliubZ97c1sbh8vnYCUcmjDxuLGEfKBMw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FxMn6PbQ;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="A/AZsZV3";
 	arc=none smtp.remote-ip=198.175.65.15
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A04606AE05;
-	Mon, 23 Nov 2026 18:18:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93A04606AE05
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF3C606BCD2;
+	Mon, 23 Nov 2026 18:18:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8CF3C606BCD2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FxMn6PbQ
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=A/AZsZV3
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795457892; x=1826993892;
+  t=1795457893; x=1826993893;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=QQOeZx3PshKrdiTHfxbpnU2vc62voj3HDAU3ca8Xr8I=;
-  b=FxMn6PbQPXrsWnCJzrhTAZP9cHG0s7fg7DZkXXNXWDutp/2yucO+V33K
-   P4WzN0zGi6Wx5DcvKKcTtjNO2p0Sly6sMH1vVrK5LLya950xLWpwbodjw
-   0kWCwtRf4JPEksGG6McS+p3acN33Eseigw9Y3UPQ2dkqLoaOC0meUiy3d
-   T6PLGPuJLmhOtJpVW0IyecHlaXR2ivb3VpQn/m51XX35jCy55sJ1S1Ym0
-   3M5cn+FtLPWPbiu3T4DpyLQW7GTzAl6e/ceNbeaOh4axCJNMV/SlWftjU
-   rUpGJiE1z9DiudHNTDRBUdw4IkkTaijO3w7smjYmUugYdhNdfUtYB3bCg
-   w==;
-X-CSE-ConnectionGUID: 3txNZMHRSii8tKYPhesOTg==
-X-CSE-MsgGUID: WsIgaiPrRAyqRhUS7iRQxw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4288901"
+  bh=pEfBuwXeuUja3VTwO8qCyONQvwtpZbKDmz71+elVXeg=;
+  b=A/AZsZV3xqXpjic3dt0kwKIhaV067OQZH0RcniEzBwMZsde55CcWCd/B
+   44Nnf7N25hKumFtKuMrPf38E+CpcE1qMM1BXifDG+Ljd4ECvlgObqEopp
+   0YbRSFdbGTRA3p2WYC5ZbEFwjWcuNCvA7lBzN5zwxW8CbrTPZ10ySlAD6
+   qtjzlu6u7XGwQFLbu8Dikyb03/dbXEEX8PI7xJgdQTomrpesNLDh00g74
+   Vt/xezdVOxbDxB2pHy3bqpDvVPS8byRqOgSPi6ptT6LEKhq1K2g0wLvhM
+   2mfyh02UKRvpbHFdYPS20mWoYYZ8bxDBY3TjWXyWf5DnedmAmmhOoZq70
+   g==;
+X-CSE-ConnectionGUID: ufuoOP+NR6qwQGhEJQc5UA==
+X-CSE-MsgGUID: dx8O7xiiS+q5pLERreKzlw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4288915"
 X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; 
-   d="scan'208";a="4288901"
+   d="scan'208";a="4288915"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 10:05:36 -0800
-X-CSE-ConnectionGUID: u8mNMD6YSdmYs+gAURmZ1g==
-X-CSE-MsgGUID: hCeQsZGMRr6s1xC6eI/O3w==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 10:05:40 -0800
+X-CSE-ConnectionGUID: MXccp4qLQFSiFKYYHF0ALQ==
+X-CSE-MsgGUID: BTyh8gVpRWK4QVcJrWQdUw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; 
-   d="scan'208";a="11241177"
+   d="scan'208";a="11241184"
 Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.174])
-  by orviesa004.jf.intel.com with ESMTP; 23 Nov 2026 10:05:36 -0800
+  by orviesa004.jf.intel.com with ESMTP; 23 Nov 2026 10:05:40 -0800
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 To: seanjc@google.com,
 	jmattson@google.com
@@ -70,9 +70,9 @@ Cc: pbonzini@redhat.com,
 	linux-kernel@vger.kernel.org,
 	zhao1.liu@intel.com,
 	chang.seok.bae@intel.com
-Subject: [PATCH v10 18/20] KVM: x86: Expose APX feature to userspace
-Date: Mon, 23 Nov 2026 17:37:30 +0000
-Message-ID: <20261123173732.1072124-19-chang.seok.bae@intel.com>
+Subject: [PATCH v10 20/20] KVM: selftests: Add APX state handling and XCR0 sanity checks
+Date: Mon, 23 Nov 2026 17:37:32 +0000
+Message-ID: <20261123173732.1072124-21-chang.seok.bae@intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261123173732.1072124-1-chang.seok.bae@intel.com>
 References: <20261123173732.1072124-1-chang.seok.bae@intel.com>
@@ -87,154 +87,73 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Expose the APX feature and its sub-features to userspace. Add support for
-CPUID leaf 0x29, sub-leaf 0, to enumerate the APX sub-features.
+Now that KVM exposes the APX feature to guests, extend some existing
+selftests to validate XCR0 configuration and state management.
 
-On SVM or when using eVMCS, do not advertise APX, as EGPR support is not
-implemented yet.
+Since APX repurposes the XSAVE area previously used by MPX in the
+non-compacted format, add a check to ensure that MPX state is not set
+when APX is enabled.
+
+Also, load non-init APX state for the ABI test.
 
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Tested-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Jim Mattson <jmattson@google.com>
 ---
-V9 -> V10: Collect a review tag
----
- arch/x86/include/asm/cpuid/api.h |  1 +
- arch/x86/include/asm/kvm_host.h  |  1 +
- arch/x86/kvm/cpuid.c             | 21 ++++++++++++++++++++-
- arch/x86/kvm/reverse_cpuid.h     |  4 ++++
- arch/x86/kvm/svm/svm.c           |  1 +
- arch/x86/kvm/vmx/vmx.c           |  4 ++++
- 6 files changed, 31 insertions(+), 1 deletion(-)
+ tools/testing/selftests/kvm/x86/state_test.c  |  3 +++
+ .../selftests/kvm/x86/xcr0_cpuid_test.c       | 19 +++++++++++++++++++
+ 2 files changed, 22 insertions(+)
 
-diff --git a/arch/x86/include/asm/cpuid/api.h b/arch/x86/include/asm/cpuid/api.h
-index 759b12d94bbf..80402959804f 100644
---- a/arch/x86/include/asm/cpuid/api.h
-+++ b/arch/x86/include/asm/cpuid/api.h
-@@ -183,6 +183,7 @@ static __always_inline bool cpuid_function_is_indexed(u32 function)
- 	case 0x1f:
- 	case 0x23:
- 	case 0x24:
-+	case 0x29:
- 	case 0x8000001d:
- 		return true;
- 	}
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 327d26e38cbc..abf73bd75bd1 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -729,6 +729,7 @@ enum kvm_only_cpuid_leafs {
- 	CPUID_7_1_ECX,
- 	CPUID_1E_1_EAX,
- 	CPUID_24_1_ECX,
-+	CPUID_29_0_EBX,
- 	NR_KVM_CPU_CAPS,
- 
- 	NKVMCAPINTS = NR_KVM_CPU_CAPS - NCAPINTS,
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index f476a78a570a..2fa48efb1caa 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -1049,8 +1049,12 @@ void kvm_initialize_cpu_caps(void)
- 		F(AVX_VNNI_INT16),
- 		F(PREFETCHITI),
- 		F(AVX10),
-+		SCATTERED_F(APX),
- 	);
- 
-+	if (!IS_ENABLED(CONFIG_KVM_APX))
-+		kvm_cpu_cap_clear(X86_FEATURE_APX);
-+
- 	kvm_cpu_cap_init(CPUID_7_2_EDX,
- 		F(INTEL_PSFD),
- 		F(IPRED_CTRL),
-@@ -1095,6 +1099,10 @@ void kvm_initialize_cpu_caps(void)
- 		F(AVX10_V1_AUX),
- 	);
- 
-+	kvm_cpu_cap_init(CPUID_29_0_EBX,
-+		F(APX_NCI_NDD_NF),
-+	);
-+
- 	kvm_cpu_cap_init(CPUID_8000_0001_ECX,
- 		F(LAHF_LM),
- 		F(CMP_LEGACY),
-@@ -1463,7 +1471,7 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
- 	switch (function) {
- 	case 0:
- 		/* Limited to the highest leaf implemented in KVM. */
--		entry->eax = min(entry->eax, 0x24U);
-+		entry->eax = min(entry->eax, 0x29U);
- 		break;
- 	case 1:
- 		cpuid_entry_override(entry, CPUID_1_EDX);
-@@ -1734,6 +1742,17 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
+diff --git a/tools/testing/selftests/kvm/x86/state_test.c b/tools/testing/selftests/kvm/x86/state_test.c
+index 500b09762555..22fe0784dbc0 100644
+--- a/tools/testing/selftests/kvm/x86/state_test.c
++++ b/tools/testing/selftests/kvm/x86/state_test.c
+@@ -164,6 +164,9 @@ static void __attribute__((__flatten__)) guest_code(void *arg)
+ 			asm volatile ("vmovupd %0, %%zmm16" :: "m" (buffer));
  		}
- 		break;
- 	}
-+	/* APX sub-features */
-+	case 0x29:
-+		if (!kvm_cpu_cap_has(X86_FEATURE_APX)) {
-+			entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
-+			break;
-+		}
-+		cpuid_entry_override(entry, CPUID_29_0_EBX);
-+		entry->eax = 0;
-+		entry->ecx = 0;
-+		entry->edx = 0;
-+		break;
- 	case KVM_CPUID_SIGNATURE: {
- 		const u32 *sigptr = (const u32 *)KVM_SIGNATURE;
- 		entry->eax = KVM_CPUID_FEATURES;
-diff --git a/arch/x86/kvm/reverse_cpuid.h b/arch/x86/kvm/reverse_cpuid.h
-index 1ff87fe63c3c..9a4445138a8f 100644
---- a/arch/x86/kvm/reverse_cpuid.h
-+++ b/arch/x86/kvm/reverse_cpuid.h
-@@ -69,6 +69,9 @@
- /* Intel-defined sub-features, CPUID level 0x00000024:1 (ECX) */
- #define X86_FEATURE_AVX10_V1_AUX	KVM_X86_FEATURE(CPUID_24_1_ECX, 2)
  
-+/* Intel-defined sub-features, CPUID level 0x00000029:0 (EBX) */
-+#define X86_FEATURE_APX_NCI_NDD_NF	KVM_X86_FEATURE(CPUID_29_0_EBX, 0)
++		if (supported_xcr0 & XFEATURE_MASK_APX)
++			write_egpr(16, 0xcccccccc);
 +
- /* CPUID level 0x80000007 (EDX). */
- #define KVM_X86_FEATURE_CONSTANT_TSC	KVM_X86_FEATURE(CPUID_8000_0007_EDX, 8)
+ 		if (this_cpu_has(X86_FEATURE_MPX)) {
+ 			u64 bounds[2] = { 10, 0xffffffffull };
+ 			u64 output[2] = { };
+diff --git a/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c b/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c
+index 40dc9e6b3fad..adf665f483c1 100644
+--- a/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c
++++ b/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c
+@@ -46,6 +46,20 @@ do {									\
+ 		       __supported, (xfeatures));			\
+ } while (0)
  
-@@ -112,6 +115,7 @@ static const struct cpuid_reg reverse_cpuid[] = {
- 	[CPUID_7_1_ECX]       = {         7, 1, CPUID_ECX},
- 	[CPUID_1E_1_EAX]      = {      0x1e, 1, CPUID_EAX},
- 	[CPUID_24_1_ECX]      = {      0x24, 1, CPUID_ECX},
-+	[CPUID_29_0_EBX]      = {      0x29, 0, CPUID_EBX},
- };
- 
- /*
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 5ef785811e3f..074c8dab7420 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -5730,6 +5730,7 @@ static __init void svm_set_cpu_caps(void)
- 	 * but that require explicit SVM support (that isn't yet implemented).
- 	 */
- 	kvm_cpu_cap_clear(X86_FEATURE_MSR_IMM);
-+	kvm_cpu_cap_clear(X86_FEATURE_APX);
- 
- 	/*
- 	 * LBR Virtualization must be enabled to support BusLockTrap inside the
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 3c1d4629a00c..1ef1fbc95982 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -8023,6 +8023,10 @@ static __init void vmx_set_cpu_caps(void)
- 	 */
- 	kvm_cpu_cap_set(X86_FEATURE_EFER_LMSLE_MBZ);
- 
-+	/* eVMCS isn't prepared yet for APX */
-+	if (kvm_is_using_evmcs())
-+		kvm_cpu_cap_clear(X86_FEATURE_APX);
++/*
++ * Verify that mutually exclusive architectural features do not overlap.
++ * For example, APX and MPX must never be reported as supported together.
++ */
++#define ASSERT_XFEATURE_CONFLICT(supported_xcr0, xfeatures, conflicts)			\
++do {											\
++	u64 __supported = (supported_xcr0) & ((xfeatures) | (conflicts));		\
++											\
++	__GUEST_ASSERT((__supported & (xfeatures)) != (xfeatures) ||			\
++		       !(__supported & (conflicts)),					\
++		       "supported = 0x%lx, xfeatures = 0x%llx, conflicts = 0x%llx",	\
++		       __supported, (xfeatures), (conflicts));				\
++} while (0)
 +
- 	kvm_setup_xss_caps();
- 	kvm_finalize_cpu_caps();
- }
+ static void guest_code(void)
+ {
+ 	u64 initial_xcr0;
+@@ -79,6 +93,11 @@ static void guest_code(void)
+ 	ASSERT_ALL_OR_NONE_XFEATURE(supported_xcr0,
+ 				    XFEATURE_MASK_XTILE);
+ 
++	/* Check APX by ensuring MPX is not exposed concurrently */
++	ASSERT_XFEATURE_CONFLICT(supported_xcr0,
++				 XFEATURE_MASK_APX,
++				 XFEATURE_MASK_BNDREGS | XFEATURE_MASK_BNDCSR);
++
+ 	vector = xsetbv_safe(0, XFEATURE_MASK_FP);
+ 	__GUEST_ASSERT(!vector,
+ 		       "Expected success on XSETBV(FP), got %s",
 -- 
 2.53.0
 
