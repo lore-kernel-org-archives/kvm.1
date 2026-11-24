@@ -1,93 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.156
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795546331;
-	b=T5S/pdp4m2eakCBaMd5Rb+qkjx/qtVYIWvF0Supw6RZlgCsXwTuOerA70T6FXiLilVcN
-	 jB/s7yG84d5m7G6bW6bZB1+P11Do5uWOTW4Yt3SXy3pZVVbkCwWXFsUQhJDOEz0yvk6cl
-	 gTEoVO4Bj3/at2458JeUVGiOySI91IddyEI3Gk6KQw3LSmPIerJeM6KbumyjCzvajZmGD
-	 BOTJhlgz95H44ClNkY6TgDIanvJdORAeF9muNUE6d9XHNLiB4V83O/1udFWNZmFzWdSTn
-	 lfuYFyvhHRUe5M+TSYQNE0pp5knqdFKcOwwAEr5vFIkCzMoNYwHU+jdI3HdhyraHeXw==
+	t=1795546429;
+	b=cl0u8ipsLawGLONyTsx7Bh7msj6J4fE9zf5oLHHpSFMb3vXnXIyLR5zGqKyveZvVTI7R
+	 PWVC4FbI+c5VQNP2XQtd3hcVxpjWcVmuY7RQGr86ajwpApKUf6edMR09/7XbeUXKl+0Xr
+	 FWccF74gsEjpvmpdfOu07VAUWwh2VaORlbv624tR1t9naLZ5MF8HggD2w3oCXMvO+6cJG
+	 aecVC0m43DxirK9ZJeqj2EvrjeSsPEORVogJXzkL9Lh8fSmZe3iVzDq1v7Tbg52rpcrIc
+	 pL24gcGLWVXJlptdH9g7zNQQCwOEXY4r3J+LOtoe5dBuE8bBhYft09B+wOgzlxaScuQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795546331;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=0sNoW/KWYC5fenn6W3ZO2QgTuASrJJ6ujM7Ci83DK9o=;
-	b=Ed3D09zOQNrWj3TDzKik5Zre/WpGlfd3VJs2GluUkZg0s9Aw0+AEAg8ncpGS5Cnv2Z1A
-	 OCCCDMAKf53sHHjjxcTg/c6gI+QdtWEUY1+5b+VOSE/wDN7a03j9WHj8Yy+kN9UyeFOf1
-	 LEBee3LmDPqnM+KUgabSL13aTBRVtvfl2QSYlk/NhbW+C9bpZfDg9YbhgWpJInpy64VWL
-	 uC3qcKDpAcAtGdCtw1HT4r+Qs1kd17DdrKgiWl5niipKDd2WuruBcRMWWWt6sc7SkUwID
-	 WP0Kp/X4jY/PAzeoTAgNnKqptfakf7S1pneM8JNT6eNmGbo0+bYsm8EB/88AKHSkQ7w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795546429;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
+	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
+	 References:Subject:Content-Type:Content-Transfer-Encoding;
+	bh=iJ0bZtF+M32WhmItWYj3FSa2ZiQSpvoOogcaFVHVH5I=;
+	b=s9vESTDPkXUQKnXQIAgXiN3JzH9xqXGEbupZHA/DTU4Mb2rXQbjzgKLO64KMHurDqbQQ
+	 tkD8Scbu4mp2bDdBVYBOiL8gPYwp5g6gN1iWyYj5stIUljOJCyRFYyamP307XnSl9dO6T
+	 o883MYrqDECSjjooPJKkROXoGeQVRTCPhG3GCvTcVsdV59/s27tfXaX0gY5QqFEqQs2KX
+	 KQzAJIBFfBpXW33u0OZ7c3V7jCHhzQ+9Y4jh96ZXqVeXi8p9Cd8wHjlIcYWDoTYo9XeoN
+	 8YnCIqHTYjRf7lWnMwSFALSHxVG7aObbiqXvZRiiXFllKQE8NsW5vQELX17jIczdfYA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=HxpQmHpN;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EA1606A321;
-	Tue, 24 Nov 2026 18:52:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81EA1606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=arndb.de;
+	spf=pass smtp.mailfrom=arndb.de;
+	dkim=pass header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b="fGXI/q/Y";
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=huROl1+l;
+	arc=none smtp.remote-ip=103.168.172.156
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DEB606A31E
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 18:53:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19DEB606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=HxpQmHpN
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1019F497;
-	Tue, 24 Nov 2026 10:52:08 -0800 (PST)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7EAC33F86C;
-	Tue, 24 Nov 2026 10:52:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795546330; bh=cEx0NNr4v9OqxertlfeaIBCZsjK0gqeBlEmSznQ0QE4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HxpQmHpNrqXVqUfjE0HPfLK3ewOjjeolAx23daMcxTI88aKM+hL6rA2Fg+4rqd8+R
-	 qMFVk/rzRBXFpbU1Dfr/ftkZEjuXw3RMnNovsFD1RM3+rwaFKpdU0NBWTD4cVkNWWE
-	 Ki55UEoYDf7IlCgUAL9LE2jIQWyjvIsSNBfWze2I=
-Date: Tue, 24 Nov 2026 18:52:00 +0000
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-openrisc@vger.kernel.org
-Subject: Re: [PATCH RESEND v2 12/21] mm/pgtable: redefine PGTABLE_LEVEL enum
- with ascend order from PGD
-Message-ID: <awXc0MSZl9t9VW8e@e129823.arm.com>
-References: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
- <20261102-dummy_ptxp3-v2-12-78840b2ec73c@arm.com>
- <awXD4i47F-VAG1tD@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=fGXI/q/Y;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=huROl1+l
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id DB4A91400276
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 13:53:46 -0500 (EST)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 24 Nov 2026 13:53:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1795546424;
+	 x=1795632824; bh=iJ0bZtF+M32WhmItWYj3FSa2ZiQSpvoOogcaFVHVH5I=; b=
+	fGXI/q/YJJHPRt+gPRHUOreFU8JCB/tfsdHtsBhf3X18rgt21ZbX+26No5IKTAyj
+	AgCv1KdKfbX+I2Pn0iSzwyBZk/aTQmKDh3dYxkQQL/J3WM2z84vb6vO7x4DW8EGZ
+	sS/Wz7MJP+BtoLKLQr++7Yye1Hsyu2ULf9M/Y/cIxiPBp83DUaCzMY/wHmvrh3HQ
+	z0r0HeF0cnvWAkVDWpNLHekIzdnkWlD1MFqa+H5YTnUhFB6PA6aA1HC0BYrnek2G
+	nxpAYgIinmvsD/fk1yNzG29c7eKf94wnqayGmqr0U9/LtCL0vr89WbcpVgVwSl8H
+	4qYzW/d7q4DzqRxNHb/J/w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795546424; x=
+	1795632824; bh=iJ0bZtF+M32WhmItWYj3FSa2ZiQSpvoOogcaFVHVH5I=; b=h
+	uROl1+lk1kz0AnE8Bzw9moeUjMay7vJ5VuuqfueaPUl4m/AI84UJOgAisOoaqFn/
+	yCBo+vSL4a5lisI4l5/Z7saj2VUfqomUlV+2KVyBVQmUCOe3jgRYI6qYr4Y8R8jl
+	LJRf+DSl7GQbE5lW+g+FmCFL/3myijCtekiyTHImxIeNkj8OLVv/bdsJJh85iU2r
+	kJL7uUdjE61XSRiNNPNUtgWPIDQt/CfqMCs9Y72c8jKv8clrGSuuWvjDW+ZxoYRm
+	lUNq6g0Cq11j4GRLpY9a5Fciy4M+OD5s4ikjAzA6YUPUcczieH5Iq3irJUrRl+0o
+	JIyX3BUC16aX/QKYzqm+Q==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=arndb.de a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1795546424; d=arndb.de;
+	mf=PGFybmRAYXJuZGIuZGU+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:XAhmFVm7mPG333vdOF4x0pLfiUuOQnMzTOG7x9oYURRxs9v
+	jOw+yJSr3K+gHRRO5aVokr8kHHmoX0gH9hwum9L+3h7JfHIN+RW8yTgSBouHoc3x
+	Z5U3vZqr3/0V6dd0tWZy27oaS01HGhgC4an8dWf7jaJRSTPBwvD/O6qJrQ89bUjA
+	kdpnt32zqOKfDaSvPWA4yRjTNmYPg41/hHChOxRDuIjg5y1Tq59JfrvEDY3uy8Iz
+	RGlo0K75JP4m99zQ1GwCvhPSrHbMS2TNd4VfQp/BWil3VgMbnikqliKV1MFFCXBm
+	THL3LXmt1NFuT9WYN9W3MOlgUvtYjUZ+9ubpeOQ==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:JE9Pf+dIuvBMDyw467eQ/Tr4tyY4SBvJ9vbnWlDmBbU=:iJ0bZtF+M32WhmItWYj3FSa2ZiQSpvoOogcaFVHVH5I=;
+X-ME-Sender: <xms:NN0Fa5lZfMH0GpBjo4FIFqOt82WeXvEcO71uXdjmCA-N2thUNBatiw>
+    <xme:NN0Fa_pvDD3LDB1hOkMvebnpeZhjQXIK0f9ynC0uvxvma-6WyPByvi9RrkBtXqg9y
+    e_gVWNjeonSUqLlGosp6V90-QYv-zweVwSgzUpAtHBmrbfHPTWWgCM>
+X-ME-Proxy-Cause: dmFkZTGa89Pla2pwx0UHvBE2KEVG1Wwjhw7C4B1uLpGYODU+3QVMsGx/6XmpkdoJQ4Wdng
+    HJTQ5P6n+mDkd8Vd2SQqD6fTHTLkP7Wuqcj4e4FsRmjjuwJVAvdIAMxwY7PgDDXvm7pBQb
+    V+0M7Ws/ERhpYm8SiiloduyrTQZspJvg6qB1K46OCCPXGc+eEW+Hddr+7C00h0r6ZEOFYl
+    AEnzqIf48e5UMJEtOynuealgFc8qv49e4alT0/cDtM0pgI+fA63AVgOKJjxR0/XZ5jCWkf
+    ckqnEAFz7mzjehKRip86Ki3aHb//QV7agR0ciNvsOQftXZwZGwrw1biaGXQM2h508lVilu
+    dX1Rs8y5CwzC5NJ/X0naYSrSH/L5OxpOwwf5dMWqDQZcTdKTK/2PBgPmihT/fQy1TuHY6j
+    6M64lDHfRNX+gNElC1DL1ODauxSmwduu+m13I/SkB7IYOCXjuB2jqg7U4sW3fILD4Xxxix
+    /zzH26H2NJT/sw+csOTXwQOv0Ri5PI/gUUSUcz2DmXFV+dyZ2fG3dvBz4DLITo/r44riPy
+    Wkq3g4kLNXDJfPLtgJRoV3tB0JzWzIZNdWxrQK2e5XaTmoTp8JRX1v76d2nM+qmgUUFhFc
+    nvxsvy7PpPJFKIOSP8JO3v1DBFfZIowhnT7qZYA23jX7CcPrraaLXwRUkr+A
+X-ME-Proxy: <xmx:Nt0Fa2g9uImOLqunkhPoWGl1ltxY8JqHe77aesgUgd62JLxGu-1Ofw>
+    <xmx:Nt0Fa8Pc_Sbu-G_3abCwqPB7HUsT9kKEIkC0CdR_sFWt4SE3pgeVEw>
+    <xmx:Nt0Faxe5nGuWdBNu6u7jyT24MgZMbK0VdAI8O7B5j3SfiCxKfSR2AQ>
+    <xmx:Nt0Fa-y3V9ESX_COIXxaEavSOJ21EMmGaPaOG4nz8Qt9gqswRMc_CQ>
+    <xmx:ON0Fa2FN0OUPrjWXja9RK6szCLu_hXTZd05XGyCHHDqNdf-Ig_ZmCfL3>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 4968232A0099; Tue, 24 Nov 2026 13:53:40 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -97,77 +114,74 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <awXD4i47F-VAG1tD@kernel.org>
+X-ThreadId: Ai76fMdDSoMo
+Date: Tue, 24 Nov 2026 19:53:19 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Lorenzo Stoakes" <ljs@kernel.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Juergen Gross" <jgross@suse.com>,
+ "Stefano Stabellini" <sstabellini@kernel.org>,
+ "Oleksandr Tyshchenko" <oleksandr_tyshchenko@epam.com>,
+ "Madhavan Srinivasan" <maddy@linux.ibm.com>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Christophe Leroy" <chleroy@kernel.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ "Shrikanth Hegde" <sshegde@linux.ibm.com>,
+ "Haiyang Zhang" <haiyangz@microsoft.com>, "Wei Liu" <wei.liu@kernel.org>,
+ "Dexuan Cui" <decui@microsoft.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ "Jason Wang" <jasowangio@gmail.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ "Xuan Zhuo" <xuanzhuo@linux.alibaba.com>,
+ "Jarkko Sakkinen" <jarkko@kernel.org>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "Thomas Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, "Jan Kara" <jack@suse.com>,
+ "Paul Moore" <paul@paul-moore.com>,
+ "Stephen Smalley" <stephen.smalley.work@gmail.com>,
+ =?UTF-8?Q?Ondrej_Mosn=C3=A1=C4=8Dek?= <omosnacek@gmail.com>,
+ "Joel Stanley" <joel@jms.id.au>,
+ "Andrew Jeffery" <andrew@codeconstruct.com.au>,
+ "Ryan Chen" <ryan_chen@aspeedtech.com>,
+ "'billy_tsai@aspeedtech.com'" <billy_tsai@aspeedtech.com>,
+ "Bjorn Andersson" <andersson@kernel.org>,
+ "Konrad Dybcio" <konradybcio@kernel.org>, "Abel Vesa" <abelvesa@kernel.org>,
+ "Jens Wiklander" <jenswi@kernel.org>, "Sumit Garg" <sumit.garg@kernel.org>,
+ "Scott Branden" <scott.branden@broadcom.com>,
+ "Broadcom internal kernel review list" <bcm-kernel-feedback-list@broadcom.com>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Richard Cochran" <richardcochran@gmail.com>,
+ "David Woodhouse" <dwmw2@infradead.org>,
+ "Andrew Lunn" <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>
+Cc: xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
+ linux-sgx@vger.kernel.org, selinux@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
+ linux-arm-msm@vger.kernel.org, op-tee@lists.trustedfirmware.org,
+ Netdev <netdev@vger.kernel.org>, linux-mm@kvack.org
+Message-Id: <3208cde3-c5cf-4888-88f7-c77d7b0e5940@app.fastmail.com>
+In-Reply-To: <20261124-late-2026-mmap_prepare-v2-8-0b0d99d655f9@kernel.org>
+References: <20261124-late-2026-mmap_prepare-v2-0-0b0d99d655f9@kernel.org>
+ <20261124-late-2026-mmap_prepare-v2-8-0b0d99d655f9@kernel.org>
+Subject: Re: [PATCH v2 08/13] soc: aspeed: convert LPC and P2A control mmap hooks to
+ mmap_prepare
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 24, 2026 at 07:05:38PM +0200, Mike Rapoport wrote:
-> On Mon, Nov 02, 2026 at 11:21:25AM +0000, Yeoreum Yun wrote:
-> > The PGTABLE_LEVEL enum values appear to be ordered in the opposite direction
-> > from their intended usage.
-> > 
-> > Intuitively, higher page table levels should have smaller enum values,
-> > but PTE is currently assigned 0.
-> 
-> That's not what x86 thinks :)
-> They even expose it in /proc/vmstat with smaller numbers meaning lower levels
-> 
-> $ grep direct_map /proc/vmstat 
-> direct_map_level2_splits 152
-> direct_map_level3_splits 4
-> direct_map_level2_collapses 0
-> direct_map_level3_collapses 0
-> 
-> Just an observation, I don't mind either order.
+On Tue, Nov 24, 2026, at 15:02, Lorenzo Stoakes (ARM) wrote:
+> Move from the deprecated mmap hook to the new mmap_prepare hook for both
+> the LPC control and P2A control drivers.
+>
+> Both remap a range of their reserved memory region, so use the PFN remap
+> mmap action to do so, retaining the -EAGAIN error on failure via the action
+> error override.
+>
+> Acked-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Right. I made this change because a depth-based scheme seems more intuitive.
-
-As you pointed out, though, the x86 specification uses smaller
-numbers (0) for lower levels (pte), so I think we can leave the
-x86-specific direct_map_* entries as they are.
-
->  
-> > For consistency and cleanup, reverse the enum value ordering.
-> > 
-> > Since there is no current user relies on these numbers to be ascending from
-> > PTE->PGD, so it can be changed to be ascending from PGD->PTE, in the
-> > direction of the page table walk.
-> > 
-> > Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> > ---
-> >  include/linux/pgtable.h | 8 ++++----
-> >  1 file changed, 4 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> > index 780fe849ff8b7..a032f95943357 100644
-> > --- a/include/linux/pgtable.h
-> > +++ b/include/linux/pgtable.h
-> > @@ -2288,11 +2288,11 @@ static inline bool arch_has_pfn_modify_check(void)
-> >  typedef unsigned int pgtbl_mod_mask;
-> >  
-> >  enum pgtable_level {
-> > -	PGTABLE_LEVEL_PTE = 0,
-> > -	PGTABLE_LEVEL_PMD,
-> > -	PGTABLE_LEVEL_PUD,
-> > +	PGTABLE_LEVEL_PGD = 0,
-> >  	PGTABLE_LEVEL_P4D,
-> > -	PGTABLE_LEVEL_PGD,
-> > +	PGTABLE_LEVEL_PUD,
-> > +	PGTABLE_LEVEL_PMD,
-> > +	PGTABLE_LEVEL_PTE,
-> >  };
-> >  
-> >  static inline const char *pgtable_level_to_str(enum pgtable_level level)
-> > 
-> > -- 
-> > 2.43.0
-> > 
-> 
-> -- 
-> Sincerely yours,
-> Mike.
-
--- 
-Sincerely,
-Yeoreum Yun
+Acked-by: Arnd Bergmann <arnd@arndb.de>
