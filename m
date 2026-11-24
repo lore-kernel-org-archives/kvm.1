@@ -1,119 +1,173 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.52
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795526276;
-	b=VerzSQidzG4MQOdS9TwV230JAUpJzSc8/hKwVpwWGyDyyw+p+yWmU7BaN5Lk4+BeD5sP
-	 eAB9f29s4ui9kZO8ftHdhZhIx4z6KVRssT6ZcfdC49XBAjsk1gZ2BaFmi7lyB/Uu0NMjY
-	 I4p3Aatig2Ufco+B9HCezNOdsf8Kn/LE+lU4ff8sS9c66aOMXOzGKMmu2s6w2elOEyXCl
-	 HTKdI/uoaBXcVu0xEhAGqY0RDNn5M5pUSnJaZjBb1gk121EFhezQfGucJUR6SeenedKgu
-	 5uzODQLEJ8a3RmHLQ6HhyAFR3ncDN9gWhwcR1FWSGkMPApCuG5OUfshbDslgQuhyxjg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795526276;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=JQr5O3TAm0LrUQZ23OaV0ywjiZMgF6OfZ39GqtSUwII=;
-	b=GETOawgQp+ER4bvrtLK65c+sauGSfRI+kjsQFk1KLHJFl0qfeB/xTpevwGS4FTqeR5ru
-	 69i+R3EJG32DcDGs+wg/e9+0DFTbG4sLW1h/DbTiCoJDENuepcXfsIVp2Gyx/YidsVkLe
-	 i0TN0Iq1um9Jnl0ya0haNGHq0OuZd373SvAAdcwPSeNyDu2/nBn8CAt1DEFnzdTbGfaFM
-	 rsFK/QImAKS18c9e/MYYEtxUnO47I6c1HFlso5ybtINv8LkrFsOuTZwwHOprO4Z/B81z9
-	 k5aeBKXAVwkY41TyQ7IXUNiIJGSuqZXvV0BsrbXeTYuY5E8Gja5TK95faRx1iIvnydw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=XAywAbuF;
-	arc=none smtp.remote-ip=209.85.219.52
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=2 smtp.remote-ip=52.101.83.50
+ARC-Seal: i=3; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795526359;
+	b=T59s0f4IGVGtJh1BWGBCP6KhtP9rEPR+CW/3+I6Hro2dxPmbViIRQBP7+t+JrAK7OVsJ
+	 gW7nWnvgYTIWO9lXTLAjYdVhTLDZHgUAvFLngEaUZZp6Sb6zs7Y6WjVK17hleDC7hY1mV
+	 UQGORybGYOGmcbOvO6r8GLgHZy/v4YLmvOLhqAEamwwm9b8JZlYv86eX7DW5xazi/p3V6
+	 yz0riVrjUj5RuOMR/GNKtfI0Tx6g+JYSomyTqhVJLtKFPFJ4sOdx6772KWpHo+0nOo8cS
+	 MhOeZxudprppC0kSet/z7PflNfHisJOHEhfDLAb8WRicSvpHgxA89W++Jix6Sen8LOw==
+ARC-Message-Signature: i=3; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795526359;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:
+	 DKIM-Signature:Received:Received:From:To:CC:Subject:Thread-Topic:
+	 Thread-Index:Date:Message-ID:References:In-Reply-To:Accept-Language:
+	 Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 Authentication-Results-Original:x-ms-traffictypediagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:x-checkrecipientrouted:
+	 nodisclaimer:X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam-Untrusted:
+	 X-Microsoft-Antispam-Message-Info-Original:
+	 X-Forefront-Antispam-Report-Untrusted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:
+	 X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
+	 X-EOPAttributedMessage:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+	 X-MS-PublicTrafficType:X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=ASYyDX6H4ZkERzyPiwkFicibuFqGN6r+wUkl78wZvDk=;
+	b=SpUW3m7gov3neCiDc7ZtDBQZUniebTZ+D3zkAk9DrWQNfvn+/w4Q5eqdh8UwNLAHX99O
+	 TikFPzhpE4QBrzZagaGA4adhU/BA3uAFr1AU0M0ItnHLt+VHmuQfiS8EzUZuQuS2B2mp2
+	 3YlG7vEwiJ3aJhsKGHhMzhKF+hdIKiVRXQuhsFUKT1iAceW5lMvhaX/puKlbdfyrBwMln
+	 a0NCTq54s7TvS7yBOX/OJvEqPC7YD0VS9UFTvIhRktyV5+GaaR/Z5a+px/fNzc7vCl5rc
+	 2clX9lD1jCGu0iSjri1AO9CmpT/1DGb7tLF/QkzsSw9APjeh6uzkK72YEtwTOvaxEqQ==
+ARC-Authentication-Results: i=3; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=Yd1ltbLg;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=Yd1ltbLg;
+	arc=pass header.oldest-pass=2 smtp.remote-ip=52.101.83.50
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013050.outbound.protection.outlook.com [52.101.83.50])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448FA606A31E
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 13:17:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 448FA606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82160606A321;
+	Tue, 24 Nov 2026 13:19:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82160606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=XAywAbuF
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-921276742e3so41912826d6.2
-        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 05:17:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1795526275; x=1796131075; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JQr5O3TAm0LrUQZ23OaV0ywjiZMgF6OfZ39GqtSUwII=;
-        b=XAywAbuFEHdpJgqLJx+wUsQ2Y9xv2xvwJ8cx1D23A/19ETslrZoMGfHL0NL/0BPOdN
-         r35Qf6xmAzDpVaLAQdRrQsiMPSqsetc+ml2RXu3vOohu6QDkZUP+Atb7gRh6ylyZ//eS
-         /UgL4bwWZfuimVGs93FM+9yw2B8f91282LVGstj1T94xz5p49EHvC75ggBq4CyfH9rJ6
-         XnWXrnxMTxgXAWrYGsXDArNzsIJ5Avgu8co/TZiboocNSH1hG0IWgNkW+Qm0nAiMc0O2
-         ItAtoxIwIy9fbWjC5UOnUFshs0r4UjZpkp0xioG9e6uuGS0fzR3JkIEj3coXzHd7brvE
-         hF5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795526275; x=1796131075;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=JQr5O3TAm0LrUQZ23OaV0ywjiZMgF6OfZ39GqtSUwII=;
-        b=MItT11Az1+CYw9V4Q2ZZTcvm7rYBBBIBRs/3wNA1gDghSSHiWoMwSJjOE6PaHwVZDJ
-         ux67JN2qCa7SU52fyEiJOec3Qk27DAL/anSd2MPZdqPPIJUxtbNBv/nKkGJq1qdx3ZSE
-         pA84K1sMzxe75qceaMYT2IoZDaI6zfcv6fGjo0eCJpTouZpcWNlxw44L2xyIJZ1cTvmc
-         cqHK4eiyMQtL/VjVaiLO69/Da9qwssic3Ew5UbJF6YNwCSYoXUnf3zc+b8zceMGQ8Afj
-         07iDIZazge3kyc8YoVWJWRCJcY0gPq0U09GXOM1arSzfRUcxurNXhrlbKMYtMRB73RJ4
-         PW5A==
-X-Forwarded-Encrypted: i=1; AL+hErGhH6XI8ALqybNnDj8de18QmlRR9Akrv8O8VO5kODan9l8kMBKQlXbmWNoDXUumU+PB9p8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8+CBk7eF87knHuL3UxjPKLcwhw9Wxc5iYJL8fZvBthwO5lmZ2g
-	gETfA9jtL51cSmKtCF/NesmvLQ19hF+zuUjuyeLMFmZXKMGjWsp4hzp386xz5v0cEKI=
-X-Gm-Gg: AZFdTZd8uoU8ARKx4cD3PwKfDLvS16wCdyZl4EDvf3V+FW6k5TIO1ZiUmgCmuu5wu5n
-	HzhCDBXJJpjO5c4U26oIqK0qUQ6gxdPlzeGUmwK53j/TYIuA+OFbpFM56lLtvGYpWB6w6y5L2K5
-	/a+AOXlPb/DsRf+Ztv1Izz4APCwtNU+16Pkdhv6YuJIu+Ci3UbQH4x/Dtmrli6RIXcNCpzcxTXs
-	Mg6QzIm27mY+0rgUFDPxrP8iGBaK2Dg67680PQ4uuwFB0wpWZX9g2R2YElK87n5+uIvkBPOz5II
-	Syky+l/8PaYyTPvIk+xHX/PVt5rvW1R/1QdlntGkZmi7+r65Ss/QoRP/ViyQsc5FcR9HRiHEpgW
-	/WpDr6JQzqxHrhdN4Q+XEYKEgmA63lm4irGqj20sl9hPA1py/AeZfYvXP8C6Ny5lG0iUuIGQqgy
-	OeDoh9qqRAmWCrC1lM7bSTXTCnFVKz/JtI7cT3OfMXQvEzQO5LjxPgRyOwkuzfKP5wp+edVOZrp
-	7YckklGIcwvMHqt7Pcbqe6/kx69HqfItLEpDb3Q//dbHoT954rNx7o5DbsAwF9zlfKxDtSSoxQD
-	bwhYaDc=
-X-Received: by 2002:a05:620a:3722:b0:949:472f:226e with SMTP id af79cd13be357-949bab15455mr2786066785a.71.1795526275080;
-        Tue, 24 Nov 2026 05:17:55 -0800 (PST)
-Received: from ziepe.ca ([142.177.118.84])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-921349cdfbasm134605646d6.17.2026.11.24.05.17.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 05:17:54 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xVqPC-00000000P5z-0Ouc;
-	Tue, 24 Nov 2026 09:17:54 -0400
-Date: Tue, 24 Nov 2026 09:17:54 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Nicolin Chen <nicolinc@nvidia.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Lukas Wunner <lukas@wunner.de>, Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v1 00/10] PCI/TSM: Support guest TSM drivers
-Message-ID: <20261124131754.GF9566@ziepe.ca>
-References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
- <2026112325-emit-squeezing-5d96@gregkh>
- <20261123090623.GK14811@unreal>
- <yq5a7bi3riha.fsf@kernel.org>
- <20261123115803.GN14811@unreal>
- <yq5awlq3pto0.fsf@kernel.org>
- <20261123135638.GO14811@unreal>
- <20261123152533.GE179082@ziepe.ca>
- <20261123185826.GP14811@unreal>
+	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=Yd1ltbLg;
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=Yd1ltbLg
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=EllD2p/p38BNndR7g7QtlEsapznbNIHCOiBJXv6GeLCdSZJ26j/kWiV06xq9/Atxt/cUIVwkMUixBk0gmy8oXyEZHGS6t3I2zQR0pK8r41KgcTPEyjgz6uPcXE0HIlqdX/sBY/qqUKwF9E9A+oQfuyMXMqqT/RKi3TZ5xY8NzBd+lkdYA2xnDamNG0ydduI8jt04ag6+P5v1w34WpGXUHiSGTnOy7XpvjW8XIhQHt9IyFeqAOkcTVvso2iJ5FpDmsRMxQl7bJtIMbb5ycsfxLOCx+cZzhJpTZu74FTRg/U6LTWtwcyj8gZwRMdyJOFAnFMZ1wIJxDVUTm7ZyKgb7sA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ASYyDX6H4ZkERzyPiwkFicibuFqGN6r+wUkl78wZvDk=;
+ b=wFk0SN5XvuaGaI6aWV63ioqxSoPOnx/EyapM3z9eeXfgEWMkt5BDUAM5Tn9tarjvZakbf3wXpLN/fRBTWarB+qD4tldgiqh6KzhgpVlUemxiGXUVDpQp/pPNNItZTFGb4P+sMZR2g67ylZZCQe/fwA975anqTdN5Jq/X13AqHoPqV+lq1XOSGTQ7L+1IItXuJBYjn4UVQgNRbtFI5cjJme3BcLV0NRO0ooWbZps69MY2dvpykLOBsn+R1qpd/Bkw3oEcicX1cytV4Io4qi33RMOIj4tqucwVbwZY1rWHqyjHPv9e2S9SoPrGVTwiYzt3Ay0dMeoOVlL+mvpBKvuuRQ==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ASYyDX6H4ZkERzyPiwkFicibuFqGN6r+wUkl78wZvDk=;
+ b=Yd1ltbLg/cj2mHQL99VD6yJKNvftQgWA/Couaujd1iHGxghmTfqsHeS75beChwIt1pO0QUXoT4jNpjhQGxiiGC3Av7Tv/Rvg7H0Ze/LbPwywrBzhIb+uZZFZqg8w+DoTuRgDdxNPjASqRh+4DzQQnXH6+4zbtTH/GWV39z97JdI=
+Received: from DUZP191CA0029.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:4f8::17)
+ by AS8PR08MB9430.eurprd08.prod.outlook.com (2603:10a6:20b:5ee::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.14; Tue, 24 Nov
+ 2026 13:19:11 +0000
+Received: from DB1PEPF000509EC.eurprd03.prod.outlook.com
+ (2603:10a6:10:4f8:cafe::31) by DUZP191CA0029.outlook.office365.com
+ (2603:10a6:10:4f8::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.639.14 via Frontend Transport; Tue,
+ 24 Nov 2026 13:19:11 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 4.158.2.129) smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DB1PEPF000509EC.mail.protection.outlook.com (10.167.242.70) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.639.5
+ via Frontend Transport; Tue, 24 Nov 2026 13:19:10 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fYX+ilE1g9OV5ODPEZcIuqXQ4Nv+Z+JSgQDLD/RSm3rkzM9Ft3w0pu1dWkCrEdRd+FhdUONuBwJFjiY9VORZO+Ip0znhzQokCpkge3CulbrdDl65JHBkx9IOZ/futdUV9esBGQ9j5bfoiFT6MScWhUZol4kp6na5P2hv+7/fjhDAcm36ao0lgAUc8sRiMtjx5/Py/ZpqBEioUiF4nrSMBqPNXefTENm6Kqvc+VZpsHDLPflXkhDNUhIiw64uBCVkLVAKVHTr9bZsLJ5Wpsf4anBBejCAyXoEZdo65DVrgnemxgWP9hOJ+964Qka2D8j2j7YqgJsW+1JhHhqJQG22iQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ASYyDX6H4ZkERzyPiwkFicibuFqGN6r+wUkl78wZvDk=;
+ b=f6lGV/beQDzzkz5mJdE96xoKt3weaTxM1EUb9oZ2S9djMysaAFCHRw6VW6dKrNwn2ec7kLnbeJIqhuJXz1P+mgjz6Q7/JhZNnNHq3sxrDGbErS9rP2znXGt3Qf7RvURVO1rW+X/eQ3HX9zeoPMnryVVRTVLFXh1wC1pETV8Y1i5jAJv1Ftv0K+E+Iw8QjQSENJRq3F9PMh5UjEXepKzsVQSvCVfKZZh1zJb5o2362EhzFGrzB5luVvhBvDiCsVkWAKM3DvPwwI21STWk6z5nmj/zVRT2eAXwf7RwY+IXqYFvm6at2SZ2SDAgQvGwI38aG+ktUDqbPzTXiCsP5qz+Tg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ASYyDX6H4ZkERzyPiwkFicibuFqGN6r+wUkl78wZvDk=;
+ b=Yd1ltbLg/cj2mHQL99VD6yJKNvftQgWA/Couaujd1iHGxghmTfqsHeS75beChwIt1pO0QUXoT4jNpjhQGxiiGC3Av7Tv/Rvg7H0Ze/LbPwywrBzhIb+uZZFZqg8w+DoTuRgDdxNPjASqRh+4DzQQnXH6+4zbtTH/GWV39z97JdI=
+Received: from AS2PR08MB9786.eurprd08.prod.outlook.com (2603:10a6:20b:605::22)
+ by GV2PR08MB8097.eurprd08.prod.outlook.com (2603:10a6:150:75::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.12; Tue, 24 Nov
+ 2026 13:18:31 +0000
+Received: from AS2PR08MB9786.eurprd08.prod.outlook.com
+ ([fe80::d721:dfdb:2f83:155]) by AS2PR08MB9786.eurprd08.prod.outlook.com
+ ([fe80::d721:dfdb:2f83:155%6]) with mapi id 15.21.0639.012; Tue, 24 Nov 2026
+ 13:18:31 +0000
+From: Justin He <Justin.He@arm.com>
+To: Marc Zyngier <maz@kernel.org>
+CC: Oliver Upton <oupton@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>, Joey
+ Gouly <Joey.Gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, Suzuki
+ Poulose <Suzuki.Poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, Catalin
+ Marinas <Catalin.Marinas@arm.com>, Will Deacon <will@kernel.org>, Mark
+ Rutland <Mark.Rutland@arm.com>, Paolo Bonzini <pbonzini@redhat.com>, Sean
+ Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Sascha
+ Bischoff <Sascha.Bischoff@arm.com>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, Dan Carpenter <dan@pereq.eu>
+Subject: RE: [PATCH 1/3] KVM: arm64: Don't load hardware vCPU state before
+ first run
+Thread-Topic: [PATCH 1/3] KVM: arm64: Don't load hardware vCPU state before
+ first run
+Thread-Index: AQHde1zAtBC9mmT//0CTNvJgc0eqU7c75woAgACKa9CAALx7gIAABRQQ
+Date: Tue, 24 Nov 2026 13:18:31 +0000
+Message-ID:
+ <AS2PR08MB9786B94054D2237817356701F7442@AS2PR08MB9786.eurprd08.prod.outlook.com>
+References: <20261123150917.2679600-1-justin.he@arm.com>
+	<20261123150917.2679600-2-justin.he@arm.com>	<86eccbzcqh.wl-maz@kernel.org>
+	<AS2PR08MB978600ED2150F773D3E1631DF7442@AS2PR08MB9786.eurprd08.prod.outlook.com>
+ <868q2iz94w.wl-maz@kernel.org>
+In-Reply-To: <868q2iz94w.wl-maz@kernel.org>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Authentication-Results-Original: mx.microsoft.com 1; dkim=none (message not
+ signed) header.d=none;dmarc=none action=none header.from=arm.com;
+x-ms-traffictypediagnostic:
+	AS2PR08MB9786:EE_|GV2PR08MB8097:EE_|DB1PEPF000509EC:EE_|AS8PR08MB9430:EE_
+X-MS-Office365-Filtering-Correlation-Id: e3c5e816-8da6-4372-f386-08df4a2d8720
+x-checkrecipientrouted: true
+nodisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|23010399003|366016|376014|7416014|1800799024|38070700021|10067099003|261009223027099003|4143699003|56012099006|11063799006|261022075727099003|261021135927099003|261022105027099003|261021121427099003|261026140227099003|261026121527099003|261102123227099003|261028144727099003|18002099003|6133799003|22082099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ CSKcRgsxutUiIcFVkxYNJsWRmJjp/MjQRjNsSu2tUet0d167ChRJ/fuU7xn80h07OJo0561JsQhEvCBb1doX/BR35iv7nHhpUiZdHirMCCijAEhhXaeEfkLPaDGvjadCCY/sSWBzEAG0a/64SL4q2OhW5kNGdC/PSmS2FfKYghg+JNMXjtvS/LphkuOvNmhrjzCVpwWqOreFpGOmGfB8N+ABGP5FV9SzKbTeIoTToe/apvrNYkqF7gL8IZmZdqQzblLvNXlh+3/ifgmzRyn/p293gQ3SMLT0la2Z5JrLVntEwN9DWinWVjuFbMRLARuMnrHKKWSVDkPxRUw+IDMkk2mNDKvWqNJMzcM5xGiR/B1c/5Oeg4y43wphUSRJuAzTAjzGw9aCInmRh5jCt7gbyUXpraLj3E6CWvTh2JA6zt02ybE6R88Yaf+5BkMJQYXWRhNFSApiKkezn2Lxc0OovCTeYUAZR+okUL1Wxlt/GeVCQY0YcGsuu6pgMMwOxIYDMYb3oLpXoSQ4rFGTjkEFkeyrowai7kCIbBC5T/UTaQGREgcKB3odmEMZaL59AOytUQ/3mAdQa/jsYhIGyBvBYJLIejcuDgzfy/kpEr9SURIGPleM/Y10LtptsPVHQOZ2wH+3UqYv6kEesMk3JGE2ZNpTKDzisj7TGvyB0nE4FSJHOdSTLlr+PGLfoM8rKtg97zzcCx3CVzvUdVmeIix0Aw==
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS2PR08MB9786.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(7416014)(1800799024)(38070700021)(10067099003)(261009223027099003)(4143699003)(56012099006)(11063799006)(261022075727099003)(261021135927099003)(261022105027099003)(261021121427099003)(261026140227099003)(261026121527099003)(261102123227099003)(261028144727099003)(18002099003)(6133799003)(22082099003);DIR:OUT;SFP:1101;
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -123,40 +177,121 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261123185826.GP14811@unreal>
+X-Exchange-RoutingPolicyChecked:
+ dwF4+Xj5rP+Rq8mvNS21OdIlIjXUNsaZtYTQ8h7OyMlI48huW4hx+1gPWelLZIm+Rrb+uDIIOqAUGGcZqFivNN6Cyqax1ny++ZYdw3e7q/nlFWVZJRiTfCHa1uLJvjShPReEoUnrmrkA4bxI72Gtmn3PTatqxSOgeo/3EraAMbEzs1uYpCHAlkONsu+YHfTpWdbAkMu1/IxQu7F+4Pa4NcS34Pqjn0eIPF+pZWZuiLe53CWYZi0/vCw+4+A9MGxXtsRIPyxZWzsH2JZkitiwdMHyNuwWVBgIM5TPDtL+v7itRA/OjCLfRIH4GogVMeCrtDJYnKSJlcpdzj6CeIfWWQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR08MB8097
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DB1PEPF000509EC.eurprd03.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	1118281b-e538-4a7c-8354-08df4a2d6f84
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|14060799003|23010399003|82310400026|1800799024|7416014|376014|35042699022|36860700016|22082099003|18002099003|6133799003|261009223027099003|4143699003|10067099003|56012099006|11063799006|261102123227099003|261026140227099003|261028144727099003|261026121527099003|261021135927099003|261021121427099003|261022105027099003|261022075727099003;
+X-Microsoft-Antispam-Message-Info:
+	OqLY7LXEmU/0CA8njOe6NwHJSJVeDLTZ6MYoc1h0JACXUINXs67HXhwMrX+0BeYtai1fkDPYvyg+c6B0aDkRMNnxC/RrvcvY1RnrsasWSaBl78XgaJOBj+/b4Hyumr3RFG4ifkKEdl8qUxwM/EqGCzk20ipn7ntjGvncIIw1XmYsZ3ZO2+2TBZ8T9habfQqBJhQ1jh/5+qTiDg+WxXFGTMVAu+ymJ/JqO47J0QpLjyCyWgQ+dPIUl+2Ns0/VuIna1cYJWSG4uazS8dbrJJCLTrdq5x8QU/dhV9l5TMKH92jzwJpDd5UBvqzPUGuCstILV3T42nie3+uzE4+OzOjqRTCi3HqU5/h9a0yejFHU1jkfuc8oQSy3jpdcX+t+Owuckeb0luYGWa0zR6lhJaK+H2ui6sa4IxvG3CGa5fxLMLeOS1LMsele8JrZLaX2UK5f1DbKOn/udUerlRd2GfjKwxDx5dYoxxUFP7okbiRWbtSvbYf2ku4qkrJyxD65lxzaO/UZEph8BYq+YhjX7Li/2MrN9jhnC4LMUuMe81mJzxMxSygZmsfOEtfpeVcYalBQHOylz2uQQWzMQL7/iHumDWqYE7EfsCtycFdCkwwoLY6EjJ3I8KvZ8QIHdeJlrfxoQBMP4uMl4ZtY4pfjVUQo9G1qi3orFFp33ldh1hon9f03P+Rko5X/pqY5ACAdFrbb
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(14060799003)(23010399003)(82310400026)(1800799024)(7416014)(376014)(35042699022)(36860700016)(22082099003)(18002099003)(6133799003)(261009223027099003)(4143699003)(10067099003)(56012099006)(11063799006)(261102123227099003)(261026140227099003)(261028144727099003)(261026121527099003)(261021135927099003)(261021121427099003)(261022105027099003)(261022075727099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	LyS38f4a9OTZBjbDnwnmjmt9T77OjnqtaGXuYGzI3/MDypZKYtR/z8/J2ZKqQsp+iUc/j2VB2s0qhCjtud47YgDLieIOKI3UAQLJ9U/7vwwfc1sVwNuERKNnBtcnglvPXUwVU68Ipgid2X00SdBToK4AfqvzYxUdBEENClGfjKZV6wJ7QHY+I1y8os5qnChgenbBCyRDEvyTeJkgTPEC8122G1p0MpHP7DHMlmNJB5w2KYx+PATlQ5qVAnE1Aznxit5XsDKLs6Euk5enww8CdfmRrZVm0J2CpXXIb/1cKu/SBxkJM7Bm4miHlth2nZXHW3oURFFWnRo4pzD1ZMggQgayjZRz3PYm9zi/DYbzcHNym13Cz6nK169BC8gt6BTqF0srmAaBcm2/HHlkx1HT7AoIQXFl11uulbUPnaxVUNtDn2bH6Vt4py/TACjTvdhy
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 13:19:10.9902
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e3c5e816-8da6-4372-f386-08df4a2d8720
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB1PEPF000509EC.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB9430
 
-On Mon, Nov 23, 2026 at 08:58:26PM +0200, Leon Romanovsky wrote:
-> On Mon, Nov 23, 2026 at 11:25:33AM -0400, Jason Gunthorpe wrote:
-> > On Mon, Nov 23, 2026 at 03:56:38PM +0200, Leon Romanovsky wrote:
-> > > > >> >> But it should not, as you are making driver core changes that will
-> > > > >> >> mirror the same thing that that patchset is attempting to do.  Please
-> > > > >> >> work together on this.
-> > > > >> >
-> > > > >> > +10000000,
-> > > > >> >
-> > > > >> > Greg,
-> > > > >> >
-> > > > >> > This series came as a surprise to me given the fact that device trust
-> > > > >> > series is exactly for that - allow confidential computing.
-> > 
-> > Device trust's primary role in enabling confidential computing is to
-> > give space for the userspace to do all the TSM and attestation stuff
-> > to get the device into T=1 private DMA mode.
-> 
-> <...>
-> 
-> > Getting the device into T=1 should influence how the userspace decides
-> > to set the trust level, but it doesn't interact inside the kernel.
-> 
-> The point is that I’m describing the reverse relationship: the trust
-> level should determine how the device is configured, not the other
-> way around, as you suggest.
 
-They are unrelated. Neither influences the other. The user gets to
-make orthogonal choices if they want T=1 DMA and if they want
-adverserial. All combinations are useful and valid.
 
-Jason
+> -----Original Message-----
+[...]
+> > > > KVM_PRE_FAULT_MEMORY calls vcpu_load() as soon as
+> > > KVM_ARM_VCPU_INIT has
+> > > > completed. On arm64, however, kvm->arch.sysreg_masks, the trap
+> > > > configuration, vncr_tlb and nested vGIC state are only set up on th=
+e
+> > > > first KVM_RUN in kvm_arch_vcpu_run_pid_change().
+> > >
+> > > I think I'm going to queue a patch disabling prefaulting immediately,
+> > > and then we can fix this crap.
+> > >
+> > Fine with me. I'll rebase on top of it and have v2 re-enable
+> > pre-faulting together with the load/put change.
+>=20
+> Don't worry about that. I can fix that myself when applying the
+> patches.
+>=20
+
+Thanks. I'll leave the pre-fault enable alone in v2.
+
+>=20
+> > > > Since kvm_running_vcpu can now be set without VHE state on the CPU,
+> use
+> > > > host_ctxt->__hyp_running_vcpu in VHE enter_vmid_context() (matching
+> > > > nVHE)
+> > >
+> > > Can you clarify under which circumstances we end-up on the TLB
+> > > invalidation path? Simply faulting things in should not result in
+> > > invalidation. Unless we end-up with MMU notifiers firing?
+> > >
+> > I found this by code inspection, not from a failure. A TLBI from a stag=
+e-2
+> > BBM or an MMU notifier can hit this path during pre-faulting, but befor=
+e
+> > the first run hw_mmu is canonical, so it makes no difference. As Lorenz=
+o
+> > said, I'll drop this hunk.
+>=20
+> vcpu->arch.hw_mmu being the canonical one before the first run doesn't
+> hold anymore, since a7602ea542d4e ("KVM: arm64: nv: Initialize hw_mmu
+> to NULL for nested vCPUs"), as userspace can configure things for an
+> L2, before first run, and bad things happen otherwise.
+>=20
+> But the observation remains: if an MMU notifier occurs for any reason
+> while pre-faulting (likely a concurrent reclaim), we get the "not
+> quite loaded" vcpu in enter_vmid_context(). If vcpu->arch.hw_mmu is a
+> valid (non-null) pointer, then we will restore whatever is in that
+> structure when reaching exit_vmid_context(), and that's not what is
+> intended.
+>=20
+> So I think we need that sort of exclusion. Either we track what is
+> actually properly loaded (using __hyp_running_vcpu as you did before,
+> or by checking whether the vcpu is in a valid state).
+>=20
+
+I'll keep the __hyp_running_vcpu change then. It follows what is
+actually loaded on the CPU, and it matches nVHE.
+
+> I think we have a somewhat similar breakage with 5651590be08a6 ("KVM:
+> arm64: Load the vcpu in KVM_SET_VCPU_EVENTS"): as vcpu_load() now
+> becomes sensitive to vcpu_has_run_once() being true, we can't tell
+> anything of the state that is going to be evaluated by the event
+> injection helper.
+>=20
+
+Agreed. It already crashes: with pre-faulting disabled, an all-zero
+KVM_SET_VCPU_EVENTS before the first KVM_RUN triggers the same NULL vncr_tl=
+b dereference here.
+
+Instead of rejecting it, we could defer the injection to the first
+KVM_RUN, once the state is finalised. I can try that as a separate
+patch, if that sounds reasonable to you.
+
+
+___=A0
+Best Regards,
+Jia He (Justin)
+
+> We could prevent the non-running injection in KVM_SET_VCPU_EVENTS, but
+> that's also a change in the API...
+>=20
+> 	M.
+>=20
+> --
+> Without deviation from the norm, progress is not possible.
