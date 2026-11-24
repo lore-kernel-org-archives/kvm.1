@@ -1,109 +1,109 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.156
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795546429;
-	b=cl0u8ipsLawGLONyTsx7Bh7msj6J4fE9zf5oLHHpSFMb3vXnXIyLR5zGqKyveZvVTI7R
-	 PWVC4FbI+c5VQNP2XQtd3hcVxpjWcVmuY7RQGr86ajwpApKUf6edMR09/7XbeUXKl+0Xr
-	 FWccF74gsEjpvmpdfOu07VAUWwh2VaORlbv624tR1t9naLZ5MF8HggD2w3oCXMvO+6cJG
-	 aecVC0m43DxirK9ZJeqj2EvrjeSsPEORVogJXzkL9Lh8fSmZe3iVzDq1v7Tbg52rpcrIc
-	 pL24gcGLWVXJlptdH9g7zNQQCwOEXY4r3J+LOtoe5dBuE8bBhYft09B+wOgzlxaScuQ==
+	t=1795546468;
+	b=I/8WJyYvKbRUiV3dkHVBnzIr5MCysNMvzh71zFyYOfgVrqC2tNb22w6MA8gagd2dP1MI
+	 PaPPwPQtsubxhgG3KU3/hfbGYtksstrpwHcoZlFb7s8VgwfIIPjWuFbnGpNrzGfAh/wpY
+	 0PDXlzyWt6kZ73l/eWRc7wLav/BO+SxZ+38UMM4tV86YocOyRsf/mQks4A+A2KEJUfr0G
+	 WWBC8O/1Q33d/ZEeF3XRn8X6MROvKr0zJvvkuRAgY/3LP5fRPD82C2xNucscqj74CMdsV
+	 SPHrWvSc1z6tBZC97JEQMjAqPTq7IVYI+ePwwJTFPgLCxIoC77Xy7o9dBn+qFtQFyAw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795546429;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795546468;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
 	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
 	 X-ME-Sender:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:X-Mailer:
 	 MIME-Version:X-ThreadId:Date:From:To:Cc:Message-Id:In-Reply-To:
 	 References:Subject:Content-Type:Content-Transfer-Encoding;
-	bh=iJ0bZtF+M32WhmItWYj3FSa2ZiQSpvoOogcaFVHVH5I=;
-	b=s9vESTDPkXUQKnXQIAgXiN3JzH9xqXGEbupZHA/DTU4Mb2rXQbjzgKLO64KMHurDqbQQ
-	 tkD8Scbu4mp2bDdBVYBOiL8gPYwp5g6gN1iWyYj5stIUljOJCyRFYyamP307XnSl9dO6T
-	 o883MYrqDECSjjooPJKkROXoGeQVRTCPhG3GCvTcVsdV59/s27tfXaX0gY5QqFEqQs2KX
-	 KQzAJIBFfBpXW33u0OZ7c3V7jCHhzQ+9Y4jh96ZXqVeXi8p9Cd8wHjlIcYWDoTYo9XeoN
-	 8YnCIqHTYjRf7lWnMwSFALSHxVG7aObbiqXvZRiiXFllKQE8NsW5vQELX17jIczdfYA==
+	bh=zzADWq2A9f6U6Ncm9LM291Imr7Nwrsax19gq4eW/i1s=;
+	b=rn9C+cEq45MR0HTj3Vc+iu+K1QoOWh9oscD7GvV5eu6hKe8fYrRDXbWUGbxtbwACvs9X
+	 TJufxtOZxjcmSVoVwlIamEtB76e+BqTHswGXmaWADegE6+hk1aKzwof2qwpSps0Ktalck
+	 oTu5+JyAcy3ol9qOB8Gcn++jopR6zKLuyvs3WbYHqeua6S1Vsi6bVSxtLwKetlAGycHJ+
+	 tbsiNlo5UjBWjGJ6y7+2EfHWxLEoTtQals8PxSzbKK41n/dKuBmwjCnntGa+u0KHoDawL
+	 7zX1xPRN/XC5aAfrlokcdX2bOdeuAYK9E2Cufs+9WFUfmXv2pXaMs733SHb6dXoWOdA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arndb.de;
 	spf=pass smtp.mailfrom=arndb.de;
-	dkim=pass header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b="fGXI/q/Y";
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=huROl1+l;
+	dkim=pass header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=P5z384dP;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=TwUQQDp6;
 	arc=none smtp.remote-ip=103.168.172.156
 Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DEB606A31E
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 18:53:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19DEB606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066A4606A31E
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 18:54:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 066A4606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=fGXI/q/Y;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=huROl1+l
+	dkim=pass (2048-bit key, unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=P5z384dP;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=TwUQQDp6
 Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id DB4A91400276
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 13:53:46 -0500 (EST)
+	by mailfhigh.phl.internal (Postfix) with ESMTP id DDA3D1400265
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 13:54:26 -0500 (EST)
 Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Tue, 24 Nov 2026 13:53:47 -0500
+  by ams-compute-02.internal (MEProxy); Tue, 24 Nov 2026 13:54:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1795546424;
-	 x=1795632824; bh=iJ0bZtF+M32WhmItWYj3FSa2ZiQSpvoOogcaFVHVH5I=; b=
-	fGXI/q/YJJHPRt+gPRHUOreFU8JCB/tfsdHtsBhf3X18rgt21ZbX+26No5IKTAyj
-	AgCv1KdKfbX+I2Pn0iSzwyBZk/aTQmKDh3dYxkQQL/J3WM2z84vb6vO7x4DW8EGZ
-	sS/Wz7MJP+BtoLKLQr++7Yye1Hsyu2ULf9M/Y/cIxiPBp83DUaCzMY/wHmvrh3HQ
-	z0r0HeF0cnvWAkVDWpNLHekIzdnkWlD1MFqa+H5YTnUhFB6PA6aA1HC0BYrnek2G
-	nxpAYgIinmvsD/fk1yNzG29c7eKf94wnqayGmqr0U9/LtCL0vr89WbcpVgVwSl8H
-	4qYzW/d7q4DzqRxNHb/J/w==
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1795546464;
+	 x=1795632864; bh=zzADWq2A9f6U6Ncm9LM291Imr7Nwrsax19gq4eW/i1s=; b=
+	P5z384dPQqGFwInJesEbTB65u8U9LssEE55f2UhY+p9oT6kb3Nx7iJaixV+JMWDH
+	eO6YnseMxm9y/4d7b+FZEw4tYJYR5toelfZHwhAffCYgtl/rQH+seASNmtnaXM1C
+	6BAyKz/OlpMgNylFT4Niz5A+I5ynHX2N3a0glbxo3S4a7XEwxuqxK5UCRXAFcs0F
+	xV8IU7k0ZxKT2IoUCoqb2W4CuqSzWdEyd3J52PUNEXYf0tRTBIDaUp0MEAehqyst
+	QSLiOH5VP9JuuRYRVDcqAkYs+PGRBxP7Bi8AiZrLdzd5QdyCvpkbS2Iz10kKJVU/
+	fTiO5c5UxwJT3I0trCQYjA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795546424; x=
-	1795632824; bh=iJ0bZtF+M32WhmItWYj3FSa2ZiQSpvoOogcaFVHVH5I=; b=h
-	uROl1+lk1kz0AnE8Bzw9moeUjMay7vJ5VuuqfueaPUl4m/AI84UJOgAisOoaqFn/
-	yCBo+vSL4a5lisI4l5/Z7saj2VUfqomUlV+2KVyBVQmUCOe3jgRYI6qYr4Y8R8jl
-	LJRf+DSl7GQbE5lW+g+FmCFL/3myijCtekiyTHImxIeNkj8OLVv/bdsJJh85iU2r
-	kJL7uUdjE61XSRiNNPNUtgWPIDQt/CfqMCs9Y72c8jKv8clrGSuuWvjDW+ZxoYRm
-	lUNq6g0Cq11j4GRLpY9a5Fciy4M+OD5s4ikjAzA6YUPUcczieH5Iq3irJUrRl+0o
-	JIyX3BUC16aX/QKYzqm+Q==
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795546464; x=
+	1795632864; bh=zzADWq2A9f6U6Ncm9LM291Imr7Nwrsax19gq4eW/i1s=; b=T
+	wUQQDp6GuCGoVRbzbe4mjcc0rfiDoEIs4kIRSNf1PiE/EMGexvPkY3ABGFJ61s7o
+	IYE/uqY0DHB74tHCsb7YJYkPKNs+r1GqjbyhW3JAUrezkSy2IbqsKYITGA+Oo4AW
+	q2lA1S0nj4E1X9C7+Kwk7TVsTmSCeUdYnJhf3UoHSuegVbv/KSVWwZreSC7ESrxp
+	mDVpYnBzFs6N7MAtHbBm/QCO7favrihtH9VIjdnbhet/Z2Sjni79/LSlW+ECIqvB
+	C87LAxToVuwDTV/r0KFx0TwWvRzbnmjlHKN2gI7vxcDyO5O79vIctIKDqACyI6PE
+	eVnransWpokq86L0lm6nA==
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
 	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
 	action=sign d=arndb.de a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1795546424; d=arndb.de;
+DKIM2-Signature: i=1; m=1; t=1795546464; d=arndb.de;
 	mf=PGFybmRAYXJuZGIuZGU+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:XAhmFVm7mPG333vdOF4x0pLfiUuOQnMzTOG7x9oYURRxs9v
-	jOw+yJSr3K+gHRRO5aVokr8kHHmoX0gH9hwum9L+3h7JfHIN+RW8yTgSBouHoc3x
-	Z5U3vZqr3/0V6dd0tWZy27oaS01HGhgC4an8dWf7jaJRSTPBwvD/O6qJrQ89bUjA
-	kdpnt32zqOKfDaSvPWA4yRjTNmYPg41/hHChOxRDuIjg5y1Tq59JfrvEDY3uy8Iz
-	RGlo0K75JP4m99zQ1GwCvhPSrHbMS2TNd4VfQp/BWil3VgMbnikqliKV1MFFCXBm
-	THL3LXmt1NFuT9WYN9W3MOlgUvtYjUZ+9ubpeOQ==;
+	s=fm2:rsa-sha256:dEI9s+NZHEEUdtxxssR9//6XUE0NVz+d2+6mjJwI4Z0x/Mk
+	QCuLDaye0Qp80rc2QZJNvfgocUM9p2RTZdkz3Is+6HhlPU1nCTFS/rE98hHlNlYW
+	9adn07FKxvJ1ocqe2b3awPbldWdzEwAQeg/BMfn/Fi6h6jkXEk4le6ygzBHGsQhK
+	wmsmlKn0tLnj8zakuRQBIjoJ3vUkORT5MQlEmc1VL8SOJfITE0qDBRSwFq/F/OXX
+	wESAie2X31vq3Ink/SeJYzytdsTDp8UvlzVpPUnEiyWFOCseze1uCUY29m1vy7L1
+	2gL3Yf1yoTmEq4JX/eS9CaX77Ni/6WYuMYArHGg==;
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
 	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
 	action=mi-m=1; hc=12;
 	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
 	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:JE9Pf+dIuvBMDyw467eQ/Tr4tyY4SBvJ9vbnWlDmBbU=:iJ0bZtF+M32WhmItWYj3FSa2ZiQSpvoOogcaFVHVH5I=;
-X-ME-Sender: <xms:NN0Fa5lZfMH0GpBjo4FIFqOt82WeXvEcO71uXdjmCA-N2thUNBatiw>
-    <xme:NN0Fa_pvDD3LDB1hOkMvebnpeZhjQXIK0f9ynC0uvxvma-6WyPByvi9RrkBtXqg9y
-    e_gVWNjeonSUqLlGosp6V90-QYv-zweVwSgzUpAtHBmrbfHPTWWgCM>
-X-ME-Proxy-Cause: dmFkZTGa89Pla2pwx0UHvBE2KEVG1Wwjhw7C4B1uLpGYODU+3QVMsGx/6XmpkdoJQ4Wdng
-    HJTQ5P6n+mDkd8Vd2SQqD6fTHTLkP7Wuqcj4e4FsRmjjuwJVAvdIAMxwY7PgDDXvm7pBQb
-    V+0M7Ws/ERhpYm8SiiloduyrTQZspJvg6qB1K46OCCPXGc+eEW+Hddr+7C00h0r6ZEOFYl
-    AEnzqIf48e5UMJEtOynuealgFc8qv49e4alT0/cDtM0pgI+fA63AVgOKJjxR0/XZ5jCWkf
-    ckqnEAFz7mzjehKRip86Ki3aHb//QV7agR0ciNvsOQftXZwZGwrw1biaGXQM2h508lVilu
-    dX1Rs8y5CwzC5NJ/X0naYSrSH/L5OxpOwwf5dMWqDQZcTdKTK/2PBgPmihT/fQy1TuHY6j
-    6M64lDHfRNX+gNElC1DL1ODauxSmwduu+m13I/SkB7IYOCXjuB2jqg7U4sW3fILD4Xxxix
-    /zzH26H2NJT/sw+csOTXwQOv0Ri5PI/gUUSUcz2DmXFV+dyZ2fG3dvBz4DLITo/r44riPy
-    Wkq3g4kLNXDJfPLtgJRoV3tB0JzWzIZNdWxrQK2e5XaTmoTp8JRX1v76d2nM+qmgUUFhFc
-    nvxsvy7PpPJFKIOSP8JO3v1DBFfZIowhnT7qZYA23jX7CcPrraaLXwRUkr+A
-X-ME-Proxy: <xmx:Nt0Fa2g9uImOLqunkhPoWGl1ltxY8JqHe77aesgUgd62JLxGu-1Ofw>
-    <xmx:Nt0Fa8Pc_Sbu-G_3abCwqPB7HUsT9kKEIkC0CdR_sFWt4SE3pgeVEw>
-    <xmx:Nt0Faxe5nGuWdBNu6u7jyT24MgZMbK0VdAI8O7B5j3SfiCxKfSR2AQ>
-    <xmx:Nt0Fa-y3V9ESX_COIXxaEavSOJ21EMmGaPaOG4nz8Qt9gqswRMc_CQ>
-    <xmx:ON0Fa2FN0OUPrjWXja9RK6szCLu_hXTZd05XGyCHHDqNdf-Ig_ZmCfL3>
+Message-Instance: m=1; h=sha256:LzM4tAbzweW+mDyb/1r3509G6pq6a3/4tE8KTO1Vt/k=:zzADWq2A9f6U6Ncm9LM291Imr7Nwrsax19gq4eW/i1s=;
+X-ME-Sender: <xms:Xd0Fa-BlhsDL-CMEXAS3woexowWSp7UW8kuiF7G0LDj0VNXO3AjE3Q>
+    <xme:Xd0FazV0z76SGmdOUEhbwIvoG8NcyrYYbIy53wUavHgI_H7DRJPKil5s-MwJCCMr5
+    cvoSzBYHaNFd3ID4YKzkwnBAEjI8Gpmt9cn_mzAbMr8heuCX2pZd7c>
+X-ME-Proxy-Cause: dmFkZTFB9quJ1NFTduPcxf7Gn9pbvDkjKWpuhMkQ+EAYdW2AbKBk1t0S0hk5VWorL2Agm2
+    qtwRbXPvAVWfQY87E83MZi85KNWfq/pZQeTFC4XHsqylC5T1d9SBYYxS8rX5VpocJ8KoA2
+    JsYSa0JBaSxxKoH8VW2EBRFGYhljDkmX53R3tsjyNlgO2T+lQiasOpg7wlmJxpq/uNj5TE
+    voeb3CS3OW5nBhpFVlF+xRWPVD48Ymva4XRjaibVBPt1FhO1M6VWA+hVJOEdMSkpxstG0/
+    KzW44t0G59GU17b3vslVNsBIj2SUcGEF9hrUsK4g5Yvx4dSrucLSvw8FAQD4oCZe+P3rc8
+    w/Oerwzd1swLwlK0jroqDEmm4tm16oz4sCOOWAkBSMgxW03jchlQ7JvJdzo0Y49fIM3PX1
+    3VdCFZDvojnPfwvWebrRIlKxBGRa7yp4Se5DS3FQOC7TXS+hz0LuFaEl1ePM1sJZ5JqeJJ
+    E98Bzz69DHBeU8MPGs8Mbvn02/p+83Rt9TlGnKroxU0HzJkuU+t0Hv+2oj0HuQh5PDsrD8
+    b3CjxQkEhw9scEsELAoR2/3pc3arbhQlEBkF+XsbJ8v788vzxs67tu+YvwZWy7T/t4XFEH
+    nZkIMZPhd5BdkO9rUn0lIccJaVJFhR4VYCvxq6CkKFELBYG+zlhfrsHxJWOg
+X-ME-Proxy: <xmx:Xt0Fa2QwHhu5LKxUiyUpm8UWp-sik77xk3DomaXJfZr3RFC3-nTExA>
+    <xmx:Xt0Fa2KHuYbMnACoyAMkCZ6Fs8y1gbQ08LDFY1aXsZ2Y1mGH1VmMVg>
+    <xmx:Xt0Fa59Qv4OdpIxNkjEFbcegFlrR0ThVW4mSvoBsBY4QaC60nuO2_A>
+    <xmx:Xt0Fa9JR30qqgJvbVK6aj3_uIDx5vgTp2fUiKqJhK4PbQ5RxjDg2IQ>
+    <xmx:YN0Fa29a6Rd9dbHKKRBlDFuIHXroTLNtUsLtWdgVxS6EkhX9WOSW2I1p>
 Feedback-ID: i56a14606:Fastmail
 Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 4968232A0099; Tue, 24 Nov 2026 13:53:40 -0500 (EST)
+	id 1964B32A0099; Tue, 24 Nov 2026 13:54:21 -0500 (EST)
 X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -114,8 +114,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-ThreadId: Ai76fMdDSoMo
-Date: Tue, 24 Nov 2026 19:53:19 +0100
+X-ThreadId: ADzkAynZlS63
+Date: Tue, 24 Nov 2026 19:54:00 +0100
 From: "Arnd Bergmann" <arnd@arndb.de>
 To: "Lorenzo Stoakes" <ljs@kernel.org>,
  "Andrew Morton" <akpm@linux-foundation.org>,
@@ -163,25 +163,21 @@ Cc: xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
  linux-sgx@vger.kernel.org, selinux@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
  linux-arm-msm@vger.kernel.org, op-tee@lists.trustedfirmware.org,
- Netdev <netdev@vger.kernel.org>, linux-mm@kvack.org
-Message-Id: <3208cde3-c5cf-4888-88f7-c77d7b0e5940@app.fastmail.com>
-In-Reply-To: <20261124-late-2026-mmap_prepare-v2-8-0b0d99d655f9@kernel.org>
+ Netdev <netdev@vger.kernel.org>, linux-mm@kvack.org,
+ "Jens Wiklander" <jens.wiklander@oss.qualcomm.com>
+Message-Id: <9a87f9a4-4299-4a9f-97db-578d7687a848@app.fastmail.com>
+In-Reply-To: <20261124-late-2026-mmap_prepare-v2-10-0b0d99d655f9@kernel.org>
 References: <20261124-late-2026-mmap_prepare-v2-0-0b0d99d655f9@kernel.org>
- <20261124-late-2026-mmap_prepare-v2-8-0b0d99d655f9@kernel.org>
-Subject: Re: [PATCH v2 08/13] soc: aspeed: convert LPC and P2A control mmap hooks to
- mmap_prepare
+ <20261124-late-2026-mmap_prepare-v2-10-0b0d99d655f9@kernel.org>
+Subject: Re: [PATCH v2 10/13] tee: convert shm mmap hook to mmap_prepare
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
 On Tue, Nov 24, 2026, at 15:02, Lorenzo Stoakes (ARM) wrote:
-> Move from the deprecated mmap hook to the new mmap_prepare hook for both
-> the LPC control and P2A control drivers.
+> Move from the deprecated mmap hook to the new mmap_prepare hook, using the
+> PFN remap mmap action to map the shared memory.
 >
-> Both remap a range of their reserved memory region, so use the PFN remap
-> mmap action to do so, retaining the -EAGAIN error on failure via the action
-> error override.
->
-> Acked-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+> Reviewed-by: Jens Wiklander <jens.wiklander@oss.qualcomm.com>
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 Acked-by: Arnd Bergmann <arnd@arndb.de>
