@@ -1,109 +1,121 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795509837;
-	b=KkGfzSLJPp/Prk0/pMG+ylRF8v+ec+g5h+L+3poSX/xqeG3u3TVqcju/zHT2T+DpnX4b
-	 lzzEHOUFKLdxky2tAfOPdcgj5opL8Ddvh4Zme3CH94fhJZ7iEShdNaPqoMS4uiolN1qGa
-	 Kuw2tQOePDLox3Zp9gauivMFdmhRYuC+bgsgRCJxgn6jTVJED7MxtFYTMW9cb07PGFPfF
-	 0u/1TekC4mqEEaOUwk5rRvJuNmCn1LHXNwcwW/0WlvKGAbkzzYJ9JN7BTqkDmYB14Uz6Q
-	 XLpgrH+5FxcK/foEksUy3W53IXkF/H3PPwT+Gn7nJzstq9vSWqhFAkaTHbEwAU7pMOg==
+	t=1795509840;
+	b=pOPUj1gSlvm1w7JrPs8DnbtTM8q9HLODtD/8D1uus92WrLaSFH4VzW23rdVZdMKXaQ8R
+	 maRqnDsG2pbZ5nLUpQ4leOR116PyyaqrLqhBizub7wf8Axes5KDe/3u74ddzwyjDkHxQr
+	 gTLMnqm4Zc7MYTY9NwPjXIHsTmqvfpxQPvw1UfMOmIr25GWYwEjyRgI+Uc2NX6jbtCfXm
+	 BpIWoJBZuyqiNNCIEM4z57VRSdY+GQCzGqVJfCK31sixBMYucBGXhjC6i4D5BzbZdOAxd
+	 tyHiPpZycYBAAzoFmaM2N6GgwXbQlMRINeFKyx5WULJq5rfi/KPX9Eerppumkz6WSXA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795509837;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-TM-AS-GCONF:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-ORIG-GUID:X-Authority-Analysis:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=O7m23VpeyyFGtHVQ0SDxRDbQjLNhp4OyIKa+PT9Wo+A=;
-	b=ph8f7kRnIv8+wi83Lc2IVyuJaU4fcuZli5j7QQW16G5hsz6uZpf2zzZjmNCxuWzq5vyC
-	 OCSln2Rbv0NEtNxVCh5RSA0PtZ/vt4kSfRQJkZx9d1Vn3hB3u1XU2zBgQE5cFuB+W8kxA
-	 mW2BNh6JVEadOGXjuRB5gjkeTAztpdntDuKnP0ZqtTQ4mKF00XQFE+I0XeYrwXz/1zCDK
-	 s66Rd6TimgCy6JOJHUb7S58LzXSD/C7m6Cs4uVPWf9nI9+6C9Fjnz6TWWKNfHshVMuVUO
-	 jsFikohFrPbEaK5Ifp8uB1SLPvplJ8ZP+1froJv0El4SIrL3vlgAYXhD5gYesBqnwpA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795509840;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=80CiTGjH5Hdr3PjM7hQctIDbA2YeYVq6CaZ6FaFB58Q=;
+	b=UTi6yaNO5M4P1B3iUJWPXXleJ8CGkaw3cqc2FtLCPRAkIecf0GHh0cgQKS4PD1+MHpcO
+	 u5kHCFRN8GER7jNvfYSUmEMnKMUZeWlVLEgnXr+AEd0I3kyN2R57h5OZQdr8NP2uAclSB
+	 lv3oOGs9tZt9MPTllNe311x27j+g3pBjhK0M1fuxnV/yy7yIPToh5uR4pdRS/tUWyyN5i
+	 HMboABU13Z7W+cbL39vNbbX2dke8W5RdYte1D+Az97cVNSlNDJ5LrKbTQnui5ZqPz0zWv
+	 N44B4fMew1lfNb3DWCnu0yhJtcAJYSVb2ZY/AU94pMxm6mLP/1voTCZnGuS8sJiUjww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b="Ce/swp8J";
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HAnHcKJq;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Bmf5Fpj8;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37396606A31E;
-	Tue, 24 Nov 2026 08:43:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37396606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F29606A333
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 08:43:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8F29606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ce/swp8J
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AO352Q81412829;
-	Tue, 24 Nov 2026 08:43:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=O7m23VpeyyFGtHVQ0SDxRDbQjLNhp4
-	OyIKa+PT9Wo+A=; b=Ce/swp8Jey/TeeaXBEZHjhd3Pn93Ab/qw0pPj0tNGQP33A
-	zSE9CQFwrz8qlGB0l49GgybkyYeX1fk7YbTrooq78QG80VLmVKuL9Ak4RDomyeFg
-	1nRd/6T4/F0d23KEu7qq1E59Sc5ydzvDVZ1fevsCdMLpebGiT6bhmVB61INM6Oqc
-	2VENEAmq5cLlDO9bBxiUkiFH4NWRyUBG0AP5dILT+K7q+jK0jdG51p0JE/6AFkDd
-	jlUxeHkttM3VbezbuAiTDVu8lf+xgKVcRGYdGY7rwq5ISJC4TCR5cgwh5ZJan2eC
-	8LXMPoVlkqJlrgonEIDDZHJqxPLPivwRGzIXpuHQ==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34fa6vb0-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 24 Nov 2026 08:43:24 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AO2nX6g2087387;
-	Tue, 24 Nov 2026 08:43:24 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j3p0vj1r5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Nov 2026 08:43:23 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AO8hJ8Y42926434
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Nov 2026 08:43:20 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CBB2B20043;
-	Tue, 24 Nov 2026 08:43:19 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6C42C2004D;
-	Tue, 24 Nov 2026 08:43:19 +0000 (GMT)
-Received: from osiris (unknown [9.68.29.29])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 24 Nov 2026 08:43:19 +0000 (GMT)
-Date: Tue, 24 Nov 2026 09:43:18 +0100
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Janosch Frank <frankja@linux.ibm.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-        Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <joey.gouly@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Zenghui Yu <yuzenghui@huawei.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-        Andreas Grapentin <gra@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Friedrich Welter <fritz@linux.ibm.com>,
-        Gautam Gala <ggala@linux.ibm.com>,
-        Hariharan Mari <hari55@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Nico Boehr <nrb@linux.ibm.com>,
-        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>, Paolo Bonzini <pbonzini@redhat.com>,
-        linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org
-Subject: Re: [PATCH v3 23/23] s390: Report AEF features to sysfs
-Message-ID: <20261124084318.23381-A-seiden@linux.ibm.com>
-References: <20261106-sysreg-v3-0-75e95980fb10@linux.ibm.com>
- <20261106-sysreg-v3-23-75e95980fb10@linux.ibm.com>
- <01631f5a-9140-4dcb-a91b-5c431b384be6@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HAnHcKJq;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Bmf5Fpj8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1795509838;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=80CiTGjH5Hdr3PjM7hQctIDbA2YeYVq6CaZ6FaFB58Q=;
+	b=HAnHcKJqLqn+GmOd23f/AaT3loXDn/KN4f81J48EjELvs3zi41a8xQUTUo8Aa7sqaiGFdc
+	j+6QLfLH8Z0mFqM2XIAsGmnFXOknwyfm2Db9IRBvQxwM65xBg2JbndMHnCWSH2Synqsonf
+	ur7/7DRricEmMmlb8++z3PMjOhbnjoQ=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-634-71G-SBkzPoKi9ES09j_Vpg-1; Tue, 24 Nov 2026 08:43:55 +0000
+X-MC-Unique: 71G-SBkzPoKi9ES09j_Vpg-1
+X-Mimecast-MFC-AGG-ID: 71G-SBkzPoKi9ES09j_Vpg_1795509834
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4bb8ae35aeaso34613765e9.3
+        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 00:43:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1795509834; x=1796114634; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=80CiTGjH5Hdr3PjM7hQctIDbA2YeYVq6CaZ6FaFB58Q=;
+        b=Bmf5Fpj8dfj9+YAzmmLs7zprxnhD6SqSw7cHcSsRhi3zs08vLSTERt6nt4VFpGF+xI
+         KoxO5EfFihJmwOURYPuFSB9O+JlD7uaO+a0YalrQu+uG977ZkSP02FXU+hAmYXyKAqfD
+         mlVrBXqV46SdsqcpXsQGiaPMoTTKEyLpYRgaivhxGsf21PvD7DyL5beRToY6e3rrPLAD
+         X1RSVBzY5i2z5vmkcIiCT7ppgobuzIqjYfvKLdRcYGUMJKT7f4jtkS6Wg3jNTI977RGf
+         Rv4ekNdCva491+zTMeUrOTY8gWTtDDffnC/0y0Qmkmp99TYluuZ82yaUGnprC1eQvwlw
+         ZklA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795509834; x=1796114634;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=80CiTGjH5Hdr3PjM7hQctIDbA2YeYVq6CaZ6FaFB58Q=;
+        b=snwizsF0jkHAaQxwNRc6Hl1zjp1lrxgbSVYoTyBFAR/mg7+oMsv3qTTBeLWgiVAgaE
+         l0F9UpwZo5IV4IKR+oGZ44OuxIkTDd7CZ9d4cIBxlca7aMMBP77mpdNzX214iWXeTffl
+         i3cGnJMpL642agRNo8WdFH/Lwr1rb+Hs9elWpwGhU07i2yBRbkmgCyVg9t+1Uyf/FiZJ
+         mQ1SuKBhkKzCXmEZvSm+oinJO3F10quL/WrOMLGwK5qWou3jGX/R4mqKf9lOyCVuONt3
+         D88aIIjJy1Fkx2odAszXl76fy/NgHxEff89BAwmwv1unbKS7EJEaeLLtFDPpzAZ39/VS
+         Y/WQ==
+X-Forwarded-Encrypted: i=1; AL+hErEjEPaLTmUVDh8LhawYphP/OZEUScPrsNImiOrnxFkWnaLYFhpFZwQQMdPVw8dkHch9eIA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8eWbJr12r7j2JOxhXTGppOmBXVIU/4wVNfeR6wrIL6IOSzlyqA
+	6oDE+VssMjkZwxoUr3Si0lZeDm8179G8yPrM/SvYhAiCqe6pfkMSwoNvLfnm1EZCr3GbR16/MjF
+	BOA/Zhgetc4wT4zjmOIXkPnMqdxQ/BztXt+9JrU0wgXk0QMd3PsHBDw==
+X-Gm-Gg: AZFdTZeNLtGpEWHBJqVog+hH3Vy8Z2HEHJFrmAfZ55Hx7kJGqhJbYw7nFPbkCb++gcd
+	CWRDEpD+PQ5F01Kgb0cVPQ9QqCRYmknBzuHUIa5qAmzS/ORCh7s05DAqmtCAULtofZgPYJOTLNl
+	dWN2RvPLiOkNrOM1OGXnaxka1uQU0jwg/v+A077p2Kgepnr5xcybvlHHnoWgLHTCGKlqGUO5nbn
+	MYSz2Pv8JbeZl8k9jOAp3EJVUe6tkTt0XKurQ2M0h7D/jvkrshXGA3BkLg3/AITB3gbyO13ecur
+	lb5qNI23ILfqu4TXrU1al4tRUBXza9J8ZqAfgwlts/siZq2qHqSvuUDgF3vGVi4R6vCkTpSO28N
+	kXdvJGWUvdgI1cH1MpDpL215YOFumoSOw/zwzBpLOXyCOi+PNMrzRpg==
+X-Received: by 2002:a05:600c:4f10:b0:4bb:60bd:5398 with SMTP id 5b1f17b1804b1-4bb88804d35mr314618125e9.10.1795509833906;
+        Tue, 24 Nov 2026 00:43:53 -0800 (PST)
+X-Received: by 2002:a05:600c:4f10:b0:4bb:60bd:5398 with SMTP id 5b1f17b1804b1-4bb88804d35mr314617705e9.10.1795509833526;
+        Tue, 24 Nov 2026 00:43:53 -0800 (PST)
+Received: from sgarzare-redhat ([80.116.143.202])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853b216esm472636285e9.12.2026.11.24.00.43.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2026 00:43:51 -0800 (PST)
+Date: Tue, 24 Nov 2026 09:43:46 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Bobby Eshleman <bobbyeshleman@meta.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] vsock: only deliver taps to namespaces that can
+ reach the device
+Message-ID: <awVNJ4gXA7ZxvZcb@sgarzare-redhat>
+References: <20261116-vsock-tap-net-v1-1-7e24f45adad3@meta.com>
+ <awQJo8WE5Gn4nYHp@sgarzare-redhat>
+ <12a2b44d-3d24-4b77-9dd5-24361d5fe910@redhat.com>
+ <awQ5xzF8P0NJiCsv@sgarzare-redhat>
+ <awRnZ9S+3B996VqJ@devvm29614.prn0.facebook.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -113,105 +125,65 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <01631f5a-9140-4dcb-a91b-5c431b384be6@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI0MDAzMyBTYWx0ZWRfX7AwKlo5hrmga
- OCLxVqCWWWZO3kcworetiGUy2WV/dgmYumQCiq6Ol5EFqHg85k8E03qj8ZKkW6ZhomFEtjg5uuO
- mrI7BZ6tIMKOXCXIfY63r7ngsdsXowyOHTrdkExWZicD1Xe/wULSID9bvyvjOlXKaBMzFdt+Je5
- rcpYNU1ES9EMG8xennhRF5KNoOlkIcu0+HnSImKLgzpnNIqRjizZjHTzXLSQJaNoOT3TQzOWJ8Z
- 4XSmIhTRxPDbaD2akN/OQ58hnoar2LBUVOgfnqirlmwckzIp6aHPbMAm/kyPpOhuYRCp96FLWIY
- IaxLFB99pcLPO1q5wuNYFccmLTHHZ/iUbsM06Oqsacmm78u94YFXyhgHty7DfR/6Nu/vjTELHjo
- RK6s613cErTVTFcYyEe1DpKQHigT/XJgFzZw4lSvPCHQPRRwod0HiUblfl4nCnNkkFFe4NgRUY/
- yQOdQX3a5KMogTqz0wA==
-X-Proofpoint-ORIG-GUID: 6GJrjQx_l6DWOdMijtAWCgD_iYEspNos
-X-Authority-Analysis: v=2.4 cv=U6QHnuru c=1 sm=1 tr=0 ts=6b054e2d cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=VwQbUJbxAAAA:8 a=bireLN_HoqkOtvrXVMMA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: 6GJrjQx_l6DWOdMijtAWCgD_iYEspNos
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI0MDAzMyBTYWx0ZWRfXy5gfI4849inq
- e38ktmrAupucEPACzQtQFb06U77tqcFk/56FOIc5DRH1KOr3jmkqX1DHis5Rk5GcfYJfIant25k
- ZghX6D0s8lzz/DQ5oKO1FMjINkFmuyA=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-24_01,2026-11-23_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 lowpriorityscore=0 spamscore=0 impostorscore=0
- clxscore=1015 bulkscore=0 suspectscore=0 adultscore=0 phishscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611240033
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <awRnZ9S+3B996VqJ@devvm29614.prn0.facebook.com>
 
-On Mon, Nov 23, 2026 at 02:04:12PM +0100, Janosch Frank wrote:
-> On 11/6/26 5:07 PM, Steffen Eiden wrote:
-> > Display various information about the Arm execution Facility (AEF) to
-> > userspace. The files are located in /sys/firmware/aef/. Show if the
-> > feature is available and usable for the host, which formats are
-> > available, and how many arm vCPUS per guest are supported by the
-> > machine. Additionally, provide the raw binary output of QAAF fc1 (Query
-> > Model Capabilities) in the file qmc and fc2 (Initial
-> > System-Registers-Save Area) in the file save_area.
-> > 
-> > Co-developed-by: Janosch Frank <frankja@linux.ibm.com>
-> > Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-> > Co-developed-by: Andreas Grapentin <gra@linux.ibm.com>
-> > Signed-off-by: Andreas Grapentin <gra@linux.ibm.com>
-> > Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
-> > ---
-> >   Documentation/ABI/testing/sysfs-firmware-aef |  70 +++++++++++++++++
-> >   arch/s390/kernel/aef.c                       | 113 +++++++++++++++++++++++++++
-> >   2 files changed, 183 insertions(+)
-> > 
-> > diff --git a/Documentation/ABI/testing/sysfs-firmware-aef b/Documentation/ABI/testing/sysfs-firmware-aef
-> > new file mode 100644
-> > index 000000000000..6ccd8491a017
-> > --- /dev/null
-> > +++ b/Documentation/ABI/testing/sysfs-firmware-aef
-> 
-> [...]
-> 
-> > +
-> > +What:		/sys/firmware/aef/query/sae_avail
-> > +KernelVersion:	7.5
-> > +Contact:	linux-s390@vger.kernel.org
-> > +Description:	Read-only, decimal boolean. Reports 1 if the machine
-> > +		provides the SAE instruction.
-> > +
-> > +What:		/sys/firmware/aef/query/ptff_avail
-> > +KernelVersion:	7.5
-> > +Contact:	linux-s390@vger.kernel.org
-> > +Description:	Read-only, decimal boolean. Reports 1 if the PTFF
-> > +		instruction supports the QAGTO and QAGPT subfunctions.
-> > +
-> > +What:		/sys/firmware/aef/query/edat2_avail
-> > +KernelVersion:	7.5
-> > +Contact:	linux-s390@vger.kernel.org
-> > +Description:	Read-only, decimal boolean. Reports 1 if the EDAT-2
-> > +		facility is available.
-> 
-> I don't think we need any of the three files above.
-> sae should be reported as a feature in /proc/cpuinfo, same as sief2.
-> 
-> edat2 is facility 78 in the same file.
-> 
-> PTFF-QAF is unprivileged.
-
-OK, I can remove those. Primarily, I added them for convenience. I'll
-add those to the Documentation (I'll create one soonish)
-
-> 
-> Also, if aef is the requirement for the directory to exist, why would saef
-> not be enabled?
+On Mon, Nov 23, 2026 at 08:18:47AM -0800, Bobby Eshleman wrote:
+>On Mon, Nov 23, 2026 at 02:17:54PM +0100, Stefano Garzarella wrote:
+>> On Mon, Nov 23, 2026 at 12:58:38PM +0100, Paolo Abeni wrote:
+>> > On 11/23/26 10:43, Stefano Garzarella wrote:
+>> > > On Mon, Nov 16, 2026 at 03:46:49PM -0800, Bobby Eshleman wrote:
+>> > > > vsock_deliver_tap() clones every packet to every vsockmon device on the
+>> > > > system. Creating one needs only CAP_NET_ADMIN in the owning user
+>> > > > namespace, so an unprivileged user can capture the traffic of local mode
+>> > > > namespaces.
+>> > > >
+>> > > > Pass the packet's netns to vsock_deliver_tap() and only deliver to
+>> > > > devices that pass vsock_net_check_mode(), the same rule socket lookups
+>> > > > use. vhost passes the vhost_vsock netns, loopback the sending socket's
+>> > > > netns, and virtio-vsock NULL (global mode).
+>> > >
+>> > > For local namespaces I think we are fine, but what about global?
+>> > >
+>> > > Is it okay that a namespace with global can capture all the packets of other global namespaces?
+>> > >
+>> > > Asking because at this point the CAP_NET_ADMIN is useless, since an user on a global namespace, without CAP_NET_ADMIN, can just create a namespace to have CAP_NET_ADMIN and access all the traffic. Should we fix also that?
+>> > My take is that the above question is quite orthogonal to the current patch
+>> > and may impact old applications relying on the legacy behavior.
+>>
+>> True, but I'm not sure that behavior was correct since the beginning.
+>> E.g., what is the point of having CAP_NET_ADMIN requirement if an
+>> unprivileged user can just crate a new namespace and get it?
+>>
+>> Anyway, it's eventually pre-existing netns support in vsock, so it should be
+>> fixed with a followup.
+>>
+>>
+>> Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+>>
+>> Thanks,
+>> Stefano
+>>
 >
+>Its a fair point and I agree we should take it up in a follow up. My
+>current instinct is that CAP_NET_ADMIN probably shouldn't be enforced
+>for some (all?) of these global-mode paths.
 
-You are right. I'll drop the three files.
+Why not?
 
-I am thinking about always providing the aef directory. And just not
-calling qaaf in the !aef case. Then userspace does not have to test if
-the file exists and guess if the file does not exists because the kernel
-does not support it or the HW. Or is this a non-issue?
+I should take a closer look at what’s going on with the NICs, what 
+permissions does someone intercepting traffic need to have?
 
-	Steffen
+Ideally, even though the addressing is global, maybe we should set it up 
+so that within a namespace, you can only observe traffic generated by 
+that namespace or its children.
+
+But honestly, I don’t know how complicated that is. In fact, if you want 
+isolation, you have to enable “local,” and at that point, with this 
+patch, we’re all set.
+
+Thanks,
+Stefano
+
