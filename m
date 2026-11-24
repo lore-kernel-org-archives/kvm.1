@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795479817;
-	b=AOaiJhax/+/yKNt/sPqQex7DJ39nSoIHTH9iHel3STOYoCmBmzQOZ7tfzselkPGBzDnr
-	 TjTEA82WuSjbntEjRVoLSlNNGxQIRaUendhGmH38yoWp0bNLKjNdAfQA5Z+2oGO5mKy1m
-	 FMLPJoWmjFIzN3U+jrqde72UhVu8vHpPmkChqSy+/Zc/yoByfHiiycRkd/AfHX/gTseJV
-	 H4H39TqTaKmYnrx6HegDNIt1z8b8NOpCEyY2AUKUVEO/TMiFNQ7sA8m3QE6I1QJxK3cih
-	 RaYiS7MvUM6UrXxOOQzLX+PbLMwfepliT9v2MifGqu12MkBf0m0bcfQcbzfmcAtrCrw==
+	t=1795479819;
+	b=c4Tkc9fKBAsDu+MDJULhubEWH9BaR2lLTmejc1q+F80AxMbe8YPFt2PMZ2/wS5faAjqs
+	 glH9eIfmPuLGSnlYxKfYRAf/rJfiGdQGKh4L6SiZAtuj3dSJspujaEcjN5m3YpmBzaFCx
+	 FvNRMkY6kXm26jHEmkUecUG2FwDZxm2e/nNqYywoHUIitDGYts+yJbUE68YMy68wkf56F
+	 IoURt713nCujP8H7aZm29P/88CgJFdqEw3/4oSAgh0+jC7wy+TwEbASSVpNyZHvbYJgbQ
+	 wVcxYJQI5Dwgt7PqSVZ0VZXj+HiSwX11Kws26wvPAv8bRUwR9Zkz+UCVdqtN19TJbAg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795479817;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795479819;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=2u8O2EG46wGM2C9yzrpywzGJ0b8w2Uf602m9vEPbcIY=;
-	b=c98Ng7azkALr+9UgdMr3jrAVig7QFu+qBUGIVBM80uf1MDpblw7fiwwpx8A7GMURlpAQ
-	 AE6s8Z/kqubNRjD5tmS0zpwXV0rIqh/wp4K8DHrAfK6+QsXZsyR0QtzM9m+N81/hNapUc
-	 MZx6uqF/SPAnD+CdftEcAluk8svDZXTAMoNl1L1EEGGBGrm1FxLh5zCHb+qawamAbmHz0
-	 qotcmmUjWyTB0h+qq52NR6UX1LwI9U7Em4Mc67UhccTpKJoAObcJUVL+xiJsYZxnxLZZK
-	 5t93l1hIL5zz5s7iOeJMFphQ7DzUU6LIRdzyEWaxcpd2sYcaX3Y7RypKCRKixCCh9TA==
+	bh=mQOzi/AaGUN2LLStWaDBGp6mIFFtRvMsQoOA5hxwfKY=;
+	b=gBaswrjzz6GRXCAM+q0WvA2GLjLR+so3Thlcn/KZUu3N3OM8LSQgUniU1odTGjyG/Vnv
+	 Qb3UkmPWUzKV+IhJ9kPYLoDIOvT4AMfkalNLTPVPuVLusRTMdJUVA8f/QtHXYcauFiHRh
+	 U93uQBuFXBvT0lonMowXxgVbeyzuZjfkNIyM2xjDjlLP+my78fjgtRlU3zJQAzcXdKzFk
+	 Oq7rf9zuSMlLZjjokZAUHGi/VxHmzlBnKwM5ALL9H8AwnwMQDBgsc6hy14ezjTMFU5Vyd
+	 9uxFDJbSWDYyqvjPDr2lqWwK+leeJmyNkwziSfK28rFH5XWgvAniompx6Ixf47+NsTg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UDVmhO4d;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AW8gwmUV;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC09C606C794;
-	Tue, 24 Nov 2026 00:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE18606C7A5;
+	Tue, 24 Nov 2026 00:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UDVmhO4d
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23C91F000C6;
-	Tue, 24 Nov 2026 00:23:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AW8gwmUV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43AC41F000C6;
+	Tue, 24 Nov 2026 00:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795479817;
-	bh=2u8O2EG46wGM2C9yzrpywzGJ0b8w2Uf602m9vEPbcIY=;
+	s=k20260515; t=1795479819;
+	bh=mQOzi/AaGUN2LLStWaDBGp6mIFFtRvMsQoOA5hxwfKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UDVmhO4dcjqeWW8OZFnCMPn315z3laLwvtHMkP5zJGzXv1Ta48hu4jhUg+pRXGLS+
-	 JknuAk4rfCNPcdyL1TRuElwJC518gTefy8YVU/BH/9NOe16VTbOW2KbFPLWXCQJVTi
-	 UmyUp1rXgJULFUaGlq9MML8jPZeMPlFAQmXOj2iJ3khuoo15DfgRaZhWBRFYcf8a+I
-	 UjhObFJuXzhY+opAJ8YvW1Xm+Dy71lfncSxozubmVKKK3g93rL9u3OYoz5wCKyg9TY
-	 KxXn5gcYNAiSFNdnLUU9CRKj2H8HZf9ImEtTlf5jc+mCZfaPx0/gPjk7v75BR1/nIF
-	 lX98yE9txJydg==
+	b=AW8gwmUVqDqO0fSEn5Yns1ryoSIjXjupJ/Eanptv6ZuusGu4sCxcxW2yckrdUyAp8
+	 NcBpBEqSCGK0LlMYUJMQOcUf4ghcIE8gcJZ4gjJzglh58SfyUCXCrXFigE0Vtgeb/W
+	 Eo4ZTeQE7VAKWyGuInkszi1Q5IqOBEtqw+kv069Wdu3CG0e7Q8/0t18jWirzaP9XMl
+	 CVnxLDHrbE9ugDQuwx+yGqIUTxDKUwU+BYB2AO63Jf56aQI2iKyAmc4HMG82E8DEYX
+	 olwfrNSf2eaHfxN5KdTS39mFfU9GD47uyUVLZgqC+abz4YNZMULcFPVDrxvGs2Noe/
+	 SbVBAgTBoPYGw==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>,
 	Peter Zijlstra <peterz@infradead.org>
@@ -61,9 +61,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [RFC PATCH 20/26] KVM: x86/pmu: Check for a mediated PMU before loading/putting its context
-Date: Tue, 24 Nov 2026 00:22:57 +0000
-Message-ID: <20261124002303.1785363-21-yosry@kernel.org>
+Subject: [RFC PATCH 21/26] KVM: x86/pmu: Make loading/putting the mediated PMU context idempotent
+Date: Tue, 24 Nov 2026 00:22:58 +0000
+Message-ID: <20261124002303.1785363-22-yosry@kernel.org>
 X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
 In-Reply-To: <20261124002303.1785363-1-yosry@kernel.org>
 References: <20261124002303.1785363-1-yosry@kernel.org>
@@ -78,70 +78,63 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Move the checks for whether the vCPU has a mediated PMU from
-kvm_mediated_pmu_load() and kvm_mediated_pmu_put() to their callers, in
-preparation for putting the guest context from more places, and
-conditionally on whether perf has events conflicting with the mediated
-PMU.  The new callers need to check for a mediated PMU first anyway,
-e.g. to avoid querying perf or disabling IRQs for vCPUs without a
-mediated PMU.
+Make kvm_mediated_pmu_load() and kvm_mediated_pmu_put() bail if the
+guest context is already loaded or put, respectively, in preparation for
+leaving the guest context loaded across slowpath VM-Exits.
+kvm_mediated_pmu_load() will still be called on every vcpu_enter_guest(),
+even if the guest context is still loaded, and kvm_mediated_pmu_put()
+will be called from multiple paths, e.g. on slowpath VM-Exits, on
+vcpu_put(), and when perf reclaims the mediated PMU, any of which may
+find the guest context already put.
 
-No functional change intended.
+Checking the per-CPU state is sufficient, as only the running vCPU's
+guest context can be loaded on a CPU: it is put on vcpu_put() before
+another vCPU can run.
+
+Move lockdep_assert_irqs_disabled() before the checks, so that callers
+are verified to have IRQs disabled even if loading/putting is skipped.
 
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/pmu.c | 6 ++----
- arch/x86/kvm/x86.c | 6 ++++--
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/kvm/pmu.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index cee3c4719dd14..e92a7a1f20a89 100644
+index e92a7a1f20a89..d56cd0fa817d7 100644
 --- a/arch/x86/kvm/pmu.c
 +++ b/arch/x86/kvm/pmu.c
-@@ -1420,8 +1420,7 @@ void kvm_pmu_sync_lvtpc(struct kvm_vcpu *vcpu, u32 lvtpc)
+@@ -1420,11 +1420,12 @@ void kvm_pmu_sync_lvtpc(struct kvm_vcpu *vcpu, u32 lvtpc)
  
  void kvm_mediated_pmu_load(struct kvm_vcpu *vcpu)
  {
--	if (!kvm_vcpu_has_mediated_pmu(vcpu) ||
--	    KVM_BUG_ON(!lapic_in_kernel(vcpu), vcpu->kvm))
-+	if (KVM_BUG_ON(!lapic_in_kernel(vcpu), vcpu->kvm))
- 		return;
- 
+-	if (KVM_BUG_ON(!lapic_in_kernel(vcpu), vcpu->kvm))
+-		return;
+-
  	lockdep_assert_irqs_disabled();
-@@ -1481,8 +1480,7 @@ static void kvm_pmu_put_guest_pmcs(struct kvm_vcpu *vcpu)
+ 
++	if (is_guest_mediated_pmu_loaded() ||
++	    KVM_BUG_ON(!lapic_in_kernel(vcpu), vcpu->kvm))
++		return;
++
+ 	perf_load_guest_context();
+ 
+ 	/*
+@@ -1480,11 +1481,12 @@ static void kvm_pmu_put_guest_pmcs(struct kvm_vcpu *vcpu)
  
  void kvm_mediated_pmu_put(struct kvm_vcpu *vcpu)
  {
--	if (!kvm_vcpu_has_mediated_pmu(vcpu) ||
--	    KVM_BUG_ON(!lapic_in_kernel(vcpu), vcpu->kvm))
-+	if (KVM_BUG_ON(!lapic_in_kernel(vcpu), vcpu->kvm))
- 		return;
- 
+-	if (KVM_BUG_ON(!lapic_in_kernel(vcpu), vcpu->kvm))
+-		return;
+-
  	lockdep_assert_irqs_disabled();
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 2cd9ee316aada..8370ccceadb82 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8392,7 +8392,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		run_flags |= KVM_RUN_LOAD_DEBUGCTL;
- 	vcpu->arch.host_debugctl = debug_ctl;
  
--	kvm_mediated_pmu_load(vcpu);
-+	if (kvm_vcpu_has_mediated_pmu(vcpu))
-+		kvm_mediated_pmu_load(vcpu);
- 
- 	guest_timing_enter_irqoff();
- 
-@@ -8432,7 +8433,8 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 
- 	kvm_load_host_pkru(vcpu);
- 
--	kvm_mediated_pmu_put(vcpu);
-+	if (kvm_vcpu_has_mediated_pmu(vcpu))
-+		kvm_mediated_pmu_put(vcpu);
- 
++	if (!is_guest_mediated_pmu_loaded() ||
++	    KVM_BUG_ON(!lapic_in_kernel(vcpu), vcpu->kvm))
++		return;
++
  	/*
- 	 * Do this here before restoring debug registers on the host.  And
+ 	 * Defer handling of PERF_GLOBAL_CTRL to vendor code.  On Intel, it's
+ 	 * atomically cleared on VM-Exit, i.e. doesn't need to be clear here.
 -- 
 2.56.1.809.ga0b61035b5-goog
 
