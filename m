@@ -1,101 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.218.50
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1795554687;
-	b=mP5XanucErgkhdunY1az/BlmBqrUtNDlP9Nk8YZX+4MXPK9vhjun1wlXWk9/cIOugE6y
-	 tYnqrBZiWXaYXOaAlalqfvfCt90X8Q2FYAPRVRm0k15NW2nAW4xfK/TP9uDSmWNjux7md
-	 k6fKS26Y/MwxbSDgE3I5LT4IIeWzu6CGeXHTW9HKyYYnDs/XHqqmKta5X0TrzqRXFE+zg
-	 KF/7GauUazO/7cepzgD7PPEOMjzIWZba+pFSx3//Lzsk2DmGeSjfWNDrG2Dm9IDLtCrlc
-	 JuPswFlfp0Xl/lS9Ca+tUMNpJ5QcJS70aTsajeBJ2YJM3zu9QdJZaZR+ItvVlcW1nHQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795554687;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.197
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795555727;
+	b=mAQzjbLn1B/ftwWIzJQ9CIqtrhsAVq9CPXn3xl6w7qaUfJClIcuCuA0xPvkkqFbdQmTv
+	 F6CJdtZaLeT1XI/+kWRQBLbqBGg5iqsKEBHZSgugcKsNOQMmwsO1wFLTI/3ojwVgJJhr5
+	 I6gDklvzo9Vc84elNnlLmHrz7t+00ufo1++hRy+R7U8njN00ldoPzmnFJ4ecU0yCLng/A
+	 rm+zkAZkKEhUXXmExrvL9i79YpmdwHY0Y/V9XJU3G6cXnGli+rLs905hZEIxjkQVeBrPl
+	 Ek1dx5G2MHCbs3tw3eVLutbbbxWsI6WfVvZgc0QTsI4lZ8FhxSO41yPRvHy7RCv96SQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795555727;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=R4pw9DcpdnMYeIxEUYnbnv91ThzTvTrm2VVYBrvrMnw=;
-	b=MB9zVOxvTxN8sVq2XgsGSiFMG29pCWKfPM5eG8+TUQXxcMXb6v3MrlwsdyedWutXIRYU
-	 OWxbsaoktCtW4PwfL2XqkMzu+tNOkQxiQcsJ8lIQ4ScjmImiYcT24tAj5/ZytuWC780KE
-	 0O+nvc31xqOkuOuvoyD6uxtBkF4KZSSa8PGpESzoBFpr1weIWEvy9eyYEf7bcVBus/NQh
-	 k8ZGENuiTpB4JCLEXSagaDnfUCvm5w0Lsyd0GqTqGo4WdeSHLZnIFHnEu0u9Mrdsstuae
-	 GClRaxWyuvk3qGAx5QDquV6vFbIGFsBf0tLgk3iM/ueb4dQFB04clk0yrrdTzU8rfcQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
+	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	bh=LH7xbAaioyaoYiHQ6xeOXhOEgpjuNa84XhYKEVkAJ48=;
+	b=QndNAWhwRySbjTRjyieKjIkEfPVAUM934X1XPcN+0ikz7ZPCBuZHUz2iI2LawdPJrnpt
+	 vQdPMeVoRu6LxrODNlWsgWeR2zbJKuaUkF/5UVOmxHgkOJ8BmPTU/XPbPem6O088w4YdL
+	 jtq485GA/zZ75c7RQ8xYixAMiwthfSgGGkIauCIJoo5Vt6tB9zX70cNWsMT47mftHacOh
+	 GGJ0jUYPRi/P1FzvcUPIMQo73dqaW7gS9STE2qYN2LcR0LcKeFVFbqGhDyPPMDN7u3VBG
+	 vEHyOoLvpER9d4FPPOGSygzDyF+xurqKMNbfOIBD66HeL7xPZW0NVwxOxmPJHpBKtHw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=HKOoVTgW;
-	arc=fail smtp.remote-ip=209.85.218.50
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=f9ZC6EjX;
+	arc=none smtp.remote-ip=209.85.167.197
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F6D606A32D
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 21:11:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A5F6D606A32D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3D2606A31E
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 21:28:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AA3D2606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=HKOoVTgW
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c5127c7abd5so786024866b.3
-        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 13:11:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795554685; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HD6R4y0JIJj60NFenQXS8Aif6Ce/tpbjt7/7zqLQXV/H3NS6OQd82uOTZz47TQqpFe
-         sMtqfiy14NBcWAFvPmD7B198zteCRQ2cIc48PQzV4gYmvU87Xd1LaQ7PldPuCzEE29Q4
-         oTroo9CWa62/UrDKVzZNjKgYXSGbTYG69VpGMywjhlZLerC8MuZTZUFsA4hjfjPHk9Yc
-         kbPjYctne4Vg4ET9V0aMoUIPXWksFR5AZWaVxw16htbwOVKOFGnlBGlr5vse/RjhsZeF
-         5eK21ER9EM9AGjkZ6RENX5wKoetnxTgFVMEPPXfiQNv1DNgUSxlJmduAB77jqw/8xqw6
-         lIsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=R4pw9DcpdnMYeIxEUYnbnv91ThzTvTrm2VVYBrvrMnw=;
-        fh=r6CxZfqBx/BYJLiSamSWeN9mV6MXAAjMFgUv2NdVYi0=;
-        b=U3KH88cX7u7nHDkFkwb+yt+VDYYikh6ghAzSeSWqavJRxS74Xn1bQ66IoWtSS7MZjt
-         AQWleDRf/8HYMXAXfxKBopqnB+csm7WSXCJ6bzXyPwq64W+5aq57lUqDZKeUb1Er31wY
-         tLhU2cZANzg5YSdfdWQH3MKA4GN+zBRz61Wy5TNJT4c3GlCyDFLNh20Tieju1veXnMF9
-         o8T0Vb0oL4O9II53UPleqGmEXOdLvS8A9mzCbPGwLuiwRxSh9FljvIokrk9qqYkKfCqH
-         y9A6SaXPSGbwZSpbmzuLOe1lmJHOuzOtcmOb9JYAXaUa8XVt+Zmv+peJz4d4LpERPVCx
-         a2hQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=f9ZC6EjX
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4cc89e86e9eso6041862b6e.3
+        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 13:28:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795554685; x=1796159485; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=R4pw9DcpdnMYeIxEUYnbnv91ThzTvTrm2VVYBrvrMnw=;
-        b=HKOoVTgWD/jri2ICKWYuabv2C9ujuA+HmAdR17PYnmvFnkT100ju59IEN9nDAg7lhQ
-         3izGbBqkf1fX3HoYq56E8uvZBM8ZfAXmNAMUUomMtkB8DHkorVYcnwfKwOZBzRAsgJO2
-         wbssVX4FXCgljByNAMwJEcMSidhJrLwVFKJ1EfKU+8JqRAFj8NpfeL3/N4xH71b2T0ZD
-         PXQrVq2c0wZQYeDZp0n+YHWMjfbJA3/aBiAASKWtScWWXk2KhE5bNgUwG12UKI/EVE3c
-         WsQsHA0ImsWl4+O15635i2+p+jMvtEzWWzvoBA93u4Nd2V3dnI4ABVn9slfjzPalO5cK
-         HwaA==
+        d=google.com; s=20260707; t=1795555725; x=1796160525; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LH7xbAaioyaoYiHQ6xeOXhOEgpjuNa84XhYKEVkAJ48=;
+        b=f9ZC6EjXRbzHoHel5Gs2YLlS6npZo8QaHMvOOt8bTGivYZ8bi2I2rSSM2c8r5x9ygO
+         VnttM9J9WEcAz7kd6hJwBH7ETT8GytejJahVu9kAoyn1+YvIMs2zWH+6V66uW17Lk5Rz
+         EU2yMoeL4YZKqWLWYpgCb++ctuau6x221iaLl1mOD2fjU75Gpppvm7TV9BfSXmthkuql
+         slPDxe5OeX+VdQP/HaQKa94c0cpeFKZS379dqngMBYmak5yqAGPYUQCB2o7XXWZRfegS
+         doeHNZTDflxJEdJySianvOtWPL4U3mnGT1mAJKPI08SKTL31tQIMjFhPclMEha0L1TQh
+         zHtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795554685; x=1796159485;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1795555725; x=1796160525;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=R4pw9DcpdnMYeIxEUYnbnv91ThzTvTrm2VVYBrvrMnw=;
-        b=n35WBlFluihtc17eO16gBhcmdAOPo8MofEZ2P6PWJXBz79xfgstcN3ElmDJXbpaWX4
-         +WEdqTvXD4TP7KxqPA1uhtdJrvcufq2uJVBD4+UAMc6QzISc0eI/RRDKER5kCC2nUibJ
-         sbJnAt6LQA+PwpMT/JItV8wxYInl1DHi6b5ZKTJ0IJwIoCUfXGrwoeMpH0QDo5jnzK9S
-         CnzkPwpWqprcfJkRj0hfEyfqOMRztKkWPp281Fml/fh7LG1vDSts7vILegLCB6VR48tI
-         pHjCXf541yKLJJZ0BzwQnTd4MZjVBgdE1A4GlnNgz4Gel8vul99pLR7IrQo4ZoO7lB2o
-         h2jg==
-X-Forwarded-Encrypted: i=1; AL+hErHYSvitPlRbuC6Ju2WF5r7wXENUOYnfuXSUtL7GTiBHIdBV+77BitxKUxCr16TFBrGxlbY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z89/TWUmCPsvm4nwqkE1z5yDkW18z4y6zk4kDaN/THErg1wfnYN
-	ibsQMNcQZQ28xbz4cFb+cwvRehQ+2pzTbs/0eEDoPwh+fEQO6ygMVX2TNeMlaq+buhuz52TuivF
-	71ekEjDXeM0xp6fDOr9oQzQDq2TeX6iOGZw0ofrYR
-X-Gm-Gg: AZFdTZeQ3xfRfdt0EiAD88WcD7Bn1cI4fdI6ul6/ZAQkxiBWtcJaUucupSbtM9Mo5U8
-	eEzJliwYKo3etNpmYtTDbX3oMKwiiS3rnBxwk/odSkLLegjmEo6jM6CrD7awcP4Z8vJ9Smz7NX3
-	EjHvgNuybJPlceX0M6nw0PLAoIuHRNukfn8TIBKtqBxUy1O50XVwQyPaJfYyX8YdYfjyubQFDOq
-	3d6a/9wixy7N8gzGgXlZ3Btbrgcw6Llab+zFfsaLFundRA9hyVyksyEOSevMrzxh9A+EGr7v1Rw
-	ntevSDmT9BWlvAT7qlT4hNy69pBUrMQ7LUvqcPUcXKuActt6MkpMvagy0UR2WYU1FgGNtXZ3Wb9
-	CNPolniKa23NK3px8ksvYJEm8+sEBcPEApZ0EDdr8fRlwBCjaSAiflm2PYNOYmTUVOazTl2R2cg
-	c7EuS1QldCO0U+zXpsQPfKlAjLadmlg7dX+c6ZdL0FlmVGVtiX+d4=
-X-Received: by 2002:a17:907:8e90:b0:c50:5186:a428 with SMTP id
- a640c23a62f3a-c513a87d9edmr1227142466b.27.1795554684471; Tue, 24 Nov 2026
- 13:11:24 -0800 (PST)
+        bh=LH7xbAaioyaoYiHQ6xeOXhOEgpjuNa84XhYKEVkAJ48=;
+        b=svzRgLROtdZA4T59K+coPcFM1XUBjkwL6ubfq6pY1nrsfi5zDYUWvJrGHSkvsAh2/+
+         hKssKDMLNK+lLRYemxv8bZCHSWE6/mkNibodE8Wfo8JuqZnCoEWkubLG1J1Mfz5OxY0d
+         tXqGuZ+kduOvh56ZDmOVx1hQe/NUt1ug36q4M4WA7mNc3mETTBgpxTHgYgmj0xpbkOdO
+         hQ6wTwcSnsbJTYdIREI0X8lQChFx9Pd7ClxNYQ7kmodNISuAzVWoeURAcBPSXMTomxZE
+         nw25BmrXYRX4SX4KzvkBf5dpwPsxbRVxtATn6TFrcWVhZCWab5kVGHlBMinCJ9Gt02QT
+         AIRA==
+X-Forwarded-Encrypted: i=1; AL+hErFFFEvCEni4ZctPwoWh4FeYXRFFCR9lnj8K3+CkDPQECHiBYrZZIJmzUnbwmwYcPsNb4+w=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/SKqiN3U2Tpjo5Wjw9zO2YX+ANY/8h0P+Lt+xKoXPR5NP6d6g3
+	ANrMuInZqfOxXbQArUxXJ19tjs5+JOXYPOhHQC+R0T3Nevn9NI7w6W2VQYgYoGYnHdel891qyga
+	APu4ob/6P7CIMmg==
+X-Received: from iojj12.prod.google.com ([2002:a05:6602:820c:b0:9c7:7732:c3c1])
+ (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6808:151f:b0:4d5:295c:a82c with SMTP id 5614622812f47-57a0c9c65b1mr17326090b6e.57.1795555725290;
+ Tue, 24 Nov 2026 13:28:45 -0800 (PST)
+Date: Tue, 24 Nov 2026 21:28:42 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,259 +75,122 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-References: <ac22215d-3e58-4aab-851e-47c30836e058@app.fastmail.com>
- <20261027231728.1466446-1-jthoughton@google.com> <32fad21b-5bad-4640-97df-ef0f638cd9e9@app.fastmail.com>
-In-Reply-To: <32fad21b-5bad-4640-97df-ef0f638cd9e9@app.fastmail.com>
-From: James Houghton <jthoughton@google.com>
-Date: Tue, 24 Nov 2026 16:10:47 -0500
-X-Gm-Features: Aa3M54qLiZYW-OI4p5Ie96tNauNpwSe6qBub2eVFZl5dz1FgCFOseL6mdcwJEy8
-Message-ID: <CADrL8HX5vb1PGDpWzp-eR0rNfsMCVUhFa9vp_WZZx2eJZ+dfXQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/10] uaccess: Refuse and warn on user accesses when
- current->mm is NULL
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Pavel Begunkov <asml.silence@gmail.com>, Alexei Starovoitov <ast@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
-	bpf@vger.kernel.org, Daniel Borkmann <daniel@iogearbox.net>, 
-	"David Hildenbrand (Red Hat)" <david@kernel.org>, David Sterba <dsterba@suse.com>, io-uring@vger.kernel.org, 
-	Jim Mattson <jmattson@google.com>, John Fastabend <john.fastabend@gmail.com>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Kees Cook <kees@kernel.org>, kvm@vger.kernel.org, 
-	"Liam R. Howlett" <liam@infradead.org>, linux-btrfs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-perf-users@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	Lorenzo Stoakes <ljs@kernel.org>, Chris Mason <mason@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Michal Hocko <mhocko@suse.com>, Ingo Molnar <mingo@redhat.com>, 
-	"Martin K. Petersen" <mkp@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Mike Rapoport <rppt@kernel.org>, 
-	Sean Christopherson <seanjc@google.com>, Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.1.831.g720f3f5937-goog
+Message-ID: <20261124212842.1934651-1-skhawaja@google.com>
+Subject: [PATCH v2] vfio/pci: Only lock the upstream bridge if the reset may
+ need it
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>
+Cc: Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Anthony Pighin <anthony.pighin@nokia.com>, Dave Jiang <dave.jiang@intel.com>, 
+	Dan Williams <djbw@kernel.org>, Ionut Nechita <ionut.nechita@windriver.com>, kvm@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Samiullah Khawaja <skhawaja@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Arnd,
+Commit 962ae6892d8b ("vfio/pci: Lock upstream bridge for
+vfio_pci_core_disable()") makes vfio_pci_core_disable() trylock the
+upstream bridge before resetting the device, and skips the reset if the
+trylock fails.
 
-Sorry for the long delay; I am finally able to get back to this
-series. Thanks for all your feedback so far!
+All VFs of a PF have the same upstream bridge. Take a device with two
+VFs, both used by one process. When the process is killed, both VFs can
+be released at the same time. The first one takes the bridge lock and
+does its FLR, the second one fails the trylock and is never reset.
 
-On Wed, Oct 28, 2026 at 7:14=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
-:
->
-> On Wed, Oct 28, 2026, at 00:17, James Houghton wrote:
-> >>
-> >>  - does there need to be any compile-time configuration to skip
-> >>    the extra checks and/or the warnings?
-> >
-> > Since patch 10 moves the warning out of line, it costs nothing on the
-> > fast path, so making the WARN configurable wouldn't save anything. The
-> > question is really whether the mm check itself should be configurable,
-> > and that check is also what makes the access safe.
->
-> Right, makes sense.
->
-> > The text size increase seems manageable[1], but it would be great to
-> > hear other people's thoughts. For the runtime cost, I'll do some
-> > performance testing. My guess is that a load of current->mm and a
-> > well-predicted branch per user access will be negligible, but I'll get
-> > numbers.
->
-> Sounds good. I agree this should not have much of a performance
-> impact, and for the size it is probably as good as it gets without
-> a major rework of the lazy mm switch.
->
-> >>  - are there any cheaper ways to make it safe than to add a
-> >>    condition on each user access?
-> >>    E.g. the original lazy mm switch was intended to avoid
-> >>    expensive TLB flushes when switching to a kernel thread and
-> >>    back to the original task on 32-bit x86. On modern CPUs,
-> >>    the MMU can deal with multiple ASIDs cheaply, so turning
-> >>    off user access in a kernel thread may be cheaper than
-> >>    adding code to uaccess depending on the architecture.
-> >
-> > That's a fair point. If user memory were inaccessible in kernel threads
-> > and after exit_mm(), every such access would fault, and the fault
-> > handler could WARN about it (x86's do_user_addr_fault() already has a
-> > !mm branch), so it could still be loud without a check on every access.
-> >
-> > I'll look into disabling lazy mm switching on x86 and doing some
-> > performance testing with that (like comparing the per-uaccess check
-> > with the added cost of non-lazy mm switching).
-> >
-> > Other than the performance difference, I see these issues with making
-> > uaccess safe entirely with the mm switch mechanics:
-> >
-> >  - It only helps on architectures (and configs) that implement it,
-> >    while the common check works everywhere today.
->
-> Yes, this would probably be opt-in by architecture, unless we decide
-> to give up on lazy mm switch altogether and pay the performance
-> penalty for that on CPUs without ASID support. Either way it is not
-> be something we can do right away but that we can still consider
-> in the future.
+The bridge lock is only needed for a bus reset, which is done through
+the bridge. Add pci_reset_function_needs_bridge_lock(), which returns
+false if there is no upstream bridge, if bus resets are disabled for the
+device, or if the device is a VF. Use it in vfio_pci_core_disable() and
+pci_reset_function() to only lock the bridge when it is needed.
 
-Agreed. I haven't collected performance numbers yet; I'll try to do
-that before sending v2.
+Fixes: 962ae6892d8b ("vfio/pci: Lock upstream bridge for vfio_pci_core_disable()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+---
+v2:
+- Replace pci_reset_needs_bridge_lock() with
+  pci_reset_function_needs_bridge_lock() as suggested by Alex, and use it
+  in pci_reset_function() too.
+---
+ drivers/pci/pci.c                | 25 ++++++++++++++++++++++---
+ drivers/vfio/pci/vfio_pci_core.c |  3 ++-
+ include/linux/pci.h              |  1 +
+ 3 files changed, 25 insertions(+), 4 deletions(-)
 
-> >  - The fault handler would need to tell legitimate faults apart from
-> >    bugs, e.g. copy_from_user_nofault() from BPF or perf in a kernel
-> >    thread is fine and must stay quiet.
->
-> Would it be possible to move those checks into the individual
-> callers that want to avoid the WARN_ON(), with a comment on
-> each one explaining why they do that? It feels more consistent
-> to always warn here, and I would expect that for most of the
-> _nofault() users we do want the warning, and I'm still unsure
-> what is special about these.
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 7c6f2aba8144..cc6647d091f7 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -5256,6 +5256,24 @@ int __pci_reset_function_locked(struct pci_dev *dev)
+ }
+ EXPORT_SYMBOL_GPL(__pci_reset_function_locked);
+ 
++/**
++ * pci_reset_function_needs_bridge_lock - check whether a function reset of
++ * @dev may need the upstream bridge to be locked
++ * @dev: PCI device to check
++ *
++ * A bus reset of @dev is done through its upstream bridge, so the caller must
++ * hold the bridge lock. The bridge doesn't need to be locked if there is no
++ * upstream bridge, if bus resets are disabled for @dev, or if @dev is a VF.
++ *
++ * Return: true if a function reset of @dev may be a bus reset.
++ */
++bool pci_reset_function_needs_bridge_lock(struct pci_dev *dev)
++{
++	return pci_upstream_bridge(dev) &&
++	       !(dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET) && !dev->is_virtfn;
++}
++EXPORT_SYMBOL_GPL(pci_reset_function_needs_bridge_lock);
++
+ /**
+  * pci_init_reset_methods - check whether device can be safely reset
+  * and store supported reset mechanisms.
+@@ -5313,10 +5331,11 @@ int pci_reset_function(struct pci_dev *dev)
+ 		return -ENOTTY;
+ 
+ 	/*
+-	 * If there's no upstream bridge, no locking is needed since there is
+-	 * no upstream bridge configuration to hold consistent.
++	 * The upstream bridge only needs to be locked if the reset may be a
++	 * bus reset, which is done through the bridge.
+ 	 */
+-	bridge = pci_upstream_bridge(dev);
++	bridge = pci_reset_function_needs_bridge_lock(dev) ?
++		 pci_upstream_bridge(dev) : NULL;
+ 	if (bridge)
+ 		pci_dev_lock(bridge);
+ 
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index fcbb2da860e2..5dcbefd2eba4 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -777,7 +777,8 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
+ 	 * overwrite the previously restored configuration information.
+ 	 */
+ 	if (vdev->reset_works) {
+-		bridge = pci_upstream_bridge(pdev);
++		bridge = pci_reset_function_needs_bridge_lock(pdev) ?
++			 pci_upstream_bridge(pdev) : NULL;
+ 		if (bridge && !pci_dev_trylock(bridge))
+ 			goto out_restore_state;
+ 		if (pci_dev_trylock(pdev)) {
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index aa3765a20a96..aee6a178a535 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1486,6 +1486,7 @@ void pcie_print_link_status(struct pci_dev *dev);
+ int pcie_reset_flr(struct pci_dev *dev, bool probe);
+ int pcie_flr(struct pci_dev *dev);
+ int __pci_reset_function_locked(struct pci_dev *dev);
++bool pci_reset_function_needs_bridge_lock(struct pci_dev *dev);
+ int pci_reset_function(struct pci_dev *dev);
+ int pci_reset_function_locked(struct pci_dev *dev);
+ int pci_try_reset_function(struct pci_dev *dev);
 
-Yes, I think that is better, and I've done this for v2.
+base-commit: 7475ea8b58616b33c04afb976cf0fbaad9dd63fb
+-- 
+2.56.1.831.g720f3f5937-goog
 
-The _nofault() users really did need more scrutiny, thanks Arnd. They
-are special for different reasons, and they differ in how we should
-handle them.
-
-1. They can run in any context. Many of the BPF functions like
-probe_read_user*, probe_write_user, user dynptr and bprintf helpers,
-etc. are like this; a user can just attach a BPF program to places
-where there is no mm. So we should fail the uaccess but not WARN on
-it.
-
-2. They run in process context, but use nofault because they can't
-take page faults. btrfs's tree search ioctl is an example. In these
-cases, a missing mm is a bug, so we should WARN. So v2 will fix these.
-
-3. There are three cases where it tries to read the PC while handling
-an exception that was taken from user mode. In these cases, it should
-always be the case that `current->mm` is non-NULL, because we just
-came from user mode (i.e., when user_mode(regs) returns true,
-`current->mm` should always be non-NULL and pointing to the correct
-mm). So we should WARN if current->mm is NULL, which v2 will do.
-
-4. powerpc's BHRB decoding is a special case; I'll just put this in v2
-and we can discuss it there.
-
-So now in v2, the _nofault() helpers themselves do not check current->mm.
-
-I've uploaded a draft version of v2 here, in case you want to take a look:
-  https://github.com/48ca/linux uaccess-v2-wip
-
-> > The series handles that today by
-> >    checking current->mm in the nofault helpers (patch 6).
-> >
-> > The two approaches are mostly complementary: if non-lazy switching
-> > turns out to be cheap enough, an architecture that does this will have
-> > better defense against uaccess bugs. But I'd still like the common
-> > check so that these bugs are reported on every architecture.
->
-> Agreed. My main remaining concern is about the number of functions
-> that need the additional check, if we want to avoid missing
-> any of them. If we can have the check in access_ok(), that would
-> cover the majority of the functions you are changing right now,
-> and it looks like we can deal with the corner cases individually.
->
-> Since in principle every user access should go through both
-> access_ok/mask_user_address and current->mm check at some point,
-> so combining the two as much as possible should help long-term
-> maintainability.
-
-You're right, and v2 has been restructured like this.
-
-- The check is in access_ok() itself: the generic version, plus the
-arm64 and riscv versions. __access_ok() remains a plain range check.
-- The callers of mask_user_address()/masked_user_*_access_begin()
-check current->mm explicitly. There are about a dozen such callers.
-- The unchecked accessors, __copy_{from,to}_user()
-and__copy_{from,to}_user_inatomic() (and arm64's
-copy_from_user_flushcache(), which also relies on an earlier
-access_ok()), keep an explicit check for now. Once their users are
-converted to the checked versions, those checks can be dropped.
-
-Compared to v1, this also covers get_user()/put_user()/clear_user() on
-arm64, powerpc, riscv and the asm-generic architectures, and arch code
-like signal frame setup that uses access_ok() followed by __put_user()
-or unsafe_*(). user_access_begin() no longer needs its own check.
-
-What's still not covered: x86's get_user()/put_user(), which do their
-own range check in asm, a few architecture-specific paths that call
-__access_ok() directly (e.g. on alpha and sparc32), and arch code that
-calls __get_user()/__put_user() without access_ok(), mostly trap
-handlers for user-mode faults. Probably best tackled later.
-
->
-> >> There are of course few enough of these left that I think
-> >> we can consider doing the same thing here and turn them all
-> >> into the checking version:
-> >>
-> >> $ git grep -wl __copy_'\(from\|to\)'_user  drivers mm virt
-> >> drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-> >> drivers/gpu/drm/i915/i915_gem.c
-> >> drivers/gpu/drm/i915/i915_query.c
-> >> drivers/usb/gadget/udc/atmel_usba_udc.c
-> >> drivers/vhost/scsi.c
-> >> drivers/vhost/vhost.c
-> >> mm/kasan/kasan_test_c.c
-> >> virt/kvm/kvm_main.c
-> >
-> > Agreed, I think we should clean those up, but that can be done
-> > separately. This series already adds the check to the common
-> > __copy_{from,to}_user() and __copy_{from,to}_user_inatomic() wrappers
-> > in include/linux/uaccess.h (patches 7 and 8), so the KVM path is
-> > covered without converting the callers first.
->
-> Right, if dropping __copy_{from,to}_user() as global interfaces does
-> not help add the check in a consistent way, that can wait as well.
-> It looks like we are very slowly converting away from them already,
-> as we have about half the call sites left compared to v5.0.
->
-> There are probably few enough of these that we could address them
-> by either adding current->mm checks or converting them to use
-> the full versions instead where that is an obvious change like
-> that usb gadget driver.
-
-Sounds good. I'll send a separate series converting the obvious ones,
-starting with the usb gadget driver. I think that will be useful.
-Let's see how far I can get; hopefully I can drop
-__copy_{from,to}_user() completely.
-
-> >> As a quick fix I would probably start with just the 'if (!mm) return f=
-alse'
-> >> bit here to get something merged while we still discuss the other
-> >> details.
-> >
-> > Making the same point as Sean[2] but with a little more detail, I had
-> > thought about making the change in access_ok(), but:
-> >
-> >  - On x86-64 and powerpc, the masked user access paths don't call
-> >    access_ok() at all. That includes copy_from_user(),
-> >    strncpy_from_user(), strnlen_user() and every scoped_user_*_access()
-> >    block, which is where many of the converted __get_user() users ended
-> >    up.
->
-> Ok. Apparently there is some of this on arm64 as well, using
-> __uaccess_mask_ptr() instead of mask_user_address().
->
-> >  - __copy_{from,to}_user() and __copy_from_user_inatomic() skip it too,
-> >    and the KVM bug followed exactly that pattern: the range was checked
-> >    once up front, and the access came much later from a different
-> >    context.
->
-> Arguably this is itself a TOCTOU issue and replacing
-> all __copy_{from,to}_user() with copy_{from,to}_user() would be a better
-> solution long-term, if we can do that.
-
-Yeah, I agree, that's another reason to get rid of them.
-
-> >  - access_ok() is also used as a plain range check where having no mm
-> >    is fine. For example, copy_{from,to}_user_nofault() call
-> >    __access_ok()/access_ok(), and BPF and perf legitimately call those
-> >    from kernel threads, so a WARN there would fire on valid tracing.
->
-> These at least could be easily worked around by just skipping the
-> calls to copy_{from,to}_user_nofault() as mentioned above.
-
-Yep, and v2 now does this.
-
-Thanks, Arnd! I'll send a v2 early next week. I've kicked off
-syzkaller against the new version too.
