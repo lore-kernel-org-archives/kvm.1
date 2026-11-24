@@ -1,118 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795543557;
-	b=O8scLu8L2zRmC//ALG1XI5NyN0hj4phoXbcUqDO9ZRK0bQs/w8vPqZ081YRAdmh0+RpS
-	 VWs/xAHQlaCAbTn1fzJWh4/sZPNus/UGGB7+TgOh2AwE/9nTGJs0DmznFhd9X4/xLdTem
-	 FplWvzRrvrAQM4EdAypMRM1YOMlRj6XDwdnOJd0HqLAgTE0oVhBF6DIA2hHGalAZwsS9x
-	 2amOebUP49pgOQ+e4VWU4xTyNQ7YE4+nBK0aHZpwLhWycARXLzQ2flkh62u5mJtctJgEr
-	 wlQbnVWxP/0ff//sJx5MTWwFuuFfevCw8wf4EZFaxS/BgLKuQXbIvcgln7thW1zkDtw==
+	t=1795543571;
+	b=1gA90+3Z1udgp3lHpl+Nv3AjArvqihfTFSC/7Orysq8HSOzfibea7SpJqGkiVzWQqkFg
+	 IsswDm29tV99LyjSSoOLgVNRcJEOgIDeSMIq+pbOMcxBDu2UErtX3Rw0pp7+tOh8pDW2w
+	 VGQsn+lM98EOHjpM//xEvKmpnBGWvA77JzgLxYDdOay/8b7AQ2woNkmdvBlwwqEP0W4Xl
+	 V5v33Mzn9LI9IT54kesaOz1Yd3Zb/mYmJbF6cn4KbKLCnelwZ6M0IqqMC5aDkcoUZd0SB
+	 yGf2TkmVn898ujohlIk/0Fl85UJSYxgVdxUokVJxACkCzKJ3fEzOAsEysbWcw9C738Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795543557;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Subject:From:To:Date:In-Reply-To:
-	 References:Content-Type:Content-Transfer-Encoding:User-Agent:
-	 MIME-Version;
-	bh=aBPFZif7OQNjM5QKYDwZZgIncRfMVh/lXXAldLLFMNQ=;
-	b=3y3iGqZDyJ/71UAzPSsh/Pt6jqP8Wh95sfl1u0TEP/yyQQi5og/JiOx3nju6CwjkRpi5
-	 Mc7H8TS1hzCq1afes/LxaVzXoI/7QbFLQ7JgmlVjtkco+qKaIu6Uhcljf0YCGaZmxgcJR
-	 A274U7V+PqjTNvhkcnuVbKQDEq5XEacyDHs0t1wzvScCuOViu96A6um3Ylsv7mRfnqauC
-	 3Ot4L8V1Won1z4/m6k7xcPE3XHl8DXiv79d2/4a/x7+NYHckNo1UAjndG7N4mmrjMUU2d
-	 9y0CBgiNVviZCWBiVk1jcp3I8MVo6mPAhqDg1xGvKtf+6XY/ykNYpOTuJLiEmciCanQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795543571;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Disposition:Content-Transfer-Encoding;
+	bh=kagbCpv1QEtmm+QT0IKoz1HubJ8iePC5aHt6FNXFlZ0=;
+	b=thNU4Dss32QPQNwS3nep0VNnfEHuSIn8HFrWWW3Yq9j3de0Jsn22sudDqyoY2IHuPbGe
+	 0gZnyssDnQEQxZQnWRWoHaCTUckHHRNkeyZK/WVRe2UDtrhuVC8LyByBz+ptO7nQbdMEf
+	 lQj4/RIhgbi8uPz17qiGSEoxwBqJaJzZgNfxLDqS/zkxRBVOpY8m97PPffxvALssOJlvO
+	 I4CVEWtuWanLrtzoNrTH+TJz+R6sxFexLAiATvRyExlkkgvEpAauE790UB0n1zPlgqlZH
+	 ePjV/eG0rmicMovHsw8djbCPyQYTJ2+m1oYPy4R/joahgTmATNMFcCKfP5Ksd43tvxA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fsDnhleG;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=nb0IoGMY;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04397606A33C
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 18:05:55 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 04397606A33C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=lsmJm5pU;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC51606A68B;
+	Tue, 24 Nov 2026 18:06:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9EC51606A68B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fsDnhleG;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=nb0IoGMY
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795543554;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aBPFZif7OQNjM5QKYDwZZgIncRfMVh/lXXAldLLFMNQ=;
-	b=fsDnhleGBU82AOEnmOdRrLo08bW4ojSBwKFAOJxtBsjpXZim0JywgFck8ob0DVkufDLRYC
-	CHK6JdKCQvh5MnMLV0UR4N2tZkHEAdLCd1nx3NLxgCbUhQlznOVzAqzjIUDazxUdQ3r7nR
-	7cgjvweM0gMib3itRkweJBEEUE2kT5o=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-492-W9VhOKlFOgmtkh6Kud8a6Q-1; Tue, 24 Nov 2026 18:05:52 +0000
-X-MC-Unique: W9VhOKlFOgmtkh6Kud8a6Q-1
-X-Mimecast-MFC-AGG-ID: W9VhOKlFOgmtkh6Kud8a6Q_1795543552
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-55d994579f9so42822821cf.0
-        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 10:05:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1795543552; x=1796148352; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:to:from:subject:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=aBPFZif7OQNjM5QKYDwZZgIncRfMVh/lXXAldLLFMNQ=;
-        b=nb0IoGMYCcsrH8uMOgyGr56uGvgT4Iei90t0DcOG1q5we5yevXR7yggGoCmtlMsiI7
-         gyBUjrDIA0XetdqmJ1Fx45gCtpUSDfNgze70fLYOfAewfE1NjyiVnCYrEZevN+UBR+x4
-         CKImMWVJYa44H9esz/QSeF8W/kmXV8W4WQlropAZnIJ6TCaKNnM327+QZLEIs0tFR96w
-         +/yjO5ByYNV6RQZEUVleLSaOODFh3cdnyA7a8JUwzVI5LmvkLanyLDvCSdlIKPSpacNp
-         VZU7FaRo6KVDdYXHw1sh06Do+kWTVvy3uLsEb7jyUK2NXJhyN9jOErYsUjP1nVzGTTdQ
-         ykLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795543552; x=1796148352;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aBPFZif7OQNjM5QKYDwZZgIncRfMVh/lXXAldLLFMNQ=;
-        b=hQSG01PWQttSALzr6YcVBnP2PPXHtR1SIrRPVVM5n0e+2Lle67AuXTk1to32F4NQu0
-         0gyEpqcVnG5k9hrMAp77Nj4OgOFo6YWw5YYOItR8bDzMH1HnlQesMCZkaONX1xbjJjP+
-         Pm6TogTy8gCgnklFG/Sf33xrmK9cLX+KnWrf9Hujs2xIN4r11MC8b3APA9eIKiVIy7Sd
-         vAMJycMouuBzWydL7AUTDv2sG7Hmjx9p4sQ2gJx0OjisJRpSL90ZIhJyLy1DQ8r+r0ut
-         eggFteLRrVDwnoG/TX2D9Ow0kEmaZFu+BATXIwp0yivK5a4UBVToVReOJVBDJCxMjug/
-         KLyA==
-X-Forwarded-Encrypted: i=1; AL+hErGs0n0BAMXq/VROXVv9CaMHzIBRpFW5pIwDZPpElcqEWeHM5cucOrWwCqBq6bd81t/pyrE=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8xYo30jsARzGUuHorPrES9lJoevcWfS+4RkwiKl+DOLRQLc925
-	yEWUXV2YypYYHnPxUU6JOf6iAoFKPrRTb3p6aF1zoZ7IY1wBGo0cJMim7Mae+5zWOqEgYzpS9ni
-	iny7RuYEuyJNPp872r6RVW7cHbi/KvpizSFqqEhIco54HknvYjZYriZfuQ8pPSw==
-X-Gm-Gg: AZFdTZeqBbbUKeuJTAgJBzK0tAyUgNMjZDnmR7f5sH0TK/X3E78/3a+Mysh/xFUkEkH
-	RJXdD65np6EoMuluLWCiAi6IZARDQM6VUwJ2lTFzDRxnfpAakg7WWuX48v9gAA6YUxBx0SUny2p
-	ygRAvxiXh5sq7wPAV1rvyHk3xhG8Vk9jq3MJn0GP45BEfVq7KEz1iOHaz98yYWh3KEc5OTbMw0R
-	ap31VVSfjze6rNHOvG4EPEE8AV2C5jsbhQ8pMDk+hqbQBEKM6VMQYmjN++9BBwVUA/pmtIDBDAW
-	y94N6Xr4ykWhqP9MaDpXtiqFgYWW1RMSKbDB5vPgNBIJ5cyk5jngV8qW2i+LBr/flxmDxjc5Ljd
-	8GFGTadQrjlbhdY+8poULC9RRcMG1kDaz2KMR6wQGyTqCNWBlp7j1MB6eL3h4k5okEvSEbx3RXO
-	M8QHW9cRQ=
-X-Received: by 2002:a05:622a:1b23:b0:533:920d:7bf8 with SMTP id d75a77b69052e-55d76a16dc4mr294519471cf.24.1795543551688;
-        Tue, 24 Nov 2026 10:05:51 -0800 (PST)
-X-Received: by 2002:a05:620a:371d:b0:93f:3e39:efa1 with SMTP id af79cd13be357-949ba9c6d0fmr2938776385a.23.1795543224025;
-        Tue, 24 Nov 2026 10:00:24 -0800 (PST)
-Received: from mlevitsk-thinkpadt14gen3.ibmmarkh.csb ([209.103.33.216])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-949bb427388sm1088866085a.42.2026.11.24.10.00.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 10:00:23 -0800 (PST)
-Message-ID: <d699e5865a19a199d9044d815d3428a74c46f6c8.camel@redhat.com>
-Subject: Re: [PATCH v3 5/5] KVM: x86: nVMX: fix races in delivery of nested
- posted interrupts
-From: "mlevitsk@redhat.com" <mlevitsk@redhat.com>
-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
-Date: Tue, 24 Nov 2026 13:00:22 -0500
-In-Reply-To: <sashiko-outbox-229799@kernel.org>
-References: <20261123175512.80438-1-mlevitsk@redhat.com>
-	 <20261123175512.80438-6-mlevitsk@redhat.com>
-	 <sashiko-outbox-229799@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=lsmJm5pU
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B4BF0497;
+	Tue, 24 Nov 2026 10:06:06 -0800 (PST)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9D8BD3F86C;
+	Tue, 24 Nov 2026 10:06:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795543569; bh=NZoB2/gQBelnDkcKG2o810x2RG3gJOlJVfE8j9DhwZE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=lsmJm5pUvXw5zs6ZQXJH7igNWStTyPpD3nzfAq5AtIy5J8p2J1iXcK0YKa+eBD28s
+	 E3Bk4Ks6sAeUHkiPBMGwU5Rz4fBeXlu31neTMri1+KVSJiMV+j9F5PUBd81mgRqUYv
+	 VlMyutM0mTuozmAp/io0096/63A6y/zc86AExrto=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Dan Carpenter <dan@pereq.eu>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] KVM: arm64: nv: Upgrade sub-page TTL hint to maximum size
+Date: Tue, 24 Nov 2026 18:06:02 +0000
+Message-ID: <awXSCgN4JLLKXErv@LeoBrasDK>
+X-Mailer: git-send-email 2.56.1
+In-Reply-To: <864id6yyjy.wl-maz@kernel.org>
+References: <20261123182312.4842-1-maz@kernel.org> <awW5QKqGZAqw1ru9@LeoBrasDK> <864id6yyjy.wl-maz@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -122,117 +71,135 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2026-11-23 at 18:19 +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [High] KVM: nVMX: unhandled error and unmapped state in
-> =C2=A0 __nested_vmx_vmexit() PI completion
-> --
->=20
-> commit daa28df8cd412bbb1c1a76b22827fb7d30241474
-> Author: Maxim Levitsky <mlevitsk@redhat.com>
->=20
-> KVM: x86: nVMX: fix races in delivery of nested posted interrupts
->=20
-> This commit synchronizes nested posted interrupt delivery with nested
-> VM-Exit using atomic operations on vcpu->arch.nested_guest_state and
-> processes pending nested posted interrupts in __nested_vmx_vmexit().
->=20
-> > diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> > index 61f50175ecb79..845825c018bf5 100644
-> > --- a/arch/x86/kvm/vmx/nested.c
-> > +++ b/arch/x86/kvm/vmx/nested.c
-> [ ... ]
-> > @@ -5122,7 +5128,13 @@ void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, =
-u32 vm_exit_reason,
-> > =C2=A0	if (enable_ept && is_pae_paging(vcpu))
-> > =C2=A0		vmx_ept_load_pdptrs(vcpu);
-> > =C2=A0
-> > -	leave_guest_mode(vcpu);
-> > +	old_nested_state =3D leave_guest_mode(vcpu);
-> > +
-> > +	/* pairs with implicit memory barrier in vmx_deliver_nested_posted_in=
-terrupt */
-> > +	smp_mb__after_atomic();
-> > +
-> > +	if (old_nested_state & KVM_NESTED_PI_PENDING)
-> > +		__vmx_complete_nested_posted_interrupt(vcpu);
-> > =C2=A0
-> > =C2=A0	if (nested_cpu_has_preemption_timer(vmcs12))
-> > =C2=A0		hrtimer_cancel(&to_vmx(vcpu)->nested.preemption_timer);
->=20
-> [Severity: High]
-> What happens when __vmx_complete_nested_posted_interrupt() fails or runs
-> before vmcs12 pages are mapped?
->=20
-> If L1 configures an unbacked or MMIO GPA for posted_intr_desc_addr or
-> virtual_apic_page_addr, vmx->nested.pi_desc or virtual_apic_map.hva is NU=
-LL.
-> __vmx_complete_nested_posted_interrupt() then calls
-> kvm_handle_memory_failure(), setting vcpu->run->exit_reason to
-> KVM_EXIT_INTERNAL_ERROR and returning -ENXIO.=C2=A0 Because __nested_vmx_=
-vmexit()
-> ignores the return value, callers such as nested_vmx_reflect_vmexit() and
-> vmx_check_nested_events() continue running L1 in-kernel instead of exitin=
-g
-> to userspace, while non-KVM_RUN callers via vmx_leave_nested() clobber
-> vcpu->run->exit_reason.
->=20
-> In addition, when entering L2 with from_vmentry =3D=3D false (KVM_SET_NES=
-TED_STATE
-> or RSM), nested_vmx_enter_non_root_mode() defers nested_get_vmcs12_pages(=
-)
-> via KVM_REQ_GET_NESTED_STATE_PAGES while publishing KVM_NESTED_PI_ACTIVE =
-in
-> vcpu->arch.nested_guest_state.=C2=A0 If a nested posted interrupt arrives=
- and an
-> L2->L1 exit happens before the first L2 entry, __nested_vmx_vmexit() clea=
-rs
-> KVM_REQ_GET_NESTED_STATE_PAGES without mapping pi_desc, so
-> __vmx_complete_nested_posted_interrupt() drops the interrupt and triggers=
- a
-> spurious KVM_EXIT_INTERNAL_ERROR.
->=20
-> Finally, running __vmx_complete_nested_posted_interrupt() when vmx->fail =
-is
-> true clears pi_desc->on and writes max_irr into vmcs02 GUEST_INTR_STATUS,
-> which is then lost because sync_vmcs02_to_vmcs12() is skipped on vmx->fai=
-l.
+On Tue, Nov 24, 2026 at 04:38:41PM +0000, Marc Zyngier wrote:
+> On Tue, 24 Nov 2026 16:20:16 +0000,
+> Leonardo Bras <leo.bras@arm.com> wrote:
+> > 
+> > On Mon, Nov 23, 2026 at 06:23:12PM +0000, Marc Zyngier wrote:
+> > > Should a guest be slightly foolish and submit a S2 TLBI with a TTL hint
+> > > that describe a base granule size smaller than the host's page size,
+> > > we take the resulting size at face value and feed it to the S2 unmapping
+> > > code. Which legitimately screams about something not being page-aligned.
+> > > 
+> > > The architecture allows us to drop the TLBI on the floor, as we don't
+> > > support a S2 granule size smaller than the host's page size. But it turns
+> > > out that doing so is proving pretty hard (we call compute_tlb_inval_range
+> > > from a number of places, none of which is amenable to an early out).
+> > > 
+> > > Instead, detect the annoying case, and pretend that we don't have a TTL
+> > > hint at all, leaving the size upgrade mechanism to take place and use
+> > > the largest possible size for the guest's S2 granule size.
+> > > 
+> > > This will still allow nonsensical stuff to get through, such as a 4kB
+> > > level 2 (aka 2MB) from a guest with a 64kB S2 base granule size running
+> > > on a 16kB page size host, but that's not worse than doing nothing, and
+> > > the host code won't get shouty.
+> > > 
+> > > Reported-by: Dan Carpenter <dan@pereq.eu>
+> > > Link: https://lore.kernel.org/r/20261123-inval_range-v1-1-815e15797089@pereq.eu
+> > > Fixes: d1de1576dc21 ("KVM: arm64: nv: Handle FEAT_TTL hinted TLB operations")
+> > > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > > Cc: stable@vger.kernel.org
+> > > ---
+> > > 
+> > > Notes:
+> > >     Reposting this as a first class patch, as I'd like to plug that one
+> > >     as early as possible (and Dan has plenty of other patches in flight...)
+> > > 
+> > >  arch/arm64/kvm/nested.c | 7 +++++++
+> > >  1 file changed, 7 insertions(+)
+> > > 
+> > > diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> > > index 78d5b18dbd2d6..36e4e83badf0a 100644
+> > > --- a/arch/arm64/kvm/nested.c
+> > > +++ b/arch/arm64/kvm/nested.c
+> > > @@ -714,6 +714,13 @@ unsigned long compute_tlb_inval_range(struct kvm_s2_mmu *mmu, u64 val)
+> > >  	 */
+> > >  	max_size = __ttl_to_size(ttl);
+> > >  
+> > > +	/*
+> > > +	 * IMPDEF behaviour: treat subpage TTL-annotated TLBI as the largest
+> > > +	 * possible invalidation. Don't try this at home, kids!
+> > > +	 */
+> > > +	if (max_size < PAGE_SIZE)
+> > > +		max_size = 0;
+> > > +
+> > >  	if (!max_size) {
+> > >  		/* Compute the maximum extent of the invalidation */
+> > >  		switch (vtcr_to_tg0_pgsize(kvm, mmu->tlb_vtcr)) {
+> > > -- 
+> > > 2.47.3
+> > > 
+> > 
+> > Hey Marc,
+> > 
+> > I think the changes make sense, although rounding up to PAGE_SIZE also 
+> > looks a valid solution in my unexperienced viewpoint.
+> 
+> No, it isn't the same thing. Taker the example I have given, where the
+> host is 16k, the guest 64k, and the invalidation 4k. If you round
+> things up to 16k, you're still not invalidating anything that is
+> consistent with the *minimum page size* for the guest. Anything larger
+> is a multiple of both the host and guest page sizes, and therefore
+> always correct.
 
+Ah, right!
+In this case, could we not invalidate the largest page size supported 
+(64k)?
 
-Technically KVM doesn't have to fail when nested PIR and/or nested APICv pa=
-ge are MMIO, as stated here:
+IIUC:
+- To have max_size between 0 and PAGE_SIZE means it's either 4k or 16k, 
+  so invalidating the 64k should be enough?
+ 
+- max_size=0 from __ttl_to_size() means largest blocksize supported by 
+  stage2 in current TG. 
 
-KVM: nVMX: Fail on MMIO completion for nested posted interrupts
+The two above are opposite ends, no? Like, the first is "this is too small 
+for us to invalidate, let's pick something bigger", and the other one is 
+"we want to invalidate the largest supported block".
 
-When the kernel has no mapping for the vmcs02 virtual APIC page,
-userspace MMIO completion is necessary to process nested posted
-interrupts. This is not a configuration that KVM supports. Rather than
-silently ignoring the problem, try to exit to userspace with
-KVM_INTERNAL_ERROR.
+Is it really ok to put them in the same bucket?
 
-Note that the event that triggers this error is consumed as a
-side-effect of a call to kvm_check_nested_events. On some paths
-(notably through kvm_vcpu_check_block), the error is dropped. In any
-case, this is an incremental improvement over always ignoring the
-error.
+> 
+> > 
+> > I am curious if there is any particular reason not to merge that with the 
+> > test below, such as:
+> > 
+> > diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> > index 78d5b18dbd2d6..36e4e83badf0a 100644
+> > --- a/arch/arm64/kvm/nested.c
+> > +++ b/arch/arm64/kvm/nested.c
+> > @@ -714,6 +714,13 @@ unsigned long compute_tlb_inval_range(struct kvm_s2_mmu *mmu, u64 val)
+> >  	 */
+> >  	max_size = __ttl_to_size(ttl);
+> >  
+> > +	/*
+> > +	 * IMPDEF behaviour: treat subpage TTL-annotated TLBI as the largest
+> > +	 * possible invalidation. Don't try this at home, kids!
+> > +	 */
+> > +	if (max_size < PAGE_SIZE) {
+> > - 	if (!max_size) {
+> >  		/* Compute the maximum extent of the invalidation */
+> >  		switch (vtcr_to_tg0_pgsize(kvm, mmu->tlb_vtcr)) {
+> > --
+> > 
+> > Given max_size is unsigned (>=0), and it will be changed again in the 
+> > switch case below, I was not able to understand the need to make it zero 
+> > first.
+> 
+> There is more than one way to write similar things, and what I wrote
+> made the most sense to me.
+> 
+> I want to single out this particular corner case, which is not the
+> much more general case if "max_size is 0 because there is no TTL
+> information". Lumping these two things together makes it, IMO,
+> pointlessly hard to reason about the various cases.
 
-Signed-off-by: Jim Mattson <jmattson@google.com>
-Message-Id: <20210604172611.281819-7-jmattson@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Ah, I see it now, makes much more sense to have it that way.
 
-
-
-To avoid the complexity of bubbling up this error from __nested_vmx_vmexit,=
- I will move the kvm_handle_memory_failure
-to vmx_complete_nested_posted_interrupt, and only note the error with the r=
-eturn value in the __vmx_complete_nested_posted_interrupt,
-which __vmx_complete_nested_posted_interrupt will continue to ignore.
-
-If the guest setup one of the structures in the MMIO, it will fail sooner o=
-r later anyway.
-
-Best regards,
-	Maxim Levitsky
-
+Thanks!
+Leo
