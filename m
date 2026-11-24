@@ -1,102 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.177
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795524252;
-	b=5PZqE19EGx9rQFLmqN9yUL8ysjkD0FSlmbisN4U6uh5tqwhQEByLMfWki9gABCun3vfO
-	 jmt1Xk0UxV6tSQT7WhacasEIl3vijzNt9IksqgFkMjb/5wH89rW5CxgD89qSiQORx4HUI
-	 iEacBNTNFGgQ1avmhtaxniJIip7Ro2inHIF+kmI0eiwSPkxZZAVGymVHDZmWKwg3eQBin
-	 3IPnW1IZ9iYiGVOUQDO5WNcCsx30RbmyeIZtiG33p6srBKAtxppBTsxDB1nbDPHRvhn6C
-	 /0uZlZRf8mYmjol1nn0jul+Ay3wecskBTDtIQrRR0OH8Hont89/hcUZq4XPYl52+g/Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795524252;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:MIME-Version:
-	 Received:From:In-Reply-To:References:X-Google-Nh-Sender:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
-	bh=joFVseC72ykbXYRWpF6WHfekhD15ACD1AqHR3+slNwM=;
-	b=xbRUZ8bOA+7e8T+WBI5aKryAfOkhN/Zdw48klJQ3SVzANELIxixRFq5WJveD5E1AnWKl
-	 nCSzWKZy/lJhGmUw3wNDaMW0CIxfCKbY1bPMKcqmlRyGGOEcZMFWrDrBumeRcyELcbGIp
-	 4qIhkM83saPk2TFy3jqdM9Dugiqqe1q0xjVrWn1S/NrYrOHup/ZvCZihb0bPLUQ6Xvo+J
-	 Vm9ZYgNiODnZ4SJkt44T5bDJPWYBvvMMSGZyQkcN7mkeUV86XlAHOdxk802FdElbslVo9
-	 Dp9TAzRYM3vpcnDZapYI2VSoFeL9AE+5QmxF3/MK8x3F6xtxcXChMxtfGdt6W7FVrfw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tgb6EaoP;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.82.177
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795524260;
+	b=BSOdzGprS+yUc83ZC37KER52MZGxdDFiqbVwOCzY45S2CddtwO8CXZduVsMMU818TaGb
+	 kZQUR0UI+i/3tTYx05FtqL7KdgDuFbbUmvyjAeWnKRRNVZ+KSogy2Fuu0arLqbWSgOyiP
+	 JfWk8uiBu5l0gDkW3msH+KaYCqpgi/OfQrOHhprHbchQPT0oqLTP2QRPGtZbjCifmJ6Pu
+	 sxmAGl/gEf7AAJZneo92oCloP1IhNm3AT8hPsSWyMzChuZB/YXre+hH4myAGNPst4OBzN
+	 YTRo23Jgj8l2QBGes8CKtgaY+50wlgIczCelwKrzNtlzrh7+94x5GdbDiyautuCGyqQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795524260;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=EioaRMd6eqHJ2q4oFGJHSd8yKli/WmaenmbovHLD7kM=;
+	b=pzQaiehT8r1f+9xl9Ssp5urP+2z1c6D4T6Jhvw53KqP2g9WLLrbKNnJRr30KAaHpZ8Le
+	 oEuSnY6fGN0XBP4sFPO64MD/2cFARpjLFtyb7CZxILCe6vkmp1ULo9M/QedEzPCOcphYt
+	 BimFZ1UPU8wTTzijQI7cPT83yq9j9oN15QEO7Iky2zRFW2dRwVKLztYu5269vPfj0oi1h
+	 LInaYvlU937wW2A6X1N1h2CJnqDsrPYivF7p6tTwBSNkjgroNZGHOvJ11v37gnHRB2taY
+	 DKHtOPFkofT4VNJp3qmdz06U/NtMHXVmDnjJAulXb7DkLAAPk4aS02NQ8qEoBRBReDw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CIe4TmdY;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8C8606A31E
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 12:44:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9E8C8606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7136606A32A;
+	Tue, 24 Nov 2026 12:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tgb6EaoP
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-386c4d2e2ccso836896eec.0
-        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 04:44:11 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795524251; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OVvUK+5EnhMbSsVxn6LEvF3CY1D7ZyVKvEvKcbrLaD+3TmbSU6PFqUBwPyjVQwys7J
-         AAB1XFhSMu9HJ98IG4f8DmCTu4NgDjqU+/80cpjT7taK3UZsuo6RDeQzzMNPgcE9VPj6
-         UvUc7h+N4LbZ7vGxzKjwn0Q21lENPMI34ADRO0/ETvNEMK0NY9jo+yeA4ChD49EAoTXL
-         3zsfiHVCEY+VyBCMpiw+aXq4b6Y6ON0W6m5MrjzNSFm9hAXLt4bJf6yqmiSSwnnuY/dD
-         uhoMaFmIOJ5Gwon6P6ZNGWA0ofr3Nc7gn/tmUQFZz9s6HoLsi0+8nzdAjZBmK82cmkh3
-         JVgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:references:in-reply-to:from
-         :mime-version:dkim-signature;
-        bh=joFVseC72ykbXYRWpF6WHfekhD15ACD1AqHR3+slNwM=;
-        fh=xr4zSsvpNcBHZtAcpHMwe3tjsbNCqWYmdaehL9Q44Qc=;
-        b=A6aMLn7Pel/PogGD+OLGO+VlWO4yXRTLy/9oBVYANYL1GiLOZ6AScQFcsuCKfj0opr
-         qXmqjPYY4Q8hGZAIjQkQX3AvZtbdXgeuvg5e6PLlzgjH6V/YNLgRpzK95KtaPpitgPY0
-         g42PClyy9fRmNBoSlUUnWa1eylzUQg6PfvIYXyLxpRHK1rUSnRMkY/YBk2M3+6j+JNbe
-         rnRDVDYItXLASrg44g5jNrOAcbF9SJam1wkF/napqeksysYsRkUZMh6+PhovG1hj/mHO
-         vzHtKxzkZQiOKQOmE+3eEUuMl582+y+aUGKALH0YX1sgT2gJXemBiEwVmMDZrw69Q9k2
-         jZcg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795524251; x=1796129051; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:references:in-reply-to
-         :from:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=joFVseC72ykbXYRWpF6WHfekhD15ACD1AqHR3+slNwM=;
-        b=tgb6EaoPCF218p43z71w5VkbW2EtqVhxzBjTtYemXxm3p1G+uGVWKiZRyTcexCheEG
-         PwSlyuLtZ1Y0JeoQnxxnJs3m7Zha00kqguV+iayVtAeBg0i6gx/vKYqg4Kae9GUQu5bO
-         s2GshFwdcg9lzY9GZaFTyGGsNE+imeGaKhiEAUsnwH9geyGsPp0dKS5gVF2u4jOoINmR
-         FeNffdLhYdXLC7/52UERco/GU1xmJ3wn5ZmZAMM3ZPAFsh5lseJr+vESs2tOwp7PMTRw
-         WBgRvBPVyOIs+LeyHz9Tz9sxMhx4Hf458yMX+VAPyyZ7BDRnFpi+a8L0wMRT3NdPD9qq
-         pAdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795524251; x=1796129051;
-        h=content-type:cc:to:subject:message-id:date:references:in-reply-to
-         :from:mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=joFVseC72ykbXYRWpF6WHfekhD15ACD1AqHR3+slNwM=;
-        b=OdV4ZfoaqvALQjb+ehuebvZqhCC7k1sYSZfOWH5Ji2rTyCJjKCrfKoIeR/Zm08jgN8
-         25Js9LgGLI6g0CJv4/Nwbyq99JWBNlCt/Vsujsc4XRID3GlsBz95ZKYkpgmcKNLHmWMg
-         xRKarKGX3Z4+egFL6HuEIvaNxC6P6OQDCB6n0tmI+Okb0sRo2OBhDKDcOeg4PvWpxs/I
-         qJN2DoWiZ8wvInUVPA9ZRpOrdq4bqh8SLX3FNGRo07rrVSXYFZ0IWyrflgdFVBFxZzt1
-         vAZRKfVm6DrQ7eMbVt63ANM5n4pPA6au/nxyZdVYo3tt1gJ72qkKCCV2SvSwZF1/eQX5
-         XFxA==
-X-Gm-Message-State: APuU4Z8jkFYVEe1c4z8AsRPCnM/s94scif04M8qrklF8uAYoB/shWvH7
-	T0P4zN9vP1T2v769Ru8zL3jndyVNbJFaB5jVingaToftEZqaBUcmWnJPwM3zUK8nql9IU8Q1/xc
-	QhoD3I89ZayFLVIDaH7rSn3trQNIPmfM=
-X-Gm-Gg: AZFdTZdKxwWWL7XHdGDoDbzYkJsu8qovIm5b/MNVbw2NoSgebmka1m2L8viWEv3TUlP
-	AWq24jqnZrE3DuzEPBnSdoq81SYIdKLB18GwM6gJk0pEnTFJ7g8c3UJo0UQuaXYT7H5FJdElX1y
-	uSEGfx3PaWPrmSDHJbqhmehB9eNWngnkp8ARtSXGPngpVZ/8DCfSr8pDgRxh3oAbhrHoCUbpwzC
-	SLMHOY2QVoMVC2HNDC0vIa+HNNpIUaDNyiC+Gt9bw3/WOT6hpZtngIHlMhwrOZYfdprcCOqyi6X
-	gbSehbJOkzBGCTMaZYsr7m/gchhE4KYv20oV5wDts2RKj6AYQx9WM05E+iGLIGp3c1ndsQBVvQy
-	UWxY9k7O1OfK9aDUFtRFbosciAgS5y0gdPFav
-X-Received: by 2002:a05:693c:42da:b0:386:95e7:8497 with SMTP id
- 5a478bee46e88-38695e790e1mr11359692eec.28.1795524250539; Tue, 24 Nov 2026
- 04:44:10 -0800 (PST)
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Tue, 24 Nov 2026 06:44:09 -0600
-Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
- Tue, 24 Nov 2026 06:43:46 -0600
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CIe4TmdY
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C181F00A01;
+	Tue, 24 Nov 2026 12:44:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795524259;
+	bh=EioaRMd6eqHJ2q4oFGJHSd8yKli/WmaenmbovHLD7kM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=CIe4TmdY6br9AwtykCotco9JqqtkfH/WJSKKebGrNrp1nJRNaETh5VyuIAhCTDcip
+	 HNTg6G0cnMvBbFNNP2lHFrZkvd+uT+MU9WiZJFhUKiwURwFW2hxSLq2j9hAp6T1Tou
+	 hAF6+S+Zwz1JebfljFHSfDgXfrz70GLMMcUEnPCRZGmHpoxPkobTfWf3vEGqwYuYgq
+	 C0Vnjg1h+32bNYodx1Ajq+UZRjVx7hcZrNRUnuV65EW8rCMy9UmpW86bl3voP/YTrB
+	 /iaT8wwWdSqVhMDDM+eFrX/HNcVmxn7NCzb+Cwbm75V6qeOY/O6Sl4/jKq44oNDnAU
+	 hfqWfjujP6xlw==
+Message-ID: <sashiko-outbox-231167@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC v4 6/8] vsock: allow datagrams to use directional
+ transports
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sergio Lopez" <slp@redhat.com>
+Cc: virtualization@lists.linux.dev, kvm@vger.kernel.org, bpf@vger.kernel.org, linux-hyperv@vger.kernel.org, "Michael
+ S. Tsirkin" <mst@redhat.com>, "Eugenio Perez" <eperezma@redhat.com>
+In-Reply-To: <20261124-vsock-dgram-support-v4-6-3607484e85e8@redhat.com>
+References: <20261124-vsock-dgram-support-v4-0-3607484e85e8@redhat.com>
+ <20261124-vsock-dgram-support-v4-6-3607484e85e8@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 24 Nov 2026 12:44:18 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -105,151 +61,219 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Received: from 77377267392	named unknown	by gmailapi.google.com	with HTTPREST;
- Tue, 24 Nov 2026 07:43:42 -0500
-From: gdool88@gmail.com
-In-Reply-To: <20261124032748.1221979-1-gdool88@gmail.com>
-References: <20261124032748.1221979-1-gdool88@gmail.com>
-X-Google-Nh-Sender: AW_J_UqD7PilzehkqcEtsHCaEZTQ-LW-gWordbPibv_f69Rp0pj2gaQWOhvZrdlKxvI6Q3OS3BgKw0YPQVx-Lq3VLi7l_hdMspTZ4C6qEDwQRR3JLDtAKI89dDUVXPwBytBm4isKkRFfRMLQnrWaR9dOTgz3iCcG2mu4i7kvaUZF3V9JfkB6lcU95K232arRJKy9u7mwGiP6GY6ng50zduCWrACX28meh2iMPsjzHLqo-YSd6MdviPg_sYT_24AgNghkFB8uaNiH
-Date: Tue, 24 Nov 2026 06:44:09 -0600
-X-Gm-Features: Aa3M54okwDIzVUvAin0eRtSi3WQ0E0y6ioKmpmRwReilV-zctUEGyrhFcv4-Hvo
-Message-ID: <nh-35637c39-8c36-4115-9819-467ec8a93ad1@google.com>
-Subject: [PATCH v3] KVM: x86: Reject SMM on VMs with private memory
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Younho Choi <gdool88@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
 
-From: Younho Choi <gdool88@gmail.com>
+Thank you for your contribution! Sashiko AI review found 3 potential
+issues to consider:
+- [Medium] vsock: inconsistent loopback source CID check in
+  vsock_dgram_get_transport()
+- [Medium] vsock: missing VMADDR_CID_ANY check in
+  vsock_dgram_resolve_cid()
+- [Medium] vsock: per-packet global vsock_register_mutex lock on
+  datagram hot paths
+--
 
-A VM created with private memory (KVM_X86_SW_PROTECTED_VM, SEV-SNP, TDX)
-reports one memslot address space, as kvm_arch_nr_memslot_as_ids() returns
-1 when kvm_arch_has_private_mem() is true.  SMM still selects address
-space 1 via kvm_arch_vcpu_memslots_id(), despite the existing comment
-that SMM is unsupported for guests with private memory.
+commit 21473b8a230a0146483d0435292761949197fc7c
+Author: Sergio Lopez <slp@redhat.com>
 
-Address space 1 starts at generation 1 and is never swapped for a
-private-memory VM.  Address space 0 advances by
-kvm_arch_nr_memslot_as_ids() (i.e. 1) per swap, so after a single
-memslot operation both address spaces have generation 1.  The per-vCPU
-last_used_slot cache in kvm_vcpu_gfn_to_memslot() checks only the
-generation number, so an address-space-0 slot can be reused for an
-in-SMM address-space-1 lookup.  After the slot is deleted and freed, the
-stale cache can cause a host-kernel use-after-free of struct
-kvm_memory_slot.  This was reproduced on KVM_X86_SW_PROTECTED_VM by a
-process with access to /dev/kvm.  The same aliasing can leave SMM-root
-SPTEs that mmu_notifier invalidation does not zap, because it walks only
-address space 0.
+vsock: allow datagrams to use directional transports
 
-Enforce the documented assumption that SMM is unsupported for VMs with
-private memory.  Make the VMX and SVM has_emulated_msr() hooks report
-MSR_IA32_SMBASE unsupported for those VMs; TDX already reports it
-unsupported.  This disables VM-scoped KVM_CAP_X86_SMM reporting and
-makes kvm_inject_smi() reject KVM_SMI and APIC-delivered SMIs.  Reject
-in-SMM state, pending SMIs, and smm_inside_nmi via KVM_SET_VCPU_EVENTS,
-matching the !CONFIG_KVM_SMM validation.  Host-initiated SMBASE MSR
-access is unchanged.
+This commit enables AF_VSOCK datagram sockets to route packets across
+directional (G2H/H2G) and loopback transports while retaining VMCI as a
+fallback endpoint owner and unifying datagram receive queueing in the core.
 
-ChatGPT Codex assisted with analysis, patch drafting, and test design.
+Link: https://lore.kernel.org/all/sashiko-outbox-213343@kernel.org/
+Link: https://lore.kernel.org/all/DMGNAV67LK3F.2FNLTD5NVHDEA@gmail.com/
 
-Fixes: 89ea60c2c7b5 ("KVM: x86: Add support for "protected VMs" that
-can utilize private memory")
-Cc: stable@vger.kernel.org
-Signed-off-by: Younho Choi <gdool88@gmail.com>
----
-Changes in v3:
-- Resend with an in-body From header to preserve author attribution;
-  no code changes from v2.
+> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> index aef5389eeca2c..1880ff8ed9ca3 100644
+> --- a/net/vmw_vsock/af_vsock.c
+> +++ b/net/vmw_vsock/af_vsock.c
 
-Changes in v2:
-- Reject pending SMIs and smm_inside_nmi in KVM_SET_VCPU_EVENTS, as
-  pointed out by Sashiko.
-- Correct the description of VM-scoped SMM capability and SMBASE support.
+[ ... ]
 
-Testing:
-- On a KVM_X86_SW_PROTECTED_VM, v1 accepted pending=1 and entered SMM on
-  KVM_RUN.  Deleting its memslot then triggered a KASAN slab UAF.  v2
-  rejects the ioctl with -EINVAL and stays outside SMM after KVM_RUN.
-- Nine ioctl regression cases pass on v2, including KVM_SMI rejection,
-  VM-scoped capability reporting, and normal-VM ioctl behavior.
-- A private-VM KVM ioctl lifecycle test passes clean event-state
-  save/restore, latched INIT, and host SMBASE MSR roundtrips.  An invalid
-  pending-SMI restore returns -EINVAL without changing NMI state, and
-  the restored vCPU runs guest code.  Full VMM migration was not tested.
-- Separate CONFIG_KVM_AMD_SEV=y and CONFIG_KVM_INTEL_TDX=y builds compile
-  the affected SVM, SEV, VMX, TDX, and common x86 objects.
-- Source audit confirms tdx_vm_init() sets has_private_mem before vCPU
-  creation, so the common ioctl guard also applies to TDX.  SVM/SNP and
-  TDX hardware were not available for runtime tests.
-- A standalone reproducer is available to maintainers on request.
+> @@ -724,6 +802,113 @@ int vsock_assign_transport(struct vsock_sock *vsk, =
+struct vsock_sock *psk)
+>  }
+>  EXPORT_SYMBOL_GPL(vsock_assign_transport);
+> =20
+> +/**
+> + * vsock_dgram_get_transport - select a transport for a datagram destina=
+tion
+> + * @vsk: socket whose datagram state will be used
+> + * @remote_addr: destination address
+> + * @vmci_self: wildcard destination resolved to the VMCI owner's local C=
+ID
+> + *
+> + * The caller must hold the socket lock and release the returned transpo=
+rt's
+> + * module reference after use. A datagram fallback owns its socket's bin=
+ding,
+> + * but a directional transport takes precedence when it can reach the pe=
+er.
+> + * Parent fallback sets VMADDR_FLAG_TO_HOST to preserve that route on co=
+nnect.
+> + *
+> + * Return: a referenced transport or an ERR_PTR on failure.
+> + */
+> +const struct vsock_transport *
+> +vsock_dgram_get_transport(struct vsock_sock *vsk,
+> +			  struct sockaddr_vm *remote_addr, bool vmci_self)
+> +{
 
- arch/x86/kvm/svm/svm.c | 8 ++++++++
- arch/x86/kvm/vmx/vmx.c | 8 ++++++++
- arch/x86/kvm/x86.c     | 11 +++++++++++
- 3 files changed, 27 insertions(+)
+[ ... ]
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index e30ee8062..0b8cd1502 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4841,6 +4841,14 @@ static bool svm_has_emulated_msr(struct kvm
-*kvm, u32 index)
- 		if (!IS_ENABLED(CONFIG_KVM_SMM))
- 			return false;
+> +	if (!transport)
+> +		goto out;
+> +	if (owner->dgram_transport_match &&
+> +	    !owner->dgram_transport_match(transport)) {
+> +		err =3D -ESOCKTNOSUPPORT;
+> +		goto out;
+> +	}
+> +	/* Loopback source addresses must route replies back to loopback. */
+> +	if (shared && transport =3D=3D transport_local &&
+> +	    vsk->local_addr.svm_cid !=3D VMADDR_CID_ANY &&
+> +	    !vsock_use_local_transport(vsk->local_addr.svm_cid)) {
+> +		err =3D -EADDRNOTAVAIL;
+> +		goto out;
+> +	}
 
-+		/*
-+		 * SMM uses a second (SMRAM) address space, which a VM with
-+		 * private memory does not have; SMM is unsupported for such
-+		 * VMs (see kvm_arch_nr_memslot_as_ids()).
-+		 */
-+		if (kvm && kvm_arch_has_private_mem(kvm))
-+			return false;
-+
- #ifdef CONFIG_KVM_AMD_SEV
- 		/*
- 		 * KVM can't access register state to emulate SMM for SEV-ES
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 82eb891f6..b6d5b33c1 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7098,6 +7098,14 @@ bool vmx_has_emulated_msr(struct kvm *kvm, u32 index)
- 	case MSR_IA32_SMBASE:
- 		if (!IS_ENABLED(CONFIG_KVM_SMM))
- 			return false;
-+		/*
-+		 * SMM uses a second (SMRAM) address space.  A VM with private
-+		 * memory exposes only one address space (see
-+		 * kvm_arch_nr_memslot_as_ids()), so SMM is not supported for
-+		 * such VMs; advertising it leads to memslot aliasing.
-+		 */
-+		if (kvm && kvm_arch_has_private_mem(kvm))
-+			return false;
- 		/*
- 		 * We cannot do SMM unless we can run the guest in big
- 		 * real mode.
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 26e7beaff..4faafc407 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -3050,6 +3050,17 @@ static int
-kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
- 			      | KVM_VCPUEVENT_VALID_TRIPLE_FAULT))
- 		return -EINVAL;
+[Severity: Medium]
+Does this loopback source check miss the VMCI exclusions that
+vsock_select_transport() applies?
 
-+	/*
-+	 * SMM is unsupported for VMs with private memory, which expose a single
-+	 * memslot address space; entering SMM would select address space 1 and
-+	 * alias it with address space 0 (see kvm_arch_nr_memslot_as_ids()).
-+	 */
-+	if ((events->flags & KVM_VCPUEVENT_VALID_SMM) &&
-+	    kvm_arch_has_private_mem(vcpu->kvm) &&
-+	    (events->smi.smm || events->smi.pending ||
-+	     events->smi.smm_inside_nmi))
-+		return -EINVAL;
-+
- 	if (events->flags & KVM_VCPUEVENT_VALID_PAYLOAD) {
- 		if (!vcpu->kvm->arch.exception_payload_enabled)
- 			return -EINVAL;
--- 
-2.43.0
+For a VMCI-owned datagram socket in global mode, vsock_select_transport()
+routes both owner->get_local_cid() and VMADDR_CID_HOST away from
+transport_local even when vsock_use_local_transport() returns true.
+Checking only vsock_use_local_transport(vsk->local_addr.svm_cid) here lets
+a socket explicitly bound to VMADDR_CID_HOST (when no active G2H CID is
+present) or to VMCI's local CID (when VMCI is registered as transport_g2h)
+send or connect over transport_local, but replies to that source CID and
+connected-peer verification in virtio_transport_dgram_source_allow()
+resolve to vmci_transport instead of transport_local, causing connected
+loopback receivers to drop the packets.
+
+[ ... ]
+
+> @@ -1461,6 +1660,31 @@ static int vsock_read_skb(struct sock *sk, skb_rea=
+d_actor_t read_actor)
+>  	return vsk->transport->read_skb(vsk, read_actor);
+>  }
+> =20
+> +static int vsock_dgram_resolve_cid(struct vsock_sock *vsk,
+> +				   struct sockaddr_vm *remote_addr,
+> +				   bool *vmci_self)
+> +{
+> +	const struct vsock_transport *owner =3D vsk->transport;
+> +
+> +	if (remote_addr->svm_cid !=3D VMADDR_CID_ANY)
+> +		return 0;
+> +
+> +	mutex_lock(&vsock_register_mutex);
+> +	if (owner->dgram_fallback && vsock_net_mode_global(vsk) &&
+> +	    vsk->local_addr.svm_cid =3D=3D owner->get_local_cid()) {
+> +		remote_addr->svm_cid =3D vsk->local_addr.svm_cid;
+> +		*vmci_self =3D true;
+> +	} else if (transport_local || owner->dgram_transport_match) {
+> +		remote_addr->svm_cid =3D VMADDR_CID_LOCAL;
+> +	} else {
+> +		remote_addr->svm_cid =3D owner->get_local_cid();
+> +		*vmci_self =3D owner->dgram_fallback;
+> +	}
+> +	mutex_unlock(&vsock_register_mutex);
+> +
+> +	return remote_addr->svm_cid =3D=3D VMADDR_CID_ANY ? -EADDRNOTAVAIL : 0;
+> +}
+
+[Severity: Medium]
+Should the first branch also check that vsk->local_addr.svm_cid !=3D
+VMADDR_CID_ANY?
+
+vmci_transport_init() registers vmci_transport as the datagram fallback at
+module load time even when neither VMCI guest nor host personality is
+active, in which case owner->get_local_cid() returns VMCI_INVALID_ID
+(VMADDR_CID_ANY).  When a wildcard-bound or auto-bound socket calls
+connect() or sendmsg() with remote_addr->svm_cid =3D=3D VMADDR_CID_ANY,
+vsk->local_addr.svm_cid =3D=3D owner->get_local_cid() matches on
+VMADDR_CID_ANY, skipping the transport_local branch and failing with
+-EADDRNOTAVAIL even when vsock_loopback is loaded.
+
+>  static int vsock_dgram_sendmsg(struct socket *sock, struct msghdr *msg,
+>  			       size_t len)
+>  {
+
+[ ... ]
+
+> @@ -1493,42 +1717,34 @@ static int vsock_dgram_sendmsg(struct socket *soc=
+k, struct msghdr *msg,
+>  	if (msg->msg_name &&
+>  	    vsock_addr_cast(msg->msg_name, msg->msg_namelen,
+>  			    &remote_addr) =3D=3D 0) {
+> -		/* Ensure this address is of the right type and is a valid
+> -		 * destination.
+> -		 */
+> -
+> -		if (remote_addr->svm_cid =3D=3D VMADDR_CID_ANY)
+> -			remote_addr->svm_cid =3D transport->get_local_cid();
+> -
+> -		if (!vsock_addr_bound(remote_addr)) {
+> -			err =3D -EINVAL;
+> -			goto out;
+> -		}
+> +		connected_addr =3D *remote_addr;
+> +		remote_addr =3D &connected_addr;
+>  	} else if (sock->state =3D=3D SS_CONNECTED) {
+> -		remote_addr =3D &vsk->remote_addr;
+> -
+> -		if (remote_addr->svm_cid =3D=3D VMADDR_CID_ANY)
+> -			remote_addr->svm_cid =3D transport->get_local_cid();
+> -
+> -		/* XXX Should connect() or this function ensure remote_addr is
+> -		 * bound?
+> -		 */
+> -		if (!vsock_addr_bound(&vsk->remote_addr)) {
+> -			err =3D -EINVAL;
+> -			goto out;
+> -		}
+> +		/* A fallback must not pin subsequent sends to the host. */
+> +		connected_addr =3D vsk->remote_addr;
+> +		remote_addr =3D &connected_addr;
+> +		vmci_self =3D vsk->dgram_peer_is_vmci_self;
+>  	} else {
+>  		err =3D -EINVAL;
+>  		goto out;
+>  	}
+> =20
+> -	if (!transport->dgram_allow(vsk, remote_addr->svm_cid,
+> -				    remote_addr->svm_port)) {
+> +	err =3D vsock_dgram_resolve_cid(vsk, remote_addr, &vmci_self);
+> +	if (err)
+> +		goto out;
+> +	if (!vsock_addr_bound(remote_addr)) {
+>  		err =3D -EINVAL;
+>  		goto out;
+>  	}
+> =20
+> -	err =3D transport->dgram_enqueue(vsk, remote_addr, msg, len);
+> +	transport =3D vsock_dgram_get_transport(vsk, remote_addr, vmci_self);
+> +	if (IS_ERR(transport)) {
+> +		err =3D PTR_ERR(transport);
+> +		goto out;
+> +	}
+> +
+> +	err =3D transport->dgram_enqueue(vsk, transport, remote_addr, msg, len);
+> +	module_put(transport->module);
+
+[Severity: Medium]
+Can we avoid taking vsock_register_mutex and bouncing module refcounts on
+every datagram send and connected receive?
+
+vsock_dgram_sendmsg() and virtio_transport_dgram_source_allow() (on every
+incoming datagram for a connected socket, while holding the virtqueue lock
+and lock_sock()) now call vsock_dgram_get_transport(), which acquires the
+global vsock_register_mutex, does try_module_get()/module_put(), and
+performs multiple vhost_vsock_get() lookups per packet, serializing
+datagram traffic across all sockets system-wide.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124-vsock-dgra=
+m-support-v4-0-3607484e85e8@redhat.com?part=3D6
