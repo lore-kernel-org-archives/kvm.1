@@ -1,82 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.201
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795491218;
-	b=dj9s+wS0UVtvZ1whFji4juV/5p6U9BN21yArJlNyRRxPQ8yPa6hdGNd68I89HOb2bMKm
-	 TODT4APEp+sq3qToO9jTmfyOCz9FV9iama9NnGAWo+tm9mFG81c7N+iK+KLSCyXuD4C/e
-	 Iw1hIGzsQNuU5/VFZPBadzA4bbpAaIuGauTgqDpiaSivI6kVx5vFntW/2by/cEh5qi2HW
-	 9Z3raEl/mutWFOWoe68e+iZkvqQjGi8WtDwP2bqTve4eEkQXr27O2O4Ii4TkG6vWSRtaR
-	 TuXMhn7+jBh9P1f1hZFanNNn4nXySSmhyP2RLTqtAdpkpt/xcf4UeH9qJNRS+z/XAAQ==
+	t=1795491222;
+	b=tCvp6oh4ZtcGv94uT4+yT0Ot8VA5M319JSGbv3UwTPxD9lBARD/MXtBVDE8sNT8B+VvP
+	 QeHKkVBYBmuU0nCaUVZro7ALYpCSiYFotXP40k0D83WWmR/qiJZ/elrzwEcBNQqx65msT
+	 KtSIdjWffjvql6lE0SL/pl+3MNH78AXrC3pIInLukf5kz421KwZQV25QwoZUMajhJX21q
+	 YfadnkOuVs4QhwCgcuZaxPuFSXSazTtOO67aVKbjYTLXh3SlcQwcPisl3xel75FM9f0iH
+	 tVb72C3JCk2W20slvWCg4yPYzTkyUaE/rCSjv7pxNUkHXCju0oKwRtBytwJYi95b0Zw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795491218;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795491222;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=wj8SC7VUDAGsA7/l9+3e1xtsohCAj0LdZM2x+Y37EQs=;
-	b=qZ1UgJZZW7morAYYpmTera55B1ISUeoxZXdYYSjkp12LFbcspavIOXXA/cEFNN/xoj+p
-	 7/zOWJnUg7yi2FEVOWtSj8KGFCoBwsjcE51bn8r7NfdyeIOfY8ysPfANO/7ZI/9Aa5Zqy
-	 WYBxcUMMSgPkyr0E2Puv+TsVx69QLQiSa1/cmqQYc8PDYvrQ7RWoP+z2oadrdbQwCity0
-	 hhBuUj1tbyEZsuuMGgE2HPyPjSur+ISzmOCxvFllj06Ug7fLoFoVQ3KOUEma9JDee8GHA
-	 VNClzYBOuAK504kRu11CBlIVOxw4SBfO7vwxfjq+x4CvkaXFw8WtYgk9XTUbBG48Tag==
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=lP3ch59NAPtwcIuspqlGBS3z7FlOBtLkp+myFltPlfI=;
+	b=xi3P4kDJyYhOGRD/7tZBGeK4DvHkfzsIMU3eXgKXemGf2LT44xIXkLbT0tS10eST5uQN
+	 Lf4AVDzbUcX2PQFAwTs2/MHU5GJPkFyJp5fjffN5xfHThZULTpCWBmhgpD4qI/uzgUSoZ
+	 n2PYsB0d1vlK/JTJwcved8nl/r5rOvm/NvaoSxKeZYLGbQe6XZtIRWbwaT0R8cR54isUf
+	 smEQ9xwJeYw8n0AxWaEDEGJPNUs8ae3/o6cgNRKUFqfdkIvYdVM2q8qHeMx/VtO8j1yxB
+	 oc+VOLF7vCrr0RbAkkg4fxVze1XuWFsJrfrmif9izz4tdCHH36smtG+Pp7xBWDUak5Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gs9lhhOf;
-	arc=none smtp.remote-ip=74.125.227.201
-Received: from mail-pi2-f9.google.com (mail-pi2-f9.google.com [74.125.227.201])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=g9qMj1DA;
+	arc=none smtp.remote-ip=74.125.227.130
+Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608DB606A321
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 03:33:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 608DB606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B24606A322
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 03:33:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 75B24606A322
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gs9lhhOf
-Received: by mail-pi2-f9.google.com with SMTP id 41be03b00d2f7-cdd9779aac8so662246a12.0
-        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 19:33:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=g9qMj1DA
+Received: by mail-pj2-f2.google.com with SMTP id 98e67ed59e1d1-3b14c80b210so913053a91.0
+        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 19:33:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795491217; x=1796096017; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wj8SC7VUDAGsA7/l9+3e1xtsohCAj0LdZM2x+Y37EQs=;
-        b=gs9lhhOfNFnaLBtsSJI7wjtJzJJzC9AJGxvTLGqRAnSuXuQ6MOqZCLk0c9cGY+6Auu
-         4DbyBcRB/6R2ZgvRr+9027i0MtbRVfftVbdGnnjwq2kbECaTq+GUaQPdDhLpdSBwcve6
-         aqnA6YjMVIHkqxALJJNSRzkLYZXRGtFnMqjlQEwKgv+2hgsQwpZrMOANc9iyn92T4zTp
-         EkAO0jnHlnYckBOirYBmUJ3ExXuZppMPWiUMBe+5A2ldH/1NXsdlDqkYk60LDu0A7ILp
-         HaTnT0m2muOevY+Y5R4q5x+N8MWIBN7tMhWBVUU++80+bNaYC8LwvK4BXRaNxhYbCldv
-         oyhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795491217; x=1796096017;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1795491222; x=1796096022; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wj8SC7VUDAGsA7/l9+3e1xtsohCAj0LdZM2x+Y37EQs=;
-        b=dcoE70WBrhvto3xaUhkP9orod3wTvYVVr5eN5iwodhQghH33LUaqvTKeWo+48D+X/Z
-         A8069cmiqy3A7sQySVOa3PjEFFW368tOEjPbBUEyn47fZCjhBRfWS1HGn8pcr+46+5E/
-         +Q456aPKPA6SdSakUWrpCljcCAF8Z0D9PiO59k1ejoHTCTsllXSQ1GqOtkHd2k69BFeg
-         PGEWm3tJUjMdkmFs9mv6LrGO0IBzykwoKwm+DYDXSqnx3Ig602mNYtsuIBEQ2DKXl1N3
-         T4sjvGW3UCV1QmZcTNwIwMZkR/ZveOQzWENbx2q34VAl/KCzILrw81DubaEDDyZ40VS0
-         FAQA==
-X-Forwarded-Encrypted: i=1; AL+hErEfmUDWVFCvrIACXBMaA9yq39ktGiAKFx+im5v7NfDV/qgM31QcBrjr7a+DfqztBu+2KAQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8PK9aT2UjYZHzwzKKdFRzcAHJPyO5z4p/Kdy82gN/kwq2bGFHs
-	ScJIQUQhfEo0njhGiAQ09tV7bT7FR5l+5rllQPXo661jzyXuM3/A+VfA
-X-Gm-Gg: AZFdTZeNG29gNKDKu+NAcjOjCo4ndc5p2CuyFXQbQYZNJntCz4QAUzE3bjCNg5zAPr2
-	GQ92CmBPViDbK0ZojMWEnIfZgkPIXe2omz2WGBgSUgahIzCjYYbJvg/vPs63PqyS1Q8KURO1ZFB
-	uIQbCI6vgiWHwKe/Aw9pbtPpouYVYP6W2B473CrbicdkZipoHX/SZ4VgAZiGMiylu7CEQT1wh5l
-	lt9NMNUdXPlgWUjfSlVDXTSwX4JCgtqNgpiM91R/UJeEIthGcO3ZW/uUZah78/aAndHkBOrwyvV
-	iOteO6jwGt/GAZN8RDl1kNplsA5LmmLaRBtbj1XxshiOMK7mJcR6wJMT4VFe6qT374gd7gdnJtx
-	R8UO+UdTbFcTHQduwfPdf+fvp8lYfOgkdxPk6qxa931EAOIXyAFgxhulp3uulhE5BVk6c8c30B0
-	znuBzx7c/YIOxQW6Ak5jK2//flgAjwHqGfUi8dILCK5baIA4m/D0aeZTAJFft09agWUsHpKuTQV
-	e/1ZDsnoLk7wRvaJkHk4MdvNz3seD3oCDQ94IDYQmU1O57fdEo7qBi2pcXUJ5kmiidI0LsedG+q
-	GfiLsTNOaq+hXxJ4twjb54oKQPWEVyx30rZaVxuUhw==
-X-Received: by 2002:a05:6a00:414c:b0:87c:e44e:5694 with SMTP id d2e1a72fcca58-8c87c3882fcmr11093633b3a.21.1795491216650;
-        Mon, 23 Nov 2026 19:33:36 -0800 (PST)
+        bh=lP3ch59NAPtwcIuspqlGBS3z7FlOBtLkp+myFltPlfI=;
+        b=g9qMj1DAfbSgv7PoH2K/ov7yLNupPTQrt80IYN2IyGMQKt/62HIN8JUH2r6VxjqVjc
+         wBdYQZv0nmz7dkzwhKZ/9aJxi0tucck3CQoH9+uR5crt/CJCZ0e2HvFaxk4FRtoZ9P8M
+         X+AcoYaqkNKLpD23XqRkpwtkDp1wWAIgBnfrvbbfiWoUQVKbV7YZ0AmuUCdsT1BrCxKf
+         KJs7Vrmg4n3r4eaujkRyJAWqs8Ci7ZjkvEQoLhxBly9Ft7fcqRtFlAthjSyY/kGr6pwC
+         ipqGX6vH3amwTQzkqmBbgZF500997lie+Cw/g+XnctUUHvOtRrqYgC55hm9xyE7eFxTl
+         kkrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795491222; x=1796096022;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lP3ch59NAPtwcIuspqlGBS3z7FlOBtLkp+myFltPlfI=;
+        b=EzxHgCiLkLoYXdSOI6/czvr9aCk+56NTpshDWEfgb7y6GqvDzbBRvRHK5LLTVkylkT
+         fR3X+2LjsyKAKuvHnx8Ak/fCZW0ji9oOA3r8Q7qByjMmB8vXmIyISvFdzA4dXMDmSEzx
+         vJO5tXC4FoUSaQdckuYAKWHvmliR02Z5hCucoZv5XGmCfZRmPJuvVZnruJSW+ZNMTdTM
+         XylXUT0IO38Rq5wrbRq8zFOBm3++cl3ktPRWCjYwFcmxVKYvE16CoZFF8Cmfx9s9ar9Z
+         bhh1gXY2u4GoG0uce6mnyuvJTKgmwKc2jWiTQfjgcDx9yEayWRVjQRRx8muUywhbflTF
+         aDIw==
+X-Forwarded-Encrypted: i=1; AL+hErFi6CF7VvtgA8XE3Y5oewrgvhDcRQQ6BZvflqe/bEmZngi3x3GIN0Adn9C1FEk/tzQ5SUI=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9uhN4Q/Ar4m1itpb8yPwari7ORpk42uIFllQbgFY6H5vGUZOIO
+	nXNKT5yTqv1jnYWZsGleopVuie+i5ik40yljug9jWDCQSoKc4Gz6xKBi
+X-Gm-Gg: AZFdTZfyGWZTzGf0Hl9KvpH9NAxIeqZOCF9CdWqc0RgxVNDwU9LAFzMzLIACG9OyOYc
+	lpoqX7YV1UemNQFikWgtnbOZmg41Z+K24qFuBxe6l0l6d3GkktLueyvKBFj0qx/kOYEmTIw8EgM
+	Q5rM+2UYEN9zO3eMztXXnHUtyx+J3sgKfNcSbhJg2AUx0NE0Dev8s5GlwqFhC3JPyWFEIItiJln
+	G+8PogDmt6K7zO2W4JGXrHtZsO6BQ6sW8xT1cUK6k1M1HserU+xdgKJdUdnrmQIuHulzHXE3csY
+	ZJxMO+/NH3CRhCtihaWP1LbtEXhifWxVJm6O79EdGMcAYq/Inn0AzGUn+kKrjnivtmOUcTO9EZT
+	eRBbvDsUQd8i3LoFW8d17Fqr9YALd60CxwpVPKujYxWisB4nW5dgJ87Wtqs1tJx3RhZ5+1IYv+s
+	Z+DNx8GPcf1GLec+sF00Z40hFwP1t6UUEZAaLhS6ZTA7zqkgXR4qxmHABu6Ma9Gf1/aJvG1h1MX
+	NCBq3AFW6n09rFij/i+CTwuxvQ6gv5jPznoOREkExD7dbcSjZ2I/sIcGHCIgW5md2I6tk2hVQK2
+	hqR7yEYVg8L+EPWfnm0gtdENPTfT/0V8tZXWFUczQA==
+X-Received: by 2002:a05:6a20:7489:b0:3f9:a6b6:e16b with SMTP id adf61e73a8af0-4014c94a618mr11685070637.21.1795491221907;
+        Mon, 23 Nov 2026 19:33:41 -0800 (PST)
 Received: from q-Legion-Y7000-IRX9.. ([223.86.210.47])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c87077bff6sm6495773b3a.3.2026.11.23.19.33.31
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c87077bff6sm6495773b3a.3.2026.11.23.19.33.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 19:33:36 -0800 (PST)
+        Mon, 23 Nov 2026 19:33:41 -0800 (PST)
 From: Bingyu Xian <shanbeeyoo@gmail.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
@@ -95,10 +96,12 @@ Cc: Shuah Khan <shuah@kernel.org>,
 	linux-kselftest@vger.kernel.org,
 	linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/2] KVM: selftests: Test steal-time dirty logging and RISC-V STA transitions
-Date: Tue, 24 Nov 2026 11:33:26 +0800
-Message-Id: <20261124033328.612894-1-shanbeeyoo@gmail.com>
+Subject: [PATCH v2 1/2] KVM: selftests: Fail explicitly when schedstat cannot be read
+Date: Tue, 24 Nov 2026 11:33:27 +0800
+Message-Id: <20261124033328.612894-2-shanbeeyoo@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261124033328.612894-1-shanbeeyoo@gmail.com>
+References: <20261124033328.612894-1-shanbeeyoo@gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -110,67 +113,43 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series extends the KVM steal_time selftest to cover guest RAM
-dirty-log tracking for steal-time accounting writes across architectures,
-and exercises RISC-V SBI STA shared-memory state transitions.
+get_run_delay() currently passes a failed fopen() result directly to
+fscanf(), and substitutes MIN_RUN_DELAY_NS when parsing fails. Steal-time
+checks need real scheduling delay measurements, so neither dereferencing a
+null stream nor returning a fabricated constant is suitable; repeated parse
+failures also cause polling loops to spin indefinitely.
 
-Patch 1 fixes get_run_delay() so that missing or malformed schedstat files
-fail explicitly instead of dereferencing a null stream or returning a
-fabricated constant that causes polling loops to spin indefinitely.
+Assert that opening /proc/<tid>/schedstat and parsing both fields succeed.
 
-Patch 2 enables dirty logging on the shared-area memslot in the common
-per-vCPU test path, clears initialization dirty bits before checking
-accounting writes, removes the v1 #ifdefs from main(), and tests three
-RISC-V SBI STA transitions: disabling an active area, re-enabling the same
-area (matching the SBI calls used by Linux RISC-V guest CPU hotplug
-callbacks), and replacing an active registration directly with a new area
-at the end of a second host page.
+Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
+Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
+Signed-off-by: Bingyu Xian <shanbeeyoo@gmail.com>
+---
+ tools/testing/selftests/kvm/lib/test_util.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-Changes in v2:
-- Split the get_run_delay() error-handling fix into a prerequisite patch.
-- Move the steal-time accounting dirty-log check into the common per-vCPU
-  test path and drop the added #ifdefs from main(). (Andrew Jones)
-- Separate RISC-V SBI STA disable, re-enable of the same area, and direct
-  replacement of an active registration; clarify that the selftest invokes
-  SBI directly rather than running Linux CPU hotplug. (Andrew Jones)
-- Drop the MADV_DONTNEED check, which discarded guest page contents rather
-  than modeling migration. (Andrew Jones)
-- Clear initialization and transition dirty bits before each accounting
-  check so registration writes cannot mask missing accounting dirty marks.
-- Force bounded runnable CPU contention instead of assuming every KVM_RUN
-  advances the sequence counter when run_delay is unchanged.
-- Size the RISC-V two-page region using the host page size for 16K/64K
-  host page compatibility, and fix Author/Signed-off-by formatting.
-
-v1: https://lore.kernel.org/r/20261115085457.889873-1-shanbeeyoo@gmail.com/
-
-Validation:
-- RISC-V (QEMU TCG + H-ext L1 KVM): all 11 steal_time cases pass; local
-  controls confirm compatibility with skipping zero-increment STA updates
-  and immediate detection when the accounting dirty mark is omitted.
-- Separate local 2-vCPU RISC-V Linux L2 guest run under L1 KVM confirms
-  SBI STA detection and 3 CPU offline/online rounds invoking
-  pv_time_cpu_down_prepare() and pv_time_cpu_online().
-- x86_64 (host KVM): all 8 steal_time cases pass, plus fault-injection
-  checks for missing and malformed schedstat files.
-
-Note: AI tooling assisted with review analysis, test rework, and local
-verification; all changes were reviewed and validated by the authors.
-
-Thanks,
-Bingyu
-
-Bingyu Xian (2):
-  KVM: selftests: Fail explicitly when schedstat cannot be read
-  KVM: selftests: Test steal-time dirty logging and RISC-V STA
-    transitions
-
- tools/testing/selftests/kvm/lib/test_util.c |   7 +-
- tools/testing/selftests/kvm/steal_time.c    | 233 +++++++++++++++++---
- 2 files changed, 210 insertions(+), 30 deletions(-)
-
-
-base-commit: 23c62304dde29abe92013d85910d03a77dada35d
+diff --git a/tools/testing/selftests/kvm/lib/test_util.c b/tools/testing/selftests/kvm/lib/test_util.c
+index f5f7189f9..eccb03153 100644
+--- a/tools/testing/selftests/kvm/lib/test_util.c
++++ b/tools/testing/selftests/kvm/lib/test_util.c
+@@ -417,13 +417,14 @@ long get_run_delay(void)
+ 	char path[64];
+ 	long val[2];
+ 	FILE *fp;
++	int ret;
+ 
+ 	sprintf(path, "/proc/%ld/schedstat", (long)kvm_gettid());
+ 	fp = fopen(path, "r");
+-	/* Return MIN_RUN_DELAY_NS upon failure just to be safe */
+-	if (fscanf(fp, "%ld %ld ", &val[0], &val[1]) < 2)
+-		val[1] = MIN_RUN_DELAY_NS;
++	TEST_ASSERT(fp, "Failed to open %s: %s", path, strerror(errno));
++	ret = fscanf(fp, "%ld %ld ", &val[0], &val[1]);
+ 	fclose(fp);
++	TEST_ASSERT(ret == 2, "Failed to parse run delay from %s", path);
+ 
+ 	return val[1];
+ }
 -- 
 2.34.1
 
