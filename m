@@ -1,78 +1,118 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.224.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795525807;
-	b=yYsSTAkPnjG7ZxRaJqoprsEpC2FxwuuCYepL8wLCcsaXkh1I0bxMBWzWpO4jiKMSs+OV
-	 6FBqsPXWVezPYK/BL9PcHqmTFPWC9aU6nDij7O5vRh4Q9kgUqyh98QxtyPFXMgx2/2osR
-	 HYeGtQ9BsP7Y5IvyTmMtNVe9byYyzuh36YapxVqg0NoQgZe8WglR+CIuzXIqrYGk+BEXL
-	 raZxhmRuSOikEUeILuVxiotgXhZy5Zbz1d+P934PuMWcGKUMaoK88O3riZ4rhMuUyd9Nx
-	 VU4GTSvslLGPSU90AoYEFDr/wDaaL+idfhAMeOaNolbxRtR97zZ8z3788ESdHbK63Ig==
+	t=1795526204;
+	b=meVmgLP62BDQjL+L2b2xt4TVf/ft8H4rlf0gxW9sZOdYqZN3LqdlPh4gSZ/EH7tHcfpK
+	 SwQIJwux6TVdehNrD4Lq3gBc3CU/NhJSbDiDPEEv7nCJjPKb3QAENo0mey2AGrMFm0Rv5
+	 c0/szvf9Cjta9CdwuTI7wLhBHj5M7GyfZPz9Hk/lq6cwsbBI+W3xBXKeeueZL+7pmiOPU
+	 bpNZGwChUPLItnvauYtBadwS9D4dOTb8OJ5ncjSY8fJrttwiEVqxwnjdLuFx4mBXap+f4
+	 DjXSBiVIyWAx+i4TcM58P4P/cnv3bUczeuPh9HKt6vM1+N8vUv6yIp9M49QT+gtUOuA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795525807;
-	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
-	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
-	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
-	 X-SA-Exim-Scanned;
-	bh=Z3NWK5cLOijzuItkhwXkwNPbHwJin1fTuYBbbki6ORI=;
-	b=PAU9V0fWjy2Mqq5P5VPW+TpCOhtqSKZHuXDYcXAjLauRaDDUljVqnUXphDTFP33hagA0
-	 5fIT3PAo3mmCKCVORnM6agWtKUenhO3O6yHT4hAZ+tzgcRcAYcKE5bGwsP+BQtyNZUBY9
-	 CJ/a2DfMolvx3hlhTNDhLoSdk8eC1fH3+POF53rNkZBNuEWtr5Qi5kPrxDhFpt22p0pwF
-	 rkpd8v4nSm1Ow3mKre3pJdREdceWy1xs8ykC7lgXxjGfF4Ilk9MCWL2j/Pe7Iel/jkry+
-	 4omZCsmj2v4vVLFKkPXL47+iKZSLA9gAjeA28U/a/VYeUZhAeDIN3qMXfDx9gcYW5QQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795526204;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=0prXWPyKnaONv+XVyeK4p1EFWEfFGuwvhH1CWWabhJE=;
+	b=UR0PG4jxBOa5PPyWYY2a+AhBDJMRa/EUeCPZYhAvh1MuCOigNg8lxUlVk+nNDjTvJ9+4
+	 G3me898wsp4ARHXmAxQI6HD5bPxGn/RhFYT7c2p14fjE1etNggQTlnexCCtRZnCU7DHbK
+	 kFFzmkxlCfUfRAYZVOXm1v4U+emgmPBEtMFngwLuvaQkfj71rvdrDJERzgGTUmZDap+5v
+	 QnWkKniww8+RbxG8zS/6PSBUSIXM5P+qwMcNCewFyopH2OOowuoowXM97tarIRD7+jB4t
+	 ++r/1qMY9s6gw9GU4BBLYGx/mR4LDMfHTfXh75cQpDxTUzd8pBCCccWVcmkloJxUOuw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X0QNvToG;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=d8A3Qew5;
+	arc=none smtp.remote-ip=74.125.224.44
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3976606A31E;
-	Tue, 24 Nov 2026 13:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384A8606A326
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 13:16:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 384A8606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X0QNvToG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D851F000C0;
-	Tue, 24 Nov 2026 13:10:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795525807;
-	bh=Z3NWK5cLOijzuItkhwXkwNPbHwJin1fTuYBbbki6ORI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=X0QNvToGXtckZFbW+UoARbViFoCfBnXhVDDwI1XkbcWrUksYFrngLCyTtTIWGQpsk
-	 0BQnnXr6ZkOsAVYrbETr1rus/d1lTaP5rV+4gAwivLWSscyewP5X2zeBtjJWtjJkCo
-	 FEDWLwCynU6pD7wQDBtu2QsYMNcuhvEdFh2IoosoP1mG9SqZUTiyH7ceumcWZVEpCI
-	 7reSYgJq/P13bLyt9pTNx356QSA2Hjw60m3NJgdg3425aNSw7qRTpifjo0d0GJszaz
-	 dDyvlyeq62OUngXQI0oG2S80VBVIFeVItu6x3L+iG3u//4Od2x1r6JxbVsNIOZjKZO
-	 mmqLk4B5CutYA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xVqHc-00000002aNR-3azu;
-	Tue, 24 Nov 2026 13:10:04 +0000
-Date: Tue, 24 Nov 2026 13:10:04 +0000
-Message-ID: <867bi2z87n.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Colton Lewis <coltonlewis@google.com>
-Cc: Oliver Upton <oupton@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=d8A3Qew5
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-67da564d9f2so5995291d50.1
+        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 05:16:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1795526203; x=1796131003; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0prXWPyKnaONv+XVyeK4p1EFWEfFGuwvhH1CWWabhJE=;
+        b=d8A3Qew5zvLqzK7ifhPLlfqioCREpmfJ/ufDuC7F/5ssCfaC3RpCNWa/U4ObBLRPEb
+         KmqKnykDd74s/kautjmAq6jdO1mO/FbnQocM5D2xgQhQ1BW6Lw6XgRtoXRqeyrXZ3xcD
+         Ph1VN1Rz/NYbJRwEDCdCZ1TQ9c3VIX1TBeS7HbtfSHJfjiwZLFR21T8hoNoNTxjKB+Ls
+         rgchTnplgcZJCVCdMBPsAQRXQUNz71A6BIj/EiT6AU9TQ9tlyHswlU+glWC8BqAOp7nC
+         4b2Nqrn315qd5jC3dKSUwS1nElkC7FvegoieImbo3tWNzHIHrGZ45Bn6NiNNol/I73qZ
+         aTzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795526203; x=1796131003;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0prXWPyKnaONv+XVyeK4p1EFWEfFGuwvhH1CWWabhJE=;
+        b=OBFCx35Q8nPETyS+fHiLPVlcrGSQ0bVXIQAJ3uXvCta+XfZC4KoA+u+1tWx6DqWKCr
+         LC4wq4OZaMAL1SRlaQp2BmsjLr0Q0Oec1ZEU81ht833PQHDYDe4la47rDak/rGQHZBRe
+         NwS9pJ/S1/Ksh8kpmxQxSAXn/yNDUkNyM5g5Cbhr4xXaphGxPOUvu9BXAq+GCXzqcxzU
+         76y+JpL1/oevj3ja18KSU6eD4B5bNNSKo4ZnJqILCDN4IM4dSd5Qwg+f027VJkgmSYyo
+         ae4HgtOFQsmY1Yga4lhYiUKyr/9qB6NkC9NKFUzpf28LHnck+QWftWm8YOgVIlmNczB2
+         erSQ==
+X-Forwarded-Encrypted: i=1; AL+hErF970t/MPBDt0r7tU9pf0xbMSiNkSkdzLXUsKNXQ6km6dR1sFvgOmU4uP0BtuQyvnRRvuM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8EguBgwNWoXPIiKgBGZaKJm9nFnMqhkAdyO2d7EVeboN7xUjSH
+	YyEnojdJtMO3Zpq/nMor8uCGGGgfsg0UI0LOLXLBduUfnLDzCUfefDrxzwEtdJnWgVI=
+X-Gm-Gg: AZFdTZcxGH7aS00p9ojPHa5Wx5SOodxQBPkEDoQNHA6mb3QM2A8ATYLCpEm/UMiC7qd
+	TubK/ufSVoW+KhASepywhrM17TAcV9M9Ba6GF0Wq6OZPw/ARNjYG87cizHZAbw2A7mRaooOMnkM
+	Jyj3cBhUUPLJIoRIZcaa52orvIzgk9jaFNqjd2ldMTv5PVE4cu2d7yMPFLZ1a8BZMWaGPgHCgES
+	In2DXITVrL0dogCs9Jrv23oXzbDunRK12vnuzbmFaTOkx3FtzjwI4Rd7plT8JuY1dkNLaycSpkf
+	1o2o5ZwZOUDwEfQB4PoLMN+JXV4b7cypUqvpZemjT/XlMXVPkNWxpxH9x3NBYzaanRsYg+GHszf
+	1nmyXYMwcrYbBXT+NYKaH1mK5qHWwxIJhxpdNhlKiK8WH3znFwozhgZ6Ku9bX21sfhrAm5OAWS7
+	z9nieXyE8IEpNFnBUvsHSQppxkOSLMS8dW0fC815Cu/fcM3YtWIugGMSXcE0fkR/CkX5msD1al+
+	1H01ks+sIhlgJMLebQUJJjmUnBdTR5P3uiBvTGhLDq5mdnwIyyCbNaBRuTlDaf/D6E/vEjkRKjY
+	XicKEA==
+X-Received: by 2002:a05:690e:813:10b0:67c:11c9:2d10 with SMTP id 956f58d0204a3-67df449142amr3986970d50.89.1795526203028;
+        Tue, 24 Nov 2026 05:16:43 -0800 (PST)
+Received: from ziepe.ca ([142.177.118.84])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-949bb38322csm1037775085a.17.2026.11.24.05.16.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2026 05:16:42 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xVqO1-00000000P3N-3lUT;
+	Tue, 24 Nov 2026 09:16:41 -0400
+Date: Tue, 24 Nov 2026 09:16:41 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Nicolin Chen <nicolinc@nvidia.com>, linux-coco@lists.linux.dev,
+	Dan Williams <djbw@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Steven Price <steven.price@arm.com>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Wei-Lin Chang <weilin.chang@arm.com>,
-	Dan Carpenter <dan@pereq.eu>,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] KVM: arm64: nv: Discard undersized TTL hints in compute_tlb_inval_range()
-In-Reply-To: <20261123232647.3733149-2-coltonlewis@google.com>
-References: <20261123232647.3733149-1-coltonlewis@google.com>
-	<20261123232647.3733149-2-coltonlewis@google.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	Lukas Wunner <lukas@wunner.de>, Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
+	kvm@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH v1 00/10] PCI/TSM: Support guest TSM drivers
+Message-ID: <20261124131641.GE9566@ziepe.ca>
+References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
+ <2026112325-emit-squeezing-5d96@gregkh>
+ <20261123090623.GK14811@unreal>
+ <yq5a7bi3riha.fsf@kernel.org>
+ <20261123115803.GN14811@unreal>
+ <yq5awlq3pto0.fsf@kernel.org>
+ <20261123135638.GO14811@unreal>
+ <20261123152533.GE179082@ziepe.ca>
+ <yq5aik1n4iz3.fsf@kernel.org>
+ <2026112429-expansion-wilder-a0c2@gregkh>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -81,42 +121,39 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: coltonlewis@google.com, oupton@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, fuad.tabba@linux.dev, seiden@linux.ibm.com, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, weilin.chang@arm.com, dan@pereq.eu, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2026112429-expansion-wilder-a0c2@gregkh>
 
-On Mon, 23 Nov 2026 23:26:46 +0000,
-Colton Lewis <coltonlewis@google.com> wrote:
+On Tue, Nov 24, 2026 at 07:44:03AM +0100, Greg Kroah-Hartman wrote:
+> > @@ -617,6 +619,7 @@ enum struct_device_flags {
+> >  	DEV_FLAG_OF_NODE_REUSED = 7,
+> >  	DEV_FLAG_OFFLINE_DISABLED = 8,
+> >  	DEV_FLAG_OFFLINE = 9,
+> > +	DEV_FLAG_DMA_CC_PRIVATE = 10,
 > 
-> When an L1 guest issues TLBI IPAS2E1 with a non-zero TTL hint,
-> compute_tlb_inval_range() takes it at face value. If the hinted size is
-> smaller than the actual mapping (for example, a 4kB L3 hint on a 2MB
-> block), kvm_pgtable_stage2_unmap() clears the entire block while
-> kvm_remove_guest_s2_mappings() leaves its stale tracking entry behind in
-> guest_s2_mappings. On 16kB or 64kB hosts, a 4kB hint also triggers
-> WARN_ON(size & ~PAGE_MASK) in kvm_stage2_unmap_range().
-> 
-> A TTL hint smaller than PAGE_SIZE or the mapped entry is wrong. Check
-> it against PAGE_SIZE, the shadow stage-2 leaf size, and the guest block
-> size encoded in KVM_NV_GUEST_MAP_SZ. If it is too small, ignore the hint
-> and fall through to the unhinted invalidation path.
-> 
-> When falling back to the maximum mapping extent with stage-2 disabled,
-> size it from PAGE_SIZE rather than VTCR_EL2.TG0 so 1:1 shadow blocks are
-> still covered.
-> 
-> Fixes: d1de1576dc21 ("KVM: arm64: nv: Handle FEAT_TTL hinted TLB operations")
-> Signed-off-by: Colton Lewis <coltonlewis@google.com>
+> Again, NO!  No "cc" nonsense for device states please.  That's an insane
+> policy decision that will be driven by userspace crazyness, NOT
+> in-kernel stuff.  The kernel will give userspace the tools to enforce
+> this type of policy if someone so desires.
 
-What's the advantage doing all this dance over the patch proposed at
-[1]?
+This may be the wrong place to put it, but this is not a *policy*.
 
-	M.
+This is a "DMA property" like dma_mask, coherent_dma_mask,
+bus_dma_limit, dma_range_map, dma_params and so on.
 
-[1] https://lore.kernel.org/all/20261123182312.4842-1-maz@kernel.org/
+The name mirrors the DMA API name for a related idea:
+DMA_ATTR_CC_SHARED
 
--- 
-Without deviation from the norm, progress is not possible.
+Unlike the other DMA properties this one is changable dynamically
+depending on how the HW is configured. The TSM is in control of this
+HW block.
+
+The userspace policy input is how to configure the HW, but once
+changed the DMA API switches to following the new HW parameters.
+
+Nicolin, can you put this in its own patch with a good commit message
+so we can have a discussion where it should live?
+
+Jason
