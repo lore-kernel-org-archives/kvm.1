@@ -1,55 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795556442;
-	b=icf1Y3wtVxEVWcs+DEigPGvPBfK8tMkE/K4/rcgsNaCTMslnapdUHswq0D/mkcrttOwz
-	 ka+EqGpw4igKRdJ4LNn/XflpswiuxLotMp+++sZKrQeYYdsQidTWZ24gyt/xijeCqZ0WT
-	 w4WsWqi6/gVAiMuzLeg6rCZ7xzmCkzHYBVq1C8NBIYEHAtwEm7W/0ncS4lTJPfBt4rjXj
-	 UdcdYIEzbqOhjOqQySQCac0n5k9+JQgLs8xkIMgxLcFiIMjSLVuLZmtzk16LcHqvPbl+R
-	 7Wnc78Jf19IKKz/ftISaw9Zw1kknXPt/jWNukBh9wdy05BK+pxRMpcxY0Hui6nxXYUg==
+	t=1795557204;
+	b=YDtzHa99AmO7IdZbiFD7t+MYSQpf49afX/9iCbSiGcpHmVP2QTUSOX2rvOVly47n9j9t
+	 tEn1fWiBRwsIxU6JGlNHF/MQwGCVa5OW52c8jRy3YCrR48+SsyeumfIO2yCCGkw1r4r6K
+	 Xe/KoIcnkjQgfT+B2HXHYSDvORTRl+MeaqbVT3wXAo5j7nfn6DGj5ZI26e3oTcUJFh4x6
+	 M5VNkwSrUNz2nCmIrknpy3avgZwVL8ky3aQ9CEZ4aE0xyawu2/ynJ7UPjynYf199DeqdY
+	 ZdgKzyUaEQzcCq/NNo4VF4Ax47LosGXwZp8gVfMaXhKujNRiiJ3IgKnDf9S1mhfaMNw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795556442;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=phiuX5Zb8P8aFyzSkr8Lt0LpTmJabsik6/9jkby6ebg=;
-	b=Z9filozunvAS3KHy29HHT8hh0cSlZgmKgmdt79QVkmcfhDGR/QHlPlMnh/PpPKmG+hcH
-	 xqVY0roadpD/xkdVg872lO+xbCWRLW/so0oa2DRPiv7LwwE0/QaRBrToQxGYg3SitvBh5
-	 Op5YH6KIsIWc8eVolockKriA3FzDQc8wcdhTrUFOntvmRc1aqeHBRqdudGNNC6UQowJAw
-	 AjCL5VouZgD0uLFA5/AYaprVXrUY5OpfTOqWQocBqQufQZSJUaZcO8wDEKUsbA8wthto1
-	 flLVKdCdGkswKUivEGJklfOp7lSth4DCj3eDii7te/ekzOe0MW92crQst1RSCWV8WFQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795557204;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=s4KO4ShEkRM27eT1BnoGTuu5UEFD3sYPPNxzfYRauso=;
+	b=1oRmm2AEqS/hSYc33sjBr3MAaR44p56H2SneiUkkh7btjRD1RUh/6rjfN7AKBOAaNznN
+	 mhUtrV5TKdCCpNzrMI6u5vsc8s8fLV8nYJSnJKjLSJt2i8dB2zUoioGZwG6DsC81WyjuA
+	 yTeuiI7u3CuWVhag66dC1rHRGwLoMgobm7FIiysF03nc2OGzdmMKN27Y6q5XNN9OlcIvg
+	 hQRDDb0JxzHbHQfDS+jka+kuYeHNRd3v/8qovPT1cLzzrMJ6ufZwCXSKhI6nAMEIFrGNW
+	 5xE3O/A2plwal/kCwiwUsCnxUjYbAgvbRqgHF+qyyPJIrhNUcJHA4OlySUFOXUDvxXQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WlD3i1n3;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hVuNHmpi;
+	arc=none smtp.remote-ip=192.198.163.9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643B9606A691
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 21:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD67606A332;
+	Tue, 24 Nov 2026 21:53:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FD67606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WlD3i1n3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006FF1F00A3D
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 21:40:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795556442;
-	bh=phiuX5Zb8P8aFyzSkr8Lt0LpTmJabsik6/9jkby6ebg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=WlD3i1n3u4fTNxFSHE93F9suawNf/wd5zgjxW0Bhg7bnCAtmXf1/0RcbiOnW3O/nh
-	 O50cHHfMkhjVDzkAfNi5ehY5ymP61FNWnYuKt6FanCmRn2ycsN4qziHKllbYD4h0ph
-	 EME8GjIQFVS37hsn9cqUN6lAIh6pSlcu/JFi5fPxs3VkhNqzZfKCp/ToLXf686MxIy
-	 KVJ8pNdnadVOIMraG4ZT+UwgMbAuIBVxGBOCbddANId/GIwx94jAsNcR8YTmDeskjA
-	 49bYOjbrS/zfkQ6oNWixORhJIarXUHLKPr5kjgnLRUbSktrfiVkHGxalMgf2TyuPhh
-	 TlBCDZ/SI98oA==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5c14f3dab66so4527058e87.0
-        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 13:40:41 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErEYvHvUpIlCUO3RMcywJrR3vlNYPI9B3UT1MkxK8GimtVBgJERSCXSyHaW7k99Z080KRwI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/d8jXbdrFF3eaJA4wChh4pfE4sKPvTlLd0rpXFzSFNurt7bbIa
-	Wm4AfbxLAyNIMdq68g4V24NMo5pXWGlqDoHIwxgyR0WL9pz8kojyZEJr4X9jEu2fTeSUZrkbbd1
-	R5PY6MRWtve+XtYQQxxYfmyJ5bBN4vEU=
-X-Received: by 2002:a05:6512:32c8:b0:5c1:46f8:913c with SMTP id
- 2adb3069b0e04-5c1b7c00f96mr4380577e87.20.1795556440465; Tue, 24 Nov 2026
- 13:40:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hVuNHmpi
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795557202; x=1827093202;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Kf+ZXGgPPvoA4Fn3IiUFVfGm2RNG8r+Vv1k50Mx8NRA=;
+  b=hVuNHmpi/aSJpSz3L/GcAAdys7c3+ajdeKXe21DU+0SRvtYt/oOPzx6L
+   wLf/qurhLJmEyZAGGINbrRlginJh1EdNUWTxP8qeOUe9g7jQuNGcwIEAU
+   Z6RGUIKU+P15ODNEPx1UKfSLi1UR7fIJ1Ofy+EWdBP1UY70GUbQ+ZF9mo
+   lq+RMMMS7AoHpvwueUXx6fr56JdRmuox6fBIcuEslZtJG+hRARVzOeTqX
+   Y/XWGAFtgnCqBpC/HhfJPwbgFRNvvQWMUwIJfKh2DD6zGIGGmGF5bi91t
+   zXjpekRe1RXDp9/fLLBdQQ7RSIhbCD8yr4+1CGKqxQWK12kCWzgkkrEWa
+   A==;
+X-CSE-ConnectionGUID: ngDaINv7Qw2FFUIWlK9J5g==
+X-CSE-MsgGUID: E2lnWTz1SS2XRI65d5tvlw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4305966"
+X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
+   d="scan'208";a="4305966"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:22 -0800
+X-CSE-ConnectionGUID: Jyd457QnQSqmBhNzVMB9Pw==
+X-CSE-MsgGUID: sgOuQxsoSjaU7tuJT2zjhQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
+   d="scan'208";a="12271884"
+Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:21 -0800
+From: Zide Chen <zide.chen@intel.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>
+Cc: kvm@vger.kernel.org,
+	Jim Mattson <jmattson@google.com>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Stephane Eranian <eranian@google.com>,
+	linux-kernel@vger.kernel.org,
+	Mingwei Zhang <mizhang@google.com>,
+	Zide Chen <zide.chen@intel.com>,
+	Das Sandipan <Sandipan.Das@amd.com>,
+	Shukla Manali <Manali.Shukla@amd.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Xudong Hao <xudong.hao@intel.com>
+Subject: [PATCH v10 00/18] KVM: x86/pmu: Add hardware Topdown metrics support
+Date: Tue, 24 Nov 2026 14:38:43 -0700
+Message-ID: <20261124213901.120572-1-zide.chen@intel.com>
+X-Mailer: git-send-email 2.56.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,131 +89,151 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261015142552.4128028-1-ryan.roberts@arm.com> <20261015142552.4128028-10-ryan.roberts@arm.com>
-In-Reply-To: <20261015142552.4128028-10-ryan.roberts@arm.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 24 Nov 2026 22:40:28 +0100
-X-Gmail-Original-Message-ID: <CAD++jLmnVpGm9pG_g777yz6XvbyAgTBCM5moYy=gAeenhjQSEg@mail.gmail.com>
-X-Gm-Features: Aa3M54pcwQV3xdAu47_dI0b9w902bsdzijUBVbDcdwg2QkzqqV6jsuD637lp5XA
-Message-ID: <CAD++jLmnVpGm9pG_g777yz6XvbyAgTBCM5moYy=gAeenhjQSEg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 09/15] misc/arm-cla: Add userspace interface
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@nvidia.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jean-Philippe Brucker <jpb@kernel.org>, Oded Gabbay <ogabbay@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org, devicetree@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Ryan, Jean-Philippe,
+Activation of the PERF_METRICS feature in hardware requires both
+PERF_METRICS_AVAILABLE and the existence of fixed counter 3. However,
+the presence of the IA32_PERF_METRICS MSR is architecturally decoupled
+from it.
 
-On Thu, Oct 15, 2026 at 4:27=E2=80=AFPM Ryan Roberts <ryan.roberts@arm.com>=
- wrote:
+This version enforces the following dependencies between PERF_METRICS
+and fixed counter 3 to comply with the SDM:
 
-> Expose CLA devices through a character device so userspace can enumerate
-> the available hardware and map accelerator register frames.
->
-> Provide ioctl interface to report device topology, CPU affinity, domain
-> membership, mmap offsets, architecture version and attached accelerator
-> masks, together with the IIDR, DEVARCH and REVIDR of each accelerator.
->
-> CLA registers can only be read from the CPU local to the device, while
-> enumeration may occur on any CPU. Validate the supported CLA
-> architecture version during device setup and cache the CLA and
-> accelerator identification registers for later ioctl queries.
->
-> Support shared read-write mmap of one or more CLA register pages. Create
-> a context for every domain covered by the mapping and resolve faults
-> only while that context owns the domain. Queue unassigned contexts with
-> the domain scheduler, drop mmap_lock while waiting for assignment and
-> retry the fault after the context is woken.
->
-> Co-developed-by: Jean-Philippe Brucker <jpb@kernel.org>
-> Signed-off-by: Jean-Philippe Brucker <jpb@kernel.org>
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+- Advertise PERF_METRICS and RDPMC_METRICS_CLEAR only when mediated vPMU
+  is enabled and host perf reports num_topdown_events != 0.
 
-This uapi is very simplistic and IIUC only provides a mmap:ed view of the
-accelerator memory area, without any details on how it is actually used.
+  Gate on host Topdown events in addition to host fixed counter 3 so
+  that this feature is advertised on known CPU models only.
 
-Since we don't know much about the usage it is hard to say whether this
-is a good approach compared to using e.g. an arm64-specific syscall.
-Whether to choose one or the other depends much on the error
-modus of this thing, how a CPU or a context should recover etc.
+- Gate IA32_PERF_METRICS and RDPMC existence solely on guest
+  PERF_CAP_PERF_METRICS (per SDM Vol 4 Table 2-2). Without guest fixed
+  counter 3, neither RDMSR nor RDPMC faults (#GP): all metric fields are
+  reserved (~0ull), reads (RDMSR and RDPMC) succeed and return 0, writing
+  0 succeeds, and only non-zero writes #GP.
 
-> +       /*
-> +        * Cache some standard accelerator registers that user space may =
-query
-> +        * via ioctl from a remote CPU.
-> +        */
+  With fixed counter 3, valid metric fields are unmasked based on
+  host-provided num_topdown_events.
 
-If you're caching these registers for efficiency, a vDSO syscall could
-be more efficient as it could return the cached information without
-a roundtrip to kernelspace. OK kludgy, I know, but efficient.
+- Gate IA32_PERF_METRICS, GLOBAL_CTRL, and RDPMC passthrough (and
+  hardware context switching) on having both guest PERF_METRICS and fixed
+  counter 3. If either is missing, metrics cannot count in hardware;
+  accesses remain intercepted and handled cleanly in KVM software
+  (e.g., emulated RDPMC succeeds and returns 0).
 
-> +#define cla_for_each_mapped_domain(_vma, _domain)                      \
-> +       for (unsigned long __pg =3D (_vma)->vm_pgoff;                    =
- \
-> +            __pg < (_vma)->vm_pgoff + vma_pages(_vma) &&               \
-> +            ((_domain) =3D cla_lut_pg[dev_nospec(__pg)]->domain);       =
- \
-> +            __pg =3D (_domain)->pg_offset + (_domain)->nr_devs)
+- Allow setting GLOBAL_CTRL[48] whenever PERF_METRICS is present on
+  the guest, because the SDM defines bit 48 as an architectural control
+  bit (not reserved) when PERF_METRICS is supported, even if fixed counter
+  3 is absent.
 
-I like this macro. Very helpful.
+- Require guest fixed counter 3 to unmask FIXED_CTR_CTRL[14]
+  (METRICS_CLEAR_EN), as bit 14 resides in fixed counter 3's control nibble.
+  Without fixed counter 3, bit 14 remains reserved; when enabled with
+  fixed counter 3, RDPMC of metrics clears both PERF_METRICS and fixed
+  counter 3 in hardware and emulation.
 
-> +static long cla_ioctl_validate_param(struct file *file,
-> +                                    struct arm_cla_param *param)
-(...)
-> +static long cla_ioctl_get_param(struct file *file, unsigned long arg)
+Notes:
 
-Looks good.
+A. If the mediated vPMU PMU v5 series [1] lands first:
+- Patch 9 ("Mask only OS/USR bits when filtering fixed counters") is
+  already included in the PMU v5 series and should be dropped from here.
+- In patch 11, the contiguous fixed counter clamp in
+  kvm_init_pmu_capability() can be removed, as PMU v5 supports bitmasks.
+- The fixed counter 3 checks across the series will be updated to use
+  the new PMU v5 helper:
+    kvm_is_fixed_pmc_supported(pmu, KVM_FIXED_SLOTS_IDX)
 
-> +static int cla_file_open(struct inode *inode, struct file *file)
-> +{
-> +       unsigned int index =3D iminor(inode) - MINOR(cla_devt);
-> +
-> +       if (index >=3D cla_nr_classes)
-> +               return -ENODEV;
-> +
-> +       file->private_data =3D cla_accel_classes[index];
-> +
-> +       return 0;
-> +}
+B. Patch 3 only fixes perf_capabilities in the base PMU. Broader base PMU
+setup on hybrid hardware running with a single core type (e.g., P/E-core only
+SKUs or firmware configs) is orthogonal and left for separate patches.
 
-As you mention that this absolutely will not work unless the process
-(task) is tied to the current CPU, this should be verified and enforced.
+Patch series summary:
+patch 1-5: Prerequisites in host perf
+patch 6-9: KVM preparations
+patch 10-15: Intel Topdown feature virtualization
+patch 16-18: Topdown PERF_METRICS selftests.
 
-Obviously the task is running on the CPU it is running on when it
-gets here. What we need to ascertain is that it absolutely cannot migrate.
+Tests: Tested Topdown metrics on ICX (4 metrics), and SPR (8
+metrics). Tested RDPMC Metrics Clear on DMR. Tested nested.
 
-Essentially it needs to execute as a userspace version of a
-CPU-local workqueue or other CPU-bound kernel daemon
-that uses kthread_bind().
+Rebased on kvm-x86/next: commit 6bd2905303c5 ("Merge branch 'vmx'")
 
-You *can* of course pin a process/task to a CPU with
-sched_setaffinity() in userspace and at a minimum this
-chardev should not be allowed to be opened unless the
-process has already done this and the affinity is set to the
-current CPU and the current CPU only.
+v10:
+- Implement the above dependency policies to comply with the SDM.
+- Re-order, consolidation, and new patches:
+  * patch 2: do not inflate capabilities under hypervisors.
+  * patch 3: refine broken perf capabilities handling in host perf.
+  * patch 4: export perf_capabilities from host perf to KVM.
+  * patch 7: use host-reported perf_capabilities in VMX instead of rdmsrq().
+  * patch 9: move fixed counter filter mask fix into preparation group. (Dapeng)
+  * patch 10: intercept unexposed PERF_METRICS before fixed counter 3
+    (patch 11) to avoid premature hardware passthrough.
+  * Re-order RDPMC emulation (patches 12-13) before PERF_METRICS MSR support
+    (patch 14) to eliminate a bisection gap before advertising the capability.
+  * Fold v9 patch 11 (reserved bit validation) into patch 14. (Jim)
+- Selftests:
+  * Moved Topdown metrics tests to a separate test file to avoid bloating
+    pmu_counters_test.c.
+  * Added coverage for RDPMC Metrics Clear Mode, host MSR access, and
+    capability permutations.
 
-You want this to be enforced, but userspace does not provide
-a way to irrevocably bind a task to a certain CPU. Interestingly
-the kernel does, PF_NO_SETAFFINITY which is used in
-kthread.c. The only thing (I think) that can affect a task with
-PF_NO_SETAFFINITY is CPU hotplug.
+v9:
+- Reject writes to reserved MSR_PERF_METRICS bits (bits [63:32]).
+- Support RDPMC Metrics Clear Mode.
+- perf/x86: Add INTEL_TD_METRIC_FIELD_{BITS,MASK} constants.
+- perf/x86: Expose number of Topdown metric events to KVM.
+- Remove the incorrect comment about writing to PERF_METRICS.
+- Remove references to Metrics Clear from the changelog of patch 7.
 
-So I suggest that you might want to pursue some syscall
-extention to sched_setaffinity() such that PF_NO_SETAFFINITY
-is set on the process inside the kernel after creation, and then
-cla_file_open() should verify that the affinity is set to the
-current CPU only, and that PF_NO_SETAFFINITY is set.
+v9: https://lore.kernel.org/kvm/20260918193937.569414-1-zide.chen@intel.com/
+v8: https://lore.kernel.org/kvm/20260817183143.226156-1-zide.chen@intel.com/
+QEMU: https://lore.kernel.org/qemu-devel/20260604025546.19378-7-zide.chen@intel.com/
 
-(You could of course hack-set the flag here in open() but I
-don't think that would be appreciated.)
+[1] https://lore.kernel.org/kvm/20261112203227.289379-1-zide.chen@intel.com/
 
-Yours,
-Linus Walleij
+Dapeng Mi (2):
+  KVM: x86/pmu: Support Intel fixed counter 3 on mediated vPMU
+  KVM: x86/pmu: Support PERF_METRICS MSR in mediated vPMU
+
+Zide Chen (16):
+  perf/x86: Add INTEL_TD_METRIC_FIELD_{BITS,MASK} constants
+  perf/x86/intel: Do not inflate capabilities for guests
+  perf/x86/intel: Track common hybrid capabilities
+  perf/x86: Expose perf_capabilities to KVM
+  perf/x86: Expose number of Topdown metric events to KVM
+  KVM: x86/pmu: Do not map fixed counters >= 3 to generic perf events
+  KVM: x86/pmu: Query perf-reported capabilities instead of RDMSR
+  KVM: x86/pmu: Rename and move vcpu_get_perf_capabilities() to pmu.h
+  KVM: x86/pmu: Mask only OS/USR bits when filtering fixed counters
+  KVM: x86/pmu: Block PMU passthrough if guest lacks PERF_METRICS
+  KVM: x86/pmu: Move RDPMC emulation into per-vendor callbacks
+  KVM: x86/pmu: Emulate RDPMC on performance metrics
+  KVM: x86/pmu: Support RDPMC Metrics Clear Mode
+  KVM: selftests: Rework PMU guest measurement asm operands
+  KVM: selftests: Move and generalize PMU guest measurement helpers
+  KVM: selftests: Add Topdown PERF_METRICS test
+
+ arch/x86/events/core.c                        |   3 +
+ arch/x86/events/intel/core.c                  |  39 +-
+ arch/x86/include/asm/kvm-x86-pmu-ops.h        |   2 +-
+ arch/x86/include/asm/kvm_host.h               |   4 +-
+ arch/x86/include/asm/msr-index.h              |   2 +
+ arch/x86/include/asm/perf_event.h             |   6 +
+ arch/x86/kvm/msrs.c                           |  10 +-
+ arch/x86/kvm/pmu.c                            |  60 ++-
+ arch/x86/kvm/pmu.h                            |  33 +-
+ arch/x86/kvm/svm/pmu.c                        |  14 +-
+ arch/x86/kvm/vmx/nested.c                     |   2 +
+ arch/x86/kvm/vmx/pmu_intel.c                  | 159 +++++--
+ arch/x86/kvm/vmx/pmu_intel.h                  |  12 +-
+ arch/x86/kvm/vmx/vmx.c                        |  21 +-
+ tools/arch/x86/include/asm/msr-index.h        |   2 +
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ tools/testing/selftests/kvm/include/x86/pmu.h |  60 +++
+ .../selftests/kvm/x86/pmu_counters_test.c     |  52 +--
+ .../selftests/kvm/x86/pmu_perf_metrics_test.c | 391 ++++++++++++++++++
+ 19 files changed, 741 insertions(+), 132 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/x86/pmu_perf_metrics_test.c
+
+--
+2.56.1
+
