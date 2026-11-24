@@ -1,121 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.30.98
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795509840;
-	b=pOPUj1gSlvm1w7JrPs8DnbtTM8q9HLODtD/8D1uus92WrLaSFH4VzW23rdVZdMKXaQ8R
-	 maRqnDsG2pbZ5nLUpQ4leOR116PyyaqrLqhBizub7wf8Axes5KDe/3u74ddzwyjDkHxQr
-	 gTLMnqm4Zc7MYTY9NwPjXIHsTmqvfpxQPvw1UfMOmIr25GWYwEjyRgI+Uc2NX6jbtCfXm
-	 BpIWoJBZuyqiNNCIEM4z57VRSdY+GQCzGqVJfCK31sixBMYucBGXhjC6i4D5BzbZdOAxd
-	 tyHiPpZycYBAAzoFmaM2N6GgwXbQlMRINeFKyx5WULJq5rfi/KPX9Eerppumkz6WSXA==
+	t=1795510109;
+	b=iBFZIEAiY+XM6KW/BKVPeqrWOYenIl1QZCw7O0uJWGDCP1VJGg4IDBtcrRFtdp1Vhekj
+	 +D1FUzMjfmVgqgINylDxN6kwZ4EBPWrEMnUsIky4tUNUd97WqYK4UxsRXH1LDtx3D13b1
+	 5RwmphWrJTi7QGebSOnVW2TMRCvkr5nw8AODpCjec6B10Xu0weMplxi4wHSNDprIJh2cE
+	 XAE9PuMsRdtiWgqnqr1SgwAGYiuNNLB7yqeRaYqe81pLaYwUEEp7b8i30ozbJWc6eJAY6
+	 Pr9oI7jjR9btT1upKyXGKNQD9bCxnhX4Dy3ReeZlDrtk1rZH6iChSzTgHAi9WGPSEBQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795509840;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=80CiTGjH5Hdr3PjM7hQctIDbA2YeYVq6CaZ6FaFB58Q=;
-	b=UTi6yaNO5M4P1B3iUJWPXXleJ8CGkaw3cqc2FtLCPRAkIecf0GHh0cgQKS4PD1+MHpcO
-	 u5kHCFRN8GER7jNvfYSUmEMnKMUZeWlVLEgnXr+AEd0I3kyN2R57h5OZQdr8NP2uAclSB
-	 lv3oOGs9tZt9MPTllNe311x27j+g3pBjhK0M1fuxnV/yy7yIPToh5uR4pdRS/tUWyyN5i
-	 HMboABU13Z7W+cbL39vNbbX2dke8W5RdYte1D+Az97cVNSlNDJ5LrKbTQnui5ZqPz0zWv
-	 N44B4fMew1lfNb3DWCnu0yhJtcAJYSVb2ZY/AU94pMxm6mLP/1voTCZnGuS8sJiUjww==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795510109;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
+	 Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=NMfXN428M3Pscdin+6iB0nBnywevrayks8T3ADwi/F8=;
+	b=gDb4lBbpTPhXzhp9vBrHOY7LNOZq/CUkxH43J0b3CUFd2rEesVOIbWr+Bggj0rrZwD14
+	 b3mY3/+NZ5CfdODYHemFWjDHEWwYX0s1A0O3x3/yBrzd5HznFCm9xLgcpDlNr1IhyDr0p
+	 MsvOnBFVzfwDfHhuikp2VdR3wSUBAs//xGYpZn67nCMm96c0FgBS/JYO1IOglnDEhCsdm
+	 49yMtEyWghlePC1g9jAUAI9w1eFUcktYtgR9usuGIA03oLAb9M+JhRTfrehDOKja/8X8H
+	 +fKjS1/bVzcfJwEd+7le16oiUWq0jfOtEOJywipTrTk9AerSAEk9oeI4ukGOOM1Ee3w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HAnHcKJq;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Bmf5Fpj8;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dmarc=pass header.from=linux.alibaba.com;
+	spf=pass smtp.mailfrom=linux.alibaba.com;
+	dkim=pass header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=r2Vm0Fx2;
+	arc=none smtp.remote-ip=115.124.30.98
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F29606A333
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 08:43:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A8F29606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB92606A31E;
+	Tue, 24 Nov 2026 08:48:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AEB92606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HAnHcKJq;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Bmf5Fpj8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795509838;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=80CiTGjH5Hdr3PjM7hQctIDbA2YeYVq6CaZ6FaFB58Q=;
-	b=HAnHcKJqLqn+GmOd23f/AaT3loXDn/KN4f81J48EjELvs3zi41a8xQUTUo8Aa7sqaiGFdc
-	j+6QLfLH8Z0mFqM2XIAsGmnFXOknwyfm2Db9IRBvQxwM65xBg2JbndMHnCWSH2Synqsonf
-	ur7/7DRricEmMmlb8++z3PMjOhbnjoQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-71G-SBkzPoKi9ES09j_Vpg-1; Tue, 24 Nov 2026 08:43:55 +0000
-X-MC-Unique: 71G-SBkzPoKi9ES09j_Vpg-1
-X-Mimecast-MFC-AGG-ID: 71G-SBkzPoKi9ES09j_Vpg_1795509834
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4bb8ae35aeaso34613765e9.3
-        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 00:43:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1795509834; x=1796114634; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=80CiTGjH5Hdr3PjM7hQctIDbA2YeYVq6CaZ6FaFB58Q=;
-        b=Bmf5Fpj8dfj9+YAzmmLs7zprxnhD6SqSw7cHcSsRhi3zs08vLSTERt6nt4VFpGF+xI
-         KoxO5EfFihJmwOURYPuFSB9O+JlD7uaO+a0YalrQu+uG977ZkSP02FXU+hAmYXyKAqfD
-         mlVrBXqV46SdsqcpXsQGiaPMoTTKEyLpYRgaivhxGsf21PvD7DyL5beRToY6e3rrPLAD
-         X1RSVBzY5i2z5vmkcIiCT7ppgobuzIqjYfvKLdRcYGUMJKT7f4jtkS6Wg3jNTI977RGf
-         Rv4ekNdCva491+zTMeUrOTY8gWTtDDffnC/0y0Qmkmp99TYluuZ82yaUGnprC1eQvwlw
-         ZklA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795509834; x=1796114634;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=80CiTGjH5Hdr3PjM7hQctIDbA2YeYVq6CaZ6FaFB58Q=;
-        b=snwizsF0jkHAaQxwNRc6Hl1zjp1lrxgbSVYoTyBFAR/mg7+oMsv3qTTBeLWgiVAgaE
-         l0F9UpwZo5IV4IKR+oGZ44OuxIkTDd7CZ9d4cIBxlca7aMMBP77mpdNzX214iWXeTffl
-         i3cGnJMpL642agRNo8WdFH/Lwr1rb+Hs9elWpwGhU07i2yBRbkmgCyVg9t+1Uyf/FiZJ
-         mQ1SuKBhkKzCXmEZvSm+oinJO3F10quL/WrOMLGwK5qWou3jGX/R4mqKf9lOyCVuONt3
-         D88aIIjJy1Fkx2odAszXl76fy/NgHxEff89BAwmwv1unbKS7EJEaeLLtFDPpzAZ39/VS
-         Y/WQ==
-X-Forwarded-Encrypted: i=1; AL+hErEjEPaLTmUVDh8LhawYphP/OZEUScPrsNImiOrnxFkWnaLYFhpFZwQQMdPVw8dkHch9eIA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8eWbJr12r7j2JOxhXTGppOmBXVIU/4wVNfeR6wrIL6IOSzlyqA
-	6oDE+VssMjkZwxoUr3Si0lZeDm8179G8yPrM/SvYhAiCqe6pfkMSwoNvLfnm1EZCr3GbR16/MjF
-	BOA/Zhgetc4wT4zjmOIXkPnMqdxQ/BztXt+9JrU0wgXk0QMd3PsHBDw==
-X-Gm-Gg: AZFdTZeNLtGpEWHBJqVog+hH3Vy8Z2HEHJFrmAfZ55Hx7kJGqhJbYw7nFPbkCb++gcd
-	CWRDEpD+PQ5F01Kgb0cVPQ9QqCRYmknBzuHUIa5qAmzS/ORCh7s05DAqmtCAULtofZgPYJOTLNl
-	dWN2RvPLiOkNrOM1OGXnaxka1uQU0jwg/v+A077p2Kgepnr5xcybvlHHnoWgLHTCGKlqGUO5nbn
-	MYSz2Pv8JbeZl8k9jOAp3EJVUe6tkTt0XKurQ2M0h7D/jvkrshXGA3BkLg3/AITB3gbyO13ecur
-	lb5qNI23ILfqu4TXrU1al4tRUBXza9J8ZqAfgwlts/siZq2qHqSvuUDgF3vGVi4R6vCkTpSO28N
-	kXdvJGWUvdgI1cH1MpDpL215YOFumoSOw/zwzBpLOXyCOi+PNMrzRpg==
-X-Received: by 2002:a05:600c:4f10:b0:4bb:60bd:5398 with SMTP id 5b1f17b1804b1-4bb88804d35mr314618125e9.10.1795509833906;
-        Tue, 24 Nov 2026 00:43:53 -0800 (PST)
-X-Received: by 2002:a05:600c:4f10:b0:4bb:60bd:5398 with SMTP id 5b1f17b1804b1-4bb88804d35mr314617705e9.10.1795509833526;
-        Tue, 24 Nov 2026 00:43:53 -0800 (PST)
-Received: from sgarzare-redhat ([80.116.143.202])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853b216esm472636285e9.12.2026.11.24.00.43.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 00:43:51 -0800 (PST)
-Date: Tue, 24 Nov 2026 09:43:46 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Bobby Eshleman <bobbyeshleman@meta.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] vsock: only deliver taps to namespaces that can
- reach the device
-Message-ID: <awVNJ4gXA7ZxvZcb@sgarzare-redhat>
-References: <20261116-vsock-tap-net-v1-1-7e24f45adad3@meta.com>
- <awQJo8WE5Gn4nYHp@sgarzare-redhat>
- <12a2b44d-3d24-4b77-9dd5-24361d5fe910@redhat.com>
- <awQ5xzF8P0NJiCsv@sgarzare-redhat>
- <awRnZ9S+3B996VqJ@devvm29614.prn0.facebook.com>
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=r2Vm0Fx2
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1795510104; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=NMfXN428M3Pscdin+6iB0nBnywevrayks8T3ADwi/F8=;
+	b=r2Vm0Fx2iKegbeKUrYw7N/J/iLCr5SFs6Etq5biLFPvODq+5pG90jUtqP9ixx1IIkrQmQloS44JajIoYHaJNKbDdtzGtBY9xgtxp5Lei3PH3yjMEb4D6r8BfgUnSQ3Eb+jowj8ycOVCulR6JPAsJEn1zffUwnmtqqy8yirou5O8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R891e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=jinyue.li@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0XFO-WoZ_1795510103;
+Received: from aa8c952a0f58..(mailfrom:jinyue.li@linux.alibaba.com fp:SMTPD_---0XFO-WoZ_1795510103 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 24 Nov 2026 16:48:24 +0800
+From: Li Jinyue <jinyue.li@linux.alibaba.com>
+To: Anup Patel <anup@brainfault.org>
+Cc: Atish Patra <atish.patra@linux.dev>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	kvm@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] RISC-V: KVM: Age the whole range in kvm_age_gfn() and kvm_test_age_gfn()
+Date: Tue, 24 Nov 2026 08:48:23 +0000
+Message-Id: <20261124084823.1189514-1-jinyue.li@linux.alibaba.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -125,65 +66,165 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <awRnZ9S+3B996VqJ@devvm29614.prn0.facebook.com>
 
-On Mon, Nov 23, 2026 at 08:18:47AM -0800, Bobby Eshleman wrote:
->On Mon, Nov 23, 2026 at 02:17:54PM +0100, Stefano Garzarella wrote:
->> On Mon, Nov 23, 2026 at 12:58:38PM +0100, Paolo Abeni wrote:
->> > On 11/23/26 10:43, Stefano Garzarella wrote:
->> > > On Mon, Nov 16, 2026 at 03:46:49PM -0800, Bobby Eshleman wrote:
->> > > > vsock_deliver_tap() clones every packet to every vsockmon device on the
->> > > > system. Creating one needs only CAP_NET_ADMIN in the owning user
->> > > > namespace, so an unprivileged user can capture the traffic of local mode
->> > > > namespaces.
->> > > >
->> > > > Pass the packet's netns to vsock_deliver_tap() and only deliver to
->> > > > devices that pass vsock_net_check_mode(), the same rule socket lookups
->> > > > use. vhost passes the vhost_vsock netns, loopback the sending socket's
->> > > > netns, and virtio-vsock NULL (global mode).
->> > >
->> > > For local namespaces I think we are fine, but what about global?
->> > >
->> > > Is it okay that a namespace with global can capture all the packets of other global namespaces?
->> > >
->> > > Asking because at this point the CAP_NET_ADMIN is useless, since an user on a global namespace, without CAP_NET_ADMIN, can just create a namespace to have CAP_NET_ADMIN and access all the traffic. Should we fix also that?
->> > My take is that the above question is quite orthogonal to the current patch
->> > and may impact old applications relying on the legacy behavior.
->>
->> True, but I'm not sure that behavior was correct since the beginning.
->> E.g., what is the point of having CAP_NET_ADMIN requirement if an
->> unprivileged user can just crate a new namespace and get it?
->>
->> Anyway, it's eventually pre-existing netns support in vsock, so it should be
->> fixed with a followup.
->>
->>
->> Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
->>
->> Thanks,
->> Stefano
->>
->
->Its a fair point and I agree we should take it up in a follow up. My
->current instinct is that CAP_NET_ADMIN probably shouldn't be enforced
->for some (all?) of these global-mode paths.
+kvm_age_gfn() and kvm_test_age_gfn() expect the MMU notifier range to
+cover exactly one G-stage leaf. They warn when the size is not
+PAGE_SIZE, PMD_SIZE or PUD_SIZE, and then only look at the leaf that
+maps range->start.
 
-Why not?
+The range is the host mapping being aged, clipped to the memslot, so
+there is no such guarantee. folio_referenced_one() ages all PTEs of a
+PTE-mapped large folio in one call, and a PMD-mapped THP backing a
+memslot smaller than PMD_SIZE is clipped to the memslot size. In both
+cases the range spans several G-stage leaves. syzkaller hit the second
+case on a 6.6-based kernel with THP-backed guest memory split into
+memslots of a few pages, followed by MADV_PAGEOUT. The line number
+below is from that kernel; the same code in mainline is at
+arch/riscv/kvm/mmu.c:362 and :382:
 
-I should take a closer look at what’s going on with the NICs, what 
-permissions does someone intercepting traffic need to have?
+  WARNING: CPU: 1 PID: 7943 at arch/riscv/kvm/mmu.c:586 kvm_age_gfn+0x14c/0x20a
+  ...
+   kvm_age_gfn+0x14c/0x20a
+   kvm_mmu_notifier_clear_flush_young+0x186/0x45c
+   __mmu_notifier_clear_flush_young+0xc0/0x17a
+   folio_referenced_one+0x4b8/0x81e
+   rmap_walk_anon+0x400/0x9d0
+   folio_referenced+0x216/0x3ae
+   shrink_folio_list+0x148a/0x31c4
+   reclaim_folio_list.constprop.0+0x11c/0x3a0
+   reclaim_pages+0x2c6/0x420
+   madvise_cold_or_pageout_pte_range+0xff6/0x16e0
 
-Ideally, even though the addressing is global, maybe we should set it up 
-so that within a namespace, you can only observe traffic generated by 
-that namespace or its children.
+Besides the warning, guest accesses to any page in the range other than
+the first one are missed, so reclaim may treat recently used guest
+memory as old.
 
-But honestly, I don’t know how complicated that is. In fact, if you want 
-isolation, you have to enable “local,” and at that point, with this 
-patch, we’re all set.
+Add kvm_riscv_gstage_test_clear_young(), which walks the range the same
+way kvm_riscv_gstage_wp_range() does and tests or clears the accessed
+bit of every leaf it finds, and use it in both handlers. arm64 had the
+same problem and fixed it in commit df6556adf27b ("KVM: arm64: Correctly
+handle page aging notifiers for unaligned memslot").
 
-Thanks,
-Stefano
+Found by syzkaller.
+
+Fixes: 9955371cc014 ("RISC-V: KVM: Implement MMU notifiers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Jinyue <jinyue.li@linux.alibaba.com>
+---
+ arch/riscv/include/asm/kvm_gstage.h |  3 +++
+ arch/riscv/kvm/gstage.c             | 30 +++++++++++++++++++++++++++++
+ arch/riscv/kvm/mmu.c                | 26 ++++++-------------------
+ 3 files changed, 39 insertions(+), 20 deletions(-)
+
+diff --git a/arch/riscv/include/asm/kvm_gstage.h b/arch/riscv/include/asm/kvm_gstage.h
+index aaf080ba1b77..04e6133665c2 100644
+--- a/arch/riscv/include/asm/kvm_gstage.h
++++ b/arch/riscv/include/asm/kvm_gstage.h
+@@ -82,6 +82,9 @@ bool kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
+ 
+ bool kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, gpa_t end);
+ 
++bool kvm_riscv_gstage_test_clear_young(struct kvm_gstage *gstage, gpa_t start,
++				       gpa_t end, bool mkold);
++
+ bool kvm_riscv_gstage_wp_pt_masked(struct kvm_gstage *gstage, gfn_t base_gfn,
+ 				   unsigned long mask);
+ 
+diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
+index be70607a33ea..7cc66880acde 100644
+--- a/arch/riscv/kvm/gstage.c
++++ b/arch/riscv/kvm/gstage.c
+@@ -485,6 +485,36 @@ bool kvm_riscv_gstage_wp_range(struct kvm_gstage *gstage, gpa_t start, gpa_t end
+ 	return flush;
+ }
+ 
++bool kvm_riscv_gstage_test_clear_young(struct kvm_gstage *gstage, gpa_t start,
++				       gpa_t end, bool mkold)
++{
++	int ret;
++	pte_t *ptep;
++	u32 ptep_level;
++	bool found_leaf;
++	gpa_t addr = start;
++	unsigned long page_size;
++	bool young = false;
++
++	while (addr < end) {
++		found_leaf = kvm_riscv_gstage_get_leaf(gstage, addr, &ptep, &ptep_level);
++		ret = gstage_level_to_page_size(gstage, ptep_level, &page_size);
++		if (ret)
++			break;
++
++		if (found_leaf) {
++			if (mkold)
++				young |= ptep_test_and_clear_young(NULL, 0, ptep);
++			else
++				young |= pte_young(ptep_get(ptep));
++		}
++
++		addr = ALIGN(addr + 1, page_size);
++	}
++
++	return young;
++}
++
+ static inline void clear_huge_mask(unsigned long *mask, unsigned long page_size,
+ 				   gfn_t base_gfn, gpa_t addr)
+ {
+diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+index 6b77891d4582..26b85a0dcdb7 100644
+--- a/arch/riscv/kvm/mmu.c
++++ b/arch/riscv/kvm/mmu.c
+@@ -351,42 +351,28 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+ 
+ bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+ {
+-	pte_t *ptep;
+-	u32 ptep_level = 0;
+-	u64 size = (range->end - range->start) << PAGE_SHIFT;
+ 	struct kvm_gstage gstage;
+ 
+ 	if (!kvm->arch.pgd)
+ 		return false;
+ 
+-	WARN_ON(size != PAGE_SIZE && size != PMD_SIZE && size != PUD_SIZE);
+-
+ 	kvm_riscv_gstage_init(&gstage, kvm);
+-	if (!kvm_riscv_gstage_get_leaf(&gstage, range->start << PAGE_SHIFT,
+-				       &ptep, &ptep_level))
+-		return false;
+-
+-	return ptep_test_and_clear_young(NULL, 0, ptep);
++	return kvm_riscv_gstage_test_clear_young(&gstage,
++						 range->start << PAGE_SHIFT,
++						 range->end << PAGE_SHIFT, true);
+ }
+ 
+ bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+ {
+-	pte_t *ptep;
+-	u32 ptep_level = 0;
+-	u64 size = (range->end - range->start) << PAGE_SHIFT;
+ 	struct kvm_gstage gstage;
+ 
+ 	if (!kvm->arch.pgd)
+ 		return false;
+ 
+-	WARN_ON(size != PAGE_SIZE && size != PMD_SIZE && size != PUD_SIZE);
+-
+ 	kvm_riscv_gstage_init(&gstage, kvm);
+-	if (!kvm_riscv_gstage_get_leaf(&gstage, range->start << PAGE_SHIFT,
+-				       &ptep, &ptep_level))
+-		return false;
+-
+-	return pte_young(ptep_get(ptep));
++	return kvm_riscv_gstage_test_clear_young(&gstage,
++						 range->start << PAGE_SHIFT,
++						 range->end << PAGE_SHIFT, false);
+ }
+ 
+ static bool fault_supports_gstage_huge_mapping(struct kvm_memory_slot *memslot,
+-- 
+2.25.1
 
