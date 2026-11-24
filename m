@@ -1,62 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.133
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795521817;
-	b=cUDyVP1p5bDqk7KE5Ss/o2dxdBUsZVFALPzgwR5cERrwsEc03b/KBdaDM/Pm4H/Ie6w/
-	 uiSlxUjnhu4JKofhOdNH4lC9yIQzZS0w8j3F0HKckxDajC6ee2SAA6Ekfkh20qrfRnAa4
-	 vdFAVvUTyYG87YBI1GSxn3K9N9SLVpH78hTNwmNal6VwO3SXaGJOEV3t/19t8Ylhg+kLu
-	 Fg7AJt1u5GsoPnBgWUPNCKhGdATMPqxoBMfNPRZ57jxZZGrZmpk67AkPRh6DzR/LJzTaV
-	 wEXuahC2ei6Htr+pNFSWZ0mrzfXDNoBN833V8OToZomXdFTJieYkmhFfwD45RvWDuOQ==
+	t=1795522399;
+	b=orHMaYrqYt5042JREVy3O8bWvKA/CGxSDWV574rOtetoMyxCHPueHE9yKfU7gEXMIltf
+	 8fmjgd0Io76d1PJbgX4qJeeIhzEMD2nf5BfOHlLK6krb+nhfRPWV4zppqtn1pWAPhvAEK
+	 IQW48rlXuScBVAvJRPT/yalQkNDJ8wvF1yL3wkuB1STQdQE+DLsPJCXOCe/QotKdHUamL
+	 HW9bBp9pQ/50v2f338KBmmcQu/PVRtro+0gRu7B/D/MYsYR4QMR/3vnj8BfAASCDnZnmt
+	 mhANbf05ihYJVECGg/w58/6yRXpEH3c6eDHlsGZHRE/zJodQkzjLVrcrQ5uh4EuJtyQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795521817;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type;
-	bh=sr8kNtZUVcrLtCrf+RT8Hi9gA3/tGSBNUGobytTqIAA=;
-	b=SbA8oGu4GH9T6sUnIfvUjcM6De0gAFJ20v1AOO2ITaA2EUmrzB61xCN5tivDUntbbIlf
-	 4YnxY3huaiNkwyokB0ZsGF/YpWPw6zVHfM9psFowL0SHvyWyO5eSlx2jJ2iVY3P3qWUM3
-	 pBWT2caL1YPexJtt0OfOpLhBHboHCSFi9LBd68nf4/Yyj9y3YmfJ531uDviyzsQSSBtLf
-	 cHrIRw9sSwZxzcZplWDqCuFxkIiPxM40YwPd0TgJ+L7BpmY0FyLw+XwBfaGSTfpzb72q8
-	 wqWzaPaBXCtG99gRFJ6A0ja11eGJW1x2B8KWoP03CNPW0prEmNqod8H7rjvuWoI2LnQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795522399;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=Np0NcUv7mJCJjaicOw4k1YXtQeAzhuGY2ockZsxXegU=;
+	b=vrrCv2oEzVBWm+LLj655l8dBfNOJly+cnf5XrMOboe2saohRkdXKIDI299K7dLavFlgJ
+	 RYDTG7wc6hTu4kQFp5R/YYpI8KTjHsHysMS9hujGPQvgwn/kg0coyKH7qTiiVIsfkkfXz
+	 tzkLy3x6k2Rdd2VBXraAj2ogmCXe1H7NINPf3rVNfehpmYZCO6Poy3LQUYcbs5jDdB/tW
+	 Yv7j5xqlEn+zqcZHrbR3rMTgNBSJdLfLBfe1E7dJyRPjXOiidwwtvp05m1euenSleN9BA
+	 tfm3H0dRPE5MCmBeJNGISjiCVlTEum7bDMFuzAK2NIl/9RTekPfATUf673hFixkdSQw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=uirWn9No;
-	arc=none smtp.remote-ip=95.215.58.133
-Received: from mta1.migadu.com (out-133.mta1.migadu.com [95.215.58.133])
+	dmarc=pass header.from=resnulli.us;
+	spf=pass smtp.mailfrom=resnulli.us;
+	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b="viTi3/8K";
+	arc=none smtp.remote-ip=209.85.167.50
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA4F606A321
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 12:03:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3DA4F606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D810A606A327
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 12:13:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D810A606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=uirWn9No
-X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=sq+1U9QBpgUl6gibIVwLvQO1miis3EZ+uRylCpz45Xo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795521814; v=1; x=1796126614;
- b=uirWn9NoEnOAGA1QLmhh6dTHi2v2AHIaOs+2kXHIz2N7rAVPplSsN0iZzCh86DSUnHvwCvtx
- GPnZ1o5blQZheFcSII6SWzio4UeyBm3MYx0a74jJNq63ViidFf9YJpI8y469b03pnVLbywnLPHC
- bifBMoiPmc5b0leJKYBO5UT0=
-X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 75a0bf2bf8f8c286;
-	Tue, 24 Nov 2026 12:03:34 +0000
-X-Mizu-Trace-ID: 75a0bf2bf8f8c286
-X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5be58ad9600so22969e87.0
-        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 04:03:33 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErFbsiEs7VES3ts2iqnaW5A2KKLclOLmVFyIEKQS2OfVR5EUFqbEnbo5tYl2cl1Mb29iFqg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+qBGNmA5gLdDuxPC+PpzbHzCi/b+7g3nNyowZyZOibCUbl8368
-	DramrVgLBrZtLTlY9uKvJQLUi2J5AadLHmE4bdi6OpMGAuBztH5xcEPqZsjKLb6fjhUNwi7PG/g
-	3u1L2YEx35dHVMZC2qnKScc0vPsgGYzQgh/UdiRlu
-X-Received: by 2002:a05:6512:3d1d:b0:5bf:f0fb:2c9c with SMTP id
- 2adb3069b0e04-5c1c8256cebmr422660e87.5.1795521812773; Tue, 24 Nov 2026
- 04:03:32 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=viTi3/8K
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5be4b61fd3dso3736439e87.3
+        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 04:13:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli.us; s=google; t=1795522396; x=1796127196; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Np0NcUv7mJCJjaicOw4k1YXtQeAzhuGY2ockZsxXegU=;
+        b=viTi3/8KeIE8uhX56JlXlP6/VB/uifLp1YNde/hFxWBVL09rfHt1AgzNSQ1xTLYKYW
+         TxNBy5Mj7sV0GRKJ160Si2rkUSAgJn33iwqUin2swB01y6Ut9G2oo/NtD6GwmuBWsdGK
+         pBscQJ//hVMyPypXQMgFo5oJH1vUFdJ5blh4dTSbHXAdAibs/3F+XbUA3jS5gh2JSVOJ
+         LN2T2nENIFcXoTm0K25ZjYzgf6wvRTivXcZG6y1mBdXRA/xDPzAu9oc8mACnMdnRVp8I
+         5SJUX/xIX1KhwdTHpI3kikeVNii6iesD7pV4JscgeRxDpEqmN+UfwGtYVMRPotk3OsIE
+         2nmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795522396; x=1796127196;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Np0NcUv7mJCJjaicOw4k1YXtQeAzhuGY2ockZsxXegU=;
+        b=NKRdv+IzhRELTKYMVBDqiUCQ7GdxJ6wAI+tfuhdOCtP+I5hWojan/dDOlI5vaN4S8b
+         ydfkwZN8H6Vun7mKiHR1iW4cb7yfiBQJ4TOxhbTiIP65/aOL74gdv7ORMNyAemITGG9I
+         xt35VpYKo2OgxA50kjNTZAk7ra/sNTyCMYatQCeCI/dQPsNZ60HEGlJVeqeTTx1HnkW7
+         aAAqtfMNCdWMLppWz30WQZ5QnOAqhTIEal5gPtsiEsdM+KgZPvH7R7+AOWwDOoEr7C1x
+         r6CI8GOQODANvGr72zZzl00D5AD1CtiU6Ll8vZ7h0ElgJS69+gYua6L5rV5CUSG8dkRs
+         eQIQ==
+X-Forwarded-Encrypted: i=1; AL+hErE3jiF2newSSxjqeWAsxMDVii654NcoVM8Vy71QHAWMYsRSTyzt0IcsRWsTKhLJc5wl0uE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/+ur6yc1OOeo1tgaD+ZEF/eQyVGUzUJnGp9IKkizmWiwe6CCDb
+	oooJk0G+LuyKzROQ0/GNN8cjeT7ds/IOI2z/kpfLkwh96iQRa3iu+/cbzdZhaKi4lDw=
+X-Gm-Gg: AZFdTZfNLGlD2bGvRwkLHR/4QvhBVxzfdDdKf/21IIbTzy4g9FHcC3Ulr/KfLnZmqJp
+	yBylr8hVTAqXec9IsWLxfbCyfra/OfFPnXU3cV8KOifh7j/djVfnWI0sRSqaYZ05t0T3MulFV0t
+	QsJ+TqPbAjepWTEvCqe8TR7s9Vd7BQa+g2/saFWNiTeYOacemxRieDFmnWaoYeFOOx/UYFfqj0X
+	paq/8g90g92ZOSaEc4iolQTJOWz5EwkXswdMokQU+qjPIz7eD0R7TqeEuyEoJ/o11qhT7J0PlZS
+	1O+rdIv4RZR5GOWGg7vzM04NgRLPaVU7RtjAdoZZ4xubGXPVdsNLGkfeUaXs4h+ZJdHJZgOVnh/
+	/KUaVfeZQe54du0GDjwn++14mAswpYbNhT6Ke/R+lD36s5WhEkGvqILqDZ2adIks7isskCzBVKb
+	eZLK2gU9EhgYqO+ujR8Wq5HFGnULZ1g/q//5xxtt6wl5M7wXv+4Ft5dwAWbcPUcqhmeOPNNhp/l
+	oy4qOFhn2nw3saL1dxndZH/pCjPpGhKlQ5SFPaDcE+d1vCsRXdTt+WcNYBvAksceIufBa1mW8A8
+	ddz3jSa3X3uynY2ocfmdBp/SA5X1djQVKlOgmw==
+X-Received: by 2002:a05:6512:23a9:b0:5c1:6065:40d with SMTP id 2adb3069b0e04-5c1bc867b6dmr3406850e87.38.1795522395833;
+        Tue, 24 Nov 2026 04:13:15 -0800 (PST)
+Received: from localhost ([208.127.45.21])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5c1bd01c018sm3681005e87.44.2026.11.24.04.13.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2026 04:13:15 -0800 (PST)
+Date: Tue, 24 Nov 2026 13:13:11 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Yeoreum Yun <yeoreum.yun@arm.com>, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, linux-api@vger.kernel.org, 
+	x86@kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	david.quigley@intel.com, lukas@wunner.de, ksinyuk@kernel.org, rodrigo.vivi@intel.com, 
+	cedric.xing@intel.com, sameo@meta.com, drdeeglaze@gmail.com, 
+	James.Bottomley@hansenpartnership.com, aik@amd.com, jpiotrowski@nvidia.com, qinkun@google.com, 
+	pgonda@google.com, jic23@kernel.org, alistair.francis@wdc.com, ankita@nvidia.com, 
+	suzuki.poulose@arm.com, kas@kernel.org, rick.p.edgecombe@intel.com, 
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, peter.fang@intel.com, zohar@linux.ibm.com, 
+	aneesh.kumar@kernel.org, dave.jiang@intel.com, nik.borisov@suse.com, 
+	sergii.dmytruk@3mdeb.com
+Subject: Re: [PATCH RFC v2 9/9] attestation: Add the TDX family implementation
+Message-ID: <awV_P5443pO4yJa5@FV6GYCPJ69>
+References: <20261113160838.2512652-1-jiri@resnulli.us>
+ <20261113160838.2512652-10-jiri@resnulli.us>
+ <awQCrnD5CtEhKRWz@e129823.arm.com>
+ <awQz1P6iXYrL8lv0@kernel.org>
+ <20261123151128.GD179082@ziepe.ca>
+ <awRYr7yB8IWj7S3G@kernel.org>
+ <awRan8ZELzpTwduV@kernel.org>
+ <20261123154042.GI179082@ziepe.ca>
+ <awRe-A_KeE_kXyPq@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,52 +114,52 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261123192457.8700-1-maz@kernel.org> <20261123192457.8700-4-maz@kernel.org>
- <CA+EHjTynhBzhjrFzd514Sycib=1rmh7JqYp0xSPVBvurk6Sm-A@mail.gmail.com> <86a4myzeos.wl-maz@kernel.org>
-In-Reply-To: <86a4myzeos.wl-maz@kernel.org>
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Tue, 24 Nov 2026 12:02:56 +0000
-X-Gmail-Original-Message-ID: <CA+EHjTyOzMofQ-7exH65h1G0jCtNy=f9MsW2ORSpLpF4J8xZ5w@mail.gmail.com>
-X-Gm-Features: Aa3M54o_qgTofyawRoobP2Y_UigNAYnryN0_2l63uok4neYEvOqeAAfM8d_tF7s
-Message-ID: <CA+EHjTyOzMofQ-7exH65h1G0jCtNy=f9MsW2ORSpLpF4J8xZ5w@mail.gmail.com>
-Subject: Re: [PATCH 3/3] KVM: arm64: Drop open-coded GIC idreg sanitisation
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, Steffen Eiden <seiden@linux.ibm.com>, 
-	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <awRe-A_KeE_kXyPq@kernel.org>
 
-Hi Marc,
-
-On Tue, 24 Nov 2026 10:50:11 +0000, Marc Zyngier <maz@kernel.org> wrote:
-[...]
-> However, I want to know whether this change is an acceptable behaviour
-> or not *from an ABI perspective*. We have several options:
+Mon, Nov 23, 2026 at 04:42:48PM +0100, jarkko@kernel.org wrote:
+>On Mon, Nov 23, 2026 at 11:40:42AM -0400, Jason Gunthorpe wrote:
+>> On Mon, Nov 23, 2026 at 05:24:15PM +0200, Jarkko Sakkinen wrote:
+>> > > > > As per the function, perhaps tpm2_calc_event_log_size() should be
+>> > > > > relocated to lib and have non-TPM name like firmware_event_log_size()
+>> > > > > or something.
+>> > > > 
+>> > > > Probably under drivers/attestation since that is where all the TCG
+>> > > > formatted logs should end up. It should be 'tcg_event_log_size()' or
+>> > > > something. Maybe a tiny module for it like we would have done in lib/
+>> > > 
+>> > > +1 for the name, as it is obviously more accurate prefix.
+>> > 
+>> > Location, I don't know. I was thinking something like "lib/tcg.c" with
+>> > routines that are plain calculations based on TCG/TPM data.
+>> 
+>> I think we should not have new users outside attestation subsystem,
+>> but the legacy onces will still exist obviously..
+>> 
+>> IDK either, but this is my guess..
 >
-> (1) delay all idreg enforcement to the same (late) point
+>No strong opinions on this; just unpurging my thoughts.
+
+Okay, will put have this in a helper lib.
+
+
 >
-> (2) keep things as currently done, meaning that the GIC fields are
->     special and sanitised at a different time
+>> 
+>> > And perhaps for tpm_buf (both stack/heap allocatable), if Trenchboot
+>> > ever moves forward.
+>> 
+>> DRTM users will route through attestation subsystem to do their
+>> extends so the tpm_buf user would be the TPM driver inside
+>> attestation. We definitely need this for ROT agility.
+>> 
+>> We should be able to build the attestation TPM driver without any
+>> trenchboot stuff to motivate it.
 >
-> (3) say that idregs can change at any point if you change the
->     configuration of the system, such as creating a GIC
+>OK, this was my guess but did not know it by fact.
 >
-> I'd be tempted to go with either (1) or (3). (2) feels like a total
-> bodge.
-
-(3) works. The GIC fields can already change when userspace creates
-the vGIC. The final ID_AA64MMFR3_EL1 only depends on the order if
-userspace sets S1PIE or S1POE without the features they imply, creates
-the vGIC, then sets those features.
-
-(1) changes one thing afaict. A VMM that saves the ID registers
-between creating the vGIC and the first run, and writes them back once
-the VM has run, would get -EBUSY where the vGIC's GIC fields differ
-from their reset value. QEMU and crosvm copy the registers as a block,
-but I don't know if either ever does that.
-
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
-
-Cheers,
-/fuad
+>> 
+>> Jason
+>
+>
+>Br, Jarkko
