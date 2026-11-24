@@ -1,57 +1,94 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795524454;
-	b=RlcMkpncTO+M0gRmlmAbpSX8HoyQVXwvf1zerytD7W2GgtXyx4e/DU+qvPjqacZiNVpD
-	 4DbBWc9PINoOl1ejISuFbKiZi9ho01Dzz5qUOvIlMAGWaqqjWIYhuruhESbmz/i3d5IUk
-	 UqZogKj+xN5jmqb6n/TU6ekXrd6qTjjJy5czNr5nmLe+ebdP4jCu1pT4sUKUkOAP7qAhW
-	 TZVuTkC6cuitWRrKU79AuBNlrw1Zsf7KBxfWK0+mQR07jQYPoyn7UtLHWS7axg9U8lUSH
-	 UeG4w9R7b5ov4Rf4vH37Q/cxHS/BdCrbqA+PQtop/TIkPHexc9Tbr+RSGRGK7GtNI4Q==
+	t=1795524612;
+	b=sQ6ooD8Sfbtc5RoUXDRkCkn53EPd0SwUjwnEZR9PkKQ8UWT21cJZC4IJFnQjZyASyznU
+	 51sAE1mfRebQLH8R4LDUJcEkbMerysr7Gj140MfQ4B6gauLvzXa9TU62ZqibVcX2G/Im1
+	 Ohy0xXqpoYS44HonQ/UKidsbjiQGW7eU39W5XQhzRQH9YreS8Evs2uENrG0CwAk5lSDgL
+	 YyOKel/7GgGIgF87crX6p+iejpXEAHLV5VS5oc1+gGWYT6aKHh9ofKPA6WyT+7ixBP8Dj
+	 HPKhIR0g+b6Q4Vwc2aGM42B6a+BAMkasbcoYi5IaeMn0OcynAf6z5qWDJBc+BH9xU4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795524454;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=ro/RH43C78Nv0CR/7XnRdlSOTeJqQRr+VavPu3YBWK4=;
-	b=1Jy4RW6uI74IFMKZDWRY2AaUazDTncwqLWohDfDQxPauIs6ee3v7YSQ8x5TXspCZQtlb
-	 a4Ie8wSEmDOsj2ShvMGMB6XUpq1PTHOgHy5PNY0mvtwXoGV6peM23vHtUTAS98x6fQsdW
-	 /Z706OhQTOJ7LGb60R9POQiuBeOeuyRbYQXiOKWCUDfPyVh+zMPZ22IcNCkV666WVZJmq
-	 pR+F/fkOH4s9+XixWIj96J15Fh4JKujGUATdSrY49OAVStMlt+jxeI3EnycdndKxnyedQ
-	 I5MkqsoxaXczRqnPU8AxOzRzZ7Be0ouZdmmbpz5qIWpiMvEUvDEjYCyIeRKEbB5d+Pw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795524612;
+	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
+	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
+	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
+	 X-SA-Exim-Scanned;
+	bh=fkcXNh2S892P26zeb4v8GatV81GnIFMuUNe4sWAuvks=;
+	b=GUcPvP2SMr9qLHzUpssieGrgCs2eWdDvTIB0I0pJanUYES12weTuDNOCBJtxczRelQYl
+	 HLdTcxvmPDdaZjfF8HzHigGwSFkHBz3R0UJJI4y9D2KKN8kxcqG7ZRWinIyTKO43Db3IL
+	 cZ9KhkVpxK0qFGjwMamHY7PCJLHn4Vp/AXz1FrnGFxy2f4YWgOB8JqnvOkGeKJyzDZyg1
+	 BJXkwq+6LWDwrBziwRyzQWwrHZeOoQEsg+wpqkcSPAx+GaqXkaDJhPuqVQBAsWuNJXkQv
+	 H7w51ZWQvX9Qp4SBc/wKzxRy9C3plkzS3JxM+Pwrqo9UfkBZ/A6m0XCMnFnufqrKx9A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mxfeyXLD;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gr2PEFt6;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BCB606A31E;
-	Tue, 24 Nov 2026 12:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF30606A31E;
+	Tue, 24 Nov 2026 12:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mxfeyXLD
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D7C1F000CA;
-	Tue, 24 Nov 2026 12:47:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gr2PEFt6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B391F000C0;
+	Tue, 24 Nov 2026 12:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795524453;
-	bh=ro/RH43C78Nv0CR/7XnRdlSOTeJqQRr+VavPu3YBWK4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mxfeyXLD1gPs4UQR8oTQj3OkLshj7HZiQUBU45TqVI28lk9JhOxpgQq7BDQaFClJV
-	 hkpfcliDjY+qoVOgqamRxWmXAaYN1feznIRPtzOHCK0o8k9EOsmt1GOMiFoS3AICN/
-	 vWK93aucLOFcdfR/CAu9armJTVyRUwysQM8vj/qVLPLcnhh4o9iSzjVbPW49uGBcjZ
-	 UD+0CNAV1M3PspaMlA9puxg3BJUt3qaeGmL2Y9KDnT/tUxcGjyhbeEWvh3ZMamRP0w
-	 e1KZ7cCtD9x0brzVfrQ5mdPrIoInMVaV6bpYftG/0yF/drjSzzNAehBcbi6IPMJZ83
-	 EdfRrfBiSkm0A==
-Message-ID: <sashiko-outbox-231174@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v4 8/8] vsock: add datagram tests to vsock_test
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sergio Lopez" <slp@redhat.com>
-Cc: virtualization@lists.linux.dev, kvm@vger.kernel.org, bpf@vger.kernel.org, linux-hyperv@vger.kernel.org, "Michael
- S. Tsirkin" <mst@redhat.com>, "Eugenio Perez" <eperezma@redhat.com>
-In-Reply-To: <20261124-vsock-dgram-support-v4-8-3607484e85e8@redhat.com>
-References: <20261124-vsock-dgram-support-v4-0-3607484e85e8@redhat.com>
- <20261124-vsock-dgram-support-v4-8-3607484e85e8@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 24 Nov 2026 12:47:32 +0000
+	s=k20260515; t=1795524610;
+	bh=fkcXNh2S892P26zeb4v8GatV81GnIFMuUNe4sWAuvks=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Gr2PEFt6Nif4bgQBkTr20iv52muiiKwwK0cRcdA2K0e825bGiSD/zpBb8TnonFISy
+	 fxqG4PZIaD/LsMIx6VJ2b9q82i6NAso2o9l3lcff2wZgZkU/fYbcM/T1MqnYuWA5Tg
+	 3OeTKCka90kyPatC5NxqPl3gda+lX38e3x5q9Xv9FcQFwO5Hm6v6qeV1eyZY8VMU3F
+	 31mirC74x45EEyhE3MU0Q/la2PlvYX/UX1LzUgFtaIRv/t1AIgC+BMlOFtbXOH4PID
+	 x2aHnvY+gDaxfJFp3TjoCIPM2cpf8Lj3JiVjlcrTrKDx8/nQN8aFOKLv7UkpNWOquZ
+	 swhINiwhDxj8w==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xVpyK-00000002Zmv-16Az;
+	Tue, 24 Nov 2026 12:50:08 +0000
+Date: Tue, 24 Nov 2026 12:50:07 +0000
+Message-ID: <868q2iz94w.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Justin He <Justin.He@arm.com>
+Cc: Oliver Upton <oupton@kernel.org>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Joey
+ Gouly <Joey.Gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki
+ Poulose <Suzuki.Poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin
+ Marinas <Catalin.Marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark
+ Rutland <Mark.Rutland@arm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean
+ Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Sascha
+ Bischoff <Sascha.Bischoff@arm.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	Lorenzo
+ Stoakes <ljs@kernel.org>, Dan Carpenter <dan@pereq.eu>
+Subject: Re: [PATCH 1/3] KVM: arm64: Don't load hardware vCPU state before first run
+In-Reply-To: <AS2PR08MB978600ED2150F773D3E1631DF7442@AS2PR08MB9786.eurprd08.prod.outlook.com>
+References: <20261123150917.2679600-1-justin.he@arm.com>
+	<20261123150917.2679600-2-justin.he@arm.com>
+	<86eccbzcqh.wl-maz@kernel.org>
+	<AS2PR08MB978600ED2150F773D3E1631DF7442@AS2PR08MB9786.eurprd08.prod.outlook.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,124 +97,77 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: Justin.He@arm.com, oupton@kernel.org, fuad.tabba@linux.dev, Joey.Gouly@arm.com, seiden@linux.ibm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, Catalin.Marinas@arm.com, will@kernel.org, Mark.Rutland@arm.com, pbonzini@redhat.com, seanjc@google.com, shuah@kernel.org, Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, ljs@kernel.org, dan@pereq.eu
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] vsock_test: vsock_dgram_check_vmci_host() skips when
-  vhost_vsock is unloaded
-- [Medium] vsock_test: local CID tests fail when VMCI coexists with
-  vhost and loopback
---
+Adding Dan to this loop, as I reckon something else is amiss.
 
-commit 792ed67e2ec454b7d9e33e144a3b395a0eb9843c
-Author: Sergio Lopez <slp@redhat.com>
+On Tue, 24 Nov 2026 01:39:23 +0000,
+Justin He <Justin.He@arm.com> wrote:
+> 
+> Hi, Marc
+> 
+> > -----Original Message-----
+> [...]
+> > > KVM_PRE_FAULT_MEMORY calls vcpu_load() as soon as
+> > KVM_ARM_VCPU_INIT has
+> > > completed. On arm64, however, kvm->arch.sysreg_masks, the trap
+> > > configuration, vncr_tlb and nested vGIC state are only set up on the
+> > > first KVM_RUN in kvm_arch_vcpu_run_pid_change().
+> > 
+> > I think I'm going to queue a patch disabling prefaulting immediately,
+> > and then we can fix this crap.
+> > 
+> Fine with me. I'll rebase on top of it and have v2 re-enable
+> pre-faulting together with the load/put change.
 
-vsock: add datagram tests to vsock_test
+Don't worry about that. I can fix that myself when applying the
+patches.
 
-This commit adds SOCK_DGRAM test cases to vsock_test covering local
-loopback semantics, host/guest transfers, transport routing, and queue
-accounting, along with capability-based skip checks and a --local mode.
 
-> diff --git a/tools/testing/vsock/vsock_test_dgram.c b/tools/testing/vsock=
-/vsock_test_dgram.c
-> new file mode 100644
-> index 0000000000000..16c3a6e59f792
-> --- /dev/null
-> +++ b/tools/testing/vsock/vsock_test_dgram.c
+> > > Since kvm_running_vcpu can now be set without VHE state on the CPU, use
+> > > host_ctxt->__hyp_running_vcpu in VHE enter_vmid_context() (matching
+> > > nVHE)
+> > 
+> > Can you clarify under which circumstances we end-up on the TLB
+> > invalidation path? Simply faulting things in should not result in
+> > invalidation. Unless we end-up with MMU notifiers firing?
+> > 
+> I found this by code inspection, not from a failure. A TLBI from a stage-2
+> BBM or an MMU notifier can hit this path during pre-faulting, but before
+> the first run hw_mmu is canonical, so it makes no difference. As Lorenzo
+> said, I'll drop this hunk.
 
-[ ... ]
+vcpu->arch.hw_mmu being the canonical one before the first run doesn't
+hold anymore, since a7602ea542d4e ("KVM: arm64: nv: Initialize hw_mmu
+to NULL for nested vCPUs"), as userspace can configure things for an
+L2, before first run, and bad things happen otherwise.
 
-> +static bool usable_local_cid(void)
-> +{
-> +	unsigned int cid;
-> +	int fd, ret;
-> +
-> +	fd =3D open("/dev/vsock", O_RDONLY | O_CLOEXEC);
-> +	if (fd < 0)
-> +		return false;
-> +	ret =3D ioctl(fd, IOCTL_VM_SOCKETS_GET_LOCAL_CID, &cid);
-> +	close(fd);
-> +	return ret =3D=3D 0 && cid !=3D VMADDR_CID_ANY && cid > VMADDR_CID_LOCA=
-L;
-> +}
+But the observation remains: if an MMU notifier occurs for any reason
+while pre-faulting (likely a concurrent reclaim), we get the "not
+quite loaded" vcpu in enter_vmid_context(). If vcpu->arch.hw_mmu is a
+valid (non-null) pointer, then we will restore whatever is in that
+structure when reaching exit_vmid_context(), and that's not what is
+intended.
 
-[Severity: Medium]
-Can usable_local_cid() enable the local-CID loopback tests when VMCI owns
-VMADDR_CID_HOST?
+So I think we need that sort of exclusion. Either we track what is
+actually properly loaded (using __hyp_running_vcpu as you did before,
+or by checking whether the vcpu is in a valid state).
 
-When vhost_vsock, vsock_loopback, and vmw_vsock_vmci_transport are loaded
-together in a global namespace without a guest-to-host transport,
-IOCTL_VM_SOCKETS_GET_LOCAL_CID returns VMADDR_CID_HOST (from vhost_vsock),
-so vsock_dgram_check_local_cid() enables test_dgram_bound_lookup() and
-test_dgram_connected_cid().  However, VMCI is the datagram owner in a
-global namespace and its local CID is also VMADDR_CID_HOST, so
-vsock_select_transport() routes packets addressed to VMADDR_CID_HOST
-through vmci_transport instead of vsock_loopback.
+I think we have a somewhat similar breakage with 5651590be08a6 ("KVM:
+arm64: Load the vcpu in KVM_SET_VCPU_EVENTS"): as vcpu_load() now
+becomes sensitive to vcpu_has_run_once() being true, we can't tell
+anything of the state that is going to be evaluated by the event
+injection helper.
 
-As a result, test_dgram_bound_lookup() fails with EADDRNOTAVAIL when
-sending from a socket bound to VMADDR_CID_LOCAL to one bound to
-VMADDR_CID_HOST, and test_dgram_connected_cid() times out because the
-receiver connects to VMADDR_CID_HOST (selecting vmci_transport) while the
-packet arrives over loopback_transport and is dropped by
-virtio_transport_dgram_source_allow().
+We could prevent the non-running injection in KVM_SET_VCPU_EVENTS, but
+that's also a change in the API...
 
-[ ... ]
+	M.
 
-> +const char *vsock_dgram_check_vmci_host(const struct test_opts *opts)
-> +{
-> +	unsigned int caps =3D dgram_capabilities(opts, 0);
-> +	unsigned int cid;
-> +	char mode[16];
-> +	FILE *file;
-> +	int fd;
-> +
-> +	if (!(caps & DGRAM_SOCKET))
-> +		return "datagrams unavailable locally";
-> +	if (!(caps & DGRAM_VMCI_MODULE))
-> +		return "requires VMCI datagram transport";
-> +
-> +	file =3D fopen("/proc/sys/net/vsock/ns_mode", "r");
-> +	if (!file)
-> +		return "requires a mounted vsock namespace sysctl";
-> +	if (!fgets(mode, sizeof(mode), file)) {
-> +		fclose(file);
-> +		return "cannot read vsock namespace mode";
-> +	}
-> +	fclose(file);
-> +	if (strncmp(mode, "global", 6))
-> +		return "requires a global vsock namespace";
-> +
-> +	fd =3D open("/dev/vsock", O_RDONLY | O_CLOEXEC);
-> +	if (fd < 0)
-> +		return "cannot open /dev/vsock";
-> +	if (ioctl(fd, IOCTL_VM_SOCKETS_GET_LOCAL_CID, &cid)) {
-> +		close(fd);
-> +		return "cannot read local CID";
-> +	}
-> +	close(fd);
-> +	if (cid !=3D VMADDR_CID_HOST)
-> +		return "requires VMCI host CID without an active guest CID";
-> +	return NULL;
-> +}
-
-[Severity: Medium]
-Does checking IOCTL_VM_SOCKETS_GET_LOCAL_CID =3D=3D VMADDR_CID_HOST skip
-test_dgram_vmci_host_routes() whenever vhost_vsock is unloaded and no
-/dev/vmci host context is active?
-
-Loading vmw_vsock_vmci_transport only registers transport_dgram_fallback;
-vmci_register_vsock_callback() registers transport_h2g only while
-vmci_host_users() > 0.  Because vsock_dev_do_ioctl() queries only
-transport_g2h, transport_h2g, and transport_local for
-IOCTL_VM_SOCKETS_GET_LOCAL_CID (never transport_dgram_fallback), the ioctl
-returns VMADDR_CID_ANY or VMADDR_CID_LOCAL when vhost_vsock is not loaded,
-causing vsock_dgram_check_vmci_host() to skip the test even though VMCI
-host datagram sockets can bind and send to VMADDR_CID_HOST.
-
-Instead of requiring the ioctl to return VMADDR_CID_HOST, could this verify
-that the ioctl does not return a guest CID (> VMADDR_CID_HOST) and probe
-binding a datagram socket to VMADDR_CID_HOST?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124-vsock-dgra=
-m-support-v4-0-3607484e85e8@redhat.com?part=3D8
+-- 
+Without deviation from the norm, progress is not possible.
