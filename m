@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795479826;
-	b=l9NWBws5Ig9Jax2bjJU+le4ulYi04T908KlBP/d18s/etMFZLTiKa3BTDqX1l4DGdrV8
-	 C2F51CVL15/k3siYJt5piXZ0eU+wuIACbuvEzFZIzei7MC5kEeXDleTIAKQ01UIxoEJ0W
-	 713V571Qvqy+8X2wNkA5VZmm4pcV/Sc+FILKe9Vl7Z26X1qWWc3MRLTOZbHJfluKZeJKd
-	 pxDQNvrIhc4dv8AM9yqotwMBTsWj4ttoBwfUb+eoBF6ITza7ssm4PK8sxS6K7S5Q063h0
-	 tbB+TegVRI6TAdktEKoeCdrgkNuL5rN25phnNinb17xPfHd7ME+X5Op7SQUz99ypL4Q==
+	t=1795479823;
+	b=A0M4QUyuA0yqZb1C0foD6gUhgv3JbQoSE6LWtIn3IPr6/vfCZrY4IHQ9YF+UmFMqjFZ0
+	 8Qd0bvy53WdNQxMj3el4TmhFHfTz02eYp94oJ5OQq/ldHFFZSpZfpdOXQMyQThCKgDfFI
+	 Uu0Z8T4ykdClizRMZoZ3aoqBdhoApQwa1yPsMXsNrOxPcFB5i/9HY+IJRLStToE0U8T+j
+	 YlOUOKo0Wdwp02DQ3j3/rwaERuz5NcSUueA3hVXBRkj5TZUtm09h3HcnZ10K/5skT3RHh
+	 FuE+Ig6vTkF4nUZpVgbIgH4b84GB2+EQwnhrVzoW/OCfM4MtZS61ToTo24asQPXjxfA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795479826;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795479823;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=rMzI9ARjYbF3YZ8FF7+zs/SIxNGg4vON9w4oyH3HYGg=;
-	b=j0PE21ODca8Rf2Kxp96UApVxDvkr2x7Qdc0PCcxT/bNpPBcIC63QBGp/2KEbie3tfGqF
-	 2S83z3AeEHp239RxZOvl+W925H5FKkAETjNPweh1n93syRoGK0QdYe29jR9tnHZJzdjdQ
-	 8LRZQ2o6cueww7ND+bUi3HOIqFEtXUbpJ2yCqsRrH0MVyUhcAFyyBHSM2AEoK5cx8ASW/
-	 FqTfH2BM4SUwQxWUc66fUVk91+WikZDrtxFLG2q1k7jGwforTzs8lT5CxPwHSUNzBrQR3
-	 +Mxnyn89XJbPKCPFt65ECaPJ6RLR6jX1vGnKKxz+YC94FsX22tiHAI1sd18JDUEfVZA==
+	bh=qVEQ6WrowN6yXKJ64vRKJJ9FOws1/7+odNqRKAVNeWE=;
+	b=U6sPYB8FMYFoZth8I9/DSqnxnRKw/Rf689XvNd05dmJIClL+shxxL3kCcxBt4HwtZhjA
+	 rjpC2WFwKtVJYxyLEm09xi1CNTrKIwktgMKFEe+yyEFjW2si0CZuwoLkCAR42ikIStv5d
+	 yQwKNyl/xdXP8aihkpYtOqVppMCGoCbCOMIIuuOTOBqx9ibTYbPaDp9qIxVPvtyDwCuni
+	 v15WkKYM1LfebR05dOHaVQGFCgUvGRjZXy/UfSA4BMTeky2cbfrc5iz1Z6rGU0xPnzM6a
+	 aYVeVjFrapa4vtr2LClEb9IWvhfttfTVmUIk7HAC3dB7KEp6KqFKod60olEUhInSoeA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aWHBjoCI;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dQBqsGyk;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA45606A68B;
-	Tue, 24 Nov 2026 00:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55AC606A680;
+	Tue, 24 Nov 2026 00:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aWHBjoCI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D615B1F0093C;
-	Tue, 24 Nov 2026 00:23:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dQBqsGyk
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21B11F000CA;
+	Tue, 24 Nov 2026 00:23:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795479826;
-	bh=rMzI9ARjYbF3YZ8FF7+zs/SIxNGg4vON9w4oyH3HYGg=;
+	s=k20260515; t=1795479823;
+	bh=qVEQ6WrowN6yXKJ64vRKJJ9FOws1/7+odNqRKAVNeWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aWHBjoCI66SGYw8l7YKVycvQluFNnLGwa0p1BM2c7DUz74M7TUsaRJu0wJEiAQFts
-	 Xy9yXTqxeSeu34ish56PihOIujGnnt116ffd4L2sZ7VoLFR2KjVpma/NodoyUKLjfc
-	 VLVyoHGbZ+4DA8r7AkVlXrAiQu0IXSGXzrLX9wgCN0qJsMmwrzIGxcj+CV1uLQGRlO
-	 nftxTtrX6U35269+HokGFGdkPvMdRQ3DbArMJVeQFbo8QikKyFPkhuhLh2FszTCmLE
-	 ZRyDoFvT2PY0aJ0lz0UdRUw20bB3Su1atEU1R8EpQ6PkIacVl3m5KGutrtpmfPkbcq
-	 XSH+puZHO6Xvw==
+	b=dQBqsGykT+BWbvMYw05yAcavP2Cyw3pebm75cFK05CmwII024RvBCckOAKNiqednt
+	 EsIefixFviN6MbUq8MAdoOFECLI8XS4ddjoe97v8XXy66hyTYAkqYud47FZEqh7mSO
+	 sjL9wT0HMV9LB6XY4xJu/ixCFE/BC8ojgj3GrZSgJ+7jphPKK9NRulOKOarRTgGcE0
+	 TjnFQO9tF8KGweTCiAeLrsZbU4VmfB3GmLfN0AR5lUm14q8LWdJK0lyL102JQJ9ghf
+	 mzCSdcliNVQnfzyVDiM7r6HChBYIyOW1+6Ra7gdaZqKzj8umjW3sP1Oxf6DWBT7OAN
+	 VfXmm7zS+OLOw==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>,
 	Peter Zijlstra <peterz@infradead.org>
@@ -61,9 +61,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [RFC PATCH 26/26] KVM: x86/pmu: Allow emulation in the fastpath with a mediated PMU
-Date: Tue, 24 Nov 2026 00:23:03 +0000
-Message-ID: <20261124002303.1785363-27-yosry@kernel.org>
+Subject: [RFC PATCH 24/26] KVM: VMX: WARN if the Intel PT PMI handler runs for a mediated PMU
+Date: Tue, 24 Nov 2026 00:23:01 +0000
+Message-ID: <20261124002303.1785363-25-yosry@kernel.org>
 X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
 In-Reply-To: <20261124002303.1785363-1-yosry@kernel.org>
 References: <20261124002303.1785363-1-yosry@kernel.org>
@@ -78,91 +78,52 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Effectively revert commit f7a65e58d643 ("KVM: x86/pmu: Disallow
-emulation in the fastpath if mediated PMCs are active"), as KVM no
-longer relies on its software copies of PMU state being consistent with
-hardware while the guest context is loaded.
+vmx_handle_intel_pt_intr() handles ToPA PMIs for guests using Intel PT
+by setting the ToPA bit in KVM's software copy of the guest's
+GLOBAL_STATUS, and requesting a PMI for the guest.  This doesn't work
+with a mediated PMU, as the guest's GLOBAL_STATUS lives in hardware
+while the guest context is loaded, and the software copy is overwritten
+when the guest context is put.  The GLOBAL_STATUS accessors can't be
+used instead, as the handler runs in NMI context.
 
-KVM now accesses PMU registers in hardware if needed with the guest
-context loaded, and can therefore emulate instructions correctly in the
-fastpath with a mediated PMU. Specifically, KVM writes to hardware when
-incrementing counters or setting bits in GLOBAL_STATUS if the guest
-context is loaded.
+The handler can't run for a vCPU with a mediated PMU though: while the
+guest context is loaded, the LVTPC routes PMIs to the mediated PMI
+vector, and perf ignores NMIs (see perf_event_nmi_handler()).  NMIs from
+the guest are handled right after the VM-Exit, before the guest context
+can be put.  WARN if it runs anyway.
 
-When emulating an instruction in the fastpath, KVM increments PMCs that
-count instructions with the guest context loaded.  KVM now updates
-counters and GLOBAL_STATUS in hardware in that case.
-kvm_pmu_trigger_event() reads GLOBAL_CTRL from software to determine
-which counters to increment, but the software copy is up to date even
-when the guest context is loaded: either guest writes are intercepted,
-or it's synced from hardware after every VM-Exit
+Don't bail after the WARN, as handling the PMI is still the best effort:
+the guest still gets a PMI, and setting the ToPA bit in the software
+copy is either correct (if the guest context is not loaded) or
+harmlessly lost.  Bailing would drop the guest's PMI, and let perf
+handle the interrupt as a host Intel PT interrupt.
 
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/msrs.c |  3 ---
- arch/x86/kvm/pmu.h  | 10 ----------
- arch/x86/kvm/x86.c  |  6 ------
- 3 files changed, 19 deletions(-)
+ arch/x86/kvm/vmx/vmx.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
-index c58889cf36f55..9f2172060d331 100644
---- a/arch/x86/kvm/msrs.c
-+++ b/arch/x86/kvm/msrs.c
-@@ -924,9 +924,6 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_emulate_msr_write);
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 68fa251dda600..14d33b7ffcd93 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -8484,6 +8484,16 @@ static unsigned int vmx_handle_intel_pt_intr(void)
+ 	if (!vcpu || !kvm_handling_nmi_from_guest(vcpu))
+ 		return 0;
  
- static fastpath_t __handle_fastpath_wrmsr(struct kvm_vcpu *vcpu, u32 msr, u64 data)
- {
--	if (!kvm_pmu_is_fastpath_emulation_allowed(vcpu))
--		return EXIT_FASTPATH_NONE;
--
- 	switch (msr) {
- 	case APIC_BASE_MSR + (APIC_ICR >> 4):
- 		if (!lapic_in_kernel(vcpu) || !apic_x2apic_mode(vcpu->arch.apic) ||
-diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
-index 565e09b23c498..5953f3e8a5d45 100644
---- a/arch/x86/kvm/pmu.h
-+++ b/arch/x86/kvm/pmu.h
-@@ -308,16 +308,6 @@ static inline bool pmc_is_globally_enabled(struct kvm_pmc *pmc)
- 	return test_bit(pmc->idx, (unsigned long *)&pmu->global_ctrl);
- }
- 
--static inline bool kvm_pmu_is_fastpath_emulation_allowed(struct kvm_vcpu *vcpu)
--{
--	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
--
--	return !kvm_vcpu_has_mediated_pmu(vcpu) ||
--	       !bitmap_intersects(pmu->pmc_counting_instructions,
--				  (unsigned long *)&pmu->global_ctrl,
--				  X86_PMC_IDX_MAX);
--}
--
- void kvm_pmu_deliver_pmi(struct kvm_vcpu *vcpu);
- int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned pmc, u64 *data);
- int kvm_pmu_check_rdpmc_early(struct kvm_vcpu *vcpu, unsigned int idx);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index ca2a58079b019..c1469a64c880d 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -831,9 +831,6 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_emulate_invd);
- 
- fastpath_t handle_fastpath_invd(struct kvm_vcpu *vcpu)
- {
--	if (!kvm_pmu_is_fastpath_emulation_allowed(vcpu))
--		return EXIT_FASTPATH_NONE;
--
- 	if (!kvm_emulate_invd(vcpu))
- 		return EXIT_FASTPATH_EXIT_USERSPACE;
- 
-@@ -8780,9 +8777,6 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_emulate_halt);
- 
- fastpath_t handle_fastpath_hlt(struct kvm_vcpu *vcpu)
- {
--	if (!kvm_pmu_is_fastpath_emulation_allowed(vcpu))
--		return EXIT_FASTPATH_NONE;
--
- 	if (!kvm_emulate_halt(vcpu))
- 		return EXIT_FASTPATH_EXIT_USERSPACE;
- 
++	/*
++	 * With a mediated PMU, LVTPC points at the mediated PMI vector while the
++	 * guest runs, so a guest ToPA PMI should never arrive as an NMI. Also,
++	 * hardware GLOBAL_STATUS is authoritative while the guest context is
++	 * loaded, and pmu->global_status is overwritten when it is put, so the
++	 * bit set below would be lost. The GLOBAL_STATUS accessors can't be used
++	 * here either, as this runs in NMI context.
++	 */
++	WARN_ON_ONCE(kvm_vcpu_has_mediated_pmu(vcpu));
++
+ 	kvm_make_request(KVM_REQ_PMI, vcpu);
+ 	__set_bit(MSR_CORE_PERF_GLOBAL_OVF_CTRL_TRACE_TOPA_PMI_BIT,
+ 		  (unsigned long *)&vcpu->arch.pmu.global_status);
 -- 
 2.56.1.809.ga0b61035b5-goog
 
