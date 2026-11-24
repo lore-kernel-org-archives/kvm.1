@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795479813;
-	b=kRfVMndh+/BEqXatSSNOa1v/ImPeRHYa28QxF7OYkr5fM96I0O4DU0Xa/pgqbYKmKiNs
-	 sMBjLxcIPS8kU0FSGGNKTtknpphSI9oM/WkaONFfbVSfu5EKhX8R8xyN4/XgofdQOJ5fG
-	 Ys0yr/zdhjFB7x05C0vJVzgOK1rNIwhOM+/60oMGKeTVckUWAMkBAKYfTwGNj/uqj1K2N
-	 MqRRFuVlHXsY4SjTOOJHQ/zwCHQmnfyRyaDRTyyHG9SEGJEgL2pFel0iNQlVrBS+7ThJJ
-	 OFeDtii1k986yj82oz8reIpM4MSTVpEtU1AwATsEYNm5KSOmQ4mtm/Mc2m5/pmOU5Pg==
+	t=1795479808;
+	b=2DLtdar9oYHwvXTZrykwabDLGIFYk1GL34OJFf6B2zyRjn9/PHHMHeCbpnot5XOMVe/I
+	 8PtImrQxL6vZt9fhtUkZhh3Br1/jwNhGBewWw68Bf3hTslSKBYgQAF9DP5aBkTV3aL/eg
+	 7xAXBtOa4OKHXCH97osntDFyYqPBPvFjI3ZPXLdKQKKWCMP39/ZHBckwT0IWRJZNke2fJ
+	 HKeqp7mfFYRRJmcSEFbWsMDK5XfupU/H9XK4BswLr8s39hZuzMfc1y1gKhN0kborf/NZx
+	 RBTYkZKfvUlYKoEQw3YaBFoLnMJQqPn/jBBXU28MZKA8OnsYM7yVk04FsHGDOZP57og==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795479813;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795479808;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=i2EywLV34ZfIG+FMDzUgE+BJEY60aMQPmD/XO7mY9rY=;
-	b=JU9MP3PjxMwsG0Xr73lsTLD8mW7FGr8H6W4tSshRxEij6SkQgG4bh2gye5X+WCnXlwMJ
-	 EK4XWjzJuzSMdvkAJclSRr1X0jvyrEUS1ePvMVJlrXk2uyBwL9y0P2ygjYFDM/fi/b9Zk
-	 v/d1BKH/e9wslOF0E0QmB3TgiT7q2+t3SoD3V6wFEo+JGvRcR9H+KphuZxW6gdELKs0LQ
-	 QTo/Javf9418NKe5cRBsMAKtS1gqzH+90YITp2PhqxACCOEGkVIK1nXXawOyufDOSJJfl
-	 9mC48beaVfIK5xDuhxQgbI3DvDW9Ks8q9fo0D4IA4yypK6snjKuni8QfaDRgFPUWpuA==
+	bh=EYXC1i6VjI5xGadjPaWJoS80C15C6dTLqBMJAfut4rM=;
+	b=csAxBaazAJ57NYwo/FG6Sk5P2wC7Y7kXPVjC5L6nyLDIOprWvSNy0XUtIQ0yg+JQIbdl
+	 AtVdolki6aJZ43VOVV5r9Y2dS/gEDG7fjK4+9kJIX6SJAUhu9wqPs69k9sbWRmEsEBDyR
+	 gfLhA8l3Kmi+zmI3qJ2saIB5KDJVgpStPLp5eQppUk1h/UQhzb58IEaKqsldsZ+YZOGjJ
+	 kzE+ce9R+Mq+BetQBDtSkdFvPdGXSPejBEMZ+OXCMVKJMzeA4XXWkGtdQmL2Kigab0+aU
+	 hN7Zg1Zj2VKv/fY/mdq85I69maXeCdfp4XvlHO5r/p+xjrHmPG5Dlfx9+4kBX7ihKEg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kwn8carH;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m2u7qplt;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47EC9606A33E;
-	Tue, 24 Nov 2026 00:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982AC606A696;
+	Tue, 24 Nov 2026 00:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kwn8carH
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53EB81F000C4;
-	Tue, 24 Nov 2026 00:23:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m2u7qplt
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCDF1F01579;
+	Tue, 24 Nov 2026 00:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795479813;
-	bh=i2EywLV34ZfIG+FMDzUgE+BJEY60aMQPmD/XO7mY9rY=;
+	s=k20260515; t=1795479808;
+	bh=EYXC1i6VjI5xGadjPaWJoS80C15C6dTLqBMJAfut4rM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kwn8carHyHZ7nGIA0Q/HSFDvGYsWE/B2ekwob7+3TfiI4aMAwRxiA66XZRRzv/8Nf
-	 Pb+gQsfoQdjhe99ZCi230GESBtOkmiIhVGPnZgIGWzgin56OF2gGdb/eD/jLumgGxt
-	 ptnj3D5MEPws4aCS0Gvh99BzUerUe10zGaiMqp5Ivll3KCKdCVoi99VHXOMIPqfVBI
-	 ERgouqbKECF4z6xvicKF5Awf6ze5YXeor37RGxSWiCRUojF+/dUvDDLtDzFmuuD/Ol
-	 LxBjLoQiZzJPgGKvMs5/vXxs8LABx9BswiSDvWK5wkDOLrqF9mhFulVIkpcJYW3x0e
-	 5/f6D4QzbCN2w==
+	b=m2u7qpltQiLyJbIT4oNBVKDjqDL4FKAfVzaghXcnRms3MtH59gYky/9K1hqeOwiP7
+	 Lezn/1B+cY+htaEyk9OioJJ5wFFXrLmpukilgoSLrAepK8jrzU5ZFw1hAdXTW2rrRC
+	 XJ1b2OKEOp5ijWhdYmFJDc8/Ewo/Ea7lbUscurAN9/5GmiUHGQNagMFnSEoD0rRs/g
+	 fFCpHF0tEbqcRewuOejuEzVEVn9tzShcte/zAAddptcqh7S7m9pM5qNNoei8jKXffC
+	 5CxSdtib5dyUWZ/tCARFmK6J2YpVQS/N5ufItNMSNBl+AK7E+62tDkUfocQvASbb2z
+	 68SP4wEvU8XgA==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>,
 	Peter Zijlstra <peterz@infradead.org>
@@ -61,9 +61,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [RFC PATCH 17/26] KVM: x86/pmu: Ignore reserved bits on writes to GLOBAL_STATUS_CLR
-Date: Tue, 24 Nov 2026 00:22:54 +0000
-Message-ID: <20261124002303.1785363-18-yosry@kernel.org>
+Subject: [RFC PATCH 14/26] KVM: x86/pmu: Zero eventsel_hw for counters that can't count
+Date: Tue, 24 Nov 2026 00:22:51 +0000
+Message-ID: <20261124002303.1785363-15-yosry@kernel.org>
 X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
 In-Reply-To: <20261124002303.1785363-1-yosry@kernel.org>
 References: <20261124002303.1785363-1-yosry@kernel.org>
@@ -78,33 +78,34 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In preparation for propagating GLOBAL_STATUS_CLR writes to hardware if
-the guest's mediated PMU context is loaded, ignore reserved bits when
-the guest writes AMD's GLOBAL_STATUS_CLR, as is already done for
-GLOBAL_STATUS_SET, so that guest-controlled reserved bits aren't written
-to hardware.
-
-Writes to Intel's GLOBAL_OVF_CTRL, which share the code, are unaffected,
-as they already #GP if any reserved bits are set.
+When reprogramming a counter that can't count, zero eventsel_hw instead
+of only clearing the enable bit, so that putting the guest context
+doesn't need to clear its event selector in hardware. The guest's view
+is unaffected, as reads return eventsel, and the counter doesn't count
+either way.
 
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/pmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/pmu.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index d312f1b2f586a..81278a64be43f 100644
+index 0a5299532c086..44d947b854b9c 100644
 --- a/arch/x86/kvm/pmu.c
 +++ b/arch/x86/kvm/pmu.c
-@@ -962,7 +962,7 @@ int kvm_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		fallthrough;
- 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
- 		if (!msr_info->host_initiated)
--			pmu->global_status &= ~data;
-+			pmu->global_status &= ~(data & ~pmu->global_status_rsvd);
- 		break;
- 	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
- 		if (!msr_info->host_initiated)
+@@ -576,7 +576,11 @@ static void kvm_mediated_pmu_reprogram_counter(struct kvm_pmc *pmc)
+ 	struct kvm_pmu *pmu = pmc_to_pmu(pmc);
+ 
+ 	if (pmc_is_gp(pmc)) {
+-		pmc->eventsel_hw &= ~ARCH_PERFMON_EVENTSEL_ENABLE;
++		/*
++		 * Leave eventsel_hw zero for counters that can't count, so that
++		 * they don't need to be cleared when putting the guest context.
++		 */
++		pmc->eventsel_hw = 0;
+ 		if (allowed)
+ 			pmc->eventsel_hw = (pmc->eventsel | kvm_pmu_ops.EVENTSEL_HW_SET) &
+ 					   ~kvm_pmu_ops.EVENTSEL_HW_CLR;
 -- 
 2.56.1.809.ga0b61035b5-goog
 
