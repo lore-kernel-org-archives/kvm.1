@@ -1,85 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.227.203
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795498300;
-	b=kdFZlnqwb8K5zt+lKkwkjHUM7AHtGHZQpa7VvYErFWL/N/i4yO2cfmpS9cIzdZEWWdRS
-	 VpJrR2DZ06Yk7TZvhvpwc1620n5irep3/9A4KdKAOZWhzUV8y99GK16aq594UFgjiCHUI
-	 x7jPEW+kdyGoNhPZ38aYCnwBav/FeDjsVnHLRohKj+I9su/8/cvYhui2UOBkmJ6aoMeFo
-	 BWuOARBsbAfEvXAr6iBPC5CMYFu4CpyjOSvR80z+wBe3fOBUEdx4sQ5x39qlUKGlJUSdl
-	 C6lUIMEAOILlMdTxQcV69h+6G/SctzVJYjHjdq5yVorQQGguKjaScoCUhAZrzfdQd+Q==
+	t=1795499199;
+	b=PngILdBZJiIKgycFGn64uRUpbdg1zCMRAVmFgbEEET8C26lHD7VcZY9XWgtQU8SAjF27
+	 lJ6OoBwIK6gXdjvFCTm8k5z/GC3mD+eGf0VjmmgTO240ogx2mQb+BWSTZmGYP9KSVLbQv
+	 fKaKEYSakD7HLLLkzK7iiqjj4KKspZpHoDhWoEp9H+N6JQNLMOMZEdSEuPrk7K79lFMdB
+	 Q7VBJJCRe4EWopmR6g2rPRESfzA5DHXDdUNLW13jAFqD+uC/ckykymksjG5TpYjwHotut
+	 OlpZ7DlkLORiHq5CV0oqJ9Qf0B1t6mz+TTPSj+6MA82Zw1Q/GgYDIJxgYvB4PIW+3ZA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795498300;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=MHGUggYwA3gp5Hl40fLruxFZvaBCGWgXTV8JidRQovM=;
-	b=eJtHNFMML0G+hSuacUR6hFSMAVp/22skWAuix0S6YiQzNB6fgwZ4b8ciIiA8F4jOb0YY
-	 61pnJtdfMUhuNZeZQwesTrfEWO6u01Plz2F2z32za1P5TJrT+3LcVKjvHwT2LyzYRiKv2
-	 YKvYW8hrEyHdNc3LNoSSu2mxiQyN0c+y9EbZvLWy3bFM09cGHLCUK39E50icRbZpZgdda
-	 QuCShYCD5h1YyjEqUAInGTsY56hzkNet/BTcpr4YzDROLnO/GtS0/EAbm25XIVhZb1g41
-	 aYcM+L3pild10RWbbDgTWtY26v2sDePenWux/CM3j4+19wTImtn/6o4MjRANNU02nYA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795499199;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=jsMI+Ds46cM6xnlO1TFFO5B5dFdMLZbHbUi3x2wrsRU=;
+	b=V0xjyeO0RZTmPUy868NCkuU/XnyR0hX6mYFTpi9HMlq+DUtcXaXKd2Jk9l/ZUG81yD4n
+	 mWDqNx36Kz3vpeVl/fYWW35uXonL1xffWwBJJxYpHU5WfRgY0a4mzN7mk4mFD4XUzVsBY
+	 Hz5K6varfeJhHPIZrWqdBdrHjQ18EgtRnGejzge0Fy/A5ST/aSXkars/jAXLsWts9C+xS
+	 6jd8PI8goIT2KPkQwGpN4oxHtfRTlOtdLEqhsksOC/LK/SFfBZHCC0DaYpgo/JuzmeVPO
+	 EKCH1kQrCGFEVpqYIbyEWckfmoRMVhAH3z3maLYsPubVnWgtCBDFbRWiscnCEA2nJEw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IL2OexmH;
-	arc=none smtp.remote-ip=74.125.227.203
-Received: from mail-pi2-f11.google.com (mail-pi2-f11.google.com [74.125.227.203])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a174nxv9;
+	arc=none smtp.remote-ip=192.198.163.9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85194606A321
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 05:31:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 85194606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1545606A321;
+	Tue, 24 Nov 2026 05:46:37 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F1545606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IL2OexmH
-Received: by mail-pi2-f11.google.com with SMTP id 41be03b00d2f7-cde795fea95so914092a12.1
-        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 21:31:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795498299; x=1796103099; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=MHGUggYwA3gp5Hl40fLruxFZvaBCGWgXTV8JidRQovM=;
-        b=IL2OexmHvHFKYHluRIKtNYMqUEc5MTXHSaKYpwbh+Hj/xk9TMIYcyvQeRcQZBqGbLx
-         JvrRAPkJzFw22AtCCgQtKJTaef7PeUHoR84RpieUxP1PXls7QB3w9/r66UxCDpukSGB4
-         ReTmmwpM6RYXhALKZRMzc1Plj6nB8PoGLzkzXTS+Cgj4gsrYY+Ya7onI1BmnTaOLPyIn
-         3xdPootTOygbq5YGD5Gugw0IPDBsx29+1QlBAEBZD6otGftJu8Rmcb7+uvXGQ/kFU7t9
-         t1JTqcWTEoBb/hXzW9xSJk83RaFgh97gpXTz1R8zNB0szVMIZ3akveKMEiYVkKT+PbyA
-         +95w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795498299; x=1796103099;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MHGUggYwA3gp5Hl40fLruxFZvaBCGWgXTV8JidRQovM=;
-        b=sLOmJ+JEXbzZunRNxAmZo7HUdmsuiAqOnDuLVbL4FO+UimN0O9LKs0VqHO6cJVVYv8
-         poopoD8TbsjLZYFhQX3BeZi7Wk01+zfwx+5qA79RGGky4ueYn7NEc65ab5r0+FcrMZNi
-         CT+OJzzBNvfO6BaUkNvqQVCX1+vHFICtp2I9BHv1jlUMa5S0mkPQehQE7NwhiCkwDAyb
-         XR87XeFkRhw2x3Q8HCh4Wdfb46rwRgUvOAly9vXY6mSrY9qbc9mWtWwYZta/l4+O/LXu
-         SXml2zC+VjXMXrS33wtcMmbdUCBQVfDoOjihQrtTD+Lu1+6Gs4n8DWPetupd9HVNgQwV
-         Z6+Q==
-X-Gm-Message-State: APuU4Z9xJDfntOIs+SRFol7PtKUO1HZON1mqGjlrTvnfcefQNZw8W3So
-	+i9M6q4AbRdNKEKuskw1COSCOYrKPG1kj3EVsZ2FNrOY7zhoEfXuC1/F
-X-Gm-Gg: AZFdTZeQ5lcjmOCmK65UEp1Vb/uH/SOK+PxlFCtjBR32dss3KFJUmkYdfMLM+1S8Vpp
-	BlkJ1eonw6qNTnodBhz9mDDG5+kprHQv2sBEEAfJdL7N3LPD8hwjbhCboN+WRTOtnobkb/V8BxT
-	Vait3bo1B1Yv86zXPl6vOsoEWUmGC7KZsHIfDCp1obWJFgG0pWVXvNh6WaJqfX8ea17PgowQCgK
-	cxEcag60DSHRzjUIJ1RAk9vpGIBrt7bH5stgsSyPyL7wnt1jWmkWUvz+9ptwnBTmux+25iQHJsq
-	EqsqTYS9dzlPJEpxp+DSyDNcf79K5x2vRpjduKshTskeZ+qAMrt/XVd6zxXEqnAH+/LCb0smAo2
-	p3zRzhcE1iQIF/haHeYhsI69d6y63+CTuMUlAGHk7WIGNH3dzZjOsQRS3sitjrgrstYkkr+Mrqc
-	w/NGXu7MNalYA7QAKAN335W+jnH7Sl83Rd2y6We/WlAqqq/58PqLj9ixCWi6vFaYPFQVpSW0I/j
-	zvFYUtQdAbZXxIBCc8PWJvPDMDX5FJA/Z0al+H3A5iM18O8rejya0WChKoDz2zEeIVGGEi02piM
-	HP5e27Ab2pN/XNUq6UIcdsWXuGC/CVLXV6xLJD+OyRr2YawUunET
-X-Received: by 2002:a05:6a20:7d9b:b0:3e0:dc12:8908 with SMTP id adf61e73a8af0-4014e25b4f1mr12376756637.81.1795498298665;
-        Mon, 23 Nov 2026 21:31:38 -0800 (PST)
-Received: from [192.168.22.174] ([114.246.237.251])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cde6c9c7dcbsm6562442a12.0.2026.11.23.21.31.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Nov 2026 21:31:38 -0800 (PST)
-Message-ID: <286b4604-fb68-452c-b131-d3847669726f@gmail.com>
-Date: Tue, 24 Nov 2026 13:31:29 +0800
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a174nxv9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795499198; x=1827035198;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Rsqn8C+lyW0grTpsQkc/ILwRR9+emcI8MVVSWwxpppQ=;
+  b=a174nxv9nJnMlsHp2InXEipcPHAM+iUMgWqdu2ejufO7MhiVwGXgVftY
+   TXIFkIRvpDFQ52Gucv5cBBRl0nhafJ5XHIjN1WSXpb8XqmbIUi7jVk69x
+   vaT8aBK7F4kXaSO2dXmh+25zac3Pz61fcHfeTaLW1mcz98Etn4r3+z1EI
+   m8oDVTLT+159s713J/6C6Jr6jQWMLQoHLJ7sMlNYXMOipnX13yOF920ra
+   Zw3dD2YQTQ8sx7CRTxO7mPYQEGPlsmBwEDsk1pUW+8tErYnTE1dsnunf/
+   7HKlLflyqaVZoAWaNoNKe1YCau/Cj3Cj8ROtmZe5liVsaQVguw0r2rQlQ
+   w==;
+X-CSE-ConnectionGUID: JwYJHFUCQ12lYY1xArCmGQ==
+X-CSE-MsgGUID: 06OU5f55TAex5f0QLQWtqw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4207685"
+X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; 
+   d="scan'208";a="4207685"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 21:46:38 -0800
+X-CSE-ConnectionGUID: 1I3+CKVHSkultcLGWbpzKg==
+X-CSE-MsgGUID: G8Z/XUfUTgy0S1A4expfiA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; 
+   d="scan'208";a="13272001"
+Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 21:46:34 -0800
+Message-ID: <ac7208aa-04a0-4fd6-bb32-b9478678fd19@linux.intel.com>
+Date: Tue, 24 Nov 2026 13:46:31 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -90,96 +73,125 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 RESEND 2/5] KVM: riscv: Avoid THP adjustment for
- existing 4K G-stage leaves
-To: Jinyu Tang <jinyu.tang@linux.dev>, Anup Patel <anup@brainfault.org>,
- Anup Patel <apatel@ventanamicro.com>, Atish Patra <atish.patra@linux.dev>
-Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Andrew Jones <andrew.jones@oss.qualcomm.com>,
- Conor Dooley <conor.dooley@microchip.com>,
- Yong-Xuan Wang <yongxuan.wang@sifive.com>, Nutty Liu
- <nutty.liu@hotmail.com>, Jinyu Tang <tjytimi@163.com>,
- Gong Shuai <gong.shuai@sanechips.com.cn>
-References: <20260815102833.864330-1-jinyu.tang@linux.dev>
- <20260815103245.864925-1-jinyu.tang@linux.dev>
-From: Gong Shuai <gsh517025@gmail.com>
-In-Reply-To: <20260815103245.864925-1-jinyu.tang@linux.dev>
+Cc: baolu.lu@linux.intel.com, iommu@lists.linux.dev, x86@kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, xiaoyao.li@intel.com,
+ Chao Gao <chao.gao@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/9] x86/virt/tdx: Add SEAMCALL wrappers for IOMMU
+ setup/clear
+To: Xu Yilun <yilun.xu@linux.intel.com>
+References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
+ <20261112043054.2664857-2-baolu.lu@linux.intel.com>
+ <awQNpgjgIlwhXrqT@yilunxu-OptiPlex-7050>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <awQNpgjgIlwhXrqT@yilunxu-OptiPlex-7050>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi Jinyu,
-
-On 8/15/2026 6:32 PM, Jinyu Tang wrote:
-> When dirty logging is disabled after a G-stage PMD mapping has been
-> split, the fault path may see a 4K G-stage leaf while the backing host
-> page is still THP-backed. The existing kvm_riscv_gstage_map_page()
-> comment says that this path should update the small leaf and leave huge
-> mapping recovery to a later ioctl path.
+On 11/23/2026 5:55 PM, Xu Yilun wrote:
+>> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+>> index 4cce77b6a31f..a1f35188a272 100644
+>> --- a/arch/x86/virt/vmx/tdx/tdx.c
+>> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+>> @@ -2567,3 +2567,56 @@ void tdx_sys_disable(void)
+>>   	if (ret && (ret & TDX_SW_ERROR) != TDX_SW_ERROR)
+>>   		pr_err("TDH.SYS.DISABLE failed: 0x%016llx\n", ret);
+>>   }
+>> +
+>> +/* No cache flush is needed; hardware keeps caches coherent across KeyIDs. */
+>> +u64 tdh_iommu_setup(u64 reg_base, struct tdx_iommu_mt_param *param,
 > 
-> However, transparent_hugepage_adjust() runs before that G-stage lookup
-> and rewrites the fault GPA to the PMD base. If the original fault is not
-> at the PMD base, the lookup can find and update the wrong 4K leaf.
+> param is too general, name it iommu_mt, is it better?
+
+Agreed. In a function whose arguments are all parameters, @param doesn't
+say anything. I will rename param to iommu_mt.
+
 > 
-> Check the original fault GPA in transparent_hugepage_adjust(). If it
-> already has a 4K G-stage leaf, skip THP adjustment and keep handling the
-> fault at PAGE_SIZE granularity.
+>> +		    u64 *tdx_iommu_id)
+>> +{
+>> +	struct tdx_module_args args = {
+>> +		.rcx = reg_base,
+>> +		.rdx = __pa(param),
+>> +	};
+>> +	u64 ret;
+>> +
+>> +	/*
+>> +	 * Retry only on TDX_INTERRUPTED_RESUMABLE:
+>> +	 *
+>> +	 *  - TDX_INTERRUPTED_RESUMABLE guarantees forward progress between
+>> +	 *    calls.
+>> +	 *  - On TDX_INTERRUPTED_RESUMABLE, all registers except RAX remain
+>> +	 *    unchanged.
+>> +	 *
+>> +	 * The ABI spec also allows retrying on TDX_OPERAND_BUSY, but that
+>> +	 * status doesn't guarantee forward progress, so retrying could spin
+>> +	 * forever. The host serializes all TDH.IOMMU.SETUP and
+>> +	 * TDH.IOMMU.CLEAR calls for an IOMMU, so the TDX module should never
+>> +	 * report the operand as busy.
 > 
-> Signed-off-by: Jinyu Tang <jinyu.tang@linux.dev>
-> ---
->   arch/riscv/kvm/mmu.c | 14 +++++++++++++-
->   1 file changed, 13 insertions(+), 1 deletion(-)
+> Many SEAMCALLs return TDX_OPERAND_BUSY, and this is the generally expected
+> handling. I don't think we don't need the comment if nothing special.
+
+I'd like to keep a shorter note. It's the usual handling for TDX folks,
+but people outside TDX may read this path too.
+
 > 
-> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index bfd6168ebe30..2fabcd409991 100644
-> --- a/arch/riscv/kvm/mmu.c
-> +++ b/arch/riscv/kvm/mmu.c
-> @@ -500,10 +500,21 @@ static int get_hva_mapping_size(struct kvm *kvm,
->   
->   static unsigned long transparent_hugepage_adjust(struct kvm *kvm,
->   						 struct kvm_memory_slot *memslot,
-> +						 struct kvm_gstage *gstage,
->   						 unsigned long hva,
->   						 kvm_pfn_t *hfnp, gpa_t *gpa)
->   {
->   	kvm_pfn_t hfn = *hfnp;
-> +	u32 ptep_level;
-> +	pte_t *ptep;
-> +
-> +	/*
-> +	 * Keep the existing split G-stage leaf and update the original
-> +	 * faulting 4K page in the vCPU fault path.
-> +	 */
-> +	if (kvm_riscv_gstage_get_leaf(gstage, *gpa, &ptep, &ptep_level) &&
-> +	    !ptep_level)
-> +		return PAGE_SIZE;
->   
->   	/*
->   	 * Make sure the adjustment is done only for THP pages. Also make
-> @@ -730,7 +741,8 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
->   	 * so do not promote them through the THP helper.
->   	 */
->   	if (!logging && !is_hugetlb && vma_pagesize == PAGE_SIZE)
-> -		vma_pagesize = transparent_hugepage_adjust(kvm, memslot, hva, &hfn, &gpa);
-> +		vma_pagesize = transparent_hugepage_adjust(kvm, memslot, &gstage,
-> +							   hva, &hfn, &gpa);
->   
->   	if (writable) {
->   		mark_page_dirty_in_slot(kvm, memslot, gfn);
+>> +	 */
+>> +	do {
+>> +		ret = seamcall_ret(TDH_IOMMU_SETUP, &args);
+>> +	} while (ret == TDX_INTERRUPTED_RESUMABLE);
+>> +
+>> +	*tdx_iommu_id = args.rcx;
+> 
+> I remember there was an internal debate about whether to only assign the
+> output upon success.
+> 
+> There are several examples in tdx.c that assign the output regardless.
+> But all of them holds error information, which makes total sense to
+> assign on error.
 
-Thanks for your work.
+Oh, I overlooked this.
 
-Tested this patch on v7.4-rc4.
+> 
+> This rcx output however doesn't hold info on error. So I think early
+> exit is the right choice. Also see tdh_phymem_pamt_remove()
 
-FYI:
-https://lore.kernel.org/qemu-devel/95fe4c53-fe13-4e0c-abbc-bbb546850560@gmail.com/
+Agreed. rcx carries nothing useful on failure. Will return early and
+only set tdx_iommu_id on success.
 
-Tested-by: Gong Shuai <gong.shuai@sanechips.com.cn>
+>> +
+>> +	return ret;
+>> +}
+>> +EXPORT_SYMBOL_FOR_MODULES(tdh_iommu_setup, "tdx-host");
+>> +
+>> +u64 tdh_iommu_clear(u64 tdx_iommu_id)
+>> +{
+>> +	struct tdx_module_args args = {
+>> +		.rcx = tdx_iommu_id,
+>> +	};
+>> +	u64 ret;
+>> +
+>> +	/*
+>> +	 * Don't retry on TDX_OPERAND_BUSY. See the comment in
+>> +	 * tdh_iommu_setup().
+>> +	 */
+> 
+> ditto
+> 
+>> +	do {
+>> +		ret = seamcall(TDH_IOMMU_CLEAR, &args);
+>> +	} while (ret == TDX_INTERRUPTED_RESUMABLE);
+>> +
+>> +	return ret;
+>> +}
+>> +EXPORT_SYMBOL_FOR_MODULES(tdh_iommu_clear, "tdx-host");
+>> -- 
+>> 2.43.0
+>>
 
-Best regards,
-Shuai
-
+Thanks,
+baolu
