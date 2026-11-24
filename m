@@ -1,90 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=139.138.36.223
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795513661;
-	b=WJSoGrVxNtZ9vPurj6RXLe25eGg4dPiImlofkyx3czzygxv9LW56LtYjORpkZ04Ei+bP
-	 hE2t9C5bsYb42KhahaeqdZw8THFVyMQ2bLe160mbZWP+vyxurnkMyz69ULaJDD4nGusNR
-	 VM2S8ZbWDELjEsY9+aWISWn+4dY6JKHAPh3osJOxA1ZKsRKsyRu90u6DKmScyI0MREV3A
-	 3BvTtgvCTVxQBhVGKNNJm1JswWg65uYo0BzAOwUCh8p4x9rVcGCGaH3qFUYLH92giJmiG
-	 Pm+CzfLSg/p/fKD0WiJ+W9qQ49VWlKSFYkJVVg0Hyhv/0bFGXMrSt/39yhgJ7L90sUQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795513661;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:Received:Received:Received:Date:
-	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=mCdvX3DKxNd4ufd5SveU6bheHpcm5WlWjpwmAB6yI/I=;
-	b=V9iHjxva17A8ukiza1m8KGXPf+j/IPD3JdsfhFFcs4fbRV0QQ9cOndAEGnERUbqPz5HL
-	 TWm5xl0wJwFKHWDYrsPNYqxFNP1JHdRIAZ/pJ7yu3TiJmvW3KNg2sdmlJMwbK3ievofuh
-	 nkDv6ZcXvEtYDuJle5Ziw31AbxYFJov9Mxw7r63yzOaZVDLNWXLARGY5eU/D+jNQfYKOD
-	 LUfH72w++0reOU6gQ2DkCBriRlZGdWHrN/yJKwUs9fMHfup9h5BqJLBk2xsctNcvg6tv6
-	 LbRaX8PePF2zqKahGCVyta/31M04c5UbRchpOwg4hkVWm0U+4IeTSX+NNkD4giYG/JA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=fujitsu.com;
-	spf=pass smtp.mailfrom=fujitsu.com;
-	dkim=pass header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=QIRBOzhl;
-	arc=none smtp.remote-ip=139.138.36.223
-Received: from esa9.hc1455-7.c3s2.iphmx.com (esa9.hc1455-7.c3s2.iphmx.com [139.138.36.223])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795515330;
+	b=uz+LfHnaSpshU6f2jk8gm7iEXXS1y+7Gn3nM1UOcRbOQQ9qG0cxAeRcm4GEypTch87Io
+	 WMJKxCamedy8cOBZ6nTiLK7e9dVgF1b5oL06VaK7CCyNLIKySHl59dJ8tGuYpDHZKm05Y
+	 NDUbxalRBqqUnfxyz0Xfh3OCiZTnX13hdG5AD50Z7kjm0dQ07Bi2Xzn3Bdin4o2tNeLke
+	 L+++YoZvFlfKDA2wmaoI+L64YGpU5dKnbY0FlsnsE0ozjWWr6L1a1k4P2/u4gHCURFksm
+	 azZv8S7WV953CMT3BW1HP9GKslu2XH46K5B4VoX8y8tHF9cS7fzyqheX4icZtib18uQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795515330;
+	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:
+	 References:User-Agent:Date:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=nMng3ZJa0ZitP554JNLrDGi/NFaJSSIjBBszYdhqGDA=;
+	b=JBy2RNow7iEQdwLTpXDkmYRn9On0Ca37fXNyGfDTn1uRdegBYfojBrqKFXvvYywmLDwJ
+	 77jN/66lSf4tSMFa9OplGZ23kYPYfcCh8w8Uta3bq2plYUyMUslf823tjs80KNJKDMOli
+	 NAARI8+gdM/+QCaHEnYsbTkvhPxXDXS9la4RRKmrA1MRoVYbPUJFClz5OwWcv/ESyVylD
+	 IA5Fm/6HlhucjD/o2Ehz8FOM7LWs1WOX1bRRwZU6xc4ZJE7rY3EwuRkalgzVJ7gUuikht
+	 TrTqRwu8NZEuckdtuSUQxuozwS13FAP00VdRYymj0rkVHMfUFUTgauDRRklC5EDCIZQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=XfNReD8+;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684DA606A69B;
-	Tue, 24 Nov 2026 09:47:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 684DA606A69B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B927606A692;
+	Tue, 24 Nov 2026 10:15:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B927606A692
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=QIRBOzhl
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1795513660; x=1827049660;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=M5NqBozgTmQWYS9D9HJSCp5Du4EFXSk47fr9zjJkO3M=;
-  b=QIRBOzhlGFqjmQkw86iKR6QcbxzUuAO997/h3zS/1jiqQ+dKy5m7DMDq
-   MiX7gmx90c/SC7XqYkInVX9IzMP2gBxkSipmUKqbFzJ8U2+1ynD8VgHpN
-   It37lWqTffN4BIP1HeiHRRTL2FbrAxq2yxNu/XJI2nRYNkJ2CUXDyb9Vb
-   0fvfqCnHQbrzeeR7nnQVnMomxGeIUYjMvdJ/3eCsHhxmdDwRG4VwIqNAM
-   D1buiHbM5Ht8vHlmuoAANi5cVm+Ez51KGn/nZCL0JPB39zfhBiZgdjdtb
-   q7PzkIGhsp3FzitkNDxXRusS997Pnyzt7ll55NLmKqKqkXHtvad99WIa2
-   w==;
-X-CSE-ConnectionGUID: kK/qUvjZTuuRxVOcGv5L/A==
-X-CSE-MsgGUID: 3UCigZl0Q2CX7i3ecD0+yQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="250443381"
-X-IronPort-AV: E=Sophos;i="6.27,230,1786978800"; 
-   d="scan'208";a="250443381"
-Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
-  by esa9.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 18:47:33 +0900
-Received: from az2uksmgm2.o.css.fujitsu.com (unknown [10.151.22.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id 55A32820400;
-	Tue, 24 Nov 2026 09:47:33 +0000 (UTC)
-Received: from az2nlsmom2.o.css.fujitsu.com (unknown [10.150.26.200])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2uksmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id 07C8818002C9;
-	Tue, 24 Nov 2026 09:47:33 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.9.1.165])
-	by az2nlsmom2.o.css.fujitsu.com (Postfix) with SMTP id C668B1800528;
-	Tue, 24 Nov 2026 09:47:23 +0000 (UTC)
-Date: Tue, 24 Nov 2026 18:47:22 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v4 00/11] KVM: arm64: CCA: Prepare Realm memory management
-Message-ID: <awVZ0UrEKN9gLHIZ@FCCLS0092175.localdomain>
-References: <20261123104233.95710-1-steven.price@arm.com>
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=XfNReD8+
+Received: from ratatoskr.pengutronix.de (unknown [IPv6:2a00:1f:f805:2b01:a03:2f4:308a:7b52])
+	(Authenticated sender: str@pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id E9D5C202033;
+	Tue, 24 Nov 2026 11:15:26 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1795515327;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nMng3ZJa0ZitP554JNLrDGi/NFaJSSIjBBszYdhqGDA=;
+	b=XfNReD8+95LSSEuAPwKVuMxr/EScHMIyNNXm6XzrKwlVFx1LvCCY1sNZbyiYYAJjA1v9OW
+	EaKYjEdBkBXbcUfeJSgZBhxVSxnZuARjYD8HgZdmem/cf3Mj4YDsMFgtFAB8fuAa+D3ntK
+	aO69h5aV/Velb4B0s6QzpBKqw7irgjDu+zW4QSJE20VvCDdyeT/tGIz1eLzKAZ7ufTRftJ
+	v06YRKm184FBw/py+VW5S9d8lYpkntH3blqNwnR0A7R9Aoy6HT55VTac4rNNI8lobKa0Xx
+	bya6dkvAPN9rxb9TIysYwjwh5jECD3asuCSRbbc/wqAhC94ZNJKoM99haMLh2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1795515327;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nMng3ZJa0ZitP554JNLrDGi/NFaJSSIjBBszYdhqGDA=;
+	b=O7wBEvRpDwTYlkQcK04uYuwllHgnINS3lAGY4NxKgRW9SkgCIUFOgZx5ox7iZTwcTTXRyo
+	prNUPQ/r8KGNOlyfSLMv/BSXSvBkde3Ul+ccRX3Vr33+uzD37RQ62zEvGQsCvAmLWUnEQs
+	mZKoJqrVGArR4rOo87KcKIi4gjX60vZAfyANWNBHdz89J6IUjv2BbXEJHrS6tiJOyVzo9q
+	BrVCFA2lGII5lRW5MWNBzgzS3zTQzoqpuIHIFHBiLHvRwC3f97oE9IKbY45Mm4LsbSu+F4
+	tmkFhjGYF1kk4/18nCI9tMuAkBDYXIRX0wBaPDYDMK5WjACOzGM39DS32VZ9KA==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=str@pengutronix.de smtp.mailfrom=s.trumtrar@pengutronix.de
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795515327; a=rsa-sha256;
+	cv=none;
+	b=OiC4RMMbihANiayaaHtNtDvTSbsaj++gqSa8r0Ie1G6tFLUeS5qPXvZeRg6E0XK3sPil6J
+	bklJeX2P9SQuytZYQcR0WGR8N7sPTxfKsoGrfd6fWu+7Z0Hr3kUUCOkR+6N+c/DcbTKXvZ
+	LCHbXj/n+4hfM06nhYH5cyVRc/HluquGRQeVDE0Gt9Er1mPti9P7n2EDeBrME/d/Wy2JOr
+	5eypMYT6XqHvRHjseFauRP+kao99cI1nYhoFvuS4J7c6axd0pMZd5s8U8XbW2CagyM144v
+	mpRiOqS2E5kQCokCB7xPAyCMNbyTHTnvDYTDuw7qafA3Zvu/d2mCGMqZrG6WbQ==
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+To: netdev-bot+sashiko@kernel.org
+Cc: mst@redhat.com,  xuanzhuo@linux.alibaba.com,  davem@davemloft.net,
+  kuba@kernel.org,  pabeni@redhat.com,  richardcochran@gmail.com,
+  willemdebruijn.kernel@gmail.com,  andrew+netdev@lunn.ch,
+  eperezma@redhat.com,  jasowangio@gmail.com,  ast@kernel.org,
+  daniel@iogearbox.net,  hawk@kernel.org,  john.fastabend@gmail.com,
+  sdf@fomichev.me,  edumazet@kernel.org,  andrew@lunn.ch,
+  horms@kernel.org,  kory.maincent@bootlin.com,  liangchen.linux@gmail.com,
+  hengqi@linux.alibaba.com,  virtualization@lists.linux.dev,
+  netdev@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  bpf@vger.kernel.org,  kvm@vger.kernel.org,  kernel@pengutronix.de
+Subject: Re: [PATCH net-next v5 9/9] tun: add rx timestamp to the vnet header
+In-Reply-To: <179483731174.3136.9033275454370245376@kernel.org>
+References: <20261112-v6-7-topic-virtio-net-ptp-v5-9-7ab67b572f4f@pengutronix.de>
+	<179483731174.3136.9033275454370245376@kernel.org>
+User-Agent: mu4e 1.14.4; emacs 31.1
+Date: Tue, 24 Nov 2026 11:15:25 +0100
+Message-ID: <87wlq2eds2.fsf@pengutronix.de>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -95,37 +100,46 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261123104233.95710-1-steven.price@arm.com>
+Content-Transfer-Encoding: quoted-printable
 
-On 11/23 10:42, Steven Price wrote:
-> This series adds the memory management plumbing for CCA, building on the
-> basic RMM support [1]. Thanks to everyone who reviewed and tested the
-> earlier versions.
-> 
-> The patches introduce internal Realm VM state, prepare Realm stage-2
-> setup and teardown, and provide RTT mapping and invalidation helpers.
-> Realm memslots are restricted to the lower half of the IPA space because
-> the protected and shared halves alias each other. The final patch
-> connects the helpers to KVM's stage-2 MMU operations.
-> 
-> This is the memory management portion of the larger Realm host series.
-> Realm descriptor creation, REC entry and exit, activation, and the new
-> uAPI follow in the integration stack. This series alone does not enable
-> Realm creation.
-> 
-> The integration branch [2] includes Realm creation, REC entry and exit,
-> and the remaining host support on top of this series. The MM branch [3]
-> contains just this series.
+On 2026-11-16 at 13:55 GMT, netdev-bot+sashiko@kernel.org wrote:
 
-Hi Steve,
+> Thank you for your contribution! Sashiko AI review found 5 potential
+> issue(s) to consider.
+>=20
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 4 =C2=B7 Low: 1
+>=20
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+>=20
+> - [Medium] The commit message says the TAI time is written "when a packet
+>   is handed to userspace or vhost".
+> - [Medium] Whether tun writes the timestamp depends only on the
+>   configured header size: `vnet_hdr_sz >=3D offsetofend(struct=E2=80=A6
+> - [Medium] The value the device side reports as the 'TAI receive time' is
+>   sampled in tun_put_user() (drivers/net/tun.c:2178,=E2=80=A6
+> - [Medium] tun cannot see the negotiated virtio features, so it guesses
+>   them from vnet_hdr_sz.
+> - [Low] The patch adds `sz < tun_vnet_parse_size(features)` =E2=86=92 -EI=
+NVAL in
+>   __tun_vnet_hdr_put() (drivers/net/tun_vnet.h:163-164).
+>=20
+> --
 
-I tested the v4 integration branch in the same way as described in the
-following thread, and I haven't seen any issues so far:
-  https://lore.kernel.org/all/avV-P2_fOkFWQVnM@FCCLS0092175.localdomain/
+(...)
 
-For the series:
-Tested-by: Kohei Enju <enju.kohei@fujitsu.com>
+I will fix this.
 
-Thanks,
-Kohei
+pw-bot: cr=20
+
+
+Steffen
+
+--=20
+Pengutronix e.K.                | Dipl.-Inform. Steffen Trumtrar |
+Steuerwalder Str. 21            | https://www.pengutronix.de/    |
+31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
+Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
