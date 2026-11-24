@@ -1,118 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795526463;
-	b=pToUH0tyvBsajgW5YmLKw68/DmdTEV3vPanLYJnv5RoWgi7f0yieMH4u8WJQO4DniSXc
-	 /xbzOiv//2wnbCc8dDbmQuHcpf0XT2WA+xo5rCkXj+4H3IQexwhKrShQBzfqXviEn1CJ+
-	 ECAl6SgYTR3WTSY99B0TRIRITtXir9Z9uGTLITLso2panRS7sWjNJEI/Utt/vtGu1NPSr
-	 0bCFl+96ID9yeD/RVbBuHZb0I9WUz9eCTlx3oJXq3NMsbzVlwSqIGrevkkzpiJmnTKbZb
-	 bAMwMDo9L+0eJqSGXxCzXd6rh2ISE5PZgrK3ix9SU2OzeqEaaenH0LAqho8wii1HKtg==
+	t=1795526740;
+	b=3UO/rmhpNDROKyuN5wH+Wt757eFwVAx7dlOQEePYnuyUIvs/lU4GL6kLcSi/46drBLZD
+	 o5ftCk0bSzQiY8AZWp/Wh4+S+lSmDzS4aj7OzOJLdIHp+0VkTkvy37CmJac+Axth7QQEO
+	 BD9Sx1tDGnjiud8WGvaaUcuXjmt/I3MibBKL0AmIkjz6I3X7laHED9ictvjds6GklpWmS
+	 WtPgyZGZnd/bi3tj6UWVjCTZPxhP0sKGcdOZHhZZHhWd/xLWFXXqxQVvkIiM1Y9Wj5eo5
+	 pSHIIOn/7sz9SBGf8RC0P0mlwWYIVikSKXtvhAg0rVDm3C7Q6syEbkcJKw+ruspi2Qg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795526463;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
-	 References:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=blZR8UsBVnOfAf5ahHejAGF3Z8m4Wh7sz5IUPrOpN7A=;
-	b=cD6QLphPuYHAOkGIu7CIwPYBE51Uyc6hPcCLuz85dJk+Dnzo1sGh8VjPqx8a7rzlZMZh
-	 O/NhcI1LyVKPhb8bHgMDUDiR1xR7VsIYmfU8MDZkJewbsXj5QXLNTmk2LADfSfTKXTnDn
-	 lW/gsZyrRDFNDRMIkIA4NFKiSI1bNHXXXlWC/7t6T+aS+UC2MAgbb7XuvRsnNsG5FoJyT
-	 9RUZ4Dx7CC0fHWhVx29fmKU3UlJMJLpOJGICdM/gzHP7PkxbS3aBmOAqNfGFT9EkDsuF5
-	 PJskecf/kfihiEuoVATuBCkWvpY22NWN9i/Hy3rJjykLFM+04doDVMe9JdNr74lfi1g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795526740;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=r5dD9s9FuhBNn4Ff1ZcKdILM46rO3ylOWd478evROc8=;
+	b=FeeZlRqMUp8QEIO0W3ov5CAtIW3ak7wcNO71b40mCpVxgZznzoIWjskVLVnmgr5qnTJP
+	 P7u7vrg0DpY+cdkNzLyNagS547s4LiulqHvXZjlNhgTt8iRrqvMnjbnhrzIMQJoi/j4SE
+	 QAyJPk2BXWJvcgjT0k4WlJR3BSdo8TWl+OJuppZqq7MOKEjaBC/rlWjjb/qAQ10+kIIgL
+	 +E1ncLOjiAAjJ+uiE/RdI1tKJl9nLYHAQ57gRzF3ilp1ptmwX7TBbVSlJ1XtyDnVBx4xx
+	 lJEP2BgGY8YsSB3ihAg93kp1IdYbGHjzbAy7rMnGQ0wHx8O2a/3sKk/nFcEJiGiWnEQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CoWtNLGI;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=NxFDKm1v;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a7VtzHqC;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5272A606A31E
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 13:21:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5272A606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80CD4606A321;
+	Tue, 24 Nov 2026 13:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CoWtNLGI;
-	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=NxFDKm1v
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795526460;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=blZR8UsBVnOfAf5ahHejAGF3Z8m4Wh7sz5IUPrOpN7A=;
-	b=CoWtNLGI+bHAhdHkLp5plmSnSDu3cxqtWil/S6pW3rNglmCyuynG0ZLu3NzP8AJGS09QGF
-	yLkHRlv6FJefphqUz1dnvgVWw8BnosTmi8te5eN0pl78NYNjkt5LX68aaA2DvxFDdsYjrN
-	eKK/mOj2P122ynSPHBLqW5Z2TJD4ock=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-474-tFiRqoHMMv6X1v3B_xYxOA-1; Tue, 24 Nov 2026 13:20:58 +0000
-X-MC-Unique: tFiRqoHMMv6X1v3B_xYxOA-1
-X-Mimecast-MFC-AGG-ID: tFiRqoHMMv6X1v3B_xYxOA_1795526458
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48c6a1d4034so2484512f8f.0
-        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 05:20:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1795526457; x=1796131257; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=blZR8UsBVnOfAf5ahHejAGF3Z8m4Wh7sz5IUPrOpN7A=;
-        b=NxFDKm1vCUM48zk+sh7ekwSp6CKxYBCxTBsZVODTzbuOmYH9LWvfgUghKYb3VzwAny
-         +w0z2PZTYRjED3dXRQAhxHbH2GFED3lXQySMxcNzBeU/GQpvbVtRYqexyK/y6BbEvA44
-         zTSZD6Dc3eNYVWm0+wUPQg3MUu26RbiAzBOukhbD/sXfYU7NXM6IMIL5ScUuaiWAyugK
-         54oWujN3x5p8rElpb0fiYxS1chSUNjMG3BU7axgLQiZvoaqpqKdH4Pypo8nK5iQOX6OP
-         Ejfo2Tzrk8r0HcfJ/d/3C5J3LwzPB8lLZHQrfqdmWKZQ6y5zkV4zwNkXfy8YpZwEweWj
-         DVHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795526457; x=1796131257;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=blZR8UsBVnOfAf5ahHejAGF3Z8m4Wh7sz5IUPrOpN7A=;
-        b=AXjq8NOpbTbbyH0Ihyt0PlcmTNRWsxbq7Js7Rc7DpR/wHK2748pGeZH8wirrDIzRiV
-         eeukvQkUye9clZtq43xvEA603V/+cMOCiIZnudr8JHOSyQqGH7vx6hhmBPrTPmUumj9Z
-         t/EUOexkiZg6L3cBi8rSHZ57wrAvhfhzgwqDKjj5KngTPwL2UZLtSAYhcPxLgQCUV58U
-         zxaBDsFqMvaf8HBQTthtrnDXNtjco+5Rn63acQ08O5+PlGEHt6eqN+NuIxYhDbj0GfdQ
-         veqsE7ljPYEFox5I8RIC0zGf2nZjBb/skplnsOkGYUfgw9M6h8CBtF/x+YES3BMRTg80
-         +4eg==
-X-Forwarded-Encrypted: i=1; AL+hErGemsNUrj8zlzBrrFmdufy32EGeDbUxxGyaUz0kMN+nVCRgiPcq25baBP40Y+DzBypNVv4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8bvEP7EgsOe9th62XitBhpUCcIVEIAP/IuF8PJtvTtVR3lSNPg
-	MCkgQY30mb8KM10OPscyFzuQNWqtbl3J9KvWnr3n3JWyXKoTBRWgupa8PKTdM+hEthd38Ikdl16
-	w+hm7wvGuO3qGOCKc/bEb7/mKIsnmogd18EyaAe/aAvLLJY9mO8ONvw==
-X-Gm-Gg: AZFdTZcMLjeXnXCGIMvCkkdLSL5xh0G1jDaWq3QKGioGUR17bj32e8XzBEbcfR5SAOk
-	NHha/I4BC51IBCtJhKjqUyTMWZE18w93cSZr7Gp4mBhv16psZHmizuVC34EnFsi/wr7SixDHF+s
-	A3AkFcUoVuXGmcl4nT4IG0o1vjzL17cqiLH3upTRAWsWIYEDb5ZNLgC7aSsl8wonbG79PObXy0/
-	M+dK01BKxBNI5frY2d0ffjHRGgGq8L9UNZMKjoNF+hjqU+2TPUV8MopAzR/+VM+pHLwoFCW+yEX
-	dMOzOCejBUWmF4rc4kPD1kbANSfnuQhOwlGvWr40uri69v1VrbcZOJIbW7jvN6RcK2/QfJDtR8q
-	OPR9O7GpNrUvONNw8AYv20CMQGNVmNhuJ
-X-Received: by 2002:a5d:5e89:0:b0:4a7:5115:22c8 with SMTP id ffacd0b85a97d-4ae3aa4548fmr18259572f8f.48.1795526457479;
-        Tue, 24 Nov 2026 05:20:57 -0800 (PST)
-X-Received: by 2002:a5d:5e89:0:b0:4a7:5115:22c8 with SMTP id ffacd0b85a97d-4ae3aa4548fmr18259532f8f.48.1795526456974;
-        Tue, 24 Nov 2026 05:20:56 -0800 (PST)
-Received: from imammedo ([213.175.37.14])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6a67fec7sm26422444f8f.26.2026.11.24.05.20.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 05:20:56 -0800 (PST)
-Date: Tue, 24 Nov 2026 14:20:54 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org,
- pbonzini@redhat.com
-Subject: Re: [kvm-unit-tests PATCH 2/2] x86/apic: add retry logic to
- test_apic_change_mode
-Message-ID: <20261124142054.65a8a45c@imammedo>
-In-Reply-To: <CAO9r8zN_6afHGXu0rN4zZVuwn63eH=tbsnsKu1+CG8mUrRQeNA@mail.gmail.com>
-References: <20260428133524.3628482-1-imammedo@redhat.com>
-	<20260428133524.3628482-3-imammedo@redhat.com>
-	<asSgCLgeSCKh33_n@google.com>
-	<CAO9r8zN_6afHGXu0rN4zZVuwn63eH=tbsnsKu1+CG8mUrRQeNA@mail.gmail.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a7VtzHqC
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 848491F000C4;
+	Tue, 24 Nov 2026 13:25:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795526740;
+	bh=r5dD9s9FuhBNn4Ff1ZcKdILM46rO3ylOWd478evROc8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=a7VtzHqCy/wmyJE3p2zv8lRvaXv0SqDbCICu/Nbfm1hHEiHj5caoQtBYtk+QN4Q7q
+	 BfYRtkFs0bGN83HkDopScSSmwyWoJlf9GN9Pk5Lny0PbimRGuTS17cvEIfrI8VWTPa
+	 rIxjkkUPee9U8AYMyRMofQUQbe+3e/G+M7W0U4qouGgQuYvHQbydFFZ29DnQT9OsrD
+	 pZ7g4f4TR0HgMtbSmAyGUF54etza95SW0vCIj0ld+R/oxMZ29KjdZARq0Ms1TxQskP
+	 4garfneAL9ClMXY2VpjIg64ipqruAPvAtUjIXrntUsfNqyT047kcQ+MfNfg4K7lOCs
+	 nvKjP3XxzVNMw==
+Date: Tue, 24 Nov 2026 15:25:36 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Nicolin Chen <nicolinc@nvidia.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Lukas Wunner <lukas@wunner.de>, Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
+	kvm@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH v1 00/10] PCI/TSM: Support guest TSM drivers
+Message-ID: <20261124132536.GS14811@unreal>
+References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
+ <2026112325-emit-squeezing-5d96@gregkh>
+ <20261123090623.GK14811@unreal>
+ <yq5a7bi3riha.fsf@kernel.org>
+ <20261123115803.GN14811@unreal>
+ <yq5awlq3pto0.fsf@kernel.org>
+ <20261123135638.GO14811@unreal>
+ <20261123152533.GE179082@ziepe.ca>
+ <20261123185826.GP14811@unreal>
+ <20261124131754.GF9566@ziepe.ca>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -122,60 +80,49 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261124131754.GF9566@ziepe.ca>
 
-On Mon, 23 Nov 2026 12:12:00 -0800
-Yosry Ahmed <yosry@kernel.org> wrote:
+On Tue, Nov 24, 2026 at 09:17:54AM -0400, Jason Gunthorpe wrote:
+> On Mon, Nov 23, 2026 at 08:58:26PM +0200, Leon Romanovsky wrote:
+> > On Mon, Nov 23, 2026 at 11:25:33AM -0400, Jason Gunthorpe wrote:
+> > > On Mon, Nov 23, 2026 at 03:56:38PM +0200, Leon Romanovsky wrote:
+> > > > > >> >> But it should not, as you are making driver core changes that will
+> > > > > >> >> mirror the same thing that that patchset is attempting to do.  Please
+> > > > > >> >> work together on this.
+> > > > > >> >
+> > > > > >> > +10000000,
+> > > > > >> >
+> > > > > >> > Greg,
+> > > > > >> >
+> > > > > >> > This series came as a surprise to me given the fact that device trust
+> > > > > >> > series is exactly for that - allow confidential computing.
+> > > 
+> > > Device trust's primary role in enabling confidential computing is to
+> > > give space for the userspace to do all the TSM and attestation stuff
+> > > to get the device into T=1 private DMA mode.
+> > 
+> > <...>
+> > 
+> > > Getting the device into T=1 should influence how the userspace decides
+> > > to set the trust level, but it doesn't interact inside the kernel.
+> > 
+> > The point is that I’m describing the reverse relationship: the trust
+> > level should determine how the device is configured, not the other
+> > way around, as you suggest.
+> 
+> They are unrelated. Neither influences the other. The user gets to
+> make orthogonal choices if they want T=1 DMA and if they want
+> adverserial. All combinations are useful and valid.
 
-> On Tue, Oct 6, 2026 at 12:15=E2=80=AFAM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> >
-> > On Tue, Apr 28, 2026, Igor Mammedov wrote: =20
-> > > The APIC timer runs at wall clock time under KVM. If vCPU is stalled =
-for
-> > > long enough, timer can expire before the guest reads TMCCT or tick we=
-ll
-> > > past expected values, causing various false test failures [1].
-> > >
-> > > Add retry attempts with increasing timer period (10ms, 60ms, 700ms)
-> > > if any test fails, to handle spurious failures due to vCPU stalls.
-> > >
-> > > 1) Failures we sometimes observe in CI are:
-> > >   "FAIL: TMCCT should have a non-zero value"
-> > >   "FAIL: TMCCT should be reset to the initial-count"
-> > >   "FAIL: TMCCT should not be reset to TMICT value"
-> > > Seen on both Intel and AMD hosts.
-> > >
-> > > PS:
-> > > on most test runs, test completes fine on the 1st iteration.
-> > > The patch would affect only failure path which will be slowed down
-> > > due to retries but still fail if there is a bug with benefit of
-> > > getting rid of false positives caused by vCPU stalls.
-> > >
-> > > PS2:
-> > > Number of tries and tmict delta comes from analyzing vcpu stalls
-> > > on heavily overcommited Haswell host with test being bounced between
-> > > 2 sockets.
-> > > Typically 2nd iteration (60ms) is enough to get rid of
-> > > false positives. =20
-> >
-> > Blech.  I would rather rework the testcases to simply not be flaky.  I =
-don't see
-> > any value in waiting for the TMCCT to be half of TMICT; just validate t=
-hat it
-> > counts down across switches, and that it can wrap in PERIODIC but not i=
-n ONESHOT.
-> > We have a KVM selftest to validate the timer counts at the correct rate=
-, so just
-> > validate the core functionality here.
-> >
-> > E.g. roughly something like this? =20
->=20
-> Igor/Sean, do you intend to send a new version? I am running into the
-> same problem when running the test in a VM (i.e. nested).
+Our proposal is to represent these combinations with an internal trust-level
+enum and manage them in the kernel through that FSM, rather than maintaining
+two parallel sysfs flows that permit every possible combination.
 
-It's on my TODO list
+Thanks
 
->=20
-
+> 
+> Jason
+> 
