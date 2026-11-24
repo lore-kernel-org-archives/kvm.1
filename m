@@ -1,66 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795557210;
-	b=VKGcITKZYuhxj1PEpk1p+Or07n+WyqcVHJbSoP0GyS/t8ecmoDE0A1PuBYTajd2QOEim
-	 VvkhuybFv2O//3A1ao25Iiskpa6c+S8BMnqZ5todHbHmNzhk4BFgBxodoY8pDIs0A9Z0r
-	 h/2LNT7GKJAcDm5/QgrLs1Ohn00YplHuyww/sjLxQIGgfBGj4bDljHglHgLcHh6oT23b2
-	 b7OW5UszimiXloomguxmn5ziutJtxiv73gJN0ZSgdShLkLfCY8AzWH5BK4feAQZ+sfdcV
-	 +One+noTRfng/Hm5C1LlkVTEgZBAeoVWHLYdXwSowvmLa9fu/QY1cGv8UGA4I39gEaQ==
+	t=1795557211;
+	b=nIV15UxS9RXwlvY6CQtvAmdxK+UREN2ZSFqrk92vxgr9dEHKDlloduoVID9vvWGPFEs0
+	 omvcw+9cO/AXaf8K7O3ELwmg20vv7LnrR9pkx8s9ax9PPaiiUmQna1lxlTtQlO5n3IZWs
+	 eaPVESSbpOL7HoeULCDpQN8qqydIxXePS3XCHIJZa2TVSHSrOD+hGQiyV46/H8I+v/R4F
+	 TnrB26wwOeFC2fv3IrvSKK0pr6svuoG+8pkh1qb4J2SfTc/Kn8KKkSOJVdK0OVwSQFyp6
+	 dCECZLiPahPbd1DUPJ86/hOtbyCnmFZ0pec88rr9L8GpdYXlSwwy1/X5z8p1WBMAw8w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795557210;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795557211;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=UunifqiG3fiUVVcPdCsjEKxwkuiTHDcJhpk5SEFj7hk=;
-	b=LJZKU5vDi28S7yjXkovP2R8QULMs1bSy/pPA5Up0NAG/mL2M+6C4q80RR3/E0zsMmhsn
-	 X5Tnhv3dNwJc8CJmHcE4jhM/y6VNiv/Y0LC0MdqrJOVhGeRTxV/Sp/LEMvcxEA2Scd4Se
-	 nkT1s4VRB7oQapTHtPksZGCiHoGm42bs67alzMyJwZoKidwy+tAhxJC626pzBgaEct9E2
-	 g8xB2Zjhri2lrlIz10ifAmJ42E5p93E0AqFN0kmbIuHH2pQqwgVw9t/VurdG2YT7WAwhp
-	 2LgjM0tcdNFQ2sR0URVFv+F1j/n5/OjykvnqLtLQQLLaydxolJ6uKFiQdFSScIZdsFg==
+	bh=SgwyB4v1x91FfXTzW/7cJXmTaEh5EnMrlH3ku+wNQa8=;
+	b=rNhGnQCLLNmvkVCWe1V3VH9KqpCF/WiP9H+9Un60ddbWF5qrP9QNX8xKVim9O9EfFKOH
+	 HEDIvrAqURd9x3juxDtBovQeABoAv1T6uuEa0g24QlpTiuzjRVN5TLEWIaKX5xo03+Rdm
+	 3iv0Q7fQJ/697pwpliv5J2FRAdvkfuOKqUfsMBquyWoj95ShPJ7RoyZ96S7o6gReQfjbE
+	 iZkC45fLLDteDYoKZz7VxQBh7z0j4Hg7MEuDFlSMI2AYVe2fSt62cDw500VUErC2qCByC
+	 ZjP1z82kIccrBZr6+BtkMS6VsOFCbLsC87nKoY4TeMFvKuHtdfQJAxlpwc2+6kF51fA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="H/takVHW";
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KOUAMKUs;
 	arc=none smtp.remote-ip=192.198.163.9
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807A460A2602;
-	Tue, 24 Nov 2026 21:53:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 807A460A2602
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3864960A380D;
+	Tue, 24 Nov 2026 21:53:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3864960A380D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=H/takVHW
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KOUAMKUs
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795557210; x=1827093210;
+  t=1795557211; x=1827093211;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=lHvUvCn7j6m+l1PxFyYpMqBqYxAOkBo6dXr/ndtgIDk=;
-  b=H/takVHW4NzhEEiSRu6LBE0MbRDhmmGlDBP3PWBYHftJgr8Y0R6TKpJd
-   kiBgBqV6Iw+FEcqb65Ovtgwc7IljIcoHiV3pV6Ei6+ty4XBwV0+nDcorA
-   DrR6BnfQWnOOeakBZYa6EHc8zCUxkof7Jgl2UdeUCjh6ZaRTbQ2F+nBXW
-   4iUv7U9uYTI6z22BJdAfZCx2r2k1JbBnPPsh1a12buBH9hcUVorNgkjLt
-   tZpA9j9dhpYdPdT+17yjt00yvThqwXe6BJpdz2Hp4MOUhkqfzIj9aJn8h
-   zf2Q0JdCwAOmUeqkuwuenjsgudXwjqDmd7NY5D2SDVyitm11YQk5au0dj
-   g==;
-X-CSE-ConnectionGUID: Gx8YVa8aQPmZEGc3WgDWAg==
-X-CSE-MsgGUID: LGVuY4e3SKu50WJUt1WZZQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4306043"
+  bh=EG4H+f7+ZAL5E7ep3NCuNtNknqsymVrxnq3FYZS6uOc=;
+  b=KOUAMKUsKGR3Ufukf1ySsLpWo3VsduLXkCxyUgWN0YEN4wNzQ8nAyjAh
+   zcane63MX6hzBMRwrZ4rtpn8FqrtDg9Hv4VU8h430QRHfj8YoBYbirJOd
+   xyojS5Pq/Xe0F2Zw41KDuHg89BbSLaLRSrlPsuqnTN7X+wozrMuY4BxRV
+   W/p2Ozxj98NtvCoMBQljIyDLuUdzPoNhHd0a4O4NYlhprGGbec5UFMlKB
+   Suhh3R7PLmuxxNJl4VLp2idibbAMGHfzNv+N9yQwK5G8bzQ4FDMhXOjuy
+   mjmxBhLkkEIcVIV6xH2ZftICTsnrMXwb+AF6O2x5P2Yu16sYON9FdZnPN
+   w==;
+X-CSE-ConnectionGUID: GGZr+/qORnaQx7dwCZyhTA==
+X-CSE-MsgGUID: smqfjGmhRRSxIHjACMvM4g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4306063"
 X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="4306043"
+   d="scan'208";a="4306063"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:29 -0800
-X-CSE-ConnectionGUID: hQSxZjqVQ/OmfyY4SzPLZw==
-X-CSE-MsgGUID: QloX9KCpT0iTcm8dsgBKXw==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:30 -0800
+X-CSE-ConnectionGUID: zGWOF+dCRV6GB8M/wnrg0g==
+X-CSE-MsgGUID: GqNwysBWRpWy4x3hJh+M6Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="12271932"
+   d="scan'208";a="12271945"
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:28 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:29 -0800
 From: Zide Chen <zide.chen@intel.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -77,9 +77,9 @@ Cc: kvm@vger.kernel.org,
 	Shukla Manali <Manali.Shukla@amd.com>,
 	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Xudong Hao <xudong.hao@intel.com>
-Subject: [PATCH v10 10/18] KVM: x86/pmu: Block PMU passthrough if guest lacks PERF_METRICS
-Date: Tue, 24 Nov 2026 14:38:53 -0700
-Message-ID: <20261124213901.120572-11-zide.chen@intel.com>
+Subject: [PATCH v10 13/18] KVM: x86/pmu: Emulate RDPMC on performance metrics
+Date: Tue, 24 Nov 2026 14:38:56 -0700
+Message-ID: <20261124213901.120572-14-zide.chen@intel.com>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261124213901.120572-1-zide.chen@intel.com>
 References: <20261124213901.120572-1-zide.chen@intel.com>
@@ -94,109 +94,89 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On hosts supporting PERF_METRICS, if either the PERF_METRICS MSR or
-fixed counter 3 is absent from the guest, keep GLOBAL_CTRL and RDPMC
-intercepted so the guest cannot set GLOBAL_CTRL[48] or read metrics
-via RDPMC without fixed counter 3.
+If the host has the PERF_METRICS capability but it is not present on
+the guest, RDPMC interception must be enabled and KVM should inject
+a #GP when the guest attempts a PERF_METRICS RDPMC.
 
-KVM does not expose PERF_METRICS or fixed counter 3 to guests yet,
-so this keeps GLOBAL_CTRL and RDPMC intercepted on hosts that
-support PERF_METRICS until both are virtualized.
+If the guest has PERF_METRICS but RDPMC interception is enabled for
+other reasons, KVM needs to emulate RDPMC with type INTEL_RDPMC_METRICS.
 
-Opportunistically, rename kvm_need_any_pmc_intercept() to
-kvm_pmu_incomplete_passthrough(). The function does not decide whether
-a particular PMC MSR needs interception. It reports whether the guest
-PMU differs from the host PMU, and the PERF_METRICS check widens that
-further.
+Add perf_metrics to struct kvm_pmu to store the guest's metrics value.
+RDPMC reads will return 0 until MSR_PERF_METRICS is virtualized and
+context switched.
 
 Signed-off-by: Zide Chen <zide.chen@intel.com>
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
 ---
-v10: new patch.
+v10:
+- Drop kvm_need_rdpmc_intercept() hunk as it's included in previous
+  patch already after patch re-order.
+- Updated comments to mention Topdown metric type is not rejected.
+v9:
+- Remove references to Metrics Clear from the changelog.
 ---
- arch/x86/include/asm/msr-index.h |  1 +
- arch/x86/kvm/pmu.c               | 22 +++++++++++++++++-----
- arch/x86/kvm/pmu.h               |  5 +++++
- 3 files changed, 23 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  1 +
+ arch/x86/kvm/vmx/pmu_intel.c    | 20 ++++++++++++++++++--
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index 3a8e51a0c9e8..8fad944197fb 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -331,6 +331,7 @@
- #define PERF_CAP_PEBS_FORMAT		0xf00
- #define PERF_CAP_FW_WRITES		BIT_ULL(13)
- #define PERF_CAP_PEBS_BASELINE		BIT_ULL(14)
-+#define PERF_CAP_PERF_METRICS		BIT_ULL(15)
- #define PERF_CAP_PEBS_TIMING_INFO	BIT_ULL(17)
- #define PERF_CAP_PEBS_MASK		(PERF_CAP_PEBS_TRAP | PERF_CAP_ARCH_REG | \
- 					 PERF_CAP_PEBS_FORMAT | PERF_CAP_PEBS_BASELINE | \
-diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index dba651d4e449..4574cac5f148 100644
---- a/arch/x86/kvm/pmu.c
-+++ b/arch/x86/kvm/pmu.c
-@@ -778,7 +778,7 @@ int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
- 	return 0;
- }
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index aad835338759..1261f8302dc8 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -583,6 +583,7 @@ struct kvm_pmu {
+ 	u64 global_status_rsvd;
+ 	u64 reserved_bits;
+ 	u64 raw_event_mask;
++	u64 perf_metrics;
+ 	struct kvm_pmc gp_counters[KVM_MAX_NR_GP_COUNTERS];
+ 	struct kvm_pmc fixed_counters[KVM_MAX_NR_FIXED_COUNTERS];
  
--static bool kvm_need_any_pmc_intercept(struct kvm_vcpu *vcpu)
-+static bool kvm_pmu_incomplete_passthrough(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+index 858737504ec1..cb7db4784545 100644
+--- a/arch/x86/kvm/vmx/pmu_intel.c
++++ b/arch/x86/kvm/vmx/pmu_intel.c
+@@ -31,6 +31,7 @@
+  */
+ #define INTEL_RDPMC_GP		0
+ #define INTEL_RDPMC_FIXED	INTEL_PMC_FIXED_RDPMC_BASE
++#define INTEL_RDPMC_METRICS	INTEL_PMC_FIXED_RDPMC_METRICS
  
-@@ -790,13 +790,25 @@ static bool kvm_need_any_pmc_intercept(struct kvm_vcpu *vcpu)
- 	 * KVM's capabilities are constrained based on KVM support, i.e. KVM's
- 	 * capabilities themselves may be a subset of hardware capabilities.
- 	 */
--	return pmu->nr_arch_gp_counters != kvm_host_pmu.num_counters_gp ||
--	       pmu->nr_arch_fixed_counters != kvm_host_pmu.num_counters_fixed;
-+	if (pmu->nr_arch_gp_counters != kvm_host_pmu.num_counters_gp ||
-+	    pmu->nr_arch_fixed_counters != kvm_host_pmu.num_counters_fixed)
-+		return true;
-+
-+	/*
-+	 * RDPMC passthrough must be blocked if fixed counter 3 is missing
-+	 * to avoid leaking host metrics, as IA32_PERF_METRICS is not
-+	 * context-switched without it.
+ #define INTEL_RDPMC_TYPE_MASK	GENMASK(31, 16)
+ #define INTEL_RDPMC_INDEX_MASK	GENMASK(15, 0)
+@@ -113,8 +114,10 @@ static int intel_emulate_rdpmc(struct kvm_vcpu *vcpu, unsigned int idx,
+ 	 * are supported on all architectural PMUs, i.e. on all virtual PMUs
+ 	 * supported by KVM.  Note, KVM only emulates fixed PMCs for PMU v2+,
+ 	 * but the type itself is still valid, i.e. let RDPMC fail due to
+-	 * accessing a non-existent counter.  Reject attempts to read all other
+-	 * types, which are unknown/unsupported.
++	 * accessing a non-existent counter.
 +	 *
-+	 * That condition is already caught by the counter count check above,
-+	 * so only check for PERF_METRICS here.
-+	 */
-+	return (kvm_host_pmu.perf_capabilities & PERF_CAP_PERF_METRICS) &&
-+	       !kvm_vcpu_has_perf_metrics(vcpu);
- }
- 
- bool kvm_need_perf_global_ctrl_intercept(struct kvm_vcpu *vcpu)
- {
--	return kvm_need_any_pmc_intercept(vcpu) ||
-+	return kvm_pmu_incomplete_passthrough(vcpu) ||
- 	       !kvm_pmu_has_perf_global_ctrl(vcpu_to_pmu(vcpu));
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_need_perf_global_ctrl_intercept);
-@@ -812,7 +824,7 @@ bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
- 	if (enable_vmware_backdoor)
- 		return true;
- 
--	return kvm_need_any_pmc_intercept(vcpu) ||
-+	return kvm_pmu_incomplete_passthrough(vcpu) ||
- 	       pmu->counter_bitmask[KVM_PMC_GP] != (BIT_ULL(kvm_host_pmu.bit_width_gp) - 1) ||
- 	       pmu->counter_bitmask[KVM_PMC_FIXED] != (BIT_ULL(kvm_host_pmu.bit_width_fixed) - 1);
- }
-diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
-index 2a9c1bbe5c40..ae1e6545df40 100644
---- a/arch/x86/kvm/pmu.h
-+++ b/arch/x86/kvm/pmu.h
-@@ -281,6 +281,11 @@ static inline u64 kvm_vcpu_get_perf_caps(struct kvm_vcpu *vcpu)
- 	return vcpu->arch.perf_capabilities;
- }
- 
-+static inline bool kvm_vcpu_has_perf_metrics(struct kvm_vcpu *vcpu)
-+{
-+	return kvm_vcpu_get_perf_caps(vcpu) & PERF_CAP_PERF_METRICS;
-+}
++	 * Topdown metrics are supported only when the guest has PERF_METRICS.
++	 * Reject attempts to read all other types, which are unknown/unsupported.
+ 	 */
+ 	switch (type) {
+ 	case INTEL_RDPMC_FIXED:
+@@ -125,6 +128,19 @@ static int intel_emulate_rdpmc(struct kvm_vcpu *vcpu, unsigned int idx,
+ 		counters = pmu->gp_counters;
+ 		num_counters = pmu->nr_arch_gp_counters;
+ 		break;
++	case INTEL_RDPMC_METRICS:
++		if (!kvm_vcpu_has_perf_metrics(vcpu))
++			return 1;
 +
- void kvm_pmu_deliver_pmi(struct kvm_vcpu *vcpu);
- int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned pmc, u64 *data);
- int kvm_pmu_check_rdpmc_early(struct kvm_vcpu *vcpu, unsigned int idx);
++		/*
++		 * The index in ECX[15:0] is implementation specific, but no
++		 * platform currently supports a non-zero index.
++		 */
++		if (idx)
++			return 1;
++
++		*data = pmu->perf_metrics;
++		return 0;
+ 	default:
+ 		return 1;
+ 	}
 -- 
 2.56.1
 
