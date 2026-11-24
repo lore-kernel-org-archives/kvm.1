@@ -1,65 +1,89 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795539190;
-	b=NgwStRfu0Jd9BbJrAksCCbxgjzue+KLqoqpQY9HtAU0+rlXpxtGsJqxqg0EvR3rsjoXh
-	 qjrHIMqZ78AaZpXVab7+qfQZdSyCZxjlyVBjfDc7SFUeitxmzTu/hzRhb1huRBD52fgEU
-	 kolTZHFd8ZDx+BvPfKCNfqFey97TdOimHjMz2/2B3wbiiEba9OLeh+324SCrgAcDXDo6s
-	 DO46g4jqnGAXxz9mz8DdM3MlmTcFmk/jwx8W9k+8QkJ/0AZhnOulwDxqTBPVt57HSoMXJ
-	 5y4sUJ615nnVwEX2j+63UV3JM30HG//Kyuqt3b1tlApUxRAfQ5fqXZUEQVu2iTK81Pg==
+	t=1795539957;
+	b=PutiI5ctFsxI4aXG/EshvDDO7PGzmXF8K42NDR95Bqq1hJAXDQHMFIYHsot3v7BgZ+/G
+	 4X9kR0TGPWJVPERBuPCdTCuYrRw1aDbfIpx8eBMs2wPcvg2G4g4El7UHtt3yeDw9zUAx4
+	 2EN4TiO0kkDguu8snSh5EPN+HmHwo1trfpFsHvG6WmI9wG+7UcmArIOhWa1jaI93CS+hd
+	 DeghQX7nWq/HWVe+DzObA2BDYuW2v0rZA4e4MyLieOiShHdgpTJeCjwqtfY9RoCGAURX8
+	 aOhKbFMDI1jH2E+5bk7h9mfbBdZHMUvHkoIO/t4TNDC4giJ4QaWIFr7vEoTzjBggKGg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795539190;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795539957;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=x/uzChQMb312nOxPDZxs+qjo+ZN0ijU/g8Mc3JJQonU=;
-	b=kJmg+wwQsdgjhmeBdTNZnrLOVAFcqKs+THtoHGY7PSUGewpIzNA3Y/+7XOuMGkjF/xCG
-	 ORItpHSVxawjiXCpfTp26aZsYM2rda1M3nHON5MmKs9Tc4PHRtT8YfdvCYz12FjokNtAV
-	 Z17SKWijI3ZiIc92R4HeYUyB5EGAB0C+FfZGsyE7lfDZx+dmwfZezC3nNb69Qc3Eko7o2
-	 rgPqUwwp+v38PKDwwlIVWz5P1+jVb9iXyEHgwzEaUe0cUkJyDt22kKfPR7s/Dk06heLUL
-	 A1eVuuvWxNXTj3agAeuZeuQS+moT3VNxMLKmCp8Jf2Erb1qeaUUYUKzvrtXKHATWZqQ==
+	bh=cEp/cXDtvYTiH8Vp1GK2CqYt15Bi6PXi0it+ySjQOVc=;
+	b=dY4QLchuU6MA147eesKlpdmq1cTsssIUWsZxFAyNh82pi2M6ChFwhv31C5z+URg2hRNX
+	 87zuekccpuYbCsnup2cpuWHhjQACF2OQxLTTRIySiOg0b81NjNAFJr1nPzvhntNKmkW8o
+	 1NM80Ek7oAwxi99ccrRpV3gQt4iu8P2P1MKCb8o6dg920MtidLrsGH6EufmYRN8g0O7JW
+	 /sP7PmzDZDvnLXiRZkbyTlYZenr37h2BG/0PhmlSXcMTn/yzAspGsl2033xRySCB1p+OA
+	 P+5ygoZPd/sBx2OUQmgJIYll7tSWTTt7aMcFmnpQ36FsoXWDw958VQDg186LIIlStcQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OOMLAS+X;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bni2B9pu;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501D2606A33D;
-	Tue, 24 Nov 2026 16:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC76606A31E;
+	Tue, 24 Nov 2026 17:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OOMLAS+X
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE8E1F000CA;
-	Tue, 24 Nov 2026 16:53:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bni2B9pu
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1346D1F000C0;
+	Tue, 24 Nov 2026 17:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795539189;
-	bh=x/uzChQMb312nOxPDZxs+qjo+ZN0ijU/g8Mc3JJQonU=;
+	s=k20260515; t=1795539957;
+	bh=cEp/cXDtvYTiH8Vp1GK2CqYt15Bi6PXi0it+ySjQOVc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OOMLAS+XbhdnRS7DFxO90ypKtA8PGcVdJZbFI8gljDKch9WCYldkuqZ0kVwuUPZ+6
-	 DJ+PTxVWWPKOiF2iDRt9r3OeLjBPpdenXE1GXapKuoJRyr6FpYRvufwl+XROSY9yho
-	 jTkO8I/BbuB2Mkrtl3WoqPT+Xs9IYfiNc7ya8gNP9Dsm9gZcXM2/h8MvhRFX5GC6r+
-	 fRqG6Z3nr0a1Jpuy2CUXl8X+fANf3mDC+7/YbBfvSpwDRDyqgtrkhl2KY8WxIVvPH2
-	 qZNW4e5PmXeu/A1b+1ldGiTLSLO6MI3VOERij/AB6KsjOvpZThacNm0hGusbxOvNzs
-	 iXZmwZ+SG1Z0g==
-Date: Tue, 24 Nov 2026 16:53:01 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Justin He <Justin.He@arm.com>, Oliver Upton <oupton@kernel.org>, 
-	Fuad Tabba <fuad.tabba@linux.dev>, Joey Gouly <Joey.Gouly@arm.com>, 
-	Steffen Eiden <seiden@linux.ibm.com>, Suzuki Poulose <Suzuki.Poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <Catalin.Marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Mark Rutland <Mark.Rutland@arm.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Shuah Khan <shuah@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, Dan Carpenter <dan@pereq.eu>
-Subject: Re: [PATCH 1/3] KVM: arm64: Don't load hardware vCPU state before
- first run
-Message-ID: <awW1Q2Y9vCdxpjtG@gremlin>
-References: <20261123150917.2679600-1-justin.he@arm.com>
- <20261123150917.2679600-2-justin.he@arm.com>
- <86eccbzcqh.wl-maz@kernel.org>
- <AS2PR08MB978600ED2150F773D3E1631DF7442@AS2PR08MB9786.eurprd08.prod.outlook.com>
- <868q2iz94w.wl-maz@kernel.org>
+	b=bni2B9puF7kfV9Am5t1Ov8WQVRWkWZkohYhFYaAOCp/DQ8YyK4hiNB/6DDEmutNnx
+	 9DItMmeG9wGbsSnTa/2g6Bc+qZD0MoOo2QOCjGO0RuxOqF3Tm1xaa1EZJ9bnO6HeVo
+	 aY1UKSh6mwdd27HE+ANXhvMJYuMadmQYUspZ9MtLopcJo2kqu6TZRKLJOQ+VmUeRA8
+	 BHSro9BNahirHyqaXlAUVp75XTw4Ei0heRmarVboAGmlnTryJvfEdsallK7L2ZowDl
+	 Fuw7NBHUoexrLNsU88p9DA3WymGQjoLqXzSxY/kk/t5a2Ys6NENMpuN8WNAadIMoey
+	 tbOkOgbd3/Bhg==
+Date: Tue, 24 Nov 2026 19:05:38 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Russell King <linux@armlinux.org.uk>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-openrisc@vger.kernel.org
+Subject: Re: [PATCH RESEND v2 12/21] mm/pgtable: redefine PGTABLE_LEVEL enum
+ with ascend order from PGD
+Message-ID: <awXD4i47F-VAG1tD@kernel.org>
+References: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
+ <20261102-dummy_ptxp3-v2-12-78840b2ec73c@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,119 +95,63 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <868q2iz94w.wl-maz@kernel.org>
+In-Reply-To: <20261102-dummy_ptxp3-v2-12-78840b2ec73c@arm.com>
 
-On Tue, Nov 24, 2026 at 12:50:07PM +0000, Marc Zyngier wrote:
-> Adding Dan to this loop, as I reckon something else is amiss.
->
-> On Tue, 24 Nov 2026 01:39:23 +0000,
-> Justin He <Justin.He@arm.com> wrote:
-> >
-> > Hi, Marc
-> >
-> > > -----Original Message-----
-> > [...]
-> > > > KVM_PRE_FAULT_MEMORY calls vcpu_load() as soon as
-> > > KVM_ARM_VCPU_INIT has
-> > > > completed. On arm64, however, kvm->arch.sysreg_masks, the trap
-> > > > configuration, vncr_tlb and nested vGIC state are only set up on the
-> > > > first KVM_RUN in kvm_arch_vcpu_run_pid_change().
-> > >
-> > > I think I'm going to queue a patch disabling prefaulting immediately,
-> > > and then we can fix this crap.
-> > >
-> > Fine with me. I'll rebase on top of it and have v2 re-enable
-> > pre-faulting together with the load/put change.
->
-> Don't worry about that. I can fix that myself when applying the
-> patches.
->
->
-> > > > Since kvm_running_vcpu can now be set without VHE state on the CPU, use
-> > > > host_ctxt->__hyp_running_vcpu in VHE enter_vmid_context() (matching
-> > > > nVHE)
-> > >
-> > > Can you clarify under which circumstances we end-up on the TLB
-> > > invalidation path? Simply faulting things in should not result in
-> > > invalidation. Unless we end-up with MMU notifiers firing?
-> > >
-> > I found this by code inspection, not from a failure. A TLBI from a stage-2
-> > BBM or an MMU notifier can hit this path during pre-faulting, but before
-> > the first run hw_mmu is canonical, so it makes no difference. As Lorenzo
-> > said, I'll drop this hunk.
->
-> vcpu->arch.hw_mmu being the canonical one before the first run doesn't
-> hold anymore, since a7602ea542d4e ("KVM: arm64: nv: Initialize hw_mmu
-> to NULL for nested vCPUs"), as userspace can configure things for an
-> L2, before first run, and bad things happen otherwise.
+On Mon, Nov 02, 2026 at 11:21:25AM +0000, Yeoreum Yun wrote:
+> The PGTABLE_LEVEL enum values appear to be ordered in the opposite direction
+> from their intended usage.
+> 
+> Intuitively, higher page table levels should have smaller enum values,
+> but PTE is currently assigned 0.
 
-Yeah sorry, didn't pull locally so missed that...!
+That's not what x86 thinks :)
+They even expose it in /proc/vmstat with smaller numbers meaning lower levels
 
->
-> But the observation remains: if an MMU notifier occurs for any reason
-> while pre-faulting (likely a concurrent reclaim), we get the "not
-> quite loaded" vcpu in enter_vmid_context(). If vcpu->arch.hw_mmu is a
-> valid (non-null) pointer, then we will restore whatever is in that
-> structure when reaching exit_vmid_context(), and that's not what is
-> intended.
+$ grep direct_map /proc/vmstat 
+direct_map_level2_splits 152
+direct_map_level3_splits 4
+direct_map_level2_collapses 0
+direct_map_level3_collapses 0
 
-We might also get not-concurrent MMU notifier fun with direct reclaim like:
+Just an observation, I don't mind either order.
+ 
+> For consistency and cleanup, reverse the enum value ordering.
+> 
+> Since there is no current user relies on these numbers to be ascending from
+> PTE->PGD, so it can be changed to be ascending from PGD->PTE, in the
+> direction of the page table walk.
+> 
+> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> ---
+>  include/linux/pgtable.h | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 780fe849ff8b7..a032f95943357 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -2288,11 +2288,11 @@ static inline bool arch_has_pfn_modify_check(void)
+>  typedef unsigned int pgtbl_mod_mask;
+>  
+>  enum pgtable_level {
+> -	PGTABLE_LEVEL_PTE = 0,
+> -	PGTABLE_LEVEL_PMD,
+> -	PGTABLE_LEVEL_PUD,
+> +	PGTABLE_LEVEL_PGD = 0,
+>  	PGTABLE_LEVEL_P4D,
+> -	PGTABLE_LEVEL_PGD,
+> +	PGTABLE_LEVEL_PUD,
+> +	PGTABLE_LEVEL_PMD,
+> +	PGTABLE_LEVEL_PTE,
+>  };
+>  
+>  static inline const char *pgtable_level_to_str(enum pgtable_level level)
+> 
+> -- 
+> 2.43.0
+> 
 
-kvm_vcpu_pre_fault_memory()
-  -> vcpu_load()
-    -> kvm_running_vcpu set
-    -> kvm_arch_vcpu_load()
-      [ skipped with this patch, !vcpu_has_run_once() ]
-  -> kvm_arch_vcpu_pre_fault_memory()
-    -> user_mem_abort()
-      -> kvm_s2_fault_pin_pfn()
-        ...
-        -> get_user_pages_unlocked()
-          -> < try to fault in >
-            [ direct reclaim, tries to unmap a page from another VM ]
-            -> [ mmu notifier ]
-              -> kvm_unmap_gfn_range()
-                -> kvm_stage2_unmap_range()
-                  ...
-                  -> enter_vmid_context()
-                    [ assumes kvm_running_vcpu's hw_mmu is in VTTBR_EL2
-		      so exit_vmid_context() 'restores' it ]
-
-Yeah anyway in general this is clearly _wrong_ so right thing is to keep
-that bit.
-
->
-> So I think we need that sort of exclusion. Either we track what is
-> actually properly loaded (using __hyp_running_vcpu as you did before,
-> or by checking whether the vcpu is in a valid state).
-
-Yup makes sense!
-
->
-> I think we have a somewhat similar breakage with 5651590be08a6 ("KVM:
-> arm64: Load the vcpu in KVM_SET_VCPU_EVENTS"): as vcpu_load() now
-> becomes sensitive to vcpu_has_run_once() being true, we can't tell
-> anything of the state that is going to be evaluated by the event
-> injection helper.
->
-> We could prevent the non-running injection in KVM_SET_VCPU_EVENTS, but
-> that's also a change in the API...
-
-OK so fear is Dan's vcpu load in kvm_arm_vcpu_set_events() now ends up
-doing naff all before vcpu_has_run_once() and thus the bug he fixes might
-be a thing again?
-
-Or is the concern something else?
-
-For the bug I think probably it's fine because the issue there was that you
-had an unload without a load AFAICT, but Jia's change also updates
-kvm_arch_vcpu_put() to be symmetrical, so that should be OK?
-
->
-> 	M.
->
-> --
-> Without deviation from the norm, progress is not possible.
-
---
-Cheers, Lorenzo
+-- 
+Sincerely yours,
+Mike.
