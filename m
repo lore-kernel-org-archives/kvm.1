@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795562582;
-	b=uqrvYlp0AiXzIyS6x2s1912CJJKVmRJYHe+KwimRn/Cxf4UDa46L0l/wI8m7yANI/EXE
-	 aJQ8f4BFn6iVOgXg8Y0BirnPWx2POCmQOHdAH364Q3khGt6ils/sPHF4tFJaMcczULiB3
-	 2DyyLySoixR1iS1ZyAJ7noMvwGmSsOHAt9+fPQS4x6BiOFMO5aigro6tB7fkplivqczqB
-	 wo7H6oKdbq15a1flP9rm+pmlUN8WSq6CR2PxXZKAGX3zVzb0hohPLLA6wo4AG+96/+GIZ
-	 FS2CE6K/WC77rlSh/yCnFrr0KYOEJzpu6bAfe8hQz6swR3DOzft0r1G2PPDhLrgqyrQ==
+	t=1795562584;
+	b=fW8qtgMaZjXFRTWb81SGcN1CeXbtqIXlgsbXmeJmyzgXsAAoynPVYCQU9Cb95Li16wNR
+	 oGRTQ2g81WMYbrxQa5CkKWKZInAvrZeIOZEN+1d0vBRZxTFWwJcXlwHWgH9B8kt+uOzrI
+	 ctF9dNPhqDHqITxvuv9KWvgjqoFnKgLSrqwulfb03KT87Ie8aHWtNLjGFRG/moNGBZeuA
+	 GpemFLErLpVw7ks7TZpSlgWlvBh34Lwi+EpT54nSdA8FR9mCbfLxIjxWn+3a812yRj4yH
+	 qGg0v5GqTJUdYZ/uU0Z5PhTvCwfSArsVopqHyhMod6RuHOuLfnOUP0pKtIqiEYBGPjw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795562582;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795562584;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=fWZq+phibeUOAuCvTbIBUu8IYuUINRpE+QvToHPSryc=;
-	b=InHOZf9QOXjt07BZuWt/VtvoYh1kKJzVUl8A+89mxFVj+GLqjuhOEd5Re1bPlR1+PHqs
-	 2oEsCGaoI/CiexKe/zk1SWhucayp+T2cwDaMhWL8Vj/Pm9fp9IO/sYCryVcy7HE427Xgd
-	 vU0pfGz55K61HeSVCj1yHeJNNfeHZT/MPGu620Q2biz8l0F5H3sgXg4E3wffXg6ZI4vMb
-	 YD9mpyFvIqh4kz104i6g6iGBY+1u6vT6JtC5fC41CVuzgz/lRz6EM7LsuQRLDKUV7eCa/
-	 0tqpCrUMgLaGJbu7lXgu8vuWrlZO+iUKa/rglaG+SSuTK18fRjPT1Xxs8XHHhRitYPA==
+	 Content-Type:Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
+	bh=i4B6bqyTVLsX4pdrr6Z2tGS5jrujsXnubmc2oU/AG+g=;
+	b=gxvyCJ+Kq5+Q9jDezkBhfI+HAELtgwp2L7yjjGApyN2Nbh1J31S5T/G//dqa3YusKlHM
+	 YUszPFYyH4U/fnBMTWq9G8XA4lp3EEE+/8u1EGoS/J2QgSAqlEVP+xhKmgWbIhzKZa3ab
+	 Y2Llo0FKW1T+OlnXXMvwzPtatoSKBU0qIRqRNwVwWIobaoS6mNEMKuxulgr3MKLuUPPWI
+	 oFt1zsxyWqQ+of9+sBYdWveNjDIFMaPQqsSL1FCfHt78dMaiQ3t91dl6zeZVVLHLrrRgU
+	 g/WFG9pnPiwIIn3+AGc+DXvm/pXi4+p3+PO2+qfJLRKOpNYT16hY8mXzw0zAbfMamUw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=desiato.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=olyREV0E;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=rIrIBwsh;
 	arc=none smtp.remote-ip=90.155.92.199
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C09606A693
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:23:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E5C09606A693
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8E6606A684
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:23:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F8E6606A684
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=olyREV0E
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=rIrIBwsh
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=fWZq+phibeUOAuCvTbIBUu8IYuUINRpE+QvToHPSryc=; b=olyREV0EM42s4OFSemiYPWrcmz
-	nBl210NlEyXbsalTjLv/ZvSjQ9oY6zkhValMnTsqQ57gRPeEio/58Q3hOhBCPMob+Ion6pw7xgJDX
-	HcGSqj1ow9xIy5yr4tWm4q9ItKtX5H7M8llT6LGfUdJX3mR//BoqU81QK0bHhbkPMNSVXF9rfMIaG
-	HdFkc48goyA5+2S3JgsCi50vIQ/p4fRKaAIQelLGINLO1R5jKF3KUzxL4OojCMpxds+y8sevGkGQI
-	GMFVYtm8Fko+PMVNXTHT3lu5luX7EWk/CmgqJKOl12szWx3+LN3wJdND7tlcIQlgFqnNFEjhCwPg2
-	wxlQ/xIQ==;
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description;
+	bh=i4B6bqyTVLsX4pdrr6Z2tGS5jrujsXnubmc2oU/AG+g=; b=rIrIBwshFRXjX80qqkWQWRBXqq
+	lQU9dpwGYR3lEvehHB9qQgedtr7BuNS/gZVAnHn1qPcBEtfoDeJ8KSjJstpQk2vSHumx7CcALNHN/
+	5jKp8Sg8/XuU5V/Qh3cIjLKqg2QL5C9AuwIhnwDoBODqEjaiC7XD6w9PNn3vpHTNQ+IKLOEp9ZD30
+	OKAi22XLiRXzwaWUKIO44rfp77bw95a0jrJelwc73g8zV3/4RuNT16TqR37qtqABuUMEAtRK2LxzF
+	/CRV2cFAtGRo/5NiYpfXF2Dx4/29HRkMBLMG1L5Aht/fVnJtnh9nLPOwy7cKuuFs5+DivPkXHSXyQ
+	n7YonpXw==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xVzqc-00000004eUz-1kfl;
+	id 1xVzqc-00000004eV8-1lDN;
 	Tue, 24 Nov 2026 23:22:51 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xVzqZ-0000000061t-1D5p;
+	id 1xVzqZ-00000000634-39To;
 	Tue, 24 Nov 2026 23:22:47 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
@@ -69,9 +69,9 @@ Cc: xen-devel@lists.xenproject.org,
 	Mark Syms <mark.syms@citrix.com>,
 	Feifan Qian <bea1e@proton.me>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v1 02/21] i386/xen: Don't resample GSI when per-vCPU upcall vector is in use
-Date: Tue, 24 Nov 2026 23:22:28 +0000
-Message-ID: <20261124232247.23169-3-dwmw2@infradead.org>
+Subject: [PATCH v1 20/21] hw/i386/kvm/xen_evtchn: Hold port_lock for whole of bind_pirq_op
+Date: Tue, 24 Nov 2026 23:22:46 +0000
+Message-ID: <20261124232247.23169-21-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261124232247.23169-1-dwmw2@infradead.org>
 References: <20261124232247.23169-1-dwmw2@infradead.org>
@@ -84,52 +84,73 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-The callback_via GSI (or PCI INTx) and the per-vCPU upcall vector are
-mutually exclusive delivery mechanisms for Xen event channel upcalls.
-Xen itself will never assert the callback GSI for a vCPU which has a
-per-vCPU upcall vector configured.
+The check for an existing binding read s->pirq[].port before taking
+port_lock, and the allocation wrote it after. The BQL serialises the
+writers in practice, but holding port_lock across the check and the
+allocation is clearly correct and lets Coverity see it too.
 
-When the interrupt is acked, QEMU's resampling logic reasserts the
-GSI if evtchn_upcall_pending is still set. If the guest has configured
-a per-vCPU upcall vector, events are delivered through that vector and
-the GSI is unexpected; a guest which receives both the vector upcall
-and a spurious GSI interrupt for the same event can crash. This was
-observed in production with Windows guests on a different VMM which
-implements the same resampling logic.
+The region now under the lock is pure port_table/pirq bookkeeping.
+The MSI unmask and kvm_update_msi_routes_all() calls must remain
+outside port_lock: they can re-enter via the MSI translate function,
+which takes port_lock itself. The PIRQ→evtchn→GSI delivery paths have
+further BQL/port_lock ordering constraints — see the comments in
+xen_evtchn_set_callback_level() and xen_evtchn_set_gsi().
 
-If a per-vCPU upcall vector is configured, don't resample the GSI;
-just deassert it.
-
-Fixes: ddf0fd9ae1fd ("hw/xen: Support HVM_PARAM_CALLBACK_TYPE_GSI callback")
+Resolves: Coverity CID 1527403
+Fixes: 6096cf7877bc ("hw/xen: Support MSI mapping to PIRQ")
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- target/i386/kvm/xen-emu.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ hw/i386/kvm/xen_evtchn.c | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/target/i386/kvm/xen-emu.c b/target/i386/kvm/xen-emu.c
-index 29364a92797..7337561b159 100644
---- a/target/i386/kvm/xen-emu.c
-+++ b/target/i386/kvm/xen-emu.c
-@@ -435,6 +435,13 @@ void kvm_xen_maybe_deassert_callback(CPUState *cs)
-         return;
+diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
+index e2803cad0a8..cfe735219bf 100644
+--- a/hw/i386/kvm/xen_evtchn.c
++++ b/hw/i386/kvm/xen_evtchn.c
+@@ -1289,24 +1289,21 @@ int xen_evtchn_bind_pirq_op(struct evtchn_bind_pirq *pirq)
+ 
+     BQL_LOCK_GUARD();
+ 
+-    if (s->pirq[pirq->pirq].port) {
+-        return -EBUSY;
+-    }
++    WITH_QEMU_LOCK_GUARD(&s->port_lock) {
++        if (s->pirq[pirq->pirq].port) {
++            return -EBUSY;
++        }
+ 
+-    qemu_mutex_lock(&s->port_lock);
++        ret = allocate_port(s, 0, EVTCHNSTAT_pirq, pirq->pirq,
++                            &pirq->port);
++        if (ret) {
++            return ret;
++        }
+ 
+-    ret = allocate_port(s, 0, EVTCHNSTAT_pirq, pirq->pirq,
+-                        &pirq->port);
+-    if (ret) {
+-        qemu_mutex_unlock(&s->port_lock);
+-        return ret;
++        s->pirq[pirq->pirq].port = pirq->port;
++        trace_kvm_xen_bind_pirq(pirq->pirq, pirq->port);
      }
  
-+    if (env->xen_vcpu_callback_vector) {
-+        BQL_LOCK_GUARD();
-+        env->xen_callback_asserted = false;
-+        xen_evtchn_set_callback_level(0);
-+        return;
-+    }
-+
-     /* If the evtchn_upcall_pending flag is cleared, turn the GSI off. */
-     if (!vi->evtchn_upcall_pending) {
-         bql_lock();
+-    s->pirq[pirq->pirq].port = pirq->port;
+-    trace_kvm_xen_bind_pirq(pirq->pirq, pirq->port);
+-
+-    qemu_mutex_unlock(&s->port_lock);
+-
+     /*
+      * Need to do the unmask outside port_lock because it may call
+      * back into the MSI translate function.
 -- 
 2.43.0
 
