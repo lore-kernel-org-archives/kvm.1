@@ -1,79 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795480799;
-	b=5MsCfkBrhO7jHcArhCntYX+9VFS5l7ZlWdOD3ZgbXXN/vML0xY3uFVoccWoB/kCfztiy
-	 0L6Tinmr7F2t5Ip5FAi5cIJYQkKaepykRcsBMQdw5MnwHbht20Pg+Mg3DwrcqH/JKp7oz
-	 jFHjhUJnbizHqw1OOLAeOk6lb3pqx8R8r8jl0RopH6WVI59cuBcLYMI98rXARrouhceo2
-	 ZPtbX8q+J1ZeOXinXwArwQjph+ZnwaNpZ1SKJrc+h7A18SVPB64QmuhxDloE7i7ORClzk
-	 AB4TsLjFoFmjpZ2mMxY+sQhC6/hDbltoPgUGyF4+2StXsUuKRM4g9Hjuihe4uaPuvfA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795480799;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
-	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Originating-IP:X-Authority-Analysis:
-	 X-Proofpoint-GUID:X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version;
-	bh=efALRy5JehNWwR5fNw4avw3lMC0wfy+UAUaAyAGBkW8=;
-	b=DkkTpXxE38m88Eo6ZLr9x1/vQgZ5ghYv/bmJRxKKBT5js2PZppIRZorrlropdqy2KAAs
-	 fPpAJaa+jLVjdYUuIseOkWA24hrlK235VBggjZPl6WvERBaqFKfwPhwnidBWUqq6EH8zl
-	 jZgZfrR6O5VbN0jPX1Feh/zy+PwWGmrC6WWf6DZTxJ7mEdXJRvVK/HhKnLLSG2mm+bPJk
-	 k9LeZdkEmhF69uPmIoF5oWDTmmSb6ID4VkyL+ZPWQKnTtghHOnvvdF4WrhkWaLqkMn8St
-	 l17OoGxqcK9Icbr+FSrFictllsVlF6Izq1cVWQFLAXUrCZWmLFb/5ONDa+rA3W+mz/Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=MQ8d7z+H;
-	arc=none smtp.remote-ip=67.231.145.42
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.49
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795480838;
+	b=TqeK3VVyF7hGqy7Gy72p6uKYB6i0ThY7Q2WZ2kbvK3sA0WItKtBEpeNrg8SkgFYXWquJ
+	 ltgJKGDsmDM9Ij25W1chKWhymNuoyD0DEp/FUAkBnRnsmBKKqbpEEI4eNURKnNUDFXyv7
+	 o5cfPTzVfuyBv5vCzWfIi888kx6YeKxPt8dCHjcX1UaxOl3rXI3HrCcotV49DSO7y63iQ
+	 28exSM8413B0wInGfEfC/JMsWUJ57WP9+KnLSqVTAZi8yYGEVmcx0RtivyOsaThS0Q/AV
+	 G/rVyWwqxz6k3C7UPJvhsesPmI0foTJdQpG4Wgzv86DXYzS3jNB4UtAtpXOfyTRsKJA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795480838;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:From:Content-Language:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=3ICQWh5B5bLQ18fouiEV7EH48XJS5Cy6rqnVw2pkUVs=;
+	b=vAiDifmxaWuDBLx2ZlLLDQzLlPfq5GFNYLZliFyZ5czd7YgSulvK37lsfc+ST6lfDZzV
+	 rUBLbWDvetewA34hMI/2yWmnflZqbjSYpO5Nzafy3rtmvk0+wubUJALEx8UaDvZMQKKt3
+	 qrEhFpojBg4xOWmW4PWZNOdmfZr2xACwjY5EhkzT56if3/trt4MwdLshe073fWANg5zoL
+	 y9EkJSlq1Umx6kPOSSAXFbZL5dULkgEv1cPoXHoKgsetmrea7Nkig99oax9dxDnDi/kGq
+	 9JruhNwKQ9IbPgcWuQnRq9qooy4Y6TOBPDou0owxVGRikI3apIf9mX8+aAfcLUmSyig==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=yzdLBwd8;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.52.49
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011049.outbound.protection.outlook.com [52.101.52.49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF618606A31E;
-	Tue, 24 Nov 2026 00:39:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DF618606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0896606A31E;
+	Tue, 24 Nov 2026 00:40:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F0896606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=MQ8d7z+H
-Received: from pps.filterd (m0109334.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ANJw71x2854679;
-	Mon, 23 Nov 2026 16:39:54 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pps82601-s2048-2026-q3; bh=efALRy5JehN
-	WwR5fNw4avw3lMC0wfy+UAUaAyAGBkW8=; b=MQ8d7z+HPPVzwqqHYCFi8TAuGwm
-	B9aeFtqef2e09TvZfP65mSE4FZYADxTllsLWaz7gzGazpDqtMiS7J9D2QPeGr+3Z
-	1/sCV+dRKUxpaqEv0XjThiTEAtUmFlH+5dTw1nYaUH+LHv0CuITIWrSelt8lpyu0
-	Fr4atcCmSUBbDE3oI9X6dF/715epjh8k3wuKHB64EkdOVdZqqfTtoSxAP9WncO+1
-	dtVsfdxyJKAChQe8b8LMhMoYCTqUShqttQQOd8UzZJVYQbdy6pktGNbmrFTsEA8f
-	JWZAfjwSDDSdNY3jLutjx8se6BA55cBr1eJNMpF8UDhg+4lZYqItkvgKOHw==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4j3bfmwfvk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 23 Nov 2026 16:39:54 -0800 (PST)
-Received: from localhost (2620:10d:c0a8:1b::2d) by mail.thefacebook.com
- (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Tue, 24 Nov
- 2026 00:39:37 +0000
-Date: Mon, 23 Nov 2026 16:39:36 -0800
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-To: Nguyen Dinh Phi <phind.uet@gmail.com>
-CC: "Michael S. Tsirkin" <mst@redhat.com>,
-        Stefan Hajnoczi
-	<stefanha@redhat.com>,
-        Stefano Garzarella <sgarzare@redhat.com>,
-        Jason Wang
-	<jasowangio@gmail.com>,
-        Eugenio =?iso-8859-1?Q?P=E9rez?=
-	<eperezma@redhat.com>,
-        Asias He <asias@redhat.com>, <kvm@vger.kernel.org>,
-        <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] vhost/vsock: annotate lockless accesses to guest_cid
-Message-ID: <awTcyKKYa8R7s6h1@devvm29614.prn0.facebook.com>
-References: <20261117164916.2332953-1-phind.uet@gmail.com>
- <20261118012321-mutt-send-email-mst@kernel.org>
- <a7752192-b417-4e70-8f39-a3cdc983f447@gmail.com>
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=yzdLBwd8
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YI3i5YHzZ7Zav2Lmd1yJur2qRo1Qmcl5YIOI3PXwyvFl1zr/8rzUxdA2ukLS+uYViUELWlxtpG9po9QS6Ccv0qr9kLR2EfmSW9RQDXV+26K9ozXlVm0LKFRawF1zra5YWt2Uj5SpUDOg/mPVNtX4StVXed86ihh+EFgQMlmIxPl6GwFQPzMh8TmRlnacMJhCGxy6RxGr23qSbFvLw6RPb7rFcCw50gsDWCQEjASzig9kRmxSu7IXLjauG5gChljNDdaIxtVNPmABrrdyTOcBTfAzw11OvMO+3XRrm5I8W4whAuZcxYEfcFnfZ2JxPwj6HJZJsQHj6Wi5cjjJmGs7Qg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3ICQWh5B5bLQ18fouiEV7EH48XJS5Cy6rqnVw2pkUVs=;
+ b=ZamMxdEbKiVMDZ2FLrKKXhli1iYE3UVwsEXUwyaKqXN33IlPpQdty336nFVj2Ze2LTrtj0RFxmDVJzhHG1Eo50QxiqT/wfFs7l/B0fZylXoTxxyINgU53F6OJV9t1se2KVmb8YZg0ZKVXltdgvh7CTpYHa15H3VKyUxJrgNulIPH2dEF8Ec81kbeFjtwxm69x8Gt6xItLyKS7IFd+nGKK5EC2oxixBSs3MzQk43Q1QOsioTSxVrSCVnluDgv+Rzcj4DhM4EWwBlUIbEzg/UuDV20kxkfr++x19VQdyVxM9BFjwObnYQNH1oq/dcKRzbhJcoxsgCqH0nYGgdhN+BYjg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3ICQWh5B5bLQ18fouiEV7EH48XJS5Cy6rqnVw2pkUVs=;
+ b=yzdLBwd8QGOGWzPrl+EPPbf6R1ugaUbRiXpyGJlIeCuMSNg37OQIh67NzDimb0sgfxKiyittqJMiq+VUQOSxHm+9DT770wXCN0eicgMYhvJy+x4o5vJf5cGpyAobT4stvpHtcVCV7RUE0WyY+lL2X6Y7QpdNORW/i/Tpo1tSNXw=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SA1PR12MB999228.namprd12.prod.outlook.com
+ (2603:10b6:806:4db::10) by DM4PR12MB9069.namprd12.prod.outlook.com
+ (2603:10b6:8:b8::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.13; Tue, 24 Nov
+ 2026 00:40:26 +0000
+Received: from SA1PR12MB999228.namprd12.prod.outlook.com
+ ([fe80::4dba:119e:8e7c:37b3]) by SA1PR12MB999228.namprd12.prod.outlook.com
+ ([fe80::4dba:119e:8e7c:37b3%6]) with mapi id 15.21.0639.012; Tue, 24 Nov 2026
+ 00:40:26 +0000
+Message-ID: <9f92f7ed-5198-45aa-9cef-515ccbf98398@amd.com>
+Date: Tue, 24 Nov 2026 11:40:16 +1100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 02/10] coco: tsm: Register the TSM class before device
+ drivers
+To: Jason Gunthorpe <jgg@ziepe.ca>,
+ "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
+ Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Xu Yilun <yilun.xu@linux.intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Steven Price
+ <steven.price@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Lukas Wunner <lukas@wunner.de>, Ashish Kalra <ashish.kalra@amd.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, driver-core@lists.linux.dev,
+ linux-pci@vger.kernel.org, kvm@vger.kernel.org, patches@lists.linux.dev
+References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
+ <20261123083337.2731019-3-aneesh.kumar@kernel.org>
+ <20261123152903.GG179082@ziepe.ca>
+From: Alexey Kardashevskiy <aik@amd.com>
+Content-Language: en-US
+In-Reply-To: <20261123152903.GG179082@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY5P282CA0028.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:202::14) To SA1PR12MB999228.namprd12.prod.outlook.com
+ (2603:10b6:806:4db::10)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -83,123 +109,90 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <a7752192-b417-4e70-8f39-a3cdc983f447@gmail.com>
-X-Authority-Analysis: v=2.4 cv=DqvDa2/+ c=1 sm=1 tr=0 ts=6b04dcda cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=crHB47gyY4rKiduisYu9:22 a=pGLkceISAAAA:8
- a=BpIEGQ5VxnvoCYnNX3YA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: WMQG2mlDY79KFTZ1_j5ltsmJFe1zfpH_
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI0MDAwMSBTYWx0ZWRfX8MBqf1PahJTV
- FDRNyD2aYRuxT+r4naWLGIQoRkN0jFDLil2xAoygo3uc7S/Cof8sxQFNA23fvlZnw+3OGMEt/Wx
- 6rw+rltyDJmixWNnylpfTrLyJOSPOPc=
-X-Proofpoint-ORIG-GUID: WMQG2mlDY79KFTZ1_j5ltsmJFe1zfpH_
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI0MDAwMSBTYWx0ZWRfXwWTiFaotObcB
- EM1sufzoe0pFQ9Iuoyiae5qj2SfvlTIJiMtUGa3Cvjp+XSRn3UA4ySp924cMHBISYGzVRN3MMAZ
- trfJI3QknuOBkpRSMLJNdXZs/UbgTBJSyRFgAyExEnzbEx/YhSOqLQM2aOVBhIG1EYvp/kAVAyC
- FgV7rVO+S5LlNDgJZBgeSezY2wUN7+1XAa1T/My0nw4mv5VQGVTzQI2VJD5znETK/6lXzfj/gsn
- f3TdSb6AgP8bHXZKLyam0VTPOyVpK6huf2JRc2xUkd95us/vf5ZolIh8PLafbDV7Mz1q4RgPFkN
- wjJqqnriWaEZnwJnBvXGh2uCA8V2FrfeKrYvs/YI/J9yTkSfxKt80fKID8VA3zNvLs9q3/I+JJB
- Dft5gKkA+AzF6KBeq+RVFW62db3n2iJZG9aV0maXlxNCx1SVPVJp4jw93J6Tqw+tO9PXjvQ5b9R
- PtDJoMA1C1HEISAYJew==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-23_05,2026-11-23_01,2025-10-01_01
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR12MB999228:EE_|DM4PR12MB9069:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4729cdf4-27d7-4109-463e-08df49c3885b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|18002099003|22082099003|261009223027099003|261022105027099003|261026140227099003|261022075727099003|261026121527099003|261028144727099003|10067099003|4143699003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	shjVWaZGU+SOSVxaZPAya69bIqlqh0yc3gvOEmDYbUKv5zxhpjm1w4THQDxv6qA8jpLWtuWynt2kVp8RklHj3+vYs9YAQixZCRnj5kktarEsgaUY75aeNfgi2gKf/AbahtXk767hLI0OLooLGK5AwVLnMwLJ3eeLTPk6K97jYjnDkaW3ogV97FSu1veDbVfNCzsXi0qHiLD2OmF9dOD/wy3QE6UYvA1zhZKohJlYFMgnXhgrzgwFobj25N+CKE4JXolD7ffPN5nqFO26QzOKeTtlWUW3uPxdfswLX5gUbtJWz7DbmpgGJ4yMSN8ErSl+Wcp6y+RYwkNGc6K2WuIbZ8w6FU082wbePxXnH/7FNyBIVsyZ4vqvvYsqOYuzxd+izOlMFvhhRymO1U+B0C2EdbzgCPScewjO4Z+661qMV1etBDIeFKTsBLHpLthbsiJyvMxRp/8LzuSySqZ7UePwmf5wKk+D41iLrYExcxw+UYUw7558O16jrGcJ6DHVDu32tYuAYk4zhkTTofcCvK5IjEGtZisxi7Oiar9Nm3R4kngO22c0Tj35zcw9Nx0hQfbZkVZ8Ynqu/BQW4ZRKacGWwWw5AShxb06Yr0xwYUn/Hg6IIgqDlPcZ//MhowLqWRvWEyxSfEknwDRLjoS2lGkb9v+6dGPOtCAkX0kgCGIZmvw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB999228.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(18002099003)(22082099003)(261009223027099003)(261022105027099003)(261026140227099003)(261022075727099003)(261026121527099003)(261028144727099003)(10067099003)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eXEzcHY5RWh4VXF2Tlc0TEFmUWJxMlhBVTRYTWk0UVpHeTVDbXlaa3ZlcklV?=
+ =?utf-8?B?U3c3aEZVLytDWDhianprZWc2UU8zRXpJak9OY3VJdWM4Z2ZjcU9ReDBoTlJ4?=
+ =?utf-8?B?Z2dUcDNYclFpN2pJRjJYUytvRkQ2ZStrL2ZLOVNpTUk2d003ci9jdm8yRlZH?=
+ =?utf-8?B?ZWtKRGU5dDF5cU4rN1VVT1BsRFVvbDd3OWxDUTUwQlhIcVJYM1ZCb0VXeXFh?=
+ =?utf-8?B?eHY1TXcvbDVtN3JZalVCSEg0OHF5N1NvWUFHMGI0NFRsdGNhTVZVdS9ZWE8r?=
+ =?utf-8?B?L1JwejRSamlSQW5PVC9vdVJRb2RxOWgweFJjb1ZUYkI2a3FNckVBUmI3azV0?=
+ =?utf-8?B?Yk5YZm9Xd3BBSXM2RzVYRmJqQy9tdnhiYUFOcmdibEZUOGtBdkNFRTRRRnNX?=
+ =?utf-8?B?UlBjSFVYZ0J0VEVndjhzS2hjMU1iQzdXbDBqRjRnTG4yV05ZSkNVUjF3VzBO?=
+ =?utf-8?B?RkRwYlNSRFRvVk9ySDFTOUM0RUJ6VGtaYzY2ZTVrNVAxYW9GM0FNQmFqR0Rl?=
+ =?utf-8?B?bktPVEFkSVFydTVZbVhnUlBmMGVwdnVheHl0aDJnUEV1bHp3ZGZWV0pRdkJ2?=
+ =?utf-8?B?NEVuYURDN01jTlpUdHJNa0ExWkYrcHdHUVNHSEJzVFlJbjJ0RVhmSE1vTXJl?=
+ =?utf-8?B?UFh5cm9VdDlZNnpjUk9VYVRhKzlDZE9KY0NyOCs4a0EvcktPY2l0SkdQTU4y?=
+ =?utf-8?B?TnJMOE0wU3BQZDdSZmo0Y0IzSE9LRGplQk42WEZteXpSV01qS0Z5RXFKaTBr?=
+ =?utf-8?B?SWovRGpPdzc2dlRLU3pPUURJcnRBdEVaWWdhRms2dVJSWSszSVBEMWNTK1BN?=
+ =?utf-8?B?dWVLWU9qQ0VCUFdVeGpPMkFCWHZ1RlMxQ0pmWmlBemRrdzl5RS9GcWdDeU1B?=
+ =?utf-8?B?R2NzeS90MUhWWHFvU2JuTjUrSHBjMnRTZTB4RzQvMWZ5SmJGVzNkenhVSjB4?=
+ =?utf-8?B?K1NtenQyLzdscXd2dGN2YmYzWkVyWlUwdmZSUHUybEczM0llNmtiNXpJdndP?=
+ =?utf-8?B?MTNZL2RGYjNrWHRhZmJJaldDTzV4RUJsV1JJeGlhb084Mms3aHZXMjNPTVhN?=
+ =?utf-8?B?YXpsejcxTWoxTldUMFlFdnpxallMaXF4YXQzNnlXY0orQjJYVU5OcWZmWXJa?=
+ =?utf-8?B?RU0yT3lvRFlCSUpWQ0pQc21zMWRyTXpjMVo3R1N4blZmZFBCcmV0OUxIemdQ?=
+ =?utf-8?B?UTVNQUgweC9UVGpoSU5JTlBVOG95czljemRaZ0JVY3J2RGRlSW9HakF6M2Qy?=
+ =?utf-8?B?d2EzVGQrTk8zUVMvSEpZeTNEZ2hCSDdhZ0FtdnpCTWppZUx0L1pDWnhQSW9R?=
+ =?utf-8?B?ellveXozYWQrQ2JTVDlkL3U0RVhiYXFjbkNGWkFqeWxQMGl6Y3MyVEE4V0dj?=
+ =?utf-8?B?ek5jQnl1VjhFNjg4MlFzZnEzRVVjS3RPWEhoT2cyeENJcFc0a2RLK1l3K1lS?=
+ =?utf-8?B?czdvUmExemQ3ZFY4ejhJYklsWDdhbFEvdFI4ZVdTUW1yc295UnpOR0J0OTdY?=
+ =?utf-8?B?Wk51eDZ1TXR1VVJ2d01xZWhhT3lmaGVaaTZBdlE3dDVpTzVNNjFrMmt6aVBh?=
+ =?utf-8?B?QnhLTWVQOEpwYnJLSTNmdTBxNlBSQkFITjl1aHpsa2Q3MjZBVWwzbkthUmph?=
+ =?utf-8?B?MVlMb2lqRXFqaWIxVUo1aXRWbGc1bnVqWFRZTlA2bGQzeVJQdmNJYTJlOURk?=
+ =?utf-8?B?N1FVcmVQVTVsQnJFNHZocDJ2RE5BTUwyQS81Smk1WThPNnV3c0ZUa1hHemNs?=
+ =?utf-8?B?T1VUOXREdHI1ZGxvYmZDUUdWSmVFbEFGM2FaaDVxa3JQMjMyUnI0T1UzS21U?=
+ =?utf-8?B?RUpnK3pnd3dUUUthcnF6cUdqb1pHQjN2TlhZMUplQllIMVM3Tzd1YmovYnFP?=
+ =?utf-8?B?Uitjd1pVY05QcGY4SFpYcmdpR21YMXZvdXkxdWppb1F4SXBnNFJhNUk0TEVy?=
+ =?utf-8?B?a1pSY1Rwb2tTaTYwRE9ZTmM4RWpHcGxiY2M3bWw3a3Y1c2Y3bEg3eGpyU0Jl?=
+ =?utf-8?B?OU14V2hGbTd1OHppdXRsbFVDeW1QSlhhbmFEK0VjUFpmZmRRNEFYMk5kazFo?=
+ =?utf-8?B?WWhVSEtkaDZrOG9VQUdDbEg4NnBkZnp2MFVyWXVPSXJ4VWxDRFlZSnhDMjRD?=
+ =?utf-8?B?RnFlc05MZkZ4UkFHZW5HeHMvc0J5cEJvb3dKZWdhY1krNFAvR0hkTjBGZ283?=
+ =?utf-8?B?cDI2YnRRbGQ3SGR5KzBmZWVpMXVyc3MyVG5mZFpjZFBVS1RvSDl2VDNBZEdN?=
+ =?utf-8?B?bzdTejEyMHNYUGQzK0c0aDlYdGhmOHNydDAxQVBZR3ZVQzlxQ1hzSWZ0TEJ4?=
+ =?utf-8?Q?KciAqHMw6HXD7dpA5H?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4729cdf4-27d7-4109-463e-08df49c3885b
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB999228.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 00:40:26.7506
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: quX57Cg8G4/pKplcHY3tWfRPMntBt2dXU+bAcHzb2yLsdgNzXpOMzVP7FISiD/a7w+ETWQnBssuG7TURNfebaw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB9069
 
-On Tue, Nov 24, 2026 at 12:48:34AM +0800, Nguyen Dinh Phi wrote:
-> On 11/18/2026 2:33 PM, Michael S. Tsirkin wrote:
-> > On Wed, Nov 18, 2026 at 12:48:43AM +0800, Nguyen Dinh Phi wrote:
-> >> vhost_vsock.guest_cid is written by vhost_vsock_set_cid() under
-> >> vhost_vsock_mutex, but It is also read without that mutex in
-> >> vhost_vsock_handle_tx_kick(), and vhost_vsock_get().
-> >>
-> >> KCSAN will report data-race if we issue VHOST_VSOCK_SET_GUEST_CID
-> >> ioctl while the device has TX traffic. For example:
-> >>
-> >>  write to 0xffff88810f1596ac of 4 bytes by task 7914 on cpu 1:
-> >>    vhost_vsock_dev_ioctl+0x25f/0x720
-> >>    __x64_sys_ioctl+0xc2/0x110
-> >>    x64_sys_call+0x299/0x20a0
-> >>    do_syscall_64+0xc9/0x510
-> >>    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> >>
-> >>   read to 0xffff88810f1596ac of 4 bytes by task 7910 on cpu 3:
-> >>    vhost_vsock_handle_tx_kick+0x41b/0x740
-> >>    vhost_run_work_list+0x97/0xc0
-> >>    vhost_task_fn+0x98/0x1f0
-> >>    ret_from_fork+0x2e2/0x3c0
-> >>    ret_from_fork_asm+0x1a/0x30
-> >>
-> >>   value changed: 0x0000004d -> 0x00000032
-> >>
-> >> Both readers load the CID once and works correctly with either the
-> >> old or the new value.
-> >>
-> >> Mark the store with WRITE_ONCE() and the two lockless loads with
-> >> READ_ONCE(), so KCSAN knows the race is intentional.
-> > 
-> > You make it sounds like it is just KCSAN false positive.
-> > Is it?
-> > if yes, this should be data_race. If no, document why.
-> >
+On 24/11/26 02:29, Jason Gunthorpe wrote:
+> On Mon, Nov 23, 2026 at 02:03:29PM +0530, Aneesh Kumar K.V (Arm) wrote:
+>> Register the built-in TSM class with subsys_initcall() so it exists
+>> before a platform TSM driver probes, independently of object link order.
+>> CONFIG_TSM is boolean; remove the unused module exit path.
 > 
-> This is an actual data race, not a false positive. The value of guest_cid
-> can change while the TX worker or lookup path reads it with plain accesses.
-> Because each check loads the CID once and either value is valid, the result
-> is equivalent to the read running just before or just after the ioctl.
-> Even so, plain concurrent accesses are a data race under the Linux kernel
-> memory model, and using READ_ONCE()/WRITE_ONCE() also prevents
-> compiler re-fetching or tearing rather than just silencing KCSAN.
+> Why isn't it modular? This is going to force alot of stuff to be
+> non-modular.
+
+The TSM core registers a class. The platform TSM drivers register TSM devices of that class. If a platform module loads before the TSM code - the class is not registered yet so it fails. We could either teach modprobe or have dependencies in the module or do this:
+
+https://github.com/AMDESE/linux-kvm/commit/9eaa9c95824e69d0f852c20d7aa33a8ccb5af2ce
+
+or just make it built-in which it's been for ages. I did try making it a module when I started but lost that battle. It did not do much but I guess I'll revisit this because of ctlv. Thanks,
+
+
+
 > 
-> >>
-> >> Fixes: 433fc58e6bf2 ("VSOCK: Introduce vhost_vsock.ko")
-> >> Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
-> >> ---
-> >>  drivers/vhost/vsock.c | 6 +++---
-> >>  1 file changed, 3 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-> >> index 88a310390eb0..f26c59013075 100644
-> >> --- a/drivers/vhost/vsock.c
-> >> +++ b/drivers/vhost/vsock.c
-> >> @@ -78,7 +78,7 @@ static struct vhost_vsock *vhost_vsock_get(u32 guest_cid, struct net *net)
-> >>  
-> >>  	hash_for_each_possible_rcu(vhost_vsock_hash, vsock, hash, guest_cid,
-> >>  				   lockdep_is_held(&vhost_vsock_mutex)) {
-> >> -		u32 other_cid = vsock->guest_cid;
-> >> +		u32 other_cid = READ_ONCE(vsock->guest_cid);
-> >>  
-> >>  		/* Skip instances that have no CID yet */
-> >>  		if (other_cid == 0)
-> >> @@ -572,7 +572,7 @@ static void vhost_vsock_handle_tx_kick(struct vhost_work *work)
-> >>  		hdr = virtio_vsock_hdr(skb);
-> >>  
-> >>  		/* Only accept correctly addressed packets */
-> >> -		if (le64_to_cpu(hdr->src_cid) == vsock->guest_cid &&
-> >> +		if (le64_to_cpu(hdr->src_cid) == READ_ONCE(vsock->guest_cid) &&
-> >>  		    le64_to_cpu(hdr->dst_cid) ==
-> >>  		    vhost_transport_get_local_cid())
-> >>  			virtio_transport_recv_pkt(&vhost_transport, skb,
-> > 
-> > Will prevent compiler from hoisting the reads out of the loops.
-> > Does it matter?
-> > 
-> 
-> Not much in practice: because the loop body calls non-inline functions, the
-> field needs to be reloaded across calls anyway (and in `vhost_vsock_get()`,
-> the `vsock` pointer changes on every iteration). I checked with gcc 16.2 and
-> clang 21, and the compiler does not hoist the load out of the loop even
-> without the patch.
+> Jason
 
-I do appreciate actually looking at compiler output, but I would advise
-taking it with a grain of salt. My now-very-rusty reading of
-memory-barriers.txt is that we do not expect memory ordering
-optimizations to be consistent over time.
+-- 
+Alexey
 
-I think the code looks okay. I do second Michael's ask for clarifying
-its not just a false positive, as that was initial reading as well.
-
-Best,
-Bobby
