@@ -1,122 +1,50 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.46.61
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795528975;
-	b=pY7NsZnTnSCixdwEyfv+/44qslfCmoTX9/M8TgJLjsmQEGJqHtR3Te2NQ4ySwVkAHzUc
-	 bb8isU1q4zfwFRMd6VN60nIP//ltZY+tyXV0UyDS2jjEBZnrA7/i7rvh0MR8As9oE4jh0
-	 7RgOWSDiKNSQh6LOXelwkchckenIosEELza6lqeNzdog7rW+XNrWw+vroO4PfPR9QBUbB
-	 x/Nrgl+VV/4JYPLb4ZmZOshZcvXkMxErSZuwy0VCqBV8Y5J8wVMLGu2ECGeFsHf2PrbMp
-	 IUUl5eYPfUb4d66mut5muqmdxNbCLOsSr+L5bbe4INFGOi8ChEJ8qiFj7tqRkqdm7Ew==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795528975;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Originating-IP:X-ClientProxiedBy:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=jczDwmFJMXY8TcGYl+oMfA1gSyW0uQZakUGP9vD8mhE=;
-	b=BA8HTwl2G5ePk3DM16apNBVd7UR1MNCTYTypHtmcr3YjS5h716ooG6jmdOe7Wf0mkZQz
-	 ZErBONq64fRGueY4yMOUDaAQ5gIaAgcjH9kuWxApNtopu5pB6S0c51EgR0r+QNkQ4iBpJ
-	 IkYz3+HJcG/GXvJGshd2dUpKHf8w0N9ernECSyXi3rngeIgGfaUbC5YEgdrgOQupuavIL
-	 vdUJTkUzQlimiQWkT80cxugL/WoHxpPrNAcU3dizeJOgMFEhk54sE9o+N68KXbMT+iROC
-	 j1Tl5iUsU7LCQ+xI6vjktp8i6570edpCWKxwLt0rTPTFNpyB8PVNBT/RV4V6lpMAVfQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gKm6NOxa;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.46.61
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010061.outbound.protection.outlook.com [52.101.46.61])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795529001;
+	b=KjIsdqHtLKBVUHtIMlodUJf5QhJ+6FsyghcOz6j5s9sRk9sxozItb7hAGlx9eR2u+ur1
+	 QvcZ3JzKB2YmOvM1q8sG8yYi4LTIodKAxZbnVvbX6zpEJ4qIYxOLTR+c+Jxed3+RI8zoH
+	 rbLECathytVGxGH1cDl+187UOAcPBcs7MkaUij/JP4C4CyF6Li07jXYFiI/Gw2zwNsWDF
+	 DtlUAIlHxOq6wOEQvc0xviZkuM0YcbP2oQiyILdZqwfP+UggwB3jjjsL9IvGcw/5TU9YA
+	 nQYZz3PRMEjMr8yMIU2P7izbW9kSeooc32ZBt9oiyiAD80IwTMFCJFeCP0UehKmqhWg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795529001;
+	h=Received:DKIM-Signature:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=Pcp6KuvRcMiXfM74bIVPa/vEkoJOU8lTqnsRQrOb5o4=;
+	b=v8qzabu8kzB+0i3zrTUauqt7incO0C89B5xYYbzjRfxIvXVtlZ4zBDCE0ku7HkWTQjoa
+	 2fFE547UxWlh809/ArnczO3cfWb8TyxbS+0k2CDqpHGIMFFA6U4MZ0g0bp5zydTVOG5LY
+	 J4lPOfFxMKYprX/rLkNuk8aDRnXr2aQOwQJ2aGFm5bnWTYAtNBsBBNxt1mkkbu6CSP8ob
+	 v4K/71DJkE7bf5Cp7tdsA6UZ94fHhTINBOYW2Jr2edYoHGIUHt/GtvjetvOgeuwufL+h4
+	 f9jLvpQ+uwn5jwA2El4StWQDZrYN2WjWsbn+ZvGam/NjB9UMKyyi6kt3NXh2oF7vJHQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m5RF+lzm;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C14606A335;
-	Tue, 24 Nov 2026 14:02:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D2C14606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD67606A321;
+	Tue, 24 Nov 2026 14:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=gKm6NOxa
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XPfQ6w7vtYErid0PUDm06k2iLplpUe5srNMPnXThiH5+JTzntfxjIX9TQACOenvxX8/Rpitu8nrhqWcUEA82tlJHT5vFA/SpERBbDifI6lUdLfdfM9LjHarYozKO61WRkJxactMcx1y6IEJK6Ag30AoRxCl5GdDZ2CRX1RSe9DbcoQmxeQvg15tktYqtmMktg6aqwiB8BuAvWa3UlDQkTGAxglzYcLcEYB9AnTRYPPgGfXbeGsrfRVIfuulVINIx/qLo4cfrknU0QZfiv54hisYgWuACLluEl9hBAgE5gC85BqBnKWfy1Qa3SMbDLQ0cjbzMDjYw16BT+NtdbSBwTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jczDwmFJMXY8TcGYl+oMfA1gSyW0uQZakUGP9vD8mhE=;
- b=IWkOKhrn0ojYy0X54n1Po3pvX8baIEjabIG4TffvZX5zZY59NSU3oktM1qvPKChc+tLzRQbNXSCY00lB3TUGm+LPBQ+/Zhsk+JQANvOAZsCmjQVPa0/OK1zfYmNSa2/5aV4L7CYJTt9m82RheCiD4ag3j6YCYvRaKwTVY3hn8eXREbjAPWWVjMekP+qxtD6vgpDFTJ4RR3a3UJgoIRm2Cgb/nJkMTcJAW5scx02WFKVjxjXBq3tqrre9GPj+19Yl9n1tZFEDy4bVXiJX7NotGChHshU8etrsFlYoLG6DTzNcngLTruFZBeq30x0cNG6oue4ihKsdHV2RIj9mceUaqA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jczDwmFJMXY8TcGYl+oMfA1gSyW0uQZakUGP9vD8mhE=;
- b=gKm6NOxadfkHWkbVWkcjwNMc4QCTAJnW/BixtX1cVnr7uDoxWXgSLvuRPWtGMOVvMVROyd3fM3iJC31VVVr0WwxVu87MXXgak+bg7SCGJPw5Pj6oWNrmxLqp0iOME/VZsRXnxGVZ3+ZXxrk/gVWD8HVxJ+ijhp2mT6GqtmvIJrdA4YieWwtqJx2ivZwj4botUpQ+GdPW0hHexvsDmSfLd/gd0baWSJMGS1pQbn8uckvhDBKCykl4w6rZN3Pts2AVUSevtKYNdGzCsNLUp0db6n+wsDhiSPs6PeiNiLW9t3zE6xQzWAiI3s/Fd3MszfoDVykEdHCRJbn/FNxy7GdCRw==
-Received: from DS7PR05CA0022.namprd05.prod.outlook.com (2603:10b6:5:3b9::27)
- by SJ1PR12MB6363.namprd12.prod.outlook.com (2603:10b6:a03:453::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.5; Tue, 24 Nov
- 2026 14:02:47 +0000
-Received: from CH2PEPF000166BF.namprd04.prod.outlook.com
- (2603:10b6:5:3b9:cafe::7a) by DS7PR05CA0022.outlook.office365.com
- (2603:10b6:5:3b9::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.662.6 via Frontend Transport; Tue, 24
- Nov 2026 14:02:47 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CH2PEPF000166BF.mail.protection.outlook.com (10.167.252.9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.662.3 via Frontend Transport; Tue, 24 Nov 2026 14:02:47 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Tue, 24 Nov
- 2026 06:02:21 -0800
-Received: from kalok-SPC741D16QM3.nvidia.com (10.126.231.37) by
- rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.57; Tue, 24 Nov 2026 06:02:08 -0800
-From: Alok Kumar <alkumar@nvidia.com>
-To: <dakr@kernel.org>, <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
-	<rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
-	<linux-pci@vger.kernel.org>
-CC: <alex@shazbot.org>, <jgg@nvidia.com>, <yishaih@nvidia.com>,
-	<skolothumtho@nvidia.com>, <kevin.tian@intel.com>, <airlied@gmail.com>,
-	<simona@ffwll.ch>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
-	<boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
-	<lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
-	<tmgross@umich.edu>, <markus.probst@posteo.de>, <jhubbard@nvidia.com>,
-	<apopple@nvidia.com>, <joelagnelf@nvidia.com>, <ecourtney@nvidia.com>,
-	<cjia@nvidia.com>, <smitra@nvidia.com>, <kjaju@nvidia.com>,
-	<alkumar@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
-	<kwankhede@nvidia.com>, <targupta@nvidia.com>,
-	<linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
-	<boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
-	<work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
-	<kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
-	<peter@colberg.org>, <xinmengs@nvidia.com>
-Subject: [PATCH v5 10/35] gpu: nova-core: mm: retain BAR1 reservations after unmap failure
-Date: Tue, 24 Nov 2026 19:29:06 +0530
-Message-ID: <20261124135937.18583-11-alkumar@nvidia.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261124135937.18583-1-alkumar@nvidia.com>
-References: <20261124135937.18583-1-alkumar@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m5RF+lzm
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9741F000CF;
+	Tue, 24 Nov 2026 14:03:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795529001;
+	bh=Pcp6KuvRcMiXfM74bIVPa/vEkoJOU8lTqnsRQrOb5o4=;
+	h=From:Subject:Date:To:Cc;
+	b=m5RF+lzmoV0KlfOio0Dl2o69dI4rgtq9fEDM529z18h4bvXVByTYYPIrO3nfq66Al
+	 S7b0xt4Isk2RZvdXlVCnJO2H9ApRMebR+cuuc1Mh6rszX9Zhla035nI0F5C6x/MHLD
+	 XeitIh3tzBgM7PxhrmmkTyrk505660hD/3k2opBfr2SrNPC1Zqxuz4rugypmvl0YHv
+	 L7i+BrNOy0yloakdV4vIbbD9MhDsYIvWUGxQp/CF8ICGFRPZrqEcGhx7b//ugJyzLI
+	 jvC7NpeW/ds4v/oSUDD3cFClNVL2B4axAeKCDrEKLPDhequ6MiNoo2JytLwjxnVOOr
+	 e+11WXxZ6coOA==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: [PATCH v2 00/13] mm: convert further simple mmap hooks to
+ mmap_prepare
+Date: Tue, 24 Nov 2026 14:02:43 +0000
+Message-Id: <20261124-late-2026-mmap_prepare-v2-0-0b0d99d655f9@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -126,191 +54,132 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF000166BF:EE_|SJ1PR12MB6363:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8f97202f-be76-439c-dc63-08df4a339ea1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|23010399003|82310400026|1800799024|376014|7416014|6133799003|22082099003|18002099003|11063799006|56012099006|261026121527099003|261026140227099003|261028144727099003|261021123027099003|261021121427099003|261022113327099003|261022075727099003|261022105027099003|261021135927099003|261009223027099003|261102123227099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	AMPDF5kdCiUQ5sWdcVonGYOnoOAGH/tK/C1+DRZoHXZvhXVdWe15JS8ApsXgRl9YsvwSUvvN3PJ/fV+NjokiRkm292eqQ6NETMNtW1NOR43t2DQiVZameLNwfqMTocHaWzcpwb0jXv3zII9cPqhDm6gIZpAwfiPTh3cgajokuGVihF1HoeWNor0sLhTdVRAhI8djjsQK2N6XCNr9n5EVU97c0pgwL01xsNlJIhnfptU04Xp8r0cFn1ZnkZSu/wl3R7ppQKqYqKcbAyP1jST3BYU5WCpK9v4kFrAeq+SgVJaAS/PK48o/McxjCKxmeUcZFcgMGPvg6oSLL/EWh4xzz2k0fJ5dMth2iSGCcYu+noXAfjeUzv3x2EP7ScUhSIIHnOejqFHmPOahuX0c1r/6POYFcuVpVt+Kavk/P/6RBRmkWki7Lx0fKMmWp99gb8YG6AeOmJ+ErZfqVAcGFc6pFF9AJF75rKVhb592WhHEYa8cVM9k+rdEH3gFg22BSPb5a9uMTAGDGbcSZu4ywnVsAReBXpIkl3qR0tca19E8+dhDyoKmM9Xv2pgrdQfrEPRezBG64Xf9g0xKddbp+1+hylWK3kncTIF5yqB0redfVUX+C43HQqnF49t9jRGs+b19vuN3ANffiOd3Od1DIYN7Uc0DMqO+HmxP528qLLG46FBQE/Moz7nXogGi1KnCF9nAQKNAMJbuT/E8LKS0ZOq5Rw==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(82310400026)(1800799024)(376014)(7416014)(6133799003)(22082099003)(18002099003)(11063799006)(56012099006)(261026121527099003)(261026140227099003)(261028144727099003)(261021123027099003)(261021121427099003)(261022113327099003)(261022075727099003)(261022105027099003)(261021135927099003)(261009223027099003)(261102123227099003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	44BQquIs0v45pJUlMUqESsVg36/gtlPXGbwHWcOAC4CQ0P8K1mFRUOgkpw4tnXhkqOh9hU+0TJH//WcLfOUGRbMLBQKrQjzmfmp3jI5fWjbIYifqL3kCugNWTVj04Ffd6bThG+09vLAEt4nHtnZhKUpxF/Df61nvy1DhIlDxnOESnNtlYTarobUeKGCxoNkgAHmHmyfrmc37pFEo52MNynslesVUhC9wftqYH2d58FHbGDG50vYnvgZR2ftLyT8FuR5ULTERKako9WRSf/eYq4VMsj0Q6fQq7i4H1/RaIs9dmT3AhOtNCsh5iDTHYhchqWRldSqqWuUKX7tfaxcuvPYpWVNnQj/S7tkb/mzT50H9rGc26EcuiZ5n/KzBRCiBOk1PTZvn30aMpJb7gUXeu8jnQ4MLn+2giQaITbku0L5Tclf8PdlLeOTPreAHyVte
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 14:02:47.3991
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8f97202f-be76-439c-dc63-08df4a339ea1
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF000166BF.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6363
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAA/3XNywqDQAyF4VcZsjZlMkUrrvoeRUrUqEO9DBmRF
+ vHdi0KXXZ5/8Z0NoqiXCIXZQGX10c8TFMYlBuqep07QN1AYcNZlRJZw4EXwWDiOHJ5BJbAKWlf
+ nt8ZdyZJAYiCotP59wo8yMdD7uMz6OX9WOuqPTP+RK6HFOs2Ym7biKuf7S3SS4TJrB+W+71+eu
+ Pr9vQAAAA==
+X-Change-ID: 20261101-late-2026-mmap_prepare-02c87d23101e
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Juergen Gross <jgross@suse.com>, 
+ Stefano Stabellini <sstabellini@kernel.org>, 
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
+ Shrikanth Hegde <sshegde@linux.ibm.com>, 
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+ Dexuan Cui <decui@microsoft.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Jason Wang <jasowangio@gmail.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, 
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.com>, 
+ Paul Moore <paul@paul-moore.com>, 
+ Stephen Smalley <stephen.smalley.work@gmail.com>, 
+ =?utf-8?q?Ondrej_Mosn=C3=A1=C4=8Dek?= <omosnacek@gmail.com>, 
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+ Ryan Chen <ryan_chen@aspeedtech.com>, 
+ Billy Tsai <billy_tsai@aspeedtech.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
+ Jens Wiklander <jenswi@kernel.org>, Sumit Garg <sumit.garg@kernel.org>, 
+ Scott Branden <scott.branden@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ David Woodhouse <dwmw2@infradead.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: ljs@kernel.org, xen-devel@lists.xenproject.org, 
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+ virtualization@lists.linux.dev, linux-sgx@vger.kernel.org, 
+ selinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-aspeed@lists.ozlabs.org, linux-arm-msm@vger.kernel.org, 
+ op-tee@lists.trustedfirmware.org, netdev@vger.kernel.org, 
+ linux-mm@kvack.org, Kameron Carr <kameroncarr@linux.microsoft.com>, 
+ Michael Kelley <mhklinux@outlook.com>, Jan Kara <jack@suse.cz>, 
+ Abel Vesa <abel.vesa@oss.qualcomm.com>, 
+ Jens Wiklander <jens.wiklander@oss.qualcomm.com>, 
+ David Woodhouse <dwmw@amazon.co.uk>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2820; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=cNcQh1oes+NuXX/SLhNhorMmsomyqOJdE2nbt8XExvk=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJZZ4rIHtHcwB4V8Hin/yxTxk7PB9MvbI3XXNtvsWVPh
+ GZ0tPrsjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAEykXpmR4T6L/n7RH25zgz5/
+ uKz5oG9xyJmgPXZrlS4HfLedtXeZAz8jw9ZDvbcNpRcv4J5c+V/n8+cDm1NbX87R834vLWG3KFv
+ 2OzMA
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 
-From: Zhi Wang <zhiw@nvidia.com>
+Continue the conversion of users of the deprecated f_op->mmap callback to
+f_op->mmap_prepare. Keep things gentle this cycle by targeting simple
+cases.
 
-Vmm::unmap_pages currently returns a virtual address range to its pool
-even when PTE invalidation or its TLB flush fails. Hardware can still
-use that mapping, so reusing the range can alias a live mapping.
+No functional change intended.
 
-Borrow MappedRange during unmap and release its VA reservation only
-after invalidation succeeds. Disarm its drop guard at that point and
-reject a second unmap of a range whose guard is already disarmed.
+Build tested on x86-64 (allmodconfig, each patch individually), i386,
+arm64 and ppc64le.
 
-Keep BarUserAccess's mapped state until unmap succeeds, and update its
-callers to pass a borrowed range. A failed unmap leaves the VA reserved;
-callers must retain the backing storage while hardware may still access
-it.
+Andrew - could you take this through your tree as it's a kernel-wide
+change?  Thanks!
 
-Extend the MM self-test to unmap an old range after its virtual address
-has been reused. Require the stale token to fail without invalidating
-the new mapping.
-
-Signed-off-by: Zhi Wang <zhiw@nvidia.com>
-Signed-off-by: Alok Kumar <alkumar@nvidia.com>
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- drivers/gpu/nova-core/mm/bar_user.rs | 35 +++++++++++++++++++---------
- drivers/gpu/nova-core/mm/vmm.rs      | 18 +++++++-------
- 2 files changed, 34 insertions(+), 19 deletions(-)
+v2:
+* Added tags, thanks everybody!
+* cc'd linux-mm, Andrew.
+* Dropped the vduse patch (was 4/14), as commit bb2e6f166547 ("vduse: fix
+  VA/PA confusion in the coherent page fault path") completely broke the
+  driver and was merged without testing as a hotfix. Conversion can wait
+  for that to get fixed.
 
-diff --git a/drivers/gpu/nova-core/mm/bar_user.rs b/drivers/gpu/nova-core/mm/bar_user.rs
-index f82372ccab6e..5a8770782d14 100644
---- a/drivers/gpu/nova-core/mm/bar_user.rs
-+++ b/drivers/gpu/nova-core/mm/bar_user.rs
-@@ -87,8 +87,7 @@ pub(crate) fn map(
- /// Borrows the [`BarUser`] managing the mapping for the lifetime of the access object.
- pub(crate) struct BarUserAccess<'a> {
-     bar_user: &'a BarUser<'a>,
--    /// [`BarUserAccess::release`] [`Option::take`]s this; `Some` at
--    /// drop time means `release()` was never called.
-+    /// Cleared only after PTE invalidation and its TLB flush succeed.
-     mapped: Option<MappedRange>,
- }
- 
-@@ -96,16 +95,22 @@ pub(crate) struct BarUserAccess<'a> {
- impl BarUserAccess<'_> {
-     /// Tear down the BAR1 mapping.
-     pub(crate) fn release(mut self, mm: &mut GpuMm<'_>) -> Result {
--        let mapped = self.mapped.take().ok_or(EINVAL)?;
-+        self.unmap(mm)
-+    }
-+
-+    fn unmap(&mut self, mm: &mut GpuMm<'_>) -> Result {
-+        let Some(mapped) = self.mapped.as_ref() else {
-+            return Ok(());
-+        };
-         let mut vmm = self.bar_user.vmm.lock();
-         vmm.unmap_pages(mm, mapped)?;
-+        self.mapped = None;
-         Ok(())
-     }
- 
-     /// Returns the active mapping.
-     fn mapped(&self) -> &MappedRange {
--        // `mapped` is only `None` after `take()` in `release`; hence unwrap()
--        // cannot panic here.
-+        // `release` consumes the access, so no accessor can run after successful release.
-         self.mapped.as_ref().unwrap()
-     }
- 
-@@ -158,7 +163,7 @@ impl Drop for BarUserAccess<'_> {
-     fn drop(&mut self) {
-         if self.mapped.is_some() {
-             kernel::pr_warn!(
--                "BarUserAccess dropped without calling release(). BarUser address space will leak.\n"
-+                "BarUserAccess dropped with a live mapping; BAR1 VA remains reserved.\n"
-             );
-         }
-         // The inner `MappedRange`'s own `MustUnmapGuard` will also fire,
-@@ -259,19 +264,27 @@ pub(crate) fn run_self_test(
-     };
- 
-     // Cleanup - invalidate PTE.
--    vmm.unmap_pages(mm, mapped)?;
-+    vmm.unmap_pages(mm, &mapped)?;
- 
-     // Test 2: Two-phase prepare/execute API.
-     let prepared = vmm.prepare_map(mm, 1, None)?;
-     let mapped2 = vmm.execute_map(mm, prepared, &[test_pfn], true)?;
-+    // An old token must not invalidate a new mapping that reused its address.
-+    let repeated_unmap = vmm.unmap_pages(mm, &mapped);
-     let readback = vmm.read_mapping(mm, mapped2.vfn_start)?;
--    let test2_passed = if readback == Some(test_pfn) {
-+    let test2_passed = if mapped2.vfn_start == test_vfn
-+        && repeated_unmap == Err(EINVAL)
-+        && readback == Some(test_pfn)
-+    {
-         true
-     } else {
--        dev_err!(dev, "MM: Test 2 FAILED - Two-phase map readback mismatch\n");
-+        dev_err!(
-+            dev,
-+            "MM: Test 2 FAILED - Remapped page or stale-token rejection mismatch\n"
-+        );
-         false
-     };
--    vmm.unmap_pages(mm, mapped2)?;
-+    vmm.unmap_pages(mm, &mapped2)?;
- 
-     // Test 3: Range-constrained allocation with a hole — exercises block.size()-driven
-     // BAR1 mapping. A 4K hole is punched at base+16K, then a single 32K allocation
-@@ -363,7 +376,7 @@ pub(crate) fn run_self_test(
-             }
-         }
- 
--        vmm.unmap_pages(mm, mapped)?;
-+        vmm.unmap_pages(mm, &mapped)?;
-     }
- 
-     // Verify aggregate: all returned block sizes must sum to allocation size.
-diff --git a/drivers/gpu/nova-core/mm/vmm.rs b/drivers/gpu/nova-core/mm/vmm.rs
-index 51b500a27233..49b1e5db1498 100644
---- a/drivers/gpu/nova-core/mm/vmm.rs
-+++ b/drivers/gpu/nova-core/mm/vmm.rs
-@@ -324,23 +324,25 @@ pub(crate) fn map_pages(
-     }
- 
-     /// Unmap all pages in a [`MappedRange`] with a single TLB flush.
--    pub(crate) fn unmap_pages(&mut self, mm: &mut GpuMm<'_>, range: MappedRange) -> Result {
--        let result = self
--            .pt_map
--            .invalidate_ptes(mm, range.vfn_start, range.num_pages);
-+    ///
-+    /// A failed invalidation retains the VA reservation. The caller must keep
-+    /// the mapped storage alive while hardware may still access it.
-+    pub(crate) fn unmap_pages(&mut self, mm: &mut GpuMm<'_>, range: &MappedRange) -> Result {
-+        if !range._drop_guard.armed.get() {
-+            return Err(EINVAL);
-+        }
-+        self.pt_map
-+            .invalidate_ptes(mm, range.vfn_start, range.num_pages)?;
- 
-         // TODO: Internal page table pages (PDE, PTE pages) are still kept around.
-         // This is by design as repeated maps/unmaps will be fast. As a future TODO,
-         // we can add a reclaimer here to reclaim if VRAM is short. For now, the PT
-         // pages are dropped once the `Vmm` is dropped.
- 
--        // Free the VA range regardless of PTE invalidation success, so that the VA
--        // range is recovered even on failure (PTEs may be stale, but that is better
--        // than leaking both PTEs and VA range).
-         self.free_vfn(range.vfn_start);
- 
-         // Unmap complete, safe to drop `MappedRange`.
-         range._drop_guard.disarm();
--        result
-+        Ok(())
-     }
- }
+v1:
+https://lore.kernel.org/r/20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org
+
+---
+Lorenzo Stoakes (ARM) (13):
+      xen/privcmd: convert mmap hook to mmap_prepare
+      KVM: PPC: Book3S: convert spapr TCE mmap hook to mmap_prepare
+      mshv_vtl: convert mmap hooks to mmap_prepare
+      x86/sgx: convert vepc mmap hook to mmap_prepare
+      udf: convert mmap hook to mmap_prepare
+      selinuxfs: convert mmap hooks to mmap_prepare
+      xen: convert xenstore interface mmap hooks to mmap_prepare
+      soc: aspeed: convert LPC and P2A control mmap hooks to mmap_prepare
+      soc: qcom: rmtfs_mem: convert mmap hook to mmap_prepare
+      tee: convert shm mmap hook to mmap_prepare
+      misc: bcm-vk: convert mmap hook to mmap_prepare
+      ptp: vmclock: convert mmap hook to mmap_prepare
+      vhost-vdpa: convert mmap hook to mmap_prepare
+
+ arch/powerpc/kvm/book3s_64_vio.c        |  6 +++---
+ arch/x86/kernel/cpu/sgx/virt.c          | 15 ++++++++-------
+ drivers/hv/mshv_vtl_main.c              | 14 +++++++-------
+ drivers/misc/bcm-vk/bcm_vk_dev.c        | 20 ++++++++++----------
+ drivers/ptp/ptp_vmclock.c               | 19 +++++++++----------
+ drivers/soc/aspeed/aspeed-lpc-ctrl.c    | 20 +++++++++-----------
+ drivers/soc/aspeed/aspeed-p2a-ctrl.c    | 22 ++++++++--------------
+ drivers/soc/qcom/rmtfs_mem.c            | 22 ++++++++++------------
+ drivers/tee/tee_shm.c                   | 14 +++++++-------
+ drivers/vhost/vdpa.c                    | 23 ++++++++++++-----------
+ drivers/xen/privcmd.c                   | 11 +++++------
+ drivers/xen/xenbus/xenbus_dev_backend.c | 14 ++++++--------
+ drivers/xen/xenfs/xenstored.c           | 14 ++++++--------
+ fs/udf/file.c                           |  8 ++++----
+ security/selinux/selinuxfs.c            | 24 +++++++++++-------------
+ 15 files changed, 115 insertions(+), 131 deletions(-)
+---
+base-commit: 5bd93e4b0b357e9d0a13199887aacbf04d1ce216
+change-id: 20261101-late-2026-mmap_prepare-02c87d23101e
+
+Cheers,
 -- 
-2.53.0
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
