@@ -1,145 +1,144 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.135.223.131
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795540835;
-	b=vKc4rtl9znFj6j+beCcEyAkCdIjOb0mJCWD4y2tP1JZ2p5x3zz4eu4u0h0rZSruMN6em
-	 kUgs1rp/x7BlciJx8b2Crq5k3PBSseYqCwjEyPKnLA2V6jTap1vULXA+foQ/JWDXo+8X3
-	 M+8BMvnMUgMN7paDVkI6UUrGhHxCeapXO6HIxfYSiO8EGtUiQT5kdUCdrbmiGRJ+5BaCd
-	 NOnA/66cmOgGaL4MBvdA16h71Y35j7i/3SPiZPTnuWJz6msxZ/emDlq0pZm/eKdXSr421
-	 FH/THvSUX1sW7ta3HaxcUxVnL4ievHC4cNC+PI0KbsKqis8vV51AyNU8AhQ4v++VXzQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795540835;
-	h=DMARC-Filter:Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Spam-Flag:X-Spam-Level:X-Spamd-Result:X-Spam-Score;
-	bh=tN3vYaMnV9NupJt9uj0DyVm98fT46NJCnU18bNrr4wY=;
-	b=TJk+dVTYzEizvF1oO7Yg9lc3n5tdchogR/UVfRa3atBsQyQP3HQ8BSB7YCRq/LOYG53X
-	 jlwF9tCbaGjVmg66izPCwFMJPHSbbYCc99ZCMK8Q3NbMmdkshpVa0fL8QQwMDGf0Ufhlk
-	 DBmsYx8+4zKjE6mxKCf0ylnJnrcYyzrHFIm5gJB9ElX/+XV8kybnX+fCR6Fqp3zBTCRXq
-	 i70vU2/ZBRNBBTofNFvtslIgx+2j5IvBnokIOD8dx52Bl+3P8Jrr93qnK/8Jxd5yXkmOB
-	 ozOsu479aw5rMsNbWenSyxjM7xoAjXwB57MLUfchnYomQjTgjmtnOFwwxgiQojoYI4w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=suse.cz;
-	spf=pass smtp.mailfrom=suse.cz;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=icpbhZHb;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=lVvQ+wMH;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=icpbhZHb;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=lVvQ+wMH;
-	arc=none smtp.remote-ip=195.135.223.131
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=192.198.163.17
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795541091;
+	b=uPmhCIUiC9VD3l6q/EAtaTBOMpQXw+LZRx6im5R8ETHw3fnsO6ukcKDir688EWMNy0PU
+	 +ZFI4ptmO0Y/DbPOwf/cSYmpW40dkxL4z2whi8Z+s9Y2wkb6OEX8gs9unFCFfNoRB6Cmb
+	 hFbM4GLEghGKadELuF1sPYyAFA4z+twLf/Ao4yGOAqiB5XtvwVeY2DSTv19cHuIQ3T2MO
+	 BT2GXr17pSFpxUL8HAw5R+h4+YWlP7hoOl1MlKqP/OTLph8NQnFHcC7yPz6w4GXyGDms/
+	 5r0+pAPDxLLXZeSE/r0gUvIppoeiDJUx2uiRKNvrgYziNk75Bq1gU2mCCeNDiVgtmSQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795541091;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Received:
+	 Received:DKIM-Signature:Received:Received:Message-ID:Date:User-Agent:
+	 Subject:Content-Language:To:CC:References:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	bh=2KcfSPoMdWB+3/t33F4urwRWiqXlhucbLtGBeb1FQCg=;
+	b=IRGnAaRqq0Q8aHVYTI9LA2lKSA3tjRS5qVpiT6FZ/AtzocIeU7K0/rPO2itrexdFYzNe
+	 7qfWqjM7o3aN/GkR0onKOQ+aqFKpy/Um6tkIOIM50OdAc6I8DVYyYGV9DDFD1evee9zq8
+	 TsOUE/8xSzG9MXHSkS34UUB5cboZAqm0V1lX85zANm2gCUBssof8dC6K9gLwSJJqJ25of
+	 XYTdEWcpRjk2NRqg/be296J2y2krLgIpo815f8BQhYeNofmu2mPWGj8Jf+/lvdlY7smql
+	 cl4gdU2KxlChl6JW1dHUax7C8E0MqRegwd6qdyV22jKXvYHb51MG797x9KZKYyl3W1A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kajdRNHF;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=AjIH7ZAy;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=192.198.163.17
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23338606A323;
-	Tue, 24 Nov 2026 17:20:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 23338606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A0B606A31E;
+	Tue, 24 Nov 2026 17:24:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 64A0B606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=icpbhZHb;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=lVvQ+wMH;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=icpbhZHb;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=lVvQ+wMH
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3DD351FD06;
-	Tue, 24 Nov 2026 17:20:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1795540832; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tN3vYaMnV9NupJt9uj0DyVm98fT46NJCnU18bNrr4wY=;
-	b=icpbhZHbueFRAPYDZt+Q/evQ4tuuoi4w57XzhnK/NytlNQ2MHfpKxEDK7WpMjGpOp4BK37
-	nVqhdhblSE4ztaaMD6fIuZoFaoxqk1o/paUr2O+/AkiiSActBLumd2fOdMx5QMABuPFWUe
-	ZSU6FvWbS6M2opLwxF/2fpfxN+GYH7Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1795540832;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tN3vYaMnV9NupJt9uj0DyVm98fT46NJCnU18bNrr4wY=;
-	b=lVvQ+wMHtVJ08B6+CsIe0qG2lVsd3epqQRwVhNWoxRlwPkzsE2YdosLdljWTIjE6B0MNs3
-	Ef00k5xo5Kn50tBA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1795540832; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tN3vYaMnV9NupJt9uj0DyVm98fT46NJCnU18bNrr4wY=;
-	b=icpbhZHbueFRAPYDZt+Q/evQ4tuuoi4w57XzhnK/NytlNQ2MHfpKxEDK7WpMjGpOp4BK37
-	nVqhdhblSE4ztaaMD6fIuZoFaoxqk1o/paUr2O+/AkiiSActBLumd2fOdMx5QMABuPFWUe
-	ZSU6FvWbS6M2opLwxF/2fpfxN+GYH7Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1795540832;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tN3vYaMnV9NupJt9uj0DyVm98fT46NJCnU18bNrr4wY=;
-	b=lVvQ+wMHtVJ08B6+CsIe0qG2lVsd3epqQRwVhNWoxRlwPkzsE2YdosLdljWTIjE6B0MNs3
-	Ef00k5xo5Kn50tBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0C17A13505;
-	Tue, 24 Nov 2026 17:20:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id +eKVNl/HBWspYAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 24 Nov 2026 17:20:32 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 7719D27A3D; Tue, 24 Nov 2026 18:20:31 +0100 (CET)
-Date: Tue, 24 Nov 2026 18:20:31 +0100
-From: Jan Kara <jack@suse.cz>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Rik van Riel <riel@surriel.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
-	Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
-	Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, SJ Park <sj@kernel.org>, 
-	Rakie Kim <rakie.kim@sk.com>, David Rientjes <rientjes@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	John Johansen <john.johansen@canonical.com>, Georgia Garcia <georgia.garcia@canonical.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
-	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
-	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej =?utf-8?B?TW9zbsOhxI1law==?= <omosnacek@gmail.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, damon@lists.linux.dev, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, apparmor@lists.ubuntu.com, 
-	linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, selinux@vger.kernel.org
-Subject: Re: [PATCH v2 01/11] mm/filemap: convert fault and readahead logic
- to use vma_flags_t
-Message-ID: <zgg3ktbk2spkmpa6u2nwqktnee26yvf3gglg33sgxq2ctkvh6o@7sj5tf2eutf4>
-References: <20261124-late-2026-vma-flags-v2-0-bf3fade93064@kernel.org>
- <20261124-late-2026-vma-flags-v2-1-bf3fade93064@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kajdRNHF;
+	dkim=pass (1024-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=AjIH7ZAy
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795541091; x=1827077091;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=0X9psQQYWQbnx7k/gn1+e2IamRzxKtuM7pvOfVpl/xQ=;
+  b=kajdRNHF4SHrmt3tZM9fs/KxSnWlLG0SqNh1pwUwAVmPhzNkwqzJIT3f
+   iETcz/CMMAlmZrnyIFc2Ybtk9lOG7NRZdXIoURdW7j28LZ4GsqlsjOi3/
+   /EJwPXjNEIbb8qlY81kcBqTi3XQTO/TlVWTitHJtkXSBlPXfPdSH4N6PQ
+   OUZSFzPFDjARViDMU+JkSMs4u1eDhF6pWcGxlibXU5b8rosJEdZ4Aj9J4
+   L+nMzPEa3/NQxu8SyNWhd2/uXk2AzAoohYxDgScb0AumW8uKrJQpYwDCp
+   D71MriBSn5NDudRzIHNxoRWqLPWtmKy2NZMHyUbXbmOUyCWomRKoNOc9T
+   A==;
+X-CSE-ConnectionGUID: Tjgx++wkS8uLyXUNvptcFA==
+X-CSE-MsgGUID: 8++cfroLT2ylf7HaLvrsnA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4382387"
+X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
+   d="scan'208";a="4382387"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 09:05:22 -0800
+X-CSE-ConnectionGUID: fGc4FI28SRWq4dYsKMpSog==
+X-CSE-MsgGUID: noDnvM1JT52jTUhGiUIX0A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
+   d="scan'208";a="12063537"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 09:00:51 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.57; Tue, 24 Nov 2026 09:00:51 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.57 via Frontend Transport; Tue, 24 Nov 2026 09:00:51 -0800
+Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.11) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.57; Tue, 24 Nov 2026 09:00:51 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oqpqFPqaBcbL8FEhSn6eTlpwjJuboHNAwtDs9hW6uoNnPIvuC+WP4yBFpOss0Cy+pcAsdz/Lnt8nGKVJwFBNPsP9Zs5BecYAzrQz9cRB25UwEmcqzcgq1/Fz2ZDZiNcCiTbj4FYRj1JEljOfRyakuLex8uygbk1s+c64XCHWVmEETLCVn3uW43ovDvLyYjGLsK6q4uQSiP+2Mw7OQhlrD7UZJi1RqBLe155nyzAJxfTYqU3+JPH+BG8EUyB6xRGtBsxMFOUBPV4ByrKIOfPCszgJaAreYBFo7gLsyaO3KNJWHyGxz+k6bMe9k6Otyr88EUTuZiYGNOBiz/hxMHytOA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2KcfSPoMdWB+3/t33F4urwRWiqXlhucbLtGBeb1FQCg=;
+ b=Ia1DGAESPkursNuk42Ep0+GZkaX9oBy3sAIIj1oUd6+W9YVMQCZTSLEn+9i+HSgfOVhCbTc6uYzh0+KgWYGPC+crs81Qi7tLViOnW2jpt75UO2uALgcaCvXNr9epO7wBJ1u9VOTv6JslWEIsfgfaHOuHAToxnj+4jEulh+/WlstXePk6/QmgfVYqROUdcOlZEH6KHT7ZQ4gEPLpEfm4bwApzSihPE9Lou383Zql2bWxf8rOEuFUsZ9inE3RKywq6pzYJSD6PR7kEoiWXzV/FhzqMDAw1l4XAI/7tgRHTJcU/a5KKc4cTcgaPYMCBKFmpw6LzKsdu4AR1qZO0nbzALQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2KcfSPoMdWB+3/t33F4urwRWiqXlhucbLtGBeb1FQCg=;
+ b=AjIH7ZAyc611JE6u+BB26+M5fAn/vQktecXNR9E6Mi7rK++f+mQz4Y7uGVET+tGWGO5CYFhEbRQiMD05AXrjGb0F2NJmA56W9gqxmWJfQNmmGWdTuRXdqN7mP8VfZX0c5pMb3F7AN3xPSRI5cmruIVlR/TJ0AWFdxSKLs7F96ZY=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY8PR11MB7846.namprd11.prod.outlook.com (2603:10b6:930:79::14)
+ by PH0PR11MB9773.namprd11.prod.outlook.com (2603:10b6:510:398::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.4; Tue, 24 Nov
+ 2026 17:00:49 +0000
+Received: from CY8PR11MB7846.namprd11.prod.outlook.com
+ ([fe80::cae0:d05c:b2fc:c395]) by CY8PR11MB7846.namprd11.prod.outlook.com
+ ([fe80::cae0:d05c:b2fc:c395%7]) with mapi id 15.21.0639.012; Tue, 24 Nov 2026
+ 17:00:49 +0000
+Message-ID: <2b83b21b-7d4f-4431-bee5-70660bd12629@intel.com>
+Date: Tue, 24 Nov 2026 09:00:46 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/fred: Add this_cpu_fred_sp() and export it for KVM
+Content-Language: en-US
+To: Dave Hansen <dave.hansen@intel.com>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Borislav Petkov <bp@alien8.de>
+CC: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	<x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, Xin Li <xin@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+	Binbin Wu <binbin.wu@linux.intel.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, "Chang S . Bae" <chang.seok.bae@intel.com>, "Chao
+ Gao" <chao.gao@intel.com>, Sean Christopherson <seanjc@google.com>, "Paolo
+ Bonzini" <pbonzini@redhat.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20261124015840.2673975-1-sohil.mehta@intel.com>
+ <a4b33822-25a6-450f-a2cd-5931d015f484@intel.com>
+From: Sohil Mehta <sohil.mehta@intel.com>
+In-Reply-To: <a4b33822-25a6-450f-a2cd-5931d015f484@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY5PR04CA0023.namprd04.prod.outlook.com
+ (2603:10b6:a03:1d0::33) To CY8PR11MB7846.namprd11.prod.outlook.com
+ (2603:10b6:930:79::14)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -149,176 +148,96 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261124-late-2026-vma-flags-v2-1-bf3fade93064@kernel.org>
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spamd-Result: default: False [-11.30 / 50.00];
-	SUSE_INTERNAL_BYPASS(-9.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLyyn5iujqg1knb55iprn1jsbw)];
-	TO_DN_SOME(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,kernel.org,ziepe.ca,nvidia.com,redhat.com,infradead.org,suse.cz,surriel.com,google.com,linux.dev,intel.com,gmail.com,sk.com,gourry.net,linux.alibaba.com,arm.com,linux.ibm.com,ellerman.id.au,suse.de,tencent.com,suse.com,zeniv.linux.org.uk,linux.intel.com,linaro.org,canonical.com,paul-moore.com,namei.org,hallyn.com,huawei.com,oracle.com,kvack.org,vger.kernel.org,lists.ozlabs.org,lists.linux.dev,lists.ubuntu.com];
-	RCPT_COUNT_GT_50(0.00)[89];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email,suse.cz:email]
-X-Spam-Score: -11.30
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY8PR11MB7846:EE_|PH0PR11MB9773:EE_
+X-MS-Office365-Filtering-Correlation-Id: deb159d9-61e2-476e-14c3-08df4a4c7da7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|366016|18002099003|22082099003|56012099006|4143699003|11063799006|5023799004|261028144727099003|261102130727099003|261102123227099003|261026121527099003|261026140227099003|261021121427099003|261022075727099003|261022105027099003|10067099003;
+X-Microsoft-Antispam-Message-Info: yIXFxWENKjJYGoWy13IB5RWQeQ1aaiwI449ME/53V+4p3GUe6DaLX/dmD+IJ2nEpkdE1uTN+oKr4vNgxvZQ3CgNtAfXgblxMqJijhdz5CySZTHBgMTtxGQepaHXckvp6ZrDmbq3jewntuS7mIuxWHxDyVIErjOY46KeTwZnBi5J0ZYTm00jWrkQL3ncklsivuRU5uxQ8bL3yruUD0uI8BFG4vQKvaBPbTjmzfgP5e+81pcPXD2BeZR2QyAbf2xqQ60vRxHHknLPRKooTnRflfTDizc+0ctgshI0Mgu6YlkK+Mj43Rh0hN81zzXBUzhHbf4jFvrLgp8yvHs8+kSuvGSXFyo437bT94uLa6mfJtbXUsFy9nqEj4RlkekzaVL16309BT1TosBhX5y4iw/7p49mS9a8zYmjngOEd4NdTHlLzPi/tesgTCtPU/AyLQepWqi7urxaMvQicxArRH6ByP9RTmGKluCSH5WP/ZKObXUu+8BC+MInd+r+38+bPbSay2rR4m6pWpbdNoeSxmhA9C+Y4xEQw9btz/bvyY4x/ujWnEXpuvPg350W7hBwPrwRarn0EqMS8hlNDFGwKGoraZA7h5xA7DAabV6Eq2WLnw/5KOLS2RJJ/71SAcpX0gZFpFXXVzvK7VWS6RM4rzNXsWIRoOWuaZfKFE3PxfpGsVWc=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR11MB7846.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(366016)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006)(5023799004)(261028144727099003)(261102130727099003)(261102123227099003)(261026121527099003)(261026140227099003)(261021121427099003)(261022075727099003)(261022105027099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RzBxUlBtTG5IRWUySXdGRE1GQ2lZVGR5eUpZMCs1ZzVUY2xYMG1iUUVra013?=
+ =?utf-8?B?R05RazV6dDJFQTJicWtSZllhSTZYbnRFUytJNmJSYk1GS004M1V0N0NjMThj?=
+ =?utf-8?B?Wnc1RTRvSWhBVFN1OHV3UDhWVXNHY2w1K3kyUVdjcjBtTDRIVXVqYnk1OG11?=
+ =?utf-8?B?aURjYlpCWWFuSTZ3RkJHd2svNWRqRm5SeGpwbUd1UUVWK2NlMGE0ZC84dS9H?=
+ =?utf-8?B?REdhY1d2UllzaUJ3N2F1RGxRVzB4T2RjWXpZUERkMG50YUQrT21FUktaR1px?=
+ =?utf-8?B?QUY1LzQ5Zk4rVkZIM2t4ZU9TVVpzMFAxeGhFWFZ0d1Ftb0xKdVgzUnVVYWx3?=
+ =?utf-8?B?QjNxVVUwZktlZkNMRFRlMzUxa3VabWFDbWVVMUhtc01Nb0tkaEptRTRCbUx4?=
+ =?utf-8?B?SGdDRE9qVlpxdFJYcGNiMzZQeEt3bVB4MnlkWDJSSVV6YnFmQW5qOEVndXhw?=
+ =?utf-8?B?ZlNFeVNaNkpwdndwSmRucW54RGNNN3NqZ1U2Z3JpamIzdlV3cGZEVFNQd2Er?=
+ =?utf-8?B?aTNmckZ0bkFWQjR1M01aQXhla2NJeEhwbGIrOXFYZEtiZVF0aExTYktjcXNX?=
+ =?utf-8?B?YWZjcWxmVXI4dmVndXJWRzgxZnB6NVpGTS9YR1hueG91ZlRuN3NISnFxOWFr?=
+ =?utf-8?B?VC9LMjlhOE5IRnFzWkh3WFdzK2JXaHlMUmhSWXpnMnJJS1ZseVdyUUhMaG5C?=
+ =?utf-8?B?TXhobTc5ZU43NlZ2Yk42bURNdEJIaXZKcVRBUWwzaG5pL29Vc29DVWpXbDZm?=
+ =?utf-8?B?a20yUWFYYnZvRlJrRUhVeXdweXBvbVZ1TUs5aUdmMTFmZTREWE1zWURPUWZy?=
+ =?utf-8?B?a3E3YW1BM3gwbmVJamhvR2dXWEF0ak43K0VPTGFRZy9XZG1QR0pqZThSbytM?=
+ =?utf-8?B?MEFSUHRCZTdzK2RuMEs1a3gxU2NLSmk5RUhvQndoQ01nR2Z6M3VJQkJVejgw?=
+ =?utf-8?B?c1BRQStReU00VWlQS2hOWlN1bVhOdk80V3ZVNmg1WkcwdkVtcXU0b0FSbVRw?=
+ =?utf-8?B?cjdoLzk1YzkvdmszTXJWSWpVNXRPL1pKQnVCb1hDbnZCdTlrbUQzOTJDaGVa?=
+ =?utf-8?B?cEo4aWdRbmpVTS91MnBMQXRaMG5tQlZhNnB5Qml5dENSV0l0bFFodmdRRlQx?=
+ =?utf-8?B?UHBrS3N3K0dqWDJEZlpvUmdTQW0yMXY3NTFmTGJFMmJaN3Z3L0h1Y05Cc2JN?=
+ =?utf-8?B?TFhpUkpuekxXcXQ4bXZubHFDWHlQRUk5L1ZIWDFBZXBRbEJHVU5VN1ZpYU5V?=
+ =?utf-8?B?T3BHSjJiVlZVK2V2UU10WXpjamRTbVBBdTBrSEw4M0M3S3R5R2ZUdkEvU3p3?=
+ =?utf-8?B?ME5maEJOWnRwclp6QVkrTmJOdU1GK0RnWWN3Q1N6bUozVkdtKzFvclJGMlNZ?=
+ =?utf-8?B?cmhpZGNpY0FnNTZjbC82T3dUSi9FaUgvd3poRVNuWURFeGh4ZkNhR0o3Z2M1?=
+ =?utf-8?B?T3RqdHBVTTh5KzN4dWxMaUlmdm15SklGVzk4cVJBUVpqUXJUWXR5clBlRUFZ?=
+ =?utf-8?B?V1RYMDRqL05HNUVLWFNQTDRSbVFOZlNkWFF4VVJxQUZieDR3d3hhSmtzU3Qy?=
+ =?utf-8?B?NjdSSENJU2ZLSDhad1I2WkxuRVRpK01WL1Qyc3V1NVB5SGNPKy9takVwYU9v?=
+ =?utf-8?B?cVYvOFB5MFZrcDhrU0FyRXVUVWJBaXUzWkx5TlgwbnlEY0pYaEl1eXRvTFFS?=
+ =?utf-8?B?R3ZCUjRndkU3ZUhWcm45NVJtSFdXYVhQMUVEYi9FV2pIZC85NFV3YytOY3Ra?=
+ =?utf-8?B?SU9xTzFSR0lzUVVVUmcwVUxGZmYrM05OOUNEYWRuV0w2YW9iTkxEaVdTK2ZJ?=
+ =?utf-8?B?L3JKWjJENUN0MnZXV2RpS2ZDWEdrekZPTWVkYW95bDB3ajRQQnVmMjR5eEFW?=
+ =?utf-8?B?YzBZMDF1MVJNaXMyUmpDbjRsTHNZNU91bkJaVExpMTEwKy9jMDM3N0hLbnBr?=
+ =?utf-8?B?VGdUUWVCT1hlQnZCRW1mNmZ0RHcydUxIYW1VYndiRjhrUTVLaVQ2YUVKR1BY?=
+ =?utf-8?B?VmpzelJvUTcwUGlrZGRpY3kva25TUU9xNXo1MGhvRFpoZ0VHVzNQTkF6V0po?=
+ =?utf-8?B?cHhDczljVkNJVGVZVGo0djNWMk5UeDVSNnpXU1Q2cE5wVjBDVG4va2hML1Va?=
+ =?utf-8?B?bHFPZ296alN4SUhkUkszNjBtZWpQbWcwMnB0RnFuSTFvdXVuc1UzRldMdi9D?=
+ =?utf-8?B?ODRla3NFT1JSaXpTUHNQNlRzQzlDbzRZbFQ3TmZETDdjOHcyTVN0WDZFRTcz?=
+ =?utf-8?B?MFFuYzBFNHdCdmF4d1crb3JtRlhtdThHNFg4bUttdmYvUmdQOElLTW1iY0NX?=
+ =?utf-8?B?UUhxejE1Mm1sQkwxWkxRVXFzTG1vcTFTczVBeTBKaUpCb2ZkU0haUT09?=
+X-Exchange-RoutingPolicyChecked: Pv/fPSZeRGOjiUy3BmAtEAvsyB4+Lw/RqN4FpaIC8JXKa1OR31pgPo23WL9Bsa/5l9rXckce8pTF0hD7mM852FC77cQJTnHr+qvyxfZgxUxh9YYW7PMiWyUEcmMO2i+8yIToi/k32DiifADF1M0cFJGA2eJ5Q4vNC5fvFth7WE4Er3wQH0NyK2H8kmWJ235ytROXht5g4/4GBoifccrCKyiWvKc0h0UEIYVlxNL9UnSz65zkKvXuDq5mrR5vezFa42Um892htmX8frRdMK21f9KEORVJPZZTb4nSjHhDmHVSVG4CRzuP0Z8VXr1vFnaAc/NTGZTohkkxperKQlpDUQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: deb159d9-61e2-476e-14c3-08df4a4c7da7
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7846.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 17:00:49.7209
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kOeNWKWIjzC1H8wmpedDLqTJuD/8yOLvMPjzyZjmeLZ5GxDDesYiKU9VwZpQOcThelXEj690z5OINLFqnojidg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB9773
+X-OriginatorOrg: intel.com
 
-On Tue 24-11-26 17:07:53, Lorenzo Stoakes (ARM) wrote:
-> Replace use of the legacy vm_flags_t flags with vma_flags_t values in the
-> file fault and mmap readahead logic.
+On 11/24/2026 7:52 AM, Dave Hansen wrote:
+> Sohil,
 > 
-> No functional change intended.
+> We can take cleanups that both make sense for non-KVM FRED code and are
+> _described_ that way. We can't add dead code, or take things that have
+> changelogs for code that's not in the tree.
 > 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Reviewed-by: Barry Song <baohua@kernel.org>
+> In other words, please write a changelog and send code that has nothing
+> immediate to do with KVM. If that's not possible for a given patch,
+> that's a pretty good clue it's not a cleanup and can't be merged early.
+> 
+> Anything going in early has to stand on its own, please.
 
-Looks good. Feel free to add:
+Hi Dave,
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+My primary motivation with this patch was only to get an ACK from the
+x86 side. I believe you may have missed my note under the '---' section.
+Maybe I should have included a small cover letter.
 
-								Honza
+"... I am posting this separately because the patch has a minor
+dependency on the ESTACK_ prefix patch merged in tip today. The main
+goal is to collect acks from the x86 maintainers.
 
-> ---
->  mm/filemap.c | 26 ++++++++++++++------------
->  1 file changed, 14 insertions(+), 12 deletions(-)
-> 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index acf5e562b732..ce720c4c55f0 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3359,13 +3359,14 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
->  	struct address_space *mapping = file->f_mapping;
->  	DEFINE_READAHEAD(ractl, file, ra, mapping, vmf->pgoff);
->  	struct file *fpin = NULL;
-> -	vm_flags_t vm_flags = vmf->vma->vm_flags;
-> +	struct vm_area_struct *vma = vmf->vma;
->  	bool force_thp_readahead = false;
->  	unsigned int thp_order = 0;
->  	unsigned short mmap_miss;
->  
->  	/* Use the readahead code, even if readahead is disabled */
-> -	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && (vm_flags & VM_HUGEPAGE)) {
-> +	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
-> +	    vma_test(vma, VMA_HUGEPAGE_BIT)) {
->  		/*
->  		 * Cap max THP order at 2MB: this is the common PMD-sized
->  		 * hugepage size, and it avoids memory pressure from very
-> @@ -3385,20 +3386,21 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
->  		 * If we don't want any read-ahead, don't bother.
->  		 * VM_EXEC case below is already intended for random access.
->  		 */
-> -		if ((vm_flags & (VM_RAND_READ | VM_EXEC)) == VM_RAND_READ)
-> +		if (vma_test(vma, VMA_RAND_READ_BIT) &&
-> +		    !vma_test(vma, VMA_EXEC_BIT))
->  			return fpin;
->  
->  		if (!ra->ra_pages)
->  			return fpin;
->  
-> -		if (vm_flags & VM_SEQ_READ) {
-> +		if (vma_test(vma, VMA_SEQ_READ_BIT)) {
->  			fpin = maybe_unlock_mmap_for_io(vmf, fpin);
->  			page_cache_sync_ra(&ractl, ra->ra_pages);
->  			return fpin;
->  		}
->  	}
->  
-> -	if (!(vm_flags & (VM_SEQ_READ | VM_EXEC))) {
-> +	if (!vma_test_any(vma, VMA_SEQ_READ_BIT, VMA_EXEC_BIT)) {
->  		/* Avoid banging the cache line if not needed */
->  		mmap_miss = READ_ONCE(ra->mmap_miss);
->  		if (mmap_miss < MMAP_LOTSAMISS * 10)
-> @@ -3414,6 +3416,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
->  
->  	if (force_thp_readahead) {
->  		unsigned long folio_nr_pages = 1UL << thp_order;
-> +		const bool random_read = vma_test(vma, VMA_RAND_READ_BIT);
->  
->  		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
->  		ractl._index &= ~(folio_nr_pages - 1);
-> @@ -3422,7 +3425,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
->  		 * Fetch two folios so we get the chance to actually
->  		 * readahead, unless we've been told not to.
->  		 */
-> -		if (!(vm_flags & VM_RAND_READ))
-> +		if (!random_read)
->  			ra->size *= 2;
->  		ra->async_size = folio_nr_pages;
->  		ra->order = thp_order;
-> @@ -3430,7 +3433,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
->  		return fpin;
->  	}
->  
-> -	if (vm_flags & VM_EXEC) {
-> +	if (vma_test(vma, VMA_EXEC_BIT)) {
->  		/*
->  		 * Allow arch to request a preferred minimum folio order for
->  		 * executable memory. This can often be beneficial to
-> @@ -3442,7 +3445,6 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
->  		 * pad that might exist between sections, which would be a waste
->  		 * of memory.
->  		 */
-> -		struct vm_area_struct *vma = vmf->vma;
->  		const unsigned long start = vma_start_pgoff(vma);
->  		const unsigned long end = vma_end_pgoff(vma);
->  		unsigned long ra_end;
-> @@ -3485,7 +3487,7 @@ static struct file *do_async_mmap_readahead(struct vm_fault *vmf,
->  	unsigned short mmap_miss;
->  
->  	/* If we don't want any read-ahead, don't bother */
-> -	if (vmf->vma->vm_flags & VM_RAND_READ || !ra->ra_pages)
-> +	if (vma_test(vmf->vma, VMA_RAND_READ_BIT) || !ra->ra_pages)
->  		return fpin;
->  
->  	/*
-> @@ -3499,7 +3501,7 @@ static struct file *do_async_mmap_readahead(struct vm_fault *vmf,
->  	 * keep the counter symmetric.
->  	 */
->  	if (likely(!folio_test_locked(folio)) &&
-> -	    !(vmf->vma->vm_flags & (VM_SEQ_READ | VM_EXEC))) {
-> +	    !vma_test_any(vmf->vma, VMA_SEQ_READ_BIT, VMA_EXEC_BIT)) {
->  		mmap_miss = READ_ONCE(ra->mmap_miss);
->  		if (mmap_miss)
->  			WRITE_ONCE(ra->mmap_miss, --mmap_miss);
-> @@ -3532,7 +3534,7 @@ static vm_fault_t filemap_fault_recheck_pte_none(struct vm_fault *vmf)
->  	 * scenarios. Recheck the PTE without PT lock firstly, thereby reducing
->  	 * the number of times we hold PT lock.
->  	 */
-> -	if (!(vma->vm_flags & VM_LOCKED))
-> +	if (!vma_test(vma, VMA_LOCKED_BIT))
->  		return 0;
->  
->  	if (!(vmf->flags & FAULT_FLAG_ORIG_PTE_VALID))
-> @@ -4018,7 +4020,7 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
->  		if ((map_ret & VM_FAULT_NOPAGE) &&
->  		    !(vmf->flags & FAULT_FLAG_TRIED) &&
->  		    !folio_test_workingset(folio) &&
-> -		    !(vma->vm_flags & (VM_SEQ_READ | VM_EXEC))) {
-> +		    !vma_test_any(vma, VMA_SEQ_READ_BIT, VMA_EXEC_BIT)) {
->  			unsigned short mmap_miss;
->  
->  			mmap_miss = READ_ONCE(file->f_ra.mmap_miss);
-> 
-> -- 
-> 2.56.1
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+The first exported user for the helper is going to be in the FRED KVM
+series, so I assume this would likely be merged via the KVM tree ..."
+
+This patch only exists due to KVM and should be merged with the FRED KVM
+series. It is the last remaining core x86 patch, so I just wanted to
+make it easier for you to review it (instead of the scanning through the
+large KVM series).
+
+
