@@ -1,66 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795557206;
-	b=TFIxwONsYTbm3HeGPnS4uMWEUy4FwPMnwAryLaAtIVf6rv9M6tY8gvT81VUsuN2M/3rW
-	 Af4pBOZiouvIW8CpfjkZuz6Hfim/WEvriFlaAKY7/v7Sk72gT2oOT2V8ALwmkgOSyMsI5
-	 hwyWWlZt3Q1W5QyHDH1p9Sa0GgajkDno44meV3HZy2xi4QhUMEt6K6zQXlB3MyTlv5FVm
-	 4tFDPCFGST/o3Uqq7IIlb8IY1+mpgxHqCEPd6y22WeJ/0emNGsw5zNmq9SUrq4ZL+kHdd
-	 enA/SFdWk0Yu1BCGDcaC8OfzeR/17ym0yZPUv4GAzV9Rn+2zChfpOZWUhHxHNMhFWXQ==
+	t=1795557207;
+	b=ViDa76pU/sB5H2gD8Rz/XmjGrNwJMRcU48m7sXCJesD/sDWaQqxYjqRVEaDbe70J49t/
+	 LS2FQkCGBf15kGu+Ws7yO04slLbJfgjPirDOMVI+QUdzQF/DKSsTIlX7WQXxEY/HZiQX1
+	 7WLg60JtoLwQ0t6BMPDXELwN/Ukv9RQde6nVBYQ7M5ht9hXNfiE7TpzqwQyPFT8ru1IYt
+	 vGKXcDJe6NQnsp+r4jeP8HIAbO9+6Hd/EQ2VYFr7GtQfC/X8gogKh5b78HxMYlDukJ7KU
+	 iqdlq+aVOeTiVxYdbajS49IAKMsdsCDrmEza7qhBD2T++ncKZFgiT+4ISxrpjiSJSLg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795557206;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795557207;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=ZTmew+ylFAd06hgt19LZqGaVOyDr1ZEPWAerw8v6tZE=;
-	b=DMz0FSpDFDIyrYrOYFv9O1Z4c0cYc4Fp7ierXjTiXOPFmFG5mp5jjX2P13TYq6Tzgyyw
-	 XFOXUKa38CmRDDR9h4vMOqIi/2ufkXoQXCIP+5+VNFZSj0DqygceusQfqeLxP4gq/s6aG
-	 TcivhofD1t19wWwUdI6MdbpW2k/uiDOE5O43545AWibmKufqsr7vEZwaepJ9yuFrSjoLq
-	 a8xnzcaz+S4JNLNB1tugRVk/moLsQt0adqQWebnvcEQ6zCX9Nf6NngZeFWpgloz8GhVQ2
-	 TUilfIYufDmdQ4URzdGO5EblDkggauxTpre0L36OXPxNa6m8nmt5iLykbqWse7xTjlw==
+	bh=ZUSUUU9UbcR6Q5hiPJXAeSx9jwpJu7NJJImRPE4IjVg=;
+	b=D59L7A/svXvGtlM6EGrEyGXijdcz0jmeZTSsFC+HBZzDVVdMLrX9lHIEKcD4KesUgcEG
+	 gSiLi7xwB9vPPAPE1OTnkejZxY1+24wewikBy+3QX1Ty5elHKKVjxElGfn4khldlBNhD0
+	 MJOcpzJ74c4V/mMQeErg9gsvb7qahvcFQk77CtG1QqcesrDML81KX25fY1JsUxk3MiDx3
+	 NXqGSsLeTFkNyrbs/CoPruO+K7CoIf+7Pebymx4pg1fQCDL1ksMcrOLdnpJ8cBRxuBgYY
+	 3EXyGcva26W5RXa+Lu0fl+RTJ06/V4JigjFsEhSLpm/MrskODbmUbMqnRzAOeWmem6A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mg8o2+bz;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eOPp2w2V;
 	arc=none smtp.remote-ip=192.198.163.9
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C743E606A680;
-	Tue, 24 Nov 2026 21:53:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C743E606A680
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F740606A6AB;
+	Tue, 24 Nov 2026 21:53:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F740606A6AB
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mg8o2+bz
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eOPp2w2V
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795557205; x=1827093205;
+  t=1795557207; x=1827093207;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=UNG+kpI8bKzDjsT8cPNG2HlOU9qklwo2AtSTAwz7jNM=;
-  b=mg8o2+bzVAs7OhXeAA0K9NYp9/Q0s3gi6jsMX+WyoLk8vLaAgEZxNd8s
-   JhLj4rXRvt9ovY5JR/Crd268hESliW6tIQMUS4kFs94EaBL4emO3f0pIP
-   QpfK6lkmjuRdnrL1cfd4PzK3BuMyia9bfhYl7az664EV6wf3//5mFjYEf
-   9rCZnPuXtEjNcYnnu/2bkgvH7HgJwswxH4iLjyuvft8rk3ThOzCf+XUcY
-   5c378w5u8Q+3Z7TRMHk24f1s8WMBXfLuzwUgwsW0yMYIYSNyUroYp12Po
-   L8HJ4Ra2VkWfbkrejcgAxECSLBdUDw2UhDAlvdCPNf8J7V7x8y+Ekx3Zv
+  bh=aMmLTpF4jMP42C5uxxxmQGu0bQqSyHij96LvuvTa1SY=;
+  b=eOPp2w2VTByqAgrIP6rTXn0E0eL3GtVDN2pxCXMk9RerZj3qxyN+EEYf
+   1Uo+1/haMV7Q5KG8NsNc782ov16/OHRfu2Q6226+jUuXUtF+SxBcNrRe+
+   tKJJYSVLLr4+AI6z/msrsF10ODOkERSM+5ZNB4LOZwTiV73+4+Zef6IEi
+   z5mrXG6vwv8h+9UoQkLrg9rXJYOD3gup3ORyCKEbbJkJyQtBWgk6kAg/u
+   sBrVa8XB108UvM+X+DW+l2sIzlBLahjGaSzttBy2b12fnXoTmIdMSxG8v
+   x5alVqoito+z58emVO4/WbqXbmQnacTEK7YhbhYHRChfYX9BShpYiVyZd
    g==;
-X-CSE-ConnectionGUID: FXh8v8ALTn2zw4X7IEF1hw==
-X-CSE-MsgGUID: 14cb88FNR9SSm7oxkFqbkw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4305986"
+X-CSE-ConnectionGUID: gWLkZJBiTwOzXr57Wn6R8w==
+X-CSE-MsgGUID: ThvkGDS/SOeNPZGLzMHOqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4306013"
 X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="4305986"
+   d="scan'208";a="4306013"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:24 -0800
-X-CSE-ConnectionGUID: um5LEYSpQfqgXm4b50+KNw==
-X-CSE-MsgGUID: VrVQzimzQ3CSKPkgEwKv6A==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:26 -0800
+X-CSE-ConnectionGUID: WdL9LrDsQYWXJMENBuycmQ==
+X-CSE-MsgGUID: CU4ZNal7QbeaIdP5Ea1WJA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="12271898"
+   d="scan'208";a="12271914"
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:23 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:25 -0800
 From: Zide Chen <zide.chen@intel.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -77,9 +77,9 @@ Cc: kvm@vger.kernel.org,
 	Shukla Manali <Manali.Shukla@amd.com>,
 	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Xudong Hao <xudong.hao@intel.com>
-Subject: [PATCH v10 03/18] perf/x86/intel: Track common hybrid capabilities
-Date: Tue, 24 Nov 2026 14:38:46 -0700
-Message-ID: <20261124213901.120572-4-zide.chen@intel.com>
+Subject: [PATCH v10 06/18] KVM: x86/pmu: Do not map fixed counters >= 3 to generic perf events
+Date: Tue, 24 Nov 2026 14:38:49 -0700
+Message-ID: <20261124213901.120572-7-zide.chen@intel.com>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261124213901.120572-1-zide.chen@intel.com>
 References: <20261124213901.120572-1-zide.chen@intel.com>
@@ -94,77 +94,65 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Now that intel_update_pmu_caps() updates intel_cap on hybrid_pmu[],
-the assignment in intel_pmu_init_hybrid() is obsolete and can be
-dropped. Additionally, ADL P-cores report perf_metrics correctly, so
-hardcoding perf_metrics for P-cores is not required.
+Only fixed counters 0..2 have matching generic cross-platform
+hardware perf events (INSTRUCTIONS, CPU_CYCLES, REF_CPU_CYCLES).
+Therefore, perf_get_hw_event_config() is only applicable to these
+counters.
 
-Intersect capabilities across all online PMU types. This clears all
-potentially inflated asymmetric features (such as rdpmc_metrics_clear)
-from x86_pmu.intel_cap when the BSP is a P-core.
+KVM does not intend to emulate fixed counters >= 3 on legacy
+(non-mediated) vPMU, while for mediated vPMU, KVM does not care what
+the fixed counter event mappings are.  Therefore, return 0 for their
+eventsel.
 
-For erratum RPL018, set perf_metrics in the base x86_pmu.intel_cap
-on all-P-core systems to keep x86_pmu consistent and allow consumers
-like KVM to detect Topdown support.
+The two BUILD_BUG_ON() checks are no longer needed, so drop them along
+with __always_inline.
 
-Opportunistically fix a typo in the comment. 
-
-Fixes: f83d2f91d259 ("perf/x86/intel: Add Alder Lake Hybrid support")
 Signed-off-by: Zide Chen <zide.chen@intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
 ---
-v10: new patch.
+v10:
+- Add comment to mention event mapping is not used for mediated PMU.
+v6:
+- Re-arrange the code for early return. Clearer.
 ---
- arch/x86/events/intel/core.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ arch/x86/kvm/vmx/pmu_intel.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index dbd84d82f36d..44bede63f0c6 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -6280,11 +6280,23 @@ static void intel_update_pmu_caps(struct pmu *pmu)
+diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+index 70a8c4816135..8f72a405e737 100644
+--- a/arch/x86/kvm/vmx/pmu_intel.c
++++ b/arch/x86/kvm/vmx/pmu_intel.c
+@@ -468,11 +468,8 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+  * different perf_event is already utilizing the requested counter, but the end
+  * result is the same (ignoring the fact that using a general purpose counter
+  * will likely exacerbate counter contention).
+- *
+- * Forcibly inlined to allow asserting on @index at build time, and there should
+- * never be more than one user.
+  */
+-static __always_inline u64 intel_get_fixed_pmc_eventsel(unsigned int index)
++static u64 intel_get_fixed_pmc_eventsel(unsigned int index)
+ {
+ 	const enum perf_hw_id fixed_pmc_perf_ids[] = {
+ 		[0] = PERF_COUNT_HW_INSTRUCTIONS,
+@@ -481,8 +478,14 @@ static __always_inline u64 intel_get_fixed_pmc_eventsel(unsigned int index)
+ 	};
+ 	u64 eventsel;
  
- 		/*
- 		 * Restore perf_metrics on platforms with broken
--		 * perf_capablities.
-+		 * perf_capabilities.
- 		 */
- 		if (intel_pmu_broken_perf_cap() &&
--		    hybrid_pmu(pmu)->pmu_type == hybrid_big)
-+		    hybrid_pmu(pmu)->pmu_type == hybrid_big) {
- 			hybrid(pmu, intel_cap).perf_metrics = 1;
-+			if (!cpu_feature_enabled(X86_FEATURE_HYBRID_CPU))
-+				x86_pmu.intel_cap.perf_metrics = 1;
-+		}
-+
-+		/*
-+		 * For hybrid, x86_pmu.intel_cap tracks common capabilities
-+		 * across all online PMU types. A bitwise AND is safe because
-+		 * multi-bit PEBS/LBR format fields are identical across core
-+		 * types when supported, or zero if unsupported on a core.
-+		 */
-+		x86_pmu.intel_cap.capabilities &=
-+			hybrid(pmu, intel_cap).capabilities;
- 	}
- }
+-	BUILD_BUG_ON(ARRAY_SIZE(fixed_pmc_perf_ids) != KVM_MAX_NR_INTEL_FIXED_COUNTERS);
+-	BUILD_BUG_ON(index >= KVM_MAX_NR_INTEL_FIXED_COUNTERS);
++	/*
++	 * Fixed counters 3 and above don't have a corresponding generic
++	 * hardware perf event, and KVM does not intend to emulate them on
++	 * non-mediated vPMU. For mediated vPMU, event mappings are unused
++	 * since the hardware counters are passed through directly.
++	 */
++	if (index >= ARRAY_SIZE(fixed_pmc_perf_ids))
++		return 0;
  
-@@ -7746,14 +7758,10 @@ static __always_inline int intel_pmu_init_hybrid(enum hybrid_pmu_type pmus)
- 				     __EVENT_CONSTRAINT(0, pmu->cntr_mask64,
- 							0, x86_pmu_num_counters(&pmu->pmu), 0, 0);
- 
--		pmu->intel_cap.capabilities = x86_pmu.intel_cap.capabilities;
--		if (pmu->pmu_type & hybrid_small_tiny) {
--			pmu->intel_cap.perf_metrics = 0;
-+		if (pmu->pmu_type & hybrid_small_tiny)
- 			pmu->mid_ack = true;
--		} else if (pmu->pmu_type & hybrid_big) {
--			pmu->intel_cap.perf_metrics = 1;
-+		else if (pmu->pmu_type & hybrid_big)
- 			pmu->late_ack = true;
--		}
- 	}
- 
- 	return 0;
+ 	/*
+ 	 * Yell if perf reports support for a fixed counter but perf doesn't
 -- 
 2.56.1
 
