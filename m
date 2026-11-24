@@ -1,89 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.20
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795485652;
-	b=Qyi6Sny0g+Ex1HQB+yWWI6SUepiCaDkcIyGB72j8xC8JZht8YOi6G0iCi6mnPA4r3PLR
-	 apyMqfrbgPdVxaF43zvPGjc1kazdt6oIoDILhhuhdhPuwxwrZlskQP0se9EKwIR+nhuS/
-	 trciDIXhnQ266tBxeETRcxhJBuKwTUUMc9/EUwXPjWJ58pog/JhF0x0A/UDbEuqqRSz89
-	 kjTi8jPoLAVugfCl4aEjOZauL2cVlt7e2ZdiBeLyTlWQeM52CEelOVNoqM62DafH1kejJ
-	 ZKKVjhPbPl3xXTOtiLfilg73DNe9jw6EM2dvg2HVWn0fwSJt4/0T2LYtEQNJjk9PbhQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795485652;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=12urVjcJIDrcl9cjZIEhxB1h221OuQzODVPOk8kxWGk=;
-	b=pzAZ2ga5YUWDObCI40nTulXfAWMVLLVsxObZtoKuKCaeHV0yd21JtuACNGAgyHa8hnLf
-	 nAP2hr1ml1eQVEkBA5dbDTSFlE3+SwO0r16M0EBxFwixHICQ0kXW4jI4ny82UW1pzKA7v
-	 Ul53DjDS9f+lDHJ97smV7JmYE3b5GgF8bccn6GaMwr2fOBoPzwT6rnCG10bhEqPYc1hSk
-	 SgGE+as53A2ppb73xlzpvIAVOeX9AnvnXgD/hepVS/pbivoW+UeGqsjzkT6LCfRdnFqsa
-	 Szl8nGi4bz6REFSKTL1y6wVZPwWhIRLKYbGO5mWZ+dYCTOBrXv0hn74vWLVHiQmSGvw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kx0ffL+x;
-	arc=none smtp.remote-ip=198.175.65.20
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.43
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795485888;
+	b=d0qldp97Nt5faZa2P5k5lSx6EuzbZFQxqFX4fp0YrdQ37GGhybSvHui7b5Ns5cfWCOHW
+	 BHXt2FHMxTr/z/KhbrZUgfgps4TY7n/B1u+0mYZeQ89eDL7Hy55HNwqkPVUGb/qHgzl59
+	 Cc22JUcyR1KIDmJZjabHhJm819JRsQmNwuxQ2NGPkRb8H0JfiXyrNZnAhVDOD+hBd5NPZ
+	 mplNgs+RVaFEOjPQQ7D4F+qJDFpztjtUfqmt3V/+b6xMvGe65F/nSMtnFrFAQkbMTaHtd
+	 ci0qX6BQi9a4EfcWpG2tzinWBaJL0ztbpaTFnl91c/LoLRi0q9IcaqNEOjd032PlLMg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795485888;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=QZ8jeJhff8TwVzDr8mq7hnVn9Uwjnn1WsiAHJK7NNrs=;
+	b=TUEpHHalhXZCtaP5PwMLYV0zkft9Mj8OwbMLNycap/Z/Na0jjqb9XCaKCSWDw0/w44ns
+	 S8N7Rp9RFGMUp0xfUz7PxDZSXimf6GTztL5a+HIApK7K6ZKWorfz1igIt1kIyluvUt5j7
+	 IKGrsvxQlbXNn2xlFpdEIAwrki+NbdpaZAn6WtVFssdkY+CatuHNN+4gvXDYucgC4dEQO
+	 zjTjV+631dcniASmligkmvP/AOeO2r77TFZd+tleyqWgaq95RGqWp5PLVRy4YnXfPFnkv
+	 Ox2SyVjCVNBx5OmJYcoYarij86iRJaI9N2iI1La0KgvXNd33SvVkqL9rAw07I8j6vCw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=L0RpxqJ3;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.43
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A52606A31E;
-	Tue, 24 Nov 2026 02:00:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66A52606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E51F606A321
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 02:04:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E51F606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kx0ffL+x
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795485650; x=1827021650;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=lcA3kg9TsxK18noq96/6h7QbMzoV2+N3Xz/cpoKQw4E=;
-  b=kx0ffL+xdSHPlZK1wiM9oFZbyuzfDZf3fOzsCDgwAFqi3+Aod6lc9UQF
-   90ZYOtQS6+Xcdg/4hkzIaIIsJh0CpQwjJhHcuDhjhm0KUqHX4doxNzwLo
-   xQ5M9NZdrKIAP+EaE8sXu1cE8yW+xt2oAxNLqxtVafQ1MyFcb25/RNSOm
-   EfPh/uadsQzCp7/Z/B3o3QPIFuevsI7XzKk4meZ3EN+abzmp2NvVF14Ez
-   sOgQ4Rp12QNfXIaT2ml29yCE2h7/96vUDpEJxLKEc7JtNo4E2cjgYNAgA
-   w+2Uw4/xnMLbQvHgyV2bSsuk27T0O6GGGy+xn/db3MUMTHeYTF1PmFouu
-   g==;
-X-CSE-ConnectionGUID: PEcslABSQy6tg3NYkyfucw==
-X-CSE-MsgGUID: G/OSGO9FSquc1nzbM9R1Ig==
-X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4360960"
-X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; 
-   d="scan'208";a="4360960"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 18:00:49 -0800
-X-CSE-ConnectionGUID: 7kg1gRCKQK+nRgQBRs1u1w==
-X-CSE-MsgGUID: GOfZ3mg7Tr+rrB3JCjetsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; 
-   d="scan'208";a="11776766"
-Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by fmviesa006.fm.intel.com with ESMTP; 23 Nov 2026 18:00:49 -0800
-From: Sohil Mehta <sohil.mehta@intel.com>
-To: Dave Hansen <dave.hansen@linux.intel.com>,
-	Borislav Petkov <bp@alien8.de>
-Cc: Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Xin Li <xin@zytor.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	"Chang S . Bae" <chang.seok.bae@intel.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sohil Mehta <sohil.mehta@intel.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] x86/fred: Add this_cpu_fred_sp() and export it for KVM
-Date: Mon, 23 Nov 2026 17:58:40 -0800
-Message-ID: <20261124015840.2673975-1-sohil.mehta@intel.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=L0RpxqJ3
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5be58ad9600so19740e87.0
+        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 18:04:47 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795485886; cv=none;
+        d=google.com; s=arc-20260327;
+        b=M/LBX+99lqiLsZNmK4KbXsoWQ5VtuGY0XmSU61mfcyo3x7gzdNn0dlYZKI/TQkSt/9
+         Pj4vkhL0jkZPaqdf5ykcE+ZBfpMfb0vuEb/9QYDZnktQtsu1dbcg38iUIqWFfs2tcHty
+         UCPSKxwoxAivJqpg4v0v8dVxQx9LVXarlk2VGA7KEMOiYV9TVkdy9Cym5aa1a6I0PNDv
+         24145umw7IWTj1RbVzcOy/CjbYt6xLmgaSgKh0qg9P+UpqfUn8jz4mbnnAyM4+sLWqGT
+         DpgwDXoei8rZh5krNYyBdXHyNtxta97S+HDfofPVxvchU+o+B58PENQQ6xjxF/qvZvWS
+         oK/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=QZ8jeJhff8TwVzDr8mq7hnVn9Uwjnn1WsiAHJK7NNrs=;
+        fh=DsiymIGnqbnxpH8tpINYYp7CX6Gtc1QBUZEU7XBXgSE=;
+        b=S9fvPHAyb6UxSzn0DcoVdZxQLo8oRDmU3VynBA9kpj1Iz7vqXP1fsxn99UpisqK92+
+         bR/AeLuTjI4Tq8USdBeKyqLNf2/12NrJyJwiL+0NEwZdHJGCl3Zyhs+w7CtDCAw+xTjp
+         x1oomCxcNndSqqX3yhlH+mIFOvTU0NB/hcU9lVKFyUX2bPoQxEsY8lUdqVzGraseyQyG
+         KekjgByjmYrlz+xFzM1qyNtlCBeCY2X2tsQagukxTxJQRVlryx5hqx160miura31rdXV
+         LYxXHkQcB3U2wl1pCs6EuVe7hrW0vhhRsA5ILjBK8CVatyaiUlylDe8h5mTGcTWoFM0O
+         /V7g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795485886; x=1796090686; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QZ8jeJhff8TwVzDr8mq7hnVn9Uwjnn1WsiAHJK7NNrs=;
+        b=L0RpxqJ3H3vfIondTW9HJ/az8lgDil5r+HuyNxNnNhLQOf2oGb44oVjlYZZ+gh8FUp
+         YRQV8N/SB+uatGgO1g6guubw92PZVRFi3ULUsqNY3tbCH9GO9MFBfzaiTxvGwihkI8E7
+         Nux/OeuuUXG790sQr93e9tZhdiZJhFHzeJkdZ7c12Ywao2StJEmWY+YoDktqF8YdpAZN
+         VB/eEBd2/XlFWhHx5tD5FNtvXH3i6BBM5TOujwrhcQi3WSBjYB28lHWY6ANGaCe1aD9F
+         ql1zKRP3San7mpRd0WjMU4fGw762QFGBdqDJWQsSd1WcNze3/Tzy7yR/Z3t5U3V5sc5S
+         u6/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795485886; x=1796090686;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QZ8jeJhff8TwVzDr8mq7hnVn9Uwjnn1WsiAHJK7NNrs=;
+        b=DhbvAz9IgBQ3BfBmytcMrVkB2WnttUmkBh0VpL9IAGIYU22BFKahtYQ4OIo2190DPl
+         oAPN+ui202YOv9gJpDfA9qQ4bDqa1HG6t2+S/S54Ht8+cZfZG+ftdYUpoV/bzaAG1mos
+         AvXX3LWBMde57xk+gormjQqKcHGRkzEB2ZtWYo3314YJ+fLch8Pq2A9NFW5Wqx5VmTjd
+         OYnpsl4KQ89Rs23qFPpGlXAUfbUoDIjct+cQhMkalvtnUQBu+DVfoNwAPxeV8eqk+PVP
+         VYeNxygooh9eDj74OyVxrzEw8jivoTaUTEc48gQc1FXysKIeCXxbruGxC8mUP5VEiukO
+         7bFg==
+X-Forwarded-Encrypted: i=1; AL+hErFW6elF0aVFeROP4SyNjNLGjTMAW+YPH/XV04J2J9DhguxnXnxkzAED2g78+DQonqmRwfY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+liGINW3RywOA/hiVrWH8+de1/2TBYZHSyaWvlRc7pHZ/+UAxB
+	rYJY+fZ8FLhbijIJUHe6Vxq83yQOxxlN9sAoIjiy3472LbvKS6Cl1Sbe7ffKwnZqLYIdHSIEIh1
+	h6Ck/JEtx/QgJEs1kElb4ntHo2IheUteNOfrHDvfp
+X-Gm-Gg: AZFdTZca9xLXdFrhBPJNuu8izP067BpjCdJhf5K7DbpRQYx1/SetAUpquUjruZ9KoSB
+	EWcBAH8/R22UM6EMTPUkNsXTT6UfKExYnJRs/sQ8jG0sBlCxaFnyYyx3XZhBxRJRWtag/rj6PJW
+	KzNYSCfbmsYCgiDr5GWCQ7nkxmPyXox3DIGW9UgjclsXG9llbp+QALoMhSe73ihom0cp9x1CFq+
+	Sgc8b0dOTRSrHFGzyjjrZA/uTx/ABiBTD7Hts0dMthsds+VUG8805ZZi+dA9/R5fghAzuCOAlIt
+	fu0CzOT3LgtugWSFnGnrjU4hjxIdWsasibAg4jgRxHB10tEOGOglBdtmonC7xIGeALk+zL4yEU2
+	J6XRC68a+spYlbK7G+EqFBmdVWX08LF6GS6Gy9TwBBep91jy8Jmx/HLHEiQ0EUQtG4rC/Jga7hY
+	KXgZPK5ziwf9B4SXjQcc2BILk4wcSypKn6xGXzS4hAJ4jeVTUQGi8=
+X-Received: by 2002:a05:6512:b9e:b0:5c1:5209:5a44 with SMTP id
+ 2adb3069b0e04-5c1c8239441mr351300e87.4.1795485885773; Mon, 23 Nov 2026
+ 18:04:45 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -93,129 +105,53 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261123083337.2731019-1-aneesh.kumar@kernel.org> <20261123083337.2731019-11-aneesh.kumar@kernel.org>
+In-Reply-To: <20261123083337.2731019-11-aneesh.kumar@kernel.org>
+From: Jianxiong Gao <jxgao@google.com>
+Date: Mon, 23 Nov 2026 18:04:19 -0800
+X-Gm-Features: Aa3M54qI-S6sAhD3oo3lD3dF7U9WjxfGl_G2FEa2MNAlB4C8vKhlPO9m5SK63WY
+Message-ID: <CAMGD6P0pNAnq9U80dnpgbz+hHbX1yH1bdmXjcie4oiq7KizU=A@mail.gmail.com>
+Subject: Re: [PATCH v1 10/10] PCI/TSM: Configure accepted device DMA during
+ driver attachment
+To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>, 
+	Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Jonathan Cameron <jonathan.cameron@huawei.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
+	Alexey Kardashevskiy <aik@amd.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Steven Price <steven.price@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Lukas Wunner <lukas@wunner.de>, 
+	Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, driver-core@lists.linux.dev, 
+	linux-pci@vger.kernel.org, kvm@vger.kernel.org, patches@lists.linux.dev, 
+	Zhichuang Sun <zhichuang@google.com>, Piranava Tamilselvan <piranavat@google.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Ackerley Tng <ackerleytng@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-FRED adds fields to the VMCS host-state area for the stack pointers of
-stack levels 1 to 3. The CPU loads these pointers on every VM exit to
-ensure a valid FRED event delivery context is established immediately.
-These values are per CPU, so KVM has to refresh them each time a vCPU is
-loaded onto a CPU.
+On Mon, Nov 23, 2026 at 02:03:37PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> + /* driver_managed_dma is unsupported. */
+> + if (to_pci_driver(pdev->dev.driver)->driver_managed_dma) {
+> + ret =3D -EOPNOTSUPP;
+> + goto out;
+> + }
 
-The stack for each level is assigned implicitly, when the FRED RSP MSRs
-are programmed during CPU initialization. KVM could read the MSRs back,
-but that costs three RDMSRs on every vCPU load, while the kernel already
-has the values at hand. Add a helper that returns the corresponding
-stack pointer for each FRED RSP MSR. Use it to program the MSRs during
-init, and export it for KVM.
+Hi Aneesh,
+A short clarification question on this check: once a guest TSM driver
+implements dma_enable, pci_tsm_dma_prepare() will reject binding
+vfio-pci (and other driver_managed_dma drivers like pci-stub) with
+-EOPNOTSUPP on both locked and accepted TDIs.
+Is rejecting driver_managed_dma just a scope limit for this series, or
+the intended long-term policy? If it's a scope limit, is the expected
+direction for in-guest vfio-pci to enable private DMA when it claims DMA
+ownership / attaches an IOMMU domain (via iommufd or vfio_iommu_type1),
+rather than during pci_dma_configure()?
+We run a userspace accelerator driver over vfio-pci inside a confidential
+guest on an accepted TDI (similar in model to DPDK/SPDK), so knowing the
+planned direction for driver_managed_dma =E2=80=94 and whether any upstream=
+ work
+is planned for in-guest vfio-pci support on TDIs =E2=80=94 would really hel=
+p us
+plan.
 
-Key the helper on the MSR rather than on a stack level, so that KVM
-never needs to know which exception stack backs which level. Eventually,
-the same interface can be extended for the FRED shadow stack MSRs as
-well.
-
-Originally-by: Xin Li <xin@zytor.com>
-Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
----
-I have been working on splitting the FRED KVM series to make it easier
-to review and merge. I am posting this separately because the patch has
-a minor dependency on the ESTACK_ prefix patch merged in tip today. The
-main goal is to collect acks from the x86 maintainers.
-
-The first exported user for the helper is going to be in the FRED KVM
-series, so I assume this would likely be merged via the KVM tree. You
-can consider merging it via the x86 tree if you are feeling generous :)
-
-Note, based on a quick check on a CWF system, reading the three FRED RSP
-MSRs takes about ~6x longer than reading the per-CPU cached values.
-
-v1:
- - Key the helper on the FRED RSP MSR rather than on a stack level.
-   https://lore.kernel.org/lkml/82dc24e3-f574-4696-99cb-87c0c04eab93@intel.com/
- - Warn and return 0 on an unexpected MSR rather than calling BUG().
- - Add a comment saying why stack level 2 is special.
- - Drop Binbin's Reviewed-by and Xin's author tag, since the interface
-   has changed.
-
-FRED KVM v10:
- - https://lore.kernel.org/lkml/20260911213659.2025974-7-sohil.mehta@intel.com/
----
- arch/x86/include/asm/fred.h |  2 ++
- arch/x86/kernel/fred.c      | 29 ++++++++++++++++++++++++++---
- 2 files changed, 28 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/include/asm/fred.h b/arch/x86/include/asm/fred.h
-index 18a2f811c358..eb0b231f24ae 100644
---- a/arch/x86/include/asm/fred.h
-+++ b/arch/x86/include/asm/fred.h
-@@ -88,6 +88,7 @@ static __always_inline void fred_entry_from_kvm(unsigned int type, unsigned int
- void cpu_init_fred_exceptions(void);
- void cpu_init_fred_rsps(void);
- void fred_complete_exception_setup(void);
-+unsigned long this_cpu_fred_sp(u32 msr);
- 
- DECLARE_PER_CPU(unsigned long, fred_rsp0);
- 
-@@ -110,6 +111,7 @@ static __always_inline unsigned long fred_event_data(struct pt_regs *regs) { ret
- static inline void cpu_init_fred_exceptions(void) { }
- static inline void cpu_init_fred_rsps(void) { }
- static inline void fred_complete_exception_setup(void) { }
-+static inline unsigned long this_cpu_fred_sp(u32 msr) { return 0; }
- static inline void fred_sync_rsp0(unsigned long rsp0) { }
- static inline void fred_update_rsp0(void) { }
- #endif /* CONFIG_X86_FRED */
-diff --git a/arch/x86/kernel/fred.c b/arch/x86/kernel/fred.c
-index 1c452a389a70..12d2fda60e69 100644
---- a/arch/x86/kernel/fred.c
-+++ b/arch/x86/kernel/fred.c
-@@ -1,5 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #include <linux/kernel.h>
-+#include <linux/kvm_types.h>
- 
- #include <asm/desc.h>
- #include <asm/fred.h>
-@@ -25,6 +26,28 @@
- DEFINE_PER_CPU(unsigned long, fred_rsp0);
- EXPORT_PER_CPU_SYMBOL(fred_rsp0);
- 
-+unsigned long this_cpu_fred_sp(u32 msr)
-+{
-+	switch (msr) {
-+	case MSR_IA32_FRED_RSP0:
-+		return __this_cpu_read(fred_rsp0);
-+	case MSR_IA32_FRED_RSP1:
-+		return __this_cpu_ist_top_va(ESTACK_DB);
-+	case MSR_IA32_FRED_RSP2:
-+		/*
-+		 * NMI and #MC both use the NMI stack so ESTACK_MCE is left
-+		 * unused on a FRED system.
-+		 */
-+		return __this_cpu_ist_top_va(ESTACK_NMI);
-+	case MSR_IA32_FRED_RSP3:
-+		return __this_cpu_ist_top_va(ESTACK_DF);
-+	default:
-+		WARN_ONCE(1, "Unexpected FRED stack pointer MSR 0x%x\n", msr);
-+		return 0;
-+	}
-+}
-+EXPORT_SYMBOL_FOR_KVM(this_cpu_fred_sp);
-+
- void cpu_init_fred_exceptions(void)
- {
- 	/*
-@@ -84,7 +107,7 @@ void cpu_init_fred_rsps(void)
- 	       FRED_STKLVL(X86_TRAP_DF,  FRED_DF_STACK_LEVEL));
- 
- 	/* The FRED equivalents to IST stacks... */
--	wrmsrq(MSR_IA32_FRED_RSP1, __this_cpu_ist_top_va(ESTACK_DB));
--	wrmsrq(MSR_IA32_FRED_RSP2, __this_cpu_ist_top_va(ESTACK_NMI));
--	wrmsrq(MSR_IA32_FRED_RSP3, __this_cpu_ist_top_va(ESTACK_DF));
-+	wrmsrq(MSR_IA32_FRED_RSP1, this_cpu_fred_sp(MSR_IA32_FRED_RSP1));
-+	wrmsrq(MSR_IA32_FRED_RSP2, this_cpu_fred_sp(MSR_IA32_FRED_RSP2));
-+	wrmsrq(MSR_IA32_FRED_RSP3, this_cpu_fred_sp(MSR_IA32_FRED_RSP3));
- }
-
-base-commit: 135dbd0519cf7f72af120801ec7dbb79275a362d
--- 
-2.43.0
-
+Thanks,
+Jianxiong Gao and Zhichuang Sun
