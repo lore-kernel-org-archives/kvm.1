@@ -1,80 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795552812;
-	b=IGFftTOf0FaU5LFrtScTQRcXJyZHWovUhp9gS3pM1hrGx6qWr7fUGr2owebGL4m6qUH7
-	 e5gXH46gxdr8rERVX9LaFSkwgzIlrlXHy4i8obhLRqa+xGUN15v32AJF2ejHl4Et81Ak5
-	 jSwghrbrR9NvrB6+FyapFhzW5rWDsv6FhEQrarjnP3y3rjC5CUuGoOTwYhciWCPw7c7d0
-	 I1e1cDVpjBu62+R2hLidx67Sh4LoXxY0+5rJLOeC8l4T4x56D42oyW++Ep8h2fG/3cNQi
-	 aclb0gvKPymCq4xF5d41EQ9bhDOINUFasl9ZmcVK9WWl0+urVeMHvwU/YMp3cX+UBuQ==
+	t=1795552864;
+	b=ZDBwMI812yo9yZy77MF2hsTF7BwdKafBxGOMwe2wKenWiHO9AGTPFHmEdEbIM3ttJePu
+	 PgRayPtq6QFODq4atrEPAJGvRoermRN8Q1mSh7t+Hv3O5ZqSwEMln+6cg+jZuuNsVTiFH
+	 Yj/dy3MP4941ojhF8agHxYmJbwXI7/UzlUcOH5uOAWW4IR4JZod5AVLz7DS6FevRQzK2+
+	 JVzYSqBQXDAvlAcGE2GdXat11M0P4QR+OWfhOZkZTPnYNNSXRd37nKOMq663H8seIVClW
+	 y0QM+L6MK3FkuPLig0Xn/FYjY/kyLGz8rmEKWEllk+mAkuN2yx+3NgpGYHbqDaHKOZA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795552812;
-	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
-	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
-	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
-	 X-SA-Exim-Scanned;
-	bh=hMuj+ug/fxhLYLNO1oE/KBX7iI12GhDtXeAuAVnleAA=;
-	b=MsxtYgPA1csrjHPKsqTSJJB5V3LxZzICQSFDbFWrlejBKKB2s02DWOix6D3ouMN2gaJ1
-	 pxZuo8uSN8m6xv4FkBTDJ6536vb/iF7wd00aFlz5RRCvBJXBr38Tw7Czzmh7/DXzdaLyp
-	 iR9uSng3vXfAO6gJ0XZ3saMskW1EgPhBZTAw3xASjc54j9w1j+oyAsPTFJQ9J22eH0i8G
-	 D3XZi4r/K/l3VjodZ7irRpyylcyZkpPSF5JVzvRyC0bKFOXUH16/jbpLBbyMnHVfV/nvi
-	 yyxe4HBNRyB29oi3oD+SIOd+YDq+TslJsyHVwdgCU2QT6RNOL9wqMV/+NL4aFWeeeDg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795552864;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=uk/D/QjVmnfcsDpzFvl9QIjuM8lT16j6eXyUDrS+n9c=;
+	b=S6i1JkUoekiN/x22GmdPFbAADwXt9gxrGTf4kiOfeT6NiwFg23rHSQQAZhnjAet8GPCm
+	 Bag2xeMqmcmaVEIL49GloHd31nj+CMnX8/wiFgspwb5UCRp4YLeZQ9EpiQpVq5Gam4ALJ
+	 PtciFeZDIKA3ge6sTAvPjcN5DqofAWmpUHmSmLGSyayXonw96HjF+zWEWhb2OiUl66v6H
+	 eh0x+rNEvHelFAfuVvjjOdaPk4YiguwFOEMsrtRyiuxO+VV9DoZTy3R1L7hTeSX6cGdys
+	 23G+CvWqTDoP75duUv6cCnAF4wuXBpJB4KNQN3vIuXCvIHgUp82pv7okNiezTk6Ee9Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OPqInZwC;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ahnl9s73;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6B8606A327;
-	Tue, 24 Nov 2026 20:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB245606A330;
+	Tue, 24 Nov 2026 20:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OPqInZwC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C1B1F000F2;
-	Tue, 24 Nov 2026 20:40:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ahnl9s73
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E291F000C6;
+	Tue, 24 Nov 2026 20:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795552812;
-	bh=hMuj+ug/fxhLYLNO1oE/KBX7iI12GhDtXeAuAVnleAA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=OPqInZwC/CqupG7koI9mIkLSCBw89eRaMnjN1qL3mwg/+B3u+oaz/UTO4NxO8ny8G
-	 OYTSd/hkpotETzpHt6A/FopAza4LQpZQRcdYzmeYL5AFwnX/fgM+HUs5hmCLIxxMxg
-	 tLZHc3la9K4OZr0eqnkmyyxz45TeCU6FxdieV0aqbYyXDMGBZsxEDy3jCgLwLBhv8J
-	 OAcpZbqbAkJX10huAvRtnT0geFvThdyJmkjA2MRVr5ljdZ8ZyJVQpJUDiXt/uinv+e
-	 lxECIdfxWLkiiTbwyN0crS5I3Gd3S0S1tz/0IjnfLyLEldWFL+zSScuyaL5jg3/Lrc
-	 ZWgNvvAgQm7dQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xVxJB-00000002mQ4-47zv;
-	Tue, 24 Nov 2026 20:40:10 +0000
-Date: Tue, 24 Nov 2026 20:42:19 +0000
-Message-ID: <87a4my7yhg.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Colton Lewis <coltonlewis@google.com>
-Cc: Oliver Upton <oupton@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Wei-Lin Chang <weilin.chang@arm.com>,
-	Dan Carpenter <dan@pereq.eu>,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] KVM: arm64: nv: Discard undersized TTL hints in compute_tlb_inval_range()
-In-Reply-To: <20261124202215.3731849-1-coltonlewis@google.com>
-References: <20261123232647.3733149-1-coltonlewis@google.com>
-	<20261123232647.3733149-2-coltonlewis@google.com>
-	<867bi2z87n.wl-maz@kernel.org>
-	<20261124202215.3731849-1-coltonlewis@google.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20260515; t=1795552863;
+	bh=uk/D/QjVmnfcsDpzFvl9QIjuM8lT16j6eXyUDrS+n9c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ahnl9s73C8uo6WO1zrLYeCpJM7qrtNcfczc77qS5kbgU/zHt2sFxOV4qrMTsQqX9E
+	 S0M6DeZRygyDyraX+bLeA55TQrl3AMsyxNsVHZy5g73k5jK8lD3wMsaRx1G1pKiuXn
+	 q8Bjgx4tw1cWODlPvsCBTmWOcyUWthorFkTSWumrvrUIXwVRCsGvUNvh5iNmC1SpCD
+	 OyNDgSI8mkfXjqeHwQjaAoa6JDIbSOEdviepCOtR1vWsS8yJsHWitDL+zoVQ0vPcAc
+	 kJ/anmPOOs2XaxMg8CahIwPNnXVv/xEB0zzCPnHKqvMRH2CrKQiuOQ+AwuzQb56Io1
+	 cbpiMCvkZxa9w==
+Date: Tue, 24 Nov 2026 20:41:01 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: linux-perf-users@vger.kernel.org, kvm@vger.kernel.org
+Subject: Re: [RFC PATCH 02/26] perf/core: Don't subtract guest time for
+ events that keep counting
+Message-ID: <awXz6uAojKNYe2Sd@google.com>
+References: <20261124002303.1785363-1-yosry@kernel.org>
+ <20261124002303.1785363-3-yosry@kernel.org>
+ <sashiko-outbox-230300@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -83,42 +58,150 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: coltonlewis@google.com, oupton@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, fuad.tabba@linux.dev, seiden@linux.ibm.com, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, weilin.chang@arm.com, dan@pereq.eu, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <sashiko-outbox-230300@kernel.org>
 
-On Tue, 24 Nov 2026 20:22:15 +0000,
-Colton Lewis <coltonlewis@google.com> wrote:
+On Tue, Nov 24, 2026 at 12:45:18AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [High] perf/core: NULL pointer deref in
+>   perf_event_exclude_guest_time()
+> --
 > 
-> On Tue, 24 Nov 2026 13:10:04 +0000, Marc Zyngier <maz@kernel.org> wrote:
-> > What's the advantage doing all this dance over the patch proposed at
-> > [1]?
-> >
-> > 	M.
-> >
-> > [1] https://lore.kernel.org/all/20261123182312.4842-1-maz@kernel.org/
+> commit db83e3f1bd6bd93912ce35d2e1ee8eb8daf9be37
+> Author: Yosry Ahmed <yosry@kernel.org>
 > 
-> [1] only catches TTL hints smaller than host PAGE_SIZE. It does not
-> catch a hint that is >= PAGE_SIZE but smaller than the mapped block,
-> such as a 4kB L3 hint on a 2MB block on a 4kB host.
+> perf/core: Don't subtract guest time for events that keep counting
+> 
+> This commit restricts guest time subtraction to host-only events in a
+> mediated-capable PMU context so that events in non-mediated PMU contexts
+> do not have guest time subtracted while they continue counting.
+> 
+> > diff --git a/kernel/events/core.c b/kernel/events/core.c
+> > index 6f076e5483cb7..5a3e40155ce70 100644
+> > --- a/kernel/events/core.c
+> > +++ b/kernel/events/core.c
+> 
+> [ ... ]
+> 
+> > @@ -872,12 +873,22 @@ static_assert(offsetof(struct perf_event_context, timeguest) -
+> >  #define T_TOTAL		0
+> >  #define T_GUEST		1
+> >  
+> > +/*
+> > + * Exclude guest time only for host-only events in a mediated PMU context, as
+> > + * those are scheduled out while a guest with a mediated vPMU runs.
+> > + */
+> > +static inline bool perf_event_exclude_guest_time(struct perf_event *event)
+> > +{
+> > +	return event->attr.exclude_guest &&
+> > +	       (event->pmu_ctx->pmu->capabilities & PERF_PMU_CAP_MEDIATED_VPMU);
+> > +}
+> 
+> [Severity: High]
+> Can event->pmu_ctx be NULL here when reading a revoked event?
+> 
+> When perf_pmu_unregister() detaches an event, __pmu_detach_event() puts
+> and clears event->pmu_ctx while event->ctx remains valid until the last
+> file reference is dropped.  If an event with exclude_guest=1 is held in a
+> BPF_MAP_TYPE_PERF_EVENT_ARRAY map after its PMU is unregistered, calling
+> bpf_perf_event_read_value() reaches perf_event_read_local() ->
+> calc_timer_values() -> perf_event_time_now() ->
+> perf_event_exclude_guest_time(), causing a NULL pointer dereference on
+> event->pmu_ctx.
 
-Why do you think this makes *any* difference? The hint passed by the
-guest is utter bollocks, and the best thing would be to not invalidate
-anything. It's just too invasive to do elegantly.
+I had convinced myself event->pmu_ctx here cannot be NULL, but I was
+wrong. I don't think a NULL check helps, probably accessing the PMU here
+is not safe at all as we can race against it being freed or cleared.  We
+are not holding any locks here, and the freeing path doesn't do an RCU
+sync after detaching events.
 
-> I can rebase on top of [1] so it goes to stable on its own. Following
-> the same pattern, compute_tlb_inval_range() can check
-> mmu->guest_s2_mappings at addr for an entry larger than max_size and
-> clear it to 0 to use the maximum-extent fallback, dropping the extra
-> page-table walk and KVM_NV_GUEST_MAP_SZ check. Would that work for v3?
+We can either use RCU to synchronize lockless readers against the PMU
+being freed/cleared, or record exclude_guest_time as a property of the
+event when adding it and query that directly.
 
-No, I don't want it at all, unless you can prove that this there is
-something architecturally incorrect in what I'm proposing.
+The RCU option might be invasive, so perhaps the second approach is
+preferable? Something like this on top:
 
-	M.
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index 1308b99a0abb6..cd9ede863514f 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -828,6 +828,11 @@ struct perf_event {
+        u16                             header_size;
+        u16                             id_header_size;
+        u16                             read_size;
++       /*
++        * Exclude guest time from time_enabled/time_running. Set in
++        * list_add_event() under ctx->lock.
++        */
++       bool                            exclude_guest_time;
+        struct hw_perf_event            hw;
 
--- 
-Jazz isn't dead. It just smells funny.
+        struct perf_event_context       *ctx;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 33422b92dc0db..ec08be5c1fcbe 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -878,22 +878,12 @@ static_assert(offsetof(struct perf_event_context, timeguest) -
+ #define T_TOTAL                0
+ #define T_GUEST                1
+
+-/*
+- * Exclude guest time only for host-only events in a mediated PMU context, as
+- * those are scheduled out while a guest with a mediated vPMU runs.
+- */
+-static inline bool perf_event_exclude_guest_time(struct perf_event *event)
+-{
+-       return event->attr.exclude_guest &&
+-              (event->pmu_ctx->pmu->capabilities & PERF_PMU_CAP_MEDIATED_VPMU);
+-}
+-
+ static inline u64 __perf_event_time_ctx(struct perf_event *event,
+                                        struct perf_time_ctx *times)
+ {
+        u64 time = times[T_TOTAL].time;
+
+-       if (perf_event_exclude_guest_time(event))
++       if (event->exclude_guest_time)
+                time -= times[T_GUEST].time;
+
+        return time;
+@@ -906,7 +896,7 @@ static inline u64 __perf_event_time_ctx_now(struct perf_event *event,
+        u64 time = now + READ_ONCE(times[T_TOTAL].offset);
+        u64 guest_time;
+
+-       if (perf_event_exclude_guest_time(event)) {
++       if (event->exclude_guest_time) {
+                if (is_guest_mediated_pmu_loaded())
+                        guest_time = now + READ_ONCE(times[T_GUEST].offset);
+                else
+@@ -2017,6 +2007,21 @@ list_add_event(struct perf_event *event, struct perf_event_context *ctx)
+        WARN_ON_ONCE(event->attach_state & PERF_ATTACH_CONTEXT);
+        event->attach_state |= PERF_ATTACH_CONTEXT;
+
++       /*
++        * Exclude guest time only for host-only events in a mediated PMU
++        * context, as those are scheduled out while a guest with a mediated
++        * vPMU runs.
++        *
++        * Latch this when the event is added, as the time functions can run
++        * locklessly (e.g. perf_event_read_local()) and event->pmu_ctx is
++        * cleared when the PMU is unregistered.  This must be done before
++        * computing tstamp below, as perf_event_time() depends on it, so that
++        * tstamp and later time updates consistently include or exclude guest
++        * time.
++        */
++       event->exclude_guest_time = event->attr.exclude_guest &&
++               (event->pmu_ctx->pmu->capabilities & PERF_PMU_CAP_MEDIATED_VPMU);
++
+        event->tstamp = perf_event_time(event);
+
+        /*
+
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20261124002303.1785363-1-yosry@kernel.org?part=2
