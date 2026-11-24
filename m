@@ -1,54 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795562572;
-	b=bJwH94TZkpudX0/I9O1DADyECKifOAYCrDEJjIdnADgV5mJgL8lL4UY7dveEn+VQEHdq
-	 D87b8EkVxjiT83ibyWv4RlPw7syuv1TN1+GRN60jfSlZmvBFvPZ8RR/ADXDZxyAKcSGSF
-	 kR4GL2kOOLkFE5b1XE3nxNnwirKgGbg9qPlvQ9e1e6Dehp7ZIlPC9CNfa34lT/Qjggkde
-	 bO1gCBNk58u48/YJ8EeOWgH+T0lAmn/AeH8s2TOgWaiMV17kxwF3xSYCtmzD+BBvh+2B5
-	 T29n7fNz+OtKCvHMlev7pieMVv2phOcDFqyQxjomObhf05mFJOy4XD3v7bvePyK+6vA==
+	t=1795562582;
+	b=TIizZaPKHWbOtshxGBjdn9WCufsagXnRisFqsVh528iiv+8tRYShx7QjpjvEeWhAbsKo
+	 xjJuUFi77hUQdEW1Y0pzgPttrzMBjprRO4ni7x90b7AEat+e2UyLUpAeA7rZqk7aKR7ji
+	 YrW0vYVrSDXlkAnl+kg8gprOk0cKBCsAbc4bFZpxuvTrt+fNBbX7SWVJ0iHkCI/kNpmd6
+	 Z4yj+PRNrW51UL024LGpkudj50wrEZV/tOCAu6dPgZTSXxgmIkyOlu32RgrnA/bSvSWbJ
+	 +oF0HUCuXGGxscumMQF0/kQ67V6mievaaS9sS7ip5Zli1UbK0knVRXYjXzIpK1y/mLg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795562572;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795562582;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=hdyfm7GpJ9FLtKxanRFDOcqZILwEpUm9W0rWeuqixlE=;
-	b=z2/oVa9ItJ2BZ0cdNi15zS6cXAjMKX15ynNXJ0iohKqJ5ZXnlbgxvHa7rjuco8QYX/0I
-	 d5nirzJdl1rrql0H7evSprmXc5dc4ZiQ/lAUxyfDIu1fGZOPkYtUUOaGEBh1DxvD0e2Pm
-	 ME8F9dnwFtSrsFYlfH72N0KkuWmX7sKxGMJrf1vc8h/IceZ55adOsQClEMFte1hxLs564
-	 cFPgR1QvUklkp0/XJuLK8DHMq9jR6PcwPAjeDqn8ibV6XHk4TJiH8vHPyvRcQW8M+kfdC
-	 MDq3LoVl6YtK8epDeh5E/9t621uP5c4vDUbBpsVucTljxXOC3hkkpNoRjs8dix29C3w==
+	bh=ru4a8UM9O3xCvIpKu2plhw/a8+vAtA+xiCf/OELsEVY=;
+	b=zRQypEksK8EabbQSv2ADIXlShsv4PDZ2TZb7ARmPqzp9x8ok86wqAaw4Lelg2wRuVLdc
+	 6XHToWeLA/21gaAtzXCt9B4utjnjAHhwKx5YVy0mbUNSAZIjDRpcsHcaIP/KmJDuVPuyg
+	 QFGOJ2CGsyLU1o7e/zCc3UFKPw95tw13d5C5fdsxdweRFlf/6QCMsseW3SgAxlyVY/Cvf
+	 XBS1Fzh/kXVk01Szg0Btik/mv0HnDXc++c32vljcsa8uYj+FCOsmyENQlGBFOTGYJSuyy
+	 spseIdlJDRMg4rcpj0cX0AGRR+iWlruG0Ltep2a3bsYtK6cehnrgbgWTFWc7bpvGIMg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
-	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=F0Nol9H4;
-	arc=none smtp.remote-ip=90.155.50.34
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	spf=none smtp.mailfrom=desiato.srs.infradead.org;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=WRHaMACr;
+	arc=none smtp.remote-ip=90.155.92.199
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95A2606A31E
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:22:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E95A2606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3971606A681
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:23:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E3971606A681
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=F0Nol9H4
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=WRHaMACr
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=hdyfm7GpJ9FLtKxanRFDOcqZILwEpUm9W0rWeuqixlE=; b=F0Nol9H4CEqNAfhv45Miss1ani
-	XYN56Xrq1FtjpWaI+0gypS+mw7nIwd42pCP5rcyfVh4xuGfpKPgSLOH2uZsFlXKv1tQ/F+oxOI5CK
-	Kj5H0gbwqBHB7QSo1N566xQmUml0PTsrsM1rU6jCnMLrmNln1ejFCepPXGFtDoxg3iLhD/jLBqxvg
-	vYhuHo5DB734c1HXV6N7p/BKnfe2M65z8yq4F0Od8T3n/kWa37KO5yWGtAXXDEPhkOjAXLFyyqrhn
-	wAbc+SNxGqvJPLVYcD7ySaztLDqj7iw3PM1gqCwYQik1oHclEgkEjdcaYiZ+in+mfTTVw7w/Hnwh+
-	vYlx3IGw==;
+	bh=ru4a8UM9O3xCvIpKu2plhw/a8+vAtA+xiCf/OELsEVY=; b=WRHaMACr7U547v9WsamrbQoawa
+	fPF/kHI27grJEbdrnlIBH7N29jbWjnv+JfB7onyE9iPhQbUREJcwMWuM6vIHflMHMB1L7jIIyZs4f
+	kcaFoK4GVkf7AJGpChTsP/9mne7aTYIroB4kGlo5ylsq92Id+x+cvsO13bR3/PlIiQrxjLOkvBxNW
+	UMW9ANbOiPoPgglDCvH5Rl1or6RXkMCJpfVXn4EHvp3IusB5rAxM9TBvxAKuHTT77DVUiuDi1y0ue
+	fiBe1ifeYtHBgOaf0NVIy8dPf0GGmyqMtxGj16/Z1LIv2CVHjWjqldYF+ps2Gyw/yNKlbNkOy+kG4
+	sIt/Y2ww==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xVzqa-0000000Gdi3-0ZNx;
-	Tue, 24 Nov 2026 23:22:48 +0000
+	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xVzqc-00000004eV7-1qji;
+	Tue, 24 Nov 2026 23:22:51 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xVzqZ-0000000062w-2xwb;
+	id 1xVzqZ-00000000630-33i9;
 	Tue, 24 Nov 2026 23:22:47 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
@@ -69,9 +69,9 @@ Cc: xen-devel@lists.xenproject.org,
 	Mark Syms <mark.syms@citrix.com>,
 	Feifan Qian <bea1e@proton.me>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v1 18/21] hw/net/xen_nic: Bound the TX and RX rings' producer index
-Date: Tue, 24 Nov 2026 23:22:44 +0000
-Message-ID: <20261124232247.23169-19-dwmw2@infradead.org>
+Subject: [PATCH v1 19/21] hw/xen: Bound the rep count of PIO and MMIO ioreqs
+Date: Tue, 24 Nov 2026 23:22:45 +0000
+Message-ID: <20261124232247.23169-20-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261124232247.23169-1-dwmw2@infradead.org>
 References: <20261124232247.23169-1-dwmw2@infradead.org>
@@ -86,50 +86,69 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-net_tx_packets() consumed requests until req_cons caught up with the
-raw req_prod from the shared ring. A bogus req_prod made the loop
-process up to 2^32 stale slots while holding the BQL. Check
-RING_REQUEST_PROD_OVERFLOW on both rings, as xen-block already does.
+cpu_ioreq_pio() and cpu_ioreq_move() iterated req->count times with no
+upper bound, so a count of UINT32_MAX kept the vCPU handler thread
+spinning through four billion iterations. Xen's instruction emulator
+clips a rep batch to at most 4096 repetitions (hvmemul_virtual_to_linear()
+and hvmemul_linear_to_phys() both apply that bound before an ioreq is
+sent), so reject larger counts as malformed, and reject a zero size, as
+the other framing checks here already do.
 
-Fixes: e613b064a88a ("xen: add net backend driver.")
-Reported-by: Hui Peng <benquike@gmail.com>
-Closes: https://gitlab.com/qemu-project/qemu/-/work_items/4515
+Fixes: 9ce94e7c8a99 ("xen: Initialize event channels and io rings")
+Reported-by: Feifan Qian <bea1e@proton.me>
+Closes: https://gitlab.com/qemu-project/qemu/-/work_items/3756
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/net/xen_nic.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ hw/xen/xen-hvm-common.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/hw/net/xen_nic.c b/hw/net/xen_nic.c
-index e615303da6a..4de2464376f 100644
---- a/hw/net/xen_nic.c
-+++ b/hw/net/xen_nic.c
-@@ -138,6 +138,12 @@ static bool net_tx_packets(struct XenNetDev *netdev)
-         rp = netdev->tx_ring.sring->req_prod;
-         xen_rmb(); /* Ensure we see queued requests up to 'rp'. */
+diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
+index 62d88804c43..48ce655448b 100644
+--- a/hw/xen/xen-hvm-common.c
++++ b/hw/xen/xen-hvm-common.c
+@@ -321,10 +321,20 @@ void cpu_ioreq_pio(ioreq_t *req)
+     trace_cpu_ioreq_pio(req, req->dir, req->df, req->data_is_ptr, req->addr,
+                          req->data, req->count, req->size);
  
-+        if (RING_REQUEST_PROD_OVERFLOW(&netdev->tx_ring, rp)) {
-+            qemu_log_mask(LOG_GUEST_ERROR, "vif%u: bad req_prod %u\n",
-+                          netdev->dev, rp);
-+            break;
-+        }
-+
-         while ((rc != rp)) {
-             if (RING_REQUEST_CONS_OVERFLOW(&netdev->tx_ring, rc)) {
-                 break;
-@@ -268,7 +274,8 @@ static ssize_t net_rx_packet(NetClientState *nc, const uint8_t *buf, size_t size
-     rp = netdev->rx_ring.sring->req_prod;
-     xen_rmb(); /* Ensure we see queued requests up to 'rp'. */
- 
--    if (rc == rp || RING_REQUEST_CONS_OVERFLOW(&netdev->rx_ring, rc)) {
-+    if (rc == rp || RING_REQUEST_PROD_OVERFLOW(&netdev->rx_ring, rp) ||
-+        RING_REQUEST_CONS_OVERFLOW(&netdev->rx_ring, rc)) {
-         return 0;
+-    if (req->size > sizeof(uint32_t)) {
++    if (req->size == 0 || req->size > sizeof(uint32_t)) {
+         hw_error("PIO: bad size (%u)", req->size);
      }
-     if (size > XEN_PAGE_SIZE - NET_IP_ALIGN) {
+ 
++    /*
++     * Xen's instruction emulator clips a rep batch to at most 4096
++     * repetitions (hvmemul_virtual_to_linear(), hvmemul_linear_to_phys()),
++     * so the count of a well-formed ioreq is bounded. Don't spin for
++     * 2^32 iterations on a corrupted one.
++     */
++    if (req->data_is_ptr && req->count > 4096) {
++        hw_error("PIO: bad count (%u)", req->count);
++    }
++
+     if (req->dir == IOREQ_READ) {
+         if (!req->data_is_ptr) {
+             req->data = do_inp(req->addr, req->size);
+@@ -361,10 +371,15 @@ static void cpu_ioreq_move(ioreq_t *req)
+     trace_cpu_ioreq_move(req, req->dir, req->df, req->data_is_ptr, req->addr,
+                          req->data, req->count, req->size);
+ 
+-    if (req->size > sizeof(req->data)) {
++    if (req->size == 0 || req->size > sizeof(req->data)) {
+         hw_error("MMIO: bad size (%u)", req->size);
+     }
+ 
++    /* As for PIO: Xen clips a rep batch to at most 4096 repetitions. */
++    if (req->count > 4096) {
++        hw_error("MMIO: bad count (%u)", req->count);
++    }
++
+     if (!req->data_is_ptr) {
+         if (req->dir == IOREQ_READ) {
+             for (i = 0; i < req->count; i++) {
 -- 
 2.43.0
 
