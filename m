@@ -1,13 +1,13 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.57
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.57.33
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795501502;
-	b=gfH689887RS3EGfueXaw0+B8Y59amm9hNiAxzuReqjTu27EXqRUTzWwSjPPTpeQkvEo+
-	 kGInhL4MkAOqa306EFFnPKeP1yDQOgOmFYH3vOiY6ZlR54CJ6xNT7cjVM+jAtoZxCm/Vv
-	 WHdpRwHcFGmabBFSgvwQLA8s1Wxlu1pDGVR3KWuG5fr7T7rvDYBbIB5YQjwhVX1m+bQo0
-	 AXe4LLUz37fkdTmil2Bk45ZQM/ogEyeEKVHZ7PcwDiFazeeVsUxbX4dqBoz2AtN1ylwqP
-	 XTlUp1soqo/dGkpDUbbP+Ad7jtrfyYWOGw4u/mI0dD6is1AwTQLdAzu/Aibb9QZGAAA==
+	t=1795501546;
+	b=vBSLBSVW06CD743LiQ0baZ09AzNBIrsNzuCgR6op5PFref9+Ra9rIZh4ZeVgL+NkNego
+	 lMxjglqd11qGN6JgJbHeA0DP3AB7f9XGgapM6CZfiHZYAWiJIrzSD0Msh/esdpkqP+gF7
+	 oybQ58vttSiGsLI88wsg5qqPw7VQQwE/gXpVYpaJkF0iIX+RTwUmvgPXMYuwhte5ev6fM
+	 y0xABma5lCUbE0o1cIOuEmfuRAIuAx1M+BQXOYXcgiGPpz/bekN9sQbCtFSIaoagR3OM3
+	 OjWJZYKw/dtB6nsuKPzcPA+mwz4EBIwWkPcbKAQyFRGTHodKBSWtM73ORyfM8b6gmPg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795501502;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795501546;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:
 	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
 	 Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:
@@ -26,53 +26,52 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
 	 X-MS-Exchange-CrossTenant-FromEntityHeader:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=IoT0vIe2G3ihI/TsJQTNFkIU8eacPW9xi02yoe6lakE=;
-	b=gW+bEgH06CctvEp0fjHDExqhlzgZAMhY8eZH67HqpROGaXoTvsDVlGp5HTvMvAIIISyO
-	 70hppgLdpJNV6CBlPy1fFYeAwfY4Q/d8wxE++vXboXhKtr2Qn8Lk543/PWgyA6qEX3wkq
-	 0kuwZSgFaWCPLQzm/IKtIc6tV70n9jPCHmCUSgrhKXL9CR0TsXIDUfSYkY8sKEuYhmhif
-	 LKw29Gqw3KnP0KimwT497U5rSeeJkmZmcd8y+u6PUeEDCP09naLsVTaTVLDDZ4vdXDWJp
-	 oZmcUZJfq+mV7AwpXBz0XaC9LRThQOYX9pYWujue/Py8/e42ARfAMd6de0N27drIyjQ==
+	bh=4jJX4/LDDDz9epcWOPp9tiP7S5HITTL17Uf5A7DbzqM=;
+	b=Pa/xOMzHvYtuhnOPw3gy08sONM7XGEHdYq6jCPuAmRROY9fOdWix8lBdpI8xjUxzk7i5
+	 nBCqtvmGxXPBwDsiualpFsDSBAT3ZL32h72dzH9/HoqJTZ0GbMFxKXdZRAP/3vUrBxbGM
+	 O67mHGsp3lzOk0oF3Yo0TglXEvlIgJoBV+k2EtaJ2SvuMEt5AVMNefSqvfAu8L3e01mP6
+	 zne2NvlgVErN1pAGA9GatfY4BXUn4waLQQ5WhemUAchm79gJkN0PL0AXkiWo7dgxV52ZZ
+	 MlSvc74260iwPwYT/rhwEZ7szLnbJHgztQrjJnR5Cct/z8ymep2OFEYA2fq2rPpzKwQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=amd.com;
 	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=zU51z5Fu;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.57
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010057.outbound.protection.outlook.com [52.101.193.57])
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=XQk8wyMG;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.57.33
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011033.outbound.protection.outlook.com [52.101.57.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6692B606A322
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 06:25:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6692B606A322
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD383606A321
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 06:25:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD383606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=zU51z5Fu
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=XQk8wyMG
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UG53Qadw3apMWjjGbPPe1LJpQeBBKzS4zhoU1dsyxWZdywhF8R3xDuWDeH8/ztlBf1LfbUpwrs+G95QXT2Mbw9/b+WzItk04elRV5113cp3SO390WZ2/V/ZpDMdLm1U9kQZiPfEMOtgQlamtIL8uy2axxnAv6yV0Zi+CE2fltYEKwqsxPQR6kQRUhDbuDE4tC2HrnnIOLsyACricKskMkqPqlJuLVXocuzp8+jAMaq/wF1PDZyif8kX304d0ohMasylBYBcsPobHY2s9LacNcIf6HAJ0iEodty1kYpBnotadoplKGijV17OavpExX+vdqxdrGiEMNR3GqZvwuqKq1A==
+ b=WqtsVVZ8lIcN9VhgBQIbJ4oA76gZRD1hZ7WOLFEygGgvKo+sQy5/C8xGBDBZhtj5WG341k11tOlKtKXLBsvlvickVf4crBvtatVjwSaUy6u6fFUExdYCnhMo48XEP/KqnQm+cy/1SFMxgJce5VzQcmlXufrZCbtZ3QqdCNSZHL+yMmKPNEhB8TFYxPSvoOoaOXfPDt+EXGyswN5U5Xf/UlA1dwxoVv3wehB+AOrF2eBqSV7ADHRh+d1JF70BVTb5saGszthbVMSDAhTD9/SLjWCAL6PJTRtYANdWvSxC4sbEmbhJxEFM4K+hvHch/xSNsxrZWZS+L9JWEkE3cWBLKg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IoT0vIe2G3ihI/TsJQTNFkIU8eacPW9xi02yoe6lakE=;
- b=VAfqOGrjD7QzTKfWOEdURVnioHteFC6hvgZqJy6LE66+Je129nFLhfLsv36rqOV9It5JfiemMJQpKg/rXY2ui9V1lAhurydvvtSAyBdfAcop316T9VwiiqJuQl3rMYZWxzpDEn5IHf/ivGzrhJobDdhV26aDDonER9V1wSKpWbvFAPFxQlErRuvFDNbxufQ1zGUSBt/uRMtnWtuFDqzXs09nHoMWpQar/BpuHFt7i/N/rBi8TgZvJI8a5shCWoZgdcLglSRlEndhqpc0+EiKwJsblkxbKkzvpFa7yeJT2Fh3nXcOTtCHUC761TkMDstAzc9RNoikOyMJV0Xm9emOqQ==
+ bh=4jJX4/LDDDz9epcWOPp9tiP7S5HITTL17Uf5A7DbzqM=;
+ b=LOsWQeF/BRkGpUnUmd2O5iSOlTWVnxMcLOXLLPaBsBXC7DTXhjhXbHDpRLL2UTaj2YqRnyFpjlGrMDeIeb1K/yJ6GbUxK3AirjvZm0nUQZPTO/NDyGnNnmmr1I3XuZ/jCY9ThSojLPU/8qIrYMgHwOCCRZsISGZTCoMKsTc+9zDRV1+RToN1Fxu7/tozr0p8Q2OXr7JMF5lzhJ57aAeQUxyrb2UY6dz22j1biBDLwP02mqTA8G0t2CWMHsgef5RTOKg7DqI2A/rqtPgiojGm4SIM0t1Ikl9UkQit0IMdkkCQngoGd8PrNtCkyPjwyBFPuxdb1YO+5AbKPZ9ojERDhw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IoT0vIe2G3ihI/TsJQTNFkIU8eacPW9xi02yoe6lakE=;
- b=zU51z5FuPrfXRQlpZnPU3LKexx70i1YsTx65yjZoD+G3NnlhRi27Y/aHxSnDg3gEpR68rZ4B/5nuid4i24NcooQRCHWoVXFk63fUdL2SGRcgg+FsDANNhhrQjLMq8m+HljNGOUNf0OMWd8TkzJBWtNYi4OWV1PjrWRD7e3AD7I0=
-Received: from CH0PR03CA0085.namprd03.prod.outlook.com (2603:10b6:610:cc::30)
- by SJ2PR12MB8884.namprd12.prod.outlook.com (2603:10b6:a03:547::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.4; Tue, 24 Nov
- 2026 06:22:51 +0000
-Received: from BN3PEPF00022BC3.namprd05.prod.outlook.com
- (2603:10b6:610:cc:cafe::24) by CH0PR03CA0085.outlook.office365.com
- (2603:10b6:610:cc::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.662.5 via Frontend Transport; Tue, 24
- Nov 2026 06:22:50 +0000
+ bh=4jJX4/LDDDz9epcWOPp9tiP7S5HITTL17Uf5A7DbzqM=;
+ b=XQk8wyMG8C883LOB4bu55bpFqPBGrd8roWPtaLHmxlyOiuJI5HY5yIWVejI1RfbVKMiYcisUkVznhoGkesn8cfzy8X/x7VFQKUl1fixQENpzcPOcVEPWSjR4j86gi6WF/VnoQwdtKdcbaBlY5lpQUocTOmQhqvjSBYZcWvpViQk=
+Received: from CH0PR04CA0006.namprd04.prod.outlook.com (2603:10b6:610:76::11)
+ by DM4PR12MB6615.namprd12.prod.outlook.com (2603:10b6:8:8d::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.639.10; Tue, 24 Nov 2026 06:25:42 +0000
+Received: from BN7PEPF000000AB.namprd05.prod.outlook.com
+ (2603:10b6:610:76:cafe::97) by CH0PR04CA0006.outlook.office365.com
+ (2603:10b6:610:76::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.662.6 via Frontend Transport; Tue, 24
+ Nov 2026 06:25:41 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -80,22 +79,22 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN3PEPF00022BC3.mail.protection.outlook.com (10.167.248.215) with Microsoft
+ BN7PEPF000000AB.mail.protection.outlook.com (10.167.245.235) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.662.3 via Frontend Transport; Tue, 24 Nov 2026 06:22:50 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
+ 15.21.662.3 via Frontend Transport; Tue, 24 Nov 2026 06:25:41 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Tue, 24 Nov
- 2026 00:22:49 -0600
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 00:25:41 -0600
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Tue, 24 Nov
- 2026 00:22:49 -0600
+ 2026 00:25:41 -0600
 Received: from [10.136.18.146] (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.57 via Frontend
- Transport; Tue, 24 Nov 2026 00:22:45 -0600
-Message-ID: <9c863ed8-a28d-44f8-8ba6-8812d3977f70@amd.com>
-Date: Tue, 24 Nov 2026 11:52:44 +0530
+ Transport; Tue, 24 Nov 2026 00:25:37 -0600
+Message-ID: <e0c72f4b-53b9-409b-97d2-f95f006a6f32@amd.com>
+Date: Tue, 24 Nov 2026 11:55:37 +0530
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -106,8 +105,7 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/12] KVM: SVM: Enable hardware-assisted LBRv2
- virtualization
+Subject: Re: [PATCH v2 07/12] KVM: SVM: Advertise LbrExtV2 to userspace
 To: Jim Mattson <jmattson@google.com>
 CC: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
 	<mingo@redhat.com>, <peterz@infradead.org>, <acme@kernel.org>,
@@ -115,146 +113,70 @@ CC: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
 	<thomas.lendacky@amd.com>, <nikunj.dadhania@amd.com>, Shivansh Dhiman
 	<shivansh.dhiman@amd.com>
 References: <20261019210532.378628-1-shivansh.dhiman@amd.com>
- <20261019210532.378628-5-shivansh.dhiman@amd.com>
- <CALMp9eS+vfR=Gk5QhLFrCZ4MyCq1YrunViB=tB5OLo+L8Ka+OA@mail.gmail.com>
- <e09b97b3-7439-4b33-8c2b-033ba131a0a8@amd.com>
- <CALMp9eQSicA=nOaxOrU37Z1ROPYFhwKgBMX-Pav=qqvb+WUDew@mail.gmail.com>
+ <20261019210532.378628-8-shivansh.dhiman@amd.com>
+ <CALMp9eQmOcq0Edb6Txfe1NPASbY=3u=NSkQrVAbtqtecr6WWqA@mail.gmail.com>
+ <cc34f113-d67c-4c9d-875b-5f44ccc5c5ab@amd.com>
+ <CALMp9eRs85yTG-wgtv2S+eVCwWt2SmjH4OAOPm5cQjQB8yv9tg@mail.gmail.com>
 Content-Language: en-US
 From: Shivansh Dhiman <shivansh.dhiman@amd.com>
-In-Reply-To: <CALMp9eQSicA=nOaxOrU37Z1ROPYFhwKgBMX-Pav=qqvb+WUDew@mail.gmail.com>
+In-Reply-To: <CALMp9eRs85yTG-wgtv2S+eVCwWt2SmjH4OAOPm5cQjQB8yv9tg@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF00022BC3:EE_|SJ2PR12MB8884:EE_
-X-MS-Office365-Filtering-Correlation-Id: 89432df8-49c7-48ac-38e4-08df49f35d76
+X-MS-TrafficTypeDiagnostic: BN7PEPF000000AB:EE_|DM4PR12MB6615:EE_
+X-MS-Office365-Filtering-Correlation-Id: f1b491bd-5531-44b4-d2f3-08df49f3c3a2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|376014|7416014|36860700016|23010399003|6133799003|261009223027099003|22082099003|18002099003|4143699003|56012099006|11063799006|5023799004|261028144727099003|261102123227099003|261026140227099003|261026121527099003|261022105027099003|261022075727099003|261021121427099003|261021135927099003|10067099003;
+	BCL:0;ARA:13230040|1800799024|82310400026|23010399003|7416014|376014|36860700016|18002099003|6133799003|22082099003|11063799006|56012099006|4143699003|261102123227099003|261026121527099003|261022105027099003|261022075727099003|261021121427099003|261026140227099003|261028144727099003|10067099003;
 X-Microsoft-Antispam-Message-Info:
-	a4Z6Cg0N5yuU8IMLY+MX2HvpNb+OomKW1hHruZZfplmXcbsfMB1MAvlAV2BEfV4oU3EQarU6qeEYMNJpGEp0tL9r9uIjWBG/zrTRT/DLidhviBtyCzP0KwZHlbBRft3n37/RftXGPfMEhluOM+lY7lkQMt0d9uy3wQ0OnVHoGS2nIs7Y0cCX/PmAA/YCVpTKNFqdLfcKSzgHZ21PbG+oFsb0ELLpRdDvsCDyItLWPcH5fKlTwVzjDMcFisi5h+AoDzQZUkrfbxnS4P8eh/3nrXJpBbZasNTQxTg55zsrs06lzwX2w+BJhn5mQ+bGJeCNpm+NhCJTZJ41RU+5utniR2aEoDzd+lpfUSnC72+3Mwh7EsAJiuIafSWFBXoDOzI9n0TIkHkp/FuCNiCFOarciys+GkwR1sXWZKkMKHvdBWvzWvioxdwQizUZ9JZuYnTG47wAD+iVgU+RlxUqjcGU/A+AaXn5varlXkSGqkkF04FiwoWNhFlL0GPgt50CtOF/EgqYZmrlYe15RzwljT/EGu9DaLUo+m+LFyVYbdr5rx/gnCxzDtbyWoBCu3HkTTflwTCw2fpKYHscTL5cNZechhn3frqNa4X46DaL8B2pXacHHM6rM+W27JmfwiFXVsUKUC1JQ+daoPqzrIOQ02AAaRrq6cKlobu/GZ8X08gyKuTWmKtOYbU+L89khGeOYfbZdN9P4wXxc6TcAs2NnwAWqw==
+	TofyjBsYCt/GhVvlfhFGvTqubOH+4e1YaGp2fJVO/5KgGpzeSkj+Wj7Mkuhcic1v6Q/fFD9YhwjY7VycyfHYDn/h5RCpYX0ofX2/thwwcf5p2XSEQbtXH3LAAFo6d0l74Xg95n/7Wpp+RNy2dDumbvjlP2stQsQYij8wy3+DJuRbs0+aMvkU30gUwttR5ehjeIY0We0RMX/b0Q/MxJa56uv1YjvSmqFEeEXrlMZS3z2rvCkk+vgof6FU0ZoXQwVCX88S6x6rfPT1LW7dALLOi/n+MLzn7liWX6fAMAtTJO7AIVoGu9cx6+mulusucMx3KbUM5Gepjjxmd/tmQYGY+1sVBFbYUxlAB+DiCDj+9ot9Wv20xRqOCRB0lCWGUzzvAoyNGMfujCM1UzOp/21wKdZn7Fk6UxVJp5TX73jEXi1ps8Ly0+1OkMIDrIOjNHCKJFrYdiGRqNLoKEiPuEGpL1xpOKaZV7de77jUjKmbyLArfZ1ln6e0xDsCVsK90WsZRXjHx4aDU+AJnT9uGm4OcwT27LR2KENtQoHryMadsL0HyNoKGpIIoE87JTNB63r5g1I61RPZXVhS9fdEHcHmnqs7zXTzLGY8vx3jLwvddWrjj9SFARKXbO/Ys71BZUN2aCc6eAyC5G3tTPHBmBpykp2lNRsxbHceShAelL/IDnkwrqN5sX1raz3W9wiC1EI8EOhY9jar2gR8STTw8n8mfA==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(7416014)(36860700016)(23010399003)(6133799003)(261009223027099003)(22082099003)(18002099003)(4143699003)(56012099006)(11063799006)(5023799004)(261028144727099003)(261102123227099003)(261026140227099003)(261026121527099003)(261022105027099003)(261022075727099003)(261021121427099003)(261021135927099003)(10067099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(23010399003)(7416014)(376014)(36860700016)(18002099003)(6133799003)(22082099003)(11063799006)(56012099006)(4143699003)(261102123227099003)(261026121527099003)(261022105027099003)(261022075727099003)(261021121427099003)(261026140227099003)(261028144727099003)(10067099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	MCkhAOTr7YfureappdQ0jsQzMZN1ST0G9MpNB4RnjqzApAmHTVX2/eUqKugFPbeqCKFktvEB+/UvBSN8ForiIhEpGbcVOGVdxTAGnB2mmDF1mpAsI9aZsYwkxKnCZdsfqVktuupDAAchZ4u6EsWNJPlfjJCw4hqE/xvRcJTIRk5YhFnWu2CFpAXEQc4uNpjZVTjEno1N+VNG7o9uUrhpRYuGgFHDUedrG7jEihhqgl5DrES+B6zosocNlBdQGXvmSa5Dtqzulx5eG6sfVJ5WpIJrmQnbinAC5rgI+GEWJgFTjSmB864nl3byp9pA7w0a9vLuCT/SiWXsqoAlLCo5iL4d502228ku0fs9DCbbkwrmRmUVmN4JHO8zCrvf5ATl0QCWPPBIPr72N+gsMu5AGl+fiCC7eDOtriJHbtfoeygYv+4Zi7PwD9K9fqtl6IUv
+	dvEafmpmdHpLpNVRD/IiekpVWSncnHONBSvlxvf7KHe56kySiTxxq8XsSSc8bpjyTIQJdvyNzNFiH4ma+z7mFYADOWPmj0N2vyPynO0lMSDMac31d3gbmCpVv+Qof+OJ7TYqxC2HqqGf3I35Amr84QqvMJzY0D65FsAnRKQiOqZb726I/C0KKgk1bCb9Wiz0zbIzCIAi0eGEnSXxHxZ4zJMliqkS78yO+rMhf52S4ry4qhlU/ahLDLZ1slJFw54VQDMx9U1A9nSi4xDLvJPPg/Y9/UMLqX0u06jJWleP9G9cRegpT0ymo86RotIUaurUeHEyo72AleOPnyI1D1BAR6WvxpcLgiMRhbe5tmMU66/qh/eNAVepPPmvl8RpVKmd+PIcJk8TdSb8Bu9V/znuXLG0ge63AJz1Ut4QiIiTG+vcICIDy/b7RX/cXOH9vwZz
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 06:22:50.3387
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 06:25:41.7574
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 89432df8-49c7-48ac-38e4-08df49f35d76
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1b491bd-5531-44b4-d2f3-08df49f3c3a2
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF00022BC3.namprd05.prod.outlook.com
+	BN7PEPF000000AB.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8884
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6615
 
 
 
-On 20-11-26 03:26, Jim Mattson wrote:
-> On Sun, Nov 15, 2026 at 12:33 PM Shivansh Dhiman <shivansh.dhiman@amd.com> wrote:
->> On 22-10-26 05:04, Jim Mattson wrote:
->>> On Mon, Oct 19, 2026 at 2:07 PM Shivansh Dhiman <shivansh.dhiman@amd.com> wrote:
+On 20-11-26 03:28, Jim Mattson wrote:
+> On Wed, Nov 4, 2026 at 10:42 PM Shivansh Dhiman <shivansh.dhiman@amd.com> wrote:
+>> On 22-10-26 05:19, Jim Mattson wrote:
+>>> On Mon, Oct 19, 2026 at 2:08 PM Shivansh Dhiman <shivansh.dhiman@amd.com> wrote:
 >>>>
->>>> Enable V_LBR so hardware saves and restores the guest's LBRv2 state in
->>>> the VMCB, and pass the LBRv2 MSRs through (by disabling interception)
->>>> to the guest while it is set. V_LBR is enabled lazily, only once the
->>>> guest turns on branch recording, just like legacy LBR keys off DEBUGCTL.
+>>>> Now that LBRv2 is fully virtualized, advertise it and report the LBR
+>>>> stack depth in CPUID. Gate the advertisement on LBR virtualization, the
+>>>> mediated PMU, PerfMonV2 and a 16-entry host stack, so KVM never exposes a
+>>>> configuration it cannot faithfully virtualize.
+>>>>
+>>>> Co-developed-by: Sandipan Das <sandipan.das@amd.com>
+>>>> Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+>>>> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+>>>> ---
 >>>
->>> For a Linux guest, I think lazy V_LBR toggling is a bad idea for guest
->>> context-switch when LBR is in use:
->>>
->>> Context-switch calls perf_pmu_disable() -> amd_pmu_lbr_reset() ->
->>> perf_pmu_enable().
->>>
->>> The PMU disable clears LBRV2EN, so V_LBR is cleared. As a result, KVM
->>> intercepts all of the LBR MSRs written in amd_pmu_lbr_reset(): 32
->>> stack writes plus LBR_SELECT.
+>>> In addition to what Sashiko said, I think this needs to come after
+>>> patch 08/12. Ortherwise, we can hit the KVM_BUG_ON(is_sev_es_guest) in
+>>> __svm_disable_lbrv().
 >>
->> Thanks for this. You are right, and I've been spending time experimenting
->> with it.
->>
->> I profiled the guest context switch and counted the intercepted MSRs on
->> the host. With lazy V_LBR, each switch into an LBR user causes a VM-Exit
->> for all 32 stack writes and for LBR_SELECT. The reset then becomes the
->> largest part of the guest context switch.
->>
->> When I kept V_LBR on, these VM-Exits disappeared, and the reset took
->> about the same time as on bare metal. The same workloads ran several
->> times faster. For a guest that has LbrExtV2 but does not use it, V_LBR
->> on adds a fixed cost to each VM-Exit, because the CPU saves and loads
->> the LBR stack.
->>
->> I can see two ways forward:
->>
->>   A) Turn V_LBR on at KVM_SET_CPUID whenever LbrExtV2 is exposed, and
->>      keep it on. This is the simplest. But a guest that never uses
->>      LBRv2 pays the cost on each VM-Exit.
->>
->>   B) Turn V_LBR on when the guest first sets LBRV2EN, and keep it on
->>      until vCPU RESET. A guest that never uses LBRv2 pays nothing, and
->>      a guest that uses LBRv2 has no VM-Exits in the reset.
->>
->> Personally, I think that B is better because I do not wish to increase
->> the current overhead of a VM-Exit. Which one do you think is better?
->> Or do you see a better option?
+>> Makes sense. In next version, I will put this patch after the SEV-ES
+>> patch. Thanks.
 > 
-> I agree that B is better, since VMMs will routinely expose LbrExtV2 to
-> guests that never use it.
+> Please put it after the nSVM patches (09/12 and 10/12) as well, so
+> that KVM doesn't advertise LbrExtV2 to userspace before nested support
+> is in place.
 
-Thanks, I will implement B.
+Ack. Will do.
 
-> 
-> Note that KVM doesn't have a post-creation vCPU RESET path;
-> kvm_vcpu_reset(vcpu, false) only runs during vCPU creation.
-
-I see. Then, with B, V_LBR stays on for the life of the vCPU after the
-guest first sets LBRV2EN, also across a guest reboot. I think that V_LBR
-must turn off after a reboot.
-
-1) A SHUTDOWN, for example with reboot=triple, makes KVM INIT the vCPU,
-and that INIT can turn V_LBR off. But a guest must not need a triple
-fault for this.
-
-2) Another option is to turn V_LBR off when userspace writes DBG_EXTN_CFG
-with LBRV2EN clear. On a guest reboot, the VMM writes the reset values
-of the LBRv2 MSRs (QEMU does this with KVM_SET_MSRS), so this also
-covers a normal reboot.
-
-Is this acceptable? If not, I will just implement (B) and document the
-behavior in the commit message.
-
-> 
->> I also have two questions about this:
->>
->> 1. Legacy LBR. V_LBR also covers DEBUGCTL and the legacy LBR MSRs, and
->>    KVM toggles V_LBR lazily on DEBUGCTL.LBR. Must legacy LBR keep the
->>    lazy rule, or must it use the same rule as LBRv2?
-> 
-> Legacy LBR can keep the lazy rule. The four legacy LBR MSRs are
-> read-only, so there is no 32-MSR reset loop on context switch, and
-> keeping legacy LBR lazy avoids paying the 256-byte LBRv2 save/restore
-> cost forever if a guest only briefly enables DEBUGCTL.LBR or
-> DEBUGCTL.BUS_LOCK_DETECT.
-
-Makes sense. I'll keep that unchanged.
-
-> 
->> 2. DBG_EXTN_CFG. For non-SEV-ES guests, KVM intercepts it only to see
->>    LBRV2EN. With option A or B, KVM does not need to see it after
->>    V_LBR is on. With the reset fixed, the DBG_EXTN_CFG and DEBUGCTL
->>    VM-Exits are most of the remaining cost of the guest PMU disable and
->>    enable. Is it acceptable to pass DBG_EXTN_CFG through while V_LBR is
->>    on, as KVM already does for SEV-ES guests?
-> 
-> No. If future hardware defines new bits in DebugExtnCtl that KVM doesn't
-> virtualize or advertise to the guest, passing the MSR through would let the
-> guest enable an unvirtualized hardware feature and would break live
-> migration when svm_set_msr() rejects those bits via
-> DBG_EXTN_CFG_RESERVED_BITS.  That's the same reason KVM keeps
-> MSR_IA32_DEBUGCTLMSR intercepted for non-SEV-ES guests.
-
-Thanks. That also makes sense. I'll keep that MSR intercepted.
-
+-Shivansh
