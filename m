@@ -1,56 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795506773;
-	b=It6Df0cqEV7FrHT0W0tVsw/wfz8RWjthhrkgtp31BanQCwUaS62t2wmaQBjchPUwgyhm
-	 TEej7PQDSA6ReE57z00MwWFUcnyEmcrG5wXKmxrQvlzogMcSa8k8DjE+Ha3Jprfu6ledM
-	 jrcxT67hDUL/JsIPAISesjpTz8JvKLcXdh0BeuuGIa93ZMSuJJ0n8Huz+SUEJF4IR4so8
-	 dGkDwInk8rVVMGGt1GTW2JI3LwoAIka3vysxib3hpObxzFyQRswP9ht3zaSTYANxaZ5qF
-	 36Tk0gnULzY2GQEBPY86sJq18FiEzkbCYfPuzM+DY7qFAPz5N1LaEvMo/QCOYv93NjQ==
+	t=1795506846;
+	b=0EhvcP5xsAOFR8y+yVxTZ5l0T8ZJMC4sWN37PCidQxnGlSLcgkmYcYgY15l5ByXXIcEu
+	 ZXi0ML/zFEK8v2ew7mFQ9LgYpC5zGyEIghKx2kXFogDT+hiBYbkb9iv1Ng8SjVQgL5Wj8
+	 ks4oP0d6t07Hzb5Vj8rvKSJ2iZ+JrBgnWl5cx3YwywPmcBinzrbWm91fOoqfGER/EG1yj
+	 2hOJ0PqJ34uOupWVesGbCnwj+taWU/PNsrsj4giYIFxie+51PDQFmrrHz8oTqGf+yc8dq
+	 DwSNNl2j3KDwcyw5h++RNHqIOnmlvs6W7CdpW10ypNkj6Rc7FkDcIW3Y2MIjAho5DVw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795506773;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=M3/E2iAsr1JkDFrAcF0mgjUv0O+BVkL84W/T+yLbVnM=;
-	b=xIk8Ci4xQwhZPGl0b74fdYmhjIdXxXtRHc1yTJyTxREXFvULVT5WDmBH35yTnVKlkJe9
-	 msQAKqAb06FhCSfILJF6OY9WH21sgvwC8sO/yI7oXa2MlaCF76WWbNWz9evii92kuqB38
-	 KYlOdZs0whhHG2qqGlzSr8U6xw81Gd9sT0SXLE4EnguBSTHsUIIJsdQGYVxcuoJqdGVps
-	 ccRp/38K/h+rM8E1EXX1o6tbwL+XGPd5HXX1kFpZX9h+IKWyxY40qrnTODwchtklj8w/5
-	 R1FZ3hayl2reMlj0W1em6Yzh/7kMwCbcnqqldrccQhEjujArV+WwHyLyEXPxI/bduaw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795506846;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=WMCk1svQCiAH5bw92tRVNfz+1k/iEYiycS3j+Blsm0g=;
+	b=wfrfndL657CQBjI4sYP6qD3/ZtuU6CXYIaLYZYQ+DOv6Y/TJfjiAqMsFUuy6JhKV1xV7
+	 hjv50Xl56yD9WdxJi2+DJ4V5FvHVrcTzWjYAYCJH4DhnK+cRu3B4/OGh9ulmIOFflVKKF
+	 mhOwC5fsj2C+Q+ofkx1rmWQBrwjimIbDEw+SXR2fuNNpkzXVln3D8QhvFv6n3VwjFvbUl
+	 J/LddFj5s3CDFUZYOB9WM3ao4Ops3c9RxRIIdeS3RHtPB8Izz7QLUai950ffIsYptPkY4
+	 B1bZC+SrdNecLHAID0AXW1O47ChkemtBxYWEFZMRxLHxODpw66A5c4sK2L8OHPIaEuA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oi9hK6J8;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0wkISmoI;
+	arc=none smtp.remote-ip=209.85.216.49
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F2D606A327
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 07:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC9E606A31E
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 07:54:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7DC9E606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oi9hK6J8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F261F000D2;
-	Tue, 24 Nov 2026 07:52:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795506772;
-	bh=M3/E2iAsr1JkDFrAcF0mgjUv0O+BVkL84W/T+yLbVnM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=oi9hK6J82lVFkvg3bf+yt2CFGr+EKfvWlZG5yGwsIu2xWU0KlO5uHdTTaTAQkbwdA
-	 1YpTjvKFZXwtI3+S0uoQNcVs8XFShrMjliwhU6LE85sQmde52LoPJKhFCQVzcLURcB
-	 KZNR7ly5c5jO5YU9TRpKK5SEveHX3wJYNke1sKB8PcO226Rcd0Wzgso3VN2spIwN4i
-	 QF+RVmrpqw+3pPpnPUCsc27aFnTFMI9Td0F+KMNk5AgBv4MWXvhRCk9ijyfdCmqZsK
-	 BZ/sRE2Ltis9BCMQxZQ5UOLW7UjWKh2BLlbzCGDwROtzy7lu0MA1IEZIjDdX8sqKiA
-	 ONu7Rup/f/HSw==
-Message-ID: <sashiko-outbox-230684@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] vfio/pci: Align BAR mappings for huge page support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20261124073048.268988-3-guanghuifeng@linux.alibaba.com>
-References: <20261124073048.268988-1-guanghuifeng@linux.alibaba.com>
- <20261124073048.268988-3-guanghuifeng@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 24 Nov 2026 07:52:51 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0wkISmoI
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3ae6b4c669fso4242901a91.0
+        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 23:54:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795506846; x=1796111646; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:content-type:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WMCk1svQCiAH5bw92tRVNfz+1k/iEYiycS3j+Blsm0g=;
+        b=0wkISmoI1mzJabEiMEfJGv54TU56e7W0VBABOrLBgY0ki+ff6L2fYUDN+x20/+ASbr
+         DJ0bTdSvyfYnrEiTvJiYLEoyU5GCmKV+ftJdd2+CSCLNjzCJvwFLn2d1Jfu1mA0ugue0
+         L1AzSYPeMDNnVJtyOki+LeylRbMGTJ2DvpLemCHwlV17Ut4ZQEZbbEbXl1jtWXRdfJ3f
+         JdK08UMS8igYw+GFqzUtBr6jJ20wKbBh5pmrxm+YFfYVOvCjTSqcaBAWyi6ih+Ri5E6b
+         JLOPUXksPG9LWvxb263y6a27W9kkHo6B3HXNUzTwDSgcNqW6UtqjvOSTdYCiN2lO3soT
+         JMfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795506846; x=1796111646;
+        h=mime-version:content-transfer-encoding:content-type:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=WMCk1svQCiAH5bw92tRVNfz+1k/iEYiycS3j+Blsm0g=;
+        b=pewrZI3cIJkCNF6x6PlqaAasy9qa8hBsiuqpLR5i2fN6TkrOsuhQWzvfbW81stQ9Ld
+         hiJhnSbB3JGRSMjWkO9r6WrSxpaKTQyDmW/SiwgvThHlHFYF3eTQUsFv550+Ftkru3Fg
+         yQKHEJ5dN6tLxJMpf2/OPGXzNFvkQBQNqYkYB3mC3sLRVXwiohu93VriC36xaWe+Fvc4
+         WFshlL8zrCKlKzVHflaukPk2orAPTNyJADaac8aff4+mVQoefheQcLKPm1aQT97bdNF/
+         szIg1Uch2osqTrCpURwD3CwfBo0x6oVeiBXishNQhxino8y2+GQ4GbF6MdsYyCNoAYQC
+         CntQ==
+X-Forwarded-Encrypted: i=1; AL+hErEbwJHxISNIsBIzo7wWBt0zMVFPaI8ZBRyP+uJlHdwW602SdFbfVluZ4NPOEzIr9evnf6Y=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8+2xh8I0cHIYWk+tC5Ah37t7WkBoZLzt6NnAx5WuOSUCaBaY7O
+	Jn+dIAoVsS54CZsdE4/oh9/1clCkKHUKk0KFISYIZQSt1cK73MhHMj/mNTeGplmRh4w42y90
+X-Gm-Gg: AZFdTZdLsyh9D0CkSUe1u9WW4qWS1zolVLRchQCAzHJeCxntO7urBftUo7JQs9Gs+8E
+	cRk8ifsGdQvgowLLrzN2hZ1ULRKYoKAcCcOTxZiydeM4YvJCyzUqIdDaMVEP9qYQCDDF9vqdXg3
+	oNuWUruu9YoGqu6EgP1lZKaIzs+VRLYZI9qXoCyX3cK85nbpjhK21QrmxZAwDTdbL3/iG4DTZq5
+	Qm5Jnu1UU1U735t3BhmpIwedBm0/e1MfoR5XzsO1lt0Kom047QjpyUSgIDisD76KLUDCjD1isem
+	0AKeUofUuHqxrvUKj7WGiHot0mAHM8I+bSIKPJ/aV7IjBREG5JFhYlq8M1cHCVls+Y/+K/FGx0d
+	tfuv/E0FUwqh6JuDqRBq5jULdWYeBJvWkbA7i2ZAeQ93+yDq+yDEinrQEYazKOdTzHpsq4EPX7I
+	nOjtHJALDs+ONdIJ7+mdIHdsrFHASgRD/PuDOCiBK2ACN/QTDS0mLhF8DcyvV904ndYNZrh6svU
+	LZBmSUekC+puKlRNcyNE6BglFL37sdWNv+8kUxeFtd3tG9d24Rq7R/q1lrieh8Mio9qjigY/Eim
+	leSgraHl/K4ptPYIGIKzA9BhY0UiH6FeweHTEDu9K/5rfZKLGa4zFvT6JhvV9vsie3sDRHvbiTk
+	uMC7o80cTHO/IRQrjwbS3EL6xYaJqJ+loVLnl
+X-Received: by 2002:a17:90a:d607:b0:3b3:bcc2:6f8a with SMTP id 98e67ed59e1d1-3b41c96129amr8091678a91.35.1795506845627;
+        Mon, 23 Nov 2026 23:54:05 -0800 (PST)
+Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([43.224.245.233])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b405d97356sm24145658a91.13.2026.11.23.23.54.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Nov 2026 23:54:05 -0800 (PST)
+From: Qican Ma <goonsomeway@gmail.com>
+To: yishaih@nvidia.com, alex@shazbot.org
+Cc: jgg@ziepe.ca, skolothumtho@nvidia.com, kevin.tian@intel.com, kvm@vger.kernel.org
+Subject: [PATCH v2] vfio/mlx5: read migration buffers and f_pos under migf->lock
+Date: Tue, 24 Nov 2026 15:54:01 +0800
+Message-ID: <179550684160.38664.16653575201489890045@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,121 +95,78 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] vfio/pci: wrong align and no PMD fallback in
-  vfio_pci_core_get_unmapped_area()
-- [Medium] vfio/pci: missing MAP_FIXED check in
-  vfio_pci_core_get_unmapped_area()
---
+mlx5vf_resume_write() caches migf->buf[0] and migf->buf_header[0] and
+validates filp->f_pos before acquiring state_mutex and migf->lock.
+Because the migration file is opened with stream_open(), FMODE_ATOMIC_POS
+is cleared and concurrent writes on duplicated descriptors are not
+serialized by f_pos_lock. A racing writer inside migf->lock can free and
+reallocate migf->buf[0] or migf->buf_header[0] in PREP_HEADER_DATA or
+PREP_IMAGE, leaving the unlocked caller with a stale or freed pointer.
 
-commit 22651b52e2b64249734636f112ebe4aa3bd8ca86
-Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+Move the f_pos overflow check and buffer pointer reads under migf->lock
+after the MLX5_MIGF_STATE_ERROR check, matching the pattern used in
+commit 4ec5e932e636 ("vfio/qat: fix f_pos race in qat_vf_resume_write()").
+Set done = -EINVAL rather than ret = -EINVAL on invalid f_pos so the
+migration file is not transitioned into MLX5_MIGF_STATE_ERROR, preserving
+existing behavior.
 
-vfio/pci: Align BAR mappings for huge page support
+Found with an LLM-assisted code review tool and verified by inspection on
+v7.4-rc4 (b6a9fa34ce4). Build-tested only due to lack of mlx5 VF
+live-migration hardware.
 
-This commit implements vfio_pci_core_get_unmapped_area() to align BAR
-virtual addresses for PMD and PUD pfnmaps and sets VM_HUGEPAGE on BAR
-VMAs.
+Fixes: 6fadb021266d ("vfio/mlx5: Implement vfio_pci driver for mlx5 devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qican Ma <goonsomeway@gmail.com>
+---
+v2: resend via direct SMTP without line-wrapping corruption in the diff.
 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
-_core.c
-> index f2d5b6857925f..dd437f23b9384 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -1878,12 +1878,107 @@ int vfio_pci_core_mmap(struct vfio_device *core_=
-vdev, struct vm_area_struct *vma
-[ ... ]
-> +unsigned long vfio_pci_core_get_unmapped_area(struct vfio_device *core_v=
-dev,
-> +					      struct file *filp,
-> +					      unsigned long addr,
-> +					      unsigned long len,
-> +					      unsigned long pgoff,
-> +					      unsigned long flags)
-> +{
-> +	struct vfio_pci_core_device *vdev =3D
-> +		container_of(core_vdev, struct vfio_pci_core_device, vdev);
-> +	struct pci_dev *pdev =3D vdev->pdev;
-> +	unsigned long align, off, off_end, off_align, len_align, addr_align;
-> +	unsigned int index;
-> +	u64 bar_len;
-> +
-> +	/* The user asked for a specific address, don't second guess it */
-> +	if (addr)
-> +		goto out;
+ drivers/vfio/pci/mlx5/main.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-[Severity: Medium]
-Can this shift a fixed mapping at address 0 to a non-zero address when
-flags has MAP_FIXED or MAP_FIXED_NOREPLACE set?
+diff --git a/drivers/vfio/pci/mlx5/main.c b/drivers/vfio/pci/mlx5/main.c
+index 18a6d224b1f..ebcc22bcb75 100644
+--- a/drivers/vfio/pci/mlx5/main.c
++++ b/drivers/vfio/pci/mlx5/main.c
+@@ -884,8 +884,8 @@ static ssize_t mlx5vf_resume_write(struct file *filp, const char __user *buf,
+ 				   size_t len, loff_t *pos)
+ {
+ 	struct mlx5_vf_migration_file *migf = filp->private_data;
+-	struct mlx5_vhca_data_buffer *vhca_buf = migf->buf[0];
+-	struct mlx5_vhca_data_buffer *vhca_buf_header = migf->buf_header[0];
++	struct mlx5_vhca_data_buffer *vhca_buf;
++	struct mlx5_vhca_data_buffer *vhca_buf_header;
+ 	loff_t requested_length;
+ 	bool has_work = false;
+ 	ssize_t done = 0;
+@@ -895,10 +895,6 @@ static ssize_t mlx5vf_resume_write(struct file *filp, const char __user *buf,
+ 		return -ESPIPE;
+ 	pos = &filp->f_pos;
+ 
+-	if (*pos < 0 ||
+-	    check_add_overflow((loff_t)len, *pos, &requested_length))
+-		return -EINVAL;
+-
+ 	mutex_lock(&migf->mvdev->state_mutex);
+ 	mutex_lock(&migf->lock);
+ 	if (migf->state == MLX5_MIGF_STATE_ERROR) {
+@@ -906,6 +902,15 @@ static ssize_t mlx5vf_resume_write(struct file *filp, const char __user *buf,
+ 		goto out_unlock;
+ 	}
+ 
++	if (*pos < 0 ||
++	    check_add_overflow((loff_t)len, *pos, &requested_length)) {
++		done = -EINVAL;
++		goto out_unlock;
++	}
++
++	vhca_buf = migf->buf[0];
++	vhca_buf_header = migf->buf_header[0];
++
+ 	while (len || has_work) {
+ 		has_work = false;
+ 		switch (migf->load_state) {
+-- 
+2.50.1 (Apple Git-155)
 
-do_mmap() and vrm_set_new_addr() still invoke __get_unmapped_area() when
-MAP_FIXED is set.  With addr =3D=3D 0 and MAP_FIXED, mm_get_unmapped_area()
-returns 0 immediately, and the shift below changes the returned address to
-off & (align - 1).  When (off & (align - 1)) >=3D mmap_min_addr, do_mmap()
-with MAP_FIXED will then unmap and overwrite existing VMAs at
-[off & (align - 1), (off & (align - 1)) + len) instead of failing on
-address 0.
-
-Checking if (addr || (flags & MAP_FIXED)) before aligning avoids mutating
-a fixed address.
-
-> +
-> +	index =3D pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
-> +	if (index >=3D VFIO_PCI_ROM_REGION_INDEX || !vdev->bar_mmap_supported[i=
-ndex])
-> +		goto out;
-> +
-> +	bar_len =3D pci_resource_len(pdev, index);
-> +	if (!bar_len)
-> +		goto out;
-> +
-> +	/* The BAR size caps the page size we can map it with */
-> +	align =3D min_t(unsigned long, PUD_SIZE,
-> +		      rounddown_pow_of_two((unsigned long)bar_len));
-> +	if (align < PMD_SIZE)
-> +		goto out;
-> +	if (!IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) && align > PMD_SIZE)
-> +		align =3D PMD_SIZE;
-> +
-> +	/* Only an alignment that fits within the mapping length is useful */
-> +	while (align > PMD_SIZE && len < align)
-> +		align >>=3D 1;
-> +	if (align < PMD_SIZE)
-> +		goto out;
-> +
-> +	off =3D pgoff << PAGE_SHIFT;
-> +	off_end =3D off + len;
-> +	if (off_end < off)
-> +		goto out;
-> +	off_align =3D round_up(off, align);
-> +
-> +	/* The mapping has to span at least one fully aligned huge page */
-> +	if (off_end <=3D off_align || off_end - off_align < align)
-> +		goto out;
-
-[Severity: Medium]
-When CONFIG_ARCH_SUPPORTS_PUD_PFNMAP is enabled, doesn't this pick
-intermediate power-of-two alignments between PMD_SIZE and PUD_SIZE, and
-give up on PMD_SIZE alignment whenever the range does not span a full
-block at that larger alignment?
-
-vfio_pci_vmf_insert_pfn() only installs huge mappings at PUD_ORDER and
-PMD_ORDER.  For a BAR or mapping length between PMD_SIZE and PUD_SIZE
-(for example, a 16 MiB BAR with a 4 KiB MSI-X hole at the start and a
-4 KiB PBA hole at the end), align becomes 8 MiB, off_align rounds up to
-8 MiB, and off_end - off_align < align jumps to out with PAGE_SIZE
-alignment instead of aligning to PMD_SIZE.  Even when off is 0, a BAR
-between 4 MiB and 512 MiB reserves up to 512 MiB of extra virtual address
-slack when only PMD_SIZE pages can be faulted in.  Also, the second
-if (align < PMD_SIZE) check after the while loop cannot be reached because
-align >=3D PMD_SIZE before the loop and the loop stops at PMD_SIZE.
-
-Trying PUD_SIZE only when CONFIG_ARCH_SUPPORTS_PUD_PFNMAP is enabled and
-the mapping spans a PUD_SIZE-aligned block, and falling back to PMD_SIZE
-otherwise, would handle both full and sparse BAR mappings.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124073048.2689=
-88-1-guanghuifeng@linux.alibaba.com?part=3D2
