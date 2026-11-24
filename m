@@ -1,55 +1,53 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795552864;
-	b=ZDBwMI812yo9yZy77MF2hsTF7BwdKafBxGOMwe2wKenWiHO9AGTPFHmEdEbIM3ttJePu
-	 PgRayPtq6QFODq4atrEPAJGvRoermRN8Q1mSh7t+Hv3O5ZqSwEMln+6cg+jZuuNsVTiFH
-	 Yj/dy3MP4941ojhF8agHxYmJbwXI7/UzlUcOH5uOAWW4IR4JZod5AVLz7DS6FevRQzK2+
-	 JVzYSqBQXDAvlAcGE2GdXat11M0P4QR+OWfhOZkZTPnYNNSXRd37nKOMq663H8seIVClW
-	 y0QM+L6MK3FkuPLig0Xn/FYjY/kyLGz8rmEKWEllk+mAkuN2yx+3NgpGYHbqDaHKOZA==
+	t=1795553236;
+	b=QkyD8fijSJOJh7wXfHb/aF7mC7gWp/SNXQb6zL6fJISQepDygnk5bIHgChOQH0Wc3yA3
+	 o+T6Zr1Aog6BSqSLzMVACU5ZCFhE1E53R+6k7wBcJ1JSyBqL8LoxmehrRikRmntvRxSac
+	 nMT5d9Sgda4F2tL/xIZXys7EqLs8wkKTH/s5BcuU5Jb14W07+bqnvoCmteqFrWhNxD9hy
+	 BECYDq/rbEMMA57Txlnl55QdTCbIfIRxIDSrpBP2kbSpqSyT7wbpARKt3F19Yqmok6/iO
+	 ZVrR330gaw/7ClKfy2uR8zPj8310sdIrQpaqUQ5UvVltPJJFl018Fq+J/B4GCKDnvpA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795552864;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795553236;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=uk/D/QjVmnfcsDpzFvl9QIjuM8lT16j6eXyUDrS+n9c=;
-	b=S6i1JkUoekiN/x22GmdPFbAADwXt9gxrGTf4kiOfeT6NiwFg23rHSQQAZhnjAet8GPCm
-	 Bag2xeMqmcmaVEIL49GloHd31nj+CMnX8/wiFgspwb5UCRp4YLeZQ9EpiQpVq5Gam4ALJ
-	 PtciFeZDIKA3ge6sTAvPjcN5DqofAWmpUHmSmLGSyayXonw96HjF+zWEWhb2OiUl66v6H
-	 eh0x+rNEvHelFAfuVvjjOdaPk4YiguwFOEMsrtRyiuxO+VV9DoZTy3R1L7hTeSX6cGdys
-	 23G+CvWqTDoP75duUv6cCnAF4wuXBpJB4KNQN3vIuXCvIHgUp82pv7okNiezTk6Ee9Q==
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=yFGdnGMEIu/NB7E4HB0GZctBtJwytKx4mRTKCli0u+4=;
+	b=tVQL6gginOF3LpmFgU33QRlV7lxpMKCkh7ZRLYomzNyhAmd027w1T7mMTDJkiVcB8vYV
+	 +/LQQc72bmmuRDmdsAvJVJDHewpOVsioX7ePocUL/TIeZz6bWlXpU1ppR7pIk3g6nuxvv
+	 jvjBQMiY9yACVROpSnuQIvUfK3llAh0TByZGEPqJzXt/7Df2vFiZXM71Pi+VHuz5KFqIs
+	 EK2Wn3l5q/+KMnPjmOJu3VZZi+rS6aQfW1ACIsOG8rY5K8S6mdt6T3lYP4vYWWunfHm4J
+	 dfDKKEyvPKK/EWeqnZp5LgL3JgEQFRwyVBRu/c4Q4vfqr4UIcesbHAoRCEfOwHsqvaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ahnl9s73;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mitw+JKM;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB245606A330;
-	Tue, 24 Nov 2026 20:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AB5606A68D;
+	Tue, 24 Nov 2026 20:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ahnl9s73
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E291F000C6;
-	Tue, 24 Nov 2026 20:41:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mitw+JKM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD531F000ED;
+	Tue, 24 Nov 2026 20:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795552863;
-	bh=uk/D/QjVmnfcsDpzFvl9QIjuM8lT16j6eXyUDrS+n9c=;
+	s=k20260515; t=1795553235;
+	bh=yFGdnGMEIu/NB7E4HB0GZctBtJwytKx4mRTKCli0u+4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ahnl9s73C8uo6WO1zrLYeCpJM7qrtNcfczc77qS5kbgU/zHt2sFxOV4qrMTsQqX9E
-	 S0M6DeZRygyDyraX+bLeA55TQrl3AMsyxNsVHZy5g73k5jK8lD3wMsaRx1G1pKiuXn
-	 q8Bjgx4tw1cWODlPvsCBTmWOcyUWthorFkTSWumrvrUIXwVRCsGvUNvh5iNmC1SpCD
-	 OyNDgSI8mkfXjqeHwQjaAoa6JDIbSOEdviepCOtR1vWsS8yJsHWitDL+zoVQ0vPcAc
-	 kJ/anmPOOs2XaxMg8CahIwPNnXVv/xEB0zzCPnHKqvMRH2CrKQiuOQ+AwuzQb56Io1
-	 cbpiMCvkZxa9w==
-Date: Tue, 24 Nov 2026 20:41:01 +0000
+	b=mitw+JKM4/wdQsEirvDsddczotlFpii/Vs8TjihT0iVp2lLZ3BeZ1XH2OL14BGaz6
+	 /6MLCOd0k9GwZFyUuJJhrrBLnKeAjxvr+QmV4YjKf+jBo0yqmDItB6JRiKWtDkWNij
+	 7dEOaM+mrXIkHEEjJMDiYWKZy3kpM109icCOFZZK8eqSXA2Qt9erwZ+D9bMRqJ8CD1
+	 gY6lx5sPLWIDvPWXyn1ldy7HhNfT+1vleX5y5vkf2nOLUvxg7ZdhATZrJAhKOqxP8R
+	 /kmtOmCEKXEanbyNgcNsYvS1HIiXMd4dGgBhpHfDZ3KJex7AkmexXnr0DAPMZbHnle
+	 hq/Apcu+sDrag==
+Date: Tue, 24 Nov 2026 20:47:14 +0000
 From: Yosry Ahmed <yosry@kernel.org>
 To: sashiko-reviews@lists.linux.dev
 Cc: linux-perf-users@vger.kernel.org, kvm@vger.kernel.org
-Subject: Re: [RFC PATCH 02/26] perf/core: Don't subtract guest time for
- events that keep counting
-Message-ID: <awXz6uAojKNYe2Sd@google.com>
+Subject: Re: [RFC PATCH 10/26] perf: Track mediated PMU conflicts
+Message-ID: <awX2aPIOVrqUZ53Y@google.com>
 References: <20261124002303.1785363-1-yosry@kernel.org>
- <20261124002303.1785363-3-yosry@kernel.org>
- <sashiko-outbox-230300@kernel.org>
+ <20261124002303.1785363-11-yosry@kernel.org>
+ <sashiko-outbox-230318@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,149 +57,124 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <sashiko-outbox-230300@kernel.org>
+In-Reply-To: <sashiko-outbox-230318@kernel.org>
 
-On Tue, Nov 24, 2026 at 12:45:18AM +0000, sashiko-bot@kernel.org wrote:
+On Tue, Nov 24, 2026 at 12:52:00AM +0000, sashiko-bot@kernel.org wrote:
 > Thank you for your contribution! Sashiko AI review found 1 potential
 > issue to consider:
-> - [High] perf/core: NULL pointer deref in
->   perf_event_exclude_guest_time()
+> - [Medium] perf: missed conflict accounting for grouped events in
+>   account_mediated_pmu_conflicts()
 > --
 > 
-> commit db83e3f1bd6bd93912ce35d2e1ee8eb8daf9be37
+> commit d02999449ac3f60478e5b2d635e9ec7e78dbd825
 > Author: Yosry Ahmed <yosry@kernel.org>
 > 
-> perf/core: Don't subtract guest time for events that keep counting
+> perf: Track mediated PMU conflicts
 > 
-> This commit restricts guest time subtraction to host-only events in a
-> mediated-capable PMU context so that events in non-mediated PMU contexts
-> do not have guest time subtracted while they continue counting.
+> This commit tracks perf events that conflict with a guest mediated PMU in
+> perf_event_context and exposes perf_has_mediated_pmu_conflicts() for KVM,
+> marking Intel PT and Intel BTS with PERF_PMU_CAP_USES_MEDIATED_PMI.
 > 
 > > diff --git a/kernel/events/core.c b/kernel/events/core.c
-> > index 6f076e5483cb7..5a3e40155ce70 100644
+> > index 99aa56ced8253..33422b92dc0db 100644
 > > --- a/kernel/events/core.c
 > > +++ b/kernel/events/core.c
-> 
-> [ ... ]
-> 
-> > @@ -872,12 +873,22 @@ static_assert(offsetof(struct perf_event_context, timeguest) -
-> >  #define T_TOTAL		0
-> >  #define T_GUEST		1
+> > @@ -1989,6 +1989,22 @@ static inline bool has_inherit_and_sample_read(struct perf_event_attr *attr)
+> >  	return attr->inherit && (attr->sample_type & PERF_SAMPLE_READ);
+> >  }
 > >  
-> > +/*
-> > + * Exclude guest time only for host-only events in a mediated PMU context, as
-> > + * those are scheduled out while a guest with a mediated vPMU runs.
-> > + */
-> > +static inline bool perf_event_exclude_guest_time(struct perf_event *event)
+> > +#ifdef CONFIG_PERF_GUEST_MEDIATED_PMU
+> > +static void account_mediated_pmu_conflicts(struct perf_event *event,
+> > +					   struct perf_event_context *ctx,
+> > +					   int nr)
 > > +{
-> > +	return event->attr.exclude_guest &&
-> > +	       (event->pmu_ctx->pmu->capabilities & PERF_PMU_CAP_MEDIATED_VPMU);
+> > +	if (event->pmu_ctx->pmu->capabilities &
+> > +	    (PERF_PMU_CAP_MEDIATED_VPMU | PERF_PMU_CAP_USES_MEDIATED_PMI))
+> > +		WRITE_ONCE(ctx->nr_mediated_pmu_conflicts,
+> > +			   ctx->nr_mediated_pmu_conflicts + nr);
 > > +}
 > 
-> [Severity: High]
-> Can event->pmu_ctx be NULL here when reading a revoked event?
+> [Severity: Medium]
+> Should account_mediated_pmu_conflicts() check event->pmu->capabilities
+> rather than event->pmu_ctx->pmu->capabilities?
+
+Yes and no.
+
 > 
-> When perf_pmu_unregister() detaches an event, __pmu_detach_event() puts
-> and clears event->pmu_ctx while event->ctx remains valid until the last
-> file reference is dropped.  If an event with exclude_guest=1 is held in a
-> BPF_MAP_TYPE_PERF_EVENT_ARRAY map after its PMU is unregistered, calling
-> bpf_perf_event_read_value() reaches perf_event_read_local() ->
-> calc_timer_values() -> perf_event_time_now() ->
-> perf_event_exclude_guest_time(), causing a NULL pointer dereference on
-> event->pmu_ctx.
+> Both Intel PT and Intel BTS set task_ctx_nr = perf_sw_context, so
+> __do_sys_perf_event_open() gives their events PERF_EV_CAP_SOFTWARE.  When
+> an Intel PT or Intel BTS event is grouped with a non-software event on a
+> PMU without PERF_PMU_CAP_MEDIATED_VPMU or PERF_PMU_CAP_USES_MEDIATED_PMI
+> (for example via aux_output or move_group), event->pmu still points to
+> pt_pmu or bts_pmu, but event->pmu_ctx->pmu points to the other PMU:
+> 
+> kernel/events/core.c:__do_sys_perf_event_open() {
+>     ...
+> 		if (is_software_event(event) &&
+> 		    !in_software_context(group_leader)) {
+> 			pmu = group_leader->pmu_ctx->pmu;
+> 		} else if (!is_software_event(event)) {
+> 			if (is_software_event(group_leader) &&
+> 			    (group_leader->group_caps & PERF_EV_CAP_SOFTWARE)) {
+> 				move_group = 1;
+> 			}
+>     ...
+> }
+> 
+> In that case ctx->nr_mediated_pmu_conflicts is left at 0 while the PT or
+> BTS event is installed, so perf_has_mediated_pmu_conflicts() returns false
+> and KVM leaves the guest mediated PMU context loaded during slowpath
+> VM-exit handling.
 
-I had convinced myself event->pmu_ctx here cannot be NULL, but I was
-wrong. I don't think a NULL check helps, probably accessing the PMU here
-is not safe at all as we can race against it being freed or cleared.  We
-are not holding any locks here, and the freeing path doesn't do an RCU
-sync after detaching events.
+I originally wrote this as a helper for perf_skip_pmu_ctx(), so it
+always operated on pmu_ctx, and that was a slightly different
+implementation.
 
-We can either use RCU to synchronize lockless readers against the PMU
-being freed/cleared, or record exclude_guest_time as a property of the
-event when adding it and query that directly.
+I was going to say we need to check event->pmu instead of
+event->pmu_ctx->pmu, but I think it's more nuanced. I think conflicting
+events are either:
 
-The RCU option might be invasive, so perhaps the second approach is
-preferable? Something like this on top:
+- Events that are scheduled out while the guest context is loaded ->
+  These are basically any events whose PMU context is mediated-capable,
+  so checking event->pmu_ctx->pmu is correct.
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 1308b99a0abb6..cd9ede863514f 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -828,6 +828,11 @@ struct perf_event {
-        u16                             header_size;
-        u16                             id_header_size;
-        u16                             read_size;
-+       /*
-+        * Exclude guest time from time_enabled/time_running. Set in
-+        * list_add_event() under ctx->lock.
-+        */
-+       bool                            exclude_guest_time;
-        struct hw_perf_event            hw;
+- Events that use the same PMI mechanism as the mediated PMU -> These
+  are Intel PT/BTS events, and the context they are in doesn't matter.
+  As long as one of these events is active the guest context needs to be
+  put to avoid a misrouted PMI, so checking event->pmu is correct.
 
-        struct perf_event_context       *ctx;
+So probably the right thing to do here is this:
+
 diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 33422b92dc0db..ec08be5c1fcbe 100644
+index ec08be5c1fcbe..d3e1b33c97716 100644
 --- a/kernel/events/core.c
 +++ b/kernel/events/core.c
-@@ -878,22 +878,12 @@ static_assert(offsetof(struct perf_event_context, timeguest) -
- #define T_TOTAL                0
- #define T_GUEST                1
+@@ -1980,14 +1980,22 @@ static inline bool has_inherit_and_sample_read(struct perf_event_attr *attr)
+ }
 
--/*
-- * Exclude guest time only for host-only events in a mediated PMU context, as
-- * those are scheduled out while a guest with a mediated vPMU runs.
-- */
--static inline bool perf_event_exclude_guest_time(struct perf_event *event)
--{
--       return event->attr.exclude_guest &&
--              (event->pmu_ctx->pmu->capabilities & PERF_PMU_CAP_MEDIATED_VPMU);
--}
--
- static inline u64 __perf_event_time_ctx(struct perf_event *event,
-                                        struct perf_time_ctx *times)
+ #ifdef CONFIG_PERF_GUEST_MEDIATED_PMU
++/*
++ * Events in a mediated-capable PMU context are scheduled out while a guest
++ * context is loaded, including software events grouped with a mediated leader.
++ * Events on PMUs sharing the guest PMI mechanism (Intel PT/BTS) raise PMIs from
++ * whichever context they are in, and are software events for grouping
++ * purposes, so they can be in another PMU's context: check their own PMU.
++ */
+ static void account_mediated_pmu_conflicts(struct perf_event *event,
+                                           struct perf_event_context *ctx,
+                                           int nr)
  {
-        u64 time = times[T_TOTAL].time;
-
--       if (perf_event_exclude_guest_time(event))
-+       if (event->exclude_guest_time)
-                time -= times[T_GUEST].time;
-
-        return time;
-@@ -906,7 +896,7 @@ static inline u64 __perf_event_time_ctx_now(struct perf_event *event,
-        u64 time = now + READ_ONCE(times[T_TOTAL].offset);
-        u64 guest_time;
-
--       if (perf_event_exclude_guest_time(event)) {
-+       if (event->exclude_guest_time) {
-                if (is_guest_mediated_pmu_loaded())
-                        guest_time = now + READ_ONCE(times[T_GUEST].offset);
-                else
-@@ -2017,6 +2007,21 @@ list_add_event(struct perf_event *event, struct perf_event_context *ctx)
-        WARN_ON_ONCE(event->attach_state & PERF_ATTACH_CONTEXT);
-        event->attach_state |= PERF_ATTACH_CONTEXT;
-
-+       /*
-+        * Exclude guest time only for host-only events in a mediated PMU
-+        * context, as those are scheduled out while a guest with a mediated
-+        * vPMU runs.
-+        *
-+        * Latch this when the event is added, as the time functions can run
-+        * locklessly (e.g. perf_event_read_local()) and event->pmu_ctx is
-+        * cleared when the PMU is unregistered.  This must be done before
-+        * computing tstamp below, as perf_event_time() depends on it, so that
-+        * tstamp and later time updates consistently include or exclude guest
-+        * time.
-+        */
-+       event->exclude_guest_time = event->attr.exclude_guest &&
-+               (event->pmu_ctx->pmu->capabilities & PERF_PMU_CAP_MEDIATED_VPMU);
+-       if (event->pmu_ctx->pmu->capabilities &
+-           (PERF_PMU_CAP_MEDIATED_VPMU | PERF_PMU_CAP_USES_MEDIATED_PMI))
+-               WRITE_ONCE(ctx->nr_mediated_pmu_conflicts,
+-                          ctx->nr_mediated_pmu_conflicts + nr);
++       if (!(event->pmu_ctx->pmu->capabilities & PERF_PMU_CAP_MEDIATED_VPMU) &&
++           !(event->pmu->capabilities & PERF_PMU_CAP_USES_MEDIATED_PMI))
++               return;
 +
-        event->tstamp = perf_event_time(event);
-
-        /*
-
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20261124002303.1785363-1-yosry@kernel.org?part=2
++       WRITE_ONCE(ctx->nr_mediated_pmu_conflicts, ctx->nr_mediated_pmu_conflicts + nr);
+ }
+ #else
+ static inline void account_mediated_pmu_conflicts(struct perf_event *event,
