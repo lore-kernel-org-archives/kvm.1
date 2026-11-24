@@ -1,57 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795506489;
-	b=azKRThUDhxZbTvuxbGaZFRfEzATyDlU/hTY+LbQCGx144hFbmLVHO7jxKMWS8hxFTgnb
-	 Q+NnzGTOgXFerON5sd4nZKC0/rUAUDpOuOhN5DjhXnyOBhBNcuMl9Dx8rDevJ04A1QHew
-	 qbJKYjJb2nVD3WZEHmG9K0z6yKNS7h4a5kd3QWIL+UZPbUT7rvUdnBrVD7e8u4LkEGVSx
-	 j5VqsePmMvVMGcS2QD0fHnK0AYvTCowIl32Qp+odURPMTABT60n0KdtVqFkaf9tE6L0v/
-	 nE5yFMNX2Ept92rF7cfo3gQKS9CS4652SSaxuZHtiuQd+rFZ47YggWzk8zqB4Rf9+MQ==
+	t=1795506773;
+	b=It6Df0cqEV7FrHT0W0tVsw/wfz8RWjthhrkgtp31BanQCwUaS62t2wmaQBjchPUwgyhm
+	 TEej7PQDSA6ReE57z00MwWFUcnyEmcrG5wXKmxrQvlzogMcSa8k8DjE+Ha3Jprfu6ledM
+	 jrcxT67hDUL/JsIPAISesjpTz8JvKLcXdh0BeuuGIa93ZMSuJJ0n8Huz+SUEJF4IR4so8
+	 dGkDwInk8rVVMGGt1GTW2JI3LwoAIka3vysxib3hpObxzFyQRswP9ht3zaSTYANxaZ5qF
+	 36Tk0gnULzY2GQEBPY86sJq18FiEzkbCYfPuzM+DY7qFAPz5N1LaEvMo/QCOYv93NjQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795506489;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795506773;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=+8PHhOsJsCl3Mvvh7yQ7C1KrzlKZwSld0TIJonePQBA=;
-	b=tfX1d2n/szcjqc6ndE2D81pkbij57Kz03UOjDcl0bHxDY5F8SG+RBgxUyu36r9cN6MDh
-	 fuGWn0PjioUPqwwmhG1tzRT+8ZqcNtOdJ0/PDHFCbAg052mIpQ1oSHegfboijGANvHyIB
-	 5gh80Prccfq6Ij5UQnmkeYBsgdgLsWr+9Cwck2njdl8jEuGe5fKdceK3flr1z5UA60RU3
-	 iAKTyGz6g1rVta64W8Q8hwcCWUEqohvMwbzzXu38H6ntzPKg4beB8NnRUA90n3dVXYlK0
-	 8L+7RCVm+LAZPdNKWGSqjUAhRCtrCjCb/TvjGsJVfGwNwzWKgHr7gFHJJCyPoWpT6Mw==
+	bh=M3/E2iAsr1JkDFrAcF0mgjUv0O+BVkL84W/T+yLbVnM=;
+	b=xIk8Ci4xQwhZPGl0b74fdYmhjIdXxXtRHc1yTJyTxREXFvULVT5WDmBH35yTnVKlkJe9
+	 msQAKqAb06FhCSfILJF6OY9WH21sgvwC8sO/yI7oXa2MlaCF76WWbNWz9evii92kuqB38
+	 KYlOdZs0whhHG2qqGlzSr8U6xw81Gd9sT0SXLE4EnguBSTHsUIIJsdQGYVxcuoJqdGVps
+	 ccRp/38K/h+rM8E1EXX1o6tbwL+XGPd5HXX1kFpZX9h+IKWyxY40qrnTODwchtklj8w/5
+	 R1FZ3hayl2reMlj0W1em6Yzh/7kMwCbcnqqldrccQhEjujArV+WwHyLyEXPxI/bduaw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WJpnLfnX;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oi9hK6J8;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58A8606A31E
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 07:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F2D606A327
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 07:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WJpnLfnX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B351F000C4;
-	Tue, 24 Nov 2026 07:48:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oi9hK6J8
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F261F000D2;
+	Tue, 24 Nov 2026 07:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795506489;
-	bh=+8PHhOsJsCl3Mvvh7yQ7C1KrzlKZwSld0TIJonePQBA=;
+	s=k20260515; t=1795506772;
+	bh=M3/E2iAsr1JkDFrAcF0mgjUv0O+BVkL84W/T+yLbVnM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WJpnLfnXxbOYHCIgsosqPGD0QXu5msaAetm/pgTe/DdmYM/OrqzscJ54pHPGvYbXi
-	 C0h5zxCH0g6+cf+e0l306caAGkeiHltzleD0PngqkG0rvVKBeDAAsOGr8OUynosUKF
-	 BpDUw0tQPEJmlClyBPdBHUU1N9S8rzJ2qggCO8KF4ZtOgGDOey5z1N3PPj/vUXLeRy
-	 e4BguelkdPrxH/s5o2yGxfpmTpVQXFguHbIrecrzJ05ToRQRrQ1RPcU5yYxbgyiolT
-	 lEz3Zkn1XEuNpiDIeXp81NoQQhL6MHEg597BYk1sf/Ft/tozpNfVZtDW6qXX8i4jDt
-	 TeNZqVMCVUawA==
-Message-ID: <sashiko-outbox-230674@kernel.org>
+	b=oi9hK6J82lVFkvg3bf+yt2CFGr+EKfvWlZG5yGwsIu2xWU0KlO5uHdTTaTAQkbwdA
+	 1YpTjvKFZXwtI3+S0uoQNcVs8XFShrMjliwhU6LE85sQmde52LoPJKhFCQVzcLURcB
+	 KZNR7ly5c5jO5YU9TRpKK5SEveHX3wJYNke1sKB8PcO226Rcd0Wzgso3VN2spIwN4i
+	 QF+RVmrpqw+3pPpnPUCsc27aFnTFMI9Td0F+KMNk5AgBv4MWXvhRCk9ijyfdCmqZsK
+	 BZ/sRE2Ltis9BCMQxZQ5UOLW7UjWKh2BLlbzCGDwROtzy7lu0MA1IEZIjDdX8sqKiA
+	 ONu7Rup/f/HSw==
+Message-ID: <sashiko-outbox-230684@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/2] vfio: Add get_unmapped_area callback to
- vfio_device_ops
+Subject: Re: [PATCH 2/2] vfio/pci: Align BAR mappings for huge page support
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Guanghui Feng" <guanghuifeng@linux.alibaba.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20261124073048.268988-2-guanghuifeng@linux.alibaba.com>
+In-Reply-To: <20261124073048.268988-3-guanghuifeng@linux.alibaba.com>
 References: <20261124073048.268988-1-guanghuifeng@linux.alibaba.com>
- <20261124073048.268988-2-guanghuifeng@linux.alibaba.com>
+ <20261124073048.268988-3-guanghuifeng@linux.alibaba.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 24 Nov 2026 07:48:08 +0000
+Date: Tue, 24 Nov 2026 07:52:51 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -61,81 +60,120 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] vfio: MAP_FIXED mappings reach
-  device->ops->get_unmapped_area()
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Medium] vfio/pci: wrong align and no PMD fallback in
+  vfio_pci_core_get_unmapped_area()
+- [Medium] vfio/pci: missing MAP_FIXED check in
+  vfio_pci_core_get_unmapped_area()
 --
 
-commit c2dec2a94cdf65407cd97caccc3240752b010cec
+commit 22651b52e2b64249734636f112ebe4aa3bd8ca86
 Author: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 
-vfio: Add get_unmapped_area callback to vfio_device_ops
+vfio/pci: Align BAR mappings for huge page support
 
-This commit adds an optional get_unmapped_area callback to vfio_device_ops
-and dispatches to it from vfio_device_fops so bus drivers can align VMA
-virtual addresses for huge pfnmaps.
+This commit implements vfio_pci_core_get_unmapped_area() to align BAR
+virtual addresses for PMD and PUD pfnmaps and sets VM_HUGEPAGE on BAR
+VMAs.
 
-> diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-> index 4e5d738ccf4be..edf9eb4cd4778 100644
-> --- a/drivers/vfio/vfio_main.c
-> +++ b/drivers/vfio/vfio_main.c
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
+_core.c
+> index f2d5b6857925f..dd437f23b9384 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -1878,12 +1878,107 @@ int vfio_pci_core_mmap(struct vfio_device *core_=
+vdev, struct vm_area_struct *vma
 [ ... ]
-> @@ -1431,6 +1432,36 @@ static int vfio_device_fops_mmap(struct file *file=
-p, struct vm_area_struct *vma)
->  	return device->ops->mmap(device, vma);
->  }
-> =20
-> +#ifdef CONFIG_ARCH_SUPPORTS_HUGE_PFNMAP
-> +/*
-> + * Give the bus driver a chance to request a virtual address that allows=
- the
-> + * mapping to be backed by huge pages, fex. a PCI BAR mapping that could=
- be
-> + * faulted in with PMD or PUD sized pfnmaps.  Anything the driver cannot
-> + * handle, including devices without huge mapping support, falls back to=
- the
-> + * generic address selection, which is also what happens without this
-> + * callback.
-> + */
-> +static unsigned long vfio_device_fops_get_unmapped_area(struct file *fil=
-ep,
-> +							unsigned long addr,
-> +							unsigned long len,
-> +							unsigned long pgoff,
-> +							unsigned long flags)
+> +unsigned long vfio_pci_core_get_unmapped_area(struct vfio_device *core_v=
+dev,
+> +					      struct file *filp,
+> +					      unsigned long addr,
+> +					      unsigned long len,
+> +					      unsigned long pgoff,
+> +					      unsigned long flags)
 > +{
-> +	struct vfio_device_file *df =3D filep->private_data;
-> +	struct vfio_device *device =3D df->device;
+> +	struct vfio_pci_core_device *vdev =3D
+> +		container_of(core_vdev, struct vfio_pci_core_device, vdev);
+> +	struct pci_dev *pdev =3D vdev->pdev;
+> +	unsigned long align, off, off_end, off_align, len_align, addr_align;
+> +	unsigned int index;
+> +	u64 bar_len;
 > +
-> +	/* Paired with smp_store_release() following vfio_df_open() */
-> +	if (!smp_load_acquire(&df->access_granted))
+> +	/* The user asked for a specific address, don't second guess it */
+> +	if (addr)
 > +		goto out;
-> +
-> +	if (device->ops->get_unmapped_area)
-> +		return device->ops->get_unmapped_area(device, filep, addr, len,
-> +						      pgoff, flags);
-> +out:
-> +	return mm_get_unmapped_area(filep, addr, len, pgoff, flags);
-> +}
-> +#endif
 
 [Severity: Medium]
-Should vfio_device_fops_get_unmapped_area() bail out to out when
-flags & MAP_FIXED is set?
+Can this shift a fixed mapping at address 0 to a non-zero address when
+flags has MAP_FIXED or MAP_FIXED_NOREPLACE set?
 
-The commit message states that a MAP_FIXED mapping never reaches the hook,
-however do_mmap() and __get_unmapped_area() invoke
-file->f_op->get_unmapped_area() unconditionally even when MAP_FIXED or
-MAP_FIXED_NOREPLACE is set (the MAP_FIXED check only happens inside
-generic_get_unmapped_area() / generic_get_unmapped_area_topdown() via
-mm_get_unmapped_area()).  If a bus driver implements get_unmapped_area()
-by only checking whether addr is non-zero (like dax_get_unmapped_area()),
-a MAP_FIXED request at addr =3D=3D 0 with an unaligned file offset can have=
- its
-fixed address shifted to a non-zero aligned offset, violating MAP_FIXED
-semantics and overwriting mappings at the shifted address.
+do_mmap() and vrm_set_new_addr() still invoke __get_unmapped_area() when
+MAP_FIXED is set.  With addr =3D=3D 0 and MAP_FIXED, mm_get_unmapped_area()
+returns 0 immediately, and the shift below changes the returned address to
+off & (align - 1).  When (off & (align - 1)) >=3D mmap_min_addr, do_mmap()
+with MAP_FIXED will then unmap and overwrite existing VMAs at
+[off & (align - 1), (off & (align - 1)) + len) instead of failing on
+address 0.
+
+Checking if (addr || (flags & MAP_FIXED)) before aligning avoids mutating
+a fixed address.
+
+> +
+> +	index =3D pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
+> +	if (index >=3D VFIO_PCI_ROM_REGION_INDEX || !vdev->bar_mmap_supported[i=
+ndex])
+> +		goto out;
+> +
+> +	bar_len =3D pci_resource_len(pdev, index);
+> +	if (!bar_len)
+> +		goto out;
+> +
+> +	/* The BAR size caps the page size we can map it with */
+> +	align =3D min_t(unsigned long, PUD_SIZE,
+> +		      rounddown_pow_of_two((unsigned long)bar_len));
+> +	if (align < PMD_SIZE)
+> +		goto out;
+> +	if (!IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) && align > PMD_SIZE)
+> +		align =3D PMD_SIZE;
+> +
+> +	/* Only an alignment that fits within the mapping length is useful */
+> +	while (align > PMD_SIZE && len < align)
+> +		align >>=3D 1;
+> +	if (align < PMD_SIZE)
+> +		goto out;
+> +
+> +	off =3D pgoff << PAGE_SHIFT;
+> +	off_end =3D off + len;
+> +	if (off_end < off)
+> +		goto out;
+> +	off_align =3D round_up(off, align);
+> +
+> +	/* The mapping has to span at least one fully aligned huge page */
+> +	if (off_end <=3D off_align || off_end - off_align < align)
+> +		goto out;
+
+[Severity: Medium]
+When CONFIG_ARCH_SUPPORTS_PUD_PFNMAP is enabled, doesn't this pick
+intermediate power-of-two alignments between PMD_SIZE and PUD_SIZE, and
+give up on PMD_SIZE alignment whenever the range does not span a full
+block at that larger alignment?
+
+vfio_pci_vmf_insert_pfn() only installs huge mappings at PUD_ORDER and
+PMD_ORDER.  For a BAR or mapping length between PMD_SIZE and PUD_SIZE
+(for example, a 16 MiB BAR with a 4 KiB MSI-X hole at the start and a
+4 KiB PBA hole at the end), align becomes 8 MiB, off_align rounds up to
+8 MiB, and off_end - off_align < align jumps to out with PAGE_SIZE
+alignment instead of aligning to PMD_SIZE.  Even when off is 0, a BAR
+between 4 MiB and 512 MiB reserves up to 512 MiB of extra virtual address
+slack when only PMD_SIZE pages can be faulted in.  Also, the second
+if (align < PMD_SIZE) check after the while loop cannot be reached because
+align >=3D PMD_SIZE before the loop and the loop stops at PMD_SIZE.
+
+Trying PUD_SIZE only when CONFIG_ARCH_SUPPORTS_PUD_PFNMAP is enabled and
+the mapping spans a PUD_SIZE-aligned block, and falling back to PMD_SIZE
+otherwise, would handle both full and sparse BAR mappings.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261124073048.2689=
-88-1-guanghuifeng@linux.alibaba.com?part=3D1
+88-1-guanghuifeng@linux.alibaba.com?part=3D2
