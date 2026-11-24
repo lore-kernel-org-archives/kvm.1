@@ -1,127 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.62
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795545661;
-	b=Z9uQruF3aX8YsUJFt3ZEbd/PiDCRxbH/SbVlkkat1zcgi7Otjp/wgpv6ZzyoxSn6CUUu
-	 Snt0tJ2km51nw75BYeBTUQpnFhKqBwPrKFh9Sn1Ajmu21Yt10HdEeDdrqC2g0On1AOUUa
-	 Lct6AdT8P77tPO3I7OEfle0h4RMkJm3Z0Vs6dBCB+jfR92RXQPPLl+gyL0SGBk2kDt33G
-	 2P0qlQs4UhqERZH5zopffCeeEg5aH21ALT9OjnsPcWOkrD6jERShgJFBYHksHyMfbEe5i
-	 fPupwS2Yn0lKONSF7BdfAeMEDLWHGFaWPv7IEQu0TLf8y1r+XPOvVCN+mxj+xES/6rQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795545661;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Received:Date:From:To:CC:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-NV-OnPremToCloud:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=EsgBIeZ1tJhFAb5uFWxW5vXekj4HHokP7BHIQynCItw=;
-	b=EXdASo5yIb7pbS2RrbhjSD3Goo3zJjYYOHqHyZeCrMfdsJo7Ig82CSUDTQA0HuQBWIIK
-	 YEFb0pLNyjBh4xLT7cluVCtFkBgBBHCEIwl8yfcrm2PRYnVIjwG2z66AJJcz7O9R2AX2/
-	 WLIbeadU+QpOxtP+rxkhXYiXf8VxS0PsFw7vcgEhtQLrZfZg8q+HdikWXb9y4UhR8NahX
-	 CGwUmW3spa9OQ+LrWnngXQVsfMgIMReMb5xt2p9pOSrPLDEFOiVj88zjlhe0/dw5EYviq
-	 apc58nc5dbkiAzfcPJ/hxt7IA4h3g60uvG3hA7YacRqFkXXjJDNVuV9NOgcU/ihoXyA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=DUuNyT9N;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.62
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011062.outbound.protection.outlook.com [52.101.62.62])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C779606A321;
-	Tue, 24 Nov 2026 18:41:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8C779606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795546331;
+	b=T5S/pdp4m2eakCBaMd5Rb+qkjx/qtVYIWvF0Supw6RZlgCsXwTuOerA70T6FXiLilVcN
+	 jB/s7yG84d5m7G6bW6bZB1+P11Do5uWOTW4Yt3SXy3pZVVbkCwWXFsUQhJDOEz0yvk6cl
+	 gTEoVO4Bj3/at2458JeUVGiOySI91IddyEI3Gk6KQw3LSmPIerJeM6KbumyjCzvajZmGD
+	 BOTJhlgz95H44ClNkY6TgDIanvJdORAeF9muNUE6d9XHNLiB4V83O/1udFWNZmFzWdSTn
+	 lfuYFyvhHRUe5M+TSYQNE0pp5knqdFKcOwwAEr5vFIkCzMoNYwHU+jdI3HdhyraHeXw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795546331;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=0sNoW/KWYC5fenn6W3ZO2QgTuASrJJ6ujM7Ci83DK9o=;
+	b=Ed3D09zOQNrWj3TDzKik5Zre/WpGlfd3VJs2GluUkZg0s9Aw0+AEAg8ncpGS5Cnv2Z1A
+	 OCCCDMAKf53sHHjjxcTg/c6gI+QdtWEUY1+5b+VOSE/wDN7a03j9WHj8Yy+kN9UyeFOf1
+	 LEBee3LmDPqnM+KUgabSL13aTBRVtvfl2QSYlk/NhbW+C9bpZfDg9YbhgWpJInpy64VWL
+	 uC3qcKDpAcAtGdCtw1HT4r+Qs1kd17DdrKgiWl5niipKDd2WuruBcRMWWWt6sc7SkUwID
+	 WP0Kp/X4jY/PAzeoTAgNnKqptfakf7S1pneM8JNT6eNmGbo0+bYsm8EB/88AKHSkQ7w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=HxpQmHpN;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EA1606A321;
+	Tue, 24 Nov 2026 18:52:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 81EA1606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=DUuNyT9N
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ww195feTGU+CstVIqOSXL0Y0kHOZ4OAu0ZJHTm2Df2SefqM4AjqqhGkKQhWMhM9fvOhGFq+thzYRs16V5dmc8KqMeeXDnnrktungbU+oErdlnLbaKJ1elVHRhUUVtgNL+hkoFqU03xPIWcuUBnMOecpqgtlC/sD/b3kfE8q2LHEKE10t5cmuj9brJilDvCMaeHEiJyJoRhYoKKSurzfDro4AJ+7mSYT1D/DyppTYQ70vyyHr7YwB1YKJTk1fUAmC327NCbTdLGmWYOID/pIR3CIac/vFVQvPXSrVYp7ZHluMYJoMdKIB35hrfNPEKnqTNA8/gGCB8YkSzH58Wj+N7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EsgBIeZ1tJhFAb5uFWxW5vXekj4HHokP7BHIQynCItw=;
- b=RgHCakhqrSgYy7deeV7O0ymjGSjkd7x/cetnsgCqhjuWfC0n1T8x0t4/EaL18Cp5ZKVnyGTe3FlnddhrF4oJq04swGUtTcja3GJ8uURupHRlyB1AzjjJ/yb5YjVHq2PPGn0AjgLXB2q2revzKoOHIzIrvBJZfBTsRbOY/yQ9NQHt6o4hqscxDa4B5GCHScSzds7osaCoQLTGPuz8IMltKWRGI4fgSxUOWQogHjp1dyUqIbkiyuDb3asJsqWFbh1NLbi2YUY6s51G+XVw4v11pUJnXZnxnyan95b6b5pk9cnYhmo9EdyeNkyWW7Hp/84vs3t2PXvuWzUHAIaeEH1P5g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=ziepe.ca smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EsgBIeZ1tJhFAb5uFWxW5vXekj4HHokP7BHIQynCItw=;
- b=DUuNyT9NlsQdT2Uz+mL69S02LoTWTkRIxvwXO+Nle6LQTWWWg2Cgu4/5XQDkRuwudksEjT8UOpZziz927YS/oaeKgCR5GVjQeJMo1ZhEt9TqNwnTE0kYTMr8xvaJ4pDUfxraYZhe6OBILnGsDlNQa+zGQvjs3DDpa7Y6TxNjkLXip1hyf2EQ1sdNPOP7bJzcgHsTqI/gUEvlIPYmXZTttuNXN+6tx+mEeofoCnJ/M7MXoXUlIp7FAvWjDi1sd8iworrP8kE1IrODx3MlKw56rfjk4UkSfsa2x7ceRLVeh2V+9bQezgfDTUhsw7S3DcXVLJN8/++LMzLRSg3j/Rq3lQ==
-Received: from BL1PR13CA0282.namprd13.prod.outlook.com (2603:10b6:208:2bc::17)
- by SJ1PR12MB6099.namprd12.prod.outlook.com (2603:10b6:a03:45e::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.14; Tue, 24 Nov
- 2026 18:40:48 +0000
-Received: from MN1PEPF000793FD.namprd05.prod.outlook.com
- (2603:10b6:208:2bc:cafe::4d) by BL1PR13CA0282.outlook.office365.com
- (2603:10b6:208:2bc::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.662.6 via Frontend Transport; Tue, 24
- Nov 2026 18:40:48 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.118.233) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- MN1PEPF000793FD.mail.protection.outlook.com (10.167.249.200) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.662.3 via Frontend Transport; Tue, 24 Nov 2026 18:40:48 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Tue, 24 Nov
- 2026 10:40:19 -0800
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.57; Tue, 24 Nov 2026 10:40:18 -0800
-Received: from nvidia.com (10.127.8.14) by mail.nvidia.com (10.126.190.180)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57 via Frontend
- Transport; Tue, 24 Nov 2026 10:40:17 -0800
-Date: Tue, 24 Nov 2026 10:40:14 -0800
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Aneesh Kumar K.V
-	<aneesh.kumar@kernel.org>, Leon Romanovsky <leon@kernel.org>,
-	<linux-coco@lists.linux.dev>, Dan Williams <djbw@kernel.org>, Bjorn Helgaas
-	<bhelgaas@google.com>, Jonathan Cameron <jonathan.cameron@huawei.com>, "Xu
- Yilun" <yilun.xu@linux.intel.com>, Alexey Kardashevskiy <aik@amd.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>, Steven Price
-	<steven.price@arm.com>, "Suzuki K Poulose" <suzuki.poulose@arm.com>, Lukas
- Wunner <lukas@wunner.de>, "Ashish Kalra" <ashish.kalra@amd.com>, Tom Lendacky
-	<thomas.lendacky@amd.com>, "Herbert Xu" <herbert@gondor.apana.org.au>,
-	<driver-core@lists.linux.dev>, <linux-pci@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <patches@lists.linux.dev>
-Subject: Re: [PATCH v1 00/10] PCI/TSM: Support guest TSM drivers
-Message-ID: <awXaDrmHAiTW3SA6@nvidia.com>
-References: <2026112325-emit-squeezing-5d96@gregkh>
- <20261123090623.GK14811@unreal>
- <yq5a7bi3riha.fsf@kernel.org>
- <20261123115803.GN14811@unreal>
- <yq5awlq3pto0.fsf@kernel.org>
- <20261123135638.GO14811@unreal>
- <20261123152533.GE179082@ziepe.ca>
- <yq5aik1n4iz3.fsf@kernel.org>
- <2026112429-expansion-wilder-a0c2@gregkh>
- <20261124131641.GE9566@ziepe.ca>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=HxpQmHpN
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1019F497;
+	Tue, 24 Nov 2026 10:52:08 -0800 (PST)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7EAC33F86C;
+	Tue, 24 Nov 2026 10:52:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795546330; bh=cEx0NNr4v9OqxertlfeaIBCZsjK0gqeBlEmSznQ0QE4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HxpQmHpNrqXVqUfjE0HPfLK3ewOjjeolAx23daMcxTI88aKM+hL6rA2Fg+4rqd8+R
+	 qMFVk/rzRBXFpbU1Dfr/ftkZEjuXw3RMnNovsFD1RM3+rwaFKpdU0NBWTD4cVkNWWE
+	 Ki55UEoYDf7IlCgUAL9LE2jIQWyjvIsSNBfWze2I=
+Date: Tue, 24 Nov 2026 18:52:00 +0000
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-openrisc@vger.kernel.org
+Subject: Re: [PATCH RESEND v2 12/21] mm/pgtable: redefine PGTABLE_LEVEL enum
+ with ascend order from PGD
+Message-ID: <awXc0MSZl9t9VW8e@e129823.arm.com>
+References: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
+ <20261102-dummy_ptxp3-v2-12-78840b2ec73c@arm.com>
+ <awXD4i47F-VAG1tD@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -131,68 +97,77 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261124131641.GE9566@ziepe.ca>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF000793FD:EE_|SJ1PR12MB6099:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5b40664d-71c3-4968-c593-08df4a5a751e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|7416014|376014|36860700016|23010399003|6133799003|22082099003|18002099003|3023799007|56012099006|4143699003|261028144727099003|261022105027099003|261021135927099003|261102123227099003|261021121427099003|261009223027099003|10067099003|261026140227099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	bOon2WxLgHVctToGfrDSf1YE0dFr7oTRVrQ+r8LNVjgue1GMHHsTOIBYnQNVRF5PzV9aGq+SUDIUiRYM3NNtG3AjdIXW86m2pA8KhAZBuUrykwVMHOthNF8r3h4ZfLJGD9idOnrzHqvhph90ds58w3qZJvKo8v8rWuZclqZt+cAf9kpXLkjZK37kQqjPtcUN5wNquv2uo1kLWGgtvIeJVfgEH+FjHTQxxuz3yu/XNuDDQanCYv5rBqHuoxsLBtDAlOUzzlmw4NE8sbff0Xa2iGmySMq0U/JBrqFy5x6hcFQlxL9QN104IOHgBmyemvw/PL6KzaNTduc3+LF2heMJe5Tghy049jrEgK1Mp8fu0J0f1LUb7h5/PHMIjuHNQhiK1eEg8ZKhJBLH1TnHcadv6lUf9gd/QODesMTbGhya0CZGnwd+GfYhHQwG2N1ihg+eAJDfMq2uSR+7Hys4oreeqCpgPBVVV0JDFISFaNDGu8ePbgBs/IkIk/2TX+RQZoIe53mt8Imsi0oYxk72sBwTW1MZYauu+MQjEN7QGZKhr4Yy4BX1cEOfn0S35m6iwMKvJT2++H/Jc6aj+IR496C9m3Ni5mgzOmQ2zTswox+pR4/rNHvuiLH+5XUVwvGLWrbGdWFo0Y3Jkh24oxTmUHwC9cCKqCiN7aLFfY2YrkmTiinmgPmUh2Fa163bNd/RDZgL/72mJxP7H5dfbrcKzjqLXg==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(376014)(36860700016)(23010399003)(6133799003)(22082099003)(18002099003)(3023799007)(56012099006)(4143699003)(261028144727099003)(261022105027099003)(261021135927099003)(261102123227099003)(261021121427099003)(261009223027099003)(10067099003)(261026140227099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	bfigPpq38q0KdssH7NkC5K0rSxSV6oSAsuweqmHouvZ3Xf/319ePmqO8FmBaAe/Kn8iEgYFghIvBAkdGSapA7nHYT4p1T2pzjWK5hYa9/+7TGaO2Gdex/El4D790TuUm6mbl0QcH80iUnUF+Ia1yys5UzsayjSmeWV5sSnaKLIIYzJfLOkNWct6gkhsuvT3rGsHOCzyICwaFQ34sWDwzg/FVpE6ok8MwyBqr4lLz8qFFBg8xeU+fa9cndvGwzXyIbNkr2wEd94LDBqDdd/6V8xbSnarBgXLe95EjoCHwOiECPbxGALvWA0UmKAuhFmitMtblROMcC0poSmN3W/t4mPzuMqV+UMNYAsbr3epSRJOS/W0clGu1s+KlLud8pup4LtromvqD0dY0KfaD/YeQ9IB5h1QBmkiRmN8Jem+XjyfP8oPDaKr5JkLtB/kcFNa5
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 18:40:48.0566
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b40664d-71c3-4968-c593-08df4a5a751e
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF000793FD.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6099
+In-Reply-To: <awXD4i47F-VAG1tD@kernel.org>
 
-On Tue, Nov 24, 2026 at 09:16:41AM -0400, Jason Gunthorpe wrote:
-> On Tue, Nov 24, 2026 at 07:44:03AM +0100, Greg Kroah-Hartman wrote:
-> > > @@ -617,6 +619,7 @@ enum struct_device_flags {
-> > >  	DEV_FLAG_OF_NODE_REUSED = 7,
-> > >  	DEV_FLAG_OFFLINE_DISABLED = 8,
-> > >  	DEV_FLAG_OFFLINE = 9,
-> > > +	DEV_FLAG_DMA_CC_PRIVATE = 10,
+On Tue, Nov 24, 2026 at 07:05:38PM +0200, Mike Rapoport wrote:
+> On Mon, Nov 02, 2026 at 11:21:25AM +0000, Yeoreum Yun wrote:
+> > The PGTABLE_LEVEL enum values appear to be ordered in the opposite direction
+> > from their intended usage.
 > > 
-> > Again, NO!  No "cc" nonsense for device states please.  That's an insane
-> > policy decision that will be driven by userspace crazyness, NOT
-> > in-kernel stuff.  The kernel will give userspace the tools to enforce
-> > this type of policy if someone so desires.
+> > Intuitively, higher page table levels should have smaller enum values,
+> > but PTE is currently assigned 0.
 > 
-> This may be the wrong place to put it, but this is not a *policy*.
+> That's not what x86 thinks :)
+> They even expose it in /proc/vmstat with smaller numbers meaning lower levels
 > 
-> This is a "DMA property" like dma_mask, coherent_dma_mask,
-> bus_dma_limit, dma_range_map, dma_params and so on.
+> $ grep direct_map /proc/vmstat 
+> direct_map_level2_splits 152
+> direct_map_level3_splits 4
+> direct_map_level2_collapses 0
+> direct_map_level3_collapses 0
 > 
-> The name mirrors the DMA API name for a related idea:
-> DMA_ATTR_CC_SHARED
-> 
-> Unlike the other DMA properties this one is changable dynamically
-> depending on how the HW is configured. The TSM is in control of this
-> HW block.
-> 
-> The userspace policy input is how to configure the HW, but once
-> changed the DMA API switches to following the new HW parameters.
-> 
-> Nicolin, can you put this in its own patch with a good commit message
-> so we can have a discussion where it should live?
+> Just an observation, I don't mind either order.
 
-Ack. I will make that in my v4.
+Right. I made this change because a depth-based scheme seems more intuitive.
 
-Nicolin
+As you pointed out, though, the x86 specification uses smaller
+numbers (0) for lower levels (pte), so I think we can leave the
+x86-specific direct_map_* entries as they are.
+
+>  
+> > For consistency and cleanup, reverse the enum value ordering.
+> > 
+> > Since there is no current user relies on these numbers to be ascending from
+> > PTE->PGD, so it can be changed to be ascending from PGD->PTE, in the
+> > direction of the page table walk.
+> > 
+> > Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> > ---
+> >  include/linux/pgtable.h | 8 ++++----
+> >  1 file changed, 4 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> > index 780fe849ff8b7..a032f95943357 100644
+> > --- a/include/linux/pgtable.h
+> > +++ b/include/linux/pgtable.h
+> > @@ -2288,11 +2288,11 @@ static inline bool arch_has_pfn_modify_check(void)
+> >  typedef unsigned int pgtbl_mod_mask;
+> >  
+> >  enum pgtable_level {
+> > -	PGTABLE_LEVEL_PTE = 0,
+> > -	PGTABLE_LEVEL_PMD,
+> > -	PGTABLE_LEVEL_PUD,
+> > +	PGTABLE_LEVEL_PGD = 0,
+> >  	PGTABLE_LEVEL_P4D,
+> > -	PGTABLE_LEVEL_PGD,
+> > +	PGTABLE_LEVEL_PUD,
+> > +	PGTABLE_LEVEL_PMD,
+> > +	PGTABLE_LEVEL_PTE,
+> >  };
+> >  
+> >  static inline const char *pgtable_level_to_str(enum pgtable_level level)
+> > 
+> > -- 
+> > 2.43.0
+> > 
+> 
+> -- 
+> Sincerely yours,
+> Mike.
+
+-- 
+Sincerely,
+Yeoreum Yun
