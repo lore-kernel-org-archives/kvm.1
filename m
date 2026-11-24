@@ -1,161 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795500517;
-	b=iJ3YLlOd7RrYSogUc+P2fO8f2j4RUXTB3tCBJkHAVQsYUE7tdRDVEgK+cEDCf2MQdDhM
-	 ejEv00ZvEz2n8VZKrGUoAD8tkwV1rWG+RYi+WLJXx3sVut9wEziWYjSv+GvbpD+dpMKXp
-	 5SuYYGDd5EH1lBQT1UwvcN76LcIhvw3SKGYKZRmvKFrHrTubXgxlUp809fm3zsRp5njlt
-	 /UO3b/6SxQ/FfbGaYKdbd3B0G3ltUpMe8Mt6UEuR1me/SFVaVwfNjOs/Pv1BlGinoy47U
-	 AyDY4Jc5reWUMR/nYbd7kdJ32ZRNQWv1ulI17CiA8sgiocomnncAtFshH7BiLxwW25A==
+	t=1795500778;
+	b=JSlBMeE4V8kAYqek9TZa03mESpk0odNdXjTTs+hvx/cY0cwQ3lQhrKbc8i7utPPnXzCc
+	 DnMjpEwUx3mVBA5dAbrcUdXhzc6swaM25FoZ5OmtWqGCNiIagbe7r6Pl7yRupG4Havlp9
+	 uRXKglcMoxtD1MPzpt/B6LaAsNReoyQyofOUwpR2rj78NwmfPwNMbM0W/fltP4VALG+ZT
+	 NppcDrGZ1GZGfFJ3GUkex3/EVyVAupo7gIBe8xufWn6gN0WuJGOcJaKHE6svmbGlV+16U
+	 K/D9III7nleTwD37ugBCnshPq0jw28kaEMHJWyDAS5UfsXuu1OApuK9iGIobZpQM8/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795500517;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
-	 To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Info:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=dvY4KBfiISm+CQm5KIDUrtb6uzBgUaP0PFQaZpqv52w=;
-	b=gPVFaqcMnymMrfwxwjGylQ2pKzXk4+RcN6v8lDw9ysnXEDZih2Xqk1pX9cKffg+n1uuD
-	 iWqvG/PYYaVQHCwMcKnp/qfx9eWJpGlJY37wh5BABD+4vaVoYMJ74NxJM4gspE7yjYZWG
-	 w0cLGjOxIBYwTycqqO9fjeiwPrnH4N9etfy+zkr8pP4PwEsZCgCDSUZ/wQqwVJaglGJD7
-	 Sk1FoLV1qmRA2evniBeUqLAmg5TcGDx6Ct5HwFzVnpmtRnhG+oeeCUIYgyfM2WBEbHROQ
-	 OerEczDxC5lHh4J0azwbgXTdjIALbosQLzExECzTEYcrkdAMUxteU8oJ4ZfqXFuLbMA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795500778;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=QzdUh4XotWO4fMpwdWgdpxjmPXBWaEs7LRNsn6Vs8uc=;
+	b=GcBxzxL4RFNK8ccpLfANJ6SJ1HGWoRf42DowE6G2ND1fJ/w8aFtIsYJkTod/5Kq8R+sb
+	 nMQDDWWH6rAPEfb6rLdqE/Sm29RRxU317lRB+qOTV81RqwhuZjM7lb5BxisC+A8igFu4Y
+	 bHPdRnM+3ur3NEax1047oh/0JtZtKIAwFfSmR44EWQ8QzY6r01xIi9NKEr3a0w6lMZScp
+	 jf6ADRZIyuLCNxOjXV6cfCm6f8eGvWrkYBABS7yqSVY4U/SoSMS/0TpaOwAK6XsR0Hqz6
+	 ekP0Sm22ULRDeSImD8pw/vyFS1SONO6cZLxUn/+ecbF+2aI+1DSbnOj9/OFaq/Xa3jg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Mu+lZvdL;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=ZGO29w+k;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PpMwdelt;
+	arc=none smtp.remote-ip=198.175.65.15
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8555F606A321
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 06:08:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8555F606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2ED5606A339;
+	Tue, 24 Nov 2026 06:12:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F2ED5606A339
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Mu+lZvdL;
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=ZGO29w+k
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AO2kINi2208973
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 06:08:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=dvY4KBfiISm+CQm5KIDUrtb6
-	uzBgUaP0PFQaZpqv52w=; b=Mu+lZvdLXuWGpOkRTkHFjM/i3/zxBEn62CaGxwiM
-	4QAwVoT9XEi4yAVQyTS/Hdf4oK6g4Bc9UAYdPk+DRdycbrtCTJCG8mMPRAhd8Itr
-	YJhqFMUPxIvAUoO28f/gr9kwh8uoUQMFVNIJ4mHntvWYoUNjLLZJkNIL9C5NO8j5
-	4wzwAtnHxt9pAGjuHvdm/dL4ZGq7SYRNZIslZ6b/jAPWSWpvoexho/kIjWyCe8Go
-	XEM9WzZZfx7YDi8VBJiRGkruQKiQYtAWiuR5g/M2YJX70BEeqYi1vnUAfiYQx25H
-	1Q6Q3rvSf1diwPrHavfw3ko6BktLi1o93wWElVUR6hp2Ww==
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4j4yy11438-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 06:08:35 +0000 (GMT)
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-92104826f9bso80795816d6.1
-        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 22:08:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1795500515; x=1796105315; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dvY4KBfiISm+CQm5KIDUrtb6uzBgUaP0PFQaZpqv52w=;
-        b=ZGO29w+kZqFi0IoremOsMtN9bKkizaQT53H8YWFQDHShgC+v74I6+QopxA9VOzR3ag
-         vpo8bEUIF8O5RsZIAg/OLAqOKRB/bKTx8+cSCgApxKM12o3xffG44Tb8wjTZkSkRmxCp
-         wij9c01WUZzaDr5rVDD1SJT+iGxhVY2DGrilMJockekBI3nIm+ySQCHW9FAgGT1TCkED
-         cBg+mmrXK3wzCDdfn6tJ9MkKWiw3B/ZXVhgrV+oDdRaYRTIjpBAkDMZ/VMsXJhU+E1Kt
-         SQ9c84H9SufIQJjJDyuIlA/LWh9gOMXMRnrjdxZtJ49QfcTz5Lm9KRTSNNNdk8bu9nwV
-         oZOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795500515; x=1796105315;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dvY4KBfiISm+CQm5KIDUrtb6uzBgUaP0PFQaZpqv52w=;
-        b=FIwm/aKZvff3xgZ5oVeQtsD4yvwpI7XtplrzUbFv/FGeg60mMHwAdhLuxc9bb3al5l
-         Zd5u+2ShAS9KaSXTXON1FTLLppQ5k1bO3Wra7V3MZHgJRW6zpojaGLJFfPpEd9sGCMYe
-         a0adVncu7QJ4boXKy8y/V71CB8/xAVb2cE1cScybhOanXlZ3RgVAWvH/5EAD15s1Fyo+
-         mMBMrvUi6ElizHDGs6nPvX2+hEPQe3XlELXv/zRinVLOcELv6Wg/I8TF2eKQZCk8QvK+
-         bGkINnya/4EYOtP8iIq/PMqQPujm6l40FMeUQnpLF3oan3c4t+GWgH5VxPnctLT7QiN0
-         1CVg==
-X-Forwarded-Encrypted: i=1; AL+hErF12T4D6PutrH8WLrb/rTcdLGhd16aHHk1Q/jonoyA5X7+HbVbz9BqeyBGttSpIiMJC9Go=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8Z22lhQ7//ezJ7L/DdWGlscV/LDkrCDzHeXxscEZs6Zmz7Nd9i
-	F7DMcGF5462ZgSbjgOZ8ql6hkfU6zmx9y6sDtNu60OJqG6Iuu65NF1yGlrLawhY4A3VZf45NUdN
-	gbkMF27kt93uaF8I7EssjQmWKUxcVCmECcsybFXSrLRNGpkNnAVQf02Y=
-X-Gm-Gg: AZFdTZctZIlxcEPpSTvk6p/bCLD/l5hOy3+EOShj/Gfyl/fOEzvI4OQAJ8V7Ft5bKE/
-	uykmP5FbFeFYeGMjicQAUw8XKjEJKXjK1LKVjStUe/P59MIZkzTdnfW6OqbrWcF97h8VdsvI0sD
-	FJa3efmtmQhspkiBIfgZxLriO/MPso+Jl4pyPgYp1y2nVmOfq8U0DGgiNQV0yRWP/Ui3lBIUmCd
-	i6Pa+r6OddaZLXnxYdbEWceAnzDhrWLAjRO/3iPMYLTdKmSO7Yn/qIOZ+dCmPDGABlEAjo+cuYc
-	mGydTtg51dvo5S441YZ+ArVJQ285He4mzr5qZWWLGf4x6n8vCNgvegKOys9jrBc37VPJjpIi0n4
-	+8v0bMt0SZhSRP3/y0enPWl9SkL0ZWykA2dQzaJrCOWsRtccqkpzSt6lAI0T2tRU=
-X-Received: by 2002:a05:620a:3185:b0:93e:94a4:a97d with SMTP id af79cd13be357-949ba683204mr2433057585a.0.1795500514622;
-        Mon, 23 Nov 2026 22:08:34 -0800 (PST)
-X-Received: by 2002:a05:620a:3185:b0:93e:94a4:a97d with SMTP id af79cd13be357-949ba683204mr2433050285a.0.1795500514001;
-        Mon, 23 Nov 2026 22:08:34 -0800 (PST)
-Received: from oss.qualcomm.com ([188.27.161.77])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ad644140b5sm23005124f8f.17.2026.11.23.22.08.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2026 22:08:33 -0800 (PST)
-Date: Tue, 24 Nov 2026 08:08:29 +0200
-From: Abel Vesa <abel.vesa@oss.qualcomm.com>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Shrikanth Hegde <sshegde@linux.ibm.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
-        Dexuan Cui <decui@microsoft.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowangio@gmail.com>,
-        Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Ondrej =?utf-8?B?TW9zbsOhxI1law==?= <omosnacek@gmail.com>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@codeconstruct.com.au>,
-        Ryan Chen <ryan_chen@aspeedtech.com>,
-        Billy Tsai <billy_tsai@aspeedtech.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Abel Vesa <abelvesa@kernel.org>, Jens Wiklander <jenswi@kernel.org>,
-        Sumit Garg <sumit.garg@kernel.org>,
-        Scott Branden <scott.branden@broadcom.com>,
-        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Richard Cochran <richardcochran@gmail.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, xen-devel@lists.xenproject.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        virtualization@lists.linux.dev, linux-sgx@vger.kernel.org,
-        selinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, linux-arm-msm@vger.kernel.org,
-        op-tee@lists.trustedfirmware.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 10/14] soc: qcom: rmtfs_mem: convert mmap hook to
- mmap_prepare
-Message-ID: <7zkdydihgjnqxerwzbebrcryry37hcqc47dpzqmoxdgc7qt3i6@uanst4lmvvkn>
-References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org>
- <20261105-late-2026-mmap_prepare-v1-10-c56aadfbab8a@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PpMwdelt
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795500777; x=1827036777;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=rdPPUatwCGdhqseI0PStwl7g1cIqszizyHH+SlMOlkE=;
+  b=PpMwdelt66ywM82RwzODCocmVkLXnuPTbbvRtu1QTRSSgPn5OOIK3nbU
+   6SPOqQgiShpba+B8RG620HTg3uzMbUT1C/EYPRK1PHgKH0DS80ooLf8By
+   4vcnBwGdJRdFIwG3OHSi18oGRBi0lhM5w2fS3UeAf6ZhbQadm+5lHdTnj
+   K8JBFtdPJynhO8TU/oyVFczt2k7Uc7jnAZ6nJL9JG1aXmGo2Caqdw3BZ6
+   Xn/a2MsxdFDQ+T+LxoGZetAWUjvDiRW+BO4r4xYG1CLs0ebji5Mtxt06E
+   3Dn6LRLN4yvO0/gogaGnV8w1s+kZsikMkOq6QxtDOG9zxhqcGykRGJQvx
+   w==;
+X-CSE-ConnectionGUID: CkTz6y1vRuOjtFXIpjbBFw==
+X-CSE-MsgGUID: yB3+2UdXQGi7qtw23x5k5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4336475"
+X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; 
+   d="scan'208";a="4336475"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 22:07:07 -0800
+X-CSE-ConnectionGUID: mh6gCppTTdmWalw5M2OvVw==
+X-CSE-MsgGUID: URJvYw2ZSbCyOJUPgQ8oPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; 
+   d="scan'208";a="11688573"
+Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 22:07:03 -0800
+Message-ID: <9e7e8ed4-8f42-418e-831f-293614ef517d@linux.intel.com>
+Date: Tue, 24 Nov 2026 14:07:00 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -165,43 +72,66 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105-late-2026-mmap_prepare-v1-10-c56aadfbab8a@kernel.org>
-X-Proofpoint-ORIG-GUID: ZGvaekjjo2uDdz6euD-u-CujaiR20jCv
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI0MDAyNCBTYWx0ZWRfX3nnDKN04KQvt
- DkMm7Su9FHJdkcP/6lAOyiTBWD4SPJ59jmRJ+51QPDfy74GtwEZ+UfA9zVo7y3CHQqHyf6/za5L
- 2AJle7AJ1lYOO1K5zDi+5of7zgk67k8=
-X-Authority-Analysis: v=2.4 cv=JYspPkKV c=1 sm=1 tr=0 ts=6b0529e3 cx=c_pps
- a=UgVkIMxJMSkC9lv97toC5g==:117 a=asF+/XNaGoxFafzDDLC1GQ==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=2UNkV1bVvYdQOko7pskA:9 a=CjuIK1q_8ugA:10
- a=QtEvL3ry9E0A:10 a=1HOtulTD9v-eNWfpl4qZ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI0MDAyNCBTYWx0ZWRfX7oSoKEaZ0HZJ
- XE3IsrWuAH4hpiwX1PYpXAoUwgVBX+aY9Hbex8/cmlqcama7GrQdHdNYrm92UA3IB+nLRnMUWZS
- ovNINY94Kkw2ouPmtW2UzV9dVsylqMNls2jt4Qr3vTUiu1UfxdsjDFNN6IxHGTEYFsxp4kKLpsN
- +zcF072J5zhHnARj/9FzdpndGHLr+i7fKobA581o4cJhEbB8AAgMjhZen25xACbfg1GKcTeNijt
- 9a53kJNGBz/YGIqlnXAKa0pAHQJDVejnQExPn9xg/3+Pi76VRvAq58vyZZ988ShIWXZY0DP7znH
- pK6vU5ZMK9LUwvyoL1vun5/c+y2sr6ptrXfnsZiP8e/d33ntB54YPhmWK3yj9dhgnq6LoSSSRCJ
- JcNthJ0ByFgPuAQHhI/dW9k21TSEHwV/KGPBU2WnAMhSFB6DH1Du1gBvUChW1cXKxWU5HgSKyFk
- L/tp2Q5bdv18qMlTAtg==
-X-Proofpoint-GUID: ZGvaekjjo2uDdz6euD-u-CujaiR20jCv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-24_01,2026-11-23_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 adultscore=0 clxscore=1015 bulkscore=0
- malwarescore=0 suspectscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611240024
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, "Gao, Chao" <chao.gao@intel.com>,
+ "jgg@ziepe.ca" <jgg@ziepe.ca>, "x86@kernel.org" <x86@kernel.org>,
+ "kas@kernel.org" <kas@kernel.org>,
+ "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ "Li, Xiaoyao" <xiaoyao.li@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "Tian, Kevin" <kevin.tian@intel.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Subject: Re: [PATCH v3 3/9] x86/virt/tdx: Export Dynamic PAMT helpers to
+ tdx-host
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>
+References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
+ <20261112043054.2664857-4-baolu.lu@linux.intel.com>
+ <awQUsufmV3NipqGX@yilunxu-OptiPlex-7050>
+ <305d702ec6b5ef383115d3da9767df1ea6860da8.camel@intel.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <305d702ec6b5ef383115d3da9767df1ea6860da8.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 26-11-05 21:05:41, Lorenzo Stoakes (ARM) wrote:
-> Move from the deprecated mmap hook to the new mmap_prepare hook, using the
-> PFN remap mmap action to map the region.
+On 11/24/2026 12:28 AM, Edgecombe, Rick P wrote:
+> On Mon, 2026-11-23 at 18:25 +0800, Xu Yilun wrote:
+>> On Thu, Nov 12, 2026 at 12:30:48PM +0800, Lu Baolu wrote:
+>>> With Dynamic PAMT, any page handed to the TDX module needs PAMT backing
+>>> first, via tdx_pamt_get(), and must drop it with tdx_pamt_put() once the
+>>> TDX module gives the page back. Besides KVM, the tdx-host driver now
+>>> hands pages to the TDX module: the IOMMU_MT pages for TDH.IOMMU.SETUP.
+>>>
+>>> Export the two helpers to tdx-host as well. A symbol can only be
+>>> exported once, so replace EXPORT_SYMBOL_FOR_KVM() with an explicit list.
+>>> Only kvm-intel calls these helpers in KVM.
+>>
+>> We are seeking for some simplified intial implementation without DPAMT
+>> for TDX huge page feature. So we could also drop DPAMT support for TDX
+>> Trusted I/O currently.
+>>
+>> As an temporary solution, we can disable TDX Trusted I/O if DPAMT is on.
+>>
+>> for example:
+>>
+>> static inline bool tdx_supports_trusted_io(const struct tdx_sys_info *sysinfo)
+>> {
+>> 	if (tdx_supports_dynamic_pamt(sysinfo))
+>> 		return false;
+>>
+>> 	...
+>> }
 > 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Yes, let's try to make DPAMT support optional for the initial upstream TDX
+> connect target. We can add support for it in follow on patches and keep the
+> initial code sets smaller. In order to facilitate this, we need to add a kernel
+> param to control enabling DPAMT. I will send a patch soon.
 
-LGTM, so:
+Sounds good. I'll temperately drop the DPAMT support in the next
+version.
 
-Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+Thanks,
+baolu
