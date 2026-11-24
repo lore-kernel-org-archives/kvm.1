@@ -1,74 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.197
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795538324;
-	b=tDDsayZTpEWf0UOU1tLtjRylnTjZfubdYI8tigRI13EwXgsfyv9oRSQ8Mxnx0w6WaKxf
-	 GUlHFGiqi9GKy0dU6jT6AkFkobMQ8kCZkYdndyKvdqPuajCdPL0nvC1GbOJeFM/lxWfQK
-	 CgynO0rMZlhV6RNlHTrnE8+D40gzsqpr80Iz1D2o23TzJfDZCzVtCfxeH8ifPzplFYfSi
-	 qvNlwIFMcd12O/X+sp4EqENp8qv+9zhUpUDJtN2Or63ZvKXHkV/wxLh6+4wDufEfCFq4o
-	 +RJc7lntt9Xo4DlznTB41Cfgp8Z9Trr6rcp8EG+ORFZefR6jIq84yz0Spb+ugDkYDKw==
+	t=1795538349;
+	b=G5WVe9Y9YFY9cvagBo1/Xeb4l8aABiMcI0F5/es9vEzQ/L0r1ldywK8fLid51v1vM+y/
+	 cTFvb6XlvCjM/bUnqFiPBKgZ47z1SHDmYYePQfU0DtnjdsOEkSApmSq+PDgdiy0cxB1Ap
+	 SP1WkyWojLIcGY1uM7j9n1zlEpF/8NPIRxF44xoMtALPocB6qbNRA8S4KZ3eqTA89n8FV
+	 mBpSk0iAhF0WHA/OlkOhk5y5KTGq1U/7WK78EduImgH1vflgIKwKtb7dT+ulRh8BPHGTS
+	 MACoUt7qIshF1jk1o9JnRbnJrZiyFzSTXB1ai3owGhr13hA2lpLfU981LTYSc+o1N1A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795538324;
-	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
-	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
-	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
-	 X-SA-Exim-Scanned;
-	bh=7ADkkO7OrDOakoZissUe/feLBFMvVo6YnTMs5lxIDuc=;
-	b=oZr7lYC1qPrAojT3qzpuc5Aj5TxtG1io1or9dgVQ0EHcw7ZYTBOkmx2/0uPKifsf3krL
-	 I4dQk7lWTpUzrGZ+CLjbhAsPLjz79yGqxSQTsZdyJdiEhBQLX+XVlrROZV4+g84v7oTTj
-	 odNIGfb0aRgyS5uRKFb2fN+CkNIcwwWFwg8/dCEQ1o5ja+YEvyVmNBz8qyVMiNNZ9jM1U
-	 ikDpwtzP2DrnDpSceuBGxOaLf/3agMH242dkU8jSV4hrHCX8SXoHlJ0xWDRIIEaAWDnLl
-	 4RdT4ZaRB/pQAhAYlArVTC6KgAUlfaoaeVhf1vIwvx7PEtztOgTxjN/ft9UBcF1Kxww==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795538349;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
+	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
+	 Content-Type;
+	bh=hX9If82pAfpMeK436h6UILTlGZu6cFz55fiDFmFfVLs=;
+	b=zjC8tXD+5lroMWk4zbjMT6r21h8SnGEzVREMEnkjlLUjL95lZS7hx3SzQGHtcIm9hRJX
+	 +to+YR7l9EJKtQwW8gwDGaH9PCxDOHnTCPRXs6VTkc5ywt1BXkbz8Y72PtkFWwx+fuOK3
+	 zEJVdGbAnQCDLuWaT3kapwqPNh514UIIJU9/kUK94fk2WRDMVnD7JAMl3Yh9V3u/dCreY
+	 Vq+UErdr2hRFYc0RiS0EvCiqHndXg/2ldllSmTo/mnjINMn+RlsrFbRtHWDZDTPyDavo1
+	 7pdv0eB4fetV+Xio0oc4j+GOQs4+CM1C+loqDbn9y0ygHTBt21ThNahdhMCBB9BlHUQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FwyR1IKx;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--zhichuang.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KLPZy0+b;
+	arc=none smtp.remote-ip=74.125.82.197
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AC5606A32C;
-	Tue, 24 Nov 2026 16:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7A6606A323
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 16:39:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F7A6606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--zhichuang.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FwyR1IKx
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35251F000D2;
-	Tue, 24 Nov 2026 16:38:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795538324;
-	bh=7ADkkO7OrDOakoZissUe/feLBFMvVo6YnTMs5lxIDuc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=FwyR1IKxg5LZccDINcjDUnc6lyk1XGb6HBTNrvll1u4ipuyfAQeb4fEqM0eXjX7SM
-	 PRPRC2DYZ8MNcLmvzgqzgxnk+abDN7UJFiJs+Whb8Lc5LRBAFjUGBVW6E22fOFAq1W
-	 VjfbUkP0MdPqTDBmO+oRifVIa7l716FkzcWCzDpuFUK0X/QkoXIkAD1ONEUFjXYiOG
-	 wkCnL4dQhDRlreZZ4ZMenD7XtWULaUo2wSgzz+VAzp6JPr4XgW2Fvc4IVB1X1i3XfZ
-	 Is342rsqStkMEb42NbPEAYrcIkt3YK6J3a+cul02S6tfI6o6mSjCEjIfWEpJzQWHB9
-	 4Y/JznUmdU8Aw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xVtXV-00000002gMn-3c6E;
-	Tue, 24 Nov 2026 16:38:41 +0000
-Date: Tue, 24 Nov 2026 16:38:41 +0000
-Message-ID: <864id6yyjy.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Leonardo Bras <leo.bras@arm.com>
-Cc: kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	Dan Carpenter <dan@pereq.eu>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: nv: Upgrade sub-page TTL hint to maximum size
-In-Reply-To: <awW5QKqGZAqw1ru9@LeoBrasDK>
-References: <20261123182312.4842-1-maz@kernel.org>
-	<awW5QKqGZAqw1ru9@LeoBrasDK>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=KLPZy0+b
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-384c78aa0dbso6590593eec.0
+        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 08:39:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795538348; x=1796143148; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hX9If82pAfpMeK436h6UILTlGZu6cFz55fiDFmFfVLs=;
+        b=KLPZy0+bHuhXVJdNnmDF1uSlOai4JtlyiRJ4b9lQ2IEvnH4REB9aTvL9Y+rftk9Aks
+         0YjdH0ZYl+IB0kpGd6aTKzXNGrdAI5GUWUdQ39SpQPcc5cMYAVlF/++94c1FDYU3S3/n
+         r50M4jT68+1ZbL773ikKcvaWFho0pkuB3gC6nyHtvl+3Bo95qixbONbAhqyTGHCkRjoW
+         QVs1A0VT2jEWAUDTSiIwhuSDPQQPhmcg4qp34VhaDmm5oDUvGE09HN22hb8SR3SMpSJp
+         ATg6XtB+Dr8xyIopbUN08Penp8ODKir6AMwomjtV18rtz+yolIfPR9W7FGLKNlU8/VYd
+         G42Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795538348; x=1796143148;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hX9If82pAfpMeK436h6UILTlGZu6cFz55fiDFmFfVLs=;
+        b=0mk0IWcjSeNPY8Rgstv/QY/I83AOODfdo01cvxV0ZSQiiVV/AqX+0lpFCJVpEgZxhe
+         cyAfU7jhv38cwhqb1ojtDA5sAU+qfqG/bGdQx4AQ9fcjrSwyakDvE1QT/6oHxbtXogzS
+         JMYVrhwdDqQSKr+JBjHVnywr4eqXsfi5kAwtZkDIvEaEkhQ+eU3SxRI6m4F+8PAw5M5G
+         W3MZPRytRVkpAo2v8cKZro54NrYRCZQ9cwvT8606t/4qvQFkN/nWfbSGMDxdBuaCMRne
+         i4izR9aF3972GoSV3C594lNcx2SviatJB3btSxl953j5ubhI7yaMSYSHhNBzUfzNM1UW
+         qP9w==
+X-Forwarded-Encrypted: i=1; AL+hErEkdHqYXqFkiag/jNNYr5xtp2SRQ8C9eWEEoTke4meDf4ZnJ3iqgydE2DpJd+cspwcktb8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9Ttgj2LzCCUuAJTKeJGgZKSMy3fqfRRYYBxNXqOr4XVunTIg3h
+	6KUBy4t7tBK3LK0BKM778yzJ9nwNkEIhnxknOVcL6hFxhhkTjvtBiN73/yIbHEJNEknw2n6a0/Y
+	3y0F6jv/x8ui2frL4CQ==
+X-Received: from dybkz9.prod.google.com ([2002:a05:7301:1a09:b0:37a:8a0f:3aba])
+ (user=zhichuang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7301:d81c:b0:386:b7d2:a279 with SMTP id 5a478bee46e88-386b7d2aba6mr5074472eec.34.1795538348114;
+ Tue, 24 Nov 2026 08:39:08 -0800 (PST)
+Date: Tue, 24 Nov 2026 16:39:07 +0000
+In-Reply-To: <20261124161713.263759-1-zhichuang@google.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,121 +78,28 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: leo.bras@arm.com, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, fuad.tabba@linux.dev, dan@pereq.eu, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Mime-Version: 1.0
+References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
+ <20261123083337.2731019-11-aneesh.kumar@kernel.org> <20261124161713.263759-1-zhichuang@google.com>
+X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
+Message-ID: <20261124163907.476312-1-zhichuang@google.com>
+Subject: Re: [PATCH v1 10/10] PCI/TSM: Configure accepted device DMA during
+ driver attachment
+From: Zhichuang Sun <zhichuang@google.com>
+To: aneesh.kumar@kernel.org
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org, kvm@vger.kernel.org, 
+	driver-core@lists.linux.dev, djbw@kernel.org, jgg@ziepe.ca, leon@kernel.org, 
+	yilun.xu@linux.intel.com, aik@amd.com, thomas.lendacky@amd.com, 
+	ashish.kalra@amd.com, suzuki.poulose@arm.com, steven.price@arm.com, 
+	bhelgaas@google.com, jonathan.cameron@huawei.com, lukas@wunner.de
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 24 Nov 2026 16:20:16 +0000,
-Leonardo Bras <leo.bras@arm.com> wrote:
-> 
-> On Mon, Nov 23, 2026 at 06:23:12PM +0000, Marc Zyngier wrote:
-> > Should a guest be slightly foolish and submit a S2 TLBI with a TTL hint
-> > that describe a base granule size smaller than the host's page size,
-> > we take the resulting size at face value and feed it to the S2 unmapping
-> > code. Which legitimately screams about something not being page-aligned.
-> > 
-> > The architecture allows us to drop the TLBI on the floor, as we don't
-> > support a S2 granule size smaller than the host's page size. But it turns
-> > out that doing so is proving pretty hard (we call compute_tlb_inval_range
-> > from a number of places, none of which is amenable to an early out).
-> > 
-> > Instead, detect the annoying case, and pretend that we don't have a TTL
-> > hint at all, leaving the size upgrade mechanism to take place and use
-> > the largest possible size for the guest's S2 granule size.
-> > 
-> > This will still allow nonsensical stuff to get through, such as a 4kB
-> > level 2 (aka 2MB) from a guest with a 64kB S2 base granule size running
-> > on a 16kB page size host, but that's not worse than doing nothing, and
-> > the host code won't get shouty.
-> > 
-> > Reported-by: Dan Carpenter <dan@pereq.eu>
-> > Link: https://lore.kernel.org/r/20261123-inval_range-v1-1-815e15797089@pereq.eu
-> > Fixes: d1de1576dc21 ("KVM: arm64: nv: Handle FEAT_TTL hinted TLB operations")
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > Cc: stable@vger.kernel.org
-> > ---
-> > 
-> > Notes:
-> >     Reposting this as a first class patch, as I'd like to plug that one
-> >     as early as possible (and Dan has plenty of other patches in flight...)
-> > 
-> >  arch/arm64/kvm/nested.c | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> > 
-> > diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> > index 78d5b18dbd2d6..36e4e83badf0a 100644
-> > --- a/arch/arm64/kvm/nested.c
-> > +++ b/arch/arm64/kvm/nested.c
-> > @@ -714,6 +714,13 @@ unsigned long compute_tlb_inval_range(struct kvm_s2_mmu *mmu, u64 val)
-> >  	 */
-> >  	max_size = __ttl_to_size(ttl);
-> >  
-> > +	/*
-> > +	 * IMPDEF behaviour: treat subpage TTL-annotated TLBI as the largest
-> > +	 * possible invalidation. Don't try this at home, kids!
-> > +	 */
-> > +	if (max_size < PAGE_SIZE)
-> > +		max_size = 0;
-> > +
-> >  	if (!max_size) {
-> >  		/* Compute the maximum extent of the invalidation */
-> >  		switch (vtcr_to_tg0_pgsize(kvm, mmu->tlb_vtcr)) {
-> > -- 
-> > 2.47.3
-> > 
-> 
-> Hey Marc,
-> 
-> I think the changes make sense, although rounding up to PAGE_SIZE also 
-> looks a valid solution in my unexperienced viewpoint.
+On Tue, Nov 24, 2026 at 04:17:13PM +0000, Zhichuang Sun wrote:
+> A short clarification question on this check.
 
-No, it isn't the same thing. Taker the example I have given, where the
-host is 16k, the guest 64k, and the invalidation 4k. If you round
-things up to 16k, you're still not invalidating anything that is
-consistent with the *minimum page size* for the guest. Anything larger
-is a multiple of both the host and guest page sizes, and therefore
-always correct.
-
-> 
-> I am curious if there is any particular reason not to merge that with the 
-> test below, such as:
-> 
-> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> index 78d5b18dbd2d6..36e4e83badf0a 100644
-> --- a/arch/arm64/kvm/nested.c
-> +++ b/arch/arm64/kvm/nested.c
-> @@ -714,6 +714,13 @@ unsigned long compute_tlb_inval_range(struct kvm_s2_mmu *mmu, u64 val)
->  	 */
->  	max_size = __ttl_to_size(ttl);
->  
-> +	/*
-> +	 * IMPDEF behaviour: treat subpage TTL-annotated TLBI as the largest
-> +	 * possible invalidation. Don't try this at home, kids!
-> +	 */
-> +	if (max_size < PAGE_SIZE) {
-> - 	if (!max_size) {
->  		/* Compute the maximum extent of the invalidation */
->  		switch (vtcr_to_tg0_pgsize(kvm, mmu->tlb_vtcr)) {
-> --
-> 
-> Given max_size is unsigned (>=0), and it will be changed again in the 
-> switch case below, I was not able to understand the need to make it zero 
-> first.
-
-There is more than one way to write similar things, and what I wrote
-made the most sense to me.
-
-I want to single out this particular corner case, which is not the
-much more general case if "max_size is 0 because there is no TTL
-information". Lumping these two things together makes it, IMO,
-pointlessly hard to reason about the various cases.
+Apologies for the duplicate. Jianxiong and I drafted this question
+together and he already sent it; Aneesh and Jason have replied on his
+subthread. Please disregard this one.
 
 Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+Zhichuang
