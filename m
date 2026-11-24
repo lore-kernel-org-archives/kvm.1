@@ -1,110 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795563118;
-	b=V/5PcaspwcnMsyCVEvGKBjDEyKc3nWBswiWaKGt6LHV0LZoR9XOrFM+RxwiT2Y76nack
-	 J0O6W5xa38qhPYWBI/ryLNVA685yUWgSax4cvz6fqB885GIZYn5xx+e9Css7Vjg6ibIWu
-	 tnt6FoT4PjeRf7b69CF0ODvKbCmDmqUA6/xF4CUGoJRdoSAJs/cdQcjC/wZVcT+Y16zbe
-	 Ejp4fbdYAPzbEk6KwWFAP3dh2YsCFrzkrBS2itc7v6bwOlBYLH96Y1gNEj4XhewRcEg7W
-	 NWKs1V+PEXpoJrUdJqzbuOa3vYB0AA85CFRJMM0wgCV5kxZzfGh2A+/AmNQVSgb0lKQ==
+	t=1795564374;
+	b=gEAza7tnUBO6joNBfbV8pqWJvqxW0wa+d4w8/Rknat34IeM2A4J8y4SVgc1wRZtY6+Rp
+	 wpQPIsh0HXrkVvt3w/pnD6E5Vr7iaAu7rPqGJ904k6RG+H2dy8A3gRaaxfm9Nejc1bi+k
+	 w/Ytsjirc+sROyp5NtPumxrWmLUZdqSJwyCQANLtMmKOKVCoixF1wx5em5dSVhgF7aIuG
+	 xymVQUO9qF07YSq+T6P4dcb7IjyKlY6MvI+i7ctWgQA6tcLqxciTg6vDjMX/281ap8daN
+	 BDskldALr5jrPv222m/6vgp9Qa78VomdfHRWMIgTQya7YhxEh0W/dGzzhs6+iMIESXg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795563118;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=G1ZAm7akP9D8mbltmYnzmqncqYxXc4x3mIjxdEr9bU4=;
-	b=aSY/o+U6hQztpS7paAahgVjz6++6E9DGChpVG/EWuyaC0V0grGXUAQpOJEbU4rE0ukwi
-	 Xu28YyHE/Wl3kbawX0f4UxY7QRdssAQmTGjz4+VJld9AlktbYvjwxAsi+H3cWJVXqE4hV
-	 tZck9Yb9gmnn8BkPZu4FCbBSd5ttK7bXg5rNbM7THPin6YZCF+9/NKBpNan7sJsig1FE7
-	 7V849NfvjBsg+vGAhz14OWqeLkrK+HQvrevIL0+nzrfAQx0iXwrqAYo5sHYmSo/krXLGM
-	 /euNzcT2MaUIZVNoVqzvxKizZnKofx8ExuYF4asUWxq1+1x1zCyEHEcummZPehtn3CQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795564374;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=FdmbSo5Y/+1WVcBaZi3UOeVDRS7HdI9UnXMTYxRF8pM=;
+	b=hWtdIvyG9f8MpxDO7m3CeOPE94C15FD/RDX3HRxJCf979OQ+lq2BrQ99qTBSTDCnR77U
+	 Dxi8bff1fuZOpDZ3sAuZ1rrTbqgNgyTWAvMJcgRapeUnLRosSFMbjqSlQGd6dS1KrwZX1
+	 aFYrWSQuhtZ+n1caDhmWtVuk9vTWx0pMX24XbZb5baL0aJ/6Nd6qCRStkuGlfk27788bN
+	 tA9tepZxGKyZkxOXK2VQHLM8GF6JdRvcu9revqAvo0HPlmj0TU5v05KBLt8IMECr1jFL7
+	 pWOmildQioQ3bom3cJ22OBpM6o6uuU+77DR4+jhnMApCjXnFwY8lNTibWnob6P8oztg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=YdvJDNZU;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b="KvdDZ/Jj";
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Sxln5p4T;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A7E606A31E
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:31:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67A7E606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51944606A31E
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=YdvJDNZU;
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=KvdDZ/Jj
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AOMaxgO640514
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:31:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	G1ZAm7akP9D8mbltmYnzmqncqYxXc4x3mIjxdEr9bU4=; b=YdvJDNZUyxhdhS6J
-	arsYzy3lKCqdBPApC8vjWOmux1EIZ/i1OW6ayttqTLrpcttLnVewWbiIMUWRLJz0
-	RmmzuEZZCfCRwALk8iiU5w1FrdEn80w8EaCCPuo1QryLIYZsv52MaPN7dB5/Fx6z
-	l6jCl47R23yif+/qQfkM5FhT8f14UNd2fOQ2jupj4TKMNHZrqVPmmT6zOyrtzDL+
-	5l4JKsIwHiZQIhO4ZAJ6D3jyEh4dbR9gTyjgAnpZqeLCk36mMOeNAxvWBa4P3WlY
-	+e2yGHnhMeCh/SpVzWeo/Iwoh3bYrLMJDCh6MNDsq527n5lkVfRmsYCXMJgLDRBL
-	uQNQSA==
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com [209.85.128.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4j5effsfua-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:31:56 +0000 (GMT)
-Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-8b4d1e90b9eso43140987b3.3
-        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 15:31:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1795563115; x=1796167915; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=G1ZAm7akP9D8mbltmYnzmqncqYxXc4x3mIjxdEr9bU4=;
-        b=KvdDZ/JjUazEnN/IDa92TBmbwH0tmeZ1mRtCjdaNwdAxq8U3Nb8PkbKEUEY4A3LV2B
-         tQPyGuKdOysokDn8P01IoI4qL1dcj1djIWU5a5YcMkxQjk3hxov3ibtINd5CFKS/Sxat
-         YeIYso3DqILXchIwV4kE2zIspvfkaWSK1Wc+iDT6P1OK2yJHDWngpQBmg6ALBt3xdyxH
-         MeunH9H8JIAbw6tBRoZ/nha2C5MZHW0JDthb0ucyKqNHhdmoyewrpc5goVFJTP8Ne8vn
-         wsWANoLsSZuwtiqHIUya2n/0PTTMmq2dcvhhx///UTImYrV3zUYV8Z2kiS3B/0lgNAaR
-         +S/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795563115; x=1796167915;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=G1ZAm7akP9D8mbltmYnzmqncqYxXc4x3mIjxdEr9bU4=;
-        b=KlGhCmcF3gebdvZMnjoM4i1wFthemQCsNFSBcqk2jWigpmYLhajsV3FqPRM+TmXJIS
-         bzaaptkJoe3PJDIzNgVxdkA8wroEttTYKi1Cd5tvhDl4DaCWA9CAbzMJqHIlYB0AmYti
-         fHzbo4jMFrEzPHRwked5e1S9yHYRQqAffhVM2pQmXEWLzFFMSUcSwAIKtkuXflpmbjPR
-         UDlq06hU4dH5qlr4Fi+jiNTwSnokcw7lCndkUwrn/SC54icaF1LpxoPclsYp5ecG+2uu
-         XXcMw2iB/rsmXMJZNo8YH2WgKG3HzsTntxpBGoSNVae0tlUFfNexTpwMYBSIlNJUyQQU
-         VvDg==
-X-Forwarded-Encrypted: i=1; AL+hErGw0xSkGXEinmm6Cf+VBcLp89fDguJzqvahYSkf7FcP+DrfnbiRpn2Xh6scDs75YjtGktc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z88W23u/nw2gqBIyrt2H+cDBb0ASu8TvYLi3v1fgjTXr1FWtfWb
-	Z57oa4/GbH6ylLb2cZIaShqApx/trQozc1c2vUGCHcMVq+RV/d78vpLwIGnNA2lgrqxyWgcfXZn
-	g/Ssza7fTvBCXTsUAcPYH3vMmLVt2U4tWevzxkCEVKHsCGrmg1lrcWOs=
-X-Gm-Gg: AZFdTZfXUP/zQ1qoxQpadJPqMUSIO1OfW5hnEsrVeVroGA0ds84vBiFFoEktlZtxUqp
-	IyO9q8PW6sYPG0uhihVPZP46+mmxuHZ83CuaG3LGUaY90QYK3NGDdvRWqG7nBI09Ue6Fa0alEyo
-	bhkwppPuyyayFcF+fgwosM9T0xTDUeOQRL/tR00cguqYVE8GJ1lUt/HEiXcyRC1I0trf74weJos
-	oknbaFPj9I9ta4d2dH+MPC64fQZjf6UtfjyJ9rE80vWZC9W3YwTmOkuN5WaRe2NxsMuVJO7pwov
-	Qq542pgEGLyCkBsL3Cj7yHaNMYe8P4LLiLB1wuKoWJ8Q4TEc0vaerXpcfQGI5UCuOpAoHHclFlq
-	BmGf6PZELAIjwMAkuuuwH40TrtGuzQunwm1UiQqazsVt6eyz7Mo7wMo4x7190zD4MoqR/yPYi0H
-	ebVVSD8WI=
-X-Received: by 2002:a05:690c:e3d2:b0:873:5c0f:27c with SMTP id 00721157ae682-8b5204ad248mr71151017b3.38.1795563114695;
-        Tue, 24 Nov 2026 15:31:54 -0800 (PST)
-X-Received: by 2002:a05:690c:e3d2:b0:873:5c0f:27c with SMTP id 00721157ae682-8b5204ad248mr71150797b3.38.1795563114026;
-        Tue, 24 Nov 2026 15:31:54 -0800 (PST)
-Received: from [192.168.69.234] (pmd666.hd.free.fr. [82.67.153.177])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6b110c3csm29788684f8f.36.2026.11.24.15.31.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Nov 2026 15:31:53 -0800 (PST)
-Message-ID: <2f326926-16e7-478d-bc57-86052033199b@oss.qualcomm.com>
-Date: Wed, 25 Nov 2026 00:31:52 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Sxln5p4T
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9FEE1F000C6
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:52:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795564373;
+	bh=FdmbSo5Y/+1WVcBaZi3UOeVDRS7HdI9UnXMTYxRF8pM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Sxln5p4TnQV37sviKlKWXp5rOvoFAUSUNEhADtcG4eGJK7Roa/GTplzxTEvlNg1FP
+	 tkk2V7FcUY/Xf+cMmNe9kSQPBEICb04tRRJR1S3wgMsgCSboJjspXH9uxM/MnNHr3/
+	 nCOBgg3cBDtm5T5N3aV2U1eqbf16WwXvjzJb6i4ZK2qfWXmnQ/ZRL2SMbhmDSFiZFe
+	 cP0NdDu+5UZDnyTbbAWmjka7cbeq9kMBgDOfnpHG8O4iOsIJ8XuD36ABIWr1xkC3pK
+	 UAnISlFk7aXkcGMluVa/CChhbEH/loe4oHFIQ6UH6A9i7X8tHD2u1XfRG8Pf7N6Bbt
+	 BczI9l5DSCPdg==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5be4fea434bso5554164e87.1
+        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 15:52:53 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErGJmzJTh3OP9+I7RHfSvcMVsR7C/47yQgIctF5HDxhRA4uT6TTnEwNrP7qK6lfoPFDsmUM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8rCyDyM9g0RovfmVh7RG1AwwItr3uQK3DHHLcP0ulpHailJcfR
+	+qkb/ZzlKsy/ii41UHWvI23v0AaxKj4HQ7a3eXDpRcZAvWGorIjgZsuLHq4ozePVGAHEL8gQihb
+	qS4WGTsAa3yU89P+XBhe9z5FpLqVpWFs=
+X-Received: by 2002:a05:6512:3c86:b0:5bf:a34f:14ce with SMTP id
+ 2adb3069b0e04-5c1b7bcb80cmr4369964e87.11.1795564372635; Tue, 24 Nov 2026
+ 15:52:52 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -114,73 +59,169 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 09/21] i386/xen: Don't inject event on invalid port in
- qmp_xen_event_inject()
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
-Cc: xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Peter Maydell
- <peter.maydell@linaro.org>, Paul Durrant <paul@xen.org>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Anthony PERARD <anthony@xenproject.org>,
-        "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
-        "Michael S . Tsirkin" <mst@redhat.com>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Marcelo Tosatti <mtosatti@redhat.com>,
-        =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
-        Jason Wang <jasowangio@gmail.com>, Hui Peng <benquike@gmail.com>,
-        Mark Syms <mark.syms@citrix.com>, Feifan Qian <bea1e@proton.me>,
-        David Woodhouse <dwmw@amazon.co.uk>
-References: <20261124232247.23169-1-dwmw2@infradead.org>
- <20261124232247.23169-10-dwmw2@infradead.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20261124232247.23169-10-dwmw2@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=eo5KXYpX c=1 sm=1 tr=0 ts=6b061e6c cx=c_pps
- a=NMvoxGxYzVyQPkMeJjVPKg==:117 a=nz36NW0qrpeEijYxj/H2Ew==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=M51BFTxLslgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
- a=p0WdMEafAAAA:8 a=pBOR-ozoAAAA:8 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
- a=1tSEMpTH9XP_W59IOagA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=kLokIza1BN8a-hAJ3hfR:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI0MDA5MiBTYWx0ZWRfX/KM+S2r3zN8+
- uB4OV/wchazi9+EWjDzAcbb4eCTmGrUND0fUpLLFJKF+PpOz273/wVBrpAlZd5Jd5LvUg8Ghhpw
- 3QPurtYfx6c+/+62ipwKbFNLFMljILAVsFQnoe/csacf3Qqh275E211/HXNqBOHjlfEj2hCkAm3
- m0gmYGRssaW48WJBzDxD0j+REiMVNmjEprM/9AB54VUuevU8SzEnM99xJ7/KdkIn7Ia4wuxa+bg
- 9ZWgC05MIuvNEl8Grqt0FWqvpjY9H39yajvn2Yg+CfvdjkRNEu+69SU3QTm2Ca1Q2hbsGAEAgJO
- lRGztECJIlHWpNNKe/QaEy8dZtz7Chzb6KgcNQuEbluTQFHw9o2PKtLS0reAEhtYWva+X4/Dy47
- n5w1i/lNRzN/n57oP/UYrpyyGH+l5cOA9N1Ha4PGC3HkGTjMEi8XvxcZMHwIzzpC4Ayc1ifapNy
- kWQwZEt8qWJUesF2oxg==
-X-Proofpoint-GUID: zKeQ1qi23h-dn06_i5l2Vy4_BkmeXNkx
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI0MDA5MiBTYWx0ZWRfX5AaMY2s90WRu
- 6Nz8+FgaEm5yxLMpBqvLT8dSWiOydTHtCjdq8t/cmHZ7gMKHbKyhKdI6T0ll52WRHwwCuB0PMJI
- gf7ED3OCjKRbIbzlGqy09Q/9dzj6Uyk=
-X-Proofpoint-ORIG-GUID: zKeQ1qi23h-dn06_i5l2Vy4_BkmeXNkx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-24_06,2026-11-23_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0
- phishscore=0 impostorscore=0 suspectscore=0 clxscore=1015 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611240092
+References: <20261015142552.4128028-1-ryan.roberts@arm.com> <20261015142552.4128028-14-ryan.roberts@arm.com>
+In-Reply-To: <20261015142552.4128028-14-ryan.roberts@arm.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Wed, 25 Nov 2026 00:52:40 +0100
+X-Gmail-Original-Message-ID: <CAD++jLmpMQ1KExszFo-So-dQ2rxDiG2fo1GYGV_T0VPQM2b=MQ@mail.gmail.com>
+X-Gm-Features: Aa3M54pFqitfpRija09wdUEiLNXZP7zwbQjloIBuStVWLIh0bhqixHx00fUO9n0
+Message-ID: <CAD++jLmpMQ1KExszFo-So-dQ2rxDiG2fo1GYGV_T0VPQM2b=MQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 13/15] misc/arm-cla: Add stage-2 MTC and VM context switch
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@nvidia.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jean-Philippe Brucker <jpb@kernel.org>, Oded Gabbay <ogabbay@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org, devicetree@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 25/11/26 00:22, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
-> 
-> qmp_xen_event_inject() reported the invalid port with error_setg() but
-> then carried on regardless, passing it to set_port_pending(). Return
-> after setting the error.
-> 
-> Fixes: 507cb64d6e66 ("i386/xen: add monitor commands to test event injection")
-> Reported-by: Hui Peng <benquike@gmail.com>
-> Closes: https://gitlab.com/qemu-project/qemu/-/work_items/4525
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> ---
->   hw/i386/kvm/xen_evtchn.c | 1 +
->   1 file changed, 1 insertion(+)
+Hi Ryan, Jean-Philippe,
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@oss.qualcomm.com>
+On Thu, Oct 15, 2026 at 4:27=E2=80=AFPM Ryan Roberts <ryan.roberts@arm.com>=
+ wrote:
+
+> From: Jean-Philippe Brucker <jpb@kernel.org>
+>
+> Add functions to switch the guest MTC. Reset the accelerators and CLA
+> registers on switch. No save/restore of accelerators at the moment, we
+> only restore the kernel's PL0CTL.
+>
+> Signed-off-by: Jean-Philippe Brucker <jpb@kernel.org>
+(...)
+
+> +/**
+> + * struct cla_regs_pl1 - Saved CLA register state (PL1)
+> + * @pl0ctrl: Host PL0 control register
+> + *
+> + * Most registers are simply reset when transitionning to and from VMs, =
+since we
+> + * don't support shared assignment.
+> + */
+> +struct cla_regs_pl1 {
+> +       u64 pl0ctrl;
+> +};
+> +
+
+> +enum cla_ctx_type {
+> +       CLA_CTX_PL0,
+> +       CLA_CTX_PL1,
+> +};
+
+Please add authoritative definitions of the these two context states
+here so we know exactly what they are for.
+
+>   * Mutable, written by domain reassignment, device work, and CPU hotplug=
+:
+>   * @regs:              State for each device in domain.
+>   * @asid:              Pinned ASID of live context.
+> + * @guest_mmu:         Stage 2 translation configuration.
+
+Since they are now in a union there is some information missing here,
+asid for PL0, guest_mmu for PL1?
+
+>   */
+>  struct cla_ctx {
+>         struct kref refcnt;
+> @@ -191,7 +220,10 @@ struct cla_ctx {
+>         refcount_t users;
+>         struct list_head queue_node;
+>         void **regs;
+> -       unsigned int asid;
+> +       union {
+> +               unsigned int asid;
+> +               struct kvm_arch_guest_mmu *guest_mmu;
+> +       };
+>         wait_queue_head_t waitq;
+>  };
+
+(...)
+
+>  /**
+>   * cla_ctx_create - Create a context or increase its user count
+>   * @domain: CLA domain
+> @@ -48,8 +79,12 @@ struct cla_ctx *cla_ctx_create(struct cla_domain *doma=
+in,
+>         INIT_LIST_HEAD(&ctx->queue_node);
+>         init_waitqueue_head(&ctx->waitq);
+>
+> -       mmgrab(key->mm);
+> -       get_file(key->file);
+> +       if (cla_ctx_is_pl0(ctx)) {
+> +               mmgrab(key->mm);
+> +               get_file(key->file);
+> +       } else {
+> +               WARN_ON(!cla_ctx_get_pl1(ctx));
+> +       }
+
+This WARN_ON looks more like an assert() of some kind?
+Since it's an enum and assigned from those everywher
+this is basically a check for memory corruption...?
+
+Well maybe better safe than sorry.
+
+If you want to employ this pattern, and especially if there
+will be PL2, PL3 etc in the future, do a switch?
+
+switch (ctx->key.type) {
+case CLA_CTX_PL0:
+    mmgrab(key->mm);
+    get_file(key->file);
+    break;
+case CLA_CTX_PL1:
+    break;
+default:
+    WARN_ON(1); /* Should never happen */
+    break;
+}
+
+So you would then use that pattern also here:
+
+> -       mmdrop(key->mm);
+> -       fput(key->file);
+> +       if (cla_ctx_is_pl0(ctx)) {
+> +               mmdrop(key->mm);
+> +               fput(key->file);
+> +       } else {
+> +               cla_ctx_put_pl1(ctx);
+> +       }
+
+And here:
+
+> -       mmdrop(ctx->key.mm);
+> -       fput(ctx->key.file);
+> +       if (cla_ctx_is_pl0(ctx)) {
+> +               mmdrop(ctx->key.mm);
+> +               fput(ctx->key.file);
+> +       } else {
+> +               cla_ctx_put_pl1(ctx);
+> +       }
+
+
+>  #define cla_kernel_mtc \
+>         (cla_kernel_pl =3D=3D 2 ? CLA_MTC_REGIDX_PL2 : CLA_MTC_REGIDX_PL1=
+)
+>
+> +/**
+> + * struct cla_mtc_s2 - Stage 2 MTC configuration for the host or a VM.
+> + * @hcr: HCR_EL2 register value.
+> + * @vttbr: VTTBR_EL2 register value.
+> + * @vtcr: VTCR_EL2 register value.
+> + */
+> +struct cla_mtc_s2 {
+> +       u64 hcr;
+> +       u64 vttbr;
+> +       u64 vtcr;
+> +};
+
+At this point I have no idea what "stage 1" and "stage 2" is, but I just
+assume it is something everyone working on virtualization knows about.
+Maybe it could be explained briefly in the commit message for the
+rest of us?
+
+Yours,
+Linus Walleij
