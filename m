@@ -1,124 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.168.131
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795505877;
-	b=wzcoBrwwxs2PfFEHPT9GsqouYfu1cWI8cNStTWrlSckOVFu8wRUFL0iFKziYwRtN/CgQ
-	 AcjEkNPXp4SwdtTBgCj7ZmdnfOju4sipmw+mwafIqpx4ohj2e8Gyoj9xFS06JyO+P75vo
-	 nJN2Qp08d6Ugb/o0K0V4dZ00q9UeA1B7fZLTjuYi+HcnTZGhJzELYytecfCsatCjKYCHy
-	 9Ovxu/gMWG6ERIaj7Ht5nB0QtwuZJX7rqIE6otxKz3uAW/fn20zAo5bXJ+o9neYeN1hLz
-	 RebSFLYbmQ47fmHUryH07/G08k33ouIhES5YLeDjFVZK44OqHa/+cuFz6PygUPI5uNA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795505877;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:MIME-Version:
-	 References:In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:
-	 Cc:Content-Type:Content-Transfer-Encoding:X-Proofpoint-Spam-Info:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=WLDBCseQttjsh+YgjaRZ95arQzmquJXtwPce4pg+uuw=;
-	b=1EOSY+LEwVRoEDFbKXGDOAA4JSUb/rNO8IjkPaSAGuevHkqOAcCOpVg4J3hXRqOPBj5O
-	 W3jCk6Fl44SwKe3kbB5s1xyTtRjqyt6BQoraz8/2J8aRrWz8bveEMxWm6M8DV2uNSHCZn
-	 Jgf+PfShbTU1cZwn3sIxwxRGVoqOaL3vHPB4JVVBnrW8kk1PABE+8+nlafXn0BSZXbzgs
-	 p08EG12YhiTKDiueG9sXwzxcbm5C7nzIljwSiyvBIer2+NALu2aPnC4sNDvUDAAO5DuEz
-	 wnURjr5aZ1R+Cdjxw617b5P/HKVOFgzbJSCJpvRCGDiyix19XtNC0IZB65a3xPrNLtw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=jB2OhFnb;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=S1+Iax5U;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=205.220.168.131
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.12
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795506443;
+	b=bYNfjBdftOA2OxBWI/RF2Rf1pGYoDavLrL48Lq5Yz37S7IjovCJFjnoEUHoraTqsHCCI
+	 +ViU3Ec2X2Ilc9MYENKyhuuycB45a/I9QpxarI8Gx0m+kL5+vBcNJSJUO8GZdaRrsbnHO
+	 PsTKCC+anidFqel/l5E1qORJvzbfBm7t+lRhswkgR3+tNsT9EHBhhuY+ImWJi9OlDGmPk
+	 RVTgi/AJsMrPIgikbCcJGR3CZFk3pEZLp/gsb6kQjVO0C3VkqpYdmWt9xx0ngefytU3dR
+	 alOMWr8rAOvTvrIWJeXeAShCi6OmJbl55ZC/uf6zlsQFycptait+PA6hvSqPcwvhfYg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795506443;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=cZCl0OxNsgxdA/QB5hhJ6JhPi9t4AL/d2MvvIkbtiIg=;
+	b=AlQqfPmWZR7bRKNdHEgV1m5gme4NrVxFcyxNlWm3ScY0V0vnISFTF8khnH0iWsmXz7/U
+	 xqPTmXF1XcYf0rsvxKMwBYE+kli95tAUZ5b2zJENl44uSxTcKvOrQOfmnedT0Qd3NZFQK
+	 3NwnaD1s1+pZML4Edi3YV1ZMrqc7O0yoNXqDSqbBiutxGe6l55KAjL26ek3rb3J4YJNwv
+	 bt7a1HjaB61Yw/0wnsRDzaMGdtIDaKIWyr4u966iBuKioI8kExqVTshNexqscuUoU+ch9
+	 EcQEq5OG6rWZWdQDXp4cJS7vUQReOPqzqpNWIr8rBvLGeZG3DlNZjRv8Jnlum5KI8wg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mRYcY5jN;
+	arc=none smtp.remote-ip=192.198.163.12
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A6D606A32E
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 07:37:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B1A6D606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A0F606A321;
+	Tue, 24 Nov 2026 07:47:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29A0F606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=jB2OhFnb;
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=S1+Iax5U
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AO2k6F13225397
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 07:37:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	WLDBCseQttjsh+YgjaRZ95arQzmquJXtwPce4pg+uuw=; b=jB2OhFnb5kcQJfBh
-	9PooZCIYHGNUVjDcGwumXONQT2rphRiM+HKb+Z5rBcfoZ9URBb6HmUCKyU398p1z
-	0DE3n1unAJCPGSKA9qHqDKxoWrwnFiNfWRaB4F0mZuQ+gIyw7qVkk0rFFWIT+hr0
-	xlGvD+nbKD4m1GM6eRm0zn5N+zABS6NWAAQ4zM+xLUUTfkXPLcKrmGNQSuaj6NVk
-	LSMFCUkYtOrVzKgsE9JjRJp/p/+NgBxqv/l5UGfpSyCfsEnsySH6HhHWtAFvnFTH
-	QiJHfUK8nig+0y+RvbrdRu8nHxWlPz45JWmVSfVxj87VvZ9rM/3qatNGi8g/YvkN
-	LVZ85g==
-Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com [74.125.224.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4j4x8f1sjj-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 07:37:55 +0000 (GMT)
-Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-67be4f2f42eso7121950d50.0
-        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 23:37:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795505875; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JRpQh5MvObZcN1Gs73vfAl2EfzOhFOjGJZs/V986C6NGl9228c6IKiGPAoVeNbmZrJ
-         efQed7V2yIMqcnigomLmGESgb8YxQczWiw6ZoK+O+6qxhVR6V7rEngciHYct5RLW+U7R
-         7//BpjxvlSVrnUilIIJkuLnlbvJdnqy/nYHB7AXH/FDOvteDzMia1BBo4rPrPBjbfMAl
-         IqDzLVTufLUK7qDahX2TBu7OXPqo42H4YjShpkQUlsC2zpZkROCATVQAOG6HS3D6ZAXd
-         QRVp5xtp728ZOPsN97wdrrztLyQlbwii85vLc3AgRpwy/IOUccYvKCs9+kcjpVtsqVt+
-         sCwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WLDBCseQttjsh+YgjaRZ95arQzmquJXtwPce4pg+uuw=;
-        fh=mdo0ROPhAXL1tJsFmopQhv3ZxdIMMJaVrhohY/CV2bQ=;
-        b=kr2dw41dFowyFJj1lFoiH1WbaoMeK1Tw5XTFJnqpuFlImYyVjjNvAv0yqESGwyMGwJ
-         u5yLfJSpELwg7VeZXqM8umFlnxIA8HhapsDf2KUoZANqJ8DsSehYoYvfmusVv0mHU+s5
-         k0DhCyVAzHXaXwAoZh8vPPkL4QOa5u/s9aFnOKaAMmgXMQfnlSjJkd9LmMDX15ahes8c
-         HvRrHiULkFLixx8caTRhk+9lghTPEk7t420pffIyFF7kslWGOnNMWUbmXKpMr995T1Od
-         +C1VfxOqORqxFmmou4lk4NdVDVyjpi7CzBqnPtUJV19LtJtHAbvX38RTpdoXQDDF42gR
-         PuQA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1795505875; x=1796110675; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WLDBCseQttjsh+YgjaRZ95arQzmquJXtwPce4pg+uuw=;
-        b=S1+Iax5UjwdrBfjmC61+6GR7Ef9vLvndZMhbV6RF5f5jjGfM0fKOFIGSb9cZxbE499
-         ufQ0Iw9iW/MkroytuRNTzxKljpJElsFF8w9uRLGP7Avq+RZTb57Ul1XAJRZ5qQA1kqxg
-         7jbG878tFdG6DzFw+/37L1jhd6FV1aCc7/cXrp+cfOfsQhmbgR+jpkWB2+0CyWhWN8/h
-         yrF5TtN9QZy1tEKAfvOEpPuv5AnxPa6u6OCgoeLhGxjDwK43OfnV/PUQdhSEXPtDxnYS
-         FFlkC6lp8vy68Kr1OCdhQERS5xVbG1XGyggIdSHRH/KZmZy1PSroQztV131DD4SIsduA
-         xQvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795505875; x=1796110675;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WLDBCseQttjsh+YgjaRZ95arQzmquJXtwPce4pg+uuw=;
-        b=tUbN/F1x94B64okJYJrbFSRDIt1anqxYZDgu9QA/79BhRmtzbj4bNMt+7k57sN0TVT
-         OftnD9XiuB5LAekKtimyQdpTKankxZzc7T4MLxaHudF0HX8hk1uoFSdq030LfOK4Faiv
-         lonniOI5WbvLDdL4KbZd53gfQB+vQrLcWgOM/RJ4uGyMgW6FLaspMUFebRa5K8I9dY/P
-         Ge+eKycUPR1zU6p3DEGSifo0UFZwfa7KuZeEhwg45K57pc92zRtb72bDeNztTz4Ra9Tq
-         p7KhqBBJAS/dyOVOCezpwY8GhDLtCfcrtCBtOEr6IBLdW9KyAyWKbIK0G7L0IIolggao
-         6a6w==
-X-Forwarded-Encrypted: i=1; AL+hErGfCTrimNxxpr0S/Hf1qiseXYI0shPIYS1iHzmzG8Xvuws4zXIde25yzm1kcryRXw43M3A=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+WYn0NqWWgXt7wDXZ8p5/n3+92jpx/TSxtC2iaJ4qbKV31si0B
-	S7tA3pgEb6QssoBTPtSUM04r4BLv8IcDwSf99nQJ0wc5eQnK7TumwA+iX2umJwBP5rRACR73p3O
-	TKjTCsyFVjHVucy2SIXV07rlF6D5hCbfnk6YgYR0KdFBIeKXltKnX8OywIGhDmd06jCqLMETxtX
-	OywY+JUYF5wvEMBhEUzLUB6KB0UVRA1w==
-X-Gm-Gg: AZFdTZdDMa2KO4n55UFMRhS/6WmAkSen0QK2ySO4JO+VfhT4C3Nvld1YMPw5Kg8ThhU
-	EIeAl9YeDqFDHFV83uRiwt10Wx06qKKINmzrfhhuP4O7pI5XLSdi3LJB1WuP9t7YQrL7FXImaUE
-	mT9CC15geirndysCpeBEiRJgH37TKuB7ZVjYdjD+qa9f3AHqIh4yqSXdUElwmftPbOwyeLOSHZg
-	RMzsdcB0qqeiMCjnk7D4AiJqCoCHFhVGnGzkwqD
-X-Received: by 2002:a05:690e:450d:10b0:677:cbfc:be28 with SMTP id 956f58d0204a3-67df447c2b9mr2926869d50.75.1795505874941;
-        Mon, 23 Nov 2026 23:37:54 -0800 (PST)
-X-Received: by 2002:a05:690e:450d:10b0:677:cbfc:be28 with SMTP id
- 956f58d0204a3-67df447c2b9mr2926857d50.75.1795505874551; Mon, 23 Nov 2026
- 23:37:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mRYcY5jN
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795506443; x=1827042443;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=eDEio4NP4XHZFYRC9FiY7B/+b8uO1ZLby2dslNMzlwc=;
+  b=mRYcY5jNpzCsd4FLIGyJVfj13XFBFJ4XJeODX59bwcLBpmKEnODijY7a
+   bATCSTxhR1qmC84CSCfauYxs+PN8OZFmSJxDbPZKDTVgmPvMjvbisw3lz
+   3O6+jGqUqxPTGYbJgeMEhRusRkUSBbps4R6PEJc126OmR4s7LjnuGl73y
+   27ilyIjQ0z4YBnxMSs7T/QjQlpzkI0onfaJxNHCHymA5VpZUL+aZswU0v
+   Nv8s9uggaOVadUKSt8dSPW2BlEbLOHui5Hcaisu1gtS/lCAemVgCFkPA1
+   B+sYEufTVOt6YqdKsVLHgtP/LPo/od4APLrhqaOJiaf1+Zrl/xgeBwMsV
+   Q==;
+X-CSE-ConnectionGUID: aIV+cexuTvCindFZfinjMQ==
+X-CSE-MsgGUID: U1BgK4ZsTFGb2OJ+JYbMWA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4209495"
+X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; 
+   d="scan'208";a="4209495"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 23:47:22 -0800
+X-CSE-ConnectionGUID: Y7ovl1FcTrODbD1EE6Ad8w==
+X-CSE-MsgGUID: uPqfXCORR+6F4Zx05hLBug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; 
+   d="scan'208";a="11674543"
+Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2026 23:47:18 -0800
+Message-ID: <9ab1e5b7-fa03-473a-a251-91153fe5c7b3@linux.intel.com>
+Date: Tue, 24 Nov 2026 15:47:16 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -128,153 +72,111 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org> <20261105-late-2026-mmap_prepare-v1-11-c56aadfbab8a@kernel.org>
-In-Reply-To: <20261105-late-2026-mmap_prepare-v1-11-c56aadfbab8a@kernel.org>
-From: Jens Wiklander <jens.wiklander@oss.qualcomm.com>
-Date: Tue, 24 Nov 2026 08:37:43 +0100
-X-Gm-Features: Aa3M54q5vxZ2pH5GHxV6_gcu1Tnc83EBXhtYw1pJ9H77Fl7U3CQoqAKpEumRrbk
-Message-ID: <CAGgiveX=Z5gS7iJWBanyysVUStDRbgTnVktQwJySXw_-xL+sUA@mail.gmail.com>
-Subject: Re: [PATCH 11/14] tee: convert shm mmap hook to mmap_prepare
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Shrikanth Hegde <sshegde@linux.ibm.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
-        Dexuan Cui <decui@microsoft.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowangio@gmail.com>,
-        =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>,
-        Joel Stanley <joel@jms.id.au>,
-        Andrew Jeffery <andrew@codeconstruct.com.au>,
-        Ryan Chen <ryan_chen@aspeedtech.com>,
-        Billy Tsai <billy_tsai@aspeedtech.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Abel Vesa <abelvesa@kernel.org>, Jens Wiklander <jenswi@kernel.org>,
-        Sumit Garg <sumit.garg@kernel.org>,
-        Scott Branden <scott.branden@broadcom.com>,
-        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Richard Cochran <richardcochran@gmail.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, xen-devel@lists.xenproject.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        virtualization@lists.linux.dev, linux-sgx@vger.kernel.org,
-        selinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, linux-arm-msm@vger.kernel.org,
-        op-tee@lists.trustedfirmware.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI0MDAzMCBTYWx0ZWRfX39Ovb7/vZqUY
- Q4U4pmR5LD3+yyYiSvJOi0qAa+eesJw4IjhdEyo+0JTWONQdAkbBn9MoC3+i3COOyMnWCf1P0Rr
- +KAntdV/dq0B32s7uuOuWcT36YxoqBo=
-X-Authority-Analysis: v=2.4 cv=JbgpPkKV c=1 sm=1 tr=0 ts=6b053ed3 cx=c_pps
- a=VEzVgl358Dq0xwHDEbsOzA==:117 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=YMgV9FUhrdKAYTUUvYB2:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=97S62Xg_vF6B0O42EdoA:9 a=QEXdDO2ut3YA:10 a=uujmmnXaIg8lM0-o0HFK:22
-X-Proofpoint-GUID: dge7-NxDc4h8GNL3FI5Jfn_VJxCe8Chv
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI0MDAzMCBTYWx0ZWRfXyeapDnkShXiZ
- JQUAurH6EW3ZkG2nkDzfs7QP0a6Vz/Pu4NRSC3LkeiEWlkwIxrOoB/yLAXceD7WYQUcONbWpDC7
- 4ALcJ+uJ5Qdpw6BW4TXphsL/04PkdEvDYUauneX6qeOINS/0ueWcYMfM7WiQwvgxRA+biflYSu0
- GCon9x50MUoMZhqbqzrHt8GgUJ5SfcjS7AXOgsyL/p/31STsRFCgM620ryQQflp10XilkrKVjDV
- +zrbxRcFd59/jfoFa0jbLO92aQHTAANsIqigo9ggqnOYZfHa7pfiig2wJXoGNlppunfIJzEuQs4
- kWqlkYPusjxnAyHAw4STyD/Y0LVQc/WSTJ1JZNPo4RTVvdvj3k2fCwj7W7rDqYDQCCFt6iuOPSh
- BPQLaEwVHUFWxf1FAjH3UHkI5BsR5q8ur2nQGUxScoQHESlVCgqKs1ZbFPALRaK1q9W8+Wj7Dop
- VPEzAzsQDqmwuMiU5cA==
-X-Proofpoint-ORIG-GUID: dge7-NxDc4h8GNL3FI5Jfn_VJxCe8Chv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-24_01,2026-11-23_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 bulkscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0
- impostorscore=0 suspectscore=0 clxscore=1011 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611240030
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, iommu@lists.linux.dev, x86@kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, xiaoyao.li@intel.com,
+ Chao Gao <chao.gao@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 4/9] iommu/vt-d: Add interface for tdx-host when
+ enabling trusted DMA
+To: Xu Yilun <yilun.xu@linux.intel.com>
+References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
+ <20261112043054.2664857-5-baolu.lu@linux.intel.com>
+ <awRW3ESp3sBoxtJ9@yilunxu-OptiPlex-7050>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <awRW3ESp3sBoxtJ9@yilunxu-OptiPlex-7050>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 5, 2026 at 10:08=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.o=
-rg> wrote:
->
-> Move from the deprecated mmap hook to the new mmap_prepare hook, using th=
-e
-> PFN remap mmap action to map the shared memory.
->
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  drivers/tee/tee_shm.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+On 11/23/2026 11:08 PM, Xu Yilun wrote:
+>> Add a per-device interface so that an IOMMU is put into Secure TDX Mode
+>> only when a device behind it needs trusted DMA. tdx-host tracks how many
+>> devices use each IOMMU and calls into the VT-d driver only for the first
+>> and the last of them:
+>>
+>> - dmar_tdxc_get_params() looks up the DMAR unit translating the device
+> I think tdxc is not a good name since "TDX Connect" is not preferred as
+> a technical term. These APIs would be used by x86/tdx, so can we at
+> least avoid using tdxc for these APIs?
 
-Reviewed-by: Jens Wiklander <jens.wiklander@oss.qualcomm.com>
+I'm open to this. I used the dmar_tdxc_* prefix because the VT-d spec
+calls this feature "TDX Connect Support". Since these are interfaces for
+the tdx-host module, I'm fine with renaming them to dmar_tdx_*.
+
+> 
+> [...]
+> 
+>> +static void dmar_tdxc_fill_params(struct dmar_drhd_unit *drhd,
+>> +				  struct dmar_tdxc_params *params)
+>> +{
+>> +	params->reg_base_addr = drhd->reg_base_addr;
+>> +	params->node = drhd->iommu->node;
+>> +	/*
+>> +	 * params->drhd stays valid because trusted DMA-capable units are
+>> +	 * never hot-removed.
+>> +	 */
+>> +	params->drhd = drhd;
+> Why we store drhd in the params, any information to expose to TDX via
+> drhd?
+> 
+> [...]
+> 
+>> +/*
+>> + * dmar_tdxc_get_params() - Get the IOMMU information for a device
+>> + * @dev: PCI device that will use trusted DMA
+>> + * @params: Filled in on success
+>> + *
+>> + * Look up the IOMMU that translates @dev and return what tdx-host needs
+>> + * to issue TDH.IOMMU.SETUP and TDH.IOMMU.CLEAR on it. This only reads
+>> + * information and doesn't change any state. Devices behind the same
+>> + * IOMMU get the same @params->reg_base_addr.
+>> + *
+>> + * Return 0 on success and error code on failure.
+>> + */
+>> +int dmar_tdxc_get_params(struct pci_dev *pdev, struct dmar_tdxc_params *params)
+>> +{
+>> +	struct dmar_drhd_unit *drhd = dmar_tdxc_find_drhd(pdev);
+>> +
+>> +	if (IS_ERR(drhd))
+>> +		return PTR_ERR(drhd);
+>> +
+>> +	dmar_tdxc_fill_params(drhd, params);
+>> +
+>> +	return 0;
+>> +}
+>> +EXPORT_SYMBOL_FOR_MODULES(dmar_tdxc_get_params, "tdx-host");
+>> +
+>> +/*
+>> + * dmar_tdxc_acquire() - Acquire an IOMMU for TDH.IOMMU.SETUP
+>> + * @dev: PCI device that will use trusted DMA
+>> + * @params: Returned by dmar_tdxc_get_params() for @dev
+>> + *
+>> + * Call this right before issuing TDH.IOMMU.SETUP for the first user of
+>> + * the IOMMU. On success, the caller must issue TDH.IOMMU.SETUP and call
+>> + * dmar_tdxc_release() if it fails. The caller owns the per-IOMMU refcount
+>> + * and must serialize all calls for the same IOMMU.
+>> + *
+>> + * Return: 0 on success and error code on failure.
+>> + */
+>> +int dmar_tdxc_acquire(struct pci_dev *pdev,
+>> +		      const struct dmar_tdxc_params *params)
+>> +{
+>> +	struct dmar_drhd_unit *drhd = params->drhd;
+>> +	struct intel_iommu *iommu = drhd->iommu;
+>> +	int ret;
+>> +
+>> +	if (WARN_ON(dmar_tdxc_find_drhd(pdev) != drhd))
+> We can get drhd via pci_dev, then why we require callers to input
+> this info and judge? Like an intelligence test?
+
+The drhd was there so the VT-d driver could check that @pdev and @params
+match. But you're right that the check only exists because the API takes
+both. I'll drop drhd from the params and make acquire()/release() take
+only the pci_dev, so there's nothing to mismatch.
 
 Thanks,
-Jens
-
->
-> diff --git a/drivers/tee/tee_shm.c b/drivers/tee/tee_shm.c
-> index daa4af1e089e..8fcbf0232aeb 100644
-> --- a/drivers/tee/tee_shm.c
-> +++ b/drivers/tee/tee_shm.c
-> @@ -567,10 +567,9 @@ static int tee_shm_fop_release(struct inode *inode, =
-struct file *filp)
->         return 0;
->  }
->
-> -static int tee_shm_fop_mmap(struct file *filp, struct vm_area_struct *vm=
-a)
-> +static int tee_shm_fop_mmap_prepare(struct vm_area_desc *desc)
->  {
-> -       struct tee_shm *shm =3D filp->private_data;
-> -       size_t size =3D vma->vm_end - vma->vm_start;
-> +       struct tee_shm *shm =3D desc->file->private_data;
->
->         /* Refuse sharing shared memory provided by application */
->         if (shm->flags & TEE_SHM_USER_MAPPED)
-> @@ -580,17 +579,18 @@ static int tee_shm_fop_mmap(struct file *filp, stru=
-ct vm_area_struct *vma)
->                 return -EINVAL;
->
->         /* check for overflowing the buffer's size */
-> -       if (vma->vm_pgoff + vma_pages(vma) > shm->size >> PAGE_SHIFT)
-> +       if (desc->pgoff + vma_desc_pages(desc) > shm->size >> PAGE_SHIFT)
->                 return -EINVAL;
->
-> -       return remap_pfn_range(vma, vma->vm_start, shm->paddr >> PAGE_SHI=
-FT,
-> -                              size, vma->vm_page_prot);
-> +       mmap_action_remap_full(desc, shm->paddr >> PAGE_SHIFT);
-> +
-> +       return 0;
->  }
->
->  static const struct file_operations tee_shm_fops =3D {
->         .owner =3D THIS_MODULE,
->         .release =3D tee_shm_fop_release,
-> -       .mmap =3D tee_shm_fop_mmap,
-> +       .mmap_prepare =3D tee_shm_fop_mmap_prepare,
->  };
->
->  /**
->
-> --
-> 2.56.0
->
+baolu
