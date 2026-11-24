@@ -1,100 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.51
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795490486;
-	b=sp+qnwJJNbR5sUzDhkwuDuISYZq0mOJByCGcsP/WpiFC3tmcdwfHyvmkeCMuxwr6MCNx
-	 kyNPscrQ2lMXz0TFpiqRlVB4IwclOQ+oBe9mW99RLtDtYaL6ETr1sxffhLhl53qnEJf1X
-	 fyXJv4YqR5SlqBrBksGzkcBunr/PPunLMykpuM7qMMlmfjIoockEdQBrPcxCNteCIfZRY
-	 ZsWU4xS9SP51tmdZgFUAZYHi9N9TN1kGrV9KwNxr3b3EqBbCSWo0qJvIHlN+nbDD6iMbs
-	 yUXworQapRPhN1TABxHCISaW9z1czV4d+OFmJgk0yYPDnKikpJ6khOTuQF2WnBlEcDA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795490486;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.41
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795490876;
+	b=aBHH34xh0f/HxekEWUZg8ssYMUBjEZn+aXTXZBDj3yq4NlGij+vTHoGaZyibJEUZBaZa
+	 vxXCsIWH4Q5UVB9bMcT5tUeSMT0mwi0pJxnIbI1eeH3CARZnAbOpeS4qRItuDJOzb+Tcv
+	 CMhV7FB2zYeebmaGlVjhK4Z+jpaHZQCTWDIjxp3mSpVkx/p5uFdCuVuvL8WKIqAg1Ar49
+	 YOZFgXDYBTsQJ8CI13nHhSHBWdZqif2WEd4jKF2xYjwvRIWpMYvX5iPnJBN/t1apsgWGw
+	 Y/533j0o0Q6lWD2UQf6avRYsFShpjg3ArsH0tz219+f/UfixMPpppXEKkaLhl7Znbgg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795490876;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:MIME-Version:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type;
-	bh=+Nl+jLjFcED3vClIKXM3yAqVJJrqmqx+RtOw6zm+9fY=;
-	b=UlvSsy7MFY770B1+BZs8zQTuAwrjt8Uc0uf2njL6tai5G4NWdzkvzsg6uHV8O1BhYzWL
-	 jl3pMY5fovJ7DQh+m01PcbXIWmNOMSDAYDfTWWcU55xBTzo9Y5E0xUwvGYwd3LuyBf6TR
-	 1A5X0yhGZm2tB8LrC8qUKP22L/D+vI6as7PRXM0uecrahY8Rzuwx8dLLu4ViqslPXAYTX
-	 EWvc2CsKQDW6zQDlYjVsqwyhOWEWRTxL0xyMeJ/KrD0fNVxZF3LSa6CUbnyK0YXBCOb/T
-	 +9cE/FZGMtKad35RaOrHmWHeyQxNsWV30LEzo6c4S3WL6/5VJcpJX+xmogp3dZYHuIg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=hhfV7rDvQGkX8svztm1wWEU7DwBbew5Nukh/CQf2+fA=;
+	b=a6tYa+mAD3ezogJz/mV91DSqWiCdkYezRAoRjfo8gDQufqHeU/82UDQnomdT+nxSOYjw
+	 27gynuKfo3ih2QddQv/BPn2gU7LTHNJm6cjIH41Wd2l4xU82jyDLp304/Jys9p6QXW5kp
+	 zpM7k1qCuACHLlqXqP07IhowMeCEf4SDPZY2CB4hOFcdTHIKN+XmvpwmzBWV+zff/lP6c
+	 1qU0Sdt6uXPu5PtGDGKZkJm53I2YGpeDlTY+7zST2IlvLY6pOABqyufKSH3+6fnu8HER2
+	 Um1k42L+iFcRYgxlbdywTmshbSlrB1BHIA+ioMw+n3mDG7DDP8qN2N//qpb9qqxIA5g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rmI+LAuy;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.51
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vg4j30II;
+	arc=none smtp.remote-ip=209.85.216.41
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F35606A322
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 03:21:25 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B5F35606A322
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1AA606A322
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 03:27:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AA1AA606A322
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rmI+LAuy
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-67da7d18f2fso4563690d50.0
-        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 19:21:25 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795490485; cv=none;
-        d=google.com; s=arc-20260327;
-        b=MdNCoGxYQnshvtiSAwD7HZ5ZKc48vFUJf5MxllSZrLWewVkEpTcZPpcW1b/WAqSg1J
-         kzIQqpZJBXKyGpjPqeMYL8jKg0LpYYnsOO2EOlCKWRHwkNarIMjA4yEOpBoiGe2pUZOk
-         Qn9oiLbCeWkb3EvdHwdQOEFyL6U6wAtCOjToDUAWPYdnWuMpVeUyU+80zU6R/8kJ9Xrk
-         gJDLZbfhWhrH9Ty9MvTW5Zcuq4TW1XeKvFubSa9VVgJYkinuQLGL/x6Hiey76hnH+KZj
-         blGbischMXfeefXLoSIE2NCF2JYcZPMdU8Ey7KfEvNb5rOeE2T1a1wiLOX7/PFRdmb+R
-         HdBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:from:dkim-signature;
-        bh=+Nl+jLjFcED3vClIKXM3yAqVJJrqmqx+RtOw6zm+9fY=;
-        fh=4yGelnTkN9GwR8tClmYGBUC7HAUUVyfFjcENJOonKM8=;
-        b=VXpMwHpZxLvg5GodXpEBQyIM0vEvM+zTtKybjfmzXfN39p9N2xOsx+huC9mkkzO694
-         dXbI/CVUF55aDocJM6kaqF13AlYU0IlLmxL69jqnOe6z1w4DpZkR98jE1zpSJxyhUPhT
-         9yg930E4UVj600Us5EgLnHd+tEDhLwk5n4Lpupno5xlQ+etJltZuo8B/qE6aCiXwcQNh
-         gtte8IFSAeuZZ3oOhi4kYSHUAN42HodgX8h6X+FQ7UgsOayJrBrfgud1rZtPf1hKkKTH
-         VBURcIpRLHDTpunC3tmvQF5SGJrlOWTlTMF5/HTrXl6TF4nL0k5hKNOCfMGyF7WjThiB
-         VoDQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=vg4j30II
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3b44bdcea8aso1796038a91.1
+        for <kvm@vger.kernel.org>; Mon, 23 Nov 2026 19:27:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795490485; x=1796095285; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:from:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+Nl+jLjFcED3vClIKXM3yAqVJJrqmqx+RtOw6zm+9fY=;
-        b=rmI+LAuyldYcf44pUy8kH7oMq0zUqfPhESD5U4ochalxZoPJjlHy/8KyMQgOHd+ed/
-         KQ4TSVQhYhzOnB6gYNAKM5cQm2Vth7GN48lELJWaa8f6EPH7fslDd01scqTGbW3IdS5C
-         1RUj9yFrc/rR6NNkUuKiGOwabZJftGZcc4K+zfwix1YukgFpMcbL+DcuohdjG85jsvsA
-         F8yFE2Q7b1Pi6a7X1IHHh4JhKOwXOcfpiwsoSzQToJ5gbawLF6L58zYbVdWh8AcF8JYP
-         +kI7vHRd7LXzn9gvBJO4foqeCx6anBwLr5hhxW7VLiysnfM9QpAudD/ARW17WRncBRRE
-         5XDw==
+        d=gmail.com; s=20260707; t=1795490875; x=1796095675; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=hhfV7rDvQGkX8svztm1wWEU7DwBbew5Nukh/CQf2+fA=;
+        b=vg4j30II83qAo21CgEp+YvJSc3iCY6B0L3MN5figp/Z8qazJdhaWBFFdUXkguA/Bev
+         Ik6ZXKxLyog7KvafE4ASlOlqQkYn8tSoaWsPkXtUKyWSv6EWR5QEvMzGs5cGp75q9c2l
+         MZHuaHaRRX66wjT+++hqhvwc2zoaDRAXY/U9F1SsrFKcTJg8xpbXJm5GnqKd77bYTRhW
+         G5uO7X5FT94I8EAGIggAi/fUMsAz0Q1j9xdhyd/Lfuol51vKjnjptGN345vvsBtBVjZ6
+         6pAQYvicZqoT8aSZ5tfC2oHkBRwKsUEPdTjDvmAcJ/V8pdSHaLietMzs4+ggAJK2Fktq
+         p+oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795490485; x=1796095285;
-        h=content-type:cc:to:subject:message-id:date:mime-version:from
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=+Nl+jLjFcED3vClIKXM3yAqVJJrqmqx+RtOw6zm+9fY=;
-        b=opbOESKD1tU9dD5sun+JjDuywVDC3hU/RTP0DQNgcopRtKaP0xi7VA0KIOKo+O5cTB
-         0157AE2+GKr2kqwDvJHaiPeTJzrwESTjXSb6kRPhZYLWLSATjVI8HnAqNiNryTtiONCA
-         rDoXaHijfjwSv9ewUGkzr+/c/Byk9IUnsvyAd6erjulxpFRc1xfftvUcKFYW8AWOT5dM
-         LvUYgwUfJz2ZagRWKbKVKKgwMMOTUaCoW9XCXLxkwTKyLdT7PdAhxxGkEpuA93EVdbUY
-         FOdgrfSerSA4bfF+D0SbiOgF0MGDRsTVDHIiO6+s+hrPVpHSZZLpgtsZRWdXlakTfUdE
-         jJQw==
-X-Forwarded-Encrypted: i=1; AL+hErH3lHgDqJbpTCWUFCwa2kPhagp6YNwgyklC11hkDzaGy5QTZppQy5zzUq+eUY6c38LUxd8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/0GnjrQy+FZqH62V/xfgZw9qnuPtliRLW+SjJFkmQb1jCxk1zj
-	R9iZsqoC6RFTdYmGuUDRus99Ij7UlUqrQuBaRl5XpKCZ8xEHeUQjQbe2wf4qlPXV19L7FZ1xnrh
-	+VBjsgJgl+o5/2CCpYa7o9ZzDTtb55UM=
-X-Gm-Gg: AZFdTZd09WsA6jryEs0tYRuaz+0JBGHfqrNL4tXschrbgELgs/LR5/JJitmaB4/5yyO
-	gabjRpXN6jI96Rbr+bizI+TQ5mX+4hujaV9Mr+oVYhMWfYmyfLUhHyPMKVDkr5D8Mj0CjOtOXhJ
-	90IEGILGVgJPZ6R7TLB9f0Z6gP6TRjVK6rlPW4f2RzzQkZNTwRajkWN33w4n+/XIGM4EOBwcc2y
-	s1kFVe+1hB9HhgmIZ728puwzDuP5o+06s/F8ilzXWsiq5qK626tdVnnRLlm1QQxQTcoQpigog3F
-	qb14OnVOhX4ouejf/HDmPKWtQUqu1WkxCqdxZNXB+VPDWWsqhR5nLTuGgk4h4a7j8lOZWZ6ELvp
-	g2d6pnwJUrp/5aQzku0uPcijyamCZXjXKF/tn
-X-Received: by 2002:a05:690e:419a:b0:67b:e7b9:7a58 with SMTP id
- 956f58d0204a3-67df44dee3fmr4263105d50.44.1795490484576; Mon, 23 Nov 2026
- 19:21:24 -0800 (PST)
-Received: from 723974502065 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 23 Nov 2026 19:21:23 -0800
-From: Qican Ma <goonsomeway@gmail.com>
+        d=1e100.net; s=20260707; t=1795490875; x=1796095675;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hhfV7rDvQGkX8svztm1wWEU7DwBbew5Nukh/CQf2+fA=;
+        b=TxNweCwo+CrrQ8rjGuphQ3AtkMSzpemYxaytEMahpIQiVO33/8s9JNRocXA3bhU8kM
+         CtDtHVpkznWr16FpYSmQpBhnjxNsAvoCWmGyYPRhFfYUsGaA2TCNFNl3002ckBykxW0/
+         xLOCCssdQKNYtczca19aTO1JmkiYnv0pntEhctiYT/zN7eRdbgByCIJhMrgvZh57OmWB
+         7SsOJMTEMwBI+iRBj5SnIq9Q1cG8s0Jhg/KhxpD0VARc744/WHAuRMTCdOiznKwBIEJK
+         PhMCf/oQ0JDE1G7Q2nmycHsfCaJgq1hPJ6wMzLww4R6mq4viflSq8tRY5fuwEosz3CBO
+         XpHQ==
+X-Gm-Message-State: APuU4Z8VAqDpYM8NUS0u5wxB18o3Erut3cfAj8mxqSJnoTS1N8AtB1Em
+	AX6MTFbKfmx7Wg2BGLL93zGzcmySEcaSuzFob0UcmVMFHGix7JAKGfd6
+X-Gm-Gg: AZFdTZfe8zL7/IYMom3Ai+oD8FXmSVRjYfWLLGX+/ytlf4hniHJVr4JWJMNvHAj6zm7
+	AZ/Nn9mRQK1hfoi52dqfFSV/3/gxlXSb9j6MynxspuBLF3qOCg4Z+Dh9bNqkF9AIvqNgTbG6y9m
+	LpHYBCT34f6CE50FCOH9AGtqIkBaklrQMcvk5u7xgYdU/9zhUXJtZVRZ/ktUhYD9HQCOBUOEg7T
+	NPIohzpXZLqHKEEPhwAR8cZ4j3Amup2rRQdNOy9aBMV4eSyow+1ZKqivUkvkq1oMhnnfYgUuH3z
+	w3BpeQypfHrf225CB958j0ZZ8BYQ5FyH2d/6ALrpTh53SICry68UPwMBXGS1dl8aJNkw/wJcpGZ
+	+phBuU9aAP4puxl2p4+fjOLmWkQ4VLIJeVRm/KgzQ+iMrUwL8sHeXF3Lyc76AjZO34ogAFn/k0D
+	yBERBd/7gqtKCn3xs3F+T40Tj+ns3Otu95/6yUPfZ72DST0gCuZnArJlFddHg1Df54xcUMuaQNL
+	oGVqwugaoytI8nFiYd7heaLl7a+DxcyXPdS+YgZHZc1ihOR3jqs3xzKwza9Ft9uKLdzdIlt+mTO
+	8fAYQX+rsaXQTbz7IeUFzBscl3YmJ5QhXETVBOuZ+bxeI6sZivXE/bW4DqlgUJnfDUMRsYoR2Cu
+	TnNo=
+X-Received: by 2002:a17:90b:4490:b0:3b0:a7b5:c044 with SMTP id 98e67ed59e1d1-3b41c7bbef0mr8070993a91.1.1795490874885;
+        Mon, 23 Nov 2026 19:27:54 -0800 (PST)
+Received: from normalone-940XGK.tailec472e.ts.net ([117.17.158.201])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b40578dca0sm24008676a91.2.2026.11.23.19.27.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Nov 2026 19:27:54 -0800 (PST)
+From: Younho Choi <gdool88@gmail.com>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Younho Choi <gdool88@gmail.com>
+Subject: [PATCH] KVM: x86: Reject SMM on VMs with private memory
+Date: Tue, 24 Nov 2026 12:27:48 +0900
+Message-ID: <20261124032748.1221979-1-gdool88@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,80 +95,97 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Mon, 23 Nov 2026 19:21:23 -0800
-X-Gm-Features: Aa3M54q6MdHyMzgb6kPLo2sKYPoa9HgwIHJfl5UP9FxNmXtO7vZ4QD_33O68uVc
-Message-ID: <CA+OT+OMXvfjXQKzXPbTFzECXyNqFLjncKF+ga0bt6TcwhC7RSQ@mail.gmail.com>
-Subject: [PATCH] vfio/virtio: read migration buffers and f_pos under migf->lock
-To: alex@shazbot.org, yishaih@nvidia.com
-Cc: jgg@ziepe.ca, skolothumtho@nvidia.com, kevin.tian@intel.com, 
-	kvm@vger.kernel.org, virtualization@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-virtiovf_resume_write() reads migf->buf and migf->buf_header and checks
-filp->f_pos against vhca_buf->start_pos before taking state_mutex and
-migf->lock. Because virtiovf_pci_resume_device_data() opens the file via
-stream_open(), FMODE_ATOMIC_POS is cleared and concurrent writes through
-duplicated file descriptors are not serialized by f_pos_lock. A racing
-writer in VIRTIOVF_LOAD_STATE_PREP_HEADER_DATA can free and reallocate
-migf->buf_header under migf->lock while another writer still holds the
-stale pointer captured before the lock.
+A VM created with private memory (KVM_X86_SW_PROTECTED_VM, SEV-SNP, TDX)
+reports a single memslot address space, because kvm_arch_nr_memslot_as_ids()
+returns 1 when kvm_arch_has_private_mem() is true.  Nothing, however, prevents
+such a VM's vCPU from entering SMM, in which case kvm_arch_vcpu_memslots_id()
+still selects address space 1.  The existing comment "SMM is currently
+unsupported for guests with private memory" is not enforced anywhere.
 
-Move the buffer pointer reads and start_pos check under migf->lock after
-checking VIRTIOVF_MIGF_STATE_ERROR.
+Because address space 1 is initialised with generation 1 and is never swapped
+for a private-memory VM, while address space 0's generation advances by
+kvm_arch_nr_memslot_as_ids() (i.e. 1) per swap, after a single memslot
+operation both address spaces have generation 1.  The per-vCPU last_used_slot
+cache in kvm_vcpu_gfn_to_memslot() validates only on the generation number, so
+a slot cached in address space 0 is reused for an in-SMM (address space 1)
+lookup.  After that slot is deleted and freed, the stale per-vCPU cache is
+dereferenced: a host-kernel use-after-free of struct kvm_memory_slot reachable
+by an unprivileged process that can open /dev/kvm.  The same aliasing also
+leaves SMM-root SPTEs that mmu_notifier invalidation never zaps (it walks only
+address space 0), and can trigger a BUG() in the TDP MMU.
 
-Found with an LLM-assisted code review tool and verified by inspection on
-v7.4-rc4 (b6a9fa34ce4). Build-tested only due to lack of virtio VF
-live-migration hardware.
+Enforce the documented assumption: do not support SMM on VMs with private
+memory.  Stop advertising KVM_CAP_X86_SMM and emulating MSR_IA32_SMBASE for
+such VMs (which also makes kvm_inject_smi() and guest-driven SMIs fail), and
+reject enabling SMM via KVM_SET_VCPU_EVENTS.
 
-Fixes: 0bbc82e4ec79 ("vfio/virtio: Add support for the basic live
-migration functionality")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qican Ma <goonsomeway@gmail.com>
+Fixes: 89ea60c2c7b5 ("KVM: x86: Add support for "protected VMs" that can utilize private memory")
+Signed-off-by: Younho Choi <gdool88@gmail.com>
 ---
- drivers/vfio/pci/virtio/migrate.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ arch/x86/kvm/svm/svm.c | 8 ++++++++
+ arch/x86/kvm/vmx/vmx.c | 8 ++++++++
+ arch/x86/kvm/x86.c     | 9 +++++++++
+ 3 files changed, 25 insertions(+)
 
-diff --git a/drivers/vfio/pci/virtio/migrate.c
-b/drivers/vfio/pci/virtio/migrate.c
-index 4b1e5502f0a..5e47f349511 100644
---- a/drivers/vfio/pci/virtio/migrate.c
-+++ b/drivers/vfio/pci/virtio/migrate.c
-@@ -918,8 +918,8 @@ static ssize_t virtiovf_resume_write(struct file
-*filp, const char __user *buf,
- 				     size_t len, loff_t *pos)
- {
- 	struct virtiovf_migration_file *migf = filp->private_data;
--	struct virtiovf_data_buffer *vhca_buf = migf->buf;
--	struct virtiovf_data_buffer *vhca_buf_header = migf->buf_header;
-+	struct virtiovf_data_buffer *vhca_buf;
-+	struct virtiovf_data_buffer *vhca_buf_header;
- 	unsigned int orig_length;
- 	bool has_work = false;
- 	ssize_t done = 0;
-@@ -929,8 +929,6 @@ static ssize_t virtiovf_resume_write(struct file
-*filp, const char __user *buf,
- 		return -ESPIPE;
-
- 	pos = &filp->f_pos;
--	if (*pos < vhca_buf->start_pos)
--		return -EINVAL;
-
- 	mutex_lock(&migf->virtvdev->state_mutex);
- 	mutex_lock(&migf->lock);
-@@ -939,6 +937,13 @@ static ssize_t virtiovf_resume_write(struct file
-*filp, const char __user *buf,
- 		goto out_unlock;
- 	}
-
-+	vhca_buf = migf->buf;
-+	vhca_buf_header = migf->buf_header;
-+	if (*pos < vhca_buf->start_pos) {
-+		done = -EINVAL;
-+		goto out_unlock;
-+	}
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index e30ee8062..0b8cd1502 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4841,6 +4841,14 @@ static bool svm_has_emulated_msr(struct kvm *kvm, u32 index)
+ 		if (!IS_ENABLED(CONFIG_KVM_SMM))
+ 			return false;
+ 
++		/*
++		 * SMM uses a second (SMRAM) address space, which a VM with
++		 * private memory does not have; SMM is unsupported for such
++		 * VMs (see kvm_arch_nr_memslot_as_ids()).
++		 */
++		if (kvm && kvm_arch_has_private_mem(kvm))
++			return false;
 +
- 	while (len || has_work) {
- 		has_work = false;
- 		switch (migf->load_state) {
+ #ifdef CONFIG_KVM_AMD_SEV
+ 		/*
+ 		 * KVM can't access register state to emulate SMM for SEV-ES
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 82eb891f6..b6d5b33c1 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7098,6 +7098,14 @@ bool vmx_has_emulated_msr(struct kvm *kvm, u32 index)
+ 	case MSR_IA32_SMBASE:
+ 		if (!IS_ENABLED(CONFIG_KVM_SMM))
+ 			return false;
++		/*
++		 * SMM uses a second (SMRAM) address space.  A VM with private
++		 * memory exposes only one address space (see
++		 * kvm_arch_nr_memslot_as_ids()), so SMM is not supported for
++		 * such VMs; advertising it leads to memslot aliasing.
++		 */
++		if (kvm && kvm_arch_has_private_mem(kvm))
++			return false;
+ 		/*
+ 		 * We cannot do SMM unless we can run the guest in big
+ 		 * real mode.
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 26e7beaff..59565747d 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -3050,6 +3050,15 @@ static int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
+ 			      | KVM_VCPUEVENT_VALID_TRIPLE_FAULT))
+ 		return -EINVAL;
+ 
++	/*
++	 * SMM is unsupported for VMs with private memory, which expose a single
++	 * memslot address space; entering SMM would select address space 1 and
++	 * alias it with address space 0 (see kvm_arch_nr_memslot_as_ids()).
++	 */
++	if ((events->flags & KVM_VCPUEVENT_VALID_SMM) && events->smi.smm &&
++	    kvm_arch_has_private_mem(vcpu->kvm))
++		return -EINVAL;
++
+ 	if (events->flags & KVM_VCPUEVENT_VALID_PAYLOAD) {
+ 		if (!vcpu->kvm->arch.exception_payload_enabled)
+ 			return -EINVAL;
 -- 
-2.50.1 (Apple Git-155)
+2.43.0
