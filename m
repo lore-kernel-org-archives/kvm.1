@@ -1,62 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.90
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.177
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795513154;
-	b=SeUWRig0Pv4en60CDEPBtzJ4NkLirJNMw63hCewU3OC58YwxWAu2oSiL3ECPUHzMSUZG
-	 W7NDRzHM6wcN6JSkYOclWQi7ZNIwHFG7cKYRWhnIAz2Inj8CyQIFB5nQgiPgk8YzG8lWy
-	 IAJovF7Hjw/PGV5k+ttW12DJF8VNOQSKgIpt1Yq6BbrDlSUP92UHJPtj6dp9c+mmallTj
-	 +oFH+Mp0Fxzj7DqlVhDI+2y0Z0QSYnQDtGL8ylvuwe2cU0RXkceKizsU9sbwGMOqmkOGy
-	 OCdsa92oIitxtzo7sJwLJaycHJTseb9I/b6GHVkRvzhQoesYFWmSZUL3Ttv4L69w/IA==
+	t=1795513466;
+	b=MFSUf3KdsAxxlSgYWug6y73KuNMPowQIbKPkac7OIyMaSgyO01XIPo3u+Iy44SoggxIE
+	 vpAdKvYE0tQRglob1Io0wh9n1ItstGUYafXLLqLvj4op3pUWAE3djonHGTqlCQtuTZ/D+
+	 1ymHY9iimhmGr49xGYw3OK6zqIekCy/P7Z9BItm8Dx3YxYX4QzhfuisNCtCeXsKEZ0HvL
+	 ZDFDVuOyNRMxWV6X8koK4JLZeMHXUWXUcAI2ej9/sBq0lum8YHUbmJeXUIYfOz37IUZnc
+	 c5EBPTS6vCH55Aod2aqgu/o2rPReRG0UA5a9P9xzRKQRx3+Div1V25ebC1HGPXB4qzA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795513154;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795513466;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:Received:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
 	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
 	 Subject:To:Cc:Content-Type;
-	bh=XD3y0uRelfjcM8wuzE5PStYzhtdNUf4TcgUCbGZyLAw=;
-	b=GXV4D0LwCCRUwCnWKinEwWZE+LH5H6wQqX2j+jqkCG3sfPDtEE5YnSnIMjNPOpRAgc4U
-	 NXl3qv7epZuW2GWALmbWoa+ih15GYBs+PMRF8R0CeVzIhwGXMaOoGfluluV+U2zUhpYky
-	 oNssgfxPEd858fqgq81hVUW7BYidhDu9+/t3wsJ0TbWGFEHL1eNoi5G/if6c/qK//9GeK
-	 EtAxW1buZYVLk7B6A4oEk6SGqCaHcRaJ68lGIzLZGYOy/99aP1qlN5fNTgquye7FE6X0n
-	 IKueUntMsSGL8L4KC/cP4oBkIdJ1Qa0I14Rtr4YhlmYDBMHtLpesbBioud4o/rD9vOg==
+	bh=t2pMZHTPWQHTXaMIuwvZv4SwKto2BO2qab0ldpAoWoc=;
+	b=v/KclxOheGwLYD62YnEuemVAwofy07B7D4dft9dp638HVzNgxfY6eYIW9T4rfjijJ2l3
+	 lqFRP3NpVGnDkp/ibeVryz06VKI3zvfHosTLsNEH/EFem+i7WaOSAK5uezjXd6pWw7Z0y
+	 B8wBusWs1r1FrTKRibCQiT9JOsksrf+IWzQhVXML4TL/Q2GvZ4hrW1F85IxBOnLdMFngt
+	 9PkuXgOVCntvbqYFkmdx+9izlojgVYQpAbNAPzZFUm4WRpfWn2hJgJbgJqhBp061Ou7lY
+	 zfmw1oFOPsPzBCwQeg0lOVLiZ84a5mvXbnos94qaim2hGqti4JsAQlAEHqsQO2BCUaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=aoDtwoD6;
-	arc=none smtp.remote-ip=95.215.58.90
-Received: from mta1.migadu.com (out-90.mta1.migadu.com [95.215.58.90])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=tcc81SHn;
+	arc=none smtp.remote-ip=95.215.58.177
+Received: from mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860CF606A31E
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 09:39:13 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 860CF606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45560606A6A2
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 09:44:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 45560606A6A2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=aoDtwoD6
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=tcc81SHn
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=ilOuyRk+MAIQHiCii2Y/pLuL3MbXC2Pov4MVI4OLeCc=;
+DKIM-Signature: a=rsa-sha256; bh=t2pMZHTPWQHTXaMIuwvZv4SwKto2BO2qab0ldpAoWoc=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795513151; v=1; x=1796117951;
- b=aoDtwoD6aEnxVNS2nu2WMjGXr21s04kvsRcAWHC3TX9tp6wkV36l1Rp/G0K741fBdI64zQJI
- adq2n/BY9f5cT5A8d6myU/hwotopoE0ZDyHXdJmAE9XR/S3CkghHLBHaGKlOnxZqbr1CIcC5gvI
- QIeP4TwsuOYbMmjSsGYqxo54=
+ t=1795513462; v=1; x=1796118262;
+ b=tcc81SHngnUZu2BwMqJZpcOvHE0fcrLU6Rr1jcxJnosGkwmCvSOG7FCgVVvsJvkAWYMywRuI
+ c8WS2OM2T4u3gQ0tZmFfU50BhZTbSlS3wFuMqbipu+RwgajemwGmnOpOBHSmIyZsWvlOUl+M21m
+ PUbH7VDpidN4tq/qv4HFXFn8=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id e013843edc348aed;
-	Tue, 24 Nov 2026 09:39:10 +0000
-X-Mizu-Trace-ID: e013843edc348aed
+Received: by smtp.migadu.com with ESMTPS id 5ca4befc85038237;
+	Tue, 24 Nov 2026 09:44:22 +0000
+X-Mizu-Trace-ID: 5ca4befc85038237
 X-Migadu-Flow: FLOW_OUT
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5be58ad9600so22015e87.0
-        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 01:39:08 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErEZjLRONAShp/GuXjGzgtmdBHC0jh1jHvsNkJQQtZoDVGFAcewwmUz/s9vHIeEnOS7JGI8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+wH/AsR2SkxLUYRKnSZWpe/BDzhlK2aQF6dI7DImFTAhOyK1ar
-	cP3FDmFwyAHNqXNbaFUTlS9dHzvmWq+6G5uagj1i/JM1lrBOiUqWO/bV65ufMw2EoI5bGyVxUFj
-	2Pe4rIBKqvGYXdCqErc7uoGP/72WsLZyDvdXp4CZj
-X-Received: by 2002:a05:6512:3502:b0:5c1:488e:a067 with SMTP id
- 2adb3069b0e04-5c200ba538amr329242e87.16.1795513147393; Tue, 24 Nov 2026
- 01:39:07 -0800 (PST)
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5c00d7ac49dso16230e87.1
+        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 01:44:22 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErHxk5GsnrLHumu/TBPoPd8S4nESvbYgExXVhHkRydeEF1mFXMwcKeKeb7/D35Dstp44X2c=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+N2ekoMRIUoOEKtUuhzM/ZLQNYVAH+dfc1cSxttCB7XL+Rgk5O
+	TJuxl+Igs6g42z5y1qgulEDrac6GoUAs97HgZUWHFFBvfHtYHi63gPJioSCmpXmxbRX6EIrF65E
+	aK6YxLs5ufHvp6qVMp5NUiFonXjaWiDjCcq869jAS
+X-Received: by 2002:a05:6512:1282:b0:5c1:a880:e5b9 with SMTP id
+ 2adb3069b0e04-5c1fbb1e9acmr387548e87.7.1795513461120; Tue, 24 Nov 2026
+ 01:44:21 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,14 +66,15 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261123192457.8700-1-maz@kernel.org> <20261123192457.8700-4-maz@kernel.org>
-In-Reply-To: <20261123192457.8700-4-maz@kernel.org>
+References: <20261123192457.8700-1-maz@kernel.org>
+In-Reply-To: <20261123192457.8700-1-maz@kernel.org>
 From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Tue, 24 Nov 2026 09:38:00 +0000
-X-Gmail-Original-Message-ID: <CA+EHjTynhBzhjrFzd514Sycib=1rmh7JqYp0xSPVBvurk6Sm-A@mail.gmail.com>
-X-Gm-Features: Aa3M54oJsiX7PUIr0O3Es9w-Trkkm26FAlvtAIKuj1DU-Bg32tEzMiolqN2nYfU
-Message-ID: <CA+EHjTynhBzhjrFzd514Sycib=1rmh7JqYp0xSPVBvurk6Sm-A@mail.gmail.com>
-Subject: Re: [PATCH 3/3] KVM: arm64: Drop open-coded GIC idreg sanitisation
+Date: Tue, 24 Nov 2026 09:44:00 +0000
+X-Gmail-Original-Message-ID: <CA+EHjTyton41ATTfGNDdF7KU0_9xvGuPx_EP=TeA7n8cMuA-2g@mail.gmail.com>
+X-Gm-Features: Aa3M54pK544jqTysiDZQ3nSJIC4yYFvop17y-HAYPW-8_pI4HirsHCc0nJyGc48
+Message-ID: <CA+EHjTyton41ATTfGNDdF7KU0_9xvGuPx_EP=TeA7n8cMuA-2g@mail.gmail.com>
+Subject: Re: [PATCH 0/3] KVM: arm64: Convert GIC idreg sanitisation to the
+ confic framework
 To: Marc Zyngier <maz@kernel.org>
 Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, Steffen Eiden <seiden@linux.ibm.com>, 
@@ -83,42 +84,18 @@ Content-Type: text/plain; charset="UTF-8"
 
 Hi Marc,
 
-On Mon, 23 Nov 2026 19:24:57 +0000, Marc Zyngier <maz@kernel.org> wrote:
+On Mon, 23 Nov 2026 19:24:54 +0000, Marc Zyngier <maz@kernel.org> wrote:
+> Having started adding some sanitisation code in the idreg department
+> with ID_AA64MMFR3_EL1.S1P[IO]E, I'm back with some more and trying to
+> wrestle the GIC into submission...
 [...]
-> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-[...]
-> @@ -5874,51 +5874,6 @@ static int kvm_vm_finalize_sys_regs(struct kvm *kvm)
-[...]
-> -                 * On GICv5 hardware that supports FEAT_GCIE_LEGACY we can run
-> -                 * both GICv3- and GICv5-based guests. Therefore, we initially
-> -                 * present both ID_AA64PFR0.GIC and ID_AA64PFR2.GCIE as IMP to
-> -                 * reflect that userspace can create EITHER a vGICv3 or a
-> -                 * vGICv5. This is an architecturally invalid combination, of
-> -                 * course. Once an in-kernel GIC is created, the sysreg state is
-> -                 * updated to reflect the actual, valid configuration.
 
-nit: This comment is the only place that explains why, on a
-FEAT_GCIE_LEGACY host, a VM's ID registers can show both GIC and GCIE
-as IMP before the VM first runs. sanitise_id_aa64pfr0_el1() and
-sanitise_id_aa64pfr2_el1() still set both at reset. Is it worth having
-a short version of it next to the tables patch 2 adds?
+Tested on QEMU, booting protected and non-protected guests on pKVM,
+nVHE and VHE hosts, and running the set_id_regs, vgic_init and no-vgic
+selftests on the nVHE and VHE hosts. Also ran the vgic_v5 selftest on
+FVP, with and without GCIE_LEGACY.
 
-[...]
-> diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
-[...]
-> @@ -180,7 +180,7 @@ int kvm_vgic_create(struct kvm *kvm, u32 type)
->           * We've now created the GIC. Update the system register state
->           * to accurately reflect what we've created.
->           */
-> -        kvm_vgic_finalize_idregs(kvm);
-> +        kvm_idregs_enforce_dependencies(kvm);
-
-This now also applies the S1P[IO]E dependencies when the vGIC is
-created, at a point where userspace can still write the ID registers.
-Was that intended? If this clears S1PIE or S1POE, the first KVM_RUN
-doesn't restore it, so the final ID_AA64MMFR3_EL1 can change with the
-order in which userspace writes the ID registers and creates the vGIC.
-If that's the intent, should it say so in the commit message?
+Tested-by: Fuad Tabba <fuad.tabba@linux.dev>
 
 Cheers,
 /fuad
