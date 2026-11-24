@@ -1,72 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.197
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795555727;
-	b=mAQzjbLn1B/ftwWIzJQ9CIqtrhsAVq9CPXn3xl6w7qaUfJClIcuCuA0xPvkkqFbdQmTv
-	 F6CJdtZaLeT1XI/+kWRQBLbqBGg5iqsKEBHZSgugcKsNOQMmwsO1wFLTI/3ojwVgJJhr5
-	 I6gDklvzo9Vc84elNnlLmHrz7t+00ufo1++hRy+R7U8njN00ldoPzmnFJ4ecU0yCLng/A
-	 rm+zkAZkKEhUXXmExrvL9i79YpmdwHY0Y/V9XJU3G6cXnGli+rLs905hZEIxjkQVeBrPl
-	 Ek1dx5G2MHCbs3tw3eVLutbbbxWsI6WfVvZgc0QTsI4lZ8FhxSO41yPRvHy7RCv96SQ==
+	t=1795556442;
+	b=icf1Y3wtVxEVWcs+DEigPGvPBfK8tMkE/K4/rcgsNaCTMslnapdUHswq0D/mkcrttOwz
+	 ka+EqGpw4igKRdJ4LNn/XflpswiuxLotMp+++sZKrQeYYdsQidTWZ24gyt/xijeCqZ0WT
+	 w4WsWqi6/gVAiMuzLeg6rCZ7xzmCkzHYBVq1C8NBIYEHAtwEm7W/0ncS4lTJPfBt4rjXj
+	 UdcdYIEzbqOhjOqQySQCac0n5k9+JQgLs8xkIMgxLcFiIMjSLVuLZmtzk16LcHqvPbl+R
+	 7Wnc78Jf19IKKz/ftISaw9Zw1kknXPt/jWNukBh9wdy05BK+pxRMpcxY0Hui6nxXYUg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795555727;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:Mime-Version:
-	 X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=LH7xbAaioyaoYiHQ6xeOXhOEgpjuNa84XhYKEVkAJ48=;
-	b=QndNAWhwRySbjTRjyieKjIkEfPVAUM934X1XPcN+0ikz7ZPCBuZHUz2iI2LawdPJrnpt
-	 vQdPMeVoRu6LxrODNlWsgWeR2zbJKuaUkF/5UVOmxHgkOJ8BmPTU/XPbPem6O088w4YdL
-	 jtq485GA/zZ75c7RQ8xYixAMiwthfSgGGkIauCIJoo5Vt6tB9zX70cNWsMT47mftHacOh
-	 GGJ0jUYPRi/P1FzvcUPIMQo73dqaW7gS9STE2qYN2LcR0LcKeFVFbqGhDyPPMDN7u3VBG
-	 vEHyOoLvpER9d4FPPOGSygzDyF+xurqKMNbfOIBD66HeL7xPZW0NVwxOxmPJHpBKtHw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795556442;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=phiuX5Zb8P8aFyzSkr8Lt0LpTmJabsik6/9jkby6ebg=;
+	b=Z9filozunvAS3KHy29HHT8hh0cSlZgmKgmdt79QVkmcfhDGR/QHlPlMnh/PpPKmG+hcH
+	 xqVY0roadpD/xkdVg872lO+xbCWRLW/so0oa2DRPiv7LwwE0/QaRBrToQxGYg3SitvBh5
+	 Op5YH6KIsIWc8eVolockKriA3FzDQc8wcdhTrUFOntvmRc1aqeHBRqdudGNNC6UQowJAw
+	 AjCL5VouZgD0uLFA5/AYaprVXrUY5OpfTOqWQocBqQufQZSJUaZcO8wDEKUsbA8wthto1
+	 flLVKdCdGkswKUivEGJklfOp7lSth4DCj3eDii7te/ekzOe0MW92crQst1RSCWV8WFQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=f9ZC6EjX;
-	arc=none smtp.remote-ip=209.85.167.197
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WlD3i1n3;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3D2606A31E
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 21:28:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AA3D2606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643B9606A691
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 21:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=f9ZC6EjX
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4cc89e86e9eso6041862b6e.3
-        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 13:28:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795555725; x=1796160525; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LH7xbAaioyaoYiHQ6xeOXhOEgpjuNa84XhYKEVkAJ48=;
-        b=f9ZC6EjXRbzHoHel5Gs2YLlS6npZo8QaHMvOOt8bTGivYZ8bi2I2rSSM2c8r5x9ygO
-         VnttM9J9WEcAz7kd6hJwBH7ETT8GytejJahVu9kAoyn1+YvIMs2zWH+6V66uW17Lk5Rz
-         EU2yMoeL4YZKqWLWYpgCb++ctuau6x221iaLl1mOD2fjU75Gpppvm7TV9BfSXmthkuql
-         slPDxe5OeX+VdQP/HaQKa94c0cpeFKZS379dqngMBYmak5yqAGPYUQCB2o7XXWZRfegS
-         doeHNZTDflxJEdJySianvOtWPL4U3mnGT1mAJKPI08SKTL31tQIMjFhPclMEha0L1TQh
-         zHtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795555725; x=1796160525;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LH7xbAaioyaoYiHQ6xeOXhOEgpjuNa84XhYKEVkAJ48=;
-        b=svzRgLROtdZA4T59K+coPcFM1XUBjkwL6ubfq6pY1nrsfi5zDYUWvJrGHSkvsAh2/+
-         hKssKDMLNK+lLRYemxv8bZCHSWE6/mkNibodE8Wfo8JuqZnCoEWkubLG1J1Mfz5OxY0d
-         tXqGuZ+kduOvh56ZDmOVx1hQe/NUt1ug36q4M4WA7mNc3mETTBgpxTHgYgmj0xpbkOdO
-         hQ6wTwcSnsbJTYdIREI0X8lQChFx9Pd7ClxNYQ7kmodNISuAzVWoeURAcBPSXMTomxZE
-         nw25BmrXYRX4SX4KzvkBf5dpwPsxbRVxtATn6TFrcWVhZCWab5kVGHlBMinCJ9Gt02QT
-         AIRA==
-X-Forwarded-Encrypted: i=1; AL+hErFFFEvCEni4ZctPwoWh4FeYXRFFCR9lnj8K3+CkDPQECHiBYrZZIJmzUnbwmwYcPsNb4+w=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/SKqiN3U2Tpjo5Wjw9zO2YX+ANY/8h0P+Lt+xKoXPR5NP6d6g3
-	ANrMuInZqfOxXbQArUxXJ19tjs5+JOXYPOhHQC+R0T3Nevn9NI7w6W2VQYgYoGYnHdel891qyga
-	APu4ob/6P7CIMmg==
-X-Received: from iojj12.prod.google.com ([2002:a05:6602:820c:b0:9c7:7732:c3c1])
- (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:151f:b0:4d5:295c:a82c with SMTP id 5614622812f47-57a0c9c65b1mr17326090b6e.57.1795555725290;
- Tue, 24 Nov 2026 13:28:45 -0800 (PST)
-Date: Tue, 24 Nov 2026 21:28:42 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WlD3i1n3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006FF1F00A3D
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 21:40:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795556442;
+	bh=phiuX5Zb8P8aFyzSkr8Lt0LpTmJabsik6/9jkby6ebg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=WlD3i1n3u4fTNxFSHE93F9suawNf/wd5zgjxW0Bhg7bnCAtmXf1/0RcbiOnW3O/nh
+	 O50cHHfMkhjVDzkAfNi5ehY5ymP61FNWnYuKt6FanCmRn2ycsN4qziHKllbYD4h0ph
+	 EME8GjIQFVS37hsn9cqUN6lAIh6pSlcu/JFi5fPxs3VkhNqzZfKCp/ToLXf686MxIy
+	 KVJ8pNdnadVOIMraG4ZT+UwgMbAuIBVxGBOCbddANId/GIwx94jAsNcR8YTmDeskjA
+	 49bYOjbrS/zfkQ6oNWixORhJIarXUHLKPr5kjgnLRUbSktrfiVkHGxalMgf2TyuPhh
+	 TlBCDZ/SI98oA==
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5c14f3dab66so4527058e87.0
+        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 13:40:41 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErEYvHvUpIlCUO3RMcywJrR3vlNYPI9B3UT1MkxK8GimtVBgJERSCXSyHaW7k99Z080KRwI=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/d8jXbdrFF3eaJA4wChh4pfE4sKPvTlLd0rpXFzSFNurt7bbIa
+	Wm4AfbxLAyNIMdq68g4V24NMo5pXWGlqDoHIwxgyR0WL9pz8kojyZEJr4X9jEu2fTeSUZrkbbd1
+	R5PY6MRWtve+XtYQQxxYfmyJ5bBN4vEU=
+X-Received: by 2002:a05:6512:32c8:b0:5c1:46f8:913c with SMTP id
+ 2adb3069b0e04-5c1b7c00f96mr4380577e87.20.1795556440465; Tue, 24 Nov 2026
+ 13:40:40 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -75,122 +58,132 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.1.831.g720f3f5937-goog
-Message-ID: <20261124212842.1934651-1-skhawaja@google.com>
-Subject: [PATCH v2] vfio/pci: Only lock the upstream bridge if the reset may
- need it
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>
-Cc: Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Anthony Pighin <anthony.pighin@nokia.com>, Dave Jiang <dave.jiang@intel.com>, 
-	Dan Williams <djbw@kernel.org>, Ionut Nechita <ionut.nechita@windriver.com>, kvm@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Samiullah Khawaja <skhawaja@google.com>, stable@vger.kernel.org
+MIME-Version: 1.0
+References: <20261015142552.4128028-1-ryan.roberts@arm.com> <20261015142552.4128028-10-ryan.roberts@arm.com>
+In-Reply-To: <20261015142552.4128028-10-ryan.roberts@arm.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 24 Nov 2026 22:40:28 +0100
+X-Gmail-Original-Message-ID: <CAD++jLmnVpGm9pG_g777yz6XvbyAgTBCM5moYy=gAeenhjQSEg@mail.gmail.com>
+X-Gm-Features: Aa3M54pcwQV3xdAu47_dI0b9w902bsdzijUBVbDcdwg2QkzqqV6jsuD637lp5XA
+Message-ID: <CAD++jLmnVpGm9pG_g777yz6XvbyAgTBCM5moYy=gAeenhjQSEg@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 09/15] misc/arm-cla: Add userspace interface
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@nvidia.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jean-Philippe Brucker <jpb@kernel.org>, Oded Gabbay <ogabbay@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org, devicetree@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Commit 962ae6892d8b ("vfio/pci: Lock upstream bridge for
-vfio_pci_core_disable()") makes vfio_pci_core_disable() trylock the
-upstream bridge before resetting the device, and skips the reset if the
-trylock fails.
+Hi Ryan, Jean-Philippe,
 
-All VFs of a PF have the same upstream bridge. Take a device with two
-VFs, both used by one process. When the process is killed, both VFs can
-be released at the same time. The first one takes the bridge lock and
-does its FLR, the second one fails the trylock and is never reset.
+On Thu, Oct 15, 2026 at 4:27=E2=80=AFPM Ryan Roberts <ryan.roberts@arm.com>=
+ wrote:
 
-The bridge lock is only needed for a bus reset, which is done through
-the bridge. Add pci_reset_function_needs_bridge_lock(), which returns
-false if there is no upstream bridge, if bus resets are disabled for the
-device, or if the device is a VF. Use it in vfio_pci_core_disable() and
-pci_reset_function() to only lock the bridge when it is needed.
+> Expose CLA devices through a character device so userspace can enumerate
+> the available hardware and map accelerator register frames.
+>
+> Provide ioctl interface to report device topology, CPU affinity, domain
+> membership, mmap offsets, architecture version and attached accelerator
+> masks, together with the IIDR, DEVARCH and REVIDR of each accelerator.
+>
+> CLA registers can only be read from the CPU local to the device, while
+> enumeration may occur on any CPU. Validate the supported CLA
+> architecture version during device setup and cache the CLA and
+> accelerator identification registers for later ioctl queries.
+>
+> Support shared read-write mmap of one or more CLA register pages. Create
+> a context for every domain covered by the mapping and resolve faults
+> only while that context owns the domain. Queue unassigned contexts with
+> the domain scheduler, drop mmap_lock while waiting for assignment and
+> retry the fault after the context is woken.
+>
+> Co-developed-by: Jean-Philippe Brucker <jpb@kernel.org>
+> Signed-off-by: Jean-Philippe Brucker <jpb@kernel.org>
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 
-Fixes: 962ae6892d8b ("vfio/pci: Lock upstream bridge for vfio_pci_core_disable()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
----
-v2:
-- Replace pci_reset_needs_bridge_lock() with
-  pci_reset_function_needs_bridge_lock() as suggested by Alex, and use it
-  in pci_reset_function() too.
----
- drivers/pci/pci.c                | 25 ++++++++++++++++++++++---
- drivers/vfio/pci/vfio_pci_core.c |  3 ++-
- include/linux/pci.h              |  1 +
- 3 files changed, 25 insertions(+), 4 deletions(-)
+This uapi is very simplistic and IIUC only provides a mmap:ed view of the
+accelerator memory area, without any details on how it is actually used.
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 7c6f2aba8144..cc6647d091f7 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5256,6 +5256,24 @@ int __pci_reset_function_locked(struct pci_dev *dev)
- }
- EXPORT_SYMBOL_GPL(__pci_reset_function_locked);
- 
-+/**
-+ * pci_reset_function_needs_bridge_lock - check whether a function reset of
-+ * @dev may need the upstream bridge to be locked
-+ * @dev: PCI device to check
-+ *
-+ * A bus reset of @dev is done through its upstream bridge, so the caller must
-+ * hold the bridge lock. The bridge doesn't need to be locked if there is no
-+ * upstream bridge, if bus resets are disabled for @dev, or if @dev is a VF.
-+ *
-+ * Return: true if a function reset of @dev may be a bus reset.
-+ */
-+bool pci_reset_function_needs_bridge_lock(struct pci_dev *dev)
-+{
-+	return pci_upstream_bridge(dev) &&
-+	       !(dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET) && !dev->is_virtfn;
-+}
-+EXPORT_SYMBOL_GPL(pci_reset_function_needs_bridge_lock);
-+
- /**
-  * pci_init_reset_methods - check whether device can be safely reset
-  * and store supported reset mechanisms.
-@@ -5313,10 +5331,11 @@ int pci_reset_function(struct pci_dev *dev)
- 		return -ENOTTY;
- 
- 	/*
--	 * If there's no upstream bridge, no locking is needed since there is
--	 * no upstream bridge configuration to hold consistent.
-+	 * The upstream bridge only needs to be locked if the reset may be a
-+	 * bus reset, which is done through the bridge.
- 	 */
--	bridge = pci_upstream_bridge(dev);
-+	bridge = pci_reset_function_needs_bridge_lock(dev) ?
-+		 pci_upstream_bridge(dev) : NULL;
- 	if (bridge)
- 		pci_dev_lock(bridge);
- 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index fcbb2da860e2..5dcbefd2eba4 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -777,7 +777,8 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
- 	 * overwrite the previously restored configuration information.
- 	 */
- 	if (vdev->reset_works) {
--		bridge = pci_upstream_bridge(pdev);
-+		bridge = pci_reset_function_needs_bridge_lock(pdev) ?
-+			 pci_upstream_bridge(pdev) : NULL;
- 		if (bridge && !pci_dev_trylock(bridge))
- 			goto out_restore_state;
- 		if (pci_dev_trylock(pdev)) {
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index aa3765a20a96..aee6a178a535 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1486,6 +1486,7 @@ void pcie_print_link_status(struct pci_dev *dev);
- int pcie_reset_flr(struct pci_dev *dev, bool probe);
- int pcie_flr(struct pci_dev *dev);
- int __pci_reset_function_locked(struct pci_dev *dev);
-+bool pci_reset_function_needs_bridge_lock(struct pci_dev *dev);
- int pci_reset_function(struct pci_dev *dev);
- int pci_reset_function_locked(struct pci_dev *dev);
- int pci_try_reset_function(struct pci_dev *dev);
+Since we don't know much about the usage it is hard to say whether this
+is a good approach compared to using e.g. an arm64-specific syscall.
+Whether to choose one or the other depends much on the error
+modus of this thing, how a CPU or a context should recover etc.
 
-base-commit: 7475ea8b58616b33c04afb976cf0fbaad9dd63fb
--- 
-2.56.1.831.g720f3f5937-goog
+> +       /*
+> +        * Cache some standard accelerator registers that user space may =
+query
+> +        * via ioctl from a remote CPU.
+> +        */
 
+If you're caching these registers for efficiency, a vDSO syscall could
+be more efficient as it could return the cached information without
+a roundtrip to kernelspace. OK kludgy, I know, but efficient.
+
+> +#define cla_for_each_mapped_domain(_vma, _domain)                      \
+> +       for (unsigned long __pg =3D (_vma)->vm_pgoff;                    =
+ \
+> +            __pg < (_vma)->vm_pgoff + vma_pages(_vma) &&               \
+> +            ((_domain) =3D cla_lut_pg[dev_nospec(__pg)]->domain);       =
+ \
+> +            __pg =3D (_domain)->pg_offset + (_domain)->nr_devs)
+
+I like this macro. Very helpful.
+
+> +static long cla_ioctl_validate_param(struct file *file,
+> +                                    struct arm_cla_param *param)
+(...)
+> +static long cla_ioctl_get_param(struct file *file, unsigned long arg)
+
+Looks good.
+
+> +static int cla_file_open(struct inode *inode, struct file *file)
+> +{
+> +       unsigned int index =3D iminor(inode) - MINOR(cla_devt);
+> +
+> +       if (index >=3D cla_nr_classes)
+> +               return -ENODEV;
+> +
+> +       file->private_data =3D cla_accel_classes[index];
+> +
+> +       return 0;
+> +}
+
+As you mention that this absolutely will not work unless the process
+(task) is tied to the current CPU, this should be verified and enforced.
+
+Obviously the task is running on the CPU it is running on when it
+gets here. What we need to ascertain is that it absolutely cannot migrate.
+
+Essentially it needs to execute as a userspace version of a
+CPU-local workqueue or other CPU-bound kernel daemon
+that uses kthread_bind().
+
+You *can* of course pin a process/task to a CPU with
+sched_setaffinity() in userspace and at a minimum this
+chardev should not be allowed to be opened unless the
+process has already done this and the affinity is set to the
+current CPU and the current CPU only.
+
+You want this to be enforced, but userspace does not provide
+a way to irrevocably bind a task to a certain CPU. Interestingly
+the kernel does, PF_NO_SETAFFINITY which is used in
+kthread.c. The only thing (I think) that can affect a task with
+PF_NO_SETAFFINITY is CPU hotplug.
+
+So I suggest that you might want to pursue some syscall
+extention to sched_setaffinity() such that PF_NO_SETAFFINITY
+is set on the process inside the kernel after creation, and then
+cla_file_open() should verify that the affinity is set to the
+current CPU only, and that PF_NO_SETAFFINITY is set.
+
+(You could of course hack-set the flag here in open() but I
+don't think that would be appreciated.)
+
+Yours,
+Linus Walleij
