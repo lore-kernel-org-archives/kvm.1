@@ -1,55 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795554254;
-	b=leRDc5iwGO87xO5ry/Vnfh1HJpdGeSSKOqVToQqcu5kBu+YAmBctEl4jTzKPc9enGQgn
-	 UT3hbksqme9X+Hh+gtoeqFEPlOnf5iU9bInLgMbBh1Tb2dmF+n6KWB9O289VNIXWhw0yN
-	 Ywg4Tba5X/nOXQ74eJSw8pFseATPLQNBBbq4k1YqG1s0sm3ycCwIZ4gvfwi4iTiDX4V4Y
-	 MU6+PwrwEbiIt+y2mwOQLpkeW3uxwEcH6zMN6FKDVyzk0NuP/Fxzsuqx8xdp9551XpSIu
-	 v5OOkZttL1e0B/uNgSytcoSFO/5zHNhx3VyiYHDrZxtm4sgrO17P6MBNvLXQKBUWHMQ==
+	t=1795554304;
+	b=fAhGN2TsIm9gdLv3Vmkj5LaqLKRjh6N66XmEe98ITzzyg8s179MO47/U3t/8L2E3sEJp
+	 KY7LwsX2MpifTwxo8DxWk6WJNND61//jCVB14qHxp7Om85mqI5JB6ybIPkF+F9YrXLEb7
+	 gW6rTjErVBUOfC9NRSRUDIvL66UhN/0CdRFiDUlPAf6ViiwRdcXwd/lgjt0dO53VqBaFP
+	 bSD+uNAOA3gI+GZ2laTwCFpgQmB801401OgMvBgVH9ySloqgK1bscuo8/tQDQRaVb0UF7
+	 UdcjJuAwiMq1wCnwxJYfZDatxWo4mIrsERtBVojRrTXsf/9XxSb+OgYp8wyN5Ovnc4A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795554254;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=6dubRZ+psZ8Qs4E+TpOMXYLhcvIEPixdHXGPYBCuxJw=;
-	b=4wm66iAYJYUJGI3AtPmh8KLTerIZapr42hFB/HifOSpTmGle2XCPXzRX7tTDtUARCW2X
-	 cSdFNVczIQuFu+l4OOHEWnOwypiZNKmTHizAOaIhna7765OhfAaAv902/rDQU/ogul08P
-	 03UROVk2Nx3YCR10DXlv48luuB3ymOb23ZC7FvMzOnWD5TDFYsJO/BT2k5Vjre4PUfMEL
-	 M4L0Ui4FjB61nOqRI7jEWY7k1RI8KSTh5nJYYmpK6dpLOJELVSXb4pTvfM8jLpWWknEPU
-	 U0J4CHx3rQAq/71ZkzQgAoy8hUEDuST1JNVocOnsSidZBJ7Q6W9ggowK68xnZMZr/NQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795554304;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=8989DAIhEGp2+SqiqOgHbnDP3tqjvddGwcJYPtRttbc=;
+	b=KVqMKwJF71qjfkav4WZvfyR5OU+lPyRKpBY9ejkhDsAMpjPG1QrghyGWnOZfq2ExQ5Ax
+	 0A/+dOYp86LWErQ1BY/q7yhntBSuoHizgDKAEwQPlTBEtnyC384Kkd1vNMflQia2dR57e
+	 wCE9GNEFBndvpK/3zWpoajaD0hGzBjdAGe//BbFM7KsjbQz6mu1IwULksXOIUiNzVo0tB
+	 +dVlOe5SSyYNDTNOw6v+NPWjvmBW5aFsC7x9DiaFPvV0zhR8jnPwuufqMQD8vBqwWfJCj
+	 dl/B6eL3GaP4Yy1Wn0PFEcfI7xtoXRA62lmjBbAiPe4mid6eKAs2gi6Xjfjh0vf7QIw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E31yohwI;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Zk43yelt;
+	arc=none smtp.remote-ip=209.85.214.178
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36980606A31E;
-	Tue, 24 Nov 2026 21:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657A7606A323
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 21:05:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 657A7606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E31yohwI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578041F000C0;
-	Tue, 24 Nov 2026 21:04:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795554253;
-	bh=6dubRZ+psZ8Qs4E+TpOMXYLhcvIEPixdHXGPYBCuxJw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=E31yohwI1HSD6GQXv6X2jlRti1B+6XAuLacDTcUp71pnPeSyB3rHv0h3Sz+t+U7z4
-	 e1ViJZRgt1kSdq4XtWboFqBeycB7kD/VYCwz81seJ5vxt0i1WeFeoKRmdPibS1d1Sn
-	 IwX2xtpFAOmrk8egAeGmTsKRz5MpidV0FPuf2+Bbb6t7i/9WLjlrzUlvZv0l9CQBni
-	 3r9FU+7bw2O1l3RmptjURBc6s7cVTAShql3HGZ7oKlM6ZNa+hxGQsrXU/Zq7hvTQr2
-	 zoKdED3wnBYy4m1QJSfqIgVF3JgvY/lz6u74EQQXUXKWaawhq8SjCCugXC6iHoeEI4
-	 RU8XqmEnCz4lA==
-Date: Tue, 24 Nov 2026 21:04:12 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: linux-perf-users@vger.kernel.org, kvm@vger.kernel.org
-Subject: Re: [RFC PATCH 22/26] KVM: x86/pmu: Put the mediated PMU context
- lazily on slowpath VM-Exits
-Message-ID: <awX4ejrfT_zdZ3vS@google.com>
-References: <20261124002303.1785363-1-yosry@kernel.org>
- <20261124002303.1785363-23-yosry@kernel.org>
- <sashiko-outbox-230319@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Zk43yelt
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2f0afdb97abso150495ad.1
+        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 13:05:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795554304; x=1796159104; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8989DAIhEGp2+SqiqOgHbnDP3tqjvddGwcJYPtRttbc=;
+        b=Zk43yelt/tm8w8qrnUw/rYu8FoZfnG9Xcmo++SabJlb6abZbjfVjnfXI9XBZw/hv16
+         t9J8gTLH1sX5tjg/It/0QBr2WzKZaY4XroMeHNijrqAwKoXlcMeh8MCUjdw4+fKdt+md
+         RJ362duEdbPSO3k5gsNh20PW+bipuMnBbFmth+eRATzNg7Dyn1iPORbToeVVtiu2b6AI
+         hm4eeLQByAl4SS2/bYpWwJkDm00JSFY4WW83me9on7ZD4LR2C0L+7ip0ebIuUjbEEJKB
+         R3YRFTxd2ka1it3eIloE22crT1tiIze58b8gMdGr/dFPC5uLraumWlzqrK3w/8ZePRfc
+         zyHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795554304; x=1796159104;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8989DAIhEGp2+SqiqOgHbnDP3tqjvddGwcJYPtRttbc=;
+        b=1ieH9aZTBxV3/jOLBSeVptfxypuJChMrXqsIZ8JoQR8pEGAH/pAhHFD8u6XH5XhEsf
+         daf41Xan0CGRGUo/jmRkAMH+ZXyfUtWQJAiVb++wVgzabhxGtJ4lwyurmsq598QndgW+
+         2aiMtaj5FtY1FXssV847pZbjMXhFPxUyGpm2fuvm5xnOASlEZ8WUZ8JJHRaUL+1WNZT3
+         dLKbB0LHJnZl3uG4Z4GBl/C2skhDIs59cJPkyITXxYFXhlXD2bYRPooWXwu7pN6jBtbd
+         x0CUAPSeypap80nmVfgTz3LRSxV8o8WjLERCRg3N00w4GIbGuW8HjDjpTaF2YMaPlMzE
+         FoQg==
+X-Forwarded-Encrypted: i=1; AL+hErFcUdMeM992ez9J+Q7vluy32xDmZMiVS5ytQFF+qDw/V1mrw+nYZQ4Zui3FZCY5YFJWIOE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/VbqVZx3XVlUDCO2oVg0i1+k6J1/3/zjzhZGTooHc0epSY2yfc
+	3fj9Bo7G+gnOPpg5ms0NEf/qXF//0uUPG8wq+mDic6ZJC9ltfF11ZFML7LrNkbyxlg==
+X-Gm-Gg: AZFdTZfEl+hkPlYCDwpDQTn30L4Z0tTmWyq8GaNonXPRkp8qCupW6oq7EJ2NO5VAFJG
+	eWnqh/K9oXYgCBqA9ih4kcgpfOcwjtQsoUoO35hTOL5nSuPlQGZ+eNQa75IQA6/0mk7pyJvOMJU
+	3pvVSFet7RAwYDcAVk4ve+KZUUL5UYNIS2r4RCa9C+lXEoSYU1Dkech1QE8e4oFE9BNTybbKhAW
+	dmGhvVgAuPCT2Q00Jw0xmssPYs53fg2gnylBV6OJyWXoC00cxjm5zxaJNKCyzVIqzPhpLNOlSrt
+	lybozwE36cD+0g8D04bfToKVBTKENctV0VGak1kihYU5uei6kEUU6yxBGl1UcKhPDJGFIsqgyNX
+	o//f+ckir6k/uL5EJCH/lzVIHqj3B0PoH3wzPPPYuoiSpLP11Z52A1YfXbv5UKvSU2A8AO0NniH
+	ct55PuYLmJADWXPgEGMmJtwELNrxIH99rmkT5qoqgRfVXULA0UXsjbGtvukI+IJzIkrWoICaH/D
+	AJWPtR1aZC/qBqPeDPwUbvqPfyPUyHuOiSb0uhNi39XT6qbenudhlIUcG2Prmm7V5Jvp62qFgeA
+	afJkOAfxjv+39u8Wdv78OfksKeeCVjgUv6QsEnrTZXXFt9on9pP6xraypVmQRXvu/zfI/eHr2yN
+	7leh7ao0PG1pu5aAn0/PcJg==
+X-Received: by 2002:a17:903:3887:b0:2e2:d665:6ad8 with SMTP id d9443c01a7336-2f062b6ecb2mr14518045ad.4.1795554303196;
+        Tue, 24 Nov 2026 13:05:03 -0800 (PST)
+Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41abb1b66sm25196583a91.1.2026.11.24.13.04.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2026 13:05:00 -0800 (PST)
+Date: Tue, 24 Nov 2026 21:04:57 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Alex Williamson <alex@shazbot.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Anthony Pighin <anthony.pighin@nokia.com>, 
+	Dave Jiang <dave.jiang@intel.com>, Dan Williams <dan.j.williams@intel.com>, kvm@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] vfio/pci: Only lock the upstream bridge if the reset may
+ need it
+Message-ID: <awXedVCoT7M79Rk5@google.com>
+References: <20261112235700.2029562-1-skhawaja@google.com>
+ <20261118163706.7138d246@shazbot.org>
+ <20261119143237.4bf54796@shazbot.org>
+ <awC5Ldqmue6DiO44@google.com>
+ <20261124084852.661dd7c1@shazbot.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,139 +104,147 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <sashiko-outbox-230319@kernel.org>
+In-Reply-To: <20261124084852.661dd7c1@shazbot.org>
 
-On Tue, Nov 24, 2026 at 12:52:05AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Medium] KVM: x86/pmu: cgroup guest time corruption in
->   kvm_arch_vcpu_put() on sched-out
-> --
-> 
-> commit 17f48d0588e7da0bb43ece63664106faa2d5150c
-> Author: Yosry Ahmed <yosry@kernel.org>
-> 
-> KVM: x86/pmu: Put the mediated PMU context lazily on slowpath VM-Exits
-> 
-> This commit keeps the guest mediated PMU context loaded across slowpath
-> VM-Exits when there are no conflicting host perf events, deferring the put
-> until vcpu_put() or when perf reclaims the mediated PMU.
-> 
-> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> > index 8370ccceadb82..7fb954ed8e84b 100644
-> > --- a/arch/x86/kvm/x86.c
-> > +++ b/arch/x86/kvm/x86.c
-> > @@ -2708,6 +2708,11 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
-> >  		srcu_read_unlock(&vcpu->kvm->srcu, idx);
-> >  	}
-> >  
-> > +	if (kvm_vcpu_has_mediated_pmu(vcpu)) {
-> > +		scoped_guard(irqsave)
-> > +			kvm_mediated_pmu_put(vcpu);
-> > +	}
-> > +
-> >  	kvm_x86_call(vcpu_put)(vcpu);
-> >  	vcpu->arch.last_host_tsc = rdtsc();
-> >  }
-> 
-> [Severity: Medium]
-> Can calling kvm_mediated_pmu_put() from kvm_arch_vcpu_put() during a task
-> switch corrupt cgroup guest time accounting (info->timeguest.time) for the
-> incoming task's cgroup?
-> 
-> When a vCPU takes a slowpath VM-Exit while a non-conflicting cgroup perf
-> event (such as a software or uncore event) is active on the CPU,
-> perf_has_mediated_pmu_conflicts() is false, so the guest mediated PMU
-> context stays loaded with preemption enabled.  If the vCPU task is then
-> scheduled out to a task in another cgroup, prepare_task_switch() runs
-> perf_event_task_sched_out() before fire_sched_out_preempt_notifiers():
-> 
-> kernel/sched/core.c:prepare_task_switch() {
->     ...
-> 	perf_event_task_sched_out(prev, next);
-> 	fire_sched_out_preempt_notifiers(prev, next);
->     ...
-> }
-> 
-> During the switch:
-> 
->   prepare_task_switch(prev, next)
->     perf_event_task_sched_out(prev, next)
->       ...
->         perf_cgroup_switch(next)
->           cpuctx->cgrp = cgrp;  /* switched to next's cgroup */
->           ctx_sched_in(..., EVENT_ALL|EVENT_CGROUP)
->             perf_cgroup_set_timestamp(cpuctx, false)
->               /* sets info->time.stamp, leaves info->timeguest.stamp
->                * uninitialized or stale on next's cgroup */
->     fire_sched_out_preempt_notifiers(prev, next)
->       kvm_sched_out()
->         ...
->           kvm_arch_vcpu_put()
->             kvm_mediated_pmu_put()
->               perf_put_guest_context()
->                 perf_event_sched_in(..., EVENT_GUEST)
->                   ctx_sched_in(..., EVENT_PINNED | EVENT_GUEST)
->                     update_cgrp_time_from_cpuctx(cpuctx, false)
->                       __update_cgrp_guest_time(info, now, true)
->                         info->timeguest.time += now - info->timeguest.stamp;
-> 
-> Because perf_guest_ctx_loaded is not cleared until the end of
-> perf_put_guest_context(), update_cgrp_time_from_cpuctx() sees
-> is_guest_mediated_pmu_loaded() == true and adds now - info->timeguest.stamp
-> to next's cgroup using an uninitialized (0) or stale timestamp.  This adds
-> up to the full perf_clock() uptime to next's cgroup guest time and causes
-> 64-bit unsigned underflow when computing enabled/running time for
-> exclude_guest mediated PMU events in that cgroup.
+On Tue, Nov 24, 2026 at 08:48:52AM -0700, Alex Williamson wrote:
+>On Fri, 20 Nov 2026 22:21:16 +0000
+>Samiullah Khawaja <skhawaja@google.com> wrote:
+>
+>> On Thu, Nov 19, 2026 at 02:32:37PM -0800, Alex Williamson wrote:
+>> >On Wed, 18 Nov 2026 16:37:06 -0800
+>> >Alex Williamson <alex@shazbot.org> wrote:
+>> >
+>> >> On Thu, 12 Nov 2026 23:57:00 +0000
+>> >> Samiullah Khawaja <skhawaja@google.com> wrote:
+>> >>
+>> >> > Commit 962ae6892d8b ("vfio/pci: Lock upstream bridge for
+>> >> > vfio_pci_core_disable()") makes vfio_pci_core_disable() trylock the
+>> >> > upstream bridge before resetting the device, and skips the reset if the
+>> >> > trylock fails.
+>> >> >
+>> >> > All VFs of a PF have the same upstream bridge. Take a device with two
+>> >> > VFs, both used by one process. When the process is killed, both VFs can
+>> >> > be released at the same time. The first one takes the bridge lock and
+>> >> > does its FLR, the second one fails the trylock and is never reset.
+>> >> >
+>> >> > The bridge lock is only needed for a bus reset, which is done through
+>> >> > the bridge. A VF is reset with FLR, and pci_parent_bus_reset() never
+>> >> > resets the bus for it because the PF and the other VFs are on the same
+>> >> > bus.
+>> >> >
+>> >> > Add pci_reset_needs_bridge_lock(), which returns true if any reset
+>> >> > method enabled for the device is a bus reset, and only lock the bridge
+>> >> > in vfio_pci_core_disable() when it does.
+>> >> >
+>> >> > Fixes: 962ae6892d8b ("vfio/pci: Lock upstream bridge for vfio_pci_core_disable()")
+>> >> > Cc: stable@vger.kernel.org
+>> >> > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>> >> > ---
+>> >> > Tested in QEMU with an igb PF behind a PCIe root port, bound to vfio-pci
+>> >> > with two VFs. Both VFs are opened through VFIO and then closed from two
+>> >> > threads at the same time, counting FLRs with a kprobe on pcie_flr().
+>> >> > Without this patch one VF missed its FLR in 50 of 50 rounds, with it
+>> >> > both VFs were reset in every round. I will send a VFIO selftest for this
+>> >> > separately.
+>> >> > ---
+>> >> >  drivers/pci/pci.c                | 28 ++++++++++++++++++++++++++++
+>> >> >  drivers/vfio/pci/vfio_pci_core.c |  3 ++-
+>> >> >  include/linux/pci.h              |  1 +
+>> >> >  3 files changed, 31 insertions(+), 1 deletion(-)
+>> >> >
+>>
+>> [snip]
+>>
+>> >> > +
+>> >> > +		if (pci_reset_fn_methods[m].reset_fn == pci_reset_bus_function ||
+>> >> > +		    pci_reset_fn_methods[m].reset_fn == cxl_reset_bus_function)
+>> >>
+>> >> This looks like a maintenance nightmare.  What if instead we did
+>> >> something like:
+>> >>
+>> >> bool pci_parent_bus_reset_possible(struct pci_dev *dev)
+>> >> {
+>> >> 	struct pci_dev *pdev;
+>> >>
+>> >> 	if (pci_is_root_bus(dev->bus) || dev->subordinate ||
+>> >> 	    !dev->bus->self || dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET)
+>> >> 		return false;
+>> >>
+>> >> 	list_for_each_entry(pdev, &dev->bus->devices, bus_list)
+>> >> 		if (pdev != dev)
+>> >> 			return false;
+>> >>
+>> >> 	return true;
+>> >> }
+>> >> EXPORT_SYMBOL_GPL(pci_parent_bus_reset_possible);
+>> >>
+>> >> static int pci_parent_bus_reset(struct pci_dev *dev, bool probe)
+>> >> {
+>> >> 	if (!pci_parent_bus_reset_possible(dev))
+>> >> 		return -ENOTTY;
+>> >>
+>> >> 	if (probe)
+>> >> 		return 0;
+>> >>
+>> >> 	return pci_bridge_secondary_bus_reset(dev->bus->self);
+>> >> }
+>> >>
+>> >> Where we'd then condition acquiring the bridge lock on whether it's
+>> >> even possible for a function scoped reset to perform a bus reset.
+>> >>
+>> >> It's a bit broader of a test than whether we actually have the necessary
+>> >> methods in our reset_fn list, but since we're not locking the reset_fn
+>> >> list between test and function-reset, it's also safer.  Thanks,
+>> >
+>> >After exploring Ionut's patch[1], what I propose above is probably
+>> >wrong.  We don't have any guarantees that the sibling topology is
+>> >static and this bus-reset-possible function presents it as immutable.
+>> >The existing bus-reset function has the same race, but the gap is
+>> >smaller, let's not make it bigger.
+>> >
+>> >There are however immutable properties we can test that cover a fair
+>> >number of cases.  For example:
+>> >
+>> >bool pci_reset_function_needs_bridge_lock(struct pci_dev *dev)
+>> >{
+>> >	return pci_upstream_bridge(dev) &&
+>> >		!(dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET) && !dev->is_virtfn;
+>> >}
+>> >EXPORT_SYMBOL_GPL(pci_reset_function_needs_bridge_lock);
+>> >
+>> >We should be able to use this as a condition on whether we acquire the
+>> >bridge device lock, in pci_reset_function() and in vfio-pci code.
+>> >Thanks,
+>>
+>> This sounds good and it will also fix the bug that I am seeing.
+>>
+>> The only caveat is that pci_dev_wait() might fail during VF reset and
+>> then it might try to do a bus reset if the VF is behind a pciehp or CXL
+>> port. I would prefer to do it only for vfio-pci code as that is where
+>> the reset skip issue is. pci_reset_function() takes the lock and
+>> serializes the VF reset. Are you ok with doing it just for vfio-pci?
+>
+>I think the test I'm proposing precludes a bus reset, ie. there is no
+>upstream bridge, the device flags prevent it, or we're provided with a
+>VF.  It's only those cases where we can't do a bus reset anyway, that
+>we can skip the bridge device lock.  I think that means it's useful in
+>PCI-core as well as vfio-pci.  Did I miss something?
 
-I don't think this causes a problem in practice. The cgroup guest time
-is only consumed by events in a mediated-capable PMU's context. Such an
-event would be a conflicting event. So KVM will put the guest context
-when exiting to the slowpath, or the IPI installing it will reclaim the
-PMU.  But it may be fragile, and having silently broken (yet unused)
-accounting is not ideal.
+Yes, the slot reset probe doesn't account for the VFs and will allow
+reset of the slot when hotplug is enabled.
 
-An earlier version I had just reclaimed the PMU on context switch. I had
-convinced myself that it's not needed because KVM's preempt notifier
-(vcpu_put()) does so anyway. I missed the cgroup scheduling code. I
-think it's probably safer to just reclaim on context switch.
+I think that is probably a fix that needs to be done orthogonal to this.
+I will send a v2 of this by doing the needs_bridge_lock() as you
+mentioned above.
 
-One slightly annoying (but minor) problem is stats. Currently the
-reclaim stat counts instances where perf reclaims the PMU because host
-perf needs it (i.e. it conflicts with the mediated PMU). The vCPU put
-path is not counted, as it's technically an implementation detail. The
-context switch path would be counted as a reclaim, when it technically
-isn't. Not a big deal, and I am not sure if Sean will want to keep the
-stats anyway, we can discuss it separately.
+>
+>I do see that cxl_reset_bus_function() only does a cursory test for
+>probe, but then calls pci_reset_bus_function() when it executes, which
+>is an inconsistency issue of its own.  Thanks,
+>
+>Alex
 
-I think it would basically be a new patch calling
-perf_reclaim_mediated_pmu() at the beginning of
-__perf_event_task_sched_out(), something like this on top of the
-series:
-
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index d3e1b33c97716..0cdaaf9bbfb13 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -4019,6 +4019,15 @@ static void perf_event_switch(struct task_struct *task,
- void __perf_event_task_sched_out(struct task_struct *task,
-                                 struct task_struct *next)
- {
-+       /*
-+        * The guest's mediated PMU context may still be loaded, e.g. if KVM
-+        * left it loaded across slowpath VM-Exits, and KVM only puts it from
-+        * its preempt notifier after this.  Reclaim the PMU first, as perf's
-+        * sched-out (e.g. switching cgroups) must not run with a guest context
-+        * loaded.
-+        */
-+       perf_reclaim_mediated_pmu();
-+
-        if (__this_cpu_read(perf_sched_cb_usages))
-                perf_pmu_sched_task(task, next, false);
-
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20261124002303.1785363-1-yosry@kernel.org?part=22
+Thanks,
+Sami
