@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1795562572;
-	b=rCJF9oo4UTdLCXFtdLvGlP/jkLJt9hPbQ2T9z88wHYIR7Uja0vzIVRcEn4JHr6AGbzDB
-	 HJezWQW7EqqyXGkPl3QENxvX4rwAlI0NzT7Us3byIZRTAykggVvzoD1vxj961CVKIjglz
-	 WYyWofHMSZxc/HU6jeVLwZdR0Vc8RwqVjBXyGqHOsIaPaGHDV/yAF4vxZvwnLek0QYWkA
-	 xoIcDc7Nfr7zsYr4OVLFpCxgVdYuPGAnNJZ2HPXgL20lEmvXguex5rnBQbJSnldatDeKM
-	 NKadGU6UHRhfr2QMjn4Ky/X+7sjJB8C2UWmdAbsZq7XdLQC8qv3XQeEc6AeSoGyQtkA==
+	b=EV1wK0ItBOLu/2UExcL94B8R3AKwFaloW1wu3DMVq70ayvPMp3PLXxcP59eAXGcgrJMH
+	 nwNwepQXaNTv/44QO18ZujXzn72QS0moZ1W+Llu4XXc5wsea80U2jrKGB/uCyPbCr59vN
+	 ZQWQYPcAS8zBV3xfusHXWopwLJSCLOcwFNrA6kO10uNaxDVnM8+hSbIq33S+ehi9PV0+8
+	 JJCxsQx7s41V4kodSyFN/Zfm0B9Yxq7OtaK1S0v8QGOxUcyX5NDIbXbHjWhF43qvOh83/
+	 +K0tLHOlNlVvNCTkY0pe0megxPgDc7sqYm4Dyb0n4RPzPyklaWDobdHTBcTfPrdodnA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795562572;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=7Q8vcK6pp8jnVnCjyRjbmOniJ69JnrySfnqcCaHpuRg=;
-	b=1SEg4qY98hJtPHB2N3pnjlrcNQhWZpsPa4HmD6eKh8pHqCwjCw4FT9OksxDSG8ax66Q2
-	 MXcSV4R9nQDOfgpuA2snA5kn55JkuPyFjFIr9LM+Jz54PcNlPolr4+r+mk7H/qXmnvMeS
-	 DRSmlCSOKCUcDHVECLqj3qWbctNFc//31RQ1tg2VM9jiRBg14k/80nB/4oaGBZ3kokI9a
-	 ost4w5iJnbrGsgRzSY+pESH4G41OL2rSHMsNTdKfpUNi6/msxlZimTlCbvteZMvHJYskF
-	 0K65cfaFE62yFfezOxhxbv23gys0mcNho+fZ1ALniAt0Ybnf+ftvtAPmQmbKZpuGt9Q==
+	bh=NEdqkVW780b7/EBwy88Eid9pGH6VB8HPHsnSsQzF1WE=;
+	b=e1oqbnAYPVuTORilt5HpZ//DjQwmBLg6q4Jo8shaPG3bfXLUt/uAYbgEmcwzfe9e9iwi
+	 89x4uJH61P/60DJxsu/vhby7qUE45acQQbmuLLTUEsEJv9Kc9WPQn/rClIfg8/rFS8KQl
+	 yNdkdN3AbXKUhHb2cqHZjru53FgdqfjwGynbUuf0sBJTMhGUyEaPHanhUVzoQVxBuMPhZ
+	 Sk/u5TREcke+Tf9DIHBY+UF/Ncde7vrT3pxa4OzXXiFsutqcQRKZBASwziCqTOISW6dC+
+	 rfqyycCsLfxcyhs9ZLbCmjM3pqEV2x8qGFAflAGzx3W4/8uGRhfxAHm96JEGh49EWiA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ByYwvkFg;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=iCplaFGm;
 	arc=none smtp.remote-ip=90.155.50.34
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98A1606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9837606A32A
 	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:22:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E98A1606A32C
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9837606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ByYwvkFg
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=iCplaFGm
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=7Q8vcK6pp8jnVnCjyRjbmOniJ69JnrySfnqcCaHpuRg=; b=ByYwvkFgRf+NraRIKwg2fC4EDw
-	CmOLguurIyG6OgQEEKm1F6mB3yG70Z8RMXbB5UsF9zwGU+4Di0mNG2JjIuOoD7RMpDzEKKpgAvxRn
-	1z/ITJftIVEb3OKUXxcjYpBdrBlzT4kpDiXsbHwf+2LcESWmbnUMMDN2czKFZnVX9/zkVLZ6rZ6gM
-	QWG0EmDqE6X3Fu1wgM5JXuaM3KUgJlEyhauqf0kiFxoqQzGaGfo/2htOB02X7L4eXi0BYPukwEuKK
-	Hbb8xYQ3TxJ2jXbnctaD8vkMILe43Adp+suaI2YGl+aGUOxJQJb9QRjD371JRAyDGKpqsfs5UaWIL
-	pkueEdZA==;
+	bh=NEdqkVW780b7/EBwy88Eid9pGH6VB8HPHsnSsQzF1WE=; b=iCplaFGmsblW2SJV3FvmC0xSrM
+	1ye/eDTy0ssR0z1yr6RrPrKcPewXtbFqAjBTDsYxMSEvQeP+eWMc1kUZ7GlBZS90mpES1iL+qJt5s
+	M/gQ5wEkx9PldAlvVG8Ly6la0vGtAJ+rWHDBTtUEtIL6n8MkPP7cib8lUgM4uHbcPWz5remxh1Rjr
+	Gl7FsPgzW5RaeBH0k9xnbSycOBTIPyaIn3pmdq8I+Tl05mTKpPoz70qYH5wTbJnah/E2A87oXfLch
+	hnHGE7ThgUKrALONFtfo7xKgkXBMV8QZKfzTo0VsBKaxseUwgvcWicSAYcJUgxZX842AjlLxZmHxp
+	UyxYhBsQ==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xVzqZ-0000000Gdhz-45hv;
-	Tue, 24 Nov 2026 23:22:49 +0000
+	id 1xVzqZ-0000000Gdhx-3FY9;
+	Tue, 24 Nov 2026 23:22:48 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xVzqZ-0000000062U-2B62;
+	id 1xVzqZ-00000000625-1eYh;
 	Tue, 24 Nov 2026 23:22:47 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
@@ -69,9 +69,9 @@ Cc: xen-devel@lists.xenproject.org,
 	Mark Syms <mark.syms@citrix.com>,
 	Feifan Qian <bea1e@proton.me>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v1 11/21] hw/i386/kvm/xen: Don't leak gnttab handle on reset
-Date: Tue, 24 Nov 2026 23:22:37 +0000
-Message-ID: <20261124232247.23169-12-dwmw2@infradead.org>
+Subject: [PATCH v1 06/21] hw/xen: Validate grant copy segments against the page size
+Date: Tue, 24 Nov 2026 23:22:32 +0000
+Message-ID: <20261124232247.23169-7-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261124232247.23169-1-dwmw2@infradead.org>
 References: <20261124232247.23169-1-dwmw2@infradead.org>
@@ -90,49 +90,64 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-xen_xenstore_reset() and xen_primary_console_reset() open a new gnttab
-handle without closing the previous one, leaking it and its mappings on
-each guest soft reset. Close the old handle first; closing unmaps any
-remaining refs.
+Reject a grant copy segment whose offset and length reach beyond the
+granted page, matching Xen's GNTST_bad_copy_arg behaviour, in both the
+emulated gnttab backend and the libxengnttab fallback. The only current
+caller, xen-block, already bounds its segments to a single page.
 
-Fixes: d05864d23b1a ("hw/xen: Map guest XENSTORE_PFN grant in emulated Xenstore")
-Fixes: a72ccc7fc449 ("hw/xen: add support for Xen primary console in emulated mode")
+Fixes: b08d88e30f06 ("hw/xen: Add emulated implementation of grant table operations")
+Fixes: c412ba47b2ec ("hw/xen: Add gnttab operations to allow redirection to internal emulation")
 Reported-by: Hui Peng <benquike@gmail.com>
 Closes: https://gitlab.com/qemu-project/qemu/-/work_items/4525
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/i386/kvm/xen_primary_console.c | 3 +++
- hw/i386/kvm/xen_xenstore.c        | 3 +++
- 2 files changed, 6 insertions(+)
+ hw/i386/kvm/xen_gnttab.c | 10 ++++++++++
+ hw/xen/xen-operations.c  | 11 +++++++++++
+ 2 files changed, 21 insertions(+)
 
-diff --git a/hw/i386/kvm/xen_primary_console.c b/hw/i386/kvm/xen_primary_console.c
-index bf61f6235be..0a2a6de3ecb 100644
---- a/hw/i386/kvm/xen_primary_console.c
-+++ b/hw/i386/kvm/xen_primary_console.c
-@@ -184,6 +184,9 @@ int xen_primary_console_reset(void)
+diff --git a/hw/i386/kvm/xen_gnttab.c b/hw/i386/kvm/xen_gnttab.c
+index 26d1febac4d..6e0038b22ff 100644
+--- a/hw/i386/kvm/xen_gnttab.c
++++ b/hw/i386/kvm/xen_gnttab.c
+@@ -473,6 +473,16 @@ static int xen_be_gnttab_copy(struct xengntdev_handle *xgt, bool to_domain,
+         void *page;
+         uint32_t ref = to_domain ? seg->dest.foreign.ref :
+             seg->source.foreign.ref;
++        off_t offset = to_domain ? seg->dest.foreign.offset :
++            seg->source.foreign.offset;
++
++        if (offset < 0 || offset > XEN_PAGE_SIZE ||
++            seg->len > XEN_PAGE_SIZE - offset) {
++            if (errp) {
++                error_setg(errp, "grant copy segment out of page bounds");
++            }
++            return -EINVAL;
++        }
  
-     trace_xen_primary_console_reset(s->guest_port);
+         page = xen_be_gnttab_map_refs(xgt, 1, domid, &ref, prot);
+         if (!page) {
+diff --git a/hw/xen/xen-operations.c b/hw/xen/xen-operations.c
+index e00983ec447..bf0ec040bcf 100644
+--- a/hw/xen/xen-operations.c
++++ b/hw/xen/xen-operations.c
+@@ -50,6 +50,17 @@ static int libxengnttab_fallback_grant_copy(xengnttab_handle *xgt,
  
-+    if (s->gt) {
-+        qemu_xen_gnttab_close(s->gt);
-+    }
-     s->gt = qemu_xen_gnttab_open();
-     uint32_t xs_gntref = GNTTAB_RESERVED_CONSOLE;
-     s->granted_xs = qemu_xen_gnttab_map_refs(s->gt, 1, xen_domid, &xs_gntref,
-diff --git a/hw/i386/kvm/xen_xenstore.c b/hw/i386/kvm/xen_xenstore.c
-index 7d6d6d5cbb7..ff0dfb1bff8 100644
---- a/hw/i386/kvm/xen_xenstore.c
-+++ b/hw/i386/kvm/xen_xenstore.c
-@@ -1490,6 +1490,9 @@ int xen_xenstore_reset(void)
-      * first place. Map the grant anyway, mostly for cosmetic purposes so
-      * it *looks* like it's in use in the guest-visible grant table.
-      */
-+    if (s->gt) {
-+        qemu_xen_gnttab_close(s->gt);
-+    }
-     s->gt = qemu_xen_gnttab_open();
-     uint32_t xs_gntref = GNTTAB_RESERVED_XENSTORE;
-     s->granted_xs = qemu_xen_gnttab_map_refs(s->gt, 1, xen_domid, &xs_gntref,
+     for (i = 0; i < nr_segs; i++) {
+         XenGrantCopySegment *seg = &segs[i];
++        off_t offset = to_domain ? seg->dest.foreign.offset :
++            seg->source.foreign.offset;
++
++        if (offset < 0 || offset > XEN_PAGE_SIZE ||
++            seg->len > XEN_PAGE_SIZE - offset) {
++            if (errp) {
++                error_setg(errp, "grant copy segment out of page bounds");
++            }
++            rc = -EINVAL;
++            goto done;
++        }
+ 
+         refs[i] = to_domain ? seg->dest.foreign.ref :
+             seg->source.foreign.ref;
 -- 
 2.43.0
 
