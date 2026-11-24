@@ -1,50 +1,122 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795529001;
-	b=KjIsdqHtLKBVUHtIMlodUJf5QhJ+6FsyghcOz6j5s9sRk9sxozItb7hAGlx9eR2u+ur1
-	 QvcZ3JzKB2YmOvM1q8sG8yYi4LTIodKAxZbnVvbX6zpEJ4qIYxOLTR+c+Jxed3+RI8zoH
-	 rbLECathytVGxGH1cDl+187UOAcPBcs7MkaUij/JP4C4CyF6Li07jXYFiI/Gw2zwNsWDF
-	 DtlUAIlHxOq6wOEQvc0xviZkuM0YcbP2oQiyILdZqwfP+UggwB3jjjsL9IvGcw/5TU9YA
-	 nQYZz3PRMEjMr8yMIU2P7izbW9kSeooc32ZBt9oiyiAD80IwTMFCJFeCP0UehKmqhWg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795529001;
-	h=Received:DKIM-Signature:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=Pcp6KuvRcMiXfM74bIVPa/vEkoJOU8lTqnsRQrOb5o4=;
-	b=v8qzabu8kzB+0i3zrTUauqt7incO0C89B5xYYbzjRfxIvXVtlZ4zBDCE0ku7HkWTQjoa
-	 2fFE547UxWlh809/ArnczO3cfWb8TyxbS+0k2CDqpHGIMFFA6U4MZ0g0bp5zydTVOG5LY
-	 J4lPOfFxMKYprX/rLkNuk8aDRnXr2aQOwQJ2aGFm5bnWTYAtNBsBBNxt1mkkbu6CSP8ob
-	 v4K/71DJkE7bf5Cp7tdsA6UZ94fHhTINBOYW2Jr2edYoHGIUHt/GtvjetvOgeuwufL+h4
-	 f9jLvpQ+uwn5jwA2El4StWQDZrYN2WjWsbn+ZvGam/NjB9UMKyyi6kt3NXh2oF7vJHQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m5RF+lzm;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.22
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795529011;
+	b=fLYW9kZ3ZklE0/NmU02VVVd9ZlCQgA7O6cdCpnMgInlgXpyFRSg7gLzUUTu3EPV0MZk5
+	 RIZrQquLGZY6JO2mof3nz/7rwgRe4S7nIomcUBg9DQmNYB3CbhWq3eYFcH0IZ1Lj/G1Dt
+	 lox4QWmUzUYda3AmyZ+Q+YB/tR/WEHsxQFt9tHj7dnrZF8fNXmnmT8S5JydfOZ3qvKKIl
+	 GzbRMqcqnza2WpDKotTVdKpadfIE8gemPiZJlATw8X+GtE6EhowaIMZhddtna3TN83fSH
+	 rAbAWPVJlYwk4zIk2FgDxyBGu4dFi2sB2CcchRaHp4O8SyGInajYQ11rZ+YPX7i+LOQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795529011;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:Content-Type:
+	 X-Originating-IP:X-ClientProxiedBy:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=oLMpS8cwSh59Fdl8br4K4ySQ+KtytEjk0zPWr1ET+48=;
+	b=gbnx3v1vnjcIt/KRFGF9YCQRNVqSH8iVOrSWFXvuEXRyEdmIbXA0RErBA6XQcGTNxyn/
+	 fySYpEloRvOOuCGPGez+60y7GferpR97VP1yjtKSQkK4ILbNFIm0Ur5P+cG7CnvTy+9wk
+	 NyUBIZSxsr5r+lTifbKC4yBWjG+02IvO7Rk7Ms/yoMRpW6aQBnoo30jzRHFACsHMY4THm
+	 iq0C+31jvlIf246NPQ3F66m4wKxCnyt/nrbUIFIqYTtLJYg34UQd6mqFluYrbGSaYR/XO
+	 GoGTceZxzayHEt1WRN6kAnQYtSVxXTMD0vWEzEp71vw1HDaUeNeMFNH3H/4TD06CvjQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b="LjyoDp/B";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.196.22
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013022.outbound.protection.outlook.com [40.93.196.22])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD67606A321;
-	Tue, 24 Nov 2026 14:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8492E606A321;
+	Tue, 24 Nov 2026 14:03:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8492E606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m5RF+lzm
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9741F000CF;
-	Tue, 24 Nov 2026 14:03:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795529001;
-	bh=Pcp6KuvRcMiXfM74bIVPa/vEkoJOU8lTqnsRQrOb5o4=;
-	h=From:Subject:Date:To:Cc;
-	b=m5RF+lzmoV0KlfOio0Dl2o69dI4rgtq9fEDM529z18h4bvXVByTYYPIrO3nfq66Al
-	 S7b0xt4Isk2RZvdXlVCnJO2H9ApRMebR+cuuc1Mh6rszX9Zhla035nI0F5C6x/MHLD
-	 XeitIh3tzBgM7PxhrmmkTyrk505660hD/3k2opBfr2SrNPC1Zqxuz4rugypmvl0YHv
-	 L7i+BrNOy0yloakdV4vIbbD9MhDsYIvWUGxQp/CF8ICGFRPZrqEcGhx7b//ugJyzLI
-	 jvC7NpeW/ds4v/oSUDD3cFClNVL2B4axAeKCDrEKLPDhequ6MiNoo2JytLwjxnVOOr
-	 e+11WXxZ6coOA==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Subject: [PATCH v2 00/13] mm: convert further simple mmap hooks to
- mmap_prepare
-Date: Tue, 24 Nov 2026 14:02:43 +0000
-Message-Id: <20261124-late-2026-mmap_prepare-v2-0-0b0d99d655f9@kernel.org>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=LjyoDp/B
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=O7m5WyMNzl7tvveQpemvb2tCj3LQKvsZK/5SVty0dVOvUmHSBkD69vNj9lSbkx+PWTsgNODAa591NLc62fBLkrGTCVlbxaWCMDGyUwaOE29dwKTVKeHkqhPC9Xo49NHC/WKoUKLRckkmSn+KKklm4D/+YA1/VBsfO2Eyl50CEXUtKDR/PA1tJeVwUHRONc4ic81C6agXdkORL+SrgS/fK0kPnmHGxYQo61l3bwo/xhtmCY0vBAkk8e0JX82inHxCzV0QtcvOTTupsfiwC2cXnzGTpL6a/AeUXLp0gICs2DbyvSZzwpw4jocs3q5kpsQeK85izjKjEkVq4wq5sYGKvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oLMpS8cwSh59Fdl8br4K4ySQ+KtytEjk0zPWr1ET+48=;
+ b=iAKzY8KBlvcukhJ1vRql+wkMvL434D2cF71YRPOYPAsjmzedbebE9SV+kCTixI6kL8BEWtuWGHWP9N2jPQFsTKAFe70CpkjU6tW5O+xTEArjijIgcO2IcdCrBAuirRp3RitAZuwLVf07sX00kvB53XAK40BzeFan40pPeA6RHuOrjf8EFwzN8XhKUhiOiv5kjXsKACCeGE9Wub7RBivMC8qLCbvU+BN/0daWSN6qUPAfjUFHjjLChowJzX5rlgcNsthoL2vj02SCWpR/zMm2ha6wWMUTsYywzvKDNAxDElmXYgPY6EHegtTC8+E140ILeZRxAo1lS7LThwW4bfsjcA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oLMpS8cwSh59Fdl8br4K4ySQ+KtytEjk0zPWr1ET+48=;
+ b=LjyoDp/BfIA/wtvqBh7DNkye00fu2vchhq7oF0k3TVPoH5tYyKrbB8RsDAMuPz6Hz0S10Mq++aYU2o1VPcG7KfqQHd4OjNssHfUA6VbAgVmYCNHBWFa/+xieod0KHNJRJ838IvrrIgaegVVnuY6IU3fxz/lpraWIDWlcUNh2iZy0/tY+Wa8/Ivjsdmr5JScHw9JSY99bHmtcbddhxV1oktwzXtScIYgvoKpwWtIaiestQB3CB6ivbu/xSmptou4aMaSgs32UBLohdNjlkiqOGsSZsomBc7PD6bZCwSmIZOJvW+1HdkbrTpnfyjLprPeGoG0rDtUSauRMFBW655EIFg==
+Received: from MN2PR03CA0030.namprd03.prod.outlook.com (2603:10b6:208:23a::35)
+ by CH1PPFF9270C127.namprd12.prod.outlook.com (2603:10b6:61f:fc00::62b) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.10; Tue, 24 Nov
+ 2026 14:03:15 +0000
+Received: from LV8PEPF0000006A.namprd03.prod.outlook.com
+ (2603:10b6:208:23a:cafe::51) by MN2PR03CA0030.outlook.office365.com
+ (2603:10b6:208:23a::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.639.14 via Frontend Transport; Tue,
+ 24 Nov 2026 14:03:15 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ LV8PEPF0000006A.mail.protection.outlook.com (10.167.248.43) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.662.3 via Frontend Transport; Tue, 24 Nov 2026 14:03:15 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Tue, 24 Nov
+ 2026 06:02:47 -0800
+Received: from kalok-SPC741D16QM3.nvidia.com (10.126.231.37) by
+ rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.57; Tue, 24 Nov 2026 06:02:34 -0800
+From: Alok Kumar <alkumar@nvidia.com>
+To: <dakr@kernel.org>, <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
+	<rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+	<linux-pci@vger.kernel.org>
+CC: <alex@shazbot.org>, <jgg@nvidia.com>, <yishaih@nvidia.com>,
+	<skolothumtho@nvidia.com>, <kevin.tian@intel.com>, <airlied@gmail.com>,
+	<simona@ffwll.ch>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+	<boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+	<lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+	<tmgross@umich.edu>, <markus.probst@posteo.de>, <jhubbard@nvidia.com>,
+	<apopple@nvidia.com>, <joelagnelf@nvidia.com>, <ecourtney@nvidia.com>,
+	<cjia@nvidia.com>, <smitra@nvidia.com>, <kjaju@nvidia.com>,
+	<alkumar@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
+	<kwankhede@nvidia.com>, <targupta@nvidia.com>,
+	<linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
+	<boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
+	<work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
+	<kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
+	<peter@colberg.org>, <xinmengs@nvidia.com>
+Subject: [PATCH v5 12/35] gpu: nova-core: mm: add VramBlock
+Date: Tue, 24 Nov 2026 19:29:08 +0530
+Message-ID: <20261124135937.18583-13-alkumar@nvidia.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261124135937.18583-1-alkumar@nvidia.com>
+References: <20261124135937.18583-1-alkumar@nvidia.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -54,132 +126,161 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAA/3XNywqDQAyF4VcZsjZlMkUrrvoeRUrUqEO9DBmRF
- vHdi0KXXZ5/8Z0NoqiXCIXZQGX10c8TFMYlBuqep07QN1AYcNZlRJZw4EXwWDiOHJ5BJbAKWlf
- nt8ZdyZJAYiCotP59wo8yMdD7uMz6OX9WOuqPTP+RK6HFOs2Ym7biKuf7S3SS4TJrB+W+71+eu
- Pr9vQAAAA==
-X-Change-ID: 20261101-late-2026-mmap_prepare-02c87d23101e
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Juergen Gross <jgross@suse.com>, 
- Stefano Stabellini <sstabellini@kernel.org>, 
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
- Shrikanth Hegde <sshegde@linux.ibm.com>, 
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
- Dexuan Cui <decui@microsoft.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Jason Wang <jasowangio@gmail.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
- Dave Hansen <dave.hansen@linux.intel.com>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Jan Kara <jack@suse.com>, 
- Paul Moore <paul@paul-moore.com>, 
- Stephen Smalley <stephen.smalley.work@gmail.com>, 
- =?utf-8?q?Ondrej_Mosn=C3=A1=C4=8Dek?= <omosnacek@gmail.com>, 
- Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
- Ryan Chen <ryan_chen@aspeedtech.com>, 
- Billy Tsai <billy_tsai@aspeedtech.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
- Jens Wiklander <jenswi@kernel.org>, Sumit Garg <sumit.garg@kernel.org>, 
- Scott Branden <scott.branden@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Richard Cochran <richardcochran@gmail.com>, 
- David Woodhouse <dwmw2@infradead.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: ljs@kernel.org, xen-devel@lists.xenproject.org, 
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
- virtualization@lists.linux.dev, linux-sgx@vger.kernel.org, 
- selinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-aspeed@lists.ozlabs.org, linux-arm-msm@vger.kernel.org, 
- op-tee@lists.trustedfirmware.org, netdev@vger.kernel.org, 
- linux-mm@kvack.org, Kameron Carr <kameroncarr@linux.microsoft.com>, 
- Michael Kelley <mhklinux@outlook.com>, Jan Kara <jack@suse.cz>, 
- Abel Vesa <abel.vesa@oss.qualcomm.com>, 
- Jens Wiklander <jens.wiklander@oss.qualcomm.com>, 
- David Woodhouse <dwmw@amazon.co.uk>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2820; i=ljs@kernel.org;
- h=from:subject:message-id; bh=cNcQh1oes+NuXX/SLhNhorMmsomyqOJdE2nbt8XExvk=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJZZ4rIHtHcwB4V8Hin/yxTxk7PB9MvbI3XXNtvsWVPh
- GZ0tPrsjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAEykXpmR4T6L/n7RH25zgz5/
- uKz5oG9xyJmgPXZrlS4HfLedtXeZAz8jw9ZDvbcNpRcv4J5c+V/n8+cDm1NbX87R834vLWG3KFv
- 2OzMA
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PEPF0000006A:EE_|CH1PPFF9270C127:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4f2f41a8-496e-4a33-e7e3-08df4a33af68
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|7416014|376014|23010399003|36860700016|22082099003|18002099003|56012099006|11063799006|261026140227099003|261102123227099003|261028144727099003|261022113327099003|261026121527099003|261021121427099003|261009223027099003|261022105027099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	OeRT7007f3Qygm7KTipaXk+0n0xU4Qx8XKpJwApI62joWcWE5N2wU5+z46h5sHtMvsh5vlVAYTJgXQl2jAhCpld9YHirIVIUTnKROBYwodTKkyheddV1O38omINVGvj3bTqCY0k94b0IgeS2q/VFctoJWLUYX849udYY4zfDkRHzk4LbsoxccRu1RiWi3exVGOihISSY2Vzha+OD16PsWiaqnl/1lF3DnKJeljipSoNrk7+Nb8L0wCOCZiTRsiiDx+n3ix/1yhqppn9GQLutz1yc12ER5K5+mQPWNh7FWAlmdfu+BOQ+woD3a6ntbrzXoV0MDwI5LB7uuXUTunnYB4d+aarQ1H9xPCI4u/N2ubwZsrWwKw+LjSst5i8F2AdAU7vb5D3wFwNfAk4dFsbdAzmSv9zVq8Q5dtx4F+0ujx78U4Vd/pK/yb0xkep5xnp5E82HVuU+Y+kUZbsXe2rpzWSmAcumS0cJpReax4rmVemYnosrDCuHsRnSHEfUnwfhAdTtSsdL+WYtzJgzbWsZWyRcKySIJPpTKYtfLJCV9iTJQ7QEsfw6GhZUA7PaKevoUni1k62Hrw85GzuQe9D9mSQ6jXvJhWpks+4lLy0HX/SGye75gnObDHhIa3kd4QoKNVpFf1znJKwZOlRc75vqDrB7Mkv8IMrA/OejKgu+ANLi/g89JGAqAtffQUTeSk1BmboPtaYqTy9HBKNzgdfNFQ==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(376014)(23010399003)(36860700016)(22082099003)(18002099003)(56012099006)(11063799006)(261026140227099003)(261102123227099003)(261028144727099003)(261022113327099003)(261026121527099003)(261021121427099003)(261009223027099003)(261022105027099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	mVB9lY8DZXKpqwqZwINnAdyIJLLUwjusFthrNyFUVuGnVmzDAQDvNyaSHh5n6Z4ZB++jfhLUiHyhCd99XlmmeiyG8u2oE+o77P9OAWBzVNei8OX9iBmV0wmz5sz+WLCDtZTCM1HOauA1kit9E18Qrig4WD8jhru15DdUXD2vlWSrPs8lg/ibIT/mH3IbhOQg6WP7YWJsJfj9e2H9WgMGfjn9wFnJfyrxgN+gTeOVpg2pg7R1HfaqjNkt/s7YgGsdfy/D4IFrKQ87lYDlW+uVjiOijY6Yq/0VrSJd00nc5v6xO9sgkj5doVUwD6IFVMt8yWKuN675gC7Vx0A4vijemcNAYc256TEHWlzPcrEsS0GkYorukhc6vd4aOfogafDG+arJtmi1sZVhi8X65PVqdFSJHAo2VfDzNboTpfsPrbFY+1C5u+Gax5d9RA9j/1Ec
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 14:03:15.5153
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4f2f41a8-496e-4a33-e7e3-08df4a33af68
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	LV8PEPF0000006A.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPFF9270C127
 
-Continue the conversion of users of the deprecated f_op->mmap callback to
-f_op->mmap_prepare. Keep things gentle this cycle by targeting simple
-cases.
+From: Zhi Wang <zhiw@nvidia.com>
 
-No functional change intended.
+vGPU memory slots need allocations at fixed offsets within usable VRAM.
+Add GpuMm::alloc_vram_range and VramBlock to own these exact allocations
+and return their storage to the buddy allocator on drop.
 
-Build tested on x86-64 (allmodconfig, each patch individually), i386,
-arm64 and ppc64le.
+Use the buddy allocator's range validation and retain the checks for
+absolute physical address overflow and alignment.
 
-Andrew - could you take this through your tree as it's a kernel-wide
-change?  Thanks!
-
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Cc: Alistair Popple <apopple@nvidia.com>
+Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+Co-developed-by: Alexandre Courbot <acourbot@nvidia.com>
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+Signed-off-by: Alok Kumar <alkumar@nvidia.com>
 ---
-v2:
-* Added tags, thanks everybody!
-* cc'd linux-mm, Andrew.
-* Dropped the vduse patch (was 4/14), as commit bb2e6f166547 ("vduse: fix
-  VA/PA confusion in the coherent page fault path") completely broke the
-  driver and was merged without testing as a hotfix. Conversion can wait
-  for that to get fixed.
+ drivers/gpu/nova-core/mm.rs      |  2 +
+ drivers/gpu/nova-core/mm/vram.rs | 85 ++++++++++++++++++++++++++++++++
+ 2 files changed, 87 insertions(+)
+ create mode 100644 drivers/gpu/nova-core/mm/vram.rs
 
-v1:
-https://lore.kernel.org/r/20261105-late-2026-mmap_prepare-v1-0-c56aadfbab8a@kernel.org
-
----
-Lorenzo Stoakes (ARM) (13):
-      xen/privcmd: convert mmap hook to mmap_prepare
-      KVM: PPC: Book3S: convert spapr TCE mmap hook to mmap_prepare
-      mshv_vtl: convert mmap hooks to mmap_prepare
-      x86/sgx: convert vepc mmap hook to mmap_prepare
-      udf: convert mmap hook to mmap_prepare
-      selinuxfs: convert mmap hooks to mmap_prepare
-      xen: convert xenstore interface mmap hooks to mmap_prepare
-      soc: aspeed: convert LPC and P2A control mmap hooks to mmap_prepare
-      soc: qcom: rmtfs_mem: convert mmap hook to mmap_prepare
-      tee: convert shm mmap hook to mmap_prepare
-      misc: bcm-vk: convert mmap hook to mmap_prepare
-      ptp: vmclock: convert mmap hook to mmap_prepare
-      vhost-vdpa: convert mmap hook to mmap_prepare
-
- arch/powerpc/kvm/book3s_64_vio.c        |  6 +++---
- arch/x86/kernel/cpu/sgx/virt.c          | 15 ++++++++-------
- drivers/hv/mshv_vtl_main.c              | 14 +++++++-------
- drivers/misc/bcm-vk/bcm_vk_dev.c        | 20 ++++++++++----------
- drivers/ptp/ptp_vmclock.c               | 19 +++++++++----------
- drivers/soc/aspeed/aspeed-lpc-ctrl.c    | 20 +++++++++-----------
- drivers/soc/aspeed/aspeed-p2a-ctrl.c    | 22 ++++++++--------------
- drivers/soc/qcom/rmtfs_mem.c            | 22 ++++++++++------------
- drivers/tee/tee_shm.c                   | 14 +++++++-------
- drivers/vhost/vdpa.c                    | 23 ++++++++++++-----------
- drivers/xen/privcmd.c                   | 11 +++++------
- drivers/xen/xenbus/xenbus_dev_backend.c | 14 ++++++--------
- drivers/xen/xenfs/xenstored.c           | 14 ++++++--------
- fs/udf/file.c                           |  8 ++++----
- security/selinux/selinuxfs.c            | 24 +++++++++++-------------
- 15 files changed, 115 insertions(+), 131 deletions(-)
----
-base-commit: 5bd93e4b0b357e9d0a13199887aacbf04d1ce216
-change-id: 20261101-late-2026-mmap_prepare-02c87d23101e
-
-Cheers,
+diff --git a/drivers/gpu/nova-core/mm.rs b/drivers/gpu/nova-core/mm.rs
+index f53886f9ed91..a0aeb96bfa36 100644
+--- a/drivers/gpu/nova-core/mm.rs
++++ b/drivers/gpu/nova-core/mm.rs
+@@ -67,6 +67,8 @@ macro_rules! impl_pfn_bounded {
+ mod regs;
+ pub(super) mod tlb;
+ pub(super) mod vmm;
++#[expect(dead_code)]
++pub(crate) mod vram;
+ 
+ /// GPU Memory Manager - owns all core MM components.
+ ///
+diff --git a/drivers/gpu/nova-core/mm/vram.rs b/drivers/gpu/nova-core/mm/vram.rs
+new file mode 100644
+index 000000000000..6839960eeb2c
+--- /dev/null
++++ b/drivers/gpu/nova-core/mm/vram.rs
+@@ -0,0 +1,85 @@
++// SPDX-License-Identifier: GPL-2.0
++// SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
++
++//! VRAM allocation.
++
++use core::ops::Range;
++
++use kernel::{
++    gpu::buddy::{
++        AllocatedBlocks,
++        GpuBuddyAllocFlags,
++        GpuBuddyAllocMode, //
++    },
++    num::casts::FromSafeCast,
++    prelude::*,
++    ptr::Alignment,
++    sync::Arc, //
++};
++
++use super::{
++    GpuMm,
++    PAGE_SIZE, //
++};
++
++/// A physically contiguous VRAM allocation.
++///
++/// # Invariants
++///
++/// `range.start <= range.end`.
++pub(crate) struct VramBlock {
++    _blocks: Pin<KBox<AllocatedBlocks>>,
++    range: Range<u64>,
++}
++
++impl VramBlock {
++    /// Returns the range covered by this VRAM block.
++    pub(crate) const fn range(&self) -> &Range<u64> {
++        &self.range
++    }
++}
++
++impl GpuMm<'_> {
++    /// Allocates an exact byte range relative to the buddy allocator's base.
++    pub(crate) fn alloc_vram_range(
++        &self,
++        range: Range<u64>,
++        align: Alignment,
++    ) -> Result<Arc<VramBlock>> {
++        const PAGE_SIZE_ALIGN: Alignment = Alignment::new::<PAGE_SIZE>();
++
++        let align = if align > PAGE_SIZE_ALIGN {
++            align
++        } else {
++            PAGE_SIZE_ALIGN
++        };
++        let size = range.end.checked_sub(range.start).ok_or(EINVAL)?;
++        let buddy = self.buddy();
++        let base = buddy.base_offset();
++        let start = base.checked_add(range.start).ok_or(EOVERFLOW)?;
++        let end = base.checked_add(range.end).ok_or(EOVERFLOW)?;
++        if !start.is_multiple_of(u64::from_safe_cast(align.as_usize())) {
++            return Err(EINVAL);
++        }
++
++        let blocks = KBox::pin_init(
++            buddy.alloc_blocks(
++                GpuBuddyAllocMode::Range(range),
++                size,
++                align,
++                GpuBuddyAllocFlags::default(),
++            ),
++            GFP_KERNEL,
++        )?;
++
++        Ok(Arc::new(
++            VramBlock {
++                _blocks: blocks,
++                // INVARIANT: `range.start <= range.end` was checked above, hence
++                // `address <= end`.
++                range: start..end,
++            },
++            GFP_KERNEL,
++        )?)
++    }
++}
 -- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
+2.53.0
 
