@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.30.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795524039;
-	b=KVOgea8N/pT6shMAYUjXsdcHF06wAa79m0QrRsmE1mk15xBv8E40YVqc9IS4ZXV8GuMK
-	 Jt028FE3s6Kap+5y0OPznqGS510ovKi0I+R5PSqLP1EckK7eRkGPA5GSqrmXNldOKvNqO
-	 JHCOTTo8sJ/1i2797Ilvmvwq9iIpb7Gwag9LX9EKTjwiMbF/r5+23nHGlgj/b6rER2x9v
-	 d12ztXO6/FQABd9WSCtMHkDyXIAcsKbYV5lH0QqUnv2S80v4K1uf2Xxq5wOjW4fOz+/NA
-	 kQeEAuiKnrxsTTDfahKSvUKZkbB92HPu5mvnKHtuOV5y0UFTmWI/MaO5lkFWHMHB6vg==
+	t=1795524040;
+	b=COCpW2k92Z9QdkttjSD/C9i9gTyDjS7Ctt9DcR2QD7IVXruSe3VttSN3UqAMX92IkRWj
+	 xCifNmh8NFFpj53dKp91M30Ym4D67EldOFkjv50V1XidZSZNZr/Gf/MzXSnum/UMhKIju
+	 G/lqyJmkS7uNbg0a4nArLqM3M2rSfEMmVVOd3zCnjA7pt4XNhNt9GAElv9AFWRVRNK99c
+	 UPBliCHnKLkA0upIuXWn/JG7MXHrEbsi2oHpHCg5hVIPSKxRd+yJGhh66EKDWsxfnxylI
+	 px6SS/x5s8FH2M/ETGrQySMpFuv+VMYqJWGPwqTYFBK69aPluDt/oNPP+JI9Sz2tcqg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795524039;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795524040;
 	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
 	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=cpeGn+vip4Nk+6DYnVkKAZSr7bRqWaR1yDs4vpW4hCE=;
-	b=M0LzrwH90DCDs2JgOdFiSjNzc0u7GNQyhzxK3Ir3GjDFfD49nCTE5xuf89IbX0Tp9bJX
-	 e1yK/yFO0UVJZfEbccF8cyyNcwPZTeHJMOQVZJDtozRVdzpQsYABqHKKaDQJXPnupDfd5
-	 r2Avv0T1aN3Iy1tVLbjFvr0HMYk7MAdnb8+EgEgIZAQo/2Z8fH7VcJSfPVflfn7PfQ4dV
-	 5ytEIuPIrMwebYhOJr/or6ZzmByVpzAQoeusePtr9IA7M9NuosYgxV7StmHUezWJoL+g5
-	 RVjXwqEDQLLHIFsLDt4p1B55hMZLxvXiaeu/4sd9F0S2Qq0qDjkN3L4d1DjVHirvxVg==
+	bh=bYt6nDZcrUOPPKenRBXzBQFQ4YbrvnkuK95SE/EcFmA=;
+	b=e//Zi2lUR24Qzp22pMtz97s6eH6HUmBUF6HfWlEv/XS71m0X+Sawsumpvvp71rIWAxKi
+	 H8fG7Z+svy84u9t20dZtOHQCH3ezxwCitwfbuUlIPGQT5cA8/wpmymlqF6TDvHisJpaf3
+	 cJQZ7wmy/htiYPe+9svY1NYnKqaQ40JyXQ+xxeKY1gaZ++jG3z8wkNvIl1IxPS+9dHaH8
+	 08v8B5yYZggNQgUxyygrl7SRrUF/yVffrWz2ivdqhuMr/54PvyHmOYXMIXPkNRKvp4n+v
+	 lpM7JLB1RInf6QWg9sXuUG4M4XDJA/BrQA4S+SH6IqjfzIGBZdMewcetLCkS7Vd0g+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.alibaba.com;
 	spf=pass smtp.mailfrom=linux.alibaba.com;
-	dkim=pass header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=gpuI1LDR;
+	dkim=pass header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b="g7Nmw7T/";
 	arc=none smtp.remote-ip=115.124.30.124
 Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5450606A31E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1644E606A326;
 	Tue, 24 Nov 2026 12:40:37 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D5450606A31E
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1644E606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=gpuI1LDR
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=g7Nmw7T/
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1795524029; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=cpeGn+vip4Nk+6DYnVkKAZSr7bRqWaR1yDs4vpW4hCE=;
-	b=gpuI1LDR8T6Jc1N7kCvPf4X5moA26F9g4Poc7VvLA2UxR/rSwvfQeAdBfgfAEBjtDADvf+q+wKsihNEDgwOJTBgGHVCQ8ZnB2eF0ro3JCmLLXuLlu9exkMpZa96rBJ1HgmUnxTZ6W3R+hdKyHs3FMB+hel61ajJaehVhUDlOlgk=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R231e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0XFOSknE_1795524028;
-Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0XFOSknE_1795524028 cluster:ay36)
+	t=1795524028; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=bYt6nDZcrUOPPKenRBXzBQFQ4YbrvnkuK95SE/EcFmA=;
+	b=g7Nmw7T/p+On0LVo5jg3P19zW/KXc+zwzv/ba689xPFuAY8unCGDqnqdlyvriA0P8rW0Fd32HVbBpEMa8Iu0ZNPG20J9WKn62owI82X8oA5zxm+P5Eg5/v3QMJAie+iAgHQ12YgFos7Rw26yomZsUohPf7I0txKvAilyNDLURKY=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=guanghuifeng@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0XFOSkgI_1795524004;
+Received: from VM20241011-104.tbsite.net(mailfrom:guanghuifeng@linux.alibaba.com fp:SMTPD_---0XFOSkgI_1795524004 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Tue, 24 Nov 2026 20:40:28 +0800
+          Tue, 24 Nov 2026 20:40:27 +0800
 From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 To: guanghuifeng@linux.alibaba.com
 Cc: alex@shazbot.org,
@@ -56,13 +56,12 @@ Cc: alex@shazbot.org,
 	mattev@meta.com,
 	ritesh.list@gmail.com,
 	xinmengs@nvidia.com
-Subject: [PATCH v2 2/2] vfio/pci: Align BAR mappings for huge page support
-Date: Tue, 24 Nov 2026 20:40:04 +0800
-Message-ID: <20261124124004.457441-3-guanghuifeng@linux.alibaba.com>
+Subject: [PATCH v2 0/2] vfio/pci: Provide kernel-side BAR alignment for huge page mapping
+Date: Tue, 24 Nov 2026 20:40:02 +0800
+Message-ID: <20261124124004.457441-1-guanghuifeng@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20261124124004.457441-1-guanghuifeng@linux.alibaba.com>
+In-Reply-To: <20261124073048.268988-1-guanghuifeng@linux.alibaba.com>
 References: <20261124073048.268988-1-guanghuifeng@linux.alibaba.com>
- <20261124124004.457441-1-guanghuifeng@linux.alibaba.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -74,225 +73,69 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-vfio_pci_mmap_huge_fault() is already wired up as the huge_fault handler
-for BAR mappings and can install PMD or PUD sized pfnmaps when
-CONFIG_TRANSPARENT_HUGEPAGE is enabled.  Whether it ever gets to do so
-depends on the address the BAR VMA ended up at: is_aligned_for_order()
-requires both the fault address and the pfn to be aligned to the huge
-page size, and the generic mm_get_unmapped_area() only guarantees
-PAGE_SIZE alignment.  When the address is unaligned the check fails,
-huge_fault() returns VM_FAULT_FALLBACK without having inserted anything,
-and the region silently degrades to one PAGE_SIZE fault per page.
+VFIO PCI BAR regions support PMD/PUD huge page mapping via
+vfio_pci_mmap_huge_fault() since commit f9e54c3a2f5b ("vfio/pci:
+implement huge_fault support").  The huge_fault path requires both the
+VA and the PFN to be aligned to the huge page boundary, checked by
+is_aligned_for_order().  When alignment fails, huge_fault silently
+returns VM_FAULT_FALLBACK and the mapping degrades to 4KB pages.
 
-A PCI BAR is required by the PCI bus specification to occupy a naturally
-aligned, power of two sized region of physical address space, so the pfn
-side of the check is already satisfied for any BAR that is at least 2MB
-in size.  What is missing is the virtual address side, and that is only
-fixable before the VMA is created.
+QEMU already handles this by pre-allocating an aligned VA region and
+using MAP_FIXED, see QEMU commits 00b519c0bc ("vfio/helpers: Align
+mmaps") and 3863e47828 ("hw/vfio: align mmap to power-of-2 of region
+size for hugepfnmap").  Other userspace consumers (DPDK, custom VMMs,
+test tools, and QEMU releases predating that change) typically call
+mmap(fd, offset) with addr=0, relying on the kernel to select a suitable
+VA.  Without kernel-side alignment guidance, these consumers silently
+get 4KB mappings for large BARs.
 
-QEMU already works around this in userspace: it reserves an oversized
-anonymous region, rounds its address up to an alignment of
-MIN(pow2ceil(region->size), 1GiB), unmaps the slack at both ends and
-remaps every sparse subregion with MAP_FIXED at the aligned address, see
-QEMU commits 00b519c0bc ("vfio/helpers: Align mmaps") and 3863e47828
-("hw/vfio: align mmap to power-of-2 of region size for hugepfnmap").
-Other consumers do not.  DPDK, custom VMMs, test tools and QEMU releases
-predating that change typically call mmap(fd, offset) with addr=0 and
-leave the address selection to the kernel, so they are the ones that
-silently lose the huge mapping on a large BAR.  Providing the alignment
-in the kernel is defence in depth as well: the kernel should not quietly
-give up on a huge mapping it is able to provide just because today's
-userspace happens to compensate for its absence.
+This series adds a .get_unmapped_area callback to the VFIO device
+file_operations, modelled after drivers/dax/device.c, that provides
+PMD/PUD-aligned VA selection for BAR mappings.  It also sets
+VM_HUGEPAGE on BAR VMAs, which keeps the huge mapping available to a
+process that called prctl(PR_SET_THP_DISABLE,
+PR_THP_DISABLE_EXCEPT_ADVISED).
 
-Implement vfio_pci_core_get_unmapped_area() on top of the new
-vfio_device_ops callback, modelled after dax_get_unmapped_area() in
-drivers/dax/device.c.  It derives the largest usable page size from the
-BAR length, capped at PUD_SIZE and at PMD_SIZE when the architecture
-lacks CONFIG_ARCH_SUPPORTS_PUD_PFNMAP, asks for an area with enough
-slack to shift the mapping up to the next aligned address, and applies
-that shift.  Shifting the address preserves the offset of the mapping
-within the BAR, so aligning the address also aligns the pfn.
+Note: CONFIG_TRANSPARENT_HUGEPAGE=y is required at compile time for the
+huge pfnmap infrastructure.  The runtime THP sysfs policy (enabled=never)
+does NOT block VFIO BAR huge pages -- vma_file_bypass_thp_tuneables()
+already bypasses it for PFNMAP VMAs with a .huge_fault handler (commit
+e384abeb559d).
 
-Everything this cannot improve keeps the current behaviour.  A non-zero
-address returns early, which makes the change transparent for userspace
-such as QEMU that aligns the mapping itself: MAP_FIXED never reaches the
-hook at all, and an explicit hint without MAP_FIXED is honoured as is.
-Regions that are not mmap'able BARs, BARs smaller than PMD_SIZE, and
-mappings too short to span one fully aligned huge page all take the same
-fallback path.
+Performance impact for a 256MB BAR, 4KB pages vs PMD huge pages:
+  - Page faults:       65536 -> 128   (512x reduction)
+  - Page table memory: ~516KB -> ~4KB (129x reduction)
+  - TLB pressure:      65536 entries (exceeds STLB) -> 128 entries (fits)
 
-Also set VM_HUGEPAGE on the BAR VMA.  The THP sysfs policy does not need
-it, since huge pfnmaps are uncompactable and so
-vma_file_bypass_thp_tuneables() ignores the tuneables for a PFNMAP VMA
-that has a huge_fault handler.
-thp_vma_allowable_order() is still consulted before create_huge_pmd() and
-create_huge_pud() are reached, though, and it calls vma_thp_disabled(),
-which reports the VMA as disabled once the process has called
-prctl(PR_SET_THP_DISABLE, PR_THP_DISABLE_EXCEPT_ADVISED) unless
-VM_HUGEPAGE is set.  Marking the VMA keeps the huge mapping available for
-such a process instead of leaving it at the mercy of that single bypass,
-and makes the intent explicit regardless of how the process or the
-administrator configured THP.
+Patch 1 adds the vfio_device_ops callback infrastructure.
+Patch 2 implements the PCI BAR alignment logic and VM_HUGEPAGE.
 
-Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+Compiled with W=1, checkpatch --strict clean (0 errors, 0 warnings).
+Each patch compiles independently (bisect-safe).
+
 ---
+v2:
+ - Add MAP_FIXED/MAP_FIXED_NOREPLACE check to avoid interfering with
+   fixed-address mappings (Sashiko AI review)
+ - Simplify align selection to only PMD_SIZE or PUD_SIZE, eliminating
+   intermediate power-of-2 values that cannot be installed by
+   vfio_pci_vmf_insert_pfn() and could cause alignment failure for
+   sparse BAR regions (Sashiko AI review)
+ - Remove unreachable dead code (second align < PMD_SIZE check)
+
+v1: https://lore.kernel.org/all/20261124073048.268988-1-guanghuifeng@linux.alibaba.com/
+
+Guanghui Feng (2):
+  vfio: Add get_unmapped_area callback to vfio_device_ops
+  vfio/pci: Align BAR mappings for huge page support
+
  drivers/vfio/pci/vfio_pci.c      |  3 +
  drivers/vfio/pci/vfio_pci_core.c | 95 ++++++++++++++++++++++++++++++++
+ drivers/vfio/vfio_main.c         | 34 ++++++++++++
+ include/linux/vfio.h             | 12 ++++
  include/linux/vfio_pci_core.h    |  8 +++
- 3 files changed, 106 insertions(+)
+ 5 files changed, 152 insertions(+)
 
-diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
-index e7c012febe91..2757ff9075d2 100644
---- a/drivers/vfio/pci/vfio_pci.c
-+++ b/drivers/vfio/pci/vfio_pci.c
-@@ -158,6 +158,9 @@ static const struct vfio_device_ops vfio_pci_ops = {
- 	.read		= vfio_pci_core_read,
- 	.write		= vfio_pci_core_write,
- 	.mmap		= vfio_pci_core_mmap,
-+#ifdef CONFIG_ARCH_SUPPORTS_HUGE_PFNMAP
-+	.get_unmapped_area = vfio_pci_core_get_unmapped_area,
-+#endif
- 	.request	= vfio_pci_core_request,
- 	.match		= vfio_pci_core_match,
- 	.match_token_uuid = vfio_pci_core_match_token_uuid,
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index fcbb2da860e2..0d116dc39f24 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -17,6 +17,7 @@
- #include <linux/file.h>
- #include <linux/interrupt.h>
- #include <linux/iommu.h>
-+#include <linux/mman.h>
- #include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/notifier.h>
-@@ -1874,12 +1875,106 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
- 	 */
- 	vm_flags_set(vma, VM_ALLOW_ANY_UNCACHED | VM_IO | VM_PFNMAP |
- 			VM_DONTEXPAND | VM_DONTDUMP);
-+#ifdef CONFIG_ARCH_SUPPORTS_HUGE_PFNMAP
-+	vm_flags_set(vma, VM_HUGEPAGE);
-+#endif
- 	vma->vm_ops = &vfio_pci_mmap_ops;
- 
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(vfio_pci_core_mmap);
- 
-+#ifdef CONFIG_ARCH_SUPPORTS_HUGE_PFNMAP
-+/*
-+ * Return an mmap() address for a BAR that is aligned to the largest page
-+ * size the BAR can be faulted in with, so that vfio_pci_mmap_huge_fault()
-+ * can install PMD or PUD sized pfnmaps rather than silently falling back to
-+ * PAGE_SIZE mappings.
-+ *
-+ * Both ends have to play together for a huge pfnmap: the address of the
-+ * mapping has to be aligned such that the whole huge page fits within the
-+ * VMA (see is_aligned_for_order() and insert_pmd()), and the pfn has to be
-+ * aligned to the huge page size.  The latter is a property of the BAR
-+ * itself, the former is what we can influence here.  The offset of the
-+ * mapping within the file is preserved relative to the returned address,
-+ * therefore aligning the address also aligns the pfn as long as the mapping
-+ * starts at a BAR offset that is itself aligned, which is the common case.
-+ *
-+ * Anything we can't handle, including a user provided address hint and
-+ * regions that are not mmap'able BARs, falls back to the generic address
-+ * selection.
-+ */
-+unsigned long vfio_pci_core_get_unmapped_area(struct vfio_device *core_vdev,
-+					      struct file *filp,
-+					      unsigned long addr,
-+					      unsigned long len,
-+					      unsigned long pgoff,
-+					      unsigned long flags)
-+{
-+	struct vfio_pci_core_device *vdev =
-+		container_of(core_vdev, struct vfio_pci_core_device, vdev);
-+	struct pci_dev *pdev = vdev->pdev;
-+	unsigned long align, off, off_end, off_align, len_align, addr_align;
-+	unsigned int index;
-+	u64 bar_len;
-+
-+	/* Don't interfere with explicit address requests or fixed mappings */
-+	if (addr || (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE)))
-+		goto out;
-+
-+	index = pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
-+	if (index >= VFIO_PCI_ROM_REGION_INDEX || !vdev->bar_mmap_supported[index])
-+		goto out;
-+
-+	bar_len = pci_resource_len(pdev, index);
-+	if (!bar_len)
-+		goto out;
-+
-+	/*
-+	 * Select the largest huge page size that the BAR physical alignment,
-+	 * mapping length, and arch support can all satisfy.  Only PMD and PUD
-+	 * orders are supported by vfio_pci_vmf_insert_pfn().
-+	 */
-+	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) &&
-+	    bar_len >= PUD_SIZE && len >= PUD_SIZE)
-+		align = PUD_SIZE;
-+	else if (bar_len >= PMD_SIZE && len >= PMD_SIZE)
-+		align = PMD_SIZE;
-+	else
-+		goto out;
-+
-+	off = pgoff << PAGE_SHIFT;
-+	off_end = off + len;
-+	if (off_end < off)
-+		goto out;
-+	off_align = round_up(off, align);
-+
-+	/* The mapping has to span at least one fully aligned huge page */
-+	if (off_end <= off_align || off_end - off_align < align)
-+		goto out;
-+
-+	len_align = len + align;
-+	if (len_align < len)
-+		goto out;
-+
-+	/*
-+	 * Find an area that can hold the mapping plus the slack needed to
-+	 * shift it up to the next aligned address, then apply that shift.
-+	 * The shift preserves the relative alignment of the file offset,
-+	 * which is what makes the pfn alignment work out.
-+	 */
-+	addr_align = mm_get_unmapped_area(filp, addr, len_align, pgoff, flags);
-+	if (!IS_ERR_VALUE(addr_align)) {
-+		addr_align += (off - addr_align) & (align - 1);
-+		return addr_align;
-+	}
-+
-+out:
-+	return mm_get_unmapped_area(filp, addr, len, pgoff, flags);
-+}
-+EXPORT_SYMBOL_GPL(vfio_pci_core_get_unmapped_area);
-+#endif
-+
- void vfio_pci_core_request(struct vfio_device *core_vdev, unsigned int count)
- {
- 	struct vfio_pci_core_device *vdev =
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index 2f3fa2787737..98350c87d2ea 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -187,6 +187,14 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
- 				   struct vm_fault *vmf, unsigned long pfn,
- 				   unsigned int order);
- int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma);
-+#ifdef CONFIG_ARCH_SUPPORTS_HUGE_PFNMAP
-+unsigned long vfio_pci_core_get_unmapped_area(struct vfio_device *core_vdev,
-+					      struct file *filp,
-+					      unsigned long addr,
-+					      unsigned long len,
-+					      unsigned long pgoff,
-+					      unsigned long flags);
-+#endif
- void vfio_pci_core_request(struct vfio_device *core_vdev, unsigned int count);
- int vfio_pci_core_match(struct vfio_device *core_vdev, char *buf);
- int vfio_pci_core_match_token_uuid(struct vfio_device *core_vdev,
 -- 
 2.43.7
 
