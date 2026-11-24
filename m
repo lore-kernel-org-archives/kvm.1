@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795479806;
-	b=dlYdPimhqEQ4/w7u3gyEyrvuhPMX5Ys97hbAJfIoAQ1RtlTrsdnTR9QBNyjnYzTgLKvB
-	 bQpx25hlsJrPDwKllM3OGWWL6otFeE73ntV8KOPze5AUaBAgsBSknZFS5qW3xMuV8Inwb
-	 g1lDIpXBHY7e1mPdrqke/VJHlOFwD7zQVspErN/INHzLfEwCjFDWtQrVW7E8WSfKjsOuz
-	 FbBOK8z0hYJm6whJG+4xGWcNPpZRrMooAWZjQDac4U7Hidspz2iCmskOp9poYpTTnM3JV
-	 WR65u22nobOfWSa8CSCKFAHm3KuJFZQ1QbSLFyuXVIldIhi+2OqfS1n6y1B2f+Em+Hg==
+	t=1795479807;
+	b=XA5yaW5DYnIpBKGscG6xlHmi+lntTzBzX8szedLyLOWkEvIlj/x6nEAI/OZBPi2SrChH
+	 Hkn00TxWkLT4xyhmFlFNvVUUQ+nm5zSWObXJzaJ/xprAkKFw9MenEoFWP3mKYCYskY9E8
+	 CtzcV9VX7u4cr+D2A9JlIAE+/HOoMZrFaJa9tST+ZMA/Sn9SfNKeMrb1yYzx/B+IMax91
+	 o2m46Z9p8EWadcIJyGAFug2GFtMg4UKs4/6XR6UqIZh+rP133RB7Gj+oFJ8azcedVlHNp
+	 7WkVZQOjGHOVupGLivY+s46CZ+PB5fMpy6vYe6Em0n2iwor9pXfsNlgXK5GSEDMAdhA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795479806;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795479807;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=LrQSSv4UaljibsoNuEGR6quCOuk0TOdoW5f/RFygqrs=;
-	b=h/s40bg3kBevSAJF5YoSiP3clmXMlIgTK2qy18ig6avGEGf8h6ioWTivUZsuao9vkRMR
-	 NSlwERFNeP53nIiQoMc7OQ6ODZ/K4tvS8/ynfmkgIQop6B8+m07bdfoOza/96FeN4qb0l
-	 XY6A9jbgztkJiuShsvawZCYpxgw4N8kcNCyLY0Stw+3SK2Q5B2C9QxeO9AIsnvWEurFuB
-	 W1VjQvWDgqXHxJFjJLvgQfK4mt/w7LXCWNUZq5bE47IWequBZ94kPRC7ekXfvkiL/5tWt
-	 AkWk4X6IoSaEOGjntx3vXFOxEV5XpR47sCidiMsbX10zdetzKy4nME36D/MWGATtrWA==
+	bh=/Q08YDoQbOfOm+qoyKhtZdI+17Mqu5hb8hqerCG3tsc=;
+	b=XhXnw1NrlkT+GtQLsa2n/601BHROmGZoOzsD0UU1Bw6omVbQbJHY0/96WWNFMkiYlNNu
+	 26DsP3wNq3gzCvqF5bvGiqRVK0tdOVjjon/EB5PIav44qHmviup0Sqw09FtA5T485hq4U
+	 s7mf6eit4jml9qnJCcwtu0AZlV4J4qZ1Si4Frg0PmqSsgP52DP5+SaLYLi0fwcAPfBU5f
+	 CqTw/+/43JGvj4yXFIuHsknhjfEXOLRP6GXM98cddBGLRjPHJcHGhefMV4GYRcPJVBfzg
+	 aYGu4tFKaw0Mi3dn3pPCYXt265LMJIh0gBeC2GG7mGXY1HHCBLgSXCkdHOrJCU3Oe8w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="a1//mvyQ";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dEph31NC;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4028A606A688;
-	Tue, 24 Nov 2026 00:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA2D60A5BE7;
+	Tue, 24 Nov 2026 00:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a1//mvyQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011A41F01577;
-	Tue, 24 Nov 2026 00:23:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dEph31NC
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D7021F01576;
+	Tue, 24 Nov 2026 00:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795479805;
-	bh=LrQSSv4UaljibsoNuEGR6quCOuk0TOdoW5f/RFygqrs=;
+	s=k20260515; t=1795479807;
+	bh=/Q08YDoQbOfOm+qoyKhtZdI+17Mqu5hb8hqerCG3tsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=a1//mvyQhA2n0YIHCQQhup52+H5eekJiOsMc0VWOSNb/pCbaECUPV6+DGQuB1VavG
-	 wkh+UmjgdDFo7qwb07EDVMWlOovlnssqpDItI7h0tELnoGwvDBiJefRY3gP0BKfb6Y
-	 5/RClCUoXXwEgWCDmnCNQjfKnpU5hPagE/nuWEO3GvEsd0W9PkSorjtYFwp7OMpKOT
-	 hMozJXPCyMzw03nReVoGD5N7wsXh66qiK1hFI4Utiz68yovJ/O43aaPk5h5VIciRdz
-	 y0wBQk7VYqQKvvkBn2YQ9HdUY+4o/HrnyF49ZggbvOlj/uAu3OwSeYnhpAy4yRoYzS
-	 7TEsleTIbBMNA==
+	b=dEph31NC1icNqhy33KolhrxluSuaht2nfLoDFTap6z6aMmzAMkRA8sve2a3icXFbr
+	 TMxX2eWEbXILDjp0gPAZuFdZD9gIXbsRp841f2DxWjlC9w2h/B8L7K/d8OIE3UDkMg
+	 O+ykItxRgAio1QlD8gxh+8aT/8V4iTjsRHPxEFaanVpsiJqqchgAdWqn5vj42n5Mjp
+	 YMLKNlxEooUC3I+evl/KQs30p+laE6wo3F/1yBojd2MqI+KEdLRhiykK3RjXuBQANL
+	 zELBjk5mQ0AlcpERFPy0hHUOSd3spzLrvQT3Cr9sqNg3ZXluNtyFtJk7WySsEd2CeS
+	 4R8TYwoWsfWdQ==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>,
 	Peter Zijlstra <peterz@infradead.org>
@@ -61,9 +61,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [RFC PATCH 12/26] KVM: x86/pmu: Access PMCs in hardware if the mediated PMU context is loaded
-Date: Tue, 24 Nov 2026 00:22:49 +0000
-Message-ID: <20261124002303.1785363-13-yosry@kernel.org>
+Subject: [RFC PATCH 13/26] KVM: x86/pmu: Compute eventsel_hw from eventsel when reprogramming
+Date: Tue, 24 Nov 2026 00:22:50 +0000
+Message-ID: <20261124002303.1785363-14-yosry@kernel.org>
 X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
 In-Reply-To: <20261124002303.1785363-1-yosry@kernel.org>
 References: <20261124002303.1785363-1-yosry@kernel.org>
@@ -78,142 +78,101 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In preparation for leaving the guest's mediated PMU context loaded
-during slowpath VM-Exit handling, read and write the guest's counters in
-hardware if the guest context is loaded.  While the guest context is
-loaded, the guest's counter values live in hardware, and KVM's software
-copies in pmc->counter may be stale, as they are only synced from
-hardware when the context is put.
+Instead of only setting the enable bit in eventsel_hw when refreshing
+the event filter, compute the entire eventsel_hw from eventsel when
+reprogramming a counter that's allowed to count, and rename
+kvm_mediated_pmu_refresh_event_filter() to
+kvm_mediated_pmu_reprogram_counter() accordingly. As counters are only
+allowed to count if the enable bit is set in eventsel, copying eventsel
+also sets the enable bit.
 
-Read counters with RDPMC, refreshing the software copy, and write them
-through to hardware in addition to updating the software copy.  Use the
-accessors when incrementing counters for emulated instructions too,
-instead of updating pmc->counter directly.  Updating the software copy
-while the guest context is loaded isn't strictly necessary, as it's
-synced from hardware when the context is put.  This could be optimized
-by tracking whether the software copy is up-to-date.
+Move forcing GUESTONLY and clearing HOSTONLY on AMD from
+amd_pmu_set_msr() to the reprogramming path, using vendor-provided bits
+to set and clear, and have amd_pmu_set_msr() record the guest's value
+as-is like Intel. Writing an event selector always requests a reprogram,
+which is handled before the guest context is loaded, so the value is
+fixed up before it's written to hardware.
 
-Add kvm_pmu_guest_context_wrmsr() to write a guest PMU MSR only if the
-guest context is loaded, as it will be reused for other guest PMU
-registers, and document there which guest PMU state lives in hardware
-while the guest context is loaded.
-
-Disable IRQs across checking whether the guest context is loaded and
-accessing the counter, as perf may reclaim the PMU via IPI and put the
-guest context.
+For counters that can't count, the event selector in hardware may now
+differ in the GUESTONLY and HOSTONLY bits, which is benign as the enable
+bit is cleared.
 
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/pmu.c | 21 ++++++++++++++++-----
- arch/x86/kvm/pmu.h | 32 +++++++++++++++++++++++++++++++-
- 2 files changed, 47 insertions(+), 6 deletions(-)
+ arch/x86/kvm/pmu.c     | 8 ++++----
+ arch/x86/kvm/pmu.h     | 2 ++
+ arch/x86/kvm/svm/pmu.c | 5 +++--
+ 3 files changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index 4d170abb2b384..6f82213058f14 100644
+index 6f82213058f14..0a5299532c086 100644
 --- a/arch/x86/kvm/pmu.c
 +++ b/arch/x86/kvm/pmu.c
-@@ -419,10 +419,19 @@ static __always_inline u32 gp_eventsel_msr(u32 idx)
- 	return kvm_pmu_ops.GP_EVENTSEL_BASE + idx * kvm_pmu_ops.MSR_STRIDE;
+@@ -570,7 +570,7 @@ static bool pmc_is_event_allowed(struct kvm_pmc *pmc)
+ 	return is_fixed_event_allowed(filter, pmc->idx);
  }
  
-+static u32 pmc_counter_msr(struct kvm_pmc *pmc)
-+{
-+	return pmc_is_fixed(pmc) ?
-+	       fixed_counter_msr(pmc->idx - KVM_FIXED_PMC_BASE_IDX) :
-+	       gp_counter_msr(pmc->idx);
-+}
-+
- void pmc_write_counter(struct kvm_pmc *pmc, u64 val)
+-static void kvm_mediated_pmu_refresh_event_filter(struct kvm_pmc *pmc)
++static void kvm_mediated_pmu_reprogram_counter(struct kvm_pmc *pmc)
  {
- 	if (kvm_vcpu_has_mediated_pmu(pmc->vcpu)) {
-+		guard(irqsave)();
- 		pmc->counter = val & pmc_bitmask(pmc);
-+		kvm_pmu_guest_context_wrmsr(pmc_counter_msr(pmc), pmc->counter);
- 		return;
+ 	bool allowed = pmc_is_locally_enabled(pmc) && pmc_is_event_allowed(pmc);
+ 	struct kvm_pmu *pmu = pmc_to_pmu(pmc);
+@@ -578,8 +578,8 @@ static void kvm_mediated_pmu_refresh_event_filter(struct kvm_pmc *pmc)
+ 	if (pmc_is_gp(pmc)) {
+ 		pmc->eventsel_hw &= ~ARCH_PERFMON_EVENTSEL_ENABLE;
+ 		if (allowed)
+-			pmc->eventsel_hw |= pmc->eventsel &
+-					    ARCH_PERFMON_EVENTSEL_ENABLE;
++			pmc->eventsel_hw = (pmc->eventsel | kvm_pmu_ops.EVENTSEL_HW_SET) &
++					   ~kvm_pmu_ops.EVENTSEL_HW_CLR;
+ 	} else {
+ 		u64 mask = intel_fixed_bits_by_idx(pmc->idx - KVM_FIXED_PMC_BASE_IDX, 0xf);
+ 
+@@ -598,7 +598,7 @@ static int reprogram_counter(struct kvm_pmc *pmc)
+ 	u8 fixed_ctr_ctrl;
+ 
+ 	if (kvm_vcpu_has_mediated_pmu(pmu_to_vcpu(pmu))) {
+-		kvm_mediated_pmu_refresh_event_filter(pmc);
++		kvm_mediated_pmu_reprogram_counter(pmc);
+ 		return 0;
  	}
  
-@@ -1082,6 +1091,7 @@ static bool pmc_is_pmi_enabled(struct kvm_pmc *pmc)
- static void kvm_pmu_incr_counter(struct kvm_pmc *pmc)
- {
- 	struct kvm_vcpu *vcpu = pmc->vcpu;
-+	u64 counter;
- 
- 	/*
- 	 * For perf-based PMUs, accumulate software-emulated events separately
-@@ -1096,12 +1106,13 @@ static void kvm_pmu_incr_counter(struct kvm_pmc *pmc)
- 	}
- 
- 	/*
--	 * For mediated PMUs, pmc->counter is updated when the vCPU's PMU is
--	 * put, and will be loaded into hardware when the PMU is loaded. Simply
--	 * increment the counter and signal overflow if it wraps to zero.
-+	 * For mediated PMUs, the counter may be live in hardware or in
-+	 * pmc->counter; the helpers will access it as needed. Signal overflow
-+	 * if the counter wraps to zero after the increment.
- 	 */
--	pmc->counter = (pmc->counter + 1) & pmc_bitmask(pmc);
--	if (!pmc->counter) {
-+	counter = (pmc_read_counter(pmc) + 1) & pmc_bitmask(pmc);
-+	pmc_write_counter(pmc, counter);
-+	if (!counter) {
- 		pmc_to_pmu(pmc)->global_status |= BIT_ULL(pmc->idx);
- 		if (pmc_is_pmi_enabled(pmc))
- 			kvm_make_request(KVM_REQ_PMI, vcpu);
 diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
-index ff4b6f15b915c..fe1baa50ebceb 100644
+index fe1baa50ebceb..462df3a9de491 100644
 --- a/arch/x86/kvm/pmu.h
 +++ b/arch/x86/kvm/pmu.h
-@@ -137,12 +137,24 @@ static inline bool pmc_is_fixed(struct kvm_pmc *pmc)
- 	return pmc->type == KVM_PMC_FIXED;
- }
+@@ -44,6 +44,8 @@ struct kvm_pmu_ops {
+ 	void (*write_global_ctrl)(u64 global_ctrl);
  
-+static inline u64 pmc_rdpmc(struct kvm_pmc *pmc)
-+{
-+	if (pmc_is_fixed(pmc))
-+		return rdpmc(INTEL_PMC_FIXED_RDPMC_BASE | (pmc->idx - KVM_FIXED_PMC_BASE_IDX));
-+
-+	return rdpmc(pmc->idx);
-+}
-+
- static inline u64 pmc_read_counter(struct kvm_pmc *pmc)
- {
- 	u64 counter, enabled, running;
+ 	const u64 EVENTSEL_EVENT;
++	const u64 EVENTSEL_HW_SET;
++	const u64 EVENTSEL_HW_CLR;
+ 	const int MAX_NR_GP_COUNTERS;
+ 	const int MIN_NR_GP_COUNTERS;
  
--	if (kvm_vcpu_has_mediated_pmu(pmc->vcpu))
-+	if (kvm_vcpu_has_mediated_pmu(pmc->vcpu)) {
-+		guard(irqsave)();
-+		if (is_guest_mediated_pmu_loaded())
-+			pmc->counter = pmc_rdpmc(pmc);
- 		return pmc->counter & pmc_bitmask(pmc);
-+	}
+diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
+index c18286545a7ac..232c4779e5a32 100644
+--- a/arch/x86/kvm/svm/pmu.c
++++ b/arch/x86/kvm/svm/pmu.c
+@@ -166,8 +166,7 @@ static int amd_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		data &= ~pmu->reserved_bits;
+ 		if (data != pmc->eventsel) {
+ 			pmc->eventsel = data;
+-			pmc->eventsel_hw = (data & ~AMD64_EVENTSEL_HOSTONLY) |
+-					   AMD64_EVENTSEL_GUESTONLY;
++			pmc->eventsel_hw = data;
  
- 	counter = pmc->counter + pmc->emulated_counter;
+ 			if (data & AMD64_EVENTSEL_HOST_GUEST_MASK)
+ 				__set_bit(pmc->idx, pmu->pmc_has_mode_specific_enables);
+@@ -317,6 +316,8 @@ struct kvm_pmu_ops amd_pmu_ops __initdata = {
+ 	.mediated_put = amd_mediated_pmu_put,
  
-@@ -153,6 +165,24 @@ static inline u64 pmc_read_counter(struct kvm_pmc *pmc)
- 	return counter & pmc_bitmask(pmc);
- }
+ 	.EVENTSEL_EVENT = AMD64_EVENTSEL_EVENT,
++	.EVENTSEL_HW_SET = AMD64_EVENTSEL_GUESTONLY,
++	.EVENTSEL_HW_CLR = AMD64_EVENTSEL_HOSTONLY,
+ 	.MAX_NR_GP_COUNTERS = KVM_MAX_NR_AMD_GP_COUNTERS,
+ 	.MIN_NR_GP_COUNTERS = AMD64_NUM_COUNTERS,
  
-+/*
-+ * While the guest's mediated PMU context is loaded, the guest's PMU state
-+ * lives in hardware.  State that changes while the guest runs and is only
-+ * saved when the guest context is put (counters) must be read from
-+ * hardware, and written to both hardware and the software copy.
-+ *
-+ * Write a guest PMU MSR, but only if the guest context is loaded on this
-+ * CPU.  Callers must keep IRQs disabled across updating KVM's software copy
-+ * and calling this, so that the two are atomic with respect to perf
-+ * reclaiming the mediated PMU (via IPI) and putting the guest context.
-+ */
-+static inline void kvm_pmu_guest_context_wrmsr(u32 msr, u64 val)
-+{
-+	lockdep_assert_irqs_disabled();
-+	if (is_guest_mediated_pmu_loaded())
-+		wrmsrq(msr, val);
-+}
-+
- void pmc_write_counter(struct kvm_pmc *pmc, u64 val);
- 
- static inline bool kvm_valid_perf_global_ctrl(struct kvm_pmu *pmu,
 -- 
 2.56.1.809.ga0b61035b5-goog
 
