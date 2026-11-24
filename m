@@ -1,77 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=134.76.10.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.16
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795543610;
-	b=xgYCUcha0f/eHA/hJO8oqbWhjf+rxaSx63LdczYEKQSZW3Vm0YZjokUKB/aC+1iAC8Dt
-	 +lu83w1aZKe/g9fsmPNVyq9p/2qbylbiJip1fWx4IRDjtcEne7RCpsopAI3Q+jSBD/Izw
-	 kJwYekdpsCBnytJD72ITDLn/L2OSuWCnEBlwZAiRGEx6DO8qZhAkzpYbwfaCAGraBB5FJ
-	 +JipcPA+hfv+w2uv14uzpbKgT8aBecti9XY+7gRnWnPThoapc08Nx/p9F5sRj2A+kgVC1
-	 omwtTqqrxSkJD/FhLUj6iMO6I0Aq5JTc2jseC+9UUeIW32NNOpxYkq8X3T3hs27YDjA==
+	t=1795543784;
+	b=oVf4jW7xgFlRgI/Xjdqe//LpBze9WRzsQr5R9f/1w457WULy58TyYaHhPMbm1uEHIOPB
+	 B2mumreZZ1IZE3PrjAnD30D/QoM3CtMtUWFfrUud4Me0Zo0+KJLZKrPioPpjnJEhh2659
+	 pmzgxf94C8QnlWDolbk9YTfxAWKtommE5qu3siSr/P7kacrcpEt9Rsy4w6ssbMM/X1TyV
+	 henzEvMUd7FZ3DOGkK7oNWk1st0sESlpKwQej4ver9+UZG1aVSovkpov9bcPQoGmo1o/e
+	 0EKQjOX4ajEYN6rZZcYd+x9O3wixz7CoiR/31KDQ9AxvYywROCOJPbEQD4rwvoVIfYA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795543610;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Received:From:To:CC:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy:X-Virus-Scanned:X-Spam-Level;
-	bh=9L7gMRdKv8Y2cgyDLpGj/+9e3iMW9OQYPvzsrWlbQUU=;
-	b=OgUHivd+AZlHMpOS0R3ITjwLDi7Fzdf36hXfgtp8fYI3hUecDwdd13JY/kOd7PB38Hv9
-	 I8iAKhDmazTQkJpSBAPqMPceCyyFnCwH7boWz0trR/DqvkG8Su32iGITGTVgqsm/8VXf1
-	 kQgeGIjzw8RqiKXg2V0tYy/S42grMGyPQhv7sH0VUWgkp/NOf273CyDYyTUEThhJKdG/u
-	 6dyVwG6fP3UA5PKHF58Dai9FoY5ZuykHcILNqppXzJDVVTnSjiTcZ88TOIpGpZFWWkqVz
-	 aVMfgK0psmUMbcLts5uA3G9Aw9zRHAxFVAVQb+1d6VA/1wS0F2y7JAo/ZuMETUhEW6w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795543784;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:Autocrypt:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=UoRv0Az8bR5w/7Cqt9F46h9OvTpLAnBgpFN/iPVLcRU=;
+	b=ZZHK4hR+eLH0AtBsMUBdRBRDTz8IW1Ly5clsfMo/KKGTvJ5/6QrZ357UcQTt2Pf4gywr
+	 1DseezbAER7zczeS/hrXwFE5zP7vfq5ky5mYuJcx4ydgotsBAB/PzuvTEF+qtnPTU3ryv
+	 RlhVYejPwUwKbjvqjdA66phhNVv0+poW4iUlG9OmfShbv++S+/YQFoIz3daJWs/L2B0Pm
+	 6ookAh9EN2lXnRwC9FeYAs5e6rEhQNfPuJJ63jDlWWnjSRDBfFd/n0XUpiQV5pIcynphw
+	 iIuy8HXWMQeFJ0ErPwPHMGo/4cBs3m0VC+FZPMJb88IWi+w/mUeTQpVGCJRuKr9VCpQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cispa.de;
-	spf=pass smtp.mailfrom=cispa.de;
-	dkim=pass header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=o3AIQMgr;
-	arc=none smtp.remote-ip=134.76.10.21
-Received: from mx-2023-1.gwdg.de (mx-2023-1.gwdg.de [134.76.10.21])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CUvC+GT3;
+	arc=none smtp.remote-ip=192.198.163.16
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CF5606A339;
-	Tue, 24 Nov 2026 18:06:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F3CF5606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cispa.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cispa.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADBD606A33B;
+	Tue, 24 Nov 2026 18:09:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2ADBD606A33B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cispa.de header.i=@cispa.de header.a=rsa-sha256 header.s=2023-rsa header.b=o3AIQMgr
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=cispa.de;
-	s=2023-rsa; h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:
-	Date:Subject:CC:To:From:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=9L7gMRdKv8Y2cgyDLpGj/+9e3iMW9OQYPvzsrWlbQUU=; b=o3AIQMgrHbjsFTrGAOQYmiElyE
-	IWR82n8Dh1UZ7Ipd/onYnQ7+jHSXy2m+zwzUtT7IEf5IUKoOkGUPkQzL5Rd7RWZMULCve6Wy/1yPA
-	hzBJ31s83sIJLxUqmNT67GidTRPmnYhUdtT1M4PX5GfZdo034nDseQQZP1gPzTLMxTd/zEeEb/jVe
-	Iq+jWgov+CtHQox4gY6gK02Fzx/sLo7NVq/3YbFov6ZJwBoS+Vpg17lwKa+GQ+TCzMP7AguVwEQP2
-	1WkpKahKPZTcmc4085hmfwYmDIgUD/n1FcsTTFuHZJQga8p5w7GLhu5LoDZl+hAYo1ice4BDc+MGz
-	/g3dG9+g==;
-Received: from mailer.gwdg.de ([134.76.10.26]:58477)
-	by mailer.gwdg.de with esmtp (GWDG Mailer)
-	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xVuuX-00Blg2-20;
-	Tue, 24 Nov 2026 19:06:33 +0100
-Received: from mbx19-gwd-01.um.gwdg.de ([10.108.142.50] helo=email.gwdg.de)
-	by mailer.gwdg.de with esmtps (TLS1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-	(GWDG Mailer)
-	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1xVuuX-000BlI-1w;
-	Tue, 24 Nov 2026 19:06:33 +0100
-Received: from localhost (10.250.9.200) by mbx19-gwd-01.um.gwdg.de
- (10.108.142.50) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.57; Tue, 24 Nov
- 2026 19:06:32 +0100
-From: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
-To: <seanjc@google.com>, <pbonzini@redhat.com>
-CC: <pawan.kumar.gupta@linux.intel.com>, <brendan.jackman@linux.dev>,
-	<tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
-	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<amirmohammad.eftekhar@cispa.de>, <amirmohammadeftekhar@gmail.com>
-Subject: [PATCH] KVM: VMX: Don't disable FB_CLEAR when doing the MMIO Stale Data VERW
-Date: Tue, 24 Nov 2026 19:06:13 +0100
-Message-ID: <20261124180613.1693632-1-amirmohammad.eftekhar@cispa.de>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CUvC+GT3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795543784; x=1827079784;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=UoRv0Az8bR5w/7Cqt9F46h9OvTpLAnBgpFN/iPVLcRU=;
+  b=CUvC+GT3Stb4NMxDVLFRbkcBB6A+REx1Ki/u4r8y7wdXLABjOfrBEr3c
+   nGPTkkPNn8JSllSoCFRxewAgONO+QmlFt0AcKPm3uL4LDchDpDF3wtgS7
+   Ol7D725pX2CG35FEeysPBIAdEV8nJL9y4bvlIUmoPtfdYTq7m0jbmwMXY
+   DEhvohTvBbYAjudbkp0q1Es/H51RQ8UL6CYl8gN68Ol4mrkyvck20ylho
+   W/HUzIpWnLgdAbXuXH5t60bkzTPYb43HuJO3Jc/0HJzJS3X079mE+31ZU
+   Y0zh5pKPwNrsg3fNNKm2h2yxk3xsqNUX0HV1jDR0tDBxKZNUx3BJtfc1C
+   Q==;
+X-CSE-ConnectionGUID: 4q0AjcPSQqeItLuxXrmLnw==
+X-CSE-MsgGUID: I35fw8geQSi9MG+pz/oNQw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4434473"
+X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
+   d="scan'208";a="4434473"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 09:13:07 -0800
+X-CSE-ConnectionGUID: okizmT0YSqeAxBk+2rl+wA==
+X-CSE-MsgGUID: tVi1xaYyTPK5aVZKiorkBg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
+   d="scan'208";a="13407217"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.20]) ([10.125.110.20])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 09:13:04 -0800
+Message-ID: <1712c0cd-747b-4dce-8231-0c8d75225648@intel.com>
+Date: Tue, 24 Nov 2026 09:13:03 -0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -81,129 +73,78 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MBX19-GWD-04.um.gwdg.de (10.108.142.57) To
- mbx19-gwd-01.um.gwdg.de (10.108.142.50)
-X-Virus-Scanned: (clean) by clamav
-X-Spam-Level: -
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/fred: Add this_cpu_fred_sp() and export it for KVM
+To: Sohil Mehta <sohil.mehta@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Borislav Petkov <bp@alien8.de>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>, Xin Li <xin@zytor.com>,
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Binbin Wu <binbin.wu@linux.intel.com>, Tom Lendacky
+ <thomas.lendacky@amd.com>, "Chang S . Bae" <chang.seok.bae@intel.com>,
+ Chao Gao <chao.gao@intel.com>, Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261124015840.2673975-1-sohil.mehta@intel.com>
+ <a4b33822-25a6-450f-a2cd-5931d015f484@intel.com>
+ <2b83b21b-7d4f-4431-bee5-70660bd12629@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <2b83b21b-7d4f-4431-bee5-70660bd12629@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Don't set FB_CLEAR_DIS for a VM-Enter that does the MMIO Stale Data VERW.
-VERW doesn't overwrite the fill buffers while FB_CLEAR_DIS is set, so the
-buffer clear that is meant to protect the host from a guest with access
-to host MMIO currently does nothing.  Keep using FB_CLEAR_DIS for vCPUs
-that can't access host MMIO, which are the guests it was added for.
+On 11/24/26 09:00, Sohil Mehta wrote:
+> My primary motivation with this patch was only to get an ACK from the
+> x86 side. I believe you may have missed my note under the '---' section.
 
-Commit e6ff1d61de51 ("KVM: VMX: Handle MMIO Stale Data in VM-Enter
-assembly via ALTERNATIVES_2") moved the MMIO Stale Data VERW from
-vmx_vcpu_enter_exit(), where it ran before vmx_disable_fb_clear(), into
-__vmx_vcpu_run(), which is called after it.  When commit 43fb862de8f6
-("KVM/VMX: Move VERW closer to VMentry for MDS mitigation") moved the
-unconditional VERW into the asm, vmx_update_fb_clear_dis() was taught to
-leave FB_CLEAR alone if X86_FEATURE_CLEAR_CPU_BUF is set, but there is no
-such check for X86_FEATURE_CLEAR_CPU_BUF_VM_MMIO.
+Sohil,
 
-Both end up enabled on the same hosts.  A CPU that is affected by MMIO
-Stale Data but not by MDS or TAA mitigates it with
-X86_FEATURE_CLEAR_CPU_BUF_VM_MMIO (unless another VERW based mitigation,
-such as the one for RFDS, is enabled), and if the CPU enumerates
-FB_CLEAR_CTRL, KVM disables FB_CLEAR for vCPUs whose ARCH_CAPABILITIES
-enumerate neither FB_CLEAR nor immunity, e.g. QEMU CPU models that expose
-arch-capabilities without fb-clear.  On those hosts, every VM-Enter of
-such a vCPU with host MMIO mapped does the VERW with FB_CLEAR_DIS=1, while
-sysfs still reports "Mitigation: Clear CPU buffers".
+Please just reframe this patch as an x86 cleanup patch. The new comments
+actually do explain a thing or two. Then, the FRED/KVM patch can add the
+export as a one-liner.
 
-Fixes: e6ff1d61de51 ("KVM: VMX: Handle MMIO Stale Data in VM-Enter assembly via ALTERNATIVES_2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
----
-I don't have access to a CPU that enumerates FB_CLEAR_CTRL, so this isn't
-tested on affected hardware.  Instead I ran it as L1 on a vCPU that looks
-like an MMIO Stale Data affected Ice Lake-SP (MDS_NO, TAA_NO, FB_CLEAR and
-FB_CLEAR_CTRL), with an L2 guest that has a PCI BAR in a memslot and
-ARCH_CAPABILITIES without FB_CLEAR.  L1's MCU_OPT_CTRL writes #GP, but L0
-still sees the values L1 tries to write, and a watchpoint on L1's
-x86_verw_sel shows where the VERW happens.  Without the patch, all 2576
-MMIO VERWs came right after the write that sets FB_CLEAR_DIS; with the
-patch, none of the 4478 did, and a guest without host MMIO still gets
-FB_CLEAR_DIS on every entry.  Same result with QEMU running the L2 guest
-with -cpu Icelake-Server-v5.
-
-KVM selftests and kvm-unit-tests (including the vmx tests) gave the same
-results with and without the patch in that setup (a few fail or time out
-there either way), and it builds cleanly with KVM_INTEL=m, KVM_AMD=m and
-KVM_WERROR=y.  I can share the test scripts if that helps.
-
-6.19.y to 7.1.y still call the flag VMX_RUN_CLEAR_CPU_BUFFERS_FOR_MMIO,
-so the backport needs that rename.
-
- arch/x86/kvm/vmx/vmx.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
-
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 68fa251dda60..490cad070c13 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -482,11 +482,24 @@ static const struct kernel_param_ops vmentry_l1d_flush_ops = {
- };
- module_param_cb(vmentry_l1d_flush, &vmentry_l1d_flush_ops, NULL, 0644);
- 
--static __always_inline void vmx_disable_fb_clear(struct vcpu_vmx *vmx)
-+/*
-+ * VERW doesn't overwrite the fill buffers if FB_CLEAR_DIS is set, so leave
-+ * FB_CLEAR enabled for a VM-Enter that does the MMIO Stale Data VERW.  The
-+ * unconditional VERW is already handled by vmx_update_fb_clear_dis().
-+ */
-+static __always_inline bool vmx_should_disable_fb_clear(struct vcpu_vmx *vmx,
-+							unsigned int flags)
-+{
-+	return vmx->disable_fb_clear &&
-+	       !(flags & KVM_ENTER_CLEAR_CPU_BUFFERS_FOR_MMIO);
-+}
-+
-+static __always_inline void vmx_disable_fb_clear(struct vcpu_vmx *vmx,
-+						 unsigned int flags)
- {
- 	u64 msr;
- 
--	if (!vmx->disable_fb_clear)
-+	if (!vmx_should_disable_fb_clear(vmx, flags))
- 		return;
- 
- 	msr = native_rdmsrq(MSR_IA32_MCU_OPT_CTRL);
-@@ -496,9 +509,10 @@ static __always_inline void vmx_disable_fb_clear(struct vcpu_vmx *vmx)
- 	vmx->msr_ia32_mcu_opt_ctrl = msr;
- }
- 
--static __always_inline void vmx_enable_fb_clear(struct vcpu_vmx *vmx)
-+static __always_inline void vmx_enable_fb_clear(struct vcpu_vmx *vmx,
-+						unsigned int flags)
- {
--	if (!vmx->disable_fb_clear)
-+	if (!vmx_should_disable_fb_clear(vmx, flags))
- 		return;
- 
- 	vmx->msr_ia32_mcu_opt_ctrl &= ~FB_CLEAR_DIS;
-@@ -7323,7 +7337,7 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
- 
- 	vmx_l1d_flush(vcpu);
- 
--	vmx_disable_fb_clear(vmx);
-+	vmx_disable_fb_clear(vmx, flags);
- 
- 	if (vcpu->arch.cr2 != native_read_cr2())
- 		native_write_cr2(vcpu->arch.cr2);
-@@ -7335,7 +7349,7 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
- 
- 	vmx->idt_vectoring_info = 0;
- 
--	vmx_enable_fb_clear(vmx);
-+	vmx_enable_fb_clear(vmx, flags);
- 
- 	if (unlikely(vmx->fail)) {
- 		vmx->vt.exit_reason.full = EXIT_REASON_UNDEFINED;
-
-base-commit: cbe54fc3462b3949ab27b9ae81fb9ddb509040c7
--- 
-2.34.1
-
+The cleanup can be merged now if you do it that way.
