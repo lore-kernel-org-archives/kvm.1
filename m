@@ -1,61 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795528301;
-	b=z80BdZRE3HHwlBCZbNk0rnje7N6FGBOC7o9oAMIFvNbcu8fM6hGN68PnqD5r/MsLraD2
-	 2jeW5cHju63NqwlEckMZ364sReMzTPD6bygYd2o0HfcKVQQw/W2HVA7MHqzcq4GIC3jX4
-	 dvbUPrY/aKR9lYxHr9QSNQbJ2dzFfqno94eJNfbqDTwHtMmYyqyJX6S2LiwUt+OcuxofO
-	 6AjTpHwJ2mcULb2efkTjRt2Yf8GauP1s/s9bSOnX7J06USnjHCAywWMf+FxvTAb6aRlkM
-	 1vRD8XiuJNzDdGBe2evL48f8n67HXhtHYmW4cpenmFo5iNB+GC2T73nJ+ch+6BfMCdw==
+	t=1795528380;
+	b=C1Ld/z5MgnI00C6J4rl/u6WwR3aCeJbKHYkEU2mVbUi7wLr77/sUR5cJ7mYGlQjYvxo7
+	 dlH5vEj+tUxl4hi7Y+HivKC2mcqmsr1PjxtbUc726UDhd+EAEix9hwZyNzWgtBMPvhF1Y
+	 FWDYl5xLDCuIpsFx+BkL0GXVt8Mw8HvaMCKxNn/UQGge7giwy4QtEIxEf6vvNlsfnne7d
+	 iLU6sJNGNqZrFU/amYvCP314ygmpj3Hd11KgqXZPAAwwLZ37OW+mig+mX3w1BIOjUB082
+	 znp2nhc9bHi98Jjlobaeik3imvlv76TOWxtveN/NTou0DsSBOoy15YTCupyvbqW720A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795528301;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=wG3ZtixJaFFhkZXxYdcnHox9YkW7VVSHInEX8jMe+5w=;
-	b=xMj/Q1VcelD0TV0GOLfhxulp4H8Be/vmtQAmSVc0JSNPxI6hnj03cOoUnTWgKeCy2IyA
-	 D/uF+bzdXNY/sEb72fxOVbDqIF4ARDj/ao28hkIrML3FJC8S/r9vLSoAoczk/lJhyFxdO
-	 Ld1oFn3wOsfVtSwIqdox4+QvNzCoDRxGZJ8XblX4XpJm2rwZ6KdPEFwZp3iJ58ND19hXh
-	 LCGJ2JvFmilXQMCmZ+7RaJyEkgX4VMV11H3FQpfKNVbd619akUR4Fwv05KHEEGqgXO4Is
-	 QGv6iOUY232uyd2bACNEvLDsN0q7WzFYZqQuocS9iJFyF6JSwC4cJsN7vA/UaIRHpDA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795528380;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=ervTDQvCqZVrcHY/akwPcAXB3ZloIorGLfgD/yjQ628=;
+	b=E3U126sOZbzA8zVqmLRqXvZltmlSRUSMlqG7a2BE2pZ20zNi6vmzhoJQYreG3WtjfcOV
+	 YXATjvGMKhmURn9WhjWvzeMxI9UH9h8leiYAvpJIPFlQwRq9GbqohCaBUhuoqWImcX5nJ
+	 qVdy7LnAQKpprnbGhZ14eZSvGt47xnI4euaJ0pAYYjH+99ekz9YJr19LPHMDyIo5DWeLv
+	 vO6DR3amOQWFw1EIgJl9lv7cNp4hd93M5weekDhatOlPgXFzxWv8jRorIwEDMVGn2Wzb0
+	 Gljz8NKVxzHY4oewqmjYgQSGox/3gAFUy2Gy7ZfMkzdV7wysnK2PdQXY6V4PGnL/Hdg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BKhJ5xLI;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=kAV8M+WE;
+	arc=none smtp.remote-ip=209.85.219.53
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506D4606A31E;
-	Tue, 24 Nov 2026 13:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFFD606A31E
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 13:53:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6BFFD606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BKhJ5xLI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160D31F000C0;
-	Tue, 24 Nov 2026 13:51:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795528300;
-	bh=wG3ZtixJaFFhkZXxYdcnHox9YkW7VVSHInEX8jMe+5w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BKhJ5xLI57wn3jcdh+k3UYMM+UZH/iP3LwGv3HpcYTAoS7feQKOPpAaR9qn3kUsth
-	 vhoY/yvQd+Vbke+6trVtFw2wfac1ic3ibsn1lKpZ7h7zWG3Re5RfpxKcYWb+fRhbSO
-	 vkrIYcEg0evcjLmDX6Qs24X0cPCxS5NYQ100VdjZ3HPx1rc39UbHRgyth/e+hZ3oSl
-	 tDQpsNq+vvcfGOQu95049GJxDBFm2NcxzC17vmRGtf/8cZ2hyUHR7Nhko/L4bdnUUP
-	 ef5f2Me+jA6dLerR0uj8pREuFrxw43n0k6GOh71YtVQ+XClfgJBkVFlbWZo6YZujpe
-	 zBcg8RxjFwkkw==
-Date: Tue, 24 Nov 2026 13:51:29 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, kvm@vger.kernel.org, 
-	virtualization@lists.linux-foundation.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	2312891301@qq.com, blum@kernel.org, co+6dcbccedc9ec6452@bugs.sh, 
-	eperezma@redhat.com, fangxy@xiaopeng.com, jasowangio@gmail.com, 
-	kmehltretter@gmail.com, linfeng.sun.dev@gmail.com, lirongqing@baidu.com, 
-	longpareto@gmail.com, oss.patchbox@gmail.com, p@1g4.org, phx0fer@gmail.com, 
-	physicalmtea@gmail.com, sergiiushakov@google.com, shubham@octane.security, 
-	stable@vger.kernel.org, stjepan.poljak@gmail.com, 
-	syzbot+13df72e0dc4be5c62215@syzkaller.appspotmail.com, tavhadia@gmail.com, tjdqudcks0424@naver.com, tz2294@columbia.edu, 
-	xieyongji@bytedance.com, xmei5@asu.edu, yuz08559@gmail.com, zenghui.yu@linux.dev, 
-	zhaimingbing@cmss.chinamobile.com, zhangjiao2@cmss.chinamobile.com
-Subject: Re: [GIT PULL] vhost,virtio,vdpa: bugfixes
-Message-ID: <awWOpS3HR_2FTN3I@gremlin>
-References: <20261104081535-mutt-send-email-mst@kernel.org>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=kAV8M+WE
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-921342fae7eso49576966d6.3
+        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 05:53:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1795528379; x=1796133179; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ervTDQvCqZVrcHY/akwPcAXB3ZloIorGLfgD/yjQ628=;
+        b=kAV8M+WE2u1z+iDbpRaYLaa8uAZIhKoPynLBqtU0x6yNPd8+/UrQBkICZIdrw80/N1
+         uymx6XmLYdbrYNuKeDAhPwOyiI7Krg8e3gz/j/5uE/ZqyzLiDGJ2mai5T9ziVaU8Myp2
+         qyTSr8GIk4jYAvQr6LYQP3tas43VCSX89kJcV3C3kYxyP7NfnOETpkRLCB/eDsCVi8/i
+         O+6Fgql9pEzuMdNbB7bDfZtyLrKApScI/SBJ/XvQ4ldfeWNxvFgwTbW3JRJuZNVbSImG
+         /6upRkGe9TbcTavRepmjIAHaFZ/pN6U/gb++Csl9I69uDHjWA5nwM0QFLDP60AS6fhaw
+         cNdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795528379; x=1796133179;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ervTDQvCqZVrcHY/akwPcAXB3ZloIorGLfgD/yjQ628=;
+        b=Wf/R0p1PVufj9s79pFKzJtyTRBEDHbrwNFHwELkIrkvbbJ4/tuSEy1mdCI36D8qI/d
+         v4VfuN1879wFAWN3objH5aViIRB5XOeqAyqqPyFByWF35CVMzr7kjSfqTgf8JVgwKLE3
+         Sp72XlFTDGs/gFNCTFfshg62PQAJNWJkI1x5H3pyL4JDZN9fZMygYuXal5yn6B5xKLq3
+         7G3lfYbszoNVd+L6l6mDiFptsZicwVhvOxj81phwa2TYujIsVF9XsLOSQsb7cQgffl/u
+         W4i/3EPUsf67Xr/Wba2jQl/COQCQsI9gQXYBKSt4rjuSFEvPFhVqtRTrEOCqKKNwjB9w
+         IzeA==
+X-Forwarded-Encrypted: i=1; AL+hErHEd22iIC5ghloVcSEFkVR/DKbZNSjkMdKXfeKjSQMxStjRF+m6ek/fPnDVqbBPlo2S32Q=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/qjj7ikRcVHL+38FDGG4K1fxZ2EIeyb5pe+gHAyQp8J7lb4YYp
+	f2TN0lv0XfZqwCS4QpYf52cEt8faSBG5snWXsCPwLETSKpXr/M9aCq3AezuqO6wznMw=
+X-Gm-Gg: AZFdTZejfVqv6Z5en/r34mF+QSsr0YiZ+M6QAebr2dd2H3En0zHdMSVqOL4QRXLURCn
+	W8/oqW3dWaSQ7evlZ45lTXwud1w/B98fkltcnPcYdddTtfN/WKvG1yCeFHJ/MpPkrLPM+IWHqHR
+	1gwS5g8EERLUljZDqnwqrxX4o/1pE701X3NyG2mlHsIqzExBCdX1eUnm8ANnd/wRz5xuyT9KlnB
+	Io3OpcWfo1nO8o7PUXq9boxfP2EouyUhnVz7Nuiqv0MZzbpKRSYzmJhdHLdwmTdZSf3Nrc579vG
+	vzXIqIw8PfS5P4Ifq/QGFEgFae0EidSAKi45kmDQt6pX1xibh9OQPou1WXUjLXM4+XAmiKmRR4o
+	a50jTm15qyqiOBXBuZIL0D5NZ8TRoXZlI+iLGR6LmHQURmPWRH9Ao4nwsSr+gB1A5wHJK89/brN
+	vaEir6TQieFNEuHt2Tt8ZvMg3T2CxOHicK8lX4C22Qp7LV+dOJ56a/ATBsRHR2DS2DZsU3cZoHG
+	fRfx7RDc1snDs86XjIGs3HxICYOo3lkcODGGCFcufYUMvF0rEzST6HKD32ujrM7TJa6YwhmRLOi
+	uqmpk0A5/Pk/cAMj0eFwt3apoyg=
+X-Received: by 2002:a05:6214:1d03:b0:921:4c11:f6ef with SMTP id 6a1803df08f44-9214c11f800mr175124426d6.1.1795528379371;
+        Tue, 24 Nov 2026 05:52:59 -0800 (PST)
+Received: from ziepe.ca ([142.177.118.84])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-92134796288sm133191406d6.6.2026.11.24.05.52.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2026 05:52:58 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xVqx8-00000000QWu-1KcY;
+	Tue, 24 Nov 2026 09:52:58 -0400
+Date: Tue, 24 Nov 2026 09:52:58 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Guanghui Feng <guanghuifeng@linux.alibaba.com>, linux-mm@kvack.org,
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: alex@shazbot.org, alifm@linux.ibm.com, ankita@nvidia.com,
+	dakr@kernel.org, fengchengwen@huawei.com, kevin.tian@intel.com,
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mattev@meta.com,
+	ritesh.list@gmail.com, xinmengs@nvidia.com
+Subject: Re: [PATCH v2 2/2] vfio/pci: Align BAR mappings for huge page support
+Message-ID: <20261124135258.GK9566@ziepe.ca>
+References: <20261124073048.268988-1-guanghuifeng@linux.alibaba.com>
+ <20261124124004.457441-1-guanghuifeng@linux.alibaba.com>
+ <20261124124004.457441-3-guanghuifeng@linux.alibaba.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -67,32 +107,81 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261104081535-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20261124124004.457441-3-guanghuifeng@linux.alibaba.com>
 
-On Wed, Nov 04, 2026 at 08:15:35AM -0500, Michael S. Tsirkin wrote:
-> chenglong.ma (1):
->       vduse: fix VA/PA confusion in the coherent page fault path
+On Tue, Nov 24, 2026 at 08:40:04PM +0800, Guanghui Feng wrote:
+> +unsigned long vfio_pci_core_get_unmapped_area(struct vfio_device *core_vdev,
+> +					      struct file *filp,
+> +					      unsigned long addr,
+> +					      unsigned long len,
+> +					      unsigned long pgoff,
+> +					      unsigned long flags)
+> +{
+> +	struct vfio_pci_core_device *vdev =
+> +		container_of(core_vdev, struct vfio_pci_core_device, vdev);
+> +	struct pci_dev *pdev = vdev->pdev;
+> +	unsigned long align, off, off_end, off_align, len_align, addr_align;
+> +	unsigned int index;
+> +	u64 bar_len;
+> +
+> +	/* Don't interfere with explicit address requests or fixed mappings */
+> +	if (addr || (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE)))
+> +		goto out;
+> +
+> +	index = pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
+> +	if (index >= VFIO_PCI_ROM_REGION_INDEX || !vdev->bar_mmap_supported[index])
+> +		goto out;
+> +
+> +	bar_len = pci_resource_len(pdev, index);
+> +	if (!bar_len)
+> +		goto out;
+> +
+> +	/*
+> +	 * Select the largest huge page size that the BAR physical alignment,
+> +	 * mapping length, and arch support can all satisfy.  Only PMD and PUD
+> +	 * orders are supported by vfio_pci_vmf_insert_pfn().
+> +	 */
+> +	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) &&
+> +	    bar_len >= PUD_SIZE && len >= PUD_SIZE)
+> +		align = PUD_SIZE;
+> +	else if (bar_len >= PMD_SIZE && len >= PMD_SIZE)
+> +		align = PMD_SIZE;
+> +	else
+> +		goto out;
+> +
+> +	off = pgoff << PAGE_SHIFT;
+> +	off_end = off + len;
+> +	if (off_end < off)
+> +		goto out;
+> +	off_align = round_up(off, align);
+> +
+> +	/* The mapping has to span at least one fully aligned huge page */
+> +	if (off_end <= off_align || off_end - off_align < align)
+> +		goto out;
+> +
+> +	len_align = len + align;
+> +	if (len_align < len)
+> +		goto out;
+> +
+> +	/*
+> +	 * Find an area that can hold the mapping plus the slack needed to
+> +	 * shift it up to the next aligned address, then apply that shift.
+> +	 * The shift preserves the relative alignment of the file offset,
+> +	 * which is what makes the pfn alignment work out.
+> +	 */
+> +	addr_align = mm_get_unmapped_area(filp, addr, len_align, pgoff, flags);
+> +	if (!IS_ERR_VALUE(addr_align)) {
+> +		addr_align += (off - addr_align) & (align - 1);
+> +		return addr_align;
 
-This has landed as commit bb2e6f166547 ("vduse: fix VA/PA confusion in the
-coherent page fault path") but I don't see the patch anywhere on lore (off-list
-security report?)
 
-Anyway, clearly nobody actually _ran_ this code in 7.4, not even claude, as
-it's completely broken.
+PeterX was working on this previously and last time I was not excited
+to see all this mm logic open coded in drivers.
 
-Commit 99fd6bf43d5d ("mm/vma: enforce that mm-managed mappings may not set
-VMA_IO_BIT") literally made setting VM_IO incorrectly, like this patch does, a
-WARN_ON error on mmap(), i.e. it _refuses_ to mmap it :)
+I was hoping to see that the core mm could provide some helper scheme
+for drivers that already know what they want to map to get a vma
+alignment that is optimal for the architecutre.
 
-It looks like it doesn't need VM_IO anyway, the other changes in the patch
-make it redundant AFAICT, so you should send something like the below with
-a Fixes pointing at bb2e6f166547:
+Peter had a design that seemed like a good exploration at least..
 
---- a/drivers/vdpa/vdpa_user/iova_domain.c
-+++ b/drivers/vdpa/vdpa_user/iova_domain.c
-@@ static int vduse_domain_mmap(struct file *file, struct vm_area_struct *vma)
--       vm_flags_set(vma, VM_IO | VM_DONTDUMP | VM_DONTEXPAND);
-+       vm_flags_set(vma, VM_DONTDUMP | VM_DONTEXPAND);
-
---
-Cheers, Lorenzo
+Jason
