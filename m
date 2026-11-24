@@ -1,59 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.149.156.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795537978;
-	b=sJgSC9YPTtfHapPwqc027n/dkoJ6ztAWK3oQqcwUl8wFugk12YilQWtp5wjrayd5h9a3
-	 oCtX1VRIfR3rTmvUSeTVFLixJakDexVrXqJh9Vsa3YZ2WuW99UPLoI9UGq5jwXCr3v5b9
-	 xO0tPa5gI5J/G3rdLCEfdQwC3gttVNYRkBeKr4Od5wM/4GMRNpdruY1c4GX+9rVFo94Wq
-	 YrKiDGKy8LJ2OMjaedgfevdLUPtjbCzFKKM3ELdjd9fGYwBnfxWSNigNzO1YNexl7F2A9
-	 2WiJHX4+nOr6GTApz5n290iDfTB/kaNlnlbZlg8HmYTx0l7a4IkyGtESJM4u0WMpy8A==
+	t=1795538324;
+	b=tDDsayZTpEWf0UOU1tLtjRylnTjZfubdYI8tigRI13EwXgsfyv9oRSQ8Mxnx0w6WaKxf
+	 GUlHFGiqi9GKy0dU6jT6AkFkobMQ8kCZkYdndyKvdqPuajCdPL0nvC1GbOJeFM/lxWfQK
+	 CgynO0rMZlhV6RNlHTrnE8+D40gzsqpr80Iz1D2o23TzJfDZCzVtCfxeH8ifPzplFYfSi
+	 qvNlwIFMcd12O/X+sp4EqENp8qv+9zhUpUDJtN2Or63ZvKXHkV/wxLh6+4wDufEfCFq4o
+	 +RJc7lntt9Xo4DlznTB41Cfgp8Z9Trr6rcp8EG+ORFZefR6jIq84yz0Spb+ugDkYDKw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795537978;
-	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-CMAE-Envelope;
-	bh=uS+bRpEbxEsggVpK5uFXQCtUpYq84Y6T8SvP6ntxLfg=;
-	b=XuFsTwmWWrqB4MSVZerun38ptLuh6WFXss3H1cGrHGkU+qJmlkGU3SYqHG3FldRj1iW5
-	 KzVnTMtXAf6FM7agU1+PoNKWWBx0ZkMyysfZlcainr74KG+sRJgeA+UKuSIK3kxaiUAI3
-	 kF7OsnYy9g/5KNHmNlHrRggeObdmrQZ+wxIB/NA3HsVQ3XtenmWQBPVV5F2nnvh91doHW
-	 DtqS71/wSDcjgznCEjunrMMVeFylN6nd2L6LM8Ffitqet0yq1/3VdhGaFVI6GzQYdnlOb
-	 e/+OVJyUulgGlS7s+t1uj8qaXOoTAQti+pRtQkRozPWt0vvY8vJwWNbCGr/rqmsTuUQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795538324;
+	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
+	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
+	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
+	 X-SA-Exim-Scanned;
+	bh=7ADkkO7OrDOakoZissUe/feLBFMvVo6YnTMs5lxIDuc=;
+	b=oZr7lYC1qPrAojT3qzpuc5Aj5TxtG1io1or9dgVQ0EHcw7ZYTBOkmx2/0uPKifsf3krL
+	 I4dQk7lWTpUzrGZ+CLjbhAsPLjz79yGqxSQTsZdyJdiEhBQLX+XVlrROZV4+g84v7oTTj
+	 odNIGfb0aRgyS5uRKFb2fN+CkNIcwwWFwg8/dCEQ1o5ja+YEvyVmNBz8qyVMiNNZ9jM1U
+	 ikDpwtzP2DrnDpSceuBGxOaLf/3agMH242dkU8jSV4hrHCX8SXoHlJ0xWDRIIEaAWDnLl
+	 4RdT4ZaRB/pQAhAYlArVTC6KgAUlfaoaeVhf1vIwvx7PEtztOgTxjN/ft9UBcF1Kxww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=benettiengineering.com;
-	spf=pass smtp.mailfrom=benettiengineering.com;
-	dkim=pass header.d=aruba.it header.i=@aruba.it header.a=rsa-sha256 header.s=a1 header.b=Udotyj8S;
-	arc=none smtp.remote-ip=62.149.156.131
-Received: from smtpcmd12131.aruba.it (smtpcmd12131.aruba.it [62.149.156.131])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FwyR1IKx;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464D3606A31E
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 16:32:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 464D3606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=benettiengineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=benettiengineering.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AC5606A32C;
+	Tue, 24 Nov 2026 16:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=aruba.it header.i=@aruba.it header.a=rsa-sha256 header.s=a1 header.b=Udotyj8S
-Received: from localhost.localdomain ([95.249.82.110])
-	by Aruba SMTP with ESMTPSA
-	id VtRoxIzMNV5J9VtRpx20vm; Tue, 24 Nov 2026 17:32:49 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-	t=1795537969; bh=68lMnJp0S4dK6r1Gvabx+dFUaMwgYpnMIeEfzQ6FMn0=;
-	h=From:To:Subject:Date:MIME-Version;
-	b=Udotyj8SxpmD3n8b+p/O0dV05RM1PiEi8qplF6rVyhqJG7lOxaxd/mS1selO6jdIn
-	 O6HZLNRSKZr2x/1W7LRzbWCDYWMvRiOqeiNQm4QXO4jlm5Xig/EOsiUstvvmFWcbE+
-	 9NAVUaP1QPCikRQ+8vel7yA3MphYe9ZzxcA4KHx7fbEe+NBOBOqeZ1TxUhPYlomDrr
-	 a16AMSI784T+pow1hXwsFWYEdPvUg0gueXA1kYVIvGhb8nYSvvVIXhkyQR3OkQJz2U
-	 zZPPWgT1raz+5qWZEfhbjnkp2UlmBKSFt1b3CKWr098sm1X0s7LdnT+vj2W5PBWrUT
-	 dtMU+QfB18Ilg==
-From: Giulio Benetti <giulio.benetti@benettiengineering.com>
-To: kvm@vger.kernel.org
-Cc: will@kernel.org,
-	julien.thierry.kdev@gmail.com,
-	Giulio Benetti <giulio.benetti@benettiengineering.com>
-Subject: [PATCH kvmtool] include/linux/types.h: add __s128 and __u128 types
-Date: Tue, 24 Nov 2026 17:32:48 +0100
-Message-ID: <20261124163248.782815-1-giulio.benetti@benettiengineering.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FwyR1IKx
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35251F000D2;
+	Tue, 24 Nov 2026 16:38:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795538324;
+	bh=7ADkkO7OrDOakoZissUe/feLBFMvVo6YnTMs5lxIDuc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=FwyR1IKxg5LZccDINcjDUnc6lyk1XGb6HBTNrvll1u4ipuyfAQeb4fEqM0eXjX7SM
+	 PRPRC2DYZ8MNcLmvzgqzgxnk+abDN7UJFiJs+Whb8Lc5LRBAFjUGBVW6E22fOFAq1W
+	 VjfbUkP0MdPqTDBmO+oRifVIa7l716FkzcWCzDpuFUK0X/QkoXIkAD1ONEUFjXYiOG
+	 wkCnL4dQhDRlreZZ4ZMenD7XtWULaUo2wSgzz+VAzp6JPr4XgW2Fvc4IVB1X1i3XfZ
+	 Is342rsqStkMEb42NbPEAYrcIkt3YK6J3a+cul02S6tfI6o6mSjCEjIfWEpJzQWHB9
+	 4Y/JznUmdU8Aw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1xVtXV-00000002gMn-3c6E;
+	Tue, 24 Nov 2026 16:38:41 +0000
+Date: Tue, 24 Nov 2026 16:38:41 +0000
+Message-ID: <864id6yyjy.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Leonardo Bras <leo.bras@arm.com>
+Cc: kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Dan Carpenter <dan@pereq.eu>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] KVM: arm64: nv: Upgrade sub-page TTL hint to maximum size
+In-Reply-To: <awW5QKqGZAqw1ru9@LeoBrasDK>
+References: <20261123182312.4842-1-maz@kernel.org>
+	<awW5QKqGZAqw1ru9@LeoBrasDK>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -62,47 +77,121 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CMAE-Envelope: MS4xfAPKvsoYArB7bWL4fqwDB3icNhs/kACu3GPBm7VZ6edBKVpVuQ+WRlX1M4lp7MIisQyRC9GOp+rP/YtBLa+VCXrERdGlUAsV94szfv/qvB/EGQSpB7mZ
- em92V+lAqCI0R/EjPmN8Ris6RR0zKpMzOfrMuB5k3oXKnmN+julYR1SSUBQbBHN0ST74iqU3OFvdokrJxi4TcMQKGvkZ6KMYI+r0lHRPEnogMc1eYu1RU9y4
- WkL4v6jLijNNkO3A0do+Ye5zOvDKSCnK2jXoK/VfrIXvmDJlChaCVZMTqlI8Arlsm8AKSaSqcfjOX+0p6aACP751CEbs7a7gUWTDv54fyNEh5rvXyE/SoF78
- lHwW/d6G
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: leo.bras@arm.com, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, fuad.tabba@linux.dev, dan@pereq.eu, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-kvmtool's include/linux/types.h shadows the kernel UAPI <linux/types.h>,
-so the __s128/__u128 types it provides are missing. Starting with Linux
-7.x headers, arm64 <asm/sigcontext.h> and <asm/ptrace.h> use __u128
-instead of __uint128_t, so building kvmtool against them, where
-<signal.h> pulls <asm/sigcontext.h> in, fails with:
+On Tue, 24 Nov 2026 16:20:16 +0000,
+Leonardo Bras <leo.bras@arm.com> wrote:
+> 
+> On Mon, Nov 23, 2026 at 06:23:12PM +0000, Marc Zyngier wrote:
+> > Should a guest be slightly foolish and submit a S2 TLBI with a TTL hint
+> > that describe a base granule size smaller than the host's page size,
+> > we take the resulting size at face value and feed it to the S2 unmapping
+> > code. Which legitimately screams about something not being page-aligned.
+> > 
+> > The architecture allows us to drop the TLBI on the floor, as we don't
+> > support a S2 granule size smaller than the host's page size. But it turns
+> > out that doing so is proving pretty hard (we call compute_tlb_inval_range
+> > from a number of places, none of which is amenable to an early out).
+> > 
+> > Instead, detect the annoying case, and pretend that we don't have a TTL
+> > hint at all, leaving the size upgrade mechanism to take place and use
+> > the largest possible size for the guest's S2 granule size.
+> > 
+> > This will still allow nonsensical stuff to get through, such as a 4kB
+> > level 2 (aka 2MB) from a guest with a 64kB S2 base granule size running
+> > on a 16kB page size host, but that's not worse than doing nothing, and
+> > the host code won't get shouty.
+> > 
+> > Reported-by: Dan Carpenter <dan@pereq.eu>
+> > Link: https://lore.kernel.org/r/20261123-inval_range-v1-1-815e15797089@pereq.eu
+> > Fixes: d1de1576dc21 ("KVM: arm64: nv: Handle FEAT_TTL hinted TLB operations")
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > Cc: stable@vger.kernel.org
+> > ---
+> > 
+> > Notes:
+> >     Reposting this as a first class patch, as I'd like to plug that one
+> >     as early as possible (and Dan has plenty of other patches in flight...)
+> > 
+> >  arch/arm64/kvm/nested.c | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> > 
+> > diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> > index 78d5b18dbd2d6..36e4e83badf0a 100644
+> > --- a/arch/arm64/kvm/nested.c
+> > +++ b/arch/arm64/kvm/nested.c
+> > @@ -714,6 +714,13 @@ unsigned long compute_tlb_inval_range(struct kvm_s2_mmu *mmu, u64 val)
+> >  	 */
+> >  	max_size = __ttl_to_size(ttl);
+> >  
+> > +	/*
+> > +	 * IMPDEF behaviour: treat subpage TTL-annotated TLBI as the largest
+> > +	 * possible invalidation. Don't try this at home, kids!
+> > +	 */
+> > +	if (max_size < PAGE_SIZE)
+> > +		max_size = 0;
+> > +
+> >  	if (!max_size) {
+> >  		/* Compute the maximum extent of the invalidation */
+> >  		switch (vtcr_to_tg0_pgsize(kvm, mmu->tlb_vtcr)) {
+> > -- 
+> > 2.47.3
+> > 
+> 
+> Hey Marc,
+> 
+> I think the changes make sense, although rounding up to PAGE_SIZE also 
+> looks a valid solution in my unexperienced viewpoint.
 
-.../sysroot/usr/include/asm/sigcontext.h:81:9: error: unknown type name '__u128'; did you mean '__u32'?
-   81 |         __u128 vregs[32];
-      |         ^~~~~~
+No, it isn't the same thing. Taker the example I have given, where the
+host is 16k, the guest 64k, and the invalidation 4k. If you round
+things up to 16k, you're still not invalidating anything that is
+consistent with the *minimum page size* for the guest. Anything larger
+is a multiple of both the host and guest page sizes, and therefore
+always correct.
 
-So let's add the __s128 and __u128 types the same way the kernel UAPI
-<linux/types.h> does.
+> 
+> I am curious if there is any particular reason not to merge that with the 
+> test below, such as:
+> 
+> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> index 78d5b18dbd2d6..36e4e83badf0a 100644
+> --- a/arch/arm64/kvm/nested.c
+> +++ b/arch/arm64/kvm/nested.c
+> @@ -714,6 +714,13 @@ unsigned long compute_tlb_inval_range(struct kvm_s2_mmu *mmu, u64 val)
+>  	 */
+>  	max_size = __ttl_to_size(ttl);
+>  
+> +	/*
+> +	 * IMPDEF behaviour: treat subpage TTL-annotated TLBI as the largest
+> +	 * possible invalidation. Don't try this at home, kids!
+> +	 */
+> +	if (max_size < PAGE_SIZE) {
+> - 	if (!max_size) {
+>  		/* Compute the maximum extent of the invalidation */
+>  		switch (vtcr_to_tg0_pgsize(kvm, mmu->tlb_vtcr)) {
+> --
+> 
+> Given max_size is unsigned (>=0), and it will be changed again in the 
+> switch case below, I was not able to understand the need to make it zero 
+> first.
 
-Signed-off-by: Giulio Benetti <giulio.benetti@benettiengineering.com>
----
- include/linux/types.h | 5 +++++
- 1 file changed, 5 insertions(+)
+There is more than one way to write similar things, and what I wrote
+made the most sense to me.
 
-diff --git a/include/linux/types.h b/include/linux/types.h
-index 5e20f10..039174c 100644
---- a/include/linux/types.h
-+++ b/include/linux/types.h
-@@ -17,6 +17,11 @@ typedef __s16 s16;
- typedef __u8  u8;
- typedef __s8  s8;
- 
-+#ifdef __SIZEOF_INT128__
-+typedef __signed__ __int128 __s128 __attribute__((aligned(16)));
-+typedef unsigned __int128 __u128 __attribute__((aligned(16)));
-+#endif
-+
- #ifdef __CHECKER__
- #define __bitwise__ __attribute__((bitwise))
- #else
+I want to single out this particular corner case, which is not the
+much more general case if "max_size is 0 because there is no TTL
+information". Lumping these two things together makes it, IMO,
+pointlessly hard to reason about the various cases.
+
+Thanks,
+
+	M.
+
 -- 
-2.47.3
-
+Without deviation from the norm, progress is not possible.
