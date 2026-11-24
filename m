@@ -1,104 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.180
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795542044;
-	b=FiPhJTmOYkr7In6S5PB+Ty8YNySTa5i8rtvbY9mA3/JXvx1Ku5fv9XsiHVQ3SGU5JXT9
-	 D6vS5V2Xi5Y+WdBsCnsqBQJ5t+DqzhgxcwygMql1qWGzUH0zJSlxcO1jW+FwivDbofaNo
-	 1i+jbWdI1UV3usY6EBIQaficroYpogFJ1KPapyzFPbF9OifpDVdnIrm+9MXPUW3DbXU+I
-	 qVn6uSher7gDex3jS4FPsvEi6CIA/fDQEX8veeGdKt9W9bFLkyW2iH79CWNE+BkJdqseJ
-	 W6XXCT62rwd4vnCLvAD5sMdmW36aN0m9ydH3kNVrKKRkOFRURRyd5GaNSXnPnP/SdfA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795542044;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=A0tfxpWQZksA+4DUx2Ik9FwTneKF6Ex273j07+ppekk=;
-	b=TwvYXDza6eLfmebXEAmFNtv7E5dwog/KsWszNrCNguNnUfuApjxNFUThG5litkTIAmEO
-	 3FkWrRmtyB+qknBiR+7U19BjaBecH5q02llhVtDKIJD+fXMWNQyukdRtoYV+Vv9ZAX2MB
-	 PBrmVlBtKGb1c+PHrmFET8ytd9Jbf6k+sGN2FGwomNHNUIWIF0J67mIf6ggut56z/Q4Dc
-	 cF7BNYC9bySjbw9yCHB52WaL5mKGhbMeEVNn0DsA9TCvrZTjDjDJeZkIOrsYVwcf8LK0F
-	 JX57fIvdiKnWBnwkKHdSIqI2o4wE/E31F08bMkOJhqIxPLOAZhF7TaRUnT8zj1GTZJw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ibfncsFs;
-	arc=none smtp.remote-ip=209.85.214.180
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.12
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795542291;
+	b=zmOPJvdzwdNmnl4WHyq8leV1N5QtRE9HsTQkU1lTbyj4/Jy0kCbjDGG+XbtM1+2TAK4g
+	 LC9utbkALW0kcjVlYqCI+X+AvhndDcuURcO/I43pn83yQeNlLunXsh7YK7LOsuPcgp3W5
+	 BzLMCKIqOtx2VOFu84uk1XONa8bZfacFUceLhraYq0LR/nvsoEbGIN9Ch5GT8xHGvHTas
+	 v8ZHLR6qPwKi7V+ySeXrMksJNxwutDh2lBmVsyQBdKMLplDzcjTMlfwQDp23j1SpWSfQ4
+	 8DD7UwACHBlGYfSJSMmFgwSZ7WAZ23sypONF23N03472wMe34MQZuU6Nmx0eFSh6l2w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795542291;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:CC:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-Originating-IP:X-ClientProxiedBy:
+	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=eobYjRFrPZpIZ4y1+1ihmTA/GUxAqKNIvjcdB5x3Qg4=;
+	b=2/VGS9mTNQlo0v5Yyg5kYimamP1f6umCRcxhep0M+ZekqhS2MNoySJLHyHmSJJFAcLAM
+	 CQINpsDWjWEQeYKIequ5jZ6S/chsuPqgU7A48h7u8ERAFf6YqTJv8aPk0FRCWWnQi1fEe
+	 LnobC0SCF4P0ZDzptN740pNeqrsKGl9ljXAskPEthnD2ayGm8Tp4cFkdbX1DwGVcZbq4x
+	 KAffebikCf8OOqXf8JBR1bsduRRPlLgdHm5IEk4w2bo8I6CNmUyWIT+60HSW4QpBAkw5r
+	 +L/OizHt8kb05Z50mQg4YHuqQ37iJSF+c+Z3PtOwtbytjLqhOXe1jpg36gFEQh1WsjA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=ZMJQllMy;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.12
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010012.outbound.protection.outlook.com [52.101.56.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC5B606A321
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 17:40:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CCC5B606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484BD606A31E
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 17:44:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 484BD606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ibfncsFs
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2f048bc09d7so212685ad.0
-        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 09:40:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795542043; x=1796146843; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=A0tfxpWQZksA+4DUx2Ik9FwTneKF6Ex273j07+ppekk=;
-        b=ibfncsFsjl1Kz3hR43C3tu9vI7/bGZJ4y47qDoBAzmeCjj7Q2eB5yQnqXcdYAB/A6S
-         9MQUQESFogPtukQykuwQ4MWoiZnW/gGvxdV31AOPHeJF6Li2p1i1BYmoWJ3/tbJxTr7k
-         asclk4tB6yMBGKTDK5l0s2rVK6eSEQxitDpFq0jeRJHB9Uyu6IvDUZBxdImblVfcomeO
-         aSFzlG4OOn6fo+7hwyzWT9Mjcs6/dZzUla3Rl1zIrrZF5BF5YHwlMne5VcxPAZdYbdG1
-         GNphGUw/Le1AN2DBtd8pbLFWdT3P2aANprxyEUwHDdk6inM7u4WtaVh/bNmRKFKcgBK6
-         nLtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795542043; x=1796146843;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=A0tfxpWQZksA+4DUx2Ik9FwTneKF6Ex273j07+ppekk=;
-        b=KYCZ2OEsVYvQs36bMeD2sUoSlnv1GM1ZBlVFbUjw4dLf9Zxqkl71ol3jOxlCczPHT0
-         fKCF/kvDRIN2CAt7HvD7mMfVM6gkjVIPF6UDV1l3wITxnpHxowd2Avlw3DD5UcVBKkrV
-         UTEbHs5BEOqdzde0PPUMeTAv88cmm5qaI1gEUpAkZ2CGxqU4KOqjE0uhjJTZAdJtgZXq
-         tjIioDRFwOiqo5nX0MeMUHl8k07DP+TVrdUtwSppD7zWrelifpLFOrCXIjrjyuBh1Qoz
-         piloJVnUxnpFgHMsS6izQCjTTaCl01Z80zgv81TvsPJKTMqvMwYFg/MceGqJ1OZldC/o
-         qeBA==
-X-Forwarded-Encrypted: i=1; AL+hErGgvduIrY4fTz8kKpecbnETvd5HP9NukPksdCLIAsiFbvTkcVAVYTJd2NdPhf5dErXnAKc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9hD3zsGaMIXrlcz2IAF6AZ6gJK7jWr4gmuwTesWO9W/bxI1gLB
-	A+OZ5R0tJkVJSxgEOAiSHO7uTB/WLNYioseOn0y8HsHRoEWPjsljZmgEeCD8TPznEg==
-X-Gm-Gg: AZFdTZda8kXw8PKbvlnjtd1PnbyMVGhsMAVvCRU1vmQtgI6vS2SbCYnt5sR+hxtd5xp
-	JZilVMY5gvY6XvjMwE9njoFGuFDQolU1Jrn+nlRaJxLnofLT97fEB5h9pq4ziSZLTvtR8n8XJCM
-	rAObZzWuWXn18xogHGeYPpryGyurISW80jT05gOTeWCWdNMFo309fZwEYgh7rtB6QSyIqJ9QIyw
-	OAw5G5ZzjcMEVTj754B4HmAUu+sJQ21HXeJ8NFd3grO/+A78agw1REP7lH7myW3QIWH7/H62leN
-	+YFS3QgQNepmKTZGbOGK7XygR8x30cz8kuhwss0XY9QhBA2xxUDPle6AzkgUL9gqh1Vuaiin8JY
-	7HZU2EPXTfPlEN0Zb2heAA564xZ30t/wp+T/hxzf+1D75m9MjgJSfRZhqlf8ZJ8pwz+BNXrpFhG
-	33uhbpUsDjPH8k7Fn5zqFeYCQ6rmf6pNAJzPaiw3gDOG8VJLbIjunHkqkFuQVFMhteLPTaSYGTK
-	1W7yPeT48Tpa2vlgiHVmqoc1uZwWbysKA+9BJ5TswqDe9ZIVpnf6RTTdZc0Dg7ud1ief1pkIQ5i
-	jwkyoBilq6d2GYPVpfKSpaEUytDkW4NAWtaJoqdniFfONiAGVFYu7Ad5UbS6cRoUubkKHWqvcYb
-	dR6EaeMUSaifMuMNO1JrVe4Jb+p3udgg2bFKCefh9rd0=
-X-Received: by 2002:a17:902:da4f:b0:2e5:9bdf:6b65 with SMTP id d9443c01a7336-2f0bce40277mr4837775ad.0.1795542042658;
-        Tue, 24 Nov 2026 09:40:42 -0800 (PST)
-Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cde6cfc6130sm7514061a12.7.2026.11.24.09.40.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 09:40:41 -0800 (PST)
-Date: Tue, 24 Nov 2026 17:40:38 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Ankit Soni <Ankit.Soni@amd.com>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	David Woodhouse <dwmw2@infradead.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
-	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Pranjal Shrivastava <praan@google.com>, 
-	Vipin Sharma <vipinsh@google.com>, Nicolin Chen <nicolinc@nvidia.com>, 
-	John Starks <dev@jstarks.net>
-Subject: Re: [PATCH v8 06/18] iommu: Implement device and IOMMU HW
- preservation
-Message-ID: <awXMB5GaBlcv845A@google.com>
-References: <20261123044949.3610702-1-skhawaja@google.com>
- <20261123044949.3610702-7-skhawaja@google.com>
- <i7i7msbox2idxet5xfzkf5zg2hoznnjpaivbpsjrpeoko445ys@trkpzp6zceqz>
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=ZMJQllMy
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=P3XHKiaueWEScHibPBT9mrrjQHrRUfxRa8G9QrlvNu0KEcD9rrDeusUo5MA81SA0XBn7oBwv7Y32nVhrq2z/wiWz7TDFH3ETfKWug1gSrBlZt18zROp7UDueeOWoM/MUnQTF1rNxT6BcRyKGXYRsHP7hbQ9KwJEqTrmODNgH/4ttc5cGqQI65vhknrIW+4tYq5yk19NIt49A6owJ+lwctQc3G3JqHoPMq09LKWJqV9unLOy4emq6M9IqOjvBC8cZ3fYD4lV549fT8I8awNCBWaBX4w2J2kRkO36Cnb/cd83CMZ/fq0D3c9bxwAuLO5f7aEgpVer1onAYd8RvIYFa8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eobYjRFrPZpIZ4y1+1ihmTA/GUxAqKNIvjcdB5x3Qg4=;
+ b=FxRArFSHL0Njg47c17XS7dAR102zmpby0z2SXRtGmTu/QyhVyO5Uq3fxpzKX7nFWUdLiID0GuRDo2UcJKaFc9XSP+10Jbmnlz9FN7UloSLlEgbrSpK5Ry9qxbrL1upJTvha7v8lIbe+Gs8idsggrICAVGEeX59u1butkvCt/OzrUWDrSBUGWrYN1cUoZHbn8PC7LADu00Ymad9WZ/wi09BQKyuEWxsuqGtLBanWLeRq6pHgd1gd2czTw7RgWVYtAV4cdID99J+hsk32tYBbiGewrBftkb7kuCL/o7Fpeej6cTPb7eRPblPQ5O6oaSGWKe6D1yWGIcMf1TOUq8wpH6g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eobYjRFrPZpIZ4y1+1ihmTA/GUxAqKNIvjcdB5x3Qg4=;
+ b=ZMJQllMy+CU1zKA4tWGKGazVL0RD6ozi1jqV051KpiQvr+btkqWdiu0W+0vGlumItDxo++Gjz5GaXdvL2vPOKwX6+TAwitQNremHaMfaEHcYnmL+XR30oqDflz+M2vDF9KapCbsKzwvizY/nYQSZI7nneGIFzhIwi8e31tQ1Vuw=
+Received: from BN1PR10CA0006.namprd10.prod.outlook.com (2603:10b6:408:e0::11)
+ by SN7PR12MB6911.namprd12.prod.outlook.com (2603:10b6:806:261::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.12; Tue, 24 Nov
+ 2026 17:43:34 +0000
+Received: from BN7PEPF00000097.namprd03.prod.outlook.com
+ (2603:10b6:408:e0:cafe::9c) by BN1PR10CA0006.outlook.office365.com
+ (2603:10b6:408:e0::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.639.14 via Frontend Transport; Tue,
+ 24 Nov 2026 17:43:34 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN7PEPF00000097.mail.protection.outlook.com (10.167.245.75) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.662.3 via Frontend Transport; Tue, 24 Nov 2026 17:43:34 +0000
+Received: from [10.236.181.204] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Tue, 24 Nov
+ 2026 11:43:33 -0600
+Message-ID: <4d2f11dd-46e4-49f1-97e3-30ea79244fbf@amd.com>
+Date: Tue, 24 Nov 2026 11:43:32 -0600
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -108,22 +99,103 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <i7i7msbox2idxet5xfzkf5zg2hoznnjpaivbpsjrpeoko445ys@trkpzp6zceqz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] QEMU: Add support for AMD EPYC Zen6 and Turin-v3
+ models
+To: <pbonzini@redhat.com>, <zhao1.liu@intel.com>, <mtosatti@redhat.com>
+CC: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, <shivansh.dhiman@amd.com>,
+	<babu.moger@amd.com>
+References: <20261029195623.2209-1-Benjamin.Cheatham@amd.com>
+Content-Language: en-US
+From: "Cheatham, Benjamin" <benjamin.cheatham@amd.com>
+In-Reply-To: <20261029195623.2209-1-Benjamin.Cheatham@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN7PEPF00000097:EE_|SN7PR12MB6911:EE_
+X-MS-Office365-Filtering-Correlation-Id: 45361004-5723-48bb-905a-08df4a52768f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|30052699003|36860700016|1800799024|23010399003|82310400026|376014|261026121527099003|261022075727099003|261021135927099003|261021123027099003|10067099003|261021121427099003|261102123227099003|13003099007|261009223027099003|3023799007|18002099003|22082099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	lFk/LtP3pZDIHk4VFbE0EvEw9TGJnAskoj62HmYt+A67uRMzUIuALWvxyMS3ipaVsT6wzTx/HFIVqqd3SdnU7lBArWhvvrc8yDyBXFbkCt5eVDgm7AYMuUUlWObjn3xCHnxjuZz4O5s4rWDeF1PSTz3awXgf0K9DoOt33MvTsMnO1DEmOvppx7F6pj5l4HEbg4RzzWOhLFBMRJnU9MmOumeUU8c+lXNzRL9+Tl7CNtkMEdfP8e3eXzBc0FwXhxduC0WtEf+kz/EHgHKAIkZt6Z3DpTTmRbwoR5SG18FczExLwNBOhuF5qTT6OpZOifd3tImJ6g3MHKdTNevKQA6H5rcwFbKsb9EF5Eb1iJQrW7IBCKKUdUpKZ9+O3DS+j4pNEJERNvgcgEgZdpoe8CBa1Lv3BXj6tIGOiRmOFITmfx56nXT3YLn/PytxVSAhArVyuUNsEzbUrlYccNyEzlIExy033zDV8sgOXIUg4//VihTVhxL3ChVxNxBlaqolIZoau0lwnA8m1hlrnjH7tRmsix2yDgC8WUGykHUF+M28b5YOSEK1A0GY5pt0EoBMuEUKih9514v1W2eScwXKmzZNRXE3ZukfMNwM94V37eZprWif631X/F/BXWIXxoApVMDgs1sZNDxX50KVyZ19WN+d0T+2iZc7OQHzmMAxFmosdFA=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(30052699003)(36860700016)(1800799024)(23010399003)(82310400026)(376014)(261026121527099003)(261022075727099003)(261021135927099003)(261021123027099003)(10067099003)(261021121427099003)(261102123227099003)(13003099007)(261009223027099003)(3023799007)(18002099003)(22082099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	PfGvG1jg8j7cJ6Vi7MwfL3FutPzThUJ7nyZ+ggjZxIacv++574SlRXx4RCPlKm2Z3YH5M9b2LcLh4CjN2qtq+gxhDmCNVlU+8WjPjIDcPYymjOPCyjwwcpcRbPo2n06PovgNDyZc9Wsw40u3mWU3e0qqGvBmMZkmte6KVgHSDVgCJWjF3dAqDsafUp0N7+YOXmibITF6k74UaPuwfUQvMDH8Dbe91EMNQPZuIu9/YIi9QkvAMYiUVx1FWbXSbyP6dNiVYvODyCkSLeZbqnFJyySejAN/GrxaFzj4lTOtHni5w7TXfvfbQgKLwUSNJFWR03gaN36tZkoemJSQPn9+3NADhufmyscabEf//nQVEMrozJeiZ2zIbuVwlmxDey1q+in93taHxLge5KDQFSob9Uz087aobuOgDAxjzwpiepKhDB0xC2KP0n7Fx8nWESJ3
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 17:43:34.6323
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45361004-5723-48bb-905a-08df4a52768f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN7PEPF00000097.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6911
 
-On Tue, Nov 24, 2026 at 04:29:25AM +0000, Ankit Soni wrote:
->On Mon, Nov 23, 2026 at 04:49:37AM +0000, Samiullah Khawaja wrote:
->> Add IOMMU ops to preserve/unpreserve the device state handled by the
->> IOMMU driver. This is IOMMU specific state of the device that needs to
->> be preserved for liveupdate. These ops can be implemented by the IOMMU
->> drivers that support preservation of devices that have their IOMMU
->> domains preserved. During device preservation the state of the
->> associated IOMMU is also preserved as dependency.
->>
->> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->
->Reviewed-by: Ankit Soni <Ankit.Soni@amd.com>
+Any chance I can get some eyes on this? We (AMD) would like for this to get into 11.2 if possible.
 
 Thanks,
-Sami
+Ben
+
+On 10/29/2026 2:56 PM, Ben Cheatham wrote:
+> This series adds support for AMD's upcoming EPYC Zen6 CPU models
+> (EPYC-Venice). The first four patches add support for the EPYC-Venice
+> model while patch 6/6 adds the actual model.
+> 
+> The EPYC-Venice model is based on the EPYC-Turin model feature set with
+> the following feature additions:
+> 
+> 	ERAPS, TSC Adjustment, Flush l1d, Bus Lock Detect, and Shadow Stack
+> 
+> and support for the following instructions:
+> 
+> 	AVX512 FP16, AVX512 IFMA, AVX NE-Convert, AVX VNNI Int8, and
+> 	AVX512 BMM instructions
+> 
+> as well as new cache values.
+> 
+> Some of these features (ERAPS, Bus Lock Detect) were only just recently
+> merged into the Linux kernel. It's recommended to use the latest kernel to
+> leverage the full support of the model.
+> 
+> This series also adds a new version of the EYPC-Turin model (patch 5/6)
+> that includes some of the features enabled as part of adding the
+> Venice model support. I've done this for convenience, but can split the
+> Turin model out into a separate series if needed. The only patches
+> required for the Turin support are 2/6, 3/6, and 4/6.
+> 
+> The Venice model had two revisions before this one, see [1]. Change log
+> from that is:
+> 	- Add Turin-v3 Model
+> 	- Add flush-l1d and bus-lock-detect to Venice model
+> 	- Add Bus Lock Detect DR6 support
+> 
+> [1]:
+> Link: https://lore.kernel.org/qemu-devel/20260825162544.18633-1-Benjamin.Cheatham@amd.com/
+> 
+> Amit Shah (1):
+>   target/i386: Add getting RAPSIZE for ERAPS enabled guests
+> 
+> Ben Cheatham (4):
+>   target/i386: Update RAPSIZE definition
+>   i386: Add Bus Lock Detect support
+>   target/i386: Add EPYC-Turin-v3 CPU model
+>   target/i386: Add EPYC-Venice CPU model
+> 
+> Nikunj A Dadhania (1):
+>   target/i386: Add AVX512 Bit Matrix Multiply (BMM) support
+> 
+>  target/i386/cpu.c     | 163 +++++++++++++++++++++++++++++++++++++++++-
+>  target/i386/cpu.h     |  10 ++-
+>  target/i386/kvm/kvm.c |   4 +-
+>  3 files changed, 170 insertions(+), 7 deletions(-)
+> 
+
