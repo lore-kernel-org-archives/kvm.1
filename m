@@ -1,11 +1,11 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1795557214;
-	b=pLCNyiuh8zsky35Wk1ElGi3g+p2UKYppf1lgDrTb6hpUudnVFuA1d06g2nAUjGS93bq+
-	 YQAxsJiz6bgkRVDZeTxdjA+lF2j9WoFNbB1s8fHBUjOMpWfJ/QGgSDXwHPYeb42a8GQ4U
-	 F1DQK3bNvBhHGh0T6U47QKsQ6kc01/kkcgsRjBBd2yLzDu9DUof5gVwt8Si+TE94+Ur8T
-	 mU0E8VCTx2BIwXraxdcGcOTrYqZ+wVaHwyC4QcR4T/M9ypy/tEWXonlPoxDhKaLPgCkWG
-	 4UUDyHDGYuRmFlJGNZd/esJYj8s+jeGtgZhIx9X653lSgL9mXpYfb5qsx0CNNC+EJaA==
+	b=kVQ9miaCxGeVyYss98m6dNz6ql5EK+IIxGn9A382VKuufdBUhb/8Zc9Hhm+IkHANg6/G
+	 2cGhasED9jJWgEcyXnQuaVM2fyQZFDTV7Iyx+R0j//0nAdlkDW6Y4cSsa00lujxUwsABw
+	 AFQQGgzDji/soPn3vjV45/MrO8VYqz4mOxcPOvsMT+I0lOSU0DMr+o1byj4uNJTWsdO3I
+	 XxKsZXYtWk9YtXF0hj+xsJDI+PfRyhOZ3h6R6LkggyGpWIJnTlXGmKxDB1y2wxrGJX7KS
+	 9O7GUVU0C8KEKwm1YfgCqU8xyDiO7ks7eqbjFNk3OY0o/8jU1KXtpOHofdLPGChYXcA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795557214;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
@@ -13,54 +13,54 @@ ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=Rr0T2s3Rs5X/n4VmNDdYEbZ5EM8E6saA7GPOelvGDuY=;
-	b=u9gUOnfcKV7gBZanFu35w2nKJey6ld1vCeLRdnoYwS+bUayyTqXP7hp6eyKKCOKNjYf2
-	 XTdZp7NkaVyZU8SMsno6ktWXPf5uDwJv5ppvTYVmFPtmgjeH/VU0W4N+QjUYKJ1ErjVIW
-	 7oZTmH6ycL8HGJp5G3aJ0eBG8paxHEEKw3IVtKMm33Li65SPeet3rEBjB+34HzwCFzeZ+
-	 6Xu3hw96BHU16TWAi7Me1jMEa8x7EAz5SHU7/gSF+n0qZxBrToxTgCBKJUPHX8zz2KddG
-	 biDuDACzBObBubMI5P/UnOkROD+0bJ9I9mYjhr3E+jv28l+h1rsZY11rYykz/xMtBnQ==
+	bh=NTgRq+o8NTT9CKG30vPpL9VWDVQk3YI5fcpRio4vniQ=;
+	b=brbrZjcGWK9WvNSe7IWpfZvTH2ywtIp3gRwo+Vcc0Onla48qP73vO4pC5ckm/PF7ofqn
+	 Xk7YDBNG1SR0ro7IG6k5O8dblOFS8mBZJl5Hyabls+T0dWsqwcs0F6uxjPsQnH5dYpB64
+	 GDxf/VWMXNZDbylLTt/d6s5s/y0iokOaAfer7nHTIdEcqxzQBJY5RHD1VUHEcY5Y+MbCL
+	 wOImDcmGtbfMf5cCPaCOuW4yZzyGBCICnx5m5Bzu65qHgDQMEHeDvYgxYqfCypXkEs/Nl
+	 BMiL4wAvZppn6qqybGFBB2rkM5FbYeHwPGZAwEpCA11F8wXw/MQUCGH7YeXu+wzgApw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="dsA1RA/N";
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mo91cucY;
 	arc=none smtp.remote-ip=192.198.163.9
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7403760A6F57;
-	Tue, 24 Nov 2026 21:53:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7403760A6F57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19587606A6A6;
+	Tue, 24 Nov 2026 21:53:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19587606A6A6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dsA1RA/N
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mo91cucY
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795557214; x=1827093214;
+  t=1795557211; x=1827093211;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=84/I6rLDA8dzHRgL/IU3CoIW99Sr7ASdIcqz0yh7qvM=;
-  b=dsA1RA/Nrt6/dySMFMZx7fXvZB07V+rUff5SEzvuxNlHeq5layPaIapv
-   3mDHzBCT8KIMH63diFyvrj9kRbSUqP2T/KcEbk1+ISrJEGFdNri7DfCcA
-   heSZKBYWaFpBotV50PcdiEtmalG5R+NlCXyhPxZ4/RAaS3zpkDPlEEmrP
-   qJUqQB9qr8Tb8LfU4L0Z1qQYG4b9yOtAviMV0pjIe3RFl0kNRTknbbpQz
-   nRk014qU/YHQLZmlFn2uDDyfbnSmY1OZX+lo7nCbVeB2WvIBrrsfJRG8o
-   Y5Bx5ofFq+rl0NcarllJdixBtq41Iub3l+ERxCfcy7kfNft4+x167nkwB
+  bh=WBlpOtIZ/ZdzpUoYbK5LShQHft3qZ71PQBZ4sGIFT3k=;
+  b=mo91cucYFGfdpel3zY5gEk8ZyXbTyHuwWacmXf7UHM9ds+ZGsqMNMrLd
+   JHtakIvU+S4jBb41HCIV4bfJBLZ4YO0rgCmB44W3Ytfqd/VbKsNd4BEUO
+   8P04TbHQtO+aTY9VSdVWxb2FlFQ9cbmB5hdC4V1a7hhLGtHKR68SPA1cL
+   kdptnQiqhOLfn7sCBDQxIyKO1fH5KdDdLARUdQKiHt7n18on0ZeZn4AG5
+   m3GKhiHN+165BtSIVvBe5FrvyCREGoukvHy6cj1CDScDkzWbUci6nArHS
+   y27GBL99JMxu2p/RR8xcMz2uxzZFRvH24Bwu+XFZBlKghUi8Assc9p190
    w==;
-X-CSE-ConnectionGUID: VYIcgnZMTaSTcqMQRQOi2g==
-X-CSE-MsgGUID: /xLG1FQUSGe86IHNNi3Y/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4306088"
+X-CSE-ConnectionGUID: lG1CiMyZSYuEumiExxHkMQ==
+X-CSE-MsgGUID: jUul/UGFRwqskgA5nVj5Mg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4306057"
 X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="4306088"
+   d="scan'208";a="4306057"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:32 -0800
-X-CSE-ConnectionGUID: uopqse2wTgu1mMsRoYLO4A==
-X-CSE-MsgGUID: 5ltIJn5zQAqSXw96QuHZGA==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:30 -0800
+X-CSE-ConnectionGUID: yJnXrYZiSV2ABOycvV8lCQ==
+X-CSE-MsgGUID: 3EkV0rvrRUaQfKlJ2YcWlw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="12271967"
+   d="scan'208";a="12271941"
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:31 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:29 -0800
 From: Zide Chen <zide.chen@intel.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -77,9 +77,9 @@ Cc: kvm@vger.kernel.org,
 	Shukla Manali <Manali.Shukla@amd.com>,
 	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Xudong Hao <xudong.hao@intel.com>
-Subject: [PATCH v10 17/18] KVM: selftests: Move and generalize PMU guest measurement helpers
-Date: Tue, 24 Nov 2026 14:39:00 -0700
-Message-ID: <20261124213901.120572-18-zide.chen@intel.com>
+Subject: [PATCH v10 12/18] KVM: x86/pmu: Move RDPMC emulation into per-vendor callbacks
+Date: Tue, 24 Nov 2026 14:38:55 -0700
+Message-ID: <20261124213901.120572-13-zide.chen@intel.com>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261124213901.120572-1-zide.chen@intel.com>
 References: <20261124213901.120572-1-zide.chen@intel.com>
@@ -94,153 +94,199 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Move GUEST_MEASURE_EVENT() from pmu_counters_test.c into
-include/x86/pmu.h so the measurement assembly sequence can be shared
-across PMU selftests (e.g. Topdown PERF_METRICS).
+The current RDPMC emulation splits responsibility: rdpmc_ecx_to_pmc()
+in each vendor returns a kvm_pmc, then common code calls
+pmc_read_counter().
 
-Introduce GUEST_RUN_PAYLOAD() to execute the loop while selecting the
-supported cache-flush instruction (CLFLUSHOPT, CLFLUSH, or NOP).
+This design cannot support RDPMC reads that do not map to a counter,
+such as PERF_METRICS on Intel platforms.
+
+Replace rdpmc_ecx_to_pmc() with emulate_rdpmc(), which takes full
+ownership of the emulation and writes the result directly into @data.
+
+Opportunistically drop the redundant bitmask in intel_emulate_rdpmc()
+since pmc_read_counter() already applies the counter's bit-width mask.
 
 No functional change intended.
 
 Signed-off-by: Zide Chen <zide.chen@intel.com>
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
+Reviewed-by: Sandipan Das <sandipan.das@amd.com>
 ---
-v10: new patch.
+v6: new patch.
 ---
- tools/testing/selftests/kvm/include/x86/pmu.h | 54 +++++++++++++++++++
- .../selftests/kvm/x86/pmu_counters_test.c     | 53 +-----------------
- 2 files changed, 55 insertions(+), 52 deletions(-)
+ arch/x86/include/asm/kvm-x86-pmu-ops.h |  2 +-
+ arch/x86/kvm/pmu.c                     |  9 +--------
+ arch/x86/kvm/pmu.h                     |  4 ++--
+ arch/x86/kvm/svm/pmu.c                 | 14 ++++++++++----
+ arch/x86/kvm/vmx/pmu_intel.c           | 25 ++++++++++++-------------
+ 5 files changed, 26 insertions(+), 28 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/x86/pmu.h b/tools/testing/selftests/kvm/include/x86/pmu.h
-index 608ed83d7c6a..c06ac78db01f 100644
---- a/tools/testing/selftests/kvm/include/x86/pmu.h
-+++ b/tools/testing/selftests/kvm/include/x86/pmu.h
-@@ -127,4 +127,58 @@ static inline bool this_pmu_has_errata(enum pmu_errata errata)
- 	return pmu_errata_mask & BIT_ULL(errata);
- }
+diff --git a/arch/x86/include/asm/kvm-x86-pmu-ops.h b/arch/x86/include/asm/kvm-x86-pmu-ops.h
+index 4a223c2793e3..4b50ed058aed 100644
+--- a/arch/x86/include/asm/kvm-x86-pmu-ops.h
++++ b/arch/x86/include/asm/kvm-x86-pmu-ops.h
+@@ -13,7 +13,7 @@
+  * KVM_X86_PMU_OP_OPTIONAL() can be used for those functions that can have
+  * a NULL definition.
+  */
+-KVM_X86_PMU_OP(rdpmc_ecx_to_pmc)
++KVM_X86_PMU_OP(emulate_rdpmc)
+ KVM_X86_PMU_OP(msr_idx_to_pmc)
+ KVM_X86_PMU_OP_OPTIONAL(check_rdpmc_early)
+ KVM_X86_PMU_OP(is_valid_msr)
+diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+index 45721c6fa92b..d4fd1d9d5d93 100644
+--- a/arch/x86/kvm/pmu.c
++++ b/arch/x86/kvm/pmu.c
+@@ -777,8 +777,6 @@ static int kvm_pmu_rdpmc_vmware(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
+ int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
+ {
+ 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+-	struct kvm_pmc *pmc;
+-	u64 mask = ~0ull;
  
-+/*
-+ * Enable and disable the PMC in a monolithic asm blob to ensure that the
-+ * compiler can't insert _any_ code into the measured sequence.
-+ *
-+ * If CLFLUSH{,OPT} is supported, flush and reload a dummy cacheline on each
-+ * loop iteration to force LLC references and misses, i.e. to allow testing
-+ * that those events actually count.
-+ *
-+ * If forced emulation is enabled (and specified), force emulation on a subset
-+ * of the measured code to verify that KVM correctly emulates instructions and
-+ * branches retired events in conjunction with hardware also counting said
-+ * events.
-+ */
-+#define GUEST_MEASURE_EVENT(_msr, _value, clflush, FEP, _loops)		\
-+do {									\
-+	u32 _a = (u32)(_value), _d = (u32)((_value) >> 32);		\
-+	u32 _c = (_msr);						\
-+	u32 _dummy = 0;							\
-+									\
-+	__asm__ __volatile__("wrmsr\n\t"				\
-+			     "mov %[loops], %%ecx\n\t"			\
-+			     "1:\n\t"					\
-+			     FEP "enter $0, $0\n\t"			\
-+			     clflush "\n\t"				\
-+			     "mfence\n\t"				\
-+			     "mov (%[ptr]), %%eax\n\t"			\
-+			     FEP "leave\n\t"				\
-+			     FEP "loop 1b\n\t"				\
-+			     FEP "mov %%edi, %%ecx\n\t"			\
-+			     FEP "xor %%eax, %%eax\n\t"			\
-+			     FEP "xor %%edx, %%edx\n\t"			\
-+			     "wrmsr\n\t"				\
-+			     : "+a"(_a), "+d"(_d), "+c"(_c)		\
-+			     : "D"(_msr), [ptr]"S"(&_dummy),		\
-+			       [loops]"i"(_loops)			\
-+			     : "memory", "cc"				\
-+	);								\
-+} while (0)
-+
-+#define GUEST_RUN_PAYLOAD(_ctrl_msr, _value, FEP, _loops)		\
-+do {									\
-+	if (this_cpu_has(X86_FEATURE_CLFLUSHOPT))			\
-+		GUEST_MEASURE_EVENT(_ctrl_msr, _value,			\
-+				    "clflushopt (%[ptr])",		\
-+				    FEP, _loops);			\
-+	else if (this_cpu_has(X86_FEATURE_CLFLUSH))			\
-+		GUEST_MEASURE_EVENT(_ctrl_msr, _value,			\
-+				    "clflush (%[ptr])",		\
-+				    FEP, _loops);			\
-+	else								\
-+		GUEST_MEASURE_EVENT(_ctrl_msr, _value, "nop",		\
-+				    FEP, _loops);			\
-+} while (0)
-+
- #endif /* SELFTEST_KVM_PMU_H */
-diff --git a/tools/testing/selftests/kvm/x86/pmu_counters_test.c b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-index 5ae7f2d15d04..4836745bef7f 100644
---- a/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-+++ b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-@@ -219,61 +219,10 @@ static void guest_assert_event_count(u8 idx, u32 pmc, u32 pmc_msr)
- 	GUEST_ASSERT_EQ(_rdpmc(pmc), 0xdead);
- }
+ 	if (!pmu->version)
+ 		return 1;
+@@ -786,17 +784,12 @@ int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
+ 	if (is_vmware_backdoor_pmc(idx))
+ 		return kvm_pmu_rdpmc_vmware(vcpu, idx, data);
  
--/*
-- * Enable and disable the PMC in a monolithic asm blob to ensure that the
-- * compiler can't insert _any_ code into the measured sequence.
-- *
-- * If CLFLUSH{,OPT} is supported, flush and reload a dummy cacheline on each
-- * loop iteration to force LLC references and misses, i.e. to allow testing
-- * that those events actually count.
-- *
-- * If forced emulation is enabled (and specified), force emulation on a subset
-- * of the measured code to verify that KVM correctly emulates instructions and
-- * branches retired events in conjunction with hardware also counting said
-- * events.
-- */
--#define GUEST_MEASURE_EVENT(_msr, _value, clflush, FEP, _loops)		\
--do {									\
--	u32 _a = (u32)(_value), _d = (u32)((_value) >> 32);		\
--	u32 _c = (_msr);						\
--	u32 _dummy = 0;							\
--									\
--	__asm__ __volatile__("wrmsr\n\t"				\
--			     "mov %[loops], %%ecx\n\t"			\
--			     "1:\n\t"					\
--			     FEP "enter $0, $0\n\t"			\
--			     clflush "\n\t"				\
--			     "mfence\n\t"				\
--			     "mov (%[ptr]), %%eax\n\t"			\
--			     FEP "leave\n\t"				\
--			     FEP "loop 1b\n\t"				\
--			     FEP "mov %%edi, %%ecx\n\t"			\
--			     FEP "xor %%eax, %%eax\n\t"			\
--			     FEP "xor %%edx, %%edx\n\t"			\
--			     "wrmsr\n\t"				\
--			     : "+a"(_a), "+d"(_d), "+c"(_c)		\
--			     : "D"(_msr), [ptr]"S"(&_dummy),		\
--			       [loops]"i"(_loops)			\
--			     : "memory", "cc"				\
--	);								\
--} while (0)
+-	pmc = kvm_pmu_call(rdpmc_ecx_to_pmc)(vcpu, idx, &mask);
+-	if (!pmc)
+-		return 1;
 -
- #define GUEST_TEST_EVENT(_idx, _pmc, _pmc_msr, _ctrl_msr, _value, FEP)	\
- do {									\
- 	wrmsr(_pmc_msr, 0);						\
--									\
--	if (this_cpu_has(X86_FEATURE_CLFLUSHOPT))			\
--		GUEST_MEASURE_EVENT(_ctrl_msr, _value,			\
--				    "clflushopt (%[ptr])",		\
--				    FEP, NUM_LOOPS);			\
--	else if (this_cpu_has(X86_FEATURE_CLFLUSH))			\
--		GUEST_MEASURE_EVENT(_ctrl_msr, _value,			\
--				    "clflush (%[ptr])",		\
--				    FEP, NUM_LOOPS);			\
--	else								\
--		GUEST_MEASURE_EVENT(_ctrl_msr, _value, "nop",		\
--				    FEP, NUM_LOOPS);			\
--									\
-+	GUEST_RUN_PAYLOAD(_ctrl_msr, _value, FEP, NUM_LOOPS);		\
- 	guest_assert_event_count(_idx, _pmc, _pmc_msr);			\
- } while (0)
+ 	if (!kvm_is_cr4_bit_set(vcpu, X86_CR4_PCE) &&
+ 	    (kvm_x86_call(get_cpl)(vcpu) != 0) &&
+ 	    kvm_is_cr0_bit_set(vcpu, X86_CR0_PE))
+ 		return 1;
  
+-	*data = pmc_read_counter(pmc) & mask;
+-	return 0;
++	return kvm_pmu_call(emulate_rdpmc)(vcpu, idx, data);
+ }
+ 
+ static bool kvm_pmu_incomplete_passthrough(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
+index 1d7cbe89fa95..40395d271392 100644
+--- a/arch/x86/kvm/pmu.h
++++ b/arch/x86/kvm/pmu.h
+@@ -27,8 +27,8 @@
+ #define KVM_FIXED_SLOTS_IDX    (INTEL_PMC_IDX_FIXED_SLOTS - INTEL_PMC_IDX_FIXED)
+ 
+ struct kvm_pmu_ops {
+-	struct kvm_pmc *(*rdpmc_ecx_to_pmc)(struct kvm_vcpu *vcpu,
+-		unsigned int idx, u64 *mask);
++	int (*emulate_rdpmc)(struct kvm_vcpu *vcpu, unsigned int idx,
++			     u64 *data);
+ 	struct kvm_pmc *(*msr_idx_to_pmc)(struct kvm_vcpu *vcpu, u32 msr);
+ 	int (*check_rdpmc_early)(struct kvm_vcpu *vcpu, unsigned int idx);
+ 	bool (*is_valid_msr)(struct kvm_vcpu *vcpu, u32 msr);
+diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
+index c18286545a7a..6f9a190a6905 100644
+--- a/arch/x86/kvm/svm/pmu.c
++++ b/arch/x86/kvm/svm/pmu.c
+@@ -84,10 +84,16 @@ static int amd_check_rdpmc_early(struct kvm_vcpu *vcpu, unsigned int idx)
+ }
+ 
+ /* idx is the ECX register of RDPMC instruction */
+-static struct kvm_pmc *amd_rdpmc_ecx_to_pmc(struct kvm_vcpu *vcpu,
+-	unsigned int idx, u64 *mask)
++static int amd_emulate_rdpmc(struct kvm_vcpu *vcpu, unsigned int idx,
++			     u64 *data)
+ {
+-	return amd_pmu_get_pmc(vcpu_to_pmu(vcpu), idx);
++	struct kvm_pmc *pmc = amd_pmu_get_pmc(vcpu_to_pmu(vcpu), idx);
++
++	if (!pmc)
++		return 1;
++
++	*data = pmc_read_counter(pmc);
++	return 0;
+ }
+ 
+ static struct kvm_pmc *amd_msr_idx_to_pmc(struct kvm_vcpu *vcpu, u32 msr)
+@@ -302,7 +308,7 @@ static bool amd_pmc_is_disabled_in_current_mode(struct kvm_pmc *pmc)
+ }
+ 
+ struct kvm_pmu_ops amd_pmu_ops __initdata = {
+-	.rdpmc_ecx_to_pmc = amd_rdpmc_ecx_to_pmc,
++	.emulate_rdpmc = amd_emulate_rdpmc,
+ 	.msr_idx_to_pmc = amd_msr_idx_to_pmc,
+ 	.check_rdpmc_early = amd_check_rdpmc_early,
+ 	.is_valid_msr = amd_is_valid_msr,
+diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+index 36a2269bbd96..858737504ec1 100644
+--- a/arch/x86/kvm/vmx/pmu_intel.c
++++ b/arch/x86/kvm/vmx/pmu_intel.c
+@@ -85,14 +85,13 @@ static void reprogram_fixed_counters(struct kvm_pmu *pmu, u64 data)
+ 	}
+ }
+ 
+-static struct kvm_pmc *intel_rdpmc_ecx_to_pmc(struct kvm_vcpu *vcpu,
+-					    unsigned int idx, u64 *mask)
++static int intel_emulate_rdpmc(struct kvm_vcpu *vcpu, unsigned int idx,
++			       u64 *data)
+ {
+ 	unsigned int type = idx & INTEL_RDPMC_TYPE_MASK;
+ 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+-	struct kvm_pmc *counters;
++	struct kvm_pmc *counters, *pmc;
+ 	unsigned int num_counters;
+-	u64 bitmask;
+ 
+ 	/*
+ 	 * The encoding of ECX for RDPMC is different for architectural versus
+@@ -105,7 +104,9 @@ static struct kvm_pmc *intel_rdpmc_ecx_to_pmc(struct kvm_vcpu *vcpu,
+ 	 * as KVM doesn't support such PMUs.
+ 	 */
+ 	if (WARN_ON_ONCE(!pmu->version))
+-		return NULL;
++		return 1;
++
++	idx &= INTEL_RDPMC_INDEX_MASK;
+ 
+ 	/*
+ 	 * General Purpose (GP) PMCs are supported on all PMUs, and fixed PMCs
+@@ -119,23 +120,21 @@ static struct kvm_pmc *intel_rdpmc_ecx_to_pmc(struct kvm_vcpu *vcpu,
+ 	case INTEL_RDPMC_FIXED:
+ 		counters = pmu->fixed_counters;
+ 		num_counters = pmu->nr_arch_fixed_counters;
+-		bitmask = pmu->counter_bitmask[KVM_PMC_FIXED];
+ 		break;
+ 	case INTEL_RDPMC_GP:
+ 		counters = pmu->gp_counters;
+ 		num_counters = pmu->nr_arch_gp_counters;
+-		bitmask = pmu->counter_bitmask[KVM_PMC_GP];
+ 		break;
+ 	default:
+-		return NULL;
++		return 1;
+ 	}
+ 
+-	idx &= INTEL_RDPMC_INDEX_MASK;
+ 	if (idx >= num_counters)
+-		return NULL;
++		return 1;
+ 
+-	*mask &= bitmask;
+-	return &counters[array_index_nospec(idx, num_counters)];
++	pmc = &counters[array_index_nospec(idx, num_counters)];
++	*data = pmc_read_counter(pmc);
++	return 0;
+ }
+ 
+ static inline struct kvm_pmc *get_fw_gp_pmc(struct kvm_pmu *pmu, u32 msr)
+@@ -833,7 +832,7 @@ static void intel_mediated_pmu_put(struct kvm_vcpu *vcpu)
+ }
+ 
+ struct kvm_pmu_ops intel_pmu_ops __initdata = {
+-	.rdpmc_ecx_to_pmc = intel_rdpmc_ecx_to_pmc,
++	.emulate_rdpmc = intel_emulate_rdpmc,
+ 	.msr_idx_to_pmc = intel_msr_idx_to_pmc,
+ 	.is_valid_msr = intel_is_valid_msr,
+ 	.get_msr = intel_pmu_get_msr,
 -- 
 2.56.1
 
