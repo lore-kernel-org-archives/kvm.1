@@ -1,69 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795533487;
-	b=r8LDu5cxtYfyk++cs0WnMuJL9UUo5rDPrCFGsWPZFUKv5UpqPQc2L+SS+Yk8TWWxMhhf
-	 rGCFnc6jkYaTL6AMRGT5aua8Vgw0Y121yGbvr6nCAL1NNMia3CyMIy4/rkxb98bUxU9NI
-	 QA+NYP8ZJNZjdwB7/NNzXvmqzv0nB1iwiSVCGa38HgTMDx8Ln3PFSC1v+1+sw2r483/6N
-	 lhLbxMqvAJIt38z0QLfA774vKVU0DURUkoAziJR44d2BQBxoWFDF2z9dClAhiCO5qgEc1
-	 AVN4IbLtQaJU00GBoQtVEgYBt2q2rcnkD1O+K5rfvbqKGLZnM8ONcdDCVjrmGxPmd+w==
+	t=1795533952;
+	b=XxZ2MEM1E1ViOHdlGYWzB0qV8Tef3T1oo/ZIDXn3LRik4lD+HuElmiqCmiJSXF1a447Y
+	 gCk1FYSg8oAm9Zqf2COuJ+cFRAA7PuIMMgwMOySvzadqwhuRg66R+EcXH73juAlC7bUS9
+	 m/qkqni1d9XyO5PVd28zr8V5ej/iX4N9zr2nsHa09HzHt+PZlhrSQ7laqkInclI5GZ0jE
+	 VmGUFJDCSWYGTrMKkPyTT3g/Y5WCeQTbLS0JvoLhYb9PdGHdprxJY1fkv5JTrYfc2iYg+
+	 K3+sUfd07RZc3vbrZbrmFZf59Pof9B3pTBPIkahX/mXy/NV3/wwsFq62JzUKLfi8CDg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795533487;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:Autocrypt:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=ra1Twgfh9jA9NUiT3kKjO7S8JG98ltNrPlCqI5RdaAo=;
-	b=HUWiYPmi0hACDbLpSYoYZDLwz2UnfF5pL45Q9rJFJV8TNcsaGy7x1m0mEKlQGWBX83h4
-	 7c4sWLXB7gc7oU6jZxE9e+4lyxCz2kK06neLOIqPnPE7F2IRLVV/7NS4bfkjpYL6b7cWn
-	 eO6njkq9d1JcWLa18GDkKF/NJLvaOffG0jCQo3mIjwAWQRWhuFSnkPq3DjLd0R/ZSg4q7
-	 InAiKtdcsnnZDB1J7cQp58sK4qZPJk7nKRvSKoCHDmEge+QZ29u4wJTX9cZ/UNA1C19yJ
-	 TmPzUovOQHpcdd7hDRXtZ3wWc9i/nw75uKoQM6NIMrvQ7AhvFPRdGzaaTxuAJsd8tTw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795533952;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:User-Agent:MIME-Version:Content-Type;
+	bh=1UXh4PQJOR3VknqTlOD7G3LYkfB1ZlA2WQOnvCIXzSk=;
+	b=kLq1/+WG4TYcO/uA8IAkGtuy+mV7QZF8nxiKSioWgR+s/CN1rhvTLizJWLtUENrVeb7U
+	 R/4ryCp1D+jUh1SiDuK/uzKhiwBdgnW8iMPZpn3Z0fnhdgT+GEI1U2Fo6ecWeL6E7fAUd
+	 9Mk+97y0WzT9uSFTAb2SbI4gYs+SkiW5+mLsjGDx77jFi4cJjMiuWE6NUxrRw0hQA0VZ/
+	 b7jlWap/BBhip40tN7HhOLD5OoCgDBfo7sXuZ5XWy9pff8bIOFZXc+T1KagCr5CbDy/qa
+	 yQ9QJu9J8ytckSEepFfEECgR+NwocNrnp7gt+u/uG0mtN0gaZz7DXHOAWuPBvjFnBCQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ur3Rd0JD;
-	arc=none smtp.remote-ip=198.175.65.14
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BZKayue7;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBA9606A321;
-	Tue, 24 Nov 2026 15:18:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4DBA9606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C7D606A32D;
+	Tue, 24 Nov 2026 15:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ur3Rd0JD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795533487; x=1827069487;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ra1Twgfh9jA9NUiT3kKjO7S8JG98ltNrPlCqI5RdaAo=;
-  b=Ur3Rd0JD5BDXtl69Dd81Q67iT7NB57EzPB0L37JgfCA/aATbpEkeGLWr
-   bxO6aqmRJHsgmH5q3i1BY7jbWGi1scIBuqiqAZ3ymYz9x4MikbWRDOoll
-   Z216xsT8mNdYzaOgJIpb/3qQI3mR4fq+yrgNxnBLz0NqwDRhIHu2kZ72S
-   EaqEljCQjvqwizWjzBkwBwvTJY7tT+tTdZ6smec+OGMZGdt5doUxNUm3R
-   QX+V9WiR94Ar0uaROsMqplwpGysziFmX5EyrYt1KMGWpI14/xDRTzcoNu
-   xAOmcDMQJ08CJvlBHVLMNkTpvcbDD8Lu2hQDFagpnsCyXasz02WVB2KcN
-   w==;
-X-CSE-ConnectionGUID: wwhT8d8lSOG/P8HpJOa/lg==
-X-CSE-MsgGUID: MOIWSZUWQt2THMtY8nbb4g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4270890"
-X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="4270890"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 07:12:06 -0800
-X-CSE-ConnectionGUID: C3nz4S4CS4mm9LsESrORTQ==
-X-CSE-MsgGUID: PKh01/73Ta6dABOPmwBl1Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="13381574"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.20]) ([10.125.110.20])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 07:12:05 -0800
-Message-ID: <c2cf0aaa-7ded-4223-9ef3-302513b13977@intel.com>
-Date: Tue, 24 Nov 2026 07:12:04 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BZKayue7
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CC31F000C6;
+	Tue, 24 Nov 2026 15:25:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795533952;
+	bh=1UXh4PQJOR3VknqTlOD7G3LYkfB1ZlA2WQOnvCIXzSk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=BZKayue7T+OsylZjV79b6R0ytIW756sZrlscpck2YyZhapT9Gi9uxQD2TAqTTjgK1
+	 Ny12Sm0RAzgn+HtgnA1nCyeqansp2lHh7ivIj/Ix1qFbH4HuVOa8qCEjIyvtoi9D6R
+	 +jHmiVlbd0ZMEtoLUPptwix0CB+DWa1XVAy1+YYY895ci0d7bJUu/p9MbsNhjGaGh1
+	 rfdPKCuFn+l+eN4jST+wJuMHZLweG6N0w74drNJ6WDvCm0j+qp/odn0AgQomKQb69w
+	 XBI0ZPyD+v+OEE7bdKKZ7xDxe6TzGo/x9t8gCGRgnlp50DOQffqNVxBveg3UN2VOyB
+	 +YF0ajNdmMBkw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: "David Matlack" <dmatlack@google.com>
+Cc: "Pratyush Yadav" <pratyush@kernel.org>,  "Tarun Sahu"
+ <tarunsahu@google.com>,  "Pasha Tatashin" <pasha.tatashin@soleen.com>,
+  "Mike Rapoport" <rppt@kernel.org>,  <robin.murphy@arm.com>,
+  <maz@kernel.org>,  <will@kernel.org>,  "Alexander Graf"
+ <graf@amazon.com>,  <seanjc@google.com>,  <jgg@nvidia.com>,
+  <loganodell@google.com>,  <arnd@arndb.de>,  <dwmw2@infradead.org>,
+  <baolu.lu@linux.intel.com>,  "Bjorn Helgaas" <bhelgaas@google.com>,
+  <oupton@kernel.org>,  <alex@shazbot.org>,  <gle.com@google.com>,
+  <pbonzini@redhat.com>,  "Andrew Morton" <akpm@linux-foundation.org>,
+  <kevin.tian@intel.com>,  <joro@8bytes.org>,  <kvmarm@lists.linux.dev>,
+  <linux-pci@vger.kernel.org>,  <kexec@lists.infradead.org>,
+  <kvm@vger.kernel.org>,  <iommu@lists.linux.dev>,
+  <linux-arm-kernel@lists.infradead.org>,  <skhawaja@google.com>,
+  <sagis@google.com>,  <linux-arch@vger.kernel.org>,  <linux-mm@kvack.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 05/19] kho: Add feature header for fine-grained ABI
+ compatibility
+In-Reply-To: <DN2RQ7LGX224.3W3PSQ2PBHTJZ@google.com> (David Matlack's message
+	of "Mon, 23 Nov 2026 09:32:17 -0800")
+References: <20261110050202.529473-1-tarunsahu@google.com>
+	<20261110050202.529473-6-tarunsahu@google.com>
+	<2vxzse0rzjdn.fsf@kernel.org> <DN2RQ7LGX224.3W3PSQ2PBHTJZ@google.com>
+Date: Tue, 24 Nov 2026 15:25:44 +0000
+Message-ID: <2vxz33sqz1xj.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -73,74 +75,113 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/2] arm64: dts: ti: Add tdx vendor prefix to display
- overlays
-To: Francesco Dolcini <francesco@dolcini.it>, Nishanth Menon <nm@ti.com>,
- Vignesh Raghavendra <vigneshr@ti.com>, Tero Kristo <kristo@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org
-References: <20261124124207.199382-1-francesco@dolcini.it>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20261124124207.199382-1-francesco@dolcini.it>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 11/24/26 04:42, Francesco Dolcini wrote:
-> Add a "tdx" vendor prefix to the Toradex display accessory overlays of
-> the Verdin AM62 and Aquila AM69, and a "-v1"/"-v2" suffix to the
-> Capacitive Touch Display 10.1" LVDS ones.
+On Mon, Nov 23 2026, David Matlack wrote:
 
-I know we can't avoid all name collisions in the tree, but I do think
-calling this thing "tdx" is going to confuse folks, like it confused
-get_maintainer.pl. ;)
+> On Mon Nov 23, 2026 at 6:56 AM PST, Pratyush Yadav wrote:
+> [...]
+>
+>> When we have all this available, I don't see the point in
+>> differentiating between optional and required features at the ABI level.
+>> At the ABI level, all that matters is what the incoming kernel
+>> understands. If the incoming kernel does not understand a specific
+>> field, the outgoing kernel should just not use it. There's no point.
+>> Best case, it gets ignored.
+>
+> I pretty strongly disagree.
+>
+> An optional feature is one that the next kernel does not need to
+> understand to correctly restore the object. A required feature is one
+> that the next kernel must understand to correctly restore the object.
+> Optional features can be enabled without any compatibility concerns.
+> Required features must be enabled carefully (IMO via uAPI) to avoid
+> breaking Live Update.
+>
+> I agree it's a good idea for the outgoing kernel to check that the next
+> kernel supports all of the required features it is using, so the Live
+> Update can be stopped before the kexec. But that doesn't remove the
+> need for the distinction. The next kernel still has to decide what to
+> do when it sees a feature bit it doesn't understand, e.g. because no
+> spec was provided, the spec was wrong, or we kexec'd into a different
+> kernel than planned. Without the distinction it can only:
+>
+>  A. Treat all features as optional, which risks misinterpreting state
+>     and corrupting memory if the previous kernel did not properly
+>     validate the next kernel's capabilities.
+
+Right, that's a bad idea.
+
+>
+>  B. Treat all features as required, which means no new feature can be
+>     enabled until every kernel it might Live Update to (including
+>     rollback targets) understands it, even when those kernels could
+>     safely ignore it.
+
+I think this is what we should do.
+
+Why do all kernels need to understand a new feature?
+
+If a kernel can safely parse an object without ever looking at an
+optional feature, why set it in the first place? The outgoing kernel
+already knows its target can't understand it.
+
+So say you add a new optional feature in kernel X+1. For a rollback, the
+kernel X+1 knows it is going to X which doesn't understand the feature.
+It should just not use it in the payload, which means it never activates
+the bit for that feature. All the feature bits X sees are the ones it
+understand, and everything goes smoothly.
+
+And to be clear, I'm saying that the feature bits in the ABI header
+should be set dynamically based on what is used in the payload. The
+feature bits in the spec are static. They say what the target kernel
+understands. The feature bits in the payload are dynamic. They say what
+features are actually used.
+
+>
+> Neither of those is a good outcome.
+>
+>> The semantics of required or optional then become "can I describe this
+>> object with the capabilities I can use?". If the answer is yes,
+>> serialization succeeds, if the answer is no, serialization fails. So
+>> with this, KHO_MAP_F_MULTI_INDEX or KHO_MAP_F_DYN_DEPTH are indeed
+>> optional. All memfds can be described without these, they just will be
+>> less efficient.
+>
+> I think this is a different meaning of "optional". Whether the outgoing
+> kernel can choose not to use a feature is a decision for the serializer.
+> Whether the next kernel can safely ignore a feature's data is a property
+> of the ABI. KHO_MAP_F_MULTI_INDEX is optional in the first sense, but
+> required in the second: a kernel that doesn't understand it will
+> misinterpret the map. The header needs to convey the second.
+
+Right, which is why a payload handed to an old kernel should never set
+KHO_MAP_F_MULTI_INDEX. Even if you have a property that is truly
+optional and ignoring it will still make things work fine, why would you
+want to set it in the first place? You know it will be ignored, so just
+don't use it.
+
+>
+> So I see the spec and required bits as complementary: the spec lets the
+> outgoing kernel avoid features the next kernel doesn't support and fail
+> before kexec, and required bits let the next kernel fail safely if that
+> check was skipped or wrong.
+
+I see a marginal benefit in setting the optional bits by adding a tiny
+bit more safety. But even then, it only hides the real problem. The
+previous kernel should not be skipping its checks in the first place. If
+you're lucky, it might only end up using an optional feature and you
+might be able to ignore it. But if the checks don't happen or are
+broken, you'd be just as likely to be unlucky and the previous kernel
+might use a required feature if it skips the spec checks.
+
+I don't think it buys us any functionality. It just hides the problem in
+some lucky cases.
+
+In fact, we could even add a "strict" mode in the future, where the
+outgoing kernel refuses KHO if the spec to the incoming kernel is not
+provided.
+
+-- 
+Regards,
+Pratyush Yadav
