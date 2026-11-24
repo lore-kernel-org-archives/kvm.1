@@ -1,127 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.8
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795535337;
-	b=bTg9TdpEV8j1rsGnWO0GwrXP2bDUu3Ej/pDRZgiK0dS1wecMg6ku0PFcygnrnzF6M7EV
-	 pfYHgp/6KRwAZTApyN02WWPyj5Ct0JOk3RqH3v9zWykByomWDYUOb+hwDBbVqjiRLm69M
-	 AG4ILsBQMQBRyaGzwKZsSQeRqT4jLdZdZ78RSc5UP3vjZIkiut5tG9MnwNPah12hp9FSP
-	 bJHycS12F6Za/abqOMStizgsND0aHeStBsHFgdNvpm9F+/D7NXQ9PzbblyJzQ8M3WQTKP
-	 f5roLGDguTlAgRi5GDQwm5Kxzmku7BivQ2xPoycQuRsc/AgdTY+D3VqTISUw7ymXWGQ==
+	t=1795535560;
+	b=zei1kHmmxjZ/HHX9qxoby59cc02f4rKlnzohCqMXe3QaTbIDaqo0u6YRU0I3zO1zsNHi
+	 d6j+G36A26/wTRmiZbCdNdn23CGGbW4CP9Etgr2Y0szLvo7MJU9V4R+qwJOtDgwDyL9/0
+	 s5QrZi8gCuZUxYZeOTAubIve/y+VENZ/sqGjQSrj1yV+NW9Wi8wqIkLFHrsd3oo4bCLX/
+	 1GnWRUxQLfH5pA92gJOsN0rYxAnFz8JzYFCkL9MOcH7HhD7Df4LT1VP6h/kDf+yfISMkz
+	 roj63ZYd5Y/6edhmxxbsY9jNP9PQ8cqflqUElLyhZKRwG8myDkCQjl5VTy8RePR21JQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795535337;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
-	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
-	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
-	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=8mynfBTXLTLRL08nBCH75GUqigjj9nkhtx3ZV0Dcgmc=;
-	b=gFMMvs8CYOsrJhlkV9Zq42+jlk9vplg1mc9IqvwVoxvbvICU8czU7JoxDnHcHFmujvV7
-	 HH1H0t6ScBR7Bb4UfQoSyQapc0J0kKaLnc6hJ1lZWD/9Ojzvwf/n42Og7C7kodTCRtwiz
-	 vzju8e54OgCx7tsZj1STiFVu3Btsh47OikCa8d2xXzOFvfR7VlHlCOUsGzxbvbyD0PvYA
-	 JOMX+i0LlMDGvejUu0LaJQT5ppkAern0xYtbSLG74/o8qFmCRPEyosX9fZgPsw/MrVQ8F
-	 YzMdePpv2+GaBkiAiGGHvUlgrdXQkfoLQ4X8w0eEamMM0P6190H1Bn2abnzOSMDSH8Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795535560;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:Autocrypt:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=gm5fNwlJqcFuxqPjO1B/q3/csBij+DiO8h1pGLel3/o=;
+	b=bZNIfMCPZkJWRfVBXnMlHITTicTYY/y8hulRPaw6BeYJ5e/pudbJY74RY0h6iGlXEYe/
+	 zgbRT8hoJDBmVYFLNE7YGx0nCZVWXsKdtbiJoYwlJsfeaoYbOsUYxI+1HoSC9rgaeO77o
+	 nqVJWqD6kZCDWekW7B/dIHcM1lo+jl9UXIvxWE6iSNp46ORW/pLh+36jHPTIZTz/2/NdG
+	 f8TT3jZUv6iTkOsVFmPeHpHLKAGrtc3/uA49XoQQgdKyClgzFLRcoCDnAqMNCVBe/FXvv
+	 XYYV5sk461FRB7Ehko7uyA2niHtH7QeeSBUv4xlJtN8x7B2frtwyFi0Bng1puNJGhqw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=shazbot.org;
-	spf=pass smtp.mailfrom=shazbot.org;
-	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=vmabcQfE;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=TqKYbNy6;
-	arc=none smtp.remote-ip=103.168.172.148
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fUp0w4Wy;
+	arc=none smtp.remote-ip=192.198.163.8
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEC2606A31E
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 15:48:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6FEC2606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33951606A31E;
+	Tue, 24 Nov 2026 15:52:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33951606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=vmabcQfE;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=TqKYbNy6
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id 8541FEC0939
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 10:48:55 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 24 Nov 2026 10:48:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1795535335;
-	 x=1795621735; bh=8mynfBTXLTLRL08nBCH75GUqigjj9nkhtx3ZV0Dcgmc=; b=
-	vmabcQfEeBSTqCtiQa3TgJOQYWTGwXQn0jhifjm94rlTqHi9MSJfIlluNp2IDaXn
-	xpFqR06/eGsyym4w7slLy/YRueYPc3e+6wV0fwHEkZyQhbhNukyf0rR5IHT2HZW3
-	Qsz+QF93rb28mosdW58zBKaTAQu0wbXcgwXF43e8oQNAb5KlfIMzArl9DGJJkzud
-	qgoNSRZ/WAomTo4ijMw/nxMoyxAfF81t4xt1nEZ1pYYkqJGameCi87Ee7d5ZrdkK
-	+C8+2HKUyqViLVuth1dfIgW6V+47LCDw4QtvA9xh0OdD9xb7MyellYS7+LJsrrJN
-	E/ZyUMjVXnyQ4QMqo/JVww==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795535335; x=
-	1795621735; bh=8mynfBTXLTLRL08nBCH75GUqigjj9nkhtx3ZV0Dcgmc=; b=T
-	qKYbNy6cQnnXUkLZyZby7hya+QwPh7RD4QutQNP/0zcgaXVx+W34n4bnN+WFSbpe
-	E4cRXGIUj/k4+EGkA53n7O4M7sF9eiNKhODXm4xFB1Fgi8w6wn2YBdY1f5FYcmrH
-	svaRUgWJGETEBajlNekdEt8+V73VA2WRjH32k0BRs0vCcm4zEE7xw5QEdlh17IHB
-	a8KykxBnpVzKm8JKBiJ1s/zU0o0wKJZO77ZqWGMZeqr3hGEj46+VgsoKfBSKHbaQ
-	7vquAQ6W30p4zJuBDCCo5L29R/6384/ThpK502SsfiKoYj6XCx15N7tAzltl4Enp
-	AP4rar6tiorTwPgpSHaSA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1795535335; d=shazbot.org;
-	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:Cjdhxk/iJ4cpJyfrmkn38JTIlOb2vVGyXa8TF/hewZ52uu2
-	+FFdHi214yKQm1aYVC4jwDLaAOhZXBws0JT++UxZ/EgUjq4cUAuda2PNTJN1r4lI
-	DzaEZrEOQfwCCesNNLyd79Sgd7NmSOGD1qhuOPOaF9dOMosho+x0PPNoiifR6C/W
-	xipYpeTxnmKEYbMGcjef+opJuObUzJIpLRtdlxG0QLBhgZCPO9iXO7OUDMYMZvFF
-	3hiKD71bMK3W0CW8VTF/gr9Lkun1VFpzg8pqJskRsoQj9FvmPC9+uJXzKYgTq13T
-	M+sOdrwV5nMJvgscLZjKlHxRQwtHdXkvNUF2a/g==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:HVz3vmfsL2H6NQMvLHM+YGN1J2vDoLIcqITeDiwIIWQ=:ONVX5rzH48Ec8Y3m4PXq9ipVT3IfEVRmxwNxufszr1I=;
-X-ME-Sender: <xms:57EFa7TdtCNP8WeaCPIBToMrX0jM5bptjHZX2qQmkYbkumDWdqrVOA>
-    <xme:57EFazKcjH-TbCrBqvJjBi7KJwhXnhWUwjlr0-f-EuvJR-1F_kG3xfYnDzQaQ7-hB
-    n1KK4hutEWtjqm2Q-Mjk8oBcaU3FNbaxR6gyDhXki-VKcyQeIG_r6E>
-X-ME-Received: <xmr:57EFa9GOO3qb3bSkF4M0Mg4bTomxgzP1M4sscGPCzQRveWM7Dvah8NJF1SXcmA>
-X-ME-Proxy-Cause: dmFkZTEABe8AGurdNXDO/if1oYlc8MDAkW1gbQGMMfJXgZWY8W4a59MOzUpx7ds+yqFlGp
-    U6BODVQeglpIHXyHQPXnFZ7bOEWFVHAkSwkxYDWQ+QDt5pBQ1j04sR0bEOF7YR2CQ2Do26
-    b4r0chTt0q9dmm8Im1spKiygwe3W5B0P0V4IrNLsLdAHD9A36MZD+FLHAOvh48LrqLBHZF
-    H941Nba3PikloQWW5gfWH0XB27bA1VVnzHA4VtVp5u7hJOaICtrbbLpCmLhF1uciQUkzOV
-    oEHzZb6yfG6l0PI0lAEBa60sglPmq+gSYCekuKTAPOhdYmwzrtDw+e+gY+M3qKCouYUTFg
-    pnDZOS4vYLHHWWOuw3jlFuykVriCFmbSoO+8Q+OdfsarNS9emuP5kDOdm/weBXKd4JNuOJ
-    arw4sVEiXFjHDEEzvVhcQAL5nNsot94+ZYeRfuxC1Qk3wi7VR2dDefgMFmuAMvnlCUSv9p
-    rXiYVP+Wyy5Rr+oTqfC5nCZNum80cOXfyyMceaF0kPLuECFe60u4LC9Kcxg1npXoFL+Rdc
-    ov2wDHlLM4Z1mwz3Eicy5IVuz9Wz+unWgU0IRGbpERoP9H13Jko2zTZjRZmIkH8gGXSpkP
-    /CCxHxL+BJgC4wAACNZH69v1b/+IsAAWguq5ROF4qZkQ00CNwuy22vn722ig
-X-ME-Proxy: <xmx:57EFa400xdk1rBTpyDNG-UxLdYmT3DFClQDV0QLVApm5JiQ9L91UfA>
-    <xmx:57EFa9IYFDeqk0B3LiGiJrAzvomN8vGgJUE7mK5BGIJGHBGcBne-xw>
-    <xmx:57EFa12JHY1RFpfXtWT_BYt5OP5eRpcyJJyOnW_5Fx7l-WEUy3k-6Q>
-    <xmx:57EFa5ntpmAkA1EEg39eU8-I7L-FFbvPqOUoJTAtaaYX0suYHeDu1Q>
-    <xmx:57EFax_pqzL2OXK39fcIl5GKLNrhN2d7AykV9mcTtWNxhnhLg684VT2U>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 24 Nov 2026 10:48:54 -0500 (EST)
-Date: Tue, 24 Nov 2026 08:48:52 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Kevin Tian <kevin.tian@intel.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Anthony Pighin <anthony.pighin@nokia.com>,
- Dave Jiang <dave.jiang@intel.com>, Dan Williams <dan.j.williams@intel.com>,
- kvm@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH] vfio/pci: Only lock the upstream bridge if the reset
- may need it
-Message-ID: <20261124084852.661dd7c1@shazbot.org>
-In-Reply-To: <awC5Ldqmue6DiO44@google.com>
-References: <20261112235700.2029562-1-skhawaja@google.com>
-	<20261118163706.7138d246@shazbot.org>
-	<20261119143237.4bf54796@shazbot.org>
-	<awC5Ldqmue6DiO44@google.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fUp0w4Wy
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795535561; x=1827071561;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=gm5fNwlJqcFuxqPjO1B/q3/csBij+DiO8h1pGLel3/o=;
+  b=fUp0w4WyrTXlKJb5rUQRijDyRdGwN6cHEGNIEC/nJLn74haGoONyzM6w
+   i7F3CMjWpqgYD4C8+tsQeVI8TlepuS0Pxxls/lvtf8NlqsbwAevf/3zgI
+   obIlFx29V+qdZbsLViR30/IyO8mYSn45amZfgwOsEwx06Oo+sLSooJjRA
+   F58GhwaGDFtysYOeC6oPT8u0iVg2wfEu+0vR8kJI456Q1L1j2AYL+whGX
+   YnYY0u0PBd4UftbLL4llH3qtcUp878W5+dnj3BhVN7/vPsAiltVcKlOZL
+   SNxSOevJJly8/1Thm5M66q+hhTWUY21Cqvm5DVBELPO9itAPBOhwfFZ0i
+   g==;
+X-CSE-ConnectionGUID: suPQF6awRmSqjk/e57gt5Q==
+X-CSE-MsgGUID: yTdmCumpTpKWkgUF6lV29w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4275741"
+X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
+   d="scan'208";a="4275741"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 07:52:08 -0800
+X-CSE-ConnectionGUID: tTyNjdacS4qMa2p2hLUkXg==
+X-CSE-MsgGUID: IMYDL46zStyvFFaZzSY0WA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
+   d="scan'208";a="11474866"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.20]) ([10.125.110.20])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 07:52:04 -0800
+Message-ID: <a4b33822-25a6-450f-a2cd-5931d015f484@intel.com>
+Date: Tue, 24 Nov 2026 07:52:03 -0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -131,134 +73,83 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/fred: Add this_cpu_fred_sp() and export it for KVM
+To: Sohil Mehta <sohil.mehta@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Borislav Petkov <bp@alien8.de>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>, Xin Li <xin@zytor.com>,
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Binbin Wu <binbin.wu@linux.intel.com>, Tom Lendacky
+ <thomas.lendacky@amd.com>, "Chang S . Bae" <chang.seok.bae@intel.com>,
+ Chao Gao <chao.gao@intel.com>, Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261124015840.2673975-1-sohil.mehta@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20261124015840.2673975-1-sohil.mehta@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Fri, 20 Nov 2026 22:21:16 +0000
-Samiullah Khawaja <skhawaja@google.com> wrote:
+On 11/23/26 17:58, Sohil Mehta wrote:
+> FRED adds fields to the VMCS host-state area for the stack pointers of
+> stack levels 1 to 3. The CPU loads these pointers on every VM exit to
+> ensure a valid FRED event delivery context is established immediately.
+> These values are per CPU, so KVM has to refresh them each time a vCPU is
+> loaded onto a CPU.
 
-> On Thu, Nov 19, 2026 at 02:32:37PM -0800, Alex Williamson wrote:
-> >On Wed, 18 Nov 2026 16:37:06 -0800
-> >Alex Williamson <alex@shazbot.org> wrote:
-> >  
-> >> On Thu, 12 Nov 2026 23:57:00 +0000
-> >> Samiullah Khawaja <skhawaja@google.com> wrote:
-> >>  
-> >> > Commit 962ae6892d8b ("vfio/pci: Lock upstream bridge for
-> >> > vfio_pci_core_disable()") makes vfio_pci_core_disable() trylock the
-> >> > upstream bridge before resetting the device, and skips the reset if the
-> >> > trylock fails.
-> >> >
-> >> > All VFs of a PF have the same upstream bridge. Take a device with two
-> >> > VFs, both used by one process. When the process is killed, both VFs can
-> >> > be released at the same time. The first one takes the bridge lock and
-> >> > does its FLR, the second one fails the trylock and is never reset.
-> >> >
-> >> > The bridge lock is only needed for a bus reset, which is done through
-> >> > the bridge. A VF is reset with FLR, and pci_parent_bus_reset() never
-> >> > resets the bus for it because the PF and the other VFs are on the same
-> >> > bus.
-> >> >
-> >> > Add pci_reset_needs_bridge_lock(), which returns true if any reset
-> >> > method enabled for the device is a bus reset, and only lock the bridge
-> >> > in vfio_pci_core_disable() when it does.
-> >> >
-> >> > Fixes: 962ae6892d8b ("vfio/pci: Lock upstream bridge for vfio_pci_core_disable()")
-> >> > Cc: stable@vger.kernel.org
-> >> > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> >> > ---
-> >> > Tested in QEMU with an igb PF behind a PCIe root port, bound to vfio-pci
-> >> > with two VFs. Both VFs are opened through VFIO and then closed from two
-> >> > threads at the same time, counting FLRs with a kprobe on pcie_flr().
-> >> > Without this patch one VF missed its FLR in 50 of 50 rounds, with it
-> >> > both VFs were reset in every round. I will send a VFIO selftest for this
-> >> > separately.
-> >> > ---
-> >> >  drivers/pci/pci.c                | 28 ++++++++++++++++++++++++++++
-> >> >  drivers/vfio/pci/vfio_pci_core.c |  3 ++-
-> >> >  include/linux/pci.h              |  1 +
-> >> >  3 files changed, 31 insertions(+), 1 deletion(-)
-> >> >  
-> 
-> [snip]
-> 
-> >> > +
-> >> > +		if (pci_reset_fn_methods[m].reset_fn == pci_reset_bus_function ||
-> >> > +		    pci_reset_fn_methods[m].reset_fn == cxl_reset_bus_function)  
-> >>
-> >> This looks like a maintenance nightmare.  What if instead we did
-> >> something like:
-> >>
-> >> bool pci_parent_bus_reset_possible(struct pci_dev *dev)
-> >> {
-> >> 	struct pci_dev *pdev;
-> >>
-> >> 	if (pci_is_root_bus(dev->bus) || dev->subordinate ||
-> >> 	    !dev->bus->self || dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET)
-> >> 		return false;
-> >>
-> >> 	list_for_each_entry(pdev, &dev->bus->devices, bus_list)
-> >> 		if (pdev != dev)
-> >> 			return false;
-> >>
-> >> 	return true;
-> >> }
-> >> EXPORT_SYMBOL_GPL(pci_parent_bus_reset_possible);
-> >>
-> >> static int pci_parent_bus_reset(struct pci_dev *dev, bool probe)
-> >> {
-> >> 	if (!pci_parent_bus_reset_possible(dev))
-> >> 		return -ENOTTY;
-> >>
-> >> 	if (probe)
-> >> 		return 0;
-> >>
-> >> 	return pci_bridge_secondary_bus_reset(dev->bus->self);
-> >> }
-> >>
-> >> Where we'd then condition acquiring the bridge lock on whether it's
-> >> even possible for a function scoped reset to perform a bus reset.
-> >>
-> >> It's a bit broader of a test than whether we actually have the necessary
-> >> methods in our reset_fn list, but since we're not locking the reset_fn
-> >> list between test and function-reset, it's also safer.  Thanks,  
-> >
-> >After exploring Ionut's patch[1], what I propose above is probably
-> >wrong.  We don't have any guarantees that the sibling topology is
-> >static and this bus-reset-possible function presents it as immutable.
-> >The existing bus-reset function has the same race, but the gap is
-> >smaller, let's not make it bigger.
-> >
-> >There are however immutable properties we can test that cover a fair
-> >number of cases.  For example:
-> >
-> >bool pci_reset_function_needs_bridge_lock(struct pci_dev *dev)
-> >{
-> >	return pci_upstream_bridge(dev) &&
-> >		!(dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET) && !dev->is_virtfn;
-> >}
-> >EXPORT_SYMBOL_GPL(pci_reset_function_needs_bridge_lock);
-> >
-> >We should be able to use this as a condition on whether we acquire the
-> >bridge device lock, in pci_reset_function() and in vfio-pci code.
-> >Thanks,  
-> 
-> This sounds good and it will also fix the bug that I am seeing.
-> 
-> The only caveat is that pci_dev_wait() might fail during VF reset and
-> then it might try to do a bus reset if the VF is behind a pciehp or CXL
-> port. I would prefer to do it only for vfio-pci code as that is where
-> the reset skip issue is. pci_reset_function() takes the lock and
-> serializes the VF reset. Are you ok with doing it just for vfio-pci?
+Sohil,
 
-I think the test I'm proposing precludes a bus reset, ie. there is no
-upstream bridge, the device flags prevent it, or we're provided with a
-VF.  It's only those cases where we can't do a bus reset anyway, that
-we can skip the bridge device lock.  I think that means it's useful in
-PCI-core as well as vfio-pci.  Did I miss something?
+We can take cleanups that both make sense for non-KVM FRED code and are
+_described_ that way. We can't add dead code, or take things that have
+changelogs for code that's not in the tree.
 
-I do see that cxl_reset_bus_function() only does a cursory test for
-probe, but then calls pci_reset_bus_function() when it executes, which
-is an inconsistency issue of its own.  Thanks,
+In other words, please write a changelog and send code that has nothing
+immediate to do with KVM. If that's not possible for a given patch,
+that's a pretty good clue it's not a cleanup and can't be merged early.
 
-Alex
+Anything going in early has to stand on its own, please.
