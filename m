@@ -1,113 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.222.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795540081;
-	b=kmRaExIkYF25Luh69bFuPZEiq4+CtqAg83/GTP1+B0RE4gCkq/jf0toYctuA/6AVDIVm
-	 /ThiAr+DjAd4oea1nUhyAUDL2/KqkM70F6fWpDnuuSQa7VkKu9NPBG/R/8DC50cZWhi58
-	 p9cVzL/th3HJ3F+v6Ybzd0XxjItNvzrg5kueaitczHEXNKUjZ/R1mLGBBVW5pwkvkeivR
-	 lNB98kTN296T0MjM2/3wcmcFEtJzlIiRatavFQrEf+cszqOCCsxpyxkm6L2AClYuzzY7z
-	 f8ulVqEU/jF507U+od6Ah8Y7d2+KBrNlx4sOnRd4fu6amvy7Gqfa6HgZTz2ldgltKOQ==
+	t=1795540100;
+	b=FsocQdSgYBIhkNgfhQSFsLAJlmvM4CmIz7YytcUorNTV7bmmTGemOnUmqe3tvSei0NHb
+	 IGiZXofQ8lkEELFxWAYkCWC1M9pCfK0HpdPM+7t2uDjOsgYaabUzt39Q7vL59netablsq
+	 Smu5j/MB9aEuyZtdpCXZRArY2WMqvsC2mYguILF1STYdLrs25n3HCfquAX1o4CO6+5TMx
+	 H/5oL55pDq5NFJd1e/xPia0Wo6rm5AmJmbSWNFaG1WswyGvAqj4wnMRom/1eF6wjzBgEx
+	 MJtsSrpuNErFiXbbouf9uLzzQDUlZiTCWjxxDcAYtNb9eHTAkhPF0Fd/H+HJZqyfTlg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795540081;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=u9RNgucBnI08qUwk1iWfTQpaGbeV2FiwOEeQoPQxy0A=;
-	b=i+BzALEYq0tF2SpG6dqJ8YVlJ9DwKG3+LZ5Huk1ef88oBLqbNb4WsP9byjAZSj31vDDu
-	 9Dj9RTfoHueua+N4kaxNK22fPbXeJQUVSbDarN6FAfygZN/KVDIXkycNfzghIWhR/VVfy
-	 y/vqboM1OTRAqFJpvDJ9U5iyfgQnH8gTHk0ur7DZ0gBju6DZXg1a1l6Cdvw0q1O5vrrZA
-	 AtNJ3EL8+csL2vw8tiK6sWRWsyj1g1bRtWLLqPV7K6GHjtLPwHrFgV0fsgMv/yvuS5Of5
-	 8zKSa4NndR4w5ZQUPEsHlCauJ37g9KzS67p2S/9rM3Ug1uILgnK5gSUT9ck0UdMgfHQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795540100;
+	h=Received:DKIM-Signature:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=aqZtH0oPe0w0iyR81y6Fx2M9m70KmY8puMtxeRbq+2o=;
+	b=eN3mvG51YrPXYxCwEsUdFDQhRvKF5RUCAPwz3xUajZT9AlaSP7ytZR7LeVe03XrAHqNB
+	 JCL3TXPq2NuQEz2/iuVdVq3q83+202AnXLpZI10E5BRjaaO1iGFUQhE2irB65D1DDP0rD
+	 PMD8Cplg2lc6yLeWg9GIvV+8GcDA6oqio3v3sTt37iYIYiaGFSxuFxa9ebHS07kKwU1Ph
+	 yHoknUI3+8CCbMqdUjain/Z9LcMP2GZ1LrEG1kRhLLnfL6TMmtSWr4m44SZ4HuJe8qmbe
+	 yk/zX0Q6OFjcgyXx0ze7yUD/11+lIh0WmCeokTuJWWajOxQWMtPs6G6SykJWG8jLD+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=eoJBA6IG;
-	arc=none smtp.remote-ip=209.85.222.49
-Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VCuJxO6J;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5789A606A327
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 17:07:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5789A606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B7F606A69D;
+	Tue, 24 Nov 2026 17:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=eoJBA6IG
-Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-99e0db26c4bso1323005241.2
-        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 09:07:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1795540075; x=1796144875; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=u9RNgucBnI08qUwk1iWfTQpaGbeV2FiwOEeQoPQxy0A=;
-        b=eoJBA6IGpXZKdesYLQ+KB7Xjo6AJ4qRDJ03h5h0ODj6CqwajC0zq1sBm2lyIx5+pT5
-         IXc4kIUNGgUGsr0o898YmiiT2U3e9ADqu6XarwH7ZxdSIR3vZn8VMNk2X/hSArEggZCy
-         cv6eUweUN7Z2Kp1cApPyTPLuNcHcH3WHLXweCYjUSUbkauY+BzaF0U40ELSTaaRza63t
-         m2XUT2IjlkHJ4noO2/vGjR/INqfPTp3RzTPSCKeFavLhn8uRz/VT3jLU94VbyEK+nlr6
-         TSgtGiodl0JoPkqmm3ro16Vt9N2/MPHVnYAhCLMtCCYwZke34x9sp/aOTSzfBJ+fMnF2
-         wR6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795540075; x=1796144875;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=u9RNgucBnI08qUwk1iWfTQpaGbeV2FiwOEeQoPQxy0A=;
-        b=MDDUFVnXUAKfsVDjlqnMSMDNpVQrRURDULsT0ZtTWgP5csVL8l2pXWLlAmTfueN99o
-         UCMizPbY5AbatGRU+vnzgAiKitYlXguCrJ51to/nDYJ5iD+LMMxDDmbebnK6/a+56ySe
-         5lm3RI7c9SADDWvPW4BKuSTws4wFdbR3or7iEI36Ddw9cB+CtjoBYTI03I3m/ATuf5qK
-         souaFdrbWzRG7wm6OiywHOOSlmeyW+H606RW3S3ab+O6SBlfcRBgfupKcZpghCRJd45s
-         L0SXEs7pzCdT2x3xK+7s+rsP+80XPizkvpuAwAFc2keLUjIGLfI1l5/3OrTmGzINBkMU
-         WCEA==
-X-Forwarded-Encrypted: i=1; AL+hErHG+iHuDcz6ExZ6prhms8/wnJD5m/xoLYUCPW4BrOTyo/4wNikfuWLvnIXuo/K8PUWTcrA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8YZ62WqO85FWhtZMd6Wf8uaZccGuX3K3Jlg/xkPpuVPylM1Q8B
-	wu4VbMgshAOQFBXdGWIjl1b4IpUSi2m1reEW5fLT7QexxKuFn8lWZp6fBPfmgo0eTcw=
-X-Gm-Gg: AZFdTZeg+8IbhqWAJnuP7bRtoWvMFOk+2Ck9Iy5c8zrBwzGl/jApqAUGxEVDKPgb0HH
-	6ffIIZr2p4vWHlNUdWGkLE9/yruQ3yqOAAMrvpIUsogaNQcULWL+MwIZBSgPFuAwUNao6hBmnLf
-	BKMBBJtFWlm44aGm7i4MQX38bAA8g7AlOcBuo+m2F+jShF7emf6z6Ikh9PYItYQX63Mao8ySonC
-	tfSPq0KdMB/02qeGRokiqyOf5JZVaBpUjt9eiQUmk7h1Zu4BlCnjUKrRMlW7NA3BmmLM1Uyx391
-	usr/fKC7A1EDWgOFA9s8bxcufOq8s/ZUi8r3mlifNwnPziKP1Zflg4dCnrNC/jpKcVKmxnzlOD7
-	PhN0Z9r7ejdMwSQndrVDp9I+UuMV8y3LkZffwYGtdHjQoaaIUtbif9FKh53uLXIe9hlp/q2TVK0
-	PdhF/bZ4NJ3CE82fMQRf+7vS6jBpgTm457I6ffuCjWRkt/jeebg0uaVZfB7AW3HYo+lF/L8+29i
-	PTGUz3d9XmpPKGeW7uaRy8Vkn8l96cPIgotUd2dlaw8/0MqRZzd4z93tu3polUmRMQsth3ToR6v
-	Wk3wmQ==
-X-Received: by 2002:a05:6102:688c:b0:7ce:a69d:b020 with SMTP id ada2fe7eead31-7d72b36164amr6731183137.5.1795540075186;
-        Tue, 24 Nov 2026 09:07:55 -0800 (PST)
-Received: from ziepe.ca ([142.177.118.84])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-921366d853esm132634586d6.27.2026.11.24.09.07.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 09:07:54 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xVtzm-00000000uyF-0Lng;
-	Tue, 24 Nov 2026 13:07:54 -0400
-Date: Tue, 24 Nov 2026 13:07:54 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Lukas Wunner <lukas@wunner.de>, Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v1 02/10] coco: tsm: Register the TSM class before device
- drivers
-Message-ID: <20261124170754.GB114530@ziepe.ca>
-References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
- <20261123083337.2731019-3-aneesh.kumar@kernel.org>
- <20261123152903.GG179082@ziepe.ca>
- <9f92f7ed-5198-45aa-9cef-515ccbf98398@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VCuJxO6J
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B29B1F000D1;
+	Tue, 24 Nov 2026 17:07:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795540099;
+	bh=aqZtH0oPe0w0iyR81y6Fx2M9m70KmY8puMtxeRbq+2o=;
+	h=From:Subject:Date:To:Cc;
+	b=VCuJxO6Jjypj5DbUmhoytQziZJ5vLJGTNMNo3cqRxIUYh8Jzq3skhseCD0u5fRyjP
+	 C/2WEanKtLteavWso/oU3UJ6UtR3j3y9fK26/Wq6ytkGMpgt3chyo6ZXZEhXOKNaw5
+	 OJMyuJjnDYiBEsWgq3CJ337r7u+4G0BQSS+X4PEGurGZ29cGJXvYGBp2B0mKK810FW
+	 ftHg7joprB1aheUbxHOLTyL6VRQThAY1CflxS92AdC+zCo1MDGX49CRqEYciw8D45w
+	 OC/jVpT6VeMvEyweIbi7je9qiB2n4OB0NEcoB8q+V0O4UJwKh+CmIRZljhTIuC+2Js
+	 dix6TOTy+6I+w==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: [PATCH v2 00/11] mm: continue vma_flags_t conversion
+Date: Tue, 24 Nov 2026 17:07:52 +0000
+Message-Id: <20261124-late-2026-vma-flags-v2-0-bf3fade93064@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -117,28 +53,164 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9f92f7ed-5198-45aa-9cef-515ccbf98398@amd.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAA/23NQQqDMBCF4auEWTslY2oEV71HcZHqGEPTRBIJL
+ eLdi0J3Xb5/8b0NMifHGTqxQeLisosBOlFXAobZBMvoRugE1LLWRJLQm5XxWFheBidvbMarpla
+ R0UoPCioBS+LJvU/13lcCZpfXmD7nSaGj/rzmr1cIJcpRDSM15tE20+3JKbC/xGSh3/f9CwLCI
+ fm3AAAA
+X-Change-ID: 20261101-late-2026-vma-flags-461731a636c3
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Rik van Riel <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+ Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+ Gregory Price <gourry@gourry.net>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Alistair Popple <apopple@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
+ Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, 
+ SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>, 
+ David Rientjes <rientjes@google.com>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Arnaldo Carvalho de Melo <acme@kernel.org>, 
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+ Adrian Hunter <adrian.hunter@intel.com>, 
+ James Clark <james.clark@linaro.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+ John Johansen <john.johansen@canonical.com>, 
+ Georgia Garcia <georgia.garcia@canonical.com>, 
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+ "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+ Roberto Sassu <roberto.sassu@huawei.com>, 
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+ Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
+ Stephen Smalley <stephen.smalley.work@gmail.com>, 
+ =?utf-8?q?Ondrej_Mosn=C3=A1=C4=8Dek?= <omosnacek@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ kvm@vger.kernel.org, damon@lists.linux.dev, 
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+ apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
+ linux-integrity@vger.kernel.org, selinux@vger.kernel.org, 
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3964; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=AxeX6Zqxak7Ff0FGtjI8UQufUYyumqYNiaGRAt4jiII=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLJZj+RGMUybXCrDUp937eOZY1FXjoUfd2jjdDu7MHppi
+ 7fD9B0hHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZiI6VSGf6by2nvdT2svNv3G
+ a5Ie3p2yXP+50sy7123nv02taTp4R4yRoVPqlDxHDnfXbUEO7UKVGzOvXZxuWuvsdc7h0sMltT1
+ /uAE=
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 
-On Tue, Nov 24, 2026 at 11:40:16AM +1100, Alexey Kardashevskiy wrote:
-> On 24/11/26 02:29, Jason Gunthorpe wrote:
-> > On Mon, Nov 23, 2026 at 02:03:29PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> > > Register the built-in TSM class with subsys_initcall() so it exists
-> > > before a platform TSM driver probes, independently of object link order.
-> > > CONFIG_TSM is boolean; remove the unused module exit path.
-> > 
-> > Why isn't it modular? This is going to force alot of stuff to be
-> > non-modular.
-> 
-> The TSM core registers a class. The platform TSM drivers register
-> TSM devices of that class. If a platform module loads before the TSM
-> code - the class is not registered yet so it fails. We could either
-> teach modprobe or have dependencies in the module or do this:
+Continue the conversion of legacy vm_flags_t flags to the new vma_flags_t
+bitmap type.
 
-I understand that and Aneesh's patch is fine to solve that problem.
+Do some more core mm conversion (we really should be the first to
+completely move to the new scheme :), but also update some mm-adjacent and
+otherwise straightforward cases - /proc/$pid/maps and friends, the coredump
+VMA dump size logic, uprobes, perf and LSM mmap/mprotect hooks.
 
-I'm asking why it isn't modular. They don't conflict, using
-subsys_initcall works just fine as a module.
+This series only makes strictly mechanical changes to keep things gentle
+during this very busy cycle.
 
-Jason
+No functional change intended.
+
+Build tested on x86-64 (allmodconfig, each patch individually), i386,
+arm64, riscv nommu and ppc64le.
+
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+v2:
+* Dropped what were 1/13, 3/13, 4/13, 5/13 and 6/13, as David has taken
+  these through mm/core.git.
+* Rebased on mm-new.
+* Updated 1/11 (was 2/13) to read VMA_RAND_READ_BIT before
+  maybe_unlock_mmap_for_io() can release the fault lock, avoiding a
+  use-after-free of the VMA, and to remove the now-shadowing inner VMA
+  declaration, as per Sashiko and Andrew.
+* Updated 2/11 (was 7/13) to drop an unrelated whitespace change in
+  mm/ksm.c and to fix up the indentation of touched lines, as per David.
+* Updated 3/11 (was 8/13) to retain the shadow stack check since added to
+  hmm_vma_walk_test().
+* Updated 4/11 (was 9/13) commit message to note that the soft-dirty
+  assert in vm_flags_clear() is intentionally dropped, as per Lance.
+* Split what was 13/13 into per-LSM patches 8/11 to 11/11, as per Paul.
+* Propagated tags, thanks everyone!
+
+v1:
+https://lore.kernel.org/r/20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org
+
+---
+Lorenzo Stoakes (ARM) (11):
+      mm/filemap: convert fault and readahead logic to use vma_flags_t
+      mm/madvise: convert madvise_vma_behavior() to use vma_flags_t
+      mm: convert miscellaneous VMA flag tests to use vma_flags_t
+      fs/proc/task_mmu: convert VMA flag tests to use vma_flags_t
+      fs/coredump: convert vma_dump_size() to use vma_flags_t
+      uprobes: convert VMA flag tests to use vma_flags_t
+      perf: convert VMA flag tests to use vma_flags_t
+      selinux: convert VMA flag tests to use vma_flags_t
+      apparmor: convert VMA flag tests to use vma_flags_t
+      ima: convert VMA flag tests to use vma_flags_t
+      ipe: convert VMA flag tests to use vma_flags_t
+
+ arch/powerpc/kvm/book3s_hv_uvmem.c | 10 ++++----
+ fs/coredump.c                      | 16 ++++++-------
+ fs/proc/task_mmu.c                 | 43 +++++++++++++++++----------------
+ include/linux/huge_mm.h            |  4 ++--
+ include/linux/ksm.h                |  4 ++--
+ include/linux/mm_inline.h          |  2 +-
+ kernel/events/core.c               | 26 ++++++++++----------
+ kernel/events/uprobes.c            | 12 ++++++----
+ lib/test_hmm.c                     |  4 ++--
+ mm/damon/vaddr.c                   |  2 +-
+ mm/filemap.c                       | 26 ++++++++++----------
+ mm/hmm.c                           |  6 ++---
+ mm/internal.h                      |  2 +-
+ mm/khugepaged.c                    | 10 ++++----
+ mm/ksm.c                           |  8 +++----
+ mm/madvise.c                       | 49 ++++++++++++++++++++------------------
+ mm/mempolicy.c                     |  4 ++--
+ mm/mmap_lock.c                     |  4 ++--
+ mm/mremap.c                        |  2 +-
+ mm/msync.c                         |  4 ++--
+ mm/oom_kill.c                      |  4 ++--
+ mm/pagewalk.c                      |  2 +-
+ mm/vma.h                           |  4 ++--
+ security/apparmor/lsm.c            |  2 +-
+ security/integrity/ima/ima_main.c  |  2 +-
+ security/ipe/hooks.c               |  2 +-
+ security/selinux/hooks.c           | 14 +++++------
+ 27 files changed, 139 insertions(+), 129 deletions(-)
+---
+base-commit: 5bd93e4b0b357e9d0a13199887aacbf04d1ce216
+change-id: 20261101-late-2026-vma-flags-461731a636c3
+
+Cheers,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
