@@ -1,88 +1,129 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.159
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795557213;
-	b=RJdHY7OHLcYVMU72rM1n5TTHwZbv/PwaY1hWifuHkCjvZA18bzOPu1G1tTSWhkEvBdVC
-	 X6Sdk4FdiXDDVnOuwk+OXmTDsFdIIncWaemwMloEz8JFYY5mCxbqYYOxao8v0HoPMGfku
-	 xqXcX4f18ZDBjIDJ8EKuRMy7W2Ad1HXv8nADe7AIWjdBBMH+y4uU96h7c9HZ/d4cUF7OY
-	 i/DlRaD6Xqe7iGk4SqVFc7chhlYyLwAuxou9D8To7zFw5ocEk6ShAvibCDpa8ANT/3pc/
-	 mZjol0rDNjBOmCtY0hpzxxbHE8BGzHBRCRaENOpL3fmmnpYpCY2goGPRxLkkimlWbMA==
+	t=1795557468;
+	b=3PkAe28GWYDKfCD7CH6dI1Zspra9DziNE/qDk75BDBvW+LLl2WNu+IHtGhPQlt1TCMhx
+	 jt3JbK+VraVTdcjzdub+W4fbeh9JasLYdD7FurIaboZvEh2ygn21fpCM7C6xD+4P4F+K/
+	 s++cROaG5pQ1bScrqnvibm0+/UQ1x8/WWOHg6rB2tB68UvaLXqBwlcIlqlxA4ujvv7yF9
+	 h2iYeH/4NH7EDd55lPY7tIMXkur07wMC81x5GVjl6A0c74aJGEdVE9MXIKyqBoSpy3mdl
+	 GxQXXSaNq0BrR4T9X7AAHAls/kO2KDXv+LSTIuO/CpGkOPkImmndqT2mIxNKbSo9BDg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795557213;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=eFi/MCHFV/iGEqwhrZ93u4CFOTXFTwBlyg8ehkDYwO4=;
-	b=BnDtmu9T4rY7fJxrrewZOitDua/aFzEbd60BmTGCqv+fxn2bydtjOfmq/dFEcVM43/fo
-	 qJyTKFTwi9C9k9lDGmijcnOPf7VPIm7WQGTcKdW140eiLUplgde2H5lobDKRK2rtIsAJk
-	 fo0vxg8XHJE3rX6uUx2ihKkwSDS2VKpQ+h9UnJ0FjosBP0abPnQ0p0rJwDS2G8P78DBkt
-	 PyN2cOg09ktR9e6mRlF1t/xP060oVqfuqAVSAEI6OY8PYWmHNZJviPGIMkMeYIMhvlbLb
-	 m3Xz/E71zr10Jh908/yJ689jjU2Z4w0MyDSfwoVKxfERmTEXlk7/SapKnC9GcJkTSrQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795557468;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=9Yv7ZAdiUHDpW81//zWyyNLibVyhv0xcmjQ86w+dwHI=;
+	b=iuTYl/Y22wUd0n7zNvr8pbS23UVO/vE+U/l25D6n50TTRI7gUPZR4cjeSRE6BGngauYx
+	 TzcvhilYtWY39ouPXUyIhimxpccnmoekv0LbfpsCtABnyhWcB03/EWPtAK6V6U00tiBjd
+	 1SVPmz8gl/7mvflQHIKOxmrZvsPlnyQHauvWoZmp/ZiUP7P+MnwMz/OZ8jWZHZlnUR1Lu
+	 28Fxw+I504LhXIKMng6GN6yE0lHCbW7COBwtH+V/+s6HVGJSJRlmY0Nql/YLU8pmjIbig
+	 G2Ek7vOGpxQzYpfir5+8N2LRHFRoPtQYwIZTqV635Reh2ZlhEkQ/YIcMMffxjnEJmPQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RFsqs4Oh;
-	arc=none smtp.remote-ip=192.198.163.9
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=shazbot.org;
+	spf=pass smtp.mailfrom=shazbot.org;
+	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=q+ncxwGB;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=y+SsJFBU;
+	arc=none smtp.remote-ip=202.12.124.159
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3918960A383D;
-	Tue, 24 Nov 2026 21:53:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3918960A383D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A018606A331
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 21:57:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A018606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RFsqs4Oh
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795557212; x=1827093212;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=/+ZSyOWAz/BtXstavY7FHTBo6Fnj6JVhip7iyipZZAg=;
-  b=RFsqs4Ohku74Aanwf9erO5l3foviz7p3K01J7WVFRo8srQLM6UOCfxLN
-   Pnvjc0CfC6BfL6y7bXzXi0qd7xLZFjlUUYK+7OC2cd7QJ3H5moChQ1nHL
-   Xw4smxwtp6lT239372QY8C4wlvl5V0NdCTfYRY6gkgdTIBIiRMwSxG5Ud
-   FvY/4eAZ7mxL7FI102th0D8xljQ1TvU5992rXmratBifn4GPRt3DuClko
-   23KsF2+2I50j60152kuS5fyF9Y4bM09tvSAD/9Hn9AaWcT05tWxivUPyG
-   k4xD2o1HuPIxBqCX1lfxziYJ6G2Pr9IVFxDrYibrptH+NjJUz4TIzjcTK
-   g==;
-X-CSE-ConnectionGUID: Fgta1JTbS4ySkAH72ieI/g==
-X-CSE-MsgGUID: 1ankINOsRFOOxuQWW0aXKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4306076"
-X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="4306076"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:31 -0800
-X-CSE-ConnectionGUID: dEKhub/UTlKh/0eC4tVQgA==
-X-CSE-MsgGUID: XnYnzxnVTqWi7vp+hbveeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="12271959"
-Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:30 -0800
-From: Zide Chen <zide.chen@intel.com>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Cc: kvm@vger.kernel.org,
-	Jim Mattson <jmattson@google.com>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Andi Kleen <ak@linux.intel.com>,
-	Stephane Eranian <eranian@google.com>,
-	linux-kernel@vger.kernel.org,
-	Mingwei Zhang <mizhang@google.com>,
-	Zide Chen <zide.chen@intel.com>,
-	Das Sandipan <Sandipan.Das@amd.com>,
-	Shukla Manali <Manali.Shukla@amd.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Xudong Hao <xudong.hao@intel.com>
-Subject: [PATCH v10 15/18] KVM: x86/pmu: Support RDPMC Metrics Clear Mode
-Date: Tue, 24 Nov 2026 14:38:58 -0700
-Message-ID: <20261124213901.120572-16-zide.chen@intel.com>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <20261124213901.120572-1-zide.chen@intel.com>
-References: <20261124213901.120572-1-zide.chen@intel.com>
+	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=q+ncxwGB;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=y+SsJFBU
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id B786D7A05E5
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 16:57:46 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Tue, 24 Nov 2026 16:57:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1795557465;
+	 x=1795643865; bh=9Yv7ZAdiUHDpW81//zWyyNLibVyhv0xcmjQ86w+dwHI=; b=
+	q+ncxwGB2eC2X8922FtbouccjPHt98aXJie1SKJXZ9+OSbbcSEZ9wZVzeNGqj3z/
+	ps0UCCtahJuAg1nSWyrNpgFH4nomwUCMnMW2wv2lgo1Y76V+34jHSW/onmqvTHzk
+	ZDDS1ZB6II73GtMaU0aL0dusMwSZ0iNAGUYn+7FwDURNMwpEPaY/KqlOR8L1pfp+
+	yw1ybER66YYvTs7EZ1XhOGDETfmbpLolBfBAs7H8b8p1dnlA4lpRIss4a4TeJ0VN
+	i24MiI0LqqMk87zvlekOJ37/HyN6MA88zdC3j/iz/u7zlmX3pfDhV5My/2iIDbH0
+	lZ85HHEu5hTTLLVpr9GJRg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795557465; x=
+	1795643865; bh=9Yv7ZAdiUHDpW81//zWyyNLibVyhv0xcmjQ86w+dwHI=; b=y
+	+SsJFBUnH3zMjMim8abO+u/YXXBtXLtF64p3fQG6DzYX11LTLZLmr2Qlrgo0yd2r
+	DB9p/GC6bBoFObgI8wQCDYCX2PaobJPoPOMBRwmnytJnOnc7F4eYT/Z6x50Qg5fS
+	vWk43A5INm6bPWmjRNfU7Va1frRGVqNP8fTWZQKDkTmGEX6U5fnxbNJc7OTStbaB
+	YopCDE6bnjkt0qOqc9nSaH59C07BSY7tnMWqjAw6O69cnPLVVYHDsF7NPixbyDxB
+	VdZVwsVc7I5iYWxg/ggm1pGDgBhq33MOdp3fcdsbqo4nmKK8NLbC88ZOmPVuLqXv
+	kJQtCs0iUV3JIWotWUfMA==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=shazbot.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1795557465; d=shazbot.org;
+	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:TqGvkIgVxfJPxOt4QI4iNL+UFagXMy3Xq9mEGuRRsWd5F/I
+	FVVYVMho9jcIlodFHvO/wAZVaE8U+vybGU5svjse4MjQxv4NAL45an0PN7dFDR5j
+	v2eBlF7ml3kfFOea/7qa1W5L0Mng1Ds4kFkecXe5yM3aCAdnYizEbOhEjIzX4hza
+	eIxQQQf9t26w59nJMifeNKwZB0USVJF3vo5S9GcyTfvGbyy6t/vazzTFWiIxBPGg
+	uKnew3LgS8Uh9bWVRs8m3InYr0IyRJdyR+TOkXpp5Vh7DBUv+mQS8+D0805qm0PM
+	2d7Acms3bMiEF64gcG54/CMR5JKWIpEyvsk9v3A==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:r0gyNebnJU3UYgucvnT7f/jFp2fby4QNwszEbkpKrnE=:cKsT+oAcYb7z5Bpv3lzNYNeRW+zt7bHiR0+cduq9CFg=;
+X-ME-Sender: <xms:WQgGa7cKfEYAtAsGtqKIn4KkcASCCT5cqkKihgija1m4U7gX5YgDUA>
+    <xme:WQgGa3l4j1kTumDC7d8gSjmYtDoQqBur8Mk1rC9AG0g7WVf-dYO86QmopneKdA5pj
+    f2V4NdvsczTYP2tE3_RVwJCTbeZ6TJrsYG7cIy5ru-VyymX2ffQFw>
+X-ME-Received: <xmr:WQgGawwjz4L5qvuQWOfJJQrA6duBBo48xMYs1-RKXmEzPLIlWhIAdwfKkriEsw>
+X-ME-Proxy-Cause: dmFkZTElwk6m6nbbF8uFMkjosXYbuLtxokx9cW6je6krn/5+EOP5V5lCgGfnrEKHccNsoE
+    NgvX2qSuNcLlbhGbSz4MjXSC+gJwt/HDrrfkV+weSIT6TvDvvyMcKpdYdcwqKWCHaU7jQr
+    3irHVChJiG/EpzAZG0XU/r8T8YOtVfGoH0yLbYbDEYC5NnG0kQv5nXW+1V5t9QpAZWHwTx
+    RaqrGewtwOb+OKhC/UxSEzuFoKkarWNV4Jxv+QZLL+toPxQp4wDfY6ZTSa+jycdFy7KJ95
+    mjxRLXAXb4bMBD0DOynd3RsHE2l+B3415/SabQ1oJzTx7mMk1JlRt9TKn5Pgs7DghJOPSc
+    /J+/jPBTVHYeWELTdAJE0XnaE5kV3eEOV1W+n9jr1rNQfKrP7SXsItnkmy6a8JOajIOMYT
+    pT3Q0PlrXKquyHIv8JtjvEVsF+y4embac3PE6nSD7uQy+Ceh4ajIloXQq/AhPetpCIqpcb
+    5vp0+fKw+LZQhkuLW9sDz8nttYYnfq8MOjXMdt+k0kn6w7XW/V9ZfWbiA7Mh9Tk2bDV7cH
+    kjczU+v18/6V78Kt2WKqXaSQw5ADVUzf8oZtX0wT8wVYiySz+51mSVJbtpmHCw68Id7zqc
+    rCYj9cxZeKUFmkarzujzic7gJyXpbIo0Dy19o/PFdE4V7FKIhVG+GsVaFnJw
+X-ME-Proxy: <xmx:WQgGa6xTLOhF2cDVq2sfBfAKMzFDhS-cuDHNglrjQVeFuKyMucI5IA>
+    <xmx:WQgGawUzhpEbPfHpqJ7UZbJNy6e9WpIAdWjleI5OZi9Ez6czFncnSA>
+    <xmx:WQgGaxSDQPSjsoIPftGqvmhrHFBt_oAm7p2Mi7_iAkgMEVgvob1jpw>
+    <xmx:WQgGa4SqmZ1cdsLMUonpuITUSKh3fWhtNQggJQfo6h-NFvZOC24AQQ>
+    <xmx:WQgGa5qOJsJv75S2miF4Gtag6lXLgGh1Uk8_L_KkC94n06H-nG2KAGRC>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 24 Nov 2026 16:57:44 -0500 (EST)
+Date: Tue, 24 Nov 2026 14:57:43 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Kevin Tian <kevin.tian@intel.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Anthony Pighin <anthony.pighin@nokia.com>,
+ Dave Jiang <dave.jiang@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+ kvm@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, alex@shazbot.org
+Subject: Re: [PATCH] vfio/pci: Only lock the upstream bridge if the reset
+ may need it
+Message-ID: <20261124145743.6c253bd2@shazbot.org>
+In-Reply-To: <awXedVCoT7M79Rk5@google.com>
+References: <20261112235700.2029562-1-skhawaja@google.com>
+	<20261118163706.7138d246@shazbot.org>
+	<20261119143237.4bf54796@shazbot.org>
+	<awC5Ldqmue6DiO44@google.com>
+	<20261124084852.661dd7c1@shazbot.org>
+	<awXedVCoT7M79Rk5@google.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -92,115 +133,151 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Add PERF_CAP_RDPMC_METRICS_CLEAR (IA32_PERF_CAPABILITIES bit 19)
-support. When set, and IA32_FIXED_CTR_CTRL.METRICS_CLEAR_EN (bit 14)
-is also set, RDPMC of PERF_METRICS clears both PERF_METRICS and fixed
-counter 3 (SLOTS) after the read.
+On Tue, 24 Nov 2026 21:04:57 +0000
+Samiullah Khawaja <skhawaja@google.com> wrote:
 
-Advertise the capability to guests only when the mediated vPMU is
-enabled and the host reports it, and allow the guest to set
-METRICS_CLEAR_EN for fixed counter 3 when PERF_METRICS,
-RDPMC_METRICS_CLEAR, and fixed counter 3 are all exposed to the guest.
+> On Tue, Nov 24, 2026 at 08:48:52AM -0700, Alex Williamson wrote:
+> >On Fri, 20 Nov 2026 22:21:16 +0000
+> >Samiullah Khawaja <skhawaja@google.com> wrote:
+> >  
+> >> On Thu, Nov 19, 2026 at 02:32:37PM -0800, Alex Williamson wrote:  
+> >> >On Wed, 18 Nov 2026 16:37:06 -0800
+> >> >Alex Williamson <alex@shazbot.org> wrote:
+> >> >  
+> >> >> On Thu, 12 Nov 2026 23:57:00 +0000
+> >> >> Samiullah Khawaja <skhawaja@google.com> wrote:
+> >> >>  
+> >> >> > Commit 962ae6892d8b ("vfio/pci: Lock upstream bridge for
+> >> >> > vfio_pci_core_disable()") makes vfio_pci_core_disable() trylock the
+> >> >> > upstream bridge before resetting the device, and skips the reset if the
+> >> >> > trylock fails.
+> >> >> >
+> >> >> > All VFs of a PF have the same upstream bridge. Take a device with two
+> >> >> > VFs, both used by one process. When the process is killed, both VFs can
+> >> >> > be released at the same time. The first one takes the bridge lock and
+> >> >> > does its FLR, the second one fails the trylock and is never reset.
+> >> >> >
+> >> >> > The bridge lock is only needed for a bus reset, which is done through
+> >> >> > the bridge. A VF is reset with FLR, and pci_parent_bus_reset() never
+> >> >> > resets the bus for it because the PF and the other VFs are on the same
+> >> >> > bus.
+> >> >> >
+> >> >> > Add pci_reset_needs_bridge_lock(), which returns true if any reset
+> >> >> > method enabled for the device is a bus reset, and only lock the bridge
+> >> >> > in vfio_pci_core_disable() when it does.
+> >> >> >
+> >> >> > Fixes: 962ae6892d8b ("vfio/pci: Lock upstream bridge for vfio_pci_core_disable()")
+> >> >> > Cc: stable@vger.kernel.org
+> >> >> > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> >> >> > ---
+> >> >> > Tested in QEMU with an igb PF behind a PCIe root port, bound to vfio-pci
+> >> >> > with two VFs. Both VFs are opened through VFIO and then closed from two
+> >> >> > threads at the same time, counting FLRs with a kprobe on pcie_flr().
+> >> >> > Without this patch one VF missed its FLR in 50 of 50 rounds, with it
+> >> >> > both VFs were reset in every round. I will send a VFIO selftest for this
+> >> >> > separately.
+> >> >> > ---
+> >> >> >  drivers/pci/pci.c                | 28 ++++++++++++++++++++++++++++
+> >> >> >  drivers/vfio/pci/vfio_pci_core.c |  3 ++-
+> >> >> >  include/linux/pci.h              |  1 +
+> >> >> >  3 files changed, 31 insertions(+), 1 deletion(-)
+> >> >> >  
+> >>
+> >> [snip]
+> >>  
+> >> >> > +
+> >> >> > +		if (pci_reset_fn_methods[m].reset_fn == pci_reset_bus_function ||
+> >> >> > +		    pci_reset_fn_methods[m].reset_fn == cxl_reset_bus_function)  
+> >> >>
+> >> >> This looks like a maintenance nightmare.  What if instead we did
+> >> >> something like:
+> >> >>
+> >> >> bool pci_parent_bus_reset_possible(struct pci_dev *dev)
+> >> >> {
+> >> >> 	struct pci_dev *pdev;
+> >> >>
+> >> >> 	if (pci_is_root_bus(dev->bus) || dev->subordinate ||
+> >> >> 	    !dev->bus->self || dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET)
+> >> >> 		return false;
+> >> >>
+> >> >> 	list_for_each_entry(pdev, &dev->bus->devices, bus_list)
+> >> >> 		if (pdev != dev)
+> >> >> 			return false;
+> >> >>
+> >> >> 	return true;
+> >> >> }
+> >> >> EXPORT_SYMBOL_GPL(pci_parent_bus_reset_possible);
+> >> >>
+> >> >> static int pci_parent_bus_reset(struct pci_dev *dev, bool probe)
+> >> >> {
+> >> >> 	if (!pci_parent_bus_reset_possible(dev))
+> >> >> 		return -ENOTTY;
+> >> >>
+> >> >> 	if (probe)
+> >> >> 		return 0;
+> >> >>
+> >> >> 	return pci_bridge_secondary_bus_reset(dev->bus->self);
+> >> >> }
+> >> >>
+> >> >> Where we'd then condition acquiring the bridge lock on whether it's
+> >> >> even possible for a function scoped reset to perform a bus reset.
+> >> >>
+> >> >> It's a bit broader of a test than whether we actually have the necessary
+> >> >> methods in our reset_fn list, but since we're not locking the reset_fn
+> >> >> list between test and function-reset, it's also safer.  Thanks,  
+> >> >
+> >> >After exploring Ionut's patch[1], what I propose above is probably
+> >> >wrong.  We don't have any guarantees that the sibling topology is
+> >> >static and this bus-reset-possible function presents it as immutable.
+> >> >The existing bus-reset function has the same race, but the gap is
+> >> >smaller, let's not make it bigger.
+> >> >
+> >> >There are however immutable properties we can test that cover a fair
+> >> >number of cases.  For example:
+> >> >
+> >> >bool pci_reset_function_needs_bridge_lock(struct pci_dev *dev)
+> >> >{
+> >> >	return pci_upstream_bridge(dev) &&
+> >> >		!(dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET) && !dev->is_virtfn;
+> >> >}
+> >> >EXPORT_SYMBOL_GPL(pci_reset_function_needs_bridge_lock);
+> >> >
+> >> >We should be able to use this as a condition on whether we acquire the
+> >> >bridge device lock, in pci_reset_function() and in vfio-pci code.
+> >> >Thanks,  
+> >>
+> >> This sounds good and it will also fix the bug that I am seeing.
+> >>
+> >> The only caveat is that pci_dev_wait() might fail during VF reset and
+> >> then it might try to do a bus reset if the VF is behind a pciehp or CXL
+> >> port. I would prefer to do it only for vfio-pci code as that is where
+> >> the reset skip issue is. pci_reset_function() takes the lock and
+> >> serializes the VF reset. Are you ok with doing it just for vfio-pci?  
+> >
+> >I think the test I'm proposing precludes a bus reset, ie. there is no
+> >upstream bridge, the device flags prevent it, or we're provided with a
+> >VF.  It's only those cases where we can't do a bus reset anyway, that
+> >we can skip the bridge device lock.  I think that means it's useful in
+> >PCI-core as well as vfio-pci.  Did I miss something?  
+> 
+> Yes, the slot reset probe doesn't account for the VFs and will allow
+> reset of the slot when hotplug is enabled.
+> 
+> I think that is probably a fix that needs to be done orthogonal to this.
+> I will send a v2 of this by doing the needs_bridge_lock() as you
+> mentioned above.
 
-For the mediated vPMU, METRICS_CLEAR_EN takes effect natively via
-passthrough. However, RDPMC can still be intercepted for unrelated
-reasons, so also emulate the clear-on-read behavior for consistency.
+Yes, there might be a latent bug in the slot reset path.  I know s390
+has some weird per-VF slot reset, but they set the per_func_slot flag.
+The test in pci_dev_reset_slot_function() probably needs to account for
+both VFs and multifunction devices as:
 
-Signed-off-by: Zide Chen <zide.chen@intel.com>
----
-v10:
-- Gate METRICS_CLEAR_EN unmasking on both perf_metrics and FC3.
-- Check for valid fixed counter 3 PMC before clearing it in
-  intel_emulate_rdpmc().
-- Drop check in vmx_set_msr() requiring PERF_CAP_PERF_METRICS. (Jim)
-- Split event filter mask fix into a separate patch ("KVM: x86/pmu: Mask
-  only OS/USR bits when filtering fixed counters").
-v9: new patch.
----
- arch/x86/include/asm/msr-index.h |  1 +
- arch/x86/kvm/vmx/pmu_intel.c     | 26 ++++++++++++++++++++++++++
- arch/x86/kvm/vmx/vmx.c           |  3 ++-
- 3 files changed, 29 insertions(+), 1 deletion(-)
+	((dev->multifunction || dev->is_virtfn) &&
+	 !dev->slot->per_func_slot)
 
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index 8fad944197fb..5851edcdda05 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -333,6 +333,7 @@
- #define PERF_CAP_PEBS_BASELINE		BIT_ULL(14)
- #define PERF_CAP_PERF_METRICS		BIT_ULL(15)
- #define PERF_CAP_PEBS_TIMING_INFO	BIT_ULL(17)
-+#define PERF_CAP_RDPMC_METRICS_CLEAR	BIT_ULL(19)
- #define PERF_CAP_PEBS_MASK		(PERF_CAP_PEBS_TRAP | PERF_CAP_ARCH_REG | \
- 					 PERF_CAP_PEBS_FORMAT | PERF_CAP_PEBS_BASELINE | \
- 					 PERF_CAP_PEBS_TIMING_INFO)
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index da6dae261514..0861c65bee95 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -86,6 +86,12 @@ static void reprogram_fixed_counters(struct kvm_pmu *pmu, u64 data)
- 	}
- }
- 
-+static bool intel_pmu_metrics_clear_enabled(struct kvm_pmu *pmu)
-+{
-+	return fixed_ctrl_field(pmu->fixed_ctr_ctrl, KVM_FIXED_SLOTS_IDX) &
-+	       INTEL_FIXED_3_METRICS_CLEAR;
-+}
-+
- static int intel_emulate_rdpmc(struct kvm_vcpu *vcpu, unsigned int idx,
- 			       u64 *data)
- {
-@@ -140,6 +146,20 @@ static int intel_emulate_rdpmc(struct kvm_vcpu *vcpu, unsigned int idx,
- 			return 1;
- 
- 		*data = pmu->perf_metrics;
-+
-+		/*
-+		 * Per the SDM, RDPMC of PERF_METRICS clears both PERF_METRICS
-+		 * and the SLOTS fixed counter when Metrics Clear Mode is
-+		 * enabled via INTEL_FIXED_3_METRICS_CLEAR in FIXED_CTR_CTRL.
-+		 */
-+		if (intel_pmu_metrics_clear_enabled(pmu)) {
-+			pmc = kvm_pmc_idx_to_pmc(pmu, INTEL_PMC_IDX_FIXED_SLOTS);
-+
-+			pmu->perf_metrics = 0;
-+			if (pmc)
-+				pmc_write_counter(pmc, 0);
-+		}
-+
- 		return 0;
- 	default:
- 		return 1;
-@@ -552,6 +572,12 @@ static void intel_pmu_refresh_perf_metrics(struct kvm_vcpu *vcpu)
- 			~GENMASK_ULL(kvm_pmu_cap.num_topdown_events *
- 				     INTEL_TD_METRIC_FIELD_BITS - 1, 0);
- 	}
-+
-+	if (kvm_vcpu_get_perf_caps(vcpu) & PERF_CAP_RDPMC_METRICS_CLEAR) {
-+		pmu->fixed_ctr_ctrl_rsvd &=
-+			~intel_fixed_bits_by_idx(KVM_FIXED_SLOTS_IDX,
-+						 INTEL_FIXED_3_METRICS_CLEAR);
-+	}
- }
- 
- static void intel_pmu_refresh(struct kvm_vcpu *vcpu)
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 7441808be049..d977fc3a31d8 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7944,7 +7944,8 @@ static __init u64 vmx_get_perf_capabilities(void)
- 	 */
- 	if (enable_mediated_pmu && kvm_pmu_cap.num_topdown_events &&
- 	    kvm_pmu_cap.num_counters_fixed > KVM_FIXED_SLOTS_IDX)
--		perf_cap |= kvm_pmu_cap.perf_capabilities & PERF_CAP_PERF_METRICS;
-+		perf_cap |= kvm_pmu_cap.perf_capabilities &
-+			    (PERF_CAP_PERF_METRICS | PERF_CAP_RDPMC_METRICS_CLEAR);
- 
- 	return perf_cap;
- }
--- 
-2.56.1
+As you suggest though, that's a separate fix.  Thanks,
 
+Alex
