@@ -1,84 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.171
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795546936;
-	b=Bih37etK0qztxrbyYIHaVvFUu0cKMRQOarZftiAYHHTy+TblBVfUoK4VkSnJuoSmkZdU
-	 W9rLmLPRtu8Sb9ZOD+msKDXbmSXS8LlA+/BaTujiRLIHvisNHh6LO35rvzZ7kb1eneoo4
-	 l1VDYvumiW3pvBqEK0vwNle4ZmiK9Th1YkgPJcB/FonybMrX0TWQZk4kSWbmscVtxQhCR
-	 l3ahR+hE2L8cxZ8EEr+3HELc5xjXNmnKey9mLlZjjxM5KGyGPNTDrd+jAkiUDRCccW6K1
-	 HZjlhfGuz8PuaOp3IGYo9Q+dsHzKs+RxdzAk1KSw32NDwetV8g8819r3XNcnPPknFQQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795546936;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
-	bh=vmPlBJsxyoTZOO9g2mmGNuUfH7b/frSSah/ZWuzVmhc=;
-	b=Upd6it9QGaWWyXI6O7L+ORoZoTLLJOQK8Zfty76oM9mN5mWPPss0JrZVnyzTOE0RStTz
-	 hp18YW0ud71k4zciYEO4Zc/YCcQ4oYie0Veflw13WxLoNF2lLZemhr+CqQleyuCk5i8wF
-	 w/AjSilLZQv+zqQBCTIx6MtuxbdM/ui+fyQc7XZEANAhYxz1n+awbDC4aqXVRLlwKwDd2
-	 hB5C1fK2AMDludZPmfVqQdkLhzgQtSkQo5Rtfn9nolvmlhOhsFYALuJycpZYKhmeX/r7P
-	 WXJUVu3WOy2UjSEiNunKfmSc1ucT+h6s8VuO0k8PP5GKDNLnhtx87k/RcVQg3LCDH/w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=W49HLn5R;
-	arc=none smtp.remote-ip=209.85.215.171
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.21
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795547324;
+	b=5PKTfc31pqpV5R8TnsQa1aJ1YhiCIJzkOBeCVUyRW4VfHIvr5Jhn0Bw0SM4tjdDT87CJ
+	 7HgdN/sWAlkbcIbxmZGfiQi+IJO371XfEPZ2YtIop9VlsMk79+oJuyPgpI+VERXZ1AyEQ
+	 zStVikK2ydVwSMh9YVIfnYLfGEKLS9Ed2WREt+xpT776xBJ9pW7f3Fl/CiScc/2SLQxpE
+	 UGJUx1JhBhxtD88QZM53KFtNu+5xrTyde07gj/Uo5f7VU06BgQPpvLy7rRJD2kL8/hHNN
+	 uLS5HWDTR4t9Yx+BuJm7e9/EMPHtRTlYCHoCa8afu+xd1hbN3aB8q6JBcthlDCP+vvw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795547324;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=cyr3+lH3WeXCLkSU5JPTjhQVKbdeqzreB5XoHHgXGa4=;
+	b=KLTh6kQT4owj0GVwHvBRB8fVu6q3/V12NynM10F52hqALS6V/pKQIqxjfFpDI7lyLA9V
+	 1sPan4xGIc5+mQjir0U7jgr5kZH543RPMtPdNLiSjgAL1c8pRSk7XLsGuYkbY5/5KNZ/D
+	 7djm5lwjhwPSlOtCSWdhWudcZ50WMPEEQjMnBVDwVNb35G7kY6Yf3BUjzass1ExLrK+UV
+	 UNTwUHRWT6WHDWyCkNu8dwTGZp86AISp+BXeE8Zhc5wfbm8l7S0gqgMpZzykylFqSl0ed
+	 g0YFo/CW1IK47UZ8/Tu9tiOxuTjPc557Cumqn7P2f86KkVCCfeSKs7vknOmnyDPsyfQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=EbJFQkID;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.61.21
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010021.outbound.protection.outlook.com [52.101.61.21])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE449606A326
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 19:02:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BE449606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04D7606A31E;
+	Tue, 24 Nov 2026 19:08:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A04D7606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=W49HLn5R
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cd60c5da24cso3091821a12.0
-        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 11:02:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795546935; x=1796151735; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=vmPlBJsxyoTZOO9g2mmGNuUfH7b/frSSah/ZWuzVmhc=;
-        b=W49HLn5RkMaC5OffA1iNYwWj3QcXjho4bBBEYyHJ80sMc/UPULZx0is/eDJpC2N3ib
-         U5411fK9H7EvaHNUiAzyNcMRaRfWUePxiO5nF6dXRnWQcakCLoOcwBez1qwCR6R1oIfe
-         q4c7EtVSFXNeliYrDeUDxIDrBA9ZIJuyG39lD2tcmw1MBgaf0y6E9eqLCYzDMbFPT8aQ
-         T2II96TRsePidFGcPlSyAkLQbRIPL4z8RKR0PPlfzSoiEzHTM2cY+rkptgAAFD2Cwvml
-         DpAfsAN2AKGhtv05DtjXMcA4gmT2Ub8TyWWHMBLSJzr10iAYvLD8v6nEW2UiNe6xEGzX
-         AF6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795546935; x=1796151735;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vmPlBJsxyoTZOO9g2mmGNuUfH7b/frSSah/ZWuzVmhc=;
-        b=Oef5x633QS+lTVUWPuzuJLRuW+y7wP0FKOTAArNJpHGTQh/8Z0hpMHPNl/TRS4Lt3g
-         OaivV6taoTDYiByXvAlLh3vagPkHeJeqL0I70x/VcFPZotIT1QTunfVbiH5FBdCMwXW9
-         n2lNVb3E6sh9pZzEwHBdiKO14+ZtIYjEgWp15FBkMpdVC01fh8Nz+MZVCe7M7I9r8jdJ
-         MmWtGv7anKKCNleLhcUe4qh9o3hIO4BsfKoAoXoDLlXQ5X12xXujv+W4fRPqEOCqsAa+
-         3qxj4iUtLDqK1jpEQI3rTGvi7yhILgVQ7P+dJWq2WLjtB9Zn7iezqFUKG3fEK3X69yg8
-         0YRg==
-X-Forwarded-Encrypted: i=1; AL+hErFDEHFal1p4fQzerr/h4LrTaKkeoEjsF909ql27iSjPOdilDmb+LmGbHkXQoiUWKgwIBmg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9N5C6qnPw/FdKA4O6PG+Cv1xGvbsB8xGtGguGvODFJxvGj9Cfl
-	kj0fDfoOCQFkDGEVclnlOoypI5GjvmlDYLkP35vS2ALt1BNMaqz9MheqmsSeG6j2Rg==
-X-Gm-Gg: AZFdTZdVFu38d9nZ8qnMwn8RPxb3613YkOdPwtp0JH15D/fIdPOvXnqkbCHAoxPOn1K
-	GaSDGmAAbnH0to8HawgDC01MZGvgshgjck8QC/5snhza38pRPihGHaraNe6DxqiCtQbJnYFG6tR
-	dP5XklUgF++AGBjfm0vcwKvZNurnz6sn0SdpqWUkCjyIztjbrj5utWK4yXfbU/VqsvYojG0eADT
-	zlAb4ti4cbFnHQOYYRB7M4cUl5w3i1zWZV0YKhkRoqCLfQD1EKvlTIenLtzU6MVWE9X8pnty2VI
-	633eCH8/UtThNYXQiqxq2kaxku3frI7KPOS945Oc2oZGOxczhBuQUYA0cw1qDjrCcvQVTLypOuB
-	MVdhir7nu5kVX2j+efQO4j8Ux0c9CHyc4evnvOtVArrVH0iR93izKTrRp6dWerpzPcyoBTX6syK
-	mnx88l4k5i1vYDLIT2FqBF7AQ0WZfr7C61wxDNvDz1IJ6nl6Lhak1ThUuV1FF85/7Df2OpPfXsI
-	Jpe0Ywv8YsPgqwNc8yAb5bcP9bkPEg5vP5VUcZqrHnfbuBbCUtU6yF0Ypy6YHJJM6R8W5YeeSJ7
-	G8EkLONLs1X51IW/w+TwU0TdRQWU9ge7ge6/tLtnJqMMGyKyG8K3N4SCyS91oZs74g==
-X-Received: by 2002:a05:6a20:a11f:b0:3e9:f2d:d556 with SMTP id adf61e73a8af0-4014ca44d17mr16159174637.55.1795546934090;
-        Tue, 24 Nov 2026 11:02:14 -0800 (PST)
-Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cde9bb05981sm2247135a12.26.2026.11.24.11.02.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Nov 2026 11:02:13 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=EbJFQkID
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ramUIoswigTr27n/NkiO3peY8Ae0l/KOzEGtgcu35OaoDI+Vc33dbIwCmVMfD7z4rPa8G9mtd/U0E6olFbN+ZzUwPOezQ8bXs4yFiBuoa7MiWlHxUqo5lHFI9T7Sh1JQrIEsirgItGEsA8Q2ztKtAluU/+5yP8AuC07b6oCH3AnXqf6bTAWBC8lio3kGRR+/yGaGVbYGcWCcCb6D2cgDUpZeOvw8satAbaiPp33RLZKS5bXGVrYweo7Fan1tQAj33VEegzMrf+Xb5VU7REnGf9nmYH7JP8vrulOr1aYowEoeVri5tdMod78Y6BqEHTVrFAg7SawIFLq2+EO9v43GwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cyr3+lH3WeXCLkSU5JPTjhQVKbdeqzreB5XoHHgXGa4=;
+ b=T8Lws59RcggFbsxB++oF4ukNHAtRvKmkjV+KM5n4N7ba9l69SEixEYIQhQkljtEMyJEsWuH5JgQDjIkJWh6Uc2WZYOVdg+YbplTZ4ZArQzM7ILxCkjz3R3Uc7Uv57uPih3OZMFyPTFiYOMJwZG/l1BtlHRCSosyeinEFHXyVIQ+D3QmksSdWO1O7m2samTFip4TBN6IBeLYJzGxjLPXAAAFpBI6Q6aMlH1APmHMnx6zr/Wr3v1Ck2po/xD8i/8Jn5pRCTfHvivtBOgBwP2Ir8ucncW5T93oEuJMLz4+qOlbDSfvjEjugDRDatQfonL1ADnmqzERQNWfrxmHE+5lYbA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cyr3+lH3WeXCLkSU5JPTjhQVKbdeqzreB5XoHHgXGa4=;
+ b=EbJFQkIDqSaczQF8TiIkx0BHiiXfKFqweDAIVDpF4uWtai2NIC4i/nKStsbpDLUSIYcxc1Qj+8ceGXVzloly2E5oRHgl7XfhyfxmricK1O/0Ov3ZM9CSbP/0N2xHqTlfIz6hngfJjveH+UJi969GNCUOekRhZvShGju8Q8Hb0tb/lpYpx4KneB/uTKrQ2CqyXvXhEC2859ui7ziSpQxIPtFxdbYDOJE2WMXffDlPS4ycYPQwnwotH9M4QTzs5TC1diJDC2lhDmNnJGkRiyTqt4YYtTvVMWHfxVxV4kBDD6yApxkzL3Ou4o/HuUMslmA6I7lQuKktMuKyCHdxdpVbJw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHAPR12MB999248.namprd12.prod.outlook.com
+ (2603:10b6:610:2ff::22) by IA6PR12MB438941.namprd12.prod.outlook.com
+ (2603:10b6:208:601::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.13; Tue, 24 Nov
+ 2026 19:08:17 +0000
+Received: from CHAPR12MB999248.namprd12.prod.outlook.com
+ ([fe80::4972:8062:d74e:b205]) by CHAPR12MB999248.namprd12.prod.outlook.com
+ ([fe80::4972:8062:d74e:b205%6]) with mapi id 15.21.0662.001; Tue, 24 Nov 2026
+ 19:08:17 +0000
+Message-ID: <bee8302b-bd46-43b6-885d-09e9d89f9dd6@nvidia.com>
+Date: Tue, 24 Nov 2026 20:08:12 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] vdpa/mlx5: Increase the maximum virtqueue size
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Gal Pressman <gal@nvidia.com>, stable@vger.kernel.org
+References: <20261123135646.3962652-2-dtatulea@nvidia.com>
+ <20261123135646.3962652-4-dtatulea@nvidia.com>
+ <CAJaqyWeKT3A2A5OHiB47j1P+e8BSoAbtJ9XaGLjU+kKOzOusMg@mail.gmail.com>
+Content-Language: en-US
+From: Dragos Tatulea <dtatulea@nvidia.com>
+In-Reply-To: <CAJaqyWeKT3A2A5OHiB47j1P+e8BSoAbtJ9XaGLjU+kKOzOusMg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR4P281CA0249.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:f5::19) To CHAPR12MB999248.namprd12.prod.outlook.com
+ (2603:10b6:610:2ff::22)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -87,78 +99,105 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 24 Nov 2026 11:02:12 -0800
-Message-Id: <DN3O9LHR4XNH.1EYLA6D1F0J2P@google.com>
-Cc: "Tarun Sahu" <tarunsahu@google.com>, "Pasha Tatashin"
- <pasha.tatashin@soleen.com>, "Mike Rapoport" <rppt@kernel.org>,
- <robin.murphy@arm.com>, <maz@kernel.org>, <will@kernel.org>, "Alexander
- Graf" <graf@amazon.com>, <seanjc@google.com>, <jgg@nvidia.com>,
- <loganodell@google.com>, <arnd@arndb.de>, <dwmw2@infradead.org>,
- <baolu.lu@linux.intel.com>, "Bjorn Helgaas" <bhelgaas@google.com>,
- <oupton@kernel.org>, <alex@shazbot.org>, <gle.com@google.com>,
- <pbonzini@redhat.com>, "Andrew Morton" <akpm@linux-foundation.org>,
- <kevin.tian@intel.com>, <joro@8bytes.org>, <kvmarm@lists.linux.dev>,
- <linux-pci@vger.kernel.org>, <kexec@lists.infradead.org>,
- <kvm@vger.kernel.org>, <iommu@lists.linux.dev>,
- <linux-arm-kernel@lists.infradead.org>, <skhawaja@google.com>,
- <sagis@google.com>, <linux-arch@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 05/19] kho: Add feature header for fine-grained ABI
- compatibility
-From: "David Matlack" <dmatlack@google.com>
-To: "Pratyush Yadav" <pratyush@kernel.org>, "David Matlack"
- <dmatlack@google.com>
-X-Mailer: aerc 0.21.0
-References: <20261110050202.529473-1-tarunsahu@google.com>
- <20261110050202.529473-6-tarunsahu@google.com>
- <2vxzse0rzjdn.fsf@kernel.org> <DN2RQ7LGX224.3W3PSQ2PBHTJZ@google.com>
- <2vxz33sqz1xj.fsf@kernel.org>
-In-Reply-To: <2vxz33sqz1xj.fsf@kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHAPR12MB999248:EE_|IA6PR12MB438941:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0dff42ff-ff31-4eb6-9eba-08df4a5e4bd6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|366016|23010399003|22082099003|18002099003|261009223027099003|261021121427099003|261026140227099003|261022075727099003|261026121527099003|261022105027099003|261028144727099003|56012099006|4143699003|10067099003|261102123227099003|5023799004|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	fg9rcUAD7W2II83d/bfT/VJFstCcNbmqkxVwH61zooOUz33L1kychbxCsfLfdwmtJIs2onquGQZaDPtbK/CnGRZu54RWytfNJdJUNBqN2dljZF02Kdb562W6Sk1GfvugkDPFze7bymLzYeoweuzhT97bvZt8vngqiE9kkGAqFSaa27IkoTLf8IdaNKdRAFv49cTizXvUQJKfNZbu+cV3GnOpGLZYA3tgJ7bXsfoO0N25rU4Tp3XZ3YJ3w9bhLJOZn3fb3kxAwceFyJJesyY792UgZMpR+Tmm+wjhgZcM7gY6udwFc5AXTNPQ1qNbUGz6EC2F26DFhrl8gYEyD/a0XFBKsoItI7FLDqXZ+5dTXIgbpKL4b+yRZvXW7wHYUqG1D0reT7j5/j+1i7WTftzkGMUebVQ0RL+smDLa0e+YRbOAc6vFwzgoAIpQd5OvHHMiChrBiyiXBoQbUsC9nlHdNL0D6awWyuix72nwMRIpnMfT6h6ryi3x00n3lzb2DAH9usO3mRC+mhUL88UNN2Zl8VXeArJ9RPukT/TthaksF6nlYWXBZUIq6jiHbSNWfJM5Rnvt8nSU4xF/L5GN1gFK2MS03mfoPYCt6l6C/R7HH1ORGpYgATZAyrFVTYaMxAT9p2XH+6k8/6k8VbUBDmDxRgJe7lZvjOg+DgqyAYazdLs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHAPR12MB999248.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(23010399003)(22082099003)(18002099003)(261009223027099003)(261021121427099003)(261026140227099003)(261022075727099003)(261026121527099003)(261022105027099003)(261028144727099003)(56012099006)(4143699003)(10067099003)(261102123227099003)(5023799004)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aXRKTzduYW9RNE0wQU5CeFVVYWZqYUVNV3BZYVB6Vnp5c1R0VXh5Q2J1RlVC?=
+ =?utf-8?B?ZEpPZ2EyMUVPZXFpcy9oWGdDdjBIUVFlK0twWjNKQUdISzBmb3JPUlQyT0do?=
+ =?utf-8?B?R25sejRtSy9xa2xFRjdZS2tpT2VmYS9LbGtyWDZFOWVSSEFGeDJRdnh5SmZH?=
+ =?utf-8?B?NlM1TU1PajNQSzlGTnF6dTRnYTE3UW1lWWJsZjBmVFZwM1hjY1RxdGNwMVUx?=
+ =?utf-8?B?cmZwdVlZOXloVVc0VGgrb29Nc21zcXdlQjlaYWxhcTZqSFBoUlFQYk1OZjQ1?=
+ =?utf-8?B?ZHVyeWZKS3NWams4MWxyNlZWN016aFNjSzZudWNhbjVseWg1MG0yKzJvTzRs?=
+ =?utf-8?B?UmJ5RGZUNG1SQm9KZTJpamJjM1UwZFRXZEo1OGQzOGVkaG9CNUlCcjlIM3hM?=
+ =?utf-8?B?Tm9VUDcrRkhaYlFqSW1DT3I1YXBqeWFPbzhnOHppNVBKRDd2YytGSFNybXRy?=
+ =?utf-8?B?WVRRa0FkNjNXclpZNzhxVlJlOGp0ZW90MmR6WUVYTS9aazB5ZDlrQ2VMRzd2?=
+ =?utf-8?B?ajRYdEFzSmFNYjh0cWZ1MHVtSURKZmZEcXRkVWI3a0FIMHBTVXR0a05hK2F5?=
+ =?utf-8?B?U2pCaVl1QkI0MUZobHBtTmRQSUsyVUNzSlhvOUtWM0F0MVkwK0tmaFl5eVAr?=
+ =?utf-8?B?SlZYOSs2YXE2ai9YYkJNS2RpWE1XTEJDQnBRbUhnNEpSeE1JMnhnZjlzbGVi?=
+ =?utf-8?B?NW4rczFhSDQ0WTRmYXQ1OHVob2s4YzZsdU90R2trN1V3TktHV0pJQTF3dmNy?=
+ =?utf-8?B?WDBjcVFTUU5WckkzMWVjOXNtdDMwTmtMSlJZZHprWTdsaktJSE5xczBWZG9x?=
+ =?utf-8?B?MllFa2E1MmdCR1lhR3FucG5hKzBvaDRYQ3NFL3ZOaVVpbjhQaGlEcjdLVmg4?=
+ =?utf-8?B?b0tHYnluQUwzUm81TVFrNWZ1QUxMclA1WUExWXdkSFFpY0RJak5ZUG9aYXJW?=
+ =?utf-8?B?V2xYU1BNdUtQbWhpek14TVRqd3RsM3NrNlJ5Wk1hdFMxeWJ3Tjl5dTRWK3NN?=
+ =?utf-8?B?aE1sOXZNMGZRbndJWVgrSlIrNlBMNDY5V3RDeWpJQnlUVGs1YThnNTdPQlhC?=
+ =?utf-8?B?dTllZ0FoMVdRcXNiZEpmdlUvSmtVc2NWb2VIN05PSDJNNDRxbjRCTkVMS25x?=
+ =?utf-8?B?blFwaXh6VCtqaHNqRDJZVlc1VlE1R29vc3psK3MrRVlxbUgvWS9adklEd29j?=
+ =?utf-8?B?TlBWdEd3cWdqTUZiaEhzK1ZLaGVVaCtLeFBKRWdOWWVYNklFL3BRWm0wL1ZI?=
+ =?utf-8?B?Z2VoN0pnTi9TVnEzR3BRVCt6N2tFeThPdmxLOGQyTGl5Ty9EQ2hRM1U3S2p6?=
+ =?utf-8?B?dVlnanN1TGFtSUEyVktyd3U2Sm1XQ0tBdmZPVTVoRVFLaW5Jenk1TXoxbkJI?=
+ =?utf-8?B?MEZUVzZPRm1uZ3ZNOVg4SG51NDFoZ0t5bFhXdzBJbElSZkNDL3dYSWhHMjAy?=
+ =?utf-8?B?RHRKdjBqWUJwMFdlNG55azVyeExKKzBPTDQ1RnFaVGZqV2R3MGF4QW1hbHlE?=
+ =?utf-8?B?dzFLa3lHV1BBTlM1SzhFZzcyL3RCRlRNUzhoSWs5NGxyTlpTKzNGNVhOQmpj?=
+ =?utf-8?B?V1BzS3VtOWlDMmEzNXdMNEpNZjc0TnJOcUJHYWgvZm81b2FsL2VqVWJrTmxR?=
+ =?utf-8?B?NGE5RW40bXVMaWVRVVNMNjQ2alZPM2Q2THF6M2l0QUpWQitwSnB2VnQ0c2hG?=
+ =?utf-8?B?Wm10V2FpRWxDZlBaUVdHUEJPOHYrRjlyQUVYMCtEZ1I5WGJkbmZLMkhTUFlR?=
+ =?utf-8?B?cVQ2N0haOGNYQU5hT1dCZHIrTjhBV3JLNWJlTjdDcjNMZDZsK3FEWnhVQnE5?=
+ =?utf-8?B?L29vWS9FcWpBblpRcURmR2NqZ0t1d29zdVlFOUdOTlI2dURESXFiMVkwN2pP?=
+ =?utf-8?B?NXR5dWtDaFpwNW5QYmNrMGF6T0hnSWRneFl2cXlrQnJmL20vUUl2RXphYTBH?=
+ =?utf-8?B?MWsyOVprS2xZNHZUdlNWeCtvN3RMSzc4ZHRHM3NIK1I2OERlWm9malJKald1?=
+ =?utf-8?B?Z25ndWlRQXRtdmsxWGNJcy83a1dMWGtMQ09qaHpDQTJkVUpLSFhqb0tuVHpY?=
+ =?utf-8?B?MUhRTm9XRHdDSkMyWGJoYzVXY3RmWVFqelJkMlJ4NkpMM0ZEZjRCcEJsOWVn?=
+ =?utf-8?B?b21Kb0ducy9XZmNud29kQ1pKSFVjb243RDF6bUcxcSt0eDVRby9ET2JMZVFh?=
+ =?utf-8?B?UjNSdlJKQTZpMjdwTTFWellWVFhRT1hYSnNvSUdFNXpScjl0S0tCSVB3YVVx?=
+ =?utf-8?B?QmNXNmtlV3FIdlpGVTFMSk5JU1RxKzIzZHI0aWxGUUNxcDhnaXB0Y0k5alhv?=
+ =?utf-8?B?ZCtoeGZtYythMmJYMnF4ajNMbXlEbDNWeTZJRm9RMFJLUTlpL2E0dz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0dff42ff-ff31-4eb6-9eba-08df4a5e4bd6
+X-MS-Exchange-CrossTenant-AuthSource: CHAPR12MB999248.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 19:08:17.0757
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: j294nw4lKGSd66rvnyL65L4/iCJVP0xr+XJWjn2OuValsAK39BS4GD7ClMIqqz53d8ea8PrfmMje8C8dCH7KlA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA6PR12MB438941
 
-On Tue Nov 24, 2026 at 7:25 AM PST, Pratyush Yadav wrote:
-> I don't think it buys us any functionality. It just hides the problem in
-> some lucky cases.
+On 23.11.26 16:38, Eugenio Perez Martin wrote:
+> On Mon, Nov 23, 2026 at 2:59 PM Dragos Tatulea <dtatulea@nvidia.com> wrote:
+>>
+>> mlx5_vdpa has always advertised a maximum virtqueue size of 256 through
+>> .get_vq_num_max(), while accepting any queue size in .set_vq_num(). The
+>> hardware handles larger rings just fine and users have been running with
+>> 1024-entry queues (e.g. QEMU's virtio-net rx_queue_size/tx_queue_size)
+>> since the driver was introduced.
+>>
+>> The commit in the fixes tag vhost-vdpa enforces the advertised maximum
+>> on VHOST_SET_VRING_NUM, so configuring a 1024-entry queue fails with
+>> -EINVAL.
+>>
+>> Advertise 1024 which is the max that qemu uses today. The device itself
+>> supports more but doesn't advertise it in any way.
+>>
+>> The Fixes tag points at the vhost-vdpa commit rather than at the driver
+>> because that is where the mismatch became user visible. It also keeps
+>> this change out of trees without the vhost enforcement, where virtio-vdpa
+>> would otherwise start creating 1024-entry rings instead of 256.
+>>
+>> Fixes: ccb1dc7c527f ("vhost/vdpa: reject VRING_NUM larger than device max")
+> 
+> Is it worth backporting this change? Nothing should break (or be
+> broken because of the 256 vq size), it sounds like an improvement to
+> me.
+> 
+I considered it relevant for backporting because configuring VQs with 1K ring
+size was not working.
+> Either way,
+> 
+> Acked-by: Eugenio Pérez <eperezma@redhat.com>
+> 
+Thanks for the Ack.
 
-Following up on our offline discussion: I think it's worth keeping
-support for optional features, both before and after the spec changes
-land.
-
-Before the spec lands, optional features are the only way to enable new
-features at all. For example, the PCI follow-up series [1] preserves
-BARs and bridge windows using an optional flag. It's purely additive: a
-kernel that doesn't understand it keeps behaving the way it does today.
-With optional features it can be enabled as soon as it lands, and Live
-Update keeps working in both directions, including rollback. If every
-feature is required, there is no way to enable it until the outgoing
-kernel can learn what its target supports.
-
-After the spec lands, optional features are still useful, and at worst
-harmless:
-
- - Kernels that predate the spec mechanism can't provide a spec. As long
-   as one of them is a possible target (e.g. for rollback), optional
-   features are still the only features the outgoing kernel can use.
-
- - The outgoing kernel doesn't need to consult the spec for optional
-   features at all (less complexity), since by definition the target can
-   ignore them. It can always produce the same payload, and only
-   required features need to be gated on what the target supports.
-
- - Nothing prevents an outgoing kernel that has a spec from choosing not
-   to set optional bits its target doesn't understand, if we ever want
-   that.
-
-The cost of keeping them is negligible in the current design: the same
-number of bits in the header, and one range check on the incoming side.
-
-The one rule we need is that optional really means safe to ignore, e.g.
-optional data must not reference preserved memory or carry restrictions
-that the next kernel has to act on. Anything like that must be a
-required feature.
-
-[1] https://lore.kernel.org/linux-pci/20261019213054.3157159-5-dmatlack@goo=
-gle.com/
-
+Thanks,
+Dragos
