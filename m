@@ -1,173 +1,118 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=2 smtp.remote-ip=52.101.83.50
-ARC-Seal: i=3; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795526359;
-	b=T59s0f4IGVGtJh1BWGBCP6KhtP9rEPR+CW/3+I6Hro2dxPmbViIRQBP7+t+JrAK7OVsJ
-	 gW7nWnvgYTIWO9lXTLAjYdVhTLDZHgUAvFLngEaUZZp6Sb6zs7Y6WjVK17hleDC7hY1mV
-	 UQGORybGYOGmcbOvO6r8GLgHZy/v4YLmvOLhqAEamwwm9b8JZlYv86eX7DW5xazi/p3V6
-	 yz0riVrjUj5RuOMR/GNKtfI0Tx6g+JYSomyTqhVJLtKFPFJ4sOdx6772KWpHo+0nOo8cS
-	 MhOeZxudprppC0kSet/z7PflNfHisJOHEhfDLAb8WRicSvpHgxA89W++Jix6Sen8LOw==
-ARC-Message-Signature: i=3; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795526359;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:
-	 DKIM-Signature:Received:Received:From:To:CC:Subject:Thread-Topic:
-	 Thread-Index:Date:Message-ID:References:In-Reply-To:Accept-Language:
-	 Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
-	 Authentication-Results-Original:x-ms-traffictypediagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:x-checkrecipientrouted:
-	 nodisclaimer:X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam-Untrusted:
-	 X-Microsoft-Antispam-Message-Info-Original:
-	 X-Forefront-Antispam-Report-Untrusted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:
-	 X-Exchange-RoutingPolicyChecked:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
-	 X-EOPAttributedMessage:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStripped:
-	 X-MS-PublicTrafficType:X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=ASYyDX6H4ZkERzyPiwkFicibuFqGN6r+wUkl78wZvDk=;
-	b=SpUW3m7gov3neCiDc7ZtDBQZUniebTZ+D3zkAk9DrWQNfvn+/w4Q5eqdh8UwNLAHX99O
-	 TikFPzhpE4QBrzZagaGA4adhU/BA3uAFr1AU0M0ItnHLt+VHmuQfiS8EzUZuQuS2B2mp2
-	 3YlG7vEwiJ3aJhsKGHhMzhKF+hdIKiVRXQuhsFUKT1iAceW5lMvhaX/puKlbdfyrBwMln
-	 a0NCTq54s7TvS7yBOX/OJvEqPC7YD0VS9UFTvIhRktyV5+GaaR/Z5a+px/fNzc7vCl5rc
-	 2clX9lD1jCGu0iSjri1AO9CmpT/1DGb7tLF/QkzsSw9APjeh6uzkK72YEtwTOvaxEqQ==
-ARC-Authentication-Results: i=3; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=Yd1ltbLg;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=Yd1ltbLg;
-	arc=pass header.oldest-pass=2 smtp.remote-ip=52.101.83.50
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013050.outbound.protection.outlook.com [52.101.83.50])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795526463;
+	b=pToUH0tyvBsajgW5YmLKw68/DmdTEV3vPanLYJnv5RoWgi7f0yieMH4u8WJQO4DniSXc
+	 /xbzOiv//2wnbCc8dDbmQuHcpf0XT2WA+xo5rCkXj+4H3IQexwhKrShQBzfqXviEn1CJ+
+	 ECAl6SgYTR3WTSY99B0TRIRITtXir9Z9uGTLITLso2panRS7sWjNJEI/Utt/vtGu1NPSr
+	 0bCFl+96ID9yeD/RVbBuHZb0I9WUz9eCTlx3oJXq3NMsbzVlwSqIGrevkkzpiJmnTKbZb
+	 bAMwMDo9L+0eJqSGXxCzXd6rh2ISE5PZgrK3ix9SU2OzeqEaaenH0LAqho8wii1HKtg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795526463;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
+	 References:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=blZR8UsBVnOfAf5ahHejAGF3Z8m4Wh7sz5IUPrOpN7A=;
+	b=cD6QLphPuYHAOkGIu7CIwPYBE51Uyc6hPcCLuz85dJk+Dnzo1sGh8VjPqx8a7rzlZMZh
+	 O/NhcI1LyVKPhb8bHgMDUDiR1xR7VsIYmfU8MDZkJewbsXj5QXLNTmk2LADfSfTKXTnDn
+	 lW/gsZyrRDFNDRMIkIA4NFKiSI1bNHXXXlWC/7t6T+aS+UC2MAgbb7XuvRsnNsG5FoJyT
+	 9RUZ4Dx7CC0fHWhVx29fmKU3UlJMJLpOJGICdM/gzHP7PkxbS3aBmOAqNfGFT9EkDsuF5
+	 PJskecf/kfihiEuoVATuBCkWvpY22NWN9i/Hy3rJjykLFM+04doDVMe9JdNr74lfi1g==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CoWtNLGI;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=NxFDKm1v;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82160606A321;
-	Tue, 24 Nov 2026 13:19:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 82160606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5272A606A31E
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 13:21:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5272A606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=Yd1ltbLg;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=Yd1ltbLg
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=EllD2p/p38BNndR7g7QtlEsapznbNIHCOiBJXv6GeLCdSZJ26j/kWiV06xq9/Atxt/cUIVwkMUixBk0gmy8oXyEZHGS6t3I2zQR0pK8r41KgcTPEyjgz6uPcXE0HIlqdX/sBY/qqUKwF9E9A+oQfuyMXMqqT/RKi3TZ5xY8NzBd+lkdYA2xnDamNG0ydduI8jt04ag6+P5v1w34WpGXUHiSGTnOy7XpvjW8XIhQHt9IyFeqAOkcTVvso2iJ5FpDmsRMxQl7bJtIMbb5ycsfxLOCx+cZzhJpTZu74FTRg/U6LTWtwcyj8gZwRMdyJOFAnFMZ1wIJxDVUTm7ZyKgb7sA==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ASYyDX6H4ZkERzyPiwkFicibuFqGN6r+wUkl78wZvDk=;
- b=wFk0SN5XvuaGaI6aWV63ioqxSoPOnx/EyapM3z9eeXfgEWMkt5BDUAM5Tn9tarjvZakbf3wXpLN/fRBTWarB+qD4tldgiqh6KzhgpVlUemxiGXUVDpQp/pPNNItZTFGb4P+sMZR2g67ylZZCQe/fwA975anqTdN5Jq/X13AqHoPqV+lq1XOSGTQ7L+1IItXuJBYjn4UVQgNRbtFI5cjJme3BcLV0NRO0ooWbZps69MY2dvpykLOBsn+R1qpd/Bkw3oEcicX1cytV4Io4qi33RMOIj4tqucwVbwZY1rWHqyjHPv9e2S9SoPrGVTwiYzt3Ay0dMeoOVlL+mvpBKvuuRQ==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ASYyDX6H4ZkERzyPiwkFicibuFqGN6r+wUkl78wZvDk=;
- b=Yd1ltbLg/cj2mHQL99VD6yJKNvftQgWA/Couaujd1iHGxghmTfqsHeS75beChwIt1pO0QUXoT4jNpjhQGxiiGC3Av7Tv/Rvg7H0Ze/LbPwywrBzhIb+uZZFZqg8w+DoTuRgDdxNPjASqRh+4DzQQnXH6+4zbtTH/GWV39z97JdI=
-Received: from DUZP191CA0029.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:4f8::17)
- by AS8PR08MB9430.eurprd08.prod.outlook.com (2603:10a6:20b:5ee::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.14; Tue, 24 Nov
- 2026 13:19:11 +0000
-Received: from DB1PEPF000509EC.eurprd03.prod.outlook.com
- (2603:10a6:10:4f8:cafe::31) by DUZP191CA0029.outlook.office365.com
- (2603:10a6:10:4f8::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.639.14 via Frontend Transport; Tue,
- 24 Nov 2026 13:19:11 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 4.158.2.129) smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- DB1PEPF000509EC.mail.protection.outlook.com (10.167.242.70) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.639.5
- via Frontend Transport; Tue, 24 Nov 2026 13:19:10 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fYX+ilE1g9OV5ODPEZcIuqXQ4Nv+Z+JSgQDLD/RSm3rkzM9Ft3w0pu1dWkCrEdRd+FhdUONuBwJFjiY9VORZO+Ip0znhzQokCpkge3CulbrdDl65JHBkx9IOZ/futdUV9esBGQ9j5bfoiFT6MScWhUZol4kp6na5P2hv+7/fjhDAcm36ao0lgAUc8sRiMtjx5/Py/ZpqBEioUiF4nrSMBqPNXefTENm6Kqvc+VZpsHDLPflXkhDNUhIiw64uBCVkLVAKVHTr9bZsLJ5Wpsf4anBBejCAyXoEZdo65DVrgnemxgWP9hOJ+964Qka2D8j2j7YqgJsW+1JhHhqJQG22iQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ASYyDX6H4ZkERzyPiwkFicibuFqGN6r+wUkl78wZvDk=;
- b=f6lGV/beQDzzkz5mJdE96xoKt3weaTxM1EUb9oZ2S9djMysaAFCHRw6VW6dKrNwn2ec7kLnbeJIqhuJXz1P+mgjz6Q7/JhZNnNHq3sxrDGbErS9rP2znXGt3Qf7RvURVO1rW+X/eQ3HX9zeoPMnryVVRTVLFXh1wC1pETV8Y1i5jAJv1Ftv0K+E+Iw8QjQSENJRq3F9PMh5UjEXepKzsVQSvCVfKZZh1zJb5o2362EhzFGrzB5luVvhBvDiCsVkWAKM3DvPwwI21STWk6z5nmj/zVRT2eAXwf7RwY+IXqYFvm6at2SZ2SDAgQvGwI38aG+ktUDqbPzTXiCsP5qz+Tg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ASYyDX6H4ZkERzyPiwkFicibuFqGN6r+wUkl78wZvDk=;
- b=Yd1ltbLg/cj2mHQL99VD6yJKNvftQgWA/Couaujd1iHGxghmTfqsHeS75beChwIt1pO0QUXoT4jNpjhQGxiiGC3Av7Tv/Rvg7H0Ze/LbPwywrBzhIb+uZZFZqg8w+DoTuRgDdxNPjASqRh+4DzQQnXH6+4zbtTH/GWV39z97JdI=
-Received: from AS2PR08MB9786.eurprd08.prod.outlook.com (2603:10a6:20b:605::22)
- by GV2PR08MB8097.eurprd08.prod.outlook.com (2603:10a6:150:75::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.12; Tue, 24 Nov
- 2026 13:18:31 +0000
-Received: from AS2PR08MB9786.eurprd08.prod.outlook.com
- ([fe80::d721:dfdb:2f83:155]) by AS2PR08MB9786.eurprd08.prod.outlook.com
- ([fe80::d721:dfdb:2f83:155%6]) with mapi id 15.21.0639.012; Tue, 24 Nov 2026
- 13:18:31 +0000
-From: Justin He <Justin.He@arm.com>
-To: Marc Zyngier <maz@kernel.org>
-CC: Oliver Upton <oupton@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>, Joey
- Gouly <Joey.Gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, Suzuki
- Poulose <Suzuki.Poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, Catalin
- Marinas <Catalin.Marinas@arm.com>, Will Deacon <will@kernel.org>, Mark
- Rutland <Mark.Rutland@arm.com>, Paolo Bonzini <pbonzini@redhat.com>, Sean
- Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Sascha
- Bischoff <Sascha.Bischoff@arm.com>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, Dan Carpenter <dan@pereq.eu>
-Subject: RE: [PATCH 1/3] KVM: arm64: Don't load hardware vCPU state before
- first run
-Thread-Topic: [PATCH 1/3] KVM: arm64: Don't load hardware vCPU state before
- first run
-Thread-Index: AQHde1zAtBC9mmT//0CTNvJgc0eqU7c75woAgACKa9CAALx7gIAABRQQ
-Date: Tue, 24 Nov 2026 13:18:31 +0000
-Message-ID:
- <AS2PR08MB9786B94054D2237817356701F7442@AS2PR08MB9786.eurprd08.prod.outlook.com>
-References: <20261123150917.2679600-1-justin.he@arm.com>
-	<20261123150917.2679600-2-justin.he@arm.com>	<86eccbzcqh.wl-maz@kernel.org>
-	<AS2PR08MB978600ED2150F773D3E1631DF7442@AS2PR08MB9786.eurprd08.prod.outlook.com>
- <868q2iz94w.wl-maz@kernel.org>
-In-Reply-To: <868q2iz94w.wl-maz@kernel.org>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Authentication-Results-Original: mx.microsoft.com 1; dkim=none (message not
- signed) header.d=none;dmarc=none action=none header.from=arm.com;
-x-ms-traffictypediagnostic:
-	AS2PR08MB9786:EE_|GV2PR08MB8097:EE_|DB1PEPF000509EC:EE_|AS8PR08MB9430:EE_
-X-MS-Office365-Filtering-Correlation-Id: e3c5e816-8da6-4372-f386-08df4a2d8720
-x-checkrecipientrouted: true
-nodisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|23010399003|366016|376014|7416014|1800799024|38070700021|10067099003|261009223027099003|4143699003|56012099006|11063799006|261022075727099003|261021135927099003|261022105027099003|261021121427099003|261026140227099003|261026121527099003|261102123227099003|261028144727099003|18002099003|6133799003|22082099003;
-X-Microsoft-Antispam-Message-Info-Original:
- CSKcRgsxutUiIcFVkxYNJsWRmJjp/MjQRjNsSu2tUet0d167ChRJ/fuU7xn80h07OJo0561JsQhEvCBb1doX/BR35iv7nHhpUiZdHirMCCijAEhhXaeEfkLPaDGvjadCCY/sSWBzEAG0a/64SL4q2OhW5kNGdC/PSmS2FfKYghg+JNMXjtvS/LphkuOvNmhrjzCVpwWqOreFpGOmGfB8N+ABGP5FV9SzKbTeIoTToe/apvrNYkqF7gL8IZmZdqQzblLvNXlh+3/ifgmzRyn/p293gQ3SMLT0la2Z5JrLVntEwN9DWinWVjuFbMRLARuMnrHKKWSVDkPxRUw+IDMkk2mNDKvWqNJMzcM5xGiR/B1c/5Oeg4y43wphUSRJuAzTAjzGw9aCInmRh5jCt7gbyUXpraLj3E6CWvTh2JA6zt02ybE6R88Yaf+5BkMJQYXWRhNFSApiKkezn2Lxc0OovCTeYUAZR+okUL1Wxlt/GeVCQY0YcGsuu6pgMMwOxIYDMYb3oLpXoSQ4rFGTjkEFkeyrowai7kCIbBC5T/UTaQGREgcKB3odmEMZaL59AOytUQ/3mAdQa/jsYhIGyBvBYJLIejcuDgzfy/kpEr9SURIGPleM/Y10LtptsPVHQOZ2wH+3UqYv6kEesMk3JGE2ZNpTKDzisj7TGvyB0nE4FSJHOdSTLlr+PGLfoM8rKtg97zzcCx3CVzvUdVmeIix0Aw==
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS2PR08MB9786.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(7416014)(1800799024)(38070700021)(10067099003)(261009223027099003)(4143699003)(56012099006)(11063799006)(261022075727099003)(261021135927099003)(261022105027099003)(261021121427099003)(261026140227099003)(261026121527099003)(261102123227099003)(261028144727099003)(18002099003)(6133799003)(22082099003);DIR:OUT;SFP:1101;
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CoWtNLGI;
+	dkim=pass (2048-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=NxFDKm1v
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1795526460;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=blZR8UsBVnOfAf5ahHejAGF3Z8m4Wh7sz5IUPrOpN7A=;
+	b=CoWtNLGI+bHAhdHkLp5plmSnSDu3cxqtWil/S6pW3rNglmCyuynG0ZLu3NzP8AJGS09QGF
+	yLkHRlv6FJefphqUz1dnvgVWw8BnosTmi8te5eN0pl78NYNjkt5LX68aaA2DvxFDdsYjrN
+	eKK/mOj2P122ynSPHBLqW5Z2TJD4ock=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-474-tFiRqoHMMv6X1v3B_xYxOA-1; Tue, 24 Nov 2026 13:20:58 +0000
+X-MC-Unique: tFiRqoHMMv6X1v3B_xYxOA-1
+X-Mimecast-MFC-AGG-ID: tFiRqoHMMv6X1v3B_xYxOA_1795526458
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48c6a1d4034so2484512f8f.0
+        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 05:20:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1795526457; x=1796131257; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=blZR8UsBVnOfAf5ahHejAGF3Z8m4Wh7sz5IUPrOpN7A=;
+        b=NxFDKm1vCUM48zk+sh7ekwSp6CKxYBCxTBsZVODTzbuOmYH9LWvfgUghKYb3VzwAny
+         +w0z2PZTYRjED3dXRQAhxHbH2GFED3lXQySMxcNzBeU/GQpvbVtRYqexyK/y6BbEvA44
+         zTSZD6Dc3eNYVWm0+wUPQg3MUu26RbiAzBOukhbD/sXfYU7NXM6IMIL5ScUuaiWAyugK
+         54oWujN3x5p8rElpb0fiYxS1chSUNjMG3BU7axgLQiZvoaqpqKdH4Pypo8nK5iQOX6OP
+         Ejfo2Tzrk8r0HcfJ/d/3C5J3LwzPB8lLZHQrfqdmWKZQ6y5zkV4zwNkXfy8YpZwEweWj
+         DVHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795526457; x=1796131257;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=blZR8UsBVnOfAf5ahHejAGF3Z8m4Wh7sz5IUPrOpN7A=;
+        b=AXjq8NOpbTbbyH0Ihyt0PlcmTNRWsxbq7Js7Rc7DpR/wHK2748pGeZH8wirrDIzRiV
+         eeukvQkUye9clZtq43xvEA603V/+cMOCiIZnudr8JHOSyQqGH7vx6hhmBPrTPmUumj9Z
+         t/EUOexkiZg6L3cBi8rSHZ57wrAvhfhzgwqDKjj5KngTPwL2UZLtSAYhcPxLgQCUV58U
+         zxaBDsFqMvaf8HBQTthtrnDXNtjco+5Rn63acQ08O5+PlGEHt6eqN+NuIxYhDbj0GfdQ
+         veqsE7ljPYEFox5I8RIC0zGf2nZjBb/skplnsOkGYUfgw9M6h8CBtF/x+YES3BMRTg80
+         +4eg==
+X-Forwarded-Encrypted: i=1; AL+hErGemsNUrj8zlzBrrFmdufy32EGeDbUxxGyaUz0kMN+nVCRgiPcq25baBP40Y+DzBypNVv4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8bvEP7EgsOe9th62XitBhpUCcIVEIAP/IuF8PJtvTtVR3lSNPg
+	MCkgQY30mb8KM10OPscyFzuQNWqtbl3J9KvWnr3n3JWyXKoTBRWgupa8PKTdM+hEthd38Ikdl16
+	w+hm7wvGuO3qGOCKc/bEb7/mKIsnmogd18EyaAe/aAvLLJY9mO8ONvw==
+X-Gm-Gg: AZFdTZcMLjeXnXCGIMvCkkdLSL5xh0G1jDaWq3QKGioGUR17bj32e8XzBEbcfR5SAOk
+	NHha/I4BC51IBCtJhKjqUyTMWZE18w93cSZr7Gp4mBhv16psZHmizuVC34EnFsi/wr7SixDHF+s
+	A3AkFcUoVuXGmcl4nT4IG0o1vjzL17cqiLH3upTRAWsWIYEDb5ZNLgC7aSsl8wonbG79PObXy0/
+	M+dK01BKxBNI5frY2d0ffjHRGgGq8L9UNZMKjoNF+hjqU+2TPUV8MopAzR/+VM+pHLwoFCW+yEX
+	dMOzOCejBUWmF4rc4kPD1kbANSfnuQhOwlGvWr40uri69v1VrbcZOJIbW7jvN6RcK2/QfJDtR8q
+	OPR9O7GpNrUvONNw8AYv20CMQGNVmNhuJ
+X-Received: by 2002:a5d:5e89:0:b0:4a7:5115:22c8 with SMTP id ffacd0b85a97d-4ae3aa4548fmr18259572f8f.48.1795526457479;
+        Tue, 24 Nov 2026 05:20:57 -0800 (PST)
+X-Received: by 2002:a5d:5e89:0:b0:4a7:5115:22c8 with SMTP id ffacd0b85a97d-4ae3aa4548fmr18259532f8f.48.1795526456974;
+        Tue, 24 Nov 2026 05:20:56 -0800 (PST)
+Received: from imammedo ([213.175.37.14])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6a67fec7sm26422444f8f.26.2026.11.24.05.20.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2026 05:20:56 -0800 (PST)
+Date: Tue, 24 Nov 2026 14:20:54 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org,
+ pbonzini@redhat.com
+Subject: Re: [kvm-unit-tests PATCH 2/2] x86/apic: add retry logic to
+ test_apic_change_mode
+Message-ID: <20261124142054.65a8a45c@imammedo>
+In-Reply-To: <CAO9r8zN_6afHGXu0rN4zZVuwn63eH=tbsnsKu1+CG8mUrRQeNA@mail.gmail.com>
+References: <20260428133524.3628482-1-imammedo@redhat.com>
+	<20260428133524.3628482-3-imammedo@redhat.com>
+	<asSgCLgeSCKh33_n@google.com>
+	<CAO9r8zN_6afHGXu0rN4zZVuwn63eH=tbsnsKu1+CG8mUrRQeNA@mail.gmail.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -177,121 +122,60 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked:
- dwF4+Xj5rP+Rq8mvNS21OdIlIjXUNsaZtYTQ8h7OyMlI48huW4hx+1gPWelLZIm+Rrb+uDIIOqAUGGcZqFivNN6Cyqax1ny++ZYdw3e7q/nlFWVZJRiTfCHa1uLJvjShPReEoUnrmrkA4bxI72Gtmn3PTatqxSOgeo/3EraAMbEzs1uYpCHAlkONsu+YHfTpWdbAkMu1/IxQu7F+4Pa4NcS34Pqjn0eIPF+pZWZuiLe53CWYZi0/vCw+4+A9MGxXtsRIPyxZWzsH2JZkitiwdMHyNuwWVBgIM5TPDtL+v7itRA/OjCLfRIH4GogVMeCrtDJYnKSJlcpdzj6CeIfWWQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR08MB8097
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- DB1PEPF000509EC.eurprd03.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	1118281b-e538-4a7c-8354-08df4a2d6f84
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|14060799003|23010399003|82310400026|1800799024|7416014|376014|35042699022|36860700016|22082099003|18002099003|6133799003|261009223027099003|4143699003|10067099003|56012099006|11063799006|261102123227099003|261026140227099003|261028144727099003|261026121527099003|261021135927099003|261021121427099003|261022105027099003|261022075727099003;
-X-Microsoft-Antispam-Message-Info:
-	OqLY7LXEmU/0CA8njOe6NwHJSJVeDLTZ6MYoc1h0JACXUINXs67HXhwMrX+0BeYtai1fkDPYvyg+c6B0aDkRMNnxC/RrvcvY1RnrsasWSaBl78XgaJOBj+/b4Hyumr3RFG4ifkKEdl8qUxwM/EqGCzk20ipn7ntjGvncIIw1XmYsZ3ZO2+2TBZ8T9habfQqBJhQ1jh/5+qTiDg+WxXFGTMVAu+ymJ/JqO47J0QpLjyCyWgQ+dPIUl+2Ns0/VuIna1cYJWSG4uazS8dbrJJCLTrdq5x8QU/dhV9l5TMKH92jzwJpDd5UBvqzPUGuCstILV3T42nie3+uzE4+OzOjqRTCi3HqU5/h9a0yejFHU1jkfuc8oQSy3jpdcX+t+Owuckeb0luYGWa0zR6lhJaK+H2ui6sa4IxvG3CGa5fxLMLeOS1LMsele8JrZLaX2UK5f1DbKOn/udUerlRd2GfjKwxDx5dYoxxUFP7okbiRWbtSvbYf2ku4qkrJyxD65lxzaO/UZEph8BYq+YhjX7Li/2MrN9jhnC4LMUuMe81mJzxMxSygZmsfOEtfpeVcYalBQHOylz2uQQWzMQL7/iHumDWqYE7EfsCtycFdCkwwoLY6EjJ3I8KvZ8QIHdeJlrfxoQBMP4uMl4ZtY4pfjVUQo9G1qi3orFFp33ldh1hon9f03P+Rko5X/pqY5ACAdFrbb
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(14060799003)(23010399003)(82310400026)(1800799024)(7416014)(376014)(35042699022)(36860700016)(22082099003)(18002099003)(6133799003)(261009223027099003)(4143699003)(10067099003)(56012099006)(11063799006)(261102123227099003)(261026140227099003)(261028144727099003)(261026121527099003)(261021135927099003)(261021121427099003)(261022105027099003)(261022075727099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	LyS38f4a9OTZBjbDnwnmjmt9T77OjnqtaGXuYGzI3/MDypZKYtR/z8/J2ZKqQsp+iUc/j2VB2s0qhCjtud47YgDLieIOKI3UAQLJ9U/7vwwfc1sVwNuERKNnBtcnglvPXUwVU68Ipgid2X00SdBToK4AfqvzYxUdBEENClGfjKZV6wJ7QHY+I1y8os5qnChgenbBCyRDEvyTeJkgTPEC8122G1p0MpHP7DHMlmNJB5w2KYx+PATlQ5qVAnE1Aznxit5XsDKLs6Euk5enww8CdfmRrZVm0J2CpXXIb/1cKu/SBxkJM7Bm4miHlth2nZXHW3oURFFWnRo4pzD1ZMggQgayjZRz3PYm9zi/DYbzcHNym13Cz6nK169BC8gt6BTqF0srmAaBcm2/HHlkx1HT7AoIQXFl11uulbUPnaxVUNtDn2bH6Vt4py/TACjTvdhy
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2026 13:19:10.9902
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e3c5e816-8da6-4372-f386-08df4a2d8720
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB1PEPF000509EC.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB9430
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, 23 Nov 2026 12:12:00 -0800
+Yosry Ahmed <yosry@kernel.org> wrote:
 
-
-> -----Original Message-----
-[...]
-> > > > KVM_PRE_FAULT_MEMORY calls vcpu_load() as soon as
-> > > KVM_ARM_VCPU_INIT has
-> > > > completed. On arm64, however, kvm->arch.sysreg_masks, the trap
-> > > > configuration, vncr_tlb and nested vGIC state are only set up on th=
-e
-> > > > first KVM_RUN in kvm_arch_vcpu_run_pid_change().
+> On Tue, Oct 6, 2026 at 12:15=E2=80=AFAM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> >
+> > On Tue, Apr 28, 2026, Igor Mammedov wrote: =20
+> > > The APIC timer runs at wall clock time under KVM. If vCPU is stalled =
+for
+> > > long enough, timer can expire before the guest reads TMCCT or tick we=
+ll
+> > > past expected values, causing various false test failures [1].
 > > >
-> > > I think I'm going to queue a patch disabling prefaulting immediately,
-> > > and then we can fix this crap.
+> > > Add retry attempts with increasing timer period (10ms, 60ms, 700ms)
+> > > if any test fails, to handle spurious failures due to vCPU stalls.
 > > >
-> > Fine with me. I'll rebase on top of it and have v2 re-enable
-> > pre-faulting together with the load/put change.
->=20
-> Don't worry about that. I can fix that myself when applying the
-> patches.
->=20
-
-Thanks. I'll leave the pre-fault enable alone in v2.
-
->=20
-> > > > Since kvm_running_vcpu can now be set without VHE state on the CPU,
-> use
-> > > > host_ctxt->__hyp_running_vcpu in VHE enter_vmid_context() (matching
-> > > > nVHE)
+> > > 1) Failures we sometimes observe in CI are:
+> > >   "FAIL: TMCCT should have a non-zero value"
+> > >   "FAIL: TMCCT should be reset to the initial-count"
+> > >   "FAIL: TMCCT should not be reset to TMICT value"
+> > > Seen on both Intel and AMD hosts.
 > > >
-> > > Can you clarify under which circumstances we end-up on the TLB
-> > > invalidation path? Simply faulting things in should not result in
-> > > invalidation. Unless we end-up with MMU notifiers firing?
+> > > PS:
+> > > on most test runs, test completes fine on the 1st iteration.
+> > > The patch would affect only failure path which will be slowed down
+> > > due to retries but still fail if there is a bug with benefit of
+> > > getting rid of false positives caused by vCPU stalls.
 > > >
-> > I found this by code inspection, not from a failure. A TLBI from a stag=
-e-2
-> > BBM or an MMU notifier can hit this path during pre-faulting, but befor=
-e
-> > the first run hw_mmu is canonical, so it makes no difference. As Lorenz=
-o
-> > said, I'll drop this hunk.
+> > > PS2:
+> > > Number of tries and tmict delta comes from analyzing vcpu stalls
+> > > on heavily overcommited Haswell host with test being bounced between
+> > > 2 sockets.
+> > > Typically 2nd iteration (60ms) is enough to get rid of
+> > > false positives. =20
+> >
+> > Blech.  I would rather rework the testcases to simply not be flaky.  I =
+don't see
+> > any value in waiting for the TMCCT to be half of TMICT; just validate t=
+hat it
+> > counts down across switches, and that it can wrap in PERIODIC but not i=
+n ONESHOT.
+> > We have a KVM selftest to validate the timer counts at the correct rate=
+, so just
+> > validate the core functionality here.
+> >
+> > E.g. roughly something like this? =20
 >=20
-> vcpu->arch.hw_mmu being the canonical one before the first run doesn't
-> hold anymore, since a7602ea542d4e ("KVM: arm64: nv: Initialize hw_mmu
-> to NULL for nested vCPUs"), as userspace can configure things for an
-> L2, before first run, and bad things happen otherwise.
->=20
-> But the observation remains: if an MMU notifier occurs for any reason
-> while pre-faulting (likely a concurrent reclaim), we get the "not
-> quite loaded" vcpu in enter_vmid_context(). If vcpu->arch.hw_mmu is a
-> valid (non-null) pointer, then we will restore whatever is in that
-> structure when reaching exit_vmid_context(), and that's not what is
-> intended.
->=20
-> So I think we need that sort of exclusion. Either we track what is
-> actually properly loaded (using __hyp_running_vcpu as you did before,
-> or by checking whether the vcpu is in a valid state).
->=20
+> Igor/Sean, do you intend to send a new version? I am running into the
+> same problem when running the test in a VM (i.e. nested).
 
-I'll keep the __hyp_running_vcpu change then. It follows what is
-actually loaded on the CPU, and it matches nVHE.
+It's on my TODO list
 
-> I think we have a somewhat similar breakage with 5651590be08a6 ("KVM:
-> arm64: Load the vcpu in KVM_SET_VCPU_EVENTS"): as vcpu_load() now
-> becomes sensitive to vcpu_has_run_once() being true, we can't tell
-> anything of the state that is going to be evaluated by the event
-> injection helper.
 >=20
 
-Agreed. It already crashes: with pre-faulting disabled, an all-zero
-KVM_SET_VCPU_EVENTS before the first KVM_RUN triggers the same NULL vncr_tl=
-b dereference here.
-
-Instead of rejecting it, we could defer the injection to the first
-KVM_RUN, once the state is finalised. I can try that as a separate
-patch, if that sounds reasonable to you.
-
-
-___=A0
-Best Regards,
-Jia He (Justin)
-
-> We could prevent the non-running injection in KVM_SET_VCPU_EVENTS, but
-> that's also a change in the API...
->=20
-> 	M.
->=20
-> --
-> Without deviation from the norm, progress is not possible.
