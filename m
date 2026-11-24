@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1795562572;
-	b=2PV0K6O+cnw2+XTzpZYOHXPg42Uyw7thIJZIoOR88lZrWzgFdH+AZa1IOda60tH3k96z
-	 /gUPb1QqAatNiVtFTczRcIJqFNK2c1I0Ad37iLOKFJw+6WaStpYlCgVPA004bRjoP1mH5
-	 ElNdfy/AUEpRAWYY0LZioCv9e0Dw0eUqSUJLuFY/qELOv85PGHXzNjZNPwJzbNoyrWQ19
-	 9IDcawuaOKGrVgnADacbsaJi1ANu+8Apat/WDbzH63L5tzwpBYElNymRvTsaOJRVfUj58
-	 DbEhJpiNVo+6GdaE312bH39WZcZchHDsVTfNWWuk0D1C0IqDtjrJZeMNMje3q409Fpg==
+	b=z5dmHVDFM1/m9DXYIXTrdACavzwZbJVSXYaV87UwCyqmANaiElzps6UurrwMCUNYCUDV
+	 XXqGtPes8YZqRlgmZCwJf0kMbKpRqV/j85rzZUD1cGlwdaC0WYBjeV0EK427u5AzdssZD
+	 assTqPZ9BAL5hHyfXIKiZdSDHRM7OTZjIA4tbau/jYokUhDQGQL9PbYhdSxS2Mgzm5Wvn
+	 vGnu1X/91jkCaZDLJtXCN0VYp+F/7w+wJQNyS7l25UFTDd6mPdgB64Mfmhz9N2bmgDHlG
+	 wxOZSsBYdP34ctkYH6U0pMJCBbC+yATZtLfk/HOER/EwehXPtLUnsLMD1wen/lKQfgw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795562572;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=omSfQRir3NOjvaxuaNmQVmaf9UjouyCVezkBBc8wqZc=;
-	b=4bYESb7tzJJV8St98igvLTErqcrTWpbdGG4Gg4LI+Jk3SlI3Ob1uwHMYeEUyPh8k/L43
-	 CPGl1D8OynD07NqVcYhpmGO4gyVStoG9gLitlkpJBr7RsjYLA30YZap1G9pWtY8fJjE9F
-	 vBp1sjkKmYtqUmmvEr/TtGpMYlokncmvuyngcBHiO6ah6z29V/fKrWBj0vehI8rWD6X03
-	 IwXEFA0EkeyLvf9uxxH+qfEtcGWqRruaaUCex4P4azs3L0kxQjlaS1rLTXjy/sjMK+FAo
-	 RKajQ6FdQoL3nPaoLVE7yj71KAFgri49xuaGAQaPx/OMQhTsfcnNXtbo5OQIWaGa2nA==
+	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
+	bh=mShxXaZv6TY0Zli6pFAQOFKuPFGFrSk9kLHIUrN7Ut8=;
+	b=wnB6fWhWh6o1BbR7pLZZX7rCb9fDDFmgNW6zIj3z6igGr3PNh8TLryIBxr+ApEQtk3K8
+	 8Z7ADLNn6Ex4eUbb7++VBWFsbMe/L18ek0ds2Sm6+/CUFRzuFo9DzZpin0hAxeGR6GizS
+	 wmk3Urz1tyAIG2E1HnjhyuSZQebewV6HhRN/774TNA5wrATNnuPY917O8/QO5eX/XA3zL
+	 F677RVnJgaVXns6+0bGgDyq8Vj8j3QS1NHMhh0lKjw+XUGSa70bPTv675wX2MuQZ3giia
+	 OAxkDPwLGOgJqdFrTrRJxrtm3mRTDVTcr7pHkO4XwlFDsbpBZ0V0TXZVW1E/EJA8nqw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=DDIp988r;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=uMvqhYcU;
 	arc=none smtp.remote-ip=90.155.50.34
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9738606A327
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E964E606A321
 	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:22:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9738606A327
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E964E606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=DDIp988r
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=uMvqhYcU
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description;
-	bh=omSfQRir3NOjvaxuaNmQVmaf9UjouyCVezkBBc8wqZc=; b=DDIp988rHTV7Y/YJBbUl8MtY+f
-	OSqNgMp//dwiaqlE3WGUaJXxYnmYB/NT/ba1puqnp8cX9ie0PYqlb9T+KM0U6hx5GGut/gkATWMH9
-	yP3Amt8TaJ3JOtwSmKg8N2zr/679L3/Rrv9kUFzfXVpbQXhGOdbkFebtVmzeorfbDYfOhvMCUYFUh
-	fcFMf8pLi9VAcogUdNbm4F1RVTCi7dY7TYoqSa11A2fXVoxW/ffIOIq+B+qD13h04kIj+5Et+uxcE
-	dZE11z2cqqphjDPQmPI1zJEE03phi+Dhnq5nY2/my1iWWGPTEcTWfK64JlzqroPoJHw16J1abaUHH
-	RR18poDw==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=mShxXaZv6TY0Zli6pFAQOFKuPFGFrSk9kLHIUrN7Ut8=; b=uMvqhYcUlLku2c+q0NhmFreiZL
+	TXqO78fEulJkymZMHBv8tmwLdtaQ3Rcskf8g6WHxqeBONoGsdnS5w0MtUe02gohddf/vzkGUQhnB8
+	V6URimHadQK9fN5WMBerum0CbF5wwZmBYuUbej5eCu5OJR7XYac2D+134ru0r65BHmnvunVLRcv5s
+	GWYqKwmlyZYTV3RDkXA4cguPMfbkWZ8PsuPV8O5TMBsd2GABaKtJZA5li7GdyfqX6d3sp3P2FjYoV
+	QbOU9l/pHVf2+6Lt9m0GCTHVjj6O7eLgfmvTg+X4UO/izy/cvY2T331EUUSh5PyOMXnJWQSQ0beph
+	xPcPKP5g==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xVzqZ-0000000Gdhv-3Fud;
-	Tue, 24 Nov 2026 23:22:48 +0000
+	id 1xVzqa-0000000Gdi2-12sA;
+	Tue, 24 Nov 2026 23:22:49 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xVzqZ-0000000061z-1Qql;
+	id 1xVzqZ-0000000062s-2sK5;
 	Tue, 24 Nov 2026 23:22:47 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
@@ -69,9 +69,9 @@ Cc: xen-devel@lists.xenproject.org,
 	Mark Syms <mark.syms@citrix.com>,
 	Feifan Qian <bea1e@proton.me>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v1 04/21] hw/xen: Publish backend features before setting state to InitWait
-Date: Tue, 24 Nov 2026 23:22:30 +0000
-Message-ID: <20261124232247.23169-5-dwmw2@infradead.org>
+Subject: [PATCH v1 17/21] hw/9pfs/xen-9p-backend: Close event channel handle on disconnect
+Date: Tue, 24 Nov 2026 23:22:43 +0000
+Message-ID: <20261124232247.23169-18-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261124232247.23169-1-dwmw2@infradead.org>
 References: <20261124232247.23169-1-dwmw2@infradead.org>
@@ -84,89 +84,38 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-The XenbusStateInitWait transition tells the frontend that the
-backend's parameters are readable, but xen_device_realize() set it
-before calling the implementation's realize method — which is what
-writes the feature nodes ('max-ring-page-order' et al. for xen-block,
-'feature-rx-copy' for xen-net).
+Disconnect only unbound the port, then dropped the pointer, leaking the
+handle and its file descriptor on every disconnect/reconnect cycle.
+Close the handle; closing also unbinds.
 
-Linux blkfront reads 'max-ring-page-order' with xenbus_read_unsigned():
-no wait, no retry, default 0. Lose the race and it silently negotiates
-a single-page ring — 32 request slots instead of 256. A device
-hot-plugged into a running guest loses essentially every time; at boot
-the frontend doesn't come looking until long after realize finished.
-Netfront reads its feature nodes the same way.
-
-Commit 240cc11369fc ("hw/xen: Avoid crash when backend watch fires too
-early") introduced this by moving the realize call after the block of
-code which both populates the initial xenstore nodes *and* sets
-InitWait. The crash it fixed was real — xen-block's realize processes
-watch events via blkconf_geometry()'s aio_poll(), and the handlers fell
-over when the nodes didn't yet exist — but only the node population
-needed to come first.
-
-So keep the node population and the 'online' write before realize, and
-move only the InitWait transition after it. A watch event during
-realize now finds the frontend in Initialising and no backend 'state'
-node, which the handlers tolerate; none of the three realize
-implementations reads the backend state. Verified against the original
-2023 crash reproducer as well as the ring-order negotiation.
-
-Fixes: 240cc11369fc ("hw/xen: Avoid crash when backend watch fires too early")
-Reported-by: Mark Syms <mark.syms@citrix.com>
+Fixes: b37eeb020123 ("xen/9pfs: introduce Xen 9pfs backend")
+Reported-by: Hui Peng <benquike@gmail.com>
+Closes: https://gitlab.com/qemu-project/qemu/-/work_items/4523
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/xen/xen-bus.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ hw/9pfs/xen-9p-backend.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/xen/xen-bus.c b/hw/xen/xen-bus.c
-index 17bbbe2ea71..b75ce7f0957 100644
---- a/hw/xen/xen-bus.c
-+++ b/hw/xen/xen-bus.c
-@@ -1082,7 +1082,6 @@ static void xen_device_realize(DeviceState *dev, Error **errp)
-     xen_device_backend_printf(xendev, "hotplug-status", "connected");
- 
-     xen_device_backend_set_online(xendev, true);
--    xen_device_backend_set_state(xendev, XenbusStateInitWait);
- 
-     if (!xen_device_frontend_exists(xendev)) {
-         xen_device_frontend_printf(xendev, "backend", "%s",
-@@ -1093,6 +1092,19 @@ static void xen_device_realize(DeviceState *dev, Error **errp)
-         xen_device_frontend_set_state(xendev, XenbusStateInitialising, true);
-     }
- 
-+    /*
-+     * The implementation's realize method may write feature nodes to
-+     * the backend area (e.g. 'max-ring-page-order' for xen-block,
-+     * 'feature-rx-copy' for xen-net). It must be called after the
-+     * backend and frontend areas are populated, because it can invoke
-+     * aio_poll() (e.g. through blkconf_geometry()) and thus process
-+     * watch events which need to read the 'state' nodes. But it must
-+     * be called *before* the backend state is set to InitWait below,
-+     * because InitWait is the frontend's cue that the backend's
-+     * feature nodes can be read; a frontend which reads them promptly
-+     * (as Linux blkfront and netfront do, without waiting or retrying)
-+     * must not find them missing.
-+     */
-     if (xendev_class->realize) {
-         xendev_class->realize(xendev, errp);
-         if (*errp) {
-@@ -1100,6 +1112,8 @@ static void xen_device_realize(DeviceState *dev, Error **errp)
+diff --git a/hw/9pfs/xen-9p-backend.c b/hw/9pfs/xen-9p-backend.c
+index 6e26a445a09..612f19c45c8 100644
+--- a/hw/9pfs/xen-9p-backend.c
++++ b/hw/9pfs/xen-9p-backend.c
+@@ -392,8 +392,7 @@ static void xen_9pfs_disconnect(struct XenLegacyDevice *xendev)
+         if (xen_9pdev->rings[i].evtchndev != NULL) {
+             qemu_set_fd_handler(qemu_xen_evtchn_fd(xen_9pdev->rings[i].evtchndev),
+                                 NULL, NULL, NULL);
+-            qemu_xen_evtchn_unbind(xen_9pdev->rings[i].evtchndev,
+-                                   xen_9pdev->rings[i].local_port);
++            qemu_xen_evtchn_close(xen_9pdev->rings[i].evtchndev);
+             xen_9pdev->rings[i].evtchndev = NULL;
          }
-     }
- 
-+    xen_device_backend_set_state(xendev, XenbusStateInitWait);
-+
-     xendev->exit.notify = xen_device_exit;
-     qemu_add_exit_notifier(&xendev->exit);
-     return;
+         if (xen_9pdev->rings[i].data != NULL) {
 -- 
 2.43.0
 
