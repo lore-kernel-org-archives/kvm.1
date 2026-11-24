@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1795562582;
-	b=Qq8zQ6UlW5ihXxiay1NBOlCUrziCnH14cv2Lmmkw5mAjxs0DHBnO1yltkuTMfsbPmKU2
-	 6TeRNEZ8Ai3Bc52Zcyl4NtSa/r+lHb01gbo2MqE1APs1PQJZJExuw2KbAKexnZlSJDA24
-	 GlYlv01WoYQjAATAZobRgU6N6B/dax0bCbxITWxpuo7bJUwumJbq0whW3AtzmFoE/sXVd
-	 XvzjUBYY0QSxAMTAQQSVCCt1h3JAnkD/MWaPf6Liu8QNwsiyvi6dndhQtG/Ex6ocPDkwM
-	 Fx0wP9dQjsVFELV850QsxSloNNAbzufB7UEe5SbT6yZAHQ3cO1EjwjZqqcYbkK/6pOQ==
+	b=w9VUYRSnU8DqeOGf5SOovnLW010oaBA79ghOtPRrtDW+Lvt1EtY9LexRoWKcwFn5JPKf
+	 B2sMV1HeLuLcLVBIuQyBwmG/TsmAJ2pukrym17iV0iYntYRXBHAdKQtpVPiGwkH4WiXb0
+	 Zxy/gAI3OBDLN96++fKuoUVjJuYVrlcFqgbyIc8KyaQCY8Je58CATPemH08S84/jhHGyv
+	 x6X/3+ld/UQNax3beAn1To4HiSWYPoWxUJgJdUHZTjc7n3nXiI3s8HXerVF1kQYvEPghl
+	 7GRXCFGivYfc3QC8NCbHoamLwpkGgXp/SfnVu65onk3VHTfp3z0/rdxnfpYBeN1Gu4A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795562582;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=g0SlkPOioN/IQzWDDzbZEsZOjV4lbvBOawbX12q9VDg=;
-	b=ZDhAFZedYpj8AqHYepn88NP7xpytuOcFHGuCbWvaJTokb2HIwTYmvaDdeXlsOzyvi1bV
-	 74xI2/wc0Gpx4yEeuMGveduwq/cTwcksK5c++q0FX8uVty2J1bmGVbIMRx41L8sYXRTxY
-	 7FWle34sJC+LMGq6N4DWVSaf54NX5zlK0PBJrhICDgWSO7ZoP1ofPQsSpNw9UmE7iAcf+
-	 OOvgULtW9G/RL2iMvRqGA5UYtB6fQPQJtrv0YpS/oK/NMTKyvO0LUlIjVhtsArOGNsb89
-	 j5CxNRsGO9x6tpBk4vnxHEixWVZeMt8UdufDJgEoD7NdsjSImU6/SxGX+6EKCefzPMg==
+	bh=GX5FpFjvP4EEA1jVsu7PkqgqUubc1fokwnXjwzK+f/k=;
+	b=nJCvQ3RwACoGhr+Nu7KYQFhvMqW7r9zZrTmU8jpEyp28tQw0G+Aau1lSiwUvLp4UFypA
+	 3AvkhM3wXxZ2E257OIn3dG34eXgAN0VUJ35mxyJ1fRSj9plypSLqqXg/E3Ciu7HKJcjmC
+	 4EDwWTQfUHf9XizcNvcu79nhBag0NH9+pF8mlxZq7JP3GOtptskLHPbQvr7eo7WHaEHQG
+	 5dPYoO3bzE3DZbQ77oQJhFXd4hiicAcU5MMPyeIQ9C+bbGQTm3Qa7GRjqCyXBD1eW1PYT
+	 Jz76e7C5mo58m0LyNXf2zKxy+jE1EKMYtAsWul6a4bgwxsi++MpTDNtTY3XmTx2LUsg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=desiato.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=qW5Fg3iB;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=M+RiDqAr;
 	arc=none smtp.remote-ip=90.155.92.199
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3988606A682
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E394D606A680
 	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:23:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E3988606A682
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E394D606A680
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=qW5Fg3iB
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=M+RiDqAr
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=g0SlkPOioN/IQzWDDzbZEsZOjV4lbvBOawbX12q9VDg=; b=qW5Fg3iBgTbI+mNkwnsFDI+gCN
-	8c+8hHLNMHsUcyVv7MN5Id3OhNMrzNLKA+r7QeZPSkUOkGaplpB6EI933zhzzliR+e4aF1mhJgArF
-	7QqIBoJZkVSX6zDGEfxaYFxtu2dy0lS2lknLtc5+JnLXRIDYyaic56X32akytgegVtTKU8CGgxhG3
-	S+YwZE7u6iptNB4Unh61IUJx0Tk4KFarmhtrEmfHkEFK0/TsLkr/SdslUBb/yQpG54M2V1J4HQKHA
-	xRk0paEhHBQ6ebGgSjdcOvGjiXHqfYVdIQHvTw9UJrFfXAejI0nTxd7N0XTMwoHXmg54XS9E50Y2u
-	LmeNrUJQ==;
+	bh=GX5FpFjvP4EEA1jVsu7PkqgqUubc1fokwnXjwzK+f/k=; b=M+RiDqArijw/ZDCdN2rh9IC72T
+	AnDLGo1bE94RvoISoRLfF4+La4xY3E1zNbwK9JYkmM7kQt1oXXtriVolHzXpCxkbp6c3oCDffMEIn
+	30Z06j92HhyZcixxR69c3UdU8U3zQSXxPS1RE0fg7dKmaSmGChiWPrQPt1P0e6BaFU/36MLqqmyJ9
+	ryxBxSC3GDO9/cKytp2TVuLfkdT5ed6xhDOzdj+H22Lm/OcDB7tNkVlIZ9I0Uj0TUGr/rt8TAT3mJ
+	RgR1JMIAUf5SXpmDaZkB7UVh8Bbn7hu2fd6hlQgz6EmYGaS8+duV/kXmHEAy350ZUNXbf66J67Af2
+	t5s2cHfA==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xVzqc-00000004eV3-1kSi;
-	Tue, 24 Nov 2026 23:22:58 +0000
+	id 1xVzqc-00000004eV6-1lWW;
+	Tue, 24 Nov 2026 23:22:51 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xVzqZ-0000000062Y-2KT8;
+	id 1xVzqZ-0000000062k-2dPl;
 	Tue, 24 Nov 2026 23:22:47 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
@@ -69,9 +69,9 @@ Cc: xen-devel@lists.xenproject.org,
 	Mark Syms <mark.syms@citrix.com>,
 	Feifan Qian <bea1e@proton.me>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v1 12/21] hw/i386/kvm/xen_xenstore: Apply offset before truncation in xs_append_strings()
-Date: Tue, 24 Nov 2026 23:22:38 +0000
-Message-ID: <20261124232247.23169-13-dwmw2@infradead.org>
+Subject: [PATCH v1 15/21] hw/9pfs/xen-9p-backend: Validate the request header size field
+Date: Tue, 24 Nov 2026 23:22:41 +0000
+Message-ID: <20261124232247.23169-16-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261124232247.23169-1-dwmw2@infradead.org>
 References: <20261124232247.23169-1-dwmw2@infradead.org>
@@ -90,63 +90,52 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Truncating a string to the remaining payload space before applying the
-requested starting offset corrupts the offset accounting, so
-XS_DIRECTORY_PART returned wrong data for non-zero offsets. Skip to the
-offset first, then check what fits.
+A request whose header declares a size smaller than the header itself
+was accepted, submitting a zero-length PDU and advancing nothing, to be
+re-processed on every ring kick. Reject it instead. Set inprogress only
+once a request is accepted, so returning early on a half-arrived or
+malformed request no longer wedges the ring until disconnect.
 
-Fixes: 0254c4d19df3 ("hw/xen: Add xenstore wire implementation and implementation stubs")
+Fixes: 40a2389207fb ("xen/9pfs: implement in/out_iov_from_pdu and vmarshal/vunmarshal")
 Reported-by: Hui Peng <benquike@gmail.com>
-Closes: https://gitlab.com/qemu-project/qemu/-/work_items/4525
+Closes: https://gitlab.com/qemu-project/qemu/-/work_items/4523
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/i386/kvm/xen_xenstore.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ hw/9pfs/xen-9p-backend.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/hw/i386/kvm/xen_xenstore.c b/hw/i386/kvm/xen_xenstore.c
-index ff0dfb1bff8..7aa5d97e01a 100644
---- a/hw/i386/kvm/xen_xenstore.c
-+++ b/hw/i386/kvm/xen_xenstore.c
-@@ -614,6 +614,21 @@ static void xs_append_strings(XenXenstoreState *s, struct xsd_sockmsg *rsp,
-         size_t len = strlen(l->data) + 1; /* Including the NUL termination */
-         char *str = l->data;
- 
-+        /*
-+         * Skip to the requested offset before checking what fits, so that
-+         * truncation does not corrupt the offset accounting.
-+         */
-+        if (start) {
-+            if (start >= len) {
-+                start -= len;
-+                continue;
-+            }
-+
-+            str += start;
-+            len -= start;
-+            start = 0;
-+        }
-+
-         if (rsp->len + len > XENSTORE_PAYLOAD_MAX) {
-             if (truncate) {
-                 len = XENSTORE_PAYLOAD_MAX - rsp->len;
-@@ -626,17 +641,6 @@ static void xs_append_strings(XenXenstoreState *s, struct xsd_sockmsg *rsp,
-             }
-         }
- 
--        if (start) {
--            if (start >= len) {
--                start -= len;
--                continue;
--            }
--
--            str += start;
--            len -= start;
--            start = 0;
--        }
--
-         memcpy(&rsp_data[rsp->len], str, len);
-         rsp->len += len;
+diff --git a/hw/9pfs/xen-9p-backend.c b/hw/9pfs/xen-9p-backend.c
+index 22b2190b1b6..430de23fadb 100644
+--- a/hw/9pfs/xen-9p-backend.c
++++ b/hw/9pfs/xen-9p-backend.c
+@@ -314,7 +314,6 @@ static int xen_9pfs_receive(Xen9pfsRing *ring)
+     if (queued < sizeof(h)) {
+         return 0;
      }
+-    ring->inprogress = true;
+ 
+     masked_prod = xen_9pfs_mask(prod, XEN_FLEX_RING_SIZE(ring->ring_order));
+     masked_cons = xen_9pfs_mask(cons, XEN_FLEX_RING_SIZE(ring->ring_order));
+@@ -322,9 +321,18 @@ static int xen_9pfs_receive(Xen9pfsRing *ring)
+     xen_9pfs_read_packet((uint8_t *) &h, ring->ring.out, sizeof(h),
+                          masked_prod, &masked_cons,
+                          XEN_FLEX_RING_SIZE(ring->ring_order));
+-    if (queued < le32_to_cpu(h.size_le)) {
++    /*
++     * A size smaller than the header itself is malformed; returning
++     * with inprogress still clear means it is simply ignored until the
++     * guest fixes up the ring contents. Do not set inprogress before
++     * the request is accepted, or a half-arrived request would wedge
++     * the ring forever.
++     */
++    if (le32_to_cpu(h.size_le) < sizeof(h) ||
++        queued < le32_to_cpu(h.size_le)) {
+         return 0;
+     }
++    ring->inprogress = true;
+ 
+     /* cannot fail, because we only handle one request per ring at a time */
+     pdu = pdu_alloc(&ring->priv->state);
 -- 
 2.43.0
 
