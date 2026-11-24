@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1795562572;
-	b=CQUxUFMzu0Yz/+ed6YLWO62l+vyxj5qYIAwxrqgeox45k/fHS/9Pa/d3HvB1keDQ4j26
-	 hQK7eYzIsoGDfZnycKV1vd7NnB5Iaxt1LPro9EOwb5VwP/oJA/If+dyVwjGSC7eS8mUsY
-	 pFrv7XZHIjpbt+T1oKCWar1sJ3I1EfK54b6a2qS4nb/nZ+2/GrwEVraSyW9UFrfyi/rLy
-	 a+n5mNje9HKC0MS1ySo0t+HTHu3OvIe/TKsROwl2g3A1F8WqNow/XWoCvhZvNHKhlDyUP
-	 tt3vhhLez/DAS29Evp0AHIMwrNJV7c6xyMPPXtes/EWr9AxQ+2qloyZKmhc/WusMBnw==
+	b=rCJF9oo4UTdLCXFtdLvGlP/jkLJt9hPbQ2T9z88wHYIR7Uja0vzIVRcEn4JHr6AGbzDB
+	 HJezWQW7EqqyXGkPl3QENxvX4rwAlI0NzT7Us3byIZRTAykggVvzoD1vxj961CVKIjglz
+	 WYyWofHMSZxc/HU6jeVLwZdR0Vc8RwqVjBXyGqHOsIaPaGHDV/yAF4vxZvwnLek0QYWkA
+	 xoIcDc7Nfr7zsYr4OVLFpCxgVdYuPGAnNJZ2HPXgL20lEmvXguex5rnBQbJSnldatDeKM
+	 NKadGU6UHRhfr2QMjn4Ky/X+7sjJB8C2UWmdAbsZq7XdLQC8qv3XQeEc6AeSoGyQtkA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795562572;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=fkwzsM5yfLakW/iXmvswEvcJGfL3/kGIv/KQzG4phgQ=;
-	b=XxFKAN3D/BzQJUMUE6X7s0AwZZDW2nyXuVmpP8jDe3CgY7N/1KaeRrxVRU16h7M8idlJ
-	 WhQNDURsJMbouEAetEX+h3xA9BqpWceAqiQj4ubC2dMONMVHQBQE0D+qv72E8LZGRQ15T
-	 8aElQlOByJ2rGickNooAg4KdMTGeCSj30yBB68FDkK7eADQ5RBeu31DKwRqnHyZjS3QtF
-	 ce8PudsX71onogfkA3wjqSvMSZRYrh8MdKtxDGVzwIYNVXUb2f/Orcxp5n86IeKBZuNql
-	 DAwdv1brNqnwp3ctg1Tu71BWBmw1uk24Z6a6T4gPhFFOMOl7hV3LVILZgOVsuV+rg9g==
+	bh=7Q8vcK6pp8jnVnCjyRjbmOniJ69JnrySfnqcCaHpuRg=;
+	b=1SEg4qY98hJtPHB2N3pnjlrcNQhWZpsPa4HmD6eKh8pHqCwjCw4FT9OksxDSG8ax66Q2
+	 MXcSV4R9nQDOfgpuA2snA5kn55JkuPyFjFIr9LM+Jz54PcNlPolr4+r+mk7H/qXmnvMeS
+	 DRSmlCSOKCUcDHVECLqj3qWbctNFc//31RQ1tg2VM9jiRBg14k/80nB/4oaGBZ3kokI9a
+	 ost4w5iJnbrGsgRzSY+pESH4G41OL2rSHMsNTdKfpUNi6/msxlZimTlCbvteZMvHJYskF
+	 0K65cfaFE62yFfezOxhxbv23gys0mcNho+fZ1ALniAt0Ybnf+ftvtAPmQmbKZpuGt9Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=TneVavzo;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ByYwvkFg;
 	arc=none smtp.remote-ip=90.155.50.34
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9770606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98A1606A32C
 	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:22:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9770606A329
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E98A1606A32C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=TneVavzo
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ByYwvkFg
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=fkwzsM5yfLakW/iXmvswEvcJGfL3/kGIv/KQzG4phgQ=; b=TneVavzootORhVDT/3U9C9AZmk
-	cv8rA0ENLPJ/vNuh8K/CdF8cqSWoI0niqz0MMcY4sXMef80sFwj0BHCzcX657lmFlwP0otGngA7Vl
-	QLBDd/YEXZpU9XTxI3OJZ+3xmCWlGjhI5QLq77ea9gydurBgLiNgtIH+0VPx16OKYnu2nLBqvGCLy
-	VNySvX8yZesdoaRjXRqTPTD/ZhHWTgfbRl4EFDFQVMjHPQ4VVetFqajaIGxONLXmqMuYpq52xkYGO
-	lk1bV0yRtX5bRDeYjpGCORlnmC3pSV7HfouWL/Y+ZzE34zEPDW67ZQTyp0ndYmkWaJSFKtJOtKnJV
-	6O1xrWFA==;
+	bh=7Q8vcK6pp8jnVnCjyRjbmOniJ69JnrySfnqcCaHpuRg=; b=ByYwvkFgRf+NraRIKwg2fC4EDw
+	CmOLguurIyG6OgQEEKm1F6mB3yG70Z8RMXbB5UsF9zwGU+4Di0mNG2JjIuOoD7RMpDzEKKpgAvxRn
+	1z/ITJftIVEb3OKUXxcjYpBdrBlzT4kpDiXsbHwf+2LcESWmbnUMMDN2czKFZnVX9/zkVLZ6rZ6gM
+	QWG0EmDqE6X3Fu1wgM5JXuaM3KUgJlEyhauqf0kiFxoqQzGaGfo/2htOB02X7L4eXi0BYPukwEuKK
+	Hbb8xYQ3TxJ2jXbnctaD8vkMILe43Adp+suaI2YGl+aGUOxJQJb9QRjD371JRAyDGKpqsfs5UaWIL
+	pkueEdZA==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xVzqZ-0000000Gdhy-3iq1;
-	Tue, 24 Nov 2026 23:22:48 +0000
+	id 1xVzqZ-0000000Gdhz-45hv;
+	Tue, 24 Nov 2026 23:22:49 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xVzqZ-0000000062I-1rPA;
+	id 1xVzqZ-0000000062U-2B62;
 	Tue, 24 Nov 2026 23:22:47 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
@@ -69,9 +69,9 @@ Cc: xen-devel@lists.xenproject.org,
 	Mark Syms <mark.syms@citrix.com>,
 	Feifan Qian <bea1e@proton.me>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v1 08/21] hw/i386/kvm/xen_evtchn: Fix off-by-one in do_remove_pci_vector()
-Date: Tue, 24 Nov 2026 23:22:34 +0000
-Message-ID: <20261124232247.23169-9-dwmw2@infradead.org>
+Subject: [PATCH v1 11/21] hw/i386/kvm/xen: Don't leak gnttab handle on reset
+Date: Tue, 24 Nov 2026 23:22:37 +0000
+Message-ID: <20261124232247.23169-12-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261124232247.23169-1-dwmw2@infradead.org>
 References: <20261124232247.23169-1-dwmw2@infradead.org>
@@ -90,31 +90,49 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-The empty-word optimisation advanced pirq by 64 on top of the loop
-increment, so the first PIRQ of the following word was never examined
-and could retain a stale device binding after the device was removed.
+xen_xenstore_reset() and xen_primary_console_reset() open a new gnttab
+handle without closing the previous one, leaking it and its mappings on
+each guest soft reset. Close the old handle first; closing unmaps any
+remaining refs.
 
-Fixes: 6096cf7877bc ("hw/xen: Support MSI mapping to PIRQ")
+Fixes: d05864d23b1a ("hw/xen: Map guest XENSTORE_PFN grant in emulated Xenstore")
+Fixes: a72ccc7fc449 ("hw/xen: add support for Xen primary console in emulated mode")
 Reported-by: Hui Peng <benquike@gmail.com>
 Closes: https://gitlab.com/qemu-project/qemu/-/work_items/4525
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/i386/kvm/xen_evtchn.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/i386/kvm/xen_primary_console.c | 3 +++
+ hw/i386/kvm/xen_xenstore.c        | 3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
-index 3aff01b5d6c..d0807f5fece 100644
---- a/hw/i386/kvm/xen_evtchn.c
-+++ b/hw/i386/kvm/xen_evtchn.c
-@@ -1701,7 +1701,7 @@ static void do_remove_pci_vector(XenEvtchnState *s, PCIDevice *dev, int vector,
-          * and cache lines).
-          */
-         if (!(pirq & 63) && !(pirq_inuse_word(s, pirq))) {
--            pirq += 64;
-+            pirq += 63;
-             continue;
-         }
-         if (except_pirq && pirq == except_pirq) {
+diff --git a/hw/i386/kvm/xen_primary_console.c b/hw/i386/kvm/xen_primary_console.c
+index bf61f6235be..0a2a6de3ecb 100644
+--- a/hw/i386/kvm/xen_primary_console.c
++++ b/hw/i386/kvm/xen_primary_console.c
+@@ -184,6 +184,9 @@ int xen_primary_console_reset(void)
+ 
+     trace_xen_primary_console_reset(s->guest_port);
+ 
++    if (s->gt) {
++        qemu_xen_gnttab_close(s->gt);
++    }
+     s->gt = qemu_xen_gnttab_open();
+     uint32_t xs_gntref = GNTTAB_RESERVED_CONSOLE;
+     s->granted_xs = qemu_xen_gnttab_map_refs(s->gt, 1, xen_domid, &xs_gntref,
+diff --git a/hw/i386/kvm/xen_xenstore.c b/hw/i386/kvm/xen_xenstore.c
+index 7d6d6d5cbb7..ff0dfb1bff8 100644
+--- a/hw/i386/kvm/xen_xenstore.c
++++ b/hw/i386/kvm/xen_xenstore.c
+@@ -1490,6 +1490,9 @@ int xen_xenstore_reset(void)
+      * first place. Map the grant anyway, mostly for cosmetic purposes so
+      * it *looks* like it's in use in the guest-visible grant table.
+      */
++    if (s->gt) {
++        qemu_xen_gnttab_close(s->gt);
++    }
+     s->gt = qemu_xen_gnttab_open();
+     uint32_t xs_gntref = GNTTAB_RESERVED_XENSTORE;
+     s->granted_xs = qemu_xen_gnttab_map_refs(s->gt, 1, xen_domid, &xs_gntref,
 -- 
 2.43.0
 
