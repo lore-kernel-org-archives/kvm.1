@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1795562582;
-	b=SPN78rypewJPGGDggBfPegXD01skp5x7wR03lFe5vvJGV4iJ2Te76kaFDuYw8ZHvYh9C
-	 8e8Wvt6q9sE13d0+WKI29PeDm0NIUTUQWUqEuZo0nOpq+O1Y1RmFt9nlGaQgChzMnseeZ
-	 pFxrdv4cLEPp7xAgPyO4VLpJUplyLRetEabiUCQgVSpDZPXe2CCmNOMGnnge4yzZWmxCg
-	 GhgA/4Ee7q2A6+1Wbm7KSaVaBxZxvv1ThI6qQdYDJbgag73k964l/AQryeqMtzV/hIS5T
-	 r1nAz7cbVXlov4VCfko1PHd60mTGrf4ljzyD9DzOiQhx3ND93tXMjd+a5VekE0/Arwg==
+	b=3Aj+UfGy5wrVp5gCnLJtfext4TRrxy+GAEr62QwgSKlquFJNpWpEWW1qsEHcYtFdJIoR
+	 rxStNuF7XrjS3xHKG373IkdghK6lyq9aMSfF5v++8wbQeY3YFN915k9QeR68K7KsQgytC
+	 sFl9QK7th6QQf/PZUDHUCDNPNSessoa4AEb/hh3CMsvFWWu5BhKwF4A8dFlnbuy0ao2+S
+	 Leq9hA6S7lA9CeGnPqLMh138oWtU3K9VzXY78u4IBS/dRZpg9m2M+L1wgQPmZG2o3aYiN
+	 8G4Yp8fA/yXPcfHyZc29O3tzJfXl9HbbEXh6aBvfm0lanSUnauVDf6AuKhRJmRnPBBw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795562582;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=CuCNOHrw3g5kpN0eJlwQJDa3PSDtkFSPqrd1YVfbUH4=;
-	b=DDaEiGEl31r907WwKJSBlpxeJl9wq/1eMNdHeSPrNlXPgmNa86ubEjJUPXBF0n6CQwsu
-	 cnGKKHMvrDHEjHC22U3YWzhkozJS/EL0pfzdC04vqDCm9Ezvl9tpVySeFgr+4bHbcXOPq
-	 scDdUfVgex/Vye7HgkX+Sc92DL/0p9na5/BYGNcZ+kyGhpmxeSsYIwPfDXV3/LI2v9zgB
-	 YcgdPuXV/6WNkvnw0wSaseWW6RxTWrTGGxWQQTFJBakoflBSyJNf+TnUGupP1ixRlAI4t
-	 6X5xIzYSrHjSatERHzgDlEgIyp0ADiUuKGzOXnnVwKL8lWqVbw+KBYjwjGOekhPpMDA==
+	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
+	bh=hzcboM0ohMmWlISO8riHLJaSzXAdnFAI55ObPeXkb6U=;
+	b=Wl8DFOab/VTU1khwJODHUC5PnQ6Y9TKYVUjADcjXoK3eWZ7NbfQk4fWivSWRKk2lV5c6
+	 bj5UPPN8lsvpz4YddUGEvzLOox3nBDJxgZWxktzZS21KKK4Bh1tWX/T22vA/DGAgcue2v
+	 5VuFXCirIlMOvx+oqA6fRwN3KOSM43toitG9sMXe82QSyOEMWIAwtI57jApMUL9RTllhx
+	 +KZuxH+hMu3aFjFCSO7aUJTvdgIA5FWTg9Y8CnANqJpNFWU4ymor8yN22fymtgRXnLACf
+	 D8b/1qdPSNdqTS6RrTsI5bL9/CI8J//HTqzsWL+zzMtacHJJ0Ihi3/D4N+FiOJl45gg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=desiato.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b="TwVely/1";
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=WhbF2j+f;
 	arc=none smtp.remote-ip=90.155.92.199
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39AB606A686
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79B4606A69E
 	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:23:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E39AB606A686
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E79B4606A69E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=TwVely/1
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=WhbF2j+f
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description;
-	bh=CuCNOHrw3g5kpN0eJlwQJDa3PSDtkFSPqrd1YVfbUH4=; b=TwVely/1oU3dXIXs/wYs9bg3V7
-	v9Nr5aM4ZZiTZw6SLi74DnVzy7ZBLWoznl+XKvXaln4y2FdYnT0A/ILwNp339CIgT4I9CXALgwjqr
-	RmjtdBRxqB8aHygJAbNoXA6G/wDDL31jtfoJVbbHAXaI1pRLBnqN61POd36Gsowg6z3q8bqh1Ig2m
-	sTO3i7pWZyUfcogkMXBaC7pZIGcqziE/qAUQMWr8gYJcBXXwm+1hPKpHx6TTSD3Ly12Abn0Ykl4lu
-	vz/j8JhOcbDhaphlqd+SmhmMpa0l7TWz3MUd5V9g6H3d+NIIQn34Vt8a/F6vyXfAkEUOPTIzQ8kHp
-	Yhgu418Q==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=hzcboM0ohMmWlISO8riHLJaSzXAdnFAI55ObPeXkb6U=; b=WhbF2j+fLNR/zARIW1zGydVvN2
+	/HzwKcdAx1+okK2juHfpid4TxC+8CtK36eJS9NKfzJvIzW0hUXqa1rdwjO9szuwcqSPoLExAlBVpo
+	mDhswuUYwQ66qfwFE8QHrKOLsFPACPGdirUvEziVxZWVw7IFifTnLlYY+aG4oBSyiCEw6RWiX+XEx
+	9lOOcYbykbbwdZYQfvO5LJ1XhHwK7Y1XoNQxh0/WNxvD4TnVCofUSY/xV2GS0XryNyGBUnxyTA1d0
+	gXvOW90ENXXl/Wwf9b2J8wsHsI/R9TOP/nneCdtr9N/crar/VoiymUACDjejI/N3detNVjiLtEXOx
+	Hn0feDQw==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xVzqc-00000004eUx-1kJG;
-	Tue, 24 Nov 2026 23:22:58 +0000
+	id 1xVzqc-00000004eV1-1qbP;
+	Tue, 24 Nov 2026 23:22:57 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xVzqZ-00000000622-1Xjf;
+	id 1xVzqZ-0000000062M-1y4D;
 	Tue, 24 Nov 2026 23:22:47 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
@@ -69,9 +69,9 @@ Cc: xen-devel@lists.xenproject.org,
 	Mark Syms <mark.syms@citrix.com>,
 	Feifan Qian <bea1e@proton.me>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v1 05/21] hw/i386/kvm/xen_gnttab: Fix error handling in xen_be_gnttab_map_refs()
-Date: Tue, 24 Nov 2026 23:22:31 +0000
-Message-ID: <20261124232247.23169-6-dwmw2@infradead.org>
+Subject: [PATCH v1 09/21] i386/xen: Don't inject event on invalid port in qmp_xen_event_inject()
+Date: Tue, 24 Nov 2026 23:22:35 +0000
+Message-ID: <20261124232247.23169-10-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261124232247.23169-1-dwmw2@infradead.org>
 References: <20261124232247.23169-1-dwmw2@infradead.org>
@@ -84,74 +84,36 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-When the grant's target page cannot be mapped, the failure path calls
-gnt_unref(), which asserts that the map_track[] refcount is non-zero —
-but the refcount was only incremented after a successful mapping. Take
-the reference as soon as gnt_ref() succeeds, so the failure path stays
-balanced.
+qmp_xen_event_inject() reported the invalid port with error_setg() but
+then carried on regardless, passing it to set_port_pending(). Return
+after setting the error.
 
-Refuse writable mappings, including a write upgrade of an existing
-mapping, when the underlying memory region is read-only, and set errno
-when the upgrade fails.
-
-Fixes: b08d88e30f06 ("hw/xen: Add emulated implementation of grant table operations")
+Fixes: 507cb64d6e66 ("i386/xen: add monitor commands to test event injection")
 Reported-by: Hui Peng <benquike@gmail.com>
 Closes: https://gitlab.com/qemu-project/qemu/-/work_items/4525
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/i386/kvm/xen_gnttab.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ hw/i386/kvm/xen_evtchn.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/i386/kvm/xen_gnttab.c b/hw/i386/kvm/xen_gnttab.c
-index 85b324e62d0..26d1febac4d 100644
---- a/hw/i386/kvm/xen_gnttab.c
-+++ b/hw/i386/kvm/xen_gnttab.c
-@@ -363,7 +363,9 @@ static void *xen_be_gnttab_map_refs(struct xengntdev_handle *xgt,
-     act = g_hash_table_lookup(xgt->active_maps, GINT_TO_POINTER(refs[0]));
-     if (act) {
-         if ((prot & PROT_WRITE) && !(act->prot & PROT_WRITE)) {
--            if (gnt_ref(s, refs[0], prot) == INVALID_GPA) {
-+            if (act->mrs.readonly ||
-+                gnt_ref(s, refs[0], prot) == INVALID_GPA) {
-+                errno = EINVAL;
-                 return NULL;
-             }
-             act->prot |= PROT_WRITE;
-@@ -376,12 +378,19 @@ static void *xen_be_gnttab_map_refs(struct xengntdev_handle *xgt,
-             return NULL;
-         }
+diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
+index d0807f5fece..7fd8c3f3182 100644
+--- a/hw/i386/kvm/xen_evtchn.c
++++ b/hw/i386/kvm/xen_evtchn.c
+@@ -2342,6 +2342,7 @@ void qmp_xen_event_inject(uint32_t port, Error **errp)
  
-+        /*
-+         * Keep the map_track[] count balanced with the gnt_unref() in the
-+         * failure path below, which asserts that it never underflows.
-+         */
-+        s->map_track[refs[0]]++;
-+
-         act = g_new0(struct active_ref, 1);
-         act->prot = prot;
-         act->refcnt = 1;
-         act->mrs = memory_region_find(get_system_memory(), gpa, XEN_PAGE_SIZE);
- 
-         if (act->mrs.mr &&
-+            !(act->mrs.readonly && (prot & PROT_WRITE)) &&
-             !int128_lt(act->mrs.size, int128_make64(XEN_PAGE_SIZE)) &&
-             memory_region_get_ram_addr(act->mrs.mr) != RAM_ADDR_INVALID) {
-             act->virtaddr = qemu_map_ram_ptr(act->mrs.mr->ram_block,
-@@ -394,7 +403,6 @@ static void *xen_be_gnttab_map_refs(struct xengntdev_handle *xgt,
-             return NULL;
-         }
- 
--        s->map_track[refs[0]]++;
-         g_hash_table_insert(xgt->active_maps, GINT_TO_POINTER(refs[0]), act);
+     if (!valid_port(port)) {
+         error_setg(errp, "Invalid port %u", port);
++        return;
      }
  
+     QEMU_LOCK_GUARD(&s->port_lock);
 -- 
 2.43.0
 
