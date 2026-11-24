@@ -1,66 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795557207;
-	b=ViDa76pU/sB5H2gD8Rz/XmjGrNwJMRcU48m7sXCJesD/sDWaQqxYjqRVEaDbe70J49t/
-	 LS2FQkCGBf15kGu+Ws7yO04slLbJfgjPirDOMVI+QUdzQF/DKSsTIlX7WQXxEY/HZiQX1
-	 7WLg60JtoLwQ0t6BMPDXELwN/Ukv9RQde6nVBYQ7M5ht9hXNfiE7TpzqwQyPFT8ru1IYt
-	 vGKXcDJe6NQnsp+r4jeP8HIAbO9+6Hd/EQ2VYFr7GtQfC/X8gogKh5b78HxMYlDukJ7KU
-	 iqdlq+aVOeTiVxYdbajS49IAKMsdsCDrmEza7qhBD2T++ncKZFgiT+4ISxrpjiSJSLg==
+	t=1795557209;
+	b=EjOaMZhFz0iz5uMSOlca0ZMSvNPu/GQzOg2XZ4T5K4/6Bwx1o8spbVTG4DLU8AOqXzJv
+	 1XsT+jXgyuwWWKv8NHOyHFibKD4y2NXArPwEgjflRXYiZg6LSj/megTT08bBaIAADfGXD
+	 mRkDx4bOdPFD9dk48/NMKq5vz/NqnjMFTfyTnET31D33SvxNpTr20qynn6VspNYs/V6j2
+	 cTyROtXzSxG+UrYW5icMh+XzLZf5lhB0kU3Cot8Gxdfn39voYuwKupyNGC+hx/p3QrkMZ
+	 HOy9YlhB+kG//orGu7NwhU+D2tUzAYTfM8LK2Awugc7cE1uQgMjpklG5TLWavgr81BA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795557207;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795557209;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=ZUSUUU9UbcR6Q5hiPJXAeSx9jwpJu7NJJImRPE4IjVg=;
-	b=D59L7A/svXvGtlM6EGrEyGXijdcz0jmeZTSsFC+HBZzDVVdMLrX9lHIEKcD4KesUgcEG
-	 gSiLi7xwB9vPPAPE1OTnkejZxY1+24wewikBy+3QX1Ty5elHKKVjxElGfn4khldlBNhD0
-	 MJOcpzJ74c4V/mMQeErg9gsvb7qahvcFQk77CtG1QqcesrDML81KX25fY1JsUxk3MiDx3
-	 NXqGSsLeTFkNyrbs/CoPruO+K7CoIf+7Pebymx4pg1fQCDL1ksMcrOLdnpJ8cBRxuBgYY
-	 3EXyGcva26W5RXa+Lu0fl+RTJ06/V4JigjFsEhSLpm/MrskODbmUbMqnRzAOeWmem6A==
+	bh=aotclqhdndvK4gXJTX/iIflcOiMQyXEw3arFJij313E=;
+	b=pIg/QJDNlMVPWrQYy8PZ7RYXGk3amv71dmRMZBqDUPo7VuS74c62Cvtkka09i3QOEJGJ
+	 0lGl+D5JDL59Yew6/3WdjNCfJA2WuRzwaE8mGO6QawrHULdLI2C1i8xEVLfmF9PMG5FAR
+	 eQFhNJlvo5/n33JtIaketADkTs7Ff/C/8pw9GHn2eVKW3XW/csdkjXzzbG37Zo51AhGbF
+	 DjV5NMo/T0JUbNKVvWCN3g9QQWp0X4xx7+OZxeO+z/sEz/pXC2imyr6noXmX8xzMshweu
+	 wCJglaINCkrNHgLq/KXW7re9zRISzbahkG9QCjHgibr/t+/MpDhEx+xxYUazQMSZMNw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eOPp2w2V;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Mw6avn2E;
 	arc=none smtp.remote-ip=192.198.163.9
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F740606A6AB;
-	Tue, 24 Nov 2026 21:53:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F740606A6AB
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3127B606A33C;
+	Tue, 24 Nov 2026 21:53:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3127B606A33C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eOPp2w2V
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Mw6avn2E
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795557207; x=1827093207;
+  t=1795557204; x=1827093204;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=aMmLTpF4jMP42C5uxxxmQGu0bQqSyHij96LvuvTa1SY=;
-  b=eOPp2w2VTByqAgrIP6rTXn0E0eL3GtVDN2pxCXMk9RerZj3qxyN+EEYf
-   1Uo+1/haMV7Q5KG8NsNc782ov16/OHRfu2Q6226+jUuXUtF+SxBcNrRe+
-   tKJJYSVLLr4+AI6z/msrsF10ODOkERSM+5ZNB4LOZwTiV73+4+Zef6IEi
-   z5mrXG6vwv8h+9UoQkLrg9rXJYOD3gup3ORyCKEbbJkJyQtBWgk6kAg/u
-   sBrVa8XB108UvM+X+DW+l2sIzlBLahjGaSzttBy2b12fnXoTmIdMSxG8v
-   x5alVqoito+z58emVO4/WbqXbmQnacTEK7YhbhYHRChfYX9BShpYiVyZd
-   g==;
-X-CSE-ConnectionGUID: gWLkZJBiTwOzXr57Wn6R8w==
-X-CSE-MsgGUID: ThvkGDS/SOeNPZGLzMHOqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4306013"
+  bh=bvVw9joxXVs8F5YbekKVK2a5xDmW5WhfeJqqB/4/oQU=;
+  b=Mw6avn2EiwTNpj9dJeP7MlfU3Xaq9DRfZIrEQM6WLWGGvXUwZ0ZC1dGO
+   FnoYHPXosnHWi/CD9TLcPT08CwSTtSdk8PNp/FyelXHfEsbLyOiVWf8/F
+   eGCXrrxbfWjGRjnHnopd6VDdUiUcIObyhR43oa9qYuNJGpf/W74Z/Oy3z
+   O3owRylMJYqs6Xbpih7ZbNiuoR3niGpC/iGvcxKEY/w784kJc3IuibrCY
+   6Wr8w6kdiiRqMu38KFCqvShXtxLRwBjf+EcfyjPDjCjhUzudkiIu0Xoto
+   v9M8xrfbXQ9eUvmIuZ37rcsd8rMSYojPB9CGBxmggpm+Dazzo0NEYSAkl
+   w==;
+X-CSE-ConnectionGUID: YKtHnmlFTRCK8bdowKXi7g==
+X-CSE-MsgGUID: mpQdy/wcQt+J6KZdgDwH0Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4305973"
 X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="4306013"
+   d="scan'208";a="4305973"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:26 -0800
-X-CSE-ConnectionGUID: WdL9LrDsQYWXJMENBuycmQ==
-X-CSE-MsgGUID: CU4ZNal7QbeaIdP5Ea1WJA==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:22 -0800
+X-CSE-ConnectionGUID: lF618NQbR9yOy2LNHszlEQ==
+X-CSE-MsgGUID: +49kGHKeRaCh6DdYjyV/cg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="12271914"
+   d="scan'208";a="12271889"
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.29])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:25 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 13:53:22 -0800
 From: Zide Chen <zide.chen@intel.com>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -77,9 +77,9 @@ Cc: kvm@vger.kernel.org,
 	Shukla Manali <Manali.Shukla@amd.com>,
 	Dapeng Mi <dapeng1.mi@linux.intel.com>,
 	Xudong Hao <xudong.hao@intel.com>
-Subject: [PATCH v10 06/18] KVM: x86/pmu: Do not map fixed counters >= 3 to generic perf events
-Date: Tue, 24 Nov 2026 14:38:49 -0700
-Message-ID: <20261124213901.120572-7-zide.chen@intel.com>
+Subject: [PATCH v10 01/18] perf/x86: Add INTEL_TD_METRIC_FIELD_{BITS,MASK} constants
+Date: Tue, 24 Nov 2026 14:38:44 -0700
+Message-ID: <20261124213901.120572-2-zide.chen@intel.com>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261124213901.120572-1-zide.chen@intel.com>
 References: <20261124213901.120572-1-zide.chen@intel.com>
@@ -94,65 +94,68 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Only fixed counters 0..2 have matching generic cross-platform
-hardware perf events (INSTRUCTIONS, CPU_CYCLES, REF_CPU_CYCLES).
-Therefore, perf_get_hw_event_config() is only applicable to these
-counters.
+Replace the hardcoded field width (8) and the equivalent 0xff mask
+used for PERF_METRICS MSR field access with named constants
+INTEL_TD_METRIC_FIELD_{BITS,MASK}.
 
-KVM does not intend to emulate fixed counters >= 3 on legacy
-(non-mediated) vPMU, while for mediated vPMU, KVM does not care what
-the fixed counter event mappings are.  Therefore, return 0 for their
-eventsel.
+KVM will use INTEL_TD_METRIC_FIELD_BITS to derive the reserved bits of
+the PERF_METRICS MSR.
 
-The two BUILD_BUG_ON() checks are no longer needed, so drop them along
-with __always_inline.
+No functional change intended.
 
 Signed-off-by: Zide Chen <zide.chen@intel.com>
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Reviewed-by: Jim Mattson <jmattson@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
 ---
 v10:
-- Add comment to mention event mapping is not used for mediated PMU.
-v6:
-- Re-arrange the code for early return. Clearer.
+- Keep literal 8 for umask shift in INTEL_TD_METRIC_AVAILABLE_MAX. (Sashiko)
+- Sync icl_get_metrics_event_value() comment with INTEL_TD_METRIC_FIELD_MASK.
+v9: new patch.
 ---
- arch/x86/kvm/vmx/pmu_intel.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ arch/x86/events/intel/core.c      | 11 ++++++-----
+ arch/x86/include/asm/perf_event.h |  4 ++++
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index 70a8c4816135..8f72a405e737 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -468,11 +468,8 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
-  * different perf_event is already utilizing the requested counter, but the end
-  * result is the same (ignoring the fact that using a general purpose counter
-  * will likely exacerbate counter contention).
-- *
-- * Forcibly inlined to allow asserting on @index at build time, and there should
-- * never be more than one user.
-  */
--static __always_inline u64 intel_get_fixed_pmc_eventsel(unsigned int index)
-+static u64 intel_get_fixed_pmc_eventsel(unsigned int index)
- {
- 	const enum perf_hw_id fixed_pmc_perf_ids[] = {
- 		[0] = PERF_COUNT_HW_INSTRUCTIONS,
-@@ -481,8 +478,14 @@ static __always_inline u64 intel_get_fixed_pmc_eventsel(unsigned int index)
- 	};
- 	u64 eventsel;
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 1ac2ca35db53..c76d9aa8e5eb 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -3180,15 +3180,16 @@ DEFINE_STATIC_CALL(intel_pmu_set_topdown_event_period, x86_perf_event_set_period
  
--	BUILD_BUG_ON(ARRAY_SIZE(fixed_pmc_perf_ids) != KVM_MAX_NR_INTEL_FIXED_COUNTERS);
--	BUILD_BUG_ON(index >= KVM_MAX_NR_INTEL_FIXED_COUNTERS);
-+	/*
-+	 * Fixed counters 3 and above don't have a corresponding generic
-+	 * hardware perf event, and KVM does not intend to emulate them on
-+	 * non-mediated vPMU. For mediated vPMU, event mappings are unused
-+	 * since the hardware counters are passed through directly.
-+	 */
-+	if (index >= ARRAY_SIZE(fixed_pmc_perf_ids))
-+		return 0;
+ static inline u64 icl_get_metrics_event_value(u64 metric, u64 slots, int idx)
+ {
++	int shift = (idx - INTEL_PMC_IDX_METRIC_BASE) * INTEL_TD_METRIC_FIELD_BITS;
+ 	u32 val;
  
  	/*
- 	 * Yell if perf reports support for a fixed counter but perf doesn't
+-	 * The metric is reported as an 8bit integer fraction
+-	 * summing up to 0xff.
+-	 * slots-in-metric = (Metric / 0xff) * slots
++	 * The metric is reported as an integer fraction
++	 * summing up to INTEL_TD_METRIC_FIELD_MASK.
++	 * slots-in-metric = (Metric / INTEL_TD_METRIC_FIELD_MASK) * slots
+ 	 */
+-	val = (metric >> ((idx - INTEL_PMC_IDX_METRIC_BASE) * 8)) & 0xff;
+-	return  mul_u64_u32_div(slots, val, 0xff);
++	val = (metric >> shift) & INTEL_TD_METRIC_FIELD_MASK;
++	return mul_u64_u32_div(slots, val, INTEL_TD_METRIC_FIELD_MASK);
+ }
+ 
+ static u64 icl_get_topdown_value(struct perf_event *event,
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index 1eb13673e889..ca630bc282fb 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -418,6 +418,10 @@ static inline bool use_fixed_pseudo_encoding(u64 code)
+ #define INTEL_TD_METRIC_MAX			INTEL_TD_METRIC_MEM_BOUND
+ #define INTEL_TD_METRIC_NUM			8
+ 
++/* Width and mask of each metric field in the PERF_METRICS MSR. */
++#define INTEL_TD_METRIC_FIELD_BITS		8
++#define INTEL_TD_METRIC_FIELD_MASK		GENMASK_ULL(INTEL_TD_METRIC_FIELD_BITS - 1, 0)
++
+ #define INTEL_TD_CFG_METRIC_CLEAR_BIT		0
+ #define INTEL_TD_CFG_METRIC_CLEAR		BIT_ULL(INTEL_TD_CFG_METRIC_CLEAR_BIT)
+ 
 -- 
 2.56.1
 
