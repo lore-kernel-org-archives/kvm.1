@@ -1,76 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795549532;
-	b=qSC+4zomEBZ5q4upnFbrVghiE5A6Ai3HNcIBrWBFjAROsa8gJtsoy0K5KNMESiQRqgoU
-	 waBRm7xd9iNkBEI1Eu9p6+i80dwWCtn4+mxFZ4uTguCANYEKlI/IfxKNPFpJ9K99lnQtK
-	 f5L+Z9auwHwnIxVytrIdzpKlY/bju9xxleOvOUuMAtFw3sWL6809MC6RyKNPCm48TX02S
-	 dZ1WLOq39vE6gwc3JYHimwwrjlvRgDMk88rdHbnPP4nFsRgxTLEYKQmRAiF2UnIQksax7
-	 ErT4rbUFWTTHHu7Wa9RiEOETipulcrTmq9KdZ+9DoTmENs6TR4t8zDWU4zaxep1iCqw==
+	t=1795551066;
+	b=5LJOo8Pp/qPkuJkZStmHJBJFB8HUpvoaHwAIQMYGE94eEG/wILtLu/Xeo/zCSi/ffcRn
+	 BSyEPOIpon1lUmtI8y7oDgIn0WSNwgXvL+eAmA5R2s6qJzUtpiPnVzNQ6S2PSSGKPE7ZB
+	 4I4TVB5Jwj0az7hvIjisqcCmXC6pBgmL45pCML0jobtCNq7QcuJK1ajBE0PlX6DXMaVFo
+	 uk+1bXEeipuekJh+Z7H0+wacpcK8q54mit2ShxKx2ikSaBjPROhhDjnVlVzjZsnolV0NF
+	 gaIKxrasvGsJBpyGy+NCU5bJLRhYkkIm5AGaD227MCA+iFepJcQ4nqd82HOLINBqNGA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795549532;
-	h=Received:DKIM-Signature:Received:Date:Message-ID:From:To:Cc:Subject:
-	 In-Reply-To:References:User-Agent:MIME-Version:Content-Type:
-	 X-SA-Exim-Connect-IP:X-SA-Exim-Rcpt-To:X-SA-Exim-Mail-From:
-	 X-SA-Exim-Scanned;
-	bh=YxnkC+H0WyqL4UcCcv5HjKqJ5O4y9emPPKJptv760hc=;
-	b=Kgf4zl7G/ZoVtEdgFiqf40gf8YMp5ZuqWxYqCFFg8x30GC1jiwCIv1GUPULJld0qwNSm
-	 IdVrg0QoEEABUe7+de+wMkD6DWsS1OOd97ZE/RkmNpjAeda6QSPaeex41HpDq8FIueTrx
-	 wQo8GnLm/McWn6fnwvNGOrP/34GWyqNYftIR6VqVFAQ/UPmnM/LnygeBE7jU0NRpVOAcs
-	 Wf8AppL8k82dhvP2s16D27nEHszJMlz0UuRaRXH3NOH5ncbyykxiy+7NgcecJTzHZan+U
-	 LFKLwGmEeAuOouKtfB6P1qc4/eE64oItP7qCmtJi9nqZSsApn+3DLA11vQCJKmYIwyw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795551066;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=U3y9UCsgeJg73xzi87YxF5m6L5LFaQYi0IQ2Zw2olYE=;
+	b=cIhbl9sW1U6uVR1JyRfDCcRRbLpaYsLH9dODgJCWLQ5XzAMG8mqCcMxnJI9nK8JRJDPy
+	 5kyqTZsQbZzdhyAISQ5ORBOf5NIyl859i/YSPP6CjgxRigGjgU9MZvpthVq+294oXOYCt
+	 MDPHDNlEAdsZirZ7gTwoyVp7A88pF8xweNnoetDyyLc3m8txZpH/AV7ze4SByLFd7O8MK
+	 B75nUjHh0FE1ho9U98pDWvu5553AUW4eaJnOG12DpUQbRfMnmyVFPfM+2XDqMWL9IZRmN
+	 7BDr/mitLxyCWMZJ5CiXBzdqm/z9+lG4DF8XY/DiQwEGWEOIZR0KYz/SzNXsUTZoq3Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Yn/l+G+X";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mbQpsIKK;
+	arc=none smtp.remote-ip=198.175.65.15
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C77606A31E;
-	Tue, 24 Nov 2026 19:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BD0606A31E;
+	Tue, 24 Nov 2026 20:11:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E2BD0606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yn/l+G+X
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D9C81F000C0;
-	Tue, 24 Nov 2026 19:45:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795549532;
-	bh=YxnkC+H0WyqL4UcCcv5HjKqJ5O4y9emPPKJptv760hc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Yn/l+G+XwG6rnIr7gMg63Q/wt9fpkcsxai1AKo/AIZ6U5qrXSvVBszTWQi/D1nkr6
-	 mKmw+HUszIT+CHB/DuzwKgYNByZNvK+BMQzUgDz+0/dyvYt/aaP7yJD45tZLR5xdZz
-	 2MKVFBKpf1EteIKmBf7wAI36O98sFgf3Oj/SyXI0quMfea7ruoC51FEJZiA1mfooLo
-	 9eTLMfj/d8XbP4dbRoyKVQXqAWCUp/QWpy6XqjpPTTI+ey1P37+bmYoZ1beZ8wTdpK
-	 dOComrq2+g9ZhWhVmHaWbVjLrmbXkUtdJefn/0kogerOoJk2we8cmm2+w3+q9V608q
-	 RGxmHDzjeexRQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1xVwSI-00000002l5B-0U4K;
-	Tue, 24 Nov 2026 19:45:30 +0000
-Date: Tue, 24 Nov 2026 19:45:29 +0000
-Message-ID: <861p8aypwm.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Leonardo Bras <leo.bras@arm.com>
-Cc: kvmarm@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mbQpsIKK
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795551066; x=1827087066;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Ud3lCDNXvNmw1yqi6k8UEwUcr9dmgPSDrXaCS39y36M=;
+  b=mbQpsIKK7w5xHO+r03vppdftOh+97Douv1efInV9HePmk8tR1KK7o7Ow
+   t3lp4eNMLYGSTZ7qcdDcnLvUT8Z/Q2iUGv9I51m+WDGzsbrUFc2h5EdkK
+   l1bDQcreTQExsQ8lbn1U/QDSp/2Cbw4Oy3iNRjGNSYtvFFk2KjVLdVqkq
+   KRi3Zv4eXk2HrJEAOb7mi/nIjU5bGfeKoyqAv//ndo7AQ05F4/MJR2GP9
+   Ph7fKclSA21/Htk+EyJSza6gUdP0qas67EiajZDiN9LQv1G6vDmuJwR2V
+   R0dkY/yrgXCQBgTbbfuGARTss4W/XcRYfJGAXQJfFgRcVr+wpWBeICPyE
+   w==;
+X-CSE-ConnectionGUID: hLlQf+luSmOD2LfB8hFwXA==
+X-CSE-MsgGUID: /WldN0YxRzGmVaO62SLHMA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4412394"
+X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
+   d="scan'208";a="4412394"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 12:10:20 -0800
+X-CSE-ConnectionGUID: ZGC/kd++R42D1q6yY5gUSA==
+X-CSE-MsgGUID: uU1Nhyd6Tp2owzcioIEdEA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
+   d="scan'208";a="11646966"
+Received: from sohilmeh.sc.intel.com ([172.25.103.65])
+  by orviesa007.jf.intel.com with ESMTP; 24 Nov 2026 12:09:20 -0800
+From: Sohil Mehta <sohil.mehta@intel.com>
+To: Dave Hansen <dave.hansen@linux.intel.com>,
+	Borislav Petkov <bp@alien8.de>
+Cc: Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Xin Li <xin@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	"Chang S . Bae" <chang.seok.bae@intel.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sohil Mehta <sohil.mehta@intel.com>,
 	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Fuad Tabba <fuad.tabba@linux.dev>,
-	Dan Carpenter <dan@pereq.eu>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: nv: Upgrade sub-page TTL hint to maximum size
-In-Reply-To: <awXSCgN4JLLKXErv@LeoBrasDK>
-References: <20261123182312.4842-1-maz@kernel.org>
-	<awW5QKqGZAqw1ru9@LeoBrasDK>
-	<864id6yyjy.wl-maz@kernel.org>
-	<awXSCgN4JLLKXErv@LeoBrasDK>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] x86/fred: Consolidate the FRED stack pointer assignments
+Date: Tue, 24 Nov 2026 12:06:59 -0800
+Message-ID: <20261124200659.471685-1-sohil.mehta@intel.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -79,137 +92,96 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: leo.bras@arm.com, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, fuad.tabba@linux.dev, dan@pereq.eu, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, 24 Nov 2026 18:06:02 +0000,
-Leonardo Bras <leo.bras@arm.com> wrote:
-> 
-> On Tue, Nov 24, 2026 at 04:38:41PM +0000, Marc Zyngier wrote:
-> > On Tue, 24 Nov 2026 16:20:16 +0000,
-> > Leonardo Bras <leo.bras@arm.com> wrote:
-> > > 
-> > > On Mon, Nov 23, 2026 at 06:23:12PM +0000, Marc Zyngier wrote:
-> > > > Should a guest be slightly foolish and submit a S2 TLBI with a TTL hint
-> > > > that describe a base granule size smaller than the host's page size,
-> > > > we take the resulting size at face value and feed it to the S2 unmapping
-> > > > code. Which legitimately screams about something not being page-aligned.
-> > > > 
-> > > > The architecture allows us to drop the TLBI on the floor, as we don't
-> > > > support a S2 granule size smaller than the host's page size. But it turns
-> > > > out that doing so is proving pretty hard (we call compute_tlb_inval_range
-> > > > from a number of places, none of which is amenable to an early out).
-> > > > 
-> > > > Instead, detect the annoying case, and pretend that we don't have a TTL
-> > > > hint at all, leaving the size upgrade mechanism to take place and use
-> > > > the largest possible size for the guest's S2 granule size.
-> > > > 
-> > > > This will still allow nonsensical stuff to get through, such as a 4kB
-> > > > level 2 (aka 2MB) from a guest with a 64kB S2 base granule size running
-> > > > on a 16kB page size host, but that's not worse than doing nothing, and
-> > > > the host code won't get shouty.
-> > > > 
-> > > > Reported-by: Dan Carpenter <dan@pereq.eu>
-> > > > Link: https://lore.kernel.org/r/20261123-inval_range-v1-1-815e15797089@pereq.eu
-> > > > Fixes: d1de1576dc21 ("KVM: arm64: nv: Handle FEAT_TTL hinted TLB operations")
-> > > > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > > > Cc: stable@vger.kernel.org
-> > > > ---
-> > > > 
-> > > > Notes:
-> > > >     Reposting this as a first class patch, as I'd like to plug that one
-> > > >     as early as possible (and Dan has plenty of other patches in flight...)
-> > > > 
-> > > >  arch/arm64/kvm/nested.c | 7 +++++++
-> > > >  1 file changed, 7 insertions(+)
-> > > > 
-> > > > diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> > > > index 78d5b18dbd2d6..36e4e83badf0a 100644
-> > > > --- a/arch/arm64/kvm/nested.c
-> > > > +++ b/arch/arm64/kvm/nested.c
-> > > > @@ -714,6 +714,13 @@ unsigned long compute_tlb_inval_range(struct kvm_s2_mmu *mmu, u64 val)
-> > > >  	 */
-> > > >  	max_size = __ttl_to_size(ttl);
-> > > >  
-> > > > +	/*
-> > > > +	 * IMPDEF behaviour: treat subpage TTL-annotated TLBI as the largest
-> > > > +	 * possible invalidation. Don't try this at home, kids!
-> > > > +	 */
-> > > > +	if (max_size < PAGE_SIZE)
-> > > > +		max_size = 0;
-> > > > +
-> > > >  	if (!max_size) {
-> > > >  		/* Compute the maximum extent of the invalidation */
-> > > >  		switch (vtcr_to_tg0_pgsize(kvm, mmu->tlb_vtcr)) {
-> > > > -- 
-> > > > 2.47.3
-> > > > 
-> > > 
-> > > Hey Marc,
-> > > 
-> > > I think the changes make sense, although rounding up to PAGE_SIZE also 
-> > > looks a valid solution in my unexperienced viewpoint.
-> > 
-> > No, it isn't the same thing. Taker the example I have given, where the
-> > host is 16k, the guest 64k, and the invalidation 4k. If you round
-> > things up to 16k, you're still not invalidating anything that is
-> > consistent with the *minimum page size* for the guest. Anything larger
-> > is a multiple of both the host and guest page sizes, and therefore
-> > always correct.
-> 
-> Ah, right!
-> In this case, could we not invalidate the largest page size supported 
-> (64k)?
+FRED delivers events on one of four stack levels, and each level has its
+own stack pointer MSR. The mapping of stacks to levels is only implied
+by the MSR writes. Nothing in the code explicitly states it, or notes
+that #MC uses the NMI stack.
 
-Because that's not what the absence of TTL means.
+Add a helper that makes the connection obvious and returns the
+corresponding stack pointer for each RSP MSR. Use it to program all four
+FRED RSP MSRs during CPU initialization.
 
-> 
-> IIUC:
-> - To have max_size between 0 and PAGE_SIZE means it's either 4k or 16k, 
->   so invalidating the 64k should be enough?
+Key the helper on the MSR index rather than the stack level to keep it
+simple. Later, the same interface can easily be exported to KVM or
+extended for FRED shadow stack MSRs as well.
 
-No.
+No functional change intended.
 
->  
-> - max_size=0 from __ttl_to_size() means largest blocksize supported by 
->   stage2 in current TG.
+Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+---
+This is a standalone cleanup that was part of the FRED KVM series. Dave
+asked me to send things like this up separately for consideration:
+https://lore.kernel.org/lkml/1712c0cd-747b-4dce-8231-0c8d75225648@intel.com/
 
-Yes.
+v2:
+ - Reframe as an x86 cleanup. Drop the export, the KVM heavy changelog
+   and the unused !CONFIG_X86_FRED stub (Dave).
+ - Program the level 0 stack pointer MSR through the helper too, so that
+   all four of them go through it.
+ - Keep the helper static for now, since all the callers are file-local.
 
-> 
-> The two above are opposite ends, no? Like, the first is "this is too small 
-> for us to invalidate, let's pick something bigger", and the other one is 
-> "we want to invalidate the largest supported block".
-> 
-> Is it really ok to put them in the same bucket?
+v1: https://lore.kernel.org/lkml/20261124015840.2673975-1-sohil.mehta@intel.com/
+---
+ arch/x86/kernel/fred.c | 29 +++++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
 
-That's the *only* thing you can do, short of not invalidating anything
-at all. The commit message alreayd explains the IMPDEF choice that is
-made, and why it is made. Let me explain it again:
+diff --git a/arch/x86/kernel/fred.c b/arch/x86/kernel/fred.c
+index 1c452a389a70..35f5c27c7198 100644
+--- a/arch/x86/kernel/fred.c
++++ b/arch/x86/kernel/fred.c
+@@ -25,6 +25,27 @@
+ DEFINE_PER_CPU(unsigned long, fred_rsp0);
+ EXPORT_PER_CPU_SYMBOL(fred_rsp0);
+ 
++static unsigned long this_cpu_fred_sp(u32 msr)
++{
++	switch (msr) {
++	case MSR_IA32_FRED_RSP0:
++		return __this_cpu_read(fred_rsp0);
++	case MSR_IA32_FRED_RSP1:
++		return __this_cpu_ist_top_va(ESTACK_DB);
++	case MSR_IA32_FRED_RSP2:
++		/*
++		 * NMI and #MC both use the NMI stack so ESTACK_MCE is left
++		 * unused on a FRED system.
++		 */
++		return __this_cpu_ist_top_va(ESTACK_NMI);
++	case MSR_IA32_FRED_RSP3:
++		return __this_cpu_ist_top_va(ESTACK_DF);
++	default:
++		WARN_ONCE(1, "Unexpected FRED stack pointer MSR 0x%x\n", msr);
++		return 0;
++	}
++}
++
+ void cpu_init_fred_exceptions(void)
+ {
+ 	/*
+@@ -53,7 +74,7 @@ void cpu_init_fred_exceptions(void)
+ 	 * Ater a CPU offline/online cycle, the FRED RSP0 MSR should be
+ 	 * resynchronized with its per-CPU cache.
+ 	 */
+-	wrmsrq(MSR_IA32_FRED_RSP0, __this_cpu_read(fred_rsp0));
++	wrmsrq(MSR_IA32_FRED_RSP0, this_cpu_fred_sp(MSR_IA32_FRED_RSP0));
+ 
+ 	wrmsrq(MSR_IA32_FRED_RSP1, 0);
+ 	wrmsrq(MSR_IA32_FRED_RSP2, 0);
+@@ -84,7 +105,7 @@ void cpu_init_fred_rsps(void)
+ 	       FRED_STKLVL(X86_TRAP_DF,  FRED_DF_STACK_LEVEL));
+ 
+ 	/* The FRED equivalents to IST stacks... */
+-	wrmsrq(MSR_IA32_FRED_RSP1, __this_cpu_ist_top_va(ESTACK_DB));
+-	wrmsrq(MSR_IA32_FRED_RSP2, __this_cpu_ist_top_va(ESTACK_NMI));
+-	wrmsrq(MSR_IA32_FRED_RSP3, __this_cpu_ist_top_va(ESTACK_DF));
++	wrmsrq(MSR_IA32_FRED_RSP1, this_cpu_fred_sp(MSR_IA32_FRED_RSP1));
++	wrmsrq(MSR_IA32_FRED_RSP2, this_cpu_fred_sp(MSR_IA32_FRED_RSP2));
++	wrmsrq(MSR_IA32_FRED_RSP3, this_cpu_fred_sp(MSR_IA32_FRED_RSP3));
+ }
 
-- An invalid TTL allows us to ignore the TLBI altogether. No ifs, no
-  buts. This is definitely an invalid TTL.
-
-- However, by the time we reach this code, we are committed to perform
-  an invalidation, and we can't backtrack (doing so would be really
-  ugly).
-
-- Our next port of call is to still perform an invalidation with
-  something reasonable. Since the TTL is invalid, only the IPA tells
-  us anything. And for any IPA without any range information, the only
-  sane thing to do is to invalidate the largest possible size.
-
-You could refine this a bit more, but frankly this is not worth it. We
-are already allowing a broken guest to do some invalidations, but
-there is no need to go out of our way to do anything more.
-
-The end.
-
-	M.
-
+base-commit: 135dbd0519cf7f72af120801ec7dbb79275a362d
 -- 
-Without deviation from the norm, progress is not possible.
+2.43.0
+
