@@ -1,107 +1,110 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.44
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795563022;
-	b=Yzo12MnalNMc1CWYrPQqnQuB3uPMOUIBbBWT7jPlPoNMv+3/yFoO5idvJKUhDZFplMMj
-	 GsQgEV1ODw74rddnwfMVK7+wrWe+Q6+uwrJkP3IScrwVlcbjr5IgYS7KpxIwepzl8k47t
-	 gQ1caU4mGpQPC681L24Pea01fM4c3YPV+iDIfCZyUKN2Og3uE7BykShtRGpYICZFBBZ9m
-	 Kb1/KBgL2sTDpoXHPt5KOkSGmqUVAWDmBEQt7O+NX1e8WdNEp7kgjvWGRYf6J+aNAh7vW
-	 b2RVKQkxuKRxS+kGx4JZih0UJS4kM6IiFSdTmbtkpXFZ1JpNr0/Mdm2ok4vl439Xwfg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795563022;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:In-Reply-To:References:MIME-Version:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=tmoluJRxJ9HN+1c8Y5zGpOvMcLNPpYDSuvXeIRfQoGU=;
-	b=3jfNvffpMsXjS2KhNR+KehJ4TloT3UVI/gs1uv977m2bVZHj53XlF1SYoThalo64RCUn
-	 ErOBPOIG9Ye10N1qoMbVOcD7ZSb1o5xOxakerQWnDVulCFOAt+F8ruurCFexv2vhwpioW
-	 j05opfcaSn+ImG+XIX1yERPPR2c05n58Eg6DHyd2CzwWsVH6gOvnZEL3VkU8wsIqv9JnC
-	 NXauBpfqq4xJ1Sg9wBnLSX/+zxQz5SozlrsFQC1nCnjT1W7v5RUOkSl1SGBo+IkuB4KZ/
-	 m1hciiznLW97H5PaIKL03HZje7tKjwY5uqIBoIBsyUORkuScDWz3ra6U1Y/Y2A+GB7w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DHry630C;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.219.44
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795563118;
+	b=V/5PcaspwcnMsyCVEvGKBjDEyKc3nWBswiWaKGt6LHV0LZoR9XOrFM+RxwiT2Y76nack
+	 J0O6W5xa38qhPYWBI/ryLNVA685yUWgSax4cvz6fqB885GIZYn5xx+e9Css7Vjg6ibIWu
+	 tnt6FoT4PjeRf7b69CF0ODvKbCmDmqUA6/xF4CUGoJRdoSAJs/cdQcjC/wZVcT+Y16zbe
+	 Ejp4fbdYAPzbEk6KwWFAP3dh2YsCFrzkrBS2itc7v6bwOlBYLH96Y1gNEj4XhewRcEg7W
+	 NWKs1V+PEXpoJrUdJqzbuOa3vYB0AA85CFRJMM0wgCV5kxZzfGh2A+/AmNQVSgb0lKQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795563118;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=G1ZAm7akP9D8mbltmYnzmqncqYxXc4x3mIjxdEr9bU4=;
+	b=aSY/o+U6hQztpS7paAahgVjz6++6E9DGChpVG/EWuyaC0V0grGXUAQpOJEbU4rE0ukwi
+	 Xu28YyHE/Wl3kbawX0f4UxY7QRdssAQmTGjz4+VJld9AlktbYvjwxAsi+H3cWJVXqE4hV
+	 tZck9Yb9gmnn8BkPZu4FCbBSd5ttK7bXg5rNbM7THPin6YZCF+9/NKBpNan7sJsig1FE7
+	 7V849NfvjBsg+vGAhz14OWqeLkrK+HQvrevIL0+nzrfAQx0iXwrqAYo5sHYmSo/krXLGM
+	 /euNzcT2MaUIZVNoVqzvxKizZnKofx8ExuYF4asUWxq1+1x1zCyEHEcummZPehtn3CQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=YdvJDNZU;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b="KvdDZ/Jj";
+	arc=none smtp.remote-ip=205.220.180.131
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C830606A32A
-	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:30:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4C830606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A7E606A31E
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:31:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 67A7E606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=DHry630C
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-9215934a14cso26852746d6.0
-        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 15:30:22 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795563021; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kWqJGZVgANpxEXNYMc12ChkMO3djB/3PB9wGzEMVtS0r9BL67WpauPk8dsLYDoxftM
-         a+yWWTUlWo7b5ETvqwP8QocQDhEA/ddCsiDzgZc1f7eN9/G8KG7r6Tk/O8qcG/1wguhC
-         IOal7mOquHT7N6DjXolvbaadTO84WKksR4X2iQzvVPx426qwIICBuGCDQR2z6hfcums6
-         SiXI9zRo8ROK4ZhSR5pbJsW1DwFIAY8fQEetI8du7gDSRJ8EYEyFc3OkfqHn3k5rbLhQ
-         botOdQt0WO89XLM56fsXOFQcuyb1ZWVJKCPyr4Q0AKqQHVuAoJ5HuiAaHcIWYzH1+H4N
-         62Iw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:dkim-signature;
-        bh=tmoluJRxJ9HN+1c8Y5zGpOvMcLNPpYDSuvXeIRfQoGU=;
-        fh=GLbNY86NzXU7XZDuHPGuw2eoS20Iy5Bf7cT9x5CrvL8=;
-        b=pQkcMw0WnjQrVqzVXQbRIl3KdX3OUWz++GR7RPaW+cccQ1UELRrzOvk330ebFTkGQy
-         fO6cFXerhy4qJhAJO0/Tfg5H5moSx4pi68M1A7NcQkOILWu/P3Y1Fi/P61SeLWPTY05h
-         5UL+PYj4qvHLWyJ0vEJYF+8YKRYeX8tWqDEjcw1vtqCz/caLCucxaL8CSo3kbBjQov1K
-         ppXZgs+axYBqua9+OTCBBgPmF/4lNa/qQCRx0GRt5FXFpHwYbAz0WpJKghe582s+T0B/
-         qmIEJwRuxb2Oh8f9cHwaVq20oSG25f9xg6X0XE2a2rxT6W1IMNIF8RTnCx88E1ETpfev
-         8v7Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=YdvJDNZU;
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=KvdDZ/Jj
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AOMaxgO640514
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:31:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	G1ZAm7akP9D8mbltmYnzmqncqYxXc4x3mIjxdEr9bU4=; b=YdvJDNZUyxhdhS6J
+	arsYzy3lKCqdBPApC8vjWOmux1EIZ/i1OW6ayttqTLrpcttLnVewWbiIMUWRLJz0
+	RmmzuEZZCfCRwALk8iiU5w1FrdEn80w8EaCCPuo1QryLIYZsv52MaPN7dB5/Fx6z
+	l6jCl47R23yif+/qQfkM5FhT8f14UNd2fOQ2jupj4TKMNHZrqVPmmT6zOyrtzDL+
+	5l4JKsIwHiZQIhO4ZAJ6D3jyEh4dbR9gTyjgAnpZqeLCk36mMOeNAxvWBa4P3WlY
+	+e2yGHnhMeCh/SpVzWeo/Iwoh3bYrLMJDCh6MNDsq527n5lkVfRmsYCXMJgLDRBL
+	uQNQSA==
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com [209.85.128.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4j5effsfua-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:31:56 +0000 (GMT)
+Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-8b4d1e90b9eso43140987b3.3
+        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 15:31:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795563021; x=1796167821; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:mime-version:references:in-reply-to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tmoluJRxJ9HN+1c8Y5zGpOvMcLNPpYDSuvXeIRfQoGU=;
-        b=DHry630CFkgg7Meouug6MnkV4CymgbB1zgWtIxMwOqbS7dqL3FbBpc0WAEp8rJzaYl
-         OHot43s9miXqu11twtgj/5ReI+PFrcF9ZgTENAqvnn5bRHKWGLtj45VhnnXSPnB8VdFV
-         R8bn5vPaasIeYv1BsZXjEU4lXrU/5ChjGLNxkfk1QgZCIvro1vqcK4olj2Dn6afh3my8
-         jbS6cM0tfdMyaAGnSpcs0XH6Q3z1kfDMKzMx7d0w8Vuv5ngYO9Wd0Ucq7f3Trk6zQP9Y
-         PDbHbcEY1CpcScOYY32/evtDi+gAa7CMItg4HGnbAGf7oa5gMXkMR/76o4AIZFJ+lSGy
-         Z/rQ==
+        d=oss.qualcomm.com; s=google; t=1795563115; x=1796167915; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=G1ZAm7akP9D8mbltmYnzmqncqYxXc4x3mIjxdEr9bU4=;
+        b=KvdDZ/JjUazEnN/IDa92TBmbwH0tmeZ1mRtCjdaNwdAxq8U3Nb8PkbKEUEY4A3LV2B
+         tQPyGuKdOysokDn8P01IoI4qL1dcj1djIWU5a5YcMkxQjk3hxov3ibtINd5CFKS/Sxat
+         YeIYso3DqILXchIwV4kE2zIspvfkaWSK1Wc+iDT6P1OK2yJHDWngpQBmg6ALBt3xdyxH
+         MeunH9H8JIAbw6tBRoZ/nha2C5MZHW0JDthb0ucyKqNHhdmoyewrpc5goVFJTP8Ne8vn
+         wsWANoLsSZuwtiqHIUya2n/0PTTMmq2dcvhhx///UTImYrV3zUYV8Z2kiS3B/0lgNAaR
+         +S/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795563021; x=1796167821;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:mime-version:references:in-reply-to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tmoluJRxJ9HN+1c8Y5zGpOvMcLNPpYDSuvXeIRfQoGU=;
-        b=XLkoj+C/dXqVeLxo6ljN86j4glRDnRea1Yd/K6CFYKNbPWHMJ5+Y8ZPLK+vjSEegSo
-         YgmFWyDxkex51ipJ2oRqlhC2gG//HeYfdRFe7HjGHWHg0B0RdTrqF6rRDieNTBB/DC1+
-         qZsFNbVENYzeGkAIJ6CBIg+4fGKla3iCoEr7h+3d9BFwdodJgOzR7j1Qlu+NeEatVAYV
-         n0NI0KwpZKK8qdoFee6CYGeGdrS6IGeoR5Lcqd3iCrsr2ITlpYPGGCr9MyDEczwRve0m
-         HDCWZduZiyrv8N+CiW6yHU4Ff19xLEHyVuzNXEXrRelKgpyLuBABE3g8qzUWQghpTKvM
-         r6xQ==
-X-Forwarded-Encrypted: i=1; AL+hErHcVpxneY2hJJnEXkLtFnh+hg6vrCcefEO1j9IT68ObMEvwk93la2ECiLcZEgBB9RFXpQA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/Jbk2EMhlWwf7c5uCc9+RbtrKWtN2nNMK+nvUht0SRTxTDoCfG
-	LmSroFEjxs3n1VtuEgM86FE54zHiXUy9Wd3xO2g9ajm1xMBqBKCMB3UI3f/oOcSynkGY5UFtHWt
-	voPL04d4LQbXC886HDMZp9k6Rvx7OEhJrBwTT/HNj
-X-Gm-Gg: AZFdTZdSht2WNQBKWLEgDFlpXzAgj0Kx4YWN6++ZXVJf1PiSGKgveHPVoe+Z1aUMlWP
-	Qh8qY6cHe4DcKWOFxJSpbbE3k499jTP2NmjFns2fny/7ZydNriHdToJCKeQXjgo2EB8zgqB2NHR
-	nKImMOcDwPqgYp+Ojw06lFoiLZKpjVW5Cc64pMLx8VlMIUvFdMJrDMPBEi+gpb9Wus262z8Ctsm
-	xrlRau3aIRNcGoLVQUdlmO2R32b+iA7cEgljcGyEEdAnfPNc20K4DH8VBpw6HW3CWJJY1cECjCi
-	AOhrcWTOfS78lzwedx3DoLlsjvATxUKiG7f0eN6BpUh58ynAZ2f0q5dxHNzBdJdWM2Iy9NZWWvB
-	JuFzznF7Pgs47sAx+r6KyfsGWhP9DiQXIXEwfBZKyx3leed146c1rZVqGmk15sch+xSuZ/98oDy
-	DWYs++Hbi9G1lRtqZJEuDcgcw=
-X-Received: by 2002:a0c:f412:0:b0:921:541:246b with SMTP id
- 6a1803df08f44-92134a9123cmr301795036d6.38.1795563020302; Tue, 24 Nov 2026
- 15:30:20 -0800 (PST)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 24 Nov 2026 15:30:19 -0800
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <sashiko-outbox-229096@kernel.org>
-References: <20261123104233.95710-1-steven.price@arm.com> <20261123104233.95710-2-steven.price@arm.com>
- <sashiko-outbox-229096@kernel.org>
+        d=1e100.net; s=20260707; t=1795563115; x=1796167915;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=G1ZAm7akP9D8mbltmYnzmqncqYxXc4x3mIjxdEr9bU4=;
+        b=KlGhCmcF3gebdvZMnjoM4i1wFthemQCsNFSBcqk2jWigpmYLhajsV3FqPRM+TmXJIS
+         bzaaptkJoe3PJDIzNgVxdkA8wroEttTYKi1Cd5tvhDl4DaCWA9CAbzMJqHIlYB0AmYti
+         fHzbo4jMFrEzPHRwked5e1S9yHYRQqAffhVM2pQmXEWLzFFMSUcSwAIKtkuXflpmbjPR
+         UDlq06hU4dH5qlr4Fi+jiNTwSnokcw7lCndkUwrn/SC54icaF1LpxoPclsYp5ecG+2uu
+         XXcMw2iB/rsmXMJZNo8YH2WgKG3HzsTntxpBGoSNVae0tlUFfNexTpwMYBSIlNJUyQQU
+         VvDg==
+X-Forwarded-Encrypted: i=1; AL+hErGw0xSkGXEinmm6Cf+VBcLp89fDguJzqvahYSkf7FcP+DrfnbiRpn2Xh6scDs75YjtGktc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z88W23u/nw2gqBIyrt2H+cDBb0ASu8TvYLi3v1fgjTXr1FWtfWb
+	Z57oa4/GbH6ylLb2cZIaShqApx/trQozc1c2vUGCHcMVq+RV/d78vpLwIGnNA2lgrqxyWgcfXZn
+	g/Ssza7fTvBCXTsUAcPYH3vMmLVt2U4tWevzxkCEVKHsCGrmg1lrcWOs=
+X-Gm-Gg: AZFdTZfXUP/zQ1qoxQpadJPqMUSIO1OfW5hnEsrVeVroGA0ds84vBiFFoEktlZtxUqp
+	IyO9q8PW6sYPG0uhihVPZP46+mmxuHZ83CuaG3LGUaY90QYK3NGDdvRWqG7nBI09Ue6Fa0alEyo
+	bhkwppPuyyayFcF+fgwosM9T0xTDUeOQRL/tR00cguqYVE8GJ1lUt/HEiXcyRC1I0trf74weJos
+	oknbaFPj9I9ta4d2dH+MPC64fQZjf6UtfjyJ9rE80vWZC9W3YwTmOkuN5WaRe2NxsMuVJO7pwov
+	Qq542pgEGLyCkBsL3Cj7yHaNMYe8P4LLiLB1wuKoWJ8Q4TEc0vaerXpcfQGI5UCuOpAoHHclFlq
+	BmGf6PZELAIjwMAkuuuwH40TrtGuzQunwm1UiQqazsVt6eyz7Mo7wMo4x7190zD4MoqR/yPYi0H
+	ebVVSD8WI=
+X-Received: by 2002:a05:690c:e3d2:b0:873:5c0f:27c with SMTP id 00721157ae682-8b5204ad248mr71151017b3.38.1795563114695;
+        Tue, 24 Nov 2026 15:31:54 -0800 (PST)
+X-Received: by 2002:a05:690c:e3d2:b0:873:5c0f:27c with SMTP id 00721157ae682-8b5204ad248mr71150797b3.38.1795563114026;
+        Tue, 24 Nov 2026 15:31:54 -0800 (PST)
+Received: from [192.168.69.234] (pmd666.hd.free.fr. [82.67.153.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6b110c3csm29788684f8f.36.2026.11.24.15.31.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Nov 2026 15:31:53 -0800 (PST)
+Message-ID: <2f326926-16e7-478d-bc57-86052033199b@oss.qualcomm.com>
+Date: Wed, 25 Nov 2026 00:31:52 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -111,119 +114,73 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Tue, 24 Nov 2026 15:30:19 -0800
-X-Gm-Features: Aa3M54o433xbzGFqcKUYR3R8okBny6foO_6QsBRN_-OVy4JGrTMEGT43jesbap4
-Message-ID: <CAEvNRgGU+z609edF+Mw8xQ0NDUDKn9jjxJjJWTyUqJ0N2BGEHQ@mail.gmail.com>
-Subject: Re: [PATCH v4 01/11] KVM: arm64: guest_memfd: Check mmap support when
- preparing memslot
-To: sashiko-reviews@lists.linux.dev, Steven Price <steven.price@arm.com>, 
-	kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 09/21] i386/xen: Don't inject event on invalid port in
+ qmp_xen_event_inject()
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
+Cc: xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Peter Maydell
+ <peter.maydell@linaro.org>, Paul Durrant <paul@xen.org>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Anthony PERARD <anthony@xenproject.org>,
+        "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+        "Michael S . Tsirkin" <mst@redhat.com>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Marcelo Tosatti <mtosatti@redhat.com>,
+        =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+        Jason Wang <jasowangio@gmail.com>, Hui Peng <benquike@gmail.com>,
+        Mark Syms <mark.syms@citrix.com>, Feifan Qian <bea1e@proton.me>,
+        David Woodhouse <dwmw@amazon.co.uk>
+References: <20261124232247.23169-1-dwmw2@infradead.org>
+ <20261124232247.23169-10-dwmw2@infradead.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20261124232247.23169-10-dwmw2@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=eo5KXYpX c=1 sm=1 tr=0 ts=6b061e6c cx=c_pps
+ a=NMvoxGxYzVyQPkMeJjVPKg==:117 a=nz36NW0qrpeEijYxj/H2Ew==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=M51BFTxLslgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
+ a=p0WdMEafAAAA:8 a=pBOR-ozoAAAA:8 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
+ a=1tSEMpTH9XP_W59IOagA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=kLokIza1BN8a-hAJ3hfR:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI0MDA5MiBTYWx0ZWRfX/KM+S2r3zN8+
+ uB4OV/wchazi9+EWjDzAcbb4eCTmGrUND0fUpLLFJKF+PpOz273/wVBrpAlZd5Jd5LvUg8Ghhpw
+ 3QPurtYfx6c+/+62ipwKbFNLFMljILAVsFQnoe/csacf3Qqh275E211/HXNqBOHjlfEj2hCkAm3
+ m0gmYGRssaW48WJBzDxD0j+REiMVNmjEprM/9AB54VUuevU8SzEnM99xJ7/KdkIn7Ia4wuxa+bg
+ 9ZWgC05MIuvNEl8Grqt0FWqvpjY9H39yajvn2Yg+CfvdjkRNEu+69SU3QTm2Ca1Q2hbsGAEAgJO
+ lRGztECJIlHWpNNKe/QaEy8dZtz7Chzb6KgcNQuEbluTQFHw9o2PKtLS0reAEhtYWva+X4/Dy47
+ n5w1i/lNRzN/n57oP/UYrpyyGH+l5cOA9N1Ha4PGC3HkGTjMEi8XvxcZMHwIzzpC4Ayc1ifapNy
+ kWQwZEt8qWJUesF2oxg==
+X-Proofpoint-GUID: zKeQ1qi23h-dn06_i5l2Vy4_BkmeXNkx
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI0MDA5MiBTYWx0ZWRfX5AaMY2s90WRu
+ 6Nz8+FgaEm5yxLMpBqvLT8dSWiOydTHtCjdq8t/cmHZ7gMKHbKyhKdI6T0ll52WRHwwCuB0PMJI
+ gf7ED3OCjKRbIbzlGqy09Q/9dzj6Uyk=
+X-Proofpoint-ORIG-GUID: zKeQ1qi23h-dn06_i5l2Vy4_BkmeXNkx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-24_06,2026-11-23_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0
+ phishscore=0 impostorscore=0 suspectscore=0 clxscore=1015 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611240092
 
-sashiko-bot@kernel.org writes:
+On 25/11/26 00:22, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> qmp_xen_event_inject() reported the invalid port with error_setg() but
+> then carried on regardless, passing it to set_port_pending(). Return
+> after setting the error.
+> 
+> Fixes: 507cb64d6e66 ("i386/xen: add monitor commands to test event injection")
+> Reported-by: Hui Peng <benquike@gmail.com>
+> Closes: https://gitlab.com/qemu-project/qemu/-/work_items/4525
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>   hw/i386/kvm/xen_evtchn.c | 1 +
+>   1 file changed, 1 insertion(+)
 
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Medium] KVM: arm64: kvm_arch_prepare_memory_region() rejects non-mmap
->   guest_memfd
-> --
->
-> commit a0665f8dc612d05686ef019cc8462841573fe88c
-> Author: Steven Price <steven.price@arm.com>
->
-> KVM: arm64: guest_memfd: Check mmap support when preparing memslot
->
-> This commit introduces kvm_gmem_slot_supports_mmap() and uses it in
-> kvm_arch_prepare_memory_region() to require that all guest_memfd-backed
-> memslots on arm64 come from files created with GUEST_MEMFD_FLAG_MMAP.
->
->> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->> index 1db10d8d6db73..2825fccd2a197 100644
->> --- a/arch/arm64/kvm/mmu.c
->> +++ b/arch/arm64/kvm/mmu.c
->> @@ -2839,10 +2839,10 @@ int kvm_arch_prepare_memory_region(struct kvm *k=
-vm,
->>  		return -EFAULT;
->>
->>  	/*
->> -	 * Only support guest_memfd backed memslots with mappable memory, sinc=
-e
->> -	 * there aren't any CoCo VMs that support only private memory on arm64=
-.
->> +	 * All VMs need mappable guest_memfd memory, as the memslot's HVA may =
-be
->> +	 * used to access shared memory even if guest faults use guest_memfd.
->>  	 */
->> -	if (kvm_slot_has_gmem(new) && !kvm_memslot_is_gmem_only(new))
->> +	if (kvm_slot_has_gmem(new) && !kvm_gmem_slot_supports_mmap(new))
->>  		return -EINVAL;
->>
->>  	/* guest_memfd is incompatible with MTE. */
->
-> [Severity: Medium]
-> As reported by Suzuki K Poulose on v2 [1], should
-> kvm_arch_prepare_memory_region() drop this guest_memfd check altogether
-> rather than rejecting memslots backed by a guest_memfd created without
-> GUEST_MEMFD_FLAG_MMAP?
->
-> Both gmem_abort() and realm_gmem_abort() fault in guest_memfd pages via
-> kvm_gmem_get_pfn() without using new->userspace_addr, and
-> kvm_arch_prepare_memory_region() does not verify that new->userspace_addr
-> maps the guest_memfd or any valid VMA.  Requiring GUEST_MEMFD_FLAG_MMAP
-> here fails KVM_SET_USER_MEMORY_REGION2 with -EINVAL for VMs (such as
-> Realms) that bind private-only guest_memfd instances without allowing hos=
-t
-> userspace mmap, and on v3 the guest_memfd maintainer noted that this chec=
-k
-> is unnecessary and should be removed rather than exposing
-> kvm_gmem_slot_supports_mmap().
->
-
-I agree with Sashiko here. I traced the history of this check:
-
-    if (kvm_slot_has_gmem(new) && !kvm_memslot_is_gmem_only(new))
-        return -EINVAL;
-
-In [1], Arm64 guest_memfd enablement, !kvm_memslot_is_gmem_only(new)
-meant "this guest_memfd does not support mmap()". Arm64 had no CoCo
-private-memory VMs yet, so guest_memfd was only usable for shared memory
-where the host VMM needed mmap() to access guest RAM. Rejecting
-non-mappable guest_memfd slots prevented unusable private-only memslots.
-
-In [2], pKVM support was added. The v1 of [2], [3], says pKVM uses
-anonymous memory. pKVM doesn't really specifically use gmem, so there's
-actually no change, this check doesn't really affect pKVM.
-
-Conversions [4] made stage 2 faults (mostly on x86), always get memory
-from gmem. On arm, as long as it is a gmem memslot, it already always
-got memory from gmem.
-
-Now that ARM CCA supports private memory, we should drop this check
-completely, I think David noted that right when it was added [5], and
-that's what Sean means too [6].
-
-If userspace sets up gmem with a memslot and doesn't set up mmap,
-userspace probably won't be able to set up a running ARM CCA VM, but
-that's userspace's bug imo.
-
-Imo even back in [1] perhaps the check didn't need to be added, it's
-just a userspace bug to try and set up a memslot with gmem that can't
-really be used.
-
-[1] https://lore.kernel.org/all/20250729225455.670324-21-seanjc@google.com/
-[2] https://lore.kernel.org/all/20260330144841.26181-1-will@kernel.org/
-[3] https://lore.kernel.org/all/20260105154939.11041-1-will@kernel.org/
-[4] https://lore.kernel.org/all/20260910-gmem-inplace-conversion-v13-12-dd6=
-fbf94f4e1@google.com/
-[5] https://lore.kernel.org/all/2195c01b-3a17-46c5-a013-66922e8509bd@redhat=
-.com/
-[6] https://lore.kernel.org/all/av8No1rvJLXwciId@seanjc-mac.roam.internal/
-
-> [1] https://lore.kernel.org/r/26a29420-8d27-4069-bbd5-28692c9e8542@arm.co=
-m
->
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261123104233.95=
-710-1-steven.price@arm.com?part=3D1
+Reviewed-by: Philippe Mathieu-Daudé <philmd@oss.qualcomm.com>
