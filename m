@@ -1,44 +1,44 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795479802;
-	b=sY0LQLHNgEUmuJ8llUgYgJmElzAVQKLN/uYFL0cXq86O0nsC9kVfowo1t5qKGBRcAxLC
-	 Oed93Op/bQttUCYAi/V2H16R2MZSwQcdU58tHhWRAtGN8pTgzy3q1fuIajJO+LKFNnjpI
-	 V1JktGsPI8KPn+UFE548tNXmOx6079sTuxvSujGQRd+X5iSRo1hSgpNt3AQ4gbpKiyQ8E
-	 /hhPwFvYfZLRoGPAQTNGHdIf6vRu09pDz/ueiy2RO1Xsf7gz/OF09wcZXF4FGjZrYGWZ7
-	 3UN8iNMELAmFLbS8plqLdHcPLXpnHZzlwp+isy8WN2HiXHDobHO4h9KYXjoseZE7uxA==
+	t=1795479798;
+	b=KU6tyzIdzTVaEj21YQyMG1r1rE6MgwscqThExQOxkSfIFylb45cRxBHDpPGRlGtC3pXY
+	 wFcnQZciYa1tv9Z81Tb66gfXfTyfeuP4GaYxlePi2V0JheTBamPIM0d/qBiY2V0MjmKqy
+	 +Mm4RHV15EAD+8j3+I5NanygNH/RJ82eKjEWBIU5p5GyGHnX8rUC4ysRBhxH6Wmm09TSh
+	 G3wIp4jgDw5b9E6Rf/WcGMepv1HvGd2IIlwiT+gokAeYJbdAJbK8sXVWtjBs8TSDAYlGg
+	 jZ4Rcsb7oVfzCuo+fOaJw/meZZuBSXyrUTLGpodSaNwya8z8j36EpkKvq0gR63Pvx0Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795479802;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795479798;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=qtib51ffHxqRQT/emHOSN0KnkH+oE4jKOtAC4nasmyo=;
-	b=CuhowIqEfRPAj54ChmSatCxXQpYJa32aO7XNNnO2QNkpN2ijxoYPZ3BM8bVhIsUrceiI
-	 YG5x5IxbXC/MSUhvPic33UXSePE9wlzTyKC2e8pzSiy/AEkJ4dYk+fpiuxACFJD6bGymV
-	 LmNJgoFGcoHUKK1aIC0BCCz3c2i569J7HGEc0riCqYJXXQUQvXNI2n1zOWNQF+06zMM71
-	 n5oLUIfE1iW2zUdaQObgLU7s274P75eOWlRJyVqWqayHuZc+RE3HUqfhCxmrBXxov8DTZ
-	 wxCTJic/x69QkOT1FIF99PRs1v3KYuZVnR8ELVQjph+xkzOZq9OIMs0vCuT2LcXzWOw==
+	bh=+bTraHWrkXkEO985xY8ZwDTNz2qDRYoiFOGFRC9niZQ=;
+	b=bZL+kjreGixPhlpv03hWcXxvGjhDe7yRvgj62uwO3SwHtLRq27ZT8GkPI4ag7oVK2f23
+	 Sq8Cq7buXIjyk3VJ/hBPGTp31iLhzVI18snny8x/hmMnO+HbZd14UsyjpY2Rcf2LHHGRH
+	 C3hR3n/gvnprdqCflJ9cD3UTpyQNk8xyfHl8oQ0LTJFPhIJ/Z6YFQ1WZbl8vpVvlLX+8j
+	 ckm0n/eDTH97kSso6mUq0Id9Hazj45IClIn55Qf6yfO9f6P+o0mXTeqbdDWbmoK2v25ll
+	 f6rtwUOHexQO4WllG3ooagja3GSnXXDkgRyu9zbPwXulm+8VAkU2PUruE2sWrq7jUHg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="H/ywA3VI";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dLJBhqcH;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF3760A381D;
-	Tue, 24 Nov 2026 00:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B8460A262E;
+	Tue, 24 Nov 2026 00:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H/ywA3VI
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB711F000C0;
-	Tue, 24 Nov 2026 00:23:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dLJBhqcH
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22AD1F000EB;
+	Tue, 24 Nov 2026 00:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795479801;
-	bh=qtib51ffHxqRQT/emHOSN0KnkH+oE4jKOtAC4nasmyo=;
+	s=k20260515; t=1795479797;
+	bh=+bTraHWrkXkEO985xY8ZwDTNz2qDRYoiFOGFRC9niZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H/ywA3VIWXboWCAZ0+iXfwcCUtrzEMI4VWBeSCsBlENCxoAv60SuDF3wkNVU+ofQA
-	 W+vJaSC+yRnLtunpi+vLtQXv8mTtvp7dexkJYfdRoRRWF67UGUXlFe+pfLeiKHXIG9
-	 KJDLHr1vWxeBLIKeXiNziCiK6wCT2V0ZjXnO/kKnL+9M2Gz/xkiASQJXFBcFUs3YGD
-	 vRrrxkxG2DrLMvvJME5zdZVJmbPP8ul8tqoNY0jLjjocCV1zL7xjhFVJ5CbPlpvpcO
-	 2sHtpSSd+B+P+YkubX4p6W4M85DxZf82/soul9e41gmhSlizC1DFbArTIp7VBYSRZJ
-	 NzAdhivfVdZgA==
+	b=dLJBhqcHNaBMMCOXgo4bBfpirQhpdMo90+iQQIzNvRybtq0VAK2pxyK8pty2HCBkO
+	 qac4nnFnXE8FIEmKtah8Sa7aFi/dl74NO3+ozC8+MNutvFzv081nL7ZAv2JcqBMBVH
+	 ZG1yD8SbKt+wN/2X3zhD+hvExDCLiD2T/4mvD2a9SsJFrgCVcTPEfSkJPDa1qIPttV
+	 nyatupR0df/TbiP39/nrZPuv2YwuZpXlrCLC+EUMjWvW0pUTKDOQUaIUTVCyjMl4oY
+	 qWP2gUuC1QRq80VFO1anPJ3RojC05jsJP3+GnEDQZjJdEyv7AgJMzpA6BkP4l9TvMw
+	 wqLuxumcWgCLA==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>,
 	Peter Zijlstra <peterz@infradead.org>
@@ -61,9 +61,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [RFC PATCH 09/26] perf/x86: Reclaim the mediated PMU before clearing dirty counters
-Date: Tue, 24 Nov 2026 00:22:46 +0000
-Message-ID: <20261124002303.1785363-10-yosry@kernel.org>
+Subject: [RFC PATCH 06/26] perf/core: Guard against accessing guest mediated vPMU state
+Date: Tue, 24 Nov 2026 00:22:43 +0000
+Message-ID: <20261124002303.1785363-7-yosry@kernel.org>
 X-Mailer: git-send-email 2.56.1.809.ga0b61035b5-goog
 In-Reply-To: <20261124002303.1785363-1-yosry@kernel.org>
 References: <20261124002303.1785363-1-yosry@kernel.org>
@@ -78,45 +78,73 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-perf_clear_dirty_counters() zeroes PMCs that aren't assigned to host
-events before enabling RDPMC for a task, so that it can't read stale
-values. It doesn't go through remote_function(), so it doesn't reclaim
-the PMU, and if a guest's mediated PMU context is loaded, the "dirty"
-counters hold guest state that clearing would clobber.
+While iterating PMU contexts (i.e. using for_each_epc()) for purposes
+other than switching to/from guest context (i.e. other than
+EVENT_GUEST), skip contexts of mediated PMUs if the guest context is
+loaded, to avoid clobbering guest state (e.g. disabling/enabling the
+core PMU would overwrite the guest GLOBAL_CTRL on x86). The guest
+context should be put before any host events on those PMUs are
+activated, so WARN if the skipped PMUs have any active events.
 
-In preparation for KVM leaving the guest context loaded with IRQs
-enabled, reclaim the PMU before clearing dirty counters. Do so before
-filtering out the counters assigned to host events, as host events are
-scheduled out while the guest context is loaded, and putting the guest
-context schedules them back in, assigning counters to them.
+In merge_sched_in(), WARN if the check for events on mediated PMUs is
+true, as that shouldn't happen anymore. merge_sched_in() is only
+reachable through:
 
-No functional change intended, as the guest context is currently only
-loaded with IRQs disabled, where perf_clear_dirty_counters() never runs
+- ctx_sched_in(): Uses for_each_epc(), which now skips such contexts.
+
+- perf_rotate_context(): Rotation is never necessary for such PMUs while
+  the guest context is loaded. rotate_necessary is cleared when the host
+  contexts are scheduled out before loading the guest context, and only
+  set again when the contexts are scheduled back in after the guest
+  context is put.
 
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/events/core.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ kernel/events/core.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 4e344fb1ae3ed..95ebdec4d5f5d 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -3026,6 +3026,14 @@ void perf_clear_dirty_counters(void)
- 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
- 	int i;
- 
-+	/*
-+	 * Reclaim the mediated vPMU from any loaded guest context before
-+	 * accessing counters to avoid clobbering guest state.  Do so before
-+	 * filtering out assigned counters, as putting the guest context can
-+	 * schedule in host events.
-+	 */
-+	perf_reclaim_mediated_pmu();
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 8fd1e19cf5ab9..78441df572487 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -802,6 +802,18 @@ static bool perf_skip_pmu_ctx(struct perf_event_pmu_context *pmu_ctx,
+ 	if ((event_type & EVENT_GUEST) &&
+ 	    !(pmu_ctx->pmu->capabilities & PERF_PMU_CAP_MEDIATED_VPMU))
+ 		return true;
 +
- 	 /* Don't need to clear the assigned counter. */
- 	for (i = 0; i < cpuc->n_events; i++)
- 		__clear_bit(cpuc->assign[i], cpuc->dirty);
++	/*
++	 * Except when loading/putting the guest vPMU context, accessing a
++	 * mediated PMU while the guest vPMU context is loaded would clobber
++	 * guest state.
++	 */
++	if (!(event_type & EVENT_GUEST) && is_guest_mediated_pmu_loaded() &&
++	    (pmu_ctx->pmu->capabilities & PERF_PMU_CAP_MEDIATED_VPMU)) {
++		WARN_ON_ONCE(perf_pmu_ctx_is_active(pmu_ctx));
++		return true;
++	}
++
+ 	return false;
+ }
+ 
+@@ -4139,13 +4151,15 @@ static int merge_sched_in(struct perf_event *event, void *data)
+ 		return 0;
+ 
+ 	/*
+-	 * Don't schedule in any host events from PMU with
+-	 * PERF_PMU_CAP_MEDIATED_VPMU, while a guest is running.
++	 * perf_skip_pmu_ctx() skips mediated PMUs while the guest vPMU context
++	 * is loaded, except when loading/putting it.
+ 	 */
+ 	if (is_guest_mediated_pmu_loaded() &&
+ 	    event->pmu_ctx->pmu->capabilities & PERF_PMU_CAP_MEDIATED_VPMU &&
+-	    !(msd->event_type & EVENT_GUEST))
++	    !(msd->event_type & EVENT_GUEST)) {
++		WARN_ON_ONCE(1);
+ 		return 0;
++	}
+ 
+ 	if (group_can_go_on(event, msd->can_add_hw)) {
+ 		if (!group_sched_in(event, ctx))
 -- 
 2.56.1.809.ga0b61035b5-goog
 
