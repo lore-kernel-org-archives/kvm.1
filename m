@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1795562582;
-	b=3Aj+UfGy5wrVp5gCnLJtfext4TRrxy+GAEr62QwgSKlquFJNpWpEWW1qsEHcYtFdJIoR
-	 rxStNuF7XrjS3xHKG373IkdghK6lyq9aMSfF5v++8wbQeY3YFN915k9QeR68K7KsQgytC
-	 sFl9QK7th6QQf/PZUDHUCDNPNSessoa4AEb/hh3CMsvFWWu5BhKwF4A8dFlnbuy0ao2+S
-	 Leq9hA6S7lA9CeGnPqLMh138oWtU3K9VzXY78u4IBS/dRZpg9m2M+L1wgQPmZG2o3aYiN
-	 8G4Yp8fA/yXPcfHyZc29O3tzJfXl9HbbEXh6aBvfm0lanSUnauVDf6AuKhRJmRnPBBw==
+	b=DiftF/LexdQfEWiqupodaIrNrtbd/v/FWWXWF4F35emGs5+UeMGeSu5IlX/5LzA3ooHd
+	 85qtrzbWpZ4HpmV7uN0jt1pJ5NhjYdMNmNRwKld3GLKBZZYy2gjIzPo2fUx9dNh82GMiz
+	 QLDIMGaEAnqXKqf1mPusW3fvHETmNWHDuXsgBm9WxottLpwpjJ/Q5u7aH9qwrJjD0yIXV
+	 EmxQD0DohLqqpsZPOxWeW7PJ6rab8zPOAqGyt7bW1Aariwk+m+8MOOP5E9ZhX/cBXrsHr
+	 whBY/Cr/PZsVLt//q5ouKqfBMPUpVfvmJR8ywV3lmO3y0fYo2ha9xTgVfK3uVBZY8VA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795562582;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=hzcboM0ohMmWlISO8riHLJaSzXAdnFAI55ObPeXkb6U=;
-	b=Wl8DFOab/VTU1khwJODHUC5PnQ6Y9TKYVUjADcjXoK3eWZ7NbfQk4fWivSWRKk2lV5c6
-	 bj5UPPN8lsvpz4YddUGEvzLOox3nBDJxgZWxktzZS21KKK4Bh1tWX/T22vA/DGAgcue2v
-	 5VuFXCirIlMOvx+oqA6fRwN3KOSM43toitG9sMXe82QSyOEMWIAwtI57jApMUL9RTllhx
-	 +KZuxH+hMu3aFjFCSO7aUJTvdgIA5FWTg9Y8CnANqJpNFWU4ymor8yN22fymtgRXnLACf
-	 D8b/1qdPSNdqTS6RrTsI5bL9/CI8J//HTqzsWL+zzMtacHJJ0Ihi3/D4N+FiOJl45gg==
+	bh=gbvkt3Oepuml/pNsje0Ov8dVS+0VaVrs1jH1HkxnPHs=;
+	b=gPqheMDMFxVgS/eyZvltGQav3bpbZsqqSAyXq/30knkNlglcIFwOXltpnIefTzfnC0Gp
+	 1GmgvaIWhJLZVt46pdvIdZMICjXN+bvFG1dtyw/vdU9btdnNiE9+Bb9su8hySsttJrWiQ
+	 fiiSJw8+tzgfI/hoEViy1uHr0sj/EYmGrTRhmvCttb2CFK50qyA6+ZE+7LezVSevwrSIP
+	 LhVsP3ekaEm9iGiOnxyiHFavqdP6Xg1hEE9LToHYlpcTo9UhF+ZwWqveDThrmCJgFM8Ih
+	 SE3MuRsapIs2MUB+mPR5uI3GMoCRURg6OsD2CWGPxJLYF4hZKRupLlcC28CwS+4P50w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=desiato.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=WhbF2j+f;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=VPk73umi;
 	arc=none smtp.remote-ip=90.155.92.199
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79B4606A69E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46A3606A689
 	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 23:23:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E79B4606A69E
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E46A3606A689
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=WhbF2j+f
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=VPk73umi
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=hzcboM0ohMmWlISO8riHLJaSzXAdnFAI55ObPeXkb6U=; b=WhbF2j+fLNR/zARIW1zGydVvN2
-	/HzwKcdAx1+okK2juHfpid4TxC+8CtK36eJS9NKfzJvIzW0hUXqa1rdwjO9szuwcqSPoLExAlBVpo
-	mDhswuUYwQ66qfwFE8QHrKOLsFPACPGdirUvEziVxZWVw7IFifTnLlYY+aG4oBSyiCEw6RWiX+XEx
-	9lOOcYbykbbwdZYQfvO5LJ1XhHwK7Y1XoNQxh0/WNxvD4TnVCofUSY/xV2GS0XryNyGBUnxyTA1d0
-	gXvOW90ENXXl/Wwf9b2J8wsHsI/R9TOP/nneCdtr9N/crar/VoiymUACDjejI/N3detNVjiLtEXOx
-	Hn0feDQw==;
+	bh=gbvkt3Oepuml/pNsje0Ov8dVS+0VaVrs1jH1HkxnPHs=; b=VPk73umiR5GJfJ0+T5UgE0U/qR
+	bxw0kmsInIOWwFvbNRbHlZrBUjf9MrApQnrjgNpwnPjQOJ0HlpL3fr8+kxCfVZFvFk0iEbzUD7+vM
+	0eXgnyVzz1Kzv1qM60QzxxlM7bqKcNQZ3PqLQ4j1nkzCrFUrqkqw2LHTMWBqJf8V4aRMyHYgbkQCz
+	yzEIwLngfM1EKNQJMmf6YHDg4OSGXAhg7Kh7ViV3HkKDtFLJDKrjE0q7vrlYYfwHOpe9+D4ixI4mt
+	wVPTi6Wa93HNEkrA3hlJI6flMHTFaKYM7OTi6AbThyUAWX0ORQAWD4HEGDqkZVtkvxTQr9TelykRY
+	wtS41DXw==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xVzqc-00000004eV1-1qbP;
-	Tue, 24 Nov 2026 23:22:57 +0000
+	id 1xVzqc-00000004eV4-1kK2;
+	Tue, 24 Nov 2026 23:22:51 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xVzqZ-0000000062M-1y4D;
+	id 1xVzqZ-0000000062c-2RFz;
 	Tue, 24 Nov 2026 23:22:47 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: qemu-devel@nongnu.org
@@ -69,9 +69,9 @@ Cc: xen-devel@lists.xenproject.org,
 	Mark Syms <mark.syms@citrix.com>,
 	Feifan Qian <bea1e@proton.me>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v1 09/21] i386/xen: Don't inject event on invalid port in qmp_xen_event_inject()
-Date: Tue, 24 Nov 2026 23:22:35 +0000
-Message-ID: <20261124232247.23169-10-dwmw2@infradead.org>
+Subject: [PATCH v1 13/21] hw/char/xen_console: Fix buffer trim when size exceeds twice the limit
+Date: Tue, 24 Nov 2026 23:22:39 +0000
+Message-ID: <20261124232247.23169-14-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261124232247.23169-1-dwmw2@infradead.org>
 References: <20261124232247.23169-1-dwmw2@infradead.org>
@@ -90,30 +90,59 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-qmp_xen_event_inject() reported the invalid port with error_setg() but
-then carried on regardless, passing it to set_port_pending(). Return
-after setting the error.
+In buffer_append() we handle a full buffer by discarding bytes from the
+*middle*, preserving the oldest and the newest data. When the overflow
+exceeded the max capacity (a limit set by the guest), the memmove()
+destination was miscalculated and ended up before the start of the
+buffer. In that case there is no older data worth preserving anyway;
+just keep the newest max_capacity bytes.
 
-Fixes: 507cb64d6e66 ("i386/xen: add monitor commands to test event injection")
+Fixes: CVE-2026-123071
+Fixes: e57dd20bb706 ("xen: add console backend driver.")
+Reported-by: Giovanni Vignone <https://gitlab.com/gio24>
 Reported-by: Hui Peng <benquike@gmail.com>
-Closes: https://gitlab.com/qemu-project/qemu/-/work_items/4525
+Closes: https://gitlab.com/qemu-project/qemu/-/work_items/4191
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- hw/i386/kvm/xen_evtchn.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/char/xen_console.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
-index d0807f5fece..7fd8c3f3182 100644
---- a/hw/i386/kvm/xen_evtchn.c
-+++ b/hw/i386/kvm/xen_evtchn.c
-@@ -2342,6 +2342,7 @@ void qmp_xen_event_inject(uint32_t port, Error **errp)
+diff --git a/hw/char/xen_console.c b/hw/char/xen_console.c
+index df6a708494d..849a93a8178 100644
+--- a/hw/char/xen_console.c
++++ b/hw/char/xen_console.c
+@@ -89,17 +89,25 @@ static bool buffer_append(XenConsole *con)
  
-     if (!valid_port(port)) {
-         error_setg(errp, "Invalid port %u", port);
-+        return;
+     if (buffer->max_capacity &&
+         buffer->size > buffer->max_capacity) {
+-        /* Discard the middle of the data. */
+-
++        /*
++         * Discard the middle of the data: keep the head of the buffer
++         * up to where the overflowing data will be moved down to end
++         * at max_capacity, and the newest 'keep' bytes. If the buffer
++         * has grown to more than twice max_capacity (the frontend may
++         * set an arbitrarily small 'limit'), there is no head to keep
++         * and the newest max_capacity bytes alone remain.
++         */
+         size_t over = buffer->size - buffer->max_capacity;
+-        uint8_t *maxpos = buffer->data + buffer->max_capacity;
++        size_t keep = MIN(over, buffer->max_capacity);
+ 
+-        memmove(maxpos - over, maxpos, over);
++        memmove(buffer->data + buffer->max_capacity - keep,
++                buffer->data + buffer->size - keep, keep);
+         buffer->data = g_realloc(buffer->data, buffer->max_capacity);
+         buffer->size = buffer->capacity = buffer->max_capacity;
+ 
+-        if (buffer->consumed > buffer->max_capacity - over)
+-            buffer->consumed = buffer->max_capacity - over;
++        if (buffer->consumed > buffer->max_capacity - keep) {
++            buffer->consumed = buffer->max_capacity - keep;
++        }
      }
- 
-     QEMU_LOCK_GUARD(&s->port_lock);
+     return true;
+ }
 -- 
 2.43.0
 
