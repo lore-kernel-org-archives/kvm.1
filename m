@@ -1,95 +1,73 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795592225;
-	b=j1wY8rDo4iHmKNsfqPV4ka9ptmjXHyqG9y5n2xyvqxjCqGW5fzSEzaR/G5uH18G6wPT4
-	 sTDCdcCIFqBKBDUv+sjz1LcUvlIgZMXM7WyE1X1KxKj1fY0e5ApMLz+PHhJ7NI3VTzzIO
-	 xRy81bleDsYORlak3fPdwRJ4dyFOShk0ZgAC0NrFURFSHFfGZQwKxWK/CZ0PSgBeuT1lr
-	 V2n5/sCaY8Fx7UwhSucvSOG2ckDwFvV+t7CnSCv+6yz8fLzs16rKNlAaJHXKPnjWpOXMb
-	 34Qjfib8DIZ6Ls8UGg+/oKChhP9NKv5Xk41zRXwogXeZwYpNGOhl0iFtuKSnsxhbirw==
+	t=1795593617;
+	b=kbAXf29K9HJZLQdZ8hSmAM+BVj8aQ2LGtG9kjzU53EUs3p2qQdsYtTCB07fZGdELLg1U
+	 kBKsEeRzahl6Hnx/aDrs8aZl1XXkx4ssUWbtElsniU3cB+zQXk06kyQGOrwJ82ilsNOH9
+	 XYWzY3zcyqlvUkPUVAVEWCNUvt3LYwiLLNcGlbHBIQdx0yTbUC/D1C9a62ViANQZL18uj
+	 f+m5Yo0hb/DnQO6vbFTSuiL/xoYcJVb37k0wcns9IXcZW1wR48x8o0/XZM3pQnjJmP9w8
+	 6ot/A4dgQ9fSTlgU49pv+gcKU9W5VrIsMGhP3ouRj25a9wuu58l9GLaxLLZWENrkyog==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795592225;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=8eRVApJ+L+4/3rfdnuY4xvhBuCOH0eKWoFliwmNzr38=;
-	b=mvb/Tl+j8PQQTEaG04e1X1r2Jzut215JKF18FNlrdW1/U4kLqzU5MvbS4RsdcumDQoga
-	 GbAVBCnlS0fjp3ChOeEGT3hwk+WcvRJvl6eEVdH8zzMckIj/biNdbygDzo7a5jFUsEudg
-	 ZWcJxxr9cL8nRAFQianzaebA1MywK3UPj/Nv6rZp4yJBxIRpiYbWyzW4IUVN9EcLEsivR
-	 ihK+yZdgmzqiPQXFLw4Cpu+CiCobODp3nO02K60EYLtugRWVrEw01306xQbEGYaITKndw
-	 qE7tk9MP5aU+gp0nDsgkFFfZ/hqqWLnvMWJW/d9nDzziTHFpm7HCw9+KIE8YioS7whg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795593617;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=3JXKHxrVmfq0TiEVcdvg17Zz9dDLxpeu9nQ6Vk0bf9U=;
+	b=pxr3AIkOQuG15AYRjbEf0CgmkA+MB26X6RO5v+VrCcMYvVhDUWDUYrb8X0OhrTVlmy0d
+	 wC+lG/4xMWUPrlbLscz5NgNFNWZ2Xz0AcAyILDB2xK0BvcGHl3GS8b5zI3uyveuPNH/Ud
+	 kAxbT3Xu9vcGYsL4BD+U9EyJ6hMN/wlchiBBIV6kVuuY/FgxbBISs6GvZuARtmmW/tb2N
+	 kilQUiFsjOrgpUX4QamtCsQt/+WIO70+FBV5ISVEDFD9sCHgaL2qrwJdP5hjIrQPN16gX
+	 Y+AJU8+BOJaf05SuREMHVVMuAoy+0XTBfAFx/KBPTukvO+J189t728IGHM2FxIyCs8w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hEvwRbbZ;
-	arc=none smtp.remote-ip=192.198.163.14
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dVZLEuUu;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08CF3606A681;
-	Wed, 25 Nov 2026 07:37:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 08CF3606A681
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC62D60A2610;
+	Wed, 25 Nov 2026 08:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hEvwRbbZ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795592224; x=1827128224;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wY2iVTEG6wd27k6XZWlgDe4gkeLUQ9O+twmzFh+uS00=;
-  b=hEvwRbbZui8SSYLvGQs7taADMZmogQkKQFWtYJ9R1+Iv2Zj2Pp4jEBI2
-   U0gzQbxb4st7lArrcpG0anajB6HbquMduZtRC+6xlCk4ox8fZLK51eoq9
-   9bifCqBM+qGcQHWAMDnoSiGMghCvwGnfxIEKDtnQQAxqkHeRRZDXhnjMh
-   9kIg0rd7seljVzAd43BOSzMT4+IGBQ5W4KiL78j2gi5WzWWbNZdy6Ei5T
-   umaIrceck9w6+J+4M4B6U8HoVyG5qj2wIOFkmy0vdhrMDDhKsqcWW9j7A
-   uaH6shDGpDIJSjNbSHmTdCn37nYikTD+La9aX3WrEVObwe/UCJN2XTxJ0
-   g==;
-X-CSE-ConnectionGUID: Z9k8VcvZR/Gr4K65oTNOrw==
-X-CSE-MsgGUID: C+FD4P4eQfyV3/airmWIVw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4382073"
-X-IronPort-AV: E=Sophos;i="6.27,232,1787036400"; 
-   d="scan'208";a="4382073"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 23:36:20 -0800
-X-CSE-ConnectionGUID: BrYDC8I4QDKWdxCnBs+FxA==
-X-CSE-MsgGUID: 0XDuAw81R3eLc/q/3+0ieQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,232,1787036400"; 
-   d="scan'208";a="11781260"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa004.fm.intel.com with ESMTP; 24 Nov 2026 23:36:15 -0800
-Date: Wed, 25 Nov 2026 15:26:19 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Tian, Kevin" <kevin.tian@intel.com>
-Cc: "x86@kernel.org" <x86@kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"Xu, Yilun" <yilun.xu@intel.com>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"Mehta, Sohil" <sohil.mehta@intel.com>,
-	"Hunter, Adrian" <adrian.hunter@intel.com>,
-	"Maloor, Kishen" <kishen.maloor@intel.com>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-	"Fang, Peter" <peter.fang@intel.com>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"Gao, Chao" <chao.gao@intel.com>,
-	"artem.bityutskiy@linux.intel.com" <artem.bityutskiy@linux.intel.com>,
-	"nik.borisov@suse.com" <nik.borisov@suse.com>
-Subject: Re: [PATCH v5 5/6] x86/virt/tdx: Make TDX module initialize the
- extensions
-Message-ID: <awaNm24u6mY/BeXB@yilunxu-OptiPlex-7050>
-References: <20261111-tdx-module-ext-v5-0-c74f764abc3d@linux.intel.com>
- <20261111-tdx-module-ext-v5-5-c74f764abc3d@linux.intel.com>
- <CO1PR11MB4835398A9726ACBA73621C218C442@CO1PR11MB4835.namprd11.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dVZLEuUu
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91DA11F000C0;
+	Wed, 25 Nov 2026 08:00:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795593616;
+	bh=3JXKHxrVmfq0TiEVcdvg17Zz9dDLxpeu9nQ6Vk0bf9U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dVZLEuUu30Bp0Mh++rmExNRXqzfiexWadppURIK/+VKrCSdKwgsrU5sSKafqAoMVX
+	 RtpJk1zM4M8Ozkq3n2tUfIqN+dazbRh0Uk7tMt4ZKtCp7Ik1X2ra2vvZj3cHCkYNkX
+	 zuXHvYHAOKfV4dqS/c9v6ph+IVGU+V0EM3zsIhN334mSVLff8iGgpVz0EnVdps9F9v
+	 lvttxclF3v13FajsFkdWXUAd9uDcBXebqbW8913/zEe90DATxMaaeCz18gzbwRYCac
+	 3vztu/ALwxVnGZRTyZ/1AgydZcZmYQzBw8Vsp4D0WPSLc0s4EKB6yJgnt7x2ZIftB3
+	 QdvdlQRkUaauA==
+Date: Wed, 25 Nov 2026 00:00:15 -0800
+From: Oliver Upton <oupton@kernel.org>
+To: Dan Carpenter <dan@pereq.eu>
+Cc: Marc Zyngier <maz@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+	Christoffer Dall <c.dall@virtualopensystems.com>,
+	Rusty Russell <rusty@rustcorp.com.au>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Sebastian Ott <sebott@redhat.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	James Morse <james.morse@arm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>, Karthik Bhargavan <karthik@pereq.eu>,
+	=?iso-8859-1?Q?Cl=E9ment?= Blaudeau <clement@cryspen.com>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 5/8] KVM: arm64: nv: Replace a pending SError when
+ injecting a new one
+Message-ID: <awaVj0Aa6dMSksxX@kernel.org>
+References: <20261125-double_exception-v2-0-224689d8a764@pereq.eu>
+ <20261125-double_exception-v2-5-224689d8a764@pereq.eu>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -101,44 +79,65 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CO1PR11MB4835398A9726ACBA73621C218C442@CO1PR11MB4835.namprd11.prod.outlook.com>
+In-Reply-To: <20261125-double_exception-v2-5-224689d8a764@pereq.eu>
 
-On Tue, Nov 24, 2026 at 08:01:39AM +0000, Tian, Kevin wrote:
-> > From: Xu Yilun <yilun.xu@linux.intel.com>
-> > Sent: Wednesday, November 11, 2026 11:49 AM
-> > 
-> [...]
-> >  static __init int init_tdx_module_extensions(void)
-> >  {
-> > +	int ret;
-> > +
-> >  	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
-> >  		return 0;
-> > 
-> > -	return tdx_ext_mem_setup();
-> > +	ret = tdx_ext_mem_setup();
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	return tdx_ext_init();
-> >  }
-> > 
+Hi Dan,
+
+On Wed, Nov 25, 2026 at 09:56:20AM +0300, Dan Carpenter wrote:
+> The kvm_inject_serror_esr() function injects SErrors as the name
+> implies.  The bug is that it doesn't handle already pending errors
+> correctly in nested virtualization.
 > 
-> Above means that tdx_ext_init() will be called even when ext.required_pages
-> is 0, e.g. when TDX_KERNEL_SUPPORTED_ADDON_FEATURES0 is null as this
-> series stands or on a platform which reports TDX_FEATURES0_EXT but no
-> any add-on features (would it happen?). 
+> In vanilla KVM the kvm_inject_serror_esr() function always sets
+> the SError to pending.  However with nested KVM, it might set it
+> to pending or it might deliver the SError directly.  We can only
+> have one pending error at a time.  Imagine we enter the function
+> with an SError pending already.  In the current code if we decide
+> to pend the new error that's fine, everything works.  However if
+> we decide to deliver it directly then the pend flags should be
+> cleared but they are not.  So we deliver the SError directly and
+> then the SError that was pending on the next exit or entry.
+
+I could use a bit more color on how we got here. From what I can tell
+this state is only possible if userspace changed the routing / masking
+of the SError outside the context of a KVM_RUN. Otherwise, if the SError
+is deliverable on guest exit we perform the injection prior to exiting
+to userspace.
+
+Thanks,
+Oliver
+
+> Clear the pend flags unconditionally at the start of the function.
 > 
-> Just want to confirm that doing so won't hit an error.
-
-It's fine. TDH.EXT.INIT should return success if no extensions are
-required. This is discussed in v2 and v3 cover-letter states that:
-
-  Rick pointed out that if TDH.EXT.INIT could always return a reasonable
-  return code, we don't have to query ext_required metadata. A fix for the
-  ABI is: TDH.EXT.INIT should return success if no extensions are
-  required. We reached agreement with TDX module team and removed
-  ext_required.
-
-Oh, there is still ambiguity here, we don't ask TDX module to delete
-ext_required. We removed kernel code that reads and checks ext_required.
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/all/sashiko-outbox-229065@kernel.org/
+> Fixes: ce66109cec86 ("KVM: arm64: nv: Take "masked" aborts to EL2 when HCRX_EL2.TMEA is set")
+> Fixes: 77ee70a07357 ("KVM: arm64: nv: Honor SError exception routing / masking")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dan Carpenter <dan@pereq.eu>
+> ---
+> v2: New patch
+> ---
+>  arch/arm64/kvm/inject_fault.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/arch/arm64/kvm/inject_fault.c b/arch/arm64/kvm/inject_fault.c
+> index aa2011cc0d5a..0f6a89b65074 100644
+> --- a/arch/arm64/kvm/inject_fault.c
+> +++ b/arch/arm64/kvm/inject_fault.c
+> @@ -361,6 +361,10 @@ int kvm_inject_serror_esr(struct kvm_vcpu *vcpu, u64 esr)
+>  {
+>  	lockdep_assert_held(&vcpu->mutex);
+>  
+> +	/* A new SError replaces any that is already pending. */
+> +	vcpu_clear_flag(vcpu, NESTED_SERROR_PENDING);
+> +	*vcpu_hcr(vcpu) &= ~HCR_EL2_VSE;
+> +
+>  	if (is_nested_ctxt(vcpu) && kvm_serror_target_is_el2(vcpu))
+>  		return kvm_inject_nested_serror(vcpu, esr);
+>  
+> 
+> -- 
+> 2.53.0
+> 
+> 
