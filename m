@@ -1,153 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795634657;
-	b=Ksaps8cDTBCkoFcdNouuGbt+3yxgUdPt1EwMUzaG8Ft3NExc9cqN0/htixX+I++UQabZ
-	 kWCqDFsenSjYw2bUJtXiaj6DLP9jYIHoZtjaNFIBNT+DwktsKyVgmQonYgS0B/jVhjWAV
-	 D3P/WC1FnjZXsVvLRBFeBMXyyP8gimvq17mn155WET6VAVbOhnSapufTtgPC//2LKLyNc
-	 t5C81dDoO68RtAaUymF8hKn7+3qovhJ+lXAko1wUnsY8e4ace54fK+5AFP/uBKVVCWKX8
-	 dy3BlgPmLLbfMBdtHzsdm/3A5N4gd7I1shBJL4EdbO4AoaPLPRLeo3f40GxGzGftlJQ==
+	t=1795634688;
+	b=5Aqc5IJy//vjDQuy1uPSAr9aM/zZX+nCPuWYoNzMVaWvqUgYyjFSSeLdc09TMW2iMQbE
+	 KFXONlRSqTgWOVccvdXRWfrG3IZ1TLHoifK6BPOAUN67PIdHad8KuPVLHLbdEFb+JwTLn
+	 e84Wf2Q5bmGMYHhgKrUmtgXX6dGcMHWQCaOUSVBrnHu4MrCNJvKEDIwVZb8LN7m49otdm
+	 B+e/M0bQZ9ncQLF8Y+i8ZoyTHbLZlDIejztKjeQj9Dys+3zq8M7DfWO9JbYXc5HLRjgXD
+	 ZpdFWNgjk/JZk7q7hwcWJ+Ehlrcb5qIi+jKiWPt3Cv7KzP72yy0Mw8sG39siLgoxQng==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795634657;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795634688;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=N55gjPKFtoyQEkpZ+mulBFdiGvAn3buEDUMJWwRWBLA=;
-	b=T19thNM1EAb5wJ71D78nocEkczy3ZlCfVI1RpBjF6YUwoX0j/VXbEgeiLJFFr98lCDH6
-	 nqMfazRuuv1Lbi2fOCSZLkGy1MEiMo4CjIVBLveMT6CLSmeoz67fdb3DAUQs8EzF1PvSM
-	 6ZTQ1/Vs4M14V8NKuEujtl+dooNMV1ErglqX9W5sYN4QaZQR+/oQzqvcCdE6OKKMMmWLm
-	 v5LPIVfvdHsHl6vtXe+//ppl4+BP0pxXGZbmE9fYoKdavqigDYQAsyVv+9Ud1smYSgGKL
-	 K52o6F4MWFnK7tuA5TR5HlGz89UpBsmXng57yV3cRTLPm/TRrXdelNjCXTnAvPm5MdQ==
+	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
+	 Subject:From:To:X-Mailer:References:In-Reply-To;
+	bh=G29maGtmsp2d6vk52+6UC3L+iPYrlznjCdfPM1nxstw=;
+	b=XjBaJK4aKGSat2Y8Kgm9v+GiGUv+BB+vWStPAnar9IRv9485iFvAqA4m51jtmWt3vXbk
+	 HXrhei+41D7To20kDJJ9J2EaQm4dj3ScA9Qmf+NEs89t8+fVZEWDbmT0TvBDaO4jHnrB6
+	 OA8i5Sk1c6e1AZoxrTTUem+laTHNEcUCtS+Lt3GAnk3NJvDWdJMvJVoii17ukevyId8oZ
+	 dqa17QHCsSaw+ZLGON594usNTeAnPSzC+p5vuhf8514XsANnHTWMqci4lap910qqSY8is
+	 i46FlWJA5r4B0M+dhCr8A5McZ0qes57QFV5T6XCzEPoZGI1RuN2lWl44Vkb3xfKeR+Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=oCGp0YcP;
-	arc=none smtp.remote-ip=209.85.210.169
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=BlXpEOYq;
+	arc=none smtp.remote-ip=209.85.210.173
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4929E606A681
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 19:24:16 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4929E606A681
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A46606A6BD
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 19:24:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66A46606A6BD
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=oCGp0YcP
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8a06e79e152so3098155b3a.0
-        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 11:24:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=BlXpEOYq
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8b67f25e6e1so3111806b3a.0
+        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 11:24:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795634656; x=1796239456; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=N55gjPKFtoyQEkpZ+mulBFdiGvAn3buEDUMJWwRWBLA=;
-        b=oCGp0YcPvUHi0mkvNJzYjDzOqfg0gHs6ETaxOw6iHkwvvSF4tYjvsaGjV95aPOdQou
-         dmAQRQLqlhN3jiNznQ2pOjzWEW/G2t/wbqDp6HuYWHKE0XMdFq9FvURpTwt3LZNjNOiI
-         XwXkQTulincExFaiUQD3ExWzaLJgh5f90EbERJvf+q5dn2l8/In7F6eLtSCHApz045QY
-         AGa84JuoW96MF2RwV40xmLUxu2P+/+qEsF28w8+r12XoJqwGJeCssnVaJxVXWHGiUXGn
-         ECyAOK186fme41Oi47Fv+x2wiNPNPpqw/d4+KhlG9F3LQdPCn4i+tof3zaLzJI7SrBz8
-         moaw==
+        d=google.com; s=20260707; t=1795634688; x=1796239488; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:message-id:date:content-type
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=G29maGtmsp2d6vk52+6UC3L+iPYrlznjCdfPM1nxstw=;
+        b=BlXpEOYqTxSQUQ7SiQ8cN9LPID4TfDurCXPH7eLWWiLk8BTDB2H2snEueh2+VcZtSo
+         W2qXiBXmRsU7MkDg1/74V2hbf8G+tCsbF5vUSEEH/EX/SrtPUm1TTJ7pwmV6M0eALvf7
+         BXAJfoihY7eqxZpyZldSt7IIsme6pFeGa0Ld5LQYSkhUONcK44H4iMbBbFTceDuYr7O6
+         7oaQ63O04vu/YTgCI7tY6L1Q3PU1sgUGRj/jBDndU/fSOl2dHcpmRg6y5UubqKRBF3n+
+         1C+1wEAAAxwBoaVxCoNUioX+91eaiUeyAlF1/loSjWpswojycxFWj/1Z1XygAbylBCQ+
+         W6XA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795634656; x=1796239456;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=N55gjPKFtoyQEkpZ+mulBFdiGvAn3buEDUMJWwRWBLA=;
-        b=r+96jQMDfZ5fpQ4jwcMP6HAhy4aQ0HQPbYhnTfaRwK8a56VPIDTUI2acM3J1NWjGlF
-         78Lmz2cWuQP/FyP6OwNzdNvBFh+HcGypeJkc825ek28NLwYWkVoaw1tJ03bsfGxsr98u
-         vAECM22FncrDUV+Ipin7aWUkaj2LabbXkiG1gYL1T4rfL3fYB2WN3DG98x1kZ4GTKzJK
-         5kXtgUOBA5ulmtj0+xTGCNbMLt5z70O4FscexhhQlxHpzxnfWuw8VMgS3HvKODEuxGAs
-         WBu5gp6cqZlCxbtZ3ztThdpf8mIfZLwqjHB5jb+HulnTo8kIvMHwWMtDbVSCWxeRtxGn
-         KfWA==
-X-Forwarded-Encrypted: i=1; AL+hErEBcfqC+D6BoExt76L3MAxGgJ/hXoQdSn1dCQpLDVxLw6L1xW0FsSVbPRst2gbE4KpAeew=@vger.kernel.org
-X-Gm-Message-State: APuU4Z98CMcynv5O2MtUiCLGWr2xxvXOiWroypwZN4NFYP+1qBHeTwEB
-	co3H3Z/o2PkJGESJkgrpQQB86+FJTiNAxTmdgygC6Kwk65ZXGnsvyTOFn/2KgfHieg==
-X-Gm-Gg: AZFdTZdvqQWQCIiotBA9GxpNsxrk3PVAVB16VaFyarfTeWLFnPDrhlnSa97QH5wTay5
-	hhxCPtkNV4IiQCTNyefL5AWcmZxIkgd3g7Od3dbhO+cD4MHVfl9X68M/svowDTgh3brhbY6f8+r
-	m4VUFzQIJ+xAcBPJRnlhG56A/0R8WPSsMM1Tb3jQQ4RhHcixjycxJuDUREnQ/mHBgsJIkiJaWgT
-	eDgnYuYHrVQsdGja4YnixodTpERnYsfiO8sAISUQSgazIfy7/9WUrKlvdVhR2OlyreWeqDRFElA
-	Yrtfw7pk2dx5EakFxxMPZvsTLFcHXEJsSGFRCSspbXNcfC9+wpUYxHPCL15CIPRD892tc7L0kYy
-	kyLzOZrRH/mlKaBjIIQiphUGx5qBkuPxAzkLnoJpvWsoRCFP6eNEm27mJFB4LGps34IHiNv8pfg
-	Z+yACnBRAMFCrPPUxQ9efxny57ApgGR4DCNsGKk9sFqP+YbKJk/PKjvBBDg1dhKzBPMQUhmJJWp
-	7+CCG3RXLcPyWtWHyNuAz8YOrgIkifuBQpXQqhahK8FbWjDEWMg4PmQ/RVVTAzBMENWAVpXacj0
-	ZsnATwp44clls1Vtz9DP/HFUX7IqcebCStB7V7gSx3kjuicFN2KIiUwzRng4q0NmDXbjWy+p1vc
-	gsDnjQaksXqWbiU3Zarp9PiBh4re7RbR9g0i2c277ook0K7uHEcJkdgNUPqxaCyIJq+7M2SlmOu
-	jnXABYRDTKJg==
-X-Received: by 2002:a05:6a00:a908:b0:886:773d:a6a with SMTP id d2e1a72fcca58-8c87c199463mr15925448b3a.28.1795634654761;
-        Wed, 25 Nov 2026 11:24:14 -0800 (PST)
-Received: from google.com (196.126.197.35.bc.googleusercontent.com. [35.197.126.196])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c87077bc47sm9717494b3a.6.2026.11.25.11.24.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 11:24:13 -0800 (PST)
-Date: Wed, 25 Nov 2026 11:24:10 -0800
-From: Benson Leung <bleung@google.com>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-mm@kvack.org,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org, Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	linux-bluetooth@vger.kernel.org,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>, David Heidelberg <david@ixit.cz>,
-	oe-linux-nfc@lists.linux.dev, Chas Williams <3chas3@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, Helge Deller <deller@gmx.de>,
-	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	MPT-FusionLinux.pdl@broadcom.com,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	linux-mtd@lists.infradead.org, Neill Kapron <nkapron@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org, Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	xen-devel@lists.xenproject.org, Hans de Goede <hansg@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
-	linux-ext4@vger.kernel.org, Mike Marshall <hubcap@omnibond.com>,
-	devel@lists.orangefs.org, Paulo Alcantara <pc@manguebit.org>,
-	Namjae Jeon <linkinjeon@kernel.org>, linux-cifs@vger.kernel.org,
-	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Benson Leung <bleung@chromium.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	intel-gfx@lists.freedesktop.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	intel-xe@lists.freedesktop.org
-Subject: Re: [PATCH v3 11/12] docs: ioctl-number: update platform entries
-Message-ID: <awc12oWB5WDJi8XZ@google.com>
-References: <20261125061340.3402300-1-rdunlap@infradead.org>
- <20261125061340.3402300-12-rdunlap@infradead.org>
+        d=1e100.net; s=20260707; t=1795634688; x=1796239488;
+        h=in-reply-to:references:to:from:subject:message-id:date:content-type
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=G29maGtmsp2d6vk52+6UC3L+iPYrlznjCdfPM1nxstw=;
+        b=Lf8Z8of2eH9597V9Vd8ni/AmfW4B7K1tZJkmf37q/ofY0hFUO77BnDxUUNSKu+XMS7
+         jl0R811exAvLqravu2F9Vrkixf8gnbMtE+kB2/rY6hsme67I+dsk+XzYsAeUozW8BiCc
+         nf8mxxBB+tmpIs07Nlc+7SBvgqBCRyYfWnqbdZqz0zFKl0WAKxynsUmQjzkm659pUueZ
+         mI7tnO5ZvDWZi5Qn4MXLJ5rJ99B3MRV/A3BPmcqi5PCmksXJ87GeTM4LQIwMqIh/u9Qm
+         8JTzv70LY7HW6fAjmB5M19s8QXlz+x0nOk8Ue3Z38QlihKcAUowlLYV6Ta9TPJ6Lz9T+
+         GmeA==
+X-Forwarded-Encrypted: i=1; AL+hErFTBDTh4AasbueAE4YfDp7kMWZjiVpUCHVlNShC7DcjquVbjCE883EE0ymyok22qwww0cw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/L35UVm99snipMqShYDkZMbB0HR6QWh0N/oXbMeDAjE59MAoyp
+	jPmAuWPLAKgK4JpgGZ4GByoi2NxiGqEEwfvZ+CKxdctgpsGaH/NZIvETUN162lrDmw==
+X-Gm-Gg: AZFdTZcrpxLESTl2IpbMDkdfBFFR23nXo8ZaTWMu3o/PEEyF1pGJ5OmdfNozav3zr29
+	4hZ2srBxTDhoTKzMwc4UKkSGI2caYvZxZVuE6aYtO0B4cu+lgxJdxQAePbB07c3q09EHhpq9ybs
+	Mbr6S5F6TeVjbDDbIUIzZuxVMZx71691iyEDwtrpLf0FIcxivzfc6HTno4o0Xtr4gkJIoXogZjw
+	20dBC2dlP77HRDnCAi2aDBVPvjTt3989fHnv+p4qzx620RvFAhuWrzGz5cDe432YqzjDtxeycNY
+	u6LkWuO1q9oAkVBvp/pDkLuVOv2Li/1yK12j4/xRsDufvjfAy08cAelVT0cEztAieakhfPxetad
+	LuQJao7k/bqn0UotJIB+pzd7o4KRE13MbvCWHbpiqT/BU1d94WQafoXsHCM6mWMwkbKlJygBSyZ
+	2RmNJOPSuQZEqQWNCigBzNRbOii2pJmyYvCe7ksWm4EuuMFe55Bgk79yikyaz1hyEaIMrtUeMYa
+	e2NC5ZR432JRu2K/i21sizjgfzdvP/EEnrKzR3GNcRpclXzefmYKq4mx5dVegOW4Tzd2iKwGiYi
+	7XVlXTIyQfxg/in/+TCG+iGm2TcNQ0MDdFLap7RHtIa7TO+UIWpMHbAUiMCfRdPT
+X-Received: by 2002:a05:6a00:b80c:b0:899:74d0:8a72 with SMTP id d2e1a72fcca58-8c87d90393dmr17708068b3a.59.1795634687045;
+        Wed, 25 Nov 2026 11:24:47 -0800 (PST)
+Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c873f11da2sm9204175b3a.55.2026.11.25.11.24.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Nov 2026 11:24:46 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -156,91 +86,47 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Kk3dCghKBQNrocaf"
-Content-Disposition: inline
-In-Reply-To: <20261125061340.3402300-12-rdunlap@infradead.org>
-
-
---Kk3dCghKBQNrocaf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 25 Nov 2026 11:24:45 -0800
+Message-Id: <DN4JDERN99EE.2WKRR6CJ5R4OI@google.com>
+Subject: Re: [PATCH v4 5/5] vfio: selftests: Allow a size for
+ vfio_dma_mapping_perf_test
+From: "David Matlack" <dmatlack@google.com>
+To: <sashiko-reviews@lists.linux.dev>, "Aaron Lewis"
+ <aaronlewis@google.com>, <kvm@vger.kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20261114132200.113697-1-aaronlewis@google.com>
+ <20261114132200.113697-6-aaronlewis@google.com>
+ <sashiko-outbox-214571@kernel.org>
+In-Reply-To: <sashiko-outbox-214571@kernel.org>
 
-On Tue, Nov 24, 2026 at 10:13:38PM -0800, Randy Dunlap wrote:
-> Update the list of platform/ files where ioctls are defined and update
-> the ranges of function numbers that are used.
->=20
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Acked-by: Tzung-Bi Shih <tzungbi@kernel.org> # cros_ec
+On Sat Nov 14, 2026 at 5:29 AM PST, sashiko-bot wrote:
+> [Severity: Low]
+> Will passing a non-power-of-2 size such as "-b 3G" abort the test inside
+> iova_allocator_alloc()?
+>
+> parse_size() accepts any positive multiplier and both dma_map_unmap and
+> dma_map_unmap_from_file only check IS_ALIGNED(size, page_size), but after
+> populating the mapping they pass size directly to iova_allocator_alloc(),
+> which requires a power of two:
+>
+> tools/testing/selftests/vfio/lib/iova_allocator.c:iova_allocator_alloc() =
+{
+> 	VFIO_ASSERT_GT(size, 0, "Invalid size arg, zero\n");
+> 	VFIO_ASSERT_EQ(size & (size - 1), 0, "Invalid size arg, non-power-of-2\n=
+");
+>     ...
+> }
 
-For cros_ec as well:
+This is a false positive. iova_allocator_alloc() no longer requires a
+power-of-2 size. As of commit 53e5fe5f28df ("vfio: selftests: Allow
+drivers to specify required region size"), which landed in v7.4-rc1, it
+rounds the size up to the next power of 2:
 
-Reviewed-by: Benson Leung <bleung@chromium.org>
+	VFIO_ASSERT_LE(size, rounddown_pow_of_two(SIZE_MAX),
+		       "Invalid size arg, too large (%zu)\n", size);
+	size =3D roundup_pow_of_two(size);
 
-
-> ---
-> v2: no change
-> v3: rebase
->=20
-> [Since having multiple maintainers trying to merge these would
-> cause some conflicts, it would be more manageable for Jon to
-> take all of these through the docs-next tree.]
->=20
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Shuah Khan <skhan@linuxfoundation.org>
-> Cc: linux-doc@vger.kernel.org
-> Cc: Florian Fainelli <florian.fainelli@broadcom.com>
-> Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadc=
-om.com>
-> Cc: Tzung-Bi Shih <tzungbi@kernel.org>
-> Cc: Benson Leung <bleung@chromium.org>
->=20
->  Documentation/userspace-api/ioctl/ioctl-number.rst |    3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->=20
-> --- linux-next-20261123.orig/Documentation/userspace-api/ioctl/ioctl-numb=
-er.rst
-> +++ linux-next-20261123/Documentation/userspace-api/ioctl/ioctl-number.rst
-> @@ -434,6 +434,7 @@ Code  Seq#    Include File
->  0xBA  00-0F  uapi/linux/liveupdate.h                                   P=
-asha Tatashin
->                                                                         <=
-mailto:pasha.tatashin@soleen.com>
->  0xC0  00-0F  linux/usb/iowarrior.h
-> +0xC4  00-1F  platform/raspberrypi/vchiq-interface/vchiq_ioctl.h
->  0xCA  00-0F  uapi/misc/cxl.h                                           D=
-ead since 6.15
->  0xCA  10-2F  uapi/misc/ocxl.h
->  0xCA  80-BF  uapi/scsi/cxlflash_ioctl.h                                D=
-ead since 6.15
-> @@ -446,7 +447,7 @@ Code  Seq#    Include File
->  0xDD  00-3F                                                            Z=
-FCP device driver see drivers/s390/scsi/
->                                                                         <=
-mailto:aherrman@de.ibm.com>
->  0xE5  00-3F  linux/fuse.h
-> -0xEC  00-01  linux/platform_data/cros_ec_chardev.h                     C=
-hromeOS EC driver
-> +0xEC  00-02  linux/platform_data/cros_ec_chardev.h                     C=
-hromeOS EC driver
->  0xEE  00-09  uapi/linux/pfrut.h                                        P=
-latform Firmware Runtime Update and Telemetry
->  0xEF  00-0F  uapi/linux/ntfs.h                                         N=
-TFS
->  0xF3  00-3F  drivers/usb/misc/sisusbvga/sisusb.h                       s=
-isfb
-
---Kk3dCghKBQNrocaf
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQQCtZK6p/AktxXfkOlzbaomhzOwwgUCawc12gAKCRBzbaomhzOw
-wuvSAP9FFr45oXAv5Psc3n5xsSYyPFouusI/XwRnWy3tYxQspAD+KIeOTWQfcOeC
-TWeqyAANog5rg68r7xNPxeH8I/R6xAQ=
-=Fk2v
------END PGP SIGNATURE-----
-
---Kk3dCghKBQNrocaf--
+It looks like this review was done against an older base commit.
