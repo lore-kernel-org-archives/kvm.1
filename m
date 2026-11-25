@@ -1,118 +1,111 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795620493;
-	b=i6TAmUvKJy/ohgQtcYJ/ir1JD27ckYLwfXiZCP0Bj3Z86E5HtCBJTRYmbGrOFaQbytQ6
-	 UxNjwJigvlLh1QSXCzaoBKrrNHbqZmdnFh6zeaOv1yKfmC0HgBcapSG/5QB7URuiJDsU9
-	 caAG0guSckbYvZgavbwhNXTU7fJGidzisW5CEC+CULdAiDNYwCPn2PZ81o/oNffYCZ1gB
-	 tg3oLVRGba8rKXdCUrTkggsyQGHzA+RWYbHVPW8oucWZyNxAHEM5UkLq6T3MNJ/M4RDcS
-	 v5Gu+LWWHzixk42Z2ifDBdV5+7WB95Emt0NtjdKN9bP1c9urZfzrz3K80DnJxox3YCg==
+	t=1795620682;
+	b=GVDEOECJDCNDvcQzjzMr0tv0U8vKz8rjhphuGpNNdI7EuVDJIsT5AuxtQCifPSmiUG+5
+	 s6phO8ey2Xp0PznH+kqQJqmyWMzkrWpYlTTxQWQf4eP/v7Z830OZBJNj6+dKf9GlqJPEx
+	 /0iy5f7m+yi4uzYoG66O2d1CtbhifW+Q7RTXze3W2olEZ784eAnagrM9JfZRoQmZQjZOT
+	 m7IWVHIYkkrWQRH+pQrQhtobYOOGMFpwNDNMerZsJPGiBlggviFYzJLeFM0lxO4l7Zt2F
+	 8M7nld1G/NqQOSKL0/V9RFJr2Myhvza6EsbFp5Ogqk26cgOCAI7udeDSajam4yQ/DxA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795620493;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Subject:From:To:Date:In-Reply-To:
-	 References:Content-Type:Content-Transfer-Encoding:User-Agent:
-	 MIME-Version;
-	bh=lgIANs+qLIIOzj/H2zLJZm2Lmsm8CkjE/+alsxp6LU0=;
-	b=5CYrwm8r9vZV3256EZ7rdWxg+nBN5rHiV6l+0qS4gvU2NKXcWUXbR5lw77HHXPtuPLJq
-	 G4SUSIWjEcbXdDU3sBMJWT1MoTchsTNB4g53IpKRgBLBdKI8oWjT0ZiYfuaMl5VK7UAQu
-	 Ip2U8FFU3fYcV5pcVmwG3p8UR0k3980MvBxq3pS/qKzvAWWqTLwD5VGEkIzJQwZIMoKU3
-	 7HbGwLCF7i0xRdfIPVq4hFZCZvs+2Tw8HQ/O85BdqRdfgqU4dE/0Njj0qF/vf2bDrFCU+
-	 7CRkToY0gIDedo3qK3WWBnFvXRFviwxww78zcMHeIyEbxeP9wBnPLz3W/tFc4amrPsg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795620682;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-TM-AS-GCONF:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-GUID:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=zUZyVE+QjYtPIt3BxSr54WBueSqcfOwFowJbKlqWTGU=;
+	b=mCcYHsf91xcvLte+xQh0UepNX1BaSHKhKb2MlepMtGcCN+TmC+DM7ETyHy6WGZz+AU2K
+	 S5/gX1qX1cN/Pyg8NQQ+yFA95Tuce2gHKGE64ffI75ECGClG4ogyvmlKssJlNTB9IfYYH
+	 cgtKsUdsZSdRiBpQwnnx56XnCcUUe3OAro9bjY+Nis6h55+5lEZVniCeOGhinPBxkggMw
+	 5LKZogrsZC8I3vBSPuU13rSIQheCEM0V+YpaHaeDFIIRg41U22YW3LRoGRDlL7Y6yOom3
+	 ds8XMPSpfHKRHwIDGzH5CiLZW41zyF742zF5hl/HDxgldYrjt1X8/czOzNmzVvWy8Aw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="XreoMY/P";
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=VkiTzf5w;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b="D18L/7Ug";
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291C5606A327
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 15:28:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 291C5606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81A5606A321;
+	Wed, 25 Nov 2026 15:31:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D81A5606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XreoMY/P;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=VkiTzf5w
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795620492;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lgIANs+qLIIOzj/H2zLJZm2Lmsm8CkjE/+alsxp6LU0=;
-	b=XreoMY/Pdi1VIE3Vp7uUiuFWmYMu7jC7aBHpk1W0FgNE3lN4mcYeqnX1Skxt07uKgBMJyl
-	+hIuKNzHXr2KiIs6f71fq8NDKxPcaZ3lcMdRozI5mAg3nvwmCfqJF/xYMU7JE1/7ESpOmf
-	8/pEFgJB8WRBLlHLDuFyzeCmamtf4DQ=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-16-R615K9owOKWBniQXeQ4Nng-1; Wed, 25 Nov 2026 15:28:07 +0000
-X-MC-Unique: R615K9owOKWBniQXeQ4Nng-1
-X-Mimecast-MFC-AGG-ID: R615K9owOKWBniQXeQ4Nng_1795620487
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-6ba810fb7caso4294283a12.0
-        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 07:28:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1795620487; x=1796225287; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:to:from:subject:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=lgIANs+qLIIOzj/H2zLJZm2Lmsm8CkjE/+alsxp6LU0=;
-        b=VkiTzf5wml3WZpwY0SkizSN7gV6MuDTGC4uiHkBYOSD3/B8Oj4lFQc5//a1YyKYpoi
-         uvqApsCN4OOQxZPWdF/UXRMQF3PVcD1gkqzi4z45dSSOS0QpEM2lIB2BqEshBK4YkPfV
-         aaYOGk0+xZhn1AE3a/d5lyx+7vGIxWbSqNPusin7VwCMsW6ObQMl19Qn7ozBAgUfEK2B
-         Wg7kMYczL3i8X19yDItMGgwBrxucQlZlnlYz9pcLmF+gqIkgTmMwYRdBOvaSkJFRzuy/
-         SI8enqtmK1vlhPysEfKjYTVXoI37XR3skhxD/yqV3nIGkScpKiVxEd5glFIQdXVjRlTs
-         uznw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795620487; x=1796225287;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lgIANs+qLIIOzj/H2zLJZm2Lmsm8CkjE/+alsxp6LU0=;
-        b=03zAdYvU3i/Qa4LH+BP8K4dvU45rIZIiIX89gJEEu4yatkHO0KWrR+SX0sUrbyGqSb
-         YgMUDiDpxPDphEGMtLUDcA/M87CRQKqN9ybqBsCOFzX7VmAJhZvQSQSofB+Jy5G+fxkI
-         1G2Kgo1jJSu5oG8esZRsdkgOuqkoq80n2Piinr/nd26h6W7MzTAv4n8++AqBclcg0Yuv
-         kjUECml8v6/Vk/C9vgRxGKPP3HMvsCw0NN4RW8818p4z88MB5bpO4hbq4LlZD1ShagYk
-         wc964cSJmZuZbZIUIy34Ota2Ql7+E2fA3VjfrR92C85t7GkzWAJyrs8/TRxsCDJGukPp
-         tcqw==
-X-Forwarded-Encrypted: i=1; AL+hErHz6xXxEZY0udTtNPKaPlYh0dGy5Mf14A4kFyzoUbDHIONq+sejTffBYCC4aUmVMomLOZA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+HyIpbBxMOsUxUz652HkjRvc12HRnaYAFOIVtmiIh0v7s69Hmk
-	p/KrnZUVJjaURCBgmcTeWh6o9r3/dj+iQFffOEkeVbsX+Yht1em7SHcgjZZqmYaWytku58eEubp
-	VhIhhkzHEkYTzaeYxUHi8cPXUZXBa0CmFipN1FqubP4t581yLmIdmyA==
-X-Gm-Gg: AZFdTZeoPwYoFt51yonGACsvWm4o2VwYOvXQRuJh5iL4YGvsSVyhwh5ykKfnxdjS3dC
-	BRoVqHWVGCiofdrzu367an7KUR8F8Dts8J/jGYcrS9SdI6rwI3XHusQiThtECws85361csjSEAo
-	kbvo2qESi3PPZv3sXKS4Z6T71kL8+cVUSbGmKbTa2y2VbvUs8K9N31myX/Fcj8u6RaVSTL+D1le
-	4gOOJL2R6T/6Q9j7L1C2ebZD4RDsUm2hF6R0EtePXTnmepxNxrnxwjPTOIZ4si0EFa2uMgdpCPR
-	AwzE17Qd/df6oEoAXC5s7oAg27PVIrQWiQylgO/zdZsewLmS47r2dIn//vK0XI1emKwNftPYg99
-	xFedmWL+hVrdEJX3vhSMN0jqNLyRck+AWU7ZSD9xlDnD9LUiQW49ERr88c/p/22Osl9vRgH1Ydw
-	piTpBC9lI=
-X-Received: by 2002:a05:6402:3212:b0:6ba:31be:edc3 with SMTP id 4fb4d7f45d1cf-6ba31beee34mr13288290a12.6.1795620486639;
-        Wed, 25 Nov 2026 07:28:06 -0800 (PST)
-X-Received: by 2002:a05:6402:3212:b0:6ba:31be:edc3 with SMTP id 4fb4d7f45d1cf-6ba31beee34mr13288273a12.6.1795620486165;
-        Wed, 25 Nov 2026 07:28:06 -0800 (PST)
-Received: from mlevitsk-thinkpadt14gen3.ibmmarkh.csb ([209.103.33.216])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6bb1d49d992sm1496168a12.26.2026.11.25.07.28.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 07:28:05 -0800 (PST)
-Message-ID: <19aa03249ef85403c23a8d0287c9324fb02ab00f.camel@redhat.com>
-Subject: Re: [PATCH v4 5/5] KVM: x86: nVMX: fix races in delivery of nested
- posted interrupts
-From: "mlevitsk@redhat.com" <mlevitsk@redhat.com>
-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
-Date: Wed, 25 Nov 2026 10:28:03 -0500
-In-Reply-To: <sashiko-outbox-232632@kernel.org>
-References: <20261125052139.362046-1-mlevitsk@redhat.com>
-	 <20261125052139.362046-6-mlevitsk@redhat.com>
-	 <sashiko-outbox-232632@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=D18L/7Ug
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6APEYbHD1607612;
+	Wed, 25 Nov 2026 15:30:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=zUZyVE+QjYtPIt3BxSr54WBueSqcfO
+	wFowJbKlqWTGU=; b=D18L/7Ug7f4bfwBgZ5meV3YQMG4mWB8x33OAEAXoZ3z/oc
+	tXUNyfJ3YWGgV8oJLU88CNGd0vip0jm1arbKBQpZjdo3Vg8tZ8rSk5iQH3Cpj5C/
+	GOb1l5EPsakhoejGHjJz+XN281o41Y+eRcQLKuII7BFhBt71JdYTciQcTytb8ah6
+	qGRAUnWZgLerbRRJhyaaQopziJLWI8FFE8nQLZa+Fh9DumWjkl4gOjA3A+QwpATd
+	WwlRxhgVi7ireTq6oWChg3FNRkoFKtr8IfucZibazgp+MT2tsZDD+yHl6DUhorv6
+	o2RJ+APS2LZ3pX/U5ulco5OWpcJxu/hxc3Ltv7Qw==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34g1cncw-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 25 Nov 2026 15:30:34 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6APEKZDO918882;
+	Wed, 25 Nov 2026 15:30:33 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j5dcuuuvg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 25 Nov 2026 15:30:33 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6APFUTdM53084564
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 25 Nov 2026 15:30:29 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7D20520040;
+	Wed, 25 Nov 2026 15:30:29 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1F4862004E;
+	Wed, 25 Nov 2026 15:30:29 +0000 (GMT)
+Received: from osiris (unknown [9.68.29.29])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 25 Nov 2026 15:30:29 +0000 (GMT)
+Date: Wed, 25 Nov 2026 16:30:27 +0100
+From: Steffen Eiden <seiden@linux.ibm.com>
+To: Joey Gouly <joey.gouly@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+        Fuad Tabba <fuad.tabba@linux.dev>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu <yuzenghui@huawei.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+        Andreas Grapentin <gra@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Friedrich Welter <fritz@linux.ibm.com>,
+        Gautam Gala <ggala@linux.ibm.com>,
+        Hariharan Mari <hari55@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Nico Boehr <nrb@linux.ibm.com>,
+        Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>, Paolo Bonzini <pbonzini@redhat.com>,
+        linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org
+Subject: Re: [PATCH v3 02/23] KVM: arm64: Extract number of sys_reg_desc into
+ a constant
+Message-ID: <20261125153027.117976-A-seiden@linux.ibm.com>
+References: <20261106-sysreg-v3-0-75e95980fb10@linux.ibm.com>
+ <20261106-sysreg-v3-2-75e95980fb10@linux.ibm.com>
+ <awbw3NyDifa0WjhZ@e143914.arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -122,243 +115,83 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <awbw3NyDifa0WjhZ@e143914.arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: AV9dufpHQOAcCszHCzsGcP_PgK8iy-CT
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI1MDA2MCBTYWx0ZWRfX9sXFgl6CWlVW
+ oD08l1dCaLsrG/W1ZVLQb5bvvKWAnWSVQN4ExZ5FozQ6eCX8Bwaum80t6PmL3m5EAo7VfYKI90/
+ j2XiRj0PTCKdJMNDvMJYkvvmy0UnWOM=
+X-Proofpoint-GUID: AV9dufpHQOAcCszHCzsGcP_PgK8iy-CT
+X-Authority-Analysis: v=2.4 cv=c8M+0h9l c=1 sm=1 tr=0 ts=6b06ff1a cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=7CQSdrXTAAAA:8 a=y-atdSe32WjmkHD_2CIA:9 a=CjuIK1q_8ugA:10
+ a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI1MDA2MCBTYWx0ZWRfX+W0viPvNBaUX
+ JdQKRuvaMglM2QqPyjJEyW2Y24b4OwViyQQhgg956yD189wZJMZTh5zyeCKwkYBmp5boebWacJe
+ NNKVKqp9Zlp9hjIbzmKOHbwMIG+WNCGoGZuiCJcR/zvJV/Z1pGoXuT6I41cIHLBv5IEazIGy4vV
+ mKHbWi1/tWD5pRICYfj7VqjaujSBzJx3q12WQ3GMA5bVshJHZXtGu1SNhH4wIibWqppUEuOZ+Oi
+ a6HCHT9KfkucjWyb2POBBccnWR02Nx7oEsl0Zagqy/NkKffUuJjFeVUH5DIDCmxs6akUQpLh+Uq
+ yKTgu7DSdUBeY6P8YtX1Ui0Tltk31FDxuctVlTCshg2gvhZovP+Q6LRDMYNpnEH4J/W3+gXlqCC
+ WTnq6RWEzqCuWGeiuUucxDT4zn3bE3jEMgVT9KSHQfmSYiRXW3iCjaeiaZK3cKUDxDF1IiVxujx
+ UVjPoOGgAqEVbcI6S+A==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-25_04,2026-11-23_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 malwarescore=0 suspectscore=0 bulkscore=0
+ priorityscore=1501 phishscore=0 adultscore=0 spamscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611250060
 
-On Wed, 2026-11-25 at 05:52 +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issues to consider:
-> - [High] KVM: nVMX: delayed KVM_NESTED_PI_ACTIVE misdelivers PI to
-> =C2=A0 halted/restored L2
-> - [High] KVM: nVMX: gating KVM_NESTED_PI_ACTIVE on pi_desc breaks
-> =C2=A0 deferred error exit
-> - [Medium] KVM: nVMX: __nested_vmx_vmexit() processes nested PI on
-> =C2=A0 failed VM-Entry
-> --
->=20
-> commit aef7be5a3f3ba4f7dee7a4841c7b946e8a11d349
-> Author: Maxim Levitsky <mlevitsk@redhat.com>
->=20
-> KVM: x86: nVMX: fix races in delivery of nested posted interrupts
->=20
-> This commit serializes nested posted interrupt delivery against nested VM
-> exit using atomic operations on vcpu->arch.nested_guest_state and delays
-> enabling nested posted interrupts until vmcs12 pages are mapped.
->=20
-> > diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> > index eb33528619c2f..a5ef9a15e7e9c 100644
-> > --- a/arch/x86/kvm/vmx/nested.c
-> > +++ b/arch/x86/kvm/vmx/nested.c
-> > @@ -3440,7 +3440,18 @@ static bool nested_get_evmcs_page(struct kvm_vcp=
-u *vcpu)
-> > =C2=A0}
-> > =C2=A0#endif
-> > =C2=A0
-> > -static bool nested_get_vmcs12_pages(struct kvm_vcpu *vcpu)
-> > +static void nested_vmx_enable_posted_interrupts(struct kvm_vcpu *vcpu)
-> > +{
-> > +	struct vmcs12 *vmcs12 =3D get_vmcs12(vcpu);
-> > +
-> > +	WARN_ON_ONCE(vmcs12->posted_intr_nv & ~KVM_NESTED_PI_VECTOR_MASK);
-> > +
-> > +	atomic_or(KVM_NESTED_PI_ACTIVE |
-> > +		 (vmcs12->posted_intr_nv & KVM_NESTED_PI_VECTOR_MASK),
-> > +		=C2=A0 &vcpu->arch.nested_guest_state);
-> > +}
-> > +
-> > +static bool nested_get_vmcs12_pages(struct kvm_vcpu *vcpu, bool from_v=
-mentry)
-> > =C2=A0{
-> > =C2=A0	struct vmcs12 *vmcs12 =3D get_vmcs12(vcpu);
-> > =C2=A0	struct vcpu_vmx *vmx =3D to_vmx(vcpu);
-> > @@ -3505,6 +3516,9 @@ static bool nested_get_vmcs12_pages(struct kvm_vc=
-pu *vcpu)
-> > =C2=A0				offset_in_page(vmcs12->posted_intr_desc_addr));
-> > =C2=A0			vmcs_write64(POSTED_INTR_DESC_ADDR,
-> > =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 pfn_to_hpa(map->pfn) + offset_in_pag=
-e(vmcs12->posted_intr_desc_addr));
-> > +
-> > +			if (!from_vmentry)
-> > +				nested_vmx_enable_posted_interrupts(vcpu);
-> > =C2=A0		} else {
-> > =C2=A0			/*
-> > =C2=A0			 * Defer the KVM_INTERNAL_EXIT until KVM tries to
-> > @@ -3540,7 +3554,7 @@ static bool vmx_get_nested_state_pages(struct kvm=
-_vcpu *vcpu)
-> > =C2=A0	}
-> > =C2=A0#endif
-> > =C2=A0
-> > -	if (is_guest_mode(vcpu) && !nested_get_vmcs12_pages(vcpu))
-> > +	if (is_guest_mode(vcpu) && !nested_get_vmcs12_pages(vcpu, false))
-> > =C2=A0		return false;
-> > =C2=A0
-> > =C2=A0	return true;
-> > @@ -3671,7 +3685,7 @@ enum nvmx_vmentry_status nested_vmx_enter_non_roo=
-t_mode(struct kvm_vcpu *vcpu,
-> > =C2=A0	prepare_vmcs02_early(vmx, &vmx->vmcs01, vmcs12);
-> > =C2=A0
-> > =C2=A0	if (from_vmentry) {
-> > -		if (unlikely(!nested_get_vmcs12_pages(vcpu))) {
-> > +		if (unlikely(!nested_get_vmcs12_pages(vcpu, true))) {
-> > =C2=A0			vmx_switch_vmcs(vcpu, &vmx->vmcs01);
-> > =C2=A0			return NVMX_VMENTRY_KVM_INTERNAL_ERROR;
-> > =C2=A0		}
-> > @@ -3701,6 +3715,9 @@ enum nvmx_vmentry_status nested_vmx_enter_non_roo=
-t_mode(struct kvm_vcpu *vcpu,
-> > =C2=A0			vmcs12->exit_qualification =3D failed_index;
-> > =C2=A0			goto vmentry_fail_vmexit_guest_mode;
-> > =C2=A0		}
-> > +
-> > +		if (nested_cpu_has_posted_intr(vmcs12) && vmx->nested.pi_desc)
-> > +			nested_vmx_enable_posted_interrupts(vcpu);
->=20
-> [Severity: High]
-> Does gating nested_vmx_enable_posted_interrupts() on mapping
-> vmx->nested.pi_desc break the deferred KVM_EXIT_INTERNAL_ERROR when
-> posted_intr_desc_addr cannot be mapped?
+On Wed, Nov 25, 2026 at 02:29:48PM +0000, Joey Gouly wrote:
+> On Fri, Nov 06, 2026 at 05:07:35PM +0100, Steffen Eiden wrote:
+> > Define the constant `num_sys_reg_descs` which stores the number of
+> > elements in the sys_reg_descs array. Replace all occurrences of
+> > ARRAY_SIZE(sys_reg_descs) with the new constant.
+> > 
+> > This refactoring eases the integration of handling system registers for
+> > arm on s390. s390 needs code from the shared code to define the
+> > sys_reg_descs. But also the shared code needs the definition of the
+> > sys_reg_array and we cannot forward declare arrays and use their size
+> > before it is properly defined. This patch solves this chicken or egg
+> > problem. For the time being s390 cannot process the full arm64 defined
+> > sys_reg_descs array.
+> > 
+> > No functional changes.
+> > 
+> > Co-developed-by: Andreas Grapentin <gra@linux.ibm.com>
+> > Signed-off-by: Andreas Grapentin <gra@linux.ibm.com>
+> > Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+> 
+> I see later in the series, the include of sys_regs.c into s390 is done
+> before the s390 sys_reg_descs array is defined.
+>
 
-Yes, I made this check to be consistent with KVM_GET_NESTED_STATE, but this=
- was wrong,
-KVM_NESTED_PI_ACTIVE carries more weight that I thought.
-To still be consistent, I'll activate PI regardless of mapping failure in b=
-oth=20
-nested_vmx_enter_non_root_mode and in nested_get_vmcs12_pages.
+Are you referring to [PATCH v3 08/23] KVM: arm64: Share system register code with s390 
 
->=20
-> When kvm_vcpu_map() fails in nested_get_vmcs12_pages(), KVM sets
-> vmx->nested.pi_desc =3D NULL to defer the internal error exit until
-> __vmx_complete_nested_posted_interrupt() tries to access the descriptor.
-> Because KVM_NESTED_PI_ACTIVE is now left unset when pi_desc is NULL,
-> neither vmx_deliver_nested_posted_interrupt() nor
-> vmx_check_nested_events() recognizes vmcs12->posted_intr_nv as L2's
-> posted interrupt notification vector:
->=20
-> arch/x86/kvm/vmx/nested.c:vmx_check_nested_events() {
-> =C2=A0=C2=A0=C2=A0 ...
-> 		if ((nested_state & KVM_NESTED_PI_ACTIVE) &&
-> 			((nested_state & KVM_NESTED_PI_VECTOR_MASK) =3D=3D irq)) {
-> 			vmx_complete_nested_posted_interrupt(vcpu);
-> 			goto no_vmexit;
-> 		}
-> 		nested_vmx_vmexit(vcpu, EXIT_REASON_EXTERNAL_INTERRUPT,
-> 				=C2=A0 INTR_INFO_VALID_MASK | INTR_TYPE_EXT_INTR | irq, 0);
-> =C2=A0=C2=A0=C2=A0 ...
-> }
->=20
-> Instead of setting KVM_NESTED_PI_PENDING and exiting to userspace with
-> KVM_EXIT_INTERNAL_ERROR via __vmx_complete_nested_posted_interrupt(), KVM
-> injects a bogus EXIT_REASON_EXTERNAL_INTERRUPT VM-Exit into L1, and the
-> !vmx->nested.pi_desc check in __vmx_complete_nested_posted_interrupt()
-> becomes unreachable.
-This should be fixed.
+There, the sharing is done from the arm64 side.
 
->=20
-> > =C2=A0	} else {
-> > =C2=A0		/*
-> > =C2=A0		 * The MMU is not initialized to point at the right entities ye=
-t and
-> > @@ -3712,9 +3729,6 @@ enum nvmx_vmentry_status nested_vmx_enter_non_roo=
-t_mode(struct kvm_vcpu *vcpu,
-> > =C2=A0		kvm_make_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
-> > =C2=A0	}
-> > =C2=A0
-> > -	if (nested_cpu_has_posted_intr(vmcs12))
-> > -		atomic_or(KVM_NESTED_PI_ACTIVE | vmcs12->posted_intr_nv,
-> > -			=C2=A0 &vcpu->arch.nested_guest_state);
->=20
-> [Severity: High]
-> Does deferring nested_vmx_enable_posted_interrupts() until
-> KVM_REQ_GET_NESTED_STATE_PAGES misdeliver nested posted interrupts when L=
-2
-> is restored in KVM_MP_STATE_HALTED?
->=20
-> After nested_vmx_enter_non_root_mode(vcpu, false) during
-> KVM_SET_NESTED_STATE (or vmx_leave_smm()), a halted L2 vCPU enters
-> vcpu_block() rather than vcpu_enter_guest(), so
-> KVM_REQ_GET_NESTED_STATE_PAGES is not serviced while blocked.=C2=A0 When
-> another vCPU sends vmcs12->posted_intr_nv to wake L2,
-> vmx_deliver_nested_posted_interrupt() sees KVM_NESTED_PI_ACTIVE =3D=3D 0 =
-and
-> queues the vector into L1's LAPIC IRR.=C2=A0 vcpu_block() then runs
-> kvm_check_nested_events() -> vmx_check_nested_events() while
-> KVM_NESTED_PI_ACTIVE is still unset, failing to morph the notification
-> vector and instead reflecting a spurious EXIT_REASON_EXTERNAL_INTERRUPT
-> VM-Exit to L1.
->=20
-> > @@ -4025,22 +4039,15 @@ static void vmcs12_save_pending_event(struct kv=
-m_vcpu *vcpu,
-> > =C2=A0	}
-> > =C2=A0}
-> > =C2=A0
-> > -static int vmx_complete_nested_posted_interrupt(struct kvm_vcpu *vcpu)
-> > +static int __vmx_complete_nested_posted_interrupt(struct kvm_vcpu *vcp=
-u)
-> > =C2=A0{
-> > =C2=A0	struct vcpu_vmx *vmx =3D to_vmx(vcpu);
-> > =C2=A0	int max_irr;
-> > =C2=A0	void *vapic_page;
-> > =C2=A0	u16 status;
-> > =C2=A0
-> > -	int nested_state =3D atomic_read(&vcpu->arch.nested_guest_state);
-> > -
-> > -	if (!(nested_state & KVM_NESTED_PI_PENDING))
-> > -		return 0;
-> > -
-> > =C2=A0	if (!vmx->nested.pi_desc)
-> > -		goto mmio_needed;
-> > -
-> > -	atomic_andnot(KVM_NESTED_PI_PENDING, &vcpu->arch.nested_guest_state);
-> > +		return -ENXIO;
-> > =C2=A0
-> > =C2=A0	/*
-> > =C2=A0	 * Don't test the value of PID.ON.
-> > @@ -4057,7 +4064,7 @@ static int vmx_complete_nested_posted_interrupt(s=
-truct kvm_vcpu *vcpu)
-> > =C2=A0	if (max_irr > 0) {
-> > =C2=A0		vapic_page =3D vmx->nested.virtual_apic_map.hva;
-> > =C2=A0		if (!vapic_page)
-> > -			goto mmio_needed;
-> > +			return -ENXIO;
-> > =C2=A0
-> > =C2=A0		__kvm_apic_update_irr(vmx->nested.pi_desc->pir,
-> > =C2=A0			vapic_page, &max_irr);
->=20
-> [ ... ]
->=20
-> > @@ -5121,7 +5141,10 @@ void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, =
-u32 vm_exit_reason,
-> > =C2=A0	if (enable_ept && is_pae_paging(vcpu))
-> > =C2=A0		vmx_ept_load_pdptrs(vcpu);
-> > =C2=A0
-> > -	leave_guest_mode(vcpu);
-> > +	old_nested_state =3D leave_guest_mode(vcpu);
-> > +
-> > +	if (old_nested_state & KVM_NESTED_PI_PENDING)
-> > +		__vmx_complete_nested_posted_interrupt(vcpu);
->=20
-> [Severity: Medium]
-> Can calling __vmx_complete_nested_posted_interrupt() unconditionally in
-> __nested_vmx_vmexit() lose posted interrupts when vmx->fail is set or
-> virtual_apic_map is unmapped?
->=20
-> When a hardware VM-Entry of vmcs02 fails (vmx->fail =3D=3D 1),
-> __nested_vmx_vmexit() skips sync_vmcs02_to_vmcs12().=C2=A0 Running
-> __vmx_complete_nested_posted_interrupt() before checking !vmx->fail
-> clears PID.ON and harvests PID.PIR into the virtual APIC page, but writes
-> the updated GUEST_INTR_STATUS.RVI to vmcs02 where it is discarded without
-> being synced to vmcs12.
->=20
-> Also, if virtual_apic_page_addr could not be mapped (which forces a
-> vmcs02 VM-Entry failure while leaving pi_desc mapped),
-> __vmx_complete_nested_posted_interrupt() clears PID.ON in guest memory
-> before checking !vapic_page and returns -ENXIO without harvesting PIR or
-> marking pi_desc_map dirty, while __nested_vmx_vmexit() ignores the return
-> value.
+As this is a new file for s390 the sharing only gets effective with
+[PATCH v3 16/23] KVM: s390: arm64: Implement arm sysreg managing infrastructure
 
-While not optimal, this is not a issue, as posted interrupt is not really l=
-ost,
-and since it only happens once per migration, I don't think that this is a =
-problem.
+There, in arch/s390/kvm/arm64/Makefile.gen I add the sys_reg.c as shared
+file. Before it will not be processed (nor included) by s390.
 
+And there in our sys_regs.c I'll define that array.
 
-Best regards,
-	Maxim Levitsky
+Or did I miss something?
+
+> Reviewed-by: Joey Gouly <joey.gouly@arm.com>
+> 
+> Thanks,
+> Joey
+>
+
+Thank you!
+
+	Steffen
 
