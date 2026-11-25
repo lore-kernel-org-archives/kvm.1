@@ -1,55 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.47
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795612251;
-	b=06VAvnxvrY0sEBSeQzQUFL4CzhepjnCIuPEkhdWJhBd0g3E6voxcLOZjryZfq1VQhMlq
-	 wmdCPaJDiMGzG+n93dNGJ3wj0J2Y/130W+JDwtPVvzprIMxzv4Xi/hfTO7F31MFtH5lJQ
-	 pCHOrRfuMnzH8OOMo+kjP8+aYnFYXY9B5nUMi3Cw4DxIaNyRZfCgAsElpZvqH7aF68N4A
-	 4VmpS4NEo/aFx8LFw80CuLCTNbuC12wN7EIiDqT+0JbXk0ALf/1o1yQl7WHPRU9rm0PgC
-	 6P/VxjVME+LDxvMOHHKW46n1dCsm0liPo0iIyDhaxM/k6K38hdcKi/EEFS1DWIl8+6g==
+	t=1795613482;
+	b=S9uoruUEiQzMVC+0pH6RSK1kdzkRhpfwXfBnz90vkpten8aI5gInWTqXsRs4+9PEbjhu
+	 eQel+0LJ0cpy4l1RTgSstxs42VqaSUaJzolUUW92qp6CTiRLPKLbJtM8QXOHT6Hk7YxGy
+	 2MFVvgXFf67yIh5k/ijJPODI0FA+4+M2tBsX2gxRCBPPffyQ2N6c23hUvVkwi4wr/DsHs
+	 9ZMmvhbWcpxfujzDCyfT7ty8/Nw/h9mTUJedKsfIgwCfyWHB/d08ggU/9nBAFMTaG4V4t
+	 cGOM5tE5lAmlXfJhbX2HMktV3uqzVhdEg/BWI36xO7jN0I3IUMUyIlc53m9Jf013uWw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795612251;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=Pun56188Odwz3hfLVvarkflGwAWOvbKsC7R9kBgNN6I=;
-	b=YTVJKkcYQqBHqKi1oN+AewCpAyfup6wBIVKmpFoXjNVYnwc7JsCybw81Pmguzb7pMRrl
-	 UOrx01wDjcBw8HfQg4dtrzGN5ajND/lNOL1hLr7xLQJ4YXli4MFskrlIujygLdMyDoUvG
-	 ZBNXtLAq4YwE2O/ZBB6OlkbPeKumc7jKx9Ev+XZ0eJaADxmLKa3ogNTb9/Q0o7IQUJ0uC
-	 LpNWeHrfxy5M1aLLClNTVnKONgk7Nk2WLOAAkeVBxnS2h2FqZKGmFmgGmQtjekUwFtXFz
-	 Lsgo1XqYib0C6mghEdu3UEtTaHxrPLJU0+PwmwS9LZFaba+MoBgXL/0DRwtHQhSSZCQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795613482;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:X-Google-Original-From:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=1getO31TbpMrHD3IyKxKUohDsUND4FeywjJ/UyT4N5c=;
+	b=w+xwERZC5lUJQ01+/sorh4M3opjgGNLLOlosmHe8YDkw4OIz8StZcY05Ji2Z688bDNnV
+	 kkvw6Hso4QwCs/nfc/1LSJ0C61D3ZwQfmdyPnDwkZEPR62M38xsm9cE/S3EQL2HpQPBIV
+	 Ios0GHebMeeulR0Iv/zQLfpPf3p/3GnyNMM8X1Red7V8wH7N+QGUro320KnOZ3wqjuAxE
+	 l5c3s5dI7P2Ek0n9wCqtAjeRVOpUt1l2JmYYe838cQAXnncuRrQkY3kaDCDw2Qj3NjyUu
+	 utejOsE3N0pGckkykAq77xn0bbHYPa4iOdKvn1ehakkDgjy/0a+2ZxApupDPUbUPpaQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V03vSjrd;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wCjCPSng;
+	arc=none smtp.remote-ip=209.85.218.47
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3448A606A321
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 13:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DD5606A31E
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 13:31:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0DD5606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V03vSjrd
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C651F000CA;
-	Wed, 25 Nov 2026 13:10:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795612250;
-	bh=Pun56188Odwz3hfLVvarkflGwAWOvbKsC7R9kBgNN6I=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=V03vSjrdgbtVIlor69sb8LPaqKXyFKZnR1VbUaxoRFWcg0+l4WROAvmdUDdbnHwTg
-	 6dPIVdgEFe2AWRSib0AfhjACzHW0zhn9BiI2Jjp9MaoXqY2U8qi9nGy7YgcTT+h68Y
-	 cXz8ckJVNixOP1lroj/+RREyvwIPb0IkzJxfLoL+Pt0Gb9oiS7Zt5AcbOoxk36IYMi
-	 l4oRA8cLBfSBGsaHiqmUDlUonv7W65HDltWOezpV8euYdV+vscJr1GOlRXEpqE16+c
-	 XCSjPmmOqd5AW39dujOZ0qTM8VqSYUSFcwNKK5rFZ7AAQdxrIOjipHpjAIaqeW4n+Y
-	 nsQuKBQFVHfKQ==
-Message-ID: <sashiko-outbox-233465@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] RISC-V: KVM: Account G-stage page table memory
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tan Chi" <tanchi25@mails.ucas.ac.cn>
-Cc: kvm@vger.kernel.org, tj@kernel.org, hannes@cmpxchg.org, mkoutny@suse.com
-In-Reply-To: <20261125125024.1983082-1-tanchi25@mails.ucas.ac.cn>
-References: <20261125125024.1983082-1-tanchi25@mails.ucas.ac.cn>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Nov 2026 13:10:49 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wCjCPSng
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c50cc7540b7so812870766b.0
+        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 05:31:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795613480; x=1796218280; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1getO31TbpMrHD3IyKxKUohDsUND4FeywjJ/UyT4N5c=;
+        b=wCjCPSng7HdLg+1PvfPoRoNMrzBzUjjDG6ENfDPuOzqzn3LjmzTRpRRll8VtIb8nLP
+         3tA0I9C+dZU/wB+ndb3VYKS69MKxykz8wWgvoswwxjKKwcN8y3YleumNEU9bU3DORh00
+         IQEco8sYSAyA1jBAkFlv64fRfv/Z7BvTnLCz9BhhcwN1L/YGs1v0B7FXWGLoXHcgAJbW
+         NGzR0q0vH5eOwTSiL4zpFkezlZN2fw1xjRI0ec43I8YFqcIh2EXRhBKhkd4Ev4YFxHPv
+         yOp2NoC85YXWRo/8KBhfohQF+zYEWUr7bQJIbVXAVCjsOLaNocFA1r+HA88SsHbVlBbi
+         Yihw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795613480; x=1796218280;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=1getO31TbpMrHD3IyKxKUohDsUND4FeywjJ/UyT4N5c=;
+        b=KBIBgiS8EsOzbtp6xE36P9zHUXYClGbCUnJ2+WogG4vPIs48QAQG7dyBmUCFqxbbux
+         yYIfnKuN/eIsjwDA2GzLXZV4djsARCWW+m7oqW0VEDtgEoNh0xl6Jk9yjIhQiTB8A7mq
+         ghC0JprzNevdJTBerxZ85oxrbZkRqZLNz2z7QsUUX0vBQC/qde50vxzO6sRAvTGv9nU/
+         VM691ce5yxJFo7ZqTaDGSzKlU9I9RdY9j4S8MPq0Q5DX5P6aZSuxiJ7eW3IX0RG02wVO
+         Qxj2S90O551G5+v3u1VD2CHn3W+CK2KE2Y9WNAjBxQLVZcx+jVOA8m1Ogj5a5WruGgxq
+         2uWQ==
+X-Forwarded-Encrypted: i=1; AL+hErHa/KGbarsVJnqrhB+r2jXbkyjLMfiIu+X6bIQtEp2hy/Xp6q//o2xRy/JVgMY8e8kOOQE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/f5PtmP19I56tc89sjSyCCwC8r67sx/i+YWu86PIrtUB/KF1gG
+	l24OzRpfjMnDo9oN1vigA8GHBXvLWUDAqE4eYGf5goUMaVOau0FyfV5b
+X-Gm-Gg: AZFdTZdXQW+l3DGy9EoVR3TNxpCPcqWOkE00puyan0Qw0MTuGao59xzS41uQ/Mys57J
+	aBFk9+ac+XieprncrY5PlaboX+tLWJaD0u+brK1RFLupqPZXXT0n2NZGQ+rcEWnSAukF5IuQjxh
+	irIYt3flLmYUQi2awQDa8z9Lx8W3P8/jsV6IhOAL1HOlxAeo5roozPGdHc4jQ6kIbZeBrPcLJsv
+	VRg6o7wCi3Br/1TVolzkHrKdFj2bUZEtXDde61G+N0nWaa7BXqpd4Ej9/AdgIhcd5ZhmoZ0zXy8
+	C+UUqvND17EAbdUiOzKGVaMFkigygRqvEYzXgvr7+gGhlSMxVQ/PHC4Ncc2QPlFGwNNUBP5eGOy
+	X6id/laeOqxaYI+TdJiWEjF6YwzJ9mO0xp5HOSwYoTeNqreW93WNI1d7NbxLppLXwfIOfD8yBEa
+	iPbD3+alrkdyEWbv1LwiIJfInbmrROqH01nXwO+WlFcILw/OdoxFncY/3KvppO0QULj5ptuf5T0
+	YPE9v2RQ+JHpy04Zyt60g1yzG54QCuk/jrT7Yo95/744XbS1LI/c3EE7SJqE3dwiFU669sb9WcX
+	8lBl6qE1+saI8AOTN1PiuXvUA8ouIzxelzQ=
+X-Received: by 2002:a17:907:4d0:b0:c51:f6:216a with SMTP id a640c23a62f3a-c513aaa8eebmr1221466566b.37.1795613479877;
+        Wed, 25 Nov 2026 05:31:19 -0800 (PST)
+Received: from [10.45.18.224] ([15.248.2.12])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513ae6663esm639987366b.21.2026.11.25.05.31.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Nov 2026 05:31:19 -0800 (PST)
+From: Paul Durrant <xadimgnik@gmail.com>
+X-Google-Original-From: Paul Durrant <paul@xen.org>
+Message-ID: <7bdf9aad-dea6-4073-97eb-1c5d2535c9ae@xen.org>
+Date: Wed, 25 Nov 2026 13:31:17 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -58,50 +92,54 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 08/21] hw/i386/kvm/xen_evtchn: Fix off-by-one in
+ do_remove_pci_vector()
+To: David Woodhouse <dwmw2@infradead.org>, Paul Durrant
+ <xadimgnik@gmail.com>, qemu-devel@nongnu.org
+Cc: xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony@xenproject.org>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Jason Wang <jasowangio@gmail.com>, Hui Peng <benquike@gmail.com>,
+ Mark Syms <mark.syms@citrix.com>, Feifan Qian <bea1e@proton.me>
+References: <20261124232247.23169-1-dwmw2@infradead.org>
+ <20261124232247.23169-9-dwmw2@infradead.org>
+ <8e8fa5ae-f30a-4e38-8aa8-cd46e3b4ca31@xen.org>
+ <51d6301de00d83468af889fd4eda0e9cadf23ec4.camel@infradead.org>
+Content-Language: en-US
+In-Reply-To: <51d6301de00d83468af889fd4eda0e9cadf23ec4.camel@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found no new issues
-in this patch, but noticed 1 related pre-existing issue it does not
-introduce:
-- [Critical] KVM: riscv: missing write memory barrier in
-  kvm_riscv_gstage_set_pte() [1]
---
+On 25/11/2026 05:03, David Woodhouse wrote:
+> On Wed, 2026-11-25 at 11:16 +0000, Paul Durrant wrote:
+>>
+>> I guess I'm missing a subtlety here, but the test only fires if pirq is
+>> a multiple of 64... so why is advancing to the next word by adding 64
+>> not correct?
+> 
+> You're missing the same subtlety that I missed when I wrote it in the
+> first place: the loop *itself* does pirq++ every time, so when we do
+> 'pirq += 64; continue;' we end up adding *65*.
+> 
+>      for (pirq = 0; pirq < s->nr_pirqs; pirq++) {
+>          /*
+>           * We could be cleverer here, but it isn't really a fast path, and
+>           * this trivial optimisation is enough to let us skip the big gap
+>           * in the middle a bit quicker (in terms of both loop iterations,
+>           * and cache lines).
+>           */
+>          if (!(pirq & 63) && !(pirq_inuse_word(s, pirq))) {
+>              pirq += 63;
+>              continue;
+>          }
 
-commit 00af1817efd260bd8b07164e38fe69598a62a280
-Author: Tan Chi <tanchi25@mails.ucas.ac.cn>
-
-RISC-V: KVM: Account G-stage page table memory
-
-This commit uses kvm_account_pgtable_pages() to account for the allocation
-and freeing of RISC-V KVM G-stage root and lower-level page tables in
-NR_SECONDARY_PAGETABLE.
-
-Link: https://lore.kernel.org/r/20220426053904.3684293-6-yosryahmed@google.=
-com
-
-> diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-> index 0aace3215d3e8..f8841136d8526 100644
-> --- a/arch/riscv/kvm/gstage.c
-> +++ b/arch/riscv/kvm/gstage.c
-> @@ -162,6 +162,7 @@ int kvm_riscv_gstage_set_pte(struct kvm_gstage *gstag=
-e,
->  				return -ENOMEM;
->  			set_pte(ptep, pfn_pte(PFN_DOWN(__pa(next_ptep)),
->  					      __pgprot(_PAGE_TABLE)));
-> +			kvm_account_pgtable_pages(next_ptep, 1);
-
-[Severity: Critical]
-This problem wasn't introduced by this patch, but shouldn't there be an
-smp_wmb() before set_pte() links next_ptep into ptep [1], as in
-kvm_riscv_gstage_split_huge()?
-
-set_pte() is a plain WRITE_ONCE() on RISC-V.  Without a write memory
-barrier after kvm_mmu_memory_cache_alloc() zeroes next_ptep, the store to
-ptep can become visible to a concurrent hardware page table walker before
-the zero-initialization of next_ptep completes, exposing uninitialized
-entries as child PTEs.
-
-[1] https://sashiko.dev/#/bug/linux-9339e577-5f31-42a2-a5ea-9844d30b43f8
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261125125024.1983=
-082-1-tanchi25@mails.ucas.ac.cn?part=3D1
+Gah! Recoding as a while loop where the increment is either 1 or 64 
+would make this much less fragile.
