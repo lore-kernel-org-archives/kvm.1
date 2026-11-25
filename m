@@ -1,68 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795580865;
-	b=PGt8Hb+XPZ/scYRwnDGVEq6Jrbp42BjsqM0UEKW8Auq/Vx9WRS8G9de5N/p9kxUrSarh
-	 xYltKqty+XZ6/7hZyxh4tvhclLgguZjIc8L6lQ4qRp+C65Yd/FrkJHxrsD3cop3jE5GDB
-	 6ZIqh8PuyROcQ2hc6qQ5noAzsc8YOWU/BKJ1qjO9ClVDAVkZxkp+2jQK/9DcTjJDtcJE5
-	 QhEdqhdUCPQ6qKsLqYZaOzJE/3gsIteMS/HicvKKBPvPcITHq9YJTKCBz0NjkBnAkFI2f
-	 h8ZZ9RENUGGEWKZfLUI30bB0LX7BAjlqQNqQQj3ynRTOC7arF4O0SDQ/bVTJS9xykRQ==
+	t=1795582329;
+	b=EKaE21Y6ZSa0gQPByfmA8e89n5LdB9eMwiAbzeEAZzGAowmMV5X9F4FX7MYc7pabv6+F
+	 PhglEHE2eE8lcGzOKWm8UpAR7xJrpvI2Yle158iwHkLaEgZzBi0d0VRcV9QfaIvfAUJeZ
+	 i5IQ0LQ5zR2hgN4wCSBWFSVLMxr5K7iK58BwTjIgYK4UGUNMs1f3JVnpoT9ytM6NenJ/l
+	 vh0JF7AQHunEC17p9fa3aEJ/tydGBjrHzAzyDykelc4e/MfTw6QILOQ2+ohyrfHjwJ7Lb
+	 Rjm06quLSIb6FC/l+SvXgzSi1XXskhfn6SSNhaXKujRjPRCqW1EB3q1V0ehYg01ksLA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795580865;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=nVpT+yraa1yVDO8OUEHZEK0jQepG0L6bEBsfuNb+iGI=;
-	b=Rw9VLpp6Hsu3n6ISKRga8NKa6a6fz+TIELRSy5V7DqTJT7VWw1uI2zR7rZDiwRhNJRKI
-	 4GbmQXZiIN4LGfuxKA8fF0Ssy5hVuWPCauI4TyUIsQVIwCRXqvYSWfGzsbg6y50mIjCnO
-	 Gv+YIfb5mWh3xmww51bqi/f8m4dN3v5S4tlu9yd1+Vfkrh73JyPDZljHfGo5Gz9orcIg2
-	 6w03fm9Ybmgkh4Wtes5PARc+SEwCbU9ixzhJu06uL9z30pKOn//FiL+H6e3mBL0Q0aCJe
-	 cO667HgmLJ+L+Rnmo7gyCCUZjOd6oGktdFF/ZuK1q6uBb6bxvcVRaausPl3T7mli7ag==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795582329;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=UfsA9CwJ0qOfvuF+NW18HhX6r6LNmP5pTktEx9vryhc=;
+	b=Nka/xV21toAsYEU4JPf2NlQcgNDPDsJ/INhZ12MOghHHdgL30T7B+VwhLAxn4fP632N0
+	 uktw+lbLNky9t90EelMO19rvOWIEZE6miMe9X5cQZvyiulMxbLE2wwykdlJA6owY+LaLX
+	 gIl7HFUD4OZAv8cAZtQrICqxk8thD2OflnKAPWLYoCIuVBPqI2MXKc8dqApOByV9djnQG
+	 56ikF6gn0mIy12buxmRVyBP1gPvHE82PHwRvIuH27hylmcm97E4dxOokIPfRq13iNeeCW
+	 yBROl8CZQF9a92KjSAYgaWuY6zVGFwGL90FKPKgCTjiDwmibVDVWtS08Gf6iPf7Ljww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=max3s595;
-	arc=none smtp.remote-ip=198.175.65.14
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=N5WvpHxk;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572A1606A323;
-	Wed, 25 Nov 2026 04:27:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 572A1606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7754606A31E;
+	Wed, 25 Nov 2026 04:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=max3s595
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795580865; x=1827116865;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=S0QOwBRZ6Kla96s+DysG5kGhzedqDXrOzukPb4PwcwQ=;
-  b=max3s595MZiT93/eoaSvwXmLN+AmvzHMI3gwJceROHc0GK32jOalxpiH
-   drrFz2JaeJ7RMmTjNtXZ2f38t2RKegQDrAp9f4wabbmLuWAJagTOEbeD7
-   eEgh7WJuRQE74GkxZWRCPwDJsp6IAlB2JahrUCU3NhzS12Q9c1PeeyFIY
-   PJQ3FmGGEQ8bHzdo08dnAWcnlUVzqdp09lxv5i0sSDeK69o0fBBx6knmc
-   k7EZVfowY3cvcwt68wVpich4swUMTKB2dqHAfUruO9JgcDOVnl82xZxM7
-   Y4o1vAKIEI/vgSsJ96vDOgTStD3pZsGhl9zy1FEacobRIB4ahWDOSnl0g
-   Q==;
-X-CSE-ConnectionGUID: dkIWpmPhTDih5Xmekx/oVQ==
-X-CSE-MsgGUID: ZrWWg883RHe8U6RsFOvgiQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4344767"
-X-IronPort-AV: E=Sophos;i="6.27,232,1787036400"; 
-   d="scan'208";a="4344767"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 20:27:22 -0800
-X-CSE-ConnectionGUID: 6cAE2U3XQ5KA5qmCb5h2Nw==
-X-CSE-MsgGUID: eXgbEvJRSz+i35YH+AbkCg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,232,1787036400"; 
-   d="scan'208";a="11747849"
-Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 20:27:02 -0800
-Message-ID: <9da20e39-4168-433f-a48e-857c1196bebe@linux.intel.com>
-Date: Wed, 25 Nov 2026 12:26:59 +0800
+	dkim=pass (1024-bit key, unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=N5WvpHxk
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1500F1F000C6;
+	Wed, 25 Nov 2026 04:52:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1795582327;
+	bh=UfsA9CwJ0qOfvuF+NW18HhX6r6LNmP5pTktEx9vryhc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=N5WvpHxkDSBJ4VG//Q65BqDCUHQS56DYuBT+qbcytUhFnv9Jm42LjFWpw6L1GlrAw
+	 IZkCRljOIpXsCcQJ+sbBv+anljYdVJOoLeyiiS17U92qiqcDM/fNrlLUeR7JjGyoaR
+	 xxq6pzP4k30H/zxRSQZBeExU4iZHTKNAsF0bscd4=
+Date: Wed, 25 Nov 2026 05:52:27 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>,
+	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Lukas Wunner <lukas@wunner.de>, Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
+	kvm@vger.kernel.org, patches@lists.linux.dev,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v1 01/10] PCI/TSM: Report active IDE streams per host
+ bridge
+Message-ID: <2026112519-hesitant-deviation-9917@gregkh>
+References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
+ <20261123083337.2731019-2-aneesh.kumar@kernel.org>
+ <f377271d-353f-4c8e-94d5-98159a66ab28@amd.com>
+ <20261124024842.GB9566@ziepe.ca>
+ <25fa4ffc-96cd-4851-8ac7-dd3750b71f15@amd.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,61 +72,51 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, Jason Gunthorpe <jgg@ziepe.ca>,
- Kiryl Shutsemau <kas@kernel.org>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
- "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Gao, Chao" <chao.gao@intel.com>,
- Binbin Wu <binbin.wu@linux.intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 1/9] x86/virt/tdx: Add SEAMCALL wrappers for IOMMU
- setup/clear
-To: "Tian, Kevin" <kevin.tian@intel.com>,
- "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
- "x86@kernel.org" <x86@kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
- <20261112043054.2664857-2-baolu.lu@linux.intel.com>
- <CO1PR11MB4835FD5EB44EB94467A82E5F8C442@CO1PR11MB4835.namprd11.prod.outlook.com>
- <8ef35412-44a1-4fca-8ba2-06bbad367b22@linux.intel.com>
- <CO1PR11MB4835DE6974C89C303A8C2B658C432@CO1PR11MB4835.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <CO1PR11MB4835DE6974C89C303A8C2B658C432@CO1PR11MB4835.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <25fa4ffc-96cd-4851-8ac7-dd3750b71f15@amd.com>
 
-On 11/25/2026 11:08 AM, Tian, Kevin wrote:
->> From: Baolu Lu<baolu.lu@linux.intel.com>
->> Sent: Wednesday, November 25, 2026 10:47 AM
->>
->> On 11/24/2026 4:07 PM, Tian, Kevin wrote:
->>>> From: Lu Baolu<baolu.lu@linux.intel.com>
->>>> Sent: Thursday, November 12, 2026 12:31 PM
->>>>
->>>> Intel VT-d hardware gains a second set of DMA translation structures,
->>>> managed by the TDX module and used only for devices assigned to TDs.
->>>> Each IOMMU has a trusted root-table address register and a trusted
->>>> invalidation queue, both accessible only from SEAM. The existing
->>>> untrusted DMA translation path of the IOMMU stays under host control.
->>>>
->>>> Before trusted DMA can be used through an IOMMU, the TDX module
->> must
->>>> initialize these resources. TDH.IOMMU.SETUP does this: it puts the
->>>> IOMMU into Secure TDX Mode, programs the trusted root table and the
->>> s/Secure TDX Mode/TDX mode/, across the series
->> Secure TDX Mode is the term used in TDX Connect ABI specification.
->>
-> Can you double confirm it? I can see two "Secure TDX Mode"s and one
-> "TDX Mode" in the public spec. so it's inconsistent.
+On Wed, Nov 25, 2026 at 02:30:26PM +1100, Alexey Kardashevskiy wrote:
+> On 24/11/26 13:48, Jason Gunthorpe wrote:
+> > On Tue, Nov 24, 2026 at 11:11:49AM +1100, Alexey Kardashevskiy wrote:
+> > > On 23/11/26 19:33, Aneesh Kumar K.V (Arm) wrote:
+> > > > From: Dan Williams <dan.j.williams@intel.com>
+> > > > 
+> > > > The first attempt at an ABI for this failed to account for naming
+> > > > collisions across host bridges:
+> > > > 
+> > > > Commit a4438f06b1db ("PCI/TSM: Report active IDE streams")
+> > > > 
+> > > > Revive this ABI with a per host bridge link that appears at first stream
+> > > > creation for a given host bridge and disappears after the last stream is
+> > > > removed.
+> > > > 
+> > > > For systems with many host bridge objects it allows:
+> > > > 
+> > > >       ls /sys/class/tsm/tsmN/pci*/stream*
+> > > > 
+> > > > ...to find all the host bridges with active streams without first iterating
+> > > > over all host bridges. Yilun notes that is handy to have this short cut [1]
+> > > > and from an administrator perspective it helps with inventory for
+> > > > constrained stream resources.
+> > > > 
+> > > > Link: http://lore.kernel.org/aXLtILY85oMU5qlb@yilunxu-OptiPlex-7050 [1]
+> > > > Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+> > > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > > > Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> > > > ---
+> > > >    Documentation/ABI/testing/sysfs-class-tsm | 13 ++++
+> > > >    drivers/pci/ide.c                         |  4 +
+> > > >    drivers/virt/coco/tsm-core.c              | 95 +++++++++++++++++++++++
+> > > 
+> > > I'll take to the tsm tree, thanks!
+> > 
+> > Lets not take any new sysfs APIs please. These all need a careful
+> > thing and we are not having a good history right now on any of these.
 > 
-> Then from the internal ABI spec, still two "Secure TDX Mode"s but a lot
-> of more "TDX mode"s...
+> hm okay.
+> 
+> > I'm not even sure what this is supposed to be for, is it debugging?
+> yup, pretty much.
 
-You're right, the spec isn't consistent, and "TDX mode" is clear enough.
-I'll use "TDX mode" across the series.
-
-Thanks,
-baolu
+Then put it in debugfs please.
