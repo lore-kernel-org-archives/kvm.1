@@ -1,89 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.41
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795604226;
-	b=DjylzgM8p6Qaz2xiCh4jXGJdaT9rS4ocKvXEksrRTx3eIXmaUAigV8wRRYHou/dkXrxN
-	 MpkwRwNNJ0Apomv3xS/Y1ca+8Tgkm74cDKGnAs46bbl7pk5pDqk6V3QmhFzhzBqxOxEXL
-	 OkvOWFSewrJ1Ou3chDnfNwug+azXZ6+pw0dyD3Ba8gcX/hHfnCm5dPTOLGDgDW5gT6+XA
-	 SukfOrnfArRdixFtwBr96TrbKvkB7G9QhAmN+UE87DJvAQE97f7Lf8/98pFgIFFoknFBt
-	 5LiJQFLrNBGlkM2WM/XL3z6JX1taLZxMIKRb9GHrm2Sg5QBde4svq5PGg4H6lYJprIA==
+	t=1795604287;
+	b=hUtbfKDeuObPpJEwS+L+Mby/LqdS4Nu5qVjS/8Xz4ewGNl6EJSFxyzoe/ebMd9bNVtav
+	 0LG7hfnJ/UzfKx0H3WSSLwb8wL1mJb4/VH5f1QXY9sXRW2MyQfZ8voCb+i/SEOMCazbD5
+	 rBnW6VdqOdmbs2pfVkc0Y5guDLDyECvxTw0kjLfK4SB+buB9v0ciZ/MQijEBrSBSJt2Q3
+	 UpxJufCOhE+gQ1/ZElKMP0O/RA1a/y3DZ7zgZD/z73b8/uVXAggXQ1RH3G8gjTyZpSd/B
+	 SIeumqnkIpG3ZaNafkU82MbAw9eF8ntMYLfOJ/uHG/SPX5sPX7mLc9zk+k6gIDUDGiw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795604226;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795604287;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:
-	 X-Google-Original-From:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:References:Content-Language:In-Reply-To:Content-Type:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:X-Google-Original-From:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=YkpRhjk7eWfHpjvog+/oou8N7W2d6opPsYzOd/5SwXg=;
-	b=47MRVM/aDA+5XdW752+WWlOk1eFpSol/XpZIjnZoHTWDjUeiYKG6NubpHP/pcW0l6L9N
-	 X/lsZucxdznzTKkNn7O7NEw9Oswf3BLLIsgq/oiwPlMqAFugjAra09cjRuphY/FzI551n
-	 InCSo0WH2VnvFuZsRcXl1BYoc8/kwY0qHiOcS01mmgzca3Y4Sx7T6qglYaFiw8IW7M10y
-	 IHkzGnZXUuE5BhTmryI0BCo6xGvDyzuTlFlQBpjY2VO4FFcjvqT63jYXFKATC6I0lfRu+
-	 2XM9k8ndU5/q8Apmix44abjd1KuPtexWWigmO0G4KonMf8ROVrhjoAXwi5Jer6YaYaQ==
+	bh=9ojd6QLbo6svWTxF6DUELPeNw20UDvUeJORZrpfd3O4=;
+	b=264InFTpqxWiD+lbHHJT8t8fpWSqhSTYRY58ZUnIYPmjgNh+MNDeQmgJ3K/3tA+IljlQ
+	 s2K/ePinKHPaa1PetQH3z+6GeI0OI4buzxIWLRjF+THXftT6mx5RSI+0pi0jhSi02jAXJ
+	 Prd2QulTtvVe0sgD9miooKbCilOpPpKnJ8s3Z/KGD1trCmwTdFf3PE7xnlzkUfJuHnklq
+	 1vObglIFPnpiw3n0DNVkU83ULQ3MlodlTxGJMlj6WhbA6r8Es2P/mDI/6VXDUK1c4/IJs
+	 ZdFhWv8yqAet/2F317RIc7QiO7apJ2Ha4IvRKjtK4G25IwOG3v36l08nefTCEVDUlhA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=inxjbSRx;
-	arc=none smtp.remote-ip=209.85.128.42
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LiQssqhg;
+	arc=none smtp.remote-ip=209.85.221.41
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526EB606A321
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 10:57:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 526EB606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57CB5606A31E
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 10:58:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 57CB5606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=inxjbSRx
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4bb64ef5a14so57573585e9.1
-        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 02:57:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LiQssqhg
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-4a5024b3c28so3850741f8f.0
+        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 02:58:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795604224; x=1796209024; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1795604286; x=1796209086; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YkpRhjk7eWfHpjvog+/oou8N7W2d6opPsYzOd/5SwXg=;
-        b=inxjbSRxBkBEmadFQq5hdl9sNOEVQrfBJYHdRaWCLAMOeYrMqAKi+DXO/rz3UTmdiR
-         FLDIbv9km5FqWsegQcwGgJ5dEq3TcivcBsifEq3QpywIEF/jdt1kRdA3/aIVbveQym0o
-         eHxo98Ib1Gn+q4ENtfwxQwY/DAGREEHPGS8OHerokrFGzkz4OhW+TeTIlDGkPRA0cdFx
-         Yf067XKudsZ/JK3N8eXZfhX+8jChgX73JMookZH/0lV3x5TuDk7YhM69pzUWMp4pC110
-         E8ZjurW6+sJY0Di1ysEEGeFngtzgyEenNP1qBsnY8IS5xeAeSJLBEPBSvumiErXJNH3O
-         zX3w==
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9ojd6QLbo6svWTxF6DUELPeNw20UDvUeJORZrpfd3O4=;
+        b=LiQssqhgsoXlY6cGAtVuJws8xw3c+XRo4uPEUFuicxE0t1JzgDpUetKqqo2lhFywed
+         YA09EVK1RUqcdkWFetIqV+PjtaY0f5KO+zdfhAnv8oWKC98coNDqUS1W/xJrnI+S30FT
+         c53ldaeOMqyBkCegi/j/yQQdxgZk80u6Tb+jl6PmGLfj+euB9iitGGNJLiRJI6qZ0+Gc
+         fAU6Ec/ObgsJt8pN9xlx7UgCjbO+hGaPUQ0Q11gfDDLrYRnJ6H2YDQQCjpph98YpisH6
+         77b2+5Lr7JVzw8B21JuGb6BFUluy3XAEc9CNYrm98I/BnC0ho/HCTe/nCpsL4dGy/ezh
+         tuAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795604224; x=1796209024;
+        d=1e100.net; s=20260707; t=1795604286; x=1796209086;
         h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=YkpRhjk7eWfHpjvog+/oou8N7W2d6opPsYzOd/5SwXg=;
-        b=GtIKTNApHGlNkngrvwk7BtdlKeI+BmDzQuJpAdKnoTX8AGAA4B00lT1i/UxaZZik88
-         aFqLGeEV/80Pf7bTtGrTLBC8odmhtZ22sCF6Ivb5cnsipwByfE/7I5BccFrIUKTMr43X
-         zIjqBXMJx9WxwCfXJEhlO9XZjNmM7jlTQrYxLD6CoDm3N47OF4FdPHCV1axPoWKygt2Z
-         TalLeEw+Enr4gOK7QN9l8Sc9dJ27v4fQJrlBRw4IPBr1JlnRhfFxqIkKMiZKo7iFaBJd
-         j00z6pV26g4v0RXMdMKPz1/vXvtQdRGQ2ds2RM1aMRWXoBKN9wp+NIOltyKIk7tmZv2t
-         SC3g==
-X-Gm-Message-State: APuU4Z+rsK18UwueTqfAZgmCrA3ea6j41YXKczl4JX3GE3c3E7+NNWB2
-	0ec75yHuphZHttLL/XAZwZtxUOYNdfEuFgrQr/m9Tazm+x1kotNuUiw8yquuhbPQ
-X-Gm-Gg: AZFdTZcJ95v2+XQBgc5fiMTrlJVYT+nUeqTr3cRJWwaWmUqYZe8JvcEWsLCbkZ2cybd
-	Oi3XvDkhMFd5qIdBtzflhAVLdlT02Xh2p66W6dkP+T8XaUvUvH/K6xZe0DBuumDvB2R6mg6O9Yj
-	JUYzpRaMxkVqoSwfX0IWYb3zbK3zyNMpYj+QXa9/GDfaQ/M/FddazIqayr9Tlr+nj5bYg4roFOF
-	eiOLV9shjsK2rX/vmtXzBYaxQmXwJ1Cs0tabJzJAXiWtl/umMll1hA77RATpGVzG6QJ+5KI5MhB
-	S4pfPqKCp/SsgLir4xT/jKswjXa0IdDhigEvJfCwKeRN1rO7VCRm52FBJGf2ojtCptFa2KxB/L6
-	3PhlORlpF7uS8jBdTa8AkqPBtaDOoknDJ4aqMICw/XYBRfA1R8Me6H1aXOPDnsIMDPxnDau3iwD
-	8Ai5U02+u6wlouyAhUOHvtRzBQd7lrG25hn4W311YPHa6Y1POTsWpke9NFD8z7FONgtB/VCKi+3
-	Ou/mfRqEEHCatf6gBy3ggbNsuS7t52NEZ+D+nDBAiDQzPnvEe8jQqfidk2MgcbUMZyh25XY0W+K
-	OzpyzIW2HAUk/9sH/v/PKoL4/EZrLtWZMkg=
-X-Received: by 2002:a05:600c:c168:b0:4bb:81b2:c801 with SMTP id 5b1f17b1804b1-4bb889238f1mr344249025e9.20.1795604223717;
-        Wed, 25 Nov 2026 02:57:03 -0800 (PST)
+        bh=9ojd6QLbo6svWTxF6DUELPeNw20UDvUeJORZrpfd3O4=;
+        b=qe1sR0fa/u1GL+qhv+yEg1dnN68xW3Eov1TAsfa25V6949aUy6CaXt3L/aCVaeZd5e
+         K8/6LPkfeN3Vt7/zd7Trr8WHm1trzxL68rDrvfRr0cYsoiF4uTaG9NlVI8J7nXXcr+gW
+         4gfMToaNwGaz8wa0Tu95KjTVMkpVOw3m+yy90TSfweo2WYHtHAjJHanrw26aDjaqua3e
+         XlijlYrpbiGtmSfmb6k0ppQSImRi47bHzPDWK1r0t7mTtIvzJYLSjjPpZET2um89FU/y
+         1cZCMH5gSkWO1M8qyMJnc7qhhMuvoPFRXnVN6J8fbyUq4NvuRL03UQAnaWgbAtvXfk9r
+         A6uA==
+X-Forwarded-Encrypted: i=1; AL+hErE+1HEToCi079OZb3/KHCW+NaDleNz301bxxL6ZNW4rG6jUZBXIErNiVatf7WGtW29cSSA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/QDacEon53Enrap8kVxm8/pu1GsWu7XtQCRXjvfrpjftL6jLtQ
+	dysOTLs3wLvIk5YDoZHmHIlISkwDrImAIqpREIVcc2nSJXJLkO7neuCY
+X-Gm-Gg: AZFdTZfj1nfRjWz7Wti7XsxHty7FPEJdt4+u2BGGVTAy3KgFa1Ux6WYH9WNe3xjVQmL
+	9OB3zYqvEm6AzDA8PCmwirrgA8xAElLn1tWiuDFAuN4QtrNJD90Or1zYdx1pjp0SixyHzHOhzB7
+	XtH4aAmED1f/cul+/MZsmhgSBVVkgkbwDjO89sAAe4H+Gq2lLE68Ufp0RujaWrn+gaMihEhP3Cd
+	Y6WZrw4euRYtZuWb889aaOjZQOW30ywBFbdBJ/nH+tFxtkyLg3ceW3mO4ROfEIWJVh5+zeSZteF
+	4aufmAwlR0JAG9BN/qEz9L/etMRNGlSrgt5amn6e4mI9oWnlpjGbJqbdjxdh0zMkC6THY8AiNdA
+	WhM6V+gKgaNhW5j7RXOyR617ej27zjzcdn+bdKCMdill1cJvs3Eeve+AozbebdeeFosxA8M8sPi
+	YFhsBJ7camBLvD2DX33PbWyQXhm3X8RUet4UrBUECr9jeintYnNWizzNGVf296iT56Gxihqd0XJ
+	lE59KILhkVt/GfpSETmoRrhfCbPtpOjVK6n6UxMzeX4/yQQuohanJ17G3wtxEyqIRhPGnQALenj
+	uJ5AXz6hgH2bZ03NqW1RDuEbep9heTtPG2A=
+X-Received: by 2002:a05:600c:4f81:b0:4bb:5e8c:13bc with SMTP id 5b1f17b1804b1-4bb88805902mr337651085e9.7.1795604285398;
+        Wed, 25 Nov 2026 02:58:05 -0800 (PST)
 Received: from [10.45.18.224] ([15.248.2.12])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb9067a0e6sm234438035e9.4.2026.11.25.02.57.02
-        for <kvm@vger.kernel.org>
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb906817ccsm285486235e9.5.2026.11.25.02.58.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Nov 2026 02:57:03 -0800 (PST)
+        Wed, 25 Nov 2026 02:58:04 -0800 (PST)
 From: Paul Durrant <xadimgnik@gmail.com>
 X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <05f1b73e-2bca-46b2-b54e-ea8023129c37@xen.org>
-Date: Wed, 25 Nov 2026 10:57:02 +0000
+Message-ID: <8888e81f-ec6b-4211-afef-215eba880e01@xen.org>
+Date: Wed, 25 Nov 2026 10:58:03 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,30 +94,51 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 01/21] hw/xen: Fix partial request header handling in
- emulated XenStore
-To: kvm@vger.kernel.org
+Subject: Re: [PATCH v1 02/21] i386/xen: Don't resample GSI when per-vCPU
+ upcall vector is in use
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
+Cc: xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony@xenproject.org>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Jason Wang <jasowangio@gmail.com>, Hui Peng <benquike@gmail.com>,
+ Mark Syms <mark.syms@citrix.com>, Feifan Qian <bea1e@proton.me>,
+ David Woodhouse <dwmw@amazon.co.uk>
 References: <20261124232247.23169-1-dwmw2@infradead.org>
- <20261124232247.23169-2-dwmw2@infradead.org>
+ <20261124232247.23169-3-dwmw2@infradead.org>
 Content-Language: en-US
-In-Reply-To: <20261124232247.23169-2-dwmw2@infradead.org>
+In-Reply-To: <20261124232247.23169-3-dwmw2@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 24/11/2026 16:22, David Woodhouse wrote:
 > From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> When a XenStore request header is only partially received, QEMU copies
-> XENSTORE_HEADER_SIZE bytes instead of only the remaining header bytes.
+> The callback_via GSI (or PCI INTx) and the per-vCPU upcall vector are
+> mutually exclusive delivery mechanisms for Xen event channel upcalls.
+> Xen itself will never assert the callback GSI for a vCPU which has a
+> per-vCPU upcall vector configured.
 > 
-> Fix the length calculation to copy only the missing part of the header.
+> When the interrupt is acked, QEMU's resampling logic reasserts the
+> GSI if evtchn_upcall_pending is still set. If the guest has configured
+> a per-vCPU upcall vector, events are delivered through that vector and
+> the GSI is unexpected; a guest which receives both the vector upcall
+> and a spurious GSI interrupt for the same event can crash. This was
+> observed in production with Windows guests on a different VMM which
+> implements the same resampling logic.
 > 
-> Closes: https://gitlab.com/qemu-project/qemu/-/work_items/3644
-> Fixes: f3341e7b915 ("hw/xen: Add basic ring handling to xenstore")
-> Fixes: CVE-2026-61403
+> If a per-vCPU upcall vector is configured, don't resample the GSI;
+> just deassert it.
+> 
+> Fixes: ddf0fd9ae1fd ("hw/xen: Support HVM_PARAM_CALLBACK_TYPE_GSI callback")
 > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 > ---
->   hw/i386/kvm/xen_xenstore.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   target/i386/kvm/xen-emu.c | 7 +++++++
+>   1 file changed, 7 insertions(+)
 > 
 Reviewed-by: Paul Durrant <paul@xen.org>
