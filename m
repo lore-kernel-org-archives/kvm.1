@@ -1,54 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.20
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795641483;
-	b=LhCo691gzcmSQWMwSKjUam9HuKGT4zUq2gOTHGe/+ru4lfuk4yQFOXx+rKXVrw0xO3We
-	 Bx1hYtX3EP/4z/QUNmGoyeZdIU0xm/NLdTzMmpr/N7LJwjQjKEZGnplSXXIB/e6/GEFz7
-	 hRnVGw4wqp725NJG6VGyI/gDMXkIqjF/4C7uaFE79WcAqLSjdjYNcU8qvZ34ziUwjZ0S1
-	 QpwFjbCBQh+/fJT7P7SCVT+fZ83q3BsieZf78pG79xRHhQFukA7NpcTz7K7AFw5iZmWo/
-	 fFuL9aMu3TocZnlKex9QKLcR0YHk5X9YVxJcHtekKMtqVFtt4+mxRC/px77uOFP0+EQ==
+	t=1795641682;
+	b=xmIjIDXUIC44dV4cSebeRpRIJ1B4u3FSfXm5eftT+ysLuPXR93b76nQVdyvMqrNkgBHf
+	 Dx4IcY3UDrQwXVcon2otwNBYdB4MxT0NTKAEFEhrlMTXqFYBejkRe9/nfZCtwD3QKGo7r
+	 W2jaPTQpGzdMcm+QwnHAI/ThU4v5uZhst4J35eTy7DWXaw9MbH0EkmfWRJ442p6hOIkSg
+	 C1QdvIMJAMCoGHcL5ed+Xu5ZvIVrlAIYn9n+TWEJcGWjijt30xDDTh9gL4iHxeXe9fhWV
+	 UhxkbdiMcqVE/7tEYpDpPZbmcVDyAgkTHkqc85Z3MoW7Q+xj34PdeMp0wxsey4IcqfA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795641483;
-	h=Received:DKIM-Signature:Received:X-Gm-Message-State:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:Subject:To:Cc:
+	a=rsa-sha256; c=relaxed/relaxed; t=1795641682;
+	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
+	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=r7sDq8J0zfU/uTNsJIrUV+6ziVd/3T8tim5KxuL7pw4=;
-	b=hQmeXZIJZLS2SIWOOePF1HyeDRUcsFysxqUEpIjH2F24F80JmlIHDu6M/zV/HN1JAXxP
-	 oXRbcvGMkS8tvCDN5gAHAI+Rjqn6Gc28EgtsHN+tbKdvFGQYfDd1wK7nX7o5fulq2BnLr
-	 +pslR1b2ApMNrc2Trh3qiW6d0SPqYkclSDPy5h9d3WY2b/YnngAJn/VXNrE5UVF4bDmhe
-	 tBPrWUNfofguCM1w/eiTO4AN+7ceHERkKZl2Ey/fJZzULOeq5cBJoGk652Et960BvFQ6r
-	 oEY/zQw8mQhnM9sh5mRH1xa2vKYs3rQ7VsI6JwjPV1rF6Q4MvS5b7ZcEO7b9+oe3Vkw==
+	bh=vfLZQumhvisvpmzurTjKPkeiD17r56G5HfxylZWgS5c=;
+	b=mdedN2X2OIRplnTfO64RvSWJijawTrSw6jElGe7LG+ocRVsja1sNd+UoxcuTrcqiZ1wn
+	 xrSH9qlQA5Ey9M1zCIyJLFKP1s5/DF83vgnU5GRWFRoL8ak+LtFB/4wMQeY6gORvqPujo
+	 YJFleVXOKI1De5/AE2v7HQzjqkjx20qcNAG4RT3tc5EDh9LTLSJ8JlN0S1r5MeOcQu5Tb
+	 /SaMQ+wkZ+6nZvykKYFriSrSBsgiVugGDZMAqBV+jgUCA4q98X+iGV25rJPDS5FmjNpZG
+	 HLKeXUpQE0S6+4pTq9zpqcYFrOagwGFzJugMP+ZCvGsB0hDYGB+FKjeXCd+UgcWrvhg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J71tk0D2;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=1g4.org;
+	spf=pass smtp.mailfrom=1g4.org;
+	dkim=pass header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b="K6HH/md3";
+	arc=none smtp.remote-ip=109.224.244.20
+Received: from mail-24420.protonmail.ch (mail-24420.protonmail.ch [109.224.244.20])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2673606A33D
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 21:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DBE606A323;
+	Wed, 25 Nov 2026 21:21:21 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0DBE606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J71tk0D2
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54A91F0093E
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 21:18:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795641482;
-	bh=r7sDq8J0zfU/uTNsJIrUV+6ziVd/3T8tim5KxuL7pw4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=J71tk0D2RV/09NtolG0/jle5lqLsHKtfXJwR2pKNryqhecG6V9ZzRuGQtunbZ2ok/
-	 GIHbO677NGv8hg8Ag1uePBj2YpV0hEiuQ/zdnVJQeTs84bujSopmfjnQTw8Rz5p7So
-	 /66nLRYDKDogTbIz/XmqE6fX26HDJXdyF6dR1kpQB8l1z2MY2tgpXnjOFuzNI+dGlc
-	 kSm/teb/lms4uToBHmrBhDIOQjy7qgANd6Cdhc8xx4/SYyV33mbil5kg3OlZ0SH6xd
-	 EHRAiYnFIX7no22soODFodKq11PeELdRcD0Ua8gk733qWdT7iytNBzwAllmrjsQ1XG
-	 zybtkRnqqu/CQ==
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c4395d31228so1064547166b.1
-        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 13:18:02 -0800 (PST)
-X-Gm-Message-State: APuU4Z+4IQ/x+tNAFzZIXgdT6Ck5maMx8y62hgKrfgzx7i4P20OIIIev
-	TSr+ACi3SoftT4YRINk4NI63rzzPM+2/v0qDWNyYBwIxcbZ4aBCiiQOx3q+GhERHDKZjqUlYB8P
-	cHmCJ53rNuB6xVZb3j+5tfgGVcATWbKg=
-X-Received: by 2002:a17:906:2a17:b0:c50:f28a:8407 with SMTP id
- a640c23a62f3a-c513aac6733mr1412280166b.42.1795641481714; Wed, 25 Nov 2026
- 13:18:01 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=K6HH/md3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail; t=1795641671; x=1795900871;
+	bh=vfLZQumhvisvpmzurTjKPkeiD17r56G5HfxylZWgS5c=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=K6HH/md3pBKFeCn6smvdxo3PrAftyS8IW5f6xh7qv2uIyYwqd0JUpPVm+2xPbYHM6
+	 Qt4RHM9I1ScB7leWfeEwOKuycQI14m1Yu27mEK32Pwav3AvcUs/F4gOiv8qf16nDYT
+	 gV9QP4ML4lQI3mOQoHb4nLKK4SydwrwztGVv3R6P4/cbx+w8hpdEnDe2TURO5ESzXl
+	 Ug7mnZv6y4G0sb0p9JoiOTLBP6e9CH3eI5c4IGE4L+pEwdlgGruVSx1yRIC3r0XC0Y
+	 RIsWJOZv9uQomc20hXludvz8FgWNuU852aG+w/saQZVLOh7zl1hzkkOzTLO8UjcAF7
+	 F26BT1Tv0vmAQ==
+Date: Wed, 25 Nov 2026 21:21:01 +0000
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+From: Paul Moses <p@1g4.org>
+Cc: "chenglong.ma" <longpareto@gmail.com>, "Michael S . Tsirkin" <mst@redhat.com>, Linus Torvalds <torvalds@linux-foundation.org>, kvm@vger.kernel.org, virtualization@lists.linux-foundation.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 2312891301@qq.com, blum@kernel.org, co+6dcbccedc9ec6452@bugs.sh, eperezma@redhat.com, fangxy@xiaopeng.com, jasowangio@gmail.com, kmehltretter@gmail.com, linfeng.sun.dev@gmail.com, lirongqing@baidu.com, oss.patchbox@gmail.com, phx0fer@gmail.com, physicalmtea@gmail.com, sergiiushakov@google.com, shubham@octane.security, stable@vger.kernel.org, stjepan.poljak@gmail.com, syzbot+13df72e0dc4be5c62215@syzkaller.appspotmail.com, tavhadia@gmail.com, tjdqudcks0424@naver.com, tz2294@columbia.edu, xieyongji@bytedance.com, xmei5@asu.edu, yuz08559@gmail.com, zenghui.yu@linux.dev, zhaimingbing@cmss.chinamobile.com, zhangjiao2@cmss.chinamobile.com
+Subject: Re: [GIT PULL] vhost,virtio,vdpa: bugfixes
+Message-ID: <s1xGKGqyb3Uk_gDZmeWG7nVEq4_m00HsO9pS1RL3cUnIdr4GMgH5OEBifQIl-30ZdUu7_uUoe-TxhMQd2GuW2sWKzY6UUGSWXKaqMz_XeEE=@1g4.org>
+In-Reply-To: <awbTgufgR4Uge1kJ@gremlin>
+References: <20261104081535-mutt-send-email-mst@kernel.org> <awWOpS3HR_2FTN3I@gremlin> <20261125060533.1296-1-longpareto@gmail.com> <awbTgufgR4Uge1kJ@gremlin>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: 4a2ea5626cc74c6da271abf63e2ead6a3c9e8c0a
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -58,117 +64,52 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261118133741.1185904-1-manuel.andreas@tum.de>
-In-Reply-To: <20261118133741.1185904-1-manuel.andreas@tum.de>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 25 Nov 2026 13:17:50 -0800
-X-Gmail-Original-Message-ID: <CAO9r8zO480eWUqDA6a-4P_tKv2D9Bd5tKNdG79uUBAVtmT15aw@mail.gmail.com>
-X-Gm-Features: Aa3M54o56KCY0rPayR0-_bu0dQ_uGClyPymVArvMykhcTVEEhbyV3a07BiXR39o
-Message-ID: <CAO9r8zO480eWUqDA6a-4P_tKv2D9Bd5tKNdG79uUBAVtmT15aw@mail.gmail.com>
-Subject: Re: [PATCH] KVM: nSVM: Reject EVENTINJ of #BR/#OF into a 64-bit L2
-To: Manuel Andreas <manuel.andreas@tum.de>
-Cc: kvm@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 18, 2026 at 5:38=E2=80=AFAM Manuel Andreas <manuel.andreas@tum.=
-de> wrote:
->
-> nested_svm_event_inj_valid_exept() treats BR_VECTOR and OF_VECTOR as
-> unconditionally valid for TYPE=3D3 (exception) injection.  However, the A=
-PM
-> (Vol 2, 15.20) states that injecting an event that is impossible for the
-> guest mode, e.g. #BR into a guest in 64-bit mode, makes VMRUN fail with
-> VMEXIT_INVALID.  BOUND and INTO are both invalid in 64-bit mode.
->
-> Because the check depends on both the control area (EVENTINJ) and the sav=
-e
-> area (EFER/CR0/CS), add it to nested_svm_check_cached_vmcb12(), which cov=
-ers
-> both nested VMRUN and RSM, rather than to nested_vmcb_check_controls().
->
-> Fixes: 7e79f71bca5c ("KVM: nSVM: Add missing consistency check for EVENTI=
-NJ")
-> Signed-off-by: Manuel Andreas <manuel.andreas@tum.de>
-> ---
->  arch/x86/kvm/svm/nested.c | 32 ++++++++++++++++++++++++++++++++
->  1 file changed, 32 insertions(+)
->
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index 1cecb82702e2..c69d334e3c3c 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-> @@ -378,6 +378,8 @@ static bool nested_svm_event_inj_valid_exept(struct k=
-vm_vcpu *vcpu, u8 vector)
->   * set and:
->   * - The type of event_inj is not one of the defined values.
->   * - The type is SVM_EVTINJ_TYPE_EXEPT, but the vector is not a valid ex=
-ception.
-> + * - The event is impossible in the guest's mode. However this depends o=
-n
-> + *   save state, see nested_svm_check_event_inj_mode().
->   */
->  static bool nested_svm_check_event_inj(struct kvm_vcpu *vcpu, u32 event_=
-inj)
->  {
-> @@ -398,6 +400,31 @@ static bool nested_svm_check_event_inj(struct kvm_vc=
-pu *vcpu, u32 event_inj)
->         return true;
->  }
->
-> +/*
-> + * #BR and #OF are invalid in 64-bit mode, but not in compatibility mode=
-,
-> + * hence the CS.L check. VMRUN ignores EFER.LMA and derives
-> + * long mode from EFER.LME, CR0.PG and CR4.PAE, so do the same.
-> + */
-> +static bool nested_svm_check_event_inj_mode(u32 event_inj,
-> +                                           struct vmcb_save_area_cached =
-*save)
-> +{
-> +       u32 type =3D event_inj & SVM_EVTINJ_TYPE_MASK;
-> +       u8 vector =3D event_inj & SVM_EVTINJ_VEC_MASK;
-> +
-> +       if (!(event_inj & SVM_EVTINJ_VALID))
-> +               return true;
-> +
-> +       if (!((save->efer & EFER_LME) && (save->cr0 & X86_CR0_PG) &&
-> +            (save->cr4 & X86_CR4_PAE) && (save->cs.attrib & SVM_SELECTOR=
-_L_MASK)))
+There appears to be a recurring problem with how previously reported=20
+vulnerabilities are being handled in this subsystem.
 
-Why not check these conditions in nested_svm_event_inj_valid_exept()
-for BR_VECTOR and OF_VECTOR?
+Yu Zhang publicly reported the VDUSE VA/PA confusion on August 7,=20
+including runtime evidence and a proposed fix:
 
-> +               return true;
-> +
-> +       if (type =3D=3D SVM_EVTINJ_TYPE_EXEPT &&
-> +           (vector =3D=3D BR_VECTOR || vector =3D=3D OF_VECTOR))
-> +               return false;
-> +
-> +       return true;
-> +}
-> +
->  static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
->                                        struct vmcb_ctrl_area_cached *cont=
-rol)
->  {
-> @@ -488,6 +515,11 @@ int nested_svm_check_cached_vmcb12(struct kvm_vcpu *=
-vcpu)
->             !nested_vmcb_check_controls(vcpu, &svm->nested.ctl))
->                 return -EINVAL;
->
-> +       /* This check requires both save and control state. */
-> +       if (CC(!nested_svm_check_event_inj_mode(svm->nested.ctl.event_inj=
-,
-> +                                               &svm->nested.save)))
-> +               return -EINVAL;
-> +
->         return 0;
->  }
->
->
-> base-commit: cbe54fc3462b3949ab27b9ae81fb9ddb509040c7
-> --
-> 2.56.0
->
->
+https://lore.kernel.org/r/20260807022657.11318-1-yuz08559@gmail.com
+
+Nearly three months later, bb2e6f166547 was merged with attribution to=20
+Claude Code, but without any acknowledgment of Yu's earlier report. As=20
+Lorenzo has now pointed out, the accepted patch also breaks the driver's=20
+mmap path.
+
+This is particularly concerning given my own experience with the vDPA=20
+netlink double-free.
+
+I reported the issue in March, submitted a patch at your request, provided=
+=20
+runtime evidence, and received repeated assurances that my patch would be=
+=20
+applied. Nearly eight months later, a different Claude-assisted implementat=
+ion=20
+was merged instead after I reported it to security list a second time.
+
+I acknowledge that I eventually received a Reported-by tag. That does not e=
+xplain=20
+why a known and acknowledged memory-safety defect remained unfixed for near=
+ly eight=20
+months.
+
+I have no objection to the use of AI-assisted development. I do object to a=
+ process=20
+in which previously submitted security fixes remain unresolved for months, =
+only to=20
+be replaced by AI-assisted implementations, particularly when those impleme=
+ntations=20
+introduce regressions that basic functional testing would have caught.
+
+Why was Yu Zhang's earlier report not acknowledged?
+
+And what is being done to ensure that previously reported vulnerabilities a=
+re not left=20
+unresolved until they are rediscovered?
+
+Thanks,
+Paul
