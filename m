@@ -1,51 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.149
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.161
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795621215;
-	b=4jsXttPBJbKErhLdWd2aGdnEtR4l6eBdD7Tj7jn0tU1opBNycsHymPDLj1+PSpDBfGQd
-	 4uwNshVoUu+XuS8+tzzJa0GXVgAy1T9vpKSMOditdqWBurt7rjVCYQttDBltyL5mbe33o
-	 sRuXqVDp1mHKn7UV+I5oeCyqVOAKOmkPnCDNae8tA7EARs/C/k7En0LEa3pd3RTUdhQ2J
-	 mhMTbEWi6bNMQVwgwDRWx0YsW84CouaX6bwbDgfBiymK/GS733p8ojd6hHKi2HD2/cqur
-	 EFUNYpzcrWFc1AZFdCrEAa4JMy7g3FhNX+w/m4sk+rnWM0WmsdYGWQb9oo5mtdKf9Ng==
+	t=1795621220;
+	b=MbVwwjqrukVs/i4Y5sLmQtOKiWIXqCfFJSaAYPOYHiRyQYEPQR/OpAjSmDKxoEo9PsKZ
+	 ev41ddB51iwxmOvIDYR2aJbf6nh93xfwTaFHJFRKwATuQZlWJJBycAXCTp7x+0/M6CrJL
+	 UtawZGfygJQeYYeCQ+QUi7G9UjH9lxchsl+4qxYM/vxo/sOm/SV3vAmwhfXA3XZClykUH
+	 P/CHAO2XqNIw1catyTQlgklnYlNDQcFadGkUnPOiwdK9cpyXr7ddEKgi0jOWEP1QNCRdY
+	 c1kqXaHN1npjQ8C3Hez3WivVX0xrkumnZLvtu3Uq91g6g9Ve+jo/h/hA92Qi715CO4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795621215;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795621220;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=dD0T8dgSUguzAe93p9YMVxo+6FxHhXvK08KHlYhmqa4=;
-	b=LqRNTDmETpPwOBGqW1yCAs1If1C1sIKT949w9FOh/SdI5CPU6XeR8fFixrAFyqganxOr
-	 +wjqk1qIVWbRyWmYOFfOQJv6SukpJoQKtgAtULiUNVoFmFlD1NwLS7xFijfWa0XnfoG6q
-	 E+X1gRLsvNXrWSPvnmbmb0wljQRm2tCTVl4183FDP1SX1N1xeLXRCP9ktG3pDR3LJ/8o9
-	 lcoh0rQyb6eBqPm5lX7su1YnycGrRmvory2XdE2XT2wFef7/gE7Lf30cZ2jrpGmlbqRs0
-	 CFH2l9z+6Z7LEA+al3vneBrgIJZ4k5BjflaT8wmDuu3RzUssoYn3eEfi/hr9FZqtB8A==
+	bh=qbr0ToIRukyd9N1ATmvPfXzS3NsxYVjmc9OXslO5iLU=;
+	b=bI/gSGiOT9lWmYcHY0TxWHFQV5zMfr0X4R1CNcv2zp02Ixgc0FiMTHV9qAueqD7Bfm9j
+	 B0ArF+i4PVc/R/vS3jMg+F1n0vqU6GL6ZjRUTJzt6tDK9i07Teh8xogvxpPAE0cGVme+H
+	 10DLPRWYr/Sj9dbW6lrl2gW5ZkLEc30f7hYO/Zy+Zl5DUeK4DhNzMziKWUkeflmUw3jqc
+	 UnO04ecNFAMX4KCkn4bVP0uiLkv4YLYmR0YuCRWdcVAOP2H9vXZF9V3I5Gh8j86VQ7dk/
+	 DuZ9Yby4YgO01amit4F/MSjlOWhXwb3GEbmmG/GIPGgvuiMWdnGxvwb8elX6AhuLrsQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=e9a5qvTh;
-	arc=none smtp.remote-ip=91.218.175.149
-Received: from mta0.migadu.com (out-149.mta0.migadu.com [91.218.175.149])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZzhlLnQN;
+	arc=none smtp.remote-ip=91.218.175.161
+Received: from mta0.migadu.com (out-161.mta0.migadu.com [91.218.175.161])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6031060A6F45
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 15:40:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6031060A6F45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C02606A6A7
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 15:40:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 56C02606A6A7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=e9a5qvTh
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZzhlLnQN
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=mvYtBRC2OxyaS9QiFUPVqxRONTSDvgDwLjJRSI4wiFw=;
+DKIM-Signature: a=rsa-sha256; bh=85zZ4ygCard9cwsSRJu3jtuVcm5hyiXKIN9OY76t33s=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795621212; v=1; x=1796226012;
- b=e9a5qvThOVrD+MBv4BNEbwlTzplYMyp3Ip3eAmkTOEh2nnvAdOFHlqxWYvESl63s21ZWRqMR
- EpxI2KO16kcBQffB3bsKLt9INiPmwLHsbDTfB2C97E5cO7p7DYEWduMtIr0ly0VEmkbHcPuBZDV
- kUkHYpC4kpR/2uqk9R1+Rk8w=
+ t=1795621217; v=1; x=1796226017;
+ b=ZzhlLnQNpLhA3YX36FpKZ6MEKtPz9k9q/SyCFhiw8XpiaP7FXC+S9GYvMCkR3hmwYcdk6/14
+ hpvMOmSVWwvftAHJA6yYQu2EDQlHIhJE4rBpwlkHCudU+25A9fPQCY7qHACiWja1g1b0Wwk/9r5
+ aDMf+rnbpuCydH3cT9nUQIUk=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id aa2ea6faef9e16eb;
-	Wed, 25 Nov 2026 15:40:10 +0000
-X-Mizu-Trace-ID: aa2ea6faef9e16eb
+Received: by smtp.migadu.com with ESMTPS id 8e70405d302e2335;
+	Wed, 25 Nov 2026 15:40:15 +0000
+X-Mizu-Trace-ID: 8e70405d302e2335
 X-Migadu-Flow: FLOW_OUT
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: Marc Zyngier <maz@kernel.org>,
@@ -63,9 +63,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Fuad Tabba <tabba@google.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 10/20] KVM: arm64: Advertise the GICv3 CPU interface to protected VMs on GICv5
-Date: Wed, 25 Nov 2026 15:39:01 +0000
-Message-ID: <20261125153911.106793-11-fuad.tabba@linux.dev>
+Subject: [PATCH v2 11/20] KVM: arm64: Compute a protected vCPU's fine-grained traps at EL2
+Date: Wed, 25 Nov 2026 15:39:02 +0000
+Message-ID: <20261125153911.106793-12-fuad.tabba@linux.dev>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261125153911.106793-1-fuad.tabba@linux.dev>
 References: <20261125153911.106793-1-fuad.tabba@linux.dev>
@@ -80,38 +80,62 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A GICv5 host with FEAT_GCIE_LEGACY runs GICv3 guests, but its own
-ID_AA64PFR0_EL1.GIC is 0. KVM sets the field to IMP for non-protected
-VMs on such a host, but not for protected VMs, which read it from EL2's
-copy of the register. The next patch computes a protected vCPU's
-fine-grained traps from its ID registers, and with GIC at 0, EL2 would
-then inject an UNDEF for the guest's ICC_IGRPEN<n>_EL1 accesses.
+pKVM sets a protected vCPU's HCR_EL2, MDCR_EL2 and HCRX_EL2 at EL2 from
+the VM's ID registers, but never computes its fine-grained traps, which
+stay 0. That traps every register with a negative-polarity trap bit, so
+a feature such as S1PIE can't be advertised to a protected VM.
 
-Set the field to IMP in EL2's copy as well. The vgic isn't probed yet
-when the copy is made, so test the capability the vgic itself tests.
+Link config.c into nVHE hyp and compute the VM's FGU masks and the
+vCPU's fine-grained traps there, under vm_table_lock, once the ID
+registers are set. Build hyp without the latent_entropy plugin, which
+adds a reference to config.c's __init functions that hyp can't resolve.
 
+This also restores the AmpereOne AC03_CPU_38 masking of a protected
+vCPU's TCR_EL1 writes, which was lost when the erratum's trap moved
+into the per-vCPU fine-grained traps.
+
+Fixes: fb10ddf35c1cc ("KVM: arm64: Compute per-vCPU FGTs at vcpu_load()")
 Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
 ---
- arch/arm64/kvm/arm.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm64/kvm/hyp/nvhe/Makefile | 4 +++-
+ arch/arm64/kvm/hyp/nvhe/pkvm.c   | 2 ++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index 2753686982f0b..3b4bc646d894a 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -2819,6 +2819,12 @@ static u64 get_hyp_id_aa64pfr0_el1(void)
- 	val |= FIELD_PREP(ID_AA64PFR0_EL1_CSV3,
- 			  arm64_get_meltdown_state() == SPECTRE_UNAFFECTED);
+diff --git a/arch/arm64/kvm/hyp/nvhe/Makefile b/arch/arm64/kvm/hyp/nvhe/Makefile
+index 56a7e2c05f73a..2980f1af90166 100644
+--- a/arch/arm64/kvm/hyp/nvhe/Makefile
++++ b/arch/arm64/kvm/hyp/nvhe/Makefile
+@@ -12,7 +12,8 @@ asflags-y := -D__KVM_NVHE_HYPERVISOR__ -D__DISABLE_EXPORTS
+ ccflags-y := -D__KVM_NVHE_HYPERVISOR__ -D__DISABLE_EXPORTS -D__DISABLE_TRACE_MMIO__
+ ccflags-y += -fno-stack-protector	\
+ 	     -DDISABLE_BRANCH_PROFILING	\
+-	     $(DISABLE_KSTACK_ERASE)
++	     $(DISABLE_KSTACK_ERASE)	\
++	     $(DISABLE_LATENT_ENTROPY_PLUGIN)
  
-+	/* A GICv5 host with legacy support gives its guests a GICv3. */
-+	if (cpus_have_final_cap(ARM64_HAS_GICV5_LEGACY)) {
-+		val &= ~ID_AA64PFR0_EL1_GIC;
-+		val |= SYS_FIELD_PREP_ENUM(ID_AA64PFR0_EL1, GIC, IMP);
-+	}
-+
- 	return val;
+ hostprogs := gen-hyprel
+ HOST_EXTRACFLAGS += -I$(objtree)/include
+@@ -27,6 +28,7 @@ hyp-obj-y := timer-sr.o sysreg-sr.o debug-sr.o switch.o tlb.o hyp-init.o host.o
+ 	 cache.o setup.o mm.o mem_protect.o sys_regs.o pkvm.o stacktrace.o ffa.o
+ hyp-obj-y += ../vgic-v3-sr.o ../aarch32.o ../vgic-v2-cpuif-proxy.o ../entry.o \
+ 	 ../hyp-entry.o ../exception.o ../pgtable.o ../vgic-v5-sr.o
++hyp-obj-y += ../../config.o
+ hyp-obj-y += ../../../kernel/smccc-call.o
+ hyp-obj-$(CONFIG_LIST_HARDENED) += list_debug.o
+ hyp-obj-$(CONFIG_NVHE_EL2_TRACING) += clock.o trace.o events.o
+diff --git a/arch/arm64/kvm/hyp/nvhe/pkvm.c b/arch/arm64/kvm/hyp/nvhe/pkvm.c
+index fba8dfe6389d6..465d963d6ff57 100644
+--- a/arch/arm64/kvm/hyp/nvhe/pkvm.c
++++ b/arch/arm64/kvm/hyp/nvhe/pkvm.c
+@@ -206,6 +206,8 @@ static int pkvm_vcpu_init_traps(struct pkvm_hyp_vcpu *hyp_vcpu)
+ 	pvm_init_traps_hcr(vcpu);
+ 	pvm_init_traps_mdcr(vcpu);
+ 	vcpu_set_hcrx(vcpu);
++	kvm_init_fgu(vcpu->kvm);
++	kvm_vcpu_load_fgt(vcpu);
+ 
+ 	return 0;
  }
- 
 -- 
 2.47.3
 
