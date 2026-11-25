@@ -1,108 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795625137;
-	b=d7PihfG8THwoBJDKt1sW+ZleRR42s30RFBmqCyjDrFAWsxuZV4Yr5eV0+TVwQfNKy76l
-	 37MmJxCButtmfr5ujtpQzyKL8CO/BRKTCQLM2IbfP19asYFiBm/7lkTNMK8s/48gFIkZJ
-	 G/MhgwC1+5cTNEcp8xesI4axVxEbe1/Wacm6n70fCji7IFATTISr+2uCuhtP5g2gRLWch
-	 OJR5qaty3Is/CwVWSgXKGO5ZnnrDSE+F+vISrjJDR3nPnYGRATofmLINqWubaHziwPAd6
-	 yGp/RMkR7ffED9cZI7QZzU1VtK1/Mwbwu19nMDCRuyXYODeJBsIpE+/SBNgGN9jIBKA==
+	t=1795625189;
+	b=dWtpeVJMDx/di2VVPeK7FIDVDhKTZQKHnYMsO20t3j3OUbFyKlm9EmjVCZSU+bH578g7
+	 JQTBJRnjsCfTRqluAmtDOEOIK0X2ZMCFdg9HzNnuc4oMgRDULQdIhRYwQv1CpQuI4ytZQ
+	 7fT4BO5Fqmmg45HvF3X900jBtIJSTInzVM/qoA0LM7DEkQw2ZoBF2EwLPpR4y/S6QPZzi
+	 l7IEa9wM9/NxortT3a2Th38ZHUF+lZftFz3fENGQw9NmcqGsJsZNzXVvdvOxihCyDxirj
+	 lNLAmEfM1uJH8r4XsGAeJ3BQ1auSphEJLumdD9a8w31gNX/NbbMgAV7Lw1A3OMM0S6g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795625137;
-	h=DMARC-Filter:DKIM-Filter:DKIM-Signature:Received:From:To:Cc:Subject:
-	 In-Reply-To:References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=11zt4OupvieQqDw22Q2ubqyLm0TwPHTf9uDp8UQ/aNg=;
-	b=PUsbplCsMhlqiymWe4V5Xj/NroXrL6l5nwWUHeAe+tJogdDy8zUOeEkMzFcJNRInmf+Q
-	 Zjji2Mth+x5/ypT5hjyfsZV+DJlbCDhDP9SVZavQG79hsWIvKkMekf0zhvdHPWK4Xisa7
-	 0OLHR1E8Hg7Yvzz3zEDDiiyU729leUZO7zbT0URM5MwvsfrRKVK/VaerhW82piXXxpal5
-	 YY+PM/cgeZQrO1gojlBzOuc1R85JbaT3S7vlqlDVxnKY2gXjGQXbPApahWRk9Q1nGwk6+
-	 /6wQs7SGFbO7KbnQ/Sb2YHFSFjj7A2wxpg2Rm8yyRqjng5fp+Cef4UaWGd6Cw5rmWgg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795625189;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=KjZjsUyQFxsQPQHTHpl//Z+vqIh/wjMAMwg9CITWqr4=;
+	b=uYKCh/FywUATdd9hES+fjvAHZG7qDJ5lEzdFwxP3jgScYGDl01qt5WLsr2snwmtiNN2C
+	 YPjPN7tfAGZMKOYsB+DdqipOlArjauH9ws3Rk6O/KMJVlIWLm/8fyODBzUjFS6G4aehPE
+	 fDYQjRsG0qDGWshLtNnyjEmmc/4Pm+ToXxL3jpjswFbgL6mB5wYYxGa5q+ef7JhX50+WP
+	 xFOS/dkdZgUwnLCrbRzBE3MEYUS+WT9FbjRP4O1uqBEQXHdg0fFrS2t4CcseMHD8NKCD8
+	 PQsDPaAF+UEnqX/RfpkjaOzid7GYVDgL0HHM9yR7Pj3AnVpVQh0NdGpNywgdJIVjxuw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lwn.net;
-	spf=pass smtp.mailfrom=lwn.net;
-	dkim=pass header.d=lwn.net header.i=@lwn.net header.a=rsa-sha256 header.s=20201203 header.b=gYew8w2z;
-	arc=none smtp.remote-ip=45.79.88.28
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEEE606A327;
-	Wed, 25 Nov 2026 16:45:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5AEEE606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Z8oFofyY;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C08A606A327
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 16:46:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2C08A606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.a=rsa-sha256 header.s=20201203 header.b=gYew8w2z
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 164CF410D0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1795625135; bh=11zt4OupvieQqDw22Q2ubqyLm0TwPHTf9uDp8UQ/aNg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=gYew8w2zbH6+bi/mBbqli+h0aBDamw00BioPDCMMC4Es4g+qCaaIw8gBYOLhfGAsU
-	 9mfNHzR2Wjt3eb5ezNkPplfVvqDZB4yLXc7H/uIjYl6k/R0SNrt0O4pqewchTPc4H+
-	 DoPRzU4+fJgJOU7hPx03jLkV4HVaXJMTTjxyrWRVyiE+GFkUio915W5ZUB0L5VMnbm
-	 Z5AtjEERksNhEMgjG3ZSm0ynjzhzYrKmQP0JaqQq4T6DitPDhHE0cz5cUJ9ItE/n9j
-	 Ip9FDRPDTnpXpMfA3rcqvq+BtjVyvtC+AdbQzNra/9WErFSqw5foLA7PdpN6n18WG/
-	 9pepodyHhS3sA==
-Received: from localhost (unknown [205.220.129.44])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 164CF410D0;
-	Wed, 25 Nov 2026 16:45:34 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>, Shuah Khan
- <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org, David Hildenbrand
- <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Jason
- Gunthorpe <jgg@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>,
- linux-mm@kvack.org, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai
- <tiwai@suse.com>, linux-sound@vger.kernel.org, Jens Axboe
- <axboe@kernel.dk>, linux-block@vger.kernel.org, Marcel Holtmann
- <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- linux-bluetooth@vger.kernel.org, Willem de Bruijn
- <willemdebruijn.kernel@gmail.com>, Jason Wang <jasowangio@gmail.com>,
- David Heidelberg <david@ixit.cz>, oe-linux-nfc@lists.linux.dev, Chas
- Williams <3chas3@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, Helge Deller
- <deller@gmx.de>, linux-fbdev@vger.kernel.org,
- dri-devel@lists.freedesktop.org, MPT-FusionLinux.pdl@broadcom.com, "James
- E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K.
- Petersen" <mkp@kernel.org>, linux-scsi@vger.kernel.org, Miquel Raynal
- <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>, Vignesh
- Raghavendra <vigneshr@ti.com>, Zhihao Cheng <chengzhihao1@huawei.com>,
- linux-mtd@lists.infradead.org, Neill Kapron <nkapron@google.com>, Andrey
- Konovalov <andreyknvl@gmail.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, Juergen Gross
- <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>,
- xen-devel@lists.xenproject.org, Hans de Goede <hansg@kernel.org>, Arnd
- Bergmann <arnd@arndb.de>, "Michael S. Tsirkin" <mst@redhat.com>, Eugenio
- =?utf-8?Q?P=C3=A9rez?= <eperezma@redhat.com>, Sean Christopherson
- <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, Jan Kara <jack@suse.cz>,
- linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
- linux-ext4@vger.kernel.org, Mike Marshall <hubcap@omnibond.com>,
- devel@lists.orangefs.org, Paulo Alcantara <pc@manguebit.org>, Namjae Jeon
- <linkinjeon@kernel.org>, linux-cifs@vger.kernel.org, Jaegeuk Kim
- <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
- linux-f2fs-devel@lists.sourceforge.net, Florian Fainelli
- <florian.fainelli@broadcom.com>, Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Tzung-Bi Shih
- <tzungbi@kernel.org>, Benson Leung <bleung@chromium.org>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alex Deucher
- <alexander.deucher@amd.com>, Christian =?utf-8?Q?K=C3=B6nig?=
- <christian.koenig@amd.com>,
- amd-gfx@lists.freedesktop.org, Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi
- <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>,
- intel-gfx@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>,
- Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- intel-xe@lists.freedesktop.org
-Subject: Re: [PATCH v3 00/12] docs: ioctl-number: update entries
-In-Reply-To: <20261125061340.3402300-1-rdunlap@infradead.org>
-References: <20261125061340.3402300-1-rdunlap@infradead.org>
-Date: Wed, 25 Nov 2026 09:45:27 -0700
-Message-ID: <875wxkx3ko.fsf@trenco.lwn.net>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Z8oFofyY
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A20D62F;
+	Wed, 25 Nov 2026 08:46:25 -0800 (PST)
+Received: from [10.57.32.107] (unknown [10.57.32.107])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 20FF43F632;
+	Wed, 25 Nov 2026 08:46:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795625188; bh=0V2D5frrfjhwHE0XTZXrjncSxje69gb1mbxFSvIW8Xc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Z8oFofyYEh6F687QC/inqQz6EufsmT79XE/zqyznkNonMgsPdVs0MXG1/5JXezaL3
+	 AXcacMGW+QTBh0EEq/tVAt9oYNuEZ/x2dSgNdo04S+pR6Gk8Vj4vuvgjRv8YgIJHto
+	 RH09EEGj3FWGlFpS+CIv3zxZzRumCkfIHOoYKQzY=
+Message-ID: <23d35fa6-721c-44c9-b092-099dbd005b96@arm.com>
+Date: Wed, 25 Nov 2026 16:46:24 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -112,33 +53,189 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 07/11] KVM: arm64: CCA: Add Realm RTT mapping and
+ invalidation helpers
+To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
+References: <20261123104233.95710-1-steven.price@arm.com>
+ <20261123104233.95710-8-steven.price@arm.com>
+ <sashiko-outbox-229102@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <sashiko-outbox-229102@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Randy Dunlap <rdunlap@infradead.org> writes:
+On 23/11/2026 11:12, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issues to consider:
+> - [Medium] KVM: arm64: cca: direct-reclaim allocation in
+>   realm_unmap_cache_topup()
+> - [Medium] KVM: arm64: cca: stale err_level used after
+>   realm_unmap_cache_topup() failure
+> - [Low] KVM: arm64: cca: possible RTT creation for unmapped entry in
+>   realm_unmap_*()
+> --
+> 
+> commit 4c7e030072ac67c12f0f2603fad3d39821c47426
+> Author: Steven Price <steven.price@arm.com>
+> 
+> KVM: arm64: CCA: Add Realm RTT mapping and invalidation helpers
+> 
+> This commit adds RMI Realm Translation Table creation, folding, and stage-2
+> unmapping helpers for CCA Realms, including filtered range unmapping for
+> shared and private memory.
+> 
+>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+>> index 435174ac3d87f..b34f5320b50b6 100644
+>> --- a/arch/arm64/kvm/rmi.c
+>> +++ b/arch/arm64/kvm/rmi.c
+> 
+> [ ... ]
+> 
+>> @@ -172,6 +391,208 @@ void kvm_realm_unmap_stage2_all(struct kvm *kvm)
+>>  	realm->stage2_unmapped = true;
+>>  }
+>>  
+>> +static bool realm_unmap_cache_topup(struct kvm *kvm,
+>> +				    struct kvm_mmu_memory_cache *mc, int needed)
+>> +{
+>> +	int ret;
+>> +
+>> +	if (!mc || kvm_mmu_memory_cache_nr_free_objects(mc) >= needed)
+>> +		return false;
+>> +
+>> +	lockdep_assert_held_write(&kvm->mmu_lock);
+>> +	write_unlock(&kvm->mmu_lock);
+>> +	ret = __kvm_mmu_topup_memory_cache(mc, KVM_PGTABLE_LAST_LEVEL, needed);
+>> +	write_lock(&kvm->mmu_lock);
+>> +
+>> +	return !ret;
+>> +}
+> 
+> [Severity: Medium]
+> When __kvm_mmu_topup_memory_cache() fails, does returning false cause
+> realm_unmap_shared_range() and realm_unmap_private_range() to pass a stale
+> err_level to realm_create_rtt_levels()?
+> 
+> Because kvm->mmu_lock was dropped and re-acquired, another thread can fold
+> the RTT at err_level before the lock is retaken.  The callers only retry
+> from addr when realm_unmap_cache_topup() returns true; on failure they fall
+> through to realm_create_rtt_levels(realm, addr, err_level, level, mc).
+> alloc_rtt() can still succeed from a partially topped-up cache or via
+> alloc_delegated_granule()'s GFP_ATOMIC fallback (which sets __GFP_HIGH and
+> force-charges memcg), causing realm_rtt_create() at err_level + 1 to fail
+> with RMI_ERROR_RTT at an ancestor level < err_level.  That triggers the
+> WARN() in realm_create_rtt_levels() and returns -ENXIO, hitting
+> WARN_ON(ret != -ENOMEM) in realm_unmap_shared_range() or KVM_BUG_ON(1, kvm)
+> in realm_unmap_private_range().
+> 
+>> +static void realm_unmap_shared_range(struct kvm *kvm,
+>> +				     unsigned long start,
+>> +				     unsigned long end,
+>> +				     bool may_block,
+>> +				     struct kvm_mmu_memory_cache *mc)
+>> +{
+>> +	struct realm *realm = &kvm->arch.realm;
+>> +	unsigned long rd = realm->rd_phys;
+>> +	unsigned long next_addr, addr;
+>> +	unsigned long shared_bit = BIT(realm->ia_bits - 1);
+>> +
+>> +	if (start >= end)
+>> +		return;
+>> +
+>> +	/*
+>> +	 * Callers may pass either an IPA range or its shared alias. Add the
+>> +	 * shared bit only for the former. Use addition so an exclusive end at
+>> +	 * shared_bit advances to the end of the IPA space.
+>> +	 */
+>> +	if (start < shared_bit) {
+>> +		start += shared_bit;
+>> +		end += shared_bit;
+>> +	}
+>> +
+>> +	for (addr = start; addr < end; addr = next_addr) {
+>> +		long ret;
+>> +
+>> +		ret = rmi_rtt_unprot_unmap(rd, addr, end, RMI_ADDR_TYPE_NONE,
+>> +					   0, &next_addr, NULL, NULL);
+>> +		if (WARN_ON(ret < 0))
+>> +			return;
+>> +
+>> +		switch (RMI_RESULT_STATUS(ret)) {
+>> +		case RMI_SUCCESS:
+>> +			break;
+>> +		case RMI_ERROR_RTT: {
+>> +			int err_level = RMI_RESULT_DATA_LEVEL(ret);
+>> +			int level = find_map_level(realm, addr, end);
+>> +
+>> +			if (WARN_ON(err_level < realm->start_level ||
+>> +				    err_level > KVM_PGTABLE_LAST_LEVEL))
+>> +				return;
+>> +
+>> +			if (err_level >= level) {
+>> +				/* Nothing present, so skip */
+>> +				next_addr = ALIGN(addr + 1,
+>> +						  kvm_granule_size(err_level));
+>> +				break;
+>> +			}
+> 
+> [Severity: Low]
+> This question rests on an RMM architectural detail that could not be
+> confirmed from the kernel source: can SMC_RMI_RTT_UNPROT_UNMAP or
+> SMC_RMI_RTT_DATA_UNMAP return RMI_ERROR_RTT with err_level < level when the
+> RTT walk stops at an unassigned ancestor entry (where neither a child RTT
+> nor a block mapping is present at err_level), rather than advancing
+> next_addr and returning RMI_SUCCESS?
+> 
+> If so, when unmapping a sub-block range (such as a single page, where
+> find_map_level() returns KVM_PGTABLE_LAST_LEVEL) across an unmapped ancestor
+> entry, both realm_unmap_shared_range() and realm_unmap_private_range() only
+> skip when err_level >= level.  For err_level < level, they treat the entry
+> as a block mapping to split, allocating and delegating intermediate RTTs via
+> realm_create_rtt_levels() only to fold them back at the end of the function,
+> and if that allocation fails in realm_unmap_private_range() (for example
+> under GFP_ATOMIC when may_block is false), it hits KVM_BUG_ON(1, kvm) even
+> though nothing was mapped.
+> 
+> [ ... ]
+> 
+>> +void kvm_realm_unmap_range_filter(struct kvm *kvm, unsigned long start,
+>> +				  unsigned long size, bool may_block,
+>> +				  enum kvm_gfn_range_filter attr_filter)
+>> +{
+>> +	/*
+>> +	 * MMU notifier callbacks cannot take slots_lock, which protects the
+>> +	 * eager split cache. Use a cache owned by this invalidation instead.
+>> +	 */
+>> +	struct kvm_mmu_memory_cache cache = { .gfp_zero = __GFP_ZERO };
+> 
+> [Severity: Medium]
+> Can topping up this cache from an MMU notifier callback enter direct reclaim
+> and trigger a lockdep splat on __mmu_notifier_invalidate_range_start_map?
+> 
+> When mmu_notifier_invalidate_range_start() invokes
+> kvm_mmu_notifier_invalidate_range_start() -> ... ->
+> kvm_realm_unmap_range_filter() with may_block set, it holds
+> __mmu_notifier_invalidate_range_start_map.  Because cache.gfp_custom is left
+> at 0, realm_unmap_cache_topup() -> __kvm_mmu_topup_memory_cache() allocates
+> with GFP_KERNEL_ACCOUNT (__GFP_DIRECT_RECLAIM | __GFP_FS), which enters
+> fs_reclaim_acquire() and acquires __mmu_notifier_invalidate_range_start_map
+> recursively (and risks reclaim recursion deadlock under memory pressure).
+> Setting cache.gfp_custom to GFP_NOWAIT | __GFP_ACCOUNT avoids direct reclaim
+> in the notifier path.
+> 
 
-> Update file names that define ioctls and update the range of
-> ioctl function numbers that are used where they have changed.
->
-> [Since having multiple maintainers trying to merge these would
-> cause some conflicts, it would be more manageable for Jon to
-> take all of these through the docs-next tree.]
->
->  [PATCH 01/12 v2] docs: ioctl-number: update MM entries
->  [PATCH 02/12 v2] docs: ioctl-number: update sound entries
->  [PATCH 03/12 v2] docs: ioctl-number: update block entries
->  [PATCH 04/12 v2] docs: ioctl-number: update networking entries
->  [PATCH 05/12 v2] docs: ioctl-number: update video/fbdev entries
->  [PATCH 06/12 v2] docs: ioctl-number: update SCSI entries
->  [PATCH 07/12 v2] docs: ioctl-number: update MTD entries
->  [PATCH 08/12 v2] docs: ioctl-number: update USB entries
->  [PATCH 09/12 v2] docs: ioctl-number: update virtualization entries
->  [PATCH 10/12 v2] docs: ioctl-number: update FS entries
->  [PATCH 11/12 v2] docs: ioctl-number: update platform entries
->  [PATCH 12/12 v2] docs: ioctl-number: update DRM entries
->
->  Documentation/userspace-api/ioctl/ioctl-number.rst |   91 ++++++++---
->  1 file changed, 72 insertions(+), 19 deletions(-)
+Using GFP_NOWAIT doesn't sound a great idea. But this is actually only
+an issue for the shared mappings. Protected mappings shouldn't be
+triggering the mmu_notifiers because the memory is from the guest memfd.
+For shared memory we can always fall back on unmapping too much, so
+there's no real need to deal with the memcache.
 
-I've applied the series, thanks.
+I'll try to rework this for the next revision.
 
-jon
+Thanks,
+Steve
+
