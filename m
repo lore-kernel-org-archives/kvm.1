@@ -1,49 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795606374;
-	b=40oLmuqjQgj2/p8d/xcURsNGiakMOZB5LgIWIC4fZNrD8uxnLu4rCOMh1jFQ8SjCd0pf
-	 lNob/sMwTydMUSAU6FkWJzpuQ+ybhMVl0yMesA9RsURxatrk3NZA5ikUkNR9uygP+JJHh
-	 okZd983HvAFkzNSXUh6fNs+Jb6Ohpzx6JnSKRJw8eGd1P9E7OVAx012gYjuIFdW+IL+K9
-	 iU1KDvB8QgUO0XGwQVbhE/sYypJzaiMwOcw3iL3/Rsl1guabSQsHa8vmABtwQD7LLOlB+
-	 o0KszDbd/KpoC1Ix/YOWsl1qz5qdiEgpC/xQfbQQgU0MXjNpzNfVfYOGEHdluz2syFw==
+	t=1795606452;
+	b=QjMOpzdLahEA6FTdY1AfgNZx+sJINYNmsn3vqz1zyNBoXtV9qqFuedWK/vpYDwVJG6g1
+	 MkBU6H3Suol02mgcEzO5DMQsxa7U1XoC91V6fEWzr+9JuyTTVDb3cXsZf3Ec3bqxB0WmL
+	 Ti2LWndvH3vFjArpvPKMOrY1bL1CsXVHfMaGtMM0TSofKXAAdXLywm/ZfMy2h31D97BnO
+	 9eDAUGAkiqNLRcKiVYSJaYEzTcH9hVM70u7ukHAsaG7JnF6eRz+MoeUnCPaJTVgTfMc8Y
+	 aJu95pX0X/lcr/h3OZYWnFbFMxL+f0OyRyo3nbk+ZCsGt2TQbmTVGuKLK1DoVBsrOsA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795606374;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=ksJzZnRlzZFG+0L0HtrVowwMj9Uu8+WpRfdThQfAKGI=;
-	b=Q65Imh1W9s6MszxiMm4yun12XMmr4tFnCbSNbSdZkhF8pAHrNdyDGPKOCXX0mNSSYjhf
-	 JeUgr23CdWk9dNHxAiH33yaBbFDzSEkGV8U/m5rdPyQJh3qqaNqpmS/o4Kjc52shQ7R/Q
-	 ApxXLNhhaTBM9y70+u0vVQSTryB3wHGEAlB8eQTbuHWsgnAq3oUjQo9+/U7mQccWoY924
-	 HIfhUPvpEOVRdAj6utTgbbgww0N8QNuIaB2ogbvb8kv0Dmqhy29mYEtr5aq7DRuddN0Lc
-	 ZGK0bibeBYaaqolPt7w861pH5OC3IisyUTtIo7P6HcWKkfGXRfd601bIEzy1nmpDsPw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795606452;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:X-Google-Original-From:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=Yl/4IscYRRIYoDrOcOqnAZtQEjR1B47TFUIpt05puco=;
+	b=A2XMNm8/d/x5amfaXcUSpdP6qXxx4o+XfrDIGkE5mNeTuZ49z2I+pZrXVJZI3eAUBIMT
+	 zO/LRO25WWleCGF36rvtdZ48ts7j5rieFzO7bZFHfBeF/9B14QiaV06EUPAPYwZPVepF5
+	 E62h610USX4w4JY+ihna8cTrJQCiLX3dKV0a3ttbdHuA+N+q2x9MJFEzWKejPyLKceZkp
+	 4GvkDclj3cZpoMGXk3dCtUamn25BKOlOR6BZtn2l+xwlPCaumEo9g3naat7sDbe7jvBHU
+	 ubnUJTsq32l1iXkT7wTTGPpj0gUxMGtSR3znxOZJH9449dnBdSTOSmi2K2Au40SzoPw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=szuKiBZe;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3901D606A339;
-	Wed, 25 Nov 2026 11:32:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3901D606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="Qc4Vp26/";
+	arc=none smtp.remote-ip=209.85.128.54
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C61606A331
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 11:34:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7C61606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=szuKiBZe
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A33E814BF;
-	Wed, 25 Nov 2026 03:32:49 -0800 (PST)
-Received: from [10.57.32.107] (unknown [10.57.32.107])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C86FA3F86F;
-	Wed, 25 Nov 2026 03:32:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795606372; bh=qbHqyTNnWLNOTc00I4CKxD9wPZ5SwAvyohqcO63rleg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=szuKiBZefxrXLITi7F/BtWnWCMmSSJ8eLaNdaeL9KzYCLZa6WKUoAgn86sC0E/54J
-	 CNj2pUjlBDOuClnSbnoIso25v9NAL0kFkb32fa8/Z6MK1KiVqw1oG6eXP3NTCVgH1j
-	 msYmDvDId5dj2TAsEjj4yh/XakAspLYTUQTgX1rk=
-Message-ID: <7bd5427d-9078-4b79-bce6-3bbf801ec766@arm.com>
-Date: Wed, 25 Nov 2026 11:32:46 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Qc4Vp26/
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4bb666304fdso58655365e9.0
+        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 03:34:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795606450; x=1796211250; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Yl/4IscYRRIYoDrOcOqnAZtQEjR1B47TFUIpt05puco=;
+        b=Qc4Vp26/uC7qsxwIKtKlk3T1TJ2q4O30iidXJ2WFl8sDz0hR7xCeBstThm7T7ry1Vf
+         5g3L95KJQr2h1O0lpwWBQ0/qbr3Yxd/z1YtgGCixUWrzhidlYmnyyy6NkhN3UG+TQEhL
+         g5caIlTM7ZfL4k0L/YhHys12a1uPiaUlnZVAsXvAAP+jbCeNXfru3Yc3x6z1g/QYtlc4
+         stcEoXb+GBczKk+33B2HcrUASMHG2XWSYo/+WNePFhMlgUzonxGJo3WUSAKWgDEAcPPM
+         ySZs0IusjywiUR2aL35ZzOyDo35vSeMRAihfnIHS5yLQa01ev83J+J7SzRmFBmObcB/Z
+         8aBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795606450; x=1796211250;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Yl/4IscYRRIYoDrOcOqnAZtQEjR1B47TFUIpt05puco=;
+        b=gMmk4HbkJGV3SfYy846H6RLqEhnlKglvDANF3xiI4afFJQKJAxHII8w7EQv5ofAAns
+         xE38sRd5bdtAkrAWgiQypQmKnN/JA+Y+yq2uTBHX/ZCQTwsDNlH7HQULyoNhvMYTt3+1
+         YmQiChBHT+62s4BrteWurCMMDvIjbONlrT9g4ToqMyiLVKSyABUtsG+tQv6Gh9ee3j9x
+         mjDxGAyjXDgbpy0OfFG4RfWPICDCoIIxvSZESN+IzQafcFHDG2slXiPFdCXQoeJx8tTQ
+         zBcEHOP2x6icCymOQDtGylAB4IoFgnupS9wvVIzOH91ueMSFx2mS6nUBNp5tGTEen3Ee
+         Bpqw==
+X-Forwarded-Encrypted: i=1; AL+hErFt76ZaY4Li+G5xEsQBJ4aQrrI2OZxBFgpkp04kFiA89cgjryE4huhkG406c5p+O2G7Bmk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/vI8ijhAlv4gL5QlYYjLaQXQu1KeQREN1nE7ltoej9q1995gO1
+	3rsxO/rgqTEFeV2mjDggrKYRJNuKEavmljUauJDxGNE6PTnFrCL3NMP5
+X-Gm-Gg: AZFdTZeCTuqgr6xbssN+mpilm07tl2OEVD848EAanBmaqfmhvkW3NScIhKViK3Fhjux
+	RitUZbXqZ0pwdwSVP6M0wOcaG235M4mwa48phnEsdsw8uvKtDX4fKtilzr35j0LTFmn2eF9zmzR
+	cicTOfUgGk3vt5Z6OZnoFx3XRDNlUw+E3zkPpcvcSLlfmg/Kq89XncyeZZ5gQ7mnucLUNA5ru1+
+	P2CZFmhSMrqboFte0LYu77Isb4ZMYg53wtjqvvQg8jFH3HazawmHc0QKM3L/tXnxIOHKh12t1Pr
+	P0nhPvPLHS8R8Ve1PPvegVj29zG0loB9svccBQQdagUKlI3ZZAf7VCfKf15p8JCDf+M2rdb8fbF
+	1GSCZdtKLE/UHLSVtwKS/Jh2M9m6ALqdS4bH93yft/ORdwYjc6LmnDJdhqWpvSsJzybKOq+kwwg
+	fFbspDseWeHnChJj0GtQD6NpS795tG0FtmMiLOaW+w+I2DzHXDQkACFpKWX0EQFuz7Y0i7OHRID
+	jgRAMIf/rnKcERMUTytdGFyX+PIEH4J/nKU7VJuD71ydf9vu7LZ2gOcM4kd2h9FNwK8fb4ftvNI
+	zChuLA+ozUZWgEhbmosqF5BI6VsPIntXNCc=
+X-Received: by 2002:a05:600c:154c:b0:4bb:6a78:7c42 with SMTP id 5b1f17b1804b1-4bb887c3428mr360008895e9.1.1795606449726;
+        Wed, 25 Nov 2026 03:34:09 -0800 (PST)
+Received: from [10.45.18.224] ([15.248.2.12])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853a12acsm542185355e9.8.2026.11.25.03.34.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Nov 2026 03:34:09 -0800 (PST)
+From: Paul Durrant <xadimgnik@gmail.com>
+X-Google-Original-From: Paul Durrant <paul@xen.org>
+Message-ID: <e2787d40-0b72-4f37-b132-dfdf49d2ef04@xen.org>
+Date: Wed, 25 Nov 2026 11:34:07 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -54,165 +94,45 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 04/11] KVM: arm64: Dispatch stage-2 destruction by VM
- flavor
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Kohei Enju <enju.kohei@fujitsu.com>
-References: <20261123104233.95710-1-steven.price@arm.com>
- <20261123104233.95710-5-steven.price@arm.com>
- <0d031484-d394-47e3-be49-7c85004dbb83@arm.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <0d031484-d394-47e3-be49-7c85004dbb83@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v1 19/21] hw/xen: Bound the rep count of PIO and MMIO
+ ioreqs
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
+Cc: xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony@xenproject.org>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Jason Wang <jasowangio@gmail.com>, Hui Peng <benquike@gmail.com>,
+ Mark Syms <mark.syms@citrix.com>, Feifan Qian <bea1e@proton.me>,
+ David Woodhouse <dwmw@amazon.co.uk>
+References: <20261124232247.23169-1-dwmw2@infradead.org>
+ <20261124232247.23169-20-dwmw2@infradead.org>
+Content-Language: en-US
+In-Reply-To: <20261124232247.23169-20-dwmw2@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 23/11/2026 11:23, Suzuki K Poulose wrote:
-> On 23/11/2026 10:42, Steven Price wrote:
->> Select the stage-2 destruction functions through the VM's stage-2
->> operations. This keeps the native and pKVM paths explicit and lets a
->> Realm provide its own destruction callback when Realm stage-2
->> operations are registered.
->>
->> The Realm callback will only free the root RTT pages, because RMI
->> teardown destroys the non-root RTTs separately.
->>
+On 24/11/2026 16:22, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> minor nit: The second paragraph may be omitted as we introduce the
-> Realm stuff in a later patch.
-
-Ack
-
+> cpu_ioreq_pio() and cpu_ioreq_move() iterated req->count times with no
+> upper bound, so a count of UINT32_MAX kept the vCPU handler thread
+> spinning through four billion iterations. Xen's instruction emulator
+> clips a rep batch to at most 4096 repetitions (hvmemul_virtual_to_linear()
+> and hvmemul_linear_to_phys() both apply that bound before an ioreq is
+> sent), so reject larger counts as malformed, and reject a zero size, as
+> the other framing checks here already do.
 > 
->> Signed-off-by: Steven Price <steven.price@arm.com>
+> Fixes: 9ce94e7c8a99 ("xen: Initialize event channels and io rings")
+> Reported-by: Feifan Qian <bea1e@proton.me>
+> Closes: https://gitlab.com/qemu-project/qemu/-/work_items/3756
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>   hw/xen/xen-hvm-common.c | 19 +++++++++++++++++--
+>   1 file changed, 17 insertions(+), 2 deletions(-)
 > 
-> 
-> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-
-Thanks!
-Steve
-
-> 
->>
->> ---
->> Changes since v3:
->> - Move before basic Realm infrastructure and declare the page-table
->>    type for the new callback.
->>
->> Changes since v2:
->> - New patch in v3; split stage-2 destruction dispatch out of the
->>    Realm stage-2 MMU operations patch.
->> ---
->>   arch/arm64/include/asm/kvm_host.h |  2 ++
->>   arch/arm64/kvm/mmu.c              | 30 +++++++++++++++++++++++-------
->>   2 files changed, 25 insertions(+), 7 deletions(-)
->>
->> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/
->> asm/kvm_host.h
->> index 9d6258b213d1..3ddeddfacd06 100644
->> --- a/arch/arm64/include/asm/kvm_host.h
->> +++ b/arch/arm64/include/asm/kvm_host.h
->> @@ -234,6 +234,7 @@ struct kvm_vcpu_ops {
->>     struct kvm_gfn_range;
->>   enum kvm_gfn_range_filter;
->> +struct kvm_pgtable;
->>   struct kvm_s2_fault_desc;
->>     struct kvm_vm_s2_ops {
->> @@ -242,6 +243,7 @@ struct kvm_vm_s2_ops {
->>       int (*vm_flush_remote_tlbs)(struct kvm *kvm);
->>       int (*vm_flush_remote_tlbs_range)(struct kvm *kvm, gfn_t gfn,
->>                         u64 nr_pages);
->> +    void (*vm_stage2_destroy)(struct kvm_pgtable *pgt);
->>       void (*vm_stage2_unmap_range)(struct kvm_s2_mmu *mmu,
->>                         phys_addr_t start, u64 size,
->>                         bool may_block,
->> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->> index 8a9a80c7cfab..fab915ddeaab 100644
->> --- a/arch/arm64/kvm/mmu.c
->> +++ b/arch/arm64/kvm/mmu.c
->> @@ -1018,26 +1018,39 @@ static int kvm_init_ipa_range(struct
->> kvm_s2_mmu *mmu, unsigned long type)
->>    * cond_resched() periodically to prevent hogging the CPU for a long
->> time
->>    * and schedule something else, if required.
->>    */
->> -static void stage2_destroy_range(struct kvm_pgtable *pgt, phys_addr_t
->> addr,
->> -                   phys_addr_t end)
->> +static void stage2_destroy_range(struct kvm_pgtable *pgt,
->> +                 void (*destroy_range)(struct kvm_pgtable *pgt,
->> +                               u64 addr, u64 size))
->>   {
->> +    u64 addr = 0;
->> +    u64 end = BIT(VTCR_EL2_IPA(pgt->mmu->vtcr));
->>       u64 next;
->>         do {
->>           next = stage2_range_addr_end(addr, end);
->> -        KVM_PGT_FN(kvm_pgtable_stage2_destroy_range)(pgt, addr,
->> -                                 next - addr);
->> +        destroy_range(pgt, addr, next - addr);
->>           if (next != end)
->>               cond_resched();
->>       } while (addr = next, addr != end);
->>   }
->>   +static void kvm_vm_stage2_destroy(struct kvm_pgtable *pgt)
->> +{
->> +    stage2_destroy_range(pgt, kvm_pgtable_stage2_destroy_range);
->> +    kvm_pgtable_stage2_destroy_pgd(pgt);
->> +}
->> +
->> +static void pkvm_stage2_destroy(struct kvm_pgtable *pgt)
->> +{
->> +    stage2_destroy_range(pgt, pkvm_pgtable_stage2_destroy_range);
->> +    pkvm_pgtable_stage2_destroy_pgd(pgt);
->> +}
->> +
->>   static void kvm_stage2_destroy(struct kvm_pgtable *pgt)
->>   {
->> -    unsigned int ia_bits = VTCR_EL2_IPA(pgt->mmu->vtcr);
->> +    struct kvm *kvm = kvm_s2_mmu_to_kvm(pgt->mmu);
->>   -    stage2_destroy_range(pgt, 0, BIT(ia_bits));
->> -    KVM_PGT_FN(kvm_pgtable_stage2_destroy_pgd)(pgt);
->> +    kvm->arch.vm_s2_ops->vm_stage2_destroy(pgt);
->>   }
->>     /**
->> @@ -3146,6 +3159,7 @@ long kvm_arch_vcpu_pre_fault_memory(struct
->> kvm_vcpu *vcpu,
->>   }
->>     static const struct kvm_vm_s2_ops protected_pkvm_vm_s2_ops = {
->> +    .vm_stage2_destroy        = pkvm_stage2_destroy,
->>       .vm_flush_remote_tlbs        = pkvm_flush_remote_tlbs,
->>       .vm_flush_remote_tlbs_range    = pkvm_flush_remote_tlbs_range,
->>       .vm_age_gfn            = no_age_gfn,
->> @@ -3155,6 +3169,7 @@ static const struct kvm_vm_s2_ops
->> protected_pkvm_vm_s2_ops = {
->>   };
->>     static const struct kvm_vm_s2_ops pkvm_vm_s2_ops = {
->> +    .vm_stage2_destroy        = pkvm_stage2_destroy,
->>       .vm_flush_remote_tlbs        = pkvm_flush_remote_tlbs,
->>       .vm_flush_remote_tlbs_range    = pkvm_flush_remote_tlbs_range,
->>       .vm_age_gfn            = pkvm_age_gfn,
->> @@ -3164,6 +3179,7 @@ static const struct kvm_vm_s2_ops pkvm_vm_s2_ops
->> = {
->>   };
->>     static const struct kvm_vm_s2_ops kvm_default_vm_s2_ops = {
->> +    .vm_stage2_destroy        = kvm_vm_stage2_destroy,
->>       .vm_flush_remote_tlbs        = kvm_vm_flush_remote_tlbs,
->>       .vm_flush_remote_tlbs_range    = kvm_vm_flush_remote_tlbs_range,
->>       .vm_age_gfn            = kvm_vm_age_gfn,
-> 
-
+Reviewed-by: Paul Durrant <paul@xen.org>
