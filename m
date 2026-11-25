@@ -1,55 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795642005;
-	b=GQDiMnw9ZYjyxslPYhjHJ0fvSTgeltxExUvIsSUa6XWYRZGdu+8f/doL9BPkQ1jzgsfX
-	 Hmg81cvulDLhrvtQTLjrXlB1MKd3ayURFRHctO+Egxc9s9O9dTuZ8zCqNqw+mhAZ0qvBk
-	 eHZ1gmK80jOV1VggC0+QBPs6k9bdpmJFZidRI2u3zPr1Vw5kml2VTZ0GBqXaCsWHROwAB
-	 VqsjdGRJoFbC+iN7a0wllRHMFfKhKLwUsFD/xYiZ+J2O/nNZDa0SeUswsBwFlAep/YJVn
-	 vEPmj5STsrXpBniZNjnD2BKCpgA5ppjYJPNh5AOF9Ji9typBJPLaRyrZ3f9ObRnpuRQ==
+	t=1795642523;
+	b=cJUP4rYeOD1L8aOA0too+tMRPGioZa8r9jmc3G8Wiwc19QeCH5uU6bFV1IkFA4vVo7eg
+	 dCtSgi4g2POQNR3HOB1I/x78PCp0nGuaOi/htA+gwOTBU/ZMtD5gXfD/xmZjaHtaEt1ud
+	 9c9A5OmjftDBbsmgLOwbCQqzK/3VC/6r5lisVkhEtpjvO4w1qqg7sq/rbiHZljkkhMLW2
+	 NDXsYThsbyaH8higH/JGpQSKAX67b4CreLNYzoKcHkTOA2oFHblaFPwpxPjM/ZIAuH9At
+	 pEC/U8saZkvnJiWX4Ae6yNUghi/9xxrvtrrT9fXT7ebQU47gQ2i5hvhXTsKkgjPKu5A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795642005;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795642523;
 	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
 	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
 	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
 	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=guDPdAYNJbWbC6d5sTKqRJq9OmSRPmOCdNbIU1+Gch0=;
-	b=sQnO6FzZku9eMHUR/ny7h2PTY7HB52gnEPAqYxej4o3Av/6uGP8G02AXXpGJGZq1EO4M
-	 dzVRtuQNRGFocHjZrRlWFJ8MQIYzv1cSuwK1k16zNL/34Og07GK3Fge4WK8FlDKHCjELi
-	 WFO44VNazjGMZzuwxl1oQqtXSTUYaJYi9rJqCujSx/94Su9/v/uTToM4zGVAouYoWSOfg
-	 fo8F/LJyNRbZF9HiCrxHIIdSyDG1LDX+4XkWsmQcKGrplmEKl8eEPO0Qgf1SnlACRHphZ
-	 0wCbIEl3rqT7GNbCrMWi4vCiM7uTrF5skPppi0Uz1lG+w0PnA7/ompc1fH7bWsQi2Eg==
+	bh=5DT2gV6MaM+tF8dMnUSxLFbt3tl2B/cDE7HAdk58XGk=;
+	b=X5TApaGHSsZ7n5GCy/2wVha9PAZRuaxmhEqa5KEddKpkqiFbSPhnVYTa6zPsK6kIN29b
+	 baBi4Z9jzBH6WaRB7XFkx8Q4GiitMxlxtxU0otibVBCDuyxtcXw2k4qlr2dNG+y0I1UoT
+	 pkAsk4/XUlPWUl0ywqo7uFF7a+l1+lBj2K/dAOpa0+GuHHQVDeRuk8s6+0GWoCDVyr2O9
+	 I7IA2et7S7i3bcf2+pR4liqPLV7ojqT6J56u7x4RP+W9asylTkRboHtjagBiS60y+zg4W
+	 tMAJFYpOEt+mYkRIX5qeBEsXG/sj10uDcY0ZE83xvKg4cKCz182yjFS1EsxvmQPwqbQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=euYshZwF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cQ7UQmBA;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E649F606A335
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 21:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2F8606A31E
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 21:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=euYshZwF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE1D1F000C0
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 21:26:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cQ7UQmBA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029DC1F000E6
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 21:35:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795642004;
-	bh=guDPdAYNJbWbC6d5sTKqRJq9OmSRPmOCdNbIU1+Gch0=;
+	s=k20260515; t=1795642523;
+	bh=5DT2gV6MaM+tF8dMnUSxLFbt3tl2B/cDE7HAdk58XGk=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=euYshZwFCWO8msiqlyp3g86AQLKD+Mp+LppuO3wwvhqdQXrj413xBIAYHTY2o8Hu0
-	 Le2+VZ04LPhLXV4DPbgMH9C9c7RWlgRxgTB+OtuLW76pjkvCmL87ACVIkeSYyCP4DW
-	 83vO8q9l2IzvfvOhuj8kAD9sG+wfOnAy6GjnLxoayo5bMFscLVuFGJuwwkK3vw+G1t
-	 EMVxFoIUdJ5vafz6BbjN3fAc2j1JbbJMQQAQd9kpTUltEe2r3uAjkdxmT5+YJxn2Aj
-	 oBznpSx2Yp0aUfeke2vgkHSo9zMrZgTFNdWMmu83/NMZO8OjiLBSdh9ETIy7Gh5pQz
-	 SR02WqxNHki1A==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c4cb6834eaaso174498566b.2
-        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 13:26:43 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErEmTwWvg2icsixc3zVYVtUw8Oq5K1MHbaJYz9m+vNi4+sHYNS2QHH3dc+F83waBS4fJRL8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8FpW6fHW55QvSDDOF5PGGAyFKiRYBOcVG8F4t6iBeOALZVZ8VK
-	QauPXOtSF+7tEhhYw55QvIEXoTVFTuHqh9tU0mKrtFkA3Tbb+bk8q7RvCvrHbknMqB/1jWBMtGB
-	AUBmJCwKpqCL7YZbLKrpru70pv93B1iE=
-X-Received: by 2002:a17:907:6ea9:b0:c46:a5bb:5740 with SMTP id
- a640c23a62f3a-c513a3a656cmr1716577266b.5.1795642002900; Wed, 25 Nov 2026
- 13:26:42 -0800 (PST)
+	b=cQ7UQmBACZimGfW+iREEhX79jlZWKHRN9TaV5A9hrIeItvnl3NpZRApLGq1cn13hN
+	 BzevCHG2zBPY1eqJu2zzO5zsOke4gjuYTyKJmBzmiiN5yhO23NyhZdKUKd/3O4fKO1
+	 5PRif6vVTR4ugwAjUniaJcm+fsTAGflnR4/fJn9qag3OFYJQ1BdEzGdWbgLeSKjf5r
+	 APVLdujkIfrJ8OHAiya3R+q4sixrvhBUOR9Mf0tydOTa9329tQAvglSyHaY012wWJY
+	 MFPz2L368H+sMz/zs8SjchYXvYunVHu/vwxtb5OIar5qruljOxWkdmXkSrOYHy4nNu
+	 3YRz6Wbm/od2g==
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c5188e4980fso167374666b.2
+        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 13:35:22 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErGxI2fkoHataB9j/ioRH4c2ui11iE8u8LGXrF2zTdGCJQySPBRrHlJjjFdRpuuJvR4+lv0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+WvNfdmkhKJowIo3oJwmTwoXDaHQxzKYQbw7PAKUwT0BDCZMt5
+	JeGNw76/M8C9hbyvkJa1mU36P/Esh/ADMzFk1PT2K5vJxaoZu8VUBcHJNA1WSZgJKldbXZRRcTg
+	u+cQhG8xOkArUV3A/CQIMAwv89zwC6Ws=
+X-Received: by 2002:a17:907:584:b0:c46:c3ad:e1ca with SMTP id
+ a640c23a62f3a-c513a84dcf9mr1208760766b.9.1795642521937; Wed, 25 Nov 2026
+ 13:35:21 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,14 +59,15 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261117210934.7765-1-seanjc@google.com> <20261117210934.7765-2-seanjc@google.com>
-In-Reply-To: <20261117210934.7765-2-seanjc@google.com>
+References: <20261117210934.7765-1-seanjc@google.com> <20261117210934.7765-3-seanjc@google.com>
+In-Reply-To: <20261117210934.7765-3-seanjc@google.com>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 25 Nov 2026 13:26:30 -0800
-X-Gmail-Original-Message-ID: <CAO9r8zNkyn4Ps7zE1nBvDOcfB8V2kqjBwuxuMhmsE3LcFbFx-g@mail.gmail.com>
-X-Gm-Features: Aa3M54p2OfvxkLPbVRwbmW5CDmhyFk3PAAFu-ddqfZd9eKEX2ohUTX9VzuOtD5E
-Message-ID: <CAO9r8zNkyn4Ps7zE1nBvDOcfB8V2kqjBwuxuMhmsE3LcFbFx-g@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] KVM: nSVM: Pre-check current (L2's) CR3 during KVM_SET_NESTED_STATE
+Date: Wed, 25 Nov 2026 13:35:09 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zOBvYsOyZLoKKTVfomKKoH+4S3KPYVJ_70p_7CJQrdzSA@mail.gmail.com>
+X-Gm-Features: Aa3M54onVOC7uzSKfhzckkF_0xlFJe0eUYkk7FL4UqOts70dNltmqRJ0FRmKC3A
+Message-ID: <CAO9r8zOBvYsOyZLoKKTVfomKKoH+4S3KPYVJ_70p_7CJQrdzSA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] KVM: nVMX/nSVM: check unconditionally whether CR3
+ is valid
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Stefan Teodorescu <fane@google.com>, Sashiko Bot <sashiko-bot@kernel.org>, 
@@ -77,38 +78,29 @@ Content-Transfer-Encoding: quoted-printable
 On Tue, Nov 17, 2026 at 1:09=E2=80=AFPM Sean Christopherson <seanjc@google.=
 com> wrote:
 >
-> When loading nested state, explicitly check that the current CR3 is valid
-> before loading any state, as a misbehaving userspace can muck with guest
-> CPUID to make KVM think the current CR3 is invalid, and thus cause the la=
-te
-> "load" of CR3 to fail when initializing the guest's MMU.  If that happens=
-,
-> KVM will leave half-baked state in the vCPU, e.g. in L2 with L1's page
-> walker, and if nested NPT is disabled, L1's PGD as well.
+> From: Paolo Bonzini <pbonzini@redhat.com>
 >
-> Alternatively, KVM could try and unwind vCPU state if the late CR3 "load"
-> fails, but that is subtly quite difficult as it would require snapshottin=
-g
-> and restoring the previous state.  Simply leaving nested on failure isn't
-> an option either, because that too would leave the vCPU with half-baked
-> state (in L1 with L2 state and a very stale MMU).
+> nested_vmcb_check_save() checks CR3 legality only if long mode is active,
+> but it really needs to be checked in all cases - the check uses must be
+> zero bits of the host, and indeed nested_svm_load_cr3() later will
+> reject illegal CR3 in every mode.  Move the check earlier, and thus out
+> of nested_svm_load_cr3().
 >
-> Pre-checking CR3 will also allow hoisting the CR3 check out of
-> nested_svm_load_cr3() entirely.
+> Likewise for nested_vmx_load_cr3() and nested_vmx_check_guest_state().
+
+The code looks good, but I think the changelog needs to clarify two things:
+
+1. That nested_vmx_load_cr3() is also used for host_cr3, but that is
+already checked on nested VM-Enter and cannot change in the meantime.
+2. That nested_svm_load_cr3() also checks L2's CR3 in the restore
+path, but that is already checked in svm_set_nested_state() (i.e. in
+patch 1).
+
 >
-> WARN and bug the VM if the late CR3 load fails, as loading nested state
-> never loads PDPTRs, i.e. failure is impossible, and KVM doesn't unwind on
-> failure (see above).  I.e. if the impossible happens, KVM needs to block
-> all operations on the half-baked vCPU.
->
-> Fixes: e1779c2714c3 ("KVM: x86: nSVM: fix potential NULL derefernce on ne=
-sted migration")
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Tested-by: syzbot@syzkaller.appspotmail.com
 > Cc: stable@vger.kernel.org
-> Reported-by: Stefan Teodorescu <fane@google.com>
-> Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/all/sashiko-outbox-210535@kernel.org
-> Closes: https://lore.kernel.org/all/sashiko-outbox-205939@kernel.org
-> Closes: https://lore.kernel.org/all/sashiko-outbox-193903@kernel.org
+> [sean: tag for stable]
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 
 Reviewed-by: Yosry Ahmed <yosry@kernel.org>
