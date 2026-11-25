@@ -1,98 +1,118 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.113
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795619830;
-	b=WavBxm8/sFotl6zYlono7poAlq1LuyGCe5B1ebcSLRY36TMaoytp2ztILvpx4AKEdIjN
-	 ODfbkbwd92rFgDks78nFU13ZXGAJuuEzOsSmn0O1OH6/n9gbuWKwbn/k0LxL/guemhQRj
-	 OjES0zFpuQYFEfgFvMN7QkyMYCaVNmdvK9wH+LhhzB/1EWp9OugmqyqhVPlg7wm4dXQaq
-	 yLbI5RSVIzEmmZ95z74b3C4Ep3J4ffYxBy6mFGLWDH2f7zoRvpH0osyPf362PW1rlJYWj
-	 QB2SNdihu7+7hB5xCSATMN+m3a8NN5KWwPEIsWHUiHQIlkdjaN17XNynaNd3OsODxGA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795619830;
-	h=DMARC-Filter:Received:Received:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:Content-Transfer-Encoding:
-	 Content-Type:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=eY6uxwlzEeigUe4vHDYqs+o21vIW1wlsbR6RjuZ0I38=;
-	b=Pxcq1mK6My2Yc6dVic3V2JtpW4PYLcrkZ0hp5TY85YyDlsriNPptnjSxQLQbKFrELlRh
-	 5EpjlkeDiXXPcDqEvxkT3fQiZSBEv8ix7wizHBcO4CNt9ys6W3EJuuWqIeHWO616BjLFW
-	 sdb18sti9enX52xpClv5Dod8UpsCVZ5sd788tIf0e9Z7F7CLyq+KUTKX8/tzICxCHolA6
-	 2RM0g1l7lFscgEXqvXGkZjLjgU+vE4++LBuG+lkWJAtIoRtBmwe8qPStysq4KVsdsuC4M
-	 goVRlYq0blH62RCLEo2/nXd+0PQ2bWv0TrOYy50y4uunu02FpgjWof4Wqbse0wBUUsQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cyber.gent;
-	spf=pass smtp.mailfrom=cyber.gent;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.113
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11021113.outbound.protection.outlook.com [52.101.70.113])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795620493;
+	b=i6TAmUvKJy/ohgQtcYJ/ir1JD27ckYLwfXiZCP0Bj3Z86E5HtCBJTRYmbGrOFaQbytQ6
+	 UxNjwJigvlLh1QSXCzaoBKrrNHbqZmdnFh6zeaOv1yKfmC0HgBcapSG/5QB7URuiJDsU9
+	 caAG0guSckbYvZgavbwhNXTU7fJGidzisW5CEC+CULdAiDNYwCPn2PZ81o/oNffYCZ1gB
+	 tg3oLVRGba8rKXdCUrTkggsyQGHzA+RWYbHVPW8oucWZyNxAHEM5UkLq6T3MNJ/M4RDcS
+	 v5Gu+LWWHzixk42Z2ifDBdV5+7WB95Emt0NtjdKN9bP1c9urZfzrz3K80DnJxox3YCg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795620493;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Message-ID:Subject:From:To:Date:In-Reply-To:
+	 References:Content-Type:Content-Transfer-Encoding:User-Agent:
+	 MIME-Version;
+	bh=lgIANs+qLIIOzj/H2zLJZm2Lmsm8CkjE/+alsxp6LU0=;
+	b=5CYrwm8r9vZV3256EZ7rdWxg+nBN5rHiV6l+0qS4gvU2NKXcWUXbR5lw77HHXPtuPLJq
+	 G4SUSIWjEcbXdDU3sBMJWT1MoTchsTNB4g53IpKRgBLBdKI8oWjT0ZiYfuaMl5VK7UAQu
+	 Ip2U8FFU3fYcV5pcVmwG3p8UR0k3980MvBxq3pS/qKzvAWWqTLwD5VGEkIzJQwZIMoKU3
+	 7HbGwLCF7i0xRdfIPVq4hFZCZvs+2Tw8HQ/O85BdqRdfgqU4dE/0Njj0qF/vf2bDrFCU+
+	 7CRkToY0gIDedo3qK3WWBnFvXRFviwxww78zcMHeIyEbxeP9wBnPLz3W/tFc4amrPsg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="XreoMY/P";
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=VkiTzf5w;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB95606A31E;
-	Wed, 25 Nov 2026 15:17:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8CB95606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cyber.gent
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyber.gent
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OID86y/LgfRQPumPvWYUOorvMRzMi3cSbTFj+r+QgoHEPrdZY4sGJkWj3db13uIupSSVSHY8w7U6FbLzBlpeGKfd3N/ydSD63jI9ICiJtz/qxqIddOYYfxse8bGXCohm7PyqCjlg9s05jKsRVTPfHr/VhuKgjgZNuE2CU9Wy5mPC3VHUWDm6YbA54IBoQWr/jWr+nItsOCDlY0oJTwGGB9Wc1k1tAMFCTnTXHpkyYZ4fwPd1zy8I406gkRnzexIHIKIyWE6MKrhdX68NzJ+0WUAAYifDRvSwOdwzHQl9+m09r+IOkWnS2NcbHBjjyHncWG5BREUCqo7rPsHBjvRCwg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eY6uxwlzEeigUe4vHDYqs+o21vIW1wlsbR6RjuZ0I38=;
- b=wpkzBD1c5jxARp0iI7vzcr54cfOOIjIj7YPTCneBJ0txteCEVWGBt9enwBBI9TQT/18mPKZPeVbD93NyD3QHdZPvl+kj83kU9al3Zd1A8n7XexyMxS6vIOYvOea1sQj3V8xw+2sHyLtgXAi+yrPU+DdjNgHq+2rxO2tDW4LNZ0MC9eZTX1nFyuT5rSlbp1SGtwsiMulq5VHCMowKCDOawVFycgHZwX2Joz34A46EDAE9tSTD873UApX94mYBtP6ea36IpK4SCIgvbTW9yNrktnRWvAq9xwzbvS6NPjH9co9bb3LxwOlZXow6GEocbzkrh2bCoHIfBuZ++rOTUYjFGw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cyber.gent; dmarc=pass action=none header.from=cyber.gent;
- dkim=pass header.d=cyber.gent; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cyber.gent;
-Received: from AM9P193MB1508.EURP193.PROD.OUTLOOK.COM (2603:10a6:20b:2fd::8)
- by AS8P193MB2127.EURP193.PROD.OUTLOOK.COM (2603:10a6:20b:448::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Wed, 25 Nov
- 2026 15:17:05 +0000
-Received: from AM9P193MB1508.EURP193.PROD.OUTLOOK.COM
- ([fe80::e7cf:9c42:539d:452]) by AM9P193MB1508.EURP193.PROD.OUTLOOK.COM
- ([fe80::e7cf:9c42:539d:452%2]) with mapi id 15.21.0639.012; Wed, 25 Nov 2026
- 15:17:05 +0000
-From: Yvan Janssens <yvanj@cyber.gent>
-To: Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: David Hildenbrand <david@kernel.org>,
-	Eric Farman <farman@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	kvm@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] KVM: s390: selftests: Add a test for nested guests in ESA mode
-Date: Wed, 25 Nov 2026 16:16:07 +0100
-Message-ID: <20261125151607.3039477-3-yvanj@cyber.gent>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261125151607.3039477-1-yvanj@cyber.gent>
-References: <20261125151607.3039477-1-yvanj@cyber.gent>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AM0PR10CA0001.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:208:17c::11) To AM9P193MB1508.EURP193.PROD.OUTLOOK.COM
- (2603:10a6:20b:2fd::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291C5606A327
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 15:28:12 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 291C5606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XreoMY/P;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=VkiTzf5w
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1795620492;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lgIANs+qLIIOzj/H2zLJZm2Lmsm8CkjE/+alsxp6LU0=;
+	b=XreoMY/Pdi1VIE3Vp7uUiuFWmYMu7jC7aBHpk1W0FgNE3lN4mcYeqnX1Skxt07uKgBMJyl
+	+hIuKNzHXr2KiIs6f71fq8NDKxPcaZ3lcMdRozI5mAg3nvwmCfqJF/xYMU7JE1/7ESpOmf
+	8/pEFgJB8WRBLlHLDuFyzeCmamtf4DQ=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-16-R615K9owOKWBniQXeQ4Nng-1; Wed, 25 Nov 2026 15:28:07 +0000
+X-MC-Unique: R615K9owOKWBniQXeQ4Nng-1
+X-Mimecast-MFC-AGG-ID: R615K9owOKWBniQXeQ4Nng_1795620487
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-6ba810fb7caso4294283a12.0
+        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 07:28:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1795620487; x=1796225287; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:to:from:subject:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=lgIANs+qLIIOzj/H2zLJZm2Lmsm8CkjE/+alsxp6LU0=;
+        b=VkiTzf5wml3WZpwY0SkizSN7gV6MuDTGC4uiHkBYOSD3/B8Oj4lFQc5//a1YyKYpoi
+         uvqApsCN4OOQxZPWdF/UXRMQF3PVcD1gkqzi4z45dSSOS0QpEM2lIB2BqEshBK4YkPfV
+         aaYOGk0+xZhn1AE3a/d5lyx+7vGIxWbSqNPusin7VwCMsW6ObQMl19Qn7ozBAgUfEK2B
+         Wg7kMYczL3i8X19yDItMGgwBrxucQlZlnlYz9pcLmF+gqIkgTmMwYRdBOvaSkJFRzuy/
+         SI8enqtmK1vlhPysEfKjYTVXoI37XR3skhxD/yqV3nIGkScpKiVxEd5glFIQdXVjRlTs
+         uznw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795620487; x=1796225287;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lgIANs+qLIIOzj/H2zLJZm2Lmsm8CkjE/+alsxp6LU0=;
+        b=03zAdYvU3i/Qa4LH+BP8K4dvU45rIZIiIX89gJEEu4yatkHO0KWrR+SX0sUrbyGqSb
+         YgMUDiDpxPDphEGMtLUDcA/M87CRQKqN9ybqBsCOFzX7VmAJhZvQSQSofB+Jy5G+fxkI
+         1G2Kgo1jJSu5oG8esZRsdkgOuqkoq80n2Piinr/nd26h6W7MzTAv4n8++AqBclcg0Yuv
+         kjUECml8v6/Vk/C9vgRxGKPP3HMvsCw0NN4RW8818p4z88MB5bpO4hbq4LlZD1ShagYk
+         wc964cSJmZuZbZIUIy34Ota2Ql7+E2fA3VjfrR92C85t7GkzWAJyrs8/TRxsCDJGukPp
+         tcqw==
+X-Forwarded-Encrypted: i=1; AL+hErHz6xXxEZY0udTtNPKaPlYh0dGy5Mf14A4kFyzoUbDHIONq+sejTffBYCC4aUmVMomLOZA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+HyIpbBxMOsUxUz652HkjRvc12HRnaYAFOIVtmiIh0v7s69Hmk
+	p/KrnZUVJjaURCBgmcTeWh6o9r3/dj+iQFffOEkeVbsX+Yht1em7SHcgjZZqmYaWytku58eEubp
+	VhIhhkzHEkYTzaeYxUHi8cPXUZXBa0CmFipN1FqubP4t581yLmIdmyA==
+X-Gm-Gg: AZFdTZeoPwYoFt51yonGACsvWm4o2VwYOvXQRuJh5iL4YGvsSVyhwh5ykKfnxdjS3dC
+	BRoVqHWVGCiofdrzu367an7KUR8F8Dts8J/jGYcrS9SdI6rwI3XHusQiThtECws85361csjSEAo
+	kbvo2qESi3PPZv3sXKS4Z6T71kL8+cVUSbGmKbTa2y2VbvUs8K9N31myX/Fcj8u6RaVSTL+D1le
+	4gOOJL2R6T/6Q9j7L1C2ebZD4RDsUm2hF6R0EtePXTnmepxNxrnxwjPTOIZ4si0EFa2uMgdpCPR
+	AwzE17Qd/df6oEoAXC5s7oAg27PVIrQWiQylgO/zdZsewLmS47r2dIn//vK0XI1emKwNftPYg99
+	xFedmWL+hVrdEJX3vhSMN0jqNLyRck+AWU7ZSD9xlDnD9LUiQW49ERr88c/p/22Osl9vRgH1Ydw
+	piTpBC9lI=
+X-Received: by 2002:a05:6402:3212:b0:6ba:31be:edc3 with SMTP id 4fb4d7f45d1cf-6ba31beee34mr13288290a12.6.1795620486639;
+        Wed, 25 Nov 2026 07:28:06 -0800 (PST)
+X-Received: by 2002:a05:6402:3212:b0:6ba:31be:edc3 with SMTP id 4fb4d7f45d1cf-6ba31beee34mr13288273a12.6.1795620486165;
+        Wed, 25 Nov 2026 07:28:06 -0800 (PST)
+Received: from mlevitsk-thinkpadt14gen3.ibmmarkh.csb ([209.103.33.216])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6bb1d49d992sm1496168a12.26.2026.11.25.07.28.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Nov 2026 07:28:05 -0800 (PST)
+Message-ID: <19aa03249ef85403c23a8d0287c9324fb02ab00f.camel@redhat.com>
+Subject: Re: [PATCH v4 5/5] KVM: x86: nVMX: fix races in delivery of nested
+ posted interrupts
+From: "mlevitsk@redhat.com" <mlevitsk@redhat.com>
+To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+Date: Wed, 25 Nov 2026 10:28:03 -0500
+In-Reply-To: <sashiko-outbox-232632@kernel.org>
+References: <20261125052139.362046-1-mlevitsk@redhat.com>
+	 <20261125052139.362046-6-mlevitsk@redhat.com>
+	 <sashiko-outbox-232632@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-3.fc44) 
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -102,284 +122,243 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9P193MB1508:EE_|AS8P193MB2127:EE_
-X-MS-Office365-Filtering-Correlation-Id: 76f7865a-00fb-484b-036e-08df4b072a35
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|7416014|376014|10070799003|1800799024|18002099003|6133799003|261009223027099003|22082099003|3023799007|10067099003|56012099006|261102123227099003|261022075727099003|261022105027099003|261028144727099003|261026130827099003|261022115727099003|261026140227099003|261022113327099003|261026121527099003|261026135527099003|261021135927099003|261021133027099003|261021123027099003|261021130227099003|261021121427099003;
-X-Microsoft-Antispam-Message-Info:
-	Zh3bbKGNJyX258ZDcNuc/H5t2Tt/NiESXnYfVQzYqwg8eNtcNGMYuAUAYcRx919DjOG+QV6zblS/1dG39RfTxtny4iJCQQmU3NmaeFm3PW6rhT4KkMuIqdwWNY6AInFH7YikrQ/b2CfLpcaEnDgtilAWDvExpaw9IG9nGHqZpuMCT3yacy8jXkpVu4KnvyDEe3uslY3zi1Zjyqx6U7KcQDnjkciCjJlYwOcWPFt9bFXZdVPYzy8l45kdDGHy1tS8oKg72dmhjKLsLg2svlnUaVj8IAXZd4a0Je3fiSOZxT2PoMbDWqQPdQIamjT6xXhO4JzSESIriEzQNKvV96rj+7yU7SsoUqOs4AA5lvRs9zR2ysMFs5TEtViupkJyomkA3gh5b9jqKzZcY/segylDMCJf9gtI1DgHmyxpL90G1lm6VyEmyntK3Jpi2JTFqFtFqntxE6HQKkCh8BzhgbhhGKZCsLGGKxuNfSFEYPPr9sAGHAR76+0KVc0BuT6GkQroLachmeGSKX2l/cfLiYTv4dar/k5w6lWNsfQ8Q9dopTrWqu0/pryXfnkuTipdvErn/mFHSnFRN5KydvT0101ahwfVpx5Gi72A+4OHdEI4DThATQzEaWmR651Ioz1NkssN3I6F3QvsFFXr/w5Oz2Tv7w==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P193MB1508.EURP193.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(10070799003)(1800799024)(18002099003)(6133799003)(261009223027099003)(22082099003)(3023799007)(10067099003)(56012099006)(261102123227099003)(261022075727099003)(261022105027099003)(261028144727099003)(261026130827099003)(261022115727099003)(261026140227099003)(261022113327099003)(261026121527099003)(261026135527099003)(261021135927099003)(261021133027099003)(261021123027099003)(261021130227099003)(261021121427099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ocTf80X6jWpv4eUHCZNdj3ZPch1dLmZbxW1h1Nvn5XcIhM+I+YtI8DUG3sjY?=
- =?us-ascii?Q?DjbjELSpPz9GRvYwA1uQt9AR5tnl91xUab514RivF9VoY4xZWDqXrqn0PWGt?=
- =?us-ascii?Q?QNYokvrBCIQh/lVEQUw9ctfmzDTlfiAZfMSSYYt9+ElHMNkOk/0IJ+uq00o6?=
- =?us-ascii?Q?suY+E9dCTGhLEJqwycLl443A0lWRZWA26ZLDjnUUQa9drX6OjdjhaD29JVl9?=
- =?us-ascii?Q?emQbxC4xvqUnywvxk1eqgRmeorVyJdVMOBOiZyNjbw8sLBjSaFuFZN94SpzB?=
- =?us-ascii?Q?uA6T0wbY4CAst3/C6a/AQQ8MhwuPWtFDrgZLBBatuty9xkZBikU5Ju+OayMK?=
- =?us-ascii?Q?wTt2bf79WkFkmswKXvAFHgy+Mfaa8E+RjF3m2ZdaaOIuwP4Ncc+CFgD0KxET?=
- =?us-ascii?Q?omScYkP75maEBDPa5nY8BVPXwxx6cmrWzStBqVZJfAMNZHPVTktzVxGhb55x?=
- =?us-ascii?Q?5ZYK505JtTq80seLyFcPlfQzy71qQWqsDoZ6ajOodi88/dCtzuEajGvBXk1o?=
- =?us-ascii?Q?eZsceVXR2d2h1AxQtk7HbM/vpD/r5lfzaKvkCbKqy7U9+WRBXS4MKApKJSaB?=
- =?us-ascii?Q?RSu+pncNMs2iB/F7SC/N+h4kvjl9IPTlH9Ay8fOyAkixbslqYGRidqQuw3Lz?=
- =?us-ascii?Q?i6pwiAJ3+8q39en3MV54He+1uqa88N/gL5ChmeAZKtxb0839eEfIUKBSmSXr?=
- =?us-ascii?Q?hm1hp/CJ0A4Wf7AH/xjuMBcllCY/roGRnZ0w1q/IejcULlSDTJjirJyuTJru?=
- =?us-ascii?Q?R7SNKEO7pm4TFlG8rXGQ74fEPRm7GCC03+wfy/dXBtLlGpYSOXYWwFAA5mCy?=
- =?us-ascii?Q?ZLQLt73Jh5XO8Zi/lw+bB4mRS+8AEet+SzjcD3tpD1NQIo0v1p+6Qwh6GKt5?=
- =?us-ascii?Q?c/FUIQh0UHxDSDkWVeOvbs8VBXaoIqVWah28neTB47SDY10lB4bE1A4ib8SS?=
- =?us-ascii?Q?pnyZBLnGeeqNDMi0ucd43tQ2enjftHc7yi2jKRcQaA5jbb4bfUDi16JRYCVU?=
- =?us-ascii?Q?nzpAt/ymap7PLsmzA7boSCuOBY4dO+RhnxoVrPiraKpRbtvETZSTdFfGAXoW?=
- =?us-ascii?Q?zK91v3TFoga4UnZxja4EHSg++0D8DXix4gXCRHd8yRfFwhJUNoxCR7yhhO0r?=
- =?us-ascii?Q?1f0EahS6dP576FCaSxSRSHR5b5gS8ZrGIiyE44FgmejM9fy3ACxhwjUAt7nS?=
- =?us-ascii?Q?VNiaKGftvc9JmmcuBy+SbFmx+FhlmRKnzETDgXsLOGDiI4XqZWWPf3/uDfY+?=
- =?us-ascii?Q?tm1zqC7gRYhUskDNm7wM0CaASztlHqteJTemKE72s/Wf4YnR+zvZWf66fXd+?=
- =?us-ascii?Q?Lh2+3vNKcaX1tCSA0bvkAGxjeAqhECkSg6YXNpGUPmTMKo3X+X0TKkaZ2nQn?=
- =?us-ascii?Q?CssZX4PwHuIDSjvXfCSEmXYkqOAJqTCCGoTYhUShfFesx4b+A+e4TTPBQ93W?=
- =?us-ascii?Q?3xDRT8fuJpOfZtjJQQ5af1dOpE3NZcgw+OLuIxjtwbBbegrgek/m0JSCLkxw?=
- =?us-ascii?Q?wGs8ERaMIxiv52mBFXlknmONNplSdcBViKH3cFoLuIZUJVIGtlkz7gEKJA2R?=
- =?us-ascii?Q?l5J3ANJUl81i5YryrxO2+dlhBjFHscviRH3BkP5imwufcnU746S1yPYx3cuK?=
- =?us-ascii?Q?r5v5jTrsRcsC0TaNh6XxJderVvf7WWjjLsV3o2eJmqdOXjUSaIEY/as9hm8e?=
- =?us-ascii?Q?NF49jyYg3pZYA464x63C23tbsZh4UB8H/AoSHktSi4BxCMymc4z1h6PHgbZA?=
- =?us-ascii?Q?U6SxC7oBAy4CN8ezcHqwQCVZnsS7QSLMGH3rYDYs+gFVKdpBcX20?=
-X-OriginatorOrg: cyber.gent
-X-MS-Exchange-CrossTenant-Network-Message-Id: 76f7865a-00fb-484b-036e-08df4b072a35
-X-MS-Exchange-CrossTenant-AuthSource: AM9P193MB1508.EURP193.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 15:17:05.6184
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: d5a0a0d6-18b4-44e3-8e5e-e5dbe37f9ee2
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xq4iIIASHZpAS6ud3OXoJog02Wz+u0873T6hng3R3Vu8eVTM6mu8fBqBtPObt/rlKdnyFrVoCPC9cVPc+v80aQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8P193MB2127
 
-Run a nested guest from a state description without the z/Architecture
-flag, with KVM_CAP_S390_VSIE_ESAMODE enabled, and let it execute STORE
-FACILITY LIST EXTENDED twice. vsie intercepts the first one of every SIE
-entry to shadow the facility list guest 2 designates and then has the
-instruction repeated.
+On Wed, 2026-11-25 at 05:52 +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issues to consider:
+> - [High] KVM: nVMX: delayed KVM_NESTED_PI_ACTIVE misdelivers PI to
+> =C2=A0 halted/restored L2
+> - [High] KVM: nVMX: gating KVM_NESTED_PI_ACTIVE on pi_desc breaks
+> =C2=A0 deferred error exit
+> - [Medium] KVM: nVMX: __nested_vmx_vmexit() processes nested PI on
+> =C2=A0 failed VM-Entry
+> --
+>=20
+> commit aef7be5a3f3ba4f7dee7a4841c7b946e8a11d349
+> Author: Maxim Levitsky <mlevitsk@redhat.com>
+>=20
+> KVM: x86: nVMX: fix races in delivery of nested posted interrupts
+>=20
+> This commit serializes nested posted interrupt delivery against nested VM
+> exit using atomic operations on vcpu->arch.nested_guest_state and delays
+> enabling nested posted interrupts until vmcs12 pages are mapped.
+>=20
+> > diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> > index eb33528619c2f..a5ef9a15e7e9c 100644
+> > --- a/arch/x86/kvm/vmx/nested.c
+> > +++ b/arch/x86/kvm/vmx/nested.c
+> > @@ -3440,7 +3440,18 @@ static bool nested_get_evmcs_page(struct kvm_vcp=
+u *vcpu)
+> > =C2=A0}
+> > =C2=A0#endif
+> > =C2=A0
+> > -static bool nested_get_vmcs12_pages(struct kvm_vcpu *vcpu)
+> > +static void nested_vmx_enable_posted_interrupts(struct kvm_vcpu *vcpu)
+> > +{
+> > +	struct vmcs12 *vmcs12 =3D get_vmcs12(vcpu);
+> > +
+> > +	WARN_ON_ONCE(vmcs12->posted_intr_nv & ~KVM_NESTED_PI_VECTOR_MASK);
+> > +
+> > +	atomic_or(KVM_NESTED_PI_ACTIVE |
+> > +		 (vmcs12->posted_intr_nv & KVM_NESTED_PI_VECTOR_MASK),
+> > +		=C2=A0 &vcpu->arch.nested_guest_state);
+> > +}
+> > +
+> > +static bool nested_get_vmcs12_pages(struct kvm_vcpu *vcpu, bool from_v=
+mentry)
+> > =C2=A0{
+> > =C2=A0	struct vmcs12 *vmcs12 =3D get_vmcs12(vcpu);
+> > =C2=A0	struct vcpu_vmx *vmx =3D to_vmx(vcpu);
+> > @@ -3505,6 +3516,9 @@ static bool nested_get_vmcs12_pages(struct kvm_vc=
+pu *vcpu)
+> > =C2=A0				offset_in_page(vmcs12->posted_intr_desc_addr));
+> > =C2=A0			vmcs_write64(POSTED_INTR_DESC_ADDR,
+> > =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 pfn_to_hpa(map->pfn) + offset_in_pag=
+e(vmcs12->posted_intr_desc_addr));
+> > +
+> > +			if (!from_vmentry)
+> > +				nested_vmx_enable_posted_interrupts(vcpu);
+> > =C2=A0		} else {
+> > =C2=A0			/*
+> > =C2=A0			 * Defer the KVM_INTERNAL_EXIT until KVM tries to
+> > @@ -3540,7 +3554,7 @@ static bool vmx_get_nested_state_pages(struct kvm=
+_vcpu *vcpu)
+> > =C2=A0	}
+> > =C2=A0#endif
+> > =C2=A0
+> > -	if (is_guest_mode(vcpu) && !nested_get_vmcs12_pages(vcpu))
+> > +	if (is_guest_mode(vcpu) && !nested_get_vmcs12_pages(vcpu, false))
+> > =C2=A0		return false;
+> > =C2=A0
+> > =C2=A0	return true;
+> > @@ -3671,7 +3685,7 @@ enum nvmx_vmentry_status nested_vmx_enter_non_roo=
+t_mode(struct kvm_vcpu *vcpu,
+> > =C2=A0	prepare_vmcs02_early(vmx, &vmx->vmcs01, vmcs12);
+> > =C2=A0
+> > =C2=A0	if (from_vmentry) {
+> > -		if (unlikely(!nested_get_vmcs12_pages(vcpu))) {
+> > +		if (unlikely(!nested_get_vmcs12_pages(vcpu, true))) {
+> > =C2=A0			vmx_switch_vmcs(vcpu, &vmx->vmcs01);
+> > =C2=A0			return NVMX_VMENTRY_KVM_INTERNAL_ERROR;
+> > =C2=A0		}
+> > @@ -3701,6 +3715,9 @@ enum nvmx_vmentry_status nested_vmx_enter_non_roo=
+t_mode(struct kvm_vcpu *vcpu,
+> > =C2=A0			vmcs12->exit_qualification =3D failed_index;
+> > =C2=A0			goto vmentry_fail_vmexit_guest_mode;
+> > =C2=A0		}
+> > +
+> > +		if (nested_cpu_has_posted_intr(vmcs12) && vmx->nested.pi_desc)
+> > +			nested_vmx_enable_posted_interrupts(vcpu);
+>=20
+> [Severity: High]
+> Does gating nested_vmx_enable_posted_interrupts() on mapping
+> vmx->nested.pi_desc break the deferred KVM_EXIT_INTERNAL_ERROR when
+> posted_intr_desc_addr cannot be mapped?
 
-The test checks that the second doubleword of the PSW field, which is not
-part of an ESA/390 PSW, comes back unchanged, that the PSW points behind
-the last instruction, and that the first instruction stored the
-designated list. What the second instruction stored is printed for
-diagnosis.
+Yes, I made this check to be consistent with KVM_GET_NESTED_STATE, but this=
+ was wrong,
+KVM_NESTED_PI_ACTIVE carries more weight that I thought.
+To still be consistent, I'll activate PI regardless of mapping failure in b=
+oth=20
+nested_vmx_enter_non_root_mode and in nested_get_vmcs12_pages.
 
-The test is skipped without the capability, without interpretive
-execution for the guest (SIEF2) and without facility 7 in the guest's
-model.
+>=20
+> When kvm_vcpu_map() fails in nested_get_vmcs12_pages(), KVM sets
+> vmx->nested.pi_desc =3D NULL to defer the internal error exit until
+> __vmx_complete_nested_posted_interrupt() tries to access the descriptor.
+> Because KVM_NESTED_PI_ACTIVE is now left unset when pi_desc is NULL,
+> neither vmx_deliver_nested_posted_interrupt() nor
+> vmx_check_nested_events() recognizes vmcs12->posted_intr_nv as L2's
+> posted interrupt notification vector:
+>=20
+> arch/x86/kvm/vmx/nested.c:vmx_check_nested_events() {
+> =C2=A0=C2=A0=C2=A0 ...
+> 		if ((nested_state & KVM_NESTED_PI_ACTIVE) &&
+> 			((nested_state & KVM_NESTED_PI_VECTOR_MASK) =3D=3D irq)) {
+> 			vmx_complete_nested_posted_interrupt(vcpu);
+> 			goto no_vmexit;
+> 		}
+> 		nested_vmx_vmexit(vcpu, EXIT_REASON_EXTERNAL_INTERRUPT,
+> 				=C2=A0 INTR_INFO_VALID_MASK | INTR_TYPE_EXT_INTR | irq, 0);
+> =C2=A0=C2=A0=C2=A0 ...
+> }
+>=20
+> Instead of setting KVM_NESTED_PI_PENDING and exiting to userspace with
+> KVM_EXIT_INTERNAL_ERROR via __vmx_complete_nested_posted_interrupt(), KVM
+> injects a bogus EXIT_REASON_EXTERNAL_INTERRUPT VM-Exit into L1, and the
+> !vmx->nested.pi_desc check in __vmx_complete_nested_posted_interrupt()
+> becomes unreachable.
+This should be fixed.
 
-Assisted-by: Claude:claude-fable-5-2
-Signed-off-by: Yvan Janssens <yvanj@cyber.gent>
----
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../selftests/kvm/s390/vsie_esa_test.c        | 180 ++++++++++++++++++
- 2 files changed, 181 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/s390/vsie_esa_test.c
+>=20
+> > =C2=A0	} else {
+> > =C2=A0		/*
+> > =C2=A0		 * The MMU is not initialized to point at the right entities ye=
+t and
+> > @@ -3712,9 +3729,6 @@ enum nvmx_vmentry_status nested_vmx_enter_non_roo=
+t_mode(struct kvm_vcpu *vcpu,
+> > =C2=A0		kvm_make_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
+> > =C2=A0	}
+> > =C2=A0
+> > -	if (nested_cpu_has_posted_intr(vmcs12))
+> > -		atomic_or(KVM_NESTED_PI_ACTIVE | vmcs12->posted_intr_nv,
+> > -			=C2=A0 &vcpu->arch.nested_guest_state);
+>=20
+> [Severity: High]
+> Does deferring nested_vmx_enable_posted_interrupts() until
+> KVM_REQ_GET_NESTED_STATE_PAGES misdeliver nested posted interrupts when L=
+2
+> is restored in KVM_MP_STATE_HALTED?
+>=20
+> After nested_vmx_enter_non_root_mode(vcpu, false) during
+> KVM_SET_NESTED_STATE (or vmx_leave_smm()), a halted L2 vCPU enters
+> vcpu_block() rather than vcpu_enter_guest(), so
+> KVM_REQ_GET_NESTED_STATE_PAGES is not serviced while blocked.=C2=A0 When
+> another vCPU sends vmcs12->posted_intr_nv to wake L2,
+> vmx_deliver_nested_posted_interrupt() sees KVM_NESTED_PI_ACTIVE =3D=3D 0 =
+and
+> queues the vector into L1's LAPIC IRR.=C2=A0 vcpu_block() then runs
+> kvm_check_nested_events() -> vmx_check_nested_events() while
+> KVM_NESTED_PI_ACTIVE is still unset, failing to morph the notification
+> vector and instead reflecting a spurious EXIT_REASON_EXTERNAL_INTERRUPT
+> VM-Exit to L1.
+>=20
+> > @@ -4025,22 +4039,15 @@ static void vmcs12_save_pending_event(struct kv=
+m_vcpu *vcpu,
+> > =C2=A0	}
+> > =C2=A0}
+> > =C2=A0
+> > -static int vmx_complete_nested_posted_interrupt(struct kvm_vcpu *vcpu)
+> > +static int __vmx_complete_nested_posted_interrupt(struct kvm_vcpu *vcp=
+u)
+> > =C2=A0{
+> > =C2=A0	struct vcpu_vmx *vmx =3D to_vmx(vcpu);
+> > =C2=A0	int max_irr;
+> > =C2=A0	void *vapic_page;
+> > =C2=A0	u16 status;
+> > =C2=A0
+> > -	int nested_state =3D atomic_read(&vcpu->arch.nested_guest_state);
+> > -
+> > -	if (!(nested_state & KVM_NESTED_PI_PENDING))
+> > -		return 0;
+> > -
+> > =C2=A0	if (!vmx->nested.pi_desc)
+> > -		goto mmio_needed;
+> > -
+> > -	atomic_andnot(KVM_NESTED_PI_PENDING, &vcpu->arch.nested_guest_state);
+> > +		return -ENXIO;
+> > =C2=A0
+> > =C2=A0	/*
+> > =C2=A0	 * Don't test the value of PID.ON.
+> > @@ -4057,7 +4064,7 @@ static int vmx_complete_nested_posted_interrupt(s=
+truct kvm_vcpu *vcpu)
+> > =C2=A0	if (max_irr > 0) {
+> > =C2=A0		vapic_page =3D vmx->nested.virtual_apic_map.hva;
+> > =C2=A0		if (!vapic_page)
+> > -			goto mmio_needed;
+> > +			return -ENXIO;
+> > =C2=A0
+> > =C2=A0		__kvm_apic_update_irr(vmx->nested.pi_desc->pir,
+> > =C2=A0			vapic_page, &max_irr);
+>=20
+> [ ... ]
+>=20
+> > @@ -5121,7 +5141,10 @@ void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, =
+u32 vm_exit_reason,
+> > =C2=A0	if (enable_ept && is_pae_paging(vcpu))
+> > =C2=A0		vmx_ept_load_pdptrs(vcpu);
+> > =C2=A0
+> > -	leave_guest_mode(vcpu);
+> > +	old_nested_state =3D leave_guest_mode(vcpu);
+> > +
+> > +	if (old_nested_state & KVM_NESTED_PI_PENDING)
+> > +		__vmx_complete_nested_posted_interrupt(vcpu);
+>=20
+> [Severity: Medium]
+> Can calling __vmx_complete_nested_posted_interrupt() unconditionally in
+> __nested_vmx_vmexit() lose posted interrupts when vmx->fail is set or
+> virtual_apic_map is unmapped?
+>=20
+> When a hardware VM-Entry of vmcs02 fails (vmx->fail =3D=3D 1),
+> __nested_vmx_vmexit() skips sync_vmcs02_to_vmcs12().=C2=A0 Running
+> __vmx_complete_nested_posted_interrupt() before checking !vmx->fail
+> clears PID.ON and harvests PID.PIR into the virtual APIC page, but writes
+> the updated GUEST_INTR_STATUS.RVI to vmcs02 where it is discarded without
+> being synced to vmcs12.
+>=20
+> Also, if virtual_apic_page_addr could not be mapped (which forces a
+> vmcs02 VM-Entry failure while leaving pi_desc mapped),
+> __vmx_complete_nested_posted_interrupt() clears PID.ON in guest memory
+> before checking !vapic_page and returns -ENXIO without harvesting PIR or
+> marking pi_desc_map dirty, while __nested_vmx_vmexit() ignores the return
+> value.
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 283c59d7649c..aef64ec2719c 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -227,6 +227,7 @@ TEST_GEN_PROGS_s390 += s390/shared_zeropage_test
- TEST_GEN_PROGS_s390 += s390/ucontrol_test
- TEST_GEN_PROGS_s390 += s390/user_operexec
- TEST_GEN_PROGS_s390 += s390/keyop
-+TEST_GEN_PROGS_s390 += s390/vsie_esa_test
- TEST_GEN_PROGS_s390 += rseq_test
- TEST_GEN_PROGS_s390 += s390/irq_routing
- TEST_GEN_PROGS_s390 += mmu_stress_test
-diff --git a/tools/testing/selftests/kvm/s390/vsie_esa_test.c b/tools/testing/selftests/kvm/s390/vsie_esa_test.c
-new file mode 100644
-index 000000000000..a52603e30f63
---- /dev/null
-+++ b/tools/testing/selftests/kvm/s390/vsie_esa_test.c
-@@ -0,0 +1,180 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Test nested guests that run in ESA mode (KVM_CAP_S390_VSIE_ESAMODE).
-+ *
-+ * Guest 2 runs a guest 3 from a state description without the
-+ * z/Architecture flag. Such a state description has the eight-byte ESA/390
-+ * PSW in the first doubleword of the PSW field. vsie rewinds the PSW of
-+ * guest 3 when it has to repeat an instruction; the test uses STORE FACILITY
-+ * LIST EXTENDED, which vsie repeats after it has shadowed the facility list
-+ * guest 2 designates.
-+ */
-+#include <stdio.h>
-+#include <string.h>
-+
-+#include "kvm_util.h"
-+#include "test_util.h"
-+#include "kselftest.h"
-+#include "sie.h"
-+#include "facility.h"
-+#include "ucall_common.h"
-+
-+#define G3_MEM_LEN	0x100000UL
-+/* mso/msl have 1MB granularity */
-+#define G3_MSO		0x10000000UL
-+#define G3_START	(2 * 0x1000UL)
-+/* where guest 3 stores its facility lists, in its first page */
-+#define G3_STFLE_1	0xf00
-+#define G3_STFLE_2	0xf80
-+
-+#define FAC_STFLE	7
-+
-+/* bit 12 of an ESA/390 PSW is one, bit 32 selects 31-bit addressing */
-+#define ESA_PSW_MASK	0x0008000080000000ULL
-+#define ESA_PSW_ADDR	0x000000007fffffffULL
-+
-+/* facility list for guest 3: only the first doubleword is looked at */
-+#define G3_FAC_0	0x4000100000000001ULL
-+
-+static const u8 g3_code[] = {
-+	0xa7, 0x08, 0x00, 0x00,			/* lhi   %r0,0 */
-+	0xb2, 0xb0, 0x0f, 0x00,			/* stfle G3_STFLE_1 */
-+	0xa7, 0x08, 0x00, 0x00,			/* lhi   %r0,0 */
-+	0xb2, 0xb0, 0x0f, 0x80,			/* stfle G3_STFLE_2 */
-+	0x83, 0x00, 0x00, 0x44,			/* diag  %r0,%r0,0x44 */
-+};
-+
-+static u64 scb_real;
-+
-+static void guest_code(void)
-+{
-+	while (1) {
-+		asm volatile("	sie	0(%[scb])\n"
-+			     :
-+			     : [scb] "a" (scb_real)
-+			     : "memory", "cc");
-+		GUEST_SYNC(0);
-+	}
-+}
-+
-+static void get_machine_feat(struct kvm_s390_vm_cpu_feat *feat)
-+{
-+	struct kvm_vm *vm = vm_create_barebones();
-+
-+	kvm_device_attr_get(vm->fd, KVM_S390_VM_CPU_MODEL,
-+			    KVM_S390_VM_CPU_MACHINE_FEAT, feat);
-+	kvm_vm_free(vm);
-+}
-+
-+static bool machine_has_sief2(void)
-+{
-+	struct kvm_s390_vm_cpu_feat feat = {};
-+
-+	get_machine_feat(&feat);
-+	return feat.feat[0] & (1ULL << (63 - KVM_S390_VM_CPU_FEAT_SIEF2));
-+}
-+
-+static bool machine_has_facility(int nr)
-+{
-+	struct kvm_s390_vm_cpu_processor proc = {};
-+	struct kvm_vm *vm = vm_create_barebones();
-+	bool ret;
-+
-+	kvm_device_attr_get(vm->fd, KVM_S390_VM_CPU_MODEL,
-+			    KVM_S390_VM_CPU_PROCESSOR, &proc);
-+	ret = test_bit_inv(nr, (unsigned long *)proc.fac_list);
-+	kvm_vm_free(vm);
-+	return ret;
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	struct kvm_s390_vm_cpu_feat feat = {};
-+	struct kvm_s390_sie_block *scb;
-+	u64 *g3_page0, *fac_list;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	gva_t gva, fac_gva;
-+	u64 psw_end;
-+	struct ucall uc;
-+	void *code;
-+	int i;
-+
-+	TEST_REQUIRE(kvm_has_cap(KVM_CAP_S390_VSIE_ESAMODE));
-+	TEST_REQUIRE(machine_has_sief2());
-+	TEST_REQUIRE(machine_has_facility(FAC_STFLE));
-+
-+	ksft_print_header();
-+	ksft_set_plan(3);
-+
-+	/* SIEF2 must be enabled before the first vcpu is created */
-+	get_machine_feat(&feat);
-+	vm = vm_create(1);
-+	kvm_device_attr_set(vm->fd, KVM_S390_VM_CPU_MODEL,
-+			    KVM_S390_VM_CPU_PROCESSOR_FEAT, &feat);
-+	vm_enable_cap(vm, KVM_CAP_S390_VSIE_ESAMODE, 0);
-+	vcpu = vm_vcpu_add(vm, 0, guest_code);
-+
-+	gva = vm_alloc_page(vm);
-+	scb = addr_gva2hva(vm, gva);
-+	memset(scb, 0, getpagesize());
-+	scb_real = addr_gva2gpa(vm, gva);
-+	sync_global_to_guest(vm, scb_real);
-+
-+	fac_gva = vm_alloc_page(vm);
-+	fac_list = addr_gva2hva(vm, fac_gva);
-+	memset(fac_list, 0, getpagesize());
-+	fac_list[0] = G3_FAC_0;
-+
-+	/* guest 3: two prefix pages and one page of code */
-+	for (i = 0; i < 3; i++) {
-+		gpa_t gpa = vm_phy_page_alloc(vm, MEM_REGION_TEST_DATA);
-+
-+		virt_pg_map(vm, G3_MSO + i * getpagesize(), gpa);
-+		memset(addr_gpa2hva(vm, gpa), 0, getpagesize());
-+		if (i == 0)
-+			g3_page0 = addr_gpa2hva(vm, gpa);
-+		if (i == 2)
-+			code = addr_gpa2hva(vm, gpa);
-+	}
-+	memcpy(code, g3_code, sizeof(g3_code));
-+
-+	scb->cpuflags = CPUSTAT_RUNNING;
-+	scb->ihcpu = 0xffff;
-+	scb->mso = G3_MSO;
-+	scb->msl = G3_MSO + ((G3_MEM_LEN - 1) & ~0xfffffUL);
-+	scb->psw_mask = ESA_PSW_MASK | G3_START;
-+	scb->psw_addr = 0;
-+	scb->fac = addr_gva2gpa(vm, fac_gva);
-+	TEST_ASSERT(!(scb->fac & 7) && addr_gva2gpa(vm, fac_gva) < (1UL << 31),
-+		    "facility list not usable for a designation");
-+
-+	vcpu_run(vcpu);
-+	TEST_ASSERT_EQ(get_ucall(vcpu, &uc), UCALL_SYNC);
-+	/*
-+	 * The capability does not tell whether the machine (or the hypervisor
-+	 * this host is a guest of) runs a state description without the
-+	 * z/Architecture flag. If not, it answers with validity 0x0001.
-+	 */
-+	if (scb->icptcode == ICPT_VALIDITY && (scb->ipb >> 16) == 0x0001)
-+		ksft_exit_skip("the host cannot run nested guests in ESA mode (validity 0x0001)\n");
-+	TEST_ASSERT(scb->icptcode == ICPT_INST && scb->ipa == 0x8300,
-+		    "guest 3: icptcode 0x%02x ipa 0x%04x ipb 0x%08x psw 0x%016llx 0x%016llx",
-+		    scb->icptcode, scb->ipa, scb->ipb, scb->psw_mask, scb->psw_addr);
-+
-+	psw_end = ESA_PSW_MASK | (G3_START + sizeof(g3_code));
-+	ksft_test_result(scb->psw_addr == 0,
-+			 "second PSW doubleword of the ESA mode guest untouched (0x%llx)\n",
-+			 scb->psw_addr);
-+	ksft_test_result((scb->psw_mask & ~0x0000300000000000ULL) == psw_end,
-+			 "ESA/390 PSW after the last instruction (0x%llx)\n",
-+			 scb->psw_mask);
-+	ksft_print_msg("second STFLE stored 0x%lx\n",
-+		       g3_page0[G3_STFLE_2 / sizeof(u64)]);
-+	ksft_test_result(g3_page0[G3_STFLE_1 / sizeof(u64)] == G3_FAC_0,
-+			 "first STFLE of the ESA mode guest executed (0x%lx)\n",
-+			 g3_page0[G3_STFLE_1 / sizeof(u64)]);
-+
-+	kvm_vm_free(vm);
-+	ksft_finished();
-+}
--- 
-2.47.3
+While not optimal, this is not a issue, as posted interrupt is not really l=
+ost,
+and since it only happens once per migration, I don't think that this is a =
+problem.
 
+
+Best regards,
+	Maxim Levitsky
 
