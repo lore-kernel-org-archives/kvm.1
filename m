@@ -1,93 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795588207;
-	b=xb+dG0iYfOXBWC139JltQytsyS9ykkipA4/dOPsXURaxZKU4sKaBeTp3RNkrKbn3nwlV
-	 JOgjgcSNtkHxGQ+Tpib+xxywiZfYB2xO0vHJx2bDQ55A/kB2Bff4Feyi7oGBV83iHg2fp
-	 X5UECMwXvrFY4K+xJ96xGi99KafFgJe6P1+6+hwUBDY8acr2IOY8xAnwrpn3ZEyrR/HXH
-	 atJnJA1sD/TC+y+G0XfHfkBkZwUOyU8RJku7SPE5J8Ip+i5HboFsn8BZwyqlTJt/tMab6
-	 DRyX/XB3hrSYiHvgS2pbo9aYxecW0Ully4EAFShJlYEblasuuuMP5S7258DuBYC0RIw==
+	t=1795588280;
+	b=YXcO+XDbI/pbEfXMq6jyPH1+5hC2Ji4/NgxQhVY6XSWB4pgS143ytbDYnnizZqjFrKy2
+	 3l7HUrQ40FS/uAUPwpGb+v3TDZmuMcAz5Azw1nPl4tMtQ5bz7jsUnf7DWNj30gplXNVhd
+	 ZAYGqM5WdpWeWaTalNl3z/wlXA7dOkLbjsF7Y5kq6apAilFgPnoaAE273C9HB/nAeWl9/
+	 BdyzhMPT84/yIZJdV9cCQSNuafiwUDgt0xryIi5BomwYOuf9jrhJWurGnoCdjwEtGj7VI
+	 e0M66xZgh+wOMLXbmsKkpHT2wCTORp4FzvSQ/vvH53ykuOBpoUwBuOeloXS5T965ZBw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795588207;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:
-	 X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=EI9iN8WP/z32qsZ9Htvf2ISMotr31c9Hgi0M9PXkKHw=;
-	b=UcWLvrTWXHpIVGybaDP7DEnUFSgRYZNGQCKsM1RjDE1e0vEPTPdFaT4PtioPU823BemU
-	 Dbq7Wxhi+9rtlA/bTV0u6O47kwxrNLYM3tO7UWi2r4ujLPY4yY+d/0mSC5XlNivzkt1Wh
-	 zRpW8WxZtsUPLS4ekDTDdWCc/tQH4z6/bC/xDeNTe/3XU1aztnXKwUswTRicldjGioiZQ
-	 hFXbFW/ZDtIbAPo3Wwtht4prKnB+ivNV3MCHNzHpm0qxn1ezsCKohzoNUKRk2NosD+73P
-	 a3hWSF7W8XBMU14dEpdOw8RYF3/QoGEDJD967jJUxLVeLP6/2eSvz8RF41CYWx+iX9Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795588280;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=dNNow8pU0EgspMEvDUxBJ5a9af5PUjY1loG/b00zoNY=;
+	b=yNEmABX0zFcxPkaV+OEZ6k/2N/8DsSz9ziOtl2QcRoSjZM72Axubn9kyNoDaZXfn/cVD
+	 uDtl3JrvaZ2vpzx6Bwo3vaH547VSTj0yGeBA+2g1Mc5bPGzSE+ehvbBJFr8urcKl8fvPM
+	 r+x1xxK/OcUvXYk2gBLx4n9NTTTyvR7nGxW60zcvbWiloNOW8mLMwULimYcAqj52vzmnv
+	 YpjAggwSRqvaW92tSmBg5IpMb5gvYllzEHHlx713LgFlr2j9v3NiaHTP6pPpnQLgtAOKi
+	 VGl4LZsxgMaZ3hjho90Dhvdu734nQHTPE03fDTesw4boYic9OmB+3IfNHAXlNOVYMVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pWmDmt02;
-	arc=none smtp.remote-ip=209.85.210.169
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=exhRYpub;
+	arc=none smtp.remote-ip=192.198.163.18
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678D4606A697
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 06:30:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 678D4606A697
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5048E606A31E;
+	Wed, 25 Nov 2026 06:31:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5048E606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=pWmDmt02
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8a9f9473029so4068188b3a.2
-        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 22:30:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795588207; x=1796193007; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EI9iN8WP/z32qsZ9Htvf2ISMotr31c9Hgi0M9PXkKHw=;
-        b=pWmDmt02UcXRawX12m7sNm98B7L7cvaUgr8R27ivTAd34BENBhhAAbQ5lqJMlYCWOe
-         o47/jjZHZGeyFOkzFQm7aiHGyZp4MgrvZICXWixqVXUhRD9kFYtF4HUQx9KveRuNUjHQ
-         sfRHTLqtOq+2h3STAdCTYIO1tU1vP7w/3upmGGn2/T+FeX5qODwL6cEzg2eRaSqTUsq6
-         ViGEZgAzrMcSIYi6rWJugghAu1LZwbpP98DEaww/+JXSY4izHhhcl16U1dVWQinfV4AZ
-         pbvssHog+1ZBARCN+SRhfNepTcaisnvc2ra4fHU7caLg8dYdUs2CGeW56VJp7gPIdtgk
-         74uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795588207; x=1796193007;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EI9iN8WP/z32qsZ9Htvf2ISMotr31c9Hgi0M9PXkKHw=;
-        b=XxwhuKjl3HYyYqWRqGRLhTrNGCdyzbGbTDE4SHMeENepDSVHvtdM3QZpFH97rAF87t
-         QhJTmLWDCL+F9D6EqO/lZ0Mn1iowXcFi0oQkGwqgYENj941NMzNZMAT81QwAOoHAqhUb
-         uvpN7I9rQr1VaKTQwCHSmpvxnt05a91sxVf96WT23vbpuzX1unX7/U5kfKRgyMvXNTP1
-         1LiwwIu3i1f3W7JCsvTwpkTJMfFeeYDTMWl85H4Myndb7y67KRYLp4l/jkWCuVHnoil5
-         NFrfC2LGE1PAY+tAK+8iukIbxzuWb63eXTRe7s69dd4OPsuShlJ9lfSIEwJuXnYd5I9k
-         iDPg==
-X-Gm-Message-State: APuU4Z+hDw7rfomwNYcAwtXmg3VJtoy+JMmBCHYIIzcX1Fub+fsJUr0G
-	GGwUzvm8+aE1qfLZmhVnnxpFw3pa7coAQQ+N4NTFjg+8FuILue5JyDpeMNcs6Vat
-X-Gm-Gg: AZFdTZfUNb/I9AfS34L+ngdUS5noy9hOOT6odboqkY+uEttKNt3gQTzGVH4sIIPvuZI
-	r5bPT9x+2DpScYLuZgGtEf9qaT4ynwkkXvEwoCwHaZyEDGcyMpNTdL3vcA0SniZOy/tqLoZ0exP
-	7szPAg7i+yIJ/KiHF44t0F61UFuVnFHf5fAuW+sXe3knXpNWWNMKjno8F1hz+CpIuDwRD1+4MZS
-	RgPI/pjHHvhU8adxZtO5/kaBI07n1s29xnWiyy6pFxeuI644v/RlCz3nXyz3kahpds25lTiNBEs
-	OKP+d2fwGwPviAYaZHja28M0ki2ZLgdejgMh/p5FE93EdckOB7xCS5JepeYpJIxT/Lbh99aYjcs
-	H8y8XmJkXxrPdKGzBpidUUGty8t6HH31b7Tpxa32zyJdRSS2Tg+5p1mTq+6w0q0He95JLfbNn7+
-	b54x2EJ7m+n7zNOuHabcnQqWP3lh96ZBBPPMegNhoxIh7hDGZk/U6g8MYSMAfNeZI22ykiiQ3Dx
-	KZ2GMjOR2srxoPRE/eUc56yIWh3hUv6n3Qvo3HcBFAcvdVczORFksCCS43JGsM+d8FIPde+nC1+
-	F9cp0mm1wZyvbQTKSqVBZcZQGtfL3j0BTx5vqHZEhk61lmqZTihzsHKA9Yq2twwvpKOMi86c
-X-Received: by 2002:a05:6a00:1c85:b0:8a0:76ea:36e1 with SMTP id d2e1a72fcca58-8c8794b875bmr14853645b3a.7.1795588206720;
-        Tue, 24 Nov 2026 22:30:06 -0800 (PST)
-Received: from FLYINGPENG-MC2.tencent.com ([43.132.141.20])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c873b278f0sm8355165b3a.51.2026.11.24.22.30.05
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 24 Nov 2026 22:30:06 -0800 (PST)
-From: Peng Hao <flyingpenghao@gmail.com>
-X-Google-Original-From: Peng Hao <flyingpeng@tencent.com>
-To: pbonzini@redhat.com,
-	seanjc@google.com
-Cc: kvm@vger.kernel.org
-Subject: [PATCH 2/2] KVM: selftests: Test that an NMI-window single-step preserves the guest's RF
-Date: Wed, 25 Nov 2026 14:30:00 +0800
-Message-ID: <20261125063000.92971-2-flyingpeng@tencent.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20261125063000.92971-1-flyingpeng@tencent.com>
-References: <20261125063000.92971-1-flyingpeng@tencent.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=exhRYpub
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795588279; x=1827124279;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=AY2ItQH4n8SPEJWuIkbJCQ/t2DnGTrUZX9TmGLTjYU4=;
+  b=exhRYpubCZ4B+/4KTnFLkQmefLLvP6RLLTXN7FyOpiUqi12aoBv3askV
+   ojeAVGigb2wIQxpAyzqSxJolpHe8VVS+wCur0UOMdz/AdRV4QxD39lcXg
+   6YOXvo7UwbrUH3qUptK2R49KQVR/ORNks1JCvvIVFUlMb6Enjr8paLFYu
+   b8uqZ7p7cex5GkMFYv+vZAeeQNgFHwalSWxZ+2Nc3vHtosinWIKsMkXL7
+   cVo8yi+nEmJlKH4CvfEgwdwAvKJcx2mwId4HZW/NMd9CX6f/FRiVN/rAn
+   GtzRYKuYc6MuPQjHYgoMstmmVC6YmNVvUAliJus2rX+DvNJTkhzV5Lx4v
+   w==;
+X-CSE-ConnectionGUID: h7+MUX2dS9iQUFACLDt2pA==
+X-CSE-MsgGUID: kronBU0fQsa+1hkWLBk0Bg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4467694"
+X-IronPort-AV: E=Sophos;i="6.27,232,1787036400"; 
+   d="scan'208";a="4467694"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 22:30:11 -0800
+X-CSE-ConnectionGUID: Xa+KThYJQ/mz0e8mRQ2i5w==
+X-CSE-MsgGUID: 4vr1ggl2Q1GgBnGRFyzm0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,232,1787036400"; 
+   d="scan'208";a="11891600"
+Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 22:27:06 -0800
+Message-ID: <9ce9d375-4a95-4e00-9d62-d6a0b2875a2d@linux.intel.com>
+Date: Wed, 25 Nov 2026 14:27:02 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -97,161 +72,68 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, Jason Gunthorpe <jgg@ziepe.ca>,
+ Kiryl Shutsemau <kas@kernel.org>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
+ "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Gao, Chao" <chao.gao@intel.com>,
+ Binbin Wu <binbin.wu@linux.intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 6/9] iommu/vt-d: Refuse system suspend while acquired
+ by the TDX module
+To: "Tian, Kevin" <kevin.tian@intel.com>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ "x86@kernel.org" <x86@kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
+ <20261112043054.2664857-7-baolu.lu@linux.intel.com>
+ <CO1PR11MB4835B7CA0A21EB68A2034C108C432@CO1PR11MB4835.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <CO1PR11MB4835B7CA0A21EB68A2034C108C432@CO1PR11MB4835.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add a test for the case where KVM single-steps the IRET of an NMI
-handler to find out when NMIs are unblocked (SVM without vNMI) and that
-IRET returns to an instruction breakpoint with RF set in the popped
-RFLAGS.
+On 11/25/2026 12:01 PM, Tian, Kevin wrote:
+>> From: Lu Baolu <baolu.lu@linux.intel.com>
+>> Sent: Thursday, November 12, 2026 12:31 PM
+>>
+>> While tdx-host has acquired an IOMMU, the VT-d driver blocks its GCMD
+>> writes. TDX disables S3 by clearing acpi_suspend_lowlevel, but that is
+>> only checked after the syscore suspend callbacks have run, so an S3
+>> request, e.g. "echo mem > /sys/power/state", still runs iommu_suspend()
+>> and then iommu_resume():
+>>
+>>    suspend_enter()
+>>      syscore_suspend()
+>>        iommu_suspend()                  <- runs on the acquired IOMMU
+>>      suspend_ops->enter() = acpi_suspend_enter()
+>>        if (!acpi_suspend_lowlevel)      <- TDX's "S3 disabled" check
+>>            return -ENOSYS
+>>      syscore_resume()
+>>        iommu_resume()                   <- runs on the acquired IOMMU
+>>
+>> Register a PM notifier for each DMAR unit that supports trusted DMA and
+>> refuse PM_SUSPEND_PREPARE with -EBUSY while the unit is acquired. The
+>> suspend then fails before tasks are frozen and before syscore callbacks
+>> run.
+>>
+> 
+> what about directly returning error in iommu_suspend() if any acquired
+> IOMMU exists? at this point all other processes are frozen so no contention
+> exists at this point.
+> 
+> or introduce a new flag or counter (intel_iommu_suspend_disabled) which
+> is set/cleared or incremented/decremented along with acquire/release,
+> then just check this flag/counter in iommu_suspend().
 
-The guest arms an instruction breakpoint, sends itself an NMI that is
-delivered at the breakpoint address, and from the NMI handler sends a
-second NMI, which stays pending, and sets RF in the interrupt frame.
-The second NMI is delivered once the first handler's IRET completes,
-and when it returns the breakpoint must not fire.
+I'm fine with this. It's actually what I did at first. The only downside
+is that iommu_suspend() runs very late. By then, every device has
+already been suspended, and suspending a device that is assigned to a TD
+may affect its TDISP state. That shouldn't be the IOMMU driver's concern
+anyway, so let's start with the simpler approach.
 
-Without the preceding fix the test fails on AMD with kvm_amd.vnmi=0:
-
-  x86/nmi_iret_rf_test.c:80: READ_ONCE(db_count) == 0
-  0x1 != 0x0 (READ_ONCE(db_count) != 0)
-
-It passes with vNMI, and on Intel, where KVM doesn't single-step to
-open the NMI window.
-
-Signed-off-by: Peng Hao <flyingpeng@tencent.com>
----
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../selftests/kvm/x86/nmi_iret_rf_test.c      | 109 ++++++++++++++++++
- 2 files changed, 110 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/x86/nmi_iret_rf_test.c
-
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 17a4256e9081..d7df9df89de2 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -147,6 +147,7 @@ TEST_GEN_PROGS_x86 += x86/xapic_tpr_test
- TEST_GEN_PROGS_x86 += x86/xcr0_cpuid_test
- TEST_GEN_PROGS_x86 += x86/xss_msr_test
- TEST_GEN_PROGS_x86 += x86/debug_regs
-+TEST_GEN_PROGS_x86 += x86/nmi_iret_rf_test
- TEST_GEN_PROGS_x86 += x86/tsc_msrs_test
- TEST_GEN_PROGS_x86 += x86/vmx_pmu_caps_test
- TEST_GEN_PROGS_x86 += x86/xen_shinfo_test
-diff --git a/tools/testing/selftests/kvm/x86/nmi_iret_rf_test.c b/tools/testing/selftests/kvm/x86/nmi_iret_rf_test.c
-new file mode 100644
-index 000000000000..9d2ced788329
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/nmi_iret_rf_test.c
-@@ -0,0 +1,109 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Verify that KVM doesn't clobber RFLAGS.RF loaded by the guest's IRET when
-+ * KVM single-steps the IRET of an NMI handler to open the NMI window.
-+ *
-+ * Without vNMI, SVM detects the end of NMI blocking by intercepting IRET and
-+ * then single-stepping it.  If that IRET returns to an instruction that has
-+ * an enabled instruction breakpoint with RF set in the popped RFLAGS (which is
-+ * what an OS does when it resumes after handling the breakpoint), the guest
-+ * must not see a second #DB on that instruction.
-+ */
-+#include "test_util.h"
-+#include "kvm_util.h"
-+#include "processor.h"
-+#include "apic.h"
-+
-+#define DR7_L0		BIT(0)
-+#define DR7_GE		BIT(9)
-+#define DR7_FIXED_1	BIT(10)
-+
-+extern char bp_target[];
-+
-+static int nmi_count;
-+static int db_count;
-+
-+static u64 self_nmi_icr(void)
-+{
-+	return ((u64)x2apic_read_reg(APIC_ID) << 32) | APIC_DEST_PHYSICAL | APIC_DM_NMI;
-+}
-+
-+static void send_self_nmi(void)
-+{
-+	x2apic_write_reg(APIC_ICR, self_nmi_icr());
-+}
-+
-+static void guest_nmi_handler(struct ex_regs *regs)
-+{
-+	if (nmi_count++)
-+		return;
-+
-+	GUEST_ASSERT_EQ(regs->rip, (u64)bp_target);
-+
-+	/*
-+	 * NMIs are blocked, so this one stays pending until KVM sees the IRET
-+	 * below complete.  Return to bp_target with RF set, as if resuming
-+	 * after the instruction breakpoint was handled.
-+	 */
-+	send_self_nmi();
-+	regs->rflags |= X86_EFLAGS_RF;
-+}
-+
-+static void guest_db_handler(struct ex_regs *regs)
-+{
-+	db_count++;
-+	regs->rflags |= X86_EFLAGS_RF;
-+}
-+
-+static void guest_code(void)
-+{
-+	u64 icr;
-+
-+	x2apic_enable();
-+
-+	asm volatile("mov %0, %%dr0" : : "r"(bp_target));
-+	asm volatile("mov %0, %%dr7" : : "r"((u64)(DR7_FIXED_1 | DR7_GE | DR7_L0)));
-+
-+	/*
-+	 * Send the NMI with a bare WRMSR so that it is delivered with RIP
-+	 * pointing at bp_target, i.e. before the breakpoint is checked.
-+	 */
-+	icr = self_nmi_icr();
-+	asm volatile("wrmsr\n\t"
-+		     "bp_target: nop"
-+		     : : "c"(APIC_BASE_MSR + (APIC_ICR >> 4)),
-+			 "a"((u32)icr), "d"((u32)(icr >> 32)) : "memory");
-+
-+	asm volatile("mov %0, %%dr7" : : "r"((u64)DR7_FIXED_1));
-+
-+	GUEST_ASSERT_EQ(READ_ONCE(nmi_count), 2);
-+	GUEST_ASSERT_EQ(READ_ONCE(db_count), 0);
-+	GUEST_DONE();
-+}
-+
-+int main(void)
-+{
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	struct ucall uc;
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
-+	vm_install_exception_handler(vm, NMI_VECTOR, guest_nmi_handler);
-+	vm_install_exception_handler(vm, DB_VECTOR, guest_db_handler);
-+
-+	vcpu_run(vcpu);
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-+
-+	switch (get_ucall(vcpu, &uc)) {
-+	case UCALL_ABORT:
-+		REPORT_GUEST_ASSERT(uc);
-+		break;
-+	case UCALL_DONE:
-+		break;
-+	default:
-+		TEST_FAIL("Unexpected ucall %lu", uc.cmd);
-+	}
-+
-+	kvm_vm_free(vm);
-+	return 0;
-+}
--- 
-2.43.7
-
+Thanks,
+baolu
