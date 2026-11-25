@@ -1,88 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795589808;
-	b=TDTlvysdbX3mECK+g322ZQub9ysSs+vz5XRu2h+W6PjgcT1zMYOlwuNGPZyEz25bY7Bh
-	 4dykgdgdiiKC2lwcEu45nV95ioNN3iZbZghbZNwW9XBmcuTKiqGR58nlgbtz3Dx1z4HzB
-	 /8YcfuOoLIFbKGgQJ+PCbC5zdioyZPedc74YdZFIlOw+gyyija8vLaVr0BsCdZEr/Jq+l
-	 6NpKqFV7NDgXJGBNsbY/DDp3N8CIptGVbPKfKHrz6ZXbemQJgRrxI154Hqon4sqW/9VbQ
-	 HMY12+MAWzLV+OpIAnbRbu4D2pjuG3eMygV1wdLgSA2DovCbTvSGptdOZzis/P6OY9w==
+	t=1795589811;
+	b=yXx9nswJSip5MmZLwJ1j1TYpycrOFOvKUqsCqa3/cJawVQ4S6bKHRZcSenGhBXC4gJy5
+	 OhebDN8IEe8Onms31foGKpwx8+Y2ykMlAuzUnxbjRnT84sakB5UZOaptSiIYDt+tgXNbv
+	 ku7p55S/E8wB5EakY0IjvvpUlrd0TPcp854euptKWclJDse+/gRNKgOwMe12+XSWDNXMM
+	 LKnpEh3YqKCRRgC+PIGOuTgyjECvmQOZmZuaPct6HrOWn1C/05NRMLzqKyOdbIgYsQxjz
+	 C9Tp8Nn8DcEBIYb19xdn//XOTF/jXLxjK/fFVGk/intC6BmQIpeWrIFx6i/t8DkISww==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795589808;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795589811;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
-	bh=FprakhUf8NJ7i/pJUhVF+s5uu9taLAIMe4T8Serof+A=;
-	b=PzdnrPd18rheCyj+JmQJKzHVr2ip6Ijnrh9lHtknEEaVxqF/JRodV4vRlMN5kvh4OKTi
-	 1M16z7mIDfL8zIL6+U8TjU1eq+zbtbBy9ZAKHy5HWgL7ShZdGAfa4nJKRdLvxZ91/WUUP
-	 WCLfb1q+ATOTGGsMPpb2pHE+1R7Y3A2w+xA+9eGjcZzFkSSiz3RYK9snPoCykrTd6x1Im
-	 a6hbyR7GaVXZzC0Y4lVimgFEA1gO4RJd5rmo7jqZn1QEgLCVAo0Pb0shXRTbe5t7EwgcF
-	 s6lEUozwl8N3uBThuk57qyTSC38ra4dN9e6ktiEi0sVpTbOkPCXHFivqLD5xD5pRvNw==
+	bh=RGa577wX/xgJLkYslmrPB3AiasjRjUBJpObETRH3ZKA=;
+	b=4FDk/7iPT8hwtTBRqqQA7idawMba6hdF04rBesbfWcTA5XRQBca1JosceHPa2j6fvqxP
+	 QE7X31Ynz1TR94csU1RmzJi+b7QqIacgAouF9bVn2asuF+ccYc+1UreMx3SbtisWNkTXY
+	 akOkgFyw4ATnB5ebcVbc3m8fzOX9ufaxDuzyG2vU4M6b80mDBIf2ZPBIixffffSdXEfnJ
+	 BCJyU92oHpEhF6+eHdqo0dAvg/+ehYDV8A5ouedwfL1VRZLcWRsV5qBa4W6HNVcRNzwff
+	 9ujw7DqwnfMi8uJi8FMmeqkcwpfJV/7D2y4nUEsSC+Gsy1uuAS/d7Hr/fDKr0/XFcDg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=pereq.eu;
 	spf=pass smtp.mailfrom=cryspen.com;
-	dkim=pass header.d=pereq.eu header.i=@pereq.eu header.a=rsa-sha256 header.s=google header.b=RlPZXaa7;
-	arc=none smtp.remote-ip=209.85.221.41
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	dkim=pass header.d=pereq.eu header.i=@pereq.eu header.a=rsa-sha256 header.s=google header.b=hKxqrr3g;
+	arc=none smtp.remote-ip=209.85.128.49
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0E8606A6A9
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 06:56:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EC0E8606A6A9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB076606A6B8
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 06:56:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB076606A6B8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pereq.eu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cryspen.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pereq.eu header.i=@pereq.eu header.a=rsa-sha256 header.s=google header.b=RlPZXaa7
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48e46e449e8so3431089f8f.3
-        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 22:56:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=pereq.eu header.i=@pereq.eu header.a=rsa-sha256 header.s=google header.b=hKxqrr3g
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4bb5b8ef642so47664305e9.1
+        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 22:56:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pereq.eu; s=google; t=1795589806; x=1796194606; darn=vger.kernel.org;
+        d=pereq.eu; s=google; t=1795589809; x=1796194609; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FprakhUf8NJ7i/pJUhVF+s5uu9taLAIMe4T8Serof+A=;
-        b=RlPZXaa7fe7EQZlpHI+2GAQlXvVlmpHFOev8m+dtEjaz87EYAL8kAQJNFvcebnJnCJ
-         QayppHZcapAX1zGtIIZsMb3RlEGPDjqVmWDvVCnvzPYoTLjBV9ke6fhmRYjzuIaAP7jA
-         uK7+gZzUDH1J8jBhKFSXooKzUaz9d+QZLs7K7nY9iph4N8+4JXQtNDxgs+EMim1wIgD6
-         3tmYEVVTb6u68vD0HJXKScfYOusBlvBMoLIrGEGqC4lPbYcn7H4MFr1XSBLw1XgIUh2h
-         xgqu/Fuyde2lH67JzlyZNxMTaIY04TI3Dwh75KA5/W7iI/mh+UWUbKewCi1k6FPdGR+x
-         yANw==
+        bh=RGa577wX/xgJLkYslmrPB3AiasjRjUBJpObETRH3ZKA=;
+        b=hKxqrr3gaqvIXon62dT+8//wIIjdDSIWRBzPd8QV1IYK3M82N3s8pT7KviOlpbceqB
+         POL3tFPjnmgCXRvXs3bG0ihWnNUvLHBMDRWNVHVqTa9drm/i04+WX0EQ1JcraNK1UO2D
+         rGTIdvjMeawaDNP+KUP6Wbru6HqOcnsPWNvQE3Ez2fsMxktWXBxkVX+oh987pvDJ/j3S
+         qcccSF5b3xeERxNLxxFyr0QA0EYp1sBTBh1+GVlAtpj2u+tCsNbl0bOJC03qVUYLvdM0
+         aZG+ezaxM97dC6sWPnDmWRletcm4pAZmkSg8dK2uH50d5PedPpEzp7HoGXwBaO/5Zeoe
+         13xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795589806; x=1796194606;
+        d=1e100.net; s=20260707; t=1795589809; x=1796194609;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FprakhUf8NJ7i/pJUhVF+s5uu9taLAIMe4T8Serof+A=;
-        b=ehWj3GJ6a6Q11cKnXzCDdfZd15rz1Mm0vND46PIMG4ZeTvAofYsrHAM2u7ucQuswi9
-         LjubBuM++rW4ZYnu002oUz7fnY1/zsc2JYmR6oZxBEFQJOXZtEGWZMsiuWm5CQ3c1dMa
-         LPClpfrnpPjF0mSOKTqYm+EuKp+UTWP74NLdVGq4tyBM0MDSRM/vuHl4ar9F7WNRDCYY
-         5AQv869uNTYWTaJj5mPwMgRCqr5ttlxm0/5UIM8lhwpKWbY+ef05Uvhgfp7+0ajUeATa
-         d5wZEjod00N9IdAT1VOk9y6x1uvUZ0xGwZK+XY6VI08y37plIE96nTiJZ0xkK18UXrfG
-         /szQ==
-X-Forwarded-Encrypted: i=1; AL+hErG0Sw7KrNb9cN0Xx4QZbNDNec3LPIBNdxQdkxAMInuF+8JvbIMfXyxarkgKJN9cwEK4xRA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+hgYLAl7LqpUh6pp6tlY9TBmrlrlwYCUKfQTWUgyEzkrvG8js3
-	UgJdxRp8Xpmc/numMFIghE6a4jcs+jM5X+bdHVQ2Z9NRbE62/CvZISaWmUDG6qR0x3o=
-X-Gm-Gg: AZFdTZfom1b5cTL3gj/iY0FtlvFRRDJF8PXHCKTC/CHBgj4C3fl4hdG3y50Ki9T6neQ
-	kPdKdQiiTmF9JztPYrlBUL3ownMvAV14+apS7P6JKGxjI2zUQRyus1Yqo6OLOzCfQt3FDAd3Qwp
-	xpyeGIiwGxdWALWkDzhrRXLba0ZlNFx3yivK0FEftxmScpjkWPdsoDqKRpD6FH6FLEiBm8ASU9c
-	kTf4y+NMO7V2ArjxNpHphx0EzPPi2LQSz9X8i8rF5D+S6DfBjnIMuhUwcHfXO9nL7dAyMEEPEjE
-	rNhWfob2M+nHCl8ccdhM9w5BI7W3ecCnpOign66QeKnU3dYv55N+LU0hry/METtaBLwwinXc6fs
-	1rAWSGXRRDuAA8PuYGO32aGWXlYhyXsHDKl36sVYFFBTWdRjPog7M7W7Oc0Fhl1cOom3RX336bn
-	HLCB9+VmWC4vxUZh96Bw02YsY4x5tjnjrrR3tBSYH5b+BWtKVLtm8Uto9x9qxD8aAB4VkwHX4kk
-	qfDPjwkDh7WJ/OZrZtsRSffQXnj8Dj+LOHv51E7F4MTo4OhQ3YNNuXzsr5lozreFPVyUER6cpfM
-	orJSBu6n911KPw3Zq9o=
-X-Received: by 2002:adf:e014:0:10b0:4a6:b87:d799 with SMTP id ffacd0b85a97d-4abb400bb42mr23914238f8f.17.1795589806244;
-        Tue, 24 Nov 2026 22:56:46 -0800 (PST)
+        bh=RGa577wX/xgJLkYslmrPB3AiasjRjUBJpObETRH3ZKA=;
+        b=bvUmlNwOi3cso9XjELhnT6t4rtC74IKYzTu6b/PpX2ztF6UoYllaBCY3juM5vlSyfr
+         CpL737zh3vo1dBOHHLvVfXTOFhTfsI6Kpc/XmbI37l0BL1+AFmfC/MGP5WxHuTUl51uJ
+         K4W9104f02BU12eCk1neE8bPvxy6mJOt79uGj279YvYiDtTJGUDr7m8ll6Lxfm1HATGj
+         gyYJfT6xFiEL8MVqvYdhWTcPUrV4EYcQeYZf+7jrf6xViligGg2cANVBI29ss4Pu9SRo
+         3DrUdyob6/oQkrkhx1NnSryj0b4bTQHF3nCFy5ObYyAb4QAWNLL3pYicy2J9zqZXTpJN
+         7rMA==
+X-Forwarded-Encrypted: i=1; AL+hErGER64iis2s9Xf9lIdWkGV4PUT7RdlHbGawgBKjAvBwD0T4uosdWW9RISeYE+CenX0+RJ0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9EHnrsLIO4dFKOrehpWQdFVAk1dCKSkKk3rP0LRbIaS/pOGtPP
+	nvhobbJN4FheLoiMymt8rCwTUgTvcUl/J7Ixh9pVrLRMNav2i2PRebXwi2IpO/QbldM=
+X-Gm-Gg: AZFdTZcYGACOm50HD9shS4do8rrTjUjA4ygl705yirRhd5alu0FwVyzzfATVEuJmpyX
+	XVUJ1wG7+iSNkQ2BkiCUXBgyomlu8fSTylL2ggPhq9NpEwgXMigUgBU7vu+WQL89UHILRyL6NXv
+	mUqrNAVgZgURrRted4R1xwghXN40y1TL6rKrhZQO19TsWe5V0GMj5UgM+Y9OIY5ttYz8IhBIQpR
+	cOyDXFxzyVKlJh93uFK1+06X41jmUiMYLv90O29v1ZT1aDvWDK6kROzKIaBpSLeLCMJcElqQExb
+	t71vV91xx/3T73Shh9QXrsX8okfuftRhe/KAma9+gxo0lfQ8i/hhvJX9N8+mx3seJbNh4fCSG+h
+	hj0cCY7k/7a7O1FtP5HEFDlM5G9XUIPzx2PAyVrVgGkJZmQ/Q+xNAupEvbMLyjbDEzwZ/I9epyj
+	iOVl/LmyrPhS2LgbqQNXWsI200ibkVWAqF6hHVlEAcvnrJgG9xT8JV3wTACJpdDf72qI6tRSzQu
+	wq7xHH7Yf7EeSJB+y31l1WDrBXhcj326kxjS+QppwI0uZSyFnUjL3Pr3EVBH4qMcxHm4SS5TVct
+	879msP1uPuMDJ+JEdMk=
+X-Received: by 2002:a05:600c:8b11:b0:4a1:dda8:eb73 with SMTP id 5b1f17b1804b1-4bb8881c630mr352660555e9.27.1795589809163;
+        Tue, 24 Nov 2026 22:56:49 -0800 (PST)
 Received: from localhost ([2c0f:3d00:6be:8900:ce5e:9212:ea4b:f30])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ad644140b5sm29125406f8f.17.2026.11.24.22.56.45
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853a1e8bsm414574595e9.9.2026.11.24.22.56.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Nov 2026 22:56:45 -0800 (PST)
+        Tue, 24 Nov 2026 22:56:48 -0800 (PST)
 From: Dan Carpenter <dan@pereq.eu>
-Date: Wed, 25 Nov 2026 09:56:19 +0300
-Subject: [PATCH v2 4/8] KVM: arm64: nv: Discard nested SError in
- kvm_reset_vcpu()
+Date: Wed, 25 Nov 2026 09:56:20 +0300
+Subject: [PATCH v2 5/8] KVM: arm64: nv: Replace a pending SError when
+ injecting a new one
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,7 +94,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261125-double_exception-v2-4-224689d8a764@pereq.eu>
+Message-Id: <20261125-double_exception-v2-5-224689d8a764@pereq.eu>
 References: <20261125-double_exception-v2-0-224689d8a764@pereq.eu>
 In-Reply-To: <20261125-double_exception-v2-0-224689d8a764@pereq.eu>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
@@ -115,34 +115,52 @@ Cc: Karthik Bhargavan <karthik@pereq.eu>,
  linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
  Dan Carpenter <dan@pereq.eu>, linux-kernel@vger.kernel.org, 
  kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- stable@vger.kernel.org
+ Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
 
-Vanilla KVM stores a pending SError in ->hcr_el2 but nested KVM stores
-it in the NESTED_SERROR_PENDING flag.  Clear the flag for nested
-SErrors when we reset the vcpu.
+The kvm_inject_serror_esr() function injects SErrors as the name
+implies.  The bug is that it doesn't handle already pending errors
+correctly in nested virtualization.
 
+In vanilla KVM the kvm_inject_serror_esr() function always sets
+the SError to pending.  However with nested KVM, it might set it
+to pending or it might deliver the SError directly.  We can only
+have one pending error at a time.  Imagine we enter the function
+with an SError pending already.  In the current code if we decide
+to pend the new error that's fine, everything works.  However if
+we decide to deliver it directly then the pend flags should be
+cleared but they are not.  So we deliver the SError directly and
+then the SError that was pending on the next exit or entry.
+
+Clear the pend flags unconditionally at the start of the function.
+
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/all/sashiko-outbox-229065@kernel.org/
+Fixes: ce66109cec86 ("KVM: arm64: nv: Take "masked" aborts to EL2 when HCRX_EL2.TMEA is set")
 Fixes: 77ee70a07357 ("KVM: arm64: nv: Honor SError exception routing / masking")
 Cc: stable@vger.kernel.org
 Signed-off-by: Dan Carpenter <dan@pereq.eu>
 ---
-v2: New patch.  I split it up like this to make backporting easier.
+v2: New patch
 ---
- arch/arm64/kvm/reset.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/kvm/inject_fault.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm64/kvm/reset.c b/arch/arm64/kvm/reset.c
-index a5d298d5ce61..d80b38b2ce6c 100644
---- a/arch/arm64/kvm/reset.c
-+++ b/arch/arm64/kvm/reset.c
-@@ -209,6 +209,7 @@ void kvm_reset_vcpu(struct kvm_vcpu *vcpu)
+diff --git a/arch/arm64/kvm/inject_fault.c b/arch/arm64/kvm/inject_fault.c
+index aa2011cc0d5a..0f6a89b65074 100644
+--- a/arch/arm64/kvm/inject_fault.c
++++ b/arch/arm64/kvm/inject_fault.c
+@@ -361,6 +361,10 @@ int kvm_inject_serror_esr(struct kvm_vcpu *vcpu, u64 esr)
+ {
+ 	lockdep_assert_held(&vcpu->mutex);
  
- 	/* Discard a pending SError */
- 	vcpu->arch.hcr_el2 &= ~HCR_EL2_VSE;
++	/* A new SError replaces any that is already pending. */
 +	vcpu_clear_flag(vcpu, NESTED_SERROR_PENDING);
++	*vcpu_hcr(vcpu) &= ~HCR_EL2_VSE;
++
+ 	if (is_nested_ctxt(vcpu) && kvm_serror_target_is_el2(vcpu))
+ 		return kvm_inject_nested_serror(vcpu, esr);
  
- 	/*
- 	 * Additional reset state handling that PSCI may have imposed on us.
 
 -- 
 2.53.0
