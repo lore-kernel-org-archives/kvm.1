@@ -1,128 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795643171;
-	b=dV/on9gJuXKQ2ujOP8r4SnnhpYYxQgSP69cpvc/omWX9UeR3zwlyLMlTok3P+uK4dHYv
-	 /VdQVEvMbEeW2LYp3Alj0FyxWsvYLiNMe2xVIn+1DNEBH5WbYKoZU2QfUNRDem2/5pwhH
-	 MMklHbuA+Il9wtiNqn1kPGhXgoVIS/q30YvaXifNcOC3d07NfmEx8Sl4jCFiq1CXineWK
-	 nUMDvYkxXyD1nSl5i7yR7qS3Kp5Cn8j+0oEKMAo40UtxVbCiQWJtvTfVpSOUoVfz7rLWV
-	 ifEsNeuaZn7zN8aPH2ibzXAk5N2fJI9CLH4jKBcXaQT3q9N/P7jCTz0l0zBpqizbhOg==
+	t=1795649625;
+	b=IxxqVfpW4YQ4OdLFee0it8FRH3966HS/KlMZUnmS5HWV43lF4zO8HGJh6YWkyeY34Iwx
+	 ap6QmoTn7qDkxD0o1zPe86hJ+Nr60uaHhPWGZ2kTZX8w9TXiKNqE34fsx6bdQFyT7FR8l
+	 l7EmRbQrIRHWFXLj7lsclSRBGfwA4gOvHn/4uX6brOjubJoQadJzjh+pyKyE7ee3d2n9k
+	 RPQ/l9/MRI7pqmgfHPNM1iaDnmrQkfOWxmGpWqu2fkBMveJUHMt/wVEzWpovvsZHwsFkM
+	 sqzkFHFtAwTG6KiN2/jfqQaZ5pRWkYnu4yCA7JJ8CkK906wScHVH+fEgRX3A3Tsct9g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795643171;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=sN/vvPChvRjnihCjXMx+GKZD5EpsDE0bEFaTBUovVHA=;
-	b=gfnPqyMrTzPtbbfqk+WCWoKRLokAIetPZKiuj3+74LxeEk2y+2Nz9dt8UdR7+MSVWcqw
-	 sEhFtBxTenus7jK9hNqQ/QFycGXly4xA4B51vmLI0XOhx0nVJaDimrlVONEiniH7eDjU2
-	 FrbN7cziPUSe8EOkckGyAfa/DucMTU1AUg8lowOXbu6dp4Kf73YDio6g6Qp4hEYivr2og
-	 RgccE3e5nNqAvxZIwGUAJ8SmqQpGw1I3217zZmiDJugawQSuOKSDyw6Ld2y0mNIxbb2F+
-	 c8eTKwLzx9FLHpLd6wCFYnn9eKyDj9rB8QuuEAKC/bLCnmNwZ7K+tsCGwJXY2r2bCNw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795649625;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
+	 MIME-Version:User-Agent:From:Subject:To:Cc:References:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=b2ogpMRdOGvQOxnTYrtAYFBvprrsM3s8fDuelvc9zDg=;
+	b=feXH8834BeNB/RMerJ4dxQmi8fkApqUs0hSHtvCsD6xgG4VXnidfmZyZ4l5cO7mRMqcb
+	 v14QdskTg6HrKkrBiWuTNpGRHGxF2ArMReOc4qzCFEcfFscPxieDXwtAlw47/xP+CKCj7
+	 qQu+zmy/4H0Sv+1nVSb5Yn554bYoOQEY1DbS3AtdotToOkz/XSjI9JaJbqw0rAFkx7QB4
+	 8ctDfToVYJ6qYFLMS0vrQPoIYuA1ION4dfxvvuSKFCmvwRew3gYftcks0LD9fe4y3SF98
+	 lauDE6etiMvDbYJke5K1wf/dJD0pEGTMpogabnSSHSV5KMMwSGTY1rbC/H4ZkBk0o2A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FROQxim7;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=AkkPJYKD;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QCuwMB17;
+	arc=none smtp.remote-ip=198.175.65.18
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A48C606A323
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 21:46:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1A48C606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FA4606A31E;
+	Wed, 25 Nov 2026 23:33:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 68FA4606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FROQxim7;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=AkkPJYKD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795643170;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sN/vvPChvRjnihCjXMx+GKZD5EpsDE0bEFaTBUovVHA=;
-	b=FROQxim7NhQq+Igk9ska8V9PCoSaQWMMVnpPTDxKEvD1UQ/UztBW4kKSFiYb7uyeMGWi/Y
-	DB/NrgxUw9jeLc888Wojkub6/V16GnnRTzgmKFAN9lD7oF6grwx728L/iGQT6vaM32r4pW
-	ODBUz6kMVQaOjU7E2w/EmpdiqfiY3Rs=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-329-rLSOoE91PIWntPI_h39DwQ-1; Wed, 25 Nov 2026 21:46:08 +0000
-X-MC-Unique: rLSOoE91PIWntPI_h39DwQ-1
-X-Mimecast-MFC-AGG-ID: rLSOoE91PIWntPI_h39DwQ_1795643167
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a16dc2323cso30059435e9.3
-        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 13:46:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1795643167; x=1796247967; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sN/vvPChvRjnihCjXMx+GKZD5EpsDE0bEFaTBUovVHA=;
-        b=AkkPJYKDIXBVrVw2QNrytGIe1fLO+fFEnatpFNjpK+MFFD0PzOyztg3dFKSuBJphAZ
-         rUGNfarsUuMP1DvvQe432mVWldoZLMpMRmsd2zHfbisipNWsJjFsdACoscR+lmAfl6o5
-         xiRypMxkiSfOvk/18zg2fCkBXZFE0K1iBZkWGxaZSjsfVwC05GCFOBHg/R0ET+NLUjUg
-         ctGAtp6YKkHM9mgKPg82orvPOGZ4vMFXSOmzz0IqgtvG8FIycUmQ+8rXWAz3Y3o2afip
-         4ydLEGBJ8Ra3mV4AH6vlnAsuDAEAqIfpTMzqmnRGG81U3IR1wTk5F+/TlbvgoSlxrg01
-         G1eQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795643167; x=1796247967;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sN/vvPChvRjnihCjXMx+GKZD5EpsDE0bEFaTBUovVHA=;
-        b=AwPSGnJtRU1QcGDcF0MKxPinGYrHvuygF73hKY4b9oRyadf+MMkQHQtZjFgyTPGfZp
-         w8s6Z6LDLHkPLd7jnONuC4jTngmGlE9zXsyq8P9W7GLlPqDTGDEdIiWbfyk9hSNt1e3V
-         8vX5bx9HsNGr5iS7Sv5lz70rWjqvnpZV1KgH1JMflS3M3Vr5iDIh71fA5W61pf1kILNr
-         Wgjph2w1Lq4FsUANAua3SSxy2JkKUYgo3Bifig4Agd5qBL3jmqn5h9mjf0k1zQzQ0P7o
-         tpVupc8lGhGD7A8OPyjdivWMhACe5iU5HerYZVhymxozMAtcA+YVBqOwGRg/xkDeXPL6
-         Hrsw==
-X-Forwarded-Encrypted: i=1; AL+hErHjuAKYj7ASri0wMoeztYAUP8B7QVkN7YvNW/Lr/iha699l0bATiBhm8AOEv5rqCcc/WlQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/+rp+Bme+XtiKE7rGAgrSylJJ9Xjk9hY5/MBPBCjS7jW/+rLzY
-	lcDFcKHzAtgKt3dbpOztvZWVpomIOO/xgKYjxvhiUo3kODot0tjFP7RVP7bqP+BbveziUotptTX
-	WsfTvy/chAJIOm0QTMrjKVk8I30HKfi4REu00K2Yo0sL3VWdeNfietA==
-X-Gm-Gg: AZFdTZe5JZY3Vt+QEh3yai8KV6eVF6XsTurL0rEwLltZhtN1bQEXraBNnNyuuXkyzv3
-	Qz/XxrAXbah5BtBgEEbeL1SE5u53CW16+C3aN1ypLCPw5IC9z3JdTxilk2ZbWOus+6fvG4ANbRG
-	hiiVHjSWwzaQbBk6qEcwJ8lEqrrltJfSRFW3UKTLhBWvebcguEz1kfZyZD6kk/vSE9iowGKQCTh
-	Vg6szS+OEKNzoI1yVVOXFjrZdLzoSXlig/KXFDjS+uG4Un+IFGRPTfVZOWxcYf1qc0XoZUXkAYr
-	IK8PszzDSPiNQFFsFbqCeYN6sYRaoz1NYeqJ5okjRAiLF33eErY+HAAwg+GgGkATGIjBMRUOFX/
-	7YtRWqdf4hcuXFzrjo1PAP7SV+okmR+jSPsqLy3k3Hqs=
-X-Received: by 2002:a05:600c:3491:b0:4a2:c2b:a91b with SMTP id 5b1f17b1804b1-4bb8880014dmr398711245e9.10.1795643166749;
-        Wed, 25 Nov 2026 13:46:06 -0800 (PST)
-X-Received: by 2002:a05:600c:3491:b0:4a2:c2b:a91b with SMTP id 5b1f17b1804b1-4bb8880014dmr398710875e9.10.1795643166098;
-        Wed, 25 Nov 2026 13:46:06 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1529:2e00:86ec:bef7:c309:ba1f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6a68048esm38309168f8f.29.2026.11.25.13.46.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 13:46:04 -0800 (PST)
-Date: Wed, 25 Nov 2026 16:46:00 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Paul Moses <p@1g4.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
-	"chenglong.ma" <longpareto@gmail.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>, kvm@vger.kernel.org,
-	virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, 2312891301@qq.com, blum@kernel.org,
-	co+6dcbccedc9ec6452@bugs.sh, eperezma@redhat.com,
-	fangxy@xiaopeng.com, jasowangio@gmail.com, kmehltretter@gmail.com,
-	linfeng.sun.dev@gmail.com, lirongqing@baidu.com,
-	oss.patchbox@gmail.com, phx0fer@gmail.com, physicalmtea@gmail.com,
-	sergiiushakov@google.com, shubham@octane.security,
-	stable@vger.kernel.org, stjepan.poljak@gmail.com,
-	syzbot+13df72e0dc4be5c62215@syzkaller.appspotmail.com,
-	tavhadia@gmail.com, tjdqudcks0424@naver.com, tz2294@columbia.edu,
-	xieyongji@bytedance.com, xmei5@asu.edu, yuz08559@gmail.com,
-	zenghui.yu@linux.dev, zhaimingbing@cmss.chinamobile.com,
-	zhangjiao2@cmss.chinamobile.com
-Subject: Re: [GIT PULL] vhost,virtio,vdpa: bugfixes
-Message-ID: <20261125162710-mutt-send-email-mst@kernel.org>
-References: <20261104081535-mutt-send-email-mst@kernel.org>
- <awWOpS3HR_2FTN3I@gremlin>
- <20261125060533.1296-1-longpareto@gmail.com>
- <awbTgufgR4Uge1kJ@gremlin>
- <s1xGKGqyb3Uk_gDZmeWG7nVEq4_m00HsO9pS1RL3cUnIdr4GMgH5OEBifQIl-30ZdUu7_uUoe-TxhMQd2GuW2sWKzY6UUGSWXKaqMz_XeEE=@1g4.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QCuwMB17
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795649625; x=1827185625;
+  h=message-id:date:mime-version:from:subject:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=pCVtF8v55FmaexWS2gyF6Vx3HQfifyvY5lhhfzgms4c=;
+  b=QCuwMB17XM/COhqSiU3QLiaqeetPk+1rdpVNO1JNMstBMmymYMN8wkBo
+   yDStQ3InSPPlcLi1yTD536Ndgis4UAvYEMShd5XN9mbWVOBx5m6Xbvp+k
+   VLd4Ym+a9rlQuF8U8LcazgGt9NaXzrihWMaFLE8uLiylZuWjXcftOUKoh
+   bsCid8rNzdrDTNL56L7NCDwALmy1NC90iHlsjw9/Slo7fBYY7kWf1cF54
+   OglOYNRNkjYK5jfynFLhaXkanYbOOIq6gA2d83HIJu18MPqEI0AgFvtwK
+   67ukGINMSN2AO6u8vFGrWrMMqjdx16aUNhNaj4msxStHWaH+LYLgbAHvc
+   g==;
+X-CSE-ConnectionGUID: mugdgGKfQM6LUCgx4S5qUQ==
+X-CSE-MsgGUID: TeylpNvZR06ME7mnka6YqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11977"; a="4555517"
+X-IronPort-AV: E=Sophos;i="6.27,233,1787036400"; 
+   d="scan'208";a="4555517"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2026 15:33:45 -0800
+X-CSE-ConnectionGUID: sAWRZUW0RhOM423J0jnZyw==
+X-CSE-MsgGUID: Qc2Duxs7RI+1Nhvs8BdKqw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,233,1787036400"; 
+   d="scan'208";a="13784609"
+Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2026 15:33:41 -0800
+Message-ID: <d9eb3700-ab16-4471-9814-00c62d4602c8@linux.intel.com>
+Date: Thu, 26 Nov 2026 07:33:39 +0800
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -132,75 +72,231 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <s1xGKGqyb3Uk_gDZmeWG7nVEq4_m00HsO9pS1RL3cUnIdr4GMgH5OEBifQIl-30ZdUu7_uUoe-TxhMQd2GuW2sWKzY6UUGSWXKaqMz_XeEE=@1g4.org>
+User-Agent: Mozilla Thunderbird
+From: Baolu Lu <baolu.lu@linux.intel.com>
+Subject: Re: [PATCH v3 4/9] iommu/vt-d: Add interface for tdx-host when
+ enabling trusted DMA
+To: "Tian, Kevin" <kevin.tian@intel.com>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ "x86@kernel.org" <x86@kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Cc: baolu.lu@linux.intel.com, Jason Gunthorpe <jgg@ziepe.ca>,
+ Kiryl Shutsemau <kas@kernel.org>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
+ "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Gao, Chao" <chao.gao@intel.com>,
+ Binbin Wu <binbin.wu@linux.intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
+ <20261112043054.2664857-5-baolu.lu@linux.intel.com>
+ <CO1PR11MB4835EB7D858CC6C8A20F0E148C432@CO1PR11MB4835.namprd11.prod.outlook.com>
+Content-Language: en-US
+In-Reply-To: <CO1PR11MB4835EB7D858CC6C8A20F0E148C432@CO1PR11MB4835.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-First, thanks for your quality bug reports. I saw a fair share of these!
-To answer your questions:
-
-On Wed, Nov 25, 2026 at 09:21:01PM +0000, Paul Moses wrote:
-> There appears to be a recurring problem with how previously reported 
-> vulnerabilities are being handled in this subsystem.
+On 11/25/2026 11:29 AM, Tian, Kevin wrote:
+>> From: Lu Baolu <baolu.lu@linux.intel.com>
+>> Sent: Thursday, November 12, 2026 12:31 PM
+>>
+>> An Intel IOMMU that supports trusted DMA (ECAP.TDXCS) provides a second
+>> set of DMA translation resources, managed by the TDX module and used
+>> only for devices assigned to TDs. Before they can be used, the tdx-host
+>> driver issues TDH.IOMMU.SETUP to put the IOMMU into Secure TDX Mode,
+>> and
+>> issues TDH.IOMMU.CLEAR to take it out again.
+>>
+>> The VT-d driver owns the hardware state these SEAMCALLs depend on, so
+>> it checks that state and keeps its own use of the IOMMU out of the TDX
+>> module's way. This is cooperation, not enforcement: the TDX module
+>> protects trusted DMA regardless, and a misbehaving host can only cause
+>> failures.
+>>
+>> Add a per-device interface so that an IOMMU is put into Secure TDX Mode
+>> only when a device behind it needs trusted DMA. tdx-host tracks how many
+>> devices use each IOMMU and calls into the VT-d driver only for the first
+>> and the last of them:
+>>
+>> - dmar_tdxc_get_params() looks up the DMAR unit translating the device
+>>    and returns its register base address, which is how the TDX module
+>>    identifies an IOMMU, and its NUMA node, so that tdx-host can allocate
+>>    the TDX module's metadata pages local to that IOMMU.
+>>
+>> - dmar_tdxc_acquire() is called right before TDH.IOMMU.SETUP. It checks
+>>    the preconditions TDH.IOMMU.SETUP requires (DMA translation, queued
+>>    invalidation and scalable mode enabled) and confines the host to the
+>>    lower half of the domain ID space, since the TDX module owns the half
+>>    with the MSB set.
+>>
+>> - dmar_tdxc_release() undoes acquire(). tdx-host calls it if
+>>    TDH.IOMMU.SETUP fails, or after TDH.IOMMU.CLEAR succeeds for the last
+>>    user. If TDH.IOMMU.CLEAR fails, tdx-host doesn't call it, so the upper
+>>    half of the domain ID space stays reserved for the TDX module.
+>>
+>> DMAR units advertising ECAP.TDXCS are excluded from DMAR hotplug. No
+>> platform currently supports both trusted DMA and DMAR hotplug, so that
+>> flow can't be validated on hardware. Hot-removing such a unit is also
+>> unsafe, because tdx-host may hold a reference to it and the TDX module
+>> may own its trusted DMA resources. This also keeps the unit handle
+>> returned by dmar_tdxc_get_params() valid for the lifetime of the system.
 > 
-> Yu Zhang publicly reported the VDUSE VA/PA confusion on August 7, 
-> including runtime evidence and a proposed fix:
+> Here we used multiple terms (Intel IOMMU, VT-d, DMAR) to talk about
+> a same thing. Intel IOMMU and VT-d are interchangeable, commonly used
+> in many places. But DMAR is more a term in ACPI structure. Better avoid
+> it in description, especially in exported interface names.
+
+Intel IOMMU and VT-d refer to the hardware that the intel-iommu driver
+drives. DMAR is the ACPI DMA remapping table, and the term is sometimes
+used for the remapping hardware units it describes.
+
+The interface here is not an intel-iommu driver interface, since those
+should all go through the iommu core. It's exported from the ACPI/DMAR
+layer instead, so dmar_tdx_* seems the more fitting name.
+
 > 
-> https://lore.kernel.org/r/20260807022657.11318-1-yuz08559@gmail.com
+>> @@ -689,6 +690,8 @@ struct intel_iommu {
+>>   	u64		ecmdcap[DMA_MAX_NUM_ECMDCAP];
+>>   	u32		gcmd; /* Holds TE, EAFL. Don't need SRTP, SFL, WBF
+>> */
+>>   	raw_spinlock_t	register_lock; /* protect register handling */
+>> +	/* Acquired for the TDX module. Protected by register_lock. */
+>> +	bool		tdxc_acquired;
 > 
-> Nearly three months later, bb2e6f166547 was merged with attribution to 
-> Claude Code, but without any acknowledgment of Yu's earlier report.
+> "for the TDX module" or "for the TDX mode"?
 
-Mostly what happened is that Jason left RH, and at the same time a wave
-of vuln reports hit, and this one got some "critical" sashiko reviews.
-Which I didn't look closely at, but at the same time, the reporter
-really could have responded to, but instead ignored. The patch was not
-Cc stable, even. I could have looked at the patch more closely and
-noticed there's a reported security problem and tracked it.
+The TDX mode. Will fix it.
 
-> As 
-> Lorenzo has now pointed out, the accepted patch also breaks the driver's 
-> mmap path.
-
-yea, not good.
-
-> This is particularly concerning given my own experience with the vDPA 
-> netlink double-free.
 > 
-> I reported the issue in March, submitted a patch at your request, provided 
-> runtime evidence, and received repeated assurances that my patch would be 
-> applied. Nearly eight months later, a different Claude-assisted implementation 
-> was merged instead after I reported it to security list a second time.
+> s/tdxc_acquired/tdx_acquired/
+
+Sure.
+
 > 
-> I acknowledge that I eventually received a Reported-by tag. That does not explain 
-> why a known and acknowledged memory-safety defect remained unfixed for nearly eight 
-> months.
-
-I don't at this time remember why it took a lot of time or why I chose that patch at
-this point, sorry.
-
-> I have no objection to the use of AI-assisted development. I do object to a process 
-> in which previously submitted security fixes remain unresolved for months, only to 
-> be replaced by AI-assisted implementations, particularly when those implementations 
-> introduce regressions that basic functional testing would have caught.
+>> @@ -47,9 +47,32 @@ struct dmar_drhd_unit {
+>>   	u8	ignored:1; 		/* ignore drhd		*/
+>>   	u8	include_all:1;
+>>   	u8	gfx_dedicated:1;	/* graphic dedicated	*/
+>> +	struct mutex tdxc_lock;		/* serializes acquire/release */
 > 
-> Why was Yu Zhang's earlier report not acknowledged?
+> s/tdxc_lock/tdx_lock/
 
-Because the reporter didn't follow the process.
+Sure.
 
-> And what is being done to ensure that previously reported vulnerabilities are not left 
-> unresolved until they are rediscovered?
 > 
-> Thanks,
-> Paul
+>>   	struct intel_iommu *iommu;
+>>   };
+>>
+>> +/*
+>> + * struct dmar_tdxc_params - IOMMU information for driving
+>> TDH.IOMMU.*
+>> + * @reg_base_addr: Register base address of the IOMMU. The TDX module
+>> + *		   identifies an IOMMU by it.
+>> + * @node: NUMA node of the IOMMU, for allocating the TDX module's
+>> + *	  metadata pages local to it.
+>> + * @drhd: VT-d internal handle; the caller must not dereference it. It
+>> + *	  stays valid for the lifetime of the system because TDX
+>> + *	  Connect-capable units are never hot-removed.
+> 
+> what will happen if the caller deferences it?
 
-Following the process helps. You did good by pinging repeatedly and the
-problem was fixed as opposed to rediscovered. Thanks a lot for that.
+This will be dropped as discussed.
 
+> 
+>> @@ -2518,3 +2548,158 @@ bool dmar_platform_optin(void)
+>>   	return ret;
+>>   }
+>>   EXPORT_SYMBOL_GPL(dmar_platform_optin);
+> 
+> code starting here better fits in iommu.c?
 
-I'm not as quick as I'd like to be. Make mistakes, too (
-If more people can pitch in and help review patches, that will help a lot!
+See above.
 
--- 
-MST
+> 
+>> +
+>> +static void dmar_tdxc_fill_params(struct dmar_drhd_unit *drhd,
+>> +				  struct dmar_tdxc_params *params)
+>> +{
+>> +	params->reg_base_addr = drhd->reg_base_addr;
+>> +	params->node = drhd->iommu->node;
+>> +	/*
+>> +	 * params->drhd stays valid because trusted DMA-capable units are
+>> +	 * never hot-removed.
+> 
+> hmm now the 4th term for IOMMU...
 
+This comment is gone as discussed.
+
+> 
+>> +/*
+>> + * dmar_tdxc_acquire() - Acquire an IOMMU for TDH.IOMMU.SETUP
+>> + * @dev: PCI device that will use trusted DMA
+>> + * @params: Returned by dmar_tdxc_get_params() for @dev
+>> + *
+>> + * Call this right before issuing TDH.IOMMU.SETUP for the first user of
+>> + * the IOMMU. On success, the caller must issue TDH.IOMMU.SETUP and
+>> call
+> 
+> why defining the caller behavior here? what would happen if the caller
+> just calls acquire()/release() w/o doing any SEAMCALL in between?
+
+Nothing breaks. release() just undoes what acquire() did. You're right
+that the interface shouldn't define the caller's behavior.
+
+> 
+>> + * dmar_tdxc_release() if it fails. The caller owns the per-IOMMU refcount
+>> + * and must serialize all calls for the same IOMMU.
+> 
+> this function already serializes internally. What is the rationale asking for
+> extra serialization in the caller?
+
+None, it isn't needed. I'll describe what acquire() and release() do to
+the IOMMU, and drop the requirements on the caller.
+
+> 
+>> + *
+>> + * Return: 0 on success and error code on failure.
+>> + */
+>> +int dmar_tdxc_acquire(struct pci_dev *pdev,
+>> +		      const struct dmar_tdxc_params *params)
+>> +{
+>> +	struct dmar_drhd_unit *drhd = params->drhd;
+>> +	struct intel_iommu *iommu = drhd->iommu;
+>> +	int ret;
+>> +
+>> +	if (WARN_ON(dmar_tdxc_find_drhd(pdev) != drhd))
+>> +		return -EINVAL;
+>> +
+>> +	guard(mutex)(&drhd->tdxc_lock);
+>> +	/* Still set if TDH.IOMMU.CLEAR failed and tdx-host was reloaded. */
+>> +	if (iommu->tdxc_acquired)
+>> +		return -EBUSY;
+> 
+> what does "tdx-host was reloaded" actually mean?
+
+It's stale. After a failed TDH.IOMMU.CLEAR, the flag stays set and the
+next acquire() fails, whether or not tdx-host is reloaded. I'll reword
+it to:
+
+	/* Still set if a previous TDH.IOMMU.CLEAR failed. */
+
+> 
+>> +
+>> +	/*
+>> +	 * TDH.IOMMU.SETUP requires DMA translation, queued invalidation
+>> and
+>> +	 * scalable mode to be enabled. Catch these here so the error is
+> 
+> Remove the 1st sentence as it is explained by the code.
+
+Will do.
+
+>> +	 * -EINVAL rather than an opaque TDX_IOMMU_INVALID_STATE.
+>> +	 */
+>> +	if (!(iommu->gcmd & DMA_GCMD_TE) || !iommu->qi
+>> || !sm_supported(iommu))
+>> +		return -EINVAL;
+>> +
+
+Thanks,
+baolu
