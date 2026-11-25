@@ -1,71 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795604566;
-	b=urwZ15gPVhjyHsQeRTGXhI5HPU7kQb2ZXRdcdDEEii1ECW+kzXqHcQTnx001CJSlpfVH
-	 VhEeDlA3HwqAVyec6J4+pJPTBNKHaCXAowjcqGJGT0EG/yR12o5pempNDaJQCEP0d1a5l
-	 A9VK/Wen9VO5eTjzkIGK0YdVmmkEXl0q47wJncEYz734UjztL06kvSYSatsQWAcuYQOC/
-	 5vBnUqLVJU018SPF/IR4GFy0fvQCP+zLR0NQBqLlIB51pbXDfyJCjLCCPSw3Oy5uonms9
-	 Pr7/CqUe3/+iUsBozSIMSWOR9rfiq1ZMKyUYca/MZ3uUg4ZfJF1b+jEs/GVWgLN4edg==
+	t=1795604739;
+	b=rldKvAhFEkcNp3WXtfbsswUvY4W6k+38DvFwP1k9DQYqcoBeiGn+Hj7imnnpRgkyHYSh
+	 45kDiH9RaR/s7n1h384Il+/FrmeSzyF4Um2CyNJqrVQFmNHmzr346deNyqQXbEi8eDDTK
+	 IwEO3HP32qNZxi5DvlVlrb8EgIBw13H+sLkcHGxvY4HuzyYwYdB3+7fmRJCvdb6+42NRc
+	 2swTxNY1XAylVTi2EZlL3ShBF8Q0w4CoHccIXLgLWfz2o5IxT9j72jk0KnQDn+aKfhPod
+	 zagRspbRYvpvUqQffRBazUZMpBx4/s1PQGb6wKP2/II11rVAVTMznekD0RcE6XI7puA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795604566;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=T0/grb7hqX6huTfFN3IVlCEBMQYZ2/Yv8VYwqOJkMG4=;
-	b=zKpjan1fhRsxGV5wAX2SRMSViNaG8wMZYETZvfeWVxKvbRE2EJ8lf4MvXcPcl2ghPfZn
-	 RJeZdMLyg2IT5XAET9Mt15OqgwAF3jpo3ct5FoRPXTL18D00t0p/4h6oqF16yIgey6Iy7
-	 DAJjOE+27ME/YipAwT8Qs8lpp4Z3dFwpw4I6KD+WyeiUs5WzeLg0+XF4D1uzi8UqWmZuO
-	 cQ5/Svdp+ZfgzDHIgZmb8RHTu7TWxo6ZN9f4ATzO0fzws0TWnO2AbjqlF8xIhd8cZlL7t
-	 ubSPlfsbvzgqHZMlUIhoPsbukvWGaUrYUTTGf9Cd9sLbqD43LfNFblh+KFPzrrLxj6Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795604739;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:X-Google-Original-From:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=rj/OmW4asS9jNN/viln1BFpfuwXmJiprMQIHIS8uDWw=;
+	b=UtdHxlO0PHDqXvfMQDVM0wnPOKJvv+ifBka73hNAYKA5yqdRnTfGkvoRoq8scB74UHVc
+	 V0xVz2kXVch5Gyr/ZrAuZe1lRlpn3aQBJ8DCcRGLFz10hGCbbs/zZKn32XCh45tJ8jrl9
+	 bvg8M+8nzBVZFkEFTlKfjzLmOuTfSLO9Q0q6ld/2ofOTWEg1w38ojKdF3u8YEEpFEsBao
+	 R+h7AgS6vhnclQhj9VV8muFKBrUrMd+HSxhoJyhEM96yg9HAg6yOSX+VLGJdxOWRwwZzB
+	 YP33E5Ms1Gxr9XT/uRGEqoq9N2a/fVJ7rYwLShvR4F1BduMHUaoYyHAmqGSoF4f2apA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UTBYCJ1s;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EkJpL0Zd;
+	arc=none smtp.remote-ip=209.85.218.44
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D05606A335;
-	Wed, 25 Nov 2026 11:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A975606A31E
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 11:05:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A975606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UTBYCJ1s
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778F41F000CF;
-	Wed, 25 Nov 2026 11:02:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795604566;
-	bh=T0/grb7hqX6huTfFN3IVlCEBMQYZ2/Yv8VYwqOJkMG4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=UTBYCJ1sshanx/nXPRWinb09Cvfi/3WgfFqN65EjcHZTK2xdsfGY26aFLCk50xvX7
-	 eTPk2mRmQswSeB+s+b3oBHkzTVhHzemKDT6yzrrRNwzbupsEzVLfQOCwkH2/Sq9xPG
-	 Lw3DGy9Dhz51jWPZICbAghZSmlf9Y99VVwAOQH4H5a2uNwot+xo6WMmR+LdESnveJV
-	 Gh1SEtRKftzxvt8NOHWoTuYy7407vMYEJrl9gzDQGtyFk0Kxeua8VVRRZKCsSYD1+0
-	 1mwQbH2+U1GD0FONBIYzpuKwxXmsiDnEog9HwCIoHksB2GP+tC5mOnUQmdckwqwCrc
-	 E2y9BvmzR6Q8w==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v1 05/10] PCI/TSM: Add association locking helpers for
- evidence acceptance
-In-Reply-To: <yq5ald6h9r1g.fsf@kernel.org>
-References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
- <20261123083337.2731019-6-aneesh.kumar@kernel.org>
- <20261123153507.GH179082@ziepe.ca> <yq5ald6h9r1g.fsf@kernel.org>
-Date: Wed, 25 Nov 2026 16:32:36 +0530
-Message-ID: <yq5aa4mx9nsj.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EkJpL0Zd
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c40e30c26a4so1257709866b.0
+        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 03:05:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795604737; x=1796209537; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rj/OmW4asS9jNN/viln1BFpfuwXmJiprMQIHIS8uDWw=;
+        b=EkJpL0Zd2So3VZhWVlZIgYAYvE/y9wew5r+5IndhiqU8qZaJ21Pc2Is6zwWh4fQhsm
+         fT53a6KWOHgbVbaoXdarpP/mMp0LqmiCwJupOr3y4Le6IMhHJJNxJz2dalM1BtwKXXc9
+         +RR8XQLTZV/roHX0v6AgQqpLOIB9vW0wId7p/erUByspT73o+4BpBW5nDTEVqKMABJkc
+         1eAClkUkjMufGdWhBG8gBV7fWIrQFNRu4Q+t1nMpdgsn5RDZBZDyWtVJTsEkp6zBWNp/
+         yhtkQ+PnPmP4S3fuUGPLMCHEeQj6akgByrIfdJD6gHMkhdS0jR0/qYPinqO+s0+yCWI1
+         pXxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795604737; x=1796209537;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=rj/OmW4asS9jNN/viln1BFpfuwXmJiprMQIHIS8uDWw=;
+        b=HCIWzDje/bHZ9D1yeW0xLsojgMm2P7KmzGeNlGrgW7Z7wmFuh0+JxAnHfUGHPVuXYa
+         foBmt1LuLasjypNCC5QtCytBdTL80oNHHkTsi4zcpVSwYm7KAmyt6oIK8DRd93iNE3L6
+         OzCaw9E5DP6U/unxufb0pAZEYx8wkwevCUVNIiC6vZniFhyDnnSymAV3AuYWzjtLiq+g
+         0M5VZx5MucavQtXAmYe7OwnuDZd6tfnBjI94qy+aZhtFCIwRnqW9+gkympgPSRXz+Xpv
+         RyO/5+ivkirH5ENNcSrOkL0ZJ2BaeRLHPWi6RIc1N7CJPlKhhkZPV46WWcgGgngzk6OM
+         CyKw==
+X-Forwarded-Encrypted: i=1; AL+hErFmmkhynS2+9IgwDXpeA5VxaTUDYWk44Bqowu0tcC4CWRd7oP1wK0ap0fr1istQRj/YLZ0=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/KJrk87DapGBJIo+odsq0y8fyqKyqvFh4fhfJqyAU4/GkHoHzB
+	UGvGHJxpVZSMwY9avNZ3bPY9vd/k31wDNYWZNBHvdCJgiHGs9C/8gE+C
+X-Gm-Gg: AZFdTZdZhz+ckcQ9zwbvf1+dxtpg9JM7dD7iDrOK8GbvtoSSlJ9mcCBi7N6bgHkyg75
+	KlYpL0cck+vlrBDiex/wYgfUmIw3L2VLMVtu7Agb+AxPycTvxY6i3d7j9PMoGBBBRgRyIEdmxuz
+	GdphroVM7KfAbRgTmQudaLOvZwZAGKhLC76RoMUbMad49Uy9OCG9XoP+Kuoh+DyBYbvEgjRU9lp
+	FemHD2U/gUL2JvHXyjDEtwr77jOKqf5smAUXAktlq+rjQnR5bnV+pa70DDgbgw7cLqxK6e7Q6pX
+	YmZSWZJ8sEjVcVZ4CEwyfUlFzG+1oPG65rn2QFhiD77OsF/fIWPpWukt2wR73RiUAxEjX0iXgcM
+	k+9hOmFBJdjw0XYql0DGKFY9pN+7LCJeriNyTKdViJzRWn/zcrQ8jVXUrhTqwZDs8rjEl27tN4s
+	YG7z7gM6sitzY2LBQS8oAIq7vkgC6zBXzw3ugAHnar+19yX3LcoDycZN5clIhR257aPE3OBUHfA
+	qMz11gbDZoB1RlYhNoKhyIMQhRVR+evGzgavsxMGsnnHbkABy7VkrKBwUi8MjVvtjoOwI4JUudg
+	J1RVgF1QUGnbJVurzbbq/4FJP2nwzPcVUpE=
+X-Received: by 2002:a17:906:ad8:b0:c2e:4397:7c82 with SMTP id a640c23a62f3a-c513a5e6a7fmr1084197166b.6.1795604736841;
+        Wed, 25 Nov 2026 03:05:36 -0800 (PST)
+Received: from [10.45.18.224] ([15.248.2.12])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513afc316bsm614560066b.56.2026.11.25.03.05.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Nov 2026 03:05:36 -0800 (PST)
+From: Paul Durrant <xadimgnik@gmail.com>
+X-Google-Original-From: Paul Durrant <paul@xen.org>
+Message-ID: <e2cdc050-42c0-4565-aec9-2568c391d756@xen.org>
+Date: Wed, 25 Nov 2026 11:05:34 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -75,78 +93,65 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 04/21] hw/xen: Publish backend features before setting
+ state to InitWait
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
+Cc: xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony@xenproject.org>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Jason Wang <jasowangio@gmail.com>, Hui Peng <benquike@gmail.com>,
+ Mark Syms <mark.syms@citrix.com>, Feifan Qian <bea1e@proton.me>,
+ David Woodhouse <dwmw@amazon.co.uk>
+References: <20261124232247.23169-1-dwmw2@infradead.org>
+ <20261124232247.23169-5-dwmw2@infradead.org>
+Content-Language: en-US
+In-Reply-To: <20261124232247.23169-5-dwmw2@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Aneesh Kumar K.V <aneesh.kumar@kernel.org> writes:
-
-> Jason Gunthorpe <jgg@ziepe.ca> writes:
->
->> On Mon, Nov 23, 2026 at 02:03:32PM +0530, Aneesh Kumar K.V (Arm) wrote:
->>> Later attestation patches let userspace finish device setup through
->>> evidence-accept after host sysfs connect or guest sysfs lock returns.
->>> Those commands use a saved struct pci_tsm and must prevent disconnect or
->>> guest unlock from changing pci_dev::tsm or freeing the saved structure
->>> while setup is in progress.
->>> 
->>> Add pci_tsm_trylock_association() to acquire pci_tsm_rwsem for write and
->>> check that pci_dev::tsm still points to the saved structure. For a TSM
->>> implementing devsec_ops, first take device::mutex to prevent driver
->>> attachment during MMIO validation and device acceptance. This matches
->>> the device-mutex-before-rwsem order used by PCI DMA preparation.
->>
->> This doesn't seem the API I'd expect here.
->>
->> When we trigger SPDM session start AKA lock through the CTLV it needs
->> to capture some kind of 'session cookie' for this locked that ties
->> back to whatever the TSM is using to prevent a hostile host from
->> locking/unlocking while we are working.
->>
->>
->> That cookie should be held in the attestation driver and when we get
->> to acceptance it should be presented to confirm that nothing has been
->> tampered with.
->>
->
-> We already do something like this on lock, we track the cookie as part
-> of CCA and use that during accept. Sure if every architecture supports
-> this at firmware level we can abstract that to attestation layer. Yes
-> and this protect from hostile host.
->
->>
->> It is a further reason why we can't have lock under sysfs control.
->>
->> It should be attestation that provides a general purpose lock that
->> serializes all attestation operations including lock/unlock so we
->> don't need a TSM lock like this.
->>
->> The driver should rely on that lock and use its internal mechanism to
->> process the cookie.
->>
->
-> But this patch is about keeping pdev->tsm stable in the guest. We need a
-> mechanism to associate a TSM with a pci_dev. Currently, the host uses
-> sysfs 'connect', while the guest uses sysfs 'lock'. It is not clear that
-> we were proposing to remove that mechanism.
->
-> We also have a single sysfs teardown operation: 'disconnect' on the host
-> and 'unlock' on the guest. This tears down IDE, unlocks the guest
-> device, and disassociates the TSM from pdev->tsm.
->
-> How do we ensure that pdev->tsm remains stable across the different
-> operations?
->
-> As described in the commit message, this patch takes the lock to prevent
-> a sysfs unlock from running concurrently with evidence-accept.
->
-> Are you suggesting that the TSM association remain under sysfs control,
-> while IDE teardown and TDISP unlock become CTLV operations, and that
-> sysfs disconnect or unlock be prevented until the above CTLV operations
-> have completed?
->
-
-Even then, wouldn't we still need pci_tsm_trylock_association() at
-spdm-start? Once spdm-start completes, we can ensure that the
-association remains stable until spdm-end, but that still does not
-eliminate the need for this API, does it?
-
--aneesh
+On 24/11/2026 16:22, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> The XenbusStateInitWait transition tells the frontend that the
+> backend's parameters are readable, but xen_device_realize() set it
+> before calling the implementation's realize method — which is what
+> writes the feature nodes ('max-ring-page-order' et al. for xen-block,
+> 'feature-rx-copy' for xen-net).
+> 
+> Linux blkfront reads 'max-ring-page-order' with xenbus_read_unsigned():
+> no wait, no retry, default 0. Lose the race and it silently negotiates
+> a single-page ring — 32 request slots instead of 256. A device
+> hot-plugged into a running guest loses essentially every time; at boot
+> the frontend doesn't come looking until long after realize finished.
+> Netfront reads its feature nodes the same way.
+> 
+> Commit 240cc11369fc ("hw/xen: Avoid crash when backend watch fires too
+> early") introduced this by moving the realize call after the block of
+> code which both populates the initial xenstore nodes *and* sets
+> InitWait. The crash it fixed was real — xen-block's realize processes
+> watch events via blkconf_geometry()'s aio_poll(), and the handlers fell
+> over when the nodes didn't yet exist — but only the node population
+> needed to come first.
+> 
+> So keep the node population and the 'online' write before realize, and
+> move only the InitWait transition after it. A watch event during
+> realize now finds the frontend in Initialising and no backend 'state'
+> node, which the handlers tolerate; none of the three realize
+> implementations reads the backend state. Verified against the original
+> 2023 crash reproducer as well as the ring-order negotiation.
+> 
+> Fixes: 240cc11369fc ("hw/xen: Avoid crash when backend watch fires too early")
+> Reported-by: Mark Syms <mark.syms@citrix.com>
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>   hw/xen/xen-bus.c | 16 +++++++++++++++-
+>   1 file changed, 15 insertions(+), 1 deletion(-)
+> 
+Reviewed-by: Paul Durrant <paul@xen.org>
