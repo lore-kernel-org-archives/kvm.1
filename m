@@ -1,46 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795574686;
-	b=nVlRftbMg4e+DxLoiXanqh8JqH8z/y0uLqw0tto8KUOJl6RvboWx+LdUpTrMM7oTYeKi
-	 6BcN3vFZLi2zNTIPU6uITH3DUwCVZ3YcMTMuHicfIdkc3PdaiSxH+7/Usoj2ZJX/xFjlG
-	 row0IKcNU/p8IifUUOqpoYAUsKT4tW5eY8y0rcFfaR6OLcbDgwrQdknZEAWMSUm/6x4w+
-	 c58wyFxK8aPO8SnF+ZCgI9F62D6xGjCuOHGvf70d/HiO2IfkOcB4RZ7TAGcicypO+M6G+
-	 SPMd3ie54klbxbi/1HfqR3XUHglf83ncTmDtYpyhdLCXWLxv7Ikd/tj4aJfRqprhIJA==
+	t=1795574693;
+	b=HEn+uOEJVv4iuG7mcBU9pC+IuAbWz84IprhjWFHFs5EEd0ncriFKMJZFR+LMhjj/6Bzr
+	 wh2uhQbi2QK5Iraor/cukb3pa8JAg2E4L+rghw4U527/GkxzEEpddMEYhOHbaPf/iQHec
+	 g38G1zN/FZEQ7RWIMBpFAFhhfEkXBBCCqY1U6S10eY0JOFadhLI0R+XZJt2nJo5gclPCd
+	 WHt0NFJwYklQFNTTmjiaAf4vvKjNXsg5HPCGcVoUbkjVAdr5iVcikyPsF+WLoUK7ryAbR
+	 gHRoCfnSxMhCZUO7riKAY2NP2p3zCam54BRD9jRaTgljVtS5aXELVNsCoLz0YjgxuYQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795574686;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795574693;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=1p0CvNQuHo4sEI48VqngId1iPLhnIEEPfqYvt5YlWC0=;
-	b=cumOf8lFKtMeFBSIa0arEhxZCJtbEKjQODxAiW6/qN1Y86G5Ij0a0HWA1HnsUcV4L7xe
-	 Jek9Okooh6NN8Nem1J1H/26dQ1yz/DhiJydfFhhz1/rZcdmkYM4YNf6V3Yc29+QhfOG4D
-	 WBzPxYdK86ewS/ZXls8fnFc+ZczoDksXBaqF/7EaJkWSGIn/1rKd81bs9xlYppMcMqy8k
-	 NHHjRJeS/f0PxmvtyJSoZDKry8SdKeJeLcx/ndeJPSLBQVN4y36w4AeaN3IylYgJEjqO7
-	 h5Ov/l8LYLhySnehSXzw/5ZAeuiQALpAUANdQrrhgI0knCRlvAuL82Dupk1hlflNUCA==
+	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=B7IVwaLX709fibbh48hYcRGHLFjLr6z7tBEQ95zSkf4=;
+	b=EzqSWBTO32/3uDM9xN3OnxR1GkmrZo2fBK2rwf0bh3BEXe/+2rXMBclwpsuaGIIhBUU9
+	 CoYRUXdj8CuVKOJwlSZTCMf6g5xbvAVQoeo1VeCjd9zKksP4rhon80y5NKZFaQYvzVlvT
+	 nNcKD8FmAZpx+fq9DiGXCDM4dqjsw9tbGdUGrV5YfS/o/nRwMGXRWmWL2DP1/kKNqoTJw
+	 qpbO0m4n7RNkCVxhRszvMOxtwS1ybwyjiicvkOmWvHr+niTX4YjAf5yCkfC4npAgfjAWh
+	 7QT4ok8CDXa4mFatudqTgAOPtIakp5u9jomqvkZeYTxZW72p1OmWwBIEmxF6KBhSgtA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=JmbIT0O7;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=mqmVlJ8z;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75BE606A321;
-	Wed, 25 Nov 2026 02:44:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B75BE606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2092F606A323;
+	Wed, 25 Nov 2026 02:44:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2092F606A323
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=JmbIT0O7
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=mqmVlJ8z
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 03849339;
-	Tue, 24 Nov 2026 18:44:42 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9D8F3497;
+	Tue, 24 Nov 2026 18:44:49 -0800 (PST)
 Received: from entos-yitian-01.Arm.com (unknown [10.168.196.233])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 40E0A3F86C;
-	Tue, 24 Nov 2026 18:44:37 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 8F7BC3F86C;
+	Tue, 24 Nov 2026 18:44:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795574684; bh=NQwHqHHgW8dLEuc5KXKT12Xz9cR8nNjFga5yIVgajKg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=JmbIT0O7HA8kMHuRLJUPexkU+r5Yi9R/kIwcU5r+fBLAvgC2Zl5PTPvnSCfntEhph
-	 EdLEZSaGfx0MYkBpoOsWy/hnwrDdyKXmbRl5Z7vU1DVq6jkpX5JIwUdUQmbTTHAwnk
-	 MVBbFZGScN1QPa2BGfXU7TmWZmMexvtQj6XebujI=
+	t=1795574692; bh=EH5jCtEKN4qmBLVKifvj2kcfoizIrrQECfZK1Ci94BU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mqmVlJ8zKYlxN4YCP7cbUFVxvmwF3D7MByf6dm8glttu3k4ePY9wlc/z/eTX0j1IK
+	 ozB08w7LtbLcSyrXdYUVJjTsiYTtfWUZA17LPMaQXrOIDrJ3Amd/96Y3j8gMDcuCyV
+	 rNAe9ND7Zmuu10nJqNdOmLw3AitJNa5WagvLy8fU=
 From: Jia He <justin.he@arm.com>
 To: maz@kernel.org,
 	oupton@kernel.org
@@ -60,11 +61,14 @@ Cc: fuad.tabba@linux.dev,
 	linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
-	Jia He <justin.he@arm.com>
-Subject: [PATCH v2 0/3] KVM: arm64: nv: VNCR page in read-only and cacheable PFNMAP memory
-Date: Wed, 25 Nov 2026 02:44:23 +0000
-Message-Id: <20261125024426.3464050-1-justin.he@arm.com>
+	Jia He <justin.he@arm.com>,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: [PATCH v2 1/3] KVM: arm64: nv: Inject an SEA when the VNCR walk cannot set the AF
+Date: Wed, 25 Nov 2026 02:44:24 +0000
+Message-Id: <20261125024426.3464050-2-justin.he@arm.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261125024426.3464050-1-justin.he@arm.com>
+References: <20261125024426.3464050-1-justin.he@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,48 +80,44 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On a VNCR abort, KVM walks the guest hypervisor's EL2 stage-1 tables
-and maps the page that VNCR_EL2 points to. This series fixes two cases
-where that fails.
+When the guest hypervisor enables hardware Access flag management
+(TCR_EL2.HA), KVM's stage-1 walker sets the AF in the descriptor that
+maps VNCR_EL2 with __kvm_at_swap_desc(). If the descriptor is in a
+read-only memslot, the update fails with -EPERM and walk_s1() records an
+SEA on translation table walk in the walk result.
 
-Patch 1 fixes a bug that predates this series. If TCR_EL2.HA is set and
-the descriptor that maps VNCR_EL2 is in a read-only memslot, KVM cannot
-set the AF and the walk returns -EPERM. kvm_handle_vncr_abort() has no
-case for -EPERM, so the vCPU takes the same abort forever. Patch 1
-injects the SEA that the walk recorded.
+kvm_handle_vncr_abort() does not handle -EPERM. It neither injects the
+fault nor maps the VNCR page, and returns to the guest. The guest takes
+the same VNCR abort again and never makes progress.
 
-Patch 2 adds a selftest for this case.
+Treat -EPERM like the other walk failures and inject the recorded fault
+into the guest hypervisor.
 
-Patch 3 allows the VNCR page in a cacheable VM_PFNMAP or VM_MIXEDMAP
-VMA. The stage-2 fault path already maps such memory as cacheable, but
-kvm_translate_vncr() rejects it and injects an SEA.
+Tested with the selftest added in the next patch on a Neoverse-N2 host.
+Without this patch, the vCPU exits about 1.3 million times in 5 seconds
+on the same VNCR abort and makes no progress. With this patch, the
+guest hypervisor receives an SEA on translation table walk at level 3.
 
-Patch 1 can be applied on its own.
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/all/sashiko-outbox-230439@kernel.org/
+Fixes: bff8aa213dee ("KVM: arm64: Implement HW access flag management in stage-1 SW PTW")
+Signed-off-by: Jia He <justin.he@arm.com>
+---
+ arch/arm64/kvm/nested.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Based on v7.4-rc3.
-
-Changes since v1:
-- New patches 1 and 2, for the -EPERM issue found by Sashiko.
-- Patch 3: get the HVA with gfn_to_hva_memslot_prot() so that a VNCR
-  page in a read-only memslot is not rejected (Sashiko).
-- Patch 3: limit the stage-2 comparison in the commit message to
-  VM_PFNMAP and VM_MIXEDMAP VMAs.
-
-v1: https://lore.kernel.org/r/20261124025336.4107575-1-justin.he@arm.com
-
-Jia He (3):
-  KVM: arm64: nv: Inject an SEA when the VNCR walk cannot set the AF
-  KVM: arm64: selftests: Add a test for VNCR_EL2 translation faults
-  KVM: arm64: nv: Allow the L1 VNCR page in cacheable PFNMAP memory
-
- arch/arm64/include/asm/kvm_mmu.h              |   2 +
- arch/arm64/kvm/mmu.c                          |   2 +-
- arch/arm64/kvm/nested.c                       |  39 +++-
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../selftests/kvm/arm64/nv_vncr_abort.c       | 211 ++++++++++++++++++
- 5 files changed, 248 insertions(+), 7 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/arm64/nv_vncr_abort.c
-
+diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+index 4d83281a7a28..59d82a29ec01 100644
+--- a/arch/arm64/kvm/nested.c
++++ b/arch/arm64/kvm/nested.c
+@@ -1737,6 +1737,7 @@ int kvm_handle_vncr_abort(struct kvm_vcpu *vcpu)
+ 	case -EINVAL:
+ 	case -ENOENT:
+ 	case -EACCES:
++	case -EPERM:
+ 		/*
+ 		 * Translation failed, inject the corresponding
+ 		 * exception back to EL2.
 -- 
 2.34.1
 
