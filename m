@@ -1,52 +1,52 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.137.202.133
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795587239;
-	b=KBSx5XNLF+Z3G8DK5DPiJxUjYqIT1xA7AuKlYDxKcP5Gb7D83LoUgBov8l6EQwZwyDQV
-	 YBFS6pkneTvxvTiwSOeWuv2lx+Zkdgfh45j2Ew89++jFIJNK7/sRJ6AGew+XDbork0h7n
-	 db5TBplo16xrwqDJ+EBw6aZmhb7G8WV3hm8fpm/xSoK+u5H1YH2gjnTjneo3yXqDp5NT2
-	 a0eNc7HRRFo0Je2VYgjY8Ew73cBaRt5BPXegWUPVl2aFOVThIOFBU6OPnkBVo7JNgZOJp
-	 avR9U7LZnYvockGQdRBXJ/onMxJvIHp1+/kyqLPfCgII9h5MWmLXr59N5WjGqh3XSag==
+	t=1795587252;
+	b=ewHlSMP8rpLkWIDVpUu41zVc6v846CBULUzYbDWL5lgRx7JME+UPXSC9h7OJgI5uOe6o
+	 zw8bWzmquWmjXhxbNSG54VNa7+3CQLVhpGRsRQoBlSdBhg6wJjO86d7/hEDMAG61GXm4E
+	 rXy/Xmr1i2daMHBgj1bQG53juSDuBJPxDUKuWDb1ydTD0eUCqESGD/hxPWZAqlDwS+A7G
+	 I6WI7BPjtWWkCMaaWwnkTqWgvH7MW1ovnDwEGxBmmfcHzbWCWuFiqPWdFDRx2D2z0JbIg
+	 xqqc9/ItCuDetehAUUyEEazeanAX/2Tc0Rm4wM38wSWMGaY1YkGdMLxH7VELnQxMftg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795587239;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795587252;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=KSyfkTIM3oBW4szNqhNzxJzYdeXlrWQwTUs3E0agQZA=;
-	b=NKOTSbHIbXOofjY+MIC22j5ISnupl5Uk9bnO45BjrgFG10PiusuOi99D+YgVyOdev7ay
-	 B/0ZwtpHqAPmg309NUIEZkIzZ/2kF+THx0Uwgw9HeUOjNYJyJ9xi9C58BCzkZ+Q1QMFIs
-	 +RChVIJ7kMFxdTUrS7otHyMbmKChjklDc0dhmGirNp8cj+WBat1vfYEK+DCpwNgRP5sGM
-	 sYaLxNT7iRo8zha1GyV85pJ75NpwZ8znM4k7Wg3BwO5FSdULsEzs5LGCroJjTJzbZC094
-	 NslXAWPw7hBeQyAO4UYmUKI6IBJD0QuzVpRac7zDBlyt5C/DqE0qgzkKhuAo2l/IM/A==
+	bh=nH1JDKUpxZKr2E7xywv7sSC/lG5A4nxPxWDHndTmH+U=;
+	b=hUhEEe/BfZ5BXebxZ3LAwfTmiEjluT69SppI5QVfVblHOxk88Kodfewj3MaGdqcKs03T
+	 mkhZpRKKAfCQaYxsNXTj+bfW6j1ij8UoIu2tEDxGo8O+sM/rIp5J3OHgcvO2TRCGI7RKF
+	 DbwomOpyLkM2ULZRD1y/+belpPDmBhTO01Y44XYoNmH0h08JPhm3+0LiYnDzzcQhIOj9N
+	 F4VFnSuiEz4vtWLsTlHuu1NT96oftX7pZu5p041qm3Ky+L0TK2SPa72rGR8EMjLPYYu39
+	 7mvQF41r1fbgBxZ3N3heLL19aL5g4pvZci/jyOOTyL5Hb2ix/QcdWE347c22d/HJQww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=pass smtp.mailfrom=infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b="yWU/tPwY";
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=OQ10UQlo;
 	arc=none smtp.remote-ip=198.137.202.133
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEED60A6F79;
-	Wed, 25 Nov 2026 06:13:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2BEED60A6F79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC72606E94B;
+	Wed, 25 Nov 2026 06:14:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2FC72606E94B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=yWU/tPwY
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=OQ10UQlo
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=KSyfkTIM3oBW4szNqhNzxJzYdeXlrWQwTUs3E0agQZA=; b=yWU/tPwYuhIm5oxlF+9IIOB21x
-	XZ1/SuGnvm8fxYUV82u/rwcd+e0JZTVBDbmeo2EFN8RRcskRB0J8b/0GVtFClKCZvHJDDfHB5vJoP
-	mioMKbeXUW1pWyqV3vu4b3sl59Hg3eAdFCLVCKFOWEIQeOJQKtNmm6uSDYGYFEcNmOhI8Ogqlp0Qw
-	UCmXP5Nzvez1UEntRjVk5QkwqQuJFewkiU0ivn2GKJXjq6y17OjRmrQ+fzQ6uD4QJpFz4jELL8vwP
-	QcJ6uaOqREsHDGyS5bWv5k7pNbopX8lNMRWxb+uY/dTboKIQkxA+w2SxUTYfDiL4XcfSJeGrkPkWU
-	S6PSujXA==;
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
+	To:From:Sender:Reply-To:Content-ID:Content-Description;
+	bh=nH1JDKUpxZKr2E7xywv7sSC/lG5A4nxPxWDHndTmH+U=; b=OQ10UQlojOOElMejsET63HIbzZ
+	3DHzvbtYIGqi3qtZVmlnOiTGbSwjJaXCrsDgpHInm2eUGr8Xc79IeDQYDrtJVitNB0FwJZCPO4B8q
+	+iOBeVWlbGzBejGX44u6FBx6jMlOzwnzs0/RPybD92JWe+ZEhd2F0VZXPfoSXXKlqmHkpJj3BYeff
+	PI7xG81lPzaQFyumhKdnS4tNxkr8IW9Cdx3c7fbkK4m5X/Zh5Rgxrc0VYPw9ZDhRuFltHqM60uFWP
+	hZDBs8jxgJq594XvPuA6d95qyJlYfVavjeq76w/EreE8GdBtyeqVTX0Sp6D1XhKyU0S94iu4liry5
+	Ut1LqIcw==;
 Received: from [50.53.43.113] (helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xW6GU-00000008Wvh-0Sz8;
-	Wed, 25 Nov 2026 06:13:58 +0000
+	id 1xW6Gh-00000008Wvh-0GYM;
+	Wed, 25 Nov 2026 06:14:11 +0000
 From: Randy Dunlap <rdunlap@infradead.org>
 To: linux-kernel@vger.kernel.org
 Cc: Randy Dunlap <rdunlap@infradead.org>,
@@ -132,9 +132,9 @@ Cc: Randy Dunlap <rdunlap@infradead.org>,
 	Matthew Brost <matthew.brost@intel.com>,
 	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	intel-xe@lists.freedesktop.org
-Subject: [PATCH v3 06/12] docs: ioctl-number: update SCSI entries
-Date: Tue, 24 Nov 2026 22:13:33 -0800
-Message-ID: <20261125061340.3402300-7-rdunlap@infradead.org>
+Subject: [PATCH v3 12/12] docs: ioctl-number: update DRM entries
+Date: Tue, 24 Nov 2026 22:13:39 -0800
+Message-ID: <20261125061340.3402300-13-rdunlap@infradead.org>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261125061340.3402300-1-rdunlap@infradead.org>
 References: <20261125061340.3402300-1-rdunlap@infradead.org>
@@ -147,13 +147,12 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Update the list of files where SCSI ioctls are defined and update the
-ranges of function numbers that are used.
+Update the list of files where DRM ioctls are defined.
 
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Martin K. Petersen (Oracle) <mkp@kernel.org>
 ---
 v2: no change
 v3: rebase
@@ -165,30 +164,49 @@ take all of these through the docs-next tree.]
 Cc: Jonathan Corbet <corbet@lwn.net>
 Cc: Shuah Khan <skhan@linuxfoundation.org>
 Cc: linux-doc@vger.kernel.org
-Cc: MPT-FusionLinux.pdl@broadcom.com
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: "Martin K. Petersen" <mkp@kernel.org>
-Cc: linux-scsi@vger.kernel.org
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: amd-gfx@lists.freedesktop.org
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: intel-gfx@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: intel-xe@lists.freedesktop.org
 
- Documentation/userspace-api/ioctl/ioctl-number.rst |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Documentation/userspace-api/ioctl/ioctl-number.rst |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 --- linux-next-20261123.orig/Documentation/userspace-api/ioctl/ioctl-number.rst
 +++ linux-next-20261123/Documentation/userspace-api/ioctl/ioctl-number.rst
-@@ -187,7 +187,7 @@ Code  Seq#    Include File
- 'I'   40-4F  linux/mISDNif.h                                           conflict!
- 'K'   all    linux/kd.h
- 'L'   00-1F  linux/loop.h                                              conflict!
--'L'   10-1F  drivers/scsi/mpt3sas/mpt3sas_ctl.h                        conflict!
-+'L'   10-21  drivers/scsi/mpt3sas/mpt3sas_ctl.h                        conflict!
- 'L'   E0-FF  linux/ppdd.h                                              encrypted disk device driver
-                                                                        <http://linux01.gwdg.de/~alatham/ppdd.html>
- 'L'   35-38  arch/m68k/include/asm/fbio.h
-@@ -259,6 +259,7 @@ Code  Seq#    Include File
- 'c'   00-7F  linux/comstats.h                                          conflict!
- 'c'   00-7F  linux/coda.h                                              conflict!
- 'c'   00-1F  linux/chio.h                                              conflict!
-+'c'   08     drivers/scsi/ch.c                                         conflict!
+@@ -98,6 +98,7 @@ Code  Seq#    Include File
+ 0x1b  all                                                              InfiniBand Subsystem
+                                                                        <http://infiniband.sourceforge.net/>
+ 0x20  all    drivers/cdrom/cm206.h
++0x20  00-01  drivers/gpu/drm/amd/amdgpu/amdgpu_umr.h
+ 0x22  all    scsi/sg.h
+ 0x3E  00-0F  linux/counter.h                                           <mailto:linux-iio@vger.kernel.org>
+ '!'   00-1F  uapi/linux/seccomp.h
+@@ -268,7 +269,7 @@ Code  Seq#    Include File
+ 'c'   08     drivers/scsi/ch.c                                         conflict!
  'c'   80-9F  arch/s390/include/asm/chsc.h                              conflict!
  'c'   A0-AF  arch/x86/include/asm/msr.h conflict!
- 'd'   00-FF  linux/char/drm/drm.h                                      conflict!
+-'d'   00-FF  linux/char/drm/drm.h                                      conflict!
++'d'   00-FF  drm/drm.h                                                 conflict!
+ 'd'   02-40  pcmcia/ds.h                                               conflict!
+ 'd'   F0-FF  linux/digi1.h
+ 'e'   all    linux/digi1.h                                             conflict!
+@@ -292,6 +293,8 @@ Code  Seq#    Include File
+                                                                        <mailto:zapman@interlan.net>
+ 'h'   00-1F  linux/hpet.h                                              conflict!
+ 'h'   80-8F  fs/hfsplus/ioctl.c
++'i'   00-02  drm/i915_drm.h
++'i'   00-04  drm/xe_drm.h
+ 'i'   00-3F  linux/i2o-dev.h                                           conflict!
+ 'i'   0B-1F  linux/ipmi.h                                              conflict!
+ 'i'   80-8F  linux/i8k.h
