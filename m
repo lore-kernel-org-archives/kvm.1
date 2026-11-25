@@ -1,113 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795616401;
-	b=0qg/omzplXdSTf6FR9u0oZiy+3HC2IssAcKC9FrpTeQDE79s5xffxlp9nSniD4tvhe0A
-	 qT+757nSDejFvE2Iq9z7/1gLx+9klBVdImdQhy5YP0NXHMqszuR7+teFzrtrk6ibWBYNr
-	 GdN4FFshGgb3X5iVePeiVz+J8NZKX8UGPIUaIwWV0qfaLGJvev/DUFLnbkECFogyYlMxf
-	 CF5aJ1r6qeDtikglYh1b+EHfxZndy1GzdrK0QkzFAVJIKdLbdgC4Ta8RS136JCii9Mje7
-	 wzRXV5NQ+6RlWoxlpLxS/fYht9PE+aR9ChlP5g0Arp2g4m0NeyubJpVHgcMkNdpENJg==
+	t=1795616996;
+	b=rK6Y80ufKcbyFS1cICy71JEcGJk7KkRlwIGo6Qeke4SFoIhd9jbRcH3pawmYk0yiEdRE
+	 0I2lG1uscJZxRuVwVOZdukxsVCgqaEOQslSVf0atgPkmeps/FhIKhay3ZHegOeBvFQ4z5
+	 WghpbSdITXyfnVLvnLKwWtnSQ70+74lGXLZ+jAmhGtmf9ujUkydyIew/ywaMgZ09OjRQd
+	 +Xcu5/0/o7Up8SfIeEgW2MsF/rm6uhLFbo8Mukcjdt9w9FgBfK0mjUATlJnPiLcB3Fd8d
+	 VxTTcptthUuuWYhX60qmb4NivRwTUTDyDi2n3hdAUCdZCpMT/xT6h6BRYNxLunjhy+w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795616401;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=/sE+cARi5XYpGFmCaYKKwUnoyCBvBLnkQPGNB1SpCIw=;
-	b=rN1A+g6aHZ1SJpwcS/q41XaDhyNp2Z4PwoYpw5S/tZmHQ+ARblx1OSLXgdA1v/KyafZp
-	 of4kSCJGaxRfR911S/NGj5e8ICQfbMlBe++jiCNnKMPQXaQMmHioYwEUFlO3BoACPlWUj
-	 /OdDuAve6VdyaZi8Yi5Z57T80KNf+l8Kq38RG2ZspMWisHD2AGx/gHFtaCLABMmyl1TYF
-	 YC0+sJbca603ZAxQmkdfyaQC/2dKOZyQofoduqySuO/miNiaSVxTIJ88QMm9fsUjLSBOV
-	 Ae7QEn6D+Zm9QIC8x4+64Q1KSBvWK2LYtsbrOru2XO032UKcYOHgIEkdw28he/EWXaA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795616996;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=yzob3IjNhlkrELuFZotbKtg9maqB1cC/YQY8iPS0b0o=;
+	b=BOXbv6x//yHEObJ7Qc4U2qeiS8J/E8F331WA/kz+0/jQg82IKV5T6rWBBvr0z1dpOtSC
+	 HpL4W7kH6CnfYNhRAVsN6Nt48a3s+/rMfVv5jBnmvS2or4MihLWrBFcG2y05lVjDiYx1W
+	 NU0+RgEhDBTEdoWn2AXU4S88XXVl32J/NHAnQd5zEqE6VWst5Hw1D5pug7rQO7o/vrlBB
+	 IjoaURsGgIm2RXnGQVYDYYSfttvGhpkx3YhpHtRrYJZsKST/fT1t8+aNpna8dRjkK8sxr
+	 D3Snev5aNPGu0kLovnlFF5kH7mBpJNnV6aFwD5Zkq4GO0ekCtLJa6Y5xvAdH76D43cQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=B+jz9sYU;
-	arc=none smtp.remote-ip=209.85.221.182
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D54606A330
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 14:20:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41D54606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=btDetiEW;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9598E606A321;
+	Wed, 25 Nov 2026 14:29:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9598E606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=B+jz9sYU
-Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-5ee3a3d281fso3720648e0c.3
-        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 06:20:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1795616400; x=1796221200; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/sE+cARi5XYpGFmCaYKKwUnoyCBvBLnkQPGNB1SpCIw=;
-        b=B+jz9sYU0bMSgYLF6SYO0ghpxNXX8P9tTs2sFW7yrBXotxK22OAClFOOlo+Ugd0Hef
-         6ZOcx2k/VaxDbG4PXOUVjbWRS9eRQR03hLkMAd8ry6wSAAqtu4vZAwJwcRfUdAuszmA8
-         CNzI3Ca7ozY3H4YMujsHSkcb84IjVt98TNL7TawrjMfj3/iocPF7lujJMIU/eutHyNdd
-         1RNWbkVYvzY+yjFmiXvCTdMzZyeoQjsJWgU3fKFGxDD1PaIpQViqL90nmaPTbytWGQq4
-         j6kd3sCHPGzYWyKe3vaOSjOWXg9PHZ1v3ePg9dLHCKj3jyAy0cVjaQ4tYfc3Lgqxk3kI
-         UczQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795616400; x=1796221200;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/sE+cARi5XYpGFmCaYKKwUnoyCBvBLnkQPGNB1SpCIw=;
-        b=Fo9R8yYcee3vShS6FEAi5Y/2XDznYJ/fQoOAd8+YSnQ3bu6s1C5LtA4KQXD3/dO0eG
-         cSSwzUzawaSazM99MxGxqYxqV3a0uNPLVevjhq/V5kzKFd4E6P4ZR5NQ6Nwxe/JWoJAJ
-         b5jWxSZZK2SZF18Ra1MPHjintKXy3OJysy/akXtxq3feX1Ha6EWm/HL3YtLUY4iIM/ts
-         sfX50dz/eU7g8X8/tJOQeHUOlXyo80LO2H1NtnvgmV3GBEZG+R6GRrPoec2rlyru1Ece
-         Es8lJ4fpFahbCESFOP9W534SQOfOgZ4+Kd9+vUW4P8O8qQlrzWs/P3FmAcnDJ5enqCZB
-         Jewg==
-X-Forwarded-Encrypted: i=1; AL+hErH8sQ4m6oc9MPOjAKNFQj8D1sgyxrIi3i2TJrs+skw3iXwz9uif5BT7q/OUNFLcGv4yMcg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8SC6iJzjQRx9t1S6q7tl7Tg8kiGybTgnq1Oli17s5jEm/QJtRb
-	GP2deRyaXyMEZD+8o+AtOv65MIbLR4ToVy9nU7z4uIte+VeNzrGJ+rhcEBGMFhR3EIDUVtXmIYO
-	XeiFk
-X-Gm-Gg: AZFdTZeL3z/8zhgL9DlFbQZtC+uTZYLfWZMu6zr8IWOw0WVDmMLB6VReMXSSDC016Ut
-	gcclr3vaWMnoO7aitIraMh7UZ/PlCfFr/Q/xN1rn+kl0m01ECAWQQrXTtd5OyIO4Mc6qiLoXh2m
-	plqaTN+VgzCczQ5lDNMxUGV16rcIKutTNW7vsAFxSFkVyxNSnzDxcTnUOFArRDiIZpWmdG8sR32
-	qMO3NmRFTaE2nDkmSbpcLzWM6qNwWA3K1ZwLZSd3GQNJzyc3atdKmVgMjAdszgmOFlrlnkC8GxY
-	Ooo4/XD+42umVkw00H3yODCII31o0Cz0BsArKwgo3oMBaJVTliBkqy8eCFzaTnPjuCBn66RjXmE
-	EC5nnLpoOgwwSG/7c1wM0aiGv9uHLYi+HzBatTU/qFla458cEu5Xs8B9cnr4bxS27/hn+gZ9smq
-	AqgseYw3FCjhQcKO6Ctw47ZWMnNRXyJA4y9dL9qX5iVuvrhRbE+UNWhWMavOOXNydVUZJAmLVhk
-	773eDqnEyjWILm/5ZHfBwT8J7j2YURlblyhPXTAW0P2ro5JKQt6O5bdFcEfhC//3hhh1JJK9vnt
-	xDbjYBKqFUbwW3nLTMQzU6fLBzo=
-X-Received: by 2002:a05:622a:258b:b0:55d:3789:8c8e with SMTP id d75a77b69052e-55d769e11bamr337179531cf.15.1795616388597;
-        Wed, 25 Nov 2026 06:19:48 -0800 (PST)
-Received: from ziepe.ca ([142.177.118.84])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d7889f8absm153708121cf.27.2026.11.25.06.19.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 06:19:48 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xWDqd-00000001jay-2IOg;
-	Wed, 25 Nov 2026 10:19:47 -0400
-Date: Wed, 25 Nov 2026 10:19:47 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
-	Dan Williams <djbw@kernel.org>, Leon Romanovsky <leon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Steven Price <steven.price@arm.com>,
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=btDetiEW
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BA6FD2F;
+	Wed, 25 Nov 2026 06:29:51 -0800 (PST)
+Received: from e143914.arm.com (e143914.arm.com [10.2.213.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BF7893F763;
+	Wed, 25 Nov 2026 06:29:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795616994; bh=irJ+SLW2diU+AhutWrsQkPmnPIapmN0EHmgj2AIri5o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=btDetiEW6iagg1Fl4BzF0k9NBnwE7C9i2RYKjvc2M9/Nkk1H4Od9YD9FWkoDGmaKS
+	 2otJ3Vv1HcTLqwGA2kG3AzVGZ3yVGdT+UFEXcIh5+Hs/D7v4Z6f04gjeE61UswGTcQ
+	 Y4zU6Yjv/ZMaIHmSEfJY21N/cuT66qe2B3dQbn3o=
+Date: Wed, 25 Nov 2026 14:29:48 +0000
+From: Joey Gouly <joey.gouly@arm.com>
+To: Steffen Eiden <seiden@linux.ibm.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Lukas Wunner <lukas@wunner.de>, Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v1 04/10] PCI/TSM: Defer TSM vDEVICE allocation until
- device setup completes
-Message-ID: <20261125141947.GD246011@ziepe.ca>
-References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
- <20261123083337.2731019-5-aneesh.kumar@kernel.org>
- <5e04323f-dfdc-4956-acee-bcc09926726d@amd.com>
- <yq5aqzg99uio.fsf@kernel.org>
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+	Andreas Grapentin <gra@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Friedrich Welter <fritz@linux.ibm.com>,
+	Gautam Gala <ggala@linux.ibm.com>,
+	Hariharan Mari <hari55@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	Nico Boehr <nrb@linux.ibm.com>,
+	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>, Paolo Bonzini <pbonzini@redhat.com>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-s390@vger.kernel.org
+Subject: Re: [PATCH v3 02/23] KVM: arm64: Extract number of sys_reg_desc into
+ a constant
+Message-ID: <awbw3NyDifa0WjhZ@e143914.arm.com>
+References: <20261106-sysreg-v3-0-75e95980fb10@linux.ibm.com>
+ <20261106-sysreg-v3-2-75e95980fb10@linux.ibm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -119,16 +86,147 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <yq5aqzg99uio.fsf@kernel.org>
+In-Reply-To: <20261106-sysreg-v3-2-75e95980fb10@linux.ibm.com>
 
-On Wed, Nov 25, 2026 at 02:07:19PM +0530, Aneesh Kumar K.V wrote:
+On Fri, Nov 06, 2026 at 05:07:35PM +0100, Steffen Eiden wrote:
+> Define the constant `num_sys_reg_descs` which stores the number of
+> elements in the sys_reg_descs array. Replace all occurrences of
+> ARRAY_SIZE(sys_reg_descs) with the new constant.
+> 
+> This refactoring eases the integration of handling system registers for
+> arm on s390. s390 needs code from the shared code to define the
+> sys_reg_descs. But also the shared code needs the definition of the
+> sys_reg_array and we cannot forward declare arrays and use their size
+> before it is properly defined. This patch solves this chicken or egg
+> problem. For the time being s390 cannot process the full arm64 defined
+> sys_reg_descs array.
+> 
+> No functional changes.
+> 
+> Co-developed-by: Andreas Grapentin <gra@linux.ibm.com>
+> Signed-off-by: Andreas Grapentin <gra@linux.ibm.com>
+> Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
 
-> That is what this patch does. If IDE setup is not complete but the
-> device already has tsm0 attached and connected, pci_tsm_context_get()
-> returns an error from cca_vdevice_init(), preventing the device from
-> being assigned to the VM.
+I see later in the series, the include of sys_regs.c into s390 is done
+before the s390 sys_reg_descs array is defined.
 
-If the device has not been fully accepted on the SPDM side then you
-should not be able to create an iommufd vdevice for it, nothing else.
+Reviewed-by: Joey Gouly <joey.gouly@arm.com>
 
-Jason
+Thanks,
+Joey
+
+> ---
+>  arch/arm64/kvm/sys_regs.c | 26 ++++++++++++++------------
+>  1 file changed, 14 insertions(+), 12 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+> index 0f0b0495b710..2b28b929f9f3 100644
+> --- a/arch/arm64/kvm/sys_regs.c
+> +++ b/arch/arm64/kvm/sys_regs.c
+> @@ -3976,6 +3976,8 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+>  	EL2_REG(SP_EL2, NULL, reset_unknown, 0),
+>  };
+>  
+> +static const size_t num_sys_reg_descs = ARRAY_SIZE(sys_reg_descs);
+> +
+>  static bool handle_at_s1e01(struct kvm_vcpu *vcpu, struct sys_reg_params *p,
+>  			    const struct sys_reg_desc *r)
+>  {
+> @@ -5187,7 +5189,7 @@ static bool emulate_sys_reg(struct kvm_vcpu *vcpu,
+>  {
+>  	const struct sys_reg_desc *r;
+>  
+> -	r = find_reg(params, sys_reg_descs, ARRAY_SIZE(sys_reg_descs));
+> +	r = find_reg(params, sys_reg_descs, num_sys_reg_descs);
+>  	if (likely(r)) {
+>  		perform_access(vcpu, params, r);
+>  		return true;
+> @@ -5205,7 +5207,7 @@ static const struct sys_reg_desc *idregs_debug_find(struct kvm *kvm, loff_t pos)
+>  {
+>  	unsigned long i, idreg_idx = 0;
+>  
+> -	for (i = 0; i < ARRAY_SIZE(sys_reg_descs); i++) {
+> +	for (i = 0; i < num_sys_reg_descs; i++) {
+>  		const struct sys_reg_desc *r = &sys_reg_descs[i];
+>  
+>  		if (!is_vm_ftr_id_reg(reg_to_encoding(r)))
+> @@ -5268,7 +5270,7 @@ static const struct sys_reg_desc *sr_resx_find(struct kvm *kvm, loff_t pos)
+>  {
+>  	unsigned long i, sr_idx = 0;
+>  
+> -	for (i = 0; i < ARRAY_SIZE(sys_reg_descs); i++) {
+> +	for (i = 0; i < num_sys_reg_descs; i++) {
+>  		const struct sys_reg_desc *r = &sys_reg_descs[i];
+>  
+>  		if (r->reg < __SANITISED_REG_START__)
+> @@ -5370,7 +5372,7 @@ void kvm_reset_sys_regs(struct kvm_vcpu *vcpu)
+>  	struct kvm *kvm = vcpu->kvm;
+>  	unsigned long i;
+>  
+> -	for (i = 0; i < ARRAY_SIZE(sys_reg_descs); i++) {
+> +	for (i = 0; i < num_sys_reg_descs; i++) {
+>  		const struct sys_reg_desc *r = &sys_reg_descs[i];
+>  
+>  		if (!r->reset)
+> @@ -5594,8 +5596,8 @@ int kvm_arm_sys_reg_get_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg
+>  	if ((reg->id & KVM_REG_ARM_COPROC_MASK) == KVM_REG_ARM_DEMUX)
+>  		return demux_c15_get(vcpu, reg->id, uaddr);
+>  
+> -	return kvm_sys_reg_get_user(vcpu, reg,
+> -				    sys_reg_descs, ARRAY_SIZE(sys_reg_descs));
+> +	return kvm_sys_reg_get_user(vcpu, reg, sys_reg_descs,
+> +				    num_sys_reg_descs);
+>  }
+>  
+>  int kvm_sys_reg_set_user(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg,
+> @@ -5634,8 +5636,8 @@ int kvm_arm_sys_reg_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg
+>  	if ((reg->id & KVM_REG_ARM_COPROC_MASK) == KVM_REG_ARM_DEMUX)
+>  		return demux_c15_set(vcpu, reg->id, uaddr);
+>  
+> -	return kvm_sys_reg_set_user(vcpu, reg,
+> -				    sys_reg_descs, ARRAY_SIZE(sys_reg_descs));
+> +	return kvm_sys_reg_set_user(vcpu, reg, sys_reg_descs,
+> +				    num_sys_reg_descs);
+>  }
+>  
+>  static unsigned int num_demux_regs(void)
+> @@ -5723,7 +5725,7 @@ static int walk_sys_regs(struct kvm_vcpu *vcpu, u64 __user *uind)
+>  	int err;
+>  
+>  	i2 = sys_reg_descs;
+> -	end2 = sys_reg_descs + ARRAY_SIZE(sys_reg_descs);
+> +	end2 = sys_reg_descs + num_sys_reg_descs;
+>  
+>  	while (i2 != end2) {
+>  		err = walk_one_sys_reg(vcpu, i2++, &uind, &total);
+> @@ -5772,7 +5774,7 @@ int kvm_vm_ioctl_get_reg_writable_masks(struct kvm *kvm, struct reg_mask_range *
+>  	if (clear_user(masks, KVM_ARM_FEATURE_ID_RANGE_SIZE * sizeof(__u64)))
+>  		return -EFAULT;
+>  
+> -	for (int i = 0; i < ARRAY_SIZE(sys_reg_descs); i++) {
+> +	for (int i = 0; i < num_sys_reg_descs; i++) {
+>  		const struct sys_reg_desc *reg = &sys_reg_descs[i];
+>  		u32 encoding = reg_to_encoding(reg);
+>  		u64 val;
+> @@ -5957,7 +5959,7 @@ int __init kvm_sys_reg_table_init(void)
+>  	int ret = 0;
+>  
+>  	/* Make sure tables are unique and in order. */
+> -	valid &= check_sysreg_table(sys_reg_descs, ARRAY_SIZE(sys_reg_descs), true);
+> +	valid &= check_sysreg_table(sys_reg_descs, num_sys_reg_descs, true);
+>  	valid &= check_sysreg_table(cp14_regs, ARRAY_SIZE(cp14_regs), false);
+>  	valid &= check_sysreg_table(cp14_64_regs, ARRAY_SIZE(cp14_64_regs), false);
+>  	valid &= check_sysreg_table(cp15_regs, ARRAY_SIZE(cp15_regs), false);
+> @@ -5980,7 +5982,7 @@ int __init kvm_sys_reg_table_init(void)
+>  
+>  	check_feature_map();
+>  
+> -	for (i = 0; !ret && i < ARRAY_SIZE(sys_reg_descs); i++)
+> +	for (i = 0; !ret && i < num_sys_reg_descs; i++)
+>  		ret = populate_sysreg_config(sys_reg_descs + i, i);
+>  
+>  	for (i = 0; !ret && i < ARRAY_SIZE(sys_insn_descs); i++)
+> 
+> -- 
+> 2.56.0
+> 
