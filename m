@@ -1,55 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1795631229;
-	b=j/ouQdsCaHJJ/MRQTSoB+Nr62Z9Bciz2USZTWoiw3IeaSQY5UdbrWUwDundntnhR15ZI
-	 IzQhFuC36B/qYCxg5B1qusvukAyGuRiU4iurWeKgisAFrqRcqat9ha8F7OQiNqXQW87QI
-	 fFF5V1JsvtnoNAm4AUiIPzPekP8ZqeFY853uqfPKj7RnX1dXEdU+j5/KU4IddBGhsVTL+
-	 QNc+acgPcDAoOGtjbb4KiLoGAYVcz8FqiB0/HWpyt91BgGJGaGVZYQIgojfPTUFmM3ZDR
-	 /ftbV1mGWCsAvHmnH2bTmfcMxib4jOsSpq1quYfnfLujLzJ+SU8sinFk0PuwqOVxDyw==
+	b=HuhObGSDIcRWQGSVu9Rp76KkcaCDAdlm5CqbqeUN5PF/gV4sv6j266zxttwFtQypgC/q
+	 KbbSoek6TLYi5fJJtsirGuyz+wOYFMb+NoCTtFPQkGsXXvYTgQDabYhhzwT1Kbe/g/o8l
+	 EPLm9QZ8IHoiIflAY9kEgDIO397TL/ID3lrqVCVIcr8O1m0jrKHrbvnDzasCo2pJHLyid
+	 38TtlNCAH40xxKpxBZ0ueELJHFDTPNSekCA9qhydXNyXNxNj1qKgYpF95VGie4VKAeih0
+	 hmQXy1+7+1wrkS2auR6uodkFAS5GH8rlMY/98hoI9TunZ5BnrSMw4U98BTC7QD6+CjA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795631229;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=4ApeS1dpxE/iXP7GhIQ/uP7arI7DrfHwE127tjX2Tls=;
-	b=LbaGV1/kYeinqsh/Tra3xvwkl7zqkaoA/2vJ3+gs3zaAP65uKdFwXCvwDG1VTS+PJ6UO
-	 L/1uJORremCYlw/mG2xH5BKlCZnT9GBTn26Xym6LyhchaqjBc/taq+aMdl3etKhekaefS
-	 ZcmUPwKvzI6K6rSVQrpDUL8z8R0SHIUREKtk5HIWKmnZ4HrJWnlpxpqrXVp5S7rrImT2O
-	 z+m6uBfp/OzeCDzOEcnESeh3s4L8/CVeebAsic7GSLI7SX2z1wZCz7oPwMNV/KD4kyyKD
-	 yt6yRA22QtXMTrIUjj94cp3MTcFP7ycpDpXrrUwWj+zrG5PZmdj571Y+BIzCYLm/PYA==
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=T7om26OeJicnOx5stP3SgFdoC9BfNYzufMAyDNSKjpY=;
+	b=cfQFpOBajtTUyyrIiUseKj7aC2/h+96F4bdGudlGP41Kjd9a4kYG/GYv4SO+UUghZ4gB
+	 OKdkOCxFTCqAWGleVMsSzKecj179doL8/U0c3LRU7FaV1dqPisT3nx1UTHSgKsPYYs0Dn
+	 CBZd2Q0mY8o9SI1Zucm+CNTRKCdTjtf7I2yHm4CYTUNC7un1PlRYFAq1f7EUinblrggtl
+	 eKGcfbWSNKM3vBFavkgUGlejqHngyCw1ezqHMV8STQAbClLIwKr1ZoQNXc13AUeMTmh5W
+	 oQXKlwLzVAqdbn64/bsFBEDW006mkrGXd3/y6mpsF0+Lvvrda8K0Jkuu/yVBvQP9CHQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W6QM59HN;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MalWx9LB;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0D9606A321;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65B6606A327;
 	Wed, 25 Nov 2026 18:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W6QM59HN
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA741F000C0;
-	Wed, 25 Nov 2026 18:27:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MalWx9LB
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D8C11F000CA;
+	Wed, 25 Nov 2026 18:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1795631229;
-	bh=4ApeS1dpxE/iXP7GhIQ/uP7arI7DrfHwE127tjX2Tls=;
-	h=From:To:Cc:Subject:Date;
-	b=W6QM59HN+UQvUnjADcWPdIQm0/rdmnE+SrlefTmW7C1QJnMCEqDSTE7RB7kJvS5Wi
-	 Ssj1t32g7Ksr1eh72l4x0SKZ/JBMlWXg7+tthhHyJNLkoSRQZaZwps/6qOnGWgCbmV
-	 PPeqrk2lvYUGPFpM3I7nQvT7KwK4CZo9ewaRwZdVDqrokOkMq3hMr7o7dT4WHqD7wQ
-	 lWEjjOygGPuTKXmF1wFWHEmTL+wquilS40Q14uH22e5NcaTMOxCQutQkkyjik8KaSu
-	 a6ThRDsdNld/fsAbKfVAUPbcAoVm35w0p9/kB79AtKhoZDotzNKmPBnF6M3P4e8sXD
-	 6lO9TjL1QKsVg==
+	bh=T7om26OeJicnOx5stP3SgFdoC9BfNYzufMAyDNSKjpY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=MalWx9LBl6OXP/IkhbnWUyrbBDSREXTIj0wkacDk1bi1q6UArAIvnDE1tEET/IVKx
+	 fWjN0yYZ6WXQImSQbbRagAXtQ/J4Kwxx9N2OrQhKNe5pwYWIXPhExijet9NFtKDwCx
+	 MwENSHF+KR4M2NtfBoW+y1A8NnQoe1vlkGWTRoDI9D1e2TXE6xUmUxr6CLWihemaX7
+	 M2W0ooCdkLNpo7Q3N6GrIOOnXzJFRAKf+ONDxIXy/Ob4eBSAsc0k2gGGQLuroSHWlu
+	 Z4C45rScxddPw0wlFt7+yNJ/sQJ+bBpw3/MmG+Y2Kv+uClY9E2Qursvhm4zx071xe/
+	 zqWsU9M7Zgulg==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	Jim Mattson <jmattson@google.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH 0/3] KVM: x86/pmu: Always defer PMU reprogramming on nested transitions
-Date: Wed, 25 Nov 2026 18:27:00 +0000
-Message-ID: <20261125182703.1694998-1-yosry@kernel.org>
+	Yosry Ahmed <yosry@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/3] KVM: x86/pmu: Recalc PMC emulation when deferring counter reprogramming
+Date: Wed, 25 Nov 2026 18:27:01 +0000
+Message-ID: <20261125182703.1694998-2-yosry@kernel.org>
 X-Mailer: git-send-email 2.56.1.911.g883d8bcb20-goog
+In-Reply-To: <20261125182703.1694998-1-yosry@kernel.org>
+References: <20261125182703.1694998-1-yosry@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -61,48 +64,84 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When Host-Only/Guest-Only bits handling was added [1], we went back and
-forth between deferring PMU reprogramming vs doing it synchronously.
+In preparation for always deferring counter reprogramming, recalculate
+PMC emulation for each counter first. On AMD, this would make sure that
+mode changes (e.g. via VMRUN or toggling EFER.SVME) are immediately
+propagated before instruction emulation completes, such that
+instructions are counted in the mode they retire in as hardware does.
 
-Deferring all reprogramming is incorrect, because on mode changes (e.g.
-VMRUN or WRMSR(EFER.SVME)), this would only update the to-be-emulated
-PMCs after the instruction is emulated, which would count the
-instruction in the previous mode. Real AMD hardware counts instructions
-in the mode they retire in.
+This gives kvm_pmu_request_counters_reprogram() similar treatment to
+kvm_pmu_request_counter_reprogram(), as done in commit 5dfd498bad5f
+("KVM: x86/pmu: Calculate set of to-be-emulated PMCs at time of
+WRMSRs").
 
-We ended up with a hybrid approach where architectural mode changes
-do reprogramming synchronously, but force-leaving nested defers it, as
-it may not be safe to do it synchronously.
+Now that kvm_pmu_request_counter_reprogram() is just a single-counter
+version of kvm_pmu_request_counters_reprogram(), just call the latter
+from the former.
 
-This mini-series unifies all nested transition paths by always
-calculating to-be-emulated PMCs synchronously and deferring the rest
-(e.g. similar to WRMSR(EVENTSEL)).
+No functional change intended, as all architectural mode-changing paths
+on AMD do not currently defer counter reprogramming.
 
-The motivation for the series was an unprotected SRCU access from
-KVM_SET_SREGS -> svm_set_efer -> svm_pmu_handle_nested_transition() ->
-... -> pmc_is_event_allowed(). The obvious/simple fix (and probably more
-stable-friendly one) is to hold the SRCU lock in kvm_pmu_handle_event()
-when reprogramming the counters. However, I think this is a nice cleanup
-to have regardless of the SRCU bug.
+Cc: stable@vger.kernel.org
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+---
+ arch/x86/kvm/pmu.h | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-[1] https://lore.kernel.org/kvm/20260527234711.4175166-1-yosry@kernel.org/
-
-Yosry Ahmed (3):
-  KVM: x86/pmu: Recalc PMC emulation when deferring counter
-    reprogramming
-  KVM: x86/pmu: Always defer PMU reprogramming on SVM nested transitions
-  KVM: selftests: Set EFER.SVME via KVM_SET_SREGS in
-    svm_pmu_host_guest_test
-
- arch/x86/kvm/pmu.c                            |  1 -
- arch/x86/kvm/pmu.h                            | 32 ++++++++-----------
- arch/x86/kvm/svm/nested.c                     | 10 +-----
- arch/x86/kvm/svm/svm.h                        | 18 ++---------
- .../kvm/x86/svm_pmu_host_guest_test.c         | 31 +++++++++++++++---
- 5 files changed, 44 insertions(+), 48 deletions(-)
-
-
-base-commit: cbe54fc3462b3949ab27b9ae81fb9ddb509040c7
+diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
+index 090c9bbb74f48..8aa9db1569167 100644
+--- a/arch/x86/kvm/pmu.h
++++ b/arch/x86/kvm/pmu.h
+@@ -218,26 +218,27 @@ void kvm_init_pmu_capability(struct kvm_pmu_ops *pmu_ops);
+ void kvm_pmu_recalc_pmc_emulation(struct kvm_pmu *pmu, struct kvm_pmc *pmc);
+ void kvm_pmu_handle_event(struct kvm_vcpu *vcpu);
+ 
+-static inline void kvm_pmu_request_counter_reprogram(struct kvm_pmc *pmc)
+-{
+-	kvm_pmu_recalc_pmc_emulation(pmc_to_pmu(pmc), pmc);
+-
+-	set_bit(pmc->idx, pmc_to_pmu(pmc)->reprogram_pmi);
+-	kvm_make_request(KVM_REQ_PMU, pmc->vcpu);
+-}
+-
+ static inline void __kvm_pmu_reprogram_counters(struct kvm_pmu *pmu,
+ 						u64 counters,
+ 						bool defer)
+ {
++	DECLARE_BITMAP(bitmap, X86_PMC_IDX_MAX);
++	struct kvm_pmc *pmc;
++	int bit;
++
+ 	if (!counters)
+ 		return;
+ 
+ 	atomic64_or(counters, &pmu->__reprogram_pmi);
+-	if (defer)
++	if (defer) {
++		BUILD_BUG_ON(sizeof(bitmap) != sizeof(counters));
++		bitmap_from_u64(bitmap, counters);
++		kvm_for_each_pmc(pmu, pmc, bit, bitmap)
++			kvm_pmu_recalc_pmc_emulation(pmu, pmc);
+ 		kvm_make_request(KVM_REQ_PMU, pmu_to_vcpu(pmu));
+-	else
++	} else {
+ 		kvm_pmu_handle_event(pmu_to_vcpu(pmu));
++	}
+ }
+ 
+ static inline void kvm_pmu_request_counters_reprogram(struct kvm_pmu *pmu,
+@@ -246,6 +247,11 @@ static inline void kvm_pmu_request_counters_reprogram(struct kvm_pmu *pmu,
+ 	__kvm_pmu_reprogram_counters(pmu, counters, true);
+ }
+ 
++static inline void kvm_pmu_request_counter_reprogram(struct kvm_pmc *pmc)
++{
++	kvm_pmu_request_counters_reprogram(pmc_to_pmu(pmc), BIT_ULL(pmc->idx));
++}
++
+ /*
+  * Check if a PMC is enabled by comparing it against global_ctrl bits.
+  *
 -- 
 2.56.1.839.g22a8290db9-goog
 
