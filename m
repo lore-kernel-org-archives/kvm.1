@@ -1,89 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795604287;
-	b=hUtbfKDeuObPpJEwS+L+Mby/LqdS4Nu5qVjS/8Xz4ewGNl6EJSFxyzoe/ebMd9bNVtav
-	 0LG7hfnJ/UzfKx0H3WSSLwb8wL1mJb4/VH5f1QXY9sXRW2MyQfZ8voCb+i/SEOMCazbD5
-	 rBnW6VdqOdmbs2pfVkc0Y5guDLDyECvxTw0kjLfK4SB+buB9v0ciZ/MQijEBrSBSJt2Q3
-	 UpxJufCOhE+gQ1/ZElKMP0O/RA1a/y3DZ7zgZD/z73b8/uVXAggXQ1RH3G8gjTyZpSd/B
-	 SIeumqnkIpG3ZaNafkU82MbAw9eF8ntMYLfOJ/uHG/SPX5sPX7mLc9zk+k6gIDUDGiw==
+	t=1795604447;
+	b=F+47CoE5imbinYJ+JYtthXN4zJar0etEQ8BOSXhFE1v0N1ND9TltfLQyqdODOgMzVR3Y
+	 1BsGsFWq7MEmR8n/b7WtqpY4RT9A0iXKtNEnJbvx/avkhVi9ddP/rqnHBkU+gH3b+sw8O
+	 GDVnjiWyKfL1RDqsLEI0NdgbHeD2eZLASWuvYmCJV1L90dKrIbLh3t2QhZsYuYyfvwcIj
+	 ClFt64ts71m7v7Mc5ll2O02CXqVqdtouuS/LqvkfcP2WVSXPx1dOEZLQnKUw7UBWhTKiC
+	 UgsFa+Jqy5O5JXO2HkBQh581Pmwco4IUotu6yKXOUP50mgEZ/RoQGOAk7bycRBwJY4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795604287;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795604447;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:X-Google-Original-From:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:To:Cc:References:Content-Language:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=9ojd6QLbo6svWTxF6DUELPeNw20UDvUeJORZrpfd3O4=;
-	b=264InFTpqxWiD+lbHHJT8t8fpWSqhSTYRY58ZUnIYPmjgNh+MNDeQmgJ3K/3tA+IljlQ
-	 s2K/ePinKHPaa1PetQH3z+6GeI0OI4buzxIWLRjF+THXftT6mx5RSI+0pi0jhSi02jAXJ
-	 Prd2QulTtvVe0sgD9miooKbCilOpPpKnJ8s3Z/KGD1trCmwTdFf3PE7xnlzkUfJuHnklq
-	 1vObglIFPnpiw3n0DNVkU83ULQ3MlodlTxGJMlj6WhbA6r8Es2P/mDI/6VXDUK1c4/IJs
-	 ZdFhWv8yqAet/2F317RIc7QiO7apJ2Ha4IvRKjtK4G25IwOG3v36l08nefTCEVDUlhA==
+	bh=WH6OCX8O2rHrDc+AjcgOmeRyCyW9QUyc1yx5oWf9qtI=;
+	b=b49i+OpVxkYpsg1sE2bUA6WBOsQJx+9uPHnI/qMDUhrYWB9/37Xcx0tnXxMXjlrRTCRz
+	 9cdtpiHBNOAIC5VaRlw1O+tJoKX5K4a+8ZSxuHuxY3mXUdZmpYvGl6kywI/VuvLqROrJB
+	 qXrMttenQZzC/3XNNNzrit2xcib0BHt78TBSIPCYHVll+u9kaVvcqrLzInr1wYTSeQIZB
+	 P0Zc02vpo7YCQhQd94K2gZSm4jgsJ1pLFaUYRqquWGWO3mSHnL3RkaaIQxbPJ1SiacOtV
+	 bOvx+0atdW0nbOyiw/1C9Pe/q4kTED/VVKnIYriEMXiqvwtXPzjRhewUwZ6xVPqbHrA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LiQssqhg;
-	arc=none smtp.remote-ip=209.85.221.41
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Dvt4iI9w;
+	arc=none smtp.remote-ip=209.85.218.53
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57CB5606A31E
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 10:58:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 57CB5606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F70606A323
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 11:00:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E6F70606A323
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LiQssqhg
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-4a5024b3c28so3850741f8f.0
-        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 02:58:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Dvt4iI9w
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c5133831027so799097166b.2
+        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 03:00:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795604286; x=1796209086; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1795604445; x=1796209245; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9ojd6QLbo6svWTxF6DUELPeNw20UDvUeJORZrpfd3O4=;
-        b=LiQssqhgsoXlY6cGAtVuJws8xw3c+XRo4uPEUFuicxE0t1JzgDpUetKqqo2lhFywed
-         YA09EVK1RUqcdkWFetIqV+PjtaY0f5KO+zdfhAnv8oWKC98coNDqUS1W/xJrnI+S30FT
-         c53ldaeOMqyBkCegi/j/yQQdxgZk80u6Tb+jl6PmGLfj+euB9iitGGNJLiRJI6qZ0+Gc
-         fAU6Ec/ObgsJt8pN9xlx7UgCjbO+hGaPUQ0Q11gfDDLrYRnJ6H2YDQQCjpph98YpisH6
-         77b2+5Lr7JVzw8B21JuGb6BFUluy3XAEc9CNYrm98I/BnC0ho/HCTe/nCpsL4dGy/ezh
-         tuAg==
+        bh=WH6OCX8O2rHrDc+AjcgOmeRyCyW9QUyc1yx5oWf9qtI=;
+        b=Dvt4iI9wNLShfT5z76hzWCPIE+O4afIQ/fRVNAxPKxirsD9s0p+EF6Z1V1SBO++C8R
+         PAjE9O/danIxx3UAvz5FeTaQQxQgM0WrkGa3DxsE58n+LBuF55WXvHKtcgr8BKPU01mr
+         CTsdnVQ4GbpqoMJzI0w2dDh0tMR9X9lSyv9hsXKs5HJyQucqn6pwU9CAOEurx3C7V0R1
+         AaMvU0WmF0G95XaUNbYXlSxmGJy7gQdDs6y/pA4TI/FgAZgrhX5y9WFvZYeF+l60Dg9I
+         kUUkW+6OLyLNBJtsHV4RwhrWm1BJi0TOEPwTjz11tLzUTdlNtIPIHCaZqpPtdjdz2Moz
+         uLAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795604286; x=1796209086;
+        d=1e100.net; s=20260707; t=1795604445; x=1796209245;
         h=content-transfer-encoding:content-type:in-reply-to:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=9ojd6QLbo6svWTxF6DUELPeNw20UDvUeJORZrpfd3O4=;
-        b=qe1sR0fa/u1GL+qhv+yEg1dnN68xW3Eov1TAsfa25V6949aUy6CaXt3L/aCVaeZd5e
-         K8/6LPkfeN3Vt7/zd7Trr8WHm1trzxL68rDrvfRr0cYsoiF4uTaG9NlVI8J7nXXcr+gW
-         4gfMToaNwGaz8wa0Tu95KjTVMkpVOw3m+yy90TSfweo2WYHtHAjJHanrw26aDjaqua3e
-         XlijlYrpbiGtmSfmb6k0ppQSImRi47bHzPDWK1r0t7mTtIvzJYLSjjPpZET2um89FU/y
-         1cZCMH5gSkWO1M8qyMJnc7qhhMuvoPFRXnVN6J8fbyUq4NvuRL03UQAnaWgbAtvXfk9r
-         A6uA==
-X-Forwarded-Encrypted: i=1; AL+hErE+1HEToCi079OZb3/KHCW+NaDleNz301bxxL6ZNW4rG6jUZBXIErNiVatf7WGtW29cSSA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/QDacEon53Enrap8kVxm8/pu1GsWu7XtQCRXjvfrpjftL6jLtQ
-	dysOTLs3wLvIk5YDoZHmHIlISkwDrImAIqpREIVcc2nSJXJLkO7neuCY
-X-Gm-Gg: AZFdTZfj1nfRjWz7Wti7XsxHty7FPEJdt4+u2BGGVTAy3KgFa1Ux6WYH9WNe3xjVQmL
-	9OB3zYqvEm6AzDA8PCmwirrgA8xAElLn1tWiuDFAuN4QtrNJD90Or1zYdx1pjp0SixyHzHOhzB7
-	XtH4aAmED1f/cul+/MZsmhgSBVVkgkbwDjO89sAAe4H+Gq2lLE68Ufp0RujaWrn+gaMihEhP3Cd
-	Y6WZrw4euRYtZuWb889aaOjZQOW30ywBFbdBJ/nH+tFxtkyLg3ceW3mO4ROfEIWJVh5+zeSZteF
-	4aufmAwlR0JAG9BN/qEz9L/etMRNGlSrgt5amn6e4mI9oWnlpjGbJqbdjxdh0zMkC6THY8AiNdA
-	WhM6V+gKgaNhW5j7RXOyR617ej27zjzcdn+bdKCMdill1cJvs3Eeve+AozbebdeeFosxA8M8sPi
-	YFhsBJ7camBLvD2DX33PbWyQXhm3X8RUet4UrBUECr9jeintYnNWizzNGVf296iT56Gxihqd0XJ
-	lE59KILhkVt/GfpSETmoRrhfCbPtpOjVK6n6UxMzeX4/yQQuohanJ17G3wtxEyqIRhPGnQALenj
-	uJ5AXz6hgH2bZ03NqW1RDuEbep9heTtPG2A=
-X-Received: by 2002:a05:600c:4f81:b0:4bb:5e8c:13bc with SMTP id 5b1f17b1804b1-4bb88805902mr337651085e9.7.1795604285398;
-        Wed, 25 Nov 2026 02:58:05 -0800 (PST)
+        bh=WH6OCX8O2rHrDc+AjcgOmeRyCyW9QUyc1yx5oWf9qtI=;
+        b=Hj8+zK7kN4zZXwCA3cjMExDZiiDnKEj4NT4F8qtkC4TfTJT4MvgTo61Q0MFCd6Q1++
+         AFOQXaDQaNBbF2V7JMFyZ0woZO+CUAL53HH7Yr6fItQfyEBF2B4DaE26QyfQ1acKdhUG
+         2KMHMHwBD6ALZcINnn6L+lgWXRMKQWD2DN1UEg8qqW0D2fAjx4fKh27dA26tlxIj4XZU
+         XOAOtsrcBGs9pJMXUq9mKXBVq6oBcf95rEzMnG+bg476Wo1tWgN4F5yOrZvGXTjvbiDI
+         bqyx0XVjxv4uqSaYIY9X7E2dKKgoPEJk4C902wu4nzLN64lnO8ZOPhKYAN1kKN6+kgdW
+         vnPg==
+X-Forwarded-Encrypted: i=1; AL+hErE0O5qjcN/sfVk3f7UDB4mCf9qXvw0OCG7O/C1tCE8MdwDQe8eOWuLRBsMtxgyEb3dG2zM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/KH/NQI4Xcckpar7fPTnUxD3slOsYpQqnvMih9SN747Hw7tCLE
+	efCQEwpmM6mRVIaEUZ0+6QwI0613ak3RP/ePRbQvvs/aM/kpDJ+2FCtb
+X-Gm-Gg: AZFdTZdUN7twOVAhB1aKYy8jlPDYxzmaEUNWoqtMwq0GxUlexQIHX8r3F6fkrlXP16T
+	lm4QkqSW/yWEj0iis6OAWHOjsKsvye1Ueusu1o+5d59qbUtZr0+yTp3zs+4MOMdgO9/vWF/RzdJ
+	rDJf33CwcF1u9q1S79gUu1BBFc97H9zieP6pMNe8mmu324p3TG3+ziMPVHxjK96T4sL54fcHnhF
+	0BLfwKwxYU1ZmkyOCWU+JKiOtGKkaQx2BJNl/FD8WI6aciI+cS+F3npv5Cq6gSVp75xG6oIFDpc
+	meIlbWPL302v4hHSJB5kzKuKElirfEyPjt6Uq8757Kg1Jj/xMyWdWXLK6VbkWJTZxRGdme7O0Wd
+	94mF+C/HIF7HZgAnUDiMcOdQEqKkj/VQaX9jK4owCgcqHzuA9VQ4salJHy5lS5hZbDGiDl9ldFq
+	9li0KhwZkp8z18cf+WEQ/7Hy81N4ERuHMLh2bqB4VTfj1foAXWJVfz682apUkpjJA5DKMHcPLKL
+	bawSNqg41hwC9F0zfDiSkQdC6+odMyfClKAftAzkJKtO1bEVhXJnxiMpaAPes6E5aAd4BZ53+4u
+	JT4yf/6WXkpCpqv7nBRrYI4/5sK5ZsIdsGJz
+X-Received: by 2002:a17:907:6eaa:b0:c46:d837:b358 with SMTP id a640c23a62f3a-c513a4355afmr1482828466b.3.1795604445261;
+        Wed, 25 Nov 2026 03:00:45 -0800 (PST)
 Received: from [10.45.18.224] ([15.248.2.12])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb906817ccsm285486235e9.5.2026.11.25.02.58.04
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513afe01a0sm626673666b.68.2026.11.25.03.00.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Nov 2026 02:58:04 -0800 (PST)
+        Wed, 25 Nov 2026 03:00:44 -0800 (PST)
 From: Paul Durrant <xadimgnik@gmail.com>
 X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <8888e81f-ec6b-4211-afef-215eba880e01@xen.org>
-Date: Wed, 25 Nov 2026 10:58:03 +0000
+Message-ID: <3739cc8a-04a6-4d17-96f0-db70833c700a@xen.org>
+Date: Wed, 25 Nov 2026 11:00:43 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,8 +94,8 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 02/21] i386/xen: Don't resample GSI when per-vCPU
- upcall vector is in use
+Subject: Re: [PATCH v1 03/21] i386/xen: Free Xen vCPU timers when a vCPU is
+ destroyed
 To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
 Cc: xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
  Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
@@ -110,35 +110,43 @@ Cc: xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
  Mark Syms <mark.syms@citrix.com>, Feifan Qian <bea1e@proton.me>,
  David Woodhouse <dwmw@amazon.co.uk>
 References: <20261124232247.23169-1-dwmw2@infradead.org>
- <20261124232247.23169-3-dwmw2@infradead.org>
+ <20261124232247.23169-4-dwmw2@infradead.org>
 Content-Language: en-US
-In-Reply-To: <20261124232247.23169-3-dwmw2@infradead.org>
+In-Reply-To: <20261124232247.23169-4-dwmw2@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 On 24/11/2026 16:22, David Woodhouse wrote:
 > From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> The callback_via GSI (or PCI INTx) and the per-vCPU upcall vector are
-> mutually exclusive delivery mechanisms for Xen event channel upcalls.
-> Xen itself will never assert the callback GSI for a vCPU which has a
-> per-vCPU upcall vector configured.
+> kvm_xen_init_vcpu() allocates the per-vCPU timers with the CPUState as
+> callback opaque, and nothing freed them on vCPU destruction. So a guest
+> could arm the periodic timer for a vCPU (VCPUOP_set_periodic_timer
+> always reaches QEMU; the kernel doesn't handle it) and eject that vCPU
+> via ACPI hotplug, leaving the armed timer pointing at a freed X86CPU.
 > 
-> When the interrupt is acked, QEMU's resampling logic reasserts the
-> GSI if evtchn_upcall_pending is still set. If the guest has configured
-> a per-vCPU upcall vector, events are delivered through that vector and
-> the GSI is unexpected; a guest which receives both the vector upcall
-> and a spurious GSI interrupt for the same event can crash. This was
-> observed in production with Windows guests on a different VMM which
-> implements the same resampling logic.
+> Free both timers in kvm_xen_destroy_vcpu(), called from
+> kvm_arch_destroy_vcpu(). That runs under the BQL, as do the timer
+> callbacks, so it cannot race an in-flight callback. It *can* race a
+> timer hypercall from another vCPU — hypercalls don't take the BQL,
+> which is why xen_timers_lock exists — so clear the pointers under that
+> lock and have the periodic timer paths return -ENOENT when the timer is
+> gone, as for a nonexistent vCPU. The singleshot ops act only on the
+> calling vCPU, so cannot race its destruction.
 > 
-> If a per-vCPU upcall vector is configured, don't resample the GSI;
-> just deassert it.
+> Also move the timer_del() in do_set_periodic_timer() inside the lock,
+> where it should have been all along.
 > 
-> Fixes: ddf0fd9ae1fd ("hw/xen: Support HVM_PARAM_CALLBACK_TYPE_GSI callback")
+> Fixes: CVE-2026-123069
+> Fixes: b746a779264f ("i386/xen: handle PV timer hypercalls")
+> Reported-by: MyeonghunPak <https://gitlab.com/mhun512>
+> Closes: https://gitlab.com/qemu-project/qemu/-/work_items/4098
 > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 > ---
->   target/i386/kvm/xen-emu.c | 7 +++++++
->   1 file changed, 7 insertions(+)
+>   target/i386/kvm/kvm.c     |  6 ++++++
+>   target/i386/kvm/xen-emu.c | 36 ++++++++++++++++++++++++++++++++++--
+>   target/i386/kvm/xen-emu.h |  1 +
+>   3 files changed, 41 insertions(+), 2 deletions(-)
 > 
+
 Reviewed-by: Paul Durrant <paul@xen.org>
