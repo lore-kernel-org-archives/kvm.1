@@ -1,89 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795604739;
-	b=rldKvAhFEkcNp3WXtfbsswUvY4W6k+38DvFwP1k9DQYqcoBeiGn+Hj7imnnpRgkyHYSh
-	 45kDiH9RaR/s7n1h384Il+/FrmeSzyF4Um2CyNJqrVQFmNHmzr346deNyqQXbEi8eDDTK
-	 IwEO3HP32qNZxi5DvlVlrb8EgIBw13H+sLkcHGxvY4HuzyYwYdB3+7fmRJCvdb6+42NRc
-	 2swTxNY1XAylVTi2EZlL3ShBF8Q0w4CoHccIXLgLWfz2o5IxT9j72jk0KnQDn+aKfhPod
-	 zagRspbRYvpvUqQffRBazUZMpBx4/s1PQGb6wKP2/II11rVAVTMznekD0RcE6XI7puA==
+	t=1795604758;
+	b=y37EI3Qqv3WWcAsT+4ciAHaJ3YycvHO0YKoqwgw61y5hkLuDJ6zsVaEPmQWVPyfp50rX
+	 m/3Ht+lcRCejPvSUee0rvOiNGXeViFLBgv0BcPUGW5DBs7ToFCNCTtuMRFqkmU/Fwb4rt
+	 IfmT3S2GG6K+HJtpEzWc1BuzgmXiZD3+KnbXvMbW4CcfNclyQZE1V+nPnK4R38+eLChKW
+	 wvHZzrKTrFW0e5cLQNuu4uZjTp8QuQs7LH8ZmWAEUe3cNyAdAMtuE9gFt7W4ZjxB7Hsha
+	 3WgWnijCp6SPxccbQEYJSRSOwzPnLCmTp/ywmSfLECPHTboZJcu1fpMFoLf9TO2PaRQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795604739;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795604758;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:X-Google-Original-From:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=rj/OmW4asS9jNN/viln1BFpfuwXmJiprMQIHIS8uDWw=;
-	b=UtdHxlO0PHDqXvfMQDVM0wnPOKJvv+ifBka73hNAYKA5yqdRnTfGkvoRoq8scB74UHVc
-	 V0xVz2kXVch5Gyr/ZrAuZe1lRlpn3aQBJ8DCcRGLFz10hGCbbs/zZKn32XCh45tJ8jrl9
-	 bvg8M+8nzBVZFkEFTlKfjzLmOuTfSLO9Q0q6ld/2ofOTWEg1w38ojKdF3u8YEEpFEsBao
-	 R+h7AgS6vhnclQhj9VV8muFKBrUrMd+HSxhoJyhEM96yg9HAg6yOSX+VLGJdxOWRwwZzB
-	 YP33E5Ms1Gxr9XT/uRGEqoq9N2a/fVJ7rYwLShvR4F1BduMHUaoYyHAmqGSoF4f2apA==
+	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=oS2GSG0gTbNBdIcy/EYt/+8Op7NtDzRF0d79hf39B2Y=;
+	b=vGjsHjXaHQWSBz22/w82uI+Suyjs9/8xSLVVI1D8grATQa4brVHxykabtU/5uEpwktbM
+	 3IBW4lCOp0ac25sZojLD1Ik/Mtr1ZWhY2N31zXxWX8eT9WGhZB8SvLe58sYPGIeeFro7Z
+	 X7rVNPB3lqjjjGFN3d/i09LFoSx2rTwJf1VsMsV3mPZaFPdp894hOCGIwmkY+FWJPsQ6j
+	 BqDtZZkQe47apHjDh0Gz/Y/k2iqGUZfremGfNM6tgHe9NBYUbRVxLs7Y+XKSnwJgVCOxt
+	 OoRxlKm9RMUHRR64Umd1PYKlbiuOq+MKD2a8tSmH3Ux5/ZNwvegmnlkHqQsqz3YGr9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EkJpL0Zd;
-	arc=none smtp.remote-ip=209.85.218.44
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	dmarc=pass header.from=pereq.eu;
+	spf=pass smtp.mailfrom=cryspen.com;
+	dkim=pass header.d=pereq.eu header.i=@pereq.eu header.a=rsa-sha256 header.s=google header.b="LvN/laLM";
+	arc=none smtp.remote-ip=209.85.221.50
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A975606A31E
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 11:05:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9A975606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A78606A32D
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 11:05:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4A78606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pereq.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cryspen.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EkJpL0Zd
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c40e30c26a4so1257709866b.0
-        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 03:05:38 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=pereq.eu header.i=@pereq.eu header.a=rsa-sha256 header.s=google header.b=LvN/laLM
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-498f5fa4f70so4578845f8f.0
+        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 03:05:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795604737; x=1796209537; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rj/OmW4asS9jNN/viln1BFpfuwXmJiprMQIHIS8uDWw=;
-        b=EkJpL0Zd2So3VZhWVlZIgYAYvE/y9wew5r+5IndhiqU8qZaJ21Pc2Is6zwWh4fQhsm
-         fT53a6KWOHgbVbaoXdarpP/mMp0LqmiCwJupOr3y4Le6IMhHJJNxJz2dalM1BtwKXXc9
-         +RR8XQLTZV/roHX0v6AgQqpLOIB9vW0wId7p/erUByspT73o+4BpBW5nDTEVqKMABJkc
-         1eAClkUkjMufGdWhBG8gBV7fWIrQFNRu4Q+t1nMpdgsn5RDZBZDyWtVJTsEkp6zBWNp/
-         yhtkQ+PnPmP4S3fuUGPLMCHEeQj6akgByrIfdJD6gHMkhdS0jR0/qYPinqO+s0+yCWI1
-         pXxw==
+        d=pereq.eu; s=google; t=1795604756; x=1796209556; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=oS2GSG0gTbNBdIcy/EYt/+8Op7NtDzRF0d79hf39B2Y=;
+        b=LvN/laLMwAP6yWYFS54Es+e5khmhfROUn08VgFW2HdhXV8/SEbysIF/35odGISZTkd
+         aBDohsIMl7wHdca1EamprUvGcdKTMItmkI5KO4ifJH0JD9d0k0lxUuOGpEw14sLpz6GR
+         Zd4HnldJFJvk70sw/fraPSWyLjp6CyM5Evv5XaiBCg+0yH3iwO5rO7iwWlIaFIcHJN1n
+         9VrL5PoU23x1HbWZJk6STS7eepUogRdJ7thG5IgfpaXM6/NuWA6oKG5p++u4+mmz8hNX
+         8U018VI6TRbQ3AsTBxI5t0BezufunKZhCUsxTyhOiH+Xix9otzTirY2ONW8WQk42AnMx
+         7XLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795604737; x=1796209537;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=rj/OmW4asS9jNN/viln1BFpfuwXmJiprMQIHIS8uDWw=;
-        b=HCIWzDje/bHZ9D1yeW0xLsojgMm2P7KmzGeNlGrgW7Z7wmFuh0+JxAnHfUGHPVuXYa
-         foBmt1LuLasjypNCC5QtCytBdTL80oNHHkTsi4zcpVSwYm7KAmyt6oIK8DRd93iNE3L6
-         OzCaw9E5DP6U/unxufb0pAZEYx8wkwevCUVNIiC6vZniFhyDnnSymAV3AuYWzjtLiq+g
-         0M5VZx5MucavQtXAmYe7OwnuDZd6tfnBjI94qy+aZhtFCIwRnqW9+gkympgPSRXz+Xpv
-         RyO/5+ivkirH5ENNcSrOkL0ZJ2BaeRLHPWi6RIc1N7CJPlKhhkZPV46WWcgGgngzk6OM
-         CyKw==
-X-Forwarded-Encrypted: i=1; AL+hErFmmkhynS2+9IgwDXpeA5VxaTUDYWk44Bqowu0tcC4CWRd7oP1wK0ap0fr1istQRj/YLZ0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/KJrk87DapGBJIo+odsq0y8fyqKyqvFh4fhfJqyAU4/GkHoHzB
-	UGvGHJxpVZSMwY9avNZ3bPY9vd/k31wDNYWZNBHvdCJgiHGs9C/8gE+C
-X-Gm-Gg: AZFdTZdZhz+ckcQ9zwbvf1+dxtpg9JM7dD7iDrOK8GbvtoSSlJ9mcCBi7N6bgHkyg75
-	KlYpL0cck+vlrBDiex/wYgfUmIw3L2VLMVtu7Agb+AxPycTvxY6i3d7j9PMoGBBBRgRyIEdmxuz
-	GdphroVM7KfAbRgTmQudaLOvZwZAGKhLC76RoMUbMad49Uy9OCG9XoP+Kuoh+DyBYbvEgjRU9lp
-	FemHD2U/gUL2JvHXyjDEtwr77jOKqf5smAUXAktlq+rjQnR5bnV+pa70DDgbgw7cLqxK6e7Q6pX
-	YmZSWZJ8sEjVcVZ4CEwyfUlFzG+1oPG65rn2QFhiD77OsF/fIWPpWukt2wR73RiUAxEjX0iXgcM
-	k+9hOmFBJdjw0XYql0DGKFY9pN+7LCJeriNyTKdViJzRWn/zcrQ8jVXUrhTqwZDs8rjEl27tN4s
-	YG7z7gM6sitzY2LBQS8oAIq7vkgC6zBXzw3ugAHnar+19yX3LcoDycZN5clIhR257aPE3OBUHfA
-	qMz11gbDZoB1RlYhNoKhyIMQhRVR+evGzgavsxMGsnnHbkABy7VkrKBwUi8MjVvtjoOwI4JUudg
-	J1RVgF1QUGnbJVurzbbq/4FJP2nwzPcVUpE=
-X-Received: by 2002:a17:906:ad8:b0:c2e:4397:7c82 with SMTP id a640c23a62f3a-c513a5e6a7fmr1084197166b.6.1795604736841;
-        Wed, 25 Nov 2026 03:05:36 -0800 (PST)
-Received: from [10.45.18.224] ([15.248.2.12])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513afc316bsm614560066b.56.2026.11.25.03.05.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Nov 2026 03:05:36 -0800 (PST)
-From: Paul Durrant <xadimgnik@gmail.com>
-X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <e2cdc050-42c0-4565-aec9-2568c391d756@xen.org>
-Date: Wed, 25 Nov 2026 11:05:34 +0000
+        d=1e100.net; s=20260707; t=1795604756; x=1796209556;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oS2GSG0gTbNBdIcy/EYt/+8Op7NtDzRF0d79hf39B2Y=;
+        b=Y0MfpqQDUF3sMihBsZX6SrfEaocIqtcV1WNjY2S2U2D6QLkxxIkRqiyr0PLOYtGBnr
+         jK8z8wpf64atQwZ1Me0pqMN84GlayJ9q3c46ZTcqqKassuCQKkbQ9cV4s0Ys0P+xLC+b
+         k3FlNr3qybvI0UQOhFeHuFNKYzJPGK5RbPcITadKSdEF8hhdWibtyfLplPyA3IB3TYjk
+         +nC4XZBgbl7AF5dhXXXwTCETsQ5JGzqH2mQAfobD0RwU306j8+Ox6daeE86sSv7M0HaX
+         GAJiJO6EjiKToRU6AOHQwQ0cDy5Y7vyVKCnpxW7m72kdxwRMWlh4ZCWvDJU7ugEQU341
+         P2Ow==
+X-Forwarded-Encrypted: i=1; AL+hErH1dQ/18LbO1303w+R7U9HMPVu/++lU00oxzhd4fobWEpF5bjS0w+gcRmobJGB2aPMhNYM=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8rAH8lUeHevncKIkNOQcjwrVy3oCQuWpxlZIPRJdyITwY27ue7
+	TqBlpZc/FLITkJzoWdCyxfsfw+ZmGA+fD6vgtRyyX9Ph2hz/N4XDddWXvm8vfu1NgiE=
+X-Gm-Gg: AZFdTZfquE6uCFJw5E1leOk0fKi/zDWhS8P6h7ajPGRa01m5BnFjsqaXKTYq4G2cU9W
+	4fVKXXfxrYhJzVKMpDvw3SxBtOCvRxOdr4y163d6BC5jKdhQYoOudSlkJ5jxhcw7J9jIqsFfVpV
+	pPDOvG5Egp58+eRE0T/2ayyKJB6Q6ruXItvVuGIpDYQL3ZJhMgYapBDNcvNX7f5jD4Gbej+0e2G
+	7X1lKD7QnBCRj8wHFrQSa24N1FrvOf4GQoc+AAnVfsevVVT9W1P/3seZ83z4Qz04RjXBNvRrXzo
+	wt3yVJYOR+hVBq5mkkXOLuFfncX0ICcUIgTZ4sw2a7xnMDOEJF7v1AJvjol+dXwUnEampzb0/LV
+	fcgA9PGPve1HifdJweUbwV1uLyzg8F3tZBloclRt4tq8ulsYPdLK+KHoLMug+rUoT+WmSHYJXGC
+	rLLB/QUcVZDApDyTTtvCVurxho/WoqfQzehWd1dI8cqiZe/03XtSEh1IMQlxtGD9z86jntOlo5w
+	2iphOXVtq6sswrECnJ562enLwNVdsbE1RH2wh+/APz5s8md+/0XbdgAY0g52y9NMbPfW0zwUxcb
+	3Sz0JZBd3Fsnkgb6vOk=
+X-Received: by 2002:a05:6000:990:b0:493:ec0:861c with SMTP id ffacd0b85a97d-4abb0c5d53fmr32529130f8f.16.1795604756007;
+        Wed, 25 Nov 2026 03:05:56 -0800 (PST)
+Received: from localhost ([2c0f:3d00:6be:8900:ce5e:9212:ea4b:f30])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6b10b2c9sm34833647f8f.31.2026.11.25.03.05.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Nov 2026 03:05:55 -0800 (PST)
+Date: Wed, 25 Nov 2026 14:05:51 +0300
+From: Dan Carpenter <dan@pereq.eu>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+	Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
+Subject: Re: [PATCH v2 6/8] KVM: arm64: nv: Don't deliver a pending SError to
+ the wrong guest
+Message-ID: <awbBD_8rLYZ9aJTK@stanley.mountain>
+References: <20261125-double_exception-v2-0-224689d8a764@pereq.eu>
+ <20261125-double_exception-v2-6-224689d8a764@pereq.eu>
+ <sashiko-outbox-232776@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -93,65 +99,31 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 04/21] hw/xen: Publish backend features before setting
- state to InitWait
-To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
-Cc: xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony@xenproject.org>,
- "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Jason Wang <jasowangio@gmail.com>, Hui Peng <benquike@gmail.com>,
- Mark Syms <mark.syms@citrix.com>, Feifan Qian <bea1e@proton.me>,
- David Woodhouse <dwmw@amazon.co.uk>
-References: <20261124232247.23169-1-dwmw2@infradead.org>
- <20261124232247.23169-5-dwmw2@infradead.org>
-Content-Language: en-US
-In-Reply-To: <20261124232247.23169-5-dwmw2@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <sashiko-outbox-232776@kernel.org>
 
-On 24/11/2026 16:22, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
-> 
-> The XenbusStateInitWait transition tells the frontend that the
-> backend's parameters are readable, but xen_device_realize() set it
-> before calling the implementation's realize method — which is what
-> writes the feature nodes ('max-ring-page-order' et al. for xen-block,
-> 'feature-rx-copy' for xen-net).
-> 
-> Linux blkfront reads 'max-ring-page-order' with xenbus_read_unsigned():
-> no wait, no retry, default 0. Lose the race and it silently negotiates
-> a single-page ring — 32 request slots instead of 256. A device
-> hot-plugged into a running guest loses essentially every time; at boot
-> the frontend doesn't come looking until long after realize finished.
-> Netfront reads its feature nodes the same way.
-> 
-> Commit 240cc11369fc ("hw/xen: Avoid crash when backend watch fires too
-> early") introduced this by moving the realize call after the block of
-> code which both populates the initial xenstore nodes *and* sets
-> InitWait. The crash it fixed was real — xen-block's realize processes
-> watch events via blkconf_geometry()'s aio_poll(), and the handlers fell
-> over when the nodes didn't yet exist — but only the node population
-> needed to come first.
-> 
-> So keep the node population and the 'online' write before realize, and
-> move only the InitWait transition after it. A watch event during
-> realize now finds the frontend in Initialising and no backend 'state'
-> node, which the handlers tolerate; none of the three realize
-> implementations reads the backend state. Verified against the original
-> 2023 crash reproducer as well as the ring-order negotiation.
-> 
-> Fixes: 240cc11369fc ("hw/xen: Avoid crash when backend watch fires too early")
-> Reported-by: Mark Syms <mark.syms@citrix.com>
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> ---
->   hw/xen/xen-bus.c | 16 +++++++++++++++-
->   1 file changed, 15 insertions(+), 1 deletion(-)
-> 
-Reviewed-by: Paul Durrant <paul@xen.org>
+On Wed, Nov 25, 2026 at 07:24:38AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [High] KVM: arm64: nv: sleeping in atomic context via
+>   kvm_nested_flush_hwstate()
+> --
+
+This is an existing bug but my patchset makes it worse.
+
+I didn't have CONFIG_DEBUG_ATOMIC_SLEEP enabled when I tested my patch
+but I have enabled it now (although it wouldn't have caught the bug
+anyway).
+
+Claude says Smatch probably would have caught this bug, but I haven't
+been rebuilding the cross function DB since I started using AI for
+static analysis...  I guess I will do that again.
+
+Anyway, I will also add checking for sleeping in atomic to the standard
+review.
+
+regards,
+dan carpenter
+
+
