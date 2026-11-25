@@ -1,63 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795609535;
-	b=Sey29t5+WLxTd7Fgq96sGfxkgNO0CIp1JEpFwDLgFrFKOzGHlu1UhtUKGPCAim74pUgU
-	 Z0gJyF5WG35iwCRXMLOpiizvf9+KhilheV0j8oZLCvrAQ9SDoZBJENEC7yrz6jw+9ftrE
-	 C6GxqnytFAYR4yj4egjJeEHKaPpw6hJ81F1RTAHvRQ+h2IaEaid8xoVspP2/vL27oXnxq
-	 6Gyhs7TzFm6fnpEMl0GE5+Z4gPf3GiFts3YmtRrtfpxG3r7sREbMfQSNXonNBtWhEgn8E
-	 12/Zlgs8hlIAQwG2oQXnkfCKBxd/qDxDYkhmMdZzlLm6rcchYi3Glw2dswzfps1fnLw==
+	t=1795610593;
+	b=blIkAECQU343AEmxSweqvKVU1msHQ+QUD5+1kzMWlMOBtsOi14TP4XVFY/1xf//sOaZC
+	 efFGigNsezQ/LKlQUricvZR5759GNEPFmOmJkggGqqBfDj9ZOtWADBGWZjLGIaNlus4Qx
+	 rCC0a86PURd06DPpok6J9o2DyBKLenKLNprrcDIC9gti03NjF0l6ZzbJL44WP/yVrhgLc
+	 LEjVyA6FWcebQ329xlInpM6+Xu9czIc6UqWrP8QaEPJdNi7QBiGCnUcfu3rRHyHXjsUV7
+	 WaUsKNAOeMMm5IOfwJWqAsN+P7Rj1h8VrOT9TAo//884IUtbjR40eU+fBZcrBhmu6FQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795609535;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=nxtDC3jdfJKgfps5gESrfwqzSgq84MOBPAMS/1JAwyE=;
-	b=46cg54egFxbWJ+4Ectgw8Q1uXXP7HMKbfFlhTK0BZ0FQUdlQjvoAMGnaODMD9oQrJGYH
-	 eWDSuvspiqcZaS8TAnWO6t0GQYOHk1rgMxJMVJsxKHLjO8l+aFptq/MpKFT3KRq2Q2lyj
-	 FJ0gL8NLVdyrUt2OuIqyZC+BrAOLqfKV8K9imlslVEyig+ECYwlr7lKnZ0nmn/xZA3pyd
-	 9BWgXWdt8UW3H6yUY1if9xlKnjRBVVyMK7EX4fWX/US9nHctLDIpF29FJ+4GXQDqxHHpI
-	 zh9+NycqPMYMxjQya4cR+xQ0Yo0iw+bEFb+3UDkJAdWaQQQ70+EXKT9RXc2slaS6O4Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795610593;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=Soe9AbyJje/CanHZy+BPUS7HyCw3W/h9mWpxWG3+h70=;
+	b=H+R+WgADzIrXfkoXzdUM19UGaOQnc4Ue17ZMOjOIX8w40OETdxydty4hIkQZAzbfbBoZ
+	 CWYd5rcPx8AVoSuwRBL+WFk2eGHX/Tsibh3mjbRtshuw3e00y8/fn5FVhim5PeXlfKHO4
+	 WHLYqnA/quYOl9VergJxE410RXZ3VAaLR6Q8TdSpXbbXp9d0+6aT46QP//WM+kWzWBkkQ
+	 Leev+p7R5ROAxnnLh2iXUV3Izbm27qIAmlVXUh8+fJXDF0TlUP/jO5igBJQTkC1lQKknE
+	 225P6ma8NhUJl/6sg3/SrhEITqm9XveIGsI017BTrWW+cFmbo5v87cwCece3IFhBasA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MCeAj4a8;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IdfGlUQL;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C9B606A321;
-	Wed, 25 Nov 2026 12:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7D1606A31E
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 12:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MCeAj4a8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C3A1F000D1;
-	Wed, 25 Nov 2026 12:25:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IdfGlUQL
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458571F000C4
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 12:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795609534;
-	bh=nxtDC3jdfJKgfps5gESrfwqzSgq84MOBPAMS/1JAwyE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MCeAj4a8W7rINlxO/Of5E3o7tRlESKGuvFS6zHS9be26Y/3Nbmh3vUMQGLAuJwNxI
-	 /utv0W/IsWq31cCt0HDg/L8zSW6eUVRMyQnFJTHAQJk9B0p0lJgC6hcIdq8SDVekcC
-	 KMjb1cXYE8CBE+n+BkVzwWAVR7j/vXMExEsJwCPwlpmpk5wGJZEm2BlFFVh6jxSvBh
-	 yTjOBg0FIH/cIj/5J1+BWS2AYpL9nkiAU0ktUFUyUDYfvUazGOWHeoNlwwZiVDzLb+
-	 uOkybob6UmN3C/mTY1Qt2VY00p/jG1DUv0GCZ6uYil8F+4/K2hB3Sy52TCqevWFob6
-	 lcZtlj3N/NWDw==
-Date: Wed, 25 Nov 2026 12:25:24 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "chenglong.ma" <longpareto@gmail.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, kvm@vger.kernel.org, virtualization@lists.linux-foundation.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 2312891301@qq.com, blum@kernel.org, 
-	co+6dcbccedc9ec6452@bugs.sh, eperezma@redhat.com, fangxy@xiaopeng.com, jasowangio@gmail.com, 
-	kmehltretter@gmail.com, linfeng.sun.dev@gmail.com, lirongqing@baidu.com, 
-	oss.patchbox@gmail.com, p@1g4.org, phx0fer@gmail.com, physicalmtea@gmail.com, 
-	sergiiushakov@google.com, shubham@octane.security, stable@vger.kernel.org, 
-	stjepan.poljak@gmail.com, syzbot+13df72e0dc4be5c62215@syzkaller.appspotmail.com, 
-	tavhadia@gmail.com, tjdqudcks0424@naver.com, tz2294@columbia.edu, 
-	xieyongji@bytedance.com, xmei5@asu.edu, yuz08559@gmail.com, zenghui.yu@linux.dev, 
-	zhaimingbing@cmss.chinamobile.com, zhangjiao2@cmss.chinamobile.com
-Subject: Re: [GIT PULL] vhost,virtio,vdpa: bugfixes
-Message-ID: <awbTgufgR4Uge1kJ@gremlin>
-References: <20261104081535-mutt-send-email-mst@kernel.org>
- <awWOpS3HR_2FTN3I@gremlin>
- <20261125060533.1296-1-longpareto@gmail.com>
+	s=k20260515; t=1795610593;
+	bh=Soe9AbyJje/CanHZy+BPUS7HyCw3W/h9mWpxWG3+h70=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=IdfGlUQLVdZd+HqGeJmpnmm6ZOvD2DCF88z9GcmsjUrKh5xMoOWAGEOagnXAmAYta
+	 k5dXwiF8fnMKU/56Us9yLAAPPjZbLDyyIyN4SJwaz6ZYK/x07tMrfYIXK6AieI6mSB
+	 d1AdCCTdQcqGyELTARAP/FzRjeNQGlDxqnuOgdfoKJ9MFiO7BSIcyxarVyn4QpJp5/
+	 Te6SJK2tPRq87NZfNEoUCKt9Lc9PfZf9imw1XgFkYesMHxgV5ZIhH3PFZPEcykyjTn
+	 BdRChy9Mk6ypZdqC9qPqHPRw/g6YkI8qu84PKcwRhIcA1Rxl6OclJCgqXskhY5I66W
+	 DQPweoAUVnWBw==
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5c158c4c15fso7014067e87.1
+        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 04:43:13 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErGOokgMUNWfMucEWqPPY/5Glp8UpYspabo5AdDYt2tOhKwuYkxSJtoe7bCYfYF5mQEJB/E=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8uThgf1sqpivc7pBphJ7C8G8hGmm5Pp4mE/uGhpY+Ux9Czb3O0
+	uMRB44gSphEUAf8xmXeYGJSNFAS5hC0x5nwQtUObdGuenlnOZ05Yh4WLwyaNklTVBvXK2n+MuqA
+	Hf9XFXbtRtEBbzusSYsNoojxWzw1B9Zw=
+X-Received: by 2002:a05:6512:3e1a:b0:5c1:4d49:cd84 with SMTP id
+ 2adb3069b0e04-5c1bc89a84emr4500196e87.17.1795610592062; Wed, 25 Nov 2026
+ 04:43:12 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -67,33 +59,114 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261125060533.1296-1-longpareto@gmail.com>
+References: <20261015142552.4128028-1-ryan.roberts@arm.com> <20261015142552.4128028-16-ryan.roberts@arm.com>
+In-Reply-To: <20261015142552.4128028-16-ryan.roberts@arm.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Wed, 25 Nov 2026 13:42:59 +0100
+X-Gmail-Original-Message-ID: <CAD++jL=h8iMU1sxjopoGBuniv_vsi2uhggJNQiyoWaTsOV+-Tw@mail.gmail.com>
+X-Gm-Features: Aa3M54pGhuvz2evFxcjQ_z7LSxF4iu4SVrSPElv7BkwMOHJcq9BoFVwsp0UZH2I
+Message-ID: <CAD++jL=h8iMU1sxjopoGBuniv_vsi2uhggJNQiyoWaTsOV+-Tw@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 15/15] misc/arm-cla: Add vfio-mdev user interface
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@nvidia.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jean-Philippe Brucker <jpb@kernel.org>, Oded Gabbay <ogabbay@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org, devicetree@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 25, 2026 at 02:05:32PM +0800, chenglong.ma wrote:
-> On Tue, Nov 24, 2026 at 01:51:29PM +0000, Lorenzo Stoakes (ARM) wrote:
-> > It looks like it doesn't need VM_IO anyway, the other changes in the patch
-> > make it redundant AFAICT, so you should send something like the below with
-> > a Fixes pointing at bb2e6f166547:
+Hi Ryan, Jean-Philippe,
+
+this patch series now moves into the virtualization stratosphere where
+my knowledge doesn't even reach the level of "a little knowledge
+is dangerous", people versed with virtualization need to review this.
+
+A few general remarks though:
+
+On Thu, Oct 15, 2026 at 4:27=E2=80=AFPM Ryan Roberts <ryan.roberts@arm.com>=
+ wrote:
+
+> From: Jean-Philippe Brucker <jpb@kernel.org>
 >
-> Sorry about that: it went to security@kernel.org (hence no lore thread),
-> I did not test it on 7.4-rc, and you're right that VM_IO is redundant,
-> since vduse_domain_set_map() is the only way vhost-vdpa entries reach
-> the domain iotlb and it already rejects anything backed by the domain
-> file.
-
-Please, in future, when you submit something for a kernel release, test your
-change against that kernel release :) or get your LLM to ;)
-
+> Implement an interface to assign CLA devices to KVM guests. To creates a
+> CLA instance:
 >
-> I'll send the one-liner with Fixes: bb2e6f166547 and your Reported-by
-> and Suggested-by once I have actually run it on current mainline.
-
-Thanks!
-
+>     uuid=3D$(uuidgen)
+>     echo $uuid > /sys/class/mdev_bus/<pdev>/mdev_supported_types/arm-cla-=
+pl1/create
+>     cla_cpu=3D$(< /sys/bus/mdev/devices/$uuid/cpu)
 >
-> Thanks for catching this.
+> This creates a user interface in /dev/vfio: a VFIO group in
+> /dev/vfio/<n>, discoverable by reading the symlink
+> /sys/bus/mdev/devices/$uuid/iommu_group. Although CLA does not use an
+> IOMMU, VFIO relies on IOMMU groups as an assignable unit. Here they
+> correspond to CLA domains, whose devices communicate through a private
+> bus.
+>
+> The CLA device gets assigned exclusively to the first VMM that opens the
+> VFIO group and device. To launch a VM with a CLA attached to vCPU #4,
+> with kvmtool:
+>
+>     lkvm run -k Image --console virtio -c 8
+>         --vfio-platform $uuid,type=3Darm-cla,vcpu=3D4
+>         --vcpu-affinity 4=3D$cla_cpu      # Bind vCPU 4 to the CLA's CPU
+>
+> Opens the group, gets the device fd, mmaps the frame, and launches the
+> guest. The given vCPU thread is pinned to the CLA's CPU.
+>
+> Pinning vCPUs is not guaranteed. If the host decides to power off the
+> CPUs with assigned CLAs, the guest application can't access the assigned
+> device anymore. It would now access a RAZ/WI memory region.
+>
+> For DMA, because the TLB entries tagged with VMID+ASID are shared
+> between CPU and accelerator, we pin the VMID. The stage 2 page tables
+> are shared between CPU and CLA. CLA reports DMA page faults directly to
+> the user, who performs the access from the CPU to handle both stage 1
+> and stage 2 faults.
+>
+> Signed-off-by: Jean-Philippe Brucker <jpb@kernel.org>
 
---
-Cheers, Lorenzo
+I understand the patch as this:
+
+The CLA register window of the CLA attached to one certain CPU
+can be exposed to a virtual machine by way of VFIO, that is, this
+virtual machine can see that memory as if was its own.
+
+This makes me ask the following questions:
+
+1. Is the intended user of that VFIO window a kernel driver or
+"some userspace mockery", i.e. a plain old userspace driver just
+using the hardware from userspace. This is something I have
+seen in code trees from the likes of SpaceX, where VFIO is
+used for antenna array hardware and handled with userspace
+drivers (and the userspace driver
+is run with realtime priorities for high responsivity usecases).
+The use case matters for the design of the VFIO exposure,
+because if in-kernel users of the same hardware from the
+host can be expected this could become less than elegant.
+I don't know for sure, it may make perfect sense if the user
+is some userspace process doing some computation I need
+not worry my head about.
+
+2.The affinity story again: certainly this VM must be pinned to
+the CPU exposing the CLA and the VM will see *one* CPU
+in its world, or this would never work, right? We are not doing
+any multicore virtualized machines because then you would
+need each to expose a different VFIO window for each CPU?
+(I think I saw the kvm usecase only allowing for one instance,
+no domains, so I guess yes.)
+
+I don't know how much VMs migrate on a running system.
+But if a "normal" VFIO window pertains to the "normal"
+physical address space I suppose this is not a problem, you
+can move the VM to another CPU and everything else
+remains the same. But not so with CLA! So how do you
+intend to impose this restriction?
+
+Yours,
+Linus Walleij
