@@ -1,56 +1,125 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795585966;
-	b=KuRC1OuXwBMG9vaT4AhX5pwLrhRlkYGUuIIFmli4vzHWjeDZADsl3DZgi4E8shq6ZysE
-	 XyQilltE19q2W7XFQu+tugrWmyG9OcomvtMcXo46kUFdAUt3moPz0cRIBW8TYF3K8RI4+
-	 kSXRCO2X7Wesf1l1wl6lbi+UnoRRKlO5TmB5oOHR2ndKkEkgNze/Xt+256Y/d+pcK4LVA
-	 oUmPRFpUKPQM3WbmASHW4mmZJJr+weEFOMtizvyYBDWbEDWqPtZw/ot79ub+s8nM2Yvnf
-	 siH8jwK+R/Sym4PPfFH+gMaBTDVk82SSDDd7L1WxyRyADlrq0ie/efldI7XPQbH51kQ==
+	t=1795586748;
+	b=HdJo/azKj9ogh9vaMWIIvgOiphuMaOEMn4eYDabtgQuCgi4sSzPm9fFYY9mcq8e8lLFk
+	 D4m/vpN0MNmO/an/NH1KEXcZkcQr2OHnTqlsgoU0Zbz6ckcftNF5rihoAXfNR6JVgTtSz
+	 4lna9Pn7674FKHxElGyHS0euY9VN0ym94WqKVLfO+d1bsPueBIiA1SKcvPZ80sjhMQmLM
+	 HC+RNzeX38A7ZWHxNePhTh0CWxXZQuuakw0InBU5ST5SMRQ0mNp0WTcxWAfvEDmPsj5Fm
+	 eS7PBnV9FXKceyjM8jJ/tu5RSb7F0YXHwGB2hCvFMe41Eex0wkoiM2AeTcAKNu6PguA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795585966;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=aVD2LWCOcUXT9B9g53aQmj6qQW+Woj+F7+6pHsKdL0I=;
-	b=PyYV6dU70D8kFDtDsDHT8cS29EimE1MDgnPonNY92scMXuf1qLohM4ucBfaropFgJ/Eg
-	 +in9xe09WhbABOdOAsEp17wMFXrfbOlpYotfk0Hsgf08Ej7gPFqNCVw76d1h077oZZbnB
-	 VNEn9XGdMshlIOeCS5ow/2scuCXlvxKgFCHZwpitHBKfAxu3RwVZk10sPYaMBvEKY7hdu
-	 rGE4C2GcGnv4cdXzqepQJSeHTg2tCrs/aTo044FqbvKI/fO1FmWuHJTpOtpJgRBqXwIS0
-	 eOpughGV78SydnRuoRnFAOkgsVQCAq4LBVq9hK4A9b3fAi1npZ6tmPoT/wfWX963ltA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795586748;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=uvWUvSzQGWdU0amQGudBjE2MMEoWKQd9zyN2yG8Iybk=;
+	b=BA/pjb+At2y5INbTiXHEY0NPfI3FMq6qssqBqxuz5c/0tTNq3O/IPrOipvnRrZ96bZ1i
+	 2jAsqp2vyix3mFA0biDluLsnUFjRY2EFGtWKmtumb0zkURZIZalJsvYslKhos+gpcR6et
+	 Rh2kf2KGi4108/vcOn1Q24QMWq8BNJFNlem93KAiVRwXKQUnXuNEVU2YUHNwm7EIVcdKQ
+	 fX3AZ3MBnCM5PJTP/OB03hBMzm3llT/RGyW+yB0FhA4YY+P4MxYLMDGpTMBucQf75bTV0
+	 ABJ6JdZNcKIkyr6YBmgtup8CowJVPNc2cMEcIQdiAL0hCx7zCay783F6DdFIDAu5QZg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iwpwP6d5;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sQ9RGk4T;
+	arc=none smtp.remote-ip=74.125.82.178
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84448606A323
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 05:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA69606A321
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 06:05:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1EA69606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iwpwP6d5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5851F000C0;
-	Wed, 25 Nov 2026 05:52:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795585966;
-	bh=aVD2LWCOcUXT9B9g53aQmj6qQW+Woj+F7+6pHsKdL0I=;
-	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=iwpwP6d5tZQDXfvH8NdWEitjwfx4anzdVEuwjGVSb2X10Cp2qwDga6VuqYfbFY8+p
-	 U2mbeXpIkbqJMarPt0ja0nxXgeLmXnJeNQMk1eprQh1FJuEPV944QikdfjOqimWvBf
-	 gekmB5E1Otab8e0X9gOf6gqOA5Z+OAPb7lK4YudF1x9JKAKbOJbyswWNQi+t+0+BW0
-	 lUoePAHvvCy3OmiBOWhrFvh7Ruvmgx7wn3KLkoeZRN9rjyO4ubvbBl6Kv3fSnlrhia
-	 GzrmP65xoTQL/+3pgvFHnowuZMhPEF6dpKxFTzMU2E68gkiujerqalJ3gz7iOzH55H
-	 syEKZ7QRBFn+A==
-Message-ID: <sashiko-outbox-232632@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 5/5] KVM: x86: nVMX: fix races in delivery of nested
- posted interrupts
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Maxim Levitsky" <mlevitsk@redhat.com>, kvm@vger.kernel.org
-In-Reply-To: <20261125052139.362046-6-mlevitsk@redhat.com>
-References: <20261125052139.362046-1-mlevitsk@redhat.com>
- <20261125052139.362046-6-mlevitsk@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Nov 2026 05:52:45 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=sQ9RGk4T
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-385d8a00598so7913378eec.1
+        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 22:05:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795586747; x=1796191547; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uvWUvSzQGWdU0amQGudBjE2MMEoWKQd9zyN2yG8Iybk=;
+        b=sQ9RGk4Tox3CJBgaHd1rERGLKFnMlSEy04aCuumhalHDASrM93RkBheM3kfuO487fS
+         RTFW+tp4XwuGTm2cLzQvr1Ge2pYadRPBHZpVt6UPz+xpa8HKhFn7ak/N1YJbo+bu1AIC
+         yagdq45DU5MqDJNP3sQBCmYdFWU916d5hc6eXEbd9H2F/g/ojM1sE/XVAvAbzg+zunqV
+         O5/aGKchAF1/92KN6ghTvUf/im50ffIbXI0nxFTsGjz3YvZnqkVdbJsZ6gFrnSDFfq2t
+         OBnd8/q4v2YL+eEGxvYSPFROxgOxfWusmUtxdTOKMuIuLfZfx/E3dZLIAdibltkRBJj+
+         wyFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795586747; x=1796191547;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uvWUvSzQGWdU0amQGudBjE2MMEoWKQd9zyN2yG8Iybk=;
+        b=TMm1TWI60+plY4IA4QqPJ59PmtMKSOZ5w1r8G5DyA4Ms3mhFTC0ZKjmcrf192ymVWK
+         XaVdzof5mmE66FL2PsfSNlcLvKtezdigRGzkmk+YMcMZD6N0l/fJIZ/bowQczHcZy2Rk
+         Y9RlfuUXDWI3E+M90Ek4ke7L9tO5NAWYT68lZm2/tcSASSJ1CDaYxqM/6Dp/Z1rStIi2
+         L1Yn0miSd/6+qdGAHfpQ2Tmm7avorqDAYMF7gmFf+B5nQlLlt5r/0AspqKQeBVIG0VEY
+         VtAQMRsDGC/kBsjFYxuo0s7MAINpacH72dUwUF4l1TpY1rtTPPkrhlhmzVaoDt8lWHls
+         KoXg==
+X-Forwarded-Encrypted: i=1; AL+hErGi24GbXlHtIaJxhsN0qy1YKcytP0E1WA0PM9Wou5h9mlG/KHXyByVbT8/Ekd7ZiccFrtI=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+0jpMIGfBU0cWZGUuHGPCV47x9y7jIhuEEyAlxyEaIoCpa0Ptu
+	MfodZuL3Fazd2DPqbshbFWM67KmESa15Un9HaFf7cYQz49VfhkTBYtIJ
+X-Gm-Gg: AZFdTZcD3MLHmLQP1jxz9kdNmQnE+PXxv7e4ELQ030a7H6zHbki1nO5zz0Li5145xMy
+	w6HOMmEaN3+TkFActgD3U5SewHDOQ04da7+At/EJg9IGwrkDzf4T9p+/U2oBycYlNwPZVQ/nmXi
+	Zf68/fOprHSUP22oPqND3+5GnK5773qOjjGOTUm4bY0Wx5fFBamDZnoAUrJREbGJHopSa2qAk30
+	Yrem2gYBq9v7M5B6Tn8frURiWGGlAYPR8M+ikLmNwiuUA0py0Soed4pOBkUHG2mC+Uco2cfIoqf
+	zODAjCNx+avw1VM4iqE5WIDvrXx0QpysQqFflqpG8dakBk90bdTJHprQskouIGKBOPKA9h+nUuF
+	iOTC1gb+JcoVj3sEupeo0zt4YpZPxkxoY2Nibo+guBBwHwO3XtnNTW17ezr3DyNGJjV6FyWBNiQ
+	xNZJp8pCZf8dXRn+QHKtf8pJZe5xAW/WicWGySfZCu241g2Ps1eQmFSQ1u8MntaOmXRdvIYp9a2
+	8+94EIzB4Feb4f0t4I6O/lyIi/Pjwa4Jv8dIpqJuxIvKqWWfuXyuKZpW/yNCxQrOERbHeyoiy5K
+	NO/yPKEmi4NCVbEaVRiLLs9ZnpL9SyLi2JiaMUcHapnNpH0LsfbsWlOp9TVpOZkxGkAUX14VWQ+
+	5
+X-Received: by 2002:a05:693c:8948:20b0:386:b08e:4b7b with SMTP id 5a478bee46e88-386b08e4e93mr8414503eec.29.1795586747002;
+        Tue, 24 Nov 2026 22:05:47 -0800 (PST)
+Received: from O1PCCC03033100.cn.corp.seagroup.com ([143.92.127.241])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-38567cafec4sm57080152eec.26.2026.11.24.22.05.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Nov 2026 22:05:46 -0800 (PST)
+From: "chenglong.ma" <longpareto@gmail.com>
+To: Lorenzo Stoakes <ljs@kernel.org>,
+	"Michael S . Tsirkin" <mst@redhat.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	2312891301@qq.com,
+	blum@kernel.org,
+	co+6dcbccedc9ec6452@bugs.sh,
+	eperezma@redhat.com,
+	fangxy@xiaopeng.com,
+	jasowangio@gmail.com,
+	kmehltretter@gmail.com,
+	linfeng.sun.dev@gmail.com,
+	lirongqing@baidu.com,
+	oss.patchbox@gmail.com,
+	p@1g4.org,
+	phx0fer@gmail.com,
+	physicalmtea@gmail.com,
+	sergiiushakov@google.com,
+	shubham@octane.security,
+	stable@vger.kernel.org,
+	stjepan.poljak@gmail.com,
+	syzbot+13df72e0dc4be5c62215@syzkaller.appspotmail.com,
+	tavhadia@gmail.com,
+	tjdqudcks0424@naver.com,
+	tz2294@columbia.edu,
+	xieyongji@bytedance.com,
+	xmei5@asu.edu,
+	yuz08559@gmail.com,
+	zenghui.yu@linux.dev,
+	zhaimingbing@cmss.chinamobile.com,
+	zhangjiao2@cmss.chinamobile.com
+Subject: Re: [GIT PULL] vhost,virtio,vdpa: bugfixes
+Date: Wed, 25 Nov 2026 14:05:32 +0800
+Message-ID: <20261125060533.1296-1-longpareto@gmail.com>
+X-Mailer: git-send-email 2.45.2.windows.1
+In-Reply-To: <awWOpS3HR_2FTN3I@gremlin>
+References: <20261104081535-mutt-send-email-mst@kernel.org> <awWOpS3HR_2FTN3I@gremlin>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,222 +128,21 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issues to consider:
-- [High] KVM: nVMX: delayed KVM_NESTED_PI_ACTIVE misdelivers PI to
-  halted/restored L2
-- [High] KVM: nVMX: gating KVM_NESTED_PI_ACTIVE on pi_desc breaks
-  deferred error exit
-- [Medium] KVM: nVMX: __nested_vmx_vmexit() processes nested PI on
-  failed VM-Entry
---
+On Tue, Nov 24, 2026 at 01:51:29PM +0000, Lorenzo Stoakes (ARM) wrote:
+> It looks like it doesn't need VM_IO anyway, the other changes in the patch
+> make it redundant AFAICT, so you should send something like the below with
+> a Fixes pointing at bb2e6f166547:
 
-commit aef7be5a3f3ba4f7dee7a4841c7b946e8a11d349
-Author: Maxim Levitsky <mlevitsk@redhat.com>
+Sorry about that: it went to security@kernel.org (hence no lore thread),
+I did not test it on 7.4-rc, and you're right that VM_IO is redundant,
+since vduse_domain_set_map() is the only way vhost-vdpa entries reach
+the domain iotlb and it already rejects anything backed by the domain
+file.
 
-KVM: x86: nVMX: fix races in delivery of nested posted interrupts
+I'll send the one-liner with Fixes: bb2e6f166547 and your Reported-by
+and Suggested-by once I have actually run it on current mainline.
 
-This commit serializes nested posted interrupt delivery against nested VM
-exit using atomic operations on vcpu->arch.nested_guest_state and delays
-enabling nested posted interrupts until vmcs12 pages are mapped.
-
-> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> index eb33528619c2f..a5ef9a15e7e9c 100644
-> --- a/arch/x86/kvm/vmx/nested.c
-> +++ b/arch/x86/kvm/vmx/nested.c
-> @@ -3440,7 +3440,18 @@ static bool nested_get_evmcs_page(struct kvm_vcpu =
-*vcpu)
->  }
->  #endif
-> =20
-> -static bool nested_get_vmcs12_pages(struct kvm_vcpu *vcpu)
-> +static void nested_vmx_enable_posted_interrupts(struct kvm_vcpu *vcpu)
-> +{
-> +	struct vmcs12 *vmcs12 =3D get_vmcs12(vcpu);
-> +
-> +	WARN_ON_ONCE(vmcs12->posted_intr_nv & ~KVM_NESTED_PI_VECTOR_MASK);
-> +
-> +	atomic_or(KVM_NESTED_PI_ACTIVE |
-> +		 (vmcs12->posted_intr_nv & KVM_NESTED_PI_VECTOR_MASK),
-> +		  &vcpu->arch.nested_guest_state);
-> +}
-> +
-> +static bool nested_get_vmcs12_pages(struct kvm_vcpu *vcpu, bool from_vme=
-ntry)
->  {
->  	struct vmcs12 *vmcs12 =3D get_vmcs12(vcpu);
->  	struct vcpu_vmx *vmx =3D to_vmx(vcpu);
-> @@ -3505,6 +3516,9 @@ static bool nested_get_vmcs12_pages(struct kvm_vcpu=
- *vcpu)
->  				offset_in_page(vmcs12->posted_intr_desc_addr));
->  			vmcs_write64(POSTED_INTR_DESC_ADDR,
->  				     pfn_to_hpa(map->pfn) + offset_in_page(vmcs12->posted_intr_desc_=
-addr));
-> +
-> +			if (!from_vmentry)
-> +				nested_vmx_enable_posted_interrupts(vcpu);
->  		} else {
->  			/*
->  			 * Defer the KVM_INTERNAL_EXIT until KVM tries to
-> @@ -3540,7 +3554,7 @@ static bool vmx_get_nested_state_pages(struct kvm_v=
-cpu *vcpu)
->  	}
->  #endif
-> =20
-> -	if (is_guest_mode(vcpu) && !nested_get_vmcs12_pages(vcpu))
-> +	if (is_guest_mode(vcpu) && !nested_get_vmcs12_pages(vcpu, false))
->  		return false;
-> =20
->  	return true;
-> @@ -3671,7 +3685,7 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_=
-mode(struct kvm_vcpu *vcpu,
->  	prepare_vmcs02_early(vmx, &vmx->vmcs01, vmcs12);
-> =20
->  	if (from_vmentry) {
-> -		if (unlikely(!nested_get_vmcs12_pages(vcpu))) {
-> +		if (unlikely(!nested_get_vmcs12_pages(vcpu, true))) {
->  			vmx_switch_vmcs(vcpu, &vmx->vmcs01);
->  			return NVMX_VMENTRY_KVM_INTERNAL_ERROR;
->  		}
-> @@ -3701,6 +3715,9 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_=
-mode(struct kvm_vcpu *vcpu,
->  			vmcs12->exit_qualification =3D failed_index;
->  			goto vmentry_fail_vmexit_guest_mode;
->  		}
-> +
-> +		if (nested_cpu_has_posted_intr(vmcs12) && vmx->nested.pi_desc)
-> +			nested_vmx_enable_posted_interrupts(vcpu);
-
-[Severity: High]
-Does gating nested_vmx_enable_posted_interrupts() on mapping
-vmx->nested.pi_desc break the deferred KVM_EXIT_INTERNAL_ERROR when
-posted_intr_desc_addr cannot be mapped?
-
-When kvm_vcpu_map() fails in nested_get_vmcs12_pages(), KVM sets
-vmx->nested.pi_desc =3D NULL to defer the internal error exit until
-__vmx_complete_nested_posted_interrupt() tries to access the descriptor.
-Because KVM_NESTED_PI_ACTIVE is now left unset when pi_desc is NULL,
-neither vmx_deliver_nested_posted_interrupt() nor
-vmx_check_nested_events() recognizes vmcs12->posted_intr_nv as L2's
-posted interrupt notification vector:
-
-arch/x86/kvm/vmx/nested.c:vmx_check_nested_events() {
-    ...
-		if ((nested_state & KVM_NESTED_PI_ACTIVE) &&
-			((nested_state & KVM_NESTED_PI_VECTOR_MASK) =3D=3D irq)) {
-			vmx_complete_nested_posted_interrupt(vcpu);
-			goto no_vmexit;
-		}
-		nested_vmx_vmexit(vcpu, EXIT_REASON_EXTERNAL_INTERRUPT,
-				  INTR_INFO_VALID_MASK | INTR_TYPE_EXT_INTR | irq, 0);
-    ...
-}
-
-Instead of setting KVM_NESTED_PI_PENDING and exiting to userspace with
-KVM_EXIT_INTERNAL_ERROR via __vmx_complete_nested_posted_interrupt(), KVM
-injects a bogus EXIT_REASON_EXTERNAL_INTERRUPT VM-Exit into L1, and the
-!vmx->nested.pi_desc check in __vmx_complete_nested_posted_interrupt()
-becomes unreachable.
-
->  	} else {
->  		/*
->  		 * The MMU is not initialized to point at the right entities yet and
-> @@ -3712,9 +3729,6 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_=
-mode(struct kvm_vcpu *vcpu,
->  		kvm_make_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
->  	}
-> =20
-> -	if (nested_cpu_has_posted_intr(vmcs12))
-> -		atomic_or(KVM_NESTED_PI_ACTIVE | vmcs12->posted_intr_nv,
-> -			  &vcpu->arch.nested_guest_state);
-
-[Severity: High]
-Does deferring nested_vmx_enable_posted_interrupts() until
-KVM_REQ_GET_NESTED_STATE_PAGES misdeliver nested posted interrupts when L2
-is restored in KVM_MP_STATE_HALTED?
-
-After nested_vmx_enter_non_root_mode(vcpu, false) during
-KVM_SET_NESTED_STATE (or vmx_leave_smm()), a halted L2 vCPU enters
-vcpu_block() rather than vcpu_enter_guest(), so
-KVM_REQ_GET_NESTED_STATE_PAGES is not serviced while blocked.  When
-another vCPU sends vmcs12->posted_intr_nv to wake L2,
-vmx_deliver_nested_posted_interrupt() sees KVM_NESTED_PI_ACTIVE =3D=3D 0 and
-queues the vector into L1's LAPIC IRR.  vcpu_block() then runs
-kvm_check_nested_events() -> vmx_check_nested_events() while
-KVM_NESTED_PI_ACTIVE is still unset, failing to morph the notification
-vector and instead reflecting a spurious EXIT_REASON_EXTERNAL_INTERRUPT
-VM-Exit to L1.
-
-> @@ -4025,22 +4039,15 @@ static void vmcs12_save_pending_event(struct kvm_=
-vcpu *vcpu,
->  	}
->  }
-> =20
-> -static int vmx_complete_nested_posted_interrupt(struct kvm_vcpu *vcpu)
-> +static int __vmx_complete_nested_posted_interrupt(struct kvm_vcpu *vcpu)
->  {
->  	struct vcpu_vmx *vmx =3D to_vmx(vcpu);
->  	int max_irr;
->  	void *vapic_page;
->  	u16 status;
-> =20
-> -	int nested_state =3D atomic_read(&vcpu->arch.nested_guest_state);
-> -
-> -	if (!(nested_state & KVM_NESTED_PI_PENDING))
-> -		return 0;
-> -
->  	if (!vmx->nested.pi_desc)
-> -		goto mmio_needed;
-> -
-> -	atomic_andnot(KVM_NESTED_PI_PENDING, &vcpu->arch.nested_guest_state);
-> +		return -ENXIO;
-> =20
->  	/*
->  	 * Don't test the value of PID.ON.
-> @@ -4057,7 +4064,7 @@ static int vmx_complete_nested_posted_interrupt(str=
-uct kvm_vcpu *vcpu)
->  	if (max_irr > 0) {
->  		vapic_page =3D vmx->nested.virtual_apic_map.hva;
->  		if (!vapic_page)
-> -			goto mmio_needed;
-> +			return -ENXIO;
-> =20
->  		__kvm_apic_update_irr(vmx->nested.pi_desc->pir,
->  			vapic_page, &max_irr);
-
-[ ... ]
-
-> @@ -5121,7 +5141,10 @@ void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, u3=
-2 vm_exit_reason,
->  	if (enable_ept && is_pae_paging(vcpu))
->  		vmx_ept_load_pdptrs(vcpu);
-> =20
-> -	leave_guest_mode(vcpu);
-> +	old_nested_state =3D leave_guest_mode(vcpu);
-> +
-> +	if (old_nested_state & KVM_NESTED_PI_PENDING)
-> +		__vmx_complete_nested_posted_interrupt(vcpu);
-
-[Severity: Medium]
-Can calling __vmx_complete_nested_posted_interrupt() unconditionally in
-__nested_vmx_vmexit() lose posted interrupts when vmx->fail is set or
-virtual_apic_map is unmapped?
-
-When a hardware VM-Entry of vmcs02 fails (vmx->fail =3D=3D 1),
-__nested_vmx_vmexit() skips sync_vmcs02_to_vmcs12().  Running
-__vmx_complete_nested_posted_interrupt() before checking !vmx->fail
-clears PID.ON and harvests PID.PIR into the virtual APIC page, but writes
-the updated GUEST_INTR_STATUS.RVI to vmcs02 where it is discarded without
-being synced to vmcs12.
-
-Also, if virtual_apic_page_addr could not be mapped (which forces a
-vmcs02 VM-Entry failure while leaving pi_desc mapped),
-__vmx_complete_nested_posted_interrupt() clears PID.ON in guest memory
-before checking !vapic_page and returns -ENXIO without harvesting PIR or
-marking pi_desc_map dirty, while __nested_vmx_vmexit() ignores the return
-value.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261125052139.3620=
-46-1-mlevitsk@redhat.com?part=3D5
+Thanks for catching this.
