@@ -1,68 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795588280;
-	b=YXcO+XDbI/pbEfXMq6jyPH1+5hC2Ji4/NgxQhVY6XSWB4pgS143ytbDYnnizZqjFrKy2
-	 3l7HUrQ40FS/uAUPwpGb+v3TDZmuMcAz5Azw1nPl4tMtQ5bz7jsUnf7DWNj30gplXNVhd
-	 ZAYGqM5WdpWeWaTalNl3z/wlXA7dOkLbjsF7Y5kq6apAilFgPnoaAE273C9HB/nAeWl9/
-	 BdyzhMPT84/yIZJdV9cCQSNuafiwUDgt0xryIi5BomwYOuf9jrhJWurGnoCdjwEtGj7VI
-	 e0M66xZgh+wOMLXbmsKkpHT2wCTORp4FzvSQ/vvH53ykuOBpoUwBuOeloXS5T965ZBw==
+	t=1795588741;
+	b=ggCr6r0I7HMMOI6uXNRLR2OXFQaarhv60kCF/z/VATRpkl1yn80RLY9i85VvejMFa1Jb
+	 omAKRpmlN1Em3zGb0BBBIuaiM9dmrLEZ/4VMnC4IeZ1dYt0a2xXpIFLUYEVCbMmhOgciI
+	 BbuFzh+XmmZKB55pywIdOEKH0BHX/U4eo8JvBKvnlO8R2f8r4sjn0pwkv2ELlNESiKMOf
+	 xnf6+w0KIHAo9LLM4K+ZDyUGvcdkL/Xw0wo+ho0wdyRetaDf/eecSrY6EbwJg96PF6YvA
+	 QaOyqEcNLX++PiLDH5nId9+r0hmTRSHzba/Bj6/G5yxvHIDaBrMBznqI2jqQzFmPS9w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795588280;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Message-ID:Date:
-	 MIME-Version:User-Agent:Cc:Subject:To:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=dNNow8pU0EgspMEvDUxBJ5a9af5PUjY1loG/b00zoNY=;
-	b=yNEmABX0zFcxPkaV+OEZ6k/2N/8DsSz9ziOtl2QcRoSjZM72Axubn9kyNoDaZXfn/cVD
-	 uDtl3JrvaZ2vpzx6Bwo3vaH547VSTj0yGeBA+2g1Mc5bPGzSE+ehvbBJFr8urcKl8fvPM
-	 r+x1xxK/OcUvXYk2gBLx4n9NTTTyvR7nGxW60zcvbWiloNOW8mLMwULimYcAqj52vzmnv
-	 YpjAggwSRqvaW92tSmBg5IpMb5gvYllzEHHlx713LgFlr2j9v3NiaHTP6pPpnQLgtAOKi
-	 VGl4LZsxgMaZ3hjho90Dhvdu734nQHTPE03fDTesw4boYic9OmB+3IfNHAXlNOVYMVg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795588741;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=aUyfJgvvGSRT52NKljWjVmDNu/ObxVTgMBErx17yyLM=;
+	b=bkgPpzAXcKmqBzkw23VTf08E6KtsJcIAMk8mOb/mWUmarN1klqzp7V+sCPVPuyj4yu8w
+	 uR0yUBzNcyPzsVmwbk4ho5QCs3WZALXHHlj4aONWFciQEeBIEyVOxzkHVZ9WTq0dd9Mik
+	 LgO3CW0LVizVLxAQTM/YHeoyFiiN7uiIh9DEDLZoHKsfXdFsPnRBaJmzjvrGshzn6Z4vY
+	 aIY420koXCUmzH8V3TgFoeqpuNDjwtpdH5Qto5qTNlRkhZxJ0p+2iQ/VMFNI04qBoP8Gq
+	 eNOTQMMAO/sCjgD5CbeYoY+ToAzUbKv9GgMSRuftYiIEOvXjMBwtcqrPtj3m7HgW2bw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=exhRYpub;
-	arc=none smtp.remote-ip=192.198.163.18
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eilJIV5z;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5048E606A31E;
-	Wed, 25 Nov 2026 06:31:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5048E606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F6E606A31E
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 06:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=exhRYpub
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795588279; x=1827124279;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=AY2ItQH4n8SPEJWuIkbJCQ/t2DnGTrUZX9TmGLTjYU4=;
-  b=exhRYpubCZ4B+/4KTnFLkQmefLLvP6RLLTXN7FyOpiUqi12aoBv3askV
-   ojeAVGigb2wIQxpAyzqSxJolpHe8VVS+wCur0UOMdz/AdRV4QxD39lcXg
-   6YOXvo7UwbrUH3qUptK2R49KQVR/ORNks1JCvvIVFUlMb6Enjr8paLFYu
-   b8uqZ7p7cex5GkMFYv+vZAeeQNgFHwalSWxZ+2Nc3vHtosinWIKsMkXL7
-   cVo8yi+nEmJlKH4CvfEgwdwAvKJcx2mwId4HZW/NMd9CX6f/FRiVN/rAn
-   GtzRYKuYc6MuPQjHYgoMstmmVC6YmNVvUAliJus2rX+DvNJTkhzV5Lx4v
-   w==;
-X-CSE-ConnectionGUID: h7+MUX2dS9iQUFACLDt2pA==
-X-CSE-MsgGUID: kronBU0fQsa+1hkWLBk0Bg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4467694"
-X-IronPort-AV: E=Sophos;i="6.27,232,1787036400"; 
-   d="scan'208";a="4467694"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 22:30:11 -0800
-X-CSE-ConnectionGUID: Xa+KThYJQ/mz0e8mRQ2i5w==
-X-CSE-MsgGUID: 4vr1ggl2Q1GgBnGRFyzm0Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,232,1787036400"; 
-   d="scan'208";a="11891600"
-Received: from unknown (HELO [10.238.1.144]) ([10.238.1.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2026 22:27:06 -0800
-Message-ID: <9ce9d375-4a95-4e00-9d62-d6a0b2875a2d@linux.intel.com>
-Date: Wed, 25 Nov 2026 14:27:02 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eilJIV5z
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2031F000CF;
+	Wed, 25 Nov 2026 06:39:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795588741;
+	bh=aUyfJgvvGSRT52NKljWjVmDNu/ObxVTgMBErx17yyLM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=eilJIV5zoY71EZwlESIZ6hhtNE7Z0lakDGM/rS787+nOMSLawJBbLP/5k4QjsbQzY
+	 2PRUWUHgDASwAbC0diH7q8lBIIFRrIED3MdmVIy5gNZlrZaUOVX0M6pGZw3TKYzCZ0
+	 GYwDyXpFHzbDTxNnH1rfXmtURwbLOg1N53TO1vJtojaUKMoKvhhhmOG3yh0RnNktlJ
+	 kxPJgQLFCAo2IepCloAKbWS8EEKZ4eQSnXZ663m/jrLUVQR+j/mG/baMzaOd7t2CsF
+	 i1wS0TAyRxxUyKWbtMuFRD5hEEschaWIT8SPwWv9yPyEe+mr2i41lrs/PUuJmVynqI
+	 MY1LL6XZO91Tg==
+Message-ID: <sashiko-outbox-232723@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/2] KVM: selftests: Test that an NMI-window single-step
+ preserves the guest's RF
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Peng Hao" <flyingpenghao@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20261125063000.92971-2-flyingpeng@tencent.com>
+References: <20261125063000.92971-1-flyingpeng@tencent.com>
+ <20261125063000.92971-2-flyingpeng@tencent.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 25 Nov 2026 06:39:00 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -71,69 +60,45 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, Jason Gunthorpe <jgg@ziepe.ca>,
- Kiryl Shutsemau <kas@kernel.org>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
- "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Gao, Chao" <chao.gao@intel.com>,
- Binbin Wu <binbin.wu@linux.intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 6/9] iommu/vt-d: Refuse system suspend while acquired
- by the TDX module
-To: "Tian, Kevin" <kevin.tian@intel.com>,
- "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
- "x86@kernel.org" <x86@kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
- <20261112043054.2664857-7-baolu.lu@linux.intel.com>
- <CO1PR11MB4835B7CA0A21EB68A2034C108C432@CO1PR11MB4835.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <CO1PR11MB4835B7CA0A21EB68A2034C108C432@CO1PR11MB4835.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 11/25/2026 12:01 PM, Tian, Kevin wrote:
->> From: Lu Baolu <baolu.lu@linux.intel.com>
->> Sent: Thursday, November 12, 2026 12:31 PM
->>
->> While tdx-host has acquired an IOMMU, the VT-d driver blocks its GCMD
->> writes. TDX disables S3 by clearing acpi_suspend_lowlevel, but that is
->> only checked after the syscore suspend callbacks have run, so an S3
->> request, e.g. "echo mem > /sys/power/state", still runs iommu_suspend()
->> and then iommu_resume():
->>
->>    suspend_enter()
->>      syscore_suspend()
->>        iommu_suspend()                  <- runs on the acquired IOMMU
->>      suspend_ops->enter() = acpi_suspend_enter()
->>        if (!acpi_suspend_lowlevel)      <- TDX's "S3 disabled" check
->>            return -ENOSYS
->>      syscore_resume()
->>        iommu_resume()                   <- runs on the acquired IOMMU
->>
->> Register a PM notifier for each DMAR unit that supports trusted DMA and
->> refuse PM_SUSPEND_PREPARE with -EBUSY while the unit is acquired. The
->> suspend then fails before tasks are frozen and before syscore callbacks
->> run.
->>
-> 
-> what about directly returning error in iommu_suspend() if any acquired
-> IOMMU exists? at this point all other processes are frozen so no contention
-> exists at this point.
-> 
-> or introduce a new flag or counter (intel_iommu_suspend_disabled) which
-> is set/cleared or incremented/decremented along with acquire/release,
-> then just check this flag/counter in iommu_suspend().
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] KVM: selftests: standalone nmi_iret_rf_test duplicates
+  debug_regs harness
+--
 
-I'm fine with this. It's actually what I did at first. The only downside
-is that iommu_suspend() runs very late. By then, every device has
-already been suspended, and suspending a device that is assigned to a TD
-may affect its TDISP state. That shouldn't be the IOMMU driver's concern
-anyway, so let's start with the simpler approach.
+commit 3aebfc62612be05298e4bd8add5fc7086d476fc4
+Author: Peng Hao <flyingpenghao@gmail.com>
 
-Thanks,
-baolu
+KVM: selftests: Test that an NMI-window single-step preserves the guest's RF
+
+This commit adds a standalone KVM x86 selftest verifying that RFLAGS.RF is
+preserved across an NMI handler's IRET when KVM single-steps the IRET to
+detect the end of NMI blocking.
+
+> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/sel=
+ftests/kvm/Makefile.kvm
+> index 95867977beb3c..2ca17a1cb275a 100644
+> --- a/tools/testing/selftests/kvm/Makefile.kvm
+> +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> @@ -154,6 +154,7 @@ TEST_GEN_PROGS_x86 +=3D x86/xapic_tpr_test
+>  TEST_GEN_PROGS_x86 +=3D x86/xcr0_cpuid_test
+>  TEST_GEN_PROGS_x86 +=3D x86/xss_msr_test
+>  TEST_GEN_PROGS_x86 +=3D x86/debug_regs
+> +TEST_GEN_PROGS_x86 +=3D x86/nmi_iret_rf_test
+>  TEST_GEN_PROGS_x86 +=3D x86/tsc_msrs_test
+>  TEST_GEN_PROGS_x86 +=3D x86/vmx_pmu_caps_test
+>  TEST_GEN_PROGS_x86 +=3D x86/xen_shinfo_test
+
+[Severity: Low]
+Could this test case be folded into tools/testing/selftests/kvm/x86/debug_r=
+egs.c
+instead of adding a standalone x86/nmi_iret_rf_test binary?
+
+debug_regs.c already sets up a single-vCPU VM with x2apic_enable() and a
+DB_VECTOR exception handler to test hardware instruction breakpoints and
+guest-handled #DB interactions with interrupt delivery and IRET.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261125063000.9297=
+1-1-flyingpeng@tencent.com?part=3D2
