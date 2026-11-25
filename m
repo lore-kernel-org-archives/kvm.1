@@ -1,71 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795597417;
-	b=BZ/FSdUxdM8j2ySePPxgKxUecpqRZvFaWcrAmSTAJj2GUNeKoUCyGUQgYfuqjWUZrUFc
-	 tkVcFCUIqr+woy7chno94/yDhgwULBupfPkuH+hDbLlMQHTY5ZegAT4YQaBh3GhxmX6to
-	 2jhYJEioWCECtxmZUNN+OSXbCNYMQ2b7JxxTvZZoE/JNAb6HIJotgRzCGkPs8phf6Bt19
-	 j9ZtpQdO9I7+zOzNY8LQ09aGwEfqYb5/hNyYUT+ouh7Bje47QGdqnO5h37HGEi4451dTx
-	 bRzyy3JIvZN8aN7Sdklv03GOe11NjnGjCkeZrXBkSOZRajE49c5TWdVVTW90PPdh8/A==
+	t=1795597723;
+	b=H3VczehLcmpCJFyApqL5F0FH2o1WSzDBAFdt3Djh8ukAdqVB1YXJ38HwQolpaWpvj1xp
+	 cbvamghTDGk359QFEDTwjuK6arfCbvb/6yaZwOGEoiNnttAnb1+LLa5jdnUgg/q92iisC
+	 Xpsmdck51vtYfB8n3F2ZzipFt79HmZ/Rz5cN9CMIN6I8hwQWX0wXrDqdMCF81jo6/2GFp
+	 ijbXQTsEFpCucUycTm7YrvyoTTxBYl7atXkjMFoNot6KwX8uH3iNg+6Z/dKwA60/eP8xo
+	 oma7BwrwE9NeGo25YTAidfNU6tZiDV58JGlHiN6oM6rux6yisbZD0f92LuPhWViUYEQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795597417;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=VKJwAy1lGpq4z0cOO8aJHyNLtiPZ13aYi7c5omKUShE=;
-	b=DenGyIoRuwFmiwgy6tngfTvLK9KH/jAvpj3e/WF74tuKphcWP/8CBZMWUTHkYdkViglj
-	 TvxEduQeYJBHwRVxUYAbpmhB8CXOXNOZfcrRjZzC6HQWKiefg88XA/mrMnr0NVb+mjBVV
-	 nVYnJTL9GDpjxn0kCGpfA/swLAMm6+E0SHOdOPFlclxFm8hrioPz5vCHFIEM5zXYO950Q
-	 0BDoKPPzsCxsmwenAwxwh2Mf9LXqmbDP059bOGLWDt5XWTpXGJFmfcM+St1u1AxZyChXo
-	 03D4gRVuGosRbXBLjqFVKWIEZmnkuOGjpKv6SUKZA3AnzciaDPcFAUps4SJGNMiCbYw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795597723;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=QVie/z0J40GiWaXqHRXPvG+NrtU10m0jzVDp6bMnZM8=;
+	b=neAgpwvSgnETqhkPfUjLfbFffcHH4guqTEqR3EMug19exYsqzZDGdxd8CwI+uLzYTH7Q
+	 QbVatv5RvG8kAjnmb6/OR0uoJYn2ut6vjnqJDRixnvWrvkMM4AjJWKD9VmmUdvWuTvDPI
+	 Z6ZL7ekGb6CgRq5EN//Ocj2xXr+8YjU2Tk+hLbWur0LmbNlwlah5i4/V4cAGiuPIam2OO
+	 QZQkuOiWh/Ngzy1aHB8Gb2j+AmS3MjnE0vaWMosW1iXrZTpP06SAqbpNnIoGYtZXgVFHV
+	 44sp5QEVBc0HaA0NkdAd7tyPyvO8OXSY6STrNqy8iZJTq66BqwCf8V6mxv2cuOQRXhQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CNjuEEgY;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2822B606A31E;
-	Wed, 25 Nov 2026 09:03:36 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=dcAnQhGt;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18EF8606A332;
+	Wed, 25 Nov 2026 09:08:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 18EF8606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CNjuEEgY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C1A51F000CA;
-	Wed, 25 Nov 2026 09:03:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795597416;
-	bh=VKJwAy1lGpq4z0cOO8aJHyNLtiPZ13aYi7c5omKUShE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=CNjuEEgYPQAcKuQYdl6za1C0ebFVINRWCNnFCjlDwJQd+I/ft9hJRStwX/N39vxDl
-	 nD23OV2ymNPVX2Uw0dBQXKUZ2pljh7PYWojD+DrY1EHXYrg3HK2mDB5bALqGspQiLH
-	 SYHXiF2jIeecjb8F6IJKb/u9s1m0y8iyXAYaxveO8vsbKbwS4cMiAv9VlFgSJK9CU3
-	 jttF9y94eSzUmGwHJ4s5Zn1dIMAsIzN86hHAZQvDZ44B0uM0DYzY0K8U9mYvuHkNfF
-	 0MC3pZ6VKlroRd/tz1qK6dsFELPlNoHuJVoP9DntITzk6FMOqpA3ySLBNObxFU/Y82
-	 6Tf4S/2+emG6g==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v1 08/10] PCI/TSM: Add sysfs lock and unlock for
- guest-assigned devices
-In-Reply-To: <20261123152738.GF179082@ziepe.ca>
-References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
- <20261123083337.2731019-9-aneesh.kumar@kernel.org>
- <20261123152738.GF179082@ziepe.ca>
-Date: Wed, 25 Nov 2026 14:33:26 +0530
-Message-ID: <yq5ao6bd9tb5.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=dcAnQhGt
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9198E339;
+	Wed, 25 Nov 2026 01:08:38 -0800 (PST)
+Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 475643F86F;
+	Wed, 25 Nov 2026 01:08:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795597721; bh=pmOn0GAQ/bIzl3yEFkQbNwWqfmhqh+tr+9j74hBF0n8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dcAnQhGtPKyESIvNebDMGfL2TrSqBtOSKEzh2om+0KBX3wkCehatasRziYTiTReSc
+	 p/UUMgQHC6adqOhdOTayYPC49JWou0HCkpkyxeUkQrtwhFWHqMDagQJqtyaF2HHbmz
+	 KlGBHPKyMdilzcBf8Nwd5t0/GuII1ev/VeEvtsPg=
+Message-ID: <0c7c59df-69cd-40fe-830f-60c0f3cedafa@arm.com>
+Date: Wed, 25 Nov 2026 09:08:36 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -75,133 +53,79 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/8] KVM: arm64: Reset SP_EL1, ELR_EL1 and SPSR_EL1
+ when resetting a vcpu
+To: Dan Carpenter <dan@pereq.eu>, Marc Zyngier <maz@kernel.org>,
+ Oliver Upton <oupton@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>,
+ Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>,
+ Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Christoffer Dall <c.dall@virtualopensystems.com>,
+ Rusty Russell <rusty@rustcorp.com.au>, Marcelo Tosatti
+ <mtosatti@redhat.com>, Sebastian Ott <sebott@redhat.com>,
+ Eric Auger <eric.auger@redhat.com>, James Morse <james.morse@arm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Shuah Khan <shuah@kernel.org>
+Cc: Karthik Bhargavan <karthik@pereq.eu>,
+ =?UTF-8?Q?Cl=C3=A9ment_Blaudeau?= <clement@cryspen.com>,
+ linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+References: <20261125-double_exception-v2-0-224689d8a764@pereq.eu>
+ <20261125-double_exception-v2-2-224689d8a764@pereq.eu>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20261125-double_exception-v2-2-224689d8a764@pereq.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Jason Gunthorpe <jgg@ziepe.ca> writes:
+On 25/11/2026 06:56, Dan Carpenter wrote:
+> Resetting a vcpu keeps the old values of SP_EL1, ELR_EL1 and SPSR_EL1.
+> Commit e47c2055c68e ("KVM: arm64: Make struct kvm_regs userspace-only")
+> changed the reset to only clear the general purpose registers, SP, PC
+> and PSTATE, and later commits moved these three registers to the system
+> register array without a reset value.  Commit 85d703746154 ("KVM: arm64:
+> Fully zero the vcpu state on reset") fixed the FP registers and the
+> 32-bit SPSRs the same commit missed, but not these three.
+> 
+> The impact is that the guest that boots next can read the previous
+> kernel's stack pointer and exception return address.  KVM_GET_ONE_REG
+> also returns the old values to userspace, and a rebooted VM doesn't
+> start in the same state as a new one.
+> 
+> Zero them in kvm_reset_vcpu().
+> 
+> Fixes: e47c2055c68e ("KVM: arm64: Make struct kvm_regs userspace-only")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dan Carpenter <dan@pereq.eu>
+> ---
+>   arch/arm64/kvm/reset.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/arch/arm64/kvm/reset.c b/arch/arm64/kvm/reset.c
+> index 26081d273408..9c1b42890c96 100644
+> --- a/arch/arm64/kvm/reset.c
+> +++ b/arch/arm64/kvm/reset.c
+> @@ -199,6 +199,9 @@ void kvm_reset_vcpu(struct kvm_vcpu *vcpu)
+>   
+>   	/* Reset core registers */
+>   	kvm_reset_vcpu_core(vcpu);
+> +	__vcpu_assign_sys_reg(vcpu, SP_EL1, 0);
+> +	__vcpu_assign_sys_reg(vcpu, ELR_EL1, 0);
+> +	__vcpu_assign_sys_reg(vcpu, SPSR_EL1, 0);
 
-> On Mon, Nov 23, 2026 at 02:03:35PM +0530, Aneesh Kumar K.V (Arm) wrote:
->> A confidential guest needs to lock a PCI device before collecting and
->> verifying evidence about it. Userspace also needs a way to unlock the
->> device after use or when verification fails.
->> 
->> Add tsm/lock and tsm/unlock sysfs attributes for TSM drivers
->> implementing devsec_ops. Writing a TSM device name to tsm/lock calls its
->> lock callback. Unlock calls the matching driver's unlock callback
->
-> I thought we agreed not to do this in sysfs as we worked through the
-> SPDM stuff?
->
-> LOCKED should be the 'start SPDM' action in the guest
-> RUN should be the 'accept SPDM' action in the guest
->
-> And though we didn't talk about it there is likely some 'destroy SPDM'
-> action that is UNLOCK and UNRUN.
->
+nit: Please could we move these into kvm_reset_vcpu_core() where we
+reset other registers ?
 
-I may have misunderstood. I implemented that flow only on the host, but did
-not add a "start SPDM" action for the guest.
+With that:
 
-Currently we have it as
-
-    # Host SPDM authentication and stream acceptance are complete.
-    # VMM has created the guest's VDEV.
-
-    guest lock                 -> associate guest attestation endpoint
-                               -> RHI: request TDI CONFIG_LOCKED
-                               -> host/RMM: VDEV_LOCK + VDEV_COMMUNICATE
-                               -> RSI_VDEV_GET_INFO:
-                                 trusted state, lock sequence and digests
-
-    spdm-get                   -> available objects, certificate slots,
-                                 formats and current state
-
-                                 current firmware:
-                                   * expose only the existing selected identity
-                                   * report independent signing-slot selection
-                                     unavailable
-
-                                 updated firmware:
-                                   * expose all discovered candidate chains
-                                   * expose slot/key metadata when supported
-                                   * bind the catalog to this assigned VDEV
-
-    spdm-get(certificate,
-             slot=0)           -> retrieve captured slot 0 chain, if available
-    spdm-get(certificate,
-             slot=1)           -> retrieve captured slot 1 chain, if available
-                               -> check the applicable trusted RMM bindings
-
-    # Guest inspects the available chains and selects a signing identity.
-    # For 1.3 multi-key, its key usage must permit measurement signing.
-
-    evidence-get(
-        slot=1,
-        nonce=N,
-        selected-key-identity) -> select the firmware's supported measurement flow
-
-                                 current firmware:
-                                   * support the existing signing identity only
-                                   * reject unsupported slot/key selection
-                                   * RMI_VDEV_GET_MEASUREMENTS(nonce)
-
-                                 updated firmware:
-                                   * enhanced RHI_VDEV_GET_MEASUREMENTS(
-                                         slot, nonce, selected-key-identity)
-                                   * validate the requested slot/key association
-                                   * enhanced RMI_VDEV_GET_MEASUREMENTS(
-                                         slot, nonce, selected-key-identity)
-
-                               -> VDEV_COMMUNICATE
-                               -> device GET_MEASUREMENTS:
-                                 request signature using the selected identity
-                                 and the guest-provided nonce
-                               -> collect the complete guest device bundle:
-                                 * selected certificate chain
-                                 * fresh signed measurement exchange
-                                 * locked interface report
-                                 * available supporting transcript
-                                 * trusted device/identity and sequence bindings
-                                 * formats and declared capture limitations
-                               -> obtain fresh RSI_VDEV_GET_INFO
-                               -> check evidence digests and lock/device state
-                               -> retain one consistent complete bundle
-                               -> return bundle, device generation and receipt
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
 
-    guest verification         -> verify certificate policy and measurements
-                               -> verify signature with the selected leaf key
-                               -> verify signed inputs bind the original nonce N
-                               -> verify association with the assigned device
-                               -> approve the interface report before acceptance
+>   	vcpu->mmio_needed = false;
+>   
+>   	/* Reset system registers */
+> 
 
-    evidence-accept            -> validate this guest attempt's generation/receipt
-                               -> validate/map approved interface resources
-                               -> RHI: request TDI RUN
-
-    trust_policy=full          -> authorize driver binding
-                               -> configure PCI DMA and the default IOMMU domain
-                               -> RSI_VDEV_DMA_ENABLE with accepted sequences
-                               -> driver probe
-
-    driver unbind              -> driver removal
-                               -> RSI_VDEV_DMA_DISABLE
-                               -> release default-domain ownership
-
-    guest unlock               -> revoke guest access and mappings
-                               -> return TDI to CONFIG_UNLOCKED
-
-
-Both host and guest flows are documented
-
-https://git.gitlab.arm.com/linux-arm/linux-cca/-/blob/cca/topics/7.4/cca-da-integration-v2/Documentation/userspace-api/attestation-spdm.rst?ref_type=heads
-
-
-The reason I did not add spdm-start for the guest is that lock does not
-take an input parameter. Only GET_MEASUREMENTS requires the key details to
-use for signing.
-
-However, we can keep the guest flow consistent with the host flow: use
-the tsm/lock sysfs attribute only to associate the TSM, drive the entire
-TDISP flow via ctlv, and have spdm-start lock the device.
-
--aneesh
