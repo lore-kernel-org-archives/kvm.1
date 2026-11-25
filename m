@@ -1,73 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795591425;
-	b=HVOBExS1lbhzoUcVDoWwVbmXHIDwaM7G5Mk3cfhLQAkMgdZBJwj/Gcrk/+YVi5J47EbV
-	 k1ecxg7sS8QHBViROEbxRTQY/15FMbvBz32NFh5JG1ZTg5LW3tnL17Zyfq6Vu/J2C/45e
-	 hCK4/euEztzkyIHdsfe+ArK3gnrMudKziCY+AXXPj1HovYSnXD7bgCykm6zl/YSRHZgTV
-	 u0lN71KkFWDN3UT+hC5UiekXreBxzDvKuXX6PEwucyJVmj0OyCk1G0np0BlA5LEtxjodX
-	 n4YW1GLTQuQZI9CZa9G57e81UiUkJ3Gw1ejiAaJBMxYYAJAWX/eQrpmOyLCbgRWwT8g==
+	t=1795591479;
+	b=zp3FQtlHrUQLxV6LsohCZ7TCzuUEvL6cG6MAz6glg6m0M5G5IWWaZQWNFU6pl7xPuIPQ
+	 BYs7L3Hu3ZmGAlHQXk5vlLyOXer6uPKlRBaEKTum1u7hIuLuE5VvPTmkE3CezRW9vhN98
+	 6vMJPSDELzI+vsdqxPV+W9jokvMdzz2kkYK36ScAhJI1A3ulJv4Z1kXPbnnwb5L3Jo27c
+	 WrzTCiKZNLGMWJXPCc8RYp6W7ETeuVlS7C2yTNk6YDhcxwf9+BeGh/BlmzI+cVklDrKbc
+	 7OOjqHJlTalEcnKTvQnU1uZtT8WWYpu8jP/YtUxNLX5KRdD4G0U5VzotEzB4fMkMimw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795591425;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=q0hHWQYAcpLXZYWDPR8xQDF7EnYAaANCqBcrQywzfyU=;
-	b=UoMrFac7m34Et3F50/BYl0lPsuxYYaVf4gwEPCrosJj0lf+WESompr7lgYdD5ycAXtUj
-	 UCz5N0Rj+UIxwQd1TxTbHiSLv+8Pd6144tD6iF+r0DkLGOlWAEYHClCueqwhudQf8doRi
-	 AuelNPUjK4XJDueNUkUNw2mJpcctUGzf6GWOtRWzMoQ0Zx7aWvysasF/K2Nj/vagohmR+
-	 pKjp1XNDFabaKlA68R9ksjG39plzP1irvMhKV7ZbONC8Ifgbt27W4q0mdbswCmRdqsgYC
-	 lb9y+QI4qkYP6OPdjAVadi4psJfSEtBK09XwRMeRxBFAIQTDDa41Jk4EsoA9+V85hpA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795591479;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=+l93dXtHRQW0EV58b/3nKh4/KSBiO7DJ6aZmG48jBL8=;
+	b=A5sh4YDKYXTn2hP6how7pirnXXaIqnqf++EyT03GyPMsHztqEW80FVZ1bOTWAvfNI3pt
+	 JT5esQHg+W3jjl6j7uMKRnCNBScNlRW9c+gPCRsT/bL3cUBhUKEBv9F32NZ4AKV0lxxju
+	 KQbvQiJrrNjr11buKgZnu2lGlIINHFylNnfGmQF631s9W/WMktttqci5nEKi1mLGfy69R
+	 n9EBcYt4U9na+shfHjGZhF0GAdaCmfwu1oA7g7ij0VGvNOEQ2sDsSVQJGAwETCckA42Mr
+	 InVqM0VSLgIXw/e7MycDhiruRnKuHSoiHHd3lBmbC9ZTb/t+a/0k26oSZUASCjF1ykg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hnofm9ol;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=loeKHpXa;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F98606A323;
-	Wed, 25 Nov 2026 07:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26D5606A321;
+	Wed, 25 Nov 2026 07:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hnofm9ol
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F13F1F000C4;
-	Wed, 25 Nov 2026 07:23:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=loeKHpXa
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C43C1F000C6;
+	Wed, 25 Nov 2026 07:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795591424;
-	bh=q0hHWQYAcpLXZYWDPR8xQDF7EnYAaANCqBcrQywzfyU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Hnofm9olul8X7U563TFP9EoBxPQH6Cku69KsUU7t9hAkp1G7O+zSkVsJ+Bkpp0frG
-	 ZSjjNSGxc3K6ajhlxq8OpaFfMOzGPEO5qjmvN/TE3MOIqkAE4hqkyKJa8E/3sCX+oj
-	 9GIj48Rbpb8Rl+AxOtn9LBH2pz9gANgrYN0LyP3g8simq3jeo8oyFbbmjAx+1mNgDQ
-	 4TbSCb5P27rkXsOAJnJdA9m8Z8f++u/h0mFS5FNNGPoaB9w16axwBSN+P2ep1JooBl
-	 J4b6wPabWVhiIlwly9lhGfeSMBacvaND+/vHY7GMKEoeHHZWcY5jlq4JijHtodTLcb
-	 DpgwCjZvWXZSw==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>,
-	Alexey Kardashevskiy <aik@amd.com>
-Cc: linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, patches@lists.linux.dev,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v1 01/10] PCI/TSM: Report active IDE streams per host
- bridge
-In-Reply-To: <20261124024842.GB9566@ziepe.ca>
-References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
- <20261123083337.2731019-2-aneesh.kumar@kernel.org>
- <f377271d-353f-4c8e-94d5-98159a66ab28@amd.com>
- <20261124024842.GB9566@ziepe.ca>
-Date: Wed, 25 Nov 2026 12:53:33 +0530
-Message-ID: <yq5azeux9xxm.fsf@kernel.org>
+	s=k20260515; t=1795591479;
+	bh=+l93dXtHRQW0EV58b/3nKh4/KSBiO7DJ6aZmG48jBL8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=loeKHpXaBC9FrNf66nSNMrP9Axjcq9SJIDc5wrvXJgRG/vfAoOI3DI0Wv4zSWAbb7
+	 ZNbGCJGZzOZCJGQcdoSvVxSZIx/AqIuKtHInsbChPb4Rjn5r5eegCXwOTt1SUhmFY/
+	 lLsrUwRJo0qNDGT7ht72vkgms8Sw6eyHAsUFEn4yuD+0yRJPpXCMpxlcpeiMiETtbS
+	 AbZTAdXEnd3AYqHnoXk9Cryi3KjUte8jI4rPRzEGHwhcYOJIayjbFM0COMkHzyljQy
+	 UaaFQwdK1w5AA9aEA/h88YBPzp/h2rflaQHM7gueiZETbKxuLmG6iHjOwlG7T2MH8e
+	 hQCqgoJziUalg==
+Message-ID: <sashiko-outbox-232776@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 6/8] KVM: arm64: nv: Don't deliver a pending SError
+ to the wrong guest
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Dan Carpenter" <dan@pereq.eu>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>, "Marc
+ Zyngier" <maz@kernel.org>
+In-Reply-To: <20261125-double_exception-v2-6-224689d8a764@pereq.eu>
+References: <20261125-double_exception-v2-0-224689d8a764@pereq.eu>
+ <20261125-double_exception-v2-6-224689d8a764@pereq.eu>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 25 Nov 2026 07:24:38 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,77 +61,82 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain
 
-Jason Gunthorpe <jgg@ziepe.ca> writes:
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [High] KVM: arm64: nv: sleeping in atomic context via
+  kvm_nested_flush_hwstate()
+--
 
-> On Tue, Nov 24, 2026 at 11:11:49AM +1100, Alexey Kardashevskiy wrote:
->> On 23/11/26 19:33, Aneesh Kumar K.V (Arm) wrote:
->> > From: Dan Williams <dan.j.williams@intel.com>
->> > 
->> > The first attempt at an ABI for this failed to account for naming
->> > collisions across host bridges:
->> > 
->> > Commit a4438f06b1db ("PCI/TSM: Report active IDE streams")
->> > 
->> > Revive this ABI with a per host bridge link that appears at first stream
->> > creation for a given host bridge and disappears after the last stream is
->> > removed.
->> > 
->> > For systems with many host bridge objects it allows:
->> > 
->> >      ls /sys/class/tsm/tsmN/pci*/stream*
->> > 
->> > ...to find all the host bridges with active streams without first iterating
->> > over all host bridges. Yilun notes that is handy to have this short cut [1]
->> > and from an administrator perspective it helps with inventory for
->> > constrained stream resources.
->> > 
->> > Link: http://lore.kernel.org/aXLtILY85oMU5qlb@yilunxu-OptiPlex-7050 [1]
->> > Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
->> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
->> > Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
->> > ---
->> >   Documentation/ABI/testing/sysfs-class-tsm | 13 ++++
->> >   drivers/pci/ide.c                         |  4 +
->> >   drivers/virt/coco/tsm-core.c              | 95 +++++++++++++++++++++++
->> 
->> I'll take to the tsm tree, thanks!
->
-> Lets not take any new sysfs APIs please. These all need a careful
-> thing and we are not having a good history right now on any of these.
->
-> I'm not even sure what this is supposed to be for, is it debugging?
+commit 81f527c7f211ae919b4cadce520f83a546cfd38d
+Author: Dan Carpenter <dan@pereq.eu>
 
+KVM: arm64: nv: Don't deliver a pending SError to the wrong guest
 
-I think this helps users identify active IDE streams and determine how
-many secure streams remain available on the host bridge. I would not
-classify it as a debugging-only aid.
+This commit stashes a pending HCR_EL2.VSE bit into NESTED_SERROR_PENDING
+when switching between L1 and L2 so that kvm_nested_flush_hwstate()
+re-evaluates SError routing in the new context.
 
-A sample output for a toplogy given below
-# lspci -t   
--[0000:00]-+-01.0-[01]--+-00.0
-           |            \-00.1
-           +-02.0-[02]----00.0
-           \-03.0-[03]----00.0
-# 
+> diff --git a/arch/arm64/kvm/emulate-nested.c b/arch/arm64/kvm/emulate-nes=
+ted.c
+> index 39136a89d74bb..cccaf02610e87 100644
+> --- a/arch/arm64/kvm/emulate-nested.c
+> +++ b/arch/arm64/kvm/emulate-nested.c
+> @@ -2792,6 +2792,18 @@ static u64 kvm_check_illegal_exception_return(stru=
+ct kvm_vcpu *vcpu, u64 spsr)
+>  	return spsr;
+>  }
+> =20
+> +/*
+> + * HCR_EL2.VSE was set for the context we are leaving.  Store the SError
+> + * instead, so that kvm_nested_flush_hwstate() routes it in the new cont=
+ext.
+> + */
+> +static void kvm_nested_stash_serror(struct kvm_vcpu *vcpu)
+> +{
+> +	if (*vcpu_hcr(vcpu) & HCR_EL2_VSE) {
+> +		*vcpu_hcr(vcpu) &=3D ~HCR_EL2_VSE;
+> +		vcpu_set_flag(vcpu, NESTED_SERROR_PENDING);
+> +	}
+> +}
+> +
+>  void kvm_emulate_nested_eret(struct kvm_vcpu *vcpu)
+>  {
+>  	u64 spsr, elr, esr;
+> @@ -2823,6 +2835,7 @@ void kvm_emulate_nested_eret(struct kvm_vcpu *vcpu)
+>  	preempt_disable();
+>  	vcpu_set_flag(vcpu, IN_NESTED_ERET);
+>  	kvm_arch_vcpu_put(vcpu);
+> +	kvm_nested_stash_serror(vcpu);
 
-# pwd
-/sys/class/tsm/tsm0/pci0000:00
-# ls
-0000:00:01.0  0000:00:03.0              pci_bus  stream0.0.0  trust_policy
-0000:00:02.0  available_secure_streams  power    trust        uevent
-# cat available_secure_streams 
-255
-# ls -al stream0.0.0
-lrwxrwxrwx 1 root root 0 Jan  1 00:48 stream0.0.0 -> 0000:00:02.0/0000:02:00.0
-# 
+[Severity: High]
+Can stashing NESTED_SERROR_PENDING here cause sleeping in atomic context
+on the next guest entry when a virtual PMU counter is active?
 
-Here, I have set up an IDE stream with 0000:02:00.0.
+When L1 has a masked pending SError in HCR_EL2_VSE with HCR_EL2.AMO set
+and executes ERET into L2, setting NESTED_SERROR_PENDING causes the next
+iteration of kvm_arch_vcpu_ioctl_run() to re-inject the SError back to
+vEL2 while preemption is disabled:
 
-The previous discussion cited in the cover letter indicated a need for
-this because the number of streams available at the host bridge level is
-limited.
+  kvm_arch_vcpu_ioctl_run()
+    preempt_disable()
+    kvm_nested_flush_hwstate()
+      kvm_inject_serror_esr()
+        kvm_inject_nested_serror()
+          kvm_inject_nested()
+            preempt_disable()
+            ...
+            preempt_enable()
+            kvm_pmu_nested_transition()
+              kvm_pmu_create_perf_event()
 
--aneesh
+Because kvm_inject_nested() only balances its own inner preempt_disable(),
+the outer preempt_disable() from kvm_arch_vcpu_ioctl_run() is still in
+effect when kvm_pmu_nested_transition() recreates perf events for counters
+whose EL1 and EL2 filters differ.  kvm_pmu_create_perf_event() then calls
+perf_event_release_kernel() and perf_event_create_kernel_counter(), which
+acquire sleeping mutexes and allocate with GFP_KERNEL while atomic.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261125-double_exc=
+eption-v2-0-224689d8a764@pereq.eu?part=3D6
