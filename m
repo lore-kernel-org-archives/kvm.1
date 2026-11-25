@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795619648;
-	b=ZlLfYm2/3v4lcgq/yz9CSVzKexGb5Tb0OGW6Z1i7IAevfifyjpem5YkMkj1G6QUyQo3V
-	 FkMon4FA+Pl8H1YTY+dChN7GYjmCKzesIYsEOFNeHuqn22x6DBWvDzay7a9+sRa7MP2EG
-	 +56HvnA5MqHECLLcHQJxtS1MqhWqEiIiSl8sxUzi9GIJfo8e2YSZ+DBB56KULJ5wW6PAO
-	 8vv4XRusofH9nRmMvP0RLpZVdiHk98bZA0Y0yvIwIkrtpX2s9oxbISp5medcXGV6T0n25
-	 ib/2iHYH2YorPUVFMKJsC4yDJ0gAKx0iQzs98vsgX8gtBEubu9Uio1zXKAR4II06r6g==
+	t=1795619651;
+	b=CSmO4M61/ubzXKxEYJxOZkmN7FSzNNUDvDxZDzAsTWsUBCmtpQDcH9S+EMuXKGfgw4s+
+	 DjaRokANWi2nfUS17jkjNBZzxOZp/HQI83WNOShBdv3YVGcKL1L9T/Y39q2VrnF5bkyft
+	 9kk8TnMrFw6Ao6VCA8sGxdkQJOK5D5B14iKqwaTZD42dd3ZZpyeUL3JZscwwVcJmRms6D
+	 6BTulU/OPnupbsMrFDSXlLECuqDy6Ogtqx7b7jNpaEPGr2KFH/g6crnyzLHGYQtFoL3q3
+	 mguLGbAYRxnosOnP5XJLceD0sV1Tl1PDRgJevqa9KxOhR50SF+U/XkzcfJHeoVS2lfg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795619648;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795619651;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=R7arVPQFINgfmvaThkX4cGwxR9rvbSIVuD6b/IWXSj8=;
-	b=0d80grSXfJflzksTFsvO1d2WBstKDNjNkjKhovMoJJOviHo2DBxATNFluzfivlfIv2ig
-	 TrJHOLQpEnjGpcBvWBs7gct5PWFwgq2tfEbdJEYE8ihfoytAm/4yReYIMks0y2dNnmpQv
-	 LlfZoDU8TjIwNpsa4lo2aJGLHXzYoclJm75St7XtWRnDYzOB7O5hYTTx2xh/OfDwivfid
-	 4KZCnMHl/m4qKh3zXlQMiJkhgo0HUqofOb17HtZKYBWKvOYaq8bA516E7L3qQPAtksBSo
-	 GjydHfqzSZJ5OoXcqTl11vVV2qRTTMWkjOINoOaSbyEpUA90yrGj7eGrZeCmzCWYb/w==
+	bh=ptB7HBBIXmODENruQ/1q8o5lWV2aQFT5cwp/uxamfAM=;
+	b=NPktbu0qqDVXgWYW67QGyxMy+TB3tPWIPp2BIv5JNv/02g0qIWzHVQv6PqohrUXdIWfu
+	 F3/yW+uZelSfykEuOJTxj5K0hC0XFohn1lAw+FdS1QizbXp+QhYoDUSjYN+9GQGV9hZ9s
+	 bvPVuO7BY+m5LlOmDPCw8IVZagfhL6ynIkk5jly85WwM/jBNy42SwfF6H2O9tPEz8xvc5
+	 JbA/VrYvSBUEomnJ8C/GGuO+DarhpQruNf+sW03WKt5akld4Fj7VpB5CeRbsyT9T0eTSh
+	 BrtQCxFy88irFgFWX/Mq7ybjvt/oqLAbOSaiEbjShuDbsLIID5wfhV6v0ke37gwKHYQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=AnUamhRx;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=oS8O1is6;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADE2606A323
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 15:14:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7ADE2606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61736606A321
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 15:14:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61736606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=AnUamhRx
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=oS8O1is6
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 01B9D339;
-	Wed, 25 Nov 2026 07:14:04 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D85281596;
+	Wed, 25 Nov 2026 07:14:07 -0800 (PST)
 Received: from e133894.cambridge.arm.com (e133894.arm.com [10.2.80.62])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C00EE3FA7A;
-	Wed, 25 Nov 2026 07:14:05 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9A6833F86F;
+	Wed, 25 Nov 2026 07:14:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795619646; bh=2CrNkn059Py+6JSBmj/RbmhlCO93bsgfPfqoA1+/+pA=;
+	t=1795619650; bh=N8bg3ar1PWVMdyOQLfF0aNd7/iiEv1kXMmOX+0mXlJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AnUamhRxRm9nMXLMQzNCSwQeFxqX20SNxKKPQBqfTOAh1cLgchkaMgKasKYIvhPty
-	 ovrATfFfJqu04Tj2nGnLNT6B8f0L3ziyrInbleaCTIn8pyuHmqBLXp0cvR2m+FYx9k
-	 yiwf2/hKVoDGds7/RC8mdggZgDtN/B3qPo6qo9Sw=
+	b=oS8O1is6mIAzLqfbYz0NWgEuRMOfzVJN2WX8IbNjwnrWaD2JfmZ3PHQzByASSTUrj
+	 lE32q6axuXkhpsto6sG+JKIE2vPZAb3NJd+KJ6PQiO/vF15PV3C6zBqg4zKQu1n7HS
+	 JN6j81v41NpmOZQtIEaY+OI5egygFuG9KjG3OoTk=
 From: Sascha Bischoff <sascha.bischoff@arm.com>
 To: will@kernel.org,
 	julien.thierry.kdev@gmail.com
@@ -51,9 +51,9 @@ Cc: vladimir.murzin@arm.com,
 	kvmarm@lists.linux.dev,
 	timothy.hayes@arm.com,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH kvmtool v6 01/23] arm64: Propagate IRQ routing initialisation errors
-Date: Wed, 25 Nov 2026 15:13:34 +0000
-Message-Id: <20261125151356.2875108-2-sascha.bischoff@arm.com>
+Subject: [PATCH kvmtool v6 02/23] arm64: Close the ITS descriptor when setup fails
+Date: Wed, 25 Nov 2026 15:13:35 +0000
+Message-Id: <20261125151356.2875108-3-sascha.bischoff@arm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261125151356.2875108-1-sascha.bischoff@arm.com>
 References: <20261125151356.2875108-1-sascha.bischoff@arm.com>
@@ -68,33 +68,52 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-irq__routing_init() can fail while allocating entries for the default
-routing table. gic__init_gic() currently ignores that error and
-continues with a partially populated table. Return the error before
-the VGIC is marked as initialised.
+gic__create_its_frame() closes the device fd if the address attribute
+is unavailable, but returns without closing it if setting the address
+or initialising the ITS fails. Route all errors after device creation
+through the same close path.
 
 Reviewed-by: Vladimir Murzin <vladimir.murzin@arm.com>
 Tested-by: Vladimir Murzin <vladimir.murzin@arm.com>
 Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
 ---
- arm64/gic.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arm64/gic.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
 diff --git a/arm64/gic.c b/arm64/gic.c
-index 1e400962..debb0381 100644
+index debb0381..f8371f50 100644
 --- a/arm64/gic.c
 +++ b/arm64/gic.c
-@@ -344,7 +344,9 @@ static int gic__init_gic(struct kvm *kvm)
- 		}
+@@ -124,17 +124,22 @@ static int gic__create_its_frame(struct kvm *kvm, u64 its_frame_addr)
  	}
  
--	irq__routing_init(kvm);
-+	ret = irq__routing_init(kvm);
-+	if (ret)
-+		return ret;
+ 	err = ioctl(its_device.fd, KVM_HAS_DEVICE_ATTR, &its_attr);
+-	if (err) {
+-		close(its_device.fd);
+-		its_device.fd = -1;
+-		return err;
+-	}
++	if (err)
++		goto out_close;
  
- 	if (!ioctl(gic_fd, KVM_HAS_DEVICE_ATTR, &vgic_init_attr)) {
- 		ret = ioctl(gic_fd, KVM_SET_DEVICE_ATTR, &vgic_init_attr);
+ 	err = ioctl(its_device.fd, KVM_SET_DEVICE_ATTR, &its_attr);
+ 	if (err)
+-		return err;
++		goto out_close;
+ 
+-	return ioctl(its_device.fd, KVM_SET_DEVICE_ATTR, &its_init_attr);
++	err = ioctl(its_device.fd, KVM_SET_DEVICE_ATTR, &its_init_attr);
++	if (err)
++		goto out_close;
++
++	return 0;
++
++out_close:
++	close(its_device.fd);
++	return err;
+ }
+ 
+ static int gic__create_msi_frame(struct kvm *kvm, enum irqchip_type type,
 -- 
 2.34.1
 
