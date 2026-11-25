@@ -1,49 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795607692;
-	b=OzA59/m183z2hqNIKEDweM4WiZ6t+3LDBFkVv1COt4OjdJGu/+x7I/0MYEChkvJCJGQr
-	 YRvnPCmyVuIu8buSKzExiN28cRaT0d66ugTvtcnWxwWfkG2LgSWQMsZClBxNzLu3xFdRu
-	 3VTUlSP4JPM8od2Du2PeWogl5gEpLtlPOJTkXVgiqmrWZEmkldFNW0hONivxVKj0WhAfx
-	 ouoycRZpCFaMVxeLyzk0tLSam28c8JlKSeW+EYPJZdPtpDglFvXcgCsperb0ywBCe5LUb
-	 mpmtk2r5opZLqLUOMc1z+RVomvwi7umHdLHxdyd7LJQmIneG1AfutO5MFyiY+tqDIow==
+	t=1795608176;
+	b=hlwY6x9mEPBToJtMLoeq0lGVH3sfcr/3PXc93fq6pReroIutcQ4/n7YTkrCEuVFH3j51
+	 qakpi6Iq52etqvvZGllrwjMkmQslLDSAEW/yCoTuRxgkr/D/tY0zROfybzLpVqa27id3R
+	 lmu2gNDcKm91SJDPIQHa99u2u37fTrPc2RhqpVAlrsgktwHyw6KAcY6s5kHgsLWLOLKrX
+	 jVsEwT29s5v/xhgaVyspNd4aDXVQ6JQ4Gl37ezKNeB6FmTeuL96D6lQRMkPojgiEYyRUP
+	 uG0w+Nk6nEP+E36JF/ElVP8jBcEJP/IrFTIrKH3lseRnl6L8kH6Y3ctS8goR6zp5I8Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795607692;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=hrdNgf41OVOvk7Q8wssfV4Th9fs8mNrOwxABB5Eu2AY=;
-	b=HdNRyGjlTbqKlBgSkHC3UYZ17XezzJzxaiGcDZDTUsIJhxfLzVD6o6/56AaaK2o8rwZ2
-	 /I66DFbkXYlqziWLIbEN3HhpupCvLMW6NHwcE7rwHF1ymSIhoyHVRPqvGBgE7qzDZJ7PA
-	 IZDfXfIZZlSVU/iR1XRI4oAUkFTeeRppnwydHMuL6SDr1TYlj4FVw74QKw7hqVSKbirzD
-	 RVLif4M03xFan5Ey8u4tv60D4E8xT1KRreCPGUurrGJwiC9mC4IKt6lsoKH4ZkcxrFXS0
-	 nRFmVreQe3i7QtVyS2ovqsMC8Rhh8No+4ESm2XElNpqCHz0xT6qf9GgFvkCpb5pk5hw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795608176;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Authority-Analysis:X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=1/3s/ojeDiUUURTn0NikgHdXitYRVYHj2QGMfZR4toE=;
+	b=NNoJf3m526doGDP7UMUEEnzN0jU1giY7dWuGFSf2yBb1NjOIDvvNJ0A28fa6JOcipS0W
+	 +q07ZkiKyijUKALZn7Gm0La6Ntz1sbGc5KIFj3eLbxvWgMhHHPpRXE5cAOUZ2E1xhOSh9
+	 6s8rI/rGlofQeYT+T1Ypyww0ZXaloeBbxtU+BDyZPeQDY0Bs4sy/qLoIX8aiAGm9eXL/1
+	 p0nLCj1MYvSdC9acZQ7Px8mXT5h+ukbWnlrvdEkuF56Uou818X7FEk0L2yF/k6riY12Tz
+	 /g0ZRJeEekdP49i426P5J76aX7Qqy4tCTxLG3boyjLdYPVJR6zp7GNJXA2AG9ihpFww==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=MYu8Ffnc;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B222606A321;
-	Wed, 25 Nov 2026 11:54:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6B222606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P8j89lUU;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F39F606A326;
+	Wed, 25 Nov 2026 12:02:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0F39F606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=MYu8Ffnc
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D288F2F;
-	Wed, 25 Nov 2026 03:54:47 -0800 (PST)
-Received: from [10.57.32.107] (unknown [10.57.32.107])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 98C6B3F86F;
-	Wed, 25 Nov 2026 03:54:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795607690; bh=FdD752s2MbSn6Ah8b6CmNxJRAfCF8aNL4kgILGt8wZA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MYu8Ffnc3RGgD74p37RZXJvnnXfG5ts2YdgdjMBhWpnabINb8oEcmFb7ELLqTmRIW
-	 eNJ7Td43l6iZ9cO4MJBNv2gqBN+Mv2DNWHDa8x6+6qJM7KSnp1iMNNWty8iFEK6uKW
-	 xTiuOraJkQ9+2AjE8dY/X/GInMjx2xB4moNQrAi4=
-Message-ID: <8b3c107f-9f33-40e0-82ae-7d0373465acb@arm.com>
-Date: Wed, 25 Nov 2026 11:54:43 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P8j89lUU
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6APA4fUQ3596895;
+	Wed, 25 Nov 2026 12:02:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=1/3s/o
+	jeDiUUURTn0NikgHdXitYRVYHj2QGMfZR4toE=; b=P8j89lUUSn8o4YpG2k17Vg
+	YGuMZb87xZLBGO9HLztCdYGOBq4+AQNmfunC/rybmK705AIlZTbKt54oije1zTx0
+	8V97WnJNETjhapOYpcLhJcfOtYqLBXewBWucMBmQPk7pu4pOZQdACjTHWi/2Fhj+
+	FBwYj/2cBv67DtywM0BO9lbuSG8ZDRicFGRcGaTRRtOAfDYE/72mgxUVnLbsFpWI
+	bQz/EbeJwCUxWYOdT29CjxEtmUVO9yqA+C64ZLactXFi1qmvDbriRKehxGKGtZHJ
+	OLUYrAnI1tClV7KAwBK5j/ktyjLVfAJ4jsCs2F8DrGjUhfisbjOU9Q9n5y2HVLmA
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34g3cadb-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 25 Nov 2026 12:02:46 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AP9nFB5522008;
+	Wed, 25 Nov 2026 12:02:45 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j5axkusm4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 25 Nov 2026 12:02:45 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6APC2fPM37486848
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 25 Nov 2026 12:02:41 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 673F22004B;
+	Wed, 25 Nov 2026 12:02:41 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1680F20043;
+	Wed, 25 Nov 2026 12:02:41 +0000 (GMT)
+Received: from [9.68.16.159] (unknown [9.68.16.159])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 25 Nov 2026 12:02:41 +0000 (GMT)
+Message-ID: <1cd2d2c3-c026-4b98-b1d2-f0ded1bddfdd@linux.ibm.com>
+Date: Wed, 25 Nov 2026 13:02:55 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -54,69 +86,92 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/11] KVM: arm64: CCA: Prepare Realm memory management
-To: Kohei Enju <enju.kohei@fujitsu.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20261123104233.95710-1-steven.price@arm.com>
- <awVZ0UrEKN9gLHIZ@FCCLS0092175.localdomain>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <awVZ0UrEKN9gLHIZ@FCCLS0092175.localdomain>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH] KVM: s390: arm64: Stub kvm_vgic_put/load to prepare for
+ kvm_vcpu_wfi
+To: Andreas Grapentin <gra@linux.ibm.com>,
+        Steffen Eiden <seiden@linux.ibm.com>, Marc Zyngier <maz@kernel.org>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org
+References: <20261125-kvm_vgic_stubs-v1-1-c53ca2c5959a@linux.ibm.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20261125-kvm_vgic_stubs-v1-1-c53ca2c5959a@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=SoQFe/O0 c=1 sm=1 tr=0 ts=6b06ce66 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
+ a=useJOpUMA5kRy2FdWNcA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI1MDA0NiBTYWx0ZWRfX5972ehs9w9Bq
+ fl7MmN3wcAV32Nhhx4f03HSdK2aUEt9p6D5wOHBSIjnSsGEiUkWrRVza8lKFc9LeXTzNce/Rl4x
+ bNqYgsWLB93YS0iuDA773SbFa+32eEQ=
+X-Proofpoint-ORIG-GUID: mGs8vkCsdXtfUfzPXvvNj9kNCC46_XFt
+X-Proofpoint-GUID: mGs8vkCsdXtfUfzPXvvNj9kNCC46_XFt
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI1MDA0NiBTYWx0ZWRfX6nr8j0oQADRp
+ iFQEc/8rsbN/eA+THkzZPp7WVC3/F1Akh2AjaLDcypS6rQgt5w6GzIRqIRPfMrW8hzD9DNDuFfW
+ RLkqiysb+/ZC91CiPFRBaZwLZIYnbuVRs7h9zn9EVG6oVEM5UF02uFPfwSSU5J9enoeeOJMt0vn
+ RTKOssR2vSLPf36l079F8KI/dNHA8TPRVoVIRcFoSOZGgnzJws7PudDnHAaYK/3FeyoXX4KadPi
+ KljrWIXf5T6sYq/N5LDOqOQdPaqHqbbjjKpxdD+Wzqkf12oBhyji9eVAvOhAnNtBwtCauRPiYiv
+ O4K6rRWdwREAFXT1kH049qbu9O2wql9JuZcoSJpIsb9wtTaMBEJYDOkymwtUZNRxbRjEVPwKsA/
+ EC8KnZTOhOofUOuKmmz2eTrNfK3eDFSC+b5BBmM/+hXeDdAWgCZG2P8XgIR5xjhhHm1UI3q4bY8
+ AXbxgXH4XECMte1z7Qw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-25_03,2026-11-23_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 spamscore=0 bulkscore=0 adultscore=0
+ lowpriorityscore=0 clxscore=1015 malwarescore=0 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611250046
 
-On 24/11/2026 09:47, Kohei Enju wrote:
-> On 11/23 10:42, Steven Price wrote:
->> This series adds the memory management plumbing for CCA, building on the
->> basic RMM support [1]. Thanks to everyone who reviewed and tested the
->> earlier versions.
->>
->> The patches introduce internal Realm VM state, prepare Realm stage-2
->> setup and teardown, and provide RTT mapping and invalidation helpers.
->> Realm memslots are restricted to the lower half of the IPA space because
->> the protected and shared halves alias each other. The final patch
->> connects the helpers to KVM's stage-2 MMU operations.
->>
->> This is the memory management portion of the larger Realm host series.
->> Realm descriptor creation, REC entry and exit, activation, and the new
->> uAPI follow in the integration stack. This series alone does not enable
->> Realm creation.
->>
->> The integration branch [2] includes Realm creation, REC entry and exit,
->> and the remaining host support on top of this series. The MM branch [3]
->> contains just this series.
+
+
+Am 25.11.26 um 11:12 schrieb Andreas Grapentin:
+> In order to be able to share kvm_vcpu_wfi with arm, we need definitions
+> for kvm_vgic_put and kvm_vgic_load. Add these as empty stubs now to
+> reduce baggage in future series.
 > 
-> Hi Steve,
+> Signed-off-by: Andreas Grapentin <gra@linux.ibm.com>
 
-Hi Kohei,
+I will queue for kvms390/next.
+Thanks.
 
-> I tested the v4 integration branch in the same way as described in the
-> following thread, and I haven't seen any issues so far:
->   https://lore.kernel.org/all/avV-P2_fOkFWQVnM@FCCLS0092175.localdomain/
+> ---
+>   arch/s390/kvm/arm64/arm.h | 11 +++++++++++
+>   1 file changed, 11 insertions(+)
 > 
-> For the series:
-> Tested-by: Kohei Enju <enju.kohei@fujitsu.com>
-
-Thanks as always for the testing!
-
-Regards,
-Steve
-
-> Thanks,
-> Kohei
+> diff --git a/arch/s390/kvm/arm64/arm.h b/arch/s390/kvm/arm64/arm.h
+> index 760230685ca1..871fc853675d 100644
+> --- a/arch/s390/kvm/arm64/arm.h
+> +++ b/arch/s390/kvm/arm64/arm.h
+> @@ -55,4 +55,15 @@ static __always_inline int kvm_s390_vm_stop_migration(struct kvm *kvm)
+>   	return -EINVAL;
+>   }
+>   
+> +/* temporary stubs */
+> +static inline void kvm_vgic_put(struct kvm_vcpu *vcpu)
+> +{
+> +	/* Current state of the implementation: no in-kernel gic and no vhe -> noop */
+> +}
+> +
+> +static inline void kvm_vgic_load(struct kvm_vcpu *vcpu)
+> +{
+> +	/* Current state of the implementation: no in-kernel gic and no vhe -> noop */
+> +}
+> +
+>   #endif /* ARCH_S390_KVM_ARM64_H */
+> 
+> ---
+> base-commit: b6a9fa34ce4187cb69d3c588a4bbffc31ce5db8f
+> change-id: 20261125-kvm_vgic_stubs-e1a1eeb4a075
+> 
+> Best regards,
 
