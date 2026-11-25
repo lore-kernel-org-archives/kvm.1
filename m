@@ -1,89 +1,135 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=139.138.61.253
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.136
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795576668;
-	b=lZ5GGnZvx5aJg6A0ytsle5CouOEXZFltC+n2zhaCqoECxGv8l9obYLexNncC3zH08yg6
-	 fdClzeIU8UJmCOJcPUbOWwB0eBytWe1PBC3pdblMUyOu+EtbxXrEaO05dgsoBNqMahwBw
-	 CCVMrkJ5UH5PmKon1CqfAm+HA5BLobh486jKOKQ8q4wbmQSuIOucZcWU5H0Ce0eQohiqc
-	 wIMVFSypxNbDRTSEIKqb+4mMU5OWSHZ9Vj0k3GJ7Cgq+LFczU5/ZJILPJZ781jvl038EO
-	 3ETwthVRg2dQxYxPmAMkrX7Ko8kTrmaY69DxmTEHmSmfxq2U3LlCPZ7SUp0MMFHRqgg==
+	t=1795576780;
+	b=kW28O/TM5IXBzF4Wpu9v7UqerRTJ6AlUZ07/nsdNSwH2kSa7wVmrOZUiVD4XNtFA0GF9
+	 gb1XlSR/pNc+wN23A/s1uLuxAMNF5mRxUkr6LR2C8HShL8bmSZW947pogBml1Nk2RaYcv
+	 3HH6EfvbQGpGcjNUPlo8yJ20ZGYcWi7pnp6m1eA8IUdQcJJzCi0+KI2JicUL6qrh++Dq3
+	 238WsC0aQVuVLsnALYN7lQovbsgC8MlWqILx7HeEyz4/FoLRpztV2v8O51HhVBfvyG2/9
+	 Sl8gfN+vzdBBbcicHNz0YmpnLo0yRRaA+pBK3gfeNy7YIRbW9FX16Q/T8UXhkrMEx1A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795576668;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:Received:Received:Received:Date:
-	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=23fFU0O+rXserzO3o7D7RV3GbnE7B9R3sHZLTrVXSyk=;
-	b=Mf6hgWaMrKQyA3Kcz2s02zB37R0u0us8w1B4yJdpH/ebcPy3kNtkmcpZotPNCbXhtQ3u
-	 FUrO+19w6sQNMieQ9/q/urS7kLsNQJ4eAFzkNpGH7sBTrg6y02dPvtnhPLOsMoCcre8mR
-	 jo3NzxQ+OxjVmubFVDN+TTtU9BZ33LOGRYVeBjQzkUdfncSiw8adluox4llLzhtvF3rgv
-	 Cqian1vO7qP+xy/ihAIu94fn9HAZlLpvpimEuEH2/TGIxXzfbMSZICYCppMJppwbU4drJ
-	 VITljOXcoyd+eSiH/5udRK0SFSwgh20P4IcJYiwPcYM+eopLCyYh0HpqKwYy2k2UlBw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795576780;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=QA42/MGC/qfAtcbkUefOhbZmxkkSDqKdz1XMuKUF34U=;
+	b=cxRAO0hELDMRq6zjGaH4ZbITcthZaM9PUgfs9faqK0pqBhX8nRbFiz6UAs77nImkI+I/
+	 D7QIbGbH4s9M17/VvK/k7lsD4raf/st02MrZmoN+CsIfx41zidSYisfxJOhiyBG1588m/
+	 G4RZFDwYVtRMLRZUxE7OFTnToQC43hz0a+ehOXIf+zoeNu2eEGk+i8TB6qdHoBSMyn1Lv
+	 Hmbnv4A7K6/EjJrI8cogSB/HrAk8Pu9wBiPjErjw7SjGSPaqHKtl51raMYpwMJryUZaBf
+	 IKOZeagJqMbZcy/n7Lut70DoqF4g+pZk6Woiwr1i2iWwAo2GeMBWCbvtzFmGVgL32fw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=fujitsu.com;
-	spf=pass smtp.mailfrom=fujitsu.com;
-	dkim=pass header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=FxrXQtku;
-	arc=none smtp.remote-ip=139.138.61.253
-Received: from esa8.hc1455-7.c3s2.iphmx.com (esa8.hc1455-7.c3s2.iphmx.com [139.138.61.253])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=shazbot.org;
+	spf=pass smtp.mailfrom=shazbot.org;
+	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=k2NnDf+M;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=4lWxq8YI;
+	arc=none smtp.remote-ip=103.168.172.136
+Received: from flow-a1-smtp.messagingengine.com (flow-a1-smtp.messagingengine.com [103.168.172.136])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC45606A31E;
-	Wed, 25 Nov 2026 03:17:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6DC45606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D883606A31E
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 03:19:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4D883606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.a=rsa-sha256 header.s=fj2 header.b=FxrXQtku
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1795576667; x=1827112667;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=P+2esJNoADXhVcXnXeX/GpZHHYhnsn3OGqjyBJ5lLUY=;
-  b=FxrXQtkutOy5HAwzrVtWfYW7/flD3E/bwKTN+DxiT4eQwJC0VFws3jQw
-   FZT/tgEEgNm/rHWViHoBSA/hxHtWh78OtPSd2PH3h5xOK3MfcR9ggWcLS
-   VCyPvuPt1xmV0FEdQ3b9Ni/mQGDOAvgEfg80iOC3RId0rOHagN+wOZosW
-   CM1hqmzwxLOEZdvqNF/ODI8UkuxvbPCRKJYLCI7R60kI0oWBK7uNYSlXp
-   Mi+QH6LEHr8/E3JBEVAEpRjY3yWJfBjy1U8VzCGmx2EbDO1dybR9+G5f1
-   +5Kxkqe1of2bgGrC8SDexMYH0pgNA1IEgOz2KPglRmnP3A53brPL3s6Yr
-   g==;
-X-CSE-ConnectionGUID: XhmH1+lUReq5XiOqAEfXFw==
-X-CSE-MsgGUID: nU2ZqNcSRzawTvNxkpIX4A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="250959921"
-X-IronPort-AV: E=Sophos;i="6.27,232,1786978800"; 
-   d="scan'208";a="250959921"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa8.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2026 12:17:45 +0900
-Received: from az2nlsmgm1.o.css.fujitsu.com (unknown [10.150.26.203])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id BB91C1C0067F;
-	Wed, 25 Nov 2026 03:17:45 +0000 (UTC)
-Received: from az2nlsmom2.o.css.fujitsu.com (unknown [10.150.26.200])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id 6F6D4C013FB;
-	Wed, 25 Nov 2026 03:17:45 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.8.162.75])
-	by az2nlsmom2.o.css.fujitsu.com (Postfix) with SMTP id 6E08D18021BD;
-	Wed, 25 Nov 2026 03:17:39 +0000 (UTC)
-Date: Wed, 25 Nov 2026 12:17:38 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>, 
-	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
-	Steven Price <steven.price@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, cgroups@vger.kernel.org
-Subject: Re: [PATCH RFC v2 1/2] KVM: arm64: CCA: Add support for configuring
- the Realm MEC policy
-Message-ID: <awZR98W3sP9g12wh@FCCLS0092175.localdomain>
-References: <20261112-mm-v1-mec-v2-0-0d1dd260a588@fujitsu.com>
- <20261112-mm-v1-mec-v2-1-0d1dd260a588@fujitsu.com>
- <090662ee-0d8d-48b5-83f2-8a4d225bef08@arm.com>
+	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=k2NnDf+M;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=4lWxq8YI
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailflow.phl.internal (Postfix) with ESMTP id 12C641380481
+	for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 22:19:38 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-07.internal (MEProxy); Tue, 24 Nov 2026 22:19:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1795576778;
+	 x=1795583978; bh=QA42/MGC/qfAtcbkUefOhbZmxkkSDqKdz1XMuKUF34U=; b=
+	k2NnDf+MWKXvRdEQHMV4RgHxrHw/A8Qwr9xF2hsBw/NVWsLcJ7IZ1ROsU7yM3Dt6
+	kpu+2Vx5Z0lwQBRk98q9FG6bcORrjZCYr2y0o5Z68epD+XwDkNh0wSwJe8cHlIee
+	0GiiadLG4odJcrkGJwpQFcza7wkYgs+AED5NtqHH9tJx0absVL0UBMhJO7vOpJTt
+	gWDCGVar24xhoNdfsQQp9FmJpN3zmqaVKTsJdgYzP8as+JOwQ69J9Gz9G4Cvznoq
+	xYs4osa1m9SLH3KvR4jht7KZqKj7qfA0PpI+HRqhtmG//gQJEzQc+hdL/AOrsxE2
+	Wl+VBOOylI8Q3L1iLY66KA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795576778; x=
+	1795583978; bh=QA42/MGC/qfAtcbkUefOhbZmxkkSDqKdz1XMuKUF34U=; b=4
+	lWxq8YIMOYT6f2LCfxSOm9embOz2tc32jz2p0k0xEIMh+99rGSsPjij4HwISspeX
+	4ieetjVEUQb4ZnOvlt67CvjYtPchNeUTgBumbJhtXetbS+WhwkMCPCm+eD9QSdh/
+	VakZ6pNtZSz7a1DUgxOBnlu0+D2yLKM/l0UNbfBekQG1i7WbmWQuJNiVgHCxtjnJ
+	6mfJdVTxq6LrTuviZqisUW5TIWg7VDAkTvEyheg8myslRDd7dOH1AFmuGhp9psrH
+	ne7Gdl/dOhhK1jCeU6rOf0N/czXequFnKSN3mX+gtdTC24FRp4cSw+6YGPni2d+9
+	M9/g1AjnYUgYZvptmFjXg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=shazbot.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1795576778; d=shazbot.org;
+	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:GiUQnanQD3Q7dUrCNG7WqYgDwU5kS29MGhcZ3o+7crw+IiB
+	CxIuEfco+IiOL9UlWaX+W6yKdh7uez+LQA9V9qKQWHs0rPmBEmy25uBnsQk4FWqp
+	Sit5FuJt+cPxfLlu/9SVW5E09AnSj6yPE38Nk4UlZ+kToYXtPBwgMRswE6tE2Cp/
+	JpCT2VKp4xveRCD2XsMtvPcSSsKuPrSTeHfGagfNLiYRZgmkNvAktU8VHvVtUjIv
+	rIdib6gA4JyvvMw/jqF4aTKmwHi+qyls/SwgkNF16gyOYJtOSFtqripJ6O6dprPT
+	a1zjmuE1xexTmLx9LVpSQ+z070zv8ql3gTH0scA==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:1K/A5LqZKn0D9oabFkZ5mF6MiE3iHa/yzET0b2D4bfE=:ZeJEyzysbLsHy2+BjO+KAXvIheHBIQhnqmM7ug6KOeI=;
+X-ME-Sender: <xms:yVMGa84ADWUtVb_OhH_9Dd6djasiryq48ASfPte1yXi9Ka-ykEyXVg>
+    <xme:yVMGazsD0UbjF-5qD0w7e1DSKwFemWOre9Ahb7wEubwaJmfyuPpdsIut-MUQXcOtq
+    AcKTfXfr_J5WOZfk2oQTrSPsV2u9K0VbgOBbJDA5kjOjnd4fd5NTQ>
+X-ME-Received: <xmr:yVMGa9h3uzksYtuA6ihhrPh7nes-j0BVLoXhnnC987IqRQlIM8IeZqBG8fvyFA>
+X-ME-Proxy-Cause: dmFkZTF8lu5+zG7Jo2jGhdRZ5gRlMGh70lfhZJ+H7bdRUglZgDPpsO5yEspOOt7mwmT8Zc
+    /Sf4UbW2L7ZAxHA7L3DWkyFKSrT0QiOVvOh9yR9bFRv1J7DcUAyX0jnRI1N2secWcmG5Xr
+    /pdao9JuYuFnxa5WmmNSuZO3eThvNXhCD+ZcF5exeV6IFYAZARKE0G3XV0WDQh5uOnsDVg
+    0aiWm8zbHcxwjF2/NoixTWWXPL4g986Xcz0KBY4WB5PmB1d7TL6e3nyXFJPsuti2TJY/hj
+    y8GgKZdkjEyOaeaEqmWqLPVO7bP7YoEaHyQHwWrbXhveTeLLEba3LUMWoefFvxi6JETfII
+    8vNlcKr+FFotPs/G9qBAldO5H9/DOAgcFuJoVsfUpnpWl8M73zn7E9Y5dPho199Pl9YH+0
+    5I4g9optEHm4z2RllRflYtttx7WasRGbAoRVwcwP1GSmJd+6SbzPCwAY6cBJzLoiaM+kge
+    iq/dtNUOj9Uh2mLE+CxEJEPz82CijrCDaPEdwHadiDc99syl57kfgomDeU+6lmlr4vBeDT
+    U1QgLpWn46F7/VtGdaj+ReUcUXGdQ37BT50xSdIlW2q6py5hwA7CTOrkmjz4/klt1M4nBs
+    znapuDWFdrsV3MRdo5mm60ZbOqpTOqjRxv369ZbrSEIEd3UZ+bHnd7kJq07A
+X-ME-Proxy: <xmx:yVMGa5stP8B_NbLAFAG8YkV2_nmWHrMqXHUZngNmP3k_SXzqeMgCrg>
+    <xmx:yVMGa_S8cXWwInax9qikeMPabLmB9M7wUEO7uPKcW6cnu8GqZvlmNA>
+    <xmx:yVMGaw8xysKAfpAmZ4t-ZiIl4Nk8-ah1IuEWjEexpRJ_6PsJxqGV1Q>
+    <xmx:yVMGa-XGnQAPDGcBfe7CzbMjvnDMymBtsnPFjEi22fsfNC1-9rSFFg>
+    <xmx:ylMGa5u8NvhNAIxpYHDn4uVMfHOku5VhLwob3cPXSIOfTAF63MlNZzYG>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 24 Nov 2026 22:19:34 -0500 (EST)
+Date: Tue, 24 Nov 2026 20:19:31 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: Simon Song <xinmengs@nvidia.com>
+Cc: <dakr@kernel.org>, <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <linux-pci@vger.kernel.org>, <jgg@nvidia.com>, <yishaih@nvidia.com>,
+ <skolothumtho@nvidia.com>, <kevin.tian@intel.com>, <airlied@gmail.com>,
+ <simona@ffwll.ch>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+ <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+ <tmgross@umich.edu>, <jhubbard@nvidia.com>, <ecourtney@nvidia.com>,
+ <cjia@nvidia.com>, <smitra@nvidia.com>, <kjaju@nvidia.com>,
+ <alkumar@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
+ <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
+ <boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
+ <work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
+ <kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <peter@colberg.org>, alex@shazbot.org
+Subject: Re: [PATCH v3 9/9] vfio/nova-vgpu: add the Rust VFIO variant driver
+Message-ID: <20261124201931.55c65263@shazbot.org>
+In-Reply-To: <20261119215046.2892839-10-xinmengs@nvidia.com>
+References: <20261119215046.2892839-1-xinmengs@nvidia.com>
+	<20261119215046.2892839-10-xinmengs@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -93,200 +139,567 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <090662ee-0d8d-48b5-83f2-8a4d225bef08@arm.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Suzuki,
-Thank you for reviewing.
+On Thu, 19 Nov 2026 13:50:44 -0800
+Simon Song <xinmengs@nvidia.com> wrote:
 
-On 11/24 15:08, Suzuki K Poulose wrote:
-> On 12/11/2026 03:36, Kohei Enju wrote:
-> > Introduce the KVM_ARM_VM_RMI_CTRL device attribute group to allow
-> > userspace to configure Realm VM parameters before the Realm is created
-> > using KVM_SET_DEVICE_ATTR.
-> > 
-> > Currently, KVM_ARM_VM_RMI_CTRL_MEC_POLICY is the only supported
-> > attribute. Its value can be KVM_ARM_VM_RMI_MEC_POLICY_SHARED or
-> > KVM_ARM_VM_RMI_MEC_POLICY_PRIVATE. Reject the private policy if the
-> > platform does not support private MECs.
-> > 
-> > If userspace does not explicitly configure the MEC policy,
-> > KVM_ARM_VM_RMI_MEC_POLICY_SHARED is used by default.
-> > 
-> > Signed-off-by: Kohei Enju <enju.kohei@fujitsu.com>
-> > ---
-> >   Documentation/virt/kvm/devices/vm.rst   | 25 +++++++++++++++
-> >   arch/arm64/include/asm/kvm_rmi.h        |  5 +++
-> >   arch/arm64/include/uapi/asm/kvm.h       |  4 +++
-> >   arch/arm64/kvm/arm.c                    |  4 +++
-> >   arch/arm64/kvm/rmi.c                    | 57 +++++++++++++++++++++++++++++++++
-> >   drivers/firmware/arm_rmm/rmi.c          |  6 ++++
-> >   include/linux/arm-rmi-cmds.h            |  1 +
-> >   tools/arch/arm64/include/uapi/asm/kvm.h |  4 +++
-> >   8 files changed, 106 insertions(+)
-> > 
-> > diff --git a/Documentation/virt/kvm/devices/vm.rst b/Documentation/virt/kvm/devices/vm.rst
-> > index 78e63eb9994e..b0bd30750aa1 100644
-> > --- a/Documentation/virt/kvm/devices/vm.rst
-> > +++ b/Documentation/virt/kvm/devices/vm.rst
-> > @@ -418,3 +418,28 @@ will reject attempts to define a filter for any portion of these ranges:
-> >           0x8000_0000 0x8000_FFFF
-> >           0xC000_0000 0xC000_FFFF
-> >           =========== ===============
-> > +
-> > +7. GROUP: KVM_ARM_VM_RMI_CTRL
-> > +=============================
-> > +
-> > +:Architectures: arm64
-> > +
-> > +7.1. ATTRIBUTE: KVM_ARM_VM_RMI_CTRL_MEC_POLICY (w/o)
-> > +----------------------------------------------------
-> > +
-> > +:Parameters: Pointer to a ``__u8`` value
-> > +
-> > +:Returns:
-> > +
-> > +  =========  ===========================================================
-> > +  ENXIO      The VM is not a Realm VM
-> > +  EBUSY      The Realm has already been created
-> > +  EINVAL     Invalid MEC policy value
-> > +  EOPNOTSUPP Private MEC policy is not supported by the platform
-> > +  EFAULT     The value could not be copied from userspace
-> > +  =========  ===========================================================
-> > +
-> > +Configures the MEC policy for a Realm VM before the Realm is created. The value
-> > +must be either ``KVM_ARM_VM_RMI_MEC_POLICY_SHARED`` or
-> > +``KVM_ARM_VM_RMI_MEC_POLICY_PRIVATE``. If userspace does not explicitly set the
-> > +MEC policy, ``KVM_ARM_VM_RMI_MEC_POLICY_SHARED`` is used by default.
-> > diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-> > index 3933f8d834b8..08c1f6d0671d 100644
-> > --- a/arch/arm64/include/asm/kvm_rmi.h
-> > +++ b/arch/arm64/include/asm/kvm_rmi.h
-> > @@ -59,6 +59,7 @@ enum realm_state {
-> >    * @state: The lifetime state machine for the realm
-> >    * @ia_bits: Number of valid Input Address bits in the IPA
-> >    * @stage2_unmapped: The Realm stage-2 mappings have been removed
-> > + * @mec_policy: MEC policy for the Realm VM
-> >    */
-> >   struct realm {
-> >   	void *rd;
-> > @@ -73,6 +74,7 @@ struct realm {
-> >   	enum realm_state state;
-> >   	unsigned int ia_bits;
-> >   	bool stage2_unmapped;
-> > +	unsigned int mec_policy;
-> >   };
-> >   /**
-> > @@ -109,9 +111,12 @@ int kvm_realm_teardown_stage2(struct kvm *kvm);
-> >   void kvm_destroy_rec(struct kvm_vcpu *vcpu);
-> >   struct kvm_arm_rmi_populate;
-> > +struct kvm_device_attr;
-> >   int kvm_arm_rmi_populate(struct kvm *kvm,
-> >   			 struct kvm_arm_rmi_populate *arg);
-> > +int kvm_vm_rmi_has_attr(struct kvm *kvm, struct kvm_device_attr *attr);
-> > +int kvm_vm_rmi_set_attr(struct kvm *kvm, struct kvm_device_attr *attr);
-> >   enum kvm_gfn_range_filter;
-> > diff --git a/arch/arm64/include/uapi/asm/kvm.h b/arch/arm64/include/uapi/asm/kvm.h
-> > index 65ee09bd1463..aa1e6fe6192e 100644
-> > --- a/arch/arm64/include/uapi/asm/kvm.h
-> > +++ b/arch/arm64/include/uapi/asm/kvm.h
-> > @@ -403,6 +403,10 @@ enum {
-> >   /* Device Control API on vm fd */
-> >   #define KVM_ARM_VM_SMCCC_CTRL		0
-> >   #define   KVM_ARM_VM_SMCCC_FILTER	0
-> > +#define KVM_ARM_VM_RMI_CTRL		1
-> > +#define   KVM_ARM_VM_RMI_CTRL_MEC_POLICY	0
-> > +#define     KVM_ARM_VM_RMI_MEC_POLICY_SHARED	0
-> > +#define     KVM_ARM_VM_RMI_MEC_POLICY_PRIVATE	1
-> >   /* Device Control API: ARM VGIC */
-> >   #define KVM_DEV_ARM_VGIC_GRP_ADDR	0
-> > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> > index 8e94f1bff830..be676c13e219 100644
-> > --- a/arch/arm64/kvm/arm.c
-> > +++ b/arch/arm64/kvm/arm.c
-> > @@ -2329,6 +2329,8 @@ static int kvm_vm_has_attr(struct kvm *kvm, struct kvm_device_attr *attr)
-> >   	switch (attr->group) {
-> >   	case KVM_ARM_VM_SMCCC_CTRL:
-> >   		return kvm_vm_smccc_has_attr(kvm, attr);
-> > +	case KVM_ARM_VM_RMI_CTRL:
-> > +		return kvm_vm_rmi_has_attr(kvm, attr);
-> >   	default:
-> >   		return -ENXIO;
-> >   	}
-> > @@ -2339,6 +2341,8 @@ static int kvm_vm_set_attr(struct kvm *kvm, struct kvm_device_attr *attr)
-> >   	switch (attr->group) {
-> >   	case KVM_ARM_VM_SMCCC_CTRL:
-> >   		return kvm_vm_smccc_set_attr(kvm, attr);
-> > +	case KVM_ARM_VM_RMI_CTRL:
-> > +		return kvm_vm_rmi_set_attr(kvm, attr);
-> >   	default:
-> >   		return -ENXIO;
-> >   	}
-> > diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> > index 0d254fb80cde..01ac8d4fec7c 100644
-> > --- a/arch/arm64/kvm/rmi.c
-> > +++ b/arch/arm64/kvm/rmi.c
-> > @@ -7,6 +7,7 @@
-> >   #include <linux/arm-rmi-cmds.h>
-> >   #include <linux/kvm_host.h>
-> >   #include <linux/overflow.h>
-> > +#include <linux/uaccess.h>
-> >   #include <asm/daifflags.h>
-> >   #include <asm/kvm_emulate.h>
-> > @@ -586,6 +587,9 @@ static int realm_create_rd(struct kvm *kvm)
-> >   		params->flags0 |= RMI_REALM_PARAM_FLAG_PMU;
-> >   	}
-> > +	params->flags0 |= FIELD_PREP(RMI_REALM_PARAM_FLAG_MEC_POLICY_MASK,
-> > +				    realm->mec_policy);
-> > +
-> >   	r = realm_init_sve_param(kvm, params);
-> >   	if (r)
-> >   		goto out_undelegate_tables;
-> > @@ -1481,6 +1485,57 @@ int kvm_arm_rmi_populate(struct kvm *kvm,
-> >   	return ret;
-> >   }
-> > +static int kvm_vm_rmi_set_mec_policy(struct kvm *kvm, u8 policy)
-> > +{
-> > +	guard(mutex)(&kvm->arch.config_lock);
-> > +
-> > +	if (!kvm_vm_is_realm(kvm))
-> > +		return -ENXIO;
-> > +
-> > +	if (kvm_realm_state(kvm) != REALM_STATE_NONE)
-> > +		return -EBUSY;
-> > +
-> > +	if (policy != KVM_ARM_VM_RMI_MEC_POLICY_SHARED &&
-> > +	    policy != KVM_ARM_VM_RMI_MEC_POLICY_PRIVATE)
-> > +		return -EINVAL;
-> > +
-> > +	if (policy == KVM_ARM_VM_RMI_MEC_POLICY_PRIVATE &&
-> > +	    rmi_mec_count() == 0)
-> > +		return -EOPNOTSUPP;
-> > +
-> > +	kvm->arch.realm.mec_policy = policy;
-> > +	return 0;
-> > +}
-> > +
-> > +int kvm_vm_rmi_has_attr(struct kvm *kvm, struct kvm_device_attr *attr)
-> > +{
-> > +	if (!kvm_vm_is_realm(kvm))
-> > +		return -ENXIO;
-> > +
-> > +	switch (attr->attr) {
-> > +	case KVM_ARM_VM_RMI_CTRL_MEC_POLICY:
+> From: Danilo Krummrich <dakr@kernel.org>
 > 
-> minor nit: Could we reject this if the rmi_mec_count() == 0 ?
-> Default policy is "shared" mec, as long as it is documented, this
-> would work only on a system that supports Private MEC.
-
-With SHARED as the default, how about making this a boolean attribute
-named KVM_ARM_VM_RMI_CTRL_MEC_PRIVATE? Then gating its availability on
-rmi_mec_count() > 0 would make sense to me.
-
-Thanks,
-Kohei
-
+> NVIDIA vGPU VFs need nova-core to manage their instances when assigned
+> to userspace through VFIO.
 > 
+> Add a Rust VFIO PCI variant driver that uses the typed SR-IOV PF APIs
+> to create an instance on first open and close it on last close. Expose
+> the assigned device and subsystem IDs, enforce the assigned BAR1
+> aperture, and reset the active vGPU instance on PCI reset.
 > 
-> Suzuki
+> Match NVIDIA devices through a VFIO override-only entry. Devices
+> without an available Nova vGPU interface use ordinary PCI passthrough.
+> 
+> Register the VFIO device from probe and keep the Registration in the
+> PCI driver data, so that unbind unregisters it. Extend the GPU build
+> rules to make nova-core crate metadata available to the VFIO driver and
+> export the Rust symbols it references.
+> 
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+> Signed-off-by: Simon Song <xinmengs@nvidia.com>
+> ---
+>  drivers/gpu/Makefile                    |  15 +-
+>  drivers/vfio/pci/Kconfig                |   2 +
+>  drivers/vfio/pci/Makefile               |   2 +
+>  drivers/vfio/pci/nova-vgpu/Kconfig      |  20 ++
+>  drivers/vfio/pci/nova-vgpu/Makefile     |   3 +
+>  drivers/vfio/pci/nova-vgpu/nova_vgpu.rs | 375 ++++++++++++++++++++++++
+>  6 files changed, 414 insertions(+), 3 deletions(-)
+>  create mode 100644 drivers/vfio/pci/nova-vgpu/Kconfig
+>  create mode 100644 drivers/vfio/pci/nova-vgpu/Makefile
+>  create mode 100644 drivers/vfio/pci/nova-vgpu/nova_vgpu.rs
+> 
+> diff --git a/drivers/gpu/Makefile b/drivers/gpu/Makefile
+> index e372fc02139f..5fd610a172ad 100644
+> --- a/drivers/gpu/Makefile
+> +++ b/drivers/gpu/Makefile
+> @@ -19,8 +19,9 @@ nova-core-y := nova-core/nova_core.o nova-core/nova_core_exports.o
+>  obj-$(CONFIG_DRM_NOVA) += nova-drm.o
+>  nova-drm-y := drm/nova/nova.o
+>  
+> -# Export Rust symbols from nova-core only if nova-drm actually references them.
+> -nova-core-export-deps := $(if $(CONFIG_DRM_NOVA),$(obj)/drm/nova/nova.o)
+> +# Export Rust symbols from nova-core only if dependent modules reference them.
+> +nova-core-export-deps := $(if $(CONFIG_DRM_NOVA),$(obj)/drm/nova/nova.o) \
+> +	$(if $(CONFIG_NOVA_VGPU_VFIO_PCI),$(obj)/../vfio/pci/nova-vgpu/nova_vgpu.o)
+>  
+>  rust_needed_exports = \
+>  	{ $(if $(strip $(2)),$(NM) -u $(2);,) echo "__DEFINED_RUST_SYMBOLS__"; \
+> @@ -57,10 +58,18 @@ $(obj)/nova-core/nova_core_exports.o: private cmd_gensymtypes_c = \
+>  		$(obj)/nova-core/nova_core.o
+>  endif
+>  
+> -# Output nova-core's crate metadata for use by nova-drm at compile time.
+> +# Output nova-core's crate metadata for its Rust consumers at compile time.
+>  RUSTFLAGS_nova-core/nova_core.o += \
+>  	--emit=metadata=$(objtree)/$(obj)/nova-core/libnova_core.rmeta
+>  
+>  # Allow nova-drm to import nova-core's types.
+>  $(obj)/drm/nova/nova.o: $(obj)/nova-core/nova_core.o
+>  RUSTFLAGS_drm/nova/nova.o := -L $(objtree)/$(obj)/nova-core --extern nova_core
+> +
+> +# Build the NVIDIA VFIO driver here so metadata and generated exports share
+> +# the same dependency graph as nova-drm.
+> +obj-$(CONFIG_NOVA_VGPU_VFIO_PCI) += nova-vgpu-vfio-pci.o
+> +nova-vgpu-vfio-pci-y := ../vfio/pci/nova-vgpu/nova_vgpu.o
+> +
+> +$(obj)/../vfio/pci/nova-vgpu/nova_vgpu.o: $(obj)/nova-core/nova_core.o
+> +RUSTFLAGS_../vfio/pci/nova-vgpu/nova_vgpu.o := -L $(objtree)/$(obj)/nova-core --extern nova_core
+> diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
+> index 296bf01e185e..dd9b755262a4 100644
+> --- a/drivers/vfio/pci/Kconfig
+> +++ b/drivers/vfio/pci/Kconfig
+> @@ -74,4 +74,6 @@ source "drivers/vfio/pci/qat/Kconfig"
+>  
+>  source "drivers/vfio/pci/xe/Kconfig"
+>  
+> +source "drivers/vfio/pci/nova-vgpu/Kconfig"
+> +
+>  endmenu
+> diff --git a/drivers/vfio/pci/Makefile b/drivers/vfio/pci/Makefile
+> index 6138f1bf241d..1d9fb11eb3c2 100644
+> --- a/drivers/vfio/pci/Makefile
+> +++ b/drivers/vfio/pci/Makefile
+> @@ -24,3 +24,5 @@ obj-$(CONFIG_NVGRACE_GPU_VFIO_PCI) += nvgrace-gpu/
+>  obj-$(CONFIG_QAT_VFIO_PCI) += qat/
+>  
+>  obj-$(CONFIG_XE_VFIO_PCI) += xe/
+> +
+> +# nova-vgpu is built from drivers/gpu/Makefile for nova-core crate linkage.
+> diff --git a/drivers/vfio/pci/nova-vgpu/Kconfig b/drivers/vfio/pci/nova-vgpu/Kconfig
+> new file mode 100644
+> index 000000000000..228f6ebc108c
+> --- /dev/null
+> +++ b/drivers/vfio/pci/nova-vgpu/Kconfig
+> @@ -0,0 +1,20 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +config NOVA_VGPU_VFIO_PCI
+> +	tristate "VFIO support for the NVIDIA vGPU"
+> +	depends on NOVA_CORE && PCI_IOV && RUST
+> +	select VFIO_PCI_CORE
+> +	help
+> +	  This option enables VFIO (Virtual Function I/O) support for
+> +	  NVIDIA virtual GPUs (vGPU). It allows the assignment of a virtual
+> +	  GPU instance to userspace applications via VFIO, typically used
+> +	  with hypervisors such as KVM and device emulators like QEMU.
+> +
+> +	  Devices without an available Nova vGPU interface use ordinary PCI
+> +	  passthrough. Both paths use the VFIO PCI core defaults; vfio-pci
+> +	  module options do not apply.
+> +
+> +	  The NVIDIA vGPU allows a physical GPU to be partitioned into
+> +	  multiple virtual GPUs, each of which can be passed to a virtual
+> +	  machine as a PCI device using the standard VFIO infrastructure.
+> +
+> +	  If you don't know what to do here, say N.
+> diff --git a/drivers/vfio/pci/nova-vgpu/Makefile b/drivers/vfio/pci/nova-vgpu/Makefile
+> new file mode 100644
+> index 000000000000..0875c782602e
+> --- /dev/null
+> +++ b/drivers/vfio/pci/nova-vgpu/Makefile
+> @@ -0,0 +1,3 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +# nova-vgpu is built from drivers/gpu/Makefile for nova-core crate linkage.
+> +# nova_vgpu.o (rust-analyzer marker - DO NOT REMOVE).
+> diff --git a/drivers/vfio/pci/nova-vgpu/nova_vgpu.rs b/drivers/vfio/pci/nova-vgpu/nova_vgpu.rs
+> new file mode 100644
+> index 000000000000..20553b7b4e2e
+> --- /dev/null
+> +++ b/drivers/vfio/pci/nova-vgpu/nova_vgpu.rs
+> @@ -0,0 +1,375 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +// SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+> +
+> +//! NVIDIA vGPU VFIO variant driver.
+> +//!
+> +//! Nova VFs own an instance between the first VFIO open and last close. Other
+> +//! matching devices use ordinary PCI passthrough.
+> +
+> +use kernel::{
+> +    bindings,
+> +    device::{
+> +        Bound,
+> +        Core, //
+> +    },
+> +    io::resource::Flags,
+> +    pci,
+> +    prelude::*,
+> +    sync::{
+> +        CondVar,
+> +        Mutex,
+> +        MutexGuard, //
+> +    },
+> +    vfio::{
+> +        self,
+> +        pci::{
+> +            GetRegionInfo,
+> +            Ioctl,
+> +            Mapping,
+> +            Mmap,
+> +            Open,
+> +            Position,
+> +            Read,
+> +            Write, //
+> +        }, //
+> +    }, //
+> +};
+> +use nova_core::{
+> +    NovaCoreVfApi,
+> +    NovaCoreVfApiHandle,
+> +    VgpuInstance, //
+> +};
+> +
+> +struct NovaVgpuOps;
+> +
+> +struct VgpuRegistration<'a> {
+> +    api: NovaCoreVfApiHandle<'a>,
+> +    gfid: u32,
+> +}
+> +
+> +#[derive(Default)]
+> +struct InstanceState {
+> +    active: bool,
+> +    resetting: bool,
+> +    reset_error: Option<Error>,
+> +}
+> +
+> +#[pin_data]
+> +struct NovaVgpuRegData<'a> {
+> +    pdev: &'a pci::Device<Bound>,
+> +    vgpu: Option<VgpuRegistration<'a>>,
+> +    fb_bar: u32,
+> +    #[pin]
+> +    state: Mutex<InstanceState>,
+> +    #[pin]
+> +    reset_done: CondVar,
+> +}
+> +
+> +impl NovaVgpuRegData<'_> {
+> +    fn lock_instance(&self) -> MutexGuard<'_, InstanceState> {
+> +        let mut state = self.state.lock();
+> +        while state.resetting {
+> +            self.reset_done.wait(&mut state);
+> +        }
+> +        state
+> +    }
+> +}
+> +
+> +struct NovaVgpuOpenData<'a, 'data> {
+> +    registration: &'a NovaVgpuRegData<'data>,
+> +    instance: Option<VgpuInstance<'data>>,
+> +}
+> +
+> +impl<'a, 'data> NovaVgpuOpenData<'a, 'data> {
+> +    fn new(
+> +        dev: &vfio::pci::Device<NovaVgpuOps, Open>,
+> +        rd: &'a NovaVgpuRegData<'data>,
+> +    ) -> Result<Self> {
+> +        let mut state = rd.lock_instance();
+> +        let instance = match &rd.vgpu {
+> +            Some(vgpu) => {
+> +                // The firmware DBDF format has a 16-bit PCI segment field.
+> +                let segment = u16::try_from(rd.pdev.domain_nr()).map_err(|_| EOVERFLOW)?;
+> +                let dbdf = (u32::from(segment) << 16) | u32::from(rd.pdev.dev_id());
+> +                let vm_pid = kernel::current!().tgid().try_into()?;
+> +                let instance = vgpu.api.open(vgpu.gfid, dbdf, vm_pid)?;
+> +                let info = instance.type_info();
+> +                dev.set_device_id(info.pci_dev_id as u16);
+> +                state.active = true;
+> +                state.reset_error = None;
+> +                Some(instance)
+> +            }
+> +            None => None,
+> +        };
+> +        Ok(Self {
+> +            registration: rd,
+> +            instance,
+> +        })
+> +    }
+> +
+> +    fn bar1_size(&self) -> Result<Option<u64>> {
+> +        let Some(instance) = &self.instance else {
+> +            return Ok(None);
+> +        };
+> +        let physical = self
+> +            .registration
+> +            .pdev
+> +            .resource_len(self.registration.fb_bar)?;
+> +        let size = instance
+> +            .type_info()
+> +            .bar1_length
+> +            .checked_mul(1 << 20)
+> +            .ok_or(EOVERFLOW)?;
+> +        Ok(Some(if size == 0 {
+> +            physical
+> +        } else {
+> +            size.min(physical)
+> +        }))
+> +    }
+
+Does this provide a power-of-two size?
+
+> +
+> +    fn limit_bar1(&self, buf: &mut vfio::UserBuf, position: &Position<'_>) -> Result {
+> +        if buf.is_empty() || position.region_index() != self.registration.fb_bar {
+> +            return Ok(());
+> +        }
+> +        if let Some(size) = self.bar1_size()? {
+> +            let offset = position.region_offset();
+> +            if offset >= size {
+> +                return Err(EINVAL);
+> +            }
+> +            if size - offset < buf.len() as u64 {
+> +                buf.truncate((size - offset) as usize);
+> +            }
+> +        }
+> +        Ok(())
+> +    }
+> +}
+> +
+> +impl Drop for NovaVgpuOpenData<'_, '_> {
+> +    fn drop(&mut self) {
+> +        let mut state = self.registration.lock_instance();
+> +        state.active = false;
+> +        drop(self.instance.take());
+> +    }
+> +}
+> +
+> +impl vfio::pci::Operations for NovaVgpuOps {
+> +    const NAME: &'static CStr = c"nova-vgpu-vfio-pci";
+> +    type RegistrationData<'a> = NovaVgpuRegData<'a>;
+> +    type OpenData<'a, 'data: 'a> = NovaVgpuOpenData<'a, 'data>;
+> +
+> +    fn open_device<'a, 'data: 'a>(
+> +        dev: &'a vfio::pci::Device<Self, Open>,
+> +        rd: &'a NovaVgpuRegData<'data>,
+> +    ) -> impl PinInit<Self::OpenData<'a, 'data>, Error> + 'a {
+> +        NovaVgpuOpenData::new(dev, rd)
+> +    }
+> +
+> +    fn ioctl<'data>(
+> +        dev: &vfio::pci::Device<Self, Ioctl>,
+> +        rd: &NovaVgpuRegData<'data>,
+> +        _open_data: Pin<&Self::OpenData<'_, 'data>>,
+> +        cmd: u32,
+> +        arg: usize,
+> +    ) -> Result<isize> {
+> +        let reset = cmd == vfio::DEVICE_RESET || cmd == vfio::pci::DEVICE_PCI_HOT_RESET;
+> +        if reset {
+> +            if let Some(error) = rd.state.lock().reset_error {
+> +                return Err(error);
+> +            }
+
+Is a previous reset error effectively unrecoverable?
+
+vGPUs are VFs, why are we intercepting hot-reset?  That's a different
+class of reset that VFs don't support (unless we're running on s390).
+
+> +        }
+> +        let result = dev.core_ioctl(cmd, arg)?;
+> +        if reset {
+> +            if let Some(error) = rd.state.lock().reset_error {
+> +                return Err(error);
+> +            }
+> +        }
+> +        Ok(result)
+> +    }
+> +
+> +    fn read<'data>(
+> +        dev: &vfio::pci::Device<Self, Read>,
+> +        _rd: &NovaVgpuRegData<'data>,
+> +        open_data: Pin<&Self::OpenData<'_, 'data>>,
+> +        buf: &mut vfio::UserBuf,
+> +        position: &mut Position<'_>,
+> +    ) -> Result<isize> {
+> +        if let Some(instance) = &open_data.instance {
+> +            if position.region_index() == vfio::pci::CONFIG_REGION_INDEX {
+> +                let offset = position.region_offset();
+> +                return position.with_temporary(|next| {
+> +                    let count = dev.core_read(buf, next)?;
+> +                    buf.write_overlapping(
+> +                        offset,
+> +                        count.try_into()?,
+> +                        u64::from(bindings::PCI_SUBSYSTEM_ID),
+> +                        &(instance.type_info().pci_subsys_id as u16).to_le_bytes(),
+> +                    )?;
+> +                    Ok(count)
+> +                });
+> +            }
+> +        }
+> +        open_data.limit_bar1(buf, position)?;
+> +        dev.core_read(buf, position)
+> +    }
+
+Why do we virtualize the subsystem ID on read and the device ID on open?
+
+> +
+> +    fn write<'data>(
+> +        dev: &vfio::pci::Device<Self, Write>,
+> +        _rd: &NovaVgpuRegData<'data>,
+> +        open_data: Pin<&Self::OpenData<'_, 'data>>,
+> +        buf: &mut vfio::UserBuf,
+> +        position: &mut Position<'_>,
+> +    ) -> Result<isize> {
+> +        open_data.limit_bar1(buf, position)?;
+> +        dev.core_write(buf, position)
+> +    }
+> +
+> +    fn mmap<'data>(
+> +        dev: &vfio::pci::Device<Self, Mmap>,
+> +        rd: &NovaVgpuRegData<'data>,
+> +        open_data: Pin<&Self::OpenData<'_, 'data>>,
+> +        mapping: &mut Mapping<'_>,
+> +    ) -> Result {
+> +        if mapping.region_index() == rd.fb_bar {
+> +            if let Some(size) = open_data.bar1_size()? {
+> +                if mapping.region_end()? > size {
+> +                    return Err(EINVAL);
+> +                }
+> +            }
+> +        }
+> +        dev.core_mmap(mapping)
+> +    }
+> +
+> +    fn get_region_info<'data>(
+> +        dev: &vfio::pci::Device<Self, GetRegionInfo>,
+> +        rd: &NovaVgpuRegData<'data>,
+> +        open_data: Pin<&Self::OpenData<'_, 'data>>,
+> +        info: &mut bindings::vfio_region_info,
+> +        caps: &mut vfio::InfoCap<'_>,
+> +    ) -> Result {
+> +        dev.core_get_region_info(info, caps)?;
+> +        if info.index == rd.fb_bar && info.size != 0 {
+> +            if let Some(size) = open_data.bar1_size()? {
+> +                info.size = info.size.min(size);
+> +            }
+> +        }
+> +        Ok(())
+> +    }
+
+BAR sizing in config space also needs to reflect the virtualized BAR
+size.
+
+> +
+> +    fn reset_prepare(rd: &NovaVgpuRegData<'_>) {
+> +        // PCI holds the device lock, and VFIO may hold its memory lock. Open and
+> +        // close release this mutex before entering the VFIO core.
+> +        let mut state = rd.state.lock();
+> +        state.resetting = true;
+> +        if state.active {
+> +            if let Some(vgpu) = &rd.vgpu {
+> +                if let Err(error) = vgpu.api.reset(vgpu.gfid) {
+> +                    state.reset_error.get_or_insert(error);
+> +                }
+> +            }
+> +        }
+> +    }
+
+This seems very wrong, why are we calling the PF driver reset in
+reset_prepare()?  Isn't there still an FLR happening between prepare
+and done?  Does it do anything?
+
+> +
+> +    fn reset_done(rd: &NovaVgpuRegData<'_>) -> Result {
+> +        let mut state = rd.state.lock();
+> +        let error = state.reset_error;
+> +        state.resetting = false;
+> +        rd.reset_done.notify_all();
+> +        error.map_or(Ok(()), Err)
+> +    }
+> +}
+> +
+> +struct NovaVgpuDriver;
+> +
+> +kernel::pci_device_table!(
+> +    PCI_TABLE,
+> +    <NovaVgpuDriver as pci::Driver>::IdInfo,
+> +    [(
+> +        pci::DeviceId::from_id_vfio_override(pci::Vendor::NVIDIA, bindings::PCI_ANY_ID as u32),
+> +        (),
+> +    ),]
+> +);
+
+Whoah, this would break a ton of users that are assigning NVIDIA devices
+and depend on the module options supported by vfio-pci (that aren't
+supported here).  This entry marks this driver as the preferred over
+the vfio-pci driver for any NVIDIA vendor ID device.  We don't want
+that blast radius.
+
+This should list the specific VF device IDs we want to claim?
+
+> +
+> +#[pin_data]
+> +struct NovaVgpuData<'bound> {
+> +    reg: vfio::pci::Registration<'bound, NovaVgpuOps>,
+> +}
+> +
+> +#[vtable]
+> +impl pci::Driver for NovaVgpuDriver {
+> +    type IdInfo = ();
+> +    type Data<'bound> = NovaVgpuData<'bound>;
+> +    const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
+> +    // SAFETY: VFIO hands the DMA ownership of the device to userspace. This driver never uses
+> +    // the kernel DMA API for its devices, directly or through helpers.
+> +    const DRIVER_MANAGED_DMA: Option<pci::DriverManagedDma<Self>> =
+> +        Some(unsafe { pci::DriverManagedDma::new() });
+> +
+> +    fn probe<'bound>(
+> +        pdev: &'bound pci::Device<Core<'_>>,
+> +        _info: Option<&'bound Self::IdInfo>,
+> +    ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound {
+> +        try_pin_init!(NovaVgpuData {
+> +            reg: {
+> +                let vgpu = match NovaCoreVfApi::handle(pdev) {
+> +                    Ok(api) => Some(VgpuRegistration {
+> +                        api,
+> +                        gfid: u32::from(pdev.vf_id()?) + 1,
+> +                    }),
+> +                    Err(_) => None,
+> +                };
+> +                let dev = if vgpu.is_some() {
+> +                    vfio::pci::Device::<NovaVgpuOps>::new(pdev)?
+> +                } else {
+> +                    vfio::pci::Device::<NovaVgpuOps>::new_passthrough(pdev)?
+> +                };
+
+My LLM tells me that the new constructor installs ops that don't
+support get_dmabuf_phys, therefore can't expose dma-buf to iommufd,
+therefore cannot support P2P with iommufd.  But type1 uses a different
+mechanism, so we would be able to map the vGPU BARs for P2P with the
+legacy backend.  Is this true?  If so, why?  It needs to support
+dma-buf.
+
+> +                let fb_bar = if pdev.resource_flags(0)?.contains(Flags::IORESOURCE_MEM_64) {
+> +                    2
+> +                } else {
+> +                    1
+> +                };
+
+Nit, why are we setting up nova-vgpu machinery even on a passthrough
+device?
+
+> +                // SAFETY: The registration is stored in `NovaVgpuData`, this driver's bus
+> +                // device private data, which is never leaked.
+> +                unsafe {
+> +                    vfio::pci::Registration::new::<Self>(
+> +                        pdev,
+> +                        &dev,
+> +                        try_pin_init!(NovaVgpuRegData {
+> +                            pdev,
+> +                            vgpu,
+> +                            fb_bar,
+> +                            state <- kernel::new_mutex!(InstanceState::default()),
+> +                            reset_done <- kernel::new_condvar!(),
+> +                        }),
+> +                    )?
+> +                }
+> +            },
+> +        })
+> +    }
+> +
+> +    fn reset_prepare<'bound>(_pdev: &pci::Device<Core<'_>>, data: Pin<&Self::Data<'bound>>) {
+> +        data.reg.reset_prepare();
+> +    }
+> +
+> +    fn reset_done<'bound>(pdev: &pci::Device<Core<'_>>, data: Pin<&Self::Data<'bound>>) {
+> +        if let Err(error) = data.reg.reset_done() {
+> +            dev_err!(pdev, "VFIO device reset failed: {:?}\n", error);
+> +            data.reg.error_detected();
+> +        }
+> +    }
+
+I don't know what's happening here, why would a bad reset_done() return
+trigger an error_detected()?  We don't have that idiom anywhere else.
+
+> +
+> +    fn error_detected<'bound>(
+> +        _pdev: &pci::Device<Core<'_>>,
+> +        data: Pin<&Self::Data<'bound>>,
+> +        _state: pci::ChannelState,
+> +    ) -> pci::ErsResult {
+> +        data.reg.error_detected()
+> +    }
+> +}
+> +
+> +kernel::module_pci_driver! {
+> +    type: NovaVgpuDriver,
+> +    name: "nova-vgpu-vfio-pci",
+> +    authors: ["NVIDIA"],
+
+Please name an individual, with email.  Thanks,
+
+Alex
+
+> +    description: "NVIDIA vGPU VFIO variant driver",
+> +    license: "GPL v2",
+> +}
+
