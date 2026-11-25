@@ -1,51 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.139
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.98
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1795621197;
-	b=S0q9zDdXQj7msJ6WpTCs8j23Ms/HcFfdU8ftzLzLCuYqITMfqNE5MFgisxyMjfdIHFBJ
-	 2bx7Ms+dat88TeRVxc7jdsehcxA93Fdv/eoRhsTL7o6Qe8HUI3D77uw5XA1FG1HK0VMJx
-	 fZ71q+Oo4o72JPCT6GWXijFqlWAyWDxhB5gQLl+1jP/j3LK2NCpxsDrZqH9ElrAr/wla8
-	 wvF4JJ3sDW9liDUEQ7VMlxgX0H+t9jichtE3NLNqUxh2SPH9XVTclDJrEancyABpU3kdQ
-	 K9un1bRVO6iFxPfuiHrhiEqmLOSc/hMrrNFMYIti+AzBxwsajWdPpj5fJ9bSSfYQibg==
+	b=RytzGkYHxWCWY5SLiCXs1u84BYNrxptGtZDZiDGhZQ9V2Awe7mRjhSrR6CDYSj5uWfPg
+	 zg0ETJLH9R+0glJL2Tke61KDSSDwQ6rqVJUlP/dx1i5hWwFPhRzU4BDzd8UdGZYl77wV5
+	 9bG+cTFxxJAYPzeDQXopGQpDJWM9FSgobFE6JuDV+Ux45ZHm+XA2x3ytEz//vKbUNOW2d
+	 mxW+m3oMcykArbC8UQsfUcBE+gxHy1XclkYapJs4BIuOruEZxaPW0z+LHaZGvT8nHoBOQ
+	 UEzK6VCLIP776Zo9Rz8LR4VEQrthCgrbsG0E+53QZJBxbXpp+h6zLw6anKVDgitBeeQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795621197;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=HaDpLlZO77/PfdtGsOMSJUUh5Y4j+J367j2Kgogf+tM=;
-	b=R/YzJnU347hnbpNxzNcH+L1huTgJ3BtiYAyHaTc5MRX9thuSI3iZwDx/6sb1Z+7SGLab
-	 /p5jb7gK8VBo/KKzxoUq7/dpmZSuc/iahriysG1svxXAFiCD6sBw71fYj+BlN9qB/tj1n
-	 7Xts8Od2qxq8nJyr+vjeheSooj9zUzf0GhSTKE/51uv7NN3EqJhiVG7P5VHvL05CiLblj
-	 ll2x2zBYfQTpTQJAancXZVcUGUd5Z58Jzt0WDyEbrz1pm+ShBgIYdAVwSOWBQJNLStJhj
-	 deHx08mWo0dSzRd9nmu2p8qDh1d7saxnxbpL/TLyHLGviCFTJS8MmSW6XJsfHzD8eNw==
+	bh=AHWtWicFYQTSZ+pv8ha5Ysqf1whC+s2crZfNfys75SU=;
+	b=oMwff+WihRC702ojGY4qD1yh5WEenVpAzZvwYz1P0eh1LMpJWfKPRiNkftztgCw+Bsv2
+	 SVr/S1Bryahhg6S+sSdm1giP5u0oABkK68HH1Q1ac6BuF2tVp3fNIBDAo/2v34mZtYjq+
+	 T953KrNKnk2MUV+ga+r6X+5lrPJDEGnI6P5xmfjYpkHvl1LU8Mvq7bk0pluGaCRQlgDXx
+	 8/IFLvApvSzsWv2iLivCfz1OeZBtav86Al5mKVvH6EbS6kY2aqpEeUiFz4WfmJWo9Rg0L
+	 UyyJQWgc5+BI8pzDoJUfM2JllrKgVpL9GlaQWZbElDIddxQo/jVnWDV7cot0feegIDw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AUAMMum8;
-	arc=none smtp.remote-ip=91.218.175.139
-Received: from mta0.migadu.com (out-139.mta0.migadu.com [91.218.175.139])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=dJqgTga1;
+	arc=none smtp.remote-ip=95.215.58.98
+Received: from mta1.migadu.com (out-98.mta1.migadu.com [95.215.58.98])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A145606A6AA
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 15:39:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A145606A6AA
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033A2606A69D
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 15:39:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 033A2606A69D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AUAMMum8
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=dJqgTga1
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=GlzUdZprJRkl9i8HWXT3FIkXmSaEpIUlQmDVtwXNSuM=;
+DKIM-Signature: a=rsa-sha256; bh=VasWsmKzmIjzdgB+tnchbPGMfZU/P7HS7PhkSGjv9OQ=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
  t=1795621194; v=1; x=1796225994;
- b=AUAMMum8C5V/yzYIzbsSmtIcur4UF37a2pxl5ZAI1XD42u3BoF1NRUXz1MGszxEzV3emLB8D
- EZmliY6jPmUJ6iaXtAlr6XlH6uDFxB+s3rw1pPzQS1024DxwbA4fT54NysiqtzRCC3WN8UwwE/E
- 58oCXFxred/kG27tpOTXM1mk=
+ b=dJqgTga1laKHG54NBY5wrr/2hR+KkHBoD/2xyXgNW7/q5J+4z+/8Awe+FDHaVOizfiAOKZIz
+ 2vjha9q2GgktwA8kYH7kwprbjmRHSmSoLT2EmbZdZ3s6l+CLVbT8wuG03a8AqpJiu4A1LDoGJjO
+ 57zADTO0lXdDRqmYyrLWSAHA=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id deebcfd6609d8edf;
-	Wed, 25 Nov 2026 15:39:54 +0000
-X-Mizu-Trace-ID: deebcfd6609d8edf
+Received: by smtp.migadu.com with ESMTPS id cc9b23bc0178ea10;
+	Wed, 25 Nov 2026 15:39:53 +0000
+X-Mizu-Trace-ID: cc9b23bc0178ea10
 X-Migadu-Flow: FLOW_OUT
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: Marc Zyngier <maz@kernel.org>,
@@ -63,9 +63,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Fuad Tabba <tabba@google.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 09/20] KVM: arm64: Report an incomplete feature map with WARN_ON()
-Date: Wed, 25 Nov 2026 15:39:00 +0000
-Message-ID: <20261125153911.106793-10-fuad.tabba@linux.dev>
+Subject: [PATCH v2 08/20] KVM: arm64: Move the VM's FGU initialisation into config.c
+Date: Wed, 25 Nov 2026 15:38:59 +0000
+Message-ID: <20261125153911.106793-9-fuad.tabba@linux.dev>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261125153911.106793-1-fuad.tabba@linux.dev>
 References: <20261125153911.106793-1-fuad.tabba@linux.dev>
@@ -80,33 +80,104 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-At init, check_feature_map() reports with kvm_err() any feature map
-that doesn't account for every bit of its register. The next patch
-builds config.c into nVHE hyp, which has no printk(), so the check
-would need an #ifdef to keep it out of hyp.
+The first time one of a VM's vCPUs runs, kvm_calculate_traps() computes
+the VM's fine-grained UNDEF masks from its ID registers, one
+compute_fgu() call per FGT group, and sets KVM_ARCH_FLAG_FGU_INITIALIZED
+so that it computes them once. The next patch computes the same masks
+for protected VMs at EL2.
 
-Use WARN_ON() instead, which doesn't need printk().
+Move the calls and the flag into kvm_init_fgu() in config.c, so that a
+group added later is computed at EL2 too. compute_fgu() then has no
+caller outside config.c, so make it static.
+
+No functional change intended.
 
 Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
 ---
- arch/arm64/kvm/config.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/arm64/include/asm/kvm_host.h |  2 +-
+ arch/arm64/kvm/config.c           | 20 +++++++++++++++++++-
+ arch/arm64/kvm/sys_regs.c         | 17 +----------------
+ 3 files changed, 21 insertions(+), 18 deletions(-)
 
-diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
-index c65cf1dd27330..eef5ca50fc382 100644
---- a/arch/arm64/kvm/config.c
-+++ b/arch/arm64/kvm/config.c
-@@ -1409,9 +1409,7 @@ static void __init check_feat_map(const struct reg_bits_to_feat_map *map,
- 		if (!((map[i].flags & FORCE_RESx) && (map[i].bits & resx)))
- 			mask |= map[i].bits;
- 
--	if (mask != ~resx)
--		kvm_err("Undefined %s behaviour, bits %016llx\n",
--			str, mask ^ ~resx);
-+	WARN_ON(mask != ~resx);
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+index 97332ffcb1300..82ba4bb9573f1 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -1748,7 +1748,7 @@ static inline bool kvm_arch_has_irq_bypass(void)
  }
  
- static u64 reg_feat_map_bits(const struct reg_bits_to_feat_map *map)
+ void kvm_idregs_enforce_dependencies(struct kvm *kvm);
+-void compute_fgu(struct kvm *kvm, enum fgt_group_id fgt);
++void kvm_init_fgu(struct kvm *kvm);
+ struct resx get_reg_fixed_bits(struct kvm *kvm, enum vcpu_sysreg reg);
+ void check_feature_map(void);
+ void kvm_vcpu_load_fgt(struct kvm_vcpu *vcpu);
+diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
+index adaf26ab93b85..c65cf1dd27330 100644
+--- a/arch/arm64/kvm/config.c
++++ b/arch/arm64/kvm/config.c
+@@ -1586,7 +1586,7 @@ static u64 compute_fgu_bits(struct kvm *kvm, const struct reg_feat_map_desc *r)
+ 	return resx.res0 | resx.res1;
+ }
+ 
+-void compute_fgu(struct kvm *kvm, enum fgt_group_id fgt)
++static void compute_fgu(struct kvm *kvm, enum fgt_group_id fgt)
+ {
+ 	u64 val = 0;
+ 
+@@ -1630,6 +1630,24 @@ void compute_fgu(struct kvm *kvm, enum fgt_group_id fgt)
+ 	kvm->arch.fgu[fgt] = val;
+ }
+ 
++void kvm_init_fgu(struct kvm *kvm)
++{
++	if (test_bit(KVM_ARCH_FLAG_FGU_INITIALIZED, &kvm->arch.flags))
++		return;
++
++	compute_fgu(kvm, HFGRTR_GROUP);
++	compute_fgu(kvm, HFGITR_GROUP);
++	compute_fgu(kvm, HDFGRTR_GROUP);
++	compute_fgu(kvm, HAFGRTR_GROUP);
++	compute_fgu(kvm, HFGRTR2_GROUP);
++	compute_fgu(kvm, HFGITR2_GROUP);
++	compute_fgu(kvm, HDFGRTR2_GROUP);
++	compute_fgu(kvm, ICH_HFGRTR_GROUP);
++	compute_fgu(kvm, ICH_HFGITR_GROUP);
++
++	set_bit(KVM_ARCH_FLAG_FGU_INITIALIZED, &kvm->arch.flags);
++}
++
+ struct resx get_reg_fixed_bits(struct kvm *kvm, enum vcpu_sysreg reg)
+ {
+ 	struct resx resx;
+diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+index c7d91138a6d49..2cbbae81c07c4 100644
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -5841,22 +5841,7 @@ void kvm_calculate_traps(struct kvm_vcpu *vcpu)
+ 	vcpu_set_hcr(vcpu);
+ 	vcpu_set_ich_hcr(vcpu);
+ 	vcpu_set_hcrx(vcpu);
+-
+-	if (test_bit(KVM_ARCH_FLAG_FGU_INITIALIZED, &kvm->arch.flags))
+-		goto out;
+-
+-	compute_fgu(kvm, HFGRTR_GROUP);
+-	compute_fgu(kvm, HFGITR_GROUP);
+-	compute_fgu(kvm, HDFGRTR_GROUP);
+-	compute_fgu(kvm, HAFGRTR_GROUP);
+-	compute_fgu(kvm, HFGRTR2_GROUP);
+-	compute_fgu(kvm, HFGITR2_GROUP);
+-	compute_fgu(kvm, HDFGRTR2_GROUP);
+-	compute_fgu(kvm, ICH_HFGRTR_GROUP);
+-	compute_fgu(kvm, ICH_HFGITR_GROUP);
+-
+-	set_bit(KVM_ARCH_FLAG_FGU_INITIALIZED, &kvm->arch.flags);
+-out:
++	kvm_init_fgu(kvm);
+ 	mutex_unlock(&kvm->arch.config_lock);
+ }
+ 
 -- 
 2.47.3
 
