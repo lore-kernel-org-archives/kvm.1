@@ -1,84 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.14
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795629548;
-	b=vQ4dGO4pN0m8yVWBwgAW2xdeLE2RY7eODayjih/xm0QH+EljYSDHDj+29jKwi0giBf4r
-	 Nz82j3yHXH4J5HM1bRL5gFrUaAxuu5feJdoQoFvwJcyy7yyKWw/f/2UQUyMywOcVWpiE3
-	 Lrb3/Th8pd6fH0328/Ups1d2Lpc/K2KWsapannO6BUomriAbPXqvt/AhBNr5Ct4sZ5fwV
-	 lMT/5jjXmf3s3kgrf19aKWzfJ8GP50TDVDAmnqpG75aST8k6KUqxUHJBNZBlMl7LxZVmr
-	 VCUaCPXOVZu3dyWWABLWvqAHkUJzBs2VMBeu2YJE5hVkxAoWx9MlzxI9Gy2+f79VoJQ==
+	t=1795629560;
+	b=pvxSQJqQbesUCq4MVRKzCaisO8BLA8nSM8ArpknDphrbqghLno+kqkocEllBzag02Uhp
+	 b0PoSA5iLrggvu0PVonC0fbQW1BgI1ktrQnPa4fvsX+ht+fs6xvcKXWSiPjhb5p01gNd4
+	 D4z61NUxgisTp8oMBnBBKhuaYvwm6brAQn3vaDcLgf7RXrtXrPF9W3+KL8slPwF7LSy+K
+	 5Lcfe0tPF8GOQfBCk/Ko3bu1oXkgZQKI2+LPEjLt/xlwbV+nOSCxl5pF/cAcXdvajY6aT
+	 /2VGvfphV0MJoheg5wDnNM7eztJhcWeellBnYlOkWm3Ohml6nLzNIwV9SQfjL5TIryg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795629548;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Message-Id:
-	 Cc:Subject:From:To:X-Mailer:References:In-Reply-To;
-	bh=V3ql+trEST5GBe5icgHLs8egrkIrOnsTHov8GZtBedQ=;
-	b=MBsC9oOZVwIL+gmZVRZbCffZ57XJzAwwuufc0sC3kDrs5xvKrdF9HrB6958Wq7KB3GpC
-	 kHz+HK112Hl7nkFmUOYsCuud1H6VuySvVoQcYJzRnHIZpZwc1VGqKOLCVjEVjlinabFFZ
-	 eUB8BzOMc8tJ0zdz7Biu8dSMo8aDaVcx4Fcu9+uPSQQ01mB4dtKHgpkblqYMYMwfABNhh
-	 ZePq9wpNgFxEP+B5hiKMDPON/7Ho/vEaQfNkVwDlEPOIyMy7iHzoz7HhhCsLasM5qkKpE
-	 hoEkjtoKnG4b/A8gyG66w+ug1LeW2NeIiomrSgY94F3/seg8tIXOPnfTiqrnHMvJPUg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795629560;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Date:From:To:
+	 Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=iy5aL1ocio+77t/dXWLXVKeq77RL7RF6fKMbaIN8tko=;
+	b=vVtgOh7MntAt249CTs+eghJVV50zM0ArFS22PhK6M1uFVxPORS8x2TTaPLALmDNCtpxX
+	 jDt6S7YqrkRe0qdx8ulg1zyg3DarAfh0hDK52ccXeDd3IxyfX2YDg9S8LUFGdn120l4iM
+	 jQSr7nMLyL6v3F5CBODUq5crYT6UDLqcT+JSabvzf9FLnXDUWZg3YT+EZnvPmJe7zLubz
+	 852lS07AsGzD5suGIfAdhohzm2L3EySJ5DOgy/UQnG6Vcu7PQCWlwctWTqZ8bpy3buUn4
+	 nfK3wVi+m09fsQ7Hx6Hpm88HwPZfCPhq5jOPJRuNV/g3ojHJoCxcNczxZglghC+gl7Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=oT5p5Fx+;
-	arc=none smtp.remote-ip=209.85.215.173
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jnYqXGhh;
+	arc=none smtp.remote-ip=192.198.163.14
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5E2606A31E
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 17:59:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D5E2606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87893606A327;
+	Wed, 25 Nov 2026 17:59:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87893606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=oT5p5Fx+
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cdddc79a4afso2533820a12.1
-        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 09:59:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795629548; x=1796234348; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=V3ql+trEST5GBe5icgHLs8egrkIrOnsTHov8GZtBedQ=;
-        b=oT5p5Fx++T4ed75RtobLIo1wtLMtV+LHgUa6zJCsI6AsAvAWbzTbQGIzyyvVUqvwqL
-         2bCnshfZscfckv9/9Nnd8V8Y8iaH6XyFa31/Ur5wvDyKnwTR7auXXrCHnSC6x1LPBapQ
-         eMkanzaE241TyVD93LyVjc3gSLwkssy6lDnerYVCkflCM4ffPmNb+r+Ezbt9+R54IpXR
-         4SIc2sRTQyb/DGFTuf4b/DlU79BK66QeK7hfMVhgZqgbDUqBNkNqSW6SIkzOWXbYdT0c
-         ekYkl0rxCRDF22VxgGXkbPw0XxL15Ms2nHdVlVadiGrwGcKPgHA1IYH8yVFAb1lvVms3
-         QnEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795629548; x=1796234348;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=V3ql+trEST5GBe5icgHLs8egrkIrOnsTHov8GZtBedQ=;
-        b=d/RC3E3dWf5sNPFSRAf3jUcaGmJ1pL5KKEIfgD0x/hoZmrm6X07QVPZVN+KE7yp2VW
-         24/+w2NqI2yEmnI7eNHlxM5T8WaqR/1O2gMw5SyyK520bfL2jJdQypw7U5YgYcaoj43p
-         1RjQw8HfdLcX3yCtDcfL9gJBuz8c5CWv+oWMEb73aZRa6+Zb0WzqtyMfajCZQyvIfBaT
-         R8yHNmZv3G0oHcqKhGCyAiEBrw1+TdPcrFXmcQInZLzLrSTExVIOtHUSvelwYkQf+011
-         oHnGM0p+q96fvFNpQJXz4CYPl2Kz+AHDSgOi0szHJCdPRHzAh78/On33v1nNI7lrKgAd
-         Po6Q==
-X-Forwarded-Encrypted: i=1; AL+hErGuOviQlvhHFMfI2FtLJVBfb6IRvZwvh68A1WsA6LLqS573BYZJZUUzJLC7AXaoslvEHxA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9hWR5B0ukrMykpa95TO2ZmcwBQRWBHlBr1f9ps84fgZgScw7T+
-	YlRY3vIHiSehPOcwDfsFVzOUwOhIstvLfPIQnqvPvzBSd4/7NWvMJ9XmZGwI2gT9ig==
-X-Gm-Gg: AZFdTZdEG3uOgSL7MaZvoyV98AAgIsl7KneAV9kIhCg+ifaqjzOKlcU1xCoTUhqbICJ
-	dX1MxtktgelS+GFb+/l2a9BDAbxRxMIoxwimfPIYEQDrVVxjIwBnnCT4HVv7n+rJoPhxxan25+L
-	/C5XuWbcrenXWsXoEwEBSgrBK8GXbeU1CbVJ2nHgagCPSIP7Dh9sCgI9N5Wm7oi6hGpBKetUudA
-	+z2OUb+DvwYTpimGn4Qcg/89MsH3RxMUKqPSa9bIoyBHm5ZWCarQGawGTqRU5pqfB3p93fGXw57
-	Y1aZo9U88OvLzAxZVqymm+SEfl7JpBD1xpuCgSKo88APqU4yMPLKQgtkz9f8nV8K8KKZv/H3G+K
-	ldV3J0dEiWVhYWWIq93vyXKdwwoVYXC4aH9xZU+WwM2dTtyZBXkyC+QQpPjG97sjRMA0bIB/Ro/
-	FCEgpXZtaHdbEEgqTMGZj/1tXeOIpmY0s1rT9ViVC8MP6hHf2q5axJTHeELU3zYe8BF+d+vtZLH
-	h5GmS6UcjuTtbFBlx06fMvdW1P7tku0IwuM+ywLpJ1YMBxZ/k/wQY3pGXCJSqMSqm5om6uTCSIq
-	5FNbpS7l9oevhwoX2bgbzJ9u9cg3kp8V4X6TCuG334CKkAbsiVrk7jhlbp31n4aI
-X-Received: by 2002:a17:90a:e7d0:b0:3ab:5832:72af with SMTP id 98e67ed59e1d1-3b41c9cfc12mr15413655a91.32.1795629546987;
-        Wed, 25 Nov 2026 09:59:06 -0800 (PST)
-Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b41abb2076sm29085960a91.2.2026.11.25.09.59.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Nov 2026 09:59:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jnYqXGhh
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795629560; x=1827165560;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3Q0eWoH0hqjK/+AffASRnzPWdWve09RRdkIHSFgQxy4=;
+  b=jnYqXGhhmXJ8BHq7/KPNjlc36O9TkkitxPtdTpnrAFLzh4trl5fVKmCK
+   WRw5dgTFCQIofLwCmsmBGqZNwCaYh5roRfOPxrG9h/9aByF2hsRiOmqvm
+   Vmk/qFoq9Ku0QQ5F1Il+m5h+6cZ49NMXz7mvmIFYMjyh1s0hu1eZA2S10
+   xwZIssLH5xsqYL7wQVaUtUSlxC/En/aziyVTJHw0V9VyyxMbmuXb1IiJ7
+   xaCd4u0iMTfMQn2ArtOAmH30T6x4DnYNG63LWX1i3UAVEY4gFiUfPYyNr
+   KpPdpdbdnkP2M8ZJvbNXMP2hAEIzQjRzNHCg9Dlm7DqBSpIh7S9d1pUzw
+   A==;
+X-CSE-ConnectionGUID: nEhsRt7JREyKqzEhmKP5sw==
+X-CSE-MsgGUID: ZZp5nC0IQzaBJAxe1/Y7+g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11977"; a="4462391"
+X-IronPort-AV: E=Sophos;i="6.27,233,1787036400"; 
+   d="scan'208";a="4462391"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2026 09:59:19 -0800
+X-CSE-ConnectionGUID: 6a6LIVAHRomgpZJMlg93nw==
+X-CSE-MsgGUID: A0u+DZzIQwOjdpZxlfyO0w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,233,1787036400"; 
+   d="scan'208";a="13597397"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa012.fm.intel.com with ESMTP; 25 Nov 2026 09:59:14 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xWHGw-00000001SGM-3o5J;
+	Wed, 25 Nov 2026 17:59:10 +0000
+Date: Thu, 26 Nov 2026 01:58:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: Tan Chi <tanchi25@mails.ucas.ac.cn>, anup@brainfault.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	atish.patra@linux.dev, pjw@kernel.org, palmer@dabbelt.com,
+	aou@eecs.berkeley.edu, alex@ghiti.fr, tj@kernel.org,
+	hannes@cmpxchg.org, mkoutny@suse.com, corbet@lwn.net,
+	skhan@linuxfoundation.org, rdunlap@infradead.org, yosry@kernel.org,
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org, cgroups@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Tan Chi <tanchi25@mails.ucas.ac.cn>
+Subject: Re: [PATCH] RISC-V: KVM: Account G-stage page table memory
+Message-ID: <20261126015340.s7bzBtEB-lkp@intel.com>
+References: <20261125125024.1983082-1-tanchi25@mails.ucas.ac.cn>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -87,96 +88,76 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 25 Nov 2026 09:59:05 -0800
-Message-Id: <DN4HJTFG5WHY.1BIGOM7LNESZA@google.com>
-Cc: <kexec@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <kvm@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-kselftest@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <ajayachandra@nvidia.com>, <alex@shazbot.org>, <amastro@fb.com>,
- <ankita@nvidia.com>, <apopple@nvidia.com>, <bhelgaas@google.com>,
- <chrisl@kernel.org>, <christian.koenig@amd.com>, <corbet@lwn.net>,
- <graf@amazon.com>, <jacob.pan@linux.microsoft.com>, <jgg@nvidia.com>,
- <jgg@ziepe.ca>, <jrhilke@google.com>, <julianr@linux.ibm.com>,
- <kees@kernel.org>, <kevin.tian@intel.com>, <leon@kernel.org>,
- <leonro@nvidia.com>, <lukas@wunner.de>, <mattev@meta.com>,
- <michal.winiarski@intel.com>, <parav@nvidia.com>,
- <pasha.tatashin@soleen.com>, <praan@google.com>, <pratyush@kernel.org>,
- <rananta@google.com>, <rdunlap@infradead.org>, <rientjes@google.com>,
- <rodrigo.vivi@intel.com>, <rppt@kernel.org>, <saeedm@nvidia.com>,
- <schnelle@linux.ibm.com>, <skhan@linuxfoundation.org>,
- <skhawaja@google.com>, <vivek.kasireddy@intel.com>, <witu@nvidia.com>,
- <yanjun.zhu@linux.dev>, <yi.l.liu@intel.com>
-Subject: Re: [PATCH v6 11/27] vfio/pci: Retrieve preserved device files
- after Live Update
-From: "David Matlack" <dmatlack@google.com>
-To: "Vipin Sharma" <vipinsh@google.com>, "David Matlack"
- <dmatlack@google.com>
-X-Mailer: aerc 0.21.0
-References: <20261102153656.1431701-1-vipinsh@google.com>
- <20261102153656.1431701-12-vipinsh@google.com>
- <DMZMRTXS7OSC.M79XF39ZVEWE@google.com>
- <20261125003759.GD3545683.vipinsh@google.com>
-In-Reply-To: <20261125003759.GD3545683.vipinsh@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261125125024.1983082-1-tanchi25@mails.ucas.ac.cn>
 
-On Tue Nov 24, 2026 at 10:55 PM PST, Vipin Sharma wrote:
-> On Thu, Nov 19, 2026 at 05:01:19PM -0800, David Matlack wrote:
->> This is a lot of complexity for one commit, and it's hard to review. I'd
->> like to start with the simplest approach and build from there: implement
->> can_finish() and have it return false until the device is fully
->> retrieved, i.e. retrieved and taken over by VFIO_DEVICE_BIND_IOMMUFD.
->> Then finish() only needs to free the incoming state and call
->> pci_liveupdate_finish().
->
-> Closing session FD is not retriable. If it returns an error then
-> userspace won't be able to retry. So, only option will remain to reboot
-> the host.
->
-> VFIO doesn't need to impose this restriction. We discussed in LPC to not
-> block finish() as this call can only be tried one time in LU if
-> session is leaked.
+Hi Tan,
 
-Right, if userspace closes the session before taking over all of its
-devices, the session is leaked and the only way to recover is to reboot.
-I'm ok with that in the first series. It only happens if userspace
-misbehaves, and the device is left running with its memory still
-preserved, so nothing gets corrupted.
+kernel test robot noticed the following build warnings:
 
-I'm not opposed to improving finish() so that it handles devices that
-weren't taken over and closing the session always succeeds. But that can
-go in a follow-up series. It doesn't have to be in the first series, and
-including it makes the first series larger, harder to review, and harder
-to merge.
+[auto build test WARNING on kvm-riscv/riscv_kvm_next]
+[also build test WARNING on linus/master next-20261124]
+[cannot apply to tj-cgroup/for-next kvm/queue kvm/next mst-vhost/linux-next kvm/linux-next v7.4-rc4]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
->> It also has a nice side effect: LUO calls can_finish() on every file in
->> a session before finishing any of them, so a memfd in the same session
->> that the device DMAs into can't be finished before the device has been
->> taken over.
->
-> If userspace has two session, memfd in one and vfio in another, we will
-> still have risk, where memfd is retrieved correctly and may be
-> closed/released due to a process crash but VFIO device still acessing mem=
-ory
-> by continuing its DMA and potentially corrupting memory.
+url:    https://github.com/intel-lab-lkp/linux/commits/Tan-Chi/RISC-V-KVM-Account-G-stage-page-table-memory/20261125-205023
+base:   https://github.com/kvm-riscv/linux.git riscv_kvm_next
+patch link:    https://lore.kernel.org/r/20261125125024.1983082-1-tanchi25%40mails.ucas.ac.cn
+patch subject: [PATCH] RISC-V: KVM: Account G-stage page table memory
+config: riscv-defconfig (https://download.01.org/0day-ci/archive/20261126/20261126015340.s7bzBtEB-lkp@intel.com/config)
+compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 2012344e5da8e03ea4b8283ecd6fad6e13f09d64)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261126/20261126015340.s7bzBtEB-lkp@intel.com/reproduce)
 
-True, but resetting the device in finish() doesn't protect against that
-either. The device is only reset when its own session is finished, which
-can be after the memfd in the other session has been freed.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/20261126015340.s7bzBtEB-lkp@intel.com/
 
-With iommufd (i.e. not noiommu), memfds mapped into a VFIO device must
-be preserved in the same session, and iommufd enforces that
-dependency [1]. noiommu is inherently unsafe in many ways, so I don't
-think we need to worry about this one case there.
+All warnings (new ones prefixed by >>):
 
-> I am still inclined to let finish proceed without blocking via
-> can_finish(). I can try splitting patches.
+>> arch/riscv/kvm/mmu.c:850:5: warning: implicit conversion from 'unsigned long' to 'int' changes value from 18446744073709551612 to -4 [-Wconstant-conversion]
+     849 |                 kvm_account_pgtable_pages(pgd,
+         |                 ~~~~~~~~~~~~~~~~~~~~~~~~~
+     850 |                                 -(kvm_riscv_gstage_pgd_size >> PAGE_SHIFT));
+         |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   1 warning generated.
 
-Please go with can_finish() in this series, and send the finish()
-improvements as a separate series on top. Splitting them into separate
-patches within this series still leaves this series larger and harder to
-review.
 
-[1] https://lore.kernel.org/all/20261025021930.674647-16-skhawaja@google.co=
-m/
+vim +850 arch/riscv/kvm/mmu.c
+
+   827	
+   828	void kvm_riscv_mmu_free_pgd(struct kvm *kvm)
+   829	{
+   830		struct kvm_gstage gstage;
+   831		void *pgd = NULL;
+   832		bool flush = false;
+   833	
+   834		write_lock(&kvm->mmu_lock);
+   835		if (kvm->arch.pgd) {
+   836			kvm_riscv_gstage_init(&gstage, kvm);
+   837			flush = kvm_riscv_gstage_unmap_all(&gstage);
+   838			pgd = READ_ONCE(kvm->arch.pgd);
+   839			kvm->arch.pgd = NULL;
+   840			kvm->arch.pgd_phys = 0;
+   841			kvm->arch.pgd_levels = 0;
+   842		}
+   843		write_unlock(&kvm->mmu_lock);
+   844	
+   845		if (flush)
+   846			kvm_flush_remote_tlbs(kvm);
+   847	
+   848		if (pgd) {
+   849			kvm_account_pgtable_pages(pgd,
+ > 850					-(kvm_riscv_gstage_pgd_size >> PAGE_SHIFT));
+   851			free_pages((unsigned long)pgd, get_order(kvm_riscv_gstage_pgd_size));
+   852		}
+   853	}
+   854	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
