@@ -1,89 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.54
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795605878;
-	b=LTCdwumlggPsXfAVv8bqu+9r1jPNSAuA1k6AWuzSwP3nK3FZFwUjg3jer3yf2Tm1PIoN
-	 zM72ZClw8O/Sd12OasX/gxLOOsr5wuWyUzHuxnwb+557NQdv9SlVq1ET5poUKdhP2WHRk
-	 XlE011p/au67ZCnfv3aTJPR7uUGkhs1fxn5iks7cVJkbpIoKGWIpRCL8sS7LgIxGYrkXe
-	 olJvAPnrzxQ8n8Ir5JDwuqjsKcIFr/5FIoJ0KDeFXfK2IgXqna27I5QCmYuLHymb7MYqE
-	 AlpGTFWfym5ao2gaFjKpa7duiimASI76r0ynMMEMsKiYdpYuqwTKu6njlBs9NMUXg4A==
+	t=1795605996;
+	b=t47NnJTXyfGOPcRA/Fg3MmwLP/p6nRUyMsfV+J/50hVDDWVRzY5UMTKwO4TsneGt2hjH
+	 4cNsdwso6vihTBGjKgNwJaoR7vyjCwmkKkX+czUfODM1B/MghwYclhqimww8BKMl6URku
+	 AH04eMx7k2/l15htaaGa1O2XlhAnThvipeK2u0tQq7YKH59cTErBhhMJSEQ1E1XHI0uEe
+	 fen8Pqhrjv0w+Mfb31ofKLjZhs4MArdbxKw+rVd3ta+ehdfdCBpz5Bd0CwUZP13xoXLy6
+	 /U5y0kkFB/HjXV7y9h+AZJiZDDxQo3ZvVwVpLkp67fn9/V1Sojtdxu1cFDGTosXZOpA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795605878;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795605996;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:X-Google-Original-From:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:To:Cc:References:Content-Language:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=Gzc2evg1RQu08SoZpm7hU+pHzGBQ6fSq/GTpySlh5ek=;
-	b=qEEw4ebjci/uRYpdUjs0Bty8y0EVq80zk+0HQ+Pg7zE7APmjh1K9MBkZV4/hoctPPMvH
-	 nmQTx/SAeyzcVn9EGTTGXoCoLCDMdeEc5ijM1PNMFGryTY5UhasIHIGdVoJyew0naikpF
-	 okE6gRbB6r4wR6fFP/hpZzpKmDJ1kJlc9LWEIxp1PfBm3qhcgrPbwzCrI9IQUWEfn0Q1v
-	 R887jjWN8lA7bNdGBvsRVPDncmIIJS9Il+cOj4gCEnZr/XFNwDPtgMK6YJMDBAdImhljH
-	 yjYd661xWacbsLLGrSjqD+DBABp26DSXJQojf15GqVEcDeEFaEWGrVayoyWzzuMzObA==
+	bh=tmWNrfSIBJkiHKH6i1Txnc+Ja5dKtR29QkBEE0TVhIQ=;
+	b=mYM9/JPohx/Ye6mh2PrF9aj6eaywg15Iyo9rDiesPNvNhOk75MOzJUqlNMwHJ7CKxNai
+	 1yppGQbdkh3IylNsrECB49TOPs+guxN5W26/srHP8reiG+91rjEX7cXmhCmR4eBn6n3Kt
+	 00/4f9tDss45zZU4CCFrrcvi92H3JoUb8pcFXnrzT7bOgCkmXPkH8x0saiolvU4Jrophu
+	 AiO/VnoolZ1u/U36f08nxue+J7pBAYirr5XeNs2mzr5NqZsDSIrEaY3KBdijOeilzjGtv
+	 r3CqDbijrWjzFZXG3BkQLHx+w2rIUxf9pTxHiMvEObT3060GUTFQaKMQNP3fcAR1JIQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Q0BzsJGD;
-	arc=none smtp.remote-ip=209.85.218.43
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=c6jkQCLx;
+	arc=none smtp.remote-ip=209.85.128.54
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30264606A321
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 11:24:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 30264606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2983A60A2618
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 11:26:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2983A60A2618
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Q0BzsJGD
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c4203bbb1e9so934862366b.3
-        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 03:24:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=c6jkQCLx
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a2153c8525so45291135e9.3
+        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 03:26:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795605876; x=1796210676; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1795605994; x=1796210794; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Gzc2evg1RQu08SoZpm7hU+pHzGBQ6fSq/GTpySlh5ek=;
-        b=Q0BzsJGDvtzQpCxZUw7yU7CB8ZErzLivCDQ/J2kU1M3XlLzyTvYI8SabtGMhPso1ZU
-         md0+ATuqdvUppXwlCU3IIw1tvDQvAIGvM3xoZUra1dNFLGTEW3RujAqFaHqQVNWVkcuG
-         InydjmhgFlMkaA323a0G1Rlv2loky5vQOz6BFU3hfGlJ99j/qJ3J1ROYJlv+bVcZm5fN
-         q2RM2H6HvNqp8Ih12XSX+ilH742KZI8U/FvATJzOTJwR07Gc0P5hWGkNi4HMBn29aH0v
-         BSuInLVFbT03I7Baz3qLcRf2unfmrlvvUISReg+QPP9/2bcVkM1WZZBnl9W3vqUKJi/X
-         GWtg==
+        bh=tmWNrfSIBJkiHKH6i1Txnc+Ja5dKtR29QkBEE0TVhIQ=;
+        b=c6jkQCLxr0G1DeVFTd0QGsv/QqlrodoUyxRvzt5IwLlIKqZQrkpmjBp3wg+ue0dyCv
+         FJPhFFo2WRQrI4tTs6r6vO4nTzT6KVMPOVK0FJP1WfEwEyjf0RuCAYTB20GftiCBEpbB
+         xXIIWDcRAPLwesPK8MyrTnGBMX4zZKCVoqGNh7m6WO18c7rtOimziUJf+wVIcDo4y+gx
+         ddR4VaY8KOVrgPMUjarEbBgq8jhGv4s6xdkxQNEHGLS2/Bef8nt0cOqcWNYFSvlbAKoE
+         Q+tIX81IHhjFxDNA3uiLM+QRgLBOiw6qYoswW6Y2fiS9MfE3mQHFcz/+QrxFA/GlDcR4
+         jQkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795605876; x=1796210676;
+        d=1e100.net; s=20260707; t=1795605994; x=1796210794;
         h=content-transfer-encoding:content-type:in-reply-to:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=Gzc2evg1RQu08SoZpm7hU+pHzGBQ6fSq/GTpySlh5ek=;
-        b=mvbeOrS6SKkcKyYs1F9hpU7DCkN+TDHkso5U6DHMMlAbI7SIJUDhrXRD8JbN3e4c4M
-         +w9ZQYeU9UPCKoYQRZg/1fVhrTyftw16lczUu9px/hHHA4KpcivlxRRShsmAOeNWQL7y
-         sQHtsou/tjhXSGNhmliRIKdmEC6Bl0GEIW5s0rnxjYDH1fUGM9h2lZ63+kKm9c+M+9MO
-         7rC6/j33UMYNnhSJgvRMVBrYCoA0m7QKr0rkZOuzco8fuSWGj99GDH5tQHx/fpUf3iHd
-         +doUC1ViHA4B+kvnxpPCb8gCbuZWMUcvlB0bYpiHIW6QVu2nNJnHIjsMa6zeR3XuaZIh
-         52Hw==
-X-Forwarded-Encrypted: i=1; AL+hErELoV20ZRi7ibAEsVb0nwn365fyEVYcumqVzfOk7R8wmeByvpAfldDclJOHv4GR2DiEMKM=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9YX4xuqYwNvbBaBiP3miWondIFoGBqNE6q9u20yRkj3fJvqYan
-	0FUJEONG+JrYDb2JOGFXUHN6c2zG+gWFOR1FBnB0VIpm+1j8HmvSnrSU
-X-Gm-Gg: AZFdTZdE8hb3DQsUFQYrGr1gLABvMr23rp1O9OLJpl+8HcRVh/sERixxNZqhyfOqwt6
-	4yLkWU2OTnni7zZSho49DvBC++i94YLKq+kvR3dyVxDPAkFMgixJexJyAHlYveijsOC8bk79vr/
-	JDR0/WGzpke4+FjciZ1PsFobJrqzvnX2sOzszmlM7pSW6AvRMbxjTdfa1ajWF9RYBxezp+702yv
-	Cq9Xhg55GRIFIjWRsY0tAeZPKNaAmZgsmqH9+fclsjyGC/aSuKcXj74LjrTU3Gk4qmM4NV2W3rA
-	KsVtry6QHbEtRxTRa6w9pqU/Fb5goy1/YN0jgTFCb3mPbH69ar47/W//qG5ArV/qmFeTg58IKuo
-	cQh5JcqsUArCg0V/eWelPvYn1CT85HJWkRKZpDkptwwksG+qcR/LE1xwdgzZQg+R7yInuFgVuPl
-	dWaRgxlktS/JNRRlmOWg1InTUi7VQsDMZkGV6zUNEGJbMvefdpzzC0yzBlmbx37aLHhRi/2ql0g
-	pCUqyRmZxnZ7MJdG6MnvU7HZUcNS3yeA9MH0ErnAE9DgQxUiqS8MstqEzqJwOrGgCOe4rPnuhAR
-	E2Kq3mxv3TBSqNTFSyIFhavlCcsLmpOOmpM=
-X-Received: by 2002:a17:906:115a:b0:c3e:ee86:d2c with SMTP id a640c23a62f3a-c513a866684mr1271536266b.27.1795605876461;
-        Wed, 25 Nov 2026 03:24:36 -0800 (PST)
+        bh=tmWNrfSIBJkiHKH6i1Txnc+Ja5dKtR29QkBEE0TVhIQ=;
+        b=muET8KtHcxhruBEuK/cBykJc794IRkRi/9pI66lCrjLa+JZd2oTCm0LkHasDLyhpXT
+         IG5dhHuCRddk/9uporVQOkvowFoL/elT0vQHj0VaDIyL83dqudsLAilYMGgMnYN7HpuO
+         nn6RW6NYHszNboyjcrNStjkaHiPvrhBySkVxNEr6zrMTRJQ0K42u78A87feo4oQDP8p7
+         GqdckCMGh4Cg5xM7L3hbe+uR1+lFq+yEy8R9Gq5zalCER8Fu9wiyUzoPsy4+1sFnXYJh
+         biTC29G7MRdOE/2IcRCsMMyYZvusXJIW9FFO6tRc2HwvFYv0Wbs9yC6dF9JONWG1YAL5
+         kWbw==
+X-Forwarded-Encrypted: i=1; AL+hErGZtkp6vjX/+ucdtl7jpGuEbWetP4mWlSenE3/bYhFu2iQ51o+wycrMEPsVVXWaoB0p91Q=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9L2IJtrywUWaebUxiK/qiBestj1UKLAkxVjrWdffPX/JO4R25V
+	4h9Y6kOsb1OaQO91K7+EBiirsHZV/XPhb5BYVPRR9F7xw2LOSgThgWon
+X-Gm-Gg: AZFdTZd4ItmSe8RGit4Wwx0jboiLZsveV5CCJy+2m5PZNUmIaSZmrFg2gs3OkgVOq+k
+	iK2fZpsc6P6gbXfVBV7fl3ScC50TWYsE1wHQ8omBxot8EpUGsgBU7PXg+35xYwaEvl+YqZbEPae
+	BApH1sSpSy88+bnvmi3zYjVkkzUr2/pq9FE7vS1ktwvOZZSwhkateU9oIvezyAU75f44C31Uy+v
+	yQF7Sk0NYOy7jh9UG/oU1Wz+GWYHwTWAg8arYimfwR+Zf/+wiPUnvpHqTOoDD8h1scgaPthhSrl
+	LATkBeXELsz4eYwYglYF8gSAFM9ub5BDyNYH+NocdJCIhZ7E8tCAydYX79alXxiv7y8ABevks8u
+	9qci70sQ1a/eDDAZ9KOk/Xv714RticeTH+DJ/EIiNtjAi5+4BBAtUIBw9QjraaCUgHL2phwZ4co
+	UldCy7Jx5D2JmNL11VAnS75nn7wC3+oFnkSJRhnND+Lt6qTnXH+wZ5hiMZ9p2qEJ+zSh2Pbqys5
+	m7ogLoG9qYVkKqyBgCLX6O4uV4z2G1ZGG5IwPw+vQFXkpLXDGzw1aYSbJdIGHZl3DBydcYJZ2Y+
+	dfsLny6WaEucePkminFbZ535PZ6zYR+fUm9j
+X-Received: by 2002:a05:600c:83c3:b0:4a1:7e77:c382 with SMTP id 5b1f17b1804b1-4bb8880ad68mr345482245e9.5.1795605994518;
+        Wed, 25 Nov 2026 03:26:34 -0800 (PST)
 Received: from [10.45.18.224] ([15.248.2.12])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513afed51asm608298566b.76.2026.11.25.03.24.35
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab6bb989eesm33880637f8f.50.2026.11.25.03.26.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Nov 2026 03:24:36 -0800 (PST)
+        Wed, 25 Nov 2026 03:26:34 -0800 (PST)
 From: Paul Durrant <xadimgnik@gmail.com>
 X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <883b59a1-8ec4-4047-a3c7-d7980730f6f1@xen.org>
-Date: Wed, 25 Nov 2026 11:24:34 +0000
+Message-ID: <713c164c-1cf0-4daf-891a-90cedef5190a@xen.org>
+Date: Wed, 25 Nov 2026 11:26:32 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,8 +94,8 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 13/21] hw/char/xen_console: Fix buffer trim when size
- exceeds twice the limit
+Subject: Re: [PATCH v1 14/21] hw/9pfs/xen-9p-backend: Use validated snapshot
+ for request iovecs
 To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
 Cc: xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
  Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
@@ -110,30 +110,29 @@ Cc: xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
  Mark Syms <mark.syms@citrix.com>, Feifan Qian <bea1e@proton.me>,
  David Woodhouse <dwmw@amazon.co.uk>
 References: <20261124232247.23169-1-dwmw2@infradead.org>
- <20261124232247.23169-14-dwmw2@infradead.org>
+ <20261124232247.23169-15-dwmw2@infradead.org>
 Content-Language: en-US
-In-Reply-To: <20261124232247.23169-14-dwmw2@infradead.org>
+In-Reply-To: <20261124232247.23169-15-dwmw2@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 24/11/2026 16:22, David Woodhouse wrote:
 > From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> In buffer_append() we handle a full buffer by discarding bytes from the
-> *middle*, preserving the oldest and the newest data. When the overflow
-> exceeded the max capacity (a limit set by the guest), the memmove()
-> destination was miscalculated and ended up before the start of the
-> buffer. In that case there is no older data worth preserving anyway;
-> just keep the newest max_capacity bytes.
+> xen_9pfs_out_sg() re-read the consumer index from the shared ring page
+> when building the request iovecs, so with an index the validation in
+> xen_9pfs_receive() never saw, the iovecs can reach past the end of the
+> ring mapping. Reconstruct the index from the out_cons/out_size snapshot
+> taken at validation time, and split the iovecs purely against the ring
+> size.
 > 
-> Fixes: CVE-2026-123071
-> Fixes: e57dd20bb706 ("xen: add console backend driver.")
-> Reported-by: Giovanni Vignone <https://gitlab.com/gio24>
+> Fixes: CVE-2026-123072
+> Fixes: 40a2389207fb ("xen/9pfs: implement in/out_iov_from_pdu and vmarshal/vunmarshal")
 > Reported-by: Hui Peng <benquike@gmail.com>
-> Closes: https://gitlab.com/qemu-project/qemu/-/work_items/4191
+> Closes: https://gitlab.com/qemu-project/qemu/-/work_items/4523
 > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 > ---
->   hw/char/xen_console.c | 20 ++++++++++++++------
->   1 file changed, 14 insertions(+), 6 deletions(-)
-> 
+>   hw/9pfs/xen-9p-backend.c | 43 ++++++++++++++++++----------------------
+>   1 file changed, 19 insertions(+), 24 deletions(-)
+>
 Reviewed-by: Paul Durrant <paul@xen.org>
