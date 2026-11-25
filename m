@@ -1,89 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795605383;
-	b=CYpr0s0HOq1WpS2IggR5z17bV8iHQdrMvj9VcnwLcTxwgxpTA0vqWvHkhPhAmDebtbQH
-	 IaPpASVaGgB6ibmKeR4YaxidWX8Zu0OLSwBS2wSXyRLS/YWM1x2APr7JUFWebN2IWLaw8
-	 AziqOHJDGdv0Rsah4ha2Ce5LaUEtBzzDpc+u3ZDnk2V4uQ2l3F380yym9eUZ0rxf6fpwB
-	 A1hN5AjjpMUHCTlWD+MrczeBqVXIg3mrU5qSMcBqaiBmTopdajyzxo31Qy8fzcVd6f4UH
-	 pKovlJVwylnsDE+70naeEbueXzjkIjPePzYswGGuzxkfVCid0XOcVlSnQ8pH85FkcuA==
+	t=1795605426;
+	b=M82B4YmkxJoTmMRF9CXKoRbmYulsRsvwX314j2VbZ4OvNeZYnaS5GtiV3wqXNp3cQf3u
+	 ZKdBI5p/FsbXQ1S9wRkxp2iokCTmhFyv32FeLvFnuCP4876tC1P1cL+bVyT3QOF0xvj6g
+	 1V1tbILmh9YdiMLe6/klF6mG5q2FbezZwPknqjOY6TdDnk1MdwnqSnnhLLF14m6YpdwuV
+	 2EjKBsqIqa8g9qMOqu1x/xX5DOpd0t5XZIR6FzwpBcArM0DC2nwSXEHfZTUcPaQUtp2bJ
+	 GN/ifgJoY48bBx1Fbiauyio6BVQzm+U6ng1mb8kC8pa7d8onJqm/ynd9uw5YTtSAynQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795605383;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795605426;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:X-Google-Original-From:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:To:Cc:References:Content-Language:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=4iv8A6gqUfnNbo5/jmNa9lhvSF2xOy75Oyi24duA5IU=;
-	b=2BJa0+kyHzQa7IeCJf/Y4V9leV/Pm2EkWmOlsJyihAPp7FBqywNwX+soS64f5sS6vuKX
-	 87NVAknUE6BrvhqwrCtrr2CODDXPMOwf+SGTcvAOxneRGAAqS5RRL26F480ksIIL6UyKu
-	 oAESrTGNlv4HDyP3DH467JhAFJ/n32i845xDxwUHylKht9GZ7nCp3f9ANA7aYrdG3NvEH
-	 RZBlf8I/OOxuCVLd/y6cdE82oTlxEoXkIVvAoGbOuorxU6X/XWtVMT5kqekoNILM9xGGw
-	 wvyhLYLhAAqqn7l7y+zWMVx/nCGLAuMo9Ga42Xuhc/3uNnOAggAYlV872eJu/4TFFYw==
+	bh=sDsbr5ve7lstRzCqqwaH7hey2ad4/GX/MTHn8iSlZz4=;
+	b=cevokenXKUWfGSqIf9bjSU2rk03q3qMKulTLBFjrMMoQVFehU9bE76ur7gZT79Fxo7hu
+	 HuezGr+EoY5cxmmyYkXF6ZiJaGxqsnP64zudXU7dkSIuxn9sL683UCa2/LvbiZI2o1so+
+	 kqcafKylrUU+JrmgVbPcf+UMeJrQogRGXsDjReGQwPvnCPKB6xsfEnpkUFvjjzkx5Y+q2
+	 DEGlJmVOYZUqU0BZQxsbgIyhMPxePFmJk4AIMSkAuoMBkuiiEfPRrhBDl+XPokxwSn/r6
+	 2/5XeFuflCDOon84BdxfMHXzJGffVU32fu20uPg/QVxnaFvgBEv+Na4Lf8oHC560ZGw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=j37pl6Kj;
-	arc=none smtp.remote-ip=209.85.208.45
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uMkI1s6q;
+	arc=none smtp.remote-ip=209.85.128.45
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D64606A332
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 11:16:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C1D64606A332
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5B7606A321
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 11:17:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EF5B7606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=j37pl6Kj
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b596afb4c5so6548811a12.1
-        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 03:16:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uMkI1s6q
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a207b02a2cso40189885e9.1
+        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 03:17:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795605381; x=1796210181; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1795605424; x=1796210224; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4iv8A6gqUfnNbo5/jmNa9lhvSF2xOy75Oyi24duA5IU=;
-        b=j37pl6KjwtACM3h01DuxLsUzGaMNml3MpJwDyC9KUn2P6TnvVyWuvXILNk4Mdrs9Ic
-         Sw7ql0AjRHvWqD4BGT/dQ6yO6eK4aQDXruaQDOXiCCF1cWkQ5Ht1dgf3aKfzA6AgVusi
-         tx+0pAfwDQM3jST/uYWSyEAYSJopnXeCJL/0Y5HIfBYm85AchD2fLuDkr01+ZOWiQmkX
-         BsKOhYxiqJNqbkczAu5rRkSUyoQyF7ukPTxlK34Enlo04fS42zEmWdDNS/dqR7IfY4ke
-         lV4X84SzY13bA6oEX6pIri+WYFr22J11+ggTNaEm0j/G310b0dvAqsOpn9fjIVp0dKSf
-         MfkQ==
+        bh=sDsbr5ve7lstRzCqqwaH7hey2ad4/GX/MTHn8iSlZz4=;
+        b=uMkI1s6qFOru4xt+WokJe9Dl4CxAgIuSH4XscOvVLlbHWdW7CpsAvAvPQsa6HpkO5/
+         ybEcsviw1zeGb+mJBVcBUuXpGvG/LR+R/Pd8FOk2LagsGD3awKokzW1EZLWGfFg216Ys
+         6FY6HATpLTk81vz4pDyEabpLXGsEFzH2/Z/V1yQNm/l6z0vNVXF3YqyST/Jm8pk9i12d
+         JhqWDGN3iXvHP9SDDRFP0g/9Iwg5rbrQEVKafRHWOA6ySNFQFuiRgjIb/w6+3oK0YmlJ
+         5sBcJW6CaZYGg5ez6FGDyGj4X17ijMrbjBVuD/AJ9S5fDHyikNOt4dwVSnGWWS8GvRkD
+         3M/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795605381; x=1796210181;
+        d=1e100.net; s=20260707; t=1795605424; x=1796210224;
         h=content-transfer-encoding:content-type:in-reply-to:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=4iv8A6gqUfnNbo5/jmNa9lhvSF2xOy75Oyi24duA5IU=;
-        b=J02nEqoIMTaagu23BcLUqEWLXshS8pc1E9/KhVn9y4mN29ntEZ59G0JEuBKT+X1jYY
-         bodgeaoUlXnThmiMtvBjs9y97BU0CvEXhe0lcBMR6Md5OG3sVKSNv9p8IzILirLYCsxc
-         AGUtBxJ9O3t1nsyOpjq8VxNUAzdmpTUFKf1Td+nnT35ji/w02/rZJnJiPQUAFy1oxsOm
-         pRGyReENliSaBa2xCKrV6uBMo1Tao7XsHRs1OSBmHBDvlJ5ax9APKadtLNT0rjJqDSuC
-         B834lpbbGGb+PWFhrzc/TGteElJWFz69ZNzKDPqUku7ZnF0PuoFwxLL815I36KSRQ8RN
-         31sQ==
-X-Forwarded-Encrypted: i=1; AL+hErHz1WVK9y4D0iMShZkDorzaAgc96suJ8HvvN9Y+pWAe5ivmQpTJ7NKgULNbtH4mC6QGDec=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8TVUs2CBRZ3QxiMjjnABLJ2SOrpyrRYhHg5ABsYmCoxyUofmVy
-	pTjeeIs7umFOtHO5c7sjtKc847OW4Z24tMqBp6BcBon5vP7jMdWe1j+T
-X-Gm-Gg: AZFdTZfNqGxyjvvzRWyAR5t4sP6D8oj5/oRxTXqElr/i4GTulGCCAlbDslJGA2KTEwF
-	MlNDVXjt3Gd9YLQLSaJ7bd5lbcq+upw6Da81TSVrTj2h25kpBJ4FscCXQ2pAexqSw4gF+/JuV1n
-	gWr9yQ9kHd/lDc+luyw2x5QAaxrA5Q/+aIfABR3QoXuZcNUWhYPUXjxQg82ZWNULJLPGinhc7LT
-	meeEsR7N2PoV+z5xMY6BqfoiSrsG5lIOJ3Wy+CBsHP3CWRJnns2GSHd/JSZHZp5d2uwv3A281y7
-	SazLyhHIPTy8O3yrYwL7bh+hh3csVwdMeJf8XikGo2oN8d9OX37e7cHW+hDWcmDlAXm9imSeHOG
-	ka/B1I61O5TGkxuK6finAW7C5hnZkbUczjq9nV8Z4isuQn1zWHAAStGSX+mw7sTXVKiMJvpvzDU
-	5wWcvZFyF1ftOwkRxlX7Vn8e/GAGk0/dYGyEhyB48q0DQ1OQyprMkjQ7v0yOj8/Dotz05sdIbc3
-	Mo60laydl+qAiS/2mrFN3ynRpHF3FV/03V1EvLFKMIPnt3j61xClCKqdb4IWM2Sqwd74WlOqGc/
-	mVRW0zHLNBDnxSBlglyQrp5MUgeVd1Eiww==
-X-Received: by 2002:aa7:d351:0:b0:6b4:86e1:cc67 with SMTP id 4fb4d7f45d1cf-6ba37ea0b91mr9087571a12.27.1795605380976;
-        Wed, 25 Nov 2026 03:16:20 -0800 (PST)
+        bh=sDsbr5ve7lstRzCqqwaH7hey2ad4/GX/MTHn8iSlZz4=;
+        b=Yue+xOfhKga4ZDZJnSbJEguf3vV8MiJwk2DXi7YA6bhWNkWMg/plZuBGewLP1B1wqV
+         3fTYSbQfrUFBmAQpldCIRwfqYbBcETI7SvcxOEqZc3xv8GREi5Qa862Ih/aj9MqC6j0A
+         puj5Fz/RzmRY8g0fHzN/uKk0kzJZnqfmX0+y5RdXkVBJLV8X8IeUOWmgpHpI7YrlS2xY
+         JLzsvu+calmSdIYauBaCGtZC0ejA2pX7sGOYYWf9/yfwrkFksHV2TP53JR1+hZGOqpwt
+         jRxdd0TYwfH7YHaoeV3s2qm83jsLuoz5ryhtsT7Nj2vE1vtRBpueW4377ifozdpBY4pc
+         njvw==
+X-Forwarded-Encrypted: i=1; AL+hErEE12euJF3vyj/0+gpVT5WZ5lkvpwmj+D27noev2qvhr4ho+82/rfqy0MFaQdvE2r5dAx4=@vger.kernel.org
+X-Gm-Message-State: APuU4Z91TZ3DL8/g/53zTVvJ/i6HPwE8ijEBt7ph/T1RucYqs/7rRSlO
+	nGLm2yAME91CcfXNMcEB6D0qvaD91vwuDsK398/6iC67s2jPTsvrhn3e
+X-Gm-Gg: AZFdTZeEjwcrm7UBC6aN3tX6D6wRbe6NNBvCXEsYclVkvnnu8kBHlRYqqRzK713OI2v
+	N10uOVnMEdXS6HakAiCFYeEakUu/YSo9GldI3N2LhCOoqdXDNpwlk8e+SQD2/KtrmVrBgq6Fe8w
+	JmOfVKK1JrInGEY0xYipHXqdw1cH4DUamGu270Y0bouN1b8APKzlQkNLybOS7Cbds8B3/7iiTTo
+	p8Pbv/H1rKkbuibd3QSAzP2xHNt8A9BwmkLfysb1DQXrpcbjTZHemhS5ueLNPmvdb9P5VxiPLcM
+	ujbg+IZ3THNom05mGD0MP7XX9jEaPKm48WX8A7GCUKu+L+ofDCLK3gsAVsgZFOlLUOTir6oqjfw
+	+ksDeQgnrBYkbWz5VUCj3O9pa0uSlljlqTFC1UEZ/FIWv5lcgLNkhjYQcTNvnSX3sEcdZjTOtaS
+	a69e9+EsrkoF61IsnFRtk6IGoEqUjPCzjCvoIzxVqv1wO0iRahi2FWD3sXW0vReCkA80rzdGpRp
+	Yy2QVuqQbRgpBWCIxPLFtPVsQ/nEHcVDB0YTygkA1irLqg4vd+5nUK7GywUyAGlrop126jVfmz9
+	lH7AHG7pLphcg5x79ndjJKYncF15YyZYNsFeBIsqTGtJMv6U+521IpY=
+X-Received: by 2002:a05:600c:45d4:b0:4a2:84c:52f3 with SMTP id 5b1f17b1804b1-4bb8880988cmr372815065e9.6.1795605424154;
+        Wed, 25 Nov 2026 03:17:04 -0800 (PST)
 Received: from [10.45.18.224] ([15.248.2.8])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6ba9b131d3bsm5256928a12.34.2026.11.25.03.16.19
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb90660cb4sm454867055e9.2.2026.11.25.03.17.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Nov 2026 03:16:20 -0800 (PST)
+        Wed, 25 Nov 2026 03:17:03 -0800 (PST)
 From: Paul Durrant <xadimgnik@gmail.com>
 X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <8e8fa5ae-f30a-4e38-8aa8-cd46e3b4ca31@xen.org>
-Date: Wed, 25 Nov 2026 11:16:19 +0000
+Message-ID: <719ac82d-4638-43c1-b563-af0a33b25d1e@xen.org>
+Date: Wed, 25 Nov 2026 11:17:02 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,8 +94,8 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 08/21] hw/i386/kvm/xen_evtchn: Fix off-by-one in
- do_remove_pci_vector()
+Subject: Re: [PATCH v1 09/21] i386/xen: Don't inject event on invalid port in
+ qmp_xen_event_inject()
 To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
 Cc: xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
  Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
@@ -110,43 +110,25 @@ Cc: xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
  Mark Syms <mark.syms@citrix.com>, Feifan Qian <bea1e@proton.me>,
  David Woodhouse <dwmw@amazon.co.uk>
 References: <20261124232247.23169-1-dwmw2@infradead.org>
- <20261124232247.23169-9-dwmw2@infradead.org>
+ <20261124232247.23169-10-dwmw2@infradead.org>
 Content-Language: en-US
-In-Reply-To: <20261124232247.23169-9-dwmw2@infradead.org>
+In-Reply-To: <20261124232247.23169-10-dwmw2@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 24/11/2026 16:22, David Woodhouse wrote:
 > From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> The empty-word optimisation advanced pirq by 64 on top of the loop
-> increment, so the first PIRQ of the following word was never examined
-> and could retain a stale device binding after the device was removed.
+> qmp_xen_event_inject() reported the invalid port with error_setg() but
+> then carried on regardless, passing it to set_port_pending(). Return
+> after setting the error.
 > 
-> Fixes: 6096cf7877bc ("hw/xen: Support MSI mapping to PIRQ")
+> Fixes: 507cb64d6e66 ("i386/xen: add monitor commands to test event injection")
 > Reported-by: Hui Peng <benquike@gmail.com>
 > Closes: https://gitlab.com/qemu-project/qemu/-/work_items/4525
 > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 > ---
->   hw/i386/kvm/xen_evtchn.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   hw/i386/kvm/xen_evtchn.c | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
-> index 3aff01b5d6c..d0807f5fece 100644
-> --- a/hw/i386/kvm/xen_evtchn.c
-> +++ b/hw/i386/kvm/xen_evtchn.c
-> @@ -1701,7 +1701,7 @@ static void do_remove_pci_vector(XenEvtchnState *s, PCIDevice *dev, int vector,
->            * and cache lines).
->            */
->           if (!(pirq & 63) && !(pirq_inuse_word(s, pirq))) {
-> -            pirq += 64;
-> +            pirq += 63;
-
-I guess I'm missing a subtlety here, but the test only fires if pirq is 
-a multiple of 64... so why is advancing to the next word by adding 64 
-not correct?
-
->               continue;
->           }
->           if (except_pirq && pirq == except_pirq) {
-
+Reviewed-by: Paul Durrant <paul@xen.org>
