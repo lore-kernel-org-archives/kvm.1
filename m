@@ -1,19 +1,20 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.93
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.117
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795619821;
-	b=QK4bJGzcAsIbv3LEwxw72/hqOPmreHOPQOhQeGYC0ezycokbusYYfIWlJDFMfPYultU5
-	 c3gv1u1kuIwqkwcCIsydtE+z9GGctyU/Fdcw6ugL9nytUhaXUtD4NZ3ihj57ULt3RY49l
-	 nTKrPDQe6etuTzBGNvG1Tu8MS4tz1KFz+Cdn2I15GtAckLXqBcBFpsjmDXbL7TvUmpg/I
-	 Q5dQcKWKrOBsy3VEstG9QYASe66DTzuQFDs2kKO6La3c+5FFz+vY1J4wllRzpTWrsY09r
-	 /OqVlcKVEE30D0d8ZtzEbv4PdS7wziwk/6L+5GVJtU/dmVTzVtpYWW32QgO5ca40T2A==
+	t=1795619825;
+	b=SvqZ4U9SRH/CNFkBFIBzTbrdfMod/VqmjN06/NJorv0ZAg18QpQ7pJCPMoaO+qW4ca1d
+	 52VOoBqRGKIGGwFA4D6yyawGtsQsvFu/p4ckk5kvKVKgAjmgOWUO5FmzMe3WuKQjVpsAj
+	 GaRnifNNE3oIdvrah/DIZlPMqV4Mk7NjMiNwGDuZSdIK6q/x0LiXPJeystH2PyYaYIRHz
+	 QdgYLhNQyMMxz0vtP+do6eZlSp5TSWIBCWTQFvVJhGeyatetQoFigwsR1HHymES8lpU8l
+	 6L/XUWEpzN7ywAatXTSKt66k2670rS1mPnlViCRJz201IDC7Bks9EYrwmEZGSQID8HA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795619821;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795619825;
 	h=DMARC-Filter:Received:Received:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy:
-	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-Mailer:In-Reply-To:References:Content-Transfer-Encoding:
+	 Content-Type:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
@@ -23,32 +24,32 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=uZG1s0368q8UN44TW+17aousOwlOrZDCKGkefaog9iM=;
-	b=CHoLtW5cYS690k8MQx2xOZD4S3j3n7bEw+Hw5LOTrcRb/kQjcrUNi/jcqys2LxJBwsRs
-	 EQRpcORZh1EtU8l773dmJwRK7nhz8alUYLYVzb2TgZtQuWo7mgVFywuHCV2s+eg0LERaT
-	 EcDlbsm5IkrOlcQ2PI9LuYE8mVTfGeNAffnnq7wQlfeplRSlDu5RGfr/PCafHK+kKgAFu
-	 USFffpdaH3RVMIdXcFnw9l3uzpzZ5+ImkAbST6tpfIcajSAApIoAdVwxnl7Slpu771rZP
-	 dTV7kyDZG/vnow+dsM5a0A6d2kKk5Xrvq/4ml4ZVn4JduwNoeUI/jEP8jtwe/WmqF7g==
+	bh=JnzsjkDOh4PUQQAaMQrnEiMGBhaUYDp/YaRRP8IpsB0=;
+	b=ljZY9ljt6HljmBXr6YhCyJ4uG98kvMG6/V+c1nu/aHBwlc+5yVuKHxU5DaJlhF3Btykz
+	 gVodqYiAogbszoKqnIPZZG1lZgtQ+G3V2i1sw3trxZiO9/HTbx6Y3uajhwmktLtlI6h6+
+	 DakhKg0wvfxMwQwpsbpMoGX78n9GqiQBKIFM1d1pSnBCuJJgRAmS0mwEf60kocE49AdHs
+	 pfvXzzIZ3EbOJsAecnhRwWL6hs4fI5OjJYi4q2ricQLslOo73oC/Q7+gsNec0v0VTlowf
+	 DN69iJTu5yG8CvozM2ZK24u27sIl/xVQNGrCXRakoEZ8wXrWHj5aEoZ3IZHTAN5MDPg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cyber.gent;
 	spf=pass smtp.mailfrom=cyber.gent;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.93
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11022093.outbound.protection.outlook.com [52.101.66.93])
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.70.117
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11021117.outbound.protection.outlook.com [52.101.70.117])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF18606A31E;
-	Wed, 25 Nov 2026 15:17:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6AF18606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09332606A326;
+	Wed, 25 Nov 2026 15:17:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 09332606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cyber.gent
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyber.gent
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A7T7baHI+CfvwzDhNmaPhAuChpLAW+QQgqELJFWrIqXZobIBoNo4Cx2Zkg1AuHqv50hJ9h4t+FBwktMa7dstCVHdhJBF52SLsdryV3LyxRfQlPA/t5ZPyNSk3gZrytAbYFp/mtZk60PvQUO3mvthc9YDRNfMB/qm/x3ACQQkJQ1LXRj1DYwKkGYogwsQOURqCO1y0kx8Ih1ojK5fiVAR5QjYwu0pUdmlBdhdSPCKrk8PJcsppHXQEDqaE7uZaPtIJ61TQd54o/wOLBeFTu9PGeKFeTQGHDiUrvuFXw4fxcDcRb3fxyrCNpPqxm/BtgMDyRldXIWcOGEhHP5Ph8QveA==
+ b=DIR1f4/vcAEwexfMqCtAHKzcKDStEea82cOk8lveyTGNHZ/X+C73IimJtII6ovVKkE+F+Cmlwe6YmGTNk8B1jy5XHW8SjYPe9bp4RjE7pDKnT+xQVtnTk2EYJDeWy12PMWYiwTXLd4S+BorDkoWmDjYVxqlNjamurASWgVjwqdDtLbaJQvZ2u6bFAQOtQjGWFD4ZQ5bVb6mM+VOLEU5rrlm36IFmKejHuKoomRnnaQpbZnXDdXh8rJDNSNob+AaE8ZT9/Fr3HJLWMfMCfTsUWkBgpBEoaE2ZUCiEeHhr3gvtpXZJsXdIRr7ONNZWBAR3tHXNtWzlrWz+pKLWcDYg+w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uZG1s0368q8UN44TW+17aousOwlOrZDCKGkefaog9iM=;
- b=u9JlHMRfCMk7ndCnSHsERDxGHNMkIVt4UsR3ThZIOwpEqNko+w0dLUTWowfMPW7Pp3YGWv1z1fZ8QqOtzzpbbJAuCqyrlQSt+p2MBLeXMwWPLO6NWGhRz2eCTSbSBHBZ6wc3RJOWlgGBCNI+cSSCET8YoNQwuaqg/cxc01zQ2RSFgOGJMoKU4ic8tXf3X7CgQlHztd/TMv22uc5pz/jUSzM7gZx+Ag3rFNCxrlRxQoBtCB2WL0cTQxmcSuaEvkaBcIfiujs9c5eGCm2zVerTX6Q0S8EhpbHDthesdYFjsXZMu4MmPJ9dy4D5HlCaAnmhDsT81b0WstNIxoaQxNfI4A==
+ bh=JnzsjkDOh4PUQQAaMQrnEiMGBhaUYDp/YaRRP8IpsB0=;
+ b=bs8hcXNxphUG8z83/VHiHqSJuimqHKr1kUwRQCUMYf0mie7YHDMetA780w5AfXghRUxCZZbBkLq/WMr+c4pEeBGhIbiLB+JfDXN/4HV8vvYDq+HqpgoGpc+ROy7kY/F1tOUzRy5v7Hgj8D1VKexcCJ6nuUb4A6Ua/2smwuNgkof9rxpt6uShVkkvyGO+6R6d6ATdSDZmTB6PuiNp6KF2VxDhwU2tMMg06FAGeuz8ePho8hBzJfc8vm7pxYNEo+PZ5kzKexp8Es4uxi4BZT04/EEHWIciumzqvQbAb+8el5cYEp3IjrsPcAUr+WMTOxz56kecv0MFjsLGGq8KIvYnRg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cyber.gent; dmarc=pass action=none header.from=cyber.gent;
  dkim=pass header.d=cyber.gent; arc=none
@@ -58,11 +59,11 @@ Received: from AM9P193MB1508.EURP193.PROD.OUTLOOK.COM (2603:10a6:20b:2fd::8)
  by AS8P193MB2127.EURP193.PROD.OUTLOOK.COM (2603:10a6:20b:448::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Wed, 25 Nov
- 2026 15:16:57 +0000
+ 2026 15:17:02 +0000
 Received: from AM9P193MB1508.EURP193.PROD.OUTLOOK.COM
  ([fe80::e7cf:9c42:539d:452]) by AM9P193MB1508.EURP193.PROD.OUTLOOK.COM
  ([fe80::e7cf:9c42:539d:452%2]) with mapi id 15.21.0639.012; Wed, 25 Nov 2026
- 15:16:57 +0000
+ 15:17:02 +0000
 From: Yvan Janssens <yvanj@cyber.gent>
 To: Christian Borntraeger <borntraeger@linux.ibm.com>,
 	Janosch Frank <frankja@linux.ibm.com>,
@@ -81,14 +82,16 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-s390@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] KVM: s390: vsie: fix instruction retry for nested guests in ESA mode
-Date: Wed, 25 Nov 2026 16:16:05 +0100
-Message-ID: <20261125151607.3039477-1-yvanj@cyber.gent>
+Subject: [PATCH 1/2] KVM: s390: vsie: Rewind the PSW of ESA mode guests in the right format
+Date: Wed, 25 Nov 2026 16:16:06 +0100
+Message-ID: <20261125151607.3039477-2-yvanj@cyber.gent>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261125151607.3039477-1-yvanj@cyber.gent>
+References: <20261125151607.3039477-1-yvanj@cyber.gent>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: AM6PR05CA0029.eurprd05.prod.outlook.com
- (2603:10a6:20b:56::30) To AM9P193MB1508.EURP193.PROD.OUTLOOK.COM
+X-ClientProxiedBy: AM6PR05CA0013.eurprd05.prod.outlook.com
+ (2603:10a6:20b:56::27) To AM9P193MB1508.EURP193.PROD.OUTLOOK.COM
  (2603:10a6:20b:2fd::8)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -101,122 +104,146 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM9P193MB1508:EE_|AS8P193MB2127:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1416fc51-93a3-4c9e-2850-08df4b072527
+X-MS-Office365-Filtering-Correlation-Id: 0355403c-796b-4319-0fbb-08df4b072882
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|7416014|376014|10070799003|1800799024|18002099003|6133799003|261009223027099003|3023799007|10067099003|56012099006|5023799004|261102123227099003|261022075727099003|261022105027099003|261028144727099003|261026140227099003|261026121527099003|261021123027099003|261021121427099003;
+	BCL:0;ARA:13230040|23010399003|366016|7416014|376014|10070799003|1800799024|18002099003|261009223027099003|22082099003|3023799007|10067099003|56012099006|261102123227099003|261022075727099003|261026121527099003|261021123027099003|261021121427099003;
 X-Microsoft-Antispam-Message-Info:
-	EnMM4g3fAzxdSH3h1T9+qW8M4suOc6WPmeD1oP3Y+LB64bVpGjsNkRhzCPBh7Apnvmk3YDhn372/TTW30MPqPfgqPft14CCFG0YLNRhkbNM7uqcVP8i8bv5a/MCwfxj11LAMGh4ZBJwcmIsmn+/36mKtUyr+yoip7My7flTGM+/ir4AJu8ZziFgExi8N2ohwtqt8H/yAjiofstuR3KKnxeCNgSTC5fBrHLPBzU+HhJ0O+84qr90x054wR1y8yiVyhmOj4FNSZgS2i3npZVqpLwBnBvnrp8q2KNqA2+MninmlDUqBtMQtWxr2lN5rEJfoXhBT8LZ+oMs+FuGRvJg8dm+VPImq4xFv2LUbZVuM2kTlgM/055o4orRIgQBr1mhH+63CdzzPqnTArByJAt6LPTSApwPGFrpOrWVrxCTTJecctlF1D+t1FhEjF1SimK0UKGFtLE2CBQsXuvY+f1q6qdjUSrDRPspbnRsOUj4cGROOkQ1xe4BhDjYgsYY5zA2KVJVNLaFGQCCMxBZWNp/3HCK733JnGcQo8gX4qDOO0vno1rwdu4SPz5RwJnEXkpQ9DIftPG763EXMeIQb/TPakLPvYrPDy+UZrY1kdwHuCsJtp4kueyIkdwcqwGOuWQIL1TAiujnucr7o9NFPhhYX5FaKLnAaT36Kfc1nfFdNzac=
+	oBJHF9MVQXJw9/zyxnJQt6bTwdjeaGf1M72BuFEcYSpgRUixDETdUuXNF+tmb7YV2xQfdifgG7AaN7UHLDl5Idmt/5aQZbcczQnH1dnua+z0mb8rH8hqSr1nBpBDFRieMr0HwbIy5kLHUCTyVlO39z4N3GrSsFQ6eyZNAGfpNsTonUPfKp7IFq7fqwzSxLgz3ABAPJecfFWgyZaAVA/JNl5UcfT2ZJRmL9wpj+HrJd+pPj9Zf+INc8ljSM5mZ4XAIdtZcCSpi3mnv6h+cQTknVdZgIyyWQsrU0goJv93FEZDdOChMPa9VhBTjPm0N9KUTkxlLmv3iRStQS5Nk31pScboNH0eB6iKj7LfjEo6tASqVv/3FAgf/QhSwDeTLtqZUvQJ7KzcYNoFhus9o75C76sCMOuwD/9jKqiIh4Src3vU9b5pDL3z46H9qdMgeUEABcu1XaGDDeQKo/Ir1XoNTSDx2oKs9p2dBtL4hwY3aX+TJueV+peWGRk26DF157/R98u2fmpfS+09aR09a7j//5CPb4yl4ZqpHN6asLhzgPtGR20VrueJXDDaP/pTX1KOps2ARYkWxMUW+VrW5mISElQGihztIXA3X1Mhm+tGM9yBowZWFbjkmnQszg/b70ZUBMEFPu7kGI9nmo/m1ZBNwCQID2ru1g6kBeRj83H76YY=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P193MB1508.EURP193.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(10070799003)(1800799024)(18002099003)(6133799003)(261009223027099003)(3023799007)(10067099003)(56012099006)(5023799004)(261102123227099003)(261022075727099003)(261022105027099003)(261028144727099003)(261026140227099003)(261026121527099003)(261021123027099003)(261021121427099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P193MB1508.EURP193.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(10070799003)(1800799024)(18002099003)(261009223027099003)(22082099003)(3023799007)(10067099003)(56012099006)(261102123227099003)(261022075727099003)(261026121527099003)(261021123027099003)(261021121427099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DLwtNCoce7fA1K7CVBMUgRXJUEhBGRHV9d/AXTyWdH7TRY/rUZfHlSM/J/VQ?=
- =?us-ascii?Q?qeqD46xsQDDccGsHkNZ+5m3AcyXIl0zAUCD9ijfWT4yl9ep55C2jnLLzKPZx?=
- =?us-ascii?Q?TO0PvrJif1IVrSNNE3Tgl3BiMDsSIYuMKzxIZfFG5zgYWSRfZ4EJPROf1DWO?=
- =?us-ascii?Q?EIm3x0YaKw8LWD/2kdjyCIb0HIemSHyxr3UNVJ//Ymlbk/7IRL+RaZOZOLyN?=
- =?us-ascii?Q?dKTV07HVILXz5SuEy86Iv4It1Hq8/MaJz2dGVjX63xlHK4Yj/TalYfl9bWfP?=
- =?us-ascii?Q?KpEW1gIM/edhyJVoVxgPyEaU1xbhlBdD3QXpbBhxYV83lksLrZC3Bi6/zwdZ?=
- =?us-ascii?Q?SOf0xp1er354fCYXKgKBlDFEBuaQavHoReB7pxgLmPQBT8s0E8+xFSbkUOvw?=
- =?us-ascii?Q?Ga2dhiDihQlwSyqZP55iULvO4Leu8iSr3ByT33ceEN0t6EicgnS5TXeKJjdj?=
- =?us-ascii?Q?xXH6ro2RfZWAZPzM2ekMoa9rsCGemRZwqrPxI0KLI8PbDecyufmkzg1F6dXm?=
- =?us-ascii?Q?BoP1ou/xV5XQDPIOTDqc9GToa1jGCnYKypuy/hoi0ELmmsuIQfPcgvojyRj3?=
- =?us-ascii?Q?aYH4fcSHxPfoA0jJkA3DyF58Fb9nPcXw0BzLqZf3qbeKXl/Nt8XefLWfr4p/?=
- =?us-ascii?Q?KEgWbuv9lH+z7MpPvU3c9RfwOFPPIoYXPOe3k5um4hcbuy5dO8moL79Ps/x1?=
- =?us-ascii?Q?bWzlsqIi4hjT2zhw+W+ZFZpZEz74yT/hN6XDNRtsVI/G0NEDA9X4AL4pigOD?=
- =?us-ascii?Q?4kuUfv8kklsHPD2eQkzOm9G92ns/66inp/oLvCQLbwcAjpiEfRn/bO7SrVG/?=
- =?us-ascii?Q?WpoilGzTlIJkmZvpWNdbhk/MpphHvbC+e0pFzTbGby7YgdyyU8Vpo6joIY9E?=
- =?us-ascii?Q?+vQoGSWWZ/QDh/HB5AzBZPTZys1sX+QTY64RD4lSaPlyg45uV0yrhNYNGqcO?=
- =?us-ascii?Q?VZgqHhccucsC4ssQDwiGfbJwNTuvNBCrQo5UjjUz6m8v65If2FIlkqlVPzKU?=
- =?us-ascii?Q?CBmw0S1fqUiMfLFaGxEALcPhPKbrBAusrcABJUZq2NiKLzbHB6zhUsCZdC9w?=
- =?us-ascii?Q?OsGnkNXDuZqFJ73XYPWV8ZB/pPzR/1McLvzaAEPumj4XjEXyo7o3FuWleuug?=
- =?us-ascii?Q?2eCAYMH9WTeWDByB4DXeu4vzIvfCGPjMMTc5AhKEZvKs56bL+KeVwwUB3nPF?=
- =?us-ascii?Q?77PCmNFv3J/CYX+RcMCRiFhJw/KG3rIEK7hcc//9nWrYOxDv5lKwGSSWXiwh?=
- =?us-ascii?Q?vmjobQu9LCmA8ltKXnwjovDByMY/tetaU1xJwwZvJ1a+mi6QJ2ZPqeqODRkA?=
- =?us-ascii?Q?ASoRFJhO7Lrb7WGBt1HCTmyyPbwaqyqNgRrmRcOu2MSxdSZh+2+AdM7SHJdV?=
- =?us-ascii?Q?u0hZe+Ml9qF8yDBuDd6c1p8pgdzPyj/Des4Xeo9ordrITj7PIm9Z/1B0C38A?=
- =?us-ascii?Q?eCMrKZ5nllQ53GLUZi3KnFhc9z9B9SnvAK48rAtYcilPDKrSFIn3YK26/xZ4?=
- =?us-ascii?Q?NqgZdBgRgr0WUqcKv6Z+fBUCT4Pcrg55OCoHbKHKmBTNic4X9FFzAhQfCUKf?=
- =?us-ascii?Q?GIgHXRaHecaHLJ9zQ/XcvEV63v7XiDQOQu6wZ9vMf57QTt+hvWK9xj2HNm1t?=
- =?us-ascii?Q?NjpToi5Kkk4yR7vf4w82iLEXe2USzPfhm2FN2ML1EIny8kozRqGmkKyOT8wv?=
- =?us-ascii?Q?Hy7Ccq3/id0ihcVsIFcZlgyTTSJNxbJT626dNMu5LtGlzm9ooHuaNU5bAT4H?=
- =?us-ascii?Q?a7cU35yL/wp9VGnGSGfK5bz1WzE3RaBwzhxKhGU7CexLUdzzD7M4?=
+	=?us-ascii?Q?uUo/BQmNh0HC1mwNGgNJ8yjY8tQ1dAWNDZZc7GiJH23TnI2lVT/AN1m9874X?=
+ =?us-ascii?Q?NdUlSV9KtSewH7iutl4hlBHBfta0vqCwxnlBAx63y5ksw1jlohRfuQ59Wreo?=
+ =?us-ascii?Q?1hM3oV+fTVEr1rPfEMbBdDLnDE7wh0ZlklOjK2w+9vfaTgTL1kqFKw4TpU1a?=
+ =?us-ascii?Q?YeUN+9OHqmnPrvaMRPHtMkQngQG45STJH/VPuJ38FgnzxyJcPMGH3qkYE4S5?=
+ =?us-ascii?Q?GGUgrQuSWkMfN7rTg1CSDIzsm75pZCzbV+WTqlEqTcYvAKFdjLEQ42lY0ai9?=
+ =?us-ascii?Q?QjBQc1Piq/n6CJumN4DuJ+TKzpautQiVrErtReh1JbG/iLnAGdYF3DyIzgLh?=
+ =?us-ascii?Q?Rtaet+AKnK19/OdkD6qgLLa2FQJu6+d5rYGPnp+ip/wHUX9n8Ix+lYC3byJr?=
+ =?us-ascii?Q?c7hFSI+py6p1yDmjI3Q1WlWEGmIqtOEm11imHnnQt44RddE4y86bYw7teCB3?=
+ =?us-ascii?Q?TLGD0LA4tKD3jF/HC9TLra+1T5C38EtlPJ+n0JgL0s8SF2Q0mG7LOUnJvQGu?=
+ =?us-ascii?Q?KnQDVzIU5GvTJHKCJuy6hdl2JJAXYZuSRNxtg7ypB+pOOUrnxwIDyxbDtLkC?=
+ =?us-ascii?Q?QfrZK0WRR2qsd3y5AJsLCpJJ6ATGJqyjfUQ6Zv+QWdQV1CyUKYsK87ODgfOp?=
+ =?us-ascii?Q?rBgKoY10AdVA/YB2DmjSoJ5GlNpkWfscRuKvqFauRdbCG0vLSqCgVjiRogak?=
+ =?us-ascii?Q?FKOtzfNNlUl0jRban5DcAfZCrb/zNjNrapVJhPT3YnLO84GI3rEPlRwbQgYW?=
+ =?us-ascii?Q?OHk3uo0vLKlOmI5CLTpja6+T5fsyYhgitiZQ1/c0fJxn2xfLDImhFSLvR3zq?=
+ =?us-ascii?Q?SQp9Pg7EqLIlOYnQztjz/wfV9dtzXaEoFnkEgrS1ChbMOHSf4x479T18nqUE?=
+ =?us-ascii?Q?/lQuTy1T4P0hmkacZMOFxuNGr+MMBOMWDshPUcVt0U3fN8QAqL+XN2g7m7w5?=
+ =?us-ascii?Q?STXXVGg+Sx2BKPVFV2Z01y6cxSLermerHJd3ehmrXv1RH/HP+/4uXxX8i0R4?=
+ =?us-ascii?Q?xVzMp2YgxCWMKt4JY3yuvqK6bY4k6+pYkZVbBN9ueP2bqylUfe/Jxg+M+4dv?=
+ =?us-ascii?Q?mqYYRuVGW0DcDBnG/f4huuMjV/0Lg6TBgJBA7YgH7TRJ/wztEs2kjzIwh10o?=
+ =?us-ascii?Q?qbShh00eXnv10qIuZwC7bBW8iAi1jcc7r7vgHW/zu4ECMU5q0TYHqiqpRpQ5?=
+ =?us-ascii?Q?rvo6jzRtCBxNGKkgin1nWEPiBg/D/z5jRlp74RP3pAQG/DlJpEUyAyNAVzha?=
+ =?us-ascii?Q?ipM71if+yrrYwUZXmKQNMz8zv+WgbKv5cNoBe/rivP2siknEPk/1i9ZvAqvg?=
+ =?us-ascii?Q?IpT2rRfblbKpFiD/2eGm2K3Ai4ly1IzzO02gIy/0Nhq3Ny2fFJyfwIqVDpZQ?=
+ =?us-ascii?Q?GJ+VwYrAb7bkBBKHQ71ieimCDa7d60fvg/7b1G5+9t4DcnR9SVFaN2t+DZP3?=
+ =?us-ascii?Q?z5m0dBoWsUZCrDa/8O5iJs1LXLHeoKafE0SaXFP0qMMSeSKNNUal+5Rev32R?=
+ =?us-ascii?Q?kBccqRfxWqgAJRJLdUBp/tskqzDD1lWqnjvspnQgfRAP+Pz0V6QfE0mT3z3E?=
+ =?us-ascii?Q?k5ZEMDspul1QtdfweAf/aA2FQ/UZIjK++JQkSKnDcen454MpI0f+RToVM0aQ?=
+ =?us-ascii?Q?abp8KgRwz6UluRrrhDBlT6eQyJMu9ylZfEb2SBrIhptEB1C7jq4FcsQttWRS?=
+ =?us-ascii?Q?XZWU1fqeDHL5DzdNsTLnv4aT1KdGjlo6XHDfS/nbzRmq5p+ohpRDFjduYSN0?=
+ =?us-ascii?Q?1/xxTrneb56Nb6vprUA+Rb9Z7Zgq2/ROm+De1OLCAkKq+lX+oa0c?=
 X-OriginatorOrg: cyber.gent
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1416fc51-93a3-4c9e-2850-08df4b072527
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0355403c-796b-4319-0fbb-08df4b072882
 X-MS-Exchange-CrossTenant-AuthSource: AM9P193MB1508.EURP193.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 15:16:57.1739
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 15:17:02.7246
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: d5a0a0d6-18b4-44e3-8e5e-e5dbe37f9ee2
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: M4uSkv3egf+tkH8QZIjMPE0NDpwqhtHukGGoH3WMjSSpu5xSZryrBP6l2QwxjVDq+1dplbvsLz26ELvIJBdAHg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: o8i+m51P1dXkfx7/r71jotXj33ThhrWpgCrSHDgg0JtRvCGSBKlty8N/IVB5dnZ6rmmFdr9Z+prfK7VT3qQi9w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8P193MB2127
 
-Since v7.1 a nested hypervisor can run its guests in ESA mode (the
-ESA/390-compatibility mode of the machine) when user space enables
-KVM_CAP_S390_VSIE_ESAMODE. One piece of vsie still treats the PSW of such a
-guest as a z/Architecture PSW: the rewind that vsie uses to have an
-instruction repeated. For a state description in ESA/390 format the
-instruction is skipped instead, and a stray value is left in the half of
-the PSW field that such a state description does not use.
+A state description without the z/Architecture flag holds the eight-byte
+ESA/390 PSW in the first doubleword of its PSW field: the addressing mode
+is bit 32 and the instruction address is in bits 33-63 of that doubleword
+(Principles of Operation, "Program-Status Word" as it applies in the
+ESA/390-compatibility mode). The second doubleword is not part of the
+PSW.
 
-What a nested guest sees: the first STORE FACILITY LIST EXTENDED after
-every entry into SIE does nothing (operand and condition code untouched),
-because vsie intercepts it to shadow the facility list. A program that
-tests facility bits gets zeros.
+Since nested guests can be run in ESA mode, vsie still rewinds the PSW of
+their shadow state description as if it were a z/Architecture PSW. It
+subtracts the instruction length from the second doubleword, which leaves
+the instruction address alone and stores a wrapped address there
+(0x7ffffffc for one four-byte instruction). The value is copied back into
+the state description of guest 2 when the shadow is released.
 
-Patch 1 is the fix, patch 2 a selftest that reproduces the problem with a
-small guest 2 that issues SIE itself (modelled on the vsie selftest that is
-queued in kvm-s390 next). The series is based on v7.4-rc4-260-g4dce97c6c265.
+The rewind is how vsie repeats an instruction: STORE FACILITY LIST
+EXTENDED after the facility list that guest 2 designates has been
+shadowed (handle_stfle()), MOVE PAGE after a fault was resolved
+(vsie_handle_mvpg()), and the instruction that is reported with an
+addressing exception when guest 3 touches memory guest 2 does not have.
+For a guest in ESA mode the instruction is skipped instead. The first
+STORE FACILITY LIST EXTENDED after every entry into SIE returns with its
+operand and the condition code untouched, so a program in the nested
+guest that looks at the facility list sees zeros.
 
-Why it matters beyond one instruction: backward compatibility is a
-defining property of this platform, and the ESA/390-compatibility mode is
-the architecture's mechanism for running older programs on machines that
-only start in z/Architecture mode. Any hypervisor that runs as a KVM guest
-and gives its own guests that mode depends on vsie handling such state
-descriptions exactly like the machine.
+Rewind the instruction address where the format of the state description
+has it.
 
-Testing (z14)
-- On an LPAR running v7.3.6 with patch 1 (the host owns SIE) the selftest
-  of patch 2 passes all three checks: the unused doubleword stays 0, the
-  PSW ends behind the last instruction, and the first STFLE stores the
-  designated list.
-- Without patch 1 (v7.3.6, test kernel running as a KVM guest above a level
-  that passed ESA mode state descriptions on): the unused PSW doubleword
-  comes back as 0x7ffffff8 and neither STFLE stores anything. In such a
-  nested setup above a host without the fix, checks 1 and 3 still fail
-  with patch 1 in the test kernel, because the defect acts once per level.
-- On a host whose lower level refuses ESA mode state descriptions the test
-  skips (validity 0x0001 seen by guest 2).
-- KVM selftests (12 s390 tests and 5 generic ones) and the s390x
-  kvm-unit-tests (37 pass, 4 fail, 21 skip) give the same result for every
-  test with and without the series (v7.3.6, nested setup); the 4 failures
-  (sclp-1g, sclp-3g, css, edat) are the same with the unmodified module.
-- Built with W=1 and sparse without warnings; checkpatch --strict is clean
-  apart from the MAINTAINERS note for the new file.
-- Not tested: MOVE PAGE partial execution and the addressing-exception
-  path for a guest in ESA mode. MOVE PAGE is not available in the mode
-  without the ESA/XC facilities, so the first should not occur.
+The selftest in the next patch reproduces the problem: on 7.3.6 the
+second doubleword of the PSW field comes back as 0x7ffffff8 after two
+skipped instructions and the nested guest never stores a facility list.
 
-Assistance: the series was prepared with an AI coding assistant (see the
-Assisted-by tags); the defect was found while tracing why a facility test
-failed in a nested guest, the analysis, fix and test were written with the
-assistant and reviewed by the submitter.
+Fixes: b0ad874d9852 ("KVM: s390: vsie: Allow non-zarch guests")
+Cc: stable@vger.kernel.org # 7.1+
+Assisted-by: Claude:claude-fable-5-2
+Signed-off-by: Yvan Janssens <yvanj@cyber.gent>
+---
+ arch/s390/kvm/s390/vsie.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-Yvan Janssens (2):
-  KVM: s390: vsie: Rewind the PSW of ESA mode guests in the right format
-  KVM: s390: selftests: Add a test for nested guests in ESA mode
-
- arch/s390/kvm/s390/vsie.c                     |  23 ++-
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../selftests/kvm/s390/vsie_esa_test.c        | 180 ++++++++++++++++++
- 3 files changed, 202 insertions(+), 2 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/s390/vsie_esa_test.c
-
-
-base-commit: 4dce97c6c265544342e716e62fd24bbb232590c5
+diff --git a/arch/s390/kvm/s390/vsie.c b/arch/s390/kvm/s390/vsie.c
+index 3ce133f20fa2..58afe913bff4 100644
+--- a/arch/s390/kvm/s390/vsie.c
++++ b/arch/s390/kvm/s390/vsie.c
+@@ -948,6 +948,25 @@ static inline void clear_vsie_icpt(struct vsie_page *vsie_page)
+ 	vsie_page->scb_s.icptcode = 0;
+ }
+ 
++/*
++ * Rewind the PSW of a shadow scb. An ESA mode guest has the eight-byte
++ * ESA/390 PSW in the first doubleword of the PSW field: the addressing mode
++ * in bit 32 and the instruction address in bits 33-63. The second doubleword
++ * is not part of its PSW.
++ */
++static void vsie_rewind_psw(struct kvm_s390_sie_block *scb, int ilen)
++{
++	u64 addr_mask;
++
++	if (atomic_read(&scb->cpuflags) & CPUSTAT_ZARCH) {
++		scb->gpsw.addr = __rewind_psw(scb->gpsw, ilen);
++		return;
++	}
++	addr_mask = scb->gpsw.mask & PSW32_ADDR_AMODE ? PSW32_ADDR_INSN : 0x00ffffffUL;
++	scb->gpsw.mask = (scb->gpsw.mask & ~PSW32_ADDR_INSN) |
++			 ((scb->gpsw.mask - ilen) & addr_mask);
++}
++
+ /* rewind the psw and clear the vsie icpt, so we can retry execution */
+ static void retry_vsie_icpt(struct vsie_page *vsie_page)
+ {
+@@ -960,7 +979,7 @@ static void retry_vsie_icpt(struct vsie_page *vsie_page)
+ 		if (!ilen)
+ 			ilen = 4;
+ 	}
+-	scb_s->gpsw.addr = __rewind_psw(scb_s->gpsw, ilen);
++	vsie_rewind_psw(scb_s, ilen);
+ 	clear_vsie_icpt(vsie_page);
+ }
+ 
+@@ -1413,7 +1432,7 @@ static int vsie_run(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
+ 		scb_s->icptcode = ICPT_PROGI;
+ 		scb_s->iprcc = PGM_ADDRESSING;
+ 		scb_s->pgmilc = 4;
+-		scb_s->gpsw.addr = __rewind_psw(scb_s->gpsw, 4);
++		vsie_rewind_psw(scb_s, 4);
+ 		rc = 1;
+ 	}
+ 	return rc;
 -- 
 2.47.3
 
