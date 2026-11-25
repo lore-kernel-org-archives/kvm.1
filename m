@@ -1,19 +1,20 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.130.79
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795625771;
-	b=h+A3GJIUWko3PK13g4FmYuHqzFlR5ysSRIpVU4sObFnZdi7mliOxPmXSHRWs7+JPe92E
-	 hBm1lVya+8up8i2mSG6Nxzk/YBA9hdWKJowZ0/0EBWzNME5keneoNLSDdV69thknXWuKn
-	 E+hDYdQOyO6AWqywGwME6AzxBaOMFZx9b4C1s3pKMMoGrBT9SYh3ih9paCzpG6BremmLF
-	 w/8q8rOCOiOBb67l4HS29Sw4DAmutXS+piytAoUf2ENfRwl/vcvGTWmQoLxEQOvVtOG4D
-	 7JHpNHfBDNL9AVJ9s4mBsQpfLEmRkyUBx+Zd6GUXqw9UR1MVc42XPKTI928ut7DvT8g==
+	t=1795625772;
+	b=PdbFMpUoNajTPURLR3DoZpH2yHtP1Pli+zqzSj/leQZpRdCMvjH3caGSxUMn8V4j8Y3t
+	 gZ7pXt0JvE0x3H/MsSLgdSNbHiKVXJMckQAyemNhUgXlcbg1TW2SMlQcg9l3PD5tP5KAn
+	 C14s65/ofRMawQt5RmrECGQm9Ay2Vv4llykcJjJlTO8sdw/2xwH467EKs0dHF+yR/adzN
+	 RQFFSE+IHjWlfcizobfkslxzeQXuPmWoIBbNX7xgwYnNNE5ytNhqpBQ2oBPwTSiQAV6Xu
+	 13Lshn/KMRsRWhNEf0i4GJBR11Z/GoDBGM01GUL0InXCpfyqVjB/ElpPjo9ZAE9f9CA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795625771;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795625772;
 	h=DMARC-Filter:Received:Received:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy:
-	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-Mailer:In-Reply-To:References:Content-Transfer-Encoding:
+	 Content-Type:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
 	 X-MS-Exchange-CrossTenant-Network-Message-Id:
@@ -23,12 +24,12 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=BmaJJ4v+BSISTMNtROCSTH+HroBEIUnZpLXM6XnIkQI=;
-	b=xxUMd8AS4x6wq/jzp5gR6sFyNzZ+5u9Z7ZqamNLNya3hx+EJ4lIW89Ye9LZJfrZ9KNOo
-	 Zz2NX4MJ3w3iavTzDGKkCas+G2A7vR3O6BQfgEw/ItgQ13HMzC0S+m0fzvqumaLH6PWAi
-	 zPO7SfWrGB6QNfAjihCReMKWVHxR4k1JpmpkRdp3WpS/j2fa+Fih49SLxqXHquH+lTtvZ
-	 DTKwr5vT2q69Tb9uTva/wjbPMk8oB7Forh5tPl0be/zREt09Xv4TFI/sNSmsNhmtVQoF8
-	 kj1wc/RmeMML/iLKlGHesCyaTzZAfZzWLj5EThp+pIRvJjoIyYLq7HOiYKJBsl0ARPQ==
+	bh=jc/xBKq0iFS5p+sDc7LL6t40Gugo0nFzq65Ak5y/rks=;
+	b=unGx6hVpF3n768mJ7KhwSR8K+WhKSuKrJ97LtR0Khf6Psq5DVchiiLxrGseDIfe2al7w
+	 8uiROYzVPM3y5zEM2/kjuSbq8/SicXNO0EF2zFzqoIAF+rTRQk2g7lm7bBjQ468KtzLM/
+	 aNnQlEnDl5udrhie61i+XEzL8Bsa3zfoJyIyXukHqOxfPr7xo+szaA6ON3zUg4+W6yMsq
+	 sqzt9ecwU/3mYkyoPIPtwqzbna2DIxfYXVLOT+/E3UqyfBOiyjMoBv6gAYblsgabTRRxX
+	 aT0JKczAAwjPecaCUUBV3WElT9NQ95C8lSVKuhmQkc0PMm+SqoFRy4PrQTFzjYnxiPg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=cyber.gent;
 	spf=pass smtp.mailfrom=cyber.gent;
@@ -37,18 +38,18 @@ Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazo
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D208A606A323;
-	Wed, 25 Nov 2026 16:56:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D208A606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF59C606A32E;
+	Wed, 25 Nov 2026 16:56:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BF59C606A32E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cyber.gent
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyber.gent
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t/Gi+XcwAXrKOKbEi0Qi0a3M4Rigu4qptdm7yELBusb6Scnr6BeenDec3UtkNDM5g5u6YqWTfOQnlwjOmpNBEfBQz4ol4+vPPTGq7BsgqrNFimdEgf0loNeWP7+lAPvpnEnbgNkSI7spEWduy9mUF9gMQHLEYNHUGGUinrYpQ6Lgco9yZXd6Rd83pc6QCZIJzvMwiX28FzJ9Z6I0+704h6gQ1Z1X75nQKv4sZnvODJVAr3ANMvjqZ7KashOHsnVueU9umu36fyUxI2fGalYygi9a5UOS7itzze5JSCCIS28WkBMsQbn4pq2ASXPfx1OFfrsEIx59/7U5wjlmxgDGwA==
+ b=sjtgdMD2KPRGthsK8kmRsdNBFi2a3vJcfIA/sXKfw6cQkNINljj+3zdzfr6mQn9fTPDMWgGKXa9p33H4JzdlWTnnJaAf6lCLH69mwoi6rD4wAsndC10BNuxMmzG+ap7+GGbwM+JKKV+irxaMztt3usxg2t8X0frbzXWfSYuOqvFJGYeQfbENVeFvFFCh92GoikGJDgZa0560GYATsqM64fK4+T5xxhWibwYALifGd2gE0M89Cnlym62LlCI5J7fbImJmMJp7zDGXmxi81N7mFFODRij+jC3ZCfx9zKGrkp6xsQ8NNVFkiat8A7/ff76Pa8Tn4fCXIoAcuhASVbrTuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BmaJJ4v+BSISTMNtROCSTH+HroBEIUnZpLXM6XnIkQI=;
- b=o+/imUg30fAY5qdx8TDrO3S0l9ihMtOEay39cW1aUQeCXkCdT9LDop3dlkilFVXD3hXWqdmTrqkF0h2GDfaevPU/zFVFVfekhxdobdQZFVV2tGbk32BSKv2b2IRtHdTypQdoNlt6yeTUd42afvwJHWlBg8/V8I14ecqCflrH46/ztAhX+j8IdO2syf+uVLFwZjdL4S8Hojql+7NzRLStw+fRhd85EefCvhinjONf+dvrkJwcxbuLRtiuKlvejr1psp7dqF90/VSw3nGuflcpBSvKsqcIRz2RyOdPAwBxkGeyokCv4f+XWjXwdtKVtY7I/FTAHqwEOOg3CWTchm0cvA==
+ bh=jc/xBKq0iFS5p+sDc7LL6t40Gugo0nFzq65Ak5y/rks=;
+ b=T94jdGlIXcLdfbibWuSSu2qm1GZ0eBJGsEs76FjrAk+2a1VnhViQSA6KorAcdy3HCN8FoQxwKAkMMqGat7F5b0ahndU/70MmvwjAfpEy5yxk2DKC9H8Qb5d2qJfLxrztBIiQXJmJko2kVAVjvUfFH5f/tCn8rG7uCsIsvd7Ua86e7nZpqCwFklSiCNPXM7MnBp7NQjcJ2D1TKgUOhP9cY+PuOr4EMTas8Ao8vbmqGBcxhpeEmzTZY9h4EB7CFkqaKJvLyGFrThUBgIn1avK/zLybHd0hDu8mJibqs6/Tz2Lwqgp6JrkGCQRq7P9cfKKHZQ2VGLxM/ysE4vXtQiMtIQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cyber.gent; dmarc=pass action=none header.from=cyber.gent;
  dkim=pass header.d=cyber.gent; arc=none
@@ -58,11 +59,11 @@ Received: from AM9P193MB1508.EURP193.PROD.OUTLOOK.COM (2603:10a6:20b:2fd::8)
  by AM0P193MB0516.EURP193.PROD.OUTLOOK.COM (2603:10a6:20b:169::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Wed, 25 Nov
- 2026 16:56:08 +0000
+ 2026 16:56:10 +0000
 Received: from AM9P193MB1508.EURP193.PROD.OUTLOOK.COM
  ([fe80::e7cf:9c42:539d:452]) by AM9P193MB1508.EURP193.PROD.OUTLOOK.COM
  ([fe80::e7cf:9c42:539d:452%2]) with mapi id 15.21.0639.012; Wed, 25 Nov 2026
- 16:56:08 +0000
+ 16:56:10 +0000
 From: Yvan Janssens <yvanj@cyber.gent>
 To: Christian Borntraeger <borntraeger@linux.ibm.com>,
 	Janosch Frank <frankja@linux.ibm.com>,
@@ -81,14 +82,16 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-s390@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/2] KVM: s390: vsie: fix instruction retry for nested guests in ESA mode
-Date: Wed, 25 Nov 2026 17:56:01 +0100
-Message-ID: <20261125165604.3074595-1-yvanj@cyber.gent>
+Subject: [PATCH v2 1/2] KVM: s390: vsie: Rewind the PSW of ESA mode guests in the right format
+Date: Wed, 25 Nov 2026 17:56:02 +0100
+Message-ID: <20261125165604.3074595-2-yvanj@cyber.gent>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261125165604.3074595-1-yvanj@cyber.gent>
+References: <20261125165604.3074595-1-yvanj@cyber.gent>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: AS9PR04CA0078.eurprd04.prod.outlook.com
- (2603:10a6:20b:48b::25) To AM9P193MB1508.EURP193.PROD.OUTLOOK.COM
+X-ClientProxiedBy: AS9PR04CA0084.eurprd04.prod.outlook.com
+ (2603:10a6:20b:48b::26) To AM9P193MB1508.EURP193.PROD.OUTLOOK.COM
  (2603:10a6:20b:2fd::8)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -101,117 +104,122 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM9P193MB1508:EE_|AM0P193MB0516:EE_
-X-MS-Office365-Filtering-Correlation-Id: 25f637f8-ae96-49f3-b0c2-08df4b150083
+X-MS-Office365-Filtering-Correlation-Id: d62df646-c6e7-45de-897a-08df4b150186
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|10070799003|23010399003|366016|6133799003|261009223027099003|18002099003|3023799007|10067099003|56012099006|261028144727099003|261102123227099003|261026121527099003|261022075727099003|261022105027099003|261021121427099003|261021123027099003|261026140227099003;
+	BCL:0;ARA:13230040|1800799024|7416014|376014|10070799003|23010399003|366016|261009223027099003|18002099003|22082099003|3023799007|10067099003|5023799004|56012099006|261102123227099003|261026121527099003|261022075727099003|261021121427099003|261021123027099003;
 X-Microsoft-Antispam-Message-Info:
-	AhBQ4RQdz5/Bi7x+69QagneQ5yfYKEpg6TEwv57tAhmKCfAVkdsBVFre4kCKtIN9p6i4VltXPamp7IzwLWOCeLQCkhe1O0FBb7NirtZkQZ5rWqM4pew0DnHAaOHrvMIEvEyu2PRryChavN/I6dCvHzSbimJCRHOCeeQ586KZHyCVcAH4JOh043w04cxupbGznYm7rSmJdeKHHbZXEc0w6urwdgkw4txyfJFacen9gTMvhLkL0ghinr0a/rclNIvVNAISu7GngiWzuh3ZBIg6LBHHx+n5FcqgGFiyCSefK/Z1/qNc+WMBj+DZ2CeaOc98TIsxVWVx16fdvET4dckb9r0bjgvpuFA4RePioNpFLnKRd8plKQgmhoLKc1Fd+fqLg9eyuvCzG5PJeaYuYOEk7id1is3OzWPNhWqXd/LiQ4bKzqmD/B3EsOQpnI3H2NMyNgxcNbGVfLiNwQCOKYqRsYq7j+joHQR5DAaT0rsTmE5nQzadzFeLY+bStY+glslLrZpjMtDbqKuNaBg/cppu7BjJ9v5dfelu54mydyLj7/OoiNKWsIqzFOeleebcg0hPSI220gaGus2BsRa8sKp37i0Z9+guMQ6EgDneX2RkGT8=
+	mSfwa0dbnwkf3+prJSzUzq/1mVrE4M1zb//aOMq/O+hqakkb0zDwkSKPp1C2S+XuORNS82HloSB+g7gH8zko5/aCoq3kdLDXMR9t1yabXAUfwBJ68RFXl1zNCxz+lVj3cCSAr1du7LqEHRIKFOGUlOJwzK63qfbd92YBqhOtSRuWNbGCsqUgim2AzB7sVy7jd0duAqEi4H9STobae/qNV9JuHbIii2nTG3InNAHojzhPAl1goOTCh9QnKF8qczqkmXQYKN1dX9YzFHWg3XYOZK4l98fgA2eU5HPwnNpWRgCY7ZxZKo9xScPBa9odNYqsB/D4+D3SSfeZuELQ4h7IGpFVsrD9IzE94MIwT4T2wdWjXQjeK5R6hV6j/ndxV1JMIc9V8SUct0Guev+jFfwv3SjFymrjDV9dTbNx4q+hrLbYkUQ6AHMw2xFM9N1+UwS2oRs5dz7WkJ/hpF6QbSbfu94JiZob9isyZ6Iz5stniW52M3CIcXKf6IamjL7ivDw84Ja32bsVwHQh1L0pphreIXzawZ6CV6AFk6bJ+gt26rSWDOrpvBBrtMKDQqHS/futxP0e3gBM/wck1HH116AaOagkn3gLTiE6B+IMTc9WzEnbdBRyeF5Xzs2HgPf7xLEJqidWRP27mJHa+Rcaa/h2NH71cag//bLPXWaw0TV+trg=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P193MB1508.EURP193.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(10070799003)(23010399003)(366016)(6133799003)(261009223027099003)(18002099003)(3023799007)(10067099003)(56012099006)(261028144727099003)(261102123227099003)(261026121527099003)(261022075727099003)(261022105027099003)(261021121427099003)(261021123027099003)(261026140227099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P193MB1508.EURP193.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(10070799003)(23010399003)(366016)(261009223027099003)(18002099003)(22082099003)(3023799007)(10067099003)(5023799004)(56012099006)(261102123227099003)(261026121527099003)(261022075727099003)(261021121427099003)(261021123027099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?W3Qx622/CIEmjU1xcyRF6PKlAPtybKcNevGilxwKqK38U32g22lzjGtJ2Rgc?=
- =?us-ascii?Q?BgTH3q6sAt2zcBe4jPQIED9k4YsiOtpFvLWGHEv6DSBZ0e6SYRnSiGZENQa7?=
- =?us-ascii?Q?9Z9oFwsMYbbMFCaPNfqDyWCjF6hIDESD6OTpMojGPq1DafPwUae79rHVLd0s?=
- =?us-ascii?Q?bsdh8GujPQdB5YeW4VDtNP2cMi0VQJu5MQQVvf++ilx6uNvXsMwhXHHhI8G6?=
- =?us-ascii?Q?qj+89ieVuNO9hZ95f9lNQYaKsahPNp2qLmhCggcuIHXa8BZr+JCz4ifgG+pA?=
- =?us-ascii?Q?d8FUAYllcyNHl328U1mO258ZFZY96cMGXy/3IX4NHjCo0qGc063iIqxSxelo?=
- =?us-ascii?Q?xB2RwczlbIwHIeJw/AI5gi8TGjxTEO4i1eZG1xodbzALDxUVfQOlfYFkko0A?=
- =?us-ascii?Q?FW2+AHe9diqkdlrolcCPnbzPVGoDq/1jpqpm0QJPuEYuDQDxl27b/tnkLs04?=
- =?us-ascii?Q?WjPf10dIUp4S0dKYCm25z1tbhAEwtvw0tGq4BkaMovr2lFiJEZn6X0Y/uMRb?=
- =?us-ascii?Q?vlGZQhfp8sH+INZ9VAwxq4KRkAf9d1nDzum1jje4ZDYiTn5fxlHRoM2YGC+0?=
- =?us-ascii?Q?DitIUxBAIVVWoYlKES8KmlypYKdK0EMe6ym17xPiI8u1CBxPpL5Zz3tVMKix?=
- =?us-ascii?Q?65qfluB/iDjfQILZr2+YnPYSuHAt0W/wM+TTEKTpo8cNHHwF/wvl7xXDTU7s?=
- =?us-ascii?Q?CaT7ssbmW3jyUsePXXW7rOjdXBMG0tO0eHGOe8XjTv/9Fyl7NAihafBphkCA?=
- =?us-ascii?Q?SgWtkKotyINwC66i5qPkTDnLIuVUKsb1RFFfZApKfdiHCaAYve7SDt7SMO2Z?=
- =?us-ascii?Q?UaYjMCvBYTdYvil+puptwQg7orqKiwcSJiI+fjWRaO7zw88U9+irGej6/D/l?=
- =?us-ascii?Q?8UN8kTq6P6wf2NMpXvmRPJQRLpJKqTvb3A3R6VhXDOgiNleoytipQRiPstcV?=
- =?us-ascii?Q?J+9iTGchOsMiNze9kM5/vufIh+WTyD+oMTeLFOuF13uhnd+Pnr3XPsUiF3Ar?=
- =?us-ascii?Q?WBqEJsyEKREre/uhS39f++uTXi6avoQLSXH3m6fYWgJajdIUEmBo9FEJvH3H?=
- =?us-ascii?Q?fKzD4Wp3+n2ZbKYbm8tyEDRzQkop5VpoiGbssQfzYrC1713XzUiM6WxfB0H/?=
- =?us-ascii?Q?pzGyXwQby7lXhW/aSsUwlQE5KnJ+xgzkFeQiKJXYtYGR71drh1a5QyHVKtp2?=
- =?us-ascii?Q?rsNF862/QxoRz0bBs13+nIGOuexVv91F0aOJUKTFbzg1idVoHh9rfku0EFIF?=
- =?us-ascii?Q?j3xb3A1DWTGhpM+3aBZV+kuE79VKTIpwFwT2PIXczWi5f2nj2MIdVLGNSFC7?=
- =?us-ascii?Q?d25Rc1D+KNuB6Xfo7mYYUjZLi4bJBvIGk+BvXEMuF91gdM5FGrTMT6yZyvAT?=
- =?us-ascii?Q?dulj6kfl0CaFp70JRKSmMo0GFbPPRSaUzE1Cd+NYAHsGMA/owokxhWYlCYRE?=
- =?us-ascii?Q?3IMiddAnTiD7Xm4XzC5A33fmLgND/qv6rR0dmRJB1ZFE7Yc4CVNnjmzMsmqn?=
- =?us-ascii?Q?ZKDnl/AYFJsewo1tkd7wKkcho8MqSnWBconVH1pCh3uXV81WgwJ3jfF1QyfB?=
- =?us-ascii?Q?Muwiq60cbDpGAyWQToLfbI46aSCJuffveU32hbDaNV96YXi0kgRuzDh8ZU9n?=
- =?us-ascii?Q?bmJYir2L+bF9xpAj2rnyDXuUZ6KzFqGyS0v4bDP6uXbOUFCgDubpBvbMihew?=
- =?us-ascii?Q?kRYukehjtx/fFXZifQ7N9qgpxek/k4FjehI6daPv/Lyi/ygm+N8bsoJgBtAx?=
- =?us-ascii?Q?fi3hjBttGX36pDBvKUtBbl3uJ6O9yuUq+LwosWlS6i5evK/1R7fW?=
+	=?us-ascii?Q?CYhez5VZvfrn22vo8rPNY/ZmJqcDq2PsJLI63ZxQVws7ZTu0Co9dAWrDXS2B?=
+ =?us-ascii?Q?qWDSBS4rl0aUHyIjjGLPm2M1ijlbY/sjqUFHnBqetUT+ZEeAEcnkBXRm/PSM?=
+ =?us-ascii?Q?j3I8hMow5/Vi16NAbKF+oxv3BdpNZYqkyccRY0mBvIokrejdkxH04ONQGHrE?=
+ =?us-ascii?Q?NqYLqCoAAzqz6boQKgwpg8WQjcb44n0z+HTkheAuOGcjL3nemOBO45hWFg/P?=
+ =?us-ascii?Q?LigiBK6acjEnzKecPCQS7UeoQw+KIH8Y07PJCy5W9qqq9oHNFJOCYl6RjYI3?=
+ =?us-ascii?Q?l6xADpupSQC7oBRTJnkDLcdsmcD326CZkEVbXh0RHiMzy8IsSpLvmaBGfsT+?=
+ =?us-ascii?Q?PnrFuHJcFRXT4YUod4/ytAv6d2PdSOe+1VpI/aQW4oRF9Mj9Ja+pKYFFVN1Q?=
+ =?us-ascii?Q?/NJkwXrWEKalDt5rdKOLQIpOCTOkdtonTz6oYUDxxCrF3s+HuuUb4mkg0lpI?=
+ =?us-ascii?Q?5YNGtQ73YMx5rbO8DdVL29xXQIczWSIddCiz6fWkMF9gGxYhcjIGtLv6e4HB?=
+ =?us-ascii?Q?OX4XNVL8Wt5KQ05n9VPpJ28Oh18rYYRtPy5jYdUCGv0MjIeseD82euHzdWqU?=
+ =?us-ascii?Q?dJfMy0Mgl2QINBrJZkaSFH2CTzZUC8snrpO+Z36l1ZzUT2W/1Un+EixRHYFA?=
+ =?us-ascii?Q?WmqFGLxzf6Xs2s8ep8ppDv9ZPOYhLE1twzNi2EuA6x05K61bdRWsUPJdzl+T?=
+ =?us-ascii?Q?3yUUvdyzIxrDzscTCUK/NsS8hF3ezsYljr0CVDRQkaRF7KlSmMVvwhLmz6nQ?=
+ =?us-ascii?Q?g8mzKHL8tZ9YafxhZ8Fiu5jM43A0qyhsYGwfGhTyNZZYS/pPRv7GxrrqLkyY?=
+ =?us-ascii?Q?v+n3g1scyRoivI/lf2RTMgYBZuuuvLdV4+hewygXCjpBxf9M0S3AuIBx5O0Y?=
+ =?us-ascii?Q?7LZ7pGrgtqdiDG7W+DT/XdFB4kndlxXLWDoglvgFWTjqsaoOLMtIbfMJnplz?=
+ =?us-ascii?Q?QLhWszvIWUL98e5tPqR8hP6+IBeJ1i6ZZqc+nWZG1tVtakRqhynBMSaMPKo0?=
+ =?us-ascii?Q?D48ilQP48T1gnwCoLxybej0KVyjcT58bFkvyonBEFFl20Ipf6FUopgBdLVBr?=
+ =?us-ascii?Q?ARUaZ5OntGJv+a+8/VqCL8IcDCY+lbtEi32nghTaxhqkkQ/AsEXAGbhG68YR?=
+ =?us-ascii?Q?Uy2a3lp7EGMrs0SYkfCBrUryOMRhCLLtgftw6kMnYUfPHHTwlXOrQq2XDEKf?=
+ =?us-ascii?Q?gSYLeRJ6F3bx/gkksFMHMMMwimsWMgQfASowS8RgCOLfFo6pvk8+cpmtQj4e?=
+ =?us-ascii?Q?aGm9TkfT7pVfiGVZCTkhp2AU26bXnzAiYwBYqIQzx+rtQ78gjyZTXRss/abv?=
+ =?us-ascii?Q?8ULdFYx6CyHLtL+Hi7gFejW9nekQMX9H22SnMjxTkePmw377ueP9ioG+as7+?=
+ =?us-ascii?Q?kd6gZOlBsCEsrmP/tcMPSdWAngft3QT8Q26PVt+IG0nZXzKHkB3yJqeUoijH?=
+ =?us-ascii?Q?A0qpJLv+olmLPEq+HsrgK2Owvwx3UiWd7WKF293wK9tbpWIgxVl0bN0IzjB4?=
+ =?us-ascii?Q?lgfatCHFL7cnaWqmuuVeX5IpD3gJrionEv5EjVQbjRNkhgLWXvta23vyTwUe?=
+ =?us-ascii?Q?kmIuM7OTcqNT4j/tzP8eWibqIXql4gdR3809NxUNc2Qr+R/oAo0qFZqtBKYS?=
+ =?us-ascii?Q?6PGtkFZvNk7tkIL+lbefmY0hsEbL13hN8cI2U6EOVNA/PNTLYkBxRe7C1M2c?=
+ =?us-ascii?Q?rMlJzJ+Y9QEco9VxVc+0mYlaw7sa+Gg4NLSR80d3Cp7iEIlA1ouU6ZZ29OcW?=
+ =?us-ascii?Q?TCX3wu9H3WtgsuBwmoN9i0NFIKA6aDACWBcDStAeVgOyFZqMqdk4?=
 X-OriginatorOrg: cyber.gent
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25f637f8-ae96-49f3-b0c2-08df4b150083
+X-MS-Exchange-CrossTenant-Network-Message-Id: d62df646-c6e7-45de-897a-08df4b150186
 X-MS-Exchange-CrossTenant-AuthSource: AM9P193MB1508.EURP193.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 16:56:08.5896
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2026 16:56:10.3352
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: d5a0a0d6-18b4-44e3-8e5e-e5dbe37f9ee2
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /iJX4XIFJNKbEMJ/e+cxh0C/a+762Kzto40OR+Y5ic/tJdCBFhA9XYZTqOpfQlJMVNNK+fbXvUzVo5HyrMSm8w==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8s2aNavXNU7BssCftQ7VLb9CmJ5PaQ4pGC63E1Q38/Nch6hY3FSz1z63W0eolX84V056RjegYOhpOjdFZyKgmQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0P193MB0516
 
-This series of patches fixes vsie rewinding the PSW of ESA-mode nested
-guests in the wrong doubleword, which made an intercepted instruction be
-skipped instead of repeated. Patch 1 is the fix, patch 2 is a selftest
-that reproduces the issue. The base is the current mainline
-(v7.4-rc4-260).
+ESA-mode guests in vsie have existed since commit b0ad874d9852 ("KVM:
+s390: vsie: Allow non-zarch guests"); they use the 8-byte short PSW -
+the mask and instruction address share one doubleword.
 
-Claude has been used to try to find this bug; it was used to figure out
-what went wrong and what would be the most appropriate way to fix the
-problem. I've reviewed, verified and tested the results myself on my own
-machine (MTM 3907).
+vsie's PSW rewind originally still changed the second doubleword, which
+is unused in ESA mode, so the instruction is skipped instead of
+repeated. The visible effect is that the first STFLE after entering SIE
+does nothing in a nested guest.
 
-Changes in v2:
-- patch 1: shorter commit message;
-- patch 1: removed the comment block above vsie_rewind_psw(), added a
-  short comment in the ESA branch (as requested by Janosch);
-- dropped the Assisted-by trailers (removed from the documentation in
-  the 7.4 cycle); the AI assistance is disclosed above instead;
-- no code change in patch 2.
+This patch adds a vsie-specific rewind function that handles both
+formats; no short-PSW type is introduced - for ESA guests mask and
+address are written into the mask field.
 
-v1: https://lore.kernel.org/all/20261125151607.3039477-1-yvanj@cyber.gent/
+Fixes: b0ad874d9852 ("KVM: s390: vsie: Allow non-zarch guests")
+Cc: stable@vger.kernel.org # 7.1+
+Signed-off-by: Yvan Janssens <yvanj@cyber.gent>
+---
+ arch/s390/kvm/s390/vsie.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-Also - a note on the context of this fix; these problems were identified
-when trying to bring up Proxmox on s390x in my lab while adding support
-for non-Linux guests. This bug was found while trying to bring up z/VM
-as a KVM guest. There is another patch set on its way as an RFC to add
-the ESA/390-compatibility mode for first-level KVM guests, for programs
-that start in ESA/390 mode themselves, such as stand-alone utilities and
-the early IPL code of older systems. z/VM's ESA guests, e.g. CMS,
-already run as nested guests with this fix; what is still missing there
-is support for its ESA/XC guests, which is later work.
-
-I understand the concern wrt. ESA accommodations; the annoying thing is
-that there are a bunch of potential guest OSes from the transition
-period from ESA to z/Arch only that need this to work to survive their
-initial bootstrap until they can reach z/Architecture mode; one example
-here is the IPL text used in z/OS 1.10->1.12.
-
-I also understand that the support cycle for these systems expired long
-ago, and that the support cycle for a 3907 has also expired. My
-remaining question here is if you are open to support for this, as long
-as this does not provide a significant amount of overhead for
-maintenance.
-
-If you want to discuss this off-list, I'm also available on the Open
-Mainframe Project Slack.
-
-Yvan Janssens (2):
-  KVM: s390: vsie: Rewind the PSW of ESA mode guests in the right format
-  KVM: s390: selftests: Add a test for nested guests in ESA mode
-
- arch/s390/kvm/s390/vsie.c                     |  18 +-
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../selftests/kvm/s390/vsie_esa_test.c        | 180 ++++++++++++++++++
- 3 files changed, 197 insertions(+), 2 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/s390/vsie_esa_test.c
-
-
-base-commit: 4dce97c6c265544342e716e62fd24bbb232590c5
+diff --git a/arch/s390/kvm/s390/vsie.c b/arch/s390/kvm/s390/vsie.c
+index 3ce133f20fa2..ed40d40d89e4 100644
+--- a/arch/s390/kvm/s390/vsie.c
++++ b/arch/s390/kvm/s390/vsie.c
+@@ -948,6 +948,20 @@ static inline void clear_vsie_icpt(struct vsie_page *vsie_page)
+ 	vsie_page->scb_s.icptcode = 0;
+ }
+ 
++static void vsie_rewind_psw(struct kvm_s390_sie_block *scb, int ilen)
++{
++	u64 addr_mask;
++
++	if (atomic_read(&scb->cpuflags) & CPUSTAT_ZARCH) {
++		scb->gpsw.addr = __rewind_psw(scb->gpsw, ilen);
++		return;
++	}
++	/* ESA short PSW: mask and address both live in gpsw.mask */
++	addr_mask = scb->gpsw.mask & PSW32_ADDR_AMODE ? PSW32_ADDR_INSN : 0x00ffffffUL;
++	scb->gpsw.mask = (scb->gpsw.mask & ~PSW32_ADDR_INSN) |
++			 ((scb->gpsw.mask - ilen) & addr_mask);
++}
++
+ /* rewind the psw and clear the vsie icpt, so we can retry execution */
+ static void retry_vsie_icpt(struct vsie_page *vsie_page)
+ {
+@@ -960,7 +974,7 @@ static void retry_vsie_icpt(struct vsie_page *vsie_page)
+ 		if (!ilen)
+ 			ilen = 4;
+ 	}
+-	scb_s->gpsw.addr = __rewind_psw(scb_s->gpsw, ilen);
++	vsie_rewind_psw(scb_s, ilen);
+ 	clear_vsie_icpt(vsie_page);
+ }
+ 
+@@ -1413,7 +1427,7 @@ static int vsie_run(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
+ 		scb_s->icptcode = ICPT_PROGI;
+ 		scb_s->iprcc = PGM_ADDRESSING;
+ 		scb_s->pgmilc = 4;
+-		scb_s->gpsw.addr = __rewind_psw(scb_s->gpsw, 4);
++		vsie_rewind_psw(scb_s, 4);
+ 		rc = 1;
+ 	}
+ 	return rc;
 -- 
 2.47.3
 
