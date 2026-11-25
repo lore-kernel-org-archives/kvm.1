@@ -1,49 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795606265;
-	b=gQyz07qgdlWhBRySL7ACl2LC/fSC7dNq9sp23Ak/ngcwS7M6Zjkdmrl+u4J60j2IT1ey
-	 jcWUdkFN2rGcusfBegKQxNCGiuCeTjmyqnG4byGKbOZ9wxb80saVYZR3/kpr3g4/uOSd/
-	 N1kFq0vN2R5NxUr8PXig2/eZhZHD/GyTyZp6iW/fNEwXVcYPpu76RadKI2QulTulS9x/4
-	 ZbMem9mqkskFasoepf3uRQwlaHfIlaXSdVAAba0iOuFRquufUKogBpUVCIe2mtx0NDw9D
-	 atNrqaeFmOgSpYroQORHQG9cnIZMZZ7DDmGOKh2HCaCD1x5LQ7bdnxWeDW2wgzJffSg==
+	t=1795606329;
+	b=jVOg9LNdvlVSXnOPEmjPgjYuZ0RfCv2uvO4Yveo4nFKqCmkfwGB/TVErQqwVp7MqTEUl
+	 LWftnhQQnvqMMZ0c9rAYlpAiJY/yMTjGTGhKCop8eQBixcW6vNIN2SBRG+q5CIo75Cgv3
+	 RJquBB6k7W5BLxaask4LyYvNVirxmYpDbaAcOf3sRtadBAqQ7M0huWVmFyv+qexxLnnW7
+	 bj7MjxNcEClp0JKd5OoKFbmlA9dsl6blPUpqtKWoJ3fai48+RWG3QtvsrSnTtYIdzMp09
+	 mn0PjoCurV6I9zvzNMJgrDQ1iIf2hl8icbpj0+2ttXAe8gUV6ykmvYZofekYeuMfmxA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795606265;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=HetvVdDBuZv6qCUq12I/7l3z/I27Ld6RsejP9SDDZaI=;
-	b=PRKpgpH0gGF4PSItkLr4NsvWM9UXSH0q49uaMPVLDfA6gl7yrNeOQBQ5qVSYylQdqUF4
-	 DZDRmi6a9rQ1SUlXpM9GB123Qhe3LyNfybFpGKGAfCkoGqX9lAEhlv1rsIAvn7qxRqQwl
-	 HpvPpDp7ZTO+yDBosi39So84X9GnRJXX/WX3t7SEQ7mmsepDguTmlcmFcgYCONFE8cW1U
-	 YsG2YRTLdK/x/byMhah/D+Oh8u4aoF1JOqPsbcdlUQTkLRIM8dZXJxhXdvjaySQTuf3lN
-	 zJ2ZdwH2UzUUqXIR5yv3yW5c47gXM9PReg4iiAMQKXUHJHR4RmNHNhDT3VABovuljyg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795606329;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:X-Google-Original-From:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:Content-Language:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=XNwgaAJrA/u9YSk7hAtdQI/k6k5HNaRRAtIFaDIjJqU=;
+	b=eOFR0uARJ8JBiWvHhMQEWF/wHHGYFSKdbCRgdhl/1J/YsuZB+SpIDX54nX7PTIbgAUbU
+	 NWfzOONRR1UziuIRnumJiOsdXGyPg9NccVuRZtQA1tLJQtk/IPgXmplVvBbg3XK1QHt3z
+	 6wz0RnTr2kTOTFZ8A/cUu2YsgBnuQjyNdDwYGMSkepaty0UTwTNC/0aTznDUuj/U8zh9q
+	 W7cqrRzVZ0oCTE+/d1bzrHpqsUGsW+4kKVE0JFo41AaCEa/tUWqIFfRFVZPMaXIBWdm9J
+	 LeRasKR+kkzhBme23zOT+CjbYeVAcvBSO+xazrbdF0apuTDLKfJOfKT0LvGXC+qpwhA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="HDgERNk/";
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7585A606A32C
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 11:31:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7585A606A32C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=G+E7B5rG;
+	arc=none smtp.remote-ip=209.85.128.53
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A8C606A326
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 11:32:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06A8C606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=HDgERNk/
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BDCB2339;
-	Wed, 25 Nov 2026 03:31:00 -0800 (PST)
-Received: from [10.57.32.107] (unknown [10.57.32.107])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4696E3FA32;
-	Wed, 25 Nov 2026 03:31:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795606263; bh=eVwyG6uWjY55RVZo1vPdDd3h3+Zf4SnysFgvq49w8pg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HDgERNk/7JacD8Jmz50wjI2dmunJipQkBs8Z/zZ20zL1bo75wy3ziWEuLrI+mSFhq
-	 IMOQ1D3GfIz0NlU9J07b51Y2Jb97GwTR5klNr+o4AGtAydfunr0mixFc3/mXywVImM
-	 YMkkP/fBNRwXT2Z+QDSH8MPNGAwXvuKeN14BUlZk=
-Message-ID: <10b37dd6-a32b-46bb-8629-347805edb9d3@arm.com>
-Date: Wed, 25 Nov 2026 11:31:00 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=G+E7B5rG
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4bb72b44a97so48670955e9.0
+        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 03:32:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795606327; x=1796211127; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XNwgaAJrA/u9YSk7hAtdQI/k6k5HNaRRAtIFaDIjJqU=;
+        b=G+E7B5rGjbH2MpV2Y59G2UjyMkJM3wELyqEB82v+ghhEfU7/Qd08Q0Sf6hyXZ63Cfk
+         O/Plcf+aviD2PVC04U3ApbDRPSZoAbuiD2jhdo1vF0boZAVXi+Ovsldhhv6DkUL7MAoJ
+         mcKhmJlCbmlBlzxVzrBPPgLmPUqx5k0576Ok7i4pk7JhWL4azLlsegysKzX61HNvPdGT
+         WXdFSUY09GeCKQaPWP3pyArttT9agafgSRszdYsgeNGRZZ9OvuAAMyRDDEK2mDka6GwT
+         avpu0WxDPgv+TNL6Fu8DRYiLHy7tRHmXJJRO9hWuC/nfLpu/I7VdGRuxIbowk0to1Gm2
+         bVtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795606327; x=1796211127;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=XNwgaAJrA/u9YSk7hAtdQI/k6k5HNaRRAtIFaDIjJqU=;
+        b=qbAc0D1sE85CdpJsNddI6lQsGmhlCGvs1cyqK21hXjAOtmys+7zB0yukdgUGCnGyeV
+         pCsGFw1BBa92Nyov/IayRNq7FOEBTVTlQAMCyRUUIhTpunAei87cBdWgNIfZK8y0Pb+b
+         ksg1HgwS7WnWIS8vhKhh66KVuaKUE9yVMcstFtahvnH6/DX8edF2J1stgqXN2FLpeUVr
+         6rMGtVbYCL0gpb1yfK5Bk2pK9YjI2lxmntMVUk0DZigqOk17KCBYkzuOrUGcmCTQ5K5M
+         DXBeeEQt6AexGXhHAab8q7CTfuul2G1Tgm0i4oO02VyzSj4C3ka/uOCjubrsSb2ZnCpq
+         is6w==
+X-Forwarded-Encrypted: i=1; AL+hErE0k4zyhQkfe//YhDVopxsx+S2NzxIbNkyboZjsknS0GHSQtkSqdj1wg14w6DNcQGaW6lY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+vvwNl3bxnlWYS9ASf/dvk3I2T/b6aQ7on1oItJdNwT/QPdyh/
+	cE9kgEMk1/LbDV+klY6jBL8iG1VP7dpTZcniMzDSfhCvIbsSTDot5rMJ6OoOPHte
+X-Gm-Gg: AZFdTZc7Yn+YNu/ruBDV1g89jFHSXm/D4QA83CM46aoyHuDoz3Ybbi0OhHC1cn5reQ0
+	VPT9E+RRn6aAvBcuWou2XESjczd5l2x+aLg1KQgxj8f7NqkP9uJKO8jx59QBw5ZxT9FvMiJ/bBO
+	a7e41/A6EOHE88/OazR5GUTGTxVxViOaLjX+0Slp7ef4XxHTa128cVkA6nEbesUr4SLqMhNDyha
+	SfIYeS9E0MxOTfPJSsF5P2tiZbT5qZAC7U5ZKr7ZGj1UYmNqucmj4XqZFD+Z9uu51XEhjs3pQ89
+	j2W/NvZ0L2i0F1umMkPNP9bZSs2WKofo5buUMZIVfw8Lhe/7L1JpV9Nf/deN8TFZmK6Rzk42TrE
+	hTnFdzSd2+Cq2D1Is5jcsrBrGKyxC0EjQiFzwU+L/0drn5XZOLfSIHuSTn1yizelvL2bBFsknn6
+	AUPJUUhqRIc+enGiqL9DQGKGbFY7ZH7D5ZL/Qc6DuMsFpa3cgcDvS9/xSqm64psKSHiA3jMHOtk
+	7Tbf4iH8FIHn8UcGLfHZLGC0r0Lg9/GA724qNawSBHOH32p8G7fW8k9DCwCfLMW3vrlKM4TXknB
+	EjCqGmx+w4kZGgYNB91AYwWP4sufE5suK+PrvyukpyMJcZQ7a8YFhOCP
+X-Received: by 2002:a05:600c:848d:b0:4a4:3a2d:15da with SMTP id 5b1f17b1804b1-4bb88812026mr333238515e9.15.1795606327221;
+        Wed, 25 Nov 2026 03:32:07 -0800 (PST)
+Received: from [10.45.18.224] ([15.248.2.12])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb905f1489sm314735755e9.0.2026.11.25.03.32.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Nov 2026 03:32:06 -0800 (PST)
+From: Paul Durrant <xadimgnik@gmail.com>
+X-Google-Original-From: Paul Durrant <paul@xen.org>
+Message-ID: <02403720-6eaa-49d2-aa2c-297e9a9aa6c2@xen.org>
+Date: Wed, 25 Nov 2026 11:32:05 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -54,124 +94,42 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/11] KVM: arm64: guest_memfd: Check mmap support when
- preparing memslot
-To: Ackerley Tng <ackerleytng@google.com>, sashiko-reviews@lists.linux.dev,
- kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
-References: <20261123104233.95710-1-steven.price@arm.com>
- <20261123104233.95710-2-steven.price@arm.com>
- <sashiko-outbox-229096@kernel.org>
- <CAEvNRgGU+z609edF+Mw8xQ0NDUDKn9jjxJjJWTyUqJ0N2BGEHQ@mail.gmail.com>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <CAEvNRgGU+z609edF+Mw8xQ0NDUDKn9jjxJjJWTyUqJ0N2BGEHQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v1 18/21] hw/net/xen_nic: Bound the TX and RX rings'
+ producer index
+To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
+Cc: xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony@xenproject.org>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Jason Wang <jasowangio@gmail.com>, Hui Peng <benquike@gmail.com>,
+ Mark Syms <mark.syms@citrix.com>, Feifan Qian <bea1e@proton.me>,
+ David Woodhouse <dwmw@amazon.co.uk>
+References: <20261124232247.23169-1-dwmw2@infradead.org>
+ <20261124232247.23169-19-dwmw2@infradead.org>
+Content-Language: en-US
+In-Reply-To: <20261124232247.23169-19-dwmw2@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 24/11/2026 23:30, Ackerley Tng wrote:
-> sashiko-bot@kernel.org writes:
+On 24/11/2026 16:22, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
 > 
->> Thank you for your contribution! Sashiko AI review found 1 potential
->> issue to consider:
->> - [Medium] KVM: arm64: kvm_arch_prepare_memory_region() rejects non-mmap
->>   guest_memfd
->> --
->>
->> commit a0665f8dc612d05686ef019cc8462841573fe88c
->> Author: Steven Price <steven.price@arm.com>
->>
->> KVM: arm64: guest_memfd: Check mmap support when preparing memslot
->>
->> This commit introduces kvm_gmem_slot_supports_mmap() and uses it in
->> kvm_arch_prepare_memory_region() to require that all guest_memfd-backed
->> memslots on arm64 come from files created with GUEST_MEMFD_FLAG_MMAP.
->>
->>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->>> index 1db10d8d6db73..2825fccd2a197 100644
->>> --- a/arch/arm64/kvm/mmu.c
->>> +++ b/arch/arm64/kvm/mmu.c
->>> @@ -2839,10 +2839,10 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
->>>  		return -EFAULT;
->>>
->>>  	/*
->>> -	 * Only support guest_memfd backed memslots with mappable memory, since
->>> -	 * there aren't any CoCo VMs that support only private memory on arm64.
->>> +	 * All VMs need mappable guest_memfd memory, as the memslot's HVA may be
->>> +	 * used to access shared memory even if guest faults use guest_memfd.
->>>  	 */
->>> -	if (kvm_slot_has_gmem(new) && !kvm_memslot_is_gmem_only(new))
->>> +	if (kvm_slot_has_gmem(new) && !kvm_gmem_slot_supports_mmap(new))
->>>  		return -EINVAL;
->>>
->>>  	/* guest_memfd is incompatible with MTE. */
->>
->> [Severity: Medium]
->> As reported by Suzuki K Poulose on v2 [1], should
->> kvm_arch_prepare_memory_region() drop this guest_memfd check altogether
->> rather than rejecting memslots backed by a guest_memfd created without
->> GUEST_MEMFD_FLAG_MMAP?
->>
->> Both gmem_abort() and realm_gmem_abort() fault in guest_memfd pages via
->> kvm_gmem_get_pfn() without using new->userspace_addr, and
->> kvm_arch_prepare_memory_region() does not verify that new->userspace_addr
->> maps the guest_memfd or any valid VMA.  Requiring GUEST_MEMFD_FLAG_MMAP
->> here fails KVM_SET_USER_MEMORY_REGION2 with -EINVAL for VMs (such as
->> Realms) that bind private-only guest_memfd instances without allowing host
->> userspace mmap, and on v3 the guest_memfd maintainer noted that this check
->> is unnecessary and should be removed rather than exposing
->> kvm_gmem_slot_supports_mmap().
->>
+> net_tx_packets() consumed requests until req_cons caught up with the
+> raw req_prod from the shared ring. A bogus req_prod made the loop
+> process up to 2^32 stale slots while holding the BQL. Check
+> RING_REQUEST_PROD_OVERFLOW on both rings, as xen-block already does.
 > 
-> I agree with Sashiko here. I traced the history of this check:
+> Fixes: e613b064a88a ("xen: add net backend driver.")
+> Reported-by: Hui Peng <benquike@gmail.com>
+> Closes: https://gitlab.com/qemu-project/qemu/-/work_items/4515
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>   hw/net/xen_nic.c | 9 ++++++++-
+>   1 file changed, 8 insertions(+), 1 deletion(-)
 > 
->     if (kvm_slot_has_gmem(new) && !kvm_memslot_is_gmem_only(new))
->         return -EINVAL;
-> 
-> In [1], Arm64 guest_memfd enablement, !kvm_memslot_is_gmem_only(new)
-> meant "this guest_memfd does not support mmap()". Arm64 had no CoCo
-> private-memory VMs yet, so guest_memfd was only usable for shared memory
-> where the host VMM needed mmap() to access guest RAM. Rejecting
-> non-mappable guest_memfd slots prevented unusable private-only memslots.
-> 
-> In [2], pKVM support was added. The v1 of [2], [3], says pKVM uses
-> anonymous memory. pKVM doesn't really specifically use gmem, so there's
-> actually no change, this check doesn't really affect pKVM.
-> 
-> Conversions [4] made stage 2 faults (mostly on x86), always get memory
-> from gmem. On arm, as long as it is a gmem memslot, it already always
-> got memory from gmem.
-> 
-> Now that ARM CCA supports private memory, we should drop this check
-> completely, I think David noted that right when it was added [5], and
-> that's what Sean means too [6].
-> 
-> If userspace sets up gmem with a memslot and doesn't set up mmap,
-> userspace probably won't be able to set up a running ARM CCA VM, but
-> that's userspace's bug imo.
-> 
-> Imo even back in [1] perhaps the check didn't need to be added, it's
-> just a userspace bug to try and set up a memslot with gmem that can't
-> really be used.
-
-Ok, thanks for digging through the history. I'm fine with just dropping
-the check altogether. I had been trying to avoid changing the behaviour
-of non-realm VMs but if we're agreed that the behaviour can be loosened
-to allow buggy VMMs to shoot themselves in the foot then that's clearly
-much easier to maintain.
-
-Thanks,
-Steve
-
-> [1] https://lore.kernel.org/all/20250729225455.670324-21-seanjc@google.com/
-> [2] https://lore.kernel.org/all/20260330144841.26181-1-will@kernel.org/
-> [3] https://lore.kernel.org/all/20260105154939.11041-1-will@kernel.org/
-> [4] https://lore.kernel.org/all/20260910-gmem-inplace-conversion-v13-12-dd6fbf94f4e1@google.com/
-> [5] https://lore.kernel.org/all/2195c01b-3a17-46c5-a013-66922e8509bd@redhat.com/
-> [6] https://lore.kernel.org/all/av8No1rvJLXwciId@seanjc-mac.roam.internal/
-> 
->> [1] https://lore.kernel.org/r/26a29420-8d27-4069-bbd5-28692c9e8542@arm.com
->>
->> --
->> Sashiko AI review · https://sashiko.dev/#/patchset/20261123104233.95710-1-steven.price@arm.com?part=1
-
+Reviewed-by: Paul Durrant <paul@xen.org>
