@@ -1,113 +1,53 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795616300;
-	b=m+ZBsEktxNOC8JuuJ8ZmKilpIWKVZNqC2V+jQPK9uwclJNtgJ2YgmjUhy84xjJLdXpOK
-	 +Q1nPYFhxosbT4R2NEK9um1FL+euSKhE+OuhWQSaRPlMWB2SNni9h/srNBWyn9EtVzWy/
-	 VCy6X8EdNSZkIeSKtiNx5ZrpY8A603qYThHrAEbb0dwB/YdCbx8iKxFnOtVDDNWsRwc48
-	 eusgxGSAPN/DHJKQoGWiE++WpmDReaAUZuU+SBR0DlO9dXznD7MEFZP8ePqWgWyxzdqws
-	 XjPfrtTHsK4hayP1aV0zQ1oo22EGCqPsCMOxySYIDUridP+J6ODu9qKN24QPjXWCbjQ==
+	t=1795616343;
+	b=kHj7dIL2wn3ASruHD8StgFuF12rYwjv4uZ/ir1scJ7Ppl7Yuay1h+fLRy+QWbfdg96Wj
+	 zKwK2Q+WkwrsyYDZYtCfSZ9CqYxnCNHFye9J7sTc35W0flBAeutfgU1AIt2doU8cAw7XD
+	 Dm7XWTRFgDLRQWTmI7dP4j+njx/qG6wvQY8sYm0Ygw8L7rB95uDBhc7d/I8fDHjJS3kxe
+	 k85Umtf2cBctNMb8DBWFO8ykv7iDo50z/efV0Rws3t8/jio2Cx1akREzrPAdrHlFetl5s
+	 ZQrduc9DC5Xks4zwKn6Hhuz34VrPItqBydTqrv5VmJ7r9k8EEFmTrxH7hkWX+Nf3JfA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795616300;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=5bQ37Dr+87om1NS6c4tle8Uvo6AzgbEUJjiMwoZ0S2Y=;
-	b=sp7G0SNzNEV9RSRb+Qh5n35jJo5qHjHWcvu9Axor8OhRdo98L8y1NiBya4nnuv0X22m9
-	 U80iF4WY23yZA779dxOoET9m72jEm03caXr5PmpAwVcdDZ5n249cX8CIUNgkLNI5k64HJ
-	 T9UOdhiLeFoAd6wZtHhLI40Bk5GougVfxPzs3sqO0BVRldBeW15Jv2+w2Ijd7+mz0MpJF
-	 kVEo8cx/rsZ6si7DVSSaHrNQP5GuuRgxFq8p/9Mku2OjhImcI7uREXN6zgjXHyFhsCCdL
-	 PwFnlZMVrRoYAzHE86HOFVYfVDKJ0uAVW4kqK9fWeuROeNV6y6CKwB57pNhwLxX6hTQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795616343;
+	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding:X-CM-TRANSID:
+	 X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
+	bh=nr236xYih7iz3SImZnvcAGfaOnE1s+PqGimbAN2jjPE=;
+	b=r9UZO5iyAoLCVlNOQWHQR0lVP6xtX6fcAil8lQabtW8wIbz7Q/b5V2Pj2E3i0ekxK7An
+	 FDnDdhWMOD4bHez9Qdw5ZIgjnp+NSm5ZkwfPWX1uPMDFfsuA9jS0Z3KXatykYs931eo/w
+	 2BG9c3b/+u8Sjq8sLZNPXAxBfxQ78i1ijShunmV2SmQpvniIGqe6qJxPCvM+1LwLo8A9b
+	 Qu/XLz+d4ew7IV2rxh3quwks4IIhL/Bh2nNbTATB/Ef2brGQ3CxccFLoQwKiJz6MUt4MI
+	 kKA8D/uzMijNTlCWRXDd5WcVG3++FAOO1Q+x5wk66mltoTLYPXBgFBlFCBtlXMH0jWA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=ziepe.ca;
-	spf=pass smtp.mailfrom=ziepe.ca;
-	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=MEOlNfo1;
-	arc=none smtp.remote-ip=209.85.160.176
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=mails.ucas.ac.cn;
+	spf=pass smtp.mailfrom=mails.ucas.ac.cn;
+	arc=none smtp.remote-ip=159.226.251.81
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F96606A327
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 14:18:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 75F96606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=MEOlNfo1
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-55c48582654so65463451cf.0
-        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 06:18:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1795616299; x=1796221099; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5bQ37Dr+87om1NS6c4tle8Uvo6AzgbEUJjiMwoZ0S2Y=;
-        b=MEOlNfo1qg/cH6pOCcqk4ewoVEubf9v6YcxURtGIvBBQGSH7BYhhAR/7yNbMt52oXF
-         cwJD4Ula5C27GWRWIuZyRf1qoGWwVhVrOfUMJAZqd1T9NV6yoYdvh7cwofFrwaLvPsvP
-         nXgjg8PrYVcw+zwoh2nefGddsw8MzZm61FOsXTicEsr7kXgXb4nA6XLAob/bfzKUmbMh
-         4uktg9UZY5A2VfHDOTINNECmxxljQBDBKm8WedEnVZJViFLZCg3jEEPYETtfvbfUHFgl
-         Tj0YqSHGdT9EqoKamB2mQVQpkznFGnIyqjYQDh8bxBf1lJRXHB2bmdbRm40ZGvr1jet7
-         hh/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795616299; x=1796221099;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5bQ37Dr+87om1NS6c4tle8Uvo6AzgbEUJjiMwoZ0S2Y=;
-        b=tCJNdBpqO6Jc1KtEQ3Pu6oXXoNG27U8eOYJAP3azEphZWiwyHx4zv+4LrSc8WELYTa
-         SP6NbA/Az7Jn2rol13iY5wYCVOWYSgeB2RweETQHoiFlHmtX3Q+L8f62F+fzO/AQs5Sb
-         WwoBJgQ0mJWnExAKXj3QldC3Y87cda3uOfNt45qxbNkKoYQKeMMibFp/mL1s+FYbErvv
-         NP5ShhtCEwa5rXAtyBTjqOPVZSx8v/Qx7XR9P287/b/+Q/oP+a3eRYi0WYZlTY92UJ74
-         AcdMQdAbX/L9OFzBcx33t9amTLB0Cfi9UsIJciDvcA09MzHMFtG2WPn+Mb5rKPmJpvIp
-         c4jA==
-X-Forwarded-Encrypted: i=1; AL+hErHOlTcpfusDmIc7I0wrZQhYFM2L9M0r2c5SirVKCbi2i5IEKpMtKRLUwUNcrUYRnxHX5Gg=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/nGG+pqQhIcvXIpXgAOnp/1vbvMtJbexop21+koPJ3+rhRmbLs
-	vegeN5nwozfic9at+k9xvzDx0aDtuA3RX8HEULLr2ZwkpFEMxBsfSzU/Tb0f3MUB0Zk=
-X-Gm-Gg: AZFdTZcKE2eNhrepgKbz4sg/JSHxtwfBWBMG35J6izY1aYT77xSVl8XBlRDABDrHfit
-	4ndFKLr/WIzv+18glVfaOvNEy/uvjkQHU2xdploTWLDL/gK9pJ6ecfEvGXHGZ3VSrCuxfxfB46l
-	PyDjohY0fp2LPDA5toiiUJEt/NhN5mbPlxEEz8cmarCQ5tHUp+jjICeqbch08p6SSCpx8cs6FLx
-	a2FaFFKRsBXKeIqbw9ufUkxPlFphS3Zq7kv+kbQtUVsH/jo8xeazGBFiu7cXSUJo096dIeT7mnJ
-	cGyDqqefna4QMJIgN39co2cEn1Fs8V4HNm9JSTERVY5VkhQAIdvHeFBNWqd+bVZ+5+1qfX3nm5A
-	2np8+tnclg1Ypo6YUWh2wAKAbDc7oHw6J6QO+3ViKMdDdG7yD1stRvEXdeNJ0mpWkj4EY41qJx1
-	UEl6XNZjNiYUSrz1lCiD8z0jX/p7rTpL0VAA3iXW2GuJq/+6gxfxbBuq/L5alqQBjvpZY8NjwC8
-	oDo7bu25TmyhY2uLeSybHLkWeKzqwKPtBCtOhoKFEGUqcdyY6gazBQ0G5B7X8Dar+sNHf+kQ16S
-	CR1ngg==
-X-Received: by 2002:a05:622a:1aaa:b0:55d:3721:872e with SMTP id d75a77b69052e-55d76b34525mr321765931cf.69.1795616299369;
-        Wed, 25 Nov 2026 06:18:19 -0800 (PST)
-Received: from ziepe.ca ([142.177.118.84])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55db5bc2f31sm27755541cf.20.2026.11.25.06.18.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 06:18:18 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xWDpB-00000001jOX-3H6e;
-	Wed, 25 Nov 2026 10:18:17 -0400
-Date: Wed, 25 Nov 2026 10:18:17 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Lukas Wunner <lukas@wunner.de>, Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v1 02/10] coco: tsm: Register the TSM class before device
- drivers
-Message-ID: <20261125141817.GC246011@ziepe.ca>
-References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
- <20261123083337.2731019-3-aneesh.kumar@kernel.org>
- <20261123152903.GG179082@ziepe.ca>
- <yq5awlq19v10.fsf@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DA2606A323
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 14:18:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E3DA2606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mails.ucas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.ucas.ac.cn
+Received: from k3-03 (unknown [159.226.43.8])
+	by APP-03 (Coremail) with SMTP id rQCowACHlpdC7gZrNoDHAQ--.9257S2;
+	Wed, 25 Nov 2026 22:18:43 +0800 (CST)
+From: Tan Chi <tanchi25@mails.ucas.ac.cn>
+To: anup@brainfault.org
+Cc: atish.patra@linux.dev,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	Tan Chi <tanchi25@mails.ucas.ac.cn>
+Subject: [PATCH] RISC-V: KVM: Add missing write barrier when linking G-stage page tables
+Date: Wed, 25 Nov 2026 22:18:40 +0800
+Message-ID: <20261125141840.2047392-1-tanchi25@mails.ucas.ac.cn>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -117,29 +57,67 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5awlq19v10.fsf@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowACHlpdC7gZrNoDHAQ--.9257S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7KF43Ar48Zry3JF43GF1DAwb_yoW8Xr1kpF
+	Z7G3sa9r1rt3sagrnxtas2vrn3Wan3Gr13JrZ3CF1UZr4aqryjywnYg39FkFy5Gr9Yy34U
+	ZrWUKF1kur4DA37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVW8JVWxJw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwV
+	W5XwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v2
+	6r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2
+	Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_
+	Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMI
+	IF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUhdbbUUUUU
+	=
+X-CM-SenderInfo: pwdquxrlsvqzpdlo2hpxfd2hldfou0/
 
-On Wed, Nov 25, 2026 at 01:56:19PM +0530, Aneesh Kumar K.V wrote:
-> Jason Gunthorpe <jgg@ziepe.ca> writes:
-> 
-> > On Mon, Nov 23, 2026 at 02:03:29PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> >> Register the built-in TSM class with subsys_initcall() so it exists
-> >> before a platform TSM driver probes, independently of object link order.
-> >> CONFIG_TSM is boolean; remove the unused module exit path.
-> >
-> > Why isn't it modular? This is going to force alot of stuff to be
-> > non-modular.
-> 
-> tsm-core.c contains only a small number of helpers. Most of the tsm
-> implementation is in pci/tsm.c, and even that codebase is not large.
-> 
-> This differs from the architecture-specific backends, such as
-> arm-cca-host and arm-cca-guest, which can be built as modules.
+kvm_riscv_gstage_set_pte() links a newly allocated page table
+to its parent PTE without a write memory barrier.
 
-So, why isn't it modular anyhow? It doesn't matter that it is small,
-the expecation is most systems wont need this stuff so we should have
-a clear reason why it isn't modular.
+A concurrent hardware page table walker may observe the parent
+PTE before the child page table is fully initialized, potentially
+interpreting stale contents as valid PTEs.
 
-Jason
+Add an smp_wmb() before linking the child page table, as is
+already done in kvm_riscv_gstage_split_huge().
+
+Sashiko reported this pre-existing issue while reviewing my
+G-stage page table accounting patch. LLM assistance was used
+to analyze the issue and prepare the changelog.
+
+Fixes: 9d05c1fee837 ("RISC-V: KVM: Implement stage2 page table programming")
+Link: https://sashiko.dev/#/bug/linux-9339e577-5f31-42a2-a5ea-9844d30b43f8
+
+Signed-off-by: Tan Chi <tanchi25@mails.ucas.ac.cn>
+---
+ arch/riscv/kvm/gstage.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
+index 0aace3215d3e..61ab60adb616 100644
+--- a/arch/riscv/kvm/gstage.c
++++ b/arch/riscv/kvm/gstage.c
+@@ -160,6 +160,13 @@ int kvm_riscv_gstage_set_pte(struct kvm_gstage *gstage,
+ 			next_ptep = kvm_mmu_memory_cache_alloc(pcache);
+ 			if (!next_ptep)
+ 				return -ENOMEM;
++
++			/*
++			 * Ensure the initialization of the new page table is visible
++			 * before linking it to the parent PTE.
++			 */
++			smp_wmb();
++
+ 			set_pte(ptep, pfn_pte(PFN_DOWN(__pa(next_ptep)),
+ 					      __pgprot(_PAGE_TABLE)));
+ 		} else {
+-- 
+2.53.0
+
