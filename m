@@ -1,143 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795587250;
-	b=081eOvlMPfLlU0d+s8sW4ZA85MI3fQ0o6OHnFTFgX3AihtaynEmHENi5xwLQHseCeaqJ
-	 YYggviO+T03kigQ2m8DNHREdHcOaIW1G5CsL20SY7sVyCXNBmfTDTCT+ygy2splU5ju1j
-	 ktGAEuCUpkVX/MVcURb5HLzUCWKZZS68eQnuv07NibfZY1ZyfCo1952mGwW3oYX3uQ3fO
-	 knNFTh9zFPmB5a8dTujxV7MojIVKyGzC+W+0yC7uwUw/A4PGvTIM6r0jvZGb5mMoPRHKj
-	 idupLMEWfbFdDLJNmY1mLiBsbNtEnskSsbGmsIdJnMx8/w7hwKp6tcKoVPvoPpiAs/g==
+	t=1795588206;
+	b=dLkiKAk7EON8EHcFBP4bthzocjOyo/g57GdfnywfNxSORa6DcsPVSIf7oaqWswr1/kdu
+	 qqGzQfzGzpYbfdzOtbYPxoCnGovvpxte4soUJKIuFHQrbzU9sYWuuKlAMl2iL3ueOxAkY
+	 eNYnQpvltL6fG3GjB3Gu6XKPp6DURBhb/J73JyRn4CKrP6Cpe6UMexSOQvazTOhgC/dbo
+	 Khau4xQxeXeBCbVX3TCL1DhP5W2tWKWzBmWGaxcmlSvAt/XKD/V3OU7ljPWNM0tHzSReV
+	 +CL503G8FKi66uDFfoe/jUoIcjt1UIn0uSFxpCxW0R6643FAmJ8B2886L8n9WC9197Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795587250;
-	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=mK0QR/k2eawBNLkbZvYP+HhTb9RDx4V5SHTUcbCD1c4=;
-	b=qObq5UXdYYxgSHwEtUSq3nBBNv4pFyOA45z/q1bQ7WsYiPQ377WLUbN4HH/8IZLM7tcA
-	 YOENaR25pYi06TiPPwzek8gGp+JkrwosCwZAt/9+fVLrUm+Lpu1BBthfqsJi481F39Kjd
-	 pEX2BsZ3t6XmpjDRDrG1dHx+2TNR2N4YiiBwQ1lFDM8sOA0uGaa5IBAf7VkAH1taAKgyr
-	 xYHPlY01gh4rqHxlJXj9porIf0cgPlELmjcN90PaqNtFdboWbVMusomGueEmQRLXz6b+1
-	 TiGNssYCsToypAfhOKbTo9ghWJGXc5SDAXW6ufgQFSkD0tPzQIRQEhG8Kf76puAEi0g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795588206;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:
+	 X-Google-Original-From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=PClTuZW0DsU/l7BXsxBD8FK+P2OxUWW6O1f9RJ3UfPA=;
+	b=cqszR294DR30a9NoIzff3jZ3m5OL75c40bZ3ys8dvNgjin4J2dhk3K8e4LO7kRNfUOKk
+	 a/BvjS219tYM3jkirvt4LUTed1duqI0O9oJjIu0vgJoBaS8bDdFQrMv6aOGy2OZzBX7y4
+	 GzUBS3PoHPKilMkmvz/lXgN3hSGlq3ajUiQpIXGRmJUIcONraZp2IXWnIzZflTZrW130Z
+	 xAK78zt+6lzycqUy+FKZ9PL9uDMk5F7FxGKLoBJyUus6eTVx0gMogaHTNHxLxkDnvRi2F
+	 md/CDEIO341d/0ip6LiKH58ejvC1yxbecKVjPlOy9QBz6bHHR1jJjf/vH5MppUvSYXg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=infradead.org;
-	spf=pass smtp.mailfrom=infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=SqbDuDIo;
-	arc=none smtp.remote-ip=198.137.202.133
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BK8pilZV;
+	arc=none smtp.remote-ip=209.85.210.180
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1DA60A5BD0;
-	Wed, 25 Nov 2026 06:14:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0E1DA60A5BD0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08FD4606A684
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 06:30:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 08FD4606A684
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=SqbDuDIo
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=mK0QR/k2eawBNLkbZvYP+HhTb9RDx4V5SHTUcbCD1c4=; b=SqbDuDIodYP6BDMFiCPB+z0v5h
-	Wf8OZ/z8+c64yrSOhWNYDki4bIj7nXUsz0/8hjRSflwjz17ZYrEwSWjYzz/FGm8XelFoyiwOANJe8
-	k9V0ao/jXKEygg8Txc8vT8ZKnlaLLvZ8vi7Cu9bbOZADPxyYGOcB9SJPKWm3FABmaSxupujCzYpar
-	RBFc3L+WNPt1ER6m4syoikCMKUu0vn82kUcotGc2QkZv43q0PhftY1c8ITZR5APlT6gbbqTm2+OkK
-	RKn8HXpo/mWc0Fg2xo1JmtQTlTkFbNi72t51jkUayyle/iQXCpf/WxZwuJxyQ9w65npgSUR+5MDR8
-	JXWofKRw==;
-Received: from [50.53.43.113] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xW6Gf-00000008Wvh-0IvX;
-	Wed, 25 Nov 2026 06:14:09 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-doc@vger.kernel.org,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	linux-mm@kvack.org,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org,
-	Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	linux-bluetooth@vger.kernel.org,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	David Heidelberg <david@ixit.cz>,
-	oe-linux-nfc@lists.linux.dev,
-	Chas Williams <3chas3@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	Helge Deller <deller@gmx.de>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	MPT-FusionLinux.pdl@broadcom.com,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"Martin K. Petersen" <mkp@kernel.org>,
-	linux-scsi@vger.kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	linux-mtd@lists.infradead.org,
-	Neill Kapron <nkapron@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	xen-devel@lists.xenproject.org,
-	Hans de Goede <hansg@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	"Theodore Ts'o" <tytso@mit.edu>,
-	linux-ext4@vger.kernel.org,
-	Mike Marshall <hubcap@omnibond.com>,
-	devel@lists.orangefs.org,
-	Paulo Alcantara <pc@manguebit.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Chao Yu <chao@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Benson Leung <bleung@chromium.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	intel-gfx@lists.freedesktop.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	intel-xe@lists.freedesktop.org
-Subject: [PATCH v3 11/12] docs: ioctl-number: update platform entries
-Date: Tue, 24 Nov 2026 22:13:38 -0800
-Message-ID: <20261125061340.3402300-12-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <20261125061340.3402300-1-rdunlap@infradead.org>
-References: <20261125061340.3402300-1-rdunlap@infradead.org>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BK8pilZV
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8a594d313a3so3565378b3a.1
+        for <kvm@vger.kernel.org>; Tue, 24 Nov 2026 22:30:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795588205; x=1796193005; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=PClTuZW0DsU/l7BXsxBD8FK+P2OxUWW6O1f9RJ3UfPA=;
+        b=BK8pilZV+eGRQvALauP5do8aykm4ptRFa8X3TD1kNYs+Hyni1XJwWtIL0NVRs45qQa
+         E2Yj1ayVKokg6wnJLPfffWekhoifup0q/OB//gB7liz55XtBXQ6PUQJoznT3PJ8rPE2t
+         efkoP5y2kpQIjC34uLAhpOEfFMvVyXoVDv7kR5NoiWToqIjAgSwQlIOx6Yty5fmGN79h
+         QrFn9+KLaK9UY7td1cSpRMXwL1uFH46nPH5qSwYpcXNjpSLBJYw9AA8fUBRrmGF7yeVC
+         G2EoI+s5jykc2tiScwApYHu+eX4GlRC5bjFsFNVTTW22cWkitO/Q6DRgxtVPyFaqLeMX
+         Q8Qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795588205; x=1796193005;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PClTuZW0DsU/l7BXsxBD8FK+P2OxUWW6O1f9RJ3UfPA=;
+        b=W++tDAv814AG05iKO1mNZ4FzK27gV8xB9SQyE50HLMSvT056PVo5SAA5Wdk7xkPxyw
+         oXU3iNhqHkQGOJN4+yVCytCRvMHY4dIy/bDSuh64C7w9FaButkZwsVHT8YjAPewNJxMb
+         a+2ZaCfNIuQ1JjbJ5ahN2HQi6elG7nUMZMygv+PzTDDx0yrPMXNwWHs8Mu16+mx32uGw
+         0hydLtice5Tzoc8DhQXSKAmqNS2SenKEI4HqC5TThKsn2aV+9NtVFZFlU0BmyVCXJIN+
+         ZTPFGs7NGOGbu9rh/PbkDPz3Vu1I4e/H+o+ZOinIEVXcBMdd3TRqJkQIKNV6p+oqe4T0
+         +R0Q==
+X-Gm-Message-State: APuU4Z+HEz04jWbEqaLAJK9qB7bCVRsOlqomqZirQ1i4Wo0NNY01HVts
+	8LYbf1s/Rv3mn/eKwevlHcLDGkSpo8NKge3ovXI7ph3+HO3Chc1CoYVZ
+X-Gm-Gg: AZFdTZfE8hMZQhGWprhXv4/LFToeMni+p/5/Fya9gcWNZ5ODWj5Z8fxARGyNV10LyTl
+	cKlPel58mLPWQQu92pjv36VlJXEvAx5PcCsB6REwVVqB3e+NBPDyjVyJKcbXbMATBloxvkqbHi5
+	nc9S65/I7nKg1hB4aaFu1cIZv00SeM2gpzI1qKTDDG6MLuJghxE48aLNoj0e38KQHsK1PgVbbYO
+	C3RV6gmYOKJyxJU9OODyZrWKQRspBRWDd1Z4ooSjXZ22asc33JxNVKXe8yYUYCujNLNfi3HzzuH
+	8icaGswnIdJPruAw4WExJ2ypnP30ZdTwZbFdxPmUuzi0Kio78fdN1nfkUuIMMpgxdviz1Djbj3I
+	5jgflrAgf3kOxu9wl38JKDzcIDnz0lvcqDv/PA8r3046EVrRarcZq2RdOxJAk00BudlIWJazOwc
+	W35JiveZcimh0b3H5h0/+peE00uDdDHLFsGoHyleMMHfUQS3dXKP4oTri9IPMVAr2PVbKHAEOZQ
+	Oq3tCnN55DuBTpjp9uzxzHQUztlPMuIC+H5CAF6IUiLQ5J9tePbw7Nnq00i8Fb38lml6sVRsXHt
+	XJGgpAW4HEWCZFNJqPOl0LfrIaCkZld0plsOHYxSMzPAvEWgj7LNUBGmj25AssxxNaDBQ3mI1vR
+	BTww1Vpc5IBVm03anaC4=
+X-Received: by 2002:a05:6a00:13a7:b0:89e:9c7e:fd5e with SMTP id d2e1a72fcca58-8c87bdb41f2mr15276827b3a.9.1795588205198;
+        Tue, 24 Nov 2026 22:30:05 -0800 (PST)
+Received: from FLYINGPENG-MC2.tencent.com ([43.132.141.20])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8c873b278f0sm8355165b3a.51.2026.11.24.22.30.03
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 24 Nov 2026 22:30:04 -0800 (PST)
+From: Peng Hao <flyingpenghao@gmail.com>
+X-Google-Original-From: Peng Hao <flyingpeng@tencent.com>
+To: pbonzini@redhat.com,
+	seanjc@google.com
+Cc: kvm@vger.kernel.org
+Subject: [PATCH 1/2] KVM: SVM: Don't clobber RFLAGS.RF loaded by a single-stepped IRET
+Date: Wed, 25 Nov 2026 14:29:59 +0800
+Message-ID: <20261125063000.92971-1-flyingpeng@tencent.com>
+X-Mailer: git-send-email 2.47.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -149,46 +97,64 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Update the list of platform/ files where ioctls are defined and update
-the ranges of function numbers that are used.
+Without vNMI, KVM opens the NMI window after an NMI handler by
+intercepting IRET and then single-stepping it with TF and RF set.  When
+the single-step #DB arrives, disable_nmi_singlestep() clears TF and RF
+again unless they were set in the RFLAGS snapshot taken when the
+single-step was armed, i.e. before the IRET ran.
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Acked-by: Tzung-Bi Shih <tzungbi@kernel.org> # cros_ec
+That is wrong for RF.  By the time the single-step trap is taken, the
+stepped instruction has completed and the CPU has already cleared the RF
+that KVM set, so RF in save.rflags is guest state.  It is only set if
+the instruction loaded it, which is what the stepped IRET does when the
+NMI interrupted a context that was about to resume from an instruction
+breakpoint: the OS sets RF in the saved RFLAGS so the breakpoint is not
+hit again, the NMI pushes that RFLAGS and the NMI handler's IRET pops
+it.  KVM then clears RF based on the stale snapshot, and the guest takes
+a second #DB on the same instruction.
+
+In a Linux guest this shows up as a duplicate perf hardware breakpoint
+event when a PMI happens to land right after the breakpoint has been
+handled, e.g. while sampling with perf at a high rate.
+
+If the single-step trap fired, fold the post-instruction RF into the
+snapshot so that disable_nmi_singlestep() leaves it alone.  RF is still
+cleared on the event injection path in svm_vcpu_run(), where the
+instruction never ran and RF still holds KVM's value.
+
+TF has the same problem in principle when the stepped IRET pops TF=1,
+but there KVM cannot tell its own TF apart from the guest's after the
+fact, so it is left as is.
+
+Fixes: 44c11430b52c ("KVM: inject NMI after IRET from a previous NMI, not before.")
+Signed-off-by: Peng Hao <flyingpeng@tencent.com>
 ---
-v2: no change
-v3: rebase
+ arch/x86/kvm/svm/svm.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-[Since having multiple maintainers trying to merge these would
-cause some conflicts, it would be more manageable for Jon to
-take all of these through the docs-next tree.]
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 581bc3a23c95..118c2ce4742d 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2087,6 +2087,18 @@ static int db_interception(struct kvm_vcpu *vcpu)
+ 	}
+ 
+ 	if (svm->nmi_singlestep) {
++		/*
++		 * If the single-step trap fired, the stepped instruction has
++		 * completed and RF now holds the guest's value: the CPU clears
++		 * RF when an instruction completes, unless the instruction
++		 * loaded RFLAGS, e.g. an IRET returning to an instruction
++		 * breakpoint that the guest has already handled.  Don't let
++		 * disable_nmi_singlestep() clear the guest's RF.
++		 */
++		if (svm->vmcb->save.dr6 & DR_STEP)
++			svm->nmi_singlestep_guest_rflags |=
++				svm->vmcb->save.rflags & X86_EFLAGS_RF;
++
+ 		disable_nmi_singlestep(svm);
+ 		/* Make sure we check for pending NMIs upon entry */
+ 		kvm_make_request(KVM_REQ_EVENT, vcpu);
+-- 
+2.43.7
 
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Shuah Khan <skhan@linuxfoundation.org>
-Cc: linux-doc@vger.kernel.org
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: Tzung-Bi Shih <tzungbi@kernel.org>
-Cc: Benson Leung <bleung@chromium.org>
-
- Documentation/userspace-api/ioctl/ioctl-number.rst |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
---- linux-next-20261123.orig/Documentation/userspace-api/ioctl/ioctl-number.rst
-+++ linux-next-20261123/Documentation/userspace-api/ioctl/ioctl-number.rst
-@@ -434,6 +434,7 @@ Code  Seq#    Include File
- 0xBA  00-0F  uapi/linux/liveupdate.h                                   Pasha Tatashin
-                                                                        <mailto:pasha.tatashin@soleen.com>
- 0xC0  00-0F  linux/usb/iowarrior.h
-+0xC4  00-1F  platform/raspberrypi/vchiq-interface/vchiq_ioctl.h
- 0xCA  00-0F  uapi/misc/cxl.h                                           Dead since 6.15
- 0xCA  10-2F  uapi/misc/ocxl.h
- 0xCA  80-BF  uapi/scsi/cxlflash_ioctl.h                                Dead since 6.15
-@@ -446,7 +447,7 @@ Code  Seq#    Include File
- 0xDD  00-3F                                                            ZFCP device driver see drivers/s390/scsi/
-                                                                        <mailto:aherrman@de.ibm.com>
- 0xE5  00-3F  linux/fuse.h
--0xEC  00-01  linux/platform_data/cros_ec_chardev.h                     ChromeOS EC driver
-+0xEC  00-02  linux/platform_data/cros_ec_chardev.h                     ChromeOS EC driver
- 0xEE  00-09  uapi/linux/pfrut.h                                        Platform Firmware Runtime Update and Telemetry
- 0xEF  00-0F  uapi/linux/ntfs.h                                         NTFS
- 0xF3  00-3F  drivers/usb/misc/sisusbvga/sisusb.h                       sisfb
