@@ -1,22 +1,22 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.81
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795571078;
-	b=XoA/g45lWhbsl2EBrJ8Lc5TYel9ZIOo454xNRU/RgjPRWodJzRnK3h/FyaiCqg5ueo4g
-	 NKQiO02/Rtah/yAEY3aXpRTM0lsVsMZxXQLyIAWMZEX7BoD0haC45ZBgT3kgROOpkLn7s
-	 zkDMIB2VupzNVXrAEXI6VMPgS6V6rdWTph4r6k6HchJTzw05VOtEMX2u49RYcniaSxRPT
-	 gQ0AaeQK6DmRC43HXY38LVurrQRMjYtqGhrEsiQ3xmx5Q5XOeanVlyTdTBjbnRk0iKLpR
-	 D4+1eIgY5DAqsY4x6fy+SCLLqlbB612bfOt1gxLL0X5eqmOSPfo3mlumXYgFWwGU0Mg==
+	t=1795571080;
+	b=S7Is4ibuNFPHWdLnTWjTx0qBtLT8qv2Wv/Q98ar7E2506fttO6+gx+wuTS06IVW5CaDT
+	 kjcksNpkGCPm7DEPb4ECZrIjWNTHPl47vUfN++xvRbV05i8ktEqxjYqXYzz+Ny3ioJ1x3
+	 JTGmHzXK6OLClQnueugPGO8kCglDybt8K+d9GxOD9lYJZ0z71dqow81uYC3wGWblu213A
+	 zcJulIZfDMuL3Sl+f1sRLD0Eb7n2sugcyOufWeowbeICSNpaKzHszAmbLkqXajWxKeeH1
+	 fMuFUSLCTYGAV5nbXW+Ui352Fg1Ee5gdPzLcGXr/GLZcnBt1WXwdLghYoXdqglWhiZw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795571078;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795571080;
 	h=DMARC-Filter:Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
 	 X-CM-TRANSID:X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=WVBecoOToF5qO/iCHUP6JTXCYBb7MEy9S8KZ+Qc9a6o=;
-	b=cum9q78vpTld76Ve0+5766jPEsaslxHaKFjBcw4S+f52JX457zQtQ2dSlXcHyh0diUzR
-	 MRbZC/QDQB6iri+sJpoHJWzoEg2KR4O84XauIBggbQr7moYpVDICFZvC/R1Zbmi7XQ9rp
-	 yoJbgBSpGcX4XfOf6TpAeIT6VTLk6kAcYrs57ddN9Vcg9YtOzRtSH1BtuIj3q+wlwo062
-	 FKwYPicoZFGYgcrRtPFBA30JUU7usy2bJ/3yso4YOJrIY67ur515oU3ie+i9xdcdS3M7q
-	 dlqfzomnDMqNDeOy3SBMS7KASKRpzs7ChPSWapPyPKmt7WQSyI6xziqmGETgwZys1KA==
+	bh=DQ2noZm5zCHHb7/oSScqzeGGuAbrQQoSEmOlcfHGp20=;
+	b=3OxiRjOUBiM1xyJqn3aqwKqIgxFRspTpC+HyTxipLNRDLoPWv+eg8rzf0jC/YjTqo02W
+	 Kj245mDNIhCwu4PSLH3PJzWAYiB3PUee1OBG7MBqWc87usNbrLN3YhA9+zM0ZhJKVfNxh
+	 jIMiz8Mic+C0cyvVjKb6wvQcu8mGsonPXwo9b4pqegu/lduVOPvSucJE6ixwuRZqsJpsi
+	 bLXNFN713jFrvKrAyoq7st0e9eo6su8KjwxXFnPusUAAFDR5f+h72Fw8eAJMru+22cNi2
+	 yZ/0dpvZBZiB0bicYmVzKz/wZlDlhYfNihpEpmcNLJulwIdjSGsJJU1TkrvPxuofEQg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=iscas.ac.cn;
 	spf=pass smtp.mailfrom=iscas.ac.cn;
@@ -25,14 +25,14 @@ Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305C3606A31E
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 01:44:36 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 305C3606A31E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF42606A31E
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 01:44:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2BF42606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from localhost (unknown [122.194.100.240])
-	by APP-03 (Coremail) with SMTP id rQCowAB3gJF8PQZr2tm8AQ--.22634S2;
-	Wed, 25 Nov 2026 09:44:29 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowADn8JF7PQZrw9m8AQ--.22523S2;
+	Wed, 25 Nov 2026 09:44:27 +0800 (CST)
 From: Xiang W <wangxiang@iscas.ac.cn>
 To: kvm@vger.kernel.org,
 	kvm-riscv@lists.infradead.org
@@ -40,9 +40,9 @@ Cc: andrew.jones@linux.dev,
 	Xiang W <wangxiang@iscas.ac.cn>,
 	pbonzini@redhat.com,
 	thuth@redhat.com
-Subject: [kvm-unit-tests PATCH v3 8/9] riscv: Capture IMSIC addresses at boot time
-Date: Wed, 25 Nov 2026 09:44:08 +0800
-Message-ID: <20261125014409.79852-9-wangxiang@iscas.ac.cn>
+Subject: [kvm-unit-tests PATCH v3 5/9] riscv: Fall back to SBI DBCN when no UART is available
+Date: Wed, 25 Nov 2026 09:44:05 +0800
+Message-ID: <20261125014409.79852-6-wangxiang@iscas.ac.cn>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261125014409.79852-1-wangxiang@iscas.ac.cn>
 References: <20261125014409.79852-1-wangxiang@iscas.ac.cn>
@@ -56,227 +56,158 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAB3gJF8PQZr2tm8AQ--.22634S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxtrWUur17Cr47Kr1rGw1rWFg_yoWxJFy5pF
-	W5C3W5CrZ8CF4xW39avF1Dt34fKFnYkr17KrWxZ3yrZw4DJr95Xr4kK34vyF9xJayUZa13
-	uaykKFWYkr42qaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvC14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+X-CM-TRANSID:rQCowADn8JF7PQZrw9m8AQ--.22523S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxAF18AFWDKw43Jr1fZF1kXwb_yoW5uw18pF
+	ZIgFsxtry5GFnYq3Z7tr1kCw4rGr48W3ykKryxJw1xZw4DJrZ8Xw4fta1av343WFy3AF4Y
+	yFsFvFyfCF4UZ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvG14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
 	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
 	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxV
 	WxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
-	Yx0E2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbV
+	Yx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbV
 	WUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AF
 	wI0_JF0_Jw1lc2xSY4AK67AK6w4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
 	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
 	17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcV
-	C0I7IYx2IY6xkF7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
-	cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
-	nxnUUI43ZEXa7VUjb_-PUUUUU==
+	C0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
+	6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa
+	73UjIFyTuYvjfUeQ6pDUUUU
 X-CM-SenderInfo: pzdqw5pldqwq5lvft2wodfhubq/
 
-Tests may want to use the IMSICs for MSIs and the upcoming BRS tests
-want to confirm IMSICs are present. Provide those tests the S-mode
-interrupt file addresses at boot time. Parse DT IMSIC nodes from
-cpu_set_fdt() via imsic_init(). On ACPI, copy imsic_addr from the
-MADT RINTC entry only when an IMSIC structure is present; ACPI
-requires OSPM to ignore RINTC.imsic_addr otherwise.
+Console setup currently relies on UART initialization. On EFI/ACPI
+systems without a supported MMIO UART, initialization fails even when
+the SBI DBCN console is available.
 
-Co-authored-by: Andrew Jones <andrew.jones@linux.dev>
-Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
+Probe SBI_EXT_DBCN during console initialization. Use the UART when it
+is successfully initialized; if no UART is available, fall back to
+SBI_EXT_DBCN_CONSOLE_WRITE when DBCN is supported. Report when early
+printing may not work because the initialized UART differs from the
+early UART base, or because DBCN is used instead.
+
+Rename uart_lock to console_lock, since it protects both console
+backends.
+
 Signed-off-by: Xiang W <wangxiang@iscas.ac.cn>
 ---
- lib/riscv/asm/imsic.h     |  8 ++++
- lib/riscv/asm/processor.h |  1 +
- lib/riscv/imsic.c         | 86 +++++++++++++++++++++++++++++++++++++++
- lib/riscv/setup.c         | 13 ++++++
- riscv/Makefile            |  1 +
- 5 files changed, 109 insertions(+)
- create mode 100644 lib/riscv/asm/imsic.h
- create mode 100644 lib/riscv/imsic.c
+ lib/riscv/io.c | 52 ++++++++++++++++++++++++++++++++------------------
+ 1 file changed, 33 insertions(+), 19 deletions(-)
 
-diff --git a/lib/riscv/asm/imsic.h b/lib/riscv/asm/imsic.h
-new file mode 100644
-index 00000000..c011b106
---- /dev/null
-+++ b/lib/riscv/asm/imsic.h
-@@ -0,0 +1,8 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef _ASMRISCV_IMSIC_H_
-+#define _ASMRISCV_IMSIC_H_
-+#include <asm/processor.h>
-+
-+void imsic_init(struct thread_info *ti);
-+
-+#endif /* _ASMRISCV_IMSIC_H_ */
-diff --git a/lib/riscv/asm/processor.h b/lib/riscv/asm/processor.h
-index 5a1df355..fa0c7356 100644
---- a/lib/riscv/asm/processor.h
-+++ b/lib/riscv/asm/processor.h
-@@ -16,6 +16,7 @@ struct thread_info {
- 	unsigned long hartid;
- 	unsigned long uid;
- 	unsigned long isa[1];
-+	phys_addr_t imsic_pa;		/* S-level interrupt file, INVALID_PHYS_ADDR if none */
- 	unsigned long sp;
- 	exception_fn exception_handlers[EXCEPTION_CAUSE_MAX];
- 	exception_fn interrupt_handlers[INTERRUPT_CAUSE_MAX];
-diff --git a/lib/riscv/imsic.c b/lib/riscv/imsic.c
-new file mode 100644
-index 00000000..38665c10
---- /dev/null
-+++ b/lib/riscv/imsic.c
-@@ -0,0 +1,86 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * IMSIC support
-+ */
-+#include <libcflat.h>
-+#include <bitops.h>
-+#include <devicetree.h>
-+#include <asm/imsic.h>
-+#include <asm/processor.h>
-+
-+struct imsic_info {
-+	unsigned long hartid;
-+	phys_addr_t imsic_pa;
-+};
-+
-+static void imsic_parse_fdt(int cpu_node, u64 hartid, void *data)
-+{
-+	struct imsic_info *info = (struct imsic_info *)data;
-+	const void *fdt = dt_fdt();
-+	int intc, node = -1;
-+	u32 phandle;
-+
-+	if (info->hartid != hartid)
-+		return;
-+
-+	info->imsic_pa = INVALID_PHYS_ADDR;
-+
-+	intc = fdt_subnode_offset(fdt, cpu_node, "interrupt-controller");
-+	if (intc < 0)
-+		return;
-+
-+	phandle = fdt_get_phandle(fdt, intc);
-+
-+	while ((node = fdt_node_offset_by_compatible(fdt, node, "riscv,imsics")) >= 0) {
-+		struct dt_pbus_reg reg;
-+		const fdt32_t *prop;
-+		u64 stride, off;
-+		u32 guest_bits;
-+		int len, i;
-+
-+		prop = fdt_getprop(fdt, node, "interrupts-extended", &len);
-+		if (!prop)
-+			continue;
-+
-+		/* <phandle irq> pairs, since cpu-intc has #interrupt-cells = 1 */
-+		for (i = 0; i + 1 < len / (int)sizeof(fdt32_t); i += 2) {
-+			if (fdt32_to_cpu(prop[i]) == phandle &&
-+			    fdt32_to_cpu(prop[i + 1]) == IRQ_S_EXT)
-+				break;
-+		}
-+		if (i + 1 >= len / (int)sizeof(fdt32_t))
-+			continue;
-+
-+		prop = fdt_getprop(fdt, node, "riscv,guest-index-bits", &len);
-+		guest_bits = prop && len == sizeof(fdt32_t) ? fdt32_to_cpu(*prop) : 0;
-+		stride = BIT_ULL(guest_bits) * SZ_4K;
-+		off = (i / 2) * stride;
-+
-+		for (i = 0; dt_pbus_translate_node(node, i, &reg) == 0; i++) {
-+			if (off < reg.size) {
-+				assert(reg.size - off >= SZ_4K);
-+				info->imsic_pa = reg.addr + off;
+diff --git a/lib/riscv/io.c b/lib/riscv/io.c
+index b1163404..45fe93f5 100644
+--- a/lib/riscv/io.c
++++ b/lib/riscv/io.c
+@@ -28,7 +28,8 @@
+ static volatile u8 *uart0_base = UART_EARLY_BASE;
+ static u32 uart0_reg_width = 1;
+ static u32 uart0_reg_shift;
+-static struct spinlock uart_lock;
++static struct spinlock console_lock;
++static bool prefer_dbcn;
+ 
+ static u32 uart0_read(u32 num)
+ {
+@@ -71,16 +72,15 @@ static void uart0_init_fdt(void)
+ 				break;
+ 		}
+ 
+-#ifdef CONFIG_SBI_CONSOLE
+-		uart0_base = NULL;
+-		return;
+-#else
+ 		if (ret) {
++			if (prefer_dbcn) {
++				uart0_base = NULL;
 +				return;
 +			}
-+			off -= ALIGN(reg.size, stride);
-+		}
-+		assert_msg(false, "IMSIC interrupt file beyond reg regions");
-+	}
-+}
-+
-+void imsic_init(struct thread_info *ti)
-+{
-+	struct imsic_info info = {
-+		.hartid = ti->hartid,
-+	};
-+	int ret;
-+
-+	if (dt_available()) {
-+		ret = dt_for_each_cpu_node(imsic_parse_fdt, &info);
-+		assert(ret == 0);
-+	} else {
-+		assert_msg(false, "ACPI not available");
-+	}
-+
-+	ti->imsic_pa = info.imsic_pa;
-+}
-diff --git a/lib/riscv/setup.c b/lib/riscv/setup.c
-index 547851f5..e9563ad4 100644
---- a/lib/riscv/setup.c
-+++ b/lib/riscv/setup.c
-@@ -16,6 +16,7 @@
- #include <on-cpus.h>
- #include <vmalloc.h>
- #include <asm/csr.h>
-+#include <asm/imsic.h>
- #include <asm/isa.h>
- #include <asm/mmu.h>
- #include <asm/page.h>
-@@ -52,6 +53,14 @@ static struct mem_region riscv_mem_regions[NR_MEM_REGIONS + 1];
- #ifdef CONFIG_EFI
- #include <acpi.h>
+ 			printf("%s: Compatible uart not found in the device tree, aborting...\n",
+ 			       __func__);
+ 			abort();
+ 		}
+-#endif
+ 	} else {
+ 		const fdt32_t *val;
+ 		int len;
+@@ -102,20 +102,33 @@ static void uart0_init_fdt(void)
  
-+static bool has_imsic = false;
-+
-+static int acpi_find_imsic(struct acpi_subtable_header *header)
-+{
-+	has_imsic = true;
-+	return 0;
-+}
-+
- static int cpu_set_acpi(struct acpi_subtable_header *header)
+ static void uart0_init_acpi(void)
  {
- 	int cpu = nr_cpus++;
-@@ -62,6 +71,8 @@ static int cpu_set_acpi(struct acpi_subtable_header *header)
- 	cpus[cpu].cpu = cpu;
- 	cpus[cpu].hartid = intc->hart_id;
- 	cpus[cpu].uid = intc->uid;
-+	/* RINTC.imsic_addr is ignored unless an IMSIC MADT structure is present. */
-+	cpus[cpu].imsic_pa = has_imsic ? intc->imsic_addr : INVALID_PHYS_ADDR;
- 	isa_init(&cpus[cpu]);
+-	assert_msg(false, "ACPI not available");
++	if (prefer_dbcn)
++		uart0_base = NULL;
++	else
++		assert_msg(false, "ACPI UART not supported");
+ }
  
- 	if (intc->flags & ACPI_MADT_ENABLED) {
-@@ -81,6 +92,7 @@ static void cpu_set_fdt(int fdtnode __unused, u64 regval, void *info __unused)
- 
- 	cpus[cpu].cpu = cpu;
- 	cpus[cpu].hartid = regval;
-+	imsic_init(&cpus[cpu]);
- 	isa_init(&cpus[cpu]);
- 
- 	if (!sbi_hart_get_status(cpus[cpu].hartid).error)
-@@ -90,6 +102,7 @@ static void cpu_set_fdt(int fdtnode __unused, u64 regval, void *info __unused)
- static void cpu_init_acpi(void)
+ void io_init(void)
  {
- #ifdef CONFIG_EFI
-+	acpi_table_parse_madt(ACPI_MADT_TYPE_IMSIC, acpi_find_imsic);
- 	acpi_table_parse_madt(ACPI_MADT_TYPE_RINTC, cpu_set_acpi);
- #else
- 	assert_msg(false, "ACPI not available");
-diff --git a/riscv/Makefile b/riscv/Makefile
-index 348a30a7..f90992ab 100644
---- a/riscv/Makefile
-+++ b/riscv/Makefile
-@@ -39,6 +39,7 @@ cflatobjs += lib/on-cpus.o
- cflatobjs += lib/vmalloc.o
- cflatobjs += lib/riscv/bitops.o
- cflatobjs += lib/riscv/delay.o
-+cflatobjs += lib/riscv/imsic.o
- cflatobjs += lib/riscv/io.o
- cflatobjs += lib/riscv/isa.o
- cflatobjs += lib/riscv/mmu.o
++	prefer_dbcn = sbi_probe(SBI_EXT_DBCN);
++
+ 	if (dt_available())
+ 		uart0_init_fdt();
+ 	else
+ 		uart0_init_acpi();
+ 
++	if (!uart0_base && !prefer_dbcn)
++		assert_msg(false, "No console available");
++
+ 	if (uart0_base != UART_EARLY_BASE) {
+-		printf("WARNING: early print support may not work. "
+-		       "Found uart at %p, but early base is %p.\n",
+-		       uart0_base, UART_EARLY_BASE);
++		if (uart0_base)
++			printf("WARNING: early print support may not work. "
++			       "Found uart at %p, but early base is %p.\n",
++			       uart0_base, UART_EARLY_BASE);
++		else
++			printf("WARNING: early print support may not work. "
++			       "Found DBCN console, but early base is %p.\n",
++			       UART_EARLY_BASE);
+ 	}
+ }
+ 
+@@ -126,31 +139,32 @@ void sbi_puts(const char *s)
+ 	unsigned long hi = upper_32_bits(addr);
+ 	unsigned long lo = lower_32_bits(addr);
+ 
+-	spin_lock(&uart_lock);
++	spin_lock(&console_lock);
+ 	sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE, strlen(s), lo, hi, 0, 0, 0);
+-	spin_unlock(&uart_lock);
++	spin_unlock(&console_lock);
+ }
+ 
+ void uart0_puts(const char *s);
+ void uart0_puts(const char *s)
+ {
+ 	assert(uart0_base);
+-	spin_lock(&uart_lock);
++	spin_lock(&console_lock);
+ 	while (*s) {
+ 		while (!(uart0_read(UART_LSR_OFFSET) & UART_LSR_THRE))
+ 			;
+ 		uart0_write(0, *s++);
+ 	}
+-	spin_unlock(&uart_lock);
++	spin_unlock(&console_lock);
+ }
+ 
+ void puts(const char *s)
+ {
+-#ifdef CONFIG_SBI_CONSOLE
+-	sbi_puts(s);
+-#else
+-	uart0_puts(s);
+-#endif
++	if (uart0_base)
++		uart0_puts(s);
++	else if (prefer_dbcn)
++		sbi_puts(s);
++	else
++		assert_msg(false, "No console available");
+ }
+ 
+ /*
 -- 
 2.47.3
 
