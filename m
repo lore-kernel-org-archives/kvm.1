@@ -1,100 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.45
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795619208;
-	b=eMgkJ3eBB46Xzyi/Bkd9+Z8KPOvbUZeCMPJJHMbkKH+5cQ+C0ZYIuJscATjZXYlFUCRF
-	 +OwX1LXLgQ7Qy6vUebhE1a8qHHxR6QNXsuk4jJEVz+BkGBhhbk21OwHY1AZt+eD4PydsZ
-	 1g/37q5gRilxBSeOGcviistDBGNobMlWV3cu5XIulD02MbC0ErorBrNAf0ERm6+0pKnVn
-	 14ZHZNTFtt/U28FoNF9e7g9ijNCR8XRlYoKafx3TkxtgU6Dginda85lnkQl3PCj8kC4w+
-	 MPpPeGAVhL+UFt/xbZ00wHa6CyweKPbJhOcQR02qeWnBtuXMw1e/hRx17KAudLmfxgw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795619208;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
-	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=wQhYGWbmYRpOsQh048VImHZFZtKvuW+wybi1/wHnwY8=;
-	b=GbZs0Rzjm08HxyNrizPL/lkjoxR/rc4CZ+IO0bmIhKJ5a/5Z2BfTnZUjtkG6fXWknP5F
-	 5sikGyfeuCqYsyA3TuLuoDWpDX6u8ZkxIpUje79ROIrWaR0GW8X0oy8NtfMSPtUeEb0aN
-	 AVHYx6Kx2a+1WlIber5M37IsJDzuVNiUxDRegJ5AtvDurgJpq9O6+cFXCuHRCmyZ9RPIQ
-	 9A/QO6hEelY25/NUx/GxGfUzfUyAnEXxOtJmR11xcsVOVqyqOgSiAn2YYVyVCSngwI7qP
-	 WFfHEigqGbyf35qommQ8TxFi25rdMTZRLq2FsBviDZmaKAKFBWeX6FluO4gQJDUoJaA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=brainfault.org;
-	spf=none smtp.mailfrom=brainfault.org;
-	dkim=pass header.d=brainfault.org header.i=@brainfault.org header.a=rsa-sha256 header.s=google header.b=pemRuMXy;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.128.45
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFCB606A31E
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 15:06:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CCFCB606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795619644;
+	b=OvI2HZ3avhVfdrHeUcdWljy3PFVPTjMV77PybKyJGhhcZVmd0VquelIo2Wtk6YGJvEPW
+	 Ob7lj2lDpzMH4TIPmXDCwdYws4XdHj1Q58sgCOod1vErIUn1BGQCe4AkuYgbIpkaB3uAW
+	 4jQTJW2u1Zu+1DdRF0pwldCz1e1Siy1aweK8TxBQg4bXl9H0+LpMpIVGJgak2Ws9seiWV
+	 AqVlb00Z9AyrY7aj1shI917Sq5sIOM3PljRt1VklfH6kJ67ZjCUk9f605LE00U2cHERgW
+	 E1e1kL2vRv8skNRT6Bulzj/+Jft+ViJ1bDHsnNYaS2CgeBupVAJuxNYi8ukwJlihwnQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795619644;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=bGnf7IpqYD/0ZUcDQjAGShI74EbjTS0C+XDIaOAqBlw=;
+	b=FLTyoILgt5bPUuAY3CLWFZWA0HgkmFZ3oupkzxdUr6j1xzfx0CBi3TZiVFolu6u6jNGD
+	 hhcxi1I/63DBOlskcQ74zCwMh//jbGuWN1oe6DRe/6S5xB3wgCcUxSdnjsxgowXYb9DQg
+	 ss5YoEqc15jFBx4GrusLfhzL2BOOFfadXo0F3CZsOZwSuBGNMedbcDXwmiDjLjHsdGIn1
+	 8HjhAeiqt9WVAEfcv5wTY1WQrMP01vc1m/zsSlpjOjkBgrTrwnUkE+viPzNCJrJIhFxiZ
+	 WKBWpZS1qZQUZBUzf637l5f6AXYvshpUPcZP2nfF39gstPS4rlV9q14z1WrTIc/jtVg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=jpEaHt4X;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8CF606A31E
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 15:14:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CB8CF606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=brainfault.org header.i=@brainfault.org header.a=rsa-sha256 header.s=google header.b=pemRuMXy
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4b467581b98so57614235e9.0
-        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 07:06:47 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795619206; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pSZx6ioPzNsrrvdExjmeCx38l5NrWNjMLoQpweGL3scowlAHHH109V/kWhbhxvHU4m
-         BarYZpMEghlfDZ5r8hR7u+G2slNd7f7dQMjTPcALMx8D0TA07iEIIFc7wWF4dOItfF1J
-         tY0AejP4NcXt7JJntnjOEeYQKXkFwX8Iospz4XCW5iPDzwEsw456UsFHVzSTpl8TCXtl
-         4hyFuf+uPUGmn71P4s9NspdivHzaXsDwDUbzNHa6g9TWPZ4JCE8aSLlZKUjbnPIu4Roq
-         U/YKY/jqwam2WGgdIweiyy411RxdEOQIyqpKfDkZpNcpmzHqu6ZY9iR2o0l87nV8HXaF
-         HKsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=wQhYGWbmYRpOsQh048VImHZFZtKvuW+wybi1/wHnwY8=;
-        fh=TqkDo7HJm6C2bTHYqbzn7b/i6oYTm+CMOZGiIKAd8p4=;
-        b=bxeKZdVrPEGH+WehVrboQYBXwtRVS67lYcEUbxwi9uUevTiXlatiyLMGudcbfgORWh
-         OJaGhvUmThAMBFoj5HREhOCWY05mR479tCZBNkUisxjAKogBlCbBxKejZC0m2EBSk+AR
-         ad7t6otEtKsSnwfhIt7528jq/YjR77NIPei9o8SaUM6fblKpga6/qCDEnwgCzf2zErZm
-         WYkccqNhzSnRXWJrHxljje1zrzREBJdIRQQMAQvcH+Das26ZPTZwC6EGH+MvA9uI/g0k
-         HP0TYFhIi0jO63FwtFU26ps6fxK7ikTZa3LIAppnRjN9VYgr6MjjB+1Cx5aHyM7Det7J
-         RXtw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1795619206; x=1796224006; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=wQhYGWbmYRpOsQh048VImHZFZtKvuW+wybi1/wHnwY8=;
-        b=pemRuMXyr4I+c1uAftwjHSHymoYH7Onl2IbwGetE3XAtmQX8HIt3kHduM3rqqvWGiD
-         Yjl8YW0mB+xKtyLsZKIY7eOvw7Yl3jukaCT8DQGlnCi9GLJTA3QQJDxinJjDAjZP4Moc
-         UZ1YaNLJ7/cuVMJbNeHhLmmdME4JYLSWFxZ/IpUKSqna2UDG//Vh4PgosVBNdOELJIPO
-         rPsmtKcRuGP8+z1MGP7eQp7LBCL7EWumiDgyz8ssXhTj2sA9U+1doNI+08N+6qnz6jxG
-         P86ATgyMpc20XFtOnmiOQVQaBQoqeaVY0j0erX/fJAT8YsM1FWNTT1nrorwU+gghnTfJ
-         jzWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795619206; x=1796224006;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wQhYGWbmYRpOsQh048VImHZFZtKvuW+wybi1/wHnwY8=;
-        b=CO4O9WRBNsEGRBOU0QBUBcUf0UJyUTZTAdVqC655uKHHczUAjp/OWCtwc5vXWSSa4h
-         nwahc4je8vBZzvnNXIxN06t9lV6VO98LAa0hcHyr/CMAPUz4+8ERVAwuZ+Cqjx5CFVXV
-         98ayVvHKMV5UDftyF5yLsiJNTuoUQJyWLRepa5SrH5s4NCsYuLDGCg7hA0IrWktiSOUR
-         wr9+pjF6EvSTN8AIJUS13SKILumFHZVejmynwYBblYzB0vgRpMQ1zInxIgtKUdg7NYRK
-         6ok/crIliCHx6//ro6aVL8D+CzFp6PcwMwTqZlHXgOOVJ9HY2cZlD1TstApC/bnZonww
-         /Ddw==
-X-Gm-Message-State: APuU4Z8qi48Axa5OZWzE9u+ziTozgc07DQJ6h0F51stsGjXoL65D6bNU
-	etvqa7fcXif8YCaWWccmuJMSWbzYd1pbZu+TGQFi3iRVq59i1YMSfMLRB2TRdyTADR1AOYrnAWQ
-	voUYFtUrGDd401a+aq5PwCMcLf8mbn/C5BiHtPN+EaA==
-X-Gm-Gg: AZFdTZepD7HhGvZnOrJHtyLNG5LBtVGCsn1y5MpfKddvVm7BS6jZmlCnrPyDGyUVRmY
-	hLpnQ5kG8iaP7JwBDWoO+I0bHcut0kXSLhLI6fYoq1/VrCda+2ufG3I8y7LLZC3TmtVVrgkmcdt
-	+C2jBedCuqX0mfS4CDlKusm4M84H0AfNtarq3aobQDLPJP8fnHx37oCfgp+UQ4vDn75a+adW8kG
-	ceaZu4C6WoRLNK40WoruSWgafOXZ8zY9y7jlvBXwfdN/HSNH/CamtE2vi00ip1SkA6kNySTzD0o
-	vhgvWUZZNAdtnhqvJTNeN7iibHcAJBJtEw6vSbM+cg7F703Phwth0Q+tN4ub2dvz4ZijYNPSn7M
-	c48PGBBJ+9eQfK22qJt/jMkDvCD2qiFrdVFoCTPLn2BWK2OTt0B1d3P4U4/gtqqo5F71ad8Tn6H
-	xWh1wG0j4BRKMcofgjYF/s3ex3mA4Xuy585r52o/3gZFrYtIcRZ6uW
-X-Received: by 2002:a05:600c:828e:b0:4a1:cd83:b23e with SMTP id
- 5b1f17b1804b1-4bb88786ddemr337232595e9.0.1795619205644; Wed, 25 Nov 2026
- 07:06:45 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=jpEaHt4X
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 36E242F;
+	Wed, 25 Nov 2026 07:14:00 -0800 (PST)
+Received: from e133894.cambridge.arm.com (e133894.arm.com [10.2.80.62])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F40613F86F;
+	Wed, 25 Nov 2026 07:14:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795619643; bh=cw++yBZS8jlRB00548KczTX1DkOn+4sdOCjlk32jvuQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=jpEaHt4XRasO5Owe1M4sHNyr1grHVrZy8T1oERHdOcgTPSDcPALWH7LxyZREBs2bn
+	 8CEHOkNX4ciCKhNhfUea5NFJD9UrFaLenWrEumFt1Wth6H9MTsPxihycOAqDwBrkGC
+	 4qvvf34OtsSnI3SIzMaMvzOaE4HuRKSMpOHyV3Ak=
+From: Sascha Bischoff <sascha.bischoff@arm.com>
+To: will@kernel.org,
+	julien.thierry.kdev@gmail.com
+Cc: vladimir.murzin@arm.com,
+	maz@kernel.org,
+	kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	timothy.hayes@arm.com,
+	Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH kvmtool v6 00/23] arm64: Support GICv5-based guests
+Date: Wed, 25 Nov 2026 15:13:33 +0000
+Message-Id: <20261125151356.2875108-1-sascha.bischoff@arm.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,82 +63,90 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260914055936.3672758-1-wang.yechao255@zte.com.cn> <20260914055936.3672758-2-wang.yechao255@zte.com.cn>
-In-Reply-To: <20260914055936.3672758-2-wang.yechao255@zte.com.cn>
-From: Anup Patel <anup@brainfault.org>
-Date: Wed, 25 Nov 2026 20:36:34 +0530
-X-Gm-Features: Aa3M54rWb_qwV0lybeTg4v6ZPTlnIV7_ygoXoP0dqWuArNVCCcEttr1PQxaya24
-Message-ID: <CAAhSdy2-HGNfbBCJeXPS0wyTaSt+C9rHw08K6dn5DcJCLWy+rw@mail.gmail.com>
-Subject: Re: [PATCH v5 1/2] RISC-V: KVM: add tracepoint for guest page faults
-To: Wang Yechao <wang.yechao255@zte.com.cn>
-Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Atish Patra <atish.patra@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 14, 2026 at 11:37=E2=80=AFAM Wang Yechao <wang.yechao255@zte.co=
-m.cn> wrote:
->
-> Add the kvm_page_fault event tracepoint to count the number of KVM
-> guest page faults.
->
-> Signed-off-by: Wang Yechao <wang.yechao255@zte.com.cn>
-> ---
->  arch/riscv/kvm/trace.h     | 22 ++++++++++++++++++++++
->  arch/riscv/kvm/vcpu_exit.c |  2 ++
->  2 files changed, 24 insertions(+)
->
-> diff --git a/arch/riscv/kvm/trace.h b/arch/riscv/kvm/trace.h
-> index 23a5fd1b686e..07fcf5b6059b 100644
-> --- a/arch/riscv/kvm/trace.h
-> +++ b/arch/riscv/kvm/trace.h
-> @@ -133,6 +133,28 @@ TRACE_EVENT(kvm_vcpu_irq,
->                   __entry->vcpu_id, __entry->irq, __entry->level)
->  );
->
-> +TRACE_EVENT(kvm_page_fault,
-> +       TP_PROTO(struct kvm_vcpu *vcpu, u64 fault_address, u64 error_code=
-),
-> +       TP_ARGS(vcpu, fault_address, error_code),
-> +
-> +       TP_STRUCT__entry(
-> +               __field(unsigned int,   vcpu_id)
-> +               __field(u64,            fault_address)
-> +               __field(u64,            error_code)
-> +       ),
-> +
-> +       TP_fast_assign(
-> +               __entry->vcpu_id        =3D vcpu->vcpu_id;
-> +               __entry->fault_address  =3D fault_address;
-> +               __entry->error_code     =3D error_code;
-> +       ),
-> +
-> +       TP_printk("vcpu %u address 0x%016llx error_code 0x%llx",
-> +               __entry->vcpu_id,
-> +               __entry->fault_address,
-> +               __entry->error_code)
-> +);
-> +
->  #endif /* _TRACE_KVM_H */
->
->  #undef TRACE_INCLUDE_PATH
-> diff --git a/arch/riscv/kvm/vcpu_exit.c b/arch/riscv/kvm/vcpu_exit.c
-> index 88e0c369b354..de0262d0fd95 100644
-> --- a/arch/riscv/kvm/vcpu_exit.c
-> +++ b/arch/riscv/kvm/vcpu_exit.c
-> @@ -29,6 +29,8 @@ static int gstage_page_fault(struct kvm_vcpu *vcpu, str=
-uct kvm_run *run,
->         memslot =3D gfn_to_memslot(vcpu->kvm, gfn);
->         hva =3D gfn_to_hva_memslot_prot(memslot, gfn, &writable);
->
-> +       trace_kvm_page_fault(vcpu, fault_addr, trap->scause);
-> +
+This series adds support for GICv5-based VMs to kvmtool. These are
+exposed as --irqchip=gicv5 and --irqchip=gicv5-its, where the former
+creates a vGICv5 device and the latter adds a GICv5 ITS. The GICv5
+specification can be found at [1].
 
-The trace_kvm_vcpu_exit() in kvm_riscv_vcpu_exit() already covers
-all traps so I don't think we need separate trace point for G-stage
-page faults.
+The GICv5 support in KVM needed by --irqchip=gicv5 is available as of
+Linux v7.4-rc1. The GICv5 ITS support is described in [2]; using
+--irqchip=gicv5-its requires a KVM build with those changes.
 
-Regards,
-Anup
+The series teaches kvmtool to create the GICv5 irqchip and ITS KVM
+devices. It describes the GICv5 CPU interface, IRS and ITS in the
+guest DT, updates the timer and PMU interrupt descriptions, and
+generates GICv5 interrupt specifiers for platform devices and PCI. It
+also maps PCI MSI requester IDs to the ITS. The IRS support is built
+and exposed before the ITS support, so the GICv5 irqchip support can
+be merged separately from the ITS changes.
+
+Compared with v5 [3]:
+
+* Dropped the SETLPI frame from the IRS DT description because KVM
+  reserves but does not emulate it. Updated patch 15's commit message
+  accordingly.
+
+* Added Vladimir's Reviewed-by trailers to patches 9 and 15.
+
+The v7.4-rc1 header sync includes GICv5 IRS UAPI, but not GICv5 ITS
+UAPI. Patch 19 mirrors the ITS definitions from [2]. Once that UAPI
+lands upstream, the headers should be resynced against the latest
+Linux headers before merging the ITS support.
+
+Thanks,
+Sascha
+
+[1] https://developer.arm.com/documentation/aes0070/latest
+[2] https://lore.kernel.org/all/20261102194454.4086911-1-sascha.bischoff@arm.com/
+[3] https://lore.kernel.org/all/20261118175755.1946977-1-sascha.bischoff@arm.com/
+
+Sascha Bischoff (23):
+  arm64: Propagate IRQ routing initialisation errors
+  arm64: Close the ITS descriptor when setup fails
+  arm64: Split GIC device setup
+  Sync kernel UAPI headers with v7.4-rc1
+  arm64: Add GICv5 irqchip device support
+  arm64: Configure GIC interrupt bases
+  irq: Allow the initial interrupt line number to be set
+  arm64: Start GICv5 SPI line allocation at zero
+  arm64: Configure the GICv5 IRS
+  arm64: Define GICv5 interrupt types
+  arm64: Describe the PMU interrupt for GICv5
+  arm64: Describe timer PPIs for GICv5
+  arm64: Assign CPU DT phandles
+  arm64: Describe the GICv5 CPU interface in the DT
+  arm64: Describe the GICv5 IRS in the DT
+  arm64: Generate GICv5 SPI specifiers for platform devices
+  arm64: Generate GICv5 PCI INTx specifiers
+  arm64: Expose the GICv5 irqchip option
+  arm64: Add proposed GICv5 ITS UAPI definitions
+  arm64: Add GICv5 ITS device support
+  arm64: Describe the GICv5 ITS in the DT
+  arm64: Map PCI MSI requester IDs to the GICv5 ITS
+  arm64: Expose the GICv5 ITS irqchip option
+
+ arm64/fdt.c                         |  13 +-
+ arm64/gic.c                         | 359 ++++++++++++++++++++++++----
+ arm64/include/asm/kvm.h             |  18 ++
+ arm64/include/kvm/fdt-arch.h        |   1 +
+ arm64/include/kvm/gic.h             |  15 ++
+ arm64/include/kvm/kvm-arch.h        |  16 ++
+ arm64/include/kvm/kvm-config-arch.h |   2 +-
+ arm64/pci.c                         |  24 +-
+ arm64/pmu.c                         |  13 +-
+ arm64/timer.c                       |   8 +-
+ include/kvm/irq.h                   |   1 +
+ include/linux/kvm.h                 |  23 ++
+ include/linux/virtio_console.h      |   2 +-
+ include/linux/virtio_ids.h          |   1 +
+ irq.c                               |  15 +-
+ powerpc/include/asm/kvm.h           |  18 ++
+ riscv/include/asm/kvm.h             |  17 ++
+ x86/include/asm/kvm.h               |   4 +-
+ 18 files changed, 481 insertions(+), 69 deletions(-)
+
+-- 
+2.34.1
+
