@@ -1,51 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.84
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.139
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795621192;
-	b=svOJbNUGpJvpzzjWpd6Yuv9UeUJJFJPn9jv0EsV+t2Zr+uPW5ocgw+tCmb8VE7DpmKFF
-	 2zRHlHq9THkGaNOKsC1eCoODkBU1cgRPr7loFqkQJkr3owLHOj4/quJ7utU9JhNGKRxjx
-	 S92ONJ0Wte9W0gY4VcKxcJErmvVLGTgoYY/WB51KgAcc6Jn1OHJatNwJpwvSEQlaNmVpE
-	 WKYmMc5ACS/wHmtGZGn641G/VNCbHXTPiKJ3XQwx9zzjt3ieWSpblSUvNr2EEiZdZQGEB
-	 +3mJAKx0wzkEdZCwVXYiiEvQiALgVJx36akVAmWBk0QdC18aYU5eWOw8tWhWNzepy+g==
+	t=1795621197;
+	b=S0q9zDdXQj7msJ6WpTCs8j23Ms/HcFfdU8ftzLzLCuYqITMfqNE5MFgisxyMjfdIHFBJ
+	 2bx7Ms+dat88TeRVxc7jdsehcxA93Fdv/eoRhsTL7o6Qe8HUI3D77uw5XA1FG1HK0VMJx
+	 fZ71q+Oo4o72JPCT6GWXijFqlWAyWDxhB5gQLl+1jP/j3LK2NCpxsDrZqH9ElrAr/wla8
+	 wvF4JJ3sDW9liDUEQ7VMlxgX0H+t9jichtE3NLNqUxh2SPH9XVTclDJrEancyABpU3kdQ
+	 K9un1bRVO6iFxPfuiHrhiEqmLOSc/hMrrNFMYIti+AzBxwsajWdPpj5fJ9bSSfYQibg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795621192;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795621197;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=g8Y+VjlhAuPJi/mSdE+SsemjmM6ohHErbBXjp4HQBX8=;
-	b=TeQ64ypljX9MgiCkts5Q7+2Kof6COzAti4gNcgnh4DttGYLEyqKJ4vAdFUZo1xmX7MnB
-	 cLoe9eLuYuTpuWrTz2YppWADuhPFPE6Q0vRU48doCH68+DdK88Fxi3frZTmR87viLP4DU
-	 A907/5t6bsuVuUxGTFYaraphyEPI2DUYIsQw29UZsVZIrl+iSdNp3xwQtgbZ/G3ZTGdeI
-	 D1BTg5NMSsKjytcdkQWrb/l1NKUztjXYidLH26dk1+if5Qq/8ytdSqFpdXPNdgtYJL0vQ
-	 K8xtBsL85CoTQU7sO3VnUkgKSHdIninpsP+NgphFJyhvWcvzzeBTnuWCtmSruPryvew==
+	bh=HaDpLlZO77/PfdtGsOMSJUUh5Y4j+J367j2Kgogf+tM=;
+	b=R/YzJnU347hnbpNxzNcH+L1huTgJ3BtiYAyHaTc5MRX9thuSI3iZwDx/6sb1Z+7SGLab
+	 /p5jb7gK8VBo/KKzxoUq7/dpmZSuc/iahriysG1svxXAFiCD6sBw71fYj+BlN9qB/tj1n
+	 7Xts8Od2qxq8nJyr+vjeheSooj9zUzf0GhSTKE/51uv7NN3EqJhiVG7P5VHvL05CiLblj
+	 ll2x2zBYfQTpTQJAancXZVcUGUd5Z58Jzt0WDyEbrz1pm+ShBgIYdAVwSOWBQJNLStJhj
+	 deHx08mWo0dSzRd9nmu2p8qDh1d7saxnxbpL/TLyHLGviCFTJS8MmSW6XJsfHzD8eNw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LimZQkx0;
-	arc=none smtp.remote-ip=95.215.58.84
-Received: from mta1.migadu.com (out-84.mta1.migadu.com [95.215.58.84])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AUAMMum8;
+	arc=none smtp.remote-ip=91.218.175.139
+Received: from mta0.migadu.com (out-139.mta0.migadu.com [91.218.175.139])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B29606A69F
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 15:39:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93B29606A69F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A145606A6AA
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 15:39:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A145606A6AA
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LimZQkx0
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AUAMMum8
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=z0MdkXXkhI4FyI4pRvxVmInAnq+lBk663TaLC9etFxs=;
+DKIM-Signature: a=rsa-sha256; bh=GlzUdZprJRkl9i8HWXT3FIkXmSaEpIUlQmDVtwXNSuM=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795621189; v=1; x=1796225989;
- b=LimZQkx0qgZqlp2OTs9fxIRVylICj1WT03q+IlqtnvRRyZ9iMMUqsjDC59VCqU2B/t0BRi3F
- JJ5u0Ad+pilX2sMnPddCyfCE1jCUVlH4ee7sG/Q20wd/I2eO8j2uldl+0XxTb0NvkeVfI2XZ78D
- wfbESd2cKi8Sjb26KCh5oqqk=
+ t=1795621194; v=1; x=1796225994;
+ b=AUAMMum8C5V/yzYIzbsSmtIcur4UF37a2pxl5ZAI1XD42u3BoF1NRUXz1MGszxEzV3emLB8D
+ EZmliY6jPmUJ6iaXtAlr6XlH6uDFxB+s3rw1pPzQS1024DxwbA4fT54NysiqtzRCC3WN8UwwE/E
+ 58oCXFxred/kG27tpOTXM1mk=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id b2b04a39099f7a6d;
-	Wed, 25 Nov 2026 15:39:49 +0000
-X-Mizu-Trace-ID: b2b04a39099f7a6d
+Received: by smtp.migadu.com with ESMTPS id deebcfd6609d8edf;
+	Wed, 25 Nov 2026 15:39:54 +0000
+X-Mizu-Trace-ID: deebcfd6609d8edf
 X-Migadu-Flow: FLOW_OUT
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: Marc Zyngier <maz@kernel.org>,
@@ -63,9 +63,9 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Fuad Tabba <tabba@google.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 07/20] KVM: arm64: Allow protected VMs to use SVE
-Date: Wed, 25 Nov 2026 15:38:58 +0000
-Message-ID: <20261125153911.106793-8-fuad.tabba@linux.dev>
+Subject: [PATCH v2 09/20] KVM: arm64: Report an incomplete feature map with WARN_ON()
+Date: Wed, 25 Nov 2026 15:39:00 +0000
+Message-ID: <20261125153911.106793-10-fuad.tabba@linux.dev>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261125153911.106793-1-fuad.tabba@linux.dev>
 References: <20261125153911.106793-1-fuad.tabba@linux.dev>
@@ -80,83 +80,33 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Now that EL2 owns a protected vCPU's SVE state and advertises
-ID_AA64ZFR0_EL1, allow KVM_CAP_ARM_SVE for a protected VM, which lets
-KVM_ARM_VCPU_INIT take KVM_ARM_VCPU_SVE.
+At init, check_feature_map() reports with kvm_err() any feature map
+that doesn't account for every bit of its register. The next patch
+builds config.c into nVHE hyp, which has no printk(), so the check
+would need an #ifdef to keep it out of hyp.
 
-A protected guest's SVE access trap injects an UNDEF. An SVE
-instruction takes the SVE trap rather than the FP one, so a guest whose
-first vector instruction is an SVE one would get an UNDEF instead of
-the lazy FP switch. Handle the SVE trap as the FP trap is:
-kvm_handle_pvm_fpsimd() switches the state for a vCPU with SVE and
-still injects the UNDEF for one without.
+Use WARN_ON() instead, which doesn't need printk().
 
-Update the documentation to match.
-
-Tested-by: Vincent Donnefort <vdonnefort@google.com>
-Reviewed-by: Vincent Donnefort <vdonnefort@google.com>
 Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
 ---
- Documentation/virt/kvm/arm/pkvm.rst | 6 +++---
- arch/arm64/include/asm/kvm_pkvm.h   | 1 +
- arch/arm64/kvm/hyp/nvhe/switch.c    | 1 +
- arch/arm64/kvm/hyp/nvhe/sys_regs.c  | 2 --
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ arch/arm64/kvm/config.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/Documentation/virt/kvm/arm/pkvm.rst b/Documentation/virt/kvm/arm/pkvm.rst
-index b8c8c94cba534..c59e598645b1b 100644
---- a/Documentation/virt/kvm/arm/pkvm.rst
-+++ b/Documentation/virt/kvm/arm/pkvm.rst
-@@ -134,9 +134,9 @@ A protected VM boots from a single primary vCPU. Before the first
- * Set the primary vCPU's boot state with ``KVM_SET_ONE_REG``: the kernel
-   entry address in ``PC`` and the DTB pointer in ``x0``.
+diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
+index c65cf1dd27330..eef5ca50fc382 100644
+--- a/arch/arm64/kvm/config.c
++++ b/arch/arm64/kvm/config.c
+@@ -1409,9 +1409,7 @@ static void __init check_feat_map(const struct reg_bits_to_feat_map *map,
+ 		if (!((map[i].flags & FORCE_RESx) && (map[i].bits & resx)))
+ 			mask |= map[i].bits;
  
--``PC`` and ``x0`` are the only registers EL2 takes from the host. Other
--pre-run writes are accepted, but the guest starts from the state the
--hypervisor resets it to.
-+``PC``, ``x0`` and the SVE vector lengths (``KVM_REG_ARM64_SVE_VLS``) are
-+the only registers EL2 takes from the host. Other pre-run writes are
-+accepted, but the guest starts from the state the hypervisor resets it to.
+-	if (mask != ~resx)
+-		kvm_err("Undefined %s behaviour, bits %016llx\n",
+-			str, mask ^ ~resx);
++	WARN_ON(mask != ~resx);
+ }
  
- Secondary vCPUs are started by the guest itself through PSCI ``CPU_ON``
- (see `Power state`_), which supplies their entry point and context ID.
-diff --git a/arch/arm64/include/asm/kvm_pkvm.h b/arch/arm64/include/asm/kvm_pkvm.h
-index 155ac35069245..9350caed1e8e7 100644
---- a/arch/arm64/include/asm/kvm_pkvm.h
-+++ b/arch/arm64/include/asm/kvm_pkvm.h
-@@ -40,6 +40,7 @@ static inline bool kvm_pkvm_ext_allowed(struct kvm *kvm, long ext)
- 	case KVM_CAP_MAX_VCPU_ID:
- 	case KVM_CAP_MSI_DEVID:
- 	case KVM_CAP_ARM_VM_IPA_SIZE:
-+	case KVM_CAP_ARM_SVE:
- 	case KVM_CAP_ARM_PTRAUTH_ADDRESS:
- 	case KVM_CAP_ARM_PTRAUTH_GENERIC:
- 	case KVM_CAP_ONE_REG:
-diff --git a/arch/arm64/kvm/hyp/nvhe/switch.c b/arch/arm64/kvm/hyp/nvhe/switch.c
-index 89fb9dd351ad5..0626f4203ba6d 100644
---- a/arch/arm64/kvm/hyp/nvhe/switch.c
-+++ b/arch/arm64/kvm/hyp/nvhe/switch.c
-@@ -230,6 +230,7 @@ static const exit_handler_fn pvm_exit_handlers[] = {
- 	[ESR_ELx_EC_WFx]		= kvm_handle_pvm_wfx,
- 	[ESR_ELx_EC_HVC64]		= kvm_handle_pvm_hvc64,
- 	[ESR_ELx_EC_SYS64]		= kvm_handle_pvm_sys64,
-+	[ESR_ELx_EC_SVE]		= kvm_handle_pvm_fpsimd,
- 	[ESR_ELx_EC_FP_ASIMD]		= kvm_handle_pvm_fpsimd,
- 	[ESR_ELx_EC_IABT_LOW]		= kvm_hyp_handle_iabt_low,
- 	[ESR_ELx_EC_DABT_LOW]		= kvm_hyp_handle_dabt_low,
-diff --git a/arch/arm64/kvm/hyp/nvhe/sys_regs.c b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
-index 352998a07512a..0a536b237a7c9 100644
---- a/arch/arm64/kvm/hyp/nvhe/sys_regs.c
-+++ b/arch/arm64/kvm/hyp/nvhe/sys_regs.c
-@@ -712,8 +712,6 @@ static const struct sys_reg_desc pvm_sys_reg_descs[] = {
- 	ID_UNALLOCATED(7,6),
- 	ID_UNALLOCATED(7,7),
- 
--	/* Scalable Vector Registers are restricted. */
--
- 	HOST_HANDLED(SYS_ICC_PMR_EL1),
- 
- 	RAZ_WI(SYS_ERRIDR_EL1),
+ static u64 reg_feat_map_bits(const struct reg_bits_to_feat_map *map)
 -- 
 2.47.3
 
