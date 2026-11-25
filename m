@@ -1,50 +1,51 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.88
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.93
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795621156;
-	b=Cj2E3qeIrGmgfUgAA7iVz8v4eDLMUnf0UdFQUi/C+WYb2bLqWMNxKsfYrzoF2EeLxQfV
-	 8lQeBYONpSS1DSYVAhNXH7ctUxW4a+NA8raDs8K0kAviW0HSP1e5wUd9UxsdqFBsSUDxa
-	 cgeQAFIKCCfnbd3kHxHxaZ2kSeclFASIXOoZ80OTqxItNWeHmGTeNMw3bbeu9xE7v98GX
-	 xVEqzm0eQIbyKJnAQJQAkEJRinpogRBWAAo8FMeeVSzKzzfYAnKwU/maGgWfEOgFCqAsM
-	 xizdH20RbEnMfAIQ1ZrLNyxUeFlYOelSJ5606o4N3tp6HD3JDMnFpuIi9sWPOhQ9jKQ==
+	t=1795621158;
+	b=qADGLCObHttdA4uDWHlWfC+z6NaukramrjCzv/ObZ+Hmbc6Mugh3au24hSbvX8i9sN3U
+	 n6QNkD82kapxBmnxYlk09KQ1Zt2oYIc4wVOFNT1OyBKHDIrf4YQ7FAX7kU4KIqSsw9ov1
+	 TfpdK5XVZTZcIegB3E9knQPJscj8iz0lNgzQ2ClIe7vDU2mZmZBsd1w3FS1E1hucntuN+
+	 lISjnPYnqq167pdaYEybjzpCoU2v8WPcSHd/08bkWMgkfm7gTG+JzaAkLJfmlLcI8aCHM
+	 ubjGfqGdb9NrywLRB2Hs64mW5j2kBE1qsP0wFtExRsdvSf7bwBSSNdSkhAeuqiBS/ig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795621156;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795621158;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=ASDf1J7RYZd7g9hJRy/O98JcZzUemVt8EFMNXdnVhMI=;
-	b=JqI8aGlwq0XinhDZnjiVPfIpHaS4ACFzLxzYazyQt8AjGGKzwNyepaQykDIyoWuO3avI
-	 5AFMEMcBYJdZuBXfcr9NVTkgJ/NOSwgeaRZ1+3E08utMgBzB9XY9iDWq92fqTvKUnPoto
-	 yVoZ52gpF4949Z9ZwAPGSUQISzPQiSYIt3VMFwRZ6L4ZLiCGFNjIyDemvtHb09eQb8KaX
-	 JEqsjij9RHXKuPLlC+5JJg5n18vaL9dkQ6PvPcOloPu6l0lihT6yZWTnDjZ98wiVXuqTp
-	 NqGdxylGOycF2+rQhzTukQGxjQMP4AwEOpwriQHKJ7nyHB41LpBwLNvOV2z4kO8y5Fw==
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=eCGx1X8DR+pHjH9W44J3Lh82/2sl2cpI/RianqMEYjE=;
+	b=yzbmer4TD1S81QxGAf/Upezkxhfd8C/GN5I9coRVteArxvedd6edd7NlgkbFD5Gy/Ucn
+	 SKcxAiknzBQ08j394rT0R5D+fn6tQYRGciAe/KJt9EGisuh2q73kcaOkdYhrHByoEiCm5
+	 AP4X6/5TyZrHF9TslrMiGnOqFI4/5WYRs296SyGAqZrW00uXsvoA6UIN+ns5XxDbN5l1a
+	 9pZea164LMYvrJqkb/rQu2HrKTo5YQEtQTReGdx0D8di5JW6J2Xg9BOUwdF6gZUi5MrLP
+	 dZgfRP0Uxcf//sfvIU1Rid11u2N6JWIiRZzfm/PZYS3zkk0d9OwWKsvQrrmxAcfspiw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ehIwP+JJ;
-	arc=none smtp.remote-ip=91.218.175.88
-Received: from mta0.migadu.com (out-88.mta0.migadu.com [91.218.175.88])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b="uEGoc/GK";
+	arc=none smtp.remote-ip=91.218.175.93
+Received: from mta0.migadu.com (out-93.mta0.migadu.com [91.218.175.93])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E3B606A331
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 15:39:15 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B2E3B606A331
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5871D606A334
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 15:39:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5871D606A334
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ehIwP+JJ
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=uEGoc/GK
 X-Envelope-To: kvm@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=GsIUcTgG0fusfC+sbkYRATmQcjkhxzCYvdARKzPZoIs=;
+DKIM-Signature: a=rsa-sha256; bh=plWnGSA+t40iciXF75RUGdCCByZ2c9Fur5xw/PdG3iQ=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1795621153; v=1; x=1796225953;
- b=ehIwP+JJOsCyEKZjpEyKVfA4w7o0B5Lu5ND7tTroCYw66i4tgrkHGYJbCWTzxF33G7jFIELi
- zbgAwds3iV4CfT88xffhhxNGWtLiMS9F/ZdhHg/cx36/rGfB0j9b+c13mh+xbqTUWyzkhWijOm5
- 03fixlon4buawCSifRxBa3vk=
+ t=1795621155; v=1; x=1796225955;
+ b=uEGoc/GKCvssycowstrnGLuAYNix5t8Pc/tsZFyFww3d1R3QZXd1AiauzmkCYdr5ziZAf+Rq
+ DZivHihoNF5+liWvKQJuiUXgeO2xc6S/Wfmd7O9EAIweS5pW1AQ7WYrRyjUlRcr5UqVLh6NXpAm
+ T8kirCGpv0l8GVxnfDEM08cU=
 X-Envelope-To: kvm@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 47b5237eae5c5d30;
-	Wed, 25 Nov 2026 15:39:13 +0000
-X-Mizu-Trace-ID: 47b5237eae5c5d30
+Received: by smtp.migadu.com with ESMTPS id cccc4519f60a0c77;
+	Wed, 25 Nov 2026 15:39:15 +0000
+X-Mizu-Trace-ID: cccc4519f60a0c77
 X-Migadu-Flow: FLOW_OUT
 From: Fuad Tabba <fuad.tabba@linux.dev>
 To: Marc Zyngier <maz@kernel.org>,
@@ -62,10 +63,12 @@ Cc: Joey Gouly <joey.gouly@arm.com>,
 	Fuad Tabba <tabba@google.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 00/20] KVM: arm64: Support debug, SVE, MOPS, PIE/POE, FPMR and more in protected VMs
-Date: Wed, 25 Nov 2026 15:38:51 +0000
-Message-ID: <20261125153911.106793-1-fuad.tabba@linux.dev>
+Subject: [PATCH v2 01/20] KVM: arm64: Only allow ptrauth for a pVM on a system with full ptrauth
+Date: Wed, 25 Nov 2026 15:38:52 +0000
+Message-ID: <20261125153911.106793-2-fuad.tabba@linux.dev>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261125153911.106793-1-fuad.tabba@linux.dev>
+References: <20261125153911.106793-1-fuad.tabba@linux.dev>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -77,83 +80,45 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi folks,
+EL2 allows a protected VM both ptrauth features whatever the system
+supports. An id_aa64isar1 override can leave a system with generic but
+not address auth. EL2 then doesn't trap the guest's key accesses, but
+it doesn't switch the keys either, since the switch is gated on
+ARM64_HAS_ADDRESS_AUTH. The host can read and write the guest's
+APGAKey.
 
-Changes since v1 [1]:
-  - Replaced the #ifdef around the feature map check with a WARN_ON().
-    (Oliver)
-  - Added two fixes, for ptrauth and MTE_frac.
-  - Added a patch advertising GICv3 to protected VMs on GICv5 hosts with
-    legacy support.
-  - Small fixes and tidying up.
-  - Rebased on 7.4-rc3.
+Only allow the ptrauth features when the system has full ptrauth, as
+the host does.
 
-With most of the groundwork merged, it's time to bring protected VMs up
-to the features we support for them in Android.
+Fixes: b56680de9c648 ("KVM: arm64: Initialize trap register values in hyp in pKVM")
+Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
+---
+ arch/arm64/include/asm/kvm_pkvm.h | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-  01-02:  Fixes for ptrauth and MTE_frac.
-  03:     Self-hosted debug.
-  04-07:  SVE, with EL2 owning a protected vCPU's SVE state.
-  08-11:  Compute a protected vCPU's fine-grained traps at EL2.
-  12-20:  Advertise TCR2, SCTLR2, S1PIE, S1POE, MOPS, FPMR and the
-          features EL2 already handles for non-protected guests.
-
-Tested on QEMU, in hVHE and nVHE, and on FVP for S1POE, GICv5 in legacy
-mode and the fields QEMU doesn't model (CLRBHB, RPRFM, ECBHB, LSFE,
-LSUI, HAFT, ETS3 and F16MM). v2 of the pKVM selftests series [2] covers
-debug, SVE, MOPS, PIE, POE and FPMR.
-
-Based on Linux 7.4-rc3 (aebb727447640).
-
-Cheers,
-/fuad
-
-[1] https://lore.kernel.org/all/20261109083205.806619-1-fuad.tabba@linux.dev/
-[2] https://lore.kernel.org/all/20261109084854.840576-1-fuad.tabba@linux.dev/
-
-Fuad Tabba (20):
-  KVM: arm64: Only allow ptrauth for a pVM on a system with full ptrauth
-  KVM: arm64: Don't advertise the host's MTE_frac to protected VMs
-  KVM: arm64: Add support for self-hosted debug in protected guests
-  KVM: arm64: Remove redundant kern_hyp_va() calls from the pKVM FP sync
-  KVM: arm64: Allocate a protected vCPU's SVE state at EL2
-  KVM: arm64: Advertise ID_AA64ZFR0_EL1 to protected VMs
-  KVM: arm64: Allow protected VMs to use SVE
-  KVM: arm64: Move the VM's FGU initialisation into config.c
-  KVM: arm64: Report an incomplete feature map with WARN_ON()
-  KVM: arm64: Advertise the GICv3 CPU interface to protected VMs on
-    GICv5
-  KVM: arm64: Compute a protected vCPU's fine-grained traps at EL2
-  KVM: arm64: Advertise TCR2, SCTLR2, S1PIE and S1POE to protected VMs
-  KVM: arm64: Advertise MOPS to protected VMs
-  KVM: arm64: Advertise FPMR to protected VMs
-  KVM: arm64: Advertise HBC, CLRBHB, RPRFM, CSSC and LUT to protected
-    VMs
-  KVM: arm64: Advertise FAMINMAX, LSFE, LSUI and FPRCVT to protected VMs
-  KVM: arm64: Advertise AFP and RPRES to protected VMs
-  KVM: arm64: Advertise ECBHB, TIDCP1, TTST and LVA to protected VMs
-  KVM: arm64: Advertise FP8 and F16MM to protected VMs
-  KVM: arm64: Advertise ECV, HAFT and ETS3 to protected VMs
-
- Documentation/virt/kvm/arm/pkvm.rst     |  13 +-
- arch/arm64/include/asm/kvm_host.h       |   2 +-
- arch/arm64/include/asm/kvm_hyp.h        |   6 +
- arch/arm64/include/asm/kvm_pkvm.h       |  12 +-
- arch/arm64/kvm/arm.c                    |  11 +
- arch/arm64/kvm/config.c                 |  24 +-
- arch/arm64/kvm/hyp/include/hyp/switch.h |   2 +-
- arch/arm64/kvm/hyp/include/nvhe/pkvm.h  |   1 +
- arch/arm64/kvm/hyp/nvhe/Makefile        |   4 +-
- arch/arm64/kvm/hyp/nvhe/hyp-main.c      |   6 +-
- arch/arm64/kvm/hyp/nvhe/pkvm.c          |  51 ++--
- arch/arm64/kvm/hyp/nvhe/switch.c        |   1 +
- arch/arm64/kvm/hyp/nvhe/sys_regs.c      | 350 ++++++++++++++++++++++--
- arch/arm64/kvm/reset.c                  |   2 +
- arch/arm64/kvm/sys_regs.c               |  17 +-
- 15 files changed, 423 insertions(+), 79 deletions(-)
-
-
-base-commit: aebb7274476403040d582c61478df8f4a7bf9cd3
+diff --git a/arch/arm64/include/asm/kvm_pkvm.h b/arch/arm64/include/asm/kvm_pkvm.h
+index fd042d2b54624..155ac35069245 100644
+--- a/arch/arm64/include/asm/kvm_pkvm.h
++++ b/arch/arm64/include/asm/kvm_pkvm.h
+@@ -76,11 +76,14 @@ static inline void kvm_pkvm_vcpu_allowed_features(struct kvm *kvm,
+ 	if (kvm_pkvm_ext_allowed(kvm, KVM_CAP_ARM_PMU_V3))
+ 		set_bit(KVM_ARM_VCPU_PMU_V3, allowed);
+ 
+-	if (kvm_pkvm_ext_allowed(kvm, KVM_CAP_ARM_PTRAUTH_ADDRESS))
+-		set_bit(KVM_ARM_VCPU_PTRAUTH_ADDRESS, allowed);
++	/* Without address auth, EL2 doesn't switch the guest's keys. */
++	if (system_has_full_ptr_auth()) {
++		if (kvm_pkvm_ext_allowed(kvm, KVM_CAP_ARM_PTRAUTH_ADDRESS))
++			set_bit(KVM_ARM_VCPU_PTRAUTH_ADDRESS, allowed);
+ 
+-	if (kvm_pkvm_ext_allowed(kvm, KVM_CAP_ARM_PTRAUTH_GENERIC))
+-		set_bit(KVM_ARM_VCPU_PTRAUTH_GENERIC, allowed);
++		if (kvm_pkvm_ext_allowed(kvm, KVM_CAP_ARM_PTRAUTH_GENERIC))
++			set_bit(KVM_ARM_VCPU_PTRAUTH_GENERIC, allowed);
++	}
+ 
+ 	if (kvm_pkvm_ext_allowed(kvm, KVM_CAP_ARM_SVE))
+ 		set_bit(KVM_ARM_VCPU_SVE, allowed);
 -- 
 2.47.3
 
