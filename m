@@ -1,94 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795601895;
-	b=gAkUjwCLhd1i4RmvVak3DdlcGVJnOzVFNifWxECcFgSlCrN+HaxfxKPhUNij56A8i11U
-	 9ECYBO6sieAsManoST1y5Rn7RVsTJ1DLb219pmoQi9xSJBc7vooFvDW/pErgTcrepGOTU
-	 IgG2KF1RkqLEyUoI1Y2utR0cqed52RIzTacoWt02mYJmCyaLoRK9aoTtLa00MytlCTPY5
-	 NPjjPjxNKsz4mrlZvudTXO7htcCvmZfKK9j5gY3sCaFgBQqu0wq1Av+Y2qF94RJ6XKcOx
-	 pfQW/c6E0POwHVRGU/eG0IeT0KT5ljzG8ip42QQ/5FP65T++K9N0NdYS5ROR/2xgrtQ==
+	t=1795602420;
+	b=PeZY6kkCwEfWLf4XPcMPvwCFdp0A7rskTx77aFOTRMca9+1a5ER0q1ruZQS+x7MrCV7W
+	 leZz2M2/vQUBUJexoWR1vHqUR01NeOxBJ1pkCZqyhXO9tZwH8EUTKEpJnGM5lbI+6FkF6
+	 OXKz78AGqUenaUUk+3qhZJvOkWyFleVqDHQiKvD+9tl7+F+xLCRy0brtvNq0FcXZJLR3B
+	 gmB0l2Ndg7aQQQx0NumvVrXHgZTmyrjsTP/yd5RVGIBLE9DHz8BWLSDd2S5pk98yzFcKz
+	 uTHk+f6Zp1Zg2dnWzDTfJyoodnla5K6Mhi7t9NkQZdRBnQq/R+iOfOxbT78e4EKDZDQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795601895;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-TM-AS-GCONF:X-Authority-Analysis:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=xc3rAzR3BKcwk+iPtix5gjzzdp58bNISxYadjqSQCdc=;
-	b=b+vbJs9sDLY6uHdogqfsL5z4KD+eKxNmRMHgHHOcOuzIawsAlYOSUXEl8vMZ0gjly155
-	 BhPG2vM3jl5yBjX2hLEHlDrJEZHWqPbCDsHY9FpctpRq/DGn388xXN/RdcZ6m94CIBoQb
-	 Uqe36YuobkekNBLAEH3s+D9E3s+PEdD3u5pUH1srPiOwM9CkGw94RU8srCuxdn3R5tc1s
-	 ret+TBSfE1Y2RLUKTyA/PZFtnDo8ImvaUiJ+8FeBj7WzgrH8goW1G//anEiO1bqluW3P6
-	 w7dziKrnxfZnjrCTnQwbC5vIHr/07YbKKCOxapHJ3mH97OFjS8Uy8B3jwSlBHUDVgZg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795602420;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type;
+	bh=usb6Z06Hk8KYQV8odRZafo7lcqGHFhPDFCx6kFOexg8=;
+	b=RsYIAozKy7EWoPIg5WhgSspPIJZZskhf2d7qPLP8tvyMDY3U/+8OnADjIUt3rrC1gi2R
+	 x0tCIirV5JF1afP7835LEE1x7Cnvkr2e40vhFuapk6rdiVpu4qemcv4RewxvVnI5C7GJ2
+	 OPJRte08u3v1ODtwSRULD+XgAKSqQWnwrqwUly0A/jvVGFWsTHX979Vl6Jv896UsaPYb4
+	 zEG7YPwJ5LLBjzrBHn2p6BJngTvd12kJnUCJJ7iCarLpqNKbmJKLPPvhOnP6W5Fvvb9SQ
+	 YGXdbQo4bXGIgSUb/JGcZ37wdx2C/zNe4Fn6GDUsknvOwQL/chRcFrytdEhgFkV9m8Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=e5l6C8BE;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O4uHgzXP;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA719606A680;
-	Wed, 25 Nov 2026 10:18:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BA719606A680
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DF7606A326
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 10:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=e5l6C8BE
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6APA4fOu3596881;
-	Wed, 25 Nov 2026 10:17:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=xc3rAzR3BKcwk+iPtix5gjzzdp58bN
-	ISxYadjqSQCdc=; b=e5l6C8BEbchlivpmb9kum2JBy2D/eOCHML73iJS4V21PQ9
-	r6QM6FVO19pS6aISA1iZiXC3Fb2R6scpnBGsqRcrRVrR8ei3r4r77Qt4l75Ph6WG
-	bjRSf9X6fGdeFk9QUzki7jpCztBFpDsrc0OBVJG/2rxt4VUgVc2M0hMQjOpMFCr7
-	1Wm/fWDSvb9YQkijTjjsdG9mRsGOcYNcUKt7K1/lELQ+NAqtT20Xx8yEtCBdmkXW
-	IgmGJCk4SOVsEPHWI5jZ05mEbXN8nhkdq7igqj2WJK+dkDRG7LjDdpXNORUO+ibd
-	Z/ioAc+n2sFCqIP5dUpz3jrF/bQs8zfcPRnB9zvw==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34g3bvea-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 25 Nov 2026 10:17:53 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AP9nJPO1684184;
-	Wed, 25 Nov 2026 10:17:52 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j3q4he0jp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Nov 2026 10:17:52 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6APAHmvB49873302
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Nov 2026 10:17:48 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E6F1820049;
-	Wed, 25 Nov 2026 10:17:47 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B9FF020040;
-	Wed, 25 Nov 2026 10:17:47 +0000 (GMT)
-Received: from osiris (unknown [9.68.29.29])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 25 Nov 2026 10:17:47 +0000 (GMT)
-Date: Wed, 25 Nov 2026 11:17:46 +0100
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Andreas Grapentin <gra@linux.ibm.com>
-Cc: Marc Zyngier <maz@kernel.org>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org
-Subject: Re: [PATCH] KVM: s390: arm64: Stub kvm_vgic_put/load to prepare for
- kvm_vcpu_wfi
-Message-ID: <20261125101746.19000-A-seiden@linux.ibm.com>
-References: <20261125-kvm_vgic_stubs-v1-1-c53ca2c5959a@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O4uHgzXP
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C891F000E0
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 10:27:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795602420;
+	bh=usb6Z06Hk8KYQV8odRZafo7lcqGHFhPDFCx6kFOexg8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=O4uHgzXPpddrs5gBqi8u9B2aC0SyE1KCf5EIAftXmQf0Yz2Bd+cgo1AM8A56/XQ9b
+	 QsOVezx8SE9qn+lvrJWJL1PlTp4gI/ODzeAfNUdCBjt4Yzly+8YEdh5lAto1BeiBtW
+	 /7CFZIny7BW8SPGrIJQECs6/L+Gmln25txeh1jerNuB2R5ZuT5WsODPt16jq9ZSXN1
+	 TAdyxky7rcl0q80azCDqg0LQDzoEB1/CSIuA4WL/UAjvZTNT3qWM2GLj5N0aZvZz1R
+	 L8ZFxRiK9+1MKiLQyRnSM6v7F5pPkCH2LHiOaGB1sMe/Gxk8SHMRpzsNCp05SnHtNB
+	 EfR1nLIQmF2Pg==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5c1465bbbdaso4795005e87.3
+        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 02:26:59 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErFSg7vgvBVE8j3lW+knlAV5zqBEgPZz1Zqq+SoHEloT9MaSlpkUOgfkRtZ0a6lfYxgtNDo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8/ncFFBBJp32X+F2JQXJTxaahXiK5pK0vYGw5UoqylAH7bIf5n
+	pZ9VK7ic+mLYYdR/qnqCHS+Y0OMT8VJL8C1reOlf+tNtmr4dRkUfqaQBeAF1MS5dvHyTuY6J8Mo
+	B8K/xelVQxj4U/GA69onp75DEp73qMPI=
+X-Received: by 2002:a05:6512:104d:b0:5c1:5a83:2fd7 with SMTP id
+ 2adb3069b0e04-5c1bc907072mr5199313e87.66.1795602418769; Wed, 25 Nov 2026
+ 02:26:58 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -98,43 +59,54 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261125-kvm_vgic_stubs-v1-1-c53ca2c5959a@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=SoQFe/O0 c=1 sm=1 tr=0 ts=6b06b5d1 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
- a=HJy76JGAcEhFZ7oN8NcA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI1MDA0MCBTYWx0ZWRfXyY6p2prOExac
- YtqsVNZu6gVaGSv7Se5Zc5yDOapeoMdT2JZbdKd1S8/crsS3wsnLfJXfNe10QzK1dtyLULUcd07
- tSr/2gfj3hPypbnXUlkUYARLarcfMGE=
-X-Proofpoint-ORIG-GUID: iNa-IUaiCdfjOkHlTS9e4wnHewJC0XHQ
-X-Proofpoint-GUID: iNa-IUaiCdfjOkHlTS9e4wnHewJC0XHQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI1MDA0MCBTYWx0ZWRfX7JcQ3y+bvA42
- mxTICBiTN4CCL4uPBkDxE71uyAJr47BYxp9ZpHzrWWrVoGzHyNtrepHAXNA2NgXu0Iss38ui+ks
- Xab9EISzqVuDX03n4l5oX3M624aafLlx2rWWNFz7vsR5GhGB5b4PV7M95Wc+JSe1EPQ2OQb+UJ8
- m1byeSuTyk6e6dlZDXpdOnV3cTeKDjCtDv3C76Ys9qaJVlKzRtsZLawGWZ2OTaqI60SE5PrCQmB
- TsvHcKLaTx5Pfq3txWtpbHvmTXp3GKqyqGRXU/kgsrCHtFVRXDwp2IZ9yGWX/tRyxzYIhv+duE2
- J0GVmjKou+xJz6llIWNIJDJNGQJZguLeg1DP2qRNDEhcyeoz9qNDeldfbWfj/365cH0Acx4UMUM
- xx1Wt4l3CsOhiImLxAXdAoDbScy/ErXkz8PeDWdGFEQwBLadMkypu7WmOynnE3f/ORIdeMZIST5
- D4GBVnmDkSFR0Xhiurg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-25_03,2026-11-23_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 spamscore=0 bulkscore=0 adultscore=0
- lowpriorityscore=0 clxscore=1015 malwarescore=0 impostorscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611250040
+References: <20261015142552.4128028-1-ryan.roberts@arm.com>
+In-Reply-To: <20261015142552.4128028-1-ryan.roberts@arm.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Wed, 25 Nov 2026 11:26:46 +0100
+X-Gmail-Original-Message-ID: <CAD++jLm6VvPYB5UQS8Zm73pYifr7Oi=xX3S4Wt5c3WE7uMv+fQ@mail.gmail.com>
+X-Gm-Features: Aa3M54rtYXT0tNMww-_rAs-DbnpD3x58pzG3L6crqferpf2a4MJ3rhFXSlspZ40
+Message-ID: <CAD++jLm6VvPYB5UQS8Zm73pYifr7Oi=xX3S4Wt5c3WE7uMv+fQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 00/15] Arm Core Local Accelerator Driver
+To: Ryan Roberts <ryan.roberts@arm.com>, Arnd Bergmann <arnd@arndb.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jean-Philippe Brucker <jpb@kernel.org>, Oded Gabbay <ogabbay@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org, devicetree@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Nov 25, 2026 at 11:12:15AM +0100, Andreas Grapentin wrote:
-> In order to be able to share kvm_vcpu_wfi with arm, we need definitions
-> for kvm_vgic_put and kvm_vgic_load. Add these as empty stubs now to
-> reduce baggage in future series.
-> 
-> Signed-off-by: Andreas Grapentin <gra@linux.ibm.com>
+Hi Ryan, Jean-Philippe,
 
-Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
- 
+regarding this patch set I looked into historical precursors and
+ongoing developments that could benefit from the same infrastructure.
+
+1. Apple AMX: there is no ongoing effort for this accelerator but it
+exists in all Apple silicon. This accelerator appears to be synchronous
+using extended instructions and is just "some different SVE" and would
+be handled the same way as these.
+
+2. The PowerPC Cell SPU (Playstation 3)
+
+This is more interesting: the Cell has accelerator cores that execute
+entire litte programs (shaders?) on behalf of the CPU. These are
+however not poilled like the CLA, but signal completion using a
+mailbox interrupt. The accelerators are
+
+What is interesting with the SPU is that it communicates by creating
+a custom filesystem (spufs) mounted at /spu, so this is apparently
+another design venue to consider.
+
+I think Arnd Bergmann has worked extensively on the SPU so he will
+likely be able to provide input on lessons learned, do's and dont's
+when it comes to this and other accelerators.
+
+My superficial appraisal is that the CLA is probably executing smaller
+jobs, snippets of work rather than entire little programs/shaders like
+the SPU does, so it is conceptually different, but may provide
+additional ideas anyway. Arnd?
+
+Yours,
+Linus Walleij
