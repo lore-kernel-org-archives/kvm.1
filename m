@@ -1,78 +1,114 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795615928;
-	b=h3dtt5w2X1+nLEqAAlTfALbaJ8Hs+3R3UVvyAh7INLcGfKDY0LdX6DDHovlsmTuSfKUi
-	 3FDUuMxWuR0vSOETbD3uTABbPVOYjgsLBuUHgo6dz3xVup9OJeG+J9kcshIzPw4Ah9s0G
-	 mADd86iXLJDhl6VuaMIeMg4cZG+hLwi+dJTEK2/p2f4MFDI1FBDoBZKYwc+ZBCryzDrTb
-	 SP9cJK2On6DUrewNkODVMDPTacgM8dDRs6Ms/iGU6QDyzpC8KioP+JsLGOqgbe4hWtqwz
-	 gkVprjfWDbxzcUtltMjwToyyoI9HKGm8JMdSMBspYl7GMiqxYfcMVpR31yzQ7lo+8bA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795615928;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=iGzxZDraoWUDG8juQ5rDSMcrAFNeRPcy+J3hkWIqvY4=;
-	b=llpuXa2IugEcV2FbhngwRinUvzQeWb+e1ufNF8Z9y6I8td7Q4q6bX09k1koXSu27Qw0e
-	 zX7Yda6GIalHGXNUNlm6wwDSh35zgk4mj9q1OEEwJwa6ZnqHbZfEO1B8fOqrDAEosKHMF
-	 H6eudRhKXEUmEgccetWRgjAOJV0WMzVGeozw7h2dfK4heXrn0IyzlKX+RlcrGgQuz13QJ
-	 zOANP2KgSud0dgDXuUsxKWKYsIgQf0rreLgEmhrbKapDmRinyn2HNgJP55RvsaUWSsVKN
-	 TaYkCSKUUC/uTnTuULDo5QkBLaNYRLCR6lxvtERA4+iU4+dg6VAUcSqWsJvGZAGe+zA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kIZPtCcv;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2D3606A69D;
-	Wed, 25 Nov 2026 14:12:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kIZPtCcv
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795615928;
-	b=O5PD5f/U9y2Uf0oPCkIXR+Lxs2/CQqFdlR/u4kDoDUTDdXUn+xULTiPTIfTENzOd8jcF
-	 ad2EsIDJzgFiE7WjYE4rjbnp/mgB3m30LPJiG5QzzQ9l+1nYHjRMyKWKTIiUIS6Qmwqpz
-	 oAt5xzrszYt58DQ/1sems99ivt3ub6oxsYQmdhWfmF0uy+j16ezfj22P0y+yoBRpxmwq9
-	 QsxhdSZLA0x9iSIkPs39EfHbB/FO6bCELtFXQayFf69szVeuPt7Y+C2XFFKYOCj9phcv9
-	 +Uwz703PbMZCHmgEAPFM6Ji8gxDolxd+1Kdal6+Tt5Wlpysb6Ztc4PbOm2jwEmV+WXQ==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795615928;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=iGzxZDraoWUDG8juQ5rDSMcrAFNeRPcy+J3hkWIqvY4=;
-	b=h/HxTRhT2TLxj0BexIZWCalOEfL6xuzDkmG6XI8zFcOX3vIc5zoH8Fhx1x/te6rPwzj3
-	 j0bkKQ72HtUHFJBYGLkDvNgDBXcKmYe6r24GK9c1h/f2Y24D2CB0VRD2yIbaAWC/CZJa8
-	 jmayF/3ftolhGXZ1XDT8ugvC6k1SvdT3DXFQeWF8vPU3ysB7DIl5/zhExzsNZmrI4wEZ4
-	 GNr6esSYQdRdyJDrnHLQHGI6pQifSf74Ne9xGz2pPUwMgB0jD2a8JoFsFr26IciFDegdn
-	 XAJ1HCSN1dSokrQJx3vbcpyvPccalMJuA5UJ0pq1URRVds6e81wP2fWclN1Ysm11gNw==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.45
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795616188;
+	b=Nx6i37uG9iJNB8Yv+365/W2JjZqnydJTHWHbcdw7iiRfm84dWw90HBQZobPOXTce3Pgp
+	 IGbHr8mIfdgDIsgAeHBN+CWRyVJK0Cd2zR5dUH2wBm3NUa1JBMynbMPoF/9FVCCcA6x4w
+	 e2g6AiuCtlvD1g66TECvqKFcIob/AC0N4qBeiwMfo71amOTJpA/4nVH+mcZLV02DYaWcc
+	 bkK8KZjAcCTViJHiA4ZruBv2bVFpz1sqLCthcTx40tg96pTGsUTdIjL7zLv75w0KsxrwC
+	 lspsz8kNVkeppmT+KbEDOettK1K9nZDnAMpK0M3ITQICoXv9A9dex3RlEu2X+l76ePw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795616188;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=i/jrBB7rLlSUxUEPdi3kz4rjRXIQytYo5vvcwBrT/JI=;
+	b=zDlf50m/kke9YuZt/pZttAqQjKHl4WC7u8mmqOoKTNGgaMSzobq92Tx4qNYHeXLcyTUm
+	 baLX9CZWnz9qNBgJd75+z6yuMzJAxAZdXR6O+uLO4byKGCJSY9fVIyGnDWNR4TS1DFagi
+	 sEzzAfy3MmAzl6B8WJ2ZYwJ26ZUG2//4qipQqaGxh6/VTDfJP78sfJtqkZkKo8mcqdSCW
+	 MM8JDBwN1zsf921GDgIssLHNsmFzGPin5HwRHAvep/EjCzg/Mk+QRDzfWkDN9f5My5TWF
+	 wSpJOrfeSycO5pe3Clj5okQsdsTa6dBDFpgXVNe1pvkGcHS4ZKxyOxwixOSms/v535A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=none header.from=ziepe.ca;
+	spf=pass smtp.mailfrom=ziepe.ca;
+	dkim=pass header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=VYfWFNA2;
+	arc=none smtp.remote-ip=209.85.219.45
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id C7E3F1F000ED;
-	Wed, 25 Nov 2026 14:11:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795615928;
-	bh=iGzxZDraoWUDG8juQ5rDSMcrAFNeRPcy+J3hkWIqvY4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=kIZPtCcvJ5h8rzrWxNNAitHiAa2chnIC/oVHytO7g3rHz2WvEI/NQfUUL6636NK0C
-	 hFXMfUxkHbQZY00VvtAnEHvuZVAr0wkGJqxhpT4qHPVc+0zHR/gmgp1OwBV7b7VDg5
-	 mMP3JvAZV5ApcyI47xaRtIaGxdF8mf0Jdd7GM6srWX1W76fZ+bkE7Uq3A2jTHl3X/r
-	 omvKjzOdMhz4CSeTl9QFX2zWMVAc1N5co7XLDb4AFUHct4Os2TiRNKarmrdgn9vZZS
-	 wv564VWWeow4CFhz3iCYI4wtLyaHKbczz6ao8AK5Bu0q9fxrziYE1pn3RAy9eyWY21
-	 +mzHjrfl7texQ==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 554414CEFA;
-	Wed, 25 Nov 2026 14:11:55 +0000 (UTC)
-From: Moe Mahhouk via B4 Relay <devnull+moe.flashbots.net@kernel.org>
-Date: Wed, 25 Nov 2026 14:11:51 +0000
-Subject: [PATCH v4 2/2] virt: tdx-guest: Poll Quote status every 10 ms
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B05606A327
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 14:16:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 93B05606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=VYfWFNA2
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-9217800e7f3so11202456d6.0
+        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 06:16:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1795616186; x=1796220986; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=i/jrBB7rLlSUxUEPdi3kz4rjRXIQytYo5vvcwBrT/JI=;
+        b=VYfWFNA2L/Cja4VLPPODTcDvNUqUKXBieR9yY5ZpA9+jcmW6L7WOvtr9YY29MeQWOm
+         1lXZzMQuwnpxWRgETtqd35EdSCURdPyffthqpG41RzuMhCGg9V4w+QBIjdSRq1vBQoms
+         xLWCdmNr+35Zp51Poed52PWFdsyKoVJbRTkz4kpLgjstuWMiR52L26JdkFjs9RsxXQYc
+         NA0XtsU+IEOmtnLjEo7nqedYGkO/gPohBvneg8rx4uVhQadTAfSwYuShJ0umvcLNKaob
+         XpFVOJTr9x+iQATEYALHyc4ka5lR2xaCRGX7H6dSiOfaC8AFMWamJCHcz0E3W5RhKqdU
+         v6TQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795616186; x=1796220986;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=i/jrBB7rLlSUxUEPdi3kz4rjRXIQytYo5vvcwBrT/JI=;
+        b=bqHcXxkMxN7KclYnyHmhhvVPBXXnL8rXdSDjQiSfJb3yadQ64N/f/9qHxdoxVcNyHP
+         L1sW8FOH7eFcX6W0DBn4RpqX7SoT69uWfs05EDinTJ4SFXW5Z3Ofwpd+TszK/D0IW6kK
+         +DQ4Je7zBrAGnl5+FSNMkDmhOJ5UlaVdqNQGhuNrKH5WC9GzQWIOluZLbsUg2rcrTB8y
+         +703LH5YJhkHIoxX1IFLyLiAhMxmIJTzd+qnJN/Jn+a+WsMBBgg488MpYgtuXXNd0KE4
+         xdLsYwbjGuNwTAA9bAp8FHPfEUzVCuOFERlFakVIdt4CPDqAbmKjaBIuOn7HA2jkGk8V
+         XkZQ==
+X-Forwarded-Encrypted: i=1; AL+hErG8edFAuqI4TKlCkbrFhdWaH0sRs95g+USQD5uZu6FSJObjF7qC4wzV2GKe2K3Q4AtmAEY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+njh44RwXdp3VQI86ljFaoifqMTXE6FI0LoEjzeBCGwQG67Fp+
+	XdcMmU/tyIS5P+o3wVBIp0Fsr9l6dBMca35P/faujzTvOD+IIP5PlAH/pv4DXZX5agU=
+X-Gm-Gg: AZFdTZdMZDE/xolyXdFhj3p0f5ViSBCWnNh5h5ukvhri30ltQ5Xes0BzvR5VJ0R9qy9
+	+9byOJjO7P1iKFsY/4zztSRn4sxtuYeQWiFzPuGtec5zG1Jv36rPbZ1SCJomBsr0B2z6iK+3CFB
+	yjvLNnZjgD45zEuy6f4MG8TuGLP2ygtyZvoukJNnw3Zj/QpJNjCwzwABn5Dm7N8dijQWjgM1Okp
+	WeAJmAqse8ST9ZAUKahTCkwNA0JPf3sceGEP2qvjOYiJCLsbuJUOGawDDx2XNqP+3GeMtRzTvTr
+	Wy6RWaP+4wBMflpFHPRCg8fBAd4e8aoLU5pY9DAX9aNwaIvYUzRHQx6Tyqzs3YBkz/k7tbBZ64a
+	JOKEvOaJSxJATnQTWem0gkI8QbW2mmsrnZsuaSQn0Rp3HmM0Izab3/X3wD3iZ4eFneFFVJC+sgp
+	7QhmotC9dA9cmwIlxrI0eRlIF+Mkuw8oMcZclOjnImnwkt1dFi29IVeiks6fU8GqUFidb0Fje94
+	Ku21qlpIbuIBeL2FpxIhHa9ZFAhCp7u7Omv4YVp4+VhF4xXNg8PbEqYhrtLvZiw8vCPjTRlI76x
+	OutQ3n/3tQFOih4Y0GSVhot6OOQ=
+X-Received: by 2002:a05:6214:2f08:b0:921:5102:6b02 with SMTP id 6a1803df08f44-92151026b60mr217389976d6.38.1795616186267;
+        Wed, 25 Nov 2026 06:16:26 -0800 (PST)
+Received: from ziepe.ca ([142.177.118.84])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9217fd18b2asm6696336d6.21.2026.11.25.06.16.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Nov 2026 06:16:25 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xWDnN-00000001jAp-0WzE;
+	Wed, 25 Nov 2026 10:16:25 -0400
+Date: Wed, 25 Nov 2026 10:16:25 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
+	Dan Williams <djbw@kernel.org>, Leon Romanovsky <leon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Lukas Wunner <lukas@wunner.de>, Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
+	kvm@vger.kernel.org, patches@lists.linux.dev,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v1 01/10] PCI/TSM: Report active IDE streams per host
+ bridge
+Message-ID: <20261125141625.GA246011@ziepe.ca>
+References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
+ <20261123083337.2731019-2-aneesh.kumar@kernel.org>
+ <f377271d-353f-4c8e-94d5-98159a66ab28@amd.com>
+ <20261124024842.GB9566@ziepe.ca>
+ <yq5azeux9xxm.fsf@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -82,102 +118,98 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261125-tdx-guest-quote-poll-v4-2-d89f26854b88@flashbots.net>
-References: <20261125-tdx-guest-quote-poll-v4-0-d89f26854b88@flashbots.net>
-In-Reply-To: <20261125-tdx-guest-quote-poll-v4-0-d89f26854b88@flashbots.net>
-To: Kiryl Shutsemau <kas@kernel.org>, 
- Rick Edgecombe <rick.p.edgecombe@intel.com>, 
- Dave Hansen <dave.hansen@linux.intel.com>, 
- Erdem Aktas <erdemaktas@google.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
- Dan Williams <djbw@kernel.org>, 
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
- Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Jun Miao <jun.miao@intel.com>, x86@kernel.org, 
- linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Moe Mahhouk <moe@flashbots.net>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795615914; l=2710;
- i=moe@flashbots.net; s=20261021; h=from:subject:message-id;
- bh=ZJ2AKpTdfk8nnjvMdjII9JPQIlMg0qVyJ6/cNAQLTWE=;
- b=wI2fSczMhX/mxKYtl2J1z8aeVnGsBDgKSZSGKGgAeWbkOWb9jePYRrpaFb3+vuATW/qQdCI/E
- 94ZvL/SDmvrDOuBjUzTO+Dvc5VZdEya49VfgPXeLfK1a8AAFjyftNnW
-X-Developer-Key: i=moe@flashbots.net; a=ed25519;
- pk=hJTKfjLno/YESrpxMIKDJk34GM+/8Tol+24XK2b4xf0=
-X-Endpoint-Received: by B4 Relay for moe@flashbots.net/20261021 with
- auth_id=1259
-X-Original-From: Moe Mahhouk <moe@flashbots.net>
-Reply-To: moe@flashbots.net
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq5azeux9xxm.fsf@kernel.org>
 
-From: Moe Mahhouk <moe@flashbots.net>
+On Wed, Nov 25, 2026 at 12:53:33PM +0530, Aneesh Kumar K.V wrote:
+> Jason Gunthorpe <jgg@ziepe.ca> writes:
+> 
+> > On Tue, Nov 24, 2026 at 11:11:49AM +1100, Alexey Kardashevskiy wrote:
+> >> On 23/11/26 19:33, Aneesh Kumar K.V (Arm) wrote:
+> >> > From: Dan Williams <dan.j.williams@intel.com>
+> >> > 
+> >> > The first attempt at an ABI for this failed to account for naming
+> >> > collisions across host bridges:
+> >> > 
+> >> > Commit a4438f06b1db ("PCI/TSM: Report active IDE streams")
+> >> > 
+> >> > Revive this ABI with a per host bridge link that appears at first stream
+> >> > creation for a given host bridge and disappears after the last stream is
+> >> > removed.
+> >> > 
+> >> > For systems with many host bridge objects it allows:
+> >> > 
+> >> >      ls /sys/class/tsm/tsmN/pci*/stream*
+> >> > 
+> >> > ...to find all the host bridges with active streams without first iterating
+> >> > over all host bridges. Yilun notes that is handy to have this short cut [1]
+> >> > and from an administrator perspective it helps with inventory for
+> >> > constrained stream resources.
+> >> > 
+> >> > Link: http://lore.kernel.org/aXLtILY85oMU5qlb@yilunxu-OptiPlex-7050 [1]
+> >> > Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+> >> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> >> > Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+> >> > ---
+> >> >   Documentation/ABI/testing/sysfs-class-tsm | 13 ++++
+> >> >   drivers/pci/ide.c                         |  4 +
+> >> >   drivers/virt/coco/tsm-core.c              | 95 +++++++++++++++++++++++
+> >> 
+> >> I'll take to the tsm tree, thanks!
+> >
+> > Lets not take any new sysfs APIs please. These all need a careful
+> > thing and we are not having a good history right now on any of these.
+> >
+> > I'm not even sure what this is supposed to be for, is it debugging?
+> 
+> 
+> I think this helps users identify active IDE streams and determine how
+> many secure streams remain available on the host bridge. I would not
+> classify it as a debugging-only aid.
 
-wait_for_quote_completion() checks the status of a GetQuote request
-once and then sleeps for a full second before each further check. The
-VMM has rarely completed the request at the first check, so every Quote
-request takes at least one second, however quickly the host answers.
+It looks like debugging to me..
 
-With a local Quote Generation Service the VMM completes the request in
-a few milliseconds. On an Emerald Rapids host (KVM, QEMU 11.1, Intel
-QGS), back-to-back Quote requests through configfs-tsm took 1021-1024 ms
-each; with this change they take 14-21 ms (median 16 ms) at HZ=250.
-Since quote_lock serializes requests, the one-second floor also caps a
-TD at about one Quote per second, which hurts users that bind a fresh
-Quote to every connection, such as attested TLS.
+> A sample output for a toplogy given below
+> # lspci -t   
+> -[0000:00]-+-01.0-[01]--+-00.0
+>            |            \-00.1
+>            +-02.0-[02]----00.0
+>            \-03.0-[03]----00.0
+> # 
+> 
+> # pwd
+> /sys/class/tsm/tsm0/pci0000:00
+> # ls
+> 0000:00:01.0  0000:00:03.0              pci_bus  stream0.0.0  trust_policy
+> 0000:00:02.0  available_secure_streams  power    trust        uevent
+> # cat available_secure_streams 
+> 255
+> # ls -al stream0.0.0
+> lrwxrwxrwx 1 root root 0 Jan  1 00:48 stream0.0.0 -> 0000:00:02.0/0000:02:00.0
+> # 
+> 
+> Here, I have set up an IDE stream with 0000:02:00.0.
+.
+> The previous discussion cited in the cover letter indicated a need for
+> this because the number of streams available at the host bridge level is
+> limited.
 
-Recheck the status every 10 ms instead. msleep_interruptible() rounds
-up to whole jiffies and adds one, so at HZ=250 a step takes 16 ms. The
-sleep stays interruptible, and the timeout becomes a deadline in
-jiffies.
+So explain how the imagined "systemd device acceptd" is supposed to
+use this automatically?
 
-Suggested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Moe Mahhouk <moe@flashbots.net>
----
- drivers/virt/coco/tdx-guest/tdx-guest.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+Explain how it works with the future need for a more complex P2P
+scenario
 
-diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-index a5a53174f9d9..25fa2a875c44 100644
---- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-+++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-@@ -16,6 +16,7 @@
- #include <linux/set_memory.h>
- #include <linux/io.h>
- #include <linux/delay.h>
-+#include <linux/jiffies.h>
- #include <linux/sockptr.h>
- #include <linux/tsm.h>
- #include <linux/tsm-mr.h>
-@@ -271,18 +272,21 @@ static struct tdx_quote_buf *alloc_quote_buf(void)
-  */
- static int wait_for_quote_completion(struct tdx_quote_buf *buf, u32 timeout)
- {
--	int i = 0;
-+	unsigned long deadline = jiffies + secs_to_jiffies(timeout);
- 
- 	/*
--	 * Quote requests usually take a few seconds to complete, so waking up
--	 * once per second to recheck the status is fine for this use case.
-+	 * A local Quote Generation Service usually completes the request
-+	 * within a few milliseconds, so recheck the status every 10 ms.
-+	 * msleep_interruptible() rounds up to whole jiffies.
- 	 */
--	while (buf->status == GET_QUOTE_IN_FLIGHT && i++ < timeout) {
--		if (msleep_interruptible(MSEC_PER_SEC))
-+	while (READ_ONCE(buf->status) == GET_QUOTE_IN_FLIGHT) {
-+		if (time_after(jiffies, deadline))
-+			return -ETIMEDOUT;
-+		if (msleep_interruptible(10))
- 			return -EINTR;
- 	}
- 
--	return (buf->status == GET_QUOTE_IN_FLIGHT) ? -ETIMEDOUT : 0;
-+	return 0;
- }
- 
- static int tdx_report_new_locked(struct tsm_report *report)
+Explain how it works inside a guest to accept IDE streams setup by the
+host.
 
--- 
-2.34.1
+IMHO we are no where near understanding streams well enough to have a
+uAPI implementation, nor it is even clear sysfs will be enough to get
+us what is needed for everything.
 
+I would prefer we focus on the things we are starting have a consensus
+on, there are so many right now, lets try to get them merged before
+opening up even more topics.
 
+Jason
