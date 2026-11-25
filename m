@@ -1,65 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795622309;
-	b=r4FHEHtCcd87ZJ7dvMGBB0qvnP6bfy/z40ChxXYRq83W4kg14RjnPxfAvYWE5xMxyGcA
-	 bQztEFcvAAmu4rtUmowHHMJcWyy3awe9Kf9BBawtADju2SzzBUuvZpXeV81um4AFpxOIg
-	 jquQnamGthkhk1DVoP2dXojcYoKmczDAs8FLlrQA2JYnjXnTipU66scY4od54eopK6Z7h
-	 Qn/UlljfwxRs961jMLQ4q/0lSOg5s3iXtefwuiKKpwDxzBh1daZSSF4/9/B6RbW6wZEna
-	 yvT2yNuSjaTXXZmgPHZXeyy5aZ87aNydohr3lG6xBCaPL5Bvue6mi0mqM2KiZk7hfPg==
+	t=1795622312;
+	b=pWRE7sen9s7blZsQqmAvXtHyQNMTiCo6uR9xm3XK50Gacoa9wYm4fwZYwrjXwViR39pi
+	 i8qHfPjou2/6JS6hPhHoBrCahdUQY7MjkKRE3ro/CyMyLJfodqzriSSkCOgwA/JfSgeR5
+	 bg7X8hvsCak3z/xh/JRyGRLBVdb37fpb9ihQQxlKEWpj6lQHBe07yLRaO6/9pkV0DPNsY
+	 JSceT9yQ8/ZeiKV9Tmhkud1qISrdTLTFP5cFQ2F3NZDIUbfgFGCmw/xJOj7g6hNUlxr3N
+	 ROYp0LVrIiDXeDryU43Ut9Pbqh9Hcdf0cSYjBfTROf7mWELRUBvRxEETuppJDUKJqAw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795622309;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795622312;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Cc:Subject:Date:
 	 Message-ID:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Scanned-By;
-	bh=h52cnjKMjgPAHUO3cUiYoHAJatsTrBmwFnsr03rrh2c=;
-	b=MyY5e9wtaehWWdzTZCtCWlTxPZkkA7HIsrNkl855yAUBawaTnFDPASD140atbFS3zgjp
-	 8++FnPVp15XAcUEWKZEy13EeCwiwdt2VgTzZrXUasNI4RHcLltYPcKMB/CBz80+QJfwYg
-	 qzgOzpt1IPhqIARNumUEfyQns66UO8vmb01veb+rfE4OvY/YMx2f5ZeMPsbWku999hOw7
-	 lLUNHugHwO8KkcRf7ftHCLCglZt210/HkXvQqEC8Is/ucQ/N4915CaOccDuVCcDIIq4av
-	 csIPltfJDsDooq7DVsOg4ahqqJp3vt7lFTLp7oO9cZG9ev/ETMSpOs3c3XWjMpPvk3g==
+	bh=yPBfEKahhfYei6glmdPdejVYAgGYQtYkDSj3W5f5X7s=;
+	b=GdyUpMgrfkiTZ7TCli2hFt9uq6TKbCufO8UgzB1+kgSS4HebjdTVcEBMYd6rHHC53Lbg
+	 fhf7OEBbL+3XqHPusSHHWehMWqISkgo1k5BHppjljR3bMCAw7YcHVOaRmFRdzqx5rysvH
+	 l1sTiruG2wGZoH7ZyD0N7KnOwXQj0GcFnI2dfKAAgz4pFWdb0JpffwISLiBJEiR9LRSMX
+	 TTnP0q2odGO2XOTnLU1Do85ISFg3JCzAlhP3f6+3o6PTUSoaT2ywRk2mGhG9tCTJndKsU
+	 VX5N+V/3PeftJ5EIETo7Hz5Ep7uARPEYkbQU574wYrDEsfXbH31/2d9ysB70POxCGNA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EFbD0DyT;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dZGvvaUA;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30AE606A333
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 15:58:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D30AE606A333
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6809606A69A
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 15:58:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6809606A69A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EFbD0DyT
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dZGvvaUA
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795622307;
+	s=mimecast20190719; t=1795622311;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=h52cnjKMjgPAHUO3cUiYoHAJatsTrBmwFnsr03rrh2c=;
-	b=EFbD0DyTgUFWI8N90qFt37Og3Y6iid+JUepwCqnDAMc+w8cU+cBfba1AphZKR8HRQvvDRT
-	jDTfPKhm/pIS/UPT1sICDgo+Sdi03rD7+jDWCUuhgrSycSBBxyqjV03mCQNXrf2TJoaSXy
-	w571afrFxUVYbaPyQO2R2yZAUyxAJ1g=
+	bh=yPBfEKahhfYei6glmdPdejVYAgGYQtYkDSj3W5f5X7s=;
+	b=dZGvvaUAt+oskmw8jL8EigWCnBJGGkDtWcjPJFZghbJn8zBbx6BVTlKGiswwX7pPZmcPRf
+	coDj8Xs/lkmWIdYojBsaseuJDhPlBjz/krx/PeU4DWbunFBz/wILEkXXmrSSZcPyNLuoku
+	2IFdvVi5W6qUrldXBc62/3hD9qO/cHA=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-680-qRZeX7zAOjqNGPkoEJXMmw-1; Wed,
- 25 Nov 2026 15:58:24 +0000
-X-MC-Unique: qRZeX7zAOjqNGPkoEJXMmw-1
-X-Mimecast-MFC-AGG-ID: qRZeX7zAOjqNGPkoEJXMmw_1795622303
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-llluhFTaNsSqw3KHF2SPZg-1; Wed,
+ 25 Nov 2026 15:58:26 +0000
+X-MC-Unique: llluhFTaNsSqw3KHF2SPZg-1
+X-Mimecast-MFC-AGG-ID: llluhFTaNsSqw3KHF2SPZg_1795622305
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 43AE91955F73;
-	Wed, 25 Nov 2026 15:58:23 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C99F9195604E;
+	Wed, 25 Nov 2026 15:58:25 +0000 (UTC)
 Received: from mlevitsk-thinkpadt14gen3.ibmmarkh.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3D0F33001DB3;
-	Wed, 25 Nov 2026 15:58:22 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AEE223001DB7;
+	Wed, 25 Nov 2026 15:58:24 +0000 (UTC)
 From: Maxim Levitsky <mlevitsk@redhat.com>
 To: kvm@vger.kernel.org
 Cc: x86@kernel.org,
@@ -67,9 +67,9 @@ Cc: x86@kernel.org,
 	Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Maxim Levitsky <mlevitsk@redhat.com>
-Subject: [PATCH v5 2/5] KVM: x86: split vcpu->arch.hflags into nested_guest_state and smm_mode
-Date: Wed, 25 Nov 2026 10:58:16 -0500
-Message-ID: <20261125155819.408795-3-mlevitsk@redhat.com>
+Subject: [PATCH v5 4/5] KVM: x86: nVMX: move nested APICv state to nested_guest_state
+Date: Wed, 25 Nov 2026 10:58:18 -0500
+Message-ID: <20261125155819.408795-5-mlevitsk@redhat.com>
 In-Reply-To: <20261125155819.408795-1-mlevitsk@redhat.com>
 References: <20261125155819.408795-1-mlevitsk@redhat.com>
 X-Mailing-List: kvm@vger.kernel.org
@@ -84,191 +84,212 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Split vcpu->arch.hflags into nested_guest_mode and smm_mode to prepare
-for converting nested_guest_mode into an atomic variable that will contain
-nested guest state that is exposed locklessly for other vCPUs.
+Replace vmx->nested.pi_pending,pi_active and posted_intr_nv with
+KVM_NESTED_PI_VECTOR_MASK,KVM_NESTED_PI_ACTIVE,KVM_NESTED_PI_PENDING
+flags of nested_guest_state.
 
-No functional change expected.
+Since the nested state is cleared as a whole to 0, on each nested VM exit,
+explicit clearing of vmx->nested.posted_intr_nv and vmx->nested.pi_pending
+was dropped.
+
+Also, since nested entry sets nested_guest_state to KVM_NESTED_IN_GUEST,
+the publishing of KVM_NESTED_PI_VECTOR_MASK,KVM_NESTED_PI_ACTIVE is delayed
+to happen after enter_guest_mode().
 
 Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
 ---
- arch/x86/include/asm/kvm_host.h | 18 +++++++++++-------
- arch/x86/kvm/regs.h             |  6 +++---
- arch/x86/kvm/smm.c              |  8 ++++----
- arch/x86/kvm/smm.h              |  2 +-
- arch/x86/kvm/x86.c              | 13 ++++++++-----
- 5 files changed, 27 insertions(+), 20 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  5 ++++-
+ arch/x86/kvm/vmx/nested.c       | 33 +++++++++++++++++++--------------
+ arch/x86/kvm/vmx/vmx.c          |  7 +++----
+ arch/x86/kvm/vmx/vmx.h          |  2 --
+ 4 files changed, 26 insertions(+), 21 deletions(-)
 
 diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index ab30f418e526..226091feb44a 100644
+index 78fcc7fcece7..43acc724b8e4 100644
 --- a/arch/x86/include/asm/kvm_host.h
 +++ b/arch/x86/include/asm/kvm_host.h
-@@ -738,7 +738,6 @@ struct kvm_vcpu_arch {
- 	unsigned long cr8;
- 	u32 host_pkru;
- 	u32 pkru;
--	u32 hflags;
- 	u64 efer;
- 	u64 host_debugctl;
- 	u64 apic_base;
-@@ -758,6 +757,16 @@ struct kvm_vcpu_arch {
+@@ -757,7 +757,10 @@ struct kvm_vcpu_arch {
  	u64 arch_capabilities;
  	u64 perf_capabilities;
  
-+#define KVM_NESTED_IN_GUEST	BIT(8)
-+	/* Non zero when the guest is executing a nested guest */
-+	u16 nested_guest_state;
+-#define KVM_NESTED_IN_GUEST	BIT(8)
++#define KVM_NESTED_PI_VECTOR_MASK	0xFF
++#define KVM_NESTED_IN_GUEST		BIT(8)
++#define KVM_NESTED_PI_ACTIVE		BIT(9)
++#define KVM_NESTED_PI_PENDING		BIT(10)
+ 	/* Non zero when the guest is executing a nested guest */
+ 	atomic_t nested_guest_state;
+ 
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index bff719dce07d..1b4483dd6354 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -351,7 +351,6 @@ static void free_nested(struct kvm_vcpu *vcpu)
+ 	vmx->nested.smm.vmxon = false;
+ 	vmx->nested.vmxon_ptr = INVALID_GPA;
+ 	free_vpid(vmx->nested.vpid02);
+-	vmx->nested.posted_intr_nv = -1;
+ 	vmx->nested.current_vmptr = INVALID_GPA;
+ 	if (enable_shadow_vmcs) {
+ 		vmx_disable_shadow_vmcs(vmx);
+@@ -2445,13 +2444,9 @@ static void prepare_vmcs02_early(struct vcpu_vmx *vmx, struct loaded_vmcs *vmcs0
+ 			 ~PIN_BASED_VMX_PREEMPTION_TIMER);
+ 
+ 	/* Posted interrupts setting is only taken from vmcs12.  */
+-	vmx->nested.pi_pending = false;
+-	if (nested_cpu_has_posted_intr(vmcs12)) {
+-		vmx->nested.posted_intr_nv = vmcs12->posted_intr_nv;
+-	} else {
+-		vmx->nested.posted_intr_nv = -1;
++	if (!nested_cpu_has_posted_intr(vmcs12))
+ 		exec_control &= ~PIN_BASED_POSTED_INTR;
+-	}
 +
-+#ifdef CONFIG_KVM_SMM
-+#define SMM_MASK		BIT(0)
-+#define SMM_INSIDE_NMI_MASK	BIT(1)
-+	/* Non zero when the guest is in SMM */
-+	u16 smm_mode;
-+#endif
+ 	pin_controls_set(vmx, exec_control);
+ 
  	/*
- 	 * Paging state of the vcpu
- 	 *
-@@ -1875,16 +1884,11 @@ static inline unsigned long read_msr(unsigned long msr)
- }
- #endif
+@@ -3720,6 +3715,9 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
+ 		kvm_make_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
+ 	}
  
--#define HF_GUEST_MASK		(1 << 0) /* VCPU is in guest-mode */
--
- #ifdef CONFIG_KVM_SMM
--#define HF_SMM_MASK		(1 << 1)
--#define HF_SMM_INSIDE_NMI_MASK	(1 << 2)
--
- # define KVM_MAX_NR_ADDRESS_SPACES	2
- /* SMM is currently unsupported for guests with private memory. */
- # define kvm_arch_nr_memslot_as_ids(kvm) (kvm_arch_has_private_mem(kvm) ? 1 : 2)
--# define kvm_arch_vcpu_memslots_id(vcpu) ((vcpu)->arch.hflags & HF_SMM_MASK ? 1 : 0)
-+# define kvm_arch_vcpu_memslots_id(vcpu) ((vcpu)->arch.smm_mode & SMM_MASK ?  1 : 0)
- # define kvm_memslots_for_spte_role(kvm, role) __kvm_memslots(kvm, (role).smm)
- #else
- # define kvm_memslots_for_spte_role(kvm, role) __kvm_memslots(kvm, 0)
-diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
-index 447f0ec3e63e..ec9d4a8fbe15 100644
---- a/arch/x86/kvm/regs.h
-+++ b/arch/x86/kvm/regs.h
-@@ -457,13 +457,13 @@ static inline unsigned long kvm_get_effective_dr7(struct kvm_vcpu *vcpu)
++	if (nested_cpu_has_posted_intr(vmcs12))
++		atomic_or(KVM_NESTED_PI_ACTIVE | vmcs12->posted_intr_nv,
++			  &vcpu->arch.nested_guest_state);
+ 	/*
+ 	 * Re-evaluate pending events if L1 had a pending IRQ/NMI/INIT/SIPI
+ 	 * when it executed VMLAUNCH/VMRESUME, as entering non-root mode can
+@@ -4033,13 +4031,15 @@ static int vmx_complete_nested_posted_interrupt(struct kvm_vcpu *vcpu)
+ 	void *vapic_page;
+ 	u16 status;
  
- static inline void enter_guest_mode(struct kvm_vcpu *vcpu)
+-	if (!vmx->nested.pi_pending)
++	int nested_state = atomic_read(&vcpu->arch.nested_guest_state);
++
++	if (!(nested_state & KVM_NESTED_PI_PENDING))
+ 		return 0;
+ 
+ 	if (!vmx->nested.pi_desc)
+ 		goto mmio_needed;
+ 
+-	vmx->nested.pi_pending = false;
++	atomic_andnot(KVM_NESTED_PI_PENDING, &vcpu->arch.nested_guest_state);
+ 
+ 	/*
+ 	 * Don't test the value of PID.ON.
+@@ -4191,6 +4191,8 @@ static bool vmx_has_nested_events(struct kvm_vcpu *vcpu, bool for_injection)
+ 	void *vapic = vmx->nested.virtual_apic_map.hva;
+ 	int max_irr, vppr;
+ 
++	int nested_state = atomic_read(&vcpu->arch.nested_guest_state);
++
+ 	if (nested_vmx_preemption_timer_pending(vcpu) ||
+ 	    vmx->nested.mtf_pending)
+ 		return true;
+@@ -4217,7 +4219,7 @@ static bool vmx_has_nested_events(struct kvm_vcpu *vcpu, bool for_injection)
+ 	if ((max_irr & 0xf0) > (vppr & 0xf0))
+ 		return true;
+ 
+-	if (vmx->nested.pi_pending && vmx->nested.pi_desc) {
++	if ((nested_state & KVM_NESTED_PI_PENDING) && vmx->nested.pi_desc) {
+ 		max_irr = pi_find_highest_vector(vmx->nested.pi_desc);
+ 		if (max_irr > 0 && (max_irr & 0xf0) > (vppr & 0xf0))
+ 			return true;
+@@ -4448,7 +4450,7 @@ static int vmx_check_nested_events(struct kvm_vcpu *vcpu)
+ 	}
+ 
+ 	if (kvm_cpu_has_interrupt(vcpu) && !vmx_interrupt_blocked(vcpu)) {
+-		int irq;
++		int irq, nested_state;
+ 
+ 		if (!nested_exit_on_intr(vcpu)) {
+ 			if (block_nested_events)
+@@ -4481,6 +4483,8 @@ static int vmx_check_nested_events(struct kvm_vcpu *vcpu)
+ 			goto no_vmexit;
+ 		}
+ 
++		nested_state = atomic_read(&vcpu->arch.nested_guest_state);
++
+ 		/*
+ 		 * If the IRQ is L2's PI notification vector, process posted
+ 		 * interrupts for L2 instead of injecting VM-Exit, as the
+@@ -4489,7 +4493,8 @@ static int vmx_check_nested_events(struct kvm_vcpu *vcpu)
+ 		 * through the local APIC trigger posted interrupt processing,
+ 		 * and enabling posted interrupts requires ACK-on-exit.
+ 		 */
+-		if (irq == vmx->nested.posted_intr_nv) {
++		if ((nested_state & KVM_NESTED_PI_ACTIVE) &&
++			((nested_state & KVM_NESTED_PI_VECTOR_MASK) == irq)) {
+ 			/*
+ 			 * Nested posted interrupts are delivered via RVI, i.e.
+ 			 * aren't injected by KVM, and so can be queued even if
+@@ -4498,7 +4503,8 @@ static int vmx_check_nested_events(struct kvm_vcpu *vcpu)
+ 			if (block_non_injected_events)
+ 				return -EBUSY;
+ 
+-			vmx->nested.pi_pending = true;
++			atomic_or(KVM_NESTED_PI_PENDING, &vcpu->arch.nested_guest_state);
++
+ 			kvm_apic_clear_irr(vcpu, irq);
+ 			goto no_vmexit;
+ 		}
+@@ -5587,7 +5593,6 @@ static inline void nested_release_vmcs12(struct kvm_vcpu *vcpu)
+ 		copy_shadow_to_vmcs12(vmx);
+ 		vmx_disable_shadow_vmcs(vmx);
+ 	}
+-	vmx->nested.posted_intr_nv = -1;
+ 
+ 	/* Flush VMCS12 to guest memory */
+ 	kvm_vcpu_write_guest_page(vcpu,
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 612ab07d4100..e6dd37a3ac44 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -4370,7 +4370,7 @@ void vmx_recalc_intercepts(struct kvm_vcpu *vcpu)
+ static int vmx_deliver_nested_posted_interrupt(struct kvm_vcpu *vcpu,
+ 						int vector)
  {
--	vcpu->arch.hflags |= HF_GUEST_MASK;
-+	vcpu->arch.nested_guest_state = KVM_NESTED_IN_GUEST;
- 	vcpu->stat.guest_mode = 1;
- }
+-	struct vcpu_vmx *vmx = to_vmx(vcpu);
++	int nested_state = atomic_read(&vcpu->arch.nested_guest_state);
  
- static inline void leave_guest_mode(struct kvm_vcpu *vcpu)
- {
--	vcpu->arch.hflags &= ~HF_GUEST_MASK;
-+	vcpu->arch.nested_guest_state = 0;
- 
- 	if (vcpu->arch.load_eoi_exitmap_pending) {
- 		vcpu->arch.load_eoi_exitmap_pending = false;
-@@ -475,7 +475,7 @@ static inline void leave_guest_mode(struct kvm_vcpu *vcpu)
- 
- static inline bool is_guest_mode(struct kvm_vcpu *vcpu)
- {
--	return vcpu->arch.hflags & HF_GUEST_MASK;
-+	return vcpu->arch.nested_guest_state & KVM_NESTED_IN_GUEST;
- }
- 
- static inline unsigned long kvm_get_segment_base(struct kvm_vcpu *vcpu, int seg)
-diff --git a/arch/x86/kvm/smm.c b/arch/x86/kvm/smm.c
-index 656a38dad7e7..60af64a6209f 100644
---- a/arch/x86/kvm/smm.c
-+++ b/arch/x86/kvm/smm.c
-@@ -114,9 +114,9 @@ void kvm_smm_changed(struct kvm_vcpu *vcpu, bool entering_smm)
- 	trace_kvm_smm_transition(vcpu->vcpu_id, vcpu->arch.smbase, entering_smm);
- 
- 	if (entering_smm) {
--		vcpu->arch.hflags |= HF_SMM_MASK;
-+		vcpu->arch.smm_mode |= SMM_MASK;
- 	} else {
--		vcpu->arch.hflags &= ~(HF_SMM_MASK | HF_SMM_INSIDE_NMI_MASK);
-+		vcpu->arch.smm_mode &= ~(SMM_MASK | SMM_INSIDE_NMI_MASK);
- 
- 		/* Process a latched INIT or SMI, if any.  */
+ 	/*
+ 	 * DO NOT query the vCPU's vmcs12, as vmcs12 is dynamically allocated
+@@ -4380,12 +4380,12 @@ static int vmx_deliver_nested_posted_interrupt(struct kvm_vcpu *vcpu,
+ 	 * L1 has enabled posted interrupts for L2.
+ 	 */
+ 	if (is_guest_mode(vcpu) &&
+-	    vector == vmx->nested.posted_intr_nv) {
++	    vector == (nested_state & KVM_NESTED_PI_VECTOR_MASK)) {
+ 		/*
+ 		 * If a posted intr is not recognized by hardware,
+ 		 * we will accomplish it in the next vmentry.
+ 		 */
+-		vmx->nested.pi_pending = true;
++		atomic_or(KVM_NESTED_PI_PENDING, &vcpu->arch.nested_guest_state);
  		kvm_make_request(KVM_REQ_EVENT, vcpu);
-@@ -311,7 +311,7 @@ void enter_smm(struct kvm_vcpu *vcpu)
- 		goto error;
  
- 	if (kvm_x86_call(get_nmi_mask)(vcpu))
--		vcpu->arch.hflags |= HF_SMM_INSIDE_NMI_MASK;
-+		vcpu->arch.smm_mode |= SMM_INSIDE_NMI_MASK;
- 	else
- 		kvm_x86_call(set_nmi_mask)(vcpu, true);
+ 		/*
+@@ -5019,7 +5019,6 @@ static void __vmx_vcpu_reset(struct kvm_vcpu *vcpu)
  
-@@ -584,7 +584,7 @@ int emulator_leave_smm(struct x86_emulate_ctxt *ctxt)
- 	if (ret < 0)
- 		return X86EMUL_UNHANDLEABLE;
+ 	vcpu_setup_sgx_lepubkeyhash(vcpu);
  
--	if ((vcpu->arch.hflags & HF_SMM_INSIDE_NMI_MASK) == 0)
-+	if ((vcpu->arch.smm_mode & SMM_INSIDE_NMI_MASK) == 0)
- 		kvm_x86_call(set_nmi_mask)(vcpu, false);
+-	vmx->nested.posted_intr_nv = -1;
+ 	vmx->nested.vmxon_ptr = INVALID_GPA;
+ 	vmx->nested.current_vmptr = INVALID_GPA;
  
- 	kvm_smm_changed(vcpu, false);
-diff --git a/arch/x86/kvm/smm.h b/arch/x86/kvm/smm.h
-index db3c88f16138..323c03827d28 100644
---- a/arch/x86/kvm/smm.h
-+++ b/arch/x86/kvm/smm.h
-@@ -151,7 +151,7 @@ static inline int kvm_inject_smi(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index dc8517f15bc4..0632cd8908b3 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -151,8 +151,6 @@ struct nested_vmx {
+ 	struct kvm_host_map pi_desc_map;
  
- static inline bool is_smm(struct kvm_vcpu *vcpu)
- {
--	return vcpu->arch.hflags & HF_SMM_MASK;
-+	return vcpu->arch.smm_mode & SMM_MASK;
- }
+ 	struct pi_desc *pi_desc;
+-	bool pi_pending;
+-	u16 posted_intr_nv;
  
- void kvm_smm_changed(struct kvm_vcpu *vcpu, bool in_smm);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 79468ddfe473..0d8854bcbc4f 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -3013,7 +3013,7 @@ static void kvm_vcpu_ioctl_x86_get_vcpu_events(struct kvm_vcpu *vcpu,
- 	events->smi.smm = is_smm(vcpu);
- 	events->smi.pending = vcpu->arch.smi_pending;
- 	events->smi.smm_inside_nmi =
--		!!(vcpu->arch.hflags & HF_SMM_INSIDE_NMI_MASK);
-+		!!(vcpu->arch.smm_mode & SMM_INSIDE_NMI_MASK);
- #endif
- 	events->smi.latched_init = kvm_lapic_latched_init(vcpu);
- 
-@@ -3099,7 +3099,7 @@ static int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
- 
- 	if (events->flags & KVM_VCPUEVENT_VALID_SMM) {
- #ifdef CONFIG_KVM_SMM
--		if (!!(vcpu->arch.hflags & HF_SMM_MASK) != events->smi.smm) {
-+		if (!!(vcpu->arch.smm_mode & SMM_MASK) != events->smi.smm) {
- 			kvm_leave_nested(vcpu);
- 			kvm_smm_changed(vcpu, events->smi.smm);
- 		}
-@@ -3108,9 +3108,9 @@ static int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
- 
- 		if (events->smi.smm) {
- 			if (events->smi.smm_inside_nmi)
--				vcpu->arch.hflags |= HF_SMM_INSIDE_NMI_MASK;
-+				vcpu->arch.smm_mode |= SMM_INSIDE_NMI_MASK;
- 			else
--				vcpu->arch.hflags &= ~HF_SMM_INSIDE_NMI_MASK;
-+				vcpu->arch.smm_mode &= ~SMM_INSIDE_NMI_MASK;
- 		}
- 
- #else
-@@ -9554,7 +9554,10 @@ void kvm_vcpu_reset(struct kvm_vcpu *vcpu, bool init_event)
- 	kvm_lapic_reset(vcpu, init_event);
- 
- 	WARN_ON_ONCE(is_guest_mode(vcpu) || is_smm(vcpu));
--	vcpu->arch.hflags = 0;
-+#ifdef CONFIG_KVM_SMM
-+	vcpu->arch.smm_mode = 0;
-+#endif
-+	vcpu->arch.nested_guest_state = 0;
- 
- 	vcpu->arch.smi_pending = 0;
- 	vcpu->arch.smi_count = 0;
+ 	struct hrtimer preemption_timer;
+ 	u64 preemption_timer_deadline;
 -- 
 2.56.1
 
