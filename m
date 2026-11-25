@@ -1,58 +1,73 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795590947;
-	b=YfoNDfQt3SjR7/S0qz9S7xkSlC5h2p4ZkNdhkKHiAzPpTXsaeBT/srIDD4skeZsWArw+
-	 soerEpGb9y/DIs3gjtOAQgf61Hm6W1tH7rccoT+YWSRmwTYb3RjGZ9ucCxOm5koCLBVw0
-	 23mobCxBZ49pqvq11NTC3aleDW/9tknhHbubJMP+dn8lvDRTsWwLxWiCWUs01WJANuJTV
-	 BlLKCxE+pUdwT/STtTJWoJiEnaPCAhQ4x7+s8UCmwWJbo5YO4fDDY4zVG8G7ao96nCrqP
-	 QLvXnktbiRDeh2/AQPnBV1/4s8GMxcAvoECatjZkxGSNWRMWw8TONuX11CBd0MFO3gw==
+	t=1795591425;
+	b=HVOBExS1lbhzoUcVDoWwVbmXHIDwaM7G5Mk3cfhLQAkMgdZBJwj/Gcrk/+YVi5J47EbV
+	 k1ecxg7sS8QHBViROEbxRTQY/15FMbvBz32NFh5JG1ZTg5LW3tnL17Zyfq6Vu/J2C/45e
+	 hCK4/euEztzkyIHdsfe+ArK3gnrMudKziCY+AXXPj1HovYSnXD7bgCykm6zl/YSRHZgTV
+	 u0lN71KkFWDN3UT+hC5UiekXreBxzDvKuXX6PEwucyJVmj0OyCk1G0np0BlA5LEtxjodX
+	 n4YW1GLTQuQZI9CZa9G57e81UiUkJ3Gw1ejiAaJBMxYYAJAWX/eQrpmOyLCbgRWwT8g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795590947;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=Qr1WkdD7lUjHmLYrbbgORpljbdFmct9M7d97UJO6688=;
-	b=SXMuj1MlhM1x0Xu20fujfFhYI2pKsUdz84grVNr5cI1pEg2zVmeAzzbT9rj+NxrV6f6P
-	 uEkCZiVM40QNtA568X/JOoIkqQ6t2d+Y92Po7BCRAbMO3JSB/jqexF2KqvxLtv88PDV56
-	 M0A/UqcSX21W/j+M6ly1lcpej+RfesBrhPNk/GhFTvrkzBJs/BJ4h/KoK88ktReA7C6/5
-	 vnqcKGtd2WpHUjEhDp6NZ9qvOPGMQ1LEwb47CgVqAA05nQAKnzcCwE/JB249fmYZVZorN
-	 +GsFm0jcd8XPMlMEJpfWPkh5M5lQc69tW5+px2eAVIyJ/Yf6GgqAY7PWSsf+7PY36Mw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795591425;
+	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
+	 References:Date:Message-ID:MIME-Version:Content-Type;
+	bh=q0hHWQYAcpLXZYWDPR8xQDF7EnYAaANCqBcrQywzfyU=;
+	b=UoMrFac7m34Et3F50/BYl0lPsuxYYaVf4gwEPCrosJj0lf+WESompr7lgYdD5ycAXtUj
+	 UCz5N0Rj+UIxwQd1TxTbHiSLv+8Pd6144tD6iF+r0DkLGOlWAEYHClCueqwhudQf8doRi
+	 AuelNPUjK4XJDueNUkUNw2mJpcctUGzf6GWOtRWzMoQ0Zx7aWvysasF/K2Nj/vagohmR+
+	 pKjp1XNDFabaKlA68R9ksjG39plzP1irvMhKV7ZbONC8Ifgbt27W4q0mdbswCmRdqsgYC
+	 lb9y+QI4qkYP6OPdjAVadi4psJfSEtBK09XwRMeRxBFAIQTDDa41Jk4EsoA9+V85hpA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bCAyis22;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hnofm9ol;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484A2606A69C;
-	Wed, 25 Nov 2026 07:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F98606A323;
+	Wed, 25 Nov 2026 07:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bCAyis22
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955DE1F000C0;
-	Wed, 25 Nov 2026 07:15:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hnofm9ol
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F13F1F000C4;
+	Wed, 25 Nov 2026 07:23:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795590946;
-	bh=Qr1WkdD7lUjHmLYrbbgORpljbdFmct9M7d97UJO6688=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bCAyis22aCFZbDn2UL9udyWVE+FoHVvkvGRLkvreaQECV5zd46cvS+2V6+B7HE40C
-	 ulTO3+PjmJNxDClYZ00Z6gM4fXnxJOJLXImKCKF+B0oJ7Q1mjwyiACzfov+th5MyZo
-	 3N8x3VcDajLReFkmw9oIy0Bpa/vsniGjRnAWI86UeM/AQfbmmmdd+G0YusURcdNGwo
-	 iLvVOvTC/ZlcMZF+PMk9dtU0FUgKxO1Lls8U2mE4miIg1/z7VMuIrB8D00KSLOBssK
-	 VM7h+pVSUOLRA37CFsHhxhOmBgvUTUJZgqjhZ/9ogaqhZTeJvdB4uXuowbZLYtL+xQ
-	 0qCUzWP71bYyw==
-Message-ID: <sashiko-outbox-232760@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/8] KVM: arm64: Reset SP_EL1, ELR_EL1 and SPSR_EL1
- when resetting a vcpu
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Dan Carpenter" <dan@pereq.eu>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>, "Marc
- Zyngier" <maz@kernel.org>
-In-Reply-To: <20261125-double_exception-v2-2-224689d8a764@pereq.eu>
-References: <20261125-double_exception-v2-0-224689d8a764@pereq.eu>
- <20261125-double_exception-v2-2-224689d8a764@pereq.eu>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 25 Nov 2026 07:15:46 +0000
+	s=k20260515; t=1795591424;
+	bh=q0hHWQYAcpLXZYWDPR8xQDF7EnYAaANCqBcrQywzfyU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Hnofm9olul8X7U563TFP9EoBxPQH6Cku69KsUU7t9hAkp1G7O+zSkVsJ+Bkpp0frG
+	 ZSjjNSGxc3K6ajhlxq8OpaFfMOzGPEO5qjmvN/TE3MOIqkAE4hqkyKJa8E/3sCX+oj
+	 9GIj48Rbpb8Rl+AxOtn9LBH2pz9gANgrYN0LyP3g8simq3jeo8oyFbbmjAx+1mNgDQ
+	 4TbSCb5P27rkXsOAJnJdA9m8Z8f++u/h0mFS5FNNGPoaB9w16axwBSN+P2ep1JooBl
+	 J4b6wPabWVhiIlwly9lhGfeSMBacvaND+/vHY7GMKEoeHHZWcY5jlq4JijHtodTLcb
+	 DpgwCjZvWXZSw==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>,
+	Alexey Kardashevskiy <aik@amd.com>
+Cc: linux-coco@lists.linux.dev, Dan Williams <djbw@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
+	kvm@vger.kernel.org, patches@lists.linux.dev,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v1 01/10] PCI/TSM: Report active IDE streams per host
+ bridge
+In-Reply-To: <20261124024842.GB9566@ziepe.ca>
+References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
+ <20261123083337.2731019-2-aneesh.kumar@kernel.org>
+ <f377271d-353f-4c8e-94d5-98159a66ab28@amd.com>
+ <20261124024842.GB9566@ziepe.ca>
+Date: Wed, 25 Nov 2026 12:53:33 +0530
+Message-ID: <yq5azeux9xxm.fsf@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -61,62 +76,77 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] KVM: arm64: SP_EL1, ELR_EL1, and SPSR_EL1 unreset in
-  pkvm_reset_vcpu() and core
---
+Jason Gunthorpe <jgg@ziepe.ca> writes:
 
-commit d315f26d12c1dd260ed62612065ad5e34b6f9f03
-Author: Dan Carpenter <dan@pereq.eu>
+> On Tue, Nov 24, 2026 at 11:11:49AM +1100, Alexey Kardashevskiy wrote:
+>> On 23/11/26 19:33, Aneesh Kumar K.V (Arm) wrote:
+>> > From: Dan Williams <dan.j.williams@intel.com>
+>> > 
+>> > The first attempt at an ABI for this failed to account for naming
+>> > collisions across host bridges:
+>> > 
+>> > Commit a4438f06b1db ("PCI/TSM: Report active IDE streams")
+>> > 
+>> > Revive this ABI with a per host bridge link that appears at first stream
+>> > creation for a given host bridge and disappears after the last stream is
+>> > removed.
+>> > 
+>> > For systems with many host bridge objects it allows:
+>> > 
+>> >      ls /sys/class/tsm/tsmN/pci*/stream*
+>> > 
+>> > ...to find all the host bridges with active streams without first iterating
+>> > over all host bridges. Yilun notes that is handy to have this short cut [1]
+>> > and from an administrator perspective it helps with inventory for
+>> > constrained stream resources.
+>> > 
+>> > Link: http://lore.kernel.org/aXLtILY85oMU5qlb@yilunxu-OptiPlex-7050 [1]
+>> > Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+>> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+>> > Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+>> > ---
+>> >   Documentation/ABI/testing/sysfs-class-tsm | 13 ++++
+>> >   drivers/pci/ide.c                         |  4 +
+>> >   drivers/virt/coco/tsm-core.c              | 95 +++++++++++++++++++++++
+>> 
+>> I'll take to the tsm tree, thanks!
+>
+> Lets not take any new sysfs APIs please. These all need a careful
+> thing and we are not having a good history right now on any of these.
+>
+> I'm not even sure what this is supposed to be for, is it debugging?
 
-KVM: arm64: Reset SP_EL1, ELR_EL1 and SPSR_EL1 when resetting a vcpu
 
-This commit zeroes SP_EL1, ELR_EL1, and SPSR_EL1 in kvm_reset_vcpu() when
-resetting a vCPU.
+I think this helps users identify active IDE streams and determine how
+many secure streams remain available on the host bridge. I would not
+classify it as a debugging-only aid.
 
-> diff --git a/arch/arm64/kvm/reset.c b/arch/arm64/kvm/reset.c
-> index 26081d2734087..9c1b42890c966 100644
-> --- a/arch/arm64/kvm/reset.c
-> +++ b/arch/arm64/kvm/reset.c
-> @@ -199,6 +199,9 @@ void kvm_reset_vcpu(struct kvm_vcpu *vcpu)
-> =20
->  	/* Reset core registers */
->  	kvm_reset_vcpu_core(vcpu);
-> +	__vcpu_assign_sys_reg(vcpu, SP_EL1, 0);
-> +	__vcpu_assign_sys_reg(vcpu, ELR_EL1, 0);
-> +	__vcpu_assign_sys_reg(vcpu, SPSR_EL1, 0);
->  	vcpu->mmio_needed =3D false;
-> =20
->  	/* Reset system registers */
+A sample output for a toplogy given below
+# lspci -t   
+-[0000:00]-+-01.0-[01]--+-00.0
+           |            \-00.1
+           +-02.0-[02]----00.0
+           \-03.0-[03]----00.0
+# 
 
-[Severity: Medium]
-Should SP_EL1, ELR_EL1, and SPSR_EL1 be reset in the shared helpers instead
-of only in host kvm_reset_vcpu()?
+# pwd
+/sys/class/tsm/tsm0/pci0000:00
+# ls
+0000:00:01.0  0000:00:03.0              pci_bus  stream0.0.0  trust_policy
+0000:00:02.0  available_secure_streams  power    trust        uevent
+# cat available_secure_streams 
+255
+# ls -al stream0.0.0
+lrwxrwxrwx 1 root root 0 Jan  1 00:48 stream0.0.0 -> 0000:00:02.0/0000:02:00.0
+# 
 
-For pKVM protected VMs, flush_hyp_vcpu() does not copy host_vcpu->arch.ctxt
-into hyp_vcpu->vcpu.arch.ctxt.  Instead, on PSCI CPU_ON,
-handle___kvm_vcpu_run() calls pkvm_reset_vcpu() at EL2:
+Here, I have set up an IDE stream with 0000:02:00.0.
 
-arch/arm64/kvm/hyp/nvhe/pkvm.c:pkvm_reset_vcpu() {
-	...
-	kvm_reset_vcpu_core(&hyp_vcpu->vcpu);
-	kvm_reset_pvm_sys_regs(&hyp_vcpu->vcpu);
+The previous discussion cited in the cover letter indicated a need for
+this because the number of streams available at the host bridge level is
+limited.
 
-	/* Must be done after resetting sys registers. */
-	kvm_reset_vcpu_psci(&hyp_vcpu->vcpu, reset_state);
-	...
-}
-
-Because neither kvm_reset_vcpu_core() nor pvm_sys_reg_reset_vals[] resets
-SP_EL1, ELR_EL1, or SPSR_EL1, a protected vCPU that cycles through PSCI
-CPU_OFF and CPU_ON re-enters in PSR_MODE_EL1h with stale SP_EL1, ELR_EL1,
-and SPSR_EL1 values.  Resetting *vcpu_sp_el1(vcpu) =3D 0 in
-kvm_reset_vcpu_core() (which also covers arch/s390/kvm/arm64/reset.c) and
-ensuring ELR_EL1 and SPSR_EL1 are reset for pvm_sys_reg_reset_vals[] as
-well would keep all vCPU reset paths consistent.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261125-double_exc=
-eption-v2-0-224689d8a764@pereq.eu?part=3D2
+-aneesh
