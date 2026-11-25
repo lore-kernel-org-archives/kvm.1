@@ -1,89 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.52
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795605426;
-	b=M82B4YmkxJoTmMRF9CXKoRbmYulsRsvwX314j2VbZ4OvNeZYnaS5GtiV3wqXNp3cQf3u
-	 ZKdBI5p/FsbXQ1S9wRkxp2iokCTmhFyv32FeLvFnuCP4876tC1P1cL+bVyT3QOF0xvj6g
-	 1V1tbILmh9YdiMLe6/klF6mG5q2FbezZwPknqjOY6TdDnk1MdwnqSnnhLLF14m6YpdwuV
-	 2EjKBsqIqa8g9qMOqu1x/xX5DOpd0t5XZIR6FzwpBcArM0DC2nwSXEHfZTUcPaQUtp2bJ
-	 GN/ifgJoY48bBx1Fbiauyio6BVQzm+U6ng1mb8kC8pa7d8onJqm/ynd9uw5YTtSAynQ==
+	t=1795605519;
+	b=sTQpwymDraQMASk+N6HqAwBuzTfPAQONlEOY7NRSHCoQR9XwqffT+0NzkeKADVCpGcbv
+	 oZILoelSfUCwEzRuNk2Cwn6XBX3joQZZASj2U2SBDeQzVMcikiF+q4xK3dJ277FjP2+FN
+	 6ESktpgTUKh/LkeGXc5MoVJMZuCUQHVMISi9zxHDw0v40v/BoLXC2WVeubbSMm1VsYNYc
+	 KWnXMpekx6/bCTDw6JL9DpjtWExPTmZFU9AHUpKqG/MNPVTE8TIwpoSke1IljD7Y3ETy4
+	 JAtywy4oU63QJ3hZxnUBayXLEh6ucMV1Je3q8PPnKM/m+2bX48irGd0PaKVUG5+6WwQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795605426;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795605519;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:X-Google-Original-From:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:To:Cc:References:Content-Language:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=sDsbr5ve7lstRzCqqwaH7hey2ad4/GX/MTHn8iSlZz4=;
-	b=cevokenXKUWfGSqIf9bjSU2rk03q3qMKulTLBFjrMMoQVFehU9bE76ur7gZT79Fxo7hu
-	 HuezGr+EoY5cxmmyYkXF6ZiJaGxqsnP64zudXU7dkSIuxn9sL683UCa2/LvbiZI2o1so+
-	 kqcafKylrUU+JrmgVbPcf+UMeJrQogRGXsDjReGQwPvnCPKB6xsfEnpkUFvjjzkx5Y+q2
-	 DEGlJmVOYZUqU0BZQxsbgIyhMPxePFmJk4AIMSkAuoMBkuiiEfPRrhBDl+XPokxwSn/r6
-	 2/5XeFuflCDOon84BdxfMHXzJGffVU32fu20uPg/QVxnaFvgBEv+Na4Lf8oHC560ZGw==
+	bh=BqDRusDdiLvl1Sf7gFE/D5Bw9nPWlQ6rHY0va4kEHso=;
+	b=CZpbu5I3wZszqrzhiRs633SA2hYrtyFrSDniTkUgPkAZta4+S9FYRi5l/7ui9LUMPe1s
+	 BKTjIXfcTJadj4gdGceny+7RAVL2IMZxXHfqMekR645WR7wRO65bNVovRehPWPQRcVLCe
+	 bNGVzfPCKk6stAxdjG6yZOFmn5d827/5+2YF3y3z6EJjPcs9RT+8ErAxjHQTESHlbUSPS
+	 +ms992Ul91m1XZbhSzz1ZWrh2N2/4rs3WSXT2zip4xOt5DiePrIt4+Bo0QdKckGX0pQqV
+	 ewEm5GiT6gsWRuLD1XxU35XxAzaocJYNEoOTvzIFft4YKasxwoniVHzudQ1wxVnCyIg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uMkI1s6q;
-	arc=none smtp.remote-ip=209.85.128.45
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=H2CxyiW8;
+	arc=none smtp.remote-ip=209.85.221.52
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5B7606A321
-	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 11:17:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EF5B7606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F49606A31E
+	for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 11:18:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D7F49606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uMkI1s6q
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a207b02a2cso40189885e9.1
-        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 03:17:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=H2CxyiW8
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-498f5fa4f70so4590180f8f.0
+        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 03:18:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795605424; x=1796210224; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1795605517; x=1796210317; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sDsbr5ve7lstRzCqqwaH7hey2ad4/GX/MTHn8iSlZz4=;
-        b=uMkI1s6qFOru4xt+WokJe9Dl4CxAgIuSH4XscOvVLlbHWdW7CpsAvAvPQsa6HpkO5/
-         ybEcsviw1zeGb+mJBVcBUuXpGvG/LR+R/Pd8FOk2LagsGD3awKokzW1EZLWGfFg216Ys
-         6FY6HATpLTk81vz4pDyEabpLXGsEFzH2/Z/V1yQNm/l6z0vNVXF3YqyST/Jm8pk9i12d
-         JhqWDGN3iXvHP9SDDRFP0g/9Iwg5rbrQEVKafRHWOA6ySNFQFuiRgjIb/w6+3oK0YmlJ
-         5sBcJW6CaZYGg5ez6FGDyGj4X17ijMrbjBVuD/AJ9S5fDHyikNOt4dwVSnGWWS8GvRkD
-         3M/g==
+        bh=BqDRusDdiLvl1Sf7gFE/D5Bw9nPWlQ6rHY0va4kEHso=;
+        b=H2CxyiW87X8rQqa4e36H+F0vzjzD2YQp+orPdO8jxD7VcXxsvH7e0scqLBdrJPbQGQ
+         aBt69pZQ6UiUdyiHN4GRdwfks/KxG/PWFbF2QuuHSrKBpVLDKY0p4lCV4QBCqDgEuh3x
+         CzeNsMpW/cx44zFJ9wsU2R7CUn/ioEk+WwjYE0CQgeLURs2+jK4yEBBnKnpJqyWzweNT
+         rRgRqZKm7ZyTgliolnxCOSZm6otmaUGfo/sGIhfyvmHYBt+oLkrKG/NbzhLllr3Cgcdr
+         Q6jQZlcgcGJrNUNn3zZVSKdyVclwWa/+RkUvqHCC8veOOjltireqvZwG3Cn2gB4YtzeN
+         idTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795605424; x=1796210224;
+        d=1e100.net; s=20260707; t=1795605517; x=1796210317;
         h=content-transfer-encoding:content-type:in-reply-to:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=sDsbr5ve7lstRzCqqwaH7hey2ad4/GX/MTHn8iSlZz4=;
-        b=Yue+xOfhKga4ZDZJnSbJEguf3vV8MiJwk2DXi7YA6bhWNkWMg/plZuBGewLP1B1wqV
-         3fTYSbQfrUFBmAQpldCIRwfqYbBcETI7SvcxOEqZc3xv8GREi5Qa862Ih/aj9MqC6j0A
-         puj5Fz/RzmRY8g0fHzN/uKk0kzJZnqfmX0+y5RdXkVBJLV8X8IeUOWmgpHpI7YrlS2xY
-         JLzsvu+calmSdIYauBaCGtZC0ejA2pX7sGOYYWf9/yfwrkFksHV2TP53JR1+hZGOqpwt
-         jRxdd0TYwfH7YHaoeV3s2qm83jsLuoz5ryhtsT7Nj2vE1vtRBpueW4377ifozdpBY4pc
-         njvw==
-X-Forwarded-Encrypted: i=1; AL+hErEE12euJF3vyj/0+gpVT5WZ5lkvpwmj+D27noev2qvhr4ho+82/rfqy0MFaQdvE2r5dAx4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z91TZ3DL8/g/53zTVvJ/i6HPwE8ijEBt7ph/T1RucYqs/7rRSlO
-	nGLm2yAME91CcfXNMcEB6D0qvaD91vwuDsK398/6iC67s2jPTsvrhn3e
-X-Gm-Gg: AZFdTZeEjwcrm7UBC6aN3tX6D6wRbe6NNBvCXEsYclVkvnnu8kBHlRYqqRzK713OI2v
-	N10uOVnMEdXS6HakAiCFYeEakUu/YSo9GldI3N2LhCOoqdXDNpwlk8e+SQD2/KtrmVrBgq6Fe8w
-	JmOfVKK1JrInGEY0xYipHXqdw1cH4DUamGu270Y0bouN1b8APKzlQkNLybOS7Cbds8B3/7iiTTo
-	p8Pbv/H1rKkbuibd3QSAzP2xHNt8A9BwmkLfysb1DQXrpcbjTZHemhS5ueLNPmvdb9P5VxiPLcM
-	ujbg+IZ3THNom05mGD0MP7XX9jEaPKm48WX8A7GCUKu+L+ofDCLK3gsAVsgZFOlLUOTir6oqjfw
-	+ksDeQgnrBYkbWz5VUCj3O9pa0uSlljlqTFC1UEZ/FIWv5lcgLNkhjYQcTNvnSX3sEcdZjTOtaS
-	a69e9+EsrkoF61IsnFRtk6IGoEqUjPCzjCvoIzxVqv1wO0iRahi2FWD3sXW0vReCkA80rzdGpRp
-	Yy2QVuqQbRgpBWCIxPLFtPVsQ/nEHcVDB0YTygkA1irLqg4vd+5nUK7GywUyAGlrop126jVfmz9
-	lH7AHG7pLphcg5x79ndjJKYncF15YyZYNsFeBIsqTGtJMv6U+521IpY=
-X-Received: by 2002:a05:600c:45d4:b0:4a2:84c:52f3 with SMTP id 5b1f17b1804b1-4bb8880988cmr372815065e9.6.1795605424154;
-        Wed, 25 Nov 2026 03:17:04 -0800 (PST)
+        bh=BqDRusDdiLvl1Sf7gFE/D5Bw9nPWlQ6rHY0va4kEHso=;
+        b=KWuswre8yZEzbgXRR1UiQcdMBYvyebZVfKpLQbLKKVkYAf48/9h1idQbhphVs50m5N
+         aY0QMYyeaqpTZRY5j00G624jygQIvpcwESJPdBVJFwxLKcqC+TqKej8RvDwi0m7cqlnb
+         MFivici3pQCR66O5EH+UHV0Fzj1b3oLN6OgsuEtBWh+ljYvou7de5aH94wLejZHij0Jd
+         uWbx5bzw6JMy71sxSckxxZiIBI9zKUc/olSjB8BhelSjdlqi87cTOJglhCWCdCSXFdau
+         /5nEq0Xr8mISmfh+OWeBI63b/XILnGW7sd+oyrIwt4MNNAjjLmy7BDWo46oYC+WzVwZp
+         zzHQ==
+X-Forwarded-Encrypted: i=1; AL+hErF9A61DFEivM4V3ZuTW3cTlKuMwssYY8Z6S/O4td1IA+++iBIgNdS+bDouTIsX3yFHQbtY=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9Jc/SPWSaZ/TkPVSjJmVeR4JgikS/thvxDftbTn6LSRmjUpXrp
+	uPP0xDiE93PUVn1iq9BF+MwvqzgPQiHfUh1+GfjNoRs64Xf4HV5BrBIb
+X-Gm-Gg: AZFdTZegFynVLdei1e1F14AYhUhTJ9QFbQO6CkrirDd9DcqX55/tEIQQrxCZ68SRmW6
+	rtJo6pBZI1UYsYmvwDaJAKoQMgFnbKjaGDqOiYxHvq6ERUbYOL/FyWXvps8+IOyFtzQ6+43VwBf
+	afayNE43Na6yBodS3hNVKJRGgdUdLyJdZZRBbu0+gW4XENfhNkcd/5/aVejVXGLgfROZdf9d4hU
+	tKtXmBHXiEcLSHFRvAFnuG+6ojNgi6ydOANbBOyciuZOuTEiSoxaOkMVLb720jURRC46wAlGojP
+	uuov2ey/T9hLcRVaUz2C+ypTBtjr/ePFMOTvGS2THspqmGlKQKUlxeqJvBLnsabpCMchG0s6lf7
+	lFjVPMgIMdWbH09KeHDnKFyNEgwJhILQx7MJBiUOuHM/kNv4GV8TMs2gDsYIHlvpPj1+29PvYs/
+	1w1KtZQeLGjy8RFzeD+wQP9CIAjx84RTETnOkazgn0Wu09i9VQ9HX78scOa67gwneStvoaVbzB1
+	m0PV1WdymSWv3GxDU6H6sDRLg0dxi86jui51UP4lF2GkQAE40ZYJXPCOasz0fkHk1WZQaL8jmiQ
+	XU3Zy3PmoonqjQjWnDjjLwiSzWMnlQr8zA==
+X-Received: by 2002:a05:6000:29d6:b0:490:6fbc:9457 with SMTP id ffacd0b85a97d-4abb39566e7mr23143727f8f.41.1795605517091;
+        Wed, 25 Nov 2026 03:18:37 -0800 (PST)
 Received: from [10.45.18.224] ([15.248.2.8])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb90660cb4sm454867055e9.2.2026.11.25.03.17.02
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab65cb4341sm33914818f8f.4.2026.11.25.03.18.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Nov 2026 03:17:03 -0800 (PST)
+        Wed, 25 Nov 2026 03:18:36 -0800 (PST)
 From: Paul Durrant <xadimgnik@gmail.com>
 X-Google-Original-From: Paul Durrant <paul@xen.org>
-Message-ID: <719ac82d-4638-43c1-b563-af0a33b25d1e@xen.org>
-Date: Wed, 25 Nov 2026 11:17:02 +0000
+Message-ID: <c4e8c8e0-91a5-4009-b413-de19cf64e661@xen.org>
+Date: Wed, 25 Nov 2026 11:18:35 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -94,8 +94,8 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 09/21] i386/xen: Don't inject event on invalid port in
- qmp_xen_event_inject()
+Subject: Re: [PATCH v1 10/21] hw/i386/kvm/xen_evtchn: Reuse existing backend
+ port in find_be_port()
 To: David Woodhouse <dwmw2@infradead.org>, qemu-devel@nongnu.org
 Cc: xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
  Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
@@ -110,25 +110,29 @@ Cc: xen-devel@lists.xenproject.org, kvm@vger.kernel.org,
  Mark Syms <mark.syms@citrix.com>, Feifan Qian <bea1e@proton.me>,
  David Woodhouse <dwmw@amazon.co.uk>
 References: <20261124232247.23169-1-dwmw2@infradead.org>
- <20261124232247.23169-10-dwmw2@infradead.org>
+ <20261124232247.23169-11-dwmw2@infradead.org>
 Content-Language: en-US
-In-Reply-To: <20261124232247.23169-10-dwmw2@infradead.org>
+In-Reply-To: <20261124232247.23169-11-dwmw2@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 On 24/11/2026 16:22, David Woodhouse wrote:
 > From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> qmp_xen_event_inject() reported the invalid port with error_setg() but
-> then carried on regardless, passing it to set_port_pending(). Return
-> after setting the error.
+> After a guest soft reset, close_port() clears only the guest side of an
+> interdomain port; the backend handle still owns its be_handles[] slot.
+> Binding again then allocated a fresh slot each time, leaking the old
+> one — and leaving a dangling entry if the handle is later closed. Reuse
+> the slot the handle already owns.
 > 
-> Fixes: 507cb64d6e66 ("i386/xen: add monitor commands to test event injection")
+> Fixes: 794fba23a53a ("hw/xen: Add backend implementation of interdomain event channel support")
 > Reported-by: Hui Peng <benquike@gmail.com>
 > Closes: https://gitlab.com/qemu-project/qemu/-/work_items/4525
 > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 > ---
->   hw/i386/kvm/xen_evtchn.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
+>   hw/i386/kvm/xen_evtchn.c | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
+>
+More soft reset joy...
+
 Reviewed-by: Paul Durrant <paul@xen.org>
