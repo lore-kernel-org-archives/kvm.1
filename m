@@ -1,108 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795712436;
-	b=xxFZ2T0QuRrCiictKqxxaetHEtXq7iElp2cEwwoIUidYgQYI4LdeY/1Sxx7pDUFMosfw
-	 cYnziXGBFqxh+o1dpQyWbJtGmVRhT7/Cc9MIteSLG+G/QFVIKKBWjBOshr0O837Zxoagv
-	 /SeeW1OUHq63b40HTh5iCBCR/75/pejxsXnK3rG6s7LYGr5vaoaobXlqBEdWCN7WzFv2e
-	 rbiQZEyzNQDjRV1/C8oDWmpJBW9UVEa8XAGtxJxvJUJJRuDtuvryBy7TpytUHJt+hj+32
-	 11N4jXhpBeJ48P3jsZR/QxXCgdkuGmGaUJskw6kKnF8OHjPC7yTOeoDkJ39YgYVxEPw==
+	t=1795712558;
+	b=mPxoFS2oI6av2LW3Z31+utZZlRSMYM4KICeZ03/N0L2R2R37qZFWLiNhXts0abeYrzi+
+	 kzelozUIB+1bXHKtYzlvGyxGQzBorkSQLcJqtDbLevJOjgRmo8du/WEokk6VQJhGDMnkq
+	 stevRjA0VGIDa+5KmoagimWf0jy/RZ6Ed0+d91gXqrmNmzmEfnYvk138tlG1mRnyMJlP9
+	 mKwmKqOMKtf/ik2uQNKhMLvFWWLWhQeYpjawHapuqevte0M2pKRAWIcX86c09aYgdjwVa
+	 fkeM5R0TMxQ0g+OVPYSxRyn9/GwcKRobKllOn55Y5Z+vssEuRtVks2wp4v/TBHdxYjw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795712436;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:
-	 To:Cc:References:Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=CNjCOS8vDJEZBDE7+EdkAsSR8TKTXPOARGUmWVsbcMc=;
-	b=sbELG8cbmZfyOl8RAe9vG7sYtxtHsWJq0mc6BQ8/maBepUwJIDaPp5QnYR9mC2SCV1MR
-	 XGjR7ZaP7aZ+tWdT1Pc9aGo37in4b7GtnebEt3Zg7d4BDgJBlacb/GsX8q8NtnJKNAweE
-	 YpuxOvgBrhymM17d3jc4Shw/xtNQc+j+3fvYc5HvlNl21S0FeU5xqa30jzpNu6bKIPWHT
-	 FWBbgEMAfVT/RSW5IILPTiQ2mi6OnCiEKHvImh6Jf7nKGhDehc1YuBAayYNQQN5DXlgvn
-	 nzYH1z0ZZ25U+cZwMoXARv+XLg79KuwV1ppfldY+HdmryG+pawacmeqKWnTEE/Xl5YQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795712558;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=Y24mQmL7eZlVXSTP98fNk5t0N5bv0byo3UUzUf9LJmo=;
+	b=qx4s0uzwogt7N7/qWyjlpW0DEccKzWFuTkQWY5MmyZt1EC6iEie18AdnDZl2Eq0paniV
+	 MuiVgcJxQmbXJ0Jr8tjimGOmi196CYnYI6db4ubh/MssdVpwRgw5V8w8d+dL550Ms+FpI
+	 TirH071xjrXIwlXds3W1KUGpqLc4CnGgn0S/PsNb96nECf4AcUcxaZbcNyJr/F+ltEkYD
+	 q/XUW3kz4IDu1eYqSmqCuIt083wAxIDF3qrFzpSEEIPlXU/3Ac7sBVIKEnLX8+EhYu+1U
+	 PCzcmqiMIs88mQxffDYGz6ULp6h+AcADINTZ5Jv5Dc54DXoEpdbbLiCoMFm5RxhUNWg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YgnpxIR9;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=fpjXEXyu;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A9D606A31E
-	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 17:00:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 65A9D606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=oz6uCNkI;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C214606A331;
+	Thu, 26 Nov 2026 17:02:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C214606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YgnpxIR9;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=fpjXEXyu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795712434;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CNjCOS8vDJEZBDE7+EdkAsSR8TKTXPOARGUmWVsbcMc=;
-	b=YgnpxIR91EaFY86OwDziWGsMVkoucYdn9XWqDEvspuIloHFRLGaoVrBaOBz+soeMLjUXed
-	rieAzKcIG8QRy8qrUrhMGVBDELYkNbemLz2NTeB8N0Yz7tKXVMJi8rpy56B7CEm/gtKGpY
-	Vl/KMMAyvnJ3Qxvm1+QN/WPOPuO72nc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-449-AsIWzN8ZMQKMktpFWM9xwA-1; Thu, 26 Nov 2026 17:00:32 +0000
-X-MC-Unique: AsIWzN8ZMQKMktpFWM9xwA-1
-X-Mimecast-MFC-AGG-ID: AsIWzN8ZMQKMktpFWM9xwA_1795712431
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49febef74e3so55695725e9.0
-        for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 09:00:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1795712431; x=1796317231; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CNjCOS8vDJEZBDE7+EdkAsSR8TKTXPOARGUmWVsbcMc=;
-        b=fpjXEXyuJYVrfSTYEqfuSmAQDEcwjDzuZiU0yyeFs8N2W3VB5EIkGKnA+6C10WNj39
-         uv5fK4Bw3PdM9t6gRCYSocTDxw/V/EUSyVinCPifaBKVxa10Gr42dNsTlHDCaZrhmvxQ
-         cB+WdkcrrAuGgyrBCbWfLhj45FU4zNvbMzlF2+TtLkMn9LIQuF6J8A9SjvdYcMR3LZ6Z
-         IZ/Kee7aviNXtXdodIhIUWhCYeFkf+rep+/WD4bYa6NtGYT5PUazR4/as2jnrbEawIj5
-         U4OvNy1SIK0y0McS1I0FbyHo8bNnoHY1CVKtFHRpVNlf8gi0X9o+Chb7gRZtG7aBmZGc
-         e+fA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795712431; x=1796317231;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CNjCOS8vDJEZBDE7+EdkAsSR8TKTXPOARGUmWVsbcMc=;
-        b=eF0D1QZSUU8HYZGz9zTIjQ1Gtfy0bq2KYkcQsPQLpZt9+ILXsuf1jabjkxY3i22lWS
-         cxa1yhIxCGujFgx1SXs/JH0wlT1flM2RnwbTcIx5mdlkuPrJyoIWLP/tWcK6rFS9+sL3
-         qn3VgANBPjmVbQV8i3KUyxVia+faBbkfzxpV+4JaG8yfRs0OtLNiQ5NqsW/Ex639D2hU
-         0QpRrkEzQq+CH5wRAwipeV+F5GXtmanuSjcAAZ/JC6tjZV0MinvX7G9z3QmwPS/mfWlt
-         yfcPoAy5oNdGa4jr58xsTCb2TLgtOlh+qrkerAl0XSXLwWl7oxzYDuycav8+GdvWNE4z
-         IDcw==
-X-Forwarded-Encrypted: i=1; AL+hErFXfaB5k5Pr1EvHZcPpIHunWqwiZFFVBCFkvP/5ZS37nET6pRzE58zz7jv96nE+Ud7uU8Q=@vger.kernel.org
-X-Gm-Message-State: APuU4Z87mwMJtItKSseb/k8KsKaf+eNJU2GyV3KdAkMQy9YD3QtdpO2X
-	e+W80B1pi9SqEDibVg6gJwdHgKTPn/NY1w8EafzKl7wpACrrQ3kaV66Fq/SHK+WT/bNxDl9er/C
-	q5glVSAYipeMuHJGpENXy1LIGuiVlzBEROT4KZhDQjO+zBQU/NlhxuQ==
-X-Gm-Gg: AZFdTZcR+7ZzwjrAKFkXAUsf/Q+tKdXdxScs4kACunuusC3rG6CYxLSmpKaFequZhOK
-	G86Te3fqRaiQhU2bCGlFeqw32wIws8E1+3mjmcwtldninTS8X9axlceVP7b4oAD1lfovK1SrSPA
-	nxDPaziypYu8s+y1JzAdumFzQPGXc58bFpnYbqisV3ozIr8lXigN/fzVtG58qUT66fGekHhhw1b
-	VuHZnuL8QidOlBtH4oLd0ly+DcuATU0Eu7fSzZ8lx5HfoTb4D5S9EiizbB96IrbJQOpWuXuKaLj
-	4yuO24oJWU1vGZfSjOQr5D1BUKv28zXYBdM47wtzr/c118aFZJuvlFGzdlFFicTgMelKcE2nDeu
-	nNvIr9UPD9FE4K1VrRgTiBaxhKu/hDtF+MqFRAo6P5JfH2FTvmCLl9HHf4c1JV7MDaiNTwA5ByG
-	IZ3qWNtanFQLGbPSaq
-X-Received: by 2002:a05:600c:4e0b:b0:49e:65f2:db64 with SMTP id 5b1f17b1804b1-4bb887fb66cmr454531955e9.5.1795712430709;
-        Thu, 26 Nov 2026 09:00:30 -0800 (PST)
-X-Received: by 2002:a05:600c:4e0b:b0:49e:65f2:db64 with SMTP id 5b1f17b1804b1-4bb887fb66cmr454530965e9.5.1795712430155;
-        Thu, 26 Nov 2026 09:00:30 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:f0e:9070:af16:8320:54ea:4bc9? ([2a01:e0a:f0e:9070:af16:8320:54ea:4bc9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb853a9846sm724300475e9.11.2026.11.26.09.00.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Nov 2026 09:00:29 -0800 (PST)
-Message-ID: <c96d22b8-c344-496d-9e08-e00e89c8708a@redhat.com>
-Date: Thu, 26 Nov 2026 18:00:27 +0100
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=oz6uCNkI
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 716ED1BA8;
+	Thu, 26 Nov 2026 09:02:32 -0800 (PST)
+Received: from [10.0.129.128] (e122027.cambridge.arm.com [10.0.129.128])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3C0163F86F;
+	Thu, 26 Nov 2026 09:02:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795712555; bh=isbMh2OGZzg6ebsGQO+0DCY1HG/qDu6xRlk6oq6uVfI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=oz6uCNkI6bTTiTCFpkR8J8WU17NJGy68brv9M1M1xE1xuX+wqWSOgJBwChIa2brgt
+	 sXHEu/gvby9ydL/wtx1M9KC8Xv+4hpHUGvoAJndo3Rmx18/JpWuVZtrgmurxzgadD1
+	 W7YSDd66GEBVciR1YNr3RP+cXpOTfcXujE/j7D9M=
+Message-ID: <e5f18624-90da-4f33-8473-6ab2eb7b5de9@arm.com>
+Date: Thu, 26 Nov 2026 17:02:27 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -113,520 +54,880 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 2/3] target/arm/kvm: Let SYSREG_ID_AA64MMFR1_EL1_VH
- select an nVHE EL2
-To: Khushit Shah <khushit.shah@nutanix.com>,
- Haseeb Ashraf <haseebashraf091@gmail.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- Haseeb Ashraf <haseeb.ashraf@siemens.com>, Eric Auger
- <eric.auger@redhat.com>, Marc Zyngier <maz@kernel.org>,
- Mohamed Mediouni <mohamed@unpredictable.fr>,
- Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-References: <20261121204601.741616-1-haseebashraf091@gmail.com>
- <20261126052741.90607-1-haseebashraf091@gmail.com>
- <20261126052741.90607-3-haseebashraf091@gmail.com>
- <6BB40C51-1983-4760-BDFD-500351A7B0C9@nutanix.com>
-Content-Language: en-US
-From: Eric Auger <eauger@redhat.com>
-In-Reply-To: <6BB40C51-1983-4760-BDFD-500351A7B0C9@nutanix.com>
+Subject: Re: [PATCH v4 10/11] KVM: arm64: CCA: Support runtime faulting of
+ memory
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Kohei Enju <enju.kohei@fujitsu.com>
+References: <20261123104233.95710-1-steven.price@arm.com>
+ <20261123104233.95710-11-steven.price@arm.com>
+ <e98d2fba-7704-484e-9f73-02e52ce9900d@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <e98d2fba-7704-484e-9f73-02e52ce9900d@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Khushit,
-
-On 11/26/26 7:21 AM, Khushit Shah wrote:
->=20
->=20
->> On 26 Nov 2026, at 10:57=E2=80=AFAM, Haseeb Ashraf <haseebashraf091@gm=
-ail.com> wrote:
+On 26/11/2026 09:44, Suzuki K Poulose wrote:
+> On 23/11/2026 10:42, Steven Price wrote:
+>> At runtime, if the realm guest accesses an IPA without a stage-2
+>> mapping, then KVM fixes up the stage-2 mapping for the backing memory.
 >>
->> !-------------------------------------------------------------------|
->>  CAUTION: External Email
+>> For memory in the lower (protected) region of IPA, verify that the
+>> corresponding guest_memfd page is private before delegating to the RMM.
+>> The RMM then maps the delegated page into the Realm.
 >>
->> |-------------------------------------------------------------------!
+>> For memory in the upper (shared) IPA region, map the backing page as
+>> non-secure memory. Check that a guest_memfd page is shared when the
+>> fault uses guest_memfd; ordinary userspace-backed memslots can only be
+>> mapped at unprotected IPAs and follow the normal user memory fault path.
 >>
->> From: Haseeb Ashraf <haseeb.ashraf@siemens.com>
+>> If the fault IPA and guest_memfd attributes disagree then exit to
+>> userspace with KVM_EXIT_MEMORY_FAULT so the VMM can perform the required
+>> conversion. If a shared IPA has no memslot, KVM follows the existing
+>> MMIO or abort-injection path. The latter can result in injecting a SEA
+>> to the guest.
 >>
->> KVM runs a nested guest with a VHE-only EL2 (HCR_EL2.E2H RES1) unless
->> KVM_ARM_VCPU_HAS_EL2_E2H0 is requested at KVM_ARM_VCPU_INIT time. With=
-
->> that feature FEAT_VHE is hidden: ID_AA64MMFR1_EL1.VH reads 0 and
->> HCR_EL2.E2H is RES0. Guest hypervisors which only support nVHE, such a=
-s
->> Xen, can only run in the latter mode.
+>> Realm faults may need to create RTTs, including when updating a
+>> mapping after a permission fault. Take the write side of mmu_lock
+>> and top up the MMU cache for these faults. Do not pre-fault Realm
+>> memory.
 >>
->> Do not add a dedicated machine or CPU option for it.  Derive the vCPU
->> init feature from the ID register field selected by the user instead:
->> SYSREG_ID_AA64MMFR1_EL1_VH=3D0 requests KVM_ARM_VCPU_HAS_EL2_E2H0.
+>> The lock helpers are in a header compiled by nVHE too. Make
+>> kvm_vm_hyp_is_distrusting() available there for the lock choice.
 >>
->> KVM does not let userspace write ID_AA64MMFR1_EL1.VH, so the generic
->> "writable fields only" rule would not create the property. Expose it
->> explicitly when the host supports KVM_CAP_ARM_EL2_E2H0. Apply this
->> init-driven property before creating the scratch vCPU and use it when
->> initializing real vCPUs. Setting VH=3D0 without virtualization=3Don is=
-
->> rejected.
+>> Co-developed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
 >>
->> KVM derives other ID register fields from the selected init mode. Re-r=
-ead
->> ID_AA64MMFR1_EL1 and ID_AA64MMFR4_EL1 after vCPU initialization so QEM=
-U's
->> cached CPU model and query-cpu-model-expansion agree with the values t=
-he
->> guest sees.
->>
->> Suggested-by: Marc Zyngier <maz@kernel.org>
->> Suggested-by: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
->> Signed-off-by: Haseeb Ashraf <haseeb.ashraf@siemens.com>
 >> ---
+>> Changes since v3:
+>> - Split Realm faults into dedicated guest_memfd and userspace
+>>    mapping paths, leaving the native fault paths unchanged.
+>> - Unmap earlier shared mappings if a later RMI map call fails.
+>> - Clarify that runtime RMI data mapping does not guarantee zeroed
+>>    contents.
 >>
->> v3:
->> - Apply init-driven properties before creating the scratch vCPU.
->> - Refresh MMFR1 and MMFR4 from KVM after vCPU initialization.
->> docs/system/arm/cpu-features.rst | 22 ++++++++++++
->> target/arm/arm-qmp-cmds.c        | 38 +++++++++++++++++++++
->> target/arm/cpu-idregs.h          | 31 +++++++++++++++++
->> target/arm/cpu64.c               | 51 ++++++++++++++++++++++------
->> target/arm/kvm-stub.c            |  5 +++
->> target/arm/kvm.c                 | 58 ++++++++++++++++++++++++++++++--=
-
->> target/arm/kvm_arm.h             |  8 +++++
->> 7 files changed, 199 insertions(+), 14 deletions(-)
+>> Changes since v2:
+>> - Route all guest_memfd faults through gmem_abort(). Bound each
+>>    protected RMI map call to its encoded range, create the required
+>>    RTT levels, and tighten retry and error handling.
 >>
->> diff --git a/docs/system/arm/cpu-features.rst b/docs/system/arm/cpu-fe=
-atures.rst
->> index 13454783cf..cde26c04b9 100644
->> --- a/docs/system/arm/cpu-features.rst
->> +++ b/docs/system/arm/cpu-features.rst
->> @@ -579,6 +579,28 @@ either not writable with the specific host kernel=
-, unknown to this QEMU
->> build, or intentionally not exposed because it overlaps a legacy compo=
-site
->> option.
+>> Changes since v1:
+>> - Use the write side of mmu_lock and top up the MMU cache for Realm
+>>    faults that may create RTTs. Skip unnecessary cache flushing,
+>>    disable Realm pre-faulting, and tighten memory-fault and mapping
+>>    retry handling.
+>> ---
+>>   arch/arm64/include/asm/kvm_emulate.h |  13 ++
+>>   arch/arm64/include/asm/kvm_host.h    |   4 +-
+>>   arch/arm64/include/asm/kvm_mmu.h     |   4 +-
+>>   arch/arm64/include/asm/kvm_rmi.h     |  12 ++
+>>   arch/arm64/kvm/mmu.c                 | 174 +++++++++++++++--
+>>   arch/arm64/kvm/rmi.c                 | 268 +++++++++++++++++++++++++++
+>>   6 files changed, 459 insertions(+), 16 deletions(-)
 >>
->> +Selecting an nVHE-only EL2
->> +--------------------------
->> +
->> +With ``-machine virt,virtualization=3Don``, KVM presents a VHE-only E=
-L2 to
->> +the guest (``HCR_EL2.E2H`` is RES1) by default.  A guest hypervisor w=
-hich
->> +only supports nVHE, such as a type-1 hypervisor like Xen, needs VHE t=
-o be
->> +hidden. This is done by setting ``ID_AA64MMFR1_EL1.VH`` to 0::
->> +
->> +  $ qemu-system-aarch64 -M virt,virtualization=3Don -accel kvm \
->> +        -cpu host,SYSREG_ID_AA64MMFR1_EL1_VH=3D0
->> +
->> +QEMU then requests ``KVM_ARM_VCPU_HAS_EL2_E2H0`` when initializing th=
-e
->> +vCPUs, so that ``HCR_EL2.E2H`` is RES0 for the guest. Leaving the
->> +property unset, or setting it to 1, keeps the default VHE-only EL2.
->> +Setting it to 0 requires ``virtualization=3Don``.
->> +
->> +KVM does not allow userspace to write ``ID_AA64MMFR1_EL1.VH`` directl=
-y, so
->> +this is an exception to the rule that only writable fields get a
->> +property: the ``SYSREG_ID_AA64MMFR1_EL1_VH`` property is exposed when=
- the
->> +host kernel supports ``KVM_CAP_ARM_EL2_E2H0``. Without this support t=
-he
->> +property does not exist.
->> +
->> A note on compatibility
->> -----------------------
->>
->> diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
->> index 9a0258a3d6..b8e6c212a8 100644
->> --- a/target/arm/arm-qmp-cmds.c
->> +++ b/target/arm/arm-qmp-cmds.c
->> @@ -98,6 +98,7 @@ qmp_query_arm_cpu_model_expansion(CpuModelExpansionT=
-ype type,
->>     Visitor *visitor =3D NULL;
->>     Error *err =3D NULL;
->>     bool scratch_created =3D false;
->> +    bool e2h0_requested =3D false;
->>     const char *name;
->>     int fdarray[3];
->>     int fd =3D -1;
->> @@ -173,6 +174,38 @@ qmp_query_arm_cpu_model_expansion(CpuModelExpansi=
-onType type,
->>             goto bail_out;
->>         }
->>
->> +        /*
->> +         * Init-driven SYSREG properties must be visible while the sc=
-ratch
->> +         * vCPU is initialized, not only when the remaining propertie=
-s are
->> +         * applied below.
->> +         */
->> +        for (const QDictEntry *entry =3D qdict_first(qdict_in);
->> +                 entry !=3D NULL; entry =3D qdict_next(qdict_in, entr=
-y)) {
->> +            const char *key =3D qdict_entry_key(entry);
->> +            QObject *val_obj =3D qdict_entry_value(entry);
->> +            Visitor *v;
->> +            uint64_t value;
->> +
->> +            if (!strcmp(key, "SYSREG_ID_AA64MMFR1_EL1_VH")) {
->> +                v =3D qobject_input_visitor_new(val_obj);
->> +                if (!visit_type_uint64(v, key, &value, errp)) {
->> +                    visit_free(v);
->> +                    goto bail_out;
->> +                }
->> +                visit_free(v);
->> +                e2h0_requested =3D value =3D=3D 0;
->> +            } else {
->> +                continue;
->> +            }
->> +
->> +            v =3D qobject_input_visitor_new(val_obj);
->> +            if (!object_property_set(obj, key, v, errp)) {
->> +                visit_free(v);
->> +                goto bail_out;
->> +            }
->> +            visit_free(v);
->> +        }
->> +
->>         /**
->>          * Test SYSREG option settings
->>          * In full mode, build a scratch vcpu that reflects composite =
-legacy
->> @@ -237,6 +270,11 @@ qmp_query_arm_cpu_model_expansion(CpuModelExpansi=
-onType type,
->>             visit_free(v);
->>         }
->>
->> +        if (scratch_created && e2h0_requested &&
->> +            kvm_arm_refresh_e2h0_idregs(ARM_CPU(obj), fd, errp)) {
->> +            goto bail_out;
->> +        }
->> +
->>         visit_check_struct(visitor, &err);
->>         if (err) {
->>             goto bail_out;
->> diff --git a/target/arm/cpu-idregs.h b/target/arm/cpu-idregs.h
->> index 465ec83c97..76d7b94858 100644
->> --- a/target/arm/cpu-idregs.h
->> +++ b/target/arm/cpu-idregs.h
->> @@ -73,4 +73,35 @@ int arm_cpu_apply_sysreg_props(ARMCPU *cpu, ARMSysr=
-egPropApplyFn accel_apply_fn,
->> bool arm_cpu_validate_sysreg_prop(ARMCPU *cpu, ARM64SysRegField *field=
-,
->>                                   uint64_t value, Error **errp);
->>
->> +/**
->> + * arm_cpu_sysreg_prop_get:
->> + *
->> + * Look up the value the user set through a SYSREG_<IDREG>_<FIELD>
->> + * property, before it is applied to the vcpu.  Accelerators use it t=
-o
->> + * derive vcpu init settings from the requested ID register values.
->> + *
->> + * @cpu: vcpu the property belongs to
->> + * @reg_idx: ID register index (<REG>_EL1_IDX)
->> + * @shift: lowest bit of the field
->> + * @value: set to the requested field value when the property was set=
-
->> + *
->> + * returns true if the property was set by the user
->> + */
->> +bool arm_cpu_sysreg_prop_get(ARMCPU *cpu, int reg_idx, int shift,
->> +                             uint64_t *value);
->> +
->> +/**
->> + * arm_cpu_sysreg_field_init_driven:
->> + *
->> + * Some fields cannot be written with the accelerator once the vcpu e=
-xists
->> + * but are selected through a vcpu init feature instead (for instance=
-
->> + * ID_AA64MMFR1_EL1.VH with KVM_ARM_VCPU_HAS_EL2_E2H0).  Their SYSREG=
-
->> + * property is exposed even if the field is not writable.
->> + *
->> + * @field: ID register field
->> + *
->> + * returns true if @field is selected at vcpu init time on this host
->> + */
->> +bool arm_cpu_sysreg_field_init_driven(ARM64SysRegField *field);
->> +
->> #endif
->> diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
->> index c08eba7010..1fc3a4bb7c 100644
->> --- a/target/arm/cpu64.c
->> +++ b/target/arm/cpu64.c
->> @@ -835,6 +835,21 @@ static ARM64SysRegField *arm_sysreg_get_field(ARM=
-64SysReg *reg, int bit)
->>     return NULL;
->> }
->>
->> +bool arm_cpu_sysreg_prop_get(ARMCPU *cpu, int reg_idx, int shift,
->> +                             uint64_t *value)
+>> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/
+>> include/asm/kvm_emulate.h
+>> index 32021bdf2610..8a71fddfdb85 100644
+>> --- a/arch/arm64/include/asm/kvm_emulate.h
+>> +++ b/arch/arm64/include/asm/kvm_emulate.h
+>> @@ -847,4 +847,17 @@ static inline bool kvm_realm_is_created(struct
+>> kvm *kvm)
+>>       return kvm_vm_is_realm(kvm) && kvm_realm_state(kvm) !=
+>> REALM_STATE_NONE;
+>>   }
+>>   +static inline gpa_t kvm_gpa_from_fault(struct kvm *kvm, phys_addr_t
+>> ipa)
 >> +{
->> +    gpointer value_ptr;
->> +    uint64_t key =3D IDREG_FIELD_KEY(reg_idx, shift);
+>> +    if (!kvm_vm_is_realm(kvm))
+>> +        return ipa;
 >> +
->> +    if (!g_hash_table_lookup_extended(cpu->sysreg_props,
->> +                                      GUINT_TO_POINTER(key), NULL,
->> +                                      &value_ptr)) {
->> +        return false;
->> +    }
->> +    *value =3D GPOINTER_TO_UINT(value_ptr);
->> +    return true;
+>> +    return ipa & ~BIT(kvm->arch.realm.ia_bits - 1);
 >> +}
 >> +
->> /**
->>  * arm_cpu_validate_sysreg_prop:
->>  *
->> @@ -879,6 +894,13 @@ bool arm_cpu_validate_sysreg_prop(ARMCPU *cpu, AR=
-M64SysRegField *field,
->>             error_setg(errp, "%s is non null whereas pmu is unset", pr=
-opname);
->>             return false;
->>         }
->> +    /* nVHE-only EL2, selected at vcpu init time */
->> +    } else if (!strcmp(propname, "SYSREG_ID_AA64MMFR1_EL1_VH")) {
->> +        if (value =3D=3D 0 && !cpu->has_el2) {
->> +            error_setg(errp, "%s=3D0 requires -machine virtualization=
-=3Don",
->> +                       propname);
->> +            return false;
->> +        }
->>     /* aarch64=3Doff */
->>     } else if (!arm_feature(&cpu->env, ARM_FEATURE_AARCH64)) {
->>         if ((!strcmp(propname, "SYSREG_ID_AA64PFR0_EL1_EL0") ||
->> @@ -988,17 +1010,9 @@ static void get_sysreg_prop(Object *obj, Visitor=
- *v,
->>     int index =3D field->index;
->>     int lower =3D field->shift;
->>     int length =3D field->length;
->> -    gpointer value_ptr;
->>     uint64_t value;
->> -    uint64_t key =3D IDREG_FIELD_KEY(index, lower);
->> -    gboolean exists;
+>> +static inline gfn_t kvm_gfn_from_fault(struct kvm *kvm, phys_addr_t ipa)
+>> +{
+>> +    return gpa_to_gfn(kvm_gpa_from_fault(kvm, ipa));
+>> +}
+>> +
+>>   #endif /* __ARM64_KVM_EMULATE_H__ */
+>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/
+>> asm/kvm_host.h
+>> index 55673d08e3eb..505c0c5b7dbb 100644
+>> --- a/arch/arm64/include/asm/kvm_host.h
+>> +++ b/arch/arm64/include/asm/kvm_host.h
+>> @@ -1601,12 +1601,12 @@ struct kvm *kvm_arch_alloc_vm(void);
+>>   #define kvm_vm_is_protected(kvm)    ((kvm)->arch.vm_flavor >=
+>> __VM_PROTECTED)
+>>   #define vcpu_is_protected(vcpu)        kvm_vm_is_protected((vcpu)->kvm)
+>>   -#define kvm_vm_hyp_is_distrusting(kvm)    ((kvm)->arch.vm_flavor >=
+>> __VM_DISTRUSTING_HYP)
 >> -
->> -    exists =3D g_hash_table_lookup_extended(cpu->sysreg_props,
->> -                                          GUINT_TO_POINTER(key), NULL=
-,
->> -                                          &value_ptr);
->> -    if (exists) {
->> -        value =3D GPOINTER_TO_UINT(value_ptr);
->> -    } else {
+>>   #endif    /* __KVM_NVHE_HYPERVISOR__ */
+>>     #define kvm_vm_is_realm(kvm)        ((kvm)->arch.vm_flavor ==
+>> VM_REALM)
+>>   +#define kvm_vm_hyp_is_distrusting(kvm)    ((kvm)->arch.vm_flavor >=
+>> __VM_DISTRUSTING_HYP)
 >> +
->> +    if (!arm_cpu_sysreg_prop_get(cpu, index, lower, &value)) {
->>         uint64_t mask =3D MAKE_64BIT_MASK(lower, length);
->>         uint64_t *idregs =3D cpu->isar.idregs;
->>
->> @@ -1028,6 +1042,20 @@ static const char * const aarch64_sysreg_prop_s=
-kip_list[] =3D {
->>     "SYSREG_ID_AA64ISAR2_EL1_GPA3",
->> };
->>
->> +/*
->> + * Fields which KVM does not let userspace write with KVM_SET_ONE_REG=
-,
->> + * but which QEMU can still select through a vcpu init feature, see
->> + * kvm_arm_vcpu_prepare_init_features().  ID_AA64MMFR1_EL1.VH is hidd=
-en
->> + * by KVM_ARM_VCPU_HAS_EL2_E2H0, which requests an nVHE-only EL2.
->> + */
->> +bool arm_cpu_sysreg_field_init_driven(ARM64SysRegField *field)
+>>   #define kvm_arch_has_private_mem(kvm) kvm_vm_is_realm(kvm)
+>>     #define kvm_has_mte(kvm)                    \
+>> diff --git a/arch/arm64/include/asm/kvm_mmu.h b/arch/arm64/include/
+>> asm/kvm_mmu.h
+>> index 32392abf2e21..a70f8bd4b2b9 100644
+>> --- a/arch/arm64/include/asm/kvm_mmu.h
+>> +++ b/arch/arm64/include/asm/kvm_mmu.h
+>> @@ -371,7 +371,7 @@ static inline bool kvm_is_nested_s2_mmu(struct kvm
+>> *kvm, struct kvm_s2_mmu *mmu)
+>>     static inline void kvm_fault_lock(struct kvm *kvm)
+>>   {
+>> -    if (is_protected_kvm_enabled())
+>> +    if (kvm_vm_hyp_is_distrusting(kvm))
+>>           write_lock(&kvm->mmu_lock);
+>>       else
+>>           read_lock(&kvm->mmu_lock);
+>> @@ -379,7 +379,7 @@ static inline void kvm_fault_lock(struct kvm *kvm)
+>>     static inline void kvm_fault_unlock(struct kvm *kvm)
+>>   {
+>> -    if (is_protected_kvm_enabled())
+>> +    if (kvm_vm_hyp_is_distrusting(kvm))
+>>           write_unlock(&kvm->mmu_lock);
+>>       else
+>>           read_unlock(&kvm->mmu_lock);
+>> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/
+>> asm/kvm_rmi.h
+>> index 8a136fb67318..697964b5b4e4 100644
+>> --- a/arch/arm64/include/asm/kvm_rmi.h
+>> +++ b/arch/arm64/include/asm/kvm_rmi.h
+>> @@ -6,6 +6,7 @@
+>>   #ifndef __ASM_KVM_RMI_H
+>>   #define __ASM_KVM_RMI_H
+>>   +#include <asm/kvm_pgtable.h>
+>>   #include <linux/arm-smccc-rmi.h>
+>>   #include <linux/kvm.h>
+>>   @@ -90,4 +91,15 @@ void kvm_realm_unmap_range_filter(struct kvm *kvm,
+>>                     bool may_block,
+>>                     enum kvm_gfn_range_filter attr_filter);
+>>   +int realm_map_ipa(struct kvm *kvm, phys_addr_t ipa,
+>> +          kvm_pfn_t pfn, unsigned long map_size,
+>> +          enum kvm_pgtable_prot prot,
+>> +          struct kvm_mmu_memory_cache *memcache);
+>> +
+>> +static inline bool kvm_realm_is_private_address(struct realm *realm,
+>> +                        unsigned long addr)
 >> +{
->> +    /* Compare the field first: this runs for every ID register field=
- */
->> +    return field->index =3D=3D ID_AA64MMFR1_EL1_IDX &&
->> +           field->shift =3D=3D R_ID_AA64MMFR1_VH_SHIFT &&
->> +           kvm_enabled() && kvm_arm_el2_e2h0_supported();
+>> +    return !(addr & BIT(realm->ia_bits - 1));
 >> +}
 >> +
->> static bool aarch64_sysreg_prop_skipped(const char *prop_name)
->> {
->>     for (int i =3D 0; i < ARRAY_SIZE(aarch64_sysreg_prop_skip_list); i=
-++) {
->> @@ -1084,7 +1112,8 @@ aarch64_add_one_idreg_properties(Object *obj, AR=
-M64SysReg *reg,
->>         }
->>         map =3D map & ~field_mask;
->>
->> -        if (writable_only && !field_writable_mask) {
->> +        if (writable_only && !field_writable_mask &&
->> +            !arm_cpu_sysreg_field_init_driven(field)) {
->>             continue;
->>         }
->>
->> diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
->> index 88e35909c4..75e82887d6 100644
->> --- a/target/arm/kvm-stub.c
->> +++ b/target/arm/kvm-stub.c
->> @@ -47,6 +47,11 @@ bool kvm_arm_el2_e2h0_supported(void)
->>     return false;
->> }
->>
->> +int kvm_arm_refresh_e2h0_idregs(ARMCPU *cpu, int fd, Error **errp)
->> +{
->> +    return 0;
->> +}
+>>   #endif /* __ASM_KVM_RMI_H */
+>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>> index 9af5fe6d87f0..870dc7e2699b 100644
+>> --- a/arch/arm64/kvm/mmu.c
+>> +++ b/arch/arm64/kvm/mmu.c
+>> @@ -450,6 +450,10 @@ static void stage2_flush_vm(struct kvm *kvm)
+>>       struct kvm_memory_slot *memslot;
+>>       int idx, bkt;
+>>   +    /* The RMM requires FWB, so Realm stage-2 mappings need no
+>> cache flush. */
+>> +    if (kvm_vm_is_realm(kvm))
+>> +        return;
 >> +
->> /*
->>  * These functions should never actually be called without KVM support=
-=2E
->>  */
->> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
->> index 8ef5597c68..2a72f52c44 100644
->> --- a/target/arm/kvm.c
->> +++ b/target/arm/kvm.c
->> @@ -1324,9 +1324,15 @@ bool kvm_idreg_write_scratch_vcpu(ARMCPU *cpu, =
-int cpufd,
->>         return false;
->>     }
->>
->> -    ret =3D kvm_arm_override_idreg_field(cpufd, field, newfv, errp);
->> -    if (ret) {
->> -        return false;
->> +    /*
->> +     * Init-driven fields (e.g. VH) are selected through a vcpu init
->> +     * feature, which the scratch vcpu may not have: do not write the=
-m.
->> +     */
->> +    if (!arm_cpu_sysreg_field_init_driven(field)) {
->> +        ret =3D kvm_arm_override_idreg_field(cpufd, field, newfv, err=
-p);
->> +        if (ret) {
->> +            return false;
->> +        }
->>     }
->>
->>     cpu->isar.idregs[field->index] =3D
->> @@ -2183,6 +2189,30 @@ bool kvm_arm_el2_e2h0_supported(void)
->>     return kvm_check_extension(kvm_state, KVM_CAP_ARM_EL2_E2H0);
->> }
->>
->> +int kvm_arm_refresh_e2h0_idregs(ARMCPU *cpu, int fd, Error **errp)
->> +{
->> +    static const ARMIDRegisterIdx indices[] =3D {
->> +        ID_AA64MMFR1_EL1_IDX,
->> +        ID_AA64MMFR4_EL1_IDX,
->> +    };
+>>       idx = srcu_read_lock(&kvm->srcu);
+>>       write_lock(&kvm->mmu_lock);
+>>   @@ -1225,6 +1229,10 @@ void stage2_unmap_vm(struct kvm *kvm)
+>>       struct kvm_memory_slot *memslot;
+>>       int idx, bkt;
+>>   +    /* For realms this is handled by the RMM so nothing to do here */
+>> +    if (kvm_vm_is_realm(kvm))
+>> +        return;
 >> +
->> +    for (int i =3D 0; i < ARRAY_SIZE(indices); i++) {
->> +        ARMIDRegisterIdx index =3D indices[i];
->> +        int ret;
->> +
->> +        ret =3D read_sys_reg64(fd, &cpu->isar.idregs[index],
->> +                             idregs_sysreg_to_kvm_reg(
->> +                                 id_register_sysreg[index]));
->> +        if (ret) {
->> +            error_setg(errp, "failed to refresh %s after vCPU init",
->> +                       arm64_id_regs[index].name);
->> +            return ret;
->> +        }
->> +    }
->> +
->> +    return 0;
->> +}
->> +
->> bool kvm_arm_mte_supported(void)
->> {
->>     return kvm_check_extension(kvm_state, KVM_CAP_ARM_MTE);
->> @@ -2239,7 +2269,19 @@ static void kvm_arm_vcpu_prepare_init_features(=
-ARMCPU *cpu)
->>                                       1 << KVM_ARM_VCPU_PTRAUTH_GENERI=
-C);
->>     }
->>     if (cpu->has_el2 && kvm_arm_el2_supported()) {
->> +        uint64_t vh;
->> +
->>         cpu->kvm_init_features[0] |=3D 1 << KVM_ARM_VCPU_HAS_EL2;
->> +        /*
->> +         * KVM exposes a VHE-only EL2 by default.  An nVHE-only EL2 c=
-an
->> +         * only be selected at vcpu init time, so derive it from the
->> +         * requested ID_AA64MMFR1_EL1.VH value.
->> +         */
->> +        if (arm_cpu_sysreg_prop_get(cpu, ID_AA64MMFR1_EL1_IDX,
->> +                                    R_ID_AA64MMFR1_VH_SHIFT, &vh) &&
->> +            vh =3D=3D 0) {
->> +            cpu->kvm_init_features[0] |=3D 1 << KVM_ARM_VCPU_HAS_EL2_=
-E2H0;
->> +        }
->>     }
->> }
->>
->> @@ -2286,6 +2328,16 @@ int kvm_arch_init_vcpu(CPUState *cs, Error **er=
-rp)
->>         return ret;
->>     }
->>
->> +    uint64_t vh;
->> +    if (arm_cpu_sysreg_prop_get(cpu, ID_AA64MMFR1_EL1_IDX,
->> +                                R_ID_AA64MMFR1_VH_SHIFT, &vh) &&
->> +        vh =3D=3D 0) {
->> +        ret =3D kvm_arm_refresh_e2h0_idregs(cpu, CPU(cpu)->kvm_fd, er=
-rp);
->> +        if (ret) {
->> +            return ret;
->> +        }
->> +    }
->> +
->=20
-> There should not be a need to explicitly refreshing this specific regis=
-ters.
->=20
-> I think this should be handled by Eric=E2=80=99s series by refreshing a=
-ll the ID=20
-> registers after write-back.
->=20
-> Eric, what is your view on this?
+>>       idx = srcu_read_lock(&kvm->srcu);
+>>       mmap_read_lock(current->mm);
+>>       write_lock(&kvm->mmu_lock);
+> 
+> 
+>> @@ -1800,6 +1808,8 @@ static int gmem_abort(const struct
+>> kvm_s2_fault_desc *s2fd,
+>>           ret = topup_mmu_memcache(s2fd->mmu, memcache);
+>>           if (ret)
+>>               return ret;
+>> +    }
+>> +    if (!perm_fault) {
+> 
+> Spurious change ?
 
-yes effectivity the value read for isar.idregs[] corresponding to not exp=
-licitly set SYSREG props might be the one read from the "max" scratch vcp=
-u and not the final one.
-So I think we need to fix that
+Yes - sorry about that.
 
-Thanks
+>>           if (kvm_is_nested_s2_mmu(kvm, pgt->mmu)) {
+>>               mapping = kmalloc_obj(struct kvm_guest_s2_mapping,
+>> GFP_KERNEL_ACCOUNT);
+>>               if (!mapping)
+>> @@ -1808,7 +1818,7 @@ static int gmem_abort(const struct
+>> kvm_s2_fault_desc *s2fd,
+>>       }
+>>         s2vi.vma_pagesize = PAGE_SIZE;
+>> -    s2vi.gfn = ALIGN_DOWN(s2fd->fault_ipa, s2vi.vma_pagesize) >>
+>> PAGE_SHIFT;
+>> +    s2vi.gfn = gpa_to_gfn(s2fd->fault_ipa);
+> 
+> These looks unrelated and could be dropped from this patch
 
-Eric> >=20
-> Thanks,
-> Khushit
->>     if (cpu_isar_feature(aa64_sve, cpu)) {
->>         ret =3D kvm_arm_sve_set_vls(cpu);
->>         if (ret) {
->> diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
->> index 0916a5fdb4..670b410a1a 100644
->> --- a/target/arm/kvm_arm.h
->> +++ b/target/arm/kvm_arm.h
->> @@ -208,6 +208,8 @@ bool kvm_arm_el2_supported(void);
->>  * KVM_ARM_VCPU_HAS_EL2_E2H0, and false otherwise.
->>  */
->> bool kvm_arm_el2_e2h0_supported(void);
->> +
->> +int kvm_arm_refresh_e2h0_idregs(ARMCPU *cpu, int fd, Error **errp);
->> #else
->>
->> static inline bool kvm_arm_aarch32_supported(void)
->> @@ -229,6 +231,12 @@ static inline bool kvm_arm_el2_e2h0_supported(voi=
-d)
->> {
->>     return false;
->> }
->> +
->> +static inline int kvm_arm_refresh_e2h0_idregs(ARMCPU *cpu, int fd,
->> +                                              Error **errp)
+Yep, looks like I screwed up the rebase when moving to a separate
+realm_gmem_abort().
+
+>>       canonical_gfn = get_canonical_gfn(s2fd, &s2vi);
+>>         write_fault = kvm_s2_fault_is_write(s2fd);
+>> @@ -1890,6 +1900,66 @@ static int gmem_abort(const struct
+>> kvm_s2_fault_desc *s2fd,
+>>       return ret;
+>>   }
+>>   +static int realm_gmem_abort(const struct kvm_s2_fault_desc *s2fd)
 >> +{
->> +    return 0;
+>> +    struct kvm *kvm = s2fd->vcpu->kvm;
+>> +    bool write_fault = kvm_s2_fault_is_write(s2fd);
+>> +    bool exec_fault = kvm_s2_fault_is_exec(s2fd);
+>> +    bool is_private;
+>> +    enum kvm_pgtable_prot prot = KVM_PGTABLE_PROT_R;
+>> +    kvm_pfn_t pfn;
+>> +    gfn_t gfn;
+>> +    u64 mmu_seq;
+>> +    void *memcache;
+>> +    int ret;
+>> +
+>> +    memcache = get_mmu_memcache(s2fd->vcpu);
+>> +    ret = topup_mmu_memcache(s2fd->mmu, memcache);
+>> +    if (ret)
+>> +        return ret;
+>> +
+>> +    gfn = kvm_gfn_from_fault(kvm, s2fd->fault_ipa);
+>> +    is_private = kvm_realm_is_private_address(&kvm->arch.realm,
+>> +                          s2fd->fault_ipa);
+>> +    VM_WARN_ON_ONCE(write_fault && exec_fault);
+> 
+> Should we additionally do
+> 
+>     VM_WARN_ON_ONCE(is_private && kvm_s2_fault_is_perm(s2fd)) ?
+> 
+> We don't expect permission faults on private address coming to KVM.
+
+Ack.
+
+>> +
+>> +    mmu_seq = kvm->mmu_invalidate_seq;
+>> +    /* Pairs with the smp_wmb() in kvm_mmu_invalidate_end(). */
+>> +    smp_rmb();
+>> +
+>> +    if (is_private != kvm_gmem_is_private_gfn(kvm, gfn)) {
+>> +        kvm_prepare_memory_fault_exit(s2fd->vcpu, gfn_to_gpa(gfn),
+>> +                          PAGE_SIZE, write_fault, exec_fault,
+>> +                          is_private);
+>> +        return -EFAULT;
+>> +    }
+>> +
+>> +    ret = kvm_gmem_get_pfn(kvm, s2fd->memslot, gfn, &pfn, NULL);
+>> +    if (ret) {
+>> +        kvm_prepare_memory_fault_exit(s2fd->vcpu, gfn_to_gpa(gfn),
+>> +                          PAGE_SIZE, write_fault, exec_fault,
+>> +                          is_private);
+>> +        return ret;
+>> +    }
+>> +
+>>
+> 
+>> +    if (!(s2fd->memslot->flags & KVM_MEM_READONLY))
+>> +        prot |= KVM_PGTABLE_PROT_W;
+> 
+> We don't support READONLY memslots for Realms (and are rejected at
+> prepare/validate slot) , so we can drop this hunk ?
+
+Good point.
+
+>> +
+>> +    kvm_fault_lock(kvm);
+>> +    if (mmu_invalidate_retry(kvm, mmu_seq)) {
+>> +        ret = -EAGAIN;
+>> +    } else {
+>> +        ret = realm_map_ipa(kvm, s2fd->fault_ipa, pfn, PAGE_SIZE,
+>> +                    prot, memcache);
+>> +    }
+>> +    kvm_fault_unlock(kvm);
+>> +
+>> +    if ((prot & KVM_PGTABLE_PROT_W) && !ret)
+>> +        mark_page_dirty_in_slot(kvm, s2fd->memslot, gfn);
+> 
+> Again, for Realms, we don't support DIRTY logging, so we can drop this.
+
+Ack.
+
+>> +
+>> +    return ret == -EAGAIN ? 0 : ret;
 >> +}
->> #endif
->>
->> /**
->> --=20
->> 2.34.1
->>
->=20
+>> +
+>>   static int protected_pkvm_mem_abort(const struct kvm_s2_fault_desc
+>> *s2fd)
+>>   {
+>>       unsigned int flags = FOLL_HWPOISON | FOLL_LONGTERM | FOLL_WRITE;
+>> @@ -2050,7 +2120,8 @@ static int kvm_s2_fault_get_vma_info(const
+>> struct kvm_s2_fault_desc *s2fd,
+>>        * mapping size to ensure we find the right PFN and lay down the
+>>        * mapping in the right place.
+>>        */
+>> -    s2vi->gfn = ALIGN_DOWN(s2fd->fault_ipa, s2vi->vma_pagesize) >>
+>> PAGE_SHIFT;
+>> +    s2vi->gfn = kvm_gfn_from_fault(kvm, ALIGN_DOWN(s2fd->fault_ipa,
+>> +                               s2vi->vma_pagesize));
+>>         s2vi->mte_allowed = kvm_vma_mte_allowed(vma);
+>>   @@ -2297,8 +2368,67 @@ static int kvm_s2_fault_map(const struct
+>> kvm_s2_fault_desc *s2fd,
+>>       return ret;
+>>   }
+>>   +static int realm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
+>> +                  const struct kvm_s2_fault_vma_info *s2vi,
+>> +                  enum kvm_pgtable_prot prot,
+>> +                  void *memcache,
+>> +                  struct kvm_s2_fault_result *result)
+>> +{
+>> +    struct kvm *kvm = s2fd->vcpu->kvm;
+>> +    bool writable = prot & KVM_PGTABLE_PROT_W;
+>> +    phys_addr_t canonical_ipa = gfn_to_gpa(s2vi->gfn);
+>> +    long mapping_size = s2vi->vma_pagesize;
+>> +    kvm_pfn_t pfn = s2vi->pfn;
+>> +    gfn_t gfn = s2vi->gfn;
+>> +    int ret = -EAGAIN;
+>> +
+>> +    kvm_fault_lock(kvm);
+>> +    if (mmu_invalidate_retry(kvm, s2vi->mmu_seq))
+>> +        goto out_unlock;
+>> +
+>> +    if (mapping_size == PAGE_SIZE && s2vi->max_map_size != PAGE_SIZE) {
+>> +        mapping_size = transparent_hugepage_adjust(s2fd, &pfn, &gfn);
+>> +        if (mapping_size < 0) {
+>> +            ret = mapping_size;
+>> +            goto out_unlock;
+>> +        }
+>> +        canonical_ipa = ALIGN_DOWN(canonical_ipa, mapping_size);
+>> +    }
+>> +
+>> +    if (!kvm_s2_fault_is_perm(s2fd) && !s2vi->map_non_cacheable &&
+>> +        kvm_has_mte(kvm))
+>> +        sanitise_mte_tags(kvm, pfn, mapping_size);
+> 
+> We don't support MTE for Realms, so this can be dropped too ?
+
+Ack.
+
+>> +
+>> +    ret = realm_map_ipa(kvm, s2fd->fault_ipa, pfn, mapping_size,
+>> +                prot, memcache);
+>> +
+>> +out_unlock:
+>> +    kvm_release_faultin_page(kvm, s2vi->page, !!ret, writable);
+>> +    kvm_fault_unlock(kvm);
+>> +
+>> +    if (writable && !ret)
+>> +        mark_page_dirty_in_slot(kvm, s2fd->memslot,
+>> +                    gpa_to_gfn(canonical_ipa));
+> 
+> Same as above, no dirty logging for Realms
+
+Ack.
+
+>> +
+>> +    if (ret == -EAGAIN)
+>> +        return result ? ret : 0;
+>> +
+>> +    if (result && !ret)
+>> +        result->mapping_size = mapping_size;
+>> +
+>> +    return ret;
+>> +}
+>> +
+>> +typedef int (*kvm_s2_fault_map_fn)(const struct kvm_s2_fault_desc *s2fd,
+>> +                   const struct kvm_s2_fault_vma_info *s2vi,
+>> +                   enum kvm_pgtable_prot prot,
+>> +                   void *memcache,
+>> +                   struct kvm_s2_fault_result *result);
+>> +
+>>   static int user_mem_abort(const struct kvm_s2_fault_desc *s2fd,
+>> -              struct kvm_s2_fault_result *result)
+>> +              struct kvm_s2_fault_result *result,
+>> +              kvm_s2_fault_map_fn fault_map,
+>> +              bool topup_on_perm_fault)
+> 
+> Do we need the flag ? We could have this deduced in the function locally
+> ? I prefer to have that as we have all the required parameters to decide
+> the option.
+
+Good point, I think we can get rid of that.
+
+> More on that below.
+> 
+>>   {
+>>       bool perm_fault = kvm_s2_fault_is_perm(s2fd);
+>>       struct kvm_s2_fault_vma_info s2vi = {};
+>> @@ -2309,15 +2439,16 @@ static int user_mem_abort(const struct
+>> kvm_s2_fault_desc *s2fd,
+>>       /*
+>>        * Permission faults just need to update the existing leaf entry,
+>>        * and so normally don't require allocations from the memcache. The
+>> -     * only exception to this is when dirty logging is enabled at
+>> runtime
+>> +     * exceptions are when dirty logging is enabled at runtime
+>>        * and a fault needs to collapse a block entry into a table.
+>> +     * Realms can also require new RTT levels when replacing a mapping.
+>>        * Under pKVM a permission fault can also collapse pages into a
+>> block,
+>>        * which needs a fresh mapping object, and the hypervisor
+>> requires the
+>>        * min-pages memcache even when the install allocates nothing.
+>>        */
+>>       memcache = get_mmu_memcache(s2fd->vcpu);
+>>       if (!perm_fault || memslot_is_logging(s2fd->memslot) ||
+>> -        is_protected_kvm_enabled()) {
+>> +        is_protected_kvm_enabled() || topup_on_perm_fault) {
+> 
+> See below for this. It would be good to keep the topup_on_perm_fault
+> next to !perm_fault to make more sense.
+
+If we're dropping the flag then this can be replaced with
+kvm_vm_hyp_is_distrusting().
+
+>>           ret = topup_mmu_memcache(s2fd->mmu, memcache);
+>>           if (ret)
+>>               return ret;
+>> @@ -2340,7 +2471,7 @@ static int user_mem_abort(const struct
+>> kvm_s2_fault_desc *s2fd,
+>>           return ret;
+>>       }
+>>   -    return kvm_s2_fault_map(s2fd, &s2vi, prot, memcache, result);
+>> +    return fault_map(s2fd, &s2vi, prot, memcache, result);
+>>   }
+>>     static int kvm_vm_mem_abort(const struct kvm_s2_fault_desc *s2fd)
+>> @@ -2352,7 +2483,25 @@ static int kvm_vm_mem_abort(const struct
+>> kvm_s2_fault_desc *s2fd)
+>>       if (kvm_slot_has_gmem(s2fd->memslot))
+>>           return gmem_abort(s2fd, NULL);
+>>       else
+>> -        return user_mem_abort(s2fd, NULL);
+>> +        return user_mem_abort(s2fd, NULL, kvm_s2_fault_map, false);
+> 
+> If we are keeping the flag, should we do something like ?
+> 
+>  return user_mem_abort(s2fd, NULL, kvm_s2_fault_map,
+> is_protected_kvm_enabled());
+> 
+> 
+>> +}
+>> +
+>> +static int __maybe_unused realm_mem_abort(const struct
+>> kvm_s2_fault_desc *s2fd)
+>> +{
+>> +    struct kvm *kvm = s2fd->vcpu->kvm;
+>> +
+>> +    VM_WARN_ON_ONCE(kvm_s2_fault_is_perm(s2fd) &&
+>> +            !esr_abt_is_write_fault(s2fd->esr) &&
+>> +            !kvm_s2_fault_is_exec(s2fd));
+>> +
+>> +    if (kvm_realm_is_private_address(&kvm->arch.realm, s2fd-
+>> >fault_ipa) &&
+>> +        !kvm_slot_has_gmem(s2fd->memslot))
+>> +        return -EINVAL;
+>> +
+>> +    if (kvm_slot_has_gmem(s2fd->memslot))
+>> +        return realm_gmem_abort(s2fd);
+>> +    else
+>> +        return user_mem_abort(s2fd, NULL, realm_s2_fault_map, true);
+>>   }
+>>     /* Resolve the access fault by making the page young again. */
+>> @@ -2461,10 +2610,10 @@ int kvm_handle_guest_sea(struct kvm_vcpu *vcpu)
+>>    */
+>>   int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+>>   {
+>> +    struct kvm *kvm = vcpu->kvm;
+>>       struct kvm_s2_trans nested_trans, *nested = NULL;
+>>       unsigned long esr = kvm_vcpu_get_esr(vcpu);
+>>       struct kvm_s2_mmu *mmu = vcpu->arch.hw_mmu;
+>> -    struct kvm *kvm = vcpu->kvm;
+>>       phys_addr_t fault_ipa; /* The address we faulted on */
+>>       phys_addr_t ipa; /* Always the IPA in the L1 guest phys space */
+>>       struct kvm_memory_slot *memslot;
+>> @@ -2557,8 +2706,9 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+>>           nested = &nested_trans;
+>>       }
+>>   -    gfn = ipa >> PAGE_SHIFT;
+>> +    gfn = kvm_gfn_from_fault(kvm, ipa);
+>>       memslot = gfn_to_memslot(kvm, gfn);
+>> +
+>>       hva = gfn_to_hva_memslot_prot(memslot, gfn, &writable);
+>>       write_fault = esr_abt_is_write_fault(esr);
+>>       if (kvm_is_error_hva(hva) || (write_fault && !writable)) {
+>> @@ -2601,7 +2751,7 @@ int kvm_handle_guest_abort(struct kvm_vcpu *vcpu)
+>>            * of the page size.
+>>            */
+>>           ipa |= FAR_TO_FIPA_OFFSET(kvm_vcpu_get_hfar(vcpu));
+>> -        ret = io_mem_abort(vcpu, ipa);
+>> +        ret = io_mem_abort(vcpu, kvm_gpa_from_fault(kvm, ipa));
+>>           goto out_unlock;
+>>       }
+>>   @@ -3124,7 +3274,7 @@ static long __pre_fault_s2(struct kvm_s2_mmu
+>> *mmu, struct kvm_vcpu *vcpu,
+>>       if (is_gmem)
+>>           ret = gmem_abort(&s2fd, &result);
+>>       else
+>> -        ret = user_mem_abort(&s2fd, &result);
+>> +        ret = user_mem_abort(&s2fd, &result, kvm_s2_fault_map, false);
+>>       if (IS_ERR_VALUE(ret))
+>>           return ret;
+>>       return result.mapping_size;
+>> @@ -3160,7 +3310,7 @@ pre_fault_bytes_consumed(gpa_t gpa, unsigned
+>> long granule_size,
+>>     int kvm_arch_pre_fault_allowed(struct kvm_vcpu *vcpu)
+>>   {
+>> -    if (is_protected_kvm_enabled())
+>> +    if (is_protected_kvm_enabled() || kvm_vm_is_realm(vcpu->kvm))
+> 
+> minor nit: kvm_vm_hyp_is_distrusting() ?
+
+Indeed.
+
+>>           return -EOPNOTSUPP;
+>>       if (!kvm_vcpu_initialized(vcpu))
+>>           return -ENOEXEC;
+>> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+>> index b34f5320b50b..ab606a2dc2f5 100644
+>> --- a/arch/arm64/kvm/rmi.c
+>> +++ b/arch/arm64/kvm/rmi.c
+>> @@ -593,6 +593,274 @@ void kvm_realm_unmap_range_filter(struct kvm
+>> *kvm, unsigned long start,
+>>       }
+>>   }
+>>   +static unsigned long addr_range_desc(struct realm *realm,
+>> +                     unsigned long ipa, unsigned long phys,
+>> +                     unsigned long size, unsigned long state)
+>> +{
+>> +    unsigned long count = 1;
+>> +    unsigned long out;
+>> +    int rmi_size;
+>> +
+>> +    for (rmi_size = KVM_PGTABLE_LAST_LEVEL - realm->start_level;
+>> +         rmi_size >= 0; rmi_size--) {
+>> +        unsigned long entry_size =
+>> rmi_addr_block_size_to_bytes(rmi_size);
+>> +
+>> +        if (size >= entry_size && IS_ALIGNED(ipa, entry_size) &&
+>> +            IS_ALIGNED(phys, entry_size))
+>> +            break;
+>> +    }
+>> +
+>> +    if (rmi_size == 0) {
+>> +        /*
+>> +         * Stop at the next block boundary so that a later iteration can
+>> +         * use a larger mapping when both addresses are aligned.
+>> +         */
+>> +        count = MIN(size >> PAGE_SHIFT, PTRS_PER_PTE - 1);
+>> +        count = min(count, (PMD_SIZE - (ipa & (PMD_SIZE - 1))) >>
+>> PAGE_SHIFT);
+>> +        count = min(count, (PMD_SIZE - (phys & (PMD_SIZE - 1))) >>
+>> PAGE_SHIFT);
+>> +    }
+>> +
+>> +    WARN_ON(phys & ~PAGE_MASK);
+>> +
+>> +    out = FIELD_PREP(RMI_ADDR_RANGE_BLOCK_SIZE_MASK, rmi_size) |
+>> +          FIELD_PREP(RMI_ADDR_RANGE_COUNT_MASK, count) |
+>> +          FIELD_PREP(RMI_ADDR_RANGE_STATE_MASK, state);
+>> +    out |= phys & PAGE_MASK;
+>> +
+>> +    return out;
+>> +}
+>> +
+>> +static int realm_map_protected(struct kvm *kvm,
+>> +                   unsigned long ipa,
+>> +                   kvm_pfn_t pfn,
+>> +                   unsigned long map_size,
+>> +                   struct kvm_mmu_memory_cache *memcache)
+>> +{
+>> +    struct realm *realm = &kvm->arch.realm;
+>> +    phys_addr_t phys = __pfn_to_phys(pfn);
+>> +    phys_addr_t base_phys = phys;
+>> +    phys_addr_t rd = realm->rd_phys;
+>> +    phys_addr_t delegated_phys;
+>> +    unsigned long base_ipa = ipa;
+>> +    unsigned long ipa_top;
+>> +    unsigned int retries = 0;
+>> +    long ret = 0;
+>> +
+>> +    if (WARN_ON(!IS_ALIGNED(map_size, PAGE_SIZE) ||
+>> +            !IS_ALIGNED(ipa, map_size)))
+>> +        return -EINVAL;
+>> +
+>> +    if (rmi_delegate_range(phys, map_size, &delegated_phys)) {
+>> +        if (delegated_phys == phys) {
+>> +            /*
+>> +             * It's likely we raced with another VCPU on the same
+>> +             * fault. Assume the other VCPU has handled the fault
+>> +             * and return to the guest.
+>> +             */
+>> +            return 0;
+>> +        }
+>> +        /* Partial delegation - map as much as we can */
+>> +        map_size = delegated_phys - phys;
+>> +    }
+>> +
+>> +    ipa_top = ipa + map_size;
+>> +
+>> +    while (ipa < ipa_top) {
+>> +        unsigned long flags = RMI_ADDR_TYPE_SINGLE;
+>> +        unsigned long range_desc = addr_range_desc(realm, ipa, phys,
+>> +                               ipa_top - ipa,
+>> +                               RMI_OP_MEM_DELEGATED);
+>> +        unsigned long call_top = ipa +
+>> RMI_ADDR_RANGE_COUNT(range_desc) *
+>> +           
+>> rmi_addr_block_size_to_bytes(RMI_ADDR_RANGE_BLOCK_SIZE(range_desc));
+>> +        unsigned long out_top;
+>> +
+>> +        ret = rmi_rtt_data_map(rd, ipa, call_top, flags, range_desc,
+>> +                       &out_top);
+>> +        if (ret < 0)
+>> +            goto err_undelegate;
+> 
+> Should we really err_undelegate here ? This could effectively kill the
+> Realm as unmapping the partial range would leave the IPA in
+> RIPAS_DESTROYED and there is no coming back. I would say, just return
+> where we completed and come back again if needed.
+
+The undelegate is correct, the unmap below is the issue.
+
+>> +
+>> +        if (RMI_RESULT_STATUS(ret) == RMI_ERROR_RTT) {
+>> +            /* Create missing RTTs and retry */
+>> +            int level = RMI_RESULT_DATA_LEVEL(ret);
+>> +            int req_level = KVM_PGTABLE_LAST_LEVEL -
+>> +                RMI_ADDR_RANGE_BLOCK_SIZE(range_desc);
+>> +
+>> +            if (++retries > KVM_PGTABLE_LAST_LEVEL + 2 ||
+>> +                level < realm->start_level || level >= req_level) {
+>> +                ret = -ENXIO;
+>> +                goto err_undelegate;
+>> +            }
+>> +            ret = realm_create_rtt_levels(realm, ipa, level,
+>> +                              req_level,
+>> +                              memcache);
+>> +            if (ret)
+>> +                goto err_undelegate;
+>> +
+>> +            continue;
+>> +        }
+>> +
+>> +        if (ret) {
+>> +            ret = RMI_RESULT_STATUS(ret) == RMI_BLOCKED ? -EAGAIN : -
+>> ENXIO;
+>> +            goto err_undelegate;
+>> +        }
+>> +
+>> +        /* An IRQ can stop the RMM before it maps the first entry. */
+>> +        if (out_top == ipa) {
+>> +            ret = -EAGAIN;
+>> +            goto err_undelegate;
+>> +        }
+>> +        if (WARN_ON_ONCE(out_top < ipa || out_top > call_top)) {
+>> +            ret = -ENXIO;
+>> +            goto err_undelegate;
+>> +        }
+>> +
+>> +        phys += out_top - ipa;
+>> +        ipa = out_top;
+>> +        retries = 0;
+>> +    }
+>> +
+>> +    return 0;
+>> +
+>> +err_undelegate:
+>> +    realm_unmap_private_range(kvm, base_ipa, ipa, false, memcache);
+> 
+> See above
+
+Yes I agree there's not much point trying to roll back - obviously the
+below undelegate also needs fixing up to only undelegate the failed part.
+
+>> +    /* A range which cannot be undelegated remains owned by the RMM. */
+>> +    WARN_ON(rmi_undelegate_range(base_phys, map_size));
+>> +    return ret < 0 ? ret : -ENXIO;
+>> +}
+>> +
+>> +static int realm_map_unprotected(struct kvm *kvm,
+>> +                 unsigned long ipa,
+>> +                 kvm_pfn_t pfn,
+>> +                 unsigned long size,
+>> +                 enum kvm_pgtable_prot prot,
+>> +                 struct kvm_mmu_memory_cache *memcache)
+>> +{
+>> +    struct realm *realm = &kvm->arch.realm;
+>> +    unsigned long attr, flags = 0;
+>> +    phys_addr_t rd = realm->rd_phys;
+>> +    phys_addr_t phys = __pfn_to_phys(pfn);
+>> +    unsigned long base_ipa = ipa;
+>> +    unsigned long ipa_top = ipa + size;
+>> +    unsigned int retries = 0;
+>> +    long ret;
+>> +
+>> +    if (WARN_ON(!IS_ALIGNED(size, PAGE_SIZE)))
+>> +        return -EINVAL;
+>> +
+>> +    switch (prot & (KVM_PGTABLE_PROT_DEVICE |
+>> KVM_PGTABLE_PROT_NORMAL_NC)) {
+>> +    case KVM_PGTABLE_PROT_DEVICE | KVM_PGTABLE_PROT_NORMAL_NC:
+>> +        return -EINVAL;
+>> +    case KVM_PGTABLE_PROT_DEVICE:
+>> +        attr = MT_S2_FWB_DEVICE_nGnRE;
+>> +        break;
+>> +    case KVM_PGTABLE_PROT_NORMAL_NC:
+>> +        attr = MT_S2_FWB_NORMAL_NC;
+>> +        break;
+>> +    default:
+>> +        attr = MT_S2_FWB_NORMAL;
+>> +    }
+>> +
+>> +    flags |= FIELD_PREP(RMI_RTT_UNPROT_MAP_FLAGS_MEMATTR_MASK, attr);
+>> +
+>> +    /*
+>> +     * An instruction fetch from an unprotected IPA takes a Synchronous
+>> +     * External Abort in the Realm. KVM never handles an execute
+>> permission
+>> +     * fault for an unprotected mapping.
+>> +     */
+>> +    if (prot & KVM_PGTABLE_PROT_R)
+>> +        flags |= FIELD_PREP(RMI_RTT_UNPROT_MAP_FLAGS_S2AP_MASK,
+>> RMI_S2AP_DIRECT_READ);
+>> +    if (prot & KVM_PGTABLE_PROT_W)
+>> +        flags |= FIELD_PREP(RMI_RTT_UNPROT_MAP_FLAGS_S2AP_MASK,
+>> RMI_S2AP_DIRECT_WRITE);
+>> +
+>> +    /* TODO: Batch mappings with RMI_ADDR_TYPE_LIST. */
+>> +    flags |= RMI_ADDR_TYPE_SINGLE;
+>> +
+>> +    while (ipa < ipa_top) {
+>> +        unsigned long range_desc = addr_range_desc(realm, ipa, phys,
+>> +                               ipa_top - ipa,
+>> +                               RMI_OP_MEM_UNDELEGATED);
+>> +        unsigned long call_top = ipa +
+>> RMI_ADDR_RANGE_COUNT(range_desc) *
+>> +           
+>> rmi_addr_block_size_to_bytes(RMI_ADDR_RANGE_BLOCK_SIZE(range_desc));
+>> +        unsigned long out_top;
+>> +
+>> +        ret = rmi_rtt_unprot_map(rd, ipa, call_top, flags, range_desc,
+>> +                     &out_top);
+>> +        if (ret < 0)
+>> +            goto err_unmap;
+>> +
+>> +        if (ret) {
+>> +            /* Create missing RTTs and retry */
+>> +            int level = RMI_RESULT_DATA_LEVEL(ret);
+>> +            int req_level = KVM_PGTABLE_LAST_LEVEL -
+>> +                RMI_ADDR_RANGE_BLOCK_SIZE(range_desc);
+>> +
+>> +            if (RMI_RESULT_STATUS(ret) != RMI_ERROR_RTT ||
+>> +                ++retries > KVM_PGTABLE_LAST_LEVEL + 2) {
+>> +                ret = -ENXIO;
+>> +                goto err_unmap;
+>> +            }
+>> +
+>> +            /* Replace an existing mapping to update its permissions. */
+>> +            if (level >= req_level) {
+>> +                realm_unmap_shared_range(kvm, ipa, ipa_top, false,
+>> +                             memcache);
+>> +                continue;
+>> +            }
+>> +
+>> +            ret = realm_create_rtt_levels(realm, ipa, level,
+>> +                              req_level,
+>> +                              memcache);
+>> +            if (ret)
+>> +                goto err_unmap;
+>> +
+>> +            continue;
+>> +        }
+>> +
+>> +        /* Retry the fault after releasing mmu_lock to service the
+>> IRQ. */
+>> +        if (out_top == ipa) {
+>> +            ret = -EAGAIN;
+>> +            goto err_unmap;
+>> +        }
+>> +        if (WARN_ON_ONCE(out_top < ipa || out_top > call_top)) {
+>> +            ret = -ENXIO;
+>> +            goto err_unmap;
+>> +        }
+>> +
+>> +        phys += out_top - ipa;
+>> +        ipa = out_top;
+>> +        retries = 0;
+>> +    }
+>> +
+>> +    return 0;
+>> +
+>> +err_unmap:
+>> +    /* Earlier iterations may have installed a writable mapping. */
+>> +    realm_unmap_shared_range(kvm, base_ipa, ipa, false, memcache);
+> 
+> Similar to the protected case (though not as fatal), I think we should
+> simply return where we finished, leaving the partial mappings in.
+
+Yep. This also cleans up the error paths as we no longer need the gotos
+- nice!
+
+Thanks,
+Steve
+
+>> +    return ret;
+>> +}
+>> +
+>> +int realm_map_ipa(struct kvm *kvm, phys_addr_t ipa,
+>> +          kvm_pfn_t pfn, unsigned long map_size,
+>> +          enum kvm_pgtable_prot prot,
+>> +          struct kvm_mmu_memory_cache *memcache)
+>> +{
+>> +    struct realm *realm = &kvm->arch.realm;
+>> +
+>> +    if (kvm_realm_state(kvm) != REALM_STATE_ACTIVE)
+>> +        return -EBUSY;
+> 
+> Nice, we don't want to map anything in when the Realm is not active.
+> 
+>> +
+>> +    ipa = ALIGN_DOWN(ipa, map_size);
+>> +    if (!kvm_realm_is_private_address(realm, ipa)) {
+>> +        return realm_map_unprotected(kvm, ipa, pfn, map_size, prot,
+>> +                        memcache);
+>> +    }
+>> +
+>> +    /* It's impossible to map protected pages read-only. */
+>> +    if (WARN_ON(!(prot & KVM_PGTABLE_PROT_W)))
+>> +        return -EFAULT;
+>> +    return realm_map_protected(kvm, ipa, pfn, map_size, memcache);
+> 
+> Suzuki
+> 
+> 
+>> +}
+>> +
+>>   void kvm_destroy_realm(struct kvm *kvm)
+>>   {
+>>       struct realm *realm = &kvm->arch.realm;
+> 
 
