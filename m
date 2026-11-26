@@ -1,72 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795710963;
-	b=3Gbkcu+NxLyvr1D7sNH0FZZj3KD2m0ZaLqrIyQW5GQay9zf3wjGUw2MKtbOeW9FvueR/
-	 uB2wEDr9thyC1e4Fbae23VhEgxOMugZmLkk2TbE0+dsqF6aaRybPUBVVQKYmVfMv+d3BR
-	 lCCd/9hddgdAvMFocAqwnE4Tx9fUMdF3HRK7misUJHxNRqt/5rjcSIvVMR1/B0VXsrM8t
-	 fyCoTYZSnzk9CpXdI73NrgPTOHJxffu7lWtYf4AwB0PX9Vb3Gc2I/owguGGyxIXNKaaNv
-	 +4NfUpfxwRA6qvQKIvu13Nhqzs/xPMknk5uk9SLmh5QgItUMNXtB14fhE7ji/1mB71Q==
+	t=1795711676;
+	b=Vld30Riguy/aBL4FkWKk1mpjEgsjmENgpgv0poLwHUxTMJqIaLNaGmxfWboSfgLfUFMR
+	 azziJV5d04uUIypRdntae7mH8alVe51iG3Ql2WwXoFFp2lZSWXTACnOVRDMcjoIMTOEFM
+	 ycdcn7sWWFUor+X096kksRo9UIygDkRWmXoLHgahSJqpCLMENQE+WshWfxU217F6iNzEs
+	 3AJt80zQwMyAehjuoJeuo146tzx4Xj1vAS2rO3PzmK5F3IqGp5BlUl7BTV73UiNN051YF
+	 L1abJS1oanrPisa0xKLz+/pcXPJEaGellkNuPZlPzBf4+iXdrc3Z4TgfGVNAwEW8ByQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795710963;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
-	 Date:Message-ID:User-Agent:MIME-Version:Content-Type;
-	bh=ATJlsXEmgBegCpn5BwHudI3qqubv1tTP7fksevRvHqo=;
-	b=4PZWqiRBnibhE5iMYhR+5eEeueBwZ859CdgR7Vgx/+yhkicWzbKjZCKSIrbZqE8I5Dty
-	 m9qBrfNeTkzEuzC3tbSy+NkrchKzy6ZajjoF+h+t8HdQFGNGqLnfUskEPAFE3LL0njwxD
-	 a6la+UiixZ72iUcYvqfBnv6VLyrD6eIgvrlt1PoQZm6h/wnMHxcaYwKV7ljXjFeE7Rtng
-	 wVIY2n+Nznhe25Lej1C2hv3L1+ACiPKR65t5joFmnni96Ok9hFA4h1pVWnSC3nDfP7WzY
-	 LxAnit5oYSRkgN17PgQZgJpZflmPL6ma9qjCk2V65hijBZp0cEZAYO/rhbxtHHCD+QQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795711676;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:From:
+	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=Reb0A+vj4WxFhlRPeF5XMU0Gq5g9HJZmhJB2qXFsVXs=;
+	b=I2EY0JblPKku+zWHg2su4XCC9tBjme+uBYFYB4vQ5btu3zq0MPTkF4XwCYiYEj2mxuE4
+	 24Bwz1C97C9JPCe7mTEplitPA3YHwaO/4EgNaM7rBJP3G2rJuHDOyQ3ZgARBsnFwnyc0u
+	 QctwxPwfrBF8UWca1WLDv2CEd7N7nzxyDZ6N6rYVfIQNU4ExPB9n9YRhRYIABUgd6CUjQ
+	 4BjxCk3SoLQwEe5oXC6c5C/pcH9GUnlo5TObK3RW7sUeXbKyYhfzkRESe6S4KTOr3mTow
+	 kQy+wWatxWjc+m9ooBxWfbDp4e22cXcvfIwEu4puxVKWkIvcffXrLYpPyICac+D/lOA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P4YDuVLo;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B532606A321;
-	Thu, 26 Nov 2026 16:36:02 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=LPUTBtrn;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D40606A31C;
+	Thu, 26 Nov 2026 16:47:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 89D40606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P4YDuVLo
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBB51F000C0;
-	Thu, 26 Nov 2026 16:35:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795710962;
-	bh=ATJlsXEmgBegCpn5BwHudI3qqubv1tTP7fksevRvHqo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=P4YDuVLowB3qq6ykOWDZcHMLKiSKQ8CQtAy4yUDqIkd8odRAKualfMPxWHGSnkm+R
-	 2PWj2HwPnluHX217yIVBnz4ltf8gud7DVpDIOVnWPvj2tmRtQDwkW5GrLyBPVwc1P2
-	 H8DVFw6/ujmQyjdb8hK5mKWwhnS5tQTm/FrakhOc6yTOGs/qksPdzN8PYv8RMpUQw7
-	 ulmxngnaHoudWBkL+v4xPagIwwh7UNMjhR3rRlw1bwVr1T+AnwXiCuZycThNIvKJJn
-	 Anqy+ejek6aYvEhB9sE0PqvuZhyTpgFBZ7BDw7EvqPO1q3MBdMmd2U7pPYubVmNwfN
-	 QLihl37EmKX6Q==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: "David Matlack" <dmatlack@google.com>
-Cc: "Pratyush Yadav" <pratyush@kernel.org>,  "Tarun Sahu"
- <tarunsahu@google.com>,  "Pasha Tatashin" <pasha.tatashin@soleen.com>,
-  "Mike Rapoport" <rppt@kernel.org>,  <robin.murphy@arm.com>,
-  <maz@kernel.org>,  <will@kernel.org>,  "Alexander Graf"
- <graf@amazon.com>,  <seanjc@google.com>,  <jgg@nvidia.com>,
-  <loganodell@google.com>,  <arnd@arndb.de>,  <dwmw2@infradead.org>,
-  <baolu.lu@linux.intel.com>,  "Bjorn Helgaas" <bhelgaas@google.com>,
-  <oupton@kernel.org>,  <alex@shazbot.org>,  <gle.com@google.com>,
-  <pbonzini@redhat.com>,  "Andrew Morton" <akpm@linux-foundation.org>,
-  <kevin.tian@intel.com>,  <joro@8bytes.org>,  <kvmarm@lists.linux.dev>,
-  <linux-pci@vger.kernel.org>,  <kexec@lists.infradead.org>,
-  <kvm@vger.kernel.org>,  <iommu@lists.linux.dev>,
-  <linux-arm-kernel@lists.infradead.org>,  <skhawaja@google.com>,
-  <sagis@google.com>,  <linux-arch@vger.kernel.org>,  <linux-mm@kvack.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 03/19] kho, memfd_luo: Reference struct kho_vmalloc
- via serialized pointer
-In-Reply-To: <DN4H5ST3X9L1.3IUEC1CA5QI8H@google.com> (David Matlack's message
-	of "Wed, 25 Nov 2026 09:40:47 -0800")
-References: <20261110050202.529473-1-tarunsahu@google.com>
-	<20261110050202.529473-4-tarunsahu@google.com>
-	<2vxz4idb1i2w.fsf@kernel.org> <DN3VG4JCILOO.YN40XHHSWRPH@google.com>
-	<2vxzld6hx97g.fsf@kernel.org> <DN4H5ST3X9L1.3IUEC1CA5QI8H@google.com>
-Date: Thu, 26 Nov 2026 16:35:54 +0000
-Message-ID: <2vxzse0nwnx1.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=LPUTBtrn
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 10F161BA8;
+	Thu, 26 Nov 2026 08:47:52 -0800 (PST)
+Received: from [10.0.129.128] (e122027.cambridge.arm.com [10.0.129.128])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 94E293F86F;
+	Thu, 26 Nov 2026 08:47:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795711674; bh=wD4nn625t5o2j8O8VCNI52IkSmZmyk+WOropi/y+JW8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LPUTBtrnXanBCrATApbdjyPmJJS0xq86yxfvxWyiGzKa6XUMGIcOrSHyF9nZDjSsL
+	 v0Dt2TBLZ9XTGwTuBVXQ+cCmNd3PJj8enKmDKt35de75keVcWu173jhvW5BormtSZ5
+	 cThoprWY3F0kLdK5qLp++ArCYttwh43Yv3912ARM=
+Message-ID: <78665c8c-2c10-410e-9bd2-b62c91c0de2a@arm.com>
+Date: Thu, 26 Nov 2026 16:47:46 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,42 +53,256 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 09/11] KVM: arm64: CCA: Prevent memslot modifications
+ after Realm creation
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Ackerley Tng <ackerleytng@google.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Kohei Enju <enju.kohei@fujitsu.com>
+References: <20261123104233.95710-1-steven.price@arm.com>
+ <20261123104233.95710-10-steven.price@arm.com>
+ <CAEvNRgFQ5BXqU3KfPFT8bfZTW=RyvBw25z3GZtr3JA=Wv3Yqfw@mail.gmail.com>
+ <e4108d4f-e84c-444c-aa7a-18e823816eae@arm.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <e4108d4f-e84c-444c-aa7a-18e823816eae@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 25 2026, David Matlack wrote:
+On 25/11/2026 14:58, Suzuki K Poulose wrote:
+> Hi Ackerley
+> 
+> On 25/11/2026 00:09, Ackerley Tng wrote:
+>> Steven Price <steven.price@arm.com> writes:
+>>
+>>> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>
+>>> Once the Realm is created, prevent changes to guest_memfd backed
+>>> memslots, which can provide private memory. Validate these changes
+>>> before KVM invalidates the old memslot, so a rejected deletion leaves
+>>> its stage-2 mappings intact. Realm stage-2 faults will also validate
+>>> the private memory backing in a later commit.
+>>>
+>>> Require Realm memslots to lie in the lower half of the IPA space, as the
+>>> upper, shared half aliases the lower, protected half.
+>>>
+>>> Define kvm_arch_has_private_mem() so generic KVM recognizes Realm VMs
+>>> as supporting private memory. Defining the macro also makes
+>>> gmem_in_place_conversion true for every arm64 VM, so guest_memfd
+>>> memslots are marked gmem-only even for non-Realm VMs. A well-formed
+>>> KVM_SET_MEMORY_ATTRIBUTES2 request on a non-Realm guest_memfd now
+>>> reaches the VM check and returns -EINVAL instead of -ENOTTY.
+>>>
+>>> Additionally, similar to pKVM, do not support dirty logging or
+>>> read-only memslots.
+>>>
+>>
+>> Imo this could be split into a few patches
+>>
+>> 1. Add the constraints wrt realm memslots and being in the lower half of
+>>     the IPA space
+>> 2. Defining arm's support for private mem
+>> 3. Imposing rules on memslot changes
+>> 4. Maybe some others, maybe I'm misunderstanding the patch
+> 
+> Agree
 
-> On Wed Nov 25, 2026 at 6:43 AM PST, Pratyush Yadav wrote:
-> [...]
->
->> So I wouldn't want to support slab until we have file handlers that
->> churn through a lot of preserved objects.
->
-> Makes sense. If KHO slab isn't coming, then I'm fine with the arena.
->
-> One thing I realized is that the choice between the two is visible to
-> the incoming kernel. With separate allocations, the incoming kernel has
-> to free struct kho_vmalloc and struct memfd_luo_ser separately. With
-> the arena, it must only free the top-level allocation. So we should
-> pick one now (while memfd is bumping its compatible string anyway)
-> rather than switching later.
->
-> Separate allocations leaves the door open to KHO slab but wastes memory
-> in the short term. It's not obvious to me which direction to go :)
+Yes, although as discussed below, I think we probably don't need to have
+as much restriction on memslots as this currently adds.
 
-Separate allocations aren't any more flexible than arena allocations.
-Even if you have separate allocations, you need to know how they were
-allocated to be able to free them. If they came from slab, you need to
-call kmem_cache_free(), if they came from kho_alloc_preserve(), you need
-to call kho_restore_free().
+>>
+>>> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>>
+>>> ---
+>>> Changes since v3:
+>>> - Explain the arm64-wide in-place conversion effect and keep the
+>>>    general IPA limit comment.
+>>>
+>>> Changes since v1:
+>>> - Preserve private mappings if KVM invalidates a Realm guest_memfd
+>>>    slot before the prepare hook rejects its deletion.
+>>> ---
+>>>   arch/arm64/include/asm/kvm_host.h |  2 ++
+>>>   arch/arm64/kvm/mmu.c              | 37 ++++++++++++++++++++++++-------
+>>>   2 files changed, 31 insertions(+), 8 deletions(-)
+>>>
+>>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/
+>>> asm/kvm_host.h
+>>> index 3ddeddfacd06..55673d08e3eb 100644
+>>> --- a/arch/arm64/include/asm/kvm_host.h
+>>> +++ b/arch/arm64/include/asm/kvm_host.h
+>>> @@ -1607,6 +1607,8 @@ struct kvm *kvm_arch_alloc_vm(void);
+>>>
+>>>   #define kvm_vm_is_realm(kvm)        ((kvm)->arch.vm_flavor ==
+>>> VM_REALM)
+>>>
+>>> +#define kvm_arch_has_private_mem(kvm) kvm_vm_is_realm(kvm)
+>>> +
+>>>   #define kvm_has_mte(kvm)                    \
+>>>       (system_supports_mte() &&                \
+>>>        test_bit(KVM_ARCH_FLAG_MTE_ENABLED, &(kvm)->arch.flags))
+>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+>>> index 800333a345cd..9af5fe6d87f0 100644
+>>> --- a/arch/arm64/kvm/mmu.c
+>>> +++ b/arch/arm64/kvm/mmu.c
+>>> @@ -2861,17 +2861,32 @@ int kvm_arch_validate_memory_region(struct
+>>> kvm *kvm,
+>>>   {
+>>>       lockdep_assert_held(&kvm->slots_lock);
+>>>
+>>> -    if (kvm_vm_is_protected(kvm)) {
+>>> +    if (kvm_vm_is_protected(kvm) && new &&
+>>> +        (new->flags & (KVM_MEM_LOG_DIRTY_PAGES | KVM_MEM_READONLY)))
+>>> +        return -EPERM;
+>>
+>> gmem is already generically mutually exclusive with
+>> KVM_MEM_LOG_DIRTY_PAGES and KVM_MEM_READONLY, so before this change,
+>> pKVM is saying no to KVM_MEM_LOG_DIRTY_PAGES and KVM_MEM_READONLY for
+>> all memslots, gmem or not, so this check makes sense.
+>>
+>>> +
+>>> +    switch (kvm->arch.vm_flavor) {
+>>> +    case VM_PROTECTED_PKVM:
+>>>           /* Cannot modify memslots once a pVM has run. */
+>>>           if (pkvm_hyp_vm_is_created(kvm) &&
+>>> -            (change == KVM_MR_DELETE || change == KVM_MR_MOVE)) {
+>>> +            (change == KVM_MR_DELETE || change == KVM_MR_MOVE))
+>>>               return -EPERM;
+>>> -        }
+>>> +        break;
+>>
+>> Not sure why pKVM doesn't allow deleting a memslot after the vm is
+>> created, but this is no change from before this patch, the removal of {}
+>> here is mixed in with the other changes in this patch.
+> 
+> IIRC, pKVM relies on pinning the stage2 until the teardown ?
+> ed
+> from the Stage2 unless we d
+> 
+>>
+>>> +    case VM_REALM:
+>>> +        /*
+>>> +         * Once the Realm is created, we cannot modify any slots that
+>>> +         * could be providing private memory. i.e., guest_memfd backed
+>>> +         * slots.
+>>> +         * TODO: Handle trusted device private memory slots
+>>> +         */
+>>> +        if (!kvm_realm_is_created(kvm))
+>>> +            break;
+>>>
+>>> -        if (new &&
+>>> -            new->flags & (KVM_MEM_LOG_DIRTY_PAGES |
+>>> KVM_MEM_READONLY)) {
+>>> +        if (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new))
+>>>               return -EPERM;
+>>> -        }
+>>> +        break;
+>>
+>> Imo this should be written the same way as the pKVM branch for clarity,
+>> like
+>>
+>> if (kvm_realm_is_created() &&
+>>      (kvm_slot_has_gmem(old) || kvm_slot_has_gmem(new)))
+>>          return -EPERM;
+>>
+>> but that aside,
+>>
+>> 1. Why block creating memslots after realm is created?
+>>
+>> Does ARM CCA have no way to add pages after a VM starts? This isn't
+>> blocked for TDX and SNP so I think this constraint seems unnecessary.
+> 
+> This and (2) was triggered by the following thread, raised by Catalin.
+> 
+> https://lore.kernel.org/all/aqrGPK0lFBFXL2qY@arm.com
+> 
+> But having said that, since then, we now have :
+> 
+> 1) All private faults must be serviced by realm_gmem_abort(), which
+> mandates Guest memfd slot. (See Patch 11, realm_mem_abort())
+> 
+> 2) realm_gmem_abort() matches the "private" attribute for a "protected"
+> fault, failing which causes a memory fault exit.
+> 
+> So I think we can remove these memslot restrictions.
 
-So you need to store the information of their origin somewhere, probably
-in a feature flag. Same goes for arena. If we ever want to move away
-from arena, we'd have to use a feature flag.
+Agreed. We originally had memslots backed by user space memory. That
+meant adding or removing a memslot had to deal with all the messiness of
+dealing this that. As an initial step it was easier to just prevent
+memslot changes. guest_memfd simplifies things so I don't think this
+restriction is actually necessary - and I think it will actually
+simplify the code to not restrict it.
 
-So to me, I think they are about the same in flexibility. Using separate
-allocations is a tiny bit easier, arena is a tiny bit more efficient.
-Which is why I like arena mode.
+>>
+>> 2. Why block deleting memslots after realm is created?
+>>
+>> This also seems like an artificial constraint, and it constrains the way
+>> the userspace VMM operates when stopping a VM, like the memslots can't
+>> be removed ever, the VM just has to be closed? (something like that)
+> 
+> As mentioned above, I think we are good to remove the restrictions.
 
--- 
-Regards,
-Pratyush Yadav
+Agreed.
+
+Thanks,
+Steve
+
+> Suzuki
+> 
+> 
+>>
+>>> +    default:
+>>> +        break;
+>>>       }
+>>>
+>>>       return 0;
+>>> @@ -2883,6 +2898,7 @@ int kvm_arch_prepare_memory_region(struct kvm
+>>> *kvm,
+>>>                      enum kvm_mr_change change)
+>>>   {
+>>>       hva_t hva, reg_end;
+>>> +    gfn_t ipa_limit;
+>>>       int ret = 0;
+>>>
+>>>       if (change != KVM_MR_CREATE && change != KVM_MR_MOVE &&
+>>> @@ -2891,9 +2907,14 @@ int kvm_arch_prepare_memory_region(struct kvm
+>>> *kvm,
+>>>
+>>>       /*
+>>>        * Prevent userspace from creating a memory region outside of
+>>> the IPA
+>>> -     * space addressable by the KVM guest IPA space.
+>>> +     * space addressable by the KVM guest IPA space. Realm shared
+>>> IPAs alias
+>>> +     * the corresponding private IPAs, so Realm memslots must reside
+>>> entirely
+>>> +     * in the lower half of that space.
+>>>        */
+>>> -    if ((new->base_gfn + new->npages) > (kvm_phys_size(&kvm-
+>>> >arch.mmu) >> PAGE_SHIFT))
+>>> +    ipa_limit = kvm_phys_size(&kvm->arch.mmu) >> PAGE_SHIFT;
+>>> +    if (kvm_vm_is_realm(kvm))
+>>> +        ipa_limit >>= 1;
+>>> +    if (new->base_gfn + new->npages > ipa_limit)
+>>>           return -EFAULT;
+>>>
+>>>       /*
+>>> -- 
+>>> 2.43.0
+> 
+
