@@ -1,92 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795660251;
-	b=2WgDOJ3XEA6YEUoZvUyXxeSf8MC7aIdXRVOf4NFRDvmSJqlD0pgHqXyEFzkto+4JjBec
-	 snALjTIMaQJCvzmI1mXtm5hFPr3XUwGL+9b/oEbZV77FKanh7RIpamTwoH1Krs/n3KFRw
-	 7bXagMspmIIhmRRHl0+LCTeoYpXCIUd9BhA9sTU+YqG9L+94J43NOypsV1sMs2lRz8MiC
-	 88iN3lugxmh47cU/87c89XC+n5DikEiM/t2vrsEpafEaOb4qKwJXjMBTrJ4Eon4c1Ve2B
-	 5ULz4Te1EwQRasJduVhkziYiAjKQyzP7EQyfoyO2xRn0NH8q/LQldVJzAxjRxa7LB/A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795660251;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=pNo7FC/nRbL7LkGJ5TcZupw/29f4Jh2KwXeVR7Yj4BY=;
-	b=gnG73L+1pn87pGhxD5fQ6CY9TW3kDPYkkXJXYpbTNxeaW67UlPmiF3jtH3eoDcCrxIVn
-	 0vaX6hoOYhu3BoFPDDR6riSwwcBfpP47alv5u7FO/mpgQsKSv5XT6AFEt33+zjaJPKRAO
-	 hSm1niTZHrIbeI4JwU4V7TAo5Z1PIxdPRvOUp3RoJREZamFch6S7rWIqvD0wEpabTHiaK
-	 VPdXTQDkCQVArhSl1g25v71ROSMdGaIqeKpcT49XfF3UZv/pCUaz610dVQ3KXxmZjE6Rd
-	 tYk6nvXqQ9NAJwSQYUQGT47v/pNMWHzdoGjkPwWYuTiGt5RphYmLdgcpiUtrPivXyEw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UNsE7VL7;
-	arc=none smtp.remote-ip=198.175.65.21
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.47
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795661115;
+	b=uyR+dbVt+pbAoAM+HdjC+5VlRWu2MBb5kLVsVw3Ht8cGhrZwX/NHw6De8M1zJM+DCPNE
+	 6uNzdB5RCruyYYrHKNVNxach18Y+DReV4KcmW4+iogLR0cvepvwqEkZS46+5tScbY9tWE
+	 2kA3b+FRhVXKazjtNrXp6tyW/r+Ch/mYDtq2pEJqoPCFx/9a5HKR3F/U4A4aEswlEnr7s
+	 8ATAT5C8oCLHWyau0mM8zhz8nzdsrgznEcocFXWM3F4TdDbX73jUzgg5kSRSMVOHNh9nE
+	 z8SC9qPg343q5ZWxQlTKV5ukQb/anp+nyQ0owDu4X6SHypsj8idRuNLNfNEWDuWy1FA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795661115;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 MIME-Version:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type;
+	bh=5TgY1+p4C3dlnN2vB8vTuygWlaz1e3tNyjJvp1UBN7I=;
+	b=uoRGvngz4YI1bdnVi2ZSiz3uUnRUPltMak3VoRtzXcqzjAa4AiPd9BMG1KKy3/o5ytnc
+	 sMJ2xCs3lOPRCVAcH2owaAUPq92QfM3nLjeU030JttygZu81YavL7T6ulLer7gFGpbJTH
+	 ly0uUoed1XHW6J4+wGPAJKLHLVwDPshLo/WgXZeGELkFf3EPCZ899f4p3NtZ+ZYfvnK4x
+	 CaiZAk/MF87ZIrMgAToVNDriYvVBiCNkPV4eCejng659eBsvX9G8lBtXIKPfxF4YGfals
+	 4ubd0ju5gKyTzDSuABoN1SbIi9iOwOHyKbZVPDDqw7k5bqB27qmOL/DrkaLE4JThDHw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=certik.com;
+	spf=pass smtp.mailfrom=certik.com;
+	dkim=pass header.d=certik.com header.i=@certik.com header.a=rsa-sha256 header.s=google header.b=D+31K0RG;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.47
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9884606A32D;
-	Thu, 26 Nov 2026 02:30:50 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B9884606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1B1606A32A
+	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 02:45:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F1B1606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=certik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=certik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UNsE7VL7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795660251; x=1827196251;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=prY11NS/UJ0OpUeEsduHH5UymKEof/BwDENNeLSNI7k=;
-  b=UNsE7VL7FjtqyoWRc7B7BT86gwmfLkc43Li71qtz/5lXg8W3q0Tul4eH
-   tsYHdTJODZBRyqplcgj+4VZmRpR8qfKQzfJoXd8hS+0R2RIOYWt8FK8nf
-   HrUCq/+RqexNEs+5PIbr4gLPxljVVe71VYKZOABmewAHw6ZPwWsv8aOhI
-   aybBtTf4gIj/gdm3D0zQsCFrNvwbsDh6tiCrmwvtYqoma99uc5fLSkV5n
-   DO1yNeJEeKGPhhFu3chrXZvj4tudyxHDlTfmB7+wroCmQttAeTkchiG+L
-   7lTr6ipAjWcHgCemSALHmKFqMbtNddX6zAHPtnUb5iEgrntU6vTbQNx1h
-   g==;
-X-CSE-ConnectionGUID: f1rU7zdJQ/SSKuvqqCzhYg==
-X-CSE-MsgGUID: XBlNsuPST6SvmJvym5Xr1A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11977"; a="4642537"
-X-IronPort-AV: E=Sophos;i="6.27,234,1787036400"; 
-   d="scan'208";a="4642537"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2026 18:30:50 -0800
-X-CSE-ConnectionGUID: EP+NvuEjSHWoLVc5NVD9PQ==
-X-CSE-MsgGUID: 1fNS23aNTMOwIoV+zoRiqA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,234,1787036400"; 
-   d="scan'208";a="12044182"
-Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by orviesa007.jf.intel.com with ESMTP; 25 Nov 2026 18:30:49 -0800
-From: Sohil Mehta <sohil.mehta@intel.com>
-To: kvm@vger.kernel.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Xin Li <xin@zytor.com>,
-	Shivansh Dhiman <shivansh.dhiman@amd.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Chao Gao <chao.gao@intel.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	Sohil Mehta <sohil.mehta@intel.com>,
-	"Chang S . Bae" <chang.seok.bae@intel.com>,
-	Zhao Liu <zhao1.liu@intel.com>,
-	Jon Kohler <jon@nutanix.com>,
-	x86@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] KVM: VMX: Dump the secondary VM-exit controls in dump_vmcs()
-Date: Wed, 25 Nov 2026 18:27:43 -0800
-Message-ID: <20261126022743.4082392-4-sohil.mehta@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261126022743.4082392-1-sohil.mehta@intel.com>
-References: <20261126022743.4082392-1-sohil.mehta@intel.com>
+	dkim=pass (1024-bit key) header.d=certik.com header.i=@certik.com header.a=rsa-sha256 header.s=google header.b=D+31K0RG
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-67db5e13b0cso5960127d50.3
+        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 18:45:15 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795661114; cv=none;
+        d=google.com; s=arc-20260327;
+        b=QIsaHjQmswAb2kOVobVCxRiusMJ0I7P08nTpO1J9FzCj5dlZM82iUZVv2Ql8HBKNjZ
+         csO9hm4Er4MO7Nablf77k00cc7/vZDyTVerS9B07g0r+TMeU7LarsZN4eBN6jAXIRzWl
+         2eEQo9K4sRGw0wKuvrPTVx2QbyNejcfHatr5mM4xd/Iq33ldUGF7uxi/eDAXphD39NE6
+         1JeoPeadjPtXRbadHHibyUhjAqPBoDAoAJqCc8bwI8XLIZcBrBbD6JrdMlx2t287oowG
+         nkvLbA2qh75OqBxPGaXpQ9qKJd+ia4NpYvotM3Pc++gJm9JCvfh/AlO6Z3FLBAwcxJ3H
+         ojEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=5TgY1+p4C3dlnN2vB8vTuygWlaz1e3tNyjJvp1UBN7I=;
+        fh=bCaNZjnMYoLp3OThkju+x8s/Z00vUMCAekCF/5jaPIQ=;
+        b=p9KANuDxZoMrSgG68/1ZFuNltE+mwfwO7gXTP3TI5rNqBI+6ZFMh1PCPV75T1Uf84x
+         zcm0P9tZoLiPi0mykhG/tEJ0vBqT68UDPYNlOGOzKLlYD/BVJBc9wU02PTixtB7cBu3x
+         YUXf14Gs++BBauuSSqMROo2mCrGwmma4nAPQIly2miSPljk/CvgN1BUmtsXNNaTFFNdD
+         EkipMHLs+A07ZzbjHQkXozU1CgB+p3tf1L/r/Jww7PnWRmhVUy9HFTQHBuoA+6l16EYm
+         vBcPDWC0AKVeSjdkpJG9Li7L63E8SjUTfPSh4l5N+MBYBSgoo47ANBzHCevz7ols+2nq
+         +i+A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=certik.com; s=google; t=1795661114; x=1796265914; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5TgY1+p4C3dlnN2vB8vTuygWlaz1e3tNyjJvp1UBN7I=;
+        b=D+31K0RG4yFw1XFsGQZUWFBWM3SevFmK3xxC4Q7IBjAR7YrLulY2qh+6Y4pnBL26ZN
+         hMsqZOXnNSuscw85vpqCD0nU5qK8rpQrst4D7ecT0iewcZCFa6si3VyMsVOHSXrwv8Fb
+         K1lT/0PurK57+zBlnwY/JtqtHQOvj/V6Ap7E4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795661114; x=1796265914;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=5TgY1+p4C3dlnN2vB8vTuygWlaz1e3tNyjJvp1UBN7I=;
+        b=qzUTf/jKmoA05T21PXnSEAo5p4yisEKGcPQkK5PMaKDID/x5aWup9T4Ur8yaKHcDrC
+         sGNtsBPABxtfSDcJcAaANM76Vyv8J1Go4zuWSHVtiaKHTVOcW0NlCPtN3XCuQoneK8Lw
+         neCo0SRR5NPI/QK6lCj9+Qp6IPHfzj3ZN04AdPojzFnoSyBtsZVyt0BZEm2W9JF1xyOK
+         BG5EU/Z7gfCS2ANWdi0uehfmfdZc7Cip93G62gbrFLMXCtOJ75yG/9RZrDZ9VthvI67D
+         WeGGOK0YY/MBl/a48epQPwN74/iJUoN0OME7gwcSP29zsti6tOK0xCzWov/ldDiY0sO8
+         NXMA==
+X-Forwarded-Encrypted: i=1; AL+hErE2Tn5NxRudTTKa10VSy9aimWLMRX1Af7et3U9p5inwETFVATBKEtIclN6FBjUrvHjsZeQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8FoT7uoihrG2Wp9UCi8rrjMn2UC/8gpvQ8htsceT5r52VtiEFC
+	MlehFoYQ5e5utu/SHzHb1+0Qfqy7wVVI4vk3d/rjIKVj5V5O0Y96/6+PNCL8yqAuTfq6TTa9XYa
+	dDvkjdwGP18Q21zET0kJyim0XHuFOG1kgsUWXeeu06g==
+X-Gm-Gg: AZFdTZcYNqFm87IN/sBJQ1RaGfVtcD1aZ/RnZMNyBC/SkTxusim0x0VTku5oWsXtYbG
+	jYNM6Yxy5xSWbJU5ePh5h0uPQkoYnwXG4SySgHMHiUxKzejCH3cuulrz9Lu/yfa9iD97J+bl1nG
+	HjrJCgLkiXNIxiL1yTG+R8SBKdcSwYZo4i7wvcpiLFp1BQM88CXQjaioACknKpCceXpYgv8nqsk
+	WjixoXJyxqKP9BKpKYrbTppEPwj6veZdMg2H8oDQu/XjG2nYrvla06+4xNNNbeuqjLI/1lbzo9z
+	xLJ8odcmJi6OL8r+a1ExQ+5yRhEhv0XBYPzwDX2jMjbR/uWFd+Jur4wZaMMzq7GQEH9I9YHRWN9
+	Ryts7NtJ26DWOG5av8W7BuMWLKaZRXSd1Cz4wfwcT8KBxsmg4PGCo/IrJDNu47c0o4tv/EG0XIc
+	8GXDa/4tz0f9C1TTbYa3x6g1KhfqEWiwsI62b85qI1jI7pArJN0x8dtvDddCmeu62DJfTG2fvjm
+	A3Z6nDcROmGLeMgTm2X8KQCCTS0V6r1zpGp
+X-Received: by 2002:a05:690e:134f:b0:67e:4934:63cd with SMTP id
+ 956f58d0204a3-67e49347c5dmr1352415d50.76.1795661114352; Wed, 25 Nov 2026
+ 18:45:14 -0800 (PST)
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Wed, 25 Nov 2026 20:45:13 -0600
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -96,65 +102,114 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: Dickson Wu <dickson.wu@certik.com>
+Date: Wed, 25 Nov 2026 20:45:13 -0600
+X-Gm-Features: Aa3M54qdJD_NbjhkFxblgIbJ7L9Miw14_6xcHoRjRrZigzO-Yzs4ek9cUzQtaKU
+Message-ID: <CAFaZ9eoOtFxAansjaUbA-CDNQLcVAVJre2R9vaTQONG9MYUEng@mail.gmail.com>
+Subject: [PATCH 5.10.y] KVM: x86: Acquire kvm->srcu when handling KVM_SET_VCPU_EVENTS
+To: stable@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: "Xin Li (Intel)" <xin@zytor.com>
+From: Sean Christopherson <seanjc@google.com>
 
-KVM now activates the secondary VM-exit controls whenever hardware
-supports them. Print them next to the primary VM-exit controls in the
-VMCS dump to help debug failed VM-entries.
+commit 4bcdd831d9d01e0fb64faea50732b59b2ee88da1 upstream.
 
-While at it, give the entry and exit controls the 0x prefix that the
-execution control fields already have.
+Grab kvm->srcu when processing KVM_SET_VCPU_EVENTS, as KVM will forcibly
+leave nested VMX/SVM if SMM mode is being toggled, and leaving nested VMX
+reads guest memory.
 
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+Note, kvm_vcpu_ioctl_x86_set_vcpu_events() can also be called from KVM_RUN
+via sync_regs(), which already holds SRCU.  I.e. trying to precisely use
+kvm_vcpu_srcu_read_lock() around the problematic SMM code would cause
+problems.  Acquiring SRCU isn't all that expensive, so for simplicity,
+grab it unconditionally for KVM_SET_VCPU_EVENTS.
+
+ =============================
+ WARNING: suspicious RCU usage
+ 6.10.0-rc7-332d2c1d713e-next-vm #552 Not tainted
+ -----------------------------
+ include/linux/kvm_host.h:1027 suspicious rcu_dereference_check() usage!
+
+ other info that might help us debug this:
+
+ rcu_scheduler_active = 2, debug_locks = 1
+ 1 lock held by repro/1071:
+  #0: ffff88811e424430 (&vcpu->mutex){+.+.}-{3:3}, at:
+kvm_vcpu_ioctl+0x7d/0x970 [kvm]
+
+ stack backtrace:
+ CPU: 15 PID: 1071 Comm: repro Not tainted 6.10.0-rc7-332d2c1d713e-next-vm #552
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x7f/0x90
+  lockdep_rcu_suspicious+0x13f/0x1a0
+  kvm_vcpu_gfn_to_memslot+0x168/0x190 [kvm]
+  kvm_vcpu_read_guest+0x3e/0x90 [kvm]
+  nested_vmx_load_msr+0x6b/0x1d0 [kvm_intel]
+  load_vmcs12_host_state+0x432/0xb40 [kvm_intel]
+  vmx_leave_nested+0x30/0x40 [kvm_intel]
+  kvm_vcpu_ioctl_x86_set_vcpu_events+0x15d/0x2b0 [kvm]
+  kvm_arch_vcpu_ioctl+0x1107/0x1750 [kvm]
+  ? mark_held_locks+0x49/0x70
+  ? kvm_vcpu_ioctl+0x7d/0x970 [kvm]
+  ? kvm_vcpu_ioctl+0x497/0x970 [kvm]
+  kvm_vcpu_ioctl+0x497/0x970 [kvm]
+  ? lock_acquire+0xba/0x2d0
+  ? find_held_lock+0x2b/0x80
+  ? do_user_addr_fault+0x40c/0x6f0
+  ? lock_release+0xb7/0x270
+  __x64_sys_ioctl+0x82/0xb0
+  do_syscall_64+0x6c/0x170
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+ RIP: 0033:0x7ff11eb1b539
+  </TASK>
+
+Fixes: f7e570780efc ("KVM: x86: Forcibly leave nested virt when SMM
+state is toggled")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240723232055.3643811-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[ adapted to 5.10: same as the 5.15.y backport, vcpu->srcu_idx since
+kvm_vcpu_srcu_read_lock() is missing ]
+Signed-off-by: Dickson Wu <dickson.wu@certik.com>
 ---
-v1:
- - New patch, split out of FRED KVM v10 series so that the dump covers
-   the field this series adds.
----
- arch/x86/kvm/vmx/vmx.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+This is the 5.15.y backport (5f35099fa3d5 in linux-5.15.y), which
+applies to 5.10.y unchanged. 5.15.y and newer already have it.
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index d35bad8b29a7..7291c2916ff6 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6493,7 +6493,7 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
- 	u32 vmentry_ctl, vmexit_ctl;
- 	u32 cpu_based_exec_ctrl, pin_based_exec_ctrl, secondary_exec_control;
--	u64 tertiary_exec_control;
-+	u64 tertiary_exec_control, secondary_vmexit_ctl;
- 	unsigned long cr4;
- 	int efer_slot;
- 
-@@ -6518,6 +6518,11 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
- 	else
- 		tertiary_exec_control = 0;
- 
-+	if (cpu_has_secondary_vmexit_ctrls())
-+		secondary_vmexit_ctl = vmcs_read64(SECONDARY_VM_EXIT_CONTROLS);
-+	else
-+		secondary_vmexit_ctl = 0;
-+
- 	pr_err("VMCS %p, last attempted VM-entry on CPU %d\n",
- 	       vmx->loaded_vmcs->vmcs, vcpu->arch.last_vmentry_cpu);
- 	pr_err("*** Guest State ***\n");
-@@ -6626,8 +6631,10 @@ void dump_vmcs(struct kvm_vcpu *vcpu)
- 	pr_err("*** Control State ***\n");
- 	pr_err("CPUBased=0x%08x SecondaryExec=0x%08x TertiaryExec=0x%016llx\n",
- 	       cpu_based_exec_ctrl, secondary_exec_control, tertiary_exec_control);
--	pr_err("PinBased=0x%08x EntryControls=%08x ExitControls=%08x\n",
--	       pin_based_exec_ctrl, vmentry_ctl, vmexit_ctl);
-+	pr_err("PinBased=0x%08x EntryControls=0x%08x\n",
-+	       pin_based_exec_ctrl, vmentry_ctl);
-+	pr_err("ExitControls=0x%08x SecondaryExitControls=0x%016llx\n",
-+	       vmexit_ctl, secondary_vmexit_ctl);
- 	pr_err("ExceptionBitmap=%08x PFECmask=%08x PFECmatch=%08x\n",
- 	       vmcs_read32(EXCEPTION_BITMAP),
- 	       vmcs_read32(PAGE_FAULT_ERROR_CODE_MASK),
+Tested on v5.10.275:
+- x86_64 allmodconfig W=1 build of arch/x86/kvm/x86.o, base vs patched,
+  no new warnings
+- KVM-enabled defconfig boots under QEMU/KVM, and the existing
+  evmcs_test and smm_test KVM selftests pass on it
+
+One thing I noticed while there: in 5.10 (and 5.15), KVM_RUN calls
+sync_regs() before taking kvm->srcu, so that path can still reach
+kvm_vcpu_ioctl_x86_set_vcpu_events() without it. The upstream message
+says sync_regs() already holds SRCU, which is true in mainline but not
+in these branches. I left it alone to keep this identical to 5.15.y.
+
+The backport and the test runs were prepared with AI coding tools
+(OpenAI Codex agents, with review by Claude). I went over the result
+before signing off.
+
+ arch/x86/kvm/x86.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 58660d5de141..d44c97475625 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -4970,7 +4970,9 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 		if (copy_from_user(&events, argp, sizeof(struct kvm_vcpu_events)))
+ 			break;
+
++		vcpu->srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
+ 		r = kvm_vcpu_ioctl_x86_set_vcpu_events(vcpu, &events);
++		srcu_read_unlock(&vcpu->kvm->srcu, vcpu->srcu_idx);
+ 		break;
+ 	}
+ 	case KVM_GET_DEBUGREGS: {
 -- 
 2.43.0
-
