@@ -1,57 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795683799;
-	b=AIYSiU/2x8jKQaglWoGna4tDYOAMObt9piBTSNAEI5mwvAE5h9NElqbcYkzf660X3AVh
-	 TDCglvmQdnmfu5oA+jSkq1Xac600RR5aEdtDQZPTBy5KLGrj61vErIMkSNaX8ktmT6G8r
-	 lIv+i/vdOmnMZ2p9RiTF0bF8FWA58ADbylNXIYxenUlPXcXpR8au8bjvU8kYVaGszEpBy
-	 9Ncr7Dm3UQ5EUr9hKcoiz5fRQX6OXvYfXKwRFW7sQO2OzXVPqdqs4MkdjlcGyEEsDtI9c
-	 KKlF/+hWzzQLyPNpBMq4SJg95Rn9o6r7k9akSS5YurqgfbFjUXuBbd6/Joh1VPwd8Iw==
+	t=1795683835;
+	b=FJbnuUXPAyUaqjFtjKGs9ahiJ3sZ5AfVBT9m6MYi1qIzmgVR9uHk4yUMjEGUyGS6fM4T
+	 VFsb8ecjD11IuYJzIMDfTEFFvYDekQ+/sBoZ7mepXfTigI04HgMqmXNKOp2Xu+d7f2c0U
+	 fvHIpRIdvo9YMLunchjC/2N7x/NIh5T7mPeVl7aNR0JArwRkYNW3CwBsV3ehy1W5uUad7
+	 tsJd88R/9D3a2QLAKFm55JOzx0eZmMoQxDcCotvtuJXl8bhDrx8+TOoNbyqC2yPPSL6Xk
+	 f1If3Kw8NI7BdmWDKkWmrKms8KhiEJ2dRf1Fm25QHFthk4AELfBgeddgPauch5qvOoQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795683799;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795683835;
 	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:
 	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=XBH6J36zAqMuTH6gInfNyyU3T0R72ozkDXLkDYbWtFw=;
-	b=B4f2CeHysmgKKNhl3BpNOt4B/lBJb4fqy6xscDNvPGFP7a0xHiK8dMm65MrRv/zzv1yd
-	 TuVE7HtA674L+zmHJNbAxAWgNZ93ni+lSCKZGJpIWWYiiCHl7rdyYNdz8Z83mEhiyhlHB
-	 3SpKdcvqahG6IYIr11jfehOkGQN+7pHv4a9y4H2DPBfKZzVXSrKbJcipPBlol4KnTTJHA
-	 VGphKxGlOGqalCb6dDIxc1vhLO4NHsfcJabsVaPOwqx28jZ23prnPEqbZ9ivIxBQ6Md0Z
-	 cWk6woj0Ia0AEwVt+cqXa++0tshlsG6LQwQkONytJQcROlz/0cfSlzRa0NcfOSQB6Vg==
+	bh=2f4dTVrXUrE9hVjyhnUwkekcOAlJvedcs3DG+VbUzPo=;
+	b=tJ1asYCEltrTOsS9pNTpNyjiiD2ql1H6BWSCuGIWX/ptfYX9Yj0vCKB5jRmFIDg6+F/O
+	 /9UGPn18UhOf4Z2t4yntcsSqo++r31lx9ZLBW4gcmfpRWDVVe2BrR23obVlejwk7hlOin
+	 9eAM1tlADbvYCNIN+l78FwcRmB+3a/fQvUW1YasEUcwvVxuahmPBdV1XzegyA4XdXtzbJ
+	 CbjPWicDkfqKz90bZEpZcyZXtyIkipPDQF3jTHxrO4l9dLHUqQdulGOx26tEX85J4cPa6
+	 HWM+GLJlMi1V1MJc35bgLh8I3wazZwRbOC+DNloykw0iODswYwMT8cLuH1mX6FQ2ulw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AHuBdpj+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JeX47OBz;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96243606A321
-	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 09:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED35606A31C
+	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 09:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AHuBdpj+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275861F000C0;
-	Thu, 26 Nov 2026 09:03:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JeX47OBz
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3CDA1F000CF;
+	Thu, 26 Nov 2026 09:03:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795683799;
-	bh=XBH6J36zAqMuTH6gInfNyyU3T0R72ozkDXLkDYbWtFw=;
+	s=k20260515; t=1795683834;
+	bh=2f4dTVrXUrE9hVjyhnUwkekcOAlJvedcs3DG+VbUzPo=;
 	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
-	b=AHuBdpj+ksvDOq/+TYCeRg1tGS1H5CDXuIaaLkmNfH3SU21wojS5JFDlCZGPcpGg/
-	 YQLw+gNuxvlQFQRt7b2ftT3D5/DuIhJl8Q2B8yMprA7TE9Ecix93MCWZZh4obCRi6h
-	 0QUuyrXopz/BOk32m/lvs0c6mlJttvU/1OQFGaTOBKGP2asuemPuCLeXBlUCl5VVIK
-	 d8EkOEfmKaqto1BwkhDVU40VvHNByi9n+lGeFswuXX8JfecYlRLztcHBqWZwSiPcLv
-	 oyL2tH/KLTxtoxbyUiWFme11enwSAEu0wpBcWl6fkwV2/Uh/7ikVdJ6wPQ18umhghx
-	 JTh72W7HdJjJg==
-Message-ID: <sashiko-outbox-235073@kernel.org>
+	b=JeX47OBzQM3cjhnJ9XriTruUSEoR8PD/qXdzPOsEUW/+e8B5at2aMhGa9STGI0RUu
+	 t4BzZMXsZONVKnbOJgid02gJ3Z+KSny0OlFaaFccHPdE9pRH3KWNv5WInvtS/3MZEo
+	 09M4FhhZ9Z1FYaLCjId4rqH/3WRgaTQQJQomKn69xOuO2T3vHxdx0B/YfNMCWgD8H4
+	 gBGn0YMCZh1U5pM3JXPyqFGLYefLQMKJYQzn5NlkXOF9nPTw+QP4+RCksQz0Mcqipg
+	 dPDPhdYCANiFu9E5bmc7LAUUSS7Ju3yw2e/tKoKRefoycLlNW2cS6w40ePReRu3/eN
+	 3DvDEgHE9xLTg==
+Message-ID: <sashiko-outbox-235075@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/3] KVM: PPC: Book3S: Synchronize TCE hcalls with
- IOMMU table detach
+Subject: Re: [PATCH v2 1/3] KVM: PPC: Book3S: Hold a reference to sPAPR TCE
+ tables during hcalls
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Narayana Murty N" <nnmlinux@linux.ibm.com>, kvm@vger.kernel.org
-In-Reply-To: <20261126085008.34532-5-nnmlinux@linux.ibm.com>
+In-Reply-To: <20261126085008.34532-4-nnmlinux@linux.ibm.com>
 References: <20261126084351.32375-5-nnmlinux@linux.ibm.com>
  <20261126085008.34532-4-nnmlinux@linux.ibm.com>
- <20261126085008.34532-5-nnmlinux@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 26 Nov 2026 09:03:18 +0000
+Date: Thu, 26 Nov 2026 09:03:54 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -63,38 +62,35 @@ Precedence: list
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Low] KVM: PPC: Book3S: missing Fixes trailer for TCE hcall detach
-  race fix
+- [Low] KVM: PPC: Book3S: missing Fixes trailer for commit cad32d9d42e8
 --
 
-commit bff0a1814a06b4153499fc640facd0cd8bd3623e
+commit e9c775c6ce258aa52807c78d9ed640f4c2596501
 Author: Narayana Murty N <nnmlinux@linux.ibm.com>
 
-> KVM: PPC: Book3S: Synchronize TCE hcalls with IOMMU table detach
+> KVM: PPC: Book3S: Hold a reference to sPAPR TCE tables during hcalls
 >
-> TCE hypercalls traverse stt->iommu_tables while VFIO detach may
-> remove attachments and return hardware window ownership before
-> in-flight TCE updates complete.
+> Commit cad32d9d42e8 ("KVM: PPC: Book3s: Retire H_PUT_TCE/etc real
+> mode handlers") moved TCE hypercalls to preemptible virtual
+> mode. However, kvmppc_find_table() returns a table pointer without
+> holding a reference, allowing concurrent fd release to free it
+> while a hypercall is still using it.
 >
-> Use the existing kvm->srcu read-side protection for IOMMU table
-> traversal and synchronize SRCU readers during detach.
+> Add a kref to the sPAPR TCE table and acquire it under RCU during
+> lookup. Release the reference when the hypercall completes.
 >
-> This ensures that TCE hardware updates complete before the
-> detached window is returned to VFIO.
->
-> The following patch addresses safe reclamation of child entries
-> accessed by these SRCU readers.
+> Use kvm->srcu to synchronize active table accesses with fd release
+> before dropping the locked-memory accounting.
 >
 > Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
 
 [Severity: Low]
-This fixes a race between in-flight TCE hypercalls and IOMMU group detach
-introduced in 121f80ba68f1 ("KVM: PPC: VFIO: Add in-kernel acceleration
-for VFIO").  Should this include:
+This fixes a use-after-free introduced when TCE hypercalls were moved to
+preemptible virtual mode.  Should this include:
 
-  Fixes: 121f80ba68f1 ("KVM: PPC: VFIO: Add in-kernel acceleration for VFIO=
-")
+  Fixes: cad32d9d42e8 ("KVM: PPC: Book3s: Retire H_PUT_TCE/etc real mode ha=
+ndlers")
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261126084351.3237=
-5-5-nnmlinux@linux.ibm.com?part=3D2
+5-5-nnmlinux@linux.ibm.com?part=3D1
