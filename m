@@ -1,82 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795684442;
-	b=Kckm+msCOhd36/BNmMnpYQz4CtNwfZ86cSr25AGmJHlVYwn07Xf1tQOwwAtDR/uqNTwo
-	 IDlQsm5jW3TyDPwPmD3TXdpXaOLPDcNHz8A6cuVVNU4XSqcIo62KtaxnMAPXMK45yF48W
-	 hWKKcR+kTDn+7knigjuP/INLuAM4zQyMRUZFBuTv4NLF4ZDoYqFjJrYJ10L6/vSaRNN0r
-	 mYMPsV+e6Y4ErPJk9h7MafXIwrLtLQc0iYn+Ez+jCpcQE2h3F4n+fAAPJ/qCWeR3y9Kaf
-	 epCC2OefefAFS61o6oee/BIV7u6MhJtsM2qS60k2HVEXcJVGCVxwL8cPJsJmwHAJsWQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795684442;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-Reinject:X-Authority-Analysis:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=vZoNY4J2XfOqVAVfCTxllGnPnfy/9sUb/hOJLoDliJQ=;
-	b=zRw4+G93hJcg7AwGQ6KHK9QiYpz22G5kSKbyynzZVqeUuOZBmDoQoCVboEN73dZq06t8
-	 ytrvaqrZpkqBPtzez9aCplvxkYrrlg5hHrJoYvjMZyPXwug3VW8yMw1074BP16fHMOXUk
-	 0I5ExDxbuU6VQ1CvPKmnmYMUrjWL8VrXUC1jgXxF0HvOXWs8zpNxhtLYSusshn6mjkAHI
-	 5O+Co6z+zwShJgr31g5wi2eUfcHyIXKgWss8KQpIA5xnX00BhcBbBdhxbVu9CJ5fCFvut
-	 AefBAZMq8Aeq07s/I/J/d7gKItN9kQfgdOof1YkKqnZZjQGUz+IAPbQtjeEcmXevVCw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b="PM3znO/a";
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.56
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795685290;
+	b=HUxnUMKLx8yROPvSdKlUC3Pw7ZtWsGZT4tynfIuvrXu0td2U5yVRsSRtB8f/PPACnReN
+	 IXiOWGFbZ0yHIFE7b5iOqQxFlbcniowaKpPZdzoK9cm4sqijm00rJcXb861NEE+ERL3KK
+	 sL3ayyxjt1/MnwSTiKxSGbMVJUGgkWoN5W3d4fpBrfqJopbMcLOD9BMiwuzO8zcG+1uFM
+	 CUEI46Ceqq3++omIuTIwFVhpSMlAqJSLkfwQ28KfmpHZgbc72xt0xaITQmz/U4qupL4i+
+	 5bPngh8lxWio8vxT/K/Ab089cV4tVPmBEtGDyqDM7L4GwIy7rgTljDyee4+d2uvOZTQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795685290;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:Received:Message-ID:Date:MIME-Version:User-Agent:Subject:To:
+	 CC:References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=v1cMb3TS+ag4WuSmw2ebvlf9Gn+4AXj9dSVhjTXBiOg=;
+	b=1p/yUxakhH1M5RmuLiH7l6mXglhWCGGbEMeKL/PXNv3cgP/JKKEImgl+EDITuUcqLiGd
+	 pvcaTLIJIIGti5W7cVct2Jl9/dLPtNSIct+EsyOKvRb3wSOgpN7zLyBZXdTmUS7jS0/X8
+	 FmdwKO01TTYzzHr60lAyETc6SfDAoy2Ol0OCdg8VOg3jz23Kupi+5wuKIe9SzwyDLLgzg
+	 wptgUWlzXHKRYO7m0GV0gQsNvZr9UrqONvTRP+ZtP3gTTlDrjox7ZDEtI31PD6MG4/9+o
+	 VR+WolOP/cRudcBqgOlW5t7H56BZS6QvLFYSX1bCTH5jY0Rv2YoEkf6wVV2u1GCGaVA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=amd.com;
+	spf=fail smtp.mailfrom=amd.com;
+	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=oxlwK7S4;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.56
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010056.outbound.protection.outlook.com [52.101.201.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF45606A31C;
-	Thu, 26 Nov 2026 09:14:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1DF45606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDB0606A333;
+	Thu, 26 Nov 2026 09:28:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2DDB0606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PM3znO/a
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AQ7YfOA3658974;
-	Thu, 26 Nov 2026 09:13:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=vZoNY4
-	J2XfOqVAVfCTxllGnPnfy/9sUb/hOJLoDliJQ=; b=PM3znO/aLKks8NgMCTvxGA
-	/eA9zLTjAiOxhyETIxNtpBbac1QBB1FC9Q/fV9mFod7d/exdU4JMPlRWxyNiL7mF
-	J6QXoxaepvXXnEWKfl0+OmBXvbjbydLRdDkbWsayI33ibTopVvEdekP+efS8TL6A
-	dgsB5EbI7aiNOzpQslHZc8Vh8CLgw69qbk8fu9wAYCrxEaCL3r7YKLiv3sloBvWh
-	oIbSJT+GoFlOOd8fdLlqlIO2M4eFIhqJVgY+X3S8YTO2Quo/3eXJ15r8vR4XygfD
-	lVRszGc4b8AJN5EsV855yNe0OuIuamQZkBGcoC/UD6IMxwHuT3xvzNBWdDv8ceog
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34gvg2m0-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 26 Nov 2026 09:13:49 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AQ7JGMr3386680;
-	Thu, 26 Nov 2026 09:13:48 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j5a417gwy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Nov 2026 09:13:48 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AQ9Diff47776026
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Nov 2026 09:13:44 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 85FAB20040;
-	Thu, 26 Nov 2026 09:13:44 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 15E122004B;
-	Thu, 26 Nov 2026 09:13:44 +0000 (GMT)
-Received: from [9.68.16.159] (unknown [9.68.16.159])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 26 Nov 2026 09:13:44 +0000 (GMT)
-Message-ID: <d19de976-aa6c-4168-856d-b65e96eabe88@linux.ibm.com>
-Date: Thu, 26 Nov 2026 10:13:43 +0100
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=oxlwK7S4
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=K8rrqCChTX05d5Z/PpJXmNIi3NNqax4Dsh4qxTQCIXiPhQjZ2kWb5PrxlEEh6KmqPyXlFmLd37VnVgESUjDJ0WYhua0xx3dyFRaOWPH7DyLqmwPyUdw8xPlySn+TcUImuRA7EGf3VAKCIJvpBoSt5A+J0CZFj6TgcicFkemlDg0eValR47644EmZR/k5P2+BunqlgLZK5/rts47i7OHNx3b3lWXw3WxzK/EZhnkVkyKzwCZYD84xFeNzqQM4BfZOqJDnzEc/SQARfYr1sqleZMtikO+csNvNPhfkddv0BYqVyYMe7SS5VT0poM80+WKR9zd+uHDC/fOGcLusmL10AQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=v1cMb3TS+ag4WuSmw2ebvlf9Gn+4AXj9dSVhjTXBiOg=;
+ b=I61OIfvw0Ow+dT6+VwqKIS2JvgB2AryoakQpUWFlDXlV8FT+Y99XzG+6hJsHC4hUr6e/XfsGmUFGNRCPJ3zH9Ioo/UWC8ghtUjMQItpNRdb7OA4Nusos7CbIlQzysW+bwwMPrMhcQYF72QOos3eyWdBr1rMbBOdTXVzWFu7Wpq/t5of4Lin5EwrPHzuHF/IdiBtCPBikecMklESejZyMGLUHhTJCRt7ogd1fc0zicrc1+FDnI3wnYKx568W6mb2g76KDfvXaJ2j0t+/S37fMAIAmSYqO/2i1WyGb1+08ZkTXtOhvrNvlglJddWTz3m5LhaE57aHlqshAVU9+62HJLg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=v1cMb3TS+ag4WuSmw2ebvlf9Gn+4AXj9dSVhjTXBiOg=;
+ b=oxlwK7S4KtihXKtYEnTPHhDHRWF9mnP//qQAiXMN+YDbm5M0IenkkaN9uIVBEPfMHBovVNviyNbaByRC2wzfBSa/xXrGtk6WN2DBWAZYMyrofb3Styu+LzUoRpx+apd++gg5j2ZEX3P9SrGt5YXi0PLtnxkn6/Uq0HDJ/MbRw04=
+Received: from PH7P220CA0128.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:327::15)
+ by DS5PPFB297DAF97.namprd12.prod.outlook.com (2603:10b6:f:fc00::65d) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Thu, 26 Nov
+ 2026 09:28:04 +0000
+Received: from PH1PEPF00062F2E.namprd03.prod.outlook.com
+ (2603:10b6:510:327:cafe::7f) by PH7P220CA0128.outlook.office365.com
+ (2603:10b6:510:327::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.662.7 via Frontend Transport; Thu, 26
+ Nov 2026 09:28:04 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ PH1PEPF00062F2E.mail.protection.outlook.com (10.167.243.135) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.688.5 via Frontend Transport; Thu, 26 Nov 2026 09:28:03 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Thu, 26 Nov
+ 2026 03:28:01 -0600
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Thu, 26 Nov
+ 2026 03:28:01 -0600
+Received: from [192.168.0.101] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.57 via Frontend
+ Transport; Thu, 26 Nov 2026 03:27:57 -0600
+Message-ID: <e1b1d00b-b53a-4c6b-a746-72ed2058134a@amd.com>
+Date: Thu, 26 Nov 2026 14:57:51 +0530
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -87,163 +106,99 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] KVM: s390: selftests: Add a test for nested guests
- in ESA mode
-To: Yvan Janssens <yvanj@cyber.gent>, Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: David Hildenbrand <david@kernel.org>, Eric Farman <farman@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
-        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261125165604.3074595-1-yvanj@cyber.gent>
- <20261125165604.3074595-3-yvanj@cyber.gent>
+Subject: Re: [PATCH v2] x86/sev: Skip DR7 write during kexec when it would
+ trigger an unserviceable #VC
+To: "Kalra, Ashish" <ashish.kalra@amd.com>, Borislav Petkov <bp@alien8.de>
+CC: <tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, <hpa@zytor.com>, <thomas.lendacky@amd.com>,
+	<Srikanth.Aithal@amd.com>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>
+References: <20261116230335.1161521-1-Ashish.Kalra@amd.com>
+ <20261123234341.GCawTPrczGd6iM_Uby@fat_crate.local>
+ <47cb97d1-5919-4ee7-ad67-6039551304d6@amd.com>
+ <20261125041925.GCawZhzVbU3ngXnt5c@fat_crate.local>
+ <5acdbdc5-0c9e-4db8-a21c-fa011ba0bd57@amd.com>
 Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20261125165604.3074595-3-yvanj@cyber.gent>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: "Nikunj A. Dadhania" <nikunj@amd.com>
+In-Reply-To: <5acdbdc5-0c9e-4db8-a21c-fa011ba0bd57@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=CYCdd7rl c=1 sm=1 tr=0 ts=6b07f84d cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=iT8M5YjzDwDgK0uH:21 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22
- a=VnNF1IyMAAAA:8 a=4nKcqwHAdgOrSOTCE1kA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI2MDAzNSBTYWx0ZWRfXygJ6SuRK29FT
- cwXrSOT1Tqul/ZTeoU4DkRzGFLUJKXQ4+/DbGKncV+XU7h53NLdW6oORy7x2G6V08AzUNPZlGJi
- 3WPUZlXLorXmOCAND6kIWhWzdLcGOu8=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI2MDAzNSBTYWx0ZWRfX3TFHXFiIWxy2
- 3/m4VpnCDHR+3mSpU/GukPn60nXfuNUPi6dYct71lICZnnSOH1bo5hxyKErKKqfGLDD9j0jnS2U
- 0o9yU6/E9BQKgWzfTJ9wCOxLHjgl6Mjhp6Xx6f0dKMBohCD9+ABx69YN+E1zbpKBkIdAs1r5Tgs
- 6fAGzkrXjlaBG7xedxEP+hNf4XMs5fiGQsUKSuwLWaZH5Hofi1HjiKnMjMEvyrqJdNs2LdL+nw3
- 0HXgs5WMJFotVGzqkH0H76l6Tb+VATOufa/ik+vhemVnAZ9Hfxamb8tcaFppx/RyI5ShCTwr+7O
- Y1iui75t1iQBjgi7B5iMjrIF/dEoeWTWisbbs7dKk+LfI+l4zryt3YcHRLFkd9FjwldGENx18ib
- 18QZO1d5iOYh2pfkkrsTx4DXRVxwRpxJunI/gTxYo9wYj3rYWBEsRsijR6tfjj4xqM4dirIX0/m
- WOhNRuZvrlE1XLrENNA==
-X-Proofpoint-ORIG-GUID: V1KHpE5rQgT9y7dED-Nhb3RIhxU-9_hM
-X-Proofpoint-GUID: tl9KmaoLWI8Cz60VPl6aqgu1JxS2iSCF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-26_02,2026-11-25_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0
- clxscore=1015 spamscore=0 bulkscore=0 impostorscore=0 adultscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611260035
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH1PEPF00062F2E:EE_|DS5PPFB297DAF97:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1c85ec3d-c1b4-4ec6-5000-08df4b9f9293
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|1800799024|376014|23010399003|82310400026|261102123227099003|10067099003|11063799006|4143699003|56012099006|261021121427099003|261026121527099003|261022105027099003|261022075727099003|261028144727099003|261021135927099003|261026140227099003|22082099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	P+eVfJOOnQ0MCvMPNePTbK/gWbfn91tViECFjxYVfteAui+6wcVPMaYibH9B+Ux284OgkwiC4E0teRpFzsSBE7lKjCBxu5W3y66TJfwSBcwHUBajw/Doilm8Rhm6PcdjYCnDZOwTvjiebtka8w6MicUu+7O4CafUjI2N+E+DpU6xBiNBhM3xKF9Ekmh/dTc6XdX9KNHeJwm08O4hagqpWCc0KUE2pxVlSrsJIuNhEUbLNuWZEaBKrd0OAq+YtX+K31HNeapGsBprvNSw3m1hNhNm+f0+jZwGFnn1n0M6tNjdrrg/Wtf0FX8Aj5GKof0EJtbqjMSfRoB1bfEUyL+/xg2D8dp6BbL9r8y7rSWrtQp0NHpt47cgk5sxX1rTVIx8944GqY7Ebuh15NdUSkE03WytXCI6YKyZs+iQfNrt5CRJiS2uwC4cUiK3Jwy58dW/XWFH8HY5/YSjOHZ/Z8HfOGbqV19f0W0cbDuBMs9pOF1JBsw8Lr5Ygu+gFvl0nRLmLu32UUBqsFHEvnHGDSzdkg0Exv1YWpy7jxofnQVo2hzBweoqEP78BSBe8e3Lu1p/2I5g1zH0A7CB+LIIAcn7JqPPTZK5nThUGYGu6IeAc+rVDIG11clccHiihESIt1jPxnXNfm9wJ5ImFuRjck06NF6fw1csL+GrFxfl2uicx2d5pOD0/0WvcEWmrsfy1SLsFWYvCs0DF7HkuvoCWVZgsg==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(376014)(23010399003)(82310400026)(261102123227099003)(10067099003)(11063799006)(4143699003)(56012099006)(261021121427099003)(261026121527099003)(261022105027099003)(261022075727099003)(261028144727099003)(261021135927099003)(261026140227099003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	b1CNbIxy9UWnmzgMIwp5zrM0+nVG1kraxO/ASEWYBBlmRZQUQbfZAce/H/tXJvimR2f8sK7Bjxn7Z0rhMfPa4agpyayKz3ICAcASD5IyXzBCQfoS6N4ukcHaoVGBF0d1EiHACIfhbyo4PjEzQzWr/UZwFcDcYVO1vqfodjsdMpctBY4kB8xDziB9qn7bOosKpefUfnaCCtKcg7KklgWhBvW4jugkQ3TnL3BBtyUlncn3fG04pb8XQdYSmfzLA6LDMeZh/WocJDR52SiZZANOX1pwbrIVdu3mfwzv0K54LpugyS/5oG+imeZKf6du21qMWASj3al7e8u6XjK0wp6kuOak0hlUSyvb/Ea6bp1mv82B3sIOWCdSqj0zeEDu5aj/yn5tkU/iAm6yzF1JFXFVJNrDkAfceAUZfsT8w3K5Cx0BQQKBkauoGx3AccoPJeJN
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2026 09:28:03.9777
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1c85ec3d-c1b4-4ec6-5000-08df4b9f9293
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	PH1PEPF00062F2E.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPFB297DAF97
 
 
 
-Am 25.11.26 um 17:56 schrieb Yvan Janssens:
-> Run a nested guest from a state description without the z/Architecture
-> flag, with KVM_CAP_S390_VSIE_ESAMODE enabled, and let it execute STORE
-> FACILITY LIST EXTENDED twice. vsie intercepts the first one of every SIE
-> entry to shadow the facility list guest 2 designates and then has the
-> instruction repeated.
+On 11/26/2026 1:59 AM, Kalra, Ashish wrote:
+> Hello Boris,
 > 
-> The test checks that the second doubleword of the PSW field, which is not
-> part of an ESA/390 PSW, comes back unchanged, that the PSW points behind
-> the last instruction, and that the first instruction stored the
-> designated list. What the second instruction stored is printed for
-> diagnosis.
+> On 11/24/2026 10:19 PM, Borislav Petkov wrote:
+>> On Mon, Nov 23, 2026 at 06:22:09PM -0600, Kalra, Ashish wrote:
+>>> On the "bogus VMGEXIT": before Nikunj's change, __sev_get_ghcb() returned
+>>> the per-CPU GHCB, which snp_kexec_finish() had already converted back to
+>>> private. The host mapped that GPA, read ciphertext (exit code 0) and
+>>> returned GHCB_ERR_MISSING_INPUT, but couldn't write the result into the
+>>> private page, so the guest saw its own stale contents, treated the call as
+>>> successful and moved on. The DR7 write was simply dropped. It worked by
+>>> accident.
+>>
+>> Oh lovely.
+>>
+>>> As for using do_vc_no_ghcb(): the GHCB MSR protocol requests are meant for
+>>> specific guest-initiated operations (protocol negotiation, GHCB
+>>> registration, page state changes, termination, etc.). The only one that
+>>> corresponds to an intercepted instruction is CPUID, which is why
+>>> do_vc_no_ghcb() handles only the CPUID exit code and terminates the guest
+>>> for anything else. There's no MSR-protocol equivalent of a DR7 write, so the
+>>> no-GHCB #VC handler can't handle it.
+>>
+>> Well, can you fashion something with VMEXIT_DR7_WRITE and a dummy GHCB MSR request
+>> to the HV which is innocuous, just so that it can satisfy the flow?
+>>
 > 
-> The test is skipped without the capability, without interpretive
-> execution for the guest (SIEF2) and without facility 7 in the guest's
-> model.
-> 
-> Signed-off-by: Yvan Janssens <yvanj@cyber.gent>
-> ---
->   tools/testing/selftests/kvm/Makefile.kvm      |   1 +
->   .../selftests/kvm/s390/vsie_esa_test.c        | 180 ++++++++++++++++++
->   2 files changed, 181 insertions(+)
->   create mode 100644 tools/testing/selftests/kvm/s390/vsie_esa_test.c
-> 
-> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-> index 283c59d7649c..aef64ec2719c 100644
-> --- a/tools/testing/selftests/kvm/Makefile.kvm
-> +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> @@ -227,6 +227,7 @@ TEST_GEN_PROGS_s390 += s390/shared_zeropage_test
->   TEST_GEN_PROGS_s390 += s390/ucontrol_test
->   TEST_GEN_PROGS_s390 += s390/user_operexec
->   TEST_GEN_PROGS_s390 += s390/keyop
-> +TEST_GEN_PROGS_s390 += s390/vsie_esa_test
->   TEST_GEN_PROGS_s390 += rseq_test
->   TEST_GEN_PROGS_s390 += s390/irq_routing
->   TEST_GEN_PROGS_s390 += mmu_stress_test
-> diff --git a/tools/testing/selftests/kvm/s390/vsie_esa_test.c b/tools/testing/selftests/kvm/s390/vsie_esa_test.c
-> new file mode 100644
-> index 000000000000..a52603e30f63
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/s390/vsie_esa_test.c
-> @@ -0,0 +1,180 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Test nested guests that run in ESA mode (KVM_CAP_S390_VSIE_ESAMODE).
-> + *
-> + * Guest 2 runs a guest 3 from a state description without the
-> + * z/Architecture flag. Such a state description has the eight-byte ESA/390
-> + * PSW in the first doubleword of the PSW field. vsie rewinds the PSW of
-> + * guest 3 when it has to repeat an instruction; the test uses STORE FACILITY
-> + * LIST EXTENDED, which vsie repeats after it has shadowed the facility list
-> + * guest 2 designates.
-> + */
-> +#include <stdio.h>
-> +#include <string.h>
-> +
-> +#include "kvm_util.h"
-> +#include "test_util.h"
-> +#include "kselftest.h"
-> +#include "sie.h"
-> +#include "facility.h"
-> +#include "ucall_common.h"
-> +
-> +#define G3_MEM_LEN	0x100000UL
-> +/* mso/msl have 1MB granularity */
-> +#define G3_MSO		0x10000000UL
-> +#define G3_START	(2 * 0x1000UL)
-> +/* where guest 3 stores its facility lists, in its first page */
-> +#define G3_STFLE_1	0xf00
-> +#define G3_STFLE_2	0xf80
-> +
-> +#define FAC_STFLE	7
-> +
-> +/* bit 12 of an ESA/390 PSW is one, bit 32 selects 31-bit addressing */
-> +#define ESA_PSW_MASK	0x0008000080000000ULL
-> +#define ESA_PSW_ADDR	0x000000007fffffffULL
+> We could issue a harmless MSR-protocol request and then skip the instruction, 
+> but the request wouldn't carry anything about the DR7 write. The hypervisor 
+> would end up in exactly the same state as if we just skipped it, so it would 
+> be an extra exit that doesn't actually communicate anything.
+>
+> So how about doing it in the #VC handler: once the GHCBs have been torn down, 
+> route the #VC to a GHCB-less path that decodes and skips DR7 accesses, completing 
+> them locally, and the kexec then proceeds normally. 
 
-unused but probably ok to keep in.
+Agreed on handling it in the #VC handler rather than in do_vc_no_ghcb(). 
+If the DR7 skip lived there, it would have to decode the write and advance RIP 
+itself, and the startup code doesn't link the x86 instruction decoder. The
+runtime handler already has vc_decode_insn() and vc_finish_insn().
 
-> +
-> +/* facility list for guest 3: only the first doubleword is looked at */
-> +#define G3_FAC_0	0x4000100000000001ULL
-> +
-> +static const u8 g3_code[] = {
-> +	0xa7, 0x08, 0x00, 0x00,			/* lhi   %r0,0 */
-> +	0xb2, 0xb0, 0x0f, 0x00,			/* stfle G3_STFLE_1 */
-> +	0xa7, 0x08, 0x00, 0x00,			/* lhi   %r0,0 */
-> +	0xb2, 0xb0, 0x0f, 0x80,			/* stfle G3_STFLE_2 */
-> +	0x83, 0x00, 0x00, 0x44,			/* diag  %r0,%r0,0x44 */
-> +};
-> +
-> +static u64 scb_real;
-> +
-> +static void guest_code(void)
-> +{
-> +	while (1) {
-> +		asm volatile("	sie	0(%[scb])\n"
-> +			     :
-> +			     : [scb] "a" (scb_real)
-> +			     : "memory", "cc");
+> This is safe: without DebugSwap, 
+> KVM intercepts DR7 accesses and only tracks the value, it can't load it into the 
+> encrypted VMSA, and the kexec'ed kernel writes DR7 again in cpu_init() anyway. Any 
+> other #VC in that window, which can't be completed without the hypervisor, would 
+> terminate the guest with a specific reason code instead of dereferencing a NULL 
+> GHCB, so it gets caught explicitly rather than silently skipped.
 
-The guest touches r0, so we probably should add that to the clobber list when applying.
-
-Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-
-
-
-
+Regards
+Nikunj
