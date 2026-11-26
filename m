@@ -1,45 +1,83 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.173
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795650716;
-	b=Sfoxe7Vdhs4Zhy984BL6ww+/X15oMLXTxAEilORCmbeYO1rjYwORTH3sYSUZgcV/09H5
-	 WV5NBCotx29vD3oFFEGIUOQW82Y37ZNgyopPAvUFrMx+51xBEoy4AUxR7cTRJPQMjde50
-	 iYiEYutiESEYZNpObBh7Zlct/IqWKBWoL6i6QGUmXNVWUKGDjNqO/zywHgP3houoRLs4D
-	 uiusXXCDbbxeKiKYKFmACUx04CqiFu5IjoAZT/aP8eZFpTdW9AADzuj3Qdw7BVMgk6P61
-	 0takyhsF7kBK8IZitUXS4uaBm4YS8B2r6JsJs/b2bid7j26zlcvJ7iEMRizKMukL8hw==
+	t=1795651982;
+	b=rER4q9gWs1GCoH7sxJE8INNZoUY5eYFu3yhWuAkSHA2GBvZLzcrokQSAS6T/qzE0jG6r
+	 2Gg46CcTclj/OI7ms4GWHb/umLl5hGWaq5Ak1oW8QIx+Z9H8PnMhR0qXN+d5fballsxZk
+	 H223ACfdsNe7mQE7l9G0bTxVvjF2gJ1q2gdjUq5sG879DeNwLnAoXhFCkSJ/DFHgsUtji
+	 i1Ef6/xco7Ug9xbC06ch3+IryTHCfjisoQ9bNFSwIQw5AJD+COslqSAHJNYqQLvmbNS0c
+	 fNxCHWg46fZ2FcmRw1DOG6BurbDFKlyI/yIhgzn7thwF4GCM3rn5R4taAPsc6GHANag==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795650716;
-	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
-	 Content-Type:Date:Message-Id:Cc:To:From:Subject:References:
-	 In-Reply-To;
-	bh=eNHNSZn2koSUnpEENTHobyjeI7cVNI7nbjqUeJE3ris=;
-	b=FxXmCCoeavX8RK+Dv+J89IleABCTj+giVervqAROC6Y0SRP1CUVfI2GLNxftD6emKQY9
-	 f6d44kiWiI/owkAE4ExQ5dQlm2F3sDbxrNB2aW3NUnU2tsJoUdOE2lQlOy1pSJ0duvEK9
-	 5xYQrrtTDb2W58HZ1/kE9Hv7XNT5KNRVrLXMGbuoo4OHNgDYk47vMDIX3fzDE+xd+F9gV
-	 NpuCsSXAlvohLiTRLM6eE3Y40MXfGpMFwe13hZpUd44falkHsJ0d/6s6Cl5CG6/Yv0NI/
-	 w5G8PRIJG9x04huEpvUJXkoI6qeQ1tNGoIJn/puALmz+NcVsNlfdtcCWHuanQgwNhSw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795651982;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Mime-Version:
+	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:Subject:
+	 From:To:X-Mailer:References:In-Reply-To;
+	bh=F7ZXso7jhWjYiqUU7UwYJiU8JPoYkJS5VDECLxAjalg=;
+	b=JBlMQLVz4hljtc8h6FCcbIrfJRgGtegY0kOZTvxLnp+ifmXz2MciFG4dG9hUdhAeI5gE
+	 FFyEfynvvuQeAGLVKKOdkFONoiAqrsIgoiDM+uFRs6EdfezIXsu4MkhbPrY0+dP8HWYZS
+	 YppxA8yRMm++DkTda0YUSgch5zkB5k1YN8HiSIpp8bFA7//n7iGax1NbBLZh9CCJZSyeL
+	 kTEpUyl9g0pFe2AUcF7QPZNV070LFib/v1M53XqmfOWVT3jwGE+qMh6diLk5Oct61vYic
+	 OACJRYkz2WNwMSuMUJpuoMV7RRJ+QuqXUYWCu7d0xrA74hbDWDRM0GgLqhSgh0tYfMw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KK1dH9P1;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=CRyZoz22;
+	arc=none smtp.remote-ip=209.85.215.173
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29AE606A321;
-	Wed, 25 Nov 2026 23:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A32606A326
+	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 00:13:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58A32606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KK1dH9P1
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB6B1F000C6;
-	Wed, 25 Nov 2026 23:51:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795650715;
-	bh=eNHNSZn2koSUnpEENTHobyjeI7cVNI7nbjqUeJE3ris=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To;
-	b=KK1dH9P1/U4R9al9H+bwPpOla2CUGftQFTJhl8Lgt7XFGsTPw6Pve3rRsuBwn4hAJ
-	 K+MNehvQytF0K0bFEHNKPwXQTJwZGsrKgm0gxG6lgVS2vuFvKbSpkDywNLsS6fyQjj
-	 8rqLK8p97vHQC2ZGDeM8IEjsrPBz3IKSOfOz/TG+dQFVxaqx3FoCxOlhIpB8tQM74Z
-	 CmNppdlkvPoURS32YSw4X4Z90cXaUFp+72eatK91WTPsm5Hd6qERfIxGb/WA4ceyO5
-	 nfAYpIdGiepey8shQrvKE89azGTIioy+fq5M5SWwfa87x5trYF6b9z0QY98n34Xrg7
-	 ec/kmYgPTSO3w==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=CRyZoz22
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cdb628232d2so3568732a12.0
+        for <kvm@vger.kernel.org>; Wed, 25 Nov 2026 16:13:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1795651982; x=1796256782; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=F7ZXso7jhWjYiqUU7UwYJiU8JPoYkJS5VDECLxAjalg=;
+        b=CRyZoz223YPEgFuLspAYVU4C+wiGlk9ZRfC4HfdodSy0pSclT2YuU4hBncddoQ7NAP
+         zKu4VT2oW5ZfFBULJgFASRshVh9mA1r8lP6fnGbhH9xU2mqRmzIvmCWYvB+Kzom27kg5
+         JJFYfPxyGKTK03zpQXmD9E413UorfTlNFa+Rwa99uJ2mqFEPKSmjgNKtfgwMcAAa2/c4
+         Jqk3Tl75ny2JX/QBzMoJ5GTw1mxy+LgQ//NvfV60s+uFw7IkRE2D1pb05BgAhEcW0/G0
+         1p1usltjtOOjzyoVvVnmt3ft9YgNNpYavOWs8OxOi1FPdeQYukgE+XbkeBQ52EeN4OG5
+         +NNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795651982; x=1796256782;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=F7ZXso7jhWjYiqUU7UwYJiU8JPoYkJS5VDECLxAjalg=;
+        b=ZWFK914v7MJtiYY5hOfauHt6ctc7Hgez2I4OxSgxw0NnIpGgyauckRbjWEzgDlMSRZ
+         faXhvgs6yn+BIxHyJoV+JCpsscuYNQNKiwrm92jFwRwDF8ayx0hVdW6uY1aBndZllgMH
+         H3u8rG/uHt12Owx3ikTPHOGF9bp6ZZnl/tNgVlWoes88iFNW1WKaNpim5GjFC2SrJIoC
+         fCKTa2NdG6tK1OvxflPj5AlgEf7+A8VUl0mdYMZ19LVpKN18QXVg0saCkPZIZFqsXasO
+         RoD6Sw6qU45Sqhlo6rlT7s3SO5fEjiBK9rseyYPf+GfDiGD6Uy3nbVPZBQSz9tIn1h5B
+         mZAg==
+X-Gm-Message-State: APuU4Z/5pOWDPXxyCTjm5tbaI8WKH4vv6ceEiJMB9RmWs46ySF329hfa
+	ZQ/JQoTaNIYRNPXRZOsxl7SReu4L90N9fL/CC5VbmZVVdpXfbJJCi7646q+pMKbP5Q==
+X-Gm-Gg: AZFdTZeiD9nXinxIuquLdnMkdDsHmYFd9HcLDlMMaKFQgolQ0JiYh+R1PPkPAZ/RGXq
+	ax7jwcAZHpipWw82wvEb3w/HhCvocDce0CJ0MAu4t5NU1ttGw4OyA9ZdwM92KuhE78C8vDb2DAn
+	0GIzS2I8zgRXhf8wGmDEURZsNq0gMboYqmtLmz31lsF9twGmZVPeJnfN/HKpb+lQaNZ2XE0ilWs
+	vfcbTyZR5pknQm4J4w3+u61gpFIXOGYgNyvOntK3Xp2x/Moj7sRK+CAn9QNEkzZD6H3BeI+LO5b
+	GGEudEckRiBHCAWi8iMhr6+AYl+2H+2olSqV9NvTXtHl0aZKRfBtELEpi1RvffjO0/KRcyYwcvz
+	qX1QzRc+2lTAYINepSit92/lTA+4ueWHUBqAF4hWxOlRl5MgfsISM1QXJUTCKFc9qhBxBMN8jGr
+	X0UUMVy9gNrb6VGlhbQnvAaIfiFcZCdsWcpSlJJx7CRVnS8bdrl9Dsl8MOBCDM8mhT6lYHdDP09
+	wlOXaZ8Q87jxAqx7EmMcfarn0E+LVN2C91cklgJwuY/eI/kFgCdkJdRs5HJZuIIC26X65V903ly
+	eGnZa3CZrbOklaQwbajG+Zj7hOacaV5I5bzsuJs0OX2lPVmwtz4ArddbkFdLPtxx
+X-Received: by 2002:a17:90b:1dcd:b0:3b0:968f:fdef with SMTP id 98e67ed59e1d1-3b41c9758d8mr19498651a91.49.1795651980863;
+        Wed, 25 Nov 2026 16:13:00 -0800 (PST)
+Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdec1168866sm83815a12.25.2026.11.25.16.12.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Nov 2026 16:13:00 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -51,629 +89,421 @@ Precedence: list
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Nov 2026 00:51:45 +0100
-Message-Id: <DN4P1UAAVP8G.2TUW0Q8UEQVCG@kernel.org>
-Cc: <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <linux-pci@vger.kernel.org>, <alex@shazbot.org>, <jgg@nvidia.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <jhubbard@nvidia.com>,
- <ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
- <kjaju@nvidia.com>, <alkumar@nvidia.com>, <ankita@nvidia.com>,
- <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
- <boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
- <work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
- <kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
- <peter@colberg.org>
-To: "Simon Song" <xinmengs@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v3 7/9] rust: vfio: add PCI variant driver abstractions
-References: <20261119215046.2892839-1-xinmengs@nvidia.com>
- <20261119215046.2892839-8-xinmengs@nvidia.com>
-In-Reply-To: <20261119215046.2892839-8-xinmengs@nvidia.com>
+Date: Wed, 25 Nov 2026 16:12:59 -0800
+Message-Id: <DN4PI3EAYYBF.NM3BHJ2OYRDG@google.com>
+Cc: <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] vfio: selftests: Add NVMe driver
+From: "David Matlack" <dmatlack@google.com>
+To: "Josh Hilke" <jrhilke@google.com>, "David Matlack"
+ <dmatlack@google.com>, "Alex Williamson" <alex@shazbot.org>
+X-Mailer: aerc 0.21.0
+References: <20261124020814.1679635-1-jrhilke@google.com>
+In-Reply-To: <20261124020814.1679635-1-jrhilke@google.com>
 
-On Thu Nov 19, 2026 at 10:50 PM CET, Simon Song wrote:
-> diff --git a/rust/kernel/vfio.rs b/rust/kernel/vfio.rs
-> index bc50647a2437..43e904e2c980 100644
-> --- a/rust/kernel/vfio.rs
-> +++ b/rust/kernel/vfio.rs
-> @@ -3,7 +3,7 @@
->  //! Virtual Function I/O (VFIO) devices and callback data.
->  //!
->  //! [`DeviceBase`] combines a C VFIO device structure with the data its =
-callbacks use.
-> -//! [`Device`] is an alias of it for `struct vfio_device`.
-> +//! [`Device`] and the bus-specific devices, such as `pci::Device`, are =
-aliases of it.
+On Mon Nov 23, 2026 at 6:08 PM PST, Josh Hilke wrote:
+> The driver overwrites the first max_memcpy_size bytes of the namespace.
+> Do not use a device that holds data you want to keep.
 
-NIT: I'd refer to this as vfio::pci::Device, such that this won't be confus=
-ed
-with the bus device, and make it an intra-doc link.
+I'm worried about this. Today vfio_pci_driver_test skips NVMe devices
+("No driver found"), so anyone who already passes an NVMe device to the
+VFIO selftests (e.g. to run vfio_pci_device_test) would start losing the
+start of namespace 1 after this patch, without changing anything on
+their end. On a real disk that's the partition table or filesystem
+superblock. A note in the commit message and docs isn't enough
+protection for that.
 
->  //!
->  //! C header: [`include/linux/vfio.h`](srctree/include/linux/vfio.h)
-> =20
-> @@ -26,6 +26,9 @@
->      ptr::NonNull, //
->  };
-> =20
-> +#[cfg(CONFIG_VFIO_PCI_CORE)]
+I'd like the driver to refuse to write anywhere that it can't prove is
+unused. How about something like this:
 
-Until we have the new build system this needs to be
-#[cfg(CONFIG_VFIO_PCI_CORE =3D "y")]. The same goes for
+ - Reserve the first 4 KiB of the namespace for a header (a magic string
+   plus the number of bytes after the header the driver has claimed),
+   and do the memcpys in the blocks after it.
 
-	#[cfg(CONFIG_VFIO =3D "y")] pub mod vfio;
+ - On the first memcpy, read the header. If it's present and covers
+   max_memcpy_size, proceed.
 
-in rust/kernel/lib.rs for the preceding patch.
+ - Otherwise, check that every byte the driver could write (the header
+   plus max_memcpy_size, or just the part past what an existing header
+   already covers) is zero. If it isn't, fail with a message explaining
+   how to zero the range if the user really wants to use this device.
+   If it is, write the header and proceed.
 
-> +pub mod pci;
-> +
->  /// Reset the VFIO device.
->  pub const DEVICE_RESET: u32 =3D bindings::VFIO_DEVICE_RESET;
-> =20
-> @@ -89,7 +92,7 @@ impl IoContext for GetRegionInfo {}
-> =20
->  /// The data the driver of a [`Device`] shares with its callbacks.
->  ///
-> -/// Bus-specific devices take the data types from their own trait.
-> +/// Bus-specific devices take the data types from their own trait, such =
-as `pci::Operations`.
->  pub trait Operations: Sized + Send + Sync + 'static {
->      /// Data owned by the registration and passed to VFIO callbacks.
->      ///
-> @@ -148,8 +151,8 @@ struct CallbackData<R, O> {
->  /// beginning of `Self`, as `vfio_alloc_device()` requires.
->  ///
->  /// `R` and `O` are the types of the registration data and the open data=
- of `T`, written with
-> -/// the placeholder lifetime `'static`. Use the alias [`Device`], which =
-takes both from the
-> -/// operations trait of `T`.
-> +/// the placeholder lifetime `'static`. Use the aliases [`Device`] and `=
-pci::Device`, which
+That way things just work on a blank namespace (e.g. the QEMU device in
+your instructions), reruns on the same namespace just work since the
+memcpys never touch the header, and a disk with data on it is refused.
+A crash in the middle of a test doesn't matter either. And since the
+check happens on the first memcpy, tests that only use send_msi() (e.g.
+KVM's irq_test) still work on any NVMe device.
 
-Same here.
+I prototyped this on top of your patch (about 130 lines, mostly one
+function called from the first nvme_memcpy_start()) and
+vfio_pci_driver_test passes 35/35 on QEMU on a fresh namespace and on a
+rerun, and correctly refuses when there's data in the range. The diff is
+at the end of this email.
 
-> +/// The trait for VFIO PCI variant driver implementations.
-> +///
-> +/// Unoverridden callbacks delegate to the corresponding PCI core operat=
-ion.
-> +///
-> +/// # Lifetime of the callback data
-> +///
-> +/// [`Registration`] owns the [`RegistrationData`](Operations::Registrat=
-ionData), which
-> +/// borrows from the PCI binding scope, and each callback borrows it. Ca=
-llbacks are generic over
-> +/// the lifetime of the registration data, so they cannot store callback=
--local references in it.
-> +pub trait Operations: Sized + Send + Sync + 'static {
+> +/* nvme.h needs uuid_t from libuuid and struct_group(). */
+> +#include <uuid/uuid.h>
 
-As mentioned in the previous patch, this should extend vfio::Operations.
+Samiullah's "vfio: selftests: Remove libuuid dependency" removes libuuid
+from the VFIO selftests and adds uuid_t to libvfio, so please drop this
+include and rebase on top of that if it lands first.
 
-> +    /// The name of the VFIO driver.
-> +    const NAME: &'static CStr;
-> +
-> +    /// Data owned by the [`Registration`] and passed to VFIO callbacks.
-> +    ///
-> +    /// It can borrow resources of the driver's binding for `'a`. Per-de=
-vice state lives here.
-> +    type RegistrationData<'a>: Send + Sync + 'a;
-> +
-> +    /// Data shared by callbacks from the first successful open until th=
-e last close.
-> +    ///
-> +    /// It can borrow the registration data, of lifetime `'data`, for `'=
-a`.
-> +    type OpenData<'a, 'data: 'a>: Send + Sync + 'a;
+> +#include "nvme.h"
 
-For the previous patch - as I think it used the same definition - what abou=
-t
+This fails to build with clang:
 
-	type RegistrationData<'reg>: Send + Sync + 'reg;
-	type OpenData<'open, 'reg: 'open>: Send + Sync + 'open;
+  nvme.h:524:52: error: '_Static_assert' with no message is a C23 extension=
+ [-Werror,-Wc23-extensions]
+    524 | static_assert(sizeof(struct nvme_id_ns_nvm) =3D=3D 4096);
 
-to make it even clearer.
+include/linux/nvme.h uses the kernel's static_assert(), where the
+message is optional, but <assert.h> has already defined static_assert()
+as _Static_assert(), which requires one before C23. gcc doesn't
+complain, so please build with LLVM=3D1 too. Something like this before
+including nvme.h fixes it:
 
-Similar for the callbacks below; I think 'data can be a bit ambiguous in so=
-me
-cases.
+	/*
+	 * nvme.h uses the kernel's static_assert(), which makes the message
+	 * optional. <assert.h> defines static_assert() as _Static_assert(),
+	 * which needs one before C23.
+	 */
+	#undef static_assert
+	#define static_assert(expr, ...) __static_assert(expr, ##__VA_ARGS__, #exp=
+r)
+	#ifndef __static_assert
+	#define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+	#endif
 
-> +
-> +    /// Called when the first file descriptor is opened for this device.
-> +    ///
-> +    /// `vfio_pci_core_enable()` has already succeeded; if this returns =
-an
-> +    /// error, `vfio_pci_core_disable()` is called automatically. The re=
-turned
-> +    /// open data is dropped before PCI core close on the last close.
-> +    fn open_device<'a, 'data: 'a>(
-> +        dev: &'a Device<Self, Open>,
-> +        reg_data: &'a Self::RegistrationData<'data>,
-> +    ) -> impl PinInit<Self::OpenData<'a, 'data>, Error> + 'a;
+Also, please Cc linux-nvme and the NVMe maintainers on the next version,
+so they're aware that the selftests now depend on include/linux/nvme.h,
+and to get their feedback on the driver, especially the scratch header
+design above.
 
-Here I'd probably keep 'a as is, but use 'reg instead of 'data.
+[...]
 
-> +    /// Handle a VFIO ioctl.
-> +    ///
-> +    /// The default `vfio_pci_core_ioctl()` is available via
-> +    /// [`Device::core_ioctl()`] for delegation.
-> +    fn ioctl<'data>(
-> +        dev: &Device<Self, Ioctl>,
-> +        reg_data: &Self::RegistrationData<'data>,
-> +        open_data: Pin<&Self::OpenData<'_, 'data>>,
-> +        cmd: u32,
-> +        arg: usize,
-> +    ) -> Result<isize>;
-> +
-> +    /// Read from the device.
-> +    ///
-> +    /// `buf` is a user-space buffer provided by the VFIO core. Use
-> +    /// [`Device::core_read()`] to delegate the default read, and
-> +    /// [`UserBuf::write_overlapping()`] to override specific bytes afte=
-rwards.
-> +    fn read<'data>(
-> +        dev: &Device<Self, Read>,
-> +        reg_data: &Self::RegistrationData<'data>,
-> +        open_data: Pin<&Self::OpenData<'_, 'data>>,
-> +        buf: &mut UserBuf,
-> +        ppos: &mut Position<'_>,
-> +    ) -> Result<isize>;
-> +
-> +    /// Write to the device, delegating to [`Device::core_write()`] if a=
-ppropriate.
-> +    fn write<'data>(
-> +        dev: &Device<Self, Write>,
-> +        _reg_data: &Self::RegistrationData<'data>,
-> +        _open_data: Pin<&Self::OpenData<'_, 'data>>,
-> +        buf: &mut UserBuf,
-> +        ppos: &mut Position<'_>,
-> +    ) -> Result<isize> {
-> +        dev.core_write(buf, ppos)
-> +    }
-> +
-> +    /// Map a device region, delegating to [`Device::core_mmap()`] if ap=
-propriate.
-> +    fn mmap<'data>(
-> +        dev: &Device<Self, Mmap>,
-> +        _reg_data: &Self::RegistrationData<'data>,
-> +        _open_data: Pin<&Self::OpenData<'_, 'data>>,
-> +        mapping: &mut Mapping<'_>,
-> +    ) -> Result {
-> +        dev.core_mmap(mapping)
-> +    }
-> +
-> +    /// Prepare for PCI reset, including resets initiated during enable =
-or close.
-> +    fn reset_prepare(_reg_data: &Self::RegistrationData<'_>) {}
-> +
-> +    /// Finish PCI reset; errors are reported through the VFIO error int=
-errupt.
-> +    fn reset_done(_reg_data: &Self::RegistrationData<'_>) -> Result {
-> +        Ok(())
-> +    }
-> +
-> +    /// Fill in region info capabilities.
-> +    ///
-> +    /// The default `vfio_pci_ioctl_get_region_info()` is available via
-> +    /// [`Device::core_get_region_info()`] for delegation.
-> +    fn get_region_info<'data>(
-> +        dev: &Device<Self, GetRegionInfo>,
-> +        reg_data: &Self::RegistrationData<'data>,
-> +        open_data: Pin<&Self::OpenData<'_, 'data>>,
-> +        info: &mut bindings::vfio_region_info,
-> +        caps: &mut InfoCap<'_>,
-> +    ) -> Result;
-> +}
+> +static void nvme_enable_irqs(struct vfio_pci_device *device)
+> +{
+> +	/*
+> +	 * Admin completions always use vector 0. Require at least two MSI-X
+> +	 * vectors so I/O completions use vector 1 and admin commands never
+> +	 * signal the eventfd that the tests check.
+> +	 */
+> +	VFIO_ASSERT_GE(device->msix_info.count, 2,
+> +		       "Device must support at least 2 MSI-X vectors");
 
-I think the default behavior of the I/O callbacks (ioctl, read, write, mmap=
-, and
-get_region_info) probably needs to be revisited and aligned with the C API.
+Please check this in nvme_probe() instead, and fail the probe rather
+than asserting. A device that can't work with the driver shouldn't
+probe successfully. msix_info and the BARs are already set up when
+probe() runs (ioat_probe() already reads BAR0), so the CAP checks in
+nvme_enable_ctrl() (NVM command set, 4 KiB pages) can move to probe()
+too. Only the checks that need admin commands (number of queues,
+namespace format) have to stay in init().
 
-For instance, if write() is omitted we shouldn't call core_write(), but not
-install the callback at all.
+[...]
 
-I suggest to use #[vtable] and #[optional] for this and use the correspondi=
-ng
-generated flags when constructing the vfio_device_ops.
+> +static void nvme_create_io_queue(struct vfio_pci_device *device,
+> +				 struct nvme_queue *q, bool ien)
 
-> +
-> +/// A VFIO PCI file position, encoding a region index and an offset with=
-in that region.
-> +pub struct Position<'a> {
-> +    raw: &'a mut i64,
+nit: ien is hard to read unless you know it's the IEN bit from the spec.
+Please spell it out, e.g. irq_enabled.
 
-Shouldn't this be just file::Offset?
+[...]
 
-I don't remember if file::Offset is still an alias of a primitive or a new =
-type.
+> +static void nvme_set_prp(struct vfio_pci_device *device,
+> +			 struct nvme_command *cmd, iova_t buf, u64 size,
+> +			 __le64 *prp_list)
+> +{
+> +	u64 first =3D SZ_4K - (buf & (SZ_4K - 1));
 
-I remember I sent a patch to convert it to a new type in the past, but I do=
-n't
-remember if I ever followed up on it and if it was merged.
+nit: Please add something like NVME_CTRL_PAGE_SIZE (like the kernel
+driver has in drivers/nvme/host/nvme.h) and use it instead of SZ_4K
+everywhere the code means the controller's memory page size (CC.MPS),
+e.g. here, in the PRP list and queue alignment, and in
+NVME_PRP_LIST_ENTRIES. That makes it clear that it's unrelated to the
+CPU's page size, which can be 16K or 64K on arm64.
 
-If not, I should probably resend, or please also feel free to pick it up if=
- you
-want. In any case, this can happen subsequently and doesn't need to be part=
- of
-this series.
+[...]
 
-> +}
-> +
-> +impl Position<'_> {
-> +    /// Commit a temporary position only after the operation succeeds.
-> +    ///
-> +    /// This preserves the original position if a read succeeds but a su=
-bsequent
-> +    /// user copy fails.
-> +    pub fn with_temporary<R>(
-> +        &mut self,
-> +        operation: impl FnOnce(&mut Position<'_>) -> Result<R>,
-> +    ) -> Result<R> {
-> +        let mut next =3D *self.raw;
-> +        let result =3D operation(&mut Position { raw: &mut next })?;
-> +        *self.raw =3D next;
-> +        Ok(result)
-> +    }
-> +
-> +    /// Returns the PCI region index.
-> +    pub fn region_index(&self) -> u32 {
-> +        ((*self.raw as u64) >> bindings::VFIO_PCI_OFFSET_SHIFT) as u32
-> +    }
-> +
-> +    /// Returns the byte offset within the current region.
-> +    pub fn region_offset(&self) -> u64 {
-> +        (*self.raw as u64) & ((1u64 << bindings::VFIO_PCI_OFFSET_SHIFT) =
-- 1)
-> +    }
-> +}
-> +
-> +/// Mapping metadata supplied by VFIO while the current thread holds the=
- mmap lock.
-> +///
-> +/// The underlying VMA can only be passed back to the core mmap operatio=
-n.
-> +pub struct Mapping<'a> {
-> +    vma: &'a VmaRef,
-> +    _not_thread_safe: NotThreadSafe,
-> +}
-> +
-> +impl Mapping<'_> {
-> +    fn page_offset(&self) -> u64 {
-> +        // SAFETY: The mmap callback holds the mmap lock for this VMA.
+> +	nvme_prep_rw_cmd(device, &cmd, nvme_cmd_read, dst, size,
+> +			 state->prp_dst);
+> +	for (i =3D 0; i < count; i++)
+> +		nvme_sq_push(device, &state->pollq[i % state->nr_pollqs], &cmd);
 
-Should probably be:
+memcpy_start() is supposed to kick off @count memcpy operations, i.e.
+@count DMA reads of @src and @count DMA writes to @dst. This only reads
+@src once. Please do @count writes from @src as well. e.g. keep the
+first write and the wait for it, and then queue the other @count - 1
+writes along with the @count reads. Once the first write completes, the
+blocks already hold @src, and the other writes store the same data, so
+the reads see @src no matter what order the controller runs them in.
 
-	// SAFETY: By `VmaRef`'s invariants, the VMA is valid and the
-	// mmap/VMA read lock prevents concurrent modification.
-=09
-> +        unsafe { (*self.vma.as_ptr()).vm_pgoff as u64 }
-> +    }
+Note that max_memcpy_count will need to account for the extra commands
+(2 * @count - 1 in flight instead of @count).
 
-Also, this belongs into VmaRef, so we have to split this out as a separate =
-patch
-in the next respin.
+One possible concern with this is SSD wear. memcpy_storm would write
+around max_memcpy_count * max_memcpy_size (several GiB) per run on a real
+SSD, for each IOMMU mode. That's probably fine on datacenter drives, but
+I'm curious what you think.
 
-> +
-> +    /// Returns the PCI region index encoded in the mapping offset.
-> +    pub fn region_index(&self) -> u32 {
-> +        (self.page_offset() >> (bindings::VFIO_PCI_OFFSET_SHIFT as usize=
- - crate::page::PAGE_SHIFT))
-> +            as u32
-> +    }
-> +
-> +    /// Returns the byte offset within the PCI region.
-> +    fn region_offset(&self) -> u64 {
-> +        let mask =3D ((1u64 << bindings::VFIO_PCI_OFFSET_SHIFT) - 1) >> =
-crate::page::PAGE_SHIFT;
-> +        (self.page_offset() & mask) << crate::page::PAGE_SHIFT
-> +    }
-> +
-> +    /// Returns the requested mapping length in bytes.
-> +    fn size(&self) -> Result<u64> {
-> +        self.vma
-> +            .end()
-> +            .checked_sub(self.vma.start())
-> +            .map(|size| size as u64)
-> +            .ok_or(EOVERFLOW)
+---
 
-I don't think this needs to be fallible, a valid VMA shouldn't be able to
-produce an overflow this way.
-
-> +    }
-
-This should probably also be a helper of VmaRef, and hence also a separate
-patch.
-
-> +
-> +    /// Returns the exclusive end of the requested mapping within the PC=
-I region.
-> +    pub fn region_end(&self) -> Result<u64> {
-> +        self.region_offset()
-> +            .checked_add(self.size()?)
-> +            .ok_or(EOVERFLOW)
-> +    }
-> +}
-
-<snip>
-
-> +impl<T: Operations> Device<T> {
-> +    /// Allocate a VFIO PCI device for subsequent registration.
-> +    pub fn new(pdev: &pci::Device<device::Core<'_>>) -> Result<ARef<Self=
->> {
-> +        Self::allocate(pdev, false)
-> +    }
-> +
-> +    /// Allocate a device whose physical BARs may also be exported as DM=
-A buffers.
-> +    pub fn new_passthrough(pdev: &pci::Device<device::Core<'_>>) -> Resu=
-lt<ARef<Self>> {
-> +        Self::allocate(pdev, true)
-> +    }
-> +
-> +    fn allocate(pdev: &pci::Device<device::Core<'_>>, passthrough: bool)=
- -> Result<ARef<Self>> {
-
-I usually prefer an enum as it is more descriptive than a bool, but since t=
-he
-scope is very limited it's probably fine.
-
-> +        let size =3D Kmalloc::aligned_layout(Layout::new::<Self>()).size=
-();
-> +
-> +        // SAFETY: The bound PCI device and static ops are valid. The al=
-location
-> +        // includes the full Rust wrapper with kmalloc-compatible size a=
-nd alignment.
-> +        let raw =3D from_err_ptr(unsafe {
-> +            bindings::_vfio_alloc_device(size, pdev.as_ref().as_raw(), &=
-Self::OPS)
-> +        })?;
-> +        let this =3D NonNull::new(raw.cast::<Self>()).ok_or(ENOMEM)?;
-> +
-> +        // SAFETY: `vfio_pci_core_init_dev()` initialized the C device i=
-n this new allocation,
-> +        // which nothing else can access yet.
-> +        unsafe { Self::init(this.as_ptr()) };
-> +
-> +        if passthrough {
-> +            // SAFETY: No registration or callbacks can observe this all=
-ocation yet.
-> +            unsafe { (*this.as_ref().as_raw()).pci_ops =3D &Self::PASSTH=
-ROUGH_OPS };
-> +        }
-> +
-> +        // SAFETY: `this` owns the initial VFIO device reference.
-> +        Ok(unsafe { ARef::from_raw(this) })
-> +    }
-> +}
-> +/// # Safety
-> +///
-> +/// `vdev` must belong to a registered `Device<T>` in VFIO's first-open =
-context.
-> +/// VFIO must exclude other opens, closes and I/O callbacks for this cal=
-l.
-> +unsafe extern "C" fn open_device_cb<T: Operations>(vdev: *mut bindings::=
-vfio_device) -> c_int {
-> +    // SAFETY: `vdev` belongs to a live `Device<T>`; VFIO provides the f=
-irst-open context.
-> +    let dev =3D unsafe { Device::<T, Open>::from_raw_vfio(vdev) };
-> +
-> +    // SAFETY: Enable the PCI-core side first.
-> +    let ret =3D unsafe { bindings::vfio_pci_core_enable(dev.as_raw()) };
-> +    if ret !=3D 0 {
-> +        return ret;
-> +    }
-> +
-> +    // SAFETY: The previous last close destroyed any earlier open data. =
-The open data type
-> +    // passed is `T::OpenData`, which only differs in lifetimes from the=
- one of `Device<T>`.
-> +    // `T::open_device()` is generic over the lifetimes of its arguments=
-, and the closure
-> +    // captures nothing but `dev`, which it passes on with the same life=
-time as the
-> +    // registration data. `close_device_cb()` destroys the open data at =
-the last close.
-> +    let result =3D unsafe {
-> +        dev.open::<T::OpenData<'_, 'static>, _>(|reg_data| T::open_devic=
-e(dev, reg_data))
-> +    };
-> +    match result {
-> +        Ok(()) =3D> {
-> +            // SAFETY: open succeeded.
-> +            unsafe { bindings::vfio_pci_core_finish_enable(dev.as_raw())=
+diff --git a/Documentation/driver-api/vfio-selftests.rst b/Documentation/dr=
+iver-api/vfio-selftests.rst
+index b26040c48d5d..567262ac3d55 100644
+--- a/Documentation/driver-api/vfio-selftests.rst
++++ b/Documentation/driver-api/vfio-selftests.rst
+@@ -44,8 +44,10 @@ includes driver support for the following devices:
+ Note that using Intel DSA devices requires setting the module parameter
+ ``vfio_pci.disable_denylist=3DY`` to allow ``vfio-pci`` to bind to DSA dev=
+ices.
+=20
+-Note that the NVMe driver overwrites the start of the first active namespa=
+ce.
+-Do not use an NVMe device that holds data you want to keep.
++Note that the NVMe driver writes to the start of the first active namespac=
+e.
++To avoid destroying data, it refuses to write unless that space is all zer=
+o,
++or was zeroed and claimed by an earlier run (marked by a header in the fir=
+st
++4 KiB).
+=20
+ Setting up Devices
+ ------------------
+diff --git a/tools/testing/selftests/vfio/lib/drivers/nvme/nvme.c b/tools/t=
+esting/selftests/vfio/lib/drivers/nvme/nvme.c
+index 01f38b71a46b..04ae89f31cb2 100644
+--- a/tools/testing/selftests/vfio/lib/drivers/nvme/nvme.c
++++ b/tools/testing/selftests/vfio/lib/drivers/nvme/nvme.c
+@@ -69,6 +69,21 @@
+ #define NVME_CAP_TIMEOUT_UNIT_MS	500ULL
+ #define NVME_POLL_INTERVAL_US		1000
+=20
++/*
++ * The first NVME_SCRATCH_HDR_SIZE bytes of the namespace hold a header th=
+at
++ * marks the namespace as scratch space for VFIO selftests. memcpy command=
+s
++ * use the blocks after it, so the header survives a test that crashes.
++ */
++#define NVME_SCRATCH_HDR_SIZE		SZ_4K
++#define NVME_SCRATCH_MAGIC		"VFIO selftests NVMe scratch v1"
++#define NVME_SCRATCH_CHUNK		SZ_64K
++
++struct nvme_scratch_header {
++	char magic[32];
++	/* Bytes after the header that the driver has verified were zero. */
++	__le64 size;
++};
++
+ struct nvme_queue {
+ 	/* Byte offsets of the submission and completion rings in the region. */
+ 	u64 sq_offset;
+@@ -113,6 +128,12 @@ struct nvme_state {
+ 	/* Power-of-two shift for converting bytes to logical blocks. */
+ 	u32 lba_shift;
+=20
++	/* First logical block that memcpy commands use, after the header. */
++	u64 data_slba;
++
++	/* Set once nvme_claim_scratch() has verified the scratch space. */
++	bool scratch_claimed;
++
+ 	/* Result of the write in nvme_memcpy_start(). */
+ 	int memcpy_err;
+=20
+@@ -132,6 +153,8 @@ struct nvme_state {
+ 	 */
+ 	__le64 prp_src[NVME_PRP_LIST_ENTRIES] __aligned(SZ_4K);
+ 	__le64 prp_dst[NVME_PRP_LIST_ENTRIES] __aligned(SZ_4K);
++	/* Bounce buffer for reading and writing the scratch header and space. */
++	u8 scratch_buf[NVME_SCRATCH_CHUNK] __aligned(SZ_4K);
+ 	u8 poll_rings[] __aligned(SZ_4K);
  };
-> +            0
-> +        }
-> +        Err(e) =3D> {
-> +            // SAFETY: Undo the enable on failure.
-> +            unsafe { bindings::vfio_pci_core_disable(dev.as_raw()) };
-> +            e.to_errno()
-> +        }
-> +    }
-> +}
-
-We could wrap everything in a closure and use from_result(), then this beco=
-mes:
-
-	unsafe extern "C" fn open_device_cb<T: Operations>(
-	    vdev: *mut bindings::vfio_device,
-	) -> c_int {
-	    from_result(|| {
-	        let dev =3D unsafe { Device::<T, Open>::from_raw_vfio(vdev) };
-=09
-	        to_result(unsafe { bindings::vfio_pci_core_enable(dev.as_raw()) })=
-?;
-=09
-	        unsafe { dev.open(|reg_data| T::open_device(dev, reg_data)) }
-	            .inspect_err(|_| {
-	                unsafe { bindings::vfio_pci_core_disable(dev.as_raw()) };
-	            })?;
-=09
-	        unsafe { bindings::vfio_pci_core_finish_enable(dev.as_raw()) };
-=09
-	        Ok(0)
-	    })
-	}
-
-Which I find a bit cleaner.
-
-> +
-> +/// # Safety
-> +///
-> +/// `vdev` must belong to a registered `Device<T>` whose first open succ=
-eeded.
-> +/// Call exactly once for the last close, after draining I/O callbacks a=
-nd while
-> +/// excluding the next first open.
-> +unsafe extern "C" fn close_device_cb<T: Operations>(vdev: *mut bindings:=
-:vfio_device) {
-> +    // SAFETY: `vdev` belongs to a live `Device<T>`.
-> +    let dev =3D unsafe { Device::<T>::from_raw_vfio(vdev) };
-> +    // SAFETY: Last close drains I/O callbacks and excludes the next fir=
-st open.
-> +    // Registration data and PCI resources remain valid while open data =
-is destroyed.
-> +    unsafe { dev.close() };
-> +    // SAFETY: Matches the enable in open_device_cb.
-> +    unsafe { bindings::vfio_pci_core_close_device(vdev) };
-> +}
-> +
-> +/// # Safety
-> +///
-> +/// `vdev` must belong to a registered, open `Device<T>` in VFIO's ioctl=
- callback
-> +/// context. Registration and open data must remain alive until the call=
- returns.
-> +unsafe extern "C" fn ioctl_cb<T: Operations>(
-> +    vdev: *mut bindings::vfio_device,
-> +    cmd: core::ffi::c_uint,
-> +    arg: usize,
-> +) -> isize {
-> +    // SAFETY: `vdev` belongs to a live `Device<T>`; VFIO provides the i=
-octl context.
-> +    let dev =3D unsafe { Device::<T, Ioctl>::from_raw_vfio(vdev) };
-> +    match dev.callback_data_with(|rd, od| T::ioctl(dev, rd, od, cmd, arg=
-)) {
-> +        Ok(v) =3D> v,
-> +        Err(e) =3D> e.to_errno() as isize,
-> +    }
-
-Here and in a couple of other places, this can just be:
-
-	from_result(|| dev.callback_data_with(|rd, od| T::ioctl(dev, rd, od, cmd, =
-arg)))
-
-> +/// Keeps the PCI device of a registered VFIO device runtime active.
-> +///
-> +/// The VFIO PCI core allows runtime suspend of the PCI device while its=
- VFIO device is
-> +/// registered, and expects the PCI driver's runtime PM callbacks to cal=
-l into the VFIO PCI
-> +/// core. These abstractions do not provide such callbacks yet, so the d=
-evice must not be
-> +/// runtime suspended.
-> +///
-> +/// # Invariants
-> +///
-> +/// This type owns a runtime PM usage reference on the device.
-> +// TODO: Do not hold this reference for drivers that provide runtime PM =
-callbacks, once these
-> +// abstractions support them.
-> +struct RuntimeActive(#[cfg_attr(not(CONFIG_PM), expect(dead_code))] ARef=
-<device::Device>);
-
-This should be &'a Device<Bound>, and hence RuntimeActive<'a>.
-
-> +impl RuntimeActive {
-> +    fn new(dev: &device::Device<device::Bound>) -> Result<Self> {
-> +        // SAFETY: `dev` is a valid device. This is `pm_runtime_get_sync=
-()`, which takes a usage
-> +        // reference even if it fails.
-> +        #[cfg(CONFIG_PM)]
-> +        let ret =3D
-> +            unsafe { bindings::__pm_runtime_resume(dev.as_raw(), binding=
-s::RPM_GET_PUT as c_int) };
-> +        #[cfg(not(CONFIG_PM))]
-> +        let ret =3D 0;
-> +        // INVARIANT: `this` owns the usage reference, and drops it if t=
-he resume failed.
-> +        let this =3D Self(dev.into());
-> +        to_result(ret)?;
-> +        Ok(this)
-> +    }
-> +}
-> +
-> +impl Drop for RuntimeActive {
-> +    fn drop(&mut self) {
-> +        // SAFETY: `self.0` is a valid device, and `new()` took the usag=
-e reference dropped
-> +        // here. This is `pm_runtime_put()`.
-> +        #[cfg(CONFIG_PM)]
-> +        unsafe {
-> +            bindings::__pm_runtime_idle(
-> +                self.0.as_raw(),
-> +                (bindings::RPM_GET_PUT | bindings::RPM_ASYNC) as c_int,
-> +            )
-> +        };
-> +    }
-> +}
-
-This seems reasonable, but doesn't belong into VFIO core code. This should =
-e.g.
-go under rust/kernel/device/pm.rs.
-
-However, it would become dead code once we land the runtime PM stuff and en=
-able
-it for PCI, right? I think an alternative could be to just make nova-vgpu d=
-epend
-on !PM.
-
-> +impl<T: Operations> Device<T> {
-> +    const OPS: bindings::vfio_device_ops =3D build_ops!(T);
-> +
-> +    const PASSTHROUGH_OPS: bindings::vfio_pci_device_ops =3D bindings::v=
-fio_pci_device_ops {
-> +        #[cfg(CONFIG_VFIO_PCI_DMABUF)]
-> +        get_dmabuf_phys: Some(bindings::vfio_pci_core_get_dmabuf_phys),
-> +        #[cfg(not(CONFIG_VFIO_PCI_DMABUF))]
-> +        get_dmabuf_phys: None,
-> +    };
-> +}
-> +
-> +impl<'a, T: Operations> Registration<'a, T> {
-> +    /// Register a previously allocated VFIO PCI device with its callbac=
-k data.
-> +    ///
-> +    /// `dev` must have been allocated for `pdev`, and can be registered=
- only once. `D` is the
-> +    /// PCI driver bound to `pdev`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The returned `Registration` must be stored in the bus device pri=
-vate data of `D`, the
-> +    /// driver bound to `pdev`, and must not be leaked: it has to be dro=
-pped while that driver
-> +    /// is being unbound from `pdev`, or when its probe fails.
-> +    pub unsafe fn new<D: pci::Driver>(
-> +        pdev: &'a pci::Device<device::Core<'_>>,
-> +        dev: &Device<T>,
-> +        reg_data: impl PinInit<T::RegistrationData<'a>, Error>,
-> +    ) -> Result<Self> {
-> +        build_assert!(
-> +            D::DRIVER_MANAGED_DMA.is_some(),
-> +            "VFIO drivers must manage DMA ownership"
-> +        );
-> +        build_assert!(
-> +            !D::HAS_SRIOV_ENABLE && !D::HAS_SRIOV_DISABLE,
-> +            "VFIO PCI variant drivers do not support SR-IOV configuratio=
-n"
-> +        );
-
-I think those can be const_assert!().
+=20
+@@ -259,10 +282,6 @@ static u16 nvme_status(const struct nvme_completion *c=
+qe)
+ 	return (le16_to_cpu(cqe->status) >> 1) & NVME_SCT_SC_MASK;
+ }
+=20
+-/*
+- * The driver overwrites the first max_memcpy_size bytes of the namespace.=
+ Do
+- * not use a device that holds data you want to keep.
+- */
+ static int nvme_probe(struct vfio_pci_device *device)
+ {
+ 	u32 class_code;
+@@ -570,10 +589,12 @@ static void nvme_set_limits(struct vfio_pci_device *d=
+evice)
+ 	if (mdts && mdts < 32)
+ 		max_size =3D min_t(u64, max_size, (u64)SZ_4K << mdts);
+=20
+-	/* All memcpy operations use the logical blocks from LBA 0. */
+-	nsze =3D le64_to_cpu(state->id_ns.nsze);
+-	if (nsze < max_size >> state->lba_shift)
+-		max_size =3D nsze << state->lba_shift;
++	/* All memcpy operations use the logical blocks after the header. */
++	nsze =3D le64_to_cpu(state->id_ns.nsze) << state->lba_shift;
++	VFIO_ASSERT_GT(nsze, NVME_SCRATCH_HDR_SIZE,
++		       "Namespace %u is too small", state->nsid);
++	max_size =3D min_t(u64, max_size, nsze - NVME_SCRATCH_HDR_SIZE);
++	state->data_slba =3D NVME_SCRATCH_HDR_SIZE >> state->lba_shift;
+=20
+ 	device->driver.max_memcpy_size =3D max_size;
+ 	/* A ring of depth entries holds at most depth - 1 commands. */
+@@ -652,11 +673,11 @@ static void nvme_set_prp(struct vfio_pci_device *devi=
+ce,
+ }
+=20
+ /*
+- * Build a read or write command covering @size bytes from LBA 0, transfer=
+ring
++ * Build a read or write command covering @size bytes from @slba, transfer=
+ring
+  * to or from @buf. @size must be a whole number of logical blocks.
+  */
+ static void nvme_prep_rw_cmd(struct vfio_pci_device *device,
+-			     struct nvme_command *cmd, u8 opcode,
++			     struct nvme_command *cmd, u8 opcode, u64 slba,
+ 			     iova_t buf, u64 size, __le64 *prp_list)
+ {
+ 	struct nvme_state *state =3D to_nvme_state(device);
+@@ -667,6 +688,7 @@ static void nvme_prep_rw_cmd(struct vfio_pci_device *de=
+vice,
+ 	memset(cmd, 0, sizeof(*cmd));
+ 	cmd->rw.opcode =3D opcode;
+ 	cmd->rw.nsid =3D cpu_to_le32(state->nsid);
++	cmd->rw.slba =3D cpu_to_le64(slba);
+ 	nvme_set_prp(device, cmd, buf, size, prp_list);
+ 	cmd->rw.length =3D cpu_to_le16((size >> state->lba_shift) - 1);
+ }
+@@ -683,8 +705,92 @@ static int nvme_io_wait(struct vfio_pci_device *device=
+, struct nvme_queue *q)
+ 	return nvme_status(&cqe) ? -EIO : 0;
+ }
+=20
++/* Synchronously read or write @size bytes at byte @offset of the namespac=
+e. */
++static int nvme_scratch_rw(struct vfio_pci_device *device, u8 opcode,
++			   u64 offset, u64 size)
++{
++	struct nvme_state *state =3D to_nvme_state(device);
++	struct nvme_command cmd;
++
++	nvme_prep_rw_cmd(device, &cmd, opcode, offset >> state->lba_shift,
++			 to_iova(device, state->scratch_buf), size, state->prp_src);
++	nvme_sq_submit(device, &state->pollq[0], &cmd);
++
++	return nvme_io_wait(device, &state->pollq[0]);
++}
++
++static bool nvme_scratch_buf_is_zero(struct nvme_state *state, u64 size)
++{
++	u64 *p =3D (u64 *)state->scratch_buf;
++	u64 i;
++
++	for (i =3D 0; i < size / sizeof(*p); i++) {
++		if (p[i])
++			return false;
++	}
++
++	return true;
++}
++
+ /*
+- * Copy @src to @dst through the logical blocks from LBA 0 of the namespac=
+e.
++ * Refuse to overwrite data that the driver did not put there. The namespa=
+ce
++ * is scratch space if it starts with a header that covers max_memcpy_size=
+.
++ * Otherwise, claim it by checking that every byte the driver could write =
+is
++ * zero, and then writing the header. If the header covers less than
++ * max_memcpy_size, only the bytes past what it covers need to be zero.
++ */
++static void nvme_claim_scratch(struct vfio_pci_device *device)
++{
++	struct nvme_scratch_header *hdr =3D (void *)to_nvme_state(device)->scratc=
+h_buf;
++	struct nvme_state *state =3D to_nvme_state(device);
++	u64 max_size =3D device->driver.max_memcpy_size;
++	u64 start =3D 0, end, offset, size;
++	struct nvme_command cmd;
++	int ret;
++
++	ret =3D nvme_scratch_rw(device, nvme_cmd_read, 0, NVME_SCRATCH_HDR_SIZE);
++	VFIO_ASSERT_EQ(ret, 0, "Failed to read the scratch header");
++
++	if (!memcmp(hdr->magic, NVME_SCRATCH_MAGIC, sizeof(NVME_SCRATCH_MAGIC))) =
+{
++		if (le64_to_cpu(hdr->size) >=3D max_size)
++			return;
++
++		start =3D NVME_SCRATCH_HDR_SIZE + le64_to_cpu(hdr->size);
++	}
++
++	end =3D NVME_SCRATCH_HDR_SIZE + max_size;
++	for (offset =3D start; offset < end; offset +=3D size) {
++		size =3D min_t(u64, end - offset, NVME_SCRATCH_CHUNK);
++
++		ret =3D nvme_scratch_rw(device, nvme_cmd_read, offset, size);
++		VFIO_ASSERT_EQ(ret, 0, "Failed to read namespace %u", state->nsid);
++
++		VFIO_ASSERT_TRUE(nvme_scratch_buf_is_zero(state, size),
++				 "Namespace %u: bytes [0x%lx, 0x%lx) are not all zero.\n"
++				 "The NVMe driver only writes to zeroed space, to avoid\n"
++				 "destroying data. Zero that range to allow it, e.g.\n"
++				 "  blkdiscard -z -l %lu /dev/nvmeXn%u\n",
++				 state->nsid, start, end, end, state->nsid);
++	}
++
++	memset(state->scratch_buf, 0, NVME_SCRATCH_HDR_SIZE);
++	memcpy(hdr->magic, NVME_SCRATCH_MAGIC, sizeof(NVME_SCRATCH_MAGIC));
++	hdr->size =3D cpu_to_le64(max_size);
++
++	ret =3D nvme_scratch_rw(device, nvme_cmd_write, 0, NVME_SCRATCH_HDR_SIZE)=
+;
++	VFIO_ASSERT_EQ(ret, 0, "Failed to write the scratch header");
++
++	/* Make sure the header survives a reset or FLR of the controller. */
++	memset(&cmd, 0, sizeof(cmd));
++	cmd.common.opcode =3D nvme_cmd_flush;
++	cmd.common.nsid =3D cpu_to_le32(state->nsid);
++	nvme_sq_submit(device, &state->pollq[0], &cmd);
++	VFIO_ASSERT_EQ(nvme_io_wait(device, &state->pollq[0]), 0,
++		       "Failed to flush the scratch header");
++}
++
++/*
++ * Copy @src to @dst through the logical blocks after the scratch header.
+  * A write stores @src first. Then the driver queues @count reads of those
+  * blocks into @dst, spread over the polled queues.
+  *
+@@ -700,14 +806,19 @@ static void nvme_memcpy_start(struct vfio_pci_device =
+*device,
+ 	struct nvme_command cmd;
+ 	u64 i;
+=20
+-	nvme_prep_rw_cmd(device, &cmd, nvme_cmd_write, src, size,
++	if (!state->scratch_claimed) {
++		nvme_claim_scratch(device);
++		state->scratch_claimed =3D true;
++	}
++
++	nvme_prep_rw_cmd(device, &cmd, nvme_cmd_write, state->data_slba, src, siz=
+e,
+ 			 state->prp_src);
+ 	nvme_sq_submit(device, &state->pollq[0], &cmd);
+ 	state->memcpy_err =3D nvme_io_wait(device, &state->pollq[0]);
+ 	if (state->memcpy_err)
+ 		return;
+=20
+-	nvme_prep_rw_cmd(device, &cmd, nvme_cmd_read, dst, size,
++	nvme_prep_rw_cmd(device, &cmd, nvme_cmd_read, state->data_slba, dst, size=
+,
+ 			 state->prp_dst);
+ 	for (i =3D 0; i < count; i++)
+ 		nvme_sq_push(device, &state->pollq[i % state->nr_pollqs], &cmd);
