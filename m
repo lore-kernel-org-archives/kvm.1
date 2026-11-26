@@ -1,80 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795689296;
-	b=XjavuOagXIMsmRwk+bchEzxz2zkgemNykAE79jpyIrpopDxDt9iSs2AVOrQBzYASPqat
-	 5oQlLGVqRVl1ceGHk4EPuLVDm1yUxT+z5f8EHMGvL47GUXYpupiUfvpvWfmh1tK+zjkwO
-	 H8SAQdsllyU+QUqzUycBkV19d0/onEkv46r3F4hmZbgE9bNF+2q0F1E4GZ0ODz6LvfHMJ
-	 S4tkhPUaaMFy+JIW09+L3DbZnI1CWflSg455JCWR5rv7EQWjXR5aV1EFBTHh8jCmKrcWY
-	 ItQdQOxe3V1P//vSCnmGbybV5/CFgeQZwC1WjeRIoO+VF3PSVIEgV6dQ+hkMKqOpVIw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795689296;
-	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=JgQXv7FdgOeE5H/CalcuK3oIqiWd+ZRvVVk3oyr25Ko=;
-	b=e05mDlK4VaMXtlfXRBVat0lJ4bg/V6NKIU14G/mFQZfxOpZwlFSvu+saAVb2gP3VZy8u
-	 +g4v5x1vln2FLaCBX+pVA4558ErYT/mMt4TfE4/IwSlTHsHOKHLxIaBy08siliaulhmw+
-	 0P4/TjVOi7bo7wHm7DNO2pfDLS1h3co4IIOV/2+VoZcNWdjpEOA0B8+ZZonkAl9g5AmFK
-	 dUPcl72CIzs62RNHz0KryjhTVkmF6TApOKZAS9R8DvJZ1dyW0+T5pG9XpYlqXmuO511Zj
-	 5WY1c6THSHc2v64xtY+4PGHBY+N5/GVPUOb9Uk/HzHDxX7nozX7Bir8Z04Aycvlh5Fw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VS+d6Pt1;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79F3606A336;
-	Thu, 26 Nov 2026 10:34:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795691577;
+	b=m2G7+mYvA8c/w7oz3dJgPibSdtCXief8CjTxbFJXD9au6t6RJ4t64MIo7XuIUsVStiOl
+	 z7A56g8krNWn4D3Cv3M+tjxVYHE9Qv5hQ5Df9Ci+VfXYEdl/SvV9fYbev8pu7oxqj8ndi
+	 s55bDFnW61ZDPq8pL2C2OWxjR3vj9u1uXnChTOJzm0PeasAMcf1mwlhiMHvtVhf0jwqtx
+	 PCkKhvMWbq6Te3iFKnYyQrds/ZxY9VmRn2SEgV6TyT2I5m8P2Tz8ly+Z4UN7S1Vg/Czju
+	 tjeapOwBQccT8Hlj+5+VGGU8Jg5c4LCDft0RGEWBBmZd5Y3dYZGnnd1bvnRw986MSYg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795691577;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=1IOWT/d14QlycRCg1JO/Jw8AIofZ/OvIL8rsv66jEYY=;
+	b=Bqcp78/DBQjN4j60WnxWQNgonVoiVUhJUQrE/EVVX30clBZ0tTL+fRNFQMjrpQOmu7Bp
+	 sP8egQAC7TvlBTyLa0kmtthEMREfztyUVeAAyKfLmSkJ8BEKLFl197+mAfxVEe7TuRvKQ
+	 BW4OQ8fOl4T01pkpsfyNQ/gOKlJtjLlk7hJojW9Z/J48VlYuGDvvYm7mAFXWLqGhySStM
+	 AGA9aL9nxKi+H39ITHvC0HY5RDiX6K4aIFhl+kGpOCCsklPKQzzbdJaP4/9Pi50Q9PiVk
+	 r85i/aOFOzBXiMXzB4K9Z+Moq2A2CKiWSRWAiO3OYqWKRUPQcnKP1Jasuv1r3yqR/SA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="K1/kCLR0";
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842E1606A31C;
+	Thu, 26 Nov 2026 11:12:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 842E1606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VS+d6Pt1
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795689296;
-	b=CcWARuQKkEo/GEoxfkNw+N8A/oMrBUIenavlG+ZX1wbV4LyFaAplJBLCjYvZekElPSYa
-	 7KVMa02jT0LlA+f6qg69XlfMMUHnUhl+rwDxmdo6aJ0uMNuW618028qqABk2zrlyiuOmh
-	 B/FjDCVr1wPGfd7c7belUZXWKmOTxSqSxr+oZt2b2c8hyaYt9V3Sm02iNDRyNxthfSwyq
-	 BnTqT8HrQaEU0SCCldugvCWY9OpYorDf505SnkU2KewvYMcHa68zsMJtPGasgL7DA9mn0
-	 ynOM7NQzjm4c55xlay7kLnlNTPjcWVTsgrHHNcOs1v7hw6qRPB+H3l5s5pKh+j52dCQ==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795689296;
-	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
-	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=JgQXv7FdgOeE5H/CalcuK3oIqiWd+ZRvVVk3oyr25Ko=;
-	b=22EVORb6rMjWNx7AL6qdJ6TlXyqMsCBq57Q7yJV5+VA3AryMqlm6qcRsDQGjyj2lBA6K
-	 GWIUSkuGkuZYY7nmYgxNcwKWQ2hUSdj5jxZYVPleOlobESCX7BST0GYNmio6LZh6b3EsQ
-	 KcCxY5PeVsywsE7M09O4MfO+on1GYzQpKZ09I3sVzuk7nHci2N3dWy2l50ZpOfVyuwLHY
-	 md/c0HWzxKP19RcK3RR8DBkxh8x4pLbQemqTIuaIyr8FQ6VXbJISSK5XE97XbsS8YRO4v
-	 Cuenk0I6EqGU//NFnO7EUFFU+6tty98SFZH/7liA3+vFZcIU0T9zX128fTSR9lSJmjA==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 603DA1F000E6;
-	Thu, 26 Nov 2026 10:34:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795689296;
-	bh=JgQXv7FdgOeE5H/CalcuK3oIqiWd+ZRvVVk3oyr25Ko=;
-	h=From:Subject:Date:To:Cc:Reply-To;
-	b=VS+d6Pt1G44+/5VFkW4PSjAF7octuB1NnUIRf0VR58EvC3wZ9tI+S9d5MKq9iijY6
-	 F2fDrx6Pm2bOfyRmmqCFO9caz/nIiY16fXLWotBZN1F/YKU2OE8zWAu0SaSRZP+f0f
-	 PzW5Z+Ajqm1eM/mC4RuwloXADSkzh4RDKNx39EGrTyJTlvjvBMrFmZx/dNdWMNKQ21
-	 oZlcbL5NHLVfcl792PNeHWp7qgIvP7idBAsBh6Xq0ek30FT6ILC05ZcuJXczNqELUD
-	 xZIHCS+UHyNVUDJcgUNMLZ6DbrRf9t1sv34HkOiecDKQLFRPJKVWXHnVdj0PmzDnlO
-	 21OcyG1bZ8w+Q==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id E5C5C4D449;
-	Thu, 26 Nov 2026 10:34:39 +0000 (UTC)
-From: Dickson Wu via B4 Relay <devnull+dickson.wu.certik.com@kernel.org>
-Subject: [PATCH 5.10.y v2 0/2] KVM: x86: complete SRCU coverage for vCPU
- events
-Date: Thu, 26 Nov 2026 10:31:56 +0000
-Message-Id: <20261126-kvm-510d-v2-0-bcba96aa2088@certik.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=K1/kCLR0
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 71E821BA8;
+	Thu, 26 Nov 2026 03:12:52 -0800 (PST)
+Received: from e143914.arm.com (e143914.arm.com [10.2.213.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 799183F632;
+	Thu, 26 Nov 2026 03:12:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795691575; bh=hEzuUTn3NIQ9D3Y7opBppSoWZoPbrfaVx4Stp1mWYZk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=K1/kCLR0+zsGKueO4tdlfcGvC9uI1tsDD16FNl70XtlY2s4dLuG8uxI8AV8mSTvpW
+	 CYpB7JHabMm7QHU4onorSCZylhv92pJXFgeQ4CsC8UURe2rU824wndSsxeMuszHm8d
+	 Ny0uSTvsItVYs3DLx4g3j6wwY6T871PnF9x+Rqvc=
+Date: Thu, 26 Nov 2026 11:12:46 +0000
+From: Joey Gouly <joey.gouly@arm.com>
+To: Steffen Eiden <seiden@linux.ibm.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+	Andreas Grapentin <gra@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Friedrich Welter <fritz@linux.ibm.com>,
+	Gautam Gala <ggala@linux.ibm.com>,
+	Hariharan Mari <hari55@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	Nico Boehr <nrb@linux.ibm.com>,
+	Ulrich Weigand <Ulrich.Weigand@de.ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>, Paolo Bonzini <pbonzini@redhat.com>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-s390@vger.kernel.org
+Subject: Re: [PATCH v3 02/23] KVM: arm64: Extract number of sys_reg_desc into
+ a constant
+Message-ID: <awgULp1w79g4HvA4@e143914.arm.com>
+References: <20261106-sysreg-v3-0-75e95980fb10@linux.ibm.com>
+ <20261106-sysreg-v3-2-75e95980fb10@linux.ibm.com>
+ <awbw3NyDifa0WjhZ@e143914.arm.com>
+ <20261125153027.117976-A-seiden@linux.ibm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -84,78 +86,73 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJwKCGsC/zWMywrCMBAAf6Xs2a2b0ATxV8RDHquNj0SSWpTSf
- zdRPM4wzAKFc+AC+26BzHMoIcUKctOBG008MwZfGSRJLYTUeJ3vqAR51M4N5HdKEQ1Q80fmU3h
- 9VwdQvaD+DcefL097YTe1TyutKYw2m+jGpgpHP6V0w+a3/z+s6wfjFa5bnQAAAA==
-X-Change-ID: 20261126-kvm-510d-6cc40d855004
-To: stable@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795689116; l=1912;
- i=dickson.wu@certik.com; s=dickson-b4; h=from:subject:message-id;
- bh=tZO36opxcxWmYFpvOATral8/1zZH55TXraMh88jDJHk=;
- b=ApqeA9bExi8qy5tP2NK4EbBv7S1Mr2DckuKO99gynUeL6IjtL5NAD+cf9KHmI7oU7Tf0QJPDq
- tQbMQPpPnoXCFCuyTRlREdUYQqUQ9ICQiOpDRBFU95yyRn3U0YE1ug7
-X-Developer-Key: i=dickson.wu@certik.com; a=ed25519;
- pk=fxH7FS4FdojeJSGLJzgKdfO51Rvr4EW30yinj2mc1vg=
-X-Endpoint-Received: by B4 Relay for dickson.wu@certik.com/dickson-b4 with
- auth_id=1647
-X-Original-From: Dickson Wu <dickson.wu@certik.com>
-Reply-To: dickson.wu@certik.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261125153027.117976-A-seiden@linux.ibm.com>
 
-Hi,
+On Wed, Nov 25, 2026 at 04:30:27PM +0100, Steffen Eiden wrote:
+> On Wed, Nov 25, 2026 at 02:29:48PM +0000, Joey Gouly wrote:
+> > On Fri, Nov 06, 2026 at 05:07:35PM +0100, Steffen Eiden wrote:
+> > > Define the constant `num_sys_reg_descs` which stores the number of
+> > > elements in the sys_reg_descs array. Replace all occurrences of
+> > > ARRAY_SIZE(sys_reg_descs) with the new constant.
+> > > 
+> > > This refactoring eases the integration of handling system registers for
+> > > arm on s390. s390 needs code from the shared code to define the
+> > > sys_reg_descs. But also the shared code needs the definition of the
+> > > sys_reg_array and we cannot forward declare arrays and use their size
+> > > before it is properly defined. This patch solves this chicken or egg
+> > > problem. For the time being s390 cannot process the full arm64 defined
+> > > sys_reg_descs array.
+> > > 
+> > > No functional changes.
+> > > 
+> > > Co-developed-by: Andreas Grapentin <gra@linux.ibm.com>
+> > > Signed-off-by: Andreas Grapentin <gra@linux.ibm.com>
+> > > Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
+> > 
+> > I see later in the series, the include of sys_regs.c into s390 is done
+> > before the s390 sys_reg_descs array is defined.
+> >
+> 
+> Are you referring to [PATCH v3 08/23] KVM: arm64: Share system register code with s390 
 
-v1 was a single patch: the 5.15.y version of commit 4bcdd831d9d0 ("KVM:
-x86: Acquire kvm->srcu when handling KVM_SET_VCPU_EVENTS"). On 5.10 that
-isn't enough. KVM_RUN also reaches kvm_vcpu_ioctl_x86_set_vcpu_events()
-through sync_regs(), and on 5.10 that happens before vcpu_run() takes
-kvm->srcu. Upstream covers that path with commit 8d25b7beca7e ("KVM:
-x86: pull kvm->srcu read-side to kvm_arch_vcpu_ioctl_run"), which 5.10
-doesn't have.
+I was talking about arch/s390/kvm/arm64/sys_regs.c in
+[PATCH v3 16/23] KVM: s390: arm64: Implement arm sysreg managing infrastructure.
 
-Patch 1 is that commit with its follow-up commit 2d08935682ac ("KVM:
-x86: Don't re-acquire SRCU lock in complete_emulated_io()") folded in,
-so emulated MMIO and PIO completion can't overwrite the outer SRCU
-index. Patch 2 is the v1 patch.
++static const size_t num_sys_reg_descs;
+..
++#include "generated/sys_regs.inc"
+..
++static const size_t num_sys_reg_descs = ARRAY_SIZE(sys_reg_descs);
 
-Tested on v5.10.275:
-- x86_64 allmodconfig W=1 build of the touched objects, base vs
-  patched, no new warnings
-- booted a PROVE_LOCKING/PROVE_RCU kernel as a nested KVM host under
-  QEMU and ran the evmcs, smm, state and sync_regs selftests. All pass
-  with no lockdep or RCU splats. vmx_preemption_timer_test fails the
-  same way on base and patched in this nested setup.
+> 
+> There, the sharing is done from the arm64 side.
+> 
+> As this is a new file for s390 the sharing only gets effective with
+> [PATCH v3 16/23] KVM: s390: arm64: Implement arm sysreg managing infrastructure
+> 
+> There, in arch/s390/kvm/arm64/Makefile.gen I add the sys_reg.c as shared
+> file. Before it will not be processed (nor included) by s390.
+> 
+> And there in our sys_regs.c I'll define that array.
+> 
+> Or did I miss something?
 
-5.15.y has the SET_VCPU_EVENTS fix but not patch 1, so I'm sending patch
-1 for 5.15.y separately.
-
-Changes in v2:
-- v1 <CAFaZ9eoOtFxAansjaUbA-CDNQLcVAVJre2R9vaTQONG9MYUEng@mail.gmail.com>
-  only had patch 2 and missed the sync_regs() path. Added patch 1.
-- resent through a whitespace-safe path, v1 was also damaged by my
-  mail client.
+Sorry, I wasn't saying anything was wrong, just reading the code and
+writing why it makes sense to make this change!
 
 Thanks,
-Dickson
+Joey
 
----
-Paolo Bonzini (1):
-      KVM: x86: pull kvm->srcu read-side to kvm_arch_vcpu_ioctl_run
-
-Sean Christopherson (1):
-      KVM: x86: Acquire kvm->srcu when handling KVM_SET_VCPU_EVENTS
-
- arch/x86/kvm/x86.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
----
-base-commit: 99112ea818e35b606397c84fbc05e6fadb6ea162
-change-id: 20261126-kvm-510d-6cc40d855004
-
-Best regards,
---  
-Dickson Wu <dickson.wu@certik.com>
-
-
+> 
+> > Reviewed-by: Joey Gouly <joey.gouly@arm.com>
+> > 
+> > Thanks,
+> > Joey
+> >
+> 
+> Thank you!
+> 
+> 	Steffen
+> 
