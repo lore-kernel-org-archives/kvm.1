@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795702350;
-	b=CqRTc5+67UUQpc2WRLGuReKw3ZDLJxl+b1g8zDOhUyKHdWmJoBbeLieGMUje6ZS/W+my
-	 7N86oGZGR8HmV909ZBAtf5ITpAmHdkiDRiwtfhSxrN8z/Jw6ULE06Oeh+6Nw4ePqv1lEr
-	 FOCL44dswHkc4uJ8MBHm7hJYXMrB4UIpfqWYHM9qBLQOQDdKBSKhzoFh5DosKfEfDzyaB
-	 OdJbmcw1uV7SabcvLifK6wO6ePFSfzA6Rz9W1nAaOALKRMLznlpT9qYdHS0olSKBEwkCU
-	 eoarOQgSGhccdJtE596u9cQojnhnkT3xes5zcpxUV178Adqcjas3dajphFY72LMiYLA==
+	t=1795702773;
+	b=5dUWsurkBYQIBSv9VJL4Fd8P7h+tBSNlawRTBx+25FJc37LaaLoqml5ioSSIcw2Mwp4v
+	 T4LswtJU81H1yGK6fkytHLVbttHYTiOt0kflO0LzshX+cJTNBpFINMRdB+7M+cF2KMq4U
+	 UbIbhgAw1+uIgG6B5zFbR784hKwDRudcehhNizdkTaBBu6ZZD6Rt0jnd0FrPiqD4Ujsws
+	 GJuJj8Ef9qrFguxcMi2u+s1vz0LAdzUYIo1seZK4xuT997cyMfpQgZe9/pgHIcgKAvEQA
+	 iF6s5N47hNkG6fOXezw77HQFVzmM0pknoHGIKhbrU2jCaXaH5LSablbb8f44DRj12SQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795702350;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795702773;
 	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=i2cNc8HSARC2wOejD22JDbD0mwhfJQiUlrWNB6pO/o4=;
-	b=ulEbBod4OZ2k92KJnXNYiCegLD3hhPorpfRP7XNrPkIPR8nUbmJmB9FjFjYohObhV7WG
-	 iKpO5hYmaW/8p5/XNIUCCMtx5Sey2DT7ouGbNR4RMM38iGHSVm5EF/X1uz7B3FYinO5Kq
-	 Yny3X2Ls+J7Q43zrOX1QFRwxnX0tu/8EKD70UcmJskZmtpqMYerfTfr3Zjg+lVL4Y+K0M
-	 i/wqUXNGRMmYU63hFfrPakTaqV16w0YmthgOvANCcDXSCcYgYK7Atena5uWK2KYTueBNx
-	 3i8/sO65jEX3OthvhJzTyXJpfPnCRe1Tq4sJwgRWNOko1aW3PX37JlMB0u0k2leIlJw==
+	bh=0nlSHi0qFWi9gf0za/z/P+1+DL2gKRC6mZXAm1Oyf3Y=;
+	b=bASSO/qb0PCQVJg5LzEYLm+zVeiCIKLapQZp+BQs4uzD9aCwzdkeWRp3JjrbEs1llgkq
+	 h9yF7Lx485x/5sndySkIzFa2Km0WpNkCt7HWx233UFvcl+gFyqrvIcVLVV5Bgj6vXLZFU
+	 tSl+3UlkqLnUhoa21vEazRXhcSxaT5c5t59fQa1B2J0XmBFo/rzEmlUXsRMVkMEuSi6bF
+	 tRYL/MTp7C6fgTvbtQF0Xnp4zALdviBPbmkaw64DcMKKTUQGemHHSNH7jL8u3emkBpjQ9
+	 5sWtpg7cVnGQpgSQVdbB1xyo1v8C1HW9EuB2xpku8GN32Yv6b5OEYSRFJhjnljvUUoA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="XM/v0L+X";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BLUHY1S2;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2DF606A335;
-	Thu, 26 Nov 2026 14:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3897606A31C;
+	Thu, 26 Nov 2026 14:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XM/v0L+X
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F20F1F000C4;
-	Thu, 26 Nov 2026 14:12:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BLUHY1S2
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E06551F000C0;
+	Thu, 26 Nov 2026 14:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795702350;
-	bh=i2cNc8HSARC2wOejD22JDbD0mwhfJQiUlrWNB6pO/o4=;
+	s=k20260515; t=1795702773;
+	bh=0nlSHi0qFWi9gf0za/z/P+1+DL2gKRC6mZXAm1Oyf3Y=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XM/v0L+X45woIBgANOwNtHPPIUmqXvHJxQ6mG9ukfV9OpVWj+xy+U5/lLU6twpiv8
-	 I9moaYBWThXPieB8iVDdrgZRck2TaptOWDWaINkRf87Eq23OBBP4BTZHZiTLQF+6Dl
-	 3VoSl6+svsMEeJ2t/4eq+g6pv6fIyAc88iW1KHSuMke+N+vXD7PgYDbZOpIKcCeCBD
-	 LeBKC5ixNrN57C6ukG4KDBtar3YC/74xgGg7ZUoS6201lCrDlW5P4oZaRkM5OvGFkt
-	 8tKz+wqmdZnUid+GmJ08v/IpaXMQLzrmptGj3dz97OX8yyKN8C9vQpgSwH1Cha7eo+
-	 bzApLFZU5wIZA==
-Message-ID: <4b60cf7b-bf8f-42dc-979e-71fe6d00c5d1@kernel.org>
-Date: Thu, 26 Nov 2026 15:12:21 +0100
+	b=BLUHY1S2iF3IL/wCA6mm5j/UjKahg2kQz/XXqkCTlo45D8VOEi7G9QdsNEr9Wjspb
+	 f+sOX/wPQDZkC5aKMS5/mHYD5jT9u3LELLqDi1VkFSswNUTcTF84fd6TILyZlnKUQX
+	 az4k1Fhc398rwL0UL5/povcxQDycmhXbfAL11CxmERtfSYkbUfMNgPk2SDsx2LRoDn
+	 N1jeNgBWAf0q9fzPlzhuw6pd/MC08l2FQsl3AwKBZSqLsiNr8EuujbbjiJnYV/41Dh
+	 zMPRKzSu2x+L0FxiCikBccBJWrJJinfS8fCVjF6ipHLHZndP/d2nUx/v6dwpvPBdCD
+	 Xk2IwgWgvK91A==
+Message-ID: <682c765f-332f-4ac2-b448-4201c8fae6fc@kernel.org>
+Date: Thu, 26 Nov 2026 15:19:13 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -52,21 +52,39 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/9] mm/mprotect: add MM_CP_PERM_UPGRADE
-To: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>, kvm@vger.kernel.org,
- linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-riscv@lists.infradead.org, seanjc@google.com, pbonzini@redhat.com,
- akpm@linux-foundation.org, peterx@redhat.com, ljs@kernel.org,
- imbrenda@linux.ibm.com, borntraeger@linux.ibm.com, frankja@linux.ibm.com,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>
-References: <20261112142039.907090-2-clopez@suse.de>
- <20261112142039.907090-7-clopez@suse.de>
- <3314e44d-dbfe-45da-a1b0-8337784a5e86@kernel.org>
- <5412ba3a-ff32-48e8-b5a1-d46b97cf5f8f@suse.de>
+Subject: Re: [PATCH RESEND v2 12/21] mm/pgtable: redefine PGTABLE_LEVEL enum
+ with ascend order from PGD
+To: Yeoreum Yun <yeoreum.yun@arm.com>, Mike Rapoport <rppt@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>, Huacai Chen
+ <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
+ Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
+ <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
+ linux-riscv@lists.infradead.org, linux-openrisc@vger.kernel.org
+References: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
+ <20261102-dummy_ptxp3-v2-12-78840b2ec73c@arm.com>
+ <awXD4i47F-VAG1tD@kernel.org> <awXc0MSZl9t9VW8e@e129823.arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -113,47 +131,37 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <5412ba3a-ff32-48e8-b5a1-d46b97cf5f8f@suse.de>
+In-Reply-To: <awXc0MSZl9t9VW8e@e129823.arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 11/15/26 23:03, Carlos López wrote:
-> On 11/13/26 7:51 PM, David Hildenbrand (Arm) wrote:
->>> diff --git a/mm/mprotect.c b/mm/mprotect.c
->>> index 84bcfe0281d3..8c0fcd10f5a3 100644
->>> --- a/mm/mprotect.c
->>> +++ b/mm/mprotect.c
->>> @@ -767,6 +767,17 @@ static const struct mm_walk_ops prot_none_walk_ops = {
->>>  	.walk_lock		= PGWALK_WRLOCK,
->>>  };
->>>  
->>> +static bool vma_flags_is_perm_upgrade(vma_flags_t old_vma_flags,
->>> +				      vma_flags_t new_vma_flags)
+On 11/24/26 19:52, Yeoreum Yun wrote:
+> On Tue, Nov 24, 2026 at 07:05:38PM +0200, Mike Rapoport wrote:
+>> On Mon, Nov 02, 2026 at 11:21:25AM +0000, Yeoreum Yun wrote:
+>>> The PGTABLE_LEVEL enum values appear to be ordered in the opposite direction
+>>> from their intended usage.
+>>>
+>>> Intuitively, higher page table levels should have smaller enum values,
+>>> but PTE is currently assigned 0.
 >>
->> Two tab indent.
-> 
-> Will fix
-> 
->>> +{
->>> +	vm_flags_t old = vma_flags_to_legacy(old_vma_flags);
->>> +	vm_flags_t new = vma_flags_to_legacy(new_vma_flags);
->>> +	/* VM_ACCOUNT does not affect page tables */
->>> +	vm_flags_t mask = VM_READ | VM_WRITE | VM_EXEC | VM_ACCOUNT;
+>> That's not what x86 thinks :)
+>> They even expose it in /proc/vmstat with smaller numbers meaning lower levels
 >>
->> Why is VM_ACCOUNT a permission upgrade? At best it's "no change".
+>> $ grep direct_map /proc/vmstat 
+>> direct_map_level2_splits 152
+>> direct_map_level3_splits 4
+>> direct_map_level2_collapses 0
+>> direct_map_level3_collapses 0
 >>
->> What am I missing?
+>> Just an observation, I don't mind either order.
 > 
-> It isn't, this just means to cover the case where mprotect(PROT_READ |
-> PROT_WRITE) on a private read-only VMA sets VM_ACCOUNT as well. Without
-> this, the change is not detected as an upgrade.
+> Right. I made this change because a depth-based scheme seems more intuitive.
+> 
+> As you pointed out, though, the x86 specification uses smaller
+> numbers (0) for lower levels (pte), so I think we can leave the
+> x86-specific direct_map_* entries as they are.
 
-Why is setting VM_ACCOUNT and upgrade for permissions?!
-
-I'm sorry but this is all way to shaky and confusing.
-
-Take a step back and think how to do all of this cleanly without making this
-code here unmaintainable :)
+patch #14 depends on this, no?
 
 -- 
 Cheers,
