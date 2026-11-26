@@ -1,53 +1,53 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1795654119;
-	b=MZNXIGfDJ0fwFr8+ahlf7z53FHsgkzZ79SojdU0u2K2GHNwRHFe/z4vkZfAfjJ7bhtE7
-	 dC9gIwhyfBlmzd1m/ykLHMo9eeiDF3UHGnj/+M7jIISK2SpCnWm20cIFJx8zSO5twegCX
-	 zMXtBFboZD5zkSFqStpcRI2NoiTLBwYsAQa7eJEt5TfZorLuvflHdZ8GssUyjBOHTz1S3
-	 gdTykqqu+oX4expjkU7LJRKIROsvTWFDd1FXNu7R7TYZhmAzzWIIBN5HMPCjggvVsLD2j
-	 c3oTe9sEDBJFqCu7DdnQDEIkFJBpMwA79YVB5KWssy5q0NjytjhCWVHFeJ82ivStAMQ==
+	b=QZr4adeX0aF9iUOBdV0V91U5Rk/x5na9+t99bSiHCEsaD/eUAKaRy/TFwiTwA3uMjACe
+	 EVsHtS5YWMjofJhWwuo6JLj0KimFrdYB11cA1Hu8/eH+LTTH2tnEQRxQ4uDurbqmdMWhR
+	 zmLR8ISemvGEWoa+PO9rm+6pdvuGP7BjKYh4V2LLuO7sBs9M9mISSbPGJZai+gFwieAkg
+	 baboXjH0fMnjYaF3XW9QI0iO2VZhrwY59vh3K0hjHrMUxQONCaHtxIeDrVX7nbGY0OKU8
+	 d+bFG33F+RX4dJMhuK+oRw9tcheGz5+WP2S93hudfRG0PVhDMWcLbh70XPnqTo7+UZg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795654119;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=RMb1fbSrcTqw6OYahE1gTZIFMjBSinkZamkat5lrPTU=;
-	b=yUi3XoY6bDmbryp5DX1WsAkKTgScmO/ZabKY4SSMwzijS8sSOxE2KMveQdm4sIFtHfz8
-	 A0og2INVTqmAPOpcKejVHoSBZ1i+Q2Efu6lRHIZrzj0+7n6aya/odRBvDjOqskiWEQOVT
-	 ZV57ObiWqAltNc0mGOG5EHFY05Hh7Hc8T2/JmloX1Ri6Jc/Dz849zeWW/YlTRf+OWkrsj
-	 /U0qAw3zIRoz4Xs6qayc9DCbWITsRt+nv9EyMYwvs1+LFHYkIx6f+bs2KY1qUDutfx08c
-	 dtcWfeBXY+rfBRmze493q7gkfJGnOP8X3LIMUC6gP0ftj5lAloDoRsGUzXsnK6QBdgw==
+	bh=/WyPLTBGknmwe8eJ3NMjtwhXRdSaGrllf4Qm0YL+i6Y=;
+	b=zcAuQIPyY02qP7CXX+1uYOu+0qf6guJHNfZthSYObIIkU/ToKHG/4yrQ6CR8BXX0F0/1
+	 STpC6FXzxKR0ZTV1SvQk60fQSguLmCS/hmnjuid4saU2H1hFGbgbvbwFuSUtQ4vABNLbd
+	 WGpMsT9n/Jp59TfLshvzUhHJzmpYfomrlHC+5OU2apQeDAh81uIaFLVsftkneF3t0RoW3
+	 Ds+F6gk4dPUyBS5N21BraKPgmuoOcZZAkwnUexWFVx4Z1V94HI7Y5pQYhC7h2vb3LJwtI
+	 iae3yc8n4dAxNYLafxdin5EGS1aZrDHCmGOG+QBJeEPW5ppspex+DKCr27iTRccAdzg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GxPCsVhW;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C1mw31Pf;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED843606A323
-	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 00:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885B6606A331
+	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 00:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GxPCsVhW
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD861F000C6;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C1mw31Pf
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18981F000D0;
 	Thu, 26 Nov 2026 00:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795654118;
-	bh=RMb1fbSrcTqw6OYahE1gTZIFMjBSinkZamkat5lrPTU=;
+	s=k20260515; t=1795654119;
+	bh=/WyPLTBGknmwe8eJ3NMjtwhXRdSaGrllf4Qm0YL+i6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GxPCsVhWeyRg2skeUXRlCRpx9BbUT2dQneGKu+zbhvTQ+MSgFM03r3G0xfx7y/JUf
-	 HnGLpwaYID3OwL64ry9F+Xwj7CHDh1GarBySBNU+8pQ0j95mkY+YbeAwWKorvCiH7+
-	 fJBq4/Qhh4vvnJkT40b744mGpZ8VN5aGWEnJ0XbaQ6NO93vLONIhCGfroD1XdY1UUd
-	 fIXPNfezidAtHT+NZCA3kyzMTYEs/mchNFjdbPKUTQtwHwHFjKe72oKDQflbYdK6SP
-	 ltN49zIpfiBfizNdJ+kBqzRZ9GEsW+/9cFGj5eRVmNU3ddzdQMmg8aqVBuO+RnUPT2
-	 QHC+0NhoxyKUQ==
+	b=C1mw31Pf10XftUHWltIvWB3+IOXu0DlBE+vrG/As3EzdpA82atWQ8UT0/QAObxzWr
+	 3nAaDAMWRmkiz6PMnBSmZE7btvJSe7GpCbL6a6zeyTsXvNR7L8CTKjx4IxAesmTzcg
+	 /VZy8ET3GUzLkq1SxMuEW3uEJWvWD8nXfhFQ4B391U8Onmrdpj5/6l9P0oLFxw4iZM
+	 d6+a4bkC4NR41c2RQAHdrl48ArdSwpGXY4EpCBLrmvRXfZTvhaoizLAyhvayhEvaEs
+	 Fy/dT+0YJ9efFoUQ8dEekuCkS6bQg4F3SZUwy9wlqUau0URR2FUh1SO5nj/q3MaTkA
+	 uzpp4KGCfPVkQ==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>
 Cc: Jim Mattson <jmattson@google.com>,
 	kvm@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [kvm-unit-tests PATCH 1/3] x86/pmu: Mask emulated instruction count deltas to the counter width
-Date: Thu, 26 Nov 2026 00:48:29 +0000
-Message-ID: <20261126004831.2712453-2-yosry@kernel.org>
+Subject: [kvm-unit-tests PATCH 2/3] x86/pmu: Account for VMRUNs in emulated instruction checks on AMD
+Date: Thu, 26 Nov 2026 00:48:30 +0000
+Message-ID: <20261126004831.2712453-3-yosry@kernel.org>
 X-Mailer: git-send-email 2.56.1.911.g883d8bcb20-goog
 In-Reply-To: <20261126004831.2712453-1-yosry@kernel.org>
 References: <20261126004831.2712453-1-yosry@kernel.org>
@@ -62,66 +62,101 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-check_emulated_instr() presets each counter to -N, N being the expected
-number of instructions or branches, and computes the number of counted
-events as "count - start", where start is -N as a 64-bit value.
+AMD CPUs count a successful VMRUN as a retired instruction and as a
+retired branch in guest mode, i.e. every VM-Exit taken in the measured
+window of check_emulated_instr() adds one to both counts, including the
+10 VM-Exits for the 5 forced emulations and the 5 CPUIDs themselves.
+E.g. on AMD Turin, the counts are 32 instructions (22 expected) and 15
+branches (5 expected) with a mediated PMU, and 33/16 with KVM's
+perf-based vPMU, which also intercepts the GLOBAL_CTRL write that
+enables the counters.  KVM's accounting of the emulated instructions is
+exact, the excess is all VMRUNs.
 
-That only works if the counter wraps.  The counter is only
-gp_counter_width bits wide, so if it counts fewer than N events, it
-reads back as a large positive value (2^width - N + delta), and the
-64-bit subtraction yields 2^width + delta instead of delta.  E.g. a
-48-bit counter preset to -22 that counts only 10 events reads back as
-0xfffffffffff4, and the difference is 0x100000000000a instead of 10.
+Since commit 7999ff1d28b0 ("x86/pmu: Treat all AMD CPUs as having
+instruction/branch overcount errata"), the test only checks that the
+counts are at least the expected counts on AMD, which always passes: the
+measured window has 12 native instructions and no native branches, so
+the 10 VMRUNs alone yield 22 instructions and 10 branches, enough to
+pass ">= 22" and ">= 5" and to overflow the counters from the -22/-5
+presets, even if KVM didn't account for any of the emulated
+instructions.
 
-The "==" checks still fail in this case, but the ">=" checks, used
-without GLOBAL_CTRL and on CPUs with the instructions/branches retired
-overcount errata (i.e. all AMD CPUs), pass even though the counter
-didn't count the expected number of events.
+On AMD, add the 10 synchronous VMRUNs to the expected counts and to the
+presets, so that the counters only reach the expected counts, and only
+overflow, if KVM retired all of the emulated instructions and branches.
 
-Mask the differences to the counter width, so that a counter that didn't
-count the expected number of events fails the ">=" checks.
-
-Fixes: 20cf91472daa ("x86/pmu: Test PMU virtualization on emulated instructions")
+Fixes: 7999ff1d28b0 ("x86/pmu: Treat all AMD CPUs as having instruction/branch overcount errata")
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- x86/pmu.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ x86/pmu.c | 33 +++++++++++++++++++++++++++------
+ 1 file changed, 27 insertions(+), 6 deletions(-)
 
 diff --git a/x86/pmu.c b/x86/pmu.c
-index a54eb3843621c..db4198c2b64ae 100644
+index db4198c2b64ae..06d4992daf710 100644
 --- a/x86/pmu.c
 +++ b/x86/pmu.c
-@@ -736,7 +736,7 @@ static void check_running_counter_wrmsr(void)
- static void check_emulated_instr(void)
- {
- 	u32 eax, edx, ecx;
--	uint64_t status, instr_start, brnch_start;
-+	uint64_t status, instr_start, brnch_start, instr_delta, brnch_delta;
- 	uint64_t gp_counter_width = (1ull << pmu.gp_counter_width) - 1;
- 	unsigned int branch_idx = pmu.is_intel ?
- 				  INTEL_BRANCHES_IDX : AMD_BRANCHES_IDX;
-@@ -782,17 +782,20 @@ static void check_emulated_instr(void)
- 	__stop_event(&brnch_cnt);
- 	__stop_event(&instr_cnt);
+@@ -70,6 +70,12 @@ do {								\
+ #define KVM_FEP_INSNS		22
+ #define KVM_FEP_BRANCHES	5
  
-+	instr_delta = (instr_cnt.count - instr_start) & gp_counter_width;
-+	brnch_delta = (brnch_cnt.count - brnch_start) & gp_counter_width;
++/*
++ * The number of VM-Exits, and thus VMRUNs, caused by the kvm_fep_asm() blob:
++ * one for each of the 5 forced emulations and 5 CPUIDs.
++ */
++#define KVM_FEP_VMRUNS		10
 +
+ /*
+  * KVM_FEP is a magic prefix that forces emulation so
+  * 'KVM_FEP "jne label\n"' just counts as a single instruction.
+@@ -755,6 +761,21 @@ static void check_emulated_instr(void)
+ 		.config = EVNTSEL_OS | EVNTSEL_USR | gp_events[instruction_idx].unit_sel,
+ 	};
+ 	const bool has_perf_global_ctrl = this_cpu_has_perf_global_ctrl();
++	uint64_t instr_exp = KVM_FEP_INSNS, brnch_exp = KVM_FEP_BRANCHES;
++
++	/*
++	 * AMD CPUs count a successful VMRUN as a retired instruction and branch
++	 * in guest mode, i.e. the VM-Exits for the forced emulations and CPUIDs
++	 * add one to both counts each.  Account for them in the expected counts
++	 * and the presets, so that the counters reach the expected counts, and
++	 * overflow, only if KVM retired all of the emulated instructions and
++	 * branches.  Asynchronous VM-Exits can add more, which the ">=" checks
++	 * for the overcount errata tolerate.
++	 */
++	if (!pmu.is_intel) {
++		instr_exp += KVM_FEP_VMRUNS;
++		brnch_exp += KVM_FEP_VMRUNS;
++	}
+ 
+ 	report_prefix_push("emulated instruction");
+ 
+@@ -764,8 +785,8 @@ static void check_emulated_instr(void)
+ 	__start_event(&brnch_cnt, 0);
+ 	__start_event(&instr_cnt, 0);
+ 
+-	brnch_start = -KVM_FEP_BRANCHES;
+-	instr_start = -KVM_FEP_INSNS;
++	brnch_start = -brnch_exp;
++	instr_start = -instr_exp;
+ 	wrmsr(MSR_GP_COUNTERx(0), brnch_start & gp_counter_width);
+ 	wrmsr(MSR_GP_COUNTERx(1), instr_start & gp_counter_width);
+ 
+@@ -788,14 +809,14 @@ static void check_emulated_instr(void)
  	// Check that the end count - start count is at least the expected
  	// number of instructions and branches.
  	if (has_perf_global_ctrl && !pmu.errata.instructions_retired_overcount)
--		report(instr_cnt.count - instr_start == KVM_FEP_INSNS, "instruction count");
-+		report(instr_delta == KVM_FEP_INSNS, "instruction count");
+-		report(instr_delta == KVM_FEP_INSNS, "instruction count");
++		report(instr_delta == instr_exp, "instruction count");
  	else
--		report(instr_cnt.count - instr_start >= KVM_FEP_INSNS, "instruction count");
-+		report(instr_delta >= KVM_FEP_INSNS, "instruction count");
+-		report(instr_delta >= KVM_FEP_INSNS, "instruction count");
++		report(instr_delta >= instr_exp, "instruction count");
  
  	if (has_perf_global_ctrl && !pmu.errata.branches_retired_overcount)
--		report(brnch_cnt.count - brnch_start == KVM_FEP_BRANCHES, "branch count");
-+		report(brnch_delta == KVM_FEP_BRANCHES, "branch count");
+-		report(brnch_delta == KVM_FEP_BRANCHES, "branch count");
++		report(brnch_delta == brnch_exp, "branch count");
  	else
--		report(brnch_cnt.count - brnch_start >= KVM_FEP_BRANCHES, "branch count");
-+		report(brnch_delta >= KVM_FEP_BRANCHES, "branch count");
+-		report(brnch_delta >= KVM_FEP_BRANCHES, "branch count");
++		report(brnch_delta >= brnch_exp, "branch count");
  
  	if (this_cpu_has_perf_global_status()) {
  		// Additionally check that those counters overflowed properly.
