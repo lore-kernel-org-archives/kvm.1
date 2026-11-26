@@ -1,105 +1,136 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.71
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795673181;
-	b=sWTo/wBo0kbRgDYoqiLE73GBJqQUWDCgRgeeTOmzg9BbcxtTTs5H0sIlqFCe5+MxVKSD
-	 +8NRGufNd6KdM8A/1sSH29oPlEaXGAh/S/76/wmIzgCHZ42RX6e1vw+VHivMc2smeS52S
-	 BZN55g0+Si9Iy2bNQBXBOXeeayg1WhwUTdthj5EEvbDwVhz+Cy8OWHZvju+tVy6oONcts
-	 HjY6g1mvY6ZeAZkzfdnkNrhxb+mX2M2AVme/yCPnJr3iIXsDFYqmi+qBBZ5Ib6rb2gRle
-	 yvuZYqNj7lapFAYrjIfFdm48LRWUMehJKRghzuGblNkM8ZP+fqLHvcN4P/N3deQVq6Q==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795673181;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-ClientProxiedBy:X-EOPAttributedMessage:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=bKwVJ14dbRm8WY12WgcgfQHPRPoxYtHMMbW7HYO/Gw8=;
-	b=EkWM9+BI/evd8I/mzZIWm3tIqiEPFwWn/BIKfRsNJTLfD213wRvdLeATiGu+R7NVhV8U
-	 Pd84ZHfcsqQI+qKhc4MqlKwpGa0oW+tuvZXkAs1ol+Zim5lerdcJjpvnZ9HJN+56O+oyk
-	 8DEp6Jd1MsJ6ukfCSw1YzPP8cqHvrjLEMf4CkTRrPhjfYu4uFPIT2Hl5pBWu2QV/NdDDV
-	 gwC2CWK6yaYEiiO/6Ik7gKxangt6R0s2b89trUEci2B/zDANFA+DEUwQDJUuZnPsrmxmr
-	 nOxm9FPhIblVYlBDirO+0GfDMigOfzAdmZPwauLW+uiAigxi6Cb/BTIw5/RAnmVFZjA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amd.com;
-	spf=fail smtp.mailfrom=amd.com;
-	dkim=pass header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=DZgBAt2E;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.93.201.71
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013071.outbound.protection.outlook.com [40.93.201.71])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=103.168.172.143
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795673317;
+	b=rcwXUJ6npgQmgj/Qt7OPRgB6ogM9KJemNfl7CsYdh7P4elgninQUoAvk4+mZ279uhNXi
+	 0V4tpX9vSzJWnVKG0g6KwE1z8MienBoCynZnbp/HMamsoTpYrgMA0VLCMXG45oKGcHfp9
+	 D2viaq7UDHhfjCvI46f7SXuSsP5tPn5KOTLEbwIEB+q7FM4+nKUmtprivV9VTtCjDeiHR
+	 +loBVaWXzc6EeGRu8acHi95eCLhnDn1y2rW9Pm7IjdL/wQYbVQWbwdC5RBvy/9E00t5r/
+	 QkjK/mZoyGvMARD8gBptQO5bFyncNAlb8cB3vtiMPnyorwzrID9pb9vbhAl2F9y5xMA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795673317;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
+	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
+	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
+	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=OlqIcjiayRsUtYpoeNZkwmrbEBPqqT/RvAPJg1txEMI=;
+	b=HpM/+7IJAnHQTmSYsNpVJpjRScgAHaYRkLuPvogdq4FGth/cHJiLGxbfiLHi1tSaiA3o
+	 3ey1dPLu5ZndcJ4wyLSYvkZU/kWl3n1k/XFnqoi1dAuyDeJQqxpre9ENr94OelP6gD6cO
+	 ztUgbQuMStyvsI4LtBnWgEncbM/S86qBwW0y7ewakNdGNDCWm4JCM6hCsInMQw//mi77+
+	 G6HI/8VBiy5ZNjETEZbKJnldg62jE4l/oax8Ht7oyyWBodiztLJVrUxhsIebiiyZBL4g+
+	 10fMJWv1kEPR9Nf9vGfwxMuGW7etP6nfopMdCQw2Fp+7CVmdH0pHMCyr1SosiaKKRNw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=shazbot.org;
+	spf=pass smtp.mailfrom=shazbot.org;
+	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b="Y/2gJW/D";
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=wj+5LEq9;
+	arc=none smtp.remote-ip=103.168.172.143
+Received: from flow-a8-smtp.messagingengine.com (flow-a8-smtp.messagingengine.com [103.168.172.143])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633F6606A332;
-	Thu, 26 Nov 2026 06:06:21 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 633F6606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1D9606A330
+	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 06:08:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D1D9606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=DZgBAt2E
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vk7A3pK3hyDBa8zLoN37Bqvc7INalm7+qMjna6syA/o4c73ab4ziUoU34ooeRkhjHIPzNK9h04zm+VnoK9Uf9Yg9r47HKZBph3G67Nr4kYLEItfaKSJueNSnj9vYjkDLijrCZflXMcVRd5IxY4IzvuXzx88bvwbDEC07B1iCaVfgGeXpTe9B2NRJvgDppJg6tsmXj76fbFIL8qvn2DYYN56NpL6qwgLkts8f/AHwCXqr/sMc00UGXsA53zQBPHyHTU8AQUlO1o19L+syeCJOyXZC0L2xP2KSOoxypyVwyzuWS0mSfQscZbqJu19U+05v5IYkoMQL36yGnkBU+ApJ2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bKwVJ14dbRm8WY12WgcgfQHPRPoxYtHMMbW7HYO/Gw8=;
- b=JP3EQemxwdFahLciTTBYSzCV25omNOuKAL/zSx4A9SHKnRRnTLBvSdkNXPBHQgKMi/byvqgZ8NmzEccvacd0KMUd0HFDbkUdIR0ivLfAQwcjRBGuTq918J7NSO7b0HXot5AZRv+2EG5xZxbhhIWnkzdjIOCULT7BtQ4d1col1Shm85hUMcjyrKCa+QzHboEk9ZcBq73FR8TyHMjmJfllc4Ll3C7gwdIt8jWP491fRXAq8g19pkBagj9GeTsAU5cnUAkT9hxQWXgE6WQ5La6C7wVENk4UmDBpgqccSe6fg+D684S5fil1fFpcjo02e3L0ayq8a/Pd5c7cniPdF91fbw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=zytor.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bKwVJ14dbRm8WY12WgcgfQHPRPoxYtHMMbW7HYO/Gw8=;
- b=DZgBAt2EvDjsHYC1jnOR3IlPg8fqw92ak8MJUL6OatxwwDNn+KoY/QqD163MtLenAZCS0YLw5XVDd9yLQQL5bydN9aoo+DWSf6sjRfACiXPbo05shTqs0T1swdSIKPFGhGCGwuKZRes85bphJHGK+Fpl0y++wIIOzXnF0KUEMuQ=
-Received: from BN9PR03CA0175.namprd03.prod.outlook.com (2603:10b6:408:f4::30)
- by CY8PR12MB7267.namprd12.prod.outlook.com (2603:10b6:930:55::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.7; Thu, 26 Nov
- 2026 06:06:16 +0000
-Received: from BN2PEPF0000A894.namprd04.prod.outlook.com
- (2603:10b6:408:f4:cafe::1) by BN9PR03CA0175.outlook.office365.com
- (2603:10b6:408:f4::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.639.14 via Frontend Transport; Thu,
- 26 Nov 2026 06:06:16 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN2PEPF0000A894.mail.protection.outlook.com (10.167.248.186) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.662.3 via Frontend Transport; Thu, 26 Nov 2026 06:06:16 +0000
-Received: from BLR-L1-SARUNKOD.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Thu, 26 Nov
- 2026 00:06:12 -0600
-From: Sairaj Kodilkar <sarunkod@amd.com>
-To: "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>, "Dave
- Hansen" <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, "Paolo
- Bonzini" <pbonzini@redhat.com>, Sairaj Kodilkar <sarunkod@amd.com>, "Sean
- Christopherson" <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
-	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>
-CC: <Vasant.Hegde@amd.com>, <Suravee.Suthikulpanit@amd.com>
-Subject: [PATCH v5 2/2] KVM: x86: Add support for cmpxchg16b emulation
-Date: Thu, 26 Nov 2026 11:35:15 +0530
-Message-ID: <20261126060515.2198-3-sarunkod@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261126060515.2198-1-sarunkod@amd.com>
-References: <20261126060515.2198-1-sarunkod@amd.com>
+	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=Y/2gJW/D;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=wj+5LEq9
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailflow.phl.internal (Postfix) with ESMTP id 7E9BA1380692
+	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 01:08:35 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Thu, 26 Nov 2026 01:08:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1795673315;
+	 x=1795680515; bh=OlqIcjiayRsUtYpoeNZkwmrbEBPqqT/RvAPJg1txEMI=; b=
+	Y/2gJW/D3vTnDJk8Vgq+SFodx44867q7vY8ogBqUXSgqf8N9vHItfM8sNEShuzxd
+	5nTaZ13riRegcN9Tnbl0DDJCTcNZxcca1kU0f7Yal+GtLLL4HHBxJpXnWJ0XVjcc
+	h+GpeYAAG2gDEdwqdwY3l27OKKdeRqRjvCuwhril8ngtjPFMEGeRG64HgHBTlNVk
+	0HVxg7whD3hwvb1R0p2QRr1ENWQ5tkLbeuGAmSObk4/txfA6A2rgCSodg1aGJT/T
+	cZmRakQmaCycN6AjHGgabvmRRHKFbMNmuIBt6DfDhihMBEdM1M8ZerjFoFqFv+1Z
+	gP0dns5nrwtCG7yKXFOQ1g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795673315; x=
+	1795680515; bh=OlqIcjiayRsUtYpoeNZkwmrbEBPqqT/RvAPJg1txEMI=; b=w
+	j+5LEq9ltIC3mZgjN00vulQlBhT60VkkvWVS7OPJzG/czZqgyF7VV8mLajbZAiQx
+	7nUcGi2Y6+VfMZljpH/X2/qLaOBCa3KJ/blghJ4cMM1//U3Tn9sPmyilNgCQI9Ow
+	fuXYp34foYfpFWAAPLgAELo5hCKD6Djy92w5yxsaFnHlbQuw/BTU/WnNjGf+89cR
+	B3J0/dviMigvMtqHN1cTqOe2q+ufvt1n9fwRF3KNkMt+3dJioHL9vDcbz9lu8m6J
+	km6j37RjRM7IStf/gXWCYMdAZrPV0uCPyyR6g2OPsd9Hitn3vY2tp3eH7RrOjj7x
+	r59oLNjcI8hN5t7YqB5PQ==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=shazbot.org a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1795673315; d=shazbot.org;
+	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm2:rsa-sha256:fPymK1AVigb8yT3iaJ4cu76FRREyaVRqz0S5K56WbJQFMeF
+	BUN7PnLfcmawRjdaGuVy0HRJBdvEIxvnq6HPHVxVcU7WRAO+jKLwjVDgy1QeInlk
+	CoJ0bdcW6gQ9C1QWb+exbO7ROLT1fBeC9Xl3x15yrBc7RQf4JIzTa72lesvHxxGc
+	8VrucGdmBUvJo/HNHnJxde8H9Yy6FAQh3v0w+773I9c9t/SiEUvMPHmbhwjnwXgY
+	qQP/hVT2yPLLWAkcsXTV95UxX4Kr074/XZ2di+u50u+J0MZZbcvv7pXlB3RXNtz4
+	EXgoXnZIZOyWtQPYlRNwzvXoPW+O1w/ZYZmSwKA==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:ZwiqwLbTKsqev7qLRhdGKuqlcUPCKb2M64FoQiyCXkE=:onXiofhsw28hLL8h2Jn7CqrTijcxJ+xdXI6ZsCEvOVo=;
+X-ME-Sender: <xms:4swHa2sz1eZSKITGvPnFmgZ3JG7rN21TGEtm1mLYrKBRBoSup6Ki9w>
+    <xme:4swHaxSeQzVcutmYEcNR1grgw0q0pH0IbRbZT36-JiE7m84W7mY9aW2L-DE6FR_9p
+    PYS3igdoAjQhOQs4UP64gHaUcJykCfZNQXJ8-3wMnP-O-i1ouQ4ikw>
+X-ME-Received: <xmr:4swHaz1csqX8w1oKyodwAB-V6g4MLRphlhiC1rwSW9bC7X5SUaWXsCsEv27WSw>
+X-ME-Proxy-Cause: dmFkZTGnfL3rTnYkc2JVcLxAqQLhOkg7VINV1D77Trh4Ih8apo2IbqKGfR4n7R2YS3J5On
+    OHNx7TlOVXiZmy9dtheM3BFn8d8NIGVWFRgNf1ZVo8nbYJat2S8d7X7QNWjj85qQVQAUtc
+    +2isW3wlkm2nEP+byDStjbnYDSjboS7OWZyEHntnL8erBKc6xcOkVE5ETxQIBBoh56oKhk
+    vEzPndJg0SYqaSnwTlqj453/4as+lGlPGHx7TR8mL4fdYetQIRhPjwqoRRf9TmK1yZ5fxi
+    5OCultlFEAqRfoOqvU09p7whk0kQq8mIqhEya/PasWvsfCQyYB31i55580vXIMQanNnxeJ
+    pFRz9cuIAradCuOn/sblXO0nvrAzm3Lrl4r2UNaf73JVhd3iRH7jgB9AkQp5qFKrlCwyDj
+    NU9mOIFTj7KRdc+e/nR/3vw2/Hr8TrbcjLV2/tKRb9y/WNcpKsT+PDcEpDYfoCY0R+5Vww
+    0vOHFscezQdM7HHoNQt2hc4n42fkTobwcMFFiIjuI727K23EaGWrIzK726+t0lbiUSfXG8
+    Ple2xdSAhZkfbNi52P1PSShRSf5P7Fpc8F55e4UfRFQETgm+rMlNvqNsrMfHIlksbOgdHL
+    gZJ2aezmRavQIV/XyWfqvvuNYWgP/VukKujEyKawnQgG04RYmFfAb4FVI51A
+X-ME-Proxy: <xmx:4swHa5wqrawIp5ohZJmM0Ruo8ah28vtOtAM4MgGHT7TKUNIjZLI0Zg>
+    <xmx:4swHa2FcgQwXTOE0VG5gU3fvMdh5CSEx0TX6VU2JeKqltCl5mmsNqQ>
+    <xmx:4swHa3gAKZwLxBNSmYlSQYPWWZjwd61ez2ZbfHoieJ0YMX0S1W8eLA>
+    <xmx:4swHa5psIP_-a5NkI-OORpuua5XWOhDL3rW3_2JdNLGy0wthSKYdbQ>
+    <xmx:48wHa9BUbKCXAn4bga9W4cOcgJVrZzznvOHdK2uq6rL3N_Dyzey5HF3d>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 26 Nov 2026 01:08:31 -0500 (EST)
+Date: Wed, 25 Nov 2026 23:08:30 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: Simon Song <xinmengs@nvidia.com>
+Cc: dakr@kernel.org, acourbot@nvidia.com, kvm@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, nova-gpu@lists.linux.dev,
+ linux-pci@vger.kernel.org, jgg@nvidia.com, yishaih@nvidia.com,
+ skolothumtho@nvidia.com, kevin.tian@intel.com, airlied@gmail.com,
+ simona@ffwll.ch, ojeda@kernel.org, alex.gaynor@gmail.com,
+ boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, jhubbard@nvidia.com, ecourtney@nvidia.com,
+ cjia@nvidia.com, smitra@nvidia.com, kjaju@nvidia.com, alkumar@nvidia.com,
+ ankita@nvidia.com, aniketa@nvidia.com, kwankhede@nvidia.com,
+ targupta@nvidia.com, linux-kernel@vger.kernel.org, zhiwang@kernel.org,
+ zhiw@nvidia.com, boqun@kernel.org, daniel.almeida@collabora.com,
+ tamird@kernel.org, work@onurozkan.dev, jgg@ziepe.ca, bhelgaas@google.com,
+ kwilczynski@kernel.org, dri-devel@lists.freedesktop.org, peter@colberg.org,
+ alex@shazbot.org
+Subject: Re: [PATCH v3 9/9] vfio/nova-vgpu: add the Rust VFIO variant driver
+Message-ID: <20261125230830.48e768b7@shazbot.org>
+In-Reply-To: <abc4a0e3-2478-4b12-8a06-ffc81196bd20@nvidia.com>
+References: <20261119215046.2892839-1-xinmengs@nvidia.com>
+	<20261119215046.2892839-10-xinmengs@nvidia.com>
+	<20261124201931.55c65263@shazbot.org>
+	<abc4a0e3-2478-4b12-8a06-ffc81196bd20@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -109,224 +140,359 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF0000A894:EE_|CY8PR12MB7267:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0b8b4cce-3b0c-4287-b5a7-08df4b8361d0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|7416014|36860700016|376014|23010399003|6133799003|22082099003|18002099003|3023799007|13003099007|921020|11063799006|56012099006|260925021911599003|260925022911599003|260925021311599003|261026121527099003|261026140227099003|261028144727099003|261102123227099003|261021123027099003|261022105027099003|261022075727099003|261021121427099003|261009223027099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	mu7JuKogB1K02NFfYwcdaxdtaJUHOV4A8QFDHa9qIv5qMSBiv1LQP2vE0BPc6T1Rd4qeIZRyKM9lJnaTDwBmhpoTiQjnBbJ8KHWdSFL0xrn9ZRoPrtCbizf2AndP3b5onRcPFhE9FyfIsIgfJxNng4zK8bCIxbOxJd5Sgwbx/nrxW5WMEN9baltaDg43nMmB7I8FtV8pDUbhYmkkjlvCKuAOpxZceTtGQpZOHdRuy0kibhhcKHCdjXGjkdSpizU7Zi65kCs7YffIUvpFxsVnpmSoPd4qDp/Df881KGyJE9ItDazr3+UWDBRAR5JL2j+z8reqGlZW6aT/KHA8qr1ivPH5PMBz/AKE7EqD1pnrJPjODo9G6HDPmxC0lMW6Qc8wljMq6ToYBWs8PNq/QvehRpX4EOAA57hRuYH9iWYi9ruKZkZlx6IqfvQ9z8892KuH51LLqowO5/vmGu0VXDSPr9zT3yC2/BV0kT9g88CVp9KIZBXTyM0Ggl2T2Pl3Rddum5X1N4qxiIBrW4ftcbUIKp2QvfzQ2kWrXtd7Hh66dHvcXJWkHA3+OX8ccdGlxvXDnVliFT8af+nld3TLcMs6M1UBFEgxcQp75MUK+744Nt6hMA/9X+PvFLCrYHYFCY0WAYfeVFwcjuXglQh37FrEldhkMM+rJqikacwwqKCRb0RE1InA1panggV6dhq/lerGOS5LkpYh64FHOGgaQjOelGIZTxN6UMXPfLUduWt6F09y8zOKrr4+8S27Nmb7Zl4J
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(7416014)(36860700016)(376014)(23010399003)(6133799003)(22082099003)(18002099003)(3023799007)(13003099007)(921020)(11063799006)(56012099006)(260925021911599003)(260925022911599003)(260925021311599003)(261026121527099003)(261026140227099003)(261028144727099003)(261102123227099003)(261021123027099003)(261022105027099003)(261022075727099003)(261021121427099003)(261009223027099003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	1QvD7xjRWjvPO5YKd7VHSce29dBYX9t/Kh4tjXVTGDJ1D9onOSOgs0qqJRN0PitvYxBnGzvsivzNA6yLUrTJ+m+uKV7oh4O1hC5FK3YrkDOA4u8w4hgBrKah0jYb6G7CubxSZZXDzYpupZDILkkrShUbc/4vIKA1TaZoMHmZuY6HUaMJ1V3bjNKYGF7oNox1ua+36Z/dJ5KpHK6aT7B91vt/YwWxBYXeaCAxG6Dx+TzsznauHHXiCscFxq+0wLfz4sG+ss0aCjIzil3PY/ZfSHaxQh1gbjjFcNXQuemKBp0ei5eUkG8iXMTH1hwOvrlZYqZ/ebh0Ri7LqxunDbUryjgeHlOa3H+A1ndjHN2l/LupwqKbFfLygQ6pegNbj/ogrnQyoxVYcNGVvbpMLYuNFowmLSOj4jCuwCi8KHyIUjsOktDft/SZkUQIe4XV9+FG
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2026 06:06:16.3345
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0b8b4cce-3b0c-4287-b5a7-08df4b8361d0
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF0000A894.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7267
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-AMD and Intel both provides support for 128 bit cmpxchg operands using
-cmpxchg8b/cmpxchg16b instructions (opcode 0FC7). However, kvm does not
-support emulating cmpxchg16b (i.e when destination memory is 128 bit and
-REX.W = 1) which causes emulation failure when QEMU guest performs a
-cmpxchg16b on a memory region setup as a IO.
+On Wed, 25 Nov 2026 21:45:13 -0500
+Simon Song <xinmengs@nvidia.com> wrote:
 
-This failure is seen on the AMD IOMMU driver which writes 256-bit device
-table entries with two 128-bit cmpxchg operations. For guests using
-hardware-accelerated vIOMMU, QEMU traps device table accesses to set up
-nested page tables (see [1]).  Without 128-bit cmpxchg emulation, KVM
-cannot handle these traps and DTE access emulation fails.
+> On 11/24/2026 7:19 PM, Alex Williamson wrote:
+> 
+> >> +    fn bar1_size(&self) -> Result<Option<u64>> {
+> >> +        let Some(instance) = &self.instance else {
+> >> +            return Ok(None);
+> >> +        };
+> >> +        let physical = self
+> >> +            .registration
+> >> +            .pdev
+> >> +            .resource_len(self.registration.fb_bar)?;
+> >> +        let size = instance
+> >> +            .type_info()
+> >> +            .bar1_length
+> >> +            .checked_mul(1 << 20)
+> >> +            .ok_or(EOVERFLOW)?;
+> >> +        Ok(Some(if size == 0 {
+> >> +            physical
+> >> +        } else {
+> >> +            size.min(physical)
+> >> +        }))
+> >> +    }  
+> > 
+> > Does this provide a power-of-two size?
+> >   
+> currently it does not, we can add a check for is_power_of_two:
+> --- a/drivers/vfio/pci/nova-vgpu/nova_vgpu.rs
+> +++ b/drivers/vfio/pci/nova-vgpu/nova_vgpu.rs
+> @@ -120,6 +120,9 @@ fn bar1_size(&self) -> Result<Option<u64>> {
+>              .bar1_length
+>              .checked_mul(1 << 20)
+>              .ok_or(EOVERFLOW)?;
+> +        if size != 0 && !size.is_power_of_two() {
+> +            return Err(EINVAL);
+> +        }
+> 
+> on a side note, i think vf bar1 of 0 can be a valid case too, so i should remove that check in next respin
 
-Hence extend cmpxchg8b to perform cmpxchg16b when the destination memory
-is 128 bit.Also check guest CPUID for X86_FEATURE_CX8 / X86_FEATURE_CX16
-before emulating CMPXCHG8B / CMPXCHG16B, and inject #UD if userspace has
-not exposed the corresponding feature. This mirrors MOVBE/RDPID handling
-and ensures KVM does not emulate an instruction the VMM withheld from
-the guest.
+The real question is whether the PF tells us a power-of-two size based
+on the vGPU profile.  If it's expected to, this is a maybe a good
+sanity test, it if doesn't then maybe we'd want to extend the BAR to a
+power-of-two size with a sparse mmap to indicate we can't map past the
+implemented size.
 
-[1] https://github.com/AMDESE/qemu-iommu/blob/wip/for_iommufd_hw_queue-v8_amd_viommu_20260106/hw/i386/amd_viommu.c#L517
+> >> +
+> >> +    fn limit_bar1(&self, buf: &mut vfio::UserBuf, position: &Position<'_>) -> Result {
+> >> +        if buf.is_empty() || position.region_index() != self.registration.fb_bar {
+> >> +            return Ok(());
+> >> +        }
+> >> +        if let Some(size) = self.bar1_size()? {
+> >> +            let offset = position.region_offset();
+> >> +            if offset >= size {
+> >> +                return Err(EINVAL);
+> >> +            }
+> >> +            if size - offset < buf.len() as u64 {
+> >> +                buf.truncate((size - offset) as usize);
+> >> +            }
+> >> +        }
+> >> +        Ok(())
+> >> +    }
+> >> +}
+> >> +
+> >> +impl Drop for NovaVgpuOpenData<'_, '_> {
+> >> +    fn drop(&mut self) {
+> >> +        let mut state = self.registration.lock_instance();
+> >> +        state.active = false;
+> >> +        drop(self.instance.take());
+> >> +    }
+> >> +}
+> >> +
+> >> +impl vfio::pci::Operations for NovaVgpuOps {
+> >> +    const NAME: &'static CStr = c"nova-vgpu-vfio-pci";
+> >> +    type RegistrationData<'a> = NovaVgpuRegData<'a>;
+> >> +    type OpenData<'a, 'data: 'a> = NovaVgpuOpenData<'a, 'data>;
+> >> +
+> >> +    fn open_device<'a, 'data: 'a>(
+> >> +        dev: &'a vfio::pci::Device<Self, Open>,
+> >> +        rd: &'a NovaVgpuRegData<'data>,
+> >> +    ) -> impl PinInit<Self::OpenData<'a, 'data>, Error> + 'a {
+> >> +        NovaVgpuOpenData::new(dev, rd)
+> >> +    }
+> >> +
+> >> +    fn ioctl<'data>(
+> >> +        dev: &vfio::pci::Device<Self, Ioctl>,
+> >> +        rd: &NovaVgpuRegData<'data>,
+> >> +        _open_data: Pin<&Self::OpenData<'_, 'data>>,
+> >> +        cmd: u32,
+> >> +        arg: usize,
+> >> +    ) -> Result<isize> {
+> >> +        let reset = cmd == vfio::DEVICE_RESET || cmd == vfio::pci::DEVICE_PCI_HOT_RESET;
+> >> +        if reset {
+> >> +            if let Some(error) = rd.state.lock().reset_error {
+> >> +                return Err(error);
+> >> +            }  
+> > 
+> > Is a previous reset error effectively unrecoverable?
+> >   
+> yes, currently the behaviour makes reset error sticky, we could make the the vfio driver to be able to try again, 
+> so errors in reset_prepare would be stateless and allow vf to try to reset again, something like:
+> 
+> @@ -171,14 +170,8 @@ fn ioctl<'data>(
+>          cmd: u32,
+>          arg: usize,
+>      ) -> Result<isize> {
+> -        let reset = cmd == vfio::DEVICE_RESET || cmd == vfio::pci::DEVICE_PCI_HOT_RESET;
+> -        if reset {
+> -            if let Some(error) = rd.state.lock().reset_error {
+> -                return Err(error);
+> -            }
+> -        }
+>          let result = dev.core_ioctl(cmd, arg)?;
+> -        if reset {
+> +        if cmd == vfio::DEVICE_RESET || cmd == vfio::pci::DEVICE_PCI_HOT_RESET {
+>              if let Some(error) = rd.state.lock().reset_error {
+>                  return Err(error);
+> 
+> @@ -260,11 +253,10 @@ fn reset_prepare(rd: &NovaVgpuRegData<'_>) {
+>          // close release this mutex before entering the VFIO core.
+>          let mut state = rd.state.lock();
+>          state.resetting = true;
+> +        state.reset_error = None;
+>          if state.active {
+>              if let Some(vgpu) = &rd.vgpu {
+> -                if let Err(error) = vgpu.api.reset(vgpu.gfid) {
+> -                    state.reset_error.get_or_insert(error);
+> -                }
+> +                state.reset_error = vgpu.api.reset(vgpu.gfid).err();
+>              }
+>          }
+> 
+> this also remove the hot-reset check and address the comment regarding intercepting hot-reset:
 
-Signed-off-by: Sairaj Kodilkar <sarunkod@amd.com>
----
- arch/x86/kvm/emulate.c     | 52 ++++++++++++++++++++++++++++----------
- arch/x86/kvm/kvm_emulate.h |  8 ++++++
- arch/x86/kvm/x86.c         | 19 +++++++++++++-
- 3 files changed, 64 insertions(+), 15 deletions(-)
+Why were we trying to make it sticky?  I don't know why this is still
+trying to handle a hot-reset.  A hot-reset is a bus reset, we can't bus
+reset a VF.  Reiterating reset_prepare comments below.
 
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index c1b21282187f..a3483dcc011e 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -2184,23 +2184,41 @@ static int em_call_near_abs(struct x86_emulate_ctxt *ctxt)
- 	return rc;
- }
- 
-+#define em_cmpxchg8b_16b(__c, rbits, mbits)\
-+do {												\
-+	u##mbits old = __c->dst.orig_val##mbits;						\
-+												\
-+	BUILD_BUG_ON(rbits * 2 != mbits);							\
-+												\
-+	if (((u##rbits) (old >> 0) != (u##rbits) reg_read(__c, VCPU_REGS_RAX)) ||		\
-+	    ((u##rbits) (old >> rbits) != (u##rbits) reg_read(__c, VCPU_REGS_RDX))) {		\
-+		*reg_write(__c, VCPU_REGS_RAX) = (u##rbits) (old >> 0);			\
-+		*reg_write(__c, VCPU_REGS_RDX) = (u##rbits) (old >> rbits);			\
-+		__c->eflags &= ~X86_EFLAGS_ZF;							\
-+	} else {										\
-+		__c->dst.val##mbits = ((u##mbits)reg_read(__c, VCPU_REGS_RCX) << rbits) |	\
-+					(u##rbits) reg_read(__c, VCPU_REGS_RBX);		\
-+												\
-+		__c->eflags |= X86_EFLAGS_ZF;							\
-+	}											\
-+} while (0)
-+
- static int em_cmpxchg8b(struct x86_emulate_ctxt *ctxt)
- {
--	u64 old = ctxt->dst.orig_val64;
--
--	if (ctxt->dst.bytes == 16)
-+	if (WARN_ON_ONCE(8 + !!(ctxt->rex_bits & REX_W) * 8 != ctxt->dst.bytes))
- 		return X86EMUL_UNHANDLEABLE;
- 
--	if (((u32) (old >> 0) != (u32) reg_read(ctxt, VCPU_REGS_RAX)) ||
--	    ((u32) (old >> 32) != (u32) reg_read(ctxt, VCPU_REGS_RDX))) {
--		*reg_write(ctxt, VCPU_REGS_RAX) = (u32) (old >> 0);
--		*reg_write(ctxt, VCPU_REGS_RDX) = (u32) (old >> 32);
--		ctxt->eflags &= ~X86_EFLAGS_ZF;
--	} else {
--		ctxt->dst.val64 = ((u64)reg_read(ctxt, VCPU_REGS_RCX) << 32) |
--			(u32) reg_read(ctxt, VCPU_REGS_RBX);
- 
--		ctxt->eflags |= X86_EFLAGS_ZF;
-+	if (!(ctxt->rex_bits & REX_W)) {
-+		if (!ctxt->ops->guest_has_cmpxchg8b(ctxt))
-+			return X86EMUL_UNHANDLEABLE;
-+		em_cmpxchg8b_16b(ctxt, 32, 64);
-+#ifdef CONFIG_X86_64
-+	} else {
-+		if (!ctxt->ops->guest_has_cmpxchg16b(ctxt))
-+			return X86EMUL_UNHANDLEABLE;
-+		em_cmpxchg8b_16b(ctxt, 64, 128);
-+#endif
- 	}
- 	return X86EMUL_CONTINUE;
- }
-@@ -5414,8 +5432,14 @@ int x86_emulate_insn(struct x86_emulate_ctxt *ctxt, bool check_intercepts)
- 			goto done;
- 		}
- 	}
--	/* Copy full 64-bit value for CMPXCHG8B.  */
--	ctxt->dst.orig_val64 = ctxt->dst.val64;
-+	/* Copy full 64/128-bit value for CMPXCHG8B.  */
-+
-+#ifdef CONFIG_X86_64
-+	if (ctxt->dst.bytes == 16)
-+		ctxt->dst.orig_val128 = ctxt->dst.val128;
-+	else
-+#endif
-+		ctxt->dst.orig_val64 = ctxt->dst.val64;
- 
- special_insn:
- 
-diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
-index 10886bea82c9..6926865826c9 100644
---- a/arch/x86/kvm/kvm_emulate.h
-+++ b/arch/x86/kvm/kvm_emulate.h
-@@ -236,6 +236,8 @@ struct x86_emulate_ops {
- 	bool (*guest_has_movbe)(struct x86_emulate_ctxt *ctxt);
- 	bool (*guest_has_fxsr)(struct x86_emulate_ctxt *ctxt);
- 	bool (*guest_has_rdpid)(struct x86_emulate_ctxt *ctxt);
-+	bool (*guest_has_cmpxchg8b)(struct x86_emulate_ctxt *ctxt);
-+	bool (*guest_has_cmpxchg16b)(struct x86_emulate_ctxt *ctxt);
- 	bool (*guest_cpuid_is_intel_compatible)(struct x86_emulate_ctxt *ctxt);
- 
- 	void (*set_nmi_mask)(struct x86_emulate_ctxt *ctxt, bool masked);
-@@ -263,6 +265,9 @@ struct operand {
- 	union {
- 		unsigned long orig_val;
- 		u64 orig_val64;
-+#ifdef CONFIG_X86_64
-+		u128 orig_val128;
-+#endif
- 	};
- 	union {
- 		unsigned long *reg;
-@@ -276,6 +281,9 @@ struct operand {
- 	union {
- 		unsigned long val;
- 		u64 val64;
-+#ifdef CONFIG_X86_64
-+		u128 val128;
-+#endif
- 		char valptr[sizeof(avx256_t)];
- 		sse128_t vec_val;
- 		avx256_t vec_val2;
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0549c0b48901..0e8cc7073858 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -5314,7 +5314,7 @@ static int emulator_cmpxchg_emulated(struct x86_emulate_ctxt *ctxt,
- 	int r;
- 
- 	/* guests cmpxchg8b have to be emulated atomically */
--	if (bytes > 8 || (bytes & (bytes - 1)))
-+	if (bytes > 2 * sizeof(unsigned long) || (bytes & (bytes - 1)))
- 		goto emul_write;
- 
- 	gpa = kvm_mmu_gva_to_gpa_write(vcpu, addr, NULL);
-@@ -5354,6 +5354,11 @@ static int emulator_cmpxchg_emulated(struct x86_emulate_ctxt *ctxt,
- 	case 8:
- 		r = emulator_try_cmpxchg_user(u64, hva, old, new);
- 		break;
-+#ifdef CONFIG_X86_64
-+	case 16:
-+		r = emulator_try_cmpxchg_user(u128, hva, old, new);
-+		break;
-+#endif
- 	default:
- 		BUG();
- 	}
-@@ -5774,6 +5779,16 @@ static bool emulator_guest_has_rdpid(struct x86_emulate_ctxt *ctxt)
- 	return guest_cpu_cap_has(emul_to_vcpu(ctxt), X86_FEATURE_RDPID);
- }
- 
-+static bool emulator_guest_has_cmpxchg8b(struct x86_emulate_ctxt *ctxt)
-+{
-+	return guest_cpu_cap_has(emul_to_vcpu(ctxt), X86_FEATURE_CX8);
-+}
-+
-+static bool emulator_guest_has_cmpxchg16b(struct x86_emulate_ctxt *ctxt)
-+{
-+	return guest_cpu_cap_has(emul_to_vcpu(ctxt), X86_FEATURE_CX16);
-+}
-+
- static bool emulator_guest_cpuid_is_intel_compatible(struct x86_emulate_ctxt *ctxt)
- {
- 	return guest_cpuid_is_intel_compatible(emul_to_vcpu(ctxt));
-@@ -5894,6 +5909,8 @@ static const struct x86_emulate_ops emulate_ops = {
- 	.guest_has_movbe     = emulator_guest_has_movbe,
- 	.guest_has_fxsr      = emulator_guest_has_fxsr,
- 	.guest_has_rdpid     = emulator_guest_has_rdpid,
-+	.guest_has_cmpxchg8b = emulator_guest_has_cmpxchg8b,
-+	.guest_has_cmpxchg16b = emulator_guest_has_cmpxchg16b,
- 	.guest_cpuid_is_intel_compatible = emulator_guest_cpuid_is_intel_compatible,
- 	.set_nmi_mask        = emulator_set_nmi_mask,
- 	.is_smm              = emulator_is_smm,
--- 
-2.34.1
+> > vGPUs are VFs, why are we intercepting hot-reset?  That's a different
+> > class of reset that VFs don't support (unless we're running on s390).
+> >   
+> >> +        }
+> >> +        let result = dev.core_ioctl(cmd, arg)?;
+> >> +        if reset {
+> >> +            if let Some(error) = rd.state.lock().reset_error {
+> >> +                return Err(error);
+> >> +            }
+> >> +        }
+> >> +        Ok(result)
+> >> +    }
+> >> +
+> >> +    fn read<'data>(
+> >> +        dev: &vfio::pci::Device<Self, Read>,
+> >> +        _rd: &NovaVgpuRegData<'data>,
+> >> +        open_data: Pin<&Self::OpenData<'_, 'data>>,
+> >> +        buf: &mut vfio::UserBuf,
+> >> +        position: &mut Position<'_>,
+> >> +    ) -> Result<isize> {
+> >> +        if let Some(instance) = &open_data.instance {
+> >> +            if position.region_index() == vfio::pci::CONFIG_REGION_INDEX {
+> >> +                let offset = position.region_offset();
+> >> +                return position.with_temporary(|next| {
+> >> +                    let count = dev.core_read(buf, next)?;
+> >> +                    buf.write_overlapping(
+> >> +                        offset,
+> >> +                        count.try_into()?,
+> >> +                        u64::from(bindings::PCI_SUBSYSTEM_ID),
+> >> +                        &(instance.type_info().pci_subsys_id as u16).to_le_bytes(),
+> >> +                    )?;
+> >> +                    Ok(count)
+> >> +                });
+> >> +            }
+> >> +        }
+> >> +        open_data.limit_bar1(buf, position)?;
+> >> +        dev.core_read(buf, position)
+> >> +    }  
+> > 
+> > Why do we virtualize the subsystem ID on read and the device ID on open?
+> >   
+> 
+> This is done intentially, as core viratualized it in vconfig, where it is set
+> at open, while the core read subsystem id from hardware, will add a comment: 
+> 
+>  // A VF has no device ID of its own, so the core keeps it in vconfig, where
+>  // it is set once at open. The core reads the subsystem ID from the hardware,
+>  // as a firmware update can change it there, so replace it on every read.
 
+Right, I'd forgotten that device ID is virtualized for this purpose but
+subsystem ID is not, so we require this split.
+
+> >> +
+> >> +    fn write<'data>(
+> >> +        dev: &vfio::pci::Device<Self, Write>,
+> >> +        _rd: &NovaVgpuRegData<'data>,
+> >> +        open_data: Pin<&Self::OpenData<'_, 'data>>,
+> >> +        buf: &mut vfio::UserBuf,
+> >> +        position: &mut Position<'_>,
+> >> +    ) -> Result<isize> {
+> >> +        open_data.limit_bar1(buf, position)?;
+> >> +        dev.core_write(buf, position)
+> >> +    }
+> >> +
+> >> +    fn mmap<'data>(
+> >> +        dev: &vfio::pci::Device<Self, Mmap>,
+> >> +        rd: &NovaVgpuRegData<'data>,
+> >> +        open_data: Pin<&Self::OpenData<'_, 'data>>,
+> >> +        mapping: &mut Mapping<'_>,
+> >> +    ) -> Result {
+> >> +        if mapping.region_index() == rd.fb_bar {
+> >> +            if let Some(size) = open_data.bar1_size()? {
+> >> +                if mapping.region_end()? > size {
+> >> +                    return Err(EINVAL);
+> >> +                }
+> >> +            }
+> >> +        }
+> >> +        dev.core_mmap(mapping)
+> >> +    }
+> >> +
+> >> +    fn get_region_info<'data>(
+> >> +        dev: &vfio::pci::Device<Self, GetRegionInfo>,
+> >> +        rd: &NovaVgpuRegData<'data>,
+> >> +        open_data: Pin<&Self::OpenData<'_, 'data>>,
+> >> +        info: &mut bindings::vfio_region_info,
+> >> +        caps: &mut vfio::InfoCap<'_>,
+> >> +    ) -> Result {
+> >> +        dev.core_get_region_info(info, caps)?;
+> >> +        if info.index == rd.fb_bar && info.size != 0 {
+> >> +            if let Some(size) = open_data.bar1_size()? {
+> >> +                info.size = info.size.min(size);
+> >> +            }
+> >> +        }
+> >> +        Ok(())
+> >> +    }  
+> > 
+> > BAR sizing in config space also needs to reflect the virtualized BAR
+> > size.
+> >   
+> right, the BAR sizing through config space still not handled in this version, sizing through
+> config space will still return the physical size, in the next version, i will add code to
+> return virtual bar size to match what region info reports.
+> 
+> >> +
+> >> +    fn reset_prepare(rd: &NovaVgpuRegData<'_>) {
+> >> +        // PCI holds the device lock, and VFIO may hold its memory lock. Open and
+> >> +        // close release this mutex before entering the VFIO core.
+> >> +        let mut state = rd.state.lock();
+> >> +        state.resetting = true;
+> >> +        if state.active {
+> >> +            if let Some(vgpu) = &rd.vgpu {
+> >> +                if let Err(error) = vgpu.api.reset(vgpu.gfid) {
+> >> +                    state.reset_error.get_or_insert(error);
+> >> +                }
+> >> +            }
+> >> +        }
+> >> +    }  
+> > 
+> > This seems very wrong, why are we calling the PF driver reset in
+> > reset_prepare()?  Isn't there still an FLR happening between prepare
+> > and done?  Does it do anything?
+> >   
+> It will not reset the PF, vgpu.api.reset will reset this vgpu instance behind this VF,
+> the PF driver would ask firmware to reset the instance and scrub its memory, then FLR
+> follows
+
+PF reset is not the question.  We're calling into the PF driver to reset
+the VF, but we should not be doing that from reset_prepare().  This
+also still doesn't explain what the FLR that follows the PF initiated
+VF reset actually does.  Why can't we just use FLR?  Do we need a
+device specific reset quirk?
+
+> >> +
+> >> +    fn reset_done(rd: &NovaVgpuRegData<'_>) -> Result {
+> >> +        let mut state = rd.state.lock();
+> >> +        let error = state.reset_error;
+> >> +        state.resetting = false;
+> >> +        rd.reset_done.notify_all();
+> >> +        error.map_or(Ok(()), Err)
+> >> +    }
+> >> +}
+> >> +
+> >> +struct NovaVgpuDriver;
+> >> +
+> >> +kernel::pci_device_table!(
+> >> +    PCI_TABLE,
+> >> +    <NovaVgpuDriver as pci::Driver>::IdInfo,
+> >> +    [(
+> >> +        pci::DeviceId::from_id_vfio_override(pci::Vendor::NVIDIA, bindings::PCI_ANY_ID as u32),
+> >> +        (),
+> >> +    ),]
+> >> +);  
+> > 
+> > Whoah, this would break a ton of users that are assigning NVIDIA devices
+> > and depend on the module options supported by vfio-pci (that aren't
+> > supported here).  This entry marks this driver as the preferred over
+> > the vfio-pci driver for any NVIDIA vendor ID device.  We don't want
+> > that blast radius.
+> > 
+> > This should list the specific VF device IDs we want to claim?
+> >   
+> 
+> True, i will update the list to include only 0x2bb3 and 0x2bb5, which are the 2 GPUs we currently claim to support
+> 
+> >> +
+> >> +#[pin_data]
+> >> +struct NovaVgpuData<'bound> {
+> >> +    reg: vfio::pci::Registration<'bound, NovaVgpuOps>,
+> >> +}
+> >> +
+> >> +#[vtable]
+> >> +impl pci::Driver for NovaVgpuDriver {
+> >> +    type IdInfo = ();
+> >> +    type Data<'bound> = NovaVgpuData<'bound>;
+> >> +    const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
+> >> +    // SAFETY: VFIO hands the DMA ownership of the device to userspace. This driver never uses
+> >> +    // the kernel DMA API for its devices, directly or through helpers.
+> >> +    const DRIVER_MANAGED_DMA: Option<pci::DriverManagedDma<Self>> =
+> >> +        Some(unsafe { pci::DriverManagedDma::new() });
+> >> +
+> >> +    fn probe<'bound>(
+> >> +        pdev: &'bound pci::Device<Core<'_>>,
+> >> +        _info: Option<&'bound Self::IdInfo>,
+> >> +    ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound {
+> >> +        try_pin_init!(NovaVgpuData {
+> >> +            reg: {
+> >> +                let vgpu = match NovaCoreVfApi::handle(pdev) {
+> >> +                    Ok(api) => Some(VgpuRegistration {
+> >> +                        api,
+> >> +                        gfid: u32::from(pdev.vf_id()?) + 1,
+> >> +                    }),
+> >> +                    Err(_) => None,
+> >> +                };
+> >> +                let dev = if vgpu.is_some() {
+> >> +                    vfio::pci::Device::<NovaVgpuOps>::new(pdev)?
+> >> +                } else {
+> >> +                    vfio::pci::Device::<NovaVgpuOps>::new_passthrough(pdev)?
+> >> +                };  
+> > 
+> > My LLM tells me that the new constructor installs ops that don't
+> > support get_dmabuf_phys, therefore can't expose dma-buf to iommufd,
+> > therefore cannot support P2P with iommufd.  But type1 uses a different
+> > mechanism, so we would be able to map the vGPU BARs for P2P with the
+> > legacy backend.  Is this true?  If so, why?  It needs to support
+> > dma-buf.
+> >   
+> yes it's true, the vgpu path has no get_dmabuf_phys, would it be acceptable to add this in a follow-up series?
+> P2P is not in the scope of the first verssion, and i would rather add it together with a P2P test
+
+It seems incomplete without this.  We're suggesting that iommufd is the
+preferred IOMMU backend, but we're introducing a device here that only
+supports P2P using the legacy type1 IOMMU backend.  What's the
+difficulty in hooking up vfio_pci_core_get_dmabuf_phys()?  Thanks,
+
+Alex
