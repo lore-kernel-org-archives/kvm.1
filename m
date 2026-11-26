@@ -1,54 +1,72 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795709338;
-	b=5eESC/GLso4ckKZ9rExk3QofaGCltFL4zp8k+SXU5UkERd0wVO/UZPulWxpi0vZM5e8a
-	 hBhu4j5QxPrwq835YYgwv14LP0LFaf//iShdt8fi+uLQcUigvq7tBF9GCPtlrQiMpjtk6
-	 AJpKUBkFs3pweB4/RPXf2mxOvxJs+WWL0wfIM7MRSVLrZPbG23kvNXALSsy2ucZcDBhz7
-	 8VoSfjChT73UR5chNxRnUtT8UxLFx3YsPq6LAOqjfSOxhxa/2GWWUPognC1O26G+TBu/U
-	 8SsDDxdIv5gGBbFBUbRWug1XOc01MPjsfTGwUGLGJTevGdmKwG2StFhOKS9hnVSIdlw==
+	t=1795710963;
+	b=3Gbkcu+NxLyvr1D7sNH0FZZj3KD2m0ZaLqrIyQW5GQay9zf3wjGUw2MKtbOeW9FvueR/
+	 uB2wEDr9thyC1e4Fbae23VhEgxOMugZmLkk2TbE0+dsqF6aaRybPUBVVQKYmVfMv+d3BR
+	 lCCd/9hddgdAvMFocAqwnE4Tx9fUMdF3HRK7misUJHxNRqt/5rjcSIvVMR1/B0VXsrM8t
+	 fyCoTYZSnzk9CpXdI73NrgPTOHJxffu7lWtYf4AwB0PX9Vb3Gc2I/owguGGyxIXNKaaNv
+	 +4NfUpfxwRA6qvQKIvu13Nhqzs/xPMknk5uk9SLmh5QgItUMNXtB14fhE7ji/1mB71Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795709338;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=DLjUQ0HLK8s6BPwACEgbTcL7p51N6h9aXcgetQhJ5wE=;
-	b=fysOSYWUPwqhDiRBLoeeL3zmuEX1zYwooqSW+ruFwz89vskfD09K7ILpH9fKmN9YSw7v
-	 PeV5SYDwyhQ/x9zx2dL0rl85RL2wEyfoLpnh942E7Axq+strGamYsJmQS/LJZ5sgCyEiA
-	 XiItFtaBfh9tWxhNOExQFb9HnpST73X6Yn+8NNbpV96ht9VuMLO78hlbjf0esoFP0o/pv
-	 tKea11GaSbqKWnJ+xpMN2lBQy80m3tFMpa7AVlDJVjIZWliBiVuuyTqiKpDTG5eepJS7I
-	 Npgtv3lWWUJp0rKlrnKeRx7xJPywww/UpWpmbcbA48GjgZNtRg7FuHgD6/vTnbTDAFA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795710963;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:User-Agent:MIME-Version:Content-Type;
+	bh=ATJlsXEmgBegCpn5BwHudI3qqubv1tTP7fksevRvHqo=;
+	b=4PZWqiRBnibhE5iMYhR+5eEeueBwZ859CdgR7Vgx/+yhkicWzbKjZCKSIrbZqE8I5Dty
+	 m9qBrfNeTkzEuzC3tbSy+NkrchKzy6ZajjoF+h+t8HdQFGNGqLnfUskEPAFE3LL0njwxD
+	 a6la+UiixZ72iUcYvqfBnv6VLyrD6eIgvrlt1PoQZm6h/wnMHxcaYwKV7ljXjFeE7Rtng
+	 wVIY2n+Nznhe25Lej1C2hv3L1+ACiPKR65t5joFmnni96Ok9hFA4h1pVWnSC3nDfP7WzY
+	 LxAnit5oYSRkgN17PgQZgJpZflmPL6ma9qjCk2V65hijBZp0cEZAYO/rhbxtHHCD+QQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YUMaSnJF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P4YDuVLo;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FFD606A31E;
-	Thu, 26 Nov 2026 16:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B532606A321;
+	Thu, 26 Nov 2026 16:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YUMaSnJF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E32C91F000D0;
-	Thu, 26 Nov 2026 16:08:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P4YDuVLo
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBB51F000C0;
+	Thu, 26 Nov 2026 16:35:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795709338;
-	bh=DLjUQ0HLK8s6BPwACEgbTcL7p51N6h9aXcgetQhJ5wE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YUMaSnJFy3upxu2uKVvNyvyEmBNmdKR2s8a9SQfDsb/I6ad8vW98yuZSb/L9He+QC
-	 q0Loz9PWiYD2hI1+rgV/ar5z7B9qIXdayGw4WcvRijzEawQP6rhFdG7t1zDGsF7xGH
-	 A3HpC8dsS41P/xO5oVu3gHyQr7zh0HQz1LIoQCJuJbA6WK65rd06yGyxYtGigTmi5u
-	 RE6EcV3fmlScBlZCQkuWohiOQ5VC/Sxhf9rx7PdfVhDYSyh/TyigKOgtklp0s6yJuK
-	 OAmBU+1xn0FLaY+xIDsBbqYSj/S6sBAnjKeu3TjGmHjWjQIhjZj7FNh+mAmH66Kkjm
-	 ysTZImXrwDk7g==
-Date: Thu, 26 Nov 2026 16:08:51 +0000
-From: Will Deacon <will@kernel.org>
-To: Vincent Donnefort <vdonnefort@google.com>
-Cc: julien.thierry.kdev@gmail.com, kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	maz@kernel.org, oliver.upton@linux.dev, suzuki.poulose@arm.com,
-	alexandru.elisei@arm.com, andre.przywara@arm.com
-Subject: Re: [PATCH kvmtool] arm64: THPs for systems with pages bigger than 4K
-Message-ID: <awhZk3NrkqeGvQxC@willie-the-truck>
-References: <20261019145949.1922019-1-vdonnefort@google.com>
+	s=k20260515; t=1795710962;
+	bh=ATJlsXEmgBegCpn5BwHudI3qqubv1tTP7fksevRvHqo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=P4YDuVLowB3qq6ykOWDZcHMLKiSKQ8CQtAy4yUDqIkd8odRAKualfMPxWHGSnkm+R
+	 2PWj2HwPnluHX217yIVBnz4ltf8gud7DVpDIOVnWPvj2tmRtQDwkW5GrLyBPVwc1P2
+	 H8DVFw6/ujmQyjdb8hK5mKWwhnS5tQTm/FrakhOc6yTOGs/qksPdzN8PYv8RMpUQw7
+	 ulmxngnaHoudWBkL+v4xPagIwwh7UNMjhR3rRlw1bwVr1T+AnwXiCuZycThNIvKJJn
+	 Anqy+ejek6aYvEhB9sE0PqvuZhyTpgFBZ7BDw7EvqPO1q3MBdMmd2U7pPYubVmNwfN
+	 QLihl37EmKX6Q==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: "David Matlack" <dmatlack@google.com>
+Cc: "Pratyush Yadav" <pratyush@kernel.org>,  "Tarun Sahu"
+ <tarunsahu@google.com>,  "Pasha Tatashin" <pasha.tatashin@soleen.com>,
+  "Mike Rapoport" <rppt@kernel.org>,  <robin.murphy@arm.com>,
+  <maz@kernel.org>,  <will@kernel.org>,  "Alexander Graf"
+ <graf@amazon.com>,  <seanjc@google.com>,  <jgg@nvidia.com>,
+  <loganodell@google.com>,  <arnd@arndb.de>,  <dwmw2@infradead.org>,
+  <baolu.lu@linux.intel.com>,  "Bjorn Helgaas" <bhelgaas@google.com>,
+  <oupton@kernel.org>,  <alex@shazbot.org>,  <gle.com@google.com>,
+  <pbonzini@redhat.com>,  "Andrew Morton" <akpm@linux-foundation.org>,
+  <kevin.tian@intel.com>,  <joro@8bytes.org>,  <kvmarm@lists.linux.dev>,
+  <linux-pci@vger.kernel.org>,  <kexec@lists.infradead.org>,
+  <kvm@vger.kernel.org>,  <iommu@lists.linux.dev>,
+  <linux-arm-kernel@lists.infradead.org>,  <skhawaja@google.com>,
+  <sagis@google.com>,  <linux-arch@vger.kernel.org>,  <linux-mm@kvack.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 03/19] kho, memfd_luo: Reference struct kho_vmalloc
+ via serialized pointer
+In-Reply-To: <DN4H5ST3X9L1.3IUEC1CA5QI8H@google.com> (David Matlack's message
+	of "Wed, 25 Nov 2026 09:40:47 -0800")
+References: <20261110050202.529473-1-tarunsahu@google.com>
+	<20261110050202.529473-4-tarunsahu@google.com>
+	<2vxz4idb1i2w.fsf@kernel.org> <DN3VG4JCILOO.YN40XHHSWRPH@google.com>
+	<2vxzld6hx97g.fsf@kernel.org> <DN4H5ST3X9L1.3IUEC1CA5QI8H@google.com>
+Date: Thu, 26 Nov 2026 16:35:54 +0000
+Message-ID: <2vxzse0nwnx1.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -58,32 +76,42 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261019145949.1922019-1-vdonnefort@google.com>
+Content-Type: text/plain
 
-On Mon, Oct 19, 2026 at 03:59:49PM +0100, Vincent Donnefort wrote:
-> The THP support imposes an alignment of the memslot userspace address to
-> the size of a THP (PMD_SIZE). To do so, kvmtool overallocates the RAM
-> size and aligns it. However it assumes PMD_SIZE is 2MiB, which is only
-> true on 4KiB page systems.
-> 
-> Use a huge-page size, based on the system page size. This value can be
-> massive for a 64KiB page system, so skip the alignment if we couldn't
-> even install one THP.
-> 
-> Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
-> 
-> diff --git a/arm64/kvm.c b/arm64/kvm.c
-> index 36b3284e4a92..2c01dc32fa9a 100644
-> --- a/arm64/kvm.c
-> +++ b/arm64/kvm.c
-> @@ -18,6 +18,8 @@
->  
->  #include <asm/image.h>
->  
-> +#define HUGEPAGE_SIZE (PAGE_SIZE * (PAGE_SIZE / 8UL))
+On Wed, Nov 25 2026, David Matlack wrote:
 
-Does this invoke sysconf() twice per invocation?
+> On Wed Nov 25, 2026 at 6:43 AM PST, Pratyush Yadav wrote:
+> [...]
+>
+>> So I wouldn't want to support slab until we have file handlers that
+>> churn through a lot of preserved objects.
+>
+> Makes sense. If KHO slab isn't coming, then I'm fine with the arena.
+>
+> One thing I realized is that the choice between the two is visible to
+> the incoming kernel. With separate allocations, the incoming kernel has
+> to free struct kho_vmalloc and struct memfd_luo_ser separately. With
+> the arena, it must only free the top-level allocation. So we should
+> pick one now (while memfd is bumping its compatible string anyway)
+> rather than switching later.
+>
+> Separate allocations leaves the door open to KHO slab but wastes memory
+> in the short term. It's not obvious to me which direction to go :)
 
-Will
+Separate allocations aren't any more flexible than arena allocations.
+Even if you have separate allocations, you need to know how they were
+allocated to be able to free them. If they came from slab, you need to
+call kmem_cache_free(), if they came from kho_alloc_preserve(), you need
+to call kho_restore_free().
+
+So you need to store the information of their origin somewhere, probably
+in a feature flag. Same goes for arena. If we ever want to move away
+from arena, we'd have to use a feature flag.
+
+So to me, I think they are about the same in flexibility. Using separate
+allocations is a tiny bit easier, arena is a tiny bit more efficient.
+Which is why I like arena mode.
+
+-- 
+Regards,
+Pratyush Yadav
