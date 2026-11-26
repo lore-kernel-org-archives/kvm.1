@@ -1,49 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=129.187.255.138
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795688582;
-	b=IwI0d06dgvyfhQ7+2ao+JF/mp7rAapzlCcQ1TaPTIbrcoBGAcwK25JAojfBOL5hymQdx
-	 2RbfWvSgRI/toHWMZHKgMcRbGQSR7PBRLZPiZhEMEYNNmtSkOfIoXUDS4q+DdcZjPUCx4
-	 fY7Gtg0bHmIGYpLPROMSywpPehtWAX/w46oVEeM9MlVEdSQ7YRGzbktvhS+sSaTLCOuGW
-	 nE4um/GaFRW+JYYtpYbcSWkz8hL7bvgyI7shHRPxdWyhlgjiEpaY8skF5m75spyXGLOK+
-	 3cmK6CehZmhjwx4i0xGZJW0VEe3kLQkE2VjMXQgB2zApcXnkD1UCa31Ma+ILHiyGzjA==
+	t=1795688738;
+	b=Mwed3MODPDM4y+koEFrOPI3lf5yQhVAtsF+Lj2vP3I9Od/E/zeL0YYxursw5i6A7u46v
+	 Ivanl7WcQQ8VpQsZI4um34YNt06i8WIcPUIH+DonMRU8Z8C3FARC/lTZtiC7coT/mUBEQ
+	 8SA1YuHJqtjrFGJnC0HfLNoQ4wkJIIXTtt+Z8WM0zoFqc5CpnwC2inc3SOC1UTiz8QEj+
+	 /pYs0eADq+c/NQoU8iUq7ccz63CVu6Np6WPMDy42DDsFEd7uKtiklkKehYxlHGUtur+i8
+	 Qll6769ciqMfeDyjXeVF7AiCnUxIXIlhpZi5IKbHN7cv4CC0sAL+J95qDqvE0M//fRQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795688582;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Message-ID:Date:
-	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
-	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	bh=uB3C+pADt5y7DXYibQdrFVwV0bqyXjupJcd+3kg28Mc=;
-	b=QSESX3YVcCYdZLz6SJApZivIsN7n+vzpl03r2K/jmw+YE5JRa6LmY8HaOAQot9L1YWCa
-	 pr6mT0nSNRsPv0eGRsZPnHDmaxlVeyqZN/cLiBuvyDbEKd/9HcnpaDpDx6dSZvncMA0fB
-	 hiQBO4nYLAy64v5wbtJWwhx8nRUjas33sRTGtF87aWqHZlr8cOn9rMXXhJXNreObNljm6
-	 qxjb9ruguuGbyFROqeps83/li5LFN/IXdcu4d9vQzOAbWYULSmsBsDQWgyFcnLs0HehQE
-	 9PgmY4qVW5uqkB2SRzRn/2ScOgkd16yzJ8q/cy7We4Xc9SExwetzjf4gRLN8IMB0r+w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795688738;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Virus-Scanned:X-Spam-Flag:
+	 X-Spam-Score:X-Spam-Level:X-Spam-Status:Received:Received:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:Autocrypt:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=EIBh3I4kBpuolM9pnCBMio81J/gT/rvUXvi5tC4Fdno=;
+	b=cxcFwdETqDPw0rGbAGT7HWoBrh8pviSWscIiIQt7B8XM8nn8oY4luIQ5p7Lgd+4O0cBi
+	 sEJ2i/BqT8ldAG7tE5RJnPfdFyvcc2PXoSCNyRgc1S/7FPkepmEU6a58PitaR6ZdA620k
+	 ccps63fHqCa9SDz/ojZ+hg+o5weo9BiZ05GRu+Wod9n920ojGaWiNBpVyWLKt4WkLCXfi
+	 YBOBovtUL1VJW8FliCiziZicIAkn/3ovB2leKKuNaVBvFokIRyQKFT91s/YHTfWX536fo
+	 KE6f8Il0DlPc/KPZPeXANHDiF3hBiHoCuukworVQWUemKlPxsizTvu7B0ShMwWHVF8g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=OMpl24bJ;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41958606A323
-	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 10:23:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41958606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dmarc=pass header.from=tum.de;
+	spf=pass smtp.mailfrom=tum.de;
+	dkim=pass header.d=tum.de header.i=@tum.de header.a=rsa-sha256 header.s=tu-postout21 header.b=ipQPgJAW;
+	arc=none smtp.remote-ip=129.187.255.138
+Received: from postout2.mail.lrz.de (postout2.mail.lrz.de [129.187.255.138])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97F0606A31C
+	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 10:25:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E97F0606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tum.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tum.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=OMpl24bJ
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CD5DB1BB0;
-	Thu, 26 Nov 2026 02:22:57 -0800 (PST)
-Received: from [10.0.154.42] (e121487-lin.cambridge.arm.com [10.0.154.42])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DA45F3F86C;
-	Thu, 26 Nov 2026 02:22:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795688580; bh=Og7OY2Wl3TAZIRfqBhtc5D3nGWYt7fkPibRN0/XHiq4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OMpl24bJcsmwQE/K47xl7Rn/fAFQStrTjZR0wM8iwfpD4tgyMhdAE63K/qpZo1Qcx
-	 TuzWyPrYgFSXwSEl+xjkbtsGwbbTGNEPFJW2PJCk39EBbYSWGyF39ENAdoeH0DXOMM
-	 M1VGQ0gthLZ+Tfq3qx/jQ7g3abvOAycPsjHzQrVg=
-Message-ID: <1aa97f61-b740-4044-9065-f3ccfcb709fd@arm.com>
-Date: Thu, 26 Nov 2026 10:22:56 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=tum.de header.i=@tum.de header.a=rsa-sha256 header.s=tu-postout21 header.b=ipQPgJAW
+Received: from lxmhs52.srv.lrz.de (localhost [127.0.0.1])
+	by postout2.mail.lrz.de (Postfix) with ESMTP id 4jZt3S6S65zydX;
+	Thu, 26 Nov 2026 11:25:24 +0100 (CET)
+Authentication-Results: postout.lrz.de (amavis); dkim=pass (2048-bit key)
+ reason="pass (just generated, assumed good)" header.d=tum.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tum.de; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:to:to:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=tu-postout21; t=1795688724; bh=EIBh3I4kBpuolM9pnCBMio81J/gT/r
+	vUXvi5tC4Fdno=; b=ipQPgJAW+7EwHl7CIxQ6oLhAEgnrT3W+9x9EJhhD5eSL2h
+	ziy6yuU5k/dbasolbySlbnKt8GJ/toZQErJWXMOk6fs8Xj8mDHT80HmlX1dAkfZP
+	WFxY97YVnS9wgcoQ4OxjMcT5m1jwk2Ik5GSQwoKy/k+oB96w2kDAntqRm3CIn4cL
+	Dz5DTMuZ4Rxjfq0YvWlo8P4IBYVhv4Hc7KJxnaTDtQGyeNn1jLKkaI8s5iAOg7b+
+	umD06ZxicwjGJTeZzqyUn1qLlGc9vFkqVavGxs2vkzPewZ1U1F/GBqyham5Iv6wt
+	drqqvWrheMMacXWbPZifiiXJJlYM8lDE6w7w2dZA==
+X-Virus-Scanned: by amavisd-new at lrz.de in lxmhs52.srv.lrz.de
+X-Spam-Flag: NO
+X-Spam-Score: -2.868
+X-Spam-Level:
+Received: from postout2.mail.lrz.de ([127.0.0.1])
+ by lxmhs52.srv.lrz.de (lxmhs52.srv.lrz.de [127.0.0.1]) (amavis, port 20024)
+ with LMTP id TlFJMxPpoVke; Thu, 26 Nov 2026 11:25:24 +0100 (CET)
+Received: from [IPV6:2a02:2455:1b1c:5000:a2c4:f9c8:74:1614] (unknown [IPv6:2a02:2455:1b1c:5000:a2c4:f9c8:74:1614])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by postout2.mail.lrz.de (Postfix) with ESMTPSA id 4jZt3R6pTqzybT;
+	Thu, 26 Nov 2026 11:25:23 +0100 (CET)
+Message-ID: <3aa3966f-3fc5-423e-b44f-007a5db2acc7@tum.de>
+Date: Thu, 26 Nov 2026 11:25:23 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -54,111 +76,119 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH kvmtool v6 00/23] arm64: Support GICv5-based guests
-To: Sascha Bischoff <sascha.bischoff@arm.com>, will@kernel.org,
- julien.thierry.kdev@gmail.com
-Cc: maz@kernel.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- timothy.hayes@arm.com, Peter Maydell <peter.maydell@linaro.org>
-References: <20261125151356.2875108-1-sascha.bischoff@arm.com>
-Content-Language: en-GB
-From: Vladimir Murzin <vladimir.murzin@arm.com>
-In-Reply-To: <20261125151356.2875108-1-sascha.bischoff@arm.com>
+Subject: Re: [PATCH] KVM: nSVM: Reject EVENTINJ of #BR/#OF into a 64-bit L2
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: kvm@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com
+References: <20261118133741.1185904-1-manuel.andreas@tum.de>
+ <CAO9r8zO480eWUqDA6a-4P_tKv2D9Bd5tKNdG79uUBAVtmT15aw@mail.gmail.com>
+Content-Language: en-US
+From: Manuel Andreas <manuel.andreas@tum.de>
+Autocrypt: addr=manuel.andreas@tum.de; keydata=
+ xjMEY9Zx/RYJKwYBBAHaRw8BAQdALWzRzW9a74DX4l6i8VzXGvv72Vz0qfvj9s7bjBD905nN
+ Jk1hbnVlbCBBbmRyZWFzIDxtYW51ZWwuYW5kcmVhc0B0dW0uZGU+wokEExYIADEWIQQuSfNX
+ 11QV6exAUmOqZGwY4LuingUCY9Zx/QIbAwQLCQgHBRUICQoLBRYCAwEAAAoJEKpkbBjgu6Ke
+ McQBAPyP530S365I50I5rM2XjH5Hr9YcUQATD5dusZJMDgejAP9T/wUurwQSuRfm1rK8cNcf
+ w4wP3+PLvL+J+kuVku93CM44BGPWcf0SCisGAQQBl1UBBQEBB0AmCAf31tLBD5tvtdZ0XX1B
+ yGLUAxhgmFskGyPhY8wOKQMBCAfCeAQYFggAIBYhBC5J81fXVBXp7EBSY6pkbBjgu6KeBQJj
+ 1nH9AhsMAAoJEKpkbBjgu6Kej6YA/RvJdXMjsD5csifolLw53KX0/ElM22SvaGym1+KiiVND
+ AQDy+y+bCXI+J713/AwLBsDxTEXmP7Cp49ZqbAu83NnpBQ==
+In-Reply-To: <CAO9r8zO480eWUqDA6a-4P_tKv2D9Bd5tKNdG79uUBAVtmT15aw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Will, Julien,
+On 11/25/26 22:17, Yosry Ahmed wrote:
+> On Wed, Nov 18, 2026 at 5:38 AM Manuel Andreas <manuel.andreas@tum.de> wrote:
+>>
+>> nested_svm_event_inj_valid_exept() treats BR_VECTOR and OF_VECTOR as
+>> unconditionally valid for TYPE=3 (exception) injection.  However, the APM
+>> (Vol 2, 15.20) states that injecting an event that is impossible for the
+>> guest mode, e.g. #BR into a guest in 64-bit mode, makes VMRUN fail with
+>> VMEXIT_INVALID.  BOUND and INTO are both invalid in 64-bit mode.
+>>
+>> Because the check depends on both the control area (EVENTINJ) and the save
+>> area (EFER/CR0/CS), add it to nested_svm_check_cached_vmcb12(), which covers
+>> both nested VMRUN and RSM, rather than to nested_vmcb_check_controls().
+>>
+>> Fixes: 7e79f71bca5c ("KVM: nSVM: Add missing consistency check for EVENTINJ")
+>> Signed-off-by: Manuel Andreas <manuel.andreas@tum.de>
+>> ---
+>>  arch/x86/kvm/svm/nested.c | 32 ++++++++++++++++++++++++++++++++
+>>  1 file changed, 32 insertions(+)
+>>
+>> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+>> index 1cecb82702e2..c69d334e3c3c 100644
+>> --- a/arch/x86/kvm/svm/nested.c
+>> +++ b/arch/x86/kvm/svm/nested.c
+>> @@ -378,6 +378,8 @@ static bool nested_svm_event_inj_valid_exept(struct kvm_vcpu *vcpu, u8 vector)
+>>   * set and:
+>>   * - The type of event_inj is not one of the defined values.
+>>   * - The type is SVM_EVTINJ_TYPE_EXEPT, but the vector is not a valid exception.
+>> + * - The event is impossible in the guest's mode. However this depends on
+>> + *   save state, see nested_svm_check_event_inj_mode().
+>>   */
+>>  static bool nested_svm_check_event_inj(struct kvm_vcpu *vcpu, u32 event_inj)
+>>  {
+>> @@ -398,6 +400,31 @@ static bool nested_svm_check_event_inj(struct kvm_vcpu *vcpu, u32 event_inj)
+>>         return true;
+>>  }
+>>
+>> +/*
+>> + * #BR and #OF are invalid in 64-bit mode, but not in compatibility mode,
+>> + * hence the CS.L check. VMRUN ignores EFER.LMA and derives
+>> + * long mode from EFER.LME, CR0.PG and CR4.PAE, so do the same.
+>> + */
+>> +static bool nested_svm_check_event_inj_mode(u32 event_inj,
+>> +                                           struct vmcb_save_area_cached *save)
+>> +{
+>> +       u32 type = event_inj & SVM_EVTINJ_TYPE_MASK;
+>> +       u8 vector = event_inj & SVM_EVTINJ_VEC_MASK;
+>> +
+>> +       if (!(event_inj & SVM_EVTINJ_VALID))
+>> +               return true;
+>> +
+>> +       if (!((save->efer & EFER_LME) && (save->cr0 & X86_CR0_PG) &&
+>> +            (save->cr4 & X86_CR4_PAE) && (save->cs.attrib & SVM_SELECTOR_L_MASK)))
+> 
+> Why not check these conditions in nested_svm_event_inj_valid_exept()
+> for BR_VECTOR and OF_VECTOR?
+> 
+Thanks for your response!
+As it stands now, we cannot perform the check there since it needs both control
+and save state, and we explicitly don't pass save state to
+nested_vmcb_check_controls(). I documented this in nested_svm_check_event_inj().
 
-I reviewed and tested the patches for GICv5 IRS support (01-18). They
-do what they promise - allow booting a GICv5-enabled guest. In my
-opinion, patches are in good shape, so could you please have a look and
-consider merging GICv5 IRS support (patches 01-18)?
+Obviously, we could change this and pass save state to
+nested_vmcb_check_controls() and then forward it to
+nested_svm_check_event_inj(), but I figured this was an explicit design decision.
 
-Thanks
-Vladimir
-
-On 11/25/26 15:13, Sascha Bischoff wrote:
-> This series adds support for GICv5-based VMs to kvmtool. These are
-> exposed as --irqchip=gicv5 and --irqchip=gicv5-its, where the former
-> creates a vGICv5 device and the latter adds a GICv5 ITS. The GICv5
-> specification can be found at [1].
-> 
-> The GICv5 support in KVM needed by --irqchip=gicv5 is available as of
-> Linux v7.4-rc1. The GICv5 ITS support is described in [2]; using
-> --irqchip=gicv5-its requires a KVM build with those changes.
-> 
-> The series teaches kvmtool to create the GICv5 irqchip and ITS KVM
-> devices. It describes the GICv5 CPU interface, IRS and ITS in the
-> guest DT, updates the timer and PMU interrupt descriptions, and
-> generates GICv5 interrupt specifiers for platform devices and PCI. It
-> also maps PCI MSI requester IDs to the ITS. The IRS support is built
-> and exposed before the ITS support, so the GICv5 irqchip support can
-> be merged separately from the ITS changes.
-> 
-> Compared with v5 [3]:
-> 
-> * Dropped the SETLPI frame from the IRS DT description because KVM
->   reserves but does not emulate it. Updated patch 15's commit message
->   accordingly.
-> 
-> * Added Vladimir's Reviewed-by trailers to patches 9 and 15.
-> 
-> The v7.4-rc1 header sync includes GICv5 IRS UAPI, but not GICv5 ITS
-> UAPI. Patch 19 mirrors the ITS definitions from [2]. Once that UAPI
-> lands upstream, the headers should be resynced against the latest
-> Linux headers before merging the ITS support.
-> 
-> Thanks,
-> Sascha
-> 
-> [1] https://developer.arm.com/documentation/aes0070/latest
-> [2] https://lore.kernel.org/all/20261102194454.4086911-1-sascha.bischoff@arm.com/
-> [3] https://lore.kernel.org/all/20261118175755.1946977-1-sascha.bischoff@arm.com/
-> 
-> Sascha Bischoff (23):
->   arm64: Propagate IRQ routing initialisation errors
->   arm64: Close the ITS descriptor when setup fails
->   arm64: Split GIC device setup
->   Sync kernel UAPI headers with v7.4-rc1
->   arm64: Add GICv5 irqchip device support
->   arm64: Configure GIC interrupt bases
->   irq: Allow the initial interrupt line number to be set
->   arm64: Start GICv5 SPI line allocation at zero
->   arm64: Configure the GICv5 IRS
->   arm64: Define GICv5 interrupt types
->   arm64: Describe the PMU interrupt for GICv5
->   arm64: Describe timer PPIs for GICv5
->   arm64: Assign CPU DT phandles
->   arm64: Describe the GICv5 CPU interface in the DT
->   arm64: Describe the GICv5 IRS in the DT
->   arm64: Generate GICv5 SPI specifiers for platform devices
->   arm64: Generate GICv5 PCI INTx specifiers
->   arm64: Expose the GICv5 irqchip option
->   arm64: Add proposed GICv5 ITS UAPI definitions
->   arm64: Add GICv5 ITS device support
->   arm64: Describe the GICv5 ITS in the DT
->   arm64: Map PCI MSI requester IDs to the GICv5 ITS
->   arm64: Expose the GICv5 ITS irqchip option
-> 
->  arm64/fdt.c                         |  13 +-
->  arm64/gic.c                         | 359 ++++++++++++++++++++++++----
->  arm64/include/asm/kvm.h             |  18 ++
->  arm64/include/kvm/fdt-arch.h        |   1 +
->  arm64/include/kvm/gic.h             |  15 ++
->  arm64/include/kvm/kvm-arch.h        |  16 ++
->  arm64/include/kvm/kvm-config-arch.h |   2 +-
->  arm64/pci.c                         |  24 +-
->  arm64/pmu.c                         |  13 +-
->  arm64/timer.c                       |   8 +-
->  include/kvm/irq.h                   |   1 +
->  include/linux/kvm.h                 |  23 ++
->  include/linux/virtio_console.h      |   2 +-
->  include/linux/virtio_ids.h          |   1 +
->  irq.c                               |  15 +-
->  powerpc/include/asm/kvm.h           |  18 ++
->  riscv/include/asm/kvm.h             |  17 ++
->  x86/include/asm/kvm.h               |   4 +-
->  18 files changed, 481 insertions(+), 69 deletions(-)
-> 
-> -- 2.34.1
-> 
+>> +               return true;
+>> +
+>> +       if (type == SVM_EVTINJ_TYPE_EXEPT &&
+>> +           (vector == BR_VECTOR || vector == OF_VECTOR))
+>> +               return false;
+>> +
+>> +       return true;
+>> +}
+>> +
+>>  static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+>>                                        struct vmcb_ctrl_area_cached *control)
+>>  {
+>> @@ -488,6 +515,11 @@ int nested_svm_check_cached_vmcb12(struct kvm_vcpu *vcpu)
+>>             !nested_vmcb_check_controls(vcpu, &svm->nested.ctl))
+>>                 return -EINVAL;
+>>
+>> +       /* This check requires both save and control state. */
+>> +       if (CC(!nested_svm_check_event_inj_mode(svm->nested.ctl.event_inj,
+>> +                                               &svm->nested.save)))
+>> +               return -EINVAL;
+>> +
+>>         return 0;
+>>  }
+>>
+>>
+>> base-commit: cbe54fc3462b3949ab27b9ae81fb9ddb509040c7
+>> --
+>> 2.56.0
+>>
+>>
 
