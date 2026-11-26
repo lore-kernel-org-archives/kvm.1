@@ -1,109 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795703890;
-	b=WPsvAhRxCFsyvmbEdXnGIp4sb8qtoVIHe3LZxgantTjhTiLqWiZqjpwPMH/FJrvLdqA9
-	 44sMOGPuGpuP/fiU/SAk0R62WIm5VpxuU6EiYL+2w+d0LvSjy3sKuaUYGtwd09Le2Cl9G
-	 HACRsM5CttDzAWcjNy6IUrlu/FZ0P+B2dHxhZ09FbM8WSj5HiYO+k+QfVCoDrcR3S8Ij/
-	 40p2W0MV2wY4zIdfd/KgehnBJh963A1L+tBDEPKv5ZB50tbHKjdngrtftsGLKRh6EEMlh
-	 umQJnN/GC2nlncA0aVDEnjh/iim/5Jjl0hoVzEzA+toNtLtMTX9EiyxcSy60Do8NpaQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795703890;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
-	 Message-ID:In-Reply-To:References:Organization:X-Mailer:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-Reinject:X-Authority-Analysis:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=TwYtFIIgARqtGbMM7qPTE29IrecbQ9zr89kNyuGkh8s=;
-	b=fIMUz6S0V//6b324bv4X7Vz2SoXZELD1rCVzrn9n0RSqRNnIIAw+qsFoKyPMBlRO6urj
-	 8UyMPrNlQrfi8e+8AOsBRfJdK1CFZzXpfuPIkHo919EU444OuBIawtd7TDdfEgyd4c2mM
-	 5YKxFJSd8w66EDdIgO/DtHSGZuFFLGsZb53Ue9t1D3Dga45+zU69gQw9+m43ITk2PABn8
-	 2U2isyb7qQFs0lFUMeP3qPNu2CmqalSWDGVuo04rO1Llkb5OOup4QkO0n+8Ce4Anum/2v
-	 CItQS+UdMbixS57r8bGFGaztSmI2w3Ywr73qK+kkH8KXBX2tr6mY4/izmJx0hxJHjyw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qBcCtccu;
-	arc=none smtp.remote-ip=148.163.156.1
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.32
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795705327;
+	b=tlP8VmiHd7J0ACG6Gb8n/hgqs6iqCpZCHsvZr6dv+GppruutkZGbCsXgRyTMmkvP6eD5
+	 jrxDZoOcLO44PHOtgOq++sCwGBd8DT7DDh7VoWMGtv+qlnB7ktJ1kCyxmjBivXzty9WUB
+	 f5vM/Fjwqkl0Lr0zQCpN/BrH2Z1HnBnd1AUwVFfsRRi5WEfHQOVXojw69G4v2pjVmNv9f
+	 eAeCcbjxnMogMMMbUx9Wev5VaWQnDPB/n+yNTK6jovVQpv+GaAY53K0DqQtwgPMIkuRdg
+	 kewletYQKBPLs3AKQEo4ToKrChwsh2tqNZvRX38JksM8zzKMpcM3EJPtDNfEe9necbg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795705327;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=nwC8JHaj9JBezgBKJYCXGfkjL+/PmmrOmTsNnMyRm7c=;
+	b=P9GaprlKIkJrZNl/z7kszdrz68oquKZaq/S7VSYCb1fb2F1Jvg9g0pbxmBodTdGW9FRF
+	 XsrJ919f4/4+GE1iv+GS/4s0/mIGjC+DhZuhkbrQpwlaMqmGjhRNquCWHFuXICGA9Ev/V
+	 p4F/fTFvONhmJQJYPXDlWeE279qmQxJyigWc9mzpaMMurSmLHuIQFY5nVSoxTaoK7v9OP
+	 rgkJC2sUGYsmOMFuFWCJZd3OZoBL+ao/FqJGekgmvgejAdzgTEfvVRHnCySIYyu2R1MWV
+	 lejC1AYYAjEeDHfOmIKzmEcWwOTQvvU198KEdQvJ23ilENbc48drnadUGVEDDZWzAXg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=lykXjjjU;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.62.32
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011032.outbound.protection.outlook.com [52.101.62.32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E036A606A32E;
-	Thu, 26 Nov 2026 14:38:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E036A606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CE2606A31C;
+	Thu, 26 Nov 2026 15:02:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13CE2606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qBcCtccu
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AQEYaoX3001329;
-	Thu, 26 Nov 2026 14:37:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=TwYtFI
-	IgARqtGbMM7qPTE29IrecbQ9zr89kNyuGkh8s=; b=qBcCtccuhOdZwEnpLZnn7/
-	rLjOrKcvpDQtNOvT1K7DU3CXFWt1dIACTgb9yoluSCkgQH4p3Fvmu+6fe/BiUD10
-	iiBg3fH3YjNsQ8bfKvIpierfwUA4jirUI/055Cs/lXFCESRdwY0+yrJXLLmWO+Pi
-	+6QOTj4fpJKWsCJZORsqKJuDC7GxfKA99QNlV5HqGKX2jlVnjt5cTz+ST+53ccH2
-	o45TNTnGDVjEZqC/r0x2UGT1e6p+dWeC6Z/M5AVfQ63+VvB7ghL9/u9wOhDibIze
-	kcylGs3lpgTS1pnTMOB9SXySFRziKjaIAvQNsZEdE4j+Z+ptEpqcKq1qvFMV+t1A
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34g3hqmn-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 26 Nov 2026 14:37:52 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AQEYRT11733411;
-	Thu, 26 Nov 2026 14:37:51 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j5uxx54b0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Nov 2026 14:37:51 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AQEbld649283426
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Nov 2026 14:37:47 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 71BD02004B;
-	Thu, 26 Nov 2026 14:37:47 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2D05D20040;
-	Thu, 26 Nov 2026 14:37:47 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.68.31.243])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Thu, 26 Nov 2026 14:37:47 +0000 (GMT)
-Date: Thu, 26 Nov 2026 15:37:45 +0100
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Yvan Janssens <yvanj@cyber.gent>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank
- <frankja@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Eric Farman
- <farman@linux.ibm.com>,
-        Hendrik Brueckner <brueckner@linux.ibm.com>,
-        Heiko
- Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander
- Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson
- <seanjc@google.com>,
-        Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] KVM: s390: selftests: Add a test for nested
- guests in ESA mode
-Message-ID: <20261126153745.399d7f3d@p-imbrenda>
-In-Reply-To: <20261125165604.3074595-3-yvanj@cyber.gent>
-References: <20261125165604.3074595-1-yvanj@cyber.gent>
-	<20261125165604.3074595-3-yvanj@cyber.gent>
-Organization: IBM
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=lykXjjjU
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gGL1LbHXBgpL4KXiXJmAXEkFLe+5lw+udW00VImVWAWGH21masb5dt6bLQyvddGuFJFTIFvPIC2bjsG5OytCs85+UDyUe5m/kHGXsizqZTwDSx8u2ZQWTxdySSob1EV40eVx2ecBr74yrfIAIIeUEA1SoAEPu8ZlIXo5ZjgrbRjzwY9X58S8Mly/Q/E5LpPtglE4aziklhfF1anJJH+FegyyjYaBMPWhddpS+YlgZdBhREhCc3LSb54/bGuSWtGXxvoAVGxm5fA/lQhlBZwNxyQLh8oFKEF4IID3QsuWNOxUZ8K5rNYz0gEmWYlj0xHYzbXVGwdqQ7InigcA1VrP6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nwC8JHaj9JBezgBKJYCXGfkjL+/PmmrOmTsNnMyRm7c=;
+ b=nMELUjSYR5zssDfaKeAk8svYb99gZSVdqpqlyEciUm1vAJYpafweOevkXwvtf3HnxYHUe4cL1f8PeZyDQHT4l+fc8VxhULYbY0Zgu3B6I0cZbVyuU5RpndgEgFtQEEo/VnfXk+ogWiY3EuHboLYpDINVToMClZKzMcaryLQhXWJJWJPF0rFZC4/H904XX7mYUdV9xWY9brEzP64fGEVDHhXogBpvB2Zr0tIiNptagNsE/4NKidKdxUWqzewvrSAsjIbW3XY6ZqpcyAuVpo+fRhC4cxIBf3/j14frvHZ7cog5Pj2MEsp5hwGy2zplTuF3E5DFkMrWFTFIuuSBET5h4A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nwC8JHaj9JBezgBKJYCXGfkjL+/PmmrOmTsNnMyRm7c=;
+ b=lykXjjjUZZRM8+s0sVxqoy9M6gY0R4JsI641hnTI9NeY8gZuKUrewYbEN0bgpzR6OOR2mzPU0YnU6xAGZLIqNp6Hx1Yd4Bxu6MDpQrM4Cy2YNKYMUXfbKEhnP4i/PdRnjxsIkFThJPr3JsE86XyTEM2rozYxow65qNzVPXGX6R6t5TFEJrn/oG3W5eLBFcVBOG5b5NcQo/bnLRt1JadnZ7ibefikDRGGslFaMhZNV27PXWyhqen9OiwfCLG/KKjkQv8LyGggbK3lsxblS9kxQxsne8y8kUyH2X0TwyMS6sUwRtmuQ8nY56E8qBphLPvcZi187pUo8bmSvsx3iqUG4g==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL3PR12MB6548.namprd12.prod.outlook.com (2603:10b6:208:38f::8)
+ by IA1PR12MB6580.namprd12.prod.outlook.com (2603:10b6:208:3a0::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.7; Thu, 26 Nov
+ 2026 15:02:02 +0000
+Received: from BL3PR12MB6548.namprd12.prod.outlook.com
+ ([fe80::e916:d870:8994:46c0]) by BL3PR12MB6548.namprd12.prod.outlook.com
+ ([fe80::e916:d870:8994:46c0%3]) with mapi id 15.21.0662.004; Thu, 26 Nov 2026
+ 15:02:01 +0000
+Message-ID: <03b5355c-e8c9-4190-95b8-fb847756ad7f@nvidia.com>
+Date: Thu, 26 Nov 2026 10:01:48 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 7/9] rust: vfio: add PCI variant driver abstractions
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: acourbot@nvidia.com, kvm@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ nova-gpu@lists.linux.dev, linux-pci@vger.kernel.org, alex@shazbot.org,
+ jgg@nvidia.com, yishaih@nvidia.com, skolothumtho@nvidia.com,
+ kevin.tian@intel.com, airlied@gmail.com, simona@ffwll.ch, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, tmgross@umich.edu, jhubbard@nvidia.com,
+ ecourtney@nvidia.com, cjia@nvidia.com, smitra@nvidia.com, kjaju@nvidia.com,
+ alkumar@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com,
+ kwankhede@nvidia.com, targupta@nvidia.com, linux-kernel@vger.kernel.org,
+ zhiwang@kernel.org, zhiw@nvidia.com, boqun@kernel.org,
+ daniel.almeida@collabora.com, tamird@kernel.org, work@onurozkan.dev,
+ jgg@ziepe.ca, bhelgaas@google.com, kwilczynski@kernel.org,
+ dri-devel@lists.freedesktop.org, peter@colberg.org
+References: <20261119215046.2892839-1-xinmengs@nvidia.com>
+ <20261119215046.2892839-8-xinmengs@nvidia.com>
+ <DN4P1UAAVP8G.2TUW0Q8UEQVCG@kernel.org>
+Content-Language: en-US
+From: Simon Song <xinmengs@nvidia.com>
+In-Reply-To: <DN4P1UAAVP8G.2TUW0Q8UEQVCG@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY3PR04CA0017.namprd04.prod.outlook.com
+ (2603:10b6:a03:217::22) To BL3PR12MB6548.namprd12.prod.outlook.com
+ (2603:10b6:208:38f::8)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -113,265 +111,114 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=SoQFe/O0 c=1 sm=1 tr=0 ts=6b084441 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=iT8M5YjzDwDgK0uH:21 a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22
- a=TfUWwnGe8vgNDgZCyUkA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI2MDA1NyBTYWx0ZWRfX463DcQ9FW3w8
- 4CD1gjYGe5cbHTnInJFa0hzmbLZQcZMsk0jh+Wl/QGuyqNUpyVN8OsSI340ybPdeYeTr8anEF3C
- V2DjfiUHZq7i/quCX1J7Z7A5LXp/1o8=
-X-Proofpoint-ORIG-GUID: 6B-dCLwvQ5RuX7wWuRuAQyEWvGPt4g2g
-X-Proofpoint-GUID: BPlFXjlmmVQRsmo6wtXFssUrmVrOXFJH
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI2MDA1NyBTYWx0ZWRfX0ktblx3NA4pf
- 4QnZX2B04tI/iM3wCIZc9DUAcLkCw9hOzrPYg6fdvd7/7TzsZIEl8Vn38ERflJHWZ5EHAo9fEo3
- bCOnLtgB8FJkDljQlMs9CjQvSsDuWfZJuI+Gkckyc13Cu5d2pnj+pz/4zaKSJz1bTNc6WYk7m+N
- 8ja4/q37Ypc9/fW/KaqdA4jQZ0i6wDor6FBkK8rqt15xj+oAFAkl3ycCYjKHu4qzyrszmUHgDgD
- iiy38IQi0DVlEhlzuy91PTAvXttp5uAx8p9Zg0/PghyCk7Sq89zquapiA0I15CCH9GF61HZFCR6
- h+/GE5bYl1GzppBD98bgk9c26fw6wfxUTe/fBB5Az4ysjA2Oc2YgdQ8zR4gTBSkj29VSLa44fEL
- Jyuuu9zGDb2tD26b+qpqu+IbaGkjJGFS73cNM6aF6OYvD5aZjQGidepv/w+QprZ/U36EsuIN4q0
- Kbjgd1HCnue7Zl/00bA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-26_03,2026-11-26_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 spamscore=0 bulkscore=0 adultscore=0
- lowpriorityscore=0 clxscore=1011 malwarescore=0 impostorscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611260057
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR12MB6548:EE_|IA1PR12MB6580:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3b48d6bf-3723-4dd6-7f02-08df4bce395b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|23010399003|4143699003|6133799003|22082099003|18002099003|11063799006|10067099003|56012099006|261102123227099003|261026121527099003|261026140227099003|261021121427099003|261028144727099003|261022105027099003;
+X-Microsoft-Antispam-Message-Info:
+	W8ezL9H+iCttFmqOgVzeG5n6fsGstxj4PCFIn04+tkzvkTyFLvZR/y9e7jln3wLJkbHp14jUnyOHcaMg0KErfe05PSg2Hlk3T29OqLXbG7xpAOEky6whcGV38Mim+tS5j+OwecFGX/v6JhuaPYI8OgAhu5s7TCVNTd4y6oD6w0CyVVstspTwZQQnJZELnjnI1N3Zl4PFAD9jObZGMZszJACXeBeU0jl9qLEwnnSbf85UmEgledAx9Ybn2jTjH3MtdwsWTuLfLgfh52ll3NQa/E9He1M8RTjVvQUmKBNurItbLdG/TKQxiwoKf8Sc/fBInYn9WZbj88Ek4ohQUhF7wrlV+ZXpEJBliW/Ism/WFdDHK3MnA3nCghk51vVfWFuq+FCZ+9HZR6ZS8NnpXmaUm3FEr6u6lHQo54cU3FKJdY2Ln9W6MCrDsDHBK+ffdv+JzQ7urtmITlGSSc/mcgM5BiTWLhrU46vP7+y615P3EOlHkJXUgiz87SteMhMhp0NWi+JRw5DjwKa62dtxZTQNHuWNsCuFnWwNC2PTNgO2m/4pORzM8qKolDFewQ6Gc35N2y4GBOA2f31sMQ+ouzFrokqrHpAjao1agy31+ILSUfGhyWHxE3Sghr0+fx1xmWWdkWwWxF2k/kf3c9Hbclt1EKsc5QGJxNXGQ1lI1IcevSE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB6548.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(23010399003)(4143699003)(6133799003)(22082099003)(18002099003)(11063799006)(10067099003)(56012099006)(261102123227099003)(261026121527099003)(261026140227099003)(261021121427099003)(261028144727099003)(261022105027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZHE0Ull2aVBwMWx1VjdsWFJNejA0a09LTTBoY1B2QllFMW1XZG9XSlVodXlE?=
+ =?utf-8?B?dzJ6R3lJa3dVQkN6T1hablNJR2VaRExQdW45Q3NtM0Joek1BWmszKzYxb3pJ?=
+ =?utf-8?B?Y0JoNk5DVlRvNHJKMlVQVWlzbGp0N3Z6MlJQSVpXdkVFaTlGODcxdHlSUUVQ?=
+ =?utf-8?B?S0RuM2g1R0diUzkxVDR2Q1hlbUFoQkVEYWRUa09jMGVVY3JEMnNHOFhYUEs0?=
+ =?utf-8?B?dGsvSlBSQWd4OUMyUUNzT1pFMjdQSzVhUGZDeVVwczBJSlBkdG0wWEt1aGdI?=
+ =?utf-8?B?NmtCZm5LZGh6SVlWVkJiY0dyc1JIcVlCajN5TGcwa21jcnBNZXd5VTlQcDJt?=
+ =?utf-8?B?bzJqWnRyNnc1c2liejZZR2tHYTNYakVaYjk1QVhRQWE2VEFIaXM1MzJFZ24w?=
+ =?utf-8?B?Wk5OQXNobFpQS3pOZGpkTWxXbHdpeVcwSjRUdG9rSWJOMlFFWGNTMndLMys1?=
+ =?utf-8?B?dzZabENiY0R2emVKbUdZQU5oWStkelNqczFFYkJGbDBzRFdKb2tDakJWUTA1?=
+ =?utf-8?B?Yzdrd2NNRGVWSmQ0bWJhMDFLUk5IK3cwb2VHWEt1V3RiNGJSeVRaUW5uMEdW?=
+ =?utf-8?B?d0h5ZlE1RWZvUWUzeTd0TC9TSWpZMm0vUDc0ZDQydWE5RGxncFY5TFo1UnlV?=
+ =?utf-8?B?QnNJUk83bWpvd0hIb1IxZU9JQjgybXkzbmVUbWljcTNxUUJIc09vcE9jZGJQ?=
+ =?utf-8?B?cFM2clZLL0taTjNDbGNGdXkrNjVDQk5vTTF5Umx4MFY4KzNpWXpmVHBQK0ZP?=
+ =?utf-8?B?cVRIaXltWlNZdm1jZHlGZkJSandlckVKUHhReWVRak5XYzhjRDc5eG9sSU1x?=
+ =?utf-8?B?S1RaT0hkN2FlSWo4WldsRGtoRGVRK0xCWTFKdlNVQ2xtOVltU2xHWlBraGpP?=
+ =?utf-8?B?TVExSlJlVVNPenAzN3RHRXZGeC9ObllYbW5Cb1hLdjEreUJWL2RwVWN2WG54?=
+ =?utf-8?B?aEpMUlF4c3ErK2trY0pQdEVsSFpFdTRrUjFucEZMY2tkZDhoMHkwalQ3cCtw?=
+ =?utf-8?B?SmMxZTJDNHVpZ0Y3NnJJelJpdjRpWlVMbVhuUU1MSHN4V2dkUnR5NXk4bHY0?=
+ =?utf-8?B?ZkZMenlqSnFPazdROXBZZDl1WVlJRFVFd2dGL01WT1FTdWttZlozMVRqWlk4?=
+ =?utf-8?B?ZHVWN1hPdlF1Zk9vSHdUTGVKTFEraFRPa0NGa0E1R2lWZjJUNkV3clVOVXhJ?=
+ =?utf-8?B?dlN4T2U3eG1icEpwOTlzMUU5MnNtUS9NUGtxcUgxVHNLb0hPQmFPZHZyU1A0?=
+ =?utf-8?B?K041RG13ajh5UlF1YlJzTTh6cWJPaW9HUUdVNE5rZ1MybWl2NTVJdllqd2lh?=
+ =?utf-8?B?RFpBU1VqSjJ1ZkhmbnNoSDBNMnVGN1JNZSt2ZElvb1hQa3JNbEpmY2RLbFZN?=
+ =?utf-8?B?cTJhR3pSSU1Sajl5WHdObW0wQTZwTSs4bUNkN1Z5Ym9OeXVjUWVGdE83WCty?=
+ =?utf-8?B?VXJLYTI2eEh6dlg2dVhGSkJReGFVMUREZ0h1TE9ZdkwwME5yRW8yV3Jaamc4?=
+ =?utf-8?B?SFY0eXlaaWF4UXpzUnpEUGpvVVIvcG1oRW0yZmlTZzlEOUVSaGtRalV3NXNv?=
+ =?utf-8?B?UDJRSWNHR0hJZ3dkYzZoSHZJWHNrdFNFOUp1T25hVURwTjloYklmWFFLOGRo?=
+ =?utf-8?B?emlWRnlhYm9WcE8vRHErVTJySXpUT3R1cThKY0NpNkdyWFM0czFJZ3U4cVZB?=
+ =?utf-8?B?U1dLQXI0ODBYTlZBcGtGdmNxSGpXT05lZlMrSnpGMjdiVnRoYVdiMTUrYzRK?=
+ =?utf-8?B?dmQ5bklOV1U1dWp5akJyR2FZcTkya0lsaVBKb1RiZDRXVXpzckxKVXk3K1lI?=
+ =?utf-8?B?eGUzTENIYzNEMXdwNjJramZaZDdWVzVhMThCaWVRRVY5N3UzbHU3cEZTSkQv?=
+ =?utf-8?B?UHNiTllsR0c4NHFxWlVTM0MySGxsQWx4Sy9GaVJYb29PZyt5NFU3RWRMbEt0?=
+ =?utf-8?B?NzR3OW1ySHo3Sm04T0ZBVlFROHNaT2JTeXFlYmc3NlpOWngraWhBcStKeE5I?=
+ =?utf-8?B?V1pzVEJobUk4bUlxRHkwcmhLT3dxRld5dy9xdnQ5L0dMOEZuaXVERktCZFMx?=
+ =?utf-8?B?L2k0QTZWMnRZWnVWU1lNcFc2Z1o3ckszcmpPZWtGWnlSZ21DREkrd3RIU3Ji?=
+ =?utf-8?B?eTQrdmZlc0MxdlVoSktOaFY5Y2xjY0Z5TGNoa0o1UXRwTnRTckUrRGIyRzhj?=
+ =?utf-8?B?ZGZTM3V2a0p6R3NpdE1FeVA5K0xGNm9zMDBJNFVoWUM0THZQRk8vQmxZakE4?=
+ =?utf-8?B?N2J6VnpQbmxXN0REdkQ1NjBGUDNFNXNZbW1GRGQ0MmUrMzVhbFNLQllDdTZh?=
+ =?utf-8?B?RjkwR1pyck1RM01MTDlXUTl4Nll6UHF0a25TQm50UTROaHBUNkVYZz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3b48d6bf-3723-4dd6-7f02-08df4bce395b
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB6548.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2026 15:02:01.1332
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: A0RyyHWFH5fFGvtNYawbmu1NAxg6q1UJRFYIw+BRX2ZOxPwArCIiq7E/u3P/hzx3cCfJzIPqNJKc2tQeMLg27A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6580
 
-On Wed, 25 Nov 2026 17:56:03 +0100
-Yvan Janssens <yvanj@cyber.gent> wrote:
+On 11/25/2026 3:51 PM, Danilo Krummrich wrote:
 
-> Run a nested guest from a state description without the z/Architecture
-> flag, with KVM_CAP_S390_VSIE_ESAMODE enabled, and let it execute STORE
-> FACILITY LIST EXTENDED twice. vsie intercepts the first one of every SIE
-> entry to shadow the facility list guest 2 designates and then has the
-> instruction repeated.
+>> +impl RuntimeActive {
+>> +    fn new(dev: &device::Device<device::Bound>) -> Result<Self> {
+>> +        // SAFETY: `dev` is a valid device. This is `pm_runtime_get_sync()`, which takes a usage
+>> +        // reference even if it fails.
+>> +        #[cfg(CONFIG_PM)]
+>> +        let ret =
+>> +            unsafe { bindings::__pm_runtime_resume(dev.as_raw(), bindings::RPM_GET_PUT as c_int) };
+>> +        #[cfg(not(CONFIG_PM))]
+>> +        let ret = 0;
+>> +        // INVARIANT: `this` owns the usage reference, and drops it if the resume failed.
+>> +        let this = Self(dev.into());
+>> +        to_result(ret)?;
+>> +        Ok(this)
+>> +    }
+>> +}
+>> +
+>> +impl Drop for RuntimeActive {
+>> +    fn drop(&mut self) {
+>> +        // SAFETY: `self.0` is a valid device, and `new()` took the usage reference dropped
+>> +        // here. This is `pm_runtime_put()`.
+>> +        #[cfg(CONFIG_PM)]
+>> +        unsafe {
+>> +            bindings::__pm_runtime_idle(
+>> +                self.0.as_raw(),
+>> +                (bindings::RPM_GET_PUT | bindings::RPM_ASYNC) as c_int,
+>> +            )
+>> +        };
+>> +    }
+>> +}
 > 
-> The test checks that the second doubleword of the PSW field, which is not
-> part of an ESA/390 PSW, comes back unchanged, that the PSW points behind
-> the last instruction, and that the first instruction stored the
-> designated list. What the second instruction stored is printed for
-> diagnosis.
+> This seems reasonable, but doesn't belong into VFIO core code. This should e.g.
+> go under rust/kernel/device/pm.rs.
 > 
-> The test is skipped without the capability, without interpretive
-> execution for the guest (SIEF2) and without facility 7 in the guest's
-> model.
-
-which KVM ioctls are you testing here?
-
-are you sure that this is the right place for this test? my impression
-is that this would be done more cleanly as a kvm-unit-test
-
+> However, it would become dead code once we land the runtime PM stuff and enable
+> it for PCI, right? I think an alternative could be to just make nova-vgpu depend
+> on !PM.
 > 
-> Signed-off-by: Yvan Janssens <yvanj@cyber.gent>
-> ---
->  tools/testing/selftests/kvm/Makefile.kvm      |   1 +
->  .../selftests/kvm/s390/vsie_esa_test.c        | 180 ++++++++++++++++++
->  2 files changed, 181 insertions(+)
->  create mode 100644 tools/testing/selftests/kvm/s390/vsie_esa_test.c
-> 
-> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-> index 283c59d7649c..aef64ec2719c 100644
-> --- a/tools/testing/selftests/kvm/Makefile.kvm
-> +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> @@ -227,6 +227,7 @@ TEST_GEN_PROGS_s390 += s390/shared_zeropage_test
->  TEST_GEN_PROGS_s390 += s390/ucontrol_test
->  TEST_GEN_PROGS_s390 += s390/user_operexec
->  TEST_GEN_PROGS_s390 += s390/keyop
-> +TEST_GEN_PROGS_s390 += s390/vsie_esa_test
->  TEST_GEN_PROGS_s390 += rseq_test
->  TEST_GEN_PROGS_s390 += s390/irq_routing
->  TEST_GEN_PROGS_s390 += mmu_stress_test
-> diff --git a/tools/testing/selftests/kvm/s390/vsie_esa_test.c b/tools/testing/selftests/kvm/s390/vsie_esa_test.c
-> new file mode 100644
-> index 000000000000..a52603e30f63
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/s390/vsie_esa_test.c
-> @@ -0,0 +1,180 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Test nested guests that run in ESA mode (KVM_CAP_S390_VSIE_ESAMODE).
-> + *
-> + * Guest 2 runs a guest 3 from a state description without the
-> + * z/Architecture flag. Such a state description has the eight-byte ESA/390
-> + * PSW in the first doubleword of the PSW field. vsie rewinds the PSW of
-> + * guest 3 when it has to repeat an instruction; the test uses STORE FACILITY
-> + * LIST EXTENDED, which vsie repeats after it has shadowed the facility list
-> + * guest 2 designates.
-> + */
-> +#include <stdio.h>
-> +#include <string.h>
-> +
-> +#include "kvm_util.h"
-> +#include "test_util.h"
-> +#include "kselftest.h"
-> +#include "sie.h"
-> +#include "facility.h"
-> +#include "ucall_common.h"
-> +
-> +#define G3_MEM_LEN	0x100000UL
-> +/* mso/msl have 1MB granularity */
-> +#define G3_MSO		0x10000000UL
-> +#define G3_START	(2 * 0x1000UL)
-> +/* where guest 3 stores its facility lists, in its first page */
-> +#define G3_STFLE_1	0xf00
-> +#define G3_STFLE_2	0xf80
-> +
-> +#define FAC_STFLE	7
-> +
-> +/* bit 12 of an ESA/390 PSW is one, bit 32 selects 31-bit addressing */
-> +#define ESA_PSW_MASK	0x0008000080000000ULL
-> +#define ESA_PSW_ADDR	0x000000007fffffffULL
-> +
-> +/* facility list for guest 3: only the first doubleword is looked at */
-> +#define G3_FAC_0	0x4000100000000001ULL
-> +
-> +static const u8 g3_code[] = {
-> +	0xa7, 0x08, 0x00, 0x00,			/* lhi   %r0,0 */
-> +	0xb2, 0xb0, 0x0f, 0x00,			/* stfle G3_STFLE_1 */
-> +	0xa7, 0x08, 0x00, 0x00,			/* lhi   %r0,0 */
-> +	0xb2, 0xb0, 0x0f, 0x80,			/* stfle G3_STFLE_2 */
-> +	0x83, 0x00, 0x00, 0x44,			/* diag  %r0,%r0,0x44 */
-> +};
-> +
-> +static u64 scb_real;
-> +
-> +static void guest_code(void)
-> +{
-> +	while (1) {
-> +		asm volatile("	sie	0(%[scb])\n"
-> +			     :
-> +			     : [scb] "a" (scb_real)
-> +			     : "memory", "cc");
-> +		GUEST_SYNC(0);
-> +	}
-> +}
-> +
-> +static void get_machine_feat(struct kvm_s390_vm_cpu_feat *feat)
-> +{
-> +	struct kvm_vm *vm = vm_create_barebones();
-> +
-> +	kvm_device_attr_get(vm->fd, KVM_S390_VM_CPU_MODEL,
-> +			    KVM_S390_VM_CPU_MACHINE_FEAT, feat);
-> +	kvm_vm_free(vm);
-> +}
-> +
-> +static bool machine_has_sief2(void)
-> +{
-> +	struct kvm_s390_vm_cpu_feat feat = {};
-> +
-> +	get_machine_feat(&feat);
-> +	return feat.feat[0] & (1ULL << (63 - KVM_S390_VM_CPU_FEAT_SIEF2));
-> +}
-> +
-> +static bool machine_has_facility(int nr)
-> +{
-> +	struct kvm_s390_vm_cpu_processor proc = {};
-> +	struct kvm_vm *vm = vm_create_barebones();
-> +	bool ret;
-> +
-> +	kvm_device_attr_get(vm->fd, KVM_S390_VM_CPU_MODEL,
-> +			    KVM_S390_VM_CPU_PROCESSOR, &proc);
-> +	ret = test_bit_inv(nr, (unsigned long *)proc.fac_list);
-> +	kvm_vm_free(vm);
-> +	return ret;
-> +}
-> +
-> +int main(int argc, char *argv[])
-> +{
-> +	struct kvm_s390_vm_cpu_feat feat = {};
-> +	struct kvm_s390_sie_block *scb;
-> +	u64 *g3_page0, *fac_list;
-> +	struct kvm_vcpu *vcpu;
-> +	struct kvm_vm *vm;
-> +	gva_t gva, fac_gva;
-> +	u64 psw_end;
-> +	struct ucall uc;
-> +	void *code;
-> +	int i;
-> +
-> +	TEST_REQUIRE(kvm_has_cap(KVM_CAP_S390_VSIE_ESAMODE));
-> +	TEST_REQUIRE(machine_has_sief2());
-> +	TEST_REQUIRE(machine_has_facility(FAC_STFLE));
-> +
-> +	ksft_print_header();
-> +	ksft_set_plan(3);
-> +
-> +	/* SIEF2 must be enabled before the first vcpu is created */
-> +	get_machine_feat(&feat);
-> +	vm = vm_create(1);
-> +	kvm_device_attr_set(vm->fd, KVM_S390_VM_CPU_MODEL,
-> +			    KVM_S390_VM_CPU_PROCESSOR_FEAT, &feat);
-> +	vm_enable_cap(vm, KVM_CAP_S390_VSIE_ESAMODE, 0);
-> +	vcpu = vm_vcpu_add(vm, 0, guest_code);
-> +
-> +	gva = vm_alloc_page(vm);
-> +	scb = addr_gva2hva(vm, gva);
-> +	memset(scb, 0, getpagesize());
-> +	scb_real = addr_gva2gpa(vm, gva);
-> +	sync_global_to_guest(vm, scb_real);
-> +
-> +	fac_gva = vm_alloc_page(vm);
-> +	fac_list = addr_gva2hva(vm, fac_gva);
-> +	memset(fac_list, 0, getpagesize());
-> +	fac_list[0] = G3_FAC_0;
-> +
-> +	/* guest 3: two prefix pages and one page of code */
-> +	for (i = 0; i < 3; i++) {
-> +		gpa_t gpa = vm_phy_page_alloc(vm, MEM_REGION_TEST_DATA);
-> +
-> +		virt_pg_map(vm, G3_MSO + i * getpagesize(), gpa);
-> +		memset(addr_gpa2hva(vm, gpa), 0, getpagesize());
-> +		if (i == 0)
-> +			g3_page0 = addr_gpa2hva(vm, gpa);
-> +		if (i == 2)
-> +			code = addr_gpa2hva(vm, gpa);
-> +	}
-> +	memcpy(code, g3_code, sizeof(g3_code));
-> +
-> +	scb->cpuflags = CPUSTAT_RUNNING;
-> +	scb->ihcpu = 0xffff;
-> +	scb->mso = G3_MSO;
-> +	scb->msl = G3_MSO + ((G3_MEM_LEN - 1) & ~0xfffffUL);
-> +	scb->psw_mask = ESA_PSW_MASK | G3_START;
-> +	scb->psw_addr = 0;
-> +	scb->fac = addr_gva2gpa(vm, fac_gva);
-> +	TEST_ASSERT(!(scb->fac & 7) && addr_gva2gpa(vm, fac_gva) < (1UL << 31),
-> +		    "facility list not usable for a designation");
-> +
-> +	vcpu_run(vcpu);
-> +	TEST_ASSERT_EQ(get_ucall(vcpu, &uc), UCALL_SYNC);
-> +	/*
-> +	 * The capability does not tell whether the machine (or the hypervisor
-> +	 * this host is a guest of) runs a state description without the
-> +	 * z/Architecture flag. If not, it answers with validity 0x0001.
-> +	 */
-> +	if (scb->icptcode == ICPT_VALIDITY && (scb->ipb >> 16) == 0x0001)
-> +		ksft_exit_skip("the host cannot run nested guests in ESA mode (validity 0x0001)\n");
-> +	TEST_ASSERT(scb->icptcode == ICPT_INST && scb->ipa == 0x8300,
-> +		    "guest 3: icptcode 0x%02x ipa 0x%04x ipb 0x%08x psw 0x%016llx 0x%016llx",
-> +		    scb->icptcode, scb->ipa, scb->ipb, scb->psw_mask, scb->psw_addr);
-> +
-> +	psw_end = ESA_PSW_MASK | (G3_START + sizeof(g3_code));
-> +	ksft_test_result(scb->psw_addr == 0,
-> +			 "second PSW doubleword of the ESA mode guest untouched (0x%llx)\n",
-> +			 scb->psw_addr);
-> +	ksft_test_result((scb->psw_mask & ~0x0000300000000000ULL) == psw_end,
-> +			 "ESA/390 PSW after the last instruction (0x%llx)\n",
-> +			 scb->psw_mask);
-> +	ksft_print_msg("second STFLE stored 0x%lx\n",
-> +		       g3_page0[G3_STFLE_2 / sizeof(u64)]);
-> +	ksft_test_result(g3_page0[G3_STFLE_1 / sizeof(u64)] == G3_FAC_0,
-> +			 "first STFLE of the ESA mode guest executed (0x%lx)\n",
-> +			 g3_page0[G3_STFLE_1 / sizeof(u64)]);
-> +
-> +	kvm_vm_free(vm);
-> +	ksft_finished();
-> +}
+
+Right, this goes away once driver has runtime PM callbacks, I tried !PM and it works, but CONFIG_PM
+is set in x86_64_defconfig and allmodconfig, so driver won't be built there with default option for
+x86, would you rather keep RuntimeActive and moved it to pm.rs or prefer to depend on the CONFIG_PM
+until the runtime PM for PCI lands?
+
+
 
