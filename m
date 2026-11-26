@@ -1,100 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.51
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795697226;
-	b=5RT1UCTSZR3TpI1nYapCfv9ZlMZkCiza48ydtqMd5BLMIQOW/iM+P2oDLs3ZA6xYzIdF
-	 RIiSvmr+AH2UtBHNbtnSpV/nS/SeJviTyo3hGWCIrgmSd3UWjsTKAJmgRj0jCXhUUERva
-	 nWjrid/XxZv6q4UpztxqBQmntITaSJrgkHujlF8+SMWGLWu5w9x+eP9xxT3wXNQTemRix
-	 e7Atw90H14OFXeIVINzECNLKi0hD3W211r5hafObJQAwbtX0GL/p0mA9cEu0oJTG2SIum
-	 0yjP//RJ8/NG3opk+AwJ4DcPEZ+8X4/g029k4xIsvQzmXLs68R+Fz2ql1KhLs+oczfQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795697226;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=0sDCO1ovM17uMu/VOcrsRpcY05yXe7IWxHNvX+k7W9A=;
-	b=WcD9ViHipMlRUYgDbs+IyXmf33XuevwZofXlHZ1JfEPGLH1u8Has4ScZIaN/nlXobiZG
-	 d4cPtmdfwce+iNsvOl68hkSRxS8bZNm2Y8n6jRXFkYRmU0bavvfUfXIAR12RS8Gbo7xpv
-	 SuzDRyNrAxCJ7/SZa/RjDVEgRlWnE/vn1P2xoNtDiJMPq3Hzo8giOS8vbGBrBTFSyvmTR
-	 GkdPmPoGNempPyzm44XaRTNAJpha032z7tqd1Lv/8regZqOplLhXD/XFmsK7uB2Cd+ufS
-	 hcXSRHDRGUg/S5silPQIqe2B7MIBDbYhRQ5T66/eqN4ScR34fNdgqmLocZ56/hbgUXQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=flashbots.net;
-	spf=pass smtp.mailfrom=flashbots.net;
-	dkim=pass header.d=flashbots.net header.i=@flashbots.net header.a=rsa-sha256 header.s=google header.b=EQ7J7XaI;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.161.51
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795700283;
+	b=qa44eVIHND+ixPosju1rIvgiK8o1B3jEcIjH+C8kS6onlGbPEpF5hnUSDE0LboWvG8oU
+	 HG3neRxnyQ4fklNFvKRA5Caj6zwGITzCrfXCP5hjPoDXru/P+vKErjIW0cTHTO57JEMbz
+	 D2tghAdK4lH7t0pTJmM1GYC2F1ayRG2dvyTqGFW/nGOb0qUmulMlo2zZbqaOZdQ+RcF61
+	 nq0sDCeOAwVqt8TJJLb0ZQm81OIi1jscn4RGutCf68Q4q6Qld2RMci8QN218+MjC4yBFC
+	 3Ll5ZdHJcP5sr3Jzv9dkp1kTzu6qenZyB7p1XmIXwAl63fr24EadayWhupEHTZOVxxA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795700283;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-TM-AS-GCONF:X-Authority-Analysis:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=02BGqLoy5W4EZR++kJaOBR7XvPnZihslZauH69lTdO4=;
+	b=wwVuevp93qgx/gIknul3Dr0t9HBG1HFHaN3sX7WpLx4jI2p3fKZbYEi5wgq5d6IhEDk9
+	 tG+JaIoWwHsRE9BjdnzQ3F852LaST2x6SoneLigqa1jvAWlKbTr4dW9+kOTq4ROjHjeOO
+	 5sd85JfSvwULHfzq6TknnRvYcjgWy1lboDu9ZTsjbcxVYKplHH891QXteagNTamYutEur
+	 NI0jNh/alQfGLkVBj2TbmDg0oi1baNPXGww6eKFEMGvxnGf0DrdOiRnEJO+fxF0QsPRuM
+	 uPCtf2eQrwZ+s+lqvfVgNwqDK8exzJ40F1UFEwu7Eh7aC9vdBxEgjUu0f174DRcnAoA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KOls12L7;
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6BA606A31E
-	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 12:47:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2F6BA606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flashbots.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flashbots.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F591606A31C;
+	Thu, 26 Nov 2026 13:38:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5F591606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=flashbots.net header.i=@flashbots.net header.a=rsa-sha256 header.s=google header.b=EQ7J7XaI
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-6d68de53053so5127491eaf.0
-        for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 04:47:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795697225; cv=none;
-        d=google.com; s=arc-20260327;
-        b=tDDHTOXFxVSBhQKtRT2U0IZ6GwfrcdZfdGmki57Up6WIwPztJPtmgeTU1NDgRVS/Yo
-         lvrXGk8TxGB/Zb91H0k1ZREALBwouq+5iv0Bal/k+VFewvfIvm7HdjHn+WGEGUmMdd/c
-         uJbM0x3DzSvCZ0xDIzz/X6h7U2ttbODP2vTRkN+HD13hUBxfmSkibNbp7kvZ+dqNNI+R
-         wt0tNIwuLch+eq5lq/SFzQk+qhFchajAhpXzIOsDrlA8bYEFVhfXErSmm16oE9pckX+/
-         zwtFoCA73iEJZmsLGHvVoIunXzy7Eb2bC0xrD2miE7RFasurGcz5F+eXyt7exc2RQhNp
-         ni7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=0sDCO1ovM17uMu/VOcrsRpcY05yXe7IWxHNvX+k7W9A=;
-        fh=mu+y2IUm/M498Z8JSTouUBTcUeZixhsTGN+wf6uyNYs=;
-        b=NMispBRJX87tsuRXlTdaTAuzrqT7pMfxhT/cuPRdYkot1IrmCGN0/yWcbneNVBA/IA
-         eYb7U601eGO+WyMaRJR8xTTgRZRsWM7BehRnF2f38neY2B9ZIqKRO+V05Z9WQiXlSOQZ
-         dRgIHR35APgzDfVHtkIBaqiFo7IoX4kVjjHM3gxHWrVSPIVOTY/Vpzw68V1zFm1ZgQ8O
-         wapFZn1mFu7ce+r0Kpp/vP+fIWCi8qed8hgJ/4CxKGQ7rGu6HcLnUl7oFKYUg3P25K0J
-         +7kGYAgnJeVWwy3z6bVMwrlD+913YVEVnbDRXiEGgCJ7hAxE9zysv0W0MBhBe+CAiBl7
-         YWcQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flashbots.net; s=google; t=1795697225; x=1796302025; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0sDCO1ovM17uMu/VOcrsRpcY05yXe7IWxHNvX+k7W9A=;
-        b=EQ7J7XaIadF3uAn4gbGhDW9T79STu0JpBcKnGDPwJMdcYfp2vzoJ4A3jFOxtwEDQqp
-         dojXRykuli4jE+05IotP5k2+v+UoX3fCRGvkQg1TNhJMZWlrqhOPq83sBJicQc4pFHt2
-         /cleHU92klXpCLQCARLmfaNbraGAaItzY6T27iQIKsRh6G8Yf0L7y+PYNwhxGG42LuvG
-         YqEIdtE5gXippnFoyU8kI+xk6QL+vl8rwIzufLbB1GrLfLqKbuBo8Zek4uVaddpq3xvg
-         LuYEULMIbvaKfNsFn1u3pvqDrcI+/vEqpPxHzAIRwIIMCSNRDGj5FS87s4xkEfqOdC85
-         wZQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795697225; x=1796302025;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=0sDCO1ovM17uMu/VOcrsRpcY05yXe7IWxHNvX+k7W9A=;
-        b=PKlvUPcNch74bKPokZBvug0s77Vpypab/w8pwZZAnLammzgeHj5WSi+l5RkwesJONd
-         YvNrbhBLGJixRBlTvdFDvjg/Rx+E3xn2LPZyyW34wbeh6EEtINK0KyOqMUGThPVFJM1l
-         vkqTMHeREatwtQp+iJ+vYXqnucUVSbduGIKPu/Mfe8KhbzhbWS+y3cCNyBdJrlcPVKZp
-         6bGqQLobhIOOm0bmONVW3tRuERPjwIuEe6FeB8nIR01Yvq0+vIOg4yZ8dhaAZ/mnbBqu
-         nzMA+BqOBZToGsymqScHu+44vE0PEL4S6XGFTPtA1aSjlHtcTBVB5h+K7tJhC+yV9x17
-         hE6Q==
-X-Forwarded-Encrypted: i=1; AL+hErFT8IVAEJEVm9NKerz2niqMer5C/ycoSN0iCVZrfU/Qqe5jkAigYhnYRIY5h7Q6KKw+vhs=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8SKmb4tvhOJlaii/WZK+hikJVypuUI2sIHClzQp247dI5mkxs6
-	Yh3wUQu4aF4mhwLCJBfj1tpcyIEwohjlHhpMi4z0jYt+0mUTUFqALNlOSqwId2ysc4r8r401i1X
-	u8fOcM0pnEVDzELw5BenfqFEFLRWavM8ooT//0e4xfw==
-X-Gm-Gg: AZFdTZdbqKzjxcuOy+u80DH8fNwZsmhDL7DBhJF4YWTHkS40QYf7AJrlhcb5yIj7vCh
-	ynbswB8Y0FZlUKjaqE+7FRfIG6/+cO3SCIP1JKWKVEjup0oV2EDVABmFFuE0oX/eaZZJroZIOjm
-	423fVEGYqyEKh9w8ePw+FwVo4db4KEknbudiJwYchywBc2IHEig0IWdjkHBzel029no+IGj8OEA
-	eS7Ohh0n8j7eeXpGa8E25+RNxh/LWyTosUVjwfezBk7fEe2W5dqbYl81u8SeXwcqCAi/AVogQOv
-	gXQ1LHffNCQWh24vXF2osafhyyT+iVozMkU3qsGSkjerAA6J/tJjJJuI32BU0uLB0i/ejbanhwT
-	Vk2DAjRD6Iges1W67eJBeKcpgAXi453YLhwLwscpZiUmuWIfgbkE4JaayGEfAEaiyoOSolULEdR
-	reVCsgUVo9YaC5hSdlhB6G9tlafUkWcZMTkp+1U4Sb0KsrYZaD553RWT5BATmCGK9y6N5hvNhz
-X-Received: by 2002:a05:6820:55da:20b0:717:da:ba2d with SMTP id
- 006d021491bc7-71b3949694fmr12426690eaf.42.1795697225084; Thu, 26 Nov 2026
- 04:47:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KOls12L7
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AQBYimN4167477;
+	Thu, 26 Nov 2026 13:37:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=02BGqLoy5W4EZR++kJaOBR7XvPnZih
+	slZauH69lTdO4=; b=KOls12L72vnnjXrTjUWBLWgjFhoKFMKnBVXBRAGkcL2Djt
+	F84Yb17spq3+bZpFQ2wuf0Dcao9/PBpsE+Ji/Qsko+/z0ea0RgYQPIuvQ0KmTSk6
+	jD89jMBb8Rr1Hl4jxQnQYVG86ldhJrSFL5QZzkC9Or/pg+4Dnu5SSZ/Wa+AcqhY3
+	73n8tZrXM5kIk954acvwAbs1xkwH44CPf6bhc/jRo7s0FT2jLUnOC9xdjKP2tFz0
+	Wp1FFOjKaxzZylPsocMJf1VVVWgsHo6ClWoPZAY0O4DM+Uf0rmR601nV6ZMDPBtq
+	T53noGrUPWBTzmmcaoL2PUpT2nan/YjXKVspxHTQ==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34gvgy5y-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 26 Nov 2026 13:37:50 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AQBYJ1s1111383;
+	Thu, 26 Nov 2026 13:37:49 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j5kfa6bth-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 26 Nov 2026 13:37:49 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AQDbjgH45482330
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 26 Nov 2026 13:37:45 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ACD2C2004D;
+	Thu, 26 Nov 2026 13:37:45 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8027B20043;
+	Thu, 26 Nov 2026 13:37:45 +0000 (GMT)
+Received: from osiris (unknown [9.68.29.29])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 26 Nov 2026 13:37:45 +0000 (GMT)
+Date: Thu, 26 Nov 2026 14:37:44 +0100
+From: Steffen Eiden <seiden@linux.ibm.com>
+To: Dan Carpenter <dan@pereq.eu>
+Cc: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev,
+        kvm@vger.kernel.org, Oliver Upton <oupton@kernel.org>,
+        Marc Zyngier <maz@kernel.org>, linux-s390@vger.kernel.org,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Karthik Bhargavan <karthik@pereq.eu>,
+        =?iso-8859-1?Q?Cl=E9ment?= Blaudeau <clement@cryspen.com>
+Subject: Re: [PATCH v2 2/8] KVM: arm64: Reset SP_EL1, ELR_EL1 and SPSR_EL1
+ when resetting a vcpu
+Message-ID: <20261126133744.219929-A-seiden@linux.ibm.com>
+References: <20261125-double_exception-v2-0-224689d8a764@pereq.eu>
+ <20261125-double_exception-v2-2-224689d8a764@pereq.eu>
+ <sashiko-outbox-232760@kernel.org>
+ <awam4std0Zifdn9k@stanley.mountain>
+ <awan8mSx5cbzXzJ7@stanley.mountain>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,38 +101,87 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261125-tdx-guest-quote-poll-v4-0-d89f26854b88@flashbots.net>
- <cd7bd4428398413e16ff214fc46f5d65076757d8.camel@intel.com> <436c641a-9d35-4695-b41f-547c46479a5d@intel.com>
-In-Reply-To: <436c641a-9d35-4695-b41f-547c46479a5d@intel.com>
-From: Moe Mahhouk <moe@flashbots.net>
-Date: Thu, 26 Nov 2026 12:46:52 +0000
-X-Gm-Features: Aa3M54qbjy628W_XZiCsTaWPDZAxjlqcXQ_RCIdX0UR7G-Q3f0Ja4RKHzIf02Lc
-Message-ID: <CAKV3HMNoCbBeyAsH-UHHC2wWm5fE7ps0mo_E3TKJw0Vk47W43g@mail.gmail.com>
-Subject: =?UTF-8?Q?Re=3A_=5B=F0=9F=9A=A8ext=5D_Re=3A_=5BPATCH_v4_0=2F2=5D_virt=3A_tdx=2Dguest=3A_Fi?=
-	=?UTF-8?Q?x_and_speed_up_the_wait_for_a_Quote?=
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "kas@kernel.org" <kas@kernel.org>, 
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "Aktas, Erdem" <erdemaktas@google.com>, 
-	"djbw@kernel.org" <djbw@kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Miao, Jun" <jun.miao@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <awan8mSx5cbzXzJ7@stanley.mountain>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=CYCdd7rl c=1 sm=1 tr=0 ts=6b08362e cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=tATfSOZSwkvfaf42cScA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI2MDA1MyBTYWx0ZWRfX0nYfkJib8H2e
+ C5yHfAPDBViPSMaBWZemZJHITHp196Efv9d9lDY2D4QGRrBtNWXV5QylAghC5+n/C0pzn1CmzVY
+ qvjr/n3MrMw2bBxhZHzBtATb/ZVAYiU=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI2MDA1MyBTYWx0ZWRfX8GlYiN7T4QMa
+ 09eTnuy+v8pDrTupsl1oO0OqWjqvbe3jHCD8CZv4xatonKxI6cOHvo232QfKTodwESNhbhyXSEJ
+ D7itvXKPXSZ8Fqd7UrADUCL+WX8JRx4LI/ziYU0lUSQzq08RDiLeQqGIhvpzFY1mFrBr882Ts6p
+ W/D21RUTR2H4FJGQAoh6Y4SdffEXEMfKw9KWDGZa+KQ2etQ0Qa03cd0WbD46KCnK1DrvtUnGXmm
+ b9APgYjB671qGYz2F03i7L+SrJFsh/9915QBN+h8wSsKEJRkMder+PssfJ+f3X2qU44ND30WVff
+ y5Ipy3rld/r0qscIrEWSD7RobcjH9bphpOehs+KlGEPZ8CTp9vWaDsr6oCYDNUA7OoF1X3YjMQ2
+ J1HbUzf/iGDLV6kEQ5oAMk+6NekXF4aAqK82ZNhT3TkEnViiI9VMq2sfKbnyZZAchtrCxqkKK/7
+ PRcIu11prvhlGzYKwxQ==
+X-Proofpoint-ORIG-GUID: IOCH92TSPRg1nO84vXqoe5hpnwcJ5ANo
+X-Proofpoint-GUID: IOCH92TSPRg1nO84vXqoe5hpnwcJ5ANo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-26_03,2026-11-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0
+ clxscore=1011 spamscore=0 bulkscore=0 impostorscore=0 adultscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
+ definitions=main-2611260053
 
-On 11/26/2026 5:42 AM, Edgecombe, Rick P wrote:
-> I think something went wrong in the send. All I got was the coverletter and it
-> looks like lore did too.
+On Wed, Nov 25, 2026 at 12:18:42PM +0300, Dan Carpenter wrote:
+> On Wed, Nov 25, 2026 at 12:14:10PM +0300, Dan Carpenter wrote:
+> > Let me add the s390 maintainers to the CC list.
+> > 
+> > I considered doing it the way Sashiko suggests but s390 doesn't have the
+> > __vcpu_assign_sys_reg() helpers so it broke the build.  The registers are
+> > not the same so, either way, some of this is going to be specific to
+> > arm64.  But Sashiko is correct that s390 probably keeps a stale SP_EL1
+> > across a reset.  The s390 maintainers could probably take the selftest in
+> > patch 8 and modify it for s390.  :)
+> > 
 
-Thanks Xiaoyao. Rick, both patches went out with the cover letter and
-were addressed to you. Lore has them in linux-coco, kvm and lkml:
+FYI: the arm on s390 KVM in the current upstream state has no idea what
+SP_EL1 is :) 
 
-https://lore.kernel.org/all/20261125-tdx-guest-quote-poll-v4-1-d89f26854b88@flashbots.net/
-https://lore.kernel.org/all/20261125-tdx-guest-quote-poll-v4-2-d89f26854b88@flashbots.net/
+> 
+> Actually, never mind.  This can be done in kvm_reset_vcpu_core() like
+> Suzuki Poulose suggests.
+>
 
-Maybe a filter on your side caught them. This pulls the whole series:
+We share kvm_reset_vcpu_core() as well :) 
 
-  b4 am 20261125-tdx-guest-quote-poll-v4-0-d89f26854b88@flashbots.net
+I assume this fix series should go into 7.4. right?
 
-Happy to resend if that is easier.
+I have a series posted adding the required functions and infrastructure
+for s390 [1]. This will likely go to 7.5.
+
+For 7.4: Add a patch just providing a stub that does nothing for the
+required helper (untested):
+
+diff --git a/arch/s390/include/asm/kvm_host_arm64.h b/arch/s390/include/asm/kvm_host_arm64.h
+index 3e69724f17c9..bdca7ebf6405 100644
+--- a/arch/s390/include/asm/kvm_host_arm64.h
++++ b/arch/s390/include/asm/kvm_host_arm64.h
+@@ -206,4 +206,6 @@ static inline void kvm_arch_async_page_present_queued(struct kvm_vcpu *vcpu)
+
+ #define kvm_supports_32bit_el0() false
+
++#define __vcpu_assign_sys_reg(__vcpu, __reg, __val) (void)
++
+ #endif /* ASM_KVM_HOST_ARM64_H */
+
+
+If this does goes to 7.5 queuing that after the corresponding s390
+patches would be the simpler approach.
+
+Thanks for fixing the bugs 
+
+	Steffen
+
+
+[1] https://lore.kernel.org/all/20261106-sysreg-v3-0-75e95980fb10@linux.ibm.com
