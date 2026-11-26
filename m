@@ -1,67 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795731177;
-	b=suOYhpVwds4d9fJxsydnflkdx0A2NtRUMG1TonN8/aBDQblV9YQQSDk2/TCvoNEhyG8r
-	 OOBMLrFLsC9ty5Psj5r9XBqARCgcOMEbERNkjYb/YZjF/J8dHr+gQKg3IVkYjz53cPIbV
-	 z8Fg9OVziYFE3G1DuqbSRPVcJ0+8DkuPZ8PjR3b+omo1cbY+/N7Ej7E3USqkPw0Stu1zd
-	 RsbLoc2O/wD3dm84vXMfkpJJy+F7vLibEQOOoqeXWod2AI6DoegKpUER1+C1TtF5hY47A
-	 2UQtOqt87WquH/qydnp55U2DtgeoLgf6rtvTrp1z4DcQ2+gwMNrfYoIQ683uPx8QLhg==
+	t=1795734736;
+	b=f64lCHxg118gMXwcyStQtRbjXTkAiykxdGS7CdCwZ76kdjPaX1iG7QioBsAetwpGk8t9
+	 Jndfl3AaSqjvkNHOKOqNTtSWMUgN4lf8dot8C3+GiretL//5DPsON9/fpTvR/bqo+4/wt
+	 89fAWrPOp12v4kOsq4YN1npYRKDizB/ZY+iMojpkKQfUV80PH/GEchCV3OUmZHLfxPIKD
+	 X/OFX0yfw/LD5gkM4Ve7oCRP/QnGBUSvn0NtRx921K+KlBey6VQTOA21923wnaIo9nPHB
+	 9+ATlPJNd7V4aQu2PZxy2A72K3z0LMNkQhVvMq5WstYlIZzV8qwX78Mk5Il86TbORjA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795731177;
-	h=Received:DKIM-Signature:Content-Type:Date:Message-Id:Subject:Cc:To:
-	 From:Mime-Version:Content-Transfer-Encoding:References:In-Reply-To;
-	bh=o2bsm3sM5qM7pFg6qTM+Ueo75HRL9OdoPZG7+in0now=;
-	b=2/vfEqnMKMrucvmz6sS9jSqMay2vIviW6Mi9PfTgHlJ+rb8yU9mdJv5MEpN0OfFrua9j
-	 BdeydOCcvWRZwB69tKrXC16B7QegdkEZ2ko4nSwn6Vm8bwOM6i+1V7O5z8jOVB7VeZYps
-	 EZU1c9Lpx5b+vXEmZUCABoBGoufYje4tdFlcn6uk6bjFoKewAGTPKu1Z+Iie3edNUUcBK
-	 5AJs641rQf2WxKDNvQRAqqrEcQkebUT76BO2oF0DJrETvY6cPCquyNZoQrw/URWjZByVa
-	 Gb9REdSpdBP1ePLgtOSm3ldFmfYzTNAGlPj2ScI0okyLIJiSAD9VJcWmRz01R6wGO1g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795734736;
+	h=Received:DKIM-Signature:Mime-Version:Content-Transfer-Encoding:
+	 Content-Type:Date:Message-Id:Subject:Cc:To:From:References:
+	 In-Reply-To;
+	bh=yCg6GFs8aIIt9H7EV8TqGTZ5EaU2Zu9rrP42YjkHPnk=;
+	b=Hjv4/RPNsyjhFSNFXAHvRgDoKmFWUGQmM3OBLkUYxgUrLchk23jz2DwDe3xPSP2p8hDw
+	 L+W8BvyJDiYcjQIRU+3kdCsIkdQHGbTHXEZG+ESry+rYqueMLFyvXSCd62P8ENsOR4UXk
+	 IWHEbnux6XD3s5yjfrOqxFO+D3kNc/nQEnNamCuGUHOmNbt2d6fGjlOOLLHvjcuPzmLSY
+	 tuDCJ2kRf8rF2NmTtzNbc4Ap+5E6RDy6pg9yX09Alzg4xNt4hmIX1Lu+x3aHBUoZGTNWx
+	 XGOoYhPM6lzAs9sE7a+0X6tVAJ7o44PNc17V1mTNSZ1arjfAq+qPSK+EAq3xTaF9UiA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ng+2Fqre;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="OLE/5HdM";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65180606A31C;
-	Thu, 26 Nov 2026 22:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB58606A31C;
+	Thu, 26 Nov 2026 23:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ng+2Fqre
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8001F000C1;
-	Thu, 26 Nov 2026 22:12:48 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OLE/5HdM
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93CEB1F000C1;
+	Thu, 26 Nov 2026 23:12:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795731177;
-	bh=o2bsm3sM5qM7pFg6qTM+Ueo75HRL9OdoPZG7+in0now=;
+	s=k20260515; t=1795734736;
+	bh=yCg6GFs8aIIt9H7EV8TqGTZ5EaU2Zu9rrP42YjkHPnk=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=Ng+2FqrejxNEJfG8T0unRvcStAuJRuDRN5Vtt4t3P+PcZ93TfRUfJp+UqRhY82NTf
-	 gvvhoYeGobrtNYAPclvZzMWMHRiQi23Kbp2tBV4zH82rp4nATvEgToDWVVWaryR+kL
-	 UeWJES8M6dOXJB8Ch7oT4DhzPo3RbKJrT8xIQSDNy7jk0n2TA7mvkaNINMllMf7DZt
-	 YZsydudUrV1a7KPDzQs3bBuD++RXCZNQZvlaoxE4JAhRQR6w+OEwA4O7CgHBRwvibR
-	 NJz4ShlfPMYFgCxw2zcvqOYE1FWWM90XYDCLuZjOx451USETxqc3uqSoy/TYrDbbfG
-	 n7oSR9LbtCiHA==
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Nov 2026 23:12:47 +0100
-Message-Id: <DN5HKLQK65L0.1L9NVW750P85W@kernel.org>
-Subject: Re: [PATCH v5 12/35] gpu: nova-core: mm: add VramBlock
-Cc: <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <linux-pci@vger.kernel.org>, <alex@shazbot.org>, <jgg@nvidia.com>,
- <yishaih@nvidia.com>, <skolothumtho@nvidia.com>, <kevin.tian@intel.com>,
- <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <markus.probst@posteo.de>,
- <jhubbard@nvidia.com>, <apopple@nvidia.com>, <joelagnelf@nvidia.com>,
- <ecourtney@nvidia.com>, <cjia@nvidia.com>, <smitra@nvidia.com>,
- <kjaju@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
- <kwankhede@nvidia.com>, <targupta@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
- <boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
- <work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
- <kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
- <peter@colberg.org>, <xinmengs@nvidia.com>
-To: "Alok Kumar" <alkumar@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
+	b=OLE/5HdMOrzqMoVMzpMOMOMHiwFOsx9zxrVlr3wkAc/3r3feA4bo/4U8T+dquucT7
+	 GoxqIb3GA2Qzhx23dBRIcv/B7pXI/l0P5FqcBZ2JkRB8dKNWtcDk83NE+tFGgfmsDy
+	 Y2+X8Sk3RBM8g/QKSroJurZNSvZCfBzHReXtUL4ZFWqJTFXeExgVVyxjuXWjrWU54x
+	 wRLwe8ecIV18WWvO6CCa3mCpILwAESGiq3BoKYoO7R0FnuW3Fs9WKfUegeovFJCzNe
+	 Wn9z/hNWXG4yDF+b45eJhwRrzPajMgbisyeckxW0kPcFQ8utWEGo0CiWDlzqk7vx7W
+	 dVWYVqxyMLVnw==
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,148 +50,104 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-References: <20261124135937.18583-1-alkumar@nvidia.com>
- <20261124135937.18583-13-alkumar@nvidia.com>
-In-Reply-To: <20261124135937.18583-13-alkumar@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 27 Nov 2026 00:12:07 +0100
+Message-Id: <DN5IU15U2LO1.1NCRHBKWBJG5B@kernel.org>
+Subject: Re: [PATCH v3 7/9] rust: vfio: add PCI variant driver abstractions
+Cc: <acourbot@nvidia.com>, <kvm@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <linux-pci@vger.kernel.org>, <jgg@nvidia.com>, <yishaih@nvidia.com>,
+ <skolothumtho@nvidia.com>, <kevin.tian@intel.com>, <airlied@gmail.com>,
+ <simona@ffwll.ch>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+ <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+ <tmgross@umich.edu>, <jhubbard@nvidia.com>, <ecourtney@nvidia.com>,
+ <cjia@nvidia.com>, <smitra@nvidia.com>, <kjaju@nvidia.com>,
+ <alkumar@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
+ <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <zhiwang@kernel.org>, <zhiw@nvidia.com>,
+ <boqun@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
+ <work@onurozkan.dev>, <jgg@ziepe.ca>, <bhelgaas@google.com>,
+ <kwilczynski@kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <peter@colberg.org>
+To: "Simon Song" <xinmengs@nvidia.com>, <rafael@kernel.org>,
+ <alex@shazbot.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20261119215046.2892839-1-xinmengs@nvidia.com>
+ <20261119215046.2892839-8-xinmengs@nvidia.com>
+ <DN4P1UAAVP8G.2TUW0Q8UEQVCG@kernel.org>
+ <03b5355c-e8c9-4190-95b8-fb847756ad7f@nvidia.com>
+In-Reply-To: <03b5355c-e8c9-4190-95b8-fb847756ad7f@nvidia.com>
 
-On Tue Nov 24, 2026 at 2:59 PM CET, Alok Kumar wrote:
-> +/// A physically contiguous VRAM allocation.
-> +///
-> +/// # Invariants
-> +///
-> +/// `range.start <=3D range.end`.
-> +pub(crate) struct VramBlock {
-> +    _blocks: Pin<KBox<AllocatedBlocks>>,
-> +    range: Range<u64>,
-> +}
+(Cc: Rafael)
 
-This allocation seems unnecessary, VramBlock can itself be constructed as p=
-in
-initializer...
+On Thu Nov 26, 2026 at 4:01 PM CET, Simon Song wrote:
+> On 11/25/2026 3:51 PM, Danilo Krummrich wrote:
+>
+>>> +impl RuntimeActive {
+>>> +    fn new(dev: &device::Device<device::Bound>) -> Result<Self> {
+>>> +        // SAFETY: `dev` is a valid device. This is `pm_runtime_get_sy=
+nc()`, which takes a usage
+>>> +        // reference even if it fails.
+>>> +        #[cfg(CONFIG_PM)]
+>>> +        let ret =3D
+>>> +            unsafe { bindings::__pm_runtime_resume(dev.as_raw(), bindi=
+ngs::RPM_GET_PUT as c_int) };
+>>> +        #[cfg(not(CONFIG_PM))]
+>>> +        let ret =3D 0;
+>>> +        // INVARIANT: `this` owns the usage reference, and drops it if=
+ the resume failed.
+>>> +        let this =3D Self(dev.into());
+>>> +        to_result(ret)?;
+>>> +        Ok(this)
+>>> +    }
+>>> +}
+>>> +
+>>> +impl Drop for RuntimeActive {
+>>> +    fn drop(&mut self) {
+>>> +        // SAFETY: `self.0` is a valid device, and `new()` took the us=
+age reference dropped
+>>> +        // here. This is `pm_runtime_put()`.
+>>> +        #[cfg(CONFIG_PM)]
+>>> +        unsafe {
+>>> +            bindings::__pm_runtime_idle(
+>>> +                self.0.as_raw(),
+>>> +                (bindings::RPM_GET_PUT | bindings::RPM_ASYNC) as c_int=
+,
+>>> +            )
+>>> +        };
+>>> +    }
+>>> +}
+>>=20
+>> This seems reasonable, but doesn't belong into VFIO core code. This shou=
+ld e.g.
+>> go under rust/kernel/device/pm.rs.
+>>=20
+>> However, it would become dead code once we land the runtime PM stuff and=
+ enable
+>> it for PCI, right? I think an alternative could be to just make nova-vgp=
+u depend
+>> on !PM.
+>>=20
+>
+> Right, this goes away once driver has runtime PM callbacks, I tried !PM a=
+nd it
+> works, but CONFIG_PM is set in x86_64_defconfig and allmodconfig, so driv=
+er
+> won't be built there with default option for x86, would you rather keep
+> RuntimeActive and moved it to pm.rs or prefer to depend on the CONFIG_PM =
+until
+> the runtime PM for PCI lands?
 
-> +
-> +impl VramBlock {
-> +    /// Returns the range covered by this VRAM block.
-> +    pub(crate) const fn range(&self) -> &Range<u64> {
-> +        &self.range
-> +    }
-> +}
-> +
-> +impl GpuMm<'_> {
-> +    /// Allocates an exact byte range relative to the buddy allocator's =
-base.
-> +    pub(crate) fn alloc_vram_range(
-> +        &self,
-> +        range: Range<u64>,
-> +        align: Alignment,
-> +    ) -> Result<Arc<VramBlock>> {
-> +        const PAGE_SIZE_ALIGN: Alignment =3D Alignment::new::<PAGE_SIZE>=
-();
-> +
-> +        let align =3D if align > PAGE_SIZE_ALIGN {
-> +            align
-> +        } else {
-> +            PAGE_SIZE_ALIGN
-> +        };
-> +        let size =3D range.end.checked_sub(range.start).ok_or(EINVAL)?;
-> +        let buddy =3D self.buddy();
-> +        let base =3D buddy.base_offset();
-> +        let start =3D base.checked_add(range.start).ok_or(EOVERFLOW)?;
-> +        let end =3D base.checked_add(range.end).ok_or(EOVERFLOW)?;
-> +        if !start.is_multiple_of(u64::from_safe_cast(align.as_usize())) =
-{
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let blocks =3D KBox::pin_init(
-> +            buddy.alloc_blocks(
-> +                GpuBuddyAllocMode::Range(range),
-> +                size,
-> +                align,
-> +                GpuBuddyAllocFlags::default(),
-> +            ),
-> +            GFP_KERNEL,
-> +        )?;
+Right, in this case I'd just inline the call to __pm_runtime_resume() into
+Registration::new() and the call to __pm_runtime_idle() into
+Registration::drop() to keep it as local as possible.
 
-...so we avoid this allocation.
+We can then replace it with the proper bus PM handling once the core PM cod=
+e
+lands; I will send the corresponding PCI changes soon.
 
-> +        Ok(Arc::new(
-> +            VramBlock {
-> +                _blocks: blocks,
-> +                // INVARIANT: `range.start <=3D range.end` was checked a=
-bove, hence
-> +                // `address <=3D end`.
-> +                range: start..end,
-> +            },
-> +            GFP_KERNEL,
-> +        )?)
+Rafael, please let me know if you have any concerns.
 
-To me it seems that reference counting is not needed here.
-
-AFAICS, a VramBlock does not actually have shared ownership, it is owned by=
- the
-VgpuVramSlotPool of the VgpuInstances.
-
-A VgpuInstance owns a VgpuVramSlot, and a VgpuVramSlot owns a VramRegion. T=
-he
-VramRegion borrows (a range) from the VgpuVramSlotPool's VramBlock.
-
-Finally, a BarMapping (also owned by a VgpuInstance) also borrows from the
-VgpuVramSlotPool's VramBlock.
-
-Do I miss anything? I tried to double check and asked my clanker to inline =
-all
-the relevant structures, and it came up with this:
-
-	struct VgpuInstances {
-	    vram_slots: Option<VgpuVramSlotPool {
-	        backing: VramBlock {
-	            _blocks: Pin<KBox<AllocatedBlocks {
-	                buddy: &'mm GpuBuddy,
-	                // Allocated buddy blocks.
-	            }>>,
-	            range: Range<u64>,
-	        },
-	        layout: VgpuVramLayout,
-	        fb_region_size: u64,
-	    }>,
-=09
-	    instances: KVec<VgpuInstance {
-	        vram_slot: VgpuVramSlot {
-	            index: u32,
-	            fbmem: VramRegion {
-	                backing: &'pool VramBlock,
-	                range: Range<u64>,
-	            },
-	            mgmt_heap: VramRegion {
-	                backing: &'pool VramBlock,
-	                range: Range<u64>,
-	            },
-	        },
-=09
-	        plugin_rpc: PluginRpc {
-	            comm: CommBufferRegion {
-	                map: BarMapping {
-	                    region: VramRegion {
-	                        backing: &'pool VramBlock,
-	                        range: Range<u64>,
-	                    },
-	                    access: BarUserAccess {
-	                        bar_user: &BarUser,
-	                        mapped: Option<MappedRange>,
-	                    },
-	                    mm: &SharedGpuMm,
-	                    unmap_error: Option<Error>,
-	                },
-	            },
-	            // Other RPC state omitted.
-	        },
-	    }>,
-	}
-
-(In case you wonder why it says &'a GpuBuddy for AllocatedBlocks, I have [1=
-]
-applied locally.)
-
-[1] https://lore.kernel.org/nova-gpu/20261126221108.3768637-1-dakr@kernel.o=
-rg/
+Thanks,
+Danilo
