@@ -1,55 +1,95 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795703107;
-	b=zFF3GYCGkjJ3qnZXBTRZlBIzrt2KG9RPk5z0VYg2+NEWjo9AzzEQZqrHaTZJRb0eRo+z
-	 Pq6VF3LjnjMpVFg1tmL+YMrpzqx3rdL4owY5A0jIKpF/fR9Li+tYDu1Dz8lAHi0vxPlAI
-	 QCX288JAvs2BcYfs93jguYaLozMVojrBez0qZNOK8own3KFMsT4/OPOLQ9IYnw2lfk3IH
-	 LPqSnoN6sZbDHbzSX9rmJWv9EZSo0+ktM5et0kVRPiWX5k2VWZA4ZQhBtZMbAtO4TTamF
-	 ghV2TF1X/c+DUutiwrdOTnYllluSy3EXWhEBIX5VfqV8sjPllblKivH9xKm9vUAcySg==
+	t=1795703466;
+	b=FeAwxl53cnKcIW2iDieiAustSWRisyIBDubpKxwcuRD+/Dx3w6LXdxK6WCiIPFeJqfyx
+	 9PoPbIDZtGjr3ZaS3Cfvw661OJQcmmmlBIBnZYRjYMVHPR5/G0daWK+e8m7SoZLP+gzYq
+	 n7V5eluxwX1ROU+2e+ylkoF1dD4VOxWeUYQvGaiVA4jh9E+qrYyVOXGCdzgMnUaQ6y3NT
+	 ZYWw9WCHct4Skw60PDpeK2KhEyyw3q6Iw6/uGF5DHJ+J1PZthBHa+TJ1zl70NkabXZN95
+	 bqU94+bYlGxYCMm3wsXyo9zENkjw0ZC7KPLnFVizkcxL3GXE+zoL9N0Je9OKYjRWQtQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795703107;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=urzqIBJWhB3yp5cZJ6SMEI3ey7WIN+40bKxuYnpO/4c=;
-	b=GHudbQYiALQvSECpX+FRCuwf7l7BQz9vhSEFYulfEMTyW/pO/UdstBOEI5EHKU85u2oW
-	 VEg81syU+I68lxb9oe8UVagp8lBJj3zkUjVaFE+6+8a2NRPFGKlvtsg6tWVdIqFrMLymw
-	 pa9e4KOp952Htv9L0huv9zNkmkJsaGIzkSCUrV8n1Geoh5UqIr6wR/r4oeHC4hpxJ2Uvy
-	 YTSfH19vSbULww8K+wm9uRoVQm2cgMHWCbjzAETgH1FwAmuCA2Hu3mHyiEnY4Q9RxJQ7y
-	 6J7xdn6qpY0w5CJQuwcXXeSzqF5g1lXousbvPORNj68pnZFrSJipUAPkAIArUprjg3g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795703466;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=S5r3XjtXFsLjzzhMzj390HKNPBHceWrZJqEAhyaam0k=;
+	b=Wo9Diw2fCEfAQrfp+8gJzgKffHYSLtu4OeJV2A3JmeC/riG7QOpSHGqT1l6K2wEj4RD8
+	 k6gbvIT0e4ZrJYEWqKSb2Q3sgZ51x9YtFgrxt9PuB7K2fd905OVo/ALv+pCIdj9Acr92O
+	 oBIkyzjI7Kfyl+csNUgAhs3ovlyCg4M+g0chFgmiK+r8y6obuVDiDf0wFHuYW3LDTJhRL
+	 +ZcNylBDG9KihC93rQvxsJLWcNp/WYo7Gj6b8To6TJwFsKq2xqaYnDLZ4zx1hKrHhZAGi
+	 Vz63HospmpeNsC9xB+XoocqC9MDjsaHty60YYfLoyzBbu4AIIAQ3dbFou5UmQxHjgig==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KSTtVC5p;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305AB606A321
-	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 14:25:06 +0000 (UTC)
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=LVEeRbRa;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5089606A33F;
+	Thu, 26 Nov 2026 14:31:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E5089606A33F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KSTtVC5p
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1B31F000E6
-	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 14:25:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795703106;
-	bh=urzqIBJWhB3yp5cZJ6SMEI3ey7WIN+40bKxuYnpO/4c=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=KSTtVC5p+dd+ataqWAVi5gHO8ZRd/RWVkYxhg/g/6O/b1O/+IcyQVPR4Ck5hWhnsj
-	 GLpAIFYIBB5z2571wc7HKkORsM4fGd2pHKEKF7CrFmBUK9GHlZlvsh0hLH587a4p5w
-	 6m9f+F7ygqG8eE340zHJOL51FHRno+Rd7yaTs2PQ3ubV7VgPuPyNtRzlBssWo1dJg5
-	 HlxlOHtvH2LQOtja8acqQmaeadF2/6pD81nSo5FoCrVstAIZUgRNq4CiLOZr+r8Byn
-	 /1dXa0dlXWgYRR1aY13eLfugSGd6HmHXAAZemCmuxbcEzHpQsdXY0KX6TNk/GEP3MF
-	 m+PlAIFxLV9oQ==
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4b467581b98so68850125e9.0
-        for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 06:25:06 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErGKMw2yYhVIt7iisbJcLE29Gu/KkIgjxm6FHktyqOD49v8IiwscgQNOj0sx9h+aAhw2VcI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+PIv7I2d6ybHEpGhProrx5aMdyhrEG7AtcempCHEe5DvcEcbej
-	BVkSkMFJGc8Msq/w/B48td5EXwhg5wPK1PC8sl4iclJGopT28T8RuDwCWm5TJ1QBSE38QEkzXVx
-	elAKRAaVEwB6kwOfsyMm58Iu7iGqYWSQ=
-X-Received: by 2002:a05:600c:190d:b0:4ba:2bfc:c8b5 with SMTP id
- 5b1f17b1804b1-4bb888267aemr431006395e9.10.1795703104940; Thu, 26 Nov 2026
- 06:25:04 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=LVEeRbRa
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CE2881BA8;
+	Thu, 26 Nov 2026 06:31:00 -0800 (PST)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3E9F83F86F;
+	Thu, 26 Nov 2026 06:30:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795703463; bh=Gh8fyK7BLAji0Po7ndrDo9Z/I+fzSOToLbTFsVx3zZg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LVEeRbRacat2kmxF2QkCxag4t6jAyhtj4S+xDo+pF7fMr1Tz/HhujzVMY5tHehXMU
+	 qCzCPO6R0EVjS9S8Iu8MQu60xg6xWeReC2v+YlZNpk+tZF0qOlBkj1aO4wtTScfy+Z
+	 21pgcGpco2AGab9fHjE3qak7bp9yODvWbgfJ3hW4=
+Date: Thu, 26 Nov 2026 14:30:54 +0000
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Mike Rapoport <rppt@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-openrisc@vger.kernel.org
+Subject: Re: [PATCH RESEND v2 12/21] mm/pgtable: redefine PGTABLE_LEVEL enum
+ with ascend order from PGD
+Message-ID: <awhCnpiUc1R_BLx4@e129823.arm.com>
+References: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
+ <20261102-dummy_ptxp3-v2-12-78840b2ec73c@arm.com>
+ <awXD4i47F-VAG1tD@kernel.org>
+ <awXc0MSZl9t9VW8e@e129823.arm.com>
+ <682c765f-332f-4ac2-b448-4201c8fae6fc@kernel.org>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -59,79 +99,49 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20260924-free_bitmap_initialized-v1-1-4cfb73a0d04b@kernel.org> <CAAhSdy0cfbfufYYhVCz6Tq0_1RrS0DEi5yfKyBJr=WhUnd+QZg@mail.gmail.com>
-In-Reply-To: <CAAhSdy0cfbfufYYhVCz6Tq0_1RrS0DEi5yfKyBJr=WhUnd+QZg@mail.gmail.com>
-From: Guo Ren <guoren@kernel.org>
-Date: Thu, 26 Nov 2026 22:24:52 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTQJO-sGxTNUoVvU4bGcqPXJb6tpiVsyEPJP25Z7wjduNQ@mail.gmail.com>
-X-Gm-Features: Aa3M54qmSzszE-VR_RYTsVczrtCxMOXKk85r4dogNtwI2ZjOSGsCbY_eqm9_ZQU
-Message-ID: <CAJF2gTQJO-sGxTNUoVvU4bGcqPXJb6tpiVsyEPJP25Z7wjduNQ@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: AIA: Initialize per-CPU HGEI free_bitmap
- only once
-To: Anup Patel <anup@brainfault.org>
-Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <682c765f-332f-4ac2-b448-4201c8fae6fc@kernel.org>
 
-Hi Anup,
+On Thu, Nov 26, 2026 at 03:19:13PM +0100, David Hildenbrand (Arm) wrote:
+> On 11/24/26 19:52, Yeoreum Yun wrote:
+> > On Tue, Nov 24, 2026 at 07:05:38PM +0200, Mike Rapoport wrote:
+> >> On Mon, Nov 02, 2026 at 11:21:25AM +0000, Yeoreum Yun wrote:
+> >>> The PGTABLE_LEVEL enum values appear to be ordered in the opposite direction
+> >>> from their intended usage.
+> >>>
+> >>> Intuitively, higher page table levels should have smaller enum values,
+> >>> but PTE is currently assigned 0.
+> >>
+> >> That's not what x86 thinks :)
+> >> They even expose it in /proc/vmstat with smaller numbers meaning lower levels
+> >>
+> >> $ grep direct_map /proc/vmstat 
+> >> direct_map_level2_splits 152
+> >> direct_map_level3_splits 4
+> >> direct_map_level2_collapses 0
+> >> direct_map_level3_collapses 0
+> >>
+> >> Just an observation, I don't mind either order.
+> > 
+> > Right. I made this change because a depth-based scheme seems more intuitive.
+> > 
+> > As you pointed out, though, the x86 specification uses smaller
+> > numbers (0) for lower levels (pte), so I think we can leave the
+> > x86-specific direct_map_* entries as they are.
+> 
+> patch #14 depends on this, no?
 
-On Wed, Nov 25, 2026 at 11:35=E2=80=AFPM Anup Patel <anup@brainfault.org> w=
-rote:
->
-> On Thu, Sep 24, 2026 at 11:34=E2=80=AFAM GUO Ren (XuanTie) <guoren@kernel=
-.org> wrote:
-> >
-> > kvm_riscv_aia_enable() may run more than once on the same CPU.  The
-> > per-CPU free_bitmap only needs to be initialized once, from the HGEIE
-> > width discovered on that CPU.  Perform the HGEIE probe and bitmap
-> > setup only on the first call, and set free_bitmap_initialized after
-> > the bitmap has been populated.
->
-> The per-CPU free_bitmap for HGEI lines only one unsigned long so
-> I am not sure what you are trying to save by skipping one unsigned long.
->
-Thanks for the review. To clarify, the early-exit skips the entire
-block below =E2=80=94 not just the bitmap assignment:
----
-/* Figure-out number of bits in HGEIE */
-csr_write(CSR_HGEIE, -1UL);
-hgctrl->nr_hgei =3D fls_long(csr_read(CSR_HGEIE));
-csr_write(CSR_HGEIE, 0);
-if (hgctrl->nr_hgei)
-    hgctrl->nr_hgei--;
+Interestingly, x86 documentation numbers the PGD level as 4 or 5,
+whereas helpers such as effective_prot_pgd() use 0 for PGD.
 
-if (lc)
-    hgctrl->nr_hgei =3D min((ulong)hgctrl->nr_hgei, lc->nr_guest_files);
-else
-    hgctrl->nr_hgei =3D 0;
+Anyway, this follows the usage and semantics of effective_prot_pXd(),
+rather than architecture-specific level numbering, which varies across
+architectures.
 
-aia_nr_hgei =3D atomic_read(&kvm_riscv_aia_nr_hgei);
-do {
-    if (aia_nr_hgei <=3D hgctrl->nr_hgei)
-        break;
-} while (!atomic_try_cmpxchg(&kvm_riscv_aia_nr_hgei,
-                             &aia_nr_hgei, hgctrl->nr_hgei));
+And yes, patch #14 depends on this, although changing the condition to
+level != PGD_LEVEL would remove that dependency.
 
-raw_spin_lock_irqsave(&hgctrl->lock, flags);
-if (!hgctrl->free_bitmap_initialized) {
-    hgctrl->free_bitmap =3D (hgctrl->nr_hgei) ?
-        GENMASK_ULL(hgctrl->nr_hgei, 1) : 0;
-    hgctrl->free_bitmap_initialized =3D true;
-}
-raw_spin_unlock_irqrestore(&hgctrl->lock, flags);
----
-Once a hart has been initialized, nr_hgei is a hardware property that
-won't change. Re-probing CSR_HGEIE, re-running the atomic cmpxchg
-loop, and re-acquiring the irqsave spinlock on every subsequent
-kvm_riscv_aia_enable() is pure overhead.
-
-The free_bitmap_initialized flag in the original code already
-anticipated repeated calls. This patch simply hoists that check to
-skip the redundant probe entirely.
-
---=20
-Best Regards
- Guo Ren
+-- 
+Sincerely,
+Yeoreum Yun
