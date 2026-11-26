@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795689285;
-	b=BE4AAyb8UogDA3T9zbqb4bULhK0LNJZB0JT9Oby/zkEAqsTd+p+tBamwEsT0gUT9iJnY
-	 ovJ5VdrxTb3oqvPD9a7lRdANdPlGmoPjJxcVJVhQJ6aS/ORB6zvB2myuO2ITzWFnPxXZw
-	 YINNSuPY2EEqDU75cPq7G2cpT46hp82OBwUY7NU1Xp1dvUHtkdSjjnXoKShIs+nB3AOFV
-	 ysIEZQpP5SVpNWSTaoXsLoQQ+B0SUXSm42IX+Rhy3n/4ElmJ6ZmFPXx20+azy7TUu0kV5
-	 ybbLfjQjKeMV6qv+QFTVoFkL2fMv/8JxxE1Y0GDaO6oHukuzKGffcLF1C4gacwlOEtg==
+	t=1795689293;
+	b=C/MltAXybRBXJ8skCiUkCNQooeJBAe44G5deJGSH2mSV+giRrlcTbPFml+3DOR5ZF26k
+	 cRmw1RDJL1TzFS1ytAo9lBGumR3VuZ8C4DdLfDPp4Y2YSN4dVCEV1pi80y2YcLRroXEnJ
+	 tdpQQ8Mp9ybjUwLyWkJBUao76PJLoaTXEUjWtpcmYrQBVQWBXO2hNRSM74WW/i+OZtaCh
+	 fJYZluGq/IzNhl3qqQIcn3oTc3bZtVdZpIcTK9MarIM6+Fp4QKuJscRG2qYdhNIyohqd5
+	 Z9yxzPI6/NE6d4OjOAZF8Yi0T2yQCrQNkc5ExEYndJnXDMQ5IZGehb/RdB3FZJhRapw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795689285;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795689293;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
 	 In-Reply-To:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
 	 X-Endpoint-Received:X-Original-From:Reply-To;
-	bh=8eZBaU6z95EeRYC0FmVtB0seoiQZSZeUPr/3m7VzgOU=;
-	b=JnIlXkR2W5tCAsMFKNfy/TxJyIWIbeAQcZvmgh47I+YsGP+GmHyZtCPzU4NT5/fJWBH3
-	 /iblWvyCYyNJAGKAzmQpUVG6nge3E30RhmyYoIWXiDQFUg08L5tzPm9OAyoKwZUUcyfSd
-	 uJf34kOfwT/WEW2G32ymrsfTdg44aqjLtZybKJq1hmoTIGZE6r+QAGqHozb54g7i+vML5
-	 1SOU8i59xn133rfdoVMqYc2z4C6btare2f44OAtAqcqrYyRdcbpEf0micFaCX12eD9STC
-	 x3BCzagFhQgGWxBwXVg/dybL9KFX+3X0qccIenbuXYFoC8iurkozq33eAsy/lN4m1qQ==
+	bh=2JYZPx51REunevoZ4dK0f/jIdotpD84eHhmzozcTR1s=;
+	b=Tm/lOnzl/JzQyoGd/mrB1NQu+IjkbVNQQHsw4tf44RqZehn32q92ch3lRVhwR7yUwU79
+	 +d1aTJEp3vrgrxZV00lpTA7Ze+WRysI8MUFFiUQms/lvJiyscS8v75fGPXwIvWwPhKClh
+	 p5C1nyG5zwi2zOyKilYpQlAhMr/p+7I/n0kg8ZhD8yvqzBk+xO2pzYgCafiZDDn3E6CgB
+	 A0WInIEG3P+CwtpfljRQr9RbiBtmxjlu1ZB/fhqrZMkWKUNLh7Lm+nCxTKCWdmWo0ayDr
+	 XCxdwl/N3zcs7FpOzvsSN50VOR8500HKeUddyCIbnqXSI1lTZh+9mx/jBW5gudDem0g==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R85x3qYL;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=enSLGa5U;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5D0606A684;
-	Thu, 26 Nov 2026 10:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573BA606A685;
+	Thu, 26 Nov 2026 10:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R85x3qYL
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=enSLGa5U
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1795689284;
-	b=OV+xAIFrBLu8Pe+64Id2+BUY8rqZ5UmehkZ4OeWzQ4YNO3wYmKZER5Jx2Cy55YkI5OPV
-	 p9h5OBbWP9d+cl9nLg/CTReI2hHnM5NLOKa4P2aAFGvtYxfu+o0hD6z8m9Ee1aJMYe0Lz
-	 wPqNpAXHCG1yz7uB+Vtz3jfy5Au8SddjWII/TfyiLharTQBi+VFQES6pRbWuHRP0FTBhI
-	 YiCdce0+aGe0wly5P75pcx9LkOwJ1Pm7dlLRXo2/ROLwuFigW6V9kYH5tpwjoHwwPjr/B
-	 KVidLPbq28eFNDIEaCR+8gnTNFKdjiNiUPy0QIeLAVBvFRHlF31xgwfw9OtO6c8/dPg==
+	t=1795689293;
+	b=f4dmtEtdkDnM9kgegzwDgN+Zp9v7HwsuSKYlMEGuCMiSn+6gx/oEA97eLBmR3sqzTRUW
+	 IwqlhKTUo0xyw64rpcw+x8tCtZyuH+DxUBhVijqQCHGjwqh4spy7j1TXgowrdm8KGxc/8
+	 i4p1LdvZXTFs2s+N/Xl2e+bSqGJtuMuOQFfLB68Mw0mq9RcF0rch/bBnBfiqR1gDYw8yO
+	 thFGZHLcP3q5GUkBaFxIICo8thIH4kmKKKqB0J4DHegmexEAWCOT8WurVbYdHC4w6XS9Q
+	 ZpxJwlANq0EmyE61UEZ7LiIosxR3tX3yBxsOJHDUSoFXIzwavOU8HokUQLAbhqk6nMg==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1795689284;
+	c=relaxed/relaxed; t=1795689293;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To;
-	bh=8eZBaU6z95EeRYC0FmVtB0seoiQZSZeUPr/3m7VzgOU=;
-	b=XUIndh4mRCRHC4m6bdyoimWwc2h8wwanl8pZVqPaDLV6ZvpGMvmzR1CEpVrBz0hpCKrh
-	 kGfHitHakbdgv8TwCW0/wbcL8ERzlxG5ucSUmNA40n4BUsMJAgsuafipNlL7cS4kNLly0
-	 hSZ0Wr2q4oYwVIvKXLnquw34u8vWr9eD3ffs92slUXy0+NfLF5hUAdc8jU06UW3T+BSAz
-	 ulttcEgde55APRM9A4ZyK8R34gRiHAbIlYWlxYD7IJtDFFbSilnUU/hLQMw4QuYwQ7DQR
-	 FrrbdOukBUUtVHWMwxWvJd+WFI7HS6m8uWdTzdHK7TvWkirztOR0h7Ks1DWnpilE4MA==
+	bh=2JYZPx51REunevoZ4dK0f/jIdotpD84eHhmzozcTR1s=;
+	b=dmpQl6CRS+t9MTI2xX2UpVjQlq0qk2ef+zILyBMmS5+cxFqw75p1ugZLHQa+kQRbg84F
+	 khhiDMpKrl48vCpmIlmX29CHPIESmGW/3y3+LkgcQpzCIaVTKWXYCBbLw8lzgTTFj7X0t
+	 kF7y3u5AfrJimn5k8nKSGeNRV7I2XD28ID2hRHjao7Nmfs19oo07wLG1d2Egd5D9478jm
+	 s1BvlKTdziiFCNtK2nVdXY3CQAON/n2DtKXLWuvdi9DK8sAsM+f63t3xqSIFh3mRC0wGU
+	 9VPGBVEefd2/imkIbqamo9Y+xI2QS5mPTAnvE+vgBADHFjBbQoRvN6IeK+rSOfSAJeg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 7F4ED1F000EB;
+	by smtp.kernel.org (Postfix) with ESMTPS id CC4FF1F000EC;
 	Thu, 26 Nov 2026 10:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795689284;
-	bh=8eZBaU6z95EeRYC0FmVtB0seoiQZSZeUPr/3m7VzgOU=;
+	s=k20260515; t=1795689293;
+	bh=2JYZPx51REunevoZ4dK0f/jIdotpD84eHhmzozcTR1s=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=R85x3qYLex516igtTOP18i4JXsRMI9bx3zeXEtrJwR156PTpjmfQWnTmpGeAKqVyL
-	 yOjncV9AR+QjDwOKE5UJVxaLYFpwSNEDFUjkpcftjxoffM8CeGYXFZpOFu+Q/4llJJ
-	 KqhCiy4i5Zox7J2F2GEIi11oTwTtchK7pW1Wjrbi2HS9nthl4OLurVTzJeWwplCnWJ
-	 q+AeZibaCVaRlIQpDuQXGKM52XxmeGmblOF1jVJ33lbf5SaZkgQug4fntOTvM+b8T5
-	 zUjJdb8cNOSn1V0IViT9BUk2Tm80+zQqHvqmtnQXV/ulFkYWO4gYwqHtnNJpywUamG
-	 QyYctTxIGlEYw==
+	b=enSLGa5UthnGWupLRQDjvmEGoyBaaSXNXFRdEA+uFydZDzILto9NGjquvQ4cai0Oi
+	 cvgZ4vIKo9Y2tfx+IxTXexOV2pjtjKk1UrH8x/LnM/Y22i5BS0PkLTfHIhqXGRadka
+	 dvvmP/6z3HKohsyAm2xyx8d2mAdKUkAoLgLEi1BLAR2pfeb1I5GZTrXAx3B5Ucn9Ut
+	 NRkASpY5dzzynBdSH9sq5M4l1Ntv4cWOSRr50SEPxuXqFUJ2IwG8j9kJwyfQ7xEdIh
+	 X93gQf6QoVjpsTJWJiZq91YvjELWbPFmBL/O1hpwBrAL4Foey6xXamOHUNaiF7Rm8y
+	 YhhMqzDNDIdMQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 1164C4D448;
+	by lkml.kernel.org (Postfix) with ESMTP id 5A4E24D44D;
 	Thu, 26 Nov 2026 10:34:40 +0000 (UTC)
 From: Dickson Wu via B4 Relay <devnull+dickson.wu.certik.com@kernel.org>
-Date: Thu, 26 Nov 2026 10:31:57 +0000
-Subject: [PATCH 5.10.y v2 1/2] KVM: x86: pull kvm->srcu read-side to
- kvm_arch_vcpu_ioctl_run
+Date: Thu, 26 Nov 2026 10:31:58 +0000
+Subject: [PATCH 5.10.y v2 2/2] KVM: x86: Acquire kvm->srcu when handling
+ KVM_SET_VCPU_EVENTS
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -85,18 +85,18 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261126-kvm-510d-v2-1-bcba96aa2088@certik.com>
+Message-Id: <20261126-kvm-510d-v2-2-bcba96aa2088@certik.com>
 References: <20261126-kvm-510d-v2-0-bcba96aa2088@certik.com>
 In-Reply-To: <20261126-kvm-510d-v2-0-bcba96aa2088@certik.com>
 To: stable@vger.kernel.org
 Cc: Sean Christopherson <seanjc@google.com>, 
  Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795689116; l=5395;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795689116; l=3140;
  i=dickson.wu@certik.com; s=dickson-b4; h=from:subject:message-id;
- bh=aWlRKTULD3CULaHPvBETo5OWJQzrTM787U9y9afMXqY=;
- b=/Zc0OGramgsMxtQpZ9yJX9U88b3svJgKHqE3rON3D809yG9SntKymh1C5aJrFPIaa6AvADnb4
- HR23ixzMHWbAVlEZhGr74cbBn9vN8CqB173FIxmrhWohp/DkNkiDnni
+ bh=PMK0gZrBAmRQrVrXOfeI0jd8iITYPjI9GzoyJjp5PyQ=;
+ b=AsNEqMlI3dBGqzOWLi52zGIO5UhAN1dWaR5vo5DfilLwILCQivK0vI/dLLcKXv5gMX6lGoj2f
+ 5Nd/fukKfjZAugt/rMjZ6/vW6yPksZRXjnGnE2WfM5pnDrYWGqGPl1P
 X-Developer-Key: i=dickson.wu@certik.com; a=ed25519;
  pk=fxH7FS4FdojeJSGLJzgKdfO51Rvr4EW30yinj2mc1vg=
 X-Endpoint-Received: by B4 Relay for dickson.wu@certik.com/dickson-b4 with
@@ -104,160 +104,88 @@ X-Endpoint-Received: by B4 Relay for dickson.wu@certik.com/dickson-b4 with
 X-Original-From: Dickson Wu <dickson.wu@certik.com>
 Reply-To: dickson.wu@certik.com
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 8d25b7beca7ed6ca34f53f0f8abd009e2be15d94 upstream.
+commit 4bcdd831d9d01e0fb64faea50732b59b2ee88da1 upstream.
 
-kvm_arch_vcpu_ioctl_run is already doing srcu_read_lock/unlock in two
-places, namely vcpu_run and post_kvm_run_save, and a third is actually
-needed around the call to vcpu->arch.complete_userspace_io to avoid
-the following splat:
+Grab kvm->srcu when processing KVM_SET_VCPU_EVENTS, as KVM will forcibly
+leave nested VMX/SVM if SMM mode is being toggled, and leaving nested VMX
+reads guest memory.
 
-  WARNING: suspicious RCU usage
-  arch/x86/kvm/pmu.c:190 suspicious rcu_dereference_check() usage!
-  other info that might help us debug this:
-  rcu_scheduler_active = 2, debug_locks = 1
-  1 lock held by CPU 28/KVM/370841:
-  #0: ff11004089f280b8 (&vcpu->mutex){+.+.}-{3:3}, at: kvm_vcpu_ioctl+0x87/0x730 [kvm]
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x59/0x73
-   reprogram_fixed_counter+0x15d/0x1a0 [kvm]
-   kvm_pmu_trigger_event+0x1a3/0x260 [kvm]
-   ? free_moved_vector+0x1b4/0x1e0
-   complete_fast_pio_in+0x8a/0xd0 [kvm]
+Note, kvm_vcpu_ioctl_x86_set_vcpu_events() can also be called from KVM_RUN
+via sync_regs(), which already holds SRCU.  I.e. trying to precisely use
+kvm_vcpu_srcu_read_lock() around the problematic SMM code would cause
+problems.  Acquiring SRCU isn't all that expensive, so for simplicity,
+grab it unconditionally for KVM_SET_VCPU_EVENTS.
 
-This splat is not at all unexpected, since complete_userspace_io callbacks
-can execute similar code to vmexits.  For example, SVM with nrips=false
-will call into the emulator from svm_skip_emulated_instruction().
+ =============================
+ WARNING: suspicious RCU usage
+ 6.10.0-rc7-332d2c1d713e-next-vm #552 Not tainted
+ -----------------------------
+ include/linux/kvm_host.h:1027 suspicious rcu_dereference_check() usage!
 
-While it's tempting to never acquire kvm->srcu for an uninitialized vCPU,
-practically speaking there's no penalty to acquiring kvm->srcu "early"
-as the KVM_MP_STATE_UNINITIALIZED path is a one-time thing per vCPU.  On
-the other hand, seemingly innocuous helpers like kvm_apic_accept_events()
-and sync_regs() can theoretically reach code that might access
-SRCU-protected data structures, e.g. sync_regs() can trigger forced
-existing of nested mode via kvm_vcpu_ioctl_x86_set_vcpu_events().
+ other info that might help us debug this:
 
-Reported-by: Like Xu <likexu@tencent.com>
-Co-developed-by: Sean Christopherson <seanjc@google.com>
+ rcu_scheduler_active = 2, debug_locks = 1
+ 1 lock held by repro/1071:
+  #0: ffff88811e424430 (&vcpu->mutex){+.+.}-{3:3}, at: kvm_vcpu_ioctl+0x7d/0x970 [kvm]
+
+ stack backtrace:
+ CPU: 15 PID: 1071 Comm: repro Not tainted 6.10.0-rc7-332d2c1d713e-next-vm #552
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x7f/0x90
+  lockdep_rcu_suspicious+0x13f/0x1a0
+  kvm_vcpu_gfn_to_memslot+0x168/0x190 [kvm]
+  kvm_vcpu_read_guest+0x3e/0x90 [kvm]
+  nested_vmx_load_msr+0x6b/0x1d0 [kvm_intel]
+  load_vmcs12_host_state+0x432/0xb40 [kvm_intel]
+  vmx_leave_nested+0x30/0x40 [kvm_intel]
+  kvm_vcpu_ioctl_x86_set_vcpu_events+0x15d/0x2b0 [kvm]
+  kvm_arch_vcpu_ioctl+0x1107/0x1750 [kvm]
+  ? mark_held_locks+0x49/0x70
+  ? kvm_vcpu_ioctl+0x7d/0x970 [kvm]
+  ? kvm_vcpu_ioctl+0x497/0x970 [kvm]
+  kvm_vcpu_ioctl+0x497/0x970 [kvm]
+  ? lock_acquire+0xba/0x2d0
+  ? find_held_lock+0x2b/0x80
+  ? do_user_addr_fault+0x40c/0x6f0
+  ? lock_release+0xb7/0x270
+  __x64_sys_ioctl+0x82/0xb0
+  do_syscall_64+0x6c/0x170
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+ RIP: 0033:0x7ff11eb1b539
+  </TASK>
+
+Fixes: f7e570780efc ("KVM: x86: Forcibly leave nested virt when SMM state is toggled")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240723232055.3643811-1-seanjc@google.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[ adapted to 5.10.y: keep wants_to_run, no Xen reader; folds in 2d08935682ac ]
+[ adapted to 5.10.y: open-coded srcu_read_lock() as in the 5.15.y backport ]
 Signed-off-by: Dickson Wu <dickson.wu@certik.com>
 ---
 The backport and the test runs were prepared with AI coding tools
 (OpenAI Codex agents, with review by Claude). I went over the result
 before signing off.
 
- arch/x86/kvm/x86.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ arch/x86/kvm/x86.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 58660d5de141..69ab4e317422 100644
+index 69ab4e317422..d0bbf595dd47 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -8486,6 +8486,7 @@ static int dm_request_for_irq_injection(struct kvm_vcpu *vcpu)
- 		likely(!pic_in_kernel(vcpu->kvm));
- }
+@@ -4970,7 +4970,9 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 		if (copy_from_user(&events, argp, sizeof(struct kvm_vcpu_events)))
+ 			break;
  
-+/* Called within kvm->srcu read side.  */
- static void post_kvm_run_save(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_run *kvm_run = vcpu->run;
-@@ -9098,6 +9099,7 @@ void __kvm_request_immediate_exit(struct kvm_vcpu *vcpu)
- EXPORT_SYMBOL_GPL(__kvm_request_immediate_exit);
- 
- /*
-+ * Called within kvm->srcu read side.
-  * Returns 1 to let vcpu_run() continue the guest execution loop without
-  * exiting to the userspace.  Otherwise, the value will be returned to the
-  * userspace.
-@@ -9421,6 +9423,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 	return r;
- }
- 
-+/* Called within kvm->srcu read side.  */
- static inline int vcpu_block(struct kvm *kvm, struct kvm_vcpu *vcpu)
- {
- 	if (!kvm_arch_vcpu_runnable(vcpu) &&
-@@ -9463,12 +9466,12 @@ static inline bool kvm_vcpu_running(struct kvm_vcpu *vcpu)
- 		!vcpu->arch.apf.halted);
- }
- 
-+/* Called within kvm->srcu read side.  */
- static int vcpu_run(struct kvm_vcpu *vcpu)
- {
- 	int r;
- 	struct kvm *kvm = vcpu->kvm;
- 
--	vcpu->srcu_idx = srcu_read_lock(&kvm->srcu);
- 	vcpu->arch.l1tf_flush_l1d = true;
- 
- 	for (;;) {
-@@ -9503,25 +9506,18 @@ static int vcpu_run(struct kvm_vcpu *vcpu)
- 		if (__xfer_to_guest_mode_work_pending()) {
- 			srcu_read_unlock(&kvm->srcu, vcpu->srcu_idx);
- 			r = xfer_to_guest_mode_handle_work(vcpu);
-+			vcpu->srcu_idx = srcu_read_lock(&kvm->srcu);
- 			if (r)
- 				return r;
--			vcpu->srcu_idx = srcu_read_lock(&kvm->srcu);
- 		}
++		vcpu->srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
+ 		r = kvm_vcpu_ioctl_x86_set_vcpu_events(vcpu, &events);
++		srcu_read_unlock(&vcpu->kvm->srcu, vcpu->srcu_idx);
+ 		break;
  	}
- 
--	srcu_read_unlock(&kvm->srcu, vcpu->srcu_idx);
--
- 	return r;
- }
- 
- static inline int complete_emulated_io(struct kvm_vcpu *vcpu)
- {
--	int r;
--
--	vcpu->srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
--	r = kvm_emulate_instruction(vcpu, EMULTYPE_NO_DECODE);
--	srcu_read_unlock(&vcpu->kvm->srcu, vcpu->srcu_idx);
--	return r;
-+	return kvm_emulate_instruction(vcpu, EMULTYPE_NO_DECODE);
- }
- 
- static int complete_emulated_pio(struct kvm_vcpu *vcpu)
-@@ -9646,18 +9642,23 @@ static void kvm_put_guest_fpu(struct kvm_vcpu *vcpu)
- int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
- {
- 	struct kvm_run *kvm_run = vcpu->run;
-+	struct kvm *kvm = vcpu->kvm;
- 	int r;
- 
- 	vcpu_load(vcpu);
- 	kvm_sigset_activate(vcpu);
- 	kvm_load_guest_fpu(vcpu);
- 
-+	vcpu->srcu_idx = srcu_read_lock(&kvm->srcu);
- 	if (unlikely(vcpu->arch.mp_state == KVM_MP_STATE_UNINITIALIZED)) {
- 		if (!vcpu->wants_to_run) {
- 			r = -EINTR;
- 			goto out;
- 		}
-+		srcu_read_unlock(&kvm->srcu, vcpu->srcu_idx);
- 		kvm_vcpu_block(vcpu);
-+		vcpu->srcu_idx = srcu_read_lock(&kvm->srcu);
-+
- 		kvm_apic_accept_events(vcpu);
- 		kvm_clear_request(KVM_REQ_UNHALT, vcpu);
- 		r = -EAGAIN;
-@@ -9707,8 +9708,9 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
- 	if (kvm_run->kvm_valid_regs)
- 		store_regs(vcpu);
- 	post_kvm_run_save(vcpu);
--	kvm_sigset_deactivate(vcpu);
-+	srcu_read_unlock(&kvm->srcu, vcpu->srcu_idx);
- 
-+	kvm_sigset_deactivate(vcpu);
- 	vcpu_put(vcpu);
- 	return r;
- }
+ 	case KVM_GET_DEBUGREGS: {
 
 -- 
 2.43.0
