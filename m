@@ -1,52 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=57.103.68.194
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795715769;
-	b=bfZFENgUm8VtIsZ/Ipicj49MDexpvg01AQmKk9qR2H/bCwA71n7OAfq4AoqXjF6UEHyM
-	 KEWEDtdOqBB6LCTbmg6uN2TSUBAv+4t+Bmi2AxsTtdPMjGfgkuqvpNrKJmWVut0kAI+zf
-	 Llud8ZbnYAvmAZAs83joxcu0888cqihh+nU9sMI+/mawB81AS0u9kpC1cUfn1dx5SkNZX
-	 GypiDIEHt5ahdHau4Mee7hzyUsH8b6ZjrvQCSb1Of97PZv//Gcqn3xmrEDYxCG0vGNmyG
-	 DWxoOiyhKmVKMKw4KK87uPOZ8NOlpurPK2POCgVRqGCKNHb+1L6AdPDNdhjpWQlm22Q==
+	t=1795716212;
+	b=DPOAndpujJCljNgrDhXccahCN6QJ/6D8odLzFXG489KhXkntmJBYif8imdnQE/r0ASog
+	 Yn6uml/nCynOqmP/jGWye9d8qU5MnI2TY+nR4pGTMcMdlSLMuvr1ZnjRTz9Xghcj9np/5
+	 xOoQ5ZWhC68o1OoyC8AAVIUK7uYTIIz4Tx7jo7MtiYUEGNC9F18CTGfdH+OTATFuH4TAA
+	 Hv0Th45Rwjt8bfo1c+RioGKA5rh2KbOyhgp7KzFlobx2fHpdAa60YJ4aSDQxUVxhI/l5t
+	 VJ1d4bGPTxQ0BB609ExdDEvLBHw/iduIY5V3n14xpkhmzEj/zTlnHng8S/SoBZ4T8sQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795715769;
-	h=DMARC-Filter:Received:X-ICL-RepId:Dkim-Signature:
-	 mail-alias-created-date:Received:Content-Type:Mime-Version:Subject:
-	 From:In-Reply-To:Date:Cc:Content-Transfer-Encoding:Message-Id:
-	 References:To:X-Mailer:X-Proofpoint-Spam-Details-Enc:
-	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:
-	 X-Authority-Info-Out:X-JNJ;
-	bh=8fhhChzAZkPvLNecmDufydiFYxuMhL8zNn1PPLXOhbY=;
-	b=VBKYBFysb7RRlzHCHJBG6O9LlCA5FcCJORbpycvNF7Wy+RbKRikFZUsefYiwzUeEZjXt
-	 A8knFm7JVaNOE/TcGr7HlQxcOWYRYw/vR7hRhXQJKI6bFZrGk3luPdd3Gi10L/TLQBwJl
-	 llcQphoZRAhp7+aww+yv65q0aJ/Eq0r04sy1qlS9iFtjkcfvDyculqoBXCh7CVc2wPjDQ
-	 vy+man6tVdQ2VXBmaqN26+EdVGAzWnJiFpyfqxrb0ABNo+zaX9F5KFShJ/4SJCKrvrSEL
-	 YJR1U1UXXG+xdncMuZPF5mAPJhp6rTrnpmZkPUv0KYGb487TUjDnbqTFRvxx1di3mXg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795716212;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:User-Agent:MIME-Version:Content-Type;
+	bh=SRMbopjT2ZDCp3S0bduHH4K2gvQ2HvHqic8ibWdFK5o=;
+	b=lIw3B1KkhNJJZUceqREmThcW7u00HidKLvvGtrkQtxWRqbq831o+vpyfrZeGayc69d5X
+	 xEXmasKjRKjTQD10Sb22AfusP94L9aUfHG1vYAQVuy2SDkou+kpA0QL0M7KG0p+LrGpiF
+	 OnOs6Wz9itaUQdMFkk3sWxQFVoRMz9jTdFWuhpkf30kWgbC3jMHM1aYeyVGOB/F9aIWW1
+	 GkiJ6JCcSkNySIUexFQhJTxQemjmgyg3HwBG68xn1/FoWVOQeaCvw4FJHi5ez+sZxNPmk
+	 Bq1IqhM9/lCk4w3TTM8RCOi0eQwgir6PP+wC8+yWvA6rCFa7wklMUgXp4XwDbwnTAfA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=unpredictable.fr;
-	spf=pass smtp.mailfrom=unpredictable.fr;
-	dkim=pass header.d=unpredictable.fr header.i=@unpredictable.fr header.a=rsa-sha256 header.s=sig1 header.b=Q73iIjc5;
-	arc=none smtp.remote-ip=57.103.68.194
-Received: from outbound.mr.icloud.com (mr-2002b-snip4-1.eps.apple.com [57.103.68.194])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OGnBv2u0;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FE8606A323
-	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 17:56:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E0FE8606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unpredictable.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unpredictable.fr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360C7606A333;
+	Thu, 26 Nov 2026 18:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=unpredictable.fr header.i=@unpredictable.fr header.a=rsa-sha256 header.s=sig1 header.b=Q73iIjc5
-Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-100-percent-1 (Postfix) with ESMTPS id 3299818001E6;
-	Thu, 26 Nov 2026 17:56:04 +0000 (UTC)
-X-ICL-RepId: 01a21900-12a2-730b-91ea-54ed01ff9dc2
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unpredictable.fr; s=sig1; t=1795715767; x=1827251767; bh=8fhhChzAZkPvLNecmDufydiFYxuMhL8zNn1PPLXOhbY=; h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme; b=Q73iIjc599PelmS50qJUJzS2UtE8KGvibHV3jFcXc3el2aMMRODweAarLEmleMJu8x+/RgFk0D0Zj4FmbU/7v7lv+Qm1XR1auR16ZsvV+B8IgBXuxePiLQlhLmLRSqEMT3chF1bYLgj6PlYW+2oE+kiTthrgw0QXsM0KiaHIi9ooDTX7XFQAOf1+svNIGCyZt9AVEm3dJv9YYWmzHKxd4a7+fby9gUguihhJSIQRdUF6J7EVhh6lHFM4wsZrzHKucaCk9g2JaSMvlbSORerSDf4tyCmaJLyOnz5DLU07MhGj3MtiRz8vLB/cdp7K5pXqbjZKo/MRCHM1I+yJNXrJyA==
-mail-alias-created-date: 1752046281608
-Received: from smtpclient.apple (unknown [17.156.200.36])
-	by p00-icloudmta-asmtp-us-west-2a-100-percent-1 (Postfix) with ESMTPSA id 47E341800328;
-	Thu, 26 Nov 2026 17:56:02 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OGnBv2u0
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F3F1F00AE3;
+	Thu, 26 Nov 2026 18:03:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795716211;
+	bh=SRMbopjT2ZDCp3S0bduHH4K2gvQ2HvHqic8ibWdFK5o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=OGnBv2u03WCFZWsDn0SqFklZyJny8+Af7jkPORwbwrdfJO9Uuyh3rw7lkea/8Q6vB
+	 cSIp8xQifnWtaWmwzYmEuwcFqqquwhEDZYU9qydrjf+sBZlYdV0Uh4OcohneorzOIF
+	 dQPa+xbeiqQcdPDC9Oa7jdvVgs4qB+n6553AGLoeNcTPRVh325vt+HhS5HZHGL1sQs
+	 OkUadX01xuDVnzUkH625JGfejnQ3/CAK3j6h3DWaPExj7QpjphDplmcLYj/MRIcgd0
+	 eVototx5kDwOQb/DevkWMQPYQDKm10UmfNq6zCKguaXM2lSgE0EpwfzgMQkEYxMgnP
+	 jCJ1NS7tAygTQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Tarun Sahu <tarunsahu@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Mike Rapoport
+ <rppt@kernel.org>,  robin.murphy@arm.com,  maz@kernel.org,
+  will@kernel.org,  David Matlack <dmatlack@google.com>,  Alexander Graf
+ <graf@amazon.com>,  seanjc@google.com,  jgg@nvidia.com,
+  loganodell@google.com,  arnd@arndb.de,  dwmw2@infradead.org,
+  baolu.lu@linux.intel.com,  Bjorn Helgaas <bhelgaas@google.com>,
+  oupton@kernel.org,  alex@shazbot.org,  gle.com@google.com,
+  pbonzini@redhat.com,  Andrew Morton <akpm@linux-foundation.org>,
+  kevin.tian@intel.com,  joro@8bytes.org,  kvmarm@lists.linux.dev,
+  linux-pci@vger.kernel.org,  Pratyush Yadav <pratyush@kernel.org>,
+  kexec@lists.infradead.org,  kvm@vger.kernel.org,  iommu@lists.linux.dev,
+  linux-arm-kernel@lists.infradead.org,  skhawaja@google.com,
+  sagis@google.com,  linux-arch@vger.kernel.org,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 07/19] kho: vmalloc: Add the feature header
+In-Reply-To: <20261110050202.529473-8-tarunsahu@google.com> (Tarun Sahu's
+	message of "Tue, 10 Nov 2026 05:01:50 +0000")
+References: <20261110050202.529473-1-tarunsahu@google.com>
+	<20261110050202.529473-8-tarunsahu@google.com>
+Date: Thu, 26 Nov 2026 18:03:23 +0000
+Message-ID: <2vxzh5h3wjv8.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -55,133 +71,126 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [RFC PATCH v3 0/3] arm/kvm: select an nVHE-only EL2 with
- SYSREG_ID_AA64MMFR1_EL1_VH
-From: Mohamed Mediouni <mohamed@unpredictable.fr>
-In-Reply-To: <fa7522a1-1d0e-4bdf-aad9-767c08878cd1@redhat.com>
-Date: Thu, 26 Nov 2026 18:55:50 +0100
-Cc: Haseeb Ashraf <haseebashraf091@gmail.com>,
- Khushit Shah <khushit.shah@nutanix.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org,
- qemu-devel@nongnu.org,
- kvm@vger.kernel.org,
- Haseeb Ashraf <haseeb.ashraf@siemens.com>,
- Eric Auger <eric.auger@redhat.com>,
- Marc Zyngier <maz@kernel.org>,
- Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <9746F4BB-6688-4B39-AC6E-DC0295599927@unpredictable.fr>
-References: <8A57A0C8-9E85-4BAC-803A-DAFC6DBD6612@nutanix.com>
- <20261126062002.136401-1-haseebashraf091@gmail.com>
- <fa7522a1-1d0e-4bdf-aad9-767c08878cd1@redhat.com>
-To: Eric Auger <eauger@redhat.com>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI2MDA3MCBTYWx0ZWRfXzZ9U33Bqmp+N
- VP4we7rMqG8j480doLR0COMOd/dTzgwtduQJiFvy3qU2iwxEEqaIHSqV1aWMmXJJeJvibx4lImk
- /pD9B016Ws1dv2a18npL8SRBna9i7GjNFRi6W34dR1vnpDDvrMhJeKdj8tXJ6/pDd/pC3TJO8rv
- m+YYcI4ZDCQqD5hrGD0Hk0/A8NLqnfiVPOftehuX+wH4hbH8nYGZsRaV/3/CoYgwPJsUNPPNM4W
- y/V8asB0qR7LaggpuLUiDeaakn7v3psSUUgfXkq+gKNxI5xPy+j9qGMab46mOngzTNw2bL4tS+/
- uQCQhqFAnCgSQS3bSGmGEZhbONaIUwPDMUbYggPzholscr3ZeBLhcX1TT4uWPA=
-X-Proofpoint-GUID: R24cERRUtmaM3jZFPe9MfxytT2fD3nwH
-X-Proofpoint-ORIG-GUID: R24cERRUtmaM3jZFPe9MfxytT2fD3nwH
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI2MDA3MCBTYWx0ZWRfX3stmnvbP/ky3
- fCgEMqRBs2NZtqb3lstKjTlDlHodONGsMi1+dLMzicpcL9PmV7lv8OwqUEzynvfo/RXHUvwN4yQ
- Y92ce4eu3YgIyYG1SRERQTrqKp0oUNg=
-X-Authority-Info-Out: v=2.4 cv=XZAcX455 c=1 sm=1 tr=0 ts=6b0872b6
- cx=c_apl:c_pps:t_out a=9mRn2PO/+PIrVdEbaIuMPg==:117
- a=9mRn2PO/+PIrVdEbaIuMPg==:17 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=wbbCu9YnSpm8ZdSLOl1R:22 a=_mclknXjrhVi08tC7Eh6:22
- a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=20KFwNOVAAAA:8 a=aMxLMesAV-4Bx-ERIwIA:9
- a=QEXdDO2ut3YA:10
-X-JNJ: AAAAAAABJo+6C+pgujg2X+Of6/SxSPUScWOJG1a2iAjDB60Eni78lwFoODYGAFSc4BUc4f
- Q7AZfnBj1V8gwv5dLB0ph1uO46wKzKMUNLoRYgcMqSDMTW6+2+t1C7SWmc3iC4F9z4LQR4
- jey0tk3eFlj6zuqUC9u2LLTKCXK5e6DXAIeCiqogIOLZ7ZfN6/lQisl89I++GqYf7VBR0p
- mUWClCr4Kjfl0upVHzO2pbvvjASAOHyIUc4eHL/UBzSZkSt6TebXJ7jtJEDVmeW+IQQaSD
- Ct7aT+I8SJ0RYY3Cei/EjaThDfOb566uxObISJeV43VL5huHY2Iyt+UeKqhDcaajF84jJA
- IK1xCwLAAgUJDsHGHmojigds9s9610tZJPoXXTBO/byr314LPk5/pI9N+X3Xo6EvtsT7nR
- Em9S6hghIpzJxddwnFkc2fiM6s93lKoaFtpa8ctSItrK0ZDTtoP+XWqyoRyd4M8CLcg+cb
- T7/Cwlw8vDr+Ndv7FgZFIoN7VZiCc98QXsRxJGP2KCQ7WYH0zfAWssltHHc9JjfKrv2sCX
- d1BFPuwErgebHyxfRiVUi9+JoYIHpPopzc7x7QP/bwYw+alD8aOb8/0QSYOpTLZXDVjYxU
- 3ToOmuvYNxMe8LhJd3lKC6WkdHYM1f7M59WL6F1AhXga9meI4aZskhKoQ7QnVOVOBU0XyE
- 6cT7zA/bMlLz+mDJ0DhkMRVkCvVwp0ynA0uno8DAk1xdpZn+D7bW8N46mftLuHz56MDFRj
- JgD6eX1E2N0OFVwuvHdNBoeCcKB5Hd8cA5QNDdCyAlPN/ZTSDc5G4OS5nx5tf7Z/bxOGjT
- G2apf51+UZzbzcfIlU9FM10Y7o7+vRRfvdvXpZN1jLm9sj4gQkvw+ACw0PySocc71onbIq
- SoN1sfHt38AZG6oeLwZh0ip+I+M7msmzKSoGqaX6TxqGi9wt1RyGG7rnIl6QS3ZGDvAGpr
- Vs8cKT9HrbFiNwE0wkyP+HuO45lE08JnzDPl3tBkwKlq5k/VZC/lBuwMZY4oBWS2RHJS7e
- nWbtanNJVPfDugCo40a1xfFsaiOAf9a/ln6U0q/e+JJcgi5/5e+1WBs329tect8gQ0MUp/
- eJCQs0XcRHPjHRGrAyj/Lrt3I5N8v3UofcsRelgzI819CHu3QVX98inxEsE9VwnEYzFrSD
- uDlIQvzcACarZz57YRRHBL98KU3aL930YwRjWc05sFX0hUJtW8YOclh70tqn8fQPNu+CS3
- uhImCbruf48dt8xlcInaK0rEDztd5XYemhkyi3BDOb6S21GMt67EmTlQN1de+WaiIpWzS8
- uXFO2mBc9xt97VAIHwKMoQMhtYFgwrZNUPG4AMNLmje0VNwn2GRn+ibS+HfN2XDQ4ktBtF
- CGHBFGJHyVsAyvLIBX/KjrCbJJH6tdtVRZ0dtKaVgrYGRe41ex3cM1gD+7CSPhPknlt+XP
- NiBj5WwVeKgUaG9Apndzuj+I+JWmB66614P2M96c1pZlhggJCeE9y2Wjle3DQ/gJ0d9pYb
- mMylHdedyYUps6fX1wNSvGF7+y5Wd6XoJGNChtT2cTmqiySUp0nbbjAwVj/SyEIa0e4Owy
- UlrVlFTbylOcwDImtmj0f2fg+AV6Fb8Td/hnlwP4ubOzutB0Cjj/b281QYmreTdt+asmTL
- vC4=
+MIME-Version: 1.0
+Content-Type: text/plain
 
+On Tue, Nov 10 2026, Tarun Sahu wrote:
 
+> Register struct kho_vmalloc with the KHO serialization feature header
+> mechanism to allow future additive fields or feature extensions without
+> breaking live update ABI compatibility.
+>
+> Add DECLARE_KHO_SER(kho_vmalloc, 16, 0, 0) to register the 16-byte
+> structure with 0 required and 0 optional features. Update function
+> prototypes in include/linux/kexec_handover.h to take
+> DECLARE_KHO_SER_HDR(kho_vmalloc, *fhdr) parameters, documenting which
+> registered structure the feature header belongs to while enforcing
+> compile-time type verification.
+>
+> In kho_preserve_vmalloc(), initialize the feature header with
+> kho_ser_init() and access the payload fields via kho_ser_payload().
+> In kho_restore_vmalloc(), validate incoming required features with
+> kho_ser_validate() and access payload fields via kho_ser_payload().
+> In kho_unpreserve_vmalloc(), access payload fields via kho_ser_payload().
+> The chunk page format and traversal remain unchanged.
+>
+> Update memfd_luo and test_kho to pass typed feature header pointers
+> and use kho_ser_size() for allocation sizing.
+>
+> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+[...]
+> diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.h
+> index 7b49dd6d7e2a..b0597c438973 100644
+> --- a/include/linux/kho/abi/memfd.h
+> +++ b/include/linux/kho/abi/memfd.h
+> @@ -80,9 +80,9 @@ static_assert(!IS_ENABLED(CONFIG_64BIT) ||
+>   * @seals:     The seals present on the memfd. The seals are uABI so it is safe
+>   *             to directly use them in the ABI.
+>   * @flags:     Flags for the file. Unused flag bits must be set to 0.
+> - * @nr_folios: Number of folios in the folios array.
+> - * @folios:    Pointer to KHO vmalloc descriptor for the array of
+> - *             struct memfd_luo_folio_ser.
+> + * @nr_folios:   Number of folios in the folios array.
+> + * @folios_fhdr: Pointer to KHO vmalloc descriptor for the array of
+> + *               struct memfd_luo_folio_ser.
+>   */
+>  struct memfd_luo_ser {
+>  	u64 pos;
+> @@ -90,7 +90,7 @@ struct memfd_luo_ser {
+>  	u32 seals;
+>  	u32 flags;
+>  	u64 nr_folios;
+> -	DECLARE_KHOSER_PTR(folios, struct kho_vmalloc *);
+> +	DECLARE_KHOSER_PTR(folios_fhdr, DECLARE_KHO_SER_HDR(kho_vmalloc, *));
 
-> On 26. Nov 2026, at 18:13, Eric Auger <eauger@redhat.com> wrote:
->=20
-> Hi Haseeb, Khushit,
->=20
-> On 11/26/26 7:20 AM, Haseeb Ashraf wrote:
->> Hi Khushit,
->>=20
->> On 26/11/26 11:38, Khushit Shah wrote:
->>=20
->>> There are many such fields like PAuth (APA, GPA, =E2=80=A6) and SVE. =
-They are
->>> not part of the SYSREG_ framework as there already exists boolean
->>> properties for them.
->>> (Another way to do this is having -cpu =E2=80=A6,vhe=3Don/off =
-property)
->>=20
->> The v1 series was closer to what you are suggesting: it added a
->> standalone `vhe=3Don/off` property and used it to select the
->> requested KVM vCPU initialization mode.
->>=20
->> Could you please also review the v1 implementation?
->>=20
->> =
-https://lore.kernel.org/qemu-devel/20261121095636.289814-1-haseebashraf091=
-@gmail.com/
->=20
-> It is a valid point to question the addition of new vcpu properties =
-(especially low level ones like this one) while we plan to introduce =
-those SYSREG low level properties. For composite properties which stand =
-at higher level (tweaking several knobs at KVM VCPU init or IDREG field =
-level) it still makes sense though.
->=20
-> Until now we have proposed for the host vcpu to expose SYSREG props =
-only for KVM writable ID reg fields. On the other hand, named vcpu =
-models require to have ALL ID reg fields exposed. If we were to extend =
-this infra to other archs or TCG, we may also need to expose ALL fields =
-and just have different implementation for setters/getters depending on =
-the writability mode (REG WRITE or VCPU init or anything else).
+This doesn't _only_ point to the feature header. It points to the
+vmalloc buffer of of folios, conceptually. So it should be called
+"folios". Reading folios_fhdr everywhere is super confusing and hard to
+read. Users of KHO vmalloc should be pointing to the KHO malloc
+serialization structure, not to its headers or so on.
 
-Hi,
+The feature header is an implementation detail of kho_vmalloc (same for
+others). It should not be visible to its callers.
 
-Given that for HVF we need to say whether it=E2=80=99s VHE or nVHE =
-before vCPU creation time, I think
-that maybe bolting it on as a vCPU property isn=E2=80=99t the best =
-idea=E2=80=A6
+>  };
+>  
+>  static_assert(sizeof(struct memfd_luo_ser) == 40);
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 641a3b4c88fb..6e428df717cc 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -1378,20 +1378,20 @@ static void kho_vmalloc_unpreserve_chunk(struct kho_vmalloc_chunk *chunk,
+>  /**
+>   * kho_preserve_vmalloc - preserve memory allocated with vmalloc() across kexec
+>   * @ptr: pointer to the area in vmalloc address space
+> - * @preservation: placeholder for preservation metadata
+> + * @fhdr:         placeholder for preservation metadata
+>   *
+>   * Instructs KHO to preserve the area in vmalloc address space at @ptr. The
+>   * physical pages mapped at @ptr will be preserved and on successful return
+> - * @preservation will hold the physical address of a structure that describes
+> - * the preservation.
+> + * @fhdr will hold the preservation metadata.
+>   *
+>   * NOTE: The memory allocated with vmalloc_node() variants cannot be reliably
+>   * restored on the same node
+>   *
+>   * Return: 0 on success, error code on failure
+>   */
+> -int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation)
+> +int kho_preserve_vmalloc(void *ptr, DECLARE_KHO_SER_HDR(kho_vmalloc, *fhdr))
+>  {
+> +	struct kho_vmalloc *vmalloc_ser;
+>  	struct kho_vmalloc_chunk *chunk;
+>  	struct vm_struct *vm = find_vm_area(ptr);
+>  	unsigned int order, flags, nr_contig_pages;
+> @@ -1404,13 +1404,18 @@ int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation)
+>  	if (vm->flags & ~KHO_VMALLOC_SUPPORTED_FLAGS)
+>  		return -EOPNOTSUPP;
+>  
+> +	kho_ser_init(fhdr, kho_vmalloc);
+> +
+> +	vmalloc_ser = kho_ser_payload(fhdr, kho_vmalloc);
+> +
+>  	flags = vmalloc_flags_to_kho(vm->flags);
+>  	order = get_vm_area_page_order(vm);
+> +	vmalloc_ser->order = order;
 
-Thank you,
--Mohamed
->=20
-> Thanks
->=20
-> Eric>
->> I changed direction for v2 following Marc's feedback against adding a
->> separate property.
->>=20
->> Thanks,
->> Haseeb
->=20
->=20
+Nit: Why is this moving around? Seems like a stray change.
 
+Also, renaming preservation to vmalloc_ser adds a lot of noise to your
+diff. Perhaps keep it as-is for now?
+>  
+>  	chunk = new_vmalloc_chunk(NULL);
+>  	if (!chunk)
+>  		return -ENOMEM;
+> -	KHOSER_STORE_PTR(preservation->first, chunk);
+> +	KHOSER_STORE_PTR(vmalloc_ser->first, chunk);
+>  
+>  	nr_contig_pages = (1 << order);
+>  	for (int i = 0; i < vm->nr_pages; i += nr_contig_pages) {
+[...]
+
+-- 
+Regards,
+Pratyush Yadav
