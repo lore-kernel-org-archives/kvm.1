@@ -1,93 +1,122 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795716663;
-	b=mfHQ4ZYHxtXbH5ESMB7UoHLXOlTu6rBUcgNuAEKYY7m2F5HAR1lBoOcx8LfDk2xmn8YD
-	 Xewx2vGlrDswogjyHIq+dEoTmt5KqXe3hNpteNFCTwbqi30+efTKiIhzv7fkbfzjaoTA0
-	 vCJ5btKA1aBfaXWCpsIGl+wJLf44Y8A+zeatGLo/mdVR8RAMKlA1yEPfTuWMTPWDjSbip
-	 lUVLS0nnMpNSdkUFmaeDCf8lPdusRlYF3odoeActfWyQow+BqezzE6QPzzwLgKnySqr8U
-	 GFtP/VjOdtwa3FQR3n4/65pZ87It9RkMB5Ji3JVXWkjgzqvrlikr1VfsM8hPcACCCNA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795716663;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=u9v575CLn7pmoDOzWOn9peb7SoijlK+LbrKGpES9aRg=;
-	b=zCRBOXk6piKOkjLeYJ25xMi4+S1hRDFTDabLsGrs7ecsDmCjUB0pnRBRIoopF15PKsgl
-	 xLrWzlsgqkxRNosRbNeqFkU2OU25bOCfU/83eejxIV2D/O7xdBq/+JZVNDZeVkqQy1Ysq
-	 4b9Th2KxfZRiwuxivc77n+mKKtnguJ3qe1YEjpUp8DKHK/85Ytdz6WSAau+v2BlL68til
-	 13Gfh7VjzT12cmZW1/5NcLW5I8n0b8DhzzAcQ5F6K15S/2OkeWJHKGl/P7y0l3lssCZgT
-	 /8Nlyo30HEXv8kenWsQE+0qO4Xl9ezX46D5RE8A48xVpBX3MCR8gGlqL9RL1SnNmpVw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eTrh4ivt;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795718562;
+	b=Sbd7Ao0LpwvC51rgfsnOj/FGzup2o6jHHSyVVnFu9w0R7VgiB9cpyHeW9IM48QflBFKC
+	 jUx9e9F+/o73yYgizsPrYVWXtcPQ2xLq7O0PEFUX4FnpfIxB4rLJoYKFhy45A0La/vMaP
+	 eiPqWuUWt4c8y6RQLyLMuDp2jbTD0IKlMpzb45G3D7rbY6A5hVnvgEooAUwPs+cYn4X4b
+	 YnfX+oJmiefQ4yiZfdjIL61Vl7rJvYvHqWszMkKx+IEyrp42savk8RF93n/Vr4kJB+p/d
+	 3H2Xy4OpWVhM5n7cXAzTto1dksqSuvAa3eHUPFlBS8XJdcV+o3DdDhFjwq/O/690AVg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795718562;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:From:In-Reply-To:References:MIME-Version:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
+	bh=jbAhtOscc0IR1lviJrjyLzdj52UktyrxEKNHMTQqXwA=;
+	b=HC8uY7aSUNhB3kgCu/J/XKMCf/4aUFZyq7BzLQmI2fP4cpFgYmtUMal+vCdypgM3AKpa
+	 rIqtNK42hLlrMWzB26Of7BWFO9d3baDV9+0qzXMhSNQx9K0vu7a2XCGdwz7Bzo7VDol2u
+	 ERk7YOSRAoaj84a3NRh7oomz97f66kE5sQVitSp7uweSz5MShZMrORzmxhVpGM1CTDaLO
+	 0rIxYvl+pkrtlw+qn1MZ2pyDiMea/MlUX6Zf6xAE0nQq5VXO1rT3LcCpKDSWti0Zq4e6G
+	 ZoouxEfeeDHIxD4HLPSMoLO5aLhgWnz9+lsTn5OLpIlh6Pa0WhWIk9ENQuxf3Iocu/Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dSJV2yS5;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=AfZRd78T;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866D0606A326;
-	Thu, 26 Nov 2026 18:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB5C606A329
+	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 18:42:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DCB5C606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eTrh4ivt
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E52761F00AD3;
-	Thu, 26 Nov 2026 18:10:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795716662;
-	bh=u9v575CLn7pmoDOzWOn9peb7SoijlK+LbrKGpES9aRg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eTrh4ivtfPOlk36i/Syox5jVW6dXJmhOgZwioO+nYxMKjGShC7TMyjjJl/zzRZ/W3
-	 SkP6MLdWC5iwrRV6uvUn6/rKonHWO56PFB3c75THzdQTim1Mri+dYH52nOteGfRTCj
-	 M+BZepOCmKNRYHvlRa117MS6yceBdzXjdmtuENyHhISgbQTyWosUB771P8KFuwQKC8
-	 pVw08LjMZlVYdDIpRqOeWvsFhzaGdSX4qDT0MagmIoJIq2tNOTskLwvuvj9X76KZmW
-	 omTnmVri/xaVPYJp7AvvaZYW/JxAmTrlzAhShiP47YqYQ+fQwkXl5svB+CMxRIbwv0
-	 XMDyeevoEqAuQ==
-Date: Thu, 26 Nov 2026 20:10:43 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-openrisc@vger.kernel.org
-Subject: Re: [PATCH RESEND v2 12/21] mm/pgtable: redefine PGTABLE_LEVEL enum
- with ascend order from PGD
-Message-ID: <awh2I4llsjkB7Vds@kernel.org>
-References: <20261102-dummy_ptxp3-v2-0-78840b2ec73c@arm.com>
- <20261102-dummy_ptxp3-v2-12-78840b2ec73c@arm.com>
- <awXD4i47F-VAG1tD@kernel.org>
- <awXc0MSZl9t9VW8e@e129823.arm.com>
- <682c765f-332f-4ac2-b448-4201c8fae6fc@kernel.org>
- <awhCnpiUc1R_BLx4@e129823.arm.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dSJV2yS5;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=AfZRd78T
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1795718561;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jbAhtOscc0IR1lviJrjyLzdj52UktyrxEKNHMTQqXwA=;
+	b=dSJV2yS5i5n4Y0qa8QpYgIlvjQkV6ztVeP14NykEmG4e8ZTbbOguUnFGnuZkgM1hfvob6r
+	JsVpE2hnbjdJj2tNxhz/Zlwdqw/UfaoJiNIXP67HDDrgplpsiOxKUG+XGfh9aXwyPW8bpA
+	cl83VPqy12HNsmZ2ziLdHqi20GJFVHs=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-673-7PWfgrQSNIWo7kBMkZodsA-1; Thu, 26 Nov 2026 18:42:38 +0000
+X-MC-Unique: 7PWfgrQSNIWo7kBMkZodsA-1
+X-Mimecast-MFC-AGG-ID: 7PWfgrQSNIWo7kBMkZodsA_1795718558
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-92114c39cadso132578586d6.2
+        for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 10:42:38 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795718558; cv=none;
+        d=google.com; s=arc-20260327;
+        b=bCbO5qyjFCikxW6nk+hU3ter8sQ+UkP+ivIitA7Z0gC+uVK7mEMgso2s7NPgOC9SiU
+         eSvJBxoNYEuuHM1T0Sq5+ahhcxW/WQRNVms6PP1PHQGHkFt2NtkzhtVi8FV8Fa7S8hnj
+         wBzRLmIFkkOm6jYAWvOgH7k12mRddVF7YBPwLdu5XAvF06n6VPKvA4W5zptHyv8Z9yoh
+         czLLQel0rN6T7ud/V0gmGZuHsy/Zpn8rrKGvaTDgaE0wbaHvZp9CRadNlxQq3qrSSRnv
+         DQmljHUVAjBEzfgjlizFKfku5ByGcSck0Iyp1BrWtKP7cfpw59moRTsK/Kbzk8P8i/iU
+         28yw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=jbAhtOscc0IR1lviJrjyLzdj52UktyrxEKNHMTQqXwA=;
+        fh=kuPzeCaPUXD1yAY/OhB0/W66VHnFk2EJX+hFc9wwO8c=;
+        b=lsikGlmL2qwmCfxKPTiMlAQ8BPLX2VgHHPP033HEdjK8wxLFIPJqfXauS6lMzNflvu
+         5tzW7NwolHG08gWnPywXH5sjqnk9LfSO2YaCfbqV81qqbD0t3COs6rLOxnWZ2wzidvu9
+         PQh+nFSJi3V5WXPeRi8hbpgSIJXmQX/3Dlx1j3OylDgpCJ59l4weJ+CB0bAs6pTWwxi2
+         1m62+IJmD9rYDfMjXB6mwPMaym1fH8H1vBnfzKpnD27TLRiqk+BW4kYIXoo8qEoAb1mb
+         DdH40r6AM2ZuDjuGLh01FdzI13lyBY9FhUL0WnZdwIWRhOOHiMFkUMOqRsz0FTSGsStG
+         979Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1795718558; x=1796323358; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jbAhtOscc0IR1lviJrjyLzdj52UktyrxEKNHMTQqXwA=;
+        b=AfZRd78Tl2My6cFNYn6J2IoXlWU7jd9dGbwrI6sPcEv8IbdB7fLO2XDTbfQrF+Io//
+         ixsvT2itMWfRas0wyep77elrun0b0HGJrXml5mtbVm6K8dyKkh0KXNx0lrSGsPUkPCd+
+         htlBpxymRJe/MctD8/s3oBLQrenF1llfpvNVhQu32t7LIWWg1Bh7H8nsKdn3e7FAE3vz
+         mQxf/6gLyv6dziabFgdbxxM1bskyM7oKpN9JDuuuJ0aXwEDBLVIA3qoPxkSditthi7C9
+         qBl0dW/paw/ir3LbJm8JTGe5BmEL00jx/ma8TFxiJ/0OxfY1hFMGLr2/eSwDP5uNRg0l
+         WIQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795718558; x=1796323358;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jbAhtOscc0IR1lviJrjyLzdj52UktyrxEKNHMTQqXwA=;
+        b=x0UG0CCnqCe0M5TCpiHi7sLr08q0vCetay+Bfa6JpRBOlL+9yXXwhIPTk9xdc8EBtN
+         KeUJ3dIceWziHfea5NWBnuN27MDgpmOYzNE9I+QkNTyMFFXXVL1HElB35l1SRpAPfENI
+         H9/qAOC7GKMLHOq9YhjzyY4M3Y0jaSb/14BolJyPkO4TM8bcoDGCOJ2cExl6gaFEWGA3
+         c7alHnVSbey390m97Q1+qh66LPqugzE0vmE2QuZojxMI3nvmDMkqY4B9JnIdYlrR4Noz
+         btOKsKHisKV4JZHgONtxpW9gz0UZXir0dbudmyfL8XhOEGInBSkcEzcEyibMj3+uGhdW
+         pr8g==
+X-Forwarded-Encrypted: i=1; AL+hErGyRmMBPQoXcYCh3w5gmN5J2+p7ie2hm5LErsNvB+nLq1HbqKWzRvA9rBhiOwIEIdyhV68=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/osfuh+JnZ9hFSN7KtcciJXhNGFYEURAee3BtVvN0Mo4lwPOga
+	Of/UqrHJ/WxfZdVgf0bTM2TdnJ+d828NTvztzxgrODXbB7XSibhLhp3lH72aUAJ22itkT03nntn
+	9oRGKZOR6RaKZIKCHGvWTCTI5XDTej0/ihFI13BbbwzQV+LkCIYumvHPNZWZ0soELRdGAdIeyPn
+	feUX+skU3PlIVlmegfuMuaZSr8/Gob
+X-Gm-Gg: AZFdTZcjNDTQSRnm8tMxA2xRc1MCBsbJMWelLbRaWHjKP8Vh1+xeWdpWCTQqmgQZ1Dr
+	/4Gg8qmXeDTzF4gTCGOuCkjSCC39JdHpUc9WBjpNbmMBudR5pe2fsa/LsjGY7InZeNpwvvxgsi4
+	xjTnPqt737ECvrSLBJZqS92+fY8R/XhDqfk10wAuC8InY9XmF+g98PA5Y=
+X-Received: by 2002:a05:6214:5701:b0:921:7c1a:5953 with SMTP id 6a1803df08f44-9217c1a5a29mr99541846d6.14.1795718558219;
+        Thu, 26 Nov 2026 10:42:38 -0800 (PST)
+X-Received: by 2002:a05:6214:5701:b0:921:7c1a:5953 with SMTP id
+ 6a1803df08f44-9217c1a5a29mr99541386d6.14.1795718557797; Thu, 26 Nov 2026
+ 10:42:37 -0800 (PST)
+Received: from 821463759402 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 26 Nov 2026 10:42:36 -0800
+From: Sergio Lopez Pascual <slp@redhat.com>
+In-Reply-To: <awhAaTuR375RpyAE@sgarzare-redhat>
+References: <20261124-vsock-dgram-support-v4-0-3607484e85e8@redhat.com> <awhAaTuR375RpyAE@sgarzare-redhat>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -97,66 +126,73 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <awhCnpiUc1R_BLx4@e129823.arm.com>
+Date: Thu, 26 Nov 2026 10:42:36 -0800
+X-Gm-Features: Aa3M54odw2FRTdRy2uflU_aL9ZEV5X35-hMgLihiDc4DudGmLOU2wiibEdItlhY
+Message-ID: <CAAiTLFXT_Dqs8sUY+dL7KhXL=-QYudikb9kVFFRvGv9Ri7y7ow@mail.gmail.com>
+Subject: Re: [PATCH RFC v4 0/8] vsock: add datagram support to virtio and vhost
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Bobby Eshleman <bobbyeshleman@meta.com>, Alexei Starovoitov <ast@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Bryan Tan <bryan-bt.tan@broadcom.com>, Vishnu Dasa <vishnu.dasa@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, 
+	Sashiko AI bot <sashiko-bot@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Nov 26, 2026 at 02:30:54PM +0000, Yeoreum Yun wrote:
-> On Thu, Nov 26, 2026 at 03:19:13PM +0100, David Hildenbrand (Arm) wrote:
-> > On 11/24/26 19:52, Yeoreum Yun wrote:
-> > > On Tue, Nov 24, 2026 at 07:05:38PM +0200, Mike Rapoport wrote:
-> > >> On Mon, Nov 02, 2026 at 11:21:25AM +0000, Yeoreum Yun wrote:
-> > >>> The PGTABLE_LEVEL enum values appear to be ordered in the opposite direction
-> > >>> from their intended usage.
-> > >>>
-> > >>> Intuitively, higher page table levels should have smaller enum values,
-> > >>> but PTE is currently assigned 0.
-> > >>
-> > >> That's not what x86 thinks :)
-> > >> They even expose it in /proc/vmstat with smaller numbers meaning lower levels
-> > >>
-> > >> $ grep direct_map /proc/vmstat 
-> > >> direct_map_level2_splits 152
-> > >> direct_map_level3_splits 4
-> > >> direct_map_level2_collapses 0
-> > >> direct_map_level3_collapses 0
-> > >>
-> > >> Just an observation, I don't mind either order.
-> > > 
-> > > Right. I made this change because a depth-based scheme seems more intuitive.
-> > > 
-> > > As you pointed out, though, the x86 specification uses smaller
-> > > numbers (0) for lower levels (pte), so I think we can leave the
-> > > x86-specific direct_map_* entries as they are.
-> > 
-> > patch #14 depends on this, no?
-> 
-> Interestingly, x86 documentation numbers the PGD level as 4 or 5,
-> whereas helpers such as effective_prot_pgd() use 0 for PGD.
-> 
-> Anyway, this follows the usage and semantics of effective_prot_pXd(),
-> rather than architecture-specific level numbering, which varies across
-> architectures.
+Stefano Garzarella <sgarzare@redhat.com> writes:
 
-I asked an LLM and here's what it told me:
+> On Tue, Nov 24, 2026 at 01:20:18PM +0100, Sergio Lopez wrote:
+>>This RFC adds SOCK_DGRAM support to virtio-vsock and vhost-vsock through
+>>the existing AF_VSOCK API. It is intended for guest and host services
+>>that exchange independent requests, responses, or events and need message
+>>boundaries and sender addresses without a stream connection or application
+>>framing.
+>
+> Thanks for restarting this work, I have finally found the time to took a
+> quick look, sorry for the delay.
+>
+> Reading the cover letter, it is not clear to me the changes we are doing
+> to the core and VMCI that was already supporting DGRAM. I'd like to
+> understand better how the backward compatibility is handled and how VMCI
+> behavior is preserved. Also reading commits, most of them just contains
+> a description of what the code is doing, but they lack the reasons
+> behind the changes (i.e. the why).
+>
+> Overall it seems the right direction, but I have some open questions
+> (some of them discussed with Bobby, Stefan, and I at KVM Forum some
+> weeks ago):
+> - Can the virtio flow control be affected by a flood of dgrams ?
+>    See https://docs.oasis-open.org/virtio/virtio/v1.4/virtio-v1.4.html#x1-5720001
+>    and virtio_vsock_pkt_info.reply / virtio_vsock_skb_reply(skb)
+>    handling.
+> - Did you test virtio transports when VMCI transport is also loaded?
+>    That one is automatically loaded (for historical reasons) first time
+>    AF_VSOCK socket is created, if af_vsock.ko is not loaded. So could be
+>    a common scenario.
+> - Any limitation of the current implementation that we will need to
+>    fix/implement in next steps?
+> - Any performance number?
+>
+>
+> About patches, I started to review, but I hit a wall with patch 6. It's
+> too big and really hard to review/maintain. Please split it (e.g. the
+> refactoring for vsock_assign_transport can be moved out, etc.). Also
+> there are too many if() with conditions duplicated and few comments on
+> those conditions, for example:
+>
 
-  x86, s390, riscv, LoongArch and powerpc count from the leaf. arm64 and
-  ARM count from the root, and so does the generic page walk and ptdump.
+I agree. I focused too much on quickly addressing Sashiko's feedback and
+things went out of hand. I'll rework the series with a focus on
+bisectability and readability.
 
-My guess that the only reason that generic ptdump counts from the root is
-because it came from @arm.com :)
+Thanks for the review, Stefano!
+Sergio.
 
-> And yes, patch #14 depends on this, although changing the condition to
-> level != PGD_LEVEL would remove that dependency.
-
-I think the only real hard dependency on levels numbering is x86's KVM code
-that manages secondary page tables, but it anyway does not use enum
-pgtable_level but rather x86's own enum pg_level.
-
-> -- 
-> Sincerely,
-> Yeoreum Yun
-
--- 
-Sincerely yours,
-Mike.
