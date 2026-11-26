@@ -1,117 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795688079;
-	b=dKbPdwilrXlIlziNd8wa0YDi3PKYzbbif/VWxcTCf/bCDZblwjzYZoEMqmNIcu7y/Mrt
-	 u69pBouAtUSzj7e4tPHOnMljlQJ35gbcEr95LDgNq0HhNPa5UaILyy5gbL0faeLlQpfZ9
-	 yzjoRm2XnE4iQKL2gmFHAK0JBpVbwuB8TKF8zor6730iVhkC2U8VS7dLqkyMrIh5smVDy
-	 NG9VVUYUnLMmJyFz2F62+Vjol5+cYnuHQcr2qYH0terQzaQWowAFcuoPeIoVK5G9nYXML
-	 cgjVpW4L/h/W9FUY6Idbz4j6MEFfOk0nqisWwkHBVX4C6XFkNTMR2sqWaScn5vTxwSQ==
+	t=1795688369;
+	b=k+LE83+CxNp6TK+lZRRuekQypa/GhcGxGaLKf3bW/Wm7cDvtpAd1ViLVps7hebVxRy50
+	 rr0Bu7IxJu6wHz1kJLlUKT44TJpqjq2VXA9lP6SpsOORAzJDVD6O79O8mYub2EDnI6EyH
+	 bEebcIa/9SLIzGhNNh9a9r3Y+wzj/dGTDAsPqJovNI0Hr6UN/XjFnW7Pd+4ZTPK3pevaJ
+	 p/fE95c8+MGNsb/XrQPFrGzZnArepYTCawTG4NHHh7nhxMmKTuKAIuCmebZPYzrolXFfn
+	 wa4IffOWIsF3hjOD3UPi42yCShSlGIbvwpnOkUmMVoZ3O5+BxvpueYxxnCNCXB/Rajg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795688079;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=BnEINIidcy7TeGrgKBkYjEF8byD48m59WTwJN6efYCU=;
-	b=LmQqs6wW5O+yjztFO5aLs80FbT7sXyPIMJu3xAqS0nKXBWlZfxyYUYkr/M0Z8BGzvyMG
-	 he06p3nAQ2zK0J3aUNyfIsufJNg9HS4DbZjUM4qWQMOW8Mkif9igiIysj6Zk8NDv6tSs6
-	 j6HXzjYh0d9+0P5UGZ2NDP4/Alw0X1p78ij2dBtyw/30huoC2GKRwkwypIt2Q9an1TooR
-	 IsYzxr3wW42vQ/tLxGoFV/YnSVm7QbIbddQ3Et4+bGNaUnc0GX6UgFoIIa5w/fQU7yfBg
-	 3Atx5i+KLQGCbZH66Reiq2PccGTpDBl28ZBPeQG7osIyLxmEwOZ8c83KUK5iAS/6oFg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795688369;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
+	 Date:In-Reply-To:References:Content-Type:User-Agent:MIME-Version:
+	 X-SRS-Rewrite;
+	bh=+GeL5pnTwCQLlCCZk2db+OLzwkshETDRAWxYAlKTvd0=;
+	b=iJuT5Y2ILW51buzTswaSVkA6qxyY5YFdwCVbTCMAavC/1ss+P4hzus6s+IPBhfKgojE2
+	 EBd6IwvwScd+TviCVnGMFhuujbZU094jE3vy+//aMcOkBQXpIkMirHN4ffMkwZ9GDJgpO
+	 LaQxijlZkhBC1GBT4WF70UIxXT8e7KzF2g7mihcXEbDdj3gBJlDEd5RSVL8glESHrxmqn
+	 212zzQwadORiEbGL6HMjhGknZmEhoKKgFaJePl66GIHKRwoQiw8HStJAoM+2ii0lBfFim
+	 HytQ+TxhTNILzUflXXuub/M56kLzyvNlWzuCzRQgqs5g4kY2IGvcK9fZMa6VhypivVw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QfhvVOBA;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Novt99Iv;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dmarc=pass header.from=infradead.org;
+	spf=none smtp.mailfrom=casper.srs.infradead.org;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=pGshxVy6;
+	arc=none smtp.remote-ip=90.155.50.34
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1BE606A6A2
-	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 10:14:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9B1BE606A6A2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48149606A31C
+	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 10:19:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 48149606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QfhvVOBA;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Novt99Iv
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795688077;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BnEINIidcy7TeGrgKBkYjEF8byD48m59WTwJN6efYCU=;
-	b=QfhvVOBA1Jh5+GzeK/PWLIsk/3l4Hm1FRzShQ0yTqSUFKtfC3ULVr/pzzn3JV7fLOIXdJX
-	0vmc38r6FCLGhosgWNclLI2fNSmNFmnkmOqw31D5vcGb4wuSP5fK8GgNkBHagLN9WE2X0H
-	29sJQy15kbXHisMGOnRLc6cZu0Vx1Eg=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-55-H1cY5GUQO46Vuiq75QmY-A-1; Thu, 26 Nov 2026 10:14:35 +0000
-X-MC-Unique: H1cY5GUQO46Vuiq75QmY-A-1
-X-Mimecast-MFC-AGG-ID: H1cY5GUQO46Vuiq75QmY-A_1795688075
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-4a3705ea6ccso3790016f8f.2
-        for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 02:14:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1795688074; x=1796292874; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BnEINIidcy7TeGrgKBkYjEF8byD48m59WTwJN6efYCU=;
-        b=Novt99IvoJHBJ/nZbRBzAfBcTol0OkkVsYep/cKsDHWzuCmfRlBwTGAwNzvzTwvikC
-         YApTr97ucTzYvzijLm1iSOdclGJ+wewkvaO6tyqb9QvQElDnBHsTbE2XRmb08nib9IS+
-         fPYQr18Oxc128/QnVzb8nD/sCMldgYlWBbpamtajFaiZ+cX6HDC4z6pKrk1G2gFwXr4V
-         ubbLmJp04FG1V5+nmDmvPcaUD7EghWcpfm9hYqBqgVul0l1Fosfx6FyBsztlzNCGrkFi
-         AwQol+biuxYtul+APnDx7r1d5FxyBKErYWbEvZEzKof/CmmjPCnqvpZioPhH1dyPDmB4
-         gsHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795688074; x=1796292874;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BnEINIidcy7TeGrgKBkYjEF8byD48m59WTwJN6efYCU=;
-        b=tHXqMz/9gZwABrgwUzdAP+X2rqbMHOuGaPgrzxouc8PIHCwg3OEhfUG2g71EEDL/qS
-         dOGj7uUk1JwUERScVkP8sV4RzDp1zxArfp7Am9ia+drua1s6uxv3dssd7ozCUwpSMn4x
-         vr74/ySFb+O5W9NEHZySmi5xO7+V7HjunBjb2/PXAKjlhXj/sa+6JTpd355zcaTFlzRu
-         bZ4fER4gTpmIxARHjxvGpkGv+QhprBjC/9Tin70/GkX7Wry7FzmwHb/yWjC/akisej0K
-         xtqUaypOCS/hQ5EMgKCJbfa4U8+DS8Gi1zsAEVF7gNqQtS+Ma05IxyHKz9/fuSo5rM+O
-         T6SA==
-X-Forwarded-Encrypted: i=1; AL+hErGW6YzXoAYdnRPMkLZ03JYhdun78TB5hL2W8g59yObq9Po1P6ONYdqJcC0MKUUnfmYczG8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+cVSyQSCaxcnyKqItPwUbx2Q+0a7qw/rX4Iv504mtFEeFXfQsL
-	teIIqAuj5RQitttjeunvaY5KbeE2NKzYSs7e+T4+huYZz8+eU7UPlDYXWcCsvNs1KTpGQhLQzmI
-	io3WSt/5zXjnekORyOLbpYPt403tCPYh5MP/i02sA98b3AYUGMGjeiw==
-X-Gm-Gg: AZFdTZen4PN7+SsEwfiWJJJdJeJsUN8n9BJRAa9vv6zkh2KdSddfpSE6ttrn14uKajq
-	NR44hTnmxgbGlMxpcjpAKkPONSs2UBFaPxeiwbZ7r309WmHBS2GLWF28M7DebYVw/FsQpu3dn/p
-	cvDgBLu5ntNEJ9Usv8y7XWdH5Stf6W/o3wOKPvzLmDCFUT7K2m9dhKDwklXA+4KvRgrFtgLKG9h
-	+YawXhkH9ehIXK8TE4Rv7ybJKCzaW2eEELsn8lTke2/kGgWXWNdvynNCfGQ+dHe6Mpb4vxBW16X
-	3HSOaTDm6YIOivcsOZVn4QcJ/0TYNJ3b9AP5GdmFAOvASc/ZXPSKuzUARJSOgGkUE6WVjttdhj4
-	A2FkUjFrS1fEVYOtuHOKtv6aYxNbwbFtTxXJCnNBPmy50pyWQwOxX1A==
-X-Received: by 2002:a05:600c:1d04:b0:4bb:685e:cc42 with SMTP id 5b1f17b1804b1-4bb88817e4emr429734055e9.18.1795688074524;
-        Thu, 26 Nov 2026 02:14:34 -0800 (PST)
-X-Received: by 2002:a05:600c:1d04:b0:4bb:685e:cc42 with SMTP id 5b1f17b1804b1-4bb88817e4emr429733645e9.18.1795688074082;
-        Thu, 26 Nov 2026 02:14:34 -0800 (PST)
-Received: from sgarzare-redhat ([80.116.143.202])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab69bf680fsm45686158f8f.14.2026.11.26.02.14.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Nov 2026 02:14:32 -0800 (PST)
-Date: Thu, 26 Nov 2026 11:14:26 +0100
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Jia Jia <physicalmtea@gmail.com>
-Cc: netdev@vger.kernel.org, stefanha@redhat.com, bobbyeshleman@gmail.com, 
-	mst@redhat.com, jasowangio@gmail.com, eperezma@redhat.com, 
-	xuanzhuo@linux.alibaba.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v5 4/5] vsock/virtio: coalesce native RX
- write-space notifications
-Message-ID: <awgGJECGxVi-40Tq@sgarzare-redhat>
-References: <20261103041134.33310-1-physicalmtea@gmail.com>
- <20261103041134.33310-5-physicalmtea@gmail.com>
- <auxHe77Kv3tS4hjJ@sgarzare-redhat>
- <CAJwVaMK6UpxOmCbuzGK15h+DhN5H6cj6cy-=gCHtSxoVbLfzwA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=pGshxVy6
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=+GeL5pnTwCQLlCCZk2db+OLzwkshETDRAWxYAlKTvd0=; b=pGshxVy60OpZft8JdMIF2CvCAg
+	TrhRlHf2GnuyfrI5EJ4ls0lFdibC3GM/VIKe68kxRimG0Ty+RMw8l2cW/zTvg1sGX1i2l5hbMoTKd
+	cXwnKcHz5WfFUgq2MTJ/nQWU0JMTlEjEcvAKLvROhlxwj+YbWO++KPfnCm4QXeJA6tMsndVYcbLRQ
+	q7NZeFrKW584cgmWplo+eAj1Okv8/USBz/C47P4nnJ4gQKnSTbXF8NokyEE8g8yNc6fqy2s0yDOT2
+	HIpqEmTfRYCfB9r0CPflOeAKANOlcL49JAGhKgzk1GKF7o77R8bz3Rf5EFPzWKrZMIulerENO7H69
+	u+WdVLOw==;
+Received: from 54-240-197-238.amazon.com ([54.240.197.238] helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xWWZY-00000000r8F-3s3d;
+	Thu, 26 Nov 2026 10:19:25 +0000
+Message-ID: <d40cf395d3f8bbce335339a2638eb69247831971.camel@infradead.org>
+Subject: Re: [PATCH v1 08/21] hw/i386/kvm/xen_evtchn: Fix off-by-one in
+ do_remove_pci_vector()
+From: David Woodhouse <dwmw2@infradead.org>
+To: Paul Durrant <xadimgnik@gmail.com>, qemu-devel@nongnu.org
+Cc: xen-devel@lists.xenproject.org, kvm@vger.kernel.org, Paolo Bonzini	
+ <pbonzini@redhat.com>, Peter Maydell <peter.maydell@linaro.org>, Stefano
+ Stabellini <sstabellini@kernel.org>, Anthony PERARD
+ <anthony@xenproject.org>, "Edgar E . Iglesias"	 <edgar.iglesias@gmail.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Marcelo Tosatti <mtosatti@redhat.com>, 
+ =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau	 <marcandre.lureau@redhat.com>, Jason
+ Wang <jasowangio@gmail.com>, Hui Peng	 <benquike@gmail.com>, Mark Syms
+ <mark.syms@citrix.com>, Feifan Qian	 <bea1e@proton.me>
+Date: Thu, 26 Nov 2026 10:19:23 +0000
+In-Reply-To: <219cbb501717a33b6ce9525682a6f86de0a8626c.camel@infradead.org>
+References: <20261124232247.23169-1-dwmw2@infradead.org>
+	 <20261124232247.23169-9-dwmw2@infradead.org>
+	 <8e8fa5ae-f30a-4e38-8aa8-cd46e3b4ca31@xen.org>
+	 <51d6301de00d83468af889fd4eda0e9cadf23ec4.camel@infradead.org>
+	 <7bdf9aad-dea6-4073-97eb-1c5d2535c9ae@xen.org>
+	 <219cbb501717a33b6ce9525682a6f86de0a8626c.camel@infradead.org>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-5qGOLNVrljXa8WVq0n+/"
+User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -121,94 +81,213 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJwVaMK6UpxOmCbuzGK15h+DhN5H6cj6cy-=gCHtSxoVbLfzwA@mail.gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On Fri, Nov 06, 2026 at 08:49:17PM +0800, Jia Jia wrote:
-> >
-> > On Tue, Nov 03, 2026 at 12:11:33PM +0800, Jia Jia wrote:
-> > >Each received packet can update peer credit and call sk_write_space(). A
-> > >writer cannot consume that credit while the virtio RX worker retains the
-> > >socket lock, so repeated native write-space notifications in one RX batch
-> > >are unnecessary.
-> > >
-> > >This patch coalesces write-space notifications on the native AF_VSOCK path;
-> > >data-ready remains per-packet here.
-> > >
-> > >The batching patch establishes batch ownership before its first packet.
-> > >This lets this patch record a pending notification for that packet and
-> > >flush it even if the packet immediately ends the batch. Deliver it while
-> > >holding the socket lock to preserve the callback context of the existing
-> > >receive path. A following patch changes that timing together with
-> > >data-ready handling.
-> >
-> > Can you report performance data related to this patch also here?
-> >
-> > IIUC this is not giving a lot of advantage, so my question is if this
-> > more complexity really add a value for us.
-> >
-> 
-> Sure. The performance tests currently cover patches 4 and 5 together,
-> so I will include those results here.
-> 
-> They do not add another broad throughput improvement. I kept the
-> combined notification change because of the cycles/byte results.
-> 
-> With P1-P3 only, against baseline:
-> 
->   Buffer size  baseline cycles/B  PATCH cycles/B  cycles change (95% CI)
->   64B        66.728    61.220  -8.25% [-18.99%, +3.91%]
->   256B       14.363    14.515  +1.06% [ -4.22%, +6.64%]
->   512B        7.792     7.578  -2.74% [ -6.55%, +1.23%]
->   1K          3.988     4.032  +1.09% [ -1.64%, +3.88%]
->   4K          2.063     1.973  -4.38% [ -8.23%, -0.37%]
->   8K          1.702     1.667  -2.06% [ -7.99%, +4.25%]
->   16K         1.473     1.475  +0.17% [ -5.06%, +5.68%]
->   64K         1.385     1.358  -1.96% [-10.61%, +7.53%]
-> 
-> Only the 4K interval excluded zero. With the full series, against
-> baseline:
-> 
->   Buffer size  baseline cycles/B  PATCH cycles/B  cycles change (95% CI)
->   64B        65.282    57.843  -11.40% [-13.77%, -8.95%]
->   256B       14.710    13.813   -6.10% [ -7.89%, -4.28%]
->   512B        7.709     7.188   -6.75% [ -8.79%, -4.66%]
->   1K          4.075     3.862   -5.23% [ -6.80%, -3.63%]
->   4K          2.034     1.887   -7.21% [ -8.67%, -5.72%]
->   8K          1.664     1.568   -5.78% [ -7.83%, -3.69%]
->   16K         1.450     1.385   -4.48% [ -6.08%, -2.86%]
->   64K         1.338     1.317   -1.51% [ -3.21%, +0.22%]
-> 
-> From 64B through 16K those intervals stay below zero. 64B through 1K
-> did not show that in the P1-P3 run.
-> 
-> This is also why I spent the time making this work with sockmap.
-> 
-> The value I see is lower RX CPU cost, not another large throughput
-> gain. I am still unsure the extra code is worth it, and I would like
-> your opinion.
 
-Thanks for the numbers!
+--=-5qGOLNVrljXa8WVq0n+/
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Both tables are against baseline, but the two baselines are a bit
-different (e.g. 66.728 vs 65.282 for 64B), so it's not easy to see the
-real contribution of P4/P5. Can you compare the full series directly
-against P1-P3?
+On Wed, 2026-11-25 at 13:43 +0000, David Woodhouse wrote:
+> On Wed, 2026-11-25 at 13:31 +0000, Paul Durrant wrote:
+> > On 25/11/2026 05:03, David Woodhouse wrote:
+> > > On Wed, 2026-11-25 at 11:16 +0000, Paul Durrant wrote:
+> > > >=20
+> > > > I guess I'm missing a subtlety here, but the test only fires if pir=
+q is
+> > > > a multiple of 64... so why is advancing to the next word by adding =
+64
+> > > > not correct?
+> > >=20
+> > > You're missing the same subtlety that I missed when I wrote it in the
+> > > first place: the loop *itself* does pirq++ every time, so when we do
+> > > 'pirq +=3D 64; continue;' we end up adding *65*.
+> > >=20
+> > > =C2=A0=C2=A0=C2=A0=C2=A0 for (pirq =3D 0; pirq < s->nr_pirqs; pirq++)=
+ {
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * We could be =
+cleverer here, but it isn't really a fast path, and
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * this trivial=
+ optimisation is enough to let us skip the big gap
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * in the middl=
+e a bit quicker (in terms of both loop iterations,
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * and cache li=
+nes).
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!(pirq & 63) && =
+!(pirq_inuse_word(s, pirq))) {
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 pirq +=3D 63;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 continue;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> >=20
+> > Gah! Recoding as a while loop where the increment is either 1 or 64
+> > would make this much less fragile.
+>=20
+> Or refactor it completely to use ffs? Do we have a for_each_set_bit()
+> helper? Do we want one?
 
-Anyway, IMO the big win of this series is P1-P3 (throughput), while
-P4/P5 add a lot of complexity (saved native callbacks, new af_vsock
-helpers, sk_callback_lock, sockmap corner cases) for a ~5% of CPU
-cost, without throughput improvement.
+I iterated on this a few times, and even as a while() loop you still
+end up skipping to the last *zero* and then adding one more, so it
+might as well stay as for() loop and do the skip *every* time not just
+for full empty words:
 
-So my suggestion is to split the series: send P1-P3 first, so we can
-focus the review on them and merge them, and then send P4/P5 (squashed)
-as a separate series. That way we can also evaluate the direction
-suggested by Bobby (batching in read_skb() + coalesced sk_data_ready(),
-like TCP), that may allow us to avoid saving the native callbacks at
-all.
+    for (pirq =3D 0; pirq < s->nr_pirqs; pirq++) {
+        uint64_t bits;
 
-WDYT?
+        if (pirq_inuse(s, pirq) &&
+            !(except_pirq && pirq =3D=3D except_pirq) &&
+            s->pirq[pirq].dev =3D=3D dev &&
+            (vector =3D=3D -1 || s->pirq[pirq].vector =3D=3D vector)) {
+            /*
+             * It could theoretically be bound to a port already, but that
+             * is OK.
+             */
+            s->pirq[pirq].dev =3D dev;
+            s->pirq[pirq].gsi =3D IRQ_UNBOUND;
+            s->pirq[pirq].is_msix =3D false;
+            s->pirq[pirq].vector =3D 0;
+            s->pirq[pirq].is_masked =3D false;
+            s->pirq[pirq].is_translated =3D false;
+        }
 
-Thanks,
-Stefano
+        /*
+         * Skip to the last clear bit before the next in-use PIRQ, or to
+         * the end of the word if the rest of it is clear, leaving the
+         * loop increment to do the final step.
+         */
+        bits =3D (pirq_inuse_word(s, pirq) >> (pirq & 63)) >> 1;
+        if (bits) {
+            pirq +=3D ctz64(bits);
+        } else {
+            pirq |=3D 63;
+        }
+    }
+
+And actually, written like this the *benefit* of the skip is largely
+removed, as the subtle difference here is that we now check
+pirq_inuse() before dereferencing s->pirq[pirq] so it isn't trashing
+the cache anyway.
+
+But on the whole, I think the single-character change I originally
+posted is the simpler option in the short term.=20
+
+--=-5qGOLNVrljXa8WVq0n+/
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+JO2X/Z6mSdFnRYyAwSI3gywAAAAAAAA=
+
+
+--=-5qGOLNVrljXa8WVq0n+/--
