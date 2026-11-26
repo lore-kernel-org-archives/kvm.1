@@ -1,62 +1,52 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795713315;
-	b=jMI3CX5tLDPOmwjWn9C8W2ExO+TtNa7pvTUnv3ywRXOUdSP+inK9vAU9eT+B/rh460iJ
-	 2ONCx+HxkQDEzXGaD+B8tXdD8liht8JCDxYWX7+h2NrP7emjpC9XzV1/fQLIQl5nrE7AP
-	 5FIGJkIOEe/EeLSfYPb3ZlGB9e/rJDnrFKw/H+exIcoCq2tvcp3oVQLIOGFR6/L0ZJijc
-	 qXEe6YKkXnDVXdXqgoA26Lf1s4QlJZb9OGk/CBsWCiomwNqashZ6fobE1tY/WzNCBzska
-	 Mgh6vJgu7XmgH/E1EoimvCY+FERdWfWjj2Y4dEH0DozQgXteVS1vQ9NHK/n7aQbBcNw==
+	t=1795713360;
+	b=ge7BcTFLBBmK0vfsh0xObU8p/M7Tu098cJyggjjoIHzIIsBvjMqt2ZZ/VekosXqvoshR
+	 y/qv94BzPWR0bGah44T9Gef6KekIXQNl2J+7hVdLyMPdMiGl8A111aZi976eSukOnrpmN
+	 gm8aLg8VNSGT8/SFIe7kzjFtNYzzXAuK/dNMiRNtT12pi+wMiJfGV9BBicABuVsYZ9DBA
+	 T8GVv50E+Jf8PqgKIOFvQEQxQEwYMzv6PBtylMWa1r6FWMX8ArkDiiFGBck9kXii2SQmA
+	 ZFv4Rle6WQZ9sO0n6F94m4wvxmmvlwPzK7RjbOHZwcJU5ml1+pYphtOYBwS0EsPM2dA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795713315;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=zJyJDH0ytNJp7/5Pg6NlbzI1N64mrmledt5X+dcOWYQ=;
-	b=i/5qn3SAZg2qkHCvIriuiA/+xPFmmbqfW+2YY+YY7CmPtDTEctXBA/+YmDFfGZDJgYKi
-	 akW0pqhcNTuQHkK8SxBZ4ZTu8+6LvPgdx661h/TNMZaH7LYoD1e8wYEnKDDGotR0EzVT2
-	 iWWuaA/h7M1tUi/92WhY/Kq4EpPYhNgdl+vozjUeXpS08Waf6hDOzcNp5OUvqSLyMiqT9
-	 QtzZ8uVGcSUslwDg1PdD0CaUBUlkTjvBdzmBcUszI1uVShRT6zvEmcde/zZHwvJKp0WtP
-	 wEXhvjoAio7t8y/5mGGKjaMQQCv7LKDpARWp30eULhECZXQum+Ramitx7C14NtyU0Sw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795713360;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=BRO9cmEwKofDlfOxSsKnsN6tv9PzeIUclDwnefSi50U=;
+	b=1E+MEfNUnx7WxeU0DSNIQ3OpW4x0O/Dzq/4CuWAIKbm6Lj5rP+F7O97P1Jb+eskyVuIL
+	 eyn+5Qb+ct3KW6rtup3yq7gz3mJt3inbv12O+n6HxY0t/7ewZNbqINVRU2wE8TyC4cqCR
+	 E6f/yCryv0STdhxdiIz9F65mQTGYS1BiVubHWZJwX6jR8Zqzc6Fi8poI/1oQj5Yt92Jme
+	 ZYul8ZOeL3MA8sRg/FM5K+18nLehLUXhiOzX2gDKjo/63TpKWPyvRGJFcdUhn1FRVOYPW
+	 MZDrFkhxdTHReZ213Qki0RT9pzQhvBHNpsG/x8466ur+UgXTpzZT1Fwfc+eTyebBmBw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hqLz7Np3;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iGYz+JFv;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEF9606A326
-	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 17:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0172606A31C
+	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 17:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hqLz7Np3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181051F000C6;
-	Thu, 26 Nov 2026 17:15:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iGYz+JFv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28401F000C4;
+	Thu, 26 Nov 2026 17:15:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795713315;
-	bh=zJyJDH0ytNJp7/5Pg6NlbzI1N64mrmledt5X+dcOWYQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hqLz7Np3mZ+6Ap6XH6d/MC5WfiRl7DI3RPpzSUoZHAcsKsn1VX53ooKto5FdFMSSq
-	 ykEIxrcSX0jvmV7Dssjm6TnNgrQ2H1BwaFp4UElABTPs7cFjc5iNcntlvR3xHwzwaU
-	 j/0HM/5DwIGFu8+Cj1uRtpRT6gDXM2oCtqCupop6XNiGKgntP2ub0Z8TmHqIOnQHWd
-	 J1NPWLXtox45nVXYmbklG8bcvpLN2x01wSYEQbIF/UW3cZBVn3NBCiiFNDKGOmXUpg
-	 k4dkvi3Q6KGjbwQej2kAQILQAbZyF6ujLJFBPNmRuRqJjj2pyMaOpLj4xDnC//Dor0
-	 qREiTsMwKsMvA==
+	s=k20260515; t=1795713359;
+	bh=BRO9cmEwKofDlfOxSsKnsN6tv9PzeIUclDwnefSi50U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=iGYz+JFvdbbkM80FrwiMIKCq8SNaouheubcXzFxHM/4Oiz/3R2NRkVbNM5fcHgLR0
+	 Y0Tex0eaNKwZZXcDsoogmV0vzp89ny9cPu2qRODIijDzAkwaQm0EtW2uK3R8jHHMBP
+	 6GAhhp42z0u2SlCn2PW7c+JVTB43RknVcHcQmAGrXZ0JSsHmJ60plKBe1LFLnnC05m
+	 VYodwePrfgbqZA6qPs75G9kZ4WF1EtkEqbABhosFRBPAhDAhaO/HvZ5eECN5gVmjrd
+	 N9ebBLZbOQ7H7QnwcsAMcxhAvrnm96Skn8kcA1YSsRcVQviUTc4Ihy4NBqBUlevbzM
+	 IRPWjV2AZrN0g==
+Date: Thu, 26 Nov 2026 17:15:55 +0000
 From: Will Deacon <will@kernel.org>
-To: kvm@vger.kernel.org,
-	Mostafa Saleh <smostafa@google.com>
-Cc: catalin.marinas@arm.com,
-	mark.rutland@arm.com,
-	kernel-team@android.com,
-	Will Deacon <will@kernel.org>,
-	julien.thierry.kdev@gmail.com,
-	praan@google.com,
-	eric.auger@redhat.com,
-	alex@shazbot.org
-Subject: Re: [PATCH kvmtool 0/9] vfio: Add support for platform devices
-Date: Thu, 26 Nov 2026 17:14:39 +0000
-Message-ID: <179570943526.2895721.10234490555564321046.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261024161902.2093581-1-smostafa@google.com>
-References: <20261024161902.2093581-1-smostafa@google.com>
+To: Giulio Benetti <giulio.benetti@benettiengineering.com>
+Cc: kvm@vger.kernel.org, julien.thierry.kdev@gmail.com
+Subject: Re: [PATCH kvmtool] include/linux/types.h: add __s128 and __u128
+ types
+Message-ID: <awhpSxXK7e8G2hE-@willie-the-truck>
+References: <20261124163248.782815-1-giulio.benetti@benettiengineering.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -66,46 +56,33 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261124163248.782815-1-giulio.benetti@benettiengineering.com>
 
-On Sat, 24 Oct 2026 16:18:53 +0000, Mostafa Saleh wrote:
-> This patch series extend VFIO support to platform devices by using
-> VFIO-platform.
+On Tue, Nov 24, 2026 at 05:32:48PM +0100, Giulio Benetti wrote:
+> kvmtool's include/linux/types.h shadows the kernel UAPI <linux/types.h>,
+> so the __s128/__u128 types it provides are missing. Starting with Linux
+> 7.x headers, arm64 <asm/sigcontext.h> and <asm/ptrace.h> use __u128
+> instead of __uint128_t, so building kvmtool against them, where
+> <signal.h> pulls <asm/sigcontext.h> in, fails with:
 > 
-> One of the main difference is how the guest discover the device, which
-> is done through the device tree.
-> kvmtool can only describe:
-> - regs
-> - interrupts
+> .../sysroot/usr/include/asm/sigcontext.h:81:9: error: unknown type name '__u128'; did you mean '__u32'?
+>    81 |         __u128 vregs[32];
+>       |         ^~~~~~
 > 
-> [...]
+> So let's add the __s128 and __u128 types the same way the kernel UAPI
+> <linux/types.h> does.
+> 
+> Signed-off-by: Giulio Benetti <giulio.benetti@benettiengineering.com>
+> ---
+>  include/linux/types.h | 5 +++++
+>  1 file changed, 5 insertions(+)
 
-Applied to kvmtool (master), thanks!
+Thanks for the patch, but I think Kajetan beat you to it:
 
-[1/9] vfio: Fix fd leak in vfio_group_get_for_dev()
-      https://git.kernel.org/will/kvmtool/c/26d4c79259e3
-[2/9] vfio: Factor out wired IRQ setup and teardown
-      https://git.kernel.org/will/kvmtool/c/604a2f860f8d
-[3/9] vfio: Support edge-triggered wired IRQs
-      https://git.kernel.org/will/kvmtool/c/a9da3b73e77d
-[4/9] fdt: Allow fdt_irq_fn to generate multiple interrupts
-      https://git.kernel.org/will/kvmtool/c/2d06752ef089
-[5/9] fdt: Add helper to copy an FDT node
-      https://git.kernel.org/will/kvmtool/c/f49a8f4697bf
-[6/9] vfio: Reserve guest address space for VFIO platform
-      https://git.kernel.org/will/kvmtool/c/35c61fee2003
-[7/9] vfio: Add basic support for vfio-platform
-      https://git.kernel.org/will/kvmtool/c/eef82b735841
-[8/9] vfio: platform: Add interrupts support
-      https://git.kernel.org/will/kvmtool/c/9c63bea1df04
-[9/9] vfio: platform: Take the guest node from a device tree template
-      https://git.kernel.org/will/kvmtool/c/eefffe660bba
+https://lore.kernel.org/r/20261113153847.60183-1-kajetan.puchalski@arm.com
 
-Cheers,
--- 
+I'm just sweeping up kvmtool patches now..
+
 Will
-
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
