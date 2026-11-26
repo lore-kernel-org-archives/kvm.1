@@ -1,120 +1,123 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.156
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.147
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795672188;
-	b=EBHbHq8GAklWqFXX/CZ0vzgY7QMMSbTaA4+qxfhpubyHL9+mlnBenTAXaqN9tlRzV50i
-	 x44HCX9MZOwNprvdKVBq3ANWh8a1B2KLbj8qJ46HA43o84afjaWjRBYkdZhQ0l0BGP1It
-	 XwmUK+bJ569fsM0JLn+f6LYS3ZmsXpg3elYRLkFlWCp+UI/6LUznDScH+cV/Gs/wWq82e
-	 NA3BCEzPGmhRrOWM539ZiRKZ4I/f9Lc9XeW542rcllcmmI7ApmeGk2xfetzIoP0+KAORk
-	 8V196XHKOjXlPYuo3ukHcVScxCHBOZ8oyvbL3e3uqCFm0HmYQidxCrvzfhH1gzXtzaw==
+	t=1795672190;
+	b=SPh2JMyr+cGFaP6KPC5e1rfYMYS13jKRABh3oSi3QNywf/E7fjG73Gi7VD83AeGxddZn
+	 MPpcjifCXnCJm6NyFnPmhPaPC0+dMnn6KC1ei7oIvbavUtm212XdTnp7+YnEw201+gGV1
+	 p3SJUgUxfZ8OfSyTVVGey03NyMMK1bbO+hV4fYIO9p0rtxCuPpdx+U8TyzLD0jFk9TSZk
+	 bzbciyH5DEOTb6Sx2WysGozX429KYCFf+vdw3SgawZyUBBIlPW1nIhwb/JVI/4XYukxCF
+	 NDcC2LW1lF0s/O7b+lTAb8ioCE0VQbI1V3q8L6pKCvQlA9HZftn1kDtFMm8boe+6TlA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795672188;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795672190;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:DKIM-Signature:
 	 X-DKIM2-Info:DKIM2-Signature:X-DKIM2-Info:Message-Instance:
 	 X-ME-Sender:X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:
 	 Received:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
 	 X-Mailer:MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=1W6L+i1ya/wzwT/1nNyBP+WJhxgFXbjhgpBiEoeaWAs=;
-	b=pt0E2/5RJ9nD0GHv8RMgWRL0W6SAKTEfL6X3HzdWvABK+Fj6A9zZWtBxE/jOpvmXl+TS
-	 ZLr6lv9Ue1TQJbTbno+aGmh9XjQUdh25VcfigzLMiYsAPErdRiqO3FN0w4FQ3q79bNjCl
-	 y47xOpRZxPRJxT52uGbGJnRfc4F11JXe2Rrel5jnjIzLVZgjIlQ9CZvGitxDYaBU+2DP6
-	 Lc4telu6j6INCN/MgFlvIRu7QnoSNw+623xlh/Zh2o5sLyrxqN8JNrLmM/LpY2D59HvLA
-	 W2ds2cjF+UhCPCWCqvR/Jwhdz0QG/nwO7gK8G/s81OCxjl5wVRSIvjIP+IBYPv99m9Q==
+	bh=0uVTpFNR/9P+vhvxOP2N+gzyg3S+abaI3QgS2GRYEPY=;
+	b=Q/aae5r7F2/aAZVVlw3tnuAEAJxmWVJz2QzbOm73GyHLnttq1hC+CZGzfXfcZFBr3EHV
+	 FmhWqIZu6+ON04xvwIx4+///1heMv/hoNbj4rAJQa87qlgqBZjQn+oRxJi9mkFJ+znR/w
+	 22pYoBMUCpydtk68EvCdhXC7BryCIZ96/8NktfCxrdUPFI5J/V6ntPWtHDnH32Jh46kSr
+	 nMy3l4SymFZ6R+edI9rNJodESYD1gML45cfpZQZZncBao67mIiG7dop47HNyMdV+iWZ4i
+	 3W7wnHWI0yISulbX3YfSVMrVORAKP7Ewk0K4L/IoVlfYizpanCV+3zfC4iHl7W+niDQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=shazbot.org;
 	spf=pass smtp.mailfrom=shazbot.org;
-	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=ryGBWt3E;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=gHJcbjSZ;
-	arc=none smtp.remote-ip=202.12.124.156
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	dkim=pass header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=rm2avG75;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=uFTvMshW;
+	arc=none smtp.remote-ip=202.12.124.147
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A11B606A336
-	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 05:49:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A11B606A336
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38400606A321
+	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 05:49:50 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 38400606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=ryGBWt3E;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=gHJcbjSZ
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 5A8B37A059D
-	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 00:49:47 -0500 (EST)
+	dkim=pass (2048-bit key, unprotected) header.d=shazbot.org header.i=@shazbot.org header.a=rsa-sha256 header.s=fm2 header.b=rm2avG75;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=uFTvMshW
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.stl.internal (Postfix) with ESMTP id 5053F1D00592
+	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 00:49:49 -0500 (EST)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Thu, 26 Nov 2026 00:49:47 -0500
+  by phl-compute-03.internal (MEProxy); Thu, 26 Nov 2026 00:49:49 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1795672186;
-	 x=1795758586; bh=1W6L+i1ya/wzwT/1nNyBP+WJhxgFXbjhgpBiEoeaWAs=; b=
-	ryGBWt3EXag1TZJMq8JNqgjJVl+IKj8hodd8zhZWzmXk2Yv70ncN1X0scQ2e9jBh
-	ziE18fSBa5e0v323/06unthZ01SScriQl0m/ZWE4zfPibhqdikIsOtA3x6NURKgf
-	Va5ZuwWNTclZQiYeGMTMPPnbv58CyN4rDGazS5bwH6yMvztGRDyCRyZh5Ir7Tjmp
-	sB/FUrXbyiQ80TUTxZdGVhsXt1dDlqqj48ujy0l8db2BxzZzSWhZcshU5NUg1Mpa
-	0mWTK8rZFIZjhmOiZrWA8nJpjBFN7heyu2ycAwrr0UnWaHqsvpS8JU3BeUqRwITq
-	AfzkHc+aJbwk0Z398iN5fA==
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1795672189;
+	 x=1795758589; bh=0uVTpFNR/9P+vhvxOP2N+gzyg3S+abaI3QgS2GRYEPY=; b=
+	rm2avG75zZTHD1eLVFy3LhyzPCVqIpwzVjWE1juh0/ph72oH+VARZEqL99xVvKj1
+	+ZYc0qzsl5irInQVXDkii+B5T5pBOLVRZjPn973yMNeGoZi2i9nWsMibpICqw3TF
+	f/IkKSD0DvTlKN8XtxRxjFh3Bcf1rQ9sTVEBMEOOWJWNUW922D6DPOPVHzaE704Y
+	NUOVdfeYb13CEQf9icboAUkjlj0aQCMyzLk6Iidnuz2HyEZBK0zk81n4T0gbX/2F
+	xJ+OnA8Gj+XqAFDwceDsoL39PN17MZbD9tlrnnMnfqT00PUcf134su4Ldzf7IunD
+	iPypeaQVf+kOBFz7xw0Xaw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795672186; x=
-	1795758586; bh=1W6L+i1ya/wzwT/1nNyBP+WJhxgFXbjhgpBiEoeaWAs=; b=g
-	HJcbjSZ5655q7bVAmnnxHwz8wvFb+WENI702j4ZwEPZ2eCZEN5HcNorCCUHYOBmE
-	pai52YIgXBR+ldDcdQtLBY0NQka7O6ZJkS9/MORi+77tmiBxeuwDuRHzeaVjZFUl
-	FH8blUGrjpRnIBEixGwvXquf/uS0Hy6DSbicw6l8I3tJufQFu9XaiIdN4iC8kXuO
-	VU4dRyWwnqp4bXWhnthDWktxfxhTow62EFLj3hx4U9Ho+B9I87NLvI4tNMIqcRXY
-	9Kw/Lnv5oJDuZKeXZhURfe4kXYHXcUj2rBS5/brgoGefK0iFRcNGLBgt+ycesoxl
-	KjXDvqkTlJvH9eMsyDfqQ==
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1795672189; x=
+	1795758589; bh=0uVTpFNR/9P+vhvxOP2N+gzyg3S+abaI3QgS2GRYEPY=; b=u
+	FTvMshWrC0Da9I6+ZgxkdHiJk6HEzDIelmmzZpA8ut2n6pQHXQca0AhhhQkkcc4G
+	fLd7spW5BlxeKoCrceY+3yTPb8GZga+wVqcQRrSBtkufhzkJRbzpZOylEvuN+XZz
+	L0VctQAtAhccHb6nnisI2+ofbTj+Qf+Emm0zSE3F+p2VaWtLLc1NSu9fgav5J3Oc
+	TUHd/L2NA435BWVGef+K12m3v5p6sRQKcs1B/tk0nVXBStC4wJ7HdXruJy0/MEiR
+	+gfqJ67UPqD8p9Qxj97hDjWYSuMkNq4rzlcFjVeRBolwK+DxhAtfjeNMJOVddjJL
+	s5xOOElirIWmrlYTscHfw==
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
 	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
 	action=sign d=shazbot.org a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1795672186; d=shazbot.org;
+DKIM2-Signature: i=1; m=1; t=1795672189; d=shazbot.org;
 	mf=PGFsZXhAc2hhemJvdC5vcmc+; rt=PGt2bUB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:OHbxR6J4XZHRlRleZloV9FIm3SqcLfAziiZioD/Io3UZjq/
-	SoPxWSNWUTUmqTBBtTtUnPOBNv0sd/9uTFU5duwep2BnmXYwUBCZszzoNfyISdQp
-	XljfiB/hR5K00IyV+yizvTDKa2is47oCyOPlA3hegfQHqMC/B74qd71i1LzC+J0Z
-	zqFNikWCSJd1CDt+pvf9AbSXWGE+pTwXibtUAM91VmG2XE7iiRrCjS4wHm9G2FPt
-	q2v/ZqxzRLXK9m/3vnoQf+8MQVXRSziTbSlFCVgrMZ65OU1Gt55ijLQvRIf5iDCP
-	YR/inDDm14EVZgLv4ENjP36boCP2OYwuFnYwP7g==;
+	s=fm2:rsa-sha256:a8lcjiKhqoYM+0zC41oomOguhD4WExdsPGW/bB1zC/7mUH7
+	gnT0r9x57rD2TGgDBp4f+IMc9kdL5HlHdPRCYofnZDhVbEagIEO5NWVc6Ki2HSOA
+	1Wb3QJxEnDbRkighuXoK6i0SvLz6yl7rlra54NH08c/Eiv/KEHgF4B8+7S4cbo1T
+	lkzOWw9y69ANyVp/ntcTdif7DC7MsPBoMxVLAT1Tz5+ghbh4eP7IyVb5g1oIm1qu
+	BC5aEK/csts92Uix4tXo4a0N8zd3FOo1A1cqhmZzmAWvekvO8XFGg5OykoC+l3/7
+	0oia/P0tejPpXSLhlniJermk3em0w9SzGcAZyLw==;
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
 	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
 	action=mi-m=1; hc=12;
 	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
 	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:C0hImMyGxrE1I0Kz68j2mZds+cnNl5tUlkLv7KyNWaY=:3RlotjlO5quFf8BGEXED9YG7/vj/m1a0KVBAh5LlnYE=;
-X-ME-Sender: <xms:esgHa0T9_yBmLrfrbPXS0dHoGRfJ-BX3kVAZL_znzrnKAN_EVkN0tA>
-    <xme:esgHa71Nh8_afcEL7F4IYWCfWV6HxrBbOOr7YmR0ZeAW-3TgvT18g578HuuPxU-E8
-    Lu1hK4-m-2z0Ey5bHx7oC37Y8--gcMJaLPp4sQNaQlj1rmcMxM_DTg>
-X-ME-Received: <xmr:esgHaxtDivDMcCOx6ZPqJgFqPb64G6iXu4bREVZtkF6F_NJl8UvyNqIEM255Cw>
-X-ME-Proxy-Cause: dmFkZTGB8bAKoiZT8MxoI2vUeizcn7RM+st9/dAvmudZJ36Y+ID/SvAOGeEBPbS0olLyXS
-    y0dialytkk3ZbY+yVsRTYrUVD4wmo/Z33g895KePOE6bev6TLG/6L9Uew1xZk5Vf1TpdvW
-    r3Vwrznm4WG7WLnGOWxckovGjRVYrUfPjo/kJODfwIFMrB0C+Sh7OSG1yalOfetdGLn353
-    DSurEgKG4DYQhcCKKQvXrxEXv2nW+16bqK+BS4fkkMkVuWn0wT4mAedowLrcSD2hLWyix/
-    81ZZIch1lkCDD5oYPGI6rUHcuJ7Yk3P2SgflCnj8rALmpuuRG5GlGrLbvkBF9F31BmdycI
-    9sCL9jMurTOZSCwWUG1LGp442y7vhVoZ5dctpj30Y/WOOMbfMkY7OjreXadMC+n4Z+HBeR
-    jH7lNAL4qdpWcQ3A9iDEbMEEbjKjqAyf/AbQvHGfh+fTKASFeDOBdNFKTcY87PIJBf03Cc
-    mAbw1sQL/aNEd8kba7mDfNCCt6zfJ32xDy8eHfL2mUWohWNUyInLCxOGNeid+xUOvi5LE8
-    lhWc8KPGQ/OttYBZTa1kZuHrEZ6bnyw33bj/hstcUFmWKVsO7+ZDUfy/3WlIzsDglNr+1g
-    hBGtN8W7k9Bfc/uhvAegkooNBDBKq5HomUwdEYslm8MKsrgfnGQQRYx9mkGA
-X-ME-Proxy: <xmx:esgHa5jPdXgaSpUu0--CUPlDUSFI-305FrCs8L4boFtEZ0D0rXqFTQ>
-    <xmx:esgHa6-xWOax3o0dhmRF3qjMQgCtp3ZSDI3AnRqeck62dCOIVioDaw>
-    <xmx:esgHa0v_o8cVp4F2ynfqFS9_sPaOyr__omZq1fQaN9MmqE-XEJJ3jw>
-    <xmx:esgHa2qjk-P8ZPGf7QqQ-C7142ljiP-6DyStqM12GUbyPkQWggxBQA>
-    <xmx:esgHa3NFhRRLxJWVjbf7iwKnTCdkPzf9Q3LMd3KQCxUJJQSSplrAEtnZ>
+Message-Instance: m=1; h=sha256:mAEq1nfZfejPKkYPcHP9yu5hV2juPevAmo143RT0geU=:h7qyzkaVfI7r88LpF2NTyqyEiitTyCNZwWLx4X3m18c=;
+X-ME-Sender: <xms:fMgHaw1CW6Tvuv7DOR3QYhgL9zEB6Qhwkq-XkFYRwhTNQ_hAbbEMUA>
+    <xme:fMgHazTeoORJaZl9HUlRd4sWxruUdnROdfbljy7wpvDhllBwDED1RtXR3lgsjteSq
+    C8vR9YwTOraB5Ik4qy1q9fDwsYb69PepvMc9VWf5mffvyep_t4tkQ8>
+X-ME-Received: <xmr:fMgHa0cWjFnNqAu_TaKTx4dVT-VrXJS-O-wkkX4uL6W2xREDDikxQFZ4gPHs-g>
+X-ME-Proxy-Cause: dmFkZTEV71Ww8gm3BDcW3FtVwkUBdrFKWw7uNacMF9dPRsbcD7gqvRhoponF3jTow3SUnS
+    X9/UECgqok4WkryBiQEIaFV8IpmrM7f3U+7wzKn6uqn/eqv63Myt0N9xXsiMJyCdAw9p8F
+    RNRJBTG0/BVmL9QHHUsuoJatq0QixT1LLoMPNoay0F+ky1zodTjV5UtEny1E9Ppjtp3gT7
+    C0LJsPgZAGy9s4xL9a4ojQh7cS2b1eYcvpChLlw85hlfUsjNM7oYZPJc19EXhnwDBCvjNK
+    qGaJHpm1WcIQyH9JWEWbWiKNzqxycQipn1uZGUkIV1pwjz3OZYTOHI5CatzAC6EWt2ATj5
+    EL4cWjz2xhmSb0GJDOLnnZPZOYE6li0wtp+UWbs3KVgwgHF2VP8G8djin2R4h4K8w8HoVM
+    k/QNO+gbuijXTj78G220MPZvsyHBIlLPuJPYGPfIJY6oUPEebXRy/QbzNTE2PA5cnqaRQa
+    W2Do4V1+sCmNESHxVJQ4sihvSuGsNEIAAM4kKPPRnhmnsutCIBRu3DquEnKLdOy8sps7iS
+    ppOWl79wTLILIWlmRm1kgmZ0viRCoqNN3gbNEFeY0ifuRxB1i8qYtLyVIlQI5W8QuOYq9u
+    AytkKCTdoKMGHjANPebuP97qPAGMgBkTp1ijiz0byQBX+azKif3dwift4+Rg
+X-ME-Proxy: <xmx:fMgHa0fMlXqzJaUv5ior_uNzUAP9YqyHDWaQZGue6M3Jpnow2zoXRw>
+    <xmx:fMgHa-0HEqKzbK1NQxEaDftjPZdQ8Y_fy8J-ofRfidy3nLxir7IDBA>
+    <xmx:fMgHa88gLQD8kTKF-GPxCsoYHaxW2BGMK9dzos70PLaDLwnpUoTPrg>
+    <xmx:fMgHaz4NUC86Ng7M1ZeSvV2iS-z01aJ7MQYsJZAo61mT2pLTnYjWhg>
+    <xmx:fcgHa1twdv6sxoDOb8Fz6obLt80cCS1nYFz8LOr4NRtcDAF675Oj-6qk>
 Feedback-ID: i03f14258:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 26 Nov 2026 00:49:45 -0500 (EST)
-Date: Wed, 25 Nov 2026 22:49:14 -0700
+ 26 Nov 2026 00:49:48 -0500 (EST)
+Date: Wed, 25 Nov 2026 22:48:50 -0700
 From: Alex Williamson <alex@shazbot.org>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: David Matlack <dmatlack@google.com>, Shuah Khan <shuah@kernel.org>,
- kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH v3] vfio: selftests: Remove libuuid dependency
-Message-ID: <20261125224914.0730097c@shazbot.org>
-In-Reply-To: <20261103220337.3578111-1-skhawaja@google.com>
-References: <20261103220337.3578111-1-skhawaja@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, stable@vger.kernel.org, Abhishek Sahu
+ <abhsahu@nvidia.com>, Raghavendra Rao Ananta <rananta@google.com>, Shuah
+ Khan <shuah@kernel.org>, Vipin Sharma <vipinsh@google.com>,
+ alex@shazbot.org
+Subject: Re: [PATCH v2 0/8] vfio/pci: Fix power state race with SR-IOV
+ enablement
+Message-ID: <20261125224850.3bdc290a@shazbot.org>
+In-Reply-To: <20261119000151.442543-1-dmatlack@google.com>
+References: <20261119000151.442543-1-dmatlack@google.com>
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -128,168 +131,127 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue,  3 Nov 2026 22:03:37 +0000
-Samiullah Khawaja <skhawaja@google.com> wrote:
+On Thu, 19 Nov 2026 00:01:42 +0000
+David Matlack <dmatlack@google.com> wrote:
 
-> Replace libuuid with a minimal uuid_t and uuid_parse() in libvfio, and
-> drop -luuid from the build. libvfio only uses libuuid to parse VF
-> tokens, so pulling in an external library is not worth it.
+> This series can be found on GitHub:
 > 
-> libuuid is often missing from cross-compilation sysroots, which causes
-> the VFIO selftests to fail to link:
+>   https://github.com/dmatlack/linux/tree/vfio/set_power_state/v2
 > 
->   ld: cannot find -luuid: No such file or directory
+> This series fixes a race between closing a vfio-pci device and enabling
+> SR-IOV on it, both of which can transition the device from D3hot to D0
+> without being serialized. On devices with NoSoftRst-, this can restore
+> the PF's BARs after VFs have been enabled (triggering a WARN in
+> pci_iov_update_resource()), or double-free vdev->pm_save.
 > 
-> It also complicates building against glibc alternatives such as musl, see
-> https://lore.kernel.org/kvm/c2f7e904-2646-4b01-864d-d185221c7f56@gmail.com/
+> This series also adds a selftest that exercises VFIO's handling of
+> power state transitions requested by userspace through the PM
+> capability, including a test case that reproduces the race.
 > 
-> Reviewed-by: David Matlack <dmatlack@google.com>
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> ---
+> This series applies on top of vfio/next (vfio-v7.4-rc1).
 > 
-> v3:
+> Series Overview
+> ---------------
+> 
+> This series implements the following:
+> 
+>   1. Hold memory_lock for all calls to vfio_pci_set_power_state() and
+>      assert that it is held, which fixes the race (patch 1).
+> 
+>   2. Annotate the intentional lockless accesses to vdev->sriov_active
+>      with READ_ONCE() and WRITE_ONCE() (patch 2).
+> 
+>   3. Skip vfio_pci_sriov_uapi_test instead of failing when SR-IOV
+>      cannot be configured on the PF, e.g. because vfio-pci's
+>      enable_sriov module parameter is not set (patches 3-4).
+> 
+>   4. Add library helpers to find a PCI capability, read
+>      /sys/kernel/warn_count, and print kernel warnings from /dev/kmsg
+>      (patches 5-7).
+> 
+>   5. Add vfio_pci_power_state_test, which covers closing a device in
+>      D3hot and reopening it, enabling SR-IOV while the PF is in D3hot,
+>      and racing a close in D3hot against enabling SR-IOV. The test fails
+>      if /sys/kernel/warn_count changes during a test case, and prints
+>      the warnings logged to /dev/kmsg to help debug the failure
+>      (patch 8).
+> 
+> Testing
+> -------
+> 
+> All patches were build-tested individually. The series was tested on
+> x86_64 in a QEMU VM with an emulated Intel 82576 NIC (igb), which has
+> NoSoftRst- and supports SR-IOV, bound to vfio-pci:
+> 
+>   - Without patch 1 (KASAN kernel), close_in_d3hot_races_sriov_enable
+>     fails, hitting the pci_iov_update_resource() WARN on 9 or 10 of the
+>     test's 10 iterations.
+> 
+>   - With the full series (KASAN and lockdep kernels), all VFIO
+>     selftests pass with no warnings, KASAN reports, or lockdep splats.
+> 
+> To run the new test (the SR-IOV test cases are skipped unless
+> vfio_pci.enable_sriov=1):
+> 
+>   # tools/testing/selftests/vfio/scripts/setup.sh 0000:01:00.0
+>   # tools/testing/selftests/vfio/scripts/run.sh \
+>       tools/testing/selftests/vfio/vfio_pci_power_state_test
+> 
+> Changelog
+> ---------
+> 
+> v2:
 
-Applied to vfio next branch for v7.5.  Thanks,
+Updated to use iommu_init(NULL) in 8/8 to account for automatic IOMMU
+detection and applied to vfio next branch for v7.5.  Thanks,
 
 Alex
 
 
-> - Reword the changelog and drop the testing note from it (David)
-> - Move the libuuid comment to uuid.h and explain how it differs from
->   the kernel API (David)
+>  - Rename close_in_d3hot to reopen_after_close_in_d3hot and clarify that
+>    it does not verify the D0 transition during close, since that is not
+>    reliably observable from userspace (Alex)
+>  - Print the kernel warnings logged to /dev/kmsg when the warn_count
+>    check fails, so the failure can be debugged from the test log (Alex)
+>  - Drop the claim that memory_lock protects the sriov_active check from
+>    the comment in vfio_pci_set_power_state(), since it is cleared
+>    without memory_lock
+>  - Skip the SR-IOV tests, including the existing
+>    vfio_pci_sriov_uapi_test, when SR-IOV cannot be configured on the PF
+>    (e.g. vfio_pci.enable_sriov=N) instead of failing
+>  - Use kernel-doc for the new library helpers
+>  - Clean up commit messages, comments, and the cover letter
 > 
-> v2: https://lore.kernel.org/all/20261102200624.1570562-1-skhawaja@google.com/
-> - Move the parser to lib/uuid.c and lib/include/libvfio/uuid.h (David)
-> - Drop the vfio_ prefixes and add a uuid_t (David)
-> - Mention musl in the commit message (David)
+> v1: https://lore.kernel.org/kvm/20261029203324.1637772-1-dmatlack@google.com/
 > 
-> v1: https://lore.kernel.org/all/20260925013110.3447626-1-skhawaja@google.com/
-> ---
->  .../selftests/vfio/lib/include/libvfio.h      |  1 +
->  .../selftests/vfio/lib/include/libvfio/uuid.h | 16 +++++++
->  tools/testing/selftests/vfio/lib/libvfio.mk   |  3 +-
->  tools/testing/selftests/vfio/lib/uuid.c       | 42 +++++++++++++++++++
->  .../selftests/vfio/lib/vfio_pci_device.c      |  2 -
->  5 files changed, 60 insertions(+), 4 deletions(-)
->  create mode 100644 tools/testing/selftests/vfio/lib/include/libvfio/uuid.h
->  create mode 100644 tools/testing/selftests/vfio/lib/uuid.c
+> David Matlack (8):
+>   vfio/pci: Hold memory_lock for all calls to vfio_pci_set_power_state()
+>   vfio/pci: Annotate lockless accesses to vdev->sriov_active
+>   vfio: selftests: Add __sysfs_sriov_numvfs_set()
+>   vfio: selftests: Skip vfio_pci_sriov_uapi_test if SR-IOV can't be
+>     enabled
+>   vfio: selftests: Add vfio_pci_find_capability()
+>   vfio: selftests: Add sysfs_kernel_warn_count_get()
+>   vfio: selftests: Add helpers to print kernel warnings from /dev/kmsg
+>   vfio: selftests: Add test for device power state transitions
 > 
-> diff --git a/tools/testing/selftests/vfio/lib/include/libvfio.h b/tools/testing/selftests/vfio/lib/include/libvfio.h
-> index 07862b470777..e9d513c3a08e 100644
-> --- a/tools/testing/selftests/vfio/lib/include/libvfio.h
-> +++ b/tools/testing/selftests/vfio/lib/include/libvfio.h
-> @@ -6,6 +6,7 @@
->  #include <libvfio/iommu.h>
->  #include <libvfio/iova_allocator.h>
->  #include <libvfio/sysfs.h>
-> +#include <libvfio/uuid.h>
->  #include <libvfio/vfio_pci_device.h>
->  #include <libvfio/vfio_pci_driver.h>
->  
-> diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/uuid.h b/tools/testing/selftests/vfio/lib/include/libvfio/uuid.h
-> new file mode 100644
-> index 000000000000..5c4ebe5ae3d3
-> --- /dev/null
-> +++ b/tools/testing/selftests/vfio/lib/include/libvfio/uuid.h
-> @@ -0,0 +1,16 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#ifndef SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_UUID_H
-> +#define SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_UUID_H
-> +
-> +/*
-> + * Minimal replacement for libuuid's uuid_t and uuid_parse(). These mirror
-> + * the libuuid API, not the kernel's: uuid_t is a byte array (not a struct)
-> + * and uuid_parse() fills it in place (it does not take a uuid_t pointer).
-> + */
-> +#define UUID_SIZE	16
-> +
-> +typedef unsigned char uuid_t[UUID_SIZE];
-> +
-> +int uuid_parse(const char *in, uuid_t uu);
-> +
-> +#endif /* SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_UUID_H */
-> diff --git a/tools/testing/selftests/vfio/lib/libvfio.mk b/tools/testing/selftests/vfio/lib/libvfio.mk
-> index eff95828719e..d1d1b2b05af1 100644
-> --- a/tools/testing/selftests/vfio/lib/libvfio.mk
-> +++ b/tools/testing/selftests/vfio/lib/libvfio.mk
-> @@ -7,6 +7,7 @@ LIBVFIO_C := iommu.c
->  LIBVFIO_C += iova_allocator.c
->  LIBVFIO_C += libvfio.c
->  LIBVFIO_C += sysfs.c
-> +LIBVFIO_C += uuid.c
->  LIBVFIO_C += vfio_pci_device.c
->  LIBVFIO_C += vfio_pci_driver.c
->  
-> @@ -30,8 +31,6 @@ $(LIBVFIO_O_DIRS):
->  
->  CFLAGS += -I$(LIBVFIO_SRCDIR)/include
->  
-> -LDLIBS += -luuid
-> -
->  $(LIBVFIO_O): $(LIBVFIO_OUTPUT)/%.o : $(LIBVFIO_SRCDIR)/%.c | $(LIBVFIO_O_DIRS)
->  	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
->  
-> diff --git a/tools/testing/selftests/vfio/lib/uuid.c b/tools/testing/selftests/vfio/lib/uuid.c
-> new file mode 100644
-> index 000000000000..906a5db70ce1
-> --- /dev/null
-> +++ b/tools/testing/selftests/vfio/lib/uuid.c
-> @@ -0,0 +1,42 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +#include <string.h>
-> +
-> +#include <libvfio.h>
-> +
-> +#define UUID_STRING_LEN	36
-> +
-> +static int hexval(char c)
-> +{
-> +	if (c >= '0' && c <= '9')
-> +		return c - '0';
-> +	if (c >= 'a' && c <= 'f')
-> +		return c - 'a' + 10;
-> +	if (c >= 'A' && c <= 'F')
-> +		return c - 'A' + 10;
-> +	return -1;
-> +}
-> +
-> +int uuid_parse(const char *in, uuid_t uu)
-> +{
-> +	const char *p = in;
-> +	int i, hi, lo;
-> +
-> +	if (strlen(in) != UUID_STRING_LEN)
-> +		return -1;
-> +
-> +	for (i = 0; i < UUID_SIZE; i++) {
-> +		if (i == 4 || i == 6 || i == 8 || i == 10) {
-> +			if (*p++ != '-')
-> +				return -1;
-> +		}
-> +
-> +		hi = hexval(*p++);
-> +		lo = hexval(*p++);
-> +		if (hi < 0 || lo < 0)
-> +			return -1;
-> +
-> +		uu[i] = (hi << 4) | lo;
-> +	}
-> +
-> +	return 0;
-> +}
-> diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> index 4063a0e2b3df..4ae6ac1f8ed8 100644
-> --- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> +++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
-> @@ -23,8 +23,6 @@
->  #include <linux/types.h>
->  #include <linux/vfio.h>
->  
-> -#include <uuid/uuid.h>
-> -
->  #include "kselftest.h"
->  #include <libvfio.h>
->  
+>  drivers/vfio/pci/vfio_pci_core.c              |  16 +-
+>  tools/testing/selftests/vfio/Makefile         |   1 +
+>  .../selftests/vfio/lib/include/libvfio.h      |   1 +
+>  .../selftests/vfio/lib/include/libvfio/kmsg.h |   8 +
+>  .../vfio/lib/include/libvfio/sysfs.h          |   2 +
+>  .../lib/include/libvfio/vfio_pci_device.h     |   2 +
+>  tools/testing/selftests/vfio/lib/kmsg.c       | 134 +++++++++
+>  tools/testing/selftests/vfio/lib/libvfio.mk   |   1 +
+>  tools/testing/selftests/vfio/lib/sysfs.c      |  66 ++++-
+>  .../selftests/vfio/lib/vfio_pci_device.c      |  36 +++
+>  .../vfio/vfio_pci_power_state_test.c          | 256 ++++++++++++++++++
+>  .../selftests/vfio/vfio_pci_sriov_uapi_test.c |   8 +-
+>  12 files changed, 512 insertions(+), 19 deletions(-)
+>  create mode 100644 tools/testing/selftests/vfio/lib/include/libvfio/kmsg.h
+>  create mode 100644 tools/testing/selftests/vfio/lib/kmsg.c
+>  create mode 100644 tools/testing/selftests/vfio/vfio_pci_power_state_test.c
 > 
-> base-commit: 2637bdec0535a2044cd830eba9a79363651d9043
+> 
+> base-commit: 076d7e989cb69f6ded7d60f2a080eb909930061b
 
