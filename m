@@ -1,52 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795713360;
-	b=ge7BcTFLBBmK0vfsh0xObU8p/M7Tu098cJyggjjoIHzIIsBvjMqt2ZZ/VekosXqvoshR
-	 y/qv94BzPWR0bGah44T9Gef6KekIXQNl2J+7hVdLyMPdMiGl8A111aZi976eSukOnrpmN
-	 gm8aLg8VNSGT8/SFIe7kzjFtNYzzXAuK/dNMiRNtT12pi+wMiJfGV9BBicABuVsYZ9DBA
-	 T8GVv50E+Jf8PqgKIOFvQEQxQEwYMzv6PBtylMWa1r6FWMX8ArkDiiFGBck9kXii2SQmA
-	 ZFv4Rle6WQZ9sO0n6F94m4wvxmmvlwPzK7RjbOHZwcJU5ml1+pYphtOYBwS0EsPM2dA==
+	t=1795713371;
+	b=W851NOoY7IB2cfH310fHtNs6ab7JsLFfwdxW2faQIzgjVeaSSwluPgY7o6ijDu7u+3OB
+	 SJPiENET65xSLWTs2bFnwxJUMM03etbXTIuTFOPM1v5m3cLUTD2duZNMtls2rVcVVKBJF
+	 jDSVa2jW3A63uwyWfCJG/nL7lVhmTiFVOcr2mDComwquPFpYBinsTxXI7Uj4KU+9qr1EU
+	 V/uGSUZtL4NShtEU578g6dpzhnNRs6nS8fUZNbBFco22ZRFMpDVkUk2OT83i62G/dG+Mj
+	 13PcLiv94LhCrDz+bbsa3DUZZBJYkopC1hM3vPijz1xM9OQfq67inBJsCrPQmLfwP+Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795713360;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795713371;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=BRO9cmEwKofDlfOxSsKnsN6tv9PzeIUclDwnefSi50U=;
-	b=1E+MEfNUnx7WxeU0DSNIQ3OpW4x0O/Dzq/4CuWAIKbm6Lj5rP+F7O97P1Jb+eskyVuIL
-	 eyn+5Qb+ct3KW6rtup3yq7gz3mJt3inbv12O+n6HxY0t/7ewZNbqINVRU2wE8TyC4cqCR
-	 E6f/yCryv0STdhxdiIz9F65mQTGYS1BiVubHWZJwX6jR8Zqzc6Fi8poI/1oQj5Yt92Jme
-	 ZYul8ZOeL3MA8sRg/FM5K+18nLehLUXhiOzX2gDKjo/63TpKWPyvRGJFcdUhn1FRVOYPW
-	 MZDrFkhxdTHReZ213Qki0RT9pzQhvBHNpsG/x8466ur+UgXTpzZT1Fwfc+eTyebBmBw==
+	bh=G2SxOXFbti58OftIcIbEyeaQ/Bh9y3GZ/JtSGGzDuco=;
+	b=M6AfAxucGGCPduaXouFwXJ2VTK8jmtMx7FO0lPl1pm6pqDLJrfgpfuUuTfREwFq+H5RM
+	 gUVEUUZ81okHck6s2anDYNXi0erpo2VUPS07YtSETDr0M1ZnpvLM1HPWU6p77GC6Mn0jf
+	 OheLJmnBgTSDmDiC9GQYRTxGayYMExa3mLNOyKYdEx6KQ/+N+hAu+AVaeF2CIB4pS3/Cq
+	 7MSgQZT0hg7fZ2SwRTjWzYqpDvQ9TQayOZarF2mFa6sX2FshZvIiOkwbou1R310w7KIU9
+	 RuHT1jRwr/TKOjRrSbE1QUdGw/Z/qiT5rJjmKALezrQ1krzrh1ixvMvRYaWrHlO49tg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iGYz+JFv;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G2WWxMJ5;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0172606A31C
-	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 17:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB54606A31C;
+	Thu, 26 Nov 2026 17:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iGYz+JFv
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28401F000C4;
-	Thu, 26 Nov 2026 17:15:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G2WWxMJ5
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E9B1F000C0;
+	Thu, 26 Nov 2026 17:16:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795713359;
-	bh=BRO9cmEwKofDlfOxSsKnsN6tv9PzeIUclDwnefSi50U=;
+	s=k20260515; t=1795713371;
+	bh=G2SxOXFbti58OftIcIbEyeaQ/Bh9y3GZ/JtSGGzDuco=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iGYz+JFvdbbkM80FrwiMIKCq8SNaouheubcXzFxHM/4Oiz/3R2NRkVbNM5fcHgLR0
-	 Y0Tex0eaNKwZZXcDsoogmV0vzp89ny9cPu2qRODIijDzAkwaQm0EtW2uK3R8jHHMBP
-	 6GAhhp42z0u2SlCn2PW7c+JVTB43RknVcHcQmAGrXZ0JSsHmJ60plKBe1LFLnnC05m
-	 VYodwePrfgbqZA6qPs75G9kZ4WF1EtkEqbABhosFRBPAhDAhaO/HvZ5eECN5gVmjrd
-	 N9ebBLZbOQ7H7QnwcsAMcxhAvrnm96Skn8kcA1YSsRcVQviUTc4Ihy4NBqBUlevbzM
-	 IRPWjV2AZrN0g==
-Date: Thu, 26 Nov 2026 17:15:55 +0000
+	b=G2WWxMJ5d7ASDJW69+3Vrl5OHwhhvN55/kJ0DFRPOPOmf+E+3q3QT966bZ0z3mjR0
+	 iTTNWy8KYETTUrbVMU5YR7j7p7l3v0kWsV22JgNsIa2QkqZEhslVLIUj1OUhx4rfe+
+	 YrXHdNe76Ef+m3ulZEvL/bSdrhRrAI6P8xc5KuPpucLZUyLaveaYPdsDXeC2FRooAx
+	 20U/nS/ark9kPgtsApHGaAokl80brROtnapQ6J5Wmer1329PWsJyTcVEHasIr4unW3
+	 IS9vyM69p29TjQ+9DhZqRnGvu3gufakns0IzhBTeMpHLfypGcgyMi8SYt3n53QbWNL
+	 6v1a53QFqBMbg==
+Date: Thu, 26 Nov 2026 17:16:06 +0000
 From: Will Deacon <will@kernel.org>
-To: Giulio Benetti <giulio.benetti@benettiengineering.com>
-Cc: kvm@vger.kernel.org, julien.thierry.kdev@gmail.com
-Subject: Re: [PATCH kvmtool] include/linux/types.h: add __s128 and __u128
- types
-Message-ID: <awhpSxXK7e8G2hE-@willie-the-truck>
-References: <20261124163248.782815-1-giulio.benetti@benettiengineering.com>
+To: Vladimir Murzin <vladimir.murzin@arm.com>
+Cc: Sascha Bischoff <sascha.bischoff@arm.com>,
+	julien.thierry.kdev@gmail.com, maz@kernel.org, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, timothy.hayes@arm.com,
+	Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH kvmtool v6 00/23] arm64: Support GICv5-based guests
+Message-ID: <awhpViXFw-mts2ck@willie-the-truck>
+References: <20261125151356.2875108-1-sascha.bischoff@arm.com>
+ <1aa97f61-b740-4044-9065-f3ccfcb709fd@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -58,31 +61,17 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261124163248.782815-1-giulio.benetti@benettiengineering.com>
+In-Reply-To: <1aa97f61-b740-4044-9065-f3ccfcb709fd@arm.com>
 
-On Tue, Nov 24, 2026 at 05:32:48PM +0100, Giulio Benetti wrote:
-> kvmtool's include/linux/types.h shadows the kernel UAPI <linux/types.h>,
-> so the __s128/__u128 types it provides are missing. Starting with Linux
-> 7.x headers, arm64 <asm/sigcontext.h> and <asm/ptrace.h> use __u128
-> instead of __uint128_t, so building kvmtool against them, where
-> <signal.h> pulls <asm/sigcontext.h> in, fails with:
-> 
-> .../sysroot/usr/include/asm/sigcontext.h:81:9: error: unknown type name '__u128'; did you mean '__u32'?
->    81 |         __u128 vregs[32];
->       |         ^~~~~~
-> 
-> So let's add the __s128 and __u128 types the same way the kernel UAPI
-> <linux/types.h> does.
-> 
-> Signed-off-by: Giulio Benetti <giulio.benetti@benettiengineering.com>
-> ---
->  include/linux/types.h | 5 +++++
->  1 file changed, 5 insertions(+)
+On Thu, Nov 26, 2026 at 10:22:56AM +0000, Vladimir Murzin wrote:
+> I reviewed and tested the patches for GICv5 IRS support (01-18). They
+> do what they promise - allow booting a GICv5-enabled guest. In my
+> opinion, patches are in good shape, so could you please have a look and
+> consider merging GICv5 IRS support (patches 01-18)?
 
-Thanks for the patch, but I think Kajetan beat you to it:
+I just hoovered up the pile of kvmtool patches sitting on the list, so
+this doesn't apply any more. Please can you send a v7?
 
-https://lore.kernel.org/r/20261113153847.60183-1-kajetan.puchalski@arm.com
-
-I'm just sweeping up kvmtool patches now..
+Cheers,
 
 Will
