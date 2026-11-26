@@ -1,61 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795713291;
-	b=b2bclSsmxu6fIKXmJHsMoMn+BJomSIanx/2gq1Zq79gDw39f5BYV9WUDZQZB/p+tV2H/
-	 ZFstc+KZYao+wUACxtk/X585h/yKi64V3IN1n62nv6yGZogJ+nrdRkE1sJ+2EeVX58M/p
-	 TLspiNYZ7JIHqC/i+LkQcAfQWqYhK07s7EakVLLc0W0yt10+s4ob6SVnQGyIvpqtgdPga
-	 hAf6Q7Hy/0olaOB7hgUJsWFdpSxrlmnOq9i61PStBJu8Y85DXQpalRYNbHjA0LAXbHLb+
-	 x1qXLpAzrnhNb5kGlNuPyC2IXCfwzGbHv6kAlk5SPxF2NxmM0bqzSve0h3HljqSg0ug==
+	t=1795713293;
+	b=nMu3DpSfF3FtmMyJUW5LMdLhoE7CqRFXDUhT8Qwj9Wi+TlttP+fWHkqwWu3bUMr0CYOp
+	 D7lEFk6QUrgcp/BhZM0OfRthN0LmrCFntaH8dT7LhrfsEiuWV/6Ap1At8Nnm23WT8L0Ug
+	 8wrMXWO3UV6aZEil1x5csnBqMcmWMnhgkRa2PKqcU9yIqd8PV518xSa2EXPtaZs+Qf6ZM
+	 DzxKqFNeIA2r259j8q24kpEPj6dI1CQ2qkNDbsCaDCp74/v1aNzTuLAn7dqUzy35k5rz2
+	 364t/RuGZh3rRIwB/CGzja9mYuiRXTqs2dcLkALcF8l9c3JddLiyoHYq0PLPeB3Pjxw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795713291;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795713293;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=TQwlNEzbmht4hnnX8BCTGxhRsczcBut+0fxv15UgHBM=;
-	b=4i8sMNBiKTzcIa87EZxYkc0hwS1w2RxC3hKgThkhGrp9Zmdv+iWcHeH4eTtDl45/WU88
-	 Ke6rXvij+t3DXiDzzCN7kBXVVeh4B/L7a+sssFqz5zRVQhZ5DxZVOmmFzOicw5AfjH6yh
-	 ssTWsdn687VMshOhwnr8J+L5Ust9p+XnG1OA7ExZLyb07np2PCgZ2Y97QRvGOS5RwHXZw
-	 VnPWvl39M0Sy0HjqGoO4RnJtj28NaPMAd8IY176RcplEZrngNPkdDo5akL55pTk5Uf4Je
-	 4hkm9BH3WHFg4ZL9/SagH9osGGBIDFHM/5iodnxB04HD5CV+TVAhp+UtfQN6TPxnnDg==
+	bh=5DknUZGW8VmSy7dz/YP97kler6j7MvCOz4TuHSjvK0o=;
+	b=cik23yH5OPPOX7BgSFgFhx9oRSGWwlRdNBShzw8nJ56UfB2DVNUIpeiFAT58BOLqAqmb
+	 ZvAz6dxTgGNiiMumYPt1sGG9tI9MfqD73RD7F91GpC32dyesiEUmiDNUDrbLWH1xVV7MV
+	 iaQ50m1qpPR94x6zdu8jgzoPVVT39Xk463LIPa6jZgDUC2KiGwCRFZcl8WTGk9KFFp6b9
+	 UIg6InOWvaD8dd+ctjrYE8yyCstA5IJPZ9+UI+FbVShrq6mVOeGscQAUVhYxmtvdrtpyu
+	 L0qHZ0I4dCnUmve7HeFyE7dpK0J0StnL98rlGFOT47CMbPXr4URBD1T8K6uBa0AbUGA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="bfnc/BMs";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZLXzkny3;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6CB606A31E
-	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 17:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87A4606A31C
+	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 17:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bfnc/BMs
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B861F000C4;
-	Thu, 26 Nov 2026 17:14:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZLXzkny3
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41CE1F000C6;
+	Thu, 26 Nov 2026 17:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795713291;
-	bh=TQwlNEzbmht4hnnX8BCTGxhRsczcBut+0fxv15UgHBM=;
+	s=k20260515; t=1795713293;
+	bh=5DknUZGW8VmSy7dz/YP97kler6j7MvCOz4TuHSjvK0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bfnc/BMsSmca+5qiho/vQXFWa8NAWkgC+lynnXTrjDF2vYFdGz/P9AffZYCRv9C8w
-	 fHbgqAzGHfTfTMpxv+iILy9o13OI6WnornOjbGavMbMqfQukUIwvdqtT9OTZCcZ/hV
-	 6hzAdT7/+SDSruc1i2IMoKSXNk2dUYa59/AMtzpLputj7Q+wqkju9IRTL+lSTR0EV9
-	 d3gG2Jg9sHAVScYPLyLObMYkFBOn/Wt31riJk6TTaWfNi0SKAXfIp9E6ExU1EvpQY4
-	 t7QHrdcJi1mc0LMd9ldEednm17l7hQ9RheS91pK0Oy00vDKrGNLFTV16krOSrG17IF
-	 uJ4E7OMhq9+jQ==
+	b=ZLXzkny33Kei7WjYkwTM7CxRa3lRL6wIL9zswaH95hRL1gDz253e8VPLQgPTHRnpN
+	 m+lCWy83y4xg/MkWOlp8QTth8atR5L/0SdL4SKManlp5GrfwtMJ2MPJYeTgevaditL
+	 csy7oxiL9ck5ndNIOEddMjthvkjurLBkr+0GuZreuQVMlCpBOuyiIjGaVQKHiodXLk
+	 SdPLynbsbGQAE2MQvPQoEHa6TgkMcVEaQy+5FTCUoxGGHDQ4ikYU8AeEqziyJ6TUhD
+	 75uoko1M9+GMnGe/SWbmGwT7wm7/NXUnPiQoTvCuEpgsHZIv+C+Xe7f6hdKXpesWCU
+	 YpX/ljGkMUoiQ==
 From: Will Deacon <will@kernel.org>
 To: kvm@vger.kernel.org,
-	julien.thierry.kdev@gmail.com,
-	Andrew Jones <andrew.jones@linux.dev>
+	Dongli Si <dongli.si.linux@gmail.com>
 Cc: catalin.marinas@arm.com,
 	mark.rutland@arm.com,
 	kernel-team@android.com,
 	Will Deacon <will@kernel.org>,
-	kvm-riscv@lists.infradead.org,
-	Anup Patel <anup@brainfault.org>
-Subject: Re: [PATCH kvmtool] riscv: Place the FDT after the kernel's image_size
-Date: Thu, 26 Nov 2026 17:14:30 +0000
-Message-ID: <179570915035.2893259.9450274384721456114.b4-ty@kernel.org>
+	julien.thierry.kdev@gmail.com
+Subject: Re: [PATCH kvmtool] x86: mptable: Fix PCI device number in source bus IRQ
+Date: Thu, 26 Nov 2026 17:14:31 +0000
+Message-ID: <179571132788.2965205.11864725175771331389.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261019144304.2678066-1-andrew.jones@linux.dev>
-References: <20261019144304.2678066-1-andrew.jones@linux.dev>
+In-Reply-To: <20261111123133.1228125-1-dongli.si.linux@gmail.com>
+References: <20261111123133.1228125-1-dongli.si.linux@gmail.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -68,20 +66,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-On Mon, 19 Oct 2026 16:43:04 +0200, Andrew Jones wrote:
-> The FDT is placed relative to the end of the kernel image file, but a
-> kernel's memory footprint includes its BSS, which isn't in the file. When
-> the BSS is large enough, e.g. with lockdep enabled, the FDT lands inside
-> it and is wiped when the kernel clears BSS, leaving the guest hung with no
-> console output. Use the image_size from the Image header, as arm64 does.
+On Wed, 11 Nov 2026 20:31:33 +0800, Dongli Si wrote:
+> For PCI interrupts, bits 6:2 of srcbusirq identify the source device.
+> Use dev_hdr->dev_num to populate those bits.
 > 
 > 
-> [...]
 
 Applied to kvmtool (master), thanks!
 
-[1/1] riscv: Place the FDT after the kernel's image_size
-      https://git.kernel.org/will/kvmtool/c/fcaa9485b7a9
+[1/1] x86: mptable: Fix PCI device number in source bus IRQ
+      https://git.kernel.org/will/kvmtool/c/2f3abe56dcd2
 
 Cheers,
 -- 
