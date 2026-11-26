@@ -1,102 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795681016;
-	b=QvcLerMaXroYW42+b3sPXUR6GriVTikv7dL0fzxZqVeVGFnk81LVHL854tnJzJvSdG+q
-	 nD+8Q6h76/Kg88iJGXuy14bPE5/kBUtfLt07o3Zxhlla9239hiq8FRShs08YbXyQtNLb7
-	 4GK91yvKXR3jE8hHBOelt0sM7YfRGwA7U1hos9OLR3PXvFjlfSP1GqWuTn0IHPOV7xGR7
-	 ButTUm97OH23ItQzg9TFYRAy7p/b4LNqRcG7cTLAjWAstY56qC3+gt6x3LHbmZD+hth1i
-	 sqxFdaZkXoFopIZDU7pcuksMD0E2a+VoK6hZryZCzMcbpeiquXnl9ivLRzw03csGlJA==
+	t=1795681986;
+	b=Y7c/4k3oAk23Evr+oBNPFuD+Kn9KLNbxgGh7TXjMhBewqjcaGa7V6zaVxjKVgV+Z9ooj
+	 ThiKM3aPa2YD6RAI5VhvkzRfe3lJ8ObvdpCw68EOLl7+I9kDJ0zDFpkjnG9JuUv5pSQ6n
+	 ACCyQEhHBSPRpariMlsXFMqNDCkF7VMmw6UoKycKxwnbrRSmngzUOWMHFDmIxlWaQZWiQ
+	 x5TjELizpXhJTsGo2CqQdHPWmaTFRrYTsTzv1uGIhMkX8fsxO6Gie8I5i9GzIZGrOrVcF
+	 Xa8q+kwmSOlSuVRm36gB7+OUqrcj0/F1pYsQFXTRV4KmdKKi3np6S4ruw65LCTf52Uw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795681016;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=X0MsT9VS5PnQqjPZkQqcoPk4cS0Fvp5tQXMqwf/FufA=;
-	b=TiAREo9U7suUkxJEqKgKzup7RbsTH1RbbOFLINKJL/RSdfp2b636mFxpwFVb4IW1ybDu
-	 ORvwBVQSpJc3uPjBzG39KbQYp4C9MLIIoWojDE7WhyH9ehFpttLJfoDjQmtAzF2TPJEFb
-	 9JdyKNq7grplyxwOsvwdvDS2v0MrVOP2A0wdBsU6pqtjkQ23VdFhJkgwBd98y1ISXO5NQ
-	 hq3aWnZkopJCPwin/du2bUSiAPAVk7Qwrm9MPuN0yMjlDnjOQ7NpYE1VSWUVnCBGAlTXd
-	 unneqTehtxysBvwT8j4CT+v4QoOR9DA0pn0Glq5IKW9JU0bbomclfrL3gezxQujg2rg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795681986;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Proofpoint-Reinject:X-Authority-Analysis:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=V0IooT5qWpGyP7hAnTF6L8O/w819f9flfoXR0yPvf6s=;
+	b=jQqu5KcF8ifh+E+KFdv+ndohdgHHe0E8AuX/zQsyB3hpMCAqJG8dqjb4GEyjIDp80fnA
+	 ANWT46qj+V1SiS0I3irUQRA1CiWNjGh1+B0WvKVXwMbId7QnVck/Aa+RrfRCV9ZR0ecOG
+	 4pWumIqFVPu/kPp1Hw6jDbF1WP+cPf8upaeWxfwlH2civfvWXFZ/P6tgOJU6Rd4I97q3s
+	 vjVh5/LKO5rYCj3WS5rwF4V3SCls+Vii8EmDYs87u3Ow7GUNoG1hupruFBrDPdc2dk0P/
+	 ybx89sPUeuRHY5ycrGpZ7MogycASXeQIkunosqhijyh9jZqL6E1IgcOGONT3rDXMN7Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yqZZaKGo;
-	arc=none smtp.remote-ip=209.85.128.41
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=REoRW2de;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F41E606A323
-	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 08:16:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F41E606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91899606A329;
+	Thu, 26 Nov 2026 08:33:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 91899606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yqZZaKGo
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4bb64ef5a00so53866965e9.3
-        for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 00:16:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795681014; x=1796285814; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=X0MsT9VS5PnQqjPZkQqcoPk4cS0Fvp5tQXMqwf/FufA=;
-        b=yqZZaKGoh1mpvUGuJjiBNeOHDcI+FRALHkXZstLiPyUt0mMk0y7xzUdmWOirAdoNWn
-         f+c34YGkFJyxbaGhJ34wK+7qQYkciCGhd6im9i9H6rn5kGPesdwcRgDhBKvtN4T5hLnL
-         dmbr1xYXhs5AAAblmi36QASML7XRXKppfkTdQKPJL125u8s95qwbbtN/+8Rwy+gI5LaF
-         1G7DmppCcElSV6EgWvoJVNBMo1ZS5sWVHXqa7vgv0TNDghM5t2fDlkGcenqiJERUDvgU
-         Mz6YA+FpysPkKbQmUtgoEEcDMvfc1uPTs88GAWDMXEKS7YkLH4uJ/OSBMpZSHiEz2mve
-         gOoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795681014; x=1796285814;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=X0MsT9VS5PnQqjPZkQqcoPk4cS0Fvp5tQXMqwf/FufA=;
-        b=ayP4RThuvV9rNr9NSCxopozcjPuBDuTcyvPZyZu2wsfa124YEa9XBAqV30pjPZG1cF
-         Axf5WyR7T9Bov6RRqjDXD7X6BYTBOv/HzONJxAPr/vVwPPB3+LaFqg/lclCfZmnb1ktj
-         fQ4z4oaWKz8neckQMNdAnS5SIatGQYjFtj0oluKQVtOvPMRKrmdeE6EypiV+ae2HNiM+
-         yyU5xGrH6Wtt0zT5EOVxBAPsbG1fz5hRhplCb8wU9Hcn0IJVXwQWT4vKVI2mzUnd0VPQ
-         x62JcrXiF2nyQbzFNZfbZdkA0rQI8MDrXxn1jdbIBQabODwhrQl+cDoAoFbV4hW3QBd4
-         /e0w==
-X-Forwarded-Encrypted: i=1; AL+hErEqF2mHxIBaeT7KFyim2MAgMYFBC70J4eq7vjncPP879wcGIshGMbGL4g9stWsYpEIEMvU=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9v7w4X/Z4XVl8ohzdK2Qs/IEsNQEJJwrsQ6mBOaVED8XJ3Bv0B
-	rxrubwjsdDpuOJ/oKbq4JVHQg0J6VDtKajlhtYa7IYuqeVjOX+wUL0s5
-X-Gm-Gg: AZFdTZfKjGrOrQY2E8s1khygp3GOOMcVEmi1BgWGRL8LMW7V6zYbNZ/rytLJgDlnYwz
-	y1OMYc/xGqoSUUu5Zavyk4xDifKH3eoE9BdAQ4IOupjsTRo12jMVyo6qZxGevUDuwl4ozhi/FpF
-	MtAc0DXlk1mUZTm/c16Kt4Ba3HO8ADAOfhqifO6klC5CoDgdm+HbRpTo9axYPSm4gE5pMT2m0Kd
-	8fRhSSUSFRJeg5NzilZbAfY8Htpae4ZYNarSo31Cpa+a22kMN2Kld48SpBhPdDmVF1MPvfheSMr
-	KeoKqhxIftrIiqo+YDp9z3z3ygKwo0FzDFxKxXjKiouAHJr67q0f7/UJtx8mBihlqTUXVdO+/bc
-	QM1qsrT0Nc3Vz3bS2zeZuEPbiyoykd3Il4SfB5NKXg9Ui54jlEm5+evt9DzTGZsjG0vYS8tsJJW
-	g/69gefW/nmodtVSQiW5U8hMA8H2xTeUGhxS/fJ1LFleAYP5N+d10pHyH4eok0yD/yvCp4jqM8a
-	Ai++xlbn8ciibxDr4p24fku4k7A80TUBvfF06utzQsOaR0wV6YtcJ8EV0QsWOtUzre0sMY+RzNT
-	VUTMuF2QYDMt1wN6TeOePJMc0iUHvlGAee5GgJgw4lb+3/ZIvhXX/veyzl282g+RQFHAf1qzDA=
-	=
-X-Received: by 2002:a05:600c:4f4e:b0:4bb:6c71:b268 with SMTP id 5b1f17b1804b1-4bb8882672fmr425501975e9.6.1795681011621;
-        Thu, 26 Nov 2026 00:16:51 -0800 (PST)
-Received: from grower.termidesk.ru (ppp91-78-19-165.pppoe.mtu-net.ru. [91.78.19.165])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb884a3a3dsm569559155e9.10.2026.11.26.00.16.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Nov 2026 00:16:51 -0800 (PST)
-From: Alexander Martyniuk <alexevgmart@gmail.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alexander Martyniuk <alexevgmart@gmail.com>,
-	Diana Craciun <diana.craciun@oss.nxp.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Cornelia Huck <cohuck@redhat.com>,
-	Bharat Bhushan <Bharat.Bhushan@nxp.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Abdifatah Suruur <suruurism@gmail.com>,
-	Alex Williamson <alex@shazbot.org>
-Subject: [PATCH 5.10/5.15] vfio/fsl-mc: prevent read-only region mappings from becoming writable
-Date: Thu, 26 Nov 2026 11:16:42 +0300
-Message-ID: <20261126081644.45517-1-alexevgmart@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=REoRW2de
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AQ7ZCDU2082790;
+	Thu, 26 Nov 2026 08:32:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=V0IooT
+	5qWpGyP7hAnTF6L8O/w819f9flfoXR0yPvf6s=; b=REoRW2de76UymswdBB/i5T
+	VTBx5XzvQ+hIIlxfVlRUkVmcOqEhjaMJQvnYpPlPr7oVVfGRy/wJ0Cmwn8cywoR8
+	8T+cx4S8UHbbrYM6sUCMHAsRgl1lawMXcLf/E6EK5/EQlaeoPhfV1xgkDHValRnG
+	Z3LGcj5KjyhnkHREsiH4Eb2sfv//Saxd3sLww5mGF7LlcJUojA7Kgpq4ZJQiHPU2
+	KSLqe9Joz7R0kWiZY7l1XKRhq7URPkZqOc4/epD8+aX9U9rQgzKhYs7/ZyPlGjkw
+	4NfLXp/K+Nv9RkreIiFwgVKz6DItX4ywo+7vqJazfTBy93kLcO3b3Ps1bwLveVPg
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34g3ger2-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 26 Nov 2026 08:32:47 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6AQ7JFWC1900396;
+	Thu, 26 Nov 2026 08:32:46 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4j5axky80v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 26 Nov 2026 08:32:46 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6AQ8WgZA43254128
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 26 Nov 2026 08:32:42 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 188E72004B;
+	Thu, 26 Nov 2026 08:32:42 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C4CDA20043;
+	Thu, 26 Nov 2026 08:32:41 +0000 (GMT)
+Received: from [9.68.16.159] (unknown [9.68.16.159])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 26 Nov 2026 08:32:41 +0000 (GMT)
+Message-ID: <de93466c-42fc-4f1a-a69c-6e29809a2494@linux.ibm.com>
+Date: Thu, 26 Nov 2026 09:32:41 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -106,58 +86,126 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] KVM: s390: vsie: Rewind the PSW of ESA mode guests
+ in the right format
+To: Yvan Janssens <yvanj@cyber.gent>, Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: David Hildenbrand <david@kernel.org>, Eric Farman <farman@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
+        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261125165604.3074595-1-yvanj@cyber.gent>
+ <20261125165604.3074595-2-yvanj@cyber.gent>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20261125165604.3074595-2-yvanj@cyber.gent>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=SoQFe/O0 c=1 sm=1 tr=0 ts=6b07eeaf cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=l9r1cnm4-fEY1RtK:21 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=7QR1kp5T8qIJlEpKUbQA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI2MDAzMSBTYWx0ZWRfX6was81MEIPux
+ s4ZAJ1gR4C/Tn62Cm8Y/SFdLiZ+EOa6SDDPPLQR+r2jlF/47CWyEzVxWDo5QJgxLHz2htA5GEz0
+ +uCoDT+25tWGTLSfNvejR8bepFdqyBg=
+X-Proofpoint-ORIG-GUID: 1a-1-zTuUDZK3zmbCf9b5BHK5mSmEOC4
+X-Proofpoint-GUID: jVIROOhjmLH4IZd3t2habS1fzUEvFNdg
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI2MDAzMSBTYWx0ZWRfX25kJiCUFDFow
+ ANPoy+r2UlBMXPk7rBcdjDzmNebkBrbyMphuRsF5Av7wJ4wVWCCd+WQ6oNzcWM8btG9JmlpHs0z
+ edIbvsvg0xKfPsVhxE8sxADV+A67zJDnPF3BeO8DJNvUBbA2mECpEgdEkxj7o19+08w7AqSEIBs
+ vjr9Mpf+w8VwKrY5Obo/bg96vJcyouQZ2RE/LbnLpTvUg9Sq7bSLP50lnts5IYcz1shgDJ4481i
+ 3zhi3/Ra9aCSX0zAcDweriAMItDSOSQsjqpDo3XRp3asogQQdB3IkRhD9tRUg73L4O3WkztloL+
+ pPoWadf7E6ZtTg6vLv8zW639rg/qtWVPSagEzNmEdrfn7v6miK8E2mnAENQxOr4GM+d32mBqbT3
+ qLxC0WRmI551YVd212/gek0GosC5YYRglZ+9xOQWxeYeceb+k4UleRlrrfkA8hFlF3nxJCjhJIX
+ 6UgiPldveZkIMV1b28g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-26_02,2026-11-25_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 spamscore=0 bulkscore=0 adultscore=0
+ lowpriorityscore=0 clxscore=1011 malwarescore=0 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611260031
 
-From: Abdifatah Suruur <suruurism@gmail.com>
+Am 25.11.26 um 17:56 schrieb Yvan Janssens:
+> ESA-mode guests in vsie have existed since commit b0ad874d9852 ("KVM:
+> s390: vsie: Allow non-zarch guests"); they use the 8-byte short PSW -
+> the mask and instruction address share one doubleword.
+> 
+> vsie's PSW rewind originally still changed the second doubleword, which
+> is unused in ESA mode, so the instruction is skipped instead of
+> repeated. The visible effect is that the first STFLE after entering SIE
+> does nothing in a nested guest.
 
-commit 25fd8b27ee8d4f59cc2ad99cf67aef4570b82096 upstream.
+There might be other cases as well that we skip. So when applying maybe
+replace "The visible" with "One visible"
 
-vfio_fsl_mc_mmap() rejects writable mappings of regions without the
-WRITE flag, but leaves VM_MAYWRITE set.  Userspace can map such a region
-read-only and then upgrade the mapping to writable with mprotect().
+> 
+> This patch adds a vsie-specific rewind function that handles both
+> formats; no short-PSW type is introduced - for ESA guests mask and
+> address are written into the mask field.
+> 
+> Fixes: b0ad874d9852 ("KVM: s390: vsie: Allow non-zarch guests")
+> Cc: stable@vger.kernel.org # 7.1+
+> Signed-off-by: Yvan Janssens <yvanj@cyber.gent>
 
-Clear VM_MAYWRITE for regions without the WRITE flag, as i915 does for
-its read-only objects and as fixed in drm/vc4 (CVE-2026-68445),
-drm/panthor (CVE-2024-53071) and commit a5edadbae57e ("ptp: vmclock:
-prevent read-only mappings from becoming writable").
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 
-Note this is defensive hardening: the fsl-mc bus publishes all device
-regions with the WRITE flag set, so no device can currently reach the
-read-only path.  The guard costs nothing and keeps the mmap() interface
-honest if a read-only region ever appears.
 
-Fixes: 67247289688d4 ("vfio/fsl-mc: Allow userspace to MMAP fsl-mc device MMIO regions")
-Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
-Link: https://lore.kernel.org/r/20260929094848.7439-3-suruurism@gmail.com
-Signed-off-by: Alex Williamson <alex@shazbot.org>
-Signed-off-by: Alexander Martyniuk <alexevgmart@gmail.com>
----
-Backport fix for CVE-2026-99810, adapted for 5.10.y/5.15.y: vm_flags_clear() appeared only in 6.3,
-use the classic vm_flags assignment so the file builds on these stable branches.
- drivers/vfio/fsl-mc/vfio_fsl_mc.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+> ---
+>   arch/s390/kvm/s390/vsie.c | 18 ++++++++++++++++--
+>   1 file changed, 16 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/s390/kvm/s390/vsie.c b/arch/s390/kvm/s390/vsie.c
+> index 3ce133f20fa2..ed40d40d89e4 100644
+> --- a/arch/s390/kvm/s390/vsie.c
+> +++ b/arch/s390/kvm/s390/vsie.c
+> @@ -948,6 +948,20 @@ static inline void clear_vsie_icpt(struct vsie_page *vsie_page)
+>   	vsie_page->scb_s.icptcode = 0;
+>   }
+>   
+> +static void vsie_rewind_psw(struct kvm_s390_sie_block *scb, int ilen)
+> +{
+> +	u64 addr_mask;
+> +
+> +	if (atomic_read(&scb->cpuflags) & CPUSTAT_ZARCH) {
+> +		scb->gpsw.addr = __rewind_psw(scb->gpsw, ilen);
+> +		return;
+> +	}
+> +	/* ESA short PSW: mask and address both live in gpsw.mask */
+> +	addr_mask = scb->gpsw.mask & PSW32_ADDR_AMODE ? PSW32_ADDR_INSN : 0x00ffffffUL;
+> +	scb->gpsw.mask = (scb->gpsw.mask & ~PSW32_ADDR_INSN) |
+> +			 ((scb->gpsw.mask - ilen) & addr_mask);
+> +}
+> +
+>   /* rewind the psw and clear the vsie icpt, so we can retry execution */
+>   static void retry_vsie_icpt(struct vsie_page *vsie_page)
+>   {
+> @@ -960,7 +974,7 @@ static void retry_vsie_icpt(struct vsie_page *vsie_page)
+>   		if (!ilen)
+>   			ilen = 4;
+>   	}
+> -	scb_s->gpsw.addr = __rewind_psw(scb_s->gpsw, ilen);
+> +	vsie_rewind_psw(scb_s, ilen);
+>   	clear_vsie_icpt(vsie_page);
+>   }
+>   
+> @@ -1413,7 +1427,7 @@ static int vsie_run(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page)
+>   		scb_s->icptcode = ICPT_PROGI;
+>   		scb_s->iprcc = PGM_ADDRESSING;
+>   		scb_s->pgmilc = 4;
+> -		scb_s->gpsw.addr = __rewind_psw(scb_s->gpsw, 4);
+> +		vsie_rewind_psw(scb_s, 4);
+>   		rc = 1;
+>   	}
+>   	return rc;
 
-diff --git a/drivers/vfio/fsl-mc/vfio_fsl_mc.c b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
-index 8722f5effacd..e77062cf066a 100644
---- a/drivers/vfio/fsl-mc/vfio_fsl_mc.c
-+++ b/drivers/vfio/fsl-mc/vfio_fsl_mc.c
-@@ -494,9 +494,13 @@ static int vfio_fsl_mc_mmap(void *device_data, struct vm_area_struct *vma)
- 			&& (vma->vm_flags & VM_READ))
- 		return -EINVAL;
- 
--	if (!(vdev->regions[index].flags & VFIO_REGION_INFO_FLAG_WRITE)
--			&& (vma->vm_flags & VM_WRITE))
--		return -EINVAL;
-+	/* Prevent read-only region mappings from being upgraded with mprotect() */
-+	if (!(vdev->regions[index].flags & VFIO_REGION_INFO_FLAG_WRITE)) {
-+		if (vma->vm_flags & VM_WRITE)
-+			return -EINVAL;
-+
-+		vma->vm_flags &= ~VM_MAYWRITE;
-+	}
- 
- 	vma->vm_private_data = mc_dev;
- 
--- 
-2.43.0
