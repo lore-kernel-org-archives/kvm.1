@@ -1,72 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.123
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795676706;
-	b=CfTN8UAlyYOHCrv5bfYHWADthp+vKvgHjZwdq/y2muBjrdgomOhIBE5eV8sIp1fqGWFf
-	 KCJj7+20Qemgz5Eo3CerCChBlIDT8Ok/gebZcOi9T1yww0plEkzB4cXVWe1cx548P+B9A
-	 WqYmstHYpWwSEKBXGrH621N9Vp3Q+GlZIGoyQ1sL186DYI4syhiPlXzR8/0aAiywGouAg
-	 P0Nq9rQdReTaATSFn/NJGgFVNlg1tatCEY13m+o3QKlbq2M4ucN4mFG4S9QmGXUWl/31a
-	 YuqX2YT7ZAGtB+Ms0jKLl7jLk3ybLaHCjOJnlVWSr9TRLrczfMupAEbDQC171WpyVsA==
+	t=1795677869;
+	b=2bV4MIcuST7xHRrgoseeC9KhuLmSoHVwNb96oESwV9CVIY0IyrGqhKt3Mkcw0xNtUXfV
+	 kFxL6yJXuRg3Jm/o2sq+p3wXo8Ga5L2PlPkZJziVRjeBg+Yx1/gMutI9iw7FV6RXVEZeK
+	 NquAw0CWP8DqfyijXOOEGUEHwmzhX0+5Tsg3o49bgje0ADa6H7+FStIE1pIrILGMCzHrF
+	 94CBisqWoMZbe5T24A77Jgt2Qv1rZNRgP7tQHazA9rFkz3aJx92MIraI4oQaSD9HVeb3F
+	 GhXSTvcoIqvOF68cgwiaEIQpmecz1UmTGsLRsXZBLhp/yce64ME32TAZ2sgXASStUXA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795676706;
-	h=Received:DKIM-Signature:X-Mailer:From:To:Cc:Subject:In-Reply-To:
-	 References:Date:Message-ID:MIME-Version:Content-Type;
-	bh=cp/ltoC04vlPWpyVW0AoQORCWHUFFV9YG64MDzRXtWw=;
-	b=hDF0t/4UZ2WLVzWfvRT5+PI3YSJUTVZbg6GenBXAFDN2aEZFwWI4e5NtIaRcNRv5Xjb/
-	 xOlBB/W3khKExB8lOiaRoCCXIkTsjC42QSbnzLzl8xSOaBJYDoLlJa2ketDTyubULzL+B
-	 lKL2Qg9EH684JO+RYJRPhhk60ZGbWqXMf9noh68d6lrWMqosjBfZjsrsWoPek5vyD0VXd
-	 7LMnI3u+UPOIolE8adPGYmtv8v9udcdU06E5O4p+/qL/qqQKyDw8jXvAOd/zT9puDuqWG
-	 OBBBJmBWVnjFqnzaLM3LfLdeXh4G4HoFpdzhJQTNtRXI2N2GgXTrUVUtspERkVrpsPA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795677869;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=clQ7a2lHAgYfKz5SkvqDRWEN/kW5veMqDifdXKTPsHc=;
+	b=pmPwSKpMxIhNip0pwVtS3yx7yTFO+163uv912AuJ8xJVjB3i90BJQQvauOK9sq1caNxW
+	 gPO9foD7k3QXRZQocWvQawxji/tK++ceoIcfMuKh2+k+6n1Hk7lm0YXfjfAjI3EU1yxgJ
+	 nJLuVuiWgzrZbvvjGTMGVfktcCnuzKIS+ZRzO8rFNXt6gzUQwK3jYZU3lP2kUTEOS0ZU6
+	 qK1eDSyY43Up3SKvlYObeOZBChF7qiSbwnIkNvot7HDp22AE2lG6tH+mNcX1R6p/Hie5C
+	 7wftj3/kiDSzGjRAe5wkGIFvJUcpUN4n/DQtHuxkbNCzxe18KxuHJV1Lf3CRqqWa6nQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Qa+/Y9Ow";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=xiaopeng.com;
+	spf=pass smtp.mailfrom=xiaopeng.com;
+	dkim=pass header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=mSkSP4Gt;
+	arc=none smtp.remote-ip=115.124.28.123
+Received: from out28-123.mail.aliyun.com (out28-123.mail.aliyun.com [115.124.28.123])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF5E606A31C;
-	Thu, 26 Nov 2026 07:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E52606A31E;
+	Thu, 26 Nov 2026 07:24:26 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 85E52606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qa+/Y9Ow
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 065411F000C4;
-	Thu, 26 Nov 2026 07:05:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795676706;
-	bh=cp/ltoC04vlPWpyVW0AoQORCWHUFFV9YG64MDzRXtWw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Qa+/Y9Ow7w/8qe+BKzl555ztoRKlew8zwz9huXh+ArssV9RMTS4fGtjSwNKrC4jYB
-	 G4fbNW0PxqYSuQxMxMWri3XIz7XdB+FFId2BrwObD4Z0Z+qAo9z2EWOHEIFQ5tn4V1
-	 2ZNm4Abr5aQDIHQYawUsQVUbjZXZ4zGQ3E7QZaoxcaj9zLhlM8zdC3AdqNN6y/5ynm
-	 R5gpGYjbRUP98cb0fGij5zgbl4rivcGfO8Jvi38svkIfPg1Zfd9AiDhxT24MBhYgAt
-	 ieACDhEwXSfkXO3H+yMXQNmydnOQsALL9saHFci4mOPP0Yt9HyKx/A9V73dRbEaku6
-	 QKi0MPqaQQ/Rw==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
-	Dan Williams <djbw@kernel.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	driver-core@lists.linux.dev, linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v1 04/10] PCI/TSM: Defer TSM vDEVICE allocation until
- device setup completes
-In-Reply-To: <20261125141947.GD246011@ziepe.ca>
-References: <20261123083337.2731019-1-aneesh.kumar@kernel.org>
- <20261123083337.2731019-5-aneesh.kumar@kernel.org>
- <5e04323f-dfdc-4956-acee-bcc09926726d@amd.com>
- <yq5aqzg99uio.fsf@kernel.org> <20261125141947.GD246011@ziepe.ca>
-Date: Thu, 26 Nov 2026 12:34:57 +0530
-Message-ID: <yq5ald6gul7q.fsf@kernel.org>
+	dkim=pass (1024-bit key, unprotected) header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=mSkSP4Gt
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xiaopeng.com; s=default;
+	t=1795677856; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=clQ7a2lHAgYfKz5SkvqDRWEN/kW5veMqDifdXKTPsHc=;
+	b=mSkSP4GtfWMH3eWHuSK/gEOsXnH/ceskBTe4et0vAcD3xnx52365LiQEBYLs74x25Vzk01IwL2mr6MI8dmmxn1K839FM43jQhxhE17cX5VnA0DOruLB3E+rN8emTqzz7MYAPyR6KDAR0l9VhLzpPHJ16eCULCJQV1/QCujwhLRU=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.04440256|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00525153-5.53735e-06-0.994743;FP=1379844234834617539|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037034017;MF=fangxy@xiaopeng.com;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.kAQZfYs_1795677854;
+Received: from localhost.localdomain(mailfrom:fangxy@xiaopeng.com fp:SMTPD_---.kAQZfYs_1795677854 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Thu, 26 Nov 2026 15:24:15 +0800
+From: Fang Xieyan <fangxy@xiaopeng.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
+Cc: Xie Yongji <xieyongji@bytedance.com>,
+	stable@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] vhost-vdpa: skip unmapped gap in vhost_vdpa_va_map()
+Date: Thu, 26 Nov 2026 15:24:14 +0800
+Message-ID: <20261126072414.97199-1-fangxy@xiaopeng.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20261123143318.73514-1-fangxy@xiaopeng.com>
+References: <20261123143318.73514-1-fangxy@xiaopeng.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,21 +67,91 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-Jason Gunthorpe <jgg@ziepe.ca> writes:
+find_vma() returns the first VMA with vm_end > uaddr; when uaddr lies
+in an unmapped gap, vma->vm_start > uaddr and the offset arithmetic
 
-> On Wed, Nov 25, 2026 at 02:07:19PM +0530, Aneesh Kumar K.V wrote:
->
->> That is what this patch does. If IDE setup is not complete but the
->> device already has tsm0 attached and connected, pci_tsm_context_get()
->> returns an error from cca_vdevice_init(), preventing the device from
->> being assigned to the VM.
->
-> If the device has not been fully accepted on the SPDM side then you
-> should not be able to create an iommufd vdevice for it, nothing else.
+	offset = (vma->vm_pgoff << PAGE_SHIFT) + uaddr - vma->vm_start;
 
+produces an incorrect file offset, potentially wrapping in u64
+arithmetic, and map_size counts the gap as part of the mapping.
 
-That is what this patch does.
+Seen at runtime on v7.4-rc1: a request whose uaddr lies 0x1000
+below a shared file-backed VMA starting at file offset 0 reaches
+the vDPA driver's dma_map() callback as offset=0xfffffffffffff000.
+Since vhost_vdpa_map() adds the range to the vhost IOTLB before
+calling the backend, a successful mapping keeps an entry covering
+the gap, which has no valid backing.
 
--aneesh
+Skip the gap: stop if the whole remaining request is inside the gap,
+otherwise shrink size, set uaddr to vm_start and advance map_iova by
+the gap.  Gaps before a later VMA are left unmapped without error;
+when find_vma() returns NULL because no VMA follows uaddr, the
+existing -EINVAL is kept.
+
+Fixes: d8945ec41120 ("vdpa: Support transferring virtual addressing during DMA mapping")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
+---
+ drivers/vhost/vdpa.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+Changes since v1:
+- drop the redundant "continue": the already-found VMA is processed
+  directly instead of being looked up again; the mappings, the
+  return value and the unmap span are unchanged.
+- commit message only: quote the offset measured at runtime, note
+  that a uaddr no VMA follows keeps -EINVAL, move test records here.
+
+Testing: make W=1 drivers/vhost/vdpa.o completed without warnings on
+v7.4-rc1 (defconfig + VHOST/VDPA/VHOST_VDPA).  Under QEMU/KVM a
+userspace client sent VHOST_IOTLB_UPDATE through /dev/vhost-vdpa to
+a probe vDPA parent with use_va and dma_map logging; its memory is
+file-backed VMAs separated by a 0x1000 gap, the upper one at offset
+0.  The dma_map log then reads:
+
+  iova=0x100000 size=0x3000 uaddr=0x20001000 (request into the gap):
+    unpatched: dma_map iova=0x100000 size=0x3000 offset=0xfffffffffffff000
+    patched:   dma_map iova=0x101000 size=0x2000 offset=0x0
+  iova=0x400000 size=0x4000 (spans the gap), second segment:
+    unpatched: dma_map iova=0x401000 size=0x3000 offset=0xfffffffffffff000
+    patched:   dma_map iova=0x402000 size=0x2000 offset=0x0
+  iova=0x200000 size=0x1000 (whole request in the gap): no dma_map
+    once patched, write() still succeeds
+  iova=0x300000 size=0x1000 (contiguous): identical maps in both runs
+  iova=0x600000 size=0x3000 (tail past the last VMA): dma_map and
+    dma_unmap of the same 0x2000, write() = -1 EFAULT in both runs
+  iova=0x500000 size=0x1000 (uaddr above every VMA): no dma_map,
+    write() = -1 EFAULT in both runs
+
+vhost_chr_write_iter() turns a non-zero handler return into EFAULT,
+so the last two cases fail the same way with and without the patch.
+
+diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+index ff7d907..623c2da 100644
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -1109,6 +1109,19 @@ static int vhost_vdpa_va_map(struct vhost_vdpa *v,
+ 			ret = -EINVAL;
+ 			break;
+ 		}
++		/*
++		 * uaddr may lie in an unmapped gap before vma->vm_start; skip
++		 * the gap so the offset calculation below uses an address in the VMA.
++		 */
++		if (uaddr < vma->vm_start) {
++			u64 gap = vma->vm_start - uaddr;
++
++			if (gap >= size)
++				break;
++			size -= gap;
++			uaddr = vma->vm_start;
++			map_iova += gap;
++		}
+ 		map_size = min(size, vma->vm_end - uaddr);
+ 		if (!(vma->vm_file && (vma->vm_flags & VM_SHARED) &&
+ 			!(vma->vm_flags & (VM_IO | VM_PFNMAP))))
+-- 
+2.50.1
+
