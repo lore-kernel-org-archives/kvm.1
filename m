@@ -1,63 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.123
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.48
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795677869;
-	b=2bV4MIcuST7xHRrgoseeC9KhuLmSoHVwNb96oESwV9CVIY0IyrGqhKt3Mkcw0xNtUXfV
-	 kFxL6yJXuRg3Jm/o2sq+p3wXo8Ga5L2PlPkZJziVRjeBg+Yx1/gMutI9iw7FV6RXVEZeK
-	 NquAw0CWP8DqfyijXOOEGUEHwmzhX0+5Tsg3o49bgje0ADa6H7+FStIE1pIrILGMCzHrF
-	 94CBisqWoMZbe5T24A77Jgt2Qv1rZNRgP7tQHazA9rFkz3aJx92MIraI4oQaSD9HVeb3F
-	 GhXSTvcoIqvOF68cgwiaEIQpmecz1UmTGsLRsXZBLhp/yce64ME32TAZ2sgXASStUXA==
+	t=1795680999;
+	b=z03clvx3BaQtZrbvjQob7ZOcveEICi8o6Q3rCdNgK/+ly6qbjoVbtuztNXwGjnnaP+g8
+	 QGjay1efTUnjZisCIaAhatuJx53lKpmdzsB3ZO9twcSdYDtL7IJwPMf1uKou7ziQHtG8S
+	 C2xuqkrJYaJKob+1w3PI1mNeGayW02tbTrdhzjssS7RC/vh9PAU9ZHV5/wQoavy6BpVdC
+	 w6Q4uk0m4Azi9U7lu8qnBVUHws+ifnIoaIqUQ7W+hTZPXWDFZrYZYNKmV+s7llFTLROmU
+	 lSqf72PVu5yPhjATE2x3H+17cDCMolPKMK9Vm/h5f7HCLrHGegWh6+WY9ew6F3M38bQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795677869;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	a=rsa-sha256; c=relaxed/relaxed; t=1795680999;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=clQ7a2lHAgYfKz5SkvqDRWEN/kW5veMqDifdXKTPsHc=;
-	b=pmPwSKpMxIhNip0pwVtS3yx7yTFO+163uv912AuJ8xJVjB3i90BJQQvauOK9sq1caNxW
-	 gPO9foD7k3QXRZQocWvQawxji/tK++ceoIcfMuKh2+k+6n1Hk7lm0YXfjfAjI3EU1yxgJ
-	 nJLuVuiWgzrZbvvjGTMGVfktcCnuzKIS+ZRzO8rFNXt6gzUQwK3jYZU3lP2kUTEOS0ZU6
-	 qK1eDSyY43Up3SKvlYObeOZBChF7qiSbwnIkNvot7HDp22AE2lG6tH+mNcX1R6p/Hie5C
-	 7wftj3/kiDSzGjRAe5wkGIFvJUcpUN4n/DQtHuxkbNCzxe18KxuHJV1Lf3CRqqWa6nQ==
+	bh=CBSIDCKro4GDs12iDpbveHASbLjhtJ1zWAB1w2J4Ssg=;
+	b=v6RBXp6K+VwSVjGSarZz8Gj0ql9rO0KQ0xXQ123j+SlNsnHQgau492STqhTIxcMzRsPY
+	 NPyTv2UzyThJhc/3gk3KCNLIQuKhw5GgRLm3fk6bvUbchyzkziQDSBed+qWYCpI0txvaN
+	 tuo3JGHwNpq/O6EDo5RFvd70utFiRQY9YGmrjpsRzteVfC+nPjBgDK4/VFTKDdcL+rt/D
+	 jzBW3wKUtdrqE/MBQfMKDUa0/OHaKyOhLpyO7dvCKnW7Ky6aRcogo93TXo55W9ANkSejQ
+	 Ccxr+GzrT0quoBJFURRDW/b83aW5d8SfsGxstj0plxEPfOhG4jzAVSG40shDbF+pXbA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=xiaopeng.com;
-	spf=pass smtp.mailfrom=xiaopeng.com;
-	dkim=pass header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=mSkSP4Gt;
-	arc=none smtp.remote-ip=115.124.28.123
-Received: from out28-123.mail.aliyun.com (out28-123.mail.aliyun.com [115.124.28.123])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PQa1AFXI;
+	arc=none smtp.remote-ip=209.85.128.48
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E52606A31E;
-	Thu, 26 Nov 2026 07:24:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 85E52606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75196606A326
+	for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 08:16:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 75196606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=mSkSP4Gt
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xiaopeng.com; s=default;
-	t=1795677856; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=clQ7a2lHAgYfKz5SkvqDRWEN/kW5veMqDifdXKTPsHc=;
-	b=mSkSP4GtfWMH3eWHuSK/gEOsXnH/ceskBTe4et0vAcD3xnx52365LiQEBYLs74x25Vzk01IwL2mr6MI8dmmxn1K839FM43jQhxhE17cX5VnA0DOruLB3E+rN8emTqzz7MYAPyR6KDAR0l9VhLzpPHJ16eCULCJQV1/QCujwhLRU=
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.04440256|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00525153-5.53735e-06-0.994743;FP=1379844234834617539|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037034017;MF=fangxy@xiaopeng.com;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.kAQZfYs_1795677854;
-Received: from localhost.localdomain(mailfrom:fangxy@xiaopeng.com fp:SMTPD_---.kAQZfYs_1795677854 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Thu, 26 Nov 2026 15:24:15 +0800
-From: Fang Xieyan <fangxy@xiaopeng.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-Cc: Xie Yongji <xieyongji@bytedance.com>,
-	stable@vger.kernel.org,
-	virtualization@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PQa1AFXI
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a9a8d6cea8so86044835e9.1
+        for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 00:16:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795680998; x=1796285798; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CBSIDCKro4GDs12iDpbveHASbLjhtJ1zWAB1w2J4Ssg=;
+        b=PQa1AFXIZS40/OkHRWSeK9C0cJH4iXrwvZSbqalNLtcMObluAt2ryBFq+7UwnlrGtk
+         Rpbe2zlplBYfObUSV+nJJDjWG678OAAU2fzBxTF8TZlvuYYdU/GZtHr7hSj8Q1IpBCmc
+         8yQFV7mvXIKXGc+W+jn0ycgK+gI1vzpJ3l2H4s629XIWdwtdjEcRdVSHbORecbNpHt3i
+         5mR5Xd+Jz+7wusXeD3RH9hRRtV0w7xy8BY04bYAHjHPdkXq43OacZwmVYeQZETI6dHcE
+         +SCTpHV7CYu1AjQYSuSBFHoaFIFiSg29kxlBkHG1eOXjWNMT72xh4kU38MjsOXLOYTpd
+         S2Dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795680998; x=1796285798;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CBSIDCKro4GDs12iDpbveHASbLjhtJ1zWAB1w2J4Ssg=;
+        b=QlhEW2OQS1vmEOGs/L82JnEF0uIkNVro08/pf8pSiGR0D7XCdoVM+PhNAWKCNgrzbJ
+         xZxFmaRIWCcClL5eHk5M/q4DOoZn2vX9drYMrS7+4UPdrsqbS/Ac1chMEmxqGihjvQLL
+         tjyjcv/v1HgbQAhU89TKWot5pBJASBWmXgHxMlXbOA7PiHkCBacCwnC2tZSuik4MR6Np
+         ID7RH6olNN/q+GXZDFXs5LTiUjZGmbedy551e7yIVq6C0fSvdGbgwjUsvsxDpV+pEO0B
+         lwOFWchJZwrUrg+ytBxkREWivFzKW5woOpq1aFKqG5jMPSqZm5BudzTwSk7N4lu+Q2MK
+         BOgg==
+X-Forwarded-Encrypted: i=1; AL+hErGSdjc18MwNBdbn6B+rbAgU9JBL5z/L30yfm5dIL2rs4HOW4bt+D/LnKYpWQr6bncJtFks=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/aMFEiOt8LP9G4YxrE4eIDEehnymApNBqKYooa0aBZHqAm844+
+	1UtTYzmuFkFrkLxqyCliBQgDh8FfQVH/j3+5i9wfve8XjbFDtMeSvNxq
+X-Gm-Gg: AZFdTZemwo6S22Tq+nL2ENUOfi4Weayg8SQ7RdWrvhJbHjtADXyBUNgtdX5Gj8yqdte
+	As5Byk/X7k8Cc6w8HR2qg104yxozN1NPnQ3CsdIjSGOG5p8+WBCZ2jy/RSYgTxqf8UX+lOy9A9L
+	LQ/pNQFNgY8C0SM901ASiW5Gt6oT1YOFKnbJ89AEvNXAL9u+UzwFCApUkimifakDeP72jfW7Cv+
+	TWUvf7X7OlILY3EDxSnG+ZMCnqClnG6KkAbnrmiNcGTbYBV6GWvjsdJ5U0IW2xGsJxbkyaCB5CK
+	9VNgotUWoXHn9YVxxas1jAKRIWwln+DN6mpPah4wC5YMlwqSR5W9rxOUyVFvv+mCMMYrJBcxEuu
+	yvo/u9OI4pd/BK/A0/TrQ1oinHmDCoghl6Dp5GnTJCy6yzgbyF1EVdrcTdKsr7wjUSrAQFOnlJm
+	A06lWZFag4zMeOnEtT/snlUIt1ApHgteWoEYONvZydsopqkLm5LpKAisd50+0fOYXdFzGH+3Eb2
+	LnS8Xcaiqiq5DzMvrWvrf/VMCbvE/hpKhiFyP++fHW2qYuE+qT9bUxy7/ZWbBMfUyJA53KwfuUO
+	7XOnNFspPGKNNwAofCk8ujc2rEFkZs21T9wq+RCSiWPvVX7N5h0dQs0qUnGs2pHGA+lEGpubwA=
+	=
+X-Received: by 2002:a05:600c:154c:b0:4bb:6a78:7c42 with SMTP id 5b1f17b1804b1-4bb887c3428mr407967675e9.1.1795680997558;
+        Thu, 26 Nov 2026 00:16:37 -0800 (PST)
+Received: from grower.termidesk.ru (ppp91-78-19-165.pppoe.mtu-net.ru. [91.78.19.165])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4ab69bf61e8sm40320996f8f.11.2026.11.26.00.16.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Nov 2026 00:16:37 -0800 (PST)
+From: Alexander Martyniuk <alexevgmart@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexander Martyniuk <alexevgmart@gmail.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Cornelia Huck <cohuck@redhat.com>,
+	Baptiste Reynal <b.reynal@virtualopensystems.com>,
+	Antonios Motakis <a.motakis@virtualopensystems.com>,
 	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] vhost-vdpa: skip unmapped gap in vhost_vdpa_va_map()
-Date: Thu, 26 Nov 2026 15:24:14 +0800
-Message-ID: <20261126072414.97199-1-fangxy@xiaopeng.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20261123143318.73514-1-fangxy@xiaopeng.com>
-References: <20261123143318.73514-1-fangxy@xiaopeng.com>
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Mostafa Saleh <smostafa@google.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Abdifatah Suruur <suruurism@gmail.com>,
+	Alex Williamson <alex@shazbot.org>
+Subject: [PATCH 5.10/5.15] vfio/platform: prevent read-only region mappings from becoming writable
+Date: Thu, 26 Nov 2026 11:16:30 +0300
+Message-ID: <20261126081631.45468-1-alexevgmart@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -69,89 +109,57 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-find_vma() returns the first VMA with vm_end > uaddr; when uaddr lies
-in an unmapped gap, vma->vm_start > uaddr and the offset arithmetic
+From: Abdifatah Suruur <suruurism@gmail.com>
 
-	offset = (vma->vm_pgoff << PAGE_SHIFT) + uaddr - vma->vm_start;
+commit 420bed9131dbbe37abe9d6b32af51219875811e0 upstream.
 
-produces an incorrect file offset, potentially wrapping in u64
-arithmetic, and map_size counts the gap as part of the mapping.
+vfio_platform_mmap() rejects writable mappings of regions without the
+WRITE flag, but leaves VM_MAYWRITE set.  Userspace can map such a region
+read-only and then upgrade the mapping to writable with mprotect().
 
-Seen at runtime on v7.4-rc1: a request whose uaddr lies 0x1000
-below a shared file-backed VMA starting at file offset 0 reaches
-the vDPA driver's dma_map() callback as offset=0xfffffffffffff000.
-Since vhost_vdpa_map() adds the range to the vhost IOTLB before
-calling the backend, a successful mapping keeps an entry covering
-the gap, which has no valid backing.
+Clear VM_MAYWRITE for regions without the WRITE flag, as i915 does for
+its read-only objects and as fixed in drm/vc4 (CVE-2026-68445),
+drm/panthor (CVE-2024-53071) and commit a5edadbae57e ("ptp: vmclock:
+prevent read-only mappings from becoming writable").
 
-Skip the gap: stop if the whole remaining request is inside the gap,
-otherwise shrink size, set uaddr to vm_start and advance map_iova by
-the gap.  Gaps before a later VMA are left unmapped without error;
-when find_vma() returns NULL because no VMA follows uaddr, the
-existing -EINVAL is kept.
+Note this is defensive hardening: no in-tree platform driver currently
+publishes a region without the WRITE flag.  The guard costs nothing and
+keeps the mmap() interface honest if a read-only region ever appears.
 
-Fixes: d8945ec41120 ("vdpa: Support transferring virtual addressing during DMA mapping")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fang Xieyan <fangxy@xiaopeng.com>
+Fixes: fad4d5b1f042 ("vfio/platform: support MMAP of MMIO regions")
+Reviewed-by: Mostafa Saleh <smostafa@google.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
+Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
+Link: https://lore.kernel.org/r/20260929094848.7439-2-suruurism@gmail.com
+Signed-off-by: Alex Williamson <alex@shazbot.org>
+Signed-off-by: Alexander Martyniuk <alexevgmart@gmail.com>
 ---
- drivers/vhost/vdpa.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+Backport fix for CVE-2026-99809, adapted for 5.10.y/5.15.y: vm_flags_clear() appeared only in 6.3,
+use the classic vm_flags assignment so the file builds on these stable branches.
+ drivers/vfio/platform/vfio_platform_common.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-Changes since v1:
-- drop the redundant "continue": the already-found VMA is processed
-  directly instead of being looked up again; the mappings, the
-  return value and the unmap span are unchanged.
-- commit message only: quote the offset measured at runtime, note
-  that a uaddr no VMA follows keeps -EINVAL, move test records here.
-
-Testing: make W=1 drivers/vhost/vdpa.o completed without warnings on
-v7.4-rc1 (defconfig + VHOST/VDPA/VHOST_VDPA).  Under QEMU/KVM a
-userspace client sent VHOST_IOTLB_UPDATE through /dev/vhost-vdpa to
-a probe vDPA parent with use_va and dma_map logging; its memory is
-file-backed VMAs separated by a 0x1000 gap, the upper one at offset
-0.  The dma_map log then reads:
-
-  iova=0x100000 size=0x3000 uaddr=0x20001000 (request into the gap):
-    unpatched: dma_map iova=0x100000 size=0x3000 offset=0xfffffffffffff000
-    patched:   dma_map iova=0x101000 size=0x2000 offset=0x0
-  iova=0x400000 size=0x4000 (spans the gap), second segment:
-    unpatched: dma_map iova=0x401000 size=0x3000 offset=0xfffffffffffff000
-    patched:   dma_map iova=0x402000 size=0x2000 offset=0x0
-  iova=0x200000 size=0x1000 (whole request in the gap): no dma_map
-    once patched, write() still succeeds
-  iova=0x300000 size=0x1000 (contiguous): identical maps in both runs
-  iova=0x600000 size=0x3000 (tail past the last VMA): dma_map and
-    dma_unmap of the same 0x2000, write() = -1 EFAULT in both runs
-  iova=0x500000 size=0x1000 (uaddr above every VMA): no dma_map,
-    write() = -1 EFAULT in both runs
-
-vhost_chr_write_iter() turns a non-zero handler return into EFAULT,
-so the last two cases fail the same way with and without the patch.
-
-diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index ff7d907..623c2da 100644
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -1109,6 +1109,19 @@ static int vhost_vdpa_va_map(struct vhost_vdpa *v,
- 			ret = -EINVAL;
- 			break;
- 		}
-+		/*
-+		 * uaddr may lie in an unmapped gap before vma->vm_start; skip
-+		 * the gap so the offset calculation below uses an address in the VMA.
-+		 */
-+		if (uaddr < vma->vm_start) {
-+			u64 gap = vma->vm_start - uaddr;
+diff --git a/drivers/vfio/platform/vfio_platform_common.c b/drivers/vfio/platform/vfio_platform_common.c
+index ce67ed9510cc..64c4291592f1 100644
+--- a/drivers/vfio/platform/vfio_platform_common.c
++++ b/drivers/vfio/platform/vfio_platform_common.c
+@@ -617,9 +617,13 @@ static int vfio_platform_mmap(void *device_data, struct vm_area_struct *vma)
+ 			&& (vma->vm_flags & VM_READ))
+ 		return -EINVAL;
+ 
+-	if (!(vdev->regions[index].flags & VFIO_REGION_INFO_FLAG_WRITE)
+-			&& (vma->vm_flags & VM_WRITE))
+-		return -EINVAL;
++	/* Prevent read-only region mappings from being upgraded with mprotect() */
++	if (!(vdev->regions[index].flags & VFIO_REGION_INFO_FLAG_WRITE)) {
++		if (vma->vm_flags & VM_WRITE)
++			return -EINVAL;
 +
-+			if (gap >= size)
-+				break;
-+			size -= gap;
-+			uaddr = vma->vm_start;
-+			map_iova += gap;
-+		}
- 		map_size = min(size, vma->vm_end - uaddr);
- 		if (!(vma->vm_file && (vma->vm_flags & VM_SHARED) &&
- 			!(vma->vm_flags & (VM_IO | VM_PFNMAP))))
++		vma->vm_flags &= ~VM_MAYWRITE;
++	}
+ 
+ 	vma->vm_private_data = vdev;
+ 
 -- 
-2.50.1
-
+2.43.0
