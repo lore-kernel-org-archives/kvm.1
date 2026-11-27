@@ -1,60 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=210.118.77.11
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795790647;
-	b=mCNX1GEgpP+x5HC6hhdkUvfy+7p0fRpvs3lR5yWmh4TuByVsFBtap5HSw8ztU1hEozCF
-	 qA/F2fDdkLXUR1400w/F1Ey+nuuhNzP9kvLTq0DqwZUjLJwfRhdy/za7FiP0WdU4GuS9t
-	 i5TeHF6jdCii2iWK+umR23y6irYuNPf1QFUQXyvQV8I7wF3znPdhO+W/POa7uhOrABfv0
-	 nIGUJVQsdkYF1gBTGJgOLGWlyUfagD+Bu94A1XcOZfoJA78EnWJT80nXLS+wCBSEdYCds
-	 y9gqWXcN8hnx1PKbxZyoPf2c2MmikviQJGjKmrSos8thwu5KqaCTWxjQHdJMeAPsb8g==
+	t=1795790722;
+	b=llvThDvykQrNZiEpG4Cf7PvUdb99AstaI20UA9DdDnZoA8pdvmh74F7l/Tr1QYG6BJ90
+	 zOdItX87clWXkmQU2rH5WLEAfCiBr6O0ODBzfCaujrT3HLkcIr+pd2rxJFI1EoTjPM1hp
+	 2M8fh/U3M9w/yQlr1nLlVtEKZ9PVYrTtNcbfc/MhFuD8XP4Yr6ZxOO2SOdd6e/GuzHpDj
+	 HPcK87965Tonlmb2dh7z6wUV1mIpxWGqCH8bsA/A+wm4iCGpXyvx6q98eqDZ2aTHfz7id
+	 ylW1gFyrrENS9YCmq0UhcYl0x19qwMrEyHB+O2CwgTcyY/DPfWemLoIPnAGn+TrAssA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795790647;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=3Qte7Kp7DAtGXMMfrUS4X7SMr01p5Z5GRH/0ba5utLo=;
-	b=Cy6ew/+4IY116YBLRzeyALfH2sy2cwUZdLLa5LuPVsH5h4LiAqU7c8wItUkyS8b5lt+f
-	 HDdLjzblSYcjwcNkMX80NhEle5kjnVQnqm3yfNa7/2ZpeV6unEDnJRwVtQOEKl+sIRqok
-	 18uw92m0bdKkXJ0tP/uEKSAaNye5ffYkTwGD5RcIPmZmHzKc1RPmpm5uenTlrPQJxddMa
-	 s7cmqEZ/7gIWZDZXA4RY8p3OrkktVGS5SzHXuoU4m5zP7n1uxd1vVD7o/sHVfLWXbiY3G
-	 XLeEcfkMrN+VZcp3zy6JEjr2rwHw6CSG0pj4ZZ6stnM+iQWxrqAqMYvPpS/Tdt9Y3hQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795790722;
+	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
+	 Content-Language:From:In-Reply-To:Content-Transfer-Encoding:
+	 X-CMS-MailID:X-Msg-Generator:Content-Type:X-RootMTR:X-EPHeader:
+	 X-CMS-RootMailID:References;
+	bh=LO23VuR8oz1He3kunSDVbm/R/AJdXLqeSuquj/Un54I=;
+	b=nu3UurpWVt9jKNeCL2fVtZ44Fc4twWrNcVkErW6vMgtt+o4jM3k4TxeATByE30cSAplb
+	 DmpBYtEF0lo4D2nMIov6luv3Yx45WfxCu9GFs9ux7VkTxx2CFJQLWDGrzaqte3xtwdYKp
+	 MB9CZftVA7jUWcnD5OMm464nsfMVAsl8Wafseed/d6d3MLQ0malyotzFwh56ielulyk7D
+	 uVFJsTINw8jOXBB7wCLCN/TqqEQH8S18cEQm27AvGk0yOY6DHaBJeSWeh6VLjcTqRHjt9
+	 q4gSeprKjE2nryfv8vbLOowWQcSDd4JIR5g7aw5ED9/8ECnh+qqn0MmkCTNBOG3qtJw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KdbnCcbe;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=samsung.com;
+	spf=pass smtp.mailfrom=samsung.com;
+	dkim=pass header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=tH0WWuAW;
+	arc=none smtp.remote-ip=210.118.77.11
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B64606A682;
-	Fri, 27 Nov 2026 14:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B24606A33E
+	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 14:45:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 38B24606A33E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KdbnCcbe
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF831F0092A;
-	Fri, 27 Nov 2026 14:44:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795790646;
-	bh=3Qte7Kp7DAtGXMMfrUS4X7SMr01p5Z5GRH/0ba5utLo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KdbnCcbea6W/e3Ydt6MJpfzVYSI+LmurXxm6J4uP2rNJtNm9hvY+FG6Ds/An9T5jg
-	 hk8bCsudguI3O6IUbdw9DQstFncUACPkiLivZ3TKmrXk+TbokdrWLlpNuWREtvt1iW
-	 XUEuoURtfqHH4h2BDSXGzcezrrvEk/grQN0QAGWuAzDfREInGqfONxt+y6mzBA4C1a
-	 f8pK890FTdscO3xBeRzX8jRSLsBWO6T6Rhn9q9g6svXROZkaNL+IAI7eltHRZ79ffl
-	 reL+yOtt+SK0Y+0HhDD1Kas3wYaArxCT8hs2FJSlVQOTBGtr5j3wr6geY71G+Il51L
-	 3TZBazrlU3bog==
-Message-ID: <sashiko-outbox-237594@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 17/25] KVM: s390: arm64: Implement feature
- sanitisation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steffen Eiden" <seiden@linux.ibm.com>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Oliver
- Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261127-sysreg-v4-17-a6318d18aab5@linux.ibm.com>
-References: <20261127-sysreg-v4-0-a6318d18aab5@linux.ibm.com>
- <20261127-sysreg-v4-17-a6318d18aab5@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 27 Nov 2026 14:44:05 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=tH0WWuAW
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20261127144518euoutp014797335890475366b167b97f8e629c6c~r7iTVY_Rp2085220852euoutp01P
+	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 14:45:18 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20261127144518euoutp014797335890475366b167b97f8e629c6c~r7iTVY_Rp2085220852euoutp01P
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1795790718;
+	bh=LO23VuR8oz1He3kunSDVbm/R/AJdXLqeSuquj/Un54I=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=tH0WWuAWuzPYHQm+soNKBsCky89aAJhBeNMAl+NLBMauK5hFl+uh1UAcu8tbLdEG8
+	 nfJHn+PQMz0l0380GnH9tpUphr2qR24lltrW+TLLa0SnHNNvRebMYggDeIzGPDKUTM
+	 7619QSF/iwix+iDn0+A0kvV6ZYYjAB+a2KaAoYZs=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20261127144518eucas1p22cf8f824453316c6bfb1f0a0066453b3~r7iTA2KY93155031550eucas1p2D;
+	Fri, 27 Nov 2026 14:45:18 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20261127144515eusmtip242d75ac11ad94c4e4ca4316ca179bbe6~r7iQ-8K-m1223712237eusmtip2d;
+	Fri, 27 Nov 2026 14:45:15 +0000 (GMT)
+Message-ID: <feec2436-ad15-4aa6-a53f-800869bfac21@samsung.com>
+Date: Fri, 27 Nov 2026 15:45:15 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -63,51 +63,140 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 4/4] iommu/dma: restore flush queue use in
+ dma_iova_destroy()
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: iommu@lists.linux.dev, linux-media@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Robin Murphy <robin.murphy@arm.com>, Joerg
+	Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Leon Romanovsky
+	<leon@kernel.org>, Sibi Sankar <sibi.sankar@oss.qualcomm.com>, Honglei Huang
+	<honghuan@amd.com>, prakash.gupta@oss.qualcomm.com, Alex Williamson
+	<alex@shazbot.org>, Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>, Abhinav Kumar
+	<abhinav.kumar@linux.dev>, Bryan O'Donoghue <bod@kernel.org>, Mauro Carvalho
+	Chehab <mchehab@kernel.org>, Hans Verkuil <hverkuil+cisco@kernel.org>,
+	stable@vger.kernel.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20261127143740.GM114472@nvidia.com>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20261127144518eucas1p22cf8f824453316c6bfb1f0a0066453b3
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20261127115903eucas1p27ccc4cddb7f705d6afa5c2603597b97a
+X-EPHeader: CA
+X-CMS-RootMailID: 20261127115903eucas1p27ccc4cddb7f705d6afa5c2603597b97a
+References: <20261127115849.2780625-1-m.szyprowski@samsung.com>
+	<CGME20261127115903eucas1p27ccc4cddb7f705d6afa5c2603597b97a@eucas1p2.samsung.com>
+	<20261127115849.2780625-5-m.szyprowski@samsung.com>
+	<20261127143740.GM114472@nvidia.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] KVM: s390: missing ID_AFR0_EL1 masking in
-  kvm_arm_host_sanitize_features()
---
+On 27.11.2026 15:37, Jason Gunthorpe wrote:
+> On Fri, Nov 27, 2026 at 12:58:48PM +0100, Marek Szyprowski wrote:
+>> Commit 1acce29926d9 ("iommu/dma: simplify dma_iova_destroy() and drop
+>> the free_iova helper") turned dma_iova_destroy() into dma_iova_unlink()
+>> followed by dma_iova_free(). Before it, the destroy path marked its
+>> IOTLB gather as queued for DMA-FQ domains, skipped iommu_iotlb_sync()
+>> and handed the IOVA over to the flush queue, exactly like
+>> __iommu_dma_unmap(). After it:
+>>
+>>   - dma_iova_unlink() never queues its gather and always calls
+>>     iommu_iotlb_sync() after iommu_unmap_fast(),
+>>   - dma_iova_free() passes a NULL gather to iommu_dma_free_iova(), so
+>>     the IOVA goes straight back to the allocator via free_iova_fast().
+>>
+>> DMA-FQ domains therefore get strict invalidation on this path. This
+>> includes blk_rq_dma_map(), which NVMe uses for all data transfers, so
+>> iommu.strict=0 has no effect on NVMe I/O. On a Qualcomm Glymur CRD
+>> (SMMUv3 without RANGE_INV, 4K pages, NVMe on PCIe Gen5 x4) sequential
+>> fio throughput drops from 10.6/11.9 GiB/s (write/read) to the strict
+>> mode level of ~2.7 GiB/s.
+>>
+>> Instead of reverting, decide once in dma_iova_try_alloc() whether the
+>> IOVA space is going to be released through the flush queue and record
+>> it in a new DMA_IOVA_USE_FQ flag in dma_iova_state::__size, next to
+>> DMA_IOVA_USE_SWIOTLB, so struct dma_iova_state does not grow.
+>> dma_iova_destroy() then unmaps with a gather queued according to that
+>> flag, skipping the sync for flush queue domains, and passes the same
+>> gather to the IOVA free, so the IOVA space (and any page table pages
+>> released by the unmap) goes through queue_iova() again. dma_iova_free()
+>> honours the flag as well. The whole reservation is still freed, keeping
+>> the size fix of the reverted commit.
+>>
+>> A gather must always be retired, either by iommu_iotlb_sync() or by
+>> handing it to the flush queue together with the IOVA, and the IOVA must
+>> never be returned to the allocator while a queued invalidation for it is
+>> still pending. To keep that obvious, the internal unlink helper only
+>> unmaps into a gather supplied by its caller, and each caller retires it
+>> right away: dma_iova_destroy() syncs or queues it together with the IOVA
+>> free, exactly like __iommu_dma_unmap(), while dma_iova_unlink() always
+>> uses a never queued gather and syncs it, as the unlinked range remains
+>> owned by the caller and may be linked again immediately.
+>>
+>> Fixes: 1acce29926d9 ("iommu/dma: simplify dma_iova_destroy() and drop the free_iova helper")
+>> Reported-by: Sibi Sankar <sibi.sankar@oss.qualcomm.com>
+>> Closes: https://lore.kernel.org/all/20261125135120.1126571-1-sibi.sankar@oss.qualcomm.com/
+>> Suggested-by: Leon Romanovsky <leon@kernel.org>
+>> Cc: stable@vger.kernel.org # v7.3+
+>> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+>> ---
+>>  drivers/iommu/dma-iommu.c   | 103 ++++++++++++++++++++++++++----------
+>>  include/linux/dma-mapping.h |   8 ++-
+>>  2 files changed, 83 insertions(+), 28 deletions(-)
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
-commit 1121664ab9b9682fba8b52f02bbdb9eec39e1d2d
-Author: Steffen Eiden <seiden@linux.ibm.com>
+Thanks!
 
-KVM: s390: arm64: Implement feature sanitisation
 
-This commit implements feature detection and ID register sanitization for
-arm64 KVM guests on s390 using the QAAF instruction.
+What about the issue pointed by sashiko.dev? My LLM said that this will fix it:
 
-> diff --git a/arch/s390/kvm/arm64/feature.c b/arch/s390/kvm/arm64/feature.c
-> new file mode 100644
-> index 0000000000000..8fd278ace9426
-> --- /dev/null
-> +++ b/arch/s390/kvm/arm64/feature.c
-> @@ -0,0 +1,153 @@
 
-[ ... ]
+diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+index 0e329ecd7dfa..106da975bf0f 100644
+--- a/drivers/iommu/dma-iommu.c
++++ b/drivers/iommu/dma-iommu.c
+@@ -1892,11 +1892,12 @@ static void __dma_iova_free(struct device *dev, struct dma_iova_state *state,
+  */
+ void dma_iova_free(struct device *dev, struct dma_iova_state *state)
+ {
+-       struct iommu_iotlb_gather iotlb_gather;
+-
+-       iommu_iotlb_gather_init(&iotlb_gather);
+-       iotlb_gather.queued = state->__size & DMA_IOVA_USE_FQ;
+-       __dma_iova_free(dev, state, &iotlb_gather);
++       /*
++        * Nothing is linked any more and every dma_iova_unlink() has already
++        * invalidated the IOTLB synchronously, so there is no deferred
++        * invalidation to wait for and the IOVA can be reused right away.
++        */
++       __dma_iova_free(dev, state, NULL);
+ }
+ EXPORT_SYMBOL_GPL(dma_iova_free);
 
-> +void __init kvm_arm_host_sanitize_features(struct qaaf_qmc_block *qaaf_q=
-mc)
-> +{
+@@ -2190,12 +2191,13 @@ void dma_iova_destroy(struct device *dev, struct dma_iova_state *state,
+        struct iommu_iotlb_gather iotlb_gather;
 
-[ ... ]
+        iommu_iotlb_gather_init(&iotlb_gather);
+-       iotlb_gather.queued = state->__size & DMA_IOVA_USE_FQ;
 
-> +	MASK_RESERVED(qaaf_qmc, ID_PFR0_EL1);
-> +	MASK_RESERVED(qaaf_qmc, ID_PFR1_EL1);
-> +	MASK_RESERVED(qaaf_qmc, ID_PFR2_EL1);
-> +
-> +	MASK_RESERVED(qaaf_qmc, ID_DFR0_EL1);
-> +	MASK_RESERVED(qaaf_qmc, ID_DFR1_EL1);
-> +
-> +	MASK_RESERVED(qaaf_qmc, ID_MMFR0_EL1);
+        /*
+         * We can be here if the first call to dma_iova_link() failed and
+-        * there is nothing to unlink, so let's be more clear.
++        * there is nothing to unlink, so let's be more clear. Only queue the
++        * gather if there is an unmap whose invalidation can be deferred.
+         */
++       iotlb_gather.queued = mapped_len && (state->__size & DMA_IOVA_USE_FQ);
+        if (mapped_len)
+                __dma_iova_unlink(dev, state, 0, mapped_len, dir, attrs,
+                                &iotlb_gather);
 
-[Severity: Low]
-Should ID_AFR0_EL1 also be sanitized with MASK_RESERVED() here?
-kvm_qaaf_read_ftr_reg() exposes QAAF_REG_ID_AFR0_EL1 for SYS_ID_AFR0_EL1,
-so omitting it leaves reserved bits [63:16] unmasked when queried via
-read_sanitised_ftr_reg().
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261127-sysreg-v4-=
-0-a6318d18aab5@linux.ibm.com?part=3D17
+
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
