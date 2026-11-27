@@ -1,60 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795790722;
-	b=llvThDvykQrNZiEpG4Cf7PvUdb99AstaI20UA9DdDnZoA8pdvmh74F7l/Tr1QYG6BJ90
-	 zOdItX87clWXkmQU2rH5WLEAfCiBr6O0ODBzfCaujrT3HLkcIr+pd2rxJFI1EoTjPM1hp
-	 2M8fh/U3M9w/yQlr1nLlVtEKZ9PVYrTtNcbfc/MhFuD8XP4Yr6ZxOO2SOdd6e/GuzHpDj
-	 HPcK87965Tonlmb2dh7z6wUV1mIpxWGqCH8bsA/A+wm4iCGpXyvx6q98eqDZ2aTHfz7id
-	 ylW1gFyrrENS9YCmq0UhcYl0x19qwMrEyHB+O2CwgTcyY/DPfWemLoIPnAGn+TrAssA==
+	t=1795790934;
+	b=lRF7OQY4+LOHUcYwDbD7SBcFGb3P1hLeY4DjI2IYcoSC6FUd9uqZ36ZJELZneCN9PLkk
+	 uxMD9F1oo3EACSM/6OgqiR+YfkDwFkb+Fdp1fPnRKpekTaZTYZk2FePF9/rb4siq40Brb
+	 erihaexH4a/Q+Y844PqJQjSbyQ+i+hJFv2cha580IVOjujl9iONeLI/zum1OAE3+BkcDY
+	 hG+3p5gapWRo/r1sxZ/8Ep/6AzTTw/Psj9313o299L6DcaLNsWVo2GQ2Xf2obeYo4CoZT
+	 dNWM/XDkrbPYKYwJvDWwX2CUMevbpyW0wBAfKWGIe+qHU8fV7rHj2ebvFLUaU1o079w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795790722;
-	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
-	 Content-Language:From:In-Reply-To:Content-Transfer-Encoding:
-	 X-CMS-MailID:X-Msg-Generator:Content-Type:X-RootMTR:X-EPHeader:
-	 X-CMS-RootMailID:References;
-	bh=LO23VuR8oz1He3kunSDVbm/R/AJdXLqeSuquj/Un54I=;
-	b=nu3UurpWVt9jKNeCL2fVtZ44Fc4twWrNcVkErW6vMgtt+o4jM3k4TxeATByE30cSAplb
-	 DmpBYtEF0lo4D2nMIov6luv3Yx45WfxCu9GFs9ux7VkTxx2CFJQLWDGrzaqte3xtwdYKp
-	 MB9CZftVA7jUWcnD5OMm464nsfMVAsl8Wafseed/d6d3MLQ0malyotzFwh56ielulyk7D
-	 uVFJsTINw8jOXBB7wCLCN/TqqEQH8S18cEQm27AvGk0yOY6DHaBJeSWeh6VLjcTqRHjt9
-	 q4gSeprKjE2nryfv8vbLOowWQcSDd4JIR5g7aw5ED9/8ECnh+qqn0MmkCTNBOG3qtJw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795790934;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=YHJVXYzIVZH37r2Y5aYzfE4tJWffLlWtntnYeH+1Pa0=;
+	b=vhOVcb1qfLg52418Mnfdt4Q/l8zd4Rew3cbwKHxNb7KvbyOZJG4178wuMzv1YhnMShjL
+	 sK13YsIfP6r6rDCLBNDyDlBE1308YHLjOekTz8rOdn2Pip+/+9P9er8JR+QIZqTbrlbjW
+	 Zq85p2QST86PC3JowGe79uPc0RzcD0B/zVKz6w7XbP5dPuvThS+YFFxtvzmhGX9kDJrku
+	 HADEnFX8brObk1zGeKiUzBfNFl8jLrNhLqIuW7RSW3/XumBjfRyKDDF0LirEsI95keyfk
+	 LjO4cnx4vJCxtnRM8p+FpSRCnm441e0JLTqIaKqn280KYfRn/WAHEZ6bGS01NNvkl9g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=samsung.com;
-	spf=pass smtp.mailfrom=samsung.com;
-	dkim=pass header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=tH0WWuAW;
-	arc=none smtp.remote-ip=210.118.77.11
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bSqNiCcH;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B24606A33E
-	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 14:45:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 38B24606A33E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0243606A31E;
+	Fri, 27 Nov 2026 14:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=tH0WWuAW
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20261127144518euoutp014797335890475366b167b97f8e629c6c~r7iTVY_Rp2085220852euoutp01P
-	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 14:45:18 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20261127144518euoutp014797335890475366b167b97f8e629c6c~r7iTVY_Rp2085220852euoutp01P
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1795790718;
-	bh=LO23VuR8oz1He3kunSDVbm/R/AJdXLqeSuquj/Un54I=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=tH0WWuAWuzPYHQm+soNKBsCky89aAJhBeNMAl+NLBMauK5hFl+uh1UAcu8tbLdEG8
-	 nfJHn+PQMz0l0380GnH9tpUphr2qR24lltrW+TLLa0SnHNNvRebMYggDeIzGPDKUTM
-	 7619QSF/iwix+iDn0+A0kvV6ZYYjAB+a2KaAoYZs=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20261127144518eucas1p22cf8f824453316c6bfb1f0a0066453b3~r7iTA2KY93155031550eucas1p2D;
-	Fri, 27 Nov 2026 14:45:18 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20261127144515eusmtip242d75ac11ad94c4e4ca4316ca179bbe6~r7iQ-8K-m1223712237eusmtip2d;
-	Fri, 27 Nov 2026 14:45:15 +0000 (GMT)
-Message-ID: <feec2436-ad15-4aa6-a53f-800869bfac21@samsung.com>
-Date: Fri, 27 Nov 2026 15:45:15 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bSqNiCcH
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235F71F00897;
+	Fri, 27 Nov 2026 14:48:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795790934;
+	bh=YHJVXYzIVZH37r2Y5aYzfE4tJWffLlWtntnYeH+1Pa0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=bSqNiCcHKEUe/had57FmduLkM0fWhViAl3vi2f+NwF/p4Q0gm3UTkNNFcrMKa7sZJ
+	 F0kgmn5U6KFKKC8z2Jtk9h5+qetsBLTA6ihXlTmhoGv/wS21+ofFM0PzORuS7qj79w
+	 lO4nxQAmD5ZRkSsp0nScV91kJwStTBnQ207e2oCkAeAo95yvDEt0sulGNNF+pgWUpq
+	 +INpduWnFaY6glLBIEHQ791xRc/Fcz2VR4zOHkcFQxCreQGZx0em1WuEhWcQo18c0b
+	 /WvxZhkdZzFUpaiUk6nT2UJcu13YOnX2tkr/WXhjX7D4w5VmlquwGlQ6CbZITjIETo
+	 X5/XtWDxT5z0g==
+Message-ID: <sashiko-outbox-237607@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 21/25] KVM: s390: arm64: Implement exception
+ injection
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Steffen Eiden" <seiden@linux.ibm.com>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Oliver
+ Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261127-sysreg-v4-21-a6318d18aab5@linux.ibm.com>
+References: <20261127-sysreg-v4-0-a6318d18aab5@linux.ibm.com>
+ <20261127-sysreg-v4-21-a6318d18aab5@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 27 Nov 2026 14:48:53 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -63,140 +63,66 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 4/4] iommu/dma: restore flush queue use in
- dma_iova_destroy()
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: iommu@lists.linux.dev, linux-media@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Robin Murphy <robin.murphy@arm.com>, Joerg
-	Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Leon Romanovsky
-	<leon@kernel.org>, Sibi Sankar <sibi.sankar@oss.qualcomm.com>, Honglei Huang
-	<honghuan@amd.com>, prakash.gupta@oss.qualcomm.com, Alex Williamson
-	<alex@shazbot.org>, Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>, Abhinav Kumar
-	<abhinav.kumar@linux.dev>, Bryan O'Donoghue <bod@kernel.org>, Mauro Carvalho
-	Chehab <mchehab@kernel.org>, Hans Verkuil <hverkuil+cisco@kernel.org>,
-	stable@vger.kernel.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20261127143740.GM114472@nvidia.com>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20261127144518eucas1p22cf8f824453316c6bfb1f0a0066453b3
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20261127115903eucas1p27ccc4cddb7f705d6afa5c2603597b97a
-X-EPHeader: CA
-X-CMS-RootMailID: 20261127115903eucas1p27ccc4cddb7f705d6afa5c2603597b97a
-References: <20261127115849.2780625-1-m.szyprowski@samsung.com>
-	<CGME20261127115903eucas1p27ccc4cddb7f705d6afa5c2603597b97a@eucas1p2.samsung.com>
-	<20261127115849.2780625-5-m.szyprowski@samsung.com>
-	<20261127143740.GM114472@nvidia.com>
 
-On 27.11.2026 15:37, Jason Gunthorpe wrote:
-> On Fri, Nov 27, 2026 at 12:58:48PM +0100, Marek Szyprowski wrote:
->> Commit 1acce29926d9 ("iommu/dma: simplify dma_iova_destroy() and drop
->> the free_iova helper") turned dma_iova_destroy() into dma_iova_unlink()
->> followed by dma_iova_free(). Before it, the destroy path marked its
->> IOTLB gather as queued for DMA-FQ domains, skipped iommu_iotlb_sync()
->> and handed the IOVA over to the flush queue, exactly like
->> __iommu_dma_unmap(). After it:
->>
->>   - dma_iova_unlink() never queues its gather and always calls
->>     iommu_iotlb_sync() after iommu_unmap_fast(),
->>   - dma_iova_free() passes a NULL gather to iommu_dma_free_iova(), so
->>     the IOVA goes straight back to the allocator via free_iova_fast().
->>
->> DMA-FQ domains therefore get strict invalidation on this path. This
->> includes blk_rq_dma_map(), which NVMe uses for all data transfers, so
->> iommu.strict=0 has no effect on NVMe I/O. On a Qualcomm Glymur CRD
->> (SMMUv3 without RANGE_INV, 4K pages, NVMe on PCIe Gen5 x4) sequential
->> fio throughput drops from 10.6/11.9 GiB/s (write/read) to the strict
->> mode level of ~2.7 GiB/s.
->>
->> Instead of reverting, decide once in dma_iova_try_alloc() whether the
->> IOVA space is going to be released through the flush queue and record
->> it in a new DMA_IOVA_USE_FQ flag in dma_iova_state::__size, next to
->> DMA_IOVA_USE_SWIOTLB, so struct dma_iova_state does not grow.
->> dma_iova_destroy() then unmaps with a gather queued according to that
->> flag, skipping the sync for flush queue domains, and passes the same
->> gather to the IOVA free, so the IOVA space (and any page table pages
->> released by the unmap) goes through queue_iova() again. dma_iova_free()
->> honours the flag as well. The whole reservation is still freed, keeping
->> the size fix of the reverted commit.
->>
->> A gather must always be retired, either by iommu_iotlb_sync() or by
->> handing it to the flush queue together with the IOVA, and the IOVA must
->> never be returned to the allocator while a queued invalidation for it is
->> still pending. To keep that obvious, the internal unlink helper only
->> unmaps into a gather supplied by its caller, and each caller retires it
->> right away: dma_iova_destroy() syncs or queues it together with the IOVA
->> free, exactly like __iommu_dma_unmap(), while dma_iova_unlink() always
->> uses a never queued gather and syncs it, as the unlinked range remains
->> owned by the caller and may be linked again immediately.
->>
->> Fixes: 1acce29926d9 ("iommu/dma: simplify dma_iova_destroy() and drop the free_iova helper")
->> Reported-by: Sibi Sankar <sibi.sankar@oss.qualcomm.com>
->> Closes: https://lore.kernel.org/all/20261125135120.1126571-1-sibi.sankar@oss.qualcomm.com/
->> Suggested-by: Leon Romanovsky <leon@kernel.org>
->> Cc: stable@vger.kernel.org # v7.3+
->> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
->> ---
->>  drivers/iommu/dma-iommu.c   | 103 ++++++++++++++++++++++++++----------
->>  include/linux/dma-mapping.h |   8 ++-
->>  2 files changed, 83 insertions(+), 28 deletions(-)
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] KVM: s390: arm64: unsigned gltl overflow in inject_abt64()
+--
 
-Thanks!
+commit 9e41f0d307b22656ebad8b0615877db473136b55
+Author: Steffen Eiden <seiden@linux.ibm.com>
 
+KVM: s390: arm64: Implement exception injection
 
-What about the issue pointed by sashiko.dev? My LLM said that this will fix it:
+This commit adds guest exception entry and fault injection support for s390
+KVM arm64 guests.
 
+> diff --git a/arch/s390/kvm/arm64/inject_fault.c b/arch/s390/kvm/arm64/inj=
+ect_fault.c
+> index 425dbeaa421c6..33f40c5188c98 100644
+> --- a/arch/s390/kvm/arm64/inject_fault.c
+> +++ b/arch/s390/kvm/arm64/inject_fault.c
+> @@ -2,6 +2,38 @@
+> =20
+>  #include <arm64/kvm_emulate.h>
+> =20
+> +static void pend_sync_exception(struct kvm_vcpu *vcpu)
+> +{
+> +	kvm_pend_exception(vcpu, EXCEPT_AA64_EL1_SYNC);
+> +}
+> +
+> +static void inject_abt64(struct kvm_vcpu *vcpu, bool is_iabt, unsigned l=
+ong addr)
+> +{
+> +	unsigned long cpsr =3D *vcpu_cpsr(vcpu);
+> +	bool is_aarch32 =3D vcpu_mode_is_32bit(vcpu);
+> +	u64 esr =3D 0;
+> +
+> +	if (kvm_vcpu_abt_iss1tw(vcpu))
+> +		esr |=3D ESR_ELx_FSC_SEA_TTW(kvm_vcpu_abt_gltl(vcpu));
+> +	else
+> +		esr |=3D ESR_ELx_FSC_EXTABT;
 
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index 0e329ecd7dfa..106da975bf0f 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -1892,11 +1892,12 @@ static void __dma_iova_free(struct device *dev, struct dma_iova_state *state,
-  */
- void dma_iova_free(struct device *dev, struct dma_iova_state *state)
- {
--       struct iommu_iotlb_gather iotlb_gather;
--
--       iommu_iotlb_gather_init(&iotlb_gather);
--       iotlb_gather.queued = state->__size & DMA_IOVA_USE_FQ;
--       __dma_iova_free(dev, state, &iotlb_gather);
-+       /*
-+        * Nothing is linked any more and every dma_iova_unlink() has already
-+        * invalidated the IOTLB synchronously, so there is no deferred
-+        * invalidation to wait for and the IOVA can be reused right away.
-+        */
-+       __dma_iova_free(dev, state, NULL);
- }
- EXPORT_SYMBOL_GPL(dma_iova_free);
+[Severity: Medium]
+Can ESR_ELx_FSC_SEA_TTW(kvm_vcpu_abt_gltl(vcpu)) overflow the 6-bit FSC
+field into bit 8 of ESR_EL1 on a level -1 Stage-1 translation table walk
+fault?
 
-@@ -2190,12 +2191,13 @@ void dma_iova_destroy(struct device *dev, struct dma_iova_state *state,
-        struct iommu_iotlb_gather iotlb_gather;
+ESR_ELx_FSC_SEA_TTW(n) expands to (0x14 + (n)), expecting a signed walk
+level down to -1 for FEAT_LPA2 5-level page tables. Because
+sae_block.hai.gltl is declared as u8 and kvm_vcpu_abt_gltl() returns it as
+an int without sign-extending it, a level -1 walk encoded as 0xff becomes
+255:
 
-        iommu_iotlb_gather_init(&iotlb_gather);
--       iotlb_gather.queued = state->__size & DMA_IOVA_USE_FQ;
+arch/s390/include/arm64/kvm_emulate.h:kvm_vcpu_abt_gltl() {
+	return vcpu->arch.sae_block.hai.gltl;
+}
 
-        /*
-         * We can be here if the first call to dma_iova_link() failed and
--        * there is nothing to unlink, so let's be more clear.
-+        * there is nothing to unlink, so let's be more clear. Only queue the
-+        * gather if there is an unmap whose invalidation can be deferred.
-         */
-+       iotlb_gather.queued = mapped_len && (state->__size & DMA_IOVA_USE_FQ);
-        if (mapped_len)
-                __dma_iova_unlink(dev, state, 0, mapped_len, dir, attrs,
-                                &iotlb_gather);
+0x14 + 255 evaluates to 0x113, setting bit 8 (ESR_ELx_CM for data aborts or
+a RES0 bit for instruction aborts) in the guest's ESR_EL1. That extra bit
+also survives kvm_inject_size_fault(), which only clears GENMASK_ULL(5, 0)
+after calling __kvm_inject_sea().
 
-
-
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261127-sysreg-v4-=
+0-a6318d18aab5@linux.ibm.com?part=3D21
