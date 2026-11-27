@@ -1,65 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795784176;
-	b=I1VqfUaPWe5NjITbexboNKkwshlsv3ffBfDHJU+pV104Zd3ir676L968/MzVfI1/Y03e
-	 vO7kaP74fLcDpATVm5fr9kS6ibEyUPDW6akdpf03mgOKIhKFW0WdzH2n0E6DlzO23Hhoo
-	 bjlnyToWZWzl1Yo7uD8y2HGnDE1ZswP0R196mE2IYJ6MHRUPwydQQyuB864iYeCPm7lsg
-	 U/5QfUjwEvXlPsIxInYdqZXWRMOUUbRENf21WFBOMtLjj01ccvi6oi4ffgy0HF94gxdD5
-	 JH9/Ihn8t7I6u6DhqxlkKq4ohKLfGCE/wpF0a9CrlJFPZee9TabNpH2u4EOCjM1rG0Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795784176;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=VCgU5Kg2KvKrAQHYH6tU0m/C/hUcvMv2qP9GBHYvr3o=;
-	b=G9MORe3B3wStWoM7Bov8p0/dHuc/tjrR4NBJHk/slek4r8+cWA2ebT8+xWhxeYslr64N
-	 smbfMwzuZNU59IKpUKVW9zLLdEDHO1LcGpu/ZeEfH9P1u5dH3+bk42tUj+sXa760ILFUn
-	 V62GEuzSEOmA917zd+eWlc2FDEl7uEJAyXUDM0C7ZyGfuOpDCOx1FkEpxQYZjT2FbnAPK
-	 2FxXrxNp6ZaJnu5beAmL1etXGBppas2W+pn7n+dZ2zCUETPVcUcLXsG2XQup62LQ9TMuh
-	 XY0C3tzRSFaoHKe/FueQh9JIl38mXyzDsddFJC3X/UoJdEQZSJwRjIVRKdygMxMsO1Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G1NP2Erz;
-	arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1795785076;
+	b=i+jyV3u+4Wea+hae0grIovo0SnSC26/gSgYg1nK10DcEnXYi/ww9PS8dToucEGdshOaP
+	 XQYtjRS/qBu47LXxgCmzp8C7a8ITKVwCb1uIt7GsOd99ga4e3Y9A5aD05KyABsuVyMRFm
+	 tiMe+/vKMeiG1kitVeJPTkysvcaENuKO0dl6tVdi823m3VaMDEKGSvUm7O1KT4ypMhp8j
+	 Zz3x2DPDNzBOUbCDb/YZa1pTVxKkV3CA2tA5VZfZBxjwkWqsdjWtbz3yDZSefXNv32Cl1
+	 6ERjTHW1rDxaeAHL5teC/zuo20sHYlqjpcX5QQT+PdvfGjX88pz4mutXf6iRvpF0dtQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795785076;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
+	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=xjKUP9AknZthWMDW4B+VkLH6A/Liu4JS9Wqwar7yjbY=;
+	b=QO4bD13wecHkh0C9G1j34bzwotcjmHvlRDmVTSUWGCbOt/gfPEzWhVvUJ9TBCH3fe5Ru
+	 QYV+YAO1U41eROYnRcJ2CJpFr/Qwcb7ZjGHyckTv5wy/ZzW+QSe4UD8RwQbSs89DaB+od
+	 4HIy1hYwH5mmI9dlXMVl9sIz/yO9HoQm01dj9d4D5lq5o7UnhTLIJb9O2pnGdgmh2dX8H
+	 /0Hlwj8IJR5lUcDu4SDIOYAquiOX7O8VzwawpLwUABuHvpt/weDOnrYO6tc09jmpAR+I+
+	 iGoDwZrHTjF539EaAEz8oadZgtkfrJttqso1oIP09HqkPiZLTRTijRLPz0gdwXoMm2A==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KKyonTN4;
+	arc=fail smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B1C606A31E;
-	Fri, 27 Nov 2026 12:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0963606A31E
+	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 13:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G1NP2Erz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9CD1F00893;
-	Fri, 27 Nov 2026 12:56:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KKyonTN4
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1795785076;
+	b=oIeXLKBddiJHRE+eLs3bJCQGlawYHZBw0O4dWQtGfL4GhQYGqdIv9DHr+Fdj17UVjR0L
+	 0XThe40OFoT0+oVsY3BIb1g02cJ1DFmQfPXvQzJM8b/ZPBhj/En/dnLqqgl10o44scnBi
+	 OpbgvebF65HkIhKL63slrlwmrXoexUWlTuXOfChyGSxbfi9CElQApm6hAQb5+Txd/okf/
+	 5N3WS8UenjoZf5zSQ2wB36YSfAaawnorEblaVj5wzxDsdyotgyZjC8ZUJlJIln0XOW3Yu
+	 FFKP75lxrbrzI0LZ0tYSa4SzYCvCB+BnfOZWEe38kzw7tJSAol12Uhy/0FtEQVa0mdQ==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1795785076;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=xjKUP9AknZthWMDW4B+VkLH6A/Liu4JS9Wqwar7yjbY=;
+	b=JgsmFpfxAvJaWszjZGBXT/oMvgVQ4I1S/ylqXJFRcgkymyEG0bzRA2+VJFYMa/6nUPA0
+	 8TakXHYtAjTzOjoqvk5w2XiWeVxZsLyRaFZEcQ+eNs56PWQQD5+Bp70xq8E19UMfD8bRq
+	 5QArYBBXPmbF1Zl8Nj5H3Mnu5jMRxsPs/0dp3pbgVwEmkpYjqtoF5PZvczTCPEqFL1g9V
+	 1XgPpTL2bp7QKaFNMuc0coNKzwTkwXdTcMp7SCTvNhDxfP19XU+gdJ62IFgHAeS03VXEU
+	 MYgSpONHGyI02JdekwsUsdi8QQlzYnIyfITBGOZxvVRrHthL0w/C/J2fQizs7mu38hw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id AAF711F000C1;
+	Fri, 27 Nov 2026 13:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795784175;
-	bh=VCgU5Kg2KvKrAQHYH6tU0m/C/hUcvMv2qP9GBHYvr3o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=G1NP2ErzHAioaVQ+nq2m7ayY7YcxNVkVJBX390lHxNjRrXeEYuztB/tbo/rgHtCrQ
-	 CKJDVzC2jFZT+wf5yZOlgXfYlfA6XYXwaitYBHL7K6Yov5uLo1Mp/5mMAtMpVEp6J6
-	 o9VeU2wzc0cJcsUJDFY5B3x73p4j7tzuJaDKOJHBOrYbLhfwPmEsBn2enO26FBiPuu
-	 FKIHmIbV5+GeNCmnmebxxQgy1ag4A7ecdWd/y4JvGOHSwRvPCG7jCmOxiYTj8S7NmG
-	 +tS6HLUhsEpLfhtX3W27g8tiiCOODNEfUdkh9XOS3x7z/CUZOfbG3fPmaIBlz0RTIv
-	 qlctJuf5Q13BQ==
-Date: Fri, 27 Nov 2026 13:56:07 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: ackerleytng@google.com, Alexey Kardashevskiy <aik@amd.com>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	David Woodhouse <dwmw2@infradead.org>, Fred Griffoul <fgriffo@amazon.co.uk>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jianxiong Gao <jxgao@google.com>, 
-	John Starks <John.Starks@microsoft.com>, Michael Roth <michael.roth@amd.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Tarun Sahu <tarunsahu@google.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
-	Fuad Tabba <fuad.tabba@linux.dev>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH RFC v3 03/88] mm: shmem: Implement guest_memfd provider
- operations for tmpfs
-Message-ID: <20261127-plagiat-bergtour-einfrieren-b73600501aca@brauner>
-References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
- <20261106-gmem-alternative-providers-v3-3-8484dde66a7e@google.com>
- <20261120-provokant-zyklisch-schutt-55d8eddf2ce4@brauner>
- <awBaeiUw0i-uEQzM@seanjc-mac.roam.internal>
+	s=k20260515; t=1795785076;
+	bh=xjKUP9AknZthWMDW4B+VkLH6A/Liu4JS9Wqwar7yjbY=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=KKyonTN4RTJPx32wFYQKG2MkRXG28evql/mhVrL/sI/3/WqT5qim7NBPqecq1Ld7q
+	 2uC/exLgS43NbyR9K9o33QReftuA+8ED7g6prBsnGk7RlrUcC6gEKhW0DbeQX9KiVm
+	 nl9ybdNzY5kqmbEXWWbN18tHV1pXvxYAHbLSuokWkDrr/pFgOp/82xNjwor0FkDG3k
+	 hFcl3FrZBMJIkgE0C3G4+tyGqPC1Bg+VphrkpYwPtFSOVVlcsbdqETpRw1QqkWSO9N
+	 b06tN2bi0AIO1NvRBYNfMMzhUN/D+334zbwrouabH+c9fgXHxQ9XERuWJ2B67yd6zw
+	 HKN1/j17+oogQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 3CACD4B7D6;
+	Fri, 27 Nov 2026 13:11:07 +0000 (UTC)
+From: Dickson Wu via B4 Relay <devnull+dickson.wu.certik.com@kernel.org>
+Date: Fri, 27 Nov 2026 13:07:17 +0000
+Subject: [PATCH 5.10.y-cip] KVM: SVM: Inject #UD for INVLPGA if EFER.SVME=0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -69,30 +82,85 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <awBaeiUw0i-uEQzM@seanjc-mac.roam.internal>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261127-cip-svm-510-v1-1-a9cc8da73701@certik.com>
+X-B4-Tracking: v=1; b=H4sIAISACWsC/02NSw7CMBBDr1LNmilJpFLEVRCLfKZ0ECRVplSgq
+ ncngQ1L28/2CkKZSeDUrJBpYeEUi9C7Bvxo45WQQ9FglDlobXr0PKEsD+y0wkDBGN+7Iw0KSmP
+ KNPDru3aGrtWqfVceLr9Mnu5Gfq5zlXZWCF220Y/VEophTumO1d//3cC2fQBA6w6bpwAAAA==
+X-Change-ID: 20261127-cip-svm-510-ded22c7b8ef0
+To: cip-dev@lists.cip-project.org
+Cc: Pavel Machek <pavel@nabladev.com>, 
+ Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>, 
+ Ulrich Hecht <uli@fpond.eu>, Kevin Cheng <chengkev@google.com>, 
+ kvm@vger.kernel.org
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795784836; l=1964;
+ i=dickson.wu@certik.com; s=dickson-b4; h=from:subject:message-id;
+ bh=UKLupv1I54lhHtmKvF2aNY9MdYYKj1h36BecxzAIQ9k=;
+ b=ianuIF86t5yrt1iLKHDJIxEKIqrxzMI8OAsLc3N7S9iijcYpvnHzfwjd4+8R+7rAbTKCb/krL
+ 7SZXCim+GAxBnOgc44fnOoFEuE63qj8hdafdPtaB+rKPcfEcRXpIVVv
+X-Developer-Key: i=dickson.wu@certik.com; a=ed25519;
+ pk=fxH7FS4FdojeJSGLJzgKdfO51Rvr4EW30yinj2mc1vg=
+X-Endpoint-Received: by B4 Relay for dickson.wu@certik.com/dickson-b4 with
+ auth_id=1647
+X-Original-From: Dickson Wu <dickson.wu@certik.com>
+Reply-To: dickson.wu@certik.com
 
-On Fri, Nov 20, 2026 at 06:34:34AM -0800, Sean Christopherson wrote:
-> Eww.  I really, really want to avoid having to update KVM just to recognize a
-> new provider, and I shudder to think of the potential module dependency hell we
-> could end up in.
+From: Kevin Cheng <chengkev@google.com>
 
-I don't think you have to. LUO solves the same thing without file
-operations:
+commit d99df02ff427f461102230f9c5b90a6c64ee8e23 upstream.
 
-* Providers register a handler with the core.
-* The core asks each registered handler whether it owns the file:
+INVLPGA should cause a #UD when EFER.SVME is not set. Add a check to
+properly inject #UD when EFER.SVME=0.
 
-	liveupdate_register_file_handler(&memfd_luo_handler);
+Fixes: ff092385e828 ("KVM: SVM: Implement INVLPGA")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kevin Cheng <chengkev@google.com>
+Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20260228033328.2285047-3-chengkev@google.com
+[sean: tag for stable@]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[ adapted to 5.10.y-cip: pass the vcpu_svm argument to the branch's permission helper ]
+Signed-off-by: Dickson Wu <dickson.wu@certik.com>
+---
+The 5.10 nested SVM permission helper takes a struct vcpu_svm pointer.
+The backport passes that pointer from the INVLPGA handler.
 
-	bool (*can_preserve)(struct liveupdate_file_handler *handler,
-			     struct file *file);
+Tested on 5.10.272-cip79: arch/x86/kvm/svm/svm.o built with W=1
+before and after the patch, with no new diagnostics. The same paired
+build passed on the 5.10.275-cip80 tip. On v5.10.275, svm_vmcall_test
+passed in a QEMU TCG EPYC guest and skipped in the Intel/KVM guest.
+The runtime test was not rerun on the CIP tip.
 
-You should just do the same here, I think. So put a small provider
-registry into core code that is always built in and not into kvm.ko.
+The backport and the test runs were prepared with AI coding tools
+(OpenAI Codex agents, with review by Claude). I went over the result
+before signing off.
+---
+ arch/x86/kvm/svm/svm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Providers register a handler with a ->can_connect(file) callback and kvm
-walks the handlers when it's handed a file. This way kvm never needs to
-know about individual providers and the providers only depend on the
-registry but neither on kvm noor on each other.
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 41a4ee2aaa4c..f7862a5b686f 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2162,6 +2162,9 @@ static int invlpga_interception(struct vcpu_svm *svm)
+ {
+ 	struct kvm_vcpu *vcpu = &svm->vcpu;
+ 
++	if (nested_svm_check_permissions(svm))
++		return 1;
++
+ 	trace_kvm_invlpga(svm->vmcb->save.rip, kvm_rcx_read(&svm->vcpu),
+ 			  kvm_rax_read(&svm->vcpu));
+ 
+
+---
+base-commit: bd8b111cdf1d9897bf4d826b7305a9c16bfe5f71
+change-id: 20261127-cip-svm-510-ded22c7b8ef0
+
+Best regards,
+--  
+Dickson Wu <dickson.wu@certik.com>
+
+
