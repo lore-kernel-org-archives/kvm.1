@@ -1,54 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795793257;
-	b=q0DEG8VtKJ7dKcoRFZNwpay4ZGiPk5VOyGSlPR93Boh/5vT0b4fxjVoGZgEJJgqh2/63
-	 Vvx0CUV8CdmoZQAj7saPccv6bq9xnzQtaUyRZs4+cLZXFQA7mRB1w+Au26OR5WkPW2JwE
-	 cbvK8uVyHItWaDkX24qLNVeCFSOv7L9BEFx8SFCI60dEI/U+e2ACEMJYJr8acL1jzkDla
-	 BWexBXRuw4mDRnWORB3ixk84ZTkgikCQxySCPBJZqERQR+JnhzcWNHkVv25Arrg6j44t/
-	 N8d+71/ymFI4jjcv4id1GlD6jfMGYKDt1NGlduWH9tfx5jdNdv121CeMCPYqRNvYP3g==
+	t=1795793260;
+	b=CdQUw8I6PKp7vc6g3lhNGISnfd73OC2af3uYmKL9GAiMAy1bwVF2UEl3BmO1fNSka1/4
+	 wHsiVaNnex1e/XM2dq6QGLTG+PHPVKCo9ZAzQWRxk/ZUwVuZNLBsnLfEEmTUZp/lR2ZsV
+	 MYUCGcHDFO5ujTPUI4xSQEwF3ZkaLerAIqWmWp81HYKkn3pw4hS0IasM+ZFRyh6VLScnU
+	 aiYHJxq1bd22btBKCLX1tr1gJDThf92krJqKdMPfoEMR6bcis5j7sS4eeIauD6NP0Lj3y
+	 l3vdJbFMmBTOxSCrn4okPB61sVEIzPPT7lGqL4FmmAytddRc82M3kKXcvjQ+Bx3S/mw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795793257;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795793260;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=FIPdlMqs9rKhDSjU59l6252g88uGwqQmR/fw3UuZ0xc=;
-	b=u0u4iDKRgKLyIWAeu0noUOI0R3SNnmiuToAL0j8d1QZAvjwd9nYQrwmTp52XyTwn26v5
-	 oGBFYLU6Gw1+MDqb7KwrQX2cKQffln6OpkmvGa7CJkICOWW/p5p5wDm1FcuYJdmdqEqpL
-	 Vfp8Ei8qRImF4XFNVAsb/InD13iUXNGf4XvTtBDstADraEvCavyORzRtWJUKuiWzm2ZnR
-	 0ah5kx09xRFQyY8V6I6/3Y7YACrveA801GVghgAzzk6p73b7+pIXywAHlPiKbI3ukkaCG
-	 T8sLMQG1nes3UJ84USx37zBof1Rk6z3WPE7pBOlUKFg+yHia6bVY6XyaiywEoigWPeA==
+	bh=1BsiWFpQn5takhG8tcqf/7xB4zmGy3GbEtI5gNdaBYA=;
+	b=vp101/RkCk9lQCPJZfLMJTNHP9sj9iQ0uQg+ObzmH8/vypJvo/gY7YsIAE3ODp2BuuE9
+	 lt1taQC+dn8Z3XX3Fb/p51Cw6CJ+/+tYIOU2E9YJhSI4QOudN27mDB0x7bK8bgrdKD8jn
+	 nabdnDwjKAjfzxMirpaYLpW78QnE3tP/94UVt03KwrXsFXnwrsNHkyCQs0rTz4Vynd2C9
+	 b9L6c0dD7HwQcZ4xSjWjDziHxbQV20rN1ZOaKRqKCdNgwnNBp3fO4rZlaMwfLBFPTIwW+
+	 MKAXinOxyiomdEsQiDjTpzMtRvZAGZdLHlCmVd6Qj2YfiR8tE1ZMv+e8Qx7zky855oQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
-	spf=none smtp.mailfrom=casper.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=nU0HkPQ7;
-	arc=none smtp.remote-ip=90.155.50.34
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	spf=none smtp.mailfrom=desiato.srs.infradead.org;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b="NSW/inQz";
+	arc=none smtp.remote-ip=90.155.92.199
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE02606A323;
-	Fri, 27 Nov 2026 15:27:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2EE02606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCE960A261A;
+	Fri, 27 Nov 2026 15:27:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DDCE960A261A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=nU0HkPQ7
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=NSW/inQz
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=FIPdlMqs9rKhDSjU59l6252g88uGwqQmR/fw3UuZ0xc=; b=nU0HkPQ7PJL1u0qcbfUp8n0+kz
-	gN13PpDts7f7FBCMYh6/y+kQDtm0XEuxZPlXZEsgzOxHnxGV2UqZGzoVSj5gb/KKxHUEju41TlBas
-	Yo0y890/FtCoXrQFUwz8VtCkp2MsDPpHW+t+Zq5dkw/xNtekIEqcYjnA/aRst/IFTy7TnY1Wyjgcg
-	yosP+262j8O0OIJFg7HH8+jQmviM9rfSsr/7XyT8TBezpc4+x3FFzE+Wqgx0Bd+Zhpglqbfai1/Mp
-	1QosqdWk9ud0v0qsEHflOUWoWS7XWOhgUp+d3N3bdzySkpqjjMgF7Btego0HjRsfK7KhJ5E0D+mIo
-	OqsRjXdQ==;
+	bh=1BsiWFpQn5takhG8tcqf/7xB4zmGy3GbEtI5gNdaBYA=; b=NSW/inQzjTkQnljtiht0JG+mgl
+	Lsu2flLp3tES4Ob4V4DGNMu1yNiG4cbsicyf6O1epMRP9zM3QYl1k+7WxaQrASl47E4xL/uHOH30f
+	boSNti7b1NR+jP6rjCZVLdvqer9dJz2Fg7CQskffXaQ7lKnRjFhqK9UvDQY2rLJzf50K8Zla4BEIj
+	chLBsy4RQyDe5xis/u6JFknc9q2Ffn3+4zfmFf1Cz3YnMR/EEjcHk7Kr7ZeAAuswb7F/M63DdrK1O
+	/vpQP/psh2uOauoY0FY7QXoV3rIjmrHyvIXZqOXllovBnZooK53ylo7TuGzT+y9RjTgYYd+OisHB2
+	fwWH3cKg==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by casper.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xWxrG-0000000Gy2k-38k2;
-	Fri, 27 Nov 2026 15:27:30 +0000
+	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xWxrJ-00000007tkk-2EcX;
+	Fri, 27 Nov 2026 15:27:33 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xWxrG-00000000PqO-2345;
+	id 1xWxrG-00000000Pq4-0p3Y;
 	Fri, 27 Nov 2026 15:27:30 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -89,9 +89,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Liran Alon <liran.alon@oracle.com>,
 	Arbel Moshe <arbel.moshe@oracle.com>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v3 06/15] KVM: x86: hyper-v: Let userspace leave a hypercall uncompleted
-Date: Fri, 27 Nov 2026 15:27:21 +0000
-Message-ID: <20261127152730.99319-7-dwmw2@infradead.org>
+Subject: [PATCH v3 01/15] KVM: selftests: Make the x86 SSE register helpers volatile
+Date: Fri, 27 Nov 2026 15:27:16 +0000
+Message-ID: <20261127152730.99319-2-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261127152730.99319-1-dwmw2@infradead.org>
 References: <20261127152730.99319-1-dwmw2@infradead.org>
@@ -106,159 +106,120 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-A VMM handling KVM_EXIT_HYPERV_HCALL can only complete the hypercall:
-KVM writes the result and advances RIP.  The TLFS has some raise #UD
-at the instruction instead: a VTL return from the lowest VTL, for one.
+read_sse_reg() and write_sse_reg() were borrowed from KVM's
+_kvm_read_sse_reg() and _kvm_write_sse_reg(). The kernel is built
+without SSE, so the compiler never uses the XMM registers itself and a
+plain asm() is enough there. Selftest guest code is built with SSE, and
+there the asm statements have to tell the compiler what they do.
 
-Add a 'ret' field to the exit, which takes KVM_INSN_*: zero completes
-as before, KVM_INSN_UD and KVM_INSN_GP inject the exception, and
-KVM_INSN_RESUME does nothing, so an exception which userspace queued
-is taken at the hypercall.  It is opt-in (KVM_HYPERV_HCALL_RET):
-existing VMMs never zeroed the union.
+read_sse_reg() has an output and is not volatile, so the compiler may
+treat it as a pure computation and move it, for example ahead of the
+hypercall whose XMM output it is meant to read. write_sse_reg() has no
+outputs and is therefore implicitly volatile, but it doesn't declare the
+register it overwrites, so a value the compiler was keeping there does
+not survive.
 
-Link: https://lore.kernel.org/kvm/avuDUNAU_a933zvp@seanjc-mac.roam.internal/
+Mark both volatile, and declare the register each write_sse_reg() case
+writes as clobbered. A read_sse_reg() after __hyperv_hypercall() now
+stays after it.
+
+That still leaves the compiler free to use an XMM register for its own
+code between a write_sse_reg() and the asm which consumes it.
+hyperv_write_xmm_input() in the hyperv_ipi and hyperv_tlb_flush tests
+relies on that not happening; GCC 11.5 at -O2 emits nothing there.
+Closing that window entirely would mean passing the XMM values as
+operands of the hypercall asm itself.
+
+Fixes: 676a863ce605 ("KVM: selftests: Better XMM read/write helpers")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/all/sashiko-outbox-209724@kernel.org/
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- Documentation/virt/kvm/api.rst | 25 +++++++++++++++++++++++++
- arch/x86/kvm/hyperv.c          | 20 +++++++++++++++++++-
- arch/x86/kvm/hyperv.h          |  3 ++-
- include/uapi/linux/kvm.h       |  3 +++
- 4 files changed, 49 insertions(+), 2 deletions(-)
+ .../selftests/kvm/include/x86/processor.h     | 32 +++++++++----------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index 782c010a08a0..ea48247c2976 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -7336,6 +7336,8 @@ EOI was received.
- 					__u64 input;
- 					__u64 result;
- 					__u64 params[2];
-+					__u8 ret;
-+					__u8 pad3[7];
- 				} hcall;
- 				struct {
- 					__u32 msr;
-@@ -7372,6 +7374,23 @@ way, HvCallPostMessage in some cases among them;
- KVM_CAP_HYPERV_FORWARD_HCALL (see section 7.49) adds the hypercalls KVM
- does not implement.
- 
-+KVM sets 'ret' to zero, KVM_INSN_COMPLETE, which means that the
-+hypercall completes as described above.  With KVM_HYPERV_HCALL_RET
-+enabled, userspace may set 'ret' to another of the KVM_INSN_* values
-+instead (see :ref:`the description of completion <kvm_insn_action>`),
-+and the hypercall does not complete: KVM writes no result and leaves RIP
-+at the hypercall instruction.  KVM_INSN_UD and KVM_INSN_GP inject #UD
-+and #GP(0), the exceptions which Hyper-V raises when it refuses a
-+hypercall itself.  KVM_INSN_RESUME injects nothing: a VMM which wants
-+another exception (e.g. #PF with the address in exception_payload)
-+queues it with KVM_SET_VCPU_EVENTS before it resumes the vCPU, and the
-+guest takes it at the hypercall instruction.  'pad3' is reserved and is
-+zero.
-+
-+For a guest whose register state is protected (SEV-ES, SEV-SNP, TDX)
-+'ret' is ignored, with or without KVM_HYPERV_HCALL_RET: the hypercall
-+completes.
-+
- 	- KVM_EXIT_HYPERV_SYNDBG -- synchronously notify user-space about
- 
- Hyper-V Synthetic debugger state change. Notification is used to either update
-@@ -9293,6 +9312,7 @@ KVM_CHECK_EXTENSION returns, so features only ever use bits 0 to 30.
- The defined bits are::
- 
-   #define KVM_HYPERV_HCALL_FORWARD_UNKNOWN	(1ULL << 0)
-+  #define KVM_HYPERV_HCALL_RET			(1ULL << 1)
- 
- KVM_HYPERV_HCALL_FORWARD_UNKNOWN: a hypercall that KVM would otherwise
- fail with HV_STATUS_INVALID_HYPERCALL_CODE exits to userspace with
-@@ -9313,6 +9333,11 @@ KVM_GET_FPU/KVM_SET_FPU) before the vCPU is resumed.  Hypercalls that
- KVM implements itself, and the CPUID-enforcement checks KVM applies
- before dispatching a hypercall, are unaffected.
- 
-+KVM_HYPERV_HCALL_RET: KVM honours the 'ret' field of every
-+KVM_EXIT_HYPERV_HCALL exit, whichever hypercall caused it, and fails
-+KVM_RUN with -EINVAL for a value it does not define.  Without it the
-+field is ignored and every such exit completes.
-+
- 8. Other capabilities.
- ======================
- 
-diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index e72539f9acc9..67c9d20547d8 100644
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -2430,7 +2430,22 @@ static int kvm_hv_hypercall_complete(struct kvm_vcpu *vcpu, u64 result)
- 
- static int kvm_hv_hypercall_complete_userspace(struct kvm_vcpu *vcpu)
+diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+index 5898a277a2e0..571f8a602edd 100644
+--- a/tools/testing/selftests/kvm/include/x86/processor.h
++++ b/tools/testing/selftests/kvm/include/x86/processor.h
+@@ -866,28 +866,28 @@ static inline void read_sse_reg(int reg, sse128_t *data)
  {
--	return kvm_hv_hypercall_complete(vcpu, vcpu->run->hyperv.u.hcall.result);
-+	/*
-+	 * Userspace may say that the hypercall does not complete: the result
-+	 * stays unwritten and RIP at the instruction, where the guest takes
-+	 * the exception that userspace asked for, or queued itself.  Not so
-+	 * for a guest with protected state, whose hypercall can only complete.
-+	 */
-+	if (kvm_hv_hcall_feature(vcpu->kvm, KVM_HYPERV_HCALL_RET)) {
-+		u8 ret = READ_ONCE(vcpu->run->hyperv.u.hcall.ret);
-+		int r = kvm_insn_uncompleted(vcpu, ret);
-+
-+		if (r)
-+			return r;
-+	}
-+
-+	return kvm_hv_hypercall_complete(vcpu,
-+					 READ_ONCE(vcpu->run->hyperv.u.hcall.result));
- }
- 
- static u16 kvm_hvcall_signal_event(struct kvm_vcpu *vcpu, struct kvm_hv_hcall *hc)
-@@ -2716,6 +2731,9 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
- 	vcpu->run->hyperv.u.hcall.input = hc.param;
- 	vcpu->run->hyperv.u.hcall.params[0] = hc.ingpa;
- 	vcpu->run->hyperv.u.hcall.params[1] = hc.outgpa;
-+	vcpu->run->hyperv.u.hcall.ret = 0;
-+	memset(vcpu->run->hyperv.u.hcall.pad3, 0,
-+	       sizeof(vcpu->run->hyperv.u.hcall.pad3));
- 	vcpu->arch.complete_userspace_io = kvm_hv_hypercall_complete_userspace;
- 	return 0;
- }
-diff --git a/arch/x86/kvm/hyperv.h b/arch/x86/kvm/hyperv.h
-index 20d40261c75b..5b6220b17e77 100644
---- a/arch/x86/kvm/hyperv.h
-+++ b/arch/x86/kvm/hyperv.h
-@@ -206,7 +206,8 @@ static inline bool kvm_hv_hypercall_enabled(struct kvm_vcpu *vcpu)
- }
- 
- /* Features reported and accepted by KVM_CAP_HYPERV_FORWARD_HCALL. */
--#define KVM_HYPERV_HCALL_SUPPORTED	KVM_HYPERV_HCALL_FORWARD_UNKNOWN
-+#define KVM_HYPERV_HCALL_SUPPORTED	(KVM_HYPERV_HCALL_FORWARD_UNKNOWN | \
-+					 KVM_HYPERV_HCALL_RET)
- 
- static inline bool kvm_hv_hcall_feature(struct kvm *kvm, u64 feature)
+ 	switch (reg) {
+ 	case 0:
+-		asm("movdqa %%xmm0, %0" : "=m"(*data));
++		asm volatile("movdqa %%xmm0, %0" : "=m"(*data));
+ 		break;
+ 	case 1:
+-		asm("movdqa %%xmm1, %0" : "=m"(*data));
++		asm volatile("movdqa %%xmm1, %0" : "=m"(*data));
+ 		break;
+ 	case 2:
+-		asm("movdqa %%xmm2, %0" : "=m"(*data));
++		asm volatile("movdqa %%xmm2, %0" : "=m"(*data));
+ 		break;
+ 	case 3:
+-		asm("movdqa %%xmm3, %0" : "=m"(*data));
++		asm volatile("movdqa %%xmm3, %0" : "=m"(*data));
+ 		break;
+ 	case 4:
+-		asm("movdqa %%xmm4, %0" : "=m"(*data));
++		asm volatile("movdqa %%xmm4, %0" : "=m"(*data));
+ 		break;
+ 	case 5:
+-		asm("movdqa %%xmm5, %0" : "=m"(*data));
++		asm volatile("movdqa %%xmm5, %0" : "=m"(*data));
+ 		break;
+ 	case 6:
+-		asm("movdqa %%xmm6, %0" : "=m"(*data));
++		asm volatile("movdqa %%xmm6, %0" : "=m"(*data));
+ 		break;
+ 	case 7:
+-		asm("movdqa %%xmm7, %0" : "=m"(*data));
++		asm volatile("movdqa %%xmm7, %0" : "=m"(*data));
+ 		break;
+ 	default:
+ 		BUG();
+@@ -898,28 +898,28 @@ static inline void write_sse_reg(int reg, const sse128_t *data)
  {
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 5803c84cf8f8..e480544a3746 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -113,6 +113,8 @@ struct kvm_hyperv_exit {
- 			__u64 input;
- 			__u64 result;
- 			__u64 params[2];
-+			__u8 ret;	/* in: KVM_INSN_* */
-+			__u8 pad3[7];
- 		} hcall;
- 		struct {
- 			__u32 msr;
-@@ -128,6 +130,7 @@ struct kvm_hyperv_exit {
- 
- /* KVM_CAP_HYPERV_FORWARD_HCALL feature bits */
- #define KVM_HYPERV_HCALL_FORWARD_UNKNOWN	(1ULL << 0)
-+#define KVM_HYPERV_HCALL_RET			(1ULL << 1)
- 
- struct kvm_xen_exit {
- #define KVM_EXIT_XEN_HCALL          1
+ 	switch (reg) {
+ 	case 0:
+-		asm("movdqa %0, %%xmm0" : : "m"(*data));
++		asm volatile("movdqa %0, %%xmm0" : : "m"(*data) : "xmm0");
+ 		break;
+ 	case 1:
+-		asm("movdqa %0, %%xmm1" : : "m"(*data));
++		asm volatile("movdqa %0, %%xmm1" : : "m"(*data) : "xmm1");
+ 		break;
+ 	case 2:
+-		asm("movdqa %0, %%xmm2" : : "m"(*data));
++		asm volatile("movdqa %0, %%xmm2" : : "m"(*data) : "xmm2");
+ 		break;
+ 	case 3:
+-		asm("movdqa %0, %%xmm3" : : "m"(*data));
++		asm volatile("movdqa %0, %%xmm3" : : "m"(*data) : "xmm3");
+ 		break;
+ 	case 4:
+-		asm("movdqa %0, %%xmm4" : : "m"(*data));
++		asm volatile("movdqa %0, %%xmm4" : : "m"(*data) : "xmm4");
+ 		break;
+ 	case 5:
+-		asm("movdqa %0, %%xmm5" : : "m"(*data));
++		asm volatile("movdqa %0, %%xmm5" : : "m"(*data) : "xmm5");
+ 		break;
+ 	case 6:
+-		asm("movdqa %0, %%xmm6" : : "m"(*data));
++		asm volatile("movdqa %0, %%xmm6" : : "m"(*data) : "xmm6");
+ 		break;
+ 	case 7:
+-		asm("movdqa %0, %%xmm7" : : "m"(*data));
++		asm volatile("movdqa %0, %%xmm7" : : "m"(*data) : "xmm7");
+ 		break;
+ 	default:
+ 		BUG();
 -- 
 2.50.1
 
