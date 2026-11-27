@@ -1,57 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=210.118.77.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795780743;
-	b=tAtq3+PjXRLzbUCzzHbepFw3RCIjeOlCHEyx0D3C1LBg2CFxDhk6Z4yf1yZEJlY/lcnD
-	 iqnrLlw8BzP7HSevzsTdcTJhosG3/vRgotPGkOGlxJpxRTm9Clti7CP847SIz+LZEgZTc
-	 ptJ1GYdZQzy9C1LKVY9NkzchZ2S+H+IhrBlZlqFqeGo3hfYOadce+hk4ABkItQMOk9mrh
-	 CmSzFz3XfKAq3nk0zA/UIO9wQBvk4F6GqCPCO2iLu7EVMW0kAnIFrbnQ09M2EAhSJsPtX
-	 H+2nIHXSd3paKEHCyhanFJ6BUYeJUNX4a782N0XcL+gX5E3PHi9ZcEbP+8lTk2aHz6Q==
+	t=1795780744;
+	b=EvkKSai+Qk6eVjv86hAnLjQ/kUjqROTi4SZ3pJd/SiPznsmdAxL4GiAJGQJ63Yo/Aeai
+	 yLkihi7sOD5evw3ePsGj0YDbAR2E/m5ne1RuzvEM2pSxoT0w5138rN9fffNx/N6ySEErU
+	 q/B9UQzw7kcJvIC5vzZb+zBg5UR9UGX+6dKFqwkca/eAnoPJ6BjjjMTgXTSn6I2Y3N/3/
+	 GvuTH94BEvlAw8tOdk7CTNkNN7VFD/HWlaL9B138c3dvhx08YaWE46DqPCqw+cbMWyldp
+	 tezWjYSLwerniLrYOuc/f+BnAUYtcog0DLPVE768ahn3J3mDh3jC9mUwwhiNQMxkc1Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795780743;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795780744;
 	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:MIME-Version:
 	 Content-Transfer-Encoding:X-CMS-MailID:X-Msg-Generator:Content-Type:
 	 X-RootMTR:X-EPHeader:X-CMS-RootMailID:References;
-	bh=22tX+yU7I7HmNJKs5o0R5O/j6HPhCaItzCZ7BgwjO4k=;
-	b=z9rSEFVE57OeT/+jkPXb5qzrDsQ1zqT4bcfSUL7ppWFCKnsNMQpT6c+y1HiSVQZ5WHRx
-	 RR9/WpkPOdgfKJrf77kFS4bY8qYugcSHn46nr4eUr2zBRTRu3C1zP279FCMwEMT/Tm3Wv
-	 zpbNNPFcmGUUScK0m/K/KoFkJ9zvBCv/WyH9uic6peFjD7sn/fjondgnSV/RGZkA5LgBY
-	 yfSKqEYPhouLEA89b7kY7cmK/K/aoXr8Ntxff4Pkpzi3+jhGvH5vGAQGdklKjfXkYPzKx
-	 R9Hlg9Xk4MeH7fPNntnTCE8/0XcoEZX1ZMNyu69K8RTPoOD3M1CLV39B+3ttp4JuD7g==
+	bh=Id3upqDD1i+LHsGcQdVswyP8vuaFBxcYGp5N04HwHyM=;
+	b=eMdnyZrPbb+S2NEOWvwDPzfCXbkZBq+xEDX/Xo/LIwGRnsiiZ8/n/Btg1BuOicPfg1ue
+	 8cargYLRG13jEq4UWL5kLb1rgMMiR95A+JeXu+42voeffHg44kkqUP9Ye3K5Ca992lpM8
+	 y7fL6wpztW4QRlUABg/gPHCJLhbcN7vm/rGHjNxQEbp0xGS4qE+zSk5R1ZO/W5YmI4dvH
+	 PSNqMd7KUA0v+hw5aGzdiimXrWdAYaaXN+QKZCkaP2mOV0ReHyyzQCZbJpQkESmaJ92Q2
+	 nGmkxd+2rdyIyYvsg7Qt/CYGvm4NMlWYu5Q2+/X+1BRoh8RlugFkypTJvQGRk5xmQpA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=samsung.com;
 	spf=pass smtp.mailfrom=samsung.com;
-	dkim=pass header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=RonQfvQ6;
-	arc=none smtp.remote-ip=210.118.77.11
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	dkim=pass header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=eTDDdgdJ;
+	arc=none smtp.remote-ip=210.118.77.12
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30AB606A329
-	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 11:59:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F30AB606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D067606A69F
+	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 11:59:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3D067606A69F
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=RonQfvQ6
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=eTDDdgdJ
 Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20261127115858euoutp0156bab68101828197b8831f77d3b8cb77~r5RFAZ4xh2519325193euoutp01T
-	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 11:58:58 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20261127115858euoutp0156bab68101828197b8831f77d3b8cb77~r5RFAZ4xh2519325193euoutp01T
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20261127115902euoutp02a12f4a137bf8985dce657da1009f59be~r5RIx3ZwY1536315363euoutp02j
+	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 11:59:02 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20261127115902euoutp02a12f4a137bf8985dce657da1009f59be~r5RIx3ZwY1536315363euoutp02j
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1795780738;
-	bh=22tX+yU7I7HmNJKs5o0R5O/j6HPhCaItzCZ7BgwjO4k=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=RonQfvQ6uYtleM8SVajLLe9ZIC2xv34em9i2BT75/+6eiWQIqGrI0jY1rEvBxMoyi
-	 jEAvBQ4Eqe7JrBaxVMgj8Bwmd7K9X09akl0DiPVrmnnJTAab/DdHuxJzhFAm2vVflN
-	 BhDXuisaKeCn6+9ozn/tNvuYZVYxmvaaknUhaVgE=
+	s=mail20170921; t=1795780742;
+	bh=Id3upqDD1i+LHsGcQdVswyP8vuaFBxcYGp5N04HwHyM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=eTDDdgdJ9gPOOx7Xw2sMngNEd0oxJe1W9gj3acfWV4ZIIPZawecBhxm2tmZAPe5D4
+	 Mr6d8NPXukg82mYDgdIh30MdUfPD8obx07k9USmhKVWCJuASlFHqGczPi3hRN6shuX
+	 8wlZ3ncNeGtX/HG/xrhNoXuMLoemC0l92kG8WBFk=
 Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20261127115858eucas1p1ac63e4ce0f221453e8666ab9723a2ae0~r5REn8Iid0792807928eucas1p1q;
-	Fri, 27 Nov 2026 11:58:58 +0000 (GMT)
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20261127115901eucas1p22ee3dbe744707c23f8ac2442f755e041~r5RH9qnN12876328763eucas1p2J;
+	Fri, 27 Nov 2026 11:59:01 +0000 (GMT)
 Received: from AMDC4653.digital.local (unknown [106.120.51.32]) by
 	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20261127115857eusmtip17e501e01b3810e026b6e3248567c99ee~r5RDrUILg0610906109eusmtip1o;
-	Fri, 27 Nov 2026 11:58:57 +0000 (GMT)
+	20261127115900eusmtip1b004ba38c6e7a6b1daeab6d50a5c4eca~r5RG3wJIQ0138901389eusmtip1M;
+	Fri, 27 Nov 2026 11:59:00 +0000 (GMT)
 From: Marek Szyprowski <m.szyprowski@samsung.com>
 To: iommu@lists.linux.dev, linux-media@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org, kvm@vger.kernel.org,
@@ -64,12 +64,14 @@ Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy
 	<alex@shazbot.org>, Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
 	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>, Abhinav Kumar
 	<abhinav.kumar@linux.dev>, Bryan O'Donoghue <bod@kernel.org>, Mauro Carvalho
-	Chehab <mchehab@kernel.org>, Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 0/4] iommu/dma: restore flush queue use in
- dma_iova_destroy()
-Date: Fri, 27 Nov 2026 12:58:44 +0100
-Message-ID: <20261127115849.2780625-1-m.szyprowski@samsung.com>
+	Chehab <mchehab@kernel.org>, Hans Verkuil <hverkuil+cisco@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 3/4] dma-mapping: add DMA_IOVA_FLAGS mask for the
+ dma_iova_state size flags
+Date: Fri, 27 Nov 2026 12:58:47 +0100
+Message-ID: <20261127115849.2780625-4-m.szyprowski@samsung.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261127115849.2780625-1-m.szyprowski@samsung.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -80,70 +82,87 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20261127115858eucas1p1ac63e4ce0f221453e8666ab9723a2ae0
+X-CMS-MailID: 20261127115901eucas1p22ee3dbe744707c23f8ac2442f755e041
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20261127115858eucas1p1ac63e4ce0f221453e8666ab9723a2ae0
+X-RootMTR: 20261127115901eucas1p22ee3dbe744707c23f8ac2442f755e041
 X-EPHeader: CA
-X-CMS-RootMailID: 20261127115858eucas1p1ac63e4ce0f221453e8666ab9723a2ae0
-References: <CGME20261127115858eucas1p1ac63e4ce0f221453e8666ab9723a2ae0@eucas1p1.samsung.com>
+X-CMS-RootMailID: 20261127115901eucas1p22ee3dbe744707c23f8ac2442f755e041
+References: <20261127115849.2780625-1-m.szyprowski@samsung.com>
+	<CGME20261127115901eucas1p22ee3dbe744707c23f8ac2442f755e041@eucas1p2.samsung.com>
 
-Hi,
+dma_iova_state::__size uses its top bit to record that SWIOTLB was used
+for one of the linked ranges. Users that mask or validate sizes refer to
+DMA_IOVA_USE_SWIOTLB directly, so adding another flag would require
+updating all of them.
 
-Commit 1acce29926d9 ("iommu/dma: simplify dma_iova_destroy() and drop
-the free_iova helper") made dma_iova_destroy() always invalidate the
-IOTLB synchronously and free the IOVA directly, bypassing the flush
-queue on DMA-FQ domains. As Sibi reported [1], this makes iommu.strict=0
-ineffective for NVMe I/O (blk_rq_dma_map()) and costs about 4x of
-sequential throughput on SMMUv3 without RANGE_INV.
+Add DMA_IOVA_FLAGS covering all flags kept in __size and use it in
+dma_iova_size(), in the size check of dma_iova_try_alloc() and in the
+vfio-pci dma-buf length validation. No functional change.
 
-This series is an alternative to the revert proposed in [1]. Instead of
-restoring the free_iova flag, dma_iova_try_alloc() decides once whether
-the IOVA space is going to be released through the flush queue and
-records that in a new DMA_IOVA_USE_FQ flag in dma_iova_state::__size,
-next to DMA_IOVA_USE_SWIOTLB, so struct dma_iova_state does not grow.
-dma_iova_destroy() then unmaps with a gather queued according to that
-flag and retires it together with the IOVA free, exactly like
-__iommu_dma_unmap(): either by iommu_iotlb_sync() or by handing the
-IOVA (and any released page table pages) over to the flush queue. The
-gather is never left dangling and the IOVA is never returned to the
-allocator before a pending queued invalidation, as pointed out by Jason.
-dma_iova_unlink() stays strict, as the unlinked range remains owned by
-the caller and may be linked again right away. The whole reservation is
-still freed, keeping the size fix of the original cleanup.
+Cc: stable@vger.kernel.org # v7.3+
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+---
+ drivers/iommu/dma-iommu.c          | 8 ++++----
+ drivers/vfio/pci/vfio_pci_dmabuf.c | 2 +-
+ include/linux/dma-mapping.h        | 8 +++++++-
+ 3 files changed, 12 insertions(+), 6 deletions(-)
 
-Storing a flag in the upper bits of __size requires that nobody reads
-__size directly, so patches 1-2 convert the venus and iris IOVA
-reservation code to dma_iova_size() and patch 3 adds a DMA_IOVA_FLAGS
-mask used by dma_iova_size(), dma_iova_try_alloc() and the vfio-pci
-dma-buf length check. Patch 4 is the actual fix.
-
-The series has been developped with an aid of LLM, build tested on arm64
-and x86_64. Sibi, it would be great if you could rerun your fio test on
-top of it.
-
-[1] https://lore.kernel.org/all/20261125135120.1126571-1-sibi.sankar@oss.qualcomm.com/
-
-Best regards
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
-
-
-Patch summary:
-
-Marek Szyprowski (4):
-  media: venus: use dma_iova_size() to check the reserved IOVA size
-  media: iris: use dma_iova_size() to check the reserved IOVA size
-  dma-mapping: add DMA_IOVA_FLAGS mask for the dma_iova_state size flags
-  iommu/dma: restore flush queue use in dma_iova_destroy()
-
- drivers/iommu/dma-iommu.c                     | 111 +++++++++++++-----
- drivers/media/platform/qcom/iris/iris_probe.c |   3 +-
- drivers/media/platform/qcom/venus/core.c      |   3 +-
- drivers/vfio/pci/vfio_pci_dmabuf.c            |   2 +-
- include/linux/dma-mapping.h                   |  14 ++-
- 5 files changed, 98 insertions(+), 35 deletions(-)
-
+diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+index 78742aeba932..99eb382a1359 100644
+--- a/drivers/iommu/dma-iommu.c
++++ b/drivers/iommu/dma-iommu.c
+@@ -1838,11 +1838,11 @@ bool dma_iova_try_alloc(struct device *dev, struct dma_iova_state *state,
+ 		return false;
+ 
+ 	/*
+-	 * DMA_IOVA_USE_SWIOTLB is flag which is set by dma-iommu
+-	 * internals, make sure that caller didn't set it and/or
+-	 * didn't use this interface to map SIZE_MAX.
++	 * DMA_IOVA_FLAGS are set by dma-iommu internals, make sure that
++	 * caller didn't set them and/or didn't use this interface to map
++	 * SIZE_MAX.
+ 	 */
+-	if (WARN_ON_ONCE((u64)size & DMA_IOVA_USE_SWIOTLB))
++	if (WARN_ON_ONCE((u64)size & DMA_IOVA_FLAGS))
+ 		return false;
+ 
+ 	addr = iommu_dma_alloc_iova(domain,
+diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
+index c16f460c01d6..8bda610dd988 100644
+--- a/drivers/vfio/pci/vfio_pci_dmabuf.c
++++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+@@ -211,7 +211,7 @@ static int validate_dmabuf_input(struct vfio_device_feature_dma_buf *dma_buf,
+ 	 * dma_iova_try_alloc() will WARN on if userspace proposes a size that
+ 	 * is too big, eg with lots of ranges.
+ 	 */
+-	if ((u64)(length) & DMA_IOVA_USE_SWIOTLB)
++	if ((u64)(length) & DMA_IOVA_FLAGS)
+ 		return -EINVAL;
+ 
+ 	*lengthp = length;
+diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+index efde0e5a58dc..0ebf3090ea0f 100644
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -135,10 +135,16 @@ struct dma_iova_state {
+  */
+ #define DMA_IOVA_USE_SWIOTLB		(1ULL << 63)
+ 
++/*
++ * All flags stored in the upper bits of dma_iova_state::__size. Sizes passed
++ * to dma_iova_try_alloc() must not overlap with them.
++ */
++#define DMA_IOVA_FLAGS			DMA_IOVA_USE_SWIOTLB
++
+ static inline size_t dma_iova_size(struct dma_iova_state *state)
+ {
+ 	/* Casting is needed for 32-bits systems */
+-	return (size_t)(state->__size & ~DMA_IOVA_USE_SWIOTLB);
++	return (size_t)(state->__size & ~DMA_IOVA_FLAGS);
+ }
+ 
+ #ifdef CONFIG_DMA_API_DEBUG
 -- 
 2.43.0
 
