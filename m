@@ -1,46 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795798914;
-	b=uK6/LPaZxdXDB44OfPEX2spkizCu2QUfErXIYawPP9dtCwvGA/OukmzdOqkBSuPK6/l/
-	 SeeAm4p2OIdhDmP0moSB/hBqpjDIaV7a6bhNcN+Zn2xlTP8dO95uii2oyM3jb9Yv/P3NG
-	 s9r5AUqHTG1/u9K7Sa5VH6D9K/H4CERhlvGECEoSxfs/VBYQHXHl2TWjYhPGhRRZgzxzY
-	 XR/Avc5J03Fm57F4FdIVnF4YeWQCZypINEzlO7vBX0MJOJQieTOANgX/+aNiy4YPHtg64
-	 i2WYuTMmiXA09k2bFgE/3hZ2b7A+VCmuT4Ri0Yau3yHNuCe1t089HxQIS8V7iHYlKHQ==
+	t=1795798917;
+	b=V6lflquKd7QoQGT6CkIywOaG/Yk4prQz3rNkFBi/55Cyx5mxz9oeCmLoXv5Mg4ObU+GI
+	 Zt5/IfBDWon2zD1SfPsJzOppJ4Rd5eAm1sNkkBfE7Bcf/U+mvjwat4fkt8/DUEmQ7TNR+
+	 WNhfBo4cduOsmnnHD0omTlJjXUzsgAAFBreZRrypBVAEit65jvgUZgA5zvSjEEJVDAGmh
+	 HaHwW0yygj+gpsWjCrVj82ofXVnhEnF2uBfQX0rzZTacnh5wQUX8PpJb6Vn6q+J3h/IR8
+	 Jc4aEZtR3FKmj5+fRUytzhfa/pTXlZ6l5k+cdD/w8ytOQ7XfeCZ2wc9DvmcGlIX88pw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795798914;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795798917;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
-	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=yak0TBXxkIdwwljthgNRCuvzQfGfzhWNeK/HbAUVqGw=;
-	b=sfkJ2gkKyRjNLsk9CMhmUtsB3j/qACD6KFLQ3aFI1UU4+EXX54/HhAtSZ22MUD80N+fB
-	 QiqYf9lpgQ+v/uvlDmSZLfym48gThTO9+Qa8/GZ5WmYjZ+UDYKDqJUKBmJpluLL/EbaQ1
-	 6SwMbIY1sjAySRn0iSbbHIotYy277Ipi9zwebQ76gX4/q7CyPh7LsPkL013aUaKl4ct9k
-	 YcmPKoGAN1i9YKzU2v+8XZuXwHBnk9MbkSYcR/hoDoMtfhhknRn4yUuKndrxfliaw7rI1
-	 N3dQFHjLvJZQRLEzXtItQI6E1MiNTs50rrjsTP9CEyHb1W2xNy/v4x0Zue1iACkIwdA==
+	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=R7arVPQFINgfmvaThkX4cGwxR9rvbSIVuD6b/IWXSj8=;
+	b=QRnm9fU55PEfwc+sLBInOTAC7o+9roVmo0gQqYR0K3dndU/8eeM7oGjcQsYg1ISAwCCT
+	 GjlgyN5MpUD/hzsf6TDB0C60s/fDemrOdwkbo3tozVZLK4lWvQqFJuBYk8YpI9KcQZpPL
+	 1+D3T/xi9lnM9+GSRQO3UcI4jq+PW6nQYdzGFvqr9oBielyvM+CYw5Ql7J12L6ph3c2hH
+	 5bsq9DfC0lISUrC1nvdxUr2KI5TsCSCyQVtzXQ7oq9oLhTjVTWKo0UfB300HTrTy0bNso
+	 WwHhS5/muwNii6Jhx6klxCJsbk+646wXqeBCdhysc4nRpUzeCmsh88o+WY2OVeUW5Ew==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=sDC7sOFW;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b="ud3C/80H";
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3EB606A330
-	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 17:01:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C3EB606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE18606A326
+	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 17:01:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CBE18606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=sDC7sOFW
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=ud3C/80H
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9B2D51575;
-	Fri, 27 Nov 2026 09:01:49 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5C496169E;
+	Fri, 27 Nov 2026 09:01:53 -0800 (PST)
 Received: from e133894.cambridge.arm.com (e133894.arm.com [10.2.80.62])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 51E443F632;
-	Fri, 27 Nov 2026 09:01:51 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1D08E3F632;
+	Fri, 27 Nov 2026 09:01:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795798912; bh=K+cUO7Dn+yO33q5iHEwYw8NGo8L9v6Vj72w72CV+Dgw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=sDC7sOFWOv16B/VaUOgYi945RS2fUica6zLQv9faYf/sTIJJiIB+r+VHP3dbYBrQn
-	 aIP7X2A3JN1idvSoaJ+UOqcD9dv306Jy3SYiMMAVrgLis3jkiglVUl/HuyrJYCRyuf
-	 Dj5VnyjS8dPOVUyoNBZ7VnAcbB0yj1Ye8ITbJEvU=
+	t=1795798916; bh=2CrNkn059Py+6JSBmj/RbmhlCO93bsgfPfqoA1+/+pA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ud3C/80H2+1gki93e+zQlhENeKJu4dfgXnRE1DcxFwVRJmf3THldzlZmiWCgBQAbn
+	 +nhKoLGIXhgPi5G5K4BoTwx9HAlsmsyMQOvheftm2uZkp24YySPDIkza+5V+A7Xcey
+	 bCLbucQhPXIBDyrkPZ1sGUQGoHVhi60YR0yC854Y=
 From: Sascha Bischoff <sascha.bischoff@arm.com>
 To: will@kernel.org,
 	julien.thierry.kdev@gmail.com
@@ -50,10 +51,12 @@ Cc: vladimir.murzin@arm.com,
 	kvmarm@lists.linux.dev,
 	timothy.hayes@arm.com,
 	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH kvmtool v7 00/23] arm64: Support GICv5-based guests
-Date: Fri, 27 Nov 2026 17:01:22 +0000
-Message-Id: <20261127170145.4138182-1-sascha.bischoff@arm.com>
+Subject: [PATCH kvmtool v7 01/23] arm64: Propagate IRQ routing initialisation errors
+Date: Fri, 27 Nov 2026 17:01:23 +0000
+Message-Id: <20261127170145.4138182-2-sascha.bischoff@arm.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261127170145.4138182-1-sascha.bischoff@arm.com>
+References: <20261127170145.4138182-1-sascha.bischoff@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -65,89 +68,33 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series adds support for GICv5-based VMs to kvmtool. These are
-exposed as --irqchip=gicv5 and --irqchip=gicv5-its, where the former
-creates a vGICv5 device and the latter adds a GICv5 ITS. The GICv5
-specification can be found at [1].
+irq__routing_init() can fail while allocating entries for the default
+routing table. gic__init_gic() currently ignores that error and
+continues with a partially populated table. Return the error before
+the VGIC is marked as initialised.
 
-The GICv5 support in KVM needed by --irqchip=gicv5 is available as of
-Linux v7.4-rc1. The GICv5 ITS support is described in [2]; using
---irqchip=gicv5-its requires a KVM build with those changes.
+Reviewed-by: Vladimir Murzin <vladimir.murzin@arm.com>
+Tested-by: Vladimir Murzin <vladimir.murzin@arm.com>
+Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+---
+ arm64/gic.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-The series teaches kvmtool to create the GICv5 irqchip and ITS KVM
-devices. It describes the GICv5 CPU interface, IRS and ITS in the
-guest DT, updates the timer and PMU interrupt descriptions, and
-generates GICv5 interrupt specifiers for platform devices and PCI. It
-also maps PCI MSI requester IDs to the ITS. The IRS support is built
-and exposed before the ITS support, so the GICv5 irqchip support can
-be merged separately from the ITS changes.
-
-Compared with v6 [3]:
-
-* Rebased onto kvmtool upstream at 2f3abe56 as requested.
-* Adapted patch 16 to the upstream FDT helper that generates multiple
-  interrupts for a device. Use the selected GIC's SPI type and base
-  for each interrupt in the list.
-
-The v7.4-rc1 header sync includes GICv5 IRS UAPI, but not GICv5 ITS
-UAPI. Patch 19 mirrors the ITS definitions from [2]. Once that UAPI
-lands upstream, the headers should be resynced against the latest
-Linux headers before merging the ITS support.
-
-Thanks,
-Sascha
-
-[1] https://developer.arm.com/documentation/aes0070/latest
-[2] https://lore.kernel.org/all/20261102194454.4086911-1-sascha.bischoff@arm.com/
-[3] https://lore.kernel.org/all/20261125151356.2875108-1-sascha.bischoff@arm.com/
-
-Sascha Bischoff (23):
-  arm64: Propagate IRQ routing initialisation errors
-  arm64: Close the ITS descriptor when setup fails
-  arm64: Split GIC device setup
-  Sync kernel UAPI headers with v7.4-rc1
-  arm64: Add GICv5 irqchip device support
-  arm64: Configure GIC interrupt bases
-  irq: Allow the initial interrupt line number to be set
-  arm64: Start GICv5 SPI line allocation at zero
-  arm64: Configure the GICv5 IRS
-  arm64: Define GICv5 interrupt types
-  arm64: Describe the PMU interrupt for GICv5
-  arm64: Describe timer PPIs for GICv5
-  arm64: Assign CPU DT phandles
-  arm64: Describe the GICv5 CPU interface in the DT
-  arm64: Describe the GICv5 IRS in the DT
-  arm64: Generate GICv5 SPI specifiers for platform devices
-  arm64: Generate GICv5 PCI INTx specifiers
-  arm64: Expose the GICv5 irqchip option
-  arm64: Add proposed GICv5 ITS UAPI definitions
-  arm64: Add GICv5 ITS device support
-  arm64: Describe the GICv5 ITS in the DT
-  arm64: Map PCI MSI requester IDs to the GICv5 ITS
-  arm64: Expose the GICv5 ITS irqchip option
-
- arm64/fdt.c                         |   7 +-
- arm64/gic.c                         | 359 ++++++++++++++++++++++++----
- arm64/include/asm/kvm.h             |  18 ++
- arm64/include/kvm/fdt-arch.h        |   1 +
- arm64/include/kvm/gic.h             |  15 ++
- arm64/include/kvm/kvm-arch.h        |  16 ++
- arm64/include/kvm/kvm-config-arch.h |   2 +-
- arm64/pci.c                         |  24 +-
- arm64/pmu.c                         |  13 +-
- arm64/timer.c                       |   8 +-
- include/kvm/irq.h                   |   1 +
- include/linux/kvm.h                 |  23 ++
- include/linux/virtio_console.h      |   2 +-
- include/linux/virtio_ids.h          |   1 +
- irq.c                               |  15 +-
- powerpc/include/asm/kvm.h           |  18 ++
- riscv/include/asm/kvm.h             |  17 ++
- x86/include/asm/kvm.h               |   4 +-
- 18 files changed, 478 insertions(+), 66 deletions(-)
-
-
-base-commit: 2f3abe56dcd2658dc6dae3eeeb4996dc4b518bcf
+diff --git a/arm64/gic.c b/arm64/gic.c
+index 1e400962..debb0381 100644
+--- a/arm64/gic.c
++++ b/arm64/gic.c
+@@ -344,7 +344,9 @@ static int gic__init_gic(struct kvm *kvm)
+ 		}
+ 	}
+ 
+-	irq__routing_init(kvm);
++	ret = irq__routing_init(kvm);
++	if (ret)
++		return ret;
+ 
+ 	if (!ioctl(gic_fd, KVM_HAS_DEVICE_ATTR, &vgic_init_attr)) {
+ 		ret = ioctl(gic_fd, KVM_SET_DEVICE_ATTR, &vgic_init_attr);
 -- 
 2.34.1
 
