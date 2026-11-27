@@ -1,99 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.219.41
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1795749191;
-	b=Fc4pbisI0JOAMgHMWrKdDLKOWrjvHvBgemE/HmroOD3nfXpu5ZeTc1squSDarCZlSICC
-	 2OQBb+fodHbu3bksgNuLLT+BUxE2yTw1iWlZsztSLLGptMExXAx7lfLCaW/XiPDK1sdY0
-	 WoVFb0bpgCp0lZaTg+zBGbmV/H5C5U4agIJR4btvq25m2qrnEa5Gp/LrVi8dBOJSH1rbt
-	 2DzyOZo9YVMDLlWVR/Ns3m1PZvjJJEwwnE3hAsGLrRg0Y3uJ5qmf9RccLgTDTDr90BJ2P
-	 vueJULpUvGLy04jiAlmzDT14IiQ3c6vxVqf2jOIY1/s0KIdPd5cEtTjPLQgZb62WcRw==
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.170
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795751119;
+	b=g/C1HAv9cjdqppMHGVxMWP8GkHXjwzraGnR2krhZt13p+Y3kqev1kV3fyFqZXBnWLpCi
+	 mcXkGqmAE+xvjbdu5tWxxjbyTch4tw7CpcHHdLZ5oTFeP5Bsj1QRJEjQ//A1rHMWFJeHS
+	 V5sabKK642iAKjwgErhx3AVvz1G6N3kj1/bGHJx8PRXx57duPNavxnZqQyKVIJVRoqvZ0
+	 6zbazIr7ejWHc01W6iVaUHtPqYg4xCzW6gniak5iAl1xiDtw5uHdYOBwBbtN/0RnAbs3q
+	 fgpwkir+dsDE95bsb9ye+uGqpJJWlHjkEs4VbOWk0iCSlC/J4ysRGh9Jw6IikGe/o3g==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795749191;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795751119;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=geBVe5+FjVMWnHT2yy+iTXd1DdAvYMOm86ikvWMsAC8=;
-	b=nbamohL2f7BFRJqGlyjmpz2Yw7yYZhipyvvNoWI3Adxcv9UaRofq3e3ENiCUQ05kS0UO
-	 QpiCia+kcTmBcDux69RVs6F+IRwfehZkN9ZxuNiisMRz3uG6hHKmTj5zaV2n5MexwCGS3
-	 xag/9GrYKs8pDAchyY1juFvOi4anQK3sghnrqAh4wbPOT45EDoPy8DIhNr+GH7VGdzWxq
-	 TV8o+pfIdo8H1QnRZyf0jMH172NmBJSbvxY5g8huZWmZz/MCf/m9F6zkkRtqzbxLuNr40
-	 XqAblayCXuT6ViiGdV070jiC90Y86Et3IRVGiQ3H4oRYLn3PjokLOKS5JKSsz4OxWOw==
+	bh=FbnZURxMx4LYMK8HegrQ0qedsvGCdsjG/NAXgIAIpJs=;
+	b=Tzl/mmobI2bv9D7aiQ/g0HeY5WCDg2LAWCYdP7ETaL4ApjwMX/fUqrLxp5++RKGTuIzL
+	 HGAH5McWhMyE8t7pOMKa0npD28A258LE83GD4Cn8no30YmTT8EIPQCUxfMy1jijFI2ZJR
+	 hNTcAGCrxwpp/ggG574jxgXisI0KtjVCB/MBQVYnZ1l4FLLj5c8vL0cmgm/rRtctB97tE
+	 bfEEVJBw5EXzffBE6/iBQMIRfr0e3/+w8BESgHrRdl0TsFMcs7LL+wOjk4CtBcDLEQMeL
+	 MyNNm5cvU+Yplv0ShGAloyihpZ4Hb9FWMghwKT1wK7yQ1tg6FKJdkrDUXlY09CoXgVQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hgqNZrt9;
-	arc=fail smtp.remote-ip=209.85.219.41
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XJ6JJEP4;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.170
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6BF606A323
-	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 03:13:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5A6BF606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A679A606A31E
+	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 03:45:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A679A606A31E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hgqNZrt9
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-9211bbce3abso58920206d6.3
-        for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 19:13:11 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795749190; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XJ6JJEP4
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-94a08e4f95eso188380385a.1
+        for <kvm@vger.kernel.org>; Thu, 26 Nov 2026 19:45:18 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1795751117; cv=none;
         d=google.com; s=arc-20260327;
-        b=U86TN3jWaTDdnkuEHaZL/DvA1Xn/KVCAoErVvZhX+CxFMrGRlFbMzCASEYhPSbDYAZ
-         nMy3J4J9KUpiEprXCbhR6ZPytt/TDmeJ8PNaQn4e4DktSTW30dBg4xCSH0/ePRfxV3pF
-         c+ji+7aK1SeLWJmftN9FKMn54zbqYqm/KYDpYNQBevoDF4SiWR6d2e0tPW1pVxnn5rrj
-         j67Y5s5QT3BjXaksavDu1nGHrRiI0DRkiZmWaxyFqBpzM5HoL8aUm7Xic1a/fZ1bOFkL
-         n1HRhI7uhyKoqY0asmN9KkmEIQh1bKmR1+lxV7/IZjIuSG0Ho+HTkb/eUrBX7ZGNQ8A3
-         duvg==
+        b=hBHYS0XlqAa4es06xlOGp9xs8oawO1z7u4QOFPps02sKTPhWetHF+4y6Vr+qPhTWkD
+         Nfj/BKekKYB0XQJwNn7mGZhdcOzg9x670VTqIYo2S/y2tczBJwiod/x6Q9g5Eg+0Vm4O
+         ZJoOznyiRryXXb519c9jCpB0W48N+/2K6Vf0xVLKgvJ0K2Ob/JecGG66htQrtcK/Sm6C
+         ybHiy4rsccgyeEaKkabmV9eGICLZ8p/npounaxrjjr57q+XDWNTcn6rKqUtNbatcckyr
+         M6gN4WByxm8VWy+dN0ulqZiAlhORo29eE7WFiur56iI5KK7mlRoIHvfNhO6EoSLHzTCt
+         GoQg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=geBVe5+FjVMWnHT2yy+iTXd1DdAvYMOm86ikvWMsAC8=;
-        fh=dqEqU/6OCMW8g2kjYSRBvPu2HqX1B6/6SXhC6OvU3TI=;
-        b=WKt66iIsvpbmwKrm5MHjE3wSqfYkIt26/VnW1IchE6ZjocoZSBZtRixpgEkZY09NUO
-         NCKv0e5dJvW7lsXd0KEr7AcLwxcvRW/TLsky068wRv/iI3KLbzHPYD+cH+jZ7D9t39Yi
-         3m//rPbOIx9q4FqKDibhaRU/hKiqSjmBayRXpvQAr2qQTGIfHUUh0YsWvPGic+sLMDeG
-         ulO4DgiyZGgf9yvu6L7o5b3KW0+lUmiz+8Tbo6MP7VRJsyHOgchJyHWfXLRi7NyFg92L
-         8U83QCFbMSJiqvDTFCHnOIDWbgY5aslcb74J0yUUWLehDW0jB/WvXTYjYxvrMX9dHXw9
-         LUCA==;
+        bh=FbnZURxMx4LYMK8HegrQ0qedsvGCdsjG/NAXgIAIpJs=;
+        fh=3EflJu+TUK5oa3DSnWkXJ6nLJHWfg7cGmF94eDsD0DI=;
+        b=I3KrZT+F923nFraA7rU6z7YpNyuKCHdRQEvKbToq60740IXciu06TnGWbK9/+y6ceX
+         9EpIjrUs1+1tiBCNB1Y82HaLZE9+huoJdCROQYoHvxNAgN/0TVfO7znjh8J6Rkr9TqIQ
+         O6+ZLSU5gXYpirXbqaSZpoGn1QvGemWF7fSZBW1VHjTu9WgB7Tai0ViG88AGlSGgLHNM
+         jf7IW8ysMBSRTc8k9wLcF49mV5WXlgl6BAxvWUpc5jrcoLu7+h3xfCgfSvyWB0YlEn81
+         8PdpXNkTTClv4CVgItr70qRQPT+jv6eWiRz+f/Gv8l9eS/LoI3q+xxLFVI7MqxyXpiwL
+         FGwQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795749190; x=1796353990; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1795751117; x=1796355917; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=geBVe5+FjVMWnHT2yy+iTXd1DdAvYMOm86ikvWMsAC8=;
-        b=hgqNZrt9UP2DQwF4uuE5FKyiHisS2VYwSaRio/dRcvqnP2dWgh6d9pJBosAP2grku9
-         SWvIzkYcC+ev5ZsXyqj7C0WAEwoxyj+opbq2lACHeOgrFDhvoVIKdRwQRuGRZRVXp//1
-         J3nG1bqRajG3JXTOSkBMOGa6Y6Q9kGf4156r1KpdS7ikjzhkrI1T/zezAs3GbV/NfTdk
-         Zx1faWdJd5jLTNewog2szxoL16aZljsh94ls63sbJaJ3i7sReUfQP5I9KHVp837d25bk
-         LRldru/4nkdt6Psz0Ta0yjyeczIzrPXM9UeDSi8TqXKs8oxa9LE5SqUsyzfweI1QXLT8
-         5qqw==
+        bh=FbnZURxMx4LYMK8HegrQ0qedsvGCdsjG/NAXgIAIpJs=;
+        b=XJ6JJEP4oSsth+gQxIhZHfZIpS4t9u/j4s4JDsVJ9pOQO9KxJEL2i8l7dH8qDsddtb
+         c0JH53kJ6z3TER+MDElAAo7GbpsyiatMg/Fl+xNWkJkslkYnsIxUxfMPRSc4wSudzOOc
+         BsNOy9Xd1xm7jMl5f3IvCa0x252MyDB2C4T95TaHd026R6HdH50bvUG+ek7W4wqoQCLo
+         gWvulSpvur0VkaMncYm6XltL+S/8UXeNV+7QNqswtLAWsPldUryOOtiXyb59Mmm/XuVm
+         Kk4y9qL6OWjOaCzIo+h6oHaD3+n0mIy79O4o0btY21U9+JwQisxFM1Pv8h2jHtoxapTM
+         ACOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795749190; x=1796353990;
+        d=1e100.net; s=20260707; t=1795751117; x=1796355917;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=geBVe5+FjVMWnHT2yy+iTXd1DdAvYMOm86ikvWMsAC8=;
-        b=WqymuxvkjHCmRz+F0H1KD7CGwh717q3CcpBiPKc344gpETwCE/kDhZqj/A31jCWCTu
-         nFe0yn+OtI2ryIAM1h3FP/Ff5pzTmUeFBNQjPa0Mg6wt/UAz/46BUritjMCbfbER4UcB
-         06sFhhfZKTi25Mv6hBDcHY5bOzW+mDs87a8YopwQVv8z8dSwKSs045ro9hPCckBB44iC
-         aFQFUA4pnvLGedMZm28+XoMgA+w6KZay4uJHLMyYoUlYiUZCn/WbfGcX5KywyWGEHFs+
-         iEZ4WxrdBXVHYG+14hSHc5UuINY6+vjuxfSifKKHGpkGXRazomSdt1p7fN1NqPFY/KJ9
-         LB1Q==
-X-Forwarded-Encrypted: i=1; AL+hErHrobC5cbIVhSwXzE86mUiyTAJKLoTsh4SWMqMNWnFuT72+xWzfUACXAWnNeeM2CA4xk1U=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/4PTSTdFdverrb3GFYtf/Yo7Pj78dthWWoN6D5fB4zS+tR6Nsn
-	21N/wfMArmibDK3P2tGeZb7o32FsQHgVSK5TLdtONXj1j5sUPupH4TB+VEozaLpy9gOxtuwFGf3
-	Lk2Hxt0fEaPleX/uJzSJOKRtocuXWruI=
-X-Gm-Gg: AZFdTZfsNAk5HnNDP0KnjdGwtDq/py0euFRgHgnGLm/m9WWLCFSFehk4/ybsJdmX9lx
-	BOFAZD8XhnilvVKShZ3VPkAH2Nb5w2f/M+zBt2upO8PNeCBNZKPJ/sdGN6LW7AS6r0do69V2QRd
-	oxy3JgXomPyQNrAQs1dLhqcm+ES0NLb8dZ9TKKMKODOX7jtKGVwRNtlVNwaqoJ7y9V/5cgym7cQ
-	kaDHPs8N4EFxM9Mj/OIwW1RaIkLhWHLXSHwX3e/OZrDEv5MLli7+Ssjoz+xaxpN88dU/UYalVE9
-	hTqIv3MKopKUpQeOyixm+PTT0y3ViPI0QG3fzJ7bvwcW6NWUoDPj01hI0Ol3CazL0E7MZX+d3A4
-	o9JLUGS/BHm+UBYVyK5JY1GDhWCht6qeXiRRyaFqaEKLxb4/b0nPQemymUy2mrVzYcOrrxA==
-X-Received: by 2002:a05:620a:480b:b0:949:3017:1f91 with SMTP id
- af79cd13be357-949bab23b74mr4065205085a.48.1795749189809; Thu, 26 Nov 2026
- 19:13:09 -0800 (PST)
+        bh=FbnZURxMx4LYMK8HegrQ0qedsvGCdsjG/NAXgIAIpJs=;
+        b=QYK1/VtA9cQvP0C0XswGgdX+dsNN3CaU4tafsIbMA1w054kJuFBn24OxQjajdsPRqX
+         A9dvqcB8jK42tXlhBc5/9Ym7Br8BpcQ/hFFIA8r2XWRXQQ/A6Hy7v8bHkdzlmKJKsXNM
+         beILTP47ibvw3+CJ1pmpVJGzT7Wt4x8zwzsaGEZy8/AyzgChAM60/8bmXyA29rJvo2UL
+         c24ZijrzYr8+z/XnaX1YBw9xYNHRiyuYz/YO52PDGdmHhfljYCCHuAKPaDASaJNl1DOA
+         U0vQrZ84ZUiOhrS22HpwZT16cmedjPzb9l/K+7kXi57A83tFD62W3jvHCyICq+GoltOz
+         0Bqg==
+X-Forwarded-Encrypted: i=1; AL+hErHsBfmLjVt2qWkLl5fASw7SHG355tUen78klLNRpbQOhpy2e6m9XnwaF9QGeff6C55B2ig=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+bdqYkI/xYxd8h+Nend3JRLoCGvJxj7dyuhbPz5cj+SUVYeHH5
+	tplZcmdGChviKULhN1RtWllGzqN5nFxA7mMVDwcQrfKZ9EqBRMS9mTj54JqI+xmmhkhG8dNi0GF
+	VKqq9HV/JXmh/iRNOFsa99Ud93xAJ5Vo=
+X-Gm-Gg: AZFdTZd4NIGABD2W8mw1myfdDMhkb2pojDva9Lpui7RWDty0RaRUfDAUVT/Zimqtzyz
+	61uK4j/gcWC7EfZspo8YuQMw++R2EYC88nmSSDBx9nkwuy3URnia/CWc7aGp+ICv4Pi6VMe9haA
+	hnk85axDl8/EX05jNEie1kZn1vFbExgpr/FyH0zrG1T+vwC7AF+0+pgzcE+JY90yyc8eSYdbOZF
+	4qb2Mry4n1Bx8Zr0xS4Fj1a6Rx/BCsZPmAd95pzf/O9O4xY1kVHGVcWRh2RQFgkdUmCkNc4Sy6g
+	/LwBtdlgSUyeX6e3gJqP3tajNgj3LnE9j7SOAfO5Wvt+rmdNbnuTN5v7u974Tn3hkZ0VMpJ/gv0
+	xO/hJdkhdiAhiXvJ8YZaXNsAaFj48AByNa8F6EHJkzfWhHEu3HxSJEm0v3uUodyw4u8XXI/Q=
+X-Received: by 2002:a05:620a:7113:b0:949:7bb1:ac62 with SMTP id
+ af79cd13be357-949ba9b3e2bmr4101755985a.25.1795751117359; Thu, 26 Nov 2026
+ 19:45:17 -0800 (PST)
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,18 +104,15 @@ List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 References: <20261103041134.33310-1-physicalmtea@gmail.com>
- <20261103041134.33310-4-physicalmtea@gmail.com> <auxDWISLHB8Ln1x7@sgarzare-redhat>
- <CAJwVaMJbzzK8Sj8DvLjiAyqS8TNgRQ3tjRpGcBNC+anQECg5yw@mail.gmail.com>
- <avXn6E8y5OPtdikQ@sgarzare-redhat> <CAJwVaM+SEhbFtORYgVYNayiQED63sCLO5ibwgkcjBRVvMd=KsA@mail.gmail.com>
- <avdAV2RholA4ana_@sgarzare-redhat> <CAJwVaMLtt1iKCWbhz2T4BbjqseTxjOb8S7vbvX3845LL8GHEBQ@mail.gmail.com>
- <awgCqpU1HZ5-iTtv@sgarzare-redhat>
-In-Reply-To: <awgCqpU1HZ5-iTtv@sgarzare-redhat>
+ <20261103041134.33310-5-physicalmtea@gmail.com> <auxHe77Kv3tS4hjJ@sgarzare-redhat>
+ <CAJwVaMK6UpxOmCbuzGK15h+DhN5H6cj6cy-=gCHtSxoVbLfzwA@mail.gmail.com> <awgGJECGxVi-40Tq@sgarzare-redhat>
+In-Reply-To: <awgGJECGxVi-40Tq@sgarzare-redhat>
 From: Jia Jia <physicalmtea@gmail.com>
-Date: Fri, 27 Nov 2026 11:12:33 +0800
-X-Gm-Features: Aa3M54oWTEMZnM9QZUboNJqJ_Kpki7q04yyZCMgKo7NldSW0iRvzSC16YJfSaFY
-Message-ID: <CAJwVaMJi_Ei1uOXBRjctbGWv4yz_=R1LYf8DbX0gQSK3YVDO=Q@mail.gmail.com>
-Subject: Re: [PATCH net-next v5 3/5] vsock/virtio: amortize RX socket locking
- for stream packets
+Date: Fri, 27 Nov 2026 11:44:41 +0800
+X-Gm-Features: Aa3M54pcBjgXejbuaq1eXqIMf3KBe8_JC3aAgzKGz_iHEeLknXQ66it8CaqM6QA
+Message-ID: <CAJwVaMLfUK-qiP87i4d66UEnOEet6m0BNuDr+kDWiXrZv06SYQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v5 4/5] vsock/virtio: coalesce native RX
+ write-space notifications
 To: Stefano Garzarella <sgarzare@redhat.com>
 Cc: netdev@vger.kernel.org, stefanha@redhat.com, bobbyeshleman@gmail.com, 
 	mst@redhat.com, jasowangio@gmail.com, eperezma@redhat.com, 
@@ -125,356 +122,142 @@ Cc: netdev@vger.kernel.org, stefanha@redhat.com, bobbyeshleman@gmail.com,
 Content-Type: text/plain; charset="UTF-8"
 
 >
-> On Sat, Nov 14, 2026 at 07:10:26PM +0800, Jia Jia wrote:
+> On Fri, Nov 06, 2026 at 08:49:17PM +0800, Jia Jia wrote:
 > > >
-> > > On Fri, Nov 13, 2026 at 04:09:48PM +0800, Jia Jia wrote:
-> > > > >
-> > > > > On Fri, Nov 06, 2026 at 08:27:51PM +0800, Jia Jia wrote:
-> > > > > >>
-> > > > > >> On Tue, Nov 03, 2026 at 12:11:32PM +0800, Jia Jia wrote:
+> > > On Tue, Nov 03, 2026 at 12:11:33PM +0800, Jia Jia wrote:
+> > > >Each received packet can update peer credit and call sk_write_space(). A
+> > > >writer cannot consume that credit while the virtio RX worker retains the
+> > > >socket lock, so repeated native write-space notifications in one RX batch
+> > > >are unnecessary.
+> > > >
+> > > >This patch coalesces write-space notifications on the native AF_VSOCK path;
+> > > >data-ready remains per-packet here.
+> > > >
+> > > >The batching patch establishes batch ownership before its first packet.
+> > > >This lets this patch record a pending notification for that packet and
+> > > >flush it even if the packet immediately ends the batch. Deliver it while
+> > > >holding the socket lock to preserve the callback context of the existing
+> > > >receive path. A following patch changes that timing together with
+> > > >data-ready handling.
 > > >
-> > > [...]
+> > > Can you report performance data related to this patch also here?
 > > >
-> > > > > >> >+
-> > > > > >> >+/* The caller holds sk's socket lock. */
-> > > > > >> >+static bool
-> > > > > >> >+virtio_transport_rx_batch_can_continue(struct virtio_transport *t,
-> > > > > >> >+                                     struct sock *sk, u32 len)
-> > > > > >> >+{
-> > > > > >> >+      struct virtio_vsock_sock *vvs;
-> > > > > >> >+      struct vsock_sock *vsk;
-> > > > > >> >+
-> > > > > >> >+      vsk = vsock_sk(sk);
-> > > > > >> >+      vvs = vsk->trans;
-> > > > > >> >+
-> > > > > >> >+      /*
-> > > > > >> >+       * Keep a connected lookup reference only for the native, established
-> > > > > >> >+       * STREAM path. Sockets outside ESTABLISHED can change table membership;
-> > > > > >> >+       * a completed or reassigned socket must resume the per-packet path.
-> > > > > >> >+       */
-> > > > > >> >+      if (sk->sk_state != TCP_ESTABLISHED ||
-> > > > > >> >+          sk->sk_type != SOCK_STREAM ||
-> > > > > >> >+          sock_flag(sk, SOCK_DONE) ||
-> > > > > >> >+          vsk->transport != &t->transport || !vvs)
-> > > > > >> >+              return false;
-> > > > > >> >+
-> > > > > >> >+      /*
-> > > > > >> >+       * Do not admit a packet that would hit an existing RX limit while the
-> > > > > >> >+       * worker owns the socket lock. The caller holds that lock, so no reader can
-> > > > > >> >+       * dequeue until the batch is released.
-> > > > > >> >+       */
-> > > > > >> >+      return (u64)vvs->buf_used + len <= vvs->buf_alloc &&
-> > > > > >> >+             !virtio_transport_rx_buf_full(vvs);
-> > > > > >>
-> > > > > >
-> > > > > >Hi Stefano,
-> > > > > >
-> > > > > >> I don't understand this. We recently introduce the collapse, so when we
-> > > > > >> will call virtio_transport_recv_enqueue(), all the queue will be
-> > > > > >> collapsed, including packets in the batch.
-> > > > > >>
-> > > > > >> Or am I missing something?
-> > > > > >>
-> > > > > >
-> > > > > >Yes, collapse operates on the same receive queue, which also contains
-> > > > > >skbs queued earlier in the current batch.
-> > > > > >
-> > > > > >The rx_buf_full() check is not intended to bypass collapse. It prevents
-> > > > > >the batch from retaining the socket lock while processing a packet when
-> > > > > >there is no metadata room for another skb. Collapse is best effort:
-> > > > > >some skbs cannot be merged, and allocation of a replacement skb can
-> > > > >
-> > > > > IIUC batches are enabled only for SOCK_STREAM, so, which skbs can't be
-> > > > > merged?
-> > > >
-> > > > My wording in the previous reply may not have been precise. What I meant
-> > > > is that collapse is not guaranteed to free the skb slot needed for the
-> > > > incoming packet for every valid receive-buffer configuration.
-> > > >
-> > > > With the default 256K receive buffer, a queue of small STREAM skbs will
-> > > > normally contain multiple collapse candidates by the time it reaches
-> > > > the metadata limit, so collapse will normally make room.
-> > > >
-> > > > However, SO_VM_SOCKETS_BUFFER_SIZE is configurable through setsockopt().
-> > > > A sufficiently small but valid receive buffer can make queue_max equal
-> > > > to one. After the first small packet has been queued, that skb is
-> > > > eligible for collapse, but there is no adjacent skb to merge it with.
-> > > > virtio_transport_collapse_size() therefore returns only that skb's own
-> > > > length, and the skb is kept unchanged.
-> > > >
-> > > > The incoming second skb is not in rx_queue yet. Provided that the two
-> > > > packets combined payload still fits within buf_alloc, the payload check
-> > > > passes, but virtio_transport_inc_rx_pkt() rejects the second packet on
-> > > > the metadata check. This happens before the later tail-copy optimization
-> > > > is reached.
-> > >
-> > > I'm lost to be honest, why the secondo skb is not collapsed?
+> > > IIUC this is not giving a lot of advantage, so my question is if this
+> > > more complexity really add a value for us.
 > > >
 > >
-> > The second skb triggers the collapse, but it is not itself an input to
-> > that collapse.
+> > Sure. The performance tests currently cover patches 4 and 5 together,
+> > so I will include those results here.
 > >
-> > The concrete case is a valid receive-buffer configuration where setting
-> > SO_VM_SOCKETS_BUFFER_SIZE makes:
+> > They do not add another broad throughput improvement. I kept the
+> > combined notification change because of the cycles/byte results.
 > >
-> >       queue_max = vvs->buf_alloc / SKB_TRUESIZE(0);
+> > With P1-P3 only, against baseline:
 > >
-> > equal to one. Assume that rx_queue is initially empty and that two small
+> >   Buffer size  baseline cycles/B  PATCH cycles/B  cycles change (95% CI)
+> >   64B        66.728    61.220  -8.25% [-18.99%, +3.91%]
+> >   256B       14.363    14.515  +1.06% [ -4.22%, +6.64%]
+> >   512B        7.792     7.578  -2.74% [ -6.55%, +1.23%]
+> >   1K          3.988     4.032  +1.09% [ -1.64%, +3.88%]
+> >   4K          2.063     1.973  -4.38% [ -8.23%, -0.37%]
+> >   8K          1.702     1.667  -2.06% [ -7.99%, +4.25%]
+> >   16K         1.473     1.475  +0.17% [ -5.06%, +5.68%]
+> >   64K         1.385     1.358  -1.96% [-10.61%, +7.53%]
+> >
+> > Only the 4K interval excluded zero. With the full series, against
+> > baseline:
+> >
+> >   Buffer size  baseline cycles/B  PATCH cycles/B  cycles change (95% CI)
+> >   64B        65.282    57.843  -11.40% [-13.77%, -8.95%]
+> >   256B       14.710    13.813   -6.10% [ -7.89%, -4.28%]
+> >   512B        7.709     7.188   -6.75% [ -8.79%, -4.66%]
+> >   1K          4.075     3.862   -5.23% [ -6.80%, -3.63%]
+> >   4K          2.034     1.887   -7.21% [ -8.67%, -5.72%]
+> >   8K          1.664     1.568   -5.78% [ -7.83%, -3.69%]
+> >   16K         1.450     1.385   -4.48% [ -6.08%, -2.86%]
+> >   64K         1.338     1.317   -1.51% [ -3.21%, +0.22%]
+> >
+> > From 64B through 16K those intervals stay below zero. 64B through 1K
+> > did not show that in the P1-P3 run.
+> >
+> > This is also why I spent the time making this work with sockmap.
+> >
+> > The value I see is lower RX CPU cost, not another large throughput
+> > gain. I am still unsure the extra code is worth it, and I would like
+> > your opinion.
 >
-> But this looks like a corner case of the metadata check we added with
-> commit 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue"),
-> not something related to batching.
+> Thanks for the numbers!
 >
-> Also, with a buffer smaller than SKB_TRUESIZE(0) (allowed, the default
-> min is 128), queue_max is 0 and every RW packet resets the connection,
-> with or without batching. So small buffers are already broken.
+> Both tables are against baseline, but the two baselines are a bit
+> different (e.g. 66.728 vs 65.282 for 64B), so it's not easy to see the
+> real contribution of P4/P5. Can you compare the full series directly
+> against P1-P3?
+>
+> Anyway, IMO the big win of this series is P1-P3 (throughput), while
+> P4/P5 add a lot of complexity (saved native callbacks, new af_vsock
+> helpers, sk_callback_lock, sockmap corner cases) for a ~5% of CPU
+> cost, without throughput improvement.
 >
 
-Got it, thanks for pointing me to that discussion.
+I ran a direct A/B comparison on top of the base batching patches:
+reader TID cycles/B dropped up to ~2.3%, and guest CPU1 aggregate
+cycles/B dropped 4.4-5.8%, which matches your ~5% estimate.
 
-> > STREAM/RW packets for the same flow are available in the same RX
-> > virtqueue drain. Their combined payload still fits within buf_alloc.
-> >
-> > The first packet passes the metadata check:
-> >
-> >       u64 skb_overhead =
-> >               (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
-> >
-> > It is then queued, so rx_queue contains one skb.
-> >
-> > When the second packet enters virtio_transport_recv_enqueue(), the
-> > relevant order is:
-> >
-> >       queue_len = skb_queue_len(&vvs->rx_queue);
-> >       if (queue_len >= queue_max)
-> >               virtio_transport_collapse_rx_queue(vvs, ...);
-> >
-> >       can_enqueue = virtio_transport_inc_rx_pkt(vvs, len);
-> >       if (!can_enqueue)
-> >               goto out;
-> >
-> >       /* tail-copy is attempted here */
-> >
-> > At the point where virtio_transport_collapse_rx_queue() runs, the second
-> > skb is still only the skb argument passed to
-> > virtio_transport_recv_enqueue(). It has not been linked into
-> > vvs->rx_queue, so the collapse sees only the first skb.
-> >
-> > For that skb, virtio_transport_collapse_size() cannot find a next queue
-> > element:
-> >
-> >       while ((skb = skb_peek_next(skb, queue)) &&
-> >              virtio_transport_can_collapse(skb))
-> >               ...
-> >
-> > It therefore returns only the length of the first skb, and the collapse
-> > code keeps it unchanged:
-> >
-> >       if (alloc_size <= src_len) {
-> >               keep = true;
-> >               goto next;
-> >       }
-> >
-> > The queue length remains one. virtio_transport_inc_rx_pkt() then
-> > accounts for the existing skb plus the incoming one:
-> >
-> >       (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0)
-> >
-> > With queue_max == 1, this exceeds the metadata budget and returns false.
-> > This check happens before the tail-copy code, so the second skb cannot
-> > be copied into the first skb even if the first skb has sufficient
-> > tailroom.
-> >
-> > virtio_transport_recv_enqueue() then returns false, and the existing
-> > error path resets the connection and sets ENOBUFS:
-> >
-> >       if (!virtio_transport_recv_enqueue(vsk, skb)) {
-> >               virtio_transport_reset(vsk, skb);
-> >               virtio_transport_do_close(vsk, true);
-> >               sk->sk_err = ENOBUFS;
-> >               ...
-> >       }
-> >
-> > > >
-> > > > Therefore, this case does not require an ineligible STREAM skb or an
-> > > > allocation failure. Collapse simply cannot reduce a one-element queue.
-> > > >
-> > > > If my understanding is wrong, please correct me. Thanks.
-> > > >
-> > > > >
-> > > > > If allocation fails, I guess we have other issues, no?
-> > > > >
-> > > >
-> > > > Yes. I thought about that again, and allocation failure is not the
-> > > > reason for this check. Thanks
-> > > >
-> > > > > >fail. If the packet remained in the batch and collapse did not make
-> > > > > >enough room, virtio_transport_inc_rx_pkt() would fail and
-> > > > > >virtio_transport_recv_connected() would reset the socket with ENOBUFS
-> > > > > >while a waiting reader was still unable to drain the queue.
-> > > > > >
-> > > > > >When the check makes can_continue() return false before the current
-> > > > > >packet has been handled, the caller releases the socket lock and passes
-> > > > > >the packet to virtio_transport_recv_pkt(). This gives a waiting reader a
-> > > > > >chance to make progress. If the queue is still at the metadata limit,
-> > > > > >the normal enqueue path attempts collapse. If that still cannot make
-> > > > > >enough room, the existing ENOBUFS reset occurs.
-> > > > >
-> > > > > I really don't see the difference without batching :-(
-> > > > >
-> > > > > I may be missing something.
-> > > > >
-> > > >
-> > > > The difference is the release_sock() boundary between packets.
-> > > >
-> > > > In the regular per-packet path, the socket lock is released after the
-> > > > first packet. A reader woken by that packet can compete for the lock and
-> > > > fully dequeue the only skb before RX locks the socket for the second
-> > > > packet. If it succeeds, the second packet can be accepted. If it does
-> > > > not acquire the lock in time, or only partially consumes the skb, the
-> > > > queue length remains one and the regular path can still reach the
-> > > > existing ENOBUFS reset.
-> > > >
-> > > > Without the rx_buf_full() check, two same-flow packets processed in the
-> > > > same active batch remain under one uninterrupted socket-lock ownership
-> > > > interval. Once the first packet leaves the only skb in the queue, the
-> > > > reader cannot dequeue it before the second packet is processed.
-> > >
-> > > Why?
-> > >
-> >
-> > Because an active RX batch retains the socket lock across the two
-> > packets:
-> >
-> >       lock_sock(sk);
-> >       ...
-> >       batch->sk = sk;
-> >       virtio_transport_rx_batch_process(...);
-> >
-> > The lock is released only when the batch is finished:
-> >
-> >       void virtio_transport_rx_batch_finish(...)
-> >       {
-> >               ...
-> >               release_sock(sk);
-> >               sock_put(sk);
-> >       }
-> >
-> > The receive side needs the same socket lock before it can call
-> > stream_dequeue():
-> >
-> >       lock_sock(sk);
-> >       ...
-> >       read = transport->stream_dequeue(...);
-> >       ...
-> >       release_sock(sk);
-> >
-> > Waking the reader after the first packet does not allow it to dequeue
-> > while the RX batch still owns that lock. Without the rx_buf_full()
-> > boundary, and assuming the other batch-continuation conditions remain
-> > true, RX processes the second packet under the same uninterrupted lock
-> > ownership.
-> >
-> > > > Collapse cannot reduce that one-element queue, so the second packet
-> > > > fails the metadata check and resets the connection.
-> > >
-> > > What is unclear to me is why this is not happening without batching.
-> > >
-> >
-> > It can also happen without batching. The difference is that it is not
-> > unavoidable there.
-> >
-> > The regular per-packet path executes this sequence for every packet:
-> >
-> >       lock_sock(sk);
-> >       virtio_transport_recv_pkt_locked(...);
-> >       release_sock(sk);
-> >
-> > Therefore, even when both packets come from the same virtqueue drain,
-> > the first packet is followed by release_sock(). A waiting reader can
-> > compete for the lock and fully dequeue the first skb before RX locks the
-> > socket for the second packet.
-> >
-> > If the reader wins, the second packet sees an empty queue and can be
-> > accepted. If RX wins the race, or the reader consumes only part of the
-> > skb, the regular path can still reach the same ENOBUFS reset.
-> >
-> > Without the rx_buf_full() check, the post-processing check after the
-> > first packet only sees that the payload limit has not been exceeded:
-> >
-> >       return (u64)vvs->buf_used + len <= vvs->buf_alloc;
-> >
-> > At this point len is zero, so the batch continues to hold the socket
-> > lock and processes the second packet immediately. Under the conditions
-> > described above, the reader cannot intervene and the metadata failure
-> > is deterministic.
-> >
-> > With the current check:
-> >
-> >       return (u64)vvs->buf_used + len <= vvs->buf_alloc &&
-> >              !virtio_transport_rx_buf_full(vvs);
-> >
-> > the metadata slot is already exhausted after the first packet. The
-> > post-processing check returns false,
-> > virtio_transport_rx_batch_finish() releases the socket lock, and the
-> > next packet returns to the regular per-packet path.
-> >
-> > This restores the lock-acquisition opportunity. It does not guarantee
-> > that the reader wins it.
-> >
-> > > And, why we can't collapse the batch it self...
-> > >
-> >
-> > I am not sure whether I understood your suggestion. Do you mean
-> > changing the enqueue order so that the incoming skb can participate in
-> > tail-copy or collapse before the metadata check?
+Guest reader PID/TID (cycles/B):
+
+  Buf     P1-P3   +P4/P5  change (95% CI)
+  64B     7.032    6.963  -0.99% [-2.52%, +0.57%]
+  256B    4.323    4.256  -1.55% [-2.82%, -0.26%]
+  512B    2.296    2.257  -1.71% [-3.35%, -0.05%]
+  1K      1.313    1.303  -0.79% [-2.50%, +0.94%]
+  4K      0.744    0.727  -2.19% [-3.46%, -0.90%]
+  8K      0.611    0.597  -2.26% [-3.52%, -0.99%]
+  16K     0.535    0.534  -0.29% [-1.48%, +0.90%]
+  64K     0.512    0.513  +0.36% [-0.43%, +1.16%]
+
+Guest CPU0 aggregate (cycles/B):
+
+  Buf     P1-P3   +P4/P5  change (95% CI)
+  64B    21.688   21.049  -2.94% [-6.02%, +0.23%]
+  256B    8.333    7.892  -5.29% [-7.02%, -3.53%]
+  512B    4.448    4.240  -4.67% [-6.13%, -3.19%]
+  1K      2.497    2.382  -4.58% [-6.81%, -2.29%]
+  4K      1.302    1.227  -5.73% [-7.26%, -4.17%]
+  8K      1.050    1.013  -3.51% [-4.37%, -2.65%]
+  16K     0.953    0.925  -2.98% [-4.79%, -1.13%]
+  64K     0.842    0.805  -4.29% [-5.75%, -2.81%]
+
+Guest CPU1 aggregate (cycles/B):
+
+  Buf     P1-P3   +P4/P5  change (95% CI)
+  64B    48.985   46.388  -5.30% [-6.36%, -4.23%]
+  256B   11.194   10.704  -4.38% [-5.48%, -3.26%]
+  512B    5.886    5.592  -4.99% [-6.00%, -3.98%]
+  1K      3.080    2.945  -4.36% [-5.61%, -3.09%]
+  4K      1.508    1.421  -5.80% [-6.67%, -4.92%]
+  8K      1.215    1.160  -4.51% [-5.64%, -3.36%]
+  16K     1.079    1.029  -4.66% [-5.87%, -3.44%]
+  64K     0.941    0.894  -5.01% [-6.34%, -3.66%]
+
+> So my suggestion is to split the series: send P1-P3 first, so we can
+> focus the review on them and merge them, and then send P4/P5 (squashed)
+> as a separate series. That way we can also evaluate the direction
+> suggested by Bobby (batching in read_skb() + coalesced sk_data_ready(),
+> like TCP), that may allow us to avoid saving the native callbacks at
+> all.
 >
-> I was thinking about something like that, but honestly I don't think
-> it's worth it. With a buffer that small (less than 2 * SKB_TRUESIZE(0))
-> the user should expect issues, and without batching it already fails
-> most of the time, as your test shows.
->
-> So I don't think we should add complexity in the batching path for
-> this case. Let's start simple.
+> WDYT?
 >
 
-Understood
+Sounds good to me. I'll split out P4/P5 and send just the two core RX
+batching patches in v6 (dropping P2 as discussed in the P3 thread).
 
-> >
-> > The current implementation does not attempt that change. Its purpose
-> > here is only to preserve the behavior of the existing per-packet path
-> > in this boundary case.
-> >
-> > The earlier targeted A/B test also illustrates why I added the
-> > rx_buf_full() check. On a 2-vCPU guest with queue_max == 1, I ran 100
-> > trials in which two STREAM/RW packets for the same flow were available
-> > in the same RX virtqueue drain. With the rx_buf_full() boundary, the
-> > connection continued in 22 trials and reached ENOBUFS in the other 78.
-> > Without the boundary, all 100 trials reached ENOBUFS.
->
-> So without batching it works only if the reader wins the race, and it
-> fails 78% of the time. IMO we should not add complexity in the batching
-> path just to preserve that race.
->
+We can look into the notification changes and Bobby's read_skb() idea
+separately after that.
 
-Agreed. I'll drop the rx_buf_full() check in v6. Without it, patch 2
-isn't needed anymore either, so I'll drop that too.
+Thanks,
+Jia
 
-> >
-> > The check does not guarantee that the reader wins the lock race. It
-> > preserves the opportunity that exists in the per-packet path. Without
-> > it, batching removes that opportunity and turns a case that could
-> > previously continue into a deterministic reset when both packets are
-> > processed in the same uninterrupted batch. I consider that a functional
-> > regression from the existing behavior.
->
-> Sorry to be honest, but your answers are incredibly long and lengthy.
-> It's fine to use AI for translation, etc., but please let's not go to
-> extremes, otherwise, it becomes impossible for me to follow your line of
-> reasoning...
->
-
-Sorry about that. I'll try to keep a better balance, cut the
-unnecessary details, and just point straight to the code path.
-
+> Thanks,
 > Stefano
+>
