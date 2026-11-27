@@ -1,61 +1,64 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795804784;
-	b=Ov6VLQ64yPfYrGVzoCPTQYet2r5FLRVQbACYtUZug0eMl41NELbniSwsqlZ7EhqsYcZD
-	 vH8kuwavaUToRrlj0PygOsQeopRCyr5CWI22jJUlq9Jv9evMWPYmNcYi1iCoG9M/mijUK
-	 mFHELHkO6rd6IXVEs2LsXdRmkM+VpbVLtJe6yp1oqJcONQXW4xfupfEKuOUFGGRshSMYK
-	 XVh3MDDn4xAlok+bM54iMVVkiOttJJgIRwJGAalVnHRPrM1qoa60lfRAeSgEMSU4AaE4E
-	 /1cUndv6dPA20mxvCWlhzlX+VldCChjj51ang3v/OUTYHYW3SNsvJSLnpRHvqqdQkNw==
+	t=1795804793;
+	b=mAVsvtb9021ZhQGedoaFY3dGMm0Y4fxD65DJ/Ap3mJQFddg4w3Lt6monqAYsLV93Mye6
+	 iCW4X1p7bA5CH62hLkTi9rQX98GMstpJJFf5NhL253/5I7IYNKxhMAMMOi9zEZzW84CfZ
+	 A+ZP8yZPHTNr5a3oRugVqAWyJIYi0i1zvZM5FeKfyl4mjLPLHjdkTqm/+rZGALLFtBNiU
+	 +gE9bCeA9abgc2fk9eRZSAKMliPi4C13+0oczUZQ9FT2O73mrtOZtjyNZUVhX0XBHukGh
+	 B+Dx1X3WGwDmt3MK9jNDCAuRwHW72tYnHJdul3vwyX378QTQs1bf/kqCHPugfdZ6Qdw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795804784;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795804793;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=s+W2kFM9mGlyI0Xlc897xQd2x20RHKn3GOXtEipIeM0=;
-	b=qDzdTWxD/nsLyOaTiPboTr5i0xqq5JZ7t1dazi7Hi2Kc4XwGsTPA6ZjSLSib4vXUQlE6
-	 y5kwuJorAp0sVDOLEgGMF7SnQ+4EClVdhyDcn71HlXIz8VpZtjTurRzwytbooDXuh1/pC
-	 LjxL8aj7r/eOaYQLgnYAEz7qcNTc6rV4Foh602i6Oh1knmGAn6hZmrc6FuHgCR8BTjgZL
-	 P+D8sxZWL7N0uwitun8R66qr7D3+wUu6mkqmr+ri6cwEg+lOmCzV6j+eZjmHjic+9gXFl
-	 5HL8UMKhpRyDB8KhdpvUN0MWiXijsTeNWSkwLJx8vbyIzxMVrPzbCGpwsI9591sNj1g==
+	bh=GMnIj8q9kqDMWvDp1Ahec1IURkuOha5hwJFXn0dtihM=;
+	b=t97v8mokM9ekro7TXXkd2UtwGwdR1cR5tmecVmWSM8Z0Sjov62eT5f7YwhCcaVYM4Ynt
+	 scyxCeXgwNlY/B+vS38hU/rUWal+Dh0zGeA2LNUTAaYycVHbLHMNC6e2s79B9iPRKEobu
+	 DDBNOLODQwPmTr93RtVcjL4DrmWAworatjxfZkFhUSH66XQnMUyVhyTBvxqTcEjBixSsN
+	 gCZhO0aIdMv77TuhVxW7aA4S7PkpJn2s/WKjiaaTc9hU+h7+42lcAipRLkAfNpu8aKRIy
+	 F3C1N5Cfohefr6En2DT8Wl+txTmnSPLJUVZIA6sO5WxGqNrnfhUrC0sB5RcLwVguWAQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OY5GTibC;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PLx+PMfc;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A1860A3838
-	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 18:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9975560A2620;
+	Fri, 27 Nov 2026 18:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OY5GTibC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB95B1F0089A;
-	Fri, 27 Nov 2026 18:39:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PLx+PMfc
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09711F031D6;
+	Fri, 27 Nov 2026 18:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795804784;
-	bh=s+W2kFM9mGlyI0Xlc897xQd2x20RHKn3GOXtEipIeM0=;
+	s=k20260515; t=1795804793;
+	bh=GMnIj8q9kqDMWvDp1Ahec1IURkuOha5hwJFXn0dtihM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OY5GTibCBFn9+Q68emUYusroAEXqpVlRkjsAfxGTvOy/E7O+hWTianxvR0ABO0Tvp
-	 Nk+XHB4cr7jjPadZBacqeUGBj81clmov74rstY7oUMepi8w9VPaxts6GTBuVipCpdu
-	 NgUhoOQyjDVwRcKMfH8+sVLfcT29jP8TWo18CHQl4xlIO3Td0A0OTzpfxTtIL3ejUs
-	 D8sKDTY0xra6S1c7tGcryraNa6wT8NOVlzWDybyV33s8FvtiriGiOov5M3jKOtgmt6
-	 luo7HL0MgVJlmzIJpAn+7MG5TNcLWJXs3ak92BD/1M9bSRN+f8YltiE49rLRAcd4Ze
-	 TToRMocVTPOsA==
+	b=PLx+PMfc7vjDf9xZiK+vAvRvCC6w5PV5VkvQOJk/S3QOM8SeGwDq2hJGCqee0t00y
+	 0KIKpwWtdjgPLm1VpHc3p359yK//u7di3/X4i+U40305ax1M1uaUfWWP1qr1tIBX1e
+	 AgfKwi0EI9Fo7aHbVHDDEdOQN0ZDUHgpRKVMZNE++Q09GKMDBllcXrE6vjS9PiiTxy
+	 B1bo5dszztX0AakE9L9M0iXqt2SFrq4CMOsURWRywWem5olBh8XOM4hl5dP8AFh4k3
+	 eUOZO6MGv2GMSgtjTDcDWSaMdidd9FsI0bI54pSPrYkzoQ1YYzRjs/gEFZ8JJ0Y3G5
+	 A5Cpg3IWhWf8w==
 From: Will Deacon <will@kernel.org>
-To: Fuad Tabba <fuad.tabba@linux.dev>
+To: julien.thierry.kdev@gmail.com,
+	Sascha Bischoff <sascha.bischoff@arm.com>
 Cc: catalin.marinas@arm.com,
 	mark.rutland@arm.com,
 	kernel-team@android.com,
 	Will Deacon <will@kernel.org>,
+	vladimir.murzin@arm.com,
+	maz@kernel.org,
 	kvm@vger.kernel.org,
-	Julien Thierry <julien.thierry.kdev@gmail.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Fuad Tabba <tabba@google.com>
-Subject: Re: [PATCH kvmtool] Makefile: Make the clean target independent of the build configuration
-Date: Fri, 27 Nov 2026 18:39:14 +0000
-Message-ID: <179580207397.1722682.16898673061022985401.b4-ty@kernel.org>
+	kvmarm@lists.linux.dev,
+	timothy.hayes@arm.com,
+	Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH kvmtool v7 00/23] arm64: Support GICv5-based guests
+Date: Fri, 27 Nov 2026 18:39:17 +0000
+Message-ID: <179580197868.1668728.14216688807361955321.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261126195438.3313169-1-fuad.tabba@linux.dev>
-References: <20261126195438.3313169-1-fuad.tabba@linux.dev>
+In-Reply-To: <20261127170145.4138182-1-sascha.bischoff@arm.com>
+References: <20261127170145.4138182-1-sascha.bischoff@arm.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -68,25 +71,56 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-On Thu, 26 Nov 2026 19:54:38 +0000, Fuad Tabba wrote:
-> 'make clean' only removes the objects and dependency files of the
-> configuration it's run with ($(ARCH) and the optional libraries the
-> Makefile detects), so after a cross build a plain 'make clean' doesn't
-> remove the objects and dependency files specific to the target
-> architecture.
+On Fri, 27 Nov 2026 17:01:22 +0000, Sascha Bischoff wrote:
+> This series adds support for GICv5-based VMs to kvmtool. These are
+> exposed as --irqchip=gicv5 and --irqchip=gicv5-its, where the former
+> creates a vGICv5 device and the latter adds a GICv5 ITS. The GICv5
+> specification can be found at [1].
 > 
-> Remove every object and dependency file in the directories the Makefile
-> builds in, along with guest/init and guest/pre_init, which depend on
-> the configuration in the same way. List the directories by name so that
-> objects elsewhere in the tree, such as those of a dtc clone used for
-> LIBFDT_DIR, aren't removed.
+> The GICv5 support in KVM needed by --irqchip=gicv5 is available as of
+> Linux v7.4-rc1. The GICv5 ITS support is described in [2]; using
+> --irqchip=gicv5-its requires a KVM build with those changes.
 > 
 > [...]
 
-Applied to kvmtool (master), thanks!
+Applied first 18 (i.e. sans ITS) to kvmtool (master), thanks!
 
-[1/1] Makefile: Make the clean target independent of the build configuration
-      https://git.kernel.org/will/kvmtool/c/62c3242c6484
+[01/23] arm64: Propagate IRQ routing initialisation errors
+        https://git.kernel.org/will/kvmtool/c/643c84fcabdf
+[02/23] arm64: Close the ITS descriptor when setup fails
+        https://git.kernel.org/will/kvmtool/c/fd4073f5e2e7
+[03/23] arm64: Split GIC device setup
+        https://git.kernel.org/will/kvmtool/c/c97b9ac472c4
+[04/23] Sync kernel UAPI headers with v7.4-rc1
+        https://git.kernel.org/will/kvmtool/c/31cacdfe9610
+[05/23] arm64: Add GICv5 irqchip device support
+        https://git.kernel.org/will/kvmtool/c/ebcac904ebc9
+[06/23] arm64: Configure GIC interrupt bases
+        https://git.kernel.org/will/kvmtool/c/3eda0ae06c3f
+[07/23] irq: Allow the initial interrupt line number to be set
+        https://git.kernel.org/will/kvmtool/c/2ec8a3ef3529
+[08/23] arm64: Start GICv5 SPI line allocation at zero
+        https://git.kernel.org/will/kvmtool/c/217760904a04
+[09/23] arm64: Configure the GICv5 IRS
+        https://git.kernel.org/will/kvmtool/c/94a57e57620e
+[10/23] arm64: Define GICv5 interrupt types
+        https://git.kernel.org/will/kvmtool/c/bb395ae93047
+[11/23] arm64: Describe the PMU interrupt for GICv5
+        https://git.kernel.org/will/kvmtool/c/886ac67b5f4b
+[12/23] arm64: Describe timer PPIs for GICv5
+        https://git.kernel.org/will/kvmtool/c/c6f9c988b76b
+[13/23] arm64: Assign CPU DT phandles
+        https://git.kernel.org/will/kvmtool/c/6794fb727311
+[14/23] arm64: Describe the GICv5 CPU interface in the DT
+        https://git.kernel.org/will/kvmtool/c/265b478fc159
+[15/23] arm64: Describe the GICv5 IRS in the DT
+        https://git.kernel.org/will/kvmtool/c/93d7111bc83e
+[16/23] arm64: Generate GICv5 SPI specifiers for platform devices
+        https://git.kernel.org/will/kvmtool/c/5ac92cbe187a
+[17/23] arm64: Generate GICv5 PCI INTx specifiers
+        https://git.kernel.org/will/kvmtool/c/a21cd5dababc
+[18/23] arm64: Expose the GICv5 irqchip option
+        https://git.kernel.org/will/kvmtool/c/c5b95e85d3c4
 
 Cheers,
 -- 
