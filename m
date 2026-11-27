@@ -1,54 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=90.155.92.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1795793260;
-	b=EaAQ0wcsrd8LjTYv3sRly4YHE47977AZEdgCY6fXPkJWiLypbka2xAS+x1N9D/Zi1XPC
-	 4nLIdU9z0cfjt7t9xeyyLVna2WI7mLIRj/1T44AbYGKwshUHn5CJGq4PX70VXSc7VwxOQ
-	 T9kZO9KPR60/sPsfcpTnynp42CUpipdd2pHD5Cehu6zIDcvBikRrAs9KdHCd01vtm19bQ
-	 nvGVHfH8tFJEG42zSI7Uvw924LwI8/X9W9K1cfJ8ul+SnlCQyk1b9EvXsvEF/B8GydOh6
-	 RH7JhstBpqdHajilSImlQaebXFDUQsauoD97MESsm/fCGCj0/Egv/de7eWHISfE2WZg==
+	b=I3lcugzZ9HEq97hLnF30PQLLVI4G/R9PVD/fUTMP1IgXApxNIpVMAvjp0OFKllWJCj8G
+	 q3igeF07mNA2Gut3n5klCCbqDEN56WSE02sedclulhBE/Y9Bvx8v/EmykBrTw9xEXnmvK
+	 ZuN23Y0ybJiZpO2Xc8xlUxDcjf6zkm9X7OolDqhQMA4v/ULOQ2+3SAB8as8FUUGMBsdYj
+	 coziYWAMj0rzGFTjV23AagfQ3UsgdDcsuwP4YDv1EkRQKSEK0YN48TMIruloekEHahBMd
+	 i/ktDW+qIjX/lRceGSe0hVGZBZCWI9FcjZTBAepVmjsM8zRjIJ67i8pjQaJ+JFMUUgA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1795793260;
 	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:Sender:X-SRS-Rewrite;
-	bh=Ukx0O8oxDW21L8q50oPdnx4Z+HK1r/B4WyzP7b5ZREw=;
-	b=LWONI/10yZv9Z07ulcRcHZ1Kna3nRt2ePnt4JhEkafUOFaANqBuTGK5gwx53fFLfiPr5
-	 XUbNgROxFw+LTD6vc/xM1HQ8t8Oc2dLi8IF+5w4oTJdBv/xXXxkb+xklyiDL+ZHisX6bo
-	 BzZE36QgORb6pyJcWdISPcui67kPJKoW9b3NPcOGszRTzMMVlivkV1bKgeAxjYxOVGwwC
-	 rdk9YLOvNmT4Y76WeO9fkh95I3QbySH8yT9/iAYEqbf67eVb070EMedQR2/hkbQM7JLvh
-	 oq4nt6QmfJfW2COzLIPq5yFg67sSRchX4ypXGl7ZhB5HHfyqAXb9iv3BZ2Z2l8ZTnig==
+	bh=z2Y5xsk1oXD8hgCftu0objaSqV0eSFscaGibC1bv4bE=;
+	b=oierIRigislkwTAwlFaeoaaFI3VaSBCow4KHbCy1Jlr1+ZMHIAl9mcmwPSjSdrEwh5hK
+	 bFdiTt4fQp0wyjZvRcR5e7Q7loDqHA3f0zsb0Z3qqiQFHA6DyOu0h7gjAO9A6Ye2i4GBe
+	 g225QubT1aDypEJWValDNvZKOa0KcPsImYxig/ufR1imirn2Hx0SH+1d48drLSp/ZYUKQ
+	 SAoQ99nVpVsTaRY51hnJVbzGTq0WtS6uCoAx0gQn09X7GggiudB3aqQa7nLw1hE6ULVCb
+	 ls7O9jB+GVP1x3PeUdVlZV0igMOq0KeAo8IuU0YY/24W6sSClRc8oVkzrQ1USzmzBxA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=infradead.org;
 	spf=none smtp.mailfrom=desiato.srs.infradead.org;
-	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=AGIAV6t9;
+	dkim=pass header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=UqZAuLvF;
 	arc=none smtp.remote-ip=90.155.92.199
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF0A60A2621;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDEF060A2620;
 	Fri, 27 Nov 2026 15:27:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DDF0A60A2621
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DDEF060A2620
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=AGIAV6t9
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=UqZAuLvF
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=Ukx0O8oxDW21L8q50oPdnx4Z+HK1r/B4WyzP7b5ZREw=; b=AGIAV6t9bmEm+y2qKa4Rb7ivwP
-	vJYRxMDIKHoUfQ2ZkhGgfkpuJv/UNvgO7NTs8Tfnpp7Us/pX6y3NBj0NOhDk6lD3Lx7cMiAgGBI9/
-	wgTBf2nk78bdBhzci3rR8VCgb1H4V5IgxrK4uoUD3/9gjw02GC1XszVXpzSvDkFe0YxqV/pOsddVV
-	6dBRTBv+CfIspstV5BtgVJDoCvLXKKUfncPIOsTmoWFjw/tuicvrdNCV3rLf2NDOB0oXq/d548eIi
-	RC3cc3fX2nQogN0U4aptTQpww32IR9d8pmDv94f3lu/Q2hwhrLJ0x1p9yA08B5a2HfuUBkK408gxT
-	SeJnnUGA==;
+	bh=z2Y5xsk1oXD8hgCftu0objaSqV0eSFscaGibC1bv4bE=; b=UqZAuLvF5jjZ192pyKrUAbWUVC
+	VeYoVuzlQgCPga9YBZevU0v9lhaqrYlKiCGdpdY4kAIgC+ds2WosXpTkwzl9Hb8zYtiOe/N0t+739
+	dV/LyogFx3B6G/5cTfN6fR4IGkNXwiJgWGckn1E+yIMV6AvMFs9lgGPKqwwET5P+kYtoqzipRS/vk
+	71h3Dcm5tLzzsfrrmmssRhy+5Piped4Yaj4USQixcGwRwPIKwJR6DG6Iu4o3k0XS9wOEyBXG+atag
+	ZoN7Dq6nhWwwun7/AHTx5KMxhlV5Sqw14UIPcDV7aCH4f+blVIkUyNo4bwq/yoqXqUGumsuvYGKDU
+	0tUfaJKQ==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xWxrJ-00000007tkp-2EIE;
+	id 1xWxrJ-00000007tkl-2Ez9;
 	Fri, 27 Nov 2026 15:27:33 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xWxrG-00000000Pqe-2lLX;
+	id 1xWxrG-00000000Pq7-0xDP;
 	Fri, 27 Nov 2026 15:27:30 +0000
 From: David Woodhouse <dwmw2@infradead.org>
 To: kvm@vger.kernel.org
@@ -89,9 +89,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Liran Alon <liran.alon@oracle.com>,
 	Arbel Moshe <arbel.moshe@oracle.com>,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH v3 10/15] KVM: x86: Filter emulated CR0 and CR4 writes
-Date: Fri, 27 Nov 2026 15:27:25 +0000
-Message-ID: <20261127152730.99319-11-dwmw2@infradead.org>
+Subject: [PATCH v3 02/15] KVM: Define what completing an exit does with its instruction
+Date: Fri, 27 Nov 2026 15:27:17 +0000
+Message-ID: <20261127152730.99319-3-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261127152730.99319-1-dwmw2@infradead.org>
 References: <20261127152730.99319-1-dwmw2@infradead.org>
@@ -110,147 +110,147 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-MOV to CR, CLTS and LMSW can reach the emulator instead of the vendor
-fast paths.  Check the filter in those three handlers, not in
-->set_cr(), which RSM and task switches use too.
+The KVM_RUN after an exit which left an instruction to complete retires
+that instruction.  Only MSR exits offer anything else: their 'error'
+byte asks for #GP instead.
 
-The emulator retires what it raised, as it does for XSETBV.  Nothing
-can arm a CR0 or CR4 filter yet: the vendor patches which follow
-advertise them, and SVM leans on the emulator where it lacks decode
-assists or NextRIP.
+Define one set of values for such exits: complete the instruction,
+inject #GP or #UD at it, or do nothing and resume the guest as
+userspace left it.  Add the x86 helper which acts on them; a guest with
+protected state can only have the instruction completed.  No exit takes
+them yet.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- arch/x86/kvm/emulate.c     | 21 +++++++++++++++++++--
- arch/x86/kvm/kvm_emulate.h | 10 ++++++++++
- arch/x86/kvm/x86.c         | 37 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 66 insertions(+), 2 deletions(-)
+ Documentation/virt/kvm/api.rst | 50 ++++++++++++++++++++++++++++++++++
+ arch/x86/kvm/x86.h             | 32 ++++++++++++++++++++++
+ include/uapi/linux/kvm.h       |  9 ++++++
+ 3 files changed, 91 insertions(+)
 
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index 465b7d402f75..9a4aebcccc95 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -3252,6 +3252,10 @@ static int em_cr_write(struct x86_emulate_ctxt *ctxt)
- 	int cr_num = ctxt->modrm_reg;
- 	int r;
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index e95c9cda085d..d15dddd79e5b 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -6976,6 +6976,56 @@ to the byte array.
+       to complete pending operations without allowing any further instructions
+       to be executed.
  
-+	r = ctxt->ops->filter_cr_write(ctxt, cr_num, ctxt->src.val);
-+	if (r != X86EMUL_CONTINUE)
-+		return r;
++.. _kvm_insn_action:
 +
- 	if (ctxt->ops->set_cr(ctxt, cr_num, ctxt->src.val))
- 		return emulate_gp(ctxt, 0);
++Some exits which need completion let userspace choose what the
++completion does with the guest instruction that caused the exit.  Their
++descriptions say which field takes the choice, and when.  The values are
++the same for all of them::
++
++  #define KVM_INSN_COMPLETE	0
++  #define KVM_INSN_GP		1
++  #define KVM_INSN_UD		2
++  #define KVM_INSN_RESUME	3
++
++KVM_INSN_COMPLETE
++  The instruction completes: KVM writes its result, if it has one, and
++  retires it, i.e. moves RIP past it, clears RFLAGS.RF and the interrupt
++  shadow, and honours single-stepping.  KVM sets the field to this.  RIP
++  must still point at the instruction, and RFLAGS be as the exit left
++  it: userspace which changes either retires the instruction itself,
++  with KVM_INSN_RESUME.
++
++KVM_INSN_GP, KVM_INSN_UD
++  The instruction faults: KVM injects #GP with a zero error code, or
++  #UD, and RIP stays at the instruction.  Every exit which takes these
++  values takes both; userspace chooses the one which the CPU would raise
++  for the instruction.
++
++KVM_INSN_RESUME
++  KVM does nothing for the instruction.  It writes no result and injects
++  nothing, and the guest resumes from its state as userspace left it.
++  The instruction has not retired, so the interrupt shadow and RFLAGS.RF
++  stay as they are and no single-step trap is raised, neither a #DB for
++  the guest nor KVM_EXIT_DEBUG.  What the guest sees is up to userspace:
++
++  - with an exception queued by KVM_SET_VCPU_EVENTS, the guest takes the
++    exception at the instruction;
++  - with RIP moved, the guest continues from there: userspace has
++    retired the instruction itself and owns everything that goes with
++    that;
++  - with nothing changed, the guest executes the instruction again and
++    KVM_RUN returns with the same exit.
++
++Any other value is reserved: KVM_RUN fails with -EINVAL, and the guest
++is left as for KVM_INSN_RESUME.
++
++A guest whose register state is protected (SEV-ES, SEV-SNP, TDX) does
++not execute the instruction again, and KVM cannot inject #UD into it.
++KVM can only complete the exit there, with whatever outcome the exit
++itself has, and the description of each exit says what it makes of
++another value.
++
+ ::
  
-@@ -3409,9 +3413,15 @@ static int em_invlpg(struct x86_emulate_ctxt *ctxt)
- static int em_clts(struct x86_emulate_ctxt *ctxt)
- {
- 	ulong cr0;
-+	int r;
- 
- 	cr0 = ctxt->ops->get_cr(ctxt, 0);
- 	cr0 &= ~X86_CR0_TS;
-+
-+	r = ctxt->ops->filter_cr_write(ctxt, 0, cr0);
-+	if (r != X86EMUL_CONTINUE)
-+		return r;
-+
- 	ctxt->ops->set_cr(ctxt, 0, cr0);
- 	return X86EMUL_CONTINUE;
- }
-@@ -3512,8 +3522,15 @@ static int em_smsw(struct x86_emulate_ctxt *ctxt)
- 
- static int em_lmsw(struct x86_emulate_ctxt *ctxt)
- {
--	ctxt->ops->set_cr(ctxt, 0, (ctxt->ops->get_cr(ctxt, 0) & ~0x0eul)
--			  | (ctxt->src.val & 0x0f));
-+	ulong cr0 = (ctxt->ops->get_cr(ctxt, 0) & ~0x0eul) |
-+		    (ctxt->src.val & 0x0f);
-+	int r;
-+
-+	r = ctxt->ops->filter_cr_write(ctxt, 0, cr0);
-+	if (r != X86EMUL_CONTINUE)
-+		return r;
-+
-+	ctxt->ops->set_cr(ctxt, 0, cr0);
- 	ctxt->dst.type = OP_NONE;
- 	return X86EMUL_CONTINUE;
- }
-diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
-index 5e18c0cc7f60..311ff6a01079 100644
---- a/arch/x86/kvm/kvm_emulate.h
-+++ b/arch/x86/kvm/kvm_emulate.h
-@@ -214,6 +214,16 @@ struct x86_emulate_ops {
- 	void (*set_idt)(struct x86_emulate_ctxt *ctxt, struct desc_ptr *dt);
- 	ulong (*get_cr)(struct x86_emulate_ctxt *ctxt, int cr);
- 	int (*set_cr)(struct x86_emulate_ctxt *ctxt, int cr, ulong val);
-+	/*
-+	 * Check a guest control register write against the vCPU's write
-+	 * filters (KVM_X86_SET_REG_WRITE_FILTER) before performing it.
-+	 * Returns X86EMUL_CONTINUE when the write is to be applied, or
-+	 * X86EMUL_IO_NEEDED after setting up a KVM_EXIT_X86_REG_WRITE exit;
-+	 * the emulation is then abandoned with no architectural effect, and
-+	 * the exit's completion retires the instruction.
-+	 */
-+	int (*filter_cr_write)(struct x86_emulate_ctxt *ctxt, int cr,
-+			       ulong val);
- 	int (*cpl)(struct x86_emulate_ctxt *ctxt);
- 	ulong (*get_effective_dr7)(struct x86_emulate_ctxt *ctxt);
- 	ulong (*get_dr)(struct x86_emulate_ctxt *ctxt, int dr);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index b559c7880e54..4e6f0cb80288 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -5846,6 +5846,42 @@ static int emulator_filter_xcr_write(struct x86_emulate_ctxt *ctxt, u32 index,
- 				       vcpu->arch.xcr0, xcr);
+ 		/* KVM_EXIT_HYPERCALL */
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index 436e2fb1396c..7e5ccbce9114 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -526,6 +526,38 @@ static inline void kvm_inject_gp(struct kvm_vcpu *vcpu, u32 error_code)
+ 	kvm_queue_exception_e(vcpu, GP_VECTOR, error_code);
  }
  
 +/*
-+ * Divert an emulated CR0/CR4 write into a KVM_EXIT_X86_REG_WRITE exit when
-+ * it hits a write filter.  Called by the instruction handlers (MOV to CR,
-+ * CLTS, LMSW) before any architectural effect; state loads that reach
-+ * ->set_cr() on other instructions' behalf (RSM, task switches) are not
-+ * guest register writes and stay unfiltered.
++ * Act on the KVM_INSN_* answer which userspace gave to an exit that left an
++ * instruction to complete.  Returns 0 if the caller is to complete the
++ * instruction, 1 if there is nothing more to do for it, or -EINVAL.
++ *
++ * A guest whose state is protected does not execute the instruction again,
++ * and KVM cannot inject #UD into it: all that can be done there is to
++ * complete the exit, with an outcome which is the caller's to choose from
++ * the answer, or to ignore it.
 + */
-+static int emulator_filter_cr_write(struct x86_emulate_ctxt *ctxt, int cr,
-+				    ulong val)
++static inline int kvm_insn_uncompleted(struct kvm_vcpu *vcpu, u8 answer)
 +{
-+	struct kvm_vcpu *vcpu = emul_to_vcpu(ctxt);
-+	u64 old_value, new_value;
-+	u32 reg;
++	if (vcpu->kvm->arch.has_protected_state ||
++	    vcpu->arch.guest_state_protected)
++		return 0;
 +
-+	switch (cr) {
-+	case 0:
-+		reg = KVM_X86_REG_FILTER_CR0;
-+		old_value = kvm_read_cr0(vcpu);
-+		break;
-+	case 4:
-+		reg = KVM_X86_REG_FILTER_CR4;
-+		old_value = kvm_read_cr4(vcpu);
-+		break;
++	switch (answer) {
++	case KVM_INSN_COMPLETE:
++		return 0;
++	case KVM_INSN_GP:
++		kvm_inject_gp(vcpu, 0);
++		return 1;
++	case KVM_INSN_UD:
++		kvm_queue_exception(vcpu, UD_VECTOR);
++		return 1;
++	case KVM_INSN_RESUME:
++		return 1;
 +	default:
-+		return X86EMUL_CONTINUE;
++		return -EINVAL;
 +	}
-+
-+	/* Match the merge emulator_set_cr() will do with the same value. */
-+	new_value = mk_cr_64(old_value, val);
-+
-+	if (!kvm_reg_write_filtered(vcpu, reg, old_value, new_value))
-+		return X86EMUL_CONTINUE;
-+
-+	return emulator_reg_write_exit(ctxt, reg, old_value, new_value);
 +}
 +
- static int emulator_get_cpl(struct x86_emulate_ctxt *ctxt)
- {
- 	return kvm_x86_call(get_cpl)(emul_to_vcpu(ctxt));
-@@ -6118,6 +6154,7 @@ static const struct x86_emulate_ops emulate_ops = {
- 	.set_idt	     = emulator_set_idt,
- 	.get_cr              = emulator_get_cr,
- 	.set_cr              = emulator_set_cr,
-+	.filter_cr_write     = emulator_filter_cr_write,
- 	.cpl                 = emulator_get_cpl,
- 	.get_effective_dr7   = emulator_get_effective_dr7,
- 	.get_dr              = emulator_get_dr,
+ void kvm_inject_nmi(struct kvm_vcpu *vcpu);
+ int kvm_get_nr_pending_nmis(struct kvm_vcpu *vcpu);
+ 
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index 8dff2fc1972e..0a4c548cb329 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -220,6 +220,15 @@ struct kvm_exit_snp_req_certs {
+ #define HINT_UNSAFE_IN_KVM(_symbol) _symbol
+ #endif
+ 
++/*
++ * What the next KVM_RUN does with the instruction which an exit left to be
++ * completed, for the exits whose description says that they take one.
++ */
++#define KVM_INSN_COMPLETE	0	/* retire it, with its result if any */
++#define KVM_INSN_GP		1	/* inject #GP(0) at it */
++#define KVM_INSN_UD		2	/* inject #UD at it */
++#define KVM_INSN_RESUME		3	/* nothing: resume the guest as it is */
++
+ /* for KVM_RUN, returned by mmap(vcpu_fd, offset=0) */
+ struct kvm_run {
+ 	/* in */
 -- 
 2.50.1
 
