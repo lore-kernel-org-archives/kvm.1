@@ -1,60 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795791847;
-	b=KcrWZTmuNNH4UTAIzqj0sGxmvWcp880NNXsgQ6CSmuGFIwTLe4S+qxO1i+A4RwWUVWEt
-	 D4k/vhdYWImE8itPXHJf+pKyAqwW6EcC4R09RX/Xi/oEkoYOrzdFfYjZ6RO0eEHzxMl/7
-	 ey7g4csttOMMcR1+QRhYGH/IYU4Rn2EiUJDFhxfBEb1ZsEtyuNQ9TwJuNVc1nmLZ4/Ev+
-	 Z/psuj46J7+xq6Qt2fMPZ5kRasYAd/skGiKSIUau4AbQfWCg5+RPEGOwA+zUDK8YN0KFT
-	 hDkvZ25VUbEOM/Y+HoNBePV9HQ8krmxuFS94s0F7TgTRcH6/fHXhmY13x5AVxgOmbsQ==
+	t=1795791866;
+	b=EHweDtxuvGa1fVGN7nQmRuiRldzKJSayAUGc3VVOneLoHzjQYtDio5Xqttp0hMEbsRfL
+	 bQn+xe1efbWW2y5MWv8V6jMeWu6gwaeZoCOLbKLuQLGoVUR2H+G8cL+FHdq3+lS+GWa1F
+	 KmefjwzVLI5A8EbPah81mUS9AfUA4l92pkKUOxtYbQTbA3+aJ5idnSX29jlEDdn4EtUYm
+	 agCP2sgm6civsR2THE8b4WEZ4U9aCEIwKs1LZe0c+vt10U7ejpysoVdE02YKjG/1mcaMF
+	 ElXFBiOlWW7YSSO+WMtHBsw4m37SGB4DU5mkQTfx0V0aq4kLkLO9/JZVgy71He3AqBw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795791847;
-	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
-	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
-	bh=U3c++Uj+UHAoqFFiB1EKXeNNJOFEUngS8YdKGAytKDU=;
-	b=MaTVuAWz/V8Q1Ups0inheDFDklIdL9RkreB1c4v5j8UwDaZcPc1bJ3dTQ/UuwsJoY8Sn
-	 YCUCAqFomqLjaHPj61c8rbL05WUPz+25iAtvTY4M9FRg+UUDNbaHOoi6AvbDwkMRGenu2
-	 pk4UHdNvSxLzndI4Pv4eQ6KrUQm+xySUHenyxzb4XlKJ6jlq7Z8autvEu+H5XWijm9Vas
-	 A590ugzw9H9bHJ2jigVZbT2WLugWLj9tDq7qVwB9v4v2n/6RqXvxXOVhdv0Bcrqof5KXv
-	 5TOronol+a7W2TBzO9eAWJ2L4Xb9hkq3BKnLLDTib0clC9Qd1q5GPtJdQX++vrzZqjA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795791866;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-TM-AS-GCONF:X-Authority-Analysis:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=sugU6St8EzJa/rDxEmIRnCawp7I5bdjUngSXIvHm99o=;
+	b=acmZVCDgvcEYCghipjFrlrGSazDboGOwDHWS2r/4kNJc7E9GIZoM/3+LziFbS9iGMavo
+	 2L7lZJ07XFcodNOALK0AST3dVT4yTyQqRQNtj/rOC394RpZCCvMUXUu/nDQWtmX5IgQsO
+	 KdYP0ozdv4zRyCXYnLBb0iB3A9nxpzrEIvSeRRfAnhhpdij6eWbypsOWaze3NFBgwWW2H
+	 0wrQMChJlPpfroduMGLBYug7YDsB4n8dG+jHaWt+bJSaX6Tks3bJxOiAIlAaV3a9yIZBw
+	 GF9rYfYtRHsVvAeby+SyeDZzkkHhNTOaKufZln2+6dqaSyxPNGT4FuGsNc461Zj7xEA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BaHYVdwe;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b="tuJAxh/D";
+	arc=none smtp.remote-ip=148.163.158.5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04FF6606A31C;
-	Fri, 27 Nov 2026 15:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D493606A31C;
+	Fri, 27 Nov 2026 15:04:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2D493606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BaHYVdwe
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D967B1F000C1;
-	Fri, 27 Nov 2026 15:04:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795791846;
-	bh=U3c++Uj+UHAoqFFiB1EKXeNNJOFEUngS8YdKGAytKDU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BaHYVdweYexZ+2iegz7+2sDs5h8ZT6d/xevc29Pc+DWsWllUEiyRo51VvPQHrXrkK
-	 Wu8HOCAmS+keChoFZAvnELGwO5NKoWz2UcyOKlV0EQxdhTBzIPgWG9iKFR3/E8vXBE
-	 nS2z/54n0imZT5ZpxsZ8f0AXeLUahHfGnsyLDpZaEV9dQXP8rBNsxNOPU/keDPgasS
-	 bd871w4qXlzBhi3TmQIdZnQ1wXbhTH4AT5AL0jpDNWnUZZj56RBbCLeA4X82TNJ+dM
-	 3Vb8NHolFpJ91W6xHYTdNYl9jMxK3JAdd9nKmYeUDdyE4Z/BRla+2ByTUff1Ulv3BB
-	 Jv67vu+QUZsYw==
-Message-ID: <sashiko-outbox-237671@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 18/25] KVM: s390: arm64: Implement arm system
- register managing infrastructure
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steffen Eiden" <seiden@linux.ibm.com>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Oliver
- Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261127-sysreg-v4-18-a6318d18aab5@linux.ibm.com>
-References: <20261127-sysreg-v4-0-a6318d18aab5@linux.ibm.com>
- <20261127-sysreg-v4-18-a6318d18aab5@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 27 Nov 2026 15:04:05 +0000
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tuJAxh/D
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ARE4gjq3234333;
+	Fri, 27 Nov 2026 15:04:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=sugU6St8EzJa/rDxEmIRnCawp7I5bdjUngSXIvHm9
+	9o=; b=tuJAxh/D+34rvUZ4eRFtWyvWNZ7Qn/RfdOGvToAcoJ1QyVZgH1EscFGZm
+	ZJVBckqXvf+gDy0L0En1C5ruPz2v+M2HIUix29TgxPxIkupNXMdzrdSEhGYWJsdM
+	k5IIhVdSn3NTiVlnoeyVhNvIC3A9RVZMc/jUwriQGK/03hTDSeuh//syZdbrkOD/
+	o0bDJ7Up2cMLM5iEolIb7X8XRjtx+QqhhwdCNMn/vnb+vRtJS+cwn/RkvvexpFO9
+	I49pHpWI2ilqeuj/QX97hKBFyLs/3kjGwYTXCLhgqgkVjSRgb1ei8/a2dwR6ai2f
+	dAw1XTiHopfFEPYoaL5JeiZyWvVfA==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34gvnmfw-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 27 Nov 2026 15:04:18 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6ARE4JnO3245601;
+	Fri, 27 Nov 2026 15:04:18 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j5uxx992a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Nov 2026 15:04:17 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6ARF4ChA42926554
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 27 Nov 2026 15:04:12 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9C75620067;
+	Fri, 27 Nov 2026 15:04:12 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A1C4520065;
+	Fri, 27 Nov 2026 15:04:11 +0000 (GMT)
+Received: from p-imbrenda.ibmuc.com (unknown [9.111.43.64])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 27 Nov 2026 15:04:11 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, borntraeger@de.ibm.com, frankja@linux.ibm.com,
+        david@kernel.org, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
+        gra@linux.ibm.com, seiden@linux.ibm.com
+Subject: [PATCH v1 00/12] KVM: s390: More fixes
+Date: Fri, 27 Nov 2026 16:03:59 +0100
+Message-ID: <20261127150411.221072-1-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.56.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -63,79 +90,62 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=CYCdd7rl c=1 sm=1 tr=0 ts=6b099bf2 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=kGqrgWd52AmznxJEOmgA:9
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI3MDA1OCBTYWx0ZWRfXwYBF+se42HnP
+ B8rYx0/p2Wo+/GnUB4qi3dr8bvWlWqqJEDwaaP221SVjgkQiN59GYSMjDkw4ngA15J8M3aO20Vm
+ 56URJJuwY2ki/2/5pl7sKqFPmFpOQrY=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI3MDA1OCBTYWx0ZWRfX3zAheSr8q8O0
+ OZ3XDIJZdfD6ZqRbJCBU78ex/Tdy1Sz3E+t52BBAGWQcE4eq6LyxHKDXOs4yYaYsDMbRvlIPhYT
+ 2zBn9aczuXFAdLIivT4Ip2AfC7T5cdmS9m0c1y/Usr931IIXpW8R3cmtG5iNmA6lSCvR8gFjWQq
+ baglZEyvHUx8DH0nmFjgBj0SFnpjgClV2y5aRnM4gaFNf2esFwqUGAnXpsvbz1Llv8wngeMpbdQ
+ aeDYPdF1Hx7a87qQtKNDCNI3u3eRlg+Uh7FhddhYNqG/WsTceCdJX/5YUk47LqU78J8XoyXPcG/
+ ox1Q8wzjRt+rQh6GIcBM8DHp08NRtU4zXNqbDU0BXwDQIx2xxp3AMwn7EPvmo9MwC/Zfts2LgIs
+ iNNSugJRX2EaIcLHc/qpZB0aJUidXYqQ1eQ+jTxSwwyBasHEjoj7/fd/AN9d2rKIVtrDIwgBgfe
+ mquQh9eHRVIYwRJtXLw==
+X-Proofpoint-ORIG-GUID: iAyTunW5mn0HDKfSRtVi1ZaHSNda9jRp
+X-Proofpoint-GUID: iAyTunW5mn0HDKfSRtVi1ZaHSNda9jRp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-27_02,2026-11-27_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0
+ clxscore=1015 spamscore=0 bulkscore=0 impostorscore=0 adultscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
+ definitions=main-2611270058
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] KVM: s390: arm64: check SYS_CTR_EL0 against host_val in
-  arm64_check_features()
---
+Fix a bunch of gmap bugs. Several patches concern proper handling of
+the soft-dirty bit for migration.
 
-commit 1217d103aa61e7d71cfb3221749c5c2dc344fb25
-Author: Steffen Eiden <seiden@linux.ibm.com>
+Claudio Imbrenda (12):
+  KVM: s390: ucontrol: Do not mask -ENOMEM when translating
+  KVM: s390: Fix potential leak in kvm_s390_get_io_int()
+  KVM: s390: Introduce gmap_enable_cmm()
+  KVM: s390: Allocate page tables when CMMA is used
+  KVM: s390: Fix dat_entry_walk() with DAT_WALK_CONTINUE
+  KVM: s390: Fix soft-dirty handling in _gmap_link()
+  KVM: s390: Fix race in gmap_clear_young_pte()
+  KVM: s390: Properly adjust page size before calling _gmap_link()
+  KVM: s390: Fix *_test_and_clear_softdirty() functions
+  KVM: s390: Do not unnecessarily drop the soft-dirty bit
+  KVM: s390: Disallow 2G pages for guests up to 2G
+  KVM: s390: vsie: Fix improper shadowing of non-present host ptes
 
-KVM: s390: arm64: Implement arm system register managing infrastructure
+ arch/s390/kvm/gmap/dat.c       |   2 +-
+ arch/s390/kvm/gmap/gmap.c      | 228 +++++++++++++++++++++++++++------
+ arch/s390/kvm/gmap/gmap.h      |  14 ++
+ arch/s390/kvm/s390/gaccess.c   |   3 +-
+ arch/s390/kvm/s390/interrupt.c |  13 +-
+ arch/s390/kvm/s390/priv.c      |  11 +-
+ arch/s390/kvm/s390/s390.c      |  19 ++-
+ 7 files changed, 235 insertions(+), 55 deletions(-)
 
-This commit implements the infrastructure for the s390 KVM host to read,
-write, trap, and sanitize arm64 guest system registers.
+-- 
+2.56.1
 
-> diff --git a/arch/s390/kvm/arm64/sys_regs.c b/arch/s390/kvm/arm64/sys_reg=
-s.c
-> new file mode 100644
-> index 0000000000000..e240efb77b9b7
-> --- /dev/null
-> +++ b/arch/s390/kvm/arm64/sys_regs.c
-> @@ -0,0 +1,825 @@
-
-[ ... ]
-
-> +static int arm64_check_features(struct kvm_vcpu *vcpu,
-> +				const struct sys_reg_desc *rd, u64 val)
-> +{
-> +	u32 id =3D reg_to_encoding(rd);
-> +	u64 host_val;
-> +	u64 old_val;
-> +
-> +	/*
-> +	 * This is a very minimal implementation to sanitise only the craziest
-> +	 * shenanigans we could get from userspace. The final goal is to share
-> +	 * the sanitisation with arm as well but this needs access to arm
-> +	 * (core) kernel code for which there is no suitable solution yet. TODO
-> +	 */
-> +
-> +	/*
-> +	 * If the register is RAZ we know the only safe value is 0.
-> +	 */
-> +	if (sysreg_visible_as_raz(vcpu, rd))
-> +		return val ? -E2BIG : 0;
-> +
-> +	host_val =3D read_sanitised_ftr_reg(id);
-> +
-> +	switch (id) {
-> +	case SYS_ID_AA64MMFR0_EL1:
-> +		/* Forbid PARANGE values larger than the host supports */
-> +		if (SYS_FIELD_GET(ID_AA64MMFR0_EL1, PARANGE, val) >
-> +		    SYS_FIELD_GET(ID_AA64MMFR0_EL1, PARANGE, host_val))
-> +			return -E2BIG;
-> +		if (kvm_parange_to_address_sanitized(
-> +			    SYS_FIELD_GET(ID_AA64MMFR0_EL1, PARANGE, val)) <
-> +			    vcpu->kvm->arch.guest_phys_size)
-> +			return -E2BIG;
-> +		break;
-> +	case SYS_CTR_EL0:
-> +		/* forbid upgrading from VIPT to PIPT */
-> +		old_val =3D read_id_reg(vcpu, rd);
-> +		if (SYS_FIELD_GET(CTR_EL0, L1Ip, old_val) =3D=3D CTR_EL0_L1Ip_VIPT &&
-> +		    SYS_FIELD_GET(CTR_EL0, L1Ip, val) =3D=3D CTR_EL0_L1Ip_PIPT)
-> +			return -E2BIG;
-> +		break;
-
-[Severity: Low]
-Should SYS_CTR_EL0 check L1Ip against host_val rather than
-read_id_reg(vcpu, rd)?  read_id_reg() returns the mutable per-VM value in
-vcpu->kvm->arch.id_regs, so if userspace writes CTR_EL0_L1Ip_VIPT and
-later writes CTR_EL0_L1Ip_PIPT on a PIPT-capable host before the VM is
-finalized, the second write is rejected with -E2BIG (-EINVAL).
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261127-sysreg-v4-=
-0-a6318d18aab5@linux.ibm.com?part=3D18
