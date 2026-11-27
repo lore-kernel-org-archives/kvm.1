@@ -1,73 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795768026;
-	b=WwrUfLi8LY2tGjn/cQ+pYFOdjl5d6i04GYUPLb1YRtxCm2EaoTblp24SAKDJeHCN+QB1
-	 U4cP8uJjXdBWT3w6BJ62WJ3/Guo3poQ7r3kyrInQkq8lAn6+0k7NJG5O+b+Kk+MbImqtG
-	 y4dZ1qaj0orYtJ89kVgwC+rybstYWRtXPBWBsZMBIbXRZF/haoytjGWU18QDtSkPUoFlp
-	 AaawwhaY5R4OwisgtNV7Q8BzuFYQf4GvUMc4sPPzGVaJp4bxaICHyON8u1h3Jz92nu9r+
-	 40U5HrbGcygDXqiyejUooJyn4eTKiXsH61+atu7THldC59ymzsSMj58z9CMKtY1AFeg==
+	t=1795768427;
+	b=QaFKwcz/Ds/ZsSLOnc4TJWTROhU3oQN/e30/DAhyUKYDSjbX2JLrZfjdKNi1ZW+dmYBd
+	 tbvYaN6X/7nwOqnvb6egcdGiRJkzFW/7UXocL0AXHCm5Q0xwZN1RUa6WI58BFnRCASaPz
+	 WBf41VWLvTTV2k73ytwHOlbNKRBQECKpicNIjc6xlbZ/CrUpWE4Amp5EvldDjdue8RkFy
+	 FcK497ZDFN0T6Dc6gkyc4kR75HL0Kw5Dgc9Sd1RNEnAfVjWKWtcuO0iY476qyq4oU8k/6
+	 Piq08J9PGQgUbeFFe5YHntroqIoYCPDNEmEn42Q/dGnj5Lvp5NQBnBpOD4junzRft1w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795768026;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Received:Message-ID:
-	 Subject:From:To:Cc:Date:In-Reply-To:References:Content-Type:
-	 Content-Transfer-Encoding:User-Agent:MIME-Version;
-	bh=SkSrPL9Bm07gIeaJwaWdw7FJu9rCcE8NZOTbA0li0j4=;
-	b=0G/rPtKUK2QywrWSIiD+XVFwcDlmoG8StH6qlweCzhLsxGX0GrQ6GDL/cp+2thedH6zz
-	 oKMkL93H4T7eijikccMe9PiSSJanaa9r6xwVeNi9eOGFlOAgk1GLNKNE0C+/FBWzDjf3N
-	 qrAbC8q/KIqFTQS0TuWb7qtdz3wtsBO/y1I5WYlWNJsyAjmYde0DRmuVR6V1A3C/JsRGD
-	 5cSbVyKn0wK3KKud/TZ6De6vFVAFWDod+1XYXcBU1994YpbDCSbbj8XRinx9Hr8JWRdQy
-	 Y1Lds3cgJO9pOfjbHYbFr5I/IuH71lIzqrjJiXOk6hkx1p6sWHAnCvE0zrdSpggAfGw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795768427;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:Content-Transfer-Encoding:User-Agent:MIME-Version;
+	bh=j9Zg3IRwPaEItCVJjtZ7ABfU8BAnRz64CWJLFsRd0ss=;
+	b=qVBCM8CAoWAMJTuGiZRhs/UjGq/DS9oLOzbMA+NN3nqCM2LLIzk1/msy8l2ajloepK1l
+	 Xy+qG96TZX0SGi/UyRx6rFqhkpdN6LYfxD2abiS4zWYBEXwPku8wSBfMdCJLQtcPFre0n
+	 Ld47s2E7aub9FVo++DJNyag6xQx1IkyXuu546WXVyVkXMPZt78o5yxzt8+6KmUFi2VzLQ
+	 tFeRqsHaDUkmEUGMcOx0yebjajc7iA+WoiuGvCn1UZ/EyL989JwY3Ov/FWbrtLSH44oxu
+	 VfziOWqi0gr1oRolis9yl+t9mXGb5XGmVq8BqoL93eEb9bid9anMrvuzZS67guBJVGg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JxJsL9im;
-	arc=none smtp.remote-ip=192.198.163.11
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iWNKeeWc;
+	arc=none smtp.remote-ip=209.85.128.44
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3985606A31C
-	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 08:27:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A3985606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800A6606A321
+	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 08:33:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 800A6606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JxJsL9im
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795768026; x=1827304026;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=srtf5w+a0R+Uz3aE3kXV9tLw0JLmjJmmnwBLPsLxMqc=;
-  b=JxJsL9imtmsZfi+5Buiv7PT0Atg2bNuVH0CbHKohTZzLCdD0se1nIu4m
-   KohpzLl+p9HT5WJuyqzIXZQu5kESFEIIUnN+aQiC3EhzLy1fDDYJZniFL
-   17shZLwkVxjeZKA3/dsGDa/lDHmOd4GIsu7es1AWuY1+4C2htNyF09J1u
-   Swfhxb+rfFFAW5+4w7N/xYB0QYk7AN64iFuvTC/wV6lv1a3v1+Q3udkrP
-   xqh2/72QUQRsZVAq7OQjz0WNgQOiO/5qhI1UPjWIUTxwCctAX/3p6pxv6
-   HiP3gw69asQZSCWXrQXtCUBif9aTgZJZ68oR6dvKFwvV0vx9Y9ONrBgCv
-   w==;
-X-CSE-ConnectionGUID: SRMugr7xR762MfOdB294Mg==
-X-CSE-MsgGUID: ggf0NRC9Tpe3aO+27YHc/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11978"; a="4585841"
-X-IronPort-AV: E=Sophos;i="6.27,236,1787036400"; 
-   d="scan'208";a="4585841"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2026 00:25:48 -0800
-X-CSE-ConnectionGUID: tsfidv98QqGLFz7I9Crmeg==
-X-CSE-MsgGUID: bCLpMw4NRlu5zIkxU1efjg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,236,1787036400"; 
-   d="scan'208";a="12585685"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2026 00:25:46 -0800
-Received: from [10.245.245.79] (abityuts-desk1.ger.corp.intel.com [10.245.245.79])
-	by linux.intel.com (Postfix) with ESMTP id 6427020B8CD1;
-	Fri, 27 Nov 2026 00:25:39 -0800 (PST)
-Message-ID: <4c6adbb26d17917dfcad3fe0ea085234a0d487fe.camel@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=iWNKeeWc
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4bb70074ab2so82823155e9.0
+        for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 00:33:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795768426; x=1796373226; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=j9Zg3IRwPaEItCVJjtZ7ABfU8BAnRz64CWJLFsRd0ss=;
+        b=iWNKeeWcho9VCmkyk32ICsg7YKfO2HRFtSgPfp2clJUPlpnnHZeROE9ysqAZjmzzU7
+         etCSJ+3OKjkPB82nI2pwNIz+wwUdW8X9DbJ0+wmVEviwil6RSkEaVEXs6BAA5SwZG3Ip
+         M2bL11cmT0GUA3lrmSOTPx/ku5m/56zP+tf1HrtfL3FfIn8WMbcwL/+ASqK6nrp1Kfpk
+         l3TTRWWbrAlIPbzwqlmzLAPIvDAPxsBJ4qk+vvO7l/sJecmZuw6Df3IY8I0qFJ6QybNI
+         mUGAA5MTitxvgmn5sct4cJeFPKVsFnDSi0O8hsMHSboYsfmdAxTl84MadLayxe1gf13p
+         ONxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795768426; x=1796373226;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=j9Zg3IRwPaEItCVJjtZ7ABfU8BAnRz64CWJLFsRd0ss=;
+        b=pDi2lHt/nQMc/Ub7jmruk/adIhe5ePPSvhq+E2fFuIXeHeyp5sDDB/1RIku4UXrPxf
+         PPo91x3V2806LL92/5Ivz4bo036Fvu8mt4ZEZJhk9uQE0j6DXIimPq144xldg9dN0Ej6
+         Cg8cAbrYE7U/oFKmnnqL5KgXddz1qvTd7t7ChOtxwm7SAMk4XnAE+4D+9mEN2gf2W1xp
+         rdRPnCcRnFE4GE50CQC/uyhyRNAoldS8UYCiT/RVUp928KGXkD7PJ9u7PGKSYKJH1fxn
+         nDbaJ7bLRkh0qekUPTsvI67lR02s+yb+2gC8J8CyKaaU1GxZ4nwBazc/xXT1OBTA+AYd
+         p5SQ==
+X-Forwarded-Encrypted: i=1; AL+hErGP57REFOf5kBbgaHqEfGYPhdUkRJpoyJNoNoBhkopbSKKoVpAqRoXGC7QkqEuiPaU6oKI=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+NAOOcvSVfVVTSh34xUQG/KuENehamzZvmqZ294b8og7vdppcz
+	8C8VW6OKS1vh/z9/ra7itX/303x25sZjLf1SxIa3Jp71+T7eMkL1AeowIUIN3LO7CdEYXyCn
+X-Gm-Gg: AZFdTZf2/x96zORDzRrD0X2Y20v4cAE+UGdJHuTBRez34X4yrCPXOMQ6TkCg2dci0Dp
+	lWWzyuTwvs6trVH0BCK/QkcBedrsQO2qdvaPJj+0zFOO9KggEP5JWvcMQpKQ5AEEA/yXDeQITA8
+	Kt1neyu7dyHU9E5mDSwjFhM4E+vhW8UisDI43mN7ulyH335E+as+hLE0CnXrBgw4JfxGE7RIXkd
+	IvsdnbkIhOnSXXEmfygDoslLCz24Y/FR9BCPogSPnlp2DN5OudQoMVaKKMZZy5p33OChCUQexbx
+	H4PShyhlamKv2REz6MsLFLd6oPD+rvTYswRxW/5rBaw3TMCdyUpS0EGhMbThqM9AgJBvKqfavYB
+	OtQHdJIx2KY45K35G6DudxeVGB2HvrV11BtOZP/Flpzp4N+tntGtZ9tfMH5xmLU5zwy078ljZPq
+	8HTdu3HHaHdJNhKfzoNr9KR39QTqKoRl9crf9Do/0jvWtfIqUKuEtqc4KF3gZhVQi/pWizFN/pN
+	zx6o1YfT10P294giDIGdoWpE8uZaF/9dJi0e2Kb4U5aVub7zGE8bIvJmZMtyJN6P5/NFBE1Paq2
+	LqZb7LHILhHLZR03oZSAshNbjJtuC9I=
+X-Received: by 2002:a05:600c:37c6:b0:4bb:7033:c938 with SMTP id 5b1f17b1804b1-4bb888147b7mr473593745e9.14.1795768425627;
+        Fri, 27 Nov 2026 00:33:45 -0800 (PST)
+Received: from [10.245.245.79] ([134.191.227.46])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb884b7515sm922312255e9.13.2026.11.27.00.33.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Nov 2026 00:33:44 -0800 (PST)
+Message-ID: <74c6eec32fec9b7db75a8b4cd7f8e00d581eab5f.camel@gmail.com>
 Subject: Re: [RFC PATCH v2 2/4] KVM: x86: Add optional
  KVM_CAP_LIVE_MIGRATION and KVM_MIGRATE_CMD
-From: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+From: Artem Bityutskiy <dedekind1@gmail.com>
 To: Tony Lindgren <tony.lindgren@linux.intel.com>, Paolo Bonzini
 	 <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, Jon Grimm
@@ -77,13 +92,12 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>, Jon Grimm
  <anup@brainfault.org>, Samuel Ortiz <sameo@rivosinc.com>, Jakub
  =?UTF-8?Q?R=C5=AF=C5=BEi=C4=8Dka?=	 <jakub.ruzicka@matfyz.cz>,
  =?ISO-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>,  Vishal Annapurve
- <vannapurve@google.com>, Elena Reshetova <elena.reshetova@intel.com>, Kai
- Huang <kai.huang@intel.com>,  Kishen Maloor <kishen.maloor@intel.com>, Mika
- Westerberg <mika.westerberg@linux.intel.com>, Peter Fang	
- <peter.fang@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Xiaoyao Li	 <xiaoyao.li@intel.com>, Xu Yilun <yilun.xu@linux.intel.com>, 
-	kvm@vger.kernel.org
-Date: Fri, 27 Nov 2026 10:25:38 +0200
+ <vannapurve@google.com>, Elena Reshetova <elena.reshetova@intel.com>,
+ Kishen Maloor	 <kishen.maloor@intel.com>, Mika Westerberg
+ <mika.westerberg@linux.intel.com>,  Peter Fang <peter.fang@intel.com>, Rick
+ Edgecombe <rick.p.edgecombe@intel.com>, Xiaoyao Li	 <xiaoyao.li@intel.com>,
+ Xu Yilun <yilun.xu@linux.intel.com>, 	kvm@vger.kernel.org
+Date: Fri, 27 Nov 2026 10:33:40 +0200
 In-Reply-To: <20260831071304.762939-3-tony.lindgren@linux.intel.com>
 References: <20260831071304.762939-1-tony.lindgren@linux.intel.com>
 	 <20260831071304.762939-3-tony.lindgren@linux.intel.com>
@@ -101,14 +115,24 @@ Precedence: list
 MIME-Version: 1.0
 
 On Mon, 2026-08-31 at 10:13 +0300, Tony Lindgren wrote:
-> +struct kvm_transfer_buffer {
-> +	__u64 address;
-> +	__u32 size;
+> +struct kvm_migrate_cmd {
+> +	__u16 command;
+> +	__u16 flags;
 > +	__u32 reserved;
+> +	struct kvm_transfer_buffer buf;
 > +};
 
-I'd drop this structure and open-code the address/size fields in the ioctl
-structs that need them. A buffer pointer plus size is a too generic concept
-to deserve a wrapper - churn with no value add.
+In addition to dropping 'struct kvm_transfer_buffer', we need=C2=A0separate
+input=C2=A0and output buffers. Reasons:
+
+ - TDX requires them to be separate: using one buffer for both does not wor=
+k
+   in corner cases such as update-while-setup.
+ - We can't assume other CoCo implementations can use the input buffer as
+   the output buffer either.
+ - It is also a cleaner API.
+
+So I'd like the next version to have two buffers, each with its own pointer
+and size: one for input, one for output.
 
 Artem
