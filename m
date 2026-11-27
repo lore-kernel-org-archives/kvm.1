@@ -1,60 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=210.118.77.12
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795796988;
-	b=T/QEWfVflHLVuG4xJMAO2pjOo1NBkicnF7wPV6hTEhiIv97UxnNK7AXFm/8vwNy0HEWQ
-	 2IYP8+rOcfd87HBKb9HMkvjfPDjXapnyP8/QiuXdAVYl+HlJyzGJPspXALMOp+9l3nNvL
-	 SxytmfHs76XwGyKrevQR0vA+QSiWIhzDjCKzURgVD0sY0KVwjCK8RiYe6vARnsGbOyCEb
-	 uG2T1CPPdFF6Ly0koBctppNE4oEV4hWfUmsDz4D//q/Loel17cnV6HFsu/PU0mvAsA+NS
-	 YsrIQZg5cllV8qc+k7QdayvQCVa2TcMr+RujvPmHCKBPjElJ9iUH/zo+RyAdm/6ueLg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795796988;
-	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:
-	 Content-Language:From:In-Reply-To:Content-Transfer-Encoding:
-	 X-CMS-MailID:X-Msg-Generator:Content-Type:X-RootMTR:X-EPHeader:
-	 X-CMS-RootMailID:References;
-	bh=fskTL15wnb1o0Xx+IZq2KDKqa5bO2z7H3uOd3UTFjjo=;
-	b=5OftS53ecjDxzLYA/9Fqada5S7NsY7r1eMFY7+S9MI4HdVhJSCvnjNPIHMAlcNiJpHte
-	 pPrAn40SteF19UYv8hjQI5C1IuYRnTQmPewn8f7ePnCbMxrVVj00S0P8d26x6ZloJOfzo
-	 NyaeCkdmFfSKCS9G5PP9CwTPO4OL73OXKL4+x5if5DQNXJIFD7/nhHX1RbSbi+Zvp73xf
-	 waj85FNXvneg6SO9JSV5LLtkFK6x0pDiQzfCuudb+tFtQZyBaoYX8uuNK+lrLZc6qb1em
-	 45CHBvof9qZggIP23PQ22RaCXxm3Sb/8QjJq6dWg0eBMfcaWiZ1B7GsFOAD81GMxKAQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=samsung.com;
-	spf=pass smtp.mailfrom=samsung.com;
-	dkim=pass header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=dQ6L40eg;
-	arc=none smtp.remote-ip=210.118.77.12
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.43.4
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795798297;
+	b=J7ECt27vg/3bDyKCdPsTSD4xj7xiVeN1qS5b18qkapgQ+OT+NkZSHQ8+mf+KQQRBHh+b
+	 BtT1g9iG9nm87i6tOQuf3es475d51b9EEqz8gHyc6nY7Ht7nvKusI1ZhJhI8vdvjD2EZj
+	 o2gdZUzjxbuNKyI3hb+Fj1JuloPa3LiHREfkQZWFwj5HmTimIrb5LqakaVlH4/4nsIzER
+	 8Av2d/wTQk8fRXgr04PM53LDck/Mc++ZNpAsFEJnUY4DcWQOju5FDUKOH5K64ORkdd77T
+	 3Hv6bFBwxjselARQWbgG77FnZ1mpCjmsDEW/ipdGVecM5x+LRgg3U9P8YjRKaOSFc0g==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795798297;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:Subject:
+	 Message-ID:To:Cc:In-Reply-To:References:Date:Content-Type:
+	 Content-Transfer-Encoding:X-ClientProxiedBy:
+	 X-Microsoft-Original-Message-ID:MIME-Version:
+	 X-MS-Exchange-MessageSentRepresentingType:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=rB8H5xBowEk0RxDtI+Ibauba2o7JecZUa9JZtNZ7JWg=;
+	b=S6YjwI3r8Iga+iqjrIUpJkydisqbWYLQ+reNRV3GAC4ichuRRwwttDdg4VkWuKZZe19+
+	 z6iKF50UttN0QZXlHngB3c5zvR6tl+dyz9CprRwMhyL2HDRhCEDVopPQeMwwgalrXhQjW
+	 x42wYWILlGDKSHO2VSGBhCKZW0UkuqLKs3mhcRfyvWYVaXShsAVVqfONtdBksGcfD8x8a
+	 gRjCZchnfJA9B1eiqu6gOhAUL9ZfRgVno3i0vDvewgpPe/Z9aiSGAOw6iJg6aBK8xjdmg
+	 9djtOFRr/3rIcwJEcBQKQLkHdqtSrASUAEUfJS+lusQ4xCJeRUeAqck95crq0twUwHA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=hotmail.com;
+	spf=pass smtp.mailfrom=hotmail.com;
+	dkim=pass header.d=hotmail.com header.i=@hotmail.com header.a=rsa-sha256 header.s=selector1 header.b=ku7doYYW;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.103.43.4
+Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazolkn19010004.outbound.protection.outlook.com [52.103.43.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC0D606A31C
-	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 16:29:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CBC0D606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C264C606A329
+	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 16:51:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C264C606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=dQ6L40eg
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20261127162944euoutp023c1ed111a4a7aef814373877a9c45543~r89fgs5aq2223522235euoutp02I
-	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 16:29:44 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20261127162944euoutp023c1ed111a4a7aef814373877a9c45543~r89fgs5aq2223522235euoutp02I
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1795796984;
-	bh=fskTL15wnb1o0Xx+IZq2KDKqa5bO2z7H3uOd3UTFjjo=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=dQ6L40egfVigO5T6FlJni35+Jp68j+lHagaeh179VYPbpc3ae0mUelEupkmesuKXZ
-	 rKt9U6Xyk8Bl4qNnb5RdJhUHu6oNqQN5c6mR0MPUOeD9uvI8IUBlmE5DGO84mmCcRX
-	 KAjfZPbKz2NY4cwW2yxyXY053kgPtdf1PJHKJXwY=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20261127162944eucas1p20258c79e44d891dc99d178f690906ef2~r89fFj1xM3022230222eucas1p25;
-	Fri, 27 Nov 2026 16:29:44 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20261127162942eusmtip180948ab3b1d37be87c3161bd7750304d~r89drFbc71011010110eusmtip1I;
-	Fri, 27 Nov 2026 16:29:42 +0000 (GMT)
-Message-ID: <99691ff4-7652-4050-adca-3ec941dde4b2@samsung.com>
-Date: Fri, 27 Nov 2026 17:29:42 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=hotmail.com header.i=@hotmail.com header.a=rsa-sha256 header.s=selector1 header.b=ku7doYYW
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=P2YwJcC7KkrejjK8/EMXZjHOz/cLi///6TsLGXKzD8FBrSOEuIO6MvH5UHQjjGm7BHRLT/iUvH0uuKmJB5HHiT6LcW2e3J7G6e3MWLo/67uC8Nc8vkPnXuLx/Ck1648CUEZPP88wLAhRWfeKimtGZy8tVJqcxxbQMHYNaP4p7b80F7bltTHbFUvNQ+j7o5b5RqAz2aT+mqzqyB6ZiAMVEkGN6jyxgsPTGFfYD3A8cQuCESgJyMaCllzMdn6UVf0O8uEPEC0HdMtirp/B8Y2d+XXYPy+lReBJx3xafoGp7kjoTiieot3FWW4QdzO61h05B2Am9qgQmyAIRVNfeAayoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rB8H5xBowEk0RxDtI+Ibauba2o7JecZUa9JZtNZ7JWg=;
+ b=N6wvnoAhdVDecQj1wGjb3lA7V/6KsWE6wE/Uc6+cWyscl2eUubVApCbYSamkAZ418E/wHfDMfY9vHVQfboriSLvY+egkFnD5xBmIYX/GcHp7PmQGEBAPEUyK+amrIuDICIfM2xnSKcWrUkJa28D8dY7z4GCKIPUOYCoq/pAncmPoJzWCSo1A/8jNsamm2LpBJJoKTWxmUBDOdE+kImMkIsLpS6MQsRBpWaFUUpkofg39c3LztcwFsn1eFlm7uQ9/CeGiwUJZYOuZ09O9qn8leJGyKWBXou4MtV7ngMLo2JyNtyVQ+tCv93tNJ3aVZ8O+l37rWw9x/DjzvfHJ89/ReA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rB8H5xBowEk0RxDtI+Ibauba2o7JecZUa9JZtNZ7JWg=;
+ b=ku7doYYWeDyP3I3MSf6MajpkVNSxNt359TSeA5zH0k9cAj3l1ishocJl+RtLSHUVn64dhTSZDJ1BFPC8AOlWceXGG07mglBPPs3YLsZiC9gU8J+aQI/8Ly9bJMWpvmyerjowTQO2r+lhhRxbJMhuwlXfmW5vq3tZaaPOKFA7ZOqpeVf2itLnGC7xhfil8yEZg88nbdw6yWhgeGZdJvC6snQjOOezVIw9ztKb1riF2u6dTnB1JztIZgycOmBtvd7Oeh24exi7kyHDwVdV2zi8K1VXvWIZBkuNAhfXmUWpCs8+bCi8BL9iAVFZqcMJtRI2teStmBNQ5tG1uulVKILuww==
+Received: from OS3PR01MB10251.jpnprd01.prod.outlook.com (2603:1096:604:1e1::9)
+ by TYCPR01MB10197.jpnprd01.prod.outlook.com (2603:1096:400:1ed::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.9; Fri, 27 Nov
+ 2026 16:51:33 +0000
+Received: from OS3PR01MB10251.jpnprd01.prod.outlook.com
+ ([fe80::7edc:2a40:7b8f:56f9]) by OS3PR01MB10251.jpnprd01.prod.outlook.com
+ ([fe80::7edc:2a40:7b8f:56f9%4]) with mapi id 15.21.0662.007; Fri, 27 Nov 2026
+ 16:51:33 +0000
+From: "Jiaming Fan" <fan.jiaming@hotmail.com>
+Subject: Re: [PATCH] vhost: mask the in-order used-ring log cursor
+Message-ID:
+ <OS3PR01MB10251C57E853D892F935CB854E7412@OS3PR01MB10251.jpnprd01.prod.outlook.com>
+To: <fadouse@pm.me>, "Eugenio Perez Martin" <eperezma@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
+	"Jason Wang" <jasowangio@gmail.com>, <virtualization@lists.linux.dev>, 
+	<kvm@vger.kernel.org>
+In-Reply-To: <uD642sRa0jdIPD2nCoKzjJDfS2fpCefT340JqjRvOUyFkoXpwNAAabmjwSltui9-PD1DNwFJrw0xrsZqbYKJ5x3fraz9Wv46l3OrkBVA3vc=@pm.me>
+References: <uD642sRa0jdIPD2nCoKzjJDfS2fpCefT340JqjRvOUyFkoXpwNAAabmjwSltui9-PD1DNwFJrw0xrsZqbYKJ5x3fraz9Wv46l3OrkBVA3vc=@pm.me>
+Date: Fri, 27 Nov 2026 16:51:27 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TPYP295CA0043.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:7d0:7::11) To OS3PR01MB10251.jpnprd01.prod.outlook.com
+ (2603:1096:604:1e1::9)
+X-Microsoft-Original-Message-ID:
+ <40bfb8d5-9d2a-4ef0-b5a7-14a2342abf4a@milk.local>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -64,77 +96,99 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 4/4] iommu/dma: restore flush queue use in
- dma_iova_destroy()
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: iommu@lists.linux.dev, linux-media@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Robin Murphy <robin.murphy@arm.com>, Joerg
-	Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Leon Romanovsky
-	<leon@kernel.org>, Sibi Sankar <sibi.sankar@oss.qualcomm.com>, Honglei Huang
-	<honghuan@amd.com>, prakash.gupta@oss.qualcomm.com, Alex Williamson
-	<alex@shazbot.org>, Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>, Abhinav Kumar
-	<abhinav.kumar@linux.dev>, Bryan O'Donoghue <bod@kernel.org>, Mauro Carvalho
-	Chehab <mchehab@kernel.org>, Hans Verkuil <hverkuil+cisco@kernel.org>,
-	stable@vger.kernel.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20261127151717.GO114472@nvidia.com>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20261127162944eucas1p20258c79e44d891dc99d178f690906ef2
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20261127115903eucas1p27ccc4cddb7f705d6afa5c2603597b97a
-X-EPHeader: CA
-X-CMS-RootMailID: 20261127115903eucas1p27ccc4cddb7f705d6afa5c2603597b97a
-References: <20261127115849.2780625-1-m.szyprowski@samsung.com>
-	<CGME20261127115903eucas1p27ccc4cddb7f705d6afa5c2603597b97a@eucas1p2.samsung.com>
-	<20261127115849.2780625-5-m.szyprowski@samsung.com>
-	<20261127143740.GM114472@nvidia.com>
-	<feec2436-ad15-4aa6-a53f-800869bfac21@samsung.com>
-	<20261127151717.GO114472@nvidia.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: OS3PR01MB10251:EE_|TYCPR01MB10197:EE_
+X-MS-Office365-Filtering-Correlation-Id: 741b5ed7-7f73-4ca4-2036-08df4ca6b0f7
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|22091999003|25031999004|6090799003|24121999003|15080799012|23021999003|5072599009|51005399006|24021099003|55001999006|8060799015|19110799012|25010399006|3412199025|440099028|40105399003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?YU9tV0JvZXNWNHpkZkdhdFdvcGR6U3hQUmRXUEdoOGxzQitVd1hkMklSL21q?=
+ =?utf-8?B?OEljeWlFQi9ndlJZUUlBWTBIS2pJOTJLVmg0UjNlNmZQUEc1NUdDYnMxa3N3?=
+ =?utf-8?B?MnIvM04vQmE5cnIzZzczSCtoeGd5MzRLRm9ac0hGWjJ6WmlkdE9DTmJqS3Ex?=
+ =?utf-8?B?Vzd3Z1RMQjVDTmg4RGV6MUMybzNoWWNMN3A0UlNUdHQwQWNUaWdYTXpSTVRv?=
+ =?utf-8?B?VkM0N2xTU3lhTSswbnY5ZXNZRnptR1lFbUpSRjdwb0tjNnZFbWZBa0FGZFQ1?=
+ =?utf-8?B?aWxWNFVjcjVhVC9MY29aRWdvb0dmREt4V0c2OXl2b0gvVDU0dUxaN0FGZk9w?=
+ =?utf-8?B?c0pJUnhJSFFBdGV6d3BIWEx5Y1M4VmtZVjdlcEp3R0xFK3N2LytCOXJSR0ZD?=
+ =?utf-8?B?bVJjM0hxYm44SCtlTStHUk1KSE5NK2hvOGViSE9ZajdqUHVtdkdaRmwvQTIx?=
+ =?utf-8?B?YTB6dGQwU0cxbkNUR2RCR1NQWEZMR3BiSHJ2eW0xblYzR0lGMXNGdzhrMjdE?=
+ =?utf-8?B?ZnVnMG1ZUHFmNDNxRDgyMFdrUFlwMkhzVUpXcENvWXJVSmQ2U0h4TVpqOHdB?=
+ =?utf-8?B?N3hXSjJVWmhRSTNMMWFZZVd1NzFvWndBeEo5SDhoUWc0SlQvc2FseWFaM0RN?=
+ =?utf-8?B?UjI4bjl4bUx0VTMxdTRRZy9taGtOdkRYbC9lUDd6dDhkeHBhN05sZ0VqazZK?=
+ =?utf-8?B?bnJZRjdkN2VONUpsY2hPbFBWRmMzWlM1WHRqV0dkQmV6bDZXZUJRWWswalI1?=
+ =?utf-8?B?Z2pPbkdxajFhVVJvbDJKcHUrZ3R2d1hITWhBbE4vdGtsT0ZmNzNycEJIM0sz?=
+ =?utf-8?B?eUZBYXV5YkhJd08zMDVZcXR3NzZDTGdKYndWK1dVQmI0cDdWNVlpTWRTbzNQ?=
+ =?utf-8?B?OUpJVWZybE9TdTRYZlpnUnVacndTendjc0pCYnhHTEpJVWYvRGlkUFNCSmpT?=
+ =?utf-8?B?S2pqUDNBUnRRZzZnNVJ3RVJiRC8wdDFkUHNmVnRrQlBGL0tLdkJPOG5WYkIw?=
+ =?utf-8?B?MVpZQWZKVTkyZ2p2NW9EaFlGVTdzdGozSS82eVRyZXZQSFdoNWI5dDVLMzVh?=
+ =?utf-8?B?UlMxNGxpVkNNb081Q1FuVjllM2lKcDhvWnRNZlNnWlB4YUl5ZE1CNERxY3hX?=
+ =?utf-8?B?dzU2ckN5aVVveERSTlVadEk1U1lvdDZqdHg3eGFBcEJoU0x6a1RoV3hkakNP?=
+ =?utf-8?B?cHFlQnpZYzluVUxUY0R5VEYvQS9HVnFGM1J3NlNlZk1HcDRIYXAxSHZ2L0tF?=
+ =?utf-8?B?LzhCaHpXTnpyelk5TWt4aFl6bExOMUpXZWJrRmI3WWFXeTJNQjZ4Y011UmN4?=
+ =?utf-8?B?QkNUYkJFMjRxbkJJek5FTW9hMGl5MTM3ajVReExlRis1cTZPY1dkRE9KdStI?=
+ =?utf-8?B?TUhDNXFJSXoxdlhBaVVqd1BMUVdIRGcrdVpEb2Z5QWM0cHlxbkpxMHVVWUxR?=
+ =?utf-8?B?REJjbW03UjJvTU1PSnVWOFZRM0kyQWVMMGdoYm1lSE9iaFBCMUF6djlabjJ2?=
+ =?utf-8?Q?UpFg+k=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Ky8zbk9SN1FlREpNaGIyLzl2Rkl1R25BMDE1LzRUeE5Dd0l1K1l1ZUV5bmo5?=
+ =?utf-8?B?aXhQK2ZOeXV1NTJaVWFaOUdwMTZtN2JncjNSaVZoeU9XVlYwbmdsK3draFhJ?=
+ =?utf-8?B?ZVpLMTVDNjVIbG1pZzY1UndNMVdVRFBuajNFRVlzYnViVURzcWlMbGc1ekdZ?=
+ =?utf-8?B?ZTdBRXNkMit6WGNDQy9tQkdvWWVtQjQvV3VWVTd3Mk1lekRmNHNZZm9IcTVO?=
+ =?utf-8?B?Q0dIa2tqUTl6SW1oVFlPdlVtRTNLL0thUlRRd0ovK3UvWGJnS1FGT1ZvVFpG?=
+ =?utf-8?B?V1o4ejZPZXl2bklmVmwzWTlqUjRLVzIwVndQOFQzOXlpNFdrckk1VmZvWVl3?=
+ =?utf-8?B?b3RoelZaM2FSaFQ4TStRb3QxaVhjQTJadWxEZ2ZQeTUvUGVMWVR1ZWt6aXZQ?=
+ =?utf-8?B?WENlZDQ0dmZxK2w0azZuRkNjWUIzenNYQjg5ZkRjZmRNRzA4U3NoNTk4UDlN?=
+ =?utf-8?B?emgxeHZxSFVsZy82bFNhWVN3dFZZbkhxMnFMdFhQNU1MdW1EaUtvaVNvZDJ3?=
+ =?utf-8?B?WDZBRjlmTU5oeFB4aHR4eTVmQkNIbEdSaml1TFY4S3M4TUFuQmRPc2dwdzh6?=
+ =?utf-8?B?MGNINnY0QlptSzUvQWNNOE10ZHpSSC8wUkx0REtrOTlSNlVYd3dCNkF6RkVv?=
+ =?utf-8?B?eW9temxTUEw1UUtLS1FtMFhTNU4vZmZpR092aUF4RlhUNjFDN3RJYmw0OHIy?=
+ =?utf-8?B?MjJTajgycE5EVVFVQVdpREdRN2k1OXFTVTcwRDRKdC94MXZ5ZHBPWmFZT1Nv?=
+ =?utf-8?B?ZzJoTFJ0TGZIeWYwQUJWUzZPRHNEL2V1ZVA0VzZPQ3M1Q2VqWnloQksxVHlj?=
+ =?utf-8?B?Z25KQkJFdHBzcEJjdDZ2WkFzT0k0MWFCcEpUL1JTU2xJSkxtUjJFejlLdEVn?=
+ =?utf-8?B?bUkySjh0RUhZVTBQclVsWERoM2VZZjcvZko4Yy9yYVNIYXg3OC9PdHhyV0ps?=
+ =?utf-8?B?cG1Dc08yK0l0eEhhYy9IZmd2NDFMUkVrUnR0VVpkVGJRMk82NjBvL2FIT2Jx?=
+ =?utf-8?B?U3pNRXMyZXlMVVhnQ0MvYXd1T0tYU1RFMGV5ekM0V0dLM1M3U0FIUUltcFI3?=
+ =?utf-8?B?NXZ1elRPYXdYVHM5ZGpPNXlGMlVKR25pS0pQVjlvMEdpVDJXbllMSk5mZytO?=
+ =?utf-8?B?QXhwSXRJODNBQWRaWGlVRk10STF4bW1HSHZSVjE4SnZSS1E0N0VXUGVMRlFq?=
+ =?utf-8?B?d2V1akFzU1RYc1l2aVBldzdWSjdlRHBwSVZkUVNZbEwzWEoweStlTHNBdWJn?=
+ =?utf-8?B?Q3ZsQTFrTW15aCtmM2p0Q2dIV3FGcDMyaGdpWUZML2FEd2xzcXR1YzdBcFBm?=
+ =?utf-8?B?OXNqNFkxM1puVUs2aVhyTXExRWhHOUZnUnNvK3gwNk9JTys1N0IydHY3TnM1?=
+ =?utf-8?B?eWJLWjVyWUxhMGJmRkhLMTMrb1pmTUtmeDFqNFVlWS91TnFuL3E4K1grMWZy?=
+ =?utf-8?B?Ylo4dmJvaWZPSXF0UFptc1k0c2FXU2o0S1Y0bzhXV1hGdUdvTHVnbGVpU2dp?=
+ =?utf-8?B?S3VBMWRpVTl6Yk9zQm4rMlJqRGdRUzB2UVNzUlVTdUVxVnUyak5vTjB1TmZr?=
+ =?utf-8?B?eUk5Z2loVnBmY3h5MzNxMkxSS0JORXU1NnhKVmlMYXVWdHY1dWNzUndxRFJm?=
+ =?utf-8?B?SE1Xdm81RjB3Z2FLQitXSjZFR00vMmVUVFgxSFJvTHVnVHA3ZVBzdTZJYkh2?=
+ =?utf-8?B?aDBmTGNlR25ObVpYdENWaW9RVHlzS3BYZWExNlV4bUtubVJvUnQ4aTd0bzFC?=
+ =?utf-8?B?TWIwSEhVK2JTNW5qdDluaHRwYjY2MTJCeUg0Mmw4T0l2UXlQUlI5ZmFLdDdh?=
+ =?utf-8?B?a2J6V2ZyQ1FWWStoNEhuUHFsM0g2Wm1pTkZxRDNmZmE4eFN5Y1NwTWxDUmlq?=
+ =?utf-8?Q?ty5HjYwSXOmfN?=
+X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-b83fc.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 741b5ed7-7f73-4ca4-2036-08df4ca6b0f7
+X-MS-Exchange-CrossTenant-AuthSource: OS3PR01MB10251.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2026 16:51:33.0694
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB10197
 
-On 27.11.2026 16:17, Jason Gunthorpe wrote:
-> On Fri, Nov 27, 2026 at 03:45:15PM +0100, Marek Szyprowski wrote:
->
->> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
->> index 0e329ecd7dfa..106da975bf0f 100644
->> --- a/drivers/iommu/dma-iommu.c
->> +++ b/drivers/iommu/dma-iommu.c
->> @@ -1892,11 +1892,12 @@ static void __dma_iova_free(struct device *dev, struct dma_iova_state *state,
->>   */
->>  void dma_iova_free(struct device *dev, struct dma_iova_state *state)
->>  {
->> -       struct iommu_iotlb_gather iotlb_gather;
->> -
->> -       iommu_iotlb_gather_init(&iotlb_gather);
->> -       iotlb_gather.queued = state->__size & DMA_IOVA_USE_FQ;
->> -       __dma_iova_free(dev, state, &iotlb_gather);
->> +       /*
->> +        * Nothing is linked any more and every dma_iova_unlink() has already
->> +        * invalidated the IOTLB synchronously, so there is no deferred
->> +        * invalidation to wait for and the IOVA can be reused right away.
->> +        */
->> +       __dma_iova_free(dev, state, NULL);
->>  }
->>  EXPORT_SYMBOL_GPL(dma_iova_free);
-> That makes sense, but I'm a little lost why we needed the
-> DMA_IOVA_USE_FQ ?
->
-> If any queued gather was ever created then the ultimate free has to
-> also be queued. But the comment implies that queued gathers were never
-> created in this case?
+> Bounding get_rx_bufs() (e.g. capping its quota against vq->num, or
+> checking in-flight descriptors more broadly) is certainly worth
+> looking at separately, while keeping the mask in
+> vhost_add_used_n_in_order() keeps the dirty-logging cursor consistent
+> with the publishing loop from commit e244725e86be.
 
+Hmm, I'd actually go the other way round. Isn't the cap the real fix
+here? The mask feels more like hardening to me.
 
-Indeed there is no point caching domain->iova_cookie->fq_domain once the
-dma_iova_free() doesn't use the gather. Now fq_domain can be directly
-checked in dma_iova_destroy(). This simplifies things a lot. I will send v2
-soon.
-
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+Though the cap changes things for a packet that can't fit even a full
+ring. If I read it right, today get_rx_bufs() runs out of descriptors,
+rewinds and waits for a refill that never comes, since the guest has
+nothing left to post, so the queue just sits there. With the cap it
+hits the quota instead and the packet goes down the overrun path and
+gets dropped. Probably better, but it's a behavior change, so it'd
+need some care not to regress anything... a bit tricky I guess.
 
