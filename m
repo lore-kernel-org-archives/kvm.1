@@ -1,68 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795778878;
-	b=v5qEdk8E7bPEkGbJTvtFHZvWVFa0Mrn7W+BVZzyTd/JdIXA1zrgarhbcqy8jq6/0aDxV
-	 0stLdD8Rzp6okl1bORqj71rbnNZbHounvRdUYHkTtM9p/G3woODkjSDEMKWRIfDPi6Bjz
-	 otRsWy+61kXlBGhqvbQ6FuXccgWX7eo5zjUDm9TNjlE1P7PT3i2sUYIevkGvhoWd1NCo7
-	 e2v81IayAgXcSMuDgFwbBdFosl3ZBj7GTTKixbxYnQZ5vXUabUjDHWHBoM74Wi2ZeRagQ
-	 fXuL/k3sOVcG5CiSCJuXlxZ5GYN1LPjireWKcdY5q4/3p1j8baVn7Q9RVDE9GaU08Mw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795778878;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:Received:From:To:Subject:Date:
-	 Message-ID:MIME-Version:Content-Transfer-Encoding:X-Scanned-By;
-	bh=XE2ARMdqjzGC3eYJ4eYvnmLdtPrB95chWrcFqgsLpdU=;
-	b=owc6P0GDONlk4yDTpx8yvm4LZk+B1+VIXXjOSdhd027yDha3NBaPGAO1XhbGrtgsUQ1A
-	 aYoeTZgom7Tom3JMOuPcfZN5aXYmYONgx9MT+QRw8DWyA5NB5SCIKnkPAdPBbtF2ED2TZ
-	 Kk4OEl9hENyZxxIG5UJFfj0Y3fQuYJNZrwhAGxg+AhT38ORhlRcAon7zcioaufxNf7o0n
-	 OrChsQ33sOut2lUlF47+yoxDcRQeD1oQ2RBkt379qm8TD6iUdx5C6ggXTf35yMgelLWqv
-	 DuOrxN1TqdpD33JDPwvQeGtzqwDYe0IV5lVfIERZkGMbx5OYPGooIfzDkT85p5UUvuw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SFS3P5Kl;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1795779188;
+	b=4fnqQXg11K03o441AtFHUsCT0zrG/OwiMaAXhH7/J/ivddB9t4VhidXxjoTcnaE64QhR
+	 5TNj+/1urupdmEvnleFpZqHMrINs4DDk6KUcGj0VfSm+rhGSUmnhr47ECX68bFr1Lijgi
+	 p5YqYS3eLTsZTGOgEbB/epEBHaXXSUU4kAtRpqji8iXl3sUNamVlsM/eBokFI1szwBl6y
+	 FsP2keHjubkeMjY63/HVp6LekX+CMaxfaB2yd/er8c9xaS9JWhjzYjvhAqRMzScHthgy/
+	 Eqh7GeNtsFAXVC9Jgm53iPQOhcsxkqMwFfTj4DGLEURIDbE4dpTdd50CiAl968V6cTg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795779188;
+	h=Received:DKIM-Signature:Received:From:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:
+	 Subject:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=38+GiE1gBBjeYJ5/7keBc+DKIzPpXLrUWnUnNUTxShA=;
+	b=E13EwpgePnfzGFa3C1fJ+HQBOSbSkBpJ3pqLWY/4Z/aRiP+5nfh5KlQ9hgL8O5gJKZ76
+	 DzwvCOadHRH99VF344ZbkAV6+OAzvOz8iwQyhsMrv1P3Ar/K+EQqEXIXpuJQZBILq45qi
+	 ePz3DkCQfkGCrro2Ro7ufunRsYntuGQGsPMZpp3SFsvSl4PdvufJHBReKSvjU9u+Kd6a5
+	 K18gGYmkunIurjJpcWcJOarSdl25Obka/j7EDRJK4MmeLgICcsiwAgwfHKn+8lu9sgvxo
+	 U5yxN1+Ivn6C6EJE8/a6c7mfB9KqBPk2uHQrugTEOTe4rovCp858cIsMAQBPiDzyfAA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gjfMnoJe;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BD6606A31F
+	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 11:33:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gjfMnoJe
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1795779187;
+	b=dhWFtPp4lsauXquMm+Tk+Ug8tzUciFyvRlBwlMZLGPDzVGEZ+DLRUmYpJKEtZLMOoXnd
+	 v+07byqayDspaCjS2m9lfUQcbobHv0Fgj4LoaFd1jyjRj7Aq7+l56RA1fO5g+QLSjSiXI
+	 FYl5//cJ4kf5itBYSZr7adfOID7YujlsbRTAi6DVTjlIsDZLZ1YdQRnsItAyUQHbXci+n
+	 5oZNd7julrxyIcKyitppd8qvN2D67mr1sonLnb0MwSkLHZ6ZDYZJvQ/BpVHrW8bMZoAwo
+	 3Opfr6ltzB2laHzcQeyzs/txVnhceyTWDXXFN8eQVsngOUTGNcqbfitVdf3cJYwTlow==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1795779187;
+	h=DKIM-Signature:Received:From:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:
+	 Subject:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
+	 X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=38+GiE1gBBjeYJ5/7keBc+DKIzPpXLrUWnUnNUTxShA=;
+	b=Cz6e1ozE+TQHFqdqu90I1fIBdPI7dcb6eLyAUA6Qveebe+nG7i/Whsa9qE45oewW9uXu
+	 m8jbJYHJ6gmqL8cI5JGmj2OBx0iL/Z5ENbmRmgjlz3BdbTE74diQpECoiOyYoHkYRU7b1
+	 fHIy9MX0BuFlwHt1UspIIwm9p2IpCWeQnAfH9rAWBEAHRzE+mK+IUDnso+GRP8WfppCLE
+	 bYJfpzHWYPSUNStg9KGR+IVcJg/U8sE864lTdaWr4XieeOAXyprwBPzL9i1kW05FKLWGV
+	 uviNaucAIxLCQ+e/wKDaCjy6HAaRlQLWxP3ux2OtycJVLe1LrzGmKssicCM/jLTn8UA==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96924606A31C
-	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 11:27:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 96924606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SFS3P5Kl
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1795778876;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=XE2ARMdqjzGC3eYJ4eYvnmLdtPrB95chWrcFqgsLpdU=;
-	b=SFS3P5Klk/lOMvLaiUEUcKpjUTzucXcXpTFi31Qx6ffv/kahMnuttkQGzG2MNM8xzI6H0u
-	IrdyVY3EcSa9EuquRf/z3W5VVo1hGmDiMV43xZPdGiSM1BiXOl6Al0lYTk6zNp6G+BOCKY
-	A0PdZ4wP0YkjICjvvgJNuQaMNbyoizE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-628-yAlYoBQ9OVadX4Nu6wXyqw-1; Fri,
- 27 Nov 2026 11:27:54 +0000
-X-MC-Unique: yAlYoBQ9OVadX4Nu6wXyqw-1
-X-Mimecast-MFC-AGG-ID: yAlYoBQ9OVadX4Nu6wXyqw_1795778874
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 11382180028B
-	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 11:27:54 +0000 (UTC)
-Received: from pbonzini-thinkpadx1carbon6th.rmtit.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5DE481956042
-	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 11:27:53 +0000 (UTC)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: kvm@vger.kernel.org
-Subject: [PATCH kvm-unit-tests] run_tests: replace disabled_if with target
-Date: Fri, 27 Nov 2026 12:27:51 +0100
-Message-ID: <20261127112751.2510760-1-pbonzini@redhat.com>
+	by smtp.kernel.org (Postfix) with ESMTPS id 148101F00897;
+	Fri, 27 Nov 2026 11:33:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795779187;
+	bh=38+GiE1gBBjeYJ5/7keBc+DKIzPpXLrUWnUnNUTxShA=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=gjfMnoJe0EP6s2XTY216Ce3ZNchUCMMYh809jbQPRWD4A61VBBPu5BMLaRkCWcTHQ
+	 fAeBKW+EwONzwH1ue6tyky4eb9Mpm30QXtlGbpWwBrdV1tmHMWsagLC5gJlvw6oCSu
+	 pht4NdMnT0gxahlL1sjJVa7QIHEpmpcL1RQ4erxqmjZYcQsUyPhGcp0m5G/+w/T6R4
+	 FfbFjTzuQuUHUFxIhQc70YAiBPFr9APT7U9PuOzR1Lz6hEvsYs5Ltcobv/7JcstxEU
+	 5sq4swWS6Q/W4bwRt6T1wYduASUN7qE5HUX44gsnSix33kfCBqZ+6WfydmifecTq56
+	 8shVmB+WVd8sg==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 982F44B776;
+	Fri, 27 Nov 2026 11:32:59 +0000 (UTC)
+From: Dickson Wu via B4 Relay <devnull+dickson.wu.certik.com@kernel.org>
+Date: Fri, 27 Nov 2026 11:32:05 +0000
+Message-Id: <20261127-kvt1-virtio-d-v1-0-bfa9ce1cece5@certik.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -72,213 +82,81 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADVqCWsC/yWMSw7CMAwFr1J5jaWkhZZyFcQiH0MNKEFxiJCq3
+ p0EljN6b1YQSkwCp26FRIWFY6igdx24xYQbIfvK0Kt+1Lqf8FGyxsIpc0SPx1lNo1OHYd4PUD+
+ vRFf+/Hrny5/lbe/kcou0hTVCaJMJbmlKKPgc4xObh237AvLQLY6RAAAA
+X-Change-ID: 20261127-kvt1-virtio-d-89076c053943
+Subject: [PATCH kvmtool 0/3] virtio: Bound descriptor chains and validate
+ 9p requests
+To: will@kernel.org, kvm@vger.kernel.org
+Cc: julien.thierry.kdev@gmail.com
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795779125; l=2290;
+ i=dickson.wu@certik.com; s=dickson-b4; h=from:subject:message-id;
+ bh=5j1JHFdkrf5uc9J1afcnODHnb2r+3e6F5MbaYBCSiKs=;
+ b=rVZWSDgTtBXF/rSF0G1omd09zxQ+yVdLz0tYYDCjtX1SZ1fsXpYGwtxttW9wGUdxgftRs3EhK
+ jp+p7YqfWEyBv6ftc9GUHEVLrzJLKlWPrRKgK4PKN5vBHOwCEVPf5ey
+X-Developer-Key: i=dickson.wu@certik.com; a=ed25519;
+ pk=fxH7FS4FdojeJSGLJzgKdfO51Rvr4EW30yinj2mc1vg=
+X-Endpoint-Received: by B4 Relay for dickson.wu@certik.com/dickson-b4 with
+ auth_id=1647
+X-Original-From: Dickson Wu <dickson.wu@certik.com>
+Reply-To: dickson.wu@certik.com
 
-All instances of disabled_if are used to prevent the test from running
-with kvmtool.  Make that explicit, just making target.
+Hi Will, Julien,
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+As Will asked after my private report, here are the fixes on the list.
+A guest that controls its virtqueues can make descriptor chains exceed
+fixed host iovec arrays, place descriptor tables or buffers partly
+outside mapped RAM, supply malformed 9p strings or I/O layouts, or
+notify queues a device does not have. Reaching these paths requires
+kernel-level control of the guest.
+
+Tested:
+  - On kvmtool master 2f3abe56dcd2658dc6dae3eeeb4996dc4b518bcf,
+    the default -Werror build and 9p, net, RNG and balloon guest
+    reproducers ran on real lkvm.
+  - With the three patches on that master (tree
+    51a74622257779e94627f721b2e51bc51d23d627), the default
+    -Werror build, net valid and split RX, balloon valid, split and
+    oversized statistics, and net/9p guest smoke passed. Smoke moved
+    network traffic and created, read, wrote, renamed and deleted
+    files over 9p.
+  - A paired MMIO selection probe on master and the patched tree
+    showed invalid selection on master and safe rejection on patched,
+    with x86 MMIO enabled only in test copies.
+  - checkpatch --no-tree --strict is clean on all three patches.
+
+The reproducers are available if they help.
+
+The bugs were found, and the fixes and test runs were
+prepared with AI coding tools (OpenAI Codex agents, with review by
+Claude). I went over the result before signing off.
+
 ---
- arm/unittests.cfg       | 14 +++++++-------
- docs/unittests.txt      | 16 +++++-----------
- scripts/common.bash     | 12 ++++++------
- scripts/runtime.bash    |  8 ++++----
- scripts/s390x/func.bash |  5 +++--
- 5 files changed, 25 insertions(+), 30 deletions(-)
+Dickson Wu (3):
+      virtio: Bound descriptor chains and guest ranges
+      virtio: 9p: Validate unsigned string lengths
+      virtio: Reject invalid 9p buffers and queue indices
 
-diff --git a/arm/unittests.cfg b/arm/unittests.cfg
-index 12fc4468..df6f6d4e 100644
---- a/arm/unittests.cfg
-+++ b/arm/unittests.cfg
-@@ -43,7 +43,7 @@ groups = selftest
- [pci-test]
- file = pci-test.flat
- groups = pci
--disabled_if = [[ "$TARGET" != qemu ]]
-+target = qemu
- 
- # Test PMU support
- [pmu-cycle-counter]
-@@ -220,7 +220,7 @@ test_args = its-migration
- qemu_params = -machine gic-version=3
- kvmtool_params = --irqchip=gicv3
- groups = its migration
--disabled_if = [[ "$TARGET" != qemu ]]
-+target = qemu
- arch = arm64
- 
- [its-pending-migration]
-@@ -230,7 +230,7 @@ test_args = its-pending-migration
- qemu_params = -machine gic-version=3
- kvmtool_params = --irqchip=gicv3
- groups = its migration
--disabled_if = [[ "$TARGET" != qemu ]]
-+target = qemu
- arch = arm64
- 
- [its-migrate-unmapped-collection]
-@@ -240,7 +240,7 @@ test_args = its-migrate-unmapped-collection
- qemu_params = -machine gic-version=3
- kvmtool_params = --irqchip=gicv3
- groups = its migration
--disabled_if = [[ "$TARGET" != qemu ]]
-+target = qemu
- arch = arm64
- 
- # Test PSCI emulation
-@@ -282,7 +282,7 @@ file = debug.flat
- arch = arm64
- test_args = bp-migration
- groups = debug migration
--disabled_if = [[ "$TARGET" != qemu ]]
-+target = qemu
- 
- [debug-wp]
- file = debug.flat
-@@ -295,7 +295,7 @@ file = debug.flat
- arch = arm64
- test_args = wp-migration
- groups = debug migration
--disabled_if = [[ "$TARGET" != qemu ]]
-+target = qemu
- 
- [debug-sstep]
- file = debug.flat
-@@ -308,7 +308,7 @@ file = debug.flat
- arch = arm64
- test_args = ss-migration
- groups = debug migration
--disabled_if = [[ "$TARGET" != qemu ]]
-+target = qemu
- 
- # FPU/SIMD test
- [fpu-context]
-diff --git a/docs/unittests.txt b/docs/unittests.txt
-index 921318a6..fa0eb03d 100644
---- a/docs/unittests.txt
-+++ b/docs/unittests.txt
-@@ -125,15 +125,9 @@ The path and value cannot contain space, =, or shell wildcard characters.
- 
- Can be overwritten with the CHECK environment variable with the same syntax.
- 
--disabled_if
-------------
--disabled_if = <condition>
-+target
-+------
-+target = <target1> <target2> ...
- 
--Do not run the test if <condition> is met. <condition> will be fed unmodified
--to a bash 'if' statement and follows the same syntax.
--
--This can be used to prevent running a test when kvm-unit-tests is configured a
--certain way. For example, it can be used to skip a qemu specific test when
--using another VMM and using UEFI:
--
--disabled_if = [[ "$TARGET" != qemu ]] && [[ "$CONFIG_EFI" = y ]]
-+Restrict the test to the listed VMM targets, such as `qemu` or `kvmtool`.
-+By default, the test can run with either target.
-diff --git a/scripts/common.bash b/scripts/common.bash
-index 47c45660..0f8ae5d6 100644
---- a/scripts/common.bash
-+++ b/scripts/common.bash
-@@ -16,7 +16,7 @@ function for_each_unittest()
- 	local check
- 	local accel
- 	local timeout
--	local disabled_if
-+	local test_target
- 	local rematch
- 	local raw
- 	local current
-@@ -50,7 +50,7 @@ function for_each_unittest()
- 		if [[ "$line" =~ ^\[(.*)\]$ ]]; then
- 			rematch=${BASH_REMATCH[1]}
- 			if [ -n "${testname}" ]; then
--				$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$test_args" "$opts" "$arch" "$machine" "$check" "$accel" "$timeout" "$disabled_if"
-+				$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$test_args" "$opts" "$arch" "$machine" "$check" "$accel" "$timeout" "$test_target"
- 			fi
- 			testname=$rematch
- 			smp="$(vmm_optname_nr_cpus) 1"
-@@ -67,7 +67,7 @@ function for_each_unittest()
- 			check=""
- 			accel=""
- 			timeout=""
--			disabled_if=""
-+			test_target=""
- 			continue
- 		fi
- 
-@@ -97,8 +97,8 @@ function for_each_unittest()
- 		elif [[ $line =~ ^check\ *=\ *(.*)$ ]]; then
- 			current=check
- 			value=${BASH_REMATCH[1]}
--		elif [[ $line =~ ^disabled_if\ *=\ *(.*)$ ]]; then
--			current=disabled_if
-+		elif [[ $line =~ ^target\ *=\ *(.*)$ ]]; then
-+			current=test_target
- 			value=${BASH_REMATCH[1]}
- 		elif [[ $line =~ ^accel\ *=\ *(.*)$ ]]; then
- 			current=accel
-@@ -114,7 +114,7 @@ function for_each_unittest()
- 		[ -n "$current" ] && eval "$current=\$value"
- 	done
- 	if [ -n "${testname}" ]; then
--		$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$test_args" "$opts" "$arch" "$machine" "$check" "$accel" "$timeout"
-+		$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$test_args" "$opts" "$arch" "$machine" "$check" "$accel" "$timeout" "$test_target"
- 	fi
- 	exec {fd}<&-
- }
-diff --git a/scripts/runtime.bash b/scripts/runtime.bash
-index bf5e2125..67518ca3 100644
---- a/scripts/runtime.bash
-+++ b/scripts/runtime.bash
-@@ -82,7 +82,7 @@ function run()
-     local check="${CHECK:-$9}"
-     local accel="${10}"
-     local timeout="${TIMEOUT:-${11:-90s}}" # TIMEOUT env var overrides unittests.cfg
--    local disabled_if="${12}"
-+    local test_target="${12}"
- 
-     if [ "${CONFIG_EFI}" == "y" ]; then
-         kernel=${kernel/%.flat/.efi}
-@@ -130,9 +130,9 @@ function run()
-         accel="$ACCEL"
-     fi
- 
--    if [[ "$disabled_if" ]] && (eval $disabled_if); then
--        print_result "SKIP" $testname "" "disabled because: $disabled_if"
--	return 2
-+    if [ -n "$test_target" ] && ! find_word "$(vmm_get_target)" "$test_target"; then
-+        print_result "SKIP" $testname "" "$test_target only, but TARGET=$(vmm_get_target)"
-+        return 2
-     fi
- 
-     # check a file for a particular value before running a test
-diff --git a/scripts/s390x/func.bash b/scripts/s390x/func.bash
-index 28c3a70c..d5e132ef 100644
---- a/scripts/s390x/func.bash
-+++ b/scripts/s390x/func.bash
-@@ -18,9 +18,10 @@ function arch_cmd_s390x()
- 	local check=${10}
- 	local accel=${11}
- 	local timeout=${12}
-+	local test_target=${13}
- 
- 	# run the normal test case
--	"$cmd" "$testname" "$groups" "$smp" "$kernel" "$test_args" "$opts" "$arch" "$machine" "$check" "$accel" "$timeout"
-+	"$cmd" "$testname" "$groups" "$smp" "$kernel" "$test_args" "$opts" "$arch" "$machine" "$check" "$accel" "$timeout" "$test_target"
- 
- 	# run PV test case
- 	if [ "$accel" = 'tcg' ] || grep -q "migration" <<< "$groups"; then
-@@ -36,5 +37,5 @@ function arch_cmd_s390x()
- 		print_result 'SKIP' $testname '' 'PVM image was not created'
- 		return 2
- 	fi
--	"$cmd" "$testname" "$groups pv" "$smp" "$kernel" "$test_args" "$opts" "$arch" "$machine" "$check" "$accel" "$timeout"
-+	"$cmd" "$testname" "$groups pv" "$smp" "$kernel" "$test_args" "$opts" "$arch" "$machine" "$check" "$accel" "$timeout" "$test_target"
- }
--- 
-2.56.1
+ include/kvm/virtio.h |   9 +-
+ virtio/9p-pdu.c      |  61 +++++++--
+ virtio/9p.c          | 345 +++++++++++++++++++++++++++++++++++----------------
+ virtio/balloon.c     |  59 +++++++--
+ virtio/blk.c         |  18 ++-
+ virtio/console.c     |   9 +-
+ virtio/core.c        | 290 +++++++++++++++++++++++++++++++++++++------
+ virtio/mmio-modern.c |   9 +-
+ virtio/mmio.c        |   5 +-
+ virtio/net.c         |  57 +++++++--
+ virtio/pci-modern.c  |   3 +
+ virtio/pci.c         |   9 +-
+ virtio/rng.c         |   5 +-
+ virtio/scsi.c        |   3 +-
+ virtio/vsock.c       |   3 +-
+ 15 files changed, 679 insertions(+), 206 deletions(-)
+
+base-commit: 2f3abe56dcd2658dc6dae3eeeb4996dc4b518bcf
 
