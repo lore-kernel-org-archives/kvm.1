@@ -1,108 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.46
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795800393;
-	b=p2+F8QC0VmV7RdGZkQVjGaAlsPZWHqWjsjtBwQzOLyuLZbEJAt5jTyJVXpTw7+jfW3pi
-	 Fe2h4IUxDxKrpbPdMzVNubWZkSeRsfgjY7SU6eLI/8Y2yyY5SdCOaBth1goHikwQND59v
-	 ZNDmGOnzkq59Tn8lv+RPzT0xMyf1z5WtO9sGJXaqAdGaAhmGMWmIQ9BQynNVYQ7HxSrHt
-	 fGItljgUekxDASkB+m7lnly57NAaPvqQojlM5teN6ryZqGcI5wNdfyS5LVMTErNaRg1XQ
-	 fpAwsRqawM4ckt5P/hRjohxgiAM6bOQg5JUUx8L40UqfUxIdrtyWuVg5OnXv28xKTUQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795800393;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:Content-Type:Content-Disposition:
-	 In-Reply-To:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=gnytq53uEZOsNxelO5CL/IM1UaRZgDtTKviuNah2VDs=;
-	b=UlQJCO4mOhxxalmHWjeQJTYh12wMG1e9cQxMK3Hr/WvOdC6T6YpJR+GasImqrBLiLoC2
-	 vy9FVI5Tn4oJnX3OPzu+lPdTyebXo9cxaNk9r/xkHbX/Jpk7Eh+LDHr3ExT/ZKbl8B7au
-	 RFotJ1A65yO4wn/Tmo66wfgO//y9TOFB5/Odot01Iqr2Y7ukAgSeNlG7zK04P3OYj8RpO
-	 hjizBCA+Q72Ks1aO9GImMNKJCA5RykPxC7iAogWcr72mkBnsMDsdLLEtRy0xbeC26Sg/c
-	 Zhgxo1vhcyIwM5iJans4cEA7IIMOU6K/qMndCPbhK5deJp4XPcIrS9NLzlC6yqG6rnA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=RYReudYV;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.201.46
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010046.outbound.protection.outlook.com [52.101.201.46])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795804749;
+	b=ylLsK1KRfi9NOpHHcUReXqWrvedRzGwndA+dohSGTUxiwh9/du7qPFU4uBYTXDVMpcuR
+	 495rxI5YL/GIUYt8Lc22G9fo7gtTNkGXgKtkApL+szeShQerABXwn9A2VZa/Mz7qEfoMn
+	 9LjNGJPa3lHtqY52nMguFSy2g75cwPn+XKqXfjqY+sJ8X10h9XY9DpYDQj2u9DF+kKMRA
+	 E5kBHQGHvO7TkGEL+ZB7JauPOKXcRLeSSCnrG64FQlwp3dX81sS4Wm2E1g6Oy1CKXGyRl
+	 HhSS/lJBK859o+btn6jLoTWAGK78VGXZo6bYaezQY4EeB5vPrZczXzAszaHLLxgISag==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795804749;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
+	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:From:Content-Language:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
+	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=cxkSymY21rIaHHQKgokU6f2pFt1aFvR5dqO5c8AxGZo=;
+	b=mREfnIru2jXbjQpBaqBstLUyOFG+ANv0R5jj7VViV/JkQzoidSg66RUS5GSXSqxzirEe
+	 GRp2qFLxWf5brCy8oOTHOlDWMq/YYCLDbvaRG2b35bUaDav0ZXVOYcGlGsbp7JuaGBTTo
+	 8W00zRGyuDGfm7Wxo0P/o3gjyCa3QX2Y/NohZD9t+UbGnvwKgZBJdarEF1y/WeUcyKU1s
+	 DI7EEA5Cot5dsfKMZxGsI7yDDPihTNj56meeImrqwFkMG0SGXUP5bMwPI6pUsUXHaEFf7
+	 B0ojjh8kfShECNHEFAxppikeFk3Mp+VNCuRmKPdBGvr5Io9Bw1M0IAlLXCLgNqbfzqQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.ibm.com;
+	spf=pass smtp.mailfrom=linux.ibm.com;
+	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UHU1IuKh;
+	arc=none smtp.remote-ip=148.163.156.1
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA22606A31C;
-	Fri, 27 Nov 2026 17:26:32 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7EA22606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43CB1606A31C;
+	Fri, 27 Nov 2026 18:39:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 43CB1606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=RYReudYV
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ue4Ybh+a/NetfTYijsDB4GfhY69CaEX7xSFXdOVkFLNAqsV+V7CqnIJ7ESQudFZTSLBXcwEA9qq17q6L96pcaIbY9Oc6Bt92nCsGxkYK2G+RQPE4S3cKGxG/x7MXDIBshg6RlMRFvBVJ1yA/2+0S92piwJHnWh/6JAdZF75Zqa7hx8EztreaFcaGDYVQTqhBJqt+aH/toJGD5QaqQ+MaX2GV/yVJFrhuDLAL5COAfob0b2D35cfPvqDYaqs28KOZEuEjfU3nDcFV0tbXLTKEkxeofzeeBxNUXaNr8phVtLTuZRY5vH5J7O+m4BX9tadykJmY5gbk7g9diMfPRt3sJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gnytq53uEZOsNxelO5CL/IM1UaRZgDtTKviuNah2VDs=;
- b=iFz+ircg56I7G84Dc5YYt8ZRLZmGcB2U0e7gUT49E3q0+nJ55hsp7UbidC7Tf035fks6PKlwD1/7p1Dly1cvNMRrxKYeux+aFLNhBLERC2DvWoeDLUM1fMaxM0jZ4Cq7EwqiHvUkMT4WKJiW2NqtzSCWpg6vl5UOGRvk733FVkMm8nQzyPlR0V0z4uhEvT2mix5rKggtfpjVoMRgCYDns5plAotCjI+x897gkFCfMYcMYv6ZdYzn13Co6pdo1CB+pVLaDQKXlO79SDZObzDPO9qnRla9scX6+eB+gzuQ5jR/IdgsD/Uggl7bVasznaVuRXlGyIejAsd+1yFs6FIwGw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gnytq53uEZOsNxelO5CL/IM1UaRZgDtTKviuNah2VDs=;
- b=RYReudYVO5AVH0i7Dvc70+F7nQTrMYGw3kRXORCc2mkshe30s3gTx6AUFGTGn2RiE0STQdBjbNfgpgy0HRe3ABBFV7utfV8sYE31dqIwAOL+F3FX2o4FQiezuZAMC1lFqI0cQd+bJrAHLuZq7VuEL5KoyxbqnqmHdruqcLe/wWMcpF7CQakmrVxImvwQphvd2zgpCPv044fFt5Elncf2RavnquoEsx8NRzOEfum4xJgzBFWOggRUO+r1ZKf0uEq3Pi8C6uBNTKBXcPiFVvN2s3tYABjaNoyOp2iaQeu8jZr7C0EcYu/VH7s+GpOx3Y6hbodG706uCcMiY1vil3p2Tw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12) by LV8PR12MB9230.namprd12.prod.outlook.com
- (2603:10b6:408:186::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.7; Fri, 27 Nov
- 2026 17:26:28 +0000
-Received: from CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d]) by CHBPR12MB731189.namprd12.prod.outlook.com
- ([fe80::b0e5:123d:fe06:e10d%6]) with mapi id 15.21.0662.007; Fri, 27 Nov 2026
- 17:26:27 +0000
-Date: Fri, 27 Nov 2026 13:26:26 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Bryan O'Donoghue <bod@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>, iommu@lists.linux.dev,
-	linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Leon Romanovsky <leon@kernel.org>,
-	Sibi Sankar <sibi.sankar@oss.qualcomm.com>,
-	Honglei Huang <honghuan@amd.com>, prakash.gupta@oss.qualcomm.com,
-	Alex Williamson <alex@shazbot.org>,
-	Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/4] media: venus: use dma_iova_size() to check the
- reserved IOVA size
-Message-ID: <20261127172626.GQ114472@nvidia.com>
-References: <20261127115849.2780625-1-m.szyprowski@samsung.com>
- <CGME20261127115859eucas1p1ae20b01eec39080daf19dbd71aba10e9@eucas1p1.samsung.com>
- <20261127115849.2780625-2-m.szyprowski@samsung.com>
- <nohVXMHveO5nQuD8sOn0QoENkIUC-GQzMCh8HTX6v2eezbtW6OM5gX5JwJ7_MSwfWj3bC4Zmfz1CrxTDKJeFGg==@protonmail.internalid>
- <20261127142912.GK114472@nvidia.com>
- <dcc8689e-41bc-4a18-87fc-2fa76e11eab1@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dcc8689e-41bc-4a18-87fc-2fa76e11eab1@kernel.org>
-X-ClientProxiedBy: YT4P288CA0034.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:b01:d3::20) To CHBPR12MB731189.namprd12.prod.outlook.com
- (2603:10b6:610:33d::12)
+	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UHU1IuKh
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ARG4tSZ3660308;
+	Fri, 27 Nov 2026 18:39:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=cxkSym
+	Y21rIaHHQKgokU6f2pFt1aFvR5dqO5c8AxGZo=; b=UHU1IuKhXDIoj3UMu6RrxL
+	SlfnZXcf9fnkoiWNAxK8K6LhCdmskqunxaqagxiDiDNk8D97MRW9E3w3cqsCRsP4
+	VISzjhK3MG0DnBCS4mmp9sUUDvIPHe/loU0a/+FAyzy3wQnVPhbXkKa3MhYatHeR
+	/ORyRZ0jI29rCJwOCMCko8B8NDT7Mf4C/RZcdNHVBpDXNTD58xiqDnQ6fjJdNHpa
+	XynEwq5LFVrk9sQPnXQjK3EjP3zWS3fO7AAGUXJFy2jgC+WzIAA5UEVufHyvhRSc
+	TtIHI4o/xYdhBVl0K9/tgbnx2OiaFbNWd8Aa5/H0xJl5TmOhxJLS7DBBFEeBRUVA
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4j34faq7u7-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 27 Nov 2026 18:39:03 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6ARFnMrE3360171;
+	Fri, 27 Nov 2026 18:39:02 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4j5uxx9ydy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Nov 2026 18:39:02 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6ARId1I719006094
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 27 Nov 2026 18:39:01 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8EDA058066;
+	Fri, 27 Nov 2026 18:39:01 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 84F2958064;
+	Fri, 27 Nov 2026 18:38:57 +0000 (GMT)
+Received: from [9.111.130.58] (unknown [9.111.130.58])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 27 Nov 2026 18:38:57 +0000 (GMT)
+Message-ID: <8213e556-4a5d-46d5-8caa-00384a688145@linux.ibm.com>
+Date: Fri, 27 Nov 2026 19:38:56 +0100
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -112,96 +85,201 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHBPR12MB731189:EE_|LV8PR12MB9230:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9934a91-bce5-426b-a35d-08df4cab91b2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|366016|6133799003|22082099003|18002099003|56012099006|4143699003|11063799006|261022115727099003|261022105027099003|261026121527099003|261022113327099003|261102123227099003|261022075727099003|261026140227099003|261026130827099003|261028144727099003|261021121427099003|261021123027099003|261021130227099003|10067099003|261021135927099003;
-X-Microsoft-Antispam-Message-Info:
-	TQjVdIGEgmptAO5XLhFdw5iiqQlnwi4AMJZXhiaktSq3YI9KxHDVz6/6aVLrqVTk/+6c881dLQqDyOtiiGWFjDMDsjH3+6lz3wrU0O5/uts4KKi3DixgyeBeBOmWhdFuD5SaXiB1XfdIpWRuJUEF+Jbvwqyu9BhJX6JnkoGbJJgtI0ruUk2NjqotqflDjbiMwLBmzpnhCnfv/6A5bCFIli3sYefpQHGih0PL+Y8cXavHUPb3CW/Ye4igdv2nMqtzJPY+T1cvYs1lWezmG7FlV9MQbUw3THO2+TQ31NWX9pFn+PLzyCKG8FFqtcb7VJ/LyHjYdB0pv84izOL+U4+aRaaqPXvGWPk1dplHaVGW4YUbzvPkQmWTYXBhXBytG/Xj7QVZ3uCnppwY5OI41tn5LT3UZQ72xV1SPdZfi5RSUoHXhUrdnH8KWJCRQEaZ890rjGl7WQu8DfZkFssougvYhzDtWWutNdmAMTZuhMEjFk+g09r519lIY3b7SjwQ2w2G17Y2kkpGbMOiz20RwtRalSmdQ+yumICgGEbf3TCU+zh5PUCCehoopWTvYi/3PdzqCTxiJxnSCQJ3TOqKIoc9ztxfJynoJPHhRLExPu6WmrDoMzYVXcaSdEh3ol62WJIoOs4qaaalWsr/zCtSBQdxJ8pBJWLQgmxkWboIC9jeshw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHBPR12MB731189.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(366016)(6133799003)(22082099003)(18002099003)(56012099006)(4143699003)(11063799006)(261022115727099003)(261022105027099003)(261026121527099003)(261022113327099003)(261102123227099003)(261022075727099003)(261026140227099003)(261026130827099003)(261028144727099003)(261021121427099003)(261021123027099003)(261021130227099003)(10067099003)(261021135927099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?gfA0zpd5iUjimVxT2SKaNDPqB8dZU0715ejLvavD5UNhnjHqBUJy/CHvwHh+?=
- =?us-ascii?Q?5C8XUXy7mAM5ezS+ceBda5Lt6LpiC29pPfRvn7IPgnmeUK1CbWtsBGjOTCIr?=
- =?us-ascii?Q?7ULLQQ1sLhUTP1f02Tgy8wFomsK7GdnYTv250pm/PWzPXSK7T8Maid0vKBtv?=
- =?us-ascii?Q?wHux7Aa9XJ4qUaodIxkCx7xIoHpbs81QemoAUPslaCfeL42ROJj8SKa1yrW/?=
- =?us-ascii?Q?Clt2ZRW9JJ2HlrAnpj9pshGEMGK/J0q0S7kmoFmieTCo/8LqXdgs3w5DIlDZ?=
- =?us-ascii?Q?j84tMXC43PWVcyRxQTgj4mHHAneiPoVsdumFksDa3T1VPJIz9tSvWJgEghaP?=
- =?us-ascii?Q?HeQBK0Z2udmpvTQ3JpgYXxrf5MzetwvjLtojLQTwiEhLEmjskDeAy1lUZlV8?=
- =?us-ascii?Q?UrDOpray+ZlZiKa9yIQAwetTv0ZLnJO4FNUEu5L5gw7MnLaTyEgdL+Ra8O12?=
- =?us-ascii?Q?QG8OYhUCzVeWHHPKxfqzwr3c7yum+PbG4/kForbfO3Wm2ZBMx1fnE3y2KoqO?=
- =?us-ascii?Q?Yrd6kbiBrSy3usAgc46JHcqyRVHiVsbud6C9otavvXzK9XLIFo376tSYSilc?=
- =?us-ascii?Q?VBfUsrLA66PeUeak/KHqriarMmQ5VTyPeo6CaIk0QWHrG4OJRiGHjddyS40Z?=
- =?us-ascii?Q?nySEUMRNNxmAIiBoPK/J8qZyqGb8gJFDA+YaNoGchgRi3tsatrlFo2djLzCO?=
- =?us-ascii?Q?xC3ju2RH2t2F94GxZ+wt9BIN32sySGdNrXZRF2VJxhfkcX02zqfl9C3PyEuO?=
- =?us-ascii?Q?SXlO9J9pgwEUUICs4us1fhxBtqBjDrX7txjl4fCfYzZCrISr6amsUxaba0/m?=
- =?us-ascii?Q?JQckcIZ9k12xP+tbRweI4DtpcGpzS3HeKa9kuWuF7Zcg0gXM8R/47IDpWieh?=
- =?us-ascii?Q?rqDLbRjMt6JMBAO/bS8pl2PfXfJCoNaahxXck6ebLl+TRhUgE/rY4+BEQ8XS?=
- =?us-ascii?Q?knyaMeQwYRQaYfrn3Kto/9nyfIDiL/tdJoEKKUngiBO506F/XtshdrwSNH4q?=
- =?us-ascii?Q?5Q+pVCGsWEiSupNUDqad5EyGqrIl3LnUP6ZCE/rjBHGoglnfDSBw/80qpAm5?=
- =?us-ascii?Q?u62urB3cfSWuZ52EBEfNBW4hyuVDCM4S9T63V9TL5o/MGf672ic/r2Le8OpF?=
- =?us-ascii?Q?eHKVRB5uGagPELhyfZzjFF1LTw6J1CP+I5IRM9KuVlDppKyK3V+dhioASLeN?=
- =?us-ascii?Q?8TzkJcssZOlzZ58beI3iuuBqImR+bLzLrFCYORQ7YJGqtgNKRt75K413u6t2?=
- =?us-ascii?Q?V/RJ3/+xV089csJROo/oDalcdPN5qNgp/LxtbewNZAc1wT6a9gRWzGLo1Ynw?=
- =?us-ascii?Q?V/Z6TXZkdV+phNyjz0y84rG9GPNPbweV28Z6t4ykksLuEhOYPSVCDlUgJkVb?=
- =?us-ascii?Q?QZoZ0EjuLX8ozeTGwYWe98et25f1IGpC02NxiZPO7v9CehaysHvzTAQtKg1d?=
- =?us-ascii?Q?4sLj6JigeMYFk9DX5x8lQ7pGSi46HkCZ5Net4VTaHJ0tkz7BwGKP1iXHeBBJ?=
- =?us-ascii?Q?r3Hb1oknIlr+d1L+JMvvtGR4uxgbespoqGaKf683Zwb7FqK5NciC/JooYuPY?=
- =?us-ascii?Q?Mnp2WaruLwFeMJLKLje0a2o1ImeMR8Jq/RhII7mLYKldRYmGQf0GgWo4Nc4F?=
- =?us-ascii?Q?HfYjiZrOFeDozn2sXDchSpd55L9ucq1IjzVVxkQzQ4XpYEmcgEa35/KKRz1r?=
- =?us-ascii?Q?PxfeCWEixx6sDMiSimY9LDiipDNGbRR+7gJzaIYWSvz1Vpj1?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9934a91-bce5-426b-a35d-08df4cab91b2
-X-MS-Exchange-CrossTenant-AuthSource: CHBPR12MB731189.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2026 17:26:27.8392
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dM4D+aT6u2LHdOKEfLNKfVl7rDR5FjNRUSU9XW/sfDkzYsTyIVrMfGZghNzV/wpy
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9230
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 04/10] s390/vfio: Allow untainted use of
+ driver_override
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Harald Freudenberger <freude@linux.ibm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Eric Farman <farman@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Tony Krowiak <akrowiak@linux.ibm.com>,
+        Jason Herne <jjherne@linux.ibm.com>,
+        Holger Dengler <dengler@linux.ibm.com>,
+        Alex Williamson <alex@shazbot.org>,
+        Vineeth Vijayan <vneethv@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        linux-s390@vger.kernel.org, kvm@vger.kernel.org
+References: <cover.1795171088.git.u.kleine-koenig@baylibre.com>
+ <a53e12ad841fb18e45b3cf7a4580846943ed0c6d.1795171088.git.u.kleine-koenig@baylibre.com>
+ <8548e9504ec70bec02c6f2cebf69ea91@linux.ibm.com> <awBSb7VOGyCCBDv2@monoceros>
+ <7008c5ea-58fd-4452-a70a-2162cc3d562b@linux.ibm.com>
+ <awgBZ4vKmsLzU2qo@monoceros>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <awgBZ4vKmsLzU2qo@monoceros>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTI3MDA3NCBTYWx0ZWRfX7bL/1ozgeF7u
+ GvmYIXWNEEybUnOzM8ToYKrAqdek0DzPhU3vXEsBo1kDN/nnag2Lhl567QNy5ITUjKL5g8Heb/8
+ VgjZA8cu72BscX6vw6oOhRK+oNOIrCpW3B3NKCY2bCyFQjrae6wvhsx7ggVGCGCKrYcrmN1GtWt
+ XYVZpvSUZkmn+0fI6VKslp0zX9oGOOKsutZogaTvUgfO+1Y/WxeWrTA/j0F0jxUgZ5pQ0jK6HAV
+ b1P/JRDaZ51IS2/LFiVb8V3zaJSOuTx11a+ZcqRihkryz7sxT2uG+RaYqZQMU8J7ccaXigfZbqT
+ FH7ZgQqYUUG4xLtvQvIXT+ZRXE0whJm3OugQQ+dGdDfQw4gyJOoBzu0ePWD4m5OzRdGEXPQevmS
+ DNV/G0swq5BpIsn4e21R2uLhh+5b9VeUsvXKKmfpyaaCUsyvlByjdgDnXDrYnc9L50uniKiFN5T
+ SEQECAhRFH95tBbaBcg==
+X-Proofpoint-ORIG-GUID: pgIJoTtQAkphfoDCDfbWswBSZF9to_7N
+X-Authority-Analysis: v=2.4 cv=U6QHnuru c=1 sm=1 tr=0 ts=6b09ce47 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=UYTh1CXzSR2NwupNoPsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: pgIJoTtQAkphfoDCDfbWswBSZF9to_7N
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTI3MDA3NCBTYWx0ZWRfX0sR6l0HH1gj6
+ sbOmyw28sOuhdVq4gO8Z1rWGDc7KLlg1T3Q2i50GzS3q36ECSNX/P7taFEKf7h6yLfZVvOP+VZB
+ 33vIptmKorwjX5zz1WhbHlZuojGJNXw=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-27_03,2026-11-27_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 lowpriorityscore=0 spamscore=0 impostorscore=0
+ clxscore=1011 bulkscore=0 suspectscore=0 adultscore=0 phishscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
+ definitions=main-2611270074
 
-On Fri, Nov 27, 2026 at 05:21:35PM +0000, Bryan O'Donoghue wrote:
-> On 27/11/2026 14:29, Jason Gunthorpe wrote:
-> > On Fri, Nov 27, 2026 at 12:58:45PM +0100, Marek Szyprowski wrote:
-> > > The IOVA reservation code compares dma_iova_state::__size directly with
-> > > the requested chunk size. __size is internal to the DMA IOVA API and may
-> > > carry flags in its upper bits, so use the dma_iova_size() accessor
-> > > instead.
-> > 
-> > WTF is this even doing?
-> > 
-> >      Fix this by reserving the 0-600MB range, below the boundary the
-> >      non-pixel stream cannot address, using dma_iova_try_alloc() so the
-> >      IOMMU-DMA core never hands that range out to a real DMA mapping. This
-> >      reserves only IOVA space, it does not allocate any physical memory.
-> > 
-> > That isn't what this API is for, and it isn't how it even works! It is
-> > pure luck that the first call to it happens to take out the lower
-> > address space.
-> > 
-> > We even had a long discussion about this driver and this need in
-> > another thread and this is the hack job you guys merged?
+On 26.11.2026 11:01, Uwe Kleine-König wrote:
+> On Mon, Nov 23, 2026 at 05:31:42PM +0100, Christian Borntraeger wrote:
+
+[...]
+
+>> So let me try to translate
+>> On s390, driver_override is how a device moves
+>> between the host and a guest, in both directions:
+>>
+>>   driverctl -b css set-override 0.0.0004 vfio_ccw        # to the guest
+>>   driverctl -b css set-override 0.0.0004 io_subchannel   # back to the host
+>>
+>>   driverctl -b ap set-override 17.0005 vfio_ap           # to the guest
+>>   driverctl -b ap set-override 17.0005 cex4queue         # back to the host
+>>
+>> Your series keeps the first direction working but breaks the second
+>> one, because io_subchannel_driver and zcrypt_cex4_queue_driver do not
+>> set support_driver_override. On the AP bus this is unwanted:
+>> driver_override and apmask/aqmask are mutually exclusive
+>> (46030379f13c "s390/ap: Restrict driver_override versus apmask and
+>> aqmask use"), so once overrides are in use there is no other way to
+>> assign a queue to zcrypt.
+>>
+>> We want to keep the way back working, and there is no reason not to.
+>> The problem patch 1 addresses, i.e. a driver being forced onto a
+>> device it was never written for, cannot happen on these two buses:
+>>
+>> - css_bus_match() still requires the driver's subchannel_type to match
+>>   after the override matched. This was a deliberate design decision
+>>   when driver_override was added for css (ebc3d17915034 "s390/cio:
+>>   introduce driver_override on the css bus": "unlike pci we still
+>>   require a driver override to match the subchannel type")
+>>
+>> - ap_bus_match() always does the device type match. driver_override
+>>   only decides in ap_device_probe() which of the matching drivers
+>>   gets the queue, and the AP bus handles an override to the default
+>>   driver explicitly (ap_owned_by_def_drv()).
+>>
+>> So on css and AP, driver_override never force binds anything. It only
+>> selects between drivers that already match the device, and
+>> io_subchannel and cex4queue are the regular drivers for exactly these
+>> devices. They are unbound and rebound every time a device moves to
+>> vfio and back.
 > 
-> Have to say I wasn't aware of an objection from you, I don't think I was on
-> that thread.
+> Ah, understood better now. Feels like a misuse of driver_override to me
+> and because the ap_bus's usecase doesn't match the intention of
+> driver_override, keeping the bus working is strange as it exposes this
+> difference.
+> 
+> Without having checked all the details, I wonder if something like that
+> would be the more robust change then:
+> 
+> diff --git a/drivers/s390/cio/css.c b/drivers/s390/cio/css.c
+> index efd3df3e90ba..2d07bca149cc 100644
+> --- a/drivers/s390/cio/css.c
+> +++ b/drivers/s390/cio/css.c
+> @@ -1398,6 +1398,15 @@ static const struct bus_type css_bus_type = {
+>  int css_driver_register(struct css_driver *cdrv)
+>  {
+>  	cdrv->drv.bus = &css_bus_type;
+> +
+> +	/*
+> +	 * The driver_override mechanism provided via sysfs is used in a
+> +	 * non-common way for the AP bus: There might be more than one regular
+> +	 * driver per device and using driver_override the right one is
+> +	 * selected. Wrong drivers cannot be forced on a devices as the
+> +	 * subchannel type still has to match.
+> +	 */
+> +	cdrv->drv.support_driver_override = true;
+>  	return driver_register(&cdrv->drv);
+>  }
+>  EXPORT_SYMBOL_GPL(css_driver_register);
 
-Nobody ever shared this insane thing with us. Seriously, this isn't
-even remotely using these APIs for what they are for. Nobody thought
-"hey this seems like a creative use of APIs, lets ask someone" ?
+I consider this approach not preferable since someone who doesn’t know
+about the extra logic might get confused why driver_override works
+despite a driver not specifying it explicitly.
 
-> It would be possible to reserve this IOVA range in DT so given what you've
-> highlighted I think this and the Iris commit should be reverted and the DT
-> constraint implemented.
+[...]
 
-That was the other thread, obviously using DT to describe a hardware
-issue is the correct choice. But there was some problem where they
-also wanted to split the SID space using DT and then the DT mechansim
-doesn't work because the whole thing becomes too hacky :\
+>> We (s390 team) should probably send two followup patches, simple oneliners
+>>
+>>   s390/cio: Allow untainted use of driver_override for io_subchannel
+>>     sets .support_driver_override in io_subchannel_driver.drv
+>>     (drivers/s390/cio/device.c)
+>>
+>>   s390/zcrypt: Allow untainted use of driver_override for cex4queue
+>>     sets .driver.support_driver_override in zcrypt_cex4_queue_driver
+>>     (drivers/s390/crypto/zcrypt_cex4.c)
+>>
+>>
+>> Peter/Vineeth for cio and Harald for zcrypt: could you provide such
+>> changes as additional patches?
+>>
+>> Uwe, would you be willing to take those in your series?
+> 
+> If you don't like the above change, that would be fine for me.
+Here's the patch for the CSS bus:
 
-Jason
+From ea91296ce7ee0f31aa584736f130a86237f054eb Mon Sep 17 00:00:00 2001
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
+Date: Thu, 26 Nov 2026 17:27:04 +0100
+Subject: [PATCH] s390/cio: Allow untainted use of driver_override
+
+I/O subchannel devices on the CSS bus can be bound to either of two
+drivers:
+
+  1. io_subchannel: the default driver
+  2. vfio_ccw: used for KVM guest pass-through
+
+Although the CSS bus also hosts devices that are not I/O subchannels,
+css_bus_match() ensures that only compatible drivers can be bound, even
+when driver_override is used.
+
+A previous change marked vfio_ccw as compatible with driver_override as
+part of the logic that disables driver_override by default. This created
+an asymmetry between vfio_ccw and io_subchannel: users can switch a
+subchannel device from io_subchannel to vfio_ccw, but not back to
+io_subchannel.
+
+Restore symmetry by marking io_subchannel as compatible with
+driver_override as well.
+
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+---
+ drivers/s390/cio/device.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/s390/cio/device.c b/drivers/s390/cio/device.c
+index 68dd4a62975d..bfb0a18c395a 100644
+--- a/drivers/s390/cio/device.c
++++ b/drivers/s390/cio/device.c
+@@ -164,6 +164,7 @@ static struct css_driver io_subchannel_driver = {
+ 	.drv = {
+ 		.owner = THIS_MODULE,
+ 		.name = "io_subchannel",
++		.support_driver_override = true,
+ 	},
+ 	.subchannel_type = io_subchannel_ids,
+ 	.irq = io_subchannel_irq,
+-- 
+2.53.0
