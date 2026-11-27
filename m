@@ -1,73 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.71
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795798745;
-	b=cZi2gaLGtAa5jAGMsbQYzHjt300mdZnYCvHGTUA/EQ01pBAcBNSVVi+KBSpk7o97oRrS
-	 S6N+3WHNUGdXvaCN8X3rtucoSjzvru5VJjDOjSO4V7YhPB/gMEYmFtL0AhxHb4KwfrFNb
-	 6C7lsbjNW6XtzUZ1FT8fewmbfcqXkJNJ8gjn1LMgwPnxp8AiTxDhE51O775QNzWCQzc1i
-	 fRqTYmRA13hAKGNKcvRwbx2Rp1mfZ22j6ZhdUUdftqj433zybsQ9cUiWf9H3wnZa/mVGz
-	 R0KjBbdXafGGwWx22RwfiuIciqbD1gqQRS0zrj/Fa547gCrsvZhTUUtllPf15wEafBA==
+	t=1795798914;
+	b=uK6/LPaZxdXDB44OfPEX2spkizCu2QUfErXIYawPP9dtCwvGA/OukmzdOqkBSuPK6/l/
+	 SeeAm4p2OIdhDmP0moSB/hBqpjDIaV7a6bhNcN+Zn2xlTP8dO95uii2oyM3jb9Yv/P3NG
+	 s9r5AUqHTG1/u9K7Sa5VH6D9K/H4CERhlvGECEoSxfs/VBYQHXHl2TWjYhPGhRRZgzxzY
+	 XR/Avc5J03Fm57F4FdIVnF4YeWQCZypINEzlO7vBX0MJOJQieTOANgX/+aNiy4YPHtg64
+	 i2WYuTMmiXA09k2bFgE/3hZ2b7A+VCmuT4Ri0Yau3yHNuCe1t089HxQIS8V7iHYlKHQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795798745;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Received:Date:In-Reply-To:Mime-Version:
-	 References:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
-	bh=9ZXEacqR3rbcMgUrTgI8rcS8c5nOk1mz2EbR1FK4c64=;
-	b=c1BipLo9oSmoxGuFCqc7aCFWSUlgTNZ3Hz11vsxSD40XdySh3i/oLAquc18z7NwrsLoO
-	 fChTUGXt0fKL60kNFez05BdW5H4rvwz5VD57LgYyt+BKqP0eofAbXTt+4IXo1RcvA8xoi
-	 XmWRcnnQpl3CWFoUhWfzyPDKYa6Yp2ej+aVDyXfkHhb0ayg9YSlEtoetXmBmgiRLw9vwU
-	 HRgT41i/Ofivazxg5gH5ZEYgQWsOtzguNrC1RBo33dxZar5hsukyiOXk0yh4qNSaIH/FP
-	 Q3M1tKecljveOAlkcXE/mwF1G/vwMJp3truAw5Oc2k7AzaYRRwS54JGRUZrn/AlgV3Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795798914;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=yak0TBXxkIdwwljthgNRCuvzQfGfzhWNeK/HbAUVqGw=;
+	b=sfkJ2gkKyRjNLsk9CMhmUtsB3j/qACD6KFLQ3aFI1UU4+EXX54/HhAtSZ22MUD80N+fB
+	 QiqYf9lpgQ+v/uvlDmSZLfym48gThTO9+Qa8/GZ5WmYjZ+UDYKDqJUKBmJpluLL/EbaQ1
+	 6SwMbIY1sjAySRn0iSbbHIotYy277Ipi9zwebQ76gX4/q7CyPh7LsPkL013aUaKl4ct9k
+	 YcmPKoGAN1i9YKzU2v+8XZuXwHBnk9MbkSYcR/hoDoMtfhhknRn4yUuKndrxfliaw7rI1
+	 N3dQFHjLvJZQRLEzXtItQI6E1MiNTs50rrjsTP9CEyHb1W2xNy/v4x0Zue1iACkIwdA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=flex--vdonnefort.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=a2fjzuS+;
-	arc=none smtp.remote-ip=209.85.128.71
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5C0606A335
-	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 16:59:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7A5C0606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vdonnefort.bounces.google.com
+	dmarc=pass header.from=arm.com;
+	spf=pass smtp.mailfrom=arm.com;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=sDC7sOFW;
+	arc=none smtp.remote-ip=217.140.110.172
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3EB606A330
+	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 17:01:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7C3EB606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=a2fjzuS+
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4bb66fc3aa6so68151075e9.2
-        for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 08:59:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1795798744; x=1796403544; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9ZXEacqR3rbcMgUrTgI8rcS8c5nOk1mz2EbR1FK4c64=;
-        b=a2fjzuS+8Y9uuJ6LMFeCARzy6P1tM6jopUAxpF75CwFn8IIIFElpEMsuMWGJrScBgS
-         dSV8zpfDhGL8pHbBsNlTuB5IH4lb+s1a2b60/9iMBrZzl+t2eXCKH+JHMrUmheymyytR
-         0iTDqRZf7UZLqYpWADp8G3pqLN7xp2/TqDw0YLvLvXkskphM5ndaqLtLDe3u9zQCuyWf
-         uJomOVSMnByakpBXiuDmBvE1aOj5L9AZIlvTp68JBYMrJUoyaAZ9CjB/ZWkElDvszDHW
-         SYOSRwDv6RNpY6hqPUJUFNa8faGdnCF5gOVpw3W5++gjb/ZMh9JAcVuAbPO2INVkDkEQ
-         2JDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795798744; x=1796403544;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9ZXEacqR3rbcMgUrTgI8rcS8c5nOk1mz2EbR1FK4c64=;
-        b=00fGp9FKDn7HqQv9DronpACgIJagdUH67fV7q4hTl8jGR7w11sBxEO8BdafIta08NF
-         1y+pFF84uRd7NZa/vl9MGwrhJfCH0VBrz8aK3a9Q+wmyO7ooH5bpvseD+v7PtSayjcU/
-         k7cUzsIaThosa5kJ7daxtEE+XQfIYzOIl4EaM2MH7L4w6DkXo78AKzRgEtBE0EMQ3Xb3
-         unDw/fIhbTS0Gl5fGMOB3lh42ioQqgpRa2Rz0TznVM9RwpeY5IKMCcN1Fz+Zswjv9Vx0
-         WerkPSzkGfDsQoFCyaybTPmTcussO1ZIhrlFEYJjrzSfoQqh5BJkE0BBAV3Svs2HKPHe
-         xoIA==
-X-Gm-Message-State: APuU4Z+uUVJrQYxV8371mRwYlt6o+IIkfh2xIYW1XimcH7CndVgbdq0x
-	v9plID7WAXsTV1BdHwX9c1Iiy1hTQH6kSph2Brd55W1Z5jk7FPrpTnzYxB6PS2kweGgffwN2sRO
-	TNFyeP2gUU4e3xp8Wb3kdLw==
-X-Received: from wmbz10.prod.google.com ([2002:a05:600c:c08a:b0:4a1:8bbb:59bd])
- (user=vdonnefort job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4585:b0:4a1:83f0:7c91 with SMTP id 5b1f17b1804b1-4bb8882948dmr520359785e9.18.1795798743614;
- Fri, 27 Nov 2026 08:59:03 -0800 (PST)
-Date: Fri, 27 Nov 2026 16:58:42 +0000
-In-Reply-To: <20261127165843.709034-1-vdonnefort@google.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=sDC7sOFW
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9B2D51575;
+	Fri, 27 Nov 2026 09:01:49 -0800 (PST)
+Received: from e133894.cambridge.arm.com (e133894.arm.com [10.2.80.62])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 51E443F632;
+	Fri, 27 Nov 2026 09:01:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1795798912; bh=K+cUO7Dn+yO33q5iHEwYw8NGo8L9v6Vj72w72CV+Dgw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=sDC7sOFWOv16B/VaUOgYi945RS2fUica6zLQv9faYf/sTIJJiIB+r+VHP3dbYBrQn
+	 aIP7X2A3JN1idvSoaJ+UOqcD9dv306Jy3SYiMMAVrgLis3jkiglVUl/HuyrJYCRyuf
+	 Dj5VnyjS8dPOVUyoNBZ7VnAcbB0yj1Ye8ITbJEvU=
+From: Sascha Bischoff <sascha.bischoff@arm.com>
+To: will@kernel.org,
+	julien.thierry.kdev@gmail.com
+Cc: vladimir.murzin@arm.com,
+	maz@kernel.org,
+	kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	timothy.hayes@arm.com,
+	Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH kvmtool v7 00/23] arm64: Support GICv5-based guests
+Date: Fri, 27 Nov 2026 17:01:22 +0000
+Message-Id: <20261127170145.4138182-1-sascha.bischoff@arm.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -76,84 +62,92 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20261127165843.709034-1-vdonnefort@google.com>
-X-Mailer: git-send-email 2.56.1.839.g22a8290db9-goog
-Message-ID: <20261127165843.709034-3-vdonnefort@google.com>
-Subject: [PATCH v2 2/2] arm64: THPs for systems with pages bigger than 4K
-From: Vincent Donnefort <vdonnefort@google.com>
-To: will@kernel.org, julien.thierry.kdev@gmail.com
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, maz@kernel.org, oliver.upton@linux.dev, 
-	suzuki.poulose@arm.com, alexandru.elisei@arm.com, andre.przywara@arm.com, 
-	kernel-team@android.com, Vincent Donnefort <vdonnefort@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-The THP support imposes guest RAM over-allocation to align the memslot
-userspace address to PMD_SIZE. However the alignment is currently
-hardcoded to 2MiB, which only works with 4K page systems.
+This series adds support for GICv5-based VMs to kvmtool. These are
+exposed as --irqchip=gicv5 and --irqchip=gicv5-its, where the former
+creates a vGICv5 device and the latter adds a GICv5 ITS. The GICv5
+specification can be found at [1].
 
-Instead, derive the hugepage size from PAGE_SIZE and skip the alignment
-if the guest RAM size can't even contain a single hugepage.
+The GICv5 support in KVM needed by --irqchip=gicv5 is available as of
+Linux v7.4-rc1. The GICv5 ITS support is described in [2]; using
+--irqchip=gicv5-its requires a KVM build with those changes.
 
-Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
----
- arm64/kvm.c | 21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+The series teaches kvmtool to create the GICv5 irqchip and ITS KVM
+devices. It describes the GICv5 CPU interface, IRS and ITS in the
+guest DT, updates the timer and PMU interrupt descriptions, and
+generates GICv5 interrupt specifiers for platform devices and PCI. It
+also maps PCI MSI requester IDs to the ITS. The IRS support is built
+and exposed before the ITS support, so the GICv5 irqchip support can
+be merged separately from the ITS changes.
 
-diff --git a/arm64/kvm.c b/arm64/kvm.c
-index 35aa6f260dd1..02cd519a5cbb 100644
---- a/arm64/kvm.c
-+++ b/arm64/kvm.c
-@@ -17,6 +17,8 @@
- 
- #include <asm/image.h>
- 
-+#define HUGEPAGE_SIZE (PAGE_SIZE * (PAGE_SIZE / 8UL))
-+
- static struct arm64_image_header *kernel_header;
- 
- struct kvm_ext kvm_req_ext[] = {
-@@ -34,20 +36,23 @@ bool kvm__arch_cpu_supports_vm(void)
- 
- void kvm__init_ram(struct kvm *kvm)
- {
--	u64 phys_start, phys_size;
-+	u64 phys_start, phys_size, ram_alloc_align = SZ_64K;
- 	void *host_mem;
- 	int err;
- 
- 	/*
--	 * Allocate guest memory. We must align our buffer to 64K to
--	 * correlate with the maximum guest page size for virtio-mmio.
--	 * If using THP, then our minimal alignment becomes 2M.
--	 * 2M trumps 64K, so let's go with that.
-+	 * Allocate guest memory. We must align our buffer to 64K to correlate
-+	 * with the maximum guest page size for virtio-mmio. If using THP, then
-+	 * our minimal alignment trumps 64K, so let's go with that.
- 	 */
- 	kvm->ram_size = kvm->cfg.ram_size;
- 	kvm->arch.ram_alloc_size = kvm->ram_size;
--	if (!kvm->cfg.hugetlbfs_path)
--		kvm->arch.ram_alloc_size += SZ_2M;
-+	if (!kvm->cfg.hugetlbfs_path) {
-+		if (kvm->ram_size >= HUGEPAGE_SIZE)
-+			ram_alloc_align = HUGEPAGE_SIZE;
-+
-+		kvm->arch.ram_alloc_size += ram_alloc_align;
-+	}
- 
- 	if (kvm->cfg.arch.guest_memfd)
- 		kvm->arch.ram_alloc_start = mmap_guest_memfd(kvm,
-@@ -62,7 +67,7 @@ void kvm__init_ram(struct kvm *kvm)
- 		    kvm->arch.ram_alloc_size, errno);
- 
- 	kvm->ram_start = (void *)ALIGN((unsigned long)kvm->arch.ram_alloc_start,
--					SZ_2M);
-+					ram_alloc_align);
- 
- 	if (!kvm->cfg.arch.guest_memfd) {
- 		madvise(kvm->arch.ram_alloc_start, kvm->arch.ram_alloc_size,
+Compared with v6 [3]:
+
+* Rebased onto kvmtool upstream at 2f3abe56 as requested.
+* Adapted patch 16 to the upstream FDT helper that generates multiple
+  interrupts for a device. Use the selected GIC's SPI type and base
+  for each interrupt in the list.
+
+The v7.4-rc1 header sync includes GICv5 IRS UAPI, but not GICv5 ITS
+UAPI. Patch 19 mirrors the ITS definitions from [2]. Once that UAPI
+lands upstream, the headers should be resynced against the latest
+Linux headers before merging the ITS support.
+
+Thanks,
+Sascha
+
+[1] https://developer.arm.com/documentation/aes0070/latest
+[2] https://lore.kernel.org/all/20261102194454.4086911-1-sascha.bischoff@arm.com/
+[3] https://lore.kernel.org/all/20261125151356.2875108-1-sascha.bischoff@arm.com/
+
+Sascha Bischoff (23):
+  arm64: Propagate IRQ routing initialisation errors
+  arm64: Close the ITS descriptor when setup fails
+  arm64: Split GIC device setup
+  Sync kernel UAPI headers with v7.4-rc1
+  arm64: Add GICv5 irqchip device support
+  arm64: Configure GIC interrupt bases
+  irq: Allow the initial interrupt line number to be set
+  arm64: Start GICv5 SPI line allocation at zero
+  arm64: Configure the GICv5 IRS
+  arm64: Define GICv5 interrupt types
+  arm64: Describe the PMU interrupt for GICv5
+  arm64: Describe timer PPIs for GICv5
+  arm64: Assign CPU DT phandles
+  arm64: Describe the GICv5 CPU interface in the DT
+  arm64: Describe the GICv5 IRS in the DT
+  arm64: Generate GICv5 SPI specifiers for platform devices
+  arm64: Generate GICv5 PCI INTx specifiers
+  arm64: Expose the GICv5 irqchip option
+  arm64: Add proposed GICv5 ITS UAPI definitions
+  arm64: Add GICv5 ITS device support
+  arm64: Describe the GICv5 ITS in the DT
+  arm64: Map PCI MSI requester IDs to the GICv5 ITS
+  arm64: Expose the GICv5 ITS irqchip option
+
+ arm64/fdt.c                         |   7 +-
+ arm64/gic.c                         | 359 ++++++++++++++++++++++++----
+ arm64/include/asm/kvm.h             |  18 ++
+ arm64/include/kvm/fdt-arch.h        |   1 +
+ arm64/include/kvm/gic.h             |  15 ++
+ arm64/include/kvm/kvm-arch.h        |  16 ++
+ arm64/include/kvm/kvm-config-arch.h |   2 +-
+ arm64/pci.c                         |  24 +-
+ arm64/pmu.c                         |  13 +-
+ arm64/timer.c                       |   8 +-
+ include/kvm/irq.h                   |   1 +
+ include/linux/kvm.h                 |  23 ++
+ include/linux/virtio_console.h      |   2 +-
+ include/linux/virtio_ids.h          |   1 +
+ irq.c                               |  15 +-
+ powerpc/include/asm/kvm.h           |  18 ++
+ riscv/include/asm/kvm.h             |  17 ++
+ x86/include/asm/kvm.h               |   4 +-
+ 18 files changed, 478 insertions(+), 66 deletions(-)
+
+
+base-commit: 2f3abe56dcd2658dc6dae3eeeb4996dc4b518bcf
 -- 
-2.56.1.839.g22a8290db9-goog
+2.34.1
 
