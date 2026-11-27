@@ -1,67 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795793477;
-	b=eoWXtrlWiz9XXIM9ZOl+kUpSzOqy0bb+J/e3AXquyqb/SXK8sHPTizJ/kAmV92A4nLDq
-	 ae6Y1Zh4WOIiJhp57r+8PDBjDSmX7HT9p3ZEvBS0cGnQidsgGTZc5QYsvCsrWKL472bKU
-	 f2w+kPETWUS2uqNTqwg1lvp/384L5vDZcUaByL7DVB4I2JLt3rsrNIo5ih6ejFXgBsabd
-	 9zd5sPvI+H1vKPgI97eNT72MxAGqaiZH8I2/6c0EMF8u1EDjH7xV3NiSdjuVvTy9l2XmR
-	 8ogcBm4+BXnYNEDCKQLAeGlN1TsU0LOWzQkLrScLsReoQGgcEsB5m8IgyJ415b3CPRQ==
+	t=1795793683;
+	b=wxqa1cIwDYc4Fqi9YVKUL+1+u1kIBwY92TtkMTcXzuw9xaXgl1KA4881jk2FEq2S3pwc
+	 CMs3Jhs+aC0cvgxYem83Cm4HmBk/v91THhVKF1HyoJvnszy7EaaSGDAJWg3pXPMlBded2
+	 uMyYtcMYZbYJx+VOY1pcZI1tN8qVtPN6BKAReO60MeyEvVTAzkwpWVsFcVP8WLS5ojXsi
+	 VNHZMc1ZaHBd5JNO+V3RHi6gkrUJzriV4KiFOpoJdtKQbTu3qCNZQXTI+Ag7ahagxKjG1
+	 mlYRvdoMhMDEQxt8XgLi/u0Pw8N/4Q/AQ/vtjkNAKFyzrd7wDim+7W69Z0vpv5LdUmg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795793477;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=AiKgiR/T4qeQ5YDnuOshjx2CZduMAwFjjmKloTtaWZE=;
-	b=exHRpXDAmDQNtCsMCfRVfyFI/KAN1jQNJkf5iDuzjP0a1SYlxTz/LdwrNwKrCgoS2IiA
-	 iaIXZ6565/CLsgztoXRLrk0GZw8vfMiP3W+3AxuKEumF7KdZdTWlwMAfxRcIx3MH+yBlm
-	 bEIPXklEur2uxWRGUVS2BQuqrt4zLC74ZzT/jPC9mxDRrNdXdqyqIYy86/dIMoI3Gp9Q6
-	 HnXVcpZHm9zOlXOHKQiSeUNgjU7RmgsP63kWqikbSOJg0csWdI7cOrnFhnY8X9m7JRbMG
-	 VYaWcBCbVLIbyKvKyQ9SoOKle/Wu5TmRqqXK2J4f4UN164wSBhZuJ4Wf+YaoNWz+iBQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795793683;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=dCxmJA+bOtAUrHZAkdzDbo5hhy+22EkKgE3jLjCcZjw=;
+	b=DFYJZ3Y69f7gSJHHQjIzw087n350B4wDfz0CfWeIl28lINJCmjcHoa6bzyS70a5KBpcD
+	 whpNwnqJgZPC+yF6QzZAtkWggT8ME8hVgHRkbKiWSN3mOvkxGTMfSHfp1bbGE7xGaWrE6
+	 7DSC6utS0SnzouiRD60DFlU+ui61vdHGHAZUk3QZE0ur7B2Fo4knwXvmzCfUR+aasKwyX
+	 1IRqeq3aKp5pcWGM869QLtsTXWHdHDvvXSVpDHgakVLPtYDHH6QMQj08d8mcdy+HB8jh1
+	 9XWjSj8X98iTSyV7wOsD4fppZUg3nCfD/ucyNVVEkdVkWtTBxcvR6FDEYcBYF4yEklw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="b/bxmaPz";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ooW7Rt2l;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBDF606A321;
-	Fri, 27 Nov 2026 15:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC32606A31C;
+	Fri, 27 Nov 2026 15:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b/bxmaPz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942CD1F0089F;
-	Fri, 27 Nov 2026 15:31:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ooW7Rt2l
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720271F0089F;
+	Fri, 27 Nov 2026 15:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1795793477;
-	bh=AiKgiR/T4qeQ5YDnuOshjx2CZduMAwFjjmKloTtaWZE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=b/bxmaPzPalF4fWgf3uVw3MTeg+rguOh01GZtKw7oI6ojWL6/CEY5l93aX1+7IQjO
-	 iTNClzh1X/9MdlVCEF913BQ9Du/xnbvst6YmGtr+bPEuTuN3z8I37wQ9hfI3Ggd4Ry
-	 khqlNXFbURegBYYm5rPprF5JHGyLffngpRuaeZ7a4g0R+h6khPN6XOlcYG0SiqA5cR
-	 93gIU2oyYk/1XGtybQwV7NTXOavW1gPadA0NVS/2t7Vbz8gEb67l/M1gGM1pKFObOg
-	 TmxxJyf1nbyB3nY3GwZNLb6gXNVxDI9IaH2W+GbQ3cN2I4xu/P1x54iin77ERkctdX
-	 gvBy2GT9vwLRA==
-Date: Fri, 27 Nov 2026 17:31:13 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: iommu@lists.linux.dev, linux-media@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Robin Murphy <robin.murphy@arm.com>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sibi Sankar <sibi.sankar@oss.qualcomm.com>,
-	Honglei Huang <honghuan@amd.com>, prakash.gupta@oss.qualcomm.com,
-	Alex Williamson <alex@shazbot.org>,
-	Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Bryan O'Donoghue <bod@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH 4/4] iommu/dma: restore flush queue use in
- dma_iova_destroy()
-Message-ID: <20261127153113.GB774860@unreal>
-References: <20261127115849.2780625-1-m.szyprowski@samsung.com>
- <CGME20261127115903eucas1p27ccc4cddb7f705d6afa5c2603597b97a@eucas1p2.samsung.com>
- <20261127115849.2780625-5-m.szyprowski@samsung.com>
+	s=k20260515; t=1795793682;
+	bh=dCxmJA+bOtAUrHZAkdzDbo5hhy+22EkKgE3jLjCcZjw=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ooW7Rt2l2Gj5sZD/ofrMPdrhCiiV4FIkO8Yga2VsB7ff/tQREgYIHBNH0AE/NCCD3
+	 2Z3tVRBULJnfKncMlOEmET15XGWw+4+BrSGzqJhs7LpQF2AafyVNySYKzLlxMA4slJ
+	 7i+pSTl6uV6W8zRhhNcXaUYolkWWeC8X9Y15R4wxIZ1L3XbLFUi+TIC6aadrtLk8aT
+	 0/fa6+RNHS0MYEMAQB6XdzHtovXXwRtahGej6YaGcTlFHD1Vj7xWn1yahp4VO+v6dJ
+	 WPoSGTROxaRFDl3SUehe3CZiTZkeitI6ggOQz6fabG8eG7QfhVKWads42kRczfUvz9
+	 3cFaSXbk4kTBQ==
+Message-ID: <sashiko-outbox-237754@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v1 04/12] KVM: s390: Allocate page tables when CMMA is
+ used
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>, kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
+ Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Christian
+ Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261127150411.221072-5-imbrenda@linux.ibm.com>
+References: <20261127150411.221072-1-imbrenda@linux.ibm.com>
+ <20261127150411.221072-5-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 27 Nov 2026 15:34:42 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -70,82 +62,97 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261127115849.2780625-5-m.szyprowski@samsung.com>
 
-On Fri, Nov 27, 2026 at 12:58:48PM +0100, Marek Szyprowski wrote:
-> Commit 1acce29926d9 ("iommu/dma: simplify dma_iova_destroy() and drop
-> the free_iova helper") turned dma_iova_destroy() into dma_iova_unlink()
-> followed by dma_iova_free(). Before it, the destroy path marked its
-> IOTLB gather as queued for DMA-FQ domains, skipped iommu_iotlb_sync()
-> and handed the IOVA over to the flush queue, exactly like
-> __iommu_dma_unmap(). After it:
-> 
->   - dma_iova_unlink() never queues its gather and always calls
->     iommu_iotlb_sync() after iommu_unmap_fast(),
->   - dma_iova_free() passes a NULL gather to iommu_dma_free_iova(), so
->     the IOVA goes straight back to the allocator via free_iova_fast().
-> 
-> DMA-FQ domains therefore get strict invalidation on this path. This
-> includes blk_rq_dma_map(), which NVMe uses for all data transfers, so
-> iommu.strict=0 has no effect on NVMe I/O. On a Qualcomm Glymur CRD
-> (SMMUv3 without RANGE_INV, 4K pages, NVMe on PCIe Gen5 x4) sequential
-> fio throughput drops from 10.6/11.9 GiB/s (write/read) to the strict
-> mode level of ~2.7 GiB/s.
-> 
-> Instead of reverting, decide once in dma_iova_try_alloc() whether the
-> IOVA space is going to be released through the flush queue and record
-> it in a new DMA_IOVA_USE_FQ flag in dma_iova_state::__size, next to
-> DMA_IOVA_USE_SWIOTLB, so struct dma_iova_state does not grow.
-> dma_iova_destroy() then unmaps with a gather queued according to that
-> flag, skipping the sync for flush queue domains, and passes the same
-> gather to the IOVA free, so the IOVA space (and any page table pages
-> released by the unmap) goes through queue_iova() again. dma_iova_free()
-> honours the flag as well. The whole reservation is still freed, keeping
-> the size fix of the reverted commit.
-> 
-> A gather must always be retired, either by iommu_iotlb_sync() or by
-> handing it to the flush queue together with the IOVA, and the IOVA must
-> never be returned to the allocator while a queued invalidation for it is
-> still pending. To keep that obvious, the internal unlink helper only
-> unmaps into a gather supplied by its caller, and each caller retires it
-> right away: dma_iova_destroy() syncs or queues it together with the IOVA
-> free, exactly like __iommu_dma_unmap(), while dma_iova_unlink() always
-> uses a never queued gather and syncs it, as the unlinked range remains
-> owned by the caller and may be linked again immediately.
-> 
-> Fixes: 1acce29926d9 ("iommu/dma: simplify dma_iova_destroy() and drop the free_iova helper")
-> Reported-by: Sibi Sankar <sibi.sankar@oss.qualcomm.com>
-> Closes: https://lore.kernel.org/all/20261125135120.1126571-1-sibi.sankar@oss.qualcomm.com/
-> Suggested-by: Leon Romanovsky <leon@kernel.org>
-> Cc: stable@vger.kernel.org # v7.3+
-> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> ---
->  drivers/iommu/dma-iommu.c   | 103 ++++++++++++++++++++++++++----------
->  include/linux/dma-mapping.h |   8 ++-
->  2 files changed, 83 insertions(+), 28 deletions(-)
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] KVM: s390: premature GMAP_FLAG_USES_CMM publication in
+  gmap_enable_cmm()
+--
 
-<...>
+commit 4eafe3dbf444099ded4397c5a1073f2aff0effc2
+Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
->  /*
->   * All flags stored in the upper bits of dma_iova_state::__size. Sizes passed
->   * to dma_iova_try_alloc() must not overlap with them.
->   */
-> -#define DMA_IOVA_FLAGS			DMA_IOVA_USE_SWIOTLB
-> +#define DMA_IOVA_FLAGS			(DMA_IOVA_USE_SWIOTLB | DMA_IOVA_USE_FQ)
+KVM: s390: Allocate page tables when CMMA is used
 
-We need to be careful here. Every bit reduces the IOVA space available to
-everyone. It is only a matter of time before someone complains that __size
-is too small for their use case. This extra bit is probably not an issue,
-but that could change if we keep adding bits to DMA_IOVA_FLAGS.
+This commit calls gmap_enable_cmm() on the first ESSA intercept or
+KVM_S390_SET_CMMA_BITS ioctl to preallocate page tables and split large
+page mappings, and rejects KVM_S390_SET_CMMA_BITS on ucontrol VMs.
 
-Thanks
+> diff --git a/arch/s390/kvm/s390/priv.c b/arch/s390/kvm/s390/priv.c
+> index f22612a127c96..e66fec89ac788 100644
+> --- a/arch/s390/kvm/s390/priv.c
+> +++ b/arch/s390/kvm/s390/priv.c
+> @@ -1243,14 +1243,15 @@ static int handle_essa(struct kvm_vcpu *vcpu)
+>  	if (!READ_ONCE(vcpu->kvm->arch.migration_mode)) {
+>  		/*
+>  		 * CMMA is enabled in the KVM settings, but is disabled in
+> -		 * the SIE block and in the mm_context, and we are not doing
+> -		 * a migration. Enable CMMA in the mm_context.
+> -		 * Since we need to take a write lock to write to the context
+> +		 * the SIE block and in the gmap, and we are not doing a
+> +		 * migration. Enable CMMA in the gmap.
+> +		 * Since we need to take a mutex to write to the gmap
+>  		 * to avoid races with storage keys handling, we check if the
+>  		 * value really needs to be written to; if the value is
+>  		 * already correct, we do nothing and avoid the lock.
+>  		 */
+> -		set_bit(GMAP_FLAG_USES_CMM, &vcpu->arch.gmap->flags);
+> +		if (!uses_cmm(vcpu->arch.gmap))
+> +			gmap_enable_cmm(vcpu->arch.mc, vcpu->arch.gmap);
+>  		/*
+>  		 * If we are here, we are supposed to have CMMA enabled in
+>  		 * the SIE block. Enabling CMMA works on a per-CPU basis,
 
->  
->  static inline size_t dma_iova_size(struct dma_iova_state *state)
->  {
-> -- 
-> 2.43.0
-> 
+[Severity: Medium]
+Can a second vCPU observe uses_cmm(vcpu->arch.gmap) =3D=3D true before
+gmap_enable_cmm() has finished allocating page tables and splitting large
+pages?
+
+gmap_enable_cmm_already_locked() sets GMAP_FLAG_USES_CMM before walking
+the memslots:
+
+arch/s390/kvm/gmap/gmap.c:gmap_enable_cmm_already_locked() {
+	if (uses_cmm(gmap))
+		return;
+
+	set_bit(GMAP_FLAG_USES_CMM, &gmap->flags);
+	...
+	kvm_for_each_memslot(ms, bkt, slots) {
+		...
+		for (gfn =3D start; gfn < end; gfn +=3D _PAGE_ENTRIES) {
+			if (kvm_s390_mmu_cache_topup(mc))
+				return;
+			guard(write_lock)(&gmap->kvm->mmu_lock);
+			...
+			dat_entry_walk(mc, gfn, gmap->asce, flags, ...);
+		}
+	}
+}
+
+Because both handle_essa() and gmap_enable_cmm() check uses_cmm()
+locklessly before taking slots_arch_lock, another vCPU intercepting on
+ESSA while the memslot walk is in progress can skip gmap_enable_cmm() and
+re-enter SIE with ECB2_CMMA enabled:
+
+CPU0                                  CPU1
+handle_essa()
+  gmap_enable_cmm()
+    mutex_lock(&slots_arch_lock)
+    gmap_enable_cmm_already_locked()
+      set_bit(GMAP_FLAG_USES_CMM, ...)
+                                      handle_essa()
+                                        if (!uses_cmm(...)) -> false
+                                        sie_block->ecb2 |=3D ECB2_CMMA
+                                        kvm_s390_retry_instr()
+                                        <re-enters SIE and runs ESSA
+                                         on unvisited segments>
+      kvm_for_each_memslot(...)
+        dat_entry_walk(...)
+
+CPU1 then executes ESSA in hardware on segments that still lack page
+tables or have unsplit large pages, triggering segment translation faults
+and faulting in backing hugepages.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261127150411.2210=
+72-1-imbrenda@linux.ibm.com?part=3D4
