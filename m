@@ -1,57 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795780839;
-	b=avnAZ0NkD8MpAMT72M/L/88MNjtara6tDwK8LEHFH560S8IiJ/Me1OYHaJTiRIM6eLrc
-	 m1rx1+2BC+EJT9jz578sWEWFruSC7hEFv1tvUtlyr83VzXrJBytCV/RQEETEy2NJtGK3x
-	 1HoA6s5gLCQ2M3OPtYoIecSiWFBIVNEe5y5WuMmnDNRheA98rNwnK5wuwjZtpr0LTgH9A
-	 Y8aIWZeIbRn57EPnzWQvnyElwEQ6K10cOAehmX4H3eH3U9YxTW/oFZkT3tWjsFDFfTAgD
-	 txTpfz8y4qOl7hZkniUr5LVd5GXkY/p+4gD4Niznmzy8SQy8BLWGONuLeK314KpUMqg==
+	t=1795781544;
+	b=uo4EZ8pIM+2mxVW6WsAmWYvBy9C9+dqUzG6eNTA3KJQ6+0TYFErRTzsV2kNZ/sriXc6G
+	 P43rEnuSPgx8gHDcyolFuhbKFVR+vakEWpW5q1zcA5+Pwp3VXQ+1awyAfJf8y6aJn1vJZ
+	 onQEuNv6auotLgESzmoVBR7izXkzcYw0tIiN2H3rGfz0iskWr2fU1DaslKr9uW6wEy4Qj
+	 ML9b5oKinEwe6yea0M9upefRAGlW29FRLV2sK49xVRoI6CR022eTjdeNM2jp2QpPSPTdh
+	 SJehWY3YW1/oxAdfkGJ+7CTnJ+9BqchjwYDi89mxc2AyX/pZddKMVmAHVaEkUCOCulA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795780839;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=TlhY3LWTCNeCX3vByIasNBFHpYPe8r8PcYYum4C6s54=;
-	b=0gvtNiBX+tzd/88aqkp3LIkYj9qCl5B7BkfJymHi92dCHmWsNy+GfTyfYg8zJjiGlzDZ
-	 WnVBh9xppIOJVSkwJoH/fcwyDeIffrCh1HUuIdl0ClYb/l/+CtZ/F6KwSZb1QSX1dnWNG
-	 +8zRnbv4MRbr+AQBe6X0ReO5+wa85LAHeC5ebaXBNXmJxLjSnWj9JH3EuEjvdy+Qkg4KK
-	 NilgGKMsIUQvUmP3JA/Gjc5nCGh2qgQSrnMzCbXTWVXaCSz9WGsVPOgare2y6J8RboVd5
-	 3TWjLqh2T6WcoV8bqjkHR1jI4i5pNi198y6ytFuOaHTPbpRmwaAO3kh11R2p3RiVMbw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795781544;
+	h=Received:DKIM-Signature:Message-ID:From:Subject:Reply-To:To:Cc:
+	 In-Reply-To:References:Content-Type:Content-Transfer-Encoding:Date;
+	bh=kLHyl6P0EeFN2LdWj/U4/UCrNoB9kLiGKp5JeZJGIGw=;
+	b=s5TFPAW5/BYE+/EjVn9R0uL01yoHixPAEPrJLp95i2Jt9+24Vofq0l4Bq+heAeYqwXeM
+	 nzCNjNR+0+M8T7aTmWHbP2Ugc11eA8LhqR4uzTnktnlTnd8u6jCpPp4NfjBwWp9QBoeUe
+	 9b5BhdV2gYkv4FjdlwrO30XQGFA8SiseMkEuPnszV1iRRR6kfs9v2wCi75t1wbP8g/4wO
+	 CCj9RYv7AsVNuInpFIjCaKhExDdRfHHpawBhPF7wdI7F2X9Wn0ZKOgDYU9cCbzDFV1G+m
+	 VhatcN+T1+GVdFiXipKHL7VNOCn1nspuTe9FdDhcQCPYgK+dhaDCHOcjC69gU7kRxwA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=arm.com;
-	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=WU3OQRp5;
-	arc=none smtp.remote-ip=217.140.110.172
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57E7606A326
-	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 12:00:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B57E7606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kDFaniyo;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160C0606A31C
+	for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 12:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=WU3OQRp5
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 392321756;
-	Fri, 27 Nov 2026 04:00:35 -0800 (PST)
-Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3D9463F632;
-	Fri, 27 Nov 2026 04:00:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795780838; bh=qWuFSR6AhqsMh0YTtk5jqyb/TZAVijdWRBW5IF4S4UM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WU3OQRp5IQ4eaLX6zUe7IVUwBwXXlhR8lpA994dhLs1FpGXmkkKZUqAUKp/8vBZqj
-	 FuDLpVJKPlFR6dPTN8TRc+Nd2TNnaseo37bZ0Bl6sohLfj51jTXi4HZ1VAPHXM8TxK
-	 Jj1JCPQHzqNljU/A+va2irjD6wa0fMziNAYaHZXY=
-Date: Fri, 27 Nov 2026 12:00:34 +0000
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: Fuad Tabba <fuad.tabba@linux.dev>
-Cc: Will Deacon <will@kernel.org>, kvm@vger.kernel.org,
-	Julien Thierry <julien.thierry.kdev@gmail.com>,
-	Fuad Tabba <tabba@google.com>
-Subject: Re: [PATCH kvmtool] Makefile: Make the clean target independent of
- the build configuration
-Message-ID: <awlw4q7gkutwSJEr@raptor>
-References: <20261126195438.3313169-1-fuad.tabba@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kDFaniyo
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C031F00898;
+	Fri, 27 Nov 2026 12:12:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795781543;
+	bh=kLHyl6P0EeFN2LdWj/U4/UCrNoB9kLiGKp5JeZJGIGw=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=kDFaniyo9DXPwNxxk5moiCvEyjboJB/YEyTwZIeqAOtKWD0H0hxPbcGGjOf7jjfXP
+	 p1au5o4r3uqfc7OtDcbxQg6POFpaSCrTn03XbBH2kxQGYsgryKwM1EGX8zFojov/aX
+	 TGf3ATlA+na+J8dFysXY3iDF52QfL+p/BcuaMv5nIDvqAU5/ZhTwqz5bY+2gP/vdkt
+	 1Kn+xTgqDRA/vJgU+N8gbRqPZ7Yiifmf20O9vMzym66DmuAOC+mY9c7IMrPUchQaoF
+	 vcdC1O2TqeN2t8tU6LWMbsi/t6wEbK6Cfz8O5339XEiQ/qVnZy7ywjYo5phlwsTkwY
+	 3COz8osc+4t6A==
+Message-ID: <sashiko-outbox-237331@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 4/4] iommu/dma: restore flush queue use in
+ dma_iova_destroy()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Marek Szyprowski" <m.szyprowski@samsung.com>, kvm@vger.kernel.org
+Cc: media-ci@linuxtv.org
+In-Reply-To: <20261127115849.2780625-5-m.szyprowski@samsung.com>
+References: <20261127115849.2780625-1-m.szyprowski@samsung.com>
+ <CGME20261127115903eucas1p27ccc4cddb7f705d6afa5c2603597b97a@eucas1p2.samsung.com>
+ <20261127115849.2780625-5-m.szyprowski@samsung.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 27 Nov 2026 12:12:23 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -60,84 +61,98 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261126195438.3313169-1-fuad.tabba@linux.dev>
 
-Hi Fuad,
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] iommu/dma: unnecessary flush queue use in dma_iova_free()
+--
 
-On Thu, Nov 26, 2026 at 07:54:38PM +0000, Fuad Tabba wrote:
-> 'make clean' only removes the objects and dependency files of the
-> configuration it's run with ($(ARCH) and the optional libraries the
-> Makefile detects), so after a cross build a plain 'make clean' doesn't
-> remove the objects and dependency files specific to the target
-> architecture.
-> 
-> Remove every object and dependency file in the directories the Makefile
-> builds in, along with guest/init and guest/pre_init, which depend on
-> the configuration in the same way. List the directories by name so that
-> objects elsewhere in the tree, such as those of a dtc clone used for
-> LIBFDT_DIR, aren't removed.
+commit 7f3e82cb1115d261e31845270a947f770830fc8e
+Author: Marek Szyprowski <m.szyprowski@samsung.com>
 
-Thanks for this, make clean not cleaning all the compilation artifacts was very
-annoying.
+iommu/dma: restore flush queue use in dma_iova_destroy()
 
-I tested this on my x86 machine:
+This commit records whether an IOVA reservation should be released through
+the IOMMU flush queue in a new DMA_IOVA_USE_FQ flag in
+dma_iova_state::__size, and restores deferred IOTLB invalidation and IOVA
+queuing in dma_iova_destroy() and dma_iova_free().
 
-make
-make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- clean
-# I keep precompiled versions of libfdt in libfdt-<arch> directories
-find . -type f \( -name '*\.o' -o -name '*.d' \)|grep -v 'libfdt-*'|wc -l
-# Output: 0
-ls -a guest
-# Output: .gitignore and init.c
-make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
-make clean
-find . -type f \( -name '*\.o' -o -name '*.d' \)|grep -v 'libfdt-*'|wc -l
-# Output: 0
-ls -a guest
-# Output: .gitignore and init.c
+> diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+> index 99eb382a13597..0e329ecd7dfad 100644
+> --- a/drivers/iommu/dma-iommu.c
+> +++ b/drivers/iommu/dma-iommu.c
+[ ... ]
+> @@ -1871,14 +1892,11 @@ EXPORT_SYMBOL_GPL(dma_iova_try_alloc);
+>   */
+>  void dma_iova_free(struct device *dev, struct dma_iova_state *state)
+>  {
+> -	struct iommu_domain *domain =3D iommu_get_dma_domain(dev);
+> -	struct iommu_dma_cookie *cookie =3D domain->iova_cookie;
+> -	struct iova_domain *iovad =3D &cookie->iovad;
+> -	size_t iova_start_pad =3D iova_offset(iovad, state->addr);
+> -	size_t size =3D dma_iova_size(state);
+> +	struct iommu_iotlb_gather iotlb_gather;
+> =20
+> -	iommu_dma_free_iova(domain, state->addr - iova_start_pad,
+> -			iova_align(iovad, size + iova_start_pad), NULL);
+> +	iommu_iotlb_gather_init(&iotlb_gather);
+> +	iotlb_gather.queued =3D state->__size & DMA_IOVA_USE_FQ;
+> +	__dma_iova_free(dev, state, &iotlb_gather);
+>  }
+>  EXPORT_SYMBOL_GPL(dma_iova_free);
+[ ... ]
+> @@ -2152,14 +2187,28 @@ void dma_iova_destroy(struct device *dev, struct =
+dma_iova_state *state,
+>  		size_t mapped_len, enum dma_data_direction dir,
+>  		unsigned long attrs)
+>  {
+> -	if (mapped_len)
+> -		dma_iova_unlink(dev, state, 0, mapped_len, dir, attrs);
+> +	struct iommu_iotlb_gather iotlb_gather;
+> +
+> +	iommu_iotlb_gather_init(&iotlb_gather);
+> +	iotlb_gather.queued =3D state->__size & DMA_IOVA_USE_FQ;
+> =20
+>  	/*
+>  	 * We can be here if the first call to dma_iova_link() failed and
+>  	 * there is nothing to unlink, so let's be more clear.
+>  	 */
+> -	dma_iova_free(dev, state);
+> +	if (mapped_len)
+> +		__dma_iova_unlink(dev, state, 0, mapped_len, dir, attrs,
+> +				&iotlb_gather);
+> +
+> +	/*
+> +	 * Retire the gather together with the IOVA, like __iommu_dma_unmap()
+> +	 * does: either invalidate the IOTLB now, or hand the IOVA space and
+> +	 * any page table pages released by the unmap over to the flush queue,
+> +	 * so the IOVA cannot be reused before the deferred invalidation.
+> +	 */
+> +	if (!iotlb_gather.queued)
+> +		iommu_iotlb_sync(iommu_get_dma_domain(dev), &iotlb_gather);
+> +	__dma_iova_free(dev, state, &iotlb_gather);
+>  }
+>  EXPORT_SYMBOL_GPL(dma_iova_destroy);
 
-And again with static linking.
+[Severity: Medium]
+Does queuing the IOVA in dma_iova_free() (and in dma_iova_destroy() when
+mapped_len is 0) put already-flushed or never-mapped reservations onto the
+flush queue?
 
-Same on my arm64 machine, with CROSS_COMPILE and ARCH set for x86_64.
+When dma_iova_free() is called, either no range was ever linked or all
+linked ranges were already unmapped by dma_iova_unlink(), which always
+runs a synchronous iommu_iotlb_sync().  Because no deferred IOTLB
+invalidation or page-table freelist is pending, passing a queued gather to
+__dma_iova_free() routes the IOVA through queue_iova() instead of
+free_iova_fast().  Callers such as __drm_gpusvm_unmap_pages() that call
+dma_iova_unlink() followed by dma_iova_free() pay for the synchronous
+IOTLB sync during unlink and then still quarantine the IOVA and arm
+fq_timer for a full-domain flush_iotlb_all().
 
-Also checked with git status that no files tracked by git were deleted:
+Passing a NULL gather from dma_iova_free() and only setting
+iotlb_gather.queued when mapped_len is non-zero in dma_iova_destroy()
+would return these IOVAs straight to free_iova_fast().
 
-Tested-by: Alexandru Elisei <alexandru.elisei@arm.com>
-
-Thanks a lot!
-
-Alex
-
-> 
-> Signed-off-by: Fuad Tabba <fuad.tabba@linux.dev>
-> ---
->  Makefile | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Makefile b/Makefile
-> index 84b8baa..6698cdb 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -557,12 +557,12 @@ clean:
->  	$(E) "  CLEAN"
->  	$(Q) rm -f x86/bios/*.bin
->  	$(Q) rm -f x86/bios/*.elf
-> -	$(Q) rm -f x86/bios/*.o
->  	$(Q) rm -f x86/bios/bios-rom.h
->  	$(Q) rm -f tests/boot/boot_test.iso
->  	$(Q) rm -rf tests/boot/rootfs/
->  	$(Q) rm -f $(DEPS) $(STATIC_DEPS) $(OBJS) $(OTHEROBJS) $(OBJS_DYNOPT) $(STATIC_OBJS) $(PROGRAM) $(PROGRAM_ALIAS) $(PROGRAM)-static $(GUEST_INIT) $(GUEST_PRE_INIT) $(GUEST_OBJS)
-> -	$(Q) rm -f guest/guest_init.c guest/guest_pre_init.c
-> +	$(Q) rm -f $(foreach d,. arm64 disk guest hw mips net/uip powerpc riscv ui util vfio virtio x86 x86/bios,$(d)/*.o $(d)/.*.d)
-> +	$(Q) rm -f guest/guest_init.c guest/guest_pre_init.c guest/init guest/pre_init
->  	$(Q) rm -f cscope.*
->  	$(Q) rm -f tags
->  	$(Q) rm -f TAGS
-> 
-> base-commit: 2f3abe56dcd2658dc6dae3eeeb4996dc4b518bcf
-> -- 
-> 2.47.3
-> 
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261127115849.2780=
+625-1-m.szyprowski@samsung.com?part=3D4
