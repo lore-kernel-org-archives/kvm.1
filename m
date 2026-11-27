@@ -1,127 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.59
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795773714;
-	b=HXepw6KdEiCxb5B3kHlDFp7HoIOnN5QL3anzFc+P7WElt3sGYDWy3Vyi7vpTSb2wMSLP
-	 XHeJg+3PbkcsLgJW9G2e0g4a1YIjjVvXGhlyF2C5jvy3JGXJkm9oeCu8YG0eW8RVLuBfY
-	 csvo43dZS3ibYEWfB4pbs3ppwcGP2icouVTfgsX/Q0/tPEBMcVXsIIJSuPTjdgXTTJrUF
-	 xtM5DyngHUtdRJGUr7+9ZjnCKvd6ndpgnkL1kNYObPSS4kjzCb/xZuCgheloG25SEQKOd
-	 LNBG/M3Zyy+FaMvKjBojlmR8dh/pf2BFXP7IY5h2rIY9no2mEszm6ajLqKQ/lz8NjEA==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795773714;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:
-	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
-	 Received:Received:Date:From:To:CC:Subject:Message-ID:In-Reply-To:
-	 References:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-NV-OnPremToCloud:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=l0w7m78Q3t7NafSqffnDLuqKONPoccVan1Yqy46w+7A=;
-	b=17MtVZtb9ljayIXOt4wox8JFIt7jVwxzLC54t4I8U4dgVmCXsVlsqT0nwP2Wyf1YPeLe
-	 lVKVk9ALX53Od0QqE9Kv2AK+RVgcRjh+3NAQj0klQvS8FzeAtoKQUWr5oG8cRCi0ZOSPb
-	 TCXHLTiJcYqwTBF7DVjX3dO31UX70MZNdf5YvmAZRxaIGwt4PeNiY5PYYWpAZ+lAPA8I1
-	 k/bGktYN0BX+lrLDVTB/4TL5IOwwYv9VXSu/nMKUCW2G7D8S4g4Tu7+e+XTHJulvuiap0
-	 Q9nsKeeiN/2wqgvZ5yuSLTVExLJQVsHngr8DmPucLKTPk5lbesg1DcK3IFJTmYeLJRg==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=hfGhu9vf;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.56.59
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010059.outbound.protection.outlook.com [52.101.56.59])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.13
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1795774044;
+	b=tUBIz+KIoLBeNO8pQsLK7Diqfzoh+jk3H+A4fD8LrVf8XDukwnY3AIKxsLBsjML7jqhF
+	 1G7wEioCDSVBWZvvHVJkrMlagJkKEs0uU6YKtMXwMpVIP1GAWelz/GaTbnPu75LCjKq3V
+	 oLssJ1cflFgasyVBySBcnMZCJ4oeOdCkJvHVuQvqtowuokqsph9cJPRQ8Lb6cUJOhJsKl
+	 8i8ASAC5rCAsYovG3O6QO6srZSbp42MDTzwr1fVt1WKSd4U70cEdlsVqKip0pKfUo/K+q
+	 9heLfMfMMq0+U4p1ZAEJcObq093ROSgSvHYQNyL9JWAs9l9wFRChYZNBDJ84fNWzT5g==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795774044;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=nQh0HxRZJOo1g9eMX3ok2krtTe6kcOHVKe01GJEuzZg=;
+	b=DZXttHWcEHHofptw/Kxum4M9DSk4bEakocJuNjzs6vEXo1MyUzd953tAGy6Oxxmymrov
+	 7+b9X/F2QTO/lTB3GGEdoVmOkwqO9G1/vlXedJ965OP0uLkhbO05v/GV2wMk+6UnlpSI6
+	 pqTA3780fNXtJU6h2M3QEt/NPLXo5s32rRO0RCtKldjyXsN/XJgPy68p6HFMvNNmwoFMn
+	 3la1X2WrKMK1Q/uenIV+QxcCl+vDVw6hgXz90uW/Avo2d652PRkN70AOn5ELtmmw/3pyt
+	 KddduMAB5PdTw6lWqLwmCgy7bfPKoTkiSI3UmwNr26pPy6I/ws2ukW68RixwumASlWg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=n0yxHqZl;
+	arc=none smtp.remote-ip=192.198.163.13
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7F5606A33F;
-	Fri, 27 Nov 2026 10:01:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8B7F5606A33F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1135A606A332;
+	Fri, 27 Nov 2026 10:07:23 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1135A606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=hfGhu9vf
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rIl0Ry0EswVbofiZABrg18/soxaGjsQHWCaMi+GpBBGD3MbihGNfom52vbGdS5oaUt76lDhzW2QDH95wpB3ti+NBgZYtde6JyOoWtRfTU+4tRth/vkMK696Ex8lHeEn5E1jLrxqAIICtIghlfV4FxwnsCS6QNU9BmT/NKbyySDcUSAfIkreupzBLt1V/lqaSbBp8OvSWyQPBnGMDil1aTAAG+q5zpTFI11vCVYPb3FOhwdvjXkKYhUZKs+/3Ipe43UJnESZBUQMXIUNyrH+CVx/dWI5NO0ZOxyq/MqbdJDOyPmJyWHU3Os6VdzIwcrt4PhhfYWCgqpWnuao7JnseOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=l0w7m78Q3t7NafSqffnDLuqKONPoccVan1Yqy46w+7A=;
- b=HVucWkf9xuY8G+0A0VE3YWFz07/uQ17d7rfDOX6Ke56SOLqgnMolXNaTizZYFuu9ywNrAmYqHAE3Q7Jgru9rQWpWrXVdQbxclBrEXDtzCCCNpiKKl9z/6g1n0Szg6zq9/B6zOceTO7e8xBXrzDYehigu5oHgKF2Db360gzA49UJHAvvUD+vo/nE8dYean4WJJyAErPV8vEidRlMwKVb/xd+UiP2KWdOcuc1hTSzivCyR3PAlx58y7Tip22I6xQw+fwP23aCpLmuAllFf7I/NzRuT2ikYpnt/nnxrEVEJbDmZXsaBlwLrVqm1QhbkpSWSGc9BiXsMFuql1LJlbophxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=l0w7m78Q3t7NafSqffnDLuqKONPoccVan1Yqy46w+7A=;
- b=hfGhu9vfQGbENvcRA5asNK0tSwx66j5AIdq0kkUVOIb1+1c615ull1O2hfEHGY/xm4MBHn03aV5PRHmQ4o3HOcJqFzvOQDEoSLn7+85nli8df6WkIQvcY59rZlXxHybXImtj+XVjtSu5L9ltxAXnuOEVEzRzZcZbh/UTkICEfeM1i9+hzZoYGkvPZoyq965QvbbVQ4c8US0ILZ8DSxNZMprxDf2DwDbYravNxLkkYGEy6PyFM31sh7RsAP51STJnnuGmxLJhkeKjMQijp889EjSxDTLaful1RrK84Y+lP+hOBTyJNgeOyeKpaqY9CGu1Dz7NHMwsBIk44LEzoU5I5Q==
-Received: from CH2PR18CA0038.namprd18.prod.outlook.com (2603:10b6:610:55::18)
- by DS2PR12MB9590.namprd12.prod.outlook.com (2603:10b6:8:279::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.4; Fri, 27 Nov
- 2026 10:01:45 +0000
-Received: from CH7PEPF00000017.namprd21.prod.outlook.com
- (2603:10b6:610:55:cafe::58) by CH2PR18CA0038.outlook.office365.com
- (2603:10b6:610:55::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.662.10 via Frontend Transport; Fri,
- 27 Nov 2026 10:01:45 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CH7PEPF00000017.mail.protection.outlook.com (10.167.244.166) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.2 via Frontend Transport; Fri, 27 Nov 2026 10:01:45 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Fri, 27 Nov
- 2026 02:01:28 -0800
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Fri, 27 Nov
- 2026 02:01:28 -0800
-Received: from inno-dell (10.127.8.12) by mail.nvidia.com (10.129.68.8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57 via Frontend
- Transport; Fri, 27 Nov 2026 02:01:16 -0800
-Date: Fri, 27 Nov 2026 12:01:14 +0200
-From: Zhi Wang <zhiw@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>
-CC: Alok Kumar <alkumar@nvidia.com>, <acourbot@nvidia.com>,
-	<kvm@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
-	<nova-gpu@lists.linux.dev>, <linux-pci@vger.kernel.org>, <alex@shazbot.org>,
-	<jgg@nvidia.com>, <yishaih@nvidia.com>, <skolothumtho@nvidia.com>,
-	<kevin.tian@intel.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
-	<ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
-	<gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
-	<a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
-	<markus.probst@posteo.de>, <jhubbard@nvidia.com>, <apopple@nvidia.com>,
-	<joelagnelf@nvidia.com>, <ecourtney@nvidia.com>, <cjia@nvidia.com>,
-	<smitra@nvidia.com>, <kjaju@nvidia.com>, <ankita@nvidia.com>,
-	<aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
-	<linux-kernel@vger.kernel.org>, <zhiw@nvidia.com>, <boqun@kernel.org>,
-	<daniel.almeida@collabora.com>, <tamird@kernel.org>, <work@onurozkan.dev>,
-	<jgg@ziepe.ca>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
-	<dri-devel@lists.freedesktop.org>, <peter@colberg.org>, <xinmengs@nvidia.com>
-Subject: Re: [PATCH v5 12/35] gpu: nova-core: mm: add VramBlock
-Message-ID: <20261127120106.6f63485d@inno-dell>
-In-Reply-To: <DN5HKLQK65L0.1L9NVW750P85W@kernel.org>
-References: <20261124135937.18583-1-alkumar@nvidia.com>
-	<20261124135937.18583-13-alkumar@nvidia.com>
-	<DN5HKLQK65L0.1L9NVW750P85W@kernel.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=n0yxHqZl
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1795774044; x=1827310044;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SIdNDwakLoJc/r9zzh1dEftOcZlld4iiIQC3fzpqKBg=;
+  b=n0yxHqZl3aKlOz2Pv8TEcxpjNeslA8sJYdLs1oK5lhfFyG9nvm8Ds2jL
+   GMU3xwO6gmevk7TZgFq1DkNc89ACP1vZDABbbdjuFv2IyjxRACHwPWUvZ
+   8FpzCEOpYyyV7Vsm1LbXBJPC7JsGxTHDBDCAJdEU6YX9iph41i0NMmkX/
+   zuKuFLtjWiG68KnnBHlXShLl2ct19mx/JhdiDJIUDQcP1IyIOtrkkQPrZ
+   DC76P3Vai023/paBJwTCu1LGZf8pRsV4MN7kQA/GFM8ruy1Xny3LCxSeA
+   rib1jg6ho9s9ixfvH64dAXfX7IOyX9wsFgbj5NcdUsr/ltt1x1oDuygDs
+   g==;
+X-CSE-ConnectionGUID: C0LB5sFOQ+qs4pkj4V2Aog==
+X-CSE-MsgGUID: g4pviEMVSPej4na2Lfv55g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11978"; a="4652119"
+X-IronPort-AV: E=Sophos;i="6.27,236,1787036400"; 
+   d="scan'208";a="4652119"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2026 02:07:23 -0800
+X-CSE-ConnectionGUID: AhC/xHkBRQyccQuyLWfOqw==
+X-CSE-MsgGUID: yUV2kTuURSaC3NtYCKVqwQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,236,1787036400"; 
+   d="scan'208";a="12512273"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
+  by orviesa001.jf.intel.com with ESMTP; 27 Nov 2026 02:07:20 -0800
+Date: Fri, 27 Nov 2026 17:57:07 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: iommu@lists.linux.dev, x86@kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, xiaoyao.li@intel.com,
+	Chao Gao <chao.gao@intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 9/9] coco/tdx-host: Enable trusted DMA on IOMMUs on
+ device connect
+Message-ID: <awlT8wJYM3q1xMr7@yilunxu-OptiPlex-7050>
+References: <20261112043054.2664857-1-baolu.lu@linux.intel.com>
+ <20261112043054.2664857-10-baolu.lu@linux.intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -131,153 +84,425 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH7PEPF00000017:EE_|DS2PR12MB9590:EE_
-X-MS-Office365-Filtering-Correlation-Id: ea6f90ef-a66d-4e2b-cad1-08df4c6d71b7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|376014|36860700016|82310400026|1800799024|10067099003|11063799006|4143699003|261022105027099003|56012099006|261026140227099003|261021121427099003|261102123227099003|261028144727099003|261026121527099003|18002099003|261009223027099003|22082099003|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	RWaKKCeTx/dM1sI3YzWoWaq57o5tUQLXVjioVZwiMiw3ZlBVUE7ZsoHaYB//K/UL3cRTNBTSZiWZmbFBvSeDEmO158vNLNmef3RXgVXkj49fjKq0Tz9jMq7D5uFTucCdni0dr1r+DbeZ3MJ4x9ZWxqYfShZXOCA8imOaPLQATLXa+u2wKezEBYqdpRfxzA9SJfYDZLPt78Z5w2Lvs/4E+2nNKOghUz38+hXOrwFtU0p5V4bcDzPJH0vrxjwD+12jRpYa4tPqgyR6L+q7/ja9MsWCUfr4xCxMYJb6e4KBkHdW1FArfq20oyzQpygFHJMrRGtJj5zyaG8YYCiLWsLXAJoRyxfajCv4N9k8euvBN67Me9yYgngpk/Rk126OTHpsUHhgZpeFFCemRnHTMrpV/Nuoly/qERyDK16qD4jdc87Ypeh+S2U0f/k5N2jyVQDm5EESbxb3eZhhQMaZgOz+YN0cjgWNBlYYtBG+CTGDz3mTTDB+2OBhIR9i2x2LI+ZSxttmCwHcaTTPXC35lAYvg0mDM3l16eSywg8MvVmkgs9N1X4u7tnprB0tBPjjF+/XHx/lUuVfpu0PQqW4bgNfLbPOpJP9YWR4rqnhiJEfpISvfs99jj2iOzAXtgc6y4RUei0sxAfKV2TGMxjmh3nb1pEGrjBrQKufMjR+6Bd8m/ayHOv2Tfe+jy0nnVn/fhtGJf1o9pUwSpVugY3B4K3MGQ==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(36860700016)(82310400026)(1800799024)(10067099003)(11063799006)(4143699003)(261022105027099003)(56012099006)(261026140227099003)(261021121427099003)(261102123227099003)(261028144727099003)(261026121527099003)(18002099003)(261009223027099003)(22082099003)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	tL7ajNcNCeAA+x20392y0qsckveTj5DllMil7v7AqM3cZmBHKx9EQ5dYvQCmNO3J6gzCSFAB5RSN2urRMbQTS+ZhDJEzeWuHhunEOeWhrVXpTCpq13+Tf1MdONYtRTHs43Ya5bzkpaLrEOOwxQSXt0wLTXoza2nU1RLRgQ0nSXN3QcDQsl4/9fpHcuG7Rzm6rHb8kOCc+zkVNqMKfu2/5X+pttsgZW01oUwQ5cACeA8y42V0NstjG9ZO4FnoZjVc1yxuTrm/eTn+bNB9lgzeMv3iAT2ua6ohruGDiI+VwFqQE43s8Ctq5voFdygYk7HlvxBREqdDE0iyeqc1xcRaYGSKPoIwKv7kHBl6n6OF531DSDTozyTtYA/eDVVIfE2CUsku6+EREt6HhW/sZ+3JexhCUBG2k4Xlg0tqKW1iEsd4u3XCxWasdHswEjKiWLw4
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2026 10:01:45.1848
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ea6f90ef-a66d-4e2b-cad1-08df4c6d71b7
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH7PEPF00000017.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9590
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112043054.2664857-10-baolu.lu@linux.intel.com>
 
-On Thu, 26 Nov 2026 23:12:47 +0100
-"Danilo Krummrich" <dakr@kernel.org> wrote:
+>  static int tdx_tsm_link_connect(struct pci_dev *pdev)
+>  {
+> +	int ret;
+> +
+> +	ret = tdx_iommu_get(pdev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* TDISP connect is not implemented yet. */
+> +	tdx_iommu_put(pdev);
 
-> On Tue Nov 24, 2026 at 2:59 PM CET, Alok Kumar wrote:
-> > +/// A physically contiguous VRAM allocation.
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// `range.start <= range.end`.
-> > +pub(crate) struct VramBlock {
-> > +    _blocks: Pin<KBox<AllocatedBlocks>>,
-> > +    range: Range<u64>,
-> > +}
-> 
-> This allocation seems unnecessary, VramBlock can itself be
-> constructed as pin initializer...
-> 
+In TDX, usually we prevent the on-going feature implementation from
+reachable by a stub and finally enable it when full support lands,
+like 1e3d79135327. So can we do like that?
 
-make sense.
+Oh, we've already done this in Patch 7.
 
-> > +
-> > +impl VramBlock {
-> > +    /// Returns the range covered by this VRAM block.
-> > +    pub(crate) const fn range(&self) -> &Range<u64> {
-> > +        &self.range
-> > +    }
-> > +}
+>  	return -ENXIO;
+>  }
 
-snip
+[...]
 
-> > +        Ok(Arc::new(
-> > +            VramBlock {
-> > +                _blocks: blocks,
-> > +                // INVARIANT: `range.start <= range.end` was
-> > checked above, hence
-> > +                // `address <= end`.
-> > +                range: start..end,
-> > +            },
-> > +            GFP_KERNEL,
-> > +        )?)
-> 
-> To me it seems that reference counting is not needed here.
-> 
+> +/* These describe the trusted invalidation queue buffers. */
+> +#define IQ_BUFFER_PAGES		2
+> +#define IQ_BUFFER_SIZE		SZ_8K
 
-This patch was cooked long time before the VgpuVramSlotPool and mm
-settled. At that time I didn't know how the final ownership view will
-look like among those components. So I just put an Arc to ensure the
-backing allocation stayed alive for as long as any region or BAR
-mapping needed it, without tying those users to a particual owner's
-lifetime at that stage.
+I don't think we have to define 2 instant values, how about?
 
-And you are right, looking at the current ownership view, there
-shouldn't be any user of the backing allocation needs to outlive struct
-VgpuInstances at this time so we can definitely remove the Arc. 
+  #define IQ_BUFFER_SIZE		IQ_BUFFER_PAGES * SZ_4K
 
-> AFAICS, a VramBlock does not actually have shared ownership, it is
-> owned by the VgpuVramSlotPool of the VgpuInstances.
-> 
-> A VgpuInstance owns a VgpuVramSlot, and a VgpuVramSlot owns a
-> VramRegion. The VramRegion borrows (a range) from the
-> VgpuVramSlotPool's VramBlock.
-> 
-> Finally, a BarMapping (also owned by a VgpuInstance) also borrows
-> from the VgpuVramSlotPool's VramBlock.
-> 
-> Do I miss anything? I tried to double check and asked my clanker to
-> inline all the relevant structures, and it came up with this:
-> 
-> 	struct VgpuInstances {
-> 	    vram_slots: Option<VgpuVramSlotPool {
-> 	        backing: VramBlock {
-> 	            _blocks: Pin<KBox<AllocatedBlocks {
-> 	                buddy: &'mm GpuBuddy,
-> 	                // Allocated buddy blocks.
-> 	            }>>,
-> 	            range: Range<u64>,
-> 	        },
-> 	        layout: VgpuVramLayout,
-> 	        fb_region_size: u64,
-> 	    }>,
-> 	
-> 	    instances: KVec<VgpuInstance {
-> 	        vram_slot: VgpuVramSlot {
-> 	            index: u32,
-> 	            fbmem: VramRegion {
-> 	                backing: &'pool VramBlock,
-> 	                range: Range<u64>,
-> 	            },
-> 	            mgmt_heap: VramRegion {
-> 	                backing: &'pool VramBlock,
-> 	                range: Range<u64>,
-> 	            },
-> 	        },
-> 	
-> 	        plugin_rpc: PluginRpc {
-> 	            comm: CommBufferRegion {
-> 	                map: BarMapping {
-> 	                    region: VramRegion {
-> 	                        backing: &'pool VramBlock,
-> 	                        range: Range<u64>,
-> 	                    },
-> 	                    access: BarUserAccess {
-> 	                        bar_user: &BarUser,
-> 	                        mapped: Option<MappedRange>,
-> 	                    },
-> 	                    mm: &SharedGpuMm,
-> 	                    unmap_error: Option<Error>,
-> 	                },
-> 	            },
-> 	            // Other RPC state omitted.
-> 	        },
-> 	    }>,
-> 	}
-> 
-> (In case you wonder why it says &'a GpuBuddy for AllocatedBlocks, I
-> have [1] applied locally.)
-> 
-> [1]
-> https://lore.kernel.org/nova-gpu/20261126221108.3768637-1-dakr@kernel.org/
+> +
+> +/*
+> + * Represents a list of pages for TDX module defined IOMMU_MT object.
+> + * Typically it uses a "root page" as the medium to exchange a list of
+> + * data pages between host and TDX module.
+> + */
+> +struct tdx_iommu_pages {
+> +	struct tdx_iommu_mt_param *root;
+> +	void **pages;
+> +	unsigned int nr_entries;
+> +};
+> +
+> +/**
+> + * struct tdx_iommu - Host state of an IOMMU in Secure TDX Mode
+> + * @node: Link in tdx_iommu_list
+> + * @params: IOMMU information from the VT-d driver
+> + * @tdx_iommu_id: Identifier returned by TDH.IOMMU.SETUP
+> + * @mt_pages: Pages handed to the TDX module by TDH.IOMMU.SETUP
+> + * @users: Number of devices using trusted DMA through this IOMMU
+> + * @stuck: TDH.IOMMU.CLEAR failed. The TDX module may still own
+> + *	   @mt_pages, so they are leaked and the IOMMU is not reused.
+> + */
+> +struct tdx_iommu {
+> +	struct list_head node;
+> +	struct dmar_tdxc_params params;
+> +	u64 tdx_iommu_id;
+> +	struct tdx_iommu_pages *mt_pages;
+> +	unsigned int users;
+> +	bool stuck;
+> +};
+> +
+> +/*
+> + * Serializes the refcounts together with TDH.IOMMU.SETUP and
+> + * TDH.IOMMU.CLEAR, so a device can't join an IOMMU that is being
+> + * cleared, or one whose setup hasn't finished.
+> + */
+> +static DEFINE_MUTEX(tdx_iommu_lock);
+> +static LIST_HEAD(tdx_iommu_list);
+> +
+> +static void *tdx_iommu_alloc_pages(int node, size_t size)
+> +{
+> +	struct folio *folio;
+> +
+> +	if (node == NUMA_NO_NODE)
+> +		node = numa_mem_id();
+> +
+> +	folio = __folio_alloc_node(GFP_KERNEL | __GFP_ZERO, get_order(size), node);
+> +	if (!folio)
+> +		return NULL;
+> +
+> +	return folio_address(folio);
+> +}
+> +
+> +static void tdx_iommu_free_pages(void *virt)
+> +{
+> +	if (!virt)
+> +		return;
+> +
+> +	folio_put(virt_to_folio(virt));
+> +}
+> +
+> +/* Number of 4K pages backing IOMMU_MT entry @i. */
+> +static unsigned int mt_entry_nr_pages(unsigned int i)
+> +{
+> +	return i < TDX_IOMMU_MT_IQ_NR ? IQ_BUFFER_SIZE >> PAGE_SHIFT : 1;
+> +}
+> +
 
+[...]
+
+> +static void free_mt_pages(struct tdx_iommu_pages *array)
+> +{
+> +	unsigned int i;
+> +
+> +	if (IS_ERR_OR_NULL(array))
+> +		return;
+> +
+> +	mt_pamt_put(array, UINT_MAX);
+> +
+> +	for (i = 0; i < array->nr_entries; i++)
+> +		tdx_iommu_free_pages(array->pages[i]);
+> +
+> +	tdx_iommu_free_pages(array->root);
+
+The root page is just to hold ABI params, doesn't have to be kept until
+we exit TDX mode.
+
+> +	kfree(array->pages);
+> +	kfree(array);
+
+Maybe we don't need so many objects to hold mt page info, see below...
+
+> +}
+> +
+> +DEFINE_FREE(free_mt_pages, struct tdx_iommu_pages *, free_mt_pages(_T))
+> +
+> +static void **alloc_mt_pages(unsigned int nr_entries, int node)
+> +{
+> +	unsigned int i;
+> +	void **pages;
+> +	void *vaddr;
+> +
+> +	pages = kzalloc_objs(*pages, nr_entries);
+> +	if (!pages)
+> +		return NULL;
+> +
+> +	/* Allocate two contiguous buffers for the invalidation queue. */
+> +	pages[0] = tdx_iommu_alloc_pages(node, IQ_BUFFER_SIZE);
+> +	if (!pages[0])
+> +		goto free_pages;
+> +
+> +	pages[1] = tdx_iommu_alloc_pages(node, IQ_BUFFER_SIZE);
+> +	if (!pages[1])
+> +		goto free_pages;
+> +
+> +	/* Allocate the required number of pages for the IOMMU metadata. */
+> +	for (i = TDX_IOMMU_MT_IQ_NR; i < nr_entries; i++) {
+> +		vaddr = tdx_iommu_alloc_pages(node, SZ_4K);
+> +		if (!vaddr)
+> +			goto free_pages;
+> +		pages[i] = vaddr;
+> +	}
+
+I'm wondering if we could make the page allocation/free/populate simpler,
+how about allocating a contiguous page bulk, like:
+
+  unsigned int nr_pages = sysinfo->tdx_connect.iommu_mt_page_count +
+				TDX_IOMMU_MT_IQ_NR * IQ_BUFFER_PAGES;
+  void *iommu_mt_pages;
+
+  iommu_mt_pages = alloc_pages_exact_nid(node, nr_pages, ...);
+
+Making all pages contiguous is more than needed but it saves a lot of LOC,
+is it? We don't need to allocate void **pages, maybe we don't even need
+to define struct tdx_iommu_pages.
+
+> +
+> +	return pages;
+> +
+> +free_pages:
+> +	for (i = 0; i < nr_entries; i++)
+> +		tdx_iommu_free_pages(pages[i]);
+> +	kfree(pages);
+> +
+> +	return NULL;
+> +}
+> +
+> +static void populate_mt_pages(struct tdx_iommu_pages *array)
+> +{
+> +	struct tdx_iommu_mt_param *param = array->root;
+> +	void **pages = array->pages;
+> +	unsigned int i;
+> +
+> +	for (i = 0; i < TDX_IOMMU_MT_IQ_NR; i++)
+> +		param->iq[i] = __pa(pages[i]) | IQ_BUFFER_PAGES;
+> +
+> +	for (; i < array->nr_entries; i++)
+> +		param->mt[i - TDX_IOMMU_MT_IQ_NR] = __pa(pages[i]);
+> +}
+> +
+> +/* Allocate the IOMMU_MT pages with PAMT backing. Free with free_mt_pages(). */
+> +static struct tdx_iommu_pages *alloc_iommu_mt(int node, unsigned int nr_mt_pages)
+> +{
+> +	unsigned int nr_entries = nr_mt_pages + TDX_IOMMU_MT_IQ_NR;
+> +	struct tdx_iommu_pages *array;
+> +	unsigned int i;
+> +	int ret = -ENOMEM;
+> +
+> +	if (!nr_mt_pages || nr_mt_pages > TDX_IOMMU_MT_MAX_PAGES)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	array = kzalloc_obj(*array);
+> +	if (!array)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	array->root = tdx_iommu_alloc_pages(node, sizeof(*array->root));
+
+The root page is just to hold the ABI parameter, doesn't have to
+allocate per node, is it?
+
+> +	if (!array->root)
+> +		goto free_array;
+> +
+> +	array->nr_entries = nr_entries;
+> +	array->pages = alloc_mt_pages(nr_entries, node);
+> +	if (!array->pages)
+> +		goto free_root;
+> +
+> +	populate_mt_pages(array);
+> +
+> +	ret = mt_pamt_get(array);
+> +	if (ret)
+> +		goto free_pages;
+> +
+> +	return array;
+> +
+> +free_pages:
+> +	for (i = 0; i < nr_entries; i++)
+> +		tdx_iommu_free_pages(array->pages[i]);
+> +	kfree(array->pages);
+> +free_root:
+> +	tdx_iommu_free_pages(array->root);
+> +free_array:
+> +	kfree(array);
+> +	return ERR_PTR(ret);
+> +}
+> +
+> +static struct tdx_iommu *tdx_iommu_find(u64 reg_base_addr)
+> +{
+> +	struct tdx_iommu *tiommu;
+> +
+> +	lockdep_assert_held(&tdx_iommu_lock);
+> +
+> +	list_for_each_entry(tiommu, &tdx_iommu_list, node)
+> +		if (tiommu->params.reg_base_addr == reg_base_addr)
+> +			return tiommu;
+> +
+> +	return NULL;
+> +}
+> +
+> +/* Allocate the IOMMU_MT pages and issue TDH.IOMMU.SETUP. */
+> +static int tdx_iommu_setup(struct pci_dev *pdev, struct tdx_iommu *tiommu)
+> +{
+> +	const struct tdx_sys_info *sysinfo = tdx_get_sysinfo();
+> +	struct dmar_tdxc_params *params = &tiommu->params;
+> +	u64 r, tdx_iommu_id;
+> +	int ret;
+> +
+> +	if (!sysinfo)
+> +		return -ENXIO;
+> +
+> +	struct tdx_iommu_pages *mt __free(free_mt_pages) =
+> +			alloc_iommu_mt(params->node,
+> +				       sysinfo->tdx_connect.iommu_mt_page_count);
+> +	if (IS_ERR(mt))
+> +		return PTR_ERR(mt);
+> +
+> +	ret = dmar_tdxc_acquire(pdev, params);
+> +	if (ret)
+> +		return ret;
+> +
+> +	r = tdh_iommu_setup(params->reg_base_addr, mt->root, &tdx_iommu_id);
+> +	if (r) {
+> +		dmar_tdxc_release(pdev, params);
+> +		pr_err("TDH.IOMMU.SETUP failed, regbase 0x%llx status 0x%llx\n",
+> +		       params->reg_base_addr, r);
+> +		return -EIO;
+> +	}
+> +
+> +	tiommu->tdx_iommu_id = tdx_iommu_id;
+> +	tiommu->mt_pages = no_free_ptr(mt);
+> +
+> +	pr_info("Trusted DMA initialized, regbase 0x%llx\n", params->reg_base_addr);
+> +
+> +	return 0;
+> +}
+> +
+> +/* Issue TDH.IOMMU.CLEAR and release what TDH.IOMMU.SETUP took. */
+> +static int tdx_iommu_clear(struct pci_dev *pdev, struct tdx_iommu *tiommu)
+> +{
+> +	u64 r;
+> +
+> +	r = tdh_iommu_clear(tiommu->tdx_iommu_id);
+> +	if (r) {
+> +		pr_err("TDH.IOMMU.CLEAR failed, regbase 0x%llx tdx_iommu_id 0x%llx status 0x%llx\n",
+> +		       tiommu->params.reg_base_addr, tiommu->tdx_iommu_id, r);
+> +		/* The pages and their PAMT backing stay with the TDX module. */
+> +		return -EIO;
+> +	}
+> +
+> +	dmar_tdxc_release(pdev, &tiommu->params);
+> +	free_mt_pages(tiommu->mt_pages);
+> +	tiommu->mt_pages = NULL;
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * tdx_iommu_get() - Enable trusted DMA on the IOMMU translating a device
+> + * @pdev: PCI device that will use trusted DMA
+> + *
+> + * The first device behind an IOMMU transitions that IOMMU into Secure
+> + * TDX Mode. Later devices only take a reference. Every successful call
+> + * must be balanced by tdx_iommu_put().
+> + *
+> + * Return: 0 on success and error number on failure.
+> + */
+> +int tdx_iommu_get(struct pci_dev *pdev)
+> +{
+> +	struct dmar_tdxc_params params;
+> +	struct tdx_iommu *tiommu;
+> +	int ret;
+> +
+> +	ret = dmar_tdxc_get_params(pdev, &params);
+> +	if (ret)
+> +		return ret;
+> +
+> +	guard(mutex)(&tdx_iommu_lock);
+> +
+> +	tiommu = tdx_iommu_find(params.reg_base_addr);
+> +	if (tiommu) {
+> +		if (tiommu->stuck)
+> +			return -EBUSY;
+> +		if (WARN_ON(tiommu->users == UINT_MAX))
+> +			return -EOVERFLOW;
+> +		tiommu->users++;
+> +		return 0;
+> +	}
+> +
+> +	tiommu = kzalloc_obj(*tiommu);
+> +	if (!tiommu)
+> +		return -ENOMEM;
+> +
+> +	tiommu->params = params;
+> +	ret = tdx_iommu_setup(pdev, tiommu);
+> +	if (ret) {
+> +		kfree(tiommu);
+> +		return ret;
+> +	}
+> +
+> +	tiommu->users = 1;
+> +	list_add(&tiommu->node, &tdx_iommu_list);
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * tdx_iommu_put() - Drop a reference taken by tdx_iommu_get()
+> + * @pdev: Same device passed to tdx_iommu_get()
+> + *
+> + * The last device behind an IOMMU takes that IOMMU out of Secure TDX
+
+I'm wondering if we really needs to take the IOMMU out of TDX mode when
+all devices are disconnected. Imagine people connect a device,
+disconnect and reconnect because of link error, why bother switch TDX
+mode and reserve/release DomainIDs again and again?
+
+Previously we setup TDX mode for all IOMMUs at tdx-host probe, that's
+not a bad idea except quite a waste of resouces (e.g. DomainID). There
+may even be no TSM capable device plugged.
+
+Now we setup TDX mode per IOMMU on-demand, that solves the concern. We
+don't really need runtime switch off. We don't have to let another device
+gets a big DID then fail the reconnect.
+
+How about we only exit TDX mode for all IOMMUs on module unload, can
+that simplify some logic like user count, stuck? and locking? There will
+be no connect after we unregister TSM.
+
+Thanks
+
+> + * Mode. If TDH.IOMMU.CLEAR fails, the TDX module may still own the
+> + * IOMMU_MT pages, so they are leaked. The IOMMU then stays in Secure TDX
+> + * Mode, later tdx_iommu_get() calls for it fail, and the module can no
+> + * longer be unloaded.
+> + */
+> +void tdx_iommu_put(struct pci_dev *pdev)
+> +{
+> +	struct dmar_tdxc_params params;
+> +	struct tdx_iommu *tiommu;
+> +
+> +	if (WARN_ON(dmar_tdxc_get_params(pdev, &params)))
+> +		return;
+> +
+> +	guard(mutex)(&tdx_iommu_lock);
+> +
+> +	tiommu = tdx_iommu_find(params.reg_base_addr);
+> +	if (WARN_ON(!tiommu || tiommu->stuck || !tiommu->users))
+> +		return;
+> +
+> +	if (--tiommu->users)
+> +		return;
+> +
+> +	if (tdx_iommu_clear(pdev, tiommu)) {
+> +		/* VT-d still sees it acquired; don't let unload forget it. */
+> +		if (try_module_get(THIS_MODULE)) {
+> +			tiommu->stuck = true;
+> +			return;
+> +		}
+> +		/* Unloading: free the entry; IOMMU_MT pages stay leaked. */
+> +	}
+> +
+> +	list_del(&tiommu->node);
+> +	kfree(tiommu);
+> +}
+> -- 
+> 2.43.0
+> 
