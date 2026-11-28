@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795828528;
-	b=n/4d2pNsGuJf6B/KOhpgWNeVUFxDVh5sAsXmVz8p07uuzSrShEMKMnF6rmok0syv3kFf
-	 0mjaKUL77FVDHxOu6qF6B1FQqsDc0ufHsF5/oDbvt+daEhzTTlpf0hsTk8J58yP/rNiXG
-	 f1rIIXjVs6pNSyQQKRZ41X+72OWARfL+ER2C+u0ikMBvAeLTKL4uP0bNd0PY10Ji8DQjb
-	 RqyRp971X1wdC0VJ6y+q+VETH5VoKZNTUZA1fRjU9uMrHH9FUKdjgeM83bfoLMwLvn/46
-	 XIF6WMXNQNSs2YoeJBpzUjx9NAMGIYY8T0dElTDpkLmfiKM5OaZS61raFnK/HnMCYQQ==
+	t=1795828536;
+	b=oRCyDPzK0GArE9VXBcFYWf0nAx3Kw6Gt1fCUachnzrPKYpH223eGPf9RWHr6p2nIboz5
+	 mV2FVhRu4jFvjQe3V/chYq2Ym0UcCeiIEov1kzproVmDtOxK5IZwxb4if2yBqBCN+f5Mm
+	 JDh8wfTp444eyxifk4NVVmPngViMq1klVHp4oq9Bs8KGzszKT8HCHzJqijh5EVWQreDz8
+	 1CodS1SspHKZaUaFXX52IQJsgB9MniJWio+8tJ/205amrLF7Ev6ncrDnZbh3QSZlTOk6+
+	 c7oljTpA468A41l7fmW5nkqPR/clv9/CDCx0dxMNy3ACndcQL0yTOdDUQLJL2L1JYXQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795828528;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795828536;
 	h=DMARC-Filter:Received:Received:DKIM-Signature:From:To:Cc:Subject:
 	 Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=QpckFqMkRFSZ4FA0EQPPlblmNixRZLOna6QhU0iEGtw=;
-	b=mJGHBi3ci6FPIsaW6Hp4/r1X4oJ0afF5e5EPFQYawHfZexBzF1oLvborjUXYLrkfjlZ8
-	 S6QUSCHWrJpnQu8pZpFFf0njqMU1DnQmSEPnCCFlfqSRrVsBaEDeA1KUtTA7etWNYpHGr
-	 IL1SEEJePdnbFH0OHIjmUPmVo5/yZMcQA2yaBq025PNHHQCbKNcM4ivwxWzMgJ24F60zg
-	 CxwAPreJ9TcFxsVhiWTDZeNFyY9lFclg5ei9IVVWeEUvXFlgWy6XH5OhpQw44avlL4sQb
-	 mm1c8P7fzU8syrnwJERPBs/ZO5IEaoSWghgy1lkz4aotaZ1eGR8d3Xc8VDIV6WQdvOQ==
+	bh=e6ir9BIcJPtNB+CZ0UjTq70ens/z6VXHgq2Ph+DMpuw=;
+	b=2U7N3zF9CV1hRbrdlsMUhwRHkBv3iQ0JlC+D8MlzZOyQMRVNt9Dv8jXWl5cjYT0X7ynk
+	 erLjNKdr/Swh+ltp7YFZO1JGBFIdUoz6q3pAsdt3cU+Y1kgQDIbbhnxUVkVOel8dE/fjw
+	 U0SEBPMo4OOUCWOs6cFwgdcLd026ax7ChTwVxgW7WSC1BUY5dLhGuzRL4+daFK6smZ59w
+	 w63s3f2A6uP7c0doJgcjObkoQEm3mCQzm7Dchs5nVtHakjH2jPyJihKrVgC83XWZVNA0y
+	 FwHdgXdABool1TdhpwkpfBw5jRAUi1H72Db42pwTMOZAECqfnkCjXi/UtAx0p+8gz8Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=arm.com;
 	spf=pass smtp.mailfrom=arm.com;
-	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=k2M4PesN;
+	dkim=pass header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=VBxlsdTh;
 	arc=none smtp.remote-ip=217.140.110.172
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD81606A323;
-	Sat, 28 Nov 2026 01:15:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6AD81606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5E6606A326;
+	Sat, 28 Nov 2026 01:15:35 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BA5E6606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=k2M4PesN
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=VBxlsdTh
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E90CE169E;
-	Fri, 27 Nov 2026 17:15:24 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3CED71AED;
+	Fri, 27 Nov 2026 17:15:32 -0800 (PST)
 Received: from entos-yitian-01.Arm.com (unknown [10.168.196.233])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 301DA3F632;
-	Fri, 27 Nov 2026 17:15:20 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 756F23F632;
+	Fri, 27 Nov 2026 17:15:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1795828527; bh=G9WkR2YnyZNppiCZFAcWm+Tv7qha2bxaFXORsoSTkkI=;
+	t=1795828535; bh=PwWry79G/rHoeNTQeW74SB6yMZ5lKtAhX9zM32V09DE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k2M4PesNhhu8SO9eD/UsWjDUhFC6w8zJn2wCWZYHLuMh7iABb/2BBThhMZ7IltyJ8
-	 Pe33j1yngon+7hHiHCHN5UY05Q4HYUgIZ3ZozJmTb2YODJB97HNuiC6cDqYe7qQHoh
-	 boF/QRsBo5C+gPI3WjTz63DVrNMVy2pEsxKCckys=
+	b=VBxlsdThwMzj1IwdiMCITAQi2UbnH44b4L/iJX0KEpwRXt79HYGb6zRq9fCajHnL/
+	 GvQsBWb09k+cUJBG95O0ZRQ3JuN9Z6U9sVY45G13DH2essrhqk3FZ8qJ3NGakOv2+Y
+	 el/LX8JGnwCGYCddOdKnmTRR3rL3VjaSekIQAEHI=
 From: Jia He <justin.he@arm.com>
 To: maz@kernel.org,
 	oupton@kernel.org
@@ -63,9 +63,9 @@ Cc: fuad.tabba@linux.dev,
 	linux-kernel@vger.kernel.org,
 	Jia He <justin.he@arm.com>,
 	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH v3 1/4] KVM: arm64: nv: Locate the VNCR page in the host page from its PA
-Date: Sat, 28 Nov 2026 01:14:44 +0000
-Message-Id: <20261128011447.3588988-2-justin.he@arm.com>
+Subject: [PATCH v3 2/4] KVM: arm64: nv: Inject an SEA when the VNCR walk cannot set the AF
+Date: Sat, 28 Nov 2026 01:14:45 +0000
+Message-Id: <20261128011447.3588988-3-justin.he@arm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261128011447.3588988-1-justin.he@arm.com>
 References: <20261128011447.3588988-1-justin.he@arm.com>
@@ -80,95 +80,47 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-VNCR_EL2 only needs to be 4K aligned. On a host with 16K or 64K pages,
-kvm_translate_vncr() records the host page that contains the guest
-hypervisor's VNCR page, and that host page is mapped at the VNCR fixmap.
-__compute_hcr() then takes the offset of the VNCR page in the host page
-from bits [PAGE_SHIFT-1:12] of the guest's VNCR_EL2, which is a VA.
+When the guest hypervisor enables hardware Access flag management
+(TCR_EL2.HA), KVM's stage-1 walker sets the AF in the descriptor that
+maps VNCR_EL2 with __kvm_at_swap_desc(). If the descriptor is in a
+read-only memslot, the update fails with -EPERM and walk_s1() records an
+SEA on translation table walk in the walk result.
 
-If the guest hypervisor uses a stage-1 granule smaller than the host
-page, these bits of the VA and of the PA can differ. The nested context
-then accesses another 4K page of the guest instead of the VNCR page.
+kvm_handle_vncr_abort() does not handle -EPERM. It neither injects the
+fault nor maps the VNCR page, and returns to the guest. The guest takes
+the same VNCR abort again and never makes progress.
 
-Take the offset from the PA that the walk returns, and keep it in
-vt->hpa. Use it only while the VNCR page is mapped. Otherwise the
-fixmap is clear, the access faults and KVM translates VNCR_EL2 again,
-so the offset does not matter.
+-EPERM can only come from this AF update. The VNCR walk uses the EL2&0
+translation regime, which has no stage-2.
 
-Tested on a Neoverse-N2 host running 16K and 64K page kernels, with the
-selftest added later in this series. The test maps the VNCR page at a VA
-whose bits [15:12] differ from those of its PA. With the offset taken
-from the VA, the nested context reads 0 instead of the value in the VNCR
-page. With this patch, it reads the expected value.
+Treat -EPERM like the other walk failures and inject the recorded fault
+into the guest hypervisor.
+
+Tested with the selftest added in the next patch on a Neoverse-N2 host.
+Without this patch, the vCPU exits about 1.3 million times in 5 seconds
+on the same VNCR abort and makes no progress. With this patch, the
+guest hypervisor receives an SEA on translation table walk at level 3.
 
 Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/all/sashiko-outbox-232440@kernel.org/
-Fixes: 73e1b621b25d ("KVM: arm64: nv: Program host's VNCR_EL2 to the fixmap address")
+Closes: https://lore.kernel.org/all/sashiko-outbox-230439@kernel.org/
+Fixes: bff8aa213dee ("KVM: arm64: Implement HW access flag management in stage-1 SW PTW")
 Signed-off-by: Jia He <justin.he@arm.com>
 ---
- arch/arm64/include/asm/kvm_nested.h | 1 +
- arch/arm64/kvm/hyp/vhe/switch.c     | 9 +++++++--
- arch/arm64/kvm/nested.c             | 8 +++++++-
- 3 files changed, 15 insertions(+), 3 deletions(-)
+ arch/arm64/kvm/nested.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/include/asm/kvm_nested.h b/arch/arm64/include/asm/kvm_nested.h
-index 0f899addafa8..bc54a4b2e863 100644
---- a/arch/arm64/include/asm/kvm_nested.h
-+++ b/arch/arm64/include/asm/kvm_nested.h
-@@ -432,6 +432,7 @@ int __kvm_find_s1_desc_level(struct kvm_vcpu *vcpu, u64 va, u64 ipa,
- /* VNCR management */
- int kvm_vcpu_allocate_vncr_tlb(struct kvm_vcpu *vcpu);
- int kvm_handle_vncr_abort(struct kvm_vcpu *vcpu);
-+unsigned long kvm_vncr_page_offset(struct kvm_vcpu *vcpu);
- void kvm_handle_s1e2_tlbi(struct kvm_vcpu *vcpu, u32 inst, u64 val);
- 
- u16 get_asid_by_regime(struct kvm_vcpu *vcpu, enum trans_regime regime);
-diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
-index 3f2390a13173..0d15beea418c 100644
---- a/arch/arm64/kvm/hyp/vhe/switch.c
-+++ b/arch/arm64/kvm/hyp/vhe/switch.c
-@@ -94,8 +94,13 @@ static u64 __compute_hcr(struct kvm_vcpu *vcpu)
- 		if (guest_hcr & HCR_EL2_NV) {
- 			u64 va = __fix_to_virt(vncr_fixmap(smp_processor_id()));
- 
--			/* Inherit the low bits from the actual register */
--			va |= __vcpu_sys_reg(vcpu, VNCR_EL2) & GENMASK(PAGE_SHIFT - 1, 0);
-+			/*
-+			 * The fixmap maps the host page that contains the VNCR
-+			 * page. Locate the VNCR page in it from its PA: with a
-+			 * smaller guest granule, the VA may have another offset.
-+			 */
-+			if (host_data_test_flag(L1_VNCR_MAPPED))
-+				va |= kvm_vncr_page_offset(vcpu);
- 			write_sysreg_s(va, SYS_VNCR_EL2);
- 
- 			/* Force NV2 in case the guest is forgetful... */
 diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-index 4d83281a7a28..08582fbc09d5 100644
+index 08582fbc09d5..523d71d4df13 100644
 --- a/arch/arm64/kvm/nested.c
 +++ b/arch/arm64/kvm/nested.c
-@@ -1643,7 +1643,7 @@ static int kvm_translate_vncr(struct kvm_vcpu *vcpu, bool *is_gmem)
- 		}
- 
- 		vt->gva = va;
--		vt->hpa = pfn << PAGE_SHIFT;
-+		vt->hpa = (pfn << PAGE_SHIFT) | offset_in_page(vt->wr.pa);
- 		vt->hpa_writable = writable;
- 		vt->valid = true;
- 		atomic_set(&vt->cpu, -1);
-@@ -1683,6 +1683,12 @@ static void handle_vncr_perm(struct kvm_vcpu *vcpu)
- 	kvm_inject_nested_sync(vcpu, esr);
- }
- 
-+/* Offset of the VNCR page in the host page mapped at the VNCR fixmap */
-+unsigned long kvm_vncr_page_offset(struct kvm_vcpu *vcpu)
-+{
-+	return offset_in_page(vcpu->arch.vncr_tlb->hpa);
-+}
-+
- int kvm_handle_vncr_abort(struct kvm_vcpu *vcpu)
- {
- 	struct vncr_tlb *vt = vcpu->arch.vncr_tlb;
+@@ -1743,6 +1743,7 @@ int kvm_handle_vncr_abort(struct kvm_vcpu *vcpu)
+ 	case -EINVAL:
+ 	case -ENOENT:
+ 	case -EACCES:
++	case -EPERM:
+ 		/*
+ 		 * Translation failed, inject the corresponding
+ 		 * exception back to EL2.
 -- 
 2.34.1
 
