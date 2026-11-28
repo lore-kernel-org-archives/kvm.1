@@ -1,90 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795859170;
-	b=atahPLRCdVA+60RKl3r/3b2Y7dQzAvEoGbJ7nnYj5JVAwJ+90JoTA6O7KUslCLwTY/+1
-	 EgiPzPVmLN6cNWOYgbiZ7O0es/yoegX5SojFAusB7+GbbIeFXscV/RGS6kEmJByzffTlw
-	 WndVTwkDqNQxdAXvIV8tD1y1XSD5pxyeirQSGmtyPYQj1UQ4+y/wPMOjEa3xK401nlWd/
-	 WL+UyPd6yLtydtiVf6iSyKff7cf4IRRXZnPaao/ybt8eGGLjXruqEfyEg+w3AyhTb6qmB
-	 qw4YL9PO8WhL/k3iYg7dHkqcufz0Vf7YriUZky42bmtO9gIp0UqIxjWYtkW0WhTtJrQ==
+	t=1795859891;
+	b=MKEXNyUCvkAEBv247KqMHo7L5E8dxcxZ3HEur6ZoAcM+Vhg/NlrMNjX22a3pTdiYVVx2
+	 jyQTl0PI9YdgZzMojlblPA5xISmzAoWzhhuWICFZf4aQ5qIeh6a/y4gfCF2NjL9dzCtsD
+	 J/ISs0tRgbQsolSNtQiKiknut5FhbImBgFOKXy1mVCMl1bM7icZk8by+qL4o34pZCel+f
+	 rkCFTKxwG7DBENuY+hRn+BJ9qudjtePTU1klGTQgXcdOJigMKchwCqpB3NxMCdLKgUo+t
+	 nCG3elY3N6boWl2dQ2sq4TvNbWArhXs9zxbV+Of/oAS8bJWp+NxSrOOOPVkenvD7d3w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795859170;
+	a=rsa-sha256; c=relaxed/relaxed; t=1795859891;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To;
-	bh=fNv9TUex5ARPwbWHSqEsmUWqqFCA63X39+qHuiV0zt4=;
-	b=s4mLd4+ZsNhgNOQT+QC0oKZw4TInWuVmGz20UwDg+NfWUtwCrl3E2tYOp96iZhIpoPdE
-	 Gr/PIHj9h+6tFc5tbJe1HGHsxD5HC0R8r4B0r/+U9n/quC8LnjUHyEigfkyfVMZiHR3Rh
-	 kE+JvqMsTwWMIRq52uJFGv3KPm01hbq9M7tBvWFAz+NIb1FYGs5FA/H7ypJdehgobEmjn
-	 8/RqkZeeawk3kjC+wkvb/QP7ZEET4FXHNxH8QXLQcMrUwYRAz/OY863QHww4o5YtOiBzW
-	 nvlU/rMIAAvuPx8YId+8ML0k5ZPnFBtB8xRb7VmKuRh40kfBfioYshnXoqO+NygZFJw==
+	bh=xkqf+7x7yPJWp9LWVs41Meh3hUDnubnEWLvvXH1f0OM=;
+	b=QaQUyxx7gec5B7zyatlIuYVQD/5Fcxhclttd8AYQsyby4TLj50olD2tSzs0hRqCUHD+V
+	 VdOOI0gQbGXEjsWZNNAEvcLDbWQRWbmofO7m+KwyerURfvB9Eqen747xKflHl4A+oCzMm
+	 2TlLgbi2mKW1Z7LrnRxJF0K7kYP/XeT4dXBVKOMFkPMALUjsTCjrcEePAjo+5E5HLNFGI
+	 982Cf+1d00kCjsYuVX4K8ljVQMRCtuPZpIIfPrEPjqwr1fHYdvCscEh85EVtaR1AGwZ8V
+	 8VjQDYkyrLuUkv7+I618rgscxBGa9Rr4xjlkuDlVEBNRTqF33c19m9MeH7MzD4mydiA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.intel.com;
 	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eeL7J1hQ;
-	arc=none smtp.remote-ip=198.175.65.15
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QX+pDT2F;
+	arc=none smtp.remote-ip=192.198.163.18
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8352F606A324;
-	Sat, 28 Nov 2026 09:46:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8352F606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08594606A326;
+	Sat, 28 Nov 2026 09:58:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 08594606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eeL7J1hQ
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QX+pDT2F
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795859169; x=1827395169;
+  t=1795859891; x=1827395891;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=FUli3JSrmBDeDfvTU3OWuWFYYYznYbfuUzwPuAEvA+Y=;
-  b=eeL7J1hQqmFbueb1B63dNWBrpGHxindq+SXDELxsxT/NyqQWMBXtFz29
-   k28+xgtBf9t/V+CdD9ZuycnzLuRQjcm8KD/hZ+pfKFRTK8LhlzseYnc0a
-   Xsg9leUZTdVrX24bM8h7enK4FpwrpnrFnqGPnbGouzT/qzrThQHQTxtYw
-   n1ZJbNDPGGkgLYn1wkWi6MHzX0RGi0VAv2ggFQPnbHbYp2iOaJnHlrP0J
-   FTKv7XbieSA5hOpDDxMo4/1RKGr4sYxkZkT5XYWzH3gfBZmW2LZrVjGBy
-   ERPWrnJvim3pBjYxO8qXhwd4wXCIuTIe3DOAidl5T+DspgZXmtBBYjaLH
-   w==;
-X-CSE-ConnectionGUID: TP/6GRvrQy6PRNB41SxeXg==
-X-CSE-MsgGUID: 4lUiwFqnQ2K8Rbv/GmVsgQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11979"; a="4738415"
+  bh=mDFNMlF4soO+khi9YXxQn3h0Ih/euUVIAPICgfLuLHc=;
+  b=QX+pDT2FGyhSRGh1W3pmlhFmLl3iXJ3nDJT+0aCNAXZ7WrxN7zGLY9pV
+   xEU5sm5u3JEb+VKa/LSHaGxQ4epu8zQgpNY1gbm5N4PAyu6zRCqxzV4VS
+   FmbnWY5gqerW3EUV1V/ltzRR59VvUfqLg7EX/gQikOjOY/SJ7qiQEBlX2
+   yE8bwRI62vqrtJsedFvOb547sTsmGozW7OWp7xtScqI04y0Nqb/QNk81y
+   ncaNJ16v2e/tlnkHCxv2jZWzYjBRmszzaftGU6PrnMV6WuX6ya7cKLTLc
+   mHdkmvrJkANHfPvpzd6tp0f2dBXcFaqLJSjGzrcs0pDOp0HfsveLgEBg2
+   g==;
+X-CSE-ConnectionGUID: b4Qdi9tqSt+TJCGu2C3//w==
+X-CSE-MsgGUID: 0mQ2ZOmHTMy9J/P6+jsypw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11979"; a="4759773"
 X-IronPort-AV: E=Sophos;i="6.27,238,1787036400"; 
-   d="scan'208";a="4738415"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2026 01:46:09 -0800
-X-CSE-ConnectionGUID: 79OzccF3Rha/nqYLtK1AvA==
-X-CSE-MsgGUID: b5wDw4dOQrO7/0tXll2Rsw==
+   d="scan'208";a="4759773"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2026 01:58:10 -0800
+X-CSE-ConnectionGUID: fLpdUTWaRgyZzB03ldX3pQ==
+X-CSE-MsgGUID: KJ5g+UYZTxmbGOq8qHT3/Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,238,1787036400"; 
-   d="scan'208";a="13152341"
+   d="scan'208";a="12409550"
 Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by fmviesa010.fm.intel.com with ESMTP; 28 Nov 2026 01:46:05 -0800
-Date: Sat, 28 Nov 2026 17:35:44 +0800
+  by orviesa004.jf.intel.com with ESMTP; 28 Nov 2026 01:58:08 -0800
+Date: Sat, 28 Nov 2026 17:47:46 +0800
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: Chao Gao <chao.gao@intel.com>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Xu, Yilun" <yilun.xu@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"Peng, Chao P" <chao.p.peng@intel.com>,
-	"bp@alien8.de" <bp@alien8.de>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"tglx@kernel.org" <tglx@kernel.org>,
-	"Tian, Kevin" <kevin.tian@intel.com>,
-	"hpa@zytor.com" <hpa@zytor.com>, "kas@kernel.org" <kas@kernel.org>
-Subject: Re: [RFC PATCH 2/7] coco/tdx-host: Establish an SPDM session with
- the device
-Message-ID: <awqgcMpr9CjMZGdU@yilunxu-OptiPlex-7050>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rick.p.edgecombe@intel.com,
+	kevin.tian@intel.com, yilun.xu@intel.com, chao.p.peng@intel.com,
+	baolu.lu@linux.intel.com, Kiryl Shutsemau <kas@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [RFC PATCH 3/7] coco/tdx-host: Exchange SPDM messages through DOE
+Message-ID: <awqjQt8n7dUJ3RJo@yilunxu-OptiPlex-7050>
 References: <20261116111037.3478844-1-chao.gao@intel.com>
- <20261116111037.3478844-3-chao.gao@intel.com>
- <ac7befe5081a489172d87402e55355852a9e62ac.camel@intel.com>
- <awWKRJQ3_rIgxJVC@intel.com>
+ <20261116111037.3478844-4-chao.gao@intel.com>
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -96,41 +84,50 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <awWKRJQ3_rIgxJVC@intel.com>
+In-Reply-To: <20261116111037.3478844-4-chao.gao@intel.com>
 
-> >> +#define SPDM_CAP_HBEAT		BIT(13)
-> >> +#define SPDM_CAP_KEY_UPD	BIT(14)
-> >> +
-> >> +struct spdm_config_info_t {
-> >> +	u32 vmm_spdm_cap;
-> >> +	u8 spdm_session_policy;
-> >> +	u8 certificate_slot_mask;
-> >> +	u8 raw_bitstream_requested;
-> >> +	u8 reserved[4089];
-> >> +} __packed;
-> >
-> >This looks like more SPDM specific stuff in TDX. Do really know other vendors
-> >need it? We should at least group it in a header such that it is clear which
-> >things are SPDM spec and which are TDX.
-> 
-> This structure is not from the SPDM spec. It is an ABI structure
-> defined by the TDX module, and it is passed to TDH.SPDM.CONNECT.
-> 
-> But yes, there is some SPDM-specific stuff in this series. I will try
-> to separate it from the TDX stuff.
+>  static int tdx_spdm_msg_exchange(struct tdx_tsm_link *tlink)
 
-[...]
+I remember there is a comment in internal review that suggests we use
+struct pci_dev *pdev for this function, to explicit this is purly about
+PCI, nothing to do with TSM firmware. I accept it at that time and still
+feel good today. How do you think?
 
-> >> +	spdm_conf->certificate_slot_mask = 0xff;
-> >
-> >Can we not have the magic number? I guess it means any?
+>  {
+> -	/* TODO: implement the PCI DOE transfer */
+> +	struct pci_dev *pdev = tlink->pci.base_tsm.pdev;
+> +	struct pci_doe_msg *req  = page_address(tlink->out_msg);
+> +	struct pci_doe_msg *resp = page_address(tlink->in_msg);
+> +
+> +	size_t req_sz		= req->header.length * sizeof(u32);
+> +	size_t resp_sz		= PAGE_SIZE;
+> +
+> +	size_t req_payload_sz	= req_sz  - sizeof(struct pci_doe_header);
+> +	size_t resp_payload_sz	= resp_sz - sizeof(struct pci_doe_header);
+> +
+> +	void *resp_payload_addr	= resp->payload;
+> +	void *req_payload_addr	= req->payload;
+> +
+> +	u8 type = req->header.type;
+> +
+> +	int ret;
+> +
+> +	ret = pci_tsm_doe_transfer(pdev, type,
+> +				   req_payload_addr, req_payload_sz,
+> +				   resp_payload_addr, resp_payload_sz);
+> +	if (ret < 0) {
+> +		pci_err(pdev, "spdm msg exchange fail %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	resp->header.vendor = PCI_VENDOR_ID_PCI_SIG;
+> +	resp->header.type = type;
+> +	resp->header.length = (ret + sizeof(struct pci_doe_header)) / sizeof(u32);
+> +
+>  	return 0;
+>  }
+>  
+> -- 
+> 2.52.0
 > 
-> Sure, will remove the magic number. 0xff means getting the
-> certificates in all slots (0-7) of the device.
 > 
-> As a heads-up, this code will go away anyway when we switch to the new
-> CTLV attestation framework.
-
-So it seems we don't need any spdm_config_info_t definition for now.
-Should we keep the definition or just to provide a zero page to avoid
-unnecessary explanations here?
