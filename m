@@ -1,78 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.50
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795859891;
-	b=MKEXNyUCvkAEBv247KqMHo7L5E8dxcxZ3HEur6ZoAcM+Vhg/NlrMNjX22a3pTdiYVVx2
-	 jyQTl0PI9YdgZzMojlblPA5xISmzAoWzhhuWICFZf4aQ5qIeh6a/y4gfCF2NjL9dzCtsD
-	 J/ISs0tRgbQsolSNtQiKiknut5FhbImBgFOKXy1mVCMl1bM7icZk8by+qL4o34pZCel+f
-	 rkCFTKxwG7DBENuY+hRn+BJ9qudjtePTU1klGTQgXcdOJigMKchwCqpB3NxMCdLKgUo+t
-	 nCG3elY3N6boWl2dQ2sq4TvNbWArhXs9zxbV+Of/oAS8bJWp+NxSrOOOPVkenvD7d3w==
+	t=1795866583;
+	b=QjG3M6CuAZvN6G7+wWzrcZmnNKjSpc4DLJhnMWbCwytn6kHmmxmfH+PlBHseIiDKfT8E
+	 avK3IiYKkNOagdRz2O2sf3VMM1ewez5+Fk1WfV46Z67Nr8q+4cVDCsRSStHvF3zNgHznY
+	 s8GNyfq4hqFvSvO1DenJnofjnH6fIxycclm8mGjfwS3eFsyKfMbPcgj8Pa57vIvzfc6Ui
+	 WbnOI2LY4q950hFQ3hNNJZSSv4cfEV1WldAvDM7HF1xIKACGmYvygX8oSJ0oN23C2U70k
+	 EiXHxVyfTCffkY9gLIEU6vItTbjS5lXGJ5oOFf+9xLLJURnd87uTJXweQmWhk1sr00w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795859891;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=xkqf+7x7yPJWp9LWVs41Meh3hUDnubnEWLvvXH1f0OM=;
-	b=QaQUyxx7gec5B7zyatlIuYVQD/5Fcxhclttd8AYQsyby4TLj50olD2tSzs0hRqCUHD+V
-	 VdOOI0gQbGXEjsWZNNAEvcLDbWQRWbmofO7m+KwyerURfvB9Eqen747xKflHl4A+oCzMm
-	 2TlLgbi2mKW1Z7LrnRxJF0K7kYP/XeT4dXBVKOMFkPMALUjsTCjrcEePAjo+5E5HLNFGI
-	 982Cf+1d00kCjsYuVX4K8ljVQMRCtuPZpIIfPrEPjqwr1fHYdvCscEh85EVtaR1AGwZ8V
-	 8VjQDYkyrLuUkv7+I618rgscxBGa9Rr4xjlkuDlVEBNRTqF33c19m9MeH7MzD4mydiA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795866583;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=jmLPCFVU0KbCjYehswxgCsGm1jktDiuEEIsnoEnUV8k=;
+	b=dtg3GuKsb5J27GfnFmP1asNJsh+HSDhNJQvk2d3NRFoA/5CwltmbHlhykat/TGftLU+G
+	 xVlG1VnPdd6PCJmD/op2XWfOWUokk/ANMxzgZWmAPD8U/IjYrtih/Z8KXxa9aslSfQj6x
+	 hOBFXTCS/LVFSNakpOt4RSb3Y+9+PWxuWC+PKAXyhjCfWLsNC68cUnxotxcytxZ4Hlc/q
+	 3nGGSsQQPy9HfYqYbeED5alXbHcM7C9Pu1qesWG16gsG7EFTbHdgISqvMdVBiU/brD3c2
+	 HoAWqnnEIh6L8kb03ys13yqn4oEQ9mk5zOOek+ntec91Eq9g/h/zfe7igJMAISjF2eg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QX+pDT2F;
-	arc=none smtp.remote-ip=192.198.163.18
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gc0hdGFx;
+	arc=none smtp.remote-ip=209.85.167.50
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08594606A326;
-	Sat, 28 Nov 2026 09:58:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 08594606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29205606A329
+	for <kvm@vger.kernel.org>; Sat, 28 Nov 2026 11:49:42 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 29205606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QX+pDT2F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1795859891; x=1827395891;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=mDFNMlF4soO+khi9YXxQn3h0Ih/euUVIAPICgfLuLHc=;
-  b=QX+pDT2FGyhSRGh1W3pmlhFmLl3iXJ3nDJT+0aCNAXZ7WrxN7zGLY9pV
-   xEU5sm5u3JEb+VKa/LSHaGxQ4epu8zQgpNY1gbm5N4PAyu6zRCqxzV4VS
-   FmbnWY5gqerW3EUV1V/ltzRR59VvUfqLg7EX/gQikOjOY/SJ7qiQEBlX2
-   yE8bwRI62vqrtJsedFvOb547sTsmGozW7OWp7xtScqI04y0Nqb/QNk81y
-   ncaNJ16v2e/tlnkHCxv2jZWzYjBRmszzaftGU6PrnMV6WuX6ya7cKLTLc
-   mHdkmvrJkANHfPvpzd6tp0f2dBXcFaqLJSjGzrcs0pDOp0HfsveLgEBg2
-   g==;
-X-CSE-ConnectionGUID: b4Qdi9tqSt+TJCGu2C3//w==
-X-CSE-MsgGUID: 0mQ2ZOmHTMy9J/P6+jsypw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11979"; a="4759773"
-X-IronPort-AV: E=Sophos;i="6.27,238,1787036400"; 
-   d="scan'208";a="4759773"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2026 01:58:10 -0800
-X-CSE-ConnectionGUID: fLpdUTWaRgyZzB03ldX3pQ==
-X-CSE-MsgGUID: KJ5g+UYZTxmbGOq8qHT3/Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,238,1787036400"; 
-   d="scan'208";a="12409550"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.47.46])
-  by orviesa004.jf.intel.com with ESMTP; 28 Nov 2026 01:58:08 -0800
-Date: Sat, 28 Nov 2026 17:47:46 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: x86@kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rick.p.edgecombe@intel.com,
-	kevin.tian@intel.com, yilun.xu@intel.com, chao.p.peng@intel.com,
-	baolu.lu@linux.intel.com, Kiryl Shutsemau <kas@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [RFC PATCH 3/7] coco/tdx-host: Exchange SPDM messages through DOE
-Message-ID: <awqjQt8n7dUJ3RJo@yilunxu-OptiPlex-7050>
-References: <20261116111037.3478844-1-chao.gao@intel.com>
- <20261116111037.3478844-4-chao.gao@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=gc0hdGFx
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5bfbc67991cso6147784e87.0
+        for <kvm@vger.kernel.org>; Sat, 28 Nov 2026 03:49:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795866581; x=1796471381; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jmLPCFVU0KbCjYehswxgCsGm1jktDiuEEIsnoEnUV8k=;
+        b=gc0hdGFxvgcTRgq0t+MQftUEekcDEriI2Y9CFSjqGMjstbNFEZpoauAgTN7KObX4TE
+         NZctXtm0sYYYAqEWuG3wILNHiZynjICPG/SzhFU7oNKQHKomjsYxcm5Qp9tpLi+cBGvb
+         3raTXIwlBp1LaZ8QrNlCwZBuge3i/KcU64lbb0BRyRQtC7TtV9kiuu75gy1vcMn+GvBY
+         0wCqYxxHXl2K53+myzVyw9ty5a6tlkDKYUhp6HS+B6B1gWPQjh+mEAogRRvlesdryxrj
+         QWlcJHFCtKZa1eOWvdt5fPuLwEZ/ZNif0tG8tp88+qdFee2bjhx0XexNgVYmIJEaQTFK
+         VXaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795866581; x=1796471381;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jmLPCFVU0KbCjYehswxgCsGm1jktDiuEEIsnoEnUV8k=;
+        b=VFU98Z/aqqnCWNBsw00cRsk4aJR2DrvKGZSl8v8r0WB4Z1H9GuksAOsD0v2O98f+sq
+         v7+Q9CC9BLbnnImH4s2eQMVsixzfNlhWtQjR3RzLkommlyuPBJYO2H581QxdPTUFROYK
+         o3atS+ckILKirkm4K6MO2RDjdcQztaqEbSt9nb3qpMGOHuQy5LDifcDnYM6JJPeglxB+
+         tuDkRJB/x8LxVX9cjuEH1fFfMWTKFtlVVG0mI83OHihY8VPpjYAc5EODNzFDJMuwB7l7
+         cTi5JnduWBNAbx0d7eaka/j8hUaQx9bMZnabOHc4N+6JtpFlCYBUj8phHjpGJZY+5Pti
+         J7sQ==
+X-Gm-Message-State: APuU4Z+OLQYJPhDxZL3ScsHernP+RtLiCbZalSB6spgs+kAdEFAf7EdR
+	KD38N7K4llp1+CgimEWu4FyG0ZjFrFZ1sE59bgivVI7X5G3AcXYjp1Ck
+X-Gm-Gg: AZFdTZcxjy7P+cs1TTAP1Y+uRt8mz9PJepSaYLv6mGWYA+2MrGYBwIVTV3blsWMktHW
+	o+9tTx3gfEr6xhnsS3OY1rsSbevgX1goJ6lhCIA+prtL5ksjAA/BnVL11IozSOKIbP+EYY3+qf+
+	/ZRgh64HL9dq5jp+QEVH3O9ty7icpsmDs90f7Ylcqf7BZV35V8gIjeKkDW3qIMW5249Hu2Lt7Vw
+	gFNUz0ar+cK5Sw5bldOHSQOVwbmmMohVXLyTHRRR1b3+HhzrOxJ2S7XEIHbFJAwMkCN6k92dynJ
+	8OtGFllfI7FBmURwkHE+y6q4yQMQSNhi6bEI59MWZ4ftr3Kv942Z8LQoZU15dGOm12bnKx6k0md
+	LLr2yb9vKqjllbf1/GHMhDAYRykV3DgpUPddCFXdQa5ZJ8HqMslwl+ejBWyjdRwZIeAOPy+8UQD
+	4wNf2hpfGbG0uZH3PxM258xMb2UNukJZGo0WJRJachjWqdndnX6RnM0/wghaDlVIpurx9eOBwqd
+	puumQUiNarKVUzfhz8lXCWTNRK+Pm3IiP4RLm9XwyCzYivHPVeOu1hLDB+iFwIV7rtdohCDK9Bs
+	L5sJBQsaAEGdTxViNIhiJwdnt5CfMwM7FUkKjmLwOjOYl4l9vuZFai5qfzeXc3kVp0j0064Yaxq
+	lgt1m4S2FWKmFKhoP
+X-Received: by 2002:a05:6512:1193:b0:5c3:36ad:3736 with SMTP id 2adb3069b0e04-5c336ad3898mr1918164e87.52.1795866581110;
+        Sat, 28 Nov 2026 03:49:41 -0800 (PST)
+Received: from IsoOmenaM3 (37-33-237-87.bb.dnainternet.fi. [37.33.237.87])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5c344c5e10asm411871e87.43.2026.11.28.03.49.39
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 28 Nov 2026 03:49:40 -0800 (PST)
+From: Mika Tammi <mikatammi@gmail.com>
+To: Will Deacon <will@kernel.org>,
+	Julien Thierry <julien.thierry.kdev@gmail.com>
+Cc: kvm@vger.kernel.org,
+	Mika Tammi <mikatammi@gmail.com>
+Subject: [PATCH kvmtool] Use %llu instead of %Lu (for musl compatibility)
+Date: Sat, 28 Nov 2026 12:49:31 +0100
+Message-ID: <20261128114931.68152-1-mikatammi@gmail.com>
+X-Mailer: git-send-email 2.54.0
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -82,52 +94,70 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261116111037.3478844-4-chao.gao@intel.com>
+Content-Transfer-Encoding: 8bit
 
->  static int tdx_spdm_msg_exchange(struct tdx_tsm_link *tlink)
+The C standard defines the L length modifier only for floating-point
+conversions. glibc's printf() treats %Lu as %llu, but musl's fails at
+it, and the message ends where the number should be. With musl, the
+line that lkvm prints when it starts a guest stops after "-m":
 
-I remember there is a comment in internal review that suggests we use
-struct pci_dev *pdev for this function, to explicit this is purly about
-PCI, nothing to do with TSM firmware. I accept it at that time and still
-feel good today. How do you think?
+  Info: # lkvm run -k /guest/Image -m
 
->  {
-> -	/* TODO: implement the PCI DOE transfer */
-> +	struct pci_dev *pdev = tlink->pci.base_tsm.pdev;
-> +	struct pci_doe_msg *req  = page_address(tlink->out_msg);
-> +	struct pci_doe_msg *resp = page_address(tlink->in_msg);
-> +
-> +	size_t req_sz		= req->header.length * sizeof(u32);
-> +	size_t resp_sz		= PAGE_SIZE;
-> +
-> +	size_t req_payload_sz	= req_sz  - sizeof(struct pci_doe_header);
-> +	size_t resp_payload_sz	= resp_sz - sizeof(struct pci_doe_header);
-> +
-> +	void *resp_payload_addr	= resp->payload;
-> +	void *req_payload_addr	= req->payload;
-> +
-> +	u8 type = req->header.type;
-> +
-> +	int ret;
-> +
-> +	ret = pci_tsm_doe_transfer(pdev, type,
-> +				   req_payload_addr, req_payload_sz,
-> +				   resp_payload_addr, resp_payload_sz);
-> +	if (ret < 0) {
-> +		pci_err(pdev, "spdm msg exchange fail %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	resp->header.vendor = PCI_VENDOR_ID_PCI_SIG;
-> +	resp->header.type = type;
-> +	resp->header.length = (ret + sizeof(struct pci_doe_header)) / sizeof(u32);
-> +
->  	return 0;
->  }
->  
-> -- 
-> 2.52.0
-> 
-> 
+and the error for a firmware image that is too big stops after "(".
+
+The values are unsigned long long, so print them with %llu, as the rest
+of kvmtool does.
+
+Assisted-by: Claude:claude-fable-5-2
+Signed-off-by: Mika Tammi <mikatammi@gmail.com>
+---
+Tested with nixpkgs' kvmtool package at kvmtool master (4b4aceb1dae7)
+on x86_64. With glibc, the messages are the same with and without this
+patch. With musl, dynamic and static, they were cut off as above and
+are now the same as with glibc. The musl builds also have "Set the VCPU
+affinity with sched_setaffinity() (for musl compatibility)" [1], which
+master needs to build with musl; the two patches apply independently.
+A static musl lkvm on QEMU rv32 and rv64 KVM hosts prints the whole
+line too. Cross builds for arm64, riscv32 and riscv64 build.
+
+[1] https://lore.kernel.org/kvm/20261128061232.64870-1-mikatammi@gmail.com/
+
+ builtin-run.c | 4 ++--
+ x86/boot.c    | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/builtin-run.c b/builtin-run.c
+index f06231e..1dc962a 100644
+--- a/builtin-run.c
++++ b/builtin-run.c
+@@ -839,12 +839,12 @@ static struct kvm *kvm_cmd_run_init(int argc, const char **argv)
+ 		kvm_run_set_real_cmdline(kvm);
+ 
+ 	if (kvm->cfg.kernel_filename) {
+-		pr_info("# %s run -k %s -m %Lu -c %d --name %s", KVM_BINARY_NAME,
++		pr_info("# %s run -k %s -m %llu -c %d --name %s", KVM_BINARY_NAME,
+ 			kvm->cfg.kernel_filename,
+ 			(unsigned long long)kvm->cfg.ram_size >> MB_SHIFT,
+ 			kvm->cfg.nrcpus, kvm->cfg.guest_name);
+ 	} else if (kvm->cfg.firmware_filename) {
+-		pr_info("# %s run --firmware %s -m %Lu -c %d --name %s", KVM_BINARY_NAME,
++		pr_info("# %s run --firmware %s -m %llu -c %d --name %s", KVM_BINARY_NAME,
+ 			kvm->cfg.firmware_filename,
+ 			(unsigned long long)kvm->cfg.ram_size >> MB_SHIFT,
+ 			kvm->cfg.nrcpus, kvm->cfg.guest_name);
+diff --git a/x86/boot.c b/x86/boot.c
+index 61535eb..ed856a1 100644
+--- a/x86/boot.c
++++ b/x86/boot.c
+@@ -26,7 +26,7 @@ bool kvm__load_firmware(struct kvm *kvm, const char *firmware_filename)
+ 		return false;
+ 
+ 	if (st.st_size > MB_FIRMWARE_BIOS_SIZE)
+-		die("firmware image %s is too big to fit in memory (%Lu KB).\n", firmware_filename, (u64)(st.st_size / 1024));
++		die("firmware image %s is too big to fit in memory (%llu KB).\n", firmware_filename, (u64)(st.st_size / 1024));
+ 
+ 	p = guest_flat_to_host(kvm, MB_FIRMWARE_BIOS_BEGIN);
+ 
+-- 
+2.54.0 (Apple Git-157)
+
