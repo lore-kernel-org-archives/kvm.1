@@ -1,100 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.53
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1795828589;
-	b=fWPHcgx3kteFHb7d0zpKkNHEYiLLr5o8yN6AEtxBWOUQN7pHBDHZ6U1zQ95dR/jLP7fa
-	 4T8U5VtS8EndVniR5xWR1IPG0KestEpBi3Ud42wEEplyKBSsgAtwidCRq50MAK+sAi8NC
-	 o1M4yyCvoHuibwfuiZCdJkDWG30NmGBYTyeQeK7ZcjR0f7jRQZP2GZ+u6BkcUTCDpfmH1
-	 PHp4OpF3GcKflr2ky0JVf845nLzRUhUHsy9S2vft3VoucDJMR+ZzKQhl6j6/LqwNdDfze
-	 Hz/n4RnxrSyJVMcAQ+SrW62FYL5mOhtka0UtJhjiryx783DCHAAgrIJkfnehtnvvEcw==
+	t=1795839720;
+	b=pY9mXULIQNKBD8U9Hh67ytqvt/KiLCVD+AAqSdzFX5HZt/7cY1zWqYQSqRRvTW1AlfkY
+	 OpYkHgMf90W/cSu4WE8eFXfAQwev1q14qNbikkC1RGsQzkQkSIZ5AKlJri44PCrzoRDYm
+	 t9bViOH117CkIRV/YXtVlUeEKa1phJt/eRHof0WsVy33GseTLOhQnZHShbHqd3pqJX0Qi
+	 PV6CWdopaMjkUrttWQ+ByYfLJBlZZjFUw1k9d4lIYse2BvfW7J3oaPTOzHxF0qZXbEjbY
+	 9P42d+XpoWrQ6SXoTBxUkO2IA7RUBmoIITkB0Z2RFZ7rqagrKC5/O3s23RENoyerjzw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795828589;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:MIME-Version:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
-	 Content-Type;
-	bh=BBMBNNcvr0Pj2/ghVYvp4jkKT4rcq0bfzVoAeRYCUTU=;
-	b=cFxDMlMxi+yLcTW9+45doEYrG6Y/dZqji1nzd5gmpvea9ufNEF9KA6LF9CfT5VB3HVKZ
-	 igO4pgngfIqjvex9czHS6RMrAFrU9XyjYZGZkjxHAXlMqc9Fk+MlaQulJgQ73FWpG4yUz
-	 igZSY7HsNzUxTHQYci7DzQ1HLoPmtCchKrekcbGuy9P871NSpKkATG/LMtitAPgBxbGMP
-	 cX40XX1jUN7rEVTltzQJ55Idt7+ujy9jwrxzEy+sNmCvOouH7L+/whr+v8GrQie81HXGm
-	 Df3kVIUHz7Fbrcqo6NYoVtFiUHJZE0X4sI1N++4I98qWjViVgWD2qAkalF0sFVUZj8g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795839720;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
+	 X-Change-ID:In-Reply-To:References:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=QdlGEGgoxXmXj2z9+6gwgdcRdU3zBjkud66acvRGVx8=;
+	b=jBiCQXGvx6Vvqwpo8muLf9pEjiPXFXQrjOrF4vtbScAtYdt1WD5D9DSoKZ4sdEwGMcj7
+	 xMaUhtRInoTTBMfOoHuGDgMtV6Dh+2UFnOpBowRJLO4cKAC8YHXn7Z/QeqEeb1ttRprox
+	 owu+5vNpO5sqX6A1V06oDTwWZowPa6+fOR4WSmV/07caNPhSMDdOZkt20g8hnNUahebc3
+	 Hx1LcQ7hs1hmKfluzBPN/+VfkYxNVQg04nr6EQtnxMxz+v+KZZb4ohYdZqIOgSfwXI6wP
+	 /djkvwLpqp0ldqESZQQOGtBeRgHY02ss6qwtVn4190eWd1ncszo21zltM8dhCzOTgkQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=o86oLYeq;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.160.53
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VWxtbeF6;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9913606A31C;
+	Sat, 28 Nov 2026 04:22:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VWxtbeF6
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1795839720;
+	b=mhhFm21goL3YrHOz6TwW8a+9JRNwVzBrgvr17PhHlwr+ZShBHFfCCjyobvFI7qbmKRa1
+	 x3662xfkCbDhCKDtvR6IFgWsZ2cgn5x+iO0fE4XOCItl6vuR161QZKTbUOHYfHFC4ZugO
+	 5QJMKZrZJ+1EpQIeLYXxZZL4bag8wKDXukXVpr7tmuR14DM0Hg5zBLM8P8vLlErTzzyA7
+	 Cp1WD4Nfk+gyLwnBwTUW6PDos1y7ScHZylUZNFSw3fDbABJnkQvx6HsvcRL5q1aXWsoBa
+	 2gUD2F1xtPZk8v+QEdPN15u2eKo5JWc2uQesPpcdquCNQ05TQoqjNYlH7WqTDBDYbyw==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1795839720;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:
+	 In-Reply-To:References:To:Cc:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key:X-Endpoint-Received:X-Original-From:Reply-To;
+	bh=QdlGEGgoxXmXj2z9+6gwgdcRdU3zBjkud66acvRGVx8=;
+	b=cD/PjPoeJamdDURzKfbq2xUT5PcH/YV3CGFfYHTQqTASdF/kOZ0wPo/6n2yfzcRVlWK0
+	 f60ShXUPi5gQIWQKrWe/ztLdAteKF/GnBRSjkllGDtKf+ybl5Nbr5okjmSnALULfs8CuU
+	 NjKlsMsP0DSJzvWhlYpzcPScwV0A074yDI9Djq9m9TzsLScKT28ZEYk9EtOAehe+l4O+t
+	 9rBZ/9PtVcSqqO/LqmjzsyFwdAyxjTNhwskjTHSaeRZP+skJ48IcZycWOrqrQsYXZ/RQR
+	 mwUiI8I5+SU1pz395uz11fTbF5+EAJzGTfWJycdC/HoA3rGQer8fBmxIBwfL5DW5NKA==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4F2606A31E
-	for <kvm@vger.kernel.org>; Sat, 28 Nov 2026 01:16:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB4F2606A31E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=o86oLYeq
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-4b563403c7eso2119390fac.1
-        for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 17:16:28 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795828587; cv=none;
-        d=google.com; s=arc-20260327;
-        b=d3jF1ywUjKf4mawnyZshGppn2UILdVTgs2q3OmHrZXzl3s5jPJfSk8xUJdh2+vRYG9
-         PDpgcoBfPkQDCPyCNG6jmPvZX0o4Ok7xVYP0sfssarj0t19f+KSnwc/2KP+x/Dcolf18
-         GVb7+7dWpDv4p3u9qKPzEqI9tUrpI6VhrjLdJJQuqZV0Uz3jom5N2Kqb6/RczMnW/QaZ
-         3qrhfFHbo8TC8OQJ5ge7dDG+2z2+JbzWZCqzqpw1kCLvMVpY4UG6eh89GUKbRDI0oaIi
-         10HQQo1GAHgNeXzffwaUeqvudrdq6kQQlTcKpIH/I2nhmxDGBSYxg/J/B2bk6qwv8MTR
-         S3yQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:from:dkim-signature;
-        bh=BBMBNNcvr0Pj2/ghVYvp4jkKT4rcq0bfzVoAeRYCUTU=;
-        fh=EO6O2bjQX5kTTJTvXEuuYVFPm7rk3i3KsQto7nBlIDU=;
-        b=mPJEbZDi2qZXyFDuuHsqjO60Qz8mtXH+Ocjk5UqY6eFVMGixefZ9DS83Mq+/htr7qB
-         rW8sFdUHB3LrGcW15bbmQMIbRTFIbMB+I3+ESOwG+KmbkMd+4d8RzDkvMTEl3IoniVn5
-         aVkImHxrOq9qQUq8jB+iSkHBPzXdEyM07G4B7iP4UbaCuC3f1pfNsXozVPF/yUNZRhN4
-         i9lxwycHXCu7O3lGDrG7oQqIpD0fZoyrGW4yB8i1JcUElW1W0zOAbQqPNhdMihkvGrNZ
-         JPcGD9IVDlxOeWlswYHK5PG2TSQJPO/VBQ4lIDZIl6sKscFdcjK8pfTphfZCWlafp4BS
-         x9TA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795828587; x=1796433387; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:from:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BBMBNNcvr0Pj2/ghVYvp4jkKT4rcq0bfzVoAeRYCUTU=;
-        b=o86oLYeqVzq2hq2G89nIH8n5OsHRRTqP7nbBmZvSb3mqA/vNuXrEujFGZAe1VLOTq1
-         k+Tmm7ye3PH06KsM5zyMIDLMgbvXGvD+5frlR2wFVNxRC0cy/gYRneggGbFd7ap06G5a
-         bV5P4G9CmVkZGQMAsoHFIciwwQoxHMNMwWjmUTfKFVbvGGOFmVrxd1WSvFLLcx9g/jn2
-         nLI6F5eNcFDT7JI6O3DWaZ1OF5igEAh89s3IzYqDrWxHxvUR44So3raDi3Jdohk3gdkP
-         CRfOcLoKQu5z8v0jjbcYxfvwvq7BXVoqZNIGhQyu/dFSibsKfbVVBeHJiaAHy4pBTVox
-         So5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795828587; x=1796433387;
-        h=content-type:cc:to:subject:message-id:date:mime-version:from
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=BBMBNNcvr0Pj2/ghVYvp4jkKT4rcq0bfzVoAeRYCUTU=;
-        b=aDvWjB/sg8NshtptoO3c+Rh/P/KnFsX6ucIAm1fUDGPk7nN0RYuCHoSLJX4wxMTEOh
-         eymINCfEDbjR0Ve60tVb4m1FRIc5QOJso7l70yjQ3Ja1mufCo86KgmQBNswOuoNbP8I9
-         X8SRvd+wtarWNBE6JyZGY052n7GDyKyexIcLXuTy/q8ybcr56L30FIMzZToGuybWNFI9
-         hMRUAoXAgc++BsXCYq+pTHosSrE7RnNFdiJU08/ffg3eL0n5Amm/ICAQn0hJDTDRb/Q1
-         Oa9pppLgeYqtYPWSg5MoLWAZfCn0cQNAgExG3fXFY3zWBq7WT7ZXbipv23GmVz1d479d
-         cy9g==
-X-Forwarded-Encrypted: i=1; AL+hErGGfquxyP3nMNcQnaRLoSilz1UW/G1nK29yRLG0Bl5E5DkmwPkpJcedEw42EFOWJAkCRQ0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9m4KWPIHeGciVzCxe9oAhKVJOIJ7qB1difH1r5uF0J6zoUawGm
-	TotpjDE+bysZJ8HaI/6VB1XUnAvzPzh2x8wbWneBCH9EWpnJ2QoF8QitBoeIO8DYzoFlfgczTga
-	Bckvu6nIwJxssS72WEyGJ3VLWuGhZef0=
-X-Gm-Gg: AZFdTZfiGA13sDkGRbw8lzvslnBRA/6PBqLvc+5PLph85FL2FVGhfFBCH/Q0FjQgDaT
-	2oWXRoZh4YuyfUSfcjLgIr7Ye9XktdBggGFERbCF4UbLlMNFvPnHLpejOBIp+at7GomyX+qlUZf
-	r1hKA9C70QjM9pB9wVmRzYlLZ7OJoinZQoScM6Tm+eqjAhnMllQb2hDDPe/Yhx2wFKub2B8SrDN
-	km7vdA1dCF4MtrlbfUV9NlQiO4CToExicb2BIL9TxSxixOtB1tqXqQa1I1jc1A1E6Un/giqDVkx
-	CBVQ/tItJxi/P6OJIxOy14PFLbvphtPQnFcPFg9F8Iajw+lohIyIOL6vQP89fdxjJIA7Ei4oG9s
-	j0492fkUXVQGUBibUivZh1WD/HpVvj67i5LCoqYpccQmVR5w/1GxOSaAQ4Q==
-X-Received: by 2002:a05:6808:2224:b0:572:d0fb:ae56 with SMTP id
- 5614622812f47-57a0ab2d70fmr29848553b6e.34.1795828587269; Fri, 27 Nov 2026
- 17:16:27 -0800 (PST)
-Received: from 968777710935 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 27 Nov 2026 20:16:26 -0500
-From: Chenyang Yu <yuqwerty123a@gmail.com>
+	by smtp.kernel.org (Postfix) with ESMTPS id 11FA71F00893;
+	Sat, 28 Nov 2026 04:21:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795839720;
+	bh=QdlGEGgoxXmXj2z9+6gwgdcRdU3zBjkud66acvRGVx8=;
+	h=From:Date:Subject:In-Reply-To:References:To:Cc:Reply-To;
+	b=VWxtbeF6D/9pjdBCdMs5/6qxwlbuaZf0ZBEVuibSRxEsTuZgcvyw9tkRulLk9s3Vn
+	 EG7kvomEzjSq26oq3oiLfyOb6E4xe5GWF0OfxcoUTCIex+/ZeHyRYBfeGX0+B3Mk3h
+	 433j4ny5hnnMKcgNCQiqkFpTs4n9D90+g9hCJgMCbDDLb9J4V5BZSLoKz0WXyB/wFk
+	 m0ZwK2tS4KVkY0TLNb6IIGZ8tiEL3y9raPhT4/+B+qsTPJab1Cd5hPXIFr0pIpPqsV
+	 cEtrctQj+5woScGk5kSCax0GjoFmVotIPXotvO8xkWQFNS685eMB5o8AwTM1Uoyc9O
+	 Eqwdb+YDOF81g==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 9A8184DF96;
+	Sat, 28 Nov 2026 04:21:54 +0000 (UTC)
+From: Dickson Wu via B4 Relay <devnull+dickson.wu.certik.com@kernel.org>
+Date: Sat, 28 Nov 2026 04:13:05 +0000
+Subject: [PATCH 6.6.y] KVM: x86: Unconditionally recompute CR8 intercept on
+ PPR update
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -104,172 +84,200 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Fri, 27 Nov 2026 20:16:26 -0500
-X-Gm-Features: Aa3M54qrHo6Jaw9Cpb-IZQafwPQlp-SvlrLs2D75RZWuMCPZGNxcGUVQM_cbxKU
-Message-ID: <CAGV7iNjs2oYKh0eGrp=7XP+__c2XjjDQMd5gHmUcm=86uzCuCg@mail.gmail.com>
-Subject: [BUG] virt: geniezone: unimplemented GZVM_IRQFD_FLAG_RESAMPLE and
- dropped GZVM_IOEVENTFD MMIO notifications stall SMP Linux guests on mt6991
-To: Yingshiuan Pan <yingshiuan.pan@mediatek.com>, Ze-Yu Wang <ze-yu.wang@mediatek.com>, 
-	Liju Chen <liju-clr.chen@mediatek.com>
-Cc: linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, crosvm-dev@chromium.org, 
-	kernel-team@android.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20261128-kvm-cr8-66b-v1-1-821d19f3001a@certik.com>
+X-B4-Tracking: v=1; b=H4sIANBUCmsC/02NzQ6CMBCEX4Xs2UVbyIb4KsZDW7ZSfwrpItEQ3
+ t1WLx7ny8w3KwinwALHaoXES5AwxhzUrgI3mHhhDH3OoA+alNId3pYHutQhkcWGbeO9Uq5tCfJ
+ iSuzD62s7AdVUv+H8w/K0V3ZzMZWiNcJok4luKEg49vM43rHw/d8DbNsHiGYTnqIAAAA=
+X-Change-ID: 20261128-kvm-cr8-66b-3eb3ff11c446
+In-Reply-To: <2026071630-earmark-chop-3d7f@gregkh>
+References: <2026071630-earmark-chop-3d7f@gregkh>
+To: stable@vger.kernel.org
+Cc: clopez@suse.de, Sean Christopherson <seanjc@google.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795839184; l=7616;
+ i=dickson.wu@certik.com; s=dickson-b4; h=from:subject:message-id;
+ bh=O1sRldbR0kLnbdVCe7s0tIwjDpjmQ/7AKyu5L/PXVHQ=;
+ b=oWBJI6Z3fUAb7DjfFYDuYt7lsgMfAHGWDZDZoZzXgS7HTf71guuwkg61fXP9icM0dOQa92Knx
+ zSngdtPb7kPCN0LDmGcTf52Ewl0C1S/lwoig7jENa/nWtlXhbJaV4Kz
+X-Developer-Key: i=dickson.wu@certik.com; a=ed25519;
+ pk=fxH7FS4FdojeJSGLJzgKdfO51Rvr4EW30yinj2mc1vg=
+X-Endpoint-Received: by B4 Relay for dickson.wu@certik.com/dickson-b4 with
+ auth_id=1647
+X-Original-From: Dickson Wu <dickson.wu@certik.com>
+Reply-To: dickson.wu@certik.com
 
-Hi Yingshiuan, Ze-Yu, Liju, MediaTek GenieZone and Android/crosvm teams,
+From: Carlos López <clopez@suse.de>
 
-We are reporting two critical virtualization bugs in MediaTek's GenieZone
-driver (drivers/virt/geniezone/) and EL2 hypervisor observed on production
-mt6991 (Dimensity 9400) hardware running Android 16 / ACK 6.6.118 with AVF
-crosvm and an unmodified Debian 13 ARM64 guest (Linux 6.12.118, 8 vCPUs).
+commit bb365a506b1e6fb050c0fceaad354fe395385ef0 upstream.
 
-Hardware & Software Versions:
-- SoC / Device : MediaTek Dimensity 9400 (mt6991), OPPO Find X8 (PKB110)
-- Android Build: Android 16 (API 36), PKB110_16.0.8.300(CN01)
-- Host Kernel  : 6.6.118-android15-8-gebdfad32d749-ab15099304-4k SMP PREEMPT
-- VMM          : Android 16 com.android.virt crosvm (ab13197479)
-- Guest Kernel : Debian 6.12.118+deb13-cloud-arm64 (8 vCPUs, 4 GiB RAM)
+The TPR_THRESHOLD field in the VMCS is used by VMX to induce VM exits
+when the guest's virtual TPR falls under the specified threshold,
+allowing KVM to inject previously masked interrupts.
 
-========================================================================
-Bug 1: GZVM_IRQFD_FLAG_RESAMPLE is accepted by gzvm_irqfd() but never
-       implemented, stalling level-triggered virtio-pci INTx queues
-========================================================================
+KVM handles these VM exits in handle_tpr_below_threshold().
+Commit eb90f3417a0c ("KVM: vmx: speed up TPR below threshold vmexits")
+optimized this function by calling apic_update_ppr() instead of raising
+KVM_REQ_EVENT. apic_update_ppr() then raises KVM_REQ_EVENT if there is
+a pending, deliverable interrupt.
 
-In drivers/virt/geniezone/gzvm_irqfd.c:
+However, if there are no new interrupts pending, apic_update_ppr() does
+not issue the request. Thus, kvm_lapic_update_cr8_intercept() and
+vmx_update_cr8_intercept() are not called before VM entry, which results
+in a high, stale TPR_THRESHOLD. This is problematic due to the following
+sentence in 28.2.1.1 "VM-Execution Control Fields" in the SDM:
 
-1. gzvm_irqfd() explicitly accepts GZVM_IRQFD_FLAG_RESAMPLE:
+  The following check is performed if the “use TPR shadow” VM-execution
+  control is 1 and the “virtualize APIC accesses” and “virtual-interrupt
+  delivery” VM-execution controls are both 0: the value of bits 3:0 of
+  the TPR threshold VM-execution control field should not be greater
+  than the value of bits 7:4 of VTPR.
 
-       if (args->flags &
-           ~(GZVM_IRQFD_FLAG_DEASSIGN | GZVM_IRQFD_FLAG_RESAMPLE))
-           return -EINVAL;
+This error condition is typically not observed when KVM runs on a bare
+metal system because modern processors support APICv, which enables
+virtual-interrupt delivery, and which KVM uses when possible. This
+causes the processor to no longer generate TPR-below-threshold exits
+and to no longer check TPR_THRESHOLD on entry. However, when running
+on older platforms, or under nested virtualization on a hypervisor that
+does not support virtual-interrupt delivery and enforces this check
+(like Hyper-V) this can cause a VM entry failure with hardware error
+0x7, as seen in [1].
 
-2. However, gzvm_irqfd_assign() completely ignores args->flags and
-   args->resamplefd. No resample eventfd_ctx is acquired, no
-   gzvm_irq_ack_notifier is registered, and gzvm_notify_acked_irq() is
-   not wired to guest VGIC EOI from EL2.
+Call kvm_lapic_update_cr8_intercept() if apic_update_ppr() does not
+find a deliverable interrupt (and thus does not raise KVM_REQ_EVENT).
+Remove calls to kvm_lapic_update_cr8_intercept() on paths that end up in
+apic_update_ppr(), as they now become redundant. This ensures that any
+path that updates the guest's PPR also figures out if KVM needs to wait
+for a TPR change (using TPR_THRESHOLD on VMX or CR8 intercepts on SVM).
 
-Impact on VMMs (crosvm):
-Because GenieZone does not provide virtual GICv3 ITS (no MSI-X), crosvm
-falls back to legacy PCI INTx (IRQ_TYPE_LEVEL_HIGH on GICv3 SPIs 36..41)
-and registers GZVM_IRQFD with GZVM_IRQFD_FLAG_RESAMPLE. When register_irqfd
-succeeds, crosvm assumes level resampling works (async_intr_status = false
-in devices/src/virtio/interrupt.rs) and suppresses further irqfd triggers
-whenever interrupt_status.fetch_or(mask) != 0, relying on resamplefd to
-re-inject if interrupt_status != 0 upon guest EOI.
+Link: https://github.com/coconut-svsm/svsm/issues/1081 [1]
+Tested-by: Stefano Garzarella <sgarzare@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: eb90f3417a0c ("KVM: vmx: speed up TPR below threshold vmexits")
+Signed-off-by: Carlos López <clopez@suse.de>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260618174347.1981064-3-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[ adapted to 6.6.y: rename update_cr8_intercept(), declare it in lapic.h ]
+Signed-off-by: Dickson Wu <dickson.wu@certik.com>
+---
+This failed to apply to 6.6.y. Upstream calls
+kvm_lapic_update_cr8_intercept(), which only exists after
+update_cr8_intercept() moved to lapic.c (c67494e7fae6). Here the x86.c
+helper takes that name, becomes non-static and is declared in lapic.h
+so apic_update_ppr() can call it. The rest matches upstream: the now
+redundant calls after KVM_SET_LAPIC and in __set_sregs_common() go
+away, and CR8 is set after the segments.
 
-Whenever a host virtqueue completion races with the guest window between
-reading/clearing the VirtIO PCI ISR byte and writing ICC_EOIR1_EL1,
-interrupt_status transitions back to 1, no resample event ever arrives
-after EOI, and all subsequent interrupts for that PCI device are
-permanently suppressed.
+Tested on 6.6.163 in a QEMU guest with APICv disabled. A small KVM
+test leaves vector 0x50 pending below an in-service 0x60, sets CR8
+through KVM_SET_SREGS and through KVM_SYNC_X86_SREGS, then lowers it.
+On the base kernel the vCPU keeps exiting through
+handle_tpr_below_threshold() and both cases time out; with the patch
+both complete. recalc_apic_map_test, vmx_apic_access_test,
+xapic_ipi_test and xapic_state_test pass on both kernels, and a W=1
+build of lapic.o and x86.o shows no new warnings. I didn't reproduce
+the nested VM-entry failure under Hyper-V.
 
-Workaround confirmation:
-Rewriting /pci/interrupt-map SPI trigger flags in the UEFI FDT from 0x4
-(level-high) to 0x1 (edge-rising) prior to booting Linux completely
-prevents this stall class.
+The backport and the test runs were prepared with AI coding tools
+(OpenAI Codex agents, with review by Claude). I went over the result
+before signing off.
+---
+ arch/x86/kvm/lapic.c |  2 ++
+ arch/x86/kvm/lapic.h |  1 +
+ arch/x86/kvm/x86.c   | 10 +++-------
+ 3 files changed, 6 insertions(+), 7 deletions(-)
 
-Expected fix:
-Either wire args->resamplefd end-to-end with EL2 VGIC EOI resampling (and
-deassert the virtual SPI line prior to signaling resamplefd), or reject
-GZVM_IRQFD_FLAG_RESAMPLE with -EINVAL until EL2 support is present (and
-avoid pairing IRQ_TYPE_LEVEL_HIGH INTx with async_intr_status = false in
-crosvm when resampling is unavailable).
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index a750ec8057cc..228d01964b5b 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -981,6 +981,8 @@ static void apic_update_ppr(struct kvm_lapic *apic)
+ 	if (__apic_update_ppr(apic, &ppr) &&
+ 	    apic_has_interrupt_for_ppr(apic, ppr) != -1)
+ 		kvm_make_request(KVM_REQ_EVENT, apic->vcpu);
++	else
++		kvm_lapic_update_cr8_intercept(apic->vcpu);
+ }
+ 
+ void kvm_apic_update_ppr(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
+index 0dd069b8d6d1..20e60f7ee2f2 100644
+--- a/arch/x86/kvm/lapic.h
++++ b/arch/x86/kvm/lapic.h
+@@ -108,6 +108,7 @@ void kvm_apic_clear_irr(struct kvm_vcpu *vcpu, int vec);
+ bool __kvm_apic_update_irr(u32 *pir, void *regs, int *max_irr);
+ bool kvm_apic_update_irr(struct kvm_vcpu *vcpu, u32 *pir, int *max_irr);
+ void kvm_apic_update_ppr(struct kvm_vcpu *vcpu);
++void kvm_lapic_update_cr8_intercept(struct kvm_vcpu *vcpu);
+ int kvm_apic_set_irq(struct kvm_vcpu *vcpu, struct kvm_lapic_irq *irq,
+ 		     struct dest_map *dest_map);
+ int kvm_apic_local_deliver(struct kvm_lapic *apic, int lvt_type);
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index cc50327a0f13..af5c43c0d6d0 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -113,7 +113,6 @@ static u64 __read_mostly cr4_reserved_bits = CR4_RESERVED_BITS;
+ #define KVM_X2APIC_API_VALID_FLAGS (KVM_X2APIC_API_USE_32BIT_IDS | \
+                                     KVM_X2APIC_API_DISABLE_BROADCAST_QUIRK)
+ 
+-static void update_cr8_intercept(struct kvm_vcpu *vcpu);
+ static void process_nmi(struct kvm_vcpu *vcpu);
+ static void __kvm_set_rflags(struct kvm_vcpu *vcpu, unsigned long rflags);
+ static void store_regs(struct kvm_vcpu *vcpu);
+@@ -4977,7 +4976,6 @@ static int kvm_vcpu_ioctl_set_lapic(struct kvm_vcpu *vcpu,
+ 	r = kvm_apic_set_state(vcpu, s);
+ 	if (r)
+ 		return r;
+-	update_cr8_intercept(vcpu);
+ 
+ 	return 0;
+ }
+@@ -10094,7 +10092,7 @@ static void post_kvm_run_save(struct kvm_vcpu *vcpu)
+ 		kvm_run->flags |= KVM_RUN_X86_SMM;
+ }
+ 
+-static void update_cr8_intercept(struct kvm_vcpu *vcpu)
++void kvm_lapic_update_cr8_intercept(struct kvm_vcpu *vcpu)
+ {
+ 	int max_irr, tpr;
+ 
+@@ -10816,7 +10814,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 			static_call(kvm_x86_enable_irq_window)(vcpu);
+ 
+ 		if (kvm_lapic_enabled(vcpu)) {
+-			update_cr8_intercept(vcpu);
++			kvm_lapic_update_cr8_intercept(vcpu);
+ 			kvm_lapic_sync_to_vapic(vcpu);
+ 		}
+ 	}
+@@ -11718,8 +11716,6 @@ static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs,
+ 	kvm_register_mark_dirty(vcpu, VCPU_EXREG_CR3);
+ 	static_call_cond(kvm_x86_post_set_cr3)(vcpu, sregs->cr3);
+ 
+-	kvm_set_cr8(vcpu, sregs->cr8);
+-
+ 	*mmu_reset_needed |= vcpu->arch.efer != sregs->efer;
+ 	static_call(kvm_x86_set_efer)(vcpu, sregs->efer);
+ 
+@@ -11749,7 +11745,7 @@ static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs,
+ 	kvm_set_segment(vcpu, &sregs->tr, VCPU_SREG_TR);
+ 	kvm_set_segment(vcpu, &sregs->ldt, VCPU_SREG_LDTR);
+ 
+-	update_cr8_intercept(vcpu);
++	kvm_set_cr8(vcpu, sregs->cr8);
+ 
+ 	/* Older userspace won't unhalt the vcpu on reset. */
+ 	if (kvm_vcpu_is_bsp(vcpu) && kvm_rip_read(vcpu) == 0xfff0 &&
 
-(Note: while inspecting gzvm_vcpu.c and gzvm_irqchip_inject_irq(), we also
-noticed gzvm_vcpu_wakeup_all() unconditionally wakes all GZVM_MAX_VCPUS
-threads on every SPI injection and per-vCPU gzvm_vtimer expiry rather than
-waking only the target vCPU(s), causing 7x redundant host context switches.)
-
-========================================================================
-Bug 2: Dropped GZVM_IOEVENTFD MMIO doorbell writes permanently wedge
-       VIRTIO_RING_F_EVENT_IDX virtqueues
-========================================================================
-
-Even with PCI SPIs patched to edge-triggered, guests intermittently hang
-due to lost Guest-to-Host ioeventfd notifications when executing
-vp_notify():
-
-    dmb  oshst
-    strh w0, [x1]   // 16-bit MMIO store to VirtIO-PCI Notify BAR
-
-where crosvm registered the queue's notify address via GZVM_IOEVENTFD
-with len = 0 (wildcard length/datamatch).
-
-Case A - Live /proc/kcore proof on virtio-blk (guest IRQs enabled):
-During normal multi-process file I/O over SSH, fdatasync/fsync/writeback
-tasks hung in TASK_UNINTERRUPTIBLE (rq_qos_wait <- wbt_wait), while
-hctx0..6 were idle (active = 0) and virtio-vsock (SSH) remained live.
-/sys/kernel/debug/block/vda/hctx7/busy showed 2 requests stuck in_flight
-(tag=54 READ, tag=55 WRITE) on vCPU 7.
-
-Reading struct vring_virtqueue for virtio3 vq[7] live from /proc/kcore:
-
-    vring.num               = 256
-    event (F_EVENT_IDX)     = 1
-    num_added               = 0
-    avail_idx_shadow        = 561
-    vring.avail->idx        = 561
-    vring.avail->used_event = 558
-    vring.used->idx         = 558
-    vring.used->avail_event = 558
-    last_used_idx           = 558
-
-1. last_used_idx == used->idx == 558: the guest processed all completions
-   written by the host; no host->guest interrupt was lost.
-2. used->avail_event == 558: the host [virtio_blk] worker last consumed
-   entry 557, published avail_event = 558, and slept on epoll_wait.
-3. On submission 558 -> 559 (num_added = 1), virtqueue_kick_prepare()
-   computed (u16)(559 - 558 - 1) < 1 (true), cleared num_added = 0, and
-   executed vp_notify() (strh of 7 to GPA 0x2c01b01c) in normal task
-   context with guest IRQs enabled, advancing guest PC past strh. However,
-   the host eventfd was never signaled.
-4. Subsequent submissions 559 -> 560 and 560 -> 561 observed
-   avail_event == 558, evaluated vring_need_event() == false, and did not
-   re-notify, leaving vq[7] permanently wedged.
-
-Case B - 4-vCPU hard lockup on virtio-console hvc0 (guest IRQs disabled):
-The same dropped GZVM_IOEVENTFD write hits virtio-console (hvc0, out_vq
-GPA 0x2c003004) during boot log floods or interactive console echo.
-Because Linux's put_chars() -> __send_to_port(..., in_nonblock=false)
-submits 1 buffer at a time (needs_kick is unconditionally true) and spins
-with local IRQs disabled at:
-
-    while (!virtqueue_get_buf(out_vq, &len) && !virtqueue_is_broken(out_vq))
-        cpu_relax();
-
-while holding port->outvq_lock, a single lost 0x2c003004 kick locks up
-4 vCPUs at 100% host stime (outvq_lock holder + hp->lock waiter + RCU
-stall console_owner + hardlockup detector console_waiter), while host
-[v_console] remains asleep in WaitContext::wait() (verified live: sending
-RX input 15 minutes after the hang still woke [v_console] on in_avail_evt,
-incrementing voluntary_ctxt_switches from 844 to 847, proving the worker
-was not blocked on host pipe output and never received transmitq's
-ioeventfd signal).
-
-Suspected EL2 / gzvm_vcpu_run() boundary to audit:
-In drivers/virt/geniezone/gzvm_vcpu.c:
-
-    while (!need_userspace && !signal_pending(current)) {
-        gzvm_arch_vcpu_run(vcpu, &exit_reason);
-        switch (exit_reason) {
-        case GZVM_EXIT_MMIO:
-            if (!gzvm_vcpu_handle_mmio(vcpu))
-                need_userspace = true;
-            break;
-        ...
-        case GZVM_EXIT_IRQ:
-        case GZVM_EXIT_GZ:
-            break;
-
-If gzvm_vcpu_handle_mmio() had returned false, need_userspace = true would
-have exited to crosvm, where VirtioPciDevice::write_bar() has a userspace
-fallback (evt.event.signal()). Because neither gzvm_ioevent_write() nor
-the userspace fallback signaled the eventfd while guest ELR_EL1 advanced
-past strh w0, [x1], please audit EL2's Stage-2 MMIO abort handling under
-concurrent physical IRQ / MT_HVC_GZVM_IRQ_LINE exits to ensure an in-flight
-MMIO trap that has already incremented ELR_EL1 cannot have its exit_reason
-overwritten by GZVM_EXIT_IRQ / GZVM_EXIT_GZ before EL1 processes
-GZVM_EXIT_MMIO.
+---
+base-commit: e2bb30811e063ce0db964484357973b855b06572
+change-id: 20261128-kvm-cr8-66b-3eb3ff11c446
 
 Best regards,
-Chenyang Yu
+--  
+Dickson Wu <dickson.wu@certik.com>
+
+
