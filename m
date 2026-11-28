@@ -1,105 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1795847245;
-	b=AYYhSWEs2YyF9X2E5F8VkuhuIe7L4U5eivR9vjNqK+/fto2LQ1qKj59J0oNHpYNldBUD
-	 vDE9t9WscehiLvds4b7gGq7FvcNpl/72S99RlRXml6rpYM3AgGsoa3Phekp35MxCbu6Ze
-	 KsPDx1/8v6n/wmKn0UhISZaCtutEBKVrbC79fnVMGFpQiCPmwxRZXJUd7FEFOes+RKptt
-	 5WuS2XyocSNbfHvKOMGF4AlimcQsNqJDuXd88IXUwDmseQOWkK056Cp1QmxHLnTkMqkct
-	 vrL5Q5iPsI8dLS7+KP+eIixpMN4hWE1GKAJhXN/m7Y3YqLSnjWWM+pkww8TBYZEGL4w==
+	t=1795856126;
+	b=j9PJNR6PAvpQOVQ0dnp+jKUrwBQlRtd/yoTxIXl5aimz6wkBbhAbZ9Jd5p5mmKVLn5pm
+	 fB5a+umlreKv7rTvxWUCggqPf1ITQ4mNk+Bv7AW53vGyaMkdN3gz3/JWZzqBa0irzU8aS
+	 0vUkzv1QthKozayFQz6R0DD4+jyOtuh89aaAWHLype1B2yAd/wwUieMQPmSXBmcvNDfJH
+	 uSvEW0mrnQcKWJnDi5g1seEqPiTVqSmVyESqvyuuB9nUE4KZn/LBXkFZ1XiAdp+uLIX/V
+	 CTx/NSgh59wNJ3b7Fq0/ONAvEpXsjkjUrZj8AqCTX680vPzamKtbV/Wz77gJzEr1u0Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1795847245;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=wcZBeuMIMZGh5V5Nkisgmrflj3EBBSr6rcajrufM/Cw=;
-	b=sZw2pyYnR5T+SU+h4iDiKfh+RzoZXbWLKV+mLXLHScz+w9OkSeyZ9iiptdjSPHgmbcnO
-	 3y5/trH8arHJa3+bfEpyMPF4zrp1nsyO55xmmFQBiW400xKdTsyj0YvRFqn+K9UMOC9xO
-	 kyuy6YzR/X8RRItAoPq7ChShU7pofuRPAPpWv/M2hSD1MTwW+Mfe7qrm5JCnJvYYuEqBw
-	 NEv2LZfZofeB+Fty0Bk8tMxBWgBCQcWEYDVxYDnJvT5KXBvp2G8YSAARfmSP8lzT2bEsy
-	 eU7FnEoOfSzHiEDHTZVVQH2c7oCkLDVM9DATlq8IT/KB+ACiQhe7Rnb+gAAaagpx3MQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1795856126;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=pT/Ty5tDobukfZnRUpr1Lr4sCBOaNehiDx5qlqzSLeI=;
+	b=QirWoE0lPzw9/kWtzfU+XeN5RbaOmHtT4FKeaCktLAOkCYLvEQGDaggB8F0tll4RAcqn
+	 VwsTYgWckJw9Vp57hlO4s5r1YrnZsMdLq36nRwubh5d/Cdcgl1GAPlmNbvWJAP+Sbt/+o
+	 /ITYf80oL/Cyo0Gou7KnIdGqUM0uJoBN7W1CluKqpU8nBOuk30HTxfKUc2wDVp2JnbAAG
+	 v9UU3S+JI9h1ggAS147QQVeamcmnLjU4Ua+2Fi9kXWG5+LXOpnv3JmB+NVRX54vh9kEzU
+	 4hSQQMNrQ5lkn7xW6t9t3p7MZ24BKTZydrYbsTFmWAwuqpNwUO4QABTynBaKT1H5U7w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jIKbU4Xd;
-	arc=none smtp.remote-ip=209.85.128.45
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="a82/5EW2";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0DD606A31C
-	for <kvm@vger.kernel.org>; Sat, 28 Nov 2026 06:27:24 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB0DD606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF011606A321;
+	Sat, 28 Nov 2026 08:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jIKbU4Xd
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4bba5e17cbeso32703145e9.1
-        for <kvm@vger.kernel.org>; Fri, 27 Nov 2026 22:27:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795847243; x=1796452043; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wcZBeuMIMZGh5V5Nkisgmrflj3EBBSr6rcajrufM/Cw=;
-        b=jIKbU4XdZkWkydk5e42m6SuDkTymeUApCS1QrZ/yE1F90oMAeP/g97BSMVLOlgzQ5c
-         QqVRA3K74kPwq3xGYhEuqROx+/YEx7pb5UcPaBVxzDA8nmDm0O8XqkPrXRcfydT61nrM
-         iza4xM9uZ6Cab34jX9HLCnXDOh3NooME7gRZR9cUBctCKn6IsaV/PIps+LeGNvBg3rKz
-         1MtQHuhrA8WiuZ9Jtih5GJwlk696YrzS6CYmiBHjA15LZyN/RjN6avJj/A0YPfXpCjev
-         RDFMU7PUIpNIEQiIy9553WYur5Gbe6anAO7wQYDczuZG6xzsTkil5Xu0iSJDXMbUi6ER
-         W/vw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795847243; x=1796452043;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wcZBeuMIMZGh5V5Nkisgmrflj3EBBSr6rcajrufM/Cw=;
-        b=qlxc+FcnVQzZyh1odJpkmD8DFJTC6uW1ylIDetHBfppMGb8Ww1yzplV1k1/nei694e
-         jJGzhd24LOfllwNDJa6S1qsoSkGzNzJIYtkznltpJlf+9UXd2hwmm3Xl6g56zWxqG3bs
-         Ep5XIOIKszcc32yGJ4mac/gcyxsGkDJCapW41Ln9skdrdMHCZDU4/sPJJ/l7HHmmPb3J
-         HWtm/EBQfywQpaK8M/xchseuzNXSXfEXdhk3E27OIwzDvqxj0znZf3wUh9xKtOXtz28Y
-         ApdFjNgxlZlV7CmFGyb3aniRGDsTDsHrr1vAj1399LSYShDFa8IIpJFErjkEENE1NrFC
-         Oeig==
-X-Forwarded-Encrypted: i=1; AL+hErFT1gEjmSanBt9VAgUCIyEFBARQGmlAqtqwEeDh9WTpPBirdvzOx0aw9TgSwYlxwtoXFHQ=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9H09LDFknPggQn8EsszHNKahmFcmG+LJEdRPQ9VO/h8vcZeEVd
-	Ko64xTzFiwh745wFGBHx34XrNzM+FIEqAGoVdSSAyfgsNjzbINvDfSKg
-X-Gm-Gg: AZFdTZfeuweARQlKIuqAj36ppTvzgA+f8o69LiThZt4ammzUhuFDASmgBwwKr3PT/K+
-	vXIbW7AtEbWwGWIFPvZ4Jyu/E++su/MWn0e2CFysBNPJYjsTDcDITrR8PpVIu6Y4Ijap4Srna+Y
-	MXd4Gc5HGz4lNPKWSouQyiYqdVchesNkLBGYdxbjdTW5Zn2QTTloJyF7vCGPraEArQoCn6Bd71+
-	3oplmDyVUNINLF6DbW0nYFAaGZdijDWaIQ6sfGtq0jbPgSNe7zt27jFQs+0nGy8eI71kh2ozR6d
-	6dLV3j/NXXaZVJBET2+UqBlRczOatSeiO/5lRaM1R77m4CB6pwGm4nrKLmOjBASktA7cg29DIXO
-	n5prTi211CKpv+s/ePHsPqLE9rC5CQv2ziFHm3BEk962huXnX7DUoFc+Man/wr6fQe7I0l13/e9
-	C7oWp7J5RuVWVV5Oo9Yr4XBfsVXBJZhWbFl3u4Wb09wLsNGVFWU0fGyZ7yT7SndH/mdT8LueNkz
-	kw4GruqGnuJAkvrV0dtGFR/LAkeKT0X0mMhhFDOPlwsD075d6zytiwEivUhShE0+8vvXZGu3IhM
-	wWmaZVF5URBOHJqvQQTG2tC0Q89Dd5u2XkpHLptFD3KlwCk4dDCbPq4CrYrWUrxVrVhY7GZGfwQ
-	ExeSx6AgnII+rJrxALAzFZSGY
-X-Received: by 2002:a05:600c:1d8c:b0:4a1:c5eb:b445 with SMTP id 5b1f17b1804b1-4bb88820436mr553100495e9.35.1795847242750;
-        Fri, 27 Nov 2026 22:27:22 -0800 (PST)
-Received: from PKL-HASEEBA-LT.. ([39.36.25.192])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb884a15absm685756885e9.9.2026.11.27.22.27.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2026 22:27:22 -0800 (PST)
-From: Haseeb Ashraf <haseebashraf091@gmail.com>
-To: Mohamed Mediouni <mohamed@unpredictable.fr>
-Cc: Haseeb Ashraf <haseebashraf091@gmail.com>,
-	Eric Auger <eauger@redhat.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Khushit Shah <khushit.shah@nutanix.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org,
-	kvm@vger.kernel.org,
-	Haseeb Ashraf <haseeb.ashraf@siemens.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Pierrick Bouvier <pierrick.bouvier@oss.qualcomm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
-Subject: Re: [RFC PATCH v3 0/3] arm/kvm: select an nVHE-only EL2 with SYSREG_ID_AA64MMFR1_EL1_VH
-Date: Sat, 28 Nov 2026 11:27:15 +0500
-Message-ID: <20261128062715.130056-1-haseebashraf091@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <9746F4BB-6688-4B39-AC6E-DC0295599927@unpredictable.fr>
-References: <9746F4BB-6688-4B39-AC6E-DC0295599927@unpredictable.fr>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a82/5EW2
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A991F00898;
+	Sat, 28 Nov 2026 08:55:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1795856126;
+	bh=pT/Ty5tDobukfZnRUpr1Lr4sCBOaNehiDx5qlqzSLeI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=a82/5EW2OfNfsbisNQy+guLQbVhsz1qVvMs9F/Ys2r1NWSxIjxVbgPNIiLIyTxawm
+	 63d26N+kWSNTDaBQegZGajx2fig+KoU4kZ6MJFXA8xTGp5jZQuqLJcVzWeUN6NMd68
+	 gJEgbBgVvqFDeLfePo5ijOI5qMds/3InSMZ2LRJ8xdXF8u4ktAUYNxB/odGZzEjJIX
+	 VPKS/iasFIp+DR9UFQif07K/JL7CsGKiY4SS5NZSFz2WIJgqSgI3sGfEex1In37MPf
+	 IDTTVTRJQB7nCush8kTC4mSsgfF5xkIEtZ8BzlkdzXW0eZYIpMO2XvMT+Qab2tjfUv
+	 Uz67ViBQU+w5g==
+Message-ID: <0d77ebaa-fba4-4047-a43a-18b3c1ae242b@kernel.org>
+Date: Sat, 28 Nov 2026 08:55:20 +0000
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Post: <mailto:kvm@vger.kernel.org>
@@ -109,43 +51,104 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:kvm+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] media: venus: use dma_iova_size() to check the
+ reserved IOVA size
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, iommu@lists.linux.dev,
+ linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Leon Romanovsky <leon@kernel.org>,
+ Sibi Sankar <sibi.sankar@oss.qualcomm.com>, Honglei Huang
+ <honghuan@amd.com>, prakash.gupta@oss.qualcomm.com,
+ Alex Williamson <alex@shazbot.org>,
+ Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+ Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+ Abhinav Kumar <abhinav.kumar@linux.dev>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Hans Verkuil <hverkuil+cisco@kernel.org>, stable@vger.kernel.org
+References: <20261127115849.2780625-1-m.szyprowski@samsung.com>
+ <CGME20261127115859eucas1p1ae20b01eec39080daf19dbd71aba10e9@eucas1p1.samsung.com>
+ <20261127115849.2780625-2-m.szyprowski@samsung.com>
+ <nohVXMHveO5nQuD8sOn0QoENkIUC-GQzMCh8HTX6v2eezbtW6OM5gX5JwJ7_MSwfWj3bC4Zmfz1CrxTDKJeFGg==@protonmail.internalid>
+ <20261127142912.GK114472@nvidia.com>
+ <dcc8689e-41bc-4a18-87fc-2fa76e11eab1@kernel.org>
+ <1MLPCyQ6FzkBIjdEja1y1xlc1P6WofGan08C2FN5E6caYBo9uKTCVFZXVujGWTLFgNm4nIXZGke0kdpRd8Z_BA==@protonmail.internalid>
+ <20261127172626.GQ114472@nvidia.com>
+From: Bryan O'Donoghue <bod@kernel.org>
+Content-Language: en-GB
+Autocrypt: addr=bod@kernel.org; keydata=
+ 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
+In-Reply-To: <20261127172626.GQ114472@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi all,
+On 27/11/2026 17:26, Jason Gunthorpe wrote:
+>> It would be possible to reserve this IOVA range in DT so given what you've
+>> highlighted I think this and the Iris commit should be reverted and the DT
+>> constraint implemented.
+> That was the other thread, obviously using DT to describe a hardware
+> issue is the correct choice. But there was some problem where they
+> also wanted to split the SID space using DT and then the DT mechansim
+> doesn't work because the whole thing becomes too hacky :\
+> 
+> Jason
 
-Thanks for the feedback.
+Actually I've been looking for some resolution on this.
 
-For the ID-register cache, I can drop
-kvm_arm_refresh_e2h0_idregs() from this series and let Eric's SYSREG
-series refresh the affected ID registers generically after property
-write-back. Please let me know if that is preferred.
+https://lore.kernel.org/linux-media/d0e76f09-a360-4c1d-bfab-c5658f2a69e0@kernel.org
 
-Regarding the interface, there appear to be two possible directions:
+There's been radio silence on the method from the iommu maintainers so I 
+haven't merged the DT that would come to depend on it.
 
-1. Keep VH in the SYSREG framework with an explicit init-time
-   exception, as in the current RFC; or
+If its mergable with changes then grand, if not then the approach needs 
+to be rolled back.
 
-2. Introduce a higher-level CPU property:
+Either way several series in limbo and now this rollback.
 
-     -cpu host,vhe=on|off|auto
+I would like to do the right thing _once_ to resolve.
 
-   Here, on would require VHE, off would require nVHE/E2H=0, and auto
-   would retain the accelerator's default behavior.
-
-The first approach follows the SYSREG_<REG>_<FIELD> model, but VH
-differs from ordinary writable ID-register fields because its selection
-takes effect during vCPU initialization. The second approach keeps that
-implementation detail out of the SYSREG interface and lets each
-accelerator evaluate the requested mode before vCPU creation. That may
-also make future HVF support less awkward, as Mohamed noted.
-
-Since v1 used the separate-property approach and Marc objected to it,
-while the current approach adds an init-time exception to Eric's
-framework, I would appreciate guidance from the maintainers on which
-direction they prefer.
-
-For now, I will wait for that design decision before posting v4 and
-will adjust the implementation accordingly.
-
-Thanks,
-Haseeb
+---
+bod
